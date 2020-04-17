@@ -160,7 +160,7 @@ namespace Server.Mobiles
             if (!IsCaught || m_NextTalk > DateTime.UtcNow)
                 return;
 
-            IPooledEnumerable eable = this.GetMobilesInRange(7);
+            IPooledEnumerable eable = GetMobilesInRange(7);
             foreach (Mobile mob in eable)
             {
                 if (mob is PlayerMobile)

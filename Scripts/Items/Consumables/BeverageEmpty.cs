@@ -7,7 +7,7 @@ namespace Server.Items
         public Glass()
             : base(0x1f81)
         {
-            this.Weight = 0.1;
+            Weight = 0.1;
         }
 
         public Glass(Serial serial)
@@ -36,7 +36,7 @@ namespace Server.Items
         public GlassBottle()
             : base(0xe2b)
         {
-            this.Weight = 0.3;
+            Weight = 0.3;
         }
 
         public GlassBottle(Serial serial)

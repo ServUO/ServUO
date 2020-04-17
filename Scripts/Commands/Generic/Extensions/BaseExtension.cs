@@ -15,20 +15,20 @@ namespace Server.Commands.Generic
         private readonly ExtensionConstructor m_Constructor;
         public ExtensionInfo(int order, string name, int size, ExtensionConstructor constructor)
         {
-            this.m_Name = name;
-            this.m_Size = size;
+            m_Name = name;
+            m_Size = size;
 
-            this.m_Order = order;
+            m_Order = order;
 
-            this.m_Constructor = constructor;
+            m_Constructor = constructor;
         }
 
         public static Dictionary<string, ExtensionInfo> Table => m_Table;
-        public int Order => this.m_Order;
-        public string Name => this.m_Name;
-        public int Size => this.m_Size;
-        public bool IsFixedSize => (this.m_Size >= 0);
-        public ExtensionConstructor Constructor => this.m_Constructor;
+        public int Order => m_Order;
+        public string Name => m_Name;
+        public int Size => m_Size;
+        public bool IsFixedSize => (m_Size >= 0);
+        public ExtensionConstructor Constructor => m_Constructor;
         public static void Register(ExtensionInfo ext)
         {
             m_Table[ext.m_Name] = ext;
@@ -95,7 +95,7 @@ namespace Server.Commands.Generic
 
         public bool IsValid(object obj)
         {
-            for (int i = 0; i < this.Count; ++i)
+            for (int i = 0; i < Count; ++i)
             {
                 if (!this[i].IsValid(obj))
                     return false;
@@ -106,7 +106,7 @@ namespace Server.Commands.Generic
 
         public void Filter(ArrayList list)
         {
-            for (int i = 0; i < this.Count; ++i)
+            for (int i = 0; i < Count; ++i)
                 this[i].Filter(list);
         }
     }
@@ -114,10 +114,10 @@ namespace Server.Commands.Generic
     public abstract class BaseExtension
     {
         public abstract ExtensionInfo Info { get; }
-        public string Name => this.Info.Name;
-        public int Size => this.Info.Size;
-        public bool IsFixedSize => this.Info.IsFixedSize;
-        public int Order => this.Info.Order;
+        public string Name => Info.Name;
+        public int Size => Info.Size;
+        public bool IsFixedSize => Info.IsFixedSize;
+        public int Order => Info.Order;
         public virtual void Optimize(Mobile from, Type baseType, ref AssemblyEmitter assembly)
         {
         }

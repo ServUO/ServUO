@@ -39,7 +39,7 @@ namespace Server.Items
         public GuillotineAddon()
             : base()
         {
-            this.AddComponent(new GuillotineComponent(), 0, 0, 0);
+            AddComponent(new GuillotineComponent(), 0, 0, 0);
         }
 
         public GuillotineAddon(Serial serial)
@@ -50,11 +50,11 @@ namespace Server.Items
         public override BaseAddonDeed Deed => new GuillotineDeed();
         public override void OnComponentUsed(AddonComponent c, Mobile from)
         {
-            if (from.InRange(this.Location, 2))
+            if (from.InRange(Location, 2))
             {
                 if (Utility.RandomBool())
                 {
-                    from.Location = this.Location;
+                    from.Location = Location;
 
                     Timer.DelayCall(TimeSpan.FromSeconds(0.5), new TimerStateCallback(Activate), new object[] { c, from });
                 }
@@ -123,7 +123,7 @@ namespace Server.Items
             object[] param = (object[])obj;
 
             if (param[0] is AddonComponent && param[1] is Mobile)
-                this.Activate((AddonComponent)param[0], (Mobile)param[1]);
+                Activate((AddonComponent)param[0], (Mobile)param[1]);
         }
 
         private void Deactivate(object obj)
@@ -150,7 +150,7 @@ namespace Server.Items
         public GuillotineDeed()
             : base()
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public GuillotineDeed(Serial serial)

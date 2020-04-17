@@ -112,7 +112,7 @@ namespace Server.Multis
 
             m_Items.Add(item);
 
-            int zavg = this.Map.GetAverageZ(X + xOffset, Y + yOffset);
+            int zavg = Map.GetAverageZ(X + xOffset, Y + yOffset);
 
             if (!Map.CanFit(X + xOffset, Y + yOffset, zavg, item.ItemData.Height))
             {

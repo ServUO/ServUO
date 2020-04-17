@@ -10,8 +10,8 @@ namespace Server.Items
         public HairRestylingDeed()
             : base(0x14F0)
         {
-            this.Weight = 1.0;
-            this.LootType = LootType.Blessed;
+            Weight = 1.0;
+            LootType = LootType.Blessed;
         }
 
         public HairRestylingDeed(Serial serial)
@@ -35,7 +35,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!this.IsChildOf(from.Backpack))
+            if (!IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(1042001); // That must be in your pack...
             }
@@ -99,52 +99,52 @@ namespace Server.Items
             public InternalGump(Mobile from, HairRestylingDeed deed)
                 : base(50, 50)
             {
-                this.m_From = from;
-                this.m_Deed = deed;
+                m_From = from;
+                m_Deed = deed;
 
                 from.CloseGump(typeof(InternalGump));
 
-                this.AddBackground(100, 10, 400, 385, 0xA28);
+                AddBackground(100, 10, 400, 385, 0xA28);
 
-                this.AddHtmlLocalized(100, 25, 400, 35, 1013008, false, false);
-                this.AddButton(175, 340, 0xFA5, 0xFA7, 0x0, GumpButtonType.Reply, 0); // CANCEL
+                AddHtmlLocalized(100, 25, 400, 35, 1013008, false, false);
+                AddButton(175, 340, 0xFA5, 0xFA7, 0x0, GumpButtonType.Reply, 0); // CANCEL
 
-                this.AddHtmlLocalized(210, 342, 90, 35, 1011012, false, false);// <CENTER>HAIRSTYLE SELECTION MENU</center>
+                AddHtmlLocalized(210, 342, 90, 35, 1011012, false, false);// <CENTER>HAIRSTYLE SELECTION MENU</center>
 
-                int[][] RacialData = (from.Race == Race.Human) ? this.HumanArray : this.ElvenArray;
+                int[][] RacialData = (from.Race == Race.Human) ? HumanArray : ElvenArray;
 
                 for (int i = 1; i < RacialData.Length; i++)
                 {
-                    this.AddHtmlLocalized(this.LayoutArray[i][2], this.LayoutArray[i][3], (i == 1) ? 125 : 80, (i == 1) ? 70 : 35, (this.m_From.Female) ? RacialData[i][0] : RacialData[i][1], false, false);
-                    if (this.LayoutArray[i][4] != 0)
+                    AddHtmlLocalized(LayoutArray[i][2], LayoutArray[i][3], (i == 1) ? 125 : 80, (i == 1) ? 70 : 35, (m_From.Female) ? RacialData[i][0] : RacialData[i][1], false, false);
+                    if (LayoutArray[i][4] != 0)
                     {
-                        this.AddBackground(this.LayoutArray[i][0], this.LayoutArray[i][1], 50, 50, 0xA3C);
-                        this.AddImage(this.LayoutArray[i][4], this.LayoutArray[i][5], (this.m_From.Female) ? RacialData[i][4] : RacialData[i][5]);
+                        AddBackground(LayoutArray[i][0], LayoutArray[i][1], 50, 50, 0xA3C);
+                        AddImage(LayoutArray[i][4], LayoutArray[i][5], (m_From.Female) ? RacialData[i][4] : RacialData[i][5]);
                     }
-                    this.AddButton(this.LayoutArray[i][6], this.LayoutArray[i][7], 0xFA5, 0xFA7, i, GumpButtonType.Reply, 0);
+                    AddButton(LayoutArray[i][6], LayoutArray[i][7], 0xFA5, 0xFA7, i, GumpButtonType.Reply, 0);
                 }
             }
 
             public override void OnResponse(NetState sender, RelayInfo info)
             {
-                if (this.m_From == null || !this.m_From.Alive)
+                if (m_From == null || !m_From.Alive)
                     return;
 
-                if (this.m_Deed.Deleted)
+                if (m_Deed.Deleted)
                     return;
 
                 if (info.ButtonID < 1 || info.ButtonID > 10)
                     return;
 
-                int[][] RacialData = (this.m_From.Race == Race.Human) ? this.HumanArray : this.ElvenArray;
+                int[][] RacialData = (m_From.Race == Race.Human) ? HumanArray : ElvenArray;
 
-                if (this.m_From is PlayerMobile)
+                if (m_From is PlayerMobile)
                 {
-                    PlayerMobile pm = (PlayerMobile)this.m_From;
+                    PlayerMobile pm = (PlayerMobile)m_From;
 
                     pm.SetHairMods(-1, -1); // clear any hairmods (disguise kit, incognito)
-                    this.m_From.HairItemID = (this.m_From.Female) ? RacialData[info.ButtonID][2] : RacialData[info.ButtonID][3];
-                    this.m_Deed.Delete();
+                    m_From.HairItemID = (m_From.Female) ? RacialData[info.ButtonID][2] : RacialData[info.ButtonID][3];
+                    m_Deed.Delete();
                 }
             }
         }

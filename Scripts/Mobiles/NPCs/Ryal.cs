@@ -9,9 +9,9 @@ namespace Server.Engines.Quests
         public DaemonicPrismQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(CrystalDaemon), "crystal daemons", 3, "Prism of Light"));
+            AddObjective(new SlayObjective(typeof(CrystalDaemon), "crystal daemons", 3, "Prism of Light"));
 
-            this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
+            AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
         /* Daemonic Prism */
@@ -52,9 +52,9 @@ namespace Server.Engines.Quests
         public HowManyHeadsQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(CrystalHydra), "crystal hydras", 3, "Prism of Light"));
+            AddObjective(new SlayObjective(typeof(CrystalHydra), "crystal hydras", 3, "Prism of Light"));
 
-            this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
+            AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
         /* How Many Heads? */
@@ -95,9 +95,9 @@ namespace Server.Engines.Quests
         public GlassyFoeQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(CrystalLatticeSeeker), "crystal lattice seekers", 5, "Prism of Light"));
+            AddObjective(new SlayObjective(typeof(CrystalLatticeSeeker), "crystal lattice seekers", 5, "Prism of Light"));
 
-            this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
+            AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
         /* Glassy Foe */
@@ -138,9 +138,9 @@ namespace Server.Engines.Quests
         public HailstormQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(CrystalVortex), "crystal vortices", 8, "Prism of Light"));
+            AddObjective(new SlayObjective(typeof(CrystalVortex), "crystal vortices", 8, "Prism of Light"));
 
-            this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
+            AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
         /* Hailstorm */
@@ -182,8 +182,8 @@ namespace Server.Engines.Quests
         public Ryal()
             : base("Lorekeeper Ryal", "the keeper of tradition")
         {
-            this.SetSkill(SkillName.Meditation, 60.0, 83.0);
-            this.SetSkill(SkillName.Focus, 60.0, 83.0);
+            SetSkill(SkillName.Meditation, 60.0, 83.0);
+            SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
         public Ryal(Serial serial)
@@ -200,22 +200,22 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.Race = Race.Elf;
+            Female = false;
+            Race = Race.Elf;
 
-            this.Hue = 0x82FE;
-            this.HairItemID = 0x2FC2;
-            this.HairHue = 0x324;
+            Hue = 0x82FE;
+            HairItemID = 0x2FC2;
+            HairHue = 0x324;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new ElvenBoots(0x1BB));
-            this.AddItem(new Cloak(0x219));
-            this.AddItem(new LeafTonlet());
-            this.AddItem(new GnarledStaff());
+            AddItem(new ElvenBoots(0x1BB));
+            AddItem(new Cloak(0x219));
+            AddItem(new LeafTonlet());
+            AddItem(new GnarledStaff());
         }
 
         public override void Serialize(GenericWriter writer)

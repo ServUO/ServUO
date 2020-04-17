@@ -21,7 +21,7 @@ namespace Server.Items
         private bool _PlayerConstructed;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public CraftResource Resource { get { return _Resource; } set { _Resource = value; _Resource = value; Hue = CraftResources.GetHue(this._Resource); InvalidateProperties(); } }
+        public CraftResource Resource { get { return _Resource; } set { _Resource = value; _Resource = value; Hue = CraftResources.GetHue(_Resource); InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Crafter { get { return _Crafter; } set { _Crafter = value; InvalidateProperties(); } }
@@ -71,11 +71,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_BurntOut;
+                return m_BurntOut;
             }
             set
             {
-                this.m_BurntOut = value;
+                m_BurntOut = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -83,11 +83,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Protected;
+                return m_Protected;
             }
             set
             {
-                this.m_Protected = value;
+                m_Protected = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -95,99 +95,99 @@ namespace Server.Items
         {
             get
             {
-                if (this.m_Duration != TimeSpan.Zero && this.m_Burning)
+                if (m_Duration != TimeSpan.Zero && m_Burning)
                 {
-                    return this.m_End - DateTime.UtcNow;
+                    return m_End - DateTime.UtcNow;
                 }
                 else
-                    return this.m_Duration;
+                    return m_Duration;
             }
 
             set
             {
-                this.m_Duration = value;
+                m_Duration = value;
             }
         }
         public virtual void PlayLitSound()
         {
-            if (this.LitSound != 0)
+            if (LitSound != 0)
             {
-                Point3D loc = this.GetWorldLocation();
-                Effects.PlaySound(loc, this.Map, this.LitSound);
+                Point3D loc = GetWorldLocation();
+                Effects.PlaySound(loc, Map, LitSound);
             }
         }
 
         public virtual void PlayUnlitSound()
         {
-            int sound = this.UnlitSound;
+            int sound = UnlitSound;
 
-            if (this.m_BurntOut && this.BurntOutSound != 0)
-                sound = this.BurntOutSound;
+            if (m_BurntOut && BurntOutSound != 0)
+                sound = BurntOutSound;
 
             if (sound != 0)
             {
-                Point3D loc = this.GetWorldLocation();
-                Effects.PlaySound(loc, this.Map, sound);
+                Point3D loc = GetWorldLocation();
+                Effects.PlaySound(loc, Map, sound);
             }
         }
 
         public virtual void Ignite()
         {
-            if (!this.m_BurntOut)
+            if (!m_BurntOut)
             {
-                this.PlayLitSound();
+                PlayLitSound();
 
-                this.m_Burning = true;
-                this.ItemID = this.LitItemID;
-                this.DoTimer(this.m_Duration);
+                m_Burning = true;
+                ItemID = LitItemID;
+                DoTimer(m_Duration);
             }
         }
 
         public virtual void Douse()
         {
-            this.m_Burning = false;
+            m_Burning = false;
 
-            if (this.m_BurntOut && this.BurntOutItemID != 0)
-                this.ItemID = this.BurntOutItemID;
+            if (m_BurntOut && BurntOutItemID != 0)
+                ItemID = BurntOutItemID;
             else
-                this.ItemID = this.UnlitItemID;
+                ItemID = UnlitItemID;
 
-            if (this.m_BurntOut)
-                this.m_Duration = TimeSpan.Zero;
-            else if (this.m_Duration != TimeSpan.Zero)
-                this.m_Duration = this.m_End - DateTime.UtcNow;
+            if (m_BurntOut)
+                m_Duration = TimeSpan.Zero;
+            else if (m_Duration != TimeSpan.Zero)
+                m_Duration = m_End - DateTime.UtcNow;
 
-            if (this.m_Timer != null)
-                this.m_Timer.Stop();
+            if (m_Timer != null)
+                m_Timer.Stop();
 
-            this.PlayUnlitSound();
+            PlayUnlitSound();
         }
 
         public virtual void Burn()
         {
-            this.m_BurntOut = true;
-            this.Douse();
+            m_BurntOut = true;
+            Douse();
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.m_BurntOut)
+            if (m_BurntOut)
                 return;
 
-            if (this.m_Protected && from.IsPlayer())
+            if (m_Protected && from.IsPlayer())
                 return;
 
-            if (!from.InRange(this.GetWorldLocation(), 2))
+            if (!from.InRange(GetWorldLocation(), 2))
                 return;
 
-            if (this.m_Burning)
+            if (m_Burning)
             {
-                if (this.UnlitItemID != 0)
-                    this.Douse();
+                if (UnlitItemID != 0)
+                    Douse();
             }
             else
             {
-                this.Ignite();
+                Ignite();
             }
         }
 
@@ -218,12 +218,12 @@ namespace Server.Items
 
         public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
-            this.Quality = (ItemQuality)quality;
+            Quality = (ItemQuality)quality;
 
             PlayerConstructed = true;
 
             if (makersMark)
-                this.Crafter = from;
+                Crafter = from;
 
             if (!craftItem.ForceNonExceptional)
             {
@@ -256,13 +256,13 @@ namespace Server.Items
             writer.Write(_Crafter);
             writer.Write((int)_Quality);
 
-            writer.Write(this.m_BurntOut);
-            writer.Write(this.m_Burning);
-            writer.Write(this.m_Duration);
-            writer.Write(this.m_Protected);
+            writer.Write(m_BurntOut);
+            writer.Write(m_Burning);
+            writer.Write(m_Duration);
+            writer.Write(m_Protected);
 
-            if (this.m_Burning && this.m_Duration != TimeSpan.Zero)
-                writer.WriteDeltaTime(this.m_End);
+            if (m_Burning && m_Duration != TimeSpan.Zero)
+                writer.WriteDeltaTime(m_End);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -292,13 +292,13 @@ namespace Server.Items
                     }
                 case 0:
                     {
-                        this.m_BurntOut = reader.ReadBool();
-                        this.m_Burning = reader.ReadBool();
-                        this.m_Duration = reader.ReadTimeSpan();
-                        this.m_Protected = reader.ReadBool();
+                        m_BurntOut = reader.ReadBool();
+                        m_Burning = reader.ReadBool();
+                        m_Duration = reader.ReadTimeSpan();
+                        m_Protected = reader.ReadBool();
 
-                        if (this.m_Burning && this.m_Duration != TimeSpan.Zero)
-                            this.DoTimer(reader.ReadDeltaTime() - DateTime.UtcNow);
+                        if (m_Burning && m_Duration != TimeSpan.Zero)
+                            DoTimer(reader.ReadDeltaTime() - DateTime.UtcNow);
 
                         break;
                     }
@@ -310,18 +310,18 @@ namespace Server.Items
 
         private void DoTimer(TimeSpan delay)
         {
-            this.m_Duration = delay;
+            m_Duration = delay;
 
-            if (this.m_Timer != null)
-                this.m_Timer.Stop();
+            if (m_Timer != null)
+                m_Timer.Stop();
 
             if (delay == TimeSpan.Zero)
                 return;
 
-            this.m_End = DateTime.UtcNow + delay;
+            m_End = DateTime.UtcNow + delay;
 
-            this.m_Timer = new InternalTimer(this, delay);
-            this.m_Timer.Start();
+            m_Timer = new InternalTimer(this, delay);
+            m_Timer.Start();
         }
 
         private class InternalTimer : Timer
@@ -330,14 +330,14 @@ namespace Server.Items
             public InternalTimer(BaseLight light, TimeSpan delay)
                 : base(delay)
             {
-                this.m_Light = light;
-                this.Priority = TimerPriority.FiveSeconds;
+                m_Light = light;
+                Priority = TimerPriority.FiveSeconds;
             }
 
             protected override void OnTick()
             {
-                if (this.m_Light != null && !this.m_Light.Deleted)
-                    this.m_Light.Burn();
+                if (m_Light != null && !m_Light.Deleted)
+                    m_Light.Burn();
             }
         }
     }

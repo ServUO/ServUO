@@ -7,37 +7,37 @@ namespace Server.Mobiles
         public Walrus()
             : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a walrus";
-            this.Body = 0xDD;
-            this.BaseSoundID = 0xE0;
+            Name = "a walrus";
+            Body = 0xDD;
+            BaseSoundID = 0xE0;
 
-            this.SetStr(21, 29);
-            this.SetDex(46, 55);
-            this.SetInt(16, 20);
+            SetStr(21, 29);
+            SetDex(46, 55);
+            SetInt(16, 20);
 
-            this.SetHits(14, 17);
-            this.SetMana(0);
+            SetHits(14, 17);
+            SetMana(0);
 
-            this.SetDamage(4, 10);
+            SetDamage(4, 10);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 20, 25);
-            this.SetResistance(ResistanceType.Fire, 5, 10);
-            this.SetResistance(ResistanceType.Cold, 20, 25);
-            this.SetResistance(ResistanceType.Poison, 5, 10);
-            this.SetResistance(ResistanceType.Energy, 5, 10);
+            SetResistance(ResistanceType.Physical, 20, 25);
+            SetResistance(ResistanceType.Fire, 5, 10);
+            SetResistance(ResistanceType.Cold, 20, 25);
+            SetResistance(ResistanceType.Poison, 5, 10);
+            SetResistance(ResistanceType.Energy, 5, 10);
 
-            this.SetSkill(SkillName.MagicResist, 15.1, 20.0);
-            this.SetSkill(SkillName.Tactics, 19.2, 29.0);
-            this.SetSkill(SkillName.Wrestling, 19.2, 29.0);
+            SetSkill(SkillName.MagicResist, 15.1, 20.0);
+            SetSkill(SkillName.Tactics, 19.2, 29.0);
+            SetSkill(SkillName.Wrestling, 19.2, 29.0);
 
-            this.Fame = 150;
-            this.Karma = 0;
+            Fame = 150;
+            Karma = 0;
 
-            this.Tamable = true;
-            this.ControlSlots = 1;
-            this.MinTameSkill = 35.1;
+            Tamable = true;
+            ControlSlots = 1;
+            MinTameSkill = 35.1;
         }
 
         public Walrus(Serial serial)

@@ -13,9 +13,9 @@ namespace Server.Items
         public SextantParts(int amount)
             : base(0x1059)
         {
-            this.Stackable = true;
-            this.Amount = amount;
-            this.Weight = 2.0;
+            Stackable = true;
+            Amount = amount;
+            Weight = 2.0;
         }
 
         public SextantParts(Serial serial)

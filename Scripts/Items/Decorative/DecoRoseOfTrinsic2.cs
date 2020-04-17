@@ -6,8 +6,8 @@ namespace Server.Items
         public DecoRoseOfTrinsic2()
             : base(0x234D)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public DecoRoseOfTrinsic2(Serial serial)

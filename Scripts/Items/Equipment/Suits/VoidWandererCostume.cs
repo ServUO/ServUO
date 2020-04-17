@@ -7,7 +7,7 @@ namespace Server.Items
         [Constructable]
         public VoidWandererCostume() : base()
         {
-            this.CostumeBody = 316;
+            CostumeBody = 316;
         }
 
         public override int LabelNumber => 1114286;// void wanderer costume

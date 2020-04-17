@@ -97,12 +97,12 @@ namespace Server.Engines.TreasuresOfKotlCity
 
             if (Chest1 != null && !Chest1.Deleted)
             {
-                Chest1.MoveToWorld(new Point3D(this.X + 1, this.Y + 1, this.Z + 11), this.Map);
+                Chest1.MoveToWorld(new Point3D(X + 1, Y + 1, Z + 11), Map);
             }
 
             if (Chest2 != null && !Chest2.Deleted)
             {
-                Chest2.MoveToWorld(new Point3D(this.X, this.Y + 1, this.Z + 11), this.Map);
+                Chest2.MoveToWorld(new Point3D(X, Y + 1, Z + 11), Map);
             }
         }
 
@@ -111,10 +111,10 @@ namespace Server.Engines.TreasuresOfKotlCity
             base.OnMapChange();
 
             if (Chest1 != null)
-                Chest1.Map = this.Map;
+                Chest1.Map = Map;
 
             if (Chest2 != null)
-                Chest2.Map = this.Map;
+                Chest2.Map = Map;
         }
 
         public void Activate()

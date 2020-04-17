@@ -7,7 +7,7 @@ namespace Server.Items
         [Constructable]
         public LadyOfTheSnowCostume() : base()
         {
-            this.CostumeBody = 252;
+            CostumeBody = 252;
         }
 
         public override int LabelNumber => 1114241;// Lady of the Snow costume

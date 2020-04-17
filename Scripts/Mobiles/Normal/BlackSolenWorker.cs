@@ -9,39 +9,39 @@ namespace Server.Mobiles
         public BlackSolenWorker()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a black solen worker";
-            this.Body = 805;
-            this.BaseSoundID = 959;
-            this.Hue = 0x453;
+            Name = "a black solen worker";
+            Body = 805;
+            BaseSoundID = 959;
+            Hue = 0x453;
 
-            this.SetStr(96, 120);
-            this.SetDex(81, 105);
-            this.SetInt(36, 60);
+            SetStr(96, 120);
+            SetDex(81, 105);
+            SetInt(36, 60);
 
-            this.SetHits(58, 72);
+            SetHits(58, 72);
 
-            this.SetDamage(5, 7);
+            SetDamage(5, 7);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 25, 30);
-            this.SetResistance(ResistanceType.Fire, 20, 30);
-            this.SetResistance(ResistanceType.Cold, 10, 20);
-            this.SetResistance(ResistanceType.Poison, 10, 20);
-            this.SetResistance(ResistanceType.Energy, 20, 30);
+            SetResistance(ResistanceType.Physical, 25, 30);
+            SetResistance(ResistanceType.Fire, 20, 30);
+            SetResistance(ResistanceType.Cold, 10, 20);
+            SetResistance(ResistanceType.Poison, 10, 20);
+            SetResistance(ResistanceType.Energy, 20, 30);
 
-            this.SetSkill(SkillName.MagicResist, 60.0);
-            this.SetSkill(SkillName.Tactics, 65.0);
-            this.SetSkill(SkillName.Wrestling, 60.0);
+            SetSkill(SkillName.MagicResist, 60.0);
+            SetSkill(SkillName.Tactics, 65.0);
+            SetSkill(SkillName.Wrestling, 60.0);
 
-            this.Fame = 1500;
-            this.Karma = -1500;
+            Fame = 1500;
+            Karma = -1500;
 
-            this.PackGold(Utility.Random(100, 180));
+            PackGold(Utility.Random(100, 180));
 
             SolenHelper.PackPicnicBasket(this);
 
-            this.PackItem(new ZoogiFungus());
+            PackItem(new ZoogiFungus());
         }
 
         public BlackSolenWorker(Serial serial)
@@ -76,7 +76,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Gems, Utility.RandomMinMax(1, 2));
+            AddLoot(LootPack.Gems, Utility.RandomMinMax(1, 2));
         }
 
         public override bool IsEnemy(Mobile m)

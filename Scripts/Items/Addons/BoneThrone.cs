@@ -19,7 +19,7 @@ namespace Server.Items
             bool allow = base.OnMoveOver(m);
 
             if (allow && m.Alive && m.Player && (m.IsPlayer() || !m.Hidden))
-                Effects.PlaySound(this.Location, this.Map, Utility.RandomMinMax(0x54B, 0x54D));
+                Effects.PlaySound(Location, Map, Utility.RandomMinMax(0x54B, 0x54D));
 
             return allow;
         }
@@ -45,7 +45,7 @@ namespace Server.Items
         public BoneThroneAddon()
             : base()
         {
-            this.AddComponent(new BoneThroneComponent(), 0, 0, 0);
+            AddComponent(new BoneThroneComponent(), 0, 0, 0);
         }
 
         public BoneThroneAddon(Serial serial)
@@ -75,7 +75,7 @@ namespace Server.Items
         public BoneThroneDeed()
             : base()
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public BoneThroneDeed(Serial serial)

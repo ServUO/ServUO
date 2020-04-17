@@ -98,18 +98,18 @@ namespace Server.Items
 
         public void Validate()
         {
-            if (this.Validate(this.m_PerfectBlackPearl) && this.Validate(this.m_BurstingBrimstone) && this.Validate(this.m_BrightDaemonBlood) && this.Validate(this.m_MightyMandrake) && this.Validate(this.m_BurlyBone))
+            if (Validate(m_PerfectBlackPearl) && Validate(m_BurstingBrimstone) && Validate(m_BrightDaemonBlood) && Validate(m_MightyMandrake) && Validate(m_BurlyBone))
             {
                 Mobile creature = TheMasterInstructor.Spawn(new Point3D(105, 38, -28), Map.Ilshenar, this);
 
                 if (creature == null)
                     return;
 
-                this.Clear(this.m_PerfectBlackPearl);
-                this.Clear(this.m_BurstingBrimstone);
-                this.Clear(this.m_BrightDaemonBlood);
-                this.Clear(this.m_MightyMandrake);
-                this.Clear(this.m_BurlyBone);
+                Clear(m_PerfectBlackPearl);
+                Clear(m_BurstingBrimstone);
+                Clear(m_BrightDaemonBlood);
+                Clear(m_MightyMandrake);
+                Clear(m_BurlyBone);
             }
         }
 
@@ -136,11 +136,11 @@ namespace Server.Items
             base.Serialize(writer);
             writer.Write(0); // version
 
-            writer.Write(this.m_PerfectBlackPearl);
-            writer.Write(this.m_BurstingBrimstone);
-            writer.Write(this.m_BrightDaemonBlood);
-            writer.Write(this.m_MightyMandrake);
-            writer.Write(this.m_BurlyBone);
+            writer.Write(m_PerfectBlackPearl);
+            writer.Write(m_BurstingBrimstone);
+            writer.Write(m_BrightDaemonBlood);
+            writer.Write(m_MightyMandrake);
+            writer.Write(m_BurlyBone);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -152,11 +152,11 @@ namespace Server.Items
             {
                 case 0:
                     {
-                        this.m_PerfectBlackPearl = reader.ReadItem() as SorcerersPlate;
-                        this.m_BurstingBrimstone = reader.ReadItem() as SorcerersPlate;
-                        this.m_BrightDaemonBlood = reader.ReadItem() as SorcerersPlate;
-                        this.m_MightyMandrake = reader.ReadItem() as SorcerersPlate;
-                        this.m_BurlyBone = reader.ReadItem() as SorcerersPlate;
+                        m_PerfectBlackPearl = reader.ReadItem() as SorcerersPlate;
+                        m_BurstingBrimstone = reader.ReadItem() as SorcerersPlate;
+                        m_BrightDaemonBlood = reader.ReadItem() as SorcerersPlate;
+                        m_MightyMandrake = reader.ReadItem() as SorcerersPlate;
+                        m_BurlyBone = reader.ReadItem() as SorcerersPlate;
 
                         break;
                     }
@@ -180,19 +180,19 @@ namespace Server.Items
         };
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public SorcerersPlateController Controller => this.m_Controller;
+        public SorcerersPlateController Controller => m_Controller;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public RegsType Type
         {
             get
             {
-                return this.m_Type;
+                return m_Type;
             }
             set
             {
-                this.m_Type = value;
-                this.InvalidateProperties();
+                m_Type = value;
+                InvalidateProperties();
             }
         }
 
@@ -201,13 +201,13 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Reg;
+                return m_Reg;
             }
             set
             {
-                this.m_Reg = value;
-                if (this.m_Controller != null)
-                    this.m_Controller.Validate();
+                m_Reg = value;
+                if (m_Controller != null)
+                    m_Controller.Validate();
             }
         }
 
@@ -217,10 +217,10 @@ namespace Server.Items
         public SorcerersPlate(SorcerersPlateController controller, RegsType type)
             : base(0x9D7)
         {
-            this.m_Type = type;
-            this.Movable = false;
-            this.Hue = 2406;
-            this.m_Controller = controller;
+            m_Type = type;
+            Movable = false;
+            Hue = 2406;
+            m_Controller = controller;
         }
 
         public SorcerersPlate(Serial serial)
@@ -249,9 +249,9 @@ namespace Server.Items
 
             writer.Write(0); // version
 
-            writer.Write((int)this.m_Type);
-            writer.Write(this.m_Controller);
-            writer.Write(this.m_Reg);
+            writer.Write((int)m_Type);
+            writer.Write(m_Controller);
+            writer.Write(m_Reg);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -264,12 +264,12 @@ namespace Server.Items
             {
                 case 0:
                     {
-                        this.m_Type = (RegsType)reader.ReadInt();
-                        this.m_Controller = reader.ReadItem() as SorcerersPlateController;
-                        this.m_Reg = reader.ReadItem();
+                        m_Type = (RegsType)reader.ReadInt();
+                        m_Controller = reader.ReadItem() as SorcerersPlateController;
+                        m_Reg = reader.ReadItem();
 
-                        if (this.m_Controller == null)
-                            this.Delete();
+                        if (m_Controller == null)
+                            Delete();
 
                         break;
                     }

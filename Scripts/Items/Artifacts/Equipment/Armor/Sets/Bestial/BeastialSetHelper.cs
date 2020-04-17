@@ -142,7 +142,7 @@ namespace Server
                     {
                         int hue = BestialSetHelper.BerserkHue + Level;
 
-                        BestialSetHelper.DoHue(this.Mobile, hue);
+                        BestialSetHelper.DoHue(Mobile, hue);
 
                         if (level < 5)
                             Mobile.SendLocalizedMessage(1151533, "", hue); //Your rage grows!
@@ -151,7 +151,7 @@ namespace Server
                     {
                         int hue = BestialSetHelper.BerserkHue + Level;
 
-                        BestialSetHelper.DoHue(this.Mobile, hue);
+                        BestialSetHelper.DoHue(Mobile, hue);
 
                         if (level > 1)
                             Mobile.SendLocalizedMessage(1151534, "", hue); //Your rage recedes.
@@ -188,7 +188,7 @@ namespace Server
                 }
                 else if (Mobile.HueMod == StartHue || Mobile.HueMod == -1)
                 {
-                    BestialSetHelper.DoHue(this.Mobile, BestialSetHelper.BerserkHue);
+                    BestialSetHelper.DoHue(Mobile, BestialSetHelper.BerserkHue);
 
                     Mobile.SendLocalizedMessage(1151532); //You enter a berserk rage!
                 }
@@ -196,7 +196,7 @@ namespace Server
 
             public void EndBerserk()
             {
-                BestialSetHelper.RemoveBerserk(this.Mobile);
+                BestialSetHelper.RemoveBerserk(Mobile);
 
                 Mobile.HueMod = StartHue;
                 Mobile.SendLocalizedMessage(1151535); //Your berserk rage has subsided. 

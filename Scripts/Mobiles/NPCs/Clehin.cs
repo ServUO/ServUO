@@ -9,9 +9,9 @@ namespace Server.Engines.Quests
         public ThinningTheHerdQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Goat), "goats", 10));
+            AddObjective(new SlayObjective(typeof(Goat), "goats", 10));
 
-            this.AddReward(new BaseReward(typeof(SmallTrinketBag), 1072268));
+            AddReward(new BaseReward(typeof(SmallTrinketBag), 1072268));
         }
 
         /* Thinning the Herd */
@@ -46,8 +46,8 @@ namespace Server.Engines.Quests
         public Clehin()
             : base("Clehin", "the soil nurturer")
         {
-            this.SetSkill(SkillName.Meditation, 60.0, 83.0);
-            this.SetSkill(SkillName.Focus, 60.0, 83.0);
+            SetSkill(SkillName.Meditation, 60.0, 83.0);
+            SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
         public Clehin(Serial serial)
@@ -64,21 +64,21 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = true;
-            this.Race = Race.Elf;
+            Female = true;
+            Race = Race.Elf;
 
-            this.Hue = 0x8362;
-            this.HairItemID = 0x2FC2;
-            this.HairHue = 0x324;
+            Hue = 0x8362;
+            HairItemID = 0x2FC2;
+            HairHue = 0x324;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new ElvenBoots());
-            this.AddItem(new LeafTonlet());
-            this.AddItem(new ElvenShirt());
+            AddItem(new ElvenBoots());
+            AddItem(new LeafTonlet());
+            AddItem(new ElvenShirt());
         }
 
         public override void Serialize(GenericWriter writer)

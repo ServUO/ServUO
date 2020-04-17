@@ -7,7 +7,7 @@ namespace Server.Items
         public GiantReplicaAcorn()
             : base(0x2D4A)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public GiantReplicaAcorn(Serial serial)

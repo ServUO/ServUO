@@ -13,9 +13,9 @@ namespace Server.Engines.Quests
         public HornOfRetreat()
             : base(0xFC4)
         {
-            this.Hue = 0x482;
-            this.Weight = 1.0;
-            this.Charges = 10;
+            Hue = 0x482;
+            Weight = 1.0;
+            Charges = 10;
         }
 
         public HornOfRetreat(Serial serial)
@@ -28,11 +28,11 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return this.m_DestLoc;
+                return m_DestLoc;
             }
             set
             {
-                this.m_DestLoc = value;
+                m_DestLoc = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -40,11 +40,11 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return this.m_DestMap;
+                return m_DestMap;
             }
             set
             {
-                this.m_DestMap = value;
+                m_DestMap = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -52,12 +52,12 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return this.m_Charges;
+                return m_Charges;
             }
             set
             {
-                this.m_Charges = value;
-                this.InvalidateProperties();
+                m_Charges = value;
+                InvalidateProperties();
             }
         }
         public override int LabelNumber => 1049117;// Horn of Retreat
@@ -70,43 +70,43 @@ namespace Server.Engines.Quests
         {
             base.GetProperties(list);
 
-            list.Add(1060741, this.m_Charges.ToString()); // charges: ~1_val~
+            list.Add(1060741, m_Charges.ToString()); // charges: ~1_val~
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.IsChildOf(from.Backpack))
+            if (IsChildOf(from.Backpack))
             {
-                if (!this.ValidateUse(from))
+                if (!ValidateUse(from))
                 {
-                    this.SendLocalizedMessageTo(from, 500309); // Nothing Happens.
+                    SendLocalizedMessageTo(from, 500309); // Nothing Happens.
                 }
                 else if (from.Map != Map.Trammel && from.Map != Map.Malas)
                 {
                     from.SendLocalizedMessage(1076154); // You can only use this in Trammel and Malas.
                 }
-                else if (this.m_PlayTimer != null)
+                else if (m_PlayTimer != null)
                 {
-                    this.SendLocalizedMessageTo(from, 1042144); // This is currently in use.
+                    SendLocalizedMessageTo(from, 1042144); // This is currently in use.
                 }
-                else if (this.Charges > 0)
+                else if (Charges > 0)
                 {
                     from.Animate(34, 7, 1, true, false, 0);
                     from.PlaySound(0xFF);
                     from.SendLocalizedMessage(1049115); // You play the horn and a sense of peace overcomes you...
 
-                    --this.Charges;
+                    --Charges;
 
-                    this.m_PlayTimer = Timer.DelayCall(TimeSpan.FromSeconds(5.0), new TimerStateCallback(PlayTimer_Callback), from);
+                    m_PlayTimer = Timer.DelayCall(TimeSpan.FromSeconds(5.0), new TimerStateCallback(PlayTimer_Callback), from);
                 }
                 else
                 {
-                    this.SendLocalizedMessageTo(from, 1042544); // This item is out of charges.
+                    SendLocalizedMessageTo(from, 1042544); // This item is out of charges.
                 }
             }
             else
             {
-                this.SendLocalizedMessageTo(from, 1042001); // That must be in your pack for you to use it.
+                SendLocalizedMessageTo(from, 1042001); // That must be in your pack for you to use it.
             }
         }
 
@@ -114,9 +114,9 @@ namespace Server.Engines.Quests
         {
             Mobile from = (Mobile)state;
 
-            this.m_PlayTimer = null;
+            m_PlayTimer = null;
 
-            HornOfRetreatMoongate gate = new HornOfRetreatMoongate(this.DestLoc, this.DestMap, from, this.Hue);
+            HornOfRetreatMoongate gate = new HornOfRetreatMoongate(DestLoc, DestMap, from, Hue);
 
             gate.MoveToWorld(from.Location, from.Map);
 
@@ -131,9 +131,9 @@ namespace Server.Engines.Quests
 
             writer.Write(0); // version
 
-            writer.Write(this.m_DestLoc);
-            writer.Write(this.m_DestMap);
-            writer.Write(this.m_Charges);
+            writer.Write(m_DestLoc);
+            writer.Write(m_DestMap);
+            writer.Write(m_Charges);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -146,9 +146,9 @@ namespace Server.Engines.Quests
             {
                 case 0:
                     {
-                        this.m_DestLoc = reader.ReadPoint3D();
-                        this.m_DestMap = reader.ReadMap();
-                        this.m_Charges = reader.ReadInt();
+                        m_DestLoc = reader.ReadPoint3D();
+                        m_DestMap = reader.ReadMap();
+                        m_Charges = reader.ReadInt();
                         break;
                     }
             }
@@ -160,15 +160,15 @@ namespace Server.Engines.Quests
         private readonly Mobile m_Caster;
         public HornOfRetreatMoongate(Point3D destLoc, Map destMap, Mobile caster, int hue)
         {
-            this.m_Caster = caster;
+            m_Caster = caster;
 
-            this.Target = destLoc;
-            this.TargetMap = destMap;
+            Target = destLoc;
+            TargetMap = destMap;
 
-            this.Hue = hue;
-            this.Light = LightType.Circle300;
+            Hue = hue;
+            Light = LightType.Circle300;
 
-            this.Dispellable = false;
+            Dispellable = false;
 
             Timer.DelayCall(TimeSpan.FromSeconds(10.0), new TimerCallback(Delete));
         }
@@ -181,7 +181,7 @@ namespace Server.Engines.Quests
         public override int LabelNumber => 1049114;// Sanctuary Gate
         public override void BeginConfirmation(Mobile from)
         {
-            this.EndConfirmation(from);
+            EndConfirmation(from);
         }
 
         public override void UseGate(Mobile m)
@@ -190,10 +190,10 @@ namespace Server.Engines.Quests
             {
                 m.SendLocalizedMessage(1114345); // You'll need a better jailbreak plan than that!
             }
-            else if (m == this.m_Caster)
+            else if (m == m_Caster)
             {
                 base.UseGate(m);
-                this.Delete();
+                Delete();
             }
         }
 
@@ -210,7 +210,7 @@ namespace Server.Engines.Quests
 
             int version = reader.ReadInt();
 
-            this.Delete();
+            Delete();
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Server.Mobiles
     public class Tailor : BaseVendor
     {
         private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
 
         public override NpcGuild NpcGuild => NpcGuild.TailorsGuild;
 
@@ -15,18 +15,18 @@ namespace Server.Mobiles
         public Tailor()
             : base("the tailor")
         {
-            this.SetSkill(SkillName.Tailoring, 64.0, 100.0);
+            SetSkill(SkillName.Tailoring, 64.0, 100.0);
         }
 
         public override void InitSBInfo()
         {
             if (!IsStygianVendor)
             {
-                this.m_SBInfos.Add(new SBTailor());
+                m_SBInfos.Add(new SBTailor());
             }
             else
             {
-                this.m_SBInfos.Add(new SBSATailor());
+                m_SBInfos.Add(new SBSATailor());
             }
         }
 

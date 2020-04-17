@@ -13,7 +13,7 @@ namespace Server.Items
         public StopMusic()
             : base(0x6D, 3)
         {
-            this.m_Stream.Write((short)0x1FFF);
+            m_Stream.Write((short)0x1FFF);
         }
     }
 
@@ -54,16 +54,16 @@ namespace Server.Items
         public DawnsMusicBox()
             : base(0x2AF9)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
 
-            this.m_Tracks = new List<MusicName>();
+            m_Tracks = new List<MusicName>();
 
-            while (this.m_Tracks.Count < 4)
+            while (m_Tracks.Count < 4)
             {
                 MusicName name = RandomTrack(DawnsMusicRarity.Common);
 
-                if (!this.m_Tracks.Contains(name))
-                    this.m_Tracks.Add(name);
+                if (!m_Tracks.Contains(name))
+                    m_Tracks.Add(name);
             }
         }
 
@@ -73,17 +73,17 @@ namespace Server.Items
         }
 
         public override int LabelNumber => 1075198;// Dawn’s Music Box
-        public List<MusicName> Tracks => this.m_Tracks;
+        public List<MusicName> Tracks => m_Tracks;
         [CommandProperty(AccessLevel.GameMaster)]
         public SecureLevel Level
         {
             get
             {
-                return this.m_Level;
+                return m_Level;
             }
             set
             {
-                this.m_Level = value;
+                m_Level = value;
             }
         }
         public static void Initialize()
@@ -184,7 +184,7 @@ namespace Server.Items
                 return;
 
             box.m_Tracks = new List<MusicName>();
-            box.m_Tracks.AddRange(this.m_Tracks);
+            box.m_Tracks.AddRange(m_Tracks);
 
             base.OnAfterDuped(newItem);
         }
@@ -197,9 +197,9 @@ namespace Server.Items
             int uncommonSongs = 0;
             int rareSongs = 0;
 
-            for (int i = 0; i < this.m_Tracks.Count; i++)
+            for (int i = 0; i < m_Tracks.Count; i++)
             {
-                DawnsMusicInfo info = GetInfo(this.m_Tracks[i]);
+                DawnsMusicInfo info = GetInfo(m_Tracks[i]);
 
                 switch (info.Rarity)
                 {
@@ -232,9 +232,9 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!this.IsChildOf(from.Backpack) && !this.IsLockedDown)
+            if (!IsChildOf(from.Backpack) && !IsLockedDown)
                 from.SendLocalizedMessage(1061856); // You must have the item in your backpack or locked down in order to use it.
-            else if (this.IsLockedDown && !this.HasAccces(from))
+            else if (IsLockedDown && !HasAccces(from))
                 from.SendLocalizedMessage(502436); // That is not accessible.
             else
             {
@@ -255,26 +255,26 @@ namespace Server.Items
 
         public void PlayMusic(Mobile m, MusicName music)
         {
-            if (this.m_Timer != null && this.m_Timer.Running)
-                this.EndMusic(m);
+            if (m_Timer != null && m_Timer.Running)
+                EndMusic(m);
             else
-                this.m_ItemID = this.ItemID;
+                m_ItemID = ItemID;
 
             m.Send(new PlayMusic(music));
-            this.m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(0.5), TimeSpan.FromSeconds(0.5), 4, new TimerCallback(Animate));
+            m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(0.5), TimeSpan.FromSeconds(0.5), 4, new TimerCallback(Animate));
         }
 
         public void EndMusic(Mobile m)
         {
-            if (this.m_Timer != null && this.m_Timer.Running)
-                this.m_Timer.Stop();
+            if (m_Timer != null && m_Timer.Running)
+                m_Timer.Stop();
 
             m.Send(StopMusic.Instance);
 
-            if (this.m_Count > 0)
-                this.ItemID = this.m_ItemID;
+            if (m_Count > 0)
+                ItemID = m_ItemID;
 
-            this.m_Count = 0;
+            m_Count = 0;
         }
 
         public override void Serialize(GenericWriter writer)
@@ -285,10 +285,10 @@ namespace Server.Items
 
             writer.Write(m_Tracks.Count);
 
-            for (int i = 0; i < this.m_Tracks.Count; i++)
-                writer.Write((int)this.m_Tracks[i]);
+            for (int i = 0; i < m_Tracks.Count; i++)
+                writer.Write((int)m_Tracks[i]);
 
-            writer.Write((int)this.m_Level);
+            writer.Write((int)m_Level);
             writer.Write(m_ItemID);
         }
 
@@ -299,26 +299,26 @@ namespace Server.Items
             int version = reader.ReadEncodedInt();
 
             int count = reader.ReadInt();
-            this.m_Tracks = new List<MusicName>();
+            m_Tracks = new List<MusicName>();
 
             for (int i = 0; i < count; i++)
-                this.m_Tracks.Add((MusicName)reader.ReadInt());
+                m_Tracks.Add((MusicName)reader.ReadInt());
 
-            this.m_Level = (SecureLevel)reader.ReadInt();
-            this.m_ItemID = reader.ReadInt();
+            m_Level = (SecureLevel)reader.ReadInt();
+            m_ItemID = reader.ReadInt();
         }
 
         private void Animate()
         {
-            this.m_Count++;
+            m_Count++;
 
-            if (this.m_Count >= 4)
+            if (m_Count >= 4)
             {
-                this.m_Count = 0;
-                this.ItemID = this.m_ItemID;
+                m_Count = 0;
+                ItemID = m_ItemID;
             }
             else
-                this.ItemID++;
+                ItemID++;
         }
     }
 }

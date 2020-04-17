@@ -117,10 +117,10 @@ namespace Server.Commands
             public readonly int m_Map;
             public SignEntry(string text, Point3D pt, int itemID, int mapLoc)
             {
-                this.m_Text = text;
-                this.m_Location = pt;
-                this.m_ItemID = itemID;
-                this.m_Map = mapLoc;
+                m_Text = text;
+                m_Location = pt;
+                m_ItemID = itemID;
+                m_Map = mapLoc;
             }
         }
     }

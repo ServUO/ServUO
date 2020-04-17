@@ -8,8 +8,8 @@ namespace Server.Items
         public MapFragment()
             : base(0x14ED)
         {
-            this.LootType = LootType.Blessed;
-            this.Weight = 1;
+            LootType = LootType.Blessed;
+            Weight = 1;
         }
 
         public MapFragment(Serial serial)

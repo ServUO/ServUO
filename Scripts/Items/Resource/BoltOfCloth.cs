@@ -13,9 +13,9 @@ namespace Server.Items
         public BoltOfCloth(int amount)
             : base(0xF95)
         {
-            this.Stackable = true;
-            this.Weight = 5.0;
-            this.Amount = amount;
+            Stackable = true;
+            Weight = 5.0;
+            Amount = amount;
         }
 
         public BoltOfCloth(Serial serial)
@@ -23,14 +23,14 @@ namespace Server.Items
         {
         }
 
-        TextDefinition ICommodity.Description => this.LabelNumber;
+        TextDefinition ICommodity.Description => LabelNumber;
         bool ICommodity.IsDeedable => true;
         public bool Dye(Mobile from, DyeTub sender)
         {
-            if (this.Deleted)
+            if (Deleted)
                 return false;
 
-            this.Hue = sender.DyedHue;
+            Hue = sender.DyedHue;
 
             return true;
         }
@@ -51,7 +51,7 @@ namespace Server.Items
 
         public bool Scissor(Mobile from, Scissors scissors)
         {
-            if (this.Deleted || !from.CanSee(this))
+            if (Deleted || !from.CanSee(this))
                 return false;
 
             base.ScissorHelper(from, new Cloth(), 50);

@@ -57,9 +57,9 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich);
-            this.AddLoot(LootPack.Gems);
-            this.AddLoot(LootPack.Potions);
+            AddLoot(LootPack.Rich);
+            AddLoot(LootPack.Gems);
+            AddLoot(LootPack.Potions);
         }
 
         public override void Serialize(GenericWriter writer)

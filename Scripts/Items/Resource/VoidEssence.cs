@@ -12,8 +12,8 @@ namespace Server.Items
         public VoidEssence(int amount)
             : base(0x4007)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public VoidEssence(Serial serial)

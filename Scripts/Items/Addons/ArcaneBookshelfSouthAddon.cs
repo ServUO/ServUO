@@ -74,8 +74,8 @@ namespace Server.Items
         [Constructable]
         public ArcaneBookshelfSouthAddon()
         {
-            this.AddComponent(new AddonComponent(0x3087), 0, 0, 0);
-            this.AddComponent(new AddonComponent(0x3086), 0, 1, 0);
+            AddComponent(new AddonComponent(0x3087), 0, 0, 0);
+            AddComponent(new AddonComponent(0x3086), 0, 1, 0);
         }
 
         public ArcaneBookshelfSouthAddon(Serial serial)
@@ -106,8 +106,8 @@ namespace Server.Items
 
             if (house != null)
             {
-                Point3D p = this.Location;
-                Map map = this.Map;
+                Point3D p = Location;
+                Map map = Map;
 
                 house.Addons.Remove(this);
                 Delete();
@@ -151,19 +151,19 @@ namespace Server.Items
 
         private void Replace()
         {
-            Container c = this.Parent as Container;
+            Container c = Parent as Container;
 
             if (c != null)
             {
                 ArcaneBookShelfDeedSouth deed = new ArcaneBookShelfDeedSouth();
                 c.DropItem(deed);
             }
-            else if (this.Parent == null)
+            else if (Parent == null)
             {
                 Server.Multis.BaseHouse house = Server.Multis.BaseHouse.FindHouseAt(this);
 
                 ArcaneBookShelfDeedSouth deed = new ArcaneBookShelfDeedSouth();
-                deed.MoveToWorld(this.Location, this.Map);
+                deed.MoveToWorld(Location, Map);
 
                 deed.IsLockedDown = IsLockedDown;
                 deed.IsSecure = IsSecure;

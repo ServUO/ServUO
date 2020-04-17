@@ -6,7 +6,7 @@ namespace Server.Items
         public Tambourine()
             : base(0xE9D, 0x52, 0x53)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public Tambourine(Serial serial)
@@ -27,8 +27,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (this.Weight == 2.0)
-                this.Weight = 1.0;
+            if (Weight == 2.0)
+                Weight = 1.0;
         }
     }
 }

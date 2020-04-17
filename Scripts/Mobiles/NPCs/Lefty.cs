@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public WondersOfTheNaturalWorldQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(Gold), "gold coins", 10000, 0xEED));
+            AddObjective(new ObtainObjective(typeof(Gold), "gold coins", 10000, 0xEED));
 
-            this.AddReward(new BaseReward(typeof(PrismOfLightAdmissionTicket), 1074340)); // Prism of Light Admission Ticket
+            AddReward(new BaseReward(typeof(PrismOfLightAdmissionTicket), 1074340)); // Prism of Light Admission Ticket
         }
 
         /* Wonders of the Natural World */
@@ -62,23 +62,23 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = false;
+            CantWalk = true;
+            Race = Race.Human;
 
-            this.Hue = 0x83F4;
-            this.HairItemID = 0x203B;
-            this.HairHue = 0x470;
+            Hue = 0x83F4;
+            HairItemID = 0x203B;
+            HairHue = 0x470;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new ThighBoots(0x901));
-            this.AddItem(new LongPants(0x70D));
-            this.AddItem(new Tunic(0x30));
-            this.AddItem(new Cloak(0x30));
+            AddItem(new ThighBoots(0x901));
+            AddItem(new LongPants(0x70D));
+            AddItem(new Tunic(0x30));
+            AddItem(new Cloak(0x30));
         }
 
         public override void Serialize(GenericWriter writer)

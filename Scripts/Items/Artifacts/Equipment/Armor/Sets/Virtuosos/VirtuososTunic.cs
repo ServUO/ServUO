@@ -21,9 +21,9 @@ namespace Server.Items
         [Constructable]
         public VirtuososTunic()
         {
-            this.Hue = 1374;
-            this.StrRequirement = 35;
-            this.SetHue = 1374;
+            Hue = 1374;
+            StrRequirement = 35;
+            SetHue = 1374;
         }
 
         public VirtuososTunic(Serial serial)

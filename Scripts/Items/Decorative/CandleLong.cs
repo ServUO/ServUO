@@ -9,13 +9,13 @@ namespace Server.Items
             : base(0x1433)
         {
             if (Burnout)
-                this.Duration = TimeSpan.FromMinutes(30);
+                Duration = TimeSpan.FromMinutes(30);
             else
-                this.Duration = TimeSpan.Zero;
+                Duration = TimeSpan.Zero;
 
-            this.Burning = false;
-            this.Light = LightType.Circle150;
-            this.Weight = 1.0;
+            Burning = false;
+            Light = LightType.Circle150;
+            Weight = 1.0;
         }
 
         public CandleLong(Serial serial)

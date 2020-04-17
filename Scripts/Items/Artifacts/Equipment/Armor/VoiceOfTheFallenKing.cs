@@ -38,11 +38,11 @@ namespace Server.Items
 
             if (version < 1)
             {
-                if (this.Hue == 0x551)
-                    this.Hue = 0x76D;
+                if (Hue == 0x551)
+                    Hue = 0x76D;
 
-                this.ColdBonus = 0;
-                this.EnergyBonus = 0;
+                ColdBonus = 0;
+                EnergyBonus = 0;
             }
         }
     }

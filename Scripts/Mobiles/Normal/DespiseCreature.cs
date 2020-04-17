@@ -207,7 +207,7 @@ namespace Server.Engines.Despise
             }
             else if (m is DespiseCreature)
             {
-                return ((DespiseCreature)m).Alignment != this.Alignment;
+                return ((DespiseCreature)m).Alignment != Alignment;
             }
 
             return false;

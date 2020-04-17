@@ -9,9 +9,9 @@ namespace Server.Engines.Quests
         public SomethingToWailAboutQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(WailingBanshee), "wailing banshees", 12));
+            AddObjective(new SlayObjective(typeof(WailingBanshee), "wailing banshees", 12));
 
-            this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
+            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
         /* Something to Wail About */
@@ -43,9 +43,9 @@ namespace Server.Engines.Quests
         public RunawaysQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(FrenziedOstard), "frenzied ostards", 12));
+            AddObjective(new SlayObjective(typeof(FrenziedOstard), "frenzied ostards", 12));
 
-            this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
+            AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
         /* Runaways! */
@@ -77,9 +77,9 @@ namespace Server.Engines.Quests
         public ViciousPredatorQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(DireWolf), "dire wolves ", 10));
+            AddObjective(new SlayObjective(typeof(DireWolf), "dire wolves ", 10));
 
-            this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
+            AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
         /* Vicious Predator */
@@ -127,22 +127,22 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = true;
-            this.Race = Race.Human;
+            Female = true;
+            Race = Race.Human;
 
-            this.Hue = 0x8410;
-            this.HairItemID = 0x2047;
-            this.HairHue = 0x471;
+            Hue = 0x8410;
+            HairItemID = 0x2047;
+            HairHue = 0x471;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Shoes(0x1BB));
-            this.AddItem(new Skirt(0xD));
-            this.AddItem(new FancyShirt(0x65F));
+            AddItem(new Backpack());
+            AddItem(new Shoes(0x1BB));
+            AddItem(new Skirt(0xD));
+            AddItem(new FancyShirt(0x65F));
         }
 
         public override void Serialize(GenericWriter writer)

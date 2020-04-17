@@ -15,12 +15,12 @@ namespace Server.Spells.Spellweaving
         public override int RequiredMana => 34;
         public override int Body => 0x11D;
         public override int FireResistOffset => -25;
-        public override int PhysResistOffset => 5 + this.FocusLevel;
-        public override int ColdResistOffset => 5 + this.FocusLevel;
-        public override int PoisResistOffset => 5 + this.FocusLevel;
-        public override int NrgyResistOffset => 5 + this.FocusLevel;
-        public virtual int SwingSpeedBonus => 10 + this.FocusLevel;
-        public virtual int SpellDamageBonus => 10 + this.FocusLevel;
+        public override int PhysResistOffset => 5 + FocusLevel;
+        public override int ColdResistOffset => 5 + FocusLevel;
+        public override int PoisResistOffset => 5 + FocusLevel;
+        public override int NrgyResistOffset => 5 + FocusLevel;
+        public virtual int SwingSpeedBonus => 10 + FocusLevel;
+        public virtual int SpellDamageBonus => 10 + FocusLevel;
 
         public override void DoEffect(Mobile m)
         {

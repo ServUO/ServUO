@@ -19,7 +19,7 @@ namespace Server.Engines.Quests
 
         public override bool Update(object o)
         {
-            if (this.Quest == null || this.Quest.Owner == null)
+            if (Quest == null || Quest.Owner == null)
                 return false;
 
             if (m_HasObtained)

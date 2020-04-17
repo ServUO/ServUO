@@ -13,7 +13,7 @@ namespace Server.Engines.Quests.Naturalist
         private bool m_StudiedSpecialNest;
         public StudyNestsObjective()
         {
-            this.m_StudiedNests = new ArrayList();
+            m_StudiedNests = new ArrayList();
         }
 
         private enum StudyState
@@ -32,7 +32,7 @@ namespace Server.Engines.Quests.Naturalist
 */
                 1054044;
         public override int MaxProgress => NestArea.NonSpecialCount;
-        public bool StudiedSpecialNest => this.m_StudiedSpecialNest;
+        public bool StudiedSpecialNest => m_StudiedSpecialNest;
         public override bool GetTimerEvent()
         {
             return true;
@@ -40,49 +40,49 @@ namespace Server.Engines.Quests.Naturalist
 
         public override void CheckProgress()
         {
-            PlayerMobile from = this.System.From;
+            PlayerMobile from = System.From;
 
-            if (this.m_CurrentNest != null)
+            if (m_CurrentNest != null)
             {
-                NestArea nest = this.m_CurrentNest;
+                NestArea nest = m_CurrentNest;
 
                 if ((from.Map == Map.Trammel || from.Map == Map.Felucca) && nest.Contains(from))
                 {
-                    if (this.m_StudyState != StudyState.Inactive)
+                    if (m_StudyState != StudyState.Inactive)
                     {
-                        TimeSpan time = DateTime.UtcNow - this.m_StudyBegin;
+                        TimeSpan time = DateTime.UtcNow - m_StudyBegin;
 
                         if (time > TimeSpan.FromSeconds(30.0))
                         {
-                            this.m_StudiedNests.Add(nest);
-                            this.m_StudyState = StudyState.Inactive;
+                            m_StudiedNests.Add(nest);
+                            m_StudyState = StudyState.Inactive;
 
-                            if (this.m_CurrentNest.Special)
+                            if (m_CurrentNest.Special)
                             {
                                 from.SendLocalizedMessage(1054057); // You complete your examination of this bizarre Egg Nest. The Naturalist will undoubtedly be quite interested in these notes!
-                                this.m_StudiedSpecialNest = true;
+                                m_StudiedSpecialNest = true;
                             }
                             else
                             {
                                 from.SendLocalizedMessage(1054054); // You have completed your study of this Solen Egg Nest. You put your notes away.
-                                this.CurProgress++;
+                                CurProgress++;
                             }
                         }
-                        else if (this.m_StudyState == StudyState.FirstStep && time > TimeSpan.FromSeconds(15.0))
+                        else if (m_StudyState == StudyState.FirstStep && time > TimeSpan.FromSeconds(15.0))
                         {
                             if (!nest.Special)
                                 from.SendLocalizedMessage(1054058); // You begin recording your completed notes on a bit of parchment.
 
-                            this.m_StudyState = StudyState.SecondStep;
+                            m_StudyState = StudyState.SecondStep;
                         }
                     }
                 }
                 else
                 {
-                    if (this.m_StudyState != StudyState.Inactive)
+                    if (m_StudyState != StudyState.Inactive)
                         from.SendLocalizedMessage(1054046); // You abandon your study of the Solen Egg Nest without gathering the needed information.
 
-                    this.m_CurrentNest = null;
+                    m_CurrentNest = null;
                 }
             }
             else if (from.Map == Map.Trammel || from.Map == Map.Felucca)
@@ -91,18 +91,18 @@ namespace Server.Engines.Quests.Naturalist
 
                 if (nest != null)
                 {
-                    this.m_CurrentNest = nest;
-                    this.m_StudyBegin = DateTime.UtcNow;
+                    m_CurrentNest = nest;
+                    m_StudyBegin = DateTime.UtcNow;
 
-                    if (this.m_StudiedNests.Contains(nest))
+                    if (m_StudiedNests.Contains(nest))
                     {
-                        this.m_StudyState = StudyState.Inactive;
+                        m_StudyState = StudyState.Inactive;
 
                         from.SendLocalizedMessage(1054047); // You glance at the Egg Nest, realizing you've already studied this one.
                     }
                     else
                     {
-                        this.m_StudyState = StudyState.FirstStep;
+                        m_StudyState = StudyState.FirstStep;
 
                         if (nest.Special)
                             from.SendLocalizedMessage(1054056); // You notice something very odd about this Solen Egg Nest. You begin taking notes.
@@ -120,12 +120,12 @@ namespace Server.Engines.Quests.Naturalist
 
         public override void RenderProgress(BaseQuestGump gump)
         {
-            if (!this.Completed)
+            if (!Completed)
             {
                 gump.AddHtmlLocalized(70, 260, 270, 100, 1054055, BaseQuestGump.Blue, false, false); // Solen Nests Studied :
-                gump.AddLabel(70, 280, 0x64, this.CurProgress.ToString());
+                gump.AddLabel(70, 280, 0x64, CurProgress.ToString());
                 gump.AddLabel(100, 280, 0x64, "/");
-                gump.AddLabel(130, 280, 0x64, this.MaxProgress.ToString());
+                gump.AddLabel(130, 280, 0x64, MaxProgress.ToString());
             }
             else
             {
@@ -135,7 +135,7 @@ namespace Server.Engines.Quests.Naturalist
 
         public override void OnComplete()
         {
-            this.System.AddObjective(new ReturnToNaturalistObjective());
+            System.AddObjective(new ReturnToNaturalistObjective());
         }
 
         public override void ChildDeserialize(GenericReader reader)
@@ -146,10 +146,10 @@ namespace Server.Engines.Quests.Naturalist
             for (int i = 0; i < count; i++)
             {
                 NestArea nest = NestArea.GetByID(reader.ReadEncodedInt());
-                this.m_StudiedNests.Add(nest);
+                m_StudiedNests.Add(nest);
             }
 
-            this.m_StudiedSpecialNest = reader.ReadBool();
+            m_StudiedSpecialNest = reader.ReadBool();
         }
 
         public override void ChildSerialize(GenericWriter writer)
@@ -157,7 +157,7 @@ namespace Server.Engines.Quests.Naturalist
             writer.WriteEncodedInt(0); // version
 
             writer.WriteEncodedInt(m_StudiedNests.Count);
-            foreach (NestArea nest in this.m_StudiedNests)
+            foreach (NestArea nest in m_StudiedNests)
             {
                 writer.WriteEncodedInt(nest.ID);
             }

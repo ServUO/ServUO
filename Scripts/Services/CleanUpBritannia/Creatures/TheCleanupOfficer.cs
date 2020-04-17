@@ -13,7 +13,7 @@ namespace Server.Engines.CleanUpBritannia
         public override bool CanTeach => false;
 
         protected List<SBInfo> m_SBInfos = new List<SBInfo>();
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo() { }
 
         [Constructable]
@@ -62,7 +62,7 @@ namespace Server.Engines.CleanUpBritannia
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from is PlayerMobile && from.InRange(this.Location, 5))
+            if (from is PlayerMobile && from.InRange(Location, 5))
                 from.SendGump(new CleanUpBritanniaRewardGump(this, from as PlayerMobile));
         }
 

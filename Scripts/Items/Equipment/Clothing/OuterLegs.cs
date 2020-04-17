@@ -45,7 +45,7 @@ namespace Server.Items
         public FurSarong(int hue)
             : base(0x230C, hue)
         {
-            this.Weight = 3.0;
+            Weight = 3.0;
         }
 
         public FurSarong(Serial serial)
@@ -66,8 +66,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (this.Weight == 4.0)
-                this.Weight = 3.0;
+            if (Weight == 4.0)
+                Weight = 3.0;
         }
     }
 
@@ -84,7 +84,7 @@ namespace Server.Items
         public Skirt(int hue)
             : base(0x1516, hue)
         {
-            this.Weight = 4.0;
+            Weight = 4.0;
         }
 
         public Skirt(Serial serial)
@@ -120,7 +120,7 @@ namespace Server.Items
         public Kilt(int hue)
             : base(0x1537, hue)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public Kilt(Serial serial)
@@ -156,7 +156,7 @@ namespace Server.Items
         public Hakama(int hue)
             : base(0x279A, hue)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public Hakama(Serial serial)
@@ -191,7 +191,7 @@ namespace Server.Items
         public GargishClothKilt(int hue)
             : base(0x0408, Layer.Gloves, hue)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public GargishClothKilt(Serial serial)
@@ -208,9 +208,9 @@ namespace Server.Items
             if (parent is Mobile)
             {
                 if (((Mobile)parent).Female)
-                    this.ItemID = 0x0407;
+                    ItemID = 0x0407;
                 else
-                    this.ItemID = 0x0408;
+                    ItemID = 0x0408;
             }
         }
 
@@ -242,7 +242,7 @@ namespace Server.Items
         public FemaleGargishClothKilt(int hue)
             : base(0x0407, Layer.Gloves, hue)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public FemaleGargishClothKilt(Serial serial)
@@ -280,7 +280,7 @@ namespace Server.Items
         public MaleGargishClothKilt(int hue)
             : base(0x0408, Layer.Gloves, hue)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public MaleGargishClothKilt(Serial serial)

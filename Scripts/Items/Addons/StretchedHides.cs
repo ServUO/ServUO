@@ -5,7 +5,7 @@ namespace Server.Items
         [Constructable]
         public SmallStretchedHideEastAddon()
         {
-            this.AddComponent(new AddonComponent(0x1069), 0, 0, 0);
+            AddComponent(new AddonComponent(0x1069), 0, 0, 0);
         }
 
         public SmallStretchedHideEastAddon(Serial serial)
@@ -63,7 +63,7 @@ namespace Server.Items
         [Constructable]
         public SmallStretchedHideSouthAddon()
         {
-            this.AddComponent(new AddonComponent(0x107A), 0, 0, 0);
+            AddComponent(new AddonComponent(0x107A), 0, 0, 0);
         }
 
         public SmallStretchedHideSouthAddon(Serial serial)
@@ -121,7 +121,7 @@ namespace Server.Items
         [Constructable]
         public MediumStretchedHideEastAddon()
         {
-            this.AddComponent(new AddonComponent(0x106B), 0, 0, 0);
+            AddComponent(new AddonComponent(0x106B), 0, 0, 0);
         }
 
         public MediumStretchedHideEastAddon(Serial serial)
@@ -179,7 +179,7 @@ namespace Server.Items
         [Constructable]
         public MediumStretchedHideSouthAddon()
         {
-            this.AddComponent(new AddonComponent(0x107C), 0, 0, 0);
+            AddComponent(new AddonComponent(0x107C), 0, 0, 0);
         }
 
         public MediumStretchedHideSouthAddon(Serial serial)

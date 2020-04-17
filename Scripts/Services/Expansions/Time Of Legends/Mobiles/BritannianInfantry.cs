@@ -77,7 +77,7 @@ namespace Server.Mobiles
             return base.IsEnemy(m);
         }
 
-        public override bool AlwaysAttackable => this.Region.IsPartOf<BattleRegion>();
+        public override bool AlwaysAttackable => Region.IsPartOf<BattleRegion>();
         public override bool ShowFameTitle => false;
         public override bool ClickTitle => false;
 

@@ -38,7 +38,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(this.GetWorldLocation(), 3))
+            if (from.InRange(GetWorldLocation(), 3))
             {
                 Gump g = new Gump(100, 100);
 

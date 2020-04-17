@@ -5,11 +5,11 @@ namespace Server.Items
         [Constructable]
         public ShrineOfWisdomAddon()
         {
-            this.AddComponent(new ShrineOfWisdomComponent(0x14C3), 0, 0, 0);
-            this.AddComponent(new ShrineOfWisdomComponent(0x14C6), 1, 0, 0);
-            this.AddComponent(new ShrineOfWisdomComponent(0x14D4), 0, 1, 0);
-            this.AddComponent(new ShrineOfWisdomComponent(0x14D5), 1, 1, 0);
-            this.Hue = 0x47E;
+            AddComponent(new ShrineOfWisdomComponent(0x14C3), 0, 0, 0);
+            AddComponent(new ShrineOfWisdomComponent(0x14C6), 1, 0, 0);
+            AddComponent(new ShrineOfWisdomComponent(0x14D4), 0, 1, 0);
+            AddComponent(new ShrineOfWisdomComponent(0x14D5), 1, 1, 0);
+            Hue = 0x47E;
         }
 
         public ShrineOfWisdomAddon(Serial serial)

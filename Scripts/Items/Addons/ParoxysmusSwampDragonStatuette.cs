@@ -8,8 +8,8 @@ namespace Server.Items
         public ParoxysmusSwampDragonStatuette()
             : base(0x2619)
         {
-            this.Weight = 1.0;
-            this.Hue = 0x851;
+            Weight = 1.0;
+            Hue = 0x851;
         }
 
         public ParoxysmusSwampDragonStatuette(Serial serial)

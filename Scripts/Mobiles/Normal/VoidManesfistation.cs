@@ -69,7 +69,7 @@ namespace Server.Mobiles
 
         public override WeaponAbility GetWeaponAbility()
         {
-            if (this.Weapon is BaseWeapon)
+            if (Weapon is BaseWeapon)
             {
                 if (Utility.RandomBool())
                     return ((BaseWeapon)Weapon).PrimaryAbility;
@@ -81,9 +81,9 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.UltraRich, 3);
-            this.AddLoot(LootPack.MedScrolls, 2);
-            this.AddLoot(LootPack.HighScrolls, 3);
+            AddLoot(LootPack.UltraRich, 3);
+            AddLoot(LootPack.MedScrolls, 2);
+            AddLoot(LootPack.HighScrolls, 3);
         }
 
         private DateTime m_NextSummon;
@@ -96,7 +96,7 @@ namespace Server.Mobiles
             if (Combatant == null)
                 return;
 
-            if (m_NextSummon < DateTime.UtcNow && this.Mana > 40 && this.Followers + 5 <= this.FollowersMax)
+            if (m_NextSummon < DateTime.UtcNow && Mana > 40 && Followers + 5 <= FollowersMax)
             {
                 Spell spell = new RisingColossusSpell(this, null);
                 spell.Cast();

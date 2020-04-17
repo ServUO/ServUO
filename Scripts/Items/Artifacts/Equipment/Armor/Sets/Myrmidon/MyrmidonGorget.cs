@@ -7,20 +7,20 @@ namespace Server.Items
         public MyrmidonGorget()
             : base()
         {
-            this.SetHue = 0x331;
+            SetHue = 0x331;
 
-            this.Attributes.BonusStr = 1;
-            this.Attributes.BonusHits = 2;
+            Attributes.BonusStr = 1;
+            Attributes.BonusHits = 2;
 
-            this.SetAttributes.Luck = 500;
-            this.SetAttributes.NightSight = 1;
+            SetAttributes.Luck = 500;
+            SetAttributes.NightSight = 1;
 
-            this.SetSelfRepair = 3;
-            this.SetPhysicalBonus = 3;
-            this.SetFireBonus = 3;
-            this.SetColdBonus = 3;
-            this.SetPoisonBonus = 3;
-            this.SetEnergyBonus = 3;
+            SetSelfRepair = 3;
+            SetPhysicalBonus = 3;
+            SetFireBonus = 3;
+            SetColdBonus = 3;
+            SetPoisonBonus = 3;
+            SetEnergyBonus = 3;
         }
 
         public MyrmidonGorget(Serial serial)

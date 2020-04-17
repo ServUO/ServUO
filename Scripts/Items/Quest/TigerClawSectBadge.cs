@@ -6,7 +6,7 @@ namespace Server.Items
         public TigerClawSectBadge()
             : base(0x23D)
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public TigerClawSectBadge(Serial serial)

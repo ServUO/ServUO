@@ -12,8 +12,8 @@ namespace Server.Items
         public RaptorTeeth(int amount)
             : base(0x5747)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public RaptorTeeth(Serial serial)

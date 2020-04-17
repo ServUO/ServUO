@@ -51,7 +51,7 @@ namespace Server.Spells.Ninjitsu
 
         public override bool OnBeforeDamage(Mobile attacker, Mobile defender)
         {
-            return this.Validate(attacker) && this.CheckMana(attacker, true);
+            return Validate(attacker) && CheckMana(attacker, true);
         }
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
@@ -61,7 +61,7 @@ namespace Server.Spells.Ninjitsu
             attacker.SendLocalizedMessage(1063098); // You focus all of your abilities and strike with deadly force!
             attacker.PlaySound(0x510);
 
-            this.CheckGain(attacker);
+            CheckGain(attacker);
         }
 
         public override void OnUse(Mobile from)

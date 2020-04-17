@@ -6,7 +6,7 @@ namespace Server.Items
         public OrnateElvenChestEastAddon()
             : base(0x309A)
         {
-            this.AddComponent(new LocalizedContainerComponent(0x309B, 1073383), 0, -1, 0);
+            AddComponent(new LocalizedContainerComponent(0x309B, 1073383), 0, -1, 0);
         }
 
         public OrnateElvenChestEastAddon(Serial serial)

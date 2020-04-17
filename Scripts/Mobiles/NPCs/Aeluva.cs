@@ -9,8 +9,8 @@ namespace Server.Engines.Quests
         public Aeluva()
             : base("Aeluva", "the arcanist")
         {
-            this.SetSkill(SkillName.Meditation, 60.0, 83.0);
-            this.SetSkill(SkillName.Focus, 60.0, 83.0);
+            SetSkill(SkillName.Meditation, 60.0, 83.0);
+            SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
         public Aeluva(Serial serial)
@@ -21,22 +21,22 @@ namespace Server.Engines.Quests
         public override Type[] Quests => new Type[] { typeof(PatienceQuest) };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = true;
-            this.Race = Race.Elf;
+            Female = true;
+            Race = Race.Elf;
 
-            this.Hue = 0x8835;
-            this.HairItemID = 0x2FD0;
-            this.HairHue = 0x387;
+            Hue = 0x8835;
+            HairItemID = 0x2FD0;
+            HairHue = 0x387;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new ElvenBoots());
-            this.AddItem(new ElvenShirt());
-            this.AddItem(new Skirt());
-            this.AddItem(new Circlet());
+            AddItem(new ElvenBoots());
+            AddItem(new ElvenShirt());
+            AddItem(new Skirt());
+            AddItem(new Circlet());
         }
 
         public override void Serialize(GenericWriter writer)

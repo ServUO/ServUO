@@ -7,21 +7,21 @@ namespace Server.Items
         public GreymistChest()
             : base()
         {
-            this.SetHue = 0xCB;
+            SetHue = 0xCB;
 
-            this.Attributes.BonusMana = 2;
-            this.Attributes.SpellDamage = 2;
+            Attributes.BonusMana = 2;
+            Attributes.SpellDamage = 2;
 
-            this.SetAttributes.Luck = 100;
-            this.SetAttributes.NightSight = 1;
+            SetAttributes.Luck = 100;
+            SetAttributes.NightSight = 1;
 
-            this.SetSelfRepair = 3;
+            SetSelfRepair = 3;
 
-            this.SetPhysicalBonus = 3;
-            this.SetFireBonus = 3;
-            this.SetColdBonus = 3;
-            this.SetPoisonBonus = 3;
-            this.SetEnergyBonus = 3;
+            SetPhysicalBonus = 3;
+            SetFireBonus = 3;
+            SetColdBonus = 3;
+            SetPoisonBonus = 3;
+            SetEnergyBonus = 3;
         }
 
         public GreymistChest(Serial serial)

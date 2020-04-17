@@ -5,7 +5,7 @@ namespace Server.Items
         public BaseFloor(int itemID, int count)
             : base(Utility.Random(itemID, count))
         {
-            this.Movable = false;
+            Movable = false;
         }
 
         public BaseFloor(Serial serial)

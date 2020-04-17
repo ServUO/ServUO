@@ -51,7 +51,7 @@ namespace Server.Items
         {
             base.OnDelete();
 
-            Mobile m = this.RootParent as Mobile;
+            Mobile m = RootParent as Mobile;
 
             if (m != null)
                 m.CloseGump(typeof(Server.Gumps.CompassDirectionGump));

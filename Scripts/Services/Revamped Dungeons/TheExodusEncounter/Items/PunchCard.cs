@@ -6,9 +6,9 @@ namespace Server.Items
         public PunchCard()
             : base(0x0FF4)
         {
-            this.LootType = LootType.Regular;
-            this.Hue = Utility.RandomNondyedHue();
-            this.Weight = 2;
+            LootType = LootType.Regular;
+            Hue = Utility.RandomNondyedHue();
+            Weight = 2;
         }
 
         public override int Lifespan => 21600;

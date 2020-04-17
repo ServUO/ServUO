@@ -6,7 +6,7 @@ namespace Server.Engines.Quests.Hag
         public MoonfireBrew()
             : base(0xF04)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public MoonfireBrew(Serial serial)

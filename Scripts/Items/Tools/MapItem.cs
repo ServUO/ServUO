@@ -208,7 +208,7 @@ namespace Server.Items
 
         public virtual bool Validate(Mobile from)
         {
-            if (!from.CanSee(this) || from.Map != this.Map || !from.Alive || InSecureTrade)
+            if (!from.CanSee(this) || from.Map != Map || !from.Alive || InSecureTrade)
                 return false;
             else if (from.AccessLevel >= AccessLevel.GameMaster)
                 return true;

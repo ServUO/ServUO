@@ -7,7 +7,7 @@ namespace Server.Items
         public GargoyleEndTable()
             : base(0x4041)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public GargoyleEndTable(Serial serial)

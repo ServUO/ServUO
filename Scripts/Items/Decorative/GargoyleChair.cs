@@ -8,7 +8,7 @@ namespace Server.Items
         public GargoyleChair()
             : base(0x4023)
         {
-            this.Weight = 6;
+            Weight = 6;
         }
 
         public GargoyleChair(Serial serial)

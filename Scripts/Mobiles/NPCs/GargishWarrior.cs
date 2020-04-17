@@ -8,32 +8,32 @@ namespace Server.Mobiles
         public GargishWarrior()
             : base(AIType.AI_Animal, FightMode.None, 10, 1, 0.2, 0.4)
         {
-            this.Name = "Warrior";
-            if (this.Female = Utility.RandomBool())
+            Name = "Warrior";
+            if (Female = Utility.RandomBool())
             {
-                this.Body = 667;
-                this.HairItemID = 17067;
-                this.HairHue = 1762;
-                this.AddItem(new FemaleGargishPlateChest());
-                this.AddItem(new FemaleGargishPlateKilt());
-                this.AddItem(new FemaleGargishPlateLegs());
-                this.AddItem(new FemaleGargishPlateArms());
-                this.AddItem(new PlateTalons());
+                Body = 667;
+                HairItemID = 17067;
+                HairHue = 1762;
+                AddItem(new FemaleGargishPlateChest());
+                AddItem(new FemaleGargishPlateKilt());
+                AddItem(new FemaleGargishPlateLegs());
+                AddItem(new FemaleGargishPlateArms());
+                AddItem(new PlateTalons());
 
-                this.AddItem(new GlassSword());
+                AddItem(new GlassSword());
             }
             else
             {
-                this.Body = 666;
-                this.HairItemID = 16987;
-                this.HairHue = 1801;
-                this.AddItem(new GargishPlateChest());
-                this.AddItem(new GargishPlateKilt());
-                this.AddItem(new GargishPlateLegs());
-                this.AddItem(new GargishPlateArms());
-                this.AddItem(new PlateTalons());
+                Body = 666;
+                HairItemID = 16987;
+                HairHue = 1801;
+                AddItem(new GargishPlateChest());
+                AddItem(new GargishPlateKilt());
+                AddItem(new GargishPlateLegs());
+                AddItem(new GargishPlateArms());
+                AddItem(new PlateTalons());
 
-                this.AddItem(new GlassSword());
+                AddItem(new GlassSword());
             }
         }
 

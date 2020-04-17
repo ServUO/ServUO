@@ -49,7 +49,7 @@ namespace Server.Engines.Exodus
 
         public void MoveLocation()
         {
-            foreach (Mobile m in this.GetEnumeratedMobiles().Where(m => m is PlayerMobile && m.AccessLevel == AccessLevel.Player))
+            foreach (Mobile m in GetEnumeratedMobiles().Where(m => m is PlayerMobile && m.AccessLevel == AccessLevel.Player))
             {
                 Point3D p = Random_Locations[Utility.Random(Random_Locations.Length)];
 

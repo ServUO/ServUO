@@ -6,8 +6,8 @@ namespace Server.Items
         public AbscessTail()
             : base(0x1A9D)
         {
-            this.LootType = LootType.Blessed;
-            this.Hue = 0x51D; // TODO check
+            LootType = LootType.Blessed;
+            Hue = 0x51D; // TODO check
         }
 
         public AbscessTail(Serial serial)

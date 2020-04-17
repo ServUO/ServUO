@@ -7,7 +7,7 @@ namespace Server.Items
         [Constructable]
         public OphidianMatriarchCostume() : base()
         {
-            this.CostumeBody = 87;
+            CostumeBody = 87;
         }
 
         public override int LabelNumber => 1114230;// ophidian matriarch costume

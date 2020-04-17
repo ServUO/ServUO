@@ -5,8 +5,8 @@ namespace Server.Items
         [Constructable]
         public LightFlowerTapestryEastAddon()
         {
-            this.AddComponent(new AddonComponent(0xFDC), 0, 0, 0);
-            this.AddComponent(new AddonComponent(0xFDB), 0, 1, 0);
+            AddComponent(new AddonComponent(0xFDC), 0, 0, 0);
+            AddComponent(new AddonComponent(0xFDB), 0, 1, 0);
         }
 
         public LightFlowerTapestryEastAddon(Serial serial)
@@ -64,8 +64,8 @@ namespace Server.Items
         [Constructable]
         public LightFlowerTapestrySouthAddon()
         {
-            this.AddComponent(new AddonComponent(0xFD9), 0, 0, 0);
-            this.AddComponent(new AddonComponent(0xFDA), 1, 0, 0);
+            AddComponent(new AddonComponent(0xFD9), 0, 0, 0);
+            AddComponent(new AddonComponent(0xFDA), 1, 0, 0);
         }
 
         public LightFlowerTapestrySouthAddon(Serial serial)
@@ -123,8 +123,8 @@ namespace Server.Items
         [Constructable]
         public DarkFlowerTapestryEastAddon()
         {
-            this.AddComponent(new AddonComponent(0xFE0), 0, 0, 0);
-            this.AddComponent(new AddonComponent(0xFDF), 0, 1, 0);
+            AddComponent(new AddonComponent(0xFE0), 0, 0, 0);
+            AddComponent(new AddonComponent(0xFDF), 0, 1, 0);
         }
 
         public DarkFlowerTapestryEastAddon(Serial serial)
@@ -182,8 +182,8 @@ namespace Server.Items
         [Constructable]
         public DarkFlowerTapestrySouthAddon()
         {
-            this.AddComponent(new AddonComponent(0xFDD), 0, 0, 0);
-            this.AddComponent(new AddonComponent(0xFDE), 1, 0, 0);
+            AddComponent(new AddonComponent(0xFDD), 0, 0, 0);
+            AddComponent(new AddonComponent(0xFDE), 1, 0, 0);
         }
 
         public DarkFlowerTapestrySouthAddon(Serial serial)

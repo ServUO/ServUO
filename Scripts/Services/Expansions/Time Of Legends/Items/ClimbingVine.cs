@@ -24,7 +24,7 @@ namespace Server.Items
         {
             from.SayTo(from, 1156290, 1153); // *The vines looks as though they may be strong enough to support climbing...*
 
-            if (ClimbLocation != Point3D.Zero && from.InRange(this.GetWorldLocation(), 2) && Z >= from.Z)
+            if (ClimbLocation != Point3D.Zero && from.InRange(GetWorldLocation(), 2) && Z >= from.Z)
             {
                 from.MoveToWorld(ClimbLocation, Map);
             }

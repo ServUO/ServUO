@@ -32,27 +32,27 @@ namespace Server.Items
         {
             if (!IsChildOf(from.Backpack))
             {
-                this.PrivateOverheadMessage(MessageType.Regular, 946, 1040019, from.NetState); // The bola must be in your pack to use it.
+                PrivateOverheadMessage(MessageType.Regular, 946, 1040019, from.NetState); // The bola must be in your pack to use it.
             }
             else if (!from.CanBeginAction(typeof(Bola)))
             {
-                this.PrivateOverheadMessage(MessageType.Regular, 946, 1049624, from.NetState); // // You have to wait a few moments before you can use another bola!
+                PrivateOverheadMessage(MessageType.Regular, 946, 1049624, from.NetState); // // You have to wait a few moments before you can use another bola!
             }
             else if (from.Target is BolaTarget)
             {
-                this.PrivateOverheadMessage(MessageType.Regular, 946, 1049631, from.NetState); // This bola is already being used.
+                PrivateOverheadMessage(MessageType.Regular, 946, 1049631, from.NetState); // This bola is already being used.
             }
             else if (from.Mounted)
             {
-                this.PrivateOverheadMessage(MessageType.Regular, 946, 1042053, from.NetState); // You can't use this while on a mount!
+                PrivateOverheadMessage(MessageType.Regular, 946, 1042053, from.NetState); // You can't use this while on a mount!
             }
             else if (from.Flying)
             {
-                this.PrivateOverheadMessage(MessageType.Regular, 946, 1113414, from.NetState); // You can't use this while flying!
+                PrivateOverheadMessage(MessageType.Regular, 946, 1113414, from.NetState); // You can't use this while flying!
             }
             else if (AnimalForm.UnderTransformation(from))
             {
-                this.PrivateOverheadMessage(MessageType.Regular, 946, 1070902, from.NetState); // You can't use this while in an animal form!
+                PrivateOverheadMessage(MessageType.Regular, 946, 1070902, from.NetState); // You can't use this while in an animal form!
             }
             else
             {

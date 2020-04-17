@@ -6,8 +6,8 @@ namespace Server.Items
         public CoilsFang()
             : base(0x10E8)
         {
-            this.LootType = LootType.Blessed;
-            this.Hue = 0x487;
+            LootType = LootType.Blessed;
+            Hue = 0x487;
         }
 
         public CoilsFang(Serial serial)

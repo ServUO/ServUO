@@ -156,7 +156,7 @@ namespace Server.Items
         /* DO NOT USE! Only used in serialization of tasty treats that originally derived from Item */
         private bool m_InheritsItem;
 
-        protected bool InheritsItem => this.m_InheritsItem;
+        protected bool InheritsItem => m_InheritsItem;
         #endregion
     }
 }

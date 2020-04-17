@@ -5,13 +5,13 @@ namespace Server.Mobiles
         [Constructable]
         public EvilHealer()
         {
-            this.Title = "the healer";
+            Title = "the healer";
 
-            this.Karma = -10000;
+            Karma = -10000;
 
-            this.SetSkill(SkillName.Forensics, 80.0, 100.0);
-            this.SetSkill(SkillName.SpiritSpeak, 80.0, 100.0);
-            this.SetSkill(SkillName.Swords, 80.0, 100.0);
+            SetSkill(SkillName.Forensics, 80.0, 100.0);
+            SetSkill(SkillName.SpiritSpeak, 80.0, 100.0);
+            SetSkill(SkillName.Swords, 80.0, 100.0);
         }
 
         public EvilHealer(Serial serial)
@@ -35,14 +35,14 @@ namespace Server.Mobiles
 
         public override void InitSBInfo()
         {
-            this.SBInfos.Add(new SBHealer());
+            SBInfos.Add(new SBHealer());
         }
 
         public override bool CheckResurrect(Mobile m)
         {
             if (m.Criminal)
             {
-                this.Say(501222); // Thou art a criminal.  I shall not resurrect thee.
+                Say(501222); // Thou art a criminal.  I shall not resurrect thee.
                 return false;
             }
 

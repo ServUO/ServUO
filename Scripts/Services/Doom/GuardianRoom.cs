@@ -126,7 +126,7 @@ namespace Server.Engines.Doom
                 Guardians = new List<DarkGuardian>();
 
             int count = 0;
-            foreach (Mobile mob in this.GetEnumeratedMobiles().Where(mob => mob is PlayerMobile || (mob is BaseCreature && ((BaseCreature)mob).GetMaster() != null && !mob.IsDeadBondedPet)))
+            foreach (Mobile mob in GetEnumeratedMobiles().Where(mob => mob is PlayerMobile || (mob is BaseCreature && ((BaseCreature)mob).GetMaster() != null && !mob.IsDeadBondedPet)))
             {
                 if (mob.NetState != null)
                     mob.SendLocalizedMessage(1050000, "", 365); // The locks on the door click loudly and you begin to hear a faint hissing near the walls.

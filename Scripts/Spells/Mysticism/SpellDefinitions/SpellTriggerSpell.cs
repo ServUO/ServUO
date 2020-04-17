@@ -198,13 +198,13 @@ namespace Server.Spells.Mysticism
         public SpellStone(SpellTriggerDef spellDef)
             : base(spellDef.SpellId, 0x4079, 1)
         {
-            this.m_SpellDef = spellDef;
-            this.LootType = LootType.Blessed;
+            m_SpellDef = spellDef;
+            LootType = LootType.Blessed;
         }
 
         public override bool DropToWorld(Mobile from, Point3D p)
         {
-            this.Delete();
+            Delete();
             return false;
         }
 

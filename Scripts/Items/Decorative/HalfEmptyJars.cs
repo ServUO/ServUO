@@ -6,8 +6,8 @@
         public HalfEmptyJar()
             : base(0x1007)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public HalfEmptyJar(Serial serial)
@@ -36,8 +36,8 @@
         public HalfEmptyJars()
             : base(0xe4c)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public HalfEmptyJars(Serial serial)
@@ -66,8 +66,8 @@
         public Jars2()
             : base(0xE4d)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public Jars2(Serial serial)
@@ -96,8 +96,8 @@
         public Jars3()
             : base(0xE4e)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public Jars3(Serial serial)
@@ -126,8 +126,8 @@
         public Jars4()
             : base(0xE4f)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public Jars4(Serial serial)

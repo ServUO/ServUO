@@ -86,7 +86,7 @@ namespace Server.Items
                 from.AddToBackpack(new OrcishGalleonDeed());
                 from.SendLocalizedMessage(1116788); //You have completed a deed for an Orc Ship!
 
-                this.Delete();
+                Delete();
             }
             else
                 from.Target = new InternalTarget(this);

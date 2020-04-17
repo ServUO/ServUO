@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public OddsAndEndsQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(PrimitiveFetish), "primitive fetishes", 12));
+            AddObjective(new ObtainObjective(typeof(PrimitiveFetish), "primitive fetishes", 12));
 
-            this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
+            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
         /* Odds and Ends */
@@ -62,19 +62,19 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.Female = false;
-            this.Race = Race.Human;
+            Female = false;
+            Race = Race.Human;
 
             base.InitBody();
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Shoes(0x74B));
-            this.AddItem(new LongPants(0x1C));
-            this.AddItem(new FancyShirt(0x71B));
-            this.AddItem(new Cloak(0x1BB));
+            AddItem(new Backpack());
+            AddItem(new Shoes(0x74B));
+            AddItem(new LongPants(0x1C));
+            AddItem(new FancyShirt(0x71B));
+            AddItem(new Cloak(0x1BB));
         }
 
         public override void Serialize(GenericWriter writer)

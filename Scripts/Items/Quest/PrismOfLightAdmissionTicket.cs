@@ -9,7 +9,7 @@ namespace Server.Items
         public PrismOfLightAdmissionTicket()
             : base(0x14EF)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public PrismOfLightAdmissionTicket(Serial serial)
@@ -28,10 +28,10 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.IsChildOf(from.Backpack))
+            if (IsChildOf(from.Backpack))
             {
                 if (from.Region.IsPartOf("Prism of Light"))
-                    this.Teleport(from);
+                    Teleport(from);
                 else
                     from.SendLocalizedMessage(1074840); // This ticket can only be used while you are in the Prism of Light dungeon.
             }
@@ -42,7 +42,7 @@ namespace Server.Items
             bool ret = base.DropToWorld(from, p);
 
             if (ret)
-                this.DestroyItem(from);
+                DestroyItem(from);
 
             return ret;
         }
@@ -52,7 +52,7 @@ namespace Server.Items
             bool ret = base.DropToMobile(from, target, p);
 
             if (ret)
-                this.DestroyItem(from);
+                DestroyItem(from);
 
             return ret;
         }
@@ -61,8 +61,8 @@ namespace Server.Items
         {
             bool ret = base.DropToItem(from, target, p);
 
-            if (ret && this.Parent != from.Backpack)
-                this.DestroyItem(from);
+            if (ret && Parent != from.Backpack)
+                DestroyItem(from);
 
             return ret;
         }
@@ -70,8 +70,8 @@ namespace Server.Items
         public virtual void DestroyItem(Mobile from)
         {
             from.SendLocalizedMessage(500424); // You destroyed the item.
-            this.Teleport(from);
-            this.Decay();
+            Teleport(from);
+            Decay();
         }
 
         public virtual void Teleport(Mobile from)
@@ -87,11 +87,11 @@ namespace Server.Items
 
                     foreach (Mobile m in mobiles)
                         if (m is BaseCreature && ((BaseCreature)m).ControlMaster == from)
-                            m.MoveToWorld(new Point3D(3785, 1107, 20), this.Map);
+                            m.MoveToWorld(new Point3D(3785, 1107, 20), Map);
                 }
 
                 // teleport player
-                from.MoveToWorld(new Point3D(3785, 1107, 20), this.Map);
+                from.MoveToWorld(new Point3D(3785, 1107, 20), Map);
             }
         }
 

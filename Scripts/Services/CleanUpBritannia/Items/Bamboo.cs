@@ -6,7 +6,7 @@
         public Bamboo()
             : base(0x246D)
         {
-            this.Weight = 10;
+            Weight = 10;
         }
 
         public Bamboo(Serial serial)

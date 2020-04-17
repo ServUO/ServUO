@@ -12,21 +12,21 @@ namespace Server.Engines.Harvest
         public HarvestSoundTimer(Mobile from, Item tool, HarvestSystem system, HarvestDefinition def, object toHarvest, object locked, bool last)
             : base(def.EffectSoundDelay)
         {
-            this.m_From = from;
-            this.m_Tool = tool;
-            this.m_System = system;
-            this.m_Definition = def;
-            this.m_ToHarvest = toHarvest;
-            this.m_Locked = locked;
-            this.m_Last = last;
+            m_From = from;
+            m_Tool = tool;
+            m_System = system;
+            m_Definition = def;
+            m_ToHarvest = toHarvest;
+            m_Locked = locked;
+            m_Last = last;
         }
 
         protected override void OnTick()
         {
-            this.m_System.DoHarvestingSound(this.m_From, this.m_Tool, this.m_Definition, this.m_ToHarvest);
+            m_System.DoHarvestingSound(m_From, m_Tool, m_Definition, m_ToHarvest);
 
-            if (this.m_Last)
-                this.m_System.FinishHarvesting(this.m_From, this.m_Tool, this.m_Definition, this.m_ToHarvest, this.m_Locked);
+            if (m_Last)
+                m_System.FinishHarvesting(m_From, m_Tool, m_Definition, m_ToHarvest, m_Locked);
         }
     }
 }

@@ -8,23 +8,23 @@ namespace Server.Mobiles
         public GargishRefugee()
             : base(AIType.AI_Animal, FightMode.None, 10, 1, 0.2, 0.4)
         {
-            this.Name = "Refugee";
-            if (this.Female = Utility.RandomBool())
+            Name = "Refugee";
+            if (Female = Utility.RandomBool())
             {
-                this.Body = 667;
-                this.HairItemID = 17067;
-                this.HairHue = 1762;
-                this.AddItem(new GargishClothChest());
-                this.AddItem(new GargishClothKilt(Utility.RandomNeutralHue()));
+                Body = 667;
+                HairItemID = 17067;
+                HairHue = 1762;
+                AddItem(new GargishClothChest());
+                AddItem(new GargishClothKilt(Utility.RandomNeutralHue()));
             }
             else
             {
-                this.Body = 666;
-                this.HairItemID = 16987;
-                this.HairHue = 1801;
-                this.AddItem(new GargishClothChest());
-                this.AddItem(new GargishClothKilt());
-                this.AddItem(new GargishClothLegs(Utility.RandomNeutralHue()));
+                Body = 666;
+                HairItemID = 16987;
+                HairHue = 1801;
+                AddItem(new GargishClothChest());
+                AddItem(new GargishClothKilt());
+                AddItem(new GargishClothLegs(Utility.RandomNeutralHue()));
             }
         }
 

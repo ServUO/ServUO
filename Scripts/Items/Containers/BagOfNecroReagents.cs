@@ -11,11 +11,11 @@ namespace Server.Items
         [Constructable]
         public BagOfNecroReagents(int amount)
         {
-            this.DropItem(new BatWing(amount));
-            this.DropItem(new GraveDust(amount));
-            this.DropItem(new DaemonBlood(amount));
-            this.DropItem(new NoxCrystal(amount));
-            this.DropItem(new PigIron(amount));
+            DropItem(new BatWing(amount));
+            DropItem(new GraveDust(amount));
+            DropItem(new DaemonBlood(amount));
+            DropItem(new NoxCrystal(amount));
+            DropItem(new PigIron(amount));
         }
 
         public BagOfNecroReagents(Serial serial)

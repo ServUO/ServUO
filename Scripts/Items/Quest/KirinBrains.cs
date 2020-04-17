@@ -6,9 +6,9 @@ namespace Server.Items
         public KirinBrains()
             : base(0x1CF0)
         {
-            this.LootType = LootType.Blessed;
-            this.Weight = 1;
-            this.Hue = 0xD7;
+            LootType = LootType.Blessed;
+            Weight = 1;
+            Hue = 0xD7;
         }
 
         public KirinBrains(Serial serial)

@@ -11,35 +11,35 @@ namespace Server.Mobiles
         public SandVortex()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a sand vortex";
-            this.Body = 790;
-            this.BaseSoundID = 263;
+            Name = "a sand vortex";
+            Body = 790;
+            BaseSoundID = 263;
 
-            this.SetStr(96, 120);
-            this.SetDex(171, 195);
-            this.SetInt(76, 100);
+            SetStr(96, 120);
+            SetDex(171, 195);
+            SetInt(76, 100);
 
-            this.SetHits(51, 62);
+            SetHits(51, 62);
 
-            this.SetDamage(3, 16);
+            SetDamage(3, 16);
 
-            this.SetDamageType(ResistanceType.Physical, 90);
-            this.SetDamageType(ResistanceType.Fire, 10);
+            SetDamageType(ResistanceType.Physical, 90);
+            SetDamageType(ResistanceType.Fire, 10);
 
-            this.SetResistance(ResistanceType.Physical, 80, 90);
-            this.SetResistance(ResistanceType.Fire, 60, 70);
-            this.SetResistance(ResistanceType.Cold, 60, 70);
-            this.SetResistance(ResistanceType.Poison, 60, 70);
-            this.SetResistance(ResistanceType.Energy, 60, 70);
+            SetResistance(ResistanceType.Physical, 80, 90);
+            SetResistance(ResistanceType.Fire, 60, 70);
+            SetResistance(ResistanceType.Cold, 60, 70);
+            SetResistance(ResistanceType.Poison, 60, 70);
+            SetResistance(ResistanceType.Energy, 60, 70);
 
-            this.SetSkill(SkillName.MagicResist, 150.0);
-            this.SetSkill(SkillName.Tactics, 70.0);
-            this.SetSkill(SkillName.Wrestling, 80.0);
+            SetSkill(SkillName.MagicResist, 150.0);
+            SetSkill(SkillName.Tactics, 70.0);
+            SetSkill(SkillName.Wrestling, 80.0);
 
-            this.Fame = 4500;
-            this.Karma = -4500;
+            Fame = 4500;
+            Karma = -4500;
 
-            this.PackItem(new Bone());
+            PackItem(new Bone());
         }
 
         public SandVortex(Serial serial)
@@ -49,26 +49,26 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Meager, 2);
+            AddLoot(LootPack.Meager, 2);
         }
 
         public override void OnActionCombat()
         {
-            Mobile combatant = this.Combatant as Mobile;
+            Mobile combatant = Combatant as Mobile;
 
-            if (combatant == null || combatant.Deleted || combatant.Map != this.Map || !this.InRange(combatant, 12) || !this.CanBeHarmful(combatant) || !this.InLOS(combatant))
+            if (combatant == null || combatant.Deleted || combatant.Map != Map || !InRange(combatant, 12) || !CanBeHarmful(combatant) || !InLOS(combatant))
                 return;
 
-            if (DateTime.UtcNow >= this.m_NextAttack)
+            if (DateTime.UtcNow >= m_NextAttack)
             {
-                this.SandAttack(combatant);
-                this.m_NextAttack = DateTime.UtcNow + TimeSpan.FromSeconds(10.0 + (10.0 * Utility.RandomDouble()));
+                SandAttack(combatant);
+                m_NextAttack = DateTime.UtcNow + TimeSpan.FromSeconds(10.0 + (10.0 * Utility.RandomDouble()));
             }
         }
 
         public void SandAttack(Mobile m)
         {
-            this.DoHarmful(m);
+            DoHarmful(m);
 
             m.FixedParticles(0x36B0, 10, 25, 9540, 2413, 0, EffectLayer.Waist);
 
@@ -94,15 +94,15 @@ namespace Server.Mobiles
             public InternalTimer(Mobile m, Mobile from)
                 : base(TimeSpan.FromSeconds(1.0))
             {
-                this.m_Mobile = m;
-                this.m_From = from;
-                this.Priority = TimerPriority.TwoFiftyMS;
+                m_Mobile = m;
+                m_From = from;
+                Priority = TimerPriority.TwoFiftyMS;
             }
 
             protected override void OnTick()
             {
-                this.m_Mobile.PlaySound(0x4CF);
-                AOS.Damage(this.m_Mobile, this.m_From, Utility.RandomMinMax(1, 40), 90, 10, 0, 0, 0);
+                m_Mobile.PlaySound(0x4CF);
+                AOS.Damage(m_Mobile, m_From, Utility.RandomMinMax(1, 40), 90, 10, 0, 0, 0);
             }
         }
     }

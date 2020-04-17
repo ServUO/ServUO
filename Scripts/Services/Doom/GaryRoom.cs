@@ -95,7 +95,7 @@ namespace Server.Engines.Doom
 
         public void OnTick()
         {
-            if (NextRoll < DateTime.UtcNow /*&& (Spawn == null || !Spawn.Alive)*/ && this.GetEnumeratedMobiles().OfType<PlayerMobile>().Where(p => p.Alive).Count() > 0)
+            if (NextRoll < DateTime.UtcNow /*&& (Spawn == null || !Spawn.Alive)*/ && GetEnumeratedMobiles().OfType<PlayerMobile>().Where(p => p.Alive).Count() > 0)
             {
                 DoRoll();
                 NextRoll = DateTime.UtcNow + RollDelay;
@@ -130,7 +130,7 @@ namespace Server.Engines.Doom
                     }
                     else
                     {
-                        foreach (PlayerMobile m in this.GetEnumeratedMobiles().OfType<PlayerMobile>())
+                        foreach (PlayerMobile m in GetEnumeratedMobiles().OfType<PlayerMobile>())
                         {
                             m.SendMessage("- {0} -", (roll + 1).ToString());
                         }
@@ -308,7 +308,7 @@ namespace Server.Engines.Doom
         {
             if (Dice == null || Dice.Deleted)
             {
-                Sapphired20 dice = this.GetEnumeratedItems().OfType<Sapphired20>().FirstOrDefault(i => !i.Deleted);
+                Sapphired20 dice = GetEnumeratedItems().OfType<Sapphired20>().FirstOrDefault(i => !i.Deleted);
 
                 if (dice != null)
                 {
@@ -337,7 +337,7 @@ namespace Server.Engines.Doom
             {
                 if (Statues[i] == null || Statues[i].Deleted)
                 {
-                    DisplayStatue s = this.GetEnumeratedItems().OfType<DisplayStatue>().FirstOrDefault(st => Array.IndexOf(Statues, st) == -1);
+                    DisplayStatue s = GetEnumeratedItems().OfType<DisplayStatue>().FirstOrDefault(st => Array.IndexOf(Statues, st) == -1);
 
                     if (s == null)
                     {
@@ -493,7 +493,7 @@ namespace Server.Engines.Doom
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (this.GetRegion().IsPartOf<GaryRegion>())
+            if (GetRegion().IsPartOf<GaryRegion>())
             {
                 m.SendLocalizedMessage(1080097); // You're blasted back in a blaze of light! This d20 is not yours to roll...
 
@@ -688,7 +688,7 @@ namespace Server.Engines.Doom
         [CommandProperty(AccessLevel.GameMaster)]
         public GaryRegion RegionProps
         {
-            get { return this.Region as GaryRegion; }
+            get { return Region as GaryRegion; }
             set { }
         }
 

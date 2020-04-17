@@ -8,8 +8,8 @@ namespace Server.Items
         public FruitBowl()
             : base(0x2D4F)
         {
-            this.Weight = 1.0;
-            this.FillFactor = 20;
+            Weight = 1.0;
+            FillFactor = 20;
         }
 
         public FruitBowl(Serial serial)
@@ -23,9 +23,9 @@ namespace Server.Items
         public override int LabelNumber => 1072950;// fruit bowl
         public override bool Eat(Mobile from)
         {
-            if (FillHunger(from, this.FillFactor))
+            if (FillHunger(from, FillFactor))
             {
-                string modName = this.Serial.ToString();
+                string modName = Serial.ToString();
 
                 from.AddStatMod(new StatMod(StatType.Str, modName + "Str", 5, TimeSpan.FromSeconds(120)));
                 from.AddStatMod(new StatMod(StatType.Dex, modName + "Dex", 5, TimeSpan.FromSeconds(120)));
@@ -34,7 +34,7 @@ namespace Server.Items
                 from.PlaySound(0x1EA);
                 from.FixedParticles(0x373A, 10, 15, 5018, EffectLayer.Waist);
 
-                this.Consume();
+                Consume();
 
                 return true;
             }

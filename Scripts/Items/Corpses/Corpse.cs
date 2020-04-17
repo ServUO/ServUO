@@ -199,7 +199,7 @@ namespace Server.Items
 
         private void AssignInstancedLoot()
         {
-            AssignInstancedLoot(this.Items);
+            AssignInstancedLoot(Items);
         }
 
         public void AssignInstancedLoot(Item item)

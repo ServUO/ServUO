@@ -12,8 +12,8 @@ namespace Server.Items
         public SlithEye(int amount)
             : base(0x5749)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public SlithEye(Serial serial)

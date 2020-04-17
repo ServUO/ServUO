@@ -168,10 +168,10 @@ namespace Server.Engines.Plants
         public bool IsGrowable => m_PlantStatus >= PlantStatus.BowlOfDirt && m_PlantStatus <= PlantStatus.Stage9;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsCrossable => PlantHueInfo.IsCrossable(this.PlantHue) && PlantTypeInfo.IsCrossable(this.PlantType);
+        public bool IsCrossable => PlantHueInfo.IsCrossable(PlantHue) && PlantTypeInfo.IsCrossable(PlantType);
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Reproduces => PlantHueInfo.CanReproduce(this.PlantHue) && PlantTypeInfo.CanReproduce(this.PlantType);
+        public bool Reproduces => PlantHueInfo.CanReproduce(PlantHue) && PlantTypeInfo.CanReproduce(PlantType);
 
         private static readonly ArrayList m_Instances = new ArrayList();
 
@@ -330,7 +330,7 @@ namespace Server.Engines.Plants
             if (m_PlantStatus >= PlantStatus.DecorativePlant)
                 return;
 
-            Point3D loc = this.GetWorldLocation();
+            Point3D loc = GetWorldLocation();
 
             if (!from.InLOS(loc) || !from.InRange(loc, 2))
             {

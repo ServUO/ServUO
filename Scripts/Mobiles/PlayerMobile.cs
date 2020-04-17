@@ -155,8 +155,8 @@ namespace Server.Mobiles
             {
                 if (BeginAction(typeof(FlySpell)))
                 {
-                    if (this.Spell is Spell)
-                        ((Spell)this.Spell).Disturb(DisturbType.Unspecified, false, false);
+                    if (Spell is Spell)
+                        ((Spell)Spell).Disturb(DisturbType.Unspecified, false, false);
 
                     Spell spell = new FlySpell(this);
                     spell.Cast();
@@ -172,8 +172,8 @@ namespace Server.Mobiles
             {
                 if (BeginAction(typeof(FlySpell)))
                 {
-                    if (this.Spell is Spell)
-                        ((Spell)this.Spell).Disturb(DisturbType.Unspecified, false, false);
+                    if (Spell is Spell)
+                        ((Spell)Spell).Disturb(DisturbType.Unspecified, false, false);
 
                     Animate(AnimationType.Land, 0);
                     Flying = false;
@@ -4082,13 +4082,13 @@ namespace Server.Mobiles
             }
 
             //Skill Masteries
-            if ((this.Poison == null || this.Poison.Level < poison.Level) && ToleranceSpell.OnPoisonApplied(this))
+            if ((Poison == null || Poison.Level < poison.Level) && ToleranceSpell.OnPoisonApplied(this))
             {
                 poison = PoisonImpl.DecreaseLevel(poison);
 
                 if (poison == null || poison.Level <= 0)
                 {
-                    PrivateOverheadMessage(MessageType.Regular, 0x3F, 1053092, this.NetState); // * You feel yourself resisting the effects of the poison *
+                    PrivateOverheadMessage(MessageType.Regular, 0x3F, 1053092, NetState); // * You feel yourself resisting the effects of the poison *
                     return ApplyPoisonResult.Immune;
                 }
             }
@@ -4146,7 +4146,7 @@ namespace Server.Mobiles
         {
             get
             {
-                int facetBonus = !Siege.SiegeShard && this.Map == Map.Felucca ? RandomItemGenerator.FeluccaLuckBonus : 0;
+                int facetBonus = !Siege.SiegeShard && Map == Map.Felucca ? RandomItemGenerator.FeluccaLuckBonus : 0;
 
                 return Luck + FountainOfFortune.GetLuckBonus(this) + facetBonus;
             }
@@ -5364,7 +5364,7 @@ namespace Server.Mobiles
             }
 
             BaseGuild guild = Guild;
-            bool vvv = Server.Engines.VvV.ViceVsVirtueSystem.IsVvV(this) && (ViceVsVirtueSystem.EnhancedRules || this.Map == ViceVsVirtueSystem.Facet);
+            bool vvv = Server.Engines.VvV.ViceVsVirtueSystem.IsVvV(this) && (ViceVsVirtueSystem.EnhancedRules || Map == ViceVsVirtueSystem.Facet);
 
             if (m_OverheadTitle != null)
             {

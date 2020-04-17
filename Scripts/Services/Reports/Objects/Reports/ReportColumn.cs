@@ -21,33 +21,33 @@ namespace Server.Engines.Reports
         {
             get
             {
-                return this.m_Width;
+                return m_Width;
             }
             set
             {
-                this.m_Width = value;
+                m_Width = value;
             }
         }
         public string Align
         {
             get
             {
-                return this.m_Align;
+                return m_Align;
             }
             set
             {
-                this.m_Align = value;
+                m_Align = value;
             }
         }
         public string Name
         {
             get
             {
-                return this.m_Name;
+                return m_Name;
             }
             set
             {
-                this.m_Name = value;
+                m_Name = value;
             }
         }
 
@@ -62,23 +62,23 @@ namespace Server.Engines.Reports
 
         public ReportColumn(string width, string align, string name)
         {
-            this.m_Width = width;
-            this.m_Align = align;
-            this.m_Name = name;
+            m_Width = width;
+            m_Align = align;
+            m_Name = name;
         }
 
         public override void SerializeAttributes(PersistenceWriter op)
         {
-            op.SetString("w", this.m_Width);
-            op.SetString("a", this.m_Align);
-            op.SetString("n", this.m_Name);
+            op.SetString("w", m_Width);
+            op.SetString("a", m_Align);
+            op.SetString("n", m_Name);
         }
 
         public override void DeserializeAttributes(PersistenceReader ip)
         {
-            this.m_Width = Utility.Intern(ip.GetString("w"));
-            this.m_Align = Utility.Intern(ip.GetString("a"));
-            this.m_Name = Utility.Intern(ip.GetString("n"));
+            m_Width = Utility.Intern(ip.GetString("w"));
+            m_Align = Utility.Intern(ip.GetString("a"));
+            m_Name = Utility.Intern(ip.GetString("n"));
         }
     }
 }

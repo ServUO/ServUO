@@ -94,7 +94,7 @@ namespace Server.Items
                 if (cont != null)
                     cont.AddItem(sos);
                 else
-                    sos.MoveToWorld(this.Location, this.Map);
+                    sos.MoveToWorld(Location, Map);
 
                 from.LocalOverheadMessage(Network.MessageType.Regular, 0x3B2, 501891); // You extract the message from the bottle.
             }

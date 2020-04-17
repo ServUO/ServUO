@@ -14,9 +14,9 @@ namespace Server.Items
         public Flax(int amount)
             : base(0x1A9C)
         {
-            this.Stackable = true;
-            this.Weight = 1.0;
-            this.Amount = amount;
+            Stackable = true;
+            Weight = 1.0;
+            Amount = amount;
         }
 
         public Flax(Serial serial)
@@ -49,7 +49,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.IsChildOf(from.Backpack))
+            if (IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(502655); // What spinning wheel do you wish to spin this on?
                 from.Target = new PickWheelTarget(this);
@@ -66,12 +66,12 @@ namespace Server.Items
             public PickWheelTarget(Flax flax)
                 : base(3, false, TargetFlags.None)
             {
-                this.m_Flax = flax;
+                m_Flax = flax;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (this.m_Flax.Deleted)
+                if (m_Flax.Deleted)
                     return;
 
                 ISpinningWheel wheel = targeted as ISpinningWheel;
@@ -83,7 +83,7 @@ namespace Server.Items
                 {
                     Item item = (Item)wheel;
 
-                    if (!this.m_Flax.IsChildOf(from.Backpack))
+                    if (!m_Flax.IsChildOf(from.Backpack))
                     {
                         from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
                     }
@@ -93,8 +93,8 @@ namespace Server.Items
                     }
                     else
                     {
-                        this.m_Flax.Consume();
-                        wheel.BeginSpin(new SpinCallback(Flax.OnSpun), from, this.m_Flax.Hue);
+                        m_Flax.Consume();
+                        wheel.BeginSpin(new SpinCallback(Flax.OnSpun), from, m_Flax.Hue);
                     }
                 }
                 else

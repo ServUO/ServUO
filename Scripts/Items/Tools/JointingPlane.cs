@@ -9,14 +9,14 @@ namespace Server.Items
         public JointingPlane()
             : base(0x1030)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         [Constructable]
         public JointingPlane(int uses)
             : base(uses, 0x1030)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public JointingPlane(Serial serial)
@@ -38,8 +38,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (this.Weight == 1.0)
-                this.Weight = 2.0;
+            if (Weight == 1.0)
+                Weight = 2.0;
         }
     }
 }

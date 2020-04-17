@@ -6,8 +6,8 @@ namespace Server.Items
         public DecoGinsengRoot()
             : base(0x18EB)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public DecoGinsengRoot(Serial serial)

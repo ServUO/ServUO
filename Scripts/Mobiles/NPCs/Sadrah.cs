@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public FleeAndFatigueQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(RefreshPotion), "refresh potion", 10, 0xF0B));
+            AddObjective(new ObtainObjective(typeof(RefreshPotion), "refresh potion", 10, 0xF0B));
 
-            this.AddReward(new BaseReward(typeof(AlchemistsSatchel), 1074282)); // Craftsman's Satchel
+            AddReward(new BaseReward(typeof(AlchemistsSatchel), 1074282)); // Craftsman's Satchel
         }
 
         public override TimeSpan RestartDelay => TimeSpan.FromMinutes(3);
@@ -64,25 +64,25 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = true;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = true;
+            CantWalk = true;
+            Race = Race.Human;
 
-            this.Hue = 0x8406;
-            this.HairItemID = 0x203D;
-            this.HairHue = 0x901;
+            Hue = 0x8406;
+            HairItemID = 0x203D;
+            HairHue = 0x901;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Longsword());
-            this.AddItem(new Boots(0x901));
-            this.AddItem(new Shirt(0x127));
-            this.AddItem(new Cloak(0x65));
-            this.AddItem(new Skirt(0x52));
+            AddItem(new Backpack());
+            AddItem(new Longsword());
+            AddItem(new Boots(0x901));
+            AddItem(new Shirt(0x127));
+            AddItem(new Cloak(0x65));
+            AddItem(new Skirt(0x52));
         }
 
         public override void Serialize(GenericWriter writer)
@@ -106,10 +106,10 @@ namespace Server.Engines.Quests
         public AlchemistsSatchel()
             : base()
         {
-            this.Hue = BaseReward.SatchelHue();
+            Hue = BaseReward.SatchelHue();
 
-            this.AddItem(new Bloodmoss(10));
-            this.AddItem(new MortarPestle());
+            AddItem(new Bloodmoss(10));
+            AddItem(new MortarPestle());
         }
 
         public AlchemistsSatchel(Serial serial)

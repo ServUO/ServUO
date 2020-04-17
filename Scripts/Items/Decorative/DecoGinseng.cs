@@ -6,8 +6,8 @@ namespace Server.Items
         public DecoGinseng()
             : base(0x18E9)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public DecoGinseng(Serial serial)

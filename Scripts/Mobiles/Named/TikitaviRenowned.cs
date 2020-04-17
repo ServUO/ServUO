@@ -11,35 +11,35 @@ namespace Server.Mobiles
         public TikitaviRenowned()
             : base(AIType.AI_Melee)
         {
-            this.Name = "Tikitavi";
-            this.Title = "[Renowned]";
-            this.Body = 42;
-            this.BaseSoundID = 437;
+            Name = "Tikitavi";
+            Title = "[Renowned]";
+            Body = 42;
+            BaseSoundID = 437;
 
-            this.SetStr(315, 354);
-            this.SetDex(139, 177);
-            this.SetInt(243, 288);
+            SetStr(315, 354);
+            SetDex(139, 177);
+            SetInt(243, 288);
 
-            this.SetHits(50000);
-            this.SetMana(243, 288);
-            this.SetStam(139, 177);
+            SetHits(50000);
+            SetMana(243, 288);
+            SetStam(139, 177);
 
-            this.SetDamage(7, 9);
+            SetDamage(7, 9);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 26, 28);
-            this.SetResistance(ResistanceType.Fire, 22, 25);
-            this.SetResistance(ResistanceType.Cold, 30, 38);
-            this.SetResistance(ResistanceType.Poison, 14, 17);
-            this.SetResistance(ResistanceType.Energy, 15, 18);
+            SetResistance(ResistanceType.Physical, 26, 28);
+            SetResistance(ResistanceType.Fire, 22, 25);
+            SetResistance(ResistanceType.Cold, 30, 38);
+            SetResistance(ResistanceType.Poison, 14, 17);
+            SetResistance(ResistanceType.Energy, 15, 18);
 
-            this.SetSkill(SkillName.MagicResist, 40.4);
-            this.SetSkill(SkillName.Tactics, 73.6);
-            this.SetSkill(SkillName.Wrestling, 66.5);
+            SetSkill(SkillName.MagicResist, 40.4);
+            SetSkill(SkillName.Tactics, 73.6);
+            SetSkill(SkillName.Wrestling, 66.5);
 
-            this.Fame = 1500;
-            this.Karma = -1500;
+            Fame = 1500;
+            Karma = -1500;
         }
 
         public TikitaviRenowned(Serial serial)
@@ -56,7 +56,7 @@ namespace Server.Mobiles
         public override HideType HideType => HideType.Spined;
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich, 3);
+            AddLoot(LootPack.FilthyRich, 3);
         }
 
         public override void Serialize(GenericWriter writer)

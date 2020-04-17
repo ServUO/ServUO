@@ -9,9 +9,9 @@ namespace Server.Engines.Quests
         public OverpopulationQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Hind), "hinds", 10));
+            AddObjective(new SlayObjective(typeof(Hind), "hinds", 10));
 
-            this.AddReward(new BaseReward(typeof(SmallTrinketBag), 1072268));
+            AddReward(new BaseReward(typeof(SmallTrinketBag), 1072268));
         }
 
         /* Overpopulation */
@@ -46,9 +46,9 @@ namespace Server.Engines.Quests
         public WildBoarCullQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Boar), "boars", 10));
+            AddObjective(new SlayObjective(typeof(Boar), "boars", 10));
 
-            this.AddReward(new BaseReward(typeof(SmallTrinketBag), 1072268));
+            AddReward(new BaseReward(typeof(SmallTrinketBag), 1072268));
         }
 
         /* Wild Boar Cull */
@@ -82,11 +82,11 @@ namespace Server.Engines.Quests
         public NewLeadershipQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(SerpentsFangHighExecutioner), "serpent's fang high executioner", 1, "TheCitadel"));
-            this.AddObjective(new SlayObjective(typeof(TigersClawThief), "tiger's claw thief", 1, "TheCitadel"));
-            this.AddObjective(new SlayObjective(typeof(DragonsFlameGrandMage), "dragon's flame mage", 1, "TheCitadel"));
+            AddObjective(new SlayObjective(typeof(SerpentsFangHighExecutioner), "serpent's fang high executioner", 1, "TheCitadel"));
+            AddObjective(new SlayObjective(typeof(TigersClawThief), "tiger's claw thief", 1, "TheCitadel"));
+            AddObjective(new SlayObjective(typeof(DragonsFlameGrandMage), "dragon's flame mage", 1, "TheCitadel"));
 
-            this.AddReward(new BaseReward(typeof(RewardBox), 1072584));
+            AddReward(new BaseReward(typeof(RewardBox), 1072584));
         }
 
         /* New Leadership */
@@ -127,9 +127,9 @@ namespace Server.Engines.Quests
         public ExAssassinsQuest()
             : base()
         {
-            this.AddObjective(new InternalObjective());
+            AddObjective(new InternalObjective());
 
-            this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
+            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
         /* Ex-Assassins */
@@ -184,9 +184,9 @@ namespace Server.Engines.Quests
         public ExtinguishingTheFlameQuest()
             : base()
         {
-            this.AddObjective(new InternalObjective());
+            AddObjective(new InternalObjective());
 
-            this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
+            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
         /* Extinguishing the Flame */
@@ -242,9 +242,9 @@ namespace Server.Engines.Quests
         public DeathToTheNinjaQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(EliteNinja), "elite ninjas", 10, "TheCitadel"));
+            AddObjective(new SlayObjective(typeof(EliteNinja), "elite ninjas", 10, "TheCitadel"));
 
-            this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
+            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
         /* Death to the Ninja! */
@@ -283,9 +283,9 @@ namespace Server.Engines.Quests
         public CrimeAndPunishmentQuest()
             : base()
         {
-            this.AddObjective(new InternalObjective());
+            AddObjective(new InternalObjective());
 
-            this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
+            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
         /* Crime and Punishment */
@@ -341,8 +341,8 @@ namespace Server.Engines.Quests
         public Acob()
             : base("Elder Acob", "the wise")
         {
-            this.SetSkill(SkillName.Meditation, 60.0, 83.0);
-            this.SetSkill(SkillName.Focus, 60.0, 83.0);
+            SetSkill(SkillName.Meditation, 60.0, 83.0);
+            SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
         public Acob(Serial serial)
@@ -362,22 +362,22 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.Race = Race.Elf;
+            Female = false;
+            Race = Race.Elf;
 
-            this.Hue = 0x8389;
-            this.HairItemID = 0x2FCF;
-            this.HairHue = 0x389;
+            Hue = 0x8389;
+            HairItemID = 0x2FCF;
+            HairHue = 0x389;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new ElvenBoots(0x73D));
-            this.AddItem(new HidePants());
-            this.AddItem(new ElvenShirt(0x71));
+            AddItem(new Backpack());
+            AddItem(new ElvenBoots(0x73D));
+            AddItem(new HidePants());
+            AddItem(new ElvenShirt(0x71));
         }
 
         public override void Serialize(GenericWriter writer)

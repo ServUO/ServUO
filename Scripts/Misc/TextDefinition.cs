@@ -26,13 +26,13 @@ namespace Server
 
         public TextDefinition(int number, string text)
         {
-            this.m_Number = number;
-            this.m_String = text;
+            m_Number = number;
+            m_String = text;
         }
 
-        public int Number => this.m_Number;
+        public int Number => m_Number;
 
-        public string String => this.m_String;
+        public string String => m_String;
 
         public static void Serialize(GenericWriter writer, TextDefinition def)
         {
@@ -142,30 +142,30 @@ namespace Server
 
         public override string ToString()
         {
-            if (this.m_Number > 0)
-                return String.Concat("#", this.m_Number.ToString());
-            else if (this.m_String != null)
-                return this.m_String;
+            if (m_Number > 0)
+                return String.Concat("#", m_Number.ToString());
+            else if (m_String != null)
+                return m_String;
 
             return "";
         }
 
         public string Format(bool propsGump)
         {
-            if (this.m_Number > 0)
-                return String.Format("{0} (0x{0:X})", this.m_Number);
-            else if (this.m_String != null)
-                return String.Format("\"{0}\"", this.m_String);
+            if (m_Number > 0)
+                return String.Format("{0} (0x{0:X})", m_Number);
+            else if (m_String != null)
+                return String.Format("\"{0}\"", m_String);
 
             return propsGump ? "-empty-" : "empty";
         }
 
         public string GetValue()
         {
-            if (this.m_Number > 0)
-                return this.m_Number.ToString();
-            else if (this.m_String != null)
-                return this.m_String;
+            if (m_Number > 0)
+                return m_Number.ToString();
+            else if (m_String != null)
+                return m_String;
 
             return "";
         }

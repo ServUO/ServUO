@@ -343,8 +343,8 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            if (version == 0 && this.WeaponAttributes.HitLeechMana != 50)
-                this.WeaponAttributes.HitLeechMana = 50;
+            if (version == 0 && WeaponAttributes.HitLeechMana != 50)
+                WeaponAttributes.HitLeechMana = 50;
         }
     }
 
@@ -382,8 +382,8 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            if (version == 0 && this.WeaponAttributes.HitLeechMana != 50)
-                this.WeaponAttributes.HitLeechMana = 50;
+            if (version == 0 && WeaponAttributes.HitLeechMana != 50)
+                WeaponAttributes.HitLeechMana = 50;
         }
     }
 
@@ -575,8 +575,8 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            if (version == 0 && this.WeaponAttributes.HitLeechMana != 50)
-                this.WeaponAttributes.HitLeechMana = 50;
+            if (version == 0 && WeaponAttributes.HitLeechMana != 50)
+                WeaponAttributes.HitLeechMana = 50;
         }
     }
 
@@ -617,8 +617,8 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            if (version == 0 && this.WeaponAttributes.HitLeechMana != 50)
-                this.WeaponAttributes.HitLeechMana = 50;
+            if (version == 0 && WeaponAttributes.HitLeechMana != 50)
+                WeaponAttributes.HitLeechMana = 50;
         }
     }
 
@@ -998,7 +998,7 @@ namespace Server.Items
         public override void OnDoubleClick(Mobile m)
         {
             if (m.InRange(GetWorldLocation(), 3))
-                this.LabelTo(m, 1156321); // *You peer into the Time Rift and see back to the very beginning of Time...*
+                LabelTo(m, 1156321); // *You peer into the Time Rift and see back to the very beginning of Time...*
         }
 
         public UnstableTimeRift(Serial serial)

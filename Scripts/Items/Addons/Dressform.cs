@@ -7,7 +7,7 @@ namespace Server.Items
         public DressformFront()
             : base(0xec6)
         {
-            this.Weight = 10;
+            Weight = 10;
         }
 
         public DressformFront(Serial serial)

@@ -10,11 +10,11 @@ namespace Server.Engines.Quests
             : base()
 
         {
-            this.AddObjective(new ObtainObjective(typeof(WhiteChocolate), "White Chocolates", 5, 0xF11));
-            this.AddObjective(new ObtainObjective(typeof(DarkSapphire), "Dark Sapphire", 1, 0x3192));
+            AddObjective(new ObtainObjective(typeof(WhiteChocolate), "White Chocolates", 5, 0xF11));
+            AddObjective(new ObtainObjective(typeof(DarkSapphire), "Dark Sapphire", 1, 0x3192));
 
-            this.AddReward(new BaseReward(typeof(AverageImbuingBag), 1113768));//Average Imbuing Bag
-            this.AddReward(new BaseReward("Loyalty Rating"));
+            AddReward(new BaseReward(typeof(AverageImbuingBag), 1113768));//Average Imbuing Bag
+            AddReward(new BaseReward("Loyalty Rating"));
         }
 
         /*The Exchange*/
@@ -58,11 +58,11 @@ namespace Server.Engines.Quests
         public AWorthyPropositionQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(BambooFlute), "Bamboo Flutes", 10, 0x2805));
-            this.AddObjective(new ObtainObjective(typeof(ElvenFletching), "Elven Fletching", 1, 0x5737));
+            AddObjective(new ObtainObjective(typeof(BambooFlute), "Bamboo Flutes", 10, 0x2805));
+            AddObjective(new ObtainObjective(typeof(ElvenFletching), "Elven Fletching", 1, 0x5737));
 
-            this.AddReward(new BaseReward(typeof(ValuableImbuingBag), 1113769));//Valuable Imbuing Bag
-            this.AddReward(new BaseReward("Loyalty Rating"));
+            AddReward(new BaseReward(typeof(ValuableImbuingBag), 1113769));//Valuable Imbuing Bag
+            AddReward(new BaseReward("Loyalty Rating"));
         }
 
         /* A Worthy Proposition */
@@ -107,16 +107,16 @@ namespace Server.Engines.Quests
 
         public override void InitSBInfo()
         {
-            this.SBInfos.Add(new SBTinker(this));
+            SBInfos.Add(new SBTinker(this));
         }
 
         [Constructable]
         public Aliabeth()
             : base("Aliabeth", "the Tinker")
         {
-            this.SetSkill(SkillName.Lockpicking, 60.0, 83.0);
-            this.SetSkill(SkillName.RemoveTrap, 75.0, 98.0);
-            this.SetSkill(SkillName.Tinkering, 64.0, 100.0);
+            SetSkill(SkillName.Lockpicking, 60.0, 83.0);
+            SetSkill(SkillName.RemoveTrap, 75.0, 98.0);
+            SetSkill(SkillName.Tinkering, 64.0, 100.0);
         }
 
         public Aliabeth(Serial serial)
@@ -131,19 +131,19 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.Female = true;
+            Female = true;
             //this.CantWalk = true;
-            this.Race = Race.Human;
+            Race = Race.Human;
 
             base.InitBody();
         }
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
+            AddItem(new Backpack());
 
-            this.AddItem(new Kilt(Utility.RandomNeutralHue()));
-            this.AddItem(new Shirt(Utility.RandomNeutralHue()));
-            this.AddItem(new Sandals());
+            AddItem(new Kilt(Utility.RandomNeutralHue()));
+            AddItem(new Shirt(Utility.RandomNeutralHue()));
+            AddItem(new Sandals());
         }
 
         public override void Serialize(GenericWriter writer)

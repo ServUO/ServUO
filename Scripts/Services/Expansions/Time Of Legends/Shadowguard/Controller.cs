@@ -110,7 +110,7 @@ namespace Server.Engines.Shadowguard
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from is PlayerMobile && from.InRange(this.Location, 3))
+            if (from is PlayerMobile && from.InRange(Location, 3))
             {
                 from.SendGump(new ShadowguardGump((PlayerMobile)from));
             }

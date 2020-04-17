@@ -17,7 +17,7 @@ namespace Server.Mobiles
             Hue = Utility.RandomSkinHue();
             Name = "an elite ninja";
 
-            Body = (this.Female = Utility.RandomBool()) ? 0x191 : 0x190;
+            Body = (Female = Utility.RandomBool()) ? 0x191 : 0x190;
 
             SetHits(251, 350);
 

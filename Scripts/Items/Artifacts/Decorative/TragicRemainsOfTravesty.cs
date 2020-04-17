@@ -11,8 +11,8 @@ namespace Server.Items
         public TragicRemainsOfTravesty()
             : base(Utility.Random(0x122A, 6))
         {
-            this.Weight = 1.0;
-            this.Hue = Utility.RandomList(0x11E, 0x846);
+            Weight = 1.0;
+            Hue = Utility.RandomList(0x11E, 0x846);
         }
 
         public TragicRemainsOfTravesty(Serial serial)
@@ -23,8 +23,8 @@ namespace Server.Items
         public override int LabelNumber => 1074500;// Tragic Remains of the Travesty
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (this.TurnedOn && this.IsLockedDown && (!m.Hidden || m.IsPlayer()) && Utility.InRange(m.Location, this.Location, 2) && !Utility.InRange(oldLocation, this.Location, 2))
-                Effects.PlaySound(this.Location, this.Map, m_Sounds[Utility.Random(m_Sounds.Length)]);
+            if (TurnedOn && IsLockedDown && (!m.Hidden || m.IsPlayer()) && Utility.InRange(m.Location, Location, 2) && !Utility.InRange(oldLocation, Location, 2))
+                Effects.PlaySound(Location, Map, m_Sounds[Utility.Random(m_Sounds.Length)]);
 
             base.OnMovement(m, oldLocation);
         }

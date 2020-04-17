@@ -1155,7 +1155,7 @@ namespace Server.Mobiles
                 }
                 else
                 {
-                    this.SayTo(from, 501550, 0x3B2); // I am not interested in this.
+                    SayTo(from, 501550, 0x3B2); // I am not interested in this.
                     return false;
                 }
             }
@@ -1233,15 +1233,15 @@ namespace Server.Mobiles
                     {
                         case PointsMode.Enabled:
                             context.AddPending(BODType, points);
-                            from.SendGump(new ConfirmBankPointsGump((PlayerMobile)from, this, this.BODType, points, banked));
+                            from.SendGump(new ConfirmBankPointsGump((PlayerMobile)from, this, BODType, points, banked));
                             break;
                         case PointsMode.Disabled:
                             context.AddPending(BODType, points);
-                            from.SendGump(new RewardsGump(this, (PlayerMobile)from, this.BODType, points));
+                            from.SendGump(new RewardsGump(this, (PlayerMobile)from, BODType, points));
                             break;
                         case PointsMode.Automatic:
-                            BulkOrderSystem.SetPoints(from, this.BODType, banked);
-                            from.SendGump(new RewardsGump(this, (PlayerMobile)from, this.BODType));
+                            BulkOrderSystem.SetPoints(from, BODType, banked);
+                            from.SendGump(new RewardsGump(this, (PlayerMobile)from, BODType));
                             break;
                     }
 
@@ -1309,12 +1309,12 @@ namespace Server.Mobiles
             }
             else
             {
-                this.SayTo(from, 1071971, String.Format("#{0}", dropped.LabelNumber.ToString()), 0x3B2); // Thou art giving me ~1_VAL~?
+                SayTo(from, 1071971, String.Format("#{0}", dropped.LabelNumber.ToString()), 0x3B2); // Thou art giving me ~1_VAL~?
             }
 
             if (dropped is Gold)
             {
-                this.SayTo(from, 501548, 0x3B2); // I thank thee.
+                SayTo(from, 501548, 0x3B2); // I thank thee.
                 Titles.AwardFame(from, dropped.Amount / 100, true);
 
                 return true;
@@ -1326,14 +1326,14 @@ namespace Server.Mobiles
             {
                 if (ssi.IsSellable(dropped))
                 {
-                    this.SayTo(from, 501548, 0x3B2); // I thank thee.
+                    SayTo(from, 501548, 0x3B2); // I thank thee.
                     Titles.AwardFame(from, ssi.GetSellPriceFor(dropped, this) * dropped.Amount, true);
 
                     return true;
                 }
             }
 
-            this.SayTo(from, 501550, 0x3B2); // I am not interested in this.
+            SayTo(from, 501550, 0x3B2); // I am not interested in this.
 
             return false;
         }

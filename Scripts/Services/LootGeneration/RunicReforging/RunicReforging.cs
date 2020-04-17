@@ -1511,14 +1511,14 @@ namespace Server.Items
 
             public NamedInfoCol(object attr, int[][] info, int[][] secondary = null)
             {
-                this.Attribute = attr;
+                Attribute = attr;
                 Info = info;
                 SecondaryInfo = secondary;
             }
 
             public NamedInfoCol(object attr, int hardcap)
             {
-                this.Attribute = attr;
+                Attribute = attr;
                 HardCap = hardcap;
             }
 

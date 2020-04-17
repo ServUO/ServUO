@@ -11,9 +11,9 @@ namespace Server.Items
         public BootsOfBallast()
             : base()
         {
-            this.Hue = 2969;
-            this.LootType = LootType.Blessed;
-            this.StrRequirement = 10;
+            Hue = 2969;
+            LootType = LootType.Blessed;
+            StrRequirement = 10;
         }
 
         public override void OnDoubleClick(Mobile from)

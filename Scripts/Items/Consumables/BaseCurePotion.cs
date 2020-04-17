@@ -8,12 +8,12 @@ namespace Server.Items
         private readonly double m_Chance;
         public CureLevelInfo(Poison poison, double chance)
         {
-            this.m_Poison = poison;
-            this.m_Chance = chance;
+            m_Poison = poison;
+            m_Chance = chance;
         }
 
-        public Poison Poison => this.m_Poison;
-        public double Chance => this.m_Chance;
+        public Poison Poison => m_Poison;
+        public double Chance => m_Chance;
     }
 
     public abstract class BaseCurePotion : BasePotion
@@ -47,7 +47,7 @@ namespace Server.Items
         {
             bool cure = false;
 
-            CureLevelInfo[] info = this.LevelInfo;
+            CureLevelInfo[] info = LevelInfo;
 
             for (int i = 0; i < info.Length; ++i)
             {

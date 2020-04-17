@@ -7,7 +7,7 @@ public class TallBasket : BaseContainer
     public TallBasket()
         : base(0x24DB)
     {
-        this.Weight = 1.0;
+        Weight = 1.0;
     }
 
     public TallBasket(Serial serial)

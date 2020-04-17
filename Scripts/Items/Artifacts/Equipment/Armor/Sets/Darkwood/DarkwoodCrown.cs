@@ -11,23 +11,23 @@ namespace Server.Items
         public DarkwoodCrown()
             : base()
         {
-            this.Hue = 0x455;
-            this.SetHue = 0x494;
+            Hue = 0x455;
+            SetHue = 0x494;
 
-            this.Attributes.BonusHits = 2;
-            this.Attributes.DefendChance = 5;
+            Attributes.BonusHits = 2;
+            Attributes.DefendChance = 5;
 
-            this.SetAttributes.ReflectPhysical = 25;
-            this.SetAttributes.BonusStr = 10;
-            this.SetAttributes.NightSight = 1;
+            SetAttributes.ReflectPhysical = 25;
+            SetAttributes.BonusStr = 10;
+            SetAttributes.NightSight = 1;
 
-            this.SetSelfRepair = 3;
+            SetSelfRepair = 3;
 
-            this.SetPhysicalBonus = 2;
-            this.SetFireBonus = 5;
-            this.SetColdBonus = 5;
-            this.SetPoisonBonus = 3;
-            this.SetEnergyBonus = 5;
+            SetPhysicalBonus = 2;
+            SetFireBonus = 5;
+            SetColdBonus = 5;
+            SetPoisonBonus = 3;
+            SetEnergyBonus = 5;
         }
 
         public DarkwoodCrown(Serial serial)
@@ -60,25 +60,25 @@ namespace Server.Items
         public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
             if (resHue > 0)
-                this.Hue = resHue;
+                Hue = resHue;
 
             Type resourceType = typeRes;
 
             if (resourceType == null)
                 resourceType = craftItem.Resources.GetAt(0).ItemType;
 
-            this.Resource = CraftResources.GetFromType(resourceType);
+            Resource = CraftResources.GetFromType(resourceType);
 
-            switch (this.Resource)
+            switch (Resource)
             {
                 case CraftResource.Bloodwood:
-                    this.Attributes.RegenHits = 2;
+                    Attributes.RegenHits = 2;
                     break;
                 case CraftResource.Heartwood:
-                    this.Attributes.Luck = 40;
+                    Attributes.Luck = 40;
                     break;
                 case CraftResource.YewWood:
-                    this.Attributes.RegenHits = 1;
+                    Attributes.RegenHits = 1;
                     break;
             }
 

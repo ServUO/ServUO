@@ -6,8 +6,8 @@ namespace Server.Items
         public GrobusFur()
             : base(0x11F4)
         {
-            this.LootType = LootType.Blessed;
-            this.Hue = 0x455;
+            LootType = LootType.Blessed;
+            Hue = 0x455;
         }
 
         public GrobusFur(Serial serial)

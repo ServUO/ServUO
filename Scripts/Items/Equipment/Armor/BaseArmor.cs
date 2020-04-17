@@ -2901,19 +2901,19 @@ namespace Server.Items
             }
             else
             {
-                if (this.m_SetPhysicalBonus != 0)
+                if (m_SetPhysicalBonus != 0)
                     list.Add(1080361, ((BasePhysicalResistance * Pieces) + m_SetPhysicalBonus).ToString()); // physical resist ~1_val~% (total)
 
-                if (this.m_SetFireBonus != 0)
+                if (m_SetFireBonus != 0)
                     list.Add(1080362, ((BaseFireResistance * Pieces) + m_SetFireBonus).ToString()); // fire resist ~1_val~% (total)
 
-                if (this.m_SetColdBonus != 0)
+                if (m_SetColdBonus != 0)
                     list.Add(1080363, ((BaseColdResistance * Pieces) + m_SetColdBonus).ToString()); // cold resist ~1_val~% (total)
 
-                if (this.m_SetPoisonBonus != 0)
+                if (m_SetPoisonBonus != 0)
                     list.Add(1080364, ((BasePoisonResistance * Pieces) + m_SetPoisonBonus).ToString()); // poison resist ~1_val~% (total)
 
-                if (this.m_SetEnergyBonus != 0)
+                if (m_SetEnergyBonus != 0)
                     list.Add(1080365, ((BaseEnergyResistance * Pieces) + m_SetEnergyBonus).ToString()); // energy resist ~1_val~% (total)
             }
 

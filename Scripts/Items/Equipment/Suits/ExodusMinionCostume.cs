@@ -7,7 +7,7 @@ namespace Server.Items
         [Constructable]
         public ExodusMinionCostume() : base()
         {
-            this.CostumeBody = 757;
+            CostumeBody = 757;
         }
 
         public override int LabelNumber => 1114239;// exodus minion costume

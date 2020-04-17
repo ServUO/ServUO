@@ -6,9 +6,9 @@ namespace Server.Items
         public DreadSpiderSilk()
             : base(0xDF8)
         {
-            this.LootType = LootType.Blessed;
-            this.Weight = 4.0;
-            this.Hue = 0x481;
+            LootType = LootType.Blessed;
+            Weight = 4.0;
+            Hue = 0x481;
         }
 
         public DreadSpiderSilk(Serial serial)

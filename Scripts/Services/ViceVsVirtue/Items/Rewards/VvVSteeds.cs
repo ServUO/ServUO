@@ -20,11 +20,11 @@ namespace Server.Engines.VvV
         {
             get
             {
-                switch (this.SteedType)
+                switch (SteedType)
                 {
                     default:
-                    case SteedType.Ostard: return new VvVMount("a war ostard", 0xDA, 0x3EA4, this.Hue);
-                    case SteedType.WarHorse: return new VvVMount("a war horse", 0xE2, 0x3EA0, this.Hue);
+                    case SteedType.Ostard: return new VvVMount("a war ostard", 0xDA, 0x3EA4, Hue);
+                    case SteedType.WarHorse: return new VvVMount("a war horse", 0xE2, 0x3EA0, Hue);
                 }
             }
         }
@@ -137,7 +137,7 @@ namespace Server.Engines.VvV
             else
                 BaseSoundID = 0xA8;
 
-            this.InitStats(Utility.Random(300, 100), 125, 60);
+            InitStats(Utility.Random(300, 100), 125, 60);
 
             SetStr(400);
             SetDex(125);

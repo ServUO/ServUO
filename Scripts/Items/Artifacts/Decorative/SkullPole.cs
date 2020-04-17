@@ -7,7 +7,7 @@ namespace Server.Items
         public SkullPole()
             : base(0x2204)
         {
-            this.Weight = 5;
+            Weight = 5;
         }
 
         public SkullPole(Serial serial)

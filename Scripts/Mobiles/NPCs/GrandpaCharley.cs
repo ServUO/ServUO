@@ -10,9 +10,9 @@ namespace Server.Mobiles
         public GrandpaCharley()
             : base("the farmer")
         {
-            this.Name = "Grandpa Charley";
+            Name = "Grandpa Charley";
 
-            this.SetSkill(SkillName.ItemID, 70.0, 80.0);
+            SetSkill(SkillName.ItemID, 70.0, 80.0);
         }
 
         public GrandpaCharley(Serial serial)
@@ -23,34 +23,34 @@ namespace Server.Mobiles
         public override bool IsActiveVendor => false;
         public override bool CanTeach => true;
         public override bool IsInvulnerable => true;
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
         }
 
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.CantWalk = false;
-            this.Race = Race.Human;
+            Female = false;
+            CantWalk = false;
+            Race = Race.Human;
 
-            this.Hue = 0x8410;
-            this.HairItemID = 0x203B;
-            this.HairHue = 0x3B2;
-            this.FacialHairItemID = 0x203E;
-            this.FacialHairHue = 0x3B2;
+            Hue = 0x8410;
+            HairItemID = 0x203B;
+            HairHue = 0x3B2;
+            FacialHairItemID = 0x203E;
+            FacialHairHue = 0x3B2;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new ShepherdsCrook());
-            this.AddItem(new Shoes(0x72F));
-            this.AddItem(new LongPants(0x519));
-            this.AddItem(new FancyShirt(0x600));
-            this.AddItem(new WideBrimHat(0x6B1));
+            AddItem(new Backpack());
+            AddItem(new ShepherdsCrook());
+            AddItem(new Shoes(0x72F));
+            AddItem(new LongPants(0x519));
+            AddItem(new FancyShirt(0x600));
+            AddItem(new WideBrimHat(0x6B1));
         }
 
         public override void Serialize(GenericWriter writer)

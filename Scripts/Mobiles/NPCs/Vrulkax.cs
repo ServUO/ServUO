@@ -8,7 +8,7 @@ namespace Server.Engines.Quests
     public class Vrulkax : BaseVendor
     {
         protected readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
 
         public override bool IsActiveVendor => false;
         public override bool IsInvulnerable => true;

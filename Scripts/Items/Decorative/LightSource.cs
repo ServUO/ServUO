@@ -6,8 +6,8 @@ namespace Server.Items
         public LightSource()
             : base(0x1647)
         {
-            this.Layer = Layer.TwoHanded;
-            this.Movable = false;
+            Layer = Layer.TwoHanded;
+            Movable = false;
         }
 
         public LightSource(Serial serial)

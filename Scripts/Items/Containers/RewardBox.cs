@@ -8,29 +8,29 @@ namespace Server.Items
         public RewardBox()
             : base()
         {
-            this.Hue = Reward.StrongboxHue();
+            Hue = Reward.StrongboxHue();
 
-            while (this.Items.Count < this.Amount)
+            while (Items.Count < Amount)
             {
                 switch (Utility.Random(4))
                 {
                     case 0:
-                        this.DropItem(Reward.Armor());
+                        DropItem(Reward.Armor());
                         break;
                     case 1:
-                        this.DropItem(Reward.RangedWeapon());
+                        DropItem(Reward.RangedWeapon());
                         break;
                     case 2:
-                        this.DropItem(Reward.Weapon());
+                        DropItem(Reward.Weapon());
                         break;
                     case 3:
-                        this.DropItem(Reward.Jewlery());
+                        DropItem(Reward.Jewlery());
                         break;
                 }
             }
 
             if (0.25 > Utility.RandomDouble()) // check
-                this.DropItem(Loot.RandomTalisman());
+                DropItem(Loot.RandomTalisman());
         }
 
         public RewardBox(Serial serial)

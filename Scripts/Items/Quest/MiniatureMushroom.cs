@@ -6,8 +6,8 @@ namespace Server.Items
         public MiniatureMushroom()
             : base(0xD16)
         {
-            this.LootType = LootType.Blessed;
-            this.Weight = 1;
+            LootType = LootType.Blessed;
+            Weight = 1;
         }
 
         public MiniatureMushroom(Serial serial)

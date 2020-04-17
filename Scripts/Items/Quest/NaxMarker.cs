@@ -10,12 +10,12 @@ namespace Server.Items
         public NaxMarker()
             : base(0x176B)
         {
-            this.Weight = 0;
-            this.Name = "Nax Marker";
-            this.Hue = 0;
-            this.LootType = LootType.Blessed;
-            this.Movable = false;
-            this.Visible = false;
+            Weight = 0;
+            Name = "Nax Marker";
+            Hue = 0;
+            LootType = LootType.Blessed;
+            Movable = false;
+            Visible = false;
         }
 
         public NaxMarker(Serial serial)

@@ -78,7 +78,7 @@ namespace Server.Misc
 
         protected virtual void DelayGiveGift_Callback(object state)
         {
-            this.GiveGift((Mobile)state);
+            GiveGift((Mobile)state);
         }
     }
 }

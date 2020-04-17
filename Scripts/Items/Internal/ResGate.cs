@@ -8,9 +8,9 @@ namespace Server.Items
         public ResGate()
             : base(0xF6C)
         {
-            this.Movable = false;
-            this.Hue = 0x2D1;
-            this.Light = LightType.Circle300;
+            Movable = false;
+            Hue = 0x2D1;
+            Light = LightType.Circle300;
         }
 
         public ResGate(Serial serial)

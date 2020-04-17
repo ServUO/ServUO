@@ -6,7 +6,7 @@ namespace Server.Items
         public PileofInspectedShadowIronIngots()
             : base(0x1BEA)
         {
-            this.Hue = 2406;
+            Hue = 2406;
         }
 
         public PileofInspectedShadowIronIngots(Serial serial)

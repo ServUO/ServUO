@@ -19,24 +19,24 @@ namespace Server.Engines.Quests
         public override Type[] Quests => new Type[] { typeof(HonestBeggarQuest) };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.Race = Race.Human;
+            Female = false;
+            Race = Race.Human;
 
-            this.Hue = 0x841B;
-            this.HairItemID = 0x204A;
-            this.HairHue = 0x451;
-            this.FacialHairItemID = 0x203F;
-            this.FacialHairHue = 0x451;
+            Hue = 0x841B;
+            HairItemID = 0x204A;
+            HairHue = 0x451;
+            FacialHairItemID = 0x203F;
+            FacialHairHue = 0x451;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Shoes(0x737));
-            this.AddItem(new ShortPants(0x74C));
-            this.AddItem(new FancyShirt(0x535));
+            AddItem(new Backpack());
+            AddItem(new Shoes(0x737));
+            AddItem(new ShortPants(0x74C));
+            AddItem(new FancyShirt(0x535));
         }
 
         public override void Serialize(GenericWriter writer)

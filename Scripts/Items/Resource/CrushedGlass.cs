@@ -12,8 +12,8 @@ namespace Server.Items
         public CrushedGlass(int amount)
             : base(0x573B)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public CrushedGlass(Serial serial)

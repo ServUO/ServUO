@@ -37,7 +37,7 @@ namespace Server.Spells
         public override void OnDisturb(DisturbType type, bool message)
         {
             Caster.Flying = false;
-            BuffInfo.RemoveBuff(this.Caster, BuffIcon.Fly);
+            BuffInfo.RemoveBuff(Caster, BuffIcon.Fly);
 
             if (message)
                 Caster.SendLocalizedMessage(1113192); // You have been disrupted while attempting to fly!

@@ -33,7 +33,7 @@ namespace Server.Spells.Ninjitsu
 
         public override bool OnBeforeSwing(Mobile attacker, Mobile defender)
         {
-            bool valid = this.Validate(attacker) && this.CheckMana(attacker, true);
+            bool valid = Validate(attacker) && CheckMana(attacker, true);
 
             if (valid)
             {
@@ -55,7 +55,7 @@ namespace Server.Spells.Ninjitsu
 
             attacker.RevealingAction();
 
-            this.CheckGain(attacker);
+            CheckGain(attacker);
         }
 
         public override void OnMiss(Mobile attacker, Mobile defender)

@@ -9,7 +9,7 @@ namespace Server.Items
         public Dyes()
             : base(0xFA9)
         {
-            this.Weight = 3.0;
+            Weight = 3.0;
         }
 
         public Dyes(Serial serial)
@@ -30,8 +30,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (this.Weight == 0.0)
-                this.Weight = 3.0;
+            if (Weight == 0.0)
+                Weight = 3.0;
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -86,12 +86,12 @@ namespace Server.Items
                 public InternalPicker(DyeTub tub)
                     : base(tub.ItemID)
                 {
-                    this.m_Tub = tub;
+                    m_Tub = tub;
                 }
 
                 public override void OnResponse(int hue)
                 {
-                    this.m_Tub.DyedHue = hue;
+                    m_Tub.DyedHue = hue;
                 }
             }
         }

@@ -22,13 +22,13 @@ namespace Server.Items
         public Campfire()
             : base(0xDE3)
         {
-            this.Movable = false;
-            this.Light = LightType.Circle300;
+            Movable = false;
+            Light = LightType.Circle300;
 
-            this.m_Entries = new ArrayList();
+            m_Entries = new ArrayList();
 
-            this.m_Created = DateTime.UtcNow;
-            this.m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0), new TimerCallback(OnTick));
+            m_Created = DateTime.UtcNow;
+            m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0), new TimerCallback(OnTick));
         }
 
         public Campfire(Serial serial)
@@ -37,13 +37,13 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime Created => this.m_Created;
+        public DateTime Created => m_Created;
         [CommandProperty(AccessLevel.GameMaster)]
         public CampfireStatus Status
         {
             get
             {
-                switch (this.ItemID)
+                switch (ItemID)
                 {
                     case 0xDE3:
                         return CampfireStatus.Burning;
@@ -57,23 +57,23 @@ namespace Server.Items
             }
             set
             {
-                if (this.Status == value)
+                if (Status == value)
                     return;
 
                 switch (value)
                 {
                     case CampfireStatus.Burning:
-                        this.ItemID = 0xDE3;
-                        this.Light = LightType.Circle300;
+                        ItemID = 0xDE3;
+                        Light = LightType.Circle300;
                         break;
                     case CampfireStatus.Extinguishing:
-                        this.ItemID = 0xDE9;
-                        this.Light = LightType.Circle150;
+                        ItemID = 0xDE9;
+                        Light = LightType.Circle150;
                         break;
                     default:
-                        this.ItemID = 0xDEA;
-                        this.Light = LightType.ArchedWindowEast;
-                        this.ClearEntries();
+                        ItemID = 0xDEA;
+                        Light = LightType.ArchedWindowEast;
+                        ClearEntries();
                         break;
                 }
             }
@@ -91,10 +91,10 @@ namespace Server.Items
 
         public override void OnAfterDelete()
         {
-            if (this.m_Timer != null)
-                this.m_Timer.Stop();
+            if (m_Timer != null)
+                m_Timer.Stop();
 
-            this.ClearEntries();
+            ClearEntries();
         }
 
         public override void Serialize(GenericWriter writer)
@@ -110,25 +110,25 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            this.Delete();
+            Delete();
         }
 
         private void OnTick()
         {
             DateTime now = DateTime.UtcNow;
-            TimeSpan age = now - this.Created;
+            TimeSpan age = now - Created;
 
             if (age >= TimeSpan.FromSeconds(100.0))
-                this.Delete();
+                Delete();
             else if (age >= TimeSpan.FromSeconds(90.0))
-                this.Status = CampfireStatus.Off;
+                Status = CampfireStatus.Off;
             else if (age >= TimeSpan.FromSeconds(60.0))
-                this.Status = CampfireStatus.Extinguishing;
+                Status = CampfireStatus.Extinguishing;
 
-            if (this.Status == CampfireStatus.Off || this.Deleted)
+            if (Status == CampfireStatus.Off || Deleted)
                 return;
 
-            foreach (CampfireEntry entry in new ArrayList(this.m_Entries))
+            foreach (CampfireEntry entry in new ArrayList(m_Entries))
             {
                 if (!entry.Valid || entry.Player.NetState == null)
                 {
@@ -141,7 +141,7 @@ namespace Server.Items
                 }
             }
 
-            IPooledEnumerable eable = this.GetClientsInRange(SecureRange);
+            IPooledEnumerable eable = GetClientsInRange(SecureRange);
 
             foreach (NetState state in eable)
             {
@@ -152,7 +152,7 @@ namespace Server.Items
                     CampfireEntry entry = new CampfireEntry(pm, this);
 
                     m_Table[pm] = entry;
-                    this.m_Entries.Add(entry);
+                    m_Entries.Add(entry);
 
                     pm.SendLocalizedMessage(500620); // You feel it would take a few moments to secure your camp.
                 }
@@ -163,10 +163,10 @@ namespace Server.Items
 
         private void ClearEntries()
         {
-            if (this.m_Entries == null)
+            if (m_Entries == null)
                 return;
 
-            foreach (CampfireEntry entry in new ArrayList(this.m_Entries))
+            foreach (CampfireEntry entry in new ArrayList(m_Entries))
             {
                 RemoveEntry(entry);
             }
@@ -181,25 +181,25 @@ namespace Server.Items
         private bool m_Safe;
         public CampfireEntry(PlayerMobile player, Campfire fire)
         {
-            this.m_Player = player;
-            this.m_Fire = fire;
-            this.m_Start = DateTime.UtcNow;
-            this.m_Safe = false;
+            m_Player = player;
+            m_Fire = fire;
+            m_Start = DateTime.UtcNow;
+            m_Safe = false;
         }
 
-        public PlayerMobile Player => this.m_Player;
-        public Campfire Fire => this.m_Fire;
-        public DateTime Start => this.m_Start;
-        public bool Valid => !this.Fire.Deleted && this.Fire.Status != CampfireStatus.Off && this.Player.Map == this.Fire.Map && this.Player.InRange(this.Fire, Campfire.SecureRange);
+        public PlayerMobile Player => m_Player;
+        public Campfire Fire => m_Fire;
+        public DateTime Start => m_Start;
+        public bool Valid => !Fire.Deleted && Fire.Status != CampfireStatus.Off && Player.Map == Fire.Map && Player.InRange(Fire, Campfire.SecureRange);
         public bool Safe
         {
             get
             {
-                return this.Valid && this.m_Safe;
+                return Valid && m_Safe;
             }
             set
             {
-                this.m_Safe = value;
+                m_Safe = value;
             }
         }
     }

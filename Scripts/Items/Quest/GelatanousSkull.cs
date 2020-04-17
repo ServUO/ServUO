@@ -6,7 +6,7 @@ namespace Server.Items
         public GelatanousSkull()
             : base(0x1AE0)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public GelatanousSkull(Serial serial)

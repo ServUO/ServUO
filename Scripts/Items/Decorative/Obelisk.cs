@@ -6,7 +6,7 @@ namespace Server.Items
         public Obelisk()
             : base(0x1184)
         {
-            this.Movable = false;
+            Movable = false;
         }
 
         public Obelisk(Serial serial)

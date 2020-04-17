@@ -21,9 +21,9 @@ namespace Server.Items
         [Constructable]
         public BestialGorget() : base()
         {
-            this.Hue = 2010;
-            this.Weight = 1;
-            this.StrRequirement = 25;
+            Hue = 2010;
+            Weight = 1;
+            StrRequirement = 25;
         }
 
         public BestialGorget(Serial serial) : base(serial)
@@ -61,8 +61,8 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            if (this.Hue != 2010)
-                this.Hue = 2010;
+            if (Hue != 2010)
+                Hue = 2010;
         }
     }
 }

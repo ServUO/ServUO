@@ -8,9 +8,9 @@ namespace Server.Mobiles
         public SpectralArmour()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Body = 637;
-            this.Hue = 0x8026;
-            this.Name = "spectral armour";
+            Body = 637;
+            Hue = 0x8026;
+            Name = "spectral armour";
 
             Buckler buckler = new Buckler();
             ChainCoif coif = new ChainCoif();
@@ -21,34 +21,34 @@ namespace Server.Mobiles
             coif.Hue = 0x835;
             gloves.Hue = 0x835;
 
-            this.AddItem(buckler);
-            this.AddItem(coif);
-            this.AddItem(gloves);
+            AddItem(buckler);
+            AddItem(coif);
+            AddItem(gloves);
 
-            this.SetStr(101, 110);
-            this.SetDex(101, 110);
-            this.SetInt(101, 110);
+            SetStr(101, 110);
+            SetDex(101, 110);
+            SetInt(101, 110);
 
-            this.SetHits(178, 201);
-            this.SetStam(191, 200);
+            SetHits(178, 201);
+            SetStam(191, 200);
 
-            this.SetDamage(10, 22);
+            SetDamage(10, 22);
 
-            this.SetDamageType(ResistanceType.Physical, 75);
-            this.SetDamageType(ResistanceType.Cold, 25);
+            SetDamageType(ResistanceType.Physical, 75);
+            SetDamageType(ResistanceType.Cold, 25);
 
-            this.SetResistance(ResistanceType.Physical, 35, 45);
-            this.SetResistance(ResistanceType.Fire, 20, 30);
-            this.SetResistance(ResistanceType.Cold, 30, 40);
-            this.SetResistance(ResistanceType.Poison, 20, 30);
-            this.SetResistance(ResistanceType.Energy, 20, 30);
+            SetResistance(ResistanceType.Physical, 35, 45);
+            SetResistance(ResistanceType.Fire, 20, 30);
+            SetResistance(ResistanceType.Cold, 30, 40);
+            SetResistance(ResistanceType.Poison, 20, 30);
+            SetResistance(ResistanceType.Energy, 20, 30);
 
-            this.SetSkill(SkillName.Wrestling, 75.1, 100.0);
-            this.SetSkill(SkillName.Tactics, 90.1, 100.0);
-            this.SetSkill(SkillName.MagicResist, 90.1, 100);
+            SetSkill(SkillName.Wrestling, 75.1, 100.0);
+            SetSkill(SkillName.Tactics, 90.1, 100.0);
+            SetSkill(SkillName.MagicResist, 90.1, 100);
 
-            this.Fame = 7000;
-            this.Karma = -7000;
+            Fame = 7000;
+            Karma = -7000;
         }
 
         public SpectralArmour(Serial serial)
@@ -74,9 +74,9 @@ namespace Server.Mobiles
                 return false;
 
             Gold gold = new Gold(Utility.RandomMinMax(240, 375));
-            gold.MoveToWorld(this.Location, this.Map);
+            gold.MoveToWorld(Location, Map);
 
-            Effects.SendLocationEffect(this.Location, this.Map, 0x376A, 10, 1);
+            Effects.SendLocationEffect(Location, Map, 0x376A, 10, 1);
             return true;
         }
 

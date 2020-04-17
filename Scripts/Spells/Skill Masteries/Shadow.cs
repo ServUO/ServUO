@@ -25,7 +25,7 @@ namespace Server.Spells.SkillMasteries
 
         public override bool CheckCast()
         {
-            SkillMasterySpell spell = GetSpell(Caster, this.GetType());
+            SkillMasterySpell spell = GetSpell(Caster, GetType());
 
             if (spell != null)
             {

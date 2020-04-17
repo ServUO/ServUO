@@ -8,68 +8,68 @@ namespace Server.Mobiles
         public KhaldunZealot()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Body = 0x190;
-            this.Name = "Zealot of Khaldun";
-            this.Title = "the Knight";
-            this.Hue = 0;
+            Body = 0x190;
+            Name = "Zealot of Khaldun";
+            Title = "the Knight";
+            Hue = 0;
 
-            this.SetStr(351, 400);
-            this.SetDex(151, 165);
-            this.SetInt(76, 100);
+            SetStr(351, 400);
+            SetDex(151, 165);
+            SetInt(76, 100);
 
-            this.SetHits(448, 470);
+            SetHits(448, 470);
 
-            this.SetDamage(15, 25);
+            SetDamage(15, 25);
 
-            this.SetDamageType(ResistanceType.Physical, 75);
-            this.SetDamageType(ResistanceType.Cold, 25);
+            SetDamageType(ResistanceType.Physical, 75);
+            SetDamageType(ResistanceType.Cold, 25);
 
-            this.SetResistance(ResistanceType.Physical, 35, 45);
-            this.SetResistance(ResistanceType.Fire, 25, 30);
-            this.SetResistance(ResistanceType.Cold, 50, 60);
-            this.SetResistance(ResistanceType.Poison, 25, 35);
-            this.SetResistance(ResistanceType.Energy, 25, 35);
+            SetResistance(ResistanceType.Physical, 35, 45);
+            SetResistance(ResistanceType.Fire, 25, 30);
+            SetResistance(ResistanceType.Cold, 50, 60);
+            SetResistance(ResistanceType.Poison, 25, 35);
+            SetResistance(ResistanceType.Energy, 25, 35);
 
-            this.SetSkill(SkillName.Wrestling, 70.1, 80.0);
-            this.SetSkill(SkillName.Swords, 120.1, 130.0);
-            this.SetSkill(SkillName.Anatomy, 120.1, 130.0);
-            this.SetSkill(SkillName.MagicResist, 90.1, 100.0);
-            this.SetSkill(SkillName.Tactics, 90.1, 100.0);
+            SetSkill(SkillName.Wrestling, 70.1, 80.0);
+            SetSkill(SkillName.Swords, 120.1, 130.0);
+            SetSkill(SkillName.Anatomy, 120.1, 130.0);
+            SetSkill(SkillName.MagicResist, 90.1, 100.0);
+            SetSkill(SkillName.Tactics, 90.1, 100.0);
 
-            this.Fame = 10000;
-            this.Karma = -10000;
+            Fame = 10000;
+            Karma = -10000;
 
             VikingSword weapon = new VikingSword();
             weapon.Hue = 0x835;
             weapon.Movable = false;
-            this.AddItem(weapon);
+            AddItem(weapon);
 
             MetalShield shield = new MetalShield();
             shield.Hue = 0x835;
             shield.Movable = false;
-            this.AddItem(shield);
+            AddItem(shield);
 
             BoneHelm helm = new BoneHelm();
             helm.Hue = 0x835;
-            this.AddItem(helm);
+            AddItem(helm);
 
             BoneArms arms = new BoneArms();
             arms.Hue = 0x835;
-            this.AddItem(arms);
+            AddItem(arms);
 
             BoneGloves gloves = new BoneGloves();
             gloves.Hue = 0x835;
-            this.AddItem(gloves);
+            AddItem(gloves);
 
             BoneChest tunic = new BoneChest();
             tunic.Hue = 0x835;
-            this.AddItem(tunic);
+            AddItem(tunic);
 
             BoneLegs legs = new BoneLegs();
             legs.Hue = 0x835;
-            this.AddItem(legs);
+            AddItem(legs);
 
-            this.AddItem(new Boots());
+            AddItem(new Boots());
         }
 
         public KhaldunZealot(Serial serial)
@@ -105,8 +105,8 @@ namespace Server.Mobiles
         public override bool OnBeforeDeath()
         {
             BoneKnight rm = new BoneKnight();
-            rm.Team = this.Team;
-            rm.Combatant = this.Combatant;
+            rm.Team = Team;
+            rm.Combatant = Combatant;
             rm.NoKillAwards = true;
 
             if (rm.Backpack == null)
@@ -122,11 +122,11 @@ namespace Server.Mobiles
                 LootPack.FilthyRich.Generate(this, rm.Backpack, false, LootPack.GetLuckChanceForKiller(this));
             }
 
-            Effects.PlaySound(this, this.Map, this.GetDeathSound());
-            Effects.SendLocationEffect(this.Location, this.Map, 0x3709, 30, 10, 0x835, 0);
-            rm.MoveToWorld(this.Location, this.Map);
+            Effects.PlaySound(this, Map, GetDeathSound());
+            Effects.SendLocationEffect(Location, Map, 0x3709, 30, 10, 0x835, 0);
+            rm.MoveToWorld(Location, Map);
 
-            this.Delete();
+            Delete();
             return false;
         }
 

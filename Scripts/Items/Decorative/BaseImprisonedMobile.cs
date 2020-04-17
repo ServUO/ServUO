@@ -19,7 +19,7 @@ namespace Server.Items
         public abstract BaseCreature Summon { get; }
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.IsChildOf(from.Backpack))
+            if (IsChildOf(from.Backpack))
                 from.SendGump(new ConfirmBreakCrystalGump(this));
             else
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.

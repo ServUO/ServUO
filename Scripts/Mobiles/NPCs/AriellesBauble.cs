@@ -6,8 +6,8 @@ namespace Server.Items
         public AriellesBauble()
             : base(0x23B)
         {
-            this.Weight = 2.0;
-            this.LootType = LootType.Blessed;
+            Weight = 2.0;
+            LootType = LootType.Blessed;
         }
 
         public AriellesBauble(Serial serial)

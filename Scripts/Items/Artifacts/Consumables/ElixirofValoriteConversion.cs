@@ -34,7 +34,7 @@ namespace Server.Items
                     m_Ore1.Delete();
                     from.SendLocalizedMessage(1113048); // You've successfully converted the metal.               
                     from.AddToBackpack(new ValoriteIngot(500));
-                    this.Delete();
+                    Delete();
                 }
                 else if ((m_Ore1.Amount < 500) || (m_Ore1.Amount > 500))
                 {

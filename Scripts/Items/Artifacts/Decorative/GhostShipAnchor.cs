@@ -7,8 +7,8 @@ namespace Server.Items
         public GhostShipAnchor()
             : base(0x14F7)
         {
-            this.Hue = 0x47E;
-            this.Weight = 2;
+            Hue = 0x47E;
+            Weight = 2;
         }
 
         public GhostShipAnchor(Serial serial)
@@ -33,12 +33,12 @@ namespace Server.Items
             switch (version)
             {
                 case 0:
-                    this.Weight = 2;
+                    Weight = 2;
                     break;
             }
 
-            if (this.ItemID == 0x1F47)
-                this.ItemID = 0x14F7;
+            if (ItemID == 0x1F47)
+                ItemID = 0x14F7;
         }
     }
 }

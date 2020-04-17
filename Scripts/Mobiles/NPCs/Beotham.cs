@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public BrokenShaftQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(Arrow), "arrows", 10, 0xF3F));
+            AddObjective(new ObtainObjective(typeof(Arrow), "arrows", 10, 0xF3F));
 
-            this.AddReward(new BaseReward(typeof(FletcherCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(FletcherCraftsmanSatchel), 1074282));
         }
 
         /* Broken Shaft */
@@ -46,9 +46,9 @@ namespace Server.Engines.Quests
         public BendingTheBowQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(Bow), "bows", 10, 0x13B2));
+            AddObjective(new ObtainObjective(typeof(Bow), "bows", 10, 0x13B2));
 
-            this.AddReward(new BaseReward(typeof(FletcherCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(FletcherCraftsmanSatchel), 1074282));
         }
 
         /* Bending the Bow */
@@ -83,9 +83,9 @@ namespace Server.Engines.Quests
         public ArmsRaceQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(Crossbow), "crossbows", 10, 0xF50));
+            AddObjective(new ObtainObjective(typeof(Crossbow), "crossbows", 10, 0xF50));
 
-            this.AddReward(new BaseReward(typeof(FletcherCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(FletcherCraftsmanSatchel), 1074282));
         }
 
         /* Arms Race */
@@ -120,9 +120,9 @@ namespace Server.Engines.Quests
         public ImprovedCrossbowsQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(HeavyCrossbow), "heavy crossbows", 10, 0x13FD));
+            AddObjective(new ObtainObjective(typeof(HeavyCrossbow), "heavy crossbows", 10, 0x13FD));
 
-            this.AddReward(new BaseReward(typeof(FletcherCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(FletcherCraftsmanSatchel), 1074282));
         }
 
         /* Improved Crossbows */
@@ -157,9 +157,9 @@ namespace Server.Engines.Quests
         public BuildingTheBetterCrossbowQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(RepeatingCrossbow), "repeating crossbow", 10, 0x26C3));
+            AddObjective(new ObtainObjective(typeof(RepeatingCrossbow), "repeating crossbow", 10, 0x26C3));
 
-            this.AddReward(new BaseReward(typeof(FletcherCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(FletcherCraftsmanSatchel), 1074282));
         }
 
         /* Building the Better Crossbow */
@@ -211,28 +211,28 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.CantWalk = true;
-            this.Race = Race.Elf;
+            Female = false;
+            CantWalk = true;
+            Race = Race.Elf;
 
-            this.Hue = 0x876C;
-            this.HairItemID = 0x2FC0;
-            this.HairHue = 0x238;
+            Hue = 0x876C;
+            HairItemID = 0x2FC0;
+            HairHue = 0x238;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Sandals(0x901));
-            this.AddItem(new LongPants(0x52C));
-            this.AddItem(new FancyShirt(0x546));
+            AddItem(new Sandals(0x901));
+            AddItem(new LongPants(0x52C));
+            AddItem(new FancyShirt(0x546));
 
             Item item;
 
             item = new LeafGloves();
             item.Hue = 0x901;
-            this.AddItem(item);
+            AddItem(item);
         }
 
         public override void Serialize(GenericWriter writer)

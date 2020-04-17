@@ -115,12 +115,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Type;
+                return m_Type;
             }
             set
             {
-                this.m_Type = value;
-                this.InvalidateProperties();
+                m_Type = value;
+                InvalidateProperties();
             }
         }
 
@@ -128,11 +128,11 @@ namespace Server.Items
         public MasterThinkerDecor(int id, int hue, DecorType type, MasterThinkerContoller controller)
             : base()
         {
-            this.ItemID = id;
-            this.m_Controller = controller;
-            this.m_Type = type;
-            this.Hue = hue;
-            this.Movable = false;
+            ItemID = id;
+            m_Controller = controller;
+            m_Type = type;
+            Hue = hue;
+            Movable = false;
         }
 
         public MasterThinkerDecor(Serial serial)
@@ -142,26 +142,26 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.m_Controller != null)
+            if (m_Controller != null)
             {
-                if (this.m_Controller.Array.Where(s => s.Mobile == from).Count() == 0)
+                if (m_Controller.Array.Where(s => s.Mobile == from).Count() == 0)
                 {
-                    this.m_Controller.Array.Add(new MasterThinkerContoller.MasterThinkerArray { Mobile = from, Book = false, Pant = false, Tunic = false });
+                    m_Controller.Array.Add(new MasterThinkerContoller.MasterThinkerArray { Mobile = from, Book = false, Pant = false, Tunic = false });
                 }
 
-                if (this.m_Type == DecorType.Book)
+                if (m_Type == DecorType.Book)
                 {
-                    this.m_Controller.Array.Find(s => s.Mobile == from).Book = true;
+                    m_Controller.Array.Find(s => s.Mobile == from).Book = true;
                     from.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1154222); // *You thumb through the pages of the book, it seems to describe the anatomy of a variety of frost creatures*            
                 }
-                else if (this.m_Type == DecorType.Pant)
+                else if (m_Type == DecorType.Pant)
                 {
-                    this.m_Controller.Array.Find(s => s.Mobile == from).Pant = true;
+                    m_Controller.Array.Find(s => s.Mobile == from).Pant = true;
                     from.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1154221); // *You carefully examine the garment and take note of it's superior quality. You surmise it would be useful in keeping you warm in a cold environment*
                 }
-                else if (this.m_Type == DecorType.Tunic)
+                else if (m_Type == DecorType.Tunic)
                 {
-                    this.m_Controller.Array.Find(s => s.Mobile == from).Tunic = true;
+                    m_Controller.Array.Find(s => s.Mobile == from).Tunic = true;
                     from.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1154221); // *You carefully examine the garment and take note of it's superior quality. You surmise it would be useful in keeping you warm in a cold environment*
                 }
 
@@ -172,7 +172,7 @@ namespace Server.Items
                     if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.HeplerPaulsonComplete)
                     {
                         pm.ExploringTheDeepQuest = ExploringTheDeepQuestChain.CusteauPerronHouse;
-                        this.m_Controller.Array.RemoveAll(s => s.Mobile == from);
+                        m_Controller.Array.RemoveAll(s => s.Mobile == from);
                     }
                 }
             }
@@ -180,7 +180,7 @@ namespace Server.Items
 
         public int ClickCheck(Mobile from)
         {
-            return this.m_Controller.Array.Where(s => s.Mobile == from && s.Pant == true && s.Book == true && s.Tunic == true).Count();
+            return m_Controller.Array.Where(s => s.Mobile == from && s.Pant == true && s.Book == true && s.Tunic == true).Count();
         }
 
         public override void Serialize(GenericWriter writer)
@@ -197,8 +197,8 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            this.m_Controller = reader.ReadItem() as MasterThinkerContoller;
-            this.m_Type = (DecorType)reader.ReadInt();
+            m_Controller = reader.ReadItem() as MasterThinkerContoller;
+            m_Type = (DecorType)reader.ReadInt();
         }
     }
 }

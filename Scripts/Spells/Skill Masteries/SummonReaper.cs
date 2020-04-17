@@ -66,12 +66,12 @@ namespace Server.Spells.SkillMasteries
 
                 if (map == null || !map.CanSpawnMobile(p.X, p.Y, p.Z))
                 {
-                    this.Caster.SendLocalizedMessage(501942); // That location is blocked.
+                    Caster.SendLocalizedMessage(501942); // That location is blocked.
                 }
-                else if (SpellHelper.CheckTown(p, this.Caster) && this.CheckSequence())
+                else if (SpellHelper.CheckTown(p, Caster) && CheckSequence())
                 {
                     TimeSpan duration = TimeSpan.FromSeconds(((Caster.Skills[CastSkill].Value + (ArcanistSpell.GetFocusLevel(Caster) * 20)) / 240) * 75);
-                    BaseCreature.Summon(new SummonedReaper(Caster, this), false, this.Caster, new Point3D(p), 442, duration);
+                    BaseCreature.Summon(new SummonedReaper(Caster, this), false, Caster, new Point3D(p), 442, duration);
                 }
             }
         }
@@ -179,7 +179,7 @@ namespace Server.Spells.SkillMasteries
                 Effects.SendLocationEffect(pnt, map, 0x3709, 0x14, 0x1, 0x8AF, 4);
             });
 
-            Server.Misc.Geometry.Circle2D(Location, this.Map, 5, (pnt, map) =>
+            Server.Misc.Geometry.Circle2D(Location, Map, 5, (pnt, map) =>
             {
                 Effects.SendLocationEffect(pnt, map, 0x3709, 0x14, 0x1, 0x8AF, 4);
             });

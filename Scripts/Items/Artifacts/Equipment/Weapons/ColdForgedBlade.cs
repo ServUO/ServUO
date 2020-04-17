@@ -12,7 +12,7 @@ namespace Server.Items
             Attributes.WeaponSpeed = 25;
             Attributes.WeaponDamage = 50;
 
-            Hue = this.GetElementalDamageHue();
+            Hue = GetElementalDamageHue();
         }
 
         public ColdForgedBlade(Serial serial)

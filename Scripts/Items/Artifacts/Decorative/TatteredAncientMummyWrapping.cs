@@ -7,7 +7,7 @@ namespace Server.Items
         public TatteredAncientMummyWrapping()
             : base(0xE21)
         {
-            this.Hue = 0x909;
+            Hue = 0x909;
         }
 
         public TatteredAncientMummyWrapping(Serial serial)

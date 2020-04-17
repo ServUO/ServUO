@@ -9,30 +9,30 @@ namespace Server.Mobiles
         public GazerLarva()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a gazer larva";
-            this.Body = 778;
-            this.BaseSoundID = 377;
+            Name = "a gazer larva";
+            Body = 778;
+            BaseSoundID = 377;
 
-            this.SetStr(76, 100);
-            this.SetDex(51, 75);
-            this.SetInt(56, 80);
+            SetStr(76, 100);
+            SetDex(51, 75);
+            SetInt(56, 80);
 
-            this.SetHits(36, 47);
+            SetHits(36, 47);
 
-            this.SetDamage(2, 9);
+            SetDamage(2, 9);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 15, 25);
+            SetResistance(ResistanceType.Physical, 15, 25);
 
-            this.SetSkill(SkillName.MagicResist, 70.0);
-            this.SetSkill(SkillName.Tactics, 70.0);
-            this.SetSkill(SkillName.Wrestling, 70.0);
+            SetSkill(SkillName.MagicResist, 70.0);
+            SetSkill(SkillName.Tactics, 70.0);
+            SetSkill(SkillName.Wrestling, 70.0);
 
-            this.Fame = 900;
-            this.Karma = -900;
+            Fame = 900;
+            Karma = -900;
 
-            this.PackItem(new Nightshade(Utility.RandomMinMax(2, 3)));
+            PackItem(new Nightshade(Utility.RandomMinMax(2, 3)));
         }
 
         public GazerLarva(Serial serial)
@@ -43,7 +43,7 @@ namespace Server.Mobiles
         public override int Meat => 1;
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Poor);
+            AddLoot(LootPack.Poor);
         }
 
         public override void Serialize(GenericWriter writer)

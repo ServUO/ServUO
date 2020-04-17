@@ -5,7 +5,7 @@ namespace Server.Items
         [Constructable]
         public ArcanistStatueSouthAddon()
         {
-            this.AddComponent(new AddonComponent(0x2D0F), 0, 0, 0);
+            AddComponent(new AddonComponent(0x2D0F), 0, 0, 0);
         }
 
         public ArcanistStatueSouthAddon(Serial serial)

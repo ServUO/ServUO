@@ -12,8 +12,8 @@ namespace Server.Items
         public Emerald(int amount)
             : base(0xF10)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public Emerald(Serial serial)

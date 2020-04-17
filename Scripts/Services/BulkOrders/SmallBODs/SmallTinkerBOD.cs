@@ -18,10 +18,10 @@ namespace Server.Engines.BulkOrders
             get { return _GemType; }
             set
             {
-                if (this.Type != null && this.Type.IsSubclassOf(typeof(BaseJewel)))
+                if (Type != null && Type.IsSubclassOf(typeof(BaseJewel)))
                 {
                     _GemType = value;
-                    AssignGemNumber(this.Type);
+                    AssignGemNumber(Type);
 
                     InvalidateProperties();
                 }
@@ -366,7 +366,7 @@ namespace Server.Engines.BulkOrders
                 loc = 1044203;
             }
 
-            this.Number = loc + offset;
+            Number = loc + offset;
         }
 
         public override void Serialize(GenericWriter writer)
@@ -400,9 +400,9 @@ namespace Server.Engines.BulkOrders
                     Material = BulkMaterialType.None;
                 }
 
-                if (this.Type.IsSubclassOf(typeof(BaseJewel)))
+                if (Type.IsSubclassOf(typeof(BaseJewel)))
                 {
-                    AssignGemType(this.Type);
+                    AssignGemType(Type);
                 }
             }
         }

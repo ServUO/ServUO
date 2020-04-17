@@ -36,7 +36,7 @@ namespace Server.Spells.Necromancy
         public override int FireResistOffset => -25;
         public override void GetCastSkills(out double min, out double max)
         {
-            if (this.Caster.Skills[this.CastSkill].Value >= this.RequiredSkill)
+            if (Caster.Skills[CastSkill].Value >= RequiredSkill)
             {
                 min = 80.0;
                 max = 120.0;

@@ -139,21 +139,21 @@ namespace Server.Mobiles
         public override void OnThink()
         {
 
-            if (!this.Alive || this.Deleted)
+            if (!Alive || Deleted)
             {
                 return;
             }
 
-            if (!this.Hidden)
+            if (!Hidden)
             {
                 double chance = 0.05;
 
-                if (this.Hits < 20)
+                if (Hits < 20)
                 {
                     chance = 0.1;
                 }
 
-                if (this.Poisoned)
+                if (Poisoned)
                 {
                     chance = 0.01;
                 }
@@ -168,15 +168,15 @@ namespace Server.Mobiles
 
         private void HideSelf()
         {
-            if (Core.TickCount >= this.NextSkillTime)
+            if (Core.TickCount >= NextSkillTime)
             {
                 Effects.SendLocationParticles(
-                    EffectItem.Create(this.Location, this.Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 2023);
+                    EffectItem.Create(Location, Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 2023);
 
-                this.PlaySound(0x22F);
-                this.Hidden = true;
+                PlaySound(0x22F);
+                Hidden = true;
 
-                this.UseSkill(SkillName.Stealth);
+                UseSkill(SkillName.Stealth);
             }
         }
 

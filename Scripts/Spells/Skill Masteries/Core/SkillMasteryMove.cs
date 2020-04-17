@@ -29,7 +29,7 @@ namespace Server.Spells.SkillMasteries
         {
             SkillMasteryMove move = SpecialMove.GetCurrentMove(from) as SkillMasteryMove;
 
-            if ((move == null || move.GetType() != this.GetType()) && !CheckCooldown(from))
+            if ((move == null || move.GetType() != GetType()) && !CheckCooldown(from))
                 return false;
 
             if (from.Player && from.Skills.CurrentMastery != MoveSkill)

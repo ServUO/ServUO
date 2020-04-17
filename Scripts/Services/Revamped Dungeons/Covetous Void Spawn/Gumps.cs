@@ -129,10 +129,10 @@ namespace Server.Engines.VoidPool
 
             VoidPoolStats stats = VoidPoolStats.GetStats(Controller);
 
-            if (this.ScoreType == ScoreType.BestWave && stats.BestWave == null)
+            if (ScoreType == ScoreType.BestWave && stats.BestWave == null)
                 return;
 
-            switch (this.ScoreType)
+            switch (ScoreType)
             {
                 default:
                 case ScoreType.Current: Score = Controller.CurrentScore; loc = 1152535; break;
@@ -149,7 +149,7 @@ namespace Server.Engines.VoidPool
             else if (loc is string)
                 AddHtml(10, 50, 200, 16, String.Format("<basefont color=#8B0000>{0}", (string)loc), false, false);
 
-            if (this.ScoreType == ScoreType.BestWave)
+            if (ScoreType == ScoreType.BestWave)
             {
                 AddHtml(200, 30, 200, 16, String.Format("<basefont color=#8B0000>Total Waves: {0}", stats.BestWave.Waves.ToString()), false, false);
                 AddHtml(200, 50, 200, 16, String.Format("<basefont color=#8B0000>Total Score: {0}", stats.BestWave.TotalScore.ToString()), false, false);

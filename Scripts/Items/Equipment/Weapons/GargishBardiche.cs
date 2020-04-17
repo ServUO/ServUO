@@ -7,7 +7,7 @@ namespace Server.Items
         public GargishBardiche()
             : base(0x48B4)
         {
-            this.Weight = 7.0;
+            Weight = 7.0;
         }
 
         public GargishBardiche(Serial serial)

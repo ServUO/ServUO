@@ -6,9 +6,9 @@ namespace Server.Items
         public TransparentHeart()
             : base()
         {
-            this.LootType = LootType.Blessed;
-            this.Weight = 1;
-            this.Hue = 0x4AB;
+            LootType = LootType.Blessed;
+            Weight = 1;
+            Hue = 0x4AB;
         }
 
         public TransparentHeart(Serial serial)

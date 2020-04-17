@@ -7,36 +7,36 @@ namespace Server.Mobiles
         public GrizzlyBear()
             : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a grizzly bear";
-            this.Body = 212;
-            this.BaseSoundID = 0xA3;
+            Name = "a grizzly bear";
+            Body = 212;
+            BaseSoundID = 0xA3;
 
-            this.SetStr(126, 155);
-            this.SetDex(81, 105);
-            this.SetInt(16, 40);
+            SetStr(126, 155);
+            SetDex(81, 105);
+            SetInt(16, 40);
 
-            this.SetHits(76, 93);
-            this.SetMana(0);
+            SetHits(76, 93);
+            SetMana(0);
 
-            this.SetDamage(8, 13);
+            SetDamage(8, 13);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 25, 35);
-            this.SetResistance(ResistanceType.Cold, 15, 25);
-            this.SetResistance(ResistanceType.Poison, 5, 10);
-            this.SetResistance(ResistanceType.Energy, 5, 10);
+            SetResistance(ResistanceType.Physical, 25, 35);
+            SetResistance(ResistanceType.Cold, 15, 25);
+            SetResistance(ResistanceType.Poison, 5, 10);
+            SetResistance(ResistanceType.Energy, 5, 10);
 
-            this.SetSkill(SkillName.MagicResist, 25.1, 40.0);
-            this.SetSkill(SkillName.Tactics, 70.1, 100.0);
-            this.SetSkill(SkillName.Wrestling, 45.1, 70.0);
+            SetSkill(SkillName.MagicResist, 25.1, 40.0);
+            SetSkill(SkillName.Tactics, 70.1, 100.0);
+            SetSkill(SkillName.Wrestling, 45.1, 70.0);
 
-            this.Fame = 1000;
-            this.Karma = 0;
+            Fame = 1000;
+            Karma = 0;
 
-            this.Tamable = true;
-            this.ControlSlots = 1;
-            this.MinTameSkill = 59.1;
+            Tamable = true;
+            ControlSlots = 1;
+            MinTameSkill = 59.1;
         }
 
         public GrizzlyBear(Serial serial)

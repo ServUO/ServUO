@@ -22,22 +22,22 @@ namespace Server.Engines.Reports
         {
             get
             {
-                return this.m_TimeStamp;
+                return m_TimeStamp;
             }
             set
             {
-                this.m_TimeStamp = value;
+                m_TimeStamp = value;
             }
         }
         public int Count
         {
             get
             {
-                return this.m_Count;
+                return m_Count;
             }
             set
             {
-                this.m_Count = value;
+                m_Count = value;
             }
         }
 
@@ -47,20 +47,20 @@ namespace Server.Engines.Reports
 
         public QueueStatus(int count)
         {
-            this.m_TimeStamp = DateTime.UtcNow;
-            this.m_Count = count;
+            m_TimeStamp = DateTime.UtcNow;
+            m_Count = count;
         }
 
         public override void SerializeAttributes(PersistenceWriter op)
         {
-            op.SetDateTime("t", this.m_TimeStamp);
-            op.SetInt32("c", this.m_Count);
+            op.SetDateTime("t", m_TimeStamp);
+            op.SetInt32("c", m_Count);
         }
 
         public override void DeserializeAttributes(PersistenceReader ip)
         {
-            this.m_TimeStamp = ip.GetDateTime("t");
-            this.m_Count = ip.GetInt32("c");
+            m_TimeStamp = ip.GetDateTime("t");
+            m_Count = ip.GetInt32("c");
         }
     }
 }

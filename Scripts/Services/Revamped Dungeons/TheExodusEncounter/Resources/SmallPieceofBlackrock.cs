@@ -10,10 +10,10 @@ namespace Server.Items
         [Constructable]
         public SmallPieceofBlackrock(int amount) : base(0x0F28)
         {
-            this.Hue = 1175;
-            this.Stackable = true;
-            this.Amount = amount;
-            this.Weight = 1.0;
+            Hue = 1175;
+            Stackable = true;
+            Amount = amount;
+            Weight = 1.0;
         }
 
         public SmallPieceofBlackrock(Serial serial) : base(serial)

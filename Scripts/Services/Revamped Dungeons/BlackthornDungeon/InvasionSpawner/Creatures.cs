@@ -450,16 +450,16 @@ namespace Server.Engines.Blackthorn
 
         private void DoSpecial()
         {
-            if (this.Map == null || this.Map == Map.Internal)
+            if (Map == null || Map == Map.Internal)
                 return;
 
-            Map m = this.Map;
+            Map m = Map;
 
             for (int i = 0; i < 4; i++)
             {
                 Timer.DelayCall(TimeSpan.FromMilliseconds(i * 50), o =>
                 {
-                    Server.Misc.Geometry.Circle2D(this.Location, m, o, (pnt, map) =>
+                    Server.Misc.Geometry.Circle2D(Location, m, o, (pnt, map) =>
                     {
                         Effects.SendLocationEffect(pnt, map, Utility.RandomBool() ? 14000 : 14013, 14, 20, 2018, 0);
                     });
@@ -471,7 +471,7 @@ namespace Server.Engines.Blackthorn
                     if (m != null)
                     {
                         List<Mobile> list = new List<Mobile>();
-                        IPooledEnumerable eable = m.GetMobilesInRange(this.Location, 4);
+                        IPooledEnumerable eable = m.GetMobilesInRange(Location, 4);
 
                         foreach (Mobile mob in eable)
                         {
@@ -495,7 +495,7 @@ namespace Server.Engines.Blackthorn
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.UltraRich, 2);
+            AddLoot(LootPack.UltraRich, 2);
         }
 
         public Invader(Serial serial)
@@ -589,8 +589,8 @@ namespace Server.Engines.Blackthorn
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.UltraRich, 2);
-            this.AddLoot(LootPack.SuperBoss, 1);
+            AddLoot(LootPack.UltraRich, 2);
+            AddLoot(LootPack.SuperBoss, 1);
         }
 
         public InvaderCaptain(Serial serial)

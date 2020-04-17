@@ -38,32 +38,32 @@ namespace Server.Engines.Quests
         public ItsHammerTimeQuest()
             : base()
         {
-            this.AddObjective(new ApprenticeObjective(SkillName.Blacksmith, 50, "Gorge's Shop", 1077733, 1077734));
+            AddObjective(new ApprenticeObjective(SkillName.Blacksmith, 50, "Gorge's Shop", 1077733, 1077734));
 
             // 1077733 By using George’s forge and anvil, he is able to give you advice as you create blacksmithing items. This helps you hone your Blacksmithing skill a bit faster than normal.
             // 1077734 You’re not using George’s forge and anvil any longer, and he cannot give you advice. Your Blacksmithing learning potential is no longer enhanced. 
 
-            this.AddReward(new BaseReward(typeof(HammerOfHephaestus), 1077740));
+            AddReward(new BaseReward(typeof(HammerOfHephaestus), 1077740));
         }
 
         public override bool CanOffer()
         {
             #region Scroll of Alacrity
-            PlayerMobile pm = this.Owner as PlayerMobile;
+            PlayerMobile pm = Owner as PlayerMobile;
             if (pm.AcceleratedStart > DateTime.UtcNow)
             {
-                this.Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
+                Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
                 return false;
             }
             #endregion
             else
-                return this.Owner.Skills.Blacksmith.Base < 50;
+                return Owner.Skills.Blacksmith.Base < 50;
         }
 
         public override void OnCompleted()
         {
-            this.Owner.SendLocalizedMessage(1077738, null, 0x23); // You have achieved the rank of Apprentice Blacksmith. Return to George Hephaestus in New Haven to see what kind of reward he has waiting for you.
-            this.Owner.PlaySound(this.CompleteSound);
+            Owner.SendLocalizedMessage(1077738, null, 0x23); // You have achieved the rank of Apprentice Blacksmith. Return to George Hephaestus in New Haven to see what kind of reward he has waiting for you.
+            Owner.PlaySound(CompleteSound);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -90,20 +90,20 @@ namespace Server.Engines.Quests
 
         public override void InitSBInfo()
         {
-            this.SBInfos.Add(new SBBlacksmith());
+            SBInfos.Add(new SBBlacksmith());
         }
 
         [Constructable]
         public GeorgeHephaestus()
             : base("George Hephaestus", "The Blacksmith Instructor")
         {
-            this.SetSkill(SkillName.ArmsLore, 120.0, 120.0);
-            this.SetSkill(SkillName.Blacksmith, 120.0, 120.0);
-            this.SetSkill(SkillName.Magery, 120.0, 120.0);
-            this.SetSkill(SkillName.Tactics, 120.0, 120.0);
-            this.SetSkill(SkillName.Swords, 120.0, 120.0);
-            this.SetSkill(SkillName.Tinkering, 120.0, 120.0);
-            this.SetSkill(SkillName.Mining, 120.0, 120.0);
+            SetSkill(SkillName.ArmsLore, 120.0, 120.0);
+            SetSkill(SkillName.Blacksmith, 120.0, 120.0);
+            SetSkill(SkillName.Magery, 120.0, 120.0);
+            SetSkill(SkillName.Tactics, 120.0, 120.0);
+            SetSkill(SkillName.Swords, 120.0, 120.0);
+            SetSkill(SkillName.Tinkering, 120.0, 120.0);
+            SetSkill(SkillName.Mining, 120.0, 120.0);
         }
 
         public GeorgeHephaestus(Serial serial)
@@ -113,36 +113,36 @@ namespace Server.Engines.Quests
 
         public override void Advertise()
         {
-            this.Say(1078122); // Wanna learn how to make powerful weapons and armor? Talk to me.
+            Say(1078122); // Wanna learn how to make powerful weapons and armor? Talk to me.
         }
 
         public override void OnOfferFailed()
         {
-            this.Say(1077772); // I cannot teach you, for you know all I can teach!
+            Say(1077772); // I cannot teach you, for you know all I can teach!
         }
 
         public override void InitBody()
         {
-            this.Female = false;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = false;
+            CantWalk = true;
+            Race = Race.Human;
 
             base.InitBody();
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Boots(0x973));
-            this.AddItem(new LongPants());
-            this.AddItem(new Bascinet());
-            this.AddItem(new FullApron(0x8AB));
+            AddItem(new Backpack());
+            AddItem(new Boots(0x973));
+            AddItem(new LongPants());
+            AddItem(new Bascinet());
+            AddItem(new FullApron(0x8AB));
 
             Item item;
 
             item = new SmithHammer();
             item.Hue = 0x8AB;
-            this.AddItem(item);
+            AddItem(item);
         }
 
         public override void Serialize(GenericWriter writer)

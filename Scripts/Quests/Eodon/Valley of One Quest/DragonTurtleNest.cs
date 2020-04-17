@@ -47,7 +47,7 @@ namespace Server.Items
         public override bool HandlesOnMovement => !IsInCooldown;
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (m is PlayerMobile && m.Location != oldLocation && m.InRange(this.Location, 3) && (!FocusList.Contains(m) || 0.015 > Utility.RandomDouble()))
+            if (m is PlayerMobile && m.Location != oldLocation && m.InRange(Location, 3) && (!FocusList.Contains(m) || 0.015 > Utility.RandomDouble()))
             {
                 EmptyNestQuest quest = QuestHelper.GetQuest((PlayerMobile)m, typeof(EmptyNestQuest)) as EmptyNestQuest;
 
@@ -134,7 +134,7 @@ namespace Server.Items
                         Timer.DelayCall(TimeSpan.FromSeconds(Utility.RandomMinMax(15, 30)), () =>
                         {
                             Hatchling = new DragonTurtleHatchling();
-                            Hatchling.MoveToWorld(this.Location, this.Map);
+                            Hatchling.MoveToWorld(Location, Map);
                             Hatchling.Tamable = false;
 
                             SpawnPoachers(Hatchling);

@@ -17,7 +17,7 @@ namespace Server.Spells.Spellweaving
         public virtual double TickRate => 1.0;
         public override bool CheckCast()
         {
-            if (!TransformationSpellHelper.CheckCast(this.Caster, this))
+            if (!TransformationSpellHelper.CheckCast(Caster, this))
                 return false;
 
             return base.CheckCast();
@@ -25,9 +25,9 @@ namespace Server.Spells.Spellweaving
 
         public override void OnCast()
         {
-            TransformationSpellHelper.OnCast(this.Caster, this);
+            TransformationSpellHelper.OnCast(Caster, this);
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         public virtual void OnTick(Mobile m)

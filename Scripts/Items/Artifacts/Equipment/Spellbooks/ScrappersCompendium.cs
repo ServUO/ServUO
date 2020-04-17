@@ -54,13 +54,13 @@ namespace Server.Items
             else
                 BaseRunicTool.ApplyAttributesTo(this, true, 0, count, 70, 80);
 
-            this.Attributes.SpellDamage = 25;
-            this.Attributes.LowerManaCost = 10;
-            this.Attributes.CastSpeed = 1;
-            this.Attributes.CastRecovery = 1;
+            Attributes.SpellDamage = 25;
+            Attributes.LowerManaCost = 10;
+            Attributes.CastSpeed = 1;
+            Attributes.CastRecovery = 1;
 
             if (makersMark)
-                this.Crafter = from;
+                Crafter = from;
 
             return quality;
         }

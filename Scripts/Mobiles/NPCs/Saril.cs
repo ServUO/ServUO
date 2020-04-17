@@ -9,9 +9,9 @@ namespace Server.Engines.Quests
         public TheyreBreedingLikeRabbitsQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Rabbit), "rabbits", 10));
+            AddObjective(new SlayObjective(typeof(Rabbit), "rabbits", 10));
 
-            this.AddReward(new BaseReward(typeof(SmallTrinketBag), 1072268));
+            AddReward(new BaseReward(typeof(SmallTrinketBag), 1072268));
         }
 
         /* They're Breeding Like Rabbits */
@@ -43,9 +43,9 @@ namespace Server.Engines.Quests
         public TheyllEatAnythingQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Pig), "pigs", 10));
+            AddObjective(new SlayObjective(typeof(Pig), "pigs", 10));
 
-            this.AddReward(new BaseReward(typeof(SmallTrinketBag), 1072268));
+            AddReward(new BaseReward(typeof(SmallTrinketBag), 1072268));
         }
 
         /* They'll Eat Anything */
@@ -79,9 +79,9 @@ namespace Server.Engines.Quests
         public NoGoodFishStealingQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Walrus), "walruses", 10));
+            AddObjective(new SlayObjective(typeof(Walrus), "walruses", 10));
 
-            this.AddReward(new BaseReward(typeof(SmallTrinketBag), 1072268));
+            AddReward(new BaseReward(typeof(SmallTrinketBag), 1072268));
         }
 
         /* No Good, Fish Stealing ... */
@@ -113,9 +113,9 @@ namespace Server.Engines.Quests
         public HeroInTheMakingQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Mongbat), "mongbats", 10));
+            AddObjective(new SlayObjective(typeof(Mongbat), "mongbats", 10));
 
-            this.AddReward(new BaseReward(typeof(SmallTrinketBag), 1072268));
+            AddReward(new BaseReward(typeof(SmallTrinketBag), 1072268));
         }
 
         /* A Hero in the Making */
@@ -147,9 +147,9 @@ namespace Server.Engines.Quests
         public BullfightingSortOfQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Bull), "bulls", 10));
+            AddObjective(new SlayObjective(typeof(Bull), "bulls", 10));
 
-            this.AddReward(new BaseReward(typeof(SmallTrinketBag), 1072268));
+            AddReward(new BaseReward(typeof(SmallTrinketBag), 1072268));
         }
 
         /* Bullfighting ... Sort Of */
@@ -182,9 +182,9 @@ namespace Server.Engines.Quests
         public FineFeastQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Sheep), "sheep", 10));
+            AddObjective(new SlayObjective(typeof(Sheep), "sheep", 10));
 
-            this.AddReward(new BaseReward(typeof(SmallTrinketBag), 1072268));
+            AddReward(new BaseReward(typeof(SmallTrinketBag), 1072268));
         }
 
         /* A Fine Feast. */
@@ -216,9 +216,9 @@ namespace Server.Engines.Quests
         public ForcedMigrationQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Bird), "birds", 10));
+            AddObjective(new SlayObjective(typeof(Bird), "birds", 10));
 
-            this.AddReward(new BaseReward(typeof(SmallTrinketBag), 1072268));
+            AddReward(new BaseReward(typeof(SmallTrinketBag), 1072268));
         }
 
         /* Forced Migration */
@@ -250,9 +250,9 @@ namespace Server.Engines.Quests
         public FilthyPestsQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Sewerrat), "sewer rats", 10));
+            AddObjective(new SlayObjective(typeof(Sewerrat), "sewer rats", 10));
 
-            this.AddReward(new BaseReward(typeof(SmallTrinketBag), 1072268));
+            AddReward(new BaseReward(typeof(SmallTrinketBag), 1072268));
         }
 
         /* Filthy Pests! */
@@ -286,8 +286,8 @@ namespace Server.Engines.Quests
         public Saril()
             : base("Saril", "the guard")
         {
-            this.SetSkill(SkillName.Meditation, 60.0, 83.0);
-            this.SetSkill(SkillName.Focus, 60.0, 83.0);
+            SetSkill(SkillName.Meditation, 60.0, 83.0);
+            SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
         public Saril(Serial serial)
@@ -314,25 +314,25 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = true;
-            this.Race = Race.Elf;
+            Female = true;
+            Race = Race.Elf;
 
-            this.Hue = 0x8361;
-            this.HairItemID = 0x2FC1;
-            this.HairHue = 0x127;
+            Hue = 0x8361;
+            HairItemID = 0x2FC1;
+            HairHue = 0x127;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new ElvenBoots(0x3B2));
-            this.AddItem(new WingedHelm());
-            this.AddItem(new RadiantScimitar());
-            this.AddItem(new WoodlandLegs());
-            this.AddItem(new WoodlandArms());
-            this.AddItem(new WoodlandChest());
-            this.AddItem(new WoodlandBelt());
+            AddItem(new ElvenBoots(0x3B2));
+            AddItem(new WingedHelm());
+            AddItem(new RadiantScimitar());
+            AddItem(new WoodlandLegs());
+            AddItem(new WoodlandArms());
+            AddItem(new WoodlandChest());
+            AddItem(new WoodlandBelt());
         }
 
         public override void Serialize(GenericWriter writer)

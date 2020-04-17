@@ -49,32 +49,32 @@ namespace Server.Engines.Quests
         public DefyingTheArcaneQuest()
             : base()
         {
-            this.AddObjective(new ApprenticeObjective(SkillName.MagicResist, 50, "Old Haven Training", 1077494, 1077588));
+            AddObjective(new ApprenticeObjective(SkillName.MagicResist, 50, "Old Haven Training", 1077494, 1077588));
 
             // 1077494 Your Resisting Spells potential is greatly enhanced while questing in this area.
             // 1077588 You are not in the quest area for Apprentice Mage. Your Resisting Spells potential is not enhanced here.
 
-            this.AddReward(new BaseReward(typeof(BraceletOfResilience), 1077627));
+            AddReward(new BaseReward(typeof(BraceletOfResilience), 1077627));
         }
 
         public override bool CanOffer()
         {
             #region Scroll of Alacrity
-            PlayerMobile pm = this.Owner as PlayerMobile;
+            PlayerMobile pm = Owner as PlayerMobile;
             if (pm.AcceleratedStart > DateTime.UtcNow)
             {
-                this.Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
+                Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
                 return false;
             }
             #endregion
             else
-                return this.Owner.Skills.MagicResist.Base < 50;
+                return Owner.Skills.MagicResist.Base < 50;
         }
 
         public override void OnCompleted()
         {
-            this.Owner.SendLocalizedMessage(1077625, null, 0x23); // You have achieved the rank of Apprentice Mage (for Resisting Spells). Return to Alefian in New Haven to receive your arcane prize.
-            this.Owner.PlaySound(this.CompleteSound);
+            Owner.SendLocalizedMessage(1077625, null, 0x23); // You have achieved the rank of Apprentice Mage (for Resisting Spells). Return to Alefian in New Haven to receive your arcane prize.
+            Owner.PlaySound(CompleteSound);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -103,12 +103,12 @@ namespace Server.Engines.Quests
         public Alefian()
             : base("Alefian", "The Resisting Spells Instructor")
         {
-            this.SetSkill(SkillName.EvalInt, 120.0, 120.0);
-            this.SetSkill(SkillName.Inscribe, 120.0, 120.0);
-            this.SetSkill(SkillName.Magery, 120.0, 120.0);
-            this.SetSkill(SkillName.MagicResist, 120.0, 120.0);
-            this.SetSkill(SkillName.Wrestling, 120.0, 120.0);
-            this.SetSkill(SkillName.Meditation, 120.0, 120.0);
+            SetSkill(SkillName.EvalInt, 120.0, 120.0);
+            SetSkill(SkillName.Inscribe, 120.0, 120.0);
+            SetSkill(SkillName.Magery, 120.0, 120.0);
+            SetSkill(SkillName.MagicResist, 120.0, 120.0);
+            SetSkill(SkillName.Wrestling, 120.0, 120.0);
+            SetSkill(SkillName.Meditation, 120.0, 120.0);
         }
 
         public Alefian(Serial serial)
@@ -118,28 +118,28 @@ namespace Server.Engines.Quests
 
         public override void Advertise()
         {
-            this.Say(1078130); // A mage should learn how to resist spells.
+            Say(1078130); // A mage should learn how to resist spells.
         }
 
         public override void OnOfferFailed()
         {
-            this.Say(1077772); // I cannot teach you, for you know all I can teach!
+            Say(1077772); // I cannot teach you, for you know all I can teach!
         }
 
         public override void InitBody()
         {
-            this.Female = false;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = false;
+            CantWalk = true;
+            Race = Race.Human;
 
             base.InitBody();
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Robe());
-            this.AddItem(new Sandals());
+            AddItem(new Backpack());
+            AddItem(new Robe());
+            AddItem(new Sandals());
         }
 
         public override void Serialize(GenericWriter writer)

@@ -7,26 +7,26 @@ namespace Server.Mobiles
     public class Weaponsmith : BaseVendor
     {
         private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
 
         [Constructable]
         public Weaponsmith()
             : base("the weaponsmith")
         {
-            this.SetSkill(SkillName.ArmsLore, 64.0, 100.0);
-            this.SetSkill(SkillName.Blacksmith, 65.0, 88.0);
-            this.SetSkill(SkillName.Fencing, 45.0, 68.0);
-            this.SetSkill(SkillName.Macing, 45.0, 68.0);
-            this.SetSkill(SkillName.Swords, 45.0, 68.0);
-            this.SetSkill(SkillName.Tactics, 36.0, 68.0);
+            SetSkill(SkillName.ArmsLore, 64.0, 100.0);
+            SetSkill(SkillName.Blacksmith, 65.0, 88.0);
+            SetSkill(SkillName.Fencing, 45.0, 68.0);
+            SetSkill(SkillName.Macing, 45.0, 68.0);
+            SetSkill(SkillName.Swords, 45.0, 68.0);
+            SetSkill(SkillName.Tactics, 36.0, 68.0);
         }
 
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBWeaponSmith());
+            m_SBInfos.Add(new SBWeaponSmith());
 
-            if (this.IsTokunoVendor)
-                this.m_SBInfos.Add(new SBSEWeapons());
+            if (IsTokunoVendor)
+                m_SBInfos.Add(new SBSEWeapons());
         }
 
         public override VendorShoeType ShoeType => Utility.RandomBool() ? VendorShoeType.Boots : VendorShoeType.ThighBoots;
@@ -40,7 +40,7 @@ namespace Server.Mobiles
         {
             base.InitOutfit();
 
-            this.AddItem(new Server.Items.HalfApron());
+            AddItem(new Server.Items.HalfApron());
         }
 
         #region Bulk Orders

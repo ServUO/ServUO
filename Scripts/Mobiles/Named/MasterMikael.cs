@@ -8,42 +8,42 @@ namespace Server.Mobiles
         [Constructable]
         public MasterMikael()
         {
-            this.Name = "Master Mikael";
-            this.Hue = 0x8FD;
+            Name = "Master Mikael";
+            Hue = 0x8FD;
 
-            this.SetStr(93, 122);
-            this.SetDex(91, 100);
-            this.SetInt(252, 271);
+            SetStr(93, 122);
+            SetDex(91, 100);
+            SetInt(252, 271);
 
-            this.SetHits(789, 1014);
+            SetHits(789, 1014);
 
-            this.SetDamage(11, 19);
+            SetDamage(11, 19);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 55, 59);
-            this.SetResistance(ResistanceType.Fire, 40, 46);
-            this.SetResistance(ResistanceType.Cold, 72, 80);
-            this.SetResistance(ResistanceType.Poison, 44, 49);
-            this.SetResistance(ResistanceType.Energy, 50, 57);
+            SetResistance(ResistanceType.Physical, 55, 59);
+            SetResistance(ResistanceType.Fire, 40, 46);
+            SetResistance(ResistanceType.Cold, 72, 80);
+            SetResistance(ResistanceType.Poison, 44, 49);
+            SetResistance(ResistanceType.Energy, 50, 57);
 
-            this.SetSkill(SkillName.Wrestling, 80.1, 87.2);
-            this.SetSkill(SkillName.Tactics, 79.0, 90.9);
-            this.SetSkill(SkillName.MagicResist, 90.3, 106.9);
-            this.SetSkill(SkillName.Magery, 103.8, 108.0);
-            this.SetSkill(SkillName.EvalInt, 96.1, 105.3);
-            this.SetSkill(SkillName.Necromancy, 103.8, 108.0);
-            this.SetSkill(SkillName.SpiritSpeak, 96.1, 105.3);
+            SetSkill(SkillName.Wrestling, 80.1, 87.2);
+            SetSkill(SkillName.Tactics, 79.0, 90.9);
+            SetSkill(SkillName.MagicResist, 90.3, 106.9);
+            SetSkill(SkillName.Magery, 103.8, 108.0);
+            SetSkill(SkillName.EvalInt, 96.1, 105.3);
+            SetSkill(SkillName.Necromancy, 103.8, 108.0);
+            SetSkill(SkillName.SpiritSpeak, 96.1, 105.3);
 
-            this.Fame = 18000;
-            this.Karma = -18000;
+            Fame = 18000;
+            Karma = -18000;
 
-            this.PackReg(3);
-            this.PackNecroReg(1, 10);
+            PackReg(3);
+            PackNecroReg(1, 10);
 
             for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
             {
-                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
         }
 
@@ -72,9 +72,9 @@ namespace Server.Mobiles
         }*/
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.UltraRich, 2);
-            this.AddLoot(LootPack.MedScrolls, 2);
-            this.AddLoot(LootPack.HighScrolls, 2);
+            AddLoot(LootPack.UltraRich, 2);
+            AddLoot(LootPack.MedScrolls, 2);
+            AddLoot(LootPack.HighScrolls, 2);
         }
 
         // TODO: Special move?

@@ -20,15 +20,15 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(this.GetWorldLocation(), 1))
+            if (from.InRange(GetWorldLocation(), 1))
             {
                 from.SendLocalizedMessage(1111658); // The vines tighten their grip, stopping you from opening the door.
             }
-            else if (from.InRange(this.GetWorldLocation(), 4))
+            else if (from.InRange(GetWorldLocation(), 4))
             {
                 from.SendLocalizedMessage(1111665); // You notice something odd about the vines covering the wall.
             }
-            else if (!from.InRange(this.GetWorldLocation(), 4))
+            else if (!from.InRange(GetWorldLocation(), 4))
             {
                 from.SendLocalizedMessage(1019045); // I can't reach that.
             }

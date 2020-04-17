@@ -6,8 +6,8 @@ namespace Server.Items
         public DecoGarlicBulb2()
             : base(0x18E4)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public DecoGarlicBulb2(Serial serial)

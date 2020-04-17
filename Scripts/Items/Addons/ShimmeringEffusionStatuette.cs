@@ -10,7 +10,7 @@ namespace Server.Items
         public ShimmeringEffusionStatuette()
             : base(0x2D87)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public ShimmeringEffusionStatuette(Serial serial)
@@ -21,7 +21,7 @@ namespace Server.Items
         public override int LabelNumber => 1074503;// Shimmering Effusion Statuette
         public override void PlaySound(Mobile to)
         {
-            Effects.PlaySound(this.Location, this.Map, m_Sounds[Utility.Random(m_Sounds.Length)]);
+            Effects.PlaySound(Location, Map, m_Sounds[Utility.Random(m_Sounds.Length)]);
         }
 
         public override void Serialize(GenericWriter writer)

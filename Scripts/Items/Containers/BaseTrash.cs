@@ -40,7 +40,7 @@ namespace Server.Items
             public AppraiseforCleanup(Mobile mobile)
                 : base(1151298, 2) //Appraise for Cleanup
             {
-                this.m_Mobile = mobile;
+                m_Mobile = mobile;
             }
 
             public override void OnClick()

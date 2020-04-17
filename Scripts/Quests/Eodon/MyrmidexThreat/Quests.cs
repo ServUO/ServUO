@@ -530,7 +530,7 @@ namespace Server.Engines.Quests
 
         public void Update(Type t)
         {
-            foreach (InternalObjective obj in this.Objectives.OfType<InternalObjective>())
+            foreach (InternalObjective obj in Objectives.OfType<InternalObjective>())
             {
                 if (obj.Update(t))
                 {

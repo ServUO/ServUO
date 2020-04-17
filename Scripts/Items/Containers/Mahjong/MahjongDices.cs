@@ -7,41 +7,41 @@ namespace Server.Engines.Mahjong
         private int m_Second;
         public MahjongDices(MahjongGame game)
         {
-            this.m_Game = game;
-            this.m_First = Utility.Random(1, 6);
-            this.m_Second = Utility.Random(1, 6);
+            m_Game = game;
+            m_First = Utility.Random(1, 6);
+            m_Second = Utility.Random(1, 6);
         }
 
         public MahjongDices(MahjongGame game, GenericReader reader)
         {
-            this.m_Game = game;
+            m_Game = game;
 
             int version = reader.ReadInt();
 
-            this.m_First = reader.ReadInt();
-            this.m_Second = reader.ReadInt();
+            m_First = reader.ReadInt();
+            m_Second = reader.ReadInt();
         }
 
-        public MahjongGame Game => this.m_Game;
-        public int First => this.m_First;
-        public int Second => this.m_Second;
+        public MahjongGame Game => m_Game;
+        public int First => m_First;
+        public int Second => m_Second;
         public void RollDices(Mobile from)
         {
-            this.m_First = Utility.Random(1, 6);
-            this.m_Second = Utility.Random(1, 6);
+            m_First = Utility.Random(1, 6);
+            m_Second = Utility.Random(1, 6);
 
-            this.m_Game.Players.SendGeneralPacket(true, true);
+            m_Game.Players.SendGeneralPacket(true, true);
 
             if (from != null)
-                this.m_Game.Players.SendLocalizedMessage(1062695, string.Format("{0}\t{1}\t{2}", from.Name, this.m_First, this.m_Second)); // ~1_name~ rolls the dice and gets a ~2_number~ and a ~3_number~!
+                m_Game.Players.SendLocalizedMessage(1062695, string.Format("{0}\t{1}\t{2}", from.Name, m_First, m_Second)); // ~1_name~ rolls the dice and gets a ~2_number~ and a ~3_number~!
         }
 
         public void Save(GenericWriter writer)
         {
             writer.Write(0); // version
 
-            writer.Write(this.m_First);
-            writer.Write(this.m_Second);
+            writer.Write(m_First);
+            writer.Write(m_Second);
         }
     }
 }

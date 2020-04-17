@@ -7,33 +7,33 @@ namespace Server.Mobiles
         public JackRabbit()
             : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a jack rabbit";
-            this.Body = 0xCD;
-            this.Hue = 0x1BB;
+            Name = "a jack rabbit";
+            Body = 0xCD;
+            Hue = 0x1BB;
 
-            this.SetStr(15);
-            this.SetDex(25);
-            this.SetInt(5);
+            SetStr(15);
+            SetDex(25);
+            SetInt(5);
 
-            this.SetHits(9);
-            this.SetMana(0);
+            SetHits(9);
+            SetMana(0);
 
-            this.SetDamage(1, 2);
+            SetDamage(1, 2);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 2, 5);
+            SetResistance(ResistanceType.Physical, 2, 5);
 
-            this.SetSkill(SkillName.MagicResist, 5.0);
-            this.SetSkill(SkillName.Tactics, 5.0);
-            this.SetSkill(SkillName.Wrestling, 5.0);
+            SetSkill(SkillName.MagicResist, 5.0);
+            SetSkill(SkillName.Tactics, 5.0);
+            SetSkill(SkillName.Wrestling, 5.0);
 
-            this.Fame = 150;
-            this.Karma = 0;
+            Fame = 150;
+            Karma = 0;
 
-            this.Tamable = true;
-            this.ControlSlots = 1;
-            this.MinTameSkill = -18.9;
+            Tamable = true;
+            ControlSlots = 1;
+            MinTameSkill = -18.9;
         }
 
         public JackRabbit(Serial serial)

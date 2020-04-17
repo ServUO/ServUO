@@ -20,17 +20,17 @@ namespace Server.Spells.Necromancy
         {
             //TODO: Verify this formula being that Necro spells don't HAVE a circle.
             //int karma = -(70 + (10 * (int)Circle));
-            int karma = -(40 + (int)(10 * (this.CastDelayBase.TotalSeconds / this.CastDelaySecondsPerTick)));
+            int karma = -(40 + (int)(10 * (CastDelayBase.TotalSeconds / CastDelaySecondsPerTick)));
 
-            karma += AOS.Scale(karma, AosAttributes.GetValue(this.Caster, AosAttribute.IncreasedKarmaLoss));
+            karma += AOS.Scale(karma, AosAttributes.GetValue(Caster, AosAttribute.IncreasedKarmaLoss));
 
             return karma;
         }
 
         public override void GetCastSkills(out double min, out double max)
         {
-            min = this.RequiredSkill;
-            max = this.Scroll != null ? min : this.RequiredSkill + 40.0;
+            min = RequiredSkill;
+            max = Scroll != null ? min : RequiredSkill + 40.0;
         }
 
         public override bool ConsumeReagents()
@@ -38,7 +38,7 @@ namespace Server.Spells.Necromancy
             if (base.ConsumeReagents())
                 return true;
 
-            if (ArcaneGem.ConsumeCharges(this.Caster, 1))
+            if (ArcaneGem.ConsumeCharges(Caster, 1))
                 return true;
 
             return false;
@@ -46,7 +46,7 @@ namespace Server.Spells.Necromancy
 
         public override int GetMana()
         {
-            return this.RequiredMana;
+            return RequiredMana;
         }
     }
 }

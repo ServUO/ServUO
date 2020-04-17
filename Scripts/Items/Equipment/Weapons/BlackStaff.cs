@@ -24,6 +24,7 @@ namespace Server.Items
 
         public override int InitMinHits => 31;
         public override int InitMaxHits => 70;
+		
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

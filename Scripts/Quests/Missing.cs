@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public Missing()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(ArielHavenWritofMembership), "Ariel Haven Writ of Membership", 4, 0x2831));
+            AddObjective(new ObtainObjective(typeof(ArielHavenWritofMembership), "Ariel Haven Writ of Membership", 4, 0x2831));
 
-            this.AddReward(new BaseReward(typeof(CandlewoodTorch), "Candlewood Torch"));
+            AddReward(new BaseReward(typeof(CandlewoodTorch), "Candlewood Torch"));
         }
 
         public override Type NextQuest => typeof(EndingtheThreat);

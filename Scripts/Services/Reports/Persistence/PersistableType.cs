@@ -46,11 +46,11 @@ namespace Server.Engines.Reports
         private readonly ConstructCallback m_Constructor;
         public PersistableType(string name, ConstructCallback constructor)
         {
-            this.m_Name = name;
-            this.m_Constructor = constructor;
+            m_Name = name;
+            m_Constructor = constructor;
         }
 
-        public string Name => this.m_Name;
-        public ConstructCallback Constructor => this.m_Constructor;
+        public string Name => m_Name;
+        public ConstructCallback Constructor => m_Constructor;
     }
 }

@@ -12,8 +12,8 @@ namespace Server.Items
         public SilverSnakeSkin(int amount)
             : base(0x5744)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public SilverSnakeSkin(Serial serial)

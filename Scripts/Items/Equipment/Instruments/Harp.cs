@@ -6,7 +6,7 @@ namespace Server.Items
         public Harp()
             : base(0xEB1, 0x43, 0x44)
         {
-            this.Weight = 35.0;
+            Weight = 35.0;
         }
 
         public Harp(Serial serial)
@@ -27,8 +27,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (this.Weight == 3.0)
-                this.Weight = 35.0;
+            if (Weight == 3.0)
+                Weight = 35.0;
         }
     }
 }

@@ -525,21 +525,21 @@ namespace Server.Items
         private readonly CraftResource m_Resource;
         private readonly Type[] m_ResourceTypes;
 
-        public int Hue => this.m_Hue;
-        public int Number => this.m_Number;
-        public string Name => this.m_Name;
-        public CraftAttributeInfo AttributeInfo => this.m_AttributeInfo;
-        public CraftResource Resource => this.m_Resource;
-        public Type[] ResourceTypes => this.m_ResourceTypes;
+        public int Hue => m_Hue;
+        public int Number => m_Number;
+        public string Name => m_Name;
+        public CraftAttributeInfo AttributeInfo => m_AttributeInfo;
+        public CraftResource Resource => m_Resource;
+        public Type[] ResourceTypes => m_ResourceTypes;
 
         public CraftResourceInfo(int hue, int number, string name, CraftAttributeInfo attributeInfo, CraftResource resource, params Type[] resourceTypes)
         {
-            this.m_Hue = hue;
-            this.m_Number = number;
-            this.m_Name = name;
-            this.m_AttributeInfo = attributeInfo;
-            this.m_Resource = resource;
-            this.m_ResourceTypes = resourceTypes;
+            m_Hue = hue;
+            m_Number = number;
+            m_Name = name;
+            m_AttributeInfo = attributeInfo;
+            m_Resource = resource;
+            m_ResourceTypes = resourceTypes;
 
             for (int i = 0; i < resourceTypes.Length; ++i)
                 CraftResources.RegisterType(resourceTypes[i], resource);
@@ -824,15 +824,15 @@ namespace Server.Items
 
         public OreInfo(int level, int hue, string name)
         {
-            this.m_Level = level;
-            this.m_Hue = hue;
-            this.m_Name = name;
+            m_Level = level;
+            m_Hue = hue;
+            m_Name = name;
         }
 
-        public int Level => this.m_Level;
+        public int Level => m_Level;
 
-        public int Hue => this.m_Hue;
+        public int Hue => m_Hue;
 
-        public string Name => this.m_Name;
+        public string Name => m_Name;
     }
 }

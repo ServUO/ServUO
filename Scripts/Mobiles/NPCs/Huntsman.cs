@@ -21,10 +21,10 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.Body = 101;
+            Female = false;
+            Body = 101;
         }
 
         public override void Serialize(GenericWriter writer)

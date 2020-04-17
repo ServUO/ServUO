@@ -5,8 +5,8 @@ namespace Server.Items
         [Constructable]
         public ElvenWashBasinEastAddon()
         {
-            this.AddComponent(new AddonComponent(0x30DF), 0, 0, 0);
-            this.AddComponent(new AddonComponent(0x30E0), 0, 1, 0);
+            AddComponent(new AddonComponent(0x30DF), 0, 0, 0);
+            AddComponent(new AddonComponent(0x30E0), 0, 1, 0);
         }
 
         public ElvenWashBasinEastAddon(Serial serial)

@@ -40,32 +40,32 @@ namespace Server.Engines.Quests
         public KnowThineEnemyQuest()
             : base()
         {
-            this.AddObjective(new ApprenticeObjective(SkillName.Anatomy, 50, "Old Haven Training", 1077686, 1077687));
+            AddObjective(new ApprenticeObjective(SkillName.Anatomy, 50, "Old Haven Training", 1077686, 1077687));
 
             // 1077686 You feel very willing to learn more about the body. Your ability to hone your Anatomy skill is enhanced in this area.
             // 1077687 You lose your ambition to learn about the body. Your Anatomy skill learning potential is no longer enhanced.
 
-            this.AddReward(new BaseReward(typeof(TunicOfGuarding), 1077693));
+            AddReward(new BaseReward(typeof(TunicOfGuarding), 1077693));
         }
 
         public override bool CanOffer()
         {
             #region Scroll of Alacrity
-            PlayerMobile pm = this.Owner as PlayerMobile;
+            PlayerMobile pm = Owner as PlayerMobile;
             if (pm.AcceleratedStart > DateTime.UtcNow)
             {
-                this.Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
+                Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
                 return false;
             }
             #endregion
             else
-                return this.Owner.Skills.Anatomy.Base < 50;
+                return Owner.Skills.Anatomy.Base < 50;
         }
 
         public override void OnCompleted()
         {
-            this.Owner.SendLocalizedMessage(1077691, null, 0x23); // You have achieved the rank of Apprentice Healer (for Anatomy). Return to Andreas Vesalius in New Haven as soon as you can to claim your reward.
-            this.Owner.PlaySound(this.CompleteSound);
+            Owner.SendLocalizedMessage(1077691, null, 0x23); // You have achieved the rank of Apprentice Healer (for Anatomy). Return to Andreas Vesalius in New Haven as soon as you can to claim your reward.
+            Owner.PlaySound(CompleteSound);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -94,12 +94,12 @@ namespace Server.Engines.Quests
         public AndreasVesalius()
             : base("Andreas Vesalius", "The Anatomy Instructor")
         {
-            this.SetSkill(SkillName.Anatomy, 120.0, 120.0);
-            this.SetSkill(SkillName.Parry, 120.0, 120.0);
-            this.SetSkill(SkillName.Healing, 120.0, 120.0);
-            this.SetSkill(SkillName.Tactics, 120.0, 120.0);
-            this.SetSkill(SkillName.Swords, 120.0, 120.0);
-            this.SetSkill(SkillName.Focus, 120.0, 120.0);
+            SetSkill(SkillName.Anatomy, 120.0, 120.0);
+            SetSkill(SkillName.Parry, 120.0, 120.0);
+            SetSkill(SkillName.Healing, 120.0, 120.0);
+            SetSkill(SkillName.Tactics, 120.0, 120.0);
+            SetSkill(SkillName.Swords, 120.0, 120.0);
+            SetSkill(SkillName.Focus, 120.0, 120.0);
         }
 
         public AndreasVesalius(Serial serial)
@@ -109,30 +109,30 @@ namespace Server.Engines.Quests
 
         public override void Advertise()
         {
-            this.Say(1078138); // Learning of the body will allow you to excel in combat.
+            Say(1078138); // Learning of the body will allow you to excel in combat.
         }
 
         public override void OnOfferFailed()
         {
-            this.Say(1077772); // I cannot teach you, for you know all I can teach!
+            Say(1077772); // I cannot teach you, for you know all I can teach!
         }
 
         public override void InitBody()
         {
-            this.Female = false;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = false;
+            CantWalk = true;
+            Race = Race.Human;
 
             base.InitBody();
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new BlackStaff());
-            this.AddItem(new Boots());
-            this.AddItem(new LongPants());
-            this.AddItem(new Tunic(0x66D));
+            AddItem(new Backpack());
+            AddItem(new BlackStaff());
+            AddItem(new Boots());
+            AddItem(new LongPants());
+            AddItem(new Tunic(0x66D));
         }
 
         public override void Serialize(GenericWriter writer)

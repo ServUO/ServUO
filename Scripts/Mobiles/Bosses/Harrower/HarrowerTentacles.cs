@@ -74,11 +74,11 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_Harrower;
+                return m_Harrower;
             }
             set
             {
-                this.m_Harrower = value;
+                m_Harrower = value;
             }
         }
         public override bool AutoDispel => true;
@@ -121,9 +121,9 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich, 2);
-            this.AddLoot(LootPack.MedScrolls, 3);
-            this.AddLoot(LootPack.HighScrolls, 2);
+            AddLoot(LootPack.FilthyRich, 2);
+            AddLoot(LootPack.MedScrolls, 3);
+            AddLoot(LootPack.HighScrolls, 2);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -131,7 +131,7 @@ namespace Server.Mobiles
             base.Serialize(writer);
             writer.Write(0); // version
 
-            writer.Write(this.m_Harrower);
+            writer.Write(m_Harrower);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -139,17 +139,17 @@ namespace Server.Mobiles
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            this.m_Harrower = reader.ReadMobile();
-            this.m_Timer = new DrainTimer(this);
-            this.m_Timer.Start();
+            m_Harrower = reader.ReadMobile();
+            m_Timer = new DrainTimer(this);
+            m_Timer.Start();
         }
 
         public override void OnAfterDelete()
         {
-            if (this.m_Timer != null)
-                this.m_Timer.Stop();
+            if (m_Timer != null)
+                m_Timer.Stop();
 
-            this.m_Timer = null;
+            m_Timer = null;
 
             base.OnAfterDelete();
         }
@@ -161,15 +161,15 @@ namespace Server.Mobiles
             public DrainTimer(HarrowerTentacles owner)
                 : base(TimeSpan.FromSeconds(5.0), TimeSpan.FromSeconds(5.0))
             {
-                this.m_Owner = owner;
-                this.Priority = TimerPriority.TwoFiftyMS;
+                m_Owner = owner;
+                Priority = TimerPriority.TwoFiftyMS;
             }
 
             protected override void OnTick()
             {
-                if (this.m_Owner.Deleted)
+                if (m_Owner.Deleted)
                 {
-                    this.Stop();
+                    Stop();
                     return;
                 }
 
@@ -177,7 +177,7 @@ namespace Server.Mobiles
 
                 foreach (Mobile m in eable)
                 {
-                    if (m == this.m_Owner || m == this.m_Owner.Harrower || !this.m_Owner.CanBeHarmful(m))
+                    if (m == m_Owner || m == m_Owner.Harrower || !m_Owner.CanBeHarmful(m))
                         continue;
 
                     if (m is BaseCreature)
@@ -197,7 +197,7 @@ namespace Server.Mobiles
 
                 foreach (Mobile m in m_ToDrain)
                 {
-                    this.m_Owner.DoHarmful(m);
+                    m_Owner.DoHarmful(m);
 
                     m.FixedParticles(0x374A, 10, 15, 5013, 0x455, 0, EffectLayer.Waist);
                     m.PlaySound(0x1F1);
@@ -212,12 +212,12 @@ namespace Server.Mobiles
                     }
                     //end 
 
-                    this.m_Owner.Hits += drain;
+                    m_Owner.Hits += drain;
 
-                    if (this.m_Owner.Harrower != null)
-                        this.m_Owner.Harrower.Hits += drain;
+                    if (m_Owner.Harrower != null)
+                        m_Owner.Harrower.Hits += drain;
 
-                    m.Damage(drain, this.m_Owner);
+                    m.Damage(drain, m_Owner);
                 }
 
                 m_ToDrain.Clear();

@@ -6,7 +6,7 @@ namespace Server.Items
         public PartiallyDigestedTorso()
             : base(0x1D9F)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public PartiallyDigestedTorso(Serial serial)

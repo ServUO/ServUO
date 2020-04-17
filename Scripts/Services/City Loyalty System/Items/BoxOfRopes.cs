@@ -27,7 +27,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (CityLoyaltySystem.Enabled && CityLoyaltySystem.IsSetup() && from.InRange(this.Location, 3))
+            if (CityLoyaltySystem.Enabled && CityLoyaltySystem.IsSetup() && from.InRange(Location, 3))
             {
                 if (_Cooldown == null || !_Cooldown.ContainsKey(from) || _Cooldown[from] < DateTime.UtcNow)
                 {

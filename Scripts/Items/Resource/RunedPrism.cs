@@ -6,7 +6,7 @@ namespace Server.Items
         public RunedPrism()
             : base(0x2F57)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public RunedPrism(Serial serial)

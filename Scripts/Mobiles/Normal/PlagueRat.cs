@@ -8,33 +8,33 @@ namespace Server.Mobiles
         public PlagueRat()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a Clan Ribbon Plague Rat";
-            this.Body = 0xD7;
-            this.Hue = 1710;
-            this.BaseSoundID = 0x188;
+            Name = "a Clan Ribbon Plague Rat";
+            Body = 0xD7;
+            Hue = 1710;
+            BaseSoundID = 0x188;
 
-            this.SetStr(59);
-            this.SetDex(51);
-            this.SetInt(17);
+            SetStr(59);
+            SetDex(51);
+            SetInt(17);
 
-            this.SetHits(92);
-            this.SetMana(0);
+            SetHits(92);
+            SetMana(0);
 
-            this.SetDamage(4, 8);
+            SetDamage(4, 8);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 35, 40);
-            this.SetResistance(ResistanceType.Fire, 20, 25);
-            this.SetResistance(ResistanceType.Cold, 25, 35);
-            this.SetResistance(ResistanceType.Energy, 35, 40);
+            SetResistance(ResistanceType.Physical, 35, 40);
+            SetResistance(ResistanceType.Fire, 20, 25);
+            SetResistance(ResistanceType.Cold, 25, 35);
+            SetResistance(ResistanceType.Energy, 35, 40);
 
-            this.SetSkill(SkillName.MagicResist, 25.1, 30.0);
-            this.SetSkill(SkillName.Tactics, 34.5, 40.0);
-            this.SetSkill(SkillName.Wrestling, 40.5, 45.0);
+            SetSkill(SkillName.MagicResist, 25.1, 30.0);
+            SetSkill(SkillName.Tactics, 34.5, 40.0);
+            SetSkill(SkillName.Wrestling, 40.5, 45.0);
 
-            this.Fame = 300;
-            this.Karma = -300;
+            Fame = 300;
+            Karma = -300;
         }
 
         public PlagueRat(Serial serial)
@@ -47,7 +47,7 @@ namespace Server.Mobiles
         public override FoodType FavoriteFood => FoodType.Fish | FoodType.Meat | FoodType.FruitsAndVegies | FoodType.Eggs;
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich);
+            AddLoot(LootPack.Rich);
         }
 
         public override void Serialize(GenericWriter writer)

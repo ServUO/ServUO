@@ -11,8 +11,8 @@ namespace Server.Items
         [Constructable]
         public GargishLongTableEastAddon()
         {
-            this.AddComponent(new AddonComponent(0x4032), 0, 1, 0);
-            this.AddComponent(new AddonComponent(0x4031), 0, 0, 0);
+            AddComponent(new AddonComponent(0x4032), 0, 1, 0);
+            AddComponent(new AddonComponent(0x4031), 0, 0, 0);
         }
 
         public GargishLongTableEastAddon(Serial serial)

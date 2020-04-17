@@ -5,8 +5,8 @@ namespace Server.Items
         [Constructable]
         public StoneFireplaceSouthAddon()
         {
-            this.AddComponent(new AddonComponent(0x967), -1, 0, 0);
-            this.AddComponent(new AddonComponent(0x961), 0, 0, 0);
+            AddComponent(new AddonComponent(0x967), -1, 0, 0);
+            AddComponent(new AddonComponent(0x961), 0, 0, 0);
         }
 
         public StoneFireplaceSouthAddon(Serial serial)

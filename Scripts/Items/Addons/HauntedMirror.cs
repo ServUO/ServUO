@@ -21,18 +21,18 @@ namespace Server.Items
 
             if (m.Alive && m.Player && (m.IsPlayer() || !m.Hidden))
             {
-                if (!Utility.InRange(old, this.Location, 2) && Utility.InRange(m.Location, this.Location, 2))
+                if (!Utility.InRange(old, Location, 2) && Utility.InRange(m.Location, Location, 2))
                 {
-                    if (this.ItemID == 0x2A7B || this.ItemID == 0x2A7D)
+                    if (ItemID == 0x2A7B || ItemID == 0x2A7D)
                     {
-                        Effects.PlaySound(this.Location, this.Map, Utility.RandomMinMax(0x551, 0x553));
-                        this.ItemID += 1;
+                        Effects.PlaySound(Location, Map, Utility.RandomMinMax(0x551, 0x553));
+                        ItemID += 1;
                     }
                 }
-                else if (Utility.InRange(old, this.Location, 2) && !Utility.InRange(m.Location, this.Location, 2))
+                else if (Utility.InRange(old, Location, 2) && !Utility.InRange(m.Location, Location, 2))
                 {
-                    if (this.ItemID == 0x2A7C || this.ItemID == 0x2A7E)
-                        this.ItemID -= 1;
+                    if (ItemID == 0x2A7C || ItemID == 0x2A7E)
+                        ItemID -= 1;
                 }
             }
         }
@@ -58,7 +58,7 @@ namespace Server.Items
         public HaunterMirrorAddon()
             : base()
         {
-            this.AddComponent(new HaunterMirrorComponent(), 0, 0, 0);
+            AddComponent(new HaunterMirrorComponent(), 0, 0, 0);
         }
 
         public HaunterMirrorAddon(Serial serial)
@@ -89,7 +89,7 @@ namespace Server.Items
         public HauntedMirrorDeed()
             : base()
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public HauntedMirrorDeed(Serial serial)

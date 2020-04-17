@@ -21,14 +21,14 @@ namespace Server.Engines.Quests.TimeLord
                 TimeForLegendsQuest q = System as TimeForLegendsQuest;
 
                 if (q.ToSlay == null)
-                    gump.AddHtmlObject(70, 260, 270, 100, this.Completed ? 1049077 : 1049078, BaseQuestGump.Blue, false, false);
+                    gump.AddHtmlObject(70, 260, 270, 100, Completed ? 1049077 : 1049078, BaseQuestGump.Blue, false, false);
                 else
                 {
                     int index = Array.IndexOf(TimeForLegendsQuest.Targets, q.ToSlay);
 
                     gump.AddHtmlObject(70, 260, 150, 100, index <= 13 ? 1156324 + index : 1156354 + (index - 14), BaseQuestGump.Blue, false, false);
                     gump.AddHtmlObject(230, 260, 10, 100, ":", BaseQuestGump.Blue, false, false);
-                    gump.AddHtmlObject(235, 260, 150, 100, this.Completed ? 1046033 : 1046034, BaseQuestGump.Blue, false, false);
+                    gump.AddHtmlObject(235, 260, 150, 100, Completed ? 1046033 : 1046034, BaseQuestGump.Blue, false, false);
                 }
             }
         }

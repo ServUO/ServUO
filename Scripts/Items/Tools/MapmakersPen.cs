@@ -9,14 +9,14 @@ namespace Server.Items
         public MapmakersPen()
             : base(0x0FBF)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         [Constructable]
         public MapmakersPen(int uses)
             : base(uses, 0x0FBF)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public MapmakersPen(Serial serial)
@@ -39,8 +39,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (this.Weight == 2.0)
-                this.Weight = 1.0;
+            if (Weight == 2.0)
+                Weight = 1.0;
         }
     }
 }

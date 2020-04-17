@@ -27,10 +27,10 @@ namespace Server.Items
         public override Race RequiredRace => Race.Gargoyle;
         public bool Dye(Mobile from, DyeTub sender)
         {
-            if (this.Deleted)
+            if (Deleted)
                 return false;
 
-            this.Hue = sender.DyedHue;
+            Hue = sender.DyedHue;
 
             return true;
         }

@@ -8,7 +8,7 @@ namespace Server.Items
         public ElvenPodium()
             : base(0x2DDD)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public ElvenPodium(Serial serial)

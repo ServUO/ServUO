@@ -9,11 +9,11 @@ namespace Server.Items
         public WallTorch()
             : base(0xA05)
         {
-            this.Movable = false;
-            this.Duration = TimeSpan.Zero; // Never burnt out
-            this.Burning = false;
-            this.Light = LightType.WestBig;
-            this.Weight = 3.0;
+            Movable = false;
+            Duration = TimeSpan.Zero; // Never burnt out
+            Burning = false;
+            Light = LightType.WestBig;
+            Weight = 3.0;
         }
 
         public WallTorch(Serial serial)
@@ -25,7 +25,7 @@ namespace Server.Items
         {
             get
             {
-                if (this.ItemID == 0xA05)
+                if (ItemID == 0xA05)
                     return 0xA07;
                 else
                     return 0xA0C;
@@ -35,7 +35,7 @@ namespace Server.Items
         {
             get
             {
-                if (this.ItemID == 0xA07)
+                if (ItemID == 0xA07)
                     return 0xA05;
                 else
                     return 0xA0A;
@@ -43,24 +43,24 @@ namespace Server.Items
         }
         public void Flip()
         {
-            if (this.Light == LightType.WestBig)
-                this.Light = LightType.NorthBig;
-            else if (this.Light == LightType.NorthBig)
-                this.Light = LightType.WestBig;
+            if (Light == LightType.WestBig)
+                Light = LightType.NorthBig;
+            else if (Light == LightType.NorthBig)
+                Light = LightType.WestBig;
 
-            switch (this.ItemID)
+            switch (ItemID)
             {
                 case 0xA05:
-                    this.ItemID = 0xA0A;
+                    ItemID = 0xA0A;
                     break;
                 case 0xA07:
-                    this.ItemID = 0xA0C;
+                    ItemID = 0xA0C;
                     break;
                 case 0xA0A:
-                    this.ItemID = 0xA05;
+                    ItemID = 0xA05;
                     break;
                 case 0xA0C:
-                    this.ItemID = 0xA07;
+                    ItemID = 0xA07;
                     break;
             }
         }

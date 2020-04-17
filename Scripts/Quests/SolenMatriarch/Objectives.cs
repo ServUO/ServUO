@@ -11,17 +11,17 @@ namespace Server.Engines.Quests.Matriarch
 
         public override object Message =>
                 // Kill 7 black/red solen infiltrators.
-                ((SolenMatriarchQuest)this.System).RedSolen ? 1054086 : 1054085;
+                ((SolenMatriarchQuest)System).RedSolen ? 1054086 : 1054085;
         public override int MaxProgress => 7;
         public override void RenderProgress(BaseQuestGump gump)
         {
-            if (!this.Completed)
+            if (!Completed)
             {
                 // Black/Red Solen Infiltrators killed:
-                gump.AddHtmlLocalized(70, 260, 270, 100, ((SolenMatriarchQuest)this.System).RedSolen ? 1054088 : 1054087, BaseQuestGump.Blue, false, false);
-                gump.AddLabel(70, 280, 0x64, this.CurProgress.ToString());
+                gump.AddHtmlLocalized(70, 260, 270, 100, ((SolenMatriarchQuest)System).RedSolen ? 1054088 : 1054087, BaseQuestGump.Blue, false, false);
+                gump.AddLabel(70, 280, 0x64, CurProgress.ToString());
                 gump.AddLabel(100, 280, 0x64, "/");
-                gump.AddLabel(130, 280, 0x64, this.MaxProgress.ToString());
+                gump.AddLabel(130, 280, 0x64, MaxProgress.ToString());
             }
             else
             {
@@ -31,10 +31,10 @@ namespace Server.Engines.Quests.Matriarch
 
         public override bool IgnoreYoungProtection(Mobile from)
         {
-            if (this.Completed)
+            if (Completed)
                 return false;
 
-            bool redSolen = ((SolenMatriarchQuest)this.System).RedSolen;
+            bool redSolen = ((SolenMatriarchQuest)System).RedSolen;
 
             if (redSolen)
                 return from is BlackSolenInfiltratorWarrior || from is BlackSolenInfiltratorQueen;
@@ -44,23 +44,23 @@ namespace Server.Engines.Quests.Matriarch
 
         public override void OnKill(BaseCreature creature, Container corpse)
         {
-            bool redSolen = ((SolenMatriarchQuest)this.System).RedSolen;
+            bool redSolen = ((SolenMatriarchQuest)System).RedSolen;
 
             if (redSolen)
             {
                 if (creature is BlackSolenInfiltratorWarrior || creature is BlackSolenInfiltratorQueen)
-                    this.CurProgress++;
+                    CurProgress++;
             }
             else
             {
                 if (creature is RedSolenInfiltratorWarrior || creature is RedSolenInfiltratorQueen)
-                    this.CurProgress++;
+                    CurProgress++;
             }
         }
 
         public override void OnComplete()
         {
-            this.System.AddObjective(new ReturnAfterKillsObjective());
+            System.AddObjective(new ReturnAfterKillsObjective());
         }
     }
 
@@ -77,7 +77,7 @@ namespace Server.Engines.Quests.Matriarch
                 1054090;
         public override void OnComplete()
         {
-            this.System.AddConversation(new GatherWaterConversation());
+            System.AddConversation(new GatherWaterConversation());
         }
     }
 
@@ -93,12 +93,12 @@ namespace Server.Engines.Quests.Matriarch
         public override int MaxProgress => 40;
         public override void RenderProgress(BaseQuestGump gump)
         {
-            if (!this.Completed)
+            if (!Completed)
             {
                 gump.AddHtmlLocalized(70, 260, 270, 100, 1054093, BaseQuestGump.Blue, false, false); // Gallons of Water gathered:
-                gump.AddLabel(70, 280, 0x64, (this.CurProgress / 5).ToString());
+                gump.AddLabel(70, 280, 0x64, (CurProgress / 5).ToString());
                 gump.AddLabel(100, 280, 0x64, "/");
-                gump.AddLabel(130, 280, 0x64, (this.MaxProgress / 5).ToString());
+                gump.AddLabel(130, 280, 0x64, (MaxProgress / 5).ToString());
             }
             else
             {
@@ -108,7 +108,7 @@ namespace Server.Engines.Quests.Matriarch
 
         public override void OnComplete()
         {
-            this.System.AddObjective(new ReturnAfterWaterObjective());
+            System.AddObjective(new ReturnAfterWaterObjective());
         }
     }
 
@@ -123,12 +123,12 @@ namespace Server.Engines.Quests.Matriarch
                 1054095;
         public override void OnComplete()
         {
-            PlayerMobile player = this.System.From;
-            bool redSolen = ((SolenMatriarchQuest)this.System).RedSolen;
+            PlayerMobile player = System.From;
+            bool redSolen = ((SolenMatriarchQuest)System).RedSolen;
 
             bool friend = SolenMatriarchQuest.IsFriend(player, redSolen);
 
-            this.System.AddConversation(new ProcessFungiConversation(friend));
+            System.AddConversation(new ProcessFungiConversation(friend));
 
             if (redSolen)
                 player.SolenFriendship = SolenFriendship.Red;
@@ -148,13 +148,13 @@ namespace Server.Engines.Quests.Matriarch
                 1054098;
         public override void OnComplete()
         {
-            if (SolenMatriarchQuest.GiveRewardTo(this.System.From))
+            if (SolenMatriarchQuest.GiveRewardTo(System.From))
             {
-                this.System.Complete();
+                System.Complete();
             }
             else
             {
-                this.System.AddConversation(new FullBackpackConversation(true));
+                System.AddConversation(new FullBackpackConversation(true));
             }
         }
     }
@@ -170,7 +170,7 @@ namespace Server.Engines.Quests.Matriarch
                 1054149;
         public override void OnComplete()
         {
-            this.System.AddConversation(new EndConversation());
+            System.AddConversation(new EndConversation());
         }
     }
 }

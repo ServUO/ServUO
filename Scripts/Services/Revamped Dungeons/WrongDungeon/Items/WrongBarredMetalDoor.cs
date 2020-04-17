@@ -14,39 +14,39 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Picker
         {
-            get { return this.m_Picker; }
-            set { this.m_Picker = value; }
+            get { return m_Picker; }
+            set { m_Picker = value; }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int MaxLockLevel
         {
-            get { return this.m_MaxLockLevel; }
-            set { this.m_MaxLockLevel = value; }
+            get { return m_MaxLockLevel; }
+            set { m_MaxLockLevel = value; }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int LockLevel
         {
-            get { return this.m_LockLevel; }
-            set { this.m_LockLevel = value; }
+            get { return m_LockLevel; }
+            set { m_LockLevel = value; }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int RequiredSkill
         {
-            get { return this.m_RequiredSkill; }
-            set { this.m_RequiredSkill = value; }
+            get { return m_RequiredSkill; }
+            set { m_RequiredSkill = value; }
         }
 
         [Constructable]
         public WrongBarredMetalDoor(DoorFacing facing)
             : base(0x685 + (2 * (int)facing), 0x686 + (2 * (int)facing), 0xEC, 0xF3, BaseDoor.GetOffset(facing))
         {
-            this.Locked = true;
-            this.m_LockLevel = 80;
-            this.m_MaxLockLevel = 110;
-            this.m_RequiredSkill = 100;
+            Locked = true;
+            m_LockLevel = 80;
+            m_MaxLockLevel = 110;
+            m_RequiredSkill = 100;
         }
 
         public WrongBarredMetalDoor(Serial serial) : base(serial)
@@ -55,16 +55,16 @@ namespace Server.Items
 
         public virtual void LockPick(Mobile from)
         {
-            this.Picker = from;
-            this.Locked = false;
-            this.m_Timer = new InternalTimer(this);
-            this.m_Timer.Start();
+            Picker = from;
+            Locked = false;
+            m_Timer = new InternalTimer(this);
+            m_Timer.Start();
         }
 
         public override void OnTelekinesis(Mobile from)
         {
-            this.m_Timer = new InternalTimer(this);
-            this.m_Timer.Start();
+            m_Timer = new InternalTimer(this);
+            m_Timer.Start();
 
             if (from.Skills.Magery.Value >= m_RequiredSkill)
             {
@@ -76,8 +76,8 @@ namespace Server.Items
 
         public void OnMageUnlock(Mobile from)
         {
-            this.m_Timer = new InternalTimer(this);
-            this.m_Timer.Start();
+            m_Timer = new InternalTimer(this);
+            m_Timer.Start();
 
             if (from.Skills.Magery.Value >= m_RequiredSkill)
             {
@@ -89,11 +89,11 @@ namespace Server.Items
         {
             if (m_MagicUnlocked)
             {
-                this.Locked = false;
+                Locked = false;
                 m_MagicUnlocked = false;
             }
 
-            if (this.Locked && !this.Open)
+            if (Locked && !Open)
             {
                 from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 501746); // It appears to be locked.
                 return;
@@ -108,13 +108,13 @@ namespace Server.Items
             public InternalTimer(BaseDoor door)
                 : base(TimeSpan.FromSeconds(10.0))
             {
-                this.Priority = TimerPriority.OneSecond;
-                this.m_Door = door;
+                Priority = TimerPriority.OneSecond;
+                m_Door = door;
             }
 
             protected override void OnTick()
             {
-                this.m_Door.Locked = true;
+                m_Door.Locked = true;
             }
         }
 
@@ -137,7 +137,7 @@ namespace Server.Items
             m_MaxLockLevel = reader.ReadInt();
             m_LockLevel = reader.ReadInt();
 
-            this.Locked = true;
+            Locked = true;
         }
     }
 }

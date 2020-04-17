@@ -236,7 +236,7 @@ namespace Server.Spells.Mysticism
             m_Owner = owner;
             m_Amount = 0;
             m_NextUse = DateTime.UtcNow;
-            this.Start();
+            Start();
         }
 
         protected override void OnTick()
@@ -246,7 +246,7 @@ namespace Server.Spells.Mysticism
 
         private void EndTimer()
         {
-            this.Stop();
+            Stop();
             SpellPlagueSpell.RemoveFromList(m_Owner);
         }
     }

@@ -6,7 +6,7 @@ namespace Server.Items
         public EnchantedSwitch()
             : base(0x2F5C)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public EnchantedSwitch(Serial serial)

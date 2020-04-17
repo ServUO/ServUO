@@ -46,7 +46,7 @@ namespace Server.Mobiles
         public override int Meat => 2;
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich, 2);
+            AddLoot(LootPack.Rich, 2);
         }
 
         public override void Serialize(GenericWriter writer)

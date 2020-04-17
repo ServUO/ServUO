@@ -42,7 +42,7 @@ namespace Server.Items
                         if (pack.CheckHold(from, match, true))
                         {
                             pack.DropItem(match);
-                            this.Amount--;
+                            Amount--;
 
                             match.ItemID = 2578;
                             from.SendSound(0x047);

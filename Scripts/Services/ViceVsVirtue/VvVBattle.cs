@@ -342,7 +342,7 @@ namespace Server.Engines.VvV
             UnContested = true;
             bool checkAggression = ViceVsVirtueSystem.EnhancedRules && NextCombatHeatCycle < DateTime.UtcNow;
 
-            foreach (PlayerMobile pm in this.Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+            foreach (PlayerMobile pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
             {
                 bool vvv = ViceVsVirtueSystem.IsVvV(pm);
 
@@ -532,7 +532,7 @@ namespace Server.Engines.VvV
 
             leader.Silver += AwardSilver(WinSilver + (OppositionCount(leader.Guild) * 50));
 
-            foreach (Mobile m in this.Region.GetEnumeratedMobiles())
+            foreach (Mobile m in Region.GetEnumeratedMobiles())
             {
                 Guild g = m.Guild as Guild;
 
@@ -621,7 +621,7 @@ namespace Server.Engines.VvV
             if (Altars == null || Region == null)
                 return;
 
-            foreach (PlayerMobile pm in this.Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+            foreach (PlayerMobile pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
             {
                 if (pm.NetState != null && pm.QuestArrow == null)
                 {
@@ -954,7 +954,7 @@ namespace Server.Engines.VvV
 
             Region r = Region.Find(m.Location, m.Map);
 
-            return r == this.Region;
+            return r == Region;
         }
 
         public void OnEnterRegion(Mobile m)
@@ -981,7 +981,7 @@ namespace Server.Engines.VvV
             if (Region == null)
                 return;
 
-            foreach (PlayerMobile m in this.Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+            foreach (PlayerMobile m in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
             {
                 if (!ViceVsVirtueSystem.IsVvV(m) || m.NetState == null)
                     continue;
@@ -1004,7 +1004,7 @@ namespace Server.Engines.VvV
             if (Region == null)
                 return;
 
-            foreach (PlayerMobile m in this.Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+            foreach (PlayerMobile m in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
             {
                 if (ViceVsVirtueSystem.IsVvV(m))
                 {

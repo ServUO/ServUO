@@ -26,11 +26,11 @@ namespace Server.Items
         public Snowman(int hue, string title)
             : base(Utility.Random(0x2328, 2))
         {
-            this.Weight = 10.0;
-            this.Hue = hue;
-            this.LootType = LootType.Blessed;
+            Weight = 10.0;
+            Hue = hue;
+            LootType = LootType.Blessed;
 
-            this.m_Title = title;
+            m_Title = title;
         }
 
         public Snowman(Serial serial)
@@ -43,12 +43,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Title;
+                return m_Title;
             }
             set
             {
-                this.m_Title = value;
-                this.InvalidateProperties();
+                m_Title = value;
+                InvalidateProperties();
             }
         }
         public static string GetRandomTitle()
@@ -121,16 +121,16 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if (this.m_Title != null)
-                list.Add(1062841, this.m_Title); // ~1_NAME~ the Snowman
+            if (m_Title != null)
+                list.Add(1062841, m_Title); // ~1_NAME~ the Snowman
         }
 
         public bool Dye(Mobile from, DyeTub sender)
         {
-            if (this.Deleted)
+            if (Deleted)
                 return false;
 
-            this.Hue = sender.DyedHue;
+            Hue = sender.DyedHue;
 
             return true;
         }
@@ -154,12 +154,12 @@ namespace Server.Items
             {
                 case 1:
                     {
-                        this.m_Title = reader.ReadString();
+                        m_Title = reader.ReadString();
                         break;
                     }
             }
 
-            Utility.Intern(ref this.m_Title);
+            Utility.Intern(ref m_Title);
         }
     }
 }

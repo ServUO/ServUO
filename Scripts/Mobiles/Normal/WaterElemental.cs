@@ -15,39 +15,39 @@ namespace Server.Mobiles
         public WaterElemental()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a water elemental";
-            this.Body = 16;
-            this.BaseSoundID = 278;
+            Name = "a water elemental";
+            Body = 16;
+            BaseSoundID = 278;
 
-            this.SetStr(126, 155);
-            this.SetDex(66, 85);
-            this.SetInt(101, 125);
+            SetStr(126, 155);
+            SetDex(66, 85);
+            SetInt(101, 125);
 
-            this.SetHits(76, 93);
+            SetHits(76, 93);
 
-            this.SetDamage(7, 9);
+            SetDamage(7, 9);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 35, 45);
-            this.SetResistance(ResistanceType.Fire, 10, 25);
-            this.SetResistance(ResistanceType.Cold, 10, 25);
-            this.SetResistance(ResistanceType.Poison, 60, 70);
-            this.SetResistance(ResistanceType.Energy, 5, 10);
+            SetResistance(ResistanceType.Physical, 35, 45);
+            SetResistance(ResistanceType.Fire, 10, 25);
+            SetResistance(ResistanceType.Cold, 10, 25);
+            SetResistance(ResistanceType.Poison, 60, 70);
+            SetResistance(ResistanceType.Energy, 5, 10);
 
-            this.SetSkill(SkillName.EvalInt, 60.1, 75.0);
-            this.SetSkill(SkillName.Magery, 60.1, 75.0);
-            this.SetSkill(SkillName.MagicResist, 100.1, 115.0);
-            this.SetSkill(SkillName.Tactics, 50.1, 70.0);
-            this.SetSkill(SkillName.Wrestling, 50.1, 70.0);
+            SetSkill(SkillName.EvalInt, 60.1, 75.0);
+            SetSkill(SkillName.Magery, 60.1, 75.0);
+            SetSkill(SkillName.MagicResist, 100.1, 115.0);
+            SetSkill(SkillName.Tactics, 50.1, 70.0);
+            SetSkill(SkillName.Wrestling, 50.1, 70.0);
 
-            this.Fame = 4500;
-            this.Karma = -4500;
+            Fame = 4500;
+            Karma = -4500;
 
-            this.ControlSlots = 3;
-            this.CanSwim = true;
+            ControlSlots = 3;
+            CanSwim = true;
 
-            this.PackItem(new BlackPearl(3));
+            PackItem(new BlackPearl(3));
         }
 
         public WaterElemental(Serial serial)
@@ -61,9 +61,9 @@ namespace Server.Mobiles
         public override int TreasureMapLevel => 2;
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Average);
-            this.AddLoot(LootPack.Meager);
-            this.AddLoot(LootPack.Potions);
+            AddLoot(LootPack.Average);
+            AddLoot(LootPack.Meager);
+            AddLoot(LootPack.Potions);
         }
 
         public override void Serialize(GenericWriter writer)

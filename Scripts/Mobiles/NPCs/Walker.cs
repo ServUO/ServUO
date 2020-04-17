@@ -36,32 +36,32 @@ namespace Server.Engines.Quests
         public EyesOfRangerQuest()
             : base()
         {
-            this.AddObjective(new ApprenticeObjective(SkillName.Tracking, 50, "Enhanced Tracking Skill", 1078215, 1078216));
+            AddObjective(new ApprenticeObjective(SkillName.Tracking, 50, "Enhanced Tracking Skill", 1078215, 1078216));
 
             // 1078215 You feel you can track creatures here with ease. Your Tracking skill is enhanced in this area.
             // 1078216 You feel it is more difficult to track creatures here. Your Tracking skill is no longer enhanced.
 
-            this.AddReward(new BaseReward(typeof(WalkersLeggings), 1078222));
+            AddReward(new BaseReward(typeof(WalkersLeggings), 1078222));
         }
 
         public override bool CanOffer()
         {
             #region Scroll of Alacrity
-            PlayerMobile pm = this.Owner as PlayerMobile;
+            PlayerMobile pm = Owner as PlayerMobile;
             if (pm.AcceleratedStart > DateTime.UtcNow)
             {
-                this.Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
+                Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
                 return false;
             }
             #endregion
             else
-                return this.Owner.Skills.Tracking.Base < 50;
+                return Owner.Skills.Tracking.Base < 50;
         }
 
         public override void OnCompleted()
         {
-            this.Owner.SendLocalizedMessage(1078220, null, 0x23); // You have achieved the rank of Apprentice Ranger (for Tracking). Return to Walker in New Haven to claim your reward.
-            this.Owner.PlaySound(this.CompleteSound);
+            Owner.SendLocalizedMessage(1078220, null, 0x23); // You have achieved the rank of Apprentice Ranger (for Tracking). Return to Walker in New Haven to claim your reward.
+            Owner.PlaySound(CompleteSound);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -90,13 +90,13 @@ namespace Server.Engines.Quests
         public Walker()
             : base("Walker", "The Tracking Instructor")
         {
-            this.SetSkill(SkillName.Hiding, 120.0, 120.0);
-            this.SetSkill(SkillName.Tactics, 120.0, 120.0);
-            this.SetSkill(SkillName.Tracking, 120.0, 120.0);
-            this.SetSkill(SkillName.Fencing, 120.0, 120.0);
-            this.SetSkill(SkillName.Wrestling, 120.0, 120.0);
-            this.SetSkill(SkillName.Stealth, 120.0, 120.0);
-            this.SetSkill(SkillName.Ninjitsu, 120.0, 120.0);
+            SetSkill(SkillName.Hiding, 120.0, 120.0);
+            SetSkill(SkillName.Tactics, 120.0, 120.0);
+            SetSkill(SkillName.Tracking, 120.0, 120.0);
+            SetSkill(SkillName.Fencing, 120.0, 120.0);
+            SetSkill(SkillName.Wrestling, 120.0, 120.0);
+            SetSkill(SkillName.Stealth, 120.0, 120.0);
+            SetSkill(SkillName.Ninjitsu, 120.0, 120.0);
         }
 
         public Walker(Serial serial)
@@ -106,32 +106,32 @@ namespace Server.Engines.Quests
 
         public override void Advertise()
         {
-            this.Say(Utility.RandomMinMax(1078212, 1078214));
+            Say(Utility.RandomMinMax(1078212, 1078214));
         }
 
         public override void OnOfferFailed()
         {
-            this.Say(1077772); // I cannot teach you, for you know all I can teach!
+            Say(1077772); // I cannot teach you, for you know all I can teach!
         }
 
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = false;
+            CantWalk = true;
+            Race = Race.Human;
 
             base.InitBody();
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Boots(0x455));
-            this.AddItem(new LongPants(0x455));
-            this.AddItem(new FancyShirt(0x47D));
-            this.AddItem(new FloppyHat(0x455));
+            AddItem(new Backpack());
+            AddItem(new Boots(0x455));
+            AddItem(new LongPants(0x455));
+            AddItem(new FancyShirt(0x47D));
+            AddItem(new FloppyHat(0x455));
         }
 
         public override void Serialize(GenericWriter writer)

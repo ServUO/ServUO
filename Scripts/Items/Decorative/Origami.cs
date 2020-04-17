@@ -23,7 +23,7 @@ namespace Server.Items
             }
             else
             {
-                this.Delete();
+                Delete();
 
                 Item i = null;
 
@@ -67,7 +67,7 @@ namespace Server.Items
         public OrigamiButterfly()
             : base(0x2838)
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public OrigamiButterfly(Serial serial)
@@ -97,7 +97,7 @@ namespace Server.Items
         public OrigamiSwan()
             : base(0x2839)
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public OrigamiSwan(Serial serial)
@@ -127,7 +127,7 @@ namespace Server.Items
         public OrigamiFrog()
             : base(0x283A)
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public OrigamiFrog(Serial serial)
@@ -157,7 +157,7 @@ namespace Server.Items
         public OrigamiShape()
             : base(0x283B)
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public OrigamiShape(Serial serial)
@@ -187,7 +187,7 @@ namespace Server.Items
         public OrigamiSongbird()
             : base(0x283C)
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public OrigamiSongbird(Serial serial)
@@ -217,7 +217,7 @@ namespace Server.Items
         public OrigamiFish()
             : base(0x283D)
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public OrigamiFish(Serial serial)

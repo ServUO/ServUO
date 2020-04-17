@@ -7,7 +7,7 @@ namespace Server.Items
         public AngelDecoration()
             : base(0x46FA)
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public AngelDecoration(Serial serial)

@@ -31,7 +31,7 @@ namespace Server.Spells.Chivalry
 
         public override void OnCast()
         {
-            if (this.CheckSequence())
+            if (CheckSequence())
             {
                 Caster.PlaySound(0xF5);
                 Caster.PlaySound(0x299);
@@ -83,7 +83,7 @@ namespace Server.Spells.Chivalry
                     if (context != null && context.Spell is NecromancerSpell)	//Trees are not evil!	TODO: OSI confirm?
                     {
                         // transformed ..
-                        double drainChance = 0.5 * (this.Caster.Skills.Chivalry.Value / Math.Max(m.Skills.Necromancy.Value, 1));
+                        double drainChance = 0.5 * (Caster.Skills.Chivalry.Value / Math.Max(m.Skills.Necromancy.Value, 1));
 
                         if (drainChance > Utility.RandomDouble())
                         {

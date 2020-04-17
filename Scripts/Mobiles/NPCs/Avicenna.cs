@@ -42,32 +42,32 @@ namespace Server.Engines.Quests
         public BruisesBandagesAndBloodQuest()
             : base()
         {
-            this.AddObjective(new ApprenticeObjective(SkillName.Healing, 50, "Old Haven Training", 1077677, 1077678));
+            AddObjective(new ApprenticeObjective(SkillName.Healing, 50, "Old Haven Training", 1077677, 1077678));
 
             // 1077677 You feel fresh and are eager to heal wounds. Your ability to improve your Healing skill is enhanced in this area.
             // 1077678 You feel as if you've seen enough blood to last a lifetime. Your Healing learning potential is no longer enhanced.
 
-            this.AddReward(new BaseReward(typeof(HealersTouch), 1077684));
+            AddReward(new BaseReward(typeof(HealersTouch), 1077684));
         }
 
         public override bool CanOffer()
         {
             #region Scroll of Alacrity
-            PlayerMobile pm = this.Owner as PlayerMobile;
+            PlayerMobile pm = Owner as PlayerMobile;
             if (pm.AcceleratedStart > DateTime.UtcNow)
             {
-                this.Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
+                Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
                 return false;
             }
             #endregion
             else
-                return this.Owner.Skills.Healing.Base < 50;
+                return Owner.Skills.Healing.Base < 50;
         }
 
         public override void OnCompleted()
         {
-            this.Owner.SendLocalizedMessage(1077682, null, 0x23); // You have achieved the rank of Apprentice Healer. Return to Avicenna in New Haven as soon as you can to claim your reward.
-            this.Owner.PlaySound(this.CompleteSound);
+            Owner.SendLocalizedMessage(1077682, null, 0x23); // You have achieved the rank of Apprentice Healer. Return to Avicenna in New Haven as soon as you can to claim your reward.
+            Owner.PlaySound(CompleteSound);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -96,12 +96,12 @@ namespace Server.Engines.Quests
         public Avicenna()
             : base("Avicenna", "The Healing Instructor")
         {
-            this.SetSkill(SkillName.Anatomy, 120.0, 120.0);
-            this.SetSkill(SkillName.Parry, 120.0, 120.0);
-            this.SetSkill(SkillName.Healing, 120.0, 120.0);
-            this.SetSkill(SkillName.Tactics, 120.0, 120.0);
-            this.SetSkill(SkillName.Swords, 120.0, 120.0);
-            this.SetSkill(SkillName.Focus, 120.0, 120.0);
+            SetSkill(SkillName.Anatomy, 120.0, 120.0);
+            SetSkill(SkillName.Parry, 120.0, 120.0);
+            SetSkill(SkillName.Healing, 120.0, 120.0);
+            SetSkill(SkillName.Tactics, 120.0, 120.0);
+            SetSkill(SkillName.Swords, 120.0, 120.0);
+            SetSkill(SkillName.Focus, 120.0, 120.0);
         }
 
         public Avicenna(Serial serial)
@@ -111,29 +111,29 @@ namespace Server.Engines.Quests
 
         public override void Advertise()
         {
-            this.Say(1078137); // A warrior needs to learn how to apply bandages to wounds.
+            Say(1078137); // A warrior needs to learn how to apply bandages to wounds.
         }
 
         public override void OnOfferFailed()
         {
-            this.Say(1077772); // I cannot teach you, for you know all I can teach!
+            Say(1077772); // I cannot teach you, for you know all I can teach!
         }
 
         public override void InitBody()
         {
-            this.Female = true;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = true;
+            CantWalk = true;
+            Race = Race.Human;
 
             base.InitBody();
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Robe(0x66D));
-            this.AddItem(new Boots());
-            this.AddItem(new GnarledStaff());
+            AddItem(new Backpack());
+            AddItem(new Robe(0x66D));
+            AddItem(new Boots());
+            AddItem(new GnarledStaff());
         }
 
         public override void Serialize(GenericWriter writer)

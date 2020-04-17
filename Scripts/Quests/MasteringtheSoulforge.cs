@@ -7,9 +7,9 @@ namespace Server.Engines.Quests
         public MasteringtheSoulforge()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(RelicFragment), "Relic Fragments", 50, 0x2DB3));
+            AddObjective(new ObtainObjective(typeof(RelicFragment), "Relic Fragments", 50, 0x2DB3));
 
-            this.AddReward(new BaseReward(typeof(ScrollBox2), "Knowledge"));
+            AddReward(new BaseReward(typeof(ScrollBox2), "Knowledge"));
         }
 
         public override object Title => "Mastering the Soulforge";

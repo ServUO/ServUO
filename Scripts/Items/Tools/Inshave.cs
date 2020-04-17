@@ -8,14 +8,14 @@ namespace Server.Items
         public Inshave()
             : base(0x10E6)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         [Constructable]
         public Inshave(int uses)
             : base(uses, 0x10E6)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public Inshave(Serial serial)

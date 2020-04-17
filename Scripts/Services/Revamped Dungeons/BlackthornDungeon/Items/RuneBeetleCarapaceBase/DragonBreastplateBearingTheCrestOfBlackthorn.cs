@@ -8,12 +8,12 @@ namespace Server.Items
         public DragonBreastplateBearingTheCrestOfBlackthorn()
         {
             ReforgedSuffix = ReforgedSuffix.Blackthorn;
-            this.Hue = 1773;
-            this.Attributes.BonusMana = 10;
-            this.Attributes.RegenMana = 3;
-            this.Attributes.LowerManaCost = 15;
-            this.ArmorAttributes.LowerStatReq = 100;
-            this.ArmorAttributes.MageArmor = 1;
+            Hue = 1773;
+            Attributes.BonusMana = 10;
+            Attributes.RegenMana = 3;
+            Attributes.LowerManaCost = 15;
+            ArmorAttributes.LowerStatReq = 100;
+            ArmorAttributes.MageArmor = 1;
         }
 
         public override int BasePhysicalResistance => 5;

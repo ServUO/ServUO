@@ -606,7 +606,7 @@ namespace Server.Mobiles
                     m_Timer.Stop();
                 }
 
-                this.Deleted = true;
+                Deleted = true;
 
                 // and remove it from the list
                 RemoveFromTagList(m_Spawner, this);
@@ -671,7 +671,7 @@ namespace Server.Mobiles
                             m_Timeout = reader.ReadTimeSpan();
                             m_TrigMob = reader.ReadMobile();
 
-                            this.DoTimer(delay, m_Delay, m_Condition, m_Goto);
+                            DoTimer(delay, m_Delay, m_Condition, m_Goto);
                         }
                         break;
                 }

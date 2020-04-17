@@ -8,7 +8,7 @@ namespace Server.Items
         public CloakBearingTheCrestOfBlackthorn()
         {
             ReforgedSuffix = ReforgedSuffix.Blackthorn;
-            this.Hue = 1766;
+            Hue = 1766;
             Attributes.DefendChance = 5;
         }
 

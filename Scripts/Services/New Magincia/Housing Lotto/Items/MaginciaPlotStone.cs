@@ -31,7 +31,7 @@ namespace Server.Engines.NewMagincia
             if (system == null || !system.Enabled || m_Plot == null)
                 return;
 
-            if (from.InRange(this.Location, 4))
+            if (from.InRange(Location, 4))
             {
                 if (m_Plot.LottoOngoing)
                 {

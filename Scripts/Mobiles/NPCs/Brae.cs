@@ -23,21 +23,21 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = true;
-            this.Race = Race.Elf;
+            Female = true;
+            Race = Race.Elf;
 
-            this.Hue = 0x80BF;
-            this.HairItemID = 0x2FC2;
-            this.HairHue = 0x8E;
+            Hue = 0x80BF;
+            HairItemID = 0x2FC2;
+            HairHue = 0x8E;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new ElvenBoots(0x901));
-            this.AddItem(new GemmedCirclet());
-            this.AddItem(new FemaleElvenRobe(0x44));
+            AddItem(new ElvenBoots(0x901));
+            AddItem(new GemmedCirclet());
+            AddItem(new FemaleElvenRobe(0x44));
         }
 
         public override void Serialize(GenericWriter writer)

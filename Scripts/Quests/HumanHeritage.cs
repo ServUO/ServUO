@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public IngenuityQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(PowerCrystal), "power crystals", 10, 0x1F1C));
+            AddObjective(new ObtainObjective(typeof(PowerCrystal), "power crystals", 10, 0x1F1C));
 
-            this.AddReward(new BaseReward(1074875)); // Another step closer to becoming human.
+            AddReward(new BaseReward(1074875)); // Another step closer to becoming human.
         }
 
         public override bool ForceRemember => true;
@@ -31,7 +31,7 @@ namespace Server.Engines.Quests
         {
             base.GiveRewards();
 
-            this.Owner.SendLocalizedMessage(1074946, null, 0x23); // You have demonstrated your ingenuity!  Humans are jacks of all trades and know a little about a lot of things.  You are one step closer to achieving humanity.
+            Owner.SendLocalizedMessage(1074946, null, 0x23); // You have demonstrated your ingenuity!  Humans are jacks of all trades and know a little about a lot of things.  You are one step closer to achieving humanity.
         }
 
         public override void Serialize(GenericWriter writer)
@@ -54,9 +54,9 @@ namespace Server.Engines.Quests
         public HeaveHoQuest()
             : base()
         {
-            this.AddObjective(new DeliverObjective(typeof(CrateForSledge), "crates for Sledge", 5, typeof(Sledge), "Sledge (Buc's Den)", 3600));
+            AddObjective(new DeliverObjective(typeof(CrateForSledge), "crates for Sledge", 5, typeof(Sledge), "Sledge (Buc's Den)", 3600));
 
-            this.AddReward(new BaseReward(1074875)); // Another step closer to becoming human.
+            AddReward(new BaseReward(1074875)); // Another step closer to becoming human.
         }
 
         public override bool ForceRemember => true;
@@ -77,7 +77,7 @@ namespace Server.Engines.Quests
         {
             base.GiveRewards();
 
-            this.Owner.SendLocalizedMessage(1074948, null, 0x23); // You have demonstrated your physical strength!  Humans can carry vast loads without complaint.  You are one step closer to achieving humanity.
+            Owner.SendLocalizedMessage(1074948, null, 0x23); // You have demonstrated your physical strength!  Humans can carry vast loads without complaint.  You are one step closer to achieving humanity.
         }
 
         public override void Serialize(GenericWriter writer)
@@ -100,9 +100,9 @@ namespace Server.Engines.Quests
         public ResponsibilityQuest()
             : base()
         {
-            this.AddObjective(new EscortObjective("Sheep Farm"));
+            AddObjective(new EscortObjective("Sheep Farm"));
 
-            this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
+            AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
         public override bool ForceRemember => true;
@@ -121,7 +121,7 @@ namespace Server.Engines.Quests
         {
             base.GiveRewards();
 
-            this.Owner.SendLocalizedMessage(1074949, null, 0x23); // You have demonstrated your compassion!  Your kind actions have been noted.
+            Owner.SendLocalizedMessage(1074949, null, 0x23); // You have demonstrated your compassion!  Your kind actions have been noted.
         }
 
         public override void Serialize(GenericWriter writer)
@@ -144,10 +144,10 @@ namespace Server.Engines.Quests
         public AllSeasonAdventurerQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Efreet), "efreets", 5, "Fire"));
-            this.AddObjective(new SlayObjective(typeof(IceFiend), "ice fiends", 5, "Ice"));
+            AddObjective(new SlayObjective(typeof(Efreet), "efreets", 5, "Fire"));
+            AddObjective(new SlayObjective(typeof(IceFiend), "ice fiends", 5, "Ice"));
 
-            this.AddReward(new BaseReward(1074875)); // Another step closer to becoming human.
+            AddReward(new BaseReward(1074875)); // Another step closer to becoming human.
         }
 
         public override bool ForceRemember => true;
@@ -167,7 +167,7 @@ namespace Server.Engines.Quests
         {
             base.GiveRewards();
 
-            this.Owner.SendLocalizedMessage(1074947, null, 0x23); // You have demonstrated your toughness!  Humans are able to endure unimaginable hardships in pursuit of their goals.  You are one step closer to achieving humanity.
+            Owner.SendLocalizedMessage(1074947, null, 0x23); // You have demonstrated your toughness!  Humans are able to endure unimaginable hardships in pursuit of their goals.  You are one step closer to achieving humanity.
         }
 
         public override void Serialize(GenericWriter writer)

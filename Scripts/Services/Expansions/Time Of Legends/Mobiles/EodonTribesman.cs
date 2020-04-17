@@ -164,14 +164,14 @@ namespace Server.Mobiles
         {
             base.AggressiveAction(aggressor, criminal);
 
-            if (this.Map == null)
+            if (Map == null)
                 return;
 
-            IPooledEnumerable eable = this.Map.GetMobilesInRange(this.Location, this.RangePerception);
+            IPooledEnumerable eable = Map.GetMobilesInRange(Location, RangePerception);
 
             foreach (Mobile m in eable)
             {
-                if (m != this && m != aggressor && m is BaseEodonTribesman && ((BaseEodonTribesman)m).TribeType == this.TribeType && m.Combatant == null)
+                if (m != this && m != aggressor && m is BaseEodonTribesman && ((BaseEodonTribesman)m).TribeType == TribeType && m.Combatant == null)
                 {
                     BaseEodonTribesman tribesman = m as BaseEodonTribesman;
                     m.Warmode = true;
@@ -189,7 +189,7 @@ namespace Server.Mobiles
         public override bool IsEnemy(Mobile m)
         {
             // Basically, this makes them FightMode.Agressor. More can can be added in to make htem attack others, such as other tribes, etc.
-            bool valid = this.Aggressors.FirstOrDefault(a => a.Attacker == m) != null;
+            bool valid = Aggressors.FirstOrDefault(a => a.Attacker == m) != null;
 
             if (!valid && MyrmidexInvasionSystem.Active)
                 valid = MyrmidexInvasionSystem.AreEnemies(this, m);
@@ -391,7 +391,7 @@ namespace Server.Mobiles
             }
         }
 
-        public override bool AlwaysAttackable => this.Region.IsPartOf<BattleRegion>();
+        public override bool AlwaysAttackable => Region.IsPartOf<BattleRegion>();
         public override bool ShowFameTitle => false;
 
         public override void GenerateLoot()
@@ -563,7 +563,7 @@ namespace Server.Mobiles
             }
         }
 
-        public override bool AlwaysAttackable => this.Region.IsPartOf<BattleRegion>();
+        public override bool AlwaysAttackable => Region.IsPartOf<BattleRegion>();
         public override bool ShowFameTitle => false;
 
         public TribeShaman(Serial serial) : base(serial)

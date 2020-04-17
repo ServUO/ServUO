@@ -114,7 +114,7 @@ namespace Server.Mobiles
             if (m_NextSpawn > DateTime.UtcNow || Helpers.Where(bc => bc.Deleted).Count() > 10)
                 return;
 
-            if (this.Hits > (this.HitsMax / 4))
+            if (Hits > (HitsMax / 4))
             {
                 if (0.25 >= Utility.RandomDouble())
                 {
@@ -149,18 +149,18 @@ namespace Server.Mobiles
 
         public void SpawnSpectralArmour(Mobile m)
         {
-            Map map = this.Map;
+            Map map = Map;
 
             if (map == null)
                 return;
 
             SpectralArmour spawned = new SpectralArmour();
 
-            spawned.Team = this.Team;
+            spawned.Team = Team;
             spawned.SummonMaster = this;
 
             bool validLocation = false;
-            Point3D loc = this.Location;
+            Point3D loc = Location;
 
             for (int j = 0; !validLocation && j < 10; ++j)
             {
@@ -168,7 +168,7 @@ namespace Server.Mobiles
                 int y = Y + Utility.Random(3) - 1;
                 int z = map.GetAverageZ(x, y);
 
-                if (validLocation = map.CanFit(x, y, this.Z, 16, false, false))
+                if (validLocation = map.CanFit(x, y, Z, 16, false, false))
                     loc = new Point3D(x, y, Z);
                 else if (validLocation = map.CanFit(x, y, z, 16, false, false))
                     loc = new Point3D(x, y, z);
@@ -203,7 +203,7 @@ namespace Server.Mobiles
         {
             DoHarmful(m);
 
-            this.MovingParticles(m, 0xEEF, 9, 0, false, true, 0, 0, 9502, 6014, 0x11D, EffectLayer.Waist, 0);
+            MovingParticles(m, 0xEEF, 9, 0, false, true, 0, 0, 9502, 6014, 0x11D, EffectLayer.Waist, 0);
 
             Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
             {

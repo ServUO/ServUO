@@ -111,11 +111,11 @@ namespace Server.Mobiles
         {
             double random = Utility.RandomDouble();
             if (0.05 >= random)
-                return this.CreateArtifact(this.UniqueList);
+                return CreateArtifact(UniqueList);
             else if (0.15 >= random)
-                return this.CreateArtifact(this.SharedList);
+                return CreateArtifact(SharedList);
             else if (0.30 >= random)
-                return this.CreateArtifact(this.DecorativeList);
+                return CreateArtifact(DecorativeList);
             return null;
         }
 
@@ -130,9 +130,9 @@ namespace Server.Mobiles
 
             Item artifact = Loot.Construct(type);
 
-            if (artifact is MonsterStatuette && this.StatueTypes.Length > 0)
+            if (artifact is MonsterStatuette && StatueTypes.Length > 0)
             {
-                ((MonsterStatuette)artifact).Type = this.StatueTypes[Utility.Random(this.StatueTypes.Length)];
+                ((MonsterStatuette)artifact).Type = StatueTypes[Utility.Random(StatueTypes.Length)];
                 ((MonsterStatuette)artifact).LootType = LootType.Regular;
             }
 
@@ -141,7 +141,7 @@ namespace Server.Mobiles
 
         public virtual void GivePowerScrolls()
         {
-            if (this.Map != Map.Felucca)
+            if (Map != Map.Felucca)
                 return;
 
             List<Mobile> toGive = new List<Mobile>();
@@ -151,7 +151,7 @@ namespace Server.Mobiles
             {
                 DamageStore ds = rights[i];
 
-                if (ds.m_HasRight && InRange(ds.m_Mobile, 100) && ds.m_Mobile.Map == this.Map)
+                if (ds.m_HasRight && InRange(ds.m_Mobile, 100) && ds.m_Mobile.Map == Map)
                     toGive.Add(ds.m_Mobile);
             }
 
@@ -228,9 +228,9 @@ namespace Server.Mobiles
         {
             if (CanGivePowerscrolls && !NoKillAwards)
             {
-                this.GivePowerScrolls();
+                GivePowerScrolls();
 
-                if (this.NoGoodies)
+                if (NoGoodies)
                     return base.OnBeforeDeath();
 
                 GoldShower.DoForChamp(Location, Map);
@@ -241,7 +241,7 @@ namespace Server.Mobiles
 
         public override void OnDeath(Container c)
         {
-            if (this.Map == Map.Felucca)
+            if (Map == Map.Felucca)
             {
                 //TODO: Confirm SE change or AoS one too?
                 List<DamageStore> rights = GetLootingRights();
@@ -258,9 +258,9 @@ namespace Server.Mobiles
                 if (SkullType != ChampionSkullType.None)
                 {
                     if (toGive.Count > 0)
-                        toGive[Utility.Random(toGive.Count)].AddToBackpack(new ChampionSkull(this.SkullType));
+                        toGive[Utility.Random(toGive.Count)].AddToBackpack(new ChampionSkull(SkullType));
                     else
-                        c.DropItem(new ChampionSkull(this.SkullType));
+                        c.DropItem(new ChampionSkull(SkullType));
                 }
 
                 RefinementComponent.Roll(c, 3, 0.10);

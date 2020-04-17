@@ -18,24 +18,24 @@ namespace Server.Engines.Quests.Collector
 
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Hue = 0x83F8;
+            Hue = 0x83F8;
 
-            this.Female = false;
-            this.Body = 0x190;
-            this.Name = "Tomas O'Neerlan";
+            Female = false;
+            Body = 0x190;
+            Name = "Tomas O'Neerlan";
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new FancyShirt());
-            this.AddItem(new LongPants(0x546));
-            this.AddItem(new Boots(0x452));
-            this.AddItem(new FullApron(0x455));
+            AddItem(new FancyShirt());
+            AddItem(new LongPants(0x546));
+            AddItem(new Boots(0x452));
+            AddItem(new FullApron(0x455));
 
-            this.HairItemID = 0x203B;	//ShortHair
-            this.HairHue = 0x455;
+            HairItemID = 0x203B;	//ShortHair
+            HairHue = 0x455;
         }
 
         public override bool CanTalkTo(PlayerMobile to)
@@ -56,7 +56,7 @@ namespace Server.Engines.Quests.Collector
 
             if (qs is CollectorQuest)
             {
-                this.Direction = this.GetDirectionTo(player);
+                Direction = GetDirectionTo(player);
 
                 QuestObjective obj = qs.FindObjective(typeof(FindTomasObjective));
 

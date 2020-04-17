@@ -10,37 +10,37 @@ namespace Server.Mobiles
         public Orc()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = NameList.RandomName("orc");
-            this.Body = 17;
-            this.BaseSoundID = 0x45A;
+            Name = NameList.RandomName("orc");
+            Body = 17;
+            BaseSoundID = 0x45A;
 
-            this.SetStr(96, 120);
-            this.SetDex(81, 105);
-            this.SetInt(36, 60);
+            SetStr(96, 120);
+            SetDex(81, 105);
+            SetInt(36, 60);
 
-            this.SetHits(58, 72);
+            SetHits(58, 72);
 
-            this.SetDamage(5, 7);
+            SetDamage(5, 7);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 25, 30);
-            this.SetResistance(ResistanceType.Fire, 20, 30);
-            this.SetResistance(ResistanceType.Cold, 10, 20);
-            this.SetResistance(ResistanceType.Poison, 10, 20);
-            this.SetResistance(ResistanceType.Energy, 20, 30);
+            SetResistance(ResistanceType.Physical, 25, 30);
+            SetResistance(ResistanceType.Fire, 20, 30);
+            SetResistance(ResistanceType.Cold, 10, 20);
+            SetResistance(ResistanceType.Poison, 10, 20);
+            SetResistance(ResistanceType.Energy, 20, 30);
 
-            this.SetSkill(SkillName.MagicResist, 50.1, 75.0);
-            this.SetSkill(SkillName.Tactics, 55.1, 80.0);
-            this.SetSkill(SkillName.Wrestling, 50.1, 70.0);
+            SetSkill(SkillName.MagicResist, 50.1, 75.0);
+            SetSkill(SkillName.Tactics, 55.1, 80.0);
+            SetSkill(SkillName.Wrestling, 50.1, 70.0);
 
-            this.Fame = 1500;
-            this.Karma = -1500;
+            Fame = 1500;
+            Karma = -1500;
 
-            this.PackItem(new ThighBoots());
+            PackItem(new ThighBoots());
 
             if (0.2 > Utility.RandomDouble())
-                this.PackItem(new BolaBall());
+                PackItem(new BolaBall());
 
             if (0.5 > Utility.RandomDouble())
                 PackItem(new Yeast());
@@ -60,7 +60,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Meager);
+            AddLoot(LootPack.Meager);
         }
 
         public override bool IsEnemy(Mobile m)

@@ -6,14 +6,14 @@ namespace Server.Items
         public PerfectEmeraldRing()
             : base()
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
 
             BaseRunicTool.ApplyAttributesTo(this, true, 0, Utility.RandomMinMax(2, 4), 0, 100);
 
             if (Utility.RandomBool())
-                this.Resistances.Poison += 10;
+                Resistances.Poison += 10;
             else
-                this.Attributes.SpellDamage += 5;
+                Attributes.SpellDamage += 5;
         }
 
         public PerfectEmeraldRing(Serial serial)

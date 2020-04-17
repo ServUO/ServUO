@@ -17,7 +17,7 @@ namespace Server.Items
         public BaseConfusionBlastPotion(PotionEffect effect)
             : base(0xF06, effect)
         {
-            this.Hue = 0x48D;
+            Hue = 0x48D;
         }
 
         public BaseConfusionBlastPotion(Serial serial)
@@ -48,8 +48,8 @@ namespace Server.Items
 
             from.RevealingAction();
 
-            if (!this.m_Users.Contains(from))
-                this.m_Users.Add(from);
+            if (!m_Users.Contains(from))
+                m_Users.Add(from);
 
             from.Target = new ThrowTarget(this);
         }
@@ -74,20 +74,20 @@ namespace Server.Items
         {
             object[] states = (object[])state;
 
-            this.Explode((Mobile)states[0], (Point3D)states[1], (Map)states[2]);
+            Explode((Mobile)states[0], (Point3D)states[1], (Map)states[2]);
         }
 
         public virtual void Explode(Mobile from, Point3D loc, Map map)
         {
-            if (this.Deleted || map == null)
+            if (Deleted || map == null)
                 return;
 
-            this.Consume();
+            Consume();
 
             // Check if any other players are using this potion
-            for (int i = 0; i < this.m_Users.Count; i++)
+            for (int i = 0; i < m_Users.Count; i++)
             {
-                ThrowTarget targ = this.m_Users[i].Target as ThrowTarget;
+                ThrowTarget targ = m_Users[i].Target as ThrowTarget;
 
                 if (targ != null && targ.Potion == this)
                     Target.Cancel(from);
@@ -96,7 +96,7 @@ namespace Server.Items
             // Effects
             Effects.PlaySound(loc, map, 0x207);
 
-            Geometry.Circle2D(loc, map, this.Radius, new DoEffect_Callback(BlastEffect), 270, 90);
+            Geometry.Circle2D(loc, map, Radius, new DoEffect_Callback(BlastEffect), 270, 90);
 
             Timer.DelayCall(TimeSpan.FromSeconds(0.3), new TimerStateCallback(CircleEffect2), new object[] { loc, map });
             IPooledEnumerable eable = map.GetMobilesInRange(loc, Radius);
@@ -127,7 +127,7 @@ namespace Server.Items
         {
             object[] states = (object[])state;
 
-            Geometry.Circle2D((Point3D)states[0], (Map)states[1], this.Radius, new DoEffect_Callback(BlastEffect), 90, 270);
+            Geometry.Circle2D((Point3D)states[0], (Map)states[1], Radius, new DoEffect_Callback(BlastEffect), 90, 270);
         }
 
         #endregion
@@ -178,17 +178,17 @@ namespace Server.Items
         {
             private readonly BaseConfusionBlastPotion m_Potion;
 
-            public BaseConfusionBlastPotion Potion => this.m_Potion;
+            public BaseConfusionBlastPotion Potion => m_Potion;
 
             public ThrowTarget(BaseConfusionBlastPotion potion)
                 : base(12, true, TargetFlags.None)
             {
-                this.m_Potion = potion;
+                m_Potion = potion;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (this.m_Potion.Deleted || this.m_Potion.Map == Map.Internal)
+                if (m_Potion.Deleted || m_Potion.Map == Map.Internal)
                     return;
 
                 IPoint3D p = targeted as IPoint3D;
@@ -210,8 +210,8 @@ namespace Server.Items
                 else
                     to = new Entity(Serial.Zero, new Point3D(p), from.Map);
 
-                Effects.SendMovingEffect(from, to, 0xF0D, 7, 0, false, false, this.m_Potion.Hue, 0);
-                Timer.DelayCall(TimeSpan.FromSeconds(1.0), new TimerStateCallback(this.m_Potion.Explode_Callback), new object[] { from, new Point3D(p), from.Map });
+                Effects.SendMovingEffect(from, to, 0xF0D, 7, 0, false, false, m_Potion.Hue, 0);
+                Timer.DelayCall(TimeSpan.FromSeconds(1.0), new TimerStateCallback(m_Potion.Explode_Callback), new object[] { from, new Point3D(p), from.Map });
             }
         }
     }

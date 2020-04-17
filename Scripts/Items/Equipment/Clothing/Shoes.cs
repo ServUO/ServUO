@@ -66,7 +66,7 @@ namespace Server.Items
 
         public override bool Scissor(Mobile from, Scissors scissors)
         {
-            if (this.DefaultResource == CraftResource.None)
+            if (DefaultResource == CraftResource.None)
                 return base.Scissor(from, scissors);
 
             from.SendLocalizedMessage(502440); // Scissors can not be used on that to produce anything.
@@ -92,12 +92,12 @@ namespace Server.Items
                     break; // empty, resource removed
                 case 1:
                     {
-                        this.m_Resource = (CraftResource)reader.ReadInt();
+                        m_Resource = (CraftResource)reader.ReadInt();
                         break;
                     }
                 case 0:
                     {
-                        this.m_Resource = this.DefaultResource;
+                        m_Resource = DefaultResource;
                         break;
                     }
             }
@@ -118,7 +118,7 @@ namespace Server.Items
         public FurBoots(int hue)
             : base(0x2307, hue)
         {
-            this.Weight = 3.0;
+            Weight = 3.0;
         }
 
         public FurBoots(Serial serial)
@@ -157,7 +157,7 @@ namespace Server.Items
         public Boots(int hue)
             : base(0x170B, hue)
         {
-            this.Weight = 3.0;
+            Weight = 3.0;
         }
 
         public Boots(Serial serial)
@@ -337,7 +337,7 @@ namespace Server.Items
         public Shoes(int hue)
             : base(0x170F, hue)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public Shoes(Serial serial)
@@ -376,7 +376,7 @@ namespace Server.Items
         public Sandals(int hue)
             : base(0x170D, hue)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public Sandals(Serial serial)
@@ -413,7 +413,7 @@ namespace Server.Items
         public NinjaTabi(int hue)
             : base(0x2797, hue)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public NinjaTabi(Serial serial)
@@ -450,7 +450,7 @@ namespace Server.Items
         public SamuraiTabi(int hue)
             : base(0x2796, hue)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public SamuraiTabi(Serial serial)
@@ -487,7 +487,7 @@ namespace Server.Items
         public Waraji(int hue)
             : base(0x2796, hue)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public Waraji(Serial serial)
@@ -528,7 +528,7 @@ namespace Server.Items
         public ElvenBoots(int hue)
             : base(0x2FC4, hue)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public ElvenBoots(Serial serial)

@@ -64,7 +64,7 @@ namespace Server.Engines.NewMagincia
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(this.GetWorldLocation(), 2))
+            if (from.InRange(GetWorldLocation(), 2))
             {
                 from.CloseGump(typeof(WritNoteGump));
                 from.SendGump(new WritNoteGump(this));

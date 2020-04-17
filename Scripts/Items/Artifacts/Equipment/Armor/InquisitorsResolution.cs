@@ -38,8 +38,8 @@ namespace Server.Items
 
             if (version < 1)
             {
-                this.ColdBonus = 0;
-                this.EnergyBonus = 0;
+                ColdBonus = 0;
+                EnergyBonus = 0;
             }
         }
     }

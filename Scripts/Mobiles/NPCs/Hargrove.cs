@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public ChopChopOnTheDoubleQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(Log), "log", 60, 0x1BDD));
+            AddObjective(new ObtainObjective(typeof(Log), "log", 60, 0x1BDD));
 
-            this.AddReward(new BaseReward(typeof(LumberjacksSatchel), 1074282)); // Craftsman's Satchel
+            AddReward(new BaseReward(typeof(LumberjacksSatchel), 1074282)); // Craftsman's Satchel
         }
 
         public override TimeSpan RestartDelay => TimeSpan.FromMinutes(3);
@@ -60,31 +60,31 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = false;
+            CantWalk = true;
+            Race = Race.Human;
 
-            this.Hue = 0x83FF;
-            this.HairItemID = 0x203C;
-            this.HairHue = 0x0;
+            Hue = 0x83FF;
+            HairItemID = 0x203C;
+            HairHue = 0x0;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new BattleAxe());
-            this.AddItem(new Boots(0x901));
-            this.AddItem(new StuddedLegs());
-            this.AddItem(new Shirt(0x288));
-            this.AddItem(new Bandana(0x20));
+            AddItem(new Backpack());
+            AddItem(new BattleAxe());
+            AddItem(new Boots(0x901));
+            AddItem(new StuddedLegs());
+            AddItem(new Shirt(0x288));
+            AddItem(new Bandana(0x20));
 
             Item item;
 
             item = new PlateGloves();
             item.Hue = 0x21E;
-            this.AddItem(item);
+            AddItem(item);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -108,10 +108,10 @@ namespace Server.Engines.Quests
         public LumberjacksSatchel()
             : base()
         {
-            this.Hue = BaseReward.SatchelHue();
+            Hue = BaseReward.SatchelHue();
 
-            this.AddItem(new Gold(15));
-            this.AddItem(new Hatchet());
+            AddItem(new Gold(15));
+            AddItem(new Hatchet());
         }
 
         public LumberjacksSatchel(Serial serial)

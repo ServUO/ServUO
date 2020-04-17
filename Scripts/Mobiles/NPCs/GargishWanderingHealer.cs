@@ -7,15 +7,15 @@ namespace Server.Mobiles
         [Constructable]
         public GargishWanderingHealer()
         {
-            this.Title = "a Gargish wandering healer";
-            this.Body = 666;
+            Title = "a Gargish wandering healer";
+            Body = 666;
 
-            this.AddItem(new GnarledStaff());
+            AddItem(new GnarledStaff());
             //AddItem( new GargishRobe(5) );
 
-            this.SetSkill(SkillName.Camping, 80.0, 100.0);
-            this.SetSkill(SkillName.Forensics, 80.0, 100.0);
-            this.SetSkill(SkillName.SpiritSpeak, 80.0, 100.0);
+            SetSkill(SkillName.Camping, 80.0, 100.0);
+            SetSkill(SkillName.Forensics, 80.0, 100.0);
+            SetSkill(SkillName.SpiritSpeak, 80.0, 100.0);
         }
 
         public GargishWanderingHealer(Serial serial)
@@ -42,12 +42,12 @@ namespace Server.Mobiles
         {
             if (m.Criminal)
             {
-                this.Say(501222); // Thou art a criminal.  I shall not resurrect thee.
+                Say(501222); // Thou art a criminal.  I shall not resurrect thee.
                 return false;
             }
             else if (m.Murderer)
             {
-                this.Say(501223); // Thou'rt not a decent and good person. I shall not resurrect thee.
+                Say(501223); // Thou'rt not a decent and good person. I shall not resurrect thee.
                 return false;
             }
 

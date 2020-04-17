@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public ProofOfTheDeedQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(SeveredHumanEars), "severed human ears", 20, 0x312F));
+            AddObjective(new ObtainObjective(typeof(SeveredHumanEars), "severed human ears", 20, 0x312F));
 
-            this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
+            AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
         /* Proof of the Deed */
@@ -60,22 +60,22 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Race = Race.Elf;
-            this.Female = false;
-            this.CantWalk = true;
+            Race = Race.Elf;
+            Female = false;
+            CantWalk = true;
 
-            this.Hue = this.Race.RandomSkinHue();
-            this.HairItemID = 0x2FD0;
-            this.HairHue = 0x322;
+            Hue = Race.RandomSkinHue();
+            HairItemID = 0x2FD0;
+            HairHue = 0x322;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Shoes(0x70A));
-            this.AddItem(new Cloak(0x651));
-            this.AddItem(new WildStaff());
+            AddItem(new Shoes(0x70A));
+            AddItem(new Cloak(0x651));
+            AddItem(new WildStaff());
         }
 
         public override void Serialize(GenericWriter writer)

@@ -5,9 +5,9 @@ namespace Server.Items
         [Constructable]
         public MelisandesFermentedWine()
         {
-            this.Stackable = false;
-            this.ItemID = 0x99B;
-            this.Hue = Utility.RandomList(0xB, 0xF, 0x48D); // TODO update
+            Stackable = false;
+            ItemID = 0x99B;
+            Hue = Utility.RandomList(0xB, 0xF, 0x48D); // TODO update
         }
 
         public MelisandesFermentedWine(Serial serial)

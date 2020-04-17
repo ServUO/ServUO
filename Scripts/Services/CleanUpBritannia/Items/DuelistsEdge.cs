@@ -8,11 +8,11 @@ namespace Server.Items
         public DuelistsEdge()
             : base(0x2F58)
         {
-            this.Hue = 1902;
-            this.SkillBonuses.SetValues(0, SkillName.Anatomy, 10.0);
-            this.Attributes.RegenStam = 2;
-            this.Attributes.AttackChance = 5;
-            this.Attributes.WeaponDamage = 20;
+            Hue = 1902;
+            SkillBonuses.SetValues(0, SkillName.Anatomy, 10.0);
+            Attributes.RegenStam = 2;
+            Attributes.AttackChance = 5;
+            Attributes.WeaponDamage = 20;
         }
 
         public DuelistsEdge(Serial serial)

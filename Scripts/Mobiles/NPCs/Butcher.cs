@@ -9,7 +9,7 @@ namespace Server.Mobiles
         public Butcher()
             : base("the butcher")
         {
-            this.SetSkill(SkillName.Anatomy, 45.0, 68.0);
+            SetSkill(SkillName.Anatomy, 45.0, 68.0);
         }
 
         public Butcher(Serial serial)
@@ -17,18 +17,18 @@ namespace Server.Mobiles
         {
         }
 
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBButcher());
+            m_SBInfos.Add(new SBButcher());
         }
 
         public override void InitOutfit()
         {
             base.InitOutfit();
 
-            this.AddItem(new Server.Items.HalfApron());
-            this.AddItem(new Server.Items.Cleaver());
+            AddItem(new Server.Items.HalfApron());
+            AddItem(new Server.Items.Cleaver());
         }
 
         public override void Serialize(GenericWriter writer)

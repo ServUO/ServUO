@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public TheJoysOfLifeQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(AriellesBauble), "arielle's baubles", 3, 0x23B));
+            AddObjective(new ObtainObjective(typeof(AriellesBauble), "arielle's baubles", 3, 0x23B));
 
-            this.AddReward(new BaseReward(1072809)); // The boon of Arielle.
+            AddReward(new BaseReward(1072809)); // The boon of Arielle.
         }
 
         public override bool ForceRemember => true;
@@ -30,7 +30,7 @@ namespace Server.Engines.Quests
         {
             base.GiveRewards();
 
-            this.Owner.SendLocalizedMessage(1074944, null, 0x23); // You have gained the boon of Arielle!  You have been taught the importance of laughter and light spirits.  You are one step closer to claiming your elven heritage.
+            Owner.SendLocalizedMessage(1074944, null, 0x23); // You have gained the boon of Arielle!  You have been taught the importance of laughter and light spirits.  You are one step closer to claiming your elven heritage.
         }
 
         public override void Serialize(GenericWriter writer)
@@ -53,9 +53,9 @@ namespace Server.Engines.Quests
         public DefendingTheHerdQuest()
             : base()
         {
-            this.AddObjective(new EscortObjective("Bravehorn's drinking pool"));
+            AddObjective(new EscortObjective("Bravehorn's drinking pool"));
 
-            this.AddReward(new BaseReward(1072806)); // The boon of Bravehorn.
+            AddReward(new BaseReward(1072806)); // The boon of Bravehorn.
         }
 
         public override bool ForceRemember => true;
@@ -72,7 +72,7 @@ namespace Server.Engines.Quests
         {
             base.GiveRewards();
 
-            this.Owner.SendLocalizedMessage(1074942, null, 0x23); // You have gained the boon of Bravehorn!  You have glimpsed the nobility of those that sacrifice themselves for their people.  You are one step closer to claiming your elven heritage.
+            Owner.SendLocalizedMessage(1074942, null, 0x23); // You have gained the boon of Bravehorn!  You have glimpsed the nobility of those that sacrifice themselves for their people.  You are one step closer to claiming your elven heritage.
         }
 
         public override void Serialize(GenericWriter writer)
@@ -95,9 +95,9 @@ namespace Server.Engines.Quests
         public CaretakerOfTheLandQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(SosariaSap), "sap of sosaria", 1, 0x1848));
+            AddObjective(new ObtainObjective(typeof(SosariaSap), "sap of sosaria", 1, 0x1848));
 
-            this.AddReward(new BaseReward(1072804)); // The boon of Strongroot.
+            AddReward(new BaseReward(1072804)); // The boon of Strongroot.
         }
 
         public override bool ForceRemember => true;
@@ -117,7 +117,7 @@ namespace Server.Engines.Quests
         {
             base.GiveRewards();
 
-            this.Owner.SendLocalizedMessage(1074941, null, 0x23); // You have gained the boon of Strongroot!  You have been approved by one whose roots touch the bones of Sosaria.  You are one step closer to claiming your elven heritage.
+            Owner.SendLocalizedMessage(1074941, null, 0x23); // You have gained the boon of Strongroot!  You have been approved by one whose roots touch the bones of Sosaria.  You are one step closer to claiming your elven heritage.
         }
 
         public override void Serialize(GenericWriter writer)
@@ -140,9 +140,9 @@ namespace Server.Engines.Quests
         public SeasonsQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(RawFishSteak), "raw fish steaks", 20, 0x097A));
+            AddObjective(new ObtainObjective(typeof(RawFishSteak), "raw fish steaks", 20, 0x097A));
 
-            this.AddReward(new BaseReward(1072803)); // The boon of Maul.
+            AddReward(new BaseReward(1072803)); // The boon of Maul.
         }
 
         public override bool ForceRemember => true;
@@ -161,7 +161,7 @@ namespace Server.Engines.Quests
         {
             base.GiveRewards();
 
-            this.Owner.SendLocalizedMessage(1074940, null, 0x23); // You have gained the boon of Maul!  Your understanding of the seasons grows.  You are one step closer to claiming your elven heritage.
+            Owner.SendLocalizedMessage(1074940, null, 0x23); // You have gained the boon of Maul!  Your understanding of the seasons grows.  You are one step closer to claiming your elven heritage.
         }
 
         public override void Serialize(GenericWriter writer)
@@ -184,9 +184,9 @@ namespace Server.Engines.Quests
         public TheBalanceOfNatureQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(TimberWolf), "timber wolves", 15, "Huntsman's Forest"));
+            AddObjective(new SlayObjective(typeof(TimberWolf), "timber wolves", 15, "Huntsman's Forest"));
 
-            this.AddReward(new BaseReward(1072807)); // The boon of the Huntsman.
+            AddReward(new BaseReward(1072807)); // The boon of the Huntsman.
         }
 
         public override bool ForceRemember => true;
@@ -204,7 +204,7 @@ namespace Server.Engines.Quests
         {
             base.GiveRewards();
 
-            this.Owner.SendLocalizedMessage(1074943, null, 0x23); // You have gained the boon of the Huntsman!  You have been given a taste of the bittersweet duty of those who guard the balance.  You are one step closer to claiming your elven heritage.
+            Owner.SendLocalizedMessage(1074943, null, 0x23); // You have gained the boon of the Huntsman!  You have been given a taste of the bittersweet duty of those who guard the balance.  You are one step closer to claiming your elven heritage.
         }
 
         public override void Serialize(GenericWriter writer)
@@ -227,9 +227,9 @@ namespace Server.Engines.Quests
         public WisdomOfTheSphynxQuest()
             : base()
         {
-            this.AddObjective(new InternalObjective());
+            AddObjective(new InternalObjective());
 
-            this.AddReward(new BaseReward(1072805)); // The boon of Enigma.
+            AddReward(new BaseReward(1072805)); // The boon of Enigma.
         }
 
         public override bool ForceRemember => true;
@@ -250,7 +250,7 @@ namespace Server.Engines.Quests
         {
             base.GiveRewards();
 
-            this.Owner.SendLocalizedMessage(1074945, null, 0x23); // You have gained the boon of Enigma!  You are wise enough to know how little you know.  You are one step closer to claiming your elven heritage.
+            Owner.SendLocalizedMessage(1074945, null, 0x23); // You have gained the boon of Enigma!  You are wise enough to know how little you know.  You are one step closer to claiming your elven heritage.
         }
 
         public override void Serialize(GenericWriter writer)

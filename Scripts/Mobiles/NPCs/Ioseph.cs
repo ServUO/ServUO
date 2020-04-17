@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public EmbracingHumanityQuest()
             : base()
         {
-            this.AddObjective(new DeliverObjective(typeof(TreatForDrithen), "treat for Drithen", 1, typeof(Drithen), "Drithen (Umbra)"));
+            AddObjective(new DeliverObjective(typeof(TreatForDrithen), "treat for Drithen", 1, typeof(Drithen), "Drithen (Umbra)"));
 
-            this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
+            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
         public override TimeSpan RestartDelay => TimeSpan.FromHours(1);// not there on OSI, but prevents farming
@@ -62,20 +62,20 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.Race = Race.Human;
+            Female = false;
+            Race = Race.Human;
 
-            this.Hue = 0x8404;
+            Hue = 0x8404;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Shoes(0x737));
-            this.AddItem(new LongPants(0x1BB));
-            this.AddItem(new FancyShirt(0x535));
+            AddItem(new Backpack());
+            AddItem(new Shoes(0x737));
+            AddItem(new LongPants(0x1BB));
+            AddItem(new FancyShirt(0x535));
         }
 
         public override void Serialize(GenericWriter writer)

@@ -48,7 +48,7 @@ namespace Server.Items
         public BodySash(int hue)
             : base(0x1541, hue)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public BodySash(Serial serial)
@@ -85,7 +85,7 @@ namespace Server.Items
         public FullApron(int hue)
             : base(0x153d, hue)
         {
-            this.Weight = 4.0;
+            Weight = 4.0;
         }
 
         public FullApron(Serial serial)
@@ -121,7 +121,7 @@ namespace Server.Items
         public Doublet(int hue)
             : base(0x1F7B, hue)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public Doublet(Serial serial)
@@ -157,7 +157,7 @@ namespace Server.Items
         public Surcoat(int hue)
             : base(0x1FFD, hue)
         {
-            this.Weight = 6.0;
+            Weight = 6.0;
         }
 
         public Surcoat(Serial serial)
@@ -178,8 +178,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (this.Weight == 3.0)
-                this.Weight = 6.0;
+            if (Weight == 3.0)
+                Weight = 6.0;
         }
     }
 
@@ -196,7 +196,7 @@ namespace Server.Items
         public Tunic(int hue)
             : base(0x1FA1, hue)
         {
-            this.Weight = 5.0;
+            Weight = 5.0;
         }
 
         public Tunic(Serial serial)
@@ -232,7 +232,7 @@ namespace Server.Items
         public FormalShirt(int hue)
             : base(0x2310, hue)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public FormalShirt(Serial serial)
@@ -246,8 +246,8 @@ namespace Server.Items
 
             writer.Write(0); // version
 
-            if (this.Weight == 2.0)
-                this.Weight = 1.0;
+            if (Weight == 2.0)
+                Weight = 1.0;
         }
 
         public override void Deserialize(GenericReader reader)
@@ -271,7 +271,7 @@ namespace Server.Items
         public JesterSuit(int hue)
             : base(0x1F9F, hue)
         {
-            this.Weight = 4.0;
+            Weight = 4.0;
         }
 
         public JesterSuit(Serial serial)
@@ -307,7 +307,7 @@ namespace Server.Items
         public JinBaori(int hue)
             : base(0x27A1, hue)
         {
-            this.Weight = 3.0;
+            Weight = 3.0;
         }
 
         public JinBaori(Serial serial)
@@ -343,7 +343,7 @@ namespace Server.Items
         public GargishSash(int hue)
             : base(0x46B4, Layer.MiddleTorso, hue)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public GargishSash(Serial serial)

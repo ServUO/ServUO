@@ -7,7 +7,7 @@ namespace Server.Mobiles
     public class Weaver : BaseVendor
     {
         private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
 
         public override NpcGuild NpcGuild => NpcGuild.TailorsGuild;
 
@@ -15,12 +15,12 @@ namespace Server.Mobiles
         public Weaver()
             : base("the weaver")
         {
-            this.SetSkill(SkillName.Tailoring, 65.0, 88.0);
+            SetSkill(SkillName.Tailoring, 65.0, 88.0);
         }
 
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBWeaver());
+            m_SBInfos.Add(new SBWeaver());
         }
 
         public override VendorShoeType ShoeType => VendorShoeType.Sandals;

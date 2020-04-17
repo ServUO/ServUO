@@ -24,9 +24,9 @@ namespace Server
         {
             Point3D start = new Point3D(p);
 
-            this.m_Map = map;
-            this.m_Start = start;
-            this.m_Goal = goal;
+            m_Map = map;
+            m_Start = start;
+            m_Goal = goal;
 
             if (map == null || map == Map.Internal)
                 return;
@@ -46,7 +46,7 @@ namespace Server
                 }
 
                 if (alg != null && alg.CheckCondition(p, map, start, goal))
-                    this.m_Directions = alg.Find(p, map, start, goal);
+                    m_Directions = alg.Find(p, map, start, goal);
             }
             catch (Exception e)
             {
@@ -66,11 +66,11 @@ namespace Server
                 m_OverrideAlgorithm = value;
             }
         }
-        public Map Map => this.m_Map;
-        public Point3D Start => this.m_Start;
-        public Point3D Goal => this.m_Goal;
-        public Direction[] Directions => this.m_Directions;
-        public bool Success => (this.m_Directions != null && this.m_Directions.Length > 0);
+        public Map Map => m_Map;
+        public Point3D Start => m_Start;
+        public Point3D Goal => m_Goal;
+        public Direction[] Directions => m_Directions;
+        public bool Success => (m_Directions != null && m_Directions.Length > 0);
         public static void Initialize()
         {
             CommandSystem.Register("Path", AccessLevel.GameMaster, new CommandEventHandler(Path_OnCommand));

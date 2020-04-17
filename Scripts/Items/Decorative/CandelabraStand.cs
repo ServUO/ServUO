@@ -8,10 +8,10 @@ namespace Server.Items
         public CandelabraStand()
             : base(0xA29)
         {
-            this.Duration = TimeSpan.Zero; // Never burnt out
-            this.Burning = false;
-            this.Light = LightType.Circle225;
-            this.Weight = 20.0;
+            Duration = TimeSpan.Zero; // Never burnt out
+            Burning = false;
+            Light = LightType.Circle225;
+            Weight = 20.0;
         }
 
         public CandelabraStand(Serial serial)

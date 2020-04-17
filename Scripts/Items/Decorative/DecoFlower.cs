@@ -6,8 +6,8 @@ namespace Server.Items
         public DecoFlower()
             : base(0x18DA)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public DecoFlower(Serial serial)

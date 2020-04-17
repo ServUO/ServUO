@@ -6,8 +6,8 @@ namespace Server.Items
         public DecoEyeOfNewt()
             : base(0xF87)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public DecoEyeOfNewt(Serial serial)

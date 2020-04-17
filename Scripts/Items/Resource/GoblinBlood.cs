@@ -12,8 +12,8 @@ namespace Server.Items
         public GoblinBlood(int amount)
             : base(0x572C)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public GoblinBlood(Serial serial)

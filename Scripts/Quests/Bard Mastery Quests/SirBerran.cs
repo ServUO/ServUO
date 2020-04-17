@@ -100,7 +100,7 @@ namespace Server.Engines.Quests
                     Quest.OnCompleted();
                 else
                 {
-                    Quest.Owner.SendLocalizedMessage(1115749, true, (this.MaxProgress - this.CurProgress).ToString()); // Creatures remaining to be discorded: 
+                    Quest.Owner.SendLocalizedMessage(1115749, true, (MaxProgress - CurProgress).ToString()); // Creatures remaining to be discorded: 
                     Quest.Owner.PlaySound(Quest.UpdateSound);
                 }
 

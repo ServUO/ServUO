@@ -9,37 +9,37 @@ namespace Server.Mobiles
         public Mimic()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a mimic";
-            this.Body = 729;
+            Name = "a mimic";
+            Body = 729;
 
-            this.SetStr(281);
-            this.SetDex(140);
-            this.SetInt(261);
+            SetStr(281);
+            SetDex(140);
+            SetInt(261);
 
-            this.SetHits(543);
+            SetHits(543);
 
-            this.SetDamage(13, 20);
+            SetDamage(13, 20);
 
-            this.SetDamageType(ResistanceType.Physical, 20);
-            this.SetDamageType(ResistanceType.Fire, 20);
-            this.SetDamageType(ResistanceType.Cold, 20);
-            this.SetDamageType(ResistanceType.Poison, 20);
-            this.SetDamageType(ResistanceType.Energy, 20);
+            SetDamageType(ResistanceType.Physical, 20);
+            SetDamageType(ResistanceType.Fire, 20);
+            SetDamageType(ResistanceType.Cold, 20);
+            SetDamageType(ResistanceType.Poison, 20);
+            SetDamageType(ResistanceType.Energy, 20);
 
-            this.SetResistance(ResistanceType.Physical, 63);
-            this.SetResistance(ResistanceType.Fire, 43);
-            this.SetResistance(ResistanceType.Cold, 36);
-            this.SetResistance(ResistanceType.Poison, 37);
-            this.SetResistance(ResistanceType.Energy, 42);
+            SetResistance(ResistanceType.Physical, 63);
+            SetResistance(ResistanceType.Fire, 43);
+            SetResistance(ResistanceType.Cold, 36);
+            SetResistance(ResistanceType.Poison, 37);
+            SetResistance(ResistanceType.Energy, 42);
 
-            this.SetSkill(SkillName.EvalInt, 100.0);
-            this.SetSkill(SkillName.Magery, 107.5);
-            this.SetSkill(SkillName.Meditation, 100.0);
-            this.SetSkill(SkillName.MagicResist, 126.5);
-            this.SetSkill(SkillName.Tactics, 98.5);
-            this.SetSkill(SkillName.Wrestling, 92.2);
+            SetSkill(SkillName.EvalInt, 100.0);
+            SetSkill(SkillName.Magery, 107.5);
+            SetSkill(SkillName.Meditation, 100.0);
+            SetSkill(SkillName.MagicResist, 126.5);
+            SetSkill(SkillName.Tactics, 98.5);
+            SetSkill(SkillName.Wrestling, 92.2);
 
-            this.PackReg(20);
+            PackReg(20);
         }
 
         public Mimic(Serial serial)
@@ -49,8 +49,8 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich, 4);
-            this.AddLoot(LootPack.MedScrolls);
+            AddLoot(LootPack.FilthyRich, 4);
+            AddLoot(LootPack.MedScrolls);
         }
 
         public override void OnDeath(Container c)

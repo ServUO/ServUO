@@ -55,9 +55,9 @@ namespace Server.Items
 
         public MTSchematicsGump(Mobile owner) : base(50, 50)
         {
-            this.Closable = true;
-            this.Disposable = true;
-            this.Dragable = true;
+            Closable = true;
+            Disposable = true;
+            Dragable = true;
 
             AddPage(0);
             AddBackground(6, 11, 390, 324, 9380);

@@ -19,25 +19,25 @@ namespace Server.Items
         [Constructable]
         public SorcererHat() : base()
         {
-            this.Hue = 1165;
-            this.Weight = 1;
+            Hue = 1165;
+            Weight = 1;
 
-            this.Attributes.BonusInt = 1;
-            this.Attributes.LowerRegCost = 10;
+            Attributes.BonusInt = 1;
+            Attributes.LowerRegCost = 10;
 
-            this.SetAttributes.BonusInt = 6;
-            this.SetAttributes.RegenMana = 2;
-            this.SetAttributes.DefendChance = 10;
-            this.SetAttributes.LowerManaCost = 5;
-            this.SetAttributes.LowerRegCost = 40;
+            SetAttributes.BonusInt = 6;
+            SetAttributes.RegenMana = 2;
+            SetAttributes.DefendChance = 10;
+            SetAttributes.LowerManaCost = 5;
+            SetAttributes.LowerRegCost = 40;
 
-            this.SetHue = 1165;
+            SetHue = 1165;
 
-            this.SetPhysicalBonus = 28;
-            this.SetFireBonus = 28;
-            this.SetColdBonus = 28;
-            this.SetPoisonBonus = 28;
-            this.SetEnergyBonus = 28;
+            SetPhysicalBonus = 28;
+            SetFireBonus = 28;
+            SetColdBonus = 28;
+            SetPoisonBonus = 28;
+            SetEnergyBonus = 28;
         }
 
         public SorcererHat(Serial serial) : base(serial)

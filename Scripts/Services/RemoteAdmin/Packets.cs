@@ -20,9 +20,9 @@ namespace Server.RemoteAdmin
         public AdminCompressedPacket(byte[] CompData, int CDLen, int unCompSize)
             : base(0x01)
         {
-            this.EnsureCapacity(1 + 2 + 2 + CDLen);
-            this.m_Stream.Write((ushort)unCompSize);
-            this.m_Stream.Write(CompData, 0, CDLen);
+            EnsureCapacity(1 + 2 + 2 + CDLen);
+            m_Stream.Write((ushort)unCompSize);
+            m_Stream.Write(CompData, 0, CDLen);
         }
     }
 
@@ -31,7 +31,7 @@ namespace Server.RemoteAdmin
         public Login(LoginResponse resp)
             : base(0x02, 2)
         {
-            this.m_Stream.Write((byte)resp);
+            m_Stream.Write((byte)resp);
         }
     }
 
@@ -40,19 +40,19 @@ namespace Server.RemoteAdmin
         public ConsoleData(string str)
             : base(0x03)
         {
-            this.EnsureCapacity(1 + 2 + 1 + str.Length + 1);
-            this.m_Stream.Write((byte)2);
+            EnsureCapacity(1 + 2 + 1 + str.Length + 1);
+            m_Stream.Write((byte)2);
 
-            this.m_Stream.WriteAsciiNull(str);
+            m_Stream.WriteAsciiNull(str);
         }
 
         public ConsoleData(char ch)
             : base(0x03)
         {
-            this.EnsureCapacity(1 + 2 + 1 + 1);
-            this.m_Stream.Write((byte)3);
+            EnsureCapacity(1 + 2 + 1 + 1);
+            m_Stream.Write((byte)3);
 
-            this.m_Stream.Write((byte)ch);
+            m_Stream.Write((byte)ch);
         }
     }
 
@@ -64,7 +64,7 @@ namespace Server.RemoteAdmin
             string netVer = Environment.Version.ToString();
             string os = Environment.OSVersion.ToString();
 
-            this.EnsureCapacity(1 + 2 + (10 * 4) + netVer.Length + 1 + os.Length + 1);
+            EnsureCapacity(1 + 2 + (10 * 4) + netVer.Length + 1 + os.Length + 1);
             int banned = 0;
             int active = 0;
 
@@ -76,20 +76,20 @@ namespace Server.RemoteAdmin
                     ++active;
             }
 
-            this.m_Stream.Write(active);
-            this.m_Stream.Write(banned);
-            this.m_Stream.Write(Firewall.List.Count);
-            this.m_Stream.Write(NetState.Instances.Count);
+            m_Stream.Write(active);
+            m_Stream.Write(banned);
+            m_Stream.Write(Firewall.List.Count);
+            m_Stream.Write(NetState.Instances.Count);
 
-            this.m_Stream.Write(World.Mobiles.Count);
-            this.m_Stream.Write(Core.ScriptMobiles);
-            this.m_Stream.Write(World.Items.Count);
-            this.m_Stream.Write(Core.ScriptItems);
+            m_Stream.Write(World.Mobiles.Count);
+            m_Stream.Write(Core.ScriptMobiles);
+            m_Stream.Write(World.Items.Count);
+            m_Stream.Write(Core.ScriptItems);
 
-            this.m_Stream.Write((uint)(DateTime.UtcNow - Clock.ServerStart).TotalSeconds);
-            this.m_Stream.Write((uint)GC.GetTotalMemory(false));                        // TODO: uint not sufficient for TotalMemory (long). Fix protocol.
-            this.m_Stream.WriteAsciiNull(netVer);
-            this.m_Stream.WriteAsciiNull(os);
+            m_Stream.Write((uint)(DateTime.UtcNow - Clock.ServerStart).TotalSeconds);
+            m_Stream.Write((uint)GC.GetTotalMemory(false));                        // TODO: uint not sufficient for TotalMemory (long). Fix protocol.
+            m_Stream.WriteAsciiNull(netVer);
+            m_Stream.WriteAsciiNull(os);
         }
     }
 
@@ -98,34 +98,34 @@ namespace Server.RemoteAdmin
         public AccountSearchResults(ArrayList results)
             : base(0x05)
         {
-            this.EnsureCapacity(1 + 2 + 2);
+            EnsureCapacity(1 + 2 + 2);
 
-            this.m_Stream.Write((byte)results.Count);
+            m_Stream.Write((byte)results.Count);
 
             foreach (Account a in results)
             {
-                this.m_Stream.WriteAsciiNull(a.Username);
+                m_Stream.WriteAsciiNull(a.Username);
 
                 string pwToSend = a.PlainPassword;
 
                 if (pwToSend == null)
                     pwToSend = "(hidden)";
 
-                this.m_Stream.WriteAsciiNull(pwToSend);
-                this.m_Stream.Write((byte)a.AccessLevel);
-                this.m_Stream.Write(a.Banned);
+                m_Stream.WriteAsciiNull(pwToSend);
+                m_Stream.Write((byte)a.AccessLevel);
+                m_Stream.Write(a.Banned);
                 unchecked
                 {
-                    this.m_Stream.Write((uint)a.LastLogin.Ticks);
+                    m_Stream.Write((uint)a.LastLogin.Ticks);
                 }// TODO: This doesn't work, uint.MaxValue is only 7 minutes of ticks. Fix protocol.
 
-                this.m_Stream.Write((ushort)a.LoginIPs.Length);
+                m_Stream.Write((ushort)a.LoginIPs.Length);
                 for (int i = 0; i < a.LoginIPs.Length; i++)
-                    this.m_Stream.WriteAsciiNull(a.LoginIPs[i].ToString());
+                    m_Stream.WriteAsciiNull(a.LoginIPs[i].ToString());
 
-                this.m_Stream.Write((ushort)a.IPRestrictions.Length);
+                m_Stream.Write((ushort)a.IPRestrictions.Length);
                 for (int i = 0; i < a.IPRestrictions.Length; i++)
-                    this.m_Stream.WriteAsciiNull(a.IPRestrictions[i]);
+                    m_Stream.WriteAsciiNull(a.IPRestrictions[i]);
             }
         }
     }
@@ -135,16 +135,16 @@ namespace Server.RemoteAdmin
         public CompactServerInfo()
             : base(0x51)
         {
-            this.EnsureCapacity(1 + 2 + (4 * 4) + 8);
+            EnsureCapacity(1 + 2 + (4 * 4) + 8);
 
-            this.m_Stream.Write(NetState.Instances.Count - 1);                      // Clients
-            this.m_Stream.Write(World.Items.Count);                                 // Items
-            this.m_Stream.Write(World.Mobiles.Count);                               // Mobiles
-            this.m_Stream.Write((uint)(DateTime.UtcNow - Clock.ServerStart).TotalSeconds);  // Age (seconds)
+            m_Stream.Write(NetState.Instances.Count - 1);                      // Clients
+            m_Stream.Write(World.Items.Count);                                 // Items
+            m_Stream.Write(World.Mobiles.Count);                               // Mobiles
+            m_Stream.Write((uint)(DateTime.UtcNow - Clock.ServerStart).TotalSeconds);  // Age (seconds)
 
             long memory = GC.GetTotalMemory(false);
-            this.m_Stream.Write((uint)(memory >> 32));                                   // Memory high bytes
-            this.m_Stream.Write((uint)memory);                                           // Memory low bytes
+            m_Stream.Write((uint)(memory >> 32));                                   // Memory high bytes
+            m_Stream.Write((uint)memory);                                           // Memory low bytes
         }
     }
 
@@ -153,8 +153,8 @@ namespace Server.RemoteAdmin
         public UOGInfo(string str)
             : base(0x53, str.Length + 7)// 'S'
         {
-            this.m_Stream.WriteAsciiFixed("ervUO", 5);
-            this.m_Stream.WriteAsciiNull(str);
+            m_Stream.WriteAsciiFixed("ervUO", 5);
+            m_Stream.WriteAsciiNull(str);
         }
     }
 
@@ -163,10 +163,10 @@ namespace Server.RemoteAdmin
         public MessageBoxMessage(string msg, string caption)
             : base(0x08)
         {
-            this.EnsureCapacity(1 + 2 + msg.Length + 1 + caption.Length + 1);
+            EnsureCapacity(1 + 2 + msg.Length + 1 + caption.Length + 1);
 
-            this.m_Stream.WriteAsciiNull(msg);
-            this.m_Stream.WriteAsciiNull(caption);
+            m_Stream.WriteAsciiNull(msg);
+            m_Stream.WriteAsciiNull(caption);
         }
     }
 }

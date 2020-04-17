@@ -5,8 +5,8 @@ namespace Server.Items
         public TwistedWealdKey()
             : base(0xE26)
         {
-            this.Weight = 1.0;
-            this.Hue = 0x481;
+            Weight = 1.0;
+            Hue = 0x481;
         }
 
         public TwistedWealdKey(Serial serial)

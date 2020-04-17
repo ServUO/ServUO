@@ -41,32 +41,32 @@ namespace Server.Engines.Quests
         public TheWayOfTheSamuraiQuest()
             : base()
         {
-            this.AddObjective(new ApprenticeObjective(SkillName.Bushido, 50, "Old Haven Training", 1078008, 1078009));
+            AddObjective(new ApprenticeObjective(SkillName.Bushido, 50, "Old Haven Training", 1078008, 1078009));
 
             // 1078008 Your Bushido potential is greatly enhanced while questing in this area.
             // 1078009 You are not in the quest area for Apprentice Samurai. Your Bushido potential is not enhanced here.
 
-            this.AddReward(new BaseReward(typeof(TheDragonsTail), 1078015));
+            AddReward(new BaseReward(typeof(TheDragonsTail), 1078015));
         }
 
         public override bool CanOffer()
         {
             #region Scroll of Alacrity
-            PlayerMobile pm = this.Owner as PlayerMobile;
+            PlayerMobile pm = Owner as PlayerMobile;
             if (pm.AcceleratedStart > DateTime.UtcNow)
             {
-                this.Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
+                Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
                 return false;
             }
             #endregion
             else
-                return this.Owner.Skills.Bushido.Base < 50;
+                return Owner.Skills.Bushido.Base < 50;
         }
 
         public override void OnCompleted()
         {
-            this.Owner.SendLocalizedMessage(1078013, null, 0x23); // You have achieved the rank of Apprentice Samurai. Return to Hamato in New Haven to report your progress.
-            this.Owner.PlaySound(this.CompleteSound);
+            Owner.SendLocalizedMessage(1078013, null, 0x23); // You have achieved the rank of Apprentice Samurai. Return to Hamato in New Haven to report your progress.
+            Owner.PlaySound(CompleteSound);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -101,12 +101,12 @@ namespace Server.Engines.Quests
         public Hamato()
             : base("Hamato", "The Bushido Instructor")
         {
-            this.SetSkill(SkillName.Anatomy, 120.0, 120.0);
-            this.SetSkill(SkillName.Parry, 120.0, 120.0);
-            this.SetSkill(SkillName.Healing, 120.0, 120.0);
-            this.SetSkill(SkillName.Tactics, 120.0, 120.0);
-            this.SetSkill(SkillName.Swords, 120.0, 120.0);
-            this.SetSkill(SkillName.Bushido, 120.0, 120.0);
+            SetSkill(SkillName.Anatomy, 120.0, 120.0);
+            SetSkill(SkillName.Parry, 120.0, 120.0);
+            SetSkill(SkillName.Healing, 120.0, 120.0);
+            SetSkill(SkillName.Tactics, 120.0, 120.0);
+            SetSkill(SkillName.Swords, 120.0, 120.0);
+            SetSkill(SkillName.Bushido, 120.0, 120.0);
         }
 
         public Hamato(Serial serial)
@@ -116,32 +116,32 @@ namespace Server.Engines.Quests
 
         public override void Advertise()
         {
-            this.Say(1078134); // Seek me to learn the way of the samurai.
+            Say(1078134); // Seek me to learn the way of the samurai.
         }
 
         public override void OnOfferFailed()
         {
-            this.Say(1077772); // I cannot teach you, for you know all I can teach!
+            Say(1077772); // I cannot teach you, for you know all I can teach!
         }
 
         public override void InitBody()
         {
-            this.Female = false;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = false;
+            CantWalk = true;
+            Race = Race.Human;
 
             base.InitBody();
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new NoDachi());
-            this.AddItem(new NinjaTabi());
-            this.AddItem(new PlateSuneate());
-            this.AddItem(new LightPlateJingasa());
-            this.AddItem(new LeatherDo());
-            this.AddItem(new LeatherHiroSode());
+            AddItem(new Backpack());
+            AddItem(new NoDachi());
+            AddItem(new NinjaTabi());
+            AddItem(new PlateSuneate());
+            AddItem(new LightPlateJingasa());
+            AddItem(new LeatherDo());
+            AddItem(new LeatherHiroSode());
         }
 
         public override void Serialize(GenericWriter writer)

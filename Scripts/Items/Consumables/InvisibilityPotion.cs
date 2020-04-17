@@ -10,7 +10,7 @@ namespace Server.Items
         public InvisibilityPotion()
             : base(0xF0A, PotionEffect.Invisibility)
         {
-            this.Hue = 0x48D;
+            Hue = 0x48D;
         }
 
         public InvisibilityPotion(Serial serial)
@@ -76,7 +76,7 @@ namespace Server.Items
                 return;
             }
 
-            this.Consume();
+            Consume();
             Timer.DelayCall(TimeSpan.FromSeconds(2), new TimerStateCallback(Hide_Callback), from);
             PlayDrinkEffect(from);
         }

@@ -43,8 +43,8 @@ namespace Server.Items
 
             if (version < 1)
             {
-                this.WeaponAttributes.SelfRepair = 0;
-                this.ArmorAttributes.SelfRepair = 3;
+                WeaponAttributes.SelfRepair = 0;
+                ArmorAttributes.SelfRepair = 3;
             }
         }
     }

@@ -44,7 +44,7 @@ namespace Server.Engines.Quests
 
         public override void Advertise()
         {
-            this.Say(1112525);  // Come to be Artificer. I have a task for you. 
+            Say(1112525);  // Come to be Artificer. I have a task for you. 
         }
 
         public override void Serialize(GenericWriter writer)

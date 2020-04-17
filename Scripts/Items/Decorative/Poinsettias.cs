@@ -42,8 +42,8 @@ namespace Server.Items
         public RedPoinsettia()
             : base(0x2330)
         {
-            this.Weight = 1.0;
-            this.LootType = LootType.Blessed;
+            Weight = 1.0;
+            LootType = LootType.Blessed;
         }
 
         public RedPoinsettia(Serial serial)
@@ -72,8 +72,8 @@ namespace Server.Items
         public WhitePoinsettia()
             : base(0x2331)
         {
-            this.Weight = 1.0;
-            this.LootType = LootType.Blessed;
+            Weight = 1.0;
+            LootType = LootType.Blessed;
         }
 
         public WhitePoinsettia(Serial serial)

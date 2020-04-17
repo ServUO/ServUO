@@ -9,18 +9,18 @@ namespace Server.Items
         public RunicHammer(CraftResource resource)
             : base(resource, 0x13E3)
         {
-            this.Weight = 8.0;
-            this.Layer = Layer.OneHanded;
-            this.Hue = CraftResources.GetHue(resource);
+            Weight = 8.0;
+            Layer = Layer.OneHanded;
+            Hue = CraftResources.GetHue(resource);
         }
 
         [Constructable]
         public RunicHammer(CraftResource resource, int uses)
             : base(resource, uses, 0x13E3)
         {
-            this.Weight = 8.0;
-            this.Layer = Layer.OneHanded;
-            this.Hue = CraftResources.GetHue(resource);
+            Weight = 8.0;
+            Layer = Layer.OneHanded;
+            Hue = CraftResources.GetHue(resource);
         }
 
         public RunicHammer(Serial serial)
@@ -33,7 +33,7 @@ namespace Server.Items
         {
             get
             {
-                int index = CraftResources.GetIndex(this.Resource);
+                int index = CraftResources.GetIndex(Resource);
 
                 if (index >= 1 && index <= 8)
                     return 1049019 + index;
@@ -45,19 +45,19 @@ namespace Server.Items
         {
             base.AddNameProperties(list);
 
-            int index = CraftResources.GetIndex(this.Resource);
+            int index = CraftResources.GetIndex(Resource);
 
             if (index >= 1 && index <= 8)
                 return;
 
-            if (!CraftResources.IsStandard(this.Resource))
+            if (!CraftResources.IsStandard(Resource))
             {
-                int num = CraftResources.GetLocalizationNumber(this.Resource);
+                int num = CraftResources.GetLocalizationNumber(Resource);
 
                 if (num > 0)
                     list.Add(num);
                 else
-                    list.Add(CraftResources.GetName(this.Resource));
+                    list.Add(CraftResources.GetName(Resource));
             }
         }
 

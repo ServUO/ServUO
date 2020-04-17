@@ -17,9 +17,9 @@ namespace Server.Items
         [Constructable]
         public FlourMillSouthAddon()
         {
-            this.AddComponent(new AddonComponent(0x192C), 0, -1, 0);
-            this.AddComponent(new AddonComponent(0x192E), 0, 0, 0);
-            this.AddComponent(new AddonComponent(0x1930), 0, 1, 0);
+            AddComponent(new AddonComponent(0x192C), 0, -1, 0);
+            AddComponent(new AddonComponent(0x192E), 0, 0, 0);
+            AddComponent(new AddonComponent(0x1930), 0, 1, 0);
         }
 
         public FlourMillSouthAddon(Serial serial)
@@ -35,42 +35,42 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Flour;
+                return m_Flour;
             }
             set
             {
-                this.m_Flour = Math.Max(0, Math.Min(value, this.MaxFlour));
-                this.UpdateStage();
+                m_Flour = Math.Max(0, Math.Min(value, MaxFlour));
+                UpdateStage();
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool HasFlour => (this.m_Flour > 0);
+        public bool HasFlour => (m_Flour > 0);
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsFull => (this.m_Flour >= this.MaxFlour);
+        public bool IsFull => (m_Flour >= MaxFlour);
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsWorking => (this.m_Timer != null);
+        public bool IsWorking => (m_Timer != null);
         public void StartWorking(Mobile from)
         {
-            if (this.IsWorking)
+            if (IsWorking)
                 return;
 
-            this.m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(5.0), new TimerStateCallback(FinishWorking_Callback), from);
-            this.UpdateStage();
+            m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(5.0), new TimerStateCallback(FinishWorking_Callback), from);
+            UpdateStage();
         }
 
         public void UpdateStage()
         {
-            if (this.IsWorking)
-                this.UpdateStage(FlourMillStage.Working);
-            else if (this.HasFlour)
-                this.UpdateStage(FlourMillStage.Filled);
+            if (IsWorking)
+                UpdateStage(FlourMillStage.Working);
+            else if (HasFlour)
+                UpdateStage(FlourMillStage.Filled);
             else
-                this.UpdateStage(FlourMillStage.Empty);
+                UpdateStage(FlourMillStage.Empty);
         }
 
         public void UpdateStage(FlourMillStage stage)
         {
-            List<AddonComponent> components = this.Components;
+            List<AddonComponent> components = Components;
 
             int[][] stageTable = m_StageTable;
 
@@ -81,7 +81,7 @@ namespace Server.Items
                 if (component == null)
                     continue;
 
-                int[] itemTable = this.FindItemTable(component.ItemID);
+                int[] itemTable = FindItemTable(component.ItemID);
 
                 if (itemTable != null)
                     component.ItemID = itemTable[(int)stage];
@@ -90,12 +90,12 @@ namespace Server.Items
 
         public override void OnComponentUsed(AddonComponent c, Mobile from)
         {
-            if (!from.InRange(this.GetWorldLocation(), 4) || !from.InLOS(this))
+            if (!from.InRange(GetWorldLocation(), 4) || !from.InLOS(this))
                 from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
-            else if (!this.IsFull)
+            else if (!IsFull)
                 from.SendLocalizedMessage(500997); // You need more wheat to make a sack of flour.
             else
-                this.StartWorking(from);
+                StartWorking(from);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -117,25 +117,25 @@ namespace Server.Items
             {
                 case 1:
                     {
-                        this.m_Flour = reader.ReadInt();
+                        m_Flour = reader.ReadInt();
                         break;
                     }
             }
 
-            this.UpdateStage();
+            UpdateStage();
         }
 
         private void FinishWorking_Callback(object state)
         {
-            if (this.m_Timer != null)
+            if (m_Timer != null)
             {
-                this.m_Timer.Stop();
-                this.m_Timer = null;
+                m_Timer.Stop();
+                m_Timer = null;
             }
 
             Mobile from = state as Mobile;
 
-            if (from != null && !from.Deleted && !this.Deleted && this.IsFull)
+            if (from != null && !from.Deleted && !Deleted && IsFull)
             {
                 SackFlour flour = new SackFlour();
 
@@ -143,7 +143,7 @@ namespace Server.Items
 
                 if (from.PlaceInBackpack(flour))
                 {
-                    this.m_Flour = 0;
+                    m_Flour = 0;
                 }
                 else
                 {
@@ -152,7 +152,7 @@ namespace Server.Items
                 }
             }
 
-            this.UpdateStage();
+            UpdateStage();
         }
 
         private int[] FindItemTable(int itemID)

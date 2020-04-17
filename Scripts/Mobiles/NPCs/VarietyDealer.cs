@@ -16,10 +16,10 @@ namespace Server.Mobiles
         {
         }
 
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBVarietyDealer());
+            m_SBInfos.Add(new SBVarietyDealer());
         }
 
         public override void Serialize(GenericWriter writer)

@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public Mallew()
             : base("the wise")
         {
-            this.Name = "Elder Mallew";
+            Name = "Elder Mallew";
         }
 
         public Mallew(Serial serial)
@@ -20,42 +20,42 @@ namespace Server.Mobiles
 
         public override bool CanTeach => false;
         public override bool IsInvulnerable => true;
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
         }
 
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.Race = Race.Elf;
+            Female = false;
+            Race = Race.Elf;
 
-            this.Hue = 0x876C;
-            this.HairItemID = 0x2FD1;
-            this.HairHue = 0x31E;
+            Hue = 0x876C;
+            HairItemID = 0x2FD1;
+            HairHue = 0x31E;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new ElvenBoots(0x1BB));
-            this.AddItem(new Circlet());
-            this.AddItem(new Cloak(0x3B2));
+            AddItem(new ElvenBoots(0x1BB));
+            AddItem(new Circlet());
+            AddItem(new Cloak(0x3B2));
 
             Item item;
 
             item = new LeafChest();
             item.Hue = 0x53E;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new LeafArms();
             item.Hue = 0x53E;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new LeafTonlet();
             item.Hue = 0x53E;
-            this.AddItem(item);
+            AddItem(item);
         }
 
         public override void Serialize(GenericWriter writer)

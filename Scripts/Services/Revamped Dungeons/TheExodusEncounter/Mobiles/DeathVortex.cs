@@ -11,8 +11,8 @@ namespace Server.Items
         public DeathVortexTrap()
             : base(0x3789)
         {
-            this.Hue = 2070;
-            this.Movable = false;
+            Hue = 2070;
+            Movable = false;
 
             m_Timer = new InternalTimer(this);
             m_Timer.Start();
@@ -40,7 +40,7 @@ namespace Server.Items
             if (from.IsStaff())
                 return;
 
-            if (from.Alive && this.CheckRange(from.Location, 1) && !(from is ClockworkExodus))
+            if (from.Alive && CheckRange(from.Location, 1) && !(from is ClockworkExodus))
                 StamManaDrain(from);
         }
 

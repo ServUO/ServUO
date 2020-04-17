@@ -6,7 +6,7 @@ namespace Server.Items
         public Beads()
             : base(0x108B)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public Beads(Serial serial)

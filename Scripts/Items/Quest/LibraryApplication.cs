@@ -6,8 +6,8 @@ namespace Server.Items
         public LibraryApplication()
             : base(0xEC0)
         {
-            this.LootType = LootType.Blessed;
-            this.Weight = 1.0;
+            LootType = LootType.Blessed;
+            Weight = 1.0;
         }
 
         public LibraryApplication(Serial serial)

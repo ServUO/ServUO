@@ -9,41 +9,41 @@ namespace Server.Mobiles
         public Satyr()
             : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a satyr";
-            this.Body = 271;
-            this.BaseSoundID = 0x586;
+            Name = "a satyr";
+            Body = 271;
+            BaseSoundID = 0x586;
 
-            this.SetStr(177, 195);
-            this.SetDex(251, 269);
-            this.SetInt(153, 170);
+            SetStr(177, 195);
+            SetDex(251, 269);
+            SetInt(153, 170);
 
-            this.SetHits(350, 400);
+            SetHits(350, 400);
 
-            this.SetDamage(13, 24);
+            SetDamage(13, 24);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 55, 60);
-            this.SetResistance(ResistanceType.Fire, 25, 35);
-            this.SetResistance(ResistanceType.Cold, 30, 40);
-            this.SetResistance(ResistanceType.Poison, 30, 40);
-            this.SetResistance(ResistanceType.Energy, 30, 40);
+            SetResistance(ResistanceType.Physical, 55, 60);
+            SetResistance(ResistanceType.Fire, 25, 35);
+            SetResistance(ResistanceType.Cold, 30, 40);
+            SetResistance(ResistanceType.Poison, 30, 40);
+            SetResistance(ResistanceType.Energy, 30, 40);
 
-            this.SetSkill(SkillName.MagicResist, 55.0, 65.0);
-            this.SetSkill(SkillName.Tactics, 80.0, 100.0);
-            this.SetSkill(SkillName.Wrestling, 80.0, 100.0);
+            SetSkill(SkillName.MagicResist, 55.0, 65.0);
+            SetSkill(SkillName.Tactics, 80.0, 100.0);
+            SetSkill(SkillName.Wrestling, 80.0, 100.0);
 
-            this.SetSkill(SkillName.Musicianship, 100);
-            this.SetSkill(SkillName.Discordance, 100);
-            this.SetSkill(SkillName.Provocation, 100);
-            this.SetSkill(SkillName.Peacemaking, 100);
+            SetSkill(SkillName.Musicianship, 100);
+            SetSkill(SkillName.Discordance, 100);
+            SetSkill(SkillName.Provocation, 100);
+            SetSkill(SkillName.Peacemaking, 100);
 
-            this.Fame = 5000;
-            this.Karma = 0;
+            Fame = 5000;
+            Karma = 0;
 
             for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
             {
-                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
         }
 
@@ -51,8 +51,8 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich);
-            this.AddLoot(LootPack.MedScrolls);
+            AddLoot(LootPack.Rich);
+            AddLoot(LootPack.MedScrolls);
         }
 
         public override bool CanDiscord => true;

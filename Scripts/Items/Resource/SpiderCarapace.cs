@@ -12,8 +12,8 @@ namespace Server.Items
         public SpiderCarapace(int amount)
             : base(0x5720)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public SpiderCarapace(Serial serial)

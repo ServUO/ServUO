@@ -14,7 +14,7 @@ namespace Server.Engines.Quests.Zento
                 1063316;
         public override void RenderProgress(BaseQuestGump gump)
         {
-            if (!this.Completed)
+            if (!Completed)
             {
                 // Deathwatch Beetle Hatchlings killed:
                 gump.AddHtmlLocalized(70, 260, 270, 100, 1063318, 0x12DC6BF, false, false);
@@ -32,12 +32,12 @@ namespace Server.Engines.Quests.Zento
         public override void OnKill(BaseCreature creature, Container corpse)
         {
             if (creature is DeathwatchBeetleHatchling)
-                this.Complete();
+                Complete();
         }
 
         public override void OnComplete()
         {
-            this.System.AddObjective(new SecondKillObjective());
+            System.AddObjective(new SecondKillObjective());
         }
     }
 
@@ -56,7 +56,7 @@ namespace Server.Engines.Quests.Zento
                 1063320;
         public override void RenderProgress(BaseQuestGump gump)
         {
-            if (!this.Completed)
+            if (!Completed)
             {
                 // Deathwatch Beetle Hatchlings killed:
                 gump.AddHtmlLocalized(70, 260, 270, 100, 1063318, 0x12DC6BF, false, false);
@@ -75,17 +75,17 @@ namespace Server.Engines.Quests.Zento
         {
             if (creature is DeathwatchBeetleHatchling)
             {
-                this.Complete();
-                this.System.AddObjective(new ThirdKillObjective(2));
+                Complete();
+                System.AddObjective(new ThirdKillObjective(2));
             }
         }
 
         public override void OnRead()
         {
-            if (!this.Completed)
+            if (!Completed)
             {
-                this.Complete();
-                this.System.AddObjective(new ThirdKillObjective(1));
+                Complete();
+                System.AddObjective(new ThirdKillObjective(1));
             }
         }
     }
@@ -94,7 +94,7 @@ namespace Server.Engines.Quests.Zento
     {
         public ThirdKillObjective(int startingProgress)
         {
-            this.CurProgress = startingProgress;
+            CurProgress = startingProgress;
         }
 
         public ThirdKillObjective()
@@ -107,12 +107,12 @@ namespace Server.Engines.Quests.Zento
         public override int MaxProgress => 10;
         public override void RenderProgress(BaseQuestGump gump)
         {
-            if (!this.Completed)
+            if (!Completed)
             {
                 // Deathwatch Beetle Hatchlings killed:
                 gump.AddHtmlLocalized(70, 260, 270, 100, 1063318, 0x12DC6BF, false, false);
 
-                gump.AddLabel(70, 280, 0x64, this.CurProgress.ToString());
+                gump.AddLabel(70, 280, 0x64, CurProgress.ToString());
                 gump.AddLabel(100, 280, 0x64, "/");
                 gump.AddLabel(130, 280, 0x64, "10");
             }
@@ -125,12 +125,12 @@ namespace Server.Engines.Quests.Zento
         public override void OnKill(BaseCreature creature, Container corpse)
         {
             if (creature is DeathwatchBeetleHatchling)
-                this.CurProgress++;
+                CurProgress++;
         }
 
         public override void OnComplete()
         {
-            this.System.AddObjective(new ReturnObjective());
+            System.AddObjective(new ReturnObjective());
         }
     }
 
@@ -145,7 +145,7 @@ namespace Server.Engines.Quests.Zento
                 1063313;
         public override void OnComplete()
         {
-            this.System.AddConversation(new EndConversation());
+            System.AddConversation(new EndConversation());
         }
     }
 }

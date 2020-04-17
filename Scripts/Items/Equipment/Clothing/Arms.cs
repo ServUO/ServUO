@@ -12,7 +12,7 @@ namespace Server.Items
         public GargishClothArms(int hue)
             : base(0x0404, Layer.Arms, hue)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public GargishClothArms(Serial serial)
@@ -29,9 +29,9 @@ namespace Server.Items
             if (parent is Mobile)
             {
                 if (((Mobile)parent).Female)
-                    this.ItemID = 0x0403;
+                    ItemID = 0x0403;
                 else
-                    this.ItemID = 0x0404;
+                    ItemID = 0x0404;
             }
         }
 
@@ -60,7 +60,7 @@ namespace Server.Items
         public FemaleGargishClothArms(int hue)
             : base(0x0403, Layer.Arms, hue)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public FemaleGargishClothArms(Serial serial)
@@ -95,7 +95,7 @@ namespace Server.Items
         public MaleGargishClothArms(int hue)
             : base(0x0404, Layer.Arms, hue)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public MaleGargishClothArms(Serial serial)

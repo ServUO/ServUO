@@ -7,12 +7,12 @@ namespace Server.Items
         public MalekisHonor()
             : base()
         {
-            this.SetHue = 0x76D;
+            SetHue = 0x76D;
 
-            this.SetSelfRepair = 3;
-            this.SetAttributes.DefendChance = 10;
-            this.SetAttributes.BonusStr = 10;
-            this.SetAttributes.WeaponSpeed = 35;
+            SetSelfRepair = 3;
+            SetAttributes.DefendChance = 10;
+            SetAttributes.BonusStr = 10;
+            SetAttributes.WeaponSpeed = 35;
         }
 
         public MalekisHonor(Serial serial)

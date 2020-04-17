@@ -9,9 +9,9 @@ namespace Server.Engines.Quests
         public MistakenIdentityQuest()
             : base()
         {
-            this.AddObjective(new DeliverObjective(typeof(TuitionReimbursementForm), "tuition reimbursement form", 1, typeof(Gorrow), "Gorrow (Luna)"));
+            AddObjective(new DeliverObjective(typeof(TuitionReimbursementForm), "tuition reimbursement form", 1, typeof(Gorrow), "Gorrow (Luna)"));
 
-            this.AddReward(new BaseReward(1074634)); // Tuition Reimbursement
+            AddReward(new BaseReward(1074634)); // Tuition Reimbursement
         }
 
         public override QuestChain ChainID => QuestChain.TuitionReimbursement;
@@ -55,11 +55,11 @@ namespace Server.Engines.Quests
         public YouScratchMyBackQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(UnicornRibs), "unicorn ribs", 1));
-            this.AddObjective(new ObtainObjective(typeof(KirinBrains), "ki-rin brains", 2));
-            this.AddObjective(new ObtainObjective(typeof(PixieLeg), "pixie legs", 5));
+            AddObjective(new ObtainObjective(typeof(UnicornRibs), "unicorn ribs", 1));
+            AddObjective(new ObtainObjective(typeof(KirinBrains), "ki-rin brains", 2));
+            AddObjective(new ObtainObjective(typeof(PixieLeg), "pixie legs", 5));
 
-            this.AddReward(new BaseReward(1074634)); // Tuition Reimbursement
+            AddReward(new BaseReward(1074634)); // Tuition Reimbursement
         }
 
         public override QuestChain ChainID => QuestChain.TuitionReimbursement;
@@ -104,9 +104,9 @@ namespace Server.Engines.Quests
         public FoolingAernyaQuest()
             : base()
         {
-            this.AddObjective(new DeliverObjective(typeof(SignedTuitionReimbursementForm), "signed tuition reimbursement form", 1, typeof(Aernya), "Aernya (Umbra)"));
+            AddObjective(new DeliverObjective(typeof(SignedTuitionReimbursementForm), "signed tuition reimbursement form", 1, typeof(Aernya), "Aernya (Umbra)"));
 
-            this.AddReward(new BaseReward(1074634)); // Tuition Reimbursement
+            AddReward(new BaseReward(1074634)); // Tuition Reimbursement
         }
 
         public override QuestChain ChainID => QuestChain.TuitionReimbursement;
@@ -147,9 +147,9 @@ namespace Server.Engines.Quests
         public NotQuiteThatEasyQuest()
             : base()
         {
-            this.AddObjective(new DeliverObjective(typeof(SignedTuitionReimbursementForm), "signed tuition reimbursement form", 1, typeof(Gnosos), "Master Gnosos (Bedlam)"));
+            AddObjective(new DeliverObjective(typeof(SignedTuitionReimbursementForm), "signed tuition reimbursement form", 1, typeof(Gnosos), "Master Gnosos (Bedlam)"));
 
-            this.AddReward(new BaseReward(1074634)); // Tuition Reimbursement
+            AddReward(new BaseReward(1074634)); // Tuition Reimbursement
         }
 
         public override QuestChain ChainID => QuestChain.TuitionReimbursement;
@@ -176,7 +176,7 @@ namespace Server.Engines.Quests
         {
             base.OnAccept();
 
-            this.Owner.Bedlam = true;
+            Owner.Bedlam = true;
         }
 
         public override void Serialize(GenericWriter writer)
@@ -199,11 +199,11 @@ namespace Server.Engines.Quests
         public ConvinceMeQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(RedDeath), "red death", 1, "Bedlam"));
-            this.AddObjective(new SlayObjective(typeof(GoreFiend), "gore fiends", 10, "Bedlam"));
-            this.AddObjective(new SlayObjective(typeof(RottingCorpse), "rotting corpses", 8, "Bedlam"));
+            AddObjective(new SlayObjective(typeof(RedDeath), "red death", 1, "Bedlam"));
+            AddObjective(new SlayObjective(typeof(GoreFiend), "gore fiends", 10, "Bedlam"));
+            AddObjective(new SlayObjective(typeof(RottingCorpse), "rotting corpses", 8, "Bedlam"));
 
-            this.AddReward(new BaseReward(1074634)); // Tuition Reimbursement
+            AddReward(new BaseReward(1074634)); // Tuition Reimbursement
         }
 
         public override QuestChain ChainID => QuestChain.TuitionReimbursement;
@@ -244,9 +244,9 @@ namespace Server.Engines.Quests
         public TuitionReimbursementQuest()
             : base()
         {
-            this.AddObjective(new DeliverObjective(typeof(CompletedTuitionReimbursementForm), "completed tuition reimbursement form", 1, typeof(Aernya), "Aernya (Umbra)"));
+            AddObjective(new DeliverObjective(typeof(CompletedTuitionReimbursementForm), "completed tuition reimbursement form", 1, typeof(Aernya), "Aernya (Umbra)"));
 
-            this.AddReward(new BaseReward(typeof(RewardBox), 1072584));
+            AddReward(new BaseReward(typeof(RewardBox), 1072584));
         }
 
         public override QuestChain ChainID => QuestChain.TuitionReimbursement;

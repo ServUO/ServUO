@@ -7,23 +7,23 @@ namespace Server.Items
         public PaladinArms()
             : base()
         {
-            this.SetHue = 0x47E;
+            SetHue = 0x47E;
 
-            this.Attributes.RegenHits = 1;
-            this.Attributes.AttackChance = 5;
+            Attributes.RegenHits = 1;
+            Attributes.AttackChance = 5;
 
-            this.SetAttributes.ReflectPhysical = 25;
-            this.SetAttributes.NightSight = 1;
+            SetAttributes.ReflectPhysical = 25;
+            SetAttributes.NightSight = 1;
 
-            this.SetSkillBonuses.SetValues(0, SkillName.Chivalry, 10);
+            SetSkillBonuses.SetValues(0, SkillName.Chivalry, 10);
 
-            this.SetSelfRepair = 3;
+            SetSelfRepair = 3;
 
-            this.SetPhysicalBonus = 2;
-            this.SetFireBonus = 5;
-            this.SetColdBonus = 5;
-            this.SetPoisonBonus = 3;
-            this.SetEnergyBonus = 5;
+            SetPhysicalBonus = 2;
+            SetFireBonus = 5;
+            SetColdBonus = 5;
+            SetPoisonBonus = 3;
+            SetEnergyBonus = 5;
         }
 
         public PaladinArms(Serial serial)

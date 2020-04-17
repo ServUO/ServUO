@@ -42,32 +42,32 @@ namespace Server.Engines.Quests
         public TheWayOfTheBladeQuest()
             : base()
         {
-            this.AddObjective(new ApprenticeObjective(SkillName.Swords, 50, "Old Haven Training", 1077659, 1077660));
+            AddObjective(new ApprenticeObjective(SkillName.Swords, 50, "Old Haven Training", 1077659, 1077660));
 
             // 1077659 You feel much more attuned to your blade. Your ability to hone your Swordsmanship skill is enhanced in this area.
             // 1077660 You feel less attuned to your blade. Your Swordsmanship learning potential is no longer enhanced.
 
-            this.AddReward(new BaseReward(typeof(JocklesQuicksword), 1077666));
+            AddReward(new BaseReward(typeof(JocklesQuicksword), 1077666));
         }
 
         public override bool CanOffer()
         {
             #region Scroll of Alacrity
-            PlayerMobile pm = this.Owner as PlayerMobile;
+            PlayerMobile pm = Owner as PlayerMobile;
             if (pm.AcceleratedStart > DateTime.UtcNow)
             {
-                this.Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
+                Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
                 return false;
             }
             #endregion
             else
-                return this.Owner.Skills.Swords.Base < 50;
+                return Owner.Skills.Swords.Base < 50;
         }
 
         public override void OnCompleted()
         {
-            this.Owner.SendLocalizedMessage(1077664, null, 0x23); // You have achieved the rank of Apprentice Swordsman. Return to Jockles in New Haven to see what kind of reward he has waiting for you. Hopefully he'll be a little nicer this time!
-            this.Owner.PlaySound(this.CompleteSound);
+            Owner.SendLocalizedMessage(1077664, null, 0x23); // You have achieved the rank of Apprentice Swordsman. Return to Jockles in New Haven to see what kind of reward he has waiting for you. Hopefully he'll be a little nicer this time!
+            Owner.PlaySound(CompleteSound);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -96,12 +96,12 @@ namespace Server.Engines.Quests
         public Jockles()
             : base("Jockles", "The Swordsmanship Instructor")
         {
-            this.SetSkill(SkillName.Anatomy, 120.0, 120.0);
-            this.SetSkill(SkillName.Parry, 120.0, 120.0);
-            this.SetSkill(SkillName.Healing, 120.0, 120.0);
-            this.SetSkill(SkillName.Tactics, 120.0, 120.0);
-            this.SetSkill(SkillName.Swords, 120.0, 120.0);
-            this.SetSkill(SkillName.Focus, 120.0, 120.0);
+            SetSkill(SkillName.Anatomy, 120.0, 120.0);
+            SetSkill(SkillName.Parry, 120.0, 120.0);
+            SetSkill(SkillName.Healing, 120.0, 120.0);
+            SetSkill(SkillName.Tactics, 120.0, 120.0);
+            SetSkill(SkillName.Swords, 120.0, 120.0);
+            SetSkill(SkillName.Focus, 120.0, 120.0);
         }
 
         public Jockles(Serial serial)
@@ -111,33 +111,33 @@ namespace Server.Engines.Quests
 
         public override void Advertise()
         {
-            this.Say(1078135); // Talk to me to learn the way of the blade.
+            Say(1078135); // Talk to me to learn the way of the blade.
         }
 
         public override void OnOfferFailed()
         {
-            this.Say(1077772); // I cannot teach you, for you know all I can teach!
+            Say(1077772); // I cannot teach you, for you know all I can teach!
         }
 
         public override void InitBody()
         {
-            this.Female = false;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = false;
+            CantWalk = true;
+            Race = Race.Human;
 
             base.InitBody();
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Broadsword());
-            this.AddItem(new PlateChest());
-            this.AddItem(new PlateLegs());
-            this.AddItem(new PlateGloves());
-            this.AddItem(new PlateArms());
-            this.AddItem(new PlateGorget());
-            this.AddItem(new OrderShield());
+            AddItem(new Backpack());
+            AddItem(new Broadsword());
+            AddItem(new PlateChest());
+            AddItem(new PlateLegs());
+            AddItem(new PlateGloves());
+            AddItem(new PlateArms());
+            AddItem(new PlateGorget());
+            AddItem(new OrderShield());
         }
 
         public override void Serialize(GenericWriter writer)

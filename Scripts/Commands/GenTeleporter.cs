@@ -160,7 +160,7 @@ namespace Server.Commands
             {
                 if (!FindTeleporter(mapLocation, pointLocation))
                 {
-                    this.m_Count++;
+                    m_Count++;
 
                     Teleporter tel = new Teleporter(pointDestination, mapDestination);
                     WeakEntityCollection.Add("tel", tel);
@@ -170,7 +170,7 @@ namespace Server.Commands
 
                 if (back && !FindTeleporter(mapDestination, pointDestination))
                 {
-                    this.m_Count++;
+                    m_Count++;
 
                     Teleporter telBack = new Teleporter(pointLocation, mapLocation);
                     WeakEntityCollection.Add("tel", telBack);
@@ -181,12 +181,12 @@ namespace Server.Commands
 
             public void CreateTeleporter(int xLoc, int yLoc, int zLoc, int xDest, int yDest, int zDest, Map map, bool back)
             {
-                this.CreateTeleporter(new Point3D(xLoc, yLoc, zLoc), new Point3D(xDest, yDest, zDest), map, map, back);
+                CreateTeleporter(new Point3D(xLoc, yLoc, zLoc), new Point3D(xDest, yDest, zDest), map, map, back);
             }
 
             public void CreateTeleporter(int xLoc, int yLoc, int zLoc, int xDest, int yDest, int zDest, Map mapLocation, Map mapDestination, bool back)
             {
-                this.CreateTeleporter(new Point3D(xLoc, yLoc, zLoc), new Point3D(xDest, yDest, zDest), mapLocation, mapDestination, back);
+                CreateTeleporter(new Point3D(xLoc, yLoc, zLoc), new Point3D(xDest, yDest, zDest), mapLocation, mapDestination, back);
             }
         }
     }

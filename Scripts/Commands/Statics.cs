@@ -547,9 +547,9 @@ namespace Server
             public readonly List<Item> m_List;
             public DeltaState(Point2D p)
             {
-                this.m_X = p.X;
-                this.m_Y = p.Y;
-                this.m_List = new List<Item>();
+                m_X = p.X;
+                m_Y = p.Y;
+                m_List = new List<Item>();
             }
         }
 
@@ -560,9 +560,9 @@ namespace Server
             public readonly Point3D m_End;
             public StateInfo(Map map, Point3D start, Point3D end)
             {
-                this.m_Map = map;
-                this.m_Start = start;
-                this.m_End = end;
+                m_Map = map;
+                m_Start = start;
+                m_End = end;
             }
         }
     }

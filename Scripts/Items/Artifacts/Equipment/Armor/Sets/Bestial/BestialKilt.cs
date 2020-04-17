@@ -21,8 +21,8 @@ namespace Server.Items
         [Constructable]
         public BestialKilt()
         {
-            this.Hue = 2010;
-            this.Weight = 5;
+            Hue = 2010;
+            Weight = 5;
         }
 
         public BestialKilt(Serial serial)
@@ -61,8 +61,8 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            if (this.Hue != 2010)
-                this.Hue = 2010;
+            if (Hue != 2010)
+                Hue = 2010;
         }
     }
 }

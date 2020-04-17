@@ -34,32 +34,32 @@ namespace Server.Engines.Quests
         public TheAllureOfDarkMagicQuest()
             : base()
         {
-            this.AddObjective(new ApprenticeObjective(SkillName.Necromancy, 50, "Old Haven Training", 1078037, 1078038));
+            AddObjective(new ApprenticeObjective(SkillName.Necromancy, 50, "Old Haven Training", 1078037, 1078038));
 
             // 1078037 Your Necromancy potential is greatly enhanced while questing in this area.
             // 1078038 You are not in the quest area for Apprentice Necromancer. Your Necromancy potential is not enhanced here.
 
-            this.AddReward(new BaseReward(typeof(CompleteNecromancerSpellbook), 1078052));
+            AddReward(new BaseReward(typeof(CompleteNecromancerSpellbook), 1078052));
         }
 
         public override bool CanOffer()
         {
             #region Scroll of Alacrity
-            PlayerMobile pm = this.Owner as PlayerMobile;
+            PlayerMobile pm = Owner as PlayerMobile;
             if (pm.AcceleratedStart > DateTime.UtcNow)
             {
-                this.Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
+                Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
                 return false;
             }
             #endregion
             else
-                return this.Owner.Skills.Necromancy.Base < 50;
+                return Owner.Skills.Necromancy.Base < 50;
         }
 
         public override void OnCompleted()
         {
-            this.Owner.SendLocalizedMessage(1078042, null, 0x23); // You have achieved the rank of Apprentice Necromancer. Return to Mulcivikh in New Haven to receive the knowledge you desire.
-            this.Owner.PlaySound(this.CompleteSound);
+            Owner.SendLocalizedMessage(1078042, null, 0x23); // You have achieved the rank of Apprentice Necromancer. Return to Mulcivikh in New Haven to receive the knowledge you desire.
+            Owner.PlaySound(CompleteSound);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -86,19 +86,19 @@ namespace Server.Engines.Quests
 
         public override void InitSBInfo()
         {
-            this.SBInfos.Add(new SBMage());
+            SBInfos.Add(new SBMage());
         }
 
         [Constructable]
         public Mulcivikh()
             : base("Mulcivikh", "The Necromancy Instructor")
         {
-            this.SetSkill(SkillName.Magery, 120.0, 120.0);
-            this.SetSkill(SkillName.MagicResist, 120.0, 120.0);
-            this.SetSkill(SkillName.SpiritSpeak, 120.0, 120.0);
-            this.SetSkill(SkillName.Swords, 120.0, 120.0);
-            this.SetSkill(SkillName.Meditation, 120.0, 120.0);
-            this.SetSkill(SkillName.Necromancy, 120.0, 120.0);
+            SetSkill(SkillName.Magery, 120.0, 120.0);
+            SetSkill(SkillName.MagicResist, 120.0, 120.0);
+            SetSkill(SkillName.SpiritSpeak, 120.0, 120.0);
+            SetSkill(SkillName.Swords, 120.0, 120.0);
+            SetSkill(SkillName.Meditation, 120.0, 120.0);
+            SetSkill(SkillName.Necromancy, 120.0, 120.0);
         }
 
         public Mulcivikh(Serial serial)
@@ -108,50 +108,50 @@ namespace Server.Engines.Quests
 
         public override void Advertise()
         {
-            this.Say(1078131); // Allured by dark magic, aren't you?
+            Say(1078131); // Allured by dark magic, aren't you?
         }
 
         public override void OnOfferFailed()
         {
-            this.Say(1077772); // I cannot teach you, for you know all I can teach!
+            Say(1077772); // I cannot teach you, for you know all I can teach!
         }
 
         public override void InitBody()
         {
-            this.Female = false;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = false;
+            CantWalk = true;
+            Race = Race.Human;
 
             base.InitBody();
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Sandals(0x8FD));
-            this.AddItem(new BoneHelm());
+            AddItem(new Backpack());
+            AddItem(new Sandals(0x8FD));
+            AddItem(new BoneHelm());
 
             Item item;
 
             item = new LeatherLegs();
             item.Hue = 0x2C3;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new LeatherGloves();
             item.Hue = 0x2C3;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new LeatherGorget();
             item.Hue = 0x2C3;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new LeatherChest();
             item.Hue = 0x2C3;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new LeatherArms();
             item.Hue = 0x2C3;
-            this.AddItem(item);
+            AddItem(item);
         }
 
         public override void Serialize(GenericWriter writer)

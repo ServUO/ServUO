@@ -8,10 +8,10 @@ namespace Server.Engines.Quests
         public StitchInTimeQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(FancyDress), "fancy dress", 1, 0x1EFF));
+            AddObjective(new ObtainObjective(typeof(FancyDress), "fancy dress", 1, 0x1EFF));
 
-            this.AddReward(new BaseReward(typeof(OldRing), 1075524)); // an old ring
-            this.AddReward(new BaseReward(typeof(OldNecklace), 1075525)); // an old necklace
+            AddReward(new BaseReward(typeof(OldRing), 1075524)); // an old ring
+            AddReward(new BaseReward(typeof(OldNecklace), 1075525)); // an old necklace
         }
 
         public override TimeSpan RestartDelay => TimeSpan.FromMinutes(2);
@@ -64,22 +64,22 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = true;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = true;
+            CantWalk = true;
+            Race = Race.Human;
 
-            this.Hue = 0x840B;
-            this.HairItemID = 0x203D;
-            this.HairHue = 0x458;
+            Hue = 0x840B;
+            HairItemID = 0x203D;
+            HairHue = 0x458;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new PlainDress(0x3C9));
-            this.AddItem(new Shoes(0x740));
+            AddItem(new Backpack());
+            AddItem(new PlainDress(0x3C9));
+            AddItem(new Shoes(0x740));
         }
 
         public override void Serialize(GenericWriter writer)
@@ -103,7 +103,7 @@ namespace Server.Engines.Quests
         public OldRing()
             : base()
         {
-            this.Hue = 0x222;
+            Hue = 0x222;
         }
 
         public OldRing(Serial serial)
@@ -133,7 +133,7 @@ namespace Server.Engines.Quests
         public OldNecklace()
             : base()
         {
-            this.Hue = 0x222;
+            Hue = 0x222;
         }
 
         public OldNecklace(Serial serial)

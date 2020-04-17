@@ -27,7 +27,7 @@ namespace Server.Items
         {
             from.Skills[SkillName.Alchemy].Base += 1;
             from.SendMessage("You have increased your Alchemy Skill by 1 Point !.");
-            this.Delete();
+            Delete();
         }
 
         public override void Serialize(GenericWriter writer)

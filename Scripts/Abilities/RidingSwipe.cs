@@ -18,7 +18,7 @@ namespace Server.Items
 
         public override bool CheckSkills(Mobile from)
         {
-            if (this.GetSkill(from, SkillName.Bushido) < 50.0)
+            if (GetSkill(from, SkillName.Bushido) < 50.0)
             {
                 from.SendLocalizedMessage(1070768, "50"); // You need ~1_SKILL_REQUIREMENT~ Bushido skill to perform that attack!
                 return false;
@@ -36,7 +36,7 @@ namespace Server.Items
                 return;
             }
 
-            if (!this.Validate(attacker) || !this.CheckMana(attacker, true))
+            if (!Validate(attacker) || !CheckMana(attacker, true))
                 return;
 
             ClearCurrentAbility(attacker);

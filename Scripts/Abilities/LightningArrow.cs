@@ -15,7 +15,7 @@ namespace Server.Items
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
-            if (!this.Validate(attacker))
+            if (!Validate(attacker))
                 return;
 
             ClearCurrentAbility(attacker);
@@ -30,7 +30,7 @@ namespace Server.Items
             if (weapon == null)
                 return;
 
-            if (!this.CheckMana(attacker, true))
+            if (!CheckMana(attacker, true))
                 return;
 
             List<Mobile> targets = new List<Mobile>();

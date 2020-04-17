@@ -7,7 +7,7 @@ namespace Server.Items
         [Constructable]
         public DrakeCostume() : base()
         {
-            this.CostumeBody = 60;
+            CostumeBody = 60;
         }
 
         public override int LabelNumber => 1114245;// drake costume

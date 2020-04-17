@@ -10,7 +10,7 @@ namespace Server.Items
         public FlameSpurtTrap()
             : base(0x1B71)
         {
-            this.Visible = false;
+            Visible = false;
         }
 
         public FlameSpurtTrap(Serial serial)
@@ -20,67 +20,67 @@ namespace Server.Items
 
         public virtual void StartTimer()
         {
-            if (this.m_Timer == null)
-                this.m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0), new TimerCallback(Refresh));
+            if (m_Timer == null)
+                m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0), new TimerCallback(Refresh));
         }
 
         public virtual void StopTimer()
         {
-            if (this.m_Timer != null)
-                this.m_Timer.Stop();
+            if (m_Timer != null)
+                m_Timer.Stop();
 
-            this.m_Timer = null;
+            m_Timer = null;
         }
 
         public virtual void CheckTimer()
         {
-            Map map = this.Map;
+            Map map = Map;
 
-            if (map != null && map.GetSector(this.GetWorldLocation()).Active)
-                this.StartTimer();
+            if (map != null && map.GetSector(GetWorldLocation()).Active)
+                StartTimer();
             else
-                this.StopTimer();
+                StopTimer();
         }
 
         public override void OnLocationChange(Point3D oldLocation)
         {
             base.OnLocationChange(oldLocation);
 
-            this.CheckTimer();
+            CheckTimer();
         }
 
         public override void OnMapChange()
         {
             base.OnMapChange();
 
-            this.CheckTimer();
+            CheckTimer();
         }
 
         public override void OnSectorActivate()
         {
             base.OnSectorActivate();
 
-            this.StartTimer();
+            StartTimer();
         }
 
         public override void OnSectorDeactivate()
         {
             base.OnSectorDeactivate();
 
-            this.StopTimer();
+            StopTimer();
         }
 
         public override void OnDelete()
         {
             base.OnDelete();
 
-            if (this.m_Spurt != null)
-                this.m_Spurt.Delete();
+            if (m_Spurt != null)
+                m_Spurt.Delete();
         }
 
         public virtual void Refresh()
         {
-            if (this.Deleted)
+            if (Deleted)
                 return;
 
             bool foundPlayer = false;
@@ -91,7 +91,7 @@ namespace Server.Items
                 if (!mob.Player || !mob.Alive || mob.IsStaff())
                     continue;
 
-                if (((this.Z + 8) >= mob.Z && (mob.Z + 16) > this.Z))
+                if (((Z + 8) >= mob.Z && (mob.Z + 16) > Z))
                 {
                     foundPlayer = true;
                     break;
@@ -101,17 +101,17 @@ namespace Server.Items
 
             if (!foundPlayer)
             {
-                if (this.m_Spurt != null)
-                    this.m_Spurt.Delete();
+                if (m_Spurt != null)
+                    m_Spurt.Delete();
 
-                this.m_Spurt = null;
+                m_Spurt = null;
             }
-            else if (this.m_Spurt == null || this.m_Spurt.Deleted)
+            else if (m_Spurt == null || m_Spurt.Deleted)
             {
-                this.m_Spurt = new Static(0x3709);
-                this.m_Spurt.MoveToWorld(this.Location, this.Map);
+                m_Spurt = new Static(0x3709);
+                m_Spurt.MoveToWorld(Location, Map);
 
-                Effects.PlaySound(this.GetWorldLocation(), this.Map, 0x309);
+                Effects.PlaySound(GetWorldLocation(), Map, 0x309);
             }
         }
 
@@ -122,7 +122,7 @@ namespace Server.Items
 
             if (m.Player && m.Alive)
             {
-                this.CheckTimer();
+                CheckTimer();
 
                 Spells.SpellHelper.Damage(TimeSpan.FromTicks(1), m, m, Utility.RandomMinMax(1, 30));
                 m.PlaySound(m.Female ? 0x327 : 0x437);
@@ -138,9 +138,9 @@ namespace Server.Items
             if (m.Location == oldLocation || !m.Player || !m.Alive || m.IsStaff())
                 return;
 
-            if (this.CheckRange(m.Location, oldLocation, 1))
+            if (CheckRange(m.Location, oldLocation, 1))
             {
-                this.CheckTimer();
+                CheckTimer();
 
                 Spells.SpellHelper.Damage(TimeSpan.FromTicks(1), m, m, Utility.RandomMinMax(1, 10));
                 m.PlaySound(m.Female ? 0x327 : 0x437);
@@ -174,7 +174,7 @@ namespace Server.Items
                         if (item != null)
                             item.Delete();
 
-                        this.CheckTimer();
+                        CheckTimer();
 
                         break;
                     }

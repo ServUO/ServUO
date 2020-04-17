@@ -10,25 +10,25 @@ namespace Server.Engines.Quests
         private readonly Type m_Quest;
         private readonly object m_Title;
 
-        public Type Quest => this.m_Quest;
-        public object Title => this.m_Title;
+        public Type Quest => m_Quest;
+        public object Title => m_Title;
 
         public HeritageQuestInfo(Type quest, object title)
         {
-            this.m_Quest = quest;
-            this.m_Title = title;
+            m_Quest = quest;
+            m_Title = title;
         }
 
         public bool Check(PlayerMobile player)
         {
-            return this.Check(player, false);
+            return Check(player, false);
         }
 
         public bool Check(PlayerMobile player, bool delete)
         {
             int j = 0;
 
-            while (j < player.DoneQuests.Count && player.DoneQuests[j].QuestType != this.m_Quest)
+            while (j < player.DoneQuests.Count && player.DoneQuests[j].QuestType != m_Quest)
             {
                 //if(player.Murderer && this.m_Quest == typeof(ResponsibilityQuest)  && player.DoneQuests[j].QuestType.IsSubclassOf(typeof(
 
@@ -48,7 +48,7 @@ namespace Server.Engines.Quests
     {
         #region Vendor stuff		
         private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override bool IsActiveVendor => false;
         public override void InitSBInfo()
         {
@@ -66,11 +66,11 @@ namespace Server.Engines.Quests
         private bool m_Busy;
         private int m_Index;
 
-        public List<HeritageQuestInfo> Quests => this.m_Quests;
+        public List<HeritageQuestInfo> Quests => m_Quests;
 
-        public List<object> Objectives => this.m_Objectives;
+        public List<object> Objectives => m_Objectives;
 
-        public List<object> Story => this.m_Story;
+        public List<object> Story => m_Story;
 
         public HeritageQuester()
             : this(null)
@@ -85,14 +85,14 @@ namespace Server.Engines.Quests
         public HeritageQuester(string name, string title)
             : base(title)
         {
-            this.m_Quests = new List<HeritageQuestInfo>();
-            this.m_Objectives = new List<object>();
-            this.m_Story = new List<object>();
+            m_Quests = new List<HeritageQuestInfo>();
+            m_Objectives = new List<object>();
+            m_Story = new List<object>();
 
-            this.Initialize();
+            Initialize();
 
-            this.Name = name;
-            this.SpeechHue = 0x3B2;
+            Name = name;
+            SpeechHue = 0x3B2;
         }
 
         public HeritageQuester(Serial serial)
@@ -104,10 +104,10 @@ namespace Server.Engines.Quests
         {
             if (m.Alive && !m.Hidden && m is PlayerMobile)
             {
-                int range = this.AutoSpeakRange;
+                int range = AutoSpeakRange;
 
-                if (range >= 0 && this.InRange(m, range) && !this.InRange(oldLocation, range))
-                    this.OnTalk(m);
+                if (range >= 0 && InRange(m, range) && !InRange(oldLocation, range))
+                    OnTalk(m);
             }
         }
 
@@ -116,34 +116,34 @@ namespace Server.Engines.Quests
             Console.WriteLine(m.Items.Count);
 
             if (m.Alive)
-                this.OnTalk(m);
+                OnTalk(m);
         }
 
         public virtual void OnTalk(Mobile m)
         {
-            if (m.Hidden || this.m_Busy || m.Race == this.Race)
+            if (m.Hidden || m_Busy || m.Race == Race)
             {
                 m.SendLocalizedMessage(1074017); // He's too busy right now, so he ignores you.
                 return;
             }
 
-            this.m_Busy = true;
-            this.m_Index = 0;
+            m_Busy = true;
+            m_Index = 0;
 
-            this.SpeechHue = Utility.RandomDyedHue();
-            this.Say(m.Name);
-            this.SpeechHue = 0x3B2;
+            SpeechHue = Utility.RandomDyedHue();
+            Say(m.Name);
+            SpeechHue = 0x3B2;
 
-            if (this.CheckCompleted(m))
-                Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(10), this.Story.Count + 1, new TimerStateCallback(SayStory), m);
+            if (CheckCompleted(m))
+                Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(10), Story.Count + 1, new TimerStateCallback(SayStory), m);
             else
             {
-                List<object> incomplete = this.FindIncompleted(m);
+                List<object> incomplete = FindIncompleted(m);
                 TimeSpan delay = TimeSpan.FromSeconds(2);
 
-                if (incomplete.Count == this.m_Quests.Count + 1)
+                if (incomplete.Count == m_Quests.Count + 1)
                 {
-                    incomplete = this.m_Objectives;
+                    incomplete = m_Objectives;
                     delay = TimeSpan.FromSeconds(10);
                 }
 
@@ -153,14 +153,14 @@ namespace Server.Engines.Quests
 
         public bool CheckCompleted(Mobile m)
         {
-            return this.CheckCompleted(m, false);
+            return CheckCompleted(m, false);
         }
 
         public bool CheckCompleted(Mobile m, bool delete)
         {
-            for (int i = 0; i < this.m_Quests.Count; i += 1)
+            for (int i = 0; i < m_Quests.Count; i += 1)
             {
-                HeritageQuestInfo info = this.m_Quests[i];
+                HeritageQuestInfo info = m_Quests[i];
 
                 if (!info.Check((PlayerMobile)m, delete))
                     return false;
@@ -173,11 +173,11 @@ namespace Server.Engines.Quests
         {
             List<object> incomplete = new List<object>();
 
-            incomplete.Add(this.IncompleteMessage);
+            incomplete.Add(IncompleteMessage);
 
-            for (int i = 0; i < this.m_Quests.Count; i += 1)
+            for (int i = 0; i < m_Quests.Count; i += 1)
             {
-                HeritageQuestInfo info = this.m_Quests[i];
+                HeritageQuestInfo info = m_Quests[i];
 
                 if (!info.Check((PlayerMobile)m))
                     incomplete.Add(info.Title);
@@ -189,38 +189,38 @@ namespace Server.Engines.Quests
         private void SayInstructions(object args)
         {
             if (args is List<object>)
-                this.SayInstructions((List<object>)args);
+                SayInstructions((List<object>)args);
         }
 
         public void SayInstructions(List<object> incomplete)
         {
-            Say(this, incomplete[this.m_Index]);
+            Say(this, incomplete[m_Index]);
 
-            this.m_Index += 1;
+            m_Index += 1;
 
-            if (this.m_Index == incomplete.Count)
-                this.m_Busy = false;
+            if (m_Index == incomplete.Count)
+                m_Busy = false;
         }
 
         private void SayStory(object args)
         {
             if (args is Mobile)
-                this.SayStory((Mobile)args);
+                SayStory((Mobile)args);
         }
 
         public void SayStory(Mobile m)
         {
-            if (this.m_Index < this.m_Story.Count)
-                Say(this, this.m_Story[this.m_Index]);
+            if (m_Index < m_Story.Count)
+                Say(this, m_Story[m_Index]);
             else
             {
-                this.m_Busy = false;
+                m_Busy = false;
 
                 m.CloseGump(typeof(ConfirmHeritageGump));
                 m.SendGump(new ConfirmHeritageGump(this));
             }
 
-            this.m_Index += 1;
+            m_Index += 1;
         }
 
         #region Static
@@ -306,11 +306,11 @@ namespace Server.Engines.Quests
 
             int version = reader.ReadInt();
 
-            this.m_Quests = new List<HeritageQuestInfo>();
-            this.m_Objectives = new List<object>();
-            this.m_Story = new List<object>();
+            m_Quests = new List<HeritageQuestInfo>();
+            m_Objectives = new List<object>();
+            m_Story = new List<object>();
 
-            this.Initialize();
+            Initialize();
         }
     }
 }

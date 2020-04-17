@@ -6,10 +6,10 @@ namespace Server.Items
         [Constructable]
         public WinterGiftPackage2003()
         {
-            this.DropItem(new Snowman());
-            this.DropItem(new WreathDeed());
-            this.DropItem(new BlueSnowflake());
-            this.DropItem(new RedPoinsettia());
+            DropItem(new Snowman());
+            DropItem(new WreathDeed());
+            DropItem(new BlueSnowflake());
+            DropItem(new RedPoinsettia());
         }
 
         public WinterGiftPackage2003(Serial serial)

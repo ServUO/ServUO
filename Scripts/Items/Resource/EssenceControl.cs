@@ -23,7 +23,7 @@ namespace Server.Items
         }
 
         public override int LabelNumber => 1113340;// essence of control
-        TextDefinition ICommodity.Description => this.LabelNumber;
+        TextDefinition ICommodity.Description => LabelNumber;
         bool ICommodity.IsDeedable => true;
         public override void Serialize(GenericWriter writer)
         {

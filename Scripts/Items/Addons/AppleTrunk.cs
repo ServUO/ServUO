@@ -6,7 +6,7 @@ namespace Server.Items
         public AppleTrunkAddon()
             : base()
         {
-            this.AddComponent(new LocalizedAddonComponent(0xD98, 1076785), 0, 0, 0);
+            AddComponent(new LocalizedAddonComponent(0xD98, 1076785), 0, 0, 0);
         }
 
         public AppleTrunkAddon(Serial serial)
@@ -36,7 +36,7 @@ namespace Server.Items
         public AppleTrunkDeed()
             : base()
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public AppleTrunkDeed(Serial serial)

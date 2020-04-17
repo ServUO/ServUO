@@ -24,8 +24,8 @@ namespace Server.Items
         public override string DefaultName => "unholy bone";
         public bool Carve(Mobile from, Item item)
         {
-            Effects.PlaySound(this.GetWorldLocation(), this.Map, 0x48F);
-            Effects.SendLocationEffect(this.GetWorldLocation(), this.Map, 0x3728, 10, 10, 0, 0);
+            Effects.PlaySound(GetWorldLocation(), Map, 0x48F);
+            Effects.SendLocationEffect(GetWorldLocation(), Map, 0x3728, 10, 10, 0, 0);
 
             if (0.3 > Utility.RandomDouble())
             {
@@ -33,10 +33,10 @@ namespace Server.Items
 
                 Gold gold = new Gold(25, 100);
 
-                gold.MoveToWorld(this.GetWorldLocation(), this.Map);
+                gold.MoveToWorld(GetWorldLocation(), Map);
 
-                this.Delete();
-                this.m_Timer.Stop();
+                Delete();
+                m_Timer.Stop();
             }
             else
             {
@@ -59,8 +59,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            this.m_Timer = new SpawnTimer(this);
-            this.m_Timer.Start();
+            m_Timer = new SpawnTimer(this);
+            m_Timer.Start();
         }
 
         private class SpawnTimer : Timer
@@ -69,14 +69,14 @@ namespace Server.Items
             public SpawnTimer(Item item)
                 : base(TimeSpan.FromSeconds(Utility.RandomMinMax(5, 10)))
             {
-                this.Priority = TimerPriority.FiftyMS;
+                Priority = TimerPriority.FiftyMS;
 
-                this.m_Item = item;
+                m_Item = item;
             }
 
             protected override void OnTick()
             {
-                if (this.m_Item.Deleted)
+                if (m_Item.Deleted)
                     return;
 
                 Mobile spawn;
@@ -122,9 +122,9 @@ namespace Server.Items
                         break;
                 }
 
-                spawn.MoveToWorld(this.m_Item.Location, this.m_Item.Map);
+                spawn.MoveToWorld(m_Item.Location, m_Item.Map);
 
-                this.m_Item.Delete();
+                m_Item.Delete();
             }
         }
     }

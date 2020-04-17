@@ -77,7 +77,7 @@ namespace Server.Items
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
-            if (!this.Validate(attacker) || !this.CheckMana(attacker, true))
+            if (!Validate(attacker) || !CheckMana(attacker, true))
                 return;
 
             ClearCurrentAbility(attacker);
@@ -109,13 +109,13 @@ namespace Server.Items
             public InternalTimer(Mobile m, TimeSpan duration)
                 : base(duration)
             {
-                this.m_Mobile = m;
-                this.Priority = TimerPriority.TwoFiftyMS;
+                m_Mobile = m;
+                Priority = TimerPriority.TwoFiftyMS;
             }
 
             protected override void OnTick()
             {
-                EndImmunity(this.m_Mobile);
+                EndImmunity(m_Mobile);
             }
         }
     }

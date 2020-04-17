@@ -44,32 +44,32 @@ namespace Server.Engines.Quests
         public TheRightToolForTheJobQuest()
             : base()
         {
-            this.AddObjective(new ApprenticeObjective(SkillName.Tinkering, 50, "Springs And Things Workshop", 1077742, 1077743));
+            AddObjective(new ApprenticeObjective(SkillName.Tinkering, 50, "Springs And Things Workshop", 1077742, 1077743));
 
             // 1077742 By tinkering inside of Amelia’s workshop, she is able to give you advice. This helps you hone your Tinkering skill faster than normal.
             // 1077743 Since you’ve left Amelia’s workshop, she cannot give you advice. Your Tinkering learning potential is no longer enhanced.
 
-            this.AddReward(new BaseReward(typeof(AmeliasToolbox), 1077749));
+            AddReward(new BaseReward(typeof(AmeliasToolbox), 1077749));
         }
 
         public override bool CanOffer()
         {
             #region Scroll of Alacrity
-            PlayerMobile pm = this.Owner as PlayerMobile;
+            PlayerMobile pm = Owner as PlayerMobile;
             if (pm.AcceleratedStart > DateTime.UtcNow)
             {
-                this.Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
+                Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
                 return false;
             }
             #endregion
             else
-                return this.Owner.Skills.Tinkering.Base < 50;
+                return Owner.Skills.Tinkering.Base < 50;
         }
 
         public override void OnCompleted()
         {
-            this.Owner.SendLocalizedMessage(1077747, null, 0x23); // You have achieved the rank of Apprentice Tinker. Talk to Amelia Youngstone in New Haven to see what kind of reward she has waiting for you.
-            this.Owner.PlaySound(this.CompleteSound);
+            Owner.SendLocalizedMessage(1077747, null, 0x23); // You have achieved the rank of Apprentice Tinker. Talk to Amelia Youngstone in New Haven to see what kind of reward she has waiting for you.
+            Owner.PlaySound(CompleteSound);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -96,20 +96,20 @@ namespace Server.Engines.Quests
 
         public override void InitSBInfo()
         {
-            this.SBInfos.Add(new SBTinker(this));
+            SBInfos.Add(new SBTinker(this));
         }
 
         [Constructable]
         public Amelia()
             : base("Amelia Youngstone", "The Tinkering Instructor")
         {
-            this.SetSkill(SkillName.ArmsLore, 120.0, 120.0);
-            this.SetSkill(SkillName.Blacksmith, 120.0, 120.0);
-            this.SetSkill(SkillName.Magery, 120.0, 120.0);
-            this.SetSkill(SkillName.Tactics, 120.0, 120.0);
-            this.SetSkill(SkillName.Swords, 120.0, 120.0);
-            this.SetSkill(SkillName.Tinkering, 120.0, 120.0);
-            this.SetSkill(SkillName.Mining, 120.0, 120.0);
+            SetSkill(SkillName.ArmsLore, 120.0, 120.0);
+            SetSkill(SkillName.Blacksmith, 120.0, 120.0);
+            SetSkill(SkillName.Magery, 120.0, 120.0);
+            SetSkill(SkillName.Tactics, 120.0, 120.0);
+            SetSkill(SkillName.Swords, 120.0, 120.0);
+            SetSkill(SkillName.Tinkering, 120.0, 120.0);
+            SetSkill(SkillName.Mining, 120.0, 120.0);
         }
 
         public Amelia(Serial serial)
@@ -119,30 +119,30 @@ namespace Server.Engines.Quests
 
         public override void Advertise()
         {
-            this.Say(1078123); // Tinkering is very useful for a blacksmith. You can make your own tools.
+            Say(1078123); // Tinkering is very useful for a blacksmith. You can make your own tools.
         }
 
         public override void OnOfferFailed()
         {
-            this.Say(1077772); // I cannot teach you, for you know all I can teach!
+            Say(1077772); // I cannot teach you, for you know all I can teach!
         }
 
         public override void InitBody()
         {
-            this.Female = true;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = true;
+            CantWalk = true;
+            Race = Race.Human;
 
             base.InitBody();
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Sandals());
-            this.AddItem(new ShortPants());
-            this.AddItem(new HalfApron(0x8AB));
-            this.AddItem(new Doublet());
+            AddItem(new Backpack());
+            AddItem(new Sandals());
+            AddItem(new ShortPants());
+            AddItem(new HalfApron(0x8AB));
+            AddItem(new Doublet());
         }
 
         public override void Serialize(GenericWriter writer)

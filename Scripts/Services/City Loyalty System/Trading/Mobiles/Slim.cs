@@ -131,7 +131,7 @@ namespace Server.Engines.CityLoyalty
                     int min, max;
                     TreasureMapChest.GetRandomItemStat(out min, out max, 1.0);
 
-                    RunicReforging.GenerateRandomItem(item, 0, min, max, this.Map);
+                    RunicReforging.GenerateRandomItem(item, 0, min, max, Map);
                     return item;
                 case 2:
                     return ScrollOfTranscendence.CreateRandom(1, 10);

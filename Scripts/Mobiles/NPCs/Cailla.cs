@@ -9,9 +9,9 @@ namespace Server.Engines.Quests
         public KingOfBearsQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(GrizzlyBear), "grizzly bears", 10));
+            AddObjective(new SlayObjective(typeof(GrizzlyBear), "grizzly bears", 10));
 
-            this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
+            AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
         /* King of Bears */
@@ -45,10 +45,10 @@ namespace Server.Engines.Quests
         public SpecimensQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(RedSolenWorker), "red solen workers", 12));
-            this.AddObjective(new SlayObjective(typeof(BlackSolenWorker), "black solen workers", 12));
+            AddObjective(new SlayObjective(typeof(RedSolenWorker), "red solen workers", 12));
+            AddObjective(new SlayObjective(typeof(BlackSolenWorker), "black solen workers", 12));
 
-            this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
+            AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
         public override bool AllObjectives => false;
@@ -83,10 +83,10 @@ namespace Server.Engines.Quests
         public DeadManWalkingQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Zombie), "zombies", 5));
-            this.AddObjective(new SlayObjective(typeof(Skeleton), "skeletons", 5));
+            AddObjective(new SlayObjective(typeof(Zombie), "zombies", 5));
+            AddObjective(new SlayObjective(typeof(Skeleton), "skeletons", 5));
 
-            this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
+            AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
         /* Dead Man Walking */
@@ -119,11 +119,11 @@ namespace Server.Engines.Quests
         public SpiritsQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Spectre), "spectres", 15));
-            this.AddObjective(new SlayObjective(typeof(Shade), "shades", 15));
-            this.AddObjective(new SlayObjective(typeof(Wraith), "wraiths", 15));
+            AddObjective(new SlayObjective(typeof(Spectre), "spectres", 15));
+            AddObjective(new SlayObjective(typeof(Shade), "shades", 15));
+            AddObjective(new SlayObjective(typeof(Wraith), "wraiths", 15));
 
-            this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
+            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
         public override bool AllObjectives => false;
@@ -157,9 +157,9 @@ namespace Server.Engines.Quests
         public RollTheBonesQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(PatchworkSkeleton), "patchwork skeletons", 8));
+            AddObjective(new SlayObjective(typeof(PatchworkSkeleton), "patchwork skeletons", 8));
 
-            this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
+            AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
         /* Roll the Bones */
@@ -192,9 +192,9 @@ namespace Server.Engines.Quests
         public ItsGhastlyJobQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Ghoul), "ghouls", 12));
+            AddObjective(new SlayObjective(typeof(Ghoul), "ghouls", 12));
 
-            this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
+            AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
         /* It's a Ghastly Job */
@@ -226,9 +226,9 @@ namespace Server.Engines.Quests
         public TroglodytesQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Troglodyte), "troglodytes", 12));
+            AddObjective(new SlayObjective(typeof(Troglodyte), "troglodytes", 12));
 
-            this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
+            AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
         /* Troglodytes! */
@@ -266,10 +266,10 @@ namespace Server.Engines.Quests
         public UnholyKnightsQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(BoneKnight), "bone knights", 16));
-            this.AddObjective(new SlayObjective(typeof(SkeletalKnight), "skeletal knights", 16));
+            AddObjective(new SlayObjective(typeof(BoneKnight), "bone knights", 16));
+            AddObjective(new SlayObjective(typeof(SkeletalKnight), "skeletal knights", 16));
 
-            this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
+            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
         public override bool AllObjectives => false;
@@ -303,9 +303,9 @@ namespace Server.Engines.Quests
         public FeatherInYerCapQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(SalivasFeather), "saliva's feather", 1));
+            AddObjective(new ObtainObjective(typeof(SalivasFeather), "saliva's feather", 1));
 
-            this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
+            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
         /* A Feather in Yer Cap */
@@ -348,9 +348,9 @@ namespace Server.Engines.Quests
         public TaleOfTailQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(AbscessTail), "abscess' tail", 1));
+            AddObjective(new ObtainObjective(typeof(AbscessTail), "abscess' tail", 1));
 
-            this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
+            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
         /* A Tale of Tail */
@@ -392,10 +392,10 @@ namespace Server.Engines.Quests
         public TrogAndHisDogQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Lurg), "lurg", 1));
-            this.AddObjective(new SlayObjective(typeof(Grobu), "grobu", 1));
+            AddObjective(new SlayObjective(typeof(Lurg), "lurg", 1));
+            AddObjective(new SlayObjective(typeof(Grobu), "grobu", 1));
 
-            this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
+            AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
         /* A Trog and His Dog */
@@ -435,8 +435,8 @@ namespace Server.Engines.Quests
         public Cailla()
             : base("Cailla", "the guard")
         {
-            this.SetSkill(SkillName.Meditation, 60.0, 83.0);
-            this.SetSkill(SkillName.Focus, 60.0, 83.0);
+            SetSkill(SkillName.Meditation, 60.0, 83.0);
+            SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
         public Cailla(Serial serial)
@@ -461,31 +461,31 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.Race = Race.Elf;
+            Female = false;
+            Race = Race.Elf;
 
-            this.Hue = 0x876B;
-            this.HairItemID = 0x2FCE;
-            this.HairHue = 0x2C8;
+            Hue = 0x876B;
+            HairItemID = 0x2FCE;
+            HairHue = 0x2C8;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new ElvenBoots());
-            this.AddItem(new MagicalShortbow());
-            this.AddItem(new HidePants());
-            this.AddItem(new HidePauldrons());
-            this.AddItem(new HideGloves());
-            this.AddItem(new HideFemaleChest());
-            this.AddItem(new WoodlandBelt());
+            AddItem(new ElvenBoots());
+            AddItem(new MagicalShortbow());
+            AddItem(new HidePants());
+            AddItem(new HidePauldrons());
+            AddItem(new HideGloves());
+            AddItem(new HideFemaleChest());
+            AddItem(new WoodlandBelt());
 
             Item item;
 
             item = new RavenHelm();
             item.Hue = 0x1BB;
-            this.AddItem(item);
+            AddItem(item);
         }
 
         public override void Serialize(GenericWriter writer)

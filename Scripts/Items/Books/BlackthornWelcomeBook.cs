@@ -218,7 +218,7 @@ namespace Server.Items
         public BlackthornWelcomeBook()
             : base(false)
         {
-            this.Hue = 0x89B;
+            Hue = 0x89B;
         }
 
         public BlackthornWelcomeBook(Serial serial)

@@ -15,8 +15,8 @@ namespace Server.Items
         public ColoredAnvil(int hue)
             : base(0xFAF)
         {
-            this.Hue = hue;
-            this.Weight = 20;
+            Hue = hue;
+            Weight = 20;
         }
 
         public ColoredAnvil(Serial serial)

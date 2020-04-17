@@ -5,7 +5,7 @@ namespace Server.Items
         [Constructable]
         public AnvilSouthAddon()
         {
-            this.AddComponent(new AnvilComponent(0xFB0), 0, 0, 0);
+            AddComponent(new AnvilComponent(0xFB0), 0, 0, 0);
         }
 
         public AnvilSouthAddon(Serial serial)

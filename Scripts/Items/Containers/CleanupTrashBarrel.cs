@@ -11,10 +11,10 @@ namespace Server.Items
         public CleanupTrashBarrel()
             : base(0xFAE)
         {
-            this.Hue = 2500;
-            this.Movable = false;
-            this.Name = "Trash - Keep Britannia Clean";
-            this.m_Cleanup = new List<CleanupArray>();
+            Hue = 2500;
+            Movable = false;
+            Name = "Trash - Keep Britannia Clean";
+            m_Cleanup = new List<CleanupArray>();
         }
 
         public CleanupTrashBarrel(Serial serial)
@@ -37,7 +37,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            this.m_Cleanup = new List<CleanupArray>();
+            m_Cleanup = new List<CleanupArray>();
         }
 
         public override bool OnDragDrop(Mobile from, Item dropped)
@@ -49,17 +49,17 @@ namespace Server.Items
             {
                 if (dropped.LootType == LootType.Blessed)
                 {
-                    this.PublicOverheadMessage(Network.MessageType.Regular, 0x3B2, 1075256); // That is blessed; you cannot throw it away.
+                    PublicOverheadMessage(Network.MessageType.Regular, 0x3B2, 1075256); // That is blessed; you cannot throw it away.
                 }
                 else
                 {
-                    this.PublicOverheadMessage(Network.MessageType.Regular, 0x3B2, 1151271); // This item has no turn-in value for Clean Up Britannia.
+                    PublicOverheadMessage(Network.MessageType.Regular, 0x3B2, 1151271); // This item has no turn-in value for Clean Up Britannia.
                 }
 
                 return false;
             }
 
-            this.PublicOverheadMessage(Network.MessageType.Regular, 0x3B2, Utility.Random(1042891, 8));
+            PublicOverheadMessage(Network.MessageType.Regular, 0x3B2, Utility.Random(1042891, 8));
             Empty();
 
             return true;
@@ -74,17 +74,17 @@ namespace Server.Items
             {
                 if (item.LootType == LootType.Blessed)
                 {
-                    this.PublicOverheadMessage(Network.MessageType.Regular, 0x3B2, 1075256); // That is blessed; you cannot throw it away.
+                    PublicOverheadMessage(Network.MessageType.Regular, 0x3B2, 1075256); // That is blessed; you cannot throw it away.
                 }
                 else
                 {
-                    this.PublicOverheadMessage(Network.MessageType.Regular, 0x3B2, 1151271); // This item has no turn-in value for Clean Up Britannia.
+                    PublicOverheadMessage(Network.MessageType.Regular, 0x3B2, 1151271); // This item has no turn-in value for Clean Up Britannia.
                 }
 
                 return false;
             }
 
-            this.PublicOverheadMessage(Network.MessageType.Regular, 0x3B2, Utility.Random(1042891, 8));
+            PublicOverheadMessage(Network.MessageType.Regular, 0x3B2, Utility.Random(1042891, 8));
             Empty();
 
             return true;
@@ -92,7 +92,7 @@ namespace Server.Items
 
         public void Empty()
         {
-            List<Item> items = this.Items;
+            List<Item> items = Items;
 
             if (items.Count > 0)
             {
@@ -105,18 +105,18 @@ namespace Server.Items
                     items[i].Delete();
                 }
 
-                if (this.m_Cleanup.Any(x => x.mobiles != null))
+                if (m_Cleanup.Any(x => x.mobiles != null))
                 {
-                    foreach (Mobile m in this.m_Cleanup.Select(x => x.mobiles).Distinct())
+                    foreach (Mobile m in m_Cleanup.Select(x => x.mobiles).Distinct())
                     {
-                        if (this.m_Cleanup.Find(x => x.mobiles == m && x.confirm) != null)
+                        if (m_Cleanup.Find(x => x.mobiles == m && x.confirm) != null)
                         {
-                            double point = this.m_Cleanup.Where(x => x.mobiles == m && x.confirm).Sum(x => x.points);
-                            m.SendLocalizedMessage(1151280, String.Format("{0}\t{1}", point.ToString(), this.m_Cleanup.Count(r => r.mobiles == m))); // You have received approximately ~1_VALUE~points for turning in ~2_COUNT~items for Clean Up Britannia.
+                            double point = m_Cleanup.Where(x => x.mobiles == m && x.confirm).Sum(x => x.points);
+                            m.SendLocalizedMessage(1151280, String.Format("{0}\t{1}", point.ToString(), m_Cleanup.Count(r => r.mobiles == m))); // You have received approximately ~1_VALUE~points for turning in ~2_COUNT~items for Clean Up Britannia.
                             PointsSystem.CleanUpBritannia.AwardPoints(m, point);
                         }
                     }
-                    this.m_Cleanup.Clear();
+                    m_Cleanup.Clear();
                 }
             }
         }

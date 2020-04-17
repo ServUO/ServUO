@@ -7,7 +7,7 @@ namespace Server.Items
         public GargoyleWallMirror()
             : base(0x4044)
         {
-            this.Weight = 10;
+            Weight = 10;
         }
 
         public GargoyleWallMirror(Serial serial)

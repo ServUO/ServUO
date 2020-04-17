@@ -32,7 +32,7 @@ namespace Server.Spells.Mysticism
         public EnchantSpell(Mobile caster, Item scroll, BaseWeapon weapon, AosWeaponAttribute attribute) : base(caster, scroll, m_Info)
         {
             Weapon = weapon;
-            this.Attribute = attribute;
+            Attribute = attribute;
         }
 
         public override bool CheckCast()
@@ -134,7 +134,7 @@ namespace Server.Spells.Mysticism
                 if (Table == null)
                     Table = new Dictionary<Mobile, EnchantmentTimer>();
 
-                Enhancement.SetValue(Caster, this.Attribute, value, ModName);
+                Enhancement.SetValue(Caster, Attribute, value, ModName);
 
                 if (prim >= 80 && sec >= 80 && Weapon.Attributes.SpellChanneling == 0)
                 {
@@ -143,11 +143,11 @@ namespace Server.Spells.Mysticism
                     malus = 1;
                 }
 
-                Table[Caster] = new EnchantmentTimer(Caster, Weapon, this.Attribute, value, malus, duration);
+                Table[Caster] = new EnchantmentTimer(Caster, Weapon, Attribute, value, malus, duration);
 
                 int loc;
 
-                switch (this.Attribute)
+                switch (Attribute)
                 {
                     default:
                     case AosWeaponAttribute.HitLightning: loc = 1060423; break;
@@ -241,7 +241,7 @@ namespace Server.Spells.Mysticism
             AttributeValue = value;
             CastingMalus = malus;
 
-            this.Start();
+            Start();
         }
 
         protected override void OnTick()

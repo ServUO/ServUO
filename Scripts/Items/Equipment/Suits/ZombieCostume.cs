@@ -7,7 +7,7 @@ namespace Server.Items
         [Constructable]
         public ZombieCostume() : base()
         {
-            this.CostumeBody = 3;
+            CostumeBody = 3;
         }
 
         public override int LabelNumber => 1114222;// zombie costume

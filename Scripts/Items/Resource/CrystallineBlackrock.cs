@@ -12,8 +12,8 @@ namespace Server.Items
         public CrystallineBlackrock(int amount)
             : base(0x5732)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public CrystallineBlackrock(Serial serial)

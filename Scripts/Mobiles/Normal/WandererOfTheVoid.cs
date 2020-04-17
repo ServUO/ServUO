@@ -7,37 +7,37 @@ namespace Server.Mobiles
         public WandererOfTheVoid()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a wanderer of the void";
-            this.Body = 316;
-            this.BaseSoundID = 377;
+            Name = "a wanderer of the void";
+            Body = 316;
+            BaseSoundID = 377;
 
-            this.SetStr(111, 200);
-            this.SetDex(101, 125);
-            this.SetInt(301, 390);
+            SetStr(111, 200);
+            SetDex(101, 125);
+            SetInt(301, 390);
 
-            this.SetHits(351, 400);
+            SetHits(351, 400);
 
-            this.SetDamage(11, 13);
+            SetDamage(11, 13);
 
-            this.SetDamageType(ResistanceType.Physical, 0);
-            this.SetDamageType(ResistanceType.Cold, 15);
-            this.SetDamageType(ResistanceType.Energy, 85);
+            SetDamageType(ResistanceType.Physical, 0);
+            SetDamageType(ResistanceType.Cold, 15);
+            SetDamageType(ResistanceType.Energy, 85);
 
-            this.SetResistance(ResistanceType.Physical, 40, 50);
-            this.SetResistance(ResistanceType.Fire, 15, 25);
-            this.SetResistance(ResistanceType.Cold, 40, 50);
-            this.SetResistance(ResistanceType.Poison, 50, 75);
-            this.SetResistance(ResistanceType.Energy, 40, 50);
+            SetResistance(ResistanceType.Physical, 40, 50);
+            SetResistance(ResistanceType.Fire, 15, 25);
+            SetResistance(ResistanceType.Cold, 40, 50);
+            SetResistance(ResistanceType.Poison, 50, 75);
+            SetResistance(ResistanceType.Energy, 40, 50);
 
-            this.SetSkill(SkillName.EvalInt, 60.1, 70.0);
-            this.SetSkill(SkillName.Magery, 60.1, 70.0);
-            this.SetSkill(SkillName.Meditation, 60.1, 70.0);
-            this.SetSkill(SkillName.MagicResist, 50.1, 75.0);
-            this.SetSkill(SkillName.Tactics, 60.1, 70.0);
-            this.SetSkill(SkillName.Wrestling, 60.1, 70.0);
+            SetSkill(SkillName.EvalInt, 60.1, 70.0);
+            SetSkill(SkillName.Magery, 60.1, 70.0);
+            SetSkill(SkillName.Meditation, 60.1, 70.0);
+            SetSkill(SkillName.MagicResist, 50.1, 75.0);
+            SetSkill(SkillName.Tactics, 60.1, 70.0);
+            SetSkill(SkillName.Wrestling, 60.1, 70.0);
 
-            this.Fame = 20000;
-            this.Karma = -20000;
+            Fame = 20000;
+            Karma = -20000;
         }
 
         public WandererOfTheVoid(Serial serial)
@@ -50,7 +50,7 @@ namespace Server.Mobiles
         public override int TreasureMapLevel => 4;
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich);
+            AddLoot(LootPack.FilthyRich);
         }
 
         public override void Serialize(GenericWriter writer)

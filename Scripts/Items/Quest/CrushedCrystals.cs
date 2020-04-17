@@ -6,8 +6,8 @@ namespace Server.Items
         public CrushedCrystals()
             : base(0x223C)
         {
-            this.Weight = 1;
-            this.Hue = 0x47E;
+            Weight = 1;
+            Hue = 0x47E;
         }
 
         public CrushedCrystals(Serial serial)

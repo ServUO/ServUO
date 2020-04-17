@@ -10,10 +10,10 @@ namespace Server.Engines.Quests.Collector
         public PaintedImage(ImageType image)
             : base(0xFF3)
         {
-            this.Weight = 1.0;
-            this.Hue = 0x8FD;
+            Weight = 1.0;
+            Hue = 0x8FD;
 
-            this.m_Image = image;
+            m_Image = image;
         }
 
         public PaintedImage(Serial serial)
@@ -26,29 +26,29 @@ namespace Server.Engines.Quests.Collector
         {
             get
             {
-                return this.m_Image;
+                return m_Image;
             }
             set
             {
-                this.m_Image = value;
-                this.InvalidateProperties();
+                m_Image = value;
+                InvalidateProperties();
             }
         }
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            ImageTypeInfo info = ImageTypeInfo.Get(this.m_Image);
+            ImageTypeInfo info = ImageTypeInfo.Get(m_Image);
             list.Add(1060847, "#1055126\t#" + info.Name); // a painted image of:
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!from.InRange(this.GetWorldLocation(), 2))
+            if (!from.InRange(GetWorldLocation(), 2))
             {
                 from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
                 return;
             }
 
-            from.SendGump(new InternalGump(this.m_Image));
+            from.SendGump(new InternalGump(m_Image));
         }
 
         public override void Serialize(GenericWriter writer)
@@ -57,7 +57,7 @@ namespace Server.Engines.Quests.Collector
 
             writer.Write(0); // version
 
-            writer.WriteEncodedInt((int)this.m_Image);
+            writer.WriteEncodedInt((int)m_Image);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -66,7 +66,7 @@ namespace Server.Engines.Quests.Collector
 
             int version = reader.ReadInt();
 
-            this.m_Image = (ImageType)reader.ReadEncodedInt();
+            m_Image = (ImageType)reader.ReadEncodedInt();
         }
 
         private class InternalGump : Gump
@@ -76,10 +76,10 @@ namespace Server.Engines.Quests.Collector
             {
                 ImageTypeInfo info = ImageTypeInfo.Get(image);
 
-                this.AddBackground(45, 20, 100, 100, 0xA3C);
-                this.AddBackground(52, 29, 86, 82, 0xBB8);
+                AddBackground(45, 20, 100, 100, 0xA3C);
+                AddBackground(52, 29, 86, 82, 0xBB8);
 
-                this.AddItem(info.X, info.Y, info.Figurine);
+                AddItem(info.X, info.Y, info.Figurine);
             }
         }
     }

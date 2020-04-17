@@ -12,7 +12,7 @@ namespace Server.Items
         public Bedroll()
             : base(0xA57)
         {
-            this.Weight = 5.0;
+            Weight = 5.0;
         }
 
         public Bedroll(Serial serial)
@@ -22,7 +22,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.Parent != null || !this.VerifyMove(from))
+            if (Parent != null || !VerifyMove(from))
                 return;
 
             if (!from.InRange(this, 2))
@@ -31,18 +31,18 @@ namespace Server.Items
                 return;
             }
 
-            if (this.ItemID == 0xA57) // rolled
+            if (ItemID == 0xA57) // rolled
             {
-                Direction dir = PlayerMobile.GetDirection4(from.Location, this.Location);
+                Direction dir = PlayerMobile.GetDirection4(from.Location, Location);
 
                 if (dir == Direction.North || dir == Direction.South)
-                    this.ItemID = 0xA55;
+                    ItemID = 0xA55;
                 else
-                    this.ItemID = 0xA56;
+                    ItemID = 0xA56;
             }
             else // unrolled
             {
-                this.ItemID = 0xA57;
+                ItemID = 0xA57;
 
                 if (!from.HasGump(typeof(LogoutGump)))
                 {
@@ -76,14 +76,14 @@ namespace Server.Items
             public LogoutGump(CampfireEntry entry, Bedroll bedroll)
                 : base(100, 0)
             {
-                this.m_Entry = entry;
-                this.m_Bedroll = bedroll;
+                m_Entry = entry;
+                m_Bedroll = bedroll;
 
-                this.m_CloseTimer = Timer.DelayCall(TimeSpan.FromSeconds(10.0), new TimerCallback(CloseGump));
+                m_CloseTimer = Timer.DelayCall(TimeSpan.FromSeconds(10.0), new TimerCallback(CloseGump));
 
-                this.AddBackground(0, 0, 400, 350, 0xA28);
+                AddBackground(0, 0, 400, 350, 0xA28);
 
-                this.AddHtmlLocalized(100, 20, 200, 35, 1011015, false, false); // <center>Logging out via camping</center>
+                AddHtmlLocalized(100, 20, 200, 35, 1011015, false, false); // <center>Logging out via camping</center>
 
                 /* Using a bedroll in the safety of a camp will log you out of the game safely.
                 * If this is what you wish to do choose CONTINUE and you will be logged out.
@@ -91,40 +91,40 @@ namespace Server.Items
                 * The camp will remain secure for 10 seconds at which time this window will close
                 * and you not be logged out.
                 */
-                this.AddHtmlLocalized(50, 55, 300, 140, 1011016, true, true);
+                AddHtmlLocalized(50, 55, 300, 140, 1011016, true, true);
 
-                this.AddButton(45, 298, 0xFA5, 0xFA7, 1, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(80, 300, 110, 35, 1011011, false, false); // CONTINUE
+                AddButton(45, 298, 0xFA5, 0xFA7, 1, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(80, 300, 110, 35, 1011011, false, false); // CONTINUE
 
-                this.AddButton(200, 298, 0xFA5, 0xFA7, 0, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(235, 300, 110, 35, 1011012, false, false); // CANCEL
+                AddButton(200, 298, 0xFA5, 0xFA7, 0, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(235, 300, 110, 35, 1011012, false, false); // CANCEL
             }
 
             public override void OnResponse(NetState sender, RelayInfo info)
             {
-                PlayerMobile pm = this.m_Entry.Player;
+                PlayerMobile pm = m_Entry.Player;
 
-                this.m_CloseTimer.Stop();
+                m_CloseTimer.Stop();
 
-                if (Campfire.GetEntry(pm) != this.m_Entry)
+                if (Campfire.GetEntry(pm) != m_Entry)
                     return;
 
-                if (info.ButtonID == 1 && this.m_Entry.Safe && this.m_Bedroll.Parent == null && this.m_Bedroll.IsAccessibleTo(pm) &&
-                    this.m_Bedroll.VerifyMove(pm) && this.m_Bedroll.Map == pm.Map && pm.InRange(this.m_Bedroll, 2))
+                if (info.ButtonID == 1 && m_Entry.Safe && m_Bedroll.Parent == null && m_Bedroll.IsAccessibleTo(pm) &&
+                    m_Bedroll.VerifyMove(pm) && m_Bedroll.Map == pm.Map && pm.InRange(m_Bedroll, 2))
                 {
-                    pm.PlaceInBackpack(this.m_Bedroll);
+                    pm.PlaceInBackpack(m_Bedroll);
 
                     pm.BedrollLogout = true;
                     sender.Dispose();
                 }
 
-                Campfire.RemoveEntry(this.m_Entry);
+                Campfire.RemoveEntry(m_Entry);
             }
 
             private void CloseGump()
             {
-                Campfire.RemoveEntry(this.m_Entry);
-                this.m_Entry.Player.CloseGump(typeof(LogoutGump));
+                Campfire.RemoveEntry(m_Entry);
+                m_Entry.Player.CloseGump(typeof(LogoutGump));
             }
         }
     }

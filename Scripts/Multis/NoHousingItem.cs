@@ -13,15 +13,15 @@ namespace Server.Items
         public NoHousingItem(BaseHouse house)
             : base(0x2FD5)
         {
-            this.m_Timer = new NoHousingDelayTimer(this);
-            this.m_Timer.Start();
+            m_Timer = new NoHousingDelayTimer(this);
+            m_Timer.Start();
 
-            this.m_Area = house.Region.Area;
-            this.m_Region = new SimpleNoHousingRegion(house.Region.Map, this.m_Area);
-            this.m_Region.Register();
+            m_Area = house.Region.Area;
+            m_Region = new SimpleNoHousingRegion(house.Region.Map, m_Area);
+            m_Region.Register();
 
-            this.Visible = false;
-            this.Movable = false;
+            Visible = false;
+            Movable = false;
         }
 
         public NoHousingItem(Serial serial)
@@ -31,11 +31,11 @@ namespace Server.Items
 
         public override void OnAfterDelete()
         {
-            if (this.m_Region != null)
-                this.m_Region.Unregister();
+            if (m_Region != null)
+                m_Region.Unregister();
 
-            if (this.m_Timer != null && this.m_Timer.Running)
-                this.m_Timer.Stop();
+            if (m_Timer != null && m_Timer.Running)
+                m_Timer.Stop();
         }
 
         public override void Serialize(GenericWriter writer)
@@ -44,14 +44,14 @@ namespace Server.Items
 
             writer.Write(0); // version
 
-            if (this.m_Timer != null)
-                writer.Write(this.m_Timer.Next);
+            if (m_Timer != null)
+                writer.Write(m_Timer.Next);
             else
                 writer.Write(DateTime.UtcNow);
 
-            writer.Write(this.m_Area.Length);
+            writer.Write(m_Area.Length);
 
-            foreach (Rectangle3D rect in this.m_Area)
+            foreach (Rectangle3D rect in m_Area)
                 writer.Write(rect);
         }
 
@@ -62,21 +62,21 @@ namespace Server.Items
             int version = reader.ReadInt();
 
             DateTime next = reader.ReadDateTime();
-            this.m_Area = new Rectangle3D[reader.ReadInt()];
+            m_Area = new Rectangle3D[reader.ReadInt()];
 
-            for (int i = 0; i < this.m_Area.Length; i++)
-                this.m_Area[i] = reader.ReadRect3D();
+            for (int i = 0; i < m_Area.Length; i++)
+                m_Area[i] = reader.ReadRect3D();
 
-            this.m_Region = new SimpleNoHousingRegion(this.Map, this.m_Area);
-            this.m_Region.Register();
+            m_Region = new SimpleNoHousingRegion(Map, m_Area);
+            m_Region.Register();
 
             if (next < DateTime.UtcNow)
             {
-                this.m_Timer = new NoHousingDelayTimer(this, next - DateTime.UtcNow);
-                this.m_Timer.Start();
+                m_Timer = new NoHousingDelayTimer(this, next - DateTime.UtcNow);
+                m_Timer.Start();
             }
             else
-                this.Delete();
+                Delete();
         }
 
         private class SimpleNoHousingRegion : BaseRegion
@@ -103,15 +103,15 @@ namespace Server.Items
             public NoHousingDelayTimer(NoHousingItem item, TimeSpan delay)
                 : base(delay)
             {
-                this.m_Item = item;
-                this.Priority = TimerPriority.OneMinute;
+                m_Item = item;
+                Priority = TimerPriority.OneMinute;
             }
 
             public static TimeSpan DefaultDelay => TimeSpan.FromMinutes(Utility.RandomMinMax(60, 120));
             protected override void OnTick()
             {
-                if (this.m_Item != null && !this.m_Item.Deleted)
-                    this.m_Item.Delete();
+                if (m_Item != null && !m_Item.Deleted)
+                    m_Item.Delete();
             }
         }
     }

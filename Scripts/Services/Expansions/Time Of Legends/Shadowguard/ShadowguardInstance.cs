@@ -93,7 +93,7 @@ namespace Server.Engines.Shadowguard
 
         public void ClearRegion()
         {
-            foreach (Item item in this.Region.GetEnumeratedItems())
+            foreach (Item item in Region.GetEnumeratedItems())
             {
                 Corpse corpse = item as Corpse;
 
@@ -112,7 +112,7 @@ namespace Server.Engines.Shadowguard
                     item.Delete();
             }
 
-            foreach (Mobile m in this.Region.GetEnumeratedMobiles())
+            foreach (Mobile m in Region.GetEnumeratedMobiles())
             {
                 if (m is BaseCreature && !(((BaseCreature)m).GetMaster() is PlayerMobile))
                     m.Delete();

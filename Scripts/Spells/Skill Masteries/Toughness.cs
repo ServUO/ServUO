@@ -32,7 +32,7 @@ namespace Server.Spells.SkillMasteries
                 return false;
             }
 
-            ToughnessSpell spell = GetSpell(Caster, this.GetType()) as ToughnessSpell;
+            ToughnessSpell spell = GetSpell(Caster, GetType()) as ToughnessSpell;
 
             if (spell != null)
             {

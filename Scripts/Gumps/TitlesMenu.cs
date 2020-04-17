@@ -1157,7 +1157,7 @@ namespace Server.Gumps
                 AddGumpLayout();
             }
 
-            User.CloseGump(this.GetType());
+            User.CloseGump(GetType());
             User.SendGump(this, false);
         }
 

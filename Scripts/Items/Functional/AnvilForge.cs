@@ -8,7 +8,7 @@ namespace Server.Items
         public Anvil()
             : base(0xFAF)
         {
-            this.Movable = false;
+            Movable = false;
         }
 
         public Anvil(Serial serial)
@@ -38,7 +38,7 @@ namespace Server.Items
         public Forge()
             : base(0xFB1)
         {
-            this.Movable = false;
+            Movable = false;
         }
 
         public Forge(Serial serial)

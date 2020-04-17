@@ -70,7 +70,7 @@ namespace Server.Mobiles
         {
             DoHarmful(m);
 
-            this.MovingParticles(m, Utility.RandomList(0x171f, 0x1720, 0x1721, 0x1722), 10, 0, false, true, 0, 0, 9502, 6014, 0x11D, EffectLayer.Waist, 0);
+            MovingParticles(m, Utility.RandomList(0x171f, 0x1720, 0x1721, 0x1722), 10, 0, false, true, 0, 0, 9502, 6014, 0x11D, EffectLayer.Waist, 0);
 
             Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
             {

@@ -6,7 +6,7 @@ namespace Server.Items
         public Torso()
             : base(0x1D9F)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public Torso(Serial serial)

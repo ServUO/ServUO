@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public EndingtheThreat()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(GrayGoblin), "Gray Goblin", 10));
+            AddObjective(new SlayObjective(typeof(GrayGoblin), "Gray Goblin", 10));
 
-            this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
+            AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
         public override object Title => 1095012;//Ending the Threat

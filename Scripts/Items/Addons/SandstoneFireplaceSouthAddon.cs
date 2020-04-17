@@ -5,8 +5,8 @@ namespace Server.Items
         [Constructable]
         public SandstoneFireplaceSouthAddon()
         {
-            this.AddComponent(new AddonComponent(0x482), -1, 0, 0);
-            this.AddComponent(new AddonComponent(0x47B), 0, 0, 0);
+            AddComponent(new AddonComponent(0x482), -1, 0, 0);
+            AddComponent(new AddonComponent(0x47B), 0, 0, 0);
         }
 
         public SandstoneFireplaceSouthAddon(Serial serial)

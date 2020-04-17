@@ -9,9 +9,9 @@ namespace Server.Engines.Quests
         public AllThatGlittersIsNotGoodQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(ShimmeringEffusion), "shimmering effusion", 10));
+            AddObjective(new SlayObjective(typeof(ShimmeringEffusion), "shimmering effusion", 10));
 
-            this.AddReward(new BaseReward(typeof(RewardBox), 1072584));
+            AddReward(new BaseReward(typeof(RewardBox), 1072584));
         }
 
         /* All That Glitters is Not Good */
@@ -55,8 +55,8 @@ namespace Server.Engines.Quests
         public Siarra()
             : base("Lorekeeper Siarra", "the keeper of tradition")
         {
-            this.SetSkill(SkillName.Meditation, 60.0, 83.0);
-            this.SetSkill(SkillName.Focus, 60.0, 83.0);
+            SetSkill(SkillName.Meditation, 60.0, 83.0);
+            SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
         public Siarra(Serial serial)
@@ -70,22 +70,22 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = true;
-            this.Race = Race.Elf;
+            Female = true;
+            Race = Race.Elf;
 
-            this.Hue = 0x8384;
-            this.HairItemID = 0x2FC1;
-            this.HairHue = 0x33;
+            Hue = 0x8384;
+            HairItemID = 0x2FC1;
+            HairHue = 0x33;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Sandals(0x1BB));
-            this.AddItem(new LeafTonlet());
-            this.AddItem(new ElvenShirt());
-            this.AddItem(new GemmedCirclet());
+            AddItem(new Sandals(0x1BB));
+            AddItem(new LeafTonlet());
+            AddItem(new ElvenShirt());
+            AddItem(new GemmedCirclet());
         }
 
         public override void Serialize(GenericWriter writer)

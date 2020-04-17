@@ -9,11 +9,11 @@ namespace Server.Engines.Quests
         public ItsElementalQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(FireElemental), "fire elementals", 4));
-            this.AddObjective(new SlayObjective(typeof(WaterElemental), "water elementals", 4));
-            this.AddObjective(new SlayObjective(typeof(EarthElemental), "earth elementals", 4));
+            AddObjective(new SlayObjective(typeof(FireElemental), "fire elementals", 4));
+            AddObjective(new SlayObjective(typeof(WaterElemental), "water elementals", 4));
+            AddObjective(new SlayObjective(typeof(EarthElemental), "earth elementals", 4));
 
-            this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
+            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
         /* It's Elemental */
@@ -47,8 +47,8 @@ namespace Server.Engines.Quests
         public Alejaha()
             : base("Elder Alejaha", "the wise")
         {
-            this.SetSkill(SkillName.Meditation, 60.0, 83.0);
-            this.SetSkill(SkillName.Focus, 60.0, 83.0);
+            SetSkill(SkillName.Meditation, 60.0, 83.0);
+            SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
         public Alejaha(Serial serial)
@@ -62,22 +62,22 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = true;
-            this.Race = Race.Elf;
+            Female = true;
+            Race = Race.Elf;
 
-            this.Hue = 0x8361;
-            this.HairItemID = 0x2FCD;
-            this.HairHue = 0x852;
+            Hue = 0x8361;
+            HairItemID = 0x2FCD;
+            HairHue = 0x852;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Sandals(0x1BB));
-            this.AddItem(new Cloak(0x59));
-            this.AddItem(new Skirt(0x901));
-            this.AddItem(new GemmedCirclet());
+            AddItem(new Sandals(0x1BB));
+            AddItem(new Cloak(0x59));
+            AddItem(new Skirt(0x901));
+            AddItem(new GemmedCirclet());
         }
 
         public override void Serialize(GenericWriter writer)

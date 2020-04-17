@@ -9,32 +9,32 @@ namespace Server.Mobiles
         public EffeteUndeadGargoyle()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "an effete undead gargoyle";
-            this.Body = 722;
-            this.BaseSoundID = 372;
+            Name = "an effete undead gargoyle";
+            Body = 722;
+            BaseSoundID = 372;
 
-            this.SetStr(60, 65);
-            this.SetDex(60, 65);
-            this.SetInt(30, 35);
+            SetStr(60, 65);
+            SetDex(60, 65);
+            SetInt(30, 35);
 
-            this.SetHits(65, 70);
+            SetHits(65, 70);
 
-            this.SetDamage(3, 7);
+            SetDamage(3, 7);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 20);
-            this.SetResistance(ResistanceType.Fire, 5, 10);
-            this.SetResistance(ResistanceType.Cold, 25, 30);
-            this.SetResistance(ResistanceType.Poison, 25);
-            this.SetResistance(ResistanceType.Energy, 14, 15);
+            SetResistance(ResistanceType.Physical, 20);
+            SetResistance(ResistanceType.Fire, 5, 10);
+            SetResistance(ResistanceType.Cold, 25, 30);
+            SetResistance(ResistanceType.Poison, 25);
+            SetResistance(ResistanceType.Energy, 14, 15);
 
-            this.SetSkill(SkillName.MagicResist, 50.0, 55.0);
-            this.SetSkill(SkillName.Tactics, 50.0);
-            this.SetSkill(SkillName.Wrestling, 50.0);
+            SetSkill(SkillName.MagicResist, 50.0, 55.0);
+            SetSkill(SkillName.Tactics, 50.0);
+            SetSkill(SkillName.Wrestling, 50.0);
 
-            this.Fame = 3500;
-            this.Karma = -3500;
+            Fame = 3500;
+            Karma = -3500;
         }
 
         public EffeteUndeadGargoyle(Serial serial)
@@ -46,7 +46,7 @@ namespace Server.Mobiles
         public override int Meat => 1;
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Meager);
+            AddLoot(LootPack.Meager);
         }
 
         public override void Serialize(GenericWriter writer)

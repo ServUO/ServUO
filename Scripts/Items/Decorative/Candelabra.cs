@@ -27,7 +27,7 @@ namespace Server.Items
             base.Serialize(writer);
             writer.Write(1);
 
-            writer.Write(this.m_IsShipwreckedItem);
+            writer.Write(m_IsShipwreckedItem);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -39,7 +39,7 @@ namespace Server.Items
             {
                 case 1:
                     {
-                        this.m_IsShipwreckedItem = reader.ReadBool();
+                        m_IsShipwreckedItem = reader.ReadBool();
                         break;
                     }
             }
@@ -49,7 +49,7 @@ namespace Server.Items
         {
             base.AddNameProperties(list);
 
-            if (this.m_IsShipwreckedItem)
+            if (m_IsShipwreckedItem)
                 list.Add(1041645); // recovered from a shipwreck
         }
 
@@ -62,11 +62,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_IsShipwreckedItem;
+                return m_IsShipwreckedItem;
             }
             set
             {
-                this.m_IsShipwreckedItem = value;
+                m_IsShipwreckedItem = value;
             }
         }
         #endregion

@@ -14,7 +14,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            this.SendLocalizedMessageTo(from, 500208); // It appears to be blank.
+            SendLocalizedMessageTo(from, 500208); // It appears to be blank.
         }
 
         public override void Serialize(GenericWriter writer)

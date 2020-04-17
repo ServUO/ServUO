@@ -7,31 +7,31 @@ namespace Server.Mobiles
         public UndeadGuardian()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "an undead guardian";
-            this.Body = 722;
+            Name = "an undead guardian";
+            Body = 722;
 
-            this.SetStr(212);
-            this.SetDex(76);
-            this.SetInt(56);
+            SetStr(212);
+            SetDex(76);
+            SetInt(56);
 
-            this.SetHits(138);
+            SetHits(138);
 
-            this.SetDamage(8, 18);
+            SetDamage(8, 18);
 
-            this.SetDamageType(ResistanceType.Physical, 40);
-            this.SetDamageType(ResistanceType.Cold, 60);
+            SetDamageType(ResistanceType.Physical, 40);
+            SetDamageType(ResistanceType.Cold, 60);
 
-            this.SetResistance(ResistanceType.Physical, 38);
-            this.SetResistance(ResistanceType.Fire, 24);
-            this.SetResistance(ResistanceType.Cold, 58);
-            this.SetResistance(ResistanceType.Poison, 28);
-            this.SetResistance(ResistanceType.Energy, 38);
+            SetResistance(ResistanceType.Physical, 38);
+            SetResistance(ResistanceType.Fire, 24);
+            SetResistance(ResistanceType.Cold, 58);
+            SetResistance(ResistanceType.Poison, 28);
+            SetResistance(ResistanceType.Energy, 38);
 
-            this.SetSkill(SkillName.MagicResist, 66.6);
-            this.SetSkill(SkillName.Tactics, 86.2);
-            this.SetSkill(SkillName.Wrestling, 86.9);
+            SetSkill(SkillName.MagicResist, 66.6);
+            SetSkill(SkillName.Tactics, 86.2);
+            SetSkill(SkillName.Wrestling, 86.9);
 
-            this.PackNecroReg(10, 15);
+            PackNecroReg(10, 15);
         }
 
         public UndeadGuardian(Serial serial)
@@ -42,7 +42,7 @@ namespace Server.Mobiles
         public override int Meat => 1;
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich, 3);
+            AddLoot(LootPack.FilthyRich, 3);
         }
 
         public override int GetIdleSound()

@@ -4,12 +4,12 @@ namespace Server.Commands.Generic
     {
         public FacetCommandImplementor()
         {
-            this.Accessors = new string[] { "Facet" };
-            this.SupportRequirement = CommandSupport.Area;
-            this.SupportsConditionals = true;
-            this.AccessLevel = AccessLevel.GameMaster;
-            this.Usage = "Facet <command> [condition]";
-            this.Description = "Invokes the command on all appropriate objects within your facet's map bounds. Optional condition arguments can further restrict the set of objects.";
+            Accessors = new string[] { "Facet" };
+            SupportRequirement = CommandSupport.Area;
+            SupportsConditionals = true;
+            AccessLevel = AccessLevel.GameMaster;
+            Usage = "Facet <command> [condition]";
+            Description = "Invokes the command on all appropriate objects within your facet's map bounds. Optional condition arguments can further restrict the set of objects.";
         }
 
         public override void Process(Mobile from, BaseCommand command, string[] args)

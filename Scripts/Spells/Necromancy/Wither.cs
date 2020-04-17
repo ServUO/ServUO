@@ -26,24 +26,24 @@ namespace Server.Spells.Necromancy
         public override bool DelayedDamage => false;
         public override void OnCast()
         {
-            if (this.CheckSequence())
+            if (CheckSequence())
             {
                 /* Creates a withering frost around the Caster,
                 * which deals Cold Damage to all valid targets in a radius of 5 tiles.
                 */
-                Map map = this.Caster.Map;
+                Map map = Caster.Map;
 
                 if (map != null)
                 {
-                    Effects.PlaySound(this.Caster.Location, map, 0x1FB);
-                    Effects.PlaySound(this.Caster.Location, map, 0x10B);
-                    Effects.SendLocationParticles(EffectItem.Create(this.Caster.Location, map, EffectItem.DefaultDuration), 0x37CC, 1, 40, 97, 3, 9917, 0);
+                    Effects.PlaySound(Caster.Location, map, 0x1FB);
+                    Effects.PlaySound(Caster.Location, map, 0x10B);
+                    Effects.SendLocationParticles(EffectItem.Create(Caster.Location, map, EffectItem.DefaultDuration), 0x37CC, 1, 40, 97, 3, 9917, 0);
 
                     foreach (IDamageable id in AcquireIndirectTargets(Caster.Location, 4))
                     {
                         Mobile m = id as Mobile;
 
-                        this.Caster.DoHarmful(id);
+                        Caster.DoHarmful(id);
 
                         if (m != null)
                         {
@@ -57,7 +57,7 @@ namespace Server.Spells.Necromancy
                         double damage = Utility.RandomMinMax(30, 35);
                         int karma = m != null ? m.Karma / 100 : 0;
 
-                        damage *= 300 + karma + (this.GetDamageSkill(this.Caster) * 10);
+                        damage *= 300 + karma + (GetDamageSkill(Caster) * 10);
                         damage /= 1000;
 
                         int sdiBonus = SpellHelper.GetSpellDamageBonus(Caster, m, CastSkill, m is PlayerMobile);
@@ -70,7 +70,7 @@ namespace Server.Spells.Necromancy
                 }
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
     }
 }

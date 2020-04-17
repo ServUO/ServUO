@@ -67,7 +67,7 @@ namespace Server.Items
         public override void OnAfterDuped(Item newItem)
         {
             if (newItem is IPlantHue)
-                ((IPlantHue)newItem).PlantHue = this.PlantHue;
+                ((IPlantHue)newItem).PlantHue = PlantHue;
 
             base.OnAfterDuped(newItem);
         }
@@ -165,7 +165,7 @@ namespace Server.Items
         public override void OnAfterDuped(Item newItem)
         {
             if (newItem is IPlantHue)
-                ((IPlantHue)newItem).PlantHue = this.PlantHue;
+                ((IPlantHue)newItem).PlantHue = PlantHue;
 
             base.OnAfterDuped(newItem);
         }

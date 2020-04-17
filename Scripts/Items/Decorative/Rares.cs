@@ -12,9 +12,9 @@ namespace Server.Items
         public Rope(int amount)
             : base(0x14F8)
         {
-            this.Stackable = true;
-            this.Weight = 1.0;
-            this.Amount = amount;
+            Stackable = true;
+            Weight = 1.0;
+            Amount = amount;
         }
 
         public Rope(Serial serial)
@@ -52,9 +52,9 @@ namespace Server.Items
         public IronWire(int amount)
             : base(0x1876)
         {
-            this.Stackable = true;
-            this.Weight = 5.0;
-            this.Amount = amount;
+            Stackable = true;
+            Weight = 5.0;
+            Amount = amount;
         }
 
         public IronWire(Serial serial)
@@ -78,8 +78,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (version < 1 && this.Weight == 2.0)
-                this.Weight = 5.0;
+            if (version < 1 && Weight == 2.0)
+                Weight = 5.0;
         }
     }
 
@@ -95,9 +95,9 @@ namespace Server.Items
         public SilverWire(int amount)
             : base(0x1877)
         {
-            this.Stackable = true;
-            this.Weight = 5.0;
-            this.Amount = amount;
+            Stackable = true;
+            Weight = 5.0;
+            Amount = amount;
         }
 
         public SilverWire(Serial serial)
@@ -121,8 +121,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (version < 1 && this.Weight == 2.0)
-                this.Weight = 5.0;
+            if (version < 1 && Weight == 2.0)
+                Weight = 5.0;
         }
     }
 
@@ -138,9 +138,9 @@ namespace Server.Items
         public GoldWire(int amount)
             : base(0x1878)
         {
-            this.Stackable = true;
-            this.Weight = 5.0;
-            this.Amount = amount;
+            Stackable = true;
+            Weight = 5.0;
+            Amount = amount;
         }
 
         public GoldWire(Serial serial)
@@ -164,8 +164,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (version < 1 && this.Weight == 2.0)
-                this.Weight = 5.0;
+            if (version < 1 && Weight == 2.0)
+                Weight = 5.0;
         }
     }
 
@@ -181,9 +181,9 @@ namespace Server.Items
         public CopperWire(int amount)
             : base(0x1879)
         {
-            this.Stackable = true;
-            this.Weight = 5.0;
-            this.Amount = amount;
+            Stackable = true;
+            Weight = 5.0;
+            Amount = amount;
         }
 
         public CopperWire(Serial serial)
@@ -207,8 +207,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (version < 1 && this.Weight == 2.0)
-                this.Weight = 5.0;
+            if (version < 1 && Weight == 2.0)
+                Weight = 5.0;
         }
     }
 
@@ -224,9 +224,9 @@ namespace Server.Items
         public WhiteDriedFlowers(int amount)
             : base(0xC3C)
         {
-            this.Stackable = true;
-            this.Weight = 1.0;
-            this.Amount = amount;
+            Stackable = true;
+            Weight = 1.0;
+            Amount = amount;
         }
 
         public WhiteDriedFlowers(Serial serial)
@@ -261,9 +261,9 @@ namespace Server.Items
         public GreenDriedFlowers(int amount)
             : base(0xC3E)
         {
-            this.Stackable = true;
-            this.Weight = 1.0;
-            this.Amount = amount;
+            Stackable = true;
+            Weight = 1.0;
+            Amount = amount;
         }
 
         public GreenDriedFlowers(Serial serial)
@@ -298,9 +298,9 @@ namespace Server.Items
         public DriedOnions(int amount)
             : base(0xC40)
         {
-            this.Stackable = true;
-            this.Weight = 1.0;
-            this.Amount = amount;
+            Stackable = true;
+            Weight = 1.0;
+            Amount = amount;
         }
 
         public DriedOnions(Serial serial)
@@ -335,9 +335,9 @@ namespace Server.Items
         public DriedHerbs(int amount)
             : base(0xC42)
         {
-            this.Stackable = true;
-            this.Weight = 1.0;
-            this.Amount = amount;
+            Stackable = true;
+            Weight = 1.0;
+            Amount = amount;
         }
 
         public DriedHerbs(Serial serial)
@@ -366,7 +366,7 @@ namespace Server.Items
         public HorseShoes()
             : base(0xFB6)
         {
-            this.Weight = 3.0;
+            Weight = 3.0;
         }
 
         public HorseShoes(Serial serial)
@@ -395,7 +395,7 @@ namespace Server.Items
         public ForgedMetal()
             : base(0xFB8)
         {
-            this.Weight = 5.0;
+            Weight = 5.0;
         }
 
         public ForgedMetal(Serial serial)
@@ -424,7 +424,7 @@ namespace Server.Items
         public Whip()
             : base(0x166E)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public Whip(Serial serial)
@@ -453,7 +453,7 @@ namespace Server.Items
         public PaintsAndBrush()
             : base(0xFC1)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public PaintsAndBrush(Serial serial)
@@ -482,7 +482,7 @@ namespace Server.Items
         public PenAndInk()
             : base(0xFBF)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public PenAndInk(Serial serial)
@@ -511,7 +511,7 @@ namespace Server.Items
         public ChiselsNorth()
             : base(0x1026)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public ChiselsNorth(Serial serial)
@@ -540,7 +540,7 @@ namespace Server.Items
         public ChiselsWest()
             : base(0x1027)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public ChiselsWest(Serial serial)
@@ -569,7 +569,7 @@ namespace Server.Items
         public DirtyPan()
             : base(0x9E8)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public DirtyPan(Serial serial)
@@ -598,7 +598,7 @@ namespace Server.Items
         public DirtySmallRoundPot()
             : base(0x9E7)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public DirtySmallRoundPot(Serial serial)
@@ -627,7 +627,7 @@ namespace Server.Items
         public DirtyPot()
             : base(0x9E6)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public DirtyPot(Serial serial)
@@ -656,7 +656,7 @@ namespace Server.Items
         public DirtyRoundPot()
             : base(0x9DF)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public DirtyRoundPot(Serial serial)
@@ -685,7 +685,7 @@ namespace Server.Items
         public DirtyFrypan()
             : base(0x9DE)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public DirtyFrypan(Serial serial)
@@ -714,7 +714,7 @@ namespace Server.Items
         public DirtySmallPot()
             : base(0x9DD)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public DirtySmallPot(Serial serial)
@@ -743,7 +743,7 @@ namespace Server.Items
         public DirtyKettle()
             : base(0x9DC)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public DirtyKettle(Serial serial)

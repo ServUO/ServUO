@@ -21,8 +21,8 @@ namespace Server.Items
         [Constructable]
         public BestialNecklace()
         {
-            this.Hue = 2010;
-            this.Weight = 1;
+            Hue = 2010;
+            Weight = 1;
         }
 
         public BestialNecklace(Serial serial)
@@ -61,8 +61,8 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            if (this.Hue != 2010)
-                this.Hue = 2010;
+            if (Hue != 2010)
+                Hue = 2010;
         }
     }
 }

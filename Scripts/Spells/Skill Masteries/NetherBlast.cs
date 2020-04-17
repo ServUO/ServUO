@@ -49,7 +49,7 @@ namespace Server.Spells.SkillMasteries
 
         public override bool CheckCast()
         {
-            if (HasSpell(Caster, this.GetType()))
+            if (HasSpell(Caster, GetType()))
             {
                 Caster.SendMessage("You cannot use this ability until the last one has expired.");
                 return false;

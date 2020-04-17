@@ -114,7 +114,7 @@ namespace Server.Engines.Despise
         public void SummonWisp_Callback()
         {
             m_Wisp = SummonWisp;
-            BaseCreature.Summon(m_Wisp, true, this, this.Location, 0, TimeSpan.FromMinutes(90));
+            BaseCreature.Summon(m_Wisp, true, this, Location, 0, TimeSpan.FromMinutes(90));
 
             m_SummonTimer = null;
         }

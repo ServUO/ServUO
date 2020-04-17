@@ -60,7 +60,7 @@ namespace Server.Mobiles
         public override int TreasureMapLevel => 2;
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich);
+            AddLoot(LootPack.Rich);
         }
 
         public override void Serialize(GenericWriter writer)

@@ -7,7 +7,7 @@ namespace Server.Items
         [Constructable]
         public GoreFiendCostume() : base()
         {
-            this.CostumeBody = 305;
+            CostumeBody = 305;
         }
 
         public override int LabelNumber => 1114227;// gore fiend costume

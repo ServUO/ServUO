@@ -33,10 +33,10 @@ namespace Server.Spells.SkillMasteries
 
         public override bool CheckCast()
         {
-            if (IsInCooldown(Caster, this.GetType()))
+            if (IsInCooldown(Caster, GetType()))
                 return false;
 
-            if (GetSpell(Caster, this.GetType()) != null) // does this expire or not let you cast it again?>
+            if (GetSpell(Caster, GetType()) != null) // does this expire or not let you cast it again?>
             {
                 Caster.SendLocalizedMessage(1155889); // You are already under the effect of this ability.
                 return false;

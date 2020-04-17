@@ -6,7 +6,7 @@ namespace Server.Items
         public OrdersFromMinax()
             : base(0x2279)
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public OrdersFromMinax(Serial serial)

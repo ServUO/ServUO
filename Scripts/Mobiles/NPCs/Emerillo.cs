@@ -8,10 +8,10 @@ namespace Server.Engines.Quests
         public CulinaryCrisisQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(Dates), "bunch of dates", 20, 0x1727));
-            this.AddObjective(new ObtainObjective(typeof(CheeseWheel), "wheels of cheese", 5, 0x97E));
+            AddObjective(new ObtainObjective(typeof(Dates), "bunch of dates", 20, 0x1727));
+            AddObjective(new ObtainObjective(typeof(CheeseWheel), "wheels of cheese", 5, 0x97E));
 
-            this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
+            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
         /* Culinary Crisis */
@@ -67,25 +67,25 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.Race = Race.Human;
+            Female = false;
+            Race = Race.Human;
 
-            this.Hue = 0x83F4;
-            this.HairItemID = 0x203C;
-            this.HairHue = 0x454;
-            this.FacialHairItemID = 0x204C;
-            this.FacialHairHue = 0x454;
+            Hue = 0x83F4;
+            HairItemID = 0x203C;
+            HairHue = 0x454;
+            FacialHairItemID = 0x204C;
+            FacialHairHue = 0x454;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Sandals(0x75D));
-            this.AddItem(new LongPants(0x529));
-            this.AddItem(new Shirt(0x38B));
-            this.AddItem(new HalfApron(0x8FD));
+            AddItem(new Backpack());
+            AddItem(new Sandals(0x75D));
+            AddItem(new LongPants(0x529));
+            AddItem(new Shirt(0x38B));
+            AddItem(new HalfApron(0x8FD));
         }
 
         public override void Serialize(GenericWriter writer)

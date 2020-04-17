@@ -1562,11 +1562,11 @@ namespace Server.Items
         {
             get
             {
-                return this.ItemID == 0x24BF;
+                return ItemID == 0x24BF;
             }
             set
             {
-                this.ItemID = value ? 0x24BF : 0x24C0;
+                ItemID = value ? 0x24BF : 0x24C0;
             }
         }
 
@@ -1574,21 +1574,21 @@ namespace Server.Items
         public TowerLanternArtifact()
             : base(0x24C0)
         {
-            this.Light = LightType.Circle225;
+            Light = LightType.Circle225;
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(this.GetWorldLocation(), 2))
+            if (from.InRange(GetWorldLocation(), 2))
             {
-                if (this.IsOn)
+                if (IsOn)
                 {
-                    this.IsOn = false;
+                    IsOn = false;
                     from.PlaySound(0x3BE);
                 }
                 else
                 {
-                    this.IsOn = true;
+                    IsOn = true;
                     from.PlaySound(0x47);
                 }
             }
@@ -1617,7 +1617,7 @@ namespace Server.Items
             int version = reader.ReadEncodedInt();
 
             if (version == 0)
-                this.Light = LightType.Circle225;
+                Light = LightType.Circle225;
         }
     }
     #endregion

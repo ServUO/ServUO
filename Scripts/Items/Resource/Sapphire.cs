@@ -12,8 +12,8 @@ namespace Server.Items
         public Sapphire(int amount)
             : base(0xF11)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public Sapphire(Serial serial)

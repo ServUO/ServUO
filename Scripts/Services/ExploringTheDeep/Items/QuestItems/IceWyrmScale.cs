@@ -10,9 +10,9 @@ namespace Server.Items
         public IceWyrmScale()
             : base(0x26B2)
         {
-            this.LootType = LootType.Blessed;
-            this.Hue = 2729;
-            this.Weight = 20.0;
+            LootType = LootType.Blessed;
+            Hue = 2729;
+            Weight = 20.0;
         }
 
         public override void OnDoubleClick(Mobile from)

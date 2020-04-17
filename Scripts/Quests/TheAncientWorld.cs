@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public TheAncientWorldQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(MapFragment), "fragment of a map", 1));
+            AddObjective(new ObtainObjective(typeof(MapFragment), "fragment of a map", 1));
 
-            this.AddReward(new BaseReward(1074876)); // Knowledge of the legendary minotaur.
+            AddReward(new BaseReward(1074876)); // Knowledge of the legendary minotaur.
         }
 
         public override QuestChain ChainID => QuestChain.AncientWorld;
@@ -40,8 +40,8 @@ namespace Server.Engines.Quests
 
         public override void OnCompleted()
         {
-            this.Owner.SendLocalizedMessage(1074541, null, 0x23); // You have discovered an important clue!						
-            this.Owner.PlaySound(this.CompleteSound);
+            Owner.SendLocalizedMessage(1074541, null, 0x23); // You have discovered an important clue!						
+            Owner.PlaySound(CompleteSound);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -64,9 +64,9 @@ namespace Server.Engines.Quests
         public TheGoldenHornQuest()
             : base()
         {
-            this.AddObjective(new DeliverObjective(typeof(MapFragment), "fragment of a map", 1, typeof(Braen), "Braen (The Heartwood)"));
+            AddObjective(new DeliverObjective(typeof(MapFragment), "fragment of a map", 1, typeof(Braen), "Braen (The Heartwood)"));
 
-            this.AddReward(new BaseReward(1074876)); // Knowledge of the legendary minotaur.
+            AddReward(new BaseReward(1074876)); // Knowledge of the legendary minotaur.
         }
 
         public override QuestChain ChainID => QuestChain.AncientWorld;
@@ -111,9 +111,9 @@ namespace Server.Engines.Quests
         public BullishQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(GamanHorns), "gaman horns", 20, 0x1084));
+            AddObjective(new ObtainObjective(typeof(GamanHorns), "gaman horns", 20, 0x1084));
 
-            this.AddReward(new BaseReward(1074876)); // Knowledge of the legendary minotaur.
+            AddReward(new BaseReward(1074876)); // Knowledge of the legendary minotaur.
         }
 
         public override QuestChain ChainID => QuestChain.AncientWorld;
@@ -159,9 +159,9 @@ namespace Server.Engines.Quests
         public LostCivilizationQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(MinotaurArtifact), "minotaur artifacts", 3));
+            AddObjective(new ObtainObjective(typeof(MinotaurArtifact), "minotaur artifacts", 3));
 
-            this.AddReward(new BaseReward(typeof(RewardBox), 1072584)); // A strongbox.
+            AddReward(new BaseReward(typeof(RewardBox), 1072584)); // A strongbox.
         }
 
         public override QuestChain ChainID => QuestChain.AncientWorld;

@@ -74,7 +74,7 @@ namespace Server.Engines.Quests.Collector
                 1055083;
         public override void OnRead()
         {
-            this.System.AddObjective(new FishPearlsObjective());
+            System.AddObjective(new FishPearlsObjective());
         }
     }
 
@@ -122,7 +122,7 @@ namespace Server.Engines.Quests.Collector
                 1055090;
         public override void OnRead()
         {
-            this.System.AddObjective(new FindAlbertaObjective());
+            System.AddObjective(new FindAlbertaObjective());
         }
     }
 
@@ -149,7 +149,7 @@ namespace Server.Engines.Quests.Collector
                 1055092;
         public override void OnRead()
         {
-            this.System.AddObjective(new SitOnTheStoolObjective());
+            System.AddObjective(new SitOnTheStoolObjective());
         }
     }
 
@@ -194,7 +194,7 @@ namespace Server.Engines.Quests.Collector
                 1055098;
         public override void OnRead()
         {
-            this.System.AddObjective(new ReturnPaintingObjective());
+            System.AddObjective(new ReturnPaintingObjective());
         }
     }
 
@@ -292,7 +292,7 @@ namespace Server.Engines.Quests.Collector
                 1055100;
         public override void OnRead()
         {
-            this.System.AddObjective(new FindGabrielObjective());
+            System.AddObjective(new FindGabrielObjective());
         }
     }
 
@@ -323,7 +323,7 @@ namespace Server.Engines.Quests.Collector
                 1055103;
         public override void OnRead()
         {
-            this.System.AddObjective(new FindSheetMusicObjective(true));
+            System.AddObjective(new FindSheetMusicObjective(true));
         }
     }
 
@@ -369,7 +369,7 @@ namespace Server.Engines.Quests.Collector
                 1055109;
         public override void OnRead()
         {
-            this.System.AddObjective(new ReturnSheetMusicObjective());
+            System.AddObjective(new ReturnSheetMusicObjective());
         }
     }
 
@@ -390,7 +390,7 @@ namespace Server.Engines.Quests.Collector
                 1055113;
         public override void OnRead()
         {
-            this.System.AddObjective(new ReturnAutographObjective());
+            System.AddObjective(new ReturnAutographObjective());
         }
     }
 
@@ -494,7 +494,7 @@ namespace Server.Engines.Quests.Collector
                 1055116;
         public override void OnRead()
         {
-            this.System.AddObjective(new FindTomasObjective());
+            System.AddObjective(new FindTomasObjective());
         }
     }
 
@@ -521,7 +521,7 @@ namespace Server.Engines.Quests.Collector
                 1055119;
         public override void OnRead()
         {
-            this.System.AddObjective(new CaptureImagesObjective(true));
+            System.AddObjective(new CaptureImagesObjective(true));
         }
     }
 
@@ -562,7 +562,7 @@ namespace Server.Engines.Quests.Collector
                 1055131;
         public override void OnRead()
         {
-            this.System.AddObjective(new ReturnToysObjective());
+            System.AddObjective(new ReturnToysObjective());
         }
     }
 
@@ -653,7 +653,7 @@ namespace Server.Engines.Quests.Collector
                 1055134;
         public override void OnRead()
         {
-            this.System.Complete();
+            System.Complete();
         }
     }
 
@@ -662,12 +662,12 @@ namespace Server.Engines.Quests.Collector
         private readonly bool m_Logged;
         public FullEndConversation(bool logged)
         {
-            this.m_Logged = logged;
+            m_Logged = logged;
         }
 
         public FullEndConversation()
         {
-            this.m_Logged = true;
+            m_Logged = true;
         }
 
         public override object Message =>
@@ -679,11 +679,11 @@ namespace Server.Engines.Quests.Collector
 * Come back when you have more room, and we'll conclude our business.
 */
                 1055135;
-        public override bool Logged => this.m_Logged;
+        public override bool Logged => m_Logged;
         public override void OnRead()
         {
-            if (this.m_Logged)
-                this.System.AddObjective(new MakeRoomObjective());
+            if (m_Logged)
+                System.AddObjective(new MakeRoomObjective());
         }
     }
 }

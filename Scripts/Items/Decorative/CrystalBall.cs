@@ -10,16 +10,16 @@ namespace Server.Items
         [Constructable]
         public MagicCrystalBall() : base(0xE2E)
         {
-            this.Name = "a crystal ball";
-            this.Weight = 10;
-            this.Stackable = false;
-            this.LootType = LootType.Blessed;
-            this.Light = LightType.Circle150;
+            Name = "a crystal ball";
+            Weight = 10;
+            Stackable = false;
+            LootType = LootType.Blessed;
+            Light = LightType.Circle150;
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            this.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1007000 + Utility.Random(28));
+            PublicOverheadMessage(MessageType.Regular, 0x3B2, 1007000 + Utility.Random(28));
         }
 
         public MagicCrystalBall(Serial serial) : base(serial)

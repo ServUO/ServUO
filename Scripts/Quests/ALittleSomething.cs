@@ -7,9 +7,9 @@ namespace Server.Engines.Quests
         public ALittleSomething()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(BrilliantAmber), "Brilliant Amber", 1, 0x3199));
+            AddObjective(new ObtainObjective(typeof(BrilliantAmber), "Brilliant Amber", 1, 0x3199));
 
-            this.AddReward(new BaseReward(typeof(MeagerImbuingBag), 1, "Meager Imbuing Bag"));
+            AddReward(new BaseReward(typeof(MeagerImbuingBag), 1, "Meager Imbuing Bag"));
         }
 
         public override object Title => "A Little Something";

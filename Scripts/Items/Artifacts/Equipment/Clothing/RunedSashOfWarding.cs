@@ -95,7 +95,7 @@ namespace Server.Items
                     break;
             }
 
-            list.Add(1060639, "{0}\t{1}", this.HitPoints, this.MaxHitPoints); // durability ~1_val~ / ~2_val~
+            list.Add(1060639, "{0}\t{1}", HitPoints, MaxHitPoints); // durability ~1_val~ / ~2_val~
         }
 
         public static bool IsUnderEffects(Mobile from, WardingEffect type)

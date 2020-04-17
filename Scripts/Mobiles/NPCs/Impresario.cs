@@ -20,20 +20,20 @@ namespace Server.Engines.Quests.Collector
 
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Hue = Utility.RandomSkinHue();
+            Hue = Utility.RandomSkinHue();
 
-            this.Female = false;
-            this.Body = 0x190;
-            this.Name = NameList.RandomName("male");
+            Female = false;
+            Body = 0x190;
+            Name = NameList.RandomName("male");
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new FancyShirt(Utility.RandomDyedHue()));
-            this.AddItem(new LongPants(Utility.RandomNondyedHue()));
-            this.AddItem(new Shoes(Utility.RandomNeutralHue()));
+            AddItem(new FancyShirt(Utility.RandomDyedHue()));
+            AddItem(new LongPants(Utility.RandomNondyedHue()));
+            AddItem(new Shoes(Utility.RandomNeutralHue()));
 
             Utility.AssignRandomHair(this);
             Utility.AssignRandomFacialHair(this);
@@ -59,7 +59,7 @@ namespace Server.Engines.Quests.Collector
 
                 if (obj != null && !obj.Completed)
                 {
-                    this.Direction = this.GetDirectionTo(player);
+                    Direction = GetDirectionTo(player);
 
                     if (obj.IsInRightTheater())
                     {
@@ -94,41 +94,41 @@ namespace Server.Engines.Quests.Collector
         public SheetMusicOfferGump()
             : base(75, 25)
         {
-            this.Closable = false;
+            Closable = false;
 
-            this.AddImage(349, 10, 0x24B0);
-            this.AddImageTiled(349, 130, 100, 120, 0x24B3);
-            this.AddImageTiled(149, 10, 200, 140, 0x24AF);
-            this.AddImageTiled(149, 300, 200, 140, 0x24B5);
-            this.AddImage(349, 300, 0x24B6);
-            this.AddImage(35, 10, 0x24AE);
-            this.AddImageTiled(35, 150, 120, 100, 0x24B1);
-            this.AddImage(35, 300, 0x24B4);
+            AddImage(349, 10, 0x24B0);
+            AddImageTiled(349, 130, 100, 120, 0x24B3);
+            AddImageTiled(149, 10, 200, 140, 0x24AF);
+            AddImageTiled(149, 300, 200, 140, 0x24B5);
+            AddImage(349, 300, 0x24B6);
+            AddImage(35, 10, 0x24AE);
+            AddImageTiled(35, 150, 120, 100, 0x24B1);
+            AddImage(35, 300, 0x24B4);
 
-            this.AddHtmlLocalized(110, 60, 200, 20, 1049069, White, false, false); // <STRONG>Conversation Event</STRONG>
+            AddHtmlLocalized(110, 60, 200, 20, 1049069, White, false, false); // <STRONG>Conversation Event</STRONG>
 
-            this.AddImage(65, 14, 0x2776);
-            this.AddImageTiled(81, 14, 349, 17, 0x2775);
-            this.AddImage(426, 14, 0x2778);
+            AddImage(65, 14, 0x2776);
+            AddImageTiled(81, 14, 349, 17, 0x2775);
+            AddImage(426, 14, 0x2778);
 
-            this.AddImageTiled(50, 37, 400, 376, 0xA40);
-            this.AddAlphaRegion(50, 37, 400, 376);
+            AddImageTiled(50, 37, 400, 376, 0xA40);
+            AddAlphaRegion(50, 37, 400, 376);
 
-            this.AddImage(0, 0, 0x28C8);
+            AddImage(0, 0, 0x28C8);
 
-            this.AddImageTiled(75, 90, 200, 1, 0x238D);
-            this.AddImage(75, 58, 0x2635);
-            this.AddImage(380, 45, 0xDF);
+            AddImageTiled(75, 90, 200, 1, 0x238D);
+            AddImage(75, 58, 0x2635);
+            AddImage(380, 45, 0xDF);
 
-            this.AddHtmlLocalized(98, 140, 312, 200, 1055107, LightGreen, false, true); // Sure, I have some sheet music for a Gabriel Piete song. I'd be happy to sell you a copy for 10 gold.
+            AddHtmlLocalized(98, 140, 312, 200, 1055107, LightGreen, false, true); // Sure, I have some sheet music for a Gabriel Piete song. I'd be happy to sell you a copy for 10 gold.
 
-            this.AddRadio(85, 350, 0x25F8, 0x25FB, true, 1);
-            this.AddHtmlLocalized(120, 356, 280, 20, 1014088, White, false, false); // I accept.
+            AddRadio(85, 350, 0x25F8, 0x25FB, true, 1);
+            AddHtmlLocalized(120, 356, 280, 20, 1014088, White, false, false); // I accept.
 
-            this.AddRadio(85, 385, 0x25F8, 0x25FB, false, 0);
-            this.AddHtmlLocalized(120, 391, 280, 20, 1049012, White, false, false); // No thanks, I decline.
+            AddRadio(85, 385, 0x25F8, 0x25FB, false, 0);
+            AddHtmlLocalized(120, 391, 280, 20, 1049012, White, false, false); // No thanks, I decline.
 
-            this.AddButton(340, 390, 0xF7, 0xF8, 1, GumpButtonType.Reply, 0);
+            AddButton(340, 390, 0xF7, 0xF8, 1, GumpButtonType.Reply, 0);
         }
 
         public override void OnResponse(NetState sender, RelayInfo info)

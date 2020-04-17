@@ -9,9 +9,9 @@ namespace Server.Engines.Quests
         public GuiltyQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Gregorio), "gregorio", 1));
+            AddObjective(new SlayObjective(typeof(Gregorio), "gregorio", 1));
 
-            this.AddReward(new BaseReward(typeof(AmuletOfRighteousness), 1075313)); // Amulet of Righteousness
+            AddReward(new BaseReward(typeof(AmuletOfRighteousness), 1075313)); // Amulet of Righteousness
         }
 
         public override bool DoneOnce => true;
@@ -66,23 +66,23 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = true;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = true;
+            CantWalk = true;
+            Race = Race.Human;
 
-            this.Hue = 0x8400;
-            this.HairItemID = 0x2045;
-            this.HairHue = 0x740;
+            Hue = 0x8400;
+            HairItemID = 0x2045;
+            HairHue = 0x740;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Shoes(0x727));
-            this.AddItem(new FancyShirt(0x53C));
-            this.AddItem(new Skirt(0x534));
+            AddItem(new Backpack());
+            AddItem(new Shoes(0x727));
+            AddItem(new FancyShirt(0x53C));
+            AddItem(new Skirt(0x534));
         }
 
         public override void Serialize(GenericWriter writer)

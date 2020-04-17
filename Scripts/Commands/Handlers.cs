@@ -838,18 +838,18 @@ namespace Server.Commands
                 public EquipMenu(Mobile from, Mobile m, ItemListEntry[] entries)
                     : base("Equipment", entries)
                 {
-                    this.m_Mobile = m;
+                    m_Mobile = m;
 
                     CommandLogging.WriteLine(from, "{0} {1} viewing equipment of {2}", from.AccessLevel, CommandLogging.Format(from), CommandLogging.Format(m));
                 }
 
                 public override void OnResponse(NetState state, int index)
                 {
-                    if (index >= 0 && index < this.m_Mobile.Items.Count)
+                    if (index >= 0 && index < m_Mobile.Items.Count)
                     {
-                        Item item = this.m_Mobile.Items[index];
+                        Item item = m_Mobile.Items[index];
 
-                        state.Mobile.SendMenu(new EquipDetailsMenu(this.m_Mobile, item));
+                        state.Mobile.SendMenu(new EquipDetailsMenu(m_Mobile, item));
                     }
                 }
 
@@ -860,31 +860,31 @@ namespace Server.Commands
                     public EquipDetailsMenu(Mobile m, Item item)
                         : base(String.Format("{0}: {1}", item.Layer, item.GetType().Name), new string[] { "Move", "Delete", "Props" })
                     {
-                        this.m_Mobile = m;
-                        this.m_Item = item;
+                        m_Mobile = m;
+                        m_Item = item;
                     }
 
                     public override void OnCancel(NetState state)
                     {
-                        state.Mobile.SendMenu(new EquipMenu(state.Mobile, this.m_Mobile, ViewEqTarget.GetEquip(this.m_Mobile)));
+                        state.Mobile.SendMenu(new EquipMenu(state.Mobile, m_Mobile, ViewEqTarget.GetEquip(m_Mobile)));
                     }
 
                     public override void OnResponse(NetState state, int index)
                     {
                         if (index == 0)
                         {
-                            CommandLogging.WriteLine(state.Mobile, "{0} {1} moving equipment item {2} of {3}", state.Mobile.AccessLevel, CommandLogging.Format(state.Mobile), CommandLogging.Format(this.m_Item), CommandLogging.Format(this.m_Mobile));
-                            state.Mobile.Target = new MoveTarget(this.m_Item);
+                            CommandLogging.WriteLine(state.Mobile, "{0} {1} moving equipment item {2} of {3}", state.Mobile.AccessLevel, CommandLogging.Format(state.Mobile), CommandLogging.Format(m_Item), CommandLogging.Format(m_Mobile));
+                            state.Mobile.Target = new MoveTarget(m_Item);
                         }
                         else if (index == 1)
                         {
-                            CommandLogging.WriteLine(state.Mobile, "{0} {1} deleting equipment item {2} of {3}", state.Mobile.AccessLevel, CommandLogging.Format(state.Mobile), CommandLogging.Format(this.m_Item), CommandLogging.Format(this.m_Mobile));
-                            this.m_Item.Delete();
+                            CommandLogging.WriteLine(state.Mobile, "{0} {1} deleting equipment item {2} of {3}", state.Mobile.AccessLevel, CommandLogging.Format(state.Mobile), CommandLogging.Format(m_Item), CommandLogging.Format(m_Mobile));
+                            m_Item.Delete();
                         }
                         else if (index == 2)
                         {
-                            CommandLogging.WriteLine(state.Mobile, "{0} {1} opening properties for equipment item {2} of {3}", state.Mobile.AccessLevel, CommandLogging.Format(state.Mobile), CommandLogging.Format(this.m_Item), CommandLogging.Format(this.m_Mobile));
-                            state.Mobile.SendGump(new PropertiesGump(state.Mobile, this.m_Item));
+                            CommandLogging.WriteLine(state.Mobile, "{0} {1} opening properties for equipment item {2} of {3}", state.Mobile.AccessLevel, CommandLogging.Format(state.Mobile), CommandLogging.Format(m_Item), CommandLogging.Format(m_Mobile));
+                            state.Mobile.SendGump(new PropertiesGump(state.Mobile, m_Item));
                         }
                     }
                 }

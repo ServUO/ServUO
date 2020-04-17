@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public MisplacedQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(DisintegratingThesisNotes), "disintegrating thesis notes", 5, 0xEF5));
+            AddObjective(new ObtainObjective(typeof(DisintegratingThesisNotes), "disintegrating thesis notes", 5, 0xEF5));
 
-            this.AddReward(new BaseReward(typeof(LibrariansKey), 1074347));
+            AddReward(new BaseReward(typeof(LibrariansKey), 1074347));
         }
 
         /* Misplaced */
@@ -66,21 +66,21 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.Race = Race.Human;
+            Female = false;
+            Race = Race.Human;
 
-            this.Hue = 0x840C;
-            this.HairItemID = 0x2045;
-            this.HairHue = 0x453;
+            Hue = 0x840C;
+            HairItemID = 0x2045;
+            HairHue = 0x453;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Sandals(0x74A));
-            this.AddItem(new Robe(0x498));
+            AddItem(new Backpack());
+            AddItem(new Sandals(0x74A));
+            AddItem(new Robe(0x498));
         }
 
         public override void Serialize(GenericWriter writer)

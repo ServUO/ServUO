@@ -7,8 +7,8 @@ namespace Server.Items
         public ReptalonStatue()
             : base(0x2D95)
         {
-            this.LootType = LootType.Blessed;
-            this.Weight = 1.0;
+            LootType = LootType.Blessed;
+            Weight = 1.0;
         }
 
         public ReptalonStatue(Serial serial)

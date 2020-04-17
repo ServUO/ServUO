@@ -19,10 +19,10 @@ namespace Server.Items
             if (range > 18)
                 range = 18;
 
-            this.Movable = false;
+            Movable = false;
 
-            this.m_WarningNumber = warning;
-            this.m_Range = range;
+            m_WarningNumber = warning;
+            m_Range = range;
         }
 
         [Constructable]
@@ -32,10 +32,10 @@ namespace Server.Items
             if (range > 18)
                 range = 18;
 
-            this.Movable = false;
+            Movable = false;
 
-            this.m_WarningString = warning;
-            this.m_Range = range;
+            m_WarningString = warning;
+            m_Range = range;
         }
 
         public WarningItem(Serial serial)
@@ -48,11 +48,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_WarningString;
+                return m_WarningString;
             }
             set
             {
-                this.m_WarningString = value;
+                m_WarningString = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -60,11 +60,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_WarningNumber;
+                return m_WarningNumber;
             }
             set
             {
-                this.m_WarningNumber = value;
+                m_WarningNumber = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -72,13 +72,13 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Range;
+                return m_Range;
             }
             set
             {
                 if (value > 18)
                     value = 18;
-                this.m_Range = value;
+                m_Range = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -86,11 +86,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_ResetDelay;
+                return m_ResetDelay;
             }
             set
             {
-                this.m_ResetDelay = value;
+                m_ResetDelay = value;
             }
         }
         public virtual bool OnlyToTriggerer => false;
@@ -108,28 +108,28 @@ namespace Server.Items
             else
             {
                 if (messageString != null)
-                    this.PublicOverheadMessage(MessageType.Regular, 0x3B2, false, messageString);
+                    PublicOverheadMessage(MessageType.Regular, 0x3B2, false, messageString);
                 else
-                    this.PublicOverheadMessage(MessageType.Regular, 0x3B2, messageNumber);
+                    PublicOverheadMessage(MessageType.Regular, 0x3B2, messageNumber);
             }
         }
 
         public virtual void Broadcast(Mobile triggerer)
         {
-            if (this.m_Broadcasting || (DateTime.UtcNow < (this.m_LastBroadcast + this.m_ResetDelay)))
+            if (m_Broadcasting || (DateTime.UtcNow < (m_LastBroadcast + m_ResetDelay)))
                 return;
 
-            this.m_LastBroadcast = DateTime.UtcNow;
+            m_LastBroadcast = DateTime.UtcNow;
 
-            this.m_Broadcasting = true;
+            m_Broadcasting = true;
 
-            this.SendMessage(triggerer, this.OnlyToTriggerer, this.m_WarningString, this.m_WarningNumber);
+            SendMessage(triggerer, OnlyToTriggerer, m_WarningString, m_WarningNumber);
 
-            if (this.NeighborRange >= 0)
+            if (NeighborRange >= 0)
             {
                 List<WarningItem> list = new List<WarningItem>();
 
-                foreach (Item item in this.GetItemsInRange(this.NeighborRange))
+                foreach (Item item in GetItemsInRange(NeighborRange))
                 {
                     if (item != this && item is WarningItem)
                         list.Add((WarningItem)item);
@@ -144,8 +144,8 @@ namespace Server.Items
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (m.Player && Utility.InRange(m.Location, this.Location, this.m_Range) && !Utility.InRange(oldLocation, this.Location, this.m_Range))
-                this.Broadcast(m);
+            if (m.Player && Utility.InRange(m.Location, Location, m_Range) && !Utility.InRange(oldLocation, Location, m_Range))
+                Broadcast(m);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -171,10 +171,10 @@ namespace Server.Items
             {
                 case 0:
                     {
-                        this.m_WarningString = reader.ReadString();
-                        this.m_WarningNumber = reader.ReadInt();
-                        this.m_Range = reader.ReadInt();
-                        this.m_ResetDelay = reader.ReadTimeSpan();
+                        m_WarningString = reader.ReadString();
+                        m_WarningNumber = reader.ReadInt();
+                        m_Range = reader.ReadInt();
+                        m_ResetDelay = reader.ReadTimeSpan();
 
                         break;
                     }
@@ -183,7 +183,7 @@ namespace Server.Items
 
         private void InternalCallback()
         {
-            this.m_Broadcasting = false;
+            m_Broadcasting = false;
         }
     }
 
@@ -195,14 +195,14 @@ namespace Server.Items
         public HintItem(int itemID, int range, int warning, int hint)
             : base(itemID, range, warning)
         {
-            this.m_HintNumber = hint;
+            m_HintNumber = hint;
         }
 
         [Constructable]
         public HintItem(int itemID, int range, string warning, string hint)
             : base(itemID, range, warning)
         {
-            this.m_HintString = hint;
+            m_HintString = hint;
         }
 
         public HintItem(Serial serial)
@@ -215,11 +215,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_HintString;
+                return m_HintString;
             }
             set
             {
-                this.m_HintString = value;
+                m_HintString = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -227,17 +227,17 @@ namespace Server.Items
         {
             get
             {
-                return this.m_HintNumber;
+                return m_HintNumber;
             }
             set
             {
-                this.m_HintNumber = value;
+                m_HintNumber = value;
             }
         }
         public override bool OnlyToTriggerer => true;
         public override void OnDoubleClick(Mobile from)
         {
-            this.SendMessage(from, true, this.m_HintString, this.m_HintNumber);
+            SendMessage(from, true, m_HintString, m_HintNumber);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -260,8 +260,8 @@ namespace Server.Items
             {
                 case 0:
                     {
-                        this.m_HintString = reader.ReadString();
-                        this.m_HintNumber = reader.ReadInt();
+                        m_HintString = reader.ReadString();
+                        m_HintNumber = reader.ReadInt();
 
                         break;
                     }

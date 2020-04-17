@@ -11,8 +11,8 @@ namespace Server.Items
         public NewPlayerTicket()
             : base(0x14EF)
         {
-            this.Weight = 1.0;
-            this.LootType = LootType.Blessed;
+            Weight = 1.0;
+            LootType = LootType.Blessed;
         }
 
         public NewPlayerTicket(Serial serial)
@@ -25,11 +25,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Owner;
+                return m_Owner;
             }
             set
             {
-                this.m_Owner = value;
+                m_Owner = value;
             }
         }
         public override int LabelNumber => 1062094;// a young player ticket
@@ -60,22 +60,22 @@ namespace Server.Items
             {
                 case 0:
                     {
-                        this.m_Owner = reader.ReadMobile();
+                        m_Owner = reader.ReadMobile();
                         break;
                     }
             }
 
-            if (this.Name == "a young player ticket")
-                this.Name = null;
+            if (Name == "a young player ticket")
+                Name = null;
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from != this.m_Owner)
+            if (from != m_Owner)
             {
                 from.SendLocalizedMessage(501926); // This isn't your ticket! Shame on you! You have to use YOUR ticket.
             }
-            else if (!this.IsChildOf(from.Backpack))
+            else if (!IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
             }
@@ -92,12 +92,12 @@ namespace Server.Items
             public InternalTarget(NewPlayerTicket ticket)
                 : base(2, false, TargetFlags.None)
             {
-                this.m_Ticket = ticket;
+                m_Ticket = ticket;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted == this.m_Ticket)
+                if (targeted == m_Ticket)
                 {
                     from.SendLocalizedMessage(501928); // You can't target the same ticket!
                 }
@@ -112,7 +112,7 @@ namespace Server.Items
                     }
                     else
                     {
-                        from.SendGump(new InternalGump(from, this.m_Ticket));
+                        from.SendGump(new InternalGump(from, m_Ticket));
                         them.SendGump(new InternalGump(them, theirTicket));
                     }
                 }
@@ -134,38 +134,38 @@ namespace Server.Items
             public InternalGump(Mobile from, NewPlayerTicket ticket)
                 : base(50, 50)
             {
-                this.m_From = from;
-                this.m_Ticket = ticket;
+                m_From = from;
+                m_Ticket = ticket;
 
-                this.AddBackground(0, 0, 400, 385, 0xA28);
+                AddBackground(0, 0, 400, 385, 0xA28);
 
-                this.AddHtmlLocalized(30, 45, 340, 70, 1013011, true, true); // Choose the gift you prefer. WARNING: if you cancel, and your partner does not, you will need to find another matching ticket!
+                AddHtmlLocalized(30, 45, 340, 70, 1013011, true, true); // Choose the gift you prefer. WARNING: if you cancel, and your partner does not, you will need to find another matching ticket!
 
-                this.AddButton(46, 128, 0xFA5, 0xFA7, 1, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(80, 130, 320, 35, 1013012, false, false); // A sextant
+                AddButton(46, 128, 0xFA5, 0xFA7, 1, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(80, 130, 320, 35, 1013012, false, false); // A sextant
 
-                this.AddButton(46, 163, 0xFA5, 0xFA7, 2, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(80, 165, 320, 35, 1013013, false, false); // A coupon for a single hair restyling
+                AddButton(46, 163, 0xFA5, 0xFA7, 2, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(80, 165, 320, 35, 1013013, false, false); // A coupon for a single hair restyling
 
-                this.AddButton(46, 198, 0xFA5, 0xFA7, 3, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(80, 200, 320, 35, 1013014, false, false); // A spellbook with all 1st - 4th spells.
+                AddButton(46, 198, 0xFA5, 0xFA7, 3, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(80, 200, 320, 35, 1013014, false, false); // A spellbook with all 1st - 4th spells.
 
-                this.AddButton(46, 233, 0xFA5, 0xFA7, 4, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(80, 235, 320, 35, 1013015, false, false); // A wand of fireworks
+                AddButton(46, 233, 0xFA5, 0xFA7, 4, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(80, 235, 320, 35, 1013015, false, false); // A wand of fireworks
 
-                this.AddButton(46, 268, 0xFA5, 0xFA7, 5, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(80, 270, 320, 35, 1013016, false, false); // A spyglass
+                AddButton(46, 268, 0xFA5, 0xFA7, 5, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(80, 270, 320, 35, 1013016, false, false); // A spyglass
 
-                this.AddButton(46, 303, 0xFA5, 0xFA7, 6, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(80, 305, 320, 35, 1013017, false, false); // Dyes and a dye tub
+                AddButton(46, 303, 0xFA5, 0xFA7, 6, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(80, 305, 320, 35, 1013017, false, false); // Dyes and a dye tub
 
-                this.AddButton(120, 340, 0xFA5, 0xFA7, 0, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(154, 342, 100, 35, 1011012, false, false); // CANCEL
+                AddButton(120, 340, 0xFA5, 0xFA7, 0, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(154, 342, 100, 35, 1011012, false, false); // CANCEL
             }
 
             public override void OnResponse(NetState sender, RelayInfo info)
             {
-                if (this.m_Ticket.Deleted)
+                if (m_Ticket.Deleted)
                     return;
 
                 int number = 0;
@@ -204,13 +204,13 @@ namespace Server.Items
 
                 if (item != null)
                 {
-                    this.m_Ticket.Delete();
+                    m_Ticket.Delete();
 
-                    this.m_From.SendLocalizedMessage(number);
-                    this.m_From.AddToBackpack(item);
+                    m_From.SendLocalizedMessage(number);
+                    m_From.AddToBackpack(item);
 
                     if (item2 != null)
-                        this.m_From.AddToBackpack(item2);
+                        m_From.AddToBackpack(item2);
                 }
             }
         }

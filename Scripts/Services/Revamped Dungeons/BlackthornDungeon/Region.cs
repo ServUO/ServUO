@@ -50,7 +50,7 @@ namespace Server.Engines.Blackthorn
         {
             Point3D p = Random_Locations[Utility.Random(Random_Locations.Length)];
 
-            m.MoveToWorld(p, this.Map);
+            m.MoveToWorld(p, Map);
 
             for (int x = m.X - 1; x <= m.X + 1; x++)
             {
@@ -64,7 +64,7 @@ namespace Server.Engines.Blackthorn
             m.LocalOverheadMessage(Network.MessageType.Regular, 0x22, 500855); // You are enveloped by a noxious gas cloud!                
             m.ApplyPoison(m, Poison.Lethal);
 
-            IPooledEnumerable eable = this.Map.GetMobilesInRange(m.Location, 12);
+            IPooledEnumerable eable = Map.GetMobilesInRange(m.Location, 12);
 
             foreach (Mobile mob in eable)
             {
@@ -92,10 +92,10 @@ namespace Server.Engines.Blackthorn
 
         public override void OnDeath(Mobile m)
         {
-            if (m is BaseCreature && this.Map == Map.Trammel && InvasionController.TramInstance != null)
+            if (m is BaseCreature && Map == Map.Trammel && InvasionController.TramInstance != null)
                 InvasionController.TramInstance.OnDeath(m as BaseCreature);
 
-            if (m is BaseCreature && this.Map == Map.Felucca && InvasionController.FelInstance != null)
+            if (m is BaseCreature && Map == Map.Felucca && InvasionController.FelInstance != null)
                 InvasionController.FelInstance.OnDeath(m as BaseCreature);
         }
     }
@@ -209,7 +209,7 @@ namespace Server.Engines.Blackthorn
         public void SendToStables(BaseCreature bc, Mobile m = null)
         {
             Point3D p = StableLocs[Utility.Random(StableLocs.Length)];
-            bc.MoveToWorld(p, this.Map);
+            bc.MoveToWorld(p, Map);
 
             if (m != null)
                 m.SendLocalizedMessage(1153053, bc.Name); // Pets are not permitted in this area. Your pet named ~1_NAME~ could not be sent to the stables, so has been teleported outside the event area.

@@ -5,15 +5,15 @@ namespace Server.Items
         [Constructable]
         public PentagramAddon()
         {
-            this.AddComponent(new AddonComponent(0xFE7), -1, -1, 0);
-            this.AddComponent(new AddonComponent(0xFE8), 0, -1, 0);
-            this.AddComponent(new AddonComponent(0xFEB), 1, -1, 0);
-            this.AddComponent(new AddonComponent(0xFE6), -1, 0, 0);
-            this.AddComponent(new AddonComponent(0xFEA), 0, 0, 0);
-            this.AddComponent(new AddonComponent(0xFEE), 1, 0, 0);
-            this.AddComponent(new AddonComponent(0xFE9), -1, 1, 0);
-            this.AddComponent(new AddonComponent(0xFEC), 0, 1, 0);
-            this.AddComponent(new AddonComponent(0xFED), 1, 1, 0);
+            AddComponent(new AddonComponent(0xFE7), -1, -1, 0);
+            AddComponent(new AddonComponent(0xFE8), 0, -1, 0);
+            AddComponent(new AddonComponent(0xFEB), 1, -1, 0);
+            AddComponent(new AddonComponent(0xFE6), -1, 0, 0);
+            AddComponent(new AddonComponent(0xFEA), 0, 0, 0);
+            AddComponent(new AddonComponent(0xFEE), 1, 0, 0);
+            AddComponent(new AddonComponent(0xFE9), -1, 1, 0);
+            AddComponent(new AddonComponent(0xFEC), 0, 1, 0);
+            AddComponent(new AddonComponent(0xFED), 1, 1, 0);
         }
 
         public PentagramAddon(Serial serial)

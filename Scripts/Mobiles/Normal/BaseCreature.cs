@@ -5420,7 +5420,7 @@ namespace Server.Mobiles
                 {
                     if (m_Paragon && Paragon.ChestChance > Utility.RandomDouble())
                     {
-                        PackItem(new ParagonChest(this.Name, treasureLevel));
+                        PackItem(new ParagonChest(Name, treasureLevel));
                     }
                     else if (TreasureMapChance >= Utility.RandomDouble())
                     {

@@ -111,7 +111,7 @@ namespace Server.Engines.ResortAndCasino
                 GettingEvenQuest q = QuestHelper.GetQuest(Player, typeof(GettingEvenQuest)) as GettingEvenQuest;
 
                 if (q != null)
-                    q.Update(this.GetType());
+                    q.Update(GetType());
             }
         }
 

@@ -6,8 +6,8 @@ namespace Server.Items
         public DecoDragonsBlood2()
             : base(0xF82)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public DecoDragonsBlood2(Serial serial)

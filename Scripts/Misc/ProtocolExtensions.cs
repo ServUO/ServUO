@@ -93,9 +93,9 @@ namespace Server.Misc
         public ProtocolExtension(int packetID, int capacity)
             : base(0xF0)
         {
-            this.EnsureCapacity(4 + capacity);
+            EnsureCapacity(4 + capacity);
 
-            this.m_Stream.Write((byte)packetID);
+            m_Stream.Write((byte)packetID);
         }
     }
 
@@ -116,13 +116,13 @@ namespace Server.Misc
                 if (Utility.InUpdateRange(from, mob) && from.CanSee(mob))
                     continue;
 
-                this.m_Stream.Write(mob.Serial);
-                this.m_Stream.Write((short)mob.X);
-                this.m_Stream.Write((short)mob.Y);
-                this.m_Stream.Write((byte)(mob.Map == null ? 0 : mob.Map.MapID));
+                m_Stream.Write(mob.Serial);
+                m_Stream.Write((short)mob.X);
+                m_Stream.Write((short)mob.Y);
+                m_Stream.Write((byte)(mob.Map == null ? 0 : mob.Map.MapID));
             }
 
-            this.m_Stream.Write(0);
+            m_Stream.Write(0);
         }
     }
 

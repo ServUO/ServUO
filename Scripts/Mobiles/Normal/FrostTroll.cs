@@ -7,32 +7,32 @@ namespace Server.Mobiles
         public FrostTroll()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a frost troll";
-            this.Body = 55;
-            this.BaseSoundID = 461;
+            Name = "a frost troll";
+            Body = 55;
+            BaseSoundID = 461;
 
-            this.SetStr(227, 265);
-            this.SetDex(66, 85);
-            this.SetInt(46, 70);
+            SetStr(227, 265);
+            SetDex(66, 85);
+            SetInt(46, 70);
 
-            this.SetHits(140, 156);
+            SetHits(140, 156);
 
-            this.SetDamage(14, 20);
+            SetDamage(14, 20);
 
-            this.SetDamageType(ResistanceType.Physical, 75);
-            this.SetDamageType(ResistanceType.Cold, 25);
+            SetDamageType(ResistanceType.Physical, 75);
+            SetDamageType(ResistanceType.Cold, 25);
 
-            this.SetResistance(ResistanceType.Physical, 45, 55);
-            this.SetResistance(ResistanceType.Cold, 40, 50);
-            this.SetResistance(ResistanceType.Poison, 5, 10);
-            this.SetResistance(ResistanceType.Energy, 5, 10);
+            SetResistance(ResistanceType.Physical, 45, 55);
+            SetResistance(ResistanceType.Cold, 40, 50);
+            SetResistance(ResistanceType.Poison, 5, 10);
+            SetResistance(ResistanceType.Energy, 5, 10);
 
-            this.SetSkill(SkillName.MagicResist, 65.1, 80.0);
-            this.SetSkill(SkillName.Tactics, 80.1, 100.0);
-            this.SetSkill(SkillName.Wrestling, 80.1, 100.0);
+            SetSkill(SkillName.MagicResist, 65.1, 80.0);
+            SetSkill(SkillName.Tactics, 80.1, 100.0);
+            SetSkill(SkillName.Wrestling, 80.1, 100.0);
 
-            this.Fame = 4000;
-            this.Karma = -4000;
+            Fame = 4000;
+            Karma = -4000;
         }
 
         public FrostTroll(Serial serial)
@@ -44,8 +44,8 @@ namespace Server.Mobiles
         public override int TreasureMapLevel => 1;
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Average);
-            this.AddLoot(LootPack.Gems);
+            AddLoot(LootPack.Average);
+            AddLoot(LootPack.Gems);
         }
 
         public override void Serialize(GenericWriter writer)

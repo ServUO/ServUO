@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public Vicaie()
             : base("the wise")
         {
-            this.Name = "Elder Vicaie";
+            Name = "Elder Vicaie";
         }
 
         public Vicaie(Serial serial)
@@ -20,33 +20,33 @@ namespace Server.Mobiles
 
         public override bool CanTeach => false;
         public override bool IsInvulnerable => true;
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
         }
 
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = true;
-            this.Race = Race.Elf;
+            Female = true;
+            Race = Race.Elf;
 
-            this.Hue = 0x8362;
-            this.HairItemID = 0x2FCD;
-            this.HairHue = 0x90;
+            Hue = 0x8362;
+            HairItemID = 0x2FCD;
+            HairHue = 0x90;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new ElvenBoots());
-            this.AddItem(new Tunic(0x1FA1));
+            AddItem(new ElvenBoots());
+            AddItem(new Tunic(0x1FA1));
 
             Item item;
 
             item = new LeafLegs();
             item.Hue = 0x3B3;
-            this.AddItem(item);
+            AddItem(item);
         }
 
         public override void Serialize(GenericWriter writer)

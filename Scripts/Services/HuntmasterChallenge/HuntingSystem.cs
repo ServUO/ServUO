@@ -53,7 +53,7 @@ namespace Server.Engines.HuntsmasterChallenge
         {
             if (m_Instance != null)
             {
-                this.Delete();
+                Delete();
                 return;
             }
 

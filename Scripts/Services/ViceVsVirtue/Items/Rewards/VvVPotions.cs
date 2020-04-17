@@ -409,7 +409,7 @@ namespace Server.Engines.VvV
 
         public override void Use(Mobile m)
         {
-            Effects.SendMovingEffect(m, new Entity(Serial.Zero, new Point3D(m.X, m.Y, m.Z + 25), m.Map), this.ItemID, 3, 0, false, false, this.Hue, 0);
+            Effects.SendMovingEffect(m, new Entity(Serial.Zero, new Point3D(m.X, m.Y, m.Z + 25), m.Map), ItemID, 3, 0, false, false, Hue, 0);
 
             int count = 5;
 

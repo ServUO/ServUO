@@ -10,40 +10,40 @@ namespace Server.Mobiles
         public WyvernRenowned()
             : base(AIType.AI_Mage)
         {
-            this.Name = "Wyvern";
-            this.Title = "[Renowned]";
-            this.Body = 62;
-            this.Hue = 243;
-            this.BaseSoundID = 362;
+            Name = "Wyvern";
+            Title = "[Renowned]";
+            Body = 62;
+            Hue = 243;
+            BaseSoundID = 362;
 
-            this.SetStr(1370, 1422);
-            this.SetDex(103, 151);
-            this.SetInt(835, 1002);
+            SetStr(1370, 1422);
+            SetDex(103, 151);
+            SetInt(835, 1002);
 
-            this.SetHits(2412, 2734);
-            this.SetStam(103, 151);
-            this.SetMana(835, 1002);
+            SetHits(2412, 2734);
+            SetStam(103, 151);
+            SetMana(835, 1002);
 
-            this.SetDamage(29, 35);
+            SetDamage(29, 35);
 
-            this.SetDamageType(ResistanceType.Physical, 75);
-            this.SetDamageType(ResistanceType.Fire, 25);
+            SetDamageType(ResistanceType.Physical, 75);
+            SetDamageType(ResistanceType.Fire, 25);
 
-            this.SetResistance(ResistanceType.Physical, 60, 70);
-            this.SetResistance(ResistanceType.Fire, 80, 90);
-            this.SetResistance(ResistanceType.Cold, 70, 80);
-            this.SetResistance(ResistanceType.Poison, 60, 70);
-            this.SetResistance(ResistanceType.Energy, 60, 70);
+            SetResistance(ResistanceType.Physical, 60, 70);
+            SetResistance(ResistanceType.Fire, 80, 90);
+            SetResistance(ResistanceType.Cold, 70, 80);
+            SetResistance(ResistanceType.Poison, 60, 70);
+            SetResistance(ResistanceType.Energy, 60, 70);
 
-            this.SetSkill(SkillName.Magery, 107.7, 109.1);
-            this.SetSkill(SkillName.Meditation, 63.9, 78.2);
-            this.SetSkill(SkillName.EvalInt, 106.8, 111.1);
-            this.SetSkill(SkillName.Wrestling, 108.6, 109.4);
-            this.SetSkill(SkillName.MagicResist, 125.8, 127.6);
-            this.SetSkill(SkillName.Tactics, 112.8, 123.7);
+            SetSkill(SkillName.Magery, 107.7, 109.1);
+            SetSkill(SkillName.Meditation, 63.9, 78.2);
+            SetSkill(SkillName.EvalInt, 106.8, 111.1);
+            SetSkill(SkillName.Wrestling, 108.6, 109.4);
+            SetSkill(SkillName.MagicResist, 125.8, 127.6);
+            SetSkill(SkillName.Tactics, 112.8, 123.7);
 
-            this.Fame = 24000;
-            this.Karma = -24000;
+            Fame = 24000;
+            Karma = -24000;
         }
 
         public WyvernRenowned(Serial serial)

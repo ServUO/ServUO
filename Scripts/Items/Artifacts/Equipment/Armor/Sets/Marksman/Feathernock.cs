@@ -7,15 +7,15 @@ namespace Server.Items
         public Feathernock()
             : base()
         {
-            this.SetHue = 0x594;
+            SetHue = 0x594;
 
-            this.Attributes.WeaponDamage = 10;
-            this.WeightReduction = 30;
+            Attributes.WeaponDamage = 10;
+            WeightReduction = 30;
 
-            this.SetAttributes.AttackChance = 15;
-            this.SetAttributes.BonusDex = 8;
-            this.SetAttributes.WeaponSpeed = 30;
-            this.SetAttributes.WeaponDamage = 20;
+            SetAttributes.AttackChance = 15;
+            SetAttributes.BonusDex = 8;
+            SetAttributes.WeaponSpeed = 30;
+            SetAttributes.WeaponDamage = 20;
         }
 
         public Feathernock(Serial serial)

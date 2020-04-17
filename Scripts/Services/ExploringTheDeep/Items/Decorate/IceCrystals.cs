@@ -13,8 +13,8 @@
         public IceCrystals()
             : base(Utility.RandomList(m_ItemIDs))
         {
-            this.Hue = 2729;
-            this.Movable = false;
+            Hue = 2729;
+            Movable = false;
         }
 
         public IceCrystals(Serial serial)

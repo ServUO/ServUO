@@ -280,7 +280,7 @@ namespace Server.Items
         }
 
         public override int LabelNumber => 1031698;// Enchaned Essence
-        TextDefinition ICommodity.Description => this.LabelNumber;
+        TextDefinition ICommodity.Description => LabelNumber;
         bool ICommodity.IsDeedable => true;
         public override void Serialize(GenericWriter writer)
         {
@@ -479,7 +479,7 @@ namespace Server.Items
         }
 
         public override int LabelNumber => 1031697;// Magical Residue
-        TextDefinition ICommodity.Description => this.LabelNumber;
+        TextDefinition ICommodity.Description => LabelNumber;
         bool ICommodity.IsDeedable => true;
         public override void Serialize(GenericWriter writer)
         {
@@ -557,7 +557,7 @@ namespace Server.Items
         }
 
         public override int LabelNumber => 1031699;// Relic Fragment
-        TextDefinition ICommodity.Description => this.LabelNumber;
+        TextDefinition ICommodity.Description => LabelNumber;
         bool ICommodity.IsDeedable => true;
         public override void Serialize(GenericWriter writer)
         {

@@ -8,9 +8,9 @@ namespace Server.Items
         public TripartiteKey()
             : base(0x1012)
         {
-            this.Weight = 1.0;
-            this.Hue = 1123;
-            this.Movable = false;
+            Weight = 1.0;
+            Hue = 1123;
+            Movable = false;
         }
 
         public TripartiteKey(Serial serial)
@@ -23,20 +23,20 @@ namespace Server.Items
         {
             PlayerMobile pm = from as PlayerMobile;
 
-            if (!this.IsChildOf(from.Backpack))
+            if (!IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
             }
             else if (pm.AbyssEntry)
             {
                 pm.SendMessage("You have completed a Sacred quest already!");
-                this.Delete();
+                Delete();
             }
             else
             {
                 pm.AbyssEntry = true;
                 pm.SendMessage("You have completed the Sacred quest and now have entry to the Underworld");
-                this.Delete();
+                Delete();
             }
         }
 

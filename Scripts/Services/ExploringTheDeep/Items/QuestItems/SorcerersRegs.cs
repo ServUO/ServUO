@@ -11,7 +11,7 @@ namespace Server.Items
         public PerfectBlackPearlDecor()
             : base(0xF7A)
         {
-            this.Movable = false;
+            Movable = false;
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -71,9 +71,9 @@ namespace Server.Items
         public PerfectBlackPearl()
             : base(0xF7A)
         {
-            this.Stackable = false;
-            this.LootType = LootType.Blessed;
-            this.Weight = 1;
+            Stackable = false;
+            LootType = LootType.Blessed;
+            Weight = 1;
         }
 
         public override void GetProperties(ObjectPropertyList list)
@@ -113,7 +113,7 @@ namespace Server.Items
         public BurstingBrimstoneDecor()
             : base(0xF7F)
         {
-            this.Movable = false;
+            Movable = false;
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -173,9 +173,9 @@ namespace Server.Items
         public BurstingBrimstone()
             : base(0xF7F)
         {
-            this.Stackable = false;
-            this.LootType = LootType.Blessed;
-            this.Weight = 1;
+            Stackable = false;
+            LootType = LootType.Blessed;
+            Weight = 1;
         }
 
         public override void GetProperties(ObjectPropertyList list)
@@ -215,7 +215,7 @@ namespace Server.Items
         public BrightDaemonBloodDecor()
             : base(0xF7D)
         {
-            this.Movable = false;
+            Movable = false;
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -275,9 +275,9 @@ namespace Server.Items
         public BrightDaemonBlood()
             : base(0xF7D)
         {
-            this.Stackable = false;
-            this.LootType = LootType.Blessed;
-            this.Weight = 1;
+            Stackable = false;
+            LootType = LootType.Blessed;
+            Weight = 1;
         }
 
         public override void GetProperties(ObjectPropertyList list)
@@ -317,7 +317,7 @@ namespace Server.Items
         public MightyMandrakeDecor()
             : base(0xF86)
         {
-            this.Movable = false;
+            Movable = false;
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -377,9 +377,9 @@ namespace Server.Items
         public MightyMandrake()
             : base(0xF86)
         {
-            this.Stackable = false;
-            this.LootType = LootType.Blessed;
-            this.Weight = 1;
+            Stackable = false;
+            LootType = LootType.Blessed;
+            Weight = 1;
         }
 
         public override void GetProperties(ObjectPropertyList list)
@@ -418,7 +418,7 @@ namespace Server.Items
         public BurlyBoneDecor()
             : base(0xF7E)
         {
-            this.Movable = false;
+            Movable = false;
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -478,9 +478,9 @@ namespace Server.Items
         public BurlyBone()
             : base(0xF7E)
         {
-            this.Stackable = false;
-            this.LootType = LootType.Blessed;
-            this.Weight = 1;
+            Stackable = false;
+            LootType = LootType.Blessed;
+            Weight = 1;
         }
 
         public override void GetProperties(ObjectPropertyList list)

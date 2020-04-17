@@ -8,8 +8,8 @@ namespace Server.Items
         [Constructable]
         public PosedGoblinTopiary() : base(0x4960)
         {
-            this.Weight = 1.0;
-            this.Name = ("a posed goblin topiary");
+            Weight = 1.0;
+            Name = ("a posed goblin topiary");
         }
 
         public PosedGoblinTopiary(Serial serial) : base(serial)

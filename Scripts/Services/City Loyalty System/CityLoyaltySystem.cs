@@ -99,7 +99,7 @@ namespace Server.Engines.CityLoyalty
         public static readonly TimeSpan LoveAtrophyDuration = TimeSpan.FromHours(40);
         public static Map SystemMap => Siege.SiegeShard ? Map.Felucca : Map.Trammel;
 
-        public override TextDefinition Name => new TextDefinition(String.Format("{0}", this.City.ToString()));
+        public override TextDefinition Name => new TextDefinition(String.Format("{0}", City.ToString()));
         public override bool AutoAdd => false;
         public override double MaxPoints => double.MaxValue;
         public override PointsType Loyalty => PointsType.None;
@@ -275,7 +275,7 @@ namespace Server.Engines.CityLoyalty
 
         public override PointsEntry GetSystemEntry(PlayerMobile pm)
         {
-            return new CityLoyaltyEntry(pm, this.City);
+            return new CityLoyaltyEntry(pm, City);
         }
 
         public bool IsCitizen(Mobile from, bool staffIsCitizen = true)
@@ -1287,7 +1287,7 @@ namespace Server.Engines.CityLoyalty
                     break;
             }
 
-            if (version == 0 && this.City == City.Britain)
+            if (version == 0 && City == City.Britain)
             {
                 int count = reader.ReadInt();
                 for (int i = 0; i < count; i++)

@@ -9,8 +9,8 @@ namespace Server.Engines.Quests
         public Mielan()
             : base("Mielan", "the arcanist")
         {
-            this.SetSkill(SkillName.Meditation, 60.0, 83.0);
-            this.SetSkill(SkillName.Focus, 60.0, 83.0);
+            SetSkill(SkillName.Meditation, 60.0, 83.0);
+            SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
         public Mielan(Serial serial)
@@ -24,22 +24,22 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.Race = Race.Elf;
+            Female = false;
+            Race = Race.Elf;
 
-            this.Hue = 0x8376;
-            this.HairItemID = 0x2FCE;
-            this.HairHue = 0x368;
+            Hue = 0x8376;
+            HairItemID = 0x2FCE;
+            HairHue = 0x368;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new ElvenBoots(0x901));
-            this.AddItem(new ElvenPants(0x901));
-            this.AddItem(new ElvenShirt());
-            this.AddItem(new GemmedCirclet());
+            AddItem(new ElvenBoots(0x901));
+            AddItem(new ElvenPants(0x901));
+            AddItem(new ElvenShirt());
+            AddItem(new GemmedCirclet());
         }
 
         public override void Serialize(GenericWriter writer)

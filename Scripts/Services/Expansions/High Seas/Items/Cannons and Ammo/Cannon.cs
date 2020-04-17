@@ -117,13 +117,13 @@ namespace Server.Items
         {
             Gump g = m.FindGump(typeof(CannonGump));
 
-            if (g != null && g is CannonGump && ((CannonGump)g).Cannon == this && !m.InRange(this.Location, 3))
+            if (g != null && g is CannonGump && ((CannonGump)g).Cannon == this && !m.InRange(Location, 3))
                 m.CloseGump(typeof(CannonGump));
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!from.InRange(this.Location, 3))
+            if (!from.InRange(Location, 3))
                 from.SendLocalizedMessage(1149687); //You are too far away.
             else if (m_Galleon.GetSecurityLevel(from) >= SecurityLevel.Crewman)
             {
@@ -168,7 +168,7 @@ namespace Server.Items
             if (from == null)
                 return;
 
-            IPooledEnumerable eable = this.GetMobilesInRange(6);
+            IPooledEnumerable eable = GetMobilesInRange(6);
             foreach (Mobile mob in eable)
             {
                 if (mob is PlayerMobile && mob.InLOS(this))
@@ -258,7 +258,7 @@ namespace Server.Items
             }
             DoAreaMessage(1116080, 10, from);
             AddAction(from, 1149683); //The fuse is lit!
-            Effects.PlaySound(this.Location, this.Map, 0x666);
+            Effects.PlaySound(Location, Map, 0x666);
             Timer.DelayCall(TimeSpan.FromSeconds(2), new TimerStateCallback(Shoot), from);
         }
 
@@ -295,8 +295,8 @@ namespace Server.Items
 
             int xOffset = 0; int yOffset = 0;
             int currentRange = 0;
-            Point3D pnt = this.Location;
-            Map map = this.Map;
+            Point3D pnt = Location;
+            Map map = Map;
             Direction d = GetFacing();
 
             switch (d)
@@ -464,8 +464,8 @@ namespace Server.Items
 
         public void DoShootEffects()
         {
-            Point3D p = this.Location;
-            Map map = this.Map;
+            Point3D p = Location;
+            Map map = Map;
 
             p.Z -= 3;
 
@@ -504,7 +504,7 @@ namespace Server.Items
                 DoAreaMessage(1116297, 5, null); //The ship cannon has been destroyed!
                 Delete();
 
-                if (from != null && from.InRange(this.Location, 5))
+                if (from != null && from.InRange(Location, 5))
                     from.SendLocalizedMessage(1116297); //The ship cannon has been destroyed!
             }
 
@@ -873,7 +873,7 @@ namespace Server.Items
         {
             Mobile from = (Mobile)state;
 
-            if (from.InRange(this.Location, 3))
+            if (from.InRange(Location, 3))
             {
                 m_Cleaned = true;
                 m_Cleansliness = 0;
@@ -898,7 +898,7 @@ namespace Server.Items
             Mobile from = obj[0] as Mobile;
             Type type = obj[1] as Type;
 
-            if (from.InRange(this.Location, 3))
+            if (from.InRange(Location, 3))
             {
                 m_Charged = true;
                 AddAction(from, 1149646); //Charging finished.
@@ -925,7 +925,7 @@ namespace Server.Items
             Mobile from = obj[0] as Mobile;
             Type type = obj[1] as Type;
 
-            if (from.InRange(this.Location, 3))
+            if (from.InRange(Location, 3))
             {
                 m_Primed = true;
                 AddAction(from, 1149652); //Ready to Fire
@@ -961,7 +961,7 @@ namespace Server.Items
                 AddAction(from, 1149663); //Must unload first.
                 from.SendLocalizedMessage(1149663);
             }
-            else if (from.InRange(this.Location, 3))
+            else if (from.InRange(Location, 3))
             {
                 if (TryLoadAmmo(ammo) && ammo is ICannonAmmo)
                 {

@@ -9,17 +9,17 @@ namespace Server.Engines.Quests
         public WrongPrisoner()
             : base()
         {
-            this.Title = "the prisoner";
-            this.IsPrisoner = true;
-            this.Female = false;
-            this.Body = 0x190;
-            this.Hue = 33802;
-            this.Name = NameList.RandomName("male");
+            Title = "the prisoner";
+            IsPrisoner = true;
+            Female = false;
+            Body = 0x190;
+            Hue = 33802;
+            Name = NameList.RandomName("male");
 
-            this.SetWearable(new PlateChest());
-            this.SetWearable(new PlateArms());
-            this.SetWearable(new PlateGloves());
-            this.SetWearable(new PlateLegs());
+            SetWearable(new PlateChest());
+            SetWearable(new PlateArms());
+            SetWearable(new PlateGloves());
+            SetWearable(new PlateLegs());
         }
 
         public WrongPrisoner(Serial serial)
@@ -29,7 +29,7 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit() { }
 
-        public override bool IsInvulnerable => !this.Controlled;
+        public override bool IsInvulnerable => !Controlled;
 
         public override Type[] Quests => new Type[]
                 {

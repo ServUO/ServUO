@@ -8,7 +8,7 @@ namespace Server.Items
         public FancyWoodenChairCushion()
             : base(0xB4F)
         {
-            this.Weight = 20.0;
+            Weight = 20.0;
         }
 
         public FancyWoodenChairCushion(Serial serial)
@@ -29,8 +29,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (this.Weight == 6.0)
-                this.Weight = 20.0;
+            if (Weight == 6.0)
+                Weight = 20.0;
         }
     }
 
@@ -42,7 +42,7 @@ namespace Server.Items
         public WoodenChairCushion()
             : base(0xB53)
         {
-            this.Weight = 20.0;
+            Weight = 20.0;
         }
 
         public WoodenChairCushion(Serial serial)
@@ -63,8 +63,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (this.Weight == 6.0)
-                this.Weight = 20.0;
+            if (Weight == 6.0)
+                Weight = 20.0;
         }
     }
 
@@ -76,7 +76,7 @@ namespace Server.Items
         public WoodenChair()
             : base(0xB57)
         {
-            this.Weight = 20.0;
+            Weight = 20.0;
         }
 
         public WoodenChair(Serial serial)
@@ -97,8 +97,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (this.Weight == 6.0)
-                this.Weight = 20.0;
+            if (Weight == 6.0)
+                Weight = 20.0;
         }
     }
 
@@ -110,7 +110,7 @@ namespace Server.Items
         public BambooChair()
             : base(0xB5B)
         {
-            this.Weight = 20.0;
+            Weight = 20.0;
         }
 
         public BambooChair(Serial serial)
@@ -131,8 +131,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (this.Weight == 6.0)
-                this.Weight = 20.0;
+            if (Weight == 6.0)
+                Weight = 20.0;
         }
     }
 
@@ -145,7 +145,7 @@ namespace Server.Items
         public StoneChair()
             : base(0x1218)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public StoneChair(Serial serial)
@@ -177,7 +177,7 @@ namespace Server.Items
         public OrnateElvenChair()
             : base(0x2DE3)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public OrnateElvenChair(Serial serial)

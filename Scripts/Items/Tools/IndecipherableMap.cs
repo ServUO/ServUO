@@ -6,9 +6,9 @@ namespace Server.Items
         public IndecipherableMap()
         {
             if (Utility.RandomDouble() < 0.2)
-                this.Hue = 0x965;
+                Hue = 0x965;
             else
-                this.Hue = 0x961;
+                Hue = 0x961;
         }
 
         public IndecipherableMap(Serial serial)

@@ -40,7 +40,7 @@ namespace Server.Mobiles
             if (!Female)
                 Utility.AssignRandomFacialHair(this, true);
 
-            this.Hue = Race.RandomSkinHue();
+            Hue = Race.RandomSkinHue();
 
             BaseWeapon wep;
 
@@ -62,36 +62,36 @@ namespace Server.Mobiles
             if (Utility.RandomBool())
                 AddImmovableItem(new GargishRobe());
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 10, 25);
-            this.SetResistance(ResistanceType.Fire, 40, 65);
-            this.SetResistance(ResistanceType.Cold, 40, 65);
-            this.SetResistance(ResistanceType.Poison, 40, 65);
-            this.SetResistance(ResistanceType.Energy, 40, 65);
+            SetResistance(ResistanceType.Physical, 10, 25);
+            SetResistance(ResistanceType.Fire, 40, 65);
+            SetResistance(ResistanceType.Cold, 40, 65);
+            SetResistance(ResistanceType.Poison, 40, 65);
+            SetResistance(ResistanceType.Energy, 40, 65);
 
-            this.SetSkill(SkillName.MagicResist, 120.0);
-            this.SetSkill(SkillName.Tactics, 50.1, 60.0);
-            this.SetSkill(SkillName.Throwing, 120.0);
-            this.SetSkill(SkillName.Anatomy, 0.0, 10.0);
-            this.SetSkill(SkillName.Magery, 50.0, 80.0);
-            this.SetSkill(SkillName.EvalInt, 50.0, 80.0);
-            this.SetSkill(SkillName.Meditation, 120);
+            SetSkill(SkillName.MagicResist, 120.0);
+            SetSkill(SkillName.Tactics, 50.1, 60.0);
+            SetSkill(SkillName.Throwing, 120.0);
+            SetSkill(SkillName.Anatomy, 0.0, 10.0);
+            SetSkill(SkillName.Magery, 50.0, 80.0);
+            SetSkill(SkillName.EvalInt, 50.0, 80.0);
+            SetSkill(SkillName.Meditation, 120);
 
-            this.Fame = 12000;
-            this.Karma = -12000;
+            Fame = 12000;
+            Karma = -12000;
 
             if (.5 > Utility.RandomDouble())
             {
                 ChangeAIType(AIType.AI_Mage);
 
-                this.SetSkill(SkillName.Necromancy, 90, 105);
-                this.SetSkill(SkillName.SpiritSpeak, 90, 105);
+                SetSkill(SkillName.Necromancy, 90, 105);
+                SetSkill(SkillName.SpiritSpeak, 90, 105);
             }
             else
             {
-                this.SetSkill(SkillName.Mysticism, 90, 105);
-                this.SetSkill(SkillName.Focus, 90, 105);
+                SetSkill(SkillName.Mysticism, 90, 105);
+                SetSkill(SkillName.Focus, 90, 105);
             }
 
             m_NextSummon = DateTime.UtcNow;
@@ -123,9 +123,9 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.UltraRich);
-            this.AddLoot(LootPack.MedScrolls, 2);
-            this.AddLoot(LootPack.HighScrolls, 2);
+            AddLoot(LootPack.UltraRich);
+            AddLoot(LootPack.MedScrolls, 2);
+            AddLoot(LootPack.HighScrolls, 2);
         }
 
         private DateTime m_NextSummon;
@@ -137,7 +137,7 @@ namespace Server.Mobiles
             if (Combatant == null || m_NextSummon > DateTime.UtcNow)
                 return;
 
-            if (this.Mana > 40 && this.Followers + 4 <= this.FollowersMax)
+            if (Mana > 40 && Followers + 4 <= FollowersMax)
             {
                 Spell spell = new AnimatedWeaponSpell(this, null);
                 spell.Cast();

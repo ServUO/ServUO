@@ -35,7 +35,7 @@ namespace Server.Items
         public SuitOfSilverArmorAddon()
             : base()
         {
-            this.AddComponent(new SuitOfSilverArmorComponent(), 0, 0, 0);
+            AddComponent(new SuitOfSilverArmorComponent(), 0, 0, 0);
         }
 
         public SuitOfSilverArmorAddon(Serial serial)
@@ -65,7 +65,7 @@ namespace Server.Items
         public SuitOfSilverArmorDeed()
             : base()
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public SuitOfSilverArmorDeed(Serial serial)

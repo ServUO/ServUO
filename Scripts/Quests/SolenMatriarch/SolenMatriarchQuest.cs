@@ -28,7 +28,7 @@ namespace Server.Engines.Quests.Matriarch
         public SolenMatriarchQuest(PlayerMobile from, bool redSolen)
             : base(from)
         {
-            this.m_RedSolen = redSolen;
+            m_RedSolen = redSolen;
         }
 
         // Serialization
@@ -44,7 +44,7 @@ namespace Server.Engines.Quests.Matriarch
         {
             get
             {
-                if (IsFriend(this.From, this.RedSolen))
+                if (IsFriend(From, RedSolen))
                 {
                     /* <I>The Solen Matriarch smiles happily as you greet her.</I><BR><BR>
                     * 
@@ -98,7 +98,7 @@ namespace Server.Engines.Quests.Matriarch
         public override TimeSpan RestartDelay => TimeSpan.Zero;
         public override bool IsTutorial => false;
         public override int Picture => 0x15C9;
-        public bool RedSolen => this.m_RedSolen;
+        public bool RedSolen => m_RedSolen;
         public static bool IsFriend(PlayerMobile player, bool redSolen)
         {
             if (redSolen)
@@ -127,7 +127,7 @@ namespace Server.Engines.Quests.Matriarch
         {
             int version = reader.ReadEncodedInt();
 
-            this.m_RedSolen = reader.ReadBool();
+            m_RedSolen = reader.ReadBool();
         }
 
         public override void ChildSerialize(GenericWriter writer)
@@ -141,7 +141,7 @@ namespace Server.Engines.Quests.Matriarch
         {
             base.Accept();
 
-            this.AddConversation(new AcceptConversation());
+            AddConversation(new AcceptConversation());
         }
     }
 }

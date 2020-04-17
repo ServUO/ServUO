@@ -16,12 +16,12 @@ namespace Server.Mobiles
         {
         }
 
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBLeatherArmor());
-            this.m_SBInfos.Add(new SBStuddedArmor());
-            this.m_SBInfos.Add(new SBLeatherWorker());
+            m_SBInfos.Add(new SBLeatherArmor());
+            m_SBInfos.Add(new SBStuddedArmor());
+            m_SBInfos.Add(new SBLeatherWorker());
         }
 
         public override void Serialize(GenericWriter writer)

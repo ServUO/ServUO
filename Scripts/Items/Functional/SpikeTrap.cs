@@ -35,7 +35,7 @@ namespace Server.Items
         {
             get
             {
-                switch (this.ItemID)
+                switch (ItemID)
                 {
                     case 4360:
                     case 4361:
@@ -59,23 +59,23 @@ namespace Server.Items
             }
             set
             {
-                bool extended = this.Extended;
+                bool extended = Extended;
 
-                this.ItemID = (extended ? GetExtendedID(value) : GetBaseID(value));
+                ItemID = (extended ? GetExtendedID(value) : GetBaseID(value));
             }
         }
         public bool Extended
         {
             get
             {
-                return (this.ItemID == GetExtendedID(this.Type));
+                return (ItemID == GetExtendedID(Type));
             }
             set
             {
                 if (value)
-                    this.ItemID = GetExtendedID(this.Type);
+                    ItemID = GetExtendedID(Type);
                 else
-                    this.ItemID = GetBaseID(this.Type);
+                    ItemID = GetBaseID(Type);
             }
         }
         public override bool PassivelyTriggered => false;
@@ -127,8 +127,8 @@ namespace Server.Items
             if (!from.Alive || from.IsStaff())
                 return;
 
-            Effects.SendLocationEffect(this.Location, this.Map, GetBaseID(this.Type) + 1, 18, 3, this.GetEffectHue(), 0);
-            Effects.PlaySound(this.Location, this.Map, 0x22C);
+            Effects.SendLocationEffect(Location, Map, GetBaseID(Type) + 1, 18, 3, GetEffectHue(), 0);
+            Effects.PlaySound(Location, Map, 0x22C);
             IPooledEnumerable eable = GetMobilesInRange(0);
 
             foreach (Mobile mob in eable)
@@ -145,14 +145,14 @@ namespace Server.Items
 
         public virtual void OnSpikeExtended()
         {
-            this.Extended = true;
+            Extended = true;
             Timer.DelayCall(TimeSpan.FromSeconds(5.0), new TimerCallback(OnSpikeRetracted));
         }
 
         public virtual void OnSpikeRetracted()
         {
-            this.Extended = false;
-            Effects.SendLocationEffect(this.Location, this.Map, GetExtendedID(this.Type) - 1, 6, 3, this.GetEffectHue(), 0);
+            Extended = false;
+            Effects.SendLocationEffect(Location, Map, GetExtendedID(Type) - 1, 6, 3, GetEffectHue(), 0);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -168,7 +168,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            this.Extended = false;
+            Extended = false;
         }
     }
 }

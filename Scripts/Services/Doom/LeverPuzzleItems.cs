@@ -12,9 +12,9 @@ namespace Server.Engines.Doom
         public LampRoomBox(LeverPuzzleController controller)
             : base(0xe80)
         {
-            this.m_Controller = controller;
-            this.ItemID = 0xe80;
-            this.Movable = false;
+            m_Controller = controller;
+            ItemID = 0xe80;
+            Movable = false;
         }
 
         public LampRoomBox(Serial serial)
@@ -24,43 +24,43 @@ namespace Server.Engines.Doom
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (!m.InRange(this.GetWorldLocation(), 3))
+            if (!m.InRange(GetWorldLocation(), 3))
                 return;
-            if (this.m_Controller.Enabled)
+            if (m_Controller.Enabled)
                 return;
 
-            if ((this.m_Wanderer == null || !this.m_Wanderer.Alive))
+            if ((m_Wanderer == null || !m_Wanderer.Alive))
             {
-                this.m_Wanderer = new WandererOfTheVoid();
-                this.m_Wanderer.MoveToWorld(LeverPuzzleController.lr_Enter, Map.Malas);
-                this.m_Wanderer.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1060002, ""); // I am the guardian of...
+                m_Wanderer = new WandererOfTheVoid();
+                m_Wanderer.MoveToWorld(LeverPuzzleController.lr_Enter, Map.Malas);
+                m_Wanderer.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1060002, ""); // I am the guardian of...
                 Timer.DelayCall(TimeSpan.FromSeconds(5.0), new TimerCallback(CallBackMessage));
             }
         }
 
         public void CallBackMessage()
         {
-            this.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1060003, ""); // You try to pry the box open...
+            PublicOverheadMessage(MessageType.Regular, 0x3B2, 1060003, ""); // You try to pry the box open...
         }
 
         public override void OnAfterDelete()
         {
-            if (this.m_Controller != null && !this.m_Controller.Deleted)
-                this.m_Controller.Delete();
+            if (m_Controller != null && !m_Controller.Deleted)
+                m_Controller.Delete();
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
             writer.Write(0); // version
-            writer.Write(this.m_Controller);
+            writer.Write(m_Controller);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-            this.m_Controller = reader.ReadItem() as LeverPuzzleController;
+            m_Controller = reader.ReadItem() as LeverPuzzleController;
         }
     }
 
@@ -70,9 +70,9 @@ namespace Server.Engines.Doom
         public LeverPuzzleStatue(int[] dat, LeverPuzzleController controller)
             : base(dat[0])
         {
-            this.m_Controller = controller;
-            this.Hue = 0x44E;
-            this.Movable = false;
+            m_Controller = controller;
+            Hue = 0x44E;
+            Movable = false;
         }
 
         public LeverPuzzleStatue(Serial serial)
@@ -82,22 +82,22 @@ namespace Server.Engines.Doom
 
         public override void OnAfterDelete()
         {
-            if (this.m_Controller != null && !this.m_Controller.Deleted)
-                this.m_Controller.Delete();
+            if (m_Controller != null && !m_Controller.Deleted)
+                m_Controller.Delete();
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
             writer.Write(0); // version
-            writer.Write(this.m_Controller);
+            writer.Write(m_Controller);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-            this.m_Controller = reader.ReadItem() as LeverPuzzleController;
+            m_Controller = reader.ReadItem() as LeverPuzzleController;
         }
     }
 
@@ -108,10 +108,10 @@ namespace Server.Engines.Doom
         public LeverPuzzleLever(UInt16 code, LeverPuzzleController controller)
             : base(0x108E)
         {
-            this.m_Controller = controller;
-            this.m_Code = code;
-            this.Hue = 0x66D;
-            this.Movable = false;
+            m_Controller = controller;
+            m_Code = code;
+            Hue = 0x66D;
+            Movable = false;
         }
 
         public LeverPuzzleLever(Serial serial)
@@ -120,14 +120,14 @@ namespace Server.Engines.Doom
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public UInt16 Code => this.m_Code;
+        public UInt16 Code => m_Code;
         public override void OnDoubleClick(Mobile m)
         {
-            if (m != null && this.m_Controller.Enabled)
+            if (m != null && m_Controller.Enabled)
             {
-                this.ItemID ^= 2;
-                Effects.PlaySound(this.Location, this.Map, 0x3E8);
-                this.m_Controller.LeverPulled(this.m_Code);
+                ItemID ^= 2;
+                Effects.PlaySound(Location, Map, 0x3E8);
+                m_Controller.LeverPulled(m_Code);
             }
             else
             {
@@ -137,8 +137,8 @@ namespace Server.Engines.Doom
 
         public override void OnAfterDelete()
         {
-            if (this.m_Controller != null && !this.m_Controller.Deleted)
-                this.m_Controller.Delete();
+            if (m_Controller != null && !m_Controller.Deleted)
+                m_Controller.Delete();
         }
 
         public override void Serialize(GenericWriter writer)
@@ -146,15 +146,15 @@ namespace Server.Engines.Doom
             base.Serialize(writer);
             writer.Write(0); // version
             writer.Write(m_Code);
-            writer.Write(this.m_Controller);
+            writer.Write(m_Controller);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-            this.m_Code = reader.ReadUShort();
-            this.m_Controller = reader.ReadItem() as LeverPuzzleController;
+            m_Code = reader.ReadUShort();
+            m_Controller = reader.ReadItem() as LeverPuzzleController;
         }
     }
 
@@ -163,9 +163,9 @@ namespace Server.Engines.Doom
     {
         public LampRoomTeleporter(int[] dat)
         {
-            this.Hue = dat[1];
-            this.ItemID = dat[0];
-            this.Movable = false;
+            Hue = dat[1];
+            ItemID = dat[0];
+            Movable = false;
         }
 
         public LampRoomTeleporter(Serial serial)

@@ -6,8 +6,8 @@ namespace Server.Items
         public DecoHay2()
             : base(0xF34)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public DecoHay2(Serial serial)

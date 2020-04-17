@@ -37,19 +37,19 @@ namespace Server.Items
 
             if (version <= 1)
             {
-                if (this.HitPoints > 255 || this.MaxHitPoints > 255)
-                    this.HitPoints = this.MaxHitPoints = 255;
+                if (HitPoints > 255 || MaxHitPoints > 255)
+                    HitPoints = MaxHitPoints = 255;
             }
 
             if (version < 1)
             {
-                if (this.Hue == 0x559)
-                    this.Hue = 0x4F5;
+                if (Hue == 0x559)
+                    Hue = 0x4F5;
 
-                if (this.ArmorAttributes.DurabilityBonus == 0)
-                    this.ArmorAttributes.DurabilityBonus = 100;
+                if (ArmorAttributes.DurabilityBonus == 0)
+                    ArmorAttributes.DurabilityBonus = 100;
 
-                this.PoisonBonus = 0;
+                PoisonBonus = 0;
             }
         }
     }

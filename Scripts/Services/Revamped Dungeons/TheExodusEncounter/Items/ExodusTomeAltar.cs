@@ -26,22 +26,22 @@ namespace Server.Items
         public List<RitualArray> Rituals => m_Rituals;
         public Mobile Owner
         {
-            get { return this.m_Owner; }
-            set { this.m_Owner = value; }
+            get { return m_Owner; }
+            set { m_Owner = value; }
         }
 
         [Constructable]
         public ExodusTomeAltar(Mobile from)
             : base(0x1C11)
         {
-            this.Hue = 1943;
-            this.Movable = false;
-            this.LootType = LootType.Regular;
-            this.Weight = 0.0;
+            Hue = 1943;
+            Movable = false;
+            LootType = LootType.Regular;
+            Weight = 0.0;
 
-            this.m_Rituals = new List<RitualArray>();
-            this.m_ExodusAlterAddon = new ExodusAlterAddon();
-            this.m_ExodusAlterAddon.Movable = false;
+            m_Rituals = new List<RitualArray>();
+            m_ExodusAlterAddon = new ExodusAlterAddon();
+            m_ExodusAlterAddon.Movable = false;
         }
 
         public ExodusTomeAltar(Serial serial) : base(serial)
@@ -99,8 +99,8 @@ namespace Server.Items
         {
             base.OnAfterDelete();
 
-            if (this.m_ExodusAlterAddon != null)
-                this.m_ExodusAlterAddon.Delete();
+            if (m_ExodusAlterAddon != null)
+                m_ExodusAlterAddon.Delete();
 
             if (Altar != null)
                 Altar = null;
@@ -108,20 +108,20 @@ namespace Server.Items
 
         public override void OnMapChange()
         {
-            if (this.Deleted)
+            if (Deleted)
                 return;
 
-            if (this.m_ExodusAlterAddon != null)
-                this.m_ExodusAlterAddon.Map = this.Map;
+            if (m_ExodusAlterAddon != null)
+                m_ExodusAlterAddon.Map = Map;
         }
 
         public override void OnLocationChange(Point3D oldLoc)
         {
-            if (this.Deleted)
+            if (Deleted)
                 return;
 
-            if (this.m_ExodusAlterAddon != null)
-                this.m_ExodusAlterAddon.Location = new Point3D(this.X - 1, this.Y - 1, this.Z - 18);
+            if (m_ExodusAlterAddon != null)
+                m_ExodusAlterAddon.Location = new Point3D(X - 1, Y - 1, Z - 18);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -187,7 +187,7 @@ namespace Server.Items
 
                 foreach (PartyMemberInfo info in party.Members)
                 {
-                    this.SendBattleground(info.Mobile);
+                    SendBattleground(info.Mobile);
                 }
             }
             else
@@ -203,7 +203,7 @@ namespace Server.Items
                 // teleport party member
                 from.FixedParticles(0x376A, 9, 32, 0x13AF, EffectLayer.Waist);
                 from.PlaySound(0x1FE);
-                from.MoveToWorld(this.m_TeleportDest, Map.Ilshenar);
+                from.MoveToWorld(m_TeleportDest, Map.Ilshenar);
                 BaseCreature.TeleportPets(from, m_TeleportDest, Map.Ilshenar);
 
                 // Robe of Rite Delete
@@ -251,9 +251,9 @@ namespace Server.Items
 
         public AltarGump(Mobile owner) : base(100, 100)
         {
-            this.Closable = true;
-            this.Disposable = true;
-            this.Dragable = true;
+            Closable = true;
+            Disposable = true;
+            Dragable = true;
 
             AddPage(0);
             AddBackground(0, 0, 447, 195, 5120);

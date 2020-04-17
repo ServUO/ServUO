@@ -78,7 +78,7 @@ namespace Server.Commands
             public AllSkillsTarget(double value)
                 : base(-1, false, TargetFlags.None)
             {
-                this.m_Value = value;
+                m_Value = value;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
@@ -89,9 +89,9 @@ namespace Server.Commands
                     Server.Skills skills = targ.Skills;
 
                     for (int i = 0; i < skills.Length; ++i)
-                        skills[i].Base = this.m_Value;
+                        skills[i].Base = m_Value;
 
-                    CommandLogging.LogChangeProperty(from, targ, "EverySkill.Base", this.m_Value.ToString());
+                    CommandLogging.LogChangeProperty(from, targ, "EverySkill.Base", m_Value.ToString());
                 }
                 else
                 {
@@ -108,16 +108,16 @@ namespace Server.Commands
             public SkillTarget(SkillName skill, double value)
                 : base(-1, false, TargetFlags.None)
             {
-                this.m_Set = true;
-                this.m_Skill = skill;
-                this.m_Value = value;
+                m_Set = true;
+                m_Skill = skill;
+                m_Value = value;
             }
 
             public SkillTarget(SkillName skill)
                 : base(-1, false, TargetFlags.None)
             {
-                this.m_Set = false;
-                this.m_Skill = skill;
+                m_Set = false;
+                m_Skill = skill;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
@@ -125,18 +125,18 @@ namespace Server.Commands
                 if (targeted is Mobile)
                 {
                     Mobile targ = (Mobile)targeted;
-                    Skill skill = targ.Skills[this.m_Skill];
+                    Skill skill = targ.Skills[m_Skill];
 
                     if (skill == null)
                         return;
 
-                    if (this.m_Set)
+                    if (m_Set)
                     {
-                        skill.Base = this.m_Value;
-                        CommandLogging.LogChangeProperty(from, targ, String.Format("{0}.Base", this.m_Skill), this.m_Value.ToString());
+                        skill.Base = m_Value;
+                        CommandLogging.LogChangeProperty(from, targ, String.Format("{0}.Base", m_Skill), m_Value.ToString());
                     }
 
-                    from.SendMessage("{0} : {1} (Base: {2})", this.m_Skill, skill.Value, skill.Base);
+                    from.SendMessage("{0} : {1} (Base: {2})", m_Skill, skill.Value, skill.Base);
                 }
                 else
                 {

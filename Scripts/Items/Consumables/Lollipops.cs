@@ -13,7 +13,7 @@
         public Lollipops(int amount)
             : base(0x468D + Utility.Random(3))
         {
-            this.Stackable = true;
+            Stackable = true;
         }
 
         public Lollipops(Serial serial)

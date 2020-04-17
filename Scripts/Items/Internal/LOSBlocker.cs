@@ -8,7 +8,7 @@ namespace Server.Items
         public LOSBlocker()
             : base(0x21A2)
         {
-            this.Movable = false;
+            Movable = false;
         }
 
         public LOSBlocker(Serial serial)
@@ -36,8 +36,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (version < 1 && this.ItemID == 0x2199)
-                this.ItemID = 0x21A2;
+            if (version < 1 && ItemID == 0x2199)
+                ItemID = 0x21A2;
         }
 
         protected override Packet GetWorldPacketFor(NetState state)
@@ -57,7 +57,7 @@ namespace Server.Items
             public GMItemPacket(Item item)
                 : base(0x1A)
             {
-                this.EnsureCapacity(20);
+                EnsureCapacity(20);
 
                 // 14 base length
                 // +2 - Amount
@@ -79,18 +79,18 @@ namespace Server.Items
                 else
                     serial &= 0x7FFFFFFF;
 
-                this.m_Stream.Write(serial);
-                this.m_Stream.Write((short)(itemID & TileData.MaxItemValue));
+                m_Stream.Write(serial);
+                m_Stream.Write((short)(itemID & TileData.MaxItemValue));
 
                 if (amount != 0)
-                    this.m_Stream.Write((short)amount);
+                    m_Stream.Write((short)amount);
 
                 x &= 0x7FFF;
 
                 if (direction != 0)
                     x |= 0x8000;
 
-                this.m_Stream.Write((short)x);
+                m_Stream.Write((short)x);
 
                 y &= 0x3FFF;
 
@@ -100,18 +100,18 @@ namespace Server.Items
                 if (flags != 0)
                     y |= 0x4000;
 
-                this.m_Stream.Write((short)y);
+                m_Stream.Write((short)y);
 
                 if (direction != 0)
-                    this.m_Stream.Write((byte)direction);
+                    m_Stream.Write((byte)direction);
 
-                this.m_Stream.Write((sbyte)loc.Z);
+                m_Stream.Write((sbyte)loc.Z);
 
                 if (hue != 0)
-                    this.m_Stream.Write((ushort)hue);
+                    m_Stream.Write((ushort)hue);
 
                 if (flags != 0)
-                    this.m_Stream.Write((byte)flags);
+                    m_Stream.Write((byte)flags);
             }
         }
     }

@@ -9,7 +9,7 @@ namespace Server.Mobiles
         public Cobbler()
             : base("the cobbler")
         {
-            this.SetSkill(SkillName.Tailoring, 60.0, 83.0);
+            SetSkill(SkillName.Tailoring, 60.0, 83.0);
         }
 
         public Cobbler(Serial serial)
@@ -18,10 +18,10 @@ namespace Server.Mobiles
         }
 
         public override VendorShoeType ShoeType => Utility.RandomBool() ? VendorShoeType.Sandals : VendorShoeType.Shoes;
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBCobbler());
+            m_SBInfos.Add(new SBCobbler());
         }
 
         public override void Serialize(GenericWriter writer)

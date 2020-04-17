@@ -6,7 +6,7 @@ namespace Server.Items
         public FetidEssenceStatuette()
             : base(0x2D94)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public FetidEssenceStatuette(Serial serial)

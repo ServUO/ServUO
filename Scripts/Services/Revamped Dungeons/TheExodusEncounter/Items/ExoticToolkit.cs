@@ -8,8 +8,8 @@ namespace Server.Items
         public ExoticToolkit()
             : base(0x1EB9)
         {
-            this.Hue = 2500;
-            this.Weight = 1;
+            Hue = 2500;
+            Weight = 1;
         }
 
         public override int Lifespan => 604800;

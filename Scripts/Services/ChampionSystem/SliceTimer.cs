@@ -8,13 +8,13 @@ namespace Server.Engines.CannedEvil
         public SliceTimer(ChampionSpawn spawn)
             : base(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0))
         {
-            this.m_Spawn = spawn;
-            this.Priority = TimerPriority.OneSecond;
+            m_Spawn = spawn;
+            Priority = TimerPriority.OneSecond;
         }
 
         protected override void OnTick()
         {
-            this.m_Spawn.OnSlice();
+            m_Spawn.OnSlice();
         }
     }
 }

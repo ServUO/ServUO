@@ -11,8 +11,8 @@ namespace Server.Items
         [Constructable]
         public GargishCouchEastAddon()
         {
-            this.AddComponent(new AddonComponent(0x402A), 0, 0, 0);
-            this.AddComponent(new AddonComponent(0x4029), 0, -1, 0);
+            AddComponent(new AddonComponent(0x402A), 0, 0, 0);
+            AddComponent(new AddonComponent(0x4029), 0, -1, 0);
         }
 
         public GargishCouchEastAddon(Serial serial)

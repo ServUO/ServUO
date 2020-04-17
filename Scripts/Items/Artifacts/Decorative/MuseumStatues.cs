@@ -8,8 +8,8 @@ namespace Server.Items
         public VesperCollectionStatuette(int itemID)
             : base(itemID)
         {
-            this.LootType = LootType.Blessed;
-            this.Weight = 1.0;
+            LootType = LootType.Blessed;
+            Weight = 1.0;
         }
 
         public VesperCollectionStatuette(Serial serial)
@@ -19,15 +19,15 @@ namespace Server.Items
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (this.TurnedOn && this.IsLockedDown && (!m.Hidden || m.IsPlayer()) && Utility.InRange(m.Location, this.Location, 2) && !Utility.InRange(oldLocation, this.Location, 2))
+            if (TurnedOn && IsLockedDown && (!m.Hidden || m.IsPlayer()) && Utility.InRange(m.Location, Location, 2) && !Utility.InRange(oldLocation, Location, 2))
             {
                 int cliloc = Utility.RandomMinMax(1073266, 1073286);
 
                 if (cliloc == 1073282)
                     cliloc -= 1;
 
-                this.PublicOverheadMessage(MessageType.Regular, 0x3B2, cliloc);
-                Effects.PlaySound(this.Location, this.Map, Utility.Random(0x17));
+                PublicOverheadMessage(MessageType.Regular, 0x3B2, cliloc);
+                Effects.PlaySound(Location, Map, Utility.Random(0x17));
             }
 
             base.OnMovement(m, oldLocation);

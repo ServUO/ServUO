@@ -9,9 +9,9 @@ namespace Server.Engines.Quests
         public ParoxysmusSuccubiQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Succubus), "succubi", 3, "Palace of Paroxysmus"));
+            AddObjective(new SlayObjective(typeof(Succubus), "succubi", 3, "Palace of Paroxysmus"));
 
-            this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
+            AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
         /* Paroxysmus' Succubi */
@@ -48,9 +48,9 @@ namespace Server.Engines.Quests
         public ParoxysmusMolochQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Moloch), "molochs", 3, "Palace of Paroxysmus"));
+            AddObjective(new SlayObjective(typeof(Moloch), "molochs", 3, "Palace of Paroxysmus"));
 
-            this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
+            AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
         /* Paroxysmus' Moloch */
@@ -87,9 +87,9 @@ namespace Server.Engines.Quests
         public ParoxysmusDaemonsQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Daemon), "daemons", 10, "Palace of Paroxysmus"));
+            AddObjective(new SlayObjective(typeof(Daemon), "daemons", 10, "Palace of Paroxysmus"));
 
-            this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
+            AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
         /* Paroxysmus' Daemons */
@@ -126,9 +126,9 @@ namespace Server.Engines.Quests
         public ParoxysmusArcaneDaemonsQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(ArcaneDaemon), "arcane daemons", 10, "Palace of Paroxysmus"));
+            AddObjective(new SlayObjective(typeof(ArcaneDaemon), "arcane daemons", 10, "Palace of Paroxysmus"));
 
-            this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
+            AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
         /* Paroxysmus' Arcane Daemons */
@@ -165,10 +165,10 @@ namespace Server.Engines.Quests
         public CausticComboQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(PoisonElemental), "poison elementals", 3, "Palace of Paroxysmus"));
-            this.AddObjective(new SlayObjective(typeof(ToxicElemental), "acid elementals", 6, "Palace of Paroxysmus"));
+            AddObjective(new SlayObjective(typeof(PoisonElemental), "poison elementals", 3, "Palace of Paroxysmus"));
+            AddObjective(new SlayObjective(typeof(ToxicElemental), "acid elementals", 6, "Palace of Paroxysmus"));
 
-            this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
+            AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
         /* Caustic Combo */
@@ -206,11 +206,11 @@ namespace Server.Engines.Quests
         public PlagueLordQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(PlagueSpawn), "plague spawns", 10, "Palace of Paroxysmus"));
-            this.AddObjective(new SlayObjective(typeof(PlagueBeast), "plague beasts", 3, "Palace of Paroxysmus"));
+            AddObjective(new SlayObjective(typeof(PlagueSpawn), "plague spawns", 10, "Palace of Paroxysmus"));
+            AddObjective(new SlayObjective(typeof(PlagueBeast), "plague beasts", 3, "Palace of Paroxysmus"));
             //AddObjective( new SlayObjective( typeof( PlagueBeastLord ), "plague beast lord", 1, "Palace of Paroxysmus" ) );
 
-            this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
+            AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
         /* Plague Lord */
@@ -249,8 +249,8 @@ namespace Server.Engines.Quests
         public Nillaen()
             : base("Lorekeeper Nillaen", "the keeper of tradition")
         {
-            this.SetSkill(SkillName.Meditation, 60.0, 83.0);
-            this.SetSkill(SkillName.Focus, 60.0, 83.0);
+            SetSkill(SkillName.Meditation, 60.0, 83.0);
+            SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
         public Nillaen(Serial serial)
@@ -269,24 +269,24 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = true;
-            this.Race = Race.Elf;
+            Female = true;
+            Race = Race.Elf;
 
-            this.Hue = 0x8367;
-            this.HairItemID = 0x2FCF;
-            this.HairHue = 0x26B;
+            Hue = 0x8367;
+            HairItemID = 0x2FCF;
+            HairHue = 0x26B;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Shoes(0x1BB));
-            this.AddItem(new LongPants(0x1FB));
-            this.AddItem(new ElvenShirt());
-            this.AddItem(new GemmedCirclet());
-            this.AddItem(new BodySash(0x25));
-            this.AddItem(new BlackStaff());
+            AddItem(new Shoes(0x1BB));
+            AddItem(new LongPants(0x1FB));
+            AddItem(new ElvenShirt());
+            AddItem(new GemmedCirclet());
+            AddItem(new BodySash(0x25));
+            AddItem(new BlackStaff());
         }
 
         public override void Serialize(GenericWriter writer)

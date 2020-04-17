@@ -57,7 +57,7 @@ namespace Server.Items
             set
             {
                 m_Active = value;
-                PublicOverheadMessage(Server.Network.MessageType.Regular, 25, false, String.Format("Corgul Altar for {0} has been {1}", this.Map, m_Active ? "activated" : "deactivated"));
+                PublicOverheadMessage(Server.Network.MessageType.Regular, 25, false, String.Format("Corgul Altar for {0} has been {1}", Map, m_Active ? "activated" : "deactivated"));
             }
         }
 
@@ -142,7 +142,7 @@ namespace Server.Items
                 from.SendMessage("This altar has been deactivated.");
             else if (!CheckCanUse(from))
                 from.SendLocalizedMessage(1116791); // You must wait a few minutes before making your sacrifice.
-            else if (from.InRange(this.Location, 3))
+            else if (from.InRange(Location, 3))
             {
                 from.Target = new InternalTarget(this);
 
@@ -156,7 +156,7 @@ namespace Server.Items
         {
             if (m_Activated)
             {
-                if (this.Map == Map.Trammel)
+                if (Map == Map.Trammel)
                     return false;
 
                 if (m_Boss == null || !m_Boss.Alive || m_Boss.Hits < m_Boss.HitsMax / 2)
@@ -333,7 +333,7 @@ namespace Server.Items
         {
             //Spawn boss
             CorgulTheSoulBinder boss = new CorgulTheSoulBinder(this);
-            boss.MoveToWorld(SpawnLoc, this.Map);
+            boss.MoveToWorld(SpawnLoc, Map);
             boss.SpawnHelpers();
             m_Boss = boss;
 

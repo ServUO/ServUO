@@ -35,12 +35,12 @@ namespace Server.Items
         public LightOfTheWinterSolstice(string dipper)
             : base(0x236E)
         {
-            this.m_Dipper = dipper;
+            m_Dipper = dipper;
 
-            this.Weight = 1.0;
-            this.LootType = LootType.Blessed;
-            this.Light = LightType.Circle300;
-            this.Hue = Utility.RandomDyedHue();
+            Weight = 1.0;
+            LootType = LootType.Blessed;
+            Light = LightType.Circle300;
+            Hue = Utility.RandomDyedHue();
         }
 
         public LightOfTheWinterSolstice(Serial serial)
@@ -53,11 +53,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Dipper;
+                return m_Dipper;
             }
             set
             {
-                this.m_Dipper = value;
+                m_Dipper = value;
             }
         }
 
@@ -65,7 +65,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            list.Add(1070881, this.m_Dipper); // Hand Dipped by ~1_name~
+            list.Add(1070881, m_Dipper); // Hand Dipped by ~1_name~
             list.Add(1070880); // Winter 2004
         }
 
@@ -88,18 +88,18 @@ namespace Server.Items
             {
                 case 1:
                     {
-                        this.m_Dipper = reader.ReadString();
+                        m_Dipper = reader.ReadString();
                         break;
                     }
                 case 0:
                     {
-                        this.m_Dipper = m_StaffNames[Utility.Random(m_StaffNames.Length)];
+                        m_Dipper = m_StaffNames[Utility.Random(m_StaffNames.Length)];
                         break;
                     }
             }
 
-            if (this.m_Dipper != null)
-                this.m_Dipper = String.Intern(this.m_Dipper);
+            if (m_Dipper != null)
+                m_Dipper = String.Intern(m_Dipper);
         }
     }
 }

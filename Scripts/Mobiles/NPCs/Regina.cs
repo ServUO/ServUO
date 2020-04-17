@@ -19,21 +19,21 @@ namespace Server.Engines.Quests
         public override Type[] Quests => null;
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = true;
-            this.Race = Race.Human;
+            Female = true;
+            Race = Race.Human;
 
-            this.Hue = 0x83EE;
-            this.HairItemID = 0x2049;
-            this.HairHue = 0x599;
+            Hue = 0x83EE;
+            HairItemID = 0x2049;
+            HairHue = 0x599;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Boots());
-            this.AddItem(new GildedDress());
+            AddItem(new Backpack());
+            AddItem(new Boots());
+            AddItem(new GildedDress());
         }
 
         public override void Serialize(GenericWriter writer)

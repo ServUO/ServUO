@@ -38,32 +38,32 @@ namespace Server.Engines.Quests
         public CrushingBonesAndTakingNamesQuest()
             : base()
         {
-            this.AddObjective(new ApprenticeObjective(SkillName.Macing, 50, "Old Haven Training", 1078063, 1078064));
+            AddObjective(new ApprenticeObjective(SkillName.Macing, 50, "Old Haven Training", 1078063, 1078064));
 
             // 1078063 You feel much more attuned to your mace. Your ability to hone your Mace Fighting skill is enhanced in this area.
             // 1078064 You feel less attuned to your mace. Your Mace Fighting learning potential is no longer enhanced.
 
-            this.AddReward(new BaseReward(typeof(ChurchillsWarMace), 1078062));
+            AddReward(new BaseReward(typeof(ChurchillsWarMace), 1078062));
         }
 
         public override bool CanOffer()
         {
             #region Scroll of Alacrity
-            PlayerMobile pm = this.Owner as PlayerMobile;
+            PlayerMobile pm = Owner as PlayerMobile;
             if (pm.AcceleratedStart > DateTime.UtcNow)
             {
-                this.Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
+                Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
                 return false;
             }
             #endregion
             else
-                return this.Owner.Skills.Macing.Base < 50;
+                return Owner.Skills.Macing.Base < 50;
         }
 
         public override void OnCompleted()
         {
-            this.Owner.SendLocalizedMessage(1078068, null, 0x23); // You have achieved the rank of Apprentice Armsman. Return to Churchill in New Haven to claim your reward.
-            this.Owner.PlaySound(this.CompleteSound);
+            Owner.SendLocalizedMessage(1078068, null, 0x23); // You have achieved the rank of Apprentice Armsman. Return to Churchill in New Haven to claim your reward.
+            Owner.PlaySound(CompleteSound);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -92,12 +92,12 @@ namespace Server.Engines.Quests
         public Churchill()
             : base("Churchill", "The Mace Fighting Instructor")
         {
-            this.SetSkill(SkillName.Anatomy, 120.0, 120.0);
-            this.SetSkill(SkillName.Parry, 120.0, 120.0);
-            this.SetSkill(SkillName.Healing, 120.0, 120.0);
-            this.SetSkill(SkillName.Tactics, 120.0, 120.0);
-            this.SetSkill(SkillName.Macing, 120.0, 120.0);
-            this.SetSkill(SkillName.Focus, 120.0, 120.0);
+            SetSkill(SkillName.Anatomy, 120.0, 120.0);
+            SetSkill(SkillName.Parry, 120.0, 120.0);
+            SetSkill(SkillName.Healing, 120.0, 120.0);
+            SetSkill(SkillName.Tactics, 120.0, 120.0);
+            SetSkill(SkillName.Macing, 120.0, 120.0);
+            SetSkill(SkillName.Focus, 120.0, 120.0);
         }
 
         public Churchill(Serial serial)
@@ -107,51 +107,51 @@ namespace Server.Engines.Quests
 
         public override void Advertise()
         {
-            this.Say(1078141); // Don't listen to Jockles. Real warriors wield mace weapons!
+            Say(1078141); // Don't listen to Jockles. Real warriors wield mace weapons!
         }
 
         public override void OnOfferFailed()
         {
-            this.Say(1077772); // I cannot teach you, for you know all I can teach!
+            Say(1077772); // I cannot teach you, for you know all I can teach!
         }
 
         public override void InitBody()
         {
-            this.Female = false;
-            this.CantWalk = true;
-            this.Race = Race.Human;
-            this.Direction = Direction.South;
+            Female = false;
+            CantWalk = true;
+            Race = Race.Human;
+            Direction = Direction.South;
 
             base.InitBody();
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new OrderShield());
-            this.AddItem(new WarMace());
+            AddItem(new Backpack());
+            AddItem(new OrderShield());
+            AddItem(new WarMace());
 
             Item item;
 
             item = new PlateLegs();
             item.Hue = 0x966;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new PlateGloves();
             item.Hue = 0x966;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new PlateGorget();
             item.Hue = 0x966;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new PlateChest();
             item.Hue = 0x966;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new PlateArms();
             item.Hue = 0x966;
-            this.AddItem(item);
+            AddItem(item);
         }
 
         public override void Serialize(GenericWriter writer)

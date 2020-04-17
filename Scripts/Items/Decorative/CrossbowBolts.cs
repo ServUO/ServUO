@@ -6,8 +6,8 @@ namespace Server.Items
         public CrossbowBolts()
             : base(0x1BFC)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public CrossbowBolts(Serial serial)

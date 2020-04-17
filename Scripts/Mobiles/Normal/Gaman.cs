@@ -9,36 +9,36 @@ namespace Server.Mobiles
         public Gaman()
             : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a gaman";
-            this.Body = 248;
+            Name = "a gaman";
+            Body = 248;
 
-            this.SetStr(146, 175);
-            this.SetDex(111, 150);
-            this.SetInt(46, 60);
+            SetStr(146, 175);
+            SetDex(111, 150);
+            SetInt(46, 60);
 
-            this.SetHits(131, 160);
-            this.SetMana(0);
+            SetHits(131, 160);
+            SetMana(0);
 
-            this.SetDamage(6, 11);
+            SetDamage(6, 11);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 50, 70);
-            this.SetResistance(ResistanceType.Fire, 30, 50);
-            this.SetResistance(ResistanceType.Cold, 30, 50);
-            this.SetResistance(ResistanceType.Poison, 40, 60);
-            this.SetResistance(ResistanceType.Energy, 30, 50);
+            SetResistance(ResistanceType.Physical, 50, 70);
+            SetResistance(ResistanceType.Fire, 30, 50);
+            SetResistance(ResistanceType.Cold, 30, 50);
+            SetResistance(ResistanceType.Poison, 40, 60);
+            SetResistance(ResistanceType.Energy, 30, 50);
 
-            this.SetSkill(SkillName.MagicResist, 37.6, 42.5);
-            this.SetSkill(SkillName.Tactics, 70.6, 83.0);
-            this.SetSkill(SkillName.Wrestling, 50.1, 57.5);
+            SetSkill(SkillName.MagicResist, 37.6, 42.5);
+            SetSkill(SkillName.Tactics, 70.6, 83.0);
+            SetSkill(SkillName.Wrestling, 50.1, 57.5);
 
-            this.Fame = 2000;
-            this.Karma = -2000;
+            Fame = 2000;
+            Karma = -2000;
 
-            this.Tamable = true;
-            this.ControlSlots = 1;
-            this.MinTameSkill = 68.7;
+            Tamable = true;
+            ControlSlots = 1;
+            MinTameSkill = 68.7;
         }
 
         public Gaman(Serial serial)

@@ -6,8 +6,8 @@ namespace Server.Items
         public DecoIronIngot()
             : base(0x1BEF)
         {
-            this.Movable = true;
-            this.Stackable = true;
+            Movable = true;
+            Stackable = true;
         }
 
         public DecoIronIngot(Serial serial)

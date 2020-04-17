@@ -9,9 +9,9 @@ namespace Server.Engines.Quests
         public WarriorCasteQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(TerathanWarrior), "terathan warriors", 10));
+            AddObjective(new SlayObjective(typeof(TerathanWarrior), "terathan warriors", 10));
 
-            this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
+            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
         /* Warrior Caste */
@@ -44,9 +44,9 @@ namespace Server.Engines.Quests
         public BigWormsQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(IceSerpent), "giant ice serpents", 10));
+            AddObjective(new SlayObjective(typeof(IceSerpent), "giant ice serpents", 10));
 
-            this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
+            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
         /* Big Worms */
@@ -79,10 +79,10 @@ namespace Server.Engines.Quests
         public OrcishEliteQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(OrcBomber), "orc bombers", 6));
-            this.AddObjective(new SlayObjective(typeof(OrcCaptain), "orc captain", 4));
+            AddObjective(new SlayObjective(typeof(OrcBomber), "orc bombers", 6));
+            AddObjective(new SlayObjective(typeof(OrcCaptain), "orc captain", 4));
 
-            this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
+            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
         /* Orcish Elite */
@@ -116,8 +116,8 @@ namespace Server.Engines.Quests
         public Caelas()
             : base("Elder Caelas", "the wise")
         {
-            this.SetSkill(SkillName.Meditation, 60.0, 83.0);
-            this.SetSkill(SkillName.Focus, 60.0, 83.0);
+            SetSkill(SkillName.Meditation, 60.0, 83.0);
+            SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
         public Caelas(Serial serial)
@@ -134,21 +134,21 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.Race = Race.Elf;
+            Female = false;
+            Race = Race.Elf;
 
-            this.Hue = 0x8381;
-            this.HairItemID = 0x2FC0;
-            this.HairHue = 0x2C8;
+            Hue = 0x8381;
+            HairItemID = 0x2FC0;
+            HairHue = 0x2C8;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new ElvenBoots(0x1BB));
-            this.AddItem(new Cloak(0x71B));
-            this.AddItem(new RoyalCirclet());
+            AddItem(new ElvenBoots(0x1BB));
+            AddItem(new Cloak(0x71B));
+            AddItem(new RoyalCirclet());
         }
 
         public override void Serialize(GenericWriter writer)

@@ -9,9 +9,9 @@ namespace Server.Engines.Quests
         public SquishyQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Slime), "slimes", 12));
+            AddObjective(new SlayObjective(typeof(Slime), "slimes", 12));
 
-            this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
+            AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
         /* Squishy */
@@ -44,10 +44,10 @@ namespace Server.Engines.Quests
         public BigJobQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Ogre), "ogres", 5));
-            this.AddObjective(new SlayObjective(typeof(Ettin), "ettins", 5));
+            AddObjective(new SlayObjective(typeof(Ogre), "ogres", 5));
+            AddObjective(new SlayObjective(typeof(Ettin), "ettins", 5));
 
-            this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
+            AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
         /* A Big Job */
@@ -79,9 +79,9 @@ namespace Server.Engines.Quests
         public TrollingForTrollsQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Troll), "trolls", 10));
+            AddObjective(new SlayObjective(typeof(Troll), "trolls", 10));
 
-            this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
+            AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
         /* Trolling for Trolls */
@@ -113,10 +113,10 @@ namespace Server.Engines.Quests
         public OrcSlayingQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Orc), "orcs", 8));
-            this.AddObjective(new SlayObjective(typeof(OrcCaptain), "orc captains", 4));
+            AddObjective(new SlayObjective(typeof(Orc), "orcs", 8));
+            AddObjective(new SlayObjective(typeof(OrcCaptain), "orc captains", 4));
 
-            this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
+            AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
         /* Orc Slaying */
@@ -149,10 +149,10 @@ namespace Server.Engines.Quests
         public ColdHeartedQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(IceSerpent), "giant ice serpents", 6));
-            this.AddObjective(new SlayObjective(typeof(FrostSpider), "frost spiders", 6));
+            AddObjective(new SlayObjective(typeof(IceSerpent), "giant ice serpents", 6));
+            AddObjective(new SlayObjective(typeof(FrostSpider), "frost spiders", 6));
 
-            this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
+            AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
         /* Cold Hearted */
@@ -184,9 +184,9 @@ namespace Server.Engines.Quests
         public ForkedTonguesQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Lizardman), "lizardmen", 10));
+            AddObjective(new SlayObjective(typeof(Lizardman), "lizardmen", 10));
 
-            this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
+            AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
         /* Forked Tongues */
@@ -219,8 +219,8 @@ namespace Server.Engines.Quests
         public Cloorne()
             : base("Cloorne", "the expeditionist")
         {
-            this.SetSkill(SkillName.Meditation, 60.0, 83.0);
-            this.SetSkill(SkillName.Focus, 60.0, 83.0);
+            SetSkill(SkillName.Meditation, 60.0, 83.0);
+            SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
         public Cloorne(Serial serial)
@@ -240,35 +240,35 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.Race = Race.Elf;
+            Female = false;
+            Race = Race.Elf;
 
-            this.Hue = 0x8376;
-            this.HairItemID = 0x2FBF;
-            this.HairHue = 0x386;
+            Hue = 0x8376;
+            HairItemID = 0x2FBF;
+            HairHue = 0x386;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new ElvenBoots(0x3B3));
-            this.AddItem(new WingedHelm());
-            this.AddItem(new RadiantScimitar());
+            AddItem(new ElvenBoots(0x3B3));
+            AddItem(new WingedHelm());
+            AddItem(new RadiantScimitar());
 
             Item item;
 
             item = new WoodlandLegs();
             item.Hue = 0x732;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new HideChest();
             item.Hue = 0x727;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new LeafArms();
             item.Hue = 0x749;
-            this.AddItem(item);
+            AddItem(item);
         }
 
         public override void Serialize(GenericWriter writer)

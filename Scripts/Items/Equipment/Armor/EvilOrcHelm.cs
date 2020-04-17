@@ -24,7 +24,7 @@ namespace Server.Items
         {
             get
             {
-                if (!(this.Parent is Mobile))
+                if (!(Parent is Mobile))
                     return true;
 
                 return base.UseIntOrDexProperty;
@@ -34,9 +34,9 @@ namespace Server.Items
         public override bool OnEquip(Mobile from)
         {
             if (from.RawInt > from.RawDex)
-                this.Attributes.BonusDex = 0;
+                Attributes.BonusDex = 0;
             else
-                this.Attributes.BonusInt = 0;
+                Attributes.BonusInt = 0;
 
             Titles.AwardKarma(from, -22, true);
 
@@ -49,8 +49,8 @@ namespace Server.Items
 
             if (parent is Mobile)
             {
-                this.Attributes.BonusInt = this.IntOrDexPropertyValue;
-                this.Attributes.BonusDex = this.IntOrDexPropertyValue;
+                Attributes.BonusInt = IntOrDexPropertyValue;
+                Attributes.BonusDex = IntOrDexPropertyValue;
             }
         }
 

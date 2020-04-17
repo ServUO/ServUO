@@ -8,23 +8,23 @@ namespace Server.Engines.Craft
 
         public void Add(CraftRes craftRes)
         {
-            this.List.Add(craftRes);
+            List.Add(craftRes);
         }
 
         public void Remove(int index)
         {
-            if (index > this.Count - 1 || index < 0)
+            if (index > Count - 1 || index < 0)
             {
             }
             else
             {
-                this.List.RemoveAt(index);
+                List.RemoveAt(index);
             }
         }
 
         public CraftRes GetAt(int index)
         {
-            return (CraftRes)this.List[index];
+            return (CraftRes)List[index];
         }
     }
 }

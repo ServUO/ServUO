@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public AemaethOneQuest()
             : base()
         {
-            this.AddObjective(new DeliverObjective(typeof(BasinOfCrystalClearWater), "basin of crystal clear water", 1, typeof(Szandor), "Szandor"));
+            AddObjective(new DeliverObjective(typeof(BasinOfCrystalClearWater), "basin of crystal clear water", 1, typeof(Szandor), "Szandor"));
 
-            this.AddReward(new BaseReward(1075323)); // Aurelia's gratitude.
+            AddReward(new BaseReward(1075323)); // Aurelia's gratitude.
         }
 
         public override QuestChain ChainID => QuestChain.Aemaeth;
@@ -51,9 +51,9 @@ namespace Server.Engines.Quests
         public AemaethTwoQuest()
             : base()
         {
-            this.AddObjective(new DeliverObjective(typeof(BasinOfCrystalClearWater), "basin of crystal clear water", 1, typeof(Aurelia), "Aurelia"));
+            AddObjective(new DeliverObjective(typeof(BasinOfCrystalClearWater), "basin of crystal clear water", 1, typeof(Aurelia), "Aurelia"));
 
-            this.AddReward(new BaseReward(typeof(MirrorOfPurification), 1075329)); // Mirror of Purification
+            AddReward(new BaseReward(typeof(MirrorOfPurification), 1075329)); // Mirror of Purification
         }
 
         public override QuestChain ChainID => QuestChain.Aemaeth;

@@ -5,7 +5,7 @@ namespace Server.Items
         [Constructable]
         public SquirrelStatueSouthAddon()
         {
-            this.AddComponent(new AddonComponent(0x2D11), 0, 0, 0);
+            AddComponent(new AddonComponent(0x2D11), 0, 0, 0);
         }
 
         public SquirrelStatueSouthAddon(Serial serial)

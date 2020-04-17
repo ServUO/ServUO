@@ -11,40 +11,40 @@ namespace Server.Mobiles
         public RakktaviRenowned()
             : base(AIType.AI_Archer)
         {
-            this.Name = "Rakktavi";
-            this.Title = "[Renowned]";
-            this.Body = 0x8E;
-            this.BaseSoundID = 437;
+            Name = "Rakktavi";
+            Title = "[Renowned]";
+            Body = 0x8E;
+            BaseSoundID = 437;
 
-            this.SetStr(119);
-            this.SetDex(279);
-            this.SetInt(327);
+            SetStr(119);
+            SetDex(279);
+            SetInt(327);
 
-            this.SetHits(50000);
-            this.SetMana(327);
-            this.SetStam(279);
+            SetHits(50000);
+            SetMana(327);
+            SetStam(279);
 
-            this.SetDamage(8, 10);
+            SetDamage(8, 10);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 20, 30);
-            this.SetResistance(ResistanceType.Fire, 10, 25);
-            this.SetResistance(ResistanceType.Cold, 30, 40);
-            this.SetResistance(ResistanceType.Poison, 10, 20);
-            this.SetResistance(ResistanceType.Energy, 10, 20);
+            SetResistance(ResistanceType.Physical, 20, 30);
+            SetResistance(ResistanceType.Fire, 10, 25);
+            SetResistance(ResistanceType.Cold, 30, 40);
+            SetResistance(ResistanceType.Poison, 10, 20);
+            SetResistance(ResistanceType.Energy, 10, 20);
 
-            this.SetSkill(SkillName.Anatomy, 0);
-            this.SetSkill(SkillName.Archery, 80.1, 90.0);
-            this.SetSkill(SkillName.MagicResist, 66.0);
-            this.SetSkill(SkillName.Tactics, 68.1);
-            this.SetSkill(SkillName.Wrestling, 85.5);
+            SetSkill(SkillName.Anatomy, 0);
+            SetSkill(SkillName.Archery, 80.1, 90.0);
+            SetSkill(SkillName.MagicResist, 66.0);
+            SetSkill(SkillName.Tactics, 68.1);
+            SetSkill(SkillName.Wrestling, 85.5);
 
-            this.Fame = 6500;
-            this.Karma = -6500;
+            Fame = 6500;
+            Karma = -6500;
 
-            this.AddItem(new Bow());
-            this.PackItem(new Arrow(Utility.RandomMinMax(10, 30)));
+            AddItem(new Bow());
+            PackItem(new Arrow(Utility.RandomMinMax(10, 30)));
         }
 
         public RakktaviRenowned(Serial serial)
@@ -60,7 +60,7 @@ namespace Server.Mobiles
         public override HideType HideType => HideType.Spined;
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.UltraRich, 3);
+            AddLoot(LootPack.UltraRich, 3);
         }
 
         public override void Serialize(GenericWriter writer)

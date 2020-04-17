@@ -6,8 +6,8 @@ namespace Server.Items
         public SpiritBottle()
             : base(0xEFB)
         {
-            this.LootType = LootType.Blessed;
-            this.Weight = 1.0;
+            LootType = LootType.Blessed;
+            Weight = 1.0;
         }
 
         public SpiritBottle(Serial serial)

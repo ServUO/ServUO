@@ -21,10 +21,10 @@ namespace Server.Items
         [Constructable]
         public BestialArms()
         {
-            this.ItemID = 0x4052;
-            this.Hue = 2010;
-            this.Weight = 4;
-            this.StrRequirement = 25;
+            ItemID = 0x4052;
+            Hue = 2010;
+            Weight = 4;
+            StrRequirement = 25;
         }
 
         public BestialArms(Serial serial)
@@ -63,8 +63,8 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            if (this.Hue != 2010)
-                this.Hue = 2010;
+            if (Hue != 2010)
+                Hue = 2010;
         }
     }
 }

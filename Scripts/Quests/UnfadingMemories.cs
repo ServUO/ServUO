@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public UnfadingMemoriesOneQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(PrismaticAmber), "prismatic amber", 1));
+            AddObjective(new ObtainObjective(typeof(PrismaticAmber), "prismatic amber", 1));
 
-            this.AddReward(new BaseReward(1075357)); // The joy of contributing to a noble artistic effort, however paltry the end product.
+            AddReward(new BaseReward(1075357)); // The joy of contributing to a noble artistic effort, however paltry the end product.
         }
 
         public override QuestChain ChainID => QuestChain.UnfadingMemories;
@@ -49,9 +49,9 @@ namespace Server.Engines.Quests
         public UnfadingMemoriesTwoQuest()
             : base()
         {
-            this.AddObjective(new DeliverObjective(typeof(PortraitOfTheBride), "portrait of the bride", 1, typeof(Thalia), "Bride"));
+            AddObjective(new DeliverObjective(typeof(PortraitOfTheBride), "portrait of the bride", 1, typeof(Thalia), "Bride"));
 
-            this.AddReward(new BaseReward(1075369)); // The Artist’s gratitude.
+            AddReward(new BaseReward(1075369)); // The Artist’s gratitude.
         }
 
         public override QuestChain ChainID => QuestChain.UnfadingMemories;
@@ -94,9 +94,9 @@ namespace Server.Engines.Quests
         public UnfadingMemoriesThreeQuest()
             : base()
         {
-            this.AddObjective(new DeliverObjective(typeof(BridesLetter), "brides letter", 1, typeof(Emilio), "Artist"));
+            AddObjective(new DeliverObjective(typeof(BridesLetter), "brides letter", 1, typeof(Emilio), "Artist"));
 
-            this.AddReward(new BaseReward(typeof(Bleach), 1075375)); // Bleach
+            AddReward(new BaseReward(typeof(Bleach), 1075375)); // Bleach
         }
 
         public override QuestChain ChainID => QuestChain.UnfadingMemories;

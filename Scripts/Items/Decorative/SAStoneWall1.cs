@@ -6,11 +6,11 @@ namespace Server.Items
         public SAStoneWall1South()
             : base(969, 631)
         {
-            this.Name = "Stone Wall";
-            this.Hue = 1110;
+            Name = "Stone Wall";
+            Hue = 1110;
 
-            this.Level = ItemLevel.VeryEasy;
-            this.Movable = false;
+            Level = ItemLevel.VeryEasy;
+            Movable = false;
         }
 
         public SAStoneWall1South(Serial serial)
@@ -39,11 +39,11 @@ namespace Server.Items
         public SAStoneWall1East()
             : base(968, 636)
         {
-            this.Name = "Stone Wall";
-            this.Hue = 1110;
+            Name = "Stone Wall";
+            Hue = 1110;
 
-            this.Level = ItemLevel.VeryEasy;
-            this.Movable = false;
+            Level = ItemLevel.VeryEasy;
+            Movable = false;
         }
 
         public SAStoneWall1East(Serial serial)

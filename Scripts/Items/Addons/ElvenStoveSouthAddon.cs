@@ -5,7 +5,7 @@ namespace Server.Items
         [Constructable]
         public ElvenStoveSouthAddon()
         {
-            this.AddComponent(new AddonComponent(0x2DDC), 0, 0, 0);
+            AddComponent(new AddonComponent(0x2DDC), 0, 0, 0);
         }
 
         public ElvenStoveSouthAddon(Serial serial)

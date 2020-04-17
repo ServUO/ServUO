@@ -8,9 +8,9 @@ namespace Server.Items
         public PowerCore()
             : base(0x47E6)
         {
-            this.Weight = 1.0;
-            this.LootType = LootType.Blessed;
-            this.Hue = 1967;
+            Weight = 1.0;
+            LootType = LootType.Blessed;
+            Hue = 1967;
         }
 
         public override void GetProperties(ObjectPropertyList list)

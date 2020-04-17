@@ -394,7 +394,7 @@ namespace Server.Mobiles
 
                 }
                 // open a new text entry gump
-                state.Mobile.SendGump(new TextEntryGump(m_Spawner, m_SpawnerGump, m_index, this.X, this.Y));
+                state.Mobile.SendGump(new TextEntryGump(m_Spawner, m_SpawnerGump, m_index, X, Y));
                 return;
             }
             if (update_entry)
@@ -414,7 +414,7 @@ namespace Server.Mobiles
 
             //m_Spawner.OnDoubleClick( state.Mobile);
             // open a new spawner gump
-            state.Mobile.SendGump(new XmlSpawnerGump(m_Spawner, this.X, this.Y, m_SpawnerGump.m_ShowGump, m_SpawnerGump.xoffset, m_SpawnerGump.page));
+            state.Mobile.SendGump(new XmlSpawnerGump(m_Spawner, X, Y, m_SpawnerGump.m_ShowGump, m_SpawnerGump.xoffset, m_SpawnerGump.page));
         }
     }
 
@@ -1297,7 +1297,7 @@ namespace Server.Mobiles
                 if (maxval < 0) maxval = 0;
                 // if the maxcount of the spawner has been altered external to the interface (e.g. via props, or by the running spawner itself
                 // then that change will override the text entry
-                if (m_Spawner.MaxCount == this.initial_maxcount)
+                if (m_Spawner.MaxCount == initial_maxcount)
                 {
                     m_Spawner.MaxCount = maxval;
                 }
@@ -1317,7 +1317,7 @@ namespace Server.Mobiles
                 case 1: // Help
                     {
                         //state.Mobile.SendGump( new XmlSpawnerGump(m_Spawner, this.X, this.Y, this.m_ShowGump));
-                        state.Mobile.SendGump(new HelpGump(m_Spawner, this, this.X + 290, this.Y));
+                        state.Mobile.SendGump(new HelpGump(m_Spawner, this, X + 290, Y));
                         break;
                     }
                 case 2: // Bring everything home
@@ -1340,18 +1340,18 @@ namespace Server.Mobiles
                     }
                 case 200: // gump extension
                     {
-                        if (this.m_ShowGump > 1)
-                            state.Mobile.SendGump(new XmlSpawnerGump(m_Spawner, this.X, this.Y, -1, this.xoffset, this.page));
+                        if (m_ShowGump > 1)
+                            state.Mobile.SendGump(new XmlSpawnerGump(m_Spawner, X, Y, -1, xoffset, page));
                         else
-                            state.Mobile.SendGump(new XmlSpawnerGump(m_Spawner, this.X, this.Y, this.m_ShowGump + 2, this.xoffset, this.page));
+                            state.Mobile.SendGump(new XmlSpawnerGump(m_Spawner, X, Y, m_ShowGump + 2, xoffset, page));
                         return;
                     }
                 case 201: // gump text extension
                     {
-                        if (this.xoffset > 0)
-                            state.Mobile.SendGump(new XmlSpawnerGump(m_Spawner, this.X, this.Y, this.m_ShowGump, 0, this.page));
+                        if (xoffset > 0)
+                            state.Mobile.SendGump(new XmlSpawnerGump(m_Spawner, X, Y, m_ShowGump, 0, page));
                         else
-                            state.Mobile.SendGump(new XmlSpawnerGump(m_Spawner, this.X, this.Y, this.m_ShowGump, 250, this.page));
+                            state.Mobile.SendGump(new XmlSpawnerGump(m_Spawner, X, Y, m_ShowGump, 250, page));
                         return;
                     }
                 case 700: // Start/stop spawner
@@ -1384,13 +1384,13 @@ namespace Server.Mobiles
                     }
                 case 9998:  // refresh the gump
                     {
-                        state.Mobile.SendGump(new XmlSpawnerGump(m_Spawner, this.X, this.Y, this.m_ShowGump, this.xoffset, this.page));
+                        state.Mobile.SendGump(new XmlSpawnerGump(m_Spawner, X, Y, m_ShowGump, xoffset, page));
                         return;
                     }
                 case 9999:
                     {
                         // Show the props window for the spawner, as well as a new gump
-                        state.Mobile.SendGump(new XmlSpawnerGump(m_Spawner, this.X, this.Y, this.m_ShowGump, this.xoffset, this.page));
+                        state.Mobile.SendGump(new XmlSpawnerGump(m_Spawner, X, Y, m_ShowGump, xoffset, page));
 #if (NEWPROPSGUMP)
                         state.Mobile.SendGump(new XmlPropertiesGump(state.Mobile, m_Spawner));
 #else
@@ -1425,7 +1425,7 @@ namespace Server.Mobiles
                             // open a text entry gump
 #if (BOOKTEXTENTRY)
                             // display a new gump
-                            XmlSpawnerGump newgump = new XmlSpawnerGump(m_Spawner, this.X, this.Y, this.m_ShowGump, this.xoffset, this.page);
+                            XmlSpawnerGump newgump = new XmlSpawnerGump(m_Spawner, X, Y, m_ShowGump, xoffset, page);
                             state.Mobile.SendGump(newgump);
 
                             // is there an existing book associated with the gump?
@@ -1508,7 +1508,7 @@ namespace Server.Mobiles
                                         if (info.ButtonID >= 4000 && info.ButtonID < 4001 + MaxSpawnEntries / MaxEntriesPerPage)
                         {
                             // which page
-                            this.page = info.ButtonID - 4000;
+                            page = info.ButtonID - 4000;
 
                         }
                         else
@@ -1555,7 +1555,7 @@ namespace Server.Mobiles
                             if (categorystring == null || categorystring.Length == 0)
                             {
 
-                                XmlSpawnerGump newg = new XmlSpawnerGump(m_Spawner, this.X, this.Y, this.m_ShowGump, this.xoffset, this.page);
+                                XmlSpawnerGump newg = new XmlSpawnerGump(m_Spawner, X, Y, m_ShowGump, xoffset, page);
                                 state.Mobile.SendGump(newg);
 
                                 // if no string has been entered then just use the full categorized add gump
@@ -1576,7 +1576,7 @@ namespace Server.Mobiles
                                 re.Index = i;
                                 re.Color = 0x1436;
 
-                                XmlSpawnerGump newg = new XmlSpawnerGump(m_Spawner, this.X, this.Y, this.m_ShowGump, this.xoffset, this.page, re);
+                                XmlSpawnerGump newg = new XmlSpawnerGump(m_Spawner, X, Y, m_ShowGump, xoffset, page, re);
 
                                 state.Mobile.SendGump(new XmlPartialCategorizedAddGump(state.Mobile, categorystring, 0, types, true, i, newg));
 
@@ -1627,7 +1627,7 @@ namespace Server.Mobiles
             }
             // Create a new gump
             //m_Spawner.OnDoubleClick( state.Mobile);
-            state.Mobile.SendGump(new XmlSpawnerGump(m_Spawner, this.X, this.Y, this.m_ShowGump, this.xoffset, this.page, this.Rentry));
+            state.Mobile.SendGump(new XmlSpawnerGump(m_Spawner, X, Y, m_ShowGump, xoffset, page, Rentry));
         }
     }
 }

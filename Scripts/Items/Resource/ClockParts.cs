@@ -13,9 +13,9 @@ namespace Server.Items
         public ClockParts(int amount)
             : base(0x104F)
         {
-            this.Stackable = true;
-            this.Amount = amount;
-            this.Weight = 1.0;
+            Stackable = true;
+            Amount = amount;
+            Weight = 1.0;
         }
 
         public ClockParts(Serial serial)

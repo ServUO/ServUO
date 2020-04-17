@@ -4,11 +4,11 @@ namespace Server.Commands.Generic
     {
         public SerialCommandImplementor()
         {
-            this.Accessors = new string[] { "Serial" };
-            this.SupportRequirement = CommandSupport.Single;
-            this.AccessLevel = AccessLevel.Counselor;
-            this.Usage = "Serial <serial> <command>";
-            this.Description = "Invokes the command on a single object by serial.";
+            Accessors = new string[] { "Serial" };
+            SupportRequirement = CommandSupport.Single;
+            AccessLevel = AccessLevel.Counselor;
+            Usage = "Serial <serial> <command>";
+            Description = "Invokes the command on a single object by serial.";
         }
 
         public override void Execute(CommandEventArgs e)
@@ -31,7 +31,7 @@ namespace Server.Commands.Generic
                 else
                 {
                     BaseCommand command = null;
-                    this.Commands.TryGetValue(e.GetString(1), out command);
+                    Commands.TryGetValue(e.GetString(1), out command);
 
                     if (command == null)
                     {
@@ -83,7 +83,7 @@ namespace Server.Commands.Generic
                         for (int i = 0; i < args.Length; ++i)
                             args[i] = oldArgs[i + 2];
 
-                        this.RunCommand(e.Mobile, obj, command, args);
+                        RunCommand(e.Mobile, obj, command, args);
                     }
                 }
             }

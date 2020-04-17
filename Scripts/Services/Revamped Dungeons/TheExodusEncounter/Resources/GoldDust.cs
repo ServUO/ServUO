@@ -10,10 +10,10 @@ namespace Server.Items
         [Constructable]
         public GoldDust(int amount) : base(0x4C09)
         {
-            this.Stackable = true;
-            this.Hue = 1177;
-            this.Weight = 1.0;
-            this.Amount = amount;
+            Stackable = true;
+            Hue = 1177;
+            Weight = 1.0;
+            Amount = amount;
         }
 
         public GoldDust(Serial serial)

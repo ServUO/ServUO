@@ -36,32 +36,32 @@ namespace Server.Engines.Quests
         public WalkingSilentlyQuest()
             : base()
         {
-            this.AddObjective(new ApprenticeObjective(SkillName.Stealth, 50, "Old Haven Training", 1078176, 1078177));
+            AddObjective(new ApprenticeObjective(SkillName.Stealth, 50, "Old Haven Training", 1078176, 1078177));
 
             // 1078176 You feel you can easily slip into the shadows and walk silently here. Your ability to Stealth is enhanced in this area.
             // 1078177 You feel it is more difficult to Stealth here. Your ability to Stealth is no longer enhanced.
 
-            this.AddReward(new BaseReward(typeof(TwilightJacket), 1078183));
+            AddReward(new BaseReward(typeof(TwilightJacket), 1078183));
         }
 
         public override bool CanOffer()
         {
             #region Scroll of Alacrity
-            PlayerMobile pm = this.Owner as PlayerMobile;
+            PlayerMobile pm = Owner as PlayerMobile;
             if (pm.AcceleratedStart > DateTime.UtcNow)
             {
-                this.Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
+                Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
                 return false;
             }
             #endregion
             else
-                return this.Owner.Skills.Stealth.Base < 50;
+                return Owner.Skills.Stealth.Base < 50;
         }
 
         public override void OnCompleted()
         {
-            this.Owner.SendLocalizedMessage(1078181, null, 0x23); // You have achieved the rank of Apprentice Rogue (for Stealth). Return to Jun in New Haven to claim your reward.
-            this.Owner.PlaySound(this.CompleteSound);
+            Owner.SendLocalizedMessage(1078181, null, 0x23); // You have achieved the rank of Apprentice Rogue (for Stealth). Return to Jun in New Haven to claim your reward.
+            Owner.PlaySound(CompleteSound);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -90,12 +90,12 @@ namespace Server.Engines.Quests
         public Jun()
             : base("Jun", "The Stealth Instructor")
         {
-            this.SetSkill(SkillName.Hiding, 120.0, 120.0);
-            this.SetSkill(SkillName.Tactics, 120.0, 120.0);
-            this.SetSkill(SkillName.Tracking, 120.0, 120.0);
-            this.SetSkill(SkillName.Fencing, 120.0, 120.0);
-            this.SetSkill(SkillName.Stealth, 120.0, 120.0);
-            this.SetSkill(SkillName.Ninjitsu, 120.0, 120.0);
+            SetSkill(SkillName.Hiding, 120.0, 120.0);
+            SetSkill(SkillName.Tactics, 120.0, 120.0);
+            SetSkill(SkillName.Tracking, 120.0, 120.0);
+            SetSkill(SkillName.Fencing, 120.0, 120.0);
+            SetSkill(SkillName.Stealth, 120.0, 120.0);
+            SetSkill(SkillName.Ninjitsu, 120.0, 120.0);
         }
 
         public Jun(Serial serial)
@@ -105,32 +105,32 @@ namespace Server.Engines.Quests
 
         public override void Advertise()
         {
-            this.Say(1078175); // Walk Silently. Remain unseen. I can teach you.
+            Say(1078175); // Walk Silently. Remain unseen. I can teach you.
         }
 
         public override void OnOfferFailed()
         {
-            this.Say(1077772); // I cannot teach you, for you know all I can teach!
+            Say(1077772); // I cannot teach you, for you know all I can teach!
         }
 
         public override void InitBody()
         {
-            this.Female = false;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = false;
+            CantWalk = true;
+            Race = Race.Human;
 
             base.InitBody();
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new SamuraiTabi());
-            this.AddItem(new LeatherNinjaPants());
-            this.AddItem(new LeatherNinjaHood());
-            this.AddItem(new LeatherNinjaBelt());
-            this.AddItem(new LeatherNinjaMitts());
-            this.AddItem(new LeatherNinjaJacket());
+            AddItem(new Backpack());
+            AddItem(new SamuraiTabi());
+            AddItem(new LeatherNinjaPants());
+            AddItem(new LeatherNinjaHood());
+            AddItem(new LeatherNinjaBelt());
+            AddItem(new LeatherNinjaMitts());
+            AddItem(new LeatherNinjaJacket());
         }
 
         public override void Serialize(GenericWriter writer)

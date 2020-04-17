@@ -53,7 +53,7 @@ namespace Server.Engines.Quests.Hag
                 1055002;
         public override void OnRead()
         {
-            this.System.AddObjective(new FindApprenticeObjective(true));
+            System.AddObjective(new FindApprenticeObjective(true));
         }
     }
 
@@ -96,7 +96,7 @@ namespace Server.Engines.Quests.Hag
                 1055004;
         public override void OnRead()
         {
-            this.System.AddObjective(new FindGrizeldaAboutMurderObjective());
+            System.AddObjective(new FindGrizeldaAboutMurderObjective());
         }
     }
 
@@ -138,7 +138,7 @@ namespace Server.Engines.Quests.Hag
                 1055005;
         public override void OnRead()
         {
-            this.System.AddObjective(new KillImpsObjective(true));
+            System.AddObjective(new KillImpsObjective(true));
         }
     }
 
@@ -167,7 +167,7 @@ namespace Server.Engines.Quests.Hag
         private Point3D m_ImpLocation;
         public ImpDeathConversation(Point3D impLocation)
         {
-            this.m_ImpLocation = impLocation;
+            m_ImpLocation = impLocation;
         }
 
         public ImpDeathConversation()
@@ -198,14 +198,14 @@ namespace Server.Engines.Quests.Hag
                 1055007;
         public override void OnRead()
         {
-            this.System.AddObjective(new FindZeefzorpulObjective(this.m_ImpLocation));
+            System.AddObjective(new FindZeefzorpulObjective(m_ImpLocation));
         }
 
         public override void ChildDeserialize(GenericReader reader)
         {
             int version = reader.ReadEncodedInt();
 
-            this.m_ImpLocation = reader.ReadPoint3D();
+            m_ImpLocation = reader.ReadPoint3D();
         }
 
         public override void ChildSerialize(GenericWriter writer)
@@ -254,7 +254,7 @@ namespace Server.Engines.Quests.Hag
                 1055008;
         public override void OnRead()
         {
-            this.System.AddObjective(new ReturnRecipeObjective());
+            System.AddObjective(new ReturnRecipeObjective());
         }
     }
 
@@ -286,7 +286,7 @@ namespace Server.Engines.Quests.Hag
                 1055009;
         public override void OnRead()
         {
-            this.System.AddObjective(new FindIngredientObjective(new Ingredient[0]));
+            System.AddObjective(new FindIngredientObjective(new Ingredient[0]));
         }
     }
 
@@ -357,10 +357,10 @@ namespace Server.Engines.Quests.Hag
                 1055010;
         public override void OnRead()
         {
-            FindIngredientObjective obj = this.System.FindObjective(typeof(FindIngredientObjective)) as FindIngredientObjective;
+            FindIngredientObjective obj = System.FindObjective(typeof(FindIngredientObjective)) as FindIngredientObjective;
 
             if (obj != null)
-                this.System.AddObjective(new FindIngredientObjective(obj.Ingredients, true));
+                System.AddObjective(new FindIngredientObjective(obj.Ingredients, true));
         }
     }
 
@@ -370,8 +370,8 @@ namespace Server.Engines.Quests.Hag
         private bool m_Drunken;
         public BlackheartNoPirateConversation(bool tricorne, bool drunken)
         {
-            this.m_Tricorne = tricorne;
-            this.m_Drunken = drunken;
+            m_Tricorne = tricorne;
+            m_Drunken = drunken;
         }
 
         public BlackheartNoPirateConversation()
@@ -382,9 +382,9 @@ namespace Server.Engines.Quests.Hag
         {
             get
             {
-                if (this.m_Tricorne)
+                if (m_Tricorne)
                 {
-                    if (this.m_Drunken)
+                    if (m_Drunken)
                     {
                         /* <I>The filthy Captain flashes a pleased grin at you as he looks you up
                         * and down.</I><BR><BR>Well that's more like it, me little deck swabber!
@@ -429,7 +429,7 @@ namespace Server.Engines.Quests.Hag
                 }
                 else
                 {
-                    if (this.m_Drunken)
+                    if (m_Drunken)
                     {
                         /* <I>The inebriated pirate looks up at you with a wry grin.</I><BR><BR>
                         * 
@@ -474,8 +474,8 @@ namespace Server.Engines.Quests.Hag
         {
             int version = reader.ReadEncodedInt();
 
-            this.m_Tricorne = reader.ReadBool();
-            this.m_Drunken = reader.ReadBool();
+            m_Tricorne = reader.ReadBool();
+            m_Drunken = reader.ReadBool();
         }
 
         public override void ChildSerialize(GenericWriter writer)
@@ -492,7 +492,7 @@ namespace Server.Engines.Quests.Hag
         private bool m_FirstMet;
         public BlackheartPirateConversation(bool firstMet)
         {
-            this.m_FirstMet = firstMet;
+            m_FirstMet = firstMet;
         }
 
         public BlackheartPirateConversation()
@@ -503,7 +503,7 @@ namespace Server.Engines.Quests.Hag
         {
             get
             {
-                if (this.m_FirstMet)
+                if (m_FirstMet)
                 {
                     /* <I>The bawdy old pirate captain looks up from his bottle of Wild Harpy
                     * whiskey, as drunk as any man you've ever seen.</I><BR><BR>
@@ -552,7 +552,7 @@ namespace Server.Engines.Quests.Hag
         }
         public override void OnRead()
         {
-            FindIngredientObjective obj = this.System.FindObjective(typeof(FindIngredientObjective)) as FindIngredientObjective;
+            FindIngredientObjective obj = System.FindObjective(typeof(FindIngredientObjective)) as FindIngredientObjective;
 
             if (obj != null)
                 obj.NextStep();
@@ -562,7 +562,7 @@ namespace Server.Engines.Quests.Hag
         {
             int version = reader.ReadEncodedInt();
 
-            this.m_FirstMet = reader.ReadBool();
+            m_FirstMet = reader.ReadBool();
         }
 
         public override void ChildSerialize(GenericWriter writer)
@@ -616,7 +616,7 @@ namespace Server.Engines.Quests.Hag
                 1055013;
         public override void OnRead()
         {
-            this.System.Complete();
+            System.Complete();
         }
     }
 

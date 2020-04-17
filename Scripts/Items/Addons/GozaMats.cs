@@ -11,9 +11,9 @@ namespace Server.Items
         [Constructable]
         public GozaMatEastAddon(int hue)
         {
-            this.AddComponent(new LocalizedAddonComponent(0x28a4, 1030688), 1, 0, 0);
-            this.AddComponent(new LocalizedAddonComponent(0x28a5, 1030688), 0, 0, 0);
-            this.Hue = hue;
+            AddComponent(new LocalizedAddonComponent(0x28a4, 1030688), 1, 0, 0);
+            AddComponent(new LocalizedAddonComponent(0x28a5, 1030688), 0, 0, 0);
+            Hue = hue;
         }
 
         public GozaMatEastAddon(Serial serial)
@@ -52,7 +52,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon => new GozaMatEastAddon(this.Hue);
+        public override BaseAddon Addon => new GozaMatEastAddon(Hue);
         public override int LabelNumber => 1030404;// goza (east)
         public override void Serialize(GenericWriter writer)
         {
@@ -80,9 +80,9 @@ namespace Server.Items
         [Constructable]
         public GozaMatSouthAddon(int hue)
         {
-            this.AddComponent(new LocalizedAddonComponent(0x28a6, 1030688), 0, 1, 0);
-            this.AddComponent(new LocalizedAddonComponent(0x28a7, 1030688), 0, 0, 0);
-            this.Hue = hue;
+            AddComponent(new LocalizedAddonComponent(0x28a6, 1030688), 0, 1, 0);
+            AddComponent(new LocalizedAddonComponent(0x28a7, 1030688), 0, 0, 0);
+            Hue = hue;
         }
 
         public GozaMatSouthAddon(Serial serial)
@@ -121,7 +121,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon => new GozaMatSouthAddon(this.Hue);
+        public override BaseAddon Addon => new GozaMatSouthAddon(Hue);
         public override int LabelNumber => 1030405;// goza (south)
         public override void Serialize(GenericWriter writer)
         {
@@ -149,8 +149,8 @@ namespace Server.Items
         [Constructable]
         public SquareGozaMatEastAddon(int hue)
         {
-            this.AddComponent(new LocalizedAddonComponent(0x28a8, 1030688), 0, 0, 0);
-            this.Hue = hue;
+            AddComponent(new LocalizedAddonComponent(0x28a8, 1030688), 0, 0, 0);
+            Hue = hue;
         }
 
         public SquareGozaMatEastAddon(Serial serial)
@@ -190,7 +190,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon => new SquareGozaMatEastAddon(this.Hue);
+        public override BaseAddon Addon => new SquareGozaMatEastAddon(Hue);
         public override int LabelNumber => 1030407;// square goza (east)
         public override void Serialize(GenericWriter writer)
         {
@@ -218,8 +218,8 @@ namespace Server.Items
         [Constructable]
         public SquareGozaMatSouthAddon(int hue)
         {
-            this.AddComponent(new LocalizedAddonComponent(0x28a9, 1030688), 0, 0, 0);
-            this.Hue = hue;
+            AddComponent(new LocalizedAddonComponent(0x28a9, 1030688), 0, 0, 0);
+            Hue = hue;
         }
 
         public SquareGozaMatSouthAddon(Serial serial)
@@ -258,7 +258,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon => new SquareGozaMatSouthAddon(this.Hue);
+        public override BaseAddon Addon => new SquareGozaMatSouthAddon(Hue);
         public override int LabelNumber => 1030406;// square goza (south)
         public override void Serialize(GenericWriter writer)
         {
@@ -286,9 +286,9 @@ namespace Server.Items
         [Constructable]
         public BrocadeGozaMatEastAddon(int hue)
         {
-            this.AddComponent(new LocalizedAddonComponent(0x28AB, 1030688), 0, 0, 0);
-            this.AddComponent(new LocalizedAddonComponent(0x28AA, 1030688), 1, 0, 0);
-            this.Hue = hue;
+            AddComponent(new LocalizedAddonComponent(0x28AB, 1030688), 0, 0, 0);
+            AddComponent(new LocalizedAddonComponent(0x28AA, 1030688), 1, 0, 0);
+            Hue = hue;
         }
 
         public BrocadeGozaMatEastAddon(Serial serial)
@@ -327,7 +327,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon => new BrocadeGozaMatEastAddon(this.Hue);
+        public override BaseAddon Addon => new BrocadeGozaMatEastAddon(Hue);
         public override int LabelNumber => 1030408;// brocade goza (east)
         public override void Serialize(GenericWriter writer)
         {
@@ -355,9 +355,9 @@ namespace Server.Items
         [Constructable]
         public BrocadeGozaMatSouthAddon(int hue)
         {
-            this.AddComponent(new LocalizedAddonComponent(0x28AD, 1030688), 0, 0, 0);
-            this.AddComponent(new LocalizedAddonComponent(0x28AC, 1030688), 0, 1, 0);
-            this.Hue = hue;
+            AddComponent(new LocalizedAddonComponent(0x28AD, 1030688), 0, 0, 0);
+            AddComponent(new LocalizedAddonComponent(0x28AC, 1030688), 0, 1, 0);
+            Hue = hue;
         }
 
         public BrocadeGozaMatSouthAddon(Serial serial)
@@ -396,7 +396,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon => new BrocadeGozaMatSouthAddon(this.Hue);
+        public override BaseAddon Addon => new BrocadeGozaMatSouthAddon(Hue);
         public override int LabelNumber => 1030409;// brocade goza (south)
         public override void Serialize(GenericWriter writer)
         {
@@ -424,8 +424,8 @@ namespace Server.Items
         [Constructable]
         public BrocadeSquareGozaMatEastAddon(int hue)
         {
-            this.AddComponent(new LocalizedAddonComponent(0x28AE, 1030688), 0, 0, 0);
-            this.Hue = hue;
+            AddComponent(new LocalizedAddonComponent(0x28AE, 1030688), 0, 0, 0);
+            Hue = hue;
         }
 
         public BrocadeSquareGozaMatEastAddon(Serial serial)
@@ -464,7 +464,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon => new BrocadeSquareGozaMatEastAddon(this.Hue);
+        public override BaseAddon Addon => new BrocadeSquareGozaMatEastAddon(Hue);
         public override int LabelNumber => 1030411;// brocade square goza (east)
         public override void Serialize(GenericWriter writer)
         {
@@ -492,8 +492,8 @@ namespace Server.Items
         [Constructable]
         public BrocadeSquareGozaMatSouthAddon(int hue)
         {
-            this.AddComponent(new LocalizedAddonComponent(0x28AF, 1030688), 0, 0, 0);
-            this.Hue = hue;
+            AddComponent(new LocalizedAddonComponent(0x28AF, 1030688), 0, 0, 0);
+            Hue = hue;
         }
 
         public BrocadeSquareGozaMatSouthAddon(Serial serial)
@@ -532,7 +532,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon => new BrocadeSquareGozaMatSouthAddon(this.Hue);
+        public override BaseAddon Addon => new BrocadeSquareGozaMatSouthAddon(Hue);
         public override int LabelNumber => 1030410;// brocade square goza (south)
         public override void Serialize(GenericWriter writer)
         {

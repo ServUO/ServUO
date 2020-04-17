@@ -7,33 +7,33 @@ namespace Server.Mobiles
         public EffetePutridGargoyle()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "an effete putrid gargoyle";
-            this.Body = 4;
-            this.BaseSoundID = 372;
+            Name = "an effete putrid gargoyle";
+            Body = 4;
+            BaseSoundID = 372;
 
-            this.SetStr(215, 220);
-            this.SetDex(90, 95);
-            this.SetInt(40, 45);
+            SetStr(215, 220);
+            SetDex(90, 95);
+            SetInt(40, 45);
 
-            this.SetHits(110, 111);
+            SetHits(110, 111);
 
-            this.SetDamage(8, 18);
+            SetDamage(8, 18);
 
-            this.SetDamageType(ResistanceType.Physical, 60);
-            this.SetDamageType(ResistanceType.Cold, 40);
+            SetDamageType(ResistanceType.Physical, 60);
+            SetDamageType(ResistanceType.Cold, 40);
 
-            this.SetResistance(ResistanceType.Physical, 30, 35);
-            this.SetResistance(ResistanceType.Fire, 25, 35);
-            this.SetResistance(ResistanceType.Cold, 5, 10);
-            this.SetResistance(ResistanceType.Poison, 15, 25);
+            SetResistance(ResistanceType.Physical, 30, 35);
+            SetResistance(ResistanceType.Fire, 25, 35);
+            SetResistance(ResistanceType.Cold, 5, 10);
+            SetResistance(ResistanceType.Poison, 15, 25);
 
-            this.SetSkill(SkillName.Anatomy, 6.0, 8.0);
-            this.SetSkill(SkillName.MagicResist, 60.5, 65);
-            this.SetSkill(SkillName.Tactics, 65.7, 66);
-            this.SetSkill(SkillName.Wrestling, 69.6, 70.0);
+            SetSkill(SkillName.Anatomy, 6.0, 8.0);
+            SetSkill(SkillName.MagicResist, 60.5, 65);
+            SetSkill(SkillName.Tactics, 65.7, 66);
+            SetSkill(SkillName.Wrestling, 69.6, 70.0);
 
-            this.Fame = 3500;
-            this.Karma = -3500;
+            Fame = 3500;
+            Karma = -3500;
         }
 
         public EffetePutridGargoyle(Serial serial)
@@ -44,9 +44,9 @@ namespace Server.Mobiles
         public override int Meat => 1;
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Average, 2);
-            this.AddLoot(LootPack.MedScrolls);
-            this.AddLoot(LootPack.Gems, Utility.RandomMinMax(1, 4));
+            AddLoot(LootPack.Average, 2);
+            AddLoot(LootPack.MedScrolls);
+            AddLoot(LootPack.Gems, Utility.RandomMinMax(1, 4));
         }
 
         public override void Serialize(GenericWriter writer)

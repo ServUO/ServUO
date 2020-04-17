@@ -45,7 +45,7 @@
 
         public SmugglersLiquor(SmugglersLiquorType type) : base(GetContents(type))
         {
-            this.LiquorType = type;
+            LiquorType = type;
         }
 
         public static BeverageType GetContents(SmugglersLiquorType type)

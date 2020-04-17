@@ -18,33 +18,33 @@ namespace Server.Engines.Quests.Collector
 
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Hue = 0x83ED;
+            Hue = 0x83ED;
 
-            this.Female = false;
-            this.Body = 0x190;
-            this.Name = "Elwood McCarrin";
+            Female = false;
+            Body = 0x190;
+            Name = "Elwood McCarrin";
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new FancyShirt());
-            this.AddItem(new LongPants(0x544));
-            this.AddItem(new Shoes(0x454));
-            this.AddItem(new JesterHat(0x4D2));
-            this.AddItem(new FullApron(0x4D2));
+            AddItem(new FancyShirt());
+            AddItem(new LongPants(0x544));
+            AddItem(new Shoes(0x454));
+            AddItem(new JesterHat(0x4D2));
+            AddItem(new FullApron(0x4D2));
 
-            this.HairItemID = 0x203D; // Pony Tail
-            this.HairHue = 0x47D;
+            HairItemID = 0x203D; // Pony Tail
+            HairHue = 0x47D;
 
-            this.FacialHairItemID = 0x2040; // Goatee
-            this.FacialHairHue = 0x47D;
+            FacialHairItemID = 0x2040; // Goatee
+            FacialHairHue = 0x47D;
         }
 
         public override void OnTalk(PlayerMobile player, bool contextMenu)
         {
-            this.Direction = this.GetDirectionTo(player);
+            Direction = GetDirectionTo(player);
 
             QuestSystem qs = player.Quest;
 
@@ -118,7 +118,7 @@ namespace Server.Engines.Quests.Collector
                                 {
                                     obj.Complete();
 
-                                    if (this.GiveReward(player))
+                                    if (GiveReward(player))
                                     {
                                         qs.AddConversation(new EndConversation());
                                     }
@@ -133,7 +133,7 @@ namespace Server.Engines.Quests.Collector
 
                                     if (obj != null && !obj.Completed)
                                     {
-                                        if (this.GiveReward(player))
+                                        if (GiveReward(player))
                                         {
                                             obj.Complete();
                                             qs.AddConversation(new EndConversation());

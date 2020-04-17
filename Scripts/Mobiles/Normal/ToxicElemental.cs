@@ -7,37 +7,37 @@ namespace Server.Mobiles
         public ToxicElemental()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "an acid elemental";
-            this.Body = 0x9E;
-            this.BaseSoundID = 278;
+            Name = "an acid elemental";
+            Body = 0x9E;
+            BaseSoundID = 278;
 
-            this.SetStr(326, 355);
-            this.SetDex(66, 85);
-            this.SetInt(271, 295);
+            SetStr(326, 355);
+            SetDex(66, 85);
+            SetInt(271, 295);
 
-            this.SetHits(196, 213);
+            SetHits(196, 213);
 
-            this.SetDamage(9, 15);
+            SetDamage(9, 15);
 
-            this.SetDamageType(ResistanceType.Physical, 25);
-            this.SetDamageType(ResistanceType.Fire, 50);
-            this.SetDamageType(ResistanceType.Energy, 25);
+            SetDamageType(ResistanceType.Physical, 25);
+            SetDamageType(ResistanceType.Fire, 50);
+            SetDamageType(ResistanceType.Energy, 25);
 
-            this.SetResistance(ResistanceType.Physical, 45, 55);
-            this.SetResistance(ResistanceType.Fire, 40, 50);
-            this.SetResistance(ResistanceType.Cold, 20, 30);
-            this.SetResistance(ResistanceType.Poison, 10, 20);
-            this.SetResistance(ResistanceType.Energy, 30, 40);
+            SetResistance(ResistanceType.Physical, 45, 55);
+            SetResistance(ResistanceType.Fire, 40, 50);
+            SetResistance(ResistanceType.Cold, 20, 30);
+            SetResistance(ResistanceType.Poison, 10, 20);
+            SetResistance(ResistanceType.Energy, 30, 40);
 
-            this.SetSkill(SkillName.Anatomy, 30.3, 60.0);
-            this.SetSkill(SkillName.EvalInt, 70.1, 85.0);
-            this.SetSkill(SkillName.Magery, 70.1, 85.0);
-            this.SetSkill(SkillName.MagicResist, 60.1, 75.0);
-            this.SetSkill(SkillName.Tactics, 80.1, 90.0);
-            this.SetSkill(SkillName.Wrestling, 70.1, 90.0);
+            SetSkill(SkillName.Anatomy, 30.3, 60.0);
+            SetSkill(SkillName.EvalInt, 70.1, 85.0);
+            SetSkill(SkillName.Magery, 70.1, 85.0);
+            SetSkill(SkillName.MagicResist, 60.1, 75.0);
+            SetSkill(SkillName.Tactics, 80.1, 90.0);
+            SetSkill(SkillName.Wrestling, 70.1, 90.0);
 
-            this.Fame = 10000;
-            this.Karma = -10000;
+            Fame = 10000;
+            Karma = -10000;
         }
 
         public ToxicElemental(Serial serial)
@@ -51,8 +51,8 @@ namespace Server.Mobiles
         public override int TreasureMapLevel => 2;
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich);
-            this.AddLoot(LootPack.Average);
+            AddLoot(LootPack.Rich);
+            AddLoot(LootPack.Average);
         }
 
         public override void Serialize(GenericWriter writer)

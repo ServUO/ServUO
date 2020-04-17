@@ -134,12 +134,12 @@ namespace Server.Mobiles
 
         public override void OnActionCombat()
         {
-            Mobile combatant = this.Combatant as Mobile;
+            Mobile combatant = Combatant as Mobile;
 
-            if (combatant == null || combatant.Deleted || combatant.Map != this.Map || !this.InRange(combatant, 12) || !this.CanBeHarmful(combatant) || !this.InLOS(combatant))
+            if (combatant == null || combatant.Deleted || combatant.Map != Map || !InRange(combatant, 12) || !CanBeHarmful(combatant) || !InLOS(combatant))
                 return;
 
-            if (DateTime.UtcNow >= this.m_NextWaterBall)
+            if (DateTime.UtcNow >= m_NextWaterBall)
             {
                 double damage = combatant.Hits * 0.3;
 
@@ -148,8 +148,8 @@ namespace Server.Mobiles
                 else if (damage > 40.0)
                     damage = 40.0;
 
-                this.DoHarmful(combatant);
-                this.MovingParticles(combatant, 0x36D4, 5, 0, false, false, 195, 0, 9502, 3006, 0, 0, 0);
+                DoHarmful(combatant);
+                MovingParticles(combatant, 0x36D4, 5, 0, false, false, 195, 0, 9502, 3006, 0, 0, 0);
                 AOS.Damage(combatant, this, (int)damage, 100, 0, 0, 0, 0);
 
                 if (combatant is PlayerMobile && combatant.Mount != null)
@@ -163,7 +163,7 @@ namespace Server.Mobiles
 
         public void SpawnEel(Mobile m)
         {
-            Map map = this.Map;
+            Map map = Map;
 
             int x = m.X; int y = m.Y; int z = m.Z;
 
@@ -196,14 +196,14 @@ namespace Server.Mobiles
         {
             List<Mobile> toExplode = new List<Mobile>();
 
-            IPooledEnumerable eable = this.GetMobilesInRange(8);
+            IPooledEnumerable eable = GetMobilesInRange(8);
             foreach (Mobile mob in eable)
             {
                 if (!CanBeHarmful(mob, false) || mob == this || (mob is BaseCreature && ((BaseCreature)mob).GetMaster() == this))
                     continue;
                 if (mob.Player)
                     toExplode.Add(mob);
-                if (mob is BaseCreature && (((BaseCreature)mob).Controlled || ((BaseCreature)mob).Summoned || ((BaseCreature)mob).Team != this.Team))
+                if (mob is BaseCreature && (((BaseCreature)mob).Controlled || ((BaseCreature)mob).Summoned || ((BaseCreature)mob).Team != Team))
                     toExplode.Add(mob);
             }
             eable.Free();

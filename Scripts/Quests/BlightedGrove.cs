@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public VilePoisonQuest()
             : base()
         {
-            this.AddObjective(new DeliverObjective(typeof(TaintedTreeSample), "tainted tree sample", 1, typeof(Ioseph), "Ioseph (Jhelom)"));
+            AddObjective(new DeliverObjective(typeof(TaintedTreeSample), "tainted tree sample", 1, typeof(Ioseph), "Ioseph (Jhelom)"));
 
-            this.AddReward(new BaseReward(1074962)); // A step closer to entering Blighted Grove.
+            AddReward(new BaseReward(1074962)); // A step closer to entering Blighted Grove.
         }
 
         public override QuestChain ChainID => QuestChain.BlightedGrove;
@@ -55,10 +55,10 @@ namespace Server.Engines.Quests
         public RockAndHardPlaceQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(Granite), "rocks", 4, 0x1779));
-            this.AddObjective(new ObtainObjective(typeof(BlueDiamond), "blue diamonds", 2, 0x3198));
+            AddObjective(new ObtainObjective(typeof(Granite), "rocks", 4, 0x1779));
+            AddObjective(new ObtainObjective(typeof(BlueDiamond), "blue diamonds", 2, 0x3198));
 
-            this.AddReward(new BaseReward(1074962)); // A step closer to entering Blighted Grove.
+            AddReward(new BaseReward(1074962)); // A step closer to entering Blighted Grove.
         }
 
         public override QuestChain ChainID => QuestChain.BlightedGrove;
@@ -101,9 +101,9 @@ namespace Server.Engines.Quests
         public SympatheticMagicQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(BarkFragment), "bark", 10, 0x318F));
+            AddObjective(new ObtainObjective(typeof(BarkFragment), "bark", 10, 0x318F));
 
-            this.AddReward(new BaseReward(1074962)); // A step closer to entering Blighted Grove.
+            AddReward(new BaseReward(1074962)); // A step closer to entering Blighted Grove.
         }
 
         public override QuestChain ChainID => QuestChain.BlightedGrove;
@@ -145,9 +145,9 @@ namespace Server.Engines.Quests
         public AlreadyDeadQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(Bone), "workable samples", 10));
+            AddObjective(new ObtainObjective(typeof(Bone), "workable samples", 10));
 
-            this.AddReward(new BaseReward(1074962)); // A step closer to entering Blighted Grove.
+            AddReward(new BaseReward(1074962)); // A step closer to entering Blighted Grove.
         }
 
         public override QuestChain ChainID => QuestChain.BlightedGrove;
@@ -189,9 +189,9 @@ namespace Server.Engines.Quests
         public EurekaQuest()
             : base()
         {
-            this.AddObjective(new DeliverObjective(typeof(SealedNotesForJamal), "sealed notes for jamal", 1, typeof(Jamal), "Jamal (near Blighted Grove)"));
+            AddObjective(new DeliverObjective(typeof(SealedNotesForJamal), "sealed notes for jamal", 1, typeof(Jamal), "Jamal (near Blighted Grove)"));
 
-            this.AddReward(new BaseReward(1074962)); // A step closer to entering Blighted Grove.
+            AddReward(new BaseReward(1074962)); // A step closer to entering Blighted Grove.
         }
 
         public override QuestChain ChainID => QuestChain.BlightedGrove;
@@ -215,13 +215,13 @@ namespace Server.Engines.Quests
 
         public override void OnCompleted()
         {
-            if (this.Owner.Skills.Blacksmith.Value >= 45.0)
+            if (Owner.Skills.Blacksmith.Value >= 45.0)
             {
-                this.Owner.AcquireRecipe((int)Server.Engines.Craft.SmithRecipes.BoneMachete);
-                this.Owner.SendLocalizedMessage(1075006); // You have learned how to smith a bone handled machete!
+                Owner.AcquireRecipe((int)Server.Engines.Craft.SmithRecipes.BoneMachete);
+                Owner.SendLocalizedMessage(1075006); // You have learned how to smith a bone handled machete!
             }
             else
-                this.Owner.SendLocalizedMessage(1075005); // You observe carefully but you can't grasp the complexities of smithing a bone handled machete.
+                Owner.SendLocalizedMessage(1075005); // You observe carefully but you can't grasp the complexities of smithing a bone handled machete.
         }
 
         public override void Serialize(GenericWriter writer)
@@ -244,9 +244,9 @@ namespace Server.Engines.Quests
         public SubContractingQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(SamplesOfCorruptedWater), "samples of corrupted water", 3));
+            AddObjective(new ObtainObjective(typeof(SamplesOfCorruptedWater), "samples of corrupted water", 3));
 
-            this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
+            AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
         public override QuestChain ChainID => QuestChain.BlightedGrove;

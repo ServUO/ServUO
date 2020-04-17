@@ -9,21 +9,21 @@ namespace Server.ContextMenus
         public RemoveFromPartyEntry(Mobile from, Mobile target)
             : base(0198, 12)
         {
-            this.m_From = from;
-            this.m_Target = target;
+            m_From = from;
+            m_Target = target;
         }
 
         public override void OnClick()
         {
-            Party p = Party.Get(this.m_From);
+            Party p = Party.Get(m_From);
 
-            if (p == null || p.Leader != this.m_From || !p.Contains(this.m_Target))
+            if (p == null || p.Leader != m_From || !p.Contains(m_Target))
                 return;
 
-            if (this.m_From == this.m_Target)
-                this.m_From.SendLocalizedMessage(1005446); // You may only remove yourself from a party if you are not the leader.
+            if (m_From == m_Target)
+                m_From.SendLocalizedMessage(1005446); // You may only remove yourself from a party if you are not the leader.
             else
-                p.Remove(this.m_Target);
+                p.Remove(m_Target);
         }
     }
 }

@@ -36,7 +36,7 @@ namespace Server.Spells.SkillMasteries
                 return false;
             }
 
-            BodyGuardSpell spell = GetSpell(Caster, this.GetType()) as BodyGuardSpell;
+            BodyGuardSpell spell = GetSpell(Caster, GetType()) as BodyGuardSpell;
 
             if (spell != null)
             {

@@ -7,22 +7,22 @@ namespace Server.Items
         public AssassinGloves()
             : base()
         {
-            this.SetHue = 0x455;
+            SetHue = 0x455;
 
-            this.Attributes.BonusStam = 2;
-            this.Attributes.WeaponSpeed = 5;
+            Attributes.BonusStam = 2;
+            Attributes.WeaponSpeed = 5;
 
-            this.SetSkillBonuses.SetValues(0, SkillName.Stealth, 30);
+            SetSkillBonuses.SetValues(0, SkillName.Stealth, 30);
 
-            this.SetSelfRepair = 3;
+            SetSelfRepair = 3;
 
-            this.SetAttributes.BonusDex = 12;
+            SetAttributes.BonusDex = 12;
 
-            this.SetPhysicalBonus = 5;
-            this.SetFireBonus = 4;
-            this.SetColdBonus = 3;
-            this.SetPoisonBonus = 4;
-            this.SetEnergyBonus = 4;
+            SetPhysicalBonus = 5;
+            SetFireBonus = 4;
+            SetColdBonus = 3;
+            SetPoisonBonus = 4;
+            SetEnergyBonus = 4;
         }
 
         public AssassinGloves(Serial serial)

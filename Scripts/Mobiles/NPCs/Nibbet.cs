@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public ClockworkPuzzleQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(ClockParts), "clock parts", 5, 0x104F));
+            AddObjective(new ObtainObjective(typeof(ClockParts), "clock parts", 5, 0x104F));
 
-            this.AddReward(new BaseReward(typeof(TinkersSatchel), 1074282)); // Craftsman's Satchel
+            AddReward(new BaseReward(typeof(TinkersSatchel), 1074282)); // Craftsman's Satchel
         }
 
         public override TimeSpan RestartDelay => TimeSpan.FromMinutes(3);
@@ -61,30 +61,30 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = false;
+            CantWalk = true;
+            Race = Race.Human;
 
-            this.Hue = 0x840C;
-            this.HairItemID = 0x2044;
-            this.HairHue = 0x1;
+            Hue = 0x840C;
+            HairItemID = 0x2044;
+            HairHue = 0x1;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Boots(0x591));
-            this.AddItem(new ShortPants(0xF8));
-            this.AddItem(new Shirt(0x2D));
-            this.AddItem(new FullApron(0x288));
+            AddItem(new Backpack());
+            AddItem(new Boots(0x591));
+            AddItem(new ShortPants(0xF8));
+            AddItem(new Shirt(0x2D));
+            AddItem(new FullApron(0x288));
 
             Item item;
 
             item = new PlateGloves();
             item.Hue = 0x21E;
-            this.AddItem(item);
+            AddItem(item);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -108,26 +108,26 @@ namespace Server.Engines.Quests
         public TinkersSatchel()
             : base()
         {
-            this.Hue = BaseReward.SatchelHue();
+            Hue = BaseReward.SatchelHue();
 
-            this.AddItem(new TinkerTools());
+            AddItem(new TinkerTools());
 
             switch (Utility.Random(5))
             {
                 case 0:
-                    this.AddItem(new Springs(3));
+                    AddItem(new Springs(3));
                     break;
                 case 1:
-                    this.AddItem(new Axle(3));
+                    AddItem(new Axle(3));
                     break;
                 case 2:
-                    this.AddItem(new Hinge(3));
+                    AddItem(new Hinge(3));
                     break;
                 case 3:
-                    this.AddItem(new Key());
+                    AddItem(new Key());
                     break;
                 case 4:
-                    this.AddItem(new Scissors());
+                    AddItem(new Scissors());
                     break;
             }
         }

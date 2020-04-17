@@ -9,9 +9,9 @@ namespace Server.Engines.Quests
         public CreepyCrawliesQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(GiantSpider), "giant spiders", 12));
+            AddObjective(new SlayObjective(typeof(GiantSpider), "giant spiders", 12));
 
-            this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
+            AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
         /* Creepy Crawlies */
@@ -43,10 +43,10 @@ namespace Server.Engines.Quests
         public VoraciousPlantsQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Corpser), "corpsers", 8));
-            this.AddObjective(new SlayObjective(typeof(SwampTentacle), "swamp tentacles", 2));
+            AddObjective(new SlayObjective(typeof(Corpser), "corpsers", 8));
+            AddObjective(new SlayObjective(typeof(SwampTentacle), "swamp tentacles", 2));
 
-            this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
+            AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
         /* Voracious Plants */
@@ -78,9 +78,9 @@ namespace Server.Engines.Quests
         public GibberJabberQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Gibberling), "gibberlings", 10));
+            AddObjective(new SlayObjective(typeof(Gibberling), "gibberlings", 10));
 
-            this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
+            AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
         /* Gibber Jabber */
@@ -112,9 +112,9 @@ namespace Server.Engines.Quests
         public AnimatedMonstrosityQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(FleshGolem), "flesh golems", 12));
+            AddObjective(new SlayObjective(typeof(FleshGolem), "flesh golems", 12));
 
-            this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
+            AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
         /* Animated Monstrosity */
@@ -146,9 +146,9 @@ namespace Server.Engines.Quests
         public BirdsOfAFeatherQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Harpy), "harpies", 10));
+            AddObjective(new SlayObjective(typeof(Harpy), "harpies", 10));
 
-            this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
+            AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
         /* Birds of a Feather */
@@ -180,9 +180,9 @@ namespace Server.Engines.Quests
         public FrightmaresQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(PlagueSpawn), "plague spawns", 10));
+            AddObjective(new SlayObjective(typeof(PlagueSpawn), "plague spawns", 10));
 
-            this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
+            AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
         /* Frightmares */
@@ -214,9 +214,9 @@ namespace Server.Engines.Quests
         public MoltenReptilesQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(LavaLizard), "lava lizards", 10));
+            AddObjective(new SlayObjective(typeof(LavaLizard), "lava lizards", 10));
 
-            this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
+            AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
         /* Molten Reptiles */
@@ -248,9 +248,9 @@ namespace Server.Engines.Quests
         public BloodyNuisanceQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(GoreFiend), "gore fiends", 10));
+            AddObjective(new SlayObjective(typeof(GoreFiend), "gore fiends", 10));
 
-            this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
+            AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
         /* Bloody Nuisance */
@@ -282,9 +282,9 @@ namespace Server.Engines.Quests
         public BloodSuckersQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(VampireBat), "vampire bats", 10));
+            AddObjective(new SlayObjective(typeof(VampireBat), "vampire bats", 10));
 
-            this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
+            AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
         /* Blood Suckers */
@@ -317,8 +317,8 @@ namespace Server.Engines.Quests
         public Aulan()
             : base("Aulan", "the expeditionist")
         {
-            this.SetSkill(SkillName.Meditation, 60.0, 83.0);
-            this.SetSkill(SkillName.Focus, 60.0, 83.0);
+            SetSkill(SkillName.Meditation, 60.0, 83.0);
+            SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
         public Aulan(Serial serial)
@@ -340,36 +340,36 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.Race = Race.Elf;
+            Female = false;
+            Race = Race.Elf;
 
-            this.Hue = 0x847E;
-            this.HairItemID = 0x2FC1;
-            this.HairHue = 0x852;
+            Hue = 0x847E;
+            HairItemID = 0x2FC1;
+            HairHue = 0x852;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new ElvenBoots(0x725));
-            this.AddItem(new ElvenPants(0x3B3));
-            this.AddItem(new Cloak(0x16A));
-            this.AddItem(new Circlet());
+            AddItem(new ElvenBoots(0x725));
+            AddItem(new ElvenPants(0x3B3));
+            AddItem(new Cloak(0x16A));
+            AddItem(new Circlet());
 
             Item item;
 
             item = new HideGloves();
             item.Hue = 0x224;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new HideChest();
             item.Hue = 0x224;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new HidePauldrons();
             item.Hue = 0x224;
-            this.AddItem(item);
+            AddItem(item);
         }
 
         public override void Serialize(GenericWriter writer)

@@ -11,8 +11,8 @@ namespace Server.Items
         [Constructable]
         public SorcerersRewardChest() : base(0x9AA)
         {
-            this.Movable = false;
-            this.Hue = 1912;
+            Movable = false;
+            Hue = 1912;
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -71,7 +71,7 @@ namespace Server.Items
             if (!(from is PlayerMobile))
                 return;
 
-            if (!this.IsChildOf(from.Backpack))
+            if (!IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(1054107); // This item must be in your backpack.
                 return;

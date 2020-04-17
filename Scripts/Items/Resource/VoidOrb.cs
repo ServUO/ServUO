@@ -12,8 +12,8 @@ namespace Server.Items
         public VoidOrb(int amount)
             : base(0x573E)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public VoidOrb(Serial serial)

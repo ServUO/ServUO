@@ -12,8 +12,8 @@ namespace Server.Items
         public ToxicVenomSac(int amount)
             : base(0x4005)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public ToxicVenomSac(Serial serial)

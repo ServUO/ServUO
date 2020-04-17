@@ -12,8 +12,8 @@ namespace Server.Items
         public Amethyst(int amount)
             : base(0xF16)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public Amethyst(Serial serial)

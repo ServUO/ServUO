@@ -15,7 +15,7 @@ namespace Server.Items
         [Constructable]
         public CursedOilstone(int amount) : base(0x0F8B)
         {
-            this.Weight = 1;
+            Weight = 1;
 
             Stackable = true;
             Amount = amount;
@@ -34,7 +34,7 @@ namespace Server.Items
                 from.Backpack.ConsumeTotal(new Type[] { typeof(QuartzGrit), typeof(CorrosiveAsh) },
                                            new int[] { 1, 1 });
 
-                this.Consume();
+                Consume();
 
                 from.AddToBackpack(new WhetstoneOfEnervation());
                 from.SendLocalizedMessage(1151812); // You have managed to form the items into a rancid smelling, crag covered, hardened lump. In a moment of prescience, you realize what it must be named. The Whetstone of Enervation!

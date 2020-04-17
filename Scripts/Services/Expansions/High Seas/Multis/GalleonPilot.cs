@@ -74,7 +74,7 @@ namespace Server.Mobiles
 
         public virtual void InitOutfit()
         {
-            if (this.Map == Map.Tokuno)
+            if (Map == Map.Tokuno)
             {
                 if (Utility.Random(2) == 0)
                     SetWearable(new Kasa(GetRandomHue()));

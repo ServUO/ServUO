@@ -5,8 +5,8 @@ namespace Server.Items
         [Constructable]
         public GrayBrickFireplaceSouthAddon()
         {
-            this.AddComponent(new AddonComponent(0x94B), -1, 0, 0);
-            this.AddComponent(new AddonComponent(0x945), 0, 0, 0);
+            AddComponent(new AddonComponent(0x94B), -1, 0, 0);
+            AddComponent(new AddonComponent(0x945), 0, 0, 0);
         }
 
         public GrayBrickFireplaceSouthAddon(Serial serial)

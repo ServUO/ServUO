@@ -32,6 +32,7 @@ namespace Server.Items
         public override bool CanBeWornByGargoyles => true;
 
         public override WeaponAnimation DefAnimation => WeaponAnimation.Slash1H;
+		
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -64,24 +64,24 @@ namespace Server.Gumps
 
         public void AddPageButton(int x, int y, int buttonID, string text, AdminGumpPage page, params AdminGumpPage[] subPages)
         {
-            bool isSelection = (this.m_PageType == page);
+            bool isSelection = (m_PageType == page);
 
             for (int i = 0; !isSelection && i < subPages.Length; ++i)
-                isSelection = (this.m_PageType == subPages[i]);
+                isSelection = (m_PageType == subPages[i]);
 
-            this.AddSelectedButton(x, y, buttonID, text, isSelection);
+            AddSelectedButton(x, y, buttonID, text, isSelection);
         }
 
         public void AddSelectedButton(int x, int y, int buttonID, string text, bool isSelection)
         {
-            this.AddButton(x, y - 1, isSelection ? 4006 : 4005, 4007, buttonID, GumpButtonType.Reply, 0);
-            this.AddHtml(x + 35, y, 200, 20, this.Color(text, isSelection ? SelectedColor32 : LabelColor32), false, false);
+            AddButton(x, y - 1, isSelection ? 4006 : 4005, 4007, buttonID, GumpButtonType.Reply, 0);
+            AddHtml(x + 35, y, 200, 20, Color(text, isSelection ? SelectedColor32 : LabelColor32), false, false);
         }
 
         public void AddButtonLabeled(int x, int y, int buttonID, string text)
         {
-            this.AddButton(x, y - 1, 4005, 4007, buttonID, GumpButtonType.Reply, 0);
-            this.AddHtml(x + 35, y, 240, 20, this.Color(text, LabelColor32), false, false);
+            AddButton(x, y - 1, 4005, 4007, buttonID, GumpButtonType.Reply, 0);
+            AddHtml(x + 35, y, 240, 20, Color(text, LabelColor32), false, false);
         }
 
         public string Center(string text)
@@ -96,8 +96,8 @@ namespace Server.Gumps
 
         public void AddBlackAlpha(int x, int y, int width, int height)
         {
-            this.AddImageTiled(x, y, width, height, 2624);
-            this.AddAlphaRegion(x, y, width, height);
+            AddImageTiled(x, y, width, height, 2624);
+            AddAlphaRegion(x, y, width, height);
         }
 
         public int GetButtonID(int type, int index)
@@ -199,29 +199,29 @@ namespace Server.Gumps
         {
             from.CloseGump(typeof(AdminGump));
 
-            this.m_From = from;
-            this.m_PageType = pageType;
-            this.m_ListPage = listPage;
-            this.m_State = state;
-            this.m_List = list;
+            m_From = from;
+            m_PageType = pageType;
+            m_ListPage = listPage;
+            m_State = state;
+            m_List = list;
 
-            this.AddPage(0);
+            AddPage(0);
 
-            this.AddBackground(0, 0, 420, 440, 5054);
+            AddBackground(0, 0, 420, 440, 5054);
 
-            this.AddBlackAlpha(10, 10, 170, 100);
-            this.AddBlackAlpha(190, 10, 220, 100);
-            this.AddBlackAlpha(10, 120, 400, 260);
-            this.AddBlackAlpha(10, 390, 400, 40);
+            AddBlackAlpha(10, 10, 170, 100);
+            AddBlackAlpha(190, 10, 220, 100);
+            AddBlackAlpha(10, 120, 400, 260);
+            AddBlackAlpha(10, 390, 400, 40);
 
-            this.AddPageButton(10, 10, this.GetButtonID(0, 0), "INFORMATION", AdminGumpPage.Information_General, AdminGumpPage.Information_Perf);
-            this.AddPageButton(10, 30, this.GetButtonID(0, 1), "ADMINISTER", AdminGumpPage.Administer, AdminGumpPage.Administer_Access, AdminGumpPage.Administer_Commands, AdminGumpPage.Administer_Server, AdminGumpPage.Administer_WorldBuilding, AdminGumpPage.Administer_Access_Lockdown, AdminGumpPage.Administer_Maintenance);
-            this.AddPageButton(10, 50, this.GetButtonID(0, 2), "CLIENT LIST", AdminGumpPage.Clients, AdminGumpPage.ClientInfo);
-            this.AddPageButton(10, 70, this.GetButtonID(0, 3), "ACCOUNT LIST", AdminGumpPage.Accounts, AdminGumpPage.Accounts_Shared, AdminGumpPage.AccountDetails, AdminGumpPage.AccountDetails_Information, AdminGumpPage.AccountDetails_Characters, AdminGumpPage.AccountDetails_Access, AdminGumpPage.AccountDetails_Access_ClientIPs, AdminGumpPage.AccountDetails_Access_Restrictions, AdminGumpPage.AccountDetails_Comments, AdminGumpPage.AccountDetails_Tags, AdminGumpPage.AccountDetails_ChangeAccess, AdminGumpPage.AccountDetails_ChangePassword);
-            this.AddPageButton(10, 90, this.GetButtonID(0, 4), "FIREWALL", AdminGumpPage.Firewall, AdminGumpPage.FirewallInfo);
+            AddPageButton(10, 10, GetButtonID(0, 0), "INFORMATION", AdminGumpPage.Information_General, AdminGumpPage.Information_Perf);
+            AddPageButton(10, 30, GetButtonID(0, 1), "ADMINISTER", AdminGumpPage.Administer, AdminGumpPage.Administer_Access, AdminGumpPage.Administer_Commands, AdminGumpPage.Administer_Server, AdminGumpPage.Administer_WorldBuilding, AdminGumpPage.Administer_Access_Lockdown, AdminGumpPage.Administer_Maintenance);
+            AddPageButton(10, 50, GetButtonID(0, 2), "CLIENT LIST", AdminGumpPage.Clients, AdminGumpPage.ClientInfo);
+            AddPageButton(10, 70, GetButtonID(0, 3), "ACCOUNT LIST", AdminGumpPage.Accounts, AdminGumpPage.Accounts_Shared, AdminGumpPage.AccountDetails, AdminGumpPage.AccountDetails_Information, AdminGumpPage.AccountDetails_Characters, AdminGumpPage.AccountDetails_Access, AdminGumpPage.AccountDetails_Access_ClientIPs, AdminGumpPage.AccountDetails_Access_Restrictions, AdminGumpPage.AccountDetails_Comments, AdminGumpPage.AccountDetails_Tags, AdminGumpPage.AccountDetails_ChangeAccess, AdminGumpPage.AccountDetails_ChangePassword);
+            AddPageButton(10, 90, GetButtonID(0, 4), "FIREWALL", AdminGumpPage.Firewall, AdminGumpPage.FirewallInfo);
 
             if (notice != null)
-                this.AddHtml(12, 392, 396, 36, this.Color(notice, LabelColor32), false, false);
+                AddHtml(12, 392, 396, 36, Color(notice, LabelColor32), false, false);
 
             switch (pageType)
             {
@@ -238,56 +238,56 @@ namespace Server.Gumps
                                 ++active;
                         }
 
-                        this.AddLabel(20, 130, LabelHue, "Active Accounts:");
-                        this.AddLabel(150, 130, LabelHue, active.ToString());
+                        AddLabel(20, 130, LabelHue, "Active Accounts:");
+                        AddLabel(150, 130, LabelHue, active.ToString());
 
-                        this.AddLabel(20, 150, LabelHue, "Banned Accounts:");
-                        this.AddLabel(150, 150, LabelHue, banned.ToString());
+                        AddLabel(20, 150, LabelHue, "Banned Accounts:");
+                        AddLabel(150, 150, LabelHue, banned.ToString());
 
-                        this.AddLabel(20, 170, LabelHue, "Firewalled:");
-                        this.AddLabel(150, 170, LabelHue, Firewall.List.Count.ToString());
+                        AddLabel(20, 170, LabelHue, "Firewalled:");
+                        AddLabel(150, 170, LabelHue, Firewall.List.Count.ToString());
 
-                        this.AddLabel(20, 190, LabelHue, "Clients:");
-                        this.AddLabel(150, 190, LabelHue, NetState.Instances.Count.ToString());
+                        AddLabel(20, 190, LabelHue, "Clients:");
+                        AddLabel(150, 190, LabelHue, NetState.Instances.Count.ToString());
 
-                        this.AddLabel(20, 210, LabelHue, "Mobiles:");
-                        this.AddLabel(150, 210, LabelHue, World.Mobiles.Count.ToString());
+                        AddLabel(20, 210, LabelHue, "Mobiles:");
+                        AddLabel(150, 210, LabelHue, World.Mobiles.Count.ToString());
 
-                        this.AddLabel(20, 230, LabelHue, "Mobile Scripts:");
-                        this.AddLabel(150, 230, LabelHue, Core.ScriptMobiles.ToString());
+                        AddLabel(20, 230, LabelHue, "Mobile Scripts:");
+                        AddLabel(150, 230, LabelHue, Core.ScriptMobiles.ToString());
 
-                        this.AddLabel(20, 250, LabelHue, "Items:");
-                        this.AddLabel(150, 250, LabelHue, World.Items.Count.ToString());
+                        AddLabel(20, 250, LabelHue, "Items:");
+                        AddLabel(150, 250, LabelHue, World.Items.Count.ToString());
 
-                        this.AddLabel(20, 270, LabelHue, "Item Scripts:");
-                        this.AddLabel(150, 270, LabelHue, Core.ScriptItems.ToString());
+                        AddLabel(20, 270, LabelHue, "Item Scripts:");
+                        AddLabel(150, 270, LabelHue, Core.ScriptItems.ToString());
 
-                        this.AddLabel(20, 290, LabelHue, "Uptime:");
-                        this.AddLabel(150, 290, LabelHue, FormatTimeSpan(DateTime.UtcNow - Clock.ServerStart));
+                        AddLabel(20, 290, LabelHue, "Uptime:");
+                        AddLabel(150, 290, LabelHue, FormatTimeSpan(DateTime.UtcNow - Clock.ServerStart));
 
-                        this.AddLabel(20, 310, LabelHue, "Memory:");
-                        this.AddLabel(150, 310, LabelHue, FormatByteAmount(GC.GetTotalMemory(false)));
+                        AddLabel(20, 310, LabelHue, "Memory:");
+                        AddLabel(150, 310, LabelHue, FormatByteAmount(GC.GetTotalMemory(false)));
 
-                        this.AddLabel(20, 330, LabelHue, "Framework:");
-                        this.AddLabel(150, 330, LabelHue, Environment.Version.ToString());
+                        AddLabel(20, 330, LabelHue, "Framework:");
+                        AddLabel(150, 330, LabelHue, Environment.Version.ToString());
 
-                        this.AddLabel(20, 350, LabelHue, "Operating System: ");
+                        AddLabel(20, 350, LabelHue, "Operating System: ");
                         string os = Environment.OSVersion.ToString();
 
                         os = os.Replace("Service Pack", "SP");
 
-                        this.AddLabel(150, 350, LabelHue, os);
+                        AddLabel(150, 350, LabelHue, os);
 
-                        this.AddPageButton(200, 20, this.GetButtonID(0, 0), "General", AdminGumpPage.Information_General);
-                        this.AddPageButton(200, 40, this.GetButtonID(0, 5), "Performance", AdminGumpPage.Information_Perf);
+                        AddPageButton(200, 20, GetButtonID(0, 0), "General", AdminGumpPage.Information_General);
+                        AddPageButton(200, 40, GetButtonID(0, 5), "Performance", AdminGumpPage.Information_Perf);
 
                         break;
                     }
                 case AdminGumpPage.Information_Perf:
                     {
-                        this.AddLabel(20, 130, LabelHue, "Cycles Per Second:");
-                        this.AddLabel(40, 150, LabelHue, "Current: " + Core.CyclesPerSecond.ToString("N2"));
-                        this.AddLabel(40, 170, LabelHue, "Average: " + Core.AverageCPS.ToString("N2"));
+                        AddLabel(20, 130, LabelHue, "Cycles Per Second:");
+                        AddLabel(40, 150, LabelHue, "Current: " + Core.CyclesPerSecond.ToString("N2"));
+                        AddLabel(40, 170, LabelHue, "Average: " + Core.AverageCPS.ToString("N2"));
 
                         StringBuilder sb = new StringBuilder();
 
@@ -348,102 +348,102 @@ namespace Server.Gumps
                             }
                         }
 
-                        this.AddLabel(20, 200, LabelHue, "Pooling:");
-                        this.AddHtml(20, 220, 380, 150, sb.ToString(), true, true);
+                        AddLabel(20, 200, LabelHue, "Pooling:");
+                        AddHtml(20, 220, 380, 150, sb.ToString(), true, true);
 
-                        this.AddPageButton(200, 20, this.GetButtonID(0, 0), "General", AdminGumpPage.Information_General);
-                        this.AddPageButton(200, 40, this.GetButtonID(0, 5), "Performance", AdminGumpPage.Information_Perf);
+                        AddPageButton(200, 20, GetButtonID(0, 0), "General", AdminGumpPage.Information_General);
+                        AddPageButton(200, 40, GetButtonID(0, 5), "Performance", AdminGumpPage.Information_Perf);
 
                         break;
                     }
                 case AdminGumpPage.Administer_WorldBuilding:
                     {
-                        this.AddHtml(10, 125, 400, 20, this.Color(this.Center("Generating"), LabelColor32), false, false);
+                        AddHtml(10, 125, 400, 20, Color(Center("Generating"), LabelColor32), false, false);
 
-                        this.AddButtonLabeled(20, 150, this.GetButtonID(3, 101), "Create World");
-                        this.AddButtonLabeled(20, 175, this.GetButtonID(3, 102), "Delete World");
-                        this.AddButtonLabeled(20, 200, this.GetButtonID(3, 103), "Recreate World");
+                        AddButtonLabeled(20, 150, GetButtonID(3, 101), "Create World");
+                        AddButtonLabeled(20, 175, GetButtonID(3, 102), "Delete World");
+                        AddButtonLabeled(20, 200, GetButtonID(3, 103), "Recreate World");
 
-                        this.AddHtml(20, 275, 400, 30, this.Color(this.Center("Statics"), LabelColor32), false, false);
+                        AddHtml(20, 275, 400, 30, Color(Center("Statics"), LabelColor32), false, false);
 
-                        this.AddButtonLabeled(20, 300, this.GetButtonID(3, 110), "Freeze (Target)");
-                        this.AddButtonLabeled(20, 325, this.GetButtonID(3, 111), "Freeze (World)");
-                        this.AddButtonLabeled(20, 350, this.GetButtonID(3, 112), "Freeze (Map)");
+                        AddButtonLabeled(20, 300, GetButtonID(3, 110), "Freeze (Target)");
+                        AddButtonLabeled(20, 325, GetButtonID(3, 111), "Freeze (World)");
+                        AddButtonLabeled(20, 350, GetButtonID(3, 112), "Freeze (Map)");
 
-                        this.AddButtonLabeled(220, 300, this.GetButtonID(3, 120), "Unfreeze (Target)");
-                        this.AddButtonLabeled(220, 325, this.GetButtonID(3, 121), "Unfreeze (World)");
-                        this.AddButtonLabeled(220, 350, this.GetButtonID(3, 122), "Unfreeze (Map)");
+                        AddButtonLabeled(220, 300, GetButtonID(3, 120), "Unfreeze (Target)");
+                        AddButtonLabeled(220, 325, GetButtonID(3, 121), "Unfreeze (World)");
+                        AddButtonLabeled(220, 350, GetButtonID(3, 122), "Unfreeze (Map)");
 
                         goto case AdminGumpPage.Administer;
                     }
                 case AdminGumpPage.Administer_Server:
                     {
-                        this.AddHtml(10, 125, 400, 20, this.Color(this.Center("Server"), LabelColor32), false, false);
+                        AddHtml(10, 125, 400, 20, Color(Center("Server"), LabelColor32), false, false);
 
-                        this.AddButtonLabeled(20, 150, this.GetButtonID(3, 200), "Save");
+                        AddButtonLabeled(20, 150, GetButtonID(3, 200), "Save");
 
-                        this.AddButtonLabeled(20, 180, this.GetButtonID(3, 201), "Shutdown (With Save)");
-                        this.AddButtonLabeled(20, 200, this.GetButtonID(3, 202), "Shutdown (Without Save)");
+                        AddButtonLabeled(20, 180, GetButtonID(3, 201), "Shutdown (With Save)");
+                        AddButtonLabeled(20, 200, GetButtonID(3, 202), "Shutdown (Without Save)");
 
-                        this.AddButtonLabeled(20, 230, this.GetButtonID(3, 203), "Shutdown & Restart (With Save)");
-                        this.AddButtonLabeled(20, 250, this.GetButtonID(3, 204), "Shutdown & Restart (Without Save)");
+                        AddButtonLabeled(20, 230, GetButtonID(3, 203), "Shutdown & Restart (With Save)");
+                        AddButtonLabeled(20, 250, GetButtonID(3, 204), "Shutdown & Restart (Without Save)");
 
-                        this.AddHtml(10, 295, 400, 20, this.Color(this.Center("Broadcast"), LabelColor32), false, false);
+                        AddHtml(10, 295, 400, 20, Color(Center("Broadcast"), LabelColor32), false, false);
 
-                        this.AddTextField(20, 320, 380, 20, 0);
-                        this.AddButtonLabeled(20, 350, this.GetButtonID(3, 210), "To Everyone");
-                        this.AddButtonLabeled(220, 350, this.GetButtonID(3, 211), "To Staff");
+                        AddTextField(20, 320, 380, 20, 0);
+                        AddButtonLabeled(20, 350, GetButtonID(3, 210), "To Everyone");
+                        AddButtonLabeled(220, 350, GetButtonID(3, 211), "To Staff");
 
                         goto case AdminGumpPage.Administer;
                     }
                 case AdminGumpPage.Administer_Access_Lockdown:
                     {
-                        this.AddHtml(10, 125, 400, 20, this.Color(this.Center("Server Lockdown"), LabelColor32), false, false);
+                        AddHtml(10, 125, 400, 20, Color(Center("Server Lockdown"), LabelColor32), false, false);
 
-                        this.AddHtml(20, 150, 380, 80, this.Color("When enabled, only clients with an access level equal to or greater than the specified lockdown level may access the server. After setting a lockdown level, use the <em>Purge Invalid Clients</em> button to disconnect those clients without access.", LabelColor32), false, false);
+                        AddHtml(20, 150, 380, 80, Color("When enabled, only clients with an access level equal to or greater than the specified lockdown level may access the server. After setting a lockdown level, use the <em>Purge Invalid Clients</em> button to disconnect those clients without access.", LabelColor32), false, false);
 
                         AccessLevel level = Misc.AccountHandler.LockdownLevel;
                         bool isLockedDown = (level > AccessLevel.VIP);
 
-                        this.AddSelectedButton(20, 230, this.GetButtonID(3, 500), "Not Locked Down", !isLockedDown);
-                        this.AddSelectedButton(20, 260, this.GetButtonID(3, 504), "Administrators", (isLockedDown && level <= AccessLevel.Administrator));
-                        this.AddSelectedButton(20, 280, this.GetButtonID(3, 503), "Seers", (isLockedDown && level <= AccessLevel.Seer));
-                        this.AddSelectedButton(20, 300, this.GetButtonID(3, 502), "Game Masters", (isLockedDown && level <= AccessLevel.GameMaster));
-                        this.AddSelectedButton(20, 320, this.GetButtonID(3, 501), "Counselors", (isLockedDown && level <= AccessLevel.Counselor));
+                        AddSelectedButton(20, 230, GetButtonID(3, 500), "Not Locked Down", !isLockedDown);
+                        AddSelectedButton(20, 260, GetButtonID(3, 504), "Administrators", (isLockedDown && level <= AccessLevel.Administrator));
+                        AddSelectedButton(20, 280, GetButtonID(3, 503), "Seers", (isLockedDown && level <= AccessLevel.Seer));
+                        AddSelectedButton(20, 300, GetButtonID(3, 502), "Game Masters", (isLockedDown && level <= AccessLevel.GameMaster));
+                        AddSelectedButton(20, 320, GetButtonID(3, 501), "Counselors", (isLockedDown && level <= AccessLevel.Counselor));
 
-                        this.AddButtonLabeled(20, 350, this.GetButtonID(3, 510), "Purge Invalid Clients");
+                        AddButtonLabeled(20, 350, GetButtonID(3, 510), "Purge Invalid Clients");
 
                         goto case AdminGumpPage.Administer;
                     }
                 case AdminGumpPage.Administer_Access:
                     {
-                        this.AddHtml(10, 125, 400, 20, this.Color(this.Center("Access"), LabelColor32), false, false);
+                        AddHtml(10, 125, 400, 20, Color(Center("Access"), LabelColor32), false, false);
 
-                        this.AddHtml(10, 155, 400, 20, this.Color(this.Center("Connectivity"), LabelColor32), false, false);
+                        AddHtml(10, 155, 400, 20, Color(Center("Connectivity"), LabelColor32), false, false);
 
-                        this.AddButtonLabeled(20, 180, this.GetButtonID(3, 300), "Kick");
-                        this.AddButtonLabeled(220, 180, this.GetButtonID(3, 301), "Ban");
+                        AddButtonLabeled(20, 180, GetButtonID(3, 300), "Kick");
+                        AddButtonLabeled(220, 180, GetButtonID(3, 301), "Ban");
 
-                        this.AddButtonLabeled(20, 210, this.GetButtonID(3, 302), "Firewall");
-                        this.AddButtonLabeled(220, 210, this.GetButtonID(3, 303), "Lockdown");
+                        AddButtonLabeled(20, 210, GetButtonID(3, 302), "Firewall");
+                        AddButtonLabeled(220, 210, GetButtonID(3, 303), "Lockdown");
 
-                        this.AddHtml(10, 245, 400, 20, this.Color(this.Center("Staff"), LabelColor32), false, false);
+                        AddHtml(10, 245, 400, 20, Color(Center("Staff"), LabelColor32), false, false);
 
-                        this.AddButtonLabeled(20, 270, this.GetButtonID(3, 310), "Make Player");
-                        this.AddButtonLabeled(20, 290, this.GetButtonID(3, 311), "Make Counselor");
-                        this.AddButtonLabeled(20, 310, this.GetButtonID(3, 312), "Make Game Master");
-                        this.AddButtonLabeled(20, 330, this.GetButtonID(3, 313), "Make Seer");
+                        AddButtonLabeled(20, 270, GetButtonID(3, 310), "Make Player");
+                        AddButtonLabeled(20, 290, GetButtonID(3, 311), "Make Counselor");
+                        AddButtonLabeled(20, 310, GetButtonID(3, 312), "Make Game Master");
+                        AddButtonLabeled(20, 330, GetButtonID(3, 313), "Make Seer");
 
                         if (from.AccessLevel > AccessLevel.Administrator)
                         {
-                            this.AddButtonLabeled(220, 270, this.GetButtonID(3, 314), "Make Administrator");
+                            AddButtonLabeled(220, 270, GetButtonID(3, 314), "Make Administrator");
 
                             if (from.AccessLevel > AccessLevel.Developer)
                             {
-                                this.AddButtonLabeled(220, 290, this.GetButtonID(3, 315), "Make Developer");
+                                AddButtonLabeled(220, 290, GetButtonID(3, 315), "Make Developer");
 
                                 if (from.AccessLevel >= AccessLevel.Owner)
-                                    this.AddButtonLabeled(220, 310, this.GetButtonID(3, 316), "Make Owner");
+                                    AddButtonLabeled(220, 310, GetButtonID(3, 316), "Make Owner");
                             }
                         }
 
@@ -451,114 +451,114 @@ namespace Server.Gumps
                     }
                 case AdminGumpPage.Administer_Maintenance:
                     {
-                        this.AddHtml(10, 125, 400, 20, this.Color(this.Center("Maintenance"), LabelColor32), false, false);
+                        AddHtml(10, 125, 400, 20, Color(Center("Maintenance"), LabelColor32), false, false);
 
-                        this.AddButtonLabeled(20, 150, this.GetButtonID(3, 600), "Rebuild Categorization");
-                        this.AddButtonLabeled(220, 150, this.GetButtonID(3, 601), "Generate Documentation");
+                        AddButtonLabeled(20, 150, GetButtonID(3, 600), "Rebuild Categorization");
+                        AddButtonLabeled(220, 150, GetButtonID(3, 601), "Generate Documentation");
 
                         if (Ultima.Files.MulPath["artlegacymul.uop"] != null || (Ultima.Files.MulPath["art.mul"] != null && Ultima.Files.MulPath["artidx.mul"] != null))
                         {
-                            this.AddButtonLabeled(20, 180, this.GetButtonID(3, 602), "Rebuild Bounds.bin");
+                            AddButtonLabeled(20, 180, GetButtonID(3, 602), "Rebuild Bounds.bin");
                         }
                         else
                         {
-                            this.AddLabelCropped(55, 180, 120, 20, RedHue, "Rebuild Bounds.bin");
+                            AddLabelCropped(55, 180, 120, 20, RedHue, "Rebuild Bounds.bin");
                         }
 
-                        this.AddButtonLabeled(220, 180, this.GetButtonID(3, 603), "Generate Reports");
+                        AddButtonLabeled(220, 180, GetButtonID(3, 603), "Generate Reports");
 
-                        this.AddHtml(10, 210, 400, 20, this.Color(this.Center("Profiling"), LabelColor32), false, false);
+                        AddHtml(10, 210, 400, 20, Color(Center("Profiling"), LabelColor32), false, false);
 
-                        this.AddButtonLabeled(20, 240, this.GetButtonID(3, 604), "Dump Timers");
-                        this.AddButtonLabeled(220, 240, this.GetButtonID(3, 605), "Count Objects");
+                        AddButtonLabeled(20, 240, GetButtonID(3, 604), "Dump Timers");
+                        AddButtonLabeled(220, 240, GetButtonID(3, 605), "Count Objects");
 
-                        this.AddButtonLabeled(20, 270, this.GetButtonID(3, 606), "Profile World");
-                        this.AddButtonLabeled(220, 270, this.GetButtonID(3, 607), "Write Profiles");
+                        AddButtonLabeled(20, 270, GetButtonID(3, 606), "Profile World");
+                        AddButtonLabeled(220, 270, GetButtonID(3, 607), "Write Profiles");
 
-                        this.AddButtonLabeled(20, 300, this.GetButtonID(3, 608), "Trace Internal");
-                        this.AddButtonLabeled(220, 300, this.GetButtonID(3, 609), "Trace Expanded");
+                        AddButtonLabeled(20, 300, GetButtonID(3, 608), "Trace Internal");
+                        AddButtonLabeled(220, 300, GetButtonID(3, 609), "Trace Expanded");
 
-                        this.AddButtonLabeled(20, 330, this.GetButtonID(3, 610), "Toggle Profiles");
+                        AddButtonLabeled(20, 330, GetButtonID(3, 610), "Toggle Profiles");
 
                         goto case AdminGumpPage.Administer;
                     }
                 case AdminGumpPage.Administer_Commands:
                     {
-                        this.AddHtml(10, 125, 400, 20, this.Color(this.Center("Commands"), LabelColor32), false, false);
+                        AddHtml(10, 125, 400, 20, Color(Center("Commands"), LabelColor32), false, false);
 
-                        this.AddButtonLabeled(20, 150, this.GetButtonID(3, 400), "Add");
-                        this.AddButtonLabeled(220, 150, this.GetButtonID(3, 401), "Remove");
+                        AddButtonLabeled(20, 150, GetButtonID(3, 400), "Add");
+                        AddButtonLabeled(220, 150, GetButtonID(3, 401), "Remove");
 
-                        this.AddButtonLabeled(20, 170, this.GetButtonID(3, 402), "Dupe");
-                        this.AddButtonLabeled(220, 170, this.GetButtonID(3, 403), "Dupe in bag");
+                        AddButtonLabeled(20, 170, GetButtonID(3, 402), "Dupe");
+                        AddButtonLabeled(220, 170, GetButtonID(3, 403), "Dupe in bag");
 
-                        this.AddButtonLabeled(20, 200, this.GetButtonID(3, 404), "Properties");
-                        this.AddButtonLabeled(220, 200, this.GetButtonID(3, 405), "Skills");
+                        AddButtonLabeled(20, 200, GetButtonID(3, 404), "Properties");
+                        AddButtonLabeled(220, 200, GetButtonID(3, 405), "Skills");
 
-                        this.AddButtonLabeled(20, 230, this.GetButtonID(3, 406), "Mortal");
-                        this.AddButtonLabeled(220, 230, this.GetButtonID(3, 407), "Immortal");
+                        AddButtonLabeled(20, 230, GetButtonID(3, 406), "Mortal");
+                        AddButtonLabeled(220, 230, GetButtonID(3, 407), "Immortal");
 
-                        this.AddButtonLabeled(20, 250, this.GetButtonID(3, 408), "Squelch");
-                        this.AddButtonLabeled(220, 250, this.GetButtonID(3, 409), "Unsquelch");
+                        AddButtonLabeled(20, 250, GetButtonID(3, 408), "Squelch");
+                        AddButtonLabeled(220, 250, GetButtonID(3, 409), "Unsquelch");
 
-                        this.AddButtonLabeled(20, 270, this.GetButtonID(3, 410), "Freeze");
-                        this.AddButtonLabeled(220, 270, this.GetButtonID(3, 411), "Unfreeze");
+                        AddButtonLabeled(20, 270, GetButtonID(3, 410), "Freeze");
+                        AddButtonLabeled(220, 270, GetButtonID(3, 411), "Unfreeze");
 
-                        this.AddButtonLabeled(20, 290, this.GetButtonID(3, 412), "Hide");
-                        this.AddButtonLabeled(220, 290, this.GetButtonID(3, 413), "Unhide");
+                        AddButtonLabeled(20, 290, GetButtonID(3, 412), "Hide");
+                        AddButtonLabeled(220, 290, GetButtonID(3, 413), "Unhide");
 
-                        this.AddButtonLabeled(20, 310, this.GetButtonID(3, 414), "Kill");
-                        this.AddButtonLabeled(220, 310, this.GetButtonID(3, 415), "Resurrect");
+                        AddButtonLabeled(20, 310, GetButtonID(3, 414), "Kill");
+                        AddButtonLabeled(220, 310, GetButtonID(3, 415), "Resurrect");
 
-                        this.AddButtonLabeled(20, 330, this.GetButtonID(3, 416), "Move");
-                        this.AddButtonLabeled(220, 330, this.GetButtonID(3, 417), "Wipe");
+                        AddButtonLabeled(20, 330, GetButtonID(3, 416), "Move");
+                        AddButtonLabeled(220, 330, GetButtonID(3, 417), "Wipe");
 
-                        this.AddButtonLabeled(20, 350, this.GetButtonID(3, 418), "Teleport");
-                        this.AddButtonLabeled(220, 350, this.GetButtonID(3, 419), "Teleport (Multiple)");
+                        AddButtonLabeled(20, 350, GetButtonID(3, 418), "Teleport");
+                        AddButtonLabeled(220, 350, GetButtonID(3, 419), "Teleport (Multiple)");
 
                         goto case AdminGumpPage.Administer;
                     }
                 case AdminGumpPage.Administer:
                     {
-                        this.AddPageButton(200, 10, this.GetButtonID(3, 0), "World Building", AdminGumpPage.Administer_WorldBuilding);
-                        this.AddPageButton(200, 30, this.GetButtonID(3, 1), "Server", AdminGumpPage.Administer_Server);
-                        this.AddPageButton(200, 50, this.GetButtonID(3, 2), "Access", AdminGumpPage.Administer_Access, AdminGumpPage.Administer_Access_Lockdown);
-                        this.AddPageButton(200, 70, this.GetButtonID(3, 3), "Commands", AdminGumpPage.Administer_Commands);
-                        this.AddPageButton(200, 90, this.GetButtonID(3, 4), "Maintenance", AdminGumpPage.Administer_Maintenance);
+                        AddPageButton(200, 10, GetButtonID(3, 0), "World Building", AdminGumpPage.Administer_WorldBuilding);
+                        AddPageButton(200, 30, GetButtonID(3, 1), "Server", AdminGumpPage.Administer_Server);
+                        AddPageButton(200, 50, GetButtonID(3, 2), "Access", AdminGumpPage.Administer_Access, AdminGumpPage.Administer_Access_Lockdown);
+                        AddPageButton(200, 70, GetButtonID(3, 3), "Commands", AdminGumpPage.Administer_Commands);
+                        AddPageButton(200, 90, GetButtonID(3, 4), "Maintenance", AdminGumpPage.Administer_Maintenance);
 
                         break;
                     }
                 case AdminGumpPage.Clients:
                     {
-                        if (this.m_List == null)
+                        if (m_List == null)
                         {
-                            this.m_List = new ArrayList(NetState.Instances);
-                            this.m_List.Sort(NetStateComparer.Instance);
+                            m_List = new ArrayList(NetState.Instances);
+                            m_List.Sort(NetStateComparer.Instance);
                         }
 
-                        this.AddClientHeader();
+                        AddClientHeader();
 
-                        this.AddLabelCropped(12, 120, 81, 20, LabelHue, "Name");
-                        this.AddLabelCropped(95, 120, 81, 20, LabelHue, "Account");
-                        this.AddLabelCropped(178, 120, 81, 20, LabelHue, "Access Level");
-                        this.AddLabelCropped(273, 120, 109, 20, LabelHue, "IP Address");
+                        AddLabelCropped(12, 120, 81, 20, LabelHue, "Name");
+                        AddLabelCropped(95, 120, 81, 20, LabelHue, "Account");
+                        AddLabelCropped(178, 120, 81, 20, LabelHue, "Access Level");
+                        AddLabelCropped(273, 120, 109, 20, LabelHue, "IP Address");
 
                         if (listPage > 0)
-                            this.AddButton(375, 122, 0x15E3, 0x15E7, this.GetButtonID(1, 0), GumpButtonType.Reply, 0);
+                            AddButton(375, 122, 0x15E3, 0x15E7, GetButtonID(1, 0), GumpButtonType.Reply, 0);
                         else
-                            this.AddImage(375, 122, 0x25EA);
+                            AddImage(375, 122, 0x25EA);
 
-                        if ((listPage + 1) * 12 < this.m_List.Count)
-                            this.AddButton(392, 122, 0x15E1, 0x15E5, this.GetButtonID(1, 1), GumpButtonType.Reply, 0);
+                        if ((listPage + 1) * 12 < m_List.Count)
+                            AddButton(392, 122, 0x15E1, 0x15E5, GetButtonID(1, 1), GumpButtonType.Reply, 0);
                         else
-                            this.AddImage(392, 122, 0x25E6);
+                            AddImage(392, 122, 0x25E6);
 
-                        if (this.m_List.Count == 0)
-                            this.AddLabel(12, 140, LabelHue, "There are no clients to display.");
+                        if (m_List.Count == 0)
+                            AddLabel(12, 140, LabelHue, "There are no clients to display.");
 
-                        for (int i = 0, index = (listPage * 12); i < 12 && index >= 0 && index < this.m_List.Count; ++i, ++index)
+                        for (int i = 0, index = (listPage * 12); i < 12 && index >= 0 && index < m_List.Count; ++i, ++index)
                         {
-                            NetState ns = this.m_List[index] as NetState;
+                            NetState ns = m_List[index] as NetState;
 
                             if (ns == null)
                                 continue;
@@ -570,20 +570,20 @@ namespace Server.Gumps
                             if (m == null)
                             {
                                 if (RemoteAdmin.AdminNetwork.IsAuth(ns))
-                                    this.AddLabelCropped(12, offset, 81, 20, LabelHue, "(remote admin)");
+                                    AddLabelCropped(12, offset, 81, 20, LabelHue, "(remote admin)");
                                 else
-                                    this.AddLabelCropped(12, offset, 81, 20, LabelHue, "(logging in)");
+                                    AddLabelCropped(12, offset, 81, 20, LabelHue, "(logging in)");
                             }
                             else
                             {
-                                this.AddLabelCropped(12, offset, 81, 20, GetHueFor(m), m.Name);
+                                AddLabelCropped(12, offset, 81, 20, GetHueFor(m), m.Name);
                             }
-                            this.AddLabelCropped(95, offset, 81, 20, LabelHue, a == null ? "(no account)" : a.Username);
-                            this.AddLabelCropped(178, offset, 81, 20, LabelHue, m == null ? (a != null ? FormatAccessLevel(a.AccessLevel) : "") : FormatAccessLevel(m.AccessLevel));
-                            this.AddLabelCropped(273, offset, 109, 20, LabelHue, ns.ToString());
+                            AddLabelCropped(95, offset, 81, 20, LabelHue, a == null ? "(no account)" : a.Username);
+                            AddLabelCropped(178, offset, 81, 20, LabelHue, m == null ? (a != null ? FormatAccessLevel(a.AccessLevel) : "") : FormatAccessLevel(m.AccessLevel));
+                            AddLabelCropped(273, offset, 109, 20, LabelHue, ns.ToString());
 
                             if (a != null || m != null)
-                                this.AddButton(380, offset - 1, 0xFA5, 0xFA7, this.GetButtonID(4, index + 2), GumpButtonType.Reply, 0);
+                                AddButton(380, offset - 1, 0xFA5, 0xFA7, GetButtonID(4, index + 2), GumpButtonType.Reply, 0);
                         }
 
                         break;
@@ -595,113 +595,113 @@ namespace Server.Gumps
                         if (m == null)
                             break;
 
-                        this.AddClientHeader();
+                        AddClientHeader();
 
-                        this.AddHtml(10, 125, 400, 20, this.Color(this.Center("Information"), LabelColor32), false, false);
+                        AddHtml(10, 125, 400, 20, Color(Center("Information"), LabelColor32), false, false);
 
                         int y = 146;
 
-                        this.AddLabel(20, y, LabelHue, "Name:");
-                        this.AddLabel(200, y, GetHueFor(m), m.Name);
+                        AddLabel(20, y, LabelHue, "Name:");
+                        AddLabel(200, y, GetHueFor(m), m.Name);
                         y += 20;
 
                         Account a = m.Account as Account;
 
-                        this.AddLabel(20, y, LabelHue, "Account:");
-                        this.AddLabel(200, y, (a != null && a.Banned) ? RedHue : LabelHue, a == null ? "(no account)" : a.Username);
-                        this.AddButton(380, y, 0xFA5, 0xFA7, this.GetButtonID(7, 14), GumpButtonType.Reply, 0);
+                        AddLabel(20, y, LabelHue, "Account:");
+                        AddLabel(200, y, (a != null && a.Banned) ? RedHue : LabelHue, a == null ? "(no account)" : a.Username);
+                        AddButton(380, y, 0xFA5, 0xFA7, GetButtonID(7, 14), GumpButtonType.Reply, 0);
                         y += 20;
 
                         NetState ns = m.NetState;
 
                         if (ns == null)
                         {
-                            this.AddLabel(20, y, LabelHue, "Address:");
-                            this.AddLabel(200, y, RedHue, "Offline");
+                            AddLabel(20, y, LabelHue, "Address:");
+                            AddLabel(200, y, RedHue, "Offline");
                             y += 20;
 
-                            this.AddLabel(20, y, LabelHue, "Location:");
-                            this.AddLabel(200, y, LabelHue, String.Format("{0} [{1}]", m.Location, m.Map));
+                            AddLabel(20, y, LabelHue, "Location:");
+                            AddLabel(200, y, LabelHue, String.Format("{0} [{1}]", m.Location, m.Map));
                             y += 44;
                         }
                         else
                         {
-                            this.AddLabel(20, y, LabelHue, "Address:");
-                            this.AddLabel(200, y, GreenHue, ns.ToString());
+                            AddLabel(20, y, LabelHue, "Address:");
+                            AddLabel(200, y, GreenHue, ns.ToString());
                             y += 20;
 
                             ClientVersion v = ns.Version;
 
-                            this.AddLabel(20, y, LabelHue, "Version:");
-                            this.AddLabel(200, y, LabelHue, v == null ? "(null)" : v.ToString());
+                            AddLabel(20, y, LabelHue, "Version:");
+                            AddLabel(200, y, LabelHue, v == null ? "(null)" : v.ToString());
                             y += 20;
 
-                            this.AddLabel(20, y, LabelHue, "Location:");
-                            this.AddLabel(200, y, LabelHue, String.Format("{0} [{1}]", m.Location, m.Map));
+                            AddLabel(20, y, LabelHue, "Location:");
+                            AddLabel(200, y, LabelHue, String.Format("{0} [{1}]", m.Location, m.Map));
                             y += 24;
                         }
 
-                        this.AddButtonLabeled(20, y, this.GetButtonID(7, 0), "Go to");
-                        this.AddButtonLabeled(200, y, this.GetButtonID(7, 1), "Get");
+                        AddButtonLabeled(20, y, GetButtonID(7, 0), "Go to");
+                        AddButtonLabeled(200, y, GetButtonID(7, 1), "Get");
                         y += 20;
 
-                        this.AddButtonLabeled(20, y, this.GetButtonID(7, 2), "Kick");
-                        this.AddButtonLabeled(200, y, this.GetButtonID(7, 3), "Ban");
+                        AddButtonLabeled(20, y, GetButtonID(7, 2), "Kick");
+                        AddButtonLabeled(200, y, GetButtonID(7, 3), "Ban");
                         y += 20;
 
-                        this.AddButtonLabeled(20, y, this.GetButtonID(7, 4), "Properties");
-                        this.AddButtonLabeled(200, y, this.GetButtonID(7, 5), "Skills");
+                        AddButtonLabeled(20, y, GetButtonID(7, 4), "Properties");
+                        AddButtonLabeled(200, y, GetButtonID(7, 5), "Skills");
                         y += 20;
 
-                        this.AddButtonLabeled(20, y, this.GetButtonID(7, 6), "Mortal");
-                        this.AddButtonLabeled(200, y, this.GetButtonID(7, 7), "Immortal");
+                        AddButtonLabeled(20, y, GetButtonID(7, 6), "Mortal");
+                        AddButtonLabeled(200, y, GetButtonID(7, 7), "Immortal");
                         y += 20;
 
-                        this.AddButtonLabeled(20, y, this.GetButtonID(7, 8), "Squelch");
-                        this.AddButtonLabeled(200, y, this.GetButtonID(7, 9), "Unsquelch");
+                        AddButtonLabeled(20, y, GetButtonID(7, 8), "Squelch");
+                        AddButtonLabeled(200, y, GetButtonID(7, 9), "Unsquelch");
                         y += 20;
 
-                        this.AddButtonLabeled(20, y, this.GetButtonID(7, 12), "Kill");
-                        this.AddButtonLabeled(200, y, this.GetButtonID(7, 13), "Resurrect");
+                        AddButtonLabeled(20, y, GetButtonID(7, 12), "Kill");
+                        AddButtonLabeled(200, y, GetButtonID(7, 13), "Resurrect");
                         y += 20;
 
                         break;
                     }
                 case AdminGumpPage.Accounts_Shared:
                     {
-                        if (this.m_List == null)
-                            this.m_List = GetAllSharedAccounts();
+                        if (m_List == null)
+                            m_List = GetAllSharedAccounts();
 
-                        this.AddLabelCropped(12, 120, 60, 20, LabelHue, "Count");
-                        this.AddLabelCropped(72, 120, 120, 20, LabelHue, "Address");
-                        this.AddLabelCropped(192, 120, 180, 20, LabelHue, "Accounts");
+                        AddLabelCropped(12, 120, 60, 20, LabelHue, "Count");
+                        AddLabelCropped(72, 120, 120, 20, LabelHue, "Address");
+                        AddLabelCropped(192, 120, 180, 20, LabelHue, "Accounts");
 
                         if (listPage > 0)
-                            this.AddButton(375, 122, 0x15E3, 0x15E7, this.GetButtonID(1, 0), GumpButtonType.Reply, 0);
+                            AddButton(375, 122, 0x15E3, 0x15E7, GetButtonID(1, 0), GumpButtonType.Reply, 0);
                         else
-                            this.AddImage(375, 122, 0x25EA);
+                            AddImage(375, 122, 0x25EA);
 
-                        if ((listPage + 1) * 12 < this.m_List.Count)
-                            this.AddButton(392, 122, 0x15E1, 0x15E5, this.GetButtonID(1, 1), GumpButtonType.Reply, 0);
+                        if ((listPage + 1) * 12 < m_List.Count)
+                            AddButton(392, 122, 0x15E1, 0x15E5, GetButtonID(1, 1), GumpButtonType.Reply, 0);
                         else
-                            this.AddImage(392, 122, 0x25E6);
+                            AddImage(392, 122, 0x25E6);
 
-                        if (this.m_List.Count == 0)
-                            this.AddLabel(12, 140, LabelHue, "There are no accounts to display.");
+                        if (m_List.Count == 0)
+                            AddLabel(12, 140, LabelHue, "There are no accounts to display.");
 
                         StringBuilder sb = new StringBuilder();
 
-                        for (int i = 0, index = (listPage * 12); i < 12 && index >= 0 && index < this.m_List.Count; ++i, ++index)
+                        for (int i = 0, index = (listPage * 12); i < 12 && index >= 0 && index < m_List.Count; ++i, ++index)
                         {
-                            DictionaryEntry de = (DictionaryEntry)this.m_List[index];
+                            DictionaryEntry de = (DictionaryEntry)m_List[index];
 
                             IPAddress ipAddr = (IPAddress)de.Key;
                             ArrayList accts = (ArrayList)de.Value;
 
                             int offset = 140 + (i * 20);
 
-                            this.AddLabelCropped(12, offset, 60, 20, LabelHue, accts.Count.ToString());
-                            this.AddLabelCropped(72, offset, 120, 20, LabelHue, ipAddr.ToString());
+                            AddLabelCropped(12, offset, 60, 20, LabelHue, accts.Count.ToString());
+                            AddLabelCropped(72, offset, 120, 20, LabelHue, ipAddr.ToString());
 
                             if (sb.Length > 0)
                                 sb.Length = 0;
@@ -724,58 +724,58 @@ namespace Server.Gumps
                                 }
                             }
 
-                            this.AddLabelCropped(192, offset, 180, 20, LabelHue, sb.ToString());
+                            AddLabelCropped(192, offset, 180, 20, LabelHue, sb.ToString());
 
-                            this.AddButton(380, offset - 1, 0xFA5, 0xFA7, this.GetButtonID(5, index + 56), GumpButtonType.Reply, 0);
+                            AddButton(380, offset - 1, 0xFA5, 0xFA7, GetButtonID(5, index + 56), GumpButtonType.Reply, 0);
                         }
 
                         break;
                     }
                 case AdminGumpPage.Accounts:
                     {
-                        if (this.m_List == null)
+                        if (m_List == null)
                         {
-                            this.m_List = new ArrayList((ICollection)Accounts.GetAccounts());
-                            this.m_List.Sort(AccountComparer.Instance);
+                            m_List = new ArrayList((ICollection)Accounts.GetAccounts());
+                            m_List.Sort(AccountComparer.Instance);
                         }
 
                         ArrayList rads = (state as ArrayList);
 
-                        this.AddAccountHeader();
+                        AddAccountHeader();
 
                         if (rads == null)
-                            this.AddLabelCropped(12, 120, 120, 20, LabelHue, "Name");
+                            AddLabelCropped(12, 120, 120, 20, LabelHue, "Name");
                         else
-                            this.AddLabelCropped(32, 120, 100, 20, LabelHue, "Name");
+                            AddLabelCropped(32, 120, 100, 20, LabelHue, "Name");
 
-                        this.AddLabelCropped(132, 120, 120, 20, LabelHue, "Access Level");
-                        this.AddLabelCropped(252, 120, 120, 20, LabelHue, "Status");
+                        AddLabelCropped(132, 120, 120, 20, LabelHue, "Access Level");
+                        AddLabelCropped(252, 120, 120, 20, LabelHue, "Status");
 
                         if (listPage > 0)
-                            this.AddButton(375, 122, 0x15E3, 0x15E7, this.GetButtonID(1, 0), GumpButtonType.Reply, 0);
+                            AddButton(375, 122, 0x15E3, 0x15E7, GetButtonID(1, 0), GumpButtonType.Reply, 0);
                         else
-                            this.AddImage(375, 122, 0x25EA);
+                            AddImage(375, 122, 0x25EA);
 
-                        if ((listPage + 1) * 12 < this.m_List.Count)
-                            this.AddButton(392, 122, 0x15E1, 0x15E5, this.GetButtonID(1, 1), GumpButtonType.Reply, 0);
+                        if ((listPage + 1) * 12 < m_List.Count)
+                            AddButton(392, 122, 0x15E1, 0x15E5, GetButtonID(1, 1), GumpButtonType.Reply, 0);
                         else
-                            this.AddImage(392, 122, 0x25E6);
+                            AddImage(392, 122, 0x25E6);
 
-                        if (this.m_List.Count == 0)
-                            this.AddLabel(12, 140, LabelHue, "There are no accounts to display.");
+                        if (m_List.Count == 0)
+                            AddLabel(12, 140, LabelHue, "There are no accounts to display.");
 
                         if (rads != null && notice == null)
                         {
-                            this.AddButtonLabeled(10, 390, this.GetButtonID(5, 27), "Ban marked");
-                            this.AddButtonLabeled(10, 410, this.GetButtonID(5, 28), "Delete marked");
+                            AddButtonLabeled(10, 390, GetButtonID(5, 27), "Ban marked");
+                            AddButtonLabeled(10, 410, GetButtonID(5, 28), "Delete marked");
 
-                            this.AddButtonLabeled(210, 390, this.GetButtonID(5, 29), "Mark all");
-                            this.AddButtonLabeled(210, 410, this.GetButtonID(5, 35), "Unmark house owners");
+                            AddButtonLabeled(210, 390, GetButtonID(5, 29), "Mark all");
+                            AddButtonLabeled(210, 410, GetButtonID(5, 35), "Unmark house owners");
                         }
 
-                        for (int i = 0, index = (listPage * 12); i < 12 && index >= 0 && index < this.m_List.Count; ++i, ++index)
+                        for (int i = 0, index = (listPage * 12); i < 12 && index >= 0 && index < m_List.Count; ++i, ++index)
                         {
-                            Account a = this.m_List[index] as Account;
+                            Account a = m_List[index] as Account;
 
                             if (a == null)
                                 continue;
@@ -789,35 +789,35 @@ namespace Server.Gumps
 
                             if (rads == null)
                             {
-                                this.AddLabelCropped(12, offset, 120, 20, LabelHue, a.Username);
+                                AddLabelCropped(12, offset, 120, 20, LabelHue, a.Username);
                             }
                             else
                             {
-                                this.AddCheck(10, offset, 0xD2, 0xD3, rads.Contains(a), index);
-                                this.AddLabelCropped(32, offset, 100, 20, LabelHue, a.Username);
+                                AddCheck(10, offset, 0xD2, 0xD3, rads.Contains(a), index);
+                                AddLabelCropped(32, offset, 100, 20, LabelHue, a.Username);
                             }
 
-                            this.AddLabelCropped(132, offset, 120, 20, LabelHue, FormatAccessLevel(accessLevel));
+                            AddLabelCropped(132, offset, 120, 20, LabelHue, FormatAccessLevel(accessLevel));
 
                             if (online)
-                                this.AddLabelCropped(252, offset, 120, 20, GreenHue, "Online");
+                                AddLabelCropped(252, offset, 120, 20, GreenHue, "Online");
                             else if (a.Banned)
-                                this.AddLabelCropped(252, offset, 120, 20, RedHue, "Banned");
+                                AddLabelCropped(252, offset, 120, 20, RedHue, "Banned");
                             else
-                                this.AddLabelCropped(252, offset, 120, 20, RedHue, "Offline");
+                                AddLabelCropped(252, offset, 120, 20, RedHue, "Offline");
 
-                            this.AddButton(380, offset - 1, 0xFA5, 0xFA7, this.GetButtonID(5, index + 56), GumpButtonType.Reply, 0);
+                            AddButton(380, offset - 1, 0xFA5, 0xFA7, GetButtonID(5, index + 56), GumpButtonType.Reply, 0);
                         }
 
                         break;
                     }
                 case AdminGumpPage.AccountDetails:
                     {
-                        this.AddPageButton(190, 10, this.GetButtonID(5, 0), "Information", AdminGumpPage.AccountDetails_Information, AdminGumpPage.AccountDetails_ChangeAccess, AdminGumpPage.AccountDetails_ChangePassword);
-                        this.AddPageButton(190, 30, this.GetButtonID(5, 1), "Characters", AdminGumpPage.AccountDetails_Characters);
-                        this.AddPageButton(190, 50, this.GetButtonID(5, 13), "Access", AdminGumpPage.AccountDetails_Access, AdminGumpPage.AccountDetails_Access_ClientIPs, AdminGumpPage.AccountDetails_Access_Restrictions);
-                        this.AddPageButton(190, 70, this.GetButtonID(5, 2), "Comments", AdminGumpPage.AccountDetails_Comments);
-                        this.AddPageButton(190, 90, this.GetButtonID(5, 3), "Tags", AdminGumpPage.AccountDetails_Tags);
+                        AddPageButton(190, 10, GetButtonID(5, 0), "Information", AdminGumpPage.AccountDetails_Information, AdminGumpPage.AccountDetails_ChangeAccess, AdminGumpPage.AccountDetails_ChangePassword);
+                        AddPageButton(190, 30, GetButtonID(5, 1), "Characters", AdminGumpPage.AccountDetails_Characters);
+                        AddPageButton(190, 50, GetButtonID(5, 13), "Access", AdminGumpPage.AccountDetails_Access, AdminGumpPage.AccountDetails_Access_ClientIPs, AdminGumpPage.AccountDetails_Access_Restrictions);
+                        AddPageButton(190, 70, GetButtonID(5, 2), "Comments", AdminGumpPage.AccountDetails_Comments);
+                        AddPageButton(190, 90, GetButtonID(5, 3), "Tags", AdminGumpPage.AccountDetails_Tags);
                         break;
                     }
                 case AdminGumpPage.AccountDetails_ChangePassword:
@@ -827,18 +827,18 @@ namespace Server.Gumps
                         if (a == null)
                             break;
 
-                        this.AddHtml(10, 125, 400, 20, this.Color(this.Center("Change Password"), LabelColor32), false, false);
+                        AddHtml(10, 125, 400, 20, Color(Center("Change Password"), LabelColor32), false, false);
 
-                        this.AddLabel(20, 150, LabelHue, "Username:");
-                        this.AddLabel(200, 150, LabelHue, a.Username);
+                        AddLabel(20, 150, LabelHue, "Username:");
+                        AddLabel(200, 150, LabelHue, a.Username);
 
-                        this.AddLabel(20, 180, LabelHue, "Password:");
-                        this.AddTextField(200, 180, 160, 20, 0);
+                        AddLabel(20, 180, LabelHue, "Password:");
+                        AddTextField(200, 180, 160, 20, 0);
 
-                        this.AddLabel(20, 210, LabelHue, "Confirm:");
-                        this.AddTextField(200, 210, 160, 20, 1);
+                        AddLabel(20, 210, LabelHue, "Confirm:");
+                        AddTextField(200, 210, 160, 20, 1);
 
-                        this.AddButtonLabeled(20, 240, this.GetButtonID(5, 12), "Submit Change");
+                        AddButtonLabeled(20, 240, GetButtonID(5, 12), "Submit Change");
 
                         goto case AdminGumpPage.AccountDetails;
                     }
@@ -849,29 +849,29 @@ namespace Server.Gumps
                         if (a == null)
                             break;
 
-                        this.AddHtml(10, 125, 400, 20, this.Color(this.Center("Change Access Level"), LabelColor32), false, false);
+                        AddHtml(10, 125, 400, 20, Color(Center("Change Access Level"), LabelColor32), false, false);
 
-                        this.AddLabel(20, 150, LabelHue, "Username:");
-                        this.AddLabel(200, 150, LabelHue, a.Username);
+                        AddLabel(20, 150, LabelHue, "Username:");
+                        AddLabel(200, 150, LabelHue, a.Username);
 
-                        this.AddLabel(20, 170, LabelHue, "Current Level:");
-                        this.AddLabel(200, 170, LabelHue, FormatAccessLevel(a.AccessLevel));
+                        AddLabel(20, 170, LabelHue, "Current Level:");
+                        AddLabel(200, 170, LabelHue, FormatAccessLevel(a.AccessLevel));
 
-                        this.AddButtonLabeled(20, 200, this.GetButtonID(5, 20), "Player");
-                        this.AddButtonLabeled(20, 220, this.GetButtonID(5, 21), "Counselor");
-                        this.AddButtonLabeled(20, 240, this.GetButtonID(5, 22), "Game Master");
-                        this.AddButtonLabeled(20, 260, this.GetButtonID(5, 23), "Seer");
+                        AddButtonLabeled(20, 200, GetButtonID(5, 20), "Player");
+                        AddButtonLabeled(20, 220, GetButtonID(5, 21), "Counselor");
+                        AddButtonLabeled(20, 240, GetButtonID(5, 22), "Game Master");
+                        AddButtonLabeled(20, 260, GetButtonID(5, 23), "Seer");
 
                         if (from.AccessLevel > AccessLevel.Administrator)
                         {
-                            this.AddButtonLabeled(20, 280, this.GetButtonID(5, 24), "Administrator");
+                            AddButtonLabeled(20, 280, GetButtonID(5, 24), "Administrator");
 
                             if (from.AccessLevel > AccessLevel.Developer)
                             {
-                                this.AddButtonLabeled(20, 300, this.GetButtonID(5, 33), "Developer");
+                                AddButtonLabeled(20, 300, GetButtonID(5, 33), "Developer");
 
                                 if (from.AccessLevel >= AccessLevel.Owner)
-                                    this.AddButtonLabeled(20, 320, this.GetButtonID(5, 34), "Owner");
+                                    AddButtonLabeled(20, 320, GetButtonID(5, 34), "Owner");
                             }
                         }
 
@@ -892,16 +892,16 @@ namespace Server.Gumps
                                 ++charCount;
                         }
 
-                        this.AddHtml(10, 125, 400, 20, this.Color(this.Center("Information"), LabelColor32), false, false);
+                        AddHtml(10, 125, 400, 20, Color(Center("Information"), LabelColor32), false, false);
 
-                        this.AddLabel(20, 150, LabelHue, "Username:");
-                        this.AddLabel(200, 150, LabelHue, a.Username);
+                        AddLabel(20, 150, LabelHue, "Username:");
+                        AddLabel(200, 150, LabelHue, a.Username);
 
-                        this.AddLabel(20, 170, LabelHue, "Access Level:");
-                        this.AddLabel(200, 170, LabelHue, FormatAccessLevel(a.AccessLevel));
+                        AddLabel(20, 170, LabelHue, "Access Level:");
+                        AddLabel(200, 170, LabelHue, FormatAccessLevel(a.AccessLevel));
 
-                        this.AddLabel(20, 190, LabelHue, "Status:");
-                        this.AddLabel(200, 190, a.Banned ? RedHue : GreenHue, a.Banned ? "Banned" : "Active");
+                        AddLabel(20, 190, LabelHue, "Status:");
+                        AddLabel(200, 190, a.Banned ? RedHue : GreenHue, a.Banned ? "Banned" : "Active");
 
                         DateTime banTime;
                         TimeSpan banDuration;
@@ -910,11 +910,11 @@ namespace Server.Gumps
                         {
                             if (banDuration == TimeSpan.MaxValue)
                             {
-                                this.AddLabel(250, 190, LabelHue, "(Infinite)");
+                                AddLabel(250, 190, LabelHue, "(Infinite)");
                             }
                             else if (banDuration == TimeSpan.Zero)
                             {
-                                this.AddLabel(250, 190, LabelHue, "(Zero)");
+                                AddLabel(250, 190, LabelHue, "(Zero)");
                             }
                             else
                             {
@@ -930,38 +930,38 @@ namespace Server.Gumps
 
                                 double perc = remMinutes / totMinutes;
 
-                                this.AddLabel(250, 190, LabelHue, String.Format("{0} [{1:F0}%]", FormatTimeSpan(banDuration), perc * 100));
+                                AddLabel(250, 190, LabelHue, String.Format("{0} [{1:F0}%]", FormatTimeSpan(banDuration), perc * 100));
                             }
                         }
                         else if (a.Banned)
                         {
-                            this.AddLabel(250, 190, LabelHue, "(Unspecified)");
+                            AddLabel(250, 190, LabelHue, "(Unspecified)");
                         }
 
-                        this.AddLabel(20, 210, LabelHue, "Created:");
-                        this.AddLabel(200, 210, LabelHue, a.Created.ToString());
+                        AddLabel(20, 210, LabelHue, "Created:");
+                        AddLabel(200, 210, LabelHue, a.Created.ToString());
 
-                        this.AddLabel(20, 230, LabelHue, "Last Login:");
-                        this.AddLabel(200, 230, LabelHue, a.LastLogin.ToString());
+                        AddLabel(20, 230, LabelHue, "Last Login:");
+                        AddLabel(200, 230, LabelHue, a.LastLogin.ToString());
 
-                        this.AddLabel(20, 250, LabelHue, "Character Count:");
-                        this.AddLabel(200, 250, LabelHue, charCount.ToString());
+                        AddLabel(20, 250, LabelHue, "Character Count:");
+                        AddLabel(200, 250, LabelHue, charCount.ToString());
 
-                        this.AddLabel(20, 270, LabelHue, "Comment Count:");
-                        this.AddLabel(200, 270, LabelHue, a.Comments.Count.ToString());
+                        AddLabel(20, 270, LabelHue, "Comment Count:");
+                        AddLabel(200, 270, LabelHue, a.Comments.Count.ToString());
 
-                        this.AddLabel(20, 290, LabelHue, "Tag Count:");
-                        this.AddLabel(200, 290, LabelHue, a.Tags.Count.ToString());
+                        AddLabel(20, 290, LabelHue, "Tag Count:");
+                        AddLabel(200, 290, LabelHue, a.Tags.Count.ToString());
 
-                        this.AddButtonLabeled(20, 320, this.GetButtonID(5, 8), "Change Password");
-                        this.AddButtonLabeled(200, 320, this.GetButtonID(5, 9), "Change Access Level");
+                        AddButtonLabeled(20, 320, GetButtonID(5, 8), "Change Password");
+                        AddButtonLabeled(200, 320, GetButtonID(5, 9), "Change Access Level");
 
                         if (!a.Banned)
-                            this.AddButtonLabeled(20, 350, this.GetButtonID(5, 10), "Ban Account");
+                            AddButtonLabeled(20, 350, GetButtonID(5, 10), "Ban Account");
                         else
-                            this.AddButtonLabeled(20, 350, this.GetButtonID(5, 11), "Unban Account");
+                            AddButtonLabeled(20, 350, GetButtonID(5, 11), "Unban Account");
 
-                        this.AddButtonLabeled(200, 350, this.GetButtonID(5, 25), "Delete Account");
+                        AddButtonLabeled(200, 350, GetButtonID(5, 25), "Delete Account");
 
                         goto case AdminGumpPage.AccountDetails;
                     }
@@ -972,10 +972,10 @@ namespace Server.Gumps
                         if (a == null)
                             break;
 
-                        this.AddHtml(10, 125, 400, 20, this.Color(this.Center("Access"), LabelColor32), false, false);
+                        AddHtml(10, 125, 400, 20, Color(Center("Access"), LabelColor32), false, false);
 
-                        this.AddPageButton(20, 150, this.GetButtonID(5, 14), "View client addresses", AdminGumpPage.AccountDetails_Access_ClientIPs);
-                        this.AddPageButton(20, 170, this.GetButtonID(5, 15), "Manage restrictions", AdminGumpPage.AccountDetails_Access_Restrictions);
+                        AddPageButton(20, 150, GetButtonID(5, 14), "View client addresses", AdminGumpPage.AccountDetails_Access_ClientIPs);
+                        AddPageButton(20, 170, GetButtonID(5, 15), "Manage restrictions", AdminGumpPage.AccountDetails_Access_Restrictions);
 
                         goto case AdminGumpPage.AccountDetails;
                     }
@@ -986,42 +986,42 @@ namespace Server.Gumps
                         if (a == null)
                             break;
 
-                        if (this.m_List == null)
-                            this.m_List = new ArrayList(a.LoginIPs);
+                        if (m_List == null)
+                            m_List = new ArrayList(a.LoginIPs);
 
-                        this.AddHtml(10, 195, 400, 20, this.Color(this.Center("Client Addresses"), LabelColor32), false, false);
+                        AddHtml(10, 195, 400, 20, Color(Center("Client Addresses"), LabelColor32), false, false);
 
-                        this.AddButtonLabeled(227, 225, this.GetButtonID(5, 16), "View all shared accounts");
-                        this.AddButtonLabeled(227, 245, this.GetButtonID(5, 17), "Ban all shared accounts");
-                        this.AddButtonLabeled(227, 265, this.GetButtonID(5, 18), "Firewall all addresses");
-                        this.AddButtonLabeled(227, 285, this.GetButtonID(5, 36), "Clear all addresses");
+                        AddButtonLabeled(227, 225, GetButtonID(5, 16), "View all shared accounts");
+                        AddButtonLabeled(227, 245, GetButtonID(5, 17), "Ban all shared accounts");
+                        AddButtonLabeled(227, 265, GetButtonID(5, 18), "Firewall all addresses");
+                        AddButtonLabeled(227, 285, GetButtonID(5, 36), "Clear all addresses");
 
-                        this.AddHtml(225, 315, 180, 80, this.Color("List of IP addresses which have accessed this account.", LabelColor32), false, false);
+                        AddHtml(225, 315, 180, 80, Color("List of IP addresses which have accessed this account.", LabelColor32), false, false);
 
-                        this.AddImageTiled(15, 219, 206, 156, 0xBBC);
-                        this.AddBlackAlpha(16, 220, 204, 154);
+                        AddImageTiled(15, 219, 206, 156, 0xBBC);
+                        AddBlackAlpha(16, 220, 204, 154);
 
-                        this.AddHtml(18, 221, 114, 20, this.Color("IP Address", LabelColor32), false, false);
+                        AddHtml(18, 221, 114, 20, Color("IP Address", LabelColor32), false, false);
 
                         if (listPage > 0)
-                            this.AddButton(184, 223, 0x15E3, 0x15E7, this.GetButtonID(1, 0), GumpButtonType.Reply, 0);
+                            AddButton(184, 223, 0x15E3, 0x15E7, GetButtonID(1, 0), GumpButtonType.Reply, 0);
                         else
-                            this.AddImage(184, 223, 0x25EA);
+                            AddImage(184, 223, 0x25EA);
 
-                        if ((listPage + 1) * 6 < this.m_List.Count)
-                            this.AddButton(201, 223, 0x15E1, 0x15E5, this.GetButtonID(1, 1), GumpButtonType.Reply, 0);
+                        if ((listPage + 1) * 6 < m_List.Count)
+                            AddButton(201, 223, 0x15E1, 0x15E5, GetButtonID(1, 1), GumpButtonType.Reply, 0);
                         else
-                            this.AddImage(201, 223, 0x25E6);
+                            AddImage(201, 223, 0x25E6);
 
-                        if (this.m_List.Count == 0)
-                            this.AddHtml(18, 243, 200, 60, this.Color("This account has not yet been accessed.", LabelColor32), false, false);
+                        if (m_List.Count == 0)
+                            AddHtml(18, 243, 200, 60, Color("This account has not yet been accessed.", LabelColor32), false, false);
 
-                        for (int i = 0, index = (listPage * 6); i < 6 && index >= 0 && index < this.m_List.Count; ++i, ++index)
+                        for (int i = 0, index = (listPage * 6); i < 6 && index >= 0 && index < m_List.Count; ++i, ++index)
                         {
-                            this.AddHtml(18, 243 + (i * 22), 114, 20, this.Color(this.m_List[index].ToString(), LabelColor32), false, false);
-                            this.AddButton(130, 242 + (i * 22), 0xFA2, 0xFA4, this.GetButtonID(8, index), GumpButtonType.Reply, 0);
-                            this.AddButton(160, 242 + (i * 22), 0xFA8, 0xFAA, this.GetButtonID(9, index), GumpButtonType.Reply, 0);
-                            this.AddButton(190, 242 + (i * 22), 0xFB1, 0xFB3, this.GetButtonID(10, index), GumpButtonType.Reply, 0);
+                            AddHtml(18, 243 + (i * 22), 114, 20, Color(m_List[index].ToString(), LabelColor32), false, false);
+                            AddButton(130, 242 + (i * 22), 0xFA2, 0xFA4, GetButtonID(8, index), GumpButtonType.Reply, 0);
+                            AddButton(160, 242 + (i * 22), 0xFA8, 0xFAA, GetButtonID(9, index), GumpButtonType.Reply, 0);
+                            AddButton(190, 242 + (i * 22), 0xFB1, 0xFB3, GetButtonID(10, index), GumpButtonType.Reply, 0);
                         }
 
                         goto case AdminGumpPage.AccountDetails_Access;
@@ -1033,39 +1033,39 @@ namespace Server.Gumps
                         if (a == null)
                             break;
 
-                        if (this.m_List == null)
-                            this.m_List = new ArrayList(a.IPRestrictions);
+                        if (m_List == null)
+                            m_List = new ArrayList(a.IPRestrictions);
 
-                        this.AddHtml(10, 195, 400, 20, this.Color(this.Center("Address Restrictions"), LabelColor32), false, false);
+                        AddHtml(10, 195, 400, 20, Color(Center("Address Restrictions"), LabelColor32), false, false);
 
-                        this.AddTextField(227, 225, 120, 20, 0);
+                        AddTextField(227, 225, 120, 20, 0);
 
-                        this.AddButtonLabeled(352, 225, this.GetButtonID(5, 19), "Add");
+                        AddButtonLabeled(352, 225, GetButtonID(5, 19), "Add");
 
-                        this.AddHtml(225, 255, 180, 120, this.Color("Any clients connecting from an address not in this list will be rejected. Or, if the list is empty, any client may connect.", LabelColor32), false, false);
+                        AddHtml(225, 255, 180, 120, Color("Any clients connecting from an address not in this list will be rejected. Or, if the list is empty, any client may connect.", LabelColor32), false, false);
 
-                        this.AddImageTiled(15, 219, 206, 156, 0xBBC);
-                        this.AddBlackAlpha(16, 220, 204, 154);
+                        AddImageTiled(15, 219, 206, 156, 0xBBC);
+                        AddBlackAlpha(16, 220, 204, 154);
 
-                        this.AddHtml(18, 221, 114, 20, this.Color("IP Address", LabelColor32), false, false);
+                        AddHtml(18, 221, 114, 20, Color("IP Address", LabelColor32), false, false);
 
                         if (listPage > 0)
-                            this.AddButton(184, 223, 0x15E3, 0x15E7, this.GetButtonID(1, 0), GumpButtonType.Reply, 0);
+                            AddButton(184, 223, 0x15E3, 0x15E7, GetButtonID(1, 0), GumpButtonType.Reply, 0);
                         else
-                            this.AddImage(184, 223, 0x25EA);
+                            AddImage(184, 223, 0x25EA);
 
-                        if ((listPage + 1) * 6 < this.m_List.Count)
-                            this.AddButton(201, 223, 0x15E1, 0x15E5, this.GetButtonID(1, 1), GumpButtonType.Reply, 0);
+                        if ((listPage + 1) * 6 < m_List.Count)
+                            AddButton(201, 223, 0x15E1, 0x15E5, GetButtonID(1, 1), GumpButtonType.Reply, 0);
                         else
-                            this.AddImage(201, 223, 0x25E6);
+                            AddImage(201, 223, 0x25E6);
 
-                        if (this.m_List.Count == 0)
-                            this.AddHtml(18, 243, 200, 60, this.Color("There are no addresses in this list.", LabelColor32), false, false);
+                        if (m_List.Count == 0)
+                            AddHtml(18, 243, 200, 60, Color("There are no addresses in this list.", LabelColor32), false, false);
 
-                        for (int i = 0, index = (listPage * 6); i < 6 && index >= 0 && index < this.m_List.Count; ++i, ++index)
+                        for (int i = 0, index = (listPage * 6); i < 6 && index >= 0 && index < m_List.Count; ++i, ++index)
                         {
-                            this.AddHtml(18, 243 + (i * 22), 114, 20, this.Color(this.m_List[index].ToString(), LabelColor32), false, false);
-                            this.AddButton(190, 242 + (i * 22), 0xFB1, 0xFB3, this.GetButtonID(8, index), GumpButtonType.Reply, 0);
+                            AddHtml(18, 243 + (i * 22), 114, 20, Color(m_List[index].ToString(), LabelColor32), false, false);
+                            AddButton(190, 242 + (i * 22), 0xFB1, 0xFB3, GetButtonID(8, index), GumpButtonType.Reply, 0);
                         }
 
                         goto case AdminGumpPage.AccountDetails_Access;
@@ -1077,11 +1077,11 @@ namespace Server.Gumps
                         if (a == null)
                             break;
 
-                        this.AddHtml(10, 125, 400, 20, this.Color(this.Center("Characters"), LabelColor32), false, false);
+                        AddHtml(10, 125, 400, 20, Color(Center("Characters"), LabelColor32), false, false);
 
-                        this.AddLabelCropped(12, 150, 120, 20, LabelHue, "Name");
-                        this.AddLabelCropped(132, 150, 120, 20, LabelHue, "Access Level");
-                        this.AddLabelCropped(252, 150, 120, 20, LabelHue, "Status");
+                        AddLabelCropped(12, 150, 120, 20, LabelHue, "Name");
+                        AddLabelCropped(132, 150, 120, 20, LabelHue, "Access Level");
+                        AddLabelCropped(252, 150, 120, 20, LabelHue, "Status");
 
                         int index = 0;
 
@@ -1094,21 +1094,21 @@ namespace Server.Gumps
 
                             int offset = 170 + (index * 20);
 
-                            this.AddLabelCropped(12, offset, 120, 20, GetHueFor(m), m.Name);
-                            this.AddLabelCropped(132, offset, 120, 20, LabelHue, FormatAccessLevel(m.AccessLevel));
+                            AddLabelCropped(12, offset, 120, 20, GetHueFor(m), m.Name);
+                            AddLabelCropped(132, offset, 120, 20, LabelHue, FormatAccessLevel(m.AccessLevel));
 
                             if (m.NetState != null)
-                                this.AddLabelCropped(252, offset, 120, 20, GreenHue, "Online");
+                                AddLabelCropped(252, offset, 120, 20, GreenHue, "Online");
                             else
-                                this.AddLabelCropped(252, offset, 120, 20, RedHue, "Offline");
+                                AddLabelCropped(252, offset, 120, 20, RedHue, "Offline");
 
-                            this.AddButton(380, offset - 1, 0xFA5, 0xFA7, this.GetButtonID(5, i + 50), GumpButtonType.Reply, 0);
+                            AddButton(380, offset - 1, 0xFA5, 0xFA7, GetButtonID(5, i + 50), GumpButtonType.Reply, 0);
 
                             ++index;
                         }
 
                         if (index == 0)
-                            this.AddLabel(12, 170, LabelHue, "The character list is empty.");
+                            AddLabel(12, 170, LabelHue, "The character list is empty.");
 
                         goto case AdminGumpPage.AccountDetails;
                     }
@@ -1119,9 +1119,9 @@ namespace Server.Gumps
                         if (a == null)
                             break;
 
-                        this.AddHtml(10, 125, 400, 20, this.Color(this.Center("Comments"), LabelColor32), false, false);
+                        AddHtml(10, 125, 400, 20, Color(Center("Comments"), LabelColor32), false, false);
 
-                        this.AddButtonLabeled(20, 150, this.GetButtonID(5, 4), "Add Comment");
+                        AddButtonLabeled(20, 150, GetButtonID(5, 4), "Add Comment");
 
                         StringBuilder sb = new StringBuilder();
 
@@ -1138,7 +1138,7 @@ namespace Server.Gumps
                             sb.AppendFormat("[{0} on {1}]<BR>{2}", c.AddedBy, c.LastModified, c.Content);
                         }
 
-                        this.AddHtml(20, 180, 380, 190, sb.ToString(), true, true);
+                        AddHtml(20, 180, 380, 190, sb.ToString(), true, true);
 
                         goto case AdminGumpPage.AccountDetails;
                     }
@@ -1149,9 +1149,9 @@ namespace Server.Gumps
                         if (a == null)
                             break;
 
-                        this.AddHtml(10, 125, 400, 20, this.Color(this.Center("Tags"), LabelColor32), false, false);
+                        AddHtml(10, 125, 400, 20, Color(Center("Tags"), LabelColor32), false, false);
 
-                        this.AddButtonLabeled(20, 150, this.GetButtonID(5, 5), "Add Tag");
+                        AddButtonLabeled(20, 150, GetButtonID(5, 5), "Add Tag");
 
                         StringBuilder sb = new StringBuilder();
 
@@ -1168,63 +1168,63 @@ namespace Server.Gumps
                             sb.AppendFormat("{0} = {1}", tag.Name, tag.Value);
                         }
 
-                        this.AddHtml(20, 180, 380, 190, sb.ToString(), true, true);
+                        AddHtml(20, 180, 380, 190, sb.ToString(), true, true);
 
                         goto case AdminGumpPage.AccountDetails;
                     }
                 case AdminGumpPage.Firewall:
                     {
-                        this.AddFirewallHeader();
+                        AddFirewallHeader();
 
-                        if (this.m_List == null)
-                            this.m_List = new ArrayList(Firewall.List);
+                        if (m_List == null)
+                            m_List = new ArrayList(Firewall.List);
 
-                        this.AddLabelCropped(12, 120, 358, 20, LabelHue, "IP Address");
+                        AddLabelCropped(12, 120, 358, 20, LabelHue, "IP Address");
 
                         if (listPage > 0)
-                            this.AddButton(375, 122, 0x15E3, 0x15E7, this.GetButtonID(1, 0), GumpButtonType.Reply, 0);
+                            AddButton(375, 122, 0x15E3, 0x15E7, GetButtonID(1, 0), GumpButtonType.Reply, 0);
                         else
-                            this.AddImage(375, 122, 0x25EA);
+                            AddImage(375, 122, 0x25EA);
 
-                        if ((listPage + 1) * 12 < this.m_List.Count)
-                            this.AddButton(392, 122, 0x15E1, 0x15E5, this.GetButtonID(1, 1), GumpButtonType.Reply, 0);
+                        if ((listPage + 1) * 12 < m_List.Count)
+                            AddButton(392, 122, 0x15E1, 0x15E5, GetButtonID(1, 1), GumpButtonType.Reply, 0);
                         else
-                            this.AddImage(392, 122, 0x25E6);
+                            AddImage(392, 122, 0x25E6);
 
-                        if (this.m_List.Count == 0)
-                            this.AddLabel(12, 140, LabelHue, "The firewall list is empty.");
+                        if (m_List.Count == 0)
+                            AddLabel(12, 140, LabelHue, "The firewall list is empty.");
 
-                        for (int i = 0, index = (listPage * 12); i < 12 && index >= 0 && index < this.m_List.Count; ++i, ++index)
+                        for (int i = 0, index = (listPage * 12); i < 12 && index >= 0 && index < m_List.Count; ++i, ++index)
                         {
-                            object obj = this.m_List[index];
+                            object obj = m_List[index];
 
                             if (!(obj is Firewall.IFirewallEntry))
                                 break;
 
                             int offset = 140 + (i * 20);
 
-                            this.AddLabelCropped(12, offset, 358, 20, LabelHue, obj.ToString());
-                            this.AddButton(380, offset - 1, 0xFA5, 0xFA7, this.GetButtonID(6, index + 4), GumpButtonType.Reply, 0);
+                            AddLabelCropped(12, offset, 358, 20, LabelHue, obj.ToString());
+                            AddButton(380, offset - 1, 0xFA5, 0xFA7, GetButtonID(6, index + 4), GumpButtonType.Reply, 0);
                         }
 
                         break;
                     }
                 case AdminGumpPage.FirewallInfo:
                     {
-                        this.AddFirewallHeader();
+                        AddFirewallHeader();
 
                         if (!(state is Firewall.IFirewallEntry))
                             break;
 
-                        this.AddHtml(10, 125, 400, 20, this.Color(this.Center(state.ToString()), LabelColor32), false, false);
+                        AddHtml(10, 125, 400, 20, Color(Center(state.ToString()), LabelColor32), false, false);
 
-                        this.AddButtonLabeled(20, 150, this.GetButtonID(6, 3), "Remove");
+                        AddButtonLabeled(20, 150, GetButtonID(6, 3), "Remove");
 
-                        this.AddHtml(10, 175, 400, 20, this.Color(this.Center("Potentially Affected Accounts"), LabelColor32), false, false);
+                        AddHtml(10, 175, 400, 20, Color(Center("Potentially Affected Accounts"), LabelColor32), false, false);
 
-                        if (this.m_List == null)
+                        if (m_List == null)
                         {
-                            this.m_List = new ArrayList();
+                            m_List = new ArrayList();
 
                             foreach (Account acct in Accounts.GetAccounts())
                             {
@@ -1236,31 +1236,31 @@ namespace Server.Gumps
                                 {
                                     if (((Firewall.IFirewallEntry)state).IsBlocked(loginList[i]))
                                     {
-                                        this.m_List.Add(acct);
+                                        m_List.Add(acct);
                                         break;
                                     }
                                 }
                             }
 
-                            this.m_List.Sort(AccountComparer.Instance);
+                            m_List.Sort(AccountComparer.Instance);
                         }
 
                         if (listPage > 0)
-                            this.AddButton(375, 177, 0x15E3, 0x15E7, this.GetButtonID(1, 0), GumpButtonType.Reply, 0);
+                            AddButton(375, 177, 0x15E3, 0x15E7, GetButtonID(1, 0), GumpButtonType.Reply, 0);
                         else
-                            this.AddImage(375, 177, 0x25EA);
+                            AddImage(375, 177, 0x25EA);
 
-                        if ((listPage + 1) * 12 < this.m_List.Count)
-                            this.AddButton(392, 177, 0x15E1, 0x15E5, this.GetButtonID(1, 1), GumpButtonType.Reply, 0);
+                        if ((listPage + 1) * 12 < m_List.Count)
+                            AddButton(392, 177, 0x15E1, 0x15E5, GetButtonID(1, 1), GumpButtonType.Reply, 0);
                         else
-                            this.AddImage(392, 177, 0x25E6);
+                            AddImage(392, 177, 0x25E6);
 
-                        if (this.m_List.Count == 0)
-                            this.AddLabelCropped(12, 200, 398, 20, LabelHue, "No accounts found.");
+                        if (m_List.Count == 0)
+                            AddLabelCropped(12, 200, 398, 20, LabelHue, "No accounts found.");
 
-                        for (int i = 0, index = (listPage * 9); i < 9 && index >= 0 && index < this.m_List.Count; ++i, ++index)
+                        for (int i = 0, index = (listPage * 9); i < 9 && index >= 0 && index < m_List.Count; ++i, ++index)
                         {
-                            Account a = this.m_List[index] as Account;
+                            Account a = m_List[index] as Account;
 
                             if (a == null)
                                 continue;
@@ -1272,17 +1272,17 @@ namespace Server.Gumps
 
                             GetAccountInfo(a, out accessLevel, out online);
 
-                            this.AddLabelCropped(12, offset, 120, 20, LabelHue, a.Username);
-                            this.AddLabelCropped(132, offset, 120, 20, LabelHue, FormatAccessLevel(accessLevel));
+                            AddLabelCropped(12, offset, 120, 20, LabelHue, a.Username);
+                            AddLabelCropped(132, offset, 120, 20, LabelHue, FormatAccessLevel(accessLevel));
 
                             if (online)
-                                this.AddLabelCropped(252, offset, 120, 20, GreenHue, "Online");
+                                AddLabelCropped(252, offset, 120, 20, GreenHue, "Online");
                             else if (a.Banned)
-                                this.AddLabelCropped(252, offset, 120, 20, RedHue, "Banned");
+                                AddLabelCropped(252, offset, 120, 20, RedHue, "Banned");
                             else
-                                this.AddLabelCropped(252, offset, 120, 20, RedHue, "Offline");
+                                AddLabelCropped(252, offset, 120, 20, RedHue, "Offline");
 
-                            this.AddButton(380, offset - 1, 0xFA5, 0xFA7, this.GetButtonID(5, index + 56), GumpButtonType.Reply, 0);
+                            AddButton(380, offset - 1, 0xFA5, 0xFA7, GetButtonID(5, index + 56), GumpButtonType.Reply, 0);
                         }
 
                         break;
@@ -1292,51 +1292,51 @@ namespace Server.Gumps
 
         public void AddTextField(int x, int y, int width, int height, int index)
         {
-            this.AddBackground(x - 2, y - 2, width + 4, height + 4, 0x2486);
-            this.AddTextEntry(x + 2, y + 2, width - 4, height - 4, 0, index, "");
+            AddBackground(x - 2, y - 2, width + 4, height + 4, 0x2486);
+            AddTextEntry(x + 2, y + 2, width - 4, height - 4, 0, index, "");
         }
 
         public void AddClientHeader()
         {
-            this.AddTextField(200, 20, 200, 20, 0);
-            this.AddButtonLabeled(200, 50, this.GetButtonID(4, 0), "Search For Name");
-            this.AddButtonLabeled(200, 80, this.GetButtonID(4, 1), "Search For IP Address");
+            AddTextField(200, 20, 200, 20, 0);
+            AddButtonLabeled(200, 50, GetButtonID(4, 0), "Search For Name");
+            AddButtonLabeled(200, 80, GetButtonID(4, 1), "Search For IP Address");
         }
 
         public void AddAccountHeader()
         {
-            this.AddPage(1);
+            AddPage(1);
 
-            this.AddLabel(200, 20, LabelHue, "Name:");
-            this.AddTextField(250, 20, 150, 20, 0);
+            AddLabel(200, 20, LabelHue, "Name:");
+            AddTextField(250, 20, 150, 20, 0);
 
-            this.AddLabel(200, 50, LabelHue, "Pass:");
-            this.AddTextField(250, 50, 150, 20, 1);
+            AddLabel(200, 50, LabelHue, "Pass:");
+            AddTextField(250, 50, 150, 20, 1);
 
-            this.AddButtonLabeled(200, 80, this.GetButtonID(5, 6), "Add");
-            this.AddButtonLabeled(290, 80, this.GetButtonID(5, 7), "Search");
+            AddButtonLabeled(200, 80, GetButtonID(5, 6), "Add");
+            AddButtonLabeled(290, 80, GetButtonID(5, 7), "Search");
 
-            this.AddButton(384, 84, 0x15E1, 0x15E5, 0, GumpButtonType.Page, 2);
+            AddButton(384, 84, 0x15E1, 0x15E5, 0, GumpButtonType.Page, 2);
 
-            this.AddPage(2);
+            AddPage(2);
 
-            this.AddButtonLabeled(200, 10, this.GetButtonID(5, 31), "View All: Inactive");
-            this.AddButtonLabeled(200, 30, this.GetButtonID(5, 32), "View All: Banned");
-            this.AddButtonLabeled(200, 50, this.GetButtonID(5, 26), "View All: Shared");
-            this.AddButtonLabeled(200, 70, this.GetButtonID(5, 33), "View All: Empty");
-            this.AddButtonLabeled(200, 90, this.GetButtonID(5, 30), "View All: TotalGameTime");
+            AddButtonLabeled(200, 10, GetButtonID(5, 31), "View All: Inactive");
+            AddButtonLabeled(200, 30, GetButtonID(5, 32), "View All: Banned");
+            AddButtonLabeled(200, 50, GetButtonID(5, 26), "View All: Shared");
+            AddButtonLabeled(200, 70, GetButtonID(5, 33), "View All: Empty");
+            AddButtonLabeled(200, 90, GetButtonID(5, 30), "View All: TotalGameTime");
 
-            this.AddButton(384, 84, 0x15E1, 0x15E5, 0, GumpButtonType.Page, 1);
+            AddButton(384, 84, 0x15E1, 0x15E5, 0, GumpButtonType.Page, 1);
 
-            this.AddPage(0);
+            AddPage(0);
         }
 
         public void AddFirewallHeader()
         {
-            this.AddTextField(200, 20, 200, 20, 0);
-            this.AddButtonLabeled(320, 50, this.GetButtonID(6, 0), "Search");
-            this.AddButtonLabeled(200, 50, this.GetButtonID(6, 1), "Add (Input)");
-            this.AddButtonLabeled(200, 80, this.GetButtonID(6, 2), "Add (Target)");
+            AddTextField(200, 20, 200, 20, 0);
+            AddButtonLabeled(320, 50, GetButtonID(6, 0), "Search");
+            AddButtonLabeled(200, 50, GetButtonID(6, 1), "Add (Input)");
+            AddButtonLabeled(200, 80, GetButtonID(6, 2), "Add (Target)");
         }
 
         private static ArrayList GetAllSharedAccounts()
@@ -1674,19 +1674,19 @@ namespace Server.Gumps
             if (val < 0)
                 return;
 
-            Mobile from = this.m_From;
+            Mobile from = m_From;
 
             if (from.AccessLevel < AccessLevel.Administrator)
                 return;
 
-            if (this.m_PageType == AdminGumpPage.Accounts)
+            if (m_PageType == AdminGumpPage.Accounts)
             {
-                ArrayList list = this.m_List;
-                ArrayList rads = this.m_State as ArrayList;
+                ArrayList list = m_List;
+                ArrayList rads = m_State as ArrayList;
 
                 if (list != null && rads != null)
                 {
-                    for (int i = 0, v = this.m_ListPage * 12; i < 12 && v < list.Count; ++i, ++v)
+                    for (int i = 0, v = m_ListPage * 12; i < 12 && v < list.Count; ++i, ++v)
                     {
                         object obj = list[v];
 
@@ -1745,15 +1745,15 @@ namespace Server.Gumps
                         {
                             case 0:
                                 {
-                                    if (this.m_List != null && this.m_ListPage > 0)
-                                        from.SendGump(new AdminGump(from, this.m_PageType, this.m_ListPage - 1, this.m_List, null, this.m_State));
+                                    if (m_List != null && m_ListPage > 0)
+                                        from.SendGump(new AdminGump(from, m_PageType, m_ListPage - 1, m_List, null, m_State));
 
                                     break;
                                 }
                             case 1:
                                 {
-                                    if (this.m_List != null /*&& (m_ListPage + 1) * 12 < m_List.Count*/)
-                                        from.SendGump(new AdminGump(from, this.m_PageType, this.m_ListPage + 1, this.m_List, null, this.m_State));
+                                    if (m_List != null /*&& (m_ListPage + 1) * 12 < m_List.Count*/)
+                                        from.SendGump(new AdminGump(from, m_PageType, m_ListPage + 1, m_List, null, m_State));
 
                                     break;
                                 }
@@ -1797,40 +1797,40 @@ namespace Server.Gumps
                                 page = AdminGumpPage.Administer_Maintenance;
                                 break;
                             case 101:
-                                this.InvokeCommand("CreateWorld nogump");
+                                InvokeCommand("CreateWorld nogump");
                                 notice = "The world has been created.";
                                 break;
                             case 102:
-                                this.InvokeCommand("DeleteWorld nogump");
+                                InvokeCommand("DeleteWorld nogump");
                                 notice = "The world has been deleted.";
                                 break;
                             case 103:
-                                this.InvokeCommand("RecreateWorld nogump");
+                                InvokeCommand("RecreateWorld nogump");
                                 notice = "The world has been recreated.";
                                 break;
                             case 110:
-                                this.InvokeCommand("Freeze");
+                                InvokeCommand("Freeze");
                                 notice = "Target bounding points.";
                                 break;
                             case 120:
-                                this.InvokeCommand("Unfreeze");
+                                InvokeCommand("Unfreeze");
                                 notice = "Target bounding points.";
                                 break;
                             case 200:
-                                this.InvokeCommand("Save");
+                                InvokeCommand("Save");
                                 notice = "The world has been saved.";
                                 break;
                             case 201:
-                                this.Shutdown(false, true);
+                                Shutdown(false, true);
                                 break;
                             case 202:
-                                this.Shutdown(false, false);
+                                Shutdown(false, false);
                                 break;
                             case 203:
-                                this.Shutdown(true, true);
+                                Shutdown(true, true);
                                 break;
                             case 204:
-                                this.Shutdown(true, false);
+                                Shutdown(true, false);
                                 break;
                             case 210:
                             case 211:
@@ -1845,48 +1845,48 @@ namespace Server.Gumps
                                     else
                                     {
                                         notice = "Your message has been broadcasted.";
-                                        this.InvokeCommand(String.Format("{0} {1}", index == 210 ? "BC" : "SM", text));
+                                        InvokeCommand(String.Format("{0} {1}", index == 210 ? "BC" : "SM", text));
                                     }
 
                                     break;
                                 }
 
                             case 300:
-                                this.InvokeCommand("Kick");
+                                InvokeCommand("Kick");
                                 notice = "Target the player to kick.";
                                 break;
                             case 301:
-                                this.InvokeCommand("Ban");
+                                InvokeCommand("Ban");
                                 notice = "Target the player to ban.";
                                 break;
                             case 302:
-                                this.InvokeCommand("Firewall");
+                                InvokeCommand("Firewall");
                                 notice = "Target the player to firewall.";
                                 break;
                             case 303:
                                 page = AdminGumpPage.Administer_Access_Lockdown;
                                 break;
                             case 310:
-                                this.InvokeCommand("Set AccessLevel Player");
+                                InvokeCommand("Set AccessLevel Player");
                                 notice = "Target the player to change their access level. (Player)";
                                 break;
                             case 311:
-                                this.InvokeCommand("Set AccessLevel Counselor");
+                                InvokeCommand("Set AccessLevel Counselor");
                                 notice = "Target the player to change their access level. (Counselor)";
                                 break;
                             case 312:
-                                this.InvokeCommand("Set AccessLevel GameMaster");
+                                InvokeCommand("Set AccessLevel GameMaster");
                                 notice = "Target the player to change their access level. (Game Master)";
                                 break;
                             case 313:
-                                this.InvokeCommand("Set AccessLevel Seer");
+                                InvokeCommand("Set AccessLevel Seer");
                                 notice = "Target the player to change their access level. (Seer)";
                                 break;
                             case 314:
                                 {
                                     if (from.AccessLevel > AccessLevel.Administrator)
                                     {
-                                        this.InvokeCommand("Set AccessLevel Administrator");
+                                        InvokeCommand("Set AccessLevel Administrator");
                                         notice = "Target the player to change their access level. (Administrator)";
                                     }
 
@@ -1897,7 +1897,7 @@ namespace Server.Gumps
                                 {
                                     if (from.AccessLevel > AccessLevel.Developer)
                                     {
-                                        this.InvokeCommand("Set AccessLevel Developer");
+                                        InvokeCommand("Set AccessLevel Developer");
                                         notice = "Target the player to change their access level. (Developer)";
                                     }
 
@@ -1908,7 +1908,7 @@ namespace Server.Gumps
                                 {
                                     if (from.AccessLevel >= AccessLevel.Owner)
                                     {
-                                        this.InvokeCommand("Set AccessLevel Owner");
+                                        InvokeCommand("Set AccessLevel Owner");
                                         notice = "Target the player to change their access level. (Owner)";
                                     }
 
@@ -1919,79 +1919,79 @@ namespace Server.Gumps
                                 notice = "Enter search terms to add objects.";
                                 break;
                             case 401:
-                                this.InvokeCommand("Remove");
+                                InvokeCommand("Remove");
                                 notice = "Target the item or mobile to remove.";
                                 break;
                             case 402:
-                                this.InvokeCommand("Dupe");
+                                InvokeCommand("Dupe");
                                 notice = "Target the item to dupe.";
                                 break;
                             case 403:
-                                this.InvokeCommand("DupeInBag");
+                                InvokeCommand("DupeInBag");
                                 notice = "Target the item to dupe. The item will be duped at it's current location.";
                                 break;
                             case 404:
-                                this.InvokeCommand("Props");
+                                InvokeCommand("Props");
                                 notice = "Target the item or mobile to inspect.";
                                 break;
                             case 405:
-                                this.InvokeCommand("Skills");
+                                InvokeCommand("Skills");
                                 notice = "Target a mobile to view their skills.";
                                 break;
                             case 406:
-                                this.InvokeCommand("Set Blessed False");
+                                InvokeCommand("Set Blessed False");
                                 notice = "Target the mobile to make mortal.";
                                 break;
                             case 407:
-                                this.InvokeCommand("Set Blessed True");
+                                InvokeCommand("Set Blessed True");
                                 notice = "Target the mobile to make immortal.";
                                 break;
                             case 408:
-                                this.InvokeCommand("Set Squelched True");
+                                InvokeCommand("Set Squelched True");
                                 notice = "Target the mobile to squelch.";
                                 break;
                             case 409:
-                                this.InvokeCommand("Set Squelched False");
+                                InvokeCommand("Set Squelched False");
                                 notice = "Target the mobile to unsquelch.";
                                 break;
                             case 410:
-                                this.InvokeCommand("Set Frozen True");
+                                InvokeCommand("Set Frozen True");
                                 notice = "Target the mobile to freeze.";
                                 break;
                             case 411:
-                                this.InvokeCommand("Set Frozen False");
+                                InvokeCommand("Set Frozen False");
                                 notice = "Target the mobile to unfreeze.";
                                 break;
                             case 412:
-                                this.InvokeCommand("Set Hidden True");
+                                InvokeCommand("Set Hidden True");
                                 notice = "Target the mobile to hide.";
                                 break;
                             case 413:
-                                this.InvokeCommand("Set Hidden False");
+                                InvokeCommand("Set Hidden False");
                                 notice = "Target the mobile to unhide.";
                                 break;
                             case 414:
-                                this.InvokeCommand("Kill");
+                                InvokeCommand("Kill");
                                 notice = "Target the mobile to kill.";
                                 break;
                             case 415:
-                                this.InvokeCommand("Resurrect");
+                                InvokeCommand("Resurrect");
                                 notice = "Target the mobile to resurrect.";
                                 break;
                             case 416:
-                                this.InvokeCommand("Move");
+                                InvokeCommand("Move");
                                 notice = "Target the item or mobile to move.";
                                 break;
                             case 417:
-                                this.InvokeCommand("Wipe");
+                                InvokeCommand("Wipe");
                                 notice = "Target bounding points.";
                                 break;
                             case 418:
-                                this.InvokeCommand("Tele");
+                                InvokeCommand("Tele");
                                 notice = "Choose your destination.";
                                 break;
                             case 419:
-                                this.InvokeCommand("Multi Tele");
+                                InvokeCommand("Multi Tele");
                                 notice = "Choose your destination.";
                                 break;
                             case 500:
@@ -2064,47 +2064,47 @@ namespace Server.Gumps
                                     break;
                                 }
                             case 600:
-                                this.InvokeCommand("RebuildCategorization");
+                                InvokeCommand("RebuildCategorization");
                                 notice = "Categorization menu has been regenerated. The server should be restarted.";
                                 break;
                             case 601:
-                                this.InvokeCommand("DocGen");
+                                InvokeCommand("DocGen");
                                 notice = "Documentation has been generated.";
                                 break;
                             case 602:
-                                this.InvokeCommand("GenBounds");
+                                InvokeCommand("GenBounds");
                                 notice = "Bounds.bin rebuild. Restart server to take effect.";
                                 break;
                             case 603:
-                                this.InvokeCommand("GenReports");
+                                InvokeCommand("GenReports");
                                 notice = "Reports generated.";
                                 break;
                             case 604:
-                                this.InvokeCommand("DumpTimers");
+                                InvokeCommand("DumpTimers");
                                 notice = "Timers dumped.";
                                 break;
                             case 605:
-                                this.InvokeCommand("CountObjects");
+                                InvokeCommand("CountObjects");
                                 notice = "Objects counted.";
                                 break;
                             case 606:
-                                this.InvokeCommand("ProfileWorld");
+                                InvokeCommand("ProfileWorld");
                                 notice = "World profiled.";
                                 break;
                             case 607:
-                                this.InvokeCommand("WriteProfiles");
+                                InvokeCommand("WriteProfiles");
                                 notice = "Profiles written.";
                                 break;
                             case 608:
-                                this.InvokeCommand("TraceInternal");
+                                InvokeCommand("TraceInternal");
                                 notice = "Tracing completed.";
                                 break;
                             case 609:
-                                this.InvokeCommand("TraceExpanded");
+                                InvokeCommand("TraceExpanded");
                                 notice = "Tracing completed.";
                                 break;
                             case 610:
-                                this.InvokeCommand("SetProfiles");
+                                InvokeCommand("SetProfiles");
                                 notice = "Profiles toggled. Use with caution. This increases server load.";
                                 break;
                         }
@@ -2114,19 +2114,19 @@ namespace Server.Gumps
                         switch (index)
                         {
                             case 400:
-                                this.InvokeCommand("Add");
+                                InvokeCommand("Add");
                                 break;
                             case 111:
-                                this.InvokeCommand("FreezeWorld");
+                                InvokeCommand("FreezeWorld");
                                 break;
                             case 112:
-                                this.InvokeCommand("FreezeMap");
+                                InvokeCommand("FreezeMap");
                                 break;
                             case 121:
-                                this.InvokeCommand("UnfreezeWorld");
+                                InvokeCommand("UnfreezeWorld");
                                 break;
                             case 122:
-                                this.InvokeCommand("UnfreezeMap");
+                                InvokeCommand("UnfreezeMap");
                                 break;
                         }
 
@@ -2207,9 +2207,9 @@ namespace Server.Gumps
                                 {
                                     index -= 2;
 
-                                    if (this.m_List != null && index >= 0 && index < this.m_List.Count)
+                                    if (m_List != null && index >= 0 && index < m_List.Count)
                                     {
-                                        NetState ns = this.m_List[index] as NetState;
+                                        NetState ns = m_List[index] as NetState;
 
                                         if (ns == null)
                                             break;
@@ -2234,32 +2234,32 @@ namespace Server.Gumps
                         switch (index)
                         {
                             case 0:
-                                from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Information, 0, null, null, this.m_State));
+                                from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Information, 0, null, null, m_State));
                                 break;
                             case 1:
-                                from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Characters, 0, null, null, this.m_State));
+                                from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Characters, 0, null, null, m_State));
                                 break;
                             case 2:
-                                from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Comments, 0, null, null, this.m_State));
+                                from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Comments, 0, null, null, m_State));
                                 break;
                             case 3:
-                                from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Tags, 0, null, null, this.m_State));
+                                from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Tags, 0, null, null, m_State));
                                 break;
                             case 13:
-                                from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Access, 0, null, null, this.m_State));
+                                from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Access, 0, null, null, m_State));
                                 break;
                             case 14:
-                                from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Access_ClientIPs, 0, null, null, this.m_State));
+                                from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Access_ClientIPs, 0, null, null, m_State));
                                 break;
                             case 15:
-                                from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Access_Restrictions, 0, null, null, this.m_State));
+                                from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Access_Restrictions, 0, null, null, m_State));
                                 break;
                             case 4:
-                                from.Prompt = new AddCommentPrompt(this.m_State as Account);
+                                from.Prompt = new AddCommentPrompt(m_State as Account);
                                 from.SendMessage("Enter the new account comment.");
                                 break;
                             case 5:
-                                from.Prompt = new AddTagNamePrompt(this.m_State as Account);
+                                from.Prompt = new AddTagNamePrompt(m_State as Account);
                                 from.SendMessage("Enter the new tag name.");
                                 break;
                             case 6:
@@ -2297,7 +2297,7 @@ namespace Server.Gumps
                                         }
                                     }
 
-                                    from.SendGump(new AdminGump(from, dispAccount != null ? AdminGumpPage.AccountDetails_Information : this.m_PageType, this.m_ListPage, this.m_List, notice, dispAccount != null ? dispAccount : this.m_State));
+                                    from.SendGump(new AdminGump(from, dispAccount != null ? AdminGumpPage.AccountDetails_Information : m_PageType, m_ListPage, m_List, notice, dispAccount != null ? dispAccount : m_State));
                                     break;
                                 }
                             case 7:
@@ -2334,15 +2334,15 @@ namespace Server.Gumps
                                     break;
                                 }
                             case 8:
-                                from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_ChangePassword, 0, null, null, this.m_State));
+                                from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_ChangePassword, 0, null, null, m_State));
                                 break;
                             case 9:
-                                from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_ChangeAccess, 0, null, null, this.m_State));
+                                from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_ChangeAccess, 0, null, null, m_State));
                                 break;
                             case 10:
                             case 11:
                                 {
-                                    Account a = this.m_State as Account;
+                                    Account a = m_State as Account;
 
                                     if (a == null)
                                         break;
@@ -2350,7 +2350,7 @@ namespace Server.Gumps
                                     a.SetUnspecifiedBan(from);
                                     a.Banned = (index == 10);
                                     CommandLogging.WriteLine(from, "{0} {1} {3} account {2}", from.AccessLevel, CommandLogging.Format(from), a.Username, a.Banned ? "banning" : "unbanning");
-                                    from.SendGump(new AdminGump(from, this.m_PageType, this.m_ListPage, this.m_List, String.Format("The account has been {0}.", a.Banned ? "banned" : "unbanned"), this.m_State));
+                                    from.SendGump(new AdminGump(from, m_PageType, m_ListPage, m_List, String.Format("The account has been {0}.", a.Banned ? "banned" : "unbanned"), m_State));
 
                                     if (index == 10)
                                         from.SendGump(new BanDurationGump(a));
@@ -2359,7 +2359,7 @@ namespace Server.Gumps
                                 }
                             case 12:
                                 {
-                                    Account a = this.m_State as Account;
+                                    Account a = m_State as Account;
 
                                     if (a == null)
                                         break;
@@ -2389,13 +2389,13 @@ namespace Server.Gumps
                                         CommandLogging.WriteLine(from, "{0} {1} changing password of account {2}", from.AccessLevel, CommandLogging.Format(from), a.Username);
                                     }
 
-                                    from.SendGump(new AdminGump(from, page, 0, null, notice, this.m_State));
+                                    from.SendGump(new AdminGump(from, page, 0, null, notice, m_State));
 
                                     break;
                                 }
                             case 16: // view shared
                                 {
-                                    Account a = this.m_State as Account;
+                                    Account a = m_State as Account;
 
                                     if (a == null)
                                         break;
@@ -2408,18 +2408,18 @@ namespace Server.Gumps
                                     }
                                     else if (a.LoginIPs.Length > 0)
                                     {
-                                        from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Access_ClientIPs, 0, null, "There are no other accounts which share an address with this one.", this.m_State));
+                                        from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Access_ClientIPs, 0, null, "There are no other accounts which share an address with this one.", m_State));
                                     }
                                     else
                                     {
-                                        from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Access_ClientIPs, 0, null, "This account has not yet been accessed.", this.m_State));
+                                        from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Access_ClientIPs, 0, null, "This account has not yet been accessed.", m_State));
                                     }
 
                                     break;
                                 }
                             case 17: // ban shared
                                 {
-                                    Account a = this.m_State as Account;
+                                    Account a = m_State as Account;
 
                                     if (a == null)
                                         break;
@@ -2439,18 +2439,18 @@ namespace Server.Gumps
                                     }
                                     else if (a.LoginIPs.Length > 0)
                                     {
-                                        from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Access_ClientIPs, 0, null, "There are no accounts which share an address with this one.", this.m_State));
+                                        from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Access_ClientIPs, 0, null, "There are no accounts which share an address with this one.", m_State));
                                     }
                                     else
                                     {
-                                        from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Access_ClientIPs, 0, null, "This account has not yet been accessed.", this.m_State));
+                                        from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Access_ClientIPs, 0, null, "This account has not yet been accessed.", m_State));
                                     }
 
                                     break;
                                 }
                             case 18: // firewall all
                                 {
-                                    Account a = this.m_State as Account;
+                                    Account a = m_State as Account;
 
                                     if (a == null)
                                         break;
@@ -2461,14 +2461,14 @@ namespace Server.Gumps
                                     }
                                     else
                                     {
-                                        from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Access_ClientIPs, 0, null, "This account has not yet been accessed.", this.m_State));
+                                        from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Access_ClientIPs, 0, null, "This account has not yet been accessed.", m_State));
                                     }
 
                                     break;
                                 }
                             case 19: // add
                                 {
-                                    Account a = this.m_State as Account;
+                                    Account a = m_State as Account;
 
                                     if (a == null)
                                         break;
@@ -2509,7 +2509,7 @@ namespace Server.Gumps
                                         }
                                     }
 
-                                    from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Access_Restrictions, 0, null, notice, this.m_State));
+                                    from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Access_Restrictions, 0, null, notice, m_State));
 
                                     break;
                                 }
@@ -2519,7 +2519,7 @@ namespace Server.Gumps
                             case 23:
                             case 24:
                                 {
-                                    Account a = this.m_State as Account;
+                                    Account a = m_State as Account;
 
                                     if (a == null)
                                         break;
@@ -2557,19 +2557,19 @@ namespace Server.Gumps
                                         a.AccessLevel = newLevel;
 
                                         CommandLogging.WriteLine(from, "{0} {1} changing access level of account {2} to {3}", from.AccessLevel, CommandLogging.Format(from), a.Username, a.AccessLevel);
-                                        from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Information, 0, null, "The access level has been changed.", this.m_State));
+                                        from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Information, 0, null, "The access level has been changed.", m_State));
                                     }
 
                                     break;
                                 }
                             case 25:
                                 {
-                                    Account a = this.m_State as Account;
+                                    Account a = m_State as Account;
 
                                     if (a == null)
                                         break;
 
-                                    from.SendGump(new WarningGump(1060635, 30720, String.Format("<center>Account of {0}</center><br>You are about to <em><basefont color=red>permanently delete</basefont></em> the account. Likewise, all characters on the account will be deleted, including equiped, inventory, and banked items. Any houses tied to the account will be demolished.<br><br>Do you wish to continue?", a.Username), 0xFFC000, 420, 280, new WarningGumpCallback(AccountDelete_Callback), this.m_State));
+                                    from.SendGump(new WarningGump(1060635, 30720, String.Format("<center>Account of {0}</center><br>You are about to <em><basefont color=red>permanently delete</basefont></em> the account. Likewise, all characters on the account will be deleted, including equiped, inventory, and banked items. Any houses tied to the account will be demolished.<br><br>Do you wish to continue?", a.Username), 0xFFC000, 420, 280, new WarningGumpCallback(AccountDelete_Callback), m_State));
                                     break;
                                 }
                             case 26: // View all shared accounts
@@ -2579,43 +2579,43 @@ namespace Server.Gumps
                                 }
                             case 27: // Ban marked
                                 {
-                                    ArrayList list = this.m_List;
-                                    ArrayList rads = this.m_State as ArrayList;
+                                    ArrayList list = m_List;
+                                    ArrayList rads = m_State as ArrayList;
 
                                     if (list == null || rads == null)
                                         break;
 
                                     if (rads.Count > 0)
-                                        from.SendGump(new WarningGump(1060635, 30720, String.Format("You are about to ban {0} marked account{1}. Be cautioned, the only way to reverse this is by hand--manually unbanning each account.<br><br>Do you wish to continue?", rads.Count, rads.Count == 1 ? "" : "s"), 0xFFC000, 420, 280, new WarningGumpCallback(Marked_Callback), new object[] { true, list, rads, this.m_ListPage }));
+                                        from.SendGump(new WarningGump(1060635, 30720, String.Format("You are about to ban {0} marked account{1}. Be cautioned, the only way to reverse this is by hand--manually unbanning each account.<br><br>Do you wish to continue?", rads.Count, rads.Count == 1 ? "" : "s"), 0xFFC000, 420, 280, new WarningGumpCallback(Marked_Callback), new object[] { true, list, rads, m_ListPage }));
                                     else
-                                        from.SendGump(new NoticeGump(1060637, 30720, "You have not yet marked any accounts. Place a check mark next to the accounts you wish to ban and then try again.", 0xFFC000, 420, 280, new NoticeGumpCallback(ResendGump_Callback), new object[] { list, rads, this.m_ListPage }));
+                                        from.SendGump(new NoticeGump(1060637, 30720, "You have not yet marked any accounts. Place a check mark next to the accounts you wish to ban and then try again.", 0xFFC000, 420, 280, new NoticeGumpCallback(ResendGump_Callback), new object[] { list, rads, m_ListPage }));
 
                                     break;
                                 }
                             case 28: // Delete marked
                                 {
-                                    ArrayList list = this.m_List;
-                                    ArrayList rads = this.m_State as ArrayList;
+                                    ArrayList list = m_List;
+                                    ArrayList rads = m_State as ArrayList;
 
                                     if (list == null || rads == null)
                                         break;
 
                                     if (rads.Count > 0)
-                                        from.SendGump(new WarningGump(1060635, 30720, String.Format("You are about to <em><basefont color=red>permanently delete</basefont></em> {0} marked account{1}. Likewise, all characters on the account{1} will be deleted, including equiped, inventory, and banked items. Any houses tied to the account{1} will be demolished.<br><br>Do you wish to continue?", rads.Count, rads.Count == 1 ? "" : "s"), 0xFFC000, 420, 280, new WarningGumpCallback(Marked_Callback), new object[] { false, list, rads, this.m_ListPage }));
+                                        from.SendGump(new WarningGump(1060635, 30720, String.Format("You are about to <em><basefont color=red>permanently delete</basefont></em> {0} marked account{1}. Likewise, all characters on the account{1} will be deleted, including equiped, inventory, and banked items. Any houses tied to the account{1} will be demolished.<br><br>Do you wish to continue?", rads.Count, rads.Count == 1 ? "" : "s"), 0xFFC000, 420, 280, new WarningGumpCallback(Marked_Callback), new object[] { false, list, rads, m_ListPage }));
                                     else
-                                        from.SendGump(new NoticeGump(1060637, 30720, "You have not yet marked any accounts. Place a check mark next to the accounts you wish to ban and then try again.", 0xFFC000, 420, 280, new NoticeGumpCallback(ResendGump_Callback), new object[] { list, rads, this.m_ListPage }));
+                                        from.SendGump(new NoticeGump(1060637, 30720, "You have not yet marked any accounts. Place a check mark next to the accounts you wish to ban and then try again.", 0xFFC000, 420, 280, new NoticeGumpCallback(ResendGump_Callback), new object[] { list, rads, m_ListPage }));
 
                                     break;
                                 }
                             case 29: // Mark all
                                 {
-                                    ArrayList list = this.m_List;
-                                    ArrayList rads = this.m_State as ArrayList;
+                                    ArrayList list = m_List;
+                                    ArrayList rads = m_State as ArrayList;
 
                                     if (list == null || rads == null)
                                         break;
 
-                                    from.SendGump(new AdminGump(from, AdminGumpPage.Accounts, this.m_ListPage, this.m_List, null, new ArrayList(list)));
+                                    from.SendGump(new AdminGump(from, AdminGumpPage.Accounts, m_ListPage, m_List, null, new ArrayList(list)));
 
                                     break;
                                 }
@@ -2714,8 +2714,8 @@ namespace Server.Gumps
                                 }
                             case 35: // Unmark house owners
                                 {
-                                    ArrayList list = this.m_List;
-                                    ArrayList rads = this.m_State as ArrayList;
+                                    ArrayList list = m_List;
+                                    ArrayList rads = m_State as ArrayList;
 
                                     if (list == null || rads == null)
                                         break;
@@ -2734,13 +2734,13 @@ namespace Server.Gumps
                                             newRads.Add(acct);
                                     }
 
-                                    from.SendGump(new AdminGump(from, AdminGumpPage.Accounts, this.m_ListPage, this.m_List, null, newRads));
+                                    from.SendGump(new AdminGump(from, AdminGumpPage.Accounts, m_ListPage, m_List, null, newRads));
 
                                     break;
                                 }
                             case 36: // Clear login addresses
                                 {
-                                    Account a = this.m_State as Account;
+                                    Account a = m_State as Account;
 
                                     if (a == null)
                                         break;
@@ -2748,7 +2748,7 @@ namespace Server.Gumps
                                     IPAddress[] ips = a.LoginIPs;
 
                                     if (ips.Length == 0)
-                                        from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Access_ClientIPs, 0, null, "This account has not yet been accessed.", this.m_State));
+                                        from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Access_ClientIPs, 0, null, "This account has not yet been accessed.", m_State));
                                     else
                                         from.SendGump(new WarningGump(1060635, 30720, String.Format("You are about to clear the address list for account {0} containing {1} {2}. Do you wish to continue?", a, ips.Length, (ips.Length == 1) ? "entry" : "entries"), 0xFFC000, 420, 280, new WarningGumpCallback(RemoveLoginIPs_Callback), a));
 
@@ -2758,7 +2758,7 @@ namespace Server.Gumps
                                 {
                                     index -= 50;
 
-                                    Account a = this.m_State as Account;
+                                    Account a = m_State as Account;
 
                                     if (a != null && index >= 0 && index < a.Length)
                                     {
@@ -2771,12 +2771,12 @@ namespace Server.Gumps
                                     {
                                         index -= 6;
 
-                                        if (this.m_List != null && index >= 0 && index < this.m_List.Count)
+                                        if (m_List != null && index >= 0 && index < m_List.Count)
                                         {
-                                            if (this.m_List[index] is Account)
-                                                from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Information, 0, null, null, this.m_List[index]));
-                                            else if (this.m_List[index] is DictionaryEntry)
-                                                from.SendGump(new AdminGump(from, AdminGumpPage.Accounts, 0, (ArrayList)(((DictionaryEntry)this.m_List[index]).Value), null, new ArrayList()));
+                                            if (m_List[index] is Account)
+                                                from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Information, 0, null, null, m_List[index]));
+                                            else if (m_List[index] is DictionaryEntry)
+                                                from.SendGump(new AdminGump(from, AdminGumpPage.Accounts, 0, (ArrayList)(((DictionaryEntry)m_List[index]).Value), null, new ArrayList()));
                                         }
                                     }
 
@@ -2816,9 +2816,9 @@ namespace Server.Gumps
                                     if (results.Count == 1)
                                         from.SendGump(new AdminGump(from, AdminGumpPage.FirewallInfo, 0, null, "One match found.", results[0]));
                                     else if (results.Count > 1)
-                                        from.SendGump(new AdminGump(from, AdminGumpPage.Firewall, 0, results, String.Format("Search results for : {0}", match), this.m_State));
+                                        from.SendGump(new AdminGump(from, AdminGumpPage.Firewall, 0, results, String.Format("Search results for : {0}", match), m_State));
                                     else
-                                        from.SendGump(new AdminGump(from, this.m_PageType, this.m_ListPage, this.m_List, notice == null ? "Nothing matched your search terms." : notice, this.m_State));
+                                        from.SendGump(new AdminGump(from, m_PageType, m_ListPage, m_List, notice == null ? "Nothing matched your search terms." : notice, m_State));
 
                                     break;
                                 }
@@ -2829,11 +2829,11 @@ namespace Server.Gumps
 
                                     if (text == null || text.Length == 0)
                                     {
-                                        from.SendGump(new AdminGump(from, this.m_PageType, this.m_ListPage, this.m_List, "You must enter an address or pattern to add.", this.m_State));
+                                        from.SendGump(new AdminGump(from, m_PageType, m_ListPage, m_List, "You must enter an address or pattern to add.", m_State));
                                     }
                                     else if (!Utility.IsValidIP(text))
                                     {
-                                        from.SendGump(new AdminGump(from, this.m_PageType, this.m_ListPage, this.m_List, "That is not a valid address or pattern.", this.m_State));
+                                        from.SendGump(new AdminGump(from, m_PageType, m_ListPage, m_List, "That is not a valid address or pattern.", m_State));
                                     }
                                     else
                                     {
@@ -2849,18 +2849,18 @@ namespace Server.Gumps
                                 }
                             case 2:
                                 {
-                                    this.InvokeCommand("Firewall");
-                                    from.SendGump(new AdminGump(from, this.m_PageType, this.m_ListPage, this.m_List, "Target the player to firewall.", this.m_State));
+                                    InvokeCommand("Firewall");
+                                    from.SendGump(new AdminGump(from, m_PageType, m_ListPage, m_List, "Target the player to firewall.", m_State));
                                     break;
                                 }
                             case 3:
                                 {
-                                    if (this.m_State is Firewall.IFirewallEntry)
+                                    if (m_State is Firewall.IFirewallEntry)
                                     {
-                                        CommandLogging.WriteLine(from, "{0} {1} removing {2} from firewall list", from.AccessLevel, CommandLogging.Format(from), this.m_State);
+                                        CommandLogging.WriteLine(from, "{0} {1} removing {2} from firewall list", from.AccessLevel, CommandLogging.Format(from), m_State);
 
-                                        Firewall.Remove(this.m_State);
-                                        from.SendGump(new AdminGump(from, AdminGumpPage.Firewall, 0, null, String.Format("{0} : Removed from firewall.", this.m_State), null));
+                                        Firewall.Remove(m_State);
+                                        from.SendGump(new AdminGump(from, AdminGumpPage.Firewall, 0, null, String.Format("{0} : Removed from firewall.", m_State), null));
                                     }
 
                                     break;
@@ -2869,8 +2869,8 @@ namespace Server.Gumps
                                 {
                                     index -= 4;
 
-                                    if (this.m_List != null && index >= 0 && index < this.m_List.Count)
-                                        from.SendGump(new AdminGump(from, AdminGumpPage.FirewallInfo, 0, null, null, this.m_List[index]));
+                                    if (m_List != null && index >= 0 && index < m_List.Count)
+                                        from.SendGump(new AdminGump(from, AdminGumpPage.FirewallInfo, 0, null, null, m_List[index]));
 
                                     break;
                                 }
@@ -2880,7 +2880,7 @@ namespace Server.Gumps
                     }
                 case 7:
                     {
-                        Mobile m = this.m_State as Mobile;
+                        Mobile m = m_State as Mobile;
 
                         if (m == null)
                             break;
@@ -3010,7 +3010,7 @@ namespace Server.Gumps
                         }
 
                         if (sendGump)
-                            from.SendGump(new AdminGump(from, AdminGumpPage.ClientInfo, 0, null, notice, this.m_State));
+                            from.SendGump(new AdminGump(from, AdminGumpPage.ClientInfo, 0, null, notice, m_State));
 
                         switch (index)
                         {
@@ -3039,26 +3039,26 @@ namespace Server.Gumps
                     }
                 case 8:
                     {
-                        if (this.m_List != null && index >= 0 && index < this.m_List.Count)
+                        if (m_List != null && index >= 0 && index < m_List.Count)
                         {
-                            Account a = this.m_State as Account;
+                            Account a = m_State as Account;
 
                             if (a == null)
                                 break;
 
-                            if (this.m_PageType == AdminGumpPage.AccountDetails_Access_ClientIPs)
+                            if (m_PageType == AdminGumpPage.AccountDetails_Access_ClientIPs)
                             {
-                                from.SendGump(new WarningGump(1060635, 30720, String.Format("You are about to firewall {0}. All connection attempts from a matching IP will be refused. Are you sure?", this.m_List[index]), 0xFFC000, 420, 280, new WarningGumpCallback(Firewall_Callback), new object[] { a, this.m_List[index] }));
+                                from.SendGump(new WarningGump(1060635, 30720, String.Format("You are about to firewall {0}. All connection attempts from a matching IP will be refused. Are you sure?", m_List[index]), 0xFFC000, 420, 280, new WarningGumpCallback(Firewall_Callback), new object[] { a, m_List[index] }));
                             }
-                            else if (this.m_PageType == AdminGumpPage.AccountDetails_Access_Restrictions)
+                            else if (m_PageType == AdminGumpPage.AccountDetails_Access_Restrictions)
                             {
                                 ArrayList list = new ArrayList(a.IPRestrictions);
 
-                                list.Remove(this.m_List[index]);
+                                list.Remove(m_List[index]);
 
                                 a.IPRestrictions = (string[])list.ToArray(typeof(string));
 
-                                from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Access_Restrictions, 0, null, String.Format("{0} : Removed from list.", this.m_List[index]), a));
+                                from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Access_Restrictions, 0, null, String.Format("{0} : Removed from list.", m_List[index]), a));
                             }
                         }
 
@@ -3066,16 +3066,16 @@ namespace Server.Gumps
                     }
                 case 9:
                     {
-                        if (this.m_List != null && index >= 0 && index < this.m_List.Count)
+                        if (m_List != null && index >= 0 && index < m_List.Count)
                         {
-                            if (this.m_PageType == AdminGumpPage.AccountDetails_Access_ClientIPs)
+                            if (m_PageType == AdminGumpPage.AccountDetails_Access_ClientIPs)
                             {
-                                object obj = this.m_List[index];
+                                object obj = m_List[index];
 
                                 if (!(obj is IPAddress))
                                     break;
 
-                                Account a = this.m_State as Account;
+                                Account a = m_State as Account;
 
                                 if (a == null)
                                     break;
@@ -3085,7 +3085,7 @@ namespace Server.Gumps
                                 if (list.Count > 1 || (list.Count == 1 && !list.Contains(a)))
                                     from.SendGump(new AdminGump(from, AdminGumpPage.Accounts, 0, list, null, new ArrayList()));
                                 else
-                                    from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Access_ClientIPs, 0, null, "There are no other accounts which share that address.", this.m_State));
+                                    from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Access_ClientIPs, 0, null, "There are no other accounts which share that address.", m_State));
                             }
                         }
 
@@ -3093,16 +3093,16 @@ namespace Server.Gumps
                     }
                 case 10:
                     {
-                        if (this.m_List != null && index >= 0 && index < this.m_List.Count)
+                        if (m_List != null && index >= 0 && index < m_List.Count)
                         {
-                            if (this.m_PageType == AdminGumpPage.AccountDetails_Access_ClientIPs)
+                            if (m_PageType == AdminGumpPage.AccountDetails_Access_ClientIPs)
                             {
-                                IPAddress ip = this.m_List[index] as IPAddress;
+                                IPAddress ip = m_List[index] as IPAddress;
 
                                 if (ip == null)
                                     break;
 
-                                Account a = this.m_State as Account;
+                                Account a = m_State as Account;
 
                                 if (a == null)
                                     break;
@@ -3118,17 +3118,17 @@ namespace Server.Gumps
 
         private void Shutdown(bool restart, bool save)
         {
-            CommandLogging.WriteLine(this.m_From, "{0} {1} shutting down server (Restart: {2}) (Save: {3})", this.m_From.AccessLevel, CommandLogging.Format(this.m_From), restart, save);
+            CommandLogging.WriteLine(m_From, "{0} {1} shutting down server (Restart: {2}) (Save: {3})", m_From.AccessLevel, CommandLogging.Format(m_From), restart, save);
 
             if (save)
-                this.InvokeCommand("Save");
+                InvokeCommand("Save");
 
             Core.Kill(restart);
         }
 
         private void InvokeCommand(string c)
         {
-            CommandSystem.Handle(this.m_From, String.Format("{0}{1}", CommandSystem.Prefix, c));
+            CommandSystem.Handle(m_From, String.Format("{0}{1}", CommandSystem.Prefix, c));
         }
 
         public static void GetAccountInfo(Account a, out AccessLevel accessLevel, out bool online)
@@ -3157,20 +3157,20 @@ namespace Server.Gumps
 
             public AddCommentPrompt(Account acct)
             {
-                this.m_Account = acct;
+                m_Account = acct;
             }
 
             public override void OnCancel(Mobile from)
             {
-                from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Comments, 0, null, "Request to add comment was canceled.", this.m_Account));
+                from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Comments, 0, null, "Request to add comment was canceled.", m_Account));
             }
 
             public override void OnResponse(Mobile from, string text)
             {
-                if (this.m_Account != null)
+                if (m_Account != null)
                 {
-                    this.m_Account.Comments.Add(new AccountComment(from.RawName, text));
-                    from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Comments, 0, null, "Comment added.", this.m_Account));
+                    m_Account.Comments.Add(new AccountComment(from.RawName, text));
+                    from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Comments, 0, null, "Comment added.", m_Account));
                 }
             }
         }
@@ -3181,17 +3181,17 @@ namespace Server.Gumps
 
             public AddTagNamePrompt(Account acct)
             {
-                this.m_Account = acct;
+                m_Account = acct;
             }
 
             public override void OnCancel(Mobile from)
             {
-                from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Tags, 0, null, "Request to add tag was canceled.", this.m_Account));
+                from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Tags, 0, null, "Request to add tag was canceled.", m_Account));
             }
 
             public override void OnResponse(Mobile from, string text)
             {
-                from.Prompt = new AddTagValuePrompt(this.m_Account, text);
+                from.Prompt = new AddTagValuePrompt(m_Account, text);
                 from.SendMessage("Enter the new tag value.");
             }
         }
@@ -3203,21 +3203,21 @@ namespace Server.Gumps
 
             public AddTagValuePrompt(Account acct, string name)
             {
-                this.m_Account = acct;
-                this.m_Name = name;
+                m_Account = acct;
+                m_Name = name;
             }
 
             public override void OnCancel(Mobile from)
             {
-                from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Tags, 0, null, "Request to add tag was canceled.", this.m_Account));
+                from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Tags, 0, null, "Request to add tag was canceled.", m_Account));
             }
 
             public override void OnResponse(Mobile from, string text)
             {
-                if (this.m_Account != null)
+                if (m_Account != null)
                 {
-                    this.m_Account.AddTag(this.m_Name, text);
-                    from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Tags, 0, null, "Tag added.", this.m_Account));
+                    m_Account.AddTag(m_Name, text);
+                    from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Tags, 0, null, "Tag added.", m_Account));
                 }
             }
         }

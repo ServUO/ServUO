@@ -5,9 +5,9 @@ namespace Server.Items
         [Constructable]
         public FancyElvenTableEastAddon()
         {
-            this.AddComponent(new AddonComponent(0x3094), -1, 0, 0);
-            this.AddComponent(new AddonComponent(0x3093), 0, 0, 0);
-            this.AddComponent(new AddonComponent(0x3092), 1, 0, 0);
+            AddComponent(new AddonComponent(0x3094), -1, 0, 0);
+            AddComponent(new AddonComponent(0x3093), 0, 0, 0);
+            AddComponent(new AddonComponent(0x3092), 1, 0, 0);
         }
 
         public FancyElvenTableEastAddon(Serial serial)

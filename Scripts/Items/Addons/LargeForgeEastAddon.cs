@@ -5,10 +5,10 @@ namespace Server.Items
         [Constructable]
         public LargeForgeEastAddon()
         {
-            this.AddComponent(new ForgeComponent(0x1986), 0, 0, 0);
-            this.AddComponent(new ForgeComponent(0x198A), 0, 1, 0);
-            this.AddComponent(new ForgeComponent(0x1996), 0, 2, 0);
-            this.AddComponent(new ForgeComponent(0x1992), 0, 3, 0);
+            AddComponent(new ForgeComponent(0x1986), 0, 0, 0);
+            AddComponent(new ForgeComponent(0x198A), 0, 1, 0);
+            AddComponent(new ForgeComponent(0x1996), 0, 2, 0);
+            AddComponent(new ForgeComponent(0x1992), 0, 3, 0);
         }
 
         public LargeForgeEastAddon(Serial serial)

@@ -6,10 +6,10 @@ namespace Server.Items
         public TyballsKey()
             : base(0x1012)
         {
-            this.Hue = 0x489;
-            this.Weight = 1.0;
-            this.Name = "Tyball's Key";
-            this.Movable = false;
+            Hue = 0x489;
+            Weight = 1.0;
+            Name = "Tyball's Key";
+            Movable = false;
         }
 
         public TyballsKey(Serial serial)
@@ -30,7 +30,7 @@ namespace Server.Items
                     m.AddToBackpack(new TripartiteKey());
                     a.Delete();
                     b.Delete();
-                    this.Delete();
+                    Delete();
                     m.SendLocalizedMessage(1111649);
                 }
             }

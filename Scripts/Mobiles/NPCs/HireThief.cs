@@ -7,67 +7,67 @@ namespace Server.Mobiles
         [Constructable]
         public HireThief()
         {
-            this.SpeechHue = Utility.RandomDyedHue();
-            this.Hue = Utility.RandomSkinHue();
+            SpeechHue = Utility.RandomDyedHue();
+            Hue = Utility.RandomSkinHue();
 
-            if (this.Female = Utility.RandomBool())
+            if (Female = Utility.RandomBool())
             {
-                this.Body = 0x191;
-                this.Name = NameList.RandomName("female");
+                Body = 0x191;
+                Name = NameList.RandomName("female");
 
                 switch (Utility.Random(2))
                 {
                     case 0:
-                        this.AddItem(new Skirt(Utility.RandomNeutralHue()));
+                        AddItem(new Skirt(Utility.RandomNeutralHue()));
                         break;
                     case 1:
-                        this.AddItem(new Kilt(Utility.RandomNeutralHue()));
+                        AddItem(new Kilt(Utility.RandomNeutralHue()));
                         break;
                 }
             }
             else
             {
-                this.Body = 0x190;
-                this.Name = NameList.RandomName("male");
-                this.AddItem(new ShortPants(Utility.RandomNeutralHue()));
+                Body = 0x190;
+                Name = NameList.RandomName("male");
+                AddItem(new ShortPants(Utility.RandomNeutralHue()));
             }
-            this.Title = "the thief";
-            this.HairItemID = this.Race.RandomHair(this.Female);
-            this.HairHue = this.Race.RandomHairHue();
-            this.Race.RandomFacialHair(this);
+            Title = "the thief";
+            HairItemID = Race.RandomHair(Female);
+            HairHue = Race.RandomHairHue();
+            Race.RandomFacialHair(this);
 
-            this.SetStr(81, 95);
-            this.SetDex(86, 100);
-            this.SetInt(61, 75);
+            SetStr(81, 95);
+            SetDex(86, 100);
+            SetInt(61, 75);
 
-            this.SetDamage(10, 23);
+            SetDamage(10, 23);
 
-            this.SetSkill(SkillName.Stealing, 66.0, 97.5);
-            this.SetSkill(SkillName.Peacemaking, 65.0, 87.5);
-            this.SetSkill(SkillName.MagicResist, 25.0, 47.5);
-            this.SetSkill(SkillName.Healing, 65.0, 87.5);
-            this.SetSkill(SkillName.Tactics, 65.0, 87.5);
-            this.SetSkill(SkillName.Fencing, 65.0, 87.5);
-            this.SetSkill(SkillName.Parry, 45.0, 60.5);
-            this.SetSkill(SkillName.Lockpicking, 65, 87);
-            this.SetSkill(SkillName.Hiding, 65, 87);
-            this.SetSkill(SkillName.Snooping, 65, 87);
-            this.Fame = 100;
-            this.Karma = 0;
+            SetSkill(SkillName.Stealing, 66.0, 97.5);
+            SetSkill(SkillName.Peacemaking, 65.0, 87.5);
+            SetSkill(SkillName.MagicResist, 25.0, 47.5);
+            SetSkill(SkillName.Healing, 65.0, 87.5);
+            SetSkill(SkillName.Tactics, 65.0, 87.5);
+            SetSkill(SkillName.Fencing, 65.0, 87.5);
+            SetSkill(SkillName.Parry, 45.0, 60.5);
+            SetSkill(SkillName.Lockpicking, 65, 87);
+            SetSkill(SkillName.Hiding, 65, 87);
+            SetSkill(SkillName.Snooping, 65, 87);
+            Fame = 100;
+            Karma = 0;
 
-            this.AddItem(new Sandals(Utility.RandomNeutralHue()));
-            this.AddItem(new Dagger());
+            AddItem(new Sandals(Utility.RandomNeutralHue()));
+            AddItem(new Dagger());
             switch (Utility.Random(2))
             {
                 case 0:
-                    this.AddItem(new Doublet(Utility.RandomNeutralHue()));
+                    AddItem(new Doublet(Utility.RandomNeutralHue()));
                     break;
                 case 1:
-                    this.AddItem(new Shirt(Utility.RandomNeutralHue()));
+                    AddItem(new Shirt(Utility.RandomNeutralHue()));
                     break;
             }
 
-            this.PackGold(0, 25);
+            PackGold(0, 25);
         }
 
         public HireThief(Serial serial)

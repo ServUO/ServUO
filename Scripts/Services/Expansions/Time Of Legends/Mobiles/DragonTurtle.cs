@@ -139,7 +139,7 @@ namespace Server.Mobiles
 
         public void DoBubble()
         {
-            if (!this.Alive || this.Map == Map.Internal || this.Map == null)
+            if (!Alive || Map == Map.Internal || Map == null)
                 return;
 
             int pathLength = Utility.RandomMinMax(5, 11);
@@ -148,7 +148,7 @@ namespace Server.Mobiles
 
             for (int i = 0; i < 8; i++)
             {
-                _BubbleLocs.Add(new Tuple<Point3D, int>(this.Location, _Hues[Utility.Random(_Hues.Length)]));
+                _BubbleLocs.Add(new Tuple<Point3D, int>(Location, _Hues[Utility.Random(_Hues.Length)]));
             }
 
             for (int i = 0; i < pathLength; i++)
@@ -157,9 +157,9 @@ namespace Server.Mobiles
                 {
                     for (int j = 0; j < _BubbleLocs.Count; j++)
                     {
-                        Map map = this.Map;
+                        Map map = Map;
 
-                        if (!this.Alive || map == null || (i > 0 && _BubbleLocs[j].Item1 == Point3D.Zero))
+                        if (!Alive || map == null || (i > 0 && _BubbleLocs[j].Item1 == Point3D.Zero))
                             continue;
 
                         Point3D newLoc;
@@ -181,13 +181,13 @@ namespace Server.Mobiles
                         else
                             Movement.Movement.Offset(d, ref x, ref y);
 
-                        IPoint3D p = new Point3D(x, y, this.Map.GetAverageZ(x, y)) as IPoint3D;
+                        IPoint3D p = new Point3D(x, y, Map.GetAverageZ(x, y)) as IPoint3D;
                         Server.Spells.SpellHelper.GetSurfaceTop(ref p);
 
                         newLoc = new Point3D(p);
 
                         bool hasMobile = false;
-                        IPooledEnumerable eable = this.Map.GetMobilesInRange(newLoc, 0);
+                        IPooledEnumerable eable = Map.GetMobilesInRange(newLoc, 0);
 
                         foreach (Mobile m in eable)
                         {
@@ -204,7 +204,7 @@ namespace Server.Mobiles
 
                         if (!hasMobile)
                         {
-                            Effects.SendLocationEffect(newLoc, this.Map, 13920, 20, 10, hue == 0 ? 0 : hue - 1, 5);
+                            Effects.SendLocationEffect(newLoc, Map, 13920, 20, 10, hue == 0 ? 0 : hue - 1, 5);
                             _BubbleLocs[j] = new Tuple<Point3D, int>(newLoc, hue);
                         }
                     }
@@ -224,12 +224,12 @@ namespace Server.Mobiles
 
         public void DoBubbleAttack()
         {
-            if (!this.Alive || this.Map == Map.Internal || this.Map == null)
+            if (!Alive || Map == Map.Internal || Map == null)
                 return;
 
             List<Mobile> toget = new List<Mobile>();
 
-            IPooledEnumerable eable = this.Map.GetMobilesInRange(this.Location, 11);
+            IPooledEnumerable eable = Map.GetMobilesInRange(Location, 11);
 
             foreach (Mobile m in eable)
             {
@@ -248,7 +248,7 @@ namespace Server.Mobiles
                 else
                     hue = _Hues[Utility.Random(_Hues.Length)];
 
-                this.MovingParticles(mob, 13920, 10, 0, false, true, hue == 0 ? 0 : hue - 1, 5, 9502, 14120, 0, 0);
+                MovingParticles(mob, 13920, 10, 0, false, true, hue == 0 ? 0 : hue - 1, 5, 9502, 14120, 0, 0);
 
                 Timer.DelayCall(TimeSpan.FromSeconds(.7), DoAttack_Callback, new object[] { mob, hue });
             });
@@ -286,7 +286,7 @@ namespace Server.Mobiles
 
         private void DoAttack_Callback(object obj)
         {
-            if (!this.Alive)
+            if (!Alive)
                 return;
 
             object[] o = obj as object[];

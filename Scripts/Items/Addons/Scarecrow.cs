@@ -35,7 +35,7 @@ namespace Server.Items
         public ScarecrowAddon()
             : base()
         {
-            this.AddComponent(new ScarecrowComponent(), 0, 0, 0);
+            AddComponent(new ScarecrowComponent(), 0, 0, 0);
         }
 
         public ScarecrowAddon(Serial serial)
@@ -65,7 +65,7 @@ namespace Server.Items
         public ScarecrowDeed()
             : base()
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public ScarecrowDeed(Serial serial)

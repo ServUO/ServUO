@@ -18,14 +18,14 @@ namespace Server.Engines.Quests.Ambitious
         public override bool DisallowAllMoves => false;
         public override void InitBody()
         {
-            this.Name = "an ambitious solen queen";
+            Name = "an ambitious solen queen";
 
-            this.Body = 0x30F;
+            Body = 0x30F;
 
-            if (!this.RedSolen)
-                this.Hue = 0x453;
+            if (!RedSolen)
+                Hue = 0x453;
 
-            this.SpeechHue = 0;
+            SpeechHue = 0;
         }
 
         public override int GetIdleSound()
@@ -35,11 +35,11 @@ namespace Server.Engines.Quests.Ambitious
 
         public override void OnTalk(PlayerMobile player, bool contextMenu)
         {
-            this.Direction = this.GetDirectionTo(player);
+            Direction = GetDirectionTo(player);
 
             AmbitiousQueenQuest qs = player.Quest as AmbitiousQueenQuest;
 
-            if (qs != null && qs.RedSolen == this.RedSolen)
+            if (qs != null && qs.RedSolen == RedSolen)
             {
                 if (qs.IsObjectiveInProgress(typeof(KillQueensObjective)))
                 {
@@ -87,7 +87,7 @@ namespace Server.Engines.Quests.Ambitious
             }
             else
             {
-                QuestSystem newQuest = new AmbitiousQueenQuest(player, this.RedSolen);
+                QuestSystem newQuest = new AmbitiousQueenQuest(player, RedSolen);
 
                 if (player.Quest == null && QuestSystem.CanOfferQuest(player, typeof(AmbitiousQueenQuest)))
                 {
@@ -102,7 +102,7 @@ namespace Server.Engines.Quests.Ambitious
 
         public override bool OnDragDrop(Mobile from, Item dropped)
         {
-            this.Direction = this.GetDirectionTo(from);
+            Direction = GetDirectionTo(from);
 
             PlayerMobile player = from as PlayerMobile;
 
@@ -110,7 +110,7 @@ namespace Server.Engines.Quests.Ambitious
             {
                 AmbitiousQueenQuest qs = player.Quest as AmbitiousQueenQuest;
 
-                if (qs != null && qs.RedSolen == this.RedSolen)
+                if (qs != null && qs.RedSolen == RedSolen)
                 {
                     QuestObjective obj = qs.FindObjective(typeof(GatherFungiObjective));
 
@@ -138,7 +138,7 @@ namespace Server.Engines.Quests.Ambitious
                             }
                             else
                             {
-                                this.SayTo(player, 1054072); // Our arrangement was for 50 of the zoogi fungus. Please return to me when you have that amount.
+                                SayTo(player, 1054072); // Our arrangement was for 50 of the zoogi fungus. Please return to me when you have that amount.
                                 return false;
                             }
                         }

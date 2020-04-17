@@ -225,13 +225,13 @@ namespace Server.Multis
         {
             if (!m_Arrow.Running)
             {
-                this.Stop();
+                Stop();
                 return;
             }
             else if (m_From.NetState == null || m_From.Deleted || m_Target.Deleted || m_From.Map != m_Target.Map || !m_From.InRange(m_Target, m_Range))
             {
                 m_Arrow.Stop();
-                this.Stop();
+                Stop();
                 return;
             }
 

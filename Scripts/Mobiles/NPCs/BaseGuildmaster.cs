@@ -12,7 +12,7 @@ namespace Server.Mobiles
         public BaseGuildmaster(string title)
             : base(title)
         {
-            this.Title = String.Format("the {0} {1}", title, this.Female ? "guildmistress" : "guildmaster");
+            Title = String.Format("the {0} {1}", title, Female ? "guildmistress" : "guildmaster");
         }
 
         public BaseGuildmaster(Serial serial)
@@ -27,7 +27,7 @@ namespace Server.Mobiles
         public virtual TimeSpan JoinGameAge => TimeSpan.FromDays(2.0);
         public virtual TimeSpan QuitAge => TimeSpan.FromDays(7.0);
         public virtual TimeSpan QuitGameAge => TimeSpan.FromDays(4.0);
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
         }
@@ -39,29 +39,29 @@ namespace Server.Mobiles
 
         public virtual void SayGuildTo(Mobile m)
         {
-            this.SayTo(m, 1008055 + (int)this.NpcGuild);
+            SayTo(m, 1008055 + (int)NpcGuild);
         }
 
         public virtual void SayWelcomeTo(Mobile m)
         {
-            this.SayTo(m, 1008054); // Welcome to the guild! Thou shalt find that fellow members shall grant thee lower prices in shops.
+            SayTo(m, 1008054); // Welcome to the guild! Thou shalt find that fellow members shall grant thee lower prices in shops.
         }
 
         public virtual void SayPriceTo(Mobile m)
         {
-            m.Send(new MessageLocalizedAffix(m.NetState, this.Serial, this.Body, MessageType.Regular, this.SpeechHue, 3, 1008052, this.Name, AffixType.Append, this.JoinCost.ToString(), ""));
+            m.Send(new MessageLocalizedAffix(m.NetState, Serial, Body, MessageType.Regular, SpeechHue, 3, 1008052, Name, AffixType.Append, JoinCost.ToString(), ""));
         }
 
         public virtual bool WasNamed(string speech)
         {
-            string name = this.Name;
+            string name = Name;
 
             return (name != null && Insensitive.StartsWith(speech, name));
         }
 
         public override bool HandlesOnSpeech(Mobile from)
         {
-            if (from.InRange(this.Location, 2))
+            if (from.InRange(Location, 2))
                 return true;
 
             return base.HandlesOnSpeech(from);
@@ -71,36 +71,36 @@ namespace Server.Mobiles
         {
             Mobile from = e.Mobile;
 
-            if (!e.Handled && from is PlayerMobile && from.InRange(this.Location, 2) && this.WasNamed(e.Speech))
+            if (!e.Handled && from is PlayerMobile && from.InRange(Location, 2) && WasNamed(e.Speech))
             {
                 PlayerMobile pm = (PlayerMobile)from;
 
                 if (e.HasKeyword(0x0004)) // *join* | *member*
                 {
-                    if (pm.NpcGuild == this.NpcGuild)
-                        this.SayTo(from, 501047); // Thou art already a member of our guild.
+                    if (pm.NpcGuild == NpcGuild)
+                        SayTo(from, 501047); // Thou art already a member of our guild.
                     else if (pm.NpcGuild != NpcGuild.None)
-                        this.SayTo(from, 501046); // Thou must resign from thy other guild first.
-                    else if (pm.GameTime < this.JoinGameAge || (pm.CreationTime + this.JoinAge) > DateTime.UtcNow)
-                        this.SayTo(from, 501048); // You are too young to join my guild...
-                    else if (this.CheckCustomReqs(pm))
-                        this.SayPriceTo(from);
+                        SayTo(from, 501046); // Thou must resign from thy other guild first.
+                    else if (pm.GameTime < JoinGameAge || (pm.CreationTime + JoinAge) > DateTime.UtcNow)
+                        SayTo(from, 501048); // You are too young to join my guild...
+                    else if (CheckCustomReqs(pm))
+                        SayPriceTo(from);
 
                     e.Handled = true;
                 }
                 else if (e.HasKeyword(0x0005)) // *resign* | *quit*
                 {
-                    if (pm.NpcGuild != this.NpcGuild)
+                    if (pm.NpcGuild != NpcGuild)
                     {
-                        this.SayTo(from, 501052); // Thou dost not belong to my guild!
+                        SayTo(from, 501052); // Thou dost not belong to my guild!
                     }
-                    else if ((pm.NpcGuildJoinTime + this.QuitAge) > DateTime.UtcNow || (pm.NpcGuildGameTime + this.QuitGameAge) > pm.GameTime)
+                    else if ((pm.NpcGuildJoinTime + QuitAge) > DateTime.UtcNow || (pm.NpcGuildGameTime + QuitGameAge) > pm.GameTime)
                     {
-                        this.SayTo(from, 501053); // You just joined my guild! You must wait a week to resign.
+                        SayTo(from, 501053); // You just joined my guild! You must wait a week to resign.
                     }
                     else
                     {
-                        this.SayTo(from, 501054); // I accept thy resignation.
+                        SayTo(from, 501054); // I accept thy resignation.
                         pm.NpcGuild = NpcGuild.None;
                     }
 
@@ -113,27 +113,27 @@ namespace Server.Mobiles
 
         public override bool OnGoldGiven(Mobile from, Gold dropped)
         {
-            if (from is PlayerMobile && dropped.Amount == this.JoinCost)
+            if (from is PlayerMobile && dropped.Amount == JoinCost)
             {
                 PlayerMobile pm = (PlayerMobile)from;
 
-                if (pm.NpcGuild == this.NpcGuild)
+                if (pm.NpcGuild == NpcGuild)
                 {
-                    this.SayTo(from, 501047); // Thou art already a member of our guild.
+                    SayTo(from, 501047); // Thou art already a member of our guild.
                 }
                 else if (pm.NpcGuild != NpcGuild.None)
                 {
-                    this.SayTo(from, 501046); // Thou must resign from thy other guild first.
+                    SayTo(from, 501046); // Thou must resign from thy other guild first.
                 }
-                else if (pm.GameTime < this.JoinGameAge || (pm.CreationTime + this.JoinAge) > DateTime.UtcNow)
+                else if (pm.GameTime < JoinGameAge || (pm.CreationTime + JoinAge) > DateTime.UtcNow)
                 {
-                    this.SayTo(from, 501048); // You are too young to join my guild...
+                    SayTo(from, 501048); // You are too young to join my guild...
                 }
-                else if (this.CheckCustomReqs(pm))
+                else if (CheckCustomReqs(pm))
                 {
-                    this.SayWelcomeTo(from);
+                    SayWelcomeTo(from);
 
-                    pm.NpcGuild = this.NpcGuild;
+                    pm.NpcGuild = NpcGuild;
                     pm.NpcGuildJoinTime = DateTime.UtcNow;
                     pm.NpcGuildGameTime = pm.GameTime;
 

@@ -21,9 +21,9 @@ namespace Server.Items
         [Constructable]
         public VirtuososEarpieces()
         {
-            this.Hue = 1374;
-            this.Weight = 1;
-            this.SetHue = 1374;
+            Hue = 1374;
+            Weight = 1;
+            SetHue = 1374;
         }
 
         public VirtuososEarpieces(Serial serial)

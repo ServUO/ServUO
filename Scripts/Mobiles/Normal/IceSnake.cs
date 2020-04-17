@@ -7,34 +7,34 @@ namespace Server.Mobiles
         public IceSnake()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "an ice snake";
-            this.Body = 52;
-            this.Hue = 0x480;
-            this.BaseSoundID = 0xDB;
+            Name = "an ice snake";
+            Body = 52;
+            Hue = 0x480;
+            BaseSoundID = 0xDB;
 
-            this.SetStr(42, 54);
-            this.SetDex(36, 45);
-            this.SetInt(26, 30);
+            SetStr(42, 54);
+            SetDex(36, 45);
+            SetInt(26, 30);
 
-            this.SetMana(0);
+            SetMana(0);
 
-            this.SetDamage(4, 12);
+            SetDamage(4, 12);
 
-            this.SetDamageType(ResistanceType.Physical, 25);
-            this.SetDamageType(ResistanceType.Cold, 25);
-            this.SetDamageType(ResistanceType.Poison, 50);
+            SetDamageType(ResistanceType.Physical, 25);
+            SetDamageType(ResistanceType.Cold, 25);
+            SetDamageType(ResistanceType.Poison, 50);
 
-            this.SetResistance(ResistanceType.Physical, 20, 25);
-            this.SetResistance(ResistanceType.Cold, 80, 90);
-            this.SetResistance(ResistanceType.Poison, 60, 70);
-            this.SetResistance(ResistanceType.Energy, 30, 40);
+            SetResistance(ResistanceType.Physical, 20, 25);
+            SetResistance(ResistanceType.Cold, 80, 90);
+            SetResistance(ResistanceType.Poison, 60, 70);
+            SetResistance(ResistanceType.Energy, 30, 40);
 
-            this.SetSkill(SkillName.MagicResist, 15.1, 20.0);
-            this.SetSkill(SkillName.Tactics, 39.3, 54.0);
-            this.SetSkill(SkillName.Wrestling, 39.3, 54.0);
+            SetSkill(SkillName.MagicResist, 15.1, 20.0);
+            SetSkill(SkillName.Tactics, 39.3, 54.0);
+            SetSkill(SkillName.Wrestling, 39.3, 54.0);
 
-            this.Fame = 900;
-            this.Karma = -900;
+            Fame = 900;
+            Karma = -900;
         }
 
         public IceSnake(Serial serial)
@@ -46,7 +46,7 @@ namespace Server.Mobiles
         public override int Meat => 1;
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Meager);
+            AddLoot(LootPack.Meager);
         }
 
         public override void Serialize(GenericWriter writer)

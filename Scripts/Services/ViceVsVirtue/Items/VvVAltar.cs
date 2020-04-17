@@ -118,10 +118,10 @@ namespace Server.Engines.VvV
 
         public bool Contains(IPoint3D p)
         {
-            if (p is IEntity && ((IEntity)p).Map != this.Map)
+            if (p is IEntity && ((IEntity)p).Map != Map)
                 return false;
 
-            return p.X >= this.X - 2 && p.X <= this.X + 2 && p.Y >= this.Y - 2 && p.Y <= this.Y + 2;
+            return p.X >= X - 2 && p.X <= X + 2 && p.Y >= Y - 2 && p.Y <= Y + 2;
         }
 
         public void Activate()
@@ -176,7 +176,7 @@ namespace Server.Engines.VvV
             {
                 Server.Timer.DelayCall(TimeSpan.FromMilliseconds((i - 2) * 600), o =>
                 {
-                    Server.Misc.Geometry.Circle2D(this.Location, this.Map, o, (pnt, map) =>
+                    Server.Misc.Geometry.Circle2D(Location, Map, o, (pnt, map) =>
                     {
                         LaunchFireworks(pnt, map);
                     });
@@ -224,10 +224,10 @@ namespace Server.Engines.VvV
 
         public void CheckOccupy()
         {
-            if (!IsActive || this.Map == null || this.Map == Map.Internal)
+            if (!IsActive || Map == null || Map == Map.Internal)
                 return;
 
-            IPooledEnumerable eable = this.Map.GetMobilesInBounds(new Rectangle2D(this.X - 2, this.Y - 2, 5, 5));
+            IPooledEnumerable eable = Map.GetMobilesInBounds(new Rectangle2D(X - 2, Y - 2, 5, 5));
             int count = 0;
 
             foreach (Mobile m in eable)
@@ -250,14 +250,14 @@ namespace Server.Engines.VvV
                     }
                     else
                     {
-                        this.OccupationTimer = new OccupyTimer(this, entry.Guild);
+                        OccupationTimer = new OccupyTimer(this, entry.Guild);
                     }
                 }
             }
 
-            if (this.OccupationTimer != null && !this.OccupationTimer.Running && count > 0)
+            if (OccupationTimer != null && !OccupationTimer.Running && count > 0)
             {
-                this.OccupationTimer.Start();
+                OccupationTimer.Start();
             }
             else if (OccupationTimer != null && count == 0)
             {
@@ -434,9 +434,9 @@ namespace Server.Engines.VvV
                 Timer.Stop();
                 return;
             }
-            else if (this.Mobile.NetState == null || this.Mobile.Deleted || Altar.Deleted || this.Mobile.Map != Altar.Map
-                || ViceVsVirtueSystem.Instance.Battle == null || !ViceVsVirtueSystem.Instance.Battle.OnGoing || !this.Mobile.Region.IsPartOf(ViceVsVirtueSystem.Instance.Battle.Region)
-                || Altar.Contains(this.Mobile))
+            else if (Mobile.NetState == null || Mobile.Deleted || Altar.Deleted || Mobile.Map != Altar.Map
+                || ViceVsVirtueSystem.Instance.Battle == null || !ViceVsVirtueSystem.Instance.Battle.OnGoing || !Mobile.Region.IsPartOf(ViceVsVirtueSystem.Instance.Battle.Region)
+                || Altar.Contains(Mobile))
             {
                 Stop();
                 return;

@@ -18,7 +18,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber => 1094894 + this.m_Level;// [Quality] Detective of the Royal Guard [Replica]
+        public override int LabelNumber => 1094894 + m_Level;// [Quality] Detective of the Royal Guard [Replica]
         public override int InitMinHits => 150;
         public override int InitMaxHits => 150;
         public override bool CanFortify => false;
@@ -27,13 +27,13 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Level;
+                return m_Level;
             }
             set
             {
-                this.m_Level = Math.Max(Math.Min(2, value), 0);
-                this.Attributes.BonusInt = 2 + this.m_Level;
-                this.InvalidateProperties();
+                m_Level = Math.Max(Math.Min(2, value), 0);
+                Attributes.BonusInt = 2 + m_Level;
+                InvalidateProperties();
             }
         }
         public override void Serialize(GenericWriter writer)
@@ -49,7 +49,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            this.Level = this.Attributes.BonusInt - 2;
+            Level = Attributes.BonusInt - 2;
         }
     }
 }

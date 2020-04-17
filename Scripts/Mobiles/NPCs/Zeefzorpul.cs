@@ -15,8 +15,8 @@ namespace Server.Engines.Quests.Hag
 
         public override void InitBody()
         {
-            this.Body = 0x4A;
-            this.Name = "Zeefzorpul";
+            Body = 0x4A;
+            Name = "Zeefzorpul";
         }
 
         public override bool CanTalkTo(PlayerMobile to)
@@ -41,7 +41,7 @@ namespace Server.Engines.Quests.Hag
 
             int version = reader.ReadInt();
 
-            this.Delete();
+            Delete();
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public Jothan()
             : base("the wise")
         {
-            this.Name = "Elder Jothan";
+            Name = "Elder Jothan";
         }
 
         public Jothan(Serial serial)
@@ -20,30 +20,30 @@ namespace Server.Mobiles
 
         public override bool CanTeach => false;
         public override bool IsInvulnerable => true;
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
         }
 
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.Race = Race.Elf;
+            Female = false;
+            Race = Race.Elf;
 
-            this.Hue = 0x8579;
-            this.HairItemID = 0x2FC2;
-            this.HairHue = 0x2C2;
+            Hue = 0x8579;
+            HairItemID = 0x2FC2;
+            HairHue = 0x2C2;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new ThighBoots());
-            this.AddItem(new ElvenPants(0x57A));
-            this.AddItem(new ElvenShirt(0x711));
-            this.AddItem(new Cloak(0x21));
-            this.AddItem(new Circlet());
+            AddItem(new ThighBoots());
+            AddItem(new ElvenPants(0x57A));
+            AddItem(new ElvenShirt(0x711));
+            AddItem(new Cloak(0x21));
+            AddItem(new Circlet());
         }
 
         public override void Serialize(GenericWriter writer)

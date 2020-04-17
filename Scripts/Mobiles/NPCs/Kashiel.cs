@@ -9,9 +9,9 @@ namespace Server.Engines.Quests
         public ShotAnArrowIntoTheAirQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Sheep), "sheep", 10));
+            AddObjective(new SlayObjective(typeof(Sheep), "sheep", 10));
 
-            this.AddReward(new BaseReward(typeof(TrinketBag), 1072341)); // A bag of trinkets.
+            AddReward(new BaseReward(typeof(TrinketBag), 1072341)); // A bag of trinkets.
         }
 
         /*  I Shot an Arrow Into the Air... */
@@ -59,43 +59,43 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = false;
+            CantWalk = true;
+            Race = Race.Human;
 
-            this.Hue = 0x83FE;
-            this.HairItemID = 0x2045;
-            this.HairHue = 0x1;
+            Hue = 0x83FE;
+            HairItemID = 0x2045;
+            HairHue = 0x1;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Boots(0x1BB));
+            AddItem(new Backpack());
+            AddItem(new Boots(0x1BB));
 
             Item item;
 
             item = new LeatherLegs();
             item.Hue = 0x901;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new LeatherGloves();
             item.Hue = 0x1BB;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new LeatherChest();
             item.Hue = 0x1BB;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new LeatherArms();
             item.Hue = 0x901;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new CompositeBow();
             item.Hue = 0x606;
-            this.AddItem(item);
+            AddItem(item);
         }
 
         public override void Serialize(GenericWriter writer)

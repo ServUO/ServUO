@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public Arielle()
             : base("Arielle")
         {
-            this.BaseSoundID = 0x46F;
+            BaseSoundID = 0x46F;
 
-            this.SetSkill(SkillName.Focus, 60.0, 83.0);
+            SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
         public Arielle(Serial serial)
@@ -24,10 +24,10 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = true;
-            this.Body = 128;
+            Female = true;
+            Body = 128;
         }
 
         public override void Serialize(GenericWriter writer)

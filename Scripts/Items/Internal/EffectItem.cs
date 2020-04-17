@@ -15,7 +15,7 @@ namespace Server.Items
         private EffectItem()
             : base(1)// nodraw
         {
-            this.Movable = false;
+            Movable = false;
         }
 
         public override bool Decays => true;
@@ -62,7 +62,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            this.Delete();
+            Delete();
         }
 
         private class FreeTimer : Timer
@@ -71,15 +71,15 @@ namespace Server.Items
             public FreeTimer(EffectItem item, TimeSpan delay)
                 : base(delay)
             {
-                this.m_Item = item;
-                this.Priority = TimerPriority.OneSecond;
+                m_Item = item;
+                Priority = TimerPriority.OneSecond;
             }
 
             protected override void OnTick()
             {
-                this.m_Item.Internalize();
+                m_Item.Internalize();
 
-                m_Free.Add(this.m_Item);
+                m_Free.Add(m_Item);
             }
         }
     }

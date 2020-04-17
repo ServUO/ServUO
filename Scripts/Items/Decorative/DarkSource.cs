@@ -6,8 +6,8 @@ namespace Server.Items
         public DarkSource()
             : base(0x1646)
         {
-            this.Layer = Layer.TwoHanded;
-            this.Movable = false;
+            Layer = Layer.TwoHanded;
+            Movable = false;
         }
 
         public DarkSource(Serial serial)

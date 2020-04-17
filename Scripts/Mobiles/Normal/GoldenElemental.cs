@@ -50,8 +50,8 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Average);
-            this.AddLoot(LootPack.Gems, 2);
+            AddLoot(LootPack.Average);
+            AddLoot(LootPack.Gems, 2);
         }
 
         public override void Serialize(GenericWriter writer)

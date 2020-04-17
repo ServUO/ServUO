@@ -7,7 +7,7 @@ namespace Server.Items
         [Constructable]
         public LightweightShortbow()
         {
-            this.Balanced = true;
+            Balanced = true;
         }
 
         public LightweightShortbow(Serial serial)

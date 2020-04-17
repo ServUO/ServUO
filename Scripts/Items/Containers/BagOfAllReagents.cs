@@ -11,19 +11,19 @@ namespace Server.Items
         [Constructable]
         public BagOfAllReagents(int amount)
         {
-            this.DropItem(new BlackPearl(amount));
-            this.DropItem(new Bloodmoss(amount));
-            this.DropItem(new Garlic(amount));
-            this.DropItem(new Ginseng(amount));
-            this.DropItem(new MandrakeRoot(amount));
-            this.DropItem(new Nightshade(amount));
-            this.DropItem(new SulfurousAsh(amount));
-            this.DropItem(new SpidersSilk(amount));
-            this.DropItem(new BatWing(amount));
-            this.DropItem(new GraveDust(amount));
-            this.DropItem(new DaemonBlood(amount));
-            this.DropItem(new NoxCrystal(amount));
-            this.DropItem(new PigIron(amount));
+            DropItem(new BlackPearl(amount));
+            DropItem(new Bloodmoss(amount));
+            DropItem(new Garlic(amount));
+            DropItem(new Ginseng(amount));
+            DropItem(new MandrakeRoot(amount));
+            DropItem(new Nightshade(amount));
+            DropItem(new SulfurousAsh(amount));
+            DropItem(new SpidersSilk(amount));
+            DropItem(new BatWing(amount));
+            DropItem(new GraveDust(amount));
+            DropItem(new DaemonBlood(amount));
+            DropItem(new NoxCrystal(amount));
+            DropItem(new PigIron(amount));
         }
 
         public BagOfAllReagents(Serial serial)

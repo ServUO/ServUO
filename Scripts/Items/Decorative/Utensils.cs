@@ -10,7 +10,7 @@ namespace Server.Items
         private ItemQuality _Quality;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public CraftResource Resource { get { return _Resource; } set { _Resource = value; Hue = CraftResources.GetHue(this._Resource); InvalidateProperties(); } }
+        public CraftResource Resource { get { return _Resource; } set { _Resource = value; Hue = CraftResources.GetHue(_Resource); InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Crafter { get { return _Crafter; } set { _Crafter = value; InvalidateProperties(); } }
@@ -24,7 +24,7 @@ namespace Server.Items
         /* DO NOT USE! Only used in serialization of special scrolls that originally derived from Item */
         private bool m_InheritsItem;
 
-        protected bool InheritsItem => this.m_InheritsItem;
+        protected bool InheritsItem => m_InheritsItem;
         #endregion
 
         public BaseUtensil(int itemID)
@@ -59,10 +59,10 @@ namespace Server.Items
 
         public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
-            this.Quality = (ItemQuality)quality;
+            Quality = (ItemQuality)quality;
 
             if (makersMark)
-                this.Crafter = from;
+                Crafter = from;
 
             if (!craftItem.ForceNonExceptional)
             {
@@ -119,7 +119,7 @@ namespace Server.Items
         public Fork()
             : base(0x9F4)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public Fork(Serial serial)
@@ -138,7 +138,7 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
+            int version = (InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
         }
     }
 
@@ -148,7 +148,7 @@ namespace Server.Items
         public ForkLeft()
             : base(0x9F4)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public ForkLeft(Serial serial)
@@ -167,7 +167,7 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
+            int version = (InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
         }
     }
 
@@ -177,7 +177,7 @@ namespace Server.Items
         public ForkRight()
             : base(0x9F5)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public ForkRight(Serial serial)
@@ -196,7 +196,7 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
+            int version = (InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
         }
     }
 
@@ -207,7 +207,7 @@ namespace Server.Items
         public Spoon()
             : base(0x9F8)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public Spoon(Serial serial)
@@ -226,7 +226,7 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
+            int version = (InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
         }
     }
 
@@ -236,7 +236,7 @@ namespace Server.Items
         public SpoonLeft()
             : base(0x9F8)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public SpoonLeft(Serial serial)
@@ -255,7 +255,7 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
+            int version = (InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
         }
     }
 
@@ -265,7 +265,7 @@ namespace Server.Items
         public SpoonRight()
             : base(0x9F9)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public SpoonRight(Serial serial)
@@ -284,7 +284,7 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
+            int version = (InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
         }
     }
 
@@ -295,7 +295,7 @@ namespace Server.Items
         public Knife()
             : base(0x9F6)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public Knife(Serial serial)
@@ -314,7 +314,7 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
+            int version = (InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
         }
     }
 
@@ -324,7 +324,7 @@ namespace Server.Items
         public KnifeLeft()
             : base(0x9F6)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public KnifeLeft(Serial serial)
@@ -343,7 +343,7 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
+            int version = (InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
         }
     }
 
@@ -353,7 +353,7 @@ namespace Server.Items
         public KnifeRight()
             : base(0x9F7)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public KnifeRight(Serial serial)
@@ -372,7 +372,7 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
+            int version = (InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
         }
     }
 
@@ -382,7 +382,7 @@ namespace Server.Items
         public Plate()
             : base(0x9D7)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public Plate(Serial serial)
@@ -401,7 +401,7 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
+            int version = (InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
         }
     }
 }

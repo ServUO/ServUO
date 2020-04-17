@@ -7,7 +7,7 @@ namespace Server.Items
         public RockingHorse()
             : base(0x4214)
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public RockingHorse(Serial serial)

@@ -15,9 +15,9 @@ namespace Server.Items
         public BlankScroll(int amount)
             : base(0xEF3)
         {
-            this.Stackable = true;
-            this.Weight = 1.0;
-            this.Amount = amount;
+            Stackable = true;
+            Weight = 1.0;
+            Amount = amount;
         }
 
         public BlankScroll(Serial serial)
@@ -25,7 +25,7 @@ namespace Server.Items
         {
         }
 
-        TextDefinition ICommodity.Description => this.LabelNumber;
+        TextDefinition ICommodity.Description => LabelNumber;
         bool ICommodity.IsDeedable => true;
         public override void Serialize(GenericWriter writer)
         {

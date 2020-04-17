@@ -20,10 +20,10 @@ namespace Server.Items
         [Constructable]
         public VirtuososCap() : base()
         {
-            this.Hue = 1374;
-            this.Weight = 5;
-            this.StrRequirement = 10;
-            this.SetHue = 1374;
+            Hue = 1374;
+            Weight = 5;
+            StrRequirement = 10;
+            SetHue = 1374;
         }
 
         public VirtuososCap(Serial serial) : base(serial)

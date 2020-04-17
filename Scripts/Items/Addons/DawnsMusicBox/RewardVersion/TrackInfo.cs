@@ -82,54 +82,54 @@ namespace Server.Items.MusicBox
         private TrackRarity m_Rarity;
         public TrackInfo(int duration, int label, MusicName name, TrackRarity rarity)
         {
-            this.m_Duration = duration;
-            this.m_Label = label;
-            this.m_Name = name;
-            this.m_Rarity = rarity;
+            m_Duration = duration;
+            m_Label = label;
+            m_Name = name;
+            m_Rarity = rarity;
         }
 
         public int Duration
         {
             get
             {
-                return this.m_Duration;
+                return m_Duration;
             }
             set
             {
-                this.m_Duration = value;
+                m_Duration = value;
             }
         }
         public int Label
         {
             get
             {
-                return this.m_Label;
+                return m_Label;
             }
             set
             {
-                this.m_Label = value;
+                m_Label = value;
             }
         }
         public MusicName Name
         {
             get
             {
-                return this.m_Name;
+                return m_Name;
             }
             set
             {
-                this.m_Name = value;
+                m_Name = value;
             }
         }
         public TrackRarity Rarity
         {
             get
             {
-                return this.m_Rarity;
+                return m_Rarity;
             }
             set
             {
-                this.m_Rarity = value;
+                m_Rarity = value;
             }
         }
         /// <summary>

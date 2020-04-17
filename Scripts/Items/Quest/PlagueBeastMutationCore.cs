@@ -29,21 +29,21 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Cut;
+                return m_Cut;
             }
             set
             {
-                this.m_Cut = value;
+                m_Cut = value;
             }
         }
         public virtual bool Scissor(Mobile from, Scissors scissors)
         {
-            if (!this.m_Cut)
+            if (!m_Cut)
             {
-                PlagueBeastLord owner = this.RootParent as PlagueBeastLord;
+                PlagueBeastLord owner = RootParent as PlagueBeastLord;
 
-                this.m_Cut = true;
-                this.Movable = true;
+                m_Cut = true;
+                Movable = true;
 
                 from.AddToBackpack(this);
                 from.LocalOverheadMessage(MessageType.Regular, 0x34, 1071906); // * You remove the plague mutation core from the plague beast, causing it to dissolve into a pile of goo *				
@@ -72,7 +72,7 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            this.m_Cut = reader.ReadBool();
+            m_Cut = reader.ReadBool();
         }
 
         private void KillParent(PlagueBeastLord parent)

@@ -35,7 +35,7 @@ namespace Server.Items
         public SmallFishingNetAddon()
             : base()
         {
-            this.AddComponent(new SmallFishingNetComponent(), 0, 0, 0);
+            AddComponent(new SmallFishingNetComponent(), 0, 0, 0);
         }
 
         public SmallFishingNetAddon(Serial serial)
@@ -65,7 +65,7 @@ namespace Server.Items
         public SmallFishingNetDeed()
             : base()
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public SmallFishingNetDeed(Serial serial)

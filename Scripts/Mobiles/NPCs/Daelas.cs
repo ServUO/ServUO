@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public Daelas()
             : base("the aborist")
         {
-            this.Name = "Daelas";
+            Name = "Daelas";
         }
 
         public Daelas(Serial serial)
@@ -20,37 +20,37 @@ namespace Server.Mobiles
 
         public override bool CanTeach => false;
         public override bool IsInvulnerable => true;
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
         }
 
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.Race = Race.Elf;
+            Female = false;
+            Race = Race.Elf;
 
-            this.Hue = 0x84DE;
-            this.HairItemID = 0x2FCF;
-            this.HairHue = 0x8F;
+            Hue = 0x84DE;
+            HairItemID = 0x2FCF;
+            HairHue = 0x8F;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new ElvenBoots(0x901));
-            this.AddItem(new ElvenPants(0x8AB));
+            AddItem(new ElvenBoots(0x901));
+            AddItem(new ElvenPants(0x8AB));
 
             Item item;
 
             item = new LeafGloves();
             item.Hue = 0x1BB;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new LeafChest();
             item.Hue = 0x8B0;
-            this.AddItem(item);
+            AddItem(item);
         }
 
         public override void Serialize(GenericWriter writer)

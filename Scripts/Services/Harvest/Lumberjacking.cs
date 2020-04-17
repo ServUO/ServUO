@@ -22,7 +22,7 @@ namespace Server.Engines.Harvest
 
         private readonly HarvestDefinition m_Definition;
 
-        public HarvestDefinition Definition => this.m_Definition;
+        public HarvestDefinition Definition => m_Definition;
 
         private Lumberjacking()
         {
@@ -109,8 +109,8 @@ namespace Server.Engines.Harvest
             lumber.RaceBonus = true;
             lumber.RandomizeVeins = true;
 
-            this.m_Definition = lumber;
-            this.Definitions.Add(lumber);
+            m_Definition = lumber;
+            Definitions.Add(lumber);
             #endregion
         }
 

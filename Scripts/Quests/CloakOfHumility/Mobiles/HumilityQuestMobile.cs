@@ -45,7 +45,7 @@ namespace Server.Engines.Quests
         {
             PlayerMobile pm = m as PlayerMobile;
 
-            if (pm == null || !pm.InRange(this.Location, 3))
+            if (pm == null || !pm.InRange(Location, 3))
                 return;
 
             WhosMostHumbleQuest quest = QuestHelper.GetQuest(pm, typeof(WhosMostHumbleQuest)) as WhosMostHumbleQuest;
@@ -81,7 +81,7 @@ namespace Server.Engines.Quests
 
                 if (item is GreyCloak && ((GreyCloak)item).Owner == null)
                 {
-                    int idx = HumilityQuestMobileInfo.GetNPCIndex(this.GetType());
+                    int idx = HumilityQuestMobileInfo.GetNPCIndex(GetType());
 
                     if (idx > -1 && quest.Infos.ContainsKey(idx) && idx < quest.Infos.Count)
                     {

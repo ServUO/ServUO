@@ -36,32 +36,32 @@ namespace Server.Engines.Quests
         public TheArtOfStealthQuest()
             : base()
         {
-            this.AddObjective(new ApprenticeObjective(SkillName.Ninjitsu, 50, "Old Haven Training", 1078156, 1078157));
+            AddObjective(new ApprenticeObjective(SkillName.Ninjitsu, 50, "Old Haven Training", 1078156, 1078157));
 
             // 1078156 You feel a greater sense of awareness here. Your ability to hone your Ninjitsu skill is enhanced in this area.
             // 1078157 You feel your sense of awareness is normal here. Your Ninjitsu learning potential is no longer enhanced.
 
-            this.AddReward(new BaseReward(typeof(SilverSerpentBlade), 1078163));
+            AddReward(new BaseReward(typeof(SilverSerpentBlade), 1078163));
         }
 
         public override bool CanOffer()
         {
             #region Scroll of Alacrity
-            PlayerMobile pm = this.Owner as PlayerMobile;
+            PlayerMobile pm = Owner as PlayerMobile;
             if (pm.AcceleratedStart > DateTime.UtcNow)
             {
-                this.Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
+                Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
                 return false;
             }
             #endregion
             else
-                return this.Owner.Skills.Ninjitsu.Base < 50;
+                return Owner.Skills.Ninjitsu.Base < 50;
         }
 
         public override void OnCompleted()
         {
-            this.Owner.SendLocalizedMessage(1078161, null, 0x23); // You have achieved the rank of Apprentice Ninja. Return to Ryuichi in New Haven to see what kind of reward he has waiting for you.
-            this.Owner.PlaySound(this.CompleteSound);
+            Owner.SendLocalizedMessage(1078161, null, 0x23); // You have achieved the rank of Apprentice Ninja. Return to Ryuichi in New Haven to see what kind of reward he has waiting for you.
+            Owner.PlaySound(CompleteSound);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -96,13 +96,13 @@ namespace Server.Engines.Quests
         public Ryuichi()
             : base("Ryuichi", "The Ninjitsu Instructor")
         {
-            this.SetSkill(SkillName.Hiding, 120.0, 120.0);
-            this.SetSkill(SkillName.Tracking, 120.0, 120.0);
-            this.SetSkill(SkillName.Healing, 120.0, 120.0);
-            this.SetSkill(SkillName.Tactics, 120.0, 120.0);
-            this.SetSkill(SkillName.Fencing, 120.0, 120.0);
-            this.SetSkill(SkillName.Stealth, 120.0, 120.0);
-            this.SetSkill(SkillName.Ninjitsu, 120.0, 120.0);
+            SetSkill(SkillName.Hiding, 120.0, 120.0);
+            SetSkill(SkillName.Tracking, 120.0, 120.0);
+            SetSkill(SkillName.Healing, 120.0, 120.0);
+            SetSkill(SkillName.Tactics, 120.0, 120.0);
+            SetSkill(SkillName.Fencing, 120.0, 120.0);
+            SetSkill(SkillName.Stealth, 120.0, 120.0);
+            SetSkill(SkillName.Ninjitsu, 120.0, 120.0);
         }
 
         public Ryuichi(Serial serial)
@@ -112,32 +112,32 @@ namespace Server.Engines.Quests
 
         public override void Advertise()
         {
-            this.Say(1078155); // I can teach you Ninjitsu. The Art of Stealth.
+            Say(1078155); // I can teach you Ninjitsu. The Art of Stealth.
         }
 
         public override void OnOfferFailed()
         {
-            this.Say(1077772); // I cannot teach you, for you know all I can teach!
+            Say(1077772); // I cannot teach you, for you know all I can teach!
         }
 
         public override void InitBody()
         {
-            this.Female = false;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = false;
+            CantWalk = true;
+            Race = Race.Human;
 
             base.InitBody();
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new SamuraiTabi());
-            this.AddItem(new LeatherNinjaPants());
-            this.AddItem(new LeatherNinjaHood());
-            this.AddItem(new LeatherNinjaBelt());
-            this.AddItem(new LeatherNinjaMitts());
-            this.AddItem(new LeatherNinjaJacket());
+            AddItem(new Backpack());
+            AddItem(new SamuraiTabi());
+            AddItem(new LeatherNinjaPants());
+            AddItem(new LeatherNinjaHood());
+            AddItem(new LeatherNinjaBelt());
+            AddItem(new LeatherNinjaMitts());
+            AddItem(new LeatherNinjaJacket());
         }
 
         public override void Serialize(GenericWriter writer)

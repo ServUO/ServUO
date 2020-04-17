@@ -21,9 +21,9 @@ namespace Server.Items
         [Constructable]
         public BestialHelm() : base()
         {
-            this.Hue = 2010;
-            this.Weight = 5;
-            this.StrRequirement = 10;
+            Hue = 2010;
+            Weight = 5;
+            StrRequirement = 10;
         }
 
         public BestialHelm(Serial serial) : base(serial)
@@ -61,8 +61,8 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            if (this.Hue != 2010)
-                this.Hue = 2010;
+            if (Hue != 2010)
+                Hue = 2010;
         }
     }
 }

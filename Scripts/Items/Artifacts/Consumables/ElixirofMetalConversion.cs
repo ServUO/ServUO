@@ -50,7 +50,7 @@ namespace Server.Items
                     }
 
                     from.SendLocalizedMessage(1113048); // You've successfully converted the metal.
-                    this.Delete();
+                    Delete();
                 }
                 else if ((m_Ore1.Amount < 500) || (m_Ore1.Amount > 500))
                 {

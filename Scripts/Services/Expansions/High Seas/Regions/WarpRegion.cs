@@ -39,7 +39,7 @@ namespace Server.Regions
                         if (t >= 10)
                         {
                             MarkerItem i = new MarkerItem(14089);
-                            i.MoveToWorld(new Point3D(x, y, -5), this.Map);
+                            i.MoveToWorld(new Point3D(x, y, -5), Map);
                             m_Markers.Add(i);
                             t = 0;
                         }
@@ -63,7 +63,7 @@ namespace Server.Regions
 
         public void CheckEnter(BaseBoat boat)
         {
-            if (boat == null || this.Map == null || this.Map == Map.Internal)
+            if (boat == null || Map == null || Map == Map.Internal)
                 return;
 
             //Do not enter corgul region if we aren't in this region anymore
@@ -71,7 +71,7 @@ namespace Server.Regions
             if (r != null && !r.IsPartOf(this))
                 return;
 
-            Map map = this.Map;
+            Map map = Map;
 
             List<PlayerMobile> pms = new List<PlayerMobile>();
             bool hasMap = false;
@@ -85,7 +85,7 @@ namespace Server.Regions
                     continue;
 
                 Item item = pm.Backpack.FindItemByType(typeof(CorgulIslandMap));
-                if (item != null && item is CorgulIslandMap && this.Contains(((CorgulIslandMap)item).DestinationPoint))
+                if (item != null && item is CorgulIslandMap && Contains(((CorgulIslandMap)item).DestinationPoint))
                 {
                     hasMap = true;
                     break;
@@ -104,7 +104,7 @@ namespace Server.Regions
                 int offsetY = ePnt.Y - boat.Y;
                 int offsetZ = map.GetAverageZ(ePnt.X, ePnt.Y) - boat.Z;
 
-                if (boat.CanFit(ePnt, this.Map, boat.ItemID))
+                if (boat.CanFit(ePnt, Map, boat.ItemID))
                 {
                     boat.Teleport(offsetX, offsetY, offsetZ);
 

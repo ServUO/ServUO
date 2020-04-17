@@ -7,8 +7,8 @@ namespace Server.Items
         public WolfStatue()
             : base(0x25D3)
         {
-            this.LootType = LootType.Blessed;
-            this.Weight = 1.0;
+            LootType = LootType.Blessed;
+            Weight = 1.0;
         }
 
         public WolfStatue(Serial serial)

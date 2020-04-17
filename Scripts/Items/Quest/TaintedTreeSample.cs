@@ -6,9 +6,9 @@ namespace Server.Items
         public TaintedTreeSample()
             : base(0xDE2)
         {
-            this.LootType = LootType.Blessed;
-            this.Weight = 5;
-            this.Hue = 0x9D;
+            LootType = LootType.Blessed;
+            Weight = 5;
+            Hue = 0x9D;
         }
 
         public TaintedTreeSample(Serial serial)

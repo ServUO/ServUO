@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public StoneCrafter()
             : base("the stone crafter")
         {
-            this.SetSkill(SkillName.Carpentry, 85.0, 100.0);
+            SetSkill(SkillName.Carpentry, 85.0, 100.0);
         }
 
         public StoneCrafter(Serial serial)
@@ -19,13 +19,13 @@ namespace Server.Mobiles
         }
 
         public override NpcGuild NpcGuild => NpcGuild.TinkersGuild;
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBStoneCrafter());
-            this.m_SBInfos.Add(new SBStavesWeapon());
-            this.m_SBInfos.Add(new SBCarpenter());
-            this.m_SBInfos.Add(new SBWoodenShields());
+            m_SBInfos.Add(new SBStoneCrafter());
+            m_SBInfos.Add(new SBStavesWeapon());
+            m_SBInfos.Add(new SBCarpenter());
+            m_SBInfos.Add(new SBWoodenShields());
         }
 
         public override void Serialize(GenericWriter writer)
@@ -41,8 +41,8 @@ namespace Server.Mobiles
 
             int version = reader.ReadInt();
 
-            if (this.Title == "the stonecrafter")
-                this.Title = "the stone crafter";
+            if (Title == "the stonecrafter")
+                Title = "the stone crafter";
         }
     }
 }

@@ -20,8 +20,8 @@ namespace Server.Items
         public override bool HandlesOnMovement => true;
         public override void OnDoubleClick(Mobile from)
         {
-            if (Utility.InRange(this.Location, from.Location, 2))
-                Effects.PlaySound(this.Location, this.Map, Utility.RandomMinMax(0x565, 0x566));
+            if (Utility.InRange(Location, from.Location, 2))
+                Effects.PlaySound(Location, Map, Utility.RandomMinMax(0x565, 0x566));
             else
                 from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
         }
@@ -30,19 +30,19 @@ namespace Server.Items
         {
             if (m.Alive && m.Player && (m.IsPlayer() || !m.Hidden))
             {
-                if (!Utility.InRange(old, this.Location, 2) && Utility.InRange(m.Location, this.Location, 2))
+                if (!Utility.InRange(old, Location, 2) && Utility.InRange(m.Location, Location, 2))
                 {
-                    if (this.ItemID == 0x2A69 || this.ItemID == 0x2A6D)
+                    if (ItemID == 0x2A69 || ItemID == 0x2A6D)
                     {
-                        this.Up();
+                        Up();
                         Timer.DelayCall(TimeSpan.FromSeconds(0.5), TimeSpan.FromSeconds(0.5), 2, new TimerCallback(Up));
                     }
                 }
-                else if (Utility.InRange(old, this.Location, 2) && !Utility.InRange(m.Location, this.Location, 2))
+                else if (Utility.InRange(old, Location, 2) && !Utility.InRange(m.Location, Location, 2))
                 {
-                    if (this.ItemID == 0x2A6C || this.ItemID == 0x2A70)
+                    if (ItemID == 0x2A6C || ItemID == 0x2A70)
                     {
-                        this.Down();
+                        Down();
                         Timer.DelayCall(TimeSpan.FromSeconds(0.5), TimeSpan.FromSeconds(0.5), 2, new TimerCallback(Down));
                     }
                 }
@@ -62,18 +62,18 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            if (version == 0 && this.ItemID != 0x2A69 && this.ItemID != 0x2A6D)
-                this.ItemID = 0x2A69;
+            if (version == 0 && ItemID != 0x2A69 && ItemID != 0x2A6D)
+                ItemID = 0x2A69;
         }
 
         private void Up()
         {
-            this.ItemID += 1;
+            ItemID += 1;
         }
 
         private void Down()
         {
-            this.ItemID -= 1;
+            ItemID -= 1;
         }
     }
 
@@ -83,7 +83,7 @@ namespace Server.Items
         public CreepyPortraitAddon()
             : base()
         {
-            this.AddComponent(new CreepyPortraitComponent(), 0, 0, 0);
+            AddComponent(new CreepyPortraitComponent(), 0, 0, 0);
         }
 
         public CreepyPortraitAddon(Serial serial)
@@ -113,7 +113,7 @@ namespace Server.Items
         public CreepyPortraitDeed()
             : base()
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public CreepyPortraitDeed(Serial serial)

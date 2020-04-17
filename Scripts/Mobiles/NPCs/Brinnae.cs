@@ -9,9 +9,9 @@ namespace Server.Engines.Quests
         public EvilEyeQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Gazer), "gazers", 12));
+            AddObjective(new SlayObjective(typeof(Gazer), "gazers", 12));
 
-            this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
+            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
         /* Evil Eye */
@@ -45,9 +45,9 @@ namespace Server.Engines.Quests
         public ImpishDelightsQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Imp), "imps", 12));
+            AddObjective(new SlayObjective(typeof(Imp), "imps", 12));
 
-            this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
+            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
         /* Impish Delights */
@@ -80,10 +80,10 @@ namespace Server.Engines.Quests
         public StirringTheNestQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(RedSolenQueen), "red solen queens", 3));
-            this.AddObjective(new SlayObjective(typeof(BlackSolenQueen), "black solen queens", 3));
+            AddObjective(new SlayObjective(typeof(RedSolenQueen), "red solen queens", 3));
+            AddObjective(new SlayObjective(typeof(BlackSolenQueen), "black solen queens", 3));
 
-            this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
+            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
         public override bool AllObjectives => false;
@@ -117,10 +117,10 @@ namespace Server.Engines.Quests
         public UndeadMagesQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(BoneMagi), "bone mages", 10));
-            this.AddObjective(new SlayObjective(typeof(SkeletalMage), "skeletal mages", 10));
+            AddObjective(new SlayObjective(typeof(BoneMagi), "bone mages", 10));
+            AddObjective(new SlayObjective(typeof(SkeletalMage), "skeletal mages", 10));
 
-            this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
+            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
         public override bool AllObjectives => false;
@@ -154,9 +154,9 @@ namespace Server.Engines.Quests
         public TheAfterlifeQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Mummy), "mummies", 15));
+            AddObjective(new SlayObjective(typeof(Mummy), "mummies", 15));
 
-            this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
+            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
         /* The Afterlife */
@@ -189,9 +189,9 @@ namespace Server.Engines.Quests
         public FriendlyNeighborhoodSpiderkillerQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(DreadSpider), "dread spiders", 8));
+            AddObjective(new SlayObjective(typeof(DreadSpider), "dread spiders", 8));
 
-            this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
+            AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
         /* Friendly Neighborhood Spider-killer */
@@ -224,9 +224,9 @@ namespace Server.Engines.Quests
         public GargoylesWrathQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(GargoyleEnforcer), "gargoyle enforcers", 6));
+            AddObjective(new SlayObjective(typeof(GargoyleEnforcer), "gargoyle enforcers", 6));
 
-            this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
+            AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
         /* Gargoyle's Wrath */
@@ -259,9 +259,9 @@ namespace Server.Engines.Quests
         public ThreeWishesQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Efreet), "efreets", 8));
+            AddObjective(new SlayObjective(typeof(Efreet), "efreets", 8));
 
-            this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
+            AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
         /* Three Wishes */
@@ -294,10 +294,10 @@ namespace Server.Engines.Quests
         public ForkedTongueQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(OphidianKnight), "ophidian knight-errants", 10));
-            this.AddObjective(new SlayObjective(typeof(OphidianMage), "ophidian mages", 10));
+            AddObjective(new SlayObjective(typeof(OphidianKnight), "ophidian knight-errants", 10));
+            AddObjective(new SlayObjective(typeof(OphidianMage), "ophidian mages", 10));
 
-            this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
+            AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
         public override bool AllObjectives => false;
@@ -331,10 +331,10 @@ namespace Server.Engines.Quests
         public MongbatMenaceQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Mongbat), "mongbats", 10));
-            this.AddObjective(new SlayObjective(typeof(GreaterMongbat), "greater mongbats", 4));
+            AddObjective(new SlayObjective(typeof(Mongbat), "mongbats", 10));
+            AddObjective(new SlayObjective(typeof(GreaterMongbat), "greater mongbats", 4));
 
-            this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
+            AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
         /* Mongbat Menace! */
@@ -368,7 +368,7 @@ namespace Server.Engines.Quests
         public Brinnae()
             : base("Brinnae", "the wise")
         {
-            this.SetSkill(SkillName.Focus, 60.0, 83.0);
+            SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
         public Brinnae(Serial serial)
@@ -392,23 +392,23 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = true;
-            this.Race = Race.Elf;
+            Female = true;
+            Race = Race.Elf;
 
-            this.Hue = 0x8382;
-            this.HairItemID = 0x2FD0;
-            this.HairHue = 0x852;
+            Hue = 0x8382;
+            HairItemID = 0x2FD0;
+            HairHue = 0x852;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new ElvenBoots(0x1BB));
-            this.AddItem(new LeafArms());
-            this.AddItem(new FemaleLeafChest());
-            this.AddItem(new HidePants());
-            this.AddItem(new ElvenCompositeLongbow());
+            AddItem(new ElvenBoots(0x1BB));
+            AddItem(new LeafArms());
+            AddItem(new FemaleLeafChest());
+            AddItem(new HidePants());
+            AddItem(new ElvenCompositeLongbow());
         }
 
         public override void Serialize(GenericWriter writer)

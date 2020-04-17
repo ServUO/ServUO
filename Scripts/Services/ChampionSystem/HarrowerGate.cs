@@ -6,13 +6,13 @@ namespace Server.Items
         public HarrowerGate(Mobile harrower, Point3D loc, Map map, Point3D targLoc, Map targMap)
             : base(targLoc, targMap)
         {
-            this.m_Harrower = harrower;
+            m_Harrower = harrower;
 
-            this.Dispellable = false;
-            this.ItemID = 0x1FD4;
-            this.Light = LightType.Circle300;
+            Dispellable = false;
+            ItemID = 0x1FD4;
+            Light = LightType.Circle300;
 
-            this.MoveToWorld(loc, map);
+            MoveToWorld(loc, map);
         }
 
         public HarrowerGate(Serial serial)
@@ -27,7 +27,7 @@ namespace Server.Items
 
             writer.Write(0); // version
 
-            writer.Write(this.m_Harrower);
+            writer.Write(m_Harrower);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -40,17 +40,17 @@ namespace Server.Items
             {
                 case 0:
                     {
-                        this.m_Harrower = reader.ReadMobile();
+                        m_Harrower = reader.ReadMobile();
 
-                        if (this.m_Harrower == null)
-                            this.Delete();
+                        if (m_Harrower == null)
+                            Delete();
 
                         break;
                     }
             }
 
-            if (this.Light != LightType.Circle300)
-                this.Light = LightType.Circle300;
+            if (Light != LightType.Circle300)
+                Light = LightType.Circle300;
         }
     }
 }

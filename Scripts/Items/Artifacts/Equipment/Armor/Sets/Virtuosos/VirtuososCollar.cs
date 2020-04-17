@@ -20,10 +20,10 @@ namespace Server.Items
         [Constructable]
         public VirtuososCollar() : base()
         {
-            this.Hue = 1374;
-            this.Weight = 1;
-            this.StrRequirement = 20;
-            this.SetHue = 1374;
+            Hue = 1374;
+            Weight = 1;
+            StrRequirement = 20;
+            SetHue = 1374;
         }
 
         public VirtuososCollar(Serial serial) : base(serial)

@@ -20,7 +20,7 @@ namespace Server.Engines.Blackthorn
         {
             if (m is PlayerMobile)
             {
-                m.MoveToWorld(new Point3D(5703, 639, 0), this.Map);
+                m.MoveToWorld(new Point3D(5703, 639, 0), Map);
 
                 if (!DeathList.Contains(m))
                 {

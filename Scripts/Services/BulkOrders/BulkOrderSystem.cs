@@ -757,7 +757,7 @@ namespace Server.Engines.BulkOrders
             int version = reader.ReadInt();
             ConfigEntries();
 
-            this.PointsMode = (PointsMode)reader.ReadInt();
+            PointsMode = (PointsMode)reader.ReadInt();
             BOBFilter = new BOBFilter(reader);
 
             int count = reader.ReadInt();
@@ -776,7 +776,7 @@ namespace Server.Engines.BulkOrders
         {
             writer.Write(0);
 
-            writer.Write((int)this.PointsMode);
+            writer.Write((int)PointsMode);
             BOBFilter.Serialize(writer);
 
             // Lets do this dynamically incase we add new bods in the future

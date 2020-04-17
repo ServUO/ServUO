@@ -8,7 +8,7 @@ namespace Server.Items
         [Constructable]
         public ElixirOfRebirth() : base(0x24E2)
         {
-            this.Hue = 0x48E;
+            Hue = 0x48E;
         }
 
         public override int LabelNumber => 1112762;  // elixir of rebirth

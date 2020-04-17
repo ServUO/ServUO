@@ -12,8 +12,8 @@ namespace Server.Items
         public Arrow(int amount)
             : base(0xF3F)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public Arrow(Serial serial)
@@ -22,7 +22,7 @@ namespace Server.Items
         }
 
         public override double DefaultWeight => 0.1;
-        TextDefinition ICommodity.Description => this.LabelNumber;
+        TextDefinition ICommodity.Description => LabelNumber;
         bool ICommodity.IsDeedable => true;
         public override void Serialize(GenericWriter writer)
         {

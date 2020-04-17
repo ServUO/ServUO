@@ -23,49 +23,49 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return this.m_System;
+                return m_System;
             }
             set
             {
-                this.m_System = value;
+                m_System = value;
             }
         }
         public bool HasBeenRead
         {
             get
             {
-                return this.m_HasBeenRead;
+                return m_HasBeenRead;
             }
             set
             {
-                this.m_HasBeenRead = value;
+                m_HasBeenRead = value;
             }
         }
         public int CurProgress
         {
             get
             {
-                return this.m_CurProgress;
+                return m_CurProgress;
             }
             set
             {
-                this.m_CurProgress = value;
-                this.CheckCompletionStatus();
+                m_CurProgress = value;
+                CheckCompletionStatus();
             }
         }
         public bool HasCompleted
         {
             get
             {
-                return this.m_HasCompleted;
+                return m_HasCompleted;
             }
             set
             {
-                this.m_HasCompleted = value;
+                m_HasCompleted = value;
             }
         }
-        public virtual bool Completed => this.m_CurProgress >= this.MaxProgress;
-        public bool IsSingleObjective => (this.MaxProgress == 1);
+        public virtual bool Completed => m_CurProgress >= MaxProgress;
+        public bool IsSingleObjective => (MaxProgress == 1);
         public virtual void BaseDeserialize(GenericReader reader)
         {
             int version = reader.ReadEncodedInt();
@@ -74,19 +74,19 @@ namespace Server.Engines.Quests
             {
                 case 1:
                     {
-                        this.m_HasBeenRead = reader.ReadBool();
+                        m_HasBeenRead = reader.ReadBool();
                         goto case 0;
                     }
                 case 0:
                     {
-                        this.m_CurProgress = reader.ReadEncodedInt();
-                        this.m_HasCompleted = reader.ReadBool();
+                        m_CurProgress = reader.ReadEncodedInt();
+                        m_HasCompleted = reader.ReadBool();
 
                         break;
                     }
             }
 
-            this.ChildDeserialize(reader);
+            ChildDeserialize(reader);
         }
 
         public virtual void ChildDeserialize(GenericReader reader)
@@ -102,7 +102,7 @@ namespace Server.Engines.Quests
             writer.WriteEncodedInt(m_CurProgress);
             writer.Write(m_HasCompleted);
 
-            this.ChildSerialize(writer);
+            ChildSerialize(writer);
         }
 
         public virtual void ChildSerialize(GenericWriter writer)
@@ -112,25 +112,25 @@ namespace Server.Engines.Quests
 
         public virtual void Complete()
         {
-            this.CurProgress = this.MaxProgress;
+            CurProgress = MaxProgress;
         }
 
         public virtual void RenderMessage(BaseQuestGump gump)
         {
-            gump.AddHtmlObject(70, 130, 300, 100, this.Message, BaseQuestGump.Blue, false, false);
+            gump.AddHtmlObject(70, 130, 300, 100, Message, BaseQuestGump.Blue, false, false);
         }
 
         public virtual void RenderProgress(BaseQuestGump gump)
         {
-            gump.AddHtmlObject(70, 260, 270, 100, this.Completed ? 1049077 : 1049078, BaseQuestGump.Blue, false, false);
+            gump.AddHtmlObject(70, 260, 270, 100, Completed ? 1049077 : 1049078, BaseQuestGump.Blue, false, false);
         }
 
         public virtual void CheckCompletionStatus()
         {
-            if (this.Completed && !this.HasCompleted)
+            if (Completed && !HasCompleted)
             {
-                this.HasCompleted = true;
-                this.OnComplete();
+                HasCompleted = true;
+                OnComplete();
             }
         }
 
@@ -140,7 +140,7 @@ namespace Server.Engines.Quests
 
         public virtual bool GetTimerEvent()
         {
-            return !this.Completed;
+            return !Completed;
         }
 
         public virtual void CheckProgress()
@@ -153,7 +153,7 @@ namespace Server.Engines.Quests
 
         public virtual bool GetKillEvent(BaseCreature creature, Container corpse)
         {
-            return !this.Completed;
+            return !Completed;
         }
 
         public virtual void OnKill(BaseCreature creature, Container corpse)
@@ -172,24 +172,24 @@ namespace Server.Engines.Quests
         public QuestLogUpdatedGump(QuestSystem system)
             : base(3, 30)
         {
-            this.m_System = system;
+            m_System = system;
 
-            this.AddPage(0);
+            AddPage(0);
 
-            this.AddImage(20, 5, 1417);
+            AddImage(20, 5, 1417);
 
-            this.AddHtmlLocalized(0, 78, 120, 40, 1049079, White, false, false); // Quest Log Updated
+            AddHtmlLocalized(0, 78, 120, 40, 1049079, White, false, false); // Quest Log Updated
 
-            this.AddImageTiled(0, 78, 120, 40, 2624);
-            this.AddAlphaRegion(0, 78, 120, 40);
+            AddImageTiled(0, 78, 120, 40, 2624);
+            AddAlphaRegion(0, 78, 120, 40);
 
-            this.AddButton(30, 15, 5575, 5576, 1, GumpButtonType.Reply, 0);
+            AddButton(30, 15, 5575, 5576, 1, GumpButtonType.Reply, 0);
         }
 
         public override void OnResponse(NetState sender, RelayInfo info)
         {
             if (info.ButtonID == 1)
-                this.m_System.ShowQuestLog();
+                m_System.ShowQuestLog();
         }
     }
 
@@ -204,48 +204,48 @@ namespace Server.Engines.Quests
         public QuestObjectivesGump(ArrayList objectives)
             : base(90, 50)
         {
-            this.m_Objectives = objectives;
+            m_Objectives = objectives;
 
-            this.Closable = false;
+            Closable = false;
 
-            this.AddPage(0);
+            AddPage(0);
 
-            this.AddImage(0, 0, 3600);
-            this.AddImageTiled(0, 14, 15, 375, 3603);
-            this.AddImageTiled(380, 14, 14, 375, 3605);
-            this.AddImage(0, 376, 3606);
-            this.AddImageTiled(15, 376, 370, 16, 3607);
-            this.AddImageTiled(15, 0, 370, 16, 3601);
-            this.AddImage(380, 0, 3602);
-            this.AddImage(380, 376, 3608);
+            AddImage(0, 0, 3600);
+            AddImageTiled(0, 14, 15, 375, 3603);
+            AddImageTiled(380, 14, 14, 375, 3605);
+            AddImage(0, 376, 3606);
+            AddImageTiled(15, 376, 370, 16, 3607);
+            AddImageTiled(15, 0, 370, 16, 3601);
+            AddImage(380, 0, 3602);
+            AddImage(380, 376, 3608);
 
-            this.AddImageTiled(15, 15, 365, 365, 2624);
-            this.AddAlphaRegion(15, 15, 365, 365);
+            AddImageTiled(15, 15, 365, 365, 2624);
+            AddAlphaRegion(15, 15, 365, 365);
 
-            this.AddImage(20, 87, 1231);
-            this.AddImage(75, 62, 9307);
+            AddImage(20, 87, 1231);
+            AddImage(75, 62, 9307);
 
-            this.AddHtmlLocalized(117, 35, 230, 20, 1046026, Blue, false, false); // Quest Log
+            AddHtmlLocalized(117, 35, 230, 20, 1046026, Blue, false, false); // Quest Log
 
-            this.AddImage(77, 33, 9781);
-            this.AddImage(65, 110, 2104);
+            AddImage(77, 33, 9781);
+            AddImage(65, 110, 2104);
 
-            this.AddHtmlLocalized(79, 106, 230, 20, 1049073, Blue, false, false); // Objective:
+            AddHtmlLocalized(79, 106, 230, 20, 1049073, Blue, false, false); // Objective:
 
-            this.AddImageTiled(68, 125, 120, 1, 9101);
-            this.AddImage(65, 240, 2104);
+            AddImageTiled(68, 125, 120, 1, 9101);
+            AddImage(65, 240, 2104);
 
-            this.AddHtmlLocalized(79, 237, 230, 20, 1049076, Blue, false, false); // Progress details:
+            AddHtmlLocalized(79, 237, 230, 20, 1049076, Blue, false, false); // Progress details:
 
-            this.AddImageTiled(68, 255, 120, 1, 9101);
-            this.AddButton(175, 355, 2313, 2312, 1, GumpButtonType.Reply, 0);
+            AddImageTiled(68, 255, 120, 1, 9101);
+            AddButton(175, 355, 2313, 2312, 1, GumpButtonType.Reply, 0);
 
-            this.AddImage(341, 15, 10450);
-            this.AddImage(341, 330, 10450);
-            this.AddImage(15, 330, 10450);
-            this.AddImage(15, 15, 10450);
+            AddImage(341, 15, 10450);
+            AddImage(341, 330, 10450);
+            AddImage(15, 330, 10450);
+            AddImage(15, 15, 10450);
 
-            this.AddPage(1);
+            AddPage(1);
 
             for (int i = 0; i < objectives.Count; ++i)
             {
@@ -253,10 +253,10 @@ namespace Server.Engines.Quests
 
                 if (i > 0)
                 {
-                    this.AddButton(55, 346, 9909, 9911, 0, GumpButtonType.Page, 1 + i);
-                    this.AddHtmlLocalized(82, 347, 50, 20, 1043354, White, false, false); // Previous
+                    AddButton(55, 346, 9909, 9911, 0, GumpButtonType.Page, 1 + i);
+                    AddHtmlLocalized(82, 347, 50, 20, 1043354, White, false, false); // Previous
 
-                    this.AddPage(1 + i);
+                    AddPage(1 + i);
                 }
 
                 obj.RenderMessage(this);
@@ -264,17 +264,17 @@ namespace Server.Engines.Quests
 
                 if (i > 0)
                 {
-                    this.AddButton(317, 346, 9903, 9905, 0, GumpButtonType.Page, i);
-                    this.AddHtmlLocalized(278, 347, 50, 20, 1043353, White, false, false); // Next
+                    AddButton(317, 346, 9903, 9905, 0, GumpButtonType.Page, i);
+                    AddHtmlLocalized(278, 347, 50, 20, 1043353, White, false, false); // Next
                 }
             }
         }
 
         public override void OnResponse(NetState sender, RelayInfo info)
         {
-            for (int i = this.m_Objectives.Count - 1; i >= 0; --i)
+            for (int i = m_Objectives.Count - 1; i >= 0; --i)
             {
-                QuestObjective obj = (QuestObjective)this.m_Objectives[i];
+                QuestObjective obj = (QuestObjective)m_Objectives[i];
 
                 if (!obj.HasBeenRead)
                 {

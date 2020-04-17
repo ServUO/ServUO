@@ -5,8 +5,8 @@ namespace Server.Items
         [Constructable]
         public WaterTroughSouthAddon()
         {
-            this.AddComponent(new AddonComponent(0xB43), 0, 0, 0);
-            this.AddComponent(new AddonComponent(0xB44), 1, 0, 0);
+            AddComponent(new AddonComponent(0xB43), 0, 0, 0);
+            AddComponent(new AddonComponent(0xB44), 1, 0, 0);
         }
 
         public WaterTroughSouthAddon(Serial serial)

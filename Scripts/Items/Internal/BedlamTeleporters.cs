@@ -37,8 +37,8 @@ namespace Server.Items
 
                 if (player.Bedlam)
                 {
-                    BaseCreature.TeleportPets(player, new Point3D(121, 1682, 0), this.Map);
-                    player.MoveToWorld(new Point3D(121, 1682, 0), this.Map);
+                    BaseCreature.TeleportPets(player, new Point3D(121, 1682, 0), Map);
+                    player.MoveToWorld(new Point3D(121, 1682, 0), Map);
                 }
                 else
                 {

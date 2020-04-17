@@ -9,9 +9,9 @@ namespace Server.Items
         [Constructable]
         public OrcishSchematics() : base(0x2258)
         {
-            this.Hue = 1945;
-            this.Weight = 1.0;
-            this.LootType = LootType.Blessed;
+            Hue = 1945;
+            Weight = 1.0;
+            LootType = LootType.Blessed;
         }
 
         public override void OnDoubleClick(Mobile from)
