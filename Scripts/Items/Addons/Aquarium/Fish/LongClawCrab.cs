@@ -6,7 +6,7 @@ namespace Server.Items
         public LongClawCrab()
             : base(0x3AFC)
         {
-            this.Hue = 0x527;
+            Hue = 0x527;
         }
 
         public LongClawCrab(Serial serial)

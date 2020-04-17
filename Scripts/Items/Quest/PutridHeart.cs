@@ -23,11 +23,11 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!this.Deleted && DespiseController.Instance != null)
+            if (!Deleted && DespiseController.Instance != null)
             {
                 //DespiseController.Instance.AddDespisePoints(from, this);
-                Engines.Points.PointsSystem.DespiseCrystals.AwardPoints(from, this.Amount);
-                this.Delete();
+                Engines.Points.PointsSystem.DespiseCrystals.AwardPoints(from, Amount);
+                Delete();
             }
         }
 

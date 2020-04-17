@@ -6,8 +6,8 @@ namespace Server.Items
         public DecoBloodspawn()
             : base(0xF7C)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public DecoBloodspawn(Serial serial)

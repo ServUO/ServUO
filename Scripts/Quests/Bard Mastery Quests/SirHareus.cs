@@ -100,7 +100,7 @@ namespace Server.Engines.Quests
                     Quest.OnCompleted();
                 else
                 {
-                    Quest.Owner.SendLocalizedMessage(1115748, true, (this.MaxProgress - this.CurProgress).ToString()); // Conflicts remaining to be incited: 
+                    Quest.Owner.SendLocalizedMessage(1115748, true, (MaxProgress - CurProgress).ToString()); // Conflicts remaining to be incited: 
                     Quest.Owner.PlaySound(Quest.UpdateSound);
                 }
 

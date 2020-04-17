@@ -5,9 +5,9 @@ namespace Server.Items
         [Constructable]
         public OrnateElvenTableEastAddon()
         {
-            this.AddComponent(new AddonComponent(0x308F), 0, 1, 0);
-            this.AddComponent(new AddonComponent(0x3090), 0, 0, 0);
-            this.AddComponent(new AddonComponent(0x3091), 0, -1, 0);
+            AddComponent(new AddonComponent(0x308F), 0, 1, 0);
+            AddComponent(new AddonComponent(0x3090), 0, 0, 0);
+            AddComponent(new AddonComponent(0x3091), 0, -1, 0);
         }
 
         public OrnateElvenTableEastAddon(Serial serial)

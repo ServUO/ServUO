@@ -6,8 +6,8 @@ namespace Server.Items
         public Cards3()
             : base(0xE15)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public Cards3(Serial serial)

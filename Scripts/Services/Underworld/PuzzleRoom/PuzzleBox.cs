@@ -28,7 +28,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!from.InRange(this.Location, 3))
+            if (!from.InRange(Location, 3))
                 from.SendLocalizedMessage(3000268); // that is too far away.
             else if (from.Backpack != null)
             {

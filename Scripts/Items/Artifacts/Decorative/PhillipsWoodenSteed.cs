@@ -7,7 +7,7 @@ namespace Server.Items
         public PhillipsWoodenSteed()
             : base(MonsterStatuetteType.PhillipsWoodenSteed)
         {
-            this.LootType = LootType.Regular;
+            LootType = LootType.Regular;
         }
 
         public PhillipsWoodenSteed(Serial serial)

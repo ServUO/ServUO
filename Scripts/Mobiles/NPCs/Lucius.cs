@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public WatchYourStepQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(Gold), "gold", 5000, 0xEED));
+            AddObjective(new ObtainObjective(typeof(Gold), "gold", 5000, 0xEED));
 
-            this.AddReward(new BaseReward(typeof(MagicalRope), 1074338)); // Magical Rope
+            AddReward(new BaseReward(typeof(MagicalRope), 1074338)); // Magical Rope
         }
 
         /* Watch Your Step */
@@ -59,25 +59,25 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = false;
+            CantWalk = true;
+            Race = Race.Human;
 
-            this.Hue = 0x83F3;
-            this.HairItemID = 0x2047;
-            this.HairHue = 0x393;
-            this.FacialHairItemID = 0x203F;
-            this.FacialHairHue = 0x393;
+            Hue = 0x83F3;
+            HairItemID = 0x2047;
+            HairHue = 0x393;
+            FacialHairItemID = 0x203F;
+            FacialHairHue = 0x393;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Boots(0x717));
-            this.AddItem(new LongPants(0x1BB));
-            this.AddItem(new Cloak(0x71));
+            AddItem(new Backpack());
+            AddItem(new Boots(0x717));
+            AddItem(new LongPants(0x1BB));
+            AddItem(new Cloak(0x71));
         }
 
         public override void Serialize(GenericWriter writer)

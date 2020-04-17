@@ -11,8 +11,8 @@ namespace Server.Engines.Reports
         private PageInfoCollection m_Pages;
         public BaseInfo(string account)
         {
-            this.m_Account = account;
-            this.m_Pages = new PageInfoCollection();
+            m_Account = account;
+            m_Pages = new PageInfoCollection();
         }
 
         public static TimeSpan SortRange
@@ -30,34 +30,34 @@ namespace Server.Engines.Reports
         {
             get
             {
-                return this.m_Account;
+                return m_Account;
             }
             set
             {
-                this.m_Account = value;
+                m_Account = value;
             }
         }
         public PageInfoCollection Pages
         {
             get
             {
-                return this.m_Pages;
+                return m_Pages;
             }
             set
             {
-                this.m_Pages = value;
+                m_Pages = value;
             }
         }
         public string Display
         {
             get
             {
-                if (this.m_Display != null)
-                    return this.m_Display;
+                if (m_Display != null)
+                    return m_Display;
 
-                if (this.m_Account != null)
+                if (m_Account != null)
                 {
-                    IAccount acct = Accounts.GetAccount(this.m_Account);
+                    IAccount acct = Accounts.GetAccount(m_Account);
 
                     if (acct != null)
                     {
@@ -72,26 +72,26 @@ namespace Server.Engines.Reports
                         }
 
                         if (mob != null && mob.Name != null && mob.Name.Length > 0)
-                            return (this.m_Display = mob.Name);
+                            return (m_Display = mob.Name);
                     }
                 }
 
-                return (this.m_Display = this.m_Account);
+                return (m_Display = m_Account);
             }
         }
         public int GetPageCount(PageResolution res, DateTime min, DateTime max)
         {
-            return StaffHistory.GetPageCount(this.m_Pages, res, min, max);
+            return StaffHistory.GetPageCount(m_Pages, res, min, max);
         }
 
         public void Register(PageInfo page)
         {
-            this.m_Pages.Add(page);
+            m_Pages.Add(page);
         }
 
         public void Unregister(PageInfo page)
         {
-            this.m_Pages.Remove(page);
+            m_Pages.Remove(page);
         }
 
         public int CompareTo(object obj)
@@ -99,10 +99,10 @@ namespace Server.Engines.Reports
             BaseInfo cmp = obj as BaseInfo;
 
             int v = cmp.GetPageCount(cmp is StaffInfo ? PageResolution.Handled : PageResolution.None, DateTime.UtcNow - m_SortRange, DateTime.UtcNow) -
-                    this.GetPageCount(this is StaffInfo ? PageResolution.Handled : PageResolution.None, DateTime.UtcNow - m_SortRange, DateTime.UtcNow);
+                    GetPageCount(this is StaffInfo ? PageResolution.Handled : PageResolution.None, DateTime.UtcNow - m_SortRange, DateTime.UtcNow);
 
             if (v == 0)
-                v = String.Compare(this.Display, cmp.Display);
+                v = String.Compare(Display, cmp.Display);
 
             return v;
         }

@@ -208,7 +208,7 @@ namespace Server.Items
 
                 if (m_Ticks == 10)
                 {
-                    this.Stop();
+                    Stop();
                     m_From.Frozen = false;
                 }
             }

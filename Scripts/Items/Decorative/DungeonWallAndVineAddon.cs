@@ -8,8 +8,8 @@ namespace Server.Items
         [Constructable]
         public DungeonWallAndVineAddon()
         {
-            this.AddComponent(new MagicVinesComponent(), 1, 0, 0);
-            this.AddComponent(new DungeonWallComponent(), 0, 0, 0);
+            AddComponent(new MagicVinesComponent(), 1, 0, 0);
+            AddComponent(new DungeonWallComponent(), 0, 0, 0);
         }
 
         public DungeonWallAndVineAddon(Serial serial)
@@ -46,25 +46,25 @@ namespace Server.Items
         public override bool HandlesOnMovement => true;
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.X > this.X)
+            if (from.X > X)
             {
                 from.SendLocalizedMessage(1111659); // You try to examine the strange wall but the vines get in your way.
             }
             else
             {
-                this.Z += -22;
+                Z += -22;
                 Timer.DelayCall(TimeSpan.FromSeconds(15.0), delegate ()
                 {
-                    this.Z += 22;
+                    Z += 22;
                 });
             }
         }
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (this.Parent == null && Utility.InRange(this.Location, m.Location, 3) && !Utility.InRange(this.Location, oldLocation, 3) && m is PlayerMobile)
+            if (Parent == null && Utility.InRange(Location, m.Location, 3) && !Utility.InRange(Location, oldLocation, 3) && m is PlayerMobile)
             {
-                if (m.X > this.X)
+                if (m.X > X)
                     m.SendLocalizedMessage(1111665); // You notice something odd about the vines covering the wall.
             }
         }

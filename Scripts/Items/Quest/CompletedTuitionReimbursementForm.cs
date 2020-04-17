@@ -6,8 +6,8 @@ namespace Server.Items
         public CompletedTuitionReimbursementForm()
             : base(0x14F0)
         {
-            this.LootType = LootType.Blessed;
-            this.Weight = 1;
+            LootType = LootType.Blessed;
+            Weight = 1;
         }
 
         public CompletedTuitionReimbursementForm(Serial serial)

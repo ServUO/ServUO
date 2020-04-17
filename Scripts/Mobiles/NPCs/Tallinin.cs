@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public ImpressivePlaidQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(Kilt), "kilts", 10, 0x1537));
+            AddObjective(new ObtainObjective(typeof(Kilt), "kilts", 10, 0x1537));
 
-            this.AddReward(new BaseReward(typeof(TailorsCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(TailorsCraftsmanSatchel), 1074282));
         }
 
         /* An Impressive Plaid */
@@ -44,9 +44,9 @@ namespace Server.Engines.Quests
         public NiceShirtQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(FancyShirt), "fancy shirt", 10, 0x1EFD));
+            AddObjective(new ObtainObjective(typeof(FancyShirt), "fancy shirt", 10, 0x1EFD));
 
-            this.AddReward(new BaseReward(typeof(TailorsCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(TailorsCraftsmanSatchel), 1074282));
         }
 
         /* A Nice Shirt */
@@ -80,9 +80,9 @@ namespace Server.Engines.Quests
         public LeatherAndLaceQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(StuddedBustierArms), "studded bustiers", 10, 0x1C0C));
+            AddObjective(new ObtainObjective(typeof(StuddedBustierArms), "studded bustiers", 10, 0x1C0C));
 
-            this.AddReward(new BaseReward(typeof(TailorsCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(TailorsCraftsmanSatchel), 1074282));
         }
 
         /* Leather and Lace */
@@ -116,9 +116,9 @@ namespace Server.Engines.Quests
         public FeyHeadgearQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(FlowerGarland), "flower garlands", 10, 0x2306));
+            AddObjective(new ObtainObjective(typeof(FlowerGarland), "flower garlands", 10, 0x2306));
 
-            this.AddReward(new BaseReward(typeof(TailorsCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(TailorsCraftsmanSatchel), 1074282));
         }
 
         /* Fey Headgear */
@@ -152,9 +152,9 @@ namespace Server.Engines.Quests
         public NewCloakQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(GrobusFur), "grobu's fur", 1));
+            AddObjective(new ObtainObjective(typeof(GrobusFur), "grobu's fur", 1));
 
-            this.AddReward(new BaseReward(typeof(TailorsCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(TailorsCraftsmanSatchel), 1074282));
         }
 
         /* New Cloak */
@@ -213,22 +213,22 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.CantWalk = true;
-            this.Race = Race.Elf;
+            Female = false;
+            CantWalk = true;
+            Race = Race.Elf;
 
-            this.Hue = 0x876C;
-            this.HairItemID = 0x2FC0;
-            this.HairHue = 0x26B;
+            Hue = 0x876C;
+            HairItemID = 0x2FC0;
+            HairHue = 0x26B;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new ElvenBoots(0x901));
-            this.AddItem(new Tunic(0x62));
-            this.AddItem(new Cloak(0x71E));
+            AddItem(new ElvenBoots(0x901));
+            AddItem(new Tunic(0x62));
+            AddItem(new Cloak(0x71E));
         }
 
         public override void Serialize(GenericWriter writer)

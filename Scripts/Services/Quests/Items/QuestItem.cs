@@ -14,20 +14,20 @@ namespace Server.Engines.Quests
         {
         }
 
-        public virtual bool Accepted => this.Deleted;
+        public virtual bool Accepted => Deleted;
         public abstract bool CanDrop(PlayerMobile pm);
 
         public override bool DropToWorld(Mobile from, Point3D p)
         {
             bool ret = base.DropToWorld(from, p);
 
-            if (ret && !this.Accepted && this.Parent != from.Backpack)
+            if (ret && !Accepted && Parent != from.Backpack)
             {
                 if (from.IsStaff())
                 {
                     return true;
                 }
-                else if (!(from is PlayerMobile) || this.CanDrop((PlayerMobile)from))
+                else if (!(from is PlayerMobile) || CanDrop((PlayerMobile)from))
                 {
                     return true;
                 }
@@ -47,13 +47,13 @@ namespace Server.Engines.Quests
         {
             bool ret = base.DropToMobile(from, target, p);
 
-            if (ret && !this.Accepted && this.Parent != from.Backpack)
+            if (ret && !Accepted && Parent != from.Backpack)
             {
                 if (from.IsStaff())
                 {
                     return true;
                 }
-                else if (!(from is PlayerMobile) || this.CanDrop((PlayerMobile)from))
+                else if (!(from is PlayerMobile) || CanDrop((PlayerMobile)from))
                 {
                     return true;
                 }
@@ -73,13 +73,13 @@ namespace Server.Engines.Quests
         {
             bool ret = base.DropToItem(from, target, p);
 
-            if (ret && !this.Accepted && this.Parent != from.Backpack)
+            if (ret && !Accepted && Parent != from.Backpack)
             {
                 if (from.IsStaff())
                 {
                     return true;
                 }
-                else if (!(from is PlayerMobile) || this.CanDrop((PlayerMobile)from))
+                else if (!(from is PlayerMobile) || CanDrop((PlayerMobile)from))
                 {
                     return true;
                 }
@@ -97,7 +97,7 @@ namespace Server.Engines.Quests
 
         public override DeathMoveResult OnParentDeath(Mobile parent)
         {
-            if (parent is PlayerMobile && !this.CanDrop((PlayerMobile)parent))
+            if (parent is PlayerMobile && !CanDrop((PlayerMobile)parent))
                 return DeathMoveResult.MoveToBackpack;
             else
                 return base.OnParentDeath(parent);

@@ -6,10 +6,10 @@ namespace Server.Items
         public TreefellowWood()
             : base(0x1BDD)
         {
-            this.Name = "Treefellow Wood";
+            Name = "Treefellow Wood";
 
-            this.Hue = 2425;
-            this.Movable = true;
+            Hue = 2425;
+            Movable = true;
         }
 
         public TreefellowWood(Serial serial)

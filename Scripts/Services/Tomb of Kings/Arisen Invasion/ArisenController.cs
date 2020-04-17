@@ -45,7 +45,7 @@ namespace Server.Items
             {
                 XmlSpawner spawner = new XmlSpawner(m_Amount, (int)m_MinDelay.TotalSeconds, (int)m_MaxDelay.TotalSeconds, 0, 20, 10, m_Creature);
 
-                spawner.MoveToWorld(this.Location, this.Map);
+                spawner.MoveToWorld(Location, Map);
 
                 return spawner;
             }

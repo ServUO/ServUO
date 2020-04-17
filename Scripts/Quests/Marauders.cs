@@ -9,9 +9,9 @@ namespace Server.Engines.Quests
         public MaraudersQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Ogre), "ogres", 10, "Sanctuary"));
+            AddObjective(new SlayObjective(typeof(Ogre), "ogres", 10, "Sanctuary"));
 
-            this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
+            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
         public override QuestChain ChainID => QuestChain.Marauders;
@@ -53,9 +53,9 @@ namespace Server.Engines.Quests
         public TheBrainsOfTheOperationQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(OgreLord), "ogre lords", 10, "Sanctuary"));
+            AddObjective(new SlayObjective(typeof(OgreLord), "ogre lords", 10, "Sanctuary"));
 
-            this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
+            AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
         public override QuestChain ChainID => QuestChain.Marauders;
@@ -96,9 +96,9 @@ namespace Server.Engines.Quests
         public TheBrawnQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Cyclops), "cyclops", 6, "Sanctuary"));
+            AddObjective(new SlayObjective(typeof(Cyclops), "cyclops", 6, "Sanctuary"));
 
-            this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
+            AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
         public override QuestChain ChainID => QuestChain.Marauders;
@@ -138,9 +138,9 @@ namespace Server.Engines.Quests
         public TheBiggerTheyAreQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Titan), "titans", 3, "Sanctuary"));
+            AddObjective(new SlayObjective(typeof(Titan), "titans", 3, "Sanctuary"));
 
-            this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
+            AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
         public override QuestChain ChainID => QuestChain.Marauders;

@@ -9,8 +9,8 @@ namespace Server.Engines.Quests
         public Tamm()
             : base("Tamm", "the guard")
         {
-            this.SetSkill(SkillName.Meditation, 60.0, 83.0);
-            this.SetSkill(SkillName.Focus, 60.0, 83.0);
+            SetSkill(SkillName.Meditation, 60.0, 83.0);
+            SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
         public Tamm(Serial serial)
@@ -36,23 +36,23 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.Race = Race.Elf;
+            Female = false;
+            Race = Race.Elf;
 
-            this.Hue = 0x8353;
-            this.HairItemID = 0x2FBF;
-            this.HairHue = 0x386;
+            Hue = 0x8353;
+            HairItemID = 0x2FBF;
+            HairHue = 0x386;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new ElvenBoots(0x901));
-            this.AddItem(new ElvenCompositeLongbow());
-            this.AddItem(new HidePants());
-            this.AddItem(new HidePauldrons());
-            this.AddItem(new HideChest());
+            AddItem(new ElvenBoots(0x901));
+            AddItem(new ElvenCompositeLongbow());
+            AddItem(new HidePants());
+            AddItem(new HidePauldrons());
+            AddItem(new HideChest());
         }
 
         public override void Serialize(GenericWriter writer)

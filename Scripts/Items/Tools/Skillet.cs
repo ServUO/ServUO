@@ -8,14 +8,14 @@ namespace Server.Items
         public Skillet()
             : base(0x97F)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         [Constructable]
         public Skillet(int uses)
             : base(uses, 0x97F)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public Skillet(Serial serial)

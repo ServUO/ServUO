@@ -6,7 +6,7 @@ namespace Server.Engines.VvV
         {
             get
             {
-                if (this.Hue == ViceVsVirtueSystem.VirtueHue)
+                if (Hue == ViceVsVirtueSystem.VirtueHue)
                     return 1155538;
 
                 return 1155539;
@@ -26,8 +26,8 @@ namespace Server.Engines.VvV
             {
                 if (ViceVsVirtueSystem.IsVvV(m))
                 {
-                    m.HairHue = this.Hue;
-                    m.FacialHairHue = this.Hue;
+                    m.HairHue = Hue;
+                    m.FacialHairHue = Hue;
 
                     Delete();
                     m.PlaySound(0x4E);

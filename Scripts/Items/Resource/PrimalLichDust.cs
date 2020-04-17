@@ -12,8 +12,8 @@ namespace Server.Items
         public PrimalLichDust(int amount)
             : base(0x2DB5)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public PrimalLichDust(Serial serial)

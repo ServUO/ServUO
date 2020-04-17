@@ -7,15 +7,15 @@ namespace Server.Items
         public Swiftflight()
             : base()
         {
-            this.SetHue = 0x594;
+            SetHue = 0x594;
 
-            this.Attributes.WeaponDamage = 40;
+            Attributes.WeaponDamage = 40;
 
-            this.SetSelfRepair = 3;
-            this.SetAttributes.AttackChance = 15;
-            this.SetAttributes.BonusDex = 8;
-            this.SetAttributes.WeaponSpeed = 30;
-            this.SetAttributes.WeaponDamage = 20;
+            SetSelfRepair = 3;
+            SetAttributes.AttackChance = 15;
+            SetAttributes.BonusDex = 8;
+            SetAttributes.WeaponSpeed = 30;
+            SetAttributes.WeaponDamage = 20;
         }
 
         public Swiftflight(Serial serial)

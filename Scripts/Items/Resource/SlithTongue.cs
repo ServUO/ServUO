@@ -12,8 +12,8 @@ namespace Server.Items
         public SlithTongue(int amount)
             : base(0x5746)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public SlithTongue(Serial serial)

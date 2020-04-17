@@ -6,7 +6,7 @@ namespace Server.Mobiles
         public TailorGuildmaster()
             : base("tailor")
         {
-            this.SetSkill(SkillName.Tailoring, 90.0, 100.0);
+            SetSkill(SkillName.Tailoring, 90.0, 100.0);
         }
 
         public TailorGuildmaster(Serial serial)

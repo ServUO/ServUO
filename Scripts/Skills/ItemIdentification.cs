@@ -28,7 +28,7 @@ namespace Server.Items
             public InternalTarget()
                 : base(8, false, TargetFlags.None)
             {
-                this.AllowNonlocal = true;
+                AllowNonlocal = true;
             }
 
             protected override void OnTarget(Mobile from, object o)

@@ -9,10 +9,10 @@ namespace Server.Engines.Quests
         public BoundToTheLandQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(InsaneDryad), "insane dryads", 12));
-            this.AddObjective(new SlayObjective(typeof(Saliva), "saliva", 1));
+            AddObjective(new SlayObjective(typeof(InsaneDryad), "insane dryads", 12));
+            AddObjective(new SlayObjective(typeof(Saliva), "saliva", 1));
 
-            this.AddReward(new BaseReward(typeof(DryadsBlessing), 1074345));
+            AddReward(new BaseReward(typeof(DryadsBlessing), 1074345));
         }
 
         public override QuestChain ChainID => QuestChain.BlightedGrove;
@@ -71,9 +71,9 @@ namespace Server.Engines.Quests
 
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
-            this.Female = true;
-            this.Body = 266;
+            InitStats(100, 100, 25);
+            Female = true;
+            Body = 266;
         }
 
         public override void Serialize(GenericWriter writer)

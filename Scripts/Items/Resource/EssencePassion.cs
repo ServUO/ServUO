@@ -23,7 +23,7 @@ namespace Server.Items
         }
 
         public override int LabelNumber => 1113326;// essence of passion
-        TextDefinition ICommodity.Description => this.LabelNumber;
+        TextDefinition ICommodity.Description => LabelNumber;
         bool ICommodity.IsDeedable => true;
         public override void Serialize(GenericWriter writer)
         {

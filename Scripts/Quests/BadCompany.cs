@@ -9,9 +9,9 @@ namespace Server.Engines.Quests
         public BadCompany()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(GreenGoblin), "GreenGoblin", 10));
+            AddObjective(new SlayObjective(typeof(GreenGoblin), "GreenGoblin", 10));
 
-            this.AddReward(new BaseReward(typeof(JaacarBox), "Bowl of Rotworm Stew Recipe"));
+            AddReward(new BaseReward(typeof(JaacarBox), "Bowl of Rotworm Stew Recipe"));
         }
 
         public override Type NextQuest => typeof(ATangledWeb);

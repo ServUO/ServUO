@@ -69,36 +69,36 @@ namespace Server.Engines.Help
 
         private readonly Queue<SpeechLogEntry> m_Queue;
 
-        public int Count => this.m_Queue.Count;
+        public int Count => m_Queue.Count;
 
         public SpeechLog()
         {
-            this.m_Queue = new Queue<SpeechLogEntry>();
+            m_Queue = new Queue<SpeechLogEntry>();
         }
 
         public void Add(Mobile from, string speech)
         {
-            this.Add(new SpeechLogEntry(from, speech));
+            Add(new SpeechLogEntry(from, speech));
         }
 
         public void Add(SpeechLogEntry entry)
         {
-            if (MaxLength > 0 && this.m_Queue.Count >= MaxLength)
-                this.m_Queue.Dequeue();
+            if (MaxLength > 0 && m_Queue.Count >= MaxLength)
+                m_Queue.Dequeue();
 
-            this.Clean();
+            Clean();
 
-            this.m_Queue.Enqueue(entry);
+            m_Queue.Enqueue(entry);
         }
 
         public void Clean()
         {
-            while (this.m_Queue.Count > 0)
+            while (m_Queue.Count > 0)
             {
-                SpeechLogEntry entry = this.m_Queue.Peek();
+                SpeechLogEntry entry = m_Queue.Peek();
 
                 if (DateTime.UtcNow - entry.Created > EntryDuration)
-                    this.m_Queue.Dequeue();
+                    m_Queue.Dequeue();
                 else
                     break;
             }
@@ -106,14 +106,14 @@ namespace Server.Engines.Help
 
         public void CopyTo(SpeechLogEntry[] array, int index)
         {
-            this.m_Queue.CopyTo(array, index);
+            m_Queue.CopyTo(array, index);
         }
 
         #region IEnumerable<SpeechLogEntry> Members
 
         IEnumerator<SpeechLogEntry> IEnumerable<SpeechLogEntry>.GetEnumerator()
         {
-            return this.m_Queue.GetEnumerator();
+            return m_Queue.GetEnumerator();
         }
 
         #endregion
@@ -122,7 +122,7 @@ namespace Server.Engines.Help
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.m_Queue.GetEnumerator();
+            return m_Queue.GetEnumerator();
         }
         #endregion
     }
@@ -133,22 +133,22 @@ namespace Server.Engines.Help
         private readonly string m_Speech;
         private DateTime m_Created;
 
-        public Mobile From => this.m_From;
-        public string Speech => this.m_Speech;
+        public Mobile From => m_From;
+        public string Speech => m_Speech;
         public DateTime Created
         {
             get
             {
-                return this.m_Created;
+                return m_Created;
             }
-            set { this.m_Created = value; }
+            set { m_Created = value; }
         }
 
         public SpeechLogEntry(Mobile from, string speech)
         {
-            this.m_From = from;
-            this.m_Speech = speech;
-            this.m_Created = DateTime.UtcNow;
+            m_From = from;
+            m_Speech = speech;
+            m_Created = DateTime.UtcNow;
         }
     }
 }

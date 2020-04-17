@@ -14,10 +14,10 @@ namespace Server.Engines.Quests
         public BaseQuestItem(int itemID)
             : base(itemID)
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
 
-            if (this.Lifespan > 0)
-                this.StartTimer();
+            if (Lifespan > 0)
+                StartTimer();
         }
 
         public BaseQuestItem(Serial serial)
@@ -31,28 +31,28 @@ namespace Server.Engines.Quests
         {
             get
             {
-                return this.m_Duration;
+                return m_Duration;
             }
             set
             {
-                this.m_Duration = value;
-                this.InvalidateProperties();
+                m_Duration = value;
+                InvalidateProperties();
             }
         }
         public BaseQuest Quest
         {
             get
             {
-                return this.m_Quest;
+                return m_Quest;
             }
             set
             {
-                this.m_Quest = value;
+                m_Quest = value;
             }
         }
         public override void OnDoubleClick(Mobile from)
         {
-            if (!this.IsChildOf(from.Backpack) && this.Movable)
+            if (!IsChildOf(from.Backpack) && Movable)
             {
                 from.SendLocalizedMessage(1060640); // The item must be in your backpack to use it.
                 return;
@@ -63,7 +63,7 @@ namespace Server.Engines.Quests
 
             PlayerMobile player = (PlayerMobile)from;
 
-            if (QuestHelper.InProgress(player, this.Quests))
+            if (QuestHelper.InProgress(player, Quests))
                 return;
 
             if (QuestHelper.QuestLimitReached(player))
@@ -74,7 +74,7 @@ namespace Server.Engines.Quests
             {
                 BaseChain chain = pair.Value;
 
-                if (chain != null && chain.Quester != null && chain.Quester.IsAssignableFrom(this.GetType()))
+                if (chain != null && chain.Quester != null && chain.Quester.IsAssignableFrom(GetType()))
                 {
                     BaseQuest quest = QuestHelper.RandomQuest(player, new Type[] { chain.CurrentQuest }, this);
 
@@ -87,7 +87,7 @@ namespace Server.Engines.Quests
                 }
             }
 
-            BaseQuest questt = QuestHelper.RandomQuest(player, this.Quests, this);
+            BaseQuest questt = QuestHelper.RandomQuest(player, Quests, this);
 
             if (questt != null)
             {
@@ -102,10 +102,10 @@ namespace Server.Engines.Quests
         {
             base.GetProperties(list);
 
-            if (this.m_Duration > 0)
-                list.Add(1072517, this.m_Duration.ToString()); // Lifespan: ~1_val~ seconds
+            if (m_Duration > 0)
+                list.Add(1072517, m_Duration.ToString()); // Lifespan: ~1_val~ seconds
 
-            if (!this.QuestItem)
+            if (!QuestItem)
                 list.Add(1072351); // Quest Item
         }
 
@@ -125,46 +125,46 @@ namespace Server.Engines.Quests
 
             int version = reader.ReadInt();
 
-            this.m_Duration = reader.ReadInt();
-            this.m_InDelivery = reader.ReadBool();
+            m_Duration = reader.ReadInt();
+            m_InDelivery = reader.ReadBool();
 
-            if (this.m_Duration > 0)
-                this.StartTimer();
+            if (m_Duration > 0)
+                StartTimer();
         }
 
         public virtual void StartTimer()
         {
-            if (this.m_Timer != null)
+            if (m_Timer != null)
                 return;
 
-            this.m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), new TimerCallback(Slice));
+            m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), new TimerCallback(Slice));
         }
 
         public virtual void StopTimer()
         {
-            if (this.m_Timer != null)
-                this.m_Timer.Stop();
+            if (m_Timer != null)
+                m_Timer.Stop();
 
-            this.m_Timer = null;
+            m_Timer = null;
         }
 
         public virtual void Slice()
         {
-            if (this.m_Duration + 10 < this.Lifespan)
-                this.m_Duration += 10;
+            if (m_Duration + 10 < Lifespan)
+                m_Duration += 10;
             else
             {
-                this.StopTimer();
+                StopTimer();
 
-                if (this.Parent is Backpack)
+                if (Parent is Backpack)
                 {
-                    Backpack pack = (Backpack)this.Parent;
+                    Backpack pack = (Backpack)Parent;
 
                     if (pack.Parent is PlayerMobile)
                         QuestHelper.RemoveStatus((PlayerMobile)pack.Parent, this);
                 }
 
-                this.Delete();
+                Delete();
             }
         }
     }

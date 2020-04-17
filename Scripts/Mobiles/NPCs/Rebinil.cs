@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public Rebinil()
             : base("the healer")
         {
-            this.Name = "Rebinil";
+            Name = "Rebinil";
         }
 
         public Rebinil(Serial serial)
@@ -20,28 +20,28 @@ namespace Server.Mobiles
 
         public override bool CanTeach => false;
         public override bool IsInvulnerable => true;
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
         }
 
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = true;
-            this.Race = Race.Elf;
+            Female = true;
+            Race = Race.Elf;
 
-            this.Hue = 0x83E7;
-            this.HairItemID = 0x2FD0;
-            this.HairHue = 0x26B;
+            Hue = 0x83E7;
+            HairItemID = 0x2FD0;
+            HairHue = 0x26B;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Sandals(0x719));
-            this.AddItem(new FemaleElvenRobe(0x757));
-            this.AddItem(new RoyalCirclet());
+            AddItem(new Sandals(0x719));
+            AddItem(new FemaleElvenRobe(0x757));
+            AddItem(new RoyalCirclet());
         }
 
         public override void Serialize(GenericWriter writer)

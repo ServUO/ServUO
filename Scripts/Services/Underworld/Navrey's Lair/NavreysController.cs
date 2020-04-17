@@ -71,7 +71,7 @@ namespace Server.Items
                             pillar.Type = PillarType.Three;
                     }
 
-                    this.TypeRestart = TimeSpan.FromHours(24.0); // The timers rotate among the three stone ruins randomly once a day
+                    TypeRestart = TimeSpan.FromHours(24.0); // The timers rotate among the three stone ruins randomly once a day
                 }
 
                 return ts;

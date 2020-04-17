@@ -98,14 +98,14 @@ namespace Server.Engines.MyrmidexInvasion
                 BaseCreature bc = (BaseCreature)m;
                 Point3D check = Allegiance == Allegiance.Myrmidex ? new Point3D(914, 1807, 0) : Location;
 
-                if (this.Allegiance == Allegiance.Myrmidex && bc.InRange(check, 8))
+                if (Allegiance == Allegiance.Myrmidex && bc.InRange(check, 8))
                 {
                     if (bc is BritannianInfantry || (bc is BaseEodonTribesman && ((BaseEodonTribesman)bc).TribeType != EodonTribe.Barrab))
                     {
                         Spawn(false, typeof(MyrmidexDrone), typeof(MyrmidexWarrior), typeof(TribeWarrior));
                     }
                 }
-                else if (this.Allegiance == Allegiance.Tribes && bc.InRange(check, 8))
+                else if (Allegiance == Allegiance.Tribes && bc.InRange(check, 8))
                 {
                     if (bc is MyrmidexDrone || bc is MyrmidexWarrior || (bc is BaseEodonTribesman && ((BaseEodonTribesman)bc).TribeType == EodonTribe.Barrab))
                     {
@@ -134,18 +134,18 @@ namespace Server.Engines.MyrmidexInvasion
 
                 if (bc != null)
                 {
-                    Rectangle2D rec = new Rectangle2D(this.X, this.Y, 3, 3);
-                    Point3D p = this.Location;
+                    Rectangle2D rec = new Rectangle2D(X, Y, 3, 3);
+                    Point3D p = Location;
 
                     bc.NoLootOnDeath = true;
 
                     do
                     {
-                        p = this.Map.GetRandomSpawnPoint(rec);
+                        p = Map.GetRandomSpawnPoint(rec);
                     }
-                    while (p == this.Location || !this.Map.CanSpawnMobile(p));
+                    while (p == Location || !Map.CanSpawnMobile(p));
 
-                    bc.MoveToWorld(p, this.Map);
+                    bc.MoveToWorld(p, Map);
 
                     if (tribe)
                     {

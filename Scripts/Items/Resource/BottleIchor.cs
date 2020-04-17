@@ -12,8 +12,8 @@ namespace Server.Items
         public BottleIchor(int amount)
             : base(0x5748)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public BottleIchor(Serial serial)

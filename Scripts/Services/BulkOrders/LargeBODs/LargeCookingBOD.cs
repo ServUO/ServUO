@@ -40,19 +40,19 @@ namespace Server.Engines.BulkOrders
                     break;
             }
 
-            this.Hue = 1169;
-            this.AmountMax = Utility.RandomList(10, 15, 20, 20);
-            this.Entries = entries;
-            this.RequireExceptional = !nonexceptional && 0.825 > Utility.RandomDouble();
+            Hue = 1169;
+            AmountMax = Utility.RandomList(10, 15, 20, 20);
+            Entries = entries;
+            RequireExceptional = !nonexceptional && 0.825 > Utility.RandomDouble();
         }
 
         public LargeCookingBOD(int amountMax, bool reqExceptional, BulkMaterialType mat, LargeBulkEntry[] entries)
         {
-            this.Hue = 1169;
-            this.AmountMax = amountMax;
-            this.Entries = entries;
-            this.RequireExceptional = reqExceptional;
-            this.Material = mat;
+            Hue = 1169;
+            AmountMax = amountMax;
+            Entries = entries;
+            RequireExceptional = reqExceptional;
+            Material = mat;
         }
 
         public LargeCookingBOD(Serial serial)

@@ -6,8 +6,8 @@ namespace Server.Items
         public SealingWaxOrder()
             : base(0xEBF)
         {
-            this.LootType = LootType.Blessed;
-            this.Weight = 1.0;
+            LootType = LootType.Blessed;
+            Weight = 1.0;
         }
 
         public SealingWaxOrder(Serial serial)

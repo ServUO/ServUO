@@ -12,8 +12,8 @@ namespace Server.Items
         public StarSapphire(int amount)
             : base(0x0F0F)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public StarSapphire(Serial serial)

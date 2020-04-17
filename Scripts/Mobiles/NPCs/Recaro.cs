@@ -38,32 +38,32 @@ namespace Server.Engines.Quests
         public EnGuardeQuest()
             : base()
         {
-            this.AddObjective(new ApprenticeObjective(SkillName.Fencing, 50, "Old Haven Training", 1078188, 1078189));
+            AddObjective(new ApprenticeObjective(SkillName.Fencing, 50, "Old Haven Training", 1078188, 1078189));
 
             // 1078188 You feel more dexterous and quick witted while practicing combat here. Your ability to raise your Fencing skill is enhanced in this area.
             // 1078189 You feel less dexterous here. Your Fencing learning potential is no longer enhanced.
 
-            this.AddReward(new BaseReward(typeof(RecarosRiposte), 1078195));
+            AddReward(new BaseReward(typeof(RecarosRiposte), 1078195));
         }
 
         public override bool CanOffer()
         {
             #region Scroll of Alacrity
-            PlayerMobile pm = this.Owner as PlayerMobile;
+            PlayerMobile pm = Owner as PlayerMobile;
             if (pm.AcceleratedStart > DateTime.UtcNow)
             {
-                this.Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
+                Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
                 return false;
             }
             #endregion
             else
-                return this.Owner.Skills.Fencing.Base < 50;
+                return Owner.Skills.Fencing.Base < 50;
         }
 
         public override void OnCompleted()
         {
-            this.Owner.SendLocalizedMessage(1078193, null, 0x23); // You have achieved the rank of Apprentice Fencer. Return to Recaro in New Haven to claim your reward.
-            this.Owner.PlaySound(this.CompleteSound);
+            Owner.SendLocalizedMessage(1078193, null, 0x23); // You have achieved the rank of Apprentice Fencer. Return to Recaro in New Haven to claim your reward.
+            Owner.PlaySound(CompleteSound);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -92,12 +92,12 @@ namespace Server.Engines.Quests
         public Recaro()
             : base("Recaro", "The Fencer Instructor")
         {
-            this.SetSkill(SkillName.Anatomy, 120.0, 120.0);
-            this.SetSkill(SkillName.Parry, 120.0, 120.0);
-            this.SetSkill(SkillName.Healing, 120.0, 120.0);
-            this.SetSkill(SkillName.Tactics, 120.0, 120.0);
-            this.SetSkill(SkillName.Fencing, 120.0, 120.0);
-            this.SetSkill(SkillName.Focus, 120.0, 120.0);
+            SetSkill(SkillName.Anatomy, 120.0, 120.0);
+            SetSkill(SkillName.Parry, 120.0, 120.0);
+            SetSkill(SkillName.Healing, 120.0, 120.0);
+            SetSkill(SkillName.Tactics, 120.0, 120.0);
+            SetSkill(SkillName.Fencing, 120.0, 120.0);
+            SetSkill(SkillName.Focus, 120.0, 120.0);
         }
 
         public Recaro(Serial serial)
@@ -107,50 +107,50 @@ namespace Server.Engines.Quests
 
         public override void Advertise()
         {
-            this.Say(1078187); // The art of fencing requires a dexterous hand, a quick wit and fleet feet.
+            Say(1078187); // The art of fencing requires a dexterous hand, a quick wit and fleet feet.
         }
 
         public override void OnOfferFailed()
         {
-            this.Say(1077772); // I cannot teach you, for you know all I can teach!
+            Say(1077772); // I cannot teach you, for you know all I can teach!
         }
 
         public override void InitBody()
         {
-            this.Female = false;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = false;
+            CantWalk = true;
+            Race = Race.Human;
 
             base.InitBody();
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Shoes(0x455));
-            this.AddItem(new WarFork());
+            AddItem(new Backpack());
+            AddItem(new Shoes(0x455));
+            AddItem(new WarFork());
 
             Item item;
 
             item = new StuddedLegs();
             item.Hue = 0x455;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new StuddedGloves();
             item.Hue = 0x455;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new StuddedGorget();
             item.Hue = 0x455;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new StuddedChest();
             item.Hue = 0x455;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new StuddedArms();
             item.Hue = 0x455;
-            this.AddItem(item);
+            AddItem(item);
         }
 
         public override void Serialize(GenericWriter writer)

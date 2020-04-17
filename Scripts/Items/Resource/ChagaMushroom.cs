@@ -12,8 +12,8 @@ namespace Server.Items
         public ChagaMushroom(int amount)
             : base(0x5743)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public ChagaMushroom(Serial serial)

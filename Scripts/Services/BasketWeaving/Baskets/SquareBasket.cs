@@ -7,7 +7,7 @@ public class SquareBasket : BaseContainer
     public SquareBasket()
         : base(0x24D5)
     {
-        this.Weight = 1.0;
+        Weight = 1.0;
     }
 
     public SquareBasket(Serial serial)

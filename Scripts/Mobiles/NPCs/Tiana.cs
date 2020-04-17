@@ -9,9 +9,9 @@ namespace Server.Engines.Quests
         public ChillInTheAirQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(IceElemental), "ice elementals", 15));
+            AddObjective(new SlayObjective(typeof(IceElemental), "ice elementals", 15));
 
-            this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
+            AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
         /* A Chill in the Air */
@@ -44,9 +44,9 @@ namespace Server.Engines.Quests
         public IndustriousAsAnAntLionQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(AntLion), "ant lions", 12));
+            AddObjective(new SlayObjective(typeof(AntLion), "ant lions", 12));
 
-            this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
+            AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
         /* Industrious as an Ant Lion */
@@ -79,9 +79,9 @@ namespace Server.Engines.Quests
         public ThePerilsOfFarmingQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(WhippingVine), "whipping vines", 15));
+            AddObjective(new SlayObjective(typeof(WhippingVine), "whipping vines", 15));
 
-            this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
+            AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
         /* The Perils of Farming */
@@ -114,11 +114,11 @@ namespace Server.Engines.Quests
         public DishBestServedColdQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Orc), "orcs", 10, "Sanctuary"));
-            this.AddObjective(new SlayObjective(typeof(OrcBomber), "orc bombers", 5, "Sanctuary"));
-            this.AddObjective(new SlayObjective(typeof(OrcBrute), "orc brutes", 3, "Sanctuary"));
+            AddObjective(new SlayObjective(typeof(Orc), "orcs", 10, "Sanctuary"));
+            AddObjective(new SlayObjective(typeof(OrcBomber), "orc bombers", 5, "Sanctuary"));
+            AddObjective(new SlayObjective(typeof(OrcBrute), "orc brutes", 3, "Sanctuary"));
 
-            this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
+            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
         /* A Dish Best Served Cold */
@@ -155,9 +155,9 @@ namespace Server.Engines.Quests
         public CommonBrigandsQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective("common brigands", 20, typeof(Brigand)));
+            AddObjective(new SlayObjective("common brigands", 20, typeof(Brigand)));
 
-            this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
+            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
         /* Common Brigands */
@@ -190,9 +190,9 @@ namespace Server.Engines.Quests
         public ArchEnemiesQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(RatmanArcher), "ratman archers", 10));
+            AddObjective(new SlayObjective(typeof(RatmanArcher), "ratman archers", 10));
 
-            this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
+            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
         /* Arch Enemies */
@@ -225,9 +225,9 @@ namespace Server.Engines.Quests
         public VerminQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Ratman), "ratmen", 12));
+            AddObjective(new SlayObjective(typeof(Ratman), "ratmen", 12));
 
-            this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
+            AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
         /* Vermin */
@@ -284,30 +284,30 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = true;
-            this.CantWalk = true;
-            this.Race = Race.Elf;
+            Female = true;
+            CantWalk = true;
+            Race = Race.Elf;
 
-            this.Hue = 0x824E;
-            this.HairItemID = 0x2FCC;
-            this.HairHue = 0x385;
+            Hue = 0x824E;
+            HairItemID = 0x2FCC;
+            HairHue = 0x385;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new ElvenBoots());
-            this.AddItem(new HidePants());
-            this.AddItem(new HideFemaleChest());
-            this.AddItem(new HidePauldrons());
-            this.AddItem(new WoodlandBelt(0x657));
+            AddItem(new ElvenBoots());
+            AddItem(new HidePants());
+            AddItem(new HideFemaleChest());
+            AddItem(new HidePauldrons());
+            AddItem(new WoodlandBelt(0x657));
 
             Item item;
 
             item = new RavenHelm();
             item.Hue = 0x1BB;
-            this.AddItem(item);
+            AddItem(item);
         }
 
         public override void Serialize(GenericWriter writer)

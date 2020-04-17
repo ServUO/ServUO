@@ -25,7 +25,7 @@ namespace Server.Engines.Quests.Ambitious
         public AmbitiousQueenQuest(PlayerMobile from, bool redSolen)
             : base(from)
         {
-            this.m_RedSolen = redSolen;
+            m_RedSolen = redSolen;
         }
 
         // Serialization
@@ -66,7 +66,7 @@ namespace Server.Engines.Quests.Ambitious
         public override TimeSpan RestartDelay => TimeSpan.Zero;
         public override bool IsTutorial => false;
         public override int Picture => 0x15C9;
-        public bool RedSolen => this.m_RedSolen;
+        public bool RedSolen => m_RedSolen;
         public static void GiveRewardTo(PlayerMobile player, ref bool bagOfSending, ref bool powderOfTranslocation, ref bool gold)
         {
             if (bagOfSending)
@@ -119,7 +119,7 @@ namespace Server.Engines.Quests.Ambitious
         {
             int version = reader.ReadEncodedInt();
 
-            this.m_RedSolen = reader.ReadBool();
+            m_RedSolen = reader.ReadBool();
         }
 
         public override void ChildSerialize(GenericWriter writer)
@@ -133,7 +133,7 @@ namespace Server.Engines.Quests.Ambitious
         {
             base.Accept();
 
-            this.AddConversation(new AcceptConversation());
+            AddConversation(new AcceptConversation());
         }
     }
 }

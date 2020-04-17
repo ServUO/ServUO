@@ -64,7 +64,7 @@ namespace Server.Engines.CityLoyalty
         {
             if (CitySystem != null && m is PlayerMobile && InRange(m.Location, 2))
             {
-                Raider raider = ((PlayerMobile)m).AllFollowers.FirstOrDefault(mob => mob is Raider && mob.InRange(this.Location, 2)) as Raider;
+                Raider raider = ((PlayerMobile)m).AllFollowers.FirstOrDefault(mob => mob is Raider && mob.InRange(Location, 2)) as Raider;
 
                 if (raider != null)
                 {

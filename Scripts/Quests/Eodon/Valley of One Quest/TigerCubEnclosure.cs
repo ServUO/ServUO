@@ -34,7 +34,7 @@ namespace Server.Items
             Cub.Blessed = true;
             Cub.RangeHome = 5;
 
-            Cub.Location = new Point3D(this.Location.X + 1, this.Location.Y + 1, this.Location.Z);
+            Cub.Location = new Point3D(Location.X + 1, Location.Y + 1, Location.Z);
         }
 
         public override void OnLocationChange(Point3D oldLocation)
@@ -42,11 +42,11 @@ namespace Server.Items
             base.OnLocationChange(oldLocation);
 
             if (Door != null)
-                Door.MoveToWorld(new Point3D(X + DoorOffset.X, Y + DoorOffset.Y, Z + DoorOffset.Z), this.Map);
+                Door.MoveToWorld(new Point3D(X + DoorOffset.X, Y + DoorOffset.Y, Z + DoorOffset.Z), Map);
 
             if (Cub != null)
             {
-                Cub.MoveToWorld(new Point3D(X + 1, Y + 1, Z), this.Map);
+                Cub.MoveToWorld(new Point3D(X + 1, Y + 1, Z), Map);
                 Cub.Home = Cub.Location;
             }
         }
@@ -56,10 +56,10 @@ namespace Server.Items
             base.OnMapChange();
 
             if (Door != null)
-                Door.Map = this.Map;
+                Door.Map = Map;
 
             if (Cub != null)
-                Cub.Map = this.Map;
+                Cub.Map = Map;
         }
 
         public bool Contains(Point3D p)
@@ -128,7 +128,7 @@ namespace Server.Items
                     int y = p.Y + Utility.RandomMinMax(p.Y - 2, p.Y + 2);
                     int z = m.Map.GetAverageZ(x, y);
 
-                    if (m.Map.CanSpawnMobile(x, y, z) && !this.Contains(new Point3D(x, y, z)))
+                    if (m.Map.CanSpawnMobile(x, y, z) && !Contains(new Point3D(x, y, z)))
                     {
                         p = new Point3D(x, y, z);
                         break;
@@ -265,7 +265,7 @@ namespace Server.Items
                 Entries.TrimExcess();
                 AddGumpLayout();
 
-                User.CloseGump(this.GetType());
+                User.CloseGump(GetType());
                 User.SendGump(this, false);
             }
 

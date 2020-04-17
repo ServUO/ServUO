@@ -7,7 +7,7 @@ namespace Server.Items
         [Constructable]
         public DreamWraithCostume() : base()
         {
-            this.CostumeBody = 740;
+            CostumeBody = 740;
         }
 
         public override int LabelNumber => 1114008;// dream wraith halloween costume

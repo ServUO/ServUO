@@ -6,8 +6,8 @@ namespace Server.Items
         public ColorFixative()
             : base(0x182D)
         {
-            this.Weight = 1.0;
-            this.Hue = 473;  // ...make this the proper shade of green
+            Weight = 1.0;
+            Hue = 473;  // ...make this the proper shade of green
         }
 
         public ColorFixative(Serial serial)

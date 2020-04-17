@@ -6,8 +6,8 @@ namespace Server.Items
         public BrokenCrystals()
             : base(0x2247)
         {
-            this.Weight = 1;
-            this.Hue = 0x2B2;
+            Weight = 1;
+            Hue = 0x2B2;
         }
 
         public BrokenCrystals(Serial serial)

@@ -20,10 +20,10 @@ namespace Server.Items
         public InitiationGorget() : base()
         {
 
-            this.Hue = 0x9C4;
+            Hue = 0x9C4;
             //this.Attributes.Brittle = 1; //If you have imbuing add this part in!!!!
-            this.Weight = 1;
-            this.LootType = LootType.Blessed;
+            Weight = 1;
+            LootType = LootType.Blessed;
 
             SetHue = 0x30;
             SetPhysicalBonus = 2;

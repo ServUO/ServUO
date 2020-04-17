@@ -17,7 +17,7 @@ namespace Server.Items
         [Constructable]
         public SnakeCharmerFlute()
         {
-            this.Hue = 0x187;
+            Hue = 0x187;
         }
 
         public SnakeCharmerFlute(Serial serial)

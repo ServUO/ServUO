@@ -213,7 +213,7 @@ namespace Server.Items
 
     public class TigerRugAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed => new TigerRugAddonDeed(this.RugType);
+        public override BaseAddonDeed Deed => new TigerRugAddonDeed(RugType);
 
         public RugHue RugType { get; set; }
 
@@ -295,7 +295,7 @@ namespace Server.Items
         {
             get
             {
-                switch (this.RugType)
+                switch (RugType)
                 {
                     case RugHue.Regular: return 1156481;
                     case RugHue.White: return 1156483;
@@ -306,7 +306,7 @@ namespace Server.Items
             }
         }
 
-        public override BaseAddon Addon => new TigerRugAddon(this.RugType, SouthFacing);
+        public override BaseAddon Addon => new TigerRugAddon(RugType, SouthFacing);
 
         public RugHue RugType { get; set; }
         public bool SouthFacing { get; set; }
@@ -410,7 +410,7 @@ namespace Server.Items
             base.Serialize(writer);
             writer.Write(0);
 
-            writer.Write((int)this.BananaHoardSize);
+            writer.Write((int)BananaHoardSize);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -418,7 +418,7 @@ namespace Server.Items
             base.Deserialize(reader);
             int v = reader.ReadInt();
 
-            this.BananaHoardSize = (BananaHoardSize)reader.ReadInt();
+            BananaHoardSize = (BananaHoardSize)reader.ReadInt();
         }
     }
 
@@ -440,7 +440,7 @@ namespace Server.Items
             {
                 from.SendGump(new InternalGump(from as PlayerMobile, s =>
                 {
-                    this.BananaHoardSize = s;
+                    BananaHoardSize = s;
                     base.OnDoubleClick(from);
                 }));
             }

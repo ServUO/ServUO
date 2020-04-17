@@ -201,12 +201,12 @@ namespace Server.Engines.TreasuresOfKotlCity
 
                 if (_Active && ItemID != 0x9CDE)
                 {
-                    Effects.PlaySound(this.Location, this.Map, 0x051);
+                    Effects.PlaySound(Location, Map, 0x051);
                     ItemID = 0x9CDE;
                 }
                 else if (!_Active && ItemID != 0x9D0B)
                 {
-                    Effects.PlaySound(this.Location, this.Map, 0x051);
+                    Effects.PlaySound(Location, Map, 0x051);
                     ItemID = 0x9D0B;
                 }
             }

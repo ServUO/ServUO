@@ -19,11 +19,11 @@ namespace Server.Items
         public RoseOfTrinsic()
             : base(0x234D)
         {
-            this.Weight = 1.0;
-            this.LootType = LootType.Blessed;
+            Weight = 1.0;
+            LootType = LootType.Blessed;
 
-            this.m_Petals = 0;
-            this.StartSpawnTimer(TimeSpan.FromMinutes(1.0));
+            m_Petals = 0;
+            StartSpawnTimer(TimeSpan.FromMinutes(1.0));
         }
 
         public RoseOfTrinsic(Serial serial)
@@ -40,11 +40,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Level;
+                return m_Level;
             }
             set
             {
-                this.m_Level = value;
+                m_Level = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -52,34 +52,34 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Petals;
+                return m_Petals;
             }
             set
             {
                 if (value >= 10)
                 {
-                    this.m_Petals = 10;
+                    m_Petals = 10;
 
-                    this.StopSpawnTimer();
+                    StopSpawnTimer();
                 }
                 else
                 {
                     if (value <= 0)
-                        this.m_Petals = 0;
+                        m_Petals = 0;
                     else
-                        this.m_Petals = value;
+                        m_Petals = value;
 
-                    this.StartSpawnTimer(m_SpawnTime);
+                    StartSpawnTimer(m_SpawnTime);
                 }
 
-                this.InvalidateProperties();
+                InvalidateProperties();
             }
         }
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 
-            list.Add(1062925, this.Petals.ToString()); // Petals:  ~1_COUNT~
+            list.Add(1062925, Petals.ToString()); // Petals:  ~1_COUNT~
         }
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
@@ -91,14 +91,14 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!from.InRange(this.GetWorldLocation(), 2))
+            if (!from.InRange(GetWorldLocation(), 2))
             {
                 from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
             }
-            else if (this.Petals > 0)
+            else if (Petals > 0)
             {
-                from.AddToBackpack(new RoseOfTrinsicPetal(this.Petals));
-                this.Petals = 0;
+                from.AddToBackpack(new RoseOfTrinsicPetal(Petals));
+                Petals = 0;
             }
         }
 
@@ -110,7 +110,7 @@ namespace Server.Items
 
             writer.WriteEncodedInt(m_Petals);
             writer.WriteDeltaTime(m_NextSpawnTime);
-            writer.WriteEncodedInt((int)this.m_Level);
+            writer.WriteEncodedInt((int)m_Level);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -119,30 +119,30 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            this.m_Petals = reader.ReadEncodedInt();
-            this.m_NextSpawnTime = reader.ReadDeltaTime();
-            this.m_Level = (SecureLevel)reader.ReadEncodedInt();
+            m_Petals = reader.ReadEncodedInt();
+            m_NextSpawnTime = reader.ReadDeltaTime();
+            m_Level = (SecureLevel)reader.ReadEncodedInt();
 
-            if (this.m_Petals < 10)
-                this.StartSpawnTimer(this.m_NextSpawnTime - DateTime.UtcNow);
+            if (m_Petals < 10)
+                StartSpawnTimer(m_NextSpawnTime - DateTime.UtcNow);
         }
 
         private void StartSpawnTimer(TimeSpan delay)
         {
-            this.StopSpawnTimer();
+            StopSpawnTimer();
 
-            this.m_SpawnTimer = new SpawnTimer(this, delay);
-            this.m_SpawnTimer.Start();
+            m_SpawnTimer = new SpawnTimer(this, delay);
+            m_SpawnTimer.Start();
 
-            this.m_NextSpawnTime = DateTime.UtcNow + delay;
+            m_NextSpawnTime = DateTime.UtcNow + delay;
         }
 
         private void StopSpawnTimer()
         {
-            if (this.m_SpawnTimer != null)
+            if (m_SpawnTimer != null)
             {
-                this.m_SpawnTimer.Stop();
-                this.m_SpawnTimer = null;
+                m_SpawnTimer.Stop();
+                m_SpawnTimer = null;
             }
         }
 
@@ -152,18 +152,18 @@ namespace Server.Items
             public SpawnTimer(RoseOfTrinsic rose, TimeSpan delay)
                 : base(delay)
             {
-                this.m_Rose = rose;
+                m_Rose = rose;
 
-                this.Priority = TimerPriority.OneMinute;
+                Priority = TimerPriority.OneMinute;
             }
 
             protected override void OnTick()
             {
-                if (this.m_Rose.Deleted)
+                if (m_Rose.Deleted)
                     return;
 
-                this.m_Rose.m_SpawnTimer = null;
-                this.m_Rose.Petals++;
+                m_Rose.m_SpawnTimer = null;
+                m_Rose.Petals++;
             }
         }
     }
@@ -180,11 +180,11 @@ namespace Server.Items
         public RoseOfTrinsicPetal(int amount)
             : base(0x1021)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
 
-            this.Weight = 1.0;
-            this.Hue = 0xE;
+            Weight = 1.0;
+            Hue = 0xE;
         }
 
         public RoseOfTrinsicPetal(Serial serial)
@@ -195,7 +195,7 @@ namespace Server.Items
         public override int LabelNumber => 1062926;// Petal of the Rose of Trinsic
         public override void OnDoubleClick(Mobile from)
         {
-            if (!this.IsChildOf(from.Backpack))
+            if (!IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(1042038); // You must have the object in your backpack to use it.
             }
@@ -208,7 +208,7 @@ namespace Server.Items
                 from.PlaySound(0x1EE);
                 from.AddStatMod(new StatMod(StatType.Str, "RoseOfTrinsicPetal", 5, TimeSpan.FromMinutes(5.0)));
 
-                this.Consume();
+                Consume();
             }
         }
 

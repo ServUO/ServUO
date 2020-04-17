@@ -21,7 +21,7 @@ namespace Server.Items
         protected RaiseSwitch(int itemID)
             : base(itemID)
         {
-            this.Movable = false;
+            Movable = false;
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -29,11 +29,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_RaisableItem;
+                return m_RaisableItem;
             }
             set
             {
-                this.m_RaisableItem = value;
+                m_RaisableItem = value;
             }
         }
         public override void OnDoubleClick(Mobile m)
@@ -44,16 +44,16 @@ namespace Server.Items
                 return;
             }
 
-            if (this.RaisableItem != null && this.RaisableItem.Deleted)
-                this.RaisableItem = null;
+            if (RaisableItem != null && RaisableItem.Deleted)
+                RaisableItem = null;
 
-            this.Flip();
+            Flip();
 
-            if (this.RaisableItem != null)
+            if (RaisableItem != null)
             {
-                if (this.RaisableItem.IsRaisable)
+                if (RaisableItem.IsRaisable)
                 {
-                    this.RaisableItem.Raise();
+                    RaisableItem.Raise();
                     m.LocalOverheadMessage(MessageType.Regular, 0x5A, true, "You hear a grinding noise echoing in the distance.");
                 }
                 else
@@ -78,53 +78,53 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            this.m_RaisableItem = (RaisableItem)reader.ReadItem();
+            m_RaisableItem = (RaisableItem)reader.ReadItem();
 
-            this.Reset();
+            Reset();
         }
 
         protected virtual void Flip()
         {
-            if (this.ItemID != 0x1093)
+            if (ItemID != 0x1093)
             {
-                this.ItemID = 0x1093;
+                ItemID = 0x1093;
 
-                this.StopResetTimer();
+                StopResetTimer();
             }
             else
             {
-                this.ItemID = 0x1095;
+                ItemID = 0x1095;
 
-                if (this.RaisableItem != null && this.RaisableItem.CloseDelay >= TimeSpan.Zero)
-                    this.StartResetTimer(this.RaisableItem.CloseDelay);
+                if (RaisableItem != null && RaisableItem.CloseDelay >= TimeSpan.Zero)
+                    StartResetTimer(RaisableItem.CloseDelay);
                 else
-                    this.StartResetTimer(TimeSpan.FromMinutes(2.0));
+                    StartResetTimer(TimeSpan.FromMinutes(2.0));
             }
 
-            Effects.PlaySound(this.Location, this.Map, 0x3E8);
+            Effects.PlaySound(Location, Map, 0x3E8);
         }
 
         protected void StartResetTimer(TimeSpan delay)
         {
-            this.StopResetTimer();
+            StopResetTimer();
 
-            this.m_ResetTimer = new ResetTimer(this, delay);
-            this.m_ResetTimer.Start();
+            m_ResetTimer = new ResetTimer(this, delay);
+            m_ResetTimer.Start();
         }
 
         protected void StopResetTimer()
         {
-            if (this.m_ResetTimer != null)
+            if (m_ResetTimer != null)
             {
-                this.m_ResetTimer.Stop();
-                this.m_ResetTimer = null;
+                m_ResetTimer.Stop();
+                m_ResetTimer = null;
             }
         }
 
         protected virtual void Reset()
         {
-            if (this.ItemID != 0x1093)
-                this.Flip();
+            if (ItemID != 0x1093)
+                Flip();
         }
 
         private class ResetTimer : Timer
@@ -133,19 +133,19 @@ namespace Server.Items
             public ResetTimer(RaiseSwitch raiseSwitch, TimeSpan delay)
                 : base(delay)
             {
-                this.m_RaiseSwitch = raiseSwitch;
+                m_RaiseSwitch = raiseSwitch;
 
-                this.Priority = ComputePriority(delay);
+                Priority = ComputePriority(delay);
             }
 
             protected override void OnTick()
             {
-                if (this.m_RaiseSwitch.Deleted)
+                if (m_RaiseSwitch.Deleted)
                     return;
 
-                this.m_RaiseSwitch.m_ResetTimer = null;
+                m_RaiseSwitch.m_ResetTimer = null;
 
-                this.m_RaiseSwitch.Reset();
+                m_RaiseSwitch.Reset();
             }
         }
     }
@@ -163,24 +163,24 @@ namespace Server.Items
         {
         }
 
-        public int CurrentRange => this.Visible ? 3 : 2;
+        public int CurrentRange => Visible ? 3 : 2;
         public override bool HandlesOnMovement => true;
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (Utility.InRange(m.Location, this.Location, this.CurrentRange) || Utility.InRange(oldLocation, this.Location, this.CurrentRange))
-                this.Refresh();
+            if (Utility.InRange(m.Location, Location, CurrentRange) || Utility.InRange(oldLocation, Location, CurrentRange))
+                Refresh();
         }
 
         public override void OnMapChange()
         {
-            if (!this.Deleted)
-                this.Refresh();
+            if (!Deleted)
+                Refresh();
         }
 
         public override void OnLocationChange(Point3D oldLoc)
         {
-            if (!this.Deleted)
-                this.Refresh();
+            if (!Deleted)
+                Refresh();
         }
 
         public void Refresh()
@@ -197,13 +197,13 @@ namespace Server.Items
                 break;
             }
             eable.Free();
-            this.Visible = found;
+            Visible = found;
         }
 
         public override void Serialize(GenericWriter writer)
         {
-            if (this.RaisableItem != null && this.RaisableItem.Deleted)
-                this.RaisableItem = null;
+            if (RaisableItem != null && RaisableItem.Deleted)
+                RaisableItem = null;
 
             base.Serialize(writer);
 

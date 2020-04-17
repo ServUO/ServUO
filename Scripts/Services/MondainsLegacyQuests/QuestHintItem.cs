@@ -60,7 +60,7 @@ namespace Server.Items
             if (m_Table.ContainsKey(from) && m_Table[from] < DateTime.Now)
                 m_Table.Remove(from);
 
-            if (!m_Table.ContainsKey(from) && from.InRange(this.Location, m_Range))
+            if (!m_Table.ContainsKey(from) && from.InRange(Location, m_Range))
             {
                 if (QuestItemType != null && !FindItem())
                     return;
@@ -79,7 +79,7 @@ namespace Server.Items
 
         private bool FindItem()
         {
-            IPooledEnumerable eable = this.Map.GetItemsInRange(this.Location, m_Range * 2);
+            IPooledEnumerable eable = Map.GetItemsInRange(Location, m_Range * 2);
 
             foreach (Item item in eable)
             {

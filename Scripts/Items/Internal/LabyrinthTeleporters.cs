@@ -8,7 +8,7 @@ namespace Server.Items
         public LabyrinthIslandTele()
             : base(0x2FD4)
         {
-            this.Movable = false;
+            Movable = false;
         }
 
         public LabyrinthIslandTele(Serial serial)
@@ -18,8 +18,8 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (MondainsLegacy.Labyrinth && from.InRange(this.Location, 2))
-                from.MoveToWorld(new Point3D(1731, 978, -80), this.Map);
+            if (MondainsLegacy.Labyrinth && from.InRange(Location, 2))
+                from.MoveToWorld(new Point3D(1731, 978, -80), Map);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -43,7 +43,7 @@ namespace Server.Items
         public LabyrinthTele()
             : base(0x248B)
         {
-            this.Movable = false;
+            Movable = false;
         }
 
         public LabyrinthTele(Serial serial)
@@ -59,12 +59,12 @@ namespace Server.Items
                 return;
             }
 
-            if (from.InRange(this.Location, 2))
+            if (from.InRange(Location, 2))
             {
                 Point3D p = new Point3D(330, 1973, 0);
 
-                BaseCreature.TeleportPets(from, p, this.Map);
-                from.MoveToWorld(p, this.Map);
+                BaseCreature.TeleportPets(from, p, Map);
+                from.MoveToWorld(p, Map);
             }
         }
 

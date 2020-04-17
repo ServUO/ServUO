@@ -157,7 +157,7 @@ namespace Server.Items
         {
             Container pack = from.Backpack;
 
-            foreach (Item item in new List<Item>(this.Items))
+            foreach (Item item in new List<Item>(Items))
             {
                 if (item == null)
                     continue;
@@ -234,7 +234,7 @@ namespace Server.Items
             if (RootParent == null)
             {
                 if (from.Backpack == null || !from.Backpack.TryDropItem(from, this, false))
-                    this.MoveToWorld(from.Location, from.Map);
+                    MoveToWorld(from.Location, from.Map);
             }
         }
 
@@ -264,7 +264,7 @@ namespace Server.Items
             bool rare = true;
             double bump = m_Bobs / 100.0;
 
-            Type type = FishInfo.GetSpecialItem(m_Owner, this, this.Location, bump, this is LavaLobsterTrap);
+            Type type = FishInfo.GetSpecialItem(m_Owner, this, Location, bump, this is LavaLobsterTrap);
 
             if (type != null)
             {
@@ -325,9 +325,9 @@ namespace Server.Items
             if (m_Timer != null)
                 m_Timer.Stop();
 
-            Effects.PlaySound(this, this.Map, Utility.Random(0x025, 3));
+            Effects.PlaySound(this, Map, Utility.Random(0x025, 3));
 
-            IPooledEnumerable eable = this.GetMobilesInRange(12);
+            IPooledEnumerable eable = GetMobilesInRange(12);
             foreach (Mobile mob in eable)
             {
                 if (mob is PlayerMobile && m_Owner != null)
@@ -343,7 +343,7 @@ namespace Server.Items
             if (m_Owner == null || RootParent != null)
                 return false;
 
-            if (!from.InRange(this.Location, 6))
+            if (!from.InRange(Location, 6))
             {
                 from.SendLocalizedMessage(500295); //You are too far away to do that.
                 return false;

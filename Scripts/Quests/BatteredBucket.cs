@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public LostAndFoundQuest()
             : base()
         {
-            this.AddObjective(new DeliverObjective(typeof(BatteredBucket), "battered bucket", 1, typeof(Dallid), "Dallid (Sanctuary)", 600));
+            AddObjective(new DeliverObjective(typeof(BatteredBucket), "battered bucket", 1, typeof(Dallid), "Dallid (Sanctuary)", 600));
 
-            this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
+            AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
         /* Lost and Found */

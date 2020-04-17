@@ -155,22 +155,22 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.Race = Race.Human;
+            Female = false;
+            Race = Race.Human;
 
-            this.Hue = 0x8418;
-            this.HairItemID = 0x2046;
-            this.HairHue = 0x466;
+            Hue = 0x8418;
+            HairItemID = 0x2046;
+            HairHue = 0x466;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Shoes(0x743));
-            this.AddItem(new LongPants());
-            this.AddItem(new FancyShirt());
+            AddItem(new Backpack());
+            AddItem(new Shoes(0x743));
+            AddItem(new LongPants());
+            AddItem(new FancyShirt());
         }
 
         public override void Serialize(GenericWriter writer)

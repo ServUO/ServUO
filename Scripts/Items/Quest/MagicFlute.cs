@@ -8,7 +8,7 @@ namespace Server.Engines.Quests.Hag
         public MagicFlute()
             : base(0x1421)
         {
-            this.Hue = 0x8AB;
+            Hue = 0x8AB;
         }
 
         public MagicFlute(Serial serial)
@@ -19,9 +19,9 @@ namespace Server.Engines.Quests.Hag
         public override int LabelNumber => 1055051;// magic flute
         public override void OnDoubleClick(Mobile from)
         {
-            if (!this.IsChildOf(from.Backpack))
+            if (!IsChildOf(from.Backpack))
             {
-                this.SendLocalizedMessageTo(from, 1042292); // You must have the object in your backpack to use it.
+                SendLocalizedMessageTo(from, 1042292); // You must have the object in your backpack to use it.
                 return;
             }
 
@@ -45,7 +45,7 @@ namespace Server.Engines.Quests.Hag
                         }
                         else if (player.InRange(obj.ImpLocation, 4))
                         {
-                            this.Delete();
+                            Delete();
 
                             obj.Complete();
                         }

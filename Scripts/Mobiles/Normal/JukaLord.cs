@@ -66,8 +66,8 @@ namespace Server.Mobiles
         public override int Meat => 1;
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich);
-            this.AddLoot(LootPack.Average);
+            AddLoot(LootPack.Rich);
+            AddLoot(LootPack.Average);
         }
 
         public override void OnDamage(int amount, Mobile from, bool willKill)
@@ -82,7 +82,7 @@ namespace Server.Mobiles
                     "{0}!!  You will pay for that!"
                 };
 
-                this.Say(true, String.Format(toSay[Utility.Random(toSay.Length)], from.Name));
+                Say(true, String.Format(toSay[Utility.Random(toSay.Length)], from.Name));
             }
 
             base.OnDamage(amount, from, willKill);

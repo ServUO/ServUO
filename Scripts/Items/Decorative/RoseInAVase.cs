@@ -6,8 +6,8 @@
         public RoseInAVase()
             : base(0x0EB0)
         {
-            this.Hue = 0x20;
-            this.LootType = LootType.Blessed;
+            Hue = 0x20;
+            LootType = LootType.Blessed;
         }
 
         public RoseInAVase(Serial serial)

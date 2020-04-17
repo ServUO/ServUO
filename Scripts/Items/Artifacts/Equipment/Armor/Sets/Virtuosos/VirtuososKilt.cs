@@ -21,9 +21,9 @@ namespace Server.Items
         [Constructable]
         public VirtuososKilt()
         {
-            this.Hue = 1374;
-            this.Weight = 5;
-            this.SetHue = 1374;
+            Hue = 1374;
+            Weight = 5;
+            SetHue = 1374;
         }
 
         public VirtuososKilt(Serial serial)

@@ -9,8 +9,8 @@ namespace Server.Items
         [Constructable]
         public UnknownShipwreck() : base(0x14ED)
         {
-            this.Weight = 1.0;
-            this.LootType = LootType.Blessed;
+            Weight = 1.0;
+            LootType = LootType.Blessed;
         }
 
         public override void GetProperties(ObjectPropertyList list)

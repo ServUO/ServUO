@@ -6,8 +6,8 @@ namespace Server.Items
         public PlayingCards2()
             : base(0xFA2)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public PlayingCards2(Serial serial)

@@ -13,7 +13,7 @@ namespace Server.Items
         public PlateTalons(int hue)
             : base(0x42DE, hue)
         {
-            this.Weight = 5.0;
+            Weight = 5.0;
         }
 
         public PlateTalons(Serial serial)

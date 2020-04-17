@@ -25,7 +25,7 @@ namespace Server.Spells.Third
         public override SpellCircle Circle => SpellCircle.Third;
         public override void OnCast()
         {
-            this.Caster.Target = new InternalTarget(this);
+            Caster.Target = new InternalTarget(this);
         }
 
         private class InternalTarget : Target
@@ -34,7 +34,7 @@ namespace Server.Spells.Third
             public InternalTarget(UnlockSpell owner)
                 : base(10, false, TargetFlags.None)
             {
-                this.m_Owner = owner;
+                m_Owner = owner;
             }
 
             protected override void OnTarget(Mobile from, object o)
@@ -44,7 +44,7 @@ namespace Server.Spells.Third
                 if (loc == null)
                     return;
 
-                if (this.m_Owner.CheckSequence())
+                if (m_Owner.CheckSequence())
                 {
                     SpellHelper.Turn(from, o);
 
@@ -106,12 +106,12 @@ namespace Server.Spells.Third
                     }
                 }
 
-                this.m_Owner.FinishSequence();
+                m_Owner.FinishSequence();
             }
 
             protected override void OnTargetFinish(Mobile from)
             {
-                this.m_Owner.FinishSequence();
+                m_Owner.FinishSequence();
             }
         }
     }

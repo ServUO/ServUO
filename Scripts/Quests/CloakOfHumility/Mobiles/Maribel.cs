@@ -26,21 +26,21 @@ namespace Server.Mobiles
 
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = true;
-            this.Race = Race.Human;
-            this.Body = 0x191;
+            Female = true;
+            Race = Race.Human;
+            Body = 0x191;
 
-            this.Hue = 0x83EA;
-            this.HairItemID = 0x2049;
+            Hue = 0x83EA;
+            HairItemID = 0x2049;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Server.Items.Backpack());
-            this.AddItem(new Server.Items.Sandals());
-            this.AddItem(new Server.Items.FancyDress(2205));
+            AddItem(new Server.Items.Backpack());
+            AddItem(new Server.Items.Sandals());
+            AddItem(new Server.Items.FancyDress(2205));
         }
 
         public override void Serialize(GenericWriter writer)

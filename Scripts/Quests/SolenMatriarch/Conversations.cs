@@ -5,7 +5,7 @@ namespace Server.Engines.Quests.Matriarch
         private bool m_Friend;
         public DontOfferConversation(bool friend)
         {
-            this.m_Friend = friend;
+            m_Friend = friend;
         }
 
         public DontOfferConversation()
@@ -16,7 +16,7 @@ namespace Server.Engines.Quests.Matriarch
         {
             get
             {
-                if (this.m_Friend)
+                if (m_Friend)
                 {
                     /* <I>The Solen Matriarch smiles as you greet her.</I><BR><BR>
                     * 
@@ -46,7 +46,7 @@ namespace Server.Engines.Quests.Matriarch
         {
             int version = reader.ReadEncodedInt();
 
-            this.m_Friend = reader.ReadBool();
+            m_Friend = reader.ReadBool();
         }
 
         public override void ChildSerialize(GenericWriter writer)
@@ -74,7 +74,7 @@ namespace Server.Engines.Quests.Matriarch
                 1054084;
         public override void OnRead()
         {
-            this.System.AddObjective(new KillInfiltratorsObjective());
+            System.AddObjective(new KillInfiltratorsObjective());
         }
     }
 
@@ -117,7 +117,7 @@ namespace Server.Engines.Quests.Matriarch
                 1054091;
         public override void OnRead()
         {
-            this.System.AddObjective(new GatherWaterObjective());
+            System.AddObjective(new GatherWaterObjective());
         }
     }
 
@@ -144,7 +144,7 @@ namespace Server.Engines.Quests.Matriarch
         private bool m_Friend;
         public ProcessFungiConversation(bool friend)
         {
-            this.m_Friend = friend;
+            m_Friend = friend;
         }
 
         public ProcessFungiConversation()
@@ -155,7 +155,7 @@ namespace Server.Engines.Quests.Matriarch
         {
             get
             {
-                if (this.m_Friend)
+                if (m_Friend)
                 {
                     /* <I>The Solen Matriarch listens as you report the completion of your
                     * tasks to her.</I><BR><BR>
@@ -192,14 +192,14 @@ namespace Server.Engines.Quests.Matriarch
         }
         public override void OnRead()
         {
-            this.System.AddObjective(new ProcessFungiObjective());
+            System.AddObjective(new ProcessFungiObjective());
         }
 
         public override void ChildDeserialize(GenericReader reader)
         {
             int version = reader.ReadEncodedInt();
 
-            this.m_Friend = reader.ReadBool();
+            m_Friend = reader.ReadBool();
         }
 
         public override void ChildSerialize(GenericWriter writer)
@@ -232,12 +232,12 @@ namespace Server.Engines.Quests.Matriarch
         private readonly bool m_Logged;
         public FullBackpackConversation(bool logged)
         {
-            this.m_Logged = logged;
+            m_Logged = logged;
         }
 
         public FullBackpackConversation()
         {
-            this.m_Logged = true;
+            m_Logged = true;
         }
 
         public override object Message =>
@@ -249,11 +249,11 @@ namespace Server.Engines.Quests.Matriarch
 * Perhaps you should free some room in your backpack before we proceed.
 */
                 1054102;
-        public override bool Logged => this.m_Logged;
+        public override bool Logged => m_Logged;
         public override void OnRead()
         {
-            if (this.m_Logged)
-                this.System.AddObjective(new GetRewardObjective());
+            if (m_Logged)
+                System.AddObjective(new GetRewardObjective());
         }
     }
 
@@ -272,7 +272,7 @@ namespace Server.Engines.Quests.Matriarch
                 1054101;
         public override void OnRead()
         {
-            this.System.Complete();
+            System.Complete();
         }
     }
 }

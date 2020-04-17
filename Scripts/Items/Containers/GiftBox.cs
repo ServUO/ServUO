@@ -16,8 +16,8 @@ namespace Server.Items
         public GiftBox(int hue)
             : base(Utility.Random(0x232A, 2))
         {
-            this.Weight = 2.0;
-            this.Hue = hue;
+            Weight = 2.0;
+            Hue = hue;
         }
 
         public GiftBox(Serial serial)

@@ -36,32 +36,32 @@ namespace Server.Engines.Quests
         public TheRudimentsOfSelfDefenseQuest()
             : base()
         {
-            this.AddObjective(new ApprenticeObjective(SkillName.Wrestling, 50, "Old Haven Training", 1077492, 1077586));
+            AddObjective(new ApprenticeObjective(SkillName.Wrestling, 50, "Old Haven Training", 1077492, 1077586));
 
             // 1077492 Your Wrestling potential is greatly enhanced while questing in this area.
             // 1077586 You are not in the quest area for Apprentice Wrestler. Your Wrestling potential is not enhanced here.
 
-            this.AddReward(new BaseReward(typeof(GlovesOfSafeguarding), 1077614));
+            AddReward(new BaseReward(typeof(GlovesOfSafeguarding), 1077614));
         }
 
         public override bool CanOffer()
         {
             #region Scroll of Alacrity
-            PlayerMobile pm = this.Owner as PlayerMobile;
+            PlayerMobile pm = Owner as PlayerMobile;
             if (pm.AcceleratedStart > DateTime.UtcNow)
             {
-                this.Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
+                Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
                 return false;
             }
             #endregion
             else
-                return this.Owner.Skills.Wrestling.Base < 50;
+                return Owner.Skills.Wrestling.Base < 50;
         }
 
         public override void OnCompleted()
         {
-            this.Owner.SendLocalizedMessage(1077612, null, 0x23); // You have achieved the rank of Apprentice Wrestler. Return to Dimethro in New Haven to receive your prize.
-            this.Owner.PlaySound(this.CompleteSound);
+            Owner.SendLocalizedMessage(1077612, null, 0x23); // You have achieved the rank of Apprentice Wrestler. Return to Dimethro in New Haven to receive your prize.
+            Owner.PlaySound(CompleteSound);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -90,12 +90,12 @@ namespace Server.Engines.Quests
         public Dimethro()
             : base("Dimethro", "The Wrestling Instructor")
         {
-            this.SetSkill(SkillName.EvalInt, 120.0, 120.0);
-            this.SetSkill(SkillName.Inscribe, 120.0, 120.0);
-            this.SetSkill(SkillName.Magery, 120.0, 120.0);
-            this.SetSkill(SkillName.MagicResist, 120.0, 120.0);
-            this.SetSkill(SkillName.Wrestling, 120.0, 120.0);
-            this.SetSkill(SkillName.Meditation, 120.0, 120.0);
+            SetSkill(SkillName.EvalInt, 120.0, 120.0);
+            SetSkill(SkillName.Inscribe, 120.0, 120.0);
+            SetSkill(SkillName.Magery, 120.0, 120.0);
+            SetSkill(SkillName.MagicResist, 120.0, 120.0);
+            SetSkill(SkillName.Wrestling, 120.0, 120.0);
+            SetSkill(SkillName.Meditation, 120.0, 120.0);
         }
 
         public Dimethro(Serial serial)
@@ -105,29 +105,29 @@ namespace Server.Engines.Quests
 
         public override void Advertise()
         {
-            this.Say(1078128); // You there! Wanna master hand to hand defense? Of course you do!
+            Say(1078128); // You there! Wanna master hand to hand defense? Of course you do!
         }
 
         public override void OnOfferFailed()
         {
-            this.Say(1077772); // I cannot teach you, for you know all I can teach!
+            Say(1077772); // I cannot teach you, for you know all I can teach!
         }
 
         public override void InitBody()
         {
-            this.Female = false;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = false;
+            CantWalk = true;
+            Race = Race.Human;
 
             base.InitBody();
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new LongPants(0x455));
-            this.AddItem(new Sandals(0x455));
-            this.AddItem(new BodySash(0x455));
+            AddItem(new Backpack());
+            AddItem(new LongPants(0x455));
+            AddItem(new Sandals(0x455));
+            AddItem(new BodySash(0x455));
         }
 
         public override void Serialize(GenericWriter writer)

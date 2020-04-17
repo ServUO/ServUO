@@ -10,7 +10,7 @@ namespace Server.Items
         public MagicWand()
             : base(0xDF2)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public MagicWand(Serial serial)

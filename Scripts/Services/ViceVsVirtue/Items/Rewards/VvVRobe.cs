@@ -8,10 +8,10 @@ namespace Server.Engines.VvV
         {
             get
             {
-                if (this.Hue == ViceVsVirtueSystem.VirtueHue)
+                if (Hue == ViceVsVirtueSystem.VirtueHue)
                     return 1155532;
 
-                if (this.Hue == ViceVsVirtueSystem.ViceHue)
+                if (Hue == ViceVsVirtueSystem.ViceHue)
                     return 1155533;
 
                 return base.LabelNumber;

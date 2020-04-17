@@ -15,12 +15,12 @@ namespace Server.Items
         public KhaldunPitTeleporter(Point3D pointDest, Map mapDest)
             : base(0x053B)
         {
-            this.Movable = false;
-            this.Hue = 1;
+            Movable = false;
+            Hue = 1;
 
-            this.m_Active = true;
-            this.m_PointDest = pointDest;
-            this.m_MapDest = mapDest;
+            m_Active = true;
+            m_PointDest = pointDest;
+            m_MapDest = mapDest;
         }
 
         public KhaldunPitTeleporter(Serial serial)
@@ -33,11 +33,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Active;
+                return m_Active;
             }
             set
             {
-                this.m_Active = value;
+                m_Active = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -45,11 +45,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_PointDest;
+                return m_PointDest;
             }
             set
             {
-                this.m_PointDest = value;
+                m_PointDest = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -57,34 +57,34 @@ namespace Server.Items
         {
             get
             {
-                return this.m_MapDest;
+                return m_MapDest;
             }
             set
             {
-                this.m_MapDest = value;
+                m_MapDest = value;
             }
         }
         public override int LabelNumber => 1016511;// the floor of the cavern seems to have collapsed here - a faint light is visible at the bottom of the pit
         public override void OnDoubleClick(Mobile m)
         {
-            if (!this.m_Active)
+            if (!m_Active)
                 return;
 
-            Map map = this.m_MapDest;
+            Map map = m_MapDest;
 
             if (map == null || map == Map.Internal)
                 map = m.Map;
 
-            Point3D p = this.m_PointDest;
+            Point3D p = m_PointDest;
 
             if (p == Point3D.Zero)
                 p = m.Location;
 
             if (m.InRange(this, 3))
             {
-                Server.Mobiles.BaseCreature.TeleportPets(m, this.m_PointDest, this.m_MapDest);
+                Server.Mobiles.BaseCreature.TeleportPets(m, m_PointDest, m_MapDest);
 
-                m.MoveToWorld(this.m_PointDest, this.m_MapDest);
+                m.MoveToWorld(m_PointDest, m_MapDest);
             }
             else
             {
@@ -94,7 +94,7 @@ namespace Server.Items
 
         public override void OnDoubleClickDead(Mobile m)
         {
-            this.OnDoubleClick(m);
+            OnDoubleClick(m);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -103,9 +103,9 @@ namespace Server.Items
 
             writer.Write(0); // version
 
-            writer.Write(this.m_Active);
-            writer.Write(this.m_PointDest);
-            writer.Write(this.m_MapDest);
+            writer.Write(m_Active);
+            writer.Write(m_PointDest);
+            writer.Write(m_MapDest);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -114,9 +114,9 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            this.m_Active = reader.ReadBool();
-            this.m_PointDest = reader.ReadPoint3D();
-            this.m_MapDest = reader.ReadMap();
+            m_Active = reader.ReadBool();
+            m_PointDest = reader.ReadPoint3D();
+            m_MapDest = reader.ReadMap();
         }
     }
 }

@@ -12,8 +12,8 @@ namespace Server.Items
         public CrystalShards(int amount)
             : base(0x5738)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public CrystalShards(Serial serial)

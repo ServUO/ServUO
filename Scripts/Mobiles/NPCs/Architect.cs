@@ -17,10 +17,10 @@ namespace Server.Mobiles
         }
 
         public override NpcGuild NpcGuild => NpcGuild.TinkersGuild;
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBArchitect());
+            m_SBInfos.Add(new SBArchitect());
         }
 
         public override void Serialize(GenericWriter writer)

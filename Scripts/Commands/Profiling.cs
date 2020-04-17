@@ -362,8 +362,8 @@ namespace Server.Commands
                 DictionaryEntry a = (DictionaryEntry)x;
                 DictionaryEntry b = (DictionaryEntry)y;
 
-                int aCount = this.GetCount(a.Value);
-                int bCount = this.GetCount(b.Value);
+                int aCount = GetCount(a.Value);
+                int bCount = GetCount(b.Value);
 
                 int v = -aCount.CompareTo(bCount);
 

@@ -39,7 +39,7 @@ namespace Server.Items
             {
                 case 0:
                     {
-                        this.Resistances.Physical = 0;
+                        Resistances.Physical = 0;
                         break;
                     }
             }

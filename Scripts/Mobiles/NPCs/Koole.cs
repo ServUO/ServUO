@@ -9,9 +9,9 @@ namespace Server.Engines.Quests
         public TroubleOnTheWingQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Gargoyle), "gargoyles", 12, "Sanctuary"));
+            AddObjective(new SlayObjective(typeof(Gargoyle), "gargoyles", 12, "Sanctuary"));
 
-            this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
+            AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
         /* Trouble on the Wing */
@@ -65,31 +65,31 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.Race = Race.Elf;
+            Female = false;
+            Race = Race.Elf;
 
-            this.Hue = 0x83E5;
-            this.HairItemID = 0x2FBF;
-            this.HairHue = 0x386;
+            Hue = 0x83E5;
+            HairItemID = 0x2FBF;
+            HairHue = 0x386;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Boots(0x901));
-            this.AddItem(new RoyalCirclet());
-            this.AddItem(new LeafTonlet());
+            AddItem(new Boots(0x901));
+            AddItem(new RoyalCirclet());
+            AddItem(new LeafTonlet());
 
             Item item;
 
             item = new LeafChest();
             item.Hue = 0x1BB;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new LeafArms();
             item.Hue = 0x1BB;
-            this.AddItem(item);
+            AddItem(item);
         }
 
         public override void Serialize(GenericWriter writer)

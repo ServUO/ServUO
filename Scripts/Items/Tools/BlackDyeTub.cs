@@ -5,8 +5,8 @@ namespace Server.Items
         [Constructable]
         public BlackDyeTub()
         {
-            this.Hue = this.DyedHue = 0x0001;
-            this.Redyable = false;
+            Hue = DyedHue = 0x0001;
+            Redyable = false;
         }
 
         public BlackDyeTub(Serial serial)

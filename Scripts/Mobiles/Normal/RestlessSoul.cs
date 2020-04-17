@@ -48,7 +48,7 @@ namespace Server.Mobiles
         public override int TreasureMapLevel => 2;
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Poor);
+            AddLoot(LootPack.Poor);
         }
 
         public override void DisplayPaperdollTo(Mobile to)

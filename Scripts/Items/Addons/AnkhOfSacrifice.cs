@@ -57,9 +57,9 @@ namespace Server.Items
             base.GetContextMenuEntries(from, list);
 
             if (from is PlayerMobile)
-                list.Add(new LockKarmaEntry((PlayerMobile)from, this.Addon as AnkhOfSacrificeAddon));
+                list.Add(new LockKarmaEntry((PlayerMobile)from, Addon as AnkhOfSacrificeAddon));
 
-            list.Add(new ResurrectEntry(from, this.Addon as AnkhOfSacrificeAddon));
+            list.Add(new ResurrectEntry(from, Addon as AnkhOfSacrificeAddon));
         }
 
         public override void Serialize(GenericWriter writer)
@@ -83,16 +83,16 @@ namespace Server.Items
             public ResurrectEntry(Mobile mobile, AnkhOfSacrificeAddon ankh)
                 : base(6195, 2)
             {
-                this.m_Mobile = mobile;
-                this.m_Ankh = ankh;
+                m_Mobile = mobile;
+                m_Ankh = ankh;
             }
 
             public override void OnClick()
             {
-                if (this.m_Ankh == null || this.m_Ankh.Deleted)
+                if (m_Ankh == null || m_Ankh.Deleted)
                     return;
 
-                Resurrect(this.m_Mobile as PlayerMobile, this.m_Ankh);
+                Resurrect(m_Mobile as PlayerMobile, m_Ankh);
             }
         }
 
@@ -103,22 +103,22 @@ namespace Server.Items
             public LockKarmaEntry(PlayerMobile mobile, AnkhOfSacrificeAddon ankh)
                 : base(mobile.KarmaLocked ? 6197 : 6196, 2)
             {
-                this.m_Mobile = mobile;
-                this.m_Ankh = ankh;
+                m_Mobile = mobile;
+                m_Ankh = ankh;
             }
 
             public override void OnClick()
             {
-                if (!this.m_Mobile.InRange(this.m_Ankh.GetWorldLocation(), 2))
-                    this.m_Mobile.SendLocalizedMessage(500446); // That is too far away.
+                if (!m_Mobile.InRange(m_Ankh.GetWorldLocation(), 2))
+                    m_Mobile.SendLocalizedMessage(500446); // That is too far away.
                 else
                 {
-                    this.m_Mobile.KarmaLocked = !this.m_Mobile.KarmaLocked;
+                    m_Mobile.KarmaLocked = !m_Mobile.KarmaLocked;
 
-                    if (this.m_Mobile.KarmaLocked)
-                        this.m_Mobile.SendLocalizedMessage(1060192); // Your karma has been locked. Your karma can no longer be raised.
+                    if (m_Mobile.KarmaLocked)
+                        m_Mobile.SendLocalizedMessage(1060192); // Your karma has been locked. Your karma can no longer be raised.
                     else
-                        this.m_Mobile.SendLocalizedMessage(1060191); // Your karma has been unlocked. Your karma can be raised again.
+                        m_Mobile.SendLocalizedMessage(1060191); // Your karma has been unlocked. Your karma can be raised again.
                 }
             }
         }
@@ -162,21 +162,21 @@ namespace Server.Items
         {
             if (east)
             {
-                this.AddComponent(new AnkhOfSacrificeComponent(0x1D98), 0, 0, 0);
-                this.AddComponent(new AnkhOfSacrificeComponent(0x1D97), 0, 1, 0);
-                this.AddComponent(new AnkhOfSacrificeComponent(0x1CD6), 1, 0, 0);
-                this.AddComponent(new AnkhOfSacrificeComponent(0x1CD4), 1, 1, 0);
-                this.AddComponent(new AnkhOfSacrificeComponent(0x1CD0), 2, 0, 0);
-                this.AddComponent(new AnkhOfSacrificeComponent(0x1CCE), 2, 1, 0);
+                AddComponent(new AnkhOfSacrificeComponent(0x1D98), 0, 0, 0);
+                AddComponent(new AnkhOfSacrificeComponent(0x1D97), 0, 1, 0);
+                AddComponent(new AnkhOfSacrificeComponent(0x1CD6), 1, 0, 0);
+                AddComponent(new AnkhOfSacrificeComponent(0x1CD4), 1, 1, 0);
+                AddComponent(new AnkhOfSacrificeComponent(0x1CD0), 2, 0, 0);
+                AddComponent(new AnkhOfSacrificeComponent(0x1CCE), 2, 1, 0);
             }
             else
             {
-                this.AddComponent(new AnkhOfSacrificeComponent(0x1E5D), 0, 0, 0);
-                this.AddComponent(new AnkhOfSacrificeComponent(0x1E5C), 1, 0, 0);
-                this.AddComponent(new AnkhOfSacrificeComponent(0x1CD2), 0, 1, 0);
-                this.AddComponent(new AnkhOfSacrificeComponent(0x1CD8), 1, 1, 0);
-                this.AddComponent(new AnkhOfSacrificeComponent(0x1CCD), 0, 2, 0);
-                this.AddComponent(new AnkhOfSacrificeComponent(0x1CCE), 1, 2, 0);
+                AddComponent(new AnkhOfSacrificeComponent(0x1E5D), 0, 0, 0);
+                AddComponent(new AnkhOfSacrificeComponent(0x1E5C), 1, 0, 0);
+                AddComponent(new AnkhOfSacrificeComponent(0x1CD2), 0, 1, 0);
+                AddComponent(new AnkhOfSacrificeComponent(0x1CD8), 1, 1, 0);
+                AddComponent(new AnkhOfSacrificeComponent(0x1CCD), 0, 2, 0);
+                AddComponent(new AnkhOfSacrificeComponent(0x1CCE), 1, 2, 0);
             }
         }
 
@@ -191,7 +191,7 @@ namespace Server.Items
             get
             {
                 AnkhOfSacrificeDeed deed = new AnkhOfSacrificeDeed();
-                deed.IsRewardItem = this.m_IsRewardItem;
+                deed.IsRewardItem = m_IsRewardItem;
 
                 return deed;
             }
@@ -201,17 +201,17 @@ namespace Server.Items
         {
             get
             {
-                return this.m_IsRewardItem;
+                return m_IsRewardItem;
             }
             set
             {
-                this.m_IsRewardItem = value;
-                this.InvalidateProperties();
+                m_IsRewardItem = value;
+                InvalidateProperties();
             }
         }
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (!m.Alive && Utility.InRange(this.Location, m.Location, 1) && !Utility.InRange(this.Location, oldLocation, 1))
+            if (!m.Alive && Utility.InRange(Location, m.Location, 1) && !Utility.InRange(Location, oldLocation, 1))
                 AnkhOfSacrificeComponent.Resurrect(m as PlayerMobile, this);
         }
 
@@ -230,7 +230,7 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            this.m_IsRewardItem = reader.ReadBool();
+            m_IsRewardItem = reader.ReadBool();
         }
     }
 
@@ -248,9 +248,9 @@ namespace Server.Items
         public AnkhOfSacrificeDeed(bool isRewardItem)
             : base()
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
 
-            this.m_IsRewardItem = isRewardItem;
+            m_IsRewardItem = isRewardItem;
         }
 
         public AnkhOfSacrificeDeed(Serial serial)
@@ -263,8 +263,8 @@ namespace Server.Items
         {
             get
             {
-                AnkhOfSacrificeAddon addon = new AnkhOfSacrificeAddon(this.m_East);
-                addon.IsRewardItem = this.m_IsRewardItem;
+                AnkhOfSacrificeAddon addon = new AnkhOfSacrificeAddon(m_East);
+                addon.IsRewardItem = m_IsRewardItem;
 
                 return addon;
             }
@@ -274,20 +274,20 @@ namespace Server.Items
         {
             get
             {
-                return this.m_IsRewardItem;
+                return m_IsRewardItem;
             }
             set
             {
-                this.m_IsRewardItem = value;
-                this.InvalidateProperties();
+                m_IsRewardItem = value;
+                InvalidateProperties();
             }
         }
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.m_IsRewardItem && !RewardSystem.CheckIsUsableBy(from, this, null))
+            if (m_IsRewardItem && !RewardSystem.CheckIsUsableBy(from, this, null))
                 return;
 
-            if (this.IsChildOf(from.Backpack))
+            if (IsChildOf(from.Backpack))
             {
                 from.CloseGump(typeof(RewardOptionGump));
                 from.SendGump(new RewardOptionGump(this));
@@ -300,7 +300,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if (this.m_IsRewardItem)
+            if (m_IsRewardItem)
                 list.Add(1080457); // 10th Year Veteran Reward
         }
 
@@ -319,7 +319,7 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            this.m_IsRewardItem = reader.ReadBool();
+            m_IsRewardItem = reader.ReadBool();
         }
 
         public void GetOptions(RewardOptionList list)
@@ -333,14 +333,14 @@ namespace Server.Items
             switch (option)
             {
                 case 1:
-                    this.m_East = false;
+                    m_East = false;
                     break;
                 case 2:
-                    this.m_East = true;
+                    m_East = true;
                     break;
             }
 
-            if (!this.Deleted)
+            if (!Deleted)
                 base.OnDoubleClick(from);
         }
     }

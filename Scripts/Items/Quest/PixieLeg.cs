@@ -12,12 +12,12 @@ namespace Server.Items
         public PixieLeg(int amount)
             : base(0x1608)
         {
-            this.LootType = LootType.Blessed;
-            this.Weight = 1;
-            this.Hue = 0x1C2;
+            LootType = LootType.Blessed;
+            Weight = 1;
+            Hue = 0x1C2;
 
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public PixieLeg(Serial serial)

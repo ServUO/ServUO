@@ -81,26 +81,26 @@ namespace Server
             public BattleLustTimer(Mobile m, int bonus)
                 : base(TimeSpan.FromSeconds(2.0), TimeSpan.FromSeconds(2.0))
             {
-                this.m_Mobile = m;
-                this.Bonus = bonus;
-                this.m_Count = 1;
+                m_Mobile = m;
+                Bonus = bonus;
+                m_Count = 1;
             }
 
             protected override void OnTick()
             {
-                this.m_Count %= 3;
+                m_Count %= 3;
 
-                if (this.m_Count == 0)
+                if (m_Count == 0)
                 {
-                    if (!DecreaseBattleLust(this.m_Mobile))
-                        this.Stop();
+                    if (!DecreaseBattleLust(m_Mobile))
+                        Stop();
                 }
                 else
                 {
-                    this.CanGain = true;
+                    CanGain = true;
                 }
 
-                this.m_Count++;
+                m_Count++;
             }
         }
     }

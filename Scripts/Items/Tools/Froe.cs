@@ -8,14 +8,14 @@ namespace Server.Items
         public Froe()
             : base(0x10E5)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         [Constructable]
         public Froe(int uses)
             : base(uses, 0x10E5)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public Froe(Serial serial)

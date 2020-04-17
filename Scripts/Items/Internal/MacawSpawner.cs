@@ -29,7 +29,7 @@ namespace Server.Items
 
         public override bool VerifyMove(Mobile from)
         {
-            if (this.Visible && this.Map != null && this.Map != Map.Internal && Utility.RandomBool())
+            if (Visible && Map != null && Map != Map.Internal && Utility.RandomBool())
             {
                 SpawnBirdies(from);
             }
@@ -49,9 +49,9 @@ namespace Server.Items
                 {
                     int x = Utility.RandomMinMax(X - 1, X + 1);
                     int y = Utility.RandomMinMax(Y - 1, Y + 2);
-                    int z = this.Map.GetAverageZ(x, y);
+                    int z = Map.GetAverageZ(x, y);
 
-                    if (this.Map.CanSpawnMobile(x, y, z))
+                    if (Map.CanSpawnMobile(x, y, z))
                     {
                         p = new Point3D(x, y, z);
                         break;
@@ -59,7 +59,7 @@ namespace Server.Items
                 }
 
                 BaseCreature macaw = new Macaw(this);
-                macaw.MoveToWorld(p, this.Map);
+                macaw.MoveToWorld(p, Map);
                 Spawn.Add(macaw);
 
                 Visible = false;
@@ -71,7 +71,7 @@ namespace Server.Items
 
         public override void OnLocationChange(Point3D oldLocation)
         {
-            if (this.Location != oldLocation && Addon != null && !Moving)
+            if (Location != oldLocation && Addon != null && !Moving)
                 MoveToNest();
 
             base.OnLocationChange(oldLocation);
@@ -80,14 +80,14 @@ namespace Server.Items
         public override void OnMapChange()
         {
             if (Addon != null)
-                Addon.Map = this.Map;
+                Addon.Map = Map;
 
             base.OnMapChange();
         }
 
         private void MoveToNest()
         {
-            Addon.MoveToWorld(this.Location, this.Map);
+            Addon.MoveToWorld(Location, Map);
             Moving = true;
             MoveToWorld(new Point3D(Addon.X + 1, Addon.Y, Addon.Z + 9), Addon.Map);
             Moving = false;

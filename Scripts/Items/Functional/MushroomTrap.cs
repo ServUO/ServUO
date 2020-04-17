@@ -22,11 +22,11 @@ namespace Server.Items
         public override TimeSpan ResetDelay => TimeSpan.Zero;
         public override void OnTrigger(Mobile from)
         {
-            if (!from.Alive || this.ItemID != 0x1125 || from.IsStaff())
+            if (!from.Alive || ItemID != 0x1125 || from.IsStaff())
                 return;
 
-            this.ItemID = 0x1126;
-            Effects.PlaySound(this.Location, this.Map, 0x306);
+            ItemID = 0x1126;
+            Effects.PlaySound(Location, Map, 0x306);
 
             Spells.SpellHelper.Damage(TimeSpan.FromSeconds(0.5), from, from, Utility.Dice(2, 4, 0));
 
@@ -35,10 +35,10 @@ namespace Server.Items
 
         public virtual void OnMushroomReset()
         {
-            if (Region.Find(this.Location, this.Map).IsPartOf<DungeonRegion>())
-                this.ItemID = 0x1125; // reset
+            if (Region.Find(Location, Map).IsPartOf<DungeonRegion>())
+                ItemID = 0x1125; // reset
             else
-                this.Delete();
+                Delete();
         }
 
         public override void Serialize(GenericWriter writer)
@@ -54,8 +54,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (this.ItemID == 0x1126)
-                this.OnMushroomReset();
+            if (ItemID == 0x1126)
+                OnMushroomReset();
         }
     }
 }

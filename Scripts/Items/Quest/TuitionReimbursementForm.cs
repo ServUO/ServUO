@@ -6,9 +6,9 @@ namespace Server.Items
         public TuitionReimbursementForm()
             : base(0xE3A)
         {
-            this.LootType = LootType.Blessed;
-            this.Weight = 1;
-            this.Hue = 0x395;
+            LootType = LootType.Blessed;
+            Weight = 1;
+            Hue = 0x395;
         }
 
         public TuitionReimbursementForm(Serial serial)

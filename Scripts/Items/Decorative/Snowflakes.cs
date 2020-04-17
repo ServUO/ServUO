@@ -6,8 +6,8 @@ namespace Server.Items
         public BlueSnowflake()
             : base(0x232E)
         {
-            this.Weight = 1.0;
-            this.LootType = LootType.Blessed;
+            Weight = 1.0;
+            LootType = LootType.Blessed;
         }
 
         public BlueSnowflake(Serial serial)
@@ -36,8 +36,8 @@ namespace Server.Items
         public WhiteSnowflake()
             : base(0x232F)
         {
-            this.Weight = 1.0;
-            this.LootType = LootType.Blessed;
+            Weight = 1.0;
+            LootType = LootType.Blessed;
         }
 
         public WhiteSnowflake(Serial serial)

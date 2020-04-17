@@ -6,7 +6,7 @@ namespace Server.Items
         public JeweledFiligree()
             : base(0x2F5E)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public JeweledFiligree(Serial serial)

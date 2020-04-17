@@ -189,7 +189,7 @@ namespace Server.Spells.SkillMasteries
 
         public override bool CheckSequence()
         {
-            int requiredTithing = this.RequiredTithing;
+            int requiredTithing = RequiredTithing;
 
             if (Caster is PlayerMobile && (Caster.Player && Caster.TithingPoints < requiredTithing))
             {

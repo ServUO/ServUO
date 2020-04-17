@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public ComfortableSeatingQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(BambooChair), "straw chair", 1, 0xB5B));
+            AddObjective(new ObtainObjective(typeof(BambooChair), "straw chair", 1, 0xB5B));
 
-            this.AddReward(new BaseReward(typeof(CarpentersSatchel), 1074282)); // Craftsman's Satchel
+            AddReward(new BaseReward(typeof(CarpentersSatchel), 1074282)); // Craftsman's Satchel
         }
 
         /* Comfortable Seating */
@@ -60,24 +60,24 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = false;
+            CantWalk = true;
+            Race = Race.Human;
 
-            this.Hue = 0x83F6;
-            this.HairItemID = 0x203C;
-            this.HairHue = 0x6B1;
+            Hue = 0x83F6;
+            HairItemID = 0x203C;
+            HairHue = 0x6B1;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Boots(0x543));
-            this.AddItem(new ShortPants(0x758));
-            this.AddItem(new FancyShirt(0x53A));
-            this.AddItem(new HalfApron(0x6D2));
+            AddItem(new Backpack());
+            AddItem(new Boots(0x543));
+            AddItem(new ShortPants(0x758));
+            AddItem(new FancyShirt(0x53A));
+            AddItem(new HalfApron(0x6D2));
         }
 
         public override void Serialize(GenericWriter writer)
@@ -101,10 +101,10 @@ namespace Server.Engines.Quests
         public CarpentersSatchel()
             : base()
         {
-            this.Hue = BaseReward.SatchelHue();
+            Hue = BaseReward.SatchelHue();
 
-            this.AddItem(new Board(10));
-            this.AddItem(new DovetailSaw());
+            AddItem(new Board(10));
+            AddItem(new DovetailSaw());
         }
 
         public CarpentersSatchel(Serial serial)

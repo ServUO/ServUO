@@ -5,10 +5,10 @@ namespace Server.Items
         [Constructable]
         public AquariumFishNet()
         {
-            this.ItemID = 0xDC8;
+            ItemID = 0xDC8;
 
-            if (this.Hue == 0x8A0)
-                this.Hue = 0x240;
+            if (Hue == 0x8A0)
+                Hue = 0x240;
         }
 
         public AquariumFishNet(Serial serial)
@@ -44,7 +44,7 @@ namespace Server.Items
             }
             else
             {
-                BaseFish fish = this.GiveFish(from);
+                BaseFish fish = GiveFish(from);
                 FishBowl bowl = Aquarium.GetEmptyBowl(from);
 
                 if (bowl != null)
@@ -52,7 +52,7 @@ namespace Server.Items
                     fish.StopTimer();
                     bowl.AddItem(fish);
                     from.SendLocalizedMessage(1074489); // A live creature jumps into the fish bowl in your pack!
-                    this.Delete();
+                    Delete();
                     return;
                 }
                 else
@@ -63,7 +63,7 @@ namespace Server.Items
                         from.SendLocalizedMessage(1074490); // A live creature flops around in your pack before running out of air.
 
                         fish.Kill();
-                        this.Delete();
+                        Delete();
                         return;
                     }
                     else
@@ -75,15 +75,15 @@ namespace Server.Items
                 }
             }
 
-            this.InUse = false;
-            this.Movable = true;
+            InUse = false;
+            Movable = true;
 
             if (!from.PlaceInBackpack(this))
             {
                 if (from.Map == null || from.Map == Map.Internal)
-                    this.Delete();
+                    Delete();
                 else
-                    this.MoveToWorld(from.Location, from.Map);
+                    MoveToWorld(from.Location, from.Map);
             }
         }
 
@@ -162,13 +162,13 @@ namespace Server.Items
         public override int LabelNumber => 1074463;// An aquarium fishing net
         public override void OnDoubleClick(Mobile from)
         {
-            if (!this.IsChildOf(from.Backpack))
+            if (!IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
                 return;
             }
 
-            Item replacement = this.CreateReplacement();
+            Item replacement = CreateReplacement();
 
             if (!from.PlaceInBackpack(replacement))
             {
@@ -177,7 +177,7 @@ namespace Server.Items
             }
             else
             {
-                this.Delete();
+                Delete();
                 from.Use(replacement);
             }
         }
@@ -199,12 +199,12 @@ namespace Server.Items
         private Item CreateReplacement()
         {
             Item result = new AquariumFishNet();
-            result.Hue = this.Hue;
-            result.LootType = this.LootType;
-            result.Movable = this.Movable;
-            result.Name = this.Name;
-            result.QuestItem = this.QuestItem;
-            result.Visible = this.Visible;
+            result.Hue = Hue;
+            result.LootType = LootType;
+            result.Movable = Movable;
+            result.Name = Name;
+            result.QuestItem = QuestItem;
+            result.Visible = Visible;
 
             return result;
         }

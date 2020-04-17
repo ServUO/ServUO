@@ -18,18 +18,18 @@ namespace Server.Items
         public HouseRaffleDeed(HouseRaffleStone stone, Mobile m)
             : base(0x2830)
         {
-            this.m_Stone = stone;
+            m_Stone = stone;
 
             if (stone != null)
             {
-                this.m_PlotLocation = stone.GetPlotCenter();
-                this.m_Facet = stone.PlotFacet;
+                m_PlotLocation = stone.GetPlotCenter();
+                m_Facet = stone.PlotFacet;
             }
 
-            this.m_AwardedTo = m;
+            m_AwardedTo = m;
 
-            this.LootType = LootType.Blessed;
-            this.Hue = 0x501;
+            LootType = LootType.Blessed;
+            Hue = 0x501;
         }
 
         public HouseRaffleDeed(Serial serial)
@@ -42,12 +42,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Stone;
+                return m_Stone;
             }
             set
             {
-                this.m_Stone = value;
-                this.InvalidateProperties();
+                m_Stone = value;
+                InvalidateProperties();
             }
         }
         [CommandProperty(AccessLevel.GameMaster, AccessLevel.Seer)]
@@ -55,12 +55,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_PlotLocation;
+                return m_PlotLocation;
             }
             set
             {
-                this.m_PlotLocation = value;
-                this.InvalidateProperties();
+                m_PlotLocation = value;
+                InvalidateProperties();
             }
         }
         [CommandProperty(AccessLevel.GameMaster, AccessLevel.Seer)]
@@ -68,12 +68,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Facet;
+                return m_Facet;
             }
             set
             {
-                this.m_Facet = value;
-                this.InvalidateProperties();
+                m_Facet = value;
+                InvalidateProperties();
             }
         }
         [CommandProperty(AccessLevel.GameMaster, AccessLevel.Seer)]
@@ -81,45 +81,45 @@ namespace Server.Items
         {
             get
             {
-                return this.m_AwardedTo;
+                return m_AwardedTo;
             }
             set
             {
-                this.m_AwardedTo = value;
-                this.InvalidateProperties();
+                m_AwardedTo = value;
+                InvalidateProperties();
             }
         }
         [CommandProperty(AccessLevel.GameMaster, AccessLevel.Seer)]
-        public bool IsExpired => (this.m_Stone == null || this.m_Stone.Deleted || this.m_Stone.IsExpired);
+        public bool IsExpired => (m_Stone == null || m_Stone.Deleted || m_Stone.IsExpired);
         public override string DefaultName => "a writ of lease";
         public override double DefaultWeight => 1.0;
         public bool ValidLocation()
         {
-            return (this.m_PlotLocation != Point3D.Zero && this.m_Facet != null && this.m_Facet != Map.Internal);
+            return (m_PlotLocation != Point3D.Zero && m_Facet != null && m_Facet != Map.Internal);
         }
 
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 
-            if (this.ValidLocation())
+            if (ValidLocation())
             {
-                list.Add(1060658, "location\t{0}", HouseRaffleStone.FormatLocation(this.m_PlotLocation, this.m_Facet, false)); // ~1_val~: ~2_val~
-                list.Add(1060659, "facet\t{0}", this.m_Facet); // ~1_val~: ~2_val~
+                list.Add(1060658, "location\t{0}", HouseRaffleStone.FormatLocation(m_PlotLocation, m_Facet, false)); // ~1_val~: ~2_val~
+                list.Add(1060659, "facet\t{0}", m_Facet); // ~1_val~: ~2_val~
                 list.Add(1150486); // [Marked Item]
             }
 
-            if (this.IsExpired)
+            if (IsExpired)
                 list.Add(1150487); // [Expired]
             //list.Add( 1060660, "shard\t{0}", ServerList.ServerName ); // ~1_val~: ~2_val~
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!this.ValidLocation())
+            if (!ValidLocation())
                 return;
 
-            if (this.IsChildOf(from.Backpack))
+            if (IsChildOf(from.Backpack))
             {
                 from.CloseGump(typeof(WritOfLeaseGump));
                 from.SendGump(new WritOfLeaseGump(this));
@@ -136,10 +136,10 @@ namespace Server.Items
 
             writer.Write(1); // version
 
-            writer.Write(this.m_Stone);
-            writer.Write(this.m_PlotLocation);
-            writer.Write(this.m_Facet);
-            writer.Write(this.m_AwardedTo);
+            writer.Write(m_Stone);
+            writer.Write(m_PlotLocation);
+            writer.Write(m_Facet);
+            writer.Write(m_AwardedTo);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -152,15 +152,15 @@ namespace Server.Items
             {
                 case 1:
                     {
-                        this.m_Stone = reader.ReadItem<HouseRaffleStone>();
+                        m_Stone = reader.ReadItem<HouseRaffleStone>();
 
                         goto case 0;
                     }
                 case 0:
                     {
-                        this.m_PlotLocation = reader.ReadPoint3D();
-                        this.m_Facet = reader.ReadMap();
-                        this.m_AwardedTo = reader.ReadMobile();
+                        m_PlotLocation = reader.ReadPoint3D();
+                        m_Facet = reader.ReadMap();
+                        m_AwardedTo = reader.ReadMobile();
 
                         break;
                     }
@@ -172,26 +172,26 @@ namespace Server.Items
             public WritOfLeaseGump(HouseRaffleDeed deed)
                 : base(150, 50)
             {
-                this.AddPage(0);
+                AddPage(0);
 
-                this.AddImage(0, 0, 9380);
-                this.AddImage(114, 0, 9381);
-                this.AddImage(171, 0, 9382);
-                this.AddImage(0, 140, 9383);
-                this.AddImage(114, 140, 9384);
-                this.AddImage(171, 140, 9385);
-                this.AddImage(0, 182, 9383);
-                this.AddImage(114, 182, 9384);
-                this.AddImage(171, 182, 9385);
-                this.AddImage(0, 224, 9383);
-                this.AddImage(114, 224, 9384);
-                this.AddImage(171, 224, 9385);
-                this.AddImage(0, 266, 9386);
-                this.AddImage(114, 266, 9387);
-                this.AddImage(171, 266, 9388);
+                AddImage(0, 0, 9380);
+                AddImage(114, 0, 9381);
+                AddImage(171, 0, 9382);
+                AddImage(0, 140, 9383);
+                AddImage(114, 140, 9384);
+                AddImage(171, 140, 9385);
+                AddImage(0, 182, 9383);
+                AddImage(114, 182, 9384);
+                AddImage(171, 182, 9385);
+                AddImage(0, 224, 9383);
+                AddImage(114, 224, 9384);
+                AddImage(171, 224, 9385);
+                AddImage(0, 266, 9386);
+                AddImage(114, 266, 9387);
+                AddImage(171, 266, 9388);
 
-                this.AddHtmlLocalized(30, 48, 229, 20, 1150484, 200, false, false); // WRIT OF LEASE
-                this.AddHtml(28, 75, 231, 280, FormatDescription(deed), false, true);
+                AddHtmlLocalized(30, 48, 229, 20, 1150484, 200, false, false); // WRIT OF LEASE
+                AddHtml(28, 75, 231, 280, FormatDescription(deed), false, true);
             }
 
             private static string FormatDescription(HouseRaffleDeed deed)

@@ -77,7 +77,7 @@ namespace Server.Items
 
                         if (g.SetControlMaster(from))
                         {
-                            this.Delete();
+                            Delete();
 
                             g.MoveToWorld(from.Location, from.Map);
                             from.PlaySound(0x241);

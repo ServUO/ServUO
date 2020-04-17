@@ -29,8 +29,8 @@ namespace Server.Items
         public Head(HeadType headType, string playerName)
             : base(0x1DA0)
         {
-            this.m_HeadType = headType;
-            this.m_PlayerName = playerName;
+            m_HeadType = headType;
+            m_PlayerName = playerName;
         }
 
         public Head(Serial serial)
@@ -43,11 +43,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_PlayerName;
+                return m_PlayerName;
             }
             set
             {
-                this.m_PlayerName = value;
+                m_PlayerName = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -55,30 +55,30 @@ namespace Server.Items
         {
             get
             {
-                return this.m_HeadType;
+                return m_HeadType;
             }
             set
             {
-                this.m_HeadType = value;
+                m_HeadType = value;
             }
         }
         public override string DefaultName
         {
             get
             {
-                if (this.m_PlayerName == null)
+                if (m_PlayerName == null)
                     return base.DefaultName;
 
-                switch (this.m_HeadType)
+                switch (m_HeadType)
                 {
                     default:
-                        return String.Format("the head of {0}", this.m_PlayerName);
+                        return String.Format("the head of {0}", m_PlayerName);
 
                     case HeadType.Duel:
-                        return String.Format("the head of {0}, taken in a duel", this.m_PlayerName);
+                        return String.Format("the head of {0}, taken in a duel", m_PlayerName);
 
                     case HeadType.Tournament:
-                        return String.Format("the head of {0}, taken in a tournament", this.m_PlayerName);
+                        return String.Format("the head of {0}, taken in a tournament", m_PlayerName);
                 }
             }
         }
@@ -89,7 +89,7 @@ namespace Server.Items
             writer.Write(1); // version
 
             writer.Write(m_PlayerName);
-            writer.WriteEncodedInt((int)this.m_HeadType);
+            writer.WriteEncodedInt((int)m_HeadType);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -101,11 +101,11 @@ namespace Server.Items
             switch (version)
             {
                 case 1:
-                    this.m_PlayerName = reader.ReadString();
-                    this.m_HeadType = (HeadType)reader.ReadEncodedInt();
+                    m_PlayerName = reader.ReadString();
+                    m_HeadType = (HeadType)reader.ReadEncodedInt();
                     break;
                 case 0:
-                    string format = this.Name;
+                    string format = Name;
 
                     if (format != null)
                     {
@@ -115,17 +115,17 @@ namespace Server.Items
                         if (format.EndsWith(", taken in a duel"))
                         {
                             format = format.Substring(0, format.Length - ", taken in a duel".Length);
-                            this.m_HeadType = HeadType.Duel;
+                            m_HeadType = HeadType.Duel;
                         }
                         else if (format.EndsWith(", taken in a tournament"))
                         {
                             format = format.Substring(0, format.Length - ", taken in a tournament".Length);
-                            this.m_HeadType = HeadType.Tournament;
+                            m_HeadType = HeadType.Tournament;
                         }
                     }
 
-                    this.m_PlayerName = format;
-                    this.Name = null;
+                    m_PlayerName = format;
+                    Name = null;
 
                     break;
             }

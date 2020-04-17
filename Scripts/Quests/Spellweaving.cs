@@ -9,9 +9,9 @@ namespace Server.Engines.Quests
         public PatienceQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(MiniatureMushroom), "miniature mushrooms", 20, 0xD16, 3600));
+            AddObjective(new ObtainObjective(typeof(MiniatureMushroom), "miniature mushrooms", 20, 0xD16, 3600));
 
-            this.AddReward(new BaseReward(1074872)); // The opportunity to learn the ways of the Arcanist.
+            AddReward(new BaseReward(1074872)); // The opportunity to learn the ways of the Arcanist.
         }
 
         public override QuestChain ChainID => QuestChain.Spellweaving;
@@ -58,9 +58,9 @@ namespace Server.Engines.Quests
         public NeedsOfManyHeartwoodQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(Cotton), "bale of cotton", 10, 0xDF9));
+            AddObjective(new ObtainObjective(typeof(Cotton), "bale of cotton", 10, 0xDF9));
 
-            this.AddReward(new BaseReward(1074872)); // The opportunity to learn the ways of the Arcanist.
+            AddReward(new BaseReward(1074872)); // The opportunity to learn the ways of the Arcanist.
         }
 
         public override QuestChain ChainID => QuestChain.Spellweaving;
@@ -103,9 +103,9 @@ namespace Server.Engines.Quests
         public NeedsOfManyPartHeartwoodQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(Board), "boards", 250, 0x1BD7));
+            AddObjective(new ObtainObjective(typeof(Board), "boards", 250, 0x1BD7));
 
-            this.AddReward(new BaseReward(1074872)); // The opportunity to learn the ways of the Arcanist.
+            AddReward(new BaseReward(1074872)); // The opportunity to learn the ways of the Arcanist.
         }
 
         public override QuestChain ChainID => QuestChain.Spellweaving;
@@ -146,11 +146,11 @@ namespace Server.Engines.Quests
         public MakingContributionHeartwoodQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(SackFlour), "sack of flour", 1, 0x1039));
-            this.AddObjective(new ObtainObjective(typeof(JarHoney), "jar of honey", 10, 0x9EC));
-            this.AddObjective(new ObtainObjective(typeof(FishSteak), "fish steak", 20, 0x97B));
+            AddObjective(new ObtainObjective(typeof(SackFlour), "sack of flour", 1, 0x1039));
+            AddObjective(new ObtainObjective(typeof(JarHoney), "jar of honey", 10, 0x9EC));
+            AddObjective(new ObtainObjective(typeof(FishSteak), "fish steak", 20, 0x97B));
 
-            this.AddReward(new BaseReward(1074872)); // The opportunity to learn the ways of the Arcanist.
+            AddReward(new BaseReward(1074872)); // The opportunity to learn the ways of the Arcanist.
         }
 
         public override QuestChain ChainID => QuestChain.Spellweaving;
@@ -194,12 +194,12 @@ namespace Server.Engines.Quests
         public UnnaturalCreationsQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(ExodusOverseer), "exodus overseers", 5));
-            this.AddObjective(new SlayObjective(typeof(ExodusMinion), "exodus minions", 2));
+            AddObjective(new SlayObjective(typeof(ExodusOverseer), "exodus overseers", 5));
+            AddObjective(new SlayObjective(typeof(ExodusMinion), "exodus minions", 2));
 
-            this.AddReward(new BaseReward(typeof(ArcaneCircleScroll), 1071026)); // Arcane Circle			
-            this.AddReward(new BaseReward(typeof(GiftOfRenewalScroll), 1071027)); // Gift of Renewal
-            this.AddReward(new BaseReward(typeof(SpellweavingBook), 1031600)); // Spellweaving Spellbook
+            AddReward(new BaseReward(typeof(ArcaneCircleScroll), 1071026)); // Arcane Circle			
+            AddReward(new BaseReward(typeof(GiftOfRenewalScroll), 1071027)); // Gift of Renewal
+            AddReward(new BaseReward(typeof(SpellweavingBook), 1031600)); // Spellweaving Spellbook
         }
 
         public override QuestChain ChainID => QuestChain.Spellweaving;
@@ -225,7 +225,7 @@ namespace Server.Engines.Quests
 
         public override void GiveRewards()
         {
-            this.Owner.Spellweaving = true;
+            Owner.Spellweaving = true;
 
             base.GiveRewards();
         }

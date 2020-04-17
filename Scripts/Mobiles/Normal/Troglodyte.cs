@@ -58,7 +58,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich);  // Need to verify
+            AddLoot(LootPack.Rich);  // Need to verify
         }
 
         public override void OnDeath(Container c)

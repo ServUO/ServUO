@@ -8,28 +8,28 @@ namespace Server.Engines.Mahjong
         private MahjongWind m_Wind;
         public MahjongDealerIndicator(MahjongGame game, Point2D position, MahjongPieceDirection direction, MahjongWind wind)
         {
-            this.m_Game = game;
-            this.m_Position = position;
-            this.m_Direction = direction;
-            this.m_Wind = wind;
+            m_Game = game;
+            m_Position = position;
+            m_Direction = direction;
+            m_Wind = wind;
         }
 
         public MahjongDealerIndicator(MahjongGame game, GenericReader reader)
         {
-            this.m_Game = game;
+            m_Game = game;
 
             int version = reader.ReadInt();
 
-            this.m_Position = reader.ReadPoint2D();
-            this.m_Direction = (MahjongPieceDirection)reader.ReadInt();
-            this.m_Wind = (MahjongWind)reader.ReadInt();
+            m_Position = reader.ReadPoint2D();
+            m_Direction = (MahjongPieceDirection)reader.ReadInt();
+            m_Wind = (MahjongWind)reader.ReadInt();
         }
 
-        public MahjongGame Game => this.m_Game;
-        public Point2D Position => this.m_Position;
-        public MahjongPieceDirection Direction => this.m_Direction;
-        public MahjongWind Wind => this.m_Wind;
-        public MahjongPieceDim Dimensions => GetDimensions(this.m_Position, this.m_Direction);
+        public MahjongGame Game => m_Game;
+        public Point2D Position => m_Position;
+        public MahjongPieceDirection Direction => m_Direction;
+        public MahjongWind Wind => m_Wind;
+        public MahjongPieceDim Dimensions => GetDimensions(m_Position, m_Direction);
         public static MahjongPieceDim GetDimensions(Point2D position, MahjongPieceDirection direction)
         {
             if (direction == MahjongPieceDirection.Up || direction == MahjongPieceDirection.Down)
@@ -45,20 +45,20 @@ namespace Server.Engines.Mahjong
             if (!dim.IsValid())
                 return;
 
-            this.m_Position = position;
-            this.m_Direction = direction;
-            this.m_Wind = wind;
+            m_Position = position;
+            m_Direction = direction;
+            m_Wind = wind;
 
-            this.m_Game.Players.SendGeneralPacket(true, true);
+            m_Game.Players.SendGeneralPacket(true, true);
         }
 
         public void Save(GenericWriter writer)
         {
             writer.Write(0); // version
 
-            writer.Write(this.m_Position);
-            writer.Write((int)this.m_Direction);
-            writer.Write((int)this.m_Wind);
+            writer.Write(m_Position);
+            writer.Write((int)m_Direction);
+            writer.Write((int)m_Wind);
         }
     }
 }

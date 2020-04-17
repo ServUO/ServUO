@@ -162,7 +162,7 @@ namespace Server.Mobiles
 
             Item item = ((ItemTileButtonInfo)buttonInfo).Item;
 
-            if (!(pm != null && item.IsChildOf(pm.Backpack) && pm.InRange(this.m_Collector.Location, 7)))
+            if (!(pm != null && item.IsChildOf(pm.Backpack) && pm.InRange(m_Collector.Location, 7)))
                 return;
 
             m_Collector.AwardPoints(pm, item, m_Collector.TurnInPoints);

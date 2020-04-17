@@ -29,33 +29,33 @@ namespace Server.Engines.Reports
         private bool _showPercents;
         public PieChartRenderer()
         {
-            this._chartItems = new ArrayList();
-            this._perimeter = 250;
-            this._backgroundColor = Color.White;
-            this._borderColor = Color.FromArgb(63, 63, 63);
-            this._legendFontSize = 8;
-            this._legendFontStyle = "Verdana";
+            _chartItems = new ArrayList();
+            _perimeter = 250;
+            _backgroundColor = Color.White;
+            _borderColor = Color.FromArgb(63, 63, 63);
+            _legendFontSize = 8;
+            _legendFontStyle = "Verdana";
         }
 
         public PieChartRenderer(Color bgColor)
         {
-            this._chartItems = new ArrayList();
-            this._perimeter = 250;
-            this._backgroundColor = bgColor;
-            this._borderColor = Color.FromArgb(63, 63, 63);
-            this._legendFontSize = 8;
-            this._legendFontStyle = "Verdana";
+            _chartItems = new ArrayList();
+            _perimeter = 250;
+            _backgroundColor = bgColor;
+            _borderColor = Color.FromArgb(63, 63, 63);
+            _legendFontSize = 8;
+            _legendFontStyle = "Verdana";
         }
 
         public bool ShowPercents
         {
             get
             {
-                return this._showPercents;
+                return _showPercents;
             }
             set
             {
-                this._showPercents = value;
+                _showPercents = value;
             }
         }
         //*********************************************************************
@@ -66,26 +66,26 @@ namespace Server.Engines.Reports
         //*********************************************************************
         public void CollectDataPoints(string[] xValues, string[] yValues)
         {
-            this._total = 0.0f;
+            _total = 0.0f;
 
             for (int i = 0; i < xValues.Length; i++)
             {
                 float ftemp = Convert.ToSingle(yValues[i]);
-                this._chartItems.Add(new DataItem(xValues[i], xValues.ToString(), ftemp, 0, 0, Color.AliceBlue));
-                this._total += ftemp;
+                _chartItems.Add(new DataItem(xValues[i], xValues.ToString(), ftemp, 0, 0, Color.AliceBlue));
+                _total += ftemp;
             }
 
             float nextStartPos = 0.0f;
             int counter = 0;
-            foreach (DataItem item in this._chartItems)
+            foreach (DataItem item in _chartItems)
             {
                 item.StartPos = nextStartPos;
-                item.SweepSize = item.Value / this._total * 360;
+                item.SweepSize = item.Value / _total * 360;
                 nextStartPos = item.StartPos + item.SweepSize;
-                item.ItemColor = this.GetColor(counter++);
+                item.ItemColor = GetColor(counter++);
             }
 
-            this.CalculateLegendWidthHeight();
+            CalculateLegendWidthHeight();
         }
 
         //*********************************************************************
@@ -96,9 +96,9 @@ namespace Server.Engines.Reports
         //*********************************************************************
         public override Bitmap Draw()
         {
-            int perimeter = this._perimeter;
+            int perimeter = _perimeter;
             Rectangle pieRect = new Rectangle(0, 0, perimeter, perimeter - 1);
-            Bitmap bmp = new Bitmap(perimeter + this._legendWidth, perimeter);
+            Bitmap bmp = new Bitmap(perimeter + _legendWidth, perimeter);
             Font fnt = null;
             Pen pen = null;
             Graphics grp = null;
@@ -112,16 +112,16 @@ namespace Server.Engines.Reports
                 sf = new StringFormat();
 
                 //Paint Back ground
-                using (SolidBrush brsh = new SolidBrush(this._backgroundColor))
-                    grp.FillRectangle(brsh, -1, -1, perimeter + this._legendWidth + 1, perimeter + 1);
+                using (SolidBrush brsh = new SolidBrush(_backgroundColor))
+                    grp.FillRectangle(brsh, -1, -1, perimeter + _legendWidth + 1, perimeter + 1);
 
                 //Align text to the right
                 sf.Alignment = StringAlignment.Far;
 
                 //Draw all wedges and legends
-                for (int i = 0; i < this._chartItems.Count; i++)
+                for (int i = 0; i < _chartItems.Count; i++)
                 {
-                    DataItem item = (DataItem)this._chartItems[i];
+                    DataItem item = (DataItem)_chartItems[i];
                     SolidBrush brs = null;
                     try
                     {
@@ -131,9 +131,9 @@ namespace Server.Engines.Reports
                         //grp.DrawPie(new Pen(_borderColor,1.2f),pieRect,item.StartPos,item.SweepSize);
 
                         if (fnt == null)
-                            fnt = new Font(this._legendFontStyle, this._legendFontSize);
+                            fnt = new Font(_legendFontStyle, _legendFontSize);
 
-                        if (this._showPercents && item.SweepSize > 10)
+                        if (_showPercents && item.SweepSize > 10)
                         {
                             if (sfp == null)
                             {
@@ -171,16 +171,16 @@ namespace Server.Engines.Reports
                         }
 
                         if (pen == null)
-                            pen = new Pen(this._borderColor, 0.5f);
+                            pen = new Pen(_borderColor, 0.5f);
 
-                        grp.FillRectangle(brs, perimeter + _bufferSpace, i * this._legendFontHeight + 15, 10, 10);
-                        grp.DrawRectangle(pen, perimeter + _bufferSpace, i * this._legendFontHeight + 15, 10, 10);
+                        grp.FillRectangle(brs, perimeter + _bufferSpace, i * _legendFontHeight + 15, 10, 10);
+                        grp.DrawRectangle(pen, perimeter + _bufferSpace, i * _legendFontHeight + 15, 10, 10);
 
                         grp.DrawString(item.Label, fnt,
-                            Brushes.Black, perimeter + _bufferSpace + 20, i * this._legendFontHeight + 13);
+                            Brushes.Black, perimeter + _bufferSpace + 20, i * _legendFontHeight + 13);
 
                         grp.DrawString(item.Value.ToString("#,###.##"), fnt,
-                            Brushes.Black, perimeter + _bufferSpace + 200, i * this._legendFontHeight + 13, sf);
+                            Brushes.Black, perimeter + _bufferSpace + 200, i * _legendFontHeight + 13, sf);
                     }
                     finally
                     {
@@ -189,13 +189,13 @@ namespace Server.Engines.Reports
                     }
                 }
 
-                for (int i = 0; i < this._chartItems.Count; i++)
+                for (int i = 0; i < _chartItems.Count; i++)
                 {
-                    DataItem item = (DataItem)this._chartItems[i];
+                    DataItem item = (DataItem)_chartItems[i];
                     SolidBrush brs = null;
                     try
                     {
-                        grp.DrawPie(new Pen(this._borderColor, 0.5f), pieRect, item.StartPos, item.SweepSize);
+                        grp.DrawPie(new Pen(_borderColor, 0.5f), pieRect, item.StartPos, item.SweepSize);
                     }
                     finally
                     {
@@ -205,20 +205,20 @@ namespace Server.Engines.Reports
                 }
 
                 //draws the border around Pie
-                using (Pen pen2 = new Pen(this._borderColor, 2))
+                using (Pen pen2 = new Pen(_borderColor, 2))
                     grp.DrawEllipse(pen2, pieRect);
 
                 //draw border around legend
-                using (Pen pen1 = new Pen(this._borderColor, 1))
-                    grp.DrawRectangle(pen1, perimeter + _bufferSpace - 10, 10, 220, this._chartItems.Count * this._legendFontHeight + 25);
+                using (Pen pen1 = new Pen(_borderColor, 1))
+                    grp.DrawRectangle(pen1, perimeter + _bufferSpace - 10, 10, 220, _chartItems.Count * _legendFontHeight + 25);
 
                 //Draw Total under legend
-                using (Font fntb = new Font(this._legendFontStyle, this._legendFontSize, FontStyle.Bold))
+                using (Font fntb = new Font(_legendFontStyle, _legendFontSize, FontStyle.Bold))
                 {
                     grp.DrawString("Total", fntb,
-                        Brushes.Black, perimeter + _bufferSpace + 30, (this._chartItems.Count + 1) * this._legendFontHeight, sf);
-                    grp.DrawString(this._total.ToString("#,###.##"), fntb,
-                        Brushes.Black, perimeter + _bufferSpace + 200, (this._chartItems.Count + 1) * this._legendFontHeight, sf);
+                        Brushes.Black, perimeter + _bufferSpace + 30, (_chartItems.Count + 1) * _legendFontHeight, sf);
+                    grp.DrawString(_total.ToString("#,###.##"), fntb,
+                        Brushes.Black, perimeter + _bufferSpace + 200, (_chartItems.Count + 1) * _legendFontHeight, sf);
                 }
 
                 grp.SmoothingMode = SmoothingMode.AntiAlias;
@@ -246,13 +246,13 @@ namespace Server.Engines.Reports
         //*********************************************************************
         private void CalculateLegendWidthHeight()
         {
-            Font fontLegend = new Font(this._legendFontStyle, this._legendFontSize);
-            this._legendFontHeight = fontLegend.Height + 3;
-            this._legendHeight = fontLegend.Height * (this._chartItems.Count + 1);
-            if (this._legendHeight > this._perimeter)
-                this._perimeter = this._legendHeight;
+            Font fontLegend = new Font(_legendFontStyle, _legendFontSize);
+            _legendFontHeight = fontLegend.Height + 3;
+            _legendHeight = fontLegend.Height * (_chartItems.Count + 1);
+            if (_legendHeight > _perimeter)
+                _perimeter = _legendHeight;
 
-            this._legendWidth = this._perimeter + _bufferSpace;
+            _legendWidth = _perimeter + _bufferSpace;
             fontLegend.Dispose();
         }
     }

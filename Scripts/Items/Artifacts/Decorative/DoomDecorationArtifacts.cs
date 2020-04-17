@@ -210,7 +210,7 @@ namespace Server.Items
         public BrazierArtifact()
             : base(0xE31)
         {
-            this.Light = LightType.Circle150;
+            Light = LightType.Circle150;
         }
 
         public BrazierArtifact(Serial serial)
@@ -376,7 +376,7 @@ namespace Server.Items
         public LampPostArtifact()
             : base(0xB24)
         {
-            this.Light = LightType.Circle300;
+            Light = LightType.Circle300;
         }
 
         public LampPostArtifact(Serial serial)
@@ -608,7 +608,7 @@ namespace Server.Items
         public SkullCandleArtifact()
             : base(0x1858)
         {
-            this.Light = LightType.Circle150;
+            Light = LightType.Circle150;
         }
 
         public SkullCandleArtifact(Serial serial)
@@ -948,7 +948,7 @@ namespace Server.Items
         {
             Light = LightType.Circle300;
 
-            switch (this.ItemID)
+            switch (ItemID)
             {
                 case 40685:
                     ItemID = 40686;

@@ -5,8 +5,8 @@ namespace Server.Items
         [Constructable]
         public StoneOvenEastAddon()
         {
-            this.AddComponent(new AddonComponent(0x92C), 0, 0, 0);
-            this.AddComponent(new AddonComponent(0x92B), 0, 1, 0);
+            AddComponent(new AddonComponent(0x92C), 0, 0, 0);
+            AddComponent(new AddonComponent(0x92B), 0, 1, 0);
         }
 
         public StoneOvenEastAddon(Serial serial)

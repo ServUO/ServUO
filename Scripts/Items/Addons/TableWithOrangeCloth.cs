@@ -6,7 +6,7 @@ namespace Server.Items
         public TableWithOrangeClothAddon()
             : base()
         {
-            this.AddComponent(new LocalizedAddonComponent(0x118E, 1076278), 0, 0, 0);
+            AddComponent(new LocalizedAddonComponent(0x118E, 1076278), 0, 0, 0);
         }
 
         public TableWithOrangeClothAddon(Serial serial)
@@ -36,7 +36,7 @@ namespace Server.Items
         public TableWithOrangeClothDeed()
             : base()
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public TableWithOrangeClothDeed(Serial serial)

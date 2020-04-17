@@ -6,8 +6,8 @@ namespace Server.Items
         public ScrollBox3()
             : base()
         {
-            this.Movable = true;
-            this.Hue = 1159;
+            Movable = true;
+            Hue = 1159;
 
             DropItem(new PowerScroll(SkillName.Imbuing, Utility.RandomBool() ? 105.0 : 110.0));
 

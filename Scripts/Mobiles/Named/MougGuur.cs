@@ -8,34 +8,34 @@ namespace Server.Mobiles
         [Constructable]
         public MougGuur()
         {
-            this.Name = "Moug-Guur";
+            Name = "Moug-Guur";
 
-            this.SetStr(556, 575);
-            this.SetDex(84, 94);
-            this.SetInt(59, 73);
+            SetStr(556, 575);
+            SetDex(84, 94);
+            SetInt(59, 73);
 
-            this.SetHits(400, 415);
+            SetHits(400, 415);
 
-            this.SetDamage(12, 20);
+            SetDamage(12, 20);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 61, 65);
-            this.SetResistance(ResistanceType.Fire, 16, 19);
-            this.SetResistance(ResistanceType.Cold, 41, 46);
-            this.SetResistance(ResistanceType.Poison, 21, 24);
-            this.SetResistance(ResistanceType.Energy, 19, 25);
+            SetResistance(ResistanceType.Physical, 61, 65);
+            SetResistance(ResistanceType.Fire, 16, 19);
+            SetResistance(ResistanceType.Cold, 41, 46);
+            SetResistance(ResistanceType.Poison, 21, 24);
+            SetResistance(ResistanceType.Energy, 19, 25);
 
-            this.SetSkill(SkillName.MagicResist, 70.2, 75.0);
-            this.SetSkill(SkillName.Tactics, 80.8, 81.7);
-            this.SetSkill(SkillName.Wrestling, 93.9, 99.4);
+            SetSkill(SkillName.MagicResist, 70.2, 75.0);
+            SetSkill(SkillName.Tactics, 80.8, 81.7);
+            SetSkill(SkillName.Wrestling, 93.9, 99.4);
 
-            this.Fame = 3000;
-            this.Karma = -3000;
+            Fame = 3000;
+            Karma = -3000;
 
             for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
             {
-                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
         }
 

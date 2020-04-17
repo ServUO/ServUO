@@ -49,16 +49,16 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Average, 3);
+            AddLoot(LootPack.Average, 3);
         }
 
         public override void OnAfterTame(Mobile tamer)
         {
             if (Owners.Count == 0)
             {
-                SkillsCap = this.Skills.Total;
+                SkillsCap = Skills.Total;
 
-                foreach (Skill sk in this.Skills)
+                foreach (Skill sk in Skills)
                 {
                     if (sk.Base > 0)
                     {

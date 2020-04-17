@@ -20,24 +20,24 @@ namespace Server.Engines.Quests.Doom
         {
             get
             {
-                return this.m_Daemon;
+                return m_Daemon;
             }
             set
             {
-                this.m_Daemon = value;
-                this.CheckDaemon();
+                m_Daemon = value;
+                CheckDaemon();
             }
         }
         public void CheckDaemon()
         {
-            if (this.m_Daemon == null || !this.m_Daemon.Alive)
+            if (m_Daemon == null || !m_Daemon.Alive)
             {
-                this.m_Daemon = null;
-                this.Hue = 0;
+                m_Daemon = null;
+                Hue = 0;
             }
             else
             {
-                this.Hue = 0x66D;
+                Hue = 0x66D;
             }
         }
 
@@ -56,9 +56,9 @@ namespace Server.Engines.Quests.Doom
 
             int version = reader.ReadInt();
 
-            this.m_Daemon = reader.ReadMobile() as BoneDemon;
+            m_Daemon = reader.ReadMobile() as BoneDemon;
 
-            this.CheckDaemon();
+            CheckDaemon();
         }
     }
 }

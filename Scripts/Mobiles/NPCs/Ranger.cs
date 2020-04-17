@@ -9,12 +9,12 @@ namespace Server.Mobiles
         public Ranger()
             : base("the ranger")
         {
-            this.SetSkill(SkillName.Camping, 55.0, 78.0);
-            this.SetSkill(SkillName.DetectHidden, 65.0, 88.0);
-            this.SetSkill(SkillName.Hiding, 45.0, 68.0);
-            this.SetSkill(SkillName.Archery, 65.0, 88.0);
-            this.SetSkill(SkillName.Tracking, 65.0, 88.0);
-            this.SetSkill(SkillName.Veterinary, 60.0, 83.0);
+            SetSkill(SkillName.Camping, 55.0, 78.0);
+            SetSkill(SkillName.DetectHidden, 65.0, 88.0);
+            SetSkill(SkillName.Hiding, 45.0, 68.0);
+            SetSkill(SkillName.Archery, 65.0, 88.0);
+            SetSkill(SkillName.Tracking, 65.0, 88.0);
+            SetSkill(SkillName.Veterinary, 60.0, 83.0);
         }
 
         public Ranger(Serial serial)
@@ -22,20 +22,20 @@ namespace Server.Mobiles
         {
         }
 
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBRanger());
+            m_SBInfos.Add(new SBRanger());
         }
 
         public override void InitOutfit()
         {
             base.InitOutfit();
 
-            this.AddItem(new Server.Items.Shirt(Utility.RandomNeutralHue()));
-            this.AddItem(new Server.Items.LongPants(Utility.RandomNeutralHue()));
-            this.AddItem(new Server.Items.Bow());
-            this.AddItem(new Server.Items.ThighBoots(Utility.RandomNeutralHue()));
+            AddItem(new Server.Items.Shirt(Utility.RandomNeutralHue()));
+            AddItem(new Server.Items.LongPants(Utility.RandomNeutralHue()));
+            AddItem(new Server.Items.Bow());
+            AddItem(new Server.Items.ThighBoots(Utility.RandomNeutralHue()));
         }
 
         public override void Serialize(GenericWriter writer)

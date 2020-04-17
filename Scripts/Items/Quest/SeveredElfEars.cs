@@ -13,9 +13,9 @@ namespace Server.Items
         public SeveredElfEars(int amount)
             : base(Utility.RandomList(0x312D, 0x312E))
         {
-            this.Stackable = true;
-            this.Amount = amount;
-            this.Weight = 1;
+            Stackable = true;
+            Amount = amount;
+            Weight = 1;
         }
 
         public SeveredElfEars(Serial serial)

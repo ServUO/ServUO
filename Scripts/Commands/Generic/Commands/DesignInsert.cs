@@ -17,12 +17,12 @@ namespace Server.Commands.Generic
 
         public DesignInsertCommand()
         {
-            this.AccessLevel = AccessLevel.GameMaster;
-            this.Supports = CommandSupport.Single | CommandSupport.Area;
-            this.Commands = new string[] { "DesignInsert" };
-            this.ObjectTypes = ObjectTypes.Items;
-            this.Usage = "DesignInsert [allItems=false]";
-            this.Description = "Inserts multiple targeted items into a customizable house's design.";
+            AccessLevel = AccessLevel.GameMaster;
+            Supports = CommandSupport.Single | CommandSupport.Area;
+            Commands = new string[] { "DesignInsert" };
+            ObjectTypes = ObjectTypes.Items;
+            Usage = "DesignInsert [allItems=false]";
+            Description = "Inserts multiple targeted items into a customizable house's design.";
         }
 
         #region Single targeting mode
@@ -40,17 +40,17 @@ namespace Server.Commands.Generic
             public DesignInsertTarget(List<HouseFoundation> foundations, bool staticsOnly)
                 : base(-1, false, TargetFlags.None)
             {
-                this.m_Foundations = foundations;
-                this.m_StaticsOnly = staticsOnly;
+                m_Foundations = foundations;
+                m_StaticsOnly = staticsOnly;
             }
 
             protected override void OnTargetCancel(Mobile from, TargetCancelType cancelType)
             {
-                if (this.m_Foundations.Count != 0)
+                if (m_Foundations.Count != 0)
                 {
                     from.SendMessage("Your changes have been committed. Updating...");
 
-                    foreach (HouseFoundation house in this.m_Foundations)
+                    foreach (HouseFoundation house in m_Foundations)
                         house.Delta(ItemDelta.Update);
                 }
             }
@@ -58,19 +58,19 @@ namespace Server.Commands.Generic
             protected override void OnTarget(Mobile from, object obj)
             {
                 HouseFoundation house;
-                DesignInsertResult result = ProcessInsert(obj as Item, this.m_StaticsOnly, out house);
+                DesignInsertResult result = ProcessInsert(obj as Item, m_StaticsOnly, out house);
 
                 switch (result)
                 {
                     case DesignInsertResult.Valid:
                         {
-                            if (this.m_Foundations.Count == 0)
+                            if (m_Foundations.Count == 0)
                                 from.SendMessage("The item has been inserted into the house design. Press ESC when you are finished.");
                             else
                                 from.SendMessage("The item has been inserted into the house design.");
 
-                            if (!this.m_Foundations.Contains(house))
-                                this.m_Foundations.Add(house);
+                            if (!m_Foundations.Contains(house))
+                                m_Foundations.Add(house);
 
                             break;
                         }
@@ -87,7 +87,7 @@ namespace Server.Commands.Generic
                         }
                 }
 
-                from.Target = new DesignInsertTarget(this.m_Foundations, this.m_StaticsOnly);
+                from.Target = new DesignInsertTarget(m_Foundations, m_StaticsOnly);
             }
         }
         #endregion
@@ -96,7 +96,7 @@ namespace Server.Commands.Generic
         public override void ExecuteList(CommandEventArgs e, ArrayList list)
         {
             e.Mobile.SendGump(new WarningGump(1060637, 30720, String.Format("You are about to insert {0} objects. This cannot be undone without a full server revert.<br><br>Continue?", list.Count), 0xFFC000, 420, 280, new WarningGumpCallback(OnConfirmCallback), new object[] { e, list, (e.Length < 1 || !e.GetBoolean(0)) }));
-            this.AddResponse("Awaiting confirmation...");
+            AddResponse("Awaiting confirmation...");
         }
 
         private void OnConfirmCallback(Mobile from, bool okay, object state)
@@ -122,7 +122,7 @@ namespace Server.Commands.Generic
                     {
                         case DesignInsertResult.Valid:
                             {
-                                this.AddResponse("The item has been inserted into the house design.");
+                                AddResponse("The item has been inserted into the house design.");
 
                                 if (!foundations.Contains(house))
                                     foundations.Add(house);
@@ -131,13 +131,13 @@ namespace Server.Commands.Generic
                             }
                         case DesignInsertResult.InvalidItem:
                             {
-                                this.LogFailure("That cannot be inserted.");
+                                LogFailure("That cannot be inserted.");
                                 break;
                             }
                         case DesignInsertResult.NotInHouse:
                         case DesignInsertResult.OutsideHouseBounds:
                             {
-                                this.LogFailure("That item is not inside a customizable house.");
+                                LogFailure("That item is not inside a customizable house.");
                                 break;
                             }
                     }
@@ -148,10 +148,10 @@ namespace Server.Commands.Generic
             }
             else
             {
-                this.AddResponse("Command aborted.");
+                AddResponse("Command aborted.");
             }
 
-            this.Flush(from, flushToLog);
+            Flush(from, flushToLog);
         }
 
         #endregion

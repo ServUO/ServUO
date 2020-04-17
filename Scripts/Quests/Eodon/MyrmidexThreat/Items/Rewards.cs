@@ -109,11 +109,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_SecureLevel;
+                return m_SecureLevel;
             }
             set
             {
-                this.m_SecureLevel = value;
+                m_SecureLevel = value;
             }
         }
 
@@ -237,14 +237,14 @@ namespace Server.Items
         {
             base.Serialize(writer);
             writer.Write(0);
-            writer.Write((int)this.m_SecureLevel);  // At first, need to save world with this line before next starting.
+            writer.Write((int)m_SecureLevel);  // At first, need to save world with this line before next starting.
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-            this.m_SecureLevel = (SecureLevel)reader.ReadInt();  // If you have not saved world with above line in Serialize(), you should not add this line.
+            m_SecureLevel = (SecureLevel)reader.ReadInt();  // If you have not saved world with above line in Serialize(), you should not add this line.
         }
     }
 

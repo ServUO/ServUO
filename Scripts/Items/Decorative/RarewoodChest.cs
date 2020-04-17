@@ -8,7 +8,7 @@ namespace Server.Items
         public RarewoodChest()
             : base(0x2DF1)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public RarewoodChest(Serial serial)

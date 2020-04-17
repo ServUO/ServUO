@@ -62,8 +62,8 @@ namespace Server.Engines.Quests
 
         private void ValidateCaught()
         {
-            if (m_CapturedCaptain != null && m_CapturedCaptain is PirateCaptain && this.Quest is ProfessionalBountyQuest)
-                ((PirateCaptain)m_CapturedCaptain).Quest = this.Quest as ProfessionalBountyQuest;
+            if (m_CapturedCaptain != null && m_CapturedCaptain is PirateCaptain && Quest is ProfessionalBountyQuest)
+                ((PirateCaptain)m_CapturedCaptain).Quest = Quest as ProfessionalBountyQuest;
         }
     }
 }

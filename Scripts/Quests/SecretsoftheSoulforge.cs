@@ -7,9 +7,9 @@ namespace Server.Engines.Quests
         public SecretsoftheSoulforge()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(MagicalResidue), "Magical Residue", 50, 0x2DB1));
+            AddObjective(new ObtainObjective(typeof(MagicalResidue), "Magical Residue", 50, 0x2DB1));
 
-            this.AddReward(new BaseReward(typeof(ScrollBox3), 1, "Knowledge"));
+            AddReward(new BaseReward(typeof(ScrollBox3), 1, "Knowledge"));
         }
 
         public override object Title => "Secrets of the Soulforge";

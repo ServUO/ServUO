@@ -6,15 +6,15 @@ namespace Server.Items
         public GoldenDecorativeRugAddon()
             : base()
         {
-            this.AddComponent(new LocalizedAddonComponent(0xADB, 1076586), 1, 1, 0);
-            this.AddComponent(new LocalizedAddonComponent(0xADC, 1076586), -1, -1, 0);
-            this.AddComponent(new LocalizedAddonComponent(0xADD, 1076586), -1, 1, 0);
-            this.AddComponent(new LocalizedAddonComponent(0xADE, 1076586), 1, -1, 0);
-            this.AddComponent(new LocalizedAddonComponent(0xADF, 1076586), -1, 0, 0);
-            this.AddComponent(new LocalizedAddonComponent(0xAE0, 1076586), 0, -1, 0);
-            this.AddComponent(new LocalizedAddonComponent(0xAE1, 1076586), 1, 0, 0);
-            this.AddComponent(new LocalizedAddonComponent(0xAE2, 1076586), 0, 1, 0);
-            this.AddComponent(new LocalizedAddonComponent(0xADA, 1076586), 0, 0, 0);
+            AddComponent(new LocalizedAddonComponent(0xADB, 1076586), 1, 1, 0);
+            AddComponent(new LocalizedAddonComponent(0xADC, 1076586), -1, -1, 0);
+            AddComponent(new LocalizedAddonComponent(0xADD, 1076586), -1, 1, 0);
+            AddComponent(new LocalizedAddonComponent(0xADE, 1076586), 1, -1, 0);
+            AddComponent(new LocalizedAddonComponent(0xADF, 1076586), -1, 0, 0);
+            AddComponent(new LocalizedAddonComponent(0xAE0, 1076586), 0, -1, 0);
+            AddComponent(new LocalizedAddonComponent(0xAE1, 1076586), 1, 0, 0);
+            AddComponent(new LocalizedAddonComponent(0xAE2, 1076586), 0, 1, 0);
+            AddComponent(new LocalizedAddonComponent(0xADA, 1076586), 0, 0, 0);
         }
 
         public GoldenDecorativeRugAddon(Serial serial)
@@ -44,7 +44,7 @@ namespace Server.Items
         public GoldenDecorativeRugDeed()
             : base()
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public GoldenDecorativeRugDeed(Serial serial)

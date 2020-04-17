@@ -6,8 +6,8 @@ namespace Server.Items
         public YellowKey1()
             : base(0x1012)
         {
-            this.Hue = 0x489;
-            this.Weight = 1.0;
+            Hue = 0x489;
+            Weight = 1.0;
         }
 
         public YellowKey1(Serial serial)
@@ -28,7 +28,7 @@ namespace Server.Items
                     m.AddToBackpack(new TripartiteKey());
                     a.Delete();
                     b.Delete();
-                    this.Delete();
+                    Delete();
                     m.SendLocalizedMessage(1111649);
                 }
             }

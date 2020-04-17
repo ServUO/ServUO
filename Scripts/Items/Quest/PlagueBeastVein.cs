@@ -10,7 +10,7 @@ namespace Server.Items
         public PlagueBeastVein(int itemID, int hue)
             : base(itemID, hue)
         {
-            this.m_Cut = false;
+            m_Cut = false;
         }
 
         public PlagueBeastVein(Serial serial)
@@ -18,14 +18,14 @@ namespace Server.Items
         {
         }
 
-        public bool Cut => this.m_Cut;
+        public bool Cut => m_Cut;
         public override bool Scissor(Mobile from, Scissors scissors)
         {
-            if (this.IsAccessibleTo(from))
+            if (IsAccessibleTo(from))
             {
-                if (!this.m_Cut && this.m_Timer == null)
+                if (!m_Cut && m_Timer == null)
                 {
-                    this.m_Timer = Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(3), new TimerStateCallback<Mobile>(CuttingDone), from);
+                    m_Timer = Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(3), new TimerStateCallback<Mobile>(CuttingDone), from);
                     scissors.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1071899); // You begin cutting through the vein.
                     return true;
                 }
@@ -38,8 +38,8 @@ namespace Server.Items
 
         public override void OnAfterDelete()
         {
-            if (this.m_Timer != null && this.m_Timer.Running)
-                this.m_Timer.Stop();
+            if (m_Timer != null && m_Timer.Running)
+                m_Timer.Stop();
         }
 
         public override void Serialize(GenericWriter writer)
@@ -57,22 +57,22 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            this.m_Cut = reader.ReadBool();
+            m_Cut = reader.ReadBool();
         }
 
         private void CuttingDone(Mobile from)
         {
-            this.m_Cut = true;
+            m_Cut = true;
 
-            if (this.ItemID == 0x1B1C)
-                this.ItemID = 0x1B1B;
+            if (ItemID == 0x1B1C)
+                ItemID = 0x1B1B;
             else
-                this.ItemID = 0x1B1C;
+                ItemID = 0x1B1C;
 
-            if (this.Owner != null)
-                this.Owner.PlaySound(0x199);
+            if (Owner != null)
+                Owner.PlaySound(0x199);
 
-            PlagueBeastRubbleOrgan organ = this.Organ as PlagueBeastRubbleOrgan;
+            PlagueBeastRubbleOrgan organ = Organ as PlagueBeastRubbleOrgan;
 
             if (organ != null)
                 organ.OnVeinCut(from, this);

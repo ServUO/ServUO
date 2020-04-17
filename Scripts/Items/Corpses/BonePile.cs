@@ -7,8 +7,8 @@ namespace Server.Items
         public BonePile()
             : base(0x1B09 + Utility.Random(8))
         {
-            this.Stackable = false;
-            this.Weight = 10.0;
+            Stackable = false;
+            Weight = 10.0;
         }
 
         public BonePile(Serial serial)
@@ -32,7 +32,7 @@ namespace Server.Items
 
         public bool Scissor(Mobile from, Scissors scissors)
         {
-            if (this.Deleted || !from.CanSee(this))
+            if (Deleted || !from.CanSee(this))
                 return false;
 
             base.ScissorHelper(from, new Bone(), Utility.RandomMinMax(10, 15));

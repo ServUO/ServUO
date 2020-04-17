@@ -18,7 +18,7 @@ namespace Server.Engines.Quests.Doom
         public TheSummoningQuest(Victoria victoria, PlayerMobile from)
             : base(from)
         {
-            this.m_Victoria = victoria;
+            m_Victoria = victoria;
         }
 
         public TheSummoningQuest()
@@ -26,16 +26,16 @@ namespace Server.Engines.Quests.Doom
         }
 
         public override Type[] TypeReferenceTable => m_TypeReferenceTable;
-        public Victoria Victoria => this.m_Victoria;
+        public Victoria Victoria => m_Victoria;
         public bool WaitForSummon
         {
             get
             {
-                return this.m_WaitForSummon;
+                return m_WaitForSummon;
             }
             set
             {
-                this.m_WaitForSummon = value;
+                m_WaitForSummon = value;
             }
         }
         public override object Name =>
@@ -92,17 +92,17 @@ namespace Server.Engines.Quests.Doom
         // NOTE: Quest not entirely OSI-accurate: some changes made to prevent numerous OSI bugs
         public override void Slice()
         {
-            if (this.m_WaitForSummon && this.m_Victoria != null)
+            if (m_WaitForSummon && m_Victoria != null)
             {
-                SummoningAltar altar = this.m_Victoria.Altar;
+                SummoningAltar altar = m_Victoria.Altar;
 
                 if (altar != null && (altar.Daemon == null || !altar.Daemon.Alive))
                 {
-                    if (this.From.Map == this.m_Victoria.Map && this.From.InRange(this.m_Victoria, 8))
+                    if (From.Map == m_Victoria.Map && From.InRange(m_Victoria, 8))
                     {
-                        this.m_WaitForSummon = false;
+                        m_WaitForSummon = false;
 
-                        this.AddConversation(new VanquishDaemonConversation());
+                        AddConversation(new VanquishDaemonConversation());
                     }
                 }
             }
@@ -114,13 +114,13 @@ namespace Server.Engines.Quests.Doom
         {
             base.Cancel();
 
-            QuestObjective obj = this.FindObjective(typeof(CollectBonesObjective));
+            QuestObjective obj = FindObjective(typeof(CollectBonesObjective));
 
             if (obj != null && obj.CurProgress > 0)
             {
-                this.From.BankBox.DropItem(new DaemonBone(obj.CurProgress));
+                From.BankBox.DropItem(new DaemonBone(obj.CurProgress));
 
-                this.From.SendLocalizedMessage(1050030); // The Daemon bones that you have thus far given to Victoria have been returned to you.
+                From.SendLocalizedMessage(1050030); // The Daemon bones that you have thus far given to Victoria have been returned to you.
             }
         }
 
@@ -128,15 +128,15 @@ namespace Server.Engines.Quests.Doom
         {
             base.Accept();
 
-            this.AddConversation(new AcceptConversation());
+            AddConversation(new AcceptConversation());
         }
 
         public override void ChildDeserialize(GenericReader reader)
         {
             int version = reader.ReadEncodedInt();
 
-            this.m_Victoria = reader.ReadMobile() as Victoria;
-            this.m_WaitForSummon = reader.ReadBool();
+            m_Victoria = reader.ReadMobile() as Victoria;
+            m_WaitForSummon = reader.ReadBool();
         }
 
         public override void ChildSerialize(GenericWriter writer)

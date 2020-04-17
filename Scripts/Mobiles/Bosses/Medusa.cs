@@ -136,7 +136,7 @@ namespace Server.Mobiles
         {
             List<Mobile> list = new List<Mobile>();
 
-            IPooledEnumerable eable = this.GetMobilesInRange(12);
+            IPooledEnumerable eable = GetMobilesInRange(12);
             foreach (Mobile m in eable)
             {
                 if (m == null || m == this || m_TurnedToStone.Contains(m) || !CanBeHarmful(m) || !InLOS(m) || m.AccessLevel > AccessLevel.Player)

@@ -35,7 +35,7 @@ namespace Server.Items
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
-            if (!this.Validate(attacker))
+            if (!Validate(attacker))
                 return;
 
             if (defender is ChaosDragoon || defender is ChaosDragoonElite)
@@ -54,7 +54,7 @@ namespace Server.Items
                 return;
             }
 
-            if (!this.CheckMana(attacker, true))
+            if (!CheckMana(attacker, true))
             {
                 return;
             }

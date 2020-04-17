@@ -13,36 +13,36 @@ namespace Server.Mobiles
         public FrenziedOstard(string name)
             : base(name, 0xDA, 0x3EA4, AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Hue = Utility.RandomHairHue() | 0x8000;
+            Hue = Utility.RandomHairHue() | 0x8000;
 
-            this.BaseSoundID = 0x275;
+            BaseSoundID = 0x275;
 
-            this.SetStr(94, 170);
-            this.SetDex(96, 115);
-            this.SetInt(6, 10);
+            SetStr(94, 170);
+            SetDex(96, 115);
+            SetInt(6, 10);
 
-            this.SetHits(71, 110);
-            this.SetMana(0);
+            SetHits(71, 110);
+            SetMana(0);
 
-            this.SetDamage(11, 17);
+            SetDamage(11, 17);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 25, 30);
-            this.SetResistance(ResistanceType.Fire, 10, 15);
-            this.SetResistance(ResistanceType.Poison, 20, 25);
-            this.SetResistance(ResistanceType.Energy, 20, 25);
+            SetResistance(ResistanceType.Physical, 25, 30);
+            SetResistance(ResistanceType.Fire, 10, 15);
+            SetResistance(ResistanceType.Poison, 20, 25);
+            SetResistance(ResistanceType.Energy, 20, 25);
 
-            this.SetSkill(SkillName.MagicResist, 75.1, 80.0);
-            this.SetSkill(SkillName.Tactics, 79.3, 94.0);
-            this.SetSkill(SkillName.Wrestling, 79.3, 94.0);
+            SetSkill(SkillName.MagicResist, 75.1, 80.0);
+            SetSkill(SkillName.Tactics, 79.3, 94.0);
+            SetSkill(SkillName.Wrestling, 79.3, 94.0);
 
-            this.Fame = 1500;
-            this.Karma = -1500;
+            Fame = 1500;
+            Karma = -1500;
 
-            this.Tamable = true;
-            this.ControlSlots = 1;
-            this.MinTameSkill = 77.1;
+            Tamable = true;
+            ControlSlots = 1;
+            MinTameSkill = 77.1;
         }
 
         public FrenziedOstard(Serial serial)

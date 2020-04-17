@@ -6,8 +6,8 @@ namespace Server.Items
         public DecoTarot4()
             : base(0x12A8)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public DecoTarot4(Serial serial)

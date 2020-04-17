@@ -29,7 +29,7 @@ namespace Server.Spells.SkillMasteries
 
         public override bool CheckCast()
         {
-            if (IsInCooldown(Caster, this.GetType()))
+            if (IsInCooldown(Caster, GetType()))
                 return false;
 
             if (!CheckWeapon())
@@ -38,7 +38,7 @@ namespace Server.Spells.SkillMasteries
                 return false;
             }
 
-            CalledShotSpell spell = GetSpell(Caster, this.GetType()) as CalledShotSpell;
+            CalledShotSpell spell = GetSpell(Caster, GetType()) as CalledShotSpell;
 
             if (spell != null)
             {

@@ -8,9 +8,9 @@
         public FlyWheel()
             : base(0x46FE)
         {
-            this.Weight = 1.0;
-            this.LootType = LootType.Blessed;
-            this.Hue = 1901;
+            Weight = 1.0;
+            LootType = LootType.Blessed;
+            Hue = 1901;
         }
 
         public override void GetProperties(ObjectPropertyList list)

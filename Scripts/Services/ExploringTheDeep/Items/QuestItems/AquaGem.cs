@@ -9,10 +9,10 @@ namespace Server.Items
         [Constructable]
         public AquaGem() : base(0x4B48)
         {
-            this.Stackable = false;
-            this.Weight = 1.0;
-            this.Hue = 1916;
-            this.LootType = LootType.Blessed;
+            Stackable = false;
+            Weight = 1.0;
+            Hue = 1916;
+            LootType = LootType.Blessed;
         }
 
         public override void OnDoubleClick(Mobile from)

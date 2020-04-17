@@ -44,9 +44,9 @@ namespace Server.Spells.Fifth
             * The magic reflection spell has an indefinite duration, becoming active when cast, and deactivated when re-cast.
             * Reactive Armor, Protection, and Magic Reflection will stay on—even after logging out, even after dying—until you “turn them off” by casting them again. 
             */
-            if (this.CheckSequence())
+            if (CheckSequence())
             {
-                Mobile targ = this.Caster;
+                Mobile targ = Caster;
 
                 ResistanceMod[] mods = (ResistanceMod[])m_Table[targ];
 
@@ -90,7 +90,7 @@ namespace Server.Spells.Fifth
                 }
             }
 
-            this.FinishSequence();
+            FinishSequence();
 
         }
 

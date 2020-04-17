@@ -7,7 +7,7 @@ namespace Server.Items
         [Constructable]
         public MongbatCostume() : base()
         {
-            this.CostumeBody = 39;
+            CostumeBody = 39;
         }
 
         public override int LabelNumber => 1114223;// mongbat costume

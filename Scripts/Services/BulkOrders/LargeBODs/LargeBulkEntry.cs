@@ -12,8 +12,8 @@ namespace Server.Engines.BulkOrders
 
         public LargeBulkEntry(LargeBOD owner, SmallBulkEntry details)
         {
-            this.m_Owner = owner;
-            this.m_Details = details;
+            m_Owner = owner;
+            m_Details = details;
         }
 
         public static SmallBulkEntry[] LargeRing => GetEntries("Blacksmith", "largering");
@@ -85,27 +85,27 @@ namespace Server.Engines.BulkOrders
         {
             get
             {
-                return this.m_Owner;
+                return m_Owner;
             }
             set
             {
-                this.m_Owner = value;
+                m_Owner = value;
             }
         }
         public int Amount
         {
             get
             {
-                return this.m_Amount;
+                return m_Amount;
             }
             set
             {
-                this.m_Amount = value;
-                if (this.m_Owner != null)
-                    this.m_Owner.InvalidateProperties();
+                m_Amount = value;
+                if (m_Owner != null)
+                    m_Owner.InvalidateProperties();
             }
         }
-        public SmallBulkEntry Details => this.m_Details;
+        public SmallBulkEntry Details => m_Details;
         public static SmallBulkEntry[] GetEntries(string type, string name)
         {
             if (m_Cache == null)
@@ -136,8 +136,8 @@ namespace Server.Engines.BulkOrders
 
         public LargeBulkEntry(LargeBOD owner, GenericReader reader, int version)
         {
-            this.m_Owner = owner;
-            this.m_Amount = reader.ReadInt();
+            m_Owner = owner;
+            m_Amount = reader.ReadInt();
 
             Type realType = null;
 
@@ -146,16 +146,16 @@ namespace Server.Engines.BulkOrders
             if (type != null)
                 realType = ScriptCompiler.FindTypeByFullName(type);
 
-            this.m_Details = new SmallBulkEntry(realType, reader.ReadInt(), reader.ReadInt(), version == 0 ? 0 : reader.ReadInt());
+            m_Details = new SmallBulkEntry(realType, reader.ReadInt(), reader.ReadInt(), version == 0 ? 0 : reader.ReadInt());
         }
 
         public void Serialize(GenericWriter writer)
         {
-            writer.Write(this.m_Amount);
-            writer.Write(this.m_Details.Type == null ? null : this.m_Details.Type.FullName);
-            writer.Write(this.m_Details.Number);
-            writer.Write(this.m_Details.Graphic);
-            writer.Write(this.m_Details.Hue);
+            writer.Write(m_Amount);
+            writer.Write(m_Details.Type == null ? null : m_Details.Type.FullName);
+            writer.Write(m_Details.Number);
+            writer.Write(m_Details.Graphic);
+            writer.Write(m_Details.Hue);
         }
     }
 }

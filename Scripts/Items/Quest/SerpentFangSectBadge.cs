@@ -6,7 +6,7 @@ namespace Server.Items
         public SerpentFangSectBadge()
             : base(0x23C)
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public SerpentFangSectBadge(Serial serial)

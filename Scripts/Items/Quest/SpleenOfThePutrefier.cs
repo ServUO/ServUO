@@ -6,7 +6,7 @@ namespace Server.Items
         public SpleenOfThePutrefier()
             : base(0x1CEE)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public SpleenOfThePutrefier(Serial serial)

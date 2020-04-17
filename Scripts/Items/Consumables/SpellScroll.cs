@@ -23,15 +23,15 @@ namespace Server.Items
         public SpellScroll(int spellID, int itemID, int amount)
             : base(itemID)
         {
-            this.Stackable = true;
-            this.Weight = 1.0;
-            this.Amount = amount;
+            Stackable = true;
+            Weight = 1.0;
+            Amount = amount;
 
-            this.m_SpellID = spellID;
+            m_SpellID = spellID;
         }
 
-        public int SpellID => this.m_SpellID;
-        TextDefinition ICommodity.Description => this.LabelNumber;
+        public int SpellID => m_SpellID;
+        TextDefinition ICommodity.Description => LabelNumber;
         bool ICommodity.IsDeedable => true;
         public override void Serialize(GenericWriter writer)
         {
@@ -52,7 +52,7 @@ namespace Server.Items
             {
                 case 0:
                     {
-                        this.m_SpellID = reader.ReadInt();
+                        m_SpellID = reader.ReadInt();
 
                         break;
                     }
@@ -63,7 +63,7 @@ namespace Server.Items
         {
             base.GetContextMenuEntries(from, list);
 
-            if (from.Alive && this.Movable)
+            if (from.Alive && Movable)
                 list.Add(new ContextMenus.AddToSpellbookEntry());
         }
 
@@ -72,7 +72,7 @@ namespace Server.Items
             if (!Multis.DesignContext.Check(from))
                 return; // They are customizing
 
-            if (!this.IsChildOf(from.Backpack))
+            if (!IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
                 return;
@@ -86,7 +86,7 @@ namespace Server.Items
             }
             #endregion
 
-            Spell spell = SpellRegistry.NewSpell(this.m_SpellID, from, this);
+            Spell spell = SpellRegistry.NewSpell(m_SpellID, from, this);
 
             if (spell != null)
                 spell.Cast();

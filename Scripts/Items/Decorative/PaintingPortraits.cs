@@ -6,7 +6,7 @@ namespace Server.Items
         public LargePainting()
             : base(0x0EA0)
         {
-            this.Movable = false;
+            Movable = false;
         }
 
         public LargePainting(Serial serial)
@@ -36,7 +36,7 @@ namespace Server.Items
         public WomanPortrait1()
             : base(0x0E9F)
         {
-            this.Movable = false;
+            Movable = false;
         }
 
         public WomanPortrait1(Serial serial)
@@ -66,7 +66,7 @@ namespace Server.Items
         public WomanPortrait2()
             : base(0x0EE7)
         {
-            this.Movable = false;
+            Movable = false;
         }
 
         public WomanPortrait2(Serial serial)
@@ -96,7 +96,7 @@ namespace Server.Items
         public ManPortrait1()
             : base(0x0EA2)
         {
-            this.Movable = false;
+            Movable = false;
         }
 
         public ManPortrait1(Serial serial)
@@ -126,7 +126,7 @@ namespace Server.Items
         public ManPortrait2()
             : base(0x0EA3)
         {
-            this.Movable = false;
+            Movable = false;
         }
 
         public ManPortrait2(Serial serial)
@@ -156,7 +156,7 @@ namespace Server.Items
         public LadyPortrait1()
             : base(0x0EA6)
         {
-            this.Movable = false;
+            Movable = false;
         }
 
         public LadyPortrait1(Serial serial)
@@ -186,7 +186,7 @@ namespace Server.Items
         public LadyPortrait2()
             : base(0x0EA7)
         {
-            this.Movable = false;
+            Movable = false;
         }
 
         public LadyPortrait2(Serial serial)

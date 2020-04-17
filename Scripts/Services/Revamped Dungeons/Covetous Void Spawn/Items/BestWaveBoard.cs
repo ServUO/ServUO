@@ -16,7 +16,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (m is PlayerMobile && m.InRange(this.Location, 3))
+            if (m is PlayerMobile && m.InRange(Location, 3))
                 m.SendGump(new ScoresGump(m.Map == Map.Felucca ? VoidPoolController.InstanceFel : VoidPoolController.InstanceTram, m as PlayerMobile, ScoreType.BestWave));
         }
 

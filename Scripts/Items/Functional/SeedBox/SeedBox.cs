@@ -63,7 +63,7 @@ namespace Server.Engines.Plants
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (IsChildOf(m.Backpack) || (CheckAccessible(m) && m.InRange(this.GetWorldLocation(), 3)))
+            if (IsChildOf(m.Backpack) || (CheckAccessible(m) && m.InRange(GetWorldLocation(), 3)))
             {
                 if (m is PlayerMobile)
                     BaseGump.SendGump(new SeedBoxGump((PlayerMobile)m, this));
@@ -120,7 +120,7 @@ namespace Server.Engines.Plants
             {
                 return false;
             }
-            else if (!from.InRange(this.GetWorldLocation(), 3) || from.Map != this.Map)
+            else if (!from.InRange(GetWorldLocation(), 3) || from.Map != Map)
             {
                 return false;
             }
@@ -294,7 +294,7 @@ namespace Server.Engines.Plants
 
         private void CheckEntries()
         {
-            List<Item> toDelete = new List<Item>(this.Items);
+            List<Item> toDelete = new List<Item>(Items);
 
             foreach (Item item in toDelete.Where(i => i != null && i.Amount == 0))
                 item.Delete();

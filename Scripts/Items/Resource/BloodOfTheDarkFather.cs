@@ -12,9 +12,9 @@ namespace Server.Items
         public BloodOfTheDarkFather(int amount)
             : base(0x9D7F)
         {
-            this.Hue = 2741;
-            this.Stackable = true;
-            this.Amount = amount;
+            Hue = 2741;
+            Stackable = true;
+            Amount = amount;
         }
 
         public BloodOfTheDarkFather(Serial serial)

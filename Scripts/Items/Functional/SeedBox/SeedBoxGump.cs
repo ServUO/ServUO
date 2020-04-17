@@ -17,7 +17,7 @@ namespace Server.Engines.Plants
             Box = box;
             Page = page;
 
-            user.CloseGump(this.GetType());
+            user.CloseGump(GetType());
         }
 
         public override void AddGumpLayout()
@@ -147,14 +147,14 @@ namespace Server.Engines.Plants
             Box = box;
             Entry = entry;
 
-            user.CloseGump(this.GetType());
+            user.CloseGump(GetType());
         }
 
         public override void AddGumpLayout()
         {
             if (Entry == null || Entry.Seed == null)
             {
-                User.CloseGump(this.GetType());
+                User.CloseGump(GetType());
                 return;
             }
 

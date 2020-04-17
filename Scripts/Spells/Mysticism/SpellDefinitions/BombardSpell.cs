@@ -67,7 +67,7 @@ namespace Server.Spells.Mysticism
                     {
                         if (!CheckResisted((Mobile)target))
                         {
-                            int secs = (int)((GetDamageSkill(this.Caster) / 10) - (GetResistSkill((Mobile)target) / 10));
+                            int secs = (int)((GetDamageSkill(Caster) / 10) - (GetResistSkill((Mobile)target) / 10));
 
                             if (secs < 0)
                                 secs = 0;

@@ -12,8 +12,8 @@ namespace Server.Items
         public DelicateScales(int amount)
             : base(0x573A)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public DelicateScales(Serial serial)

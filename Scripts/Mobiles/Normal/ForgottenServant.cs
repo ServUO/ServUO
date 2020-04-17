@@ -8,73 +8,73 @@ namespace Server.Mobiles
         public ForgottenServant()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.SpeechHue = Utility.RandomDyedHue();
-            this.Title = "Forgotten Servant";
-            this.Hue = 768;
+            SpeechHue = Utility.RandomDyedHue();
+            Title = "Forgotten Servant";
+            Hue = 768;
 
-            if (this.Female = Utility.RandomBool())
+            if (Female = Utility.RandomBool())
             {
-                this.Body = 0x191;
-                this.Name = NameList.RandomName("female");
-                this.AddItem(new Skirt(Utility.RandomNeutralHue()));
+                Body = 0x191;
+                Name = NameList.RandomName("female");
+                AddItem(new Skirt(Utility.RandomNeutralHue()));
             }
             else
             {
-                this.Body = 0x190;
-                this.Name = NameList.RandomName("male");
-                this.AddItem(new ShortPants(Utility.RandomNeutralHue()));
+                Body = 0x190;
+                Name = NameList.RandomName("male");
+                AddItem(new ShortPants(Utility.RandomNeutralHue()));
             }
 
-            this.SetStr(147, 215);
-            this.SetDex(91, 115);
-            this.SetInt(61, 85);
+            SetStr(147, 215);
+            SetDex(91, 115);
+            SetInt(61, 85);
 
-            this.SetHits(95, 123);
+            SetHits(95, 123);
 
-            this.SetDamage(4, 14);
+            SetDamage(4, 14);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 25, 35);
-            this.SetResistance(ResistanceType.Fire, 30, 40);
-            this.SetResistance(ResistanceType.Cold, 20, 30);
-            this.SetResistance(ResistanceType.Poison, 30, 40);
-            this.SetResistance(ResistanceType.Energy, 30, 40);
+            SetResistance(ResistanceType.Physical, 25, 35);
+            SetResistance(ResistanceType.Fire, 30, 40);
+            SetResistance(ResistanceType.Cold, 20, 30);
+            SetResistance(ResistanceType.Poison, 30, 40);
+            SetResistance(ResistanceType.Energy, 30, 40);
 
-            this.SetSkill(SkillName.MagicResist, 70.1, 85.0);
-            this.SetSkill(SkillName.Swords, 60.1, 85.0);
-            this.SetSkill(SkillName.Tactics, 75.1, 90.0);
-            this.SetSkill(SkillName.Wrestling, 60.1, 85.0);
+            SetSkill(SkillName.MagicResist, 70.1, 85.0);
+            SetSkill(SkillName.Swords, 60.1, 85.0);
+            SetSkill(SkillName.Tactics, 75.1, 90.0);
+            SetSkill(SkillName.Wrestling, 60.1, 85.0);
 
-            this.Fame = 2500;
-            this.Karma = -2500;
+            Fame = 2500;
+            Karma = -2500;
 
-            this.AddItem(new Boots(Utility.RandomNeutralHue()));
-            this.AddItem(new FancyShirt());
-            this.AddItem(new Bandana());
+            AddItem(new Boots(Utility.RandomNeutralHue()));
+            AddItem(new FancyShirt());
+            AddItem(new Bandana());
 
             switch (Utility.Random(7))
             {
                 case 0:
-                    this.AddItem(new Longsword());
+                    AddItem(new Longsword());
                     break;
                 case 1:
-                    this.AddItem(new Cutlass());
+                    AddItem(new Cutlass());
                     break;
                 case 2:
-                    this.AddItem(new Broadsword());
+                    AddItem(new Broadsword());
                     break;
                 case 3:
-                    this.AddItem(new Axe());
+                    AddItem(new Axe());
                     break;
                 case 4:
-                    this.AddItem(new Club());
+                    AddItem(new Club());
                     break;
                 case 5:
-                    this.AddItem(new Dagger());
+                    AddItem(new Dagger());
                     break;
                 case 6:
-                    this.AddItem(new Spear());
+                    AddItem(new Spear());
                     break;
             }
 
@@ -91,7 +91,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Average);
+            AddLoot(LootPack.Average);
         }
 
         public override void Serialize(GenericWriter writer)

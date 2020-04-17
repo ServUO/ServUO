@@ -15,8 +15,8 @@ namespace Server.Items
             if (v < 0 || v > 7)
                 v = 0;
 
-            this.ItemID += v;
-            this.Weight = 1.0;
+            ItemID += v;
+            Weight = 1.0;
         }
 
         public Vines(Serial serial)

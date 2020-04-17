@@ -6,10 +6,10 @@ namespace Server.Items
         public EssenceBox()
             : base()
         {
-            this.Movable = true;
-            this.Hue = 2306;
+            Movable = true;
+            Hue = 2306;
 
-            this.DropItem(Loot.RandomEssence());
+            DropItem(Loot.RandomEssence());
         }
 
         public EssenceBox(Serial serial)

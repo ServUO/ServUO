@@ -42,7 +42,7 @@ namespace Server.Engines.Quests.Naturalist
                 1054043;
         public override void OnRead()
         {
-            this.System.AddObjective(new StudyNestsObjective());
+            System.AddObjective(new StudyNestsObjective());
         }
     }
 
@@ -102,7 +102,7 @@ namespace Server.Engines.Quests.Naturalist
                 1054050;
         public override void OnRead()
         {
-            this.System.Complete();
+            System.Complete();
         }
     }
 
@@ -142,7 +142,7 @@ namespace Server.Engines.Quests.Naturalist
                 1054051;
         public override void OnRead()
         {
-            this.System.Complete();
+            System.Complete();
         }
     }
 

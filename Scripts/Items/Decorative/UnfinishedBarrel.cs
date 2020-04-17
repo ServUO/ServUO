@@ -6,8 +6,8 @@ namespace Server.Items
         public UnfinishedBarrel()
             : base(0x1EB5)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public UnfinishedBarrel(Serial serial)

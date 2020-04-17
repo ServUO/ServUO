@@ -48,18 +48,18 @@ namespace Server.Engines.BulkOrders
 
             int amountMax = Utility.RandomList(10, 15, 20, 20);
 
-            this.Hue = 2598;
-            this.AmountMax = amountMax;
-            this.Entries = entries;
+            Hue = 2598;
+            AmountMax = amountMax;
+            Entries = entries;
         }
 
         public LargeInscriptionBOD(int amountMax, bool reqExceptional, BulkMaterialType mat, LargeBulkEntry[] entries)
         {
-            this.Hue = 2598;
-            this.AmountMax = amountMax;
-            this.Entries = entries;
-            this.RequireExceptional = reqExceptional;
-            this.Material = mat;
+            Hue = 2598;
+            AmountMax = amountMax;
+            Entries = entries;
+            RequireExceptional = reqExceptional;
+            Material = mat;
         }
 
         public LargeInscriptionBOD(Serial serial)

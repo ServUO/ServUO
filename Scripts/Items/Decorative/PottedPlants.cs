@@ -6,7 +6,7 @@ namespace Server.Items
         public PottedPlant()
             : base(0x11CA)
         {
-            this.Weight = 100;
+            Weight = 100;
         }
 
         public PottedPlant(Serial serial)
@@ -35,7 +35,7 @@ namespace Server.Items
         public PottedPlant1()
             : base(0x11CB)
         {
-            this.Weight = 100;
+            Weight = 100;
         }
 
         public PottedPlant1(Serial serial)
@@ -64,7 +64,7 @@ namespace Server.Items
         public PottedPlant2()
             : base(0x11CC)
         {
-            this.Weight = 100;
+            Weight = 100;
         }
 
         public PottedPlant2(Serial serial)

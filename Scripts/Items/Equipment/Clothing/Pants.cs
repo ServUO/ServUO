@@ -151,7 +151,7 @@ namespace Server.Items
         public ShortPants(int hue)
             : base(0x152E, hue)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public ShortPants(Serial serial)
@@ -187,7 +187,7 @@ namespace Server.Items
         public LongPants(int hue)
             : base(0x1539, hue)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public LongPants(Serial serial)
@@ -223,7 +223,7 @@ namespace Server.Items
         public TattsukeHakama(int hue)
             : base(0x279B, hue)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public TattsukeHakama(Serial serial)
@@ -261,7 +261,7 @@ namespace Server.Items
         public ElvenPants(int hue)
             : base(0x2FC3, hue)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public ElvenPants(Serial serial)
@@ -299,7 +299,7 @@ namespace Server.Items
         public GargishClothLegs(int hue)
             : base(0x040A, Layer.Pants, hue)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public override void OnAdded(object parent)
@@ -309,9 +309,9 @@ namespace Server.Items
             if (parent is Mobile)
             {
                 if (((Mobile)parent).Female)
-                    this.ItemID = 0x0409;
+                    ItemID = 0x0409;
                 else
-                    this.ItemID = 0x040A;
+                    ItemID = 0x040A;
             }
         }
 
@@ -348,7 +348,7 @@ namespace Server.Items
         public FemaleGargishClothLegs(int hue)
             : base(0x0409, Layer.Pants, hue)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public FemaleGargishClothLegs(Serial serial)
@@ -384,7 +384,7 @@ namespace Server.Items
         public MaleGargishClothLegs(int hue)
             : base(0x040A, Layer.Pants, hue)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public MaleGargishClothLegs(Serial serial)

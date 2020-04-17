@@ -6,9 +6,9 @@ namespace Server.Items
         public WhitePearlBracelet()
             : base()
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
 
-            this.Attributes.NightSight = 1;
+            Attributes.NightSight = 1;
 
             BaseRunicTool.ApplyAttributesTo(this, true, 0, Utility.RandomMinMax(3, 5), 0, 100);
 
@@ -17,13 +17,13 @@ namespace Server.Items
                 switch (Utility.Random(3))
                 {
                     case 0:
-                        this.Attributes.CastSpeed += 1;
+                        Attributes.CastSpeed += 1;
                         break;
                     case 1:
-                        this.Attributes.CastRecovery += 2;
+                        Attributes.CastRecovery += 2;
                         break;
                     case 2:
-                        this.Attributes.LowerRegCost += 10;
+                        Attributes.LowerRegCost += 10;
                         break;
                 }
             }

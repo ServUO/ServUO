@@ -16,17 +16,17 @@ namespace Server.Mobiles
         {
         }
 
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBTavernKeeper());
+            m_SBInfos.Add(new SBTavernKeeper());
         }
 
         public override void InitOutfit()
         {
             base.InitOutfit();
 
-            this.AddItem(new Server.Items.HalfApron());
+            AddItem(new Server.Items.HalfApron());
         }
 
         public override void Serialize(GenericWriter writer)

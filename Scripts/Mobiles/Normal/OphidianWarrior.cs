@@ -12,33 +12,33 @@ namespace Server.Mobiles
         public OphidianWarrior()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = m_Names[Utility.Random(m_Names.Length)];
-            this.Body = 86;
-            this.BaseSoundID = 634;
+            Name = m_Names[Utility.Random(m_Names.Length)];
+            Body = 86;
+            BaseSoundID = 634;
 
-            this.SetStr(150, 320);
-            this.SetDex(94, 190);
-            this.SetInt(64, 160);
+            SetStr(150, 320);
+            SetDex(94, 190);
+            SetInt(64, 160);
 
-            this.SetHits(128, 155);
-            this.SetMana(0);
+            SetHits(128, 155);
+            SetMana(0);
 
-            this.SetDamage(5, 11);
+            SetDamage(5, 11);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 35, 40);
-            this.SetResistance(ResistanceType.Fire, 20, 30);
-            this.SetResistance(ResistanceType.Cold, 25, 35);
-            this.SetResistance(ResistanceType.Poison, 30, 40);
-            this.SetResistance(ResistanceType.Energy, 25, 35);
+            SetResistance(ResistanceType.Physical, 35, 40);
+            SetResistance(ResistanceType.Fire, 20, 30);
+            SetResistance(ResistanceType.Cold, 25, 35);
+            SetResistance(ResistanceType.Poison, 30, 40);
+            SetResistance(ResistanceType.Energy, 25, 35);
 
-            this.SetSkill(SkillName.MagicResist, 70.1, 85.0);
-            this.SetSkill(SkillName.Swords, 60.1, 85.0);
-            this.SetSkill(SkillName.Tactics, 75.1, 90.0);
+            SetSkill(SkillName.MagicResist, 70.1, 85.0);
+            SetSkill(SkillName.Swords, 60.1, 85.0);
+            SetSkill(SkillName.Tactics, 75.1, 90.0);
 
-            this.Fame = 4500;
-            this.Karma = -4500;
+            Fame = 4500;
+            Karma = -4500;
         }
 
         public OphidianWarrior(Serial serial)
@@ -53,9 +53,9 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Meager);
-            this.AddLoot(LootPack.Average);
-            this.AddLoot(LootPack.Gems);
+            AddLoot(LootPack.Meager);
+            AddLoot(LootPack.Average);
+            AddLoot(LootPack.Gems);
         }
 
         public override void Serialize(GenericWriter writer)

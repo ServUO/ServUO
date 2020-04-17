@@ -16,9 +16,9 @@ namespace Server.Items
         [Constructable]
         public SatietyCure() : base(0xEFC)
         {
-            this.Weight = 1.0;
-            this.Hue = 235;
-            this.LootType = LootType.Blessed;
+            Weight = 1.0;
+            Hue = 235;
+            LootType = LootType.Blessed;
             m_Uses = 10;
         }
 

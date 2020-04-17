@@ -102,7 +102,7 @@ namespace Server.Engines.Points
                 GetEntry(from).Points = points;
 
                 Utility.PushColor(ConsoleColor.Green);
-                Console.WriteLine("Converted {0} points for {1} to {2}!", (int)points, from.Name, this.GetType().Name);
+                Console.WriteLine("Converted {0} points for {1} to {2}!", (int)points, from.Name, GetType().Name);
                 Utility.PopColor();
             }
         }

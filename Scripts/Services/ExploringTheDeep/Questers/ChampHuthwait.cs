@@ -14,21 +14,21 @@ namespace Server.Mobiles
         public ChampHuthwait()
             : base()
         {
-            this.Name = "Champ Huthwait";
-            this.Title = "The Seedy Cobbler";
-            this.Female = false;
-            this.Race = Race.Human;
-            this.CantWalk = true;
-            this.Blessed = true;
+            Name = "Champ Huthwait";
+            Title = "The Seedy Cobbler";
+            Female = false;
+            Race = Race.Human;
+            CantWalk = true;
+            Blessed = true;
 
-            this.Hue = Utility.RandomSkinHue();
+            Hue = Utility.RandomSkinHue();
             Utility.AssignRandomHair(this);
 
-            this.AddItem(new Backpack());
-            this.AddItem(new Boots(2017));
-            this.AddItem(new LongPants(2017));
-            this.AddItem(new FancyShirt(1432));
-            this.AddItem(new JinBaori(1408));
+            AddItem(new Backpack());
+            AddItem(new Boots(2017));
+            AddItem(new LongPants(2017));
+            AddItem(new FancyShirt(1432));
+            AddItem(new JinBaori(1408));
         }
 
         public override void OnDoubleClick(Mobile m)
@@ -71,7 +71,7 @@ namespace Server.Mobiles
                     }
                     else
                     {
-                        this.PublicOverheadMessage(MessageType.Regular, 0x3B2, 501550); // I am not interested in this.
+                        PublicOverheadMessage(MessageType.Regular, 0x3B2, 501550); // I am not interested in this.
                     }
                 }
                 else
@@ -116,31 +116,31 @@ namespace Server.Gumps
 
         public ChampHuthwaitGump(Mobile owner) : base(50, 50)
         {
-            this.Closable = false;
-            this.Disposable = true;
-            this.Dragable = true;
-            this.Resizable = false;
+            Closable = false;
+            Disposable = true;
+            Dragable = true;
+            Resizable = false;
 
             AddPage(0);
-            this.AddImageTiled(50, 20, 400, 460, 0x1404);
-            this.AddImageTiled(50, 29, 30, 450, 0x28DC);
-            this.AddImageTiled(34, 140, 17, 339, 0x242F);
-            this.AddImage(48, 135, 0x28AB);
-            this.AddImage(-16, 285, 0x28A2);
-            this.AddImage(0, 10, 0x28B5);
-            this.AddImage(25, 0, 0x28B4);
-            this.AddImageTiled(83, 15, 350, 15, 0x280A);
-            this.AddImage(34, 479, 0x2842);
-            this.AddImage(442, 479, 0x2840);
-            this.AddImageTiled(51, 479, 392, 17, 0x2775);
-            this.AddImageTiled(415, 29, 44, 450, 0xA2D);
-            this.AddImageTiled(415, 29, 30, 450, 0x28DC);
-            this.AddImage(370, 50, 0x589);
+            AddImageTiled(50, 20, 400, 460, 0x1404);
+            AddImageTiled(50, 29, 30, 450, 0x28DC);
+            AddImageTiled(34, 140, 17, 339, 0x242F);
+            AddImage(48, 135, 0x28AB);
+            AddImage(-16, 285, 0x28A2);
+            AddImage(0, 10, 0x28B5);
+            AddImage(25, 0, 0x28B4);
+            AddImageTiled(83, 15, 350, 15, 0x280A);
+            AddImage(34, 479, 0x2842);
+            AddImage(442, 479, 0x2840);
+            AddImageTiled(51, 479, 392, 17, 0x2775);
+            AddImageTiled(415, 29, 44, 450, 0xA2D);
+            AddImageTiled(415, 29, 30, 450, 0x28DC);
+            AddImage(370, 50, 0x589);
 
-            this.AddImage(379, 60, 0x15A9);
-            this.AddImage(425, 0, 0x28C9);
-            this.AddImage(90, 33, 0x232D);
-            this.AddImageTiled(130, 65, 175, 1, 0x238D);
+            AddImage(379, 60, 0x15A9);
+            AddImage(425, 0, 0x28C9);
+            AddImage(90, 33, 0x232D);
+            AddImageTiled(130, 65, 175, 1, 0x238D);
 
             AddHtmlLocalized(140, 45, 250, 24, 1154327, 0x7FFF, false, false); // Exploring the Deep
 
@@ -203,31 +203,31 @@ namespace Server.Gumps
 
         public ChampHuthwaitCompleteGump(Mobile owner) : base(50, 50)
         {
-            this.Closable = false;
-            this.Disposable = true;
-            this.Dragable = true;
-            this.Resizable = false;
+            Closable = false;
+            Disposable = true;
+            Dragable = true;
+            Resizable = false;
 
             AddPage(0);
-            this.AddImageTiled(50, 20, 400, 460, 0x1404);
-            this.AddImageTiled(50, 29, 30, 450, 0x28DC);
-            this.AddImageTiled(34, 140, 17, 339, 0x242F);
-            this.AddImage(48, 135, 0x28AB);
-            this.AddImage(-16, 285, 0x28A2);
-            this.AddImage(0, 10, 0x28B5);
-            this.AddImage(25, 0, 0x28B4);
-            this.AddImageTiled(83, 15, 350, 15, 0x280A);
-            this.AddImage(34, 479, 0x2842);
-            this.AddImage(442, 479, 0x2840);
-            this.AddImageTiled(51, 479, 392, 17, 0x2775);
-            this.AddImageTiled(415, 29, 44, 450, 0xA2D);
-            this.AddImageTiled(415, 29, 30, 450, 0x28DC);
-            this.AddImage(370, 50, 0x589);
+            AddImageTiled(50, 20, 400, 460, 0x1404);
+            AddImageTiled(50, 29, 30, 450, 0x28DC);
+            AddImageTiled(34, 140, 17, 339, 0x242F);
+            AddImage(48, 135, 0x28AB);
+            AddImage(-16, 285, 0x28A2);
+            AddImage(0, 10, 0x28B5);
+            AddImage(25, 0, 0x28B4);
+            AddImageTiled(83, 15, 350, 15, 0x280A);
+            AddImage(34, 479, 0x2842);
+            AddImage(442, 479, 0x2840);
+            AddImageTiled(51, 479, 392, 17, 0x2775);
+            AddImageTiled(415, 29, 44, 450, 0xA2D);
+            AddImageTiled(415, 29, 30, 450, 0x28DC);
+            AddImage(370, 50, 0x589);
 
-            this.AddImage(379, 60, 0x15A9);
-            this.AddImage(425, 0, 0x28C9);
-            this.AddImage(90, 33, 0x232D);
-            this.AddImageTiled(130, 65, 175, 1, 0x238D);
+            AddImage(379, 60, 0x15A9);
+            AddImage(425, 0, 0x28C9);
+            AddImage(90, 33, 0x232D);
+            AddImageTiled(130, 65, 175, 1, 0x238D);
 
             AddHtmlLocalized(140, 45, 250, 24, 1154327, 0x7FFF, false, false); // Exploring the Deep
 

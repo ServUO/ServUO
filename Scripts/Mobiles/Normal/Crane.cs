@@ -7,29 +7,29 @@ namespace Server.Mobiles
         public Crane()
             : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a crane";
-            this.Body = 254;
-            this.BaseSoundID = 0x4D7;
+            Name = "a crane";
+            Body = 254;
+            BaseSoundID = 0x4D7;
 
-            this.SetStr(26, 35);
-            this.SetDex(16, 25);
-            this.SetInt(11, 15);
+            SetStr(26, 35);
+            SetDex(16, 25);
+            SetInt(11, 15);
 
-            this.SetHits(26, 35);
-            this.SetMana(0);
+            SetHits(26, 35);
+            SetMana(0);
 
-            this.SetDamage(1, 1);
+            SetDamage(1, 1);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 5, 5);
+            SetResistance(ResistanceType.Physical, 5, 5);
 
-            this.SetSkill(SkillName.MagicResist, 4.1, 5.0);
-            this.SetSkill(SkillName.Tactics, 10.1, 11.0);
-            this.SetSkill(SkillName.Wrestling, 10.1, 11.0);
+            SetSkill(SkillName.MagicResist, 4.1, 5.0);
+            SetSkill(SkillName.Tactics, 10.1, 11.0);
+            SetSkill(SkillName.Wrestling, 10.1, 11.0);
 
-            this.Fame = 0;
-            this.Karma = 200;
+            Fame = 0;
+            Karma = 200;
         }
 
         public Crane(Serial serial)

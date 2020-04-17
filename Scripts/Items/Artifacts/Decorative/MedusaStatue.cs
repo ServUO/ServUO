@@ -7,8 +7,8 @@ namespace Server.Items
         public MedusaStatue()
             : base(0x40BC)
         {
-            this.Name = "Medusa";
-            this.Weight = 10;
+            Name = "Medusa";
+            Weight = 10;
         }
 
         public MedusaStatue(Serial serial)

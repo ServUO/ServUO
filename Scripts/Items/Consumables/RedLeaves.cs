@@ -14,9 +14,9 @@ namespace Server.Items
         public RedLeaves(int amount)
             : base(0x1E85)
         {
-            this.Stackable = true;
-            this.Hue = 0x21;
-            this.Amount = amount;
+            Stackable = true;
+            Hue = 0x21;
+            Amount = amount;
         }
 
         public RedLeaves(Serial serial)
@@ -31,7 +31,7 @@ namespace Server.Items
         public override double DefaultWeight => 0.1;
         public override void OnDoubleClick(Mobile from)
         {
-            if (!this.IsChildOf(from.Backpack))
+            if (!IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(1042664); // You must have the object in your backpack to use it.
                 return;
@@ -61,15 +61,15 @@ namespace Server.Items
             public InternalTarget(RedLeaves redLeaves)
                 : base(3, false, TargetFlags.None)
             {
-                this.m_RedLeaves = redLeaves;
+                m_RedLeaves = redLeaves;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (this.m_RedLeaves.Deleted)
+                if (m_RedLeaves.Deleted)
                     return;
 
-                if (!this.m_RedLeaves.IsChildOf(from.Backpack))
+                if (!m_RedLeaves.IsChildOf(from.Backpack))
                 {
                     from.SendLocalizedMessage(1042664); // You must have the object in your backpack to use it.
                     return;
@@ -95,7 +95,7 @@ namespace Server.Items
                     }
                     else
                     {
-                        this.m_RedLeaves.Consume();
+                        m_RedLeaves.Consume();
                         book.Writable = false;
 
                         book.LabelTo(from, 1061910); // You seal the ink to the page using wax from the red leaf.

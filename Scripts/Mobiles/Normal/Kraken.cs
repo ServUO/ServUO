@@ -12,39 +12,39 @@ namespace Server.Mobiles
         public Kraken()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.m_NextWaterBall = DateTime.UtcNow;
+            m_NextWaterBall = DateTime.UtcNow;
 
-            this.Name = "a kraken";
-            this.Body = 77;
-            this.BaseSoundID = 353;
+            Name = "a kraken";
+            Body = 77;
+            BaseSoundID = 353;
 
-            this.SetStr(756, 780);
-            this.SetDex(226, 245);
-            this.SetInt(26, 40);
+            SetStr(756, 780);
+            SetDex(226, 245);
+            SetInt(26, 40);
 
-            this.SetHits(454, 468);
-            this.SetMana(0);
+            SetHits(454, 468);
+            SetMana(0);
 
-            this.SetDamage(19, 33);
+            SetDamage(19, 33);
 
-            this.SetDamageType(ResistanceType.Physical, 70);
-            this.SetDamageType(ResistanceType.Cold, 30);
+            SetDamageType(ResistanceType.Physical, 70);
+            SetDamageType(ResistanceType.Cold, 30);
 
-            this.SetResistance(ResistanceType.Physical, 45, 55);
-            this.SetResistance(ResistanceType.Fire, 30, 40);
-            this.SetResistance(ResistanceType.Cold, 30, 40);
-            this.SetResistance(ResistanceType.Poison, 20, 30);
-            this.SetResistance(ResistanceType.Energy, 10, 20);
+            SetResistance(ResistanceType.Physical, 45, 55);
+            SetResistance(ResistanceType.Fire, 30, 40);
+            SetResistance(ResistanceType.Cold, 30, 40);
+            SetResistance(ResistanceType.Poison, 20, 30);
+            SetResistance(ResistanceType.Energy, 10, 20);
 
-            this.SetSkill(SkillName.MagicResist, 15.1, 20.0);
-            this.SetSkill(SkillName.Tactics, 45.1, 60.0);
-            this.SetSkill(SkillName.Wrestling, 45.1, 60.0);
+            SetSkill(SkillName.MagicResist, 15.1, 20.0);
+            SetSkill(SkillName.Tactics, 45.1, 60.0);
+            SetSkill(SkillName.Wrestling, 45.1, 60.0);
 
-            this.Fame = 11000;
-            this.Karma = -11000;
+            Fame = 11000;
+            Karma = -11000;
 
-            this.CanSwim = true;
-            this.CantWalk = true;
+            CanSwim = true;
+            CantWalk = true;
 
             //Rope is supposed to be a rare drop.  ref UO Guide Kraken
             if (Utility.RandomDouble() < 0.05)
@@ -62,12 +62,12 @@ namespace Server.Mobiles
 
         public override void OnActionCombat()
         {
-            Mobile combatant = this.Combatant as Mobile;
+            Mobile combatant = Combatant as Mobile;
 
-            if (combatant == null || combatant.Deleted || combatant.Map != this.Map || !this.InRange(combatant, 12) || !this.CanBeHarmful(combatant) || !this.InLOS(combatant))
+            if (combatant == null || combatant.Deleted || combatant.Map != Map || !InRange(combatant, 12) || !CanBeHarmful(combatant) || !InLOS(combatant))
                 return;
 
-            if (DateTime.UtcNow >= this.m_NextWaterBall)
+            if (DateTime.UtcNow >= m_NextWaterBall)
             {
                 double damage = combatant.Hits * 0.3;
 
@@ -76,8 +76,8 @@ namespace Server.Mobiles
                 else if (damage > 40.0)
                     damage = 40.0;
 
-                this.DoHarmful(combatant);
-                this.MovingParticles(combatant, 0x36D4, 5, 0, false, false, 195, 0, 9502, 3006, 0, 0, 0);
+                DoHarmful(combatant);
+                MovingParticles(combatant, 0x36D4, 5, 0, false, false, 195, 0, 9502, 3006, 0, 0, 0);
                 AOS.Damage(combatant, this, (int)damage, 100, 0, 0, 0, 0);
 
                 if (combatant is PlayerMobile && combatant.Mount != null)
@@ -91,7 +91,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich);
+            AddLoot(LootPack.Rich);
         }
 
         public override void Serialize(GenericWriter writer)

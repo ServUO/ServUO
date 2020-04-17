@@ -20,16 +20,16 @@ namespace Server.Multis
         {
             BaseDoor west, east;
 
-            this.AddItem(west = new LightWoodGate(DoorFacing.WestCW), -4, 4, 7);
-            this.AddItem(east = new LightWoodGate(DoorFacing.EastCCW), -3, 4, 7);
+            AddItem(west = new LightWoodGate(DoorFacing.WestCW), -4, 4, 7);
+            AddItem(east = new LightWoodGate(DoorFacing.EastCCW), -3, 4, 7);
 
             west.Link = east;
             east.Link = west;
 
-            this.AddItem(new Sign(SignType.Healer, SignFacing.West), -5, 5, -4);
+            AddItem(new Sign(SignType.Healer, SignFacing.West), -5, 5, -4);
 
-            this.AddMobile(new Healer(), -4, 3, 7);
-            this.AddMobile(new Healer(), 4, -2, 0);
+            AddMobile(new Healer(), -4, 3, 7);
+            AddMobile(new Healer(), 4, -2, 0);
 
             SetDecayTime();
         }

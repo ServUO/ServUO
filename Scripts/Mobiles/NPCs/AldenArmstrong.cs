@@ -41,32 +41,32 @@ namespace Server.Engines.Quests
         public TheArtOfWarQuest()
             : base()
         {
-            this.AddObjective(new ApprenticeObjective(SkillName.Tactics, 50, "Old Haven Training", 1077668, 1077669));
+            AddObjective(new ApprenticeObjective(SkillName.Tactics, 50, "Old Haven Training", 1077668, 1077669));
 
             // 1077668 You feel like practicing combat here would really help you learn to fight better. Your ability to raise your Tactics skill is enhanced in this area.
             // 1077669 You feel less able to absorb the lessons of combat. Your Tactics learning potential is no longer enhanced.
 
-            this.AddReward(new BaseReward(typeof(ArmsOfArmstrong), 1077675));
+            AddReward(new BaseReward(typeof(ArmsOfArmstrong), 1077675));
         }
 
         public override bool CanOffer()
         {
             #region Scroll of Alacrity
-            PlayerMobile pm = this.Owner as PlayerMobile;
+            PlayerMobile pm = Owner as PlayerMobile;
             if (pm.AcceleratedStart > DateTime.UtcNow)
             {
-                this.Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
+                Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
                 return false;
             }
             #endregion
             else
-                return this.Owner.Skills.Tactics.Base < 50;
+                return Owner.Skills.Tactics.Base < 50;
         }
 
         public override void OnCompleted()
         {
-            this.Owner.SendLocalizedMessage(1077673, null, 0x23); // You have achieved the rank of Apprentice Warrior. Return to Alden Armstrong in New Haven to claim your reward.
-            this.Owner.PlaySound(this.CompleteSound);
+            Owner.SendLocalizedMessage(1077673, null, 0x23); // You have achieved the rank of Apprentice Warrior. Return to Alden Armstrong in New Haven to claim your reward.
+            Owner.PlaySound(CompleteSound);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -95,12 +95,12 @@ namespace Server.Engines.Quests
         public AldenArmstrong()
             : base("Alden Armstrong", "The Tactics Instructor")
         {
-            this.SetSkill(SkillName.Anatomy, 120.0, 120.0);
-            this.SetSkill(SkillName.Parry, 120.0, 120.0);
-            this.SetSkill(SkillName.Healing, 120.0, 120.0);
-            this.SetSkill(SkillName.Tactics, 120.0, 120.0);
-            this.SetSkill(SkillName.Swords, 120.0, 120.0);
-            this.SetSkill(SkillName.Focus, 120.0, 120.0);
+            SetSkill(SkillName.Anatomy, 120.0, 120.0);
+            SetSkill(SkillName.Parry, 120.0, 120.0);
+            SetSkill(SkillName.Healing, 120.0, 120.0);
+            SetSkill(SkillName.Tactics, 120.0, 120.0);
+            SetSkill(SkillName.Swords, 120.0, 120.0);
+            SetSkill(SkillName.Focus, 120.0, 120.0);
         }
 
         public AldenArmstrong(Serial serial)
@@ -110,33 +110,33 @@ namespace Server.Engines.Quests
 
         public override void Advertise()
         {
-            this.Say(1078136); // There is an art to slaying your enemies swiftly. It's called tactics, and I can teach it to you.
+            Say(1078136); // There is an art to slaying your enemies swiftly. It's called tactics, and I can teach it to you.
         }
 
         public override void OnOfferFailed()
         {
-            this.Say(1077772); // I cannot teach you, for you know all I can teach!
+            Say(1077772); // I cannot teach you, for you know all I can teach!
         }
 
         public override void InitBody()
         {
-            this.Female = false;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = false;
+            CantWalk = true;
+            Race = Race.Human;
 
             base.InitBody();
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Shoes());
-            this.AddItem(new StuddedLegs());
-            this.AddItem(new StuddedGloves());
-            this.AddItem(new StuddedGorget());
-            this.AddItem(new StuddedChest());
-            this.AddItem(new StuddedArms());
-            this.AddItem(new Katana());
+            AddItem(new Backpack());
+            AddItem(new Shoes());
+            AddItem(new StuddedLegs());
+            AddItem(new StuddedGloves());
+            AddItem(new StuddedGorget());
+            AddItem(new StuddedChest());
+            AddItem(new StuddedArms());
+            AddItem(new Katana());
         }
 
         public override void Serialize(GenericWriter writer)

@@ -32,7 +32,7 @@ namespace Server.Spells.SkillMasteries
 
         public override bool CheckCast()
         {
-            if (IsInCooldown(Caster, this.GetType()))
+            if (IsInCooldown(Caster, GetType()))
                 return false;
 
             if (!CheckWeapon())
@@ -41,7 +41,7 @@ namespace Server.Spells.SkillMasteries
                 return false;
             }
 
-            ElementalFurySpell spell = GetSpell(Caster, this.GetType()) as ElementalFurySpell;
+            ElementalFurySpell spell = GetSpell(Caster, GetType()) as ElementalFurySpell;
 
             if (spell != null)
             {

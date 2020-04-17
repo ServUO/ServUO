@@ -481,10 +481,10 @@ namespace Server.Items
             // teleport fighter
             if (fighter.NetState == null && MobileIsInBossArea(fighter.LogoutLocation))
             {
-                fighter.LogoutMap = this is CitadelAltar ? Map.Tokuno : this.Map;
+                fighter.LogoutMap = this is CitadelAltar ? Map.Tokuno : Map;
                 fighter.LogoutLocation = ExitDest;
             }
-            else if (MobileIsInBossArea(fighter) && fighter.Map == this.Map)
+            else if (MobileIsInBossArea(fighter) && fighter.Map == Map)
             {
                 fighter.FixedParticles(0x376A, 9, 32, 0x13AF, EffectLayer.Waist);
                 fighter.PlaySound(0x1FE);

@@ -12,8 +12,8 @@ namespace Server.Engines.Quests
         public DynamicTeleporter(int itemID, int hue)
             : base(itemID)
         {
-            this.Movable = false;
-            this.Hue = hue;
+            Movable = false;
+            Hue = hue;
         }
 
         public DynamicTeleporter(Serial serial)
@@ -34,7 +34,7 @@ namespace Server.Engines.Quests
                 Point3D loc = Point3D.Zero;
                 Map map = null;
 
-                if (this.GetDestination(pm, ref loc, ref map))
+                if (GetDestination(pm, ref loc, ref map))
                 {
                     BaseCreature.TeleportPets(pm, loc, map);
 
@@ -45,7 +45,7 @@ namespace Server.Engines.Quests
                 }
                 else
                 {
-                    pm.SendLocalizedMessage(this.NotWorkingMessage);
+                    pm.SendLocalizedMessage(NotWorkingMessage);
                 }
             }
 

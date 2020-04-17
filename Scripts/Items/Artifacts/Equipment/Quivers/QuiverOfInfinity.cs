@@ -35,11 +35,11 @@
 
             int version = reader.ReadEncodedInt();
 
-            if (version < 1 && this.DamageIncrease == 0)
-                this.DamageIncrease = 10;
+            if (version < 1 && DamageIncrease == 0)
+                DamageIncrease = 10;
 
-            if (version < 2 && this.Attributes.WeaponDamage == 10)
-                this.Attributes.WeaponDamage = 0;
+            if (version < 2 && Attributes.WeaponDamage == 10)
+                Attributes.WeaponDamage = 0;
         }
     }
 }

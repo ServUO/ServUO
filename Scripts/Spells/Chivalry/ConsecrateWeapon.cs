@@ -26,13 +26,13 @@ namespace Server.Spells.Chivalry
         public override bool BlocksMovement => false;
         public override void OnCast()
         {
-            BaseWeapon weapon = this.Caster.Weapon as BaseWeapon;
+            BaseWeapon weapon = Caster.Weapon as BaseWeapon;
 
             if (Caster.Player && (weapon == null || weapon is Fists))
             {
-                this.Caster.SendLocalizedMessage(501078); // You must be holding a weapon.
+                Caster.SendLocalizedMessage(501078); // You must be holding a weapon.
             }
-            else if (this.CheckSequence())
+            else if (CheckSequence())
             {
                 /* Temporarily enchants the weapon the caster is currently wielding.
                 * The type of damage the weapon inflicts when hitting a target will
@@ -57,19 +57,19 @@ namespace Server.Spells.Chivalry
                         break;
                 }
 
-                this.Caster.PlaySound(0x20C);
-                this.Caster.PlaySound(soundID);
-                this.Caster.FixedParticles(0x3779, 1, 30, 9964, 3, 3, EffectLayer.Waist);
+                Caster.PlaySound(0x20C);
+                Caster.PlaySound(soundID);
+                Caster.FixedParticles(0x3779, 1, 30, 9964, 3, 3, EffectLayer.Waist);
 
-                IEntity from = new Entity(Serial.Zero, new Point3D(this.Caster.X, this.Caster.Y, this.Caster.Z), this.Caster.Map);
-                IEntity to = new Entity(Serial.Zero, new Point3D(this.Caster.X, this.Caster.Y, this.Caster.Z + 50), this.Caster.Map);
+                IEntity from = new Entity(Serial.Zero, new Point3D(Caster.X, Caster.Y, Caster.Z), Caster.Map);
+                IEntity to = new Entity(Serial.Zero, new Point3D(Caster.X, Caster.Y, Caster.Z + 50), Caster.Map);
                 Effects.SendMovingParticles(from, to, itemID, 1, 0, false, false, 33, 3, 9501, 1, 0, EffectLayer.Head, 0x100);
 
-                double seconds = this.ComputePowerValue(20);
+                double seconds = ComputePowerValue(20);
 
                 // TODO: Should caps be applied?
 
-                int pkarma = this.Caster.Karma;
+                int pkarma = Caster.Karma;
 
                 if (pkarma > 5000)
                     seconds = 11.0;
@@ -114,7 +114,7 @@ namespace Server.Spells.Chivalry
                 BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.ConsecrateWeapon, 1151385, 1151386, duration, Caster, String.Format("{0}\t{1}", context.ConsecrateProcChance, context.ConsecrateDamageBonus)));
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         public static bool IsUnderEffects(Mobile m)

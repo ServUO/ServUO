@@ -8,7 +8,7 @@ namespace Server.Items
         public BaseDecorationArtifact(int itemID)
             : base(itemID)
         {
-            this.Weight = 10.0;
+            Weight = 10.0;
         }
 
         public BaseDecorationArtifact(Serial serial)
@@ -23,7 +23,7 @@ namespace Server.Items
             base.GetProperties(list);
 
             if (ShowArtifactRarity)
-                list.Add(1061078, this.ArtifactRarity.ToString()); // artifact rarity ~1_val~
+                list.Add(1061078, ArtifactRarity.ToString()); // artifact rarity ~1_val~
         }
 
         public override void Serialize(GenericWriter writer)
@@ -46,7 +46,7 @@ namespace Server.Items
         public BaseDecorationContainerArtifact(int itemID)
             : base(itemID)
         {
-            this.Weight = 10.0;
+            Weight = 10.0;
         }
 
         public BaseDecorationContainerArtifact(Serial serial)
@@ -60,7 +60,7 @@ namespace Server.Items
         {
             base.AddNameProperties(list);
 
-            list.Add(1061078, this.ArtifactRarity.ToString()); // artifact rarity ~1_val~
+            list.Add(1061078, ArtifactRarity.ToString()); // artifact rarity ~1_val~
         }
 
         public override void Serialize(GenericWriter writer)

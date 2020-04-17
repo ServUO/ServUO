@@ -50,7 +50,7 @@ namespace Server.Items
             base.GetContextMenuEntries(from, list);
             list.Add(new DestroyCrate(from, this));
 
-            if (m_Boat != null && this.Items.Count > 0)
+            if (m_Boat != null && Items.Count > 0)
                 list.Add(new LoadShip(from, this));
         }
 
@@ -144,7 +144,7 @@ namespace Server.Items
         {
             base.OnItemRemoved(item);
 
-            if (this.TotalItems == 0)
+            if (TotalItems == 0)
                 Delete();
         }
 

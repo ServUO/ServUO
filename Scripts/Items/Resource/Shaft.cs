@@ -12,8 +12,8 @@ namespace Server.Items
         public Shaft(int amount)
             : base(0x1BD4)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public Shaft(Serial serial)
@@ -22,7 +22,7 @@ namespace Server.Items
         }
 
         public override double DefaultWeight => 0.1;
-        TextDefinition ICommodity.Description => this.LabelNumber;
+        TextDefinition ICommodity.Description => LabelNumber;
         bool ICommodity.IsDeedable => true;
         public override void Serialize(GenericWriter writer)
         {

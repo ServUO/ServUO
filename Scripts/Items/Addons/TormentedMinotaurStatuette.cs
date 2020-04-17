@@ -10,8 +10,8 @@ namespace Server.Items
         public TormentedMinotaurStatuette()
             : base(0x2D88)
         {
-            this.Name = "Tormented Minotaur Statuette";
-            this.Weight = 1.0;
+            Name = "Tormented Minotaur Statuette";
+            Weight = 1.0;
         }
 
         public TormentedMinotaurStatuette(Serial serial)
@@ -21,8 +21,8 @@ namespace Server.Items
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (this.TurnedOn && this.IsLockedDown && (!m.Hidden || m.IsPlayer()) && Utility.InRange(m.Location, this.Location, 2) && !Utility.InRange(oldLocation, this.Location, 2))
-                Effects.PlaySound(this.Location, this.Map, m_Sounds[Utility.Random(m_Sounds.Length)]);
+            if (TurnedOn && IsLockedDown && (!m.Hidden || m.IsPlayer()) && Utility.InRange(m.Location, Location, 2) && !Utility.InRange(oldLocation, Location, 2))
+                Effects.PlaySound(Location, Map, m_Sounds[Utility.Random(m_Sounds.Length)]);
 
             base.OnMovement(m, oldLocation);
         }

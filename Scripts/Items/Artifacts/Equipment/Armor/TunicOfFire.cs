@@ -38,14 +38,14 @@ namespace Server.Items
 
             if (version < 1)
             {
-                if (this.Hue == 0x54E)
-                    this.Hue = 0x54F;
+                if (Hue == 0x54E)
+                    Hue = 0x54F;
 
-                if (this.Attributes.NightSight == 0)
-                    this.Attributes.NightSight = 1;
+                if (Attributes.NightSight == 0)
+                    Attributes.NightSight = 1;
 
-                this.PhysicalBonus = 0;
-                this.FireBonus = 0;
+                PhysicalBonus = 0;
+                FireBonus = 0;
             }
         }
     }

@@ -19,22 +19,22 @@ namespace Server.Engines.Quests
         public override Type[] Quests => new Type[] { typeof(AemaethOneQuest) };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = true;
-            this.Race = Race.Human;
+            Female = true;
+            Race = Race.Human;
 
-            this.Hue = 0x83F7;
-            this.HairItemID = 0x2047;
-            this.HairHue = 0x457;
+            Hue = 0x83F7;
+            HairItemID = 0x2047;
+            HairHue = 0x457;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Sandals(0x4B7));
-            this.AddItem(new Skirt(0x4B4));
-            this.AddItem(new FancyShirt(0x659));
+            AddItem(new Backpack());
+            AddItem(new Sandals(0x4B7));
+            AddItem(new Skirt(0x4B4));
+            AddItem(new FancyShirt(0x659));
         }
 
         public override void Serialize(GenericWriter writer)

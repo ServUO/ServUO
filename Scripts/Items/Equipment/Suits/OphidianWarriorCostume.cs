@@ -7,7 +7,7 @@ namespace Server.Items
         [Constructable]
         public OphidianWarriorCostume() : base()
         {
-            this.CostumeBody = 86;
+            CostumeBody = 86;
         }
 
         public OphidianWarriorCostume(Serial serial) : base(serial)

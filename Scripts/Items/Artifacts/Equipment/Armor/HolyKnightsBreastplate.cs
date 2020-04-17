@@ -35,7 +35,7 @@ namespace Server.Items
             int version = reader.ReadInt();
 
             if (version < 1)
-                this.PhysicalBonus = 0;
+                PhysicalBonus = 0;
         }
     }
 }

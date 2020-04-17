@@ -90,14 +90,14 @@ namespace Server.Engines.Quests.Collector
         {
             base.Accept();
 
-            this.AddConversation(new AcceptConversation());
+            AddConversation(new AcceptConversation());
         }
 
         public override void Decline()
         {
             base.Decline();
 
-            this.AddConversation(new DeclineConversation());
+            AddConversation(new DeclineConversation());
         }
     }
 }

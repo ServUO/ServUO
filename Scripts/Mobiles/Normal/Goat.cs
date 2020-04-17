@@ -7,33 +7,33 @@ namespace Server.Mobiles
         public Goat()
             : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a goat";
-            this.Body = 0xD1;
-            this.BaseSoundID = 0x99;
+            Name = "a goat";
+            Body = 0xD1;
+            BaseSoundID = 0x99;
 
-            this.SetStr(19);
-            this.SetDex(15);
-            this.SetInt(5);
+            SetStr(19);
+            SetDex(15);
+            SetInt(5);
 
-            this.SetHits(12);
-            this.SetMana(0);
+            SetHits(12);
+            SetMana(0);
 
-            this.SetDamage(3, 4);
+            SetDamage(3, 4);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 5, 15);
+            SetResistance(ResistanceType.Physical, 5, 15);
 
-            this.SetSkill(SkillName.MagicResist, 5.0);
-            this.SetSkill(SkillName.Tactics, 5.0);
-            this.SetSkill(SkillName.Wrestling, 5.0);
+            SetSkill(SkillName.MagicResist, 5.0);
+            SetSkill(SkillName.Tactics, 5.0);
+            SetSkill(SkillName.Wrestling, 5.0);
 
-            this.Fame = 150;
-            this.Karma = 0;
+            Fame = 150;
+            Karma = 0;
 
-            this.Tamable = true;
-            this.ControlSlots = 1;
-            this.MinTameSkill = 11.1;
+            Tamable = true;
+            ControlSlots = 1;
+            MinTameSkill = 11.1;
         }
 
         public Goat(Serial serial)

@@ -102,7 +102,7 @@ namespace Server.Mobiles
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(this.Location, 5))
+            if (from.InRange(Location, 5))
             {
                 if (!m_Conversation.ContainsKey(from))
                 {
@@ -231,7 +231,7 @@ namespace Server.Mobiles
 
         private void DoRestock()
         {
-            List<Item> list = new List<Item>(this.Backpack.Items);
+            List<Item> list = new List<Item>(Backpack.Items);
             m_ItemTable.Clear();
 
             InternalGump.Clear();
@@ -291,7 +291,7 @@ namespace Server.Mobiles
 
                 m_ItemTable[item] = (int)((weight + Server.SkillHandlers.Imbuing.GetTotalWeight(item, -1, false, true)) * 31.5);
                 item.Movable = false;
-                this.Backpack.DropItem(item);
+                Backpack.DropItem(item);
             }
 
             m_NextRestock = DateTime.UtcNow + TimeSpan.FromMinutes(Utility.RandomMinMax(m_RestockMin, m_RestockMax));
@@ -307,7 +307,7 @@ namespace Server.Mobiles
 
         public void TryBuyItem(Mobile from, Item item)
         {
-            if (item.Deleted || !this.Backpack.Items.Contains(item) || !m_ItemTable.ContainsKey(item))
+            if (item.Deleted || !Backpack.Items.Contains(item) || !m_ItemTable.ContainsKey(item))
             {
                 from.SendMessage("This item is no longer available.");
                 return;

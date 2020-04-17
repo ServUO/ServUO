@@ -16,7 +16,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(this.Location, 3))
+            if (from.InRange(Location, 3))
             {
                 if (from.AccessLevel == AccessLevel.Player && IsInCooldown(from))
                     from.SendLocalizedMessage(1113413); // You have recently participated in this challenge. You must wait 24 hours to try again.

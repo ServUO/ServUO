@@ -6,8 +6,8 @@ namespace Server.Items
         public Checkers()
             : base(0xE1A)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public Checkers(Serial serial)

@@ -8,7 +8,7 @@
         public ChestOfDrawers()
             : base(0x0A2C)
         {
-            this.Weight = 25.0;
+            Weight = 25.0;
         }
 
         public ChestOfDrawers(Serial serial)

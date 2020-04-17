@@ -6,8 +6,8 @@ namespace Server.Items
         public PrimitiveFetish()
             : base(0x23F)
         {
-            this.LootType = LootType.Blessed;
-            this.Hue = 0x244;
+            LootType = LootType.Blessed;
+            Hue = 0x244;
         }
 
         public PrimitiveFetish(Serial serial)

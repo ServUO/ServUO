@@ -12,8 +12,8 @@ namespace Server.Items
         public SecretWall(int itemID)
             : base(itemID)
         {
-            this.m_Active = true;
-            this.m_Locked = true;
+            m_Active = true;
+            m_Locked = true;
         }
 
         public SecretWall(Serial serial)
@@ -26,11 +26,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_PointDest;
+                return m_PointDest;
             }
             set
             {
-                this.m_PointDest = value;
+                m_PointDest = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -38,11 +38,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_MapDest;
+                return m_MapDest;
             }
             set
             {
-                this.m_MapDest = value;
+                m_MapDest = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -50,11 +50,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Locked;
+                return m_Locked;
             }
             set
             {
-                this.m_Locked = value;
+                m_Locked = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -62,20 +62,20 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Active;
+                return m_Active;
             }
             set
             {
-                this.m_Active = value;
+                m_Active = value;
             }
         }
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(this.Location, 2))
+            if (from.InRange(Location, 2))
             {
-                if (!this.m_Locked && this.m_Active)
+                if (!m_Locked && m_Active)
                 {
-                    from.MoveToWorld(this.m_PointDest, this.m_MapDest);
+                    from.MoveToWorld(m_PointDest, m_MapDest);
                     from.SendLocalizedMessage(1072790); // The wall becomes transparent, and you push your way through it.
                 }
                 else
@@ -101,10 +101,10 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            this.m_PointDest = reader.ReadPoint3D();
-            this.m_MapDest = reader.ReadMap();
-            this.m_Locked = reader.ReadBool();
-            this.m_Active = reader.ReadBool();
+            m_PointDest = reader.ReadPoint3D();
+            m_MapDest = reader.ReadMap();
+            m_Locked = reader.ReadBool();
+            m_Active = reader.ReadBool();
         }
     }
 
@@ -122,7 +122,7 @@ namespace Server.Items
         public SecretSwitch(int itemID, SecretWall wall)
             : base(itemID)
         {
-            this.m_Wall = wall;
+            m_Wall = wall;
         }
 
         public SecretSwitch(Serial serial)
@@ -135,11 +135,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Wall;
+                return m_Wall;
             }
             set
             {
-                this.m_Wall = value;
+                m_Wall = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -147,28 +147,28 @@ namespace Server.Items
         {
             get
             {
-                return this.m_TurnedOn;
+                return m_TurnedOn;
             }
             set
             {
-                this.m_TurnedOn = value;
+                m_TurnedOn = value;
             }
         }
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(this.Location, 2) && this.m_Wall != null)
+            if (from.InRange(Location, 2) && m_Wall != null)
             {
-                if (this.m_TurnedOn)
-                    this.ItemID -= 1;
+                if (m_TurnedOn)
+                    ItemID -= 1;
                 else
                 {
-                    this.ItemID += 1;
+                    ItemID += 1;
 
                     Timer.DelayCall(TimeSpan.FromSeconds(10), new TimerCallback(Lock));
                 }
 
-                this.m_TurnedOn = !this.m_TurnedOn;
-                this.m_Wall.Locked = !this.m_Wall.Locked;
+                m_TurnedOn = !m_TurnedOn;
+                m_Wall.Locked = !m_Wall.Locked;
 
                 if (Utility.RandomBool())
                 {
@@ -185,13 +185,13 @@ namespace Server.Items
 
         public virtual void Lock()
         {
-            if (this.m_Wall != null)
+            if (m_Wall != null)
             {
-                if (this.m_TurnedOn)
-                    this.ItemID -= 1;
+                if (m_TurnedOn)
+                    ItemID -= 1;
 
-                this.m_TurnedOn = false;
-                this.m_Wall.Locked = true;
+                m_TurnedOn = false;
+                m_Wall.Locked = true;
             }
         }
 
@@ -211,8 +211,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            this.m_Wall = reader.ReadItem() as SecretWall;
-            this.m_TurnedOn = reader.ReadBool();
+            m_Wall = reader.ReadItem() as SecretWall;
+            m_TurnedOn = reader.ReadBool();
         }
     }
 }

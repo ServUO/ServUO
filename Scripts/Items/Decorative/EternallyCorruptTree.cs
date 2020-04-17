@@ -6,7 +6,7 @@ namespace Server.Items
         public EternallyCorruptTree()
             : base(0x20FA)
         {
-            this.Hue = Utility.RandomMinMax(0x899, 0x8B0);
+            Hue = Utility.RandomMinMax(0x899, 0x8B0);
         }
 
         public EternallyCorruptTree(Serial serial)

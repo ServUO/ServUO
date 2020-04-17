@@ -8,28 +8,28 @@ namespace Server.Mobiles
         public Artist()
             : base(AIType.AI_Animal, FightMode.None, 10, 1, 0.2, 0.4)
         {
-            this.InitStats(31, 41, 51);
+            InitStats(31, 41, 51);
 
-            this.SetSkill(SkillName.Healing, 36, 68);
+            SetSkill(SkillName.Healing, 36, 68);
 
-            this.SpeechHue = Utility.RandomDyedHue();
-            this.Title = "the artist";
-            this.Hue = Utility.RandomSkinHue();
+            SpeechHue = Utility.RandomDyedHue();
+            Title = "the artist";
+            Hue = Utility.RandomSkinHue();
 
-            if (this.Female = Utility.RandomBool())
+            if (Female = Utility.RandomBool())
             {
-                this.Body = 0x191;
-                this.Name = NameList.RandomName("female");
+                Body = 0x191;
+                Name = NameList.RandomName("female");
             }
             else
             {
-                this.Body = 0x190;
-                this.Name = NameList.RandomName("male");
+                Body = 0x190;
+                Name = NameList.RandomName("male");
             }
-            this.AddItem(new Doublet(Utility.RandomDyedHue()));
-            this.AddItem(new Sandals(Utility.RandomNeutralHue()));
-            this.AddItem(new ShortPants(Utility.RandomNeutralHue()));
-            this.AddItem(new HalfApron(Utility.RandomDyedHue()));
+            AddItem(new Doublet(Utility.RandomDyedHue()));
+            AddItem(new Sandals(Utility.RandomNeutralHue()));
+            AddItem(new ShortPants(Utility.RandomNeutralHue()));
+            AddItem(new HalfApron(Utility.RandomDyedHue()));
 
             Utility.AssignRandomHair(this);
 
@@ -39,7 +39,7 @@ namespace Server.Mobiles
 
             pack.Movable = false;
 
-            this.AddItem(pack);
+            AddItem(pack);
         }
 
         public Artist(Serial serial)

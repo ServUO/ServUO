@@ -8,7 +8,7 @@ namespace Server.Items
         /* DO NOT USE! Only used in serialization of special scrolls that originally derived from Item */
         private bool m_InheritsItem;
 
-        protected bool InheritsItem => this.m_InheritsItem;
+        protected bool InheritsItem => m_InheritsItem;
         #endregion
 
         private Mobile m_Fisher;

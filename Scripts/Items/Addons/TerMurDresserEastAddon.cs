@@ -5,8 +5,8 @@ namespace Server.Items
         [Constructable]
         public TerMurDresserEastAddon()
         {
-            this.AddComponent(new AddonComponent(0x402E), 0, 0, 0);
-            this.AddComponent(new AddonComponent(0x402D), 0, -1, 0);
+            AddComponent(new AddonComponent(0x402E), 0, 0, 0);
+            AddComponent(new AddonComponent(0x402D), 0, -1, 0);
         }
 
         public TerMurDresserEastAddon(Serial serial)

@@ -20,13 +20,13 @@ namespace Server.Engines.BulkOrders
 
             Points = points;
             Banked = banked;
-            this.BODType = type;
+            BODType = type;
 
             Owner = owner;
 
             Rectangle2D rec = ItemBounds.Table[0x2258];
 
-            AddItem(115 + rec.Width / 2 - rec.X, 110 + rec.Height / 2 - rec.Y, 0x2258, BulkOrderSystem.GetBodHue(this.BODType));
+            AddItem(115 + rec.Width / 2 - rec.X, 110 + rec.Height / 2 - rec.Y, 0x2258, BulkOrderSystem.GetBodHue(BODType));
         }
 
         private static void OnSave(Mobile m, object state)

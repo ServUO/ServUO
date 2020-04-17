@@ -10,12 +10,12 @@ namespace Server.Mobiles
         public HolyMage()
             : base("the Holy Mage")
         {
-            this.SetSkill(SkillName.EvalInt, 65.0, 88.0);
-            this.SetSkill(SkillName.Inscribe, 60.0, 83.0);
-            this.SetSkill(SkillName.Magery, 64.0, 100.0);
-            this.SetSkill(SkillName.Meditation, 60.0, 83.0);
-            this.SetSkill(SkillName.MagicResist, 65.0, 88.0);
-            this.SetSkill(SkillName.Wrestling, 36.0, 68.0);
+            SetSkill(SkillName.EvalInt, 65.0, 88.0);
+            SetSkill(SkillName.Inscribe, 60.0, 83.0);
+            SetSkill(SkillName.Magery, 64.0, 100.0);
+            SetSkill(SkillName.Meditation, 60.0, 83.0);
+            SetSkill(SkillName.MagicResist, 65.0, 88.0);
+            SetSkill(SkillName.Wrestling, 36.0, 68.0);
         }
 
         public HolyMage(Serial serial)
@@ -23,10 +23,10 @@ namespace Server.Mobiles
         {
         }
 
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBHolyMage());
+            m_SBInfos.Add(new SBHolyMage());
         }
 
         public Item ApplyHue(Item item, int hue)
@@ -38,34 +38,34 @@ namespace Server.Mobiles
 
         public override void InitOutfit()
         {
-            this.AddItem(this.ApplyHue(new Robe(), 0x47E));
-            this.AddItem(this.ApplyHue(new ThighBoots(), 0x47E));
-            this.AddItem(this.ApplyHue(new BlackStaff(), 0x47E));
+            AddItem(ApplyHue(new Robe(), 0x47E));
+            AddItem(ApplyHue(new ThighBoots(), 0x47E));
+            AddItem(ApplyHue(new BlackStaff(), 0x47E));
 
-            if (this.Female)
+            if (Female)
             {
-                this.AddItem(this.ApplyHue(new LeatherGloves(), 0x47E));
-                this.AddItem(this.ApplyHue(new GoldNecklace(), 0x47E));
+                AddItem(ApplyHue(new LeatherGloves(), 0x47E));
+                AddItem(ApplyHue(new GoldNecklace(), 0x47E));
             }
             else
             {
-                this.AddItem(this.ApplyHue(new PlateGloves(), 0x47E));
-                this.AddItem(this.ApplyHue(new PlateGorget(), 0x47E));
+                AddItem(ApplyHue(new PlateGloves(), 0x47E));
+                AddItem(ApplyHue(new PlateGorget(), 0x47E));
             }
 
-            switch (Utility.Random(this.Female ? 2 : 1))
+            switch (Utility.Random(Female ? 2 : 1))
             {
                 case 0:
-                    this.HairItemID = 0x203C;
+                    HairItemID = 0x203C;
                     break;
                 case 1:
-                    this.HairItemID = 0x203D;
+                    HairItemID = 0x203D;
                     break;
             }
 
-            this.HairHue = 0x47E;
+            HairHue = 0x47E;
 
-            this.PackGold(100, 200);
+            PackGold(100, 200);
         }
 
         public override void Serialize(GenericWriter writer)

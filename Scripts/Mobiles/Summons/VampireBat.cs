@@ -5,32 +5,32 @@ namespace Server.Mobiles
     {
         public VampireBatFamiliar()
         {
-            this.Name = "a vampire bat";
-            this.Body = 317;
-            this.BaseSoundID = 0x270;
+            Name = "a vampire bat";
+            Body = 317;
+            BaseSoundID = 0x270;
 
-            this.SetStr(120);
-            this.SetDex(120);
-            this.SetInt(100);
+            SetStr(120);
+            SetDex(120);
+            SetInt(100);
 
-            this.SetHits(90);
-            this.SetStam(120);
-            this.SetMana(0);
+            SetHits(90);
+            SetStam(120);
+            SetMana(0);
 
-            this.SetDamage(5, 10);
+            SetDamage(5, 10);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 10, 15);
-            this.SetResistance(ResistanceType.Fire, 10, 15);
-            this.SetResistance(ResistanceType.Cold, 10, 15);
-            this.SetResistance(ResistanceType.Poison, 10, 15);
-            this.SetResistance(ResistanceType.Energy, 10, 15);
+            SetResistance(ResistanceType.Physical, 10, 15);
+            SetResistance(ResistanceType.Fire, 10, 15);
+            SetResistance(ResistanceType.Cold, 10, 15);
+            SetResistance(ResistanceType.Poison, 10, 15);
+            SetResistance(ResistanceType.Energy, 10, 15);
 
-            this.SetSkill(SkillName.Wrestling, 95.1, 100.0);
-            this.SetSkill(SkillName.Tactics, 50.0);
+            SetSkill(SkillName.Wrestling, 95.1, 100.0);
+            SetSkill(SkillName.Tactics, 50.0);
 
-            this.ControlSlots = 1;
+            ControlSlots = 1;
         }
 
         public VampireBatFamiliar(Serial serial)

@@ -12,9 +12,9 @@ namespace Server.Items
         public Fish(int amount)
             : base(Utility.Random(0x09CC, 4))
         {
-            this.Stackable = true;
-            this.Weight = 1.0;
-            this.Amount = amount;
+            Stackable = true;
+            Weight = 1.0;
+            Amount = amount;
         }
 
         public Fish(Serial serial)

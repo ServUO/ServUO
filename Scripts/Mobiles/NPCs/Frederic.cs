@@ -18,12 +18,12 @@ namespace Server.Engines.Quests
         public override Type[] Quests => null;
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Body = 0x1A;
-            this.Hue = 0x455;
-            this.CantWalk = true;
-            this.Frozen = true;
+            Body = 0x1A;
+            Hue = 0x455;
+            CantWalk = true;
+            Frozen = true;
         }
 
         public override void Serialize(GenericWriter writer)

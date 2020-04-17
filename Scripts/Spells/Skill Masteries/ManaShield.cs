@@ -41,7 +41,7 @@ namespace Server.Spells.SkillMasteries
                 return false;
             }
 
-            SkillMasterySpell spell = GetSpell(Caster, this.GetType());
+            SkillMasterySpell spell = GetSpell(Caster, GetType());
 
             if (spell != null)
             {

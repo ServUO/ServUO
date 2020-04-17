@@ -44,7 +44,7 @@ namespace Server.Multis
     public class MediumDragonBoatDeed : BaseBoatDeed
     {
         public override int LabelNumber => 1041208;  // medium dragon ship deed
-        public override BaseBoat Boat => new MediumDragonBoat(this.BoatDirection);
+        public override BaseBoat Boat => new MediumDragonBoat(BoatDirection);
 
         [Constructable]
         public MediumDragonBoatDeed() : base(0xC, Point3D.Zero)
@@ -73,7 +73,7 @@ namespace Server.Multis
     public class MediumDockedDragonBoat : BaseDockedBoat
     {
         public override int LabelNumber => 1116744;  //Medium Dragon Ship
-        public override BaseBoat Boat => new MediumDragonBoat(this.BoatDirection);
+        public override BaseBoat Boat => new MediumDragonBoat(BoatDirection);
 
         public MediumDockedDragonBoat(BaseBoat boat) : base(0xC, Point3D.Zero, boat)
         {

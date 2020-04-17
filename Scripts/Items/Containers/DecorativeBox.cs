@@ -8,7 +8,7 @@ namespace Server.Items
         public DecorativeBox()
             : base(0x2DF3)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public DecorativeBox(Serial serial)

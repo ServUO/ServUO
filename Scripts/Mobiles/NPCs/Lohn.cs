@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public CutsBothWaysQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(Broadsword), "broadswords", 12, 0xF5E));
+            AddObjective(new ObtainObjective(typeof(Broadsword), "broadswords", 12, 0xF5E));
 
-            this.AddReward(new BaseReward(typeof(SmithsCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(SmithsCraftsmanSatchel), 1074282));
         }
 
         /* Cuts Both Ways */
@@ -44,9 +44,9 @@ namespace Server.Engines.Quests
         public DragonProtectionQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(DragonHelm), "dragon helms", 10, 0x2645));
+            AddObjective(new ObtainObjective(typeof(DragonHelm), "dragon helms", 10, 0x2645));
 
-            this.AddReward(new BaseReward(typeof(SmithsCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(SmithsCraftsmanSatchel), 1074282));
         }
 
         /* Dragon Protection */
@@ -81,9 +81,9 @@ namespace Server.Engines.Quests
         public NothingFancyQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(Bascinet), "bascinets", 15, 0x140C));
+            AddObjective(new ObtainObjective(typeof(Bascinet), "bascinets", 15, 0x140C));
 
-            this.AddReward(new BaseReward(typeof(SmithsCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(SmithsCraftsmanSatchel), 1074282));
         }
 
         /* Nothing Fancy */
@@ -118,9 +118,9 @@ namespace Server.Engines.Quests
         public TheBulwarkQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(HeaterShield), "heater shields", 10, 0x1B76));
+            AddObjective(new ObtainObjective(typeof(HeaterShield), "heater shields", 10, 0x1B76));
 
-            this.AddReward(new BaseReward(typeof(SmithsCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(SmithsCraftsmanSatchel), 1074282));
         }
 
         /* The Bulwark */
@@ -156,8 +156,8 @@ namespace Server.Engines.Quests
         public Lohn()
             : base("Lohn", "the metal weaver")
         {
-            this.SetSkill(SkillName.Meditation, 60.0, 83.0);
-            this.SetSkill(SkillName.Focus, 60.0, 83.0);
+            SetSkill(SkillName.Meditation, 60.0, 83.0);
+            SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
         public Lohn(Serial serial)
@@ -174,24 +174,24 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.Race = Race.Elf;
+            Female = false;
+            Race = Race.Elf;
 
-            this.Hue = 0x8385;
-            this.HairItemID = 0x2FC2;
-            this.HairHue = 0x26B;
+            Hue = 0x8385;
+            HairItemID = 0x2FC2;
+            HairHue = 0x26B;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Sandals(0x901));
-            this.AddItem(new LongPants(0x359));
-            this.AddItem(new ElvenShirt(0x359));
-            this.AddItem(new SmithHammer());
-            this.AddItem(new FullApron(0x1BB));
-            this.AddItem(new GemmedCirclet());
+            AddItem(new Sandals(0x901));
+            AddItem(new LongPants(0x359));
+            AddItem(new ElvenShirt(0x359));
+            AddItem(new SmithHammer());
+            AddItem(new FullApron(0x1BB));
+            AddItem(new GemmedCirclet());
         }
 
         public override void Serialize(GenericWriter writer)

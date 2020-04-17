@@ -37,12 +37,12 @@ namespace Server.Items
 
             if (version < 2)
             {
-                this.Resistances.Physical = 0;
-                this.Resistances.Cold = 0;
+                Resistances.Physical = 0;
+                Resistances.Cold = 0;
             }
 
-            if (this.Attributes.NightSight == 0)
-                this.Attributes.NightSight = 1;
+            if (Attributes.NightSight == 0)
+                Attributes.NightSight = 1;
         }
     }
 }

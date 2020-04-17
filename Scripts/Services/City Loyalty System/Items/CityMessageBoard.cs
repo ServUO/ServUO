@@ -34,7 +34,7 @@ namespace Server.Items
 
             if (CitySystem.IsCitizen(from, true))
             {
-                if (from.InRange(this.Location, 3))
+                if (from.InRange(Location, 3))
                 {
                     from.SendGump(new PlayerBBGump(from, null, this, 0));
                 }

@@ -40,32 +40,32 @@ namespace Server.Engines.Quests
         public TheMagesApprenticeQuest()
             : base()
         {
-            this.AddObjective(new ApprenticeObjective(SkillName.Magery, 50, "Old Haven Training", 1077489, 1077583));
+            AddObjective(new ApprenticeObjective(SkillName.Magery, 50, "Old Haven Training", 1077489, 1077583));
 
             // 1077489 Your Magery potential is greatly enhanced while questing in this area.
             // 1077583 You are not in the quest area for Apprentice Magery. Your Magery potential is not enhanced here.
 
-            this.AddReward(new BaseReward(typeof(EmberStaff), 1077582));
+            AddReward(new BaseReward(typeof(EmberStaff), 1077582));
         }
 
         public override bool CanOffer()
         {
             #region Scroll of Alacrity
-            PlayerMobile pm = this.Owner as PlayerMobile;
+            PlayerMobile pm = Owner as PlayerMobile;
             if (pm.AcceleratedStart > DateTime.UtcNow)
             {
-                this.Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
+                Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
                 return false;
             }
             #endregion
             else
-                return this.Owner.Skills.Magery.Base < 50;
+                return Owner.Skills.Magery.Base < 50;
         }
 
         public override void OnCompleted()
         {
-            this.Owner.SendLocalizedMessage(1077580, null, 0x23); // You have achieved the rank of Apprentice Mage. Return to Kaelynna in New Haven to receive your arcane prize.
-            this.Owner.PlaySound(this.CompleteSound);
+            Owner.SendLocalizedMessage(1077580, null, 0x23); // You have achieved the rank of Apprentice Mage. Return to Kaelynna in New Haven to receive your arcane prize.
+            Owner.PlaySound(CompleteSound);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -92,19 +92,19 @@ namespace Server.Engines.Quests
 
         public override void InitSBInfo()
         {
-            this.SBInfos.Add(new SBMage());
+            SBInfos.Add(new SBMage());
         }
 
         [Constructable]
         public Kaelynna()
             : base("Kaelynna", "The Magery Instructor")
         {
-            this.SetSkill(SkillName.EvalInt, 120.0, 120.0);
-            this.SetSkill(SkillName.Inscribe, 120.0, 120.0);
-            this.SetSkill(SkillName.Magery, 120.0, 120.0);
-            this.SetSkill(SkillName.MagicResist, 120.0, 120.0);
-            this.SetSkill(SkillName.Wrestling, 120.0, 120.0);
-            this.SetSkill(SkillName.Meditation, 120.0, 120.0);
+            SetSkill(SkillName.EvalInt, 120.0, 120.0);
+            SetSkill(SkillName.Inscribe, 120.0, 120.0);
+            SetSkill(SkillName.Magery, 120.0, 120.0);
+            SetSkill(SkillName.MagicResist, 120.0, 120.0);
+            SetSkill(SkillName.Wrestling, 120.0, 120.0);
+            SetSkill(SkillName.Meditation, 120.0, 120.0);
         }
 
         public Kaelynna(Serial serial)
@@ -114,28 +114,28 @@ namespace Server.Engines.Quests
 
         public override void Advertise()
         {
-            this.Say(1078125); // Want to unlock the secrets of magery?
+            Say(1078125); // Want to unlock the secrets of magery?
         }
 
         public override void OnOfferFailed()
         {
-            this.Say(1077772); // I cannot teach you, for you know all I can teach!
+            Say(1077772); // I cannot teach you, for you know all I can teach!
         }
 
         public override void InitBody()
         {
-            this.Female = true;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = true;
+            CantWalk = true;
+            Race = Race.Human;
 
             base.InitBody();
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Robe(0x592));
-            this.AddItem(new Sandals());
+            AddItem(new Backpack());
+            AddItem(new Robe(0x592));
+            AddItem(new Sandals());
         }
 
         public override void Serialize(GenericWriter writer)

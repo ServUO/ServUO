@@ -6,16 +6,16 @@ namespace Server.Commands.Generic
     {
         public MultiCommandImplementor()
         {
-            this.Accessors = new string[] { "Multi", "m" };
-            this.SupportRequirement = CommandSupport.Multi;
-            this.AccessLevel = AccessLevel.Counselor;
-            this.Usage = "Multi <command>";
-            this.Description = "Invokes the command on multiple targeted objects.";
+            Accessors = new string[] { "Multi", "m" };
+            SupportRequirement = CommandSupport.Multi;
+            AccessLevel = AccessLevel.Counselor;
+            Usage = "Multi <command>";
+            Description = "Invokes the command on multiple targeted objects.";
         }
 
         public override void Process(Mobile from, BaseCommand command, string[] args)
         {
-            if (command.ValidateArgs(this, new CommandEventArgs(from, command.Commands[0], this.GenerateArgString(args), args)))
+            if (command.ValidateArgs(this, new CommandEventArgs(from, command.Commands[0], GenerateArgString(args), args)))
                 from.BeginTarget(-1, command.ObjectTypes == ObjectTypes.All, TargetFlags.None, new TargetStateCallback(OnTarget), new object[] { command, args });
         }
 
@@ -66,7 +66,7 @@ namespace Server.Commands.Generic
                     }
             }
 
-            this.RunCommand(from, targeted, command, args);
+            RunCommand(from, targeted, command, args);
 
             from.BeginTarget(-1, command.ObjectTypes == ObjectTypes.All, TargetFlags.None, new TargetStateCallback(OnTarget), new object[] { command, args });
         }

@@ -164,7 +164,7 @@ namespace Server.Engines.MyrmidexInvasion
             Dictionary<int, BaseCreature> hasBreached = new Dictionary<int, BaseCreature>();
             bool opposedBreach = false;
 
-            IPooledEnumerable eable = this.Map.GetMobilesInBounds(_MyrmidexObjective);
+            IPooledEnumerable eable = Map.GetMobilesInBounds(_MyrmidexObjective);
 
             foreach (Mobile m in eable)
             {
@@ -198,7 +198,7 @@ namespace Server.Engines.MyrmidexInvasion
 
             if (winners == null)
             {
-                eable = this.Map.GetMobilesInBounds(_TribalObjective);
+                eable = Map.GetMobilesInBounds(_TribalObjective);
 
                 foreach (Mobile m in eable)
                 {

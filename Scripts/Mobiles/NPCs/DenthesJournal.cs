@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public LastWordsQuest()
             : base()
         {
-            this.AddObjective(new DeliverObjective(typeof(DenthesJournal), "lord denthe's journal", 1, typeof(Verity), "Verity (Britain)"));
+            AddObjective(new DeliverObjective(typeof(DenthesJournal), "lord denthe's journal", 1, typeof(Verity), "Verity (Britain)"));
 
-            this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
+            AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
         /* Last Words */

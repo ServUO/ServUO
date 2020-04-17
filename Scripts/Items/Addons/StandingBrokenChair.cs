@@ -35,7 +35,7 @@ namespace Server.Items
         public StandingBrokenChairAddon()
             : base()
         {
-            this.AddComponent(new StandingBrokenChairComponent(), 0, 0, 0);
+            AddComponent(new StandingBrokenChairComponent(), 0, 0, 0);
         }
 
         public StandingBrokenChairAddon(Serial serial)
@@ -65,7 +65,7 @@ namespace Server.Items
         public StandingBrokenChairDeed()
             : base()
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public StandingBrokenChairDeed(Serial serial)

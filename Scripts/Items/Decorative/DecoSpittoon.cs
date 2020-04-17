@@ -6,8 +6,8 @@ namespace Server.Items
         public DecoSpittoon()
             : base(0x1003)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public DecoSpittoon(Serial serial)

@@ -6,8 +6,8 @@ namespace Server.Items
         public BrokenChair()
             : base(Utility.Random(2) + 0xC19)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public BrokenChair(Serial serial)

@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public FriendsOfTheLibraryQuest()
             : base()
         {
-            this.AddObjective(new DeliverObjective(typeof(LibraryApplication), "friends of the library application", 1, typeof(Sarakki), "Sarakki (Britain)"));
+            AddObjective(new DeliverObjective(typeof(LibraryApplication), "friends of the library application", 1, typeof(Sarakki), "Sarakki (Britain)"));
 
-            this.AddReward(new BaseReward(1072749)); // Friends of the Library Membership Token.
+            AddReward(new BaseReward(1072749)); // Friends of the Library Membership Token.
         }
 
         public override QuestChain ChainID => QuestChain.LibraryFriends;
@@ -53,9 +53,9 @@ namespace Server.Engines.Quests
         public BureaucraticDelayQuest()
             : base()
         {
-            this.AddObjective(new DeliverObjective(typeof(SealingWaxOrder), "sealing wax order", 1, typeof(Petrus), "Petrus (Ilshenar)"));
+            AddObjective(new DeliverObjective(typeof(SealingWaxOrder), "sealing wax order", 1, typeof(Petrus), "Petrus (Ilshenar)"));
 
-            this.AddReward(new BaseReward(1074871)); // A step closer to having sealing wax.
+            AddReward(new BaseReward(1074871)); // A step closer to having sealing wax.
         }
 
         public override QuestChain ChainID => QuestChain.LibraryFriends;
@@ -97,9 +97,9 @@ namespace Server.Engines.Quests
         public TheSecretIngredientQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(SpeckledPoisonSac), "speckled poison sacs", 5, 0x23A, 3600));
+            AddObjective(new ObtainObjective(typeof(SpeckledPoisonSac), "speckled poison sacs", 5, 0x23A, 3600));
 
-            this.AddReward(new BaseReward(1074871)); // A step closer to having sealing wax.
+            AddReward(new BaseReward(1074871)); // A step closer to having sealing wax.
         }
 
         public override QuestChain ChainID => QuestChain.LibraryFriends;
@@ -142,9 +142,9 @@ namespace Server.Engines.Quests
         public SpecialDeliveryQuest()
             : base()
         {
-            this.AddObjective(new DeliverObjective(typeof(OfficialSealingWax), "sealing wax", 1, typeof(Sarakki), "Sarakki (Britain)"));
+            AddObjective(new DeliverObjective(typeof(OfficialSealingWax), "sealing wax", 1, typeof(Sarakki), "Sarakki (Britain)"));
 
-            this.AddReward(new BaseReward(1072749)); // Friends of the Library Membership Token.
+            AddReward(new BaseReward(1072749)); // Friends of the Library Membership Token.
         }
 
         public override QuestChain ChainID => QuestChain.LibraryFriends;
@@ -184,9 +184,9 @@ namespace Server.Engines.Quests
         public AccessToTheStacksQuest()
             : base()
         {
-            this.AddObjective(new DeliverObjective(typeof(NotarizedApplication), "notarized application", 1, typeof(Verity), "Verity (Britain)"));
+            AddObjective(new DeliverObjective(typeof(NotarizedApplication), "notarized application", 1, typeof(Verity), "Verity (Britain)"));
 
-            this.AddReward(new BaseReward(typeof(FriendOfTheLibraryToken), 1072749)); // Friends of the Library Membership Token.
+            AddReward(new BaseReward(typeof(FriendOfTheLibraryToken), 1072749)); // Friends of the Library Membership Token.
         }
 
         public override QuestChain ChainID => QuestChain.LibraryFriends;
@@ -212,7 +212,7 @@ namespace Server.Engines.Quests
         {
             base.GiveRewards();
 
-            this.Owner.LibraryFriend = true;
+            Owner.LibraryFriend = true;
         }
 
         public override void Serialize(GenericWriter writer)

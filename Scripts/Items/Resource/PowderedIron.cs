@@ -12,8 +12,8 @@ namespace Server.Items
         public PowderedIron(int amount)
             : base(0x573D)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public PowderedIron(Serial serial)

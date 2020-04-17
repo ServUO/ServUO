@@ -21,39 +21,39 @@ namespace Server.Mobiles
         public Dummy(AIType iAI, FightMode iFightMode, int iRangePerception, int iRangeFight, double dActiveSpeed, double dPassiveSpeed)
             : base(iAI, iFightMode, iRangePerception, iRangeFight, dActiveSpeed, dPassiveSpeed)
         {
-            this.Body = 400 + Utility.Random(2);
-            this.Hue = Utility.RandomSkinHue();
+            Body = 400 + Utility.Random(2);
+            Hue = Utility.RandomSkinHue();
 
-            this.Skills[SkillName.DetectHidden].Base = 100;
-            this.Skills[SkillName.MagicResist].Base = 120;
+            Skills[SkillName.DetectHidden].Base = 100;
+            Skills[SkillName.MagicResist].Base = 120;
 
-            this.Team = Utility.Random(3);
+            Team = Utility.Random(3);
 
-            int iHue = 20 + this.Team * 40;
-            int jHue = 25 + this.Team * 40;
+            int iHue = 20 + Team * 40;
+            int jHue = 25 + Team * 40;
 
             Utility.AssignRandomHair(this, iHue);
 
             LeatherGloves glv = new LeatherGloves();
             glv.Hue = iHue;
             glv.LootType = LootType.Newbied;
-            this.AddItem(glv);
+            AddItem(glv);
 
             Container pack = new Backpack();
 
             pack.Movable = false;
 
-            this.AddItem(pack);
+            AddItem(pack);
 
-            this.m_Timer = new AutokillTimer(this);
-            this.m_Timer.Start();
+            m_Timer = new AutokillTimer(this);
+            m_Timer.Start();
         }
 
         public Dummy(Serial serial)
             : base(serial)
         {
-            this.m_Timer = new AutokillTimer(this);
-            this.m_Timer.Start();
+            m_Timer = new AutokillTimer(this);
+            m_Timer.Start();
         }
 
         public override void Serialize(GenericWriter writer)
@@ -86,46 +86,46 @@ namespace Server.Mobiles
             {
                 if (e.Speech == "kill")
                 {
-                    this.m_Timer.Stop();
-                    this.m_Timer.Delay = TimeSpan.FromSeconds(Utility.Random(1, 5));
-                    this.m_Timer.Start();
+                    m_Timer.Stop();
+                    m_Timer.Delay = TimeSpan.FromSeconds(Utility.Random(1, 5));
+                    m_Timer.Start();
                 }
             }
         }
 
         public override void OnTeamChange()
         {
-            int iHue = 20 + this.Team * 40;
-            int jHue = 25 + this.Team * 40;
+            int iHue = 20 + Team * 40;
+            int jHue = 25 + Team * 40;
 
-            Item item = this.FindItemOnLayer(Layer.OuterTorso);
+            Item item = FindItemOnLayer(Layer.OuterTorso);
 
             if (item != null)
                 item.Hue = jHue;
 
-            item = this.FindItemOnLayer(Layer.Helm);
+            item = FindItemOnLayer(Layer.Helm);
 
             if (item != null)
                 item.Hue = iHue;
 
-            item = this.FindItemOnLayer(Layer.Gloves);
+            item = FindItemOnLayer(Layer.Gloves);
 
             if (item != null)
                 item.Hue = iHue;
 
-            item = this.FindItemOnLayer(Layer.Shoes);
+            item = FindItemOnLayer(Layer.Shoes);
 
             if (item != null)
                 item.Hue = iHue;
 
-            this.HairHue = iHue;
+            HairHue = iHue;
 
-            item = this.FindItemOnLayer(Layer.MiddleTorso);
+            item = FindItemOnLayer(Layer.MiddleTorso);
 
             if (item != null)
                 item.Hue = iHue;
 
-            item = this.FindItemOnLayer(Layer.OuterLegs);
+            item = FindItemOnLayer(Layer.OuterLegs);
 
             if (item != null)
                 item.Hue = iHue;
@@ -137,14 +137,14 @@ namespace Server.Mobiles
             public AutokillTimer(Dummy owner)
                 : base(TimeSpan.FromMinutes(5.0))
             {
-                this.m_Owner = owner;
-                this.Priority = TimerPriority.FiveSeconds;
+                m_Owner = owner;
+                Priority = TimerPriority.FiveSeconds;
             }
 
             protected override void OnTick()
             {
-                this.m_Owner.Kill();
-                this.Stop();
+                m_Owner.Kill();
+                Stop();
             }
         }
     }

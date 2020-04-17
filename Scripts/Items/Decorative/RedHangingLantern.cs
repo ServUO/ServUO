@@ -9,11 +9,11 @@ namespace Server.Items
         public RedHangingLantern()
             : base(0x24C2)
         {
-            this.Movable = true;
-            this.Duration = TimeSpan.Zero; // Never burnt out
-            this.Burning = false;
-            this.Light = LightType.Circle300;
-            this.Weight = 3.0;
+            Movable = true;
+            Duration = TimeSpan.Zero; // Never burnt out
+            Burning = false;
+            Light = LightType.Circle300;
+            Weight = 3.0;
         }
 
         public RedHangingLantern(Serial serial)
@@ -25,7 +25,7 @@ namespace Server.Items
         {
             get
             {
-                if (this.ItemID == 0x24C2)
+                if (ItemID == 0x24C2)
                     return 0x24C1;
                 else
                     return 0x24C3;
@@ -35,7 +35,7 @@ namespace Server.Items
         {
             get
             {
-                if (this.ItemID == 0x24C1)
+                if (ItemID == 0x24C1)
                     return 0x24C2;
                 else
                     return 0x24C4;
@@ -43,21 +43,21 @@ namespace Server.Items
         }
         public void Flip()
         {
-            this.Light = LightType.Circle300;
+            Light = LightType.Circle300;
 
-            switch (this.ItemID)
+            switch (ItemID)
             {
                 case 0x24C2:
-                    this.ItemID = 0x24C4;
+                    ItemID = 0x24C4;
                     break;
                 case 0x24C1:
-                    this.ItemID = 0x24C3;
+                    ItemID = 0x24C3;
                     break;
                 case 0x24C4:
-                    this.ItemID = 0x24C2;
+                    ItemID = 0x24C2;
                     break;
                 case 0x24C3:
-                    this.ItemID = 0x24C1;
+                    ItemID = 0x24C1;
                     break;
             }
         }

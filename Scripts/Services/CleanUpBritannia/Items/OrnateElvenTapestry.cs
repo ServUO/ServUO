@@ -7,7 +7,7 @@
         public OrnateElvenTapestry()
             : base(0x2D72)
         {
-            this.Weight = 1;
+            Weight = 1;
         }
 
         public override int LabelNumber => 1031633;// ornate elven tapestry

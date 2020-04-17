@@ -8,8 +8,8 @@ namespace Server.Items
         public FerretImprisonedInCrystal()
             : base(0x1F19)
         {
-            this.Name = "a ferret imprisoned in a crystal";
-            this.Weight = 1.0;
+            Name = "a ferret imprisoned in a crystal";
+            Weight = 1.0;
         }
 
         public FerretImprisonedInCrystal(Serial serial)
@@ -42,9 +42,9 @@ namespace Server.Mobiles
         public ShimmeringFerret()
             : base()
         {
-            this.SetSkill(SkillName.MagicResist, 100.0);
-            this.SetSkill(SkillName.Tactics, 100.0);
-            this.SetSkill(SkillName.Wrestling, 100.0);
+            SetSkill(SkillName.MagicResist, 100.0);
+            SetSkill(SkillName.Tactics, 100.0);
+            SetSkill(SkillName.Wrestling, 100.0);
         }
 
         public ShimmeringFerret(Serial serial)

@@ -17,19 +17,19 @@ namespace Server.Items
 
         public void Flip()
         {
-            switch (this.ItemID)
+            switch (ItemID)
             {
                 case 0x295C:
-                    this.ItemID = 0x295D;
+                    ItemID = 0x295D;
                     break;
                 case 0x295E:
-                    this.ItemID = 0x295F;
+                    ItemID = 0x295F;
                     break;
                 case 0x295D:
-                    this.ItemID = 0x295C;
+                    ItemID = 0x295C;
                     break;
                 case 0x295F:
-                    this.ItemID = 0x295E;
+                    ItemID = 0x295E;
                     break;
             }
         }

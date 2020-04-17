@@ -23,7 +23,7 @@ namespace Server.Items
             base.GetProperties(list);
 
             if (ShowArtifactRarity)
-                list.Add(1061078, this.ArtifactRarity.ToString()); // artifact rarity ~1_val~
+                list.Add(1061078, ArtifactRarity.ToString()); // artifact rarity ~1_val~
         }
 
         public override void Serialize(GenericWriter writer)
@@ -44,9 +44,9 @@ namespace Server.Items
         [Constructable]
         public TortureRackEast()
         {
-            this.AddComponent(new TortureRackComponent(0x4AAB), 0, 0, 0);
-            this.AddComponent(new TortureRackComponent(0x4AA3), 0, 1, 0);
-            this.AddComponent(new TortureRackComponent(0x4AA2), 0, 2, 0);
+            AddComponent(new TortureRackComponent(0x4AAB), 0, 0, 0);
+            AddComponent(new TortureRackComponent(0x4AA3), 0, 1, 0);
+            AddComponent(new TortureRackComponent(0x4AA2), 0, 2, 0);
         }
 
         public TortureRackEast(Serial serial)
@@ -105,9 +105,9 @@ namespace Server.Items
         [Constructable]
         public TortureRackSouth()
         {
-            this.AddComponent(new TortureRackComponent(0x4AA0), 0, 0, 0);
-            this.AddComponent(new TortureRackComponent(0x4AA1), 1, 0, 0);
-            this.AddComponent(new TortureRackComponent(0x4AAD), 2, 0, 0);
+            AddComponent(new TortureRackComponent(0x4AA0), 0, 0, 0);
+            AddComponent(new TortureRackComponent(0x4AA1), 1, 0, 0);
+            AddComponent(new TortureRackComponent(0x4AAD), 2, 0, 0);
         }
 
         public TortureRackSouth(Serial serial)

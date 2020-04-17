@@ -6,10 +6,10 @@ namespace Server.Items
         public RedKey1()
             : base(0x1012)
         {
-            this.Weight = 1.0;
-            this.Hue = 0x8F; // TODO check
-            this.LootType = LootType.Blessed;
-            this.Movable = false;
+            Weight = 1.0;
+            Hue = 0x8F; // TODO check
+            LootType = LootType.Blessed;
+            Movable = false;
         }
 
         public RedKey1(Serial serial)
@@ -30,7 +30,7 @@ namespace Server.Items
                     m.AddToBackpack(new TripartiteKey());
                     a.Delete();
                     b.Delete();
-                    this.Delete();
+                    Delete();
                     m.SendLocalizedMessage(1111649);
                 }
             }

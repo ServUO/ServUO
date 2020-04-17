@@ -6,8 +6,8 @@ namespace Server.Items
         public Lockpicks()
             : base(Utility.Random(2) + 0x14FD)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public Lockpicks(Serial serial)

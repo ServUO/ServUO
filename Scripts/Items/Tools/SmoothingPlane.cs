@@ -9,14 +9,14 @@ namespace Server.Items
         public SmoothingPlane()
             : base(0x1032)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         [Constructable]
         public SmoothingPlane(int uses)
             : base(uses, 0x1032)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public SmoothingPlane(Serial serial)

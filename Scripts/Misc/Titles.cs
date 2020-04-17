@@ -453,8 +453,8 @@ namespace Server.Misc
 
         public FameEntry(int fame, KarmaEntry[] karma)
         {
-            this.m_Fame = fame;
-            this.m_Karma = karma;
+            m_Fame = fame;
+            m_Karma = karma;
         }
     }
 
@@ -465,8 +465,8 @@ namespace Server.Misc
 
         public KarmaEntry(int karma, string title)
         {
-            this.m_Karma = karma;
-            this.m_Title = title;
+            m_Karma = karma;
+            m_Title = title;
         }
     }
 

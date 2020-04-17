@@ -17,7 +17,7 @@ namespace Server.Misc
         {
             HolidayGiftToken2018 gift = new HolidayGiftToken2018();
 
-            switch (this.GiveGift(mob, gift))
+            switch (GiveGift(mob, gift))
             {
                 case GiftResult.Backpack:
                     mob.SendMessage(0x482, "Happy Holidays from the team!  Gift items have been placed in your backpack.");

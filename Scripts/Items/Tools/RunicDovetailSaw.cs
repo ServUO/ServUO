@@ -8,16 +8,16 @@ namespace Server.Items
         public RunicDovetailSaw(CraftResource resource)
             : base(resource, 0x1028)
         {
-            this.Weight = 2.0;
-            this.Hue = CraftResources.GetHue(resource);
+            Weight = 2.0;
+            Hue = CraftResources.GetHue(resource);
         }
 
         [Constructable]
         public RunicDovetailSaw(CraftResource resource, int uses)
             : base(resource, uses, 0x1028)
         {
-            this.Weight = 2.0;
-            this.Hue = CraftResources.GetHue(resource);
+            Weight = 2.0;
+            Hue = CraftResources.GetHue(resource);
         }
 
         public RunicDovetailSaw(Serial serial)
@@ -30,7 +30,7 @@ namespace Server.Items
         {
             get
             {
-                int index = CraftResources.GetIndex(this.Resource);
+                int index = CraftResources.GetIndex(Resource);
 
                 if (index >= 1 && index <= 6)
                     return 1072633 + index;

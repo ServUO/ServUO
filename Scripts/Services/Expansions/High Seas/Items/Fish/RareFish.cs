@@ -59,7 +59,7 @@ namespace Server.Items
         public AutumnDragonfish()
             : base(Utility.RandomMinMax(17637, 17638))
         {
-            Hue = FishInfo.GetFishHue(this.GetType());
+            Hue = FishInfo.GetFishHue(GetType());
         }
 
         public AutumnDragonfish(Serial serial) : base(serial) { }
@@ -86,7 +86,7 @@ namespace Server.Items
         public BullFish()
             : base(Utility.RandomMinMax(17605, 17606))
         {
-            Hue = FishInfo.GetFishHue(this.GetType());
+            Hue = FishInfo.GetFishHue(GetType());
         }
 
         public BullFish(Serial serial) : base(serial) { }
@@ -113,7 +113,7 @@ namespace Server.Items
         public CrystalFish()
             : base(Utility.RandomMinMax(17154, 17155))
         {
-            Hue = FishInfo.GetFishHue(this.GetType());
+            Hue = FishInfo.GetFishHue(GetType());
         }
 
         public CrystalFish(Serial serial) : base(serial) { }
@@ -140,7 +140,7 @@ namespace Server.Items
         public FairySalmon()
             : base(Utility.RandomMinMax(17154, 17155))
         {
-            Hue = FishInfo.GetFishHue(this.GetType());
+            Hue = FishInfo.GetFishHue(GetType());
         }
 
         public FairySalmon(Serial serial) : base(serial) { }
@@ -167,7 +167,7 @@ namespace Server.Items
         public FireFish()
             : base(Utility.RandomMinMax(17158, 17159))
         {
-            Hue = FishInfo.GetFishHue(this.GetType());
+            Hue = FishInfo.GetFishHue(GetType());
         }
 
         public FireFish(Serial serial) : base(serial) { }
@@ -194,7 +194,7 @@ namespace Server.Items
         public GiantKoi()
             : base(Utility.RandomMinMax(17605, 17606))
         {
-            Hue = FishInfo.GetFishHue(this.GetType());
+            Hue = FishInfo.GetFishHue(GetType());
         }
 
         public GiantKoi(Serial serial) : base(serial) { }
@@ -221,7 +221,7 @@ namespace Server.Items
         public GreatBarracuda()
             : base(Utility.RandomMinMax(17603, 17604))
         {
-            Hue = FishInfo.GetFishHue(this.GetType());
+            Hue = FishInfo.GetFishHue(GetType());
         }
 
         public GreatBarracuda(Serial serial) : base(serial) { }
@@ -248,7 +248,7 @@ namespace Server.Items
         public HolyMackerel()
             : base(Utility.RandomMinMax(17154, 17155))
         {
-            Hue = FishInfo.GetFishHue(this.GetType());
+            Hue = FishInfo.GetFishHue(GetType());
         }
 
         public HolyMackerel(Serial serial) : base(serial) { }
@@ -275,7 +275,7 @@ namespace Server.Items
         public LavaFish()
             : base(Utility.RandomMinMax(17156, 17157))
         {
-            Hue = FishInfo.GetFishHue(this.GetType());
+            Hue = FishInfo.GetFishHue(GetType());
         }
 
         public LavaFish(Serial serial) : base(serial) { }
@@ -302,7 +302,7 @@ namespace Server.Items
         public ReaperFish()
             : base(Utility.RandomMinMax(17603, 17604))
         {
-            Hue = FishInfo.GetFishHue(this.GetType());
+            Hue = FishInfo.GetFishHue(GetType());
         }
 
         public ReaperFish(Serial serial) : base(serial) { }
@@ -329,7 +329,7 @@ namespace Server.Items
         public SummerDragonfish()
             : base(Utility.RandomMinMax(17637, 17638))
         {
-            Hue = FishInfo.GetFishHue(this.GetType());
+            Hue = FishInfo.GetFishHue(GetType());
         }
 
         public SummerDragonfish(Serial serial) : base(serial) { }
@@ -356,7 +356,7 @@ namespace Server.Items
         public UnicornFish()
             : base(Utility.RandomMinMax(17156, 17157))
         {
-            Hue = FishInfo.GetFishHue(this.GetType());
+            Hue = FishInfo.GetFishHue(GetType());
         }
 
         public UnicornFish(Serial serial) : base(serial) { }
@@ -383,7 +383,7 @@ namespace Server.Items
         public YellowtailBarracuda()
             : base(Utility.RandomMinMax(17603, 17604))
         {
-            Hue = FishInfo.GetFishHue(this.GetType());
+            Hue = FishInfo.GetFishHue(GetType());
         }
 
         public YellowtailBarracuda(Serial serial) : base(serial) { }

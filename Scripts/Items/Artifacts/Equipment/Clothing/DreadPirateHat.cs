@@ -38,17 +38,17 @@ namespace Server.Items
 
             if (version < 3)
             {
-                this.Resistances.Cold = 0;
-                this.Resistances.Poison = 0;
+                Resistances.Cold = 0;
+                Resistances.Poison = 0;
             }
 
             if (version < 1)
             {
-                this.Attributes.Luck = 0;
-                this.Attributes.AttackChance = 10;
-                this.Attributes.NightSight = 1;
-                this.SkillBonuses.SetValues(0, Utility.RandomCombatSkill(), 10.0);
-                this.SkillBonuses.SetBonus(1, 0);
+                Attributes.Luck = 0;
+                Attributes.AttackChance = 10;
+                Attributes.NightSight = 1;
+                SkillBonuses.SetValues(0, Utility.RandomCombatSkill(), 10.0);
+                SkillBonuses.SetBonus(1, 0);
             }
         }
     }

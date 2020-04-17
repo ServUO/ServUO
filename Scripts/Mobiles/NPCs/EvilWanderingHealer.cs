@@ -7,14 +7,14 @@ namespace Server.Mobiles
         [Constructable]
         public EvilWanderingHealer()
         {
-            this.Title = "the Priest Of Mondain";
-            this.Karma = -10000;
+            Title = "the Priest Of Mondain";
+            Karma = -10000;
 
-            this.AddItem(new GnarledStaff());
+            AddItem(new GnarledStaff());
 
-            this.SetSkill(SkillName.Camping, 80.0, 100.0);
-            this.SetSkill(SkillName.Forensics, 80.0, 100.0);
-            this.SetSkill(SkillName.SpiritSpeak, 80.0, 100.0);
+            SetSkill(SkillName.Camping, 80.0, 100.0);
+            SetSkill(SkillName.Forensics, 80.0, 100.0);
+            SetSkill(SkillName.SpiritSpeak, 80.0, 100.0);
         }
 
         public EvilWanderingHealer(Serial serial)
@@ -41,7 +41,7 @@ namespace Server.Mobiles
         {
             if (m.Criminal)
             {
-                this.Say(501222); // Thou art a criminal.  I shall not resurrect thee.
+                Say(501222); // Thou art a criminal.  I shall not resurrect thee.
                 return false;
             }
 

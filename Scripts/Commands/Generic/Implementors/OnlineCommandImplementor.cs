@@ -9,12 +9,12 @@ namespace Server.Commands.Generic
     {
         public OnlineCommandImplementor()
         {
-            this.Accessors = new string[] { "Online" };
-            this.SupportRequirement = CommandSupport.Online;
-            this.SupportsConditionals = true;
-            this.AccessLevel = AccessLevel.GameMaster;
-            this.Usage = "Online <command> [condition]";
-            this.Description = "Invokes the command on all mobiles that are currently logged in. Optional condition arguments can further restrict the set of objects.";
+            Accessors = new string[] { "Online" };
+            SupportRequirement = CommandSupport.Online;
+            SupportsConditionals = true;
+            AccessLevel = AccessLevel.GameMaster;
+            Usage = "Online <command> [condition]";
+            Description = "Invokes the command on all mobiles that are currently logged in. Optional condition arguments can further restrict the set of objects.";
         }
 
         public override void Compile(Mobile from, BaseCommand command, ref string[] args, ref object obj)
@@ -25,7 +25,7 @@ namespace Server.Commands.Generic
 
                 bool items, mobiles;
 
-                if (!this.CheckObjectTypes(from, command, ext, out items, out mobiles))
+                if (!CheckObjectTypes(from, command, ext, out items, out mobiles))
                     return;
 
                 if (!mobiles) // sanity check

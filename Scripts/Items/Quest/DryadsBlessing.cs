@@ -6,8 +6,8 @@ namespace Server.Items
         public DryadsBlessing()
             : base(0x21C)
         {
-            this.Weight = 1.0;
-            this.Hue = 0x488; // TOOD check
+            Weight = 1.0;
+            Hue = 0x488; // TOOD check
         }
 
         public DryadsBlessing(Serial serial)

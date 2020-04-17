@@ -14,11 +14,11 @@ namespace Server.Commands.Generic
         {
             get
             {
-                return this.m_Property;
+                return m_Property;
             }
             set
             {
-                this.m_Property = value;
+                m_Property = value;
             }
         }
 
@@ -26,11 +26,11 @@ namespace Server.Commands.Generic
         {
             get
             {
-                return (this.m_Order > 0);
+                return (m_Order > 0);
             }
             set
             {
-                this.m_Order = (value ? +1 : -1);
+                m_Order = (value ? +1 : -1);
             }
         }
 
@@ -38,11 +38,11 @@ namespace Server.Commands.Generic
         {
             get
             {
-                return (this.m_Order < 0);
+                return (m_Order < 0);
             }
             set
             {
-                this.m_Order = (value ? -1 : +1);
+                m_Order = (value ? -1 : +1);
             }
         }
 
@@ -50,22 +50,22 @@ namespace Server.Commands.Generic
         {
             get
             {
-                return Math.Sign(this.m_Order);
+                return Math.Sign(m_Order);
             }
             set
             {
-                this.m_Order = Math.Sign(value);
+                m_Order = Math.Sign(value);
 
-                if (this.m_Order == 0)
+                if (m_Order == 0)
                     throw new InvalidOperationException("Sign cannot be zero.");
             }
         }
 
         public OrderInfo(Property property, bool isAscending)
         {
-            this.m_Property = property;
+            m_Property = property;
 
-            this.IsAscending = isAscending;
+            IsAscending = isAscending;
         }
     }
 

@@ -8,14 +8,14 @@ namespace Server.Items
         public SewingKit()
             : base(0xF9D)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         [Constructable]
         public SewingKit(int uses)
             : base(uses, 0xF9D)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public SewingKit(Serial serial)

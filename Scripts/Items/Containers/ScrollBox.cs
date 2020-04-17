@@ -6,8 +6,8 @@ namespace Server.Items
         public ScrollBox()
             : base()
         {
-            this.Movable = true;
-            this.Hue = 1151;
+            Movable = true;
+            Hue = 1151;
 
             DropItem(new PowerScroll(SkillName.Imbuing, 115.0));
 

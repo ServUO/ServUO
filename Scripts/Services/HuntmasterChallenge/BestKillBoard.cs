@@ -17,7 +17,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(this.Location, 3) && HuntingSystem.Instance != null && HuntingSystem.Instance.Active)
+            if (from.InRange(Location, 3) && HuntingSystem.Instance != null && HuntingSystem.Instance.Active)
             {
                 from.CloseGump(typeof(BestKillGump));
                 from.SendGump(new BestKillGump());

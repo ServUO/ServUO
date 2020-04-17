@@ -11,9 +11,9 @@ namespace Server.Items
         public CanvassRobe()
             : base()
         {
-            this.Hue = 2720;
-            this.LootType = LootType.Blessed;
-            this.StrRequirement = 10;
+            Hue = 2720;
+            LootType = LootType.Blessed;
+            StrRequirement = 10;
         }
 
         public override void OnDoubleClick(Mobile from)

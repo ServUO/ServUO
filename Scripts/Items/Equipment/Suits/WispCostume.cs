@@ -7,7 +7,7 @@ namespace Server.Items
         [Constructable]
         public WispCostume() : base()
         {
-            this.CostumeBody = 58;
+            CostumeBody = 58;
         }
 
         public override int LabelNumber => 1114225;// wisp costume

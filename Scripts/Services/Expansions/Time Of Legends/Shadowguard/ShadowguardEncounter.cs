@@ -97,10 +97,10 @@ namespace Server.Engines.Shadowguard
 
         public int PartySize()
         {
-            if (PartyLeader == null || this.Region == null)
+            if (PartyLeader == null || Region == null)
                 return 0;
 
-            int inRegion = this.Region.GetPlayerCount();
+            int inRegion = Region.GetPlayerCount();
 
             if (inRegion > 0)
                 return inRegion;
@@ -243,7 +243,7 @@ namespace Server.Engines.Shadowguard
 
         public void DoWarning()
         {
-            ColUtility.ForEach(this.Region.GetEnumeratedMobiles().Where(m => m is PlayerMobile), m =>
+            ColUtility.ForEach(Region.GetEnumeratedMobiles().Where(m => m is PlayerMobile), m =>
             {
                 m.SendLocalizedMessage(1156252); // You have 5 minutes remaining in the encounter!
             });
@@ -255,7 +255,7 @@ namespace Server.Engines.Shadowguard
         {
             if (message)
             {
-                ColUtility.ForEach(this.Region.GetEnumeratedMobiles().Where(m => m is PlayerMobile), m =>
+                ColUtility.ForEach(Region.GetEnumeratedMobiles().Where(m => m is PlayerMobile), m =>
                 {
                     m.SendLocalizedMessage(1156253, "", 0x32); // The encounter timer has expired!
                 });

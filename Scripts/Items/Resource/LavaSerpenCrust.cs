@@ -13,8 +13,8 @@ namespace Server.Items
         public LavaSerpentCrust(int amount)
             : base(0x572D)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public LavaSerpentCrust(Serial serial)

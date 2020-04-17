@@ -14,8 +14,8 @@ namespace Server.Items
         public TapestryOfSosaria()
             : base(0x234E)
         {
-            this.Weight = 1.0;
-            this.LootType = LootType.Blessed;
+            Weight = 1.0;
+            LootType = LootType.Blessed;
         }
 
         public TapestryOfSosaria(Serial serial)
@@ -29,11 +29,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Level;
+                return m_Level;
             }
             set
             {
-                this.m_Level = value;
+                m_Level = value;
             }
         }
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
@@ -45,7 +45,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(this.GetWorldLocation(), 2))
+            if (from.InRange(GetWorldLocation(), 2))
             {
                 from.CloseGump(typeof(InternalGump));
                 from.SendGump(new InternalGump());
@@ -62,7 +62,7 @@ namespace Server.Items
 
             writer.WriteEncodedInt(0); // version
 
-            writer.WriteEncodedInt((int)this.m_Level);
+            writer.WriteEncodedInt((int)m_Level);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -71,7 +71,7 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            this.m_Level = (SecureLevel)reader.ReadEncodedInt();
+            m_Level = (SecureLevel)reader.ReadEncodedInt();
         }
 
         private class InternalGump : Gump
@@ -79,7 +79,7 @@ namespace Server.Items
             public InternalGump()
                 : base(50, 50)
             {
-                this.AddImage(0, 0, 0x2C95);
+                AddImage(0, 0, 0x2C95);
             }
         }
     }

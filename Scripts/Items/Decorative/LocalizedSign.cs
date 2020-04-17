@@ -7,14 +7,14 @@ namespace Server.Items
         public LocalizedSign(SignType type, SignFacing facing, int labelNumber)
             : base((0xB95 + (2 * (int)type)) + (int)facing)
         {
-            this.m_LabelNumber = labelNumber;
+            m_LabelNumber = labelNumber;
         }
 
         [Constructable]
         public LocalizedSign(int itemID, int labelNumber)
             : base(itemID)
         {
-            this.m_LabelNumber = labelNumber;
+            m_LabelNumber = labelNumber;
         }
 
         public LocalizedSign(Serial serial)
@@ -22,18 +22,18 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber => this.m_LabelNumber;
+        public override int LabelNumber => m_LabelNumber;
         [CommandProperty(AccessLevel.GameMaster)]
         public int Number
         {
             get
             {
-                return this.m_LabelNumber;
+                return m_LabelNumber;
             }
             set
             {
-                this.m_LabelNumber = value;
-                this.InvalidateProperties();
+                m_LabelNumber = value;
+                InvalidateProperties();
             }
         }
         public override void Serialize(GenericWriter writer)
@@ -42,7 +42,7 @@ namespace Server.Items
 
             writer.Write(0);
 
-            writer.Write(this.m_LabelNumber);
+            writer.Write(m_LabelNumber);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -55,7 +55,7 @@ namespace Server.Items
             {
                 case 0:
                     {
-                        this.m_LabelNumber = reader.ReadInt();
+                        m_LabelNumber = reader.ReadInt();
                         break;
                     }
             }

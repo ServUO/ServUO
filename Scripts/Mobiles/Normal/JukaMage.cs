@@ -107,14 +107,14 @@ namespace Server.Mobiles
 
         public override void OnThink()
         {
-            if (DateTime.UtcNow >= this.m_NextAbilityTime)
+            if (DateTime.UtcNow >= m_NextAbilityTime)
             {
                 JukaLord toBuff = null;
                 IPooledEnumerable eable = GetMobilesInRange(8);
 
                 foreach (Mobile m in eable)
                 {
-                    if (m is JukaLord && this.IsFriend(m) && m.Combatant != null && this.CanBeBeneficial(m) && m.CanBeginAction(typeof(JukaMage)) && this.InLOS(m))
+                    if (m is JukaLord && IsFriend(m) && m.Combatant != null && CanBeBeneficial(m) && m.CanBeginAction(typeof(JukaMage)) && InLOS(m))
                     {
                         toBuff = (JukaLord)m;
                         break;
@@ -124,14 +124,14 @@ namespace Server.Mobiles
 
                 if (toBuff != null)
                 {
-                    if (this.CanBeBeneficial(toBuff) && toBuff.BeginAction(typeof(JukaMage)))
+                    if (CanBeBeneficial(toBuff) && toBuff.BeginAction(typeof(JukaMage)))
                     {
-                        this.m_NextAbilityTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(30, 60));
+                        m_NextAbilityTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(30, 60));
 
                         toBuff.Say(true, "Give me the power to destroy my enemies!");
-                        this.Say(true, "Fight well my lord!");
+                        Say(true, "Fight well my lord!");
 
-                        this.DoBeneficial(toBuff);
+                        DoBeneficial(toBuff);
 
                         object[] state = new object[] { toBuff, toBuff.HitsMaxSeed, toBuff.RawStr, toBuff.RawDex };
 
@@ -169,7 +169,7 @@ namespace Server.Mobiles
                 }
                 else
                 {
-                    this.m_NextAbilityTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(2, 5));
+                    m_NextAbilityTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(2, 5));
                 }
             }
 

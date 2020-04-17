@@ -31,7 +31,7 @@ namespace Server.Items
 
         public void DoPoison(Mobile from)
         {
-            from.ApplyPoison(from, this.Poison);
+            from.ApplyPoison(from, Poison);
         }
 
         public override void Drink(Mobile from)

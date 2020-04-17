@@ -6,8 +6,8 @@ namespace Server.Items
         public ToolKit()
             : base(Utility.Random(2) + 0x1EBA)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public ToolKit(Serial serial)

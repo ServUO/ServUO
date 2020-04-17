@@ -35,7 +35,7 @@ namespace Server.Engines.Despise
 
         public override Mobile GetBardTarget(bool creaturesOnly = false)
         {
-            IPooledEnumerable eable = this.Map.GetMobilesInRange(this.Location, RangePerception);
+            IPooledEnumerable eable = Map.GetMobilesInRange(Location, RangePerception);
 
             Mobile closest = null;
             int range = 0;
@@ -65,10 +65,10 @@ namespace Server.Engines.Despise
             if (!CanBeHarmful(m, false) || Server.SkillHandlers.Discordance.GetEffect(m, ref discordanceEffect))
                 return false;
 
-            if ((m is DespiseCreature && ((DespiseCreature)m).Alignment != Alignment.Neutral && ((DespiseCreature)m).Alignment != this.Alignment) || m is DespiseBoss)
+            if ((m is DespiseCreature && ((DespiseCreature)m).Alignment != Alignment.Neutral && ((DespiseCreature)m).Alignment != Alignment) || m is DespiseBoss)
                 return true;
 
-            return m is PlayerMobile && !this.Controlled && ((m.Karma < 0 && this.Alignment == Alignment.Good) || (m.Karma > 0 && this.Alignment == Alignment.Evil));
+            return m is PlayerMobile && !Controlled && ((m.Karma < 0 && Alignment == Alignment.Good) || (m.Karma > 0 && Alignment == Alignment.Evil));
         }
 
         public Phantom(Serial serial) : base(serial)
@@ -450,10 +450,10 @@ namespace Server.Engines.Despise
         {
             base.OnThink();
 
-            if (m_NextHeal < DateTime.UtcNow && this.Map != null && this.Map != Map.Internal)
+            if (m_NextHeal < DateTime.UtcNow && Map != null && Map != Map.Internal)
             {
                 List<Mobile> eligables = new List<Mobile>();
-                IPooledEnumerable eable = this.Map.GetMobilesInRange(this.Location, 8);
+                IPooledEnumerable eable = Map.GetMobilesInRange(Location, 8);
 
                 foreach (Mobile m in eable)
                 {

@@ -11,8 +11,8 @@ namespace Server.Items
         public PickpocketDip(int itemID)
             : base(itemID)
         {
-            this.m_MinSkill = -25.0;
-            this.m_MaxSkill = +25.0;
+            m_MinSkill = -25.0;
+            m_MaxSkill = +25.0;
         }
 
         public PickpocketDip(Serial serial)
@@ -25,11 +25,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_MinSkill;
+                return m_MinSkill;
             }
             set
             {
-                this.m_MinSkill = value;
+                m_MinSkill = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -37,75 +37,75 @@ namespace Server.Items
         {
             get
             {
-                return this.m_MaxSkill;
+                return m_MaxSkill;
             }
             set
             {
-                this.m_MaxSkill = value;
+                m_MaxSkill = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Swinging => (this.m_Timer != null);
+        public bool Swinging => (m_Timer != null);
         public void UpdateItemID()
         {
-            int baseItemID = 0x1EC0 + (((this.ItemID - 0x1EC0) / 3) * 3);
+            int baseItemID = 0x1EC0 + (((ItemID - 0x1EC0) / 3) * 3);
 
-            this.ItemID = baseItemID + (this.Swinging ? 1 : 0);
+            ItemID = baseItemID + (Swinging ? 1 : 0);
         }
 
         public void BeginSwing()
         {
-            if (this.m_Timer != null)
-                this.m_Timer.Stop();
+            if (m_Timer != null)
+                m_Timer.Stop();
 
-            this.m_Timer = new InternalTimer(this);
-            this.m_Timer.Start();
+            m_Timer = new InternalTimer(this);
+            m_Timer.Start();
 
-            this.UpdateItemID();
+            UpdateItemID();
         }
 
         public void EndSwing()
         {
-            if (this.m_Timer != null)
-                this.m_Timer.Stop();
+            if (m_Timer != null)
+                m_Timer.Stop();
 
-            this.m_Timer = null;
+            m_Timer = null;
 
-            this.UpdateItemID();
+            UpdateItemID();
         }
 
         public void Use(Mobile from)
         {
-            from.Direction = from.GetDirectionTo(this.GetWorldLocation());
+            from.Direction = from.GetDirectionTo(GetWorldLocation());
 
-            Effects.PlaySound(this.GetWorldLocation(), this.Map, 0x4F);
+            Effects.PlaySound(GetWorldLocation(), Map, 0x4F);
 
-            if (from.CheckSkill(SkillName.Stealing, this.m_MinSkill, this.m_MaxSkill))
+            if (from.CheckSkill(SkillName.Stealing, m_MinSkill, m_MaxSkill))
             {
-                this.SendLocalizedMessageTo(from, 501834); // You successfully avoid disturbing the dip while searching it.
+                SendLocalizedMessageTo(from, 501834); // You successfully avoid disturbing the dip while searching it.
             }
             else
             {
-                Effects.PlaySound(this.GetWorldLocation(), this.Map, 0x390);
+                Effects.PlaySound(GetWorldLocation(), Map, 0x390);
 
-                this.BeginSwing();
-                this.ProcessDelta();
-                this.SendLocalizedMessageTo(from, 501831); // You carelessly bump the dip and start it swinging.
+                BeginSwing();
+                ProcessDelta();
+                SendLocalizedMessageTo(from, 501831); // You carelessly bump the dip and start it swinging.
             }
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!from.InRange(this.GetWorldLocation(), 1))
-                this.SendLocalizedMessageTo(from, 501816); // You are too far away to do that.
-            else if (this.Swinging)
-                this.SendLocalizedMessageTo(from, 501815); // You have to wait until it stops swinging.
-            else if (from.Skills[SkillName.Stealing].Base >= this.m_MaxSkill)
-                this.SendLocalizedMessageTo(from, 501830); // Your ability to steal cannot improve any further by simply practicing on a dummy.
+            if (!from.InRange(GetWorldLocation(), 1))
+                SendLocalizedMessageTo(from, 501816); // You are too far away to do that.
+            else if (Swinging)
+                SendLocalizedMessageTo(from, 501815); // You have to wait until it stops swinging.
+            else if (from.Skills[SkillName.Stealing].Base >= m_MaxSkill)
+                SendLocalizedMessageTo(from, 501830); // Your ability to steal cannot improve any further by simply practicing on a dummy.
             else if (from.Mounted)
-                this.SendLocalizedMessageTo(from, 501829); // You can't practice on this while on a mount.
+                SendLocalizedMessageTo(from, 501829); // You can't practice on this while on a mount.
             else
-                this.Use(from);
+                Use(from);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -114,8 +114,8 @@ namespace Server.Items
 
             writer.Write(0);
 
-            writer.Write(this.m_MinSkill);
-            writer.Write(this.m_MaxSkill);
+            writer.Write(m_MinSkill);
+            writer.Write(m_MaxSkill);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -128,20 +128,20 @@ namespace Server.Items
             {
                 case 0:
                     {
-                        this.m_MinSkill = reader.ReadDouble();
-                        this.m_MaxSkill = reader.ReadDouble();
+                        m_MinSkill = reader.ReadDouble();
+                        m_MaxSkill = reader.ReadDouble();
 
-                        if (this.m_MinSkill == 0.0 && this.m_MaxSkill == 30.0)
+                        if (m_MinSkill == 0.0 && m_MaxSkill == 30.0)
                         {
-                            this.m_MinSkill = -25.0;
-                            this.m_MaxSkill = +25.0;
+                            m_MinSkill = -25.0;
+                            m_MaxSkill = +25.0;
                         }
 
                         break;
                     }
             }
 
-            this.UpdateItemID();
+            UpdateItemID();
         }
 
         private class InternalTimer : Timer
@@ -150,13 +150,13 @@ namespace Server.Items
             public InternalTimer(PickpocketDip dip)
                 : base(TimeSpan.FromSeconds(3.0))
             {
-                this.m_Dip = dip;
-                this.Priority = TimerPriority.FiftyMS;
+                m_Dip = dip;
+                Priority = TimerPriority.FiftyMS;
             }
 
             protected override void OnTick()
             {
-                this.m_Dip.EndSwing();
+                m_Dip.EndSwing();
             }
         }
     }
@@ -166,7 +166,7 @@ namespace Server.Items
         [Constructable]
         public PickpocketDipEastAddon()
         {
-            this.AddComponent(new PickpocketDip(0x1EC3), 0, 0, 0);
+            AddComponent(new PickpocketDip(0x1EC3), 0, 0, 0);
         }
 
         public PickpocketDipEastAddon(Serial serial)
@@ -224,7 +224,7 @@ namespace Server.Items
         [Constructable]
         public PickpocketDipSouthAddon()
         {
-            this.AddComponent(new PickpocketDip(0x1EC0), 0, 0, 0);
+            AddComponent(new PickpocketDip(0x1EC0), 0, 0, 0);
         }
 
         public PickpocketDipSouthAddon(Serial serial)

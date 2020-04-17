@@ -5,7 +5,7 @@ namespace Server.Items
         [Constructable]
         public SmallForgeAddon()
         {
-            this.AddComponent(new ForgeComponent(0xFB1), 0, 0, 0);
+            AddComponent(new ForgeComponent(0xFB1), 0, 0, 0);
         }
 
         public SmallForgeAddon(Serial serial)

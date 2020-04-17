@@ -133,7 +133,7 @@ namespace Server.Mobiles
 
             Point3D pnt = Point3D.Zero;
 
-            if (!CanDropCrate(ref pnt, this.Map))
+            if (!CanDropCrate(ref pnt, Map))
             {
                 SayTo(from, 1116517); //Arrrgh!  My dock has no more room.  Please come back later.
                 from.BankBox.DropItem(crate);
@@ -143,7 +143,7 @@ namespace Server.Mobiles
             else
             {
                 from.SendLocalizedMessage(1116542, ShipCrate.DT.ToString()); //Yer ship has been unloaded to a crate inside this here warehouse.  You have ~1_time~ minutes to get yer goods or it be gone.
-                crate.MoveToWorld(pnt, this.Map);
+                crate.MoveToWorld(pnt, Map);
             }
 
             if (cantMove)
@@ -194,12 +194,12 @@ namespace Server.Mobiles
 
         public BaseBoat GetBoatInRegion(Mobile from)
         {
-            if (this.Map == null || this.Map == Map.Internal || this.Region == null)
+            if (Map == null || Map == Map.Internal || Region == null)
                 return null;
 
-            foreach (Rectangle3D rec in this.Region.Area)
+            foreach (Rectangle3D rec in Region.Area)
             {
-                IPooledEnumerable eable = this.Map.GetItemsInBounds(new Rectangle2D(rec.Start.X, rec.Start.Y, rec.Width, rec.Height));
+                IPooledEnumerable eable = Map.GetItemsInBounds(new Rectangle2D(rec.Start.X, rec.Start.Y, rec.Width, rec.Height));
 
                 foreach (Item item in eable)
                 {

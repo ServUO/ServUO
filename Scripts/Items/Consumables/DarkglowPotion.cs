@@ -6,7 +6,7 @@ namespace Server.Items
         public DarkglowPotion()
             : base(PotionEffect.Darkglow)
         {
-            this.Hue = 0x96;
+            Hue = 0x96;
         }
 
         public DarkglowPotion(Serial serial)

@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public ThePenIsMightierQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(RecallScroll), "recall scroll", 5, 0x1F4C));
+            AddObjective(new ObtainObjective(typeof(RecallScroll), "recall scroll", 5, 0x1F4C));
 
-            this.AddReward(new BaseReward(typeof(RedLeatherBook), 1075545)); // a book bound in red leather
+            AddReward(new BaseReward(typeof(RedLeatherBook), 1075545)); // a book bound in red leather
         }
 
         public override TimeSpan RestartDelay => TimeSpan.FromMinutes(3);
@@ -65,22 +65,22 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = false;
+            CantWalk = true;
+            Race = Race.Human;
 
-            this.Hue = 0x83F7;
-            this.HairItemID = 0x204A;
-            this.HairHue = 0x459;
+            Hue = 0x83F7;
+            HairItemID = 0x204A;
+            HairHue = 0x459;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new ThighBoots());
-            this.AddItem(new Robe(0x2FD));
+            AddItem(new Backpack());
+            AddItem(new ThighBoots());
+            AddItem(new Robe(0x2FD));
         }
 
         public override void Serialize(GenericWriter writer)
@@ -104,7 +104,7 @@ namespace Server.Engines.Quests
         public RedLeatherBook()
             : base(0xFF2)
         {
-            this.Hue = 0x485;
+            Hue = 0x485;
         }
 
         public RedLeatherBook(Serial serial)

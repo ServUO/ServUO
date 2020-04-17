@@ -6,8 +6,8 @@ namespace Server.Items
         public PrismaticCrystal()
             : base(0x2DA)
         {
-            this.Movable = false;
-            this.Hue = 0x32;
+            Movable = false;
+            Hue = 0x32;
         }
 
         public PrismaticCrystal(Serial serial)
@@ -21,12 +21,12 @@ namespace Server.Items
             if (from.Backpack == null)
                 return;
 
-            if (from.InRange(this.Location, 2))
+            if (from.InRange(Location, 2))
             {
                 if (from.Backpack.FindItemByType(typeof(PrismaticAmber), true) == null)
                 {
                     if (from.PlaceInBackpack(new PrismaticAmber()))
-                        this.Delete();
+                        Delete();
                     else
                         from.SendLocalizedMessage(1077971); // Make room in your backpack first!
                 }

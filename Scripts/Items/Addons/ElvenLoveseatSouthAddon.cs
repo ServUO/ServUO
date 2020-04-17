@@ -5,8 +5,8 @@ namespace Server.Items
         [Constructable]
         public ElvenLoveseatSouthAddon()
         {
-            this.AddComponent(new AddonComponent(0x308A), 0, 0, 0);
-            this.AddComponent(new AddonComponent(0x308B), 0, -1, 0);
+            AddComponent(new AddonComponent(0x308A), 0, 0, 0);
+            AddComponent(new AddonComponent(0x308B), 0, -1, 0);
         }
 
         public ElvenLoveseatSouthAddon(Serial serial)

@@ -5,10 +5,10 @@ namespace Server.Items
         [Constructable]
         public LargeBedSouthAddon()
         {
-            this.AddComponent(new AddonComponent(0xA83), 0, 0, 0);
-            this.AddComponent(new AddonComponent(0xA7F), 0, 1, 0);
-            this.AddComponent(new AddonComponent(0xA82), 1, 0, 0);
-            this.AddComponent(new AddonComponent(0xA7E), 1, 1, 0);
+            AddComponent(new AddonComponent(0xA83), 0, 0, 0);
+            AddComponent(new AddonComponent(0xA7F), 0, 1, 0);
+            AddComponent(new AddonComponent(0xA82), 1, 0, 0);
+            AddComponent(new AddonComponent(0xA7E), 1, 1, 0);
         }
 
         public LargeBedSouthAddon(Serial serial)

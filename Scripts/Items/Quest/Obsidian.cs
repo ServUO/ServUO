@@ -94,25 +94,25 @@ namespace Server.Engines.Quests.Collector
         {
             get
             {
-                return this.m_Quantity;
+                return m_Quantity;
             }
             set
             {
                 if (value <= 1)
-                    this.m_Quantity = 1;
+                    m_Quantity = 1;
                 else if (value >= m_Completed)
-                    this.m_Quantity = m_Completed;
+                    m_Quantity = m_Completed;
                 else
-                    this.m_Quantity = value;
+                    m_Quantity = value;
 
-                if (this.m_Quantity < m_Partial)
-                    this.ItemID = 0x1EA7;
-                else if (this.m_Quantity < m_Completed)
-                    this.ItemID = 0x1F13;
+                if (m_Quantity < m_Partial)
+                    ItemID = 0x1EA7;
+                else if (m_Quantity < m_Completed)
+                    ItemID = 0x1F13;
                 else
-                    this.ItemID = 0x12CB;
+                    ItemID = 0x12CB;
 
-                this.InvalidateProperties();
+                InvalidateProperties();
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -120,12 +120,12 @@ namespace Server.Engines.Quests.Collector
         {
             get
             {
-                return this.m_StatueName;
+                return m_StatueName;
             }
             set
             {
-                this.m_StatueName = value;
-                this.InvalidateProperties();
+                m_StatueName = value;
+                InvalidateProperties();
             }
         }
         public override bool ForceShowProperties => true;
@@ -141,28 +141,28 @@ namespace Server.Engines.Quests.Collector
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            if (this.m_Quantity < m_Partial)
+            if (m_Quantity < m_Partial)
                 list.Add(1055137); // a section of an obsidian statue
-            else if (this.m_Quantity < m_Completed)
+            else if (m_Quantity < m_Completed)
                 list.Add(1055138); // a partially reconstructed obsidian statue
             else
-                list.Add(1055139, this.m_StatueName); // an obsidian statue of ~1_STATUE_NAME~
+                list.Add(1055139, m_StatueName); // an obsidian statue of ~1_STATUE_NAME~
         }
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
         {
             base.GetContextMenuEntries(from, list);
 
-            if (from.Alive && this.m_Quantity >= m_Partial && this.m_Quantity < m_Completed && this.IsChildOf(from.Backpack))
+            if (from.Alive && m_Quantity >= m_Partial && m_Quantity < m_Completed && IsChildOf(from.Backpack))
                 list.Add(new DisassembleEntry(this));
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.m_Quantity < m_Completed)
+            if (m_Quantity < m_Completed)
             {
-                if (!this.IsChildOf(from.Backpack))
-                    from.Send(new MessageLocalized(this.Serial, this.ItemID, MessageType.Regular, 0x2C, 3, 500309, "", "")); // Nothing Happens.
+                if (!IsChildOf(from.Backpack))
+                    from.Send(new MessageLocalized(Serial, ItemID, MessageType.Regular, 0x2C, 3, 500309, "", "")); // Nothing Happens.
                 else
                     from.Target = new InternalTarget(this);
             }
@@ -174,7 +174,7 @@ namespace Server.Engines.Quests.Collector
 
             writer.Write(0); // version
 
-            writer.WriteEncodedInt(this.m_Quantity);
+            writer.WriteEncodedInt(m_Quantity);
             writer.Write(m_StatueName);
         }
 
@@ -184,8 +184,8 @@ namespace Server.Engines.Quests.Collector
 
             int version = reader.ReadInt();
 
-            this.m_Quantity = reader.ReadEncodedInt();
-            this.m_StatueName = Utility.Intern(reader.ReadString());
+            m_Quantity = reader.ReadEncodedInt();
+            m_StatueName = Utility.Intern(reader.ReadString());
         }
 
         private class DisassembleEntry : ContextMenuEntry
@@ -194,18 +194,18 @@ namespace Server.Engines.Quests.Collector
             public DisassembleEntry(Obsidian obsidian)
                 : base(6142)
             {
-                this.m_Obsidian = obsidian;
+                m_Obsidian = obsidian;
             }
 
             public override void OnClick()
             {
-                Mobile from = this.Owner.From;
-                if (!this.m_Obsidian.Deleted && this.m_Obsidian.Quantity >= Obsidian.m_Partial && this.m_Obsidian.Quantity < Obsidian.m_Completed && this.m_Obsidian.IsChildOf(from.Backpack) && from.CheckAlive())
+                Mobile from = Owner.From;
+                if (!m_Obsidian.Deleted && m_Obsidian.Quantity >= Obsidian.m_Partial && m_Obsidian.Quantity < Obsidian.m_Completed && m_Obsidian.IsChildOf(from.Backpack) && from.CheckAlive())
                 {
-                    for (int i = 0; i < this.m_Obsidian.Quantity - 1; i++)
+                    for (int i = 0; i < m_Obsidian.Quantity - 1; i++)
                         from.AddToBackpack(new Obsidian());
 
-                    this.m_Obsidian.Quantity = 1;
+                    m_Obsidian.Quantity = 1;
                 }
             }
         }
@@ -216,42 +216,42 @@ namespace Server.Engines.Quests.Collector
             public InternalTarget(Obsidian obsidian)
                 : base(-1, false, TargetFlags.None)
             {
-                this.m_Obsidian = obsidian;
+                m_Obsidian = obsidian;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
                 Item targ = targeted as Item;
-                if (this.m_Obsidian.Deleted || this.m_Obsidian.Quantity >= Obsidian.m_Completed || targ == null)
+                if (m_Obsidian.Deleted || m_Obsidian.Quantity >= Obsidian.m_Completed || targ == null)
                     return;
 
-                if (this.m_Obsidian.IsChildOf(from.Backpack) && targ.IsChildOf(from.Backpack) && targ is Obsidian && targ != this.m_Obsidian)
+                if (m_Obsidian.IsChildOf(from.Backpack) && targ.IsChildOf(from.Backpack) && targ is Obsidian && targ != m_Obsidian)
                 {
                     Obsidian targObsidian = (Obsidian)targ;
                     if (targObsidian.Quantity < Obsidian.m_Completed)
                     {
-                        if (targObsidian.Quantity + this.m_Obsidian.Quantity <= Obsidian.m_Completed)
+                        if (targObsidian.Quantity + m_Obsidian.Quantity <= Obsidian.m_Completed)
                         {
-                            targObsidian.Quantity += this.m_Obsidian.Quantity;
-                            this.m_Obsidian.Delete();
+                            targObsidian.Quantity += m_Obsidian.Quantity;
+                            m_Obsidian.Delete();
                         }
                         else
                         {
                             int delta = Obsidian.m_Completed - targObsidian.Quantity;
                             targObsidian.Quantity += delta;
-                            this.m_Obsidian.Quantity -= delta;
+                            m_Obsidian.Quantity -= delta;
                         }
 
                         if (targObsidian.Quantity >= Obsidian.m_Completed)
                             targObsidian.StatueName = Obsidian.RandomName(from);
 
-                        from.Send(new AsciiMessage(targObsidian.Serial, targObsidian.ItemID, MessageType.Regular, 0x59, 3, this.m_Obsidian.Name, "Something Happened."));
+                        from.Send(new AsciiMessage(targObsidian.Serial, targObsidian.ItemID, MessageType.Regular, 0x59, 3, m_Obsidian.Name, "Something Happened."));
 
                         return;
                     }
                 }
 
-                from.Send(new MessageLocalized(this.m_Obsidian.Serial, this.m_Obsidian.ItemID, MessageType.Regular, 0x2C, 3, 500309, this.m_Obsidian.Name, "")); // Nothing Happens.
+                from.Send(new MessageLocalized(m_Obsidian.Serial, m_Obsidian.ItemID, MessageType.Regular, 0x2C, 3, 500309, m_Obsidian.Name, "")); // Nothing Happens.
             }
         }
     }

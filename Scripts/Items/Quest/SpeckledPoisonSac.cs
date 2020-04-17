@@ -6,8 +6,8 @@ namespace Server.Items
         public SpeckledPoisonSac()
             : base(0x23A)
         {
-            this.LootType = LootType.Blessed;
-            this.Weight = 2.0;
+            LootType = LootType.Blessed;
+            Weight = 2.0;
         }
 
         public SpeckledPoisonSac(Serial serial)

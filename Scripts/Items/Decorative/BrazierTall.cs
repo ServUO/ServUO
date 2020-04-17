@@ -8,11 +8,11 @@ namespace Server.Items
         public BrazierTall()
             : base(0x19AA)
         {
-            this.Movable = false;
-            this.Duration = TimeSpan.Zero; // Never burnt out
-            this.Burning = true;
-            this.Light = LightType.Circle300;
-            this.Weight = 25.0;
+            Movable = false;
+            Duration = TimeSpan.Zero; // Never burnt out
+            Burning = true;
+            Light = LightType.Circle300;
+            Weight = 25.0;
         }
 
         public BrazierTall(Serial serial)

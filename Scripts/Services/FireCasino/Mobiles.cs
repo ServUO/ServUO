@@ -27,7 +27,7 @@ namespace Server.Engines.ResortAndCasino
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (m is PlayerMobile && m.InRange(this.Location, 3))
+            if (m is PlayerMobile && m.InRange(Location, 3))
             {
                 m.SendGump(new PurchaseCasinoChipGump(m as PlayerMobile));
             }
@@ -357,7 +357,7 @@ namespace Server.Engines.ResortAndCasino
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (!m.InRange(this.Location, 3))
+            if (!m.InRange(Location, 3))
                 return;
 
             if (_Drinks == null)
@@ -388,7 +388,7 @@ namespace Server.Engines.ResortAndCasino
         {
             base.OnThink();
 
-            IPooledEnumerable eable = this.Map.GetMobilesInRange(this.Location, 8);
+            IPooledEnumerable eable = Map.GetMobilesInRange(Location, 8);
             bool canspeak = _NextAdvertise < DateTime.UtcNow;
 
             if (!canspeak)

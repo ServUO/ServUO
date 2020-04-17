@@ -9,9 +9,9 @@ namespace Server.Engines.Quests
         public MougGuurMustDieQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(MougGuur), "moug-guur", 1, "Sanctuary"));
+            AddObjective(new SlayObjective(typeof(MougGuur), "moug-guur", 1, "Sanctuary"));
 
-            this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
+            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
         public override QuestChain ChainID => QuestChain.MiniBoss;
@@ -52,9 +52,9 @@ namespace Server.Engines.Quests
         public LeaderOfThePackQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Chiikkaha), "chiikkaha", 1, "Sanctuary"));
+            AddObjective(new SlayObjective(typeof(Chiikkaha), "chiikkaha", 1, "Sanctuary"));
 
-            this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
+            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
         public override QuestChain ChainID => QuestChain.MiniBoss;
@@ -98,9 +98,9 @@ namespace Server.Engines.Quests
         public SayonaraSzavetraQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Szavetra), "szavetra", 1, "Sanctuary"));
+            AddObjective(new SlayObjective(typeof(Szavetra), "szavetra", 1, "Sanctuary"));
 
-            this.AddReward(new BaseReward(typeof(RewardBox), 1072584));
+            AddReward(new BaseReward(typeof(RewardBox), 1072584));
         }
 
         public override QuestChain ChainID => QuestChain.MiniBoss;

@@ -107,16 +107,16 @@ namespace Server.Items
             public MoveDelayTimer(Mobile m)
                 : base(TimeSpan.FromSeconds(10.0))
             {
-                this.m_Mobile = m;
+                m_Mobile = m;
 
-                this.Priority = TimerPriority.TwoFiftyMS;
+                Priority = TimerPriority.TwoFiftyMS;
 
-                this.m_Mobile.BeginAction(typeof(Fists));
+                m_Mobile.BeginAction(typeof(Fists));
             }
 
             protected override void OnTick()
             {
-                this.m_Mobile.EndAction(typeof(Fists));
+                m_Mobile.EndAction(typeof(Fists));
             }
         }
 

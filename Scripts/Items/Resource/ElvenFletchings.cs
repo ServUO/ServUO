@@ -13,8 +13,8 @@ namespace Server.Items
         public ElvenFletching(int amount)
             : base(0x5737)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public ElvenFletching(Serial serial)

@@ -9,41 +9,41 @@ namespace Server.Mobiles
         public EarthElemental()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "an earth elemental";
-            this.Body = 14;
-            this.BaseSoundID = 268;
+            Name = "an earth elemental";
+            Body = 14;
+            BaseSoundID = 268;
 
-            this.SetStr(126, 155);
-            this.SetDex(66, 85);
-            this.SetInt(71, 92);
+            SetStr(126, 155);
+            SetDex(66, 85);
+            SetInt(71, 92);
 
-            this.SetHits(76, 93);
+            SetHits(76, 93);
 
-            this.SetDamage(9, 16);
+            SetDamage(9, 16);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 30, 35);
-            this.SetResistance(ResistanceType.Fire, 10, 20);
-            this.SetResistance(ResistanceType.Cold, 10, 20);
-            this.SetResistance(ResistanceType.Poison, 15, 25);
-            this.SetResistance(ResistanceType.Energy, 15, 25);
+            SetResistance(ResistanceType.Physical, 30, 35);
+            SetResistance(ResistanceType.Fire, 10, 20);
+            SetResistance(ResistanceType.Cold, 10, 20);
+            SetResistance(ResistanceType.Poison, 15, 25);
+            SetResistance(ResistanceType.Energy, 15, 25);
 
-            this.SetSkill(SkillName.MagicResist, 50.1, 95.0);
-            this.SetSkill(SkillName.Tactics, 60.1, 100.0);
-            this.SetSkill(SkillName.Wrestling, 60.1, 100.0);
+            SetSkill(SkillName.MagicResist, 50.1, 95.0);
+            SetSkill(SkillName.Tactics, 60.1, 100.0);
+            SetSkill(SkillName.Wrestling, 60.1, 100.0);
 
-            this.Fame = 3500;
-            this.Karma = -3500;
+            Fame = 3500;
+            Karma = -3500;
 
-            this.ControlSlots = 2;
+            ControlSlots = 2;
 
-            this.PackItem(new FertileDirt(Utility.RandomMinMax(1, 4)));
-            this.PackItem(new MandrakeRoot());
+            PackItem(new FertileDirt(Utility.RandomMinMax(1, 4)));
+            PackItem(new MandrakeRoot());
 
             Item ore = new IronOre(5);
             ore.ItemID = 0x19B7;
-            this.PackItem(ore);
+            PackItem(ore);
         }
 
         public EarthElemental(Serial serial)
@@ -57,9 +57,9 @@ namespace Server.Mobiles
         public override int TreasureMapLevel => 1;
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Average);
-            this.AddLoot(LootPack.Meager);
-            this.AddLoot(LootPack.Gems);
+            AddLoot(LootPack.Average);
+            AddLoot(LootPack.Meager);
+            AddLoot(LootPack.Gems);
         }
 
         public override void Serialize(GenericWriter writer)

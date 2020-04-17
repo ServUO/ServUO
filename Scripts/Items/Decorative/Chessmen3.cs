@@ -6,8 +6,8 @@ namespace Server.Items
         public Chessmen3()
             : base(0xE14)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public Chessmen3(Serial serial)

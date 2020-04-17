@@ -43,7 +43,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!from.InRange(this.GetWorldLocation(), 1))
+            if (!from.InRange(GetWorldLocation(), 1))
             {
                 from.SendLocalizedMessage(502138); // That is too far away for you to use
                 return;
@@ -88,7 +88,7 @@ namespace Server.Items
                     }
 
                     if (m_LifeForce <= 0)
-                        this.Consume();
+                        Consume();
 
                     Timer.DelayCall(TimeSpan.FromSeconds(2.0), new TimerStateCallback(ReleaseHealLock), from);
                     return;
@@ -109,7 +109,7 @@ namespace Server.Items
                 if (m_LifeForce <= 0)
                 {
                     from.SendLocalizedMessage(1115266); //The healing stone has used up all its energy and has been destroyed.
-                    this.Consume();
+                    Consume();
                 }
                 else
                 {
@@ -144,7 +144,7 @@ namespace Server.Items
             {
                 m_Stone = stone;
                 m_Ticks = 0;
-                this.Start();
+                Start();
             }
 
             protected override void OnTick()
@@ -154,7 +154,7 @@ namespace Server.Items
                 m_Stone.OnTick();
 
                 if (m_Ticks >= 15)
-                    this.Stop();
+                    Stop();
             }
         }
 

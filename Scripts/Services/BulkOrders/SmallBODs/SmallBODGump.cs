@@ -15,13 +15,13 @@ namespace Server.Engines.BulkOrders
         public SmallBODGump(Mobile from, SmallBOD deed)
             : base(25, 25)
         {
-            this.m_From = from;
-            this.m_Deed = deed;
+            m_From = from;
+            m_Deed = deed;
 
-            this.m_From.CloseGump(typeof(LargeBODGump));
-            this.m_From.CloseGump(typeof(SmallBODGump));
+            m_From.CloseGump(typeof(LargeBODGump));
+            m_From.CloseGump(typeof(SmallBODGump));
 
-            this.AddPage(0);
+            AddPage(0);
 
             int height = 0;
 
@@ -37,45 +37,45 @@ namespace Server.Engines.BulkOrders
                     height += 24;
             }
 
-            this.AddBackground(50, 10, 455, 245 + height, 5054);
-            this.AddImageTiled(58, 20, 438, 226 + height, 2624);
-            this.AddAlphaRegion(58, 20, 438, 226 + height);
+            AddBackground(50, 10, 455, 245 + height, 5054);
+            AddImageTiled(58, 20, 438, 226 + height, 2624);
+            AddAlphaRegion(58, 20, 438, 226 + height);
 
-            this.AddImage(45, 5, 10460);
-            this.AddImage(480, 5, 10460);
-            this.AddImage(45, 230 + height, 10460);
-            this.AddImage(480, 230 + height, 10460);
+            AddImage(45, 5, 10460);
+            AddImage(480, 5, 10460);
+            AddImage(45, 230 + height, 10460);
+            AddImage(480, 230 + height, 10460);
 
-            this.AddHtmlLocalized(225, 25, 120, 20, 1045133, 0x7FFF, false, false); // A bulk order
+            AddHtmlLocalized(225, 25, 120, 20, 1045133, 0x7FFF, false, false); // A bulk order
 
-            this.AddHtmlLocalized(75, 48, 250, 20, 1045138, 0x7FFF, false, false); // Amount to make:
-            this.AddLabel(275, 48, 1152, deed.AmountMax.ToString());
+            AddHtmlLocalized(75, 48, 250, 20, 1045138, 0x7FFF, false, false); // Amount to make:
+            AddLabel(275, 48, 1152, deed.AmountMax.ToString());
 
-            this.AddHtmlLocalized(275, 76, 200, 20, 1045153, 0x7FFF, false, false); // Amount finished:
-            this.AddHtmlLocalized(75, 72, 120, 20, 1045136, 0x7FFF, false, false); // Item requested:
+            AddHtmlLocalized(275, 76, 200, 20, 1045153, 0x7FFF, false, false); // Amount finished:
+            AddHtmlLocalized(75, 72, 120, 20, 1045136, 0x7FFF, false, false); // Item requested:
 
-            this.AddItem(410, 72, deed.Graphic, deed.GraphicHue);
+            AddItem(410, 72, deed.Graphic, deed.GraphicHue);
 
-            this.AddHtmlLocalized(75, 96, 210, 20, deed.Number, 0x7FFF, false, false);
-            this.AddLabel(275, 96, 0x480, deed.AmountCur.ToString());
+            AddHtmlLocalized(75, 96, 210, 20, deed.Number, 0x7FFF, false, false);
+            AddLabel(275, 96, 0x480, deed.AmountCur.ToString());
 
             int y = 120;
 
             if (deed.RequireExceptional || deed.Material != BulkMaterialType.None)
             {
-                this.AddHtmlLocalized(75, y, 200, 20, 1045140, 0x7FFF, false, false); // Special requirements to meet:
+                AddHtmlLocalized(75, y, 200, 20, 1045140, 0x7FFF, false, false); // Special requirements to meet:
                 y += 24;
             }
 
             if (deed.RequireExceptional)
             {
-                this.AddHtmlLocalized(75, y, 300, 20, 1045141, 0x7FFF, false, false); // All items must be exceptional.
+                AddHtmlLocalized(75, y, 300, 20, 1045141, 0x7FFF, false, false); // All items must be exceptional.
                 y += 24;
             }
 
             if (deed.Material != BulkMaterialType.None)
             {
-                this.AddHtmlLocalized(75, y, 300, 20, GetMaterialNumberFor(deed.Material), 0x7FFF, false, false); // All items must be made with x material.
+                AddHtmlLocalized(75, y, 300, 20, GetMaterialNumberFor(deed.Material), 0x7FFF, false, false); // All items must be made with x material.
                 y += 24;
             }
 
@@ -99,19 +99,19 @@ namespace Server.Engines.BulkOrders
                 AddHtmlLocalized(160, y, 300, 20, 1045154, 0x7FFF, false, false); // Combine this deed with the item requested.
                 y += 24;
 
-                this.AddButton(125, y, 4005, 4007, 4, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(160, y, 300, 20, 1157304, 0x7FFF, false, false); // Combine this deed with contained items.
+                AddButton(125, y, 4005, 4007, 4, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(160, y, 300, 20, 1157304, 0x7FFF, false, false); // Combine this deed with contained items.
                 y += 24;
             }
             else
             {
-                this.AddButton(125, y, 4005, 4007, 2, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(160, y, 300, 20, 1045154, 0x7FFF, false, false); // Combine this deed with the item requested.
+                AddButton(125, y, 4005, 4007, 2, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(160, y, 300, 20, 1045154, 0x7FFF, false, false); // Combine this deed with the item requested.
                 y += 24;
             }
 
-            this.AddButton(125, y, 4005, 4007, 1, GumpButtonType.Reply, 0);
-            this.AddHtmlLocalized(160, y, 120, 20, 1011441, 0x7FFF, false, false); // EXIT
+            AddButton(125, y, 4005, 4007, 1, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(160, y, 120, 20, 1011441, 0x7FFF, false, false); // EXIT
         }
 
         public static int GetMaterialNumberFor(BulkMaterialType material)
@@ -137,15 +137,15 @@ namespace Server.Engines.BulkOrders
 
         public override void OnResponse(NetState sender, RelayInfo info)
         {
-            if (this.m_Deed.Deleted || !this.m_Deed.IsChildOf(this.m_From.Backpack))
+            if (m_Deed.Deleted || !m_Deed.IsChildOf(m_From.Backpack))
                 return;
 
             switch (info.ButtonID)
             {
                 case 2: // Combine
                     {
-                        this.m_From.SendGump(new SmallBODGump(this.m_From, this.m_Deed));
-                        this.m_Deed.BeginCombine(this.m_From);
+                        m_From.SendGump(new SmallBODGump(m_From, m_Deed));
+                        m_Deed.BeginCombine(m_From);
                         break;
                     }
                 case 3: // points mode
@@ -162,7 +162,7 @@ namespace Server.Engines.BulkOrders
                             }
                         }
 
-                        m_From.SendGump(new SmallBODGump(this.m_From, this.m_Deed));
+                        m_From.SendGump(new SmallBODGump(m_From, m_Deed));
                         break;
                     }
                 case 4: // combine from container

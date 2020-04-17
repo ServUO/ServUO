@@ -17,7 +17,7 @@ namespace Server.Items
         public RockHammer(int uses)
             : base(uses, 0x9E7E)
         {
-            this.Weight = 5.0;
+            Weight = 5.0;
         }
 
         public RockHammer(Serial serial)

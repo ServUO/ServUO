@@ -9,11 +9,11 @@ namespace Server.Items
         public PaperLantern()
             : base(0x24BE)
         {
-            this.Movable = true;
-            this.Duration = TimeSpan.Zero; // Never burnt out
-            this.Burning = false;
-            this.Light = LightType.Circle150;
-            this.Weight = 3.0;
+            Movable = true;
+            Duration = TimeSpan.Zero; // Never burnt out
+            Burning = false;
+            Light = LightType.Circle150;
+            Weight = 3.0;
         }
 
         public PaperLantern(Serial serial)

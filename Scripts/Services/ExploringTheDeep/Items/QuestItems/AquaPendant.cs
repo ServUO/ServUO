@@ -9,8 +9,8 @@ namespace Server.Items
         [Constructable]
         public AquaPendant()
         {
-            this.Hue = 1916;
-            this.LootType = LootType.Blessed;
+            Hue = 1916;
+            LootType = LootType.Blessed;
         }
 
         public override void OnDoubleClick(Mobile from)

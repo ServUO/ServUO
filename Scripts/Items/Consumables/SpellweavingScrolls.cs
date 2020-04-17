@@ -12,7 +12,7 @@ namespace Server.Items
         public ArcaneCircleScroll(int amount)
             : base(600, 0x2D51, amount)
         {
-            this.Hue = 0x8FD;
+            Hue = 0x8FD;
         }
 
         public ArcaneCircleScroll(Serial serial)
@@ -47,7 +47,7 @@ namespace Server.Items
         public GiftOfRenewalScroll(int amount)
             : base(601, 0x2D52, amount)
         {
-            this.Hue = 0x8FD;
+            Hue = 0x8FD;
         }
 
         public GiftOfRenewalScroll(Serial serial)
@@ -82,7 +82,7 @@ namespace Server.Items
         public ImmolatingWeaponScroll(int amount)
             : base(602, 0x2D53, amount)
         {
-            this.Hue = 0x8FD;
+            Hue = 0x8FD;
         }
 
         public ImmolatingWeaponScroll(Serial serial)
@@ -117,7 +117,7 @@ namespace Server.Items
         public AttuneWeaponScroll(int amount)
             : base(603, 0x2D54, amount)
         {
-            this.Hue = 0x8FD;
+            Hue = 0x8FD;
         }
 
         public AttuneWeaponScroll(Serial serial)
@@ -152,7 +152,7 @@ namespace Server.Items
         public ThunderstormScroll(int amount)
             : base(604, 0x2D55, amount)
         {
-            this.Hue = 0x8FD;
+            Hue = 0x8FD;
         }
 
         public ThunderstormScroll(Serial serial)
@@ -187,7 +187,7 @@ namespace Server.Items
         public NatureFuryScroll(int amount)
             : base(605, 0x2D56, amount)
         {
-            this.Hue = 0x8FD;
+            Hue = 0x8FD;
         }
 
         public NatureFuryScroll(Serial serial)
@@ -222,7 +222,7 @@ namespace Server.Items
         public SummonFeyScroll(int amount)
             : base(606, 0x2D57, amount)
         {
-            this.Hue = 0x8FD;
+            Hue = 0x8FD;
         }
 
         public SummonFeyScroll(Serial serial)
@@ -257,7 +257,7 @@ namespace Server.Items
         public SummonFiendScroll(int amount)
             : base(607, 0x2D58, amount)
         {
-            this.Hue = 0x8FD;
+            Hue = 0x8FD;
         }
 
         public SummonFiendScroll(Serial serial)
@@ -292,7 +292,7 @@ namespace Server.Items
         public ReaperFormScroll(int amount)
             : base(608, 0x2D59, amount)
         {
-            this.Hue = 0x8FD;
+            Hue = 0x8FD;
         }
 
         public ReaperFormScroll(Serial serial)
@@ -327,7 +327,7 @@ namespace Server.Items
         public WildfireScroll(int amount)
             : base(609, 0x2D5A, amount)
         {
-            this.Hue = 0x8FD;
+            Hue = 0x8FD;
         }
 
         public WildfireScroll(Serial serial)
@@ -362,7 +362,7 @@ namespace Server.Items
         public EssenceOfWindScroll(int amount)
             : base(610, 0x2D5B, amount)
         {
-            this.Hue = 0x8FD;
+            Hue = 0x8FD;
         }
 
         public EssenceOfWindScroll(Serial serial)
@@ -397,7 +397,7 @@ namespace Server.Items
         public DryadAllureScroll(int amount)
             : base(611, 0x2D5C, amount)
         {
-            this.Hue = 0x8FD;
+            Hue = 0x8FD;
         }
 
         public DryadAllureScroll(Serial serial)
@@ -432,7 +432,7 @@ namespace Server.Items
         public EtherealVoyageScroll(int amount)
             : base(612, 0x2D5D, amount)
         {
-            this.Hue = 0x8FD;
+            Hue = 0x8FD;
         }
 
         public EtherealVoyageScroll(Serial serial)
@@ -467,7 +467,7 @@ namespace Server.Items
         public WordOfDeathScroll(int amount)
             : base(613, 0x2D5E, amount)
         {
-            this.Hue = 0x8FD;
+            Hue = 0x8FD;
         }
 
         public WordOfDeathScroll(Serial serial)
@@ -502,7 +502,7 @@ namespace Server.Items
         public GiftOfLifeScroll(int amount)
             : base(614, 0x2D5F, amount)
         {
-            this.Hue = 0x8FD;
+            Hue = 0x8FD;
         }
 
         public GiftOfLifeScroll(Serial serial)
@@ -537,7 +537,7 @@ namespace Server.Items
         public ArcaneEmpowermentScroll(int amount)
             : base(615, 0x2D60, amount)
         {
-            this.Hue = 0x8FD;
+            Hue = 0x8FD;
         }
 
         public ArcaneEmpowermentScroll(Serial serial)

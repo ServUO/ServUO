@@ -7,10 +7,10 @@ namespace Server.Engines.Quests
         public EscortToWrongEntrance()
             : base()
         {
-            this.AddObjective(new EscortObjective("Wrong Entrance"));
+            AddObjective(new EscortObjective("Wrong Entrance"));
 
-            this.AddReward(new BaseReward("Compassion"));
-            this.AddReward(new BaseReward(typeof(Gold), 500, 1062577));
+            AddReward(new BaseReward("Compassion"));
+            AddReward(new BaseReward(typeof(Gold), 500, 1062577));
         }
 
         /*We Who Are About To Die*/

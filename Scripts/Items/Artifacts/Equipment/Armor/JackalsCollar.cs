@@ -37,11 +37,11 @@ namespace Server.Items
 
             if (version < 1)
             {
-                if (this.Hue == 0x54B)
-                    this.Hue = 0x6D1;
+                if (Hue == 0x54B)
+                    Hue = 0x6D1;
 
-                this.FireBonus = 0;
-                this.ColdBonus = 0;
+                FireBonus = 0;
+                ColdBonus = 0;
             }
         }
     }

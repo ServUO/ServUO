@@ -20,7 +20,7 @@ namespace Server.Engines.Quests.Naturalist
         public StudyOfSolenQuest(PlayerMobile from, Naturalist naturalist)
             : base(from)
         {
-            this.m_Naturalist = naturalist;
+            m_Naturalist = naturalist;
         }
 
         // Serialization
@@ -65,12 +65,12 @@ namespace Server.Engines.Quests.Naturalist
         public override TimeSpan RestartDelay => TimeSpan.Zero;
         public override bool IsTutorial => false;
         public override int Picture => 0x15C7;
-        public Naturalist Naturalist => this.m_Naturalist;
+        public Naturalist Naturalist => m_Naturalist;
         public override void ChildDeserialize(GenericReader reader)
         {
             int version = reader.ReadEncodedInt();
 
-            this.m_Naturalist = (Naturalist)reader.ReadMobile();
+            m_Naturalist = (Naturalist)reader.ReadMobile();
         }
 
         public override void ChildSerialize(GenericWriter writer)
@@ -84,10 +84,10 @@ namespace Server.Engines.Quests.Naturalist
         {
             base.Accept();
 
-            if (this.m_Naturalist != null)
-                this.m_Naturalist.PlaySound(0x431);
+            if (m_Naturalist != null)
+                m_Naturalist.PlaySound(0x431);
 
-            this.AddConversation(new AcceptConversation());
+            AddConversation(new AcceptConversation());
         }
     }
 }

@@ -46,7 +46,7 @@ namespace Server.Items
 
         public override bool TryDropItem(Mobile from, Item dropped, bool message)
         {
-            if (dropped is ExperimentalGem && ((ExperimentalGem)dropped).Complete && from.InRange(this.Location, 2))
+            if (dropped is ExperimentalGem && ((ExperimentalGem)dropped).Complete && from.InRange(Location, 2))
             {
                 dropped.Delete();
 
@@ -98,7 +98,7 @@ namespace Server.Items
 
         public override bool OnDecay()
         {
-            List<Item> items = new List<Item>(this.Items);
+            List<Item> items = new List<Item>(Items);
 
             foreach (Item i in items)
             {

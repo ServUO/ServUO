@@ -10,79 +10,79 @@ namespace Server.Engines.Craft
         private bool m_Init;
         public CraftSubResCol()
         {
-            this.m_Init = false;
+            m_Init = false;
         }
 
         public bool Init
         {
             get
             {
-                return this.m_Init;
+                return m_Init;
             }
             set
             {
-                this.m_Init = value;
+                m_Init = value;
             }
         }
         public Type ResType
         {
             get
             {
-                return this.m_Type;
+                return m_Type;
             }
             set
             {
-                this.m_Type = value;
+                m_Type = value;
             }
         }
         public string NameString
         {
             get
             {
-                return this.m_NameString;
+                return m_NameString;
             }
             set
             {
-                this.m_NameString = value;
+                m_NameString = value;
             }
         }
         public int NameNumber
         {
             get
             {
-                return this.m_NameNumber;
+                return m_NameNumber;
             }
             set
             {
-                this.m_NameNumber = value;
+                m_NameNumber = value;
             }
         }
         public void Add(CraftSubRes craftSubRes)
         {
-            this.List.Add(craftSubRes);
+            List.Add(craftSubRes);
         }
 
         public void Remove(int index)
         {
-            if (index > this.Count - 1 || index < 0)
+            if (index > Count - 1 || index < 0)
             {
             }
             else
             {
-                this.List.RemoveAt(index);
+                List.RemoveAt(index);
             }
         }
 
         public CraftSubRes GetAt(int index)
         {
-            return (CraftSubRes)this.List[index];
+            return (CraftSubRes)List[index];
         }
 
         public CraftSubRes SearchFor(Type type)
         {
-            for (int i = 0; i < this.List.Count; i++)
+            for (int i = 0; i < List.Count; i++)
             {
-                CraftSubRes craftSubRes = (CraftSubRes)this.List[i];
+                CraftSubRes craftSubRes = (CraftSubRes)List[i];
                 if (craftSubRes.ItemType == type)
                 {
                     return craftSubRes;

@@ -21,7 +21,7 @@ namespace Server.Items
         {
             base.OnMovement(m, lastLocation);
 
-            if (m.Player && m.InRange(this.Location, 5) && m.AccessLevel == AccessLevel.Player && 0.5 > Utility.RandomDouble())
+            if (m.Player && m.InRange(Location, 5) && m.AccessLevel == AccessLevel.Player && 0.5 > Utility.RandomDouble())
             {
                 KotlAutomaton automaton = new KotlAutomaton();
                 automaton.MoveToWorld(Location, Map);

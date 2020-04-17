@@ -9,9 +9,9 @@
         public FigureheadOfBmvArarat()
             : base(0x2D0E)
         {
-            this.Name = "Figurehead Of The Bmv Ararat";
-            this.Weight = 10.0;
-            this.Hue = 2968; // checked
+            Name = "Figurehead Of The Bmv Ararat";
+            Weight = 10.0;
+            Hue = 2968; // checked
         }
 
         public FigureheadOfBmvArarat(Serial serial)

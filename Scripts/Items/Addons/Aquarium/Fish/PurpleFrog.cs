@@ -6,7 +6,7 @@ namespace Server.Items
         public PurpleFrog()
             : base(0x3B0D)
         {
-            this.Hue = 0x4FA;
+            Hue = 0x4FA;
         }
 
         public PurpleFrog(Serial serial)

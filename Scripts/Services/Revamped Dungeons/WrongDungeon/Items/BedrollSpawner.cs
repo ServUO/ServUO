@@ -322,7 +322,7 @@ namespace Server.Items
                 Timer.DelayCall<Map>(TimeSpan.FromSeconds(5), map =>
                     {
                         EnchantedHotItem.SpawnChests(map);
-                        Console.WriteLine("Hot Item chests spawned for {0}.", this.Map);
+                        Console.WriteLine("Hot Item chests spawned for {0}.", Map);
                     }, Map);
             }
         }

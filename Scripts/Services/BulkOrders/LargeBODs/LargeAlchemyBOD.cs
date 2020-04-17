@@ -33,18 +33,18 @@ namespace Server.Engines.BulkOrders
 
             int amountMax = Utility.RandomList(10, 15, 20, 20);
 
-            this.Hue = 2505;
-            this.AmountMax = amountMax;
-            this.Entries = entries;
+            Hue = 2505;
+            AmountMax = amountMax;
+            Entries = entries;
         }
 
         public LargeAlchemyBOD(int amountMax, bool reqExceptional, BulkMaterialType mat, LargeBulkEntry[] entries)
         {
-            this.Hue = 2505;
-            this.AmountMax = amountMax;
-            this.Entries = entries;
-            this.RequireExceptional = reqExceptional;
-            this.Material = mat;
+            Hue = 2505;
+            AmountMax = amountMax;
+            Entries = entries;
+            RequireExceptional = reqExceptional;
+            Material = mat;
         }
 
         public LargeAlchemyBOD(Serial serial)

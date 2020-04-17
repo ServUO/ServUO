@@ -7,9 +7,9 @@ namespace Server.Items
         public SeahorseStatuette()
             : base(MonsterStatuetteType.Seahorse)
         {
-            this.LootType = LootType.Regular;
+            LootType = LootType.Regular;
 
-            this.Hue = Utility.RandomList(0, 0x482, 0x489, 0x495, 0x4F2);
+            Hue = Utility.RandomList(0, 0x482, 0x489, 0x495, 0x4F2);
         }
 
         public SeahorseStatuette(Serial serial)

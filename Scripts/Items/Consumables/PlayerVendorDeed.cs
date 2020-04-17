@@ -9,7 +9,7 @@ namespace Server.Items
         public ContractOfEmployment()
             : base(0x14F0)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
             //LootType = LootType.Blessed;
         }
 
@@ -35,7 +35,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!this.IsChildOf(from.Backpack))
+            if (!IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
             }
@@ -52,7 +52,7 @@ namespace Server.Items
 
                 EventSink.InvokePlacePlayerVendor(new PlacePlayerVendorEventArgs(from, v));
 
-                this.Delete();
+                Delete();
             }
             else
             {
@@ -98,7 +98,7 @@ namespace Server.Items
 
                         EventSink.InvokePlacePlayerVendor(new PlacePlayerVendorEventArgs(from, v));
 
-                        this.Delete();
+                        Delete();
                     }
                 }
             }

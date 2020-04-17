@@ -13,8 +13,8 @@ namespace Server.Items
         [Constructable]
         public ExodusSummoningAlter() : base(0x14F0)
         {
-            this.LootType = LootType.Regular;
-            this.Weight = 1;
+            LootType = LootType.Regular;
+            Weight = 1;
         }
 
         public override int Lifespan => 604800;

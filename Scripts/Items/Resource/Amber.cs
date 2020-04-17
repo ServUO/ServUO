@@ -12,8 +12,8 @@ namespace Server.Items
         public Amber(int amount)
             : base(0xF25)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public Amber(Serial serial)

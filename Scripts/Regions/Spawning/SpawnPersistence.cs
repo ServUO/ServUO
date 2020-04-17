@@ -12,7 +12,7 @@ namespace Server.Regions
         private SpawnPersistence()
             : base(1)
         {
-            this.Movable = false;
+            Movable = false;
         }
 
         public SpawnPersistence Instance => m_Instance;

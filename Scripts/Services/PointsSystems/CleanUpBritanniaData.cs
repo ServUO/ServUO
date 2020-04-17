@@ -895,7 +895,7 @@ namespace Server.Engines.Points
         {
             base.Deserialize(reader);
 
-            if (this.Version >= 2)
+            if (Version >= 2)
             {
                 int version = reader.ReadInt();
 

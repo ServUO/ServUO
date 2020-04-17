@@ -11,37 +11,37 @@ namespace Server.Mobiles
         [Constructable]
         public LadyJennifyr()
         {
-            this.Name = "Lady Jennifyr";
-            this.Hue = 0x76D;
+            Name = "Lady Jennifyr";
+            Hue = 0x76D;
 
-            this.SetStr(208, 309);
-            this.SetDex(91, 118);
-            this.SetInt(44, 101);
+            SetStr(208, 309);
+            SetDex(91, 118);
+            SetInt(44, 101);
 
-            this.SetHits(1113, 1285);
+            SetHits(1113, 1285);
 
-            this.SetDamage(15, 25);
+            SetDamage(15, 25);
 
-            this.SetDamageType(ResistanceType.Physical, 40);
-            this.SetDamageType(ResistanceType.Cold, 60);
+            SetDamageType(ResistanceType.Physical, 40);
+            SetDamageType(ResistanceType.Cold, 60);
 
-            this.SetResistance(ResistanceType.Physical, 56, 65);
-            this.SetResistance(ResistanceType.Fire, 41, 49);
-            this.SetResistance(ResistanceType.Cold, 71, 80);
-            this.SetResistance(ResistanceType.Poison, 41, 50);
-            this.SetResistance(ResistanceType.Energy, 50, 58);
+            SetResistance(ResistanceType.Physical, 56, 65);
+            SetResistance(ResistanceType.Fire, 41, 49);
+            SetResistance(ResistanceType.Cold, 71, 80);
+            SetResistance(ResistanceType.Poison, 41, 50);
+            SetResistance(ResistanceType.Energy, 50, 58);
 
-            this.SetSkill(SkillName.Wrestling, 127.9, 137.1);
-            this.SetSkill(SkillName.Tactics, 128.4, 141.9);
-            this.SetSkill(SkillName.MagicResist, 102.1, 119.5);
-            this.SetSkill(SkillName.Anatomy, 129.0, 137.5);
+            SetSkill(SkillName.Wrestling, 127.9, 137.1);
+            SetSkill(SkillName.Tactics, 128.4, 141.9);
+            SetSkill(SkillName.MagicResist, 102.1, 119.5);
+            SetSkill(SkillName.Anatomy, 129.0, 137.5);
 
-            this.Fame = 18000;
-            this.Karma = -18000;
+            Fame = 18000;
+            Karma = -18000;
 
             for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
             {
-                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
         }
 
@@ -72,7 +72,7 @@ namespace Server.Mobiles
         }*/
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.UltraRich, 3);
+            AddLoot(LootPack.UltraRich, 3);
         }
 
         public override void OnGaveMeleeAttack(Mobile defender)
@@ -119,23 +119,23 @@ namespace Server.Mobiles
             public ExpireTimer(Mobile m, ResistanceMod mod)
                 : base(TimeSpan.FromSeconds(10))
             {
-                this.m_Mobile = m;
-                this.m_Mod = mod;
-                this.Priority = TimerPriority.TwoFiftyMS;
+                m_Mobile = m;
+                m_Mod = mod;
+                Priority = TimerPriority.TwoFiftyMS;
             }
 
             public void DoExpire()
             {
-                this.m_Mobile.RemoveResistanceMod(this.m_Mod);
+                m_Mobile.RemoveResistanceMod(m_Mod);
 
-                this.Stop();
-                m_Table.Remove(this.m_Mobile);
+                Stop();
+                m_Table.Remove(m_Mobile);
             }
 
             protected override void OnTick()
             {
-                this.m_Mobile.SendLocalizedMessage(1070834); // Your resistance to fire attacks has returned.
-                this.DoExpire();
+                m_Mobile.SendLocalizedMessage(1070834); // Your resistance to fire attacks has returned.
+                DoExpire();
             }
         }
     }

@@ -7,7 +7,7 @@ namespace Server.Items
         [Constructable]
         public MaddeningHorrorCostume() : base()
         {
-            this.CostumeBody = 721;
+            CostumeBody = 721;
         }
 
         public override int LabelNumber => 1114233;// maddening horror costume

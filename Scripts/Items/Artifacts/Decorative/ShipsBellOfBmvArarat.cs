@@ -9,9 +9,9 @@
         public ShipsBellOfBmvArarat()
             : base(0x4C5E)
         {
-            this.Name = "Ship's Bell Of The Bmv Ararat";
-            this.Weight = 10.0;
-            this.Hue = 2968; //checked
+            Name = "Ship's Bell Of The Bmv Ararat";
+            Weight = 10.0;
+            Hue = 2968; //checked
         }
 
         public ShipsBellOfBmvArarat(Serial serial)

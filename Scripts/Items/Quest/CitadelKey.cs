@@ -5,7 +5,7 @@ namespace Server.Items
         public CitadelKey()
             : base(0x1012)
         {
-            this.Hue = 0x489;
+            Hue = 0x489;
         }
 
         public CitadelKey(Serial serial)

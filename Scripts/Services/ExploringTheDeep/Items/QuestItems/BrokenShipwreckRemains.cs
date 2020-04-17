@@ -14,10 +14,10 @@ namespace Server.Items
         [Constructable]
         public BrokenShipwreckRemains(int amount) : base(0xC2D)
         {
-            this.Hue = 2969;
-            this.Weight = 25.0;
-            this.Amount = amount;
-            this.LootType = LootType.Blessed;
+            Hue = 2969;
+            Weight = 25.0;
+            Amount = amount;
+            LootType = LootType.Blessed;
         }
 
         public override void GetProperties(ObjectPropertyList list)

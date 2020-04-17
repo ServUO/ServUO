@@ -13,11 +13,11 @@ namespace Server.Items
         public BaseScales(CraftResource resource, int amount)
             : base(0x26B4)
         {
-            this.Stackable = true;
-            this.Amount = amount;
-            this.Hue = CraftResources.GetHue(resource);
+            Stackable = true;
+            Amount = amount;
+            Hue = CraftResources.GetHue(resource);
 
-            this.m_Resource = resource;
+            m_Resource = resource;
         }
 
         public BaseScales(Serial serial)
@@ -31,16 +31,16 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Resource;
+                return m_Resource;
             }
             set
             {
-                this.m_Resource = value;
-                this.InvalidateProperties();
+                m_Resource = value;
+                InvalidateProperties();
             }
         }
         public override double DefaultWeight => 0.1;
-        TextDefinition ICommodity.Description => this.LabelNumber;
+        TextDefinition ICommodity.Description => LabelNumber;
         bool ICommodity.IsDeedable => true;
         public override void Serialize(GenericWriter writer)
         {
@@ -48,7 +48,7 @@ namespace Server.Items
 
             writer.Write(0); // version
 
-            writer.Write((int)this.m_Resource);
+            writer.Write((int)m_Resource);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -60,12 +60,12 @@ namespace Server.Items
             switch (version)
             {
                 case 1: // Reset from Resource System
-                    this.m_Resource = this.DefaultResource;
+                    m_Resource = DefaultResource;
                     reader.ReadString();
                     break;
                 case 0:
                     {
-                        this.m_Resource = (CraftResource)reader.ReadInt();
+                        m_Resource = (CraftResource)reader.ReadInt();
                         break;
                     }
             }

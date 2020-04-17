@@ -53,11 +53,11 @@ namespace Server.Multis
         private readonly TimeSpan m_MaxDuration;
         public DecayStageInfo(TimeSpan min, TimeSpan max)
         {
-            this.m_MinDuration = min;
-            this.m_MaxDuration = max;
+            m_MinDuration = min;
+            m_MaxDuration = max;
         }
 
-        public TimeSpan MinDuration => this.m_MinDuration;
-        public TimeSpan MaxDuration => this.m_MaxDuration;
+        public TimeSpan MinDuration => m_MinDuration;
+        public TimeSpan MaxDuration => m_MaxDuration;
     }
 }

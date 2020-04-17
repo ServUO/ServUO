@@ -6,7 +6,7 @@ namespace Server.Items
         public CoagulatedLegs()
             : base(0x1CDF)
         {
-            this.Weight = 1;
+            Weight = 1;
         }
 
         public CoagulatedLegs(Serial serial)

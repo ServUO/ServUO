@@ -11,10 +11,10 @@ namespace Server.Items
         [Constructable]
         public LargeStoneTableSouthAddon(int hue)
         {
-            this.AddComponent(new AddonComponent(0x1205), 0, 0, 0);
-            this.AddComponent(new AddonComponent(0x1206), 1, 0, 0);
-            this.AddComponent(new AddonComponent(0x1204), 2, 0, 0);
-            this.Hue = hue;
+            AddComponent(new AddonComponent(0x1205), 0, 0, 0);
+            AddComponent(new AddonComponent(0x1206), 1, 0, 0);
+            AddComponent(new AddonComponent(0x1204), 2, 0, 0);
+            Hue = hue;
         }
 
         public LargeStoneTableSouthAddon(Serial serial)
@@ -51,7 +51,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon => new LargeStoneTableSouthAddon(this.Hue);
+        public override BaseAddon Addon => new LargeStoneTableSouthAddon(Hue);
         public override int LabelNumber => 1044512;// large stone table (South)
         public override void Serialize(GenericWriter writer)
         {

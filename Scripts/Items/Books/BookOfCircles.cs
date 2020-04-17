@@ -60,7 +60,7 @@ namespace Server.Items
         public BookOfCircles()
             : base(false)
         {
-            this.Hue = 2210;
+            Hue = 2210;
         }
 
         public BookOfCircles(Serial serial)

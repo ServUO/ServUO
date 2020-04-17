@@ -68,7 +68,7 @@ namespace Server.Mobiles
                     if (((x == 0 && y == 0) || .5 > Utility.RandomDouble()) && Map.CanSpawnMobile(p.X, p.Y, p.Z))
                     {
                         FireItem item = new FireItem(this);
-                        item.MoveToWorld(new Point3D(p), this.Map);
+                        item.MoveToWorld(new Point3D(p), Map);
                     }
                 }
             }
@@ -98,7 +98,7 @@ namespace Server.Mobiles
                     Mobile.DoHarmful(from);
 
                     AOS.Damage(from, Mobile, Utility.RandomMinMax(50, 85), 0, 100, 0, 0, 0);
-                    Effects.PlaySound(this.Location, this.Map, 0x1DD);
+                    Effects.PlaySound(Location, Map, 0x1DD);
                     from.PrivateOverheadMessage(Server.Network.MessageType.Regular, 0x20, 1156084, from.NetState); // *The trail of fire scorches you, setting you ablaze!*
                 }
 
@@ -113,7 +113,7 @@ namespace Server.Mobiles
                 }
                 else
                 {
-                    IPooledEnumerable eable = this.Map.GetMobilesInRange(this.Location, 0);
+                    IPooledEnumerable eable = Map.GetMobilesInRange(Location, 0);
 
                     foreach (Mobile m in eable)
                         OnMoveOver(m);

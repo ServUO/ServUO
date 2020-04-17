@@ -9,9 +9,9 @@
         public SternAnchorOfBmvArarat()
             : base(0x14F7)
         {
-            this.Name = "Stern Anchor of the BMV Ararat";
-            this.Weight = 10.0;
-            this.Hue = 2959; // checked
+            Name = "Stern Anchor of the BMV Ararat";
+            Weight = 10.0;
+            Hue = 2959; // checked
         }
 
         public SternAnchorOfBmvArarat(Serial serial)

@@ -9,19 +9,19 @@ namespace Server.Items
         [Constructable]
         public NovoBleue() : base()
         {
-            this.Weight = 1.0;
-            this.Hue = 1165;
+            Weight = 1.0;
+            Hue = 1165;
 
-            this.Attributes.Luck = 150;
-            this.Attributes.CastSpeed = 1;
-            this.Attributes.CastRecovery = 1;
+            Attributes.Luck = 150;
+            Attributes.CastSpeed = 1;
+            Attributes.CastRecovery = 1;
 
-            this.SetHue = 1165;
-            this.SetAttributes.Luck = 100;
-            this.SetAttributes.RegenHits = 2;
-            this.SetAttributes.RegenMana = 2;
-            this.SetAttributes.CastSpeed = 1;
-            this.SetAttributes.CastRecovery = 4;
+            SetHue = 1165;
+            SetAttributes.Luck = 100;
+            SetAttributes.RegenHits = 2;
+            SetAttributes.RegenMana = 2;
+            SetAttributes.CastSpeed = 1;
+            SetAttributes.CastRecovery = 4;
         }
 
         public NovoBleue(Serial serial) : base(serial)

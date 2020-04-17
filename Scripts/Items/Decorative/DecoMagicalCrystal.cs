@@ -6,8 +6,8 @@ namespace Server.Items
         public DecoMagicalCrystal()
             : base(0x1F19)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public DecoMagicalCrystal(Serial serial)

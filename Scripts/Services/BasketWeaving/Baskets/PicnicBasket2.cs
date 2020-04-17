@@ -7,7 +7,7 @@ public class PicnicBasket2 : BaseContainer
     public PicnicBasket2()
         : base(0xE7A)
     {
-        this.Weight = 1.0;
+        Weight = 1.0;
     }
 
     public PicnicBasket2(Serial serial)

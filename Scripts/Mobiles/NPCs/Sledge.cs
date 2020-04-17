@@ -23,19 +23,19 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.Female = false;
-            this.Race = Race.Human;
+            Female = false;
+            Race = Race.Human;
 
             base.InitBody();
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new ElvenBoots(0x736));
-            this.AddItem(new LongPants(0x521));
-            this.AddItem(new Tunic(0x71E));
-            this.AddItem(new Cloak(0x59));
+            AddItem(new Backpack());
+            AddItem(new ElvenBoots(0x736));
+            AddItem(new LongPants(0x521));
+            AddItem(new Tunic(0x71E));
+            AddItem(new Cloak(0x59));
         }
 
         public override void Serialize(GenericWriter writer)

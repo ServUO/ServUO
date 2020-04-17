@@ -6,8 +6,8 @@ namespace Server.Mobiles
         public EnragedRabbit(Mobile summoner)
             : base(summoner)
         {
-            this.Name = "a rabbit";
-            this.Body = 0xcd;
+            Name = "a rabbit";
+            Body = 0xcd;
         }
 
         public EnragedRabbit(Serial serial)
@@ -49,8 +49,8 @@ namespace Server.Mobiles
         public EnragedHart(Mobile summoner)
             : base(summoner)
         {
-            this.Name = "a great hart";
-            this.Body = 0xea;
+            Name = "a great hart";
+            Body = 0xea;
         }
 
         public EnragedHart(Serial serial)
@@ -92,8 +92,8 @@ namespace Server.Mobiles
         public EnragedHind(Mobile summoner)
             : base(summoner)
         {
-            this.Name = "a hind";
-            this.Body = 0xed;
+            Name = "a hind";
+            Body = 0xed;
         }
 
         public EnragedHind(Serial serial)
@@ -135,9 +135,9 @@ namespace Server.Mobiles
         public EnragedBlackBear(Mobile summoner)
             : base(summoner)
         {
-            this.Name = "a black bear";
-            this.Body = 0xd3;
-            this.BaseSoundID = 0xa3;
+            Name = "a black bear";
+            Body = 0xd3;
+            BaseSoundID = 0xa3;
         }
 
         public EnragedBlackBear(Serial serial)
@@ -164,9 +164,9 @@ namespace Server.Mobiles
         public EnragedEagle(Mobile summoner)
             : base(summoner)
         {
-            this.Name = "an eagle";
-            this.Body = 0x5;
-            this.BaseSoundID = 0x2ee;
+            Name = "an eagle";
+            Body = 0x5;
+            BaseSoundID = 0x2ee;
         }
 
         public EnragedEagle(Serial serial)
@@ -192,10 +192,10 @@ namespace Server.Mobiles
         public BaseEnraged(Mobile summoner)
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.SetStr(50, 200);
-            this.SetDex(50, 200);
-            this.SetHits(50, 200);
-            this.SetStam(50, 200);
+            SetStr(50, 200);
+            SetDex(50, 200);
+            SetHits(50, 200);
+            SetStam(50, 200);
 
             /* 
             On OSI, all stats are random 50-200, but
@@ -203,15 +203,15 @@ namespace Server.Mobiles
             less than stam.
             */
 
-            if (this.Str < this.Hits)
-                this.Str = this.Hits;
-            if (this.Dex < this.Stam)
-                this.Dex = this.Stam;
+            if (Str < Hits)
+                Str = Hits;
+            if (Dex < Stam)
+                Dex = Stam;
 
-            this.Karma = -1000;
-            this.Tamable = false;
+            Karma = -1000;
+            Tamable = false;
 
-            this.SummonMaster = summoner;
+            SummonMaster = summoner;
         }
 
         public BaseEnraged(Serial serial)
@@ -221,20 +221,20 @@ namespace Server.Mobiles
 
         public override void OnThink()
         {
-            if (this.SummonMaster == null || this.SummonMaster.Deleted)
+            if (SummonMaster == null || SummonMaster.Deleted)
             {
-                this.Delete();
+                Delete();
             }
             /*
             On OSI, without combatant, they behave as if they have been
             given "come" command, ie they wander towards their summoner,
             but never actually "follow".
             */
-            else if (!this.Combat(this))
+            else if (!Combat(this))
             {
-                if (this.AIObject != null)
+                if (AIObject != null)
                 {
-                    this.AIObject.MoveTo(this.SummonMaster, false, 5);
+                    AIObject.MoveTo(SummonMaster, false, 5);
                 }
             }
             /*
@@ -243,16 +243,16 @@ namespace Server.Mobiles
             is a player or controlled/summoned, and the summoner is not already
             engaged in combat.
             */
-            else if (!this.Combat(this.SummonMaster))
+            else if (!Combat(SummonMaster))
             {
                 BaseCreature bc = null;
-                if (this.Combatant is BaseCreature)
+                if (Combatant is BaseCreature)
                 {
-                    bc = (BaseCreature)this.Combatant;
+                    bc = (BaseCreature)Combatant;
                 }
-                if (this.Combatant is PlayerMobile || (bc != null && (bc.Controlled || bc.SummonMaster != null)))
+                if (Combatant is PlayerMobile || (bc != null && (bc.Controlled || bc.SummonMaster != null)))
                 {
-                    this.SummonMaster.Combatant = this.Combatant;
+                    SummonMaster.Combatant = Combatant;
                 }
             }
             else

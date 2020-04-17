@@ -8,8 +8,8 @@ namespace Server.Items
         public CollectionStatuette(int itemID)
             : base(itemID)
         {
-            this.LootType = LootType.Blessed;
-            this.Weight = 1.0;
+            LootType = LootType.Blessed;
+            Weight = 1.0;
         }
 
         public CollectionStatuette(Serial serial)
@@ -19,10 +19,10 @@ namespace Server.Items
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (this.TurnedOn && this.IsLockedDown && (!m.Hidden || m.IsPlayer()) && Utility.InRange(m.Location, this.Location, 2) && !Utility.InRange(oldLocation, this.Location, 2))
+            if (TurnedOn && IsLockedDown && (!m.Hidden || m.IsPlayer()) && Utility.InRange(m.Location, Location, 2) && !Utility.InRange(oldLocation, Location, 2))
             {
-                this.PublicOverheadMessage(MessageType.Regular, 0x3B2, Utility.RandomMinMax(1073207, 1073216));
-                Effects.PlaySound(this.Location, this.Map, Utility.RandomMinMax(0x5A, 0xE9));
+                PublicOverheadMessage(MessageType.Regular, 0x3B2, Utility.RandomMinMax(1073207, 1073216));
+                Effects.PlaySound(Location, Map, Utility.RandomMinMax(0x5A, 0xE9));
             }
 
             base.OnMovement(m, oldLocation);
@@ -290,7 +290,7 @@ namespace Server.Items
         public SpecialAchievementZooStatuette()
             : base(0x2FF6)
         {
-            this.Weight = 10.0;
+            Weight = 10.0;
         }
 
         public SpecialAchievementZooStatuette(Serial serial)

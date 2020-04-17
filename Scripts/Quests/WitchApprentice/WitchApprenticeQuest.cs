@@ -118,7 +118,7 @@ namespace Server.Engines.Quests.Hag
         {
             base.Accept();
 
-            this.AddConversation(new AcceptConversation());
+            AddConversation(new AcceptConversation());
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public Bolaevin()
             : base("the arcanist")
         {
-            this.Name = "Bolaevin";
+            Name = "Bolaevin";
         }
 
         public Bolaevin(Serial serial)
@@ -20,35 +20,35 @@ namespace Server.Mobiles
 
         public override bool CanTeach => false;
         public override bool IsInvulnerable => true;
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
         }
 
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.Race = Race.Elf;
+            Female = false;
+            Race = Race.Elf;
 
-            this.Hue = 0x84DE;
-            this.HairItemID = 0x2FC0;
-            this.HairHue = 0x36;
+            Hue = 0x84DE;
+            HairItemID = 0x2FC0;
+            HairHue = 0x36;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new ElvenBoots(0x3B3));
-            this.AddItem(new RoyalCirclet());
-            this.AddItem(new LeafChest());
-            this.AddItem(new LeafArms());
+            AddItem(new ElvenBoots(0x3B3));
+            AddItem(new RoyalCirclet());
+            AddItem(new LeafChest());
+            AddItem(new LeafArms());
 
             Item item;
 
             item = new LeafLegs();
             item.Hue = 0x1BB;
-            this.AddItem(item);
+            AddItem(item);
         }
 
         public override void Serialize(GenericWriter writer)

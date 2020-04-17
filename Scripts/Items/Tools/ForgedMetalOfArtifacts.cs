@@ -92,11 +92,11 @@ namespace Server.Items
             {
                 from.NextEnhanceSuccess = true;
                 from.SendLocalizedMessage(1149956); // A magical aura surrounds you and you feel your next item enhancing attempt will most certainly be successful.
-                this.m_UsesRemaining -= 1;
+                m_UsesRemaining -= 1;
                 InvalidateProperties();
-                if (this.m_UsesRemaining <= 0)
+                if (m_UsesRemaining <= 0)
                 {
-                    this.Delete();
+                    Delete();
                     from.SendLocalizedMessage(1044038); // You have worn out your tool!
                 }
             }

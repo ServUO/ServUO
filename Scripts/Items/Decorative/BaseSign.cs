@@ -5,7 +5,7 @@ namespace Server.Items
         public BaseSign(int dispID)
             : base(dispID)
         {
-            this.Movable = false;
+            Movable = false;
         }
 
         public BaseSign(Serial serial)

@@ -9,9 +9,9 @@ namespace Server.Engines.Quests
         public DisciplineQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Rat), "rats", 50, "Sanctuary"));
+            AddObjective(new SlayObjective(typeof(Rat), "rats", 50, "Sanctuary"));
 
-            this.AddReward(new BaseReward(1074872)); // The opportunity to learn the ways of the Arcanist.
+            AddReward(new BaseReward(1074872)); // The opportunity to learn the ways of the Arcanist.
         }
 
         public override QuestChain ChainID => QuestChain.SpellweavingS;
@@ -52,9 +52,9 @@ namespace Server.Engines.Quests
         public NeedsOfTheManySanctuaryQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(Cotton), "bale of cotton", 10, 0xDF9));
+            AddObjective(new ObtainObjective(typeof(Cotton), "bale of cotton", 10, 0xDF9));
 
-            this.AddReward(new BaseReward(1074872)); // The opportunity to learn the ways of the Arcanist.
+            AddReward(new BaseReward(1074872)); // The opportunity to learn the ways of the Arcanist.
         }
 
         public override QuestChain ChainID => QuestChain.SpellweavingS;
@@ -96,9 +96,9 @@ namespace Server.Engines.Quests
         public MakingContributionSanctuaryQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(Board), "boards", 250, 0x1BD7));
+            AddObjective(new ObtainObjective(typeof(Board), "boards", 250, 0x1BD7));
 
-            this.AddReward(new BaseReward(1074872)); // The opportunity to learn the ways of the Arcanist.
+            AddReward(new BaseReward(1074872)); // The opportunity to learn the ways of the Arcanist.
         }
 
         public override QuestChain ChainID => QuestChain.SpellweavingS;
@@ -139,11 +139,11 @@ namespace Server.Engines.Quests
         public SuppliesForSanctuaryQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(SackFlour), "sack of flour", 1, 0x1039));
-            this.AddObjective(new ObtainObjective(typeof(JarHoney), "jar of honey", 10, 0x9EC));
-            this.AddObjective(new ObtainObjective(typeof(FishSteak), "fish steak", 20, 0x97B));
+            AddObjective(new ObtainObjective(typeof(SackFlour), "sack of flour", 1, 0x1039));
+            AddObjective(new ObtainObjective(typeof(JarHoney), "jar of honey", 10, 0x9EC));
+            AddObjective(new ObtainObjective(typeof(FishSteak), "fish steak", 20, 0x97B));
 
-            this.AddReward(new BaseReward(1074872)); // The opportunity to learn the ways of the Arcanist.
+            AddReward(new BaseReward(1074872)); // The opportunity to learn the ways of the Arcanist.
         }
 
         public override QuestChain ChainID => QuestChain.SpellweavingS;
@@ -187,11 +187,11 @@ namespace Server.Engines.Quests
         public TheHumanBlightQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(SeveredHumanEars), "severed human ears", 30, 0x312F));
+            AddObjective(new ObtainObjective(typeof(SeveredHumanEars), "severed human ears", 30, 0x312F));
 
-            this.AddReward(new BaseReward(typeof(ArcaneCircleScroll), 1071026)); // Arcane Circle			
-            this.AddReward(new BaseReward(typeof(GiftOfRenewalScroll), 1071027)); // Gift of Renewal
-            this.AddReward(new BaseReward(typeof(SpellweavingBook), 1031600)); // Spellweaving Spellbook
+            AddReward(new BaseReward(typeof(ArcaneCircleScroll), 1071026)); // Arcane Circle			
+            AddReward(new BaseReward(typeof(GiftOfRenewalScroll), 1071027)); // Gift of Renewal
+            AddReward(new BaseReward(typeof(SpellweavingBook), 1031600)); // Spellweaving Spellbook
         }
 
         public override QuestChain ChainID => QuestChain.SpellweavingS;
@@ -216,7 +216,7 @@ namespace Server.Engines.Quests
 
         public override void GiveRewards()
         {
-            this.Owner.Spellweaving = true;
+            Owner.Spellweaving = true;
 
             base.GiveRewards();
         }

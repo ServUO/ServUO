@@ -7,29 +7,29 @@ namespace Server.Mobiles
         public MoundOfMaggots()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a mound of maggots";
-            this.Body = 319;
-            this.BaseSoundID = 898;
+            Name = "a mound of maggots";
+            Body = 319;
+            BaseSoundID = 898;
 
-            this.SetStr(61, 70);
-            this.SetDex(61, 70);
-            this.SetInt(10);
+            SetStr(61, 70);
+            SetDex(61, 70);
+            SetInt(10);
 
-            this.SetMana(0);
+            SetMana(0);
 
-            this.SetDamage(3, 9);
+            SetDamage(3, 9);
 
-            this.SetDamageType(ResistanceType.Physical, 50);
-            this.SetDamageType(ResistanceType.Poison, 50);
+            SetDamageType(ResistanceType.Physical, 50);
+            SetDamageType(ResistanceType.Poison, 50);
 
-            this.SetResistance(ResistanceType.Physical, 90);
-            this.SetResistance(ResistanceType.Poison, 100);
+            SetResistance(ResistanceType.Physical, 90);
+            SetResistance(ResistanceType.Poison, 100);
 
-            this.SetSkill(SkillName.Tactics, 50.0);
-            this.SetSkill(SkillName.Wrestling, 50.1, 60.0);
+            SetSkill(SkillName.Tactics, 50.0);
+            SetSkill(SkillName.Wrestling, 50.1, 60.0);
 
-            this.Fame = 1000;
-            this.Karma = -1000;
+            Fame = 1000;
+            Karma = -1000;
         }
 
         public MoundOfMaggots(Serial serial)
@@ -41,8 +41,8 @@ namespace Server.Mobiles
         public override int TreasureMapLevel => 1;
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Meager);
-            this.AddLoot(LootPack.Gems);
+            AddLoot(LootPack.Meager);
+            AddLoot(LootPack.Gems);
         }
 
         public override void Serialize(GenericWriter writer)

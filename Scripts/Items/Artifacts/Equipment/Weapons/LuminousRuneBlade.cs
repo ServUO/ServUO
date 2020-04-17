@@ -11,7 +11,7 @@ namespace Server.Items
             Attributes.NightSight = 1;
             Attributes.WeaponSpeed = 25;
             Attributes.WeaponDamage = 55;
-            Hue = this.GetElementalDamageHue();
+            Hue = GetElementalDamageHue();
         }
 
         public LuminousRuneBlade(Serial serial)

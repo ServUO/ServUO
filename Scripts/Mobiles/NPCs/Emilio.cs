@@ -19,26 +19,26 @@ namespace Server.Engines.Quests
         public override Type[] Quests => new Type[] { typeof(UnfadingMemoriesOneQuest) };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.Race = Race.Human;
+            Female = false;
+            Race = Race.Human;
 
-            this.Hue = 0x83EB;
-            this.HairItemID = 0x2048;
-            this.HairHue = 0x470;
-            this.FacialHairItemID = 0x204C;
-            this.FacialHairHue = 0x470;
+            Hue = 0x83EB;
+            HairItemID = 0x2048;
+            HairHue = 0x470;
+            FacialHairItemID = 0x204C;
+            FacialHairHue = 0x470;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Sandals(0x721));
-            this.AddItem(new LongPants(0x51B));
-            this.AddItem(new FancyShirt(0x517));
-            this.AddItem(new FloppyHat(0x584));
-            this.AddItem(new BodySash(0x13));
+            AddItem(new Backpack());
+            AddItem(new Sandals(0x721));
+            AddItem(new LongPants(0x51B));
+            AddItem(new FancyShirt(0x517));
+            AddItem(new FloppyHat(0x584));
+            AddItem(new BodySash(0x13));
         }
 
         public override void Serialize(GenericWriter writer)

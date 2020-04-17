@@ -34,32 +34,32 @@ namespace Server.Engines.Quests
         public CleansingOldHavenQuest()
             : base()
         {
-            this.AddObjective(new ApprenticeObjective(SkillName.Chivalry, 50, "Old Haven Training", 1077720, 1077721));
+            AddObjective(new ApprenticeObjective(SkillName.Chivalry, 50, "Old Haven Training", 1077720, 1077721));
 
             // 1077720 Your Chivalry potential is greatly enhanced while questing in this area.
             // 1077721 You are not in the quest area for Apprentice Paladin. Your Chivalry potential is not enhanced here.
 
-            this.AddReward(new BaseReward(typeof(BulwarkLeggings), 1077727));
+            AddReward(new BaseReward(typeof(BulwarkLeggings), 1077727));
         }
 
         public override bool CanOffer()
         {
             #region Scroll of Alacrity
-            PlayerMobile pm = this.Owner as PlayerMobile;
+            PlayerMobile pm = Owner as PlayerMobile;
             if (pm.AcceleratedStart > DateTime.UtcNow)
             {
-                this.Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
+                Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
                 return false;
             }
             #endregion
             else
-                return this.Owner.Skills.Chivalry.Base < 50;
+                return Owner.Skills.Chivalry.Base < 50;
         }
 
         public override void OnCompleted()
         {
-            this.Owner.SendLocalizedMessage(1077725, null, 0x23); // You have achieved the rank of Apprentice Paladin. Return to Aelorn in New Haven to report your progress.						
-            this.Owner.PlaySound(this.CompleteSound);
+            Owner.SendLocalizedMessage(1077725, null, 0x23); // You have achieved the rank of Apprentice Paladin. Return to Aelorn in New Haven to report your progress.						
+            Owner.PlaySound(CompleteSound);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -87,20 +87,20 @@ namespace Server.Engines.Quests
         public override bool IsActiveVendor => true;
         public override void InitSBInfo()
         {
-            this.SBInfos.Add(new SBKeeperOfChivalry());
+            SBInfos.Add(new SBKeeperOfChivalry());
         }
 
         [Constructable]
         public Aelorn()
             : base("Aelorn", "The Chivalry Instructor")
         {
-            this.SetSkill(SkillName.Anatomy, 120.0, 120.0);
-            this.SetSkill(SkillName.MagicResist, 120.0, 120.0);
-            this.SetSkill(SkillName.Tactics, 120.0, 120.0);
-            this.SetSkill(SkillName.Swords, 120.0, 120.0);
-            this.SetSkill(SkillName.Meditation, 120.0, 120.0);
-            this.SetSkill(SkillName.Focus, 120.0, 120.0);
-            this.SetSkill(SkillName.Chivalry, 120.0, 120.0);
+            SetSkill(SkillName.Anatomy, 120.0, 120.0);
+            SetSkill(SkillName.MagicResist, 120.0, 120.0);
+            SetSkill(SkillName.Tactics, 120.0, 120.0);
+            SetSkill(SkillName.Swords, 120.0, 120.0);
+            SetSkill(SkillName.Meditation, 120.0, 120.0);
+            SetSkill(SkillName.Focus, 120.0, 120.0);
+            SetSkill(SkillName.Chivalry, 120.0, 120.0);
         }
 
         public Aelorn(Serial serial)
@@ -110,33 +110,33 @@ namespace Server.Engines.Quests
 
         public override void Advertise()
         {
-            this.Say(1078133); // Hail, friend. Want to live the life of a paladin?
+            Say(1078133); // Hail, friend. Want to live the life of a paladin?
         }
 
         public override void OnOfferFailed()
         {
-            this.Say(1077772); // I cannot teach you, for you know all I can teach!
+            Say(1077772); // I cannot teach you, for you know all I can teach!
         }
 
         public override void InitBody()
         {
-            this.Female = false;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = false;
+            CantWalk = true;
+            Race = Race.Human;
 
             base.InitBody();
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new VikingSword());
-            this.AddItem(new PlateChest());
-            this.AddItem(new PlateLegs());
-            this.AddItem(new PlateGloves());
-            this.AddItem(new PlateArms());
-            this.AddItem(new PlateGorget());
-            this.AddItem(new OrderShield());
+            AddItem(new Backpack());
+            AddItem(new VikingSword());
+            AddItem(new PlateChest());
+            AddItem(new PlateLegs());
+            AddItem(new PlateGloves());
+            AddItem(new PlateArms());
+            AddItem(new PlateGorget());
+            AddItem(new OrderShield());
         }
 
         public override void Serialize(GenericWriter writer)

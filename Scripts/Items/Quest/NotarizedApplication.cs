@@ -6,8 +6,8 @@ namespace Server.Items
         public NotarizedApplication()
             : base(0x14EF)
         {
-            this.LootType = LootType.Blessed;
-            this.Weight = 1.0;
+            LootType = LootType.Blessed;
+            Weight = 1.0;
         }
 
         public NotarizedApplication(Serial serial)

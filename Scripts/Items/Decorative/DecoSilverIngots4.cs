@@ -6,8 +6,8 @@ namespace Server.Items
         public DecoSilverIngots4()
             : base(0x1BF9)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public DecoSilverIngots4(Serial serial)

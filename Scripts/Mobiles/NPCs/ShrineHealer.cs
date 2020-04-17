@@ -82,8 +82,8 @@ namespace Server.Mobiles
 
             public override void OnClick()
             {
-                if (this.m_Mobile.CheckAlive())
-                    this.m_Mobile.SendGump(new TithingGump(this.m_Mobile, 0));
+                if (m_Mobile.CheckAlive())
+                    m_Mobile.SendGump(new TithingGump(m_Mobile, 0));
             }
         }
 

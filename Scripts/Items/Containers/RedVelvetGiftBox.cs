@@ -16,17 +16,17 @@ namespace Server.Items
         public RedVelvetGiftBox(bool fill)
             : base(0xE7A)
         {
-            this.Hue = 0x20;
+            Hue = 0x20;
 
             if (fill)
             {
                 for (int i = 0; i < 5; i++)
                 {
-                    this.AddToBox(new ValentinesCardSouth(), new Point3D(60 + (i * 10), 47, 0));
-                    this.AddToBox(new ValentinesCardEast(), new Point3D(20 + (i * 10), 72, 0));
+                    AddToBox(new ValentinesCardSouth(), new Point3D(60 + (i * 10), 47, 0));
+                    AddToBox(new ValentinesCardEast(), new Point3D(20 + (i * 10), 72, 0));
                 }
-                this.AddToBox(new Bacon(), new Point3D(90, 85, 0));
-                this.AddToBox(new RoseInAVase(), new Point3D(130, 55, 0));
+                AddToBox(new Bacon(), new Point3D(90, 85, 0));
+                AddToBox(new RoseInAVase(), new Point3D(130, 55, 0));
             }
         }
 
@@ -39,7 +39,7 @@ namespace Server.Items
         public override int LabelNumber => 1077596;// A Red Velvet Box
         public virtual void AddToBox(Item item, Point3D loc)
         {
-            this.DropItem(item);
+            DropItem(item);
             item.Location = loc;
         }
 

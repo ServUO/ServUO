@@ -6,8 +6,8 @@ namespace Server.Items
         public Bluekeyfragment()
             : base(0x1012)
         {
-            this.Movable = false;
-            this.Hue = 0x5D;
+            Movable = false;
+            Hue = 0x5D;
         }
 
         public Bluekeyfragment(Serial serial)

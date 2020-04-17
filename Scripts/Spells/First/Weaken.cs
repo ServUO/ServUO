@@ -89,10 +89,10 @@ namespace Server.Spells.First
 
                     if (-newOffset < oldOffset)
                     {
-                        SpellHelper.AddStatCurse(this.Caster, m, StatType.Str, false, newOffset);
+                        SpellHelper.AddStatCurse(Caster, m, StatType.Str, false, newOffset);
 
-                        int percentage = (int)(SpellHelper.GetOffsetScalar(this.Caster, m, true) * 100);
-                        TimeSpan length = SpellHelper.GetDuration(this.Caster, m);
+                        int percentage = (int)(SpellHelper.GetOffsetScalar(Caster, m, true) * 100);
+                        TimeSpan length = SpellHelper.GetDuration(Caster, m);
                         BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Weaken, 1075837, length, m, percentage.ToString()));
 
                         if (m_Table.ContainsKey(m))

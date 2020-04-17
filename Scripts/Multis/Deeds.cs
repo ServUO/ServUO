@@ -10,7 +10,7 @@ namespace Server.Multis.Deeds
         public HousePlacementTarget(HouseDeed deed)
             : base(deed.MultiID, deed.Offset)
         {
-            this.m_Deed = deed;
+            m_Deed = deed;
         }
 
         protected override void OnTarget(Mobile from, object o)
@@ -27,7 +27,7 @@ namespace Server.Multis.Deeds
                 Region reg = Region.Find(new Point3D(p), from.Map);
 
                 if (from.AccessLevel >= AccessLevel.GameMaster || reg.AllowHousing(from, p))
-                    this.m_Deed.OnPlacement(from, p);
+                    m_Deed.OnPlacement(from, p);
                 else if (reg.IsPartOf<TempNoHousingRegion>())
                     from.SendLocalizedMessage(501270); // Lord British has decreed a 'no build' period, thus you cannot build this house at this time.
                 else if (reg.IsPartOf<HouseRegion>())
@@ -47,11 +47,11 @@ namespace Server.Multis.Deeds
         public HouseDeed(int id, Point3D offset)
             : base(0x14F0)
         {
-            this.Weight = 1.0;
-            this.LootType = LootType.Newbied;
+            Weight = 1.0;
+            LootType = LootType.Newbied;
 
-            this.m_MultiID = id;
-            this.m_Offset = offset;
+            m_MultiID = id;
+            m_Offset = offset;
         }
 
         public HouseDeed(Serial serial)
@@ -64,11 +64,11 @@ namespace Server.Multis.Deeds
         {
             get
             {
-                return this.m_MultiID;
+                return m_MultiID;
             }
             set
             {
-                this.m_MultiID = value;
+                m_MultiID = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -76,11 +76,11 @@ namespace Server.Multis.Deeds
         {
             get
             {
-                return this.m_Offset;
+                return m_Offset;
             }
             set
             {
-                this.m_Offset = value;
+                m_Offset = value;
             }
         }
         public abstract Rectangle2D[] Area { get; }
@@ -90,9 +90,9 @@ namespace Server.Multis.Deeds
 
             writer.Write(1); // version
 
-            writer.Write(this.m_Offset);
+            writer.Write(m_Offset);
 
-            writer.Write(this.m_MultiID);
+            writer.Write(m_MultiID);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -105,25 +105,25 @@ namespace Server.Multis.Deeds
             {
                 case 1:
                     {
-                        this.m_Offset = reader.ReadPoint3D();
+                        m_Offset = reader.ReadPoint3D();
 
                         goto case 0;
                     }
                 case 0:
                     {
-                        this.m_MultiID = reader.ReadInt();
+                        m_MultiID = reader.ReadInt();
 
                         break;
                     }
             }
 
-            if (this.Weight == 0.0)
-                this.Weight = 1.0;
+            if (Weight == 0.0)
+                Weight = 1.0;
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!this.IsChildOf(from.Backpack))
+            if (!IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
             }
@@ -141,18 +141,18 @@ namespace Server.Multis.Deeds
 
         public void OnPlacement(Mobile from, Point3D p)
         {
-            if (this.Deleted)
+            if (Deleted)
                 return;
 
-            if (!this.IsChildOf(from.Backpack))
+            if (!IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
             }
             else
             {
                 ArrayList toMove;
-                Point3D center = new Point3D(p.X - this.m_Offset.X, p.Y - this.m_Offset.Y, p.Z - this.m_Offset.Z);
-                HousePlacementResult res = HousePlacement.Check(from, this.m_MultiID, center, out toMove);
+                Point3D center = new Point3D(p.X - m_Offset.X, p.Y - m_Offset.Y, p.Z - m_Offset.Z);
+                HousePlacementResult res = HousePlacement.Check(from, m_MultiID, center, out toMove);
 
                 switch (res)
                 {
@@ -160,9 +160,9 @@ namespace Server.Multis.Deeds
                         {
                             if (from.AccessLevel > AccessLevel.Player || BaseHouse.CheckAccountHouseLimit(from))
                             {
-                                BaseHouse house = this.GetHouse(from);
+                                BaseHouse house = GetHouse(from);
                                 house.MoveToWorld(center, from.Map);
-                                this.Delete();
+                                Delete();
 
                                 for (int i = 0; i < toMove.Count; ++i)
                                 {

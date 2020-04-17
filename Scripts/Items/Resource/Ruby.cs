@@ -12,8 +12,8 @@ namespace Server.Items
         public Ruby(int amount)
             : base(0xF13)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public Ruby(Serial serial)

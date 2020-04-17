@@ -6,7 +6,7 @@ namespace Server.Items
         public SmallEmptyPot()
             : base(0x11C6)
         {
-            this.Weight = 100;
+            Weight = 100;
         }
 
         public SmallEmptyPot(Serial serial)
@@ -35,7 +35,7 @@ namespace Server.Items
         public LargeEmptyPot()
             : base(0x11C7)
         {
-            this.Weight = 6;
+            Weight = 6;
         }
 
         public LargeEmptyPot(Serial serial)

@@ -9,10 +9,10 @@ namespace Server.Engines.Quests
         public ShakingThingsUpQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(RedSolenWarrior), "red solen warriors", 10));
-            this.AddObjective(new SlayObjective(typeof(BlackSolenWarrior), "black solen warriors", 10));
+            AddObjective(new SlayObjective(typeof(RedSolenWarrior), "red solen warriors", 10));
+            AddObjective(new SlayObjective(typeof(BlackSolenWarrior), "black solen warriors", 10));
 
-            this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
+            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
         public override bool AllObjectives => false;
@@ -46,9 +46,9 @@ namespace Server.Engines.Quests
         public ArachnophobiaQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(GiantBlackWidow), "giant black widows", 12));
+            AddObjective(new SlayObjective(typeof(GiantBlackWidow), "giant black widows", 12));
 
-            this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
+            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
         /* Arachnophobia */
@@ -81,9 +81,9 @@ namespace Server.Engines.Quests
         public MiniSwampThingQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Bogling), "boglings", 20));
+            AddObjective(new SlayObjective(typeof(Bogling), "boglings", 20));
 
-            this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
+            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
         /* Mini Swamp Thing */
@@ -116,8 +116,8 @@ namespace Server.Engines.Quests
         public Salaenih()
             : base("Salaenih", "the expeditionist")
         {
-            this.SetSkill(SkillName.Meditation, 60.0, 83.0);
-            this.SetSkill(SkillName.Focus, 60.0, 83.0);
+            SetSkill(SkillName.Meditation, 60.0, 83.0);
+            SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
         public Salaenih(Serial serial)
@@ -140,42 +140,42 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = true;
-            this.Race = Race.Elf;
+            Female = true;
+            Race = Race.Elf;
 
-            this.Hue = 0x851D;
-            this.HairItemID = 0x2FCD;
-            this.HairHue = 0x324;
+            Hue = 0x851D;
+            HairItemID = 0x2FCD;
+            HairHue = 0x324;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new ElvenBoots());
-            this.AddItem(new WarCleaver());
+            AddItem(new ElvenBoots());
+            AddItem(new WarCleaver());
 
             Item item;
 
             item = new WoodlandLegs();
             item.Hue = 0x1BB;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new WoodlandArms();
             item.Hue = 0x1BB;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new WoodlandChest();
             item.Hue = 0x1BB;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new WoodlandBelt();
             item.Hue = 0x597;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new VultureHelm();
             item.Hue = 0x1BB;
-            this.AddItem(item);
+            AddItem(item);
         }
 
         public override void Serialize(GenericWriter writer)

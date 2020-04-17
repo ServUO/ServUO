@@ -8,12 +8,12 @@ namespace Server.Commands.Generic
     {
         public IPAddressCommandImplementor()
         {
-            this.Accessors = new string[] { "IPAddress" };
-            this.SupportRequirement = CommandSupport.IPAddress;
-            this.SupportsConditionals = true;
-            this.AccessLevel = AccessLevel.Administrator;
-            this.Usage = "IPAddress <command> [condition]";
-            this.Description = "Invokes the command on one mobile from each IP address that is logged in. Optional condition arguments can further restrict the set of objects.";
+            Accessors = new string[] { "IPAddress" };
+            SupportRequirement = CommandSupport.IPAddress;
+            SupportsConditionals = true;
+            AccessLevel = AccessLevel.Administrator;
+            Usage = "IPAddress <command> [condition]";
+            Description = "Invokes the command on one mobile from each IP address that is logged in. Optional condition arguments can further restrict the set of objects.";
         }
 
         public override void Compile(Mobile from, BaseCommand command, ref string[] args, ref object obj)
@@ -24,7 +24,7 @@ namespace Server.Commands.Generic
 
                 bool items, mobiles;
 
-                if (!this.CheckObjectTypes(from, command, ext, out items, out mobiles))
+                if (!CheckObjectTypes(from, command, ext, out items, out mobiles))
                     return;
 
                 if (!mobiles) // sanity check

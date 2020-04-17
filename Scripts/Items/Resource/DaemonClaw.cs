@@ -12,8 +12,8 @@ namespace Server.Items
         public DaemonClaw(int amount)
             : base(0x5721)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public DaemonClaw(Serial serial)

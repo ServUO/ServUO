@@ -67,7 +67,7 @@ namespace Server.Items
             if (tool is IUsesRemaining && ((IUsesRemaining)tool).UsesRemaining < 1)
                 return;
 
-            from.Direction = from.GetDirectionTo(this.Location);
+            from.Direction = from.GetDirectionTo(Location);
             from.Animate(11, 5, 1, true, false, 0);
 
             Timer.DelayCall(TimeSpan.FromSeconds(1), new TimerStateCallback(DoMine), new object[] { from, tool });

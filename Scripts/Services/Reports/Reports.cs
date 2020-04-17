@@ -214,12 +214,12 @@ namespace Server.Engines.Reports
             public int m_NumberOfGMs;
             public SkillDistribution(SkillInfo skill)
             {
-                this.m_Skill = skill;
+                m_Skill = skill;
             }
 
             public int CompareTo(object obj)
             {
-                return (((SkillDistribution)obj).m_NumberOfGMs - this.m_NumberOfGMs);
+                return (((SkillDistribution)obj).m_NumberOfGMs - m_NumberOfGMs);
             }
         }
     }

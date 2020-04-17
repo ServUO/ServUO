@@ -6,8 +6,8 @@ namespace Server.Items
         public JaggedCrystals()
             : base(0x223E)
         {
-            this.Weight = 1;
-            this.Hue = 0x2B2;
+            Weight = 1;
+            Hue = 0x2B2;
         }
 
         public JaggedCrystals(Serial serial)

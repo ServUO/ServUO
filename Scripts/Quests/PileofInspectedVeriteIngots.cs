@@ -6,9 +6,9 @@ namespace Server.Items
         public PileofInspectedVeriteIngots()
             : base(0x1BEA)
         {
-            this.Name = "Pile of Inspected Agapite Ingots";
+            Name = "Pile of Inspected Agapite Ingots";
 
-            this.Hue = 2207;
+            Hue = 2207;
         }
 
         public PileofInspectedVeriteIngots(Serial serial)

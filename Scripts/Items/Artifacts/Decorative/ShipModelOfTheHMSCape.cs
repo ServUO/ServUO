@@ -7,7 +7,7 @@ namespace Server.Items
         public ShipModelOfTheHMSCape()
             : base(0x14F3)
         {
-            this.Hue = 0x37B;
+            Hue = 0x37B;
         }
 
         public ShipModelOfTheHMSCape(Serial serial)

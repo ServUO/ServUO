@@ -6,8 +6,8 @@ namespace Server.Items
         public MechanicalComponent()
             : base(0x2DD7)
         {
-            this.Hue = 2500;
-            this.Weight = 1;
+            Hue = 2500;
+            Weight = 1;
         }
 
         public override int Lifespan => 259200;
@@ -25,7 +25,7 @@ namespace Server.Items
             if (from.Skills[SkillName.Tinkering].Value >= 80.0)
             {
                 from.AddToBackpack(new ExoticToolkit());
-                this.Delete();
+                Delete();
                 from.SendLocalizedMessage(1152369); // You successfully convert the component into an exotic tool kit.
             }
             else

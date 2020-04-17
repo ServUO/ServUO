@@ -11,14 +11,14 @@ namespace Server.Mobiles
         {
         }
 
-        public override IShopSellInfo SellInfo => this.m_SellInfo;
-        public override List<GenericBuyInfo> BuyInfo => this.m_BuyInfo;
+        public override IShopSellInfo SellInfo => m_SellInfo;
+        public override List<GenericBuyInfo> BuyInfo => m_BuyInfo;
 
         public class InternalBuyInfo : List<GenericBuyInfo>
         {
             public InternalBuyInfo()
             {
-                this.Add(new GenericBuyInfo("1154215", typeof(SpecialSalvageHook), 1900, 10, 0x14F9, 2654));
+                Add(new GenericBuyInfo("1154215", typeof(SpecialSalvageHook), 1900, 10, 0x14F9, 2654));
             }
         }
 

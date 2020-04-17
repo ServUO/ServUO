@@ -46,7 +46,7 @@ namespace Server.Mobiles
                 SayTo(player, 1116514); //Bring yer ship around, I might have some work for ye!);
             else
             {
-                bool inRange = InRange(boat.Location, distance) && boat.Map == this.Map;
+                bool inRange = InRange(boat.Location, distance) && boat.Map == Map;
 
                 if (!FishQuestHelper.HasFishQuest(player, this, inRange))
                 {
@@ -67,7 +67,7 @@ namespace Server.Mobiles
                             player.SendGump(new MondainQuestGump(quest));
 
                             if (boat.IsClassicBoat)
-                                this.SayTo(player, "Such a weak vessle can only catch a weak line.");
+                                SayTo(player, "Such a weak vessle can only catch a weak line.");
                         }
                     }
                 }

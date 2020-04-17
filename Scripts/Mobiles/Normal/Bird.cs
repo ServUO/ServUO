@@ -9,48 +9,48 @@ namespace Server.Mobiles
         {
             if (Utility.RandomBool())
             {
-                this.Hue = 0x901;
+                Hue = 0x901;
 
                 switch (Utility.Random(3))
                 {
                     case 0:
-                        this.Name = "a crow";
+                        Name = "a crow";
                         break;
                     case 2:
-                        this.Name = "a raven";
+                        Name = "a raven";
                         break;
                     case 1:
-                        this.Name = "a magpie";
+                        Name = "a magpie";
                         break;
                 }
             }
             else
             {
-                this.Hue = Utility.RandomBirdHue();
-                this.Name = NameList.RandomName("bird");
+                Hue = Utility.RandomBirdHue();
+                Name = NameList.RandomName("bird");
             }
 
-            this.Body = 6;
-            this.BaseSoundID = 0x1B;
+            Body = 6;
+            BaseSoundID = 0x1B;
 
-            this.SetStr(10);
-            this.SetDex(25, 35);
-            this.SetInt(10);
+            SetStr(10);
+            SetDex(25, 35);
+            SetInt(10);
 
-            this.SetDamage(0);
+            SetDamage(0);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetSkill(SkillName.Wrestling, 4.2, 6.4);
-            this.SetSkill(SkillName.Tactics, 4.0, 6.0);
-            this.SetSkill(SkillName.MagicResist, 4.0, 5.0);
+            SetSkill(SkillName.Wrestling, 4.2, 6.4);
+            SetSkill(SkillName.Tactics, 4.0, 6.0);
+            SetSkill(SkillName.MagicResist, 4.0, 5.0);
 
-            this.Fame = 150;
-            this.Karma = 0;
+            Fame = 150;
+            Karma = 0;
 
-            this.Tamable = true;
-            this.ControlSlots = 1;
-            this.MinTameSkill = -6.9;
+            Tamable = true;
+            ControlSlots = 1;
+            MinTameSkill = -6.9;
         }
 
         public Bird(Serial serial)
@@ -82,30 +82,30 @@ namespace Server.Mobiles
         public TropicalBird()
             : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Hue = Utility.RandomBirdHue();
-            this.Name = "a tropical bird";
+            Hue = Utility.RandomBirdHue();
+            Name = "a tropical bird";
 
-            this.Body = 6;
-            this.BaseSoundID = 0xBF;
+            Body = 6;
+            BaseSoundID = 0xBF;
 
-            this.SetStr(10);
-            this.SetDex(25, 35);
-            this.SetInt(10);
+            SetStr(10);
+            SetDex(25, 35);
+            SetInt(10);
 
-            this.SetDamage(0);
+            SetDamage(0);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetSkill(SkillName.Wrestling, 4.2, 6.4);
-            this.SetSkill(SkillName.Tactics, 4.0, 6.0);
-            this.SetSkill(SkillName.MagicResist, 4.0, 5.0);
+            SetSkill(SkillName.Wrestling, 4.2, 6.4);
+            SetSkill(SkillName.Tactics, 4.0, 6.0);
+            SetSkill(SkillName.MagicResist, 4.0, 5.0);
 
-            this.Fame = 150;
-            this.Karma = 0;
+            Fame = 150;
+            Karma = 0;
 
-            this.Tamable = true;
-            this.ControlSlots = 1;
-            this.MinTameSkill = -6.9;
+            Tamable = true;
+            ControlSlots = 1;
+            MinTameSkill = -6.9;
         }
 
         public TropicalBird(Serial serial)

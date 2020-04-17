@@ -6,8 +6,8 @@ namespace Server.Items
         public ThrashersTail()
             : base(0x1A9D)
         {
-            this.LootType = LootType.Blessed;
-            this.Hue = 0x455;
+            LootType = LootType.Blessed;
+            Hue = 0x455;
         }
 
         public ThrashersTail(Serial serial)

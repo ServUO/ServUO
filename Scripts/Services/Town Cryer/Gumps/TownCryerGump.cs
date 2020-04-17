@@ -170,7 +170,7 @@ namespace Server.Services.TownCryer
             AddButton(601, 150, City == City.Yew ? 0x5E9 : 0x5E8, City == City.Yew ? 0x5E9 : 0x5E8, 18, GumpButtonType.Reply, 0);
             AddTooltip(CityLoyaltySystem.GetCityLocalization(City.Yew));
 
-            AddHtmlLocalized(0, 260, 854, 20, CenterLoc, String.Format("#{0}", TownCryerSystem.GetCityLoc(this.City)), 0, false, false); // The Latest News from the City of ~1_CITY~
+            AddHtmlLocalized(0, 260, 854, 20, CenterLoc, String.Format("#{0}", TownCryerSystem.GetCityLoc(City)), 0, false, false); // The Latest News from the City of ~1_CITY~
 
             int y = 300;
 
@@ -178,7 +178,7 @@ namespace Server.Services.TownCryer
             {
                 TownCryerCityEntry entry = TownCryerSystem.CityEntries[i];
 
-                if (entry.City != this.City)
+                if (entry.City != City)
                     continue;
 
                 AddButton(50, y, 0x5FB, 0x5FC, 300 + i, GumpButtonType.Reply, 0);

@@ -7,7 +7,7 @@ namespace Server.Items
         [Constructable]
         public SolenWarriorCostume() : base()
         {
-            this.CostumeBody = 782;
+            CostumeBody = 782;
         }
 
         public override int LabelNumber => 1114231;// solen warrior costume

@@ -28,7 +28,7 @@ namespace Server.SkillHandlers
             public InternalTarget()
                 : base(2, false, TargetFlags.None)
             {
-                this.AllowNonlocal = true;
+                AllowNonlocal = true;
             }
 
             protected override void OnTarget(Mobile from, object targeted)

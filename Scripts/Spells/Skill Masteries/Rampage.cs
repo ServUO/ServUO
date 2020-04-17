@@ -47,7 +47,7 @@ namespace Server.Spells.SkillMasteries
         {
             base.OnBeginCast();
 
-            if (!HasSpell(Caster, this.GetType()))
+            if (!HasSpell(Caster, GetType()))
             {
                 Caster.PrivateOverheadMessage(MessageType.Regular, 1150, 1155890, Caster.NetState); // *You attempt channel your wrestling mastery into a fit of rage!*
 

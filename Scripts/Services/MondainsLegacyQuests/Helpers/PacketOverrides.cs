@@ -11,11 +11,11 @@ namespace Server.Engines.Quests
         public HeritagePacket(bool female, short type)
             : base(0xBF)
         {
-            this.EnsureCapacity(7);
+            EnsureCapacity(7);
 
-            this.m_Stream.Write((short)0x2A);
-            this.m_Stream.Write((byte)(female ? 1 : 0));
-            this.m_Stream.Write((byte)type);
+            m_Stream.Write((short)0x2A);
+            m_Stream.Write((byte)(female ? 1 : 0));
+            m_Stream.Write((byte)type);
         }
     }
 

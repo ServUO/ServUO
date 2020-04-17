@@ -127,7 +127,7 @@ namespace Server.Mobiles
                         spawn.MoveToWorld(p, map);
                         spawn.Home = p;
                         spawn.RangeHome = 5;
-                        spawn.Team = this.Team;
+                        spawn.Team = Team;
                         spawn.SummonMaster = this;
 
                         if (!initial)

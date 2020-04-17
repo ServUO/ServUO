@@ -47,8 +47,8 @@ namespace Server.Items
         public SpecialSalvageHook()
               : base(0x14F7)
         {
-            this.Weight = 25.0;
-            this.Hue = 2654;
+            Weight = 25.0;
+            Hue = 2654;
         }
 
         public SpecialSalvageHook(Serial serial)
@@ -61,8 +61,8 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool InUse
         {
-            get { return this.m_InUse; }
-            set { this.m_InUse = value; }
+            get { return m_InUse; }
+            set { m_InUse = value; }
         }
 
         public virtual bool RequireDeepWater => true;
@@ -73,7 +73,7 @@ namespace Server.Items
 
             writer.Write(1); // version
 
-            writer.Write(this.m_InUse);
+            writer.Write(m_InUse);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -86,16 +86,16 @@ namespace Server.Items
             {
                 case 1:
                     {
-                        this.m_InUse = reader.ReadBool();
+                        m_InUse = reader.ReadBool();
 
-                        if (this.m_InUse)
-                            this.Delete();
+                        if (m_InUse)
+                            Delete();
 
                         break;
                     }
             }
 
-            this.Stackable = false;
+            Stackable = false;
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -104,7 +104,7 @@ namespace Server.Items
 
             if (pm.ExploringTheDeepQuest > ExploringTheDeepQuestChain.None)
             {
-                if (!this.m_InUse)
+                if (!m_InUse)
                 {
                     from.SendLocalizedMessage(1154219); // Where do you wish to use this?
                     from.BeginTarget(-1, true, TargetFlags.None, new TargetCallback(OnTarget));
@@ -119,7 +119,7 @@ namespace Server.Items
 
         public void OnTarget(Mobile from, object obj)
         {
-            if (this.Deleted || this.m_InUse)
+            if (Deleted || m_InUse)
                 return;
 
             IPoint3D p3D = obj as IPoint3D;
@@ -138,21 +138,21 @@ namespace Server.Items
             {
                 from.SendLocalizedMessage(500979); // You cannot see that location.
             }
-            else if (this.RequireDeepWater ? SpecialFishingNet.FullValidation(map, x, y) : (SpecialFishingNet.ValidateDeepWater(map, x, y) || SpecialFishingNet.ValidateUndeepWater(map, obj, ref z)))
+            else if (RequireDeepWater ? SpecialFishingNet.FullValidation(map, x, y) : (SpecialFishingNet.ValidateDeepWater(map, x, y) || SpecialFishingNet.ValidateUndeepWater(map, obj, ref z)))
             {
                 Point3D p = new Point3D(x, y, z);
 
-                if (this.GetType() == typeof(SpecialSalvageHook))
+                if (GetType() == typeof(SpecialSalvageHook))
                 {
-                    for (int i = 1; i < this.Amount; ++i) // these were stackable before, doh
+                    for (int i = 1; i < Amount; ++i) // these were stackable before, doh
                         from.AddToBackpack(new SpecialSalvageHook());
                 }
 
                 _Tick = 0;
 
-                this.m_InUse = true;
-                this.Movable = false;
-                this.MoveToWorld(p, map);
+                m_InUse = true;
+                Movable = false;
+                MoveToWorld(p, map);
 
                 SpellHelper.Turn(from, p);
                 from.Animate(12, 5, 1, true, false, 0);
@@ -175,7 +175,7 @@ namespace Server.Items
         {
             int count = Utility.RandomMinMax(1, 3);
 
-            if (this.Hue != 0x8A0)
+            if (Hue != 0x8A0)
                 count += Utility.RandomMinMax(1, 2);
 
             return count;
@@ -215,7 +215,7 @@ namespace Server.Items
             {
                 from.RevealingAction();
 
-                int count = this.GetSpawnCount();
+                int count = GetSpawnCount();
                 BaseCreature spawn;
 
                 for (int i = 0; i < count; ++i)
@@ -237,7 +237,7 @@ namespace Server.Items
                             break;
                     }
 
-                    this.Spawn(p, map, spawn);
+                    Spawn(p, map, spawn);
                     spawn.Combatant = from;
                 }
             }
@@ -269,7 +269,7 @@ namespace Server.Items
 
         private void DoEffect(object state)
         {
-            if (this.Deleted)
+            if (Deleted)
                 return;
 
             object[] states = (object[])state;
@@ -279,12 +279,12 @@ namespace Server.Items
 
             if (_Tick == 1)
             {
-                Effects.SendLocationEffect(p, this.Map, 0x352D, 16, 4);
-                Effects.PlaySound(p, this.Map, 0x364);
+                Effects.SendLocationEffect(p, Map, 0x352D, 16, 4);
+                Effects.PlaySound(p, Map, 0x364);
             }
             else if (_Tick <= 7 || _Tick == 14)
             {
-                if (this.RequireDeepWater)
+                if (RequireDeepWater)
                 {
                     for (int i = 0; i < 3; ++i)
                     {
@@ -297,7 +297,7 @@ namespace Server.Items
                         }
                         while (x == 0 && y == 0);
 
-                        Effects.SendLocationEffect(new Point3D(p.X + x, p.Y + y, p.Z), this.Map, 0x352D, 16, 4);
+                        Effects.SendLocationEffect(new Point3D(p.X + x, p.Y + y, p.Z), Map, 0x352D, 16, 4);
                     }
 
                     if (_Tick == 14)
@@ -312,24 +312,24 @@ namespace Server.Items
                             }
                             else
                             {
-                                SpawnBaddies(p, this.Map, from);
+                                SpawnBaddies(p, Map, from);
                             }
                         }
 
                         //TODO: Message?
 
-                        this.Delete();
+                        Delete();
                     }
                 }
                 else
                 {
-                    Effects.SendLocationEffect(p, this.Map, 0x352D, 16, 4);
+                    Effects.SendLocationEffect(p, Map, 0x352D, 16, 4);
                 }
 
                 if (Utility.RandomBool())
-                    Effects.PlaySound(p, this.Map, 0x364);
+                    Effects.PlaySound(p, Map, 0x364);
 
-                this.Z -= 1;
+                Z -= 1;
             }
 
             _Tick++;

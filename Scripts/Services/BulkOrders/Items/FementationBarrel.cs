@@ -89,7 +89,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(this.GetWorldLocation(), 2))
+            if (from.InRange(GetWorldLocation(), 2))
             {
                 if (_Fermenting && _FermentingEnds < DateTime.UtcNow)
                 {

@@ -8,8 +8,8 @@ namespace Server.Items
         [Constructable]
         public LlamaTopiary() : base(0x491B)
         {
-            this.Weight = 1.0;
-            this.Name = ("a llama topiary");
+            Weight = 1.0;
+            Name = ("a llama topiary");
         }
 
         public LlamaTopiary(Serial serial) : base(serial)

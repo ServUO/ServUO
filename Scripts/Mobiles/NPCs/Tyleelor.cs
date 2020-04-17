@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public Tyleelor()
             : base("the expeditionist")
         {
-            this.Name = "Tyeelor";
+            Name = "Tyeelor";
         }
 
         public Tyleelor(Serial serial)
@@ -20,48 +20,48 @@ namespace Server.Mobiles
 
         public override bool CanTeach => false;
         public override bool IsInvulnerable => true;
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
         }
 
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.Race = Race.Elf;
+            Female = false;
+            Race = Race.Elf;
 
-            this.Hue = 0x8367;
-            this.HairItemID = 0x2FC1;
-            this.HairHue = 0x38;
+            Hue = 0x8367;
+            HairItemID = 0x2FC1;
+            HairHue = 0x38;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new ElvenBoots(0x1BB));
+            AddItem(new ElvenBoots(0x1BB));
 
             Item item;
 
             item = new WoodlandLegs();
             item.Hue = 0x236;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new WoodlandChest();
             item.Hue = 0x236;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new WoodlandArms();
             item.Hue = 0x236;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new WoodlandBelt();
             item.Hue = 0x237;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new VultureHelm();
             item.Hue = 0x236;
-            this.AddItem(item);
+            AddItem(item);
         }
 
         public override void Serialize(GenericWriter writer)

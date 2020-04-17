@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public Aluniol()
             : base("the healer")
         {
-            this.Name = "Aluniol";
+            Name = "Aluniol";
         }
 
         public Aluniol(Serial serial)
@@ -20,28 +20,28 @@ namespace Server.Mobiles
 
         public override bool CanTeach => false;
         public override bool IsInvulnerable => true;
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
         }
 
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.Race = Race.Elf;
+            Female = false;
+            Race = Race.Elf;
 
-            this.Hue = 0x8383;
-            this.HairItemID = 0x2FBF;
-            this.HairHue = 0x323;
+            Hue = 0x8383;
+            HairItemID = 0x2FBF;
+            HairHue = 0x323;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new ElvenBoots(0x1BB));
-            this.AddItem(new MaleElvenRobe(0x47E));
-            this.AddItem(new WildStaff());
+            AddItem(new ElvenBoots(0x1BB));
+            AddItem(new MaleElvenRobe(0x47E));
+            AddItem(new WildStaff());
         }
 
         public override void Serialize(GenericWriter writer)

@@ -7,7 +7,7 @@ namespace Server.Items
         public MountedDreadHorn()
             : base(0x3158)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public MountedDreadHorn(Serial serial)

@@ -12,8 +12,8 @@ namespace Server.Items
         public Diamond(int amount)
             : base(0xF26)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public Diamond(Serial serial)

@@ -35,7 +35,7 @@ namespace Server.Items
         public BrokenBookcaseAddon()
             : base()
         {
-            this.AddComponent(new BrokenBookcaseComponent(), 0, 0, 0);
+            AddComponent(new BrokenBookcaseComponent(), 0, 0, 0);
         }
 
         public BrokenBookcaseAddon(Serial serial)
@@ -65,7 +65,7 @@ namespace Server.Items
         public BrokenBookcaseDeed()
             : base()
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public BrokenBookcaseDeed(Serial serial)

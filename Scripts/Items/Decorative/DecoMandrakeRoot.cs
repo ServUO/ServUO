@@ -6,8 +6,8 @@ namespace Server.Items
         public DecoMandrakeRoot()
             : base(0x18DE)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public DecoMandrakeRoot(Serial serial)

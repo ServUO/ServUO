@@ -53,7 +53,7 @@ namespace Server.Spells.SkillMasteries
 
                     return;
                 }
-                else if (!HasSpell(Caster, this.GetType()))
+                else if (!HasSpell(Caster, GetType()))
                 {
                     if (CheckSequence())
                     {

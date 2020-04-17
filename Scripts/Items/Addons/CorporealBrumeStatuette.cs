@@ -6,7 +6,7 @@ namespace Server.Items
         public CorporealBrumeStatuette()
             : base(0x2D94)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public CorporealBrumeStatuette(Serial serial)

@@ -6,9 +6,9 @@ namespace Server.Items
         public WristWatch()
             : base(0x1086)
         {
-            this.Weight = this.DefaultWeight;
-            this.LootType = LootType.Blessed;
-            this.Layer = Layer.Bracelet;
+            Weight = DefaultWeight;
+            LootType = LootType.Blessed;
+            Layer = Layer.Bracelet;
         }
 
         public WristWatch(Serial serial)

@@ -12,8 +12,8 @@ namespace Server.Items
         public WoodPulp(int amount)
             : base(0x103D)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public WoodPulp(Serial serial)

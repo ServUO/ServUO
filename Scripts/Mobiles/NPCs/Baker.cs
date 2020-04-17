@@ -9,8 +9,8 @@ namespace Server.Mobiles
         public Baker()
             : base("the baker")
         {
-            this.SetSkill(SkillName.Cooking, 75.0, 98.0);
-            this.SetSkill(SkillName.TasteID, 36.0, 68.0);
+            SetSkill(SkillName.Cooking, 75.0, 98.0);
+            SetSkill(SkillName.TasteID, 36.0, 68.0);
         }
 
         public Baker(Serial serial)
@@ -18,10 +18,10 @@ namespace Server.Mobiles
         {
         }
 
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBBaker());
+            m_SBInfos.Add(new SBBaker());
         }
 
         public override void Serialize(GenericWriter writer)

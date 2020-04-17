@@ -18,38 +18,38 @@ namespace Server.Items
         {
             for (int i = 0; i < 8; i++)
             {
-                this.CreatePiece(new PieceBlackPawn(this), 67, (25 * i) + 17);
-                this.CreatePiece(new PieceWhitePawn(this), 192, (25 * i) + 17);
+                CreatePiece(new PieceBlackPawn(this), 67, (25 * i) + 17);
+                CreatePiece(new PieceWhitePawn(this), 192, (25 * i) + 17);
             }
 
             // Rook
-            this.CreatePiece(new PieceBlackRook(this), 42, 5);
-            this.CreatePiece(new PieceBlackRook(this), 42, 180);
+            CreatePiece(new PieceBlackRook(this), 42, 5);
+            CreatePiece(new PieceBlackRook(this), 42, 180);
 
-            this.CreatePiece(new PieceWhiteRook(this), 216, 5);
-            this.CreatePiece(new PieceWhiteRook(this), 216, 180);
+            CreatePiece(new PieceWhiteRook(this), 216, 5);
+            CreatePiece(new PieceWhiteRook(this), 216, 180);
 
             // Knight
-            this.CreatePiece(new PieceBlackKnight(this), 42, 30);
-            this.CreatePiece(new PieceBlackKnight(this), 42, 155);
+            CreatePiece(new PieceBlackKnight(this), 42, 30);
+            CreatePiece(new PieceBlackKnight(this), 42, 155);
 
-            this.CreatePiece(new PieceWhiteKnight(this), 216, 30);
-            this.CreatePiece(new PieceWhiteKnight(this), 216, 155);
+            CreatePiece(new PieceWhiteKnight(this), 216, 30);
+            CreatePiece(new PieceWhiteKnight(this), 216, 155);
 
             // Bishop
-            this.CreatePiece(new PieceBlackBishop(this), 42, 55);
-            this.CreatePiece(new PieceBlackBishop(this), 42, 130);
+            CreatePiece(new PieceBlackBishop(this), 42, 55);
+            CreatePiece(new PieceBlackBishop(this), 42, 130);
 
-            this.CreatePiece(new PieceWhiteBishop(this), 216, 55);
-            this.CreatePiece(new PieceWhiteBishop(this), 216, 130);
+            CreatePiece(new PieceWhiteBishop(this), 216, 55);
+            CreatePiece(new PieceWhiteBishop(this), 216, 130);
 
             // Queen
-            this.CreatePiece(new PieceBlackQueen(this), 42, 105);
-            this.CreatePiece(new PieceWhiteQueen(this), 216, 105);
+            CreatePiece(new PieceBlackQueen(this), 42, 105);
+            CreatePiece(new PieceWhiteQueen(this), 216, 105);
 
             // King
-            this.CreatePiece(new PieceBlackKing(this), 42, 80);
-            this.CreatePiece(new PieceWhiteKing(this), 216, 80);
+            CreatePiece(new PieceBlackKing(this), 42, 80);
+            CreatePiece(new PieceWhiteKing(this), 216, 80);
         }
 
         public override void Serialize(GenericWriter writer)

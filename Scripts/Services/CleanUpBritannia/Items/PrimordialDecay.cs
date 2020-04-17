@@ -5,9 +5,9 @@
         [Constructable]
         public PrimordialDecay()
         {
-            this.Hue = 1927;
-            this.Weight = 4;
-            this.Slayer = SlayerName.ElementalBan;
+            Hue = 1927;
+            Weight = 4;
+            Slayer = SlayerName.ElementalBan;
 
             UsesRemaining = 450;
         }

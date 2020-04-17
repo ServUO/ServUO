@@ -202,7 +202,7 @@ namespace Server.Regions
         {
             List<BaseBoat> list = new List<BaseBoat>();
 
-            foreach (BaseBoat boat in this.GetEnumeratedMultis().OfType<BaseBoat>())
+            foreach (BaseBoat boat in GetEnumeratedMultis().OfType<BaseBoat>())
                 list.Add(boat);
 
             return list;

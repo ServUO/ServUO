@@ -9,12 +9,12 @@ namespace Server.Engines.Quests
 
         public GatheringOfEvidence() : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(VoidCrystalOfCorruptedArcaneEssence), "Void Crystal of Corrupted Arcane Essence", 1));
-            this.AddObjective(new ObtainObjective(typeof(VoidCrystalOfCorruptedSpiritualEssence), "Void Crystal of Corrupted Spiritual Essence", 1));
-            this.AddObjective(new ObtainObjective(typeof(VoidCrystalOfCorruptedMysticalEssence), "Void Crystal of Corrupted Mystical Essence", 1));
+            AddObjective(new ObtainObjective(typeof(VoidCrystalOfCorruptedArcaneEssence), "Void Crystal of Corrupted Arcane Essence", 1));
+            AddObjective(new ObtainObjective(typeof(VoidCrystalOfCorruptedSpiritualEssence), "Void Crystal of Corrupted Spiritual Essence", 1));
+            AddObjective(new ObtainObjective(typeof(VoidCrystalOfCorruptedMysticalEssence), "Void Crystal of Corrupted Mystical Essence", 1));
 
-            this.AddReward(new BaseReward(typeof(ResonantShieldOfVengeance), "Resonant Shield of Vengeance"));
-            this.AddReward(new BaseReward(typeof(WindOfCorruption), "Wind of Corruption"));
+            AddReward(new BaseReward(typeof(ResonantShieldOfVengeance), "Resonant Shield of Vengeance"));
+            AddReward(new BaseReward(typeof(WindOfCorruption), "Wind of Corruption"));
         }
 
         public override object Title => 1150316; // Gathering of Evidence (Gargoyle Rewards)
@@ -59,12 +59,12 @@ namespace Server.Engines.Quests
         public GatheringProof()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(VoidCrystalOfCorruptedArcaneEssence), "Void Crystal of Corrupted Arcane Essence", 1));
-            this.AddObjective(new ObtainObjective(typeof(VoidCrystalOfCorruptedSpiritualEssence), "Void Crystal of Corrupted Spiritual Essence", 1));
-            this.AddObjective(new ObtainObjective(typeof(VoidCrystalOfCorruptedMysticalEssence), "Void Crystal of Corrupted Mystical Essence", 1));
+            AddObjective(new ObtainObjective(typeof(VoidCrystalOfCorruptedArcaneEssence), "Void Crystal of Corrupted Arcane Essence", 1));
+            AddObjective(new ObtainObjective(typeof(VoidCrystalOfCorruptedSpiritualEssence), "Void Crystal of Corrupted Spiritual Essence", 1));
+            AddObjective(new ObtainObjective(typeof(VoidCrystalOfCorruptedMysticalEssence), "Void Crystal of Corrupted Mystical Essence", 1));
 
-            this.AddReward(new BaseReward(typeof(ResonantShieldOfVengeanceHuman), "Resonant Shield of Vengeance"));
-            this.AddReward(new BaseReward(typeof(WindOfCorruptionHuman), "Wind of Corruption"));
+            AddReward(new BaseReward(typeof(ResonantShieldOfVengeanceHuman), "Resonant Shield of Vengeance"));
+            AddReward(new BaseReward(typeof(WindOfCorruptionHuman), "Wind of Corruption"));
         }
 
         public override object Title => 1150384; // Gathering Proof (Human Rewards)
@@ -121,25 +121,25 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.CantWalk = true;
+            Female = false;
+            CantWalk = true;
             Race = Race.Gargoyle;
 
-            this.Body = 666;
+            Body = 666;
             Utility.AssignRandomHair(this);
             Utility.AssignRandomFacialHair(this);
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
+            AddItem(new Backpack());
 
-            this.AddItem(new GargishClothChest(Utility.RandomNeutralHue()));
-            this.AddItem(new GargishClothKilt(Utility.RandomNeutralHue()));
-            this.AddItem(new GargishClothLegs(Utility.RandomNeutralHue()));
-            this.AddItem(new SerpentStoneStaff());
+            AddItem(new GargishClothChest(Utility.RandomNeutralHue()));
+            AddItem(new GargishClothKilt(Utility.RandomNeutralHue()));
+            AddItem(new GargishClothLegs(Utility.RandomNeutralHue()));
+            AddItem(new SerpentStoneStaff());
         }
 
         public override void Serialize(GenericWriter writer)
@@ -176,24 +176,24 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
+            Female = false;
             Race = Race.Human;
 
-            this.Body = 0x190;
+            Body = 0x190;
             Utility.AssignRandomHair(this);
             Utility.AssignRandomFacialHair(this);
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
+            AddItem(new Backpack());
 
-            this.AddItem(new Tunic(Utility.RandomNeutralHue()));
-            this.AddItem(new ShortPants(Utility.RandomNeutralHue()));
-            this.AddItem(new Boots());
-            this.AddItem(new Halberd());
+            AddItem(new Tunic(Utility.RandomNeutralHue()));
+            AddItem(new ShortPants(Utility.RandomNeutralHue()));
+            AddItem(new Boots());
+            AddItem(new Halberd());
         }
 
         public override bool CheckTerMur()

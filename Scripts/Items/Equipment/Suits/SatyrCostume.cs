@@ -7,7 +7,7 @@ namespace Server.Items
         [Constructable]
         public SatyrCostume() : base()
         {
-            this.CostumeBody = 271;
+            CostumeBody = 271;
         }
 
         public override int LabelNumber => 1114287;// satyr costume

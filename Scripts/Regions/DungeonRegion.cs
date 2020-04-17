@@ -15,8 +15,8 @@ namespace Server.Regions
             Map entrMap = map;
             ReadMap(entrEl, "map", ref entrMap, false);
 
-            if (ReadPoint3D(entrEl, entrMap, ref this.m_EntranceLocation, false))
-                this.m_EntranceMap = entrMap;
+            if (ReadPoint3D(entrEl, entrMap, ref m_EntranceLocation, false))
+                m_EntranceMap = entrMap;
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -27,11 +27,11 @@ namespace Server.Regions
         {
             get
             {
-                return this.m_EntranceLocation;
+                return m_EntranceLocation;
             }
             set
             {
-                this.m_EntranceLocation = value;
+                m_EntranceLocation = value;
             }
         }
 
@@ -40,11 +40,11 @@ namespace Server.Regions
         {
             get
             {
-                return this.m_EntranceMap;
+                return m_EntranceMap;
             }
             set
             {
-                this.m_EntranceMap = value;
+                m_EntranceMap = value;
             }
         }
 

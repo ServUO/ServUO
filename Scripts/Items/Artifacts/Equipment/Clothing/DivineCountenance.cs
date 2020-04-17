@@ -43,10 +43,10 @@ namespace Server.Items
             {
                 case 0:
                     {
-                        this.Resistances.Physical = 0;
-                        this.Resistances.Fire = 0;
-                        this.Resistances.Cold = 0;
-                        this.Resistances.Energy = 0;
+                        Resistances.Physical = 0;
+                        Resistances.Fire = 0;
+                        Resistances.Cold = 0;
+                        Resistances.Energy = 0;
                         break;
                     }
             }

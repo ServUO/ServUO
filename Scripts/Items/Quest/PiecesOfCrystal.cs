@@ -6,8 +6,8 @@ namespace Server.Items
         public PiecesOfCrystal()
             : base(0x2245)
         {
-            this.Weight = 1;
-            this.Hue = 0x2B2;
+            Weight = 1;
+            Hue = 0x2B2;
         }
 
         public PiecesOfCrystal(Serial serial)

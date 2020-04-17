@@ -7,22 +7,22 @@ namespace Server.Items
         public GrizzleGauntlets()
             : base()
         {
-            this.SetHue = 0x278;
+            SetHue = 0x278;
 
-            this.ArmorAttributes.MageArmor = 1;
-            this.Attributes.BonusHits = 5;
-            this.Attributes.NightSight = 1;
+            ArmorAttributes.MageArmor = 1;
+            Attributes.BonusHits = 5;
+            Attributes.NightSight = 1;
 
-            this.SetAttributes.DefendChance = 10;
-            this.SetAttributes.BonusStr = 12;
+            SetAttributes.DefendChance = 10;
+            SetAttributes.BonusStr = 12;
 
-            this.SetSelfRepair = 3;
+            SetSelfRepair = 3;
 
-            this.SetPhysicalBonus = 3;
-            this.SetFireBonus = 5;
-            this.SetColdBonus = 3;
-            this.SetPoisonBonus = 3;
-            this.SetEnergyBonus = 5;
+            SetPhysicalBonus = 3;
+            SetFireBonus = 5;
+            SetColdBonus = 3;
+            SetPoisonBonus = 3;
+            SetEnergyBonus = 5;
         }
 
         public GrizzleGauntlets(Serial serial)

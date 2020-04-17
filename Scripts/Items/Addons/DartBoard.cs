@@ -22,14 +22,14 @@ namespace Server.Items
         }
 
         public override bool NeedsWall => true;
-        public override Point3D WallPosition => this.East ? new Point3D(-1, 0, 0) : new Point3D(0, -1, 0);
-        public bool East => this.ItemID == 0x1E2F;
+        public override Point3D WallPosition => East ? new Point3D(-1, 0, 0) : new Point3D(0, -1, 0);
+        public bool East => ItemID == 0x1E2F;
         public override void OnDoubleClick(Mobile from)
         {
             Direction dir;
-            if (from.Location != this.Location)
+            if (from.Location != Location)
                 dir = from.GetDirectionTo(this);
-            else if (this.East)
+            else if (East)
                 dir = Direction.West;
             else
                 dir = Direction.North;
@@ -40,13 +40,13 @@ namespace Server.Items
 
             if (!from.InRange(this, 4) || !from.InLOS(this))
                 canThrow = false;
-            else if (this.East)
+            else if (East)
                 canThrow = (dir == Direction.Left || dir == Direction.West || dir == Direction.Up);
             else
                 canThrow = (dir == Direction.Up || dir == Direction.North || dir == Direction.Right);
 
             if (canThrow)
-                this.Throw(from);
+                Throw(from);
             else
                 from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
         }
@@ -82,7 +82,7 @@ namespace Server.Items
             else
                 message = 500757; // Missed.
 
-            this.PublicOverheadMessage(MessageType.Regular, 0x3B2, message);
+            PublicOverheadMessage(MessageType.Regular, 0x3B2, message);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -104,7 +104,7 @@ namespace Server.Items
     {
         public DartBoardEastAddon()
         {
-            this.AddComponent(new DartBoard(true), 0, 0, 0);
+            AddComponent(new DartBoard(true), 0, 0, 0);
         }
 
         public DartBoardEastAddon(Serial serial)
@@ -161,7 +161,7 @@ namespace Server.Items
     {
         public DartBoardSouthAddon()
         {
-            this.AddComponent(new DartBoard(false), 0, 0, 0);
+            AddComponent(new DartBoard(false), 0, 0, 0);
         }
 
         public DartBoardSouthAddon(Serial serial)

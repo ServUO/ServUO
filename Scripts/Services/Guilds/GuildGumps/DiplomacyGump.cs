@@ -48,7 +48,7 @@ namespace Server.Guilds
             private readonly Guild m_Guild;
             public StatusComparer(Guild g)
             {
-                this.m_Guild = g;
+                m_Guild = g;
             }
 
             public int Compare(Guild x, Guild y)
@@ -63,14 +63,14 @@ namespace Server.Guilds
                 GuildCompareStatus aStatus = GuildCompareStatus.Peace;
                 GuildCompareStatus bStatus = GuildCompareStatus.Peace;
 
-                if (this.m_Guild.IsAlly(x))
+                if (m_Guild.IsAlly(x))
                     aStatus = GuildCompareStatus.Ally;
-                else if (this.m_Guild.IsWar(x))
+                else if (m_Guild.IsWar(x))
                     aStatus = GuildCompareStatus.War;
 
-                if (this.m_Guild.IsAlly(y))
+                if (m_Guild.IsAlly(y))
                     bStatus = GuildCompareStatus.Ally;
-                else if (this.m_Guild.IsWar(y))
+                else if (m_Guild.IsWar(y))
                     bStatus = GuildCompareStatus.War;
 
                 return ((int)aStatus).CompareTo((int)bStatus);
@@ -132,35 +132,35 @@ namespace Server.Guilds
                 new InfoField<Guild>(1062958, 120, new GuildDiplomacyGump.StatusComparer(g))//Guild Title
             })
         {
-            this.m_Display = display;
-            this.m_LowerText = lowerText;
-            this.PopulateGump();
+            m_Display = display;
+            m_LowerText = lowerText;
+            PopulateGump();
         }
 
         public override void PopulateGump()
         {
             base.PopulateGump();
 
-            this.AddHtmlLocalized(431, 43, 110, 26, 1062978, 0xF, false, false); // Diplomacy			
+            AddHtmlLocalized(431, 43, 110, 26, 1062978, 0xF, false, false); // Diplomacy			
         }
 
         protected override TextDefinition[] GetValuesFor(Guild g, int aryLength)
         {
             TextDefinition[] defs = new TextDefinition[aryLength];
 
-            defs[0] = (g == this.guild) ? Color(g.Name, 0x006600) : g.Name;
+            defs[0] = (g == guild) ? Color(g.Name, 0x006600) : g.Name;
             defs[1] = g.Abbreviation;
 
             defs[2] = 3000085; //Peace
 
-            if (this.guild.IsAlly(g))
+            if (guild.IsAlly(g))
             {
-                if (this.guild.Alliance.Leader == g)
+                if (guild.Alliance.Leader == g)
                     defs[2] = 1063237; // Alliance Leader
                 else
                     defs[2] = 1062964; // Ally
             }
-            else if (this.guild.IsWar(g))
+            else if (guild.IsWar(g))
             {
                 defs[2] = 3000086; // War
             }
@@ -170,13 +170,13 @@ namespace Server.Guilds
 
         public override bool HasRelationship(Guild g)
         {
-            if (g == this.guild)
+            if (g == guild)
                 return false;
 
-            if (this.guild.FindPendingWar(g) != null)
+            if (guild.FindPendingWar(g) != null)
                 return true;
 
-            AllianceInfo alliance = this.guild.Alliance;
+            AllianceInfo alliance = guild.Alliance;
 
             if (alliance != null)
             {
@@ -184,7 +184,7 @@ namespace Server.Guilds
 
                 if (leader != null)
                 {
-                    if (this.guild == leader && alliance.IsPendingMember(g) || g == leader && alliance.IsPendingMember(this.guild))
+                    if (guild == leader && alliance.IsPendingMember(g) || g == leader && alliance.IsPendingMember(guild))
                         return true;
                 }
                 else if (alliance.IsPendingMember(g))
@@ -198,16 +198,16 @@ namespace Server.Guilds
         {
             //AddHtmlLocalized( 66, 153 + itemNumber * 28, 280, 26, 1063136 + (int)m_Display, 0xF, false, false ); // Showing All Guilds/Awaiting Action/ w/Relation Ship
             //AddHtmlText( 66, 153 + itemNumber * 28, 280, 26, m_LowerText, false, false );
-            if (this.m_LowerText != null && this.m_LowerText.Number > 0)
-                this.AddHtmlLocalized(66, 153 + itemNumber * 28, 280, 26, this.m_LowerText.Number, 0xF, false, false);
-            else if (this.m_LowerText != null && this.m_LowerText.String != null)
-                this.AddHtml(66, 153 + itemNumber * 28, 280, 26, Color(this.m_LowerText.String, 0x99), false, false);
+            if (m_LowerText != null && m_LowerText.Number > 0)
+                AddHtmlLocalized(66, 153 + itemNumber * 28, 280, 26, m_LowerText.Number, 0xF, false, false);
+            else if (m_LowerText != null && m_LowerText.String != null)
+                AddHtml(66, 153 + itemNumber * 28, 280, 26, Color(m_LowerText.String, 0x99), false, false);
 
-            if (this.AllowAdvancedSearch)
+            if (AllowAdvancedSearch)
             {
-                this.AddBackground(350, 148 + itemNumber * 28, 200, 26, 0x2486);
-                this.AddButton(355, 153 + itemNumber * 28, 0x845, 0x846, 8, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(380, 151 + itemNumber * 28, 160, 26, 1063083, 0x0, false, false); // Advanced Search
+                AddBackground(350, 148 + itemNumber * 28, 200, 26, 0x2486);
+                AddButton(355, 153 + itemNumber * 28, 0x845, 0x846, 8, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(380, 151 + itemNumber * 28, 160, 26, 1063083, 0x0, false, false); // Advanced Search
             }
         }
 
@@ -216,19 +216,19 @@ namespace Server.Guilds
             if (g == null)
                 return true;
 
-            switch (this.m_Display)
+            switch (m_Display)
             {
                 case GuildDisplayType.Relations:
                     {
                         //if( !( guild.IsWar( g ) || guild.IsAlly( g ) ) )
-                        if (!(this.guild.FindActiveWar(g) != null || this.guild.IsAlly(g)))	//As per OSI, only the guild leader wars show up under the sorting by relation
+                        if (!(guild.FindActiveWar(g) != null || guild.IsAlly(g)))	//As per OSI, only the guild leader wars show up under the sorting by relation
                             return true;
 
                         return false;
                     }
                 case GuildDisplayType.AwaitingAction:
                     {
-                        return !this.HasRelationship(g);
+                        return !HasRelationship(g);
                     }
             }
 
@@ -239,7 +239,7 @@ namespace Server.Guilds
         {
             get
             {
-                if (this.m_Display == GuildDisplayType.All)
+                if (m_Display == GuildDisplayType.All)
                     return base.WillFilter;
 
                 return true;
@@ -248,12 +248,12 @@ namespace Server.Guilds
 
         public override Gump GetResentGump(PlayerMobile pm, Guild g, IComparer<Guild> comparer, bool ascending, string filter, int startNumber)
         {
-            return new GuildDiplomacyGump(pm, g, comparer, ascending, filter, startNumber, this.m_Display);
+            return new GuildDiplomacyGump(pm, g, comparer, ascending, filter, startNumber, m_Display);
         }
 
         public override Gump GetObjectInfoGump(PlayerMobile pm, Guild g, Guild o)
         {
-            if (this.guild == o)
+            if (guild == o)
                 return new GuildInfoGump(pm, g);
 
             return new OtherGuildInfo(pm, g, o);
@@ -265,17 +265,17 @@ namespace Server.Guilds
 
             PlayerMobile pm = sender.Mobile as PlayerMobile;
 
-            if (pm == null || !IsMember(pm, this.guild))
+            if (pm == null || !IsMember(pm, guild))
                 return;
 
-            if (this.AllowAdvancedSearch && info.ButtonID == 8)
-                pm.SendGump(new GuildAdvancedSearchGump(pm, this.guild, this.m_Display, new SearchSelectionCallback(AdvancedSearch_Callback)));
+            if (AllowAdvancedSearch && info.ButtonID == 8)
+                pm.SendGump(new GuildAdvancedSearchGump(pm, guild, m_Display, new SearchSelectionCallback(AdvancedSearch_Callback)));
         }
 
         public void AdvancedSearch_Callback(GuildDisplayType display)
         {
-            this.m_Display = display;
-            this.ResendGump();
+            m_Display = display;
+            ResendGump();
         }
     }
 }

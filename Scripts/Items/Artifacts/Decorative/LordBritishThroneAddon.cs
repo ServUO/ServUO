@@ -6,8 +6,8 @@ namespace Server.Items
         [Constructable]
         public LordBritishThroneAddon()
         {
-            this.AddComponent(new AddonComponent(0x1526), 0, 0, 0);
-            this.AddComponent(new AddonComponent(0x1527), 0, -1, 0);
+            AddComponent(new AddonComponent(0x1526), 0, 0, 0);
+            AddComponent(new AddonComponent(0x1527), 0, -1, 0);
         }
 
         public LordBritishThroneAddon(Serial serial)
@@ -36,7 +36,7 @@ namespace Server.Items
         [Constructable]
         public LordBritishThroneDeed()
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public LordBritishThroneDeed(Serial serial)

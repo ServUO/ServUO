@@ -7,7 +7,7 @@ namespace Server.Items
         [Constructable]
         public FireElementalCostume() : base()
         {
-            this.CostumeBody = 15;
+            CostumeBody = 15;
         }
 
         public override int LabelNumber => 1114224;// fire elemental costume

@@ -18,9 +18,9 @@ namespace Server.Items
         public FukiyaDarts(int amount)
             : base(0x2806)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
 
-            this.m_UsesRemaining = amount;
+            m_UsesRemaining = amount;
         }
 
         public FukiyaDarts(Serial serial)
@@ -33,12 +33,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_UsesRemaining;
+                return m_UsesRemaining;
             }
             set
             {
-                this.m_UsesRemaining = value;
-                this.InvalidateProperties();
+                m_UsesRemaining = value;
+                InvalidateProperties();
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -46,12 +46,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Poison;
+                return m_Poison;
             }
             set
             {
-                this.m_Poison = value;
-                this.InvalidateProperties();
+                m_Poison = value;
+                InvalidateProperties();
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -59,12 +59,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_PoisonCharges;
+                return m_PoisonCharges;
             }
             set
             {
-                this.m_PoisonCharges = value;
-                this.InvalidateProperties();
+                m_PoisonCharges = value;
+                InvalidateProperties();
             }
         }
         public bool ShowUsesRemaining
@@ -81,10 +81,10 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            list.Add(1060584, this.m_UsesRemaining.ToString()); // uses remaining: ~1_val~
+            list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~
 
-            if (this.m_Poison != null && this.m_PoisonCharges > 0)
-                list.Add(1062412 + this.m_Poison.Level, this.m_PoisonCharges.ToString());
+            if (m_Poison != null && m_PoisonCharges > 0)
+                list.Add(1062412 + m_Poison.Level, m_PoisonCharges.ToString());
         }
 
         public override void Serialize(GenericWriter writer)
@@ -95,7 +95,7 @@ namespace Server.Items
 
             writer.Write(m_UsesRemaining);
 
-            Poison.Serialize(this.m_Poison, writer);
+            Poison.Serialize(m_Poison, writer);
             writer.Write(m_PoisonCharges);
         }
 
@@ -109,10 +109,10 @@ namespace Server.Items
             {
                 case 0:
                     {
-                        this.m_UsesRemaining = reader.ReadInt();
+                        m_UsesRemaining = reader.ReadInt();
 
-                        this.m_Poison = Poison.Deserialize(reader);
-                        this.m_PoisonCharges = reader.ReadInt();
+                        m_Poison = Poison.Deserialize(reader);
+                        m_PoisonCharges = reader.ReadInt();
 
                         break;
                     }
@@ -122,7 +122,7 @@ namespace Server.Items
         public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
             if (quality == 2)
-                this.UsesRemaining *= 2;
+                UsesRemaining *= 2;
 
             return quality;
         }

@@ -9,7 +9,7 @@ namespace Server.Mobiles
         public Tanner()
             : base("the tanner")
         {
-            this.SetSkill(SkillName.Tailoring, 36.0, 68.0);
+            SetSkill(SkillName.Tailoring, 36.0, 68.0);
         }
 
         public Tanner(Serial serial)
@@ -17,16 +17,16 @@ namespace Server.Mobiles
         {
         }
 
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
-            if (!this.IsStygianVendor)
+            if (!IsStygianVendor)
             {
-                this.m_SBInfos.Add(new SBTanner());
+                m_SBInfos.Add(new SBTanner());
             }
             else
             {
-                this.m_SBInfos.Add(new SBSATanner());
+                m_SBInfos.Add(new SBSATanner());
             }
         }
 
@@ -34,7 +34,7 @@ namespace Server.Mobiles
         {
             if (item is Server.Items.TaxidermyKit && buyer.Skills[SkillName.Carpentry].Value < 90.1)
             {
-                this.SayTo(buyer, 1042603, 0x3B2); // You would not understand how to use the kit.
+                SayTo(buyer, 1042603, 0x3B2); // You would not understand how to use the kit.
                 return false;
             }
 

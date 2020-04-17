@@ -174,9 +174,9 @@ namespace Server.Items
         public BaseGlovesOfMining(int bonus, int itemID)
             : base(itemID)
         {
-            this.m_Bonus = bonus;
+            m_Bonus = bonus;
 
-            this.Hue = CraftResources.GetHue((CraftResource)Utility.RandomMinMax((int)CraftResource.DullCopper, (int)CraftResource.Valorite));
+            Hue = CraftResources.GetHue((CraftResource)Utility.RandomMinMax((int)CraftResource.DullCopper, (int)CraftResource.Valorite));
         }
 
         public BaseGlovesOfMining(Serial serial)
@@ -189,28 +189,28 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Bonus;
+                return m_Bonus;
             }
             set
             {
-                this.m_Bonus = value;
-                this.InvalidateProperties();
+                m_Bonus = value;
+                InvalidateProperties();
 
-                if (this.m_Bonus == 0)
+                if (m_Bonus == 0)
                 {
-                    if (this.m_SkillMod != null)
-                        this.m_SkillMod.Remove();
+                    if (m_SkillMod != null)
+                        m_SkillMod.Remove();
 
-                    this.m_SkillMod = null;
+                    m_SkillMod = null;
                 }
-                else if (this.m_SkillMod == null && this.Parent is Mobile)
+                else if (m_SkillMod == null && Parent is Mobile)
                 {
-                    this.m_SkillMod = new DefaultSkillMod(SkillName.Mining, true, this.m_Bonus);
-                    ((Mobile)this.Parent).AddSkillMod(this.m_SkillMod);
+                    m_SkillMod = new DefaultSkillMod(SkillName.Mining, true, m_Bonus);
+                    ((Mobile)Parent).AddSkillMod(m_SkillMod);
                 }
-                else if (this.m_SkillMod != null)
+                else if (m_SkillMod != null)
                 {
-                    this.m_SkillMod.Value = this.m_Bonus;
+                    m_SkillMod.Value = m_Bonus;
                 }
             }
         }
@@ -218,13 +218,13 @@ namespace Server.Items
         {
             base.OnAdded(parent);
 
-            if (this.m_Bonus != 0 && parent is Mobile)
+            if (m_Bonus != 0 && parent is Mobile)
             {
-                if (this.m_SkillMod != null)
-                    this.m_SkillMod.Remove();
+                if (m_SkillMod != null)
+                    m_SkillMod.Remove();
 
-                this.m_SkillMod = new DefaultSkillMod(SkillName.Mining, true, this.m_Bonus);
-                ((Mobile)parent).AddSkillMod(this.m_SkillMod);
+                m_SkillMod = new DefaultSkillMod(SkillName.Mining, true, m_Bonus);
+                ((Mobile)parent).AddSkillMod(m_SkillMod);
             }
         }
 
@@ -232,18 +232,18 @@ namespace Server.Items
         {
             base.OnRemoved(parent);
 
-            if (this.m_SkillMod != null)
-                this.m_SkillMod.Remove();
+            if (m_SkillMod != null)
+                m_SkillMod.Remove();
 
-            this.m_SkillMod = null;
+            m_SkillMod = null;
         }
 
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 
-            if (this.m_Bonus != 0)
-                list.Add(1062005, this.m_Bonus.ToString()); // mining bonus +~1_val~
+            if (m_Bonus != 0)
+                list.Add(1062005, m_Bonus.ToString()); // mining bonus +~1_val~
         }
 
         public override void Serialize(GenericWriter writer)
@@ -265,18 +265,18 @@ namespace Server.Items
             {
                 case 0:
                     {
-                        this.m_Bonus = reader.ReadInt();
+                        m_Bonus = reader.ReadInt();
                         break;
                     }
             }
 
-            if (this.m_Bonus != 0 && this.Parent is Mobile)
+            if (m_Bonus != 0 && Parent is Mobile)
             {
-                if (this.m_SkillMod != null)
-                    this.m_SkillMod.Remove();
+                if (m_SkillMod != null)
+                    m_SkillMod.Remove();
 
-                this.m_SkillMod = new DefaultSkillMod(SkillName.Mining, true, this.m_Bonus);
-                ((Mobile)this.Parent).AddSkillMod(this.m_SkillMod);
+                m_SkillMod = new DefaultSkillMod(SkillName.Mining, true, m_Bonus);
+                ((Mobile)Parent).AddSkillMod(m_SkillMod);
             }
         }
     }

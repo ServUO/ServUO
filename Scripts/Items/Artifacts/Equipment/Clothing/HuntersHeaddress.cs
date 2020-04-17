@@ -39,7 +39,7 @@ namespace Server.Items
             {
                 case 0:
                     {
-                        this.Resistances.Cold = 0;
+                        Resistances.Cold = 0;
                         break;
                     }
             }

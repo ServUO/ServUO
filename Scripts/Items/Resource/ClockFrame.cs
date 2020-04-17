@@ -13,9 +13,9 @@ namespace Server.Items
         public ClockFrame(int amount)
             : base(0x104D)
         {
-            this.Stackable = true;
-            this.Amount = amount;
-            this.Weight = 2.0;
+            Stackable = true;
+            Amount = amount;
+            Weight = 2.0;
         }
 
         public ClockFrame(Serial serial)

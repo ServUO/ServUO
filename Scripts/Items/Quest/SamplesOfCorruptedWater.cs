@@ -6,7 +6,7 @@ namespace Server.Items
         public SamplesOfCorruptedWater()
             : base(0xEFE)
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public SamplesOfCorruptedWater(Serial serial)

@@ -8,12 +8,12 @@ namespace Server.Mobiles
         [Constructable]
         public SpawnedOrcishLord()
         {
-            Container pack = this.Backpack;
+            Container pack = Backpack;
 
             if (pack != null)
                 pack.Delete();
 
-            this.NoKillAwards = true;
+            NoKillAwards = true;
         }
 
         public SpawnedOrcishLord(Serial serial)
@@ -38,7 +38,7 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-            this.NoKillAwards = true;
+            NoKillAwards = true;
         }
     }
 }

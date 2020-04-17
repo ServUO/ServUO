@@ -7,9 +7,9 @@ namespace Server.Engines.Quests
         public KnowledgeoftheSoulforge()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(EnchantedEssence), "Enchanted Essence", 50, 0x2DB2));
+            AddObjective(new ObtainObjective(typeof(EnchantedEssence), "Enchanted Essence", 50, 0x2DB2));
 
-            this.AddReward(new BaseReward(typeof(ScrollBox), 1, "Knowledge"));
+            AddReward(new BaseReward(typeof(ScrollBox), 1, "Knowledge"));
         }
 
         public override object Title => "Knowledge of the Soulforge";

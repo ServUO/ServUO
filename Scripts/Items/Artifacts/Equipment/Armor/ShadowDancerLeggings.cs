@@ -38,12 +38,12 @@ namespace Server.Items
 
             if (version < 1)
             {
-                if (this.ItemID == 0x13CB)
-                    this.ItemID = 0x13D2;
+                if (ItemID == 0x13CB)
+                    ItemID = 0x13D2;
 
-                this.PhysicalBonus = 0;
-                this.PoisonBonus = 0;
-                this.EnergyBonus = 0;
+                PhysicalBonus = 0;
+                PoisonBonus = 0;
+                EnergyBonus = 0;
             }
         }
     }

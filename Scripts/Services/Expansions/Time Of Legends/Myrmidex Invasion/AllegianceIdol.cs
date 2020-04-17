@@ -70,7 +70,7 @@ namespace Server.Engines.MyrmidexInvasion
                                     }
                                     else
                                     {
-                                        MyrmidexInvasionSystem.System.Join((PlayerMobile)from, this.AllegianceType);
+                                        MyrmidexInvasionSystem.System.Join((PlayerMobile)from, AllegianceType);
                                     }
                                 }));
                     }

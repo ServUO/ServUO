@@ -5,10 +5,10 @@ namespace Server.Items
         [Constructable]
         public TallElvenBedEastAddon()
         {
-            this.AddComponent(new AddonComponent(0x3054), 0, 0, 0);
-            this.AddComponent(new AddonComponent(0x3053), 1, 0, 0);
-            this.AddComponent(new AddonComponent(0x3055), 2, -1, 0);
-            this.AddComponent(new AddonComponent(0x3052), 2, 0, 0);
+            AddComponent(new AddonComponent(0x3054), 0, 0, 0);
+            AddComponent(new AddonComponent(0x3053), 1, 0, 0);
+            AddComponent(new AddonComponent(0x3055), 2, -1, 0);
+            AddComponent(new AddonComponent(0x3052), 2, 0, 0);
         }
 
         public TallElvenBedEastAddon(Serial serial)

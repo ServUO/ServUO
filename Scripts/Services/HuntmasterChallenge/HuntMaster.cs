@@ -27,7 +27,7 @@ namespace Server.Engines.HuntsmasterChallenge
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(this.Location, 4))
+            if (from.InRange(Location, 4))
             {
                 from.CloseGump(typeof(BasicInfoGump));
                 from.SendGump(new BasicInfoGump(1155750, 1155726));
@@ -90,7 +90,7 @@ namespace Server.Engines.HuntsmasterChallenge
 
             public override void OnClick()
             {
-                Mobile from = this.Owner.From;
+                Mobile from = Owner.From;
 
                 if (HuntingPermit.HasPermit(from))
                     from.SendLocalizedMessage(1155702); // You already have a hunting permit.

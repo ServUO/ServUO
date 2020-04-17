@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public SplitEndsQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(Arrow), "arrow", 20, 0xF3F));
+            AddObjective(new ObtainObjective(typeof(Arrow), "arrow", 20, 0xF3F));
 
-            this.AddReward(new BaseReward(typeof(FletchersSatchel), 1074282)); // Craftsman's Satchel
+            AddReward(new BaseReward(typeof(FletchersSatchel), 1074282)); // Craftsman's Satchel
         }
 
         /* Split Ends */
@@ -47,7 +47,7 @@ namespace Server.Engines.Quests
         public Andric()
             : base("Andric", "the archer trainer")
         {
-            this.SetSkill(SkillName.Archery, 65.0, 88.0);
+            SetSkill(SkillName.Archery, 65.0, 88.0);
         }
 
         public Andric(Serial serial)
@@ -61,43 +61,43 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = false;
+            CantWalk = true;
+            Race = Race.Human;
 
-            this.Hue = 0x8407;
-            this.HairItemID = 0x2049;
-            this.HairHue = 0x6CE;
+            Hue = 0x8407;
+            HairItemID = 0x2049;
+            HairHue = 0x6CE;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Boots(0x1BB));
+            AddItem(new Backpack());
+            AddItem(new Boots(0x1BB));
 
             Item item;
 
             item = new LeatherLegs();
             item.Hue = 0x6C8;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new LeatherGloves();
             item.Hue = 0x1BB;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new LeatherChest();
             item.Hue = 0x1BB;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new LeatherArms();
             item.Hue = 0x4C7;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new CompositeBow();
             item.Hue = 0x5DD;
-            this.AddItem(item);
+            AddItem(item);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -121,10 +121,10 @@ namespace Server.Engines.Quests
         public FletchersSatchel()
             : base()
         {
-            this.Hue = BaseReward.SatchelHue();
+            Hue = BaseReward.SatchelHue();
 
-            this.AddItem(new Feather(10));
-            this.AddItem(new FletcherTools());
+            AddItem(new Feather(10));
+            AddItem(new FletcherTools());
         }
 
         public FletchersSatchel(Serial serial)

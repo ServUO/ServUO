@@ -6,8 +6,8 @@
         public DecoFullJar()
             : base(0x1006)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public DecoFullJar(Serial serial)
@@ -36,8 +36,8 @@
         public DecoFullJars3()
             : base(0xE4a)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public DecoFullJars3(Serial serial)
@@ -66,8 +66,8 @@
         public DecoFullJars4()
             : base(0xE4b)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public DecoFullJars4(Serial serial)

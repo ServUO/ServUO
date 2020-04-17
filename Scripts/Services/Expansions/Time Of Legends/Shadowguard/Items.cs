@@ -22,7 +22,7 @@ namespace Server.Engines.Shadowguard
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (m.InRange(this.GetWorldLocation(), 2))
+            if (m.InRange(GetWorldLocation(), 2))
             {
                 if (0.1 > Utility.RandomDouble())
                 {
@@ -168,7 +168,7 @@ namespace Server.Engines.Shadowguard
                             Map map = tree.Map;
 
                             from.Animate(31, 7, 1, true, false, 0);
-                            m.MovingParticles(tree, this.ItemID, 10, 0, false, true, 0, 0, 9502, 6014, 0x11D, EffectLayer.Waist, 0);
+                            m.MovingParticles(tree, ItemID, 10, 0, false, true, 0, 0, 9502, 6014, 0x11D, EffectLayer.Waist, 0);
 
                             Timer.DelayCall(TimeSpan.FromSeconds(.7), () =>
                                 {
@@ -334,12 +334,12 @@ namespace Server.Engines.Shadowguard
         public override void OnMapChange()
         {
             if (Foilage != null)
-                Foilage.Map = this.Map;
+                Foilage.Map = Map;
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.Backpack != null && from.InRange(this.Location, 3))
+            if (from.Backpack != null && from.InRange(Location, 3))
             {
                 if (Encounter.Apple == null || Encounter.Apple.Deleted)
                 {
@@ -356,22 +356,22 @@ namespace Server.Engines.Shadowguard
             switch (type)
             {
                 default:
-                case VirtueType.Honesty: return this.VirtueType == VirtueType.Deceit;
-                case VirtueType.Compassion: return this.VirtueType == VirtueType.Despise;
-                case VirtueType.Valor: return this.VirtueType == VirtueType.Destard;
-                case VirtueType.Justice: return this.VirtueType == VirtueType.Wrong;
-                case VirtueType.Sacrafice: return this.VirtueType == VirtueType.Covetous;
-                case VirtueType.Honor: return this.VirtueType == VirtueType.Shame;
-                case VirtueType.Spirituality: return this.VirtueType == VirtueType.Hythloth;
-                case VirtueType.Humility: return this.VirtueType == VirtueType.Pride;
-                case VirtueType.Deceit: return this.VirtueType == VirtueType.Honesty;
-                case VirtueType.Despise: return this.VirtueType == VirtueType.Compassion;
-                case VirtueType.Destard: return this.VirtueType == VirtueType.Valor;
-                case VirtueType.Wrong: return this.VirtueType == VirtueType.Justice;
-                case VirtueType.Covetous: return this.VirtueType == VirtueType.Sacrafice;
-                case VirtueType.Shame: return this.VirtueType == VirtueType.Honor;
-                case VirtueType.Hythloth: return this.VirtueType == VirtueType.Spirituality;
-                case VirtueType.Pride: return this.VirtueType == VirtueType.Humility;
+                case VirtueType.Honesty: return VirtueType == VirtueType.Deceit;
+                case VirtueType.Compassion: return VirtueType == VirtueType.Despise;
+                case VirtueType.Valor: return VirtueType == VirtueType.Destard;
+                case VirtueType.Justice: return VirtueType == VirtueType.Wrong;
+                case VirtueType.Sacrafice: return VirtueType == VirtueType.Covetous;
+                case VirtueType.Honor: return VirtueType == VirtueType.Shame;
+                case VirtueType.Spirituality: return VirtueType == VirtueType.Hythloth;
+                case VirtueType.Humility: return VirtueType == VirtueType.Pride;
+                case VirtueType.Deceit: return VirtueType == VirtueType.Honesty;
+                case VirtueType.Despise: return VirtueType == VirtueType.Compassion;
+                case VirtueType.Destard: return VirtueType == VirtueType.Valor;
+                case VirtueType.Wrong: return VirtueType == VirtueType.Justice;
+                case VirtueType.Covetous: return VirtueType == VirtueType.Sacrafice;
+                case VirtueType.Shame: return VirtueType == VirtueType.Honor;
+                case VirtueType.Hythloth: return VirtueType == VirtueType.Spirituality;
+                case VirtueType.Pride: return VirtueType == VirtueType.Humility;
             }
         }
 
@@ -804,9 +804,9 @@ namespace Server.Engines.Shadowguard
 
         public override void OnDoubleClick(Mobile m)
         {
-            FountainEncounter encounter = ShadowguardController.GetEncounter(this.Location, this.Map) as FountainEncounter;
+            FountainEncounter encounter = ShadowguardController.GetEncounter(Location, Map) as FountainEncounter;
 
-            if (m.InRange(this.Location, 2) && encounter != null && this.ItemID != 17294 && this.ItemID != 17278)
+            if (m.InRange(Location, 2) && encounter != null && ItemID != 17294 && ItemID != 17278)
             {
                 encounter.UseSpigot(this, m);
             }
@@ -925,8 +925,8 @@ namespace Server.Engines.Shadowguard
 
                     for (int i = 0; i < toSpawn; i++)
                     {
-                        encounter.SpawnDrake(this.Location, from);
-                        Effects.PlaySound(this.Location, this.Map, 0x66C);
+                        encounter.SpawnDrake(Location, from);
+                        Effects.PlaySound(Location, Map, 0x66C);
                     }
                 }
             }

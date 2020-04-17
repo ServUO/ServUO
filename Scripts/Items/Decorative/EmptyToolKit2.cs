@@ -6,8 +6,8 @@ namespace Server.Items
         public EmptyToolKit2()
             : base(0x1EB7)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public EmptyToolKit2(Serial serial)

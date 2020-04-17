@@ -7,62 +7,62 @@ namespace Server.Mobiles
         [Constructable]
         public HireBeggar()
         {
-            this.SpeechHue = Utility.RandomDyedHue();
-            this.Hue = Utility.RandomSkinHue();
+            SpeechHue = Utility.RandomDyedHue();
+            Hue = Utility.RandomSkinHue();
 
-            if (this.Female = Utility.RandomBool())
+            if (Female = Utility.RandomBool())
             {
-                this.Body = 0x191;
-                this.Name = NameList.RandomName("female");
+                Body = 0x191;
+                Name = NameList.RandomName("female");
 
                 switch (Utility.Random(2))
                 {
                     case 0:
-                        this.AddItem(new Skirt(Utility.RandomNeutralHue()));
+                        AddItem(new Skirt(Utility.RandomNeutralHue()));
                         break;
                     case 1:
-                        this.AddItem(new Kilt(Utility.RandomNeutralHue()));
+                        AddItem(new Kilt(Utility.RandomNeutralHue()));
                         break;
                 }
             }
             else
             {
-                this.Body = 0x190;
-                this.Name = NameList.RandomName("male");
-                this.AddItem(new ShortPants(Utility.RandomNeutralHue()));
+                Body = 0x190;
+                Name = NameList.RandomName("male");
+                AddItem(new ShortPants(Utility.RandomNeutralHue()));
             }
-            this.Title = "the beggar";
-            this.HairItemID = this.Race.RandomHair(this.Female);
-            this.HairHue = this.Race.RandomHairHue();
-            this.Race.RandomFacialHair(this);
+            Title = "the beggar";
+            HairItemID = Race.RandomHair(Female);
+            HairHue = Race.RandomHairHue();
+            Race.RandomFacialHair(this);
 
-            this.SetStr(26, 26);
-            this.SetDex(21, 21);
-            this.SetInt(36, 36);
+            SetStr(26, 26);
+            SetDex(21, 21);
+            SetInt(36, 36);
 
-            this.SetDamage(1, 1);
+            SetDamage(1, 1);
 
-            this.SetSkill(SkillName.Begging, 66, 97);
-            this.SetSkill(SkillName.Tactics, 5, 27);
-            this.SetSkill(SkillName.Wrestling, 5, 27);
-            this.SetSkill(SkillName.Magery, 2, 2);
+            SetSkill(SkillName.Begging, 66, 97);
+            SetSkill(SkillName.Tactics, 5, 27);
+            SetSkill(SkillName.Wrestling, 5, 27);
+            SetSkill(SkillName.Magery, 2, 2);
 
-            this.Fame = 0;
-            this.Karma = 0;
+            Fame = 0;
+            Karma = 0;
 
-            this.AddItem(new Sandals(Utility.RandomNeutralHue()));
+            AddItem(new Sandals(Utility.RandomNeutralHue()));
 
             switch (Utility.Random(2))
             {
                 case 0:
-                    this.AddItem(new Doublet(Utility.RandomNeutralHue()));
+                    AddItem(new Doublet(Utility.RandomNeutralHue()));
                     break;
                 case 1:
-                    this.AddItem(new Shirt(Utility.RandomNeutralHue()));
+                    AddItem(new Shirt(Utility.RandomNeutralHue()));
                     break;
             }
 
-            this.PackGold(0, 25);
+            PackGold(0, 25);
         }
 
         public HireBeggar(Serial serial)

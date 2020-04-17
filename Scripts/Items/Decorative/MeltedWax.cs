@@ -6,8 +6,8 @@ namespace Server.Items
         public MeltedWax()
             : base(0x122A)
         {
-            this.Movable = false;
-            this.Hue = 0x835;
+            Movable = false;
+            Hue = 0x835;
         }
 
         public MeltedWax(Serial serial)

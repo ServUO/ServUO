@@ -49,7 +49,7 @@ namespace Server.Mobiles
 
             pack.Movable = false;
 
-            this.AddItem(pack);
+            AddItem(pack);
         }
 
         public Gypsy(Serial serial)

@@ -14,11 +14,11 @@ namespace Server.Items
         [Constructable]
         public SalvagerSuitPlans(int amount) : base(0x2258)
         {
-            this.Hue = 92;
-            this.Stackable = false;
-            this.Weight = 1.0;
-            this.Amount = amount;
-            this.LootType = LootType.Blessed;
+            Hue = 92;
+            Stackable = false;
+            Weight = 1.0;
+            Amount = amount;
+            LootType = LootType.Blessed;
         }
 
         public override void OnDoubleClick(Mobile from)

@@ -72,7 +72,7 @@ namespace Server.Mobiles
             m_OnCourse = true;
             m_StopTime = DateTime.MinValue;
 
-            if (this.Female = Utility.RandomBool())
+            if (Female = Utility.RandomBool())
             {
                 Body = 0x191;
                 Name = NameList.RandomName("female");
@@ -119,7 +119,7 @@ namespace Server.Mobiles
 
             if (this is PirateCaptain)
                 gal = new OrcishGalleon(Direction.North);
-            else if (this.Map == Map.Tokuno)
+            else if (Map == Map.Tokuno)
                 gal = new TokunoGalleon(Direction.North);
             else
                 gal = new GargishGalleon(Direction.North);
@@ -165,7 +165,7 @@ namespace Server.Mobiles
 
         public void OnShipDelete()
         {
-            if (this.Alive && !this.Deleted)
+            if (Alive && !Deleted)
                 Kill();
 
             for (int i = 0; i < m_Crew.Count; i++)
@@ -457,7 +457,7 @@ namespace Server.Mobiles
 
                     if (shootatboat)
                     {
-                        BaseGalleon g = BaseGalleon.FindGalleonAt(newPoint, this.Map);
+                        BaseGalleon g = BaseGalleon.FindGalleonAt(newPoint, Map);
 
                         if (g != null && g == m_TargetBoat && g != Galleon)
                             return true;
@@ -551,7 +551,7 @@ namespace Server.Mobiles
             {
                 if (!m_Galleon.Contains(crewman))
                 {
-                    crewman.MoveToWorld(new Point3D(m_Galleon.X + Utility.RandomList(-1, 1), m_Galleon.Y + Utility.RandomList(-1, 0, 1), m_Galleon.ZSurface), this.Map);
+                    crewman.MoveToWorld(new Point3D(m_Galleon.X + Utility.RandomList(-1, 1), m_Galleon.Y + Utility.RandomList(-1, 0, 1), m_Galleon.ZSurface), Map);
                 }
             }
 

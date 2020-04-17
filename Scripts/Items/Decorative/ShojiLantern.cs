@@ -9,11 +9,11 @@ namespace Server.Items
         public ShojiLantern()
             : base(0x24BC)
         {
-            this.Movable = true;
-            this.Duration = TimeSpan.Zero; // Never burnt out
-            this.Burning = false;
-            this.Light = LightType.Circle150;
-            this.Weight = 3.0;
+            Movable = true;
+            Duration = TimeSpan.Zero; // Never burnt out
+            Burning = false;
+            Light = LightType.Circle150;
+            Weight = 3.0;
         }
 
         public ShojiLantern(Serial serial)

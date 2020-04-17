@@ -6,8 +6,8 @@ namespace Server.Items
         public ThorvaldsMedallion()
             : base(0x2AAA)
         {
-            this.LootType = LootType.Blessed;
-            this.Hue = 0x47F; // TODO check
+            LootType = LootType.Blessed;
+            Hue = 0x47F; // TODO check
         }
 
         public ThorvaldsMedallion(Serial serial)

@@ -6,8 +6,8 @@ namespace Server.Items
         public FriendOfTheLibraryToken()
             : base(0x2F58)
         {
-            this.Weight = 1.0;
-            this.Hue = 0x28A;
+            Weight = 1.0;
+            Hue = 0x28A;
         }
 
         public FriendOfTheLibraryToken(Serial serial)

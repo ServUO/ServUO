@@ -19,24 +19,24 @@ namespace Server.Items
         [Constructable]
         public KnightsPlateLegs() : base()
         {
-            this.Hue = 1150;
-            this.Weight = 7;
+            Hue = 1150;
+            Weight = 7;
 
-            this.Attributes.BonusHits = 1;
+            Attributes.BonusHits = 1;
 
-            this.SetAttributes.BonusHits = 6;
-            this.SetAttributes.RegenHits = 2;
-            this.SetAttributes.RegenMana = 2;
-            this.SetAttributes.AttackChance = 10;
-            this.SetAttributes.DefendChance = 10;
+            SetAttributes.BonusHits = 6;
+            SetAttributes.RegenHits = 2;
+            SetAttributes.RegenMana = 2;
+            SetAttributes.AttackChance = 10;
+            SetAttributes.DefendChance = 10;
 
-            this.SetHue = 1150;
+            SetHue = 1150;
 
-            this.SetPhysicalBonus = 28;
-            this.SetFireBonus = 28;
-            this.SetColdBonus = 28;
-            this.SetPoisonBonus = 28;
-            this.SetEnergyBonus = 28;
+            SetPhysicalBonus = 28;
+            SetFireBonus = 28;
+            SetColdBonus = 28;
+            SetPoisonBonus = 28;
+            SetEnergyBonus = 28;
         }
 
         public KnightsPlateLegs(Serial serial) : base(serial)

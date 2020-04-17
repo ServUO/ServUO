@@ -7,22 +7,22 @@ namespace Server.Items
         public HunterGloves()
             : base()
         {
-            this.SetHue = 0x483;
+            SetHue = 0x483;
 
-            this.Attributes.RegenHits = 1;
-            this.Attributes.Luck = 50;
+            Attributes.RegenHits = 1;
+            Attributes.Luck = 50;
 
-            this.SetAttributes.BonusDex = 10;
+            SetAttributes.BonusDex = 10;
 
-            this.SetSkillBonuses.SetValues(0, SkillName.Stealth, 40);
+            SetSkillBonuses.SetValues(0, SkillName.Stealth, 40);
 
-            this.SetSelfRepair = 3;
+            SetSelfRepair = 3;
 
-            this.SetPhysicalBonus = 5;
-            this.SetFireBonus = 4;
-            this.SetColdBonus = 3;
-            this.SetPoisonBonus = 4;
-            this.SetEnergyBonus = 4;
+            SetPhysicalBonus = 5;
+            SetFireBonus = 4;
+            SetColdBonus = 3;
+            SetPoisonBonus = 4;
+            SetEnergyBonus = 4;
         }
 
         public HunterGloves(Serial serial)

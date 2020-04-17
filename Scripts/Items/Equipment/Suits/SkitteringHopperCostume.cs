@@ -7,7 +7,7 @@ namespace Server.Items
         [Constructable]
         public SkitteringHopperCostume() : base()
         {
-            this.CostumeBody = 302;
+            CostumeBody = 302;
         }
 
         public override int LabelNumber => 1114240;// skittering hopper costume

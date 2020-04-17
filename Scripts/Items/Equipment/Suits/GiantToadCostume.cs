@@ -7,7 +7,7 @@ namespace Server.Items
         [Constructable]
         public GiantToadCostume() : base()
         {
-            this.CostumeBody = 80;
+            CostumeBody = 80;
         }
 
         public override int LabelNumber => 1114226;// giant toad costume

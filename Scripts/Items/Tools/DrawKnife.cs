@@ -8,14 +8,14 @@ namespace Server.Items
         public DrawKnife()
             : base(0x10E4)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         [Constructable]
         public DrawKnife(int uses)
             : base(uses, 0x10E4)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public DrawKnife(Serial serial)

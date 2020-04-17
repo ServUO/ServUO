@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public MomentoQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(ResolvesBridle), "resolve's bridle", 1, 0x1727));
+            AddObjective(new ObtainObjective(typeof(ResolvesBridle), "resolve's bridle", 1, 0x1727));
 
-            this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
+            AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
         /* Momento! */
@@ -65,21 +65,21 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = true;
-            this.Race = Race.Human;
+            Female = true;
+            Race = Race.Human;
 
-            this.Hue = 0x8418;
-            this.HairItemID = 0x2046;
-            this.HairHue = 0x466;
+            Hue = 0x8418;
+            HairItemID = 0x2046;
+            HairHue = 0x466;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Shoes(0x743));
-            this.AddItem(new Robe(0x485));
+            AddItem(new Backpack());
+            AddItem(new Shoes(0x743));
+            AddItem(new Robe(0x485));
         }
 
         public override void Serialize(GenericWriter writer)

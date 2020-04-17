@@ -7,32 +7,32 @@ namespace Server.Mobiles
         public Squirrel()
             : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a squirrel";
-            this.Body = 0x116;
+            Name = "a squirrel";
+            Body = 0x116;
 
-            this.SetStr(44, 50);
-            this.SetDex(35);
-            this.SetInt(5);
+            SetStr(44, 50);
+            SetDex(35);
+            SetInt(5);
 
-            this.SetHits(42, 50);
+            SetHits(42, 50);
 
-            this.SetDamage(1, 2);
+            SetDamage(1, 2);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 30, 34);
-            this.SetResistance(ResistanceType.Fire, 10, 14);
-            this.SetResistance(ResistanceType.Cold, 30, 35);
-            this.SetResistance(ResistanceType.Poison, 20, 25);
-            this.SetResistance(ResistanceType.Energy, 20, 25);
+            SetResistance(ResistanceType.Physical, 30, 34);
+            SetResistance(ResistanceType.Fire, 10, 14);
+            SetResistance(ResistanceType.Cold, 30, 35);
+            SetResistance(ResistanceType.Poison, 20, 25);
+            SetResistance(ResistanceType.Energy, 20, 25);
 
-            this.SetSkill(SkillName.MagicResist, 4.0);
-            this.SetSkill(SkillName.Tactics, 4.0);
-            this.SetSkill(SkillName.Wrestling, 4.0);
+            SetSkill(SkillName.MagicResist, 4.0);
+            SetSkill(SkillName.Tactics, 4.0);
+            SetSkill(SkillName.Wrestling, 4.0);
 
-            this.Tamable = true;
-            this.ControlSlots = 1;
-            this.MinTameSkill = -21.3;
+            Tamable = true;
+            ControlSlots = 1;
+            MinTameSkill = -21.3;
         }
 
         public Squirrel(Serial serial)

@@ -8,11 +8,11 @@ namespace Server.Items
         public MysticsMemento()
             : base(0x2F5B)
         {
-            this.Hue = 1912;
-            this.SkillBonuses.SetValues(0, SkillName.Focus, 10.0);
-            this.Attributes.RegenMana = 1;
-            this.Attributes.LowerRegCost = 10;
-            this.Attributes.SpellDamage = 5;
+            Hue = 1912;
+            SkillBonuses.SetValues(0, SkillName.Focus, 10.0);
+            Attributes.RegenMana = 1;
+            Attributes.LowerRegCost = 10;
+            Attributes.SpellDamage = 5;
         }
 
         public MysticsMemento(Serial serial)

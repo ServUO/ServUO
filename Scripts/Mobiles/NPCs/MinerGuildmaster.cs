@@ -6,8 +6,8 @@ namespace Server.Mobiles
         public MinerGuildmaster()
             : base("miner")
         {
-            this.SetSkill(SkillName.ItemID, 60.0, 83.0);
-            this.SetSkill(SkillName.Mining, 90.0, 100.0);
+            SetSkill(SkillName.ItemID, 60.0, 83.0);
+            SetSkill(SkillName.Mining, 90.0, 100.0);
         }
 
         public MinerGuildmaster(Serial serial)

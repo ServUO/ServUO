@@ -34,7 +34,7 @@ namespace Server.Engines.NewMagincia
             foreach (Item item in m_Fillers)
             {
                 if (item != null && !item.Deleted)
-                    item.Map = this.Map; ;
+                    item.Map = Map; ;
             }
         }
 
@@ -97,7 +97,7 @@ namespace Server.Engines.NewMagincia
         public CommodityStyle1() : base(0x1772)
         {
             Item comp = new Static(1801);
-            comp.MoveToWorld(new Point3D(this.X + 1, this.Y + 1, this.Z), this.Map);
+            comp.MoveToWorld(new Point3D(X + 1, Y + 1, Z), Map);
             AddComponent(comp);
         }
 
@@ -124,7 +124,7 @@ namespace Server.Engines.NewMagincia
         public CommodityStyle2() : base(0x1773)
         {
             Item comp = new Static(9272);
-            comp.MoveToWorld(new Point3D(this.X + 1, this.Y, this.Z), this.Map);
+            comp.MoveToWorld(new Point3D(X + 1, Y, Z), Map);
             AddComponent(comp);
         }
 
@@ -151,7 +151,7 @@ namespace Server.Engines.NewMagincia
         public CommodityStyle3() : base(0x1774)
         {
             Item comp = new Static(16527);
-            comp.MoveToWorld(new Point3D(this.X, this.Y, this.Z), this.Map);
+            comp.MoveToWorld(new Point3D(X, Y, Z), Map);
             AddComponent(comp);
         }
 
@@ -178,7 +178,7 @@ namespace Server.Engines.NewMagincia
         public PetStyle1() : base(0x1775)
         {
             Item comp = new Static(1036);
-            comp.MoveToWorld(new Point3D(this.X - 1, this.Y, this.Z), this.Map);
+            comp.MoveToWorld(new Point3D(X - 1, Y, Z), Map);
             AddComponent(comp);
         }
 
@@ -205,11 +205,11 @@ namespace Server.Engines.NewMagincia
         public PetStyle2() : base(0x1777)
         {
             Item comp = new Static(6013);
-            comp.MoveToWorld(new Point3D(this.X, this.Y - 1, this.Z), this.Map);
+            comp.MoveToWorld(new Point3D(X, Y - 1, Z), Map);
             AddComponent(comp);
 
             comp = new Static(6013);
-            comp.MoveToWorld(new Point3D(this.X, this.Y + 1, this.Z), this.Map);
+            comp.MoveToWorld(new Point3D(X, Y + 1, Z), Map);
             AddComponent(comp);
         }
 
@@ -236,7 +236,7 @@ namespace Server.Engines.NewMagincia
         public PetStyle3() : base(0x177B)
         {
             Item comp = new Static(2324);
-            comp.MoveToWorld(new Point3D(this.X - 1, this.Y, this.Z), this.Map);
+            comp.MoveToWorld(new Point3D(X - 1, Y, Z), Map);
             AddComponent(comp);
         }
 

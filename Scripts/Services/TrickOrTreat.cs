@@ -286,12 +286,12 @@ namespace Server.Engines.Events
         {
             if (TrickOrTreat.CheckMobile(from))
             {
-                this.Body = from.Body;
+                Body = from.Body;
 
-                this.m_From = from;
-                this.Name = String.Format("{0}\'s Naughty Twin", from.Name);
+                m_From = from;
+                Name = String.Format("{0}\'s Naughty Twin", from.Name);
 
-                Timer.DelayCall<Mobile>(TrickOrTreat.OneSecond, Utility.RandomBool() ? new TimerStateCallback<Mobile>(StealCandy) : new TimerStateCallback<Mobile>(ToGate), this.m_From);
+                Timer.DelayCall<Mobile>(TrickOrTreat.OneSecond, Utility.RandomBool() ? new TimerStateCallback<Mobile>(StealCandy) : new TimerStateCallback<Mobile>(ToGate), m_From);
             }
         }
 
@@ -365,9 +365,9 @@ namespace Server.Engines.Events
 
         public override void OnThink()
         {
-            if (this.m_From == null || this.m_From.Deleted)
+            if (m_From == null || m_From.Deleted)
             {
-                this.Delete();
+                Delete();
             }
         }
 

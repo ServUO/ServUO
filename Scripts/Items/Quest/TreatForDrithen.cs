@@ -6,9 +6,9 @@ namespace Server.Items
         public TreatForDrithen()
             : base(0x21B)
         {
-            this.LootType = LootType.Blessed;
-            this.Weight = 2;
-            this.Hue = 0x489;
+            LootType = LootType.Blessed;
+            Weight = 2;
+            Hue = 0x489;
         }
 
         public TreatForDrithen(Serial serial)

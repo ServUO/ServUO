@@ -9,9 +9,9 @@ namespace Server.Engines.Quests
         public ATangledWeb()
             : base()
         {
-            this.AddObjective(new BloodCreaturesObjective(typeof(IBloodCreature), "blood creatures", 12));
+            AddObjective(new BloodCreaturesObjective(typeof(IBloodCreature), "blood creatures", 12));
 
-            this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
+            AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
         /*A Tangled Web*/
@@ -29,8 +29,8 @@ namespace Server.Engines.Quests
         public override object Uncomplete => 1095036;
         public override void OnCompleted()
         {
-            this.Owner.SendLocalizedMessage(1095038, null, 0x23); // Jaacar's barrel is completely full. Return to Jaacar for your reward.							
-            this.Owner.PlaySound(this.CompleteSound);
+            Owner.SendLocalizedMessage(1095038, null, 0x23); // Jaacar's barrel is completely full. Return to Jaacar for your reward.							
+            Owner.PlaySound(CompleteSound);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -58,8 +58,8 @@ namespace Server.Engines.Quests
             {
                 base.OnKill(killed);
 
-                if (!this.Completed)
-                    this.Quest.Owner.SendLocalizedMessage(1095037); // Blood from the creature goes into Jaacar’s barrel.
+                if (!Completed)
+                    Quest.Owner.SendLocalizedMessage(1095037); // Blood from the creature goes into Jaacar’s barrel.
             }
 
             public override void Serialize(GenericWriter writer)

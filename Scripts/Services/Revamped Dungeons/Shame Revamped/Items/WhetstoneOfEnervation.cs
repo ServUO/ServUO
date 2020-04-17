@@ -15,8 +15,8 @@ namespace Server.Items
         [Constructable]
         public WhetstoneOfEnervation(int amount) : base(0x1368)
         {
-            this.Hue = 1458;
-            this.Weight = 1;
+            Hue = 1458;
+            Weight = 1;
 
             Stackable = true;
             Amount = amount;
@@ -44,7 +44,7 @@ namespace Server.Items
                                 wep.Attributes.WeaponDamage = 0;
                                 m.SendLocalizedMessage(1151814); // You have removed the damage increase from this weapon.
 
-                                this.Consume();
+                                Consume();
                             }
                             else
                                 m.SendLocalizedMessage(1046439); // Invalid target.

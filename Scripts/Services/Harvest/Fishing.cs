@@ -26,7 +26,7 @@ namespace Server.Engines.Harvest
 
         private readonly HarvestDefinition m_Definition;
 
-        public HarvestDefinition Definition => this.m_Definition;
+        public HarvestDefinition Definition => m_Definition;
 
         private Fishing()
         {
@@ -97,8 +97,8 @@ namespace Server.Engines.Harvest
                 new BonusHarvestResource(80.0, 1.0, 1072597, typeof(WhitePearl))
             };
 
-            this.m_Definition = fish;
-            this.Definitions.Add(fish);
+            m_Definition = fish;
+            Definitions.Add(fish);
             #endregion
         }
 
@@ -690,7 +690,7 @@ namespace Server.Engines.Harvest
             Map map;
             Point3D loc;
 
-            if (this.GetHarvestDetails(from, tool, toHarvest, out tileID, out map, out loc))
+            if (GetHarvestDetails(from, tool, toHarvest, out tileID, out map, out loc))
                 Timer.DelayCall(TimeSpan.FromSeconds(1.5),
                     delegate
                     {

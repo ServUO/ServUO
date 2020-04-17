@@ -174,7 +174,7 @@ namespace Server.Items
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (m.Player && CanRes(m) && !m.Alive && m.InRange(this.Location, 5))
+            if (m.Player && CanRes(m) && !m.Alive && m.InRange(Location, 5))
                 m.SendGump(new ResurrectGump(m, m, ResurrectMessage.Generic, false, 0.0, Resurrect_Callback));
         }
 

@@ -96,35 +96,35 @@ namespace Server.Engines.Doom
         public LeverPuzzleController()
             : base(0x1822)
         {
-            this.Movable = false;
-            this.Hue = 0x4c;
+            Movable = false;
+            Hue = 0x4c;
             installed = true;
             int i = 0;
 
-            this.m_Levers = new List<Item>();	/* codes are 0x1 shifted left x # of bits, easily handled here */
+            m_Levers = new List<Item>();	/* codes are 0x1 shifted left x # of bits, easily handled here */
             for (; i < 4; i++)
-                this.m_Levers.Add(AddLeverPuzzlePart(TA[i], new LeverPuzzleLever((ushort)(1 << i), this)));
+                m_Levers.Add(AddLeverPuzzlePart(TA[i], new LeverPuzzleLever((ushort)(1 << i), this)));
 
-            this.m_Tiles = new List<LeverPuzzleRegion>();
+            m_Tiles = new List<LeverPuzzleRegion>();
             for (; i < 9; i++)
-                this.m_Tiles.Add(new LeverPuzzleRegion(this, TA[i]));
+                m_Tiles.Add(new LeverPuzzleRegion(this, TA[i]));
 
-            this.m_Teles = new List<Item>();
+            m_Teles = new List<Item>();
             for (; i < 15; i++)
-                this.m_Teles.Add(AddLeverPuzzlePart(TA[i], new LampRoomTeleporter(TA[++i])));
+                m_Teles.Add(AddLeverPuzzlePart(TA[i], new LampRoomTeleporter(TA[++i])));
 
-            this.m_Statues = new List<Item>();
+            m_Statues = new List<Item>();
             for (; i < 19; i++)
-                this.m_Statues.Add(AddLeverPuzzlePart(TA[i], new LeverPuzzleStatue(TA[++i], this)));
+                m_Statues.Add(AddLeverPuzzlePart(TA[i], new LeverPuzzleStatue(TA[++i], this)));
 
             if (!installed)
-                this.Delete();
+                Delete();
             else
-                this.Enabled = true;
+                Enabled = true;
 
-            this.m_Box = (LampRoomBox)AddLeverPuzzlePart(TA[i], new LampRoomBox(this));
-            this.m_LampRoom = new LampRoomRegion(this);
-            this.GenKey();
+            m_Box = (LampRoomBox)AddLeverPuzzlePart(TA[i], new LampRoomBox(this));
+            m_LampRoom = new LampRoomRegion(this);
+            GenKey();
         }
 
         public LeverPuzzleController(Serial serial)
@@ -137,11 +137,11 @@ namespace Server.Engines.Doom
         {
             get
             {
-                return this.m_MyKey;
+                return m_MyKey;
             }
             set
             {
-                this.m_MyKey = value;
+                m_MyKey = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -149,11 +149,11 @@ namespace Server.Engines.Doom
         {
             get
             {
-                return this.m_TheirKey;
+                return m_TheirKey;
             }
             set
             {
-                this.m_TheirKey = value;
+                m_TheirKey = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -161,21 +161,21 @@ namespace Server.Engines.Doom
         {
             get
             {
-                return this.m_Enabled;
+                return m_Enabled;
             }
             set
             {
-                this.m_Enabled = value;
+                m_Enabled = value;
             }
         }
-        public Mobile Successful => this.m_Successful;
+        public Mobile Successful => m_Successful;
         public bool CircleComplete
         {
             get	/* OSI: all 5 must be occupied */
             {
                 for (int i = 0; i < 5; i++)
                 {
-                    if (this.GetOccupant(i) == null)
+                    if (GetOccupant(i) == null)
                     {
                         return false;
                     }
@@ -333,36 +333,36 @@ namespace Server.Engines.Doom
 
         public override void OnDelete()
         {
-            this.KillTimers();
+            KillTimers();
             base.OnDelete();
         }
 
         public override void OnAfterDelete()
         {
-            NukeItemList(this.m_Teles);
-            NukeItemList(this.m_Statues);
-            NukeItemList(this.m_Levers);
+            NukeItemList(m_Teles);
+            NukeItemList(m_Statues);
+            NukeItemList(m_Levers);
 
-            if (this.m_LampRoom != null)
+            if (m_LampRoom != null)
             {
-                this.m_LampRoom.Unregister();
+                m_LampRoom.Unregister();
             }
-            if (this.m_Tiles != null)
+            if (m_Tiles != null)
             {
-                foreach (Region region in this.m_Tiles)
+                foreach (Region region in m_Tiles)
                 {
                     region.Unregister();
                 }
             }
-            if (this.m_Box != null && !this.m_Box.Deleted)
+            if (m_Box != null && !m_Box.Deleted)
             {
-                this.m_Box.Delete();
+                m_Box.Delete();
             }
         }
 
         public virtual PlayerMobile GetOccupant(int index)
         {
-            LeverPuzzleRegion region = this.m_Tiles[index];
+            LeverPuzzleRegion region = m_Tiles[index];
 
             if (region != null)
             {
@@ -376,7 +376,7 @@ namespace Server.Engines.Doom
 
         public virtual LeverPuzzleStatue GetStatue(int index)
         {
-            LeverPuzzleStatue statue = (LeverPuzzleStatue)this.m_Statues[index];
+            LeverPuzzleStatue statue = (LeverPuzzleStatue)m_Statues[index];
 
             if (statue != null && !statue.Deleted)
             {
@@ -387,7 +387,7 @@ namespace Server.Engines.Doom
 
         public virtual LeverPuzzleLever GetLever(int index)
         {
-            LeverPuzzleLever lever = (LeverPuzzleLever)this.m_Levers[index];
+            LeverPuzzleLever lever = (LeverPuzzleLever)m_Levers[index];
 
             if (lever != null && !lever.Deleted)
             {
@@ -401,7 +401,7 @@ namespace Server.Engines.Doom
             for (int i = 0; i < 2; i++)
             {
                 Item s;
-                if ((s = this.GetStatue(i)) != null)
+                if ((s = GetStatue(i)) != null)
                 {
                     s.PublicOverheadMessage(MessageType.Regular, 0x3B2, message, fstring);
                 }
@@ -410,8 +410,8 @@ namespace Server.Engines.Doom
 
         public virtual void ResetPuzzle()
         {
-            this.PuzzleStatus(1062053, null);
-            this.ResetLevers();
+            PuzzleStatus(1062053, null);
+            ResetLevers();
         }
 
         public virtual void ResetLevers()
@@ -419,30 +419,30 @@ namespace Server.Engines.Doom
             for (int i = 0; i < 4; i++)
             {
                 Item l;
-                if ((l = this.GetLever(i)) != null)
+                if ((l = GetLever(i)) != null)
                 {
                     l.ItemID = 0x108E;
-                    Effects.PlaySound(l.Location, this.Map, 0x3E8);
+                    Effects.PlaySound(l.Location, Map, 0x3E8);
                 }
             }
-            this.TheirKey ^= this.TheirKey;
+            TheirKey ^= TheirKey;
         }
 
         public virtual void KillTimers()
         {
-            if (this.l_Timer != null && this.l_Timer.Running)
+            if (l_Timer != null && l_Timer.Running)
             {
-                this.l_Timer.Stop();
+                l_Timer.Stop();
             }
-            if (this.m_Timer != null && this.m_Timer.Running)
+            if (m_Timer != null && m_Timer.Running)
             {
-                this.m_Timer.Stop();
+                m_Timer.Stop();
             }
         }
 
         public virtual void RemoveSuccessful()
         {
-            this.m_Successful = null;
+            m_Successful = null;
         }
 
         public virtual void LeverPulled(UInt16 code)
@@ -450,26 +450,26 @@ namespace Server.Engines.Doom
             int Correct = 0;
             Mobile m_Player;
 
-            this.KillTimers();
+            KillTimers();
 
             /* if one bit in each of the four nibbles is set, this is false */
 
-            if ((this.TheirKey = (ushort)(code | (this.TheirKey <<= 4))) < 0x0FFF)
+            if ((TheirKey = (ushort)(code | (TheirKey <<= 4))) < 0x0FFF)
             {
-                this.l_Timer = Timer.DelayCall(TimeSpan.FromSeconds(30.0), new TimerCallback(ResetPuzzle));
+                l_Timer = Timer.DelayCall(TimeSpan.FromSeconds(30.0), new TimerCallback(ResetPuzzle));
                 return;
             }
 
-            if (!this.CircleComplete)
+            if (!CircleComplete)
             {
-                this.PuzzleStatus(1050004, null); // The circle is the key...
+                PuzzleStatus(1050004, null); // The circle is the key...
             }
             else
             {
-                if (this.TheirKey == this.MyKey)
+                if (TheirKey == MyKey)
                 {
-                    this.GenKey();
-                    if ((this.m_Successful = (m_Player = this.GetOccupant(0))) != null)
+                    GenKey();
+                    if ((m_Successful = (m_Player = GetOccupant(0))) != null)
                     {
                         SendLocationEffect(lp_Center, 0x1153, 0, 60, 1);
                         PlaySounds(lp_Center, cs1);
@@ -477,26 +477,26 @@ namespace Server.Engines.Doom
                         Effects.SendBoltEffect(m_Player, true);
                         m_Player.MoveToWorld(lr_Enter, Map.Malas);
 
-                        this.m_Timer = new LampRoomTimer(this);
-                        this.m_Timer.Start();
-                        this.m_Enabled = false;
+                        m_Timer = new LampRoomTimer(this);
+                        m_Timer.Start();
+                        m_Enabled = false;
                     }
                 }
                 else
                 {
                     for (int i = 0; i < 16; i++)  /* Count matching SET bits, ie correct codes */
                     {
-                        if ((((this.MyKey >> i) & 1) == 1) && (((this.TheirKey >> i) & 1) == 1))
+                        if ((((MyKey >> i) & 1) == 1) && (((TheirKey >> i) & 1) == 1))
                         {
                             Correct++;
                         }
                     }
 
-                    this.PuzzleStatus(Statue_Msg[Correct], (Correct > 0) ? Correct.ToString() : null);
+                    PuzzleStatus(Statue_Msg[Correct], (Correct > 0) ? Correct.ToString() : null);
 
                     for (int i = 0; i < 5; i++)
                     {
-                        if ((m_Player = this.GetOccupant(i)) != null)
+                        if ((m_Player = GetOccupant(i)) != null)
                         {
                             Timer smash = new RockTimer(m_Player, this);
                             smash.Start();
@@ -504,7 +504,7 @@ namespace Server.Engines.Doom
                     }
                 }
             }
-            this.ResetLevers();
+            ResetLevers();
         }
 
         public virtual void GenKey() /* Shuffle & build key */
@@ -519,7 +519,7 @@ namespace Server.Engines.Doom
                 CA[i] = CA[n];
                 CA[n] = tmp;
             }
-            for (i = 0; i < 4; this.MyKey = (ushort)(CA[(i++)] | (this.MyKey <<= 4)))
+            for (i = 0; i < 4; MyKey = (ushort)(CA[(i++)] | (MyKey <<= 4)))
             {
             }
         }
@@ -528,10 +528,10 @@ namespace Server.Engines.Doom
         {
             base.Serialize(writer);
             writer.Write(0); // version
-            writer.WriteItemList(this.m_Levers, true);
-            writer.WriteItemList(this.m_Statues, true);
-            writer.WriteItemList(this.m_Teles, true);
-            writer.Write(this.m_Box);
+            writer.WriteItemList(m_Levers, true);
+            writer.WriteItemList(m_Statues, true);
+            writer.WriteItemList(m_Teles, true);
+            writer.Write(m_Box);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -540,21 +540,21 @@ namespace Server.Engines.Doom
 
             int version = reader.ReadInt();
 
-            this.m_Levers = reader.ReadStrongItemList();
-            this.m_Statues = reader.ReadStrongItemList();
-            this.m_Teles = reader.ReadStrongItemList();
+            m_Levers = reader.ReadStrongItemList();
+            m_Statues = reader.ReadStrongItemList();
+            m_Teles = reader.ReadStrongItemList();
 
-            this.m_Box = reader.ReadItem() as LampRoomBox;
+            m_Box = reader.ReadItem() as LampRoomBox;
 
-            this.m_Tiles = new List<LeverPuzzleRegion>();
+            m_Tiles = new List<LeverPuzzleRegion>();
             for (int i = 4; i < 9; i++)
-                this.m_Tiles.Add(new LeverPuzzleRegion(this, TA[i]));
+                m_Tiles.Add(new LeverPuzzleRegion(this, TA[i]));
 
-            this.m_LampRoom = new LampRoomRegion(this);
-            this.m_Enabled = true;
-            this.m_TheirKey = 0;
-            this.m_MyKey = 0;
-            this.GenKey();
+            m_LampRoom = new LampRoomRegion(this);
+            m_Enabled = true;
+            m_TheirKey = 0;
+            m_MyKey = 0;
+            GenKey();
         }
 
         private static bool IsValidDamagable(Mobile m)
@@ -586,53 +586,53 @@ namespace Server.Engines.Doom
             public RockTimer(Mobile player, LeverPuzzleController Controller)
                 : base(TimeSpan.Zero, TimeSpan.FromSeconds(.25))
             {
-                this.Count = 0;
-                this.m_Player = player;
-                this.m_Controller = Controller;
+                Count = 0;
+                m_Player = player;
+                m_Controller = Controller;
             }
 
             protected override void OnTick()
             {
-                if (this.m_Player == null || !(this.m_Player.Map == Map.Malas))
+                if (m_Player == null || !(m_Player.Map == Map.Malas))
                 {
-                    this.Stop();
+                    Stop();
                 }
                 else
                 {
-                    this.Count++;
-                    if (this.Count == 1) /* TODO consolidate */
+                    Count++;
+                    if (Count == 1) /* TODO consolidate */
                     {
-                        this.m_Player.Paralyze(TimeSpan.FromSeconds(2));
-                        Effects.SendTargetEffect(this.m_Player, 0x11B7, 20, 10);
-                        PlayerSendASCII(this.m_Player, 0);  // You are pinned down ...
+                        m_Player.Paralyze(TimeSpan.FromSeconds(2));
+                        Effects.SendTargetEffect(m_Player, 0x11B7, 20, 10);
+                        PlayerSendASCII(m_Player, 0);  // You are pinned down ...
 
-                        PlaySounds(this.m_Player.Location, (!this.m_Player.Female) ? fs : ms);
-                        PlayEffect(ZAdjustedIEFromMobile(this.m_Player, 50), this.m_Player, 0x11B7, 20, false);
+                        PlaySounds(m_Player.Location, (!m_Player.Female) ? fs : ms);
+                        PlayEffect(ZAdjustedIEFromMobile(m_Player, 50), m_Player, 0x11B7, 20, false);
                     }
-                    else if (this.Count == 2)
+                    else if (Count == 2)
                     {
-                        DoDamage(this.m_Player, 80, 90, false);
-                        Effects.SendTargetEffect(this.m_Player, 0x36BD, 20, 10);
-                        PlaySounds(this.m_Player.Location, exp);
-                        PlayerSendASCII(this.m_Player, 1); // A speeding rock  ...
+                        DoDamage(m_Player, 80, 90, false);
+                        Effects.SendTargetEffect(m_Player, 0x36BD, 20, 10);
+                        PlaySounds(m_Player.Location, exp);
+                        PlayerSendASCII(m_Player, 1); // A speeding rock  ...
 
-                        if (AniSafe(this.m_Player))
+                        if (AniSafe(m_Player))
                         {
-                            this.m_Player.Animate(21, 10, 1, true, true, 0);
+                            m_Player.Animate(21, 10, 1, true, true, 0);
                         }
                     }
-                    else if (this.Count == 3)
+                    else if (Count == 3)
                     {
-                        this.Stop();
+                        Stop();
 
-                        Effects.SendTargetEffect(this.m_Player, 0x36B0, 20, 10);
-                        PlayerSendASCII(this.m_Player, 1); // A speeding rock  ...
-                        PlaySounds(this.m_Player.Location, (!this.m_Player.Female) ? fs2 : ms2);
+                        Effects.SendTargetEffect(m_Player, 0x36B0, 20, 10);
+                        PlayerSendASCII(m_Player, 1); // A speeding rock  ...
+                        PlaySounds(m_Player.Location, (!m_Player.Female) ? fs2 : ms2);
 
                         int j = Utility.Random(6, 10);
                         for (int i = 0; i < j; i++)
                         {
-                            IEntity m_IEntity = new Entity(Serial.Zero, RandomPointIn(this.m_Player.Location, 10), this.m_Player.Map);
+                            IEntity m_IEntity = new Entity(Serial.Zero, RandomPointIn(m_Player.Location, 10), m_Player.Map);
 
                             List<Mobile> mobiles = new List<Mobile>();
                             IPooledEnumerable eable = m_IEntity.Map.GetMobilesInRange(m_IEntity.Location, 2);
@@ -644,9 +644,9 @@ namespace Server.Engines.Doom
                             eable.Free();
                             for (int k = 0; k < mobiles.Count; k++)
                             {
-                                if (IsValidDamagable(mobiles[k]) && mobiles[k] != this.m_Player)
+                                if (IsValidDamagable(mobiles[k]) && mobiles[k] != m_Player)
                                 {
-                                    PlayEffect(this.m_Player, mobiles[k], this.Rock(), 8, true);
+                                    PlayEffect(m_Player, mobiles[k], Rock(), 8, true);
                                     DoDamage(mobiles[k], 25, 30, false);
 
                                     if (mobiles[k].Player)
@@ -655,7 +655,7 @@ namespace Server.Engines.Doom
                                     }
                                 }
                             }
-                            PlayEffect(this.m_Player, m_IEntity, this.Rock(), 8, false);
+                            PlayEffect(m_Player, m_IEntity, Rock(), 8, false);
                         }
                     }
                 }
@@ -673,12 +673,12 @@ namespace Server.Engines.Doom
             public LampRoomKickTimer(Mobile player)
                 : base(TimeSpan.FromSeconds(.25))
             {
-                this.m = player;
+                m = player;
             }
 
             protected override void OnTick()
             {
-                MoveMobileOut(this.m);
+                MoveMobileOut(m);
             }
         }
 
@@ -690,17 +690,17 @@ namespace Server.Engines.Doom
             public LampRoomTimer(LeverPuzzleController controller)
                 : base(TimeSpan.FromSeconds(5.0), TimeSpan.FromSeconds(5.0))
             {
-                this.level = 0;
-                this.ticks = 0;
-                this.m_Controller = controller;
+                level = 0;
+                ticks = 0;
+                m_Controller = controller;
             }
 
             protected override void OnTick()
             {
-                this.ticks++;
-                List<Mobile> mobiles = this.m_Controller.m_LampRoom.GetMobiles();
+                ticks++;
+                List<Mobile> mobiles = m_Controller.m_LampRoom.GetMobiles();
 
-                if (this.ticks >= 71 || this.m_Controller.m_LampRoom.GetPlayerCount() == 0)
+                if (ticks >= 71 || m_Controller.m_LampRoom.GetPlayerCount() == 0)
                 {
                     foreach (Mobile mobile in mobiles)
                     {
@@ -709,20 +709,20 @@ namespace Server.Engines.Doom
                             mobile.Kill();
                         }
                     }
-                    this.m_Controller.Enabled = true;
-                    this.Stop();
+                    m_Controller.Enabled = true;
+                    Stop();
                 }
                 else
                 {
-                    if (this.ticks % 12 == 0)
+                    if (ticks % 12 == 0)
                     {
-                        this.level++;
+                        level++;
                     }
                     foreach (Mobile mobile in mobiles)
                     {
                         if (IsValidDamagable(mobile))
                         {
-                            if (this.ticks % 2 == 0 && this.level == 5)
+                            if (ticks % 2 == 0 && level == 5)
                             {
                                 if (mobile.Player)
                                 {
@@ -734,19 +734,19 @@ namespace Server.Engines.Doom
                                 }
                                 DoDamage(mobile, 15, 20, true);
                             }
-                            if (Utility.Random((int)(this.level & ~0xfffffffc), 3) == 3)
+                            if (Utility.Random((int)(level & ~0xfffffffc), 3) == 3)
                             {
-                                mobile.ApplyPoison(mobile, PA2[this.level]);
+                                mobile.ApplyPoison(mobile, PA2[level]);
                             }
-                            if (this.ticks % 12 == 0 && this.level > 0 && mobile.Player)
+                            if (ticks % 12 == 0 && level > 0 && mobile.Player)
                             {
-                                mobile.SendLocalizedMessage(PA[this.level][0], null, PA[this.level][1]);
+                                mobile.SendLocalizedMessage(PA[level][0], null, PA[level][1]);
                             }
                         }
                     }
-                    for (int i = 0; i <= this.level; i++)
+                    for (int i = 0; i <= level; i++)
                     {
-                        SendLocationEffect(RandomPointIn(lr_Rect, -1), 0x36B0, Utility.Random(150, 200), 0, PA[this.level][2]);
+                        SendLocationEffect(RandomPointIn(lr_Rect, -1), 0x36B0, Utility.Random(150, 200), 0, PA[level][2]);
                     }
                 }
             }

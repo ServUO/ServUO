@@ -45,7 +45,7 @@ namespace Server.Items
             if (version == 0)
             {
                 Resource = CraftResource.None;
-                this.Hue = 1366;
+                Hue = 1366;
             }
         }
     }

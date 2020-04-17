@@ -47,7 +47,7 @@ namespace Server.Engines.Quests.Zento
         {
             base.Accept();
 
-            this.AddConversation(new AcceptConversation());
+            AddConversation(new AcceptConversation());
         }
     }
 }

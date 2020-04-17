@@ -9,9 +9,9 @@ namespace Server.Mobiles
         public Farmer()
             : base("the farmer")
         {
-            this.SetSkill(SkillName.Lumberjacking, 36.0, 68.0);
-            this.SetSkill(SkillName.TasteID, 36.0, 68.0);
-            this.SetSkill(SkillName.Cooking, 36.0, 68.0);
+            SetSkill(SkillName.Lumberjacking, 36.0, 68.0);
+            SetSkill(SkillName.TasteID, 36.0, 68.0);
+            SetSkill(SkillName.Cooking, 36.0, 68.0);
         }
 
         public Farmer(Serial serial)
@@ -20,10 +20,10 @@ namespace Server.Mobiles
         }
 
         public override VendorShoeType ShoeType => VendorShoeType.ThighBoots;
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBFarmer());
+            m_SBInfos.Add(new SBFarmer());
         }
 
         public override int GetShoeHue()
@@ -35,7 +35,7 @@ namespace Server.Mobiles
         {
             base.InitOutfit();
 
-            this.AddItem(new Server.Items.WideBrimHat(Utility.RandomNeutralHue()));
+            AddItem(new Server.Items.WideBrimHat(Utility.RandomNeutralHue()));
         }
 
         public override void Serialize(GenericWriter writer)

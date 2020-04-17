@@ -44,9 +44,9 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (version < 1 && this.Hue == 0x3f) /* Pigmented? */
+            if (version < 1 && Hue == 0x3f) /* Pigmented? */
             {
-                this.Hue = 0x2a3;
+                Hue = 0x2a3;
             }
         }
     }

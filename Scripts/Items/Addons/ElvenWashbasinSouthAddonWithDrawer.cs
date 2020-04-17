@@ -6,7 +6,7 @@ namespace Server.Items
         public ElvenWashBasinSouthAddonWithDrawer()
             : base(0x30E2)
         {
-            this.AddComponent(new AddonContainerComponent(0x30E1), -1, 0, 0);
+            AddComponent(new AddonContainerComponent(0x30E1), -1, 0, 0);
         }
 
         public ElvenWashBasinSouthAddonWithDrawer(Serial serial)

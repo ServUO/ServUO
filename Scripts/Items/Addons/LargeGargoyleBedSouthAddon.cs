@@ -12,17 +12,17 @@ namespace Server.Items
         public LargeGargoyleBedSouthAddon()
         {
             //Left Side
-            this.AddComponent(new AddonComponent(0x4010), 0, 0, 0);
-            this.AddComponent(new AddonComponent(0x4013), 0, 1, 0);
-            this.AddComponent(new AddonComponent(0x4016), 0, 2, 0);
+            AddComponent(new AddonComponent(0x4010), 0, 0, 0);
+            AddComponent(new AddonComponent(0x4013), 0, 1, 0);
+            AddComponent(new AddonComponent(0x4016), 0, 2, 0);
             //Middle
-            this.AddComponent(new AddonComponent(0x4011), 1, 0, 0);
-            this.AddComponent(new AddonComponent(0x4014), 1, 1, 0);
-            this.AddComponent(new AddonComponent(0x4017), 1, 2, 0);
+            AddComponent(new AddonComponent(0x4011), 1, 0, 0);
+            AddComponent(new AddonComponent(0x4014), 1, 1, 0);
+            AddComponent(new AddonComponent(0x4017), 1, 2, 0);
             //Right Side
-            this.AddComponent(new AddonComponent(0x4012), 2, 0, 0);
-            this.AddComponent(new AddonComponent(0x4015), 2, 1, 0);
-            this.AddComponent(new AddonComponent(0x4018), 2, 2, 0);
+            AddComponent(new AddonComponent(0x4012), 2, 0, 0);
+            AddComponent(new AddonComponent(0x4015), 2, 1, 0);
+            AddComponent(new AddonComponent(0x4018), 2, 2, 0);
         }
 
         public LargeGargoyleBedSouthAddon(Serial serial)

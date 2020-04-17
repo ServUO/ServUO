@@ -6,7 +6,7 @@ namespace Server.Items
         public CherryBlossomTrunkAddon()
             : base()
         {
-            this.AddComponent(new LocalizedAddonComponent(0x26EE, 1076784), 0, 0, 0);
+            AddComponent(new LocalizedAddonComponent(0x26EE, 1076784), 0, 0, 0);
         }
 
         public CherryBlossomTrunkAddon(Serial serial)
@@ -36,7 +36,7 @@ namespace Server.Items
         public CherryBlossomTrunkDeed()
             : base()
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public CherryBlossomTrunkDeed(Serial serial)

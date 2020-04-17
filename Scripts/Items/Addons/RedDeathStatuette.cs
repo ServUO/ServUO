@@ -10,8 +10,8 @@ namespace Server.Items
         public RedDeathStatuette()
             : base(0x2617)
         {
-            this.Name = "Red Death";
-            this.Weight = 5.0;
+            Name = "Red Death";
+            Weight = 5.0;
         }
 
         public RedDeathStatuette(Serial serial)
@@ -21,8 +21,8 @@ namespace Server.Items
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (this.TurnedOn && this.IsLockedDown && (!m.Hidden || m.IsPlayer()) && Utility.InRange(m.Location, this.Location, 2) && !Utility.InRange(oldLocation, this.Location, 2))
-                Effects.PlaySound(this.Location, this.Map, m_Sounds[Utility.Random(m_Sounds.Length)]);
+            if (TurnedOn && IsLockedDown && (!m.Hidden || m.IsPlayer()) && Utility.InRange(m.Location, Location, 2) && !Utility.InRange(oldLocation, Location, 2))
+                Effects.PlaySound(Location, Map, m_Sounds[Utility.Random(m_Sounds.Length)]);
 
             base.OnMovement(m, oldLocation);
         }

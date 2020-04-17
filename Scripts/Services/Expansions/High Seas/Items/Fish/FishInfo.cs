@@ -347,7 +347,7 @@ namespace Server.Items
 
         public double GetBaitStrength(Type baitType, Mobile from, bool enhanced)
         {
-            if (baitType != this.Type)
+            if (baitType != Type)
                 return 1.0;
 
             double str = enhanced ? 3.0 : 2.0;

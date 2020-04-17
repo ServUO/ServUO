@@ -1302,7 +1302,7 @@ namespace Server.Spells
                 {
                     op.WriteLine("# {0}", DateTime.UtcNow);
                     op.WriteLine("Target with bad contructor args:");
-                    op.WriteLine("Offending Spell: {0}", this.ToString());
+                    op.WriteLine("Offending Spell: {0}", ToString());
                     op.WriteLine("_____");
                 }
             }

@@ -20,10 +20,10 @@ namespace Server.Items
         public InitiationGloves() : base()
         {
 
-            this.Weight = 1;
-            this.Hue = 0x9C4;
+            Weight = 1;
+            Hue = 0x9C4;
             //this.Attributes.Brittle = 1; //If you have imbuing add this part in!!!!
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
 
             SetHue = 0x30;
             SetPhysicalBonus = 2;

@@ -9,7 +9,7 @@ namespace Server.Engines.Quests
         public Aernya()
             : base("Aernya", "the mistress of admissions")
         {
-            this.SetSkill(SkillName.Focus, 60.0, 83.0);
+            SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
         public Aernya(Serial serial)
@@ -20,23 +20,23 @@ namespace Server.Engines.Quests
         public override Type[] Quests => new Type[] { typeof(MistakenIdentityQuest) };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = true;
-            this.Race = Race.Human;
+            Female = true;
+            Race = Race.Human;
 
-            this.Hue = 0x8404;
-            this.HairItemID = 0x2047;
-            this.HairHue = 0x465;
+            Hue = 0x8404;
+            HairItemID = 0x2047;
+            HairHue = 0x465;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Sandals(0x743));
-            this.AddItem(new FancyShirt(0x3B3));
-            this.AddItem(new Cloak(0x3));
-            this.AddItem(new Skirt());
+            AddItem(new Backpack());
+            AddItem(new Sandals(0x743));
+            AddItem(new FancyShirt(0x3B3));
+            AddItem(new Cloak(0x3));
+            AddItem(new Skirt());
         }
 
         public override void Serialize(GenericWriter writer)

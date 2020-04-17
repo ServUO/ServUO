@@ -34,7 +34,7 @@ namespace Server.Items
             {
                 _UsesRemaining = value;
 
-                if (_UsesRemaining <= 0 && this.RootParent is Mobile)
+                if (_UsesRemaining <= 0 && RootParent is Mobile)
                     ((Mobile)RootParent).SendLocalizedMessage(1152621); // Your talisman's magic is exhausted.
 
                 InvalidateProperties();
@@ -84,8 +84,8 @@ namespace Server.Items
             }
             else
             {
-                Effects.SendLocationParticles(EffectItem.Create(this.Location, this.Map, EffectItem.DefaultDuration), 0x3728, 8, 20, 5042);
-                Effects.PlaySound(this.Location, this.Map, 0x201);
+                Effects.SendLocationParticles(EffectItem.Create(Location, Map, EffectItem.DefaultDuration), 0x3728, 8, 20, 5042);
+                Effects.PlaySound(Location, Map, 0x201);
             }
 
             Delete();

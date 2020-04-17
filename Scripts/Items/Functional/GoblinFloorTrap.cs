@@ -78,7 +78,7 @@ namespace Server.Items
             {
                 if (m.NetState != null)
                 {
-                    Packet p = new MessageLocalized(this.Serial, this.ItemID, Network.MessageType.Regular, 0x65, 3, 500813, this.Name, String.Empty);
+                    Packet p = new MessageLocalized(Serial, ItemID, Network.MessageType.Regular, 0x65, 3, 500813, Name, String.Empty);
                     p.Acquire();
                     m.NetState.Send(p);
                     Packet.Release(p);

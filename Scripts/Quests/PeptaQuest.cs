@@ -9,10 +9,10 @@ namespace Server.Engines.Quests
         public PeptaQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(FreshGinger), "Fresh Ginger", 1, 0x2BE3));
-            this.AddObjective(new ObtainObjective(typeof(TribalBerry), "Tribal Berries", 2, 0x9D0));
+            AddObjective(new ObtainObjective(typeof(FreshGinger), "Fresh Ginger", 1, 0x2BE3));
+            AddObjective(new ObtainObjective(typeof(TribalBerry), "Tribal Berries", 2, 0x9D0));
 
-            this.AddReward(new BaseReward(typeof(SatietyCure), 1080542));
+            AddReward(new BaseReward(typeof(SatietyCure), 1080542));
         }
 
         /* I Think I Overate */
@@ -63,20 +63,20 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.Female = true;
-            this.Race = Race.Human;
+            Female = true;
+            Race = Race.Human;
 
-            this.Hue = 0x83F4;
-            this.HairItemID = 0x2049;
-            this.HairHue = 0x46A;
+            Hue = 0x83F4;
+            HairItemID = 0x2049;
+            HairHue = 0x46A;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Shoes(0x346));
-            this.AddItem(new PlainDress(0x27B));
-            this.AddItem(new HalfApron());
+            AddItem(new Backpack());
+            AddItem(new Shoes(0x346));
+            AddItem(new PlainDress(0x27B));
+            AddItem(new HalfApron());
         }
 
         public override void Serialize(GenericWriter writer)

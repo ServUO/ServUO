@@ -35,7 +35,7 @@ namespace Server.Items
         public SuitOfGoldArmorAddon()
             : base()
         {
-            this.AddComponent(new SuitOfGoldArmorComponent(), 0, 0, 0);
+            AddComponent(new SuitOfGoldArmorComponent(), 0, 0, 0);
         }
 
         public SuitOfGoldArmorAddon(Serial serial)
@@ -65,7 +65,7 @@ namespace Server.Items
         public SuitOfGoldArmorDeed()
             : base()
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public SuitOfGoldArmorDeed(Serial serial)

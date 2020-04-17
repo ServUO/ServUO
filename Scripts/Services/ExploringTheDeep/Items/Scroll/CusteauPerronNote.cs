@@ -11,8 +11,8 @@ namespace Server.Items
         [Constructable]
         public CusteauPerronNote() : base(0x46B2)
         {
-            this.LootType = LootType.Blessed;
-            this.Weight = 1;
+            LootType = LootType.Blessed;
+            Weight = 1;
         }
 
         public override void AddNameProperties(ObjectPropertyList list)
@@ -56,9 +56,9 @@ namespace Server.Items
     {
         public CusteauPerronNoteGump(Mobile owner) : base(50, 50)
         {
-            this.Closable = true;
-            this.Disposable = true;
-            this.Dragable = true;
+            Closable = true;
+            Disposable = true;
+            Dragable = true;
 
             AddPage(0);
             AddBackground(6, 11, 390, 324, 9380);

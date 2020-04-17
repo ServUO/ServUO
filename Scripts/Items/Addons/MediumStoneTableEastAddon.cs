@@ -11,9 +11,9 @@ namespace Server.Items
         [Constructable]
         public MediumStoneTableEastAddon(int hue)
         {
-            this.AddComponent(new AddonComponent(0x1202), 0, 0, 0);
-            this.AddComponent(new AddonComponent(0x1201), 0, 1, 0);
-            this.Hue = hue;
+            AddComponent(new AddonComponent(0x1202), 0, 0, 0);
+            AddComponent(new AddonComponent(0x1201), 0, 1, 0);
+            Hue = hue;
         }
 
         public MediumStoneTableEastAddon(Serial serial)
@@ -50,7 +50,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon => new MediumStoneTableEastAddon(this.Hue);
+        public override BaseAddon Addon => new MediumStoneTableEastAddon(Hue);
         public override int LabelNumber => 1044508;// stone table (east)
         public override void Serialize(GenericWriter writer)
         {

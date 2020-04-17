@@ -32,7 +32,7 @@ namespace Server.Items
                     case 4: from.AddToBackpack(new PhoenixHelm()); break;
                     case 5: from.AddToBackpack(new PhoenixLegs()); break;
                 }
-                this.Delete();
+                Delete();
                 from.SendLocalizedMessage(502064); // A piece of phoenix armor has been placed in your backpack.
             }
 

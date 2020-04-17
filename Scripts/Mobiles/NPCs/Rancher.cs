@@ -9,10 +9,10 @@ namespace Server.Mobiles
         public Rancher()
             : base("the rancher")
         {
-            this.SetSkill(SkillName.AnimalLore, 55.0, 78.0);
-            this.SetSkill(SkillName.AnimalTaming, 55.0, 78.0);
-            this.SetSkill(SkillName.Herding, 64.0, 100.0);
-            this.SetSkill(SkillName.Veterinary, 60.0, 83.0);
+            SetSkill(SkillName.AnimalLore, 55.0, 78.0);
+            SetSkill(SkillName.AnimalTaming, 55.0, 78.0);
+            SetSkill(SkillName.Herding, 64.0, 100.0);
+            SetSkill(SkillName.Veterinary, 60.0, 83.0);
         }
 
         public Rancher(Serial serial)
@@ -20,10 +20,10 @@ namespace Server.Mobiles
         {
         }
 
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBRancher());
+            m_SBInfos.Add(new SBRancher());
         }
 
         public override void Serialize(GenericWriter writer)

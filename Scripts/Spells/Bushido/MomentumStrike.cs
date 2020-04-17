@@ -14,7 +14,7 @@ namespace Server.Spells.Bushido
         public override TextDefinition AbilityMessage => new TextDefinition(1070757);// You prepare to strike two enemies with one blow.
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
-            if (!this.Validate(attacker) || !this.CheckMana(attacker, false))
+            if (!Validate(attacker) || !CheckMana(attacker, false))
                 return;
 
             ClearCurrentMove(attacker);
@@ -36,7 +36,7 @@ namespace Server.Spells.Bushido
 
             if (targets.Count > 0)
             {
-                if (!this.CheckMana(attacker, true))
+                if (!CheckMana(attacker, true))
                     return;
 
                 Mobile target = targets[Utility.Random(targets.Count)];
@@ -58,7 +58,7 @@ namespace Server.Spells.Bushido
                 if (defender.Alive)
                     attacker.Combatant = defender;
 
-                this.CheckGain(attacker);
+                CheckGain(attacker);
             }
             else
             {
@@ -84,7 +84,7 @@ namespace Server.Spells.Bushido
 
         public override void CheckGain(Mobile m)
         {
-            m.CheckSkill(this.MoveSkill, this.RequiredSkill, 120.0);
+            m.CheckSkill(MoveSkill, RequiredSkill, 120.0);
         }
     }
 }

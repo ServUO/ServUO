@@ -9,11 +9,11 @@ namespace Server.Engines.Quests
         public GuileIrkAndSpiteQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Guile), "guile", 1));
-            this.AddObjective(new SlayObjective(typeof(Irk), "irk", 1));
-            this.AddObjective(new SlayObjective(typeof(Spite), "spite", 1));
+            AddObjective(new SlayObjective(typeof(Guile), "guile", 1));
+            AddObjective(new SlayObjective(typeof(Irk), "irk", 1));
+            AddObjective(new SlayObjective(typeof(Spite), "spite", 1));
 
-            this.AddReward(new BaseReward(typeof(RewardBox), 1072584));
+            AddReward(new BaseReward(typeof(RewardBox), 1072584));
         }
 
         /* Guile, Irk and Spite */
@@ -77,21 +77,21 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.Race = Race.Human;
+            Female = false;
+            Race = Race.Human;
 
-            this.Hue = 0x841D;
+            Hue = 0x841D;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Shoes(0x755));
-            this.AddItem(new LongPants(0x1BB));
-            this.AddItem(new FancyShirt(0x71E));
-            this.AddItem(new Cloak(0x59));
+            AddItem(new Backpack());
+            AddItem(new Shoes(0x755));
+            AddItem(new LongPants(0x1BB));
+            AddItem(new FancyShirt(0x71E));
+            AddItem(new Cloak(0x59));
         }
 
         public override void Serialize(GenericWriter writer)

@@ -8,21 +8,21 @@ namespace Server.Items
         public LeafweaveLegs()
             : base()
         {
-            this.SetHue = 0x47E;
+            SetHue = 0x47E;
 
-            this.Attributes.RegenMana = 1;
-            this.ArmorAttributes.MageArmor = 1;
+            Attributes.RegenMana = 1;
+            ArmorAttributes.MageArmor = 1;
 
-            this.SetAttributes.BonusInt = 10;
-            this.SetAttributes.SpellDamage = 15;
+            SetAttributes.BonusInt = 10;
+            SetAttributes.SpellDamage = 15;
 
-            this.SetSelfRepair = 3;
+            SetSelfRepair = 3;
 
-            this.SetPhysicalBonus = 4;
-            this.SetFireBonus = 5;
-            this.SetColdBonus = 3;
-            this.SetPoisonBonus = 4;
-            this.SetEnergyBonus = 4;
+            SetPhysicalBonus = 4;
+            SetFireBonus = 5;
+            SetColdBonus = 3;
+            SetPoisonBonus = 4;
+            SetEnergyBonus = 4;
         }
 
         public LeafweaveLegs(Serial serial)

@@ -46,7 +46,7 @@ namespace Server.Items
         {
             PlantHueInfo info = PlantHueInfo.GetInfo(m_PlantHue);
 
-            if (this.Amount > 1)
+            if (Amount > 1)
                 list.Add(info.IsBright() ? 1113272 : 1113274, String.Format("{0}\t#{1}", Amount.ToString(), info.Name)); //~1_AMOUNT~ bright ~2_COLOR~ plant clippings
             else
                 list.Add(info.IsBright() ? 1112121 : 1112122, String.Format("#{0}", info.Name)); //bright ~1_COLOR~ plant clippings
@@ -60,7 +60,7 @@ namespace Server.Items
         public override void OnAfterDuped(Item newItem)
         {
             if (newItem is IPlantHue)
-                ((IPlantHue)newItem).PlantHue = this.PlantHue;
+                ((IPlantHue)newItem).PlantHue = PlantHue;
 
             base.OnAfterDuped(newItem);
         }

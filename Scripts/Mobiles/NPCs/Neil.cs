@@ -10,9 +10,9 @@ namespace Server.Engines.Quests
         public CrystallineFragmentsQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(CrystallineFragments), "crystalline fragments", 10));
+            AddObjective(new ObtainObjective(typeof(CrystallineFragments), "crystalline fragments", 10));
 
-            this.AddReward(new BaseReward(typeof(SmithsCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(SmithsCraftsmanSatchel), 1074282));
         }
 
         /* Crystalline Fragments */
@@ -47,9 +47,9 @@ namespace Server.Engines.Quests
         public ProtectorsEssenceQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(ProtectorsEssence), "protector's essences", 5, 0x1ED1));
+            AddObjective(new ObtainObjective(typeof(ProtectorsEssence), "protector's essences", 5, 0x1ED1));
 
-            this.AddReward(new BaseReward(typeof(SmithsCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(SmithsCraftsmanSatchel), 1074282));
         }
 
         /* Protector's Essence */
@@ -84,9 +84,9 @@ namespace Server.Engines.Quests
         public HeartOfIceQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(IcyHeart), "icy hearts", 6, 0x1CED));
+            AddObjective(new ObtainObjective(typeof(IcyHeart), "icy hearts", 6, 0x1CED));
 
-            this.AddReward(new BaseReward(typeof(SmithsCraftsmanSatchel), 1074282));
+            AddReward(new BaseReward(typeof(SmithsCraftsmanSatchel), 1074282));
         }
 
         /* Heart of Ice */
@@ -122,12 +122,12 @@ namespace Server.Engines.Quests
         public Neil()
             : base("Neil", "the iron worker")
         {
-            this.SetSkill(SkillName.Blacksmith, 65.0, 88.0);
-            this.SetSkill(SkillName.Fencing, 45.0, 68.0);
-            this.SetSkill(SkillName.Macing, 45.0, 68.0);
-            this.SetSkill(SkillName.Swords, 45.0, 68.0);
-            this.SetSkill(SkillName.Tactics, 36.0, 68.0);
-            this.SetSkill(SkillName.Parry, 61.0, 93.0);
+            SetSkill(SkillName.Blacksmith, 65.0, 88.0);
+            SetSkill(SkillName.Fencing, 45.0, 68.0);
+            SetSkill(SkillName.Macing, 45.0, 68.0);
+            SetSkill(SkillName.Swords, 45.0, 68.0);
+            SetSkill(SkillName.Tactics, 36.0, 68.0);
+            SetSkill(SkillName.Parry, 61.0, 93.0);
         }
 
         public Neil(Serial serial)
@@ -141,34 +141,34 @@ namespace Server.Engines.Quests
                     typeof(ProtectorsEssenceQuest),
                     typeof(HeartOfIceQuest)
                 };
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBBlacksmith());
+            m_SBInfos.Add(new SBBlacksmith());
         }
 
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = false;
+            CantWalk = true;
+            Race = Race.Human;
 
-            this.Hue = 0x83F5;
-            this.HairItemID = 0x203C;
-            this.HairHue = 0x46F;
-            this.FacialHairItemID = 0x203F;
-            this.FacialHairHue = 0x46F;
+            Hue = 0x83F5;
+            HairItemID = 0x203C;
+            HairHue = 0x46F;
+            FacialHairItemID = 0x203F;
+            FacialHairHue = 0x46F;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new SmithHammer());
-            this.AddItem(new ShortPants(0x3A));
-            this.AddItem(new Bandana(0x30));
-            this.AddItem(new Doublet(0x13));
-            this.AddItem(new RingmailChest());
+            AddItem(new SmithHammer());
+            AddItem(new ShortPants(0x3A));
+            AddItem(new Bandana(0x30));
+            AddItem(new Doublet(0x13));
+            AddItem(new RingmailChest());
         }
 
         public override void Serialize(GenericWriter writer)

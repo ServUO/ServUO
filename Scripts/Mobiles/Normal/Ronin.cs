@@ -16,7 +16,7 @@ namespace Server.Mobiles
             SpeechHue = Utility.RandomDyedHue();
             Hue = Utility.RandomSkinHue();
             Name = "a ronin";
-            Body = ((this.Female = Utility.RandomBool()) ? Body = 0x191 : Body = 0x190);
+            Body = ((Female = Utility.RandomBool()) ? Body = 0x191 : Body = 0x190);
 
             Hue = Utility.RandomSkinHue();
 

@@ -31,7 +31,7 @@ namespace Server.Items
 
         public override void OnWandUse(Mobile from)
         {
-            this.Cast(new HealSpell(from, this));
+            Cast(new HealSpell(from, this));
         }
     }
 }

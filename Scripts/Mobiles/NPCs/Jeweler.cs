@@ -9,7 +9,7 @@ namespace Server.Mobiles
         public Jeweler()
             : base("the jeweler")
         {
-            this.SetSkill(SkillName.ItemID, 64.0, 100.0);
+            SetSkill(SkillName.ItemID, 64.0, 100.0);
         }
 
         public Jeweler(Serial serial)
@@ -17,10 +17,10 @@ namespace Server.Mobiles
         {
         }
 
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBJewel());
+            m_SBInfos.Add(new SBJewel());
         }
 
         public override void Serialize(GenericWriter writer)

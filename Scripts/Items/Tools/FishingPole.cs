@@ -296,7 +296,7 @@ namespace Server.Items
             {
                 Mobile m = from;
 
-                string modName = this.Serial.ToString();
+                string modName = Serial.ToString();
 
                 if (strBonus != 0)
                     m.AddStatMod(new StatMod(StatType.Str, modName + "Str", strBonus, TimeSpan.Zero));
@@ -329,7 +329,7 @@ namespace Server.Items
             {
                 Mobile m = (Mobile)parent;
 
-                string modName = this.Serial.ToString();
+                string modName = Serial.ToString();
 
                 m.RemoveStatMod(modName + "Str");
                 m.RemoveStatMod(modName + "Dex");
@@ -569,11 +569,11 @@ namespace Server.Items
             int dexBonus = m_AosAttributes.BonusDex;
             int intBonus = m_AosAttributes.BonusInt;
 
-            if (this.Parent is Mobile && (strBonus != 0 || dexBonus != 0 || intBonus != 0))
+            if (Parent is Mobile && (strBonus != 0 || dexBonus != 0 || intBonus != 0))
             {
-                Mobile m = (Mobile)this.Parent;
+                Mobile m = (Mobile)Parent;
 
-                string modName = this.Serial.ToString();
+                string modName = Serial.ToString();
 
                 if (strBonus != 0)
                     m.AddStatMod(new StatMod(StatType.Str, modName + "Str", strBonus, TimeSpan.Zero));

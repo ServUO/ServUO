@@ -9,8 +9,8 @@ namespace Server.Items
         public ImprisonedDog()
             : base(0x1F1C)
         {
-            this.Weight = 1.0;
-            this.Hue = 0x485;
+            Weight = 1.0;
+            Hue = 0x485;
         }
 
         public ImprisonedDog(Serial serial)
@@ -46,10 +46,10 @@ namespace Server.Mobiles
         public TravestyDog()
             : base()
         {
-            this.Hue = 2301;
+            Hue = 2301;
 
-            this.m_Name = null;
-            this.m_NextAttempt = DateTime.UtcNow;
+            m_Name = null;
+            m_NextAttempt = DateTime.UtcNow;
         }
 
         public TravestyDog(Serial serial)
@@ -58,7 +58,7 @@ namespace Server.Mobiles
         }
 
         public override bool DeleteOnRelease => true;
-        public bool Morphed => this.m_Name != null;
+        public bool Morphed => m_Name != null;
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
@@ -68,60 +68,60 @@ namespace Server.Mobiles
 
         public void DeleteItems()
         {
-            for (int i = this.Items.Count - 1; i >= 0; i--)
-                if (this.Items[i] is ClonedItem)
-                    this.Items[i].Delete();
+            for (int i = Items.Count - 1; i >= 0; i--)
+                if (Items[i] is ClonedItem)
+                    Items[i].Delete();
         }
 
         public void BeginMorph(Mobile to)
         {
-            if (to == null || !this.Alive || this.Morphed)
+            if (to == null || !Alive || Morphed)
                 return;
 
-            this.m_Name = this.Name;
+            m_Name = Name;
 
-            this.Body = to.Body;
-            this.Hue = to.Hue;
-            this.Name = to.Name;
-            this.Female = to.Female;
-            this.Title = to.Title;
-            this.HairItemID = to.HairItemID;
-            this.HairHue = to.HairHue;
-            this.FacialHairItemID = to.FacialHairItemID;
-            this.FacialHairHue = to.FacialHairHue;
+            Body = to.Body;
+            Hue = to.Hue;
+            Name = to.Name;
+            Female = to.Female;
+            Title = to.Title;
+            HairItemID = to.HairItemID;
+            HairHue = to.HairHue;
+            FacialHairItemID = to.FacialHairItemID;
+            FacialHairHue = to.FacialHairHue;
 
             for (int i = to.Items.Count - 1; i >= 0; i--)
             {
                 Item item = to.Items[i];
 
                 if (item.Layer != Layer.Backpack && item.Layer != Layer.Mount)
-                    this.AddItem(new ClonedItem(item));
+                    AddItem(new ClonedItem(item));
             }
 
-            this.PlaySound(0x511);
-            this.FixedParticles(0x376A, 1, 14, 5045, EffectLayer.Waist);
+            PlaySound(0x511);
+            FixedParticles(0x376A, 1, 14, 5045, EffectLayer.Waist);
 
             Timer.DelayCall(TimeSpan.FromSeconds(60), new TimerCallback(EndMorph));
         }
 
         public void EndMorph()
         {
-            this.DeleteItems();
+            DeleteItems();
 
-            this.Body = 0xD9;
-            this.Hue = 2301;
-            this.Name = this.m_Name;
-            this.Female = false;
-            this.Title = null;
-            this.HairItemID = 0;
-            this.HairHue = 0;
-            this.FacialHairItemID = 0;
-            this.FacialHairHue = 0;
+            Body = 0xD9;
+            Hue = 2301;
+            Name = m_Name;
+            Female = false;
+            Title = null;
+            HairItemID = 0;
+            HairHue = 0;
+            FacialHairItemID = 0;
+            FacialHairHue = 0;
 
-            this.m_Name = null;
+            m_Name = null;
 
-            this.PlaySound(0x511);
-            this.FixedParticles(0x376A, 1, 14, 5045, EffectLayer.Waist);
+            PlaySound(0x511);
+            FixedParticles(0x376A, 1, 14, 5045, EffectLayer.Waist);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -139,29 +139,29 @@ namespace Server.Mobiles
 
             int version = reader.ReadInt();
 
-            this.m_Name = reader.ReadString();
-            this.m_NextAttempt = DateTime.UtcNow;
+            m_Name = reader.ReadString();
+            m_NextAttempt = DateTime.UtcNow;
 
-            if (this.Morphed)
-                this.EndMorph();
+            if (Morphed)
+                EndMorph();
         }
 
         protected override bool OnMove(Direction d)
         {
-            if (!this.Morphed && this.m_NextAttempt <= DateTime.UtcNow)
+            if (!Morphed && m_NextAttempt <= DateTime.UtcNow)
             {
                 IPooledEnumerable eable = GetMobilesInRange(6);
                 foreach (Mobile m in eable)
                 {
                     if (!m.Hidden && m.Alive && Utility.RandomDouble() < 0.25)
                     {
-                        this.BeginMorph(m);
+                        BeginMorph(m);
                         break;
                     }
                 }
                 eable.Free();
 
-                this.m_NextAttempt = DateTime.UtcNow + TimeSpan.FromSeconds(90);
+                m_NextAttempt = DateTime.UtcNow + TimeSpan.FromSeconds(90);
             }
 
             return base.OnMove(d);
@@ -172,10 +172,10 @@ namespace Server.Mobiles
             public ClonedItem(Item item)
                 : base(item.ItemID)
             {
-                this.Name = item.Name;
-                this.Weight = item.Weight;
-                this.Hue = item.Hue;
-                this.Layer = item.Layer;
+                Name = item.Name;
+                Weight = item.Weight;
+                Hue = item.Hue;
+                Layer = item.Layer;
             }
 
             public ClonedItem(Serial serial)
@@ -185,7 +185,7 @@ namespace Server.Mobiles
 
             public override DeathMoveResult OnParentDeath(Mobile parent)
             {
-                this.Delete();
+                Delete();
 
                 return DeathMoveResult.RemainEquiped;
             }

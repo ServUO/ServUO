@@ -30,7 +30,7 @@ namespace Server.Items
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
-            if (!this.Validate(attacker))
+            if (!Validate(attacker))
                 return;
 
             ClearCurrentAbility(attacker);
@@ -57,7 +57,7 @@ namespace Server.Items
             {
                 attacker.SendLocalizedMessage(1060849); // Your target is already unarmed!
             }
-            else if (this.CheckMana(attacker, true))
+            else if (CheckMana(attacker, true))
             {
                 attacker.SendLocalizedMessage(1060092); // You disarm their weapon!
                 defender.SendLocalizedMessage(1060093); // Your weapon has been disarmed!

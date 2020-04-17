@@ -6,7 +6,7 @@ namespace Server.Items
         public AcidProofRope()
             : base(0x20D)
         {
-            this.Hue = 0x3D1; // TODO check
+            Hue = 0x3D1; // TODO check
         }
 
         public AcidProofRope(Serial serial)

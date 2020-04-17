@@ -24,9 +24,9 @@ namespace Server.Items
             if (from.IsStaff())
                 return;
 
-            Effects.SendLocationEffect(this.Location, this.Map, 0x1D99, 48, 2, this.GetEffectHue(), 0);
+            Effects.SendLocationEffect(Location, Map, 0x1D99, 48, 2, GetEffectHue(), 0);
 
-            if (from.Alive && this.CheckRange(from.Location, 0))
+            if (from.Alive && CheckRange(from.Location, 0))
                 Spells.SpellHelper.Damage(TimeSpan.FromTicks(1), from, from, Utility.Dice(10, 7, 0));
         }
 

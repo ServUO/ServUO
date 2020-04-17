@@ -8,12 +8,12 @@ namespace Server.Items
         public ClothingBlessTarget(ClothingBlessDeed deed)
             : base(1, false, TargetFlags.None)
         {
-            this.m_Deed = deed;
+            m_Deed = deed;
         }
 
         protected override void OnTarget(Mobile from, object target) // Override the protected OnTarget() for our feature
         {
-            if (this.m_Deed.Deleted || this.m_Deed.RootParent != from)
+            if (m_Deed.Deleted || m_Deed.RootParent != from)
                 return;
 
             if (target is BaseClothing)
@@ -47,7 +47,7 @@ namespace Server.Items
                     item.LootType = LootType.Blessed;
                     from.SendLocalizedMessage(1010026); // You bless the item....
 
-                    this.m_Deed.Delete(); // Delete the bless deed
+                    m_Deed.Delete(); // Delete the bless deed
                 }
             }
             else
@@ -85,14 +85,14 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
 
             int version = reader.ReadInt();
         }
 
         public override void OnDoubleClick(Mobile from) // Override double click of the deed to call our target
         {
-            if (!this.IsChildOf(from.Backpack)) // Make sure its in their pack
+            if (!IsChildOf(from.Backpack)) // Make sure its in their pack
             {
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
             }

@@ -6,8 +6,8 @@ namespace Server.Items
         public BasinOfCrystalClearWater()
             : base(0x1008)
         {
-            this.LootType = LootType.Blessed;
-            this.Weight = 5.0;
+            LootType = LootType.Blessed;
+            Weight = 5.0;
         }
 
         public BasinOfCrystalClearWater(Serial serial)

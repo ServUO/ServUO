@@ -36,32 +36,32 @@ namespace Server.Engines.Quests
         public ChannelingTheSupernaturalQuest()
             : base()
         {
-            this.AddObjective(new ApprenticeObjective(SkillName.SpiritSpeak, 50, "Old Haven Training", 1078045, 1078046));
+            AddObjective(new ApprenticeObjective(SkillName.SpiritSpeak, 50, "Old Haven Training", 1078045, 1078046));
 
             // 1078045 You ability to channel the supernatural is greatly enhanced while questing in this area.
             // 1078046 You are not in the quest area for Apprentice Medium. Your ability to channel the supernatural potential is not enhanced here.
 
-            this.AddReward(new BaseReward(typeof(BagOfNecroReagents), 1078053));
+            AddReward(new BaseReward(typeof(BagOfNecroReagents), 1078053));
         }
 
         public override bool CanOffer()
         {
             #region Scroll of Alacrity
-            PlayerMobile pm = this.Owner as PlayerMobile;
+            PlayerMobile pm = Owner as PlayerMobile;
             if (pm.AcceleratedStart > DateTime.UtcNow)
             {
-                this.Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
+                Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
                 return false;
             }
             #endregion
             else
-                return this.Owner.Skills.SpiritSpeak.Base < 50;
+                return Owner.Skills.SpiritSpeak.Base < 50;
         }
 
         public override void OnCompleted()
         {
-            this.Owner.SendLocalizedMessage(1078050, null, 0x23); // You have achieved the rank of Apprentice Medium. Return to Morganna in New Haven to receive your reward.
-            this.Owner.PlaySound(this.CompleteSound);
+            Owner.SendLocalizedMessage(1078050, null, 0x23); // You have achieved the rank of Apprentice Medium. Return to Morganna in New Haven to receive your reward.
+            Owner.PlaySound(CompleteSound);
         }
 
         public override void Serialize(GenericWriter writer)

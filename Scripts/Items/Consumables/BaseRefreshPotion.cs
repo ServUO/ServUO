@@ -31,7 +31,7 @@ namespace Server.Items
         {
             if (from.Stam < from.StamMax)
             {
-                from.Stam += Scale(from, (int)(this.Refresh * from.StamMax));
+                from.Stam += Scale(from, (int)(Refresh * from.StamMax));
 
                 PlayDrinkEffect(from);
                 Consume();

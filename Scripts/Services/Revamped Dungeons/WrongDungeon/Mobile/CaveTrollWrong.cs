@@ -10,7 +10,7 @@ namespace Server.Mobiles
             Name = "a Cave Troll";
             Body = Utility.RandomList(53, 54);
             BaseSoundID = 461;
-            this.Hue = 674;
+            Hue = 674;
 
             SetStr(118, 118);
             SetDex(58, 58);

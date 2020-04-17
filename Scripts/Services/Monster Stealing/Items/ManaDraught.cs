@@ -80,7 +80,7 @@ namespace Server.Items
             toHeal = Math.Min(toHeal, diff);
 
             pm.Mana += toHeal;
-            this.Consume();
+            Consume();
             if (!DaughtUsageList.ContainsKey(pm))
             {
                 DaughtUsageList.Add(pm, DateTime.Now);

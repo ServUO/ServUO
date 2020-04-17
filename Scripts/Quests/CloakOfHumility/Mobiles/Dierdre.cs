@@ -20,23 +20,23 @@ namespace Server.Mobiles
 
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = true;
-            this.Race = Race.Human;
-            this.Body = 0x191;
+            Female = true;
+            Race = Race.Human;
+            Body = 0x191;
 
-            this.Hue = Race.RandomSkinHue();
-            this.HairItemID = Race.RandomHair(true);
-            this.HairHue = Race.RandomHairHue();
+            Hue = Race.RandomSkinHue();
+            HairItemID = Race.RandomHair(true);
+            HairHue = Race.RandomHairHue();
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Sandals());
-            this.AddItem(new FancyShirt());
-            this.AddItem(new PlainDress());
+            AddItem(new Backpack());
+            AddItem(new Sandals());
+            AddItem(new FancyShirt());
+            AddItem(new PlainDress());
         }
 
         public override void Serialize(GenericWriter writer)

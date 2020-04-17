@@ -13,9 +13,9 @@ namespace Server.Items
         public Axle(int amount)
             : base(0x105B)
         {
-            this.Stackable = true;
-            this.Amount = amount;
-            this.Weight = 1.0;
+            Stackable = true;
+            Amount = amount;
+            Weight = 1.0;
         }
 
         public Axle(Serial serial)

@@ -6,9 +6,9 @@ namespace Server.Items
         public InspectedKegofTotalRefreshment()
             : base(0x1940)
         {
-            this.Name = "Inspected Keg of Total Refreshment";
+            Name = "Inspected Keg of Total Refreshment";
 
-            this.Hue = 2418;
+            Hue = 2418;
         }
 
         public InspectedKegofTotalRefreshment(Serial serial)

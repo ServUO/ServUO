@@ -5,7 +5,7 @@ namespace Server.Items
         [Constructable]
         public WarriorStatueEastAddon()
         {
-            this.AddComponent(new AddonComponent(0x2D12), 0, 0, 0);
+            AddComponent(new AddonComponent(0x2D12), 0, 0, 0);
         }
 
         public WarriorStatueEastAddon(Serial serial)

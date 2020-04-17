@@ -9,7 +9,7 @@ namespace Server.Mobiles
         public Fisherman()
             : base("the fisher")
         {
-            this.SetSkill(SkillName.Fishing, 75.0, 98.0);
+            SetSkill(SkillName.Fishing, 75.0, 98.0);
         }
 
         public Fisherman(Serial serial)
@@ -18,17 +18,17 @@ namespace Server.Mobiles
         }
 
         public override NpcGuild NpcGuild => NpcGuild.FishermensGuild;
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBFisherman());
+            m_SBInfos.Add(new SBFisherman());
         }
 
         public override void InitOutfit()
         {
             base.InitOutfit();
 
-            this.AddItem(new Server.Items.FishingPole());
+            AddItem(new Server.Items.FishingPole());
         }
 
         public override void Serialize(GenericWriter writer)

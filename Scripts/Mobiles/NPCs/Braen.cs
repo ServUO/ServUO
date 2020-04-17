@@ -9,9 +9,9 @@ namespace Server.Engines.Quests
         public UnholyConstructQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Golem), "golems", 10));
+            AddObjective(new SlayObjective(typeof(Golem), "golems", 10));
 
-            this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706)); // A large bag of treasure.
+            AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706)); // A large bag of treasure.
         }
 
         /* Unholy Construct */
@@ -34,8 +34,8 @@ namespace Server.Engines.Quests
         public Braen()
             : base("Braen", "the thaumaturgist")
         {
-            this.SetSkill(SkillName.Meditation, 60.0, 83.0);
-            this.SetSkill(SkillName.Focus, 60.0, 83.0);
+            SetSkill(SkillName.Meditation, 60.0, 83.0);
+            SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
         public Braen(Serial serial)
@@ -46,20 +46,20 @@ namespace Server.Engines.Quests
         public override Type[] Quests => new Type[] { typeof(UnholyConstructQuest) };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.Race = Race.Elf;
+            Female = false;
+            Race = Race.Elf;
 
-            this.Hue = 0x876C;
-            this.HairItemID = 0x2FBF;
-            this.HairHue = 0x2C2;
+            Hue = 0x876C;
+            HairItemID = 0x2FBF;
+            HairHue = 0x2C2;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Sandals(0x722));
-            this.AddItem(RandomWand.CreateWand());
+            AddItem(new Sandals(0x722));
+            AddItem(RandomWand.CreateWand());
         }
 
         public override void Serialize(GenericWriter writer)

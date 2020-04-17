@@ -131,7 +131,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.UltraRich, 1);
+            AddLoot(LootPack.UltraRich, 1);
         }
 
         public override void OnDeath(Container c)
@@ -216,7 +216,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.UltraRich, 1);
+            AddLoot(LootPack.UltraRich, 1);
         }
 
         public override void OnDeath(Container c)
@@ -288,8 +288,8 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.UltraRich, 1);
-            this.AddLoot(LootPack.HighScrolls, Utility.RandomMinMax(3, 5));
+            AddLoot(LootPack.UltraRich, 1);
+            AddLoot(LootPack.HighScrolls, Utility.RandomMinMax(3, 5));
         }
 
         public override void OnDeath(Container c)

@@ -10,8 +10,8 @@ namespace Server.Items
         public OphidianArchMageStatuette()
             : base(0x25A9)
         {
-            this.Name = "Ophidian Arch Mage";
-            this.Weight = 5.0;
+            Name = "Ophidian Arch Mage";
+            Weight = 5.0;
         }
 
         public OphidianArchMageStatuette(Serial serial)
@@ -21,8 +21,8 @@ namespace Server.Items
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (this.TurnedOn && this.IsLockedDown && (!m.Hidden || m.IsPlayer()) && Utility.InRange(m.Location, this.Location, 2) && !Utility.InRange(oldLocation, this.Location, 2))
-                Effects.PlaySound(this.Location, this.Map, m_Sounds[Utility.Random(m_Sounds.Length)]);
+            if (TurnedOn && IsLockedDown && (!m.Hidden || m.IsPlayer()) && Utility.InRange(m.Location, Location, 2) && !Utility.InRange(oldLocation, Location, 2))
+                Effects.PlaySound(Location, Map, m_Sounds[Utility.Random(m_Sounds.Length)]);
 
             base.OnMovement(m, oldLocation);
         }
@@ -40,8 +40,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (this.ItemID == 0x25AB)
-                this.ItemID = 0x25A9;
+            if (ItemID == 0x25AB)
+                ItemID = 0x25A9;
         }
     }
 }

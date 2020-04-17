@@ -8,11 +8,11 @@ namespace Server.Engines.Quests
         public BlackOrderBadgesQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(SerpentFangSectBadge), "serpent fang badges", 5));
-            this.AddObjective(new ObtainObjective(typeof(TigerClawSectBadge), "tiger claw badges", 5));
-            this.AddObjective(new ObtainObjective(typeof(DragonFlameSectBadge), "dragon flame badges", 5));
+            AddObjective(new ObtainObjective(typeof(SerpentFangSectBadge), "serpent fang badges", 5));
+            AddObjective(new ObtainObjective(typeof(TigerClawSectBadge), "tiger claw badges", 5));
+            AddObjective(new ObtainObjective(typeof(DragonFlameSectBadge), "dragon flame badges", 5));
 
-            this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
+            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
         /* Black Order Badges */
@@ -50,9 +50,9 @@ namespace Server.Engines.Quests
         public EvidenceQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(OrdersFromMinax), "orders from minax", 1));
+            AddObjective(new ObtainObjective(typeof(OrdersFromMinax), "orders from minax", 1));
 
-            this.AddReward(new BaseReward(typeof(RewardBox), 1072584));
+            AddReward(new BaseReward(typeof(RewardBox), 1072584));
         }
 
         /* Evidence */
@@ -105,22 +105,22 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = true;
-            this.Race = Race.Human;
+            Female = true;
+            Race = Race.Human;
 
-            this.Hue = 0x841E;
-            this.HairItemID = 0x2049;
-            this.HairHue = 0x1BB;
+            Hue = 0x841E;
+            HairItemID = 0x2049;
+            HairHue = 0x1BB;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Shoes(0x740));
-            this.AddItem(new FancyShirt(0x72C));
-            this.AddItem(new Skirt(0x53C));
+            AddItem(new Backpack());
+            AddItem(new Shoes(0x740));
+            AddItem(new FancyShirt(0x72C));
+            AddItem(new Skirt(0x53C));
         }
 
         public override void Serialize(GenericWriter writer)

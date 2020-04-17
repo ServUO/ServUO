@@ -14,9 +14,9 @@ namespace Server.Items
         public ValentinesCard(int itemid)
             : base(itemid)
         {
-            this.LootType = LootType.Blessed;
-            this.Hue = Utility.RandomDouble() < .001 ? 0x47E : 0xE8;
-            this.m_LabelNumber = Utility.Random(1077589, 5);
+            LootType = LootType.Blessed;
+            Hue = Utility.RandomDouble() < .001 ? 0x47E : 0xE8;
+            m_LabelNumber = Utility.Random(1077589, 5);
         }
 
         public ValentinesCard(Serial serial)
@@ -29,11 +29,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_From;
+                return m_From;
             }
             set
             {
-                this.m_From = value;
+                m_From = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -41,11 +41,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_To;
+                return m_To;
             }
             set
             {
-                this.m_To = value;
+                m_To = value;
             }
         }
         /*
@@ -60,14 +60,14 @@ namespace Server.Items
         */
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            list.Add(this.m_LabelNumber, String.Format("{0}\t{1}", (this.m_To != null) ? this.m_To : Unsigned, (this.m_From != null) ? this.m_From : Unsigned));
+            list.Add(m_LabelNumber, String.Format("{0}\t{1}", (m_To != null) ? m_To : Unsigned, (m_From != null) ? m_From : Unsigned));
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.m_To == null)
+            if (m_To == null)
             {
-                if (this.IsChildOf(from))
+                if (IsChildOf(from))
                 {
                     from.BeginTarget(10, false, TargetFlags.None, new TargetCallback(OnTarget));
 
@@ -82,7 +82,7 @@ namespace Server.Items
 
         public virtual void OnTarget(Mobile from, object targeted)
         {
-            if (!this.Deleted)
+            if (!Deleted)
             {
                 if (targeted != null && targeted is Mobile)
                 {
@@ -92,10 +92,10 @@ namespace Server.Items
                     {
                         if (to != from)
                         {
-                            this.m_From = from.Name;
-                            this.m_To = to.Name;
+                            m_From = from.Name;
+                            m_To = to.Name;
                             from.SendLocalizedMessage(1077498); //You fill out the card. Hopefully the other person actually likes you...
-                            this.InvalidateProperties();
+                            InvalidateProperties();
                         }
                         else
                         {
@@ -129,12 +129,12 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-            this.m_LabelNumber = reader.ReadInt();
-            this.m_From = reader.ReadString();
-            this.m_To = reader.ReadString();
+            m_LabelNumber = reader.ReadInt();
+            m_From = reader.ReadString();
+            m_To = reader.ReadString();
 
-            Utility.Intern(ref this.m_From);
-            Utility.Intern(ref this.m_To);
+            Utility.Intern(ref m_From);
+            Utility.Intern(ref m_To);
         }
     }
 

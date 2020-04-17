@@ -19,8 +19,8 @@ namespace Server.Spells.Necromancy
         public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(2.25);
         public override double RequiredSkill => 20.0;
         public override int RequiredMana => 17;
-        public override int Body => this.Caster.Female ? 747 : 748;
-        public override int Hue => this.Caster.Female ? 0 : 0x4001;
+        public override int Body => Caster.Female ? 747 : 748;
+        public override int Hue => Caster.Female ? 0 : 0x4001;
         public override int PhysResistOffset => +15;
         public override int FireResistOffset => -5;
         public override int ColdResistOffset => 0;

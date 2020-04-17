@@ -5,7 +5,7 @@ namespace Server.Spells
         public override SkillName MoveSkill => SkillName.Ninjitsu;
         public override void CheckGain(Mobile m)
         {
-            m.CheckSkill(this.MoveSkill, this.RequiredSkill - 12.5, this.RequiredSkill + 37.5);	//Per five on friday 02/16/07
+            m.CheckSkill(MoveSkill, RequiredSkill - 12.5, RequiredSkill + 37.5);	//Per five on friday 02/16/07
         }
     }
 }

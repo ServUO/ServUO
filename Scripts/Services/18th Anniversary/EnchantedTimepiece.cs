@@ -12,7 +12,7 @@ namespace Server.Items
             {
                 int hour, min;
 
-                Clock.GetTime(this.Map, GetWorldLocation().X, GetWorldLocation().Y, out hour, out min);
+                Clock.GetTime(Map, GetWorldLocation().X, GetWorldLocation().Y, out hour, out min);
 
                 if (hour > 20 || hour < 4)
                     return 1156199; // Moon Dial
@@ -61,7 +61,7 @@ namespace Server.Items
         {
             int hour, min;
 
-            Clock.GetTime(this.Map, GetWorldLocation().X, GetWorldLocation().Y, out hour, out min);
+            Clock.GetTime(Map, GetWorldLocation().X, GetWorldLocation().Y, out hour, out min);
 
             if (hour > 12)
                 hour -= 12;
@@ -76,11 +76,11 @@ namespace Server.Items
         {
             int id = 0x9BC6;
 
-            if (!Movable && this.Map != Map.Internal)
+            if (!Movable && Map != Map.Internal)
             {
                 int hour, min;
 
-                Clock.GetTime(this.Map, GetWorldLocation().X, GetWorldLocation().Y, out hour, out min);
+                Clock.GetTime(Map, GetWorldLocation().X, GetWorldLocation().Y, out hour, out min);
 
                 if (hour > 12)
                     hour -= 12;

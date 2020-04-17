@@ -8,9 +8,9 @@
         public WireSpool()
             : base(0x4CDB)
         {
-            this.Weight = 1.0;
-            this.LootType = LootType.Blessed;
-            this.Hue = 2315;
+            Weight = 1.0;
+            LootType = LootType.Blessed;
+            Hue = 2315;
         }
 
         public override void GetProperties(ObjectPropertyList list)

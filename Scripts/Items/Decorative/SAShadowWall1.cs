@@ -6,10 +6,10 @@ namespace Server.Items
         public SAShadowWall1South()
             : base(13883, 631)
         {
-            this.Name = "Shadow Wall";
+            Name = "Shadow Wall";
 
-            this.Level = ItemLevel.VeryEasy;
-            this.Movable = false;
+            Level = ItemLevel.VeryEasy;
+            Movable = false;
         }
 
         public SAShadowWall1South(Serial serial)
@@ -38,10 +38,10 @@ namespace Server.Items
         public SAShadowWall1East()
             : base(13882, 636)
         {
-            this.Name = "Shadow Wall";
+            Name = "Shadow Wall";
 
-            this.Level = ItemLevel.VeryEasy;
-            this.Movable = false;
+            Level = ItemLevel.VeryEasy;
+            Movable = false;
         }
 
         public SAShadowWall1East(Serial serial)

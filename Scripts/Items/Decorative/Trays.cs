@@ -6,8 +6,8 @@ namespace Server.Items
         public DecoTray()
             : base(Utility.Random(2) + 0x991)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public DecoTray(Serial serial)

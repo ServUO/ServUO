@@ -38,22 +38,22 @@ namespace Server.Mobiles
 
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.Race = Race.Human;
-            this.Body = 0x190;
+            Female = false;
+            Race = Race.Human;
+            Body = 0x190;
 
-            this.Hue = Race.RandomSkinHue();
-            this.HairItemID = Race.RandomHair(false);
-            this.HairHue = Race.RandomHairHue();
+            Hue = Race.RandomSkinHue();
+            HairItemID = Race.RandomHair(false);
+            HairHue = Race.RandomHairHue();
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Server.Items.Backpack());
-            this.AddItem(new Server.Items.Robe(Utility.RandomYellowHue()));
-            this.AddItem(new Server.Items.Sandals());
+            AddItem(new Server.Items.Backpack());
+            AddItem(new Server.Items.Robe(Utility.RandomYellowHue()));
+            AddItem(new Server.Items.Sandals());
         }
 
         public override void Serialize(GenericWriter writer)

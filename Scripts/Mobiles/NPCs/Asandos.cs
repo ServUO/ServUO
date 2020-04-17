@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public BakersDozenQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(CookieMix), "cookie mix", 5, 0x103F));
+            AddObjective(new ObtainObjective(typeof(CookieMix), "cookie mix", 5, 0x103F));
 
-            this.AddReward(new BaseReward(typeof(ChefsSatchel), 1074282)); // Craftsman's Satchel
+            AddReward(new BaseReward(typeof(ChefsSatchel), 1074282)); // Craftsman's Satchel
         }
 
         /* Baker's Dozen */
@@ -62,25 +62,25 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = false;
+            CantWalk = true;
+            Race = Race.Human;
 
-            this.Hue = 0x83FF;
-            this.HairItemID = 0x2044;
-            this.HairHue = 0x1;
+            Hue = 0x83FF;
+            HairItemID = 0x2044;
+            HairHue = 0x1;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Boots(0x901));
-            this.AddItem(new ShortPants());
-            this.AddItem(new Shirt());
-            this.AddItem(new Cap());
-            this.AddItem(new HalfApron(0x28));
+            AddItem(new Backpack());
+            AddItem(new Boots(0x901));
+            AddItem(new ShortPants());
+            AddItem(new Shirt());
+            AddItem(new Cap());
+            AddItem(new HalfApron(0x28));
         }
 
         public override void Serialize(GenericWriter writer)
@@ -104,10 +104,10 @@ namespace Server.Engines.Quests
         public ChefsSatchel()
             : base()
         {
-            this.Hue = BaseReward.SatchelHue();
+            Hue = BaseReward.SatchelHue();
 
-            this.AddItem(new SackFlour());
-            this.AddItem(new Skillet());
+            AddItem(new SackFlour());
+            AddItem(new Skillet());
         }
 
         public ChefsSatchel(Serial serial)

@@ -9,14 +9,14 @@ namespace Server.Items
         public Nails()
             : base(0x102E)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         [Constructable]
         public Nails(int uses)
             : base(uses, 0x102C)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public Nails(Serial serial)

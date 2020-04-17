@@ -7,35 +7,35 @@ namespace Server.Mobiles
         public Boar()
             : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a boar";
-            this.Body = 0x122;
-            this.BaseSoundID = 0xC4;
+            Name = "a boar";
+            Body = 0x122;
+            BaseSoundID = 0xC4;
 
-            this.SetStr(25);
-            this.SetDex(15);
-            this.SetInt(5);
+            SetStr(25);
+            SetDex(15);
+            SetInt(5);
 
-            this.SetHits(15);
-            this.SetMana(0);
+            SetHits(15);
+            SetMana(0);
 
-            this.SetDamage(3, 6);
+            SetDamage(3, 6);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 10, 15);
-            this.SetResistance(ResistanceType.Fire, 5, 10);
-            this.SetResistance(ResistanceType.Poison, 5, 10);
+            SetResistance(ResistanceType.Physical, 10, 15);
+            SetResistance(ResistanceType.Fire, 5, 10);
+            SetResistance(ResistanceType.Poison, 5, 10);
 
-            this.SetSkill(SkillName.MagicResist, 9.0);
-            this.SetSkill(SkillName.Tactics, 9.0);
-            this.SetSkill(SkillName.Wrestling, 9.0);
+            SetSkill(SkillName.MagicResist, 9.0);
+            SetSkill(SkillName.Tactics, 9.0);
+            SetSkill(SkillName.Wrestling, 9.0);
 
-            this.Fame = 300;
-            this.Karma = 0;
+            Fame = 300;
+            Karma = 0;
 
-            this.Tamable = true;
-            this.ControlSlots = 1;
-            this.MinTameSkill = 29.1;
+            Tamable = true;
+            ControlSlots = 1;
+            MinTameSkill = 29.1;
         }
 
         public Boar(Serial serial)

@@ -34,32 +34,32 @@ namespace Server.Engines.Quests
         public BecomingOneWithTheShadowsQuest()
             : base()
         {
-            this.AddObjective(new ApprenticeObjective(SkillName.Hiding, 50, "Haven Dojo", 1078166, 1078167));
+            AddObjective(new ApprenticeObjective(SkillName.Hiding, 50, "Haven Dojo", 1078166, 1078167));
 
             // 1078166 You feel you can easily slip into the shadows here. Your ability to hide is enhanced in this area.
             // 1078167 You feel it is more difficult to hide here. Your ability to hide is no longer enhanced.
 
-            this.AddReward(new BaseReward(typeof(BagOfSmokeBombs), 1078173));
+            AddReward(new BaseReward(typeof(BagOfSmokeBombs), 1078173));
         }
 
         public override bool CanOffer()
         {
             #region Scroll of Alacrity
-            PlayerMobile pm = this.Owner as PlayerMobile;
+            PlayerMobile pm = Owner as PlayerMobile;
             if (pm.AcceleratedStart > DateTime.UtcNow)
             {
-                this.Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
+                Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
                 return false;
             }
             #endregion
             else
-                return this.Owner.Skills.Hiding.Base < 50;
+                return Owner.Skills.Hiding.Base < 50;
         }
 
         public override void OnCompleted()
         {
-            this.Owner.SendLocalizedMessage(1078171, null, 0x23); // You have achieved the rank of Apprentice Rogue (for Hiding). Return to Chiyo in New Haven to claim your reward.
-            this.Owner.PlaySound(this.CompleteSound);
+            Owner.SendLocalizedMessage(1078171, null, 0x23); // You have achieved the rank of Apprentice Rogue (for Hiding). Return to Chiyo in New Haven to claim your reward.
+            Owner.PlaySound(CompleteSound);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -88,13 +88,13 @@ namespace Server.Engines.Quests
         public Chiyo()
             : base("Chiyo", "The Hiding Instructor")
         {
-            this.SetSkill(SkillName.Hiding, 120.0, 120.0);
-            this.SetSkill(SkillName.Tracking, 120.0, 120.0);
-            this.SetSkill(SkillName.Healing, 120.0, 120.0);
-            this.SetSkill(SkillName.Tactics, 120.0, 120.0);
-            this.SetSkill(SkillName.Fencing, 120.0, 120.0);
-            this.SetSkill(SkillName.Stealth, 120.0, 120.0);
-            this.SetSkill(SkillName.Ninjitsu, 120.0, 120.0);
+            SetSkill(SkillName.Hiding, 120.0, 120.0);
+            SetSkill(SkillName.Tracking, 120.0, 120.0);
+            SetSkill(SkillName.Healing, 120.0, 120.0);
+            SetSkill(SkillName.Tactics, 120.0, 120.0);
+            SetSkill(SkillName.Fencing, 120.0, 120.0);
+            SetSkill(SkillName.Stealth, 120.0, 120.0);
+            SetSkill(SkillName.Ninjitsu, 120.0, 120.0);
         }
 
         public Chiyo(Serial serial)
@@ -104,24 +104,24 @@ namespace Server.Engines.Quests
 
         public override void Advertise()
         {
-            this.Say(1078165); // To be undetected means you cannot be harmed.
+            Say(1078165); // To be undetected means you cannot be harmed.
         }
 
         public override void OnOfferFailed()
         {
-            this.Say(1077772); // I cannot teach you, for you know all I can teach!
+            Say(1077772); // I cannot teach you, for you know all I can teach!
         }
 
         public override void InitBody()
         {
-            this.Female = false;
-            this.CantWalk = true;
-            this.Body = 247;
+            Female = false;
+            CantWalk = true;
+            Body = 247;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
+            AddItem(new Backpack());
         }
 
         public override void Serialize(GenericWriter writer)

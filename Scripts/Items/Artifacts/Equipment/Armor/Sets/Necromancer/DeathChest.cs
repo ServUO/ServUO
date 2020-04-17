@@ -7,22 +7,22 @@ namespace Server.Items
         public DeathChest()
             : base()
         {
-            this.SetHue = 0x455;
+            SetHue = 0x455;
 
-            this.Attributes.RegenHits = 1;
-            this.Attributes.RegenMana = 1;
+            Attributes.RegenHits = 1;
+            Attributes.RegenMana = 1;
 
-            this.SetAttributes.LowerManaCost = 10;
+            SetAttributes.LowerManaCost = 10;
 
-            this.SetSkillBonuses.SetValues(0, SkillName.Necromancy, 10);
+            SetSkillBonuses.SetValues(0, SkillName.Necromancy, 10);
 
-            this.SetSelfRepair = 3;
+            SetSelfRepair = 3;
 
-            this.SetPhysicalBonus = 4;
-            this.SetFireBonus = 5;
-            this.SetColdBonus = 3;
-            this.SetPoisonBonus = 4;
-            this.SetEnergyBonus = 4;
+            SetPhysicalBonus = 4;
+            SetFireBonus = 5;
+            SetColdBonus = 3;
+            SetPoisonBonus = 4;
+            SetEnergyBonus = 4;
         }
 
         public DeathChest(Serial serial)

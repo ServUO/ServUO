@@ -134,46 +134,46 @@ namespace Server.Multis
             {
                 default:
                 case Direction.North:
-                    if (x == this.X && y < this.Y)
+                    if (x == X && y < Y)
                         return ShipPosition.Bow;
-                    if (x > this.X && y < this.Y)
+                    if (x > X && y < Y)
                         return ShipPosition.BowStarboard;
-                    if (x < this.X && y < this.Y)
+                    if (x < X && y < Y)
                         return ShipPosition.BowPort;
-                    else if (x > this.X && y > this.Y)
+                    else if (x > X && y > Y)
                         return ShipPosition.AftStarboard;
                     else
                         return ShipPosition.AftPort;
                 case Direction.West:
-                    if (x < this.X && y == this.Y)
+                    if (x < X && y == Y)
                         return ShipPosition.Bow;
-                    else if (x < this.X && y < this.Y)
+                    else if (x < X && y < Y)
                         return ShipPosition.BowStarboard;
-                    else if (x < this.X && y > this.Y)
+                    else if (x < X && y > Y)
                         return ShipPosition.BowPort;
-                    else if (x > this.X && y < this.Y)
+                    else if (x > X && y < Y)
                         return ShipPosition.AftStarboard;
                     else
                         return ShipPosition.AftPort;
                 case Direction.South:
-                    if (x == this.X && y > this.Y)
+                    if (x == X && y > Y)
                         return ShipPosition.Bow;
-                    else if (x < this.X && y > this.Y)
+                    else if (x < X && y > Y)
                         return ShipPosition.BowStarboard;
-                    else if (x > this.X && y > this.Y)
+                    else if (x > X && y > Y)
                         return ShipPosition.BowPort;
-                    else if (x < this.X && y < this.Y)
+                    else if (x < X && y < Y)
                         return ShipPosition.AftStarboard;
                     else
                         return ShipPosition.AftPort;
                 case Direction.East:
-                    if (x > this.X && y == this.Y)
+                    if (x > X && y == Y)
                         return ShipPosition.Bow;
-                    else if (x > this.X && y > this.Y)
+                    else if (x > X && y > Y)
                         return ShipPosition.BowStarboard;
-                    else if (x > this.X && y < this.Y)
+                    else if (x > X && y < Y)
                         return ShipPosition.BowPort;
-                    else if (x < this.X && y > this.Y)
+                    else if (x < X && y > Y)
                         return ShipPosition.AftStarboard;
                     else
                         return ShipPosition.AftPort;
@@ -201,7 +201,7 @@ namespace Server.Multis
     public class TokunoGalleonDeed : BaseBoatDeed
     {
         public override int LabelNumber => 1116740;
-        public override BaseBoat Boat => new TokunoGalleon(this.BoatDirection);
+        public override BaseBoat Boat => new TokunoGalleon(BoatDirection);
 
         [Constructable]
         public TokunoGalleonDeed()
@@ -232,7 +232,7 @@ namespace Server.Multis
     public class DockedTokunoGalleon : BaseDockedBoat
     {
         public override int LabelNumber => 1116749;  //Tokuno Ship
-        public override BaseBoat Boat => new TokunoGalleon(this.BoatDirection);
+        public override BaseBoat Boat => new TokunoGalleon(BoatDirection);
 
         public DockedTokunoGalleon(BaseBoat boat)
             : base(0x30, Point3D.Zero, boat)

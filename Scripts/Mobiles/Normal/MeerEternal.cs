@@ -12,35 +12,35 @@ namespace Server.Mobiles
         public MeerEternal()
             : base(AIType.AI_Spellweaving, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a meer eternal";
-            this.Body = 772;
+            Name = "a meer eternal";
+            Body = 772;
 
-            this.SetStr(416, 505);
-            this.SetDex(146, 165);
-            this.SetInt(566, 655);
+            SetStr(416, 505);
+            SetDex(146, 165);
+            SetInt(566, 655);
 
-            this.SetHits(250, 303);
+            SetHits(250, 303);
 
-            this.SetDamage(11, 13);
+            SetDamage(11, 13);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 45, 55);
-            this.SetResistance(ResistanceType.Fire, 15, 25);
-            this.SetResistance(ResistanceType.Cold, 45, 55);
-            this.SetResistance(ResistanceType.Poison, 30, 40);
-            this.SetResistance(ResistanceType.Energy, 30, 40);
+            SetResistance(ResistanceType.Physical, 45, 55);
+            SetResistance(ResistanceType.Fire, 15, 25);
+            SetResistance(ResistanceType.Cold, 45, 55);
+            SetResistance(ResistanceType.Poison, 30, 40);
+            SetResistance(ResistanceType.Energy, 30, 40);
 
-            this.SetSkill(SkillName.EvalInt, 90.1, 100.0);
-            this.SetSkill(SkillName.Magery, 90.1, 100.0);
-            this.SetSkill(SkillName.Meditation, 90.1, 100.0);
-            this.SetSkill(SkillName.MagicResist, 150.5, 200.0);
-            this.SetSkill(SkillName.Tactics, 50.1, 70.0);
-            this.SetSkill(SkillName.Wrestling, 60.1, 80.0);
-            this.SetSkill(SkillName.Spellweaving, 90.1, 100.0);
+            SetSkill(SkillName.EvalInt, 90.1, 100.0);
+            SetSkill(SkillName.Magery, 90.1, 100.0);
+            SetSkill(SkillName.Meditation, 90.1, 100.0);
+            SetSkill(SkillName.MagicResist, 150.5, 200.0);
+            SetSkill(SkillName.Tactics, 50.1, 70.0);
+            SetSkill(SkillName.Wrestling, 60.1, 80.0);
+            SetSkill(SkillName.Spellweaving, 90.1, 100.0);
 
-            this.Fame = 18000;
-            this.Karma = 18000;
+            Fame = 18000;
+            Karma = 18000;
 
             switch (Utility.Random(12))
             {
@@ -49,7 +49,7 @@ namespace Server.Mobiles
                 case 2: PackItem(new VampiricEmbraceScroll()); break;
             }
 
-            this.m_NextAbilityTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(2, 5));
+            m_NextAbilityTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(2, 5));
         }
 
         public MeerEternal(Serial serial)
@@ -64,9 +64,9 @@ namespace Server.Mobiles
         public override bool InitialInnocent => true;
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich, 2);
-            this.AddLoot(LootPack.MedScrolls, 2);
-            this.AddLoot(LootPack.HighScrolls, 2);
+            AddLoot(LootPack.FilthyRich, 2);
+            AddLoot(LootPack.MedScrolls, 2);
+            AddLoot(LootPack.HighScrolls, 2);
         }
 
         public override int GetHurtSound()
@@ -86,29 +86,29 @@ namespace Server.Mobiles
 
         public override void OnThink()
         {
-            if (DateTime.UtcNow >= this.m_NextAbilityTime)
+            if (DateTime.UtcNow >= m_NextAbilityTime)
             {
-                Mobile combatant = this.Combatant as Mobile;
+                Mobile combatant = Combatant as Mobile;
 
-                if (combatant != null && combatant.Map == this.Map && combatant.InRange(this, 12))
+                if (combatant != null && combatant.Map == Map && combatant.InRange(this, 12))
                 {
-                    this.m_NextAbilityTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(10, 15));
+                    m_NextAbilityTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(10, 15));
 
                     int ability = Utility.Random(4);
 
                     switch (ability)
                     {
                         case 0:
-                            this.DoFocusedLeech(combatant, "Thine essence will fill my withering body with strength!");
+                            DoFocusedLeech(combatant, "Thine essence will fill my withering body with strength!");
                             break;
                         case 1:
-                            this.DoFocusedLeech(combatant, "I rebuke thee, worm, and cleanse thy vile spirit of its tainted blood!");
+                            DoFocusedLeech(combatant, "I rebuke thee, worm, and cleanse thy vile spirit of its tainted blood!");
                             break;
                         case 2:
-                            this.DoFocusedLeech(combatant, "I devour your life's essence to strengthen my resolve!");
+                            DoFocusedLeech(combatant, "I devour your life's essence to strengthen my resolve!");
                             break;
                         case 3:
-                            this.DoAreaLeech();
+                            DoAreaLeech();
                             break;
                             // TODO: Resurrect ability
                     }
@@ -132,10 +132,10 @@ namespace Server.Mobiles
 
         private void DoAreaLeech()
         {
-            this.m_NextAbilityTime += TimeSpan.FromSeconds(2.5);
+            m_NextAbilityTime += TimeSpan.FromSeconds(2.5);
 
-            this.Say(true, "Beware, mortals!  You have provoked my wrath!");
-            this.FixedParticles(0x376A, 10, 10, 9537, 33, 0, EffectLayer.Waist);
+            Say(true, "Beware, mortals!  You have provoked my wrath!");
+            FixedParticles(0x376A, 10, 10, 9537, 33, 0, EffectLayer.Waist);
 
             Timer.DelayCall(TimeSpan.FromSeconds(5.0), new TimerCallback(DoAreaLeech_Finish));
         }
@@ -147,14 +147,14 @@ namespace Server.Mobiles
 
             foreach (Mobile m in eable)
             {
-                if (this.CanBeHarmful(m) && this.IsEnemy(m))
+                if (CanBeHarmful(m) && IsEnemy(m))
                     list.Add(m);
             }
             eable.Free();
 
             if (list.Count == 0)
             {
-                this.Say(true, "Bah! You have escaped my grasp this time, mortal!");
+                Say(true, "Bah! You have escaped my grasp this time, mortal!");
             }
             else
             {
@@ -181,17 +181,17 @@ namespace Server.Mobiles
                     m.MovingParticles(this, 0x36F4, 1, 0, false, false, 32, 0, 9535, 1, 0, (EffectLayer)255, 0x100);
                     m.MovingParticles(this, 0x0001, 1, 0, false, true, 32, 0, 9535, 9536, 0, (EffectLayer)255, 0);
 
-                    this.DoHarmful(m);
-                    this.Hits += AOS.Damage(m, this, damage, 100, 0, 0, 0, 0);
+                    DoHarmful(m);
+                    Hits += AOS.Damage(m, this, damage, 100, 0, 0, 0, 0);
                 }
 
-                this.Say(true, "If I cannot cleanse thy soul, I will destroy it!");
+                Say(true, "If I cannot cleanse thy soul, I will destroy it!");
             }
         }
 
         private void DoFocusedLeech(Mobile combatant, string message)
         {
-            this.Say(true, message);
+            Say(true, message);
 
             Timer.DelayCall(TimeSpan.FromSeconds(0.5), new TimerStateCallback(DoFocusedLeech_Stage1), combatant);
         }
@@ -200,11 +200,11 @@ namespace Server.Mobiles
         {
             Mobile combatant = (Mobile)state;
 
-            if (this.CanBeHarmful(combatant))
+            if (CanBeHarmful(combatant))
             {
-                this.MovingParticles(combatant, 0x36FA, 1, 0, false, false, 1108, 0, 9533, 1, 0, (EffectLayer)255, 0x100);
-                this.MovingParticles(combatant, 0x0001, 1, 0, false, true, 1108, 0, 9533, 9534, 0, (EffectLayer)255, 0);
-                this.PlaySound(0x1FB);
+                MovingParticles(combatant, 0x36FA, 1, 0, false, false, 1108, 0, 9533, 1, 0, (EffectLayer)255, 0x100);
+                MovingParticles(combatant, 0x0001, 1, 0, false, true, 1108, 0, 9533, 9534, 0, (EffectLayer)255, 0);
+                PlaySound(0x1FB);
 
                 Timer.DelayCall(TimeSpan.FromSeconds(1.0), new TimerStateCallback(DoFocusedLeech_Stage2), combatant);
             }
@@ -214,14 +214,14 @@ namespace Server.Mobiles
         {
             Mobile combatant = (Mobile)state;
 
-            if (this.CanBeHarmful(combatant))
+            if (CanBeHarmful(combatant))
             {
                 combatant.MovingParticles(this, 0x36F4, 1, 0, false, false, 32, 0, 9535, 1, 0, (EffectLayer)255, 0x100);
                 combatant.MovingParticles(this, 0x0001, 1, 0, false, true, 32, 0, 9535, 9536, 0, (EffectLayer)255, 0);
 
-                this.PlaySound(0x209);
-                this.DoHarmful(combatant);
-                this.Hits += AOS.Damage(combatant, this, Utility.RandomMinMax(30, 40), 100, 0, 0, 0, 0);
+                PlaySound(0x209);
+                DoHarmful(combatant);
+                Hits += AOS.Damage(combatant, this, Utility.RandomMinMax(30, 40), 100, 0, 0, 0, 0);
             }
         }
     }

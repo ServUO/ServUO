@@ -37,32 +37,32 @@ namespace Server.Engines.Quests
         public SwiftAsAnArrowQuest()
             : base()
         {
-            this.AddObjective(new ApprenticeObjective(SkillName.Archery, 50, "Old Haven Training", 1078203, 1078204));
+            AddObjective(new ApprenticeObjective(SkillName.Archery, 50, "Old Haven Training", 1078203, 1078204));
 
             // 1078203 You feel more steady and dexterous here. Your Archery skill is enhanced in this area.
             // 1078204 You feel less steady and dexterous here. Your Archery learning potential is no longer enhanced.
 
-            this.AddReward(new BaseReward(typeof(Heartseeker), 1078210));
+            AddReward(new BaseReward(typeof(Heartseeker), 1078210));
         }
 
         public override bool CanOffer()
         {
             #region Scroll of Alacrity
-            PlayerMobile pm = this.Owner as PlayerMobile;
+            PlayerMobile pm = Owner as PlayerMobile;
             if (pm.AcceleratedStart > DateTime.UtcNow)
             {
-                this.Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
+                Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
                 return false;
             }
             #endregion
             else
-                return this.Owner.Skills.Archery.Base < 50;
+                return Owner.Skills.Archery.Base < 50;
         }
 
         public override void OnCompleted()
         {
-            this.Owner.SendLocalizedMessage(1078208, null, 0x23); // You have achieved the rank of Apprentice Archer. Return to Robyn in New Haven to claim your reward.
-            this.Owner.PlaySound(this.CompleteSound);
+            Owner.SendLocalizedMessage(1078208, null, 0x23); // You have achieved the rank of Apprentice Archer. Return to Robyn in New Haven to claim your reward.
+            Owner.PlaySound(CompleteSound);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -89,20 +89,20 @@ namespace Server.Engines.Quests
 
         public override void InitSBInfo()
         {
-            this.SBInfos.Add(new SBRanger());
+            SBInfos.Add(new SBRanger());
         }
 
         [Constructable]
         public Robyn()
             : base("Robyn", "The Archer Instructor")
         {
-            this.SetSkill(SkillName.Anatomy, 120.0, 120.0);
-            this.SetSkill(SkillName.Parry, 120.0, 120.0);
-            this.SetSkill(SkillName.Fletching, 120.0, 120.0);
-            this.SetSkill(SkillName.Healing, 120.0, 120.0);
-            this.SetSkill(SkillName.Tactics, 120.0, 120.0);
-            this.SetSkill(SkillName.Archery, 120.0, 120.0);
-            this.SetSkill(SkillName.Focus, 120.0, 120.0);
+            SetSkill(SkillName.Anatomy, 120.0, 120.0);
+            SetSkill(SkillName.Parry, 120.0, 120.0);
+            SetSkill(SkillName.Fletching, 120.0, 120.0);
+            SetSkill(SkillName.Healing, 120.0, 120.0);
+            SetSkill(SkillName.Tactics, 120.0, 120.0);
+            SetSkill(SkillName.Archery, 120.0, 120.0);
+            SetSkill(SkillName.Focus, 120.0, 120.0);
         }
 
         public Robyn(Serial serial)
@@ -112,52 +112,52 @@ namespace Server.Engines.Quests
 
         public override void Advertise()
         {
-            this.Say(1078202); // Archery requires a steady aim and dexterous fingers.
+            Say(1078202); // Archery requires a steady aim and dexterous fingers.
         }
 
         public override void OnOfferFailed()
         {
-            this.Say(1077772); // I cannot teach you, for you know all I can teach!
+            Say(1077772); // I cannot teach you, for you know all I can teach!
         }
 
         public override void InitBody()
         {
-            this.Female = true;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = true;
+            CantWalk = true;
+            Race = Race.Human;
 
             base.InitBody();
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Boots(0x592));
-            this.AddItem(new Cloak(0x592));
-            this.AddItem(new Bandana(0x592));
-            this.AddItem(new CompositeBow());
+            AddItem(new Backpack());
+            AddItem(new Boots(0x592));
+            AddItem(new Cloak(0x592));
+            AddItem(new Bandana(0x592));
+            AddItem(new CompositeBow());
 
             Item item;
 
             item = new StuddedLegs();
             item.Hue = 0x592;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new StuddedGloves();
             item.Hue = 0x592;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new StuddedGorget();
             item.Hue = 0x592;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new StuddedChest();
             item.Hue = 0x592;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new StuddedArms();
             item.Hue = 0x592;
-            this.AddItem(item);
+            AddItem(item);
         }
 
         public override void Serialize(GenericWriter writer)

@@ -71,7 +71,7 @@ namespace Server.Spells.SkillMasteries
             if (!base.CheckCast())
                 return false;
 
-            if (IsInCooldown(Caster, this.GetType()))
+            if (IsInCooldown(Caster, GetType()))
                 return false;
 
             if (Caster.Player && Caster.Skills[CastSkill].Value < RequiredSkill)
@@ -1004,7 +1004,7 @@ namespace Server.Spells.SkillMasteries
 
             _Cooldown[this] = DateTime.UtcNow + ts;
 
-            Server.Timer.DelayCall(ts, () => RemoveFromCooldown(this.GetType(), Caster));
+            Server.Timer.DelayCall(ts, () => RemoveFromCooldown(GetType(), Caster));
         }
 
         public static bool IsInCooldown(Mobile m, Type type, bool message = true)

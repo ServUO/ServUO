@@ -85,14 +85,14 @@ namespace Server.Engines.CityLoyalty
         {
             if (IsChildOf(from.Backpack))
             {
-                CityLoyaltySystem sys = CityLoyaltySystem.GetCityInstance(this.City);
+                CityLoyaltySystem sys = CityLoyaltySystem.GetCityInstance(City);
 
-                if (CityLoyaltySystem.HasCitizenship(from, this.City) && sys.GetLoyaltyRating(from) >= LoyaltyRating.Commended)
+                if (CityLoyaltySystem.HasCitizenship(from, City) && sys.GetLoyaltyRating(from) >= LoyaltyRating.Commended)
                 {
                     base.OnDoubleClick(from);
                 }
                 else
-                    from.SendLocalizedMessage(1152361, String.Format("#{0}", CityLoyaltySystem.GetCityLocalization(this.City))); // You are not sufficiently loyal to ~1_CITY~ to use this.
+                    from.SendLocalizedMessage(1152361, String.Format("#{0}", CityLoyaltySystem.GetCityLocalization(City))); // You are not sufficiently loyal to ~1_CITY~ to use this.
             }
         }
 

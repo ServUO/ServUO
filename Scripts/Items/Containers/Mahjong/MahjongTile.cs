@@ -11,38 +11,38 @@ namespace Server.Engines.Mahjong
         private bool m_Flipped;
         public MahjongTile(MahjongGame game, int number, MahjongTileType value, Point2D position, int stackLevel, MahjongPieceDirection direction, bool flipped)
         {
-            this.m_Game = game;
-            this.m_Number = number;
-            this.m_Value = value;
-            this.m_Position = position;
-            this.m_StackLevel = stackLevel;
-            this.m_Direction = direction;
-            this.m_Flipped = flipped;
+            m_Game = game;
+            m_Number = number;
+            m_Value = value;
+            m_Position = position;
+            m_StackLevel = stackLevel;
+            m_Direction = direction;
+            m_Flipped = flipped;
         }
 
         public MahjongTile(MahjongGame game, GenericReader reader)
         {
-            this.m_Game = game;
+            m_Game = game;
 
             int version = reader.ReadInt();
 
-            this.m_Number = reader.ReadInt();
-            this.m_Value = (MahjongTileType)reader.ReadInt();
-            this.m_Position = reader.ReadPoint2D();
-            this.m_StackLevel = reader.ReadInt();
-            this.m_Direction = (MahjongPieceDirection)reader.ReadInt();
-            this.m_Flipped = reader.ReadBool();
+            m_Number = reader.ReadInt();
+            m_Value = (MahjongTileType)reader.ReadInt();
+            m_Position = reader.ReadPoint2D();
+            m_StackLevel = reader.ReadInt();
+            m_Direction = (MahjongPieceDirection)reader.ReadInt();
+            m_Flipped = reader.ReadBool();
         }
 
-        public MahjongGame Game => this.m_Game;
-        public int Number => this.m_Number;
-        public MahjongTileType Value => this.m_Value;
-        public Point2D Position => this.m_Position;
-        public int StackLevel => this.m_StackLevel;
-        public MahjongPieceDirection Direction => this.m_Direction;
-        public bool Flipped => this.m_Flipped;
-        public MahjongPieceDim Dimensions => GetDimensions(this.m_Position, this.m_Direction);
-        public bool IsMovable => this.m_Game.GetStackLevel(this.Dimensions) <= this.m_StackLevel;
+        public MahjongGame Game => m_Game;
+        public int Number => m_Number;
+        public MahjongTileType Value => m_Value;
+        public Point2D Position => m_Position;
+        public int StackLevel => m_StackLevel;
+        public MahjongPieceDirection Direction => m_Direction;
+        public bool Flipped => m_Flipped;
+        public MahjongPieceDim Dimensions => GetDimensions(m_Position, m_Direction);
+        public bool IsMovable => m_Game.GetStackLevel(Dimensions) <= m_StackLevel;
         public static MahjongPieceDim GetDimensions(Point2D position, MahjongPieceDirection direction)
         {
             if (direction == MahjongPieceDirection.Up || direction == MahjongPieceDirection.Down)
@@ -54,31 +54,31 @@ namespace Server.Engines.Mahjong
         public void Move(Point2D position, MahjongPieceDirection direction, bool flip, int validHandArea)
         {
             MahjongPieceDim dim = GetDimensions(position, direction);
-            int curHandArea = this.Dimensions.GetHandArea();
+            int curHandArea = Dimensions.GetHandArea();
             int newHandArea = dim.GetHandArea();
 
-            if (!this.IsMovable || !dim.IsValid() || (validHandArea >= 0 && ((curHandArea >= 0 && curHandArea != validHandArea) || (newHandArea >= 0 && newHandArea != validHandArea))))
+            if (!IsMovable || !dim.IsValid() || (validHandArea >= 0 && ((curHandArea >= 0 && curHandArea != validHandArea) || (newHandArea >= 0 && newHandArea != validHandArea))))
                 return;
 
-            this.m_Position = position;
-            this.m_Direction = direction;
-            this.m_StackLevel = -1; // Avoid self interference
-            this.m_StackLevel = this.m_Game.GetStackLevel(dim) + 1;
-            this.m_Flipped = flip;
+            m_Position = position;
+            m_Direction = direction;
+            m_StackLevel = -1; // Avoid self interference
+            m_StackLevel = m_Game.GetStackLevel(dim) + 1;
+            m_Flipped = flip;
 
-            this.m_Game.Players.SendTilePacket(this, true, true);
+            m_Game.Players.SendTilePacket(this, true, true);
         }
 
         public void Save(GenericWriter writer)
         {
             writer.Write(0); // version
 
-            writer.Write(this.m_Number);
-            writer.Write((int)this.m_Value);
-            writer.Write(this.m_Position);
-            writer.Write(this.m_StackLevel);
-            writer.Write((int)this.m_Direction);
-            writer.Write(this.m_Flipped);
+            writer.Write(m_Number);
+            writer.Write((int)m_Value);
+            writer.Write(m_Position);
+            writer.Write(m_StackLevel);
+            writer.Write((int)m_Direction);
+            writer.Write(m_Flipped);
         }
     }
 }

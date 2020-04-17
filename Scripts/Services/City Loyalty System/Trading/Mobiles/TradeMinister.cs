@@ -66,7 +66,7 @@ namespace Server.Engines.CityLoyalty
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(this.Location, 4))
+            if (from.InRange(Location, 4))
             {
                 from.SendGump(new InternalGump());
             }

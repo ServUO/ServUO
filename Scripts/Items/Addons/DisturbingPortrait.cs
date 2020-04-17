@@ -10,7 +10,7 @@ namespace Server.Items
         public DisturbingPortraitComponent()
             : base(0x2A5D)
         {
-            this.m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(3), TimeSpan.FromMinutes(3), new TimerCallback(Change));
+            m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(3), TimeSpan.FromMinutes(3), new TimerCallback(Change));
         }
 
         public DisturbingPortraitComponent(Serial serial)
@@ -21,8 +21,8 @@ namespace Server.Items
         public override int LabelNumber => 1074479;// Disturbing portrait
         public override void OnDoubleClick(Mobile from)
         {
-            if (Utility.InRange(this.Location, from.Location, 2))
-                Effects.PlaySound(this.Location, this.Map, Utility.RandomMinMax(0x567, 0x568));
+            if (Utility.InRange(Location, from.Location, 2))
+                Effects.PlaySound(Location, Map, Utility.RandomMinMax(0x567, 0x568));
             else
                 from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
         }
@@ -31,8 +31,8 @@ namespace Server.Items
         {
             base.OnAfterDelete();
 
-            if (this.m_Timer != null && this.m_Timer.Running)
-                this.m_Timer.Stop();
+            if (m_Timer != null && m_Timer.Running)
+                m_Timer.Stop();
         }
 
         public override void Serialize(GenericWriter writer)
@@ -48,15 +48,15 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            this.m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(3), TimeSpan.FromMinutes(3), new TimerCallback(Change));
+            m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(3), TimeSpan.FromMinutes(3), new TimerCallback(Change));
         }
 
         private void Change()
         {
-            if (this.ItemID < 0x2A61)
-                this.ItemID = Utility.RandomMinMax(0x2A5D, 0x2A60);
+            if (ItemID < 0x2A61)
+                ItemID = Utility.RandomMinMax(0x2A5D, 0x2A60);
             else
-                this.ItemID = Utility.RandomMinMax(0x2A61, 0x2A64);
+                ItemID = Utility.RandomMinMax(0x2A61, 0x2A64);
         }
     }
 
@@ -66,7 +66,7 @@ namespace Server.Items
         public DisturbingPortraitAddon()
             : base()
         {
-            this.AddComponent(new DisturbingPortraitComponent(), 0, 0, 0);
+            AddComponent(new DisturbingPortraitComponent(), 0, 0, 0);
         }
 
         public DisturbingPortraitAddon(Serial serial)
@@ -96,7 +96,7 @@ namespace Server.Items
         public DisturbingPortraitDeed()
             : base()
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public DisturbingPortraitDeed(Serial serial)

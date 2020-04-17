@@ -44,7 +44,7 @@ namespace Server.Multis
     public class SmallDragonBoatDeed : BaseBoatDeed
     {
         public override int LabelNumber => 1041206;  // small dragon ship deed
-        public override BaseBoat Boat => new SmallDragonBoat(this.BoatDirection);
+        public override BaseBoat Boat => new SmallDragonBoat(BoatDirection);
 
         [Constructable]
         public SmallDragonBoatDeed() : base(0x4, Point3D.Zero)
@@ -73,7 +73,7 @@ namespace Server.Multis
     public class SmallDockedDragonBoat : BaseDockedBoat
     {
         public override int LabelNumber => 1116742;  //Small Dragon Ship
-        public override BaseBoat Boat => new SmallDragonBoat(this.BoatDirection);
+        public override BaseBoat Boat => new SmallDragonBoat(BoatDirection);
 
         public SmallDockedDragonBoat(BaseBoat boat) : base(0x4, Point3D.Zero, boat)
         {

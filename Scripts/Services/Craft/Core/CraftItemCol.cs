@@ -10,30 +10,30 @@ namespace Server.Engines.Craft
 
         public int Add(CraftItem craftItem)
         {
-            return this.List.Add(craftItem);
+            return List.Add(craftItem);
         }
 
         public void Remove(int index)
         {
-            if (index > this.Count - 1 || index < 0)
+            if (index > Count - 1 || index < 0)
             {
             }
             else
             {
-                this.List.RemoveAt(index);
+                List.RemoveAt(index);
             }
         }
 
         public CraftItem GetAt(int index)
         {
-            return (CraftItem)this.List[index];
+            return (CraftItem)List[index];
         }
 
         public CraftItem SearchForSubclass(Type type)
         {
-            for (int i = 0; i < this.List.Count; i++)
+            for (int i = 0; i < List.Count; i++)
             {
-                CraftItem craftItem = (CraftItem)this.List[i];
+                CraftItem craftItem = (CraftItem)List[i];
 
                 if (craftItem.ItemType == type || type.IsSubclassOf(craftItem.ItemType))
                     return craftItem;
@@ -44,9 +44,9 @@ namespace Server.Engines.Craft
 
         public CraftItem SearchFor(Type type)
         {
-            for (int i = 0; i < this.List.Count; i++)
+            for (int i = 0; i < List.Count; i++)
             {
-                CraftItem craftItem = (CraftItem)this.List[i];
+                CraftItem craftItem = (CraftItem)List[i];
                 if (craftItem.ItemType == type)
                 {
                     return craftItem;

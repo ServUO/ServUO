@@ -6,8 +6,8 @@ namespace Server.Items
         public DecoArrowShafts()
             : base(Utility.Random(2) + 0x1024)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public DecoArrowShafts(Serial serial)

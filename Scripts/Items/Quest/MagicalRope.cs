@@ -6,8 +6,8 @@ namespace Server.Items
         public MagicalRope()
             : base(0x20D)
         {
-            this.LootType = LootType.Blessed;
-            this.Weight = 5.0;
+            LootType = LootType.Blessed;
+            Weight = 5.0;
         }
 
         public MagicalRope(Serial serial)

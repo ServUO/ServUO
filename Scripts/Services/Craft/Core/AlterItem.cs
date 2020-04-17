@@ -73,8 +73,8 @@ namespace Server.Engines.Craft
         public AlterItemTarget(CraftSystem system, ITool tool)
             : base(1, false, TargetFlags.None)
         {
-            this.m_System = system;
-            this.m_Tool = tool;
+            m_System = system;
+            m_Tool = tool;
         }
 
         private static AlterableAttribute GetAlterableAttribute(object o, bool inherit)

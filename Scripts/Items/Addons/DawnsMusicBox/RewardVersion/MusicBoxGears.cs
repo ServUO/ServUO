@@ -16,8 +16,8 @@ namespace Server.Items.MusicBox
         public MusicBoxGears(MusicName music)
             : base(0x1053)
         {
-            this.m_Music = music;
-            this.Weight = 1.0;
+            m_Music = music;
+            Weight = 1.0;
         }
 
         public MusicBoxGears(Serial serial)
@@ -26,7 +26,7 @@ namespace Server.Items.MusicBox
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public MusicName Music => this.m_Music;
+        public MusicName Music => m_Music;
         public static MusicBoxGears RandomMusixBoxGears(TrackRarity rarity)
         {
             return new MusicBoxGears(TrackInfo.RandomSong(rarity));
@@ -39,7 +39,7 @@ namespace Server.Items.MusicBox
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            TrackInfo ti = TrackInfo.GetInfo(this.m_Music);
+            TrackInfo ti = TrackInfo.GetInfo(m_Music);
             switch (ti.Rarity)
             {
                 case TrackRarity.Common:
@@ -58,13 +58,13 @@ namespace Server.Items.MusicBox
         {
             base.GetProperties(list);
 
-            TrackInfo ti = TrackInfo.GetInfo(this.m_Music);
+            TrackInfo ti = TrackInfo.GetInfo(m_Music);
             list.Add(ti.Label);
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.IsChildOf(from.Backpack))
+            if (IsChildOf(from.Backpack))
             {
                 from.BeginTarget(3, false, TargetFlags.None, new TargetCallback(OnTarget));
                 from.SendMessage("Select a Dawn's music box to add this gears to.");
@@ -77,7 +77,7 @@ namespace Server.Items.MusicBox
 
         public virtual void OnTarget(Mobile from, object obj)
         {
-            if (this.Deleted)
+            if (Deleted)
                 return;
 
             DawnsMusicBox mb = obj as DawnsMusicBox;
@@ -88,10 +88,10 @@ namespace Server.Items.MusicBox
             }
             else
             {
-                if (mb.AddSong(this.m_Music))
+                if (mb.AddSong(m_Music))
                 {
                     from.SendMessage("You have added this gear to the music box.");
-                    this.Delete();
+                    Delete();
                 }
                 else
                     from.SendMessage("This gear is already present in this box.");
@@ -104,7 +104,7 @@ namespace Server.Items.MusicBox
 
             writer.Write(0); // version
 
-            writer.Write((int)this.m_Music);
+            writer.Write((int)m_Music);
         }
 
         public override void Deserialize(GenericReader reader)

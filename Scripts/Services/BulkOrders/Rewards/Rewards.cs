@@ -11,20 +11,20 @@ namespace Server.Engines.BulkOrders
         private readonly int m_Points;
         private readonly Type[] m_Types;
 
-        public int Points => this.m_Points;
-        public Type[] Types => this.m_Types;
+        public int Points => m_Points;
+        public Type[] Types => m_Types;
 
         public RewardType(int points, params Type[] types)
         {
-            this.m_Points = points;
-            this.m_Types = types;
+            m_Points = points;
+            m_Types = types;
         }
 
         public bool Contains(Type type)
         {
-            for (int i = 0; i < this.m_Types.Length; ++i)
+            for (int i = 0; i < m_Types.Length; ++i)
             {
-                if (this.m_Types[i] == type)
+                if (m_Types[i] == type)
                     return true;
             }
 
@@ -38,9 +38,9 @@ namespace Server.Engines.BulkOrders
         private readonly ConstructCallback m_Constructor;
         private readonly int m_Type;
 
-        public int Weight => this.m_Weight;
-        public ConstructCallback Constructor => this.m_Constructor;
-        public int Type => this.m_Type;
+        public int Weight => m_Weight;
+        public ConstructCallback Constructor => m_Constructor;
+        public int Type => m_Type;
 
         public RewardItem(int weight, ConstructCallback constructor)
             : this(weight, constructor, 0)
@@ -49,16 +49,16 @@ namespace Server.Engines.BulkOrders
 
         public RewardItem(int weight, ConstructCallback constructor, int type)
         {
-            this.m_Weight = weight;
-            this.m_Constructor = constructor;
-            this.m_Type = type;
+            m_Weight = weight;
+            m_Constructor = constructor;
+            m_Type = type;
         }
 
         public Item Construct()
         {
             try
             {
-                return this.m_Constructor(this.m_Type);
+                return m_Constructor(m_Type);
             }
             catch
             {
@@ -85,32 +85,32 @@ namespace Server.Engines.BulkOrders
         private readonly int m_Points;
         private readonly RewardItem[] m_Items;
 
-        public int Points => this.m_Points;
-        public RewardItem[] Items => this.m_Items;
+        public int Points => m_Points;
+        public RewardItem[] Items => m_Items;
 
         public RewardGroup(int points, params RewardItem[] items)
         {
-            this.m_Points = points;
-            this.m_Items = items;
+            m_Points = points;
+            m_Items = items;
         }
 
         public RewardItem AcquireItem()
         {
-            if (this.m_Items.Length == 0)
+            if (m_Items.Length == 0)
                 return null;
-            else if (this.m_Items.Length == 1)
-                return this.m_Items[0];
+            else if (m_Items.Length == 1)
+                return m_Items[0];
 
             int totalWeight = 0;
 
-            for (int i = 0; i < this.m_Items.Length; ++i)
-                totalWeight += this.m_Items[i].Weight;
+            for (int i = 0; i < m_Items.Length; ++i)
+                totalWeight += m_Items[i].Weight;
 
             int randomWeight = Utility.Random(totalWeight);
 
-            for (int i = 0; i < this.m_Items.Length; ++i)
+            for (int i = 0; i < m_Items.Length; ++i)
             {
-                RewardItem item = this.m_Items[i];
+                RewardItem item = m_Items[i];
 
                 if (randomWeight < item.Weight)
                     return item;
@@ -130,11 +130,11 @@ namespace Server.Engines.BulkOrders
         {
             get
             {
-                return this.m_Groups;
+                return m_Groups;
             }
             set
             {
-                this.m_Groups = value;
+                m_Groups = value;
             }
         }
 
@@ -146,51 +146,51 @@ namespace Server.Engines.BulkOrders
 
         public virtual int ComputeFame(SmallBOD bod)
         {
-            int points = this.ComputePoints(bod) / 50;
+            int points = ComputePoints(bod) / 50;
 
             return points * points;
         }
 
         public virtual int ComputeFame(LargeBOD bod)
         {
-            int points = this.ComputePoints(bod) / 50;
+            int points = ComputePoints(bod) / 50;
 
             return points * points;
         }
 
         public virtual int ComputePoints(SmallBOD bod)
         {
-            return this.ComputePoints(bod.AmountMax, bod.RequireExceptional, bod.Material, 1, bod.Type);
+            return ComputePoints(bod.AmountMax, bod.RequireExceptional, bod.Material, 1, bod.Type);
         }
 
         public virtual int ComputePoints(LargeBOD bod)
         {
             Type type = bod.Entries == null || bod.Entries.Length == 0 ? null : bod.Entries[0].Details.Type;
 
-            return this.ComputePoints(bod.AmountMax, bod.RequireExceptional, bod.Material, bod.Entries.Length, type);
+            return ComputePoints(bod.AmountMax, bod.RequireExceptional, bod.Material, bod.Entries.Length, type);
         }
 
         public virtual int ComputeGold(SmallBOD bod)
         {
-            return this.ComputeGold(bod.AmountMax, bod.RequireExceptional, bod.Material, 1, bod.Type);
+            return ComputeGold(bod.AmountMax, bod.RequireExceptional, bod.Material, 1, bod.Type);
         }
 
         public virtual int ComputeGold(LargeBOD bod)
         {
-            return this.ComputeGold(bod.AmountMax, bod.RequireExceptional, bod.Material, bod.Entries.Length, bod.Entries[0].Details.Type);
+            return ComputeGold(bod.AmountMax, bod.RequireExceptional, bod.Material, bod.Entries.Length, bod.Entries[0].Details.Type);
         }
 
         public virtual RewardGroup LookupRewards(int points)
         {
-            for (int i = this.m_Groups.Length - 1; i >= 1; --i)
+            for (int i = m_Groups.Length - 1; i >= 1; --i)
             {
-                RewardGroup group = this.m_Groups[i];
+                RewardGroup group = m_Groups[i];
 
                 if (points >= group.Points)
                     return group;
             }
 
-            return this.m_Groups[0];
+            return m_Groups[0];
         }
 
         public virtual int LookupTypePoints(RewardType[] types, Type type)
@@ -318,7 +318,7 @@ namespace Server.Engines.BulkOrders
             }
             else
             {
-                this.Groups = new RewardGroup[]
+                Groups = new RewardGroup[]
                 {
                     new RewardGroup(0, new RewardItem(1, SturdyShovel)),
                     new RewardGroup(25, new RewardItem(1, SturdyPickaxe)),
@@ -472,7 +472,7 @@ namespace Server.Engines.BulkOrders
                 points += 200;
 
             if (itemCount > 1)
-                points += this.LookupTypePoints(this.m_Types, type);
+                points += LookupTypePoints(m_Types, type);
 
             if (material >= BulkMaterialType.DullCopper && material <= BulkMaterialType.Valorite)
                 points += 200 + (50 * (material - BulkMaterialType.DullCopper));
@@ -579,7 +579,7 @@ namespace Server.Engines.BulkOrders
             // Loop through the RewardTypes defined earlier and find the correct one.
             for (typeIdx = 0; typeIdx < 7; ++typeIdx)
             {
-                if (this.m_Types[typeIdx].Contains(type))
+                if (m_Types[typeIdx].Contains(type))
                     break;
             }
 
@@ -601,7 +601,7 @@ namespace Server.Engines.BulkOrders
 
             int[][][] goldTable = m_GoldTable;
 
-            int typeIndex = this.ComputeType(type, itemCount);
+            int typeIndex = ComputeType(type, itemCount);
             int quanIndex = (quantity == 20 ? 2 : quantity == 15 ? 1 : 0);
             int mtrlIndex = (material >= BulkMaterialType.DullCopper && material <= BulkMaterialType.Valorite) ? 1 + (material - BulkMaterialType.DullCopper) : 0;
 
@@ -655,7 +655,7 @@ namespace Server.Engines.BulkOrders
             }
             else
             {
-                this.Groups = new RewardGroup[]
+                Groups = new RewardGroup[]
                 {
                     new RewardGroup(0, new RewardItem(1, Cloth, 0)),
                     new RewardGroup(50, new RewardItem(1, Cloth, 1)),
@@ -1199,7 +1199,7 @@ namespace Server.Engines.BulkOrders
             }
 
             if (itemCount > 1)
-                points += this.LookupTypePoints(m_Types, type);
+                points += LookupTypePoints(m_Types, type);
 
             return points;
         }
@@ -1351,7 +1351,7 @@ namespace Server.Engines.BulkOrders
                 points += 50;
 
             if (itemCount > 1)
-                points += this.LookupTypePoints(m_Types, type);
+                points += LookupTypePoints(m_Types, type);
 
             return points;
         }
@@ -1484,7 +1484,7 @@ namespace Server.Engines.BulkOrders
                 points += 200;
 
             if (itemCount > 1)
-                points += this.LookupTypePoints(m_Types, type);
+                points += LookupTypePoints(m_Types, type);
 
             return points;
         }
@@ -1633,7 +1633,7 @@ namespace Server.Engines.BulkOrders
             }
 
             if (itemCount > 1)
-                points += this.LookupTypePoints(m_Types, type);
+                points += LookupTypePoints(m_Types, type);
 
             return points;
         }

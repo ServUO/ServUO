@@ -12,8 +12,8 @@ namespace Server.Items
         public Citrine(int amount)
             : base(0xF15)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public Citrine(Serial serial)

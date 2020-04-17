@@ -5,7 +5,7 @@ namespace Server.Items
         public BaseWall(int itemID)
             : base(itemID)
         {
-            this.Movable = false;
+            Movable = false;
         }
 
         public BaseWall(Serial serial)

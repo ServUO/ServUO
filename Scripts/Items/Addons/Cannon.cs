@@ -12,7 +12,7 @@ namespace Server.Items
         public CannonAddonComponent(int itemID)
             : base(itemID)
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public CannonAddonComponent(Serial serial)
@@ -25,12 +25,12 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if (this.Addon is CannonAddon)
+            if (Addon is CannonAddon)
             {
-                if (((CannonAddon)this.Addon).IsRewardItem)
+                if (((CannonAddon)Addon).IsRewardItem)
                     list.Add(1076223); // 7th Year Veteran Reward
 
-                list.Add(1076207, ((CannonAddon)this.Addon).Charges.ToString()); // Remaining Charges: ~1_val~
+                list.Add(1076207, ((CannonAddon)Addon).Charges.ToString()); // Remaining Charges: ~1_val~
             }
         }
 
@@ -61,39 +61,39 @@ namespace Server.Items
         [Constructable]
         public CannonAddon(CannonDirection direction)
         {
-            this.m_CannonDirection = direction;
+            m_CannonDirection = direction;
 
             switch (direction)
             {
                 case CannonDirection.North:
                     {
-                        this.AddComponent(new CannonAddonComponent(0xE8D), 0, 0, 0);
-                        this.AddComponent(new CannonAddonComponent(0xE8C), 0, 1, 0);
-                        this.AddComponent(new CannonAddonComponent(0xE8B), 0, 2, 0);
+                        AddComponent(new CannonAddonComponent(0xE8D), 0, 0, 0);
+                        AddComponent(new CannonAddonComponent(0xE8C), 0, 1, 0);
+                        AddComponent(new CannonAddonComponent(0xE8B), 0, 2, 0);
 
                         break;
                     }
                 case CannonDirection.East:
                     {
-                        this.AddComponent(new CannonAddonComponent(0xE96), 0, 0, 0);
-                        this.AddComponent(new CannonAddonComponent(0xE95), -1, 0, 0);
-                        this.AddComponent(new CannonAddonComponent(0xE94), -2, 0, 0);
+                        AddComponent(new CannonAddonComponent(0xE96), 0, 0, 0);
+                        AddComponent(new CannonAddonComponent(0xE95), -1, 0, 0);
+                        AddComponent(new CannonAddonComponent(0xE94), -2, 0, 0);
 
                         break;
                     }
                 case CannonDirection.South:
                     {
-                        this.AddComponent(new CannonAddonComponent(0xE91), 0, 0, 0);
-                        this.AddComponent(new CannonAddonComponent(0xE92), 0, -1, 0);
-                        this.AddComponent(new CannonAddonComponent(0xE93), 0, -2, 0);
+                        AddComponent(new CannonAddonComponent(0xE91), 0, 0, 0);
+                        AddComponent(new CannonAddonComponent(0xE92), 0, -1, 0);
+                        AddComponent(new CannonAddonComponent(0xE93), 0, -2, 0);
 
                         break;
                     }
                 default:
                     {
-                        this.AddComponent(new CannonAddonComponent(0xE8E), 0, 0, 0);
-                        this.AddComponent(new CannonAddonComponent(0xE8F), 1, 0, 0);
-                        this.AddComponent(new CannonAddonComponent(0xE90), 2, 0, 0);
+                        AddComponent(new CannonAddonComponent(0xE8E), 0, 0, 0);
+                        AddComponent(new CannonAddonComponent(0xE8F), 1, 0, 0);
+                        AddComponent(new CannonAddonComponent(0xE90), 2, 0, 0);
 
                         break;
                     }
@@ -110,26 +110,26 @@ namespace Server.Items
             get
             {
                 CannonDeed deed = new CannonDeed();
-                deed.Charges = this.m_Charges;
-                deed.IsRewardItem = this.m_IsRewardItem;
+                deed.Charges = m_Charges;
+                deed.IsRewardItem = m_IsRewardItem;
 
                 return deed;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
-        public CannonDirection CannonDirection => this.m_CannonDirection;
+        public CannonDirection CannonDirection => m_CannonDirection;
         [CommandProperty(AccessLevel.GameMaster)]
         public int Charges
         {
             get
             {
-                return this.m_Charges;
+                return m_Charges;
             }
             set
             {
-                this.m_Charges = value;
+                m_Charges = value;
 
-                foreach (AddonComponent c in this.Components)
+                foreach (AddonComponent c in Components)
                     c.InvalidateProperties();
             }
         }
@@ -138,21 +138,21 @@ namespace Server.Items
         {
             get
             {
-                return this.m_IsRewardItem;
+                return m_IsRewardItem;
             }
             set
             {
-                this.m_IsRewardItem = value;
+                m_IsRewardItem = value;
 
-                foreach (AddonComponent c in this.Components)
+                foreach (AddonComponent c in Components)
                     c.InvalidateProperties();
             }
         }
         public override void OnComponentUsed(AddonComponent c, Mobile from)
         {
-            if (from.InRange(this.Location, 2))
+            if (from.InRange(Location, 2))
             {
-                if (this.m_Charges > 0)
+                if (m_Charges > 0)
                 {
                     from.Target = new InternalTarget(this);
                 }
@@ -162,7 +162,7 @@ namespace Server.Items
                     {
                         PotionKeg keg = from.Backpack.FindItemByType(typeof(PotionKeg)) as PotionKeg;
 
-                        if (this.Validate(keg) > 0)
+                        if (Validate(keg) > 0)
                             from.SendGump(new InternalGump(this, keg));
                         else
                             from.SendLocalizedMessage(1076198); // You do not have a full keg of explosion potions needed to recharge the cannon.
@@ -190,9 +190,9 @@ namespace Server.Items
 
         public void Fill(Mobile from, PotionKeg keg)
         {
-            this.Charges = this.Validate(keg);
+            Charges = Validate(keg);
 
-            if (this.Charges > 0)
+            if (Charges > 0)
             {
                 keg.Delete();
                 from.SendLocalizedMessage(1076199); // Your cannon is recharged.
@@ -203,7 +203,7 @@ namespace Server.Items
 
         public void DoFireEffect(IPoint3D target)
         {
-            Map map = this.Map;
+            Map map = Map;
 
             if (target == null || map == null)
                 return;
@@ -218,7 +218,7 @@ namespace Server.Items
                 Effects.SendLocationEffect(location, map, effect, 16, 1);
             }
 
-            this.Charges -= 1;
+            Charges -= 1;
         }
 
         public override void Serialize(GenericWriter writer)
@@ -227,7 +227,7 @@ namespace Server.Items
 
             writer.WriteEncodedInt(0); // version
 
-            writer.Write((int)this.m_CannonDirection);
+            writer.Write((int)m_CannonDirection);
             writer.Write(m_Charges);
             writer.Write(m_IsRewardItem);
         }
@@ -238,9 +238,9 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            this.m_CannonDirection = (CannonDirection)reader.ReadInt();
-            this.m_Charges = reader.ReadInt();
-            this.m_IsRewardItem = reader.ReadBool();
+            m_CannonDirection = (CannonDirection)reader.ReadInt();
+            m_Charges = reader.ReadInt();
+            m_IsRewardItem = reader.ReadBool();
         }
 
         private class InternalTarget : Target
@@ -249,12 +249,12 @@ namespace Server.Items
             public InternalTarget(CannonAddon cannon)
                 : base(12, true, TargetFlags.None)
             {
-                this.m_Cannon = cannon;
+                m_Cannon = cannon;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (this.m_Cannon == null || this.m_Cannon.Deleted)
+                if (m_Cannon == null || m_Cannon.Deleted)
                     return;
 
                 IPoint3D p = targeted as IPoint3D;
@@ -264,14 +264,14 @@ namespace Server.Items
 
                 if (from.InLOS(new Point3D(p)))
                 {
-                    if (!Utility.InRange(new Point3D(p), this.m_Cannon.Location, 2))
+                    if (!Utility.InRange(new Point3D(p), m_Cannon.Location, 2))
                     {
                         bool allow = false;
 
-                        int x = p.X - this.m_Cannon.X;
-                        int y = p.Y - this.m_Cannon.Y;
+                        int x = p.X - m_Cannon.X;
+                        int y = p.Y - m_Cannon.Y;
 
-                        switch (this.m_Cannon.CannonDirection)
+                        switch (m_Cannon.CannonDirection)
                         {
                             case CannonDirection.North:
                                 if (y < 0 && Math.Abs(x) <= -y / 3)
@@ -295,8 +295,8 @@ namespace Server.Items
                                 break;
                         }
 
-                        if (allow && Utility.InRange(new Point3D(p), this.m_Cannon.Location, 14))
-                            this.m_Cannon.DoFireEffect(p);
+                        if (allow && Utility.InRange(new Point3D(p), m_Cannon.Location, 14))
+                            m_Cannon.DoFireEffect(p);
                         else
                             from.SendLocalizedMessage(1076203); // Target out of range.							
                     }
@@ -320,26 +320,26 @@ namespace Server.Items
             public InternalGump(CannonAddon cannon, PotionKeg keg)
                 : base(50, 50)
             {
-                this.m_Cannon = cannon;
-                this.m_Keg = keg;
+                m_Cannon = cannon;
+                m_Keg = keg;
 
-                this.Closable = true;
-                this.Disposable = true;
-                this.Dragable = true;
-                this.Resizable = false;
+                Closable = true;
+                Disposable = true;
+                Dragable = true;
+                Resizable = false;
 
-                this.AddPage(0);
+                AddPage(0);
 
-                this.AddBackground(0, 0, 291, 133, 0x13BE);
-                this.AddImageTiled(5, 5, 280, 100, 0xA40);
+                AddBackground(0, 0, 291, 133, 0x13BE);
+                AddImageTiled(5, 5, 280, 100, 0xA40);
 
-                this.AddHtmlLocalized(9, 9, 272, 100, 1076196, cannon.Validate(keg).ToString(), 0x7FFF, false, false); // You will need a full keg of explosion potions to recharge the cannon.  Your keg will provide ~1_CHARGES~ charges.
+                AddHtmlLocalized(9, 9, 272, 100, 1076196, cannon.Validate(keg).ToString(), 0x7FFF, false, false); // You will need a full keg of explosion potions to recharge the cannon.  Your keg will provide ~1_CHARGES~ charges.
 
-                this.AddButton(5, 107, 0xFB1, 0xFB2, (int)Buttons.Cancel, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(40, 109, 100, 20, 1060051, 0x7FFF, false, false); // CANCEL
+                AddButton(5, 107, 0xFB1, 0xFB2, (int)Buttons.Cancel, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(40, 109, 100, 20, 1060051, 0x7FFF, false, false); // CANCEL
 
-                this.AddButton(160, 107, 0xFB7, 0xFB8, (int)Buttons.Recharge, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(195, 109, 120, 20, 1076197, 0x7FFF, false, false); // Recharge
+                AddButton(160, 107, 0xFB7, 0xFB8, (int)Buttons.Recharge, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(195, 109, 120, 20, 1076197, 0x7FFF, false, false); // Recharge
             }
 
             private enum Buttons
@@ -349,11 +349,11 @@ namespace Server.Items
             }
             public override void OnResponse(NetState state, RelayInfo info)
             {
-                if (this.m_Cannon == null || this.m_Cannon.Deleted)
+                if (m_Cannon == null || m_Cannon.Deleted)
                     return;
 
                 if (info.ButtonID == (int)Buttons.Recharge)
-                    this.m_Cannon.Fill(state.Mobile, this.m_Keg);
+                    m_Cannon.Fill(state.Mobile, m_Keg);
             }
         }
     }
@@ -367,7 +367,7 @@ namespace Server.Items
         public CannonDeed()
             : base()
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public CannonDeed(Serial serial)
@@ -380,9 +380,9 @@ namespace Server.Items
         {
             get
             {
-                CannonAddon addon = new CannonAddon(this.m_Direction);
-                addon.Charges = this.m_Charges;
-                addon.IsRewardItem = this.m_IsRewardItem;
+                CannonAddon addon = new CannonAddon(m_Direction);
+                addon.Charges = m_Charges;
+                addon.IsRewardItem = m_IsRewardItem;
 
                 return addon;
             }
@@ -392,12 +392,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Charges;
+                return m_Charges;
             }
             set
             {
-                this.m_Charges = value;
-                this.InvalidateProperties();
+                m_Charges = value;
+                InvalidateProperties();
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -405,30 +405,30 @@ namespace Server.Items
         {
             get
             {
-                return this.m_IsRewardItem;
+                return m_IsRewardItem;
             }
             set
             {
-                this.m_IsRewardItem = value;
-                this.InvalidateProperties();
+                m_IsRewardItem = value;
+                InvalidateProperties();
             }
         }
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 
-            if (this.m_IsRewardItem)
+            if (m_IsRewardItem)
                 list.Add(1076223); // 7th Year Veteran Reward
 
-            list.Add(1076207, this.m_Charges.ToString()); // Remaining Charges: ~1_val~
+            list.Add(1076207, m_Charges.ToString()); // Remaining Charges: ~1_val~
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.m_IsRewardItem && !RewardSystem.CheckIsUsableBy(from, this, null))
+            if (m_IsRewardItem && !RewardSystem.CheckIsUsableBy(from, this, null))
                 return;
 
-            if (this.IsChildOf(from.Backpack))
+            if (IsChildOf(from.Backpack))
             {
                 from.CloseGump(typeof(RewardOptionGump));
                 from.SendGump(new RewardOptionGump(this));
@@ -453,8 +453,8 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            this.m_Charges = reader.ReadInt();
-            this.m_IsRewardItem = reader.ReadBool();
+            m_Charges = reader.ReadInt();
+            m_IsRewardItem = reader.ReadBool();
         }
 
         public void GetOptions(RewardOptionList list)
@@ -467,9 +467,9 @@ namespace Server.Items
 
         public void OnOptionSelected(Mobile from, int option)
         {
-            this.m_Direction = (CannonDirection)option;
+            m_Direction = (CannonDirection)option;
 
-            if (!this.Deleted)
+            if (!Deleted)
                 base.OnDoubleClick(from);
         }
     }

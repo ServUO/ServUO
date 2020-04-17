@@ -6,7 +6,7 @@ namespace Server.Items
         public TableWithBlueClothAddon()
             : base()
         {
-            this.AddComponent(new LocalizedAddonComponent(0x118C, 1076276), 0, 0, 0);
+            AddComponent(new LocalizedAddonComponent(0x118C, 1076276), 0, 0, 0);
         }
 
         public TableWithBlueClothAddon(Serial serial)
@@ -36,7 +36,7 @@ namespace Server.Items
         public TableWithBlueClothDeed()
             : base()
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public TableWithBlueClothDeed(Serial serial)

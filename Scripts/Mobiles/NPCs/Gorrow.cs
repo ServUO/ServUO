@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public PointyEarsQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(SeveredElfEars), "severed elf ears", 20, 0x312D));
+            AddObjective(new ObtainObjective(typeof(SeveredElfEars), "severed elf ears", 20, 0x312D));
 
-            this.AddReward(new BaseReward(typeof(TrinketBag), 1072341));
+            AddReward(new BaseReward(typeof(TrinketBag), 1072341));
         }
 
         /* Pointy Ears */
@@ -46,7 +46,7 @@ namespace Server.Engines.Quests
         public Gorrow()
             : base("Gorrow", "the mayor")
         {
-            this.SetSkill(SkillName.Focus, 60.0, 83.0);
+            SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
         public Gorrow(Serial serial)
@@ -62,23 +62,23 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.Race = Race.Human;
+            Female = false;
+            Race = Race.Human;
 
-            this.Hue = 0x8412;
-            this.HairItemID = 0x2047;
-            this.HairHue = 0x465;
+            Hue = 0x8412;
+            HairItemID = 0x2047;
+            HairHue = 0x465;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Shoes(0x1BB));
-            this.AddItem(new LongPants(0x901));
-            this.AddItem(new Tunic(0x70A));
-            this.AddItem(new Cloak(0x675));
+            AddItem(new Backpack());
+            AddItem(new Shoes(0x1BB));
+            AddItem(new LongPants(0x901));
+            AddItem(new Tunic(0x70A));
+            AddItem(new Cloak(0x675));
         }
 
         public override void Serialize(GenericWriter writer)

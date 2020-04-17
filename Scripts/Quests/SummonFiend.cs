@@ -9,9 +9,9 @@ namespace Server.Engines.Quests
         public FiendishFriendsQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(Imp), "imps", 50));
+            AddObjective(new SlayObjective(typeof(Imp), "imps", 50));
 
-            this.AddReward(new BaseReward(1074873)); // The opportunity to prove yourself worthy of learning to Summon Fiends. (Sufficient spellweaving skill is required to cast the spell)
+            AddReward(new BaseReward(1074873)); // The opportunity to prove yourself worthy of learning to Summon Fiends. (Sufficient spellweaving skill is required to cast the spell)
         }
 
         public override QuestChain ChainID => QuestChain.SummonFiend;
@@ -51,9 +51,9 @@ namespace Server.Engines.Quests
         public CrackingTheWhipQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(StoutWhip), "stout whip", 1, 0x166F));
+            AddObjective(new ObtainObjective(typeof(StoutWhip), "stout whip", 1, 0x166F));
 
-            this.AddReward(new BaseReward(1075028)); // A step closer to learning to summon and control fiends.
+            AddReward(new BaseReward(1075028)); // A step closer to learning to summon and control fiends.
         }
 
         public override QuestChain ChainID => QuestChain.SummonFiend;
@@ -94,9 +94,9 @@ namespace Server.Engines.Quests
         public IronWillQuest()
             : base()
         {
-            this.AddObjective(new SlayObjective(typeof(ArcaneDaemon), "arcane daemon", 1));
+            AddObjective(new SlayObjective(typeof(ArcaneDaemon), "arcane daemon", 1));
 
-            this.AddReward(new BaseReward(typeof(SummonFiendScroll), 1071033));
+            AddReward(new BaseReward(typeof(SummonFiendScroll), 1071033));
         }
 
         public override QuestChain ChainID => QuestChain.SummonFiend;
@@ -119,7 +119,7 @@ namespace Server.Engines.Quests
         {
             /* You've demonstrated your strength, got a means of control, and taught the imps to fear 
             you.  You're ready now to summon them. */
-            this.Owner.SendLocalizedMessage(1074322, null, 0x2A);
+            Owner.SendLocalizedMessage(1074322, null, 0x2A);
 
             base.GiveRewards();
         }

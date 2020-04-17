@@ -126,78 +126,78 @@ namespace Server.Multis
             {
                 default:
                 case Direction.North:
-                    if (x == this.X && y < this.Y)
+                    if (x == X && y < Y)
                         return ShipPosition.Bow;
-                    else if (x > this.X && y + 5 == this.Y)
+                    else if (x > X && y + 5 == Y)
                         return ShipPosition.BowStarboard;
-                    else if (x < this.X && y + 5 == this.Y)
+                    else if (x < X && y + 5 == Y)
                         return ShipPosition.BowPort;
-                    else if (x > this.X && y + 1 == this.Y)
+                    else if (x > X && y + 1 == Y)
                         return ShipPosition.AmidShipStarboard;
-                    else if (x < this.X && y + 1 == this.Y)
+                    else if (x < X && y + 1 == Y)
                         return ShipPosition.AmidShipPort;
-                    else if (x > this.X && y - 3 == this.Y)
+                    else if (x > X && y - 3 == Y)
                         return ShipPosition.AmidShipStarboard;
-                    else if (x < this.X && y - 3 == this.Y)
+                    else if (x < X && y - 3 == Y)
                         return ShipPosition.AmidShipPort;
-                    else if (x > this.X && y - 3 > this.Y)
+                    else if (x > X && y - 3 > Y)
                         return ShipPosition.AftStarboard;
                     else
                         return ShipPosition.AftPort;
                 case Direction.West:
-                    if (x < this.X && y == this.Y)
+                    if (x < X && y == Y)
                         return ShipPosition.Bow;
-                    else if (x + 5 == this.X && y < this.Y)
+                    else if (x + 5 == X && y < Y)
                         return ShipPosition.BowStarboard;
-                    else if (x + 5 == this.X && y > this.Y)
+                    else if (x + 5 == X && y > Y)
                         return ShipPosition.BowPort;
-                    else if (x + 1 == this.X && y < this.Y)
+                    else if (x + 1 == X && y < Y)
                         return ShipPosition.AmidShipStarboard;
-                    else if (x + 1 == this.X && y > this.Y)
+                    else if (x + 1 == X && y > Y)
                         return ShipPosition.AmidShipPort;
-                    else if (x - 3 == this.X && y < this.Y)
+                    else if (x - 3 == X && y < Y)
                         return ShipPosition.AmidShipStarboard;
-                    else if (x - 3 == this.X && y > this.Y)
+                    else if (x - 3 == X && y > Y)
                         return ShipPosition.AmidShipPort;
-                    else if (x - 3 > this.X && y < this.Y)
+                    else if (x - 3 > X && y < Y)
                         return ShipPosition.AftStarboard;
                     else
                         return ShipPosition.AftPort;
                 case Direction.South:
-                    if (x == this.X && y > this.Y)
+                    if (x == X && y > Y)
                         return ShipPosition.Bow;
-                    else if (x < this.X && y - 5 == this.Y)
+                    else if (x < X && y - 5 == Y)
                         return ShipPosition.BowStarboard;
-                    else if (x > this.X && y - 5 == this.Y)
+                    else if (x > X && y - 5 == Y)
                         return ShipPosition.BowPort;
-                    else if (x < this.X && y - 1 == this.Y)
+                    else if (x < X && y - 1 == Y)
                         return ShipPosition.AmidShipStarboard;
-                    else if (x > this.X && y - 1 == this.Y)
+                    else if (x > X && y - 1 == Y)
                         return ShipPosition.AmidShipPort;
-                    else if (x < this.X && y + 3 == this.Y)
+                    else if (x < X && y + 3 == Y)
                         return ShipPosition.AmidShipStarboard;
-                    else if (x > this.X && y + 3 == this.Y)
+                    else if (x > X && y + 3 == Y)
                         return ShipPosition.AmidShipPort;
-                    else if (x < this.X && y + 3 < this.Y)
+                    else if (x < X && y + 3 < Y)
                         return ShipPosition.AftStarboard;
                     else
                         return ShipPosition.AftPort;
                 case Direction.East:
-                    if (x > this.X && y == this.Y)
+                    if (x > X && y == Y)
                         return ShipPosition.Bow;
-                    else if (x - 5 == this.X && y > this.Y)
+                    else if (x - 5 == X && y > Y)
                         return ShipPosition.BowStarboard;
-                    else if (x - 5 == this.X && y < this.Y)
+                    else if (x - 5 == X && y < Y)
                         return ShipPosition.BowPort;
-                    else if (x - 1 == this.X && y > this.Y)
+                    else if (x - 1 == X && y > Y)
                         return ShipPosition.AmidShipStarboard;
-                    else if (x - 1 == this.X && y < this.Y)
+                    else if (x - 1 == X && y < Y)
                         return ShipPosition.AmidShipPort;
-                    else if (x + 3 == this.X && y > this.Y)
+                    else if (x + 3 == X && y > Y)
                         return ShipPosition.AmidShipStarboard;
-                    else if (x + 3 == this.X && y < this.Y)
+                    else if (x + 3 == X && y < Y)
                         return ShipPosition.AmidShipPort;
-                    else if (x + 3 < this.X && y > this.Y)
+                    else if (x + 3 < X && y > Y)
                         return ShipPosition.AftStarboard;
                     else
                         return ShipPosition.AftPort;
@@ -214,8 +214,8 @@ namespace Server.Multis
 
             if (contains)
             {
-                int boatX = this.X;
-                int boatY = this.Y;
+                int boatX = X;
+                int boatY = Y;
 
                 switch (Facing)
                 {
@@ -300,7 +300,7 @@ namespace Server.Multis
     public class BritannianShipDeed : BaseBoatDeed
     {
         public override int LabelNumber => 1150017;
-        public override BaseBoat Boat => new BritannianShip(this.BoatDirection);
+        public override BaseBoat Boat => new BritannianShip(BoatDirection);
 
         [Constructable]
         public BritannianShipDeed()
@@ -331,7 +331,7 @@ namespace Server.Multis
     public class DockedBritannianShip : BaseDockedBoat
     {
         public override int LabelNumber => 1150100;  //Britannian Ship
-        public override BaseBoat Boat => new BritannianShip(this.BoatDirection);
+        public override BaseBoat Boat => new BritannianShip(BoatDirection);
 
         public DockedBritannianShip(BaseBoat boat)
             : base(0x40, Point3D.Zero, boat)

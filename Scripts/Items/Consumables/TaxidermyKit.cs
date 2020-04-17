@@ -366,21 +366,21 @@ namespace Server.Items
 
         public override void OnAosSingleClick(Mobile from)
         {
-            ObjectPropertyList opl = this.PropertyList;
+            ObjectPropertyList opl = PropertyList;
 
-            if (this.AddonNumber == 1041110)
+            if (AddonNumber == 1041110)
             {
-                from.Send(new UnicodeMessage(this.Serial, this.ItemID, MessageType.Label, 0x3B2, 3, "ENU", "", "A large fish trophy"));
+                from.Send(new UnicodeMessage(Serial, ItemID, MessageType.Label, 0x3B2, 3, "ENU", "", "A large fish trophy"));
 
-                if (this.Hunter != null)
-                    from.Send(new UnicodeMessage(this.Serial, this.ItemID, MessageType.Label, 0x3B2, 3, "ENU", "", "Caught by " + this.Hunter.Name));
+                if (Hunter != null)
+                    from.Send(new UnicodeMessage(Serial, ItemID, MessageType.Label, 0x3B2, 3, "ENU", "", "Caught by " + Hunter.Name));
 
-                from.Send(new UnicodeMessage(this.Serial, this.ItemID, MessageType.Label, 0x3B2, 3, "ENU", "", this.AnimalWeight + " stones"));
+                from.Send(new UnicodeMessage(Serial, ItemID, MessageType.Label, 0x3B2, 3, "ENU", "", AnimalWeight + " stones"));
             }
             else
             {
                 if (opl.Header > 0)
-                    from.Send(new MessageLocalized(this.Serial, this.ItemID, MessageType.Label, 0x3B2, 3, opl.Header, this.Name, opl.HeaderArgs));
+                    from.Send(new MessageLocalized(Serial, ItemID, MessageType.Label, 0x3B2, 3, opl.Header, Name, opl.HeaderArgs));
             }
         }
 
@@ -390,10 +390,10 @@ namespace Server.Items
 
         public bool CouldFit(IPoint3D p, Map map)
         {
-            if (!map.CanFit(p.X, p.Y, p.Z, this.ItemData.Height))
+            if (!map.CanFit(p.X, p.Y, p.Z, ItemData.Height))
                 return false;
 
-            if (this.ItemID == m_NorthID)
+            if (ItemID == m_NorthID)
                 return BaseAddon.IsWall(p.X, p.Y - 1, p.Z, map); // North wall
             else
                 return BaseAddon.IsWall(p.X - 1, p.Y, p.Z, map); // West wall
@@ -450,21 +450,21 @@ namespace Server.Items
 
         private void FixMovingCrate()
         {
-            if (this.Deleted)
+            if (Deleted)
                 return;
 
-            if (this.Movable || this.IsLockedDown)
+            if (Movable || IsLockedDown)
             {
-                Item deed = this.Deed;
+                Item deed = Deed;
 
-                if (this.Parent is Item)
+                if (Parent is Item)
                 {
-                    ((Item)this.Parent).AddItem(deed);
-                    deed.Location = this.Location;
+                    ((Item)Parent).AddItem(deed);
+                    deed.Location = Location;
                 }
                 else
                 {
-                    deed.MoveToWorld(this.Location, this.Map);
+                    deed.MoveToWorld(Location, Map);
                 }
 
                 Delete();
@@ -486,7 +486,7 @@ namespace Server.Items
             {
                 if (from.InRange(GetWorldLocation(), 1))
                 {
-                    from.AddToBackpack(this.Deed);
+                    from.AddToBackpack(Deed);
                     Delete();
                 }
                 else

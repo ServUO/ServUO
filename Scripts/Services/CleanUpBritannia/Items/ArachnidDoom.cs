@@ -5,9 +5,9 @@
         [Constructable]
         public ArachnidDoom()
         {
-            this.Hue = 1944;
-            this.Weight = 4;
-            this.Slayer = SlayerName.ArachnidDoom;
+            Hue = 1944;
+            Weight = 4;
+            Slayer = SlayerName.ArachnidDoom;
 
             UsesRemaining = 450;
         }

@@ -6,9 +6,9 @@ namespace Server.Items
         public EyeOfNavrey()
             : base(0x318D)
         {
-            this.Weight = 1;
-            this.Hue = 68;
-            this.LootType = LootType.Blessed;
+            Weight = 1;
+            Hue = 68;
+            LootType = LootType.Blessed;
         }
 
         public EyeOfNavrey(Serial serial)

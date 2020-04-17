@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public Athialon()
             : base("the expeditionist")
         {
-            this.Name = "Athialon";
+            Name = "Athialon";
         }
 
         public Athialon(Serial serial)
@@ -20,46 +20,46 @@ namespace Server.Mobiles
 
         public override bool CanTeach => false;
         public override bool IsInvulnerable => true;
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
         }
 
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.Race = Race.Elf;
+            Female = false;
+            Race = Race.Elf;
 
-            this.Hue = 0x8382;
-            this.HairItemID = 0x2FC0;
-            this.HairHue = 0x35;
+            Hue = 0x8382;
+            HairItemID = 0x2FC0;
+            HairHue = 0x35;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new ElvenBoots(0x901));
-            this.AddItem(new DiamondMace());
-            this.AddItem(new WoodlandBelt());
+            AddItem(new ElvenBoots(0x901));
+            AddItem(new DiamondMace());
+            AddItem(new WoodlandBelt());
 
             Item item;
 
             item = new WoodlandLegs();
             item.Hue = 0x3B2;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new WoodlandChest();
             item.Hue = 0x3B2;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new WoodlandArms();
             item.Hue = 0x3B2;
-            this.AddItem(item);
+            AddItem(item);
 
             item = new WingedHelm();
             item.Hue = 0x3B2;
-            this.AddItem(item);
+            AddItem(item);
         }
 
         public override void Serialize(GenericWriter writer)

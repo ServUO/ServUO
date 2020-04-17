@@ -8,23 +8,23 @@ namespace Server.Mobiles
         public Aminia()
             : base(AIType.AI_Melee, FightMode.None, 2, 1, 0.5, 2)
         {
-            this.Name = "Aminia";
-            this.Title = "the master weaponsmith's wife";
-            this.Blessed = true;
+            Name = "Aminia";
+            Title = "the master weaponsmith's wife";
+            Blessed = true;
 
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = true;
-            this.Race = Race.Human;
+            Female = true;
+            Race = Race.Human;
 
-            this.Hue = 0x83ED;
-            this.HairItemID = 0x203B;
-            this.HairHue = 0x454;
+            Hue = 0x83ED;
+            HairItemID = 0x203B;
+            HairHue = 0x454;
 
-            this.AddItem(new Backpack());
-            this.AddItem(new Sandals(0x75B));
-            this.AddItem(new Tunic(0x4BF));
-            this.AddItem(new Skirt(0x8FD));
+            AddItem(new Backpack());
+            AddItem(new Sandals(0x75B));
+            AddItem(new Tunic(0x4BF));
+            AddItem(new Skirt(0x8FD));
         }
 
         public Aminia(Serial serial)
@@ -37,17 +37,17 @@ namespace Server.Mobiles
             int hours = 0;
             int minutes = 0;
 
-            Clock.GetTime(this.Map, this.Location.X, this.Location.Y, out hours, out minutes);
+            Clock.GetTime(Map, Location.X, Location.Y, out hours, out minutes);
 
             if (hours == 21)
             {
-                this.Blessed = false;
-                this.Body = 0x17;
+                Blessed = false;
+                Body = 0x17;
             }
             else
             {
-                this.Blessed = true;
-                this.Body = 0x191;
+                Blessed = true;
+                Body = 0x191;
             }
         }
 

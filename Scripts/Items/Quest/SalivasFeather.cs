@@ -6,8 +6,8 @@ namespace Server.Items
         public SalivasFeather()
             : base(0x1020)
         {
-            this.LootType = LootType.Blessed;
-            this.Hue = 0x5C;
+            LootType = LootType.Blessed;
+            Hue = 0x5C;
         }
 
         public SalivasFeather(Serial serial)

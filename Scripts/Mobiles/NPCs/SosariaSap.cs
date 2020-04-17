@@ -6,8 +6,8 @@ namespace Server.Items
         public SosariaSap()
             : base(0x1848)
         {
-            this.Weight = 1.0;
-            this.LootType = LootType.Blessed;
+            Weight = 1.0;
+            LootType = LootType.Blessed;
         }
 
         public SosariaSap(Serial serial)

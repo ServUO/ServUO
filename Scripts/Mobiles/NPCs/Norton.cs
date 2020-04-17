@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
         public DeliciousFishesQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(Fish), "fish", 5, 0x9CC));
+            AddObjective(new ObtainObjective(typeof(Fish), "fish", 5, 0x9CC));
 
-            this.AddReward(new BaseReward(typeof(PeppercornFishsteak), 3, 1075557)); // peppercorn fishsteak
+            AddReward(new BaseReward(typeof(PeppercornFishsteak), 3, 1075557)); // peppercorn fishsteak
         }
 
         public override TimeSpan RestartDelay => TimeSpan.FromMinutes(3);
@@ -67,23 +67,23 @@ namespace Server.Engines.Quests
                 };
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = false;
+            CantWalk = true;
+            Race = Race.Human;
 
-            this.Hue = 0x83F8;
-            this.HairItemID = 0x203B;
-            this.HairHue = 0x472;
+            Hue = 0x83F8;
+            HairItemID = 0x203B;
+            HairHue = 0x472;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new ThighBoots());
-            this.AddItem(new Shirt(0x11D));
-            this.AddItem(new LongPants(0x6C2));
+            AddItem(new Backpack());
+            AddItem(new ThighBoots());
+            AddItem(new Shirt(0x11D));
+            AddItem(new LongPants(0x6C2));
         }
 
         public override void Serialize(GenericWriter writer)

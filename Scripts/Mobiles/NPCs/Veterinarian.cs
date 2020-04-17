@@ -68,7 +68,7 @@ namespace Server.Mobiles
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (this.InRange(m, 3) && !this.InRange(oldLocation, 3) && this.InLOS(m))
+            if (InRange(m, 3) && !InRange(oldLocation, 3) && InLOS(m))
             {
                 BaseCreature[] pets = GetDeadPets(m);
 

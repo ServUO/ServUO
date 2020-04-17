@@ -20,7 +20,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!from.InRange(this.GetWorldLocation(), 3))
+            if (!from.InRange(GetWorldLocation(), 3))
                 from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
             else
                 from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1114372); // This looks like part of a larger contraption.

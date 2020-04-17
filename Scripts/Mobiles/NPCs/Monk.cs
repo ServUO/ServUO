@@ -10,11 +10,11 @@ namespace Server.Mobiles
         public Monk()
             : base("the Monk")
         {
-            this.SetSkill(SkillName.EvalInt, 100.0);
-            this.SetSkill(SkillName.Tactics, 70.0, 90.0);
-            this.SetSkill(SkillName.Wrestling, 70.0, 90.0);
-            this.SetSkill(SkillName.MagicResist, 70.0, 90.0);
-            this.SetSkill(SkillName.Macing, 70.0, 90.0);
+            SetSkill(SkillName.EvalInt, 100.0);
+            SetSkill(SkillName.Tactics, 70.0, 90.0);
+            SetSkill(SkillName.Wrestling, 70.0, 90.0);
+            SetSkill(SkillName.MagicResist, 70.0, 90.0);
+            SetSkill(SkillName.Macing, 70.0, 90.0);
         }
 
         public Monk(Serial serial)
@@ -22,16 +22,16 @@ namespace Server.Mobiles
         {
         }
 
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBMonk());
+            m_SBInfos.Add(new SBMonk());
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Sandals());
-            this.AddItem(new MonkRobe());
+            AddItem(new Sandals());
+            AddItem(new MonkRobe());
         }
 
         public override void Serialize(GenericWriter writer)

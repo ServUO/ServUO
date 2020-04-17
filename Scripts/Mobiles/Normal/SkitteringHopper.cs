@@ -7,34 +7,34 @@ namespace Server.Mobiles
         public SkitteringHopper()
             : base(AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a skittering hopper";
-            this.Body = 302;
-            this.BaseSoundID = 959;
+            Name = "a skittering hopper";
+            Body = 302;
+            BaseSoundID = 959;
 
-            this.SetStr(41, 65);
-            this.SetDex(91, 115);
-            this.SetInt(26, 50);
+            SetStr(41, 65);
+            SetDex(91, 115);
+            SetInt(26, 50);
 
-            this.SetHits(31, 45);
+            SetHits(31, 45);
 
-            this.SetDamage(3, 5);
+            SetDamage(3, 5);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 5, 10);
-            this.SetResistance(ResistanceType.Cold, 10, 20);
-            this.SetResistance(ResistanceType.Energy, 5, 10);
+            SetResistance(ResistanceType.Physical, 5, 10);
+            SetResistance(ResistanceType.Cold, 10, 20);
+            SetResistance(ResistanceType.Energy, 5, 10);
 
-            this.SetSkill(SkillName.MagicResist, 30.1, 45.0);
-            this.SetSkill(SkillName.Tactics, 45.1, 70.0);
-            this.SetSkill(SkillName.Wrestling, 40.1, 60.0);
+            SetSkill(SkillName.MagicResist, 30.1, 45.0);
+            SetSkill(SkillName.Tactics, 45.1, 70.0);
+            SetSkill(SkillName.Wrestling, 40.1, 60.0);
 
-            this.Fame = 300;
-            this.Karma = 0;
+            Fame = 300;
+            Karma = 0;
 
-            this.Tamable = true;
-            this.ControlSlots = 1;
-            this.MinTameSkill = -12.9;
+            Tamable = true;
+            ControlSlots = 1;
+            MinTameSkill = -12.9;
         }
 
         public SkitteringHopper(Serial serial)
@@ -45,7 +45,7 @@ namespace Server.Mobiles
         public override int TreasureMapLevel => 1;
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Meager);
+            AddLoot(LootPack.Meager);
         }
 
         public override void Serialize(GenericWriter writer)

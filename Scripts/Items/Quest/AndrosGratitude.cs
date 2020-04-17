@@ -6,7 +6,7 @@ namespace Server.Items
         public AndrosGratitude()
             : base(10)
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public AndrosGratitude(Serial serial)

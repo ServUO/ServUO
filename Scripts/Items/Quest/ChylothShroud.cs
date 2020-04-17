@@ -6,8 +6,8 @@ namespace Server.Engines.Quests.Doom
         public ChylothShroud()
             : base(0x204E)
         {
-            this.Hue = 0x846;
-            this.Layer = Layer.OuterTorso;
+            Hue = 0x846;
+            Layer = Layer.OuterTorso;
         }
 
         public ChylothShroud(Serial serial)

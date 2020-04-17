@@ -6,32 +6,32 @@ namespace Server.Mobiles
         public CorruptedSoul()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, .1, 5)
         {
-            this.Name = "a corrupted soul";
-            this.Body = 0x3CA;
-            this.Hue = 0x453;
+            Name = "a corrupted soul";
+            Body = 0x3CA;
+            Hue = 0x453;
 
-            this.SetStr(102, 115);
-            this.SetDex(101, 115);
-            this.SetInt(203, 215);
+            SetStr(102, 115);
+            SetDex(101, 115);
+            SetInt(203, 215);
 
-            this.SetHits(61, 69);
+            SetHits(61, 69);
 
-            this.SetDamage(4, 40);
+            SetDamage(4, 40);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 61, 74);
-            this.SetResistance(ResistanceType.Fire, 22, 48);
-            this.SetResistance(ResistanceType.Cold, 73, 100);
-            this.SetResistance(ResistanceType.Poison, 0);
-            this.SetResistance(ResistanceType.Energy, 51, 60);
+            SetResistance(ResistanceType.Physical, 61, 74);
+            SetResistance(ResistanceType.Fire, 22, 48);
+            SetResistance(ResistanceType.Cold, 73, 100);
+            SetResistance(ResistanceType.Poison, 0);
+            SetResistance(ResistanceType.Energy, 51, 60);
 
-            this.SetSkill(SkillName.MagicResist, 80.2, 89.4);
-            this.SetSkill(SkillName.Tactics, 81.3, 89.9);
-            this.SetSkill(SkillName.Wrestling, 80.1, 88.7);
+            SetSkill(SkillName.MagicResist, 80.2, 89.4);
+            SetSkill(SkillName.Tactics, 81.3, 89.9);
+            SetSkill(SkillName.Wrestling, 80.1, 88.7);
 
-            this.Fame = 5000;
-            this.Karma = -5000;
+            Fame = 5000;
+            Karma = -5000;
         }
 
         public CorruptedSoul(Serial serial)
@@ -63,7 +63,7 @@ namespace Server.Mobiles
 
             // 1 in 20 chance that a Thread of Fate will appear in the killer's pack
 
-            Effects.SendLocationEffect(this.Location, this.Map, 0x376A, 10, 1);
+            Effects.SendLocationEffect(Location, Map, 0x376A, 10, 1);
             return true;
         }
 

@@ -6,9 +6,9 @@ namespace Server.Items
         [Constructable]
         public RewardBlackDyeTub()
         {
-            this.Hue = this.DyedHue = 0x0001;
-            this.Redyable = false;
-            this.LootType = LootType.Blessed;
+            Hue = DyedHue = 0x0001;
+            Redyable = false;
+            LootType = LootType.Blessed;
         }
 
         public RewardBlackDyeTub(Serial serial)
@@ -22,16 +22,16 @@ namespace Server.Items
         {
             get
             {
-                return this.m_IsRewardItem;
+                return m_IsRewardItem;
             }
             set
             {
-                this.m_IsRewardItem = value;
+                m_IsRewardItem = value;
             }
         }
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.m_IsRewardItem && !Engines.VeteranRewards.RewardSystem.CheckIsUsableBy(from, this, null))
+            if (m_IsRewardItem && !Engines.VeteranRewards.RewardSystem.CheckIsUsableBy(from, this, null))
                 return;
 
             base.OnDoubleClick(from);
@@ -41,7 +41,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if (this.m_IsRewardItem)
+            if (m_IsRewardItem)
                 list.Add(1076217); // 1st Year Veteran Reward
         }
 
@@ -64,7 +64,7 @@ namespace Server.Items
             {
                 case 1:
                     {
-                        this.m_IsRewardItem = reader.ReadBool();
+                        m_IsRewardItem = reader.ReadBool();
                         break;
                     }
             }

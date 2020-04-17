@@ -9,8 +9,8 @@ namespace Server.Mobiles
         public Provisioner()
             : base("the provisioner")
         {
-            this.SetSkill(SkillName.Camping, 45.0, 68.0);
-            this.SetSkill(SkillName.Tactics, 45.0, 68.0);
+            SetSkill(SkillName.Camping, 45.0, 68.0);
+            SetSkill(SkillName.Tactics, 45.0, 68.0);
         }
 
         public Provisioner(Serial serial)
@@ -18,13 +18,13 @@ namespace Server.Mobiles
         {
         }
 
-        protected override List<SBInfo> SBInfos => this.m_SBInfos;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBProvisioner());
+            m_SBInfos.Add(new SBProvisioner());
 
-            if (this.IsTokunoVendor)
-                this.m_SBInfos.Add(new SBSEHats());
+            if (IsTokunoVendor)
+                m_SBInfos.Add(new SBSEHats());
         }
 
         public override void Serialize(GenericWriter writer)

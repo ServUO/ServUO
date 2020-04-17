@@ -6,9 +6,9 @@ namespace Server.Items
         public HolidayTimepiece()
             : base(0x1086)
         {
-            this.Weight = this.DefaultWeight;
-            this.LootType = LootType.Blessed;
-            this.Layer = Layer.Bracelet;
+            Weight = DefaultWeight;
+            LootType = LootType.Blessed;
+            Layer = Layer.Bracelet;
         }
 
         public HolidayTimepiece(Serial serial)

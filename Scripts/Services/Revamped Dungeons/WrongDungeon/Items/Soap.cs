@@ -14,10 +14,10 @@ namespace Server.Items
         public Soap(int amount)
             : base(0x1422)
         {
-            this.Hue = 1285;
-            this.Weight = 1.0;
-            this.Stackable = true;
-            this.Amount = amount;
+            Hue = 1285;
+            Weight = 1.0;
+            Stackable = true;
+            Amount = amount;
         }
 
         public Soap(Serial serial)

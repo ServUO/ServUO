@@ -80,9 +80,9 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.CraftSystem != null && (IsChildOf(from.Backpack) || Parent == from))
+            if (CraftSystem != null && (IsChildOf(from.Backpack) || Parent == from))
             {
-                int num = this.CraftSystem.CanCraft(from, this, null);
+                int num = CraftSystem.CanCraft(from, this, null);
 
                 if (num > 0 && num != 1044267) // Blacksmithing shows the gump regardless of proximity of an anvil and forge after SE
                 {
@@ -90,9 +90,9 @@ namespace Server.Items
                 }
                 else
                 {
-                    CraftContext context = this.CraftSystem.GetContext(from);
+                    CraftContext context = CraftSystem.GetContext(from);
 
-                    from.SendGump(new CraftGump(from, this.CraftSystem, this, null));
+                    from.SendGump(new CraftGump(from, CraftSystem, this, null));
                 }
             }
             else

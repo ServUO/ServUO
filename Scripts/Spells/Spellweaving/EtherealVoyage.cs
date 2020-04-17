@@ -30,17 +30,17 @@ namespace Server.Spells.Spellweaving
 
         public override bool CheckCast()
         {
-            if (TransformationSpellHelper.UnderTransformation(this.Caster, typeof(EtherealVoyageSpell)))
+            if (TransformationSpellHelper.UnderTransformation(Caster, typeof(EtherealVoyageSpell)))
             {
-                this.Caster.SendLocalizedMessage(501775); // This spell is already in effect.
+                Caster.SendLocalizedMessage(501775); // This spell is already in effect.
             }
-            else if (!this.Caster.CanBeginAction(typeof(EtherealVoyageSpell)))
+            else if (!Caster.CanBeginAction(typeof(EtherealVoyageSpell)))
             {
-                this.Caster.SendLocalizedMessage(1075124); // You must wait before casting that spell again.
+                Caster.SendLocalizedMessage(1075124); // You must wait before casting that spell again.
             }
-            else if (this.Caster.Combatant != null)
+            else if (Caster.Combatant != null)
             {
-                this.Caster.SendLocalizedMessage(1072586); // You cannot cast Ethereal Voyage while you are in combat.
+                Caster.SendLocalizedMessage(1072586); // You cannot cast Ethereal Voyage while you are in combat.
             }
             else
             {
@@ -55,15 +55,15 @@ namespace Server.Spells.Spellweaving
             m.PlaySound(0x5C8);
             m.SendLocalizedMessage(1074770); // You are now under the effects of Ethereal Voyage.
 
-            double skill = this.Caster.Skills.Spellweaving.Value;
+            double skill = Caster.Skills.Spellweaving.Value;
 
-            TimeSpan duration = TimeSpan.FromSeconds(12 + (int)(skill / 24) + (this.FocusLevel * 2));
+            TimeSpan duration = TimeSpan.FromSeconds(12 + (int)(skill / 24) + (FocusLevel * 2));
 
-            Timer.DelayCall<Mobile>(duration, new TimerStateCallback<Mobile>(RemoveEffect), this.Caster);
+            Timer.DelayCall<Mobile>(duration, new TimerStateCallback<Mobile>(RemoveEffect), Caster);
 
-            this.Caster.BeginAction(typeof(EtherealVoyageSpell));	//Cannot cast this spell for another 5 minutes(300sec) after effect removed.
+            Caster.BeginAction(typeof(EtherealVoyageSpell));	//Cannot cast this spell for another 5 minutes(300sec) after effect removed.
 
-            BuffInfo.AddBuff(this.Caster, new BuffInfo(BuffIcon.EtherealVoyage, 1031613, 1075805, duration, this.Caster));
+            BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.EtherealVoyage, 1031613, 1075805, duration, Caster));
         }
 
         public override void RemoveEffect(Mobile m)

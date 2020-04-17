@@ -15,12 +15,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Type;
+                return m_Type;
             }
             set
             {
-                this.m_Type = value;
-                this.InvalidateProperties();
+                m_Type = value;
+                InvalidateProperties();
             }
         }
 
@@ -28,17 +28,17 @@ namespace Server.Items
         public LockerKey(Parts type)
             : base(0x410B)
         {
-            this.Weight = 1.0;
-            this.LootType = LootType.Blessed;
-            this.Hue = 1359;
-            this.m_Type = type;
+            Weight = 1.0;
+            LootType = LootType.Blessed;
+            Hue = 1359;
+            m_Type = type;
         }
 
         public override int Lifespan => 300;
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!this.IsChildOf(from.Backpack))
+            if (!IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(501661); // That key is unreachable.
                 return;
@@ -55,12 +55,12 @@ namespace Server.Items
             public UnlockTarget(LockerKey key)
                 : base(1, false, TargetFlags.None)
             {
-                this.m_Key = key;
+                m_Key = key;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (this.m_Key.Deleted || !this.m_Key.IsChildOf(from.Backpack))
+                if (m_Key.Deleted || !m_Key.IsChildOf(from.Backpack))
                 {
                     from.SendLocalizedMessage(501661); // That key is unreachable.
                     return;
@@ -70,7 +70,7 @@ namespace Server.Items
                 {
                     StorageLocker sl = (StorageLocker)targeted;
 
-                    if (sl.Type == this.m_Key.Type)
+                    if (sl.Type == m_Key.Type)
                     {
                         sl.Locked = false;
 
