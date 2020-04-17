@@ -10,7 +10,7 @@ namespace Server.Items
 {
     public class TeleporterComponent : AddonComponent
     {
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         public Direction _Direction { get; set; }
 
@@ -79,7 +79,7 @@ namespace Server.Items
 
     public class SpiralStaircaseAddon : BaseAddon, ISecurable, IDyable
     {
-        public override BaseAddonDeed Deed { get { return new SpiralStaircaseDeed(); } }
+        public override BaseAddonDeed Deed => new SpiralStaircaseDeed();
 
         [CommandProperty(AccessLevel.GameMaster)]
         public SecureLevel Level { get; set; }
@@ -161,8 +161,8 @@ namespace Server.Items
 
     public class SpiralStaircaseDeed : BaseAddonDeed, IRewardOption
     {
-        public override BaseAddon Addon { get { return new SpiralStaircaseAddon(m_Topper); } }
-        public override int LabelNumber { get { return 1159429; } } // spiral staircase
+        public override BaseAddon Addon => new SpiralStaircaseAddon(m_Topper);
+        public override int LabelNumber => 1159429;  // spiral staircase
 
         private bool m_Topper;
 

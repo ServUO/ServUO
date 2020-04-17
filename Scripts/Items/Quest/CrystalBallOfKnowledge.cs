@@ -11,7 +11,7 @@ namespace Server.Items
             SkillName.Meditation, SkillName.Focus
         };
 
-        public override int LabelNumber { get { return 1112568; } } // Crystal Ball of Knowledge
+        public override int LabelNumber => 1112568;  // Crystal Ball of Knowledge
 
         private bool m_Active;
 

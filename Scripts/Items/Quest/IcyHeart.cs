@@ -13,13 +13,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073162;
-            }
-        }// Icy Heart
+        public override int LabelNumber => 1073162;// Icy Heart
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

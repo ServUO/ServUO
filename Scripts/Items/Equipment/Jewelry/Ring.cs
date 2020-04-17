@@ -14,13 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override int BaseGemTypeNumber
-        {
-            get
-            {
-                return 1044176;
-            }
-        }// star sapphire ring
+        public override int BaseGemTypeNumber => 1044176;// star sapphire ring
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -75,7 +69,7 @@ namespace Server.Items
 
     public class SilverRing : BaseRing, IRepairable
     {
-        public CraftSystem RepairSystem { get { return DefTinkering.CraftSystem; } }
+        public CraftSystem RepairSystem => DefTinkering.CraftSystem;
 
         [Constructable]
         public SilverRing()

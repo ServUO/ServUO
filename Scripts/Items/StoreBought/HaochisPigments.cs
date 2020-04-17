@@ -77,7 +77,7 @@ namespace Server.Items
             }
         }
 
-        public override int LabelNumber { get { return 1071249; } } // Haochi's Pigments
+        public override int LabelNumber => 1071249;  // Haochi's Pigments
 
         public override void Serialize(GenericWriter writer)
         {
@@ -95,7 +95,7 @@ namespace Server.Items
             Type = (HaochisPigmentType)reader.ReadInt();
         }
 
-        public static HoachisPigmentInfo[] Table { get { return m_Table; } }
+        public static HoachisPigmentInfo[] Table => m_Table;
         private static readonly HoachisPigmentInfo[] m_Table =
         {
             new HoachisPigmentInfo( HaochisPigmentType.None, 0, -1 ),

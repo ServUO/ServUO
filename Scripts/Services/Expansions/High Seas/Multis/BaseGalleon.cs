@@ -67,27 +67,26 @@ namespace Server.Multis
         private BindingPole _Pole;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public ShipWheel Wheel { get { return _Wheel ?? (_Wheel = Fixtures.FirstOrDefault(f => f.GetType() == typeof(ShipWheel)) as ShipWheel); } }
+        public ShipWheel Wheel => _Wheel ?? (_Wheel = Fixtures.FirstOrDefault(f => f.GetType() == typeof(ShipWheel)) as ShipWheel);
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public GalleonHold GalleonHold
-        { get { return _Hold ?? (_Hold = Fixtures.FirstOrDefault(f => f.GetType() == typeof(GalleonHold)) as GalleonHold); } }
+        public GalleonHold GalleonHold => _Hold ?? (_Hold = Fixtures.FirstOrDefault(f => f.GetType() == typeof(GalleonHold)) as GalleonHold);
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public BindingPole Pole { get { return _Pole ?? (_Pole = Fixtures.FirstOrDefault(f => f.GetType() == typeof(BindingPole)) as BindingPole); } }
+        public BindingPole Pole => _Pole ?? (_Pole = Fixtures.FirstOrDefault(f => f.GetType() == typeof(BindingPole)) as BindingPole);
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile CapturedCaptain { get; set; }
 
-        public override int LabelNumber { get { return 1035980; } } // mast
+        public override int LabelNumber => 1035980;  // mast
 
-        public override bool IsClassicBoat { get { return false; } }
+        public override bool IsClassicBoat => false;
 
-        public virtual int MaxCannons { get { return 0; } }
-        public virtual int WheelDistance { get { return 0; } }
-        public virtual int CaptiveOffset { get { return 0; } }
-        public virtual int MaxAddons { get { return 0; } }
-        public virtual double CannonDamageMod { get { return 1.0; } }
+        public virtual int MaxCannons => 0;
+        public virtual int WheelDistance => 0;
+        public virtual int CaptiveOffset => 0;
+        public virtual int MaxAddons => 0;
+        public virtual double CannonDamageMod => 1.0;
 
         public abstract int[][] CannonTileIDs { get; }
         public abstract int[][] FillerIDs { get; }
@@ -1012,7 +1011,7 @@ namespace Server.Multis
             }
         }
 
-        public static int[][] CannonIDs { get { return m_CannonIDs; } }
+        public static int[][] CannonIDs => m_CannonIDs;
         private static readonly int[][] m_CannonIDs = new int[][]
         { 
                       //Light  Heavy, Blunder, Pumpkin
@@ -1050,7 +1049,7 @@ namespace Server.Multis
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool HasPaint { get { return m_BasePaintHue != 0; } }
+        public bool HasPaint => m_BasePaintHue != 0;
 
         private static readonly TimeSpan DecayPeriod = TimeSpan.FromDays(14);
         private static readonly int MaxPaintCoats = 4;
@@ -1262,7 +1261,7 @@ namespace Server.Multis
         }
 
         #region Addons
-        public static int[] ShipAddonTiles { get { return m_ShipAddonTiles; } }
+        public static int[] ShipAddonTiles => m_ShipAddonTiles;
         private static readonly int[] m_ShipAddonTiles =
             {23664, 23665, 23718, 23719, 23610, 23611, 23556, 23557, 23664, 23665, 23718, 23719, 23610, 23611, 23556, 23557};
 
@@ -1634,10 +1633,10 @@ namespace Server.Multis
         [CommandProperty(AccessLevel.GameMaster)]
         public SecurityLevel DefaultGuildAccess { get; set; }
 
-        public Dictionary<Mobile, SecurityLevel> Manifest { get { return m_Manifest; } }
+        public Dictionary<Mobile, SecurityLevel> Manifest => m_Manifest;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsPublic { get { return DefaultPublicAccess != SecurityLevel.Denied; } }
+        public bool IsPublic => DefaultPublicAccess != SecurityLevel.Denied;
 
         public SecurityEntry(BaseGalleon galleon)
         {

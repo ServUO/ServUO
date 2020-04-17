@@ -10,27 +10,9 @@ namespace Server.Spells.Bushido
         {
         }
 
-        public override int BaseMana
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 25.0;
-            }
-        }
-        public override TextDefinition AbilityMessage
-        {
-            get
-            {
-                return new TextDefinition(1063122);
-            }
-        }// You better kill your enemy with your next hit or you'll be rather sorry...
+        public override int BaseMana => 0;
+        public override double RequiredSkill => 25.0;
+        public override TextDefinition AbilityMessage => new TextDefinition(1063122);// You better kill your enemy with your next hit or you'll be rather sorry...
         public static int GetSwingBonus(Mobile target)
         {
             HonorableExecutionInfo info = m_Table[target] as HonorableExecutionInfo;

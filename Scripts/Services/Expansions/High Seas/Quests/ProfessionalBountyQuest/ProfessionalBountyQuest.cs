@@ -10,11 +10,11 @@ namespace Server.Engines.Quests
 {
     public class ProfessionalBountyQuest : BaseQuest
     {
-        public override object Title { get { return 1116708; } }
-        public override object Description { get { return 1116709; } }
-        public override object Refuse { get { return 1116713; } }
-        public override object Uncomplete { get { return 1116714; } }
-        public override object Complete { get { return 1116715; } }
+        public override object Title => 1116708;
+        public override object Description => 1116709;
+        public override object Refuse => 1116713;
+        public override object Uncomplete => 1116714;
+        public override object Complete => 1116715;
 
         private BaseGalleon m_Galleon;
         private BindingPole m_Pole;
@@ -22,9 +22,9 @@ namespace Server.Engines.Quests
         private Mobile m_Captain;
         private readonly List<Mobile> m_Helpers = new List<Mobile>();
 
-        public BaseGalleon Galleon { get { return m_Galleon; } }
-        public BindingPole Pole { get { return m_Pole; } }
-        public BindingRope Rope { get { return m_Rope; } }
+        public BaseGalleon Galleon => m_Galleon;
+        public BindingPole Pole => m_Pole;
+        public BindingRope Rope => m_Rope;
         public Mobile Captain { get { return m_Captain; } set { m_Captain = value; } }
 
         public ProfessionalBountyQuest()

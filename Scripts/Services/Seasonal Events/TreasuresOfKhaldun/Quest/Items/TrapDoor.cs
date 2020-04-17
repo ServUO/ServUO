@@ -13,7 +13,7 @@ namespace Server.Engines.Khaldun
         //public static readonly Point3D TeleportDestination1 = new Point3D(6242, 2892, 17);
 
         public Timer HideTimer { get; set; }
-        public bool CheckWhenHidden { get { return true; } }
+        public bool CheckWhenHidden => true;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Map DestinationMap { get; set; }
@@ -155,7 +155,7 @@ namespace Server.Engines.Khaldun
 
         private class TrapDoorPrompt : Prompt
         {
-            public override int MessageCliloc { get { return 1158557; } }
+            public override int MessageCliloc => 1158557;
 
             public TrapDoor Door { get; set; }
 

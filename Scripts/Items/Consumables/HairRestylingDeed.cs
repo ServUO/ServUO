@@ -19,13 +19,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041061;
-            }
-        }// a coupon for a free hair restyling
+        public override int LabelNumber => 1041061;// a coupon for a free hair restyling
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

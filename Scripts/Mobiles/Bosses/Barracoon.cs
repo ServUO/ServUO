@@ -59,112 +59,28 @@ namespace Server.Mobiles
         {
         }
 
-        public override ChampionSkullType SkullType
-        {
-            get
-            {
-                return ChampionSkullType.Greed;
-            }
-        }
-        public override Type[] UniqueList
-        {
-            get
-            {
-                return new Type[] { typeof(FangOfRactus) };
-            }
-        }
-        public override Type[] SharedList
-        {
-            get
-            {
-                return new Type[]
+        public override ChampionSkullType SkullType => ChampionSkullType.Greed;
+        public override Type[] UniqueList => new Type[] { typeof(FangOfRactus) };
+        public override Type[] SharedList => new Type[]
                 {
                     typeof(EmbroideredOakLeafCloak),
                     typeof(DjinnisRing),
                     typeof(DetectiveBoots),
                     typeof(GauntletsOfAnger)
                 };
-            }
-        }
-        public override Type[] DecorativeList
-        {
-            get
-            {
-                return new Type[] { typeof(SwampTile), typeof(MonsterStatuette) };
-            }
-        }
-        public override MonsterStatuetteType[] StatueTypes
-        {
-            get
-            {
-                return new MonsterStatuetteType[] { MonsterStatuetteType.Slime };
-            }
-        }
-        public override bool AlwaysMurderer
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool AutoDispel
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override double AutoDispelChance
-        {
-            get
-            {
-                return 1.0;
-            }
-        }
-        public override bool AllureImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool Unprovokable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool Uncalmable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Deadly;
-            }
-        }
-        public override bool ShowFameTitle
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool ClickTitle
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override Type[] DecorativeList => new Type[] { typeof(SwampTile), typeof(MonsterStatuette) };
+        public override MonsterStatuetteType[] StatueTypes => new MonsterStatuetteType[] { MonsterStatuetteType.Slime };
+        public override bool AlwaysMurderer => true;
+        public override bool AutoDispel => true;
+        public override double AutoDispelChance => 1.0;
+        public override bool AllureImmune => true;
+        public override bool Unprovokable => true;
+        public override bool Uncalmable => true;
+        public override Poison PoisonImmune => Poison.Deadly;
+        public override bool ShowFameTitle => false;
+        public override bool ClickTitle => false;
 
-        public override bool ForceStayHome { get { return true; } }
+        public override bool ForceStayHome => true;
 
         public override void GenerateLoot()
         {

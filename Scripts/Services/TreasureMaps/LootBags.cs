@@ -3,7 +3,7 @@ namespace Server.Items
     [FlipableAttribute(0xA333, 0xA334)]
     public class BagOfGems : Bag
     {
-        public override int LabelNumber { get { return 1048032; } } // a bag
+        public override int LabelNumber => 1048032;  // a bag
 
         [Constructable]
         public BagOfGems()
@@ -32,7 +32,7 @@ namespace Server.Items
     [FlipableAttribute(0xA331, 0xA332)]
     public class BagOfGold : Bag
     {
-        public override int LabelNumber { get { return 1048032; } } // a bag
+        public override int LabelNumber => 1048032;  // a bag
 
         [Constructable]
         public BagOfGold()
@@ -61,7 +61,7 @@ namespace Server.Items
     [FlipableAttribute(0xA32F, 0xA330)]
     public class BagOfRegs : Bag
     {
-        public override int LabelNumber { get { return 1048032; } } // a bag
+        public override int LabelNumber => 1048032;  // a bag
 
         [Constructable]
         public BagOfRegs()

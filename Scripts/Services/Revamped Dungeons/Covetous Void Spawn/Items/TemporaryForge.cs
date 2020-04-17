@@ -79,8 +79,8 @@ namespace Server.Items
 
         private class InternalComponent : ForgeComponent
         {
-            public override bool ForceShowProperties { get { return true; } }
-            public override int LabelNumber { get { return 1152601; } } //Temporary forge
+            public override bool ForceShowProperties => true;
+            public override int LabelNumber => 1152601;  //Temporary forge
 
             public InternalComponent() : base(0xFB1)
             {
@@ -149,7 +149,7 @@ namespace Server.Items
 
     public class TemporaryForgeDeed : BaseAddonDeed
     {
-        public override BaseAddon Addon { get { return new TemporaryForge(); } }
+        public override BaseAddon Addon => new TemporaryForge();
 
         public const int DecayPeriod = 24;
 

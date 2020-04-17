@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class AquaPendant : GoldNecklace
     {
-        public override int LabelNumber { get { return 1154246; } } // Aqua Pendant
+        public override int LabelNumber => 1154246;  // Aqua Pendant
 
         [Constructable]
         public AquaPendant()

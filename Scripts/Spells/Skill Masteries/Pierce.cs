@@ -11,11 +11,11 @@ namespace Server.Spells.SkillMasteries
 {
     public class PierceSpell : SkillMasteryMove
     {
-        public override int BaseMana { get { return 20; } }
-        public override double RequiredSkill { get { return 90.0; } }
+        public override int BaseMana => 20;
+        public override double RequiredSkill => 90.0;
 
-        public override SkillName MoveSkill { get { return SkillName.Fencing; } }
-        public override TextDefinition AbilityMessage { get { return new TextDefinition(1155991); } } // You ready yourself to pierce your opponent!
+        public override SkillName MoveSkill => SkillName.Fencing;
+        public override TextDefinition AbilityMessage => new TextDefinition(1155991);  // You ready yourself to pierce your opponent!
 
         private Dictionary<Mobile, Timer> _Table;
 

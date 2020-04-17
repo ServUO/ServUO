@@ -52,30 +52,30 @@ namespace Server.Items
         public DamageLevel DamageState { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Direction Facing { get { return GetFacing(); } }
+        public Direction Facing => GetFacing();
 
-        public virtual bool HitMultipleMobs { get { return false; } }
+        public virtual bool HitMultipleMobs => false;
 
         public abstract ShipCannonDeed GetDeed { get; }
         public abstract int Range { get; }
         public abstract CannonPower Power { get; }
 
-        public virtual int MaxHits { get { return 100; } }
-        public virtual TimeSpan ActionTime { get { return TimeSpan.FromSeconds(1.5); } }
+        public virtual int MaxHits => 100;
+        public virtual TimeSpan ActionTime => TimeSpan.FromSeconds(1.5);
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool CanLight => Prepered == CannonAction.Finish && Loaded == CannonAction.Finish && Charged == CannonAction.Finish && Primed == CannonAction.Finish;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Empty { get { return !CanLight && Items.Count == 0; } }
+        public bool Empty => !CanLight && Items.Count == 0;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public double Durability { get { return (m_Hits / (double)MaxHits) * 100.0; } }
+        public double Durability => (m_Hits / (double)MaxHits) * 100.0;
 
-        public override bool ForceShowProperties { get { return true; } }
-        public override int DefaultGumpID { get { return 0x9CE7; } }
-        public override bool DisplaysContent { get { return false; } }
-        public override int DefaultMaxWeight { get { return 300; } }
+        public override bool ForceShowProperties => true;
+        public override int DefaultGumpID => 0x9CE7;
+        public override bool DisplaysContent => false;
+        public override int DefaultMaxWeight => 300;
 
         public List<Mobile> Viewing { get; set; } = new List<Mobile>();
 
@@ -1087,7 +1087,7 @@ namespace Server.Items
             InvalidateDamageState(from);
         }
 
-        public Dictionary<Mobile, List<int>> Actions { get { return m_Actions; } }
+        public Dictionary<Mobile, List<int>> Actions => m_Actions;
         private readonly Dictionary<Mobile, List<int>> m_Actions = new Dictionary<Mobile, List<int>>();
 
         public void AddAction(Mobile from, int action)
@@ -1429,9 +1429,9 @@ namespace Server.Items
 
     public class Culverin : BaseShipCannon
     {
-        public override int Range { get { return 10; } }
-        public override ShipCannonDeed GetDeed { get { return new CulverinDeed(); } }
-        public override CannonPower Power { get { return CannonPower.Light; } }
+        public override int Range => 10;
+        public override ShipCannonDeed GetDeed => new CulverinDeed();
+        public override CannonPower Power => CannonPower.Light;
 
         public Culverin(BaseGalleon g) : base(g)
         {
@@ -1454,11 +1454,11 @@ namespace Server.Items
 
     public class Carronade : BaseShipCannon
     {
-        public override int Range { get { return 10; } }
-        public override ShipCannonDeed GetDeed { get { return new CarronadeDeed(); } }
-        public override CannonPower Power { get { return CannonPower.Heavy; } }
+        public override int Range => 10;
+        public override ShipCannonDeed GetDeed => new CarronadeDeed();
+        public override CannonPower Power => CannonPower.Heavy;
 
-        public override TimeSpan ActionTime { get { return TimeSpan.FromSeconds(2.0); } }
+        public override TimeSpan ActionTime => TimeSpan.FromSeconds(2.0);
 
         public Carronade(BaseGalleon g) : base(g)
         {
@@ -1481,13 +1481,13 @@ namespace Server.Items
 
     public class Blundercannon : BaseShipCannon
     {
-        public override int LabelNumber { get { return 1158942; } } // Blundercannon
+        public override int LabelNumber => 1158942;  // Blundercannon
 
-        public override int Range { get { return 12; } }
-        public override ShipCannonDeed GetDeed { get { return new BlundercannonDeed(); } }
-        public override CannonPower Power { get { return CannonPower.Massive; } }
+        public override int Range => 12;
+        public override ShipCannonDeed GetDeed => new BlundercannonDeed();
+        public override CannonPower Power => CannonPower.Massive;
 
-        public override TimeSpan ActionTime { get { return TimeSpan.FromSeconds(2.0); } }
+        public override TimeSpan ActionTime => TimeSpan.FromSeconds(2.0);
 
         public Blundercannon(BaseGalleon g) : base(g)
         {

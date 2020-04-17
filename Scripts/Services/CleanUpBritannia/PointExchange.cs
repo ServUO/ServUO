@@ -5,8 +5,8 @@ namespace Server.Engines.Points
 {
     public class PointExchanceStone : Item
     {
-        public override int LabelNumber { get { return 1158449; } } // Cleanup Point Exchange
-        public override bool ForceShowProperties { get { return true; } }
+        public override int LabelNumber => 1158449;  // Cleanup Point Exchange
+        public override bool ForceShowProperties => true;
 
         [Constructable]
         public PointExchanceStone()
@@ -40,7 +40,7 @@ namespace Server.Engines.Points
 
         private class InternalGump : BaseGump
         {
-            public CleanUpBritanniaData System { get { return PointsSystem.CleanUpBritannia; } }
+            public CleanUpBritanniaData System => PointsSystem.CleanUpBritannia;
 
             public InternalGump(PlayerMobile pm)
                 : base(pm, 100, 100)

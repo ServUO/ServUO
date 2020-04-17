@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class FellowshipMedallion : Item
     {
-        public override int LabelNumber { get { return 1159248; } } // Fellowship Medallion
+        public override int LabelNumber => 1159248;  // Fellowship Medallion
 
         [Constructable]
         public FellowshipMedallion()

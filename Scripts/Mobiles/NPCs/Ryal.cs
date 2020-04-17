@@ -15,48 +15,18 @@ namespace Server.Engines.Quests
         }
 
         /* Daemonic Prism */
-        public override object Title
-        {
-            get
-            {
-                return 1073053;
-            }
-        }
+        public override object Title => 1073053;
         /* Good, you're here.  The presence of a twisted creature deep under the earth near Nu'Jelm has 
         corrupted the natural growth of crystals in that region.  They've become infused with the 
         twisting energy - they've come to a sort of life.  This is an abomination that festers within 
         Sosaria. You must eradicate the crystal daemons. */
-        public override object Description
-        {
-            get
-            {
-                return 1074668;
-            }
-        }
+        public override object Description => 1074668;
         /* These abominations must not be permitted to fester! */
-        public override object Refuse
-        {
-            get
-            {
-                return 1074671;
-            }
-        }
+        public override object Refuse => 1074671;
         /* You must not waste time. Do not suffer these crystalline abominations to live. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1074672;
-            }
-        }
+        public override object Uncomplete => 1074672;
         /* You have done well.  Enjoy this reward. */
-        public override object Complete
-        {
-            get
-            {
-                return 1074673;
-            }
-        }
+        public override object Complete => 1074673;
         public override bool CanOffer()
         {
             return MondainsLegacy.PrismOfLight;
@@ -88,48 +58,18 @@ namespace Server.Engines.Quests
         }
 
         /* How Many Heads? */
-        public override object Title
-        {
-            get
-            {
-                return 1073050;
-            }
-        }
+        public override object Title => 1073050;
         /* Good, you're here.  The presence of a twisted creature deep under the earth near Nu'Jelm has 
         corrupted the natural growth of crystals in that region.  They've become infused with the twisting 
         energy - they've come to a sort of life.  This is an abomination that festers within Sosaria. You 
         must eradicate the crystal hydras. */
-        public override object Description
-        {
-            get
-            {
-                return 1074674;
-            }
-        }
+        public override object Description => 1074674;
         /* These abominations must not be permitted to fester! */
-        public override object Refuse
-        {
-            get
-            {
-                return 1074671;
-            }
-        }
+        public override object Refuse => 1074671;
         /* You must not waste time. Do not suffer these crystalline abominations to live. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1074672;
-            }
-        }
+        public override object Uncomplete => 1074672;
         /* You have done well.  Enjoy this reward. */
-        public override object Complete
-        {
-            get
-            {
-                return 1074673;
-            }
-        }
+        public override object Complete => 1074673;
         public override bool CanOffer()
         {
             return MondainsLegacy.PrismOfLight;
@@ -161,48 +101,18 @@ namespace Server.Engines.Quests
         }
 
         /* Glassy Foe */
-        public override object Title
-        {
-            get
-            {
-                return 1073055;
-            }
-        }
+        public override object Title => 1073055;
         /* Good, you're here.  The presence of a twisted creature deep under the earth near Nu'Jelm has 
         corrupted the natural growth of crystals in that region.  They've become infused with the twisting 
         energy - they've come to a sort of life.  This is an abomination that festers within Sosaria.  You 
         must eradicate the crystal lattice seekers. */
-        public override object Description
-        {
-            get
-            {
-                return 1074669;
-            }
-        }
+        public override object Description => 1074669;
         /* These abominations must not be permitted to fester! */
-        public override object Refuse
-        {
-            get
-            {
-                return 1074671;
-            }
-        }
+        public override object Refuse => 1074671;
         /* You must not waste time. Do not suffer these crystalline abominations to live. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1074672;
-            }
-        }
+        public override object Uncomplete => 1074672;
         /* You have done well.  Enjoy this reward. */
-        public override object Complete
-        {
-            get
-            {
-                return 1074673;
-            }
-        }
+        public override object Complete => 1074673;
         public override bool CanOffer()
         {
             return MondainsLegacy.PrismOfLight;
@@ -234,48 +144,18 @@ namespace Server.Engines.Quests
         }
 
         /* Hailstorm */
-        public override object Title
-        {
-            get
-            {
-                return 1073057;
-            }
-        }
+        public override object Title => 1073057;
         /* Good, you're here.  The presence of a twisted creature deep under the earth near Nu'Jelm has corrupted 
         the natural growth of crystals in that region.  They've become infused with the twisting energy - they've 
         come to a sort of life.  This is an abomination that festers within Sosaria.  You must eradicate the 
         crystal vortices. */
-        public override object Description
-        {
-            get
-            {
-                return 1074670;
-            }
-        }
+        public override object Description => 1074670;
         /* These abominations must not be permitted to fester! */
-        public override object Refuse
-        {
-            get
-            {
-                return 1074671;
-            }
-        }
+        public override object Refuse => 1074671;
         /* You must not waste time. Do not suffer these crystalline abominations to live. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1074672;
-            }
-        }
+        public override object Uncomplete => 1074672;
         /* You have done well.  Enjoy this reward. */
-        public override object Complete
-        {
-            get
-            {
-                return 1074673;
-            }
-        }
+        public override object Complete => 1074673;
         public override bool CanOffer()
         {
             return MondainsLegacy.PrismOfLight;
@@ -311,19 +191,13 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(DaemonicPrismQuest),
                     typeof(HowManyHeadsQuest),
                     typeof(GlassyFoeQuest),
                     typeof(HailstormQuest)
                 };
-            }
-        }
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);

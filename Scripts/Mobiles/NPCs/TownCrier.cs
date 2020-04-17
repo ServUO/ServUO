@@ -42,21 +42,9 @@ namespace Server.Mobiles
             }
         }
 
-        public bool IsEmpty
-        {
-            get
-            {
-                return (m_Entries == null || m_Entries.Count == 0);
-            }
-        }
+        public bool IsEmpty => (m_Entries == null || m_Entries.Count == 0);
 
-        public List<TownCrierEntry> Entries
-        {
-            get
-            {
-                return m_Entries;
-            }
-        }
+        public List<TownCrierEntry> Entries => m_Entries;
 
         public static void Initialize()
         {
@@ -214,29 +202,11 @@ namespace Server.Mobiles
             m_ExpireTime = DateTime.UtcNow + duration;
         }
 
-        public string[] Lines
-        {
-            get
-            {
-                return m_Lines;
-            }
-        }
+        public string[] Lines => m_Lines;
 
-        public DateTime ExpireTime
-        {
-            get
-            {
-                return m_ExpireTime;
-            }
-        }
+        public DateTime ExpireTime => m_ExpireTime;
 
-        public bool Expired
-        {
-            get
-            {
-                return (DateTime.UtcNow >= m_ExpireTime);
-            }
-        }
+        public bool Expired => (DateTime.UtcNow >= m_ExpireTime);
 
         public TownCrierEntry(GenericReader reader)
         {
@@ -539,21 +509,9 @@ namespace Server.Mobiles
             m_Instances.Add(this);
         }
 
-        public static List<TownCrier> Instances
-        {
-            get
-            {
-                return m_Instances;
-            }
-        }
+        public static List<TownCrier> Instances => m_Instances;
 
-        public List<TownCrierEntry> Entries
-        {
-            get
-            {
-                return m_Entries;
-            }
-        }
+        public List<TownCrierEntry> Entries => m_Entries;
 
         public TownCrierEntry GetRandomEntry()
         {

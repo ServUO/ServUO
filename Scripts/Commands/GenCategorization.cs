@@ -278,20 +278,8 @@ namespace Server.Commands
             this.m_Object = Activator.CreateInstance(type);
         }
 
-        public Type Type
-        {
-            get
-            {
-                return this.m_Type;
-            }
-        }
-        public object Object
-        {
-            get
-            {
-                return this.m_Object;
-            }
-        }
+        public Type Type => this.m_Type;
+        public object Object => this.m_Object;
     }
 
     public class CategoryEntry
@@ -367,41 +355,11 @@ namespace Server.Commands
             this.m_Matched = list;
         }
 
-        public string Title
-        {
-            get
-            {
-                return this.m_Title;
-            }
-        }
-        public Type[] Matches
-        {
-            get
-            {
-                return this.m_Matches;
-            }
-        }
-        public CategoryEntry Parent
-        {
-            get
-            {
-                return this.m_Parent;
-            }
-        }
-        public CategoryEntry[] SubCategories
-        {
-            get
-            {
-                return this.m_SubCategories;
-            }
-        }
-        public ArrayList Matched
-        {
-            get
-            {
-                return this.m_Matched;
-            }
-        }
+        public string Title => this.m_Title;
+        public Type[] Matches => this.m_Matches;
+        public CategoryEntry Parent => this.m_Parent;
+        public CategoryEntry[] SubCategories => this.m_SubCategories;
+        public ArrayList Matched => this.m_Matched;
         public bool IsMatch(Type type)
         {
             bool isMatch = false;
@@ -434,20 +392,8 @@ namespace Server.Commands
             this.m_Text = input.Substring(index);
         }
 
-        public int Indentation
-        {
-            get
-            {
-                return this.m_Indentation;
-            }
-        }
-        public string Text
-        {
-            get
-            {
-                return this.m_Text;
-            }
-        }
+        public int Indentation => this.m_Indentation;
+        public string Text => this.m_Text;
         public static CategoryLine[] Load(string path)
         {
             ArrayList list = new ArrayList();

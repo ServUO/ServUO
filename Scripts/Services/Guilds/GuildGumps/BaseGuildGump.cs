@@ -24,20 +24,8 @@ namespace Server.Guilds
             pm.CloseGump(typeof(BaseGuildGump));
         }
 
-        protected Guild guild
-        {
-            get
-            {
-                return this.m_Guild;
-            }
-        }
-        protected PlayerMobile player
-        {
-            get
-            {
-                return this.m_Player;
-            }
-        }
+        protected Guild guild => this.m_Guild;
+        protected PlayerMobile player => this.m_Player;
         public static bool IsLeader(Mobile m, Guild g)
         {
             return !(m.Deleted || g.Disbanded || !(m is PlayerMobile) || (m.AccessLevel < AccessLevel.GameMaster && g.Leader != m));

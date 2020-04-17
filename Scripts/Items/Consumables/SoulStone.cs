@@ -13,13 +13,7 @@ namespace Server.Items
 {
     public class SoulStone : Item, ISecurable
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1030899;
-            }
-        }// soulstone
+        public override int LabelNumber => 1030899;// soulstone
 
         private int m_ActiveItemID;
         private int m_InactiveItemID;
@@ -139,13 +133,7 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsEmpty
-        {
-            get
-            {
-                return m_SkillValue <= 0.0;
-            }
-        }
+        public bool IsEmpty => m_SkillValue <= 0.0;
 
         [Constructable]
         public SoulStone()
@@ -889,13 +877,7 @@ namespace Server.Items
     {
         private int m_UsesRemaining;
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1071000;
-            }
-        }// soulstone fragment
+        public override int LabelNumber => 1071000;// soulstone fragment
 
         [Constructable]
         public SoulstoneFragment()

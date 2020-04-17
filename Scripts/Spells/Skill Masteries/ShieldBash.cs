@@ -15,13 +15,13 @@ namespace Server.Spells.SkillMasteries
                 9002
             );
 
-        public override int RequiredMana { get { return 40; } }
-        public override bool BlocksMovement { get { return false; } }
-        public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(1.0); } }
+        public override int RequiredMana => 40;
+        public override bool BlocksMovement => false;
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(1.0);
 
-        public override SkillName CastSkill { get { return SkillName.Parry; } }
+        public override SkillName CastSkill => SkillName.Parry;
 
-        public double Multiplier { get { return (Caster.Skills[GetBestSkill()].Value + Caster.Skills[SkillName.Parry].Value + (GetMasteryLevel() * 40)) / 360; } }
+        public double Multiplier => (Caster.Skills[GetBestSkill()].Value + Caster.Skills[SkillName.Parry].Value + (GetMasteryLevel() * 40)) / 360;
 
         public ShieldBashSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)

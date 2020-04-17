@@ -32,20 +32,8 @@ namespace Server.Items
                 this.m_Owner = value;
             }
         }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1062094;
-            }
-        }// a young player ticket
-        public override bool DisplayLootType
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override int LabelNumber => 1062094;// a young player ticket
+        public override bool DisplayLootType => true;
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);

@@ -56,55 +56,13 @@ namespace Server.Mobiles
             AddLoot(LootPack.MedScrolls, 2);
         }
 
-        public override int Meat
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int Hides
-        {
-            get
-            {
-                return 30;
-            }
-        }
-        public override HideType HideType
-        {
-            get
-            {
-                return HideType.Regular;
-            }
-        }
-        public override FoodType FavoriteFood
-        {
-            get
-            {
-                return FoodType.Fish;
-            }
-        }
-        public override bool ShowFameTitle
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool ClickTitle
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool PropertyTitle
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override int Meat => 5;
+        public override int Hides => 30;
+        public override HideType HideType => HideType.Regular;
+        public override FoodType FavoriteFood => FoodType.Fish;
+        public override bool ShowFameTitle => false;
+        public override bool ClickTitle => false;
+        public override bool PropertyTitle => false;
 
         public override void OnCombatantChange()
         {

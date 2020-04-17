@@ -15,9 +15,9 @@ namespace Server.Engines.TreasuresOfDoom
         public static readonly int MinSpawn = 1;
         public static readonly int MaxSpawn = 3;
 
-        public bool UnlinkOnTaming { get { return false; } }
-        public Point3D HomeLocation { get { return Point3D.Zero; } }
-        public int HomeRange { get { return 0; } }
+        public bool UnlinkOnTaming => false;
+        public Point3D HomeLocation => Point3D.Zero;
+        public int HomeRange => 0;
 
         public static VaseSpawner Instance { get; set; }
 

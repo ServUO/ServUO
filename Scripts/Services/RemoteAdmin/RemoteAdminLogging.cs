@@ -23,13 +23,7 @@ namespace Server.RemoteAdmin
                 m_Enabled = value;
             }
         }
-        public static StreamWriter Output
-        {
-            get
-            {
-                return m_Output;
-            }
-        }
+        public static StreamWriter Output => m_Output;
         public static void LazyInitialize()
         {
             if (Initialized || !m_Enabled)

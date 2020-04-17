@@ -108,21 +108,9 @@ namespace Server.Items
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsEmpty
-        {
-            get
-            {
-                return this.m_Type == null;
-            }
-        }
+        public bool IsEmpty => this.m_Type == null;
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsItem
-        {
-            get
-            {
-                return this.m_Type != null && this.m_Type.Namespace.Equals("Server.Items");
-            }
-        }
+        public bool IsItem => this.m_Type != null && this.m_Type.Namespace.Equals("Server.Items");
         public override string ToString()
         {
             if (this.m_Type != null)

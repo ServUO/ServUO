@@ -19,13 +19,7 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Dead
-        {
-            get
-            {
-                return (this.ItemID == 0x3B0C);
-            }
-        }
+        public bool Dead => (this.ItemID == 0x3B0C);
         public virtual void StartTimer()
         {
             if (this.m_Timer != null)

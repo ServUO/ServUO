@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class PortraitOfTheBride : Item
     {
-        public override int LabelNumber { get { return 1075300; } }// Portrait of the Bride
+        public override int LabelNumber => 1075300; // Portrait of the Bride
 
         [Constructable]
         public PortraitOfTheBride()

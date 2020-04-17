@@ -9,18 +9,18 @@ namespace Server.Items
     [Furniture]
     public class Mailbox : LockableContainer, IFlipable
     {
-        public override int LabelNumber { get { return 1113927; } } // Mailbox
+        public override int LabelNumber => 1113927;  // Mailbox
 
-        public override int DefaultGumpID { get { return 0x11A; } }
+        public override int DefaultGumpID => 0x11A;
 
-        public virtual int SouthMailBoxID { get { return 0x4141; } }
-        public virtual int SouthEmptyMailBoxID { get { return 0x4142; } }
-        public virtual int EastMailBoxID { get { return 0x4143; } }
-        public virtual int EastEmptyMailBoxID { get { return 0x4144; } }
+        public virtual int SouthMailBoxID => 0x4141;
+        public virtual int SouthEmptyMailBoxID => 0x4142;
+        public virtual int EastMailBoxID => 0x4143;
+        public virtual int EastEmptyMailBoxID => 0x4144;
 
         public Dictionary<Item, Mobile> Contents { get; set; }
 
-        public bool IsEmpty { get { return Items.Count == 0; } }
+        public bool IsEmpty => Items.Count == 0;
 
         [CommandProperty(AccessLevel.Decorator)]
         public override int ItemID

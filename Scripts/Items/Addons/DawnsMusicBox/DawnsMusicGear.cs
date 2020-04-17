@@ -26,27 +26,9 @@ namespace Server.Items
         {
         }
 
-        public static DawnsMusicGear RandomCommon
-        {
-            get
-            {
-                return new DawnsMusicGear(DawnsMusicBox.RandomTrack(DawnsMusicRarity.Common));
-            }
-        }
-        public static DawnsMusicGear RandomUncommon
-        {
-            get
-            {
-                return new DawnsMusicGear(DawnsMusicBox.RandomTrack(DawnsMusicRarity.Uncommon));
-            }
-        }
-        public static DawnsMusicGear RandomRare
-        {
-            get
-            {
-                return new DawnsMusicGear(DawnsMusicBox.RandomTrack(DawnsMusicRarity.Rare));
-            }
-        }
+        public static DawnsMusicGear RandomCommon => new DawnsMusicGear(DawnsMusicBox.RandomTrack(DawnsMusicRarity.Common));
+        public static DawnsMusicGear RandomUncommon => new DawnsMusicGear(DawnsMusicBox.RandomTrack(DawnsMusicRarity.Uncommon));
+        public static DawnsMusicGear RandomRare => new DawnsMusicGear(DawnsMusicBox.RandomTrack(DawnsMusicRarity.Rare));
         [CommandProperty(AccessLevel.GameMaster)]
         public MusicName Music
         {

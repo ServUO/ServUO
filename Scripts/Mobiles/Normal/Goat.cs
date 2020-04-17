@@ -41,27 +41,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Meat
-        {
-            get
-            {
-                return 2;
-            }
-        }
-        public override int Hides
-        {
-            get
-            {
-                return 8;
-            }
-        }
-        public override FoodType FavoriteFood
-        {
-            get
-            {
-                return FoodType.GrainsAndHay | FoodType.FruitsAndVegies;
-            }
-        }
+        public override int Meat => 2;
+        public override int Hides => 8;
+        public override FoodType FavoriteFood => FoodType.GrainsAndHay | FoodType.FruitsAndVegies;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

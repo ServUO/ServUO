@@ -5,9 +5,9 @@ namespace Server.Mobiles
 {
     public class LasherStatue : Item, ICreatureStatuette
     {
-        public override int LabelNumber { get { return 1157214; } } // Lasher
+        public override int LabelNumber => 1157214;  // Lasher
 
-        public Type CreatureType { get { return typeof(Lasher); } }
+        public Type CreatureType => typeof(Lasher);
 
         [Constructable]
         public LasherStatue()
@@ -89,9 +89,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Meat { get { return 3; } }
-        public override int Hides { get { return 10; } }
-        public override FoodType FavoriteFood { get { return FoodType.FruitsAndVegies | FoodType.GrainsAndHay; } }
+        public override int Meat => 3;
+        public override int Hides => 10;
+        public override FoodType FavoriteFood => FoodType.FruitsAndVegies | FoodType.GrainsAndHay;
 
         public override void Serialize(GenericWriter writer)
         {

@@ -2,7 +2,7 @@ namespace Server.Engines.Quests.Hag
 {
     public class HangoverCure : Item
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         private int m_Uses;
         [Constructable]
         public HangoverCure()
@@ -19,13 +19,7 @@ namespace Server.Engines.Quests.Hag
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1055060;
-            }
-        }// Grizelda's Extra Strength Hangover Cure
+        public override int LabelNumber => 1055060;// Grizelda's Extra Strength Hangover Cure
         [CommandProperty(AccessLevel.GameMaster)]
         public int Uses
         {

@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class HildebrandtDragonRugAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new HildebrandtDragonRugDeed(); } }
+        public override BaseAddonDeed Deed => new HildebrandtDragonRugDeed();
 
         [Constructable]
         public HildebrandtDragonRugAddon()
@@ -75,16 +75,13 @@ namespace Server.Items
 
     public class HildebrandtDragonRugDeed : BaseAddonDeed, IRewardOption
     {
-        public override BaseAddon Addon { get { return new HildebrandtDragonRugAddon(m_South); } }
-        public override int LabelNumber { get { return 1157889; } } // Hildebrandt Dragon Rug
+        public override BaseAddon Addon => new HildebrandtDragonRugAddon(m_South);
+        public override int LabelNumber => 1157889;  // Hildebrandt Dragon Rug
 
         private bool m_South;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool South
-        {
-            get { return m_South; }
-        }
+        public bool South => m_South;
 
         public void GetOptions(RewardOptionList list)
         {

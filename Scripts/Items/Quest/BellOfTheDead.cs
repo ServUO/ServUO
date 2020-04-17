@@ -33,13 +33,7 @@ namespace Server.Engines.Quests.Doom
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1050018;
-            }
-        }// bell of the dead
+        public override int LabelNumber => 1050018;// bell of the dead
         [CommandProperty(AccessLevel.GameMaster, AccessLevel.Administrator)]
         public Chyloth Chyloth
         {

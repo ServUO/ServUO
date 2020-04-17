@@ -15,20 +15,8 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override object ConfirmMessage
-        {
-            get
-            {
-                return 1073643;
-            }
-        }// Are you sure you wish to embrace your humanity?
-        public override object IncompleteMessage
-        {
-            get
-            {
-                return 1074412;
-            }
-        }// You have made a good start but have more yet to do.	
+        public override object ConfirmMessage => 1073643;// Are you sure you wish to embrace your humanity?
+        public override object IncompleteMessage => 1074412;// You have made a good start but have more yet to do.	
         public override void InitBody()
         {
             this.Female = false;

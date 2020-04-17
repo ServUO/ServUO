@@ -5,8 +5,8 @@ namespace Server.Mobiles
 {
     public class EliteNinja : BaseCreature
     {
-        public override bool ClickTitle { get { return false; } }
-        public override bool CanStealth { get { return true; } }
+        public override bool ClickTitle => false;
+        public override bool CanStealth => true;
 
         private DateTime m_NextWeaponChange;
 
@@ -111,7 +111,7 @@ namespace Server.Mobiles
             c.DropItem(new BookOfNinjitsu());
         }
 
-        public override bool BardImmune { get { return true; } }
+        public override bool BardImmune => true;
 
         public override void GenerateLoot()
         {
@@ -120,7 +120,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.Gems, 2);
         }
 
-        public override bool AlwaysMurderer { get { return true; } }
+        public override bool AlwaysMurderer => true;
 
         private void ChangeWeapon()
         {

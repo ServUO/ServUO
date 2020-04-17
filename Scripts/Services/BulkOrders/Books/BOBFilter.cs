@@ -29,13 +29,7 @@ namespace Server.Engines.BulkOrders
             }
         }
 
-        public bool IsDefault
-        {
-            get
-            {
-                return (this.m_Type == 0 && this.m_Quality == 0 && this.m_Material == 0 && this.m_Quantity == 0);
-            }
-        }
+        public bool IsDefault => (this.m_Type == 0 && this.m_Quality == 0 && this.m_Material == 0 && this.m_Quantity == 0);
         public int Type
         {
             get

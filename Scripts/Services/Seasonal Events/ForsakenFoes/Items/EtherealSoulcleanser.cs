@@ -5,10 +5,10 @@ namespace Server.Items
 {
     public class EtherealSoulcleanser : BaseContainer
     {
-        public override int LabelNumber { get { return 1159196; } } // Ethereal Soulcleanser
+        public override int LabelNumber => 1159196;  // Ethereal Soulcleanser
 
-        public override int DefaultGumpID { get { return 0x10C; } }
-        public override bool DisplaysContent { get { return false; } }
+        public override int DefaultGumpID => 0x10C;
+        public override bool DisplaysContent => false;
 
         public static EtherealSoulcleanser InstanceTram { get; set; }
         public static EtherealSoulcleanser InstanceFel { get; set; }

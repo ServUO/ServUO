@@ -48,13 +48,7 @@ namespace Server.Mobiles
         {
         }
 
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
+        public override Poison PoisonImmune => Poison.Lethal;
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile OpenedBy
         {
@@ -320,20 +314,8 @@ namespace Server.Mobiles
                 this.m_Deadline = deadline;
             }
 
-            public int Count
-            {
-                get
-                {
-                    return this.m_Count;
-                }
-            }
-            public int Deadline
-            {
-                get
-                {
-                    return this.m_Deadline;
-                }
-            }
+            public int Count => this.m_Count;
+            public int Deadline => this.m_Deadline;
             public void StartDissolving()
             {
                 this.m_Deadline = Math.Min(this.m_Count + 60, this.m_Deadline);

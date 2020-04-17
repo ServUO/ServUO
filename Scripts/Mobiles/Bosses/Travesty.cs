@@ -26,9 +26,9 @@ namespace Server.Mobiles
         private bool _CanPeace;
         private bool _CanProvoke;
 
-        public override bool CanDiscord { get { return _CanDiscord; } }
-        public override bool CanPeace { get { return _CanPeace; } }
-        public override bool CanProvoke { get { return _CanProvoke; } }
+        public override bool CanDiscord => _CanDiscord;
+        public override bool CanPeace => _CanPeace;
+        public override bool CanProvoke => _CanProvoke;
 
         [Constructable]
         public Travesty()
@@ -93,7 +93,7 @@ namespace Server.Mobiles
             }
         }
 
-        public override bool ShowFameTitle { get { return false; } }
+        public override bool ShowFameTitle => false;
 
         public Travesty(Serial serial)
             : base(serial)
@@ -349,8 +349,8 @@ namespace Server.Mobiles
         }
 
         #region Spawn Helpers
-        public override bool CanSpawnHelpers { get { return true; } }
-        public override int MaxHelpersWaves { get { return 1; } }
+        public override bool CanSpawnHelpers => true;
+        public override int MaxHelpersWaves => 1;
 
         public override bool CanSpawnWave()
         {

@@ -8,7 +8,7 @@ namespace Server.Items
     [TypeAlias("Server.Items.SkullRugEastAddon", "Server.Items.SkullRugSouthAddon")]
     public class SkullRugAddon : BaseAddon, IRewardItem
     {
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         private bool m_IsRewardItem;
         private int m_ResourceCount;
@@ -184,7 +184,7 @@ namespace Server.Items
 
         private class InternalAddonComponent : AddonComponent
         {
-            public override int LabelNumber { get { return 1150120; } } // Skull Rug
+            public override int LabelNumber => 1150120;  // Skull Rug
 
             public InternalAddonComponent(int id)
                 : base(id)

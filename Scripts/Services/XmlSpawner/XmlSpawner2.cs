@@ -317,14 +317,7 @@ namespace Server.Mobiles
 
         public DayOfWeek RealDayOfWeek => DateTime.UtcNow.DayOfWeek;
 
-        public MoonPhase MoonPhase
-        {
-            get
-            {
-                return Clock.GetMoonPhase(this.Map, this.Location.X, this.Location.Y);
-            }
-
-        }
+        public MoonPhase MoonPhase => Clock.GetMoonPhase(this.Map, this.Location.X, this.Location.Y);
 
         public XmlSpawnerGump SpawnerGump
         {
@@ -615,15 +608,9 @@ namespace Server.Mobiles
             }
         }
 
-        public DateTime FirstModified
-        {
-            get { return m_FirstModified; }
-        }
+        public DateTime FirstModified => m_FirstModified;
 
-        public DateTime LastModified
-        {
-            get { return m_LastModified; }
-        }
+        public DateTime LastModified => m_LastModified;
 
         public bool PlayerCreated
         {
@@ -709,16 +696,10 @@ namespace Server.Mobiles
             }
         }
 
-        public string UniqueId
-        {
-            get { return m_UniqueId; }
-        }
+        public string UniqueId => m_UniqueId;
 
         // does not perform a defrag, so less accurate but can be used while looping through world object enums
-        public int SafeCurrentCount
-        {
-            get { return SafeTotalSpawnedObjects; }
-        }
+        public int SafeCurrentCount => SafeTotalSpawnedObjects;
 
 
         public bool FreeRun
@@ -1183,10 +1164,7 @@ namespace Server.Mobiles
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int CurrentCount
-        {
-            get { return TotalSpawnedObjects; }
-        }
+        public int CurrentCount => TotalSpawnedObjects;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public WayPoint WayPoint
@@ -1869,13 +1847,7 @@ namespace Server.Mobiles
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsEmpty
-        {
-            get
-            {
-                return isEmpty();
-            }
-        }
+        public bool IsEmpty => isEmpty();
 
         #endregion
 
@@ -2791,13 +2763,7 @@ namespace Server.Mobiles
             return ((m.Player || m_AllowNPCTriggering) && (m.AccessLevel <= TriggerAccessLevel) && ((!m.Body.IsGhost && !m_AllowGhostTriggering) || (m.Body.IsGhost && m_AllowGhostTriggering)));
         }
 
-        private bool AllowTriggering
-        {
-            get
-            {
-                return m_Running && !m_refractActivated && TODInRange && CanSpawn;
-            }
-        }
+        private bool AllowTriggering => m_Running && !m_refractActivated && TODInRange && CanSpawn;
 
         private void ActivateTrigger()
         {
@@ -3065,13 +3031,7 @@ namespace Server.Mobiles
             }
         }
 
-        public override bool HandlesOnMovement
-        {
-            get
-            {
-                return (m_Running && m_ProximityRange >= 0);
-            }
-        }
+        public override bool HandlesOnMovement => (m_Running && m_ProximityRange >= 0);
 
         public void AddToMovementList(Mobile m)
         {
@@ -10019,13 +9979,7 @@ namespace Server.Mobiles
                 return false;
         }
 
-        public Rectangle2D SpawnerBounds
-        {
-            get
-            {
-                return new Rectangle2D(m_X, m_Y, m_Width + 1, m_Height + 1);
-            }
-        }
+        public Rectangle2D SpawnerBounds => new Rectangle2D(m_X, m_Y, m_Width + 1, m_Height + 1);
 
         private void FindTileLocations(ref List<Point3D> locations, Map map, int startx, int starty, int width, int height, List<int> includetilelist, List<int> excludetilelist, TileFlag tileflag, bool checkitems, int spawnerZ)
         {

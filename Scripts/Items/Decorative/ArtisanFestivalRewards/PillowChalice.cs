@@ -3,7 +3,7 @@ namespace Server.Items
     [Flipable(0xA491, 0xA492)]
     public class PillowChalice : Item
     {
-        public override int LabelNumber { get { return 1025015; } } // pillow
+        public override int LabelNumber => 1025015;  // pillow
 
         [Constructable]
         public PillowChalice()

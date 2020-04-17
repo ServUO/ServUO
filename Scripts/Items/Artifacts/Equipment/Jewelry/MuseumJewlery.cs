@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class VesperCollectionRing : GoldRing
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         public VesperCollectionRing()
             : base()
         {
@@ -13,13 +13,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073234;
-            }
-        }// A Souvenir from the Museum of Vesper
+        public override int LabelNumber => 1073234;// A Souvenir from the Museum of Vesper
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -37,7 +31,7 @@ namespace Server.Items
 
     public class VesperCollectionNecklace : GoldNecklace
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         public VesperCollectionNecklace()
             : base()
         {
@@ -48,13 +42,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073234;
-            }
-        }// A Souvenir from the Museum of Vesper
+        public override int LabelNumber => 1073234;// A Souvenir from the Museum of Vesper
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -72,7 +60,7 @@ namespace Server.Items
 
     public class VesperCollectionBracelet : GoldBracelet
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         public VesperCollectionBracelet()
             : base()
         {
@@ -83,13 +71,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073234;
-            }
-        }// A Souvenir from the Museum of Vesper
+        public override int LabelNumber => 1073234;// A Souvenir from the Museum of Vesper
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -107,7 +89,7 @@ namespace Server.Items
 
     public class VesperCollectionEarrings : GoldEarrings
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         public VesperCollectionEarrings()
             : base()
         {
@@ -118,13 +100,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073234;
-            }
-        }// A Souvenir from the Museum of Vesper
+        public override int LabelNumber => 1073234;// A Souvenir from the Museum of Vesper
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

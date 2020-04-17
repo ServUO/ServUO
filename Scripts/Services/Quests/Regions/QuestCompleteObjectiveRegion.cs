@@ -18,20 +18,8 @@ namespace Server.Engines.Quests
             ReadType(questEl, "complete", ref this.m_Objective);
         }
 
-        public Type Quest
-        {
-            get
-            {
-                return this.m_Quest;
-            }
-        }
-        public Type Objective
-        {
-            get
-            {
-                return this.m_Objective;
-            }
-        }
+        public Type Quest => this.m_Quest;
+        public Type Objective => this.m_Objective;
         public override void OnEnter(Mobile m)
         {
             base.OnEnter(m);

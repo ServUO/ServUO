@@ -16,13 +16,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1032407;
-            }
-        }// elven alchemy table
+        public override int LabelNumber => 1032407;// elven alchemy table
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class LuckyDagger : Item
     {
-        public override int LabelNumber { get { return 1151983; } } // Lucky Dagger
+        public override int LabelNumber => 1151983;  // Lucky Dagger
 
         [Constructable]
         public LuckyDagger()

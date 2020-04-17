@@ -13,13 +13,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073159;
-            }
-        }// Protector's Essence
+        public override int LabelNumber => 1073159;// Protector's Essence
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

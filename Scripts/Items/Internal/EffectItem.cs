@@ -18,13 +18,7 @@ namespace Server.Items
             this.Movable = false;
         }
 
-        public override bool Decays
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool Decays => true;
         public static EffectItem Create(Point3D p, Map map, TimeSpan duration)
         {
             EffectItem item = null;

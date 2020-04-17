@@ -95,7 +95,7 @@ namespace Server.Engines.NewMagincia
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Active { get { return MaginciaBazaar.IsActivePlot(this); } }
+        public bool Active => MaginciaBazaar.IsActivePlot(this);
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime AuctionEnds
@@ -397,13 +397,13 @@ namespace Server.Engines.NewMagincia
         public Point3D Location { get { return m_Location; } set { m_Location = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Map Map { get { return m_Map; } }
+        public Map Map => m_Map;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Point3D SignLoc { get { return new Point3D(m_Location.X + 1, m_Location.Y - 2, m_Location.Z); } }
+        public Point3D SignLoc => new Point3D(m_Location.X + 1, m_Location.Y - 2, m_Location.Z);
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Point3D MultiLocation { get { return new Point3D(m_Location.X, m_Location.Y, m_Location.Z + 2); } }
+        public Point3D MultiLocation => new Point3D(m_Location.X, m_Location.Y, m_Location.Z + 2);
 
         public PlotDef(string id, Point3D pnt, int mapID)
         {

@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class PaladinHelm : PlateHelm
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public PaladinHelm()
             : base()
@@ -31,62 +31,14 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074303;
-            }
-        }// Plate of Honor
-        public override SetItem SetID
-        {
-            get
-            {
-                return SetItem.Paladin;
-            }
-        }
-        public override int Pieces
-        {
-            get
-            {
-                return 6;
-            }
-        }
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 4;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 9;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 3;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 6;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 8;
-            }
-        }
+        public override int LabelNumber => 1074303;// Plate of Honor
+        public override SetItem SetID => SetItem.Paladin;
+        public override int Pieces => 6;
+        public override int BasePhysicalResistance => 4;
+        public override int BaseFireResistance => 9;
+        public override int BaseColdResistance => 3;
+        public override int BasePoisonResistance => 6;
+        public override int BaseEnergyResistance => 8;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

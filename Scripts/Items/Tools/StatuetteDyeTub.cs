@@ -14,48 +14,12 @@ namespace Server.Items
         {
         }
 
-        public override bool AllowDyables
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool AllowStatuettes
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int TargetMessage
-        {
-            get
-            {
-                return 1049777;
-            }
-        }// Target the statuette to dye
-        public override int FailMessage
-        {
-            get
-            {
-                return 1049778;
-            }
-        }// You can only dye veteran reward statuettes with this tub.
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1049741;
-            }
-        }// Reward Statuette Dye Tub
-        public override CustomHuePicker CustomHuePicker
-        {
-            get
-            {
-                return CustomHuePicker.LeatherDyeTub;
-            }
-        }
+        public override bool AllowDyables => false;
+        public override bool AllowStatuettes => true;
+        public override int TargetMessage => 1049777;// Target the statuette to dye
+        public override int FailMessage => 1049778;// You can only dye veteran reward statuettes with this tub.
+        public override int LabelNumber => 1049741;// Reward Statuette Dye Tub
+        public override CustomHuePicker CustomHuePicker => CustomHuePicker.LeatherDyeTub;
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsRewardItem
         {

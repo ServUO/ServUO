@@ -6,12 +6,12 @@ namespace Server.Items
     [Flipable(0x9981, 0x9982)]
     public class ScrollOfAlacrityBook : BaseSpecialScrollBook
     {
-        public override Type ScrollType { get { return typeof(ScrollOfAlacrity); } }
-        public override int LabelNumber { get { return 1154321; } } // Scrolls of Alacrity Book
-        public override int BadDropMessage { get { return 1154323; } } // This book only holds Scrolls of Alacrity.
-        public override int DropMessage { get { return 1154326; } }    // You add the scroll to your Scrolls of Alacrity book.
-        public override int RemoveMessage { get { return 1154322; } }  // You remove a Scroll of Alacrity and put it in your pack.
-        public override int GumpTitle { get { return 1154324; } }  // Alacrity Scrolls
+        public override Type ScrollType => typeof(ScrollOfAlacrity);
+        public override int LabelNumber => 1154321;  // Scrolls of Alacrity Book
+        public override int BadDropMessage => 1154323;  // This book only holds Scrolls of Alacrity.
+        public override int DropMessage => 1154326;     // You add the scroll to your Scrolls of Alacrity book.
+        public override int RemoveMessage => 1154322;   // You remove a Scroll of Alacrity and put it in your pack.
+        public override int GumpTitle => 1154324;   // Alacrity Scrolls
 
         [Constructable]
         public ScrollOfAlacrityBook()
@@ -39,8 +39,8 @@ namespace Server.Items
             int version = reader.ReadInt();
         }
 
-        public override Dictionary<SkillCat, List<SkillName>> SkillInfo { get { return _SkillInfo; } }
-        public override Dictionary<int, double> ValueInfo { get { return _ValueInfo; } }
+        public override Dictionary<SkillCat, List<SkillName>> SkillInfo => _SkillInfo;
+        public override Dictionary<int, double> ValueInfo => _ValueInfo;
 
         public static Dictionary<SkillCat, List<SkillName>> _SkillInfo;
         public static Dictionary<int, double> _ValueInfo;

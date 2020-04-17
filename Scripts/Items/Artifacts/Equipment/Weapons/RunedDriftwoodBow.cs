@@ -2,11 +2,11 @@
 {
     public class RunedDriftwoodBow : Bow
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1149961; } }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1149961;
 
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
         [Constructable]
         public RunedDriftwoodBow()

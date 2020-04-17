@@ -64,34 +64,10 @@ namespace Server.Engines.BulkOrders
             }
         }
 
-        public bool RequireExceptional
-        {
-            get
-            {
-                return m_RequireExceptional;
-            }
-        }
-        public BODType DeedType
-        {
-            get
-            {
-                return m_DeedType;
-            }
-        }
-        public BulkMaterialType Material
-        {
-            get
-            {
-                return m_Material;
-            }
-        }
-        public int AmountMax
-        {
-            get
-            {
-                return m_AmountMax;
-            }
-        }
+        public bool RequireExceptional => m_RequireExceptional;
+        public BODType DeedType => m_DeedType;
+        public BulkMaterialType Material => m_Material;
+        public int AmountMax => m_AmountMax;
         public int Price
         {
             get
@@ -114,13 +90,7 @@ namespace Server.Engines.BulkOrders
                 m_GemType = value;
             }
         }
-        public BOBLargeSubEntry[] Entries
-        {
-            get
-            {
-                return m_Entries;
-            }
-        }
+        public BOBLargeSubEntry[] Entries => m_Entries;
         public Item Reconstruct()
         {
             LargeBOD bod = null;

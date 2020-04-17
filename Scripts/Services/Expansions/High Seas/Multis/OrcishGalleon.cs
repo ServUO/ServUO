@@ -4,26 +4,26 @@ namespace Server.Multis
 {
     public class OrcishGalleon : BaseGalleon
     {
-        public override int NorthID { get { return 0x18 + (DamageValue * 4); } }
-        public override int EastID { get { return 0x19 + (DamageValue * 4); } }
-        public override int SouthID { get { return 0x1A + (DamageValue * 4); } }
-        public override int WestID { get { return 0x1B + (DamageValue * 4); } }
+        public override int NorthID => 0x18 + (DamageValue * 4);
+        public override int EastID => 0x19 + (DamageValue * 4);
+        public override int SouthID => 0x1A + (DamageValue * 4);
+        public override int WestID => 0x1B + (DamageValue * 4);
 
-        public override int HoldDistance { get { return 9; } }
-        public override int TillerManDistance { get { return 6; } }
-        public override int RuneOffset { get { return -3; } }
+        public override int HoldDistance => 9;
+        public override int TillerManDistance => 6;
+        public override int RuneOffset => -3;
 
-        public override int WheelDistance { get { return 7; } }
-        public override int CaptiveOffset { get { return 4; } }
-        public override int MaxCannons { get { return 7; } }
-        public override double CannonDamageMod { get { return 1.3; } }
+        public override int WheelDistance => 7;
+        public override int CaptiveOffset => 4;
+        public override int MaxCannons => 7;
+        public override double CannonDamageMod => 1.3;
 
-        public override double TurnDelay { get { return 2; } }
-        public override int MaxHits { get { return 100000; } }
+        public override double TurnDelay => 2;
+        public override int MaxHits => 100000;
 
-        public override int ZSurface { get { return 14; } }
+        public override int ZSurface => 14;
 
-        public override BaseDockedBoat DockedBoat { get { return new DockedOrcishGalleon(this); } }
+        public override BaseDockedBoat DockedBoat => new DockedOrcishGalleon(this);
 
         [Constructable]
         public OrcishGalleon() : this(Direction.North) { }
@@ -33,7 +33,7 @@ namespace Server.Multis
         {
         }
 
-        public override int[][] CannonTileIDs { get { return m_CannonTileIDs; } }
+        public override int[][] CannonTileIDs => m_CannonTileIDs;
         private readonly int[][] m_CannonTileIDs = new int[][]
         {
 
@@ -53,7 +53,7 @@ namespace Server.Multis
             new int[] { 33112, 33137, 33141, 33165, 33169, 33193, 33197 }, //NORTH D2   
         };
 
-        public override int[][] FillerIDs { get { return m_FillerIDs; } }
+        public override int[][] FillerIDs => m_FillerIDs;
         private readonly int[][] m_FillerIDs = new int[][]
         {
             new int[] { 30030, 30034, 30048, 30044, 30090, 30086 },  //SOUTH
@@ -72,7 +72,7 @@ namespace Server.Multis
             new int[] { 33130, 33134, 33148, 33144, 33190, 33186 },  //EAST  D2
         };
 
-        public override int[][] HoldIDs { get { return m_HoldIDs; } }
+        public override int[][] HoldIDs => m_HoldIDs;
         private readonly int[][] m_HoldIDs = new int[][]
         {
             new int[] { 30127, 30124, 30122, 30115, 30120 },  //SOUTH
@@ -91,7 +91,7 @@ namespace Server.Multis
             new int[] { 33227, 33224, 33222, 33215, 33220 },  //EAST D1
         };
 
-        public override int[][] HoldItemIDs { get { return m_HoldItemIDs; } }
+        public override int[][] HoldItemIDs => m_HoldItemIDs;
         private readonly int[][] m_HoldItemIDs = new int[][]
         {
             new int[] { 30117 },
@@ -110,7 +110,7 @@ namespace Server.Multis
             new int[] { 33217 },
         };
 
-        public override int[][] WheelItemIDs { get { return m_WheelItemIDs; } }
+        public override int[][] WheelItemIDs => m_WheelItemIDs;
         private readonly int[][] m_WheelItemIDs = new int[][]
         {
             new int[] { 30141 },
@@ -283,8 +283,8 @@ namespace Server.Multis
 
     public class OrcishGalleonDeed : BaseBoatDeed
     {
-        public override int LabelNumber { get { return 1116738; } } // small dragon ship deed
-        public override BaseBoat Boat { get { return new OrcishGalleon(this.BoatDirection); } }
+        public override int LabelNumber => 1116738;  // small dragon ship deed
+        public override BaseBoat Boat => new OrcishGalleon(this.BoatDirection);
 
         [Constructable]
         public OrcishGalleonDeed()
@@ -314,8 +314,8 @@ namespace Server.Multis
 
     public class DockedOrcishGalleon : BaseDockedBoat
     {
-        public override int LabelNumber { get { return 1116747; } } //Orc Ship
-        public override BaseBoat Boat { get { return new OrcishGalleon(this.BoatDirection); } }
+        public override int LabelNumber => 1116747;  //Orc Ship
+        public override BaseBoat Boat => new OrcishGalleon(this.BoatDirection);
 
         public DockedOrcishGalleon(BaseBoat boat)
             : base(0x18, Point3D.Zero, boat)

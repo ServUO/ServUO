@@ -50,76 +50,28 @@ namespace Server.Mobiles
         {
         }
 
-        public override ChampionSkullType SkullType
-        {
-            get
-            {
-                return ChampionSkullType.Power;
-            }
-        }
-        public override Type[] UniqueList
-        {
-            get
-            {
-                return new Type[] { typeof(CrownOfTalKeesh) };
-            }
-        }
-        public override Type[] SharedList
-        {
-            get
-            {
-                return new Type[]
+        public override ChampionSkullType SkullType => ChampionSkullType.Power;
+        public override Type[] UniqueList => new Type[] { typeof(CrownOfTalKeesh) };
+        public override Type[] SharedList => new Type[]
                 {
                     typeof(TheMostKnowledgePerson),
                     typeof(BraveKnightOfTheBritannia),
                     typeof(LieutenantOfTheBritannianRoyalGuard)
                 };
-            }
-        }
-        public override Type[] DecorativeList
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] DecorativeList => new Type[]
                 {
                     typeof(LavaTile),
                     typeof(MonsterStatuette),
                     typeof(MonsterStatuette)
                 };
-            }
-        }
-        public override MonsterStatuetteType[] StatueTypes
-        {
-            get
-            {
-                return new MonsterStatuetteType[]
+        public override MonsterStatuetteType[] StatueTypes => new MonsterStatuetteType[]
                 {
                     MonsterStatuetteType.OphidianArchMage,
                     MonsterStatuetteType.OphidianWarrior
                 };
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
-        public override ScaleType ScaleType
-        {
-            get
-            {
-                return ScaleType.All;
-            }
-        }
-        public override int Scales
-        {
-            get
-            {
-                return 20;
-            }
-        }
+        public override Poison PoisonImmune => Poison.Lethal;
+        public override ScaleType ScaleType => ScaleType.All;
+        public override int Scales => 20;
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 4);

@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class MalekisHonor : MetalKiteShield
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public MalekisHonor()
             : base()
@@ -20,62 +20,14 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074312;
-            }
-        }// Maleki's Honor (Juggernaut Set)
-        public override SetItem SetID
-        {
-            get
-            {
-                return SetItem.Juggernaut;
-            }
-        }
-        public override int Pieces
-        {
-            get
-            {
-                return 2;
-            }
-        }
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 3;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 3;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 3;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 3;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 3;
-            }
-        }
+        public override int LabelNumber => 1074312;// Maleki's Honor (Juggernaut Set)
+        public override SetItem SetID => SetItem.Juggernaut;
+        public override int Pieces => 2;
+        public override int BasePhysicalResistance => 3;
+        public override int BaseFireResistance => 3;
+        public override int BaseColdResistance => 3;
+        public override int BasePoisonResistance => 3;
+        public override int BaseEnergyResistance => 3;
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);

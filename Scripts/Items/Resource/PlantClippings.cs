@@ -10,7 +10,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public PlantHue PlantHue { get { return m_PlantHue; } set { m_PlantHue = value; InvalidatePlantHue(); InvalidateProperties(); } }
 
-        public override int LabelNumber { get { return 1112131; } } // plant clippings
+        public override int LabelNumber => 1112131;  // plant clippings
 
         [Constructable]
         public PlantClippings()

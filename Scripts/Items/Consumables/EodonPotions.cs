@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class EodonPotionContext
     {
-        public PotionEffect Type { get { return Potion.PotionEffect; } }
+        public PotionEffect Type => Potion.PotionEffect;
         public DateTime StartTime { get; set; }
         public DateTime Expires { get; set; }
         public EodonianPotion Potion { get; set; }
@@ -45,7 +45,7 @@ namespace Server.Items
         public static Dictionary<Mobile, List<EodonPotionContext>> Contexts { get; set; }
         public static Timer Timer { get; set; }
 
-        public virtual TimeSpan Cooldown { get { return TimeSpan.FromMinutes(20); } }
+        public virtual TimeSpan Cooldown => TimeSpan.FromMinutes(20);
 
         public override int LabelNumber
         {
@@ -415,7 +415,7 @@ namespace Server.Items
 
     public class KurakAmbushersEssence : EodonianPotion
     {
-        public override TimeSpan Cooldown { get { return TimeSpan.FromMinutes(10); } }
+        public override TimeSpan Cooldown => TimeSpan.FromMinutes(10);
 
         [Constructable]
         public KurakAmbushersEssence() : this(1) { }
@@ -604,7 +604,7 @@ namespace Server.Items
     // resources
     public class MyrmidexEggsac : Item, ICommodity
     {
-        public override int LabelNumber { get { return 1156725; } } // Myrmidex Eggsac
+        public override int LabelNumber => 1156725;  // Myrmidex Eggsac
 
         [Constructable]
         public MyrmidexEggsac() : this(1) { }
@@ -623,8 +623,8 @@ namespace Server.Items
         {
         }
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
         public override void Serialize(GenericWriter writer)
         {
@@ -642,7 +642,7 @@ namespace Server.Items
     public class LavaBerry : Item
     {
         // TODO: Harvested near Jukari Village
-        public override int LabelNumber { get { return 1156727; } } // Lava Berry
+        public override int LabelNumber => 1156727;  // Lava Berry
 
         [Constructable]
         public LavaBerry() : this(1) { }
@@ -678,7 +678,7 @@ namespace Server.Items
     public class LavaBerryBush : Item
     {
         // TODO: Harvested near Jukari Village
-        public override int LabelNumber { get { return 1156735; } } // Lava Berry Bush
+        public override int LabelNumber => 1156735;  // Lava Berry Bush
 
         [Constructable]
         public LavaBerryBush()
@@ -723,7 +723,7 @@ namespace Server.Items
 
     public class PerfectBanana : Item
     {
-        public override int LabelNumber { get { return 1156730; } } // Perfect Bananas
+        public override int LabelNumber => 1156730;  // Perfect Bananas
 
         [Constructable]
         public PerfectBanana() : this(1) { }
@@ -758,7 +758,7 @@ namespace Server.Items
     public class RiverMossDecorate : Item
     {
         // TODO: Harvested near Urali Village
-        public override int LabelNumber { get { return 1156731; } } // River Moss
+        public override int LabelNumber => 1156731;  // River Moss
 
         [Constructable]
         public RiverMossDecorate()
@@ -804,7 +804,7 @@ namespace Server.Items
     public class RiverMoss : Item, ICommodity
     {
         // TODO: Harvested near Urali Village
-        public override int LabelNumber { get { return 1156731; } } // River Moss
+        public override int LabelNumber => 1156731;  // River Moss
 
         [Constructable]
         public RiverMoss() : this(1) { }
@@ -823,8 +823,8 @@ namespace Server.Items
         {
         }
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
         public override void Serialize(GenericWriter writer)
         {
@@ -842,7 +842,7 @@ namespace Server.Items
     public class BlueCorn : EarOfCorn
     {
         // TODO: Harvestable from Sakkhra corn fields
-        public override int LabelNumber { get { return 1156733; } } // Blue Corn
+        public override int LabelNumber => 1156733;  // Blue Corn
 
         [Constructable]
         public BlueCorn() : this(1) { }
@@ -874,7 +874,7 @@ namespace Server.Items
 
     public class CornStalk : Item
     {
-        public override int LabelNumber { get { return 1035639; } } // corn stalk
+        public override int LabelNumber => 1035639;  // corn stalk
         private int m_Used;
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -950,7 +950,7 @@ namespace Server.Items
 
     public class MoonstoneCrystalShard : Item
     {
-        public override int LabelNumber { get { return 1124142; } } // Moonstone Crystal Shards
+        public override int LabelNumber => 1124142;  // Moonstone Crystal Shards
 
         [Constructable]
         public MoonstoneCrystalShard() : this(1) { }

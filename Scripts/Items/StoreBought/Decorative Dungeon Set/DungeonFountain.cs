@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class DungeonFountainAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new DungeonFountainDeed(); } }
+        public override BaseAddonDeed Deed => new DungeonFountainDeed();
 
         [Constructable]
         public DungeonFountainAddon()
@@ -40,8 +40,8 @@ namespace Server.Items
 
     public class DungeonFountainDeed : BaseAddonDeed
     {
-        public override int LabelNumber { get { return 1159474; } } // Dungeon Fountain
-        public override BaseAddon Addon { get { return new DungeonFountainAddon(); } }
+        public override int LabelNumber => 1159474;  // Dungeon Fountain
+        public override BaseAddon Addon => new DungeonFountainAddon();
 
         [Constructable]
         public DungeonFountainDeed()

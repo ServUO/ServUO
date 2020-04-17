@@ -19,13 +19,7 @@ namespace Server.Items
         {
         }
 
-        public PlagueBeastLord Owner
-        {
-            get
-            {
-                return this.RootParent as PlagueBeastLord;
-            }
-        }
+        public PlagueBeastLord Owner => this.RootParent as PlagueBeastLord;
         public virtual bool Scissor(Mobile from, Scissors scissors)
         {
             return false;
@@ -111,27 +105,9 @@ namespace Server.Items
                 this.m_Organ = value;
             }
         }
-        public bool IsBrain
-        {
-            get
-            {
-                return this.ItemID == 0x1CF0;
-            }
-        }
-        public bool IsGland
-        {
-            get
-            {
-                return this.ItemID == 0x1CEF;
-            }
-        }
-        public bool IsReceptacle
-        {
-            get
-            {
-                return this.ItemID == 0x9DF;
-            }
-        }
+        public bool IsBrain => this.ItemID == 0x1CF0;
+        public bool IsGland => this.ItemID == 0x1CEF;
+        public bool IsReceptacle => this.ItemID == 0x9DF;
         public override bool DropToItem(Mobile from, Item target, Point3D p)
         {
             if (target is PlagueBeastBackpack)

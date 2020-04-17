@@ -18,13 +18,7 @@ namespace Server.Items
         {
         }
 
-        public static int[] Sounds
-        {
-            get
-            {
-                return m_Sounds;
-            }
-        }
+        public static int[] Sounds => m_Sounds;
         [CommandProperty(AccessLevel.GameMaster)]
         public bool TurnedOn
         {
@@ -38,13 +32,7 @@ namespace Server.Items
                 this.InvalidateProperties();
             }
         }
-        public override bool HandlesOnMovement
-        {
-            get
-            {
-                return this.m_TurnedOn && this.IsLockedDown;
-            }
-        }
+        public override bool HandlesOnMovement => this.m_TurnedOn && this.IsLockedDown;
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
             if (this.m_TurnedOn && this.IsLockedDown && (!m.Hidden || m.IsPlayer()) && Utility.InRange(m.Location, this.Location, 2) && !Utility.InRange(oldLocation, this.Location, 2))
@@ -158,13 +146,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1030290;
-            }
-        }
+        public override int LabelNumber => 1030290;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -191,13 +173,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1030291;
-            }
-        }
+        public override int LabelNumber => 1030291;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

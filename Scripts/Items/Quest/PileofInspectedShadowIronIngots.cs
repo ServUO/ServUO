@@ -14,13 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113022;
-            }
-        }//Pile of Inspected Shadow Iron Ingots
+        public override int LabelNumber => 1113022;//Pile of Inspected Shadow Iron Ingots
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

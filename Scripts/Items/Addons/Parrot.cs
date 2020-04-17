@@ -23,13 +23,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074281;
-            }
-        }// pet parrot
+        public override int LabelNumber => 1074281;// pet parrot
         public override void OnDoubleClick(Mobile from)
         {
             if (this.IsChildOf(from.Backpack))

@@ -24,7 +24,7 @@ namespace Server.Items
             : base(serial)
         { }
 
-        public override bool DisplayWeight { get { return false; } }
+        public override bool DisplayWeight => false;
 
         [Hue, CommandProperty(AccessLevel.GameMaster)]
         public override int Hue
@@ -63,13 +63,13 @@ namespace Server.Items
             }
         }
 
-        public virtual bool RetainDeedHue { get { return false; } }
-        public virtual bool NeedsWall { get { return false; } }
-        public virtual bool ShareHue { get { return true; } }
-        public virtual Point3D WallPosition { get { return Point3D.Zero; } }
-        public virtual BaseAddonContainerDeed Deed { get { return null; } }
-        public List<AddonContainerComponent> Components { get { return m_Components; } }
-        Item IAddon.Deed { get { return Deed; } }
+        public virtual bool RetainDeedHue => false;
+        public virtual bool NeedsWall => false;
+        public virtual bool ShareHue => true;
+        public virtual Point3D WallPosition => Point3D.Zero;
+        public virtual BaseAddonContainerDeed Deed => null;
+        public List<AddonContainerComponent> Components => m_Components;
+        Item IAddon.Deed => Deed;
 
         public override void OnLocationChange(Point3D oldLoc)
         {

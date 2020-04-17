@@ -14,13 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073827;
-            }
-        }// A Long Claw Crab 
+        public override int LabelNumber => 1073827;// A Long Claw Crab 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -11,9 +11,9 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public string Account { get; set; }
 
-        public Account LinkedAccount { get { return Account == null ? null : Accounts.GetAccount(Account) as Account; } }
+        public Account LinkedAccount => Account == null ? null : Accounts.GetAccount(Account) as Account;
 
-        public override BaseAddonDeed Deed { get { return new LighthouseAddonDeed(Account); } }
+        public override BaseAddonDeed Deed => new LighthouseAddonDeed(Account);
 
         [Constructable]
         public LighthouseAddon(string account)
@@ -186,7 +186,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public string Account { get; set; }
 
-        public Account LinkedAccount { get { return Account == null ? null : Accounts.GetAccount(Account) as Account; } }
+        public Account LinkedAccount => Account == null ? null : Accounts.GetAccount(Account) as Account;
 
         public bool IsRewardItem
         {
@@ -194,8 +194,8 @@ namespace Server.Items
             set { }
         }
 
-        public override BaseAddon Addon { get { return new LighthouseAddon(Account); } }
-        public override int LabelNumber { get { return 1154582; } } // Deed for a Lighthouse
+        public override BaseAddon Addon => new LighthouseAddon(Account);
+        public override int LabelNumber => 1154582;  // Deed for a Lighthouse
 
         [Constructable]
         public LighthouseAddonDeed() : this(null)

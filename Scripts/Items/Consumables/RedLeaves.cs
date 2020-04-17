@@ -24,23 +24,11 @@ namespace Server.Items
         {
         }
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1053123;
-            }
-        }// red leaves
-        public override double DefaultWeight
-        {
-            get
-            {
-                return 0.1;
-            }
-        }
+        public override int LabelNumber => 1053123;// red leaves
+        public override double DefaultWeight => 0.1;
         public override void OnDoubleClick(Mobile from)
         {
             if (!this.IsChildOf(from.Backpack))

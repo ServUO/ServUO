@@ -64,13 +64,7 @@ namespace Server.Items
         {
         }
 
-        public override bool DisplayLootType
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool DisplayLootType => true;
         [CommandProperty(AccessLevel.GameMaster)]
         public RepairSkillType RepairSkill
         {
@@ -310,48 +304,12 @@ namespace Server.Items
         {
         }
 
-        public static RepairSkillInfo[] Table
-        {
-            get
-            {
-                return m_Table;
-            }
-        }
-        public TextDefinition NotNearbyMessage
-        {
-            get
-            {
-                return m_NotNearbyMessage;
-            }
-        }
-        public TextDefinition Name
-        {
-            get
-            {
-                return m_Name;
-            }
-        }
-        public TextDefinition Description
-        {
-            get
-            {
-                return m_Description;
-            }
-        }
-        public CraftSystem System
-        {
-            get
-            {
-                return m_System;
-            }
-        }
-        public Type[] NearbyTypes
-        {
-            get
-            {
-                return m_NearbyTypes;
-            }
-        }
+        public static RepairSkillInfo[] Table => m_Table;
+        public TextDefinition NotNearbyMessage => m_NotNearbyMessage;
+        public TextDefinition Name => m_Name;
+        public TextDefinition Description => m_Description;
+        public CraftSystem System => m_System;
+        public Type[] NearbyTypes => m_NearbyTypes;
         public static RepairSkillInfo GetInfo(RepairSkillType type)
         {
             int v = (int)type;

@@ -13,13 +13,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1015231;
-            }
-        }// city map
+        public override int LabelNumber => 1015231;// city map
         public override void CraftInit(Mobile from)
         {
             double skillValue = from.Skills[SkillName.Cartography].Value;

@@ -7,7 +7,7 @@ namespace Server.Items
     {
         private int m_Lifespan;
         private Timer m_Timer;
-        public override int LabelNumber { get { return 1154236; } } // Willem Harte's Hat
+        public override int LabelNumber => 1154236;  // Willem Harte's Hat
 
         [Constructable]
         public WillemHartesHat()
@@ -30,7 +30,7 @@ namespace Server.Items
             from.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1154237); // *The hat emits a sour smelling odor indicative of spending a significant period of time in the belly of a dragon.*
         }
 
-        public virtual int Lifespan { get { return 3600; } }
+        public virtual int Lifespan => 3600;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int TimeLeft
@@ -125,12 +125,12 @@ namespace Server.Items
             this.Delete();
         }
 
-        public override int BaseFireResistance { get { return 5; } }
-        public override int BaseColdResistance { get { return 9; } }
-        public override int BasePoisonResistance { get { return 5; } }
-        public override int BaseEnergyResistance { get { return 5; } }
-        public override int InitMinHits { get { return 20; } }
-        public override int InitMaxHits { get { return 30; } }
+        public override int BaseFireResistance => 5;
+        public override int BaseColdResistance => 9;
+        public override int BasePoisonResistance => 5;
+        public override int BaseEnergyResistance => 5;
+        public override int InitMinHits => 20;
+        public override int InitMaxHits => 30;
 
         public WillemHartesHat(Serial serial)
             : base(serial)

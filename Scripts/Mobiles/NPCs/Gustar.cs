@@ -6,22 +6,10 @@ namespace Server.Engines.Quests
 {
     public class StoppingTheWorldQuest : BaseQuest
     {
-        public override bool DoneOnce
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool DoneOnce => true;
 
         /* Stopping the World */
-        public override object Title
-        {
-            get
-            {
-                return 1077597;
-            }
-        }
+        public override object Title => 1077597;
 
         /* Head East out of town and go to Old Haven. Use spells and abilites to deplete your mana and meditate there until you have 
         raised your Meditation skill to 50.	Well met! I can teach you how to 'Stop the World' around you and focus your inner energies 
@@ -34,45 +22,21 @@ namespace Server.Engines.Quests
         properties of Meditation. It is wise to wear leather or cloth protection when meditating. Head east out of town and go to Old 
         Haven. Use spells and abilities to deplete your mana and actively meditate to replenish it.	Come back once you feel you are at 
         the worthy rank of Apprentice Stoic and i will reward you with a arcane prize. */
-        public override object Description
-        {
-            get
-            {
-                return 1077598;
-            }
-        }
+        public override object Description => 1077598;
 
         /* Seek me out if you ever wish to study the art of Meditation. Good journey. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1077599;
-            }
-        }
+        public override object Refuse => 1077599;
 
         /* You have not achived the rank of Apprentice Stoic. Come back to me once you feel that you are worthy of the rank Apprentice 
         Stoic and i will reward you with a arcane prize. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1077601;
-            }
-        }
+        public override object Uncomplete => 1077601;
 
         /* Splendid! On behalf of the New Haven Mage Council i wish to present you with this hat. When worn the Philosopher's Hat will 
         protect you somewhat from physical attacks. The Philosopher's Hat also enhances the potency of your offensive spells, lowers 
         the mana cost of your arcane soekks abd abilities, and passively increases your mana regeneration rate. Ah yes almost forgot. 
         The philosopher's Hat also grants one other special ability to its wearer. It allows a chance for the wearer to cast spells 
         without using any reagents. I hope the Philosopher's Hate serves you well. */
-        public override object Complete
-        {
-            get
-            {
-                return 1077601;
-            }
-        }
+        public override object Complete => 1077601;
 
         public StoppingTheWorldQuest()
             : base()
@@ -122,16 +86,10 @@ namespace Server.Engines.Quests
 
     public class Gustar : MondainQuester
     {
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(StoppingTheWorldQuest)
                 };
-            }
-        }
 
         [Constructable]
         public Gustar()

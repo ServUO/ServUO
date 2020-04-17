@@ -157,8 +157,8 @@ namespace Server.Mobiles
             return center;
         }
 
-        public override bool AlwaysMurderer { get { return true; } }
-        public override bool ShowFameTitle { get { return false; } }
+        public override bool AlwaysMurderer => true;
+        public override bool ShowFameTitle => false;
 
         public CultistAmbusher(Serial serial)
             : base(serial)

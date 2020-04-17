@@ -26,18 +26,18 @@ namespace Server.Items
         {
         }
 
-        public override int PhysicalResistance { get { return 0; } }
-        public override int FireResistance { get { return 0; } }
-        public override int ColdResistance { get { return 0; } }
-        public override int PoisonResistance { get { return 0; } }
-        public override int EnergyResistance { get { return 0; } }
+        public override int PhysicalResistance => 0;
+        public override int FireResistance => 0;
+        public override int ColdResistance => 0;
+        public override int PoisonResistance => 0;
+        public override int EnergyResistance => 0;
 
-        public override int StrReq { get { return 10; } }
-        public override ArmorMaterialType MaterialType { get { return ArmorMaterialType.Leather; } }
-        public override CraftResource DefaultResource { get { return CraftResource.RegularLeather; } }
-        public override ArmorMeditationAllowance DefMedAllowance { get { return ArmorMeditationAllowance.All; } }
-        public override Race RequiredRace { get { return Race.Gargoyle; } }
-        public override bool CanBeWornByGargoyles { get { return true; } }
+        public override int StrReq => 10;
+        public override ArmorMaterialType MaterialType => ArmorMaterialType.Leather;
+        public override CraftResource DefaultResource => CraftResource.RegularLeather;
+        public override ArmorMeditationAllowance DefMedAllowance => ArmorMeditationAllowance.All;
+        public override Race RequiredRace => Race.Gargoyle;
+        public override bool CanBeWornByGargoyles => true;
 
         public override int GetLuckBonus() { return 0; }
 

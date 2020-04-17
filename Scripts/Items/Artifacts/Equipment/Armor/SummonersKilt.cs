@@ -5,10 +5,10 @@ namespace Server.Items
 {
     public class SummonersKilt : GargishClothKilt, IRepairable
     {
-        public Server.Engines.Craft.CraftSystem RepairSystem { get { return DefTailoring.CraftSystem; } }
+        public Server.Engines.Craft.CraftSystem RepairSystem => DefTailoring.CraftSystem;
 
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1113540; } } // Summoner's Kilt
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113540;  // Summoner's Kilt
 
         [Constructable]
         public SummonersKilt()
@@ -27,55 +27,13 @@ namespace Server.Items
         {
         }
 
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 7;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 21;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 6;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 21;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int BasePhysicalResistance => 5;
+        public override int BaseFireResistance => 7;
+        public override int BaseColdResistance => 21;
+        public override int BasePoisonResistance => 6;
+        public override int BaseEnergyResistance => 21;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

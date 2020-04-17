@@ -5,8 +5,8 @@ namespace Server.Engines.Plants
 {
     public class MaginciaPlantItem : PlantItem
     {
-        public override bool MaginciaPlant { get { return true; } }
-        public override int BowlOfDirtID { get { return 2323; } }
+        public override bool MaginciaPlant => true;
+        public override int BowlOfDirtID => 2323;
         public override int GreenBowlID
         {
             get
@@ -18,9 +18,9 @@ namespace Server.Engines.Plants
             }
         }
 
-        public override int ContainerLocalization { get { return 1150436; } } // mound of dirt
-        public override int OnPlantLocalization { get { return 1150442; } } // You plant the seed in the mound of dirt.
-        public override int CantUseLocalization { get { return 501648; } } // You cannot use this unless you are the owner.
+        public override int ContainerLocalization => 1150436;  // mound of dirt
+        public override int OnPlantLocalization => 1150442;  // You plant the seed in the mound of dirt.
+        public override int CantUseLocalization => 501648;  // You cannot use this unless you are the owner.
 
         public override int LabelNumber
         {
@@ -58,13 +58,7 @@ namespace Server.Engines.Plants
         public DateTime SetToDecorative { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public override bool ValidGrowthLocation
-        {
-            get
-            {
-                return RootParent == null && !Movable;
-            }
-        }
+        public override bool ValidGrowthLocation => RootParent == null && !Movable;
 
         [Constructable]
         public MaginciaPlantItem()

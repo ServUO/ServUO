@@ -15,63 +15,15 @@ namespace Server.Items
         {
         }
 
-        public override WeaponAbility PrimaryAbility
-        {
-            get
-            {
-                return WeaponAbility.CrushingBlow;
-            }
-        }
-        public override WeaponAbility SecondaryAbility
-        {
-            get
-            {
-                return WeaponAbility.Dismount;
-            }
-        }
-        public override int StrengthReq
-        {
-            get
-            {
-                return 40;
-            }
-        }
-        public override int MinDamage
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int MaxDamage
-        {
-            get
-            {
-                return 14;
-            }
-        }
-        public override float Speed
-        {
-            get
-            {
-                return 2.50f;
-            }
-        }
+        public override WeaponAbility PrimaryAbility => WeaponAbility.CrushingBlow;
+        public override WeaponAbility SecondaryAbility => WeaponAbility.Dismount;
+        public override int StrengthReq => 40;
+        public override int MinDamage => 10;
+        public override int MaxDamage => 14;
+        public override float Speed => 2.50f;
 
-        public override int InitMinHits
-        {
-            get
-            {
-                return 31;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 40;
-            }
-        }
+        public override int InitMinHits => 31;
+        public override int InitMaxHits => 40;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

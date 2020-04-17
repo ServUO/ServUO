@@ -12,11 +12,11 @@ namespace Server.Items
         private readonly double m_Chance;
         private readonly Type[] m_Ingredients;
 
-        public Type CreatureType { get { return m_CreatureType; } }
-        public bool DropMultiples { get { return m_DropMultiples; } }
-        public string Region { get { return m_Region; } }
-        public double Chance { get { return m_Chance; } }
-        public Type[] Ingredients { get { return m_Ingredients; } }
+        public Type CreatureType => m_CreatureType;
+        public bool DropMultiples => m_DropMultiples;
+        public string Region => m_Region;
+        public double Chance => m_Chance;
+        public Type[] Ingredients => m_Ingredients;
 
         public IngredientDropEntry(Type creature, bool dropMultiples, double chance, params Type[] ingredients)
             : this(creature, dropMultiples, null, chance, ingredients)
@@ -33,7 +33,7 @@ namespace Server.Items
         }
 
         private static List<IngredientDropEntry> m_IngredientTable;
-        public static List<IngredientDropEntry> IngredientTable { get { return m_IngredientTable; } }
+        public static List<IngredientDropEntry> IngredientTable => m_IngredientTable;
 
         public static void Initialize()
         {

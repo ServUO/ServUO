@@ -72,27 +72,9 @@ namespace Server.Mobiles
             c.DropItem(new CrystallineFragments());
         }
 
-        public override int Hides
-        {
-            get
-            {
-                return 40;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 19;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 5;
-            }
-        }
+        public override int Hides => 40;
+        public override int Meat => 19;
+        public override int TreasureMapLevel => 5;
 
         public override void Serialize(GenericWriter writer)
         {

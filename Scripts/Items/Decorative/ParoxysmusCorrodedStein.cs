@@ -13,13 +13,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1072083;
-            }
-        }// Paroxysmus' Corroded Stein
+        public override int LabelNumber => 1072083;// Paroxysmus' Corroded Stein
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

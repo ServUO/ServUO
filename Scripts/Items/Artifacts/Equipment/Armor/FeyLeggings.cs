@@ -2,10 +2,10 @@ namespace Server.Items
 {
     public class FeyLeggings : ChainLegs, ICanBeElfOrHuman
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
 
         private bool _ElfOnly;
-        public override Race RequiredRace { get { return _ElfOnly ? Race.Elf : null; } }
+        public override Race RequiredRace => _ElfOnly ? Race.Elf : null;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool ElfOnly { get { return _ElfOnly; } set { _ElfOnly = value; InvalidateProperties(); } }
@@ -26,62 +26,14 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1075041;
-            }
-        }// Fey Leggings
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 12;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 8;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 7;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 4;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 19;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int LabelNumber => 1075041;// Fey Leggings
+        public override int BasePhysicalResistance => 12;
+        public override int BaseFireResistance => 8;
+        public override int BaseColdResistance => 7;
+        public override int BasePoisonResistance => 4;
+        public override int BaseEnergyResistance => 19;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
         public override void Serialize(GenericWriter writer)
         {

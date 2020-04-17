@@ -15,11 +15,11 @@ namespace Server.Spells.SkillMasteries
                 Reagent.Bone
             );
 
-        public override double RequiredSkill { get { return 90; } }
-        public override int RequiredMana { get { return 40; } }
-        public override bool PartyEffects { get { return false; } }
+        public override double RequiredSkill => 90;
+        public override int RequiredMana => 40;
+        public override bool PartyEffects => false;
 
-        public override SkillName CastSkill { get { return SkillName.Mysticism; } }
+        public override SkillName CastSkill => SkillName.Mysticism;
         public override SkillName DamageSkill
         {
             get

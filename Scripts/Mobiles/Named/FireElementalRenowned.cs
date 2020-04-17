@@ -53,48 +53,12 @@ namespace Server.Mobiles
         {
         }
 
-        public override Type[] UniqueSAList
-        {
-            get
-            {
-                return new Type[] { typeof(JadeWarAxe) };
-            }
-        }
-        public override Type[] SharedSAList
-        {
-            get
-            {
-                return new Type[] { typeof(TokenOfHolyFavor), typeof(SwordOfShatteredHopes), typeof(LegacyOfDespair) };
-            }
-        }
-        public override double DispelDifficulty
-        {
-            get
-            {
-                return 117.5;
-            }
-        }
-        public override double DispelFocus
-        {
-            get
-            {
-                return 45.0;
-            }
-        }
-        public override bool BleedImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 2;
-            }
-        }
+        public override Type[] UniqueSAList => new Type[] { typeof(JadeWarAxe) };
+        public override Type[] SharedSAList => new Type[] { typeof(TokenOfHolyFavor), typeof(SwordOfShatteredHopes), typeof(LegacyOfDespair) };
+        public override double DispelDifficulty => 117.5;
+        public override double DispelFocus => 45.0;
+        public override bool BleedImmune => true;
+        public override int TreasureMapLevel => 2;
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.UltraRich);

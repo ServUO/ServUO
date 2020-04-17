@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class SandMiningBook : Item
     {
-        public override int LabelNumber { get { return 1153531; } } // Find Glass-Quality Sand
+        public override int LabelNumber => 1153531;  // Find Glass-Quality Sand
 
         [Constructable]
         public SandMiningBook()

@@ -45,41 +45,11 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override MeatType MeatType
-        {
-            get
-            {
-                return MeatType.Bird;
-            }
-        }
-        public override int Feathers
-        {
-            get
-            {
-                return 36;
-            }
-        }
-        public override FoodType FavoriteFood
-        {
-            get
-            {
-                return FoodType.Meat | FoodType.Fish;
-            }
-        }
-        public override bool CanFly
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override int Meat => 1;
+        public override MeatType MeatType => MeatType.Bird;
+        public override int Feathers => 36;
+        public override FoodType FavoriteFood => FoodType.Meat | FoodType.Fish;
+        public override bool CanFly => true;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -2,10 +2,7 @@ namespace Server.Items
 {
     public class RecipeScrollFilter
     {
-        public bool IsDefault
-        {
-            get { return (Skill == 0 && Expansion == 0 && Amount == 0); }
-        }
+        public bool IsDefault => (Skill == 0 && Expansion == 0 && Amount == 0);
 
         public void Clear()
         {

@@ -14,49 +14,19 @@ namespace Server.Engines.Quests
         }
 
         /* Misplaced */
-        public override object Title
-        {
-            get
-            {
-                return 1074438;
-            }
-        }
+        public override object Title => 1074438;
         /* Shhh!  *nervous chuckle* Oh, sorry about that.  I forget that I'm not in the library any longer -- and instead that 
         THING has taken over.  If that wasn't distressing enough, I've misplaced my thesis pages and they've been gathered up 
         by the shambling dead.  Could you retrieve them for me? */
-        public override object Description
-        {
-            get
-            {
-                return 1074439;
-            }
-        }
+        public override object Description => 1074439;
         /* *tense sigh* Of course, I understand.  If you change your mind, I'll be waiting. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1074441;
-            }
-        }
+        public override object Refuse => 1074441;
         /* Most of the creatures here wouldn't be interested in my thesis.  *nervous chuckle*  Master Gnosos would argue that 
         no one is -- not even the undead.  Still, I'd wager that the more powerful undead have my pages. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1074442;
-            }
-        }
+        public override object Uncomplete => 1074442;
         /* Ah!  You've got my pages?  Oh no ... they've been damaged.  Here, take this key.  Perhaps you can find the podium 
         and gain access to the library.  My poor books are being ravaged by that horror and you'd do well to put things right. */
-        public override object Complete
-        {
-            get
-            {
-                return 1074443;
-            }
-        }
+        public override object Complete => 1074443;
         public override bool CanOffer()
         {
             return MondainsLegacy.Bedlam;
@@ -90,16 +60,10 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(MisplacedQuest)
                 };
-            }
-        }
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);

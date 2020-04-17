@@ -10,7 +10,7 @@ namespace Server.Items
     {
         public List<Tuple<TextDefinition, Type>> Titles { get; set; }
 
-        public override int LabelNumber { get { return 1156719; } } // Reward Title Scroll
+        public override int LabelNumber => 1156719;  // Reward Title Scroll
 
         public BaseRewardTitleToken(int id) : base(id)
         {

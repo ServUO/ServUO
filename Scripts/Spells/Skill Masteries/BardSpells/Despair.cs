@@ -16,12 +16,12 @@ namespace Server.Spells.SkillMasteries
                 9002
             );
 
-        public override double RequiredSkill { get { return 90; } }
-        public override double UpKeep { get { return 12; } }
-        public override int RequiredMana { get { return 26; } }
-        public override bool PartyEffects { get { return false; } }
-        public override SkillName CastSkill { get { return SkillName.Discordance; } }
-        public override double SlayerBonus { get { return 3.0; } }
+        public override double RequiredSkill => 90;
+        public override double UpKeep => 12;
+        public override int RequiredMana => 26;
+        public override bool PartyEffects => false;
+        public override SkillName CastSkill => SkillName.Discordance;
+        public override double SlayerBonus => 3.0;
 
         private int m_StatMod;
         private int m_Damage;

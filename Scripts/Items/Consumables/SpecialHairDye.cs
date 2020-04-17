@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class SpecialHairDye : Item
     {
-        public override int LabelNumber { get { return 1074402; } } // Special Hair Dye
+        public override int LabelNumber => 1074402;  // Special Hair Dye
 
         [Constructable]
         public SpecialHairDye()
@@ -154,27 +154,9 @@ namespace Server.Items
                 this.m_HueCount = hueCount;
             }
 
-            public string Name
-            {
-                get
-                {
-                    return this.m_Name;
-                }
-            }
-            public int HueStart
-            {
-                get
-                {
-                    return this.m_HueStart;
-                }
-            }
-            public int HueCount
-            {
-                get
-                {
-                    return this.m_HueCount;
-                }
-            }
+            public string Name => this.m_Name;
+            public int HueStart => this.m_HueStart;
+            public int HueCount => this.m_HueCount;
         }
     }
 }

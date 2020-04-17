@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class OrcishSchematics : BaseDecayingItem
     {
-        public override int LabelNumber { get { return 1154232; } } // Schematic for an Orcish Drilling Machine
+        public override int LabelNumber => 1154232;  // Schematic for an Orcish Drilling Machine
 
         [Constructable]
         public OrcishSchematics() : base(0x2258)
@@ -28,8 +28,8 @@ namespace Server.Items
             list.Add(1072351); // Quest Item
         }
 
-        public override int Lifespan { get { return 3600; } }
-        public override bool UseSeconds { get { return false; } }
+        public override int Lifespan => 3600;
+        public override bool UseSeconds => false;
 
         public OrcishSchematics(Serial serial) : base(serial)
         {

@@ -25,16 +25,16 @@ namespace Server.Items
         public string DateKilled { get { return m_DateKilled; } set { m_DateKilled = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public TextDefinition Species { get { return Info.Species; } }
+        public TextDefinition Species => Info.Species;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public MeasuredBy MeasuredBy { get { return Info.MeasuredBy; } }
+        public MeasuredBy MeasuredBy => Info.MeasuredBy;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual int EastID { get { return Info.EastID; } }
+        public virtual int EastID => Info.EastID;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual int SouthID { get { return Info.SouthID; } }
+        public virtual int SouthID => Info.SouthID;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int Index
@@ -55,15 +55,9 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public HuntingTrophyInfo Info { get { return HuntingTrophyInfo.Infos[Index]; } }
+        public HuntingTrophyInfo Info => HuntingTrophyInfo.Infos[Index];
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return Info.TrophyName.Number;
-            }
-        }
+        public override int LabelNumber => Info.TrophyName.Number;
 
         public HuntTrophy(string name, int index, int measurement, string killed, string location)
         {
@@ -184,16 +178,16 @@ namespace Server.Items
         public string DateKilled { get { return m_DateKilled; } set { m_DateKilled = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public TextDefinition Species { get { return Info.Species; } }
+        public TextDefinition Species => Info.Species;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public MeasuredBy MeasuredBy { get { return Info.MeasuredBy; } }
+        public MeasuredBy MeasuredBy => Info.MeasuredBy;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual int EastID { get { return Info.EastID; } }
+        public virtual int EastID => Info.EastID;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual int SouthID { get { return Info.SouthID; } }
+        public virtual int SouthID => Info.SouthID;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int Index
@@ -214,7 +208,7 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public HuntingTrophyInfo Info { get { return HuntingTrophyInfo.Infos[Index]; } }
+        public HuntingTrophyInfo Info => HuntingTrophyInfo.Infos[Index];
 
         public override int LabelNumber
         {

@@ -7,13 +7,7 @@ namespace Server.Mobiles
     public class Weaponsmith : BaseVendor
     {
         private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
-        protected override List<SBInfo> SBInfos
-        {
-            get
-            {
-                return this.m_SBInfos;
-            }
-        }
+        protected override List<SBInfo> SBInfos => this.m_SBInfos;
 
         [Constructable]
         public Weaponsmith()
@@ -35,13 +29,7 @@ namespace Server.Mobiles
                 this.m_SBInfos.Add(new SBSEWeapons());
         }
 
-        public override VendorShoeType ShoeType
-        {
-            get
-            {
-                return Utility.RandomBool() ? VendorShoeType.Boots : VendorShoeType.ThighBoots;
-            }
-        }
+        public override VendorShoeType ShoeType => Utility.RandomBool() ? VendorShoeType.Boots : VendorShoeType.ThighBoots;
 
         public override int GetShoeHue()
         {
@@ -56,7 +44,7 @@ namespace Server.Mobiles
         }
 
         #region Bulk Orders
-        public override BODType BODType { get { return BODType.Smith; } }
+        public override BODType BODType => BODType.Smith;
 
         public override Item CreateBulkOrder(Mobile from, bool fromContextMenu)
         {

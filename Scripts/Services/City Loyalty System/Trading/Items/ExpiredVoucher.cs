@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class ExpiredVoucher : Item
     {
-        public override int LabelNumber { get { return 1151749; } } // Expired Voucher for a Free Drink at the Fortune's Fire Casino
+        public override int LabelNumber => 1151749;  // Expired Voucher for a Free Drink at the Fortune's Fire Casino
 
         [Constructable]
         public ExpiredVoucher()

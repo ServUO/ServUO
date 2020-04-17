@@ -6,22 +6,10 @@ namespace Server.Engines.Quests
 {
     public class CleansingOldHavenQuest : BaseQuest
     {
-        public override bool DoneOnce
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool DoneOnce => true;
 
         /* Cleansing Old Haven */
-        public override object Title
-        {
-            get
-            {
-                return 1077719;
-            }
-        }
+        public override object Title => 1077719;
 
         /* Head East out of town to Old Haven. Consecrate your weapon, cast Divine Fury, and battle monsters there until 
         you have raised your Chivalry skill to 50.<br><center>------</center><br>Hail, friend. The life of a Paladin is 
@@ -30,42 +18,18 @@ namespace Server.Engines.Quests
         there.<br><br>Each ability a Paladin wishes to invoke will require a certain amount of "tithing points" to use. 
         A Paladin can earn these tithing points by donating gold at a shrine or holy place. You may tithe at this shrine.
         <br><br>Return to me once you feel that you are worthy of the rank of Apprentice Paladin. */
-        public override object Description
-        {
-            get
-            {
-                return 1077722;
-            }
-        }
+        public override object Description => 1077722;
 
         /* Farewell to you my friend. Return to me if you wish to live the life of a Paladin. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1077723;
-            }
-        }
+        public override object Refuse => 1077723;
 
         /* There are still more undead to lay to rest. You still have more to learn. Return to me once you have done so. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1077724;
-            }
-        }
+        public override object Uncomplete => 1077724;
 
         /* Well done, friend. While I know you understand Chivalry is its own reward, I would like to reward you with 
         something that will protect you in battle. It was passed down to me when I was a lad. Now, I am passing it on you. 
         It is called the Bulwark Leggings. Thank you for your service. */
-        public override object Complete
-        {
-            get
-            {
-                return 1077726;
-            }
-        }
+        public override object Complete => 1077726;
 
         public CleansingOldHavenQuest()
             : base()
@@ -115,24 +79,12 @@ namespace Server.Engines.Quests
 
     public class Aelorn : MondainQuester
     {
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(CleansingOldHavenQuest)
                 };
-            }
-        }
 
-        public override bool IsActiveVendor
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool IsActiveVendor => true;
         public override void InitSBInfo()
         {
             this.SBInfos.Add(new SBKeeperOfChivalry());

@@ -14,48 +14,18 @@ namespace Server.Engines.Quests
         }
 
         /* Momento! */
-        public override object Title
-        {
-            get
-            {
-                return 1074750;
-            }
-        }
+        public override object Title => 1074750;
         /* I was going to march right out there and get it myself, but no ... Master Gnosos won't let me.  But you 
         see, that bridle means so much to me.  A momento of happier, less-dead ... well undead horseback riding.  
         Could you fetch it for me?  I think my horse, formerly known as 'Resolve', may still be wearing it. */
-        public override object Description
-        {
-            get
-            {
-                return 1074751;
-            }
-        }
+        public override object Description => 1074751;
         /* Hrmph. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1074752;
-            }
-        }
+        public override object Refuse => 1074752;
         /* The bridle would be hard to miss on him now ... since he's skeletal.  Please do what you need to do to 
         retreive it for me. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1074753;
-            }
-        }
+        public override object Uncomplete => 1074753;
         /* I'd know that jingling sound anywhere!  You have recovered my bridle.  Thank you. */
-        public override object Complete
-        {
-            get
-            {
-                return 1074754;
-            }
-        }
+        public override object Complete => 1074754;
         public override bool CanOffer()
         {
             return MondainsLegacy.Bedlam;
@@ -89,16 +59,10 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(MomentoQuest)
                 };
-            }
-        }
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);

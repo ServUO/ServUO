@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class CommissionContractOfEmployment : Item
     {
-        public override int LabelNumber { get { return 1159156; } } // A Commission Contract of Employment
+        public override int LabelNumber => 1159156;  // A Commission Contract of Employment
 
         [Constructable]
         public CommissionContractOfEmployment()

@@ -7,7 +7,7 @@ namespace Server.Items
 {
     public class Hoe : BaseAxe, IUsesRemaining
     {
-        public override int LabelNumber { get { return 1150482; } } // hoe
+        public override int LabelNumber => 1150482;  // hoe
 
         [Constructable]
         public Hoe()
@@ -19,18 +19,18 @@ namespace Server.Items
             ShowUsesRemaining = true;
         }
 
-        public override WeaponAbility PrimaryAbility { get { return WeaponAbility.DoubleStrike; } }
-        public override WeaponAbility SecondaryAbility { get { return WeaponAbility.Disarm; } }
-        public override int StrengthReq { get { return 50; } }
-        public override int MinDamage { get { return 12; } }
-        public override int MaxDamage { get { return 16; } }
-        public override float Speed { get { return 3.00f; } }
-        public override int InitMinHits { get { return 31; } }
-        public override int InitMaxHits { get { return 60; } }
+        public override WeaponAbility PrimaryAbility => WeaponAbility.DoubleStrike;
+        public override WeaponAbility SecondaryAbility => WeaponAbility.Disarm;
+        public override int StrengthReq => 50;
+        public override int MinDamage => 12;
+        public override int MaxDamage => 16;
+        public override float Speed => 3.00f;
+        public override int InitMinHits => 31;
+        public override int InitMaxHits => 60;
 
-        public override bool CanBeWornByGargoyles { get { return true; } }
+        public override bool CanBeWornByGargoyles => true;
 
-        public override WeaponAnimation DefAnimation { get { return WeaponAnimation.Slash1H; } }
+        public override WeaponAnimation DefAnimation => WeaponAnimation.Slash1H;
 
         public override void OnDoubleClick(Mobile from)
         {

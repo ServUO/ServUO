@@ -19,13 +19,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1071124;
-            }
-        }//  hitching rope
+        public override int LabelNumber => 1071124;//  hitching rope
         public override void OnDoubleClick(Mobile from)
         {
             if (IsChildOf(from.Backpack) || (from.InRange(GetWorldLocation(), 2) && Movable))

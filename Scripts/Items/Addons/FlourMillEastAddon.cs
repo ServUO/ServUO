@@ -40,21 +40,9 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new FlourMillEastDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new FlourMillEastDeed();
         [CommandProperty(AccessLevel.GameMaster)]
-        public int MaxFlour
-        {
-            get
-            {
-                return 2;
-            }
-        }
+        public int MaxFlour => 2;
         [CommandProperty(AccessLevel.GameMaster)]
         public int CurFlour
         {
@@ -69,29 +57,11 @@ namespace Server.Items
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool HasFlour
-        {
-            get
-            {
-                return (this.m_Flour > 0);
-            }
-        }
+        public bool HasFlour => (this.m_Flour > 0);
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsFull
-        {
-            get
-            {
-                return (this.m_Flour >= this.MaxFlour);
-            }
-        }
+        public bool IsFull => (this.m_Flour >= this.MaxFlour);
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsWorking
-        {
-            get
-            {
-                return (this.m_Timer != null);
-            }
-        }
+        public bool IsWorking => (this.m_Timer != null);
         public void StartWorking(Mobile from)
         {
             if (this.IsWorking)
@@ -227,20 +197,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new FlourMillEastAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1044347;
-            }
-        }// flour mill (east)
+        public override BaseAddon Addon => new FlourMillEastAddon();
+        public override int LabelNumber => 1044347;// flour mill (east)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

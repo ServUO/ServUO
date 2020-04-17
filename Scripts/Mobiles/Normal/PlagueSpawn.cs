@@ -105,13 +105,7 @@ namespace Server.Mobiles
                 this.m_ExpireTime = value;
             }
         }
-        public override bool AlwaysMurderer
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool AlwaysMurderer => true;
         public override void DisplayPaperdollTo(Mobile to)
         {
         }

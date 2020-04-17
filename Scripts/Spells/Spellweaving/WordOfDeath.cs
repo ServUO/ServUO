@@ -11,27 +11,9 @@ namespace Server.Spells.Spellweaving
         {
         }
 
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(3.5);
-            }
-        }
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 83.0;
-            }
-        }
-        public override int RequiredMana
-        {
-            get
-            {
-                return 50;
-            }
-        }
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(3.5);
+        public override double RequiredSkill => 83.0;
+        public override int RequiredMana => 50;
         public override void OnCast()
         {
             this.Caster.Target = new InternalTarget(this);

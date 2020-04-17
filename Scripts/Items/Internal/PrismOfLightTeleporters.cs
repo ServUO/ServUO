@@ -115,13 +115,7 @@ namespace Server.Items
         {
         }
 
-        public override TimeSpan DecayTime
-        {
-            get
-            {
-                return TimeSpan.FromMinutes(1);
-            }
-        }
+        public override TimeSpan DecayTime => TimeSpan.FromMinutes(1);
         public override bool OnMoveOver(Mobile m)
         {
             if (m.Player)

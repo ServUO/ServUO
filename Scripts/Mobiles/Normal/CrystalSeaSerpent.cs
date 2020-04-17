@@ -44,12 +44,12 @@ namespace Server.Mobiles
                 c.DropItem(new LuckyDagger());
         }
 
-        public override int TreasureMapLevel { get { return 3; } }
-        public override int Meat { get { return 10; } }
-        public override int Hides { get { return 11; } }
-        public override HideType HideType { get { return HideType.Horned; } }
-        public override int Scales { get { return 8; } }
-        public override ScaleType ScaleType { get { return ScaleType.Blue; } }
+        public override int TreasureMapLevel => 3;
+        public override int Meat => 10;
+        public override int Hides => 11;
+        public override HideType HideType => HideType.Horned;
+        public override int Scales => 8;
+        public override ScaleType ScaleType => ScaleType.Blue;
 
         public CrystalSeaSerpent(Serial serial)
             : base(serial)

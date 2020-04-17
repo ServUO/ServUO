@@ -3,7 +3,7 @@ namespace Server.Items
     [Flipable(0xA4ED, 0xA4EE)]
     public class DecorativeStocks : Item
     {
-        public override int LabelNumber { get { return 1159472; } } // decorative stocks
+        public override int LabelNumber => 1159472;  // decorative stocks
 
         [Constructable]
         public DecorativeStocks()

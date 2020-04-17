@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class SpecialPrintingOfVirtue : Item
     {
-        public override int LabelNumber { get { return 1075793; } } // Special Printing of 'Virtue' by Lord British
+        public override int LabelNumber => 1075793;  // Special Printing of 'Virtue' by Lord British
 
         [Constructable]
         public SpecialPrintingOfVirtue() : base(4082)

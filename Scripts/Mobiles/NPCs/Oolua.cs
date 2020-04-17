@@ -15,39 +15,15 @@ namespace Server.Engines.Quests
         }
 
         /* Pixie dust to dust */
-        public override object Title
-        {
-            get
-            {
-                return 1073661;
-            }
-        }
+        public override object Title => 1073661;
         /* Is there anything more foul than a pixie? They have cruel eyes and a mind for mischief, I say. I don't 
         care if some think they're cute -- I say kill them and let the Avatar sort them out. In fact, if you were 
         to kill a few pixies, I'd make sure you had a few coins to rub together, if you get my meaning. */
-        public override object Description
-        {
-            get
-            {
-                return 1073700;
-            }
-        }
+        public override object Description => 1073700;
         /* Perhaps you'll change your mind and return at some point. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1073733;
-            }
-        }
+        public override object Refuse => 1073733;
         /* There's too much cuteness in the world -- kill those pixies! */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1073741;
-            }
-        }
+        public override object Uncomplete => 1073741;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -76,11 +52,7 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(ParoxysmusSuccubiQuest),
                     typeof(ParoxysmusMolochQuest),
@@ -92,8 +64,6 @@ namespace Server.Engines.Quests
                     typeof(DreadhornQuest),
                     typeof(PixieDustToDustQuest)
                 };
-            }
-        }
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);

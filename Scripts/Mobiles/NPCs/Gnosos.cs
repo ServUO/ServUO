@@ -15,51 +15,21 @@ namespace Server.Engines.Quests
         }
 
         /* Gone Native */
-        public override object Title
-        {
-            get
-            {
-                return 1074855;
-            }
-        }
+        public override object Title => 1074855;
         /* Pathetic really.  I must say, a senior instructor going native -- forgetting about his students and 
         peers and engaging in such disgraceful behavior!  I'm speaking, of course, of Theophilus.  Master Theophilus 
         to you. He may have gone native but he still holds a Mastery Degree from Bedlam College!  But, well, that's 
         neither here nor there.  I need you to take care of my colleague.  Convince him of the error of his ways.  
         He may resist.  In fact, assume he will and kill him.  We'll get him resurrected and be ready to cure his 
         folly.  What do you say? */
-        public override object Description
-        {
-            get
-            {
-                return 1074856;
-            }
-        }
+        public override object Description => 1074856;
         /* I understand.  A Master of Bedlam, even one entirely off his rocker, is too much for you to handle. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1074857;
-            }
-        }
+        public override object Refuse => 1074857;
         /* You had better get going.  Master Theophilus isn't likely to kill himself just to save me this embarrassment. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1074858;
-            }
-        }
+        public override object Uncomplete => 1074858;
         /* You look a bit worse for wear!  He put up a good fight did he?  Hah!  That's the spirit … a Master 
         of Bedlam is a match for most. */
-        public override object Complete
-        {
-            get
-            {
-                return 1074859;
-            }
-        }
+        public override object Complete => 1074859;
         public override bool CanOffer()
         {
             return MondainsLegacy.Bedlam;
@@ -82,7 +52,7 @@ namespace Server.Engines.Quests
 
     public class Gnosos : MondainQuester
     {
-        public override bool ConvertsMageArmor { get { return true; } }
+        public override bool ConvertsMageArmor => true;
 
         [Constructable]
         public Gnosos()
@@ -102,18 +72,12 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(CommonBrigandsQuest),
                     typeof(GoneNativeQuest),
                     typeof(PointyEarsQuest),
                 };
-            }
-        }
         public override void InitBody()
         {
             InitStats(100, 100, 25);

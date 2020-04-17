@@ -21,7 +21,7 @@ namespace Server.Items
             }
         }
 
-        public override int LabelNumber { get { return 1094943; } } // Balm of Protection
+        public override int LabelNumber => 1094943;  // Balm of Protection
 
         [Constructable]
         public BalmOfProtection()

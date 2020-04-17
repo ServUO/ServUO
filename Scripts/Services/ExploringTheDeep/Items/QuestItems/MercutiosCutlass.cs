@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class MercutiosCutlass : Cutlass
     {
-        public override int LabelNumber { get { return 1154240; } } // Mercutio's Cutlass
+        public override int LabelNumber => 1154240;  // Mercutio's Cutlass
         private int m_Lifespan;
         private Timer m_Timer;
 
@@ -22,7 +22,7 @@ namespace Server.Items
             }
         }
 
-        public virtual int Lifespan { get { return 18000; } }
+        public virtual int Lifespan => 18000;
 
         public override void OnDoubleClick(Mobile from)
         {

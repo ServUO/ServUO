@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class CollectionStatuette : BaseStatuette
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         public CollectionStatuette(int itemID)
             : base(itemID)
         {
@@ -45,7 +45,7 @@ namespace Server.Items
 
     public class SilverSteedZooStatuette : CollectionStatuette
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public SilverSteedZooStatuette()
             : base(0x259D)
@@ -57,13 +57,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073219;
-            }
-        }// Interactive Silver Steed Contribution Statue
+        public override int LabelNumber => 1073219;// Interactive Silver Steed Contribution Statue
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -81,7 +75,7 @@ namespace Server.Items
 
     public class QuagmireZooStatuette : CollectionStatuette
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public QuagmireZooStatuette()
             : base(0x2614)
@@ -93,13 +87,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074848;
-            }
-        }// Interactive Quagmire Contribution Statue from the Britannia Royal Zoo.
+        public override int LabelNumber => 1074848;// Interactive Quagmire Contribution Statue from the Britannia Royal Zoo.
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -117,7 +105,7 @@ namespace Server.Items
 
     public class BakeKitsuneZooStatuette : CollectionStatuette
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public BakeKitsuneZooStatuette()
             : base(0x2763)
@@ -129,13 +117,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074849;
-            }
-        }// Interactive Bake Kitsune Contribution Statue from the Britannia Royal Zoo.
+        public override int LabelNumber => 1074849;// Interactive Bake Kitsune Contribution Statue from the Britannia Royal Zoo.
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -153,7 +135,7 @@ namespace Server.Items
 
     public class DireWolfZooStatuette : CollectionStatuette
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public DireWolfZooStatuette()
             : base(0x25D0)
@@ -165,13 +147,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073196;
-            }
-        }// Interactive Dire Wolf Contribution Statue from the Britannia Royal Zoo.
+        public override int LabelNumber => 1073196;// Interactive Dire Wolf Contribution Statue from the Britannia Royal Zoo.
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -189,7 +165,7 @@ namespace Server.Items
 
     public class CraneZooStatuette : CollectionStatuette
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public CraneZooStatuette()
             : base(0x2764)
@@ -201,13 +177,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073197;
-            }
-        }// An Interactive Crane Contribution Statue from the Britannia Royal Zoo.
+        public override int LabelNumber => 1073197;// An Interactive Crane Contribution Statue from the Britannia Royal Zoo.
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -225,7 +195,7 @@ namespace Server.Items
 
     public class PolarBearZooStatuette : CollectionStatuette
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public PolarBearZooStatuette()
             : base(0x20E1)
@@ -237,13 +207,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074851;
-            }
-        }// Interactive Polar Bear Contribution Statue from the Britannia Royal Zoo.
+        public override int LabelNumber => 1074851;// Interactive Polar Bear Contribution Statue from the Britannia Royal Zoo.
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -261,7 +225,7 @@ namespace Server.Items
 
     public class ChangelingZooStatuette : CollectionStatuette
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public ChangelingZooStatuette()
             : base(0x2D8A)
@@ -273,13 +237,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074850;
-            }
-        }// Interactive Changeling Contribution Statue from the Britannia Royal Zoo.
+        public override int LabelNumber => 1074850;// Interactive Changeling Contribution Statue from the Britannia Royal Zoo.
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -297,7 +255,7 @@ namespace Server.Items
 
     public class ReptalonZooStatuette : CollectionStatuette
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public ReptalonZooStatuette()
             : base(0x2D95)
@@ -309,13 +267,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074852;
-            }
-        }// Interactive Reptalon Contribution Statue from the Britannia Royal Zoo.
+        public override int LabelNumber => 1074852;// Interactive Reptalon Contribution Statue from the Britannia Royal Zoo.
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -333,7 +285,7 @@ namespace Server.Items
 
     public class SpecialAchievementZooStatuette : CollectionStatuette
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public SpecialAchievementZooStatuette()
             : base(0x2FF6)
@@ -346,13 +298,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073226;
-            }
-        }// Britannia Royal Zoo Special Achievement Award
+        public override int LabelNumber => 1073226;// Britannia Royal Zoo Special Achievement Award
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

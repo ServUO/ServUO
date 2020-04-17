@@ -62,13 +62,7 @@ namespace Server.Items
                 m_TrapLevel = value;
             }
         }
-        public virtual bool TrapOnOpen
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public virtual bool TrapOnOpen => true;
         public virtual bool ExecuteTrap(Mobile from)
         {
             if (m_TrapType != TrapType.None)

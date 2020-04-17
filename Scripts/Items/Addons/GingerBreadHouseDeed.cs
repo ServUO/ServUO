@@ -17,13 +17,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new GingerBreadHouseDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new GingerBreadHouseDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -51,20 +45,8 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1077394;
-            }
-        }//a Gingerbread House Deed
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new GingerBreadHouseAddon();
-            }
-        }
+        public override int LabelNumber => 1077394;//a Gingerbread House Deed
+        public override BaseAddon Addon => new GingerBreadHouseAddon();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

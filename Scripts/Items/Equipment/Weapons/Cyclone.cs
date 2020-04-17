@@ -15,68 +15,20 @@ namespace Server.Items
         {
         }
 
-        public override int MinThrowRange { get { return 6; } }
+        public override int MinThrowRange => 6;
 
-        public override WeaponAbility PrimaryAbility
-        {
-            get
-            {
-                return WeaponAbility.MovingShot;
-            }
-        }
-        public override WeaponAbility SecondaryAbility
-        {
-            get
-            {
-                return WeaponAbility.InfusedThrow;
-            }
-        }
-        public override int StrengthReq
-        {
-            get
-            {
-                return 40;
-            }
-        }
-        public override int MinDamage
-        {
-            get
-            {
-                return 13;
-            }
-        }
-        public override int MaxDamage
-        {
-            get
-            {
-                return 17;
-            }
-        }
-        public override float Speed
-        {
-            get
-            {
-                return 3.25f;
-            }
-        }
+        public override WeaponAbility PrimaryAbility => WeaponAbility.MovingShot;
+        public override WeaponAbility SecondaryAbility => WeaponAbility.InfusedThrow;
+        public override int StrengthReq => 40;
+        public override int MinDamage => 13;
+        public override int MaxDamage => 17;
+        public override float Speed => 3.25f;
 
-        public override int InitMinHits
-        {
-            get
-            {
-                return 31;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 60;
-            }
-        }
+        public override int InitMinHits => 31;
+        public override int InitMaxHits => 60;
 
-        public override Race RequiredRace { get { return Race.Gargoyle; } }
-        public override bool CanBeWornByGargoyles { get { return true; } }
+        public override Race RequiredRace => Race.Gargoyle;
+        public override bool CanBeWornByGargoyles => true;
 
         public override void Serialize(GenericWriter writer)
         {

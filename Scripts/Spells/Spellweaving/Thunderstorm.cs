@@ -13,34 +13,16 @@ namespace Server.Spells.Spellweaving
 
         private static readonly Dictionary<Mobile, Timer> m_Table = new Dictionary<Mobile, Timer>();
 
-        public override DamageType SpellDamageType { get { return DamageType.SpellAOE; } }
+        public override DamageType SpellDamageType => DamageType.SpellAOE;
 
         public ThunderstormSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
         {
         }
 
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(1.5);
-            }
-        }
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 10.0;
-            }
-        }
-        public override int RequiredMana
-        {
-            get
-            {
-                return 32;
-            }
-        }
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(1.5);
+        public override double RequiredSkill => 10.0;
+        public override int RequiredMana => 32;
         public static int GetCastRecoveryMalus(Mobile m)
         {
             return m_Table.ContainsKey(m) ? 6 : 0;

@@ -10,7 +10,7 @@ namespace Server.Items
     {
         public static readonly int MaxEggs = 6;
 
-        public override int LabelNumber { get { return 1112479; } } //an incubator
+        public override int LabelNumber => 1112479;  //an incubator
 
         private SecureLevel m_Level;
 
@@ -21,8 +21,8 @@ namespace Server.Items
             set { m_Level = value; }
         }
 
-        public override int DefaultGumpID { get { return 1156; } }
-        public override int DefaultDropSound { get { return 66; } }
+        public override int DefaultGumpID => 1156;
+        public override int DefaultDropSound => 66;
 
         [Constructable]
         public Incubator()

@@ -57,16 +57,16 @@ namespace Server.Mobiles
         {
         }
 
-        public override ChampionSkullType SkullType { get { return ChampionSkullType.None; } }
-        public override Type[] UniqueList { get { return new Type[] { typeof(TongueOfTheBeast), typeof(DeathsHead), typeof(WallOfHungryMouths), typeof(AbyssalBlade) }; } }
-        public override Type[] SharedList { get { return new Type[] { typeof(RoyalGuardInvestigatorsCloak), typeof(DetectiveBoots), typeof(JadeArmband) }; } }
-        public override Type[] DecorativeList { get { return new Type[] { typeof(MagicalDoor) }; } }
-        public override MonsterStatuetteType[] StatueTypes { get { return new MonsterStatuetteType[] { MonsterStatuetteType.AbyssalInfernal, MonsterStatuetteType.ArchDemon }; } }
+        public override ChampionSkullType SkullType => ChampionSkullType.None;
+        public override Type[] UniqueList => new Type[] { typeof(TongueOfTheBeast), typeof(DeathsHead), typeof(WallOfHungryMouths), typeof(AbyssalBlade) };
+        public override Type[] SharedList => new Type[] { typeof(RoyalGuardInvestigatorsCloak), typeof(DetectiveBoots), typeof(JadeArmband) };
+        public override Type[] DecorativeList => new Type[] { typeof(MagicalDoor) };
+        public override MonsterStatuetteType[] StatueTypes => new MonsterStatuetteType[] { MonsterStatuetteType.AbyssalInfernal, MonsterStatuetteType.ArchDemon };
 
-        public override Poison PoisonImmune { get { return Poison.Lethal; } }
+        public override Poison PoisonImmune => Poison.Lethal;
 
-        public override ScaleType ScaleType { get { return ScaleType.All; } }
-        public override int Scales { get { return 20; } }
+        public override ScaleType ScaleType => ScaleType.All;
+        public override int Scales => 20;
 
         public override int GetAttackSound() { return 0x5D4; }
         public override int GetDeathSound() { return 0x5D5; }

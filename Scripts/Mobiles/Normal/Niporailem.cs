@@ -8,11 +8,7 @@ namespace Server.Mobiles
     [CorpseName("the corpse of niporailem")]
     public class Niporailem : BaseSABoss
     {
-        public override Type[] UniqueSAList
-        {
-            get
-            {
-                return new Type[] { typeof(HelmOfVillainousEpiphany), typeof(GorgetOfVillainousEpiphany), typeof(BreastplateOfVillainousEpiphany),
+        public override Type[] UniqueSAList => new Type[] { typeof(HelmOfVillainousEpiphany), typeof(GorgetOfVillainousEpiphany), typeof(BreastplateOfVillainousEpiphany),
                                                                         typeof(ArmsOfVillainousEpiphany), typeof(GauntletsOfVillainousEpiphany), typeof(LegsOfVillainousEpiphany),
                                                                         typeof(KiltOfVillainousEpiphany), typeof(EarringsOfVillainousEpiphany), typeof(GargishBreastplateOfVillainousEpiphany),
                                                                         typeof(GargishArmsOfVillainousEpiphany), typeof(NecklaceOfVillainousEpiphany), typeof(GargishLegsOfVillainousEpiphany),
@@ -20,10 +16,8 @@ namespace Server.Mobiles
                                                                         typeof(ArmsOfVirtuousEpiphany), typeof(GauntletsOfVirtuousEpiphany), typeof(LegsOfVirtuousEpiphany),
                                                                         typeof(KiltOfVirtuousEpiphany), typeof(EarringsOfVirtuousEpiphany), typeof(GargishBreastplateOfVirtuousEpiphany),
                                                                         typeof(GargishArmsOfVirtuousEpiphany), typeof(NecklaceOfVirtuousEpiphany), typeof(GargishLegsOfVirtuousEpiphany)};
-            }
-        }
 
-        public override Type[] SharedSAList { get { return new Type[] { typeof(BladeOfBattle), typeof(DemonBridleRing), typeof(GiantSteps), typeof(SwordOfShatteredHopes) }; } }
+        public override Type[] SharedSAList => new Type[] { typeof(BladeOfBattle), typeof(DemonBridleRing), typeof(GiantSteps), typeof(SwordOfShatteredHopes) };
 
         [Constructable]
         public Niporailem()
@@ -74,8 +68,8 @@ namespace Server.Mobiles
             AddLoot(LootPack.Gems, 6);
         }
 
-        public override int Meat { get { return 1; } }
-        public override bool AlwaysMurderer { get { return true; } }
+        public override int Meat => 1;
+        public override bool AlwaysMurderer => true;
 
         public override int GetIdleSound() { return 1609; }
         public override int GetAngerSound() { return 1606; }

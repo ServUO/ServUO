@@ -13,13 +13,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1072082;
-            }
-        }// String of Parts of Paroxysmus' Victims
+        public override int LabelNumber => 1072082;// String of Parts of Paroxysmus' Victims
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

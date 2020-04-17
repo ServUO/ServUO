@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class LetterOfIntroduction : Item
     {
-        public override int LabelNumber { get { return 1113243; } } // Laifem's Letter of Introduction
+        public override int LabelNumber => 1113243;  // Laifem's Letter of Introduction
 
         [Constructable]
         public LetterOfIntroduction()
@@ -32,7 +32,7 @@ namespace Server.Items
 
     public class MasteringWeaving : Item
     {
-        public override int LabelNumber { get { return 1113244; } } // Mastering the Art of Weaving
+        public override int LabelNumber => 1113244;  // Mastering the Art of Weaving
 
         [Constructable]
         public MasteringWeaving()

@@ -15,20 +15,8 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override object ConfirmMessage
-        {
-            get
-            {
-                return 1073642;
-            }
-        }// Are you sure you want to follow the elven ways?
-        public override object IncompleteMessage
-        {
-            get
-            {
-                return 1074002;
-            }
-        }// You have begun to walk the path of reclaiming your heritage, but you have not learned all the lessons before you.
+        public override object ConfirmMessage => 1073642;// Are you sure you want to follow the elven ways?
+        public override object IncompleteMessage => 1074002;// You have begun to walk the path of reclaiming your heritage, but you have not learned all the lessons before you.
         public override void InitBody()
         {
             this.Female = false;

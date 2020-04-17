@@ -35,7 +35,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public double Has { get { return m_Has; } set { m_Has = value; InvalidateProperties(); } }
 
-        public override int LabelNumber { get { return 1113135; } } // Scroll Binder
+        public override int LabelNumber => 1113135;  // Scroll Binder
 
         [Constructable]
         public ScrollBinderDeed()

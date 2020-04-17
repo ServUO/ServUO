@@ -159,10 +159,10 @@ namespace Server.Engines.Plants
         private readonly PlantHue m_PlantHue;
         private readonly int m_GumpHue;
 
-        public int Hue { get { return m_Hue; } }
-        public int Name { get { return m_Name; } }
-        public PlantHue PlantHue { get { return m_PlantHue; } }
-        public int GumpHue { get { return m_GumpHue; } }
+        public int Hue => m_Hue;
+        public int Name => m_Name;
+        public PlantHue PlantHue => m_PlantHue;
+        public int GumpHue => m_GumpHue;
 
         private PlantHueInfo(int hue, int name, PlantHue plantHue) : this(hue, name, plantHue, hue)
         {

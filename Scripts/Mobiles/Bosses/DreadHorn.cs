@@ -8,7 +8,7 @@ namespace Server.Mobiles
     [CorpseName("a dread horns corpse")]
     public class DreadHorn : BasePeerless
     {
-        public virtual int StrikingRange { get { return 12; } }
+        public virtual int StrikingRange => 12;
 
         [Constructable]
         public DreadHorn() : base(AIType.AI_Spellweaving, FightMode.Closest, 10, 1, 0.2, 0.4)
@@ -114,17 +114,17 @@ namespace Server.Mobiles
                 c.DropItem(new DreadsRevenge());
         }
 
-        public override int Hides { get { return 10; } }
-        public override HideType HideType { get { return HideType.Regular; } }
+        public override int Hides => 10;
+        public override HideType HideType => HideType.Regular;
 
-        public override int Meat { get { return 5; } }
-        public override MeatType MeatType { get { return MeatType.Ribs; } }
+        public override int Meat => 5;
+        public override MeatType MeatType => MeatType.Ribs;
 
-        public override bool GivesMLMinorArtifact { get { return true; } }
-        public override bool Unprovokable { get { return true; } }
-        public override Poison PoisonImmune { get { return Poison.Deadly; } }
-        public override Poison HitPoison { get { return Poison.Lethal; } }
-        public override int TreasureMapLevel { get { return 5; } }
+        public override bool GivesMLMinorArtifact => true;
+        public override bool Unprovokable => true;
+        public override Poison PoisonImmune => Poison.Deadly;
+        public override Poison HitPoison => Poison.Lethal;
+        public override int TreasureMapLevel => 5;
 
         public DreadHorn(Serial serial) : base(serial)
         {

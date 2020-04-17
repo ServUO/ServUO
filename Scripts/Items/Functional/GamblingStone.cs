@@ -31,13 +31,7 @@ namespace Server.Items
                 InvalidateProperties();
             }
         }
-        public override string DefaultName
-        {
-            get
-            {
-                return "a gambling stone";
-            }
-        }
+        public override string DefaultName => "a gambling stone";
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);

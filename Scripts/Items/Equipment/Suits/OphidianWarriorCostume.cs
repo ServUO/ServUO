@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class OphidianWarriorCostume : BaseCostume
     {
-        public override string CreatureName { get { return "ophidian warrior"; } }
+        public override string CreatureName => "ophidian warrior";
 
         [Constructable]
         public OphidianWarriorCostume() : base()
@@ -14,13 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1114229;
-            }
-        }// ophidian warrior costume
+        public override int LabelNumber => 1114229;// ophidian warrior costume
 
         public override void Serialize(GenericWriter writer)
         {

@@ -14,46 +14,16 @@ namespace Server.Engines.Quests
         }
 
         /* Cuts Both Ways */
-        public override object Title
-        {
-            get
-            {
-                return 1073913;
-            }
-        }
+        public override object Title => 1073913;
         /* What would you say is a typical human instrument of war? Is a broadsword a typical example? 
         I wish to see more of such human weapons, so I would gladly trade elven knowledge for human steel. */
-        public override object Description
-        {
-            get
-            {
-                return 1074103;
-            }
-        }
+        public override object Description => 1074103;
         /* I will patiently await your reconsideration. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1073921;
-            }
-        }
+        public override object Refuse => 1073921;
         /* I will be in your debt if you bring me broadswords. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1073959;
-            }
-        }
+        public override object Uncomplete => 1073959;
         /* Enjoy my thanks for your service. */
-        public override object Complete
-        {
-            get
-            {
-                return 1073978;
-            }
-        }
+        public override object Complete => 1073978;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -80,47 +50,17 @@ namespace Server.Engines.Quests
         }
 
         /* Dragon Protection */
-        public override object Title
-        {
-            get
-            {
-                return 1073915;
-            }
-        }
+        public override object Title => 1073915;
         /* Mankind, I am told, knows how to take the scales of a terrible dragon and forge them into powerful 
         armor. Such a feat of craftsmanship! I would give anything to view such a creation - I would even teach 
         some of the prize secrets of the elven people. */
-        public override object Description
-        {
-            get
-            {
-                return 1074105;
-            }
-        }
+        public override object Description => 1074105;
         /* I will patiently await your reconsideration. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1073921;
-            }
-        }
+        public override object Refuse => 1073921;
         /* I will be in your debt if you bring me dragon armor. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1073961;
-            }
-        }
+        public override object Uncomplete => 1073961;
         /* Enjoy my thanks for your service. */
-        public override object Complete
-        {
-            get
-            {
-                return 1073978;
-            }
-        }
+        public override object Complete => 1073978;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -147,47 +87,17 @@ namespace Server.Engines.Quests
         }
 
         /* Nothing Fancy */
-        public override object Title
-        {
-            get
-            {
-                return 1073911;
-            }
-        }
+        public override object Title => 1073911;
         /* I am curious to see the results of human blacksmithing. To examine the care and quality 
         of a simple item. Perhaps, a simple bascinet helmet? Yes, indeed -- if you could bring to 
         me some bascinet helmets, I would demonstrate my gratitude. */
-        public override object Description
-        {
-            get
-            {
-                return 1074101;
-            }
-        }
+        public override object Description => 1074101;
         /* I will patiently await your reconsideration. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1073921;
-            }
-        }
+        public override object Refuse => 1073921;
         /* I will be in your debt if you bring me bascinets. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1073957;
-            }
-        }
+        public override object Uncomplete => 1073957;
         /* Enjoy my thanks for your service. */
-        public override object Complete
-        {
-            get
-            {
-                return 1073978;
-            }
-        }
+        public override object Complete => 1073978;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -214,47 +124,17 @@ namespace Server.Engines.Quests
         }
 
         /* The Bulwark */
-        public override object Title
-        {
-            get
-            {
-                return 1073912;
-            }
-        }
+        public override object Title => 1073912;
         /* The clank of human iron and steel is strange to elven ears. For instance, the metallic heater shield 
         which human warriors carry into battle. It is odd to an elf, but nevertheless intriguing. Tell me friend, 
         could you bring me such an example of human smithing skill? */
-        public override object Description
-        {
-            get
-            {
-                return 1074102;
-            }
-        }
+        public override object Description => 1074102;
         /* I will patiently await your reconsideration. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1073921;
-            }
-        }
+        public override object Refuse => 1073921;
         /* I will be in your debt if you bring me heater shields. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1073958;
-            }
-        }
+        public override object Uncomplete => 1073958;
         /* Enjoy my thanks for your service. */
-        public override object Complete
-        {
-            get
-            {
-                return 1073978;
-            }
-        }
+        public override object Complete => 1073978;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -285,19 +165,13 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(CutsBothWaysQuest),
                     typeof(DragonProtectionQuest),
                     typeof(NothingFancyQuest),
                     typeof(TheBulwarkQuest)
                 };
-            }
-        }
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);

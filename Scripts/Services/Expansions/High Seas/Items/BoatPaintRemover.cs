@@ -5,8 +5,8 @@ namespace Server.Items
 {
     public class BoatPaintRemover : Item
     {
-        public override int LabelNumber { get { return 1116766; } }
-        public override double DefaultWeight { get { return 10.0; } }
+        public override int LabelNumber => 1116766;
+        public override double DefaultWeight => 10.0;
 
         [Constructable]
         public BoatPaintRemover() : base(4011)

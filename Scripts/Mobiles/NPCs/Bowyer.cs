@@ -21,20 +21,8 @@ namespace Server.Mobiles
         {
         }
 
-        public override VendorShoeType ShoeType
-        {
-            get
-            {
-                return this.Female ? VendorShoeType.ThighBoots : VendorShoeType.Boots;
-            }
-        }
-        protected override List<SBInfo> SBInfos
-        {
-            get
-            {
-                return this.m_SBInfos;
-            }
-        }
+        public override VendorShoeType ShoeType => this.Female ? VendorShoeType.ThighBoots : VendorShoeType.Boots;
+        protected override List<SBInfo> SBInfos => this.m_SBInfos;
         public override int GetShoeHue()
         {
             return 0;
@@ -58,7 +46,7 @@ namespace Server.Mobiles
         }
 
         #region Bulk Orders
-        public override BODType BODType { get { return BODType.Fletching; } }
+        public override BODType BODType => BODType.Fletching;
 
         public override bool IsValidBulkOrder(Item item)
         {

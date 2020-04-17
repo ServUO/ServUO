@@ -14,13 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074639;
-            }
-        }// Orders from Minax
+        public override int LabelNumber => 1074639;// Orders from Minax
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

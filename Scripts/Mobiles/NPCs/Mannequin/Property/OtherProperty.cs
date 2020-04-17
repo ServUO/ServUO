@@ -5,10 +5,10 @@ namespace Server.Mobiles.MannequinProperty
 {
     public class DurabilityProperty : ValuedProperty
     {
-        public override Catalog Catalog { get { return Catalog.None; } }
-        public override int LabelNumber { get { return 1017323; } } // Durability
-        public override int Description { get { return 1152404; } } // This property indicates how in need of repairs an item is or how close an item is to breaking.  It is comprised of two parts: the current durability and the maximum durability.  Both of which are values in the range of 0 - 255.  If both of these values are allowed to reach 0 on an item, the item is destroyed.  This property can be found on all armor, shields, accessories or weapons.
-        public override int Hue { get { return 0x1F0; } }
+        public override Catalog Catalog => Catalog.None;
+        public override int LabelNumber => 1017323;  // Durability
+        public override int Description => 1152404;  // This property indicates how in need of repairs an item is or how close an item is to breaking.  It is comprised of two parts: the current durability and the maximum durability.  Both of which are values in the range of 0 - 255.  If both of these values are allowed to reach 0 on an item, the item is destroyed.  This property can be found on all armor, shields, accessories or weapons.
+        public override int Hue => 0x1F0;
 
         public override bool Matches(Item item)
         {
@@ -81,11 +81,11 @@ namespace Server.Mobiles.MannequinProperty
 
     public class BlessedProperty : ValuedProperty
     {
-        public override Catalog Catalog { get { return Catalog.None; } }
-        public override int LabelNumber { get { return 1038021; } } // Blessed
-        public override bool IsSpriteGraph { get { return true; } }
-        public override int SpriteW { get { return 150; } }
-        public override int SpriteH { get { return 210; } }
+        public override Catalog Catalog => Catalog.None;
+        public override int LabelNumber => 1038021;  // Blessed
+        public override bool IsSpriteGraph => true;
+        public override int SpriteW => 150;
+        public override int SpriteH => 210;
 
         public override bool Matches(Item item)
         {
@@ -95,11 +95,11 @@ namespace Server.Mobiles.MannequinProperty
 
     public class CursedProperty : ValuedProperty
     {
-        public override Catalog Catalog { get { return Catalog.None; } }
-        public override int LabelNumber { get { return 1049643; } } // cursed
-        public override bool IsSpriteGraph { get { return true; } }
-        public override int SpriteW { get { return 150; } }
-        public override int SpriteH { get { return 240; } }
+        public override Catalog Catalog => Catalog.None;
+        public override int LabelNumber => 1049643;  // cursed
+        public override bool IsSpriteGraph => true;
+        public override int SpriteW => 150;
+        public override int SpriteH => 240;
 
         public override bool Matches(Item item)
         {
@@ -109,14 +109,14 @@ namespace Server.Mobiles.MannequinProperty
 
     public class MedableArmorProperty : ValuedProperty
     {
-        public override Catalog Catalog { get { return Catalog.Combat1; } }
-        public override int Order { get { return 6; } }
-        public override bool AlwaysVisible { get { return true; } }
-        public override bool IsBoolen { get { return true; } }
-        public override bool BoolenValue { get { return true; } }
-        public override int LabelNumber { get { return 1159280; } } // Medable Armor
-        public override int SpriteW { get { return 0; } }
-        public override int SpriteH { get { return 150; } }
+        public override Catalog Catalog => Catalog.Combat1;
+        public override int Order => 6;
+        public override bool AlwaysVisible => true;
+        public override bool IsBoolen => true;
+        public override bool BoolenValue => true;
+        public override int LabelNumber => 1159280;  // Medable Armor
+        public override int SpriteW => 0;
+        public override int SpriteH => 150;
 
         public double GetPropertyValue(Item item)
         {
@@ -150,11 +150,11 @@ namespace Server.Mobiles.MannequinProperty
 
     public class GargoyleProperty : ValuedProperty
     {
-        public override Catalog Catalog { get { return Catalog.None; } }
-        public override int LabelNumber { get { return 1111709; } } // Gargoyles Only
-        public override bool IsSpriteGraph { get { return true; } }
-        public override int SpriteW { get { return 30; } }
-        public override int SpriteH { get { return 270; } }
+        public override Catalog Catalog => Catalog.None;
+        public override int LabelNumber => 1111709;  // Gargoyles Only
+        public override bool IsSpriteGraph => true;
+        public override int SpriteW => 30;
+        public override int SpriteH => 270;
 
         public override bool Matches(Item item)
         {
@@ -176,11 +176,11 @@ namespace Server.Mobiles.MannequinProperty
 
     public class ElfProperty : ValuedProperty
     {
-        public override Catalog Catalog { get { return Catalog.None; } }
-        public override int LabelNumber { get { return 1075086; } } // Elves Only
-        public override bool IsSpriteGraph { get { return true; } }
-        public override int SpriteW { get { return 210; } }
-        public override int SpriteH { get { return 240; } }
+        public override Catalog Catalog => Catalog.None;
+        public override int LabelNumber => 1075086;  // Elves Only
+        public override bool IsSpriteGraph => true;
+        public override int SpriteW => 210;
+        public override int SpriteH => 240;
 
         public override bool Matches(Item item)
         {
@@ -202,12 +202,12 @@ namespace Server.Mobiles.MannequinProperty
 
     public class DamageModifierProperty : ValuedProperty
     {
-        public override Catalog Catalog { get { return Catalog.Misc; } }
-        public override int LabelNumber { get { return 1159401; } } // Damage Modifier
-        public override int Description { get { return 1152402; } } // This property provides an increase to the damage you inflict on a successful ranged weapon attack.  The bonus damage is applied to the net damage inflicted (after all damage and resistance calculations are made).  This property can only be found on certain quivers.
-        public override int Hue { get { return 0x43FF; } }
-        public override int SpriteW { get { return 180; } }
-        public override int SpriteH { get { return 270; } }
+        public override Catalog Catalog => Catalog.Misc;
+        public override int LabelNumber => 1159401;  // Damage Modifier
+        public override int Description => 1152402;  // This property provides an increase to the damage you inflict on a successful ranged weapon attack.  The bonus damage is applied to the net damage inflicted (after all damage and resistance calculations are made).  This property can only be found on certain quivers.
+        public override int Hue => 0x43FF;
+        public override int SpriteW => 180;
+        public override int SpriteH => 270;
 
         public double GetPropertyValue(Item item)
         {
@@ -245,13 +245,13 @@ namespace Server.Mobiles.MannequinProperty
 
     public class ManaPhaseProperty : ValuedProperty
     {
-        public override Catalog Catalog { get { return Catalog.Combat1; } }
-        public override int Order { get { return 10; } }
-        public override bool IsBoolen { get { return true; } }
-        public override int LabelNumber { get { return 1116158; } } // Mana Phase
-        public override int Description { get { return 1152417; } } // This property reduces mana cost to 0.  Mana phasing is a property that consumes charges.  <br>When the effect is activated the next two mana checks are made at a cost of zero mana but one charge is consumed.  The first mana check occurs when the mana consuming activity (starting to cast a spell, triggering a special move, etc.) is started and the second mana check occurs when the mana consuming activity is finalized (final targeting with the spell, the special move occurring, etc.).  There is a 30 second cool down between uses.  This property is currently only available on specific talisman.
-        public override int SpriteW { get { return 240; } }
-        public override int SpriteH { get { return 270; } }
+        public override Catalog Catalog => Catalog.Combat1;
+        public override int Order => 10;
+        public override bool IsBoolen => true;
+        public override int LabelNumber => 1116158;  // Mana Phase
+        public override int Description => 1152417;  // This property reduces mana cost to 0.  Mana phasing is a property that consumes charges.  <br>When the effect is activated the next two mana checks are made at a cost of zero mana but one charge is consumed.  The first mana check occurs when the mana consuming activity (starting to cast a spell, triggering a special move, etc.) is started and the second mana check occurs when the mana consuming activity is finalized (final targeting with the spell, the special move occurring, etc.).  There is a 30 second cool down between uses.  This property is currently only available on specific talisman.
+        public override int SpriteW => 240;
+        public override int SpriteH => 270;
 
         public bool GetPropertyValue(Item item)
         {
@@ -277,12 +277,12 @@ namespace Server.Mobiles.MannequinProperty
 
     public class SearingWeaponProperty : ValuedProperty
     {
-        public override Catalog Catalog { get { return Catalog.HitEffects; } }
-        public override bool IsBoolen { get { return true; } }
-        public override int LabelNumber { get { return 1151183; } } // Searing Weapon
-        public override int Description { get { return 1152471; } } // This property provides a 20% chance (10% for ranged weapons) to deal additional fire damage to a target while inflicting 4 points of direct damage to the wielder.  This property also induces a hit point regeneration penalty on the target that lasts for four seconds.  The penalty is -20 hit point regeneration for players and -60 hit point regeneration for monsters and NPCs.  Each attack with a weapon with this property consumes one mana.  This property is only found on weapons.
-        public override int SpriteW { get { return 270; } }
-        public override int SpriteH { get { return 270; } }
+        public override Catalog Catalog => Catalog.HitEffects;
+        public override bool IsBoolen => true;
+        public override int LabelNumber => 1151183;  // Searing Weapon
+        public override int Description => 1152471;  // This property provides a 20% chance (10% for ranged weapons) to deal additional fire damage to a target while inflicting 4 points of direct damage to the wielder.  This property also induces a hit point regeneration penalty on the target that lasts for four seconds.  The penalty is -20 hit point regeneration for players and -60 hit point regeneration for monsters and NPCs.  Each attack with a weapon with this property consumes one mana.  This property is only found on weapons.
+        public override int SpriteW => 270;
+        public override int SpriteH => 270;
 
         public bool GetPropertyValue(Item item)
         {

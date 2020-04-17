@@ -19,13 +19,7 @@ namespace Server.Spells.Third
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Third;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Third;
         public override void OnCast()
         {
             Caster.Target = new InternalTarget(this);
@@ -113,13 +107,7 @@ namespace Server.Spells.Third
             {
             }
 
-            public override bool BlocksFit
-            {
-                get
-                {
-                    return true;
-                }
-            }
+            public override bool BlocksFit => true;
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);

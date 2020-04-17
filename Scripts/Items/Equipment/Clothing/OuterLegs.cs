@@ -199,20 +199,8 @@ namespace Server.Items
         {
         }
 
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override Race RequiredRace => Race.Gargoyle;
+        public override bool CanBeWornByGargoyles => true;
         public override void OnAdded(object parent)
         {
             base.OnAdded(parent);
@@ -262,20 +250,8 @@ namespace Server.Items
         {
         }
 
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override Race RequiredRace => Race.Gargoyle;
+        public override bool CanBeWornByGargoyles => true;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -312,20 +288,8 @@ namespace Server.Items
         {
         }
 
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override Race RequiredRace => Race.Gargoyle;
+        public override bool CanBeWornByGargoyles => true;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -344,7 +308,7 @@ namespace Server.Items
 
     public class GuildedKilt : BaseOuterLegs
     {
-        public override int LabelNumber { get { return 1109619; } } // Guilded Kilt
+        public override int LabelNumber => 1109619;  // Guilded Kilt
 
         [Constructable]
         public GuildedKilt()
@@ -378,7 +342,7 @@ namespace Server.Items
 
     public class CheckeredKilt : BaseOuterLegs
     {
-        public override int LabelNumber { get { return 1109620; } } // Checkered Kilt
+        public override int LabelNumber => 1109620;  // Checkered Kilt
 
         [Constructable]
         public CheckeredKilt()
@@ -412,7 +376,7 @@ namespace Server.Items
 
     public class FancyKilt : BaseOuterLegs
     {
-        public override int LabelNumber { get { return 1109621; } } // Fancy Kilt
+        public override int LabelNumber => 1109621;  // Fancy Kilt
 
         [Constructable]
         public FancyKilt()

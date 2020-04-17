@@ -23,20 +23,8 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1045125;
-            }
-        }// sturdy shovel
-        public override HarvestSystem HarvestSystem
-        {
-            get
-            {
-                return Mining.System;
-            }
-        }
+        public override int LabelNumber => 1045125;// sturdy shovel
+        public override HarvestSystem HarvestSystem => Mining.System;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

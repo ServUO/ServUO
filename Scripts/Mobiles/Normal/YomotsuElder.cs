@@ -51,34 +51,10 @@ namespace Server.Mobiles
         {
         }
 
-        public override FoodType FavoriteFood
-        {
-            get
-            {
-                return FoodType.Fish;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override bool CanRummageCorpses
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 5;
-            }
-        }
+        public override FoodType FavoriteFood => FoodType.Fish;
+        public override int Meat => 1;
+        public override bool CanRummageCorpses => true;
+        public override int TreasureMapLevel => 5;
 
         public override void GenerateLoot()
         {

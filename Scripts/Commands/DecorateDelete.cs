@@ -90,13 +90,7 @@ namespace Server.Commands
         #region Mondain's Legacy
         private Item m_Constructed;
 
-        public Item Constructed
-        {
-            get
-            {
-                return this.m_Constructed;
-            }
-        }
+        public Item Constructed => this.m_Constructed;
 
         public int ID
         {

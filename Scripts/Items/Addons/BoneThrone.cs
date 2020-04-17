@@ -13,13 +13,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074476;
-            }
-        }// Bone throne
+        public override int LabelNumber => 1074476;// Bone throne
         public override bool OnMoveOver(Mobile m)
         {
             bool allow = base.OnMoveOver(m);
@@ -59,13 +53,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new BoneThroneDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new BoneThroneDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -95,20 +83,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new BoneThroneAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074476;
-            }
-        }// Bone throne
+        public override BaseAddon Addon => new BoneThroneAddon();
+        public override int LabelNumber => 1074476;// Bone throne
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

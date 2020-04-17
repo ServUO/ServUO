@@ -20,13 +20,7 @@ namespace Server.Items
         {
         }
 
-        public override int LitItemID
-        {
-            get
-            {
-                return 0xE31;
-            }
-        }
+        public override int LitItemID => 0xE31;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -5,21 +5,21 @@ namespace Server.Multis
 {
     public class PumpkinRowBoat : BaseBoat
     {
-        public override int NorthID { get { return 0x50; } }
-        public override int EastID { get { return 0x51; } }
-        public override int SouthID { get { return 0x52; } }
-        public override int WestID { get { return 0x53; } }
+        public override int NorthID => 0x50;
+        public override int EastID => 0x51;
+        public override int SouthID => 0x52;
+        public override int WestID => 0x53;
 
-        public override int HoldDistance { get { return -1; } }
-        public override int TillerManDistance { get { return -2; } }
+        public override int HoldDistance => -1;
+        public override int TillerManDistance => -2;
 
-        public override Point3D MarkOffset { get { return new Point3D(0, 1, 3); } }
+        public override Point3D MarkOffset => new Point3D(0, 1, 3);
 
-        public override BaseDockedBoat DockedBoat { get { return new DockedPumpkinRowBoat(this); } }
+        public override BaseDockedBoat DockedBoat => new DockedPumpkinRowBoat(this);
 
-        public override bool IsClassicBoat { get { return false; } }
-        public override bool IsRowBoat { get { return true; } }
-        public override bool CanLinkToLighthouse { get { return false; } }
+        public override bool IsClassicBoat => false;
+        public override bool IsRowBoat => true;
+        public override bool CanLinkToLighthouse => false;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public MooringBlock Line { get; private set; }
@@ -202,8 +202,8 @@ namespace Server.Multis
 
     public class PumpkinRowBoatDeed : BaseBoatDeed
     {
-        public override int LabelNumber { get { return 1159233; } } // Pumpkin Rowboat
-        public override BaseBoat Boat { get { return new PumpkinRowBoat(BoatDirection); } }
+        public override int LabelNumber => 1159233;  // Pumpkin Rowboat
+        public override BaseBoat Boat => new PumpkinRowBoat(BoatDirection);
 
         [Constructable]
         public PumpkinRowBoatDeed()
@@ -384,7 +384,7 @@ namespace Server.Multis
 
     public class DockedPumpkinRowBoat : BaseDockedBoat
     {
-        public override BaseBoat Boat { get { return new PumpkinRowBoat(BoatDirection); } }
+        public override BaseBoat Boat => new PumpkinRowBoat(BoatDirection);
 
         public DockedPumpkinRowBoat(BaseBoat boat)
             : base(0x50, Point3D.Zero, boat)

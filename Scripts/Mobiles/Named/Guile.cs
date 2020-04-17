@@ -50,28 +50,10 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-        public override bool CanBeParagon { get { return false; } }
-        public override string DefaultName
-        {
-            get
-            {
-                return "Guile";
-            }
-        }
-        public override int DefaultHue
-        {
-            get
-            {
-                return 0x3F;
-            }
-        }
-        public override bool GivesMLMinorArtifact
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool CanBeParagon => false;
+        public override string DefaultName => "Guile";
+        public override int DefaultHue => 0x3F;
+        public override bool GivesMLMinorArtifact => true;
 
         public override void GenerateLoot()
         {

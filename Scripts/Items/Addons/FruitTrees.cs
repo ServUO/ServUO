@@ -107,20 +107,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new AppleTreeDeed();
-            }
-        }
-        public override Item Fruit
-        {
-            get
-            {
-                return new Apple();
-            }
-        }
+        public override BaseAddonDeed Deed => new AppleTreeDeed();
+        public override Item Fruit => new Apple();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -150,20 +138,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new AppleTreeAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1076269;
-            }
-        }// Apple Tree
+        public override BaseAddon Addon => new AppleTreeAddon();
+        public override int LabelNumber => 1076269;// Apple Tree
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -194,20 +170,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new PeachTreeDeed();
-            }
-        }
-        public override Item Fruit
-        {
-            get
-            {
-                return new Peach();
-            }
-        }
+        public override BaseAddonDeed Deed => new PeachTreeDeed();
+        public override Item Fruit => new Peach();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -237,20 +201,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new PeachTreeAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1076270;
-            }
-        }// Peach Tree
+        public override BaseAddon Addon => new PeachTreeAddon();
+        public override int LabelNumber => 1076270;// Peach Tree
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

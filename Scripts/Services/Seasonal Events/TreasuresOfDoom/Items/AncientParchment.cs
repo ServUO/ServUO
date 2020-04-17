@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class AncientParchment : Item
     {
-        public override int LabelNumber { get { return 1155627; } } // Ancient Parchment
+        public override int LabelNumber => 1155627;  // Ancient Parchment
 
         [Constructable]
         public AncientParchment()

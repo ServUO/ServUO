@@ -11,13 +11,7 @@ namespace Server.Items
     {
         private bool m_Failure;
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1079931;
-            }
-        }// Salvage Bag
+        public override int LabelNumber => 1079931;// Salvage Bag
 
         [Constructable]
         public SalvageBag()

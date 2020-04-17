@@ -2,13 +2,13 @@ namespace Server.Items
 {
     public class SculptureWoodEven : BaseLight
     {
-        public override int LabelNumber { get { return 1029241; } } // sculpture
+        public override int LabelNumber => 1029241;  // sculpture
 
-        public override int LitItemID { get { return 0xA49A; } }
-        public override int UnlitItemID { get { return 0xA499; } }
+        public override int LitItemID => 0xA49A;
+        public override int UnlitItemID => 0xA499;
 
-        public override int LitSound { get { return 480; } }
-        public override int UnlitSound { get { return 482; } }
+        public override int LitSound => 480;
+        public override int UnlitSound => 482;
 
         [Constructable]
         public SculptureWoodEven()

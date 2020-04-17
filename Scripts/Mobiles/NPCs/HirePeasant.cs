@@ -70,13 +70,7 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool ClickTitle
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool ClickTitle => false;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

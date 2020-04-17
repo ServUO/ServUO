@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class HarvestersBlade : ElvenSpellblade
     {
-        public override int LabelNumber { get { return 1114096; } } // Harvester's Blade
+        public override int LabelNumber => 1114096;  // Harvester's Blade
 
         [Constructable]
         public HarvestersBlade()
@@ -36,7 +36,7 @@ namespace Server.Items
 
     public class RangersGuildSash : BodySash
     {
-        public override int LabelNumber { get { return 1155744; } } // Member of the Skara Brae Ranger's Guild
+        public override int LabelNumber => 1155744;  // Member of the Skara Brae Ranger's Guild
 
         [Constructable]
         public RangersGuildSash()
@@ -63,7 +63,7 @@ namespace Server.Items
 
     public class GargishRangersGuildSash : GargishSash
     {
-        public override int LabelNumber { get { return 1155744; } } // Member of the Skara Brae Ranger's Guild
+        public override int LabelNumber => 1155744;  // Member of the Skara Brae Ranger's Guild
 
         [Constructable]
         public GargishRangersGuildSash()
@@ -91,7 +91,7 @@ namespace Server.Items
 
     public class HuntmastersRewardTitleDeed : BaseRewardTitleDeed
     {
-        public override TextDefinition Title { get { return new TextDefinition(1155727); } } // Huntmaster's Champion
+        public override TextDefinition Title => new TextDefinition(1155727);  // Huntmaster's Champion
 
         [Constructable]
         public HuntmastersRewardTitleDeed()
@@ -119,7 +119,7 @@ namespace Server.Items
     [Flipable(18080, 18081)]
     public class HornOfPlenty : Item, IUsesRemaining
     {
-        public override int LabelNumber { get { return 1153503; } } // Horn of Plenty
+        public override int LabelNumber => 1153503;  // Horn of Plenty
 
         private int m_UsesRemaining;
 
@@ -264,7 +264,7 @@ namespace Server.Items
 
     public class HarvestersAxe : TwoHandedAxe
     {
-        public override int LabelNumber { get { return 1158774; } } // Harvester's Axe
+        public override int LabelNumber => 1158774;  // Harvester's Axe
 
         private int _Charges;
 

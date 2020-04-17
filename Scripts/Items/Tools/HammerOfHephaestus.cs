@@ -45,13 +45,7 @@ namespace Server.Items
             _Instances.Remove(this);
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1077740;
-            }
-        }// Hammer of Hephaestus
+        public override int LabelNumber => 1077740;// Hammer of Hephaestus
 
         public override void OnDoubleClick(Mobile from)
         {

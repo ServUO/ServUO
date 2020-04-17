@@ -45,12 +45,12 @@ namespace Server
         private static bool _FirstRun = true;
 
         private static int _Version;
-        public static int Version { get { return _Version; } }
+        public static int Version => _Version;
 
         public static SpawnerVersion VersionFlag { get; set; }
 
         private static bool _SpawnsConverted;
-        public static bool SpawnsConverted { get { return _SpawnsConverted; } }
+        public static bool SpawnsConverted => _SpawnsConverted;
 
         public static void Configure()
         {

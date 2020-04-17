@@ -23,7 +23,7 @@ namespace Server.Items
 
         public abstract int MinDamage { get; }
         public abstract int MaxDamage { get; }
-        public override bool RequireFreeHand { get { return false; } }
+        public override bool RequireFreeHand => false;
 
         public override void Serialize(GenericWriter writer)
         {
@@ -247,7 +247,7 @@ namespace Server.Items
                 m_Potion = potion;
             }
 
-            public BaseExplosionPotion Potion { get { return m_Potion; } }
+            public BaseExplosionPotion Potion => m_Potion;
 
             protected override void OnTarget(Mobile from, object targeted)
             {

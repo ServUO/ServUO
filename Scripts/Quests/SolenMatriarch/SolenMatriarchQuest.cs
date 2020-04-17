@@ -36,21 +36,10 @@ namespace Server.Engines.Quests.Matriarch
         {
         }
 
-        public override Type[] TypeReferenceTable
-        {
-            get
-            {
-                return m_TypeReferenceTable;
-            }
-        }
-        public override object Name
-        {
-            get
-            {
+        public override Type[] TypeReferenceTable => m_TypeReferenceTable;
+        public override object Name =>
                 // Solen Matriarch Quest
-                return 1054147;
-            }
-        }
+                1054147;
         public override object OfferMessage
         {
             get
@@ -106,34 +95,10 @@ namespace Server.Engines.Quests.Matriarch
                 }
             }
         }
-        public override TimeSpan RestartDelay
-        {
-            get
-            {
-                return TimeSpan.Zero;
-            }
-        }
-        public override bool IsTutorial
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override int Picture
-        {
-            get
-            {
-                return 0x15C9;
-            }
-        }
-        public bool RedSolen
-        {
-            get
-            {
-                return this.m_RedSolen;
-            }
-        }
+        public override TimeSpan RestartDelay => TimeSpan.Zero;
+        public override bool IsTutorial => false;
+        public override int Picture => 0x15C9;
+        public bool RedSolen => this.m_RedSolen;
         public static bool IsFriend(PlayerMobile player, bool redSolen)
         {
             if (redSolen)

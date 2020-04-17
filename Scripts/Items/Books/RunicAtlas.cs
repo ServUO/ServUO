@@ -143,7 +143,7 @@ namespace Server.Items
         }
 
         public RunicAtlas Atlas { get; set; }
-        public int Selected { get { return Atlas == null ? -1 : Atlas.Selected; } }
+        public int Selected => Atlas == null ? -1 : Atlas.Selected;
         public int Page { get; set; }
 
         public RunicAtlasGump(PlayerMobile pm, RunicAtlas atlas)
@@ -521,7 +521,7 @@ namespace Server.Items
 
         private class InternalPrompt : Prompt
         {
-            public override int MessageCliloc { get { return 502414; } } // Please enter a title for the runebook:
+            public override int MessageCliloc => 502414;  // Please enter a title for the runebook:
             public RunicAtlas Atlas { get; private set; }
 
             public InternalPrompt(RunicAtlas atlas)

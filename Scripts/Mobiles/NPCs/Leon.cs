@@ -16,13 +16,7 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override Type[] Quests => null;
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);

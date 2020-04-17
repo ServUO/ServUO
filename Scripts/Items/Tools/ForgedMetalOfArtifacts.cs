@@ -8,7 +8,7 @@ namespace Server.Items
     {
         private int m_UsesRemaining;
 
-        public override int LabelNumber { get { return 1149868; } } // Forged Metal of Artifacts
+        public override int LabelNumber => 1149868;  // Forged Metal of Artifacts
 
         [Constructable]
         public ForgedMetalOfArtifacts(int uses)

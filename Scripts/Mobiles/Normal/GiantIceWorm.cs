@@ -46,36 +46,12 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool SubdueBeforeTame
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Greater;
-            }
-        }
-        public override Poison HitPoison
-        {
-            get
-            {
-                return Poison.Greater;
-            }
-        }
-        public override FoodType FavoriteFood
-        {
-            get
-            {
-                return FoodType.Meat;
-            }
-        }
+        public override bool SubdueBeforeTame => true;
+        public override Poison PoisonImmune => Poison.Greater;
+        public override Poison HitPoison => Poison.Greater;
+        public override FoodType FavoriteFood => FoodType.Meat;
 
-        public override bool StatLossAfterTame { get { return true; } }
+        public override bool StatLossAfterTame => true;
 
         public override void Serialize(GenericWriter writer)
         {

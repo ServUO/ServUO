@@ -89,7 +89,7 @@ namespace Server.Engines.MyrmidexInvasion
             }
         }
 
-        public override bool HandlesOnMovement { get { return BattleSpawner != null && NextSpawn < DateTime.UtcNow; } }
+        public override bool HandlesOnMovement => BattleSpawner != null && NextSpawn < DateTime.UtcNow;
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {

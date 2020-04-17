@@ -18,7 +18,7 @@ namespace Server.Items
 
     public class InteriorDecorator : Item
     {
-        public override int LabelNumber { get { return 1041280; } } // an interior decorator
+        public override int LabelNumber => 1041280;  // an interior decorator
 
         [Constructable]
         public InteriorDecorator()

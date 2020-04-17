@@ -31,13 +31,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041080;
-            }
-        }// a message in a bottle
+        public override int LabelNumber => 1041080;// a message in a bottle
         [CommandProperty(AccessLevel.GameMaster)]
         public Map TargetMap
         {

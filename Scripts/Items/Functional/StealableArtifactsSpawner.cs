@@ -250,13 +250,7 @@ namespace Server.Items
             this.m_RespawnTimer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromMinutes(15.0), new TimerCallback(CheckRespawn));
         }
 
-        public static StealableEntry[] Entries
-        {
-            get
-            {
-                return m_Entries;
-            }
-        }
+        public static StealableEntry[] Entries => m_Entries;
         public static Type[] TypesOfEntires
         {
             get
@@ -272,20 +266,8 @@ namespace Server.Items
                 return m_TypesOfEntries;
             }
         }
-        public static StealableArtifactsSpawner Instance
-        {
-            get
-            {
-                return m_Instance;
-            }
-        }
-        public override string DefaultName
-        {
-            get
-            {
-                return "Stealable Artifacts Spawner - Internal";
-            }
-        }
+        public static StealableArtifactsSpawner Instance => m_Instance;
+        public override string DefaultName => "Stealable Artifacts Spawner - Internal";
         public static void Initialize()
         {
             CommandSystem.Register("GenStealArties", AccessLevel.Administrator, new CommandEventHandler(GenStealArties_OnCommand));
@@ -465,48 +447,12 @@ namespace Server.Items
                 this.m_Hue = hue;
             }
 
-            public Map Map
-            {
-                get
-                {
-                    return this.m_Map;
-                }
-            }
-            public Point3D Location
-            {
-                get
-                {
-                    return this.m_Location;
-                }
-            }
-            public int MinDelay
-            {
-                get
-                {
-                    return this.m_MinDelay;
-                }
-            }
-            public int MaxDelay
-            {
-                get
-                {
-                    return this.m_MaxDelay;
-                }
-            }
-            public Type Type
-            {
-                get
-                {
-                    return this.m_Type;
-                }
-            }
-            public int Hue
-            {
-                get
-                {
-                    return this.m_Hue;
-                }
-            }
+            public Map Map => this.m_Map;
+            public Point3D Location => this.m_Location;
+            public int MinDelay => this.m_MinDelay;
+            public int MaxDelay => this.m_MaxDelay;
+            public Type Type => this.m_Type;
+            public int Hue => this.m_Hue;
             public Item CreateInstance()
             {
                 Item item = (Item)Activator.CreateInstance(this.m_Type);
@@ -538,13 +484,7 @@ namespace Server.Items
                 this.m_Entry = entry;
             }
 
-            public StealableEntry Entry
-            {
-                get
-                {
-                    return this.m_Entry;
-                }
-            }
+            public StealableEntry Entry => this.m_Entry;
             public Item Item
             {
                 get

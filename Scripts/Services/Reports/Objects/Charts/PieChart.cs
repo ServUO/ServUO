@@ -10,13 +10,7 @@ namespace Server.Engines.Reports
             return new PieChart();
         }
 
-        public override PersistableType TypeID
-        {
-            get
-            {
-                return ThisTypeID;
-            }
-        }
+        public override PersistableType TypeID => ThisTypeID;
         #endregion
 
         private bool m_ShowPercents;

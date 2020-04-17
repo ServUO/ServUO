@@ -10,7 +10,7 @@ namespace Server.Mobiles
 {
     public class NecroMageAI : MageAI
     {
-        public override SkillName CastSkill { get { return SkillName.Magery; } }
+        public override SkillName CastSkill => SkillName.Magery;
 
         public NecroMageAI(BaseCreature m)
             : base(m)

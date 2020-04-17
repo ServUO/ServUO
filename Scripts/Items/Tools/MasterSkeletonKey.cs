@@ -2,10 +2,10 @@
 {
     public class MasterSkeletonKey : Skeletonkey
     {
-        public override int LabelNumber { get { return 1095523; } }
+        public override int LabelNumber => 1095523;
 
-        public override bool IsSkeletonKey { get { return true; } }
-        public override int SkillBonus { get { return 100; } }
+        public override bool IsSkeletonKey => true;
+        public override int SkillBonus => 100;
 
         [Constructable]
         public MasterSkeletonKey()

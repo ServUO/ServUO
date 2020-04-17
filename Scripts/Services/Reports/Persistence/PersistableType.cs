@@ -50,19 +50,7 @@ namespace Server.Engines.Reports
             this.m_Constructor = constructor;
         }
 
-        public string Name
-        {
-            get
-            {
-                return this.m_Name;
-            }
-        }
-        public ConstructCallback Constructor
-        {
-            get
-            {
-                return this.m_Constructor;
-            }
-        }
+        public string Name => this.m_Name;
+        public ConstructCallback Constructor => this.m_Constructor;
     }
 }

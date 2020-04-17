@@ -8,16 +8,13 @@ namespace Server.Items
 {
     public class ClockworkMechanism : BaseDecayingItem
     {
-        public override bool HiddenQuestItemHue { get { return true; } }
-        public override int Lifespan { get { return 3600; } }
-        public override bool UseSeconds { get { return false; } }
+        public override bool HiddenQuestItemHue => true;
+        public override int Lifespan => 3600;
+        public override bool UseSeconds => false;
 
         private int m_CreatureDef;
 
-        public ClockworkCreatureDef CreatureDef
-        {
-            get { return ClockworkCreature.Definitions[m_CreatureDef]; }
-        }
+        public ClockworkCreatureDef CreatureDef => ClockworkCreature.Definitions[m_CreatureDef];
 
         [Constructable]
         public ClockworkMechanism()

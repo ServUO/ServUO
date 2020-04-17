@@ -55,13 +55,7 @@ namespace Server.Engines.Harvest
                 this.m_Chance = value;
             }
         }
-        public TextDefinition SuccessMessage
-        {
-            get
-            {
-                return this.m_SuccessMessage;
-            }
-        }
+        public TextDefinition SuccessMessage => this.m_SuccessMessage;
         public void SendSuccessTo(Mobile m)
         {
             TextDefinition.SendMessageTo(m, this.m_SuccessMessage);

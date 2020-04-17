@@ -59,7 +59,7 @@ namespace Server.Items
 
     public class ClothingBlessDeed : Item // Create the item class which is derived from the base item class
     {
-        public override int LabelNumber { get { return 1041008; } } // A clothing bless deed
+        public override int LabelNumber => 1041008;  // A clothing bless deed
 
         [Constructable]
         public ClothingBlessDeed()
@@ -74,13 +74,7 @@ namespace Server.Items
         {
         }
 
-        public override bool DisplayLootType
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool DisplayLootType => true;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

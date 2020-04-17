@@ -4,8 +4,8 @@ namespace Server.Items
 {
     public class SpinningLathe : CraftAddon
     {
-        public override BaseAddonDeed Deed { get { return new SpinningLatheDeed(Tools.Count > 0 ? Tools[0].UsesRemaining : 0); } }
-        public override CraftSystem CraftSystem { get { return DefCarpentry.CraftSystem; } }
+        public override BaseAddonDeed Deed => new SpinningLatheDeed(Tools.Count > 0 ? Tools[0].UsesRemaining : 0);
+        public override CraftSystem CraftSystem => DefCarpentry.CraftSystem;
 
         [Constructable]
         public SpinningLathe(bool south, int uses)
@@ -44,8 +44,8 @@ namespace Server.Items
 
     public class SpinningLatheDeed : CraftAddonDeed
     {
-        public override int LabelNumber { get { return 1156369; } } // spinning lathe
-        public override BaseAddon Addon { get { return new SpinningLathe(_South, UsesRemaining); } }
+        public override int LabelNumber => 1156369;  // spinning lathe
+        public override BaseAddon Addon => new SpinningLathe(_South, UsesRemaining);
 
         private bool _South;
 

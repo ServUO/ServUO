@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class GoldBricks : Item
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public GoldBricks()
             : base(0x1BEB)
@@ -14,13 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1063489;
-            }
-        }
+        public override int LabelNumber => 1063489;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

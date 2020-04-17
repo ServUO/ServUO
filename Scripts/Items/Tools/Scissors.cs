@@ -40,7 +40,7 @@ namespace Server.Items
             }
         }
 
-        public bool PlayerConstructed { get { return false; } }
+        public bool PlayerConstructed => false;
 
         [Constructable]
         public Scissors()

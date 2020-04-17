@@ -13,13 +13,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073836;
-            }
-        }// A Vesper Reef Tiger
+        public override int LabelNumber => 1073836;// A Vesper Reef Tiger
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

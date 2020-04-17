@@ -23,13 +23,7 @@ namespace Server.Items
         {
         }
 
-        public override int Message
-        {
-            get
-            {
-                return 1049469;
-            }
-        }/* Using a scroll increases the maximum amount of a specific skill or your maximum statistics.
+        public override int Message => 1049469;/* Using a scroll increases the maximum amount of a specific skill or your maximum statistics.
         * When used, the effect is not immediately seen without a gain of points with that skill or statistics.
         * You can view your maximum skill values in your skills window.
         * You can view your maximum statistic value in your statistics window. */
@@ -49,13 +43,7 @@ namespace Server.Items
                 return 0;
             }
         }
-        public override string DefaultTitle
-        {
-            get
-            {
-                return String.Format("<basefont color=#FFFFFF>Power Scroll ({0}{1} Maximum Stats):</basefont>", ((int)Value - m_StatCap) >= 0 ? "+" : "", (int)Value - m_StatCap);
-            }
-        }
+        public override string DefaultTitle => String.Format("<basefont color=#FFFFFF>Power Scroll ({0}{1} Maximum Stats):</basefont>", ((int)Value - m_StatCap) >= 0 ? "+" : "", (int)Value - m_StatCap);
         public override void AddNameProperty(ObjectPropertyList list)
         {
             int level = ((int)Value - (m_StatCap + 5)) / 5;

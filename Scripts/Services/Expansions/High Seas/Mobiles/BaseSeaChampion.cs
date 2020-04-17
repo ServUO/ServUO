@@ -8,31 +8,25 @@ namespace Server.Mobiles
 {
     public class BaseSeaChampion : BaseChampion
     {
-        public override Type[] UniqueList { get { return new Type[] { }; } }
-        public override Type[] SharedList { get { return new Type[] { }; } }
-        public override Type[] DecorativeList { get { return new Type[] { }; } }
-        public override MonsterStatuetteType[] StatueTypes { get { return new MonsterStatuetteType[] { }; } }
+        public override Type[] UniqueList => new Type[] { };
+        public override Type[] SharedList => new Type[] { };
+        public override Type[] DecorativeList => new Type[] { };
+        public override MonsterStatuetteType[] StatueTypes => new MonsterStatuetteType[] { };
 
-        public override ChampionSkullType SkullType
-        {
-            get
-            {
-                return ChampionSkullType.None;
-            }
-        }
+        public override ChampionSkullType SkullType => ChampionSkullType.None;
 
         private DateTime m_NextBoatDamage;
         private bool m_InDamageMode;
         private readonly Mobile m_Fisher;
 
-        public virtual bool CanDamageBoats { get { return false; } }
-        public virtual TimeSpan BoatDamageCooldown { get { return TimeSpan.MaxValue; } }
-        public virtual DateTime NextBoatDamage { get { return m_NextBoatDamage; } }
-        public virtual int MinBoatDamage { get { return 0; } }
-        public virtual int MaxBoatDamage { get { return 0; } }
-        public virtual int DamageRange { get { return 15; } }
+        public virtual bool CanDamageBoats => false;
+        public virtual TimeSpan BoatDamageCooldown => TimeSpan.MaxValue;
+        public virtual DateTime NextBoatDamage => m_NextBoatDamage;
+        public virtual int MinBoatDamage => 0;
+        public virtual int MaxBoatDamage => 0;
+        public virtual int DamageRange => 15;
 
-        public override double BonusPetDamageScalar { get { return 1.75; } }
+        public override double BonusPetDamageScalar => 1.75;
 
         public BaseSeaChampion(Mobile fisher, AIType ai, FightMode fm)
             : base(ai, fm)

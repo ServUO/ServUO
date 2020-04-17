@@ -77,7 +77,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed { get { return new GreenMarbleFireplaceDeed(); } }
+        public override BaseAddonDeed Deed => new GreenMarbleFireplaceDeed();
 
         public override void Serialize(GenericWriter writer)
         {
@@ -94,9 +94,9 @@ namespace Server.Items
 
     public class GreenMarbleFireplaceDeed : BaseAddonDeed, IRewardOption
     {
-        public override int LabelNumber { get { return 1155698; } } // Green Marble Fireplace
+        public override int LabelNumber => 1155698;  // Green Marble Fireplace
 
-        public override BaseAddon Addon { get { return new GreenMarbleFireplaceAddon(_Direction); } }
+        public override BaseAddon Addon => new GreenMarbleFireplaceAddon(_Direction);
 
         private DirectionType _Direction;
 

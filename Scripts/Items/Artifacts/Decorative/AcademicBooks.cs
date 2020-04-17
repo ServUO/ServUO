@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class AcademicBooksArtifact : BaseDecorationArtifact
     {
-        public override int ArtifactRarity { get { return 8; } }
-        public override int LabelNumber { get { return 1071202; } } // academic books
+        public override int ArtifactRarity => 8;
+        public override int LabelNumber => 1071202;  // academic books
 
 
         [Constructable]

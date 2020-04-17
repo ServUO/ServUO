@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class LuckyCharm : BaseTalisman
     {
-        public override int LabelNumber { get { return 1154725; } }// Lucky Charm
-        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber => 1154725; // Lucky Charm
+        public override bool IsArtifact => true;
 
         [Constructable]
         public LuckyCharm()

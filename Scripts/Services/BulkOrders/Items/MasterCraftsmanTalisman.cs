@@ -2,10 +2,10 @@ namespace Server.Items
 {
     public class MasterCraftsmanTalisman : BaseTalisman
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
 
         private int _Type;
-        public virtual int Type { get { return _Type; } }
+        public virtual int Type => _Type;
 
         [Constructable]
         public MasterCraftsmanTalisman(int charges, int itemID, TalismanSkill skill)
@@ -36,20 +36,8 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1157217;
-            }
-        }// MasterCraftsmanTalisman
-        public override bool ForceShowName
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override int LabelNumber => 1157217;// MasterCraftsmanTalisman
+        public override bool ForceShowName => true;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -9,7 +9,7 @@ namespace Server.Items
 {
     public class HolidaysSign : Item, IFlipable
     {
-        public override int LabelNumber { get { return 1024759; } } // sign
+        public override int LabelNumber => 1024759;  // sign
 
         public int GumpID { get; set; }
 

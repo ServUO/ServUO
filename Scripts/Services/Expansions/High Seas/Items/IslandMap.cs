@@ -5,7 +5,7 @@
         private Point3D m_DestinationPoint;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Point3D DestinationPoint { get { return m_DestinationPoint; } }
+        public Point3D DestinationPoint => m_DestinationPoint;
 
         [Constructable]
         public CorgulIslandMap(Point3D pnt)

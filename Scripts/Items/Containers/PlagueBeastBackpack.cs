@@ -25,34 +25,10 @@ namespace Server.Items
         {
         }
 
-        public override int DefaultMaxWeight
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override int DefaultMaxItems
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override int DefaultGumpID
-        {
-            get
-            {
-                return 0x2A63;
-            }
-        }
-        public override int DefaultDropSound
-        {
-            get
-            {
-                return 0x23F;
-            }
-        }
+        public override int DefaultMaxWeight => 0;
+        public override int DefaultMaxItems => 0;
+        public override int DefaultGumpID => 0x2A63;
+        public override int DefaultDropSound => 0x23F;
         public void Initialize()
         {
             this.AddInnard(0x1CF6, 0x0, 227, 128);

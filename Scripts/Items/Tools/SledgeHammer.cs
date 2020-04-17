@@ -24,13 +24,7 @@ namespace Server.Items
         {
         }
 
-        public override CraftSystem CraftSystem
-        {
-            get
-            {
-                return DefBlacksmithy.CraftSystem;
-            }
-        }
+        public override CraftSystem CraftSystem => DefBlacksmithy.CraftSystem;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -55,8 +49,8 @@ namespace Server.Items
         }
 
         #region ITool Members
-        public CraftSystem CraftSystem { get { return DefBlacksmithy.CraftSystem; } }
-        public bool BreakOnDepletion { get { return true; } }
+        public CraftSystem CraftSystem => DefBlacksmithy.CraftSystem;
+        public bool BreakOnDepletion => true;
 
         public bool CheckAccessible(Mobile m, ref int num)
         {
@@ -75,63 +69,15 @@ namespace Server.Items
         {
         }
 
-        public override WeaponAbility PrimaryAbility
-        {
-            get
-            {
-                return WeaponAbility.CrushingBlow;
-            }
-        }
-        public override WeaponAbility SecondaryAbility
-        {
-            get
-            {
-                return WeaponAbility.ParalyzingBlow;
-            }
-        }
-        public override int StrengthReq
-        {
-            get
-            {
-                return 40;
-            }
-        }
-        public override int MinDamage
-        {
-            get
-            {
-                return 13;
-            }
-        }
-        public override int MaxDamage
-        {
-            get
-            {
-                return 17;
-            }
-        }
-        public override float Speed
-        {
-            get
-            {
-                return 3.25f;
-            }
-        }
+        public override WeaponAbility PrimaryAbility => WeaponAbility.CrushingBlow;
+        public override WeaponAbility SecondaryAbility => WeaponAbility.ParalyzingBlow;
+        public override int StrengthReq => 40;
+        public override int MinDamage => 13;
+        public override int MaxDamage => 17;
+        public override float Speed => 3.25f;
 
-        public override int InitMinHits
-        {
-            get
-            {
-                return 31;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 70;
-            }
-        }
+        public override int InitMinHits => 31;
+        public override int InitMaxHits => 70;
 
         public override void OnDoubleClick(Mobile from)
         {

@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class JacksBagOfTricks : Item
     {
-        public override int LabelNumber { get { return 1157656; } } // Jack's Bag of Tricks
+        public override int LabelNumber => 1157656;  // Jack's Bag of Tricks
 
         private DateTime _NextUse;
 
@@ -91,7 +91,7 @@ namespace Server.Items
     [Flipable(0x1E90, 0x1E91)]
     public class RancidReindeerMeat : Item
     {
-        public override int LabelNumber { get { return 1157634; } } // Rancid Reindeer Meat
+        public override int LabelNumber => 1157634;  // Rancid Reindeer Meat
 
         [Constructable]
         public RancidReindeerMeat()
@@ -129,7 +129,7 @@ namespace Server.Items
     [Flipable(0x9DC3, 0x9DC4)]
     public class GlassyCandyCane : Item
     {
-        public override int LabelNumber { get { return 1157636; } } // Glass Candy Cane
+        public override int LabelNumber => 1157636;  // Glass Candy Cane
 
         [Constructable]
         public GlassyCandyCane()
@@ -211,7 +211,7 @@ namespace Server.Items
 
     public class SuspiciousGiftBox : Container
     {
-        public override int LabelNumber { get { return 1157639; } } // Suspicious Gift Box
+        public override int LabelNumber => 1157639;  // Suspicious Gift Box
 
         [Constructable]
         public SuspiciousGiftBox()
@@ -249,7 +249,7 @@ namespace Server.Items
     [Flipable(0x48E2, 0x48E3)]
     public class InsultingDoll : Item
     {
-        public override int LabelNumber { get { return 1157641; } } // Insulting Doll
+        public override int LabelNumber => 1157641;  // Insulting Doll
 
         [Constructable]
         public InsultingDoll()
@@ -286,7 +286,7 @@ namespace Server.Items
 
     public class SpikedEggnog : Item
     {
-        public override int LabelNumber { get { return 1157647; } } // Spiked Egg Nog
+        public override int LabelNumber => 1157647;  // Spiked Egg Nog
 
         [Constructable]
         public SpikedEggnog()

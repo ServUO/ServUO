@@ -6,7 +6,7 @@ namespace Server.Items
 
     public class CaddellitePickaxe : Pickaxe, ICaddelliteTool
     {
-        public override int LabelNumber { get { return 1158689; } } // Caddellite Pickaxe
+        public override int LabelNumber => 1158689;  // Caddellite Pickaxe
 
         [Constructable]
         public CaddellitePickaxe()
@@ -42,7 +42,7 @@ namespace Server.Items
 
     public class CaddelliteHatchet : Hatchet, ICaddelliteTool
     {
-        public override int LabelNumber { get { return 1158690; } } // Caddellite Hatchet
+        public override int LabelNumber => 1158690;  // Caddellite Hatchet
 
         [Constructable]
         public CaddelliteHatchet()
@@ -78,7 +78,7 @@ namespace Server.Items
 
     public class CaddelliteFishingPole : FishingPole, ICaddelliteTool
     {
-        public override int LabelNumber { get { return 1158691; } } // Caddellite Fishing Pole
+        public override int LabelNumber => 1158691;  // Caddellite Fishing Pole
 
         [Constructable]
         public CaddelliteFishingPole()

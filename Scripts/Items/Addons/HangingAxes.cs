@@ -26,13 +26,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new HangingAxesDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new HangingAxesDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -63,20 +57,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new HangingAxesAddon(this.m_East);
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1076271;
-            }
-        }// Hanging Axes
+        public override BaseAddon Addon => new HangingAxesAddon(this.m_East);
+        public override int LabelNumber => 1076271;// Hanging Axes
         public override void OnDoubleClick(Mobile from)
         {
             if (this.IsChildOf(from.Backpack))

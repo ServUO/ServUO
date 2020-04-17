@@ -23,13 +23,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1062917;
-            }
-        }// The Tapestry of Sosaria
+        public override int LabelNumber => 1062917;// The Tapestry of Sosaria
         [CommandProperty(AccessLevel.GameMaster)]
         public SecureLevel Level
         {

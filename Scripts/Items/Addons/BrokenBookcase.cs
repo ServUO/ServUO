@@ -13,13 +13,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1076258;
-            }
-        }// Broken Bookcase
+        public override int LabelNumber => 1076258;// Broken Bookcase
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -49,13 +43,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new BrokenBookcaseDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new BrokenBookcaseDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -85,20 +73,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new BrokenBookcaseAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1076258;
-            }
-        }// Broken Bookcase
+        public override BaseAddon Addon => new BrokenBookcaseAddon();
+        public override int LabelNumber => 1076258;// Broken Bookcase
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

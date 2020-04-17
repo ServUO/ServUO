@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class ClawsOfTheBerserker : Tekagi
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1113758; } } // Claws of the Berserker
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113758;  // Claws of the Berserker
 
         [Constructable]
         public ClawsOfTheBerserker()
@@ -23,20 +23,8 @@ namespace Server.Items
         {
         }
 
-        public override int InitMinHits
-        {
-            get
-            {
-                return 35;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 60;
-            }
-        }
+        public override int InitMinHits => 35;
+        public override int InitMaxHits => 60;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

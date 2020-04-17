@@ -2,9 +2,9 @@ namespace Server.Items
 {
     public class BloodwoodSpirit : BaseTalisman
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1075034; } }// Bloodwood Spirit
-        public override bool ForceShowName { get { return true; } }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1075034; // Bloodwood Spirit
+        public override bool ForceShowName => true;
 
         [Constructable]
         public BloodwoodSpirit()

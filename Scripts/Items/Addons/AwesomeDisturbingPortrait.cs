@@ -19,20 +19,8 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074479;
-            }
-        }// Disturbing portrait
-        public bool FacingSouth
-        {
-            get
-            {
-                return this.ItemID < 0x2A61;
-            }
-        }
+        public override int LabelNumber => 1074479;// Disturbing portrait
+        public bool FacingSouth => this.ItemID < 0x2A61;
         public override void OnDoubleClick(Mobile from)
         {
             if (Utility.InRange(this.Location, from.Location, 2))
@@ -152,13 +140,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new AwesomeDisturbingPortraitDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new AwesomeDisturbingPortraitDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -188,20 +170,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new AwesomeDisturbingPortraitAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074479;
-            }
-        }// Disturbing portrait
+        public override BaseAddon Addon => new AwesomeDisturbingPortraitAddon();
+        public override int LabelNumber => 1074479;// Disturbing portrait
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

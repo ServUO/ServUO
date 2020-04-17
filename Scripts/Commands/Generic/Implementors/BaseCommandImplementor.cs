@@ -121,13 +121,7 @@ namespace Server.Commands.Generic
                 this.m_SupportRequirement = value;
             }
         }
-        public Dictionary<string, BaseCommand> Commands
-        {
-            get
-            {
-                return this.m_Commands;
-            }
-        }
+        public Dictionary<string, BaseCommand> Commands => this.m_Commands;
         public static void RegisterImplementors()
         {
             Register(new RegionCommandImplementor());

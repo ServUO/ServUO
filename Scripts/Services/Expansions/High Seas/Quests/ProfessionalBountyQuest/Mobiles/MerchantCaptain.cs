@@ -5,8 +5,8 @@ namespace Server.Mobiles
 {
     public class MerchantCaptain : BaseShipCaptain
     {
-        public override bool Aggressive { get { return false; } }
-        public override bool InitialInnocent { get { return true; } }
+        public override bool Aggressive => false;
+        public override bool InitialInnocent => true;
 
         [Constructable]
         public MerchantCaptain(BaseGalleon galleon)

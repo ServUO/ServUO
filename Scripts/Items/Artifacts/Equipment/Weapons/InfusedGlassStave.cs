@@ -3,7 +3,7 @@ namespace Server.Items
     [FlipableAttribute(0x905, 0x4070)]
     public class InfusedGlassStave : BaseStaff
     {
-        public override int LabelNumber { get { return 1112909; } } // infused glass stave
+        public override int LabelNumber => 1112909;  // infused glass stave
 
         [Constructable]
         public InfusedGlassStave()
@@ -18,77 +18,17 @@ namespace Server.Items
         {
         }
 
-        public override WeaponAbility PrimaryAbility
-        {
-            get
-            {
-                return WeaponAbility.DoubleStrike;
-            }
-        }
-        public override WeaponAbility SecondaryAbility
-        {
-            get
-            {
-                return WeaponAbility.MortalStrike;
-            }
-        }
-        public override int StrengthReq
-        {
-            get
-            {
-                return 20;
-            }
-        }
-        public override int MinDamage
-        {
-            get
-            {
-                return 11;
-            }
-        }
-        public override int MaxDamage
-        {
-            get
-            {
-                return 14;
-            }
-        }
-        public override float Speed
-        {
-            get
-            {
-                return 2.25f;
-            }
-        }
+        public override WeaponAbility PrimaryAbility => WeaponAbility.DoubleStrike;
+        public override WeaponAbility SecondaryAbility => WeaponAbility.MortalStrike;
+        public override int StrengthReq => 20;
+        public override int MinDamage => 11;
+        public override int MaxDamage => 14;
+        public override float Speed => 2.25f;
 
-        public override int InitMinHits
-        {
-            get
-            {
-                return 31;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 70;
-            }
-        }
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override int InitMinHits => 31;
+        public override int InitMaxHits => 70;
+        public override Race RequiredRace => Race.Gargoyle;
+        public override bool CanBeWornByGargoyles => true;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

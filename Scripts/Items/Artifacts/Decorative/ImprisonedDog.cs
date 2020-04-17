@@ -18,20 +18,8 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1075091;
-            }
-        }// An Imprisoned Dog
-        public override BaseCreature Summon
-        {
-            get
-            {
-                return new TravestyDog();
-            }
-        }
+        public override int LabelNumber => 1075091;// An Imprisoned Dog
+        public override BaseCreature Summon => new TravestyDog();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -69,20 +57,8 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool DeleteOnRelease
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public bool Morphed
-        {
-            get
-            {
-                return this.m_Name != null;
-            }
-        }
+        public override bool DeleteOnRelease => true;
+        public bool Morphed => this.m_Name != null;
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);

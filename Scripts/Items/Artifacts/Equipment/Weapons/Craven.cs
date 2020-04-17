@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class Craven : DualPointedSpear
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1154474; } } // Craven
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1154474;  // Craven
 
         [Constructable]
         public Craven()
@@ -23,8 +23,8 @@ namespace Server.Items
             nrgy = pois = chaos = direct = fire = 0;
         }
 
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
         public Craven(Serial serial)
             : base(serial)

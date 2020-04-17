@@ -16,13 +16,13 @@ namespace Server.Spells.Chivalry
         {
         }
 
-        public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(0.5); } }
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(0.5);
 
-        public override double RequiredSkill { get { return 45.0; } }
-        public override int RequiredMana { get { return 20; } }
-        public override int RequiredTithing { get { return 10; } }
-        public override int MantraNumber { get { return 1060723; } } // Forul Solum
-        public override bool BlocksMovement { get { return false; } }
+        public override double RequiredSkill => 45.0;
+        public override int RequiredMana => 20;
+        public override int RequiredTithing => 10;
+        public override int MantraNumber => 1060723;  // Forul Solum
+        public override bool BlocksMovement => false;
 
         public override TimeSpan GetCastDelay()
         {
@@ -177,11 +177,11 @@ namespace Server.Spells.Chivalry
 
         private Mobile m_PlayerOrPet;
 
-        public Mobile Owner { get { return m_Owner; } }
-        public Timer Timer { get { return m_Timer; } }
-        public Type TargetType { get { return m_TargetType; } }
-        public int DamageScalar { get { return m_DamageScalar; } }
-        public string TypeName { get { return m_TypeName; } }
+        public Mobile Owner => m_Owner;
+        public Timer Timer => m_Timer;
+        public Type TargetType => m_TargetType;
+        public int DamageScalar => m_DamageScalar;
+        public string TypeName => m_TypeName;
 
         public EnemyOfOneContext(Mobile owner, Timer timer, DateTime expire)
         {
@@ -192,7 +192,7 @@ namespace Server.Spells.Chivalry
             m_DamageScalar = 50;
         }
 
-        public bool IsWaitingForEnemy { get { return m_TargetType == null; } }
+        public bool IsWaitingForEnemy => m_TargetType == null;
 
         public bool IsEnemy(Mobile m)
         {

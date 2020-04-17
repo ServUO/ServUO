@@ -64,13 +64,7 @@ namespace Server.Items
                 this.m_MapDest = value;
             }
         }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1016511;
-            }
-        }// the floor of the cavern seems to have collapsed here - a faint light is visible at the bottom of the pit
+        public override int LabelNumber => 1016511;// the floor of the cavern seems to have collapsed here - a faint light is visible at the bottom of the pit
         public override void OnDoubleClick(Mobile m)
         {
             if (!this.m_Active)

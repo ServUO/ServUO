@@ -20,13 +20,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1076157;
-            }
-        }// Decorative Cannon
+        public override int LabelNumber => 1076157;// Decorative Cannon
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
@@ -123,13 +117,7 @@ namespace Server.Items
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
-        public CannonDirection CannonDirection
-        {
-            get
-            {
-                return this.m_CannonDirection;
-            }
-        }
+        public CannonDirection CannonDirection => this.m_CannonDirection;
         [CommandProperty(AccessLevel.GameMaster)]
         public int Charges
         {
@@ -387,13 +375,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1076195;
-            }
-        }// A deed for a cannon
+        public override int LabelNumber => 1076195;// A deed for a cannon
         public override BaseAddon Addon
         {
             get

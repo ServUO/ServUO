@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class PolishedMeteorite : Item
     {
-        public override int LabelNumber { get { return 1158693; } } // polished meteorite
+        public override int LabelNumber => 1158693;  // polished meteorite
 
         [Constructable]
         public PolishedMeteorite()

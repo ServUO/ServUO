@@ -13,13 +13,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1031703;
-            }
-        }// Horn of Abyssal Infernal
+        public override int LabelNumber => 1031703;// Horn of Abyssal Infernal
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

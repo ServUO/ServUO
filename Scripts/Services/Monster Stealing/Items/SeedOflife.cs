@@ -15,7 +15,7 @@ namespace Server.Items
             EventSink.AfterWorldSave += CheckCleanup;
         }
 
-        public override int LabelNumber { get { return 1094937; } } // seed of life
+        public override int LabelNumber => 1094937;  // seed of life
 
         [Constructable]
         public SeedOfLife()

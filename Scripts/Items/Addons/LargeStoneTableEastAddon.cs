@@ -22,20 +22,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new LargeStoneTableEastDeed();
-            }
-        }
-        public override bool RetainDeedHue
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override BaseAddonDeed Deed => new LargeStoneTableEastDeed();
+        public override bool RetainDeedHue => true;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -63,20 +51,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new LargeStoneTableEastAddon(this.Hue);
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1044511;
-            }
-        }// large stone table (east)
+        public override BaseAddon Addon => new LargeStoneTableEastAddon(this.Hue);
+        public override int LabelNumber => 1044511;// large stone table (east)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

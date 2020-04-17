@@ -23,7 +23,7 @@ namespace Server.Engines.CityLoyalty
         [CommandProperty(AccessLevel.GameMaster)]
         public CityPetDonation DonationPost { get; set; }
 
-        public override bool IsInvulnerable { get { return true; } }
+        public override bool IsInvulnerable => true;
 
         [Constructable]
         public TradeMinister(City city) : base(AIType.AI_Vendor, FightMode.None, 10, 1, .4, .2)

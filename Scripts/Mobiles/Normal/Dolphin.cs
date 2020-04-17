@@ -43,13 +43,7 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
+        public override int Meat => 1;
         public override void OnDoubleClick(Mobile from)
         {
             if (from.AccessLevel >= AccessLevel.GameMaster)

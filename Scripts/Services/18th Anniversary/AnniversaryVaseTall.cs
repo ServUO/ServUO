@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class AnniversaryVaseTall : Item
     {
-        public override int LabelNumber { get { return 1156147; } } // Tall 18th Anniversary Vase
+        public override int LabelNumber => 1156147;  // Tall 18th Anniversary Vase
 
         [Constructable]
         public AnniversaryVaseTall() : base(0x9BC7)

@@ -13,13 +13,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1075090;
-            }
-        }// Monsterous Interred Grizzle Maggots
+        public override int LabelNumber => 1075090;// Monsterous Interred Grizzle Maggots
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

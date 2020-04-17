@@ -34,20 +34,8 @@ namespace Server.Mobiles
                 this.m_Price = value;
             }
         }
-        public override bool IsInvulnerable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool HealsYoungPlayers
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool IsInvulnerable => true;
+        public override bool HealsYoungPlayers => false;
         public override void InitSBInfo()
         {
         }

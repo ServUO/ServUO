@@ -12,41 +12,11 @@ namespace Server.Engines.Quests
             this.AddReward(new BaseReward(typeof(ScrollBox3), 1, "Knowledge"));
         }
 
-        public override object Title
-        {
-            get
-            {
-                return "Secrets of the Soulforge";
-            }
-        }
-        public override object Description
-        {
-            get
-            {
-                return 1112522;
-            }
-        }
-        public override object Refuse
-        {
-            get
-            {
-                return 1112523;
-            }
-        }
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1112547;
-            }
-        }
-        public override object Complete
-        {
-            get
-            {
-                return 1112524;
-            }
-        }
+        public override object Title => "Secrets of the Soulforge";
+        public override object Description => 1112522;
+        public override object Refuse => 1112523;
+        public override object Uncomplete => 1112547;
+        public override object Complete => 1112524;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

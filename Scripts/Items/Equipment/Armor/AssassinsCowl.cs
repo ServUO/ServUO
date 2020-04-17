@@ -2,16 +2,16 @@ namespace Server.Items
 {
     public class AssassinsCowl : BaseHat
     {
-        public override int LabelNumber { get { return 1126024; } } // assassin's cowl
+        public override int LabelNumber => 1126024;  // assassin's cowl
 
-        public override int BasePhysicalResistance { get { return 2; } }
-        public override int BaseFireResistance { get { return 4; } }
-        public override int BaseColdResistance { get { return 4; } }
-        public override int BasePoisonResistance { get { return 3; } }
-        public override int BaseEnergyResistance { get { return 2; } }
+        public override int BasePhysicalResistance => 2;
+        public override int BaseFireResistance => 4;
+        public override int BaseColdResistance => 4;
+        public override int BasePoisonResistance => 3;
+        public override int BaseEnergyResistance => 2;
 
-        public override int InitMinHits { get { return 40; } }
-        public override int InitMaxHits { get { return 60; } }
+        public override int InitMinHits => 40;
+        public override int InitMaxHits => 60;
 
         [Constructable]
         public AssassinsCowl()

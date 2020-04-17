@@ -154,14 +154,11 @@ namespace Server.Engines.VvV
 
         public Timer Timer { get; private set; }
 
-        public int TrapCount { get { return Traps.Where(t => !t.Deleted).Count(); } }
-        public int TurretCount { get { return Turrets.Where(t => !t.Deleted).Count(); } }
+        public int TrapCount => Traps.Where(t => !t.Deleted).Count();
+        public int TurretCount => Turrets.Where(t => !t.Deleted).Count();
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool InCooldown
-        {
-            get { return CooldownEnds > DateTime.UtcNow; }
-        }
+        public bool InCooldown => CooldownEnds > DateTime.UtcNow;
 
         public DateTime NextCombatHeatCycle { get; private set; }
 

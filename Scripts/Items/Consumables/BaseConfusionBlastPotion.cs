@@ -12,13 +12,7 @@ namespace Server.Items
     {
         public abstract int Radius { get; }
 
-        public override bool RequireFreeHand
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool RequireFreeHand => false;
 
         public BaseConfusionBlastPotion(PotionEffect effect)
             : base(0xF06, effect)
@@ -184,13 +178,7 @@ namespace Server.Items
         {
             private readonly BaseConfusionBlastPotion m_Potion;
 
-            public BaseConfusionBlastPotion Potion
-            {
-                get
-                {
-                    return this.m_Potion;
-                }
-            }
+            public BaseConfusionBlastPotion Potion => this.m_Potion;
 
             public ThrowTarget(BaseConfusionBlastPotion potion)
                 : base(12, true, TargetFlags.None)

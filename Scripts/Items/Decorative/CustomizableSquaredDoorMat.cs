@@ -10,7 +10,7 @@ namespace Server.Items
     {
         public string[] Lines { get; set; }
 
-        public override BaseAddonDeed Deed { get { return new CustomizableSquaredDoorMatDeed(); } }
+        public override BaseAddonDeed Deed => new CustomizableSquaredDoorMatDeed();
 
         [Constructable]
         public CustomizableSquaredDoorMatAddon(DirectionType type)
@@ -60,7 +60,7 @@ namespace Server.Items
 
     public class CustomizableSquaredDoorMatComponent : LocalizedAddonComponent
     {
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         public CustomizableSquaredDoorMatComponent(int id)
             : base(id, 1097996) // door mat
@@ -120,11 +120,11 @@ namespace Server.Items
 
     public class CustomizableSquaredDoorMatDeed : BaseAddonDeed, IRewardOption
     {
-        public override BaseAddon Addon { get { return new CustomizableSquaredDoorMatAddon(m_CustomizableSquaredDoorMatType); } }
+        public override BaseAddon Addon => new CustomizableSquaredDoorMatAddon(m_CustomizableSquaredDoorMatType);
 
         private DirectionType m_CustomizableSquaredDoorMatType;
 
-        public override int LabelNumber { get { return 1151806; } } // squared door mat deed
+        public override int LabelNumber => 1151806;  // squared door mat deed
 
         [Constructable]
         public CustomizableSquaredDoorMatDeed()

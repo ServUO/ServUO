@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class ZealotOfKhalAnkurTitleDeed : BaseRewardTitleDeed
     {
-        public override TextDefinition Title { get { return 1158684; } } // Zealot of Khal Ankur
+        public override TextDefinition Title => 1158684;  // Zealot of Khal Ankur
 
         [Constructable]
         public ZealotOfKhalAnkurTitleDeed()

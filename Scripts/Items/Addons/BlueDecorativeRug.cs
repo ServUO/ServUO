@@ -22,13 +22,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new BlueDecorativeRugDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new BlueDecorativeRugDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -58,20 +52,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new BlueDecorativeRugAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1076589;
-            }
-        }// Blue decorative rug
+        public override BaseAddon Addon => new BlueDecorativeRugAddon();
+        public override int LabelNumber => 1076589;// Blue decorative rug
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

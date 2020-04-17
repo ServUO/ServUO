@@ -2,19 +2,19 @@ namespace Server.Items
 {
     public class InitiationGorget : LeatherGorget
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1116255; } } // Armor of Initiation
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1116255;  // Armor of Initiation
 
-        public override SetItem SetID { get { return SetItem.Initiation; } }
-        public override int Pieces { get { return 6; } }
+        public override SetItem SetID => SetItem.Initiation;
+        public override int Pieces => 6;
 
-        public override int BasePhysicalResistance { get { return 7; } }
-        public override int BaseFireResistance { get { return 4; } }
-        public override int BaseColdResistance { get { return 4; } }
-        public override int BasePoisonResistance { get { return 6; } }
-        public override int BaseEnergyResistance { get { return 4; } }
-        public override int InitMinHits { get { return 150; } }
-        public override int InitMaxHits { get { return 150; } }
+        public override int BasePhysicalResistance => 7;
+        public override int BaseFireResistance => 4;
+        public override int BaseColdResistance => 4;
+        public override int BasePoisonResistance => 6;
+        public override int BaseEnergyResistance => 4;
+        public override int InitMinHits => 150;
+        public override int InitMaxHits => 150;
 
         [Constructable]
         public InitiationGorget() : base()

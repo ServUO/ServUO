@@ -78,13 +78,7 @@ namespace Server.Items
                 this.InvalidateProperties();
             }
         }
-        public override int LabelNumber
-        {
-            get
-            {
-                return this.m_LabelNumber;
-            }
-        }
+        public override int LabelNumber => this.m_LabelNumber;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

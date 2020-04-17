@@ -114,10 +114,10 @@ namespace Server.Items
             }
         }
 
-        public override int LabelNumber { get { return 1023952; } } // Blue Moongate
+        public override int LabelNumber => 1023952;  // Blue Moongate
 
-        public override bool HandlesOnMovement { get { return true; } }
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool HandlesOnMovement => true;
+        public override bool ForceShowProperties => true;
 
         [Constructable]
         public PublicMoongate()
@@ -474,10 +474,10 @@ namespace Server.Items
             m_Entries = entries;
         }
 
-        public int Number { get { return m_Number; } }
-        public int SelNumber { get { return m_SelNumber; } }
-        public Map Map { get { return m_Map; } }
-        public PMEntry[] Entries { get { return m_Entries; } }
+        public int Number => m_Number;
+        public int SelNumber => m_SelNumber;
+        public Map Map => m_Map;
+        public PMEntry[] Entries => m_Entries;
     }
 
     public class MoongateGump : Gump

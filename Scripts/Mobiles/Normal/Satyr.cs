@@ -47,7 +47,7 @@ namespace Server.Mobiles
             }
         }
 
-        public override TribeType Tribe { get { return TribeType.Fey; } }
+        public override TribeType Tribe => TribeType.Fey;
 
         public override void GenerateLoot()
         {
@@ -55,17 +55,11 @@ namespace Server.Mobiles
             this.AddLoot(LootPack.MedScrolls);
         }
 
-        public override bool CanDiscord { get { return true; } }
-        public override bool CanPeace { get { return true; } }
-        public override bool CanProvoke { get { return true; } }
+        public override bool CanDiscord => true;
+        public override bool CanPeace => true;
+        public override bool CanProvoke => true;
 
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
+        public override int Meat => 1;
 
         public Satyr(Serial serial)
             : base(serial)

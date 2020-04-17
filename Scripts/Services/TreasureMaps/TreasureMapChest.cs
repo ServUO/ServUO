@@ -11,7 +11,7 @@ namespace Server.Items
 {
     public class TreasureMapChest : LockableContainer
     {
-        public static Type[] Artifacts { get { return m_Artifacts; } }
+        public static Type[] Artifacts => m_Artifacts;
         private static readonly Type[] m_Artifacts = new Type[]
         {
             typeof(CandelabraOfSouls), typeof(GoldBricks), typeof(PhillipsWoodenSteed),
@@ -25,19 +25,19 @@ namespace Server.Items
             typeof(AdmiralsHeartyRum)
         };
 
-        public static Type[] ArtifactsLevelFiveToSeven { get { return m_LevelFiveToSeven; } }
+        public static Type[] ArtifactsLevelFiveToSeven => m_LevelFiveToSeven;
         private static readonly Type[] m_LevelFiveToSeven = new Type[]
         {
             typeof(ForgedPardon), typeof(ManaPhasingOrb), typeof(RunedSashOfWarding), typeof(SurgeShield)
         };
 
-        public static Type[] ArtifactsLevelSeven { get { return m_LevelSevenOnly; } }
+        public static Type[] ArtifactsLevelSeven => m_LevelSevenOnly;
         private static readonly Type[] m_LevelSevenOnly = new Type[]
         {
             typeof(CoffinPiece), typeof(MasterSkeletonKey)
         };
 
-        public static Type[] SOSArtifacts { get { return m_SOSArtifacts; } }
+        public static Type[] SOSArtifacts => m_SOSArtifacts;
         private static readonly Type[] m_SOSArtifacts = new Type[]
         {
             typeof(AntiqueWeddingDress),
@@ -45,14 +45,14 @@ namespace Server.Items
             typeof(RunedDriftwoodBow),
             typeof(ValkyrieArmor)
         };
-        public static Type[] SOSDecor { get { return m_SOSDecor; } }
+        public static Type[] SOSDecor => m_SOSDecor;
         private static readonly Type[] m_SOSDecor = new Type[]
         {
             typeof(GrapeVine),
             typeof(LargeFishingNet)
         };
 
-        public static Type[] ImbuingIngreds { get { return m_ImbuingIngreds; } }
+        public static Type[] ImbuingIngreds => m_ImbuingIngreds;
         private static readonly Type[] m_ImbuingIngreds =
         {
             typeof(AbyssalCloth),   typeof(EssencePrecision), typeof(EssenceAchievement), typeof(EssenceBalance),
@@ -90,7 +90,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber { get { return 3000541; } }
+        public override int LabelNumber => 3000541;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int Level { get; set; }
@@ -140,13 +140,7 @@ namespace Server.Items
 
         public bool FailedLockpick { get; set; }
 
-        public override bool IsDecoContainer
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool IsDecoContainer => false;
 
         public static void Fill(Mobile from, LockableContainer cont, int level, bool isSos)
         {

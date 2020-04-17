@@ -52,20 +52,8 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override FoodType FavoriteFood
-        {
-            get
-            {
-                return FoodType.Fish;
-            }
-        }
+        public override int Meat => 1;
+        public override FoodType FavoriteFood => FoodType.Fish;
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
             if (m is Ferret && m.InRange(this, 3) && m.Alive)

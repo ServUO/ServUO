@@ -6,7 +6,7 @@ namespace Server.Spells.Necromancy
 {
     public class WitherSpell : NecromancerSpell
     {
-        public override DamageType SpellDamageType { get { return DamageType.SpellAOE; } }
+        public override DamageType SpellDamageType => DamageType.SpellAOE;
 
         private static readonly SpellInfo m_Info = new SpellInfo(
             "Wither", "Kal Vas An Flam",
@@ -20,34 +20,10 @@ namespace Server.Spells.Necromancy
         {
         }
 
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(1.5);
-            }
-        }
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 60.0;
-            }
-        }
-        public override int RequiredMana
-        {
-            get
-            {
-                return 23;
-            }
-        }
-        public override bool DelayedDamage
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(1.5);
+        public override double RequiredSkill => 60.0;
+        public override int RequiredMana => 23;
+        public override bool DelayedDamage => false;
         public override void OnCast()
         {
             if (this.CheckSequence())

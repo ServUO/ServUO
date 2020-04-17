@@ -5,10 +5,10 @@ namespace Server.Items
 {
     public class CocoaLiquor : Item, IQuality
     {
-        public override int LabelNumber { get { return 1080007; } } // Cocoa liquor
-        public override double DefaultWeight { get { return 1.0; } }
+        public override int LabelNumber => 1080007;  // Cocoa liquor
+        public override double DefaultWeight => 1.0;
 
-        public virtual bool PlayerConstructed { get { return true; } }
+        public virtual bool PlayerConstructed => true;
 
         private ItemQuality _Quality;
 
@@ -67,8 +67,8 @@ namespace Server.Items
 
     public class SackOfSugar : Item
     {
-        public override int LabelNumber { get { return 1080003; } } // Sack of sugar
-        public override double DefaultWeight { get { return 1.0; } }
+        public override int LabelNumber => 1080003;  // Sack of sugar
+        public override double DefaultWeight => 1.0;
 
         [Constructable]
         public SackOfSugar()
@@ -110,10 +110,10 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
 
-        public override int LabelNumber { get { return 1080005; } } // Cocoa butter
-        public override double DefaultWeight { get { return 1.0; } }
+        public override int LabelNumber => 1080005;  // Cocoa butter
+        public override double DefaultWeight => 1.0;
 
-        public bool PlayerConstructed { get { return true; } }
+        public bool PlayerConstructed => true;
 
         [Constructable]
         public CocoaButter()
@@ -168,10 +168,10 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
 
-        public override int LabelNumber { get { return 1156401; } } // Sweet Cocoa butter
-        public override double DefaultWeight { get { return 1.0; } }
+        public override int LabelNumber => 1156401;  // Sweet Cocoa butter
+        public override double DefaultWeight => 1.0;
 
-        public bool PlayerConstructed { get { return true; } }
+        public bool PlayerConstructed => true;
 
         [Constructable]
         public SweetCocoaButter()
@@ -220,8 +220,8 @@ namespace Server.Items
 
     public class Vanilla : Item
     {
-        public override int LabelNumber { get { return 1080009; } } // Vanilla
-        public override double DefaultWeight { get { return 1.0; } }
+        public override int LabelNumber => 1080009;  // Vanilla
+        public override double DefaultWeight => 1.0;
 
         [Constructable]
         public Vanilla()
@@ -258,8 +258,8 @@ namespace Server.Items
 
     public class CocoaPulp : Item
     {
-        public override int LabelNumber { get { return 1080530; } } // cocoa pulp
-        public override double DefaultWeight { get { return 1.0; } }
+        public override int LabelNumber => 1080530;  // cocoa pulp
+        public override double DefaultWeight => 1.0;
 
         [Constructable]
         public CocoaPulp()
@@ -296,8 +296,8 @@ namespace Server.Items
 
     public class DarkChocolate : BaseSweet
     {
-        public override int LabelNumber { get { return 1079994; } } // Dark chocolate
-        public override double DefaultWeight { get { return 1.0; } }
+        public override int LabelNumber => 1079994;  // Dark chocolate
+        public override double DefaultWeight => 1.0;
 
         [Constructable]
         public DarkChocolate()
@@ -328,8 +328,8 @@ namespace Server.Items
 
     public class MilkChocolate : BaseSweet
     {
-        public override int LabelNumber { get { return 1079995; } } // Milk chocolate
-        public override double DefaultWeight { get { return 1.0; } }
+        public override int LabelNumber => 1079995;  // Milk chocolate
+        public override double DefaultWeight => 1.0;
 
         [Constructable]
         public MilkChocolate()
@@ -360,8 +360,8 @@ namespace Server.Items
 
     public class WhiteChocolate : BaseSweet
     {
-        public override int LabelNumber { get { return 1079996; } } // White chocolate
-        public override double DefaultWeight { get { return 1.0; } }
+        public override int LabelNumber => 1079996;  // White chocolate
+        public override double DefaultWeight => 1.0;
 
         [Constructable]
         public WhiteChocolate()

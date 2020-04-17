@@ -13,56 +13,20 @@ namespace Server.Engines.Quests
             this.AddReward(new BaseReward(typeof(TinkersSatchel), 1074282)); // Craftsman's Satchel
         }
 
-        public override TimeSpan RestartDelay
-        {
-            get
-            {
-                return TimeSpan.FromMinutes(3);
-            }
-        }
+        public override TimeSpan RestartDelay => TimeSpan.FromMinutes(3);
         /* A clockwork puzzle */
-        public override object Title
-        {
-            get
-            {
-                return 1075535;
-            }
-        }
+        public override object Title => 1075535;
         /* 'Tis a riddle, you see! "What kind of clock is only right twice per day? A broken one!" *laughs heartily* 
         Ah, yes *wipes eye*, that's one of my favorites! Ah... to business. Could you fashion me some clock parts? 
         I wish my own clocks to be right all the day long! You'll need some tinker's tools and some iron ingots, I 
         think, but from there it should be just a matter of working the metal. */
-        public override object Description
-        {
-            get
-            {
-                return 1075534;
-            }
-        }
+        public override object Description => 1075534;
         /* Or perhaps you'd rather not. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1072981;
-            }
-        }
+        public override object Refuse => 1072981;
         /* You're not quite done yet.  Get back to work! */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1072271;
-            }
-        }
+        public override object Uncomplete => 1072271;
         /* Wonderful! Tick tock, tick tock, soon all shall be well with grandfather's clock! */
-        public override object Complete
-        {
-            get
-            {
-                return 1075536;
-            }
-        }
+        public override object Complete => 1075536;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -91,16 +55,10 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(ClockworkPuzzleQuest)
                 };
-            }
-        }
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);

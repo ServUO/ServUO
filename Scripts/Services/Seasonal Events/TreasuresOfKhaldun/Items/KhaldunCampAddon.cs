@@ -19,13 +19,7 @@ namespace Server.Items
             , {542, 7, 8, -1}, {542, 7, 9, -1}, {542, 7, 10, -1},
         };
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override BaseAddonDeed Deed => null;
 
         [Constructable]
         public KhaldunCampAddon()

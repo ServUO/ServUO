@@ -15,13 +15,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074998;
-            }
-        }// sealed notes for Jamal
+        public override int LabelNumber => 1074998;// sealed notes for Jamal
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

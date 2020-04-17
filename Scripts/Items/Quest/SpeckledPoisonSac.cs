@@ -15,13 +15,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073133;
-            }
-        }// Speckled Poison Sac
+        public override int LabelNumber => 1073133;// Speckled Poison Sac
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

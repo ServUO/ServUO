@@ -5,21 +5,15 @@ namespace Server.Items
 {
     public class BedlamAltar : PeerlessAltar
     {
-        public override int KeyCount { get { return 3; } }
-        public override MasterKey MasterKey { get { return new BedlamKey(); } }
+        public override int KeyCount => 3;
+        public override MasterKey MasterKey => new BedlamKey();
 
-        public override Type[] Keys
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Keys => new Type[]
 {
             typeof( LibrariansKey )
 };
-            }
-        }
 
-        public override BasePeerless Boss { get { return new MonstrousInterredGrizzle(); } }
+        public override BasePeerless Boss => new MonstrousInterredGrizzle();
 
         [Constructable]
         public BedlamAltar() : base(0x207E)
@@ -29,10 +23,7 @@ namespace Server.Items
             ExitDest = new Point3D(2068, 1372, -75);
         }
 
-        public override Rectangle2D[] BossBounds
-        {
-            get { return m_Bounds; }
-        }
+        public override Rectangle2D[] BossBounds => m_Bounds;
 
         private readonly Rectangle2D[] m_Bounds = new Rectangle2D[]
         {

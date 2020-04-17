@@ -11,7 +11,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber { get { return 1112410; } } //Magical Door [Replica]
+        public override int LabelNumber => 1112410;  //Magical Door [Replica]
 
         public override int ItemID
         {

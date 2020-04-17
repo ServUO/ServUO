@@ -13,7 +13,7 @@ namespace Server.Items
 
     public class StoreSingingBall : SingingBall
     {
-        public override int LabelNumber { get { return 1152323 + (int)Type; } }
+        public override int LabelNumber => 1152323 + (int)Type;
 
         public SBType Type { get; set; }
 

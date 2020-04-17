@@ -13,7 +13,7 @@ namespace Server.Items
         private readonly Timer m_Timer;
         private bool m_Drying;
 
-        public override int LabelNumber { get { return 1018143; } } // slime
+        public override int LabelNumber => 1018143;  // slime
 
         [Constructable]
         public AcidSlime()

@@ -20,8 +20,8 @@ namespace Server.Items
             : base(serial)
         { }
 
-        public virtual bool NeedsWall { get { return false; } }
-        public virtual Point3D WallPosition { get { return Point3D.Zero; } }
+        public virtual bool NeedsWall => false;
+        public virtual Point3D WallPosition => Point3D.Zero;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public BaseAddonContainer Addon { get; set; }

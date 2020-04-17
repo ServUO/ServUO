@@ -17,20 +17,8 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1075004;
-            }
-        }// An Albino Squirrel Imprisoned in a Crystal
-        public override BaseCreature Summon
-        {
-            get
-            {
-                return new AlbinoSquirrel();
-            }
-        }
+        public override int LabelNumber => 1075004;// An Albino Squirrel Imprisoned in a Crystal
+        public override BaseCreature Summon => new AlbinoSquirrel();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -63,13 +51,7 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool DeleteOnRelease
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool DeleteOnRelease => true;
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);

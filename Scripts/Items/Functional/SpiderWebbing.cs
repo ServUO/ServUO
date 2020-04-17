@@ -47,7 +47,7 @@ namespace Server.Items
             m_WebVictims.Remove(m);
         }
 
-        public override bool BlocksFit { get { return true; } }
+        public override bool BlocksFit => true;
 
         public override void OnDelete()
         {

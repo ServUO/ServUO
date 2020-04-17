@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class VoidCrystalOfCorruptedArcaneEssence : Item
     {
-        public override int LabelNumber { get { return 1150321; } } // Void Crystal of Corrupted Arcane Essence
+        public override int LabelNumber => 1150321;  // Void Crystal of Corrupted Arcane Essence
 
         [Constructable]
         public VoidCrystalOfCorruptedArcaneEssence() : base(0x1F19)
@@ -28,7 +28,7 @@ namespace Server.Items
 
     public class VoidCrystalOfCorruptedSpiritualEssence : Item
     {
-        public override int LabelNumber { get { return 1150322; } } // Void Crystal of Corrupted Spiritual Essence
+        public override int LabelNumber => 1150322;  // Void Crystal of Corrupted Spiritual Essence
 
         [Constructable]
         public VoidCrystalOfCorruptedSpiritualEssence()
@@ -57,7 +57,7 @@ namespace Server.Items
 
     public class VoidCrystalOfCorruptedMysticalEssence : Item
     {
-        public override int LabelNumber { get { return 1150323; } } // Void Crystal of Corrupted Mystical Essence
+        public override int LabelNumber => 1150323;  // Void Crystal of Corrupted Mystical Essence
 
         [Constructable]
         public VoidCrystalOfCorruptedMysticalEssence() : base(0x1F19)

@@ -3,7 +3,7 @@ namespace Server.Items
     [Flipable(0xA339, 0xA33A)]
     public class DecorativeHourglass : Item
     {
-        public override int LabelNumber { get { return 1125809; } } // hourglass
+        public override int LabelNumber => 1125809;  // hourglass
 
         [Constructable]
         public DecorativeHourglass()

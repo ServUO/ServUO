@@ -16,13 +16,7 @@ namespace Server.Engines.Quests.Hag
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1055051;
-            }
-        }// magic flute
+        public override int LabelNumber => 1055051;// magic flute
         public override void OnDoubleClick(Mobile from)
         {
             if (!this.IsChildOf(from.Backpack))

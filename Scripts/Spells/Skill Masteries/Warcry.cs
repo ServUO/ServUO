@@ -13,8 +13,8 @@ namespace Server.Spells.SkillMasteries
                 9002
             );
 
-        public override int RequiredMana { get { return 40; } }
-        public override SkillName CastSkill { get { return SkillName.Bushido; } }
+        public override int RequiredMana => 40;
+        public override SkillName CastSkill => SkillName.Bushido;
 
         private int _DamageMalus;
         private int _Radius;

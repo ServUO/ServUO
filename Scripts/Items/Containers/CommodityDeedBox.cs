@@ -20,20 +20,8 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1080523;
-            }
-        }// Commodity Deed Box
-        public override int DefaultGumpID
-        {
-            get
-            {
-                return 0x43;
-            }
-        }
+        public override int LabelNumber => 1080523;// Commodity Deed Box
+        public override int DefaultGumpID => 0x43;
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsRewardItem
         {

@@ -14,13 +14,7 @@ namespace Server.Engines.Quests
             ReadType(xml["quest"], "type", ref this.m_Quest);
         }
 
-        public Type Quest
-        {
-            get
-            {
-                return this.m_Quest;
-            }
-        }
+        public Type Quest => this.m_Quest;
         public override bool OnMoveInto(Mobile m, Direction d, Point3D newLocation, Point3D oldLocation)
         {
             if (!base.OnMoveInto(m, d, newLocation, oldLocation))

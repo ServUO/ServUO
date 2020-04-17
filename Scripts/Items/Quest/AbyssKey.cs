@@ -24,13 +24,7 @@ namespace Server.Items
         {
         }
 
-        public virtual int Lifespan
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        public virtual int Lifespan => 0;
         [CommandProperty(AccessLevel.GameMaster)]
         public int TimeLeft
         {

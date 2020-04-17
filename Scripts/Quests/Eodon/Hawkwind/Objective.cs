@@ -6,9 +6,9 @@ namespace Server.Engines.Quests.TimeLord
 {
     public class TimeForLegendsObjective : QuestObjective
     {
-        public override object Message { get { return 1156341; } } // Prove yourself to Hawkwind, defeat thy foe in order to begin your journey among the Legendary.
+        public override object Message => 1156341;  // Prove yourself to Hawkwind, defeat thy foe in order to begin your journey among the Legendary.
 
-        public override int MaxProgress { get { return 1; } }
+        public override int MaxProgress => 1;
 
         public TimeForLegendsObjective()
         {

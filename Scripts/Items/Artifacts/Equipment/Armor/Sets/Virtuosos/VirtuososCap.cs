@@ -2,20 +2,20 @@ namespace Server.Items
 {
     public class VirtuososCap : JesterHat
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1151320; } } // Virtuoso's Cap
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1151320;  // Virtuoso's Cap
 
-        public override SetItem SetID { get { return SetItem.Virtuoso; } }
-        public override int Pieces { get { return 4; } }
-        public override bool BardMasteryBonus { get { return true; } }
+        public override SetItem SetID => SetItem.Virtuoso;
+        public override int Pieces => 4;
+        public override bool BardMasteryBonus => true;
 
-        public override int BasePhysicalResistance { get { return 3; } }
-        public override int BaseFireResistance { get { return 8; } }
-        public override int BaseColdResistance { get { return 23; } }
-        public override int BasePoisonResistance { get { return 8; } }
-        public override int BaseEnergyResistance { get { return 8; } }
-        public override int InitMinHits { get { return 125; } }
-        public override int InitMaxHits { get { return 125; } }
+        public override int BasePhysicalResistance => 3;
+        public override int BaseFireResistance => 8;
+        public override int BaseColdResistance => 23;
+        public override int BasePoisonResistance => 8;
+        public override int BaseEnergyResistance => 8;
+        public override int InitMinHits => 125;
+        public override int InitMaxHits => 125;
 
         [Constructable]
         public VirtuososCap() : base()

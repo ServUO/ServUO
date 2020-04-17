@@ -35,70 +35,16 @@ namespace Server.Engines.Quests
         {
             // Don't morph me!
         }
-        public override bool IsActiveVendor
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool IsInvulnerable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool DisallowAllMoves
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool ClickTitle
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool CanTeach
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public virtual int AutoTalkRange
-        {
-            get
-            {
-                return -1;
-            }
-        }
-        public virtual int AutoSpeakRange
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public virtual TimeSpan SpeakDelay
-        {
-            get
-            {
-                return TimeSpan.FromMinutes(1);
-            }
-        }
+        public override bool IsActiveVendor => false;
+        public override bool IsInvulnerable => true;
+        public override bool DisallowAllMoves => false;
+        public override bool ClickTitle => false;
+        public override bool CanTeach => true;
+        public virtual int AutoTalkRange => -1;
+        public virtual int AutoSpeakRange => 10;
+        public virtual TimeSpan SpeakDelay => TimeSpan.FromMinutes(1);
         public abstract Type[] Quests { get; }
-        protected override List<SBInfo> SBInfos
-        {
-            get
-            {
-                return m_SBInfos;
-            }
-        }
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
         }

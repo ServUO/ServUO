@@ -30,15 +30,9 @@ namespace Server.Items
             }
         }
 
-        TextDefinition ICommodity.Description
-        {
-            get
-            {
-                return LabelNumber;
-            }
-        }
+        TextDefinition ICommodity.Description => LabelNumber;
 
-        bool ICommodity.IsDeedable { get { return true; } }
+        bool ICommodity.IsDeedable => true;
 
         [Constructable]
         public BaseWoodBoard()

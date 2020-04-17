@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class FallenMysticsSpellbook : Spellbook
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1113867; } } // Fallen Mystic's Spellbook
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113867;  // Fallen Mystic's Spellbook
 
         [Constructable]
         public FallenMysticsSpellbook()
@@ -31,27 +31,9 @@ namespace Server.Items
         {
         }
 
-        public override SpellbookType SpellbookType
-        {
-            get
-            {
-                return SpellbookType.Mystic;
-            }
-        }
-        public override int BookOffset
-        {
-            get
-            {
-                return 677;
-            }
-        }
-        public override int BookCount
-        {
-            get
-            {
-                return 16;
-            }
-        }
+        public override SpellbookType SpellbookType => SpellbookType.Mystic;
+        public override int BookOffset => 677;
+        public override int BookCount => 16;
 
 
         public override void Serialize(GenericWriter writer)

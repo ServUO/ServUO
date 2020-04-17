@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class LockerKey : BaseDecayingItem
     {
-        public override int LabelNumber { get { return 1154227; } } // Strongbox Key
+        public override int LabelNumber => 1154227;  // Strongbox Key
 
         private Parts m_Type;
 
@@ -34,7 +34,7 @@ namespace Server.Items
             this.m_Type = type;
         }
 
-        public override int Lifespan { get { return 300; } }
+        public override int Lifespan => 300;
 
         public override void OnDoubleClick(Mobile from)
         {

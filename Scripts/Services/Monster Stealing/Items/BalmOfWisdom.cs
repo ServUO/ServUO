@@ -5,7 +5,7 @@ namespace Server.Items
     [TypeAlias("drNO.ThieveItems.BalmOfWisdom")]
     public class BalmOfWisdom : BaseBalmOrLotion
     {
-        public override int LabelNumber { get { return 1094941; } }  // Balm of Wisdom
+        public override int LabelNumber => 1094941;   // Balm of Wisdom
 
         [Constructable]
         public BalmOfWisdom()

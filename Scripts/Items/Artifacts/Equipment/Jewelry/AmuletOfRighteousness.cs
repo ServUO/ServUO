@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class AmuletOfRighteousness : SilverNecklace, IUsesRemaining
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         private int m_UsesRemaining;
         [Constructable]
         public AmuletOfRighteousness()
@@ -27,13 +27,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1075313;
-            }
-        }// Amulet of Righteousness
+        public override int LabelNumber => 1075313;// Amulet of Righteousness
         public virtual bool ShowUsesRemaining
         {
             get

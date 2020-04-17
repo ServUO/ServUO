@@ -45,10 +45,10 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Meat { get { return 5; } }
-        public override FoodType FavoriteFood { get { return FoodType.Meat; } }
-        public override bool CanAngerOnTame { get { return true; } }
-        public override bool StatLossAfterTame { get { return true; } }
+        public override int Meat => 5;
+        public override FoodType FavoriteFood => FoodType.Meat;
+        public override bool CanAngerOnTame => true;
+        public override bool StatLossAfterTame => true;
 
         public override void Serialize(GenericWriter writer)
         {

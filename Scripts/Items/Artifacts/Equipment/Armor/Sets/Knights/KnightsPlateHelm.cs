@@ -2,19 +2,19 @@ namespace Server.Items
 {
     public class KnightsPlateHelm : PlateHelm
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1080158; } } // Knight's Plate Helm
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1080158;  // Knight's Plate Helm
 
-        public override SetItem SetID { get { return SetItem.Knights; } }
-        public override int Pieces { get { return 6; } }
+        public override SetItem SetID => SetItem.Knights;
+        public override int Pieces => 6;
 
-        public override int BasePhysicalResistance { get { return 7; } }
-        public override int BaseFireResistance { get { return 7; } }
-        public override int BaseColdResistance { get { return 7; } }
-        public override int BasePoisonResistance { get { return 7; } }
-        public override int BaseEnergyResistance { get { return 7; } }
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
+        public override int BasePhysicalResistance => 7;
+        public override int BaseFireResistance => 7;
+        public override int BaseColdResistance => 7;
+        public override int BasePoisonResistance => 7;
+        public override int BaseEnergyResistance => 7;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
         [Constructable]
         public KnightsPlateHelm() : base()

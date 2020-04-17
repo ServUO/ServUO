@@ -15,48 +15,18 @@ namespace Server.Engines.Quests
         }
 
         /* In The Weeds */
-        public override object Title
-        {
-            get
-            {
-                return 1113499;
-            }
-        }
+        public override object Title => 1113499;
         /* Help Farmer Nash find his pitchfork by pulling the weeds in his garden until you uncover it. (Pull weeds by double clicking them) When you find it, return it to him for your reward. I hate to trouble you, but sometimes a problem needs a plow and sometimes it needs a sword. I am good with a plow, but terrible with a sword. 
         I have been plagued with a strange weed for some time. Every day I have to clean them out of my garden and carry them away with my pitch fork. Yesterday I was working there and… well, I must have nodded off because when I woke my pitchfork was gone! 
         I have heard talk of thieves who seek treasure in the sacred tomb, but I really don’t think they took my pitchfork, in fact I think it just got lost in the weeds! 
         I would find it myself, but now that we are so close to the edge of the world, many wild creatures are lurking about and some might be hiding in these weeds. I’ve seen the creatures that have been roaming these parts recently and I fear for my life! The problem is, if I don’t get my crop in the ground soon, we won’t make it through the winter. Will you help?*/
-        public override object Description
-        {
-            get
-            {
-                return 1113500;
-            }
-        }
+        public override object Description => 1113500;
         /* I understand.  I certainly don’t want you to do something you don’t want to do. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1113501;
-            }
-        }
+        public override object Refuse => 1113501;
         /* Did you find my pitchfork?  I'm sure it is under those weeds somewhere.  It was a gift from King Draxinusom when he assigned me this job, I can’t bear to lose it! */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1113502;
-            }
-        }
+        public override object Uncomplete => 1113502;
         /* Oh, thank you!  Here is your reward as promised.  I will get right back to work in a few minutes. */
-        public override object Complete
-        {
-            get
-            {
-                return 1113503;
-            }
-        }
+        public override object Complete => 1113503;
         public override bool CanOffer()
         {
             return true;
@@ -138,16 +108,10 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(InTheWeeds)
                 };
-            }
-        }
         public override void InitBody()
         {
             InitStats(100, 100, 25);

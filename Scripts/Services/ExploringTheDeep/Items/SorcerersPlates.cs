@@ -180,13 +180,7 @@ namespace Server.Items
         };
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public SorcerersPlateController Controller
-        {
-            get
-            {
-                return this.m_Controller;
-            }
-        }
+        public SorcerersPlateController Controller => this.m_Controller;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public RegsType Type
@@ -217,7 +211,7 @@ namespace Server.Items
             }
         }
 
-        public override int LabelNumber { get { return 1011199; } } // Plate
+        public override int LabelNumber => 1011199;  // Plate
 
         [Constructable]
         public SorcerersPlate(SorcerersPlateController controller, RegsType type)

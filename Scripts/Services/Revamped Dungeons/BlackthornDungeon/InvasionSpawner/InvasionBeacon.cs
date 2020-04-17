@@ -8,7 +8,7 @@ namespace Server.Engines.Blackthorn
         [CommandProperty(AccessLevel.GameMaster)]
         public InvasionController Controller { get; set; }
 
-        public override bool CanDamage { get { return Controller == null || Controller.BeaconVulnerable; } }
+        public override bool CanDamage => Controller == null || Controller.BeaconVulnerable;
 
         public InvasionBeacon(InvasionController controller)
         {

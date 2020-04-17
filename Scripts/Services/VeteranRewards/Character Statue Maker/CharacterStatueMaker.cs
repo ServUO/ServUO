@@ -25,13 +25,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1076173;
-            }
-        }// Character Statue Maker
+        public override int LabelNumber => 1076173;// Character Statue Maker
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsRewardItem
         {

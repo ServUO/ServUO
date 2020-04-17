@@ -14,13 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041608;
-            }
-        }// ringmail leggings of the phoenix
+        public override int LabelNumber => 1041608;// ringmail leggings of the phoenix
 
         public override void Serialize(GenericWriter writer)
         {

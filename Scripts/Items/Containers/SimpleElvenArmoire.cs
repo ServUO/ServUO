@@ -16,34 +16,10 @@ namespace Server.Items
         {
         }
 
-        public override int DefaultGumpID
-        {
-            get
-            {
-                return 0x4F;
-            }
-        }
-        public override int DefaultDropSound
-        {
-            get
-            {
-                return 0x42;
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1031525;
-            }
-        }// simple elven armoire
-        public override Rectangle2D Bounds
-        {
-            get
-            {
-                return new Rectangle2D(30, 30, 90, 150);
-            }
-        }
+        public override int DefaultGumpID => 0x4F;
+        public override int DefaultDropSound => 0x42;
+        public override int LabelNumber => 1031525;// simple elven armoire
+        public override Rectangle2D Bounds => new Rectangle2D(30, 30, 90, 150);
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

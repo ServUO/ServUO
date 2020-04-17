@@ -23,48 +23,12 @@ namespace Server.Commands.Generic
             this.m_Constructor = constructor;
         }
 
-        public static Dictionary<string, ExtensionInfo> Table
-        {
-            get
-            {
-                return m_Table;
-            }
-        }
-        public int Order
-        {
-            get
-            {
-                return this.m_Order;
-            }
-        }
-        public string Name
-        {
-            get
-            {
-                return this.m_Name;
-            }
-        }
-        public int Size
-        {
-            get
-            {
-                return this.m_Size;
-            }
-        }
-        public bool IsFixedSize
-        {
-            get
-            {
-                return (this.m_Size >= 0);
-            }
-        }
-        public ExtensionConstructor Constructor
-        {
-            get
-            {
-                return this.m_Constructor;
-            }
-        }
+        public static Dictionary<string, ExtensionInfo> Table => m_Table;
+        public int Order => this.m_Order;
+        public string Name => this.m_Name;
+        public int Size => this.m_Size;
+        public bool IsFixedSize => (this.m_Size >= 0);
+        public ExtensionConstructor Constructor => this.m_Constructor;
         public static void Register(ExtensionInfo ext)
         {
             m_Table[ext.m_Name] = ext;
@@ -150,34 +114,10 @@ namespace Server.Commands.Generic
     public abstract class BaseExtension
     {
         public abstract ExtensionInfo Info { get; }
-        public string Name
-        {
-            get
-            {
-                return this.Info.Name;
-            }
-        }
-        public int Size
-        {
-            get
-            {
-                return this.Info.Size;
-            }
-        }
-        public bool IsFixedSize
-        {
-            get
-            {
-                return this.Info.IsFixedSize;
-            }
-        }
-        public int Order
-        {
-            get
-            {
-                return this.Info.Order;
-            }
-        }
+        public string Name => this.Info.Name;
+        public int Size => this.Info.Size;
+        public bool IsFixedSize => this.Info.IsFixedSize;
+        public int Order => this.Info.Order;
         public virtual void Optimize(Mobile from, Type baseType, ref AssemblyEmitter assembly)
         {
         }

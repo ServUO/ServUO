@@ -13,13 +13,7 @@ namespace Server.Engines.Reports
         private static DateTime m_GenerateTime;
         private static SnapshotHistory m_StatsHistory;
         private static StaffHistory m_StaffHistory;
-        public static StaffHistory StaffHistory
-        {
-            get
-            {
-                return m_StaffHistory;
-            }
-        }
+        public static StaffHistory StaffHistory => m_StaffHistory;
         public static void Initialize()
         {
             CommandSystem.Register("GenReports", AccessLevel.Administrator, new CommandEventHandler(GenReports_OnCommand));

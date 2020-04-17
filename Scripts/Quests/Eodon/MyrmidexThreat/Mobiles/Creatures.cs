@@ -16,10 +16,10 @@ namespace Server.Mobiles
 
         private List<BaseCreature> _Spawn;
 
-        public override bool AlwaysMurderer { get { return true; } }
-        public override Poison PoisonImmune { get { return Poison.Parasitic; } }
-        public override Poison HitPoison { get { return Poison.Parasitic; } }
-        public override bool Unprovokable { get { return true; } }
+        public override bool AlwaysMurderer => true;
+        public override Poison PoisonImmune => Poison.Parasitic;
+        public override Poison HitPoison => Poison.Parasitic;
+        public override bool Unprovokable => true;
 
         [Constructable]
         public MyrmidexQueen()
@@ -313,7 +313,7 @@ namespace Server.Mobiles
 
         public class OozeItem : Item
         {
-            public override int LabelNumber { get { return 1156831; } } // Noxious Goo
+            public override int LabelNumber => 1156831;  // Noxious Goo
 
             public BaseCreature Owner { get; set; }
 
@@ -421,9 +421,9 @@ namespace Server.Mobiles
     {
         public bool IsQuest { get; set; }
 
-        public override bool AlwaysMurderer { get { return true; } }
-        public override Poison PoisonImmune { get { return Poison.Parasitic; } }
-        public override bool Unprovokable { get { return true; } }
+        public override bool AlwaysMurderer => true;
+        public override Poison PoisonImmune => Poison.Parasitic;
+        public override bool Unprovokable => true;
 
         private DateTime _NextMastery;
         private DateTime _NextSpecial;
@@ -471,9 +471,9 @@ namespace Server.Mobiles
             SetWeaponAbility(WeaponAbility.ParalyzingBlow);
         }
 
-        public override bool TeleportsTo { get { return true; } }
-        public override TimeSpan TeleportDuration { get { return TimeSpan.FromSeconds(15); } }
-        public override double TeleportProb { get { return 0.33; } }
+        public override bool TeleportsTo => true;
+        public override TimeSpan TeleportDuration => TimeSpan.FromSeconds(15);
+        public override double TeleportProb => 0.33;
 
         public override Mobile GetTeleportTarget()
         {
@@ -701,7 +701,7 @@ namespace Server.Mobiles
 
     public class IgnisFatalis : BaseCreature
     {
-        public override bool AlwaysMurderer { get { return true; } }
+        public override bool AlwaysMurderer => true;
 
         [Constructable]
         public IgnisFatalis()

@@ -191,13 +191,7 @@ namespace Server.Engines.ResortAndCasino
     public class HiMiddleLow : BaseDiceGame
     {
         public bool ThreeOfAKind { get; set; }
-        public HighMiddleLowType BetType
-        {
-            get
-            {
-                return (HighMiddleLowType)BettingOn;
-            }
-        }
+        public HighMiddleLowType BetType => (HighMiddleLowType)BettingOn;
 
         public HiMiddleLow(PlayerMobile player, CasinoDealer dealer)
             : base(player, dealer)
@@ -305,7 +299,7 @@ namespace Server.Engines.ResortAndCasino
         public int Bet3 { get; set; }
         public int WinningTotal { get; set; }
 
-        public int TotalBet { get { return Bet1 + Bet2 + Bet3; } }
+        public int TotalBet => Bet1 + Bet2 + Bet3;
 
         private Timer _RollTimer;
 

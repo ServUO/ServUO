@@ -18,13 +18,7 @@ namespace Server.Spells.First
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.First;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.First;
         public static void EndArmor(Mobile m)
         {
             if (m_Table.Contains(m))

@@ -15,13 +15,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1075283;
-            }
-        }// Spirit bottle
+        public override int LabelNumber => 1075283;// Spirit bottle
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

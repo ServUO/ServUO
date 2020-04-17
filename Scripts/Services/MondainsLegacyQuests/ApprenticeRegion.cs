@@ -13,13 +13,7 @@ namespace Server.Regions
         {
         }
 
-        public Hashtable Table
-        {
-            get
-            {
-                return this.m_Table;
-            }
-        }
+        public Hashtable Table => this.m_Table;
         public override void OnEnter(Mobile m)
         {
             base.OnEnter(m);

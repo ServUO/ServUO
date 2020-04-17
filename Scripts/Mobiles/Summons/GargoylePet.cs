@@ -40,27 +40,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Meat
-        {
-            get
-            {
-                return 7;
-            }
-        }
-        public override int Hides
-        {
-            get
-            {
-                return 11;
-            }
-        }
-        public override HideType HideType
-        {
-            get
-            {
-                return HideType.Horned;
-            }
-        }
+        public override int Meat => 7;
+        public override int Hides => 11;
+        public override HideType HideType => HideType.Horned;
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Rich, 2);

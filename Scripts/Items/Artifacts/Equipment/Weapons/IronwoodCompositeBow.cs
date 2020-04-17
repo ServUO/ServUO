@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class IronwoodCompositeBow : CompositeBow
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1113759; } } // Ironwood Composite Bow
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113759;  // Ironwood Composite Bow
 
         [Constructable]
         public IronwoodCompositeBow()
@@ -24,20 +24,8 @@ namespace Server.Items
         {
         }
 
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
         public override void Serialize(GenericWriter writer)
         {

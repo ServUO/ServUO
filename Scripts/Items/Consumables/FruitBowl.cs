@@ -17,16 +17,10 @@ namespace Server.Items
         {
         }
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1072950;
-            }
-        }// fruit bowl
+        public override int LabelNumber => 1072950;// fruit bowl
         public override bool Eat(Mobile from)
         {
             if (FillHunger(from, this.FillFactor))

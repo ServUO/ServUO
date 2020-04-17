@@ -7,13 +7,13 @@ namespace Server.Engines.VvV
 {
     public class VvVPriest : BaseVendor
     {
-        public override bool IsActiveVendor { get { return false; } }
-        public override bool DisallowAllMoves { get { return true; } }
-        public override bool ClickTitle { get { return true; } }
-        public override bool CanTeach { get { return false; } }
+        public override bool IsActiveVendor => false;
+        public override bool DisallowAllMoves => true;
+        public override bool ClickTitle => true;
+        public override bool CanTeach => false;
 
         protected List<SBInfo> m_SBInfos = new List<SBInfo>();
-        protected override List<SBInfo> SBInfos { get { return this.m_SBInfos; } }
+        protected override List<SBInfo> SBInfos => this.m_SBInfos;
         public override void InitSBInfo() { }
 
         [CommandProperty(AccessLevel.GameMaster)]

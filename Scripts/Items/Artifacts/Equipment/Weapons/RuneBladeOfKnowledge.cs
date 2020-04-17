@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class RuneBladeOfKnowledge : RuneBlade
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public RuneBladeOfKnowledge()
         {
@@ -14,13 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073539;
-            }
-        }// rune blade of knowledge
+        public override int LabelNumber => 1073539;// rune blade of knowledge
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

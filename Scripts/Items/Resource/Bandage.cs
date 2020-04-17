@@ -577,15 +577,9 @@ namespace Server.Items
             private readonly long m_Expires;
             private bool m_CheckedHealAndBleed;
 
-            public bool CanCheckAtHalf
-            {
-                get
-                {
-                    return m_Context != null && m_Context.Healer == m_Context.Patient &&
+            public bool CanCheckAtHalf => m_Context != null && m_Context.Healer == m_Context.Patient &&
                            m_Context.Healer.Skills[SkillName.Healing].Value >= 80 &&
                            m_Context.Healer.Skills[SkillName.Anatomy].Value >= 80;
-                }
-            }
 
             public InternalTimer(BandageContext context, TimeSpan delay)
                 : base(TimeSpan.FromMilliseconds(250), TimeSpan.FromMilliseconds(250))

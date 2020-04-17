@@ -14,7 +14,7 @@ namespace Server.Items
     [Flipable(0x0DFC, 0x0DFD)]
     public class Clippers : BaseTool
     {
-        public override int LabelNumber { get { return 1112117; } } // clippers
+        public override int LabelNumber => 1112117;  // clippers
 
         [Constructable]
         public Clippers()
@@ -145,15 +145,9 @@ namespace Server.Items
             : base(serial)
         { }
 
-        public virtual PlantHue PlantHue { get { return PlantHue.None; } }
+        public virtual PlantHue PlantHue => PlantHue.None;
 
-        public override CraftSystem CraftSystem
-        {
-            get
-            {
-                return DefTinkering.CraftSystem;
-            }
-        }
+        public override CraftSystem CraftSystem => DefTinkering.CraftSystem;
 
         public void ConsumeUse(Mobile from)
         {

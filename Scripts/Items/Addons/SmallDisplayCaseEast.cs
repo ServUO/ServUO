@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class SmallDisplayCaseEastAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new SmallDisplayCaseEastDeed(); } }
+        public override BaseAddonDeed Deed => new SmallDisplayCaseEastDeed();
 
         [Constructable]
         public SmallDisplayCaseEastAddon()
@@ -31,8 +31,8 @@ namespace Server.Items
 
     public class SmallDisplayCaseEastDeed : BaseAddonDeed
     {
-        public override BaseAddon Addon { get { return new SmallDisplayCaseEastAddon(); } }
-        public override int LabelNumber { get { return 1155843; } } // Small Display Case (East)
+        public override BaseAddon Addon => new SmallDisplayCaseEastAddon();
+        public override int LabelNumber => 1155843;  // Small Display Case (East)
 
         [Constructable]
         public SmallDisplayCaseEastDeed()

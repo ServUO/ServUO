@@ -3,7 +3,7 @@ namespace Server.Items
     [Flipable(0x49CC, 0x49D0)]
     public class HeartShapedBox : Container
     {
-        public override int LabelNumber { get { return 1097762; } } // heart shaped box
+        public override int LabelNumber => 1097762;  // heart shaped box
 
         [Constructable]
         public HeartShapedBox()

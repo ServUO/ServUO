@@ -6,13 +6,7 @@ namespace Server.Engines.VvV
     [FlipableAttribute(39345, 39346)]
     public class PrideBanner : Item
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1123369;
-            }
-        }
+        public override int LabelNumber => 1123369;
 
         [Constructable]
         public PrideBanner()

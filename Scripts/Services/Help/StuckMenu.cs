@@ -17,20 +17,8 @@ namespace Server.Menus.Questions
             m_Locations = locations;
         }
 
-        public int Name
-        {
-            get
-            {
-                return m_Name;
-            }
-        }
-        public Point3D[] Locations
-        {
-            get
-            {
-                return m_Locations;
-            }
-        }
+        public int Name => m_Name;
+        public Point3D[] Locations => m_Locations;
     }
 
     public class StuckMenu : Gump

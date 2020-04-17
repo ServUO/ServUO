@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class Swiftflight : Bow
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public Swiftflight()
             : base()
@@ -23,27 +23,9 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074308;
-            }
-        }// Swiftflight (Marksman Set)
-        public override SetItem SetID
-        {
-            get
-            {
-                return SetItem.Marksman;
-            }
-        }
-        public override int Pieces
-        {
-            get
-            {
-                return 2;
-            }
-        }
+        public override int LabelNumber => 1074308;// Swiftflight (Marksman Set)
+        public override SetItem SetID => SetItem.Marksman;
+        public override int Pieces => 2;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -52,13 +52,7 @@ namespace Server.Items
             {
             }
         }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1049082;
-            }
-        }// powder of fortifying
+        public override int LabelNumber => 1049082;// powder of fortifying
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

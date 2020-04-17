@@ -805,7 +805,7 @@ namespace Server
         public PropertyAccess Access { get; private set; }
         public string Binding { get; private set; }
 
-        public bool IsBound { get { return _Chain != null; } }
+        public bool IsBound => _Chain != null;
 
         public PropertyInfo[] Chain
         {

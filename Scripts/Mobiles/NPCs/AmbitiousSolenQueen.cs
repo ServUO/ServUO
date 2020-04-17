@@ -15,13 +15,7 @@ namespace Server.Engines.Quests.Ambitious
         }
 
         public abstract bool RedSolen { get; }
-        public override bool DisallowAllMoves
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool DisallowAllMoves => false;
         public override void InitBody()
         {
             this.Name = "an ambitious solen queen";
@@ -182,13 +176,7 @@ namespace Server.Engines.Quests.Ambitious
         {
         }
 
-        public override bool RedSolen
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool RedSolen => true;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -216,13 +204,7 @@ namespace Server.Engines.Quests.Ambitious
         {
         }
 
-        public override bool RedSolen
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool RedSolen => false;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

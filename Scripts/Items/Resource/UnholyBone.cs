@@ -21,13 +21,7 @@ namespace Server.Items
         {
         }
 
-        public override string DefaultName
-        {
-            get
-            {
-                return "unholy bone";
-            }
-        }
+        public override string DefaultName => "unholy bone";
         public bool Carve(Mobile from, Item item)
         {
             Effects.PlaySound(this.GetWorldLocation(), this.Map, 0x48F);

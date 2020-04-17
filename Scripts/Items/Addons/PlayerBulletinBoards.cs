@@ -23,13 +23,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1062421;
-            }
-        }// bulletin board (south)
+        public override int LabelNumber => 1062421;// bulletin board (south)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -59,13 +53,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1062420;
-            }
-        }// bulletin board (east)
+        public override int LabelNumber => 1062420;// bulletin board (east)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -99,13 +87,7 @@ namespace Server.Items
         {
         }
 
-        public List<PlayerBBMessage> Messages
-        {
-            get
-            {
-                return m_Messages;
-            }
-        }
+        public List<PlayerBBMessage> Messages => m_Messages;
         public PlayerBBMessage Greeting
         {
             get
@@ -142,7 +124,7 @@ namespace Server.Items
             }
         }
 
-        public virtual bool Public { get { return false; } }
+        public virtual bool Public => false;
 
         public virtual bool CheckAccess(BaseHouse house, Mobile from)
         {
@@ -330,7 +312,7 @@ namespace Server.Items
 
         public class SetTitlePrompt : Prompt
         {
-            public override int MessageCliloc { get { return 1062402; } }
+            public override int MessageCliloc => 1062402;
             private readonly int m_Page;
             private readonly BaseHouse m_House;
             private readonly BasePlayerBB m_Board;

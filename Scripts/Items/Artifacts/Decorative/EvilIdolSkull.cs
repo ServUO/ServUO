@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class EvilIdolSkull : Item
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public EvilIdolSkull()
             : base(0x1F18)
@@ -14,13 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1095237;
-            }
-        }// Evil Idol
+        public override int LabelNumber => 1095237;// Evil Idol
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

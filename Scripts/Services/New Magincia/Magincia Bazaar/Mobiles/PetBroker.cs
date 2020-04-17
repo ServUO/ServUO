@@ -7,7 +7,7 @@ namespace Server.Engines.NewMagincia
     public class PetBroker : BaseBazaarBroker
     {
         private readonly List<PetBrokerEntry> m_BrokerEntries = new List<PetBrokerEntry>();
-        public List<PetBrokerEntry> BrokerEntries { get { return m_BrokerEntries; } }
+        public List<PetBrokerEntry> BrokerEntries => m_BrokerEntries;
 
         public static readonly int MaxEntries = 10;
 

@@ -7,8 +7,8 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public KotlAutomaton Automaton { get; set; }
 
-        public override int LabelNumber { get { return 1124395; } } // Automaton
-        public override bool HandlesOnMovement { get { return Automaton == null; } }
+        public override int LabelNumber => 1124395;  // Automaton
+        public override bool HandlesOnMovement => Automaton == null;
 
         [Constructable]
         public AutomatonStatue()

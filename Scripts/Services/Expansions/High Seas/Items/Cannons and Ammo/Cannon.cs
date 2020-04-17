@@ -80,24 +80,24 @@ namespace Server.Items
         public DamageLevel DamageState { get { return m_DamageState; } set { m_DamageState = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Direction Facing { get { return GetFacing(); } }
+        public Direction Facing => GetFacing();
 
-        public virtual ShipCannonDeed GetDeed { get { return null; } }
-        public virtual bool HitMultipleMobs { get { return false; } }
+        public virtual ShipCannonDeed GetDeed => null;
+        public virtual bool HitMultipleMobs => false;
 
-        public virtual int Range { get { return 0; } }
-        public virtual int MaxHits { get { return 100; } }
-        public virtual TimeSpan ActionTime { get { return TimeSpan.FromSeconds(1.5); } }
+        public virtual int Range => 0;
+        public virtual int MaxHits => 100;
+        public virtual TimeSpan ActionTime => TimeSpan.FromSeconds(1.5);
 
-        public virtual Type[] LoadTypes { get { return null; } }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public bool CanLight { get { return m_Cleaned && m_Charged && m_Primed && m_AmmoType != AmmunitionType.Empty && m_LoadedAmmo != null; } }
+        public virtual Type[] LoadTypes => null;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public double Durability { get { return (m_Hits / (double)MaxHits) * 100.0; } }
+        public bool CanLight => m_Cleaned && m_Charged && m_Primed && m_AmmoType != AmmunitionType.Empty && m_LoadedAmmo != null;
 
-        public override bool ForceShowProperties { get { return true; } }
+        [CommandProperty(AccessLevel.GameMaster)]
+        public double Durability => (m_Hits / (double)MaxHits) * 100.0;
+
+        public override bool ForceShowProperties => true;
 
         public BaseCannon(BaseGalleon galleon)
         {
@@ -111,7 +111,7 @@ namespace Server.Items
             m_DamageState = DamageLevel.Pristine;
         }
 
-        public override bool HandlesOnMovement { get { return true; } }
+        public override bool HandlesOnMovement => true;
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
@@ -1103,7 +1103,7 @@ namespace Server.Items
             InvalidateDamageState(from);
         }
 
-        public Dictionary<Mobile, List<int>> Actions { get { return m_Actions; } }
+        public Dictionary<Mobile, List<int>> Actions => m_Actions;
         private readonly Dictionary<Mobile, List<int>> m_Actions = new Dictionary<Mobile, List<int>>();
 
         public void AddAction(Mobile from, int cliloc)
@@ -1418,18 +1418,12 @@ namespace Server.Items
 
     public class LightShipCannon : BaseCannon
     {
-        public override int Range { get { return 8; } }
+        public override int Range => 8;
 
-        public override ShipCannonDeed GetDeed { get { return new LightShipCannonDeed(); } }
+        public override ShipCannonDeed GetDeed => new LightShipCannonDeed();
 
-        public override Type[] LoadTypes
-        {
-            get
-            {
-                return new Type[] {    typeof(LightCannonball),        typeof(LightGrapeshot),
+        public override Type[] LoadTypes => new Type[] {    typeof(LightCannonball),        typeof(LightGrapeshot),
                                                                         typeof(LightFlameCannonball),   typeof(LightFrostCannonball) };
-            }
-        }
 
         public LightShipCannon(BaseGalleon g) : base(g)
         {
@@ -1457,19 +1451,13 @@ namespace Server.Items
 
     public class HeavyShipCannon : BaseCannon
     {
-        public override int Range { get { return 10; } }
-        public override TimeSpan ActionTime { get { return TimeSpan.FromSeconds(2.0); } }
+        public override int Range => 10;
+        public override TimeSpan ActionTime => TimeSpan.FromSeconds(2.0);
 
-        public override int LabelNumber { get { return 0; } }
+        public override int LabelNumber => 0;
 
-        public override Type[] LoadTypes
-        {
-            get
-            {
-                return new Type[] {    typeof(HeavyCannonball),        typeof(HeavyGrapeshot),
+        public override Type[] LoadTypes => new Type[] {    typeof(HeavyCannonball),        typeof(HeavyGrapeshot),
                                                                         typeof(HeavyFrostCannonball),   typeof(HeavyFlameCannonball) };
-            }
-        }
 
         public HeavyShipCannon(BaseGalleon g) : base(g)
         {

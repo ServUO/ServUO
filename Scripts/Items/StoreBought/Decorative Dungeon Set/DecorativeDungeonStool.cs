@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class DecorativeDungeonStool : Item
     {
-        public override int LabelNumber { get { return 1159471; } } // decorative dungeon stool
+        public override int LabelNumber => 1159471;  // decorative dungeon stool
 
         [Constructable]
         public DecorativeDungeonStool()

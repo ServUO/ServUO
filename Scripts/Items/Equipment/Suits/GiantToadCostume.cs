@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class GiantToadCostume : BaseCostume
     {
-        public override string CreatureName { get { return "giant toad"; } }
+        public override string CreatureName => "giant toad";
 
         [Constructable]
         public GiantToadCostume() : base()
@@ -10,13 +10,7 @@ namespace Server.Items
             this.CostumeBody = 80;
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1114226;
-            }
-        }// giant toad costume
+        public override int LabelNumber => 1114226;// giant toad costume
 
         public GiantToadCostume(Serial serial) : base(serial)
         {

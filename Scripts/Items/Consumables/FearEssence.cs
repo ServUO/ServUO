@@ -9,9 +9,9 @@ namespace Server.Items
 {
     public class FearEssence : BasePotion
     {
-        public override int LabelNumber { get { return 1115744; } } // fear essence
-        public virtual int Radius { get { return 20; } }
-        public override bool RequireFreeHand { get { return false; } }
+        public override int LabelNumber => 1115744;  // fear essence
+        public virtual int Radius => 20;
+        public override bool RequireFreeHand => false;
 
         [Constructable]
         public FearEssence()

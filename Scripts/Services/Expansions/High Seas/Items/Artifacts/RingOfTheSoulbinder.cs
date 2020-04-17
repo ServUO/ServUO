@@ -2,7 +2,7 @@
 {
     public class RingOfTheSoulbinder : SilverRing
     {
-        public override int LabelNumber { get { return 1116620; } }
+        public override int LabelNumber => 1116620;
 
         [Constructable]
         public RingOfTheSoulbinder()

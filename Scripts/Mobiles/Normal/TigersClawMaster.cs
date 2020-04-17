@@ -28,8 +28,8 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool AlwaysMurderer { get { return true; } }
-        public override bool ShowFameTitle { get { return false; } }
+        public override bool AlwaysMurderer => true;
+        public override bool ShowFameTitle => false;
 
         public override void GenerateLoot()
         {

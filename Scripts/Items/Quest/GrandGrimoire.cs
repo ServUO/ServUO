@@ -17,13 +17,7 @@ namespace Server.Engines.Quests.Doom
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1060801;
-            }
-        }// The Grand Grimoire
+        public override int LabelNumber => 1060801;// The Grand Grimoire
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

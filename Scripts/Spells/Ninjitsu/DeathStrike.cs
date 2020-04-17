@@ -12,27 +12,9 @@ namespace Server.Spells.Ninjitsu
         {
         }
 
-        public override int BaseMana
-        {
-            get
-            {
-                return 30;
-            }
-        }
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 85.0;
-            }
-        }
-        public override TextDefinition AbilityMessage
-        {
-            get
-            {
-                return new TextDefinition(1063091);
-            }
-        }// You prepare to hit your opponent with a Death Strike.
+        public override int BaseMana => 30;
+        public override double RequiredSkill => 85.0;
+        public override TextDefinition AbilityMessage => new TextDefinition(1063091);// You prepare to hit your opponent with a Death Strike.
         public static void AddStep(Mobile m)
         {
             DeathStrikeInfo info = m_Table[m] as DeathStrikeInfo;

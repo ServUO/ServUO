@@ -29,16 +29,10 @@ namespace Server.Items
         public abstract TextDefinition ItemReceiveMessage { get; }
         public abstract TextDefinition ItemGumpName { get; }
 
-        public Type GumpType { get { return typeof(PromotionalTokenGump); } }
-        public virtual bool PlaceInBank { get { return true; } }
+        public Type GumpType => typeof(PromotionalTokenGump);
+        public virtual bool PlaceInBank => true;
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1070997;
-            }
-        }// A promotional token
+        public override int LabelNumber => 1070997;// A promotional token
         public abstract Item CreateItemFor(Mobile from);
 
         public override void GetProperties(ObjectPropertyList list)

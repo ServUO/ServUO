@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class UnknownShipwreck : BaseDecayingItem
     {
-        public override int LabelNumber { get { return 1154269; } } // Map to an Unknown Shipwreck
+        public override int LabelNumber => 1154269;  // Map to an Unknown Shipwreck
 
         [Constructable]
         public UnknownShipwreck() : base(0x14ED)
@@ -20,7 +20,7 @@ namespace Server.Items
             list.Add(1072351); // Quest Item
         }
 
-        public override int Lifespan { get { return 3600; } }
+        public override int Lifespan => 3600;
 
         public UnknownShipwreck(Serial serial) : base(serial)
         {

@@ -21,13 +21,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new BrownBearRugEastDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new BrownBearRugEastDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -55,20 +49,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new BrownBearRugEastAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1049397;
-            }
-        }// a brown bear rug deed facing east
+        public override BaseAddon Addon => new BrownBearRugEastAddon();
+        public override int LabelNumber => 1049397;// a brown bear rug deed facing east
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -105,13 +87,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new BrownBearRugSouthDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new BrownBearRugSouthDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -139,20 +115,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new BrownBearRugSouthAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1049398;
-            }
-        }// a brown bear rug deed facing south
+        public override BaseAddon Addon => new BrownBearRugSouthAddon();
+        public override int LabelNumber => 1049398;// a brown bear rug deed facing south
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -189,13 +153,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new PolarBearRugEastDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new PolarBearRugEastDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -223,20 +181,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new PolarBearRugEastAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1049399;
-            }
-        }// a polar bear rug deed facing east
+        public override BaseAddon Addon => new PolarBearRugEastAddon();
+        public override int LabelNumber => 1049399;// a polar bear rug deed facing east
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -273,13 +219,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new PolarBearRugSouthDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new PolarBearRugSouthDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -307,20 +247,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new PolarBearRugSouthAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1049400;
-            }
-        }// a polar bear rug deed facing south
+        public override BaseAddon Addon => new PolarBearRugSouthAddon();
+        public override int LabelNumber => 1049400;// a polar bear rug deed facing south
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

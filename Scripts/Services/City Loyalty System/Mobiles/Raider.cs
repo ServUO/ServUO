@@ -9,9 +9,9 @@ namespace Server.Mobiles
     {
         public DateTime DeleteTime { get; set; }
 
-        public override bool Commandable { get { return false; } }
-        public override bool ReduceSpeedWithDamage { get { return false; } }
-        public override bool AlwaysMurderer { get { return true; } }
+        public override bool Commandable => false;
+        public override bool ReduceSpeedWithDamage => false;
+        public override bool AlwaysMurderer => true;
 
         [Constructable]
         public Raider()

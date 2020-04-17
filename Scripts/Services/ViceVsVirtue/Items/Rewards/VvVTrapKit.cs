@@ -14,7 +14,7 @@ namespace Server.Engines.VvV
         [CommandProperty(AccessLevel.GameMaster)]
         public VvVTrapType TrapType { get; set; }
 
-        public override int LabelNumber { get { return 1154944; } } // Trap Kit
+        public override int LabelNumber => 1154944;  // Trap Kit
 
         private static readonly Dictionary<Mobile, DateTime> _Cooldown = new Dictionary<Mobile, DateTime>();
 

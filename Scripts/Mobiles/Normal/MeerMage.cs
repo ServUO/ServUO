@@ -57,41 +57,11 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool AutoDispel
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
-        public override bool CanRummageCorpses
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 3;
-            }
-        }
-        public override bool InitialInnocent
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool AutoDispel => true;
+        public override Poison PoisonImmune => Poison.Lethal;
+        public override bool CanRummageCorpses => true;
+        public override int TreasureMapLevel => 3;
+        public override bool InitialInnocent => true;
         public static bool UnderEffect(Mobile m)
         {
             return m_Table.Contains(m);

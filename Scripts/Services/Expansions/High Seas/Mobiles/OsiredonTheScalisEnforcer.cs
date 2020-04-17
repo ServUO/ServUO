@@ -15,26 +15,26 @@ namespace Server.Mobiles
         private DateTime m_NextSpecial;
         private DateTime m_NextWaterBall;
 
-        public override bool CanDamageBoats { get { return true; } }
-        public override bool TaintedLifeAura { get { return true; } }
-        public override TimeSpan BoatDamageCooldown { get { return TimeSpan.FromSeconds(120); } }
-        public override int MinBoatDamage { get { return 3; } }
-        public override int MaxBoatDamage { get { return 8; } }
-        public override int DamageRange { get { return 2; } }
+        public override bool CanDamageBoats => true;
+        public override bool TaintedLifeAura => true;
+        public override TimeSpan BoatDamageCooldown => TimeSpan.FromSeconds(120);
+        public override int MinBoatDamage => 3;
+        public override int MaxBoatDamage => 8;
+        public override int DamageRange => 2;
 
-        public override int Meat { get { return 5; } }
+        public override int Meat => 5;
 
-        public override ScaleType ScaleType { get { return ScaleType.All; } }
-        public override int Scales { get { return 20; } }
+        public override ScaleType ScaleType => ScaleType.All;
+        public override int Scales => 20;
 
-        public override double TreasureMapChance { get { return .50; } }
-        public override int TreasureMapLevel { get { return 7; } }
+        public override double TreasureMapChance => .50;
+        public override int TreasureMapLevel => 7;
 
-        public override Type[] UniqueList { get { return new Type[] { typeof(EnchantedCoralBracelet), typeof(WandOfThunderingGlory), typeof(LeviathanHideBracers), typeof(SmilingMoonBlade) }; } }
-        public override Type[] SharedList { get { return new Type[] { typeof(MiniSoulForgeDeed) }; } }
-        public override Type[] DecorativeList { get { return new Type[] { typeof(EnchantedBladeDeed), typeof(EnchantedVortexDeed) }; } }
+        public override Type[] UniqueList => new Type[] { typeof(EnchantedCoralBracelet), typeof(WandOfThunderingGlory), typeof(LeviathanHideBracers), typeof(SmilingMoonBlade) };
+        public override Type[] SharedList => new Type[] { typeof(MiniSoulForgeDeed) };
+        public override Type[] DecorativeList => new Type[] { typeof(EnchantedBladeDeed), typeof(EnchantedVortexDeed) };
 
-        public override bool NoGoodies { get { return true; } }
+        public override bool NoGoodies => true;
 
         [Constructable]
         public Osiredon()
@@ -329,8 +329,8 @@ namespace Server.Mobiles
             Karma = -2500;
         }
 
-        public override Poison PoisonImmune { get { return Poison.Parasitic; } }
-        public override Poison HitPoison { get { return Poison.Parasitic; } }
+        public override Poison PoisonImmune => Poison.Parasitic;
+        public override Poison HitPoison => Poison.Parasitic;
 
         public override void Delete()
         {

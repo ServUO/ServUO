@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class JaanasStaff : GnarledStaff
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public JaanasStaff()
             : base()
@@ -19,34 +19,10 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1079790;
-            }
-        }// Jaana's Staff
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 11;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 225;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 225;
-            }
-        }
+        public override int LabelNumber => 1079790;// Jaana's Staff
+        public override int ArtifactRarity => 11;
+        public override int InitMinHits => 225;
+        public override int InitMaxHits => 225;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

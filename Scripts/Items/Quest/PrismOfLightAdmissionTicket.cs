@@ -17,13 +17,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074340;
-            }
-        }// Prism of Light Admission Ticket
+        public override int LabelNumber => 1074340;// Prism of Light Admission Ticket
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);

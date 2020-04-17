@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class ScaleCollar : Item
     {
-        public override int LabelNumber { get { return 1112480; } } //a scale collar
+        public override int LabelNumber => 1112480;  //a scale collar
 
         private Timer m_Timer;
 

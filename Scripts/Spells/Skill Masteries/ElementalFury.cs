@@ -14,11 +14,11 @@ namespace Server.Spells.SkillMasteries
                 9002
             );
 
-        public override double RequiredSkill { get { return 90; } }
-        public override int RequiredMana { get { return 20; } }
+        public override double RequiredSkill => 90;
+        public override int RequiredMana => 20;
 
-        public override SkillName CastSkill { get { return SkillName.Throwing; } }
-        public override SkillName DamageSkill { get { return SkillName.Tactics; } }
+        public override SkillName CastSkill => SkillName.Throwing;
+        public override SkillName DamageSkill => SkillName.Tactics;
 
         private int _MaxAdd;
         private ResistanceType _Type;

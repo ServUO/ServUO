@@ -261,13 +261,7 @@ namespace Server.Engines.Doom
             }
         }
 
-        public override string DefaultName
-        {
-            get
-            {
-                return "doom spawner";
-            }
-        }
+        public override string DefaultName => "doom spawner";
 
         public static void Initialize()
         {

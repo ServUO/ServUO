@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class StinkingCauldron : Item
     {
-        public override int LabelNumber { get { return 1152163; } } // stinking cauldron
+        public override int LabelNumber => 1152163;  // stinking cauldron
 
         [Constructable]
         public StinkingCauldron()

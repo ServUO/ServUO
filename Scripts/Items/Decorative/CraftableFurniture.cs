@@ -5,13 +5,7 @@ namespace Server.Items
 {
     public class CraftableFurniture : Item, IResource, IQuality
     {
-        public virtual bool ShowCrafterName
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public virtual bool ShowCrafterName => true;
 
         private Mobile m_Crafter;
         private CraftResource m_Resource;
@@ -64,7 +58,7 @@ namespace Server.Items
             }
         }
 
-        public virtual bool PlayerConstructed { get { return true; } }
+        public virtual bool PlayerConstructed => true;
 
         public CraftableFurniture(int itemID)
             : base(itemID)

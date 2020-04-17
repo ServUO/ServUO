@@ -15,40 +15,16 @@ namespace Server.Engines.Quests
         }
 
         /* Evil Eye */
-        public override object Title
-        {
-            get
-            {
-                return 1073084;
-            }
-        }
+        public override object Title => 1073084;
         /* Kind traveler, hear my plea. You know of the evil orbs? The wrathful eyes? Some call 
         them gazers? They must be a nest nearby, for they are tormenting us poor folk. We need 
         to drive back their numbers. But we are not strong enough to face such horrors ourselves, 
         we need a true hero. */
-        public override object Description
-        {
-            get
-            {
-                return 1073574;
-            }
-        }
+        public override object Description => 1073574;
         /* I hope you'll reconsider. Until then, farwell. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1073580;
-            }
-        }
+        public override object Refuse => 1073580;
         /* Have you annihilated a dozen Gazers yet, kind traveler? */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1073594;
-            }
-        }
+        public override object Uncomplete => 1073594;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -75,39 +51,15 @@ namespace Server.Engines.Quests
         }
 
         /* Impish Delights */
-        public override object Title
-        {
-            get
-            {
-                return 1073077;
-            }
-        }
+        public override object Title => 1073077;
         /* Imps! Do you hear me? Imps! They're everywhere! They're in everything! Oh, don't be fooled 
         by their size - they vicious little devils! Half-sized evil incarnate, they are! Somebody 
         needs to send them back to where they came from, if you know what I mean. */
-        public override object Description
-        {
-            get
-            {
-                return 1073567;
-            }
-        }
+        public override object Description => 1073567;
         /* I hope you'll reconsider. Until then, farwell. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1073580;
-            }
-        }
+        public override object Refuse => 1073580;
         /* Don't let the little devils scare you! You  kill 12 imps - then we'll talk reward. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1073587;
-            }
-        }
+        public override object Uncomplete => 1073587;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -134,47 +86,17 @@ namespace Server.Engines.Quests
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
-        public override bool AllObjectives
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool AllObjectives => false;
         /* Stirring the Nest */
-        public override object Title
-        {
-            get
-            {
-                return 1073087;
-            }
-        }
+        public override object Title => 1073087;
         /* Were you the sort of child that enjoyed knocking over anthills? Well, perhaps you'd like 
         to try something a little bigger? There's a Solen nest nearby and I bet if you killed a queen 
         or two, it would be quite the sight to behold.  I'd even pay to see that - what do you say? */
-        public override object Description
-        {
-            get
-            {
-                return 1073577;
-            }
-        }
+        public override object Description => 1073577;
         /* I hope you'll reconsider. Until then, farwell. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1073580;
-            }
-        }
+        public override object Refuse => 1073580;
         /* Dead Solen Queens isn't too much to ask, is it? */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1073597;
-            }
-        }
+        public override object Uncomplete => 1073597;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -201,47 +123,17 @@ namespace Server.Engines.Quests
             this.AddReward(new BaseReward(typeof(TreasureBag), 1072583));
         }
 
-        public override bool AllObjectives
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool AllObjectives => false;
         /* Undead Mages */
-        public override object Title
-        {
-            get
-            {
-                return 1073080;
-            }
-        }
+        public override object Title => 1073080;
         /* Why must the dead plague the living? With their foul necromancy and dark sorceries, the undead 
         menace the countryside. I fear what will happen if no one is strong enough to face these nightmare 
         sorcerers and thin their numbers. */
-        public override object Description
-        {
-            get
-            {
-                return 1073570;
-            }
-        }
+        public override object Description => 1073570;
         /* I hope you'll reconsider. Until then, farwell. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1073580;
-            }
-        }
+        public override object Refuse => 1073580;
         /* Surely, a brave soul like yourself can kill 10 Bone Magi and Skeletal Mages? */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1073590;
-            }
-        }
+        public override object Uncomplete => 1073590;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -268,39 +160,15 @@ namespace Server.Engines.Quests
         }
 
         /* The Afterlife */
-        public override object Title
-        {
-            get
-            {
-                return 1073073;
-            }
-        }
+        public override object Title => 1073073;
         /* Nobody told me about the Mummy's Curse. How was I supposed to know you shouldn't disturb the tombs? 
         Oh, sure, now all I hear about is the curse of the vengeful dead. I'll tell you what - make a few of 
         these mummies go away and we'll keep this between you and me. */
-        public override object Description
-        {
-            get
-            {
-                return 1073563;
-            }
-        }
+        public override object Description => 1073563;
         /* I hope you'll reconsider. Until then, farwell. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1073580;
-            }
-        }
+        public override object Refuse => 1073580;
         /* Uh, I don't think you're quite done killing Mummies yet. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1073583;
-            }
-        }
+        public override object Uncomplete => 1073583;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -327,39 +195,15 @@ namespace Server.Engines.Quests
         }
 
         /* Friendly Neighborhood Spider-killer */
-        public override object Title
-        {
-            get
-            {
-                return 1073662;
-            }
-        }
+        public override object Title => 1073662;
         /* They aren't called Dread Spiders because they're fluffy and cuddly now, are they? No, there's nothing 
         appealing about those wretches so I sure wouldn't lose any sleep if you were to exterminate a few. I'd 
         even part with a generous amount of gold, I would. */
-        public override object Description
-        {
-            get
-            {
-                return 1073701;
-            }
-        }
+        public override object Description => 1073701;
         /* Perhaps you'll change your mind and return at some point. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1073733;
-            }
-        }
+        public override object Refuse => 1073733;
         /* Dread Spiders? I say keep exterminating the arachnid vermin. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1073742;
-            }
-        }
+        public override object Uncomplete => 1073742;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -386,39 +230,15 @@ namespace Server.Engines.Quests
         }
 
         /* Gargoyle's Wrath */
-        public override object Title
-        {
-            get
-            {
-                return 1073658;
-            }
-        }
+        public override object Title => 1073658;
         /* It is regretable that the Gargoyles insist upon warring with us. Their Enforcers attack men on sight, despite 
         all efforts at reason. To help maintain order in this region, I have been authorized to encourage bounty hunters 
         to reduce their numbers. Eradicate their number and I will reward you handsomely. */
-        public override object Description
-        {
-            get
-            {
-                return 1073697;
-            }
-        }
+        public override object Description => 1073697;
         /* Perhaps you'll change your mind and return at some point. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1073733;
-            }
-        }
+        public override object Refuse => 1073733;
         /* I won't be able to pay you until you've gotten enough Gargoyle Enforcers. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1073738;
-            }
-        }
+        public override object Uncomplete => 1073738;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -445,39 +265,15 @@ namespace Server.Engines.Quests
         }
 
         /* Three Wishes */
-        public override object Title
-        {
-            get
-            {
-                return 1073660;
-            }
-        }
+        public override object Title => 1073660;
         /* If I had but one wish, it would be to rid myself of these dread Efreet! Fire and ash, they are cunning and 
         deadly! You look a brave soul - would you be interested in earning a rich reward for slaughtering a few of the 
         smoky devils? */
-        public override object Description
-        {
-            get
-            {
-                return 1073699;
-            }
-        }
+        public override object Description => 1073699;
         /* Perhaps you'll change your mind and return at some point. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1073733;
-            }
-        }
+        public override object Refuse => 1073733;
         /* Those smoky devils, the Efreets, are still about. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1073740;
-            }
-        }
+        public override object Uncomplete => 1073740;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -504,47 +300,17 @@ namespace Server.Engines.Quests
             this.AddReward(new BaseReward(typeof(LargeTreasureBag), 1072706));
         }
 
-        public override bool AllObjectives
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool AllObjectives => false;
         /* Forked Tongue */
-        public override object Title
-        {
-            get
-            {
-                return 1073655;
-            }
-        }
+        public override object Title => 1073655;
         /* I must implore you, brave traveler, to do battle with the vile reptiles which haunt these parts. Those hideous 
         abominations, the Ophidians, are a blight across the land. If you were able to put down a host of the scaly 
         warriors, the Knights or the Avengers, I would forever be in your debt. */
-        public override object Description
-        {
-            get
-            {
-                return 1073694;
-            }
-        }
+        public override object Description => 1073694;
         /* Perhaps you'll change your mind and return at some point. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1073733;
-            }
-        }
+        public override object Refuse => 1073733;
         /* Have you killed the Ophidian Knights or Avengers? */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1073735;
-            }
-        }
+        public override object Uncomplete => 1073735;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -572,39 +338,15 @@ namespace Server.Engines.Quests
         }
 
         /* Mongbat Menace! */
-        public override object Title
-        {
-            get
-            {
-                return 1073003;
-            }
-        }
+        public override object Title => 1073003;
         /* I imagine you don't know about the mongbats.  Well, you may think you do, but I know more than just about anyone.  
         You see they come in two varieties ... the stronger and the weaker.  Either way, they're a menace.  Exterminate ten 
         of the weaker ones and four of the stronger and I'll pay you an honest wage. */
-        public override object Description
-        {
-            get
-            {
-                return 1073033;
-            }
-        }
+        public override object Description => 1073033;
         /* Well, okay. But if you decide you are up for it after all, c'mon back and see me. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1072270;
-            }
-        }
+        public override object Refuse => 1072270;
         /* You're not quite done yet.  Get back to work! */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1072271;
-            }
-        }
+        public override object Uncomplete => 1072271;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -634,11 +376,7 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(EvilEyeQuest),
                     typeof(ImpishDelightsQuest),
@@ -652,8 +390,6 @@ namespace Server.Engines.Quests
                     typeof(CircleOfLifeQuest),
                     typeof(MongbatMenaceQuest)
                 };
-            }
-        }
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);

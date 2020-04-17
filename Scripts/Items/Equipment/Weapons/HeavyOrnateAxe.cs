@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class HeavyOrnateAxe : OrnateAxe
     {
-        public override int LabelNumber { get { return 1073548; } }// heavy ornate axe
+        public override int LabelNumber => 1073548; // heavy ornate axe
 
         [Constructable]
         public HeavyOrnateAxe()

@@ -3,7 +3,7 @@ namespace Server.Items
     [Flipable(0x2FB9, 0x3173)]
     public class CloakOfLife : BaseOuterTorso
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
 
         [Constructable]
         public CloakOfLife()
@@ -20,7 +20,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber { get { return 1112880; } }// Cloak of Life
+        public override int LabelNumber => 1112880; // Cloak of Life
 
         public override void Serialize(GenericWriter writer)
         {

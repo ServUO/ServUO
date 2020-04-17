@@ -5,7 +5,7 @@ namespace Server.Engines.VvV
 {
     public class HythlothTileAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new HythlothTileDeed(); } }
+        public override BaseAddonDeed Deed => new HythlothTileDeed();
 
         public TileType TileType { get; set; }
 
@@ -51,8 +51,8 @@ namespace Server.Engines.VvV
 
     public class HythlothTileDeed : BaseAddonDeed, IRewardOption
     {
-        public override BaseAddon Addon { get { return new HythlothTileAddon(TileType); } }
-        public override int LabelNumber { get { return 1155520; } } // Hythloth Tile
+        public override BaseAddon Addon => new HythlothTileAddon(TileType);
+        public override int LabelNumber => 1155520;  // Hythloth Tile
 
         public TileType TileType { get; set; }
 

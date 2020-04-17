@@ -19,13 +19,7 @@ namespace Server.Spells.Sixth
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Sixth;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Sixth;
         public static bool HasTimer(Mobile m)
         {
             return m_Table[m] != null;

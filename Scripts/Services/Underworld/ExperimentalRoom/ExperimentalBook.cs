@@ -3,7 +3,7 @@ namespace Server.Items
 
     public class ExperimentalBook : BrownBook
     {
-        public override int LabelNumber { get { return 1113479; } } // 
+        public override int LabelNumber => 1113479;  // 
 
         [Constructable]
         public ExperimentalBook() : base(false)
@@ -58,7 +58,7 @@ namespace Server.Items
                 "gem in the box to receive",
                 "your reward."));
 
-        public override BookContent DefaultContent { get { return Content; } }
+        public override BookContent DefaultContent => Content;
 
         public ExperimentalBook(Serial serial)
             : base(serial)

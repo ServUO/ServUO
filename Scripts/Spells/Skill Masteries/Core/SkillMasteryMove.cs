@@ -10,8 +10,8 @@ namespace Server.Spells.SkillMasteries
     {
         public Dictionary<Mobile, DateTime> Cooldown { get; set; }
 
-        public virtual TimeSpan CooldownPeriod { get { return TimeSpan.MinValue; } }
-        public override bool ValidatesDuringHit { get { return false; } }
+        public virtual TimeSpan CooldownPeriod => TimeSpan.MinValue;
+        public override bool ValidatesDuringHit => false;
 
         public SkillMasteryMove()
         {

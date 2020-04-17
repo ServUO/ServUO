@@ -11,10 +11,7 @@ namespace Server.Commands
     public class Decorate
     {
         private static string m_Key;
-        public static string Key
-        {
-            get { return m_Key; }
-        }
+        public static string Key => m_Key;
 
         public static void Initialize()
         {
@@ -143,13 +140,7 @@ namespace Server.Commands
 
         private Item m_Constructed;
 
-        public Item Constructed
-        {
-            get
-            {
-                return m_Constructed;
-            }
-        }
+        public Item Constructed => m_Constructed;
 
         public int ID
         {
@@ -1354,20 +1345,8 @@ namespace Server.Commands
         private readonly Point3D m_Location;
         private readonly string m_Extra;
 
-        public Point3D Location
-        {
-            get
-            {
-                return m_Location;
-            }
-        }
-        public string Extra
-        {
-            get
-            {
-                return m_Extra;
-            }
-        }
+        public Point3D Location => m_Location;
+        public string Extra => m_Extra;
 
         public DecorationEntry(string line)
         {

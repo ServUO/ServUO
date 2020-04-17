@@ -21,13 +21,7 @@ namespace Server.Spells.Sixth
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Sixth;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Sixth;
         public override void OnCast()
         {
             Caster.Target = new InternalTarget(this);
@@ -99,7 +93,7 @@ namespace Server.Spells.Sixth
             private Mobile m_Caster;
             private DateTime m_End;
 
-            public Mobile Caster { get { return m_Caster; } }
+            public Mobile Caster => m_Caster;
 
             public InternalItem(int itemID, Point3D loc, Mobile caster, Map map, TimeSpan duration)
                 : base(itemID)
@@ -126,13 +120,7 @@ namespace Server.Spells.Sixth
             {
             }
 
-            public override bool BlocksFit
-            {
-                get
-                {
-                    return true;
-                }
-            }
+            public override bool BlocksFit => true;
             public override void OnAfterDelete()
             {
                 base.OnAfterDelete();

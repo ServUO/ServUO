@@ -23,13 +23,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041424;
-            }
-        }// a fireworks wand
+        public override int LabelNumber => 1041424;// a fireworks wand
         [CommandProperty(AccessLevel.GameMaster)]
         public int Charges
         {

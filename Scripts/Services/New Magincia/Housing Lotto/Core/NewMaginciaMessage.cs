@@ -11,12 +11,12 @@ namespace Server.Engines.NewMagincia
         private readonly string m_Args;
         private readonly DateTime m_Expires;
 
-        public TextDefinition Title { get { return m_Title; } }
-        public TextDefinition Body { get { return m_Body; } }
-        public string Args { get { return m_Args; } }
-        public DateTime Expires { get { return m_Expires; } }
+        public TextDefinition Title => m_Title;
+        public TextDefinition Body => m_Body;
+        public string Args => m_Args;
+        public DateTime Expires => m_Expires;
 
-        public bool Expired { get { return m_Expires < DateTime.UtcNow; } }
+        public bool Expired => m_Expires < DateTime.UtcNow;
 
         public NewMaginciaMessage(TextDefinition title, TextDefinition body)
             : this(title, body, DefaultExpirePeriod, null)

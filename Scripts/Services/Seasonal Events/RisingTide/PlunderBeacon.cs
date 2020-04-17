@@ -10,7 +10,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile LastDamager { get; set; }
 
-        public override bool CanDamage { get { return Controller == null || Controller.BeaconVulnerable; } }
+        public override bool CanDamage => Controller == null || Controller.BeaconVulnerable;
 
         public PlunderBeacon(PlunderBeaconAddon controller)
         {

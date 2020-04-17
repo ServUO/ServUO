@@ -19,13 +19,13 @@ namespace Server.Engines.NewMagincia
         public static MaginciaLottoSystem Instance { get { return m_Instance; } set { m_Instance = value; } }
 
         private static readonly List<MaginciaHousingPlot> m_Plots = new List<MaginciaHousingPlot>();
-        public static List<MaginciaHousingPlot> Plots { get { return m_Plots; } }
+        public static List<MaginciaHousingPlot> Plots => m_Plots;
 
         private static Dictionary<Map, List<Rectangle2D>> m_FreeHousingZones;
-        public static Dictionary<Map, List<Rectangle2D>> FreeHousingZones { get { return m_FreeHousingZones; } }
+        public static Dictionary<Map, List<Rectangle2D>> FreeHousingZones => m_FreeHousingZones;
 
         private static readonly Dictionary<Mobile, List<NewMaginciaMessage>> m_MessageQueue = new Dictionary<Mobile, List<NewMaginciaMessage>>();
-        public static Dictionary<Mobile, List<NewMaginciaMessage>> MessageQueue { get { return m_MessageQueue; } }
+        public static Dictionary<Mobile, List<NewMaginciaMessage>> MessageQueue => m_MessageQueue;
 
         private Timer m_Timer;
         private TimeSpan m_LottoDuration;
@@ -249,7 +249,7 @@ namespace Server.Engines.NewMagincia
             }
         }
 
-        public static Rectangle2D[] MagHousingZones { get { return m_MagHousingZones; } }
+        public static Rectangle2D[] MagHousingZones => m_MagHousingZones;
         private static readonly Rectangle2D[] m_MagHousingZones = new Rectangle2D[]
         {
             new Rectangle2D(3686, 2125, 18, 18), // C1

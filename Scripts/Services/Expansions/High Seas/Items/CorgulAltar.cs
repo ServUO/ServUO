@@ -24,17 +24,17 @@ namespace Server.Items
                 new Rectangle2D(180,  180,  300, 300)
         };
 
-        public static Rectangle2D[] WarpLocations { get { return m_WarpLocations; } }
+        public static Rectangle2D[] WarpLocations => m_WarpLocations;
 
         private static Rectangle2D m_BoatKickLocation = new Rectangle2D(2400, 2500, 500, 500);
-        public static Rectangle2D BoatKickLocation { get { return m_BoatKickLocation; } }
+        public static Rectangle2D BoatKickLocation => m_BoatKickLocation;
 
         private static Rectangle2D m_LandKickLocation = new Rectangle2D(2125, 3090, 25, 30);
-        public static Rectangle2D LandKickLocation { get { return m_LandKickLocation; } }
+        public static Rectangle2D LandKickLocation => m_LandKickLocation;
 
         private static Rectangle2D m_CorgulBounds = new Rectangle2D(6337, 1156, m_RegionSize, m_RegionSize);
 
-        public static Rectangle2D CorgulBounds { get { return m_CorgulBounds; } }
+        public static Rectangle2D CorgulBounds => m_CorgulBounds;
         #endregion
 
         private bool m_Activated;
@@ -48,7 +48,7 @@ namespace Server.Items
         private readonly List<Item> m_IslandMaps = new List<Item>();
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Activated { get { return m_Activated; } }
+        public bool Activated => m_Activated;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Active
@@ -61,19 +61,19 @@ namespace Server.Items
             }
         }
 
-        public CorgulWarpRegion WarpRegion { get { return m_WarpRegion; } }
-        public CorgulRegion BossRegion { get { return m_BossRegion; } }
+        public CorgulWarpRegion WarpRegion => m_WarpRegion;
+        public CorgulRegion BossRegion => m_BossRegion;
 
         private readonly Type[] m_Keys = new Type[] { typeof(TreasureMap), typeof(WorldMap) };
 
         public static Point3D SpawnLoc = new Point3D(6431, 1236, 10);
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime DeadLine { get { return m_DeadLine; } }
+        public DateTime DeadLine => m_DeadLine;
 
-        public int KeyStage { get { return m_KeyStage; } }
+        public int KeyStage => m_KeyStage;
 
-        public override int LabelNumber { get { return 1074818; } }
+        public override int LabelNumber => 1074818;
 
         public CorgulAltar()
             : base(13807)

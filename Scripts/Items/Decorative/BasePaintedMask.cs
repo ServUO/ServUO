@@ -47,13 +47,7 @@ namespace Server.Items.Holiday
                 return this.MaskName;
             }
         }
-        public virtual string MaskName
-        {
-            get
-            {
-                return "A Mask";
-            }
-        }
+        public virtual string MaskName => "A Mask";
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

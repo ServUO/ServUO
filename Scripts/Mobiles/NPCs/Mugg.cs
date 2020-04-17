@@ -14,48 +14,18 @@ namespace Server.Engines.Quests
         }
 
         /* More Ore Please */
-        public override object Title
-        {
-            get
-            {
-                return 1075530;
-            }
-        }
+        public override object Title => 1075530;
         /* Have a pickaxe? My supplier is late and I need some iron ore so I can complete a bulk order for another 
         merchant. If you can get me some soon I'll pay you double what it's worth on the market. Just find a cave 
         or mountainside and try to use your pickaxe there, maybe you'll strike a good vein! 5 large pieces should 
         do it. */
-        public override object Description
-        {
-            get
-            {
-                return 1075529;
-            }
-        }
+        public override object Description => 1075529;
         /* Not feeling strong enough today? Its alright, I didn't need a bucket of rocks anyway. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1075531;
-            }
-        }
+        public override object Refuse => 1075531;
         /* Hmmm… we need some more Ore. Try finding a mountain or cave, and give it a whack. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1075532;
-            }
-        }
+        public override object Uncomplete => 1075532;
         /* I see you found a good vien! Great!  This will help get this order out on time. Good work! */
-        public override object Complete
-        {
-            get
-            {
-                return 1075533;
-            }
-        }
+        public override object Complete => 1075533;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -84,16 +54,10 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(MoreOrePleaseQuest)
                 };
-            }
-        }
         public override void InitBody()
         {
             InitStats(100, 100, 25);

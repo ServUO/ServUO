@@ -25,7 +25,7 @@ namespace Server.Engines.Doom
         public BaseDoor DoorTwo { get; set; }
         public DateTime NextActivate { get; set; }
 
-        public bool CanActivate { get { return NextActivate < DateTime.UtcNow; } }
+        public bool CanActivate => NextActivate < DateTime.UtcNow;
 
         private static readonly Rectangle2D[] RegionBounds = new Rectangle2D[] { new Rectangle2D(355, 5, 20, 20) };
         private static Rectangle2D PentagramBounds = new Rectangle2D(364, 14, 2, 2);

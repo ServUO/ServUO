@@ -101,13 +101,7 @@ namespace Server.Mobiles
         }
         #endregion
 
-        public bool BurstSac
-        {
-            get
-            {
-                return this.m_BurstSac;
-            }
-        }
+        public bool BurstSac => this.m_BurstSac;
         public override int GetAngerSound()
         {
             return 0xB5;

@@ -17,7 +17,7 @@ namespace Server.Gumps
         public PlayerMobile User { get; private set; }
         public bool Open { get; set; }
 
-        public virtual bool CloseOnMapChange { get { return false; } }
+        public virtual bool CloseOnMapChange => false;
 
         public Gump Parent
         {

@@ -16,27 +16,9 @@ namespace Server.Items
         {
         }
 
-        public override bool NeedsWall
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Point3D WallPosition
-        {
-            get
-            {
-                return East ? new Point3D(-1, 0, 0) : new Point3D(0, -1, 0);
-            }
-        }
-        public bool East
-        {
-            get
-            {
-                return ((WallBanner)Addon).East;
-            }
-        }
+        public override bool NeedsWall => true;
+        public override Point3D WallPosition => East ? new Point3D(-1, 0, 0) : new Point3D(0, -1, 0);
+        public bool East => ((WallBanner)Addon).East;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -292,13 +274,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1080549;
-            }
-        }// Wall Banner Deed
+        public override int LabelNumber => 1080549;// Wall Banner Deed
         public override BaseAddon Addon
         {
             get

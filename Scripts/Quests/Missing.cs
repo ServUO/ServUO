@@ -13,44 +13,14 @@ namespace Server.Engines.Quests
             this.AddReward(new BaseReward(typeof(CandlewoodTorch), "Candlewood Torch"));
         }
 
-        public override Type NextQuest
-        {
-            get
-            {
-                return typeof(EndingtheThreat);
-            }
-        }
-        public override object Title
-        {
-            get
-            {
-                return 1094949;
-            }
-        }//Missing
-        public override object Description
-        {
-            get
-            {
-                return 1094951;
-            }
-        }
+        public override Type NextQuest => typeof(EndingtheThreat);
+        public override object Title => 1094949;//Missing
+        public override object Description => 1094951;
         /*Very well, fare thee well traveler.  I would not press our problems upon you if you are not willing.  
         I pray that my people are simply trying to secure some treasure they found.*/
-        public override object Refuse
-        {
-            get
-            {
-                return 1094952;
-            }
-        }
+        public override object Refuse => 1094952;
         /*Greetings, have you any news of my people?  I am encouraged to see you well!*/
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1094953;
-            }
-        }
+        public override object Uncomplete => 1094953;
         /*Oh, this is indeed sad news.  It seems my worst fears have been realized! 
         These writs were given to Evan and Kevin Brightwhistle, Sergio Taylor, and Sarah Bootwell.
         Based on your description of the ghastly scene, they have met a most untimely end!
@@ -61,13 +31,7 @@ namespace Server.Engines.Quests
         Please take this torch with my thanks.  It may not seem like much, but it is magic and will never burn out.  
         You will find that rotworms fear fire so it will protect you from them as you venture further into these cursed halls.
         Tread carefully traveller, each member of the party had one of these so I suspect that the rotworms are not what ended their lives.*/
-        public override object Complete
-        {
-            get
-            {
-                return 1094956;
-            }
-        }
+        public override object Complete => 1094956;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -22,34 +22,17 @@ namespace Server.Engines.Quests.Naturalist
             FirstStep,
             SecondStep
         }
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 /* Find an entrance to the Solen Hive, and search within for the Solen
-                * Egg Nests. Each Nest must be studied for some time without a break in
-                * concentration in order to gather useful information.<BR><BR>
-                * 
-                * Once you have completed your study of the Nests, return to the Naturalist
-                * who gave you this task.
-                */
-                return 1054044;
-            }
-        }
-        public override int MaxProgress
-        {
-            get
-            {
-                return NestArea.NonSpecialCount;
-            }
-        }
-        public bool StudiedSpecialNest
-        {
-            get
-            {
-                return this.m_StudiedSpecialNest;
-            }
-        }
+* Egg Nests. Each Nest must be studied for some time without a break in
+* concentration in order to gather useful information.<BR><BR>
+* 
+* Once you have completed your study of the Nests, return to the Naturalist
+* who gave you this task.
+*/
+                1054044;
+        public override int MaxProgress => NestArea.NonSpecialCount;
+        public bool StudiedSpecialNest => this.m_StudiedSpecialNest;
         public override bool GetTimerEvent()
         {
             return true;
@@ -189,16 +172,11 @@ namespace Server.Engines.Quests.Naturalist
         {
         }
 
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 /* You have studied enough Solen Egg Nests to gather a fair amount of
-                * useful information. Return to the Naturalist who gave you this task.
-                */
-                return 1054048;
-            }
-        }
+* useful information. Return to the Naturalist who gave you this task.
+*/
+                1054048;
         public override void RenderProgress(BaseQuestGump gump)
         {
             string count = NestArea.NonSpecialCount.ToString();

@@ -11,10 +11,10 @@ namespace Server.Items
             this.Weight = 2;
         }
 
-        public override int Lifespan { get { return 21600; } }
-        public override bool UseSeconds { get { return false; } }
+        public override int Lifespan => 21600;
+        public override bool UseSeconds => false;
 
-        public override int LabelNumber { get { return 1153867; } } // Punch Card
+        public override int LabelNumber => 1153867;  // Punch Card
 
         public PunchCard(Serial serial)
             : base(serial)

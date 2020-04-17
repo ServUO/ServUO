@@ -7,8 +7,8 @@ namespace Server.Items
     {
         private int m_Span;
 
-        public override int Lifespan { get { return m_Span; } }
-        public override int LabelNumber { get { return 1113578; } } // a golden compass
+        public override int Lifespan => m_Span;
+        public override int LabelNumber => 1113578;  // a golden compass
 
         [Constructable]
         public GoldenCompass() : base(459)

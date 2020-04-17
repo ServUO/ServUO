@@ -19,26 +19,8 @@ namespace Server.Engines.VeteranRewards
             this.m_Entries = new List<RewardEntry>();
         }
 
-        public int Name
-        {
-            get
-            {
-                return this.m_Name;
-            }
-        }
-        public string NameString
-        {
-            get
-            {
-                return this.m_NameString;
-            }
-        }
-        public List<RewardEntry> Entries
-        {
-            get
-            {
-                return this.m_Entries;
-            }
-        }
+        public int Name => this.m_Name;
+        public string NameString => this.m_NameString;
+        public List<RewardEntry> Entries => this.m_Entries;
     }
 }

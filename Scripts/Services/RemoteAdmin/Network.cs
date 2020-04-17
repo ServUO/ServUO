@@ -277,12 +277,6 @@ namespace Server.RemoteAdmin
                 this.m_OnLine(line);
         }
 
-        public override System.Text.Encoding Encoding
-        {
-            get
-            {
-                return System.Text.Encoding.ASCII;
-            }
-        }
+        public override System.Text.Encoding Encoding => System.Text.Encoding.ASCII;
     }
 }

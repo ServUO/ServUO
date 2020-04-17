@@ -13,8 +13,8 @@ namespace Server.Spells.SkillMasteries
                 9002
             );
 
-        public override int RequiredMana { get { return 20; } }
-        public override SkillName CastSkill { get { return SkillName.Poisoning; } }
+        public override int RequiredMana => 20;
+        public override SkillName CastSkill => SkillName.Poisoning;
 
         public ToleranceSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)

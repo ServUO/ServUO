@@ -53,13 +53,7 @@ namespace Server.Mobiles
         {
         }
 
-        public virtual TimeSpan YellDelay
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(15);
-            }
-        }
+        public virtual TimeSpan YellDelay => TimeSpan.FromSeconds(15);
         [CommandProperty(AccessLevel.GameMaster)]
         public HeraldEntry Announcement
         {

@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class StaffOfResonance : GlassStaff
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1113527; } } // Staff of Resonance
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113527;  // Staff of Resonance
 
         [Constructable]
         public StaffOfResonance()
@@ -32,28 +32,10 @@ namespace Server.Items
         {
         }
 
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 5;
-            }
-        }
+        public override int ArtifactRarity => 5;
 
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

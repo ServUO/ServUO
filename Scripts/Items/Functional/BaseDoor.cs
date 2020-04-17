@@ -177,13 +177,7 @@ namespace Server.Items
                 m_Link = value;
             }
         }
-        public virtual bool UseChainedFunctionality
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public virtual bool UseChainedFunctionality => false;
         // Called by RunUO
         public static void Initialize()
         {

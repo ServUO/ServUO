@@ -19,13 +19,7 @@ namespace Server.Engines.Harvest
             this.m_Definition = def;
         }
 
-        public HarvestDefinition Definition
-        {
-            get
-            {
-                return this.m_Definition;
-            }
-        }
+        public HarvestDefinition Definition => this.m_Definition;
         public int Current
         {
             get

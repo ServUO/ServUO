@@ -22,13 +22,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1112626;
-            }
-        }// Medusa Scales
+        public override int LabelNumber => 1112626;// Medusa Scales
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

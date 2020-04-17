@@ -8,12 +8,9 @@ namespace Server.Mobiles
 {
     public class SpellweavingAI : MageAI
     {
-        public override SkillName CastSkill { get { return SkillName.Spellweaving; } }
+        public override SkillName CastSkill => SkillName.Spellweaving;
 
-        public override bool UsesMagery
-        {
-            get { return m_Mobile.Skills[SkillName.Magery].Base >= 20.0 && !m_Mobile.Controlled; }
-        }
+        public override bool UsesMagery => m_Mobile.Skills[SkillName.Magery].Base >= 20.0 && !m_Mobile.Controlled;
 
         public SpellweavingAI(BaseCreature m)
             : base(m)

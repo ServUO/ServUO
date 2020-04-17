@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class AncientClayVase : Item, ICarvable
     {
-        public override int LabelNumber { get { return 1155625; } } // Ancient Clay Vase
+        public override int LabelNumber => 1155625;  // Ancient Clay Vase
         public bool DoomEvent { get; set; }
 
         [Constructable]

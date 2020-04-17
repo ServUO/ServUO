@@ -20,13 +20,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1049498;
-            }
-        }// dark moongate
+        public override int LabelNumber => 1049498;// dark moongate
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

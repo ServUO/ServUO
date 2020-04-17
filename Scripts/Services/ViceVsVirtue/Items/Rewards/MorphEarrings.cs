@@ -6,13 +6,7 @@ namespace Server.Items
     [TypeAlias("Server.Engines.VvV.MorphEarrings")]
     public class MorphEarrings : GoldEarrings
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1094746; // Morph Earrings
-            }
-        }
+        public override int LabelNumber => 1094746; // Morph Earrings
 
         [Constructable]
         public MorphEarrings()

@@ -19,13 +19,7 @@ namespace Server.Engines.Reports
             return new BarGraph();
         }
 
-        public override PersistableType TypeID
-        {
-            get
-            {
-                return ThisTypeID;
-            }
-        }
+        public override PersistableType TypeID => ThisTypeID;
         #endregion
 
         private int m_Ticks;

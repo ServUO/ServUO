@@ -27,13 +27,7 @@ namespace Server.Items
         {
         }
 
-        public Item Deed
-        {
-            get
-            {
-                return new WreathDeed(this.Hue);
-            }
-        }
+        public Item Deed => new WreathDeed(this.Hue);
         public bool CouldFit(IPoint3D p, Map map)
         {
             if (!map.CanFit(p.X, p.Y, p.Z, this.ItemData.Height))
@@ -198,13 +192,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1062837;
-            }
-        }// holiday wreath deed
+        public override int LabelNumber => 1062837;// holiday wreath deed
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

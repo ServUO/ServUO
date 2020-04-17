@@ -47,128 +47,26 @@ namespace Server.Regions
                 m_Table[id] = this;
         }
 
-        public static Hashtable Table
-        {
-            get
-            {
-                return m_Table;
-            }
-        }
+        public static Hashtable Table => m_Table;
         // When a creature's AI is deactivated (PlayerRangeSensitive optimization) does it return home?
-        public bool ReturnOnDeactivate
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public bool ReturnOnDeactivate => true;
         // Are creatures unlinked on taming (true) or should they also go out of the region (false)?
-        public bool UnlinkOnTaming
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public bool UnlinkOnTaming => false;
         // Are unlinked and untamed creatures removed after 20 hours?
-        public bool RemoveIfUntamed
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public int ID
-        {
-            get
-            {
-                return this.m_ID;
-            }
-        }
-        public BaseRegion Region
-        {
-            get
-            {
-                return this.m_Region;
-            }
-        }
-        public Point3D HomeLocation
-        {
-            get
-            {
-                return this.m_Home;
-            }
-        }
-        public int HomeRange
-        {
-            get
-            {
-                return this.m_Range;
-            }
-        }
-        public Direction Direction
-        {
-            get
-            {
-                return this.m_Direction;
-            }
-        }
-        public SpawnDefinition Definition
-        {
-            get
-            {
-                return this.m_Definition;
-            }
-        }
-        public List<ISpawnable> SpawnedObjects
-        {
-            get
-            {
-                return this.m_SpawnedObjects;
-            }
-        }
-        public int Max
-        {
-            get
-            {
-                return this.m_Max;
-            }
-        }
-        public TimeSpan MinSpawnTime
-        {
-            get
-            {
-                return this.m_MinSpawnTime;
-            }
-        }
-        public TimeSpan MaxSpawnTime
-        {
-            get
-            {
-                return this.m_MaxSpawnTime;
-            }
-        }
-        public bool Running
-        {
-            get
-            {
-                return this.m_Running;
-            }
-        }
-        public bool Complete
-        {
-            get
-            {
-                return this.m_SpawnedObjects.Count >= this.m_Max;
-            }
-        }
-        public bool Spawning
-        {
-            get
-            {
-                return this.m_Running && !this.Complete;
-            }
-        }
+        public bool RemoveIfUntamed => true;
+        public int ID => this.m_ID;
+        public BaseRegion Region => this.m_Region;
+        public Point3D HomeLocation => this.m_Home;
+        public int HomeRange => this.m_Range;
+        public Direction Direction => this.m_Direction;
+        public SpawnDefinition Definition => this.m_Definition;
+        public List<ISpawnable> SpawnedObjects => this.m_SpawnedObjects;
+        public int Max => this.m_Max;
+        public TimeSpan MinSpawnTime => this.m_MinSpawnTime;
+        public TimeSpan MaxSpawnTime => this.m_MaxSpawnTime;
+        public bool Running => this.m_Running;
+        public bool Complete => this.m_SpawnedObjects.Count >= this.m_Max;
+        public bool Spawning => this.m_Running && !this.Complete;
 
         public virtual void GetSpawnProperties(ISpawnable spawn, ObjectPropertyList list)
         { }

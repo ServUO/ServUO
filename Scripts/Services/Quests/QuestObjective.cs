@@ -17,20 +17,8 @@ namespace Server.Engines.Quests
         }
 
         public abstract object Message { get; }
-        public virtual int MaxProgress
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public virtual QuestItemInfo[] Info
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public virtual int MaxProgress => 1;
+        public virtual QuestItemInfo[] Info => null;
         public QuestSystem System
         {
             get
@@ -76,20 +64,8 @@ namespace Server.Engines.Quests
                 this.m_HasCompleted = value;
             }
         }
-        public virtual bool Completed
-        {
-            get
-            {
-                return this.m_CurProgress >= this.MaxProgress;
-            }
-        }
-        public bool IsSingleObjective
-        {
-            get
-            {
-                return (this.MaxProgress == 1);
-            }
-        }
+        public virtual bool Completed => this.m_CurProgress >= this.MaxProgress;
+        public bool IsSingleObjective => (this.MaxProgress == 1);
         public virtual void BaseDeserialize(GenericReader reader)
         {
             int version = reader.ReadEncodedInt();

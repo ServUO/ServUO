@@ -14,13 +14,7 @@ namespace Server.Mobiles
         {
         }
 
-        public override NpcGuild NpcGuild
-        {
-            get
-            {
-                return NpcGuild.FishermensGuild;
-            }
-        }
+        public override NpcGuild NpcGuild => NpcGuild.FishermensGuild;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

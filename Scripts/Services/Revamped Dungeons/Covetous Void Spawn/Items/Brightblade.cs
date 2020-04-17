@@ -5,8 +5,8 @@ namespace Server.Items
     [Alterable(typeof(DefBlacksmithy), typeof(GargishBrightblade))]
     public class Brightblade : Katana
     {
-        public override int LabelNumber { get { return 1152732; } } // Brightblade
-        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber => 1152732;  // Brightblade
+        public override bool IsArtifact => true;
 
         [Constructable]
         public Brightblade()
@@ -27,8 +27,8 @@ namespace Server.Items
         {
         }
 
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
         public override void Serialize(GenericWriter writer)
         {
@@ -45,8 +45,8 @@ namespace Server.Items
 
     public class GargishBrightblade : GargishKatana
     {
-        public override int LabelNumber { get { return 1152732; } } // Brightblade
-        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber => 1152732;  // Brightblade
+        public override bool IsArtifact => true;
 
         [Constructable]
         public GargishBrightblade()
@@ -66,8 +66,8 @@ namespace Server.Items
         {
         }
 
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
         public override void Serialize(GenericWriter writer)
         {

@@ -13,7 +13,7 @@ namespace Server.Items
         public DateTime HonestyPickup { get; set; }
         public bool HonestyTimerTicking { get; set; }
 
-        public override TimeSpan TickDuration { get { return TimeSpan.FromSeconds(5); } }
+        public override TimeSpan TickDuration => TimeSpan.FromSeconds(5);
 
         public HonestyItemSocket()
         {

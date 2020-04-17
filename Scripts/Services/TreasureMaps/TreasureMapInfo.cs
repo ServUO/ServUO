@@ -48,7 +48,7 @@ namespace Server.Items
 
     public static class TreasureMapInfo
     {
-        public static bool NewSystem { get { return true; } }
+        public static bool NewSystem => true;
 
         /// <summary>
         /// This is called from BaseCreature. Instead of editing EVERY creature that drops a map, we'll simply convert it here.

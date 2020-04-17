@@ -11,13 +11,7 @@ namespace Server.Items
         private Mobile m_Crafter;
         private CraftResource m_Resource;
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return this.m_Exceptional ? 1053181 : 1053012;
-            }
-        }// dragon barding deed
+        public override int LabelNumber => this.m_Exceptional ? 1053181 : 1053012;// dragon barding deed
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Crafter

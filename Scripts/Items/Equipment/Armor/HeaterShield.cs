@@ -17,62 +17,14 @@ namespace Server.Items
         {
         }
 
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 50;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 65;
-            }
-        }
-        public override int StrReq
-        {
-            get
-            {
-                return 90;
-            }
-        }
+        public override int BasePhysicalResistance => 0;
+        public override int BaseFireResistance => 1;
+        public override int BaseColdResistance => 0;
+        public override int BasePoisonResistance => 0;
+        public override int BaseEnergyResistance => 0;
+        public override int InitMinHits => 50;
+        public override int InitMaxHits => 65;
+        public override int StrReq => 90;
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);

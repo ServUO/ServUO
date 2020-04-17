@@ -45,7 +45,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime ChartedOn { get { return _ChartedOn; } set { _ChartedOn = value; } }
 
-        public override int LabelNumber { get { return _Constellation == -1 ? 1158743 : 1158493; } } // An Indecipherable Star Chart : Star Chart
+        public override int LabelNumber => _Constellation == -1 ? 1158743 : 1158493;  // An Indecipherable Star Chart : Star Chart
 
         [Constructable]
         public StarChart()

@@ -12,55 +12,13 @@ namespace Server.Spells.Bushido
 
         public abstract double RequiredSkill { get; }
         public abstract int RequiredMana { get; }
-        public override SkillName CastSkill
-        {
-            get
-            {
-                return SkillName.Bushido;
-            }
-        }
-        public override SkillName DamageSkill
-        {
-            get
-            {
-                return SkillName.Bushido;
-            }
-        }
-        public override bool ClearHandsOnCast
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool BlocksMovement
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool ShowHandMovement
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override double CastDelayFastScalar
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override int CastRecoveryBase
-        {
-            get
-            {
-                return 7;
-            }
-        }
+        public override SkillName CastSkill => SkillName.Bushido;
+        public override SkillName DamageSkill => SkillName.Bushido;
+        public override bool ClearHandsOnCast => false;
+        public override bool BlocksMovement => false;
+        public override bool ShowHandMovement => false;
+        public override double CastDelayFastScalar => 0;
+        public override int CastRecoveryBase => 7;
 
         public static void OnEffectEnd(Mobile caster, Type type)
         {

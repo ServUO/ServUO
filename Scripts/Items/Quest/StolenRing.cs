@@ -11,13 +11,7 @@ namespace Server.Items
             this.Weight = 1;
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073124;
-            }
-        }// A ring engraved: "Beloved Ciala"
+        public override int LabelNumber => 1073124;// A ring engraved: "Beloved Ciala"
 
         public StolenRing(Serial serial)
             : base(serial)

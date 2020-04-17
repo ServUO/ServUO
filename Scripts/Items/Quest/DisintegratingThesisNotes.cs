@@ -15,7 +15,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber { get { return 1074440; } } // Disintegrating Thesis Notes
+        public override int LabelNumber => 1074440;  // Disintegrating Thesis Notes
 
         public override DeathMoveResult OnInventoryDeath(Mobile parent)
         {

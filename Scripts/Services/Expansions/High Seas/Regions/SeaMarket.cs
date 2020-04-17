@@ -24,7 +24,7 @@ namespace Server.Regions
         private static bool m_RestrictBoats;
 
         private readonly Dictionary<BaseBoat, DateTime> m_BoatTable = new Dictionary<BaseBoat, DateTime>();
-        public Dictionary<BaseBoat, DateTime> BoatTable { get { return m_BoatTable; } }
+        public Dictionary<BaseBoat, DateTime> BoatTable => m_BoatTable;
 
         public static bool RestrictBoats
         {
@@ -52,7 +52,7 @@ namespace Server.Regions
             }
         }
 
-        public static Rectangle2D[] Bounds { get { return m_Bounds; } }
+        public static Rectangle2D[] Bounds => m_Bounds;
         private static readonly Rectangle2D[] m_Bounds = new Rectangle2D[]
         {
             new Rectangle2D(4529, 2296, 45, 112),

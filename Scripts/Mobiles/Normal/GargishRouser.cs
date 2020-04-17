@@ -104,15 +104,15 @@ namespace Server.Mobiles
             AddItem(item);
         }
 
-        public override Poison PoisonImmune { get { return Poison.Lethal; } }
-        public override bool AlwaysMurderer { get { return true; } }
-        public override bool ReacquireOnMovement { get { return true; } }
-        public override bool AcquireOnApproach { get { return true; } }
-        public override int AcquireOnApproachRange { get { return 8; } }
+        public override Poison PoisonImmune => Poison.Lethal;
+        public override bool AlwaysMurderer => true;
+        public override bool ReacquireOnMovement => true;
+        public override bool AcquireOnApproach => true;
+        public override int AcquireOnApproachRange => 8;
 
-        public override bool CanDiscord { get { return true; } }
-        public override bool CanPeace { get { return true; } }
-        public override bool CanProvoke { get { return true; } }
+        public override bool CanDiscord => true;
+        public override bool CanPeace => true;
+        public override bool CanProvoke => true;
 
         public override WeaponAbility GetWeaponAbility()
         {

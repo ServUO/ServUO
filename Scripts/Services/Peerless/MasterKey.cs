@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class MasterKey : PeerlessKey
     {
-        public override int LabelNumber { get { return 1074348; } } // master key
+        public override int LabelNumber => 1074348;  // master key
 
         [CommandProperty(AccessLevel.GameMaster)]
         public PeerlessAltar Altar { get; set; }

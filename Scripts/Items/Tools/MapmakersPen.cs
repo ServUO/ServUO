@@ -24,20 +24,8 @@ namespace Server.Items
         {
         }
 
-        public override CraftSystem CraftSystem
-        {
-            get
-            {
-                return DefCartography.CraftSystem;
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1044167;
-            }
-        }// mapmaker's pen
+        public override CraftSystem CraftSystem => DefCartography.CraftSystem;
+        public override int LabelNumber => 1044167;// mapmaker's pen
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

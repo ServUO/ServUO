@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class PileOfGlacialSnow : Item
     {
-        public override int LabelNumber { get { return 1070874; } }// a Pile of Glacial Snow
+        public override int LabelNumber => 1070874; // a Pile of Glacial Snow
 
         [Constructable]
         public PileOfGlacialSnow()

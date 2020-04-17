@@ -30,13 +30,7 @@ namespace Server.Spells.First
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.First;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.First;
         public override void OnCast()
         {
             if (this.CheckSequence())

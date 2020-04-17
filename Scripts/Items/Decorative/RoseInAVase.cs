@@ -15,13 +15,7 @@
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1023760;
-            }
-        }// A Rose in a Vase	1023760
+        public override int LabelNumber => 1023760;// A Rose in a Vase	1023760
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

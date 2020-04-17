@@ -7,9 +7,9 @@ namespace Server.Spells.Mysticism
 {
     public class HailStormSpell : MysticSpell
     {
-        public override SpellCircle Circle { get { return SpellCircle.Seventh; } }
-        public override bool DelayedDamage { get { return true; } }
-        public override DamageType SpellDamageType { get { return DamageType.SpellAOE; } }
+        public override SpellCircle Circle => SpellCircle.Seventh;
+        public override bool DelayedDamage => true;
+        public override DamageType SpellDamageType => DamageType.SpellAOE;
 
         private static readonly SpellInfo m_Info = new SpellInfo(
                 "Hail Storm", "Kal Des Ylem",

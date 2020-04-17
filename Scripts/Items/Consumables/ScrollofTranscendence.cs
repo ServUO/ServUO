@@ -7,31 +7,13 @@ namespace Server.Items
     [TypeAlias("Server.Items.ScrollofTranscendence")]
     public class ScrollOfTranscendence : SpecialScroll, IAccountRestricted
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1094934;
-            }
-        }// Scroll of Transcendence
+        public override int LabelNumber => 1094934;// Scroll of Transcendence
 
-        public override int Message
-        {
-            get
-            {
-                return 1094933;
-            }
-        }/*Using a Scroll of Transcendence for a given skill will permanently increase your current 
+        public override int Message => 1094933;/*Using a Scroll of Transcendence for a given skill will permanently increase your current 
         *level in that skill by the amount of points displayed on the scroll.
         *As you may not gain skills beyond your maximum skill cap, any excess points will be lost.*/
 
-        public override string DefaultTitle
-        {
-            get
-            {
-                return String.Format("<basefont color=#FFFFFF>Scroll of Transcendence ({0} Skill):</basefont>", Value);
-            }
-        }
+        public override string DefaultTitle => String.Format("<basefont color=#FFFFFF>Scroll of Transcendence ({0} Skill):</basefont>", Value);
 
         public static ScrollOfTranscendence CreateRandom(int min, int max)
         {

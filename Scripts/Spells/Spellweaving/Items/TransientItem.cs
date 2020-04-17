@@ -46,20 +46,8 @@ namespace Server.Items
                 this.m_CreationTime = value;
             }
         }
-        public override bool Nontransferable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public virtual TextDefinition InvalidTransferMessage
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override bool Nontransferable => true;
+        public virtual TextDefinition InvalidTransferMessage => null;
         public override void HandleInvalidTransfer(Mobile from)
         {
             if (this.InvalidTransferMessage != null)

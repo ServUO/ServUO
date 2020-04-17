@@ -18,13 +18,7 @@ namespace Server.Commands.Generic
             m_Instance = this;
         }
 
-        public static AreaCommandImplementor Instance
-        {
-            get
-            {
-                return m_Instance;
-            }
-        }
+        public static AreaCommandImplementor Instance => m_Instance;
         public override void Process(Mobile from, BaseCommand command, string[] args)
         {
             BoundingBoxPicker.Begin(from, new BoundingBoxCallback(OnTarget), new object[] { command, args });

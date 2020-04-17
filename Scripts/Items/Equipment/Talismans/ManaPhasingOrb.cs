@@ -4,10 +4,10 @@ namespace Server.Items
 {
     public class ManaPhasingOrb : BaseTalisman, Server.Engines.Craft.IRepairable
     {
-        public override int LabelNumber { get { return 1116230; } }
-        public Server.Engines.Craft.CraftSystem RepairSystem { get { return Server.Engines.Craft.DefTinkering.CraftSystem; } }
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
+        public override int LabelNumber => 1116230;
+        public Server.Engines.Craft.CraftSystem RepairSystem => Server.Engines.Craft.DefTinkering.CraftSystem;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
         [Constructable]
         public ManaPhasingOrb() : base(4246)

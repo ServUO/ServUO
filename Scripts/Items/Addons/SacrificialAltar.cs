@@ -9,16 +9,16 @@ namespace Server.Items
     [FlipableAddon(Direction.South, Direction.East)]
     public class SacrificialAltarAddon : BaseAddonContainer
     {
-        public override int LabelNumber { get { return 1074818; } } // Sacrificial Altar
+        public override int LabelNumber => 1074818;  // Sacrificial Altar
 
-        public override bool Security { get { return false; } }
-        public override int DefaultGumpID { get { return 0x9; } }
-        public override int DefaultDropSound { get { return 740; } }
+        public override bool Security => false;
+        public override int DefaultGumpID => 0x9;
+        public override int DefaultDropSound => 740;
 
         private Timer m_Timer;
         private List<CleanupArray> m_Cleanup;
 
-        public override BaseAddonContainerDeed Deed { get { return new SacrificialAltarDeed(); } }
+        public override BaseAddonContainerDeed Deed => new SacrificialAltarDeed();
 
         [Constructable]
         public SacrificialAltarAddon()
@@ -244,7 +244,7 @@ namespace Server.Items
 
     public class SacrificialAltarDeed : BaseAddonContainerDeed
     {
-        public override int LabelNumber { get { return 1074818; } } // Sacrificial Altar
+        public override int LabelNumber => 1074818;  // Sacrificial Altar
 
         [Constructable]
         public SacrificialAltarDeed()
@@ -258,7 +258,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonContainer Addon { get { return new SacrificialAltarAddon(); } }
+        public override BaseAddonContainer Addon => new SacrificialAltarAddon();
 
         public override void Serialize(GenericWriter writer)
         {

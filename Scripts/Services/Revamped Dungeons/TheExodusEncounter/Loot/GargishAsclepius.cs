@@ -2,23 +2,23 @@ namespace Server.Items
 {
     public class GargishAsclepius : GargishGnarledStaff
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
 
         [Constructable]
         public GargishAsclepius()
         {
         }
 
-        public override bool CanFortify { get { return false; } }
+        public override bool CanFortify => false;
 
         public GargishAsclepius(Serial serial) : base(serial)
         {
         }
 
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
-        public override int LabelNumber { get { return 1153526; } } // GargishAsclepius [Replica]
+        public override int LabelNumber => 1153526;  // GargishAsclepius [Replica]
 
         public override void AddNameProperties(ObjectPropertyList list)
         {

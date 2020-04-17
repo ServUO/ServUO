@@ -8,8 +8,8 @@ namespace Server.Engines.RisingTide
 {
     public class RisingTideRewardGump : BaseRewardGump
     {
-        public override int PointsName { get { return 1158916; } } // Your Doubloons
-        public override int RewardLabel { get { return 1158917; } } // What ye buyin' Matey?
+        public override int PointsName => 1158916;  // Your Doubloons
+        public override int RewardLabel => 1158917;  // What ye buyin' Matey?
 
         public RisingTideRewardGump(Mobile owner, PlayerMobile user)
             : base(owner, user, Rewards, 1158918)

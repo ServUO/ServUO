@@ -6,7 +6,7 @@ namespace Server.Mobiles
     [CorpseName("a cu sidhe corpse")]
     public class CuSidhe : BaseMount
     {
-        public override double HealChance { get { return 1.0; } }
+        public override double HealChance => 1.0;
 
         [Constructable]
         public CuSidhe()
@@ -68,46 +68,13 @@ namespace Server.Mobiles
         {
         }
 
-        public override int TreasureMapLevel
-        {
-            get { return 5; }
-        }
+        public override int TreasureMapLevel => 5;
 
-        public override FoodType FavoriteFood
-        {
-            get
-            {
-                return FoodType.FruitsAndVegies;
-            }
-        }
-        public override bool CanAngerOnTame
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool StatLossAfterTame
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int Hides
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 3;
-            }
-        }
+        public override FoodType FavoriteFood => FoodType.FruitsAndVegies;
+        public override bool CanAngerOnTame => true;
+        public override bool StatLossAfterTame => true;
+        public override int Hides => 10;
+        public override int Meat => 3;
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich, 5);

@@ -11,7 +11,7 @@ namespace Server.Items
 
         public DateTime NextRecharge { get; set; }
 
-        public override int LabelNumber { get { return 1071520; } } // Smuggler's Tool Box
+        public override int LabelNumber => 1071520;  // Smuggler's Tool Box
 
         [Constructable]
         public SmugglersToolBox()

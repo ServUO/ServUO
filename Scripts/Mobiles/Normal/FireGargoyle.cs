@@ -47,27 +47,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override bool CanFly
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override int TreasureMapLevel => 1;
+        public override int Meat => 1;
+        public override bool CanFly => true;
 
         public void AuraEffect(Mobile m)
         {

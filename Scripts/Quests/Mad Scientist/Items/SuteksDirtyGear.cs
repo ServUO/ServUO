@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class SuteksDirtyGear : Item
     {
-        public override int LabelNumber { get { return 1115722; } } // Sutek's Dirty Gear
+        public override int LabelNumber => 1115722;  // Sutek's Dirty Gear
 
         [Constructable]
         public SuteksDirtyGear()

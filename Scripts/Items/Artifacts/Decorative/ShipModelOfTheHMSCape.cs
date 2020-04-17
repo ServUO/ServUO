@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class ShipModelOfTheHMSCape : Item
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public ShipModelOfTheHMSCape()
             : base(0x14F3)
@@ -15,13 +15,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1063476;
-            }
-        }
+        public override int LabelNumber => 1063476;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

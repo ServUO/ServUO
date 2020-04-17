@@ -11,20 +11,8 @@ namespace Server.Engines.BulkOrders
         private readonly int m_Points;
         private readonly Type[] m_Types;
 
-        public int Points
-        {
-            get
-            {
-                return this.m_Points;
-            }
-        }
-        public Type[] Types
-        {
-            get
-            {
-                return this.m_Types;
-            }
-        }
+        public int Points => this.m_Points;
+        public Type[] Types => this.m_Types;
 
         public RewardType(int points, params Type[] types)
         {
@@ -50,27 +38,9 @@ namespace Server.Engines.BulkOrders
         private readonly ConstructCallback m_Constructor;
         private readonly int m_Type;
 
-        public int Weight
-        {
-            get
-            {
-                return this.m_Weight;
-            }
-        }
-        public ConstructCallback Constructor
-        {
-            get
-            {
-                return this.m_Constructor;
-            }
-        }
-        public int Type
-        {
-            get
-            {
-                return this.m_Type;
-            }
-        }
+        public int Weight => this.m_Weight;
+        public ConstructCallback Constructor => this.m_Constructor;
+        public int Type => this.m_Type;
 
         public RewardItem(int weight, ConstructCallback constructor)
             : this(weight, constructor, 0)
@@ -115,20 +85,8 @@ namespace Server.Engines.BulkOrders
         private readonly int m_Points;
         private readonly RewardItem[] m_Items;
 
-        public int Points
-        {
-            get
-            {
-                return this.m_Points;
-            }
-        }
-        public RewardItem[] Items
-        {
-            get
-            {
-                return this.m_Items;
-            }
-        }
+        public int Points => this.m_Points;
+        public RewardItem[] Items => this.m_Items;
 
         public RewardGroup(int points, params RewardItem[] items)
         {

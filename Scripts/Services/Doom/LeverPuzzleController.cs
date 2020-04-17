@@ -168,13 +168,7 @@ namespace Server.Engines.Doom
                 this.m_Enabled = value;
             }
         }
-        public Mobile Successful
-        {
-            get
-            {
-                return this.m_Successful;
-            }
-        }
+        public Mobile Successful => this.m_Successful;
         public bool CircleComplete
         {
             get	/* OSI: all 5 must be occupied */

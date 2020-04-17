@@ -73,9 +73,9 @@ namespace Server.Mobiles
             _NextSpecial = DateTime.UtcNow;
         }
 
-        public override Poison HitPoison { get { return Poison.Lethal; } }
-        public override bool AlwaysMurderer { get { return true; } }
-        public override FoodType FavoriteFood { get { return FoodType.BlackrockStew; } }
+        public override Poison HitPoison => Poison.Lethal;
+        public override bool AlwaysMurderer => true;
+        public override FoodType FavoriteFood => FoodType.BlackrockStew;
 
         public override bool CheckFeed(Mobile from, Item dropped)
         {

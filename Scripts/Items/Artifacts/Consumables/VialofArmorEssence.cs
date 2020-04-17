@@ -9,9 +9,9 @@ namespace Server.Items
     {
         public static Dictionary<BaseCreature, DateTime> m_Table = new Dictionary<BaseCreature, DateTime>();
 
-        public virtual int Bonus { get { return 10; } }
-        public virtual TimeSpan Duration { get { return TimeSpan.FromMinutes(10); } }
-        public virtual TimeSpan CoolDown { get { return TimeSpan.FromMinutes(120); } }
+        public virtual int Bonus => 10;
+        public virtual TimeSpan Duration => TimeSpan.FromMinutes(10);
+        public virtual TimeSpan CoolDown => TimeSpan.FromMinutes(120);
 
         [Constructable]
         public VialofArmorEssence()
@@ -24,13 +24,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113018;
-            }
-        }
+        public override int LabelNumber => 1113018;
 
         public override bool DropToMobile(Mobile from, Mobile target, Point3D p)
         {

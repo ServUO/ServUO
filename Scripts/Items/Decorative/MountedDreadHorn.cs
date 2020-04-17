@@ -15,13 +15,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074464;
-            }
-        }// mounted Dread Horn
+        public override int LabelNumber => 1074464;// mounted Dread Horn
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

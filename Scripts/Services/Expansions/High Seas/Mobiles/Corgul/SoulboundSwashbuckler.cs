@@ -4,8 +4,8 @@ namespace Server.Mobiles
 {
     public class SoulboundSwashbuckler : BaseCreature
     {
-        public override bool ClickTitle { get { return false; } }
-        public override bool AlwaysMurderer { get { return true; } }
+        public override bool ClickTitle => false;
+        public override bool AlwaysMurderer => true;
 
         [Constructable]
         public SoulboundSwashbuckler()

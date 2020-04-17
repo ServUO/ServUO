@@ -114,9 +114,9 @@ namespace Server.Items
     [Flipable(0xA272, 0xA273)]
     public class MinersSatchel : BaseResourceSatchel
     {
-        public override int LabelNumber { get { return 1158773; } } // Miner's Satchel
+        public override int LabelNumber => 1158773;  // Miner's Satchel
 
-        public override Type[] HoldTypes { get { return new Type[] { typeof(BaseOre), typeof(BaseIngot), typeof(Granite), typeof(Saltpeter) }; } }
+        public override Type[] HoldTypes => new Type[] { typeof(BaseOre), typeof(BaseIngot), typeof(Granite), typeof(Saltpeter) };
 
         [Constructable]
         public MinersSatchel()
@@ -145,9 +145,9 @@ namespace Server.Items
     [Flipable(0xA274, 0xA275)]
     public class LumbjacksSatchel : BaseResourceSatchel
     {
-        public override int LabelNumber { get { return 1158772; } } // Lumberjack's Satchel
+        public override int LabelNumber => 1158772;  // Lumberjack's Satchel
 
-        public override Type[] HoldTypes { get { return new Type[] { typeof(BaseLog), typeof(Board) }; } }
+        public override Type[] HoldTypes => new Type[] { typeof(BaseLog), typeof(Board) };
 
         [Constructable]
         public LumbjacksSatchel()

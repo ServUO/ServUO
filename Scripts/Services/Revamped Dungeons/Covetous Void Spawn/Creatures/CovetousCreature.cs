@@ -11,47 +11,47 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public int Level { get; set; }
 
-        public virtual int Stage { get { return Math.Max(1, Level / 5); } }
-        public virtual int MaxStage { get { return 15; } }
+        public virtual int Stage => Math.Max(1, Level / 5);
+        public virtual int MaxStage => 15;
 
-        public virtual int StatRatio { get { return Utility.RandomMinMax(35, 60); } }
+        public virtual int StatRatio => Utility.RandomMinMax(35, 60);
 
-        public virtual double SkillStart { get { return Utility.RandomMinMax(35, 50); } }
-        public virtual double SkillMax { get { return 160.0; } }
+        public virtual double SkillStart => Utility.RandomMinMax(35, 50);
+        public virtual double SkillMax => 160.0;
 
-        public virtual int StrStart { get { return Utility.RandomMinMax(91, 100); } }
-        public virtual int DexStart { get { return Utility.RandomMinMax(91, 100); } }
-        public virtual int IntStart { get { return IsMagical ? Utility.RandomMinMax(91, 100) : 1; } }
+        public virtual int StrStart => Utility.RandomMinMax(91, 100);
+        public virtual int DexStart => Utility.RandomMinMax(91, 100);
+        public virtual int IntStart => IsMagical ? Utility.RandomMinMax(91, 100) : 1;
 
-        public virtual int StrMax { get { return 410; } }
-        public virtual int DexMax { get { return 422; } }
-        public virtual int IntMax { get { return 250; } }
+        public virtual int StrMax => 410;
+        public virtual int DexMax => 422;
+        public virtual int IntMax => 250;
 
-        public virtual int MaxHits { get { return 2400; } }
-        public virtual int MaxStam { get { return 3000; } }
-        public virtual int MaxMana { get { return IsMagical ? 8500 : 1500; } }
+        public virtual int MaxHits => 2400;
+        public virtual int MaxStam => 3000;
+        public virtual int MaxMana => IsMagical ? 8500 : 1500;
 
-        public virtual int MinDamMax { get { return 5; } }
-        public virtual int MaxDamMax { get { return 12; } }
+        public virtual int MinDamMax => 5;
+        public virtual int MaxDamMax => 12;
 
-        public virtual int MinDamStart { get { return 5; } }
-        public virtual int MaxDamStart { get { return 15; } }
+        public virtual int MinDamStart => 5;
+        public virtual int MaxDamStart => 15;
 
-        public virtual int HitsStart { get { return StrStart + (int)(StrStart * (StatRatio / 100.0)); } }
-        public virtual int StamStart { get { return DexStart + (int)(DexStart * (StatRatio / 100.0)); } }
-        public virtual int ManaStart { get { return IntStart + (int)(IntStart * (StatRatio / 100.0)); } }
+        public virtual int HitsStart => StrStart + (int)(StrStart * (StatRatio / 100.0));
+        public virtual int StamStart => DexStart + (int)(DexStart * (StatRatio / 100.0));
+        public virtual int ManaStart => IntStart + (int)(IntStart * (StatRatio / 100.0));
 
-        public virtual bool RaiseDamage { get { return true; } }
-        public virtual double RaiseDamageFactor { get { return 0.33; } }
+        public virtual bool RaiseDamage => true;
+        public virtual double RaiseDamageFactor => 0.33;
 
-        public virtual int ResistStart { get { return 25; } }
-        public virtual int ResistMax { get { return 95; } }
+        public virtual int ResistStart => 25;
+        public virtual int ResistMax => 95;
 
-        public virtual bool IsMagical { get { return AIObject is MageAI; } }
+        public virtual bool IsMagical => AIObject is MageAI;
 
-        public override bool GivesFameAndKarmaAward { get { return false; } }
-        public override bool PlayerRangeSensitive { get { return false; } }
-        public override bool CanDestroyObstacles { get { return true; } }
+        public override bool GivesFameAndKarmaAward => false;
+        public override bool PlayerRangeSensitive => false;
+        public override bool CanDestroyObstacles => true;
 
         private Tuple<WayPoint, DateTime> TimeOnWayPoint;
 

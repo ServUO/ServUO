@@ -21,13 +21,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1154340;
-            }
-        }// Refinement Amalgamator
+        public override int LabelNumber => 1154340;// Refinement Amalgamator
 
         public override void OnDoubleClick(Mobile from)
         {

@@ -6,22 +6,10 @@ namespace Server.Engines.Quests
 {
     public class ItsHammerTimeQuest : BaseQuest
     {
-        public override bool DoneOnce
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool DoneOnce => true;
 
         /* It's Hammer Time! */
-        public override object Title
-        {
-            get
-            {
-                return 1077732;
-            }
-        }
+        public override object Title => 1077732;
 
         /* Create new daggers and maces using the forge and anvl in George's shop. Try making daggers up to 45 skill, then 
         switch to making maces until 50 skill. Hail, and welcome to my humble shop. I am George Hephaestus, New Haven's 
@@ -33,43 +21,19 @@ namespace Server.Engines.Quests
         at the market. Since I'll be around to give you advice, you'll learn faster here than anywhere else. Start off making 
         daggers until you reach 45 blacksmithing skill, then switch to maces until you've achived 50. Once you've done that, 
         come talk to me and I'll give you something for your hard work */
-        public override object Description
-        {
-            get
-            {
-                return 1077735;
-            }
-        }
+        public override object Description => 1077735;
 
         /* You're not interested in learning to be a smith, eh? I thought for sure that's why you were here. Oh well if you 
         change your mind, you can always come back and talk to me. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1077736;
-            }
-        }
+        public override object Refuse => 1077736;
 
         /* You're doing well, but you're not quite there yet. Remember that the quickest way to learn is to make daggers up 
         to 45 skill, and then switch to maces. Also, don't forget that using my forge and anvil will help you learn faster. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1077737;
-            }
-        }
+        public override object Uncomplete => 1077737;
 
         /*I've been watching you get better and better as you've been smithinh, and I have to say, you're a natural! It's a long road to being a Grandmaster Blacksmith, but I have no doubt that if you put your mind to it you'll get there someday. Let me give you one final piece of advice. If you're smithing just to practics and improve your skill, make items that are oderately difficult (60%-80% success chance), and try to stick to ones that use less ingots.
         Now that you're an Apprentice Blacksmith, I have something for you. While you were busy practicing. I was crafting this hammer for you. It's finely balanced, and has a bit of magic imbued within that will help you craft better items. However, that magic needs to restore itself over time, so you can only use it so many times per day. I hope you find it useful*/
-        public override object Complete
-        {
-            get
-            {
-                return 1077739;
-            }
-        }
+        public override object Complete => 1077739;
 
         public ItsHammerTimeQuest()
             : base()
@@ -119,16 +83,10 @@ namespace Server.Engines.Quests
 
     public class GeorgeHephaestus : MondainQuester
     {
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(ItsHammerTimeQuest)
                 };
-            }
-        }
 
         public override void InitSBInfo()
         {

@@ -14,7 +14,7 @@ namespace Server.Items
     [Flipable(0x1f14, 0x1f15, 0x1f16, 0x1f17)]
     public class RecallRune : Item
     {
-        public override int LabelNumber { get { return Type == RecallRuneType.Normal ? 1060577 : Type == RecallRuneType.Shop ? 1151508 : 1149570; } } // Recall Rune - Shop Recall Rune - Ship Recall Rune
+        public override int LabelNumber => Type == RecallRuneType.Normal ? 1060577 : Type == RecallRuneType.Shop ? 1151508 : 1149570;  // Recall Rune - Shop Recall Rune - Ship Recall Rune
 
         private const string RuneFormat = "a recall rune for {0}";
         private string m_Description;
@@ -408,7 +408,7 @@ namespace Server.Items
 
         private class RenamePrompt : Prompt
         {
-            public override int MessageCliloc { get { return 501804; } }
+            public override int MessageCliloc => 501804;
             private readonly RecallRune m_Rune;
 
             public RenamePrompt(RecallRune rune)

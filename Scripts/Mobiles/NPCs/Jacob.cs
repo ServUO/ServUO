@@ -6,22 +6,10 @@ namespace Server.Engines.Quests
 {
     public class TheDeluciansLostMineQuest : BaseQuest
     {
-        public override bool DoneOnce
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool DoneOnce => true;
 
         /* The Delucian’s Lost Mine */
-        public override object Title
-        {
-            get
-            {
-                return 1077750;
-            }
-        }
+        public override object Title => 1077750;
 
         /* Find Jacob's Lost Mine and mine iron ore there, using a pickaxe or shovel. Bring it back to Jacob's forge and 
         smelt the ore into ingots, until you have raised your Mining skill to 50. You may find a packhorse useful for 
@@ -36,47 +24,23 @@ namespace Server.Engines.Quests
         show ya how to smelt it. Ya look a bit wimpy, so you might wanna go buy yourself a packhorse in town from the animal 
         trainer to help you haul around all that ore.<br><br>When you're an Apprentice Miner, talk to me and I'll give ya a 
         little somethin' I've got layin' around here... somewhere. */
-        public override object Description
-        {
-            get
-            {
-                return 1077753;
-            }
-        }
+        public override object Description => 1077753;
 
         /* Couldn’t find my iron mine, could ya? Well, neither can I!<br><br>*Jacob laughs*<br><br>Oh, ya don’t wanna find it? 
         Well, allrighty then, ya might as well head on back down to town then and stop cluttering up my camp. Come back and 
         talk to me if you’re interested in learnin’ ‘bout minin’. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1077754;
-            }
-        }
+        public override object Refuse => 1077754;
 
         /* Where ya been off a gallivantin’ all day, pilgrim? You ain’t seen no hard work yet! Get yer arse back out there to 
         my mine and dig up some more iron. Don’t forget to take a pickaxe or shovel, and if you’re so inclined, a packhorse too. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1077755;
-            }
-        }
+        public override object Uncomplete => 1077755;
 
         /* Dang gun it! If that don't beat all! Ya went and did it, didn’t ya? What we got ourselves here is a mighty fine brand 
         spankin’ new Apprentice Miner!<br><br>I can see ya put some meat on them bones too while you were at it!<br><br>Here’s 
         that little somethin’ I told ya I had for ya. It’s a pickaxe with some high falutin’ magic inside that’ll help you find 
         the good stuff when you’re off minin’. It wears out fast, though, so you can only use it a few times a day.<br><br>Welp, 
         I’ve got some smeltin’ to do, so off with ya. Good luck, pilgrim! */
-        public override object Complete
-        {
-            get
-            {
-                return 1077757;
-            }
-        }
+        public override object Complete => 1077757;
 
         public TheDeluciansLostMineQuest()
             : base()
@@ -126,16 +90,10 @@ namespace Server.Engines.Quests
 
     public class Jacob : MondainQuester
     {
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(TheDeluciansLostMineQuest)
                 };
-            }
-        }
 
         [Constructable]
         public Jacob()

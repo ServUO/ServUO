@@ -23,13 +23,7 @@ namespace Server.Items
         {
         }
 
-        public override CraftSystem CraftSystem
-        {
-            get
-            {
-                return DefAlchemy.CraftSystem;
-            }
-        }
+        public override CraftSystem CraftSystem => DefAlchemy.CraftSystem;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

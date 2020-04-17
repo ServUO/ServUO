@@ -6,8 +6,8 @@ namespace Server.Mobiles
 {
     public class GBBigglesby : BaseVendor
     {
-        public override bool IsActiveVendor { get { return false; } }
-        protected override List<SBInfo> SBInfos { get { return new List<SBInfo>(); } }
+        public override bool IsActiveVendor => false;
+        protected override List<SBInfo> SBInfos => new List<SBInfo>();
 
         public override void InitSBInfo()
         {

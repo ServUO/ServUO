@@ -480,7 +480,7 @@ namespace Server.Items
 
     public class BowlOfRotwormStew : Food
     {
-        public override int LabelNumber { get { return 1031706; } } // bowl of rotworm stew
+        public override int LabelNumber => 1031706;  // bowl of rotworm stew
 
         [Constructable]
         public BowlOfRotwormStew()
@@ -593,7 +593,7 @@ namespace Server.Items
 
     public class BowlOfBlackrockStew : Food
     {
-        public override int LabelNumber { get { return 1115752; } } // blackrock stew
+        public override int LabelNumber => 1115752;  // blackrock stew
 
         [Constructable]
         public BowlOfBlackrockStew()

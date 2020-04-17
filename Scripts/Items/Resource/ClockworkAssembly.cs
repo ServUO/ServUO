@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class ClockworkAssembly : Item, ICommodity
     {
-        public override int LabelNumber { get { return 1073426; } } // Clockwork Assembly
+        public override int LabelNumber => 1073426;  // Clockwork Assembly
 
         [Constructable]
         public ClockworkAssembly()
@@ -20,8 +20,8 @@ namespace Server.Items
         {
         }
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
         public override void OnDoubleClick(Mobile from)
         {

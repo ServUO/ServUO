@@ -6,22 +6,10 @@ namespace Server.Engines.Quests
 {
     public class TheAllureOfDarkMagicQuest : BaseQuest
     {
-        public override bool DoneOnce
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool DoneOnce => true;
 
         /* The Allure of Dark Magic */
-        public override object Title
-        {
-            get
-            {
-                return 1078036;
-            }
-        }
+        public override object Title => 1078036;
 
         /* Head East out of town and go to Old Haven. Cast Evil Omen and Pain Spike against monsters there until you have raised your 
         Necromancy skill to 50.<br><center>------</center><br>Welcome! I see you are allured by the dark magic of Necromancy. First, 
@@ -30,42 +18,18 @@ namespace Server.Engines.Quests
         Reagents are required to cast Necromancy spells. You can purchase extra reagents from me, or you can find reagents growing in 
         the nearby wooded areas. You can see which reagents are required for each spell by looking in your spellbook.<br><br>Come back 
         to me once you feel that you are worthy of the rank of Apprentice Necromancer and I will reward you with the knowledge you desire. */
-        public override object Description
-        {
-            get
-            {
-                return 1078039;
-            }
-        }
+        public override object Description => 1078039;
 
         /* You are weak after all. Come back to me when you are ready to practice Necromancy. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1078040;
-            }
-        }
+        public override object Refuse => 1078040;
 
         /* You have not achieved the rank of Apprentice Necromancer. Come back to me once you feel that you are worthy of the rank of 
         Apprentice Necromancer and I will reward you with the knowledge you desire. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1078041;
-            }
-        }
+        public override object Uncomplete => 1078041;
 
         /* You have done well, my young apprentice. Behold! I now present to you the knowledge you desire. This spellbook contains all 
         the Necromancer spells. The power is intoxicating, isn't it? */
-        public override object Complete
-        {
-            get
-            {
-                return 1078043;
-            }
-        }
+        public override object Complete => 1078043;
 
         public TheAllureOfDarkMagicQuest()
             : base()
@@ -115,16 +79,10 @@ namespace Server.Engines.Quests
 
     public class Mulcivikh : MondainQuester
     {
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(TheAllureOfDarkMagicQuest)
                 };
-            }
-        }
 
         public override void InitSBInfo()
         {

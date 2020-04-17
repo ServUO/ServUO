@@ -7,7 +7,7 @@ namespace Server.Engines.TreasuresOfKotlCity
 {
     public class PowerCoreDockingStation : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return null; } }
+        public override BaseAddonDeed Deed => null;
 
         public static List<PowerCoreDockingStation> Stations { get; set; }
 

@@ -102,13 +102,7 @@ namespace Server.Mobiles
                 m_Owner = value;
             }
         }
-        public List<Item> Items
-        {
-            get
-            {
-                return m_Items;
-            }
-        }
+        public List<Item> Items => m_Items;
         public int Gold
         {
             get
@@ -120,13 +114,7 @@ namespace Server.Mobiles
                 m_Gold = value;
             }
         }
-        public DateTime ExpireTime
-        {
-            get
-            {
-                return m_ExpireTime;
-            }
-        }
+        public DateTime ExpireTime => m_ExpireTime;
         public void AddItem(Item item)
         {
             item.Internalize();

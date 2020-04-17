@@ -14,62 +14,14 @@ namespace Server.Items
         {
         }
 
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 50;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 65;
-            }
-        }
-        public override int StrReq
-        {
-            get
-            {
-                return 20;
-            }
-        }
+        public override int BasePhysicalResistance => 0;
+        public override int BaseFireResistance => 0;
+        public override int BaseColdResistance => 0;
+        public override int BasePoisonResistance => 0;
+        public override int BaseEnergyResistance => 1;
+        public override int InitMinHits => 50;
+        public override int InitMaxHits => 65;
+        public override int StrReq => 20;
 
         public override void Serialize(GenericWriter writer)
         {

@@ -45,8 +45,8 @@ namespace Server.Items
             }
         }
 
-        public override int DefaultMaxWeight { get { return 1200; } }
-        public override bool DisplaysContent { get { return false; } }
+        public override int DefaultMaxWeight => 1200;
+        public override bool DisplaysContent => false;
 
         public ShippingCrate(ProfessionalFisherQuest quest)
         {

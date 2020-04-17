@@ -11,10 +11,10 @@ namespace Server.Items
         public const int SlotIncrease = 3;
         public const int MaxPerChar = 21;
 
-        public override int LabelNumber { get { return 1070997; } } // A promotional token
-        public TextDefinition ItemName { get { return 1157618; } } // your Stable Slot Increase (Account-Bound)
+        public override int LabelNumber => 1070997;  // A promotional token
+        public TextDefinition ItemName => 1157618;  // your Stable Slot Increase (Account-Bound)
 
-        public Type GumpType { get { return typeof(StableSlotIncreaseToken.InternalGump); } }
+        public Type GumpType => typeof(StableSlotIncreaseToken.InternalGump);
 
         [CommandProperty(AccessLevel.GameMaster)]
         public string Account { get; set; }

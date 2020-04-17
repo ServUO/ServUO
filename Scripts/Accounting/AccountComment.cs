@@ -34,13 +34,7 @@ namespace Server.Accounting
         /// <summary>
         /// A string representing who added this comment.
         /// </summary>
-        public string AddedBy
-        {
-            get
-            {
-                return this.m_AddedBy;
-            }
-        }
+        public string AddedBy => this.m_AddedBy;
         /// <summary>
         /// Gets or sets the body of this comment. Setting this value will reset LastModified.
         /// </summary>
@@ -59,13 +53,7 @@ namespace Server.Accounting
         /// <summary>
         /// The date and time when this account was last modified -or- the comment creation time, if never modified.
         /// </summary>
-        public DateTime LastModified
-        {
-            get
-            {
-                return this.m_LastModified;
-            }
-        }
+        public DateTime LastModified => this.m_LastModified;
         /// <summary>
         /// Serializes this AccountComment instance to an XmlTextWriter.
         /// </summary>

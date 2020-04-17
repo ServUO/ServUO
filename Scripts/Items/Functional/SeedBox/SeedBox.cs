@@ -16,8 +16,8 @@ namespace Server.Engines.Plants
         public static readonly int MaxSeeds = 5000;
         public static readonly int MaxUnique = 300;
 
-        public override int DefaultMaxItems { get { return MaxUnique; } }
-        public override bool DisplaysContent { get { return false; } }
+        public override int DefaultMaxItems => MaxUnique;
+        public override bool DisplaysContent => false;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsRewardItem { get; set; }
@@ -42,12 +42,9 @@ namespace Server.Engines.Plants
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int UniqueCount
-        {
-            get { return Entries == null ? 0 : Entries.Where(e => e != null && e.Seed != null && e.Seed.Amount > 0).Count(); }
-        }
+        public int UniqueCount => Entries == null ? 0 : Entries.Where(e => e != null && e.Seed != null && e.Seed.Amount > 0).Count();
 
-        public override double DefaultWeight { get { return 10.0; } }
+        public override double DefaultWeight => 10.0;
 
         [Constructable]
         public SeedBox() : base(19288)

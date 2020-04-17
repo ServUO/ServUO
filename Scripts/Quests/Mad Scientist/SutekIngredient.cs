@@ -50,11 +50,11 @@ namespace Server.Items
         private readonly int m_ItemId, m_TextId, m_Hue;
         private Point3D m_Location;
 
-        public SutekIngredient Ingredient { get { return m_Ingredient; } }
-        public int ItemId { get { return m_ItemId; } }
-        public int TextId { get { return m_TextId; } }
-        public int Hue { get { return m_Hue; } }
-        public Point3D Location { get { return m_Location; } }
+        public SutekIngredient Ingredient => m_Ingredient;
+        public int ItemId => m_ItemId;
+        public int TextId => m_TextId;
+        public int Hue => m_Hue;
+        public Point3D Location => m_Location;
 
         public SutekIngredientInfo(SutekIngredient ingredient, Point3D location, int itemId, int textId)
             : this(ingredient, location, itemId, textId, 0)
@@ -73,8 +73,8 @@ namespace Server.Items
 
     public class SutekIngredientItem : Item
     {
-        public override int LabelNumber { get { return m_TextId; } }
-        public override bool ForceShowProperties { get { return true; } }
+        public override int LabelNumber => m_TextId;
+        public override bool ForceShowProperties => true;
 
         private SutekIngredient m_Ingredient;
         private int m_TextId;

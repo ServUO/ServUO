@@ -13,13 +13,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1072123;
-            }
-        }// Tombstone of the Damned
+        public override int LabelNumber => 1072123;// Tombstone of the Damned
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

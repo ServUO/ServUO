@@ -22,20 +22,8 @@ namespace Server.Engines.Craft
                 return m_CraftSystem;
             }
         }
-        public override SkillName MainSkill
-        {
-            get
-            {
-                return SkillName.Alchemy;
-            }
-        }
-        public override int GumpTitleNumber
-        {
-            get
-            {
-                return 1044622;
-            }// <CENTER>Glassblowing MENU</CENTER>
-        }
+        public override SkillName MainSkill => SkillName.Alchemy;
+        public override int GumpTitleNumber => 1044622;
         public override double GetChanceAtMin(CraftItem item)
         {
             if (item.ItemType == typeof(HollowPrism))

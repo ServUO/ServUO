@@ -62,48 +62,12 @@ namespace Server.Engines.VeteranRewards
                 this.m_List = value;
             }
         }
-        public RewardCategory Category
-        {
-            get
-            {
-                return this.m_Category;
-            }
-        }
-        public Type ItemType
-        {
-            get
-            {
-                return this.m_ItemType;
-            }
-        }
-        public Expansion RequiredExpansion
-        {
-            get
-            {
-                return this.m_RequiredExpansion;
-            }
-        }
-        public int Name
-        {
-            get
-            {
-                return this.m_Name;
-            }
-        }
-        public string NameString
-        {
-            get
-            {
-                return this.m_NameString;
-            }
-        }
-        public object[] Args
-        {
-            get
-            {
-                return this.m_Args;
-            }
-        }
+        public RewardCategory Category => this.m_Category;
+        public Type ItemType => this.m_ItemType;
+        public Expansion RequiredExpansion => this.m_RequiredExpansion;
+        public int Name => this.m_Name;
+        public string NameString => this.m_NameString;
+        public object[] Args => this.m_Args;
         public Item Construct()
         {
             try

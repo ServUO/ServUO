@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class ButchersWarCleaver : WarCleaver
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public ButchersWarCleaver()
             : base()
@@ -15,13 +15,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073526;
-            }
-        }// butcher's war cleaver
+        public override int LabelNumber => 1073526;// butcher's war cleaver
         public override void AppendChildNameProperties(ObjectPropertyList list)
         {
             base.AppendChildNameProperties(list);

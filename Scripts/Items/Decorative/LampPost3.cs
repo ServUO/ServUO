@@ -20,20 +20,8 @@ namespace Server.Items
         {
         }
 
-        public override int LitItemID
-        {
-            get
-            {
-                return 0xB24;
-            }
-        }
-        public override int UnlitItemID
-        {
-            get
-            {
-                return 0xB25;
-            }
-        }
+        public override int LitItemID => 0xB24;
+        public override int UnlitItemID => 0xB25;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

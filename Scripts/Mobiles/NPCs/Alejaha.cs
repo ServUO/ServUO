@@ -17,39 +17,15 @@ namespace Server.Engines.Quests
         }
 
         /* It's Elemental */
-        public override object Title
-        {
-            get
-            {
-                return 1073089;
-            }
-        }
+        public override object Title => 1073089;
         /* The universe is all about balance my friend. Tip one end, you must balance the other. That's 
         why I must ask you to kill not just one kind of elemental, but three kinds. Snuff out some Fire, 
         douse a few Water, and crush some Earth elementals and I'll pay you for your trouble. */
-        public override object Description
-        {
-            get
-            {
-                return 1073579;
-            }
-        }
+        public override object Description => 1073579;
         /* I hope you'll reconsider. Until then, farwell.	 */
-        public override object Refuse
-        {
-            get
-            {
-                return 1073580;
-            }
-        }
+        public override object Refuse => 1073580;
         /* Four of each, that's all I ask. Water, earth and fire. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1073599;
-            }
-        }
+        public override object Uncomplete => 1073599;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -80,16 +56,10 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(ItsElementalQuest)
                 };
-            }
-        }
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);

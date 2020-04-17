@@ -11,11 +11,11 @@ namespace Server.Items
             TileData.ItemTable[0x2DF3].Flags = TileFlag.None;
         }
 
-        public override int DefaultGumpID { get { return 0x10C; } }
+        public override int DefaultGumpID => 0x10C;
 
-        public bool CheckWhenHidden { get { return true; } }
+        public bool CheckWhenHidden => true;
 
-        public static Type[] RituelItem { get { return m_RituelItem; } }
+        public static Type[] RituelItem => m_RituelItem;
 
         private static readonly Type[] m_RituelItem = new Type[]
         {
@@ -25,7 +25,7 @@ namespace Server.Items
         private Timer m_Timer;
         private ExodusChestRegion m_Region;
 
-        public override bool IsDecoContainer { get { return false; } }
+        public override bool IsDecoContainer => false;
 
         [Constructable]
         public ExodusChest()
@@ -213,7 +213,7 @@ namespace Server.Items
     {
         private readonly ExodusChest m_Chest;
 
-        public ExodusChest ExodusChest { get { return m_Chest; } }
+        public ExodusChest ExodusChest => m_Chest;
 
         public ExodusChestRegion(ExodusChest chest)
             : base(null, chest.Map, Region.Find(chest.Location, chest.Map), new Rectangle2D(chest.Location.X - 2, chest.Location.Y - 2, 5, 5))

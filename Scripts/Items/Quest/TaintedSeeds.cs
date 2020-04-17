@@ -15,13 +15,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074233;
-            }
-        }// Tainted Seeds
+        public override int LabelNumber => 1074233;// Tainted Seeds
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

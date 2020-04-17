@@ -21,13 +21,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073460;
-            }
-        }// turquoise ring
+        public override int LabelNumber => 1073460;// turquoise ring
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

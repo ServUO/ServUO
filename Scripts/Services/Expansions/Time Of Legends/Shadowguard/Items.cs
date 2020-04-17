@@ -9,8 +9,8 @@ namespace Server.Engines.Shadowguard
 {
     public class ShadowguardBottleOfLiquor : BaseDecayingItem
     {
-        public override int Lifespan { get { return 60; } }
-        public override int LabelNumber { get { return 1042961; } } // a bottle of liquor
+        public override int Lifespan => 60;
+        public override int LabelNumber => 1042961;  // a bottle of liquor
 
         public BarEncounter Encounter { get; set; }
 
@@ -130,7 +130,7 @@ namespace Server.Engines.Shadowguard
 
         public bool _Thrown;
 
-        public override int Lifespan { get { return 30; } }
+        public override int Lifespan => 30;
 
         public ShadowguardApple(OrchardEncounter encounter, ShadowguardCypress tree) : base(0x9D0)
         {
@@ -450,8 +450,8 @@ namespace Server.Engines.Shadowguard
 
     public class Phylactery : BaseDecayingItem
     {
-        public override int Lifespan { get { return 60; } }
-        public override int LabelNumber { get { return _Purified ? 1156221 : 1156220; } } // Purified Phylactery : Corrupt Phylactery
+        public override int Lifespan => 60;
+        public override int LabelNumber => _Purified ? 1156221 : 1156220;  // Purified Phylactery : Corrupt Phylactery
 
         private bool _Purified;
 
@@ -579,7 +579,7 @@ namespace Server.Engines.Shadowguard
         [CommandProperty(AccessLevel.GameMaster)]
         public ShadowguardEncounter Encounter { get; set; }
 
-        public override int LabelNumber { get { return 1156218; } } // Cursed Suit of Armor
+        public override int LabelNumber => 1156218;  // Cursed Suit of Armor
 
         public CursedSuitOfArmor(ShadowguardEncounter encounter) : base(0x151A)
         {
@@ -614,7 +614,7 @@ namespace Server.Engines.Shadowguard
 
     public class PurifyingFlames : Item
     {
-        public override int LabelNumber { get { return 1156217; } } // Purifying Flames
+        public override int LabelNumber => 1156217;  // Purifying Flames
 
         [Constructable]
         public PurifyingFlames() : base(0x19AB)
@@ -651,8 +651,8 @@ namespace Server.Engines.Shadowguard
 
     public class ShadowguardCanal : BaseDecayingItem, IChopable
     {
-        public override int Lifespan { get { return 1800; } }
-        public override int LabelNumber { get { return 1156228; } } // Canal
+        public override int Lifespan => 1800;
+        public override int LabelNumber => 1156228;  // Canal
 
         private Flow _Flow;
 
@@ -795,7 +795,7 @@ namespace Server.Engines.Shadowguard
 
     public class ShadowguardSpigot : Item
     {
-        public override int LabelNumber { get { return 1156275; } } // A Spigot
+        public override int LabelNumber => 1156275;  // A Spigot
 
         public ShadowguardSpigot(int id) : base(id)
         {
@@ -831,7 +831,7 @@ namespace Server.Engines.Shadowguard
 
     public class ShadowguardDrain : Item
     {
-        public override int LabelNumber { get { return 1156272; } } // A Drain
+        public override int LabelNumber => 1156272;  // A Drain
 
         public ShadowguardDrain() : base(0x9BFF)
         {
@@ -858,8 +858,8 @@ namespace Server.Engines.Shadowguard
 
     public class MagicDrakeWing : BaseDecayingItem
     {
-        public override int Lifespan { get { return 90; } }
-        public override int LabelNumber { get { return 1156233; } } // Magic Drake Wing
+        public override int Lifespan => 90;
+        public override int LabelNumber => 1156233;  // Magic Drake Wing
 
         [Constructable]
         public MagicDrakeWing() : base(0x1E85)
@@ -898,7 +898,7 @@ namespace Server.Engines.Shadowguard
 
     public class FeedingBell : BaseAddon
     {
-        public override int LabelNumber { get { return 1156232; } }  // Feeding Bell
+        public override int LabelNumber => 1156232;   // Feeding Bell
 
         [Constructable]
         public FeedingBell()
@@ -951,8 +951,8 @@ namespace Server.Engines.Shadowguard
 
     public class WitheringBones : Container
     {
-        public override int LabelNumber { get { return 1156214; } } // The Withered Bones of an Adventurer
-        public override bool IsDecoContainer { get { return false; } }
+        public override int LabelNumber => 1156214;  // The Withered Bones of an Adventurer
+        public override bool IsDecoContainer => false;
 
         [Constructable]
         public WitheringBones()
@@ -983,7 +983,7 @@ namespace Server.Engines.Shadowguard
 
     public class TatteredBook : Item
     {
-        public override int LabelNumber { get { return 1156215; } } // a tattered book
+        public override int LabelNumber => 1156215;  // a tattered book
 
         public TatteredBook()
             : base(7712)

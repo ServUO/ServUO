@@ -16,7 +16,7 @@ namespace Server.Items
 
     public class SliderTrapTrainingKit : Item, ISliderKit, IRemoveTrapTrainingKit
     {
-        public override int LabelNumber { get { return 1159016; } } // Slider Trap Training Kit
+        public override int LabelNumber => 1159016;  // Slider Trap Training Kit
 
         private int _Style;
 
@@ -207,7 +207,7 @@ namespace Server.Items
     public class SliderTrapGump : BaseGump
     {
         public ISliderKit Kit { get; set; }
-        public int[] Order { get { return Kit.Order; } }
+        public int[] Order => Kit.Order;
 
         public SliderTrapGump(PlayerMobile pm, ISliderKit kit)
             : base(pm, 100, 100)

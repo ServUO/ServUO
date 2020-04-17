@@ -22,13 +22,7 @@ namespace Server.Spells.Third
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Third;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Third;
         public override void OnCast()
         {
             this.Caster.Target = new InternalTarget(this);

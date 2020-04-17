@@ -383,8 +383,8 @@ namespace Server.Engines.VendorSearching
     public class SearchResultsGump : BaseGump
     {
         public int PerPage = 5;
-        public int LabelColor { get { return 0x4BBD; } }
-        public int TextColor { get { return 0x6B55; } }
+        public int LabelColor => 0x4BBD;
+        public int TextColor => 0x6B55;
 
         public List<SearchItem> Items { get; set; }
         public int Index { get; set; }

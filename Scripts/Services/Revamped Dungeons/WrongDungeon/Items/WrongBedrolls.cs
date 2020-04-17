@@ -154,7 +154,7 @@ namespace Server.Items
 
     public class WrongBedrollSouth : WrongBedrollBase
     {
-        public override int LabelNumber { get { return 1022645; } } // bedroll
+        public override int LabelNumber => 1022645;  // bedroll
 
         [Constructable]
         public WrongBedrollSouth()
@@ -182,7 +182,7 @@ namespace Server.Items
 
     public class WrongBedrollEast : WrongBedrollBase
     {
-        public override int LabelNumber { get { return 1022645; } } // bedroll
+        public override int LabelNumber => 1022645;  // bedroll
 
         [Constructable]
         public WrongBedrollEast()

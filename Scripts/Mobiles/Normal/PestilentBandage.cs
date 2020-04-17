@@ -5,7 +5,7 @@ namespace Server.Mobiles
     [CorpseName("a pestilent bandage corpse")]
     public class PestilentBandage : BaseCreature
     {
-        public override double HealChance { get { return 1.0; } }
+        public override double HealChance => 1.0;
 
         [Constructable]
         public PestilentBandage()
@@ -53,13 +53,7 @@ namespace Server.Mobiles
         {
         }
 
-        public override Poison HitPoison
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
+        public override Poison HitPoison => Poison.Lethal;
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Rich);  // Need to verify

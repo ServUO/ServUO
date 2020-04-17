@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class NiceTitleDeed : BaseRewardTitleDeed
     {
-        public override TextDefinition Title { get { return new TextDefinition(1158798); } } // Nice
+        public override TextDefinition Title => new TextDefinition(1158798);  // Nice
 
         [Constructable]
         public NiceTitleDeed()

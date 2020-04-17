@@ -17,47 +17,17 @@ namespace Server.Engines.Quests
         }
 
         /* Guile, Irk and Spite */
-        public override object Title
-        {
-            get
-            {
-                return 1074739;
-            }
-        }
+        public override object Title => 1074739;
         /* You know them, don't you.  The three?  They look like you, you'll see. They looked like me, I remember, they 
         looked like, well, you'll see.  The three.  They'll drive you mad too, if you let them.  They are trouble, and 
         they need to be slain.  Seek them out. */
-        public override object Description
-        {
-            get
-            {
-                return 1074740;
-            }
-        }
+        public override object Description => 1074740;
         /* You just don't understand the gravity of the situation.  If you did, you'd agree to my task. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1074745;
-            }
-        }
+        public override object Refuse => 1074745;
         /* Perhaps I was unclear.  You'll know them when you see them, because you'll see you, and you, and you.  Hurry now. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1074746;
-            }
-        }
+        public override object Uncomplete => 1074746;
         /* Are you one of THEM?  Ahhhh!  Oh, wait, if you were them, then you'd be me.  So you're -- you.  Good job! */
-        public override object Complete
-        {
-            get
-            {
-                return 1074747;
-            }
-        }
+        public override object Complete => 1074747;
         public override bool CanOffer()
         {
             return MondainsLegacy.TwistedWeald;
@@ -91,11 +61,7 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(BullfightingSortOfQuest),
                     typeof(ForcedMigrationQuest),
@@ -109,8 +75,6 @@ namespace Server.Engines.Quests
                     typeof(TheyreBreedingLikeRabbitsQuest),
                     typeof(GuileIrkAndSpiteQuest)
                 };
-            }
-        }
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);

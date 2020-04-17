@@ -121,7 +121,7 @@ namespace Server.Engines.ArenaSystem
 
         public PVPArena Arena { get; private set; }
 
-        public override bool CloseOnMapChange { get { return true; } }
+        public override bool CloseOnMapChange => true;
 
         public BaseArenaGump(PlayerMobile pm, PVPArena arena)
             : base(pm, 30, 30)

@@ -13,20 +13,8 @@ namespace Server.Items
         {
         }
 
-        public override int Radius
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1072105;
-            }
-        }// a Confusion Blast potion
+        public override int Radius => 5;
+        public override int LabelNumber => 1072105;// a Confusion Blast potion
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

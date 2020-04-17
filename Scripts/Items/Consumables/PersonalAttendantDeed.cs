@@ -28,13 +28,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1076030;
-            }
-        }// A Contract for a Personal Attendant
+        public override int LabelNumber => 1076030;// A Contract for a Personal Attendant
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Owner
         {

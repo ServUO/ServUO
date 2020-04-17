@@ -22,7 +22,7 @@ namespace Server.Engines.Distillation
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Distiller { get { return m_Distiller; } set { m_Distiller = value; InvalidateProperties(); } }
 
-        public override bool ShowQuantity { get { return false; } }
+        public override bool ShowQuantity => false;
 
         [Constructable]
         public BottleOfLiquor() : this(Liquor.Whiskey, null, false, null)

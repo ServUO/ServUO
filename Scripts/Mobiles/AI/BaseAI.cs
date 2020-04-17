@@ -98,10 +98,7 @@ namespace Server.Mobiles
             Action = ActionType.Wander;
         }
 
-        public bool CanRun
-        {
-            get { return m_Mobile.SupportsRunAnimation; }
-        }
+        public bool CanRun => m_Mobile.SupportsRunAnimation;
 
         public ActionType Action
         {

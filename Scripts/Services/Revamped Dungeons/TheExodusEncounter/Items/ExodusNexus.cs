@@ -26,7 +26,7 @@ namespace Server.Items
         private DateTime LastUse { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Active { get { return this.Hue == 0; } }
+        public bool Active => this.Hue == 0;
 
         [Constructable]
         public ExodusNexus()
@@ -62,7 +62,7 @@ namespace Server.Items
                 }
             }
         }
-        public Node[] Path { get { return this.m_Path; } }
+        public Node[] Path => this.m_Path;
 
         public struct Node
         {

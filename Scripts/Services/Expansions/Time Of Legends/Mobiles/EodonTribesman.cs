@@ -53,8 +53,8 @@ namespace Server.Mobiles
             }
         }
 
-        public override bool InitialInnocent { get { return true; } }
-        public override int TreasureMapLevel { get { return 2; } }
+        public override bool InitialInnocent => true;
+        public override int TreasureMapLevel => 2;
 
         public override MasteryInfo[] Masteries
         {
@@ -391,8 +391,8 @@ namespace Server.Mobiles
             }
         }
 
-        public override bool AlwaysAttackable { get { return this.Region.IsPartOf<BattleRegion>(); } }
-        public override bool ShowFameTitle { get { return false; } }
+        public override bool AlwaysAttackable => this.Region.IsPartOf<BattleRegion>();
+        public override bool ShowFameTitle => false;
 
         public override void GenerateLoot()
         {
@@ -418,7 +418,7 @@ namespace Server.Mobiles
 
     public class TribeShaman : BaseEodonTribesman
     {
-        public override bool ShowSpellMantra { get { return true; } }
+        public override bool ShowSpellMantra => true;
 
         [Constructable]
         public TribeShaman(EodonTribe type) : base(AIType.AI_Mage, type)
@@ -563,8 +563,8 @@ namespace Server.Mobiles
             }
         }
 
-        public override bool AlwaysAttackable { get { return this.Region.IsPartOf<BattleRegion>(); } }
-        public override bool ShowFameTitle { get { return false; } }
+        public override bool AlwaysAttackable => this.Region.IsPartOf<BattleRegion>();
+        public override bool ShowFameTitle => false;
 
         public TribeShaman(Serial serial) : base(serial)
         {

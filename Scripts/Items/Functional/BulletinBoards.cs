@@ -380,34 +380,10 @@ namespace Server.Items
         {
         }
 
-        public Mobile Poster
-        {
-            get
-            {
-                return this.m_Poster;
-            }
-        }
-        public BulletinMessage Thread
-        {
-            get
-            {
-                return this.m_Thread;
-            }
-        }
-        public string Subject
-        {
-            get
-            {
-                return this.m_Subject;
-            }
-        }
-        public DateTime Time
-        {
-            get
-            {
-                return this.m_Time;
-            }
-        }
+        public Mobile Poster => this.m_Poster;
+        public BulletinMessage Thread => this.m_Thread;
+        public string Subject => this.m_Subject;
+        public DateTime Time => this.m_Time;
         public DateTime LastPostTime
         {
             get
@@ -419,41 +395,11 @@ namespace Server.Items
                 this.m_LastPostTime = value;
             }
         }
-        public string PostedName
-        {
-            get
-            {
-                return this.m_PostedName;
-            }
-        }
-        public int PostedBody
-        {
-            get
-            {
-                return this.m_PostedBody;
-            }
-        }
-        public int PostedHue
-        {
-            get
-            {
-                return this.m_PostedHue;
-            }
-        }
-        public BulletinEquip[] PostedEquip
-        {
-            get
-            {
-                return this.m_PostedEquip;
-            }
-        }
-        public string[] Lines
-        {
-            get
-            {
-                return this.m_Lines;
-            }
-        }
+        public string PostedName => this.m_PostedName;
+        public int PostedBody => this.m_PostedBody;
+        public int PostedHue => this.m_PostedHue;
+        public BulletinEquip[] PostedEquip => this.m_PostedEquip;
+        public string[] Lines => this.m_Lines;
         public string GetTimeAsString()
         {
             return this.m_Time.ToString("MMM dd, yyyy");

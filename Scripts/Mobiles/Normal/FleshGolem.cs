@@ -44,20 +44,8 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool BleedImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 1;
-            }
-        }
+        public override bool BleedImmune => true;
+        public override int TreasureMapLevel => 1;
 
         public override void GenerateLoot()
         {

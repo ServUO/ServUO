@@ -17,13 +17,7 @@ namespace Server.Engines.Quests.Hag
         {
         }
 
-        public override bool ClickTitle
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool ClickTitle => true;
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);

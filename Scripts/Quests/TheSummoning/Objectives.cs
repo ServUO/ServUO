@@ -10,23 +10,12 @@ namespace Server.Engines.Quests.Doom
         {
         }
 
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 /* Find 1000 Daemon bones and hand them
-                * to Victoria as you find them.
-                */
-                return 1050026;
-            }
-        }
-        public override int MaxProgress
-        {
-            get
-            {
-                return 1000;
-            }
-        }
+* to Victoria as you find them.
+*/
+                1050026;
+        public override int MaxProgress => 1000;
         public override void OnComplete()
         {
             Victoria victoria = ((TheSummoningQuest)this.System).Victoria;
@@ -107,15 +96,10 @@ namespace Server.Engines.Quests.Doom
                 this.m_CorpseWithSkull = value;
             }
         }
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 /* Go forth and vanquish the devourer that has been summoned!
-                */
-                return 1050037;
-            }
-        }
+*/
+                1050037;
         public override void CheckProgress()
         {
             if (this.m_Daemon == null || !this.m_Daemon.Alive)

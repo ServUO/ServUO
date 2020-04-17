@@ -17,13 +17,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041088;
-            }
-        }// Hair Dye
+        public override int LabelNumber => 1041088;// Hair Dye
         public override void OnDoubleClick(Mobile from)
         {
             if (IsChildOf(from.Backpack))

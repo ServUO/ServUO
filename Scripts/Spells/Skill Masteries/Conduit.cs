@@ -16,13 +16,13 @@ namespace Server.Spells.SkillMasteries
                 Reagent.GraveDust
             );
 
-        public override double RequiredSkill { get { return 90; } }
-        public override double UpKeep { get { return 0; } }
-        public override int RequiredMana { get { return 40; } }
-        public override bool PartyEffects { get { return false; } }
+        public override double RequiredSkill => 90;
+        public override double UpKeep => 0;
+        public override int RequiredMana => 40;
+        public override bool PartyEffects => false;
 
-        public override SkillName CastSkill { get { return SkillName.Necromancy; } }
-        public override SkillName DamageSkill { get { return SkillName.SpiritSpeak; } }
+        public override SkillName CastSkill => SkillName.Necromancy;
+        public override SkillName DamageSkill => SkillName.SpiritSpeak;
 
         public int Strength { get; set; }
         public List<Item> Skulls { get; set; }

@@ -11,7 +11,7 @@ namespace Server.Engines.VeteranRewards
 {
     public class DaviesLockerAddon : BaseAddon, ISecurable
     {
-        public override BaseAddonDeed Deed { get { return new DaviesLockerAddonDeed(Entries); } }
+        public override BaseAddonDeed Deed => new DaviesLockerAddonDeed(Entries);
 
         public List<DaviesLockerEntry> Entries { get; private set; } = new List<DaviesLockerEntry>();
 
@@ -180,7 +180,7 @@ namespace Server.Engines.VeteranRewards
 
         public class DaviesLockerComponent : LocalizedAddonComponent
         {
-            public override bool ForceShowProperties { get { return true; } }
+            public override bool ForceShowProperties => true;
 
             public DaviesLockerComponent(int id)
                 : base(id, 1153534) // Davies' Locker
@@ -234,8 +234,8 @@ namespace Server.Engines.VeteranRewards
 
     public class DaviesLockerAddonDeed : BaseAddonDeed, IRewardOption
     {
-        public override BaseAddon Addon { get { return new DaviesLockerAddon(South, Entries); } }
-        public override int LabelNumber { get { return 1153535; } } // Deed to Davies' Locker
+        public override BaseAddon Addon => new DaviesLockerAddon(South, Entries);
+        public override int LabelNumber => 1153535;  // Deed to Davies' Locker
 
         public List<DaviesLockerEntry> Entries { get; private set; }
 

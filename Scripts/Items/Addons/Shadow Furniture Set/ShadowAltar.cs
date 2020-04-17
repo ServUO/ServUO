@@ -25,7 +25,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed { get { return new ShadowAltarDeed(); } }
+        public override BaseAddonDeed Deed => new ShadowAltarDeed();
 
         public override void Serialize(GenericWriter writer)
         {
@@ -42,11 +42,11 @@ namespace Server.Items
 
     public class ShadowAltarDeed : BaseAddonDeed, IRewardOption
     {
-        public override int LabelNumber { get { return 1076682; } } // Shadow Altar
+        public override int LabelNumber => 1076682;  // Shadow Altar
 
-        public override bool ExcludeDeedHue { get { return true; } }
+        public override bool ExcludeDeedHue => true;
 
-        public override BaseAddon Addon { get { return new ShadowAltarAddon(_Direction); } }
+        public override BaseAddon Addon => new ShadowAltarAddon(_Direction);
 
         private DirectionType _Direction;
 

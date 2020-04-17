@@ -31,13 +31,7 @@ namespace Server.Engines.Quests.Matriarch
         }
 
         public abstract bool RedSolen { get; }
-        public override bool DisallowAllMoves
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool DisallowAllMoves => false;
         public override int GetIdleSound()
         {
             return 0x10D;
@@ -298,13 +292,7 @@ namespace Server.Engines.Quests.Matriarch
         {
         }
 
-        public override bool RedSolen
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool RedSolen => true;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -332,13 +320,7 @@ namespace Server.Engines.Quests.Matriarch
         {
         }
 
-        public override bool RedSolen
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool RedSolen => false;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

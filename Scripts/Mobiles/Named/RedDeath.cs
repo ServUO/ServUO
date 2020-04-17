@@ -54,21 +54,9 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-        public override bool CanBeParagon { get { return false; } }
-        public override bool GivesMLMinorArtifact
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool AlwaysMurderer
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool CanBeParagon => false;
+        public override bool GivesMLMinorArtifact => true;
+        public override bool AlwaysMurderer => true;
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 3);

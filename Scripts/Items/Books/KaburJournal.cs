@@ -194,13 +194,7 @@ namespace Server.Items
         {
         }
 
-        public override BookContent DefaultContent
-        {
-            get
-            {
-                return Content;
-            }
-        }
+        public override BookContent DefaultContent => Content;
         public override void AddNameProperty(ObjectPropertyList list)
         {
             list.Add("Khabur's Journal");

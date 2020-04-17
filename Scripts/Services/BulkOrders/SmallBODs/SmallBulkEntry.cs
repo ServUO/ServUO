@@ -21,106 +21,22 @@ namespace Server.Engines.BulkOrders
             m_Hue = hue;
         }
 
-        public static SmallBulkEntry[] BlacksmithWeapons
-        {
-            get
-            {
-                return GetEntries("Blacksmith", "weapons");
-            }
-        }
-        public static SmallBulkEntry[] BlacksmithArmor
-        {
-            get
-            {
-                return GetEntries("Blacksmith", "armor");
-            }
-        }
-        public static SmallBulkEntry[] TailorCloth
-        {
-            get
-            {
-                return GetEntries("Tailoring", "cloth");
-            }
-        }
-        public static SmallBulkEntry[] TailorLeather
-        {
-            get
-            {
-                return GetEntries("Tailoring", "leather");
-            }
-        }
+        public static SmallBulkEntry[] BlacksmithWeapons => GetEntries("Blacksmith", "weapons");
+        public static SmallBulkEntry[] BlacksmithArmor => GetEntries("Blacksmith", "armor");
+        public static SmallBulkEntry[] TailorCloth => GetEntries("Tailoring", "cloth");
+        public static SmallBulkEntry[] TailorLeather => GetEntries("Tailoring", "leather");
         #region Publish 95 BODs
-        public static SmallBulkEntry[] TinkeringSmalls
-        {
-            get
-            {
-                return GetEntries("Tinkering", "smalls");
-            }
-        }
-        public static SmallBulkEntry[] TinkeringSmallsRegular
-        {
-            get
-            {
-                return GetEntries("Tinkering", "smallsregular");
-            }
-        }
-        public static SmallBulkEntry[] CarpentrySmalls
-        {
-            get
-            {
-                return GetEntries("Carpentry", "smalls");
-            }
-        }
-        public static SmallBulkEntry[] InscriptionSmalls
-        {
-            get
-            {
-                return GetEntries("Inscription", "smalls");
-            }
-        }
-        public static SmallBulkEntry[] CookingSmalls
-        {
-            get
-            {
-                return GetEntries("Cooking", "smalls");
-            }
-        }
-        public static SmallBulkEntry[] CookingSmallsRegular
-        {
-            get
-            {
-                return GetEntries("Cooking", "smallsregular");
-            }
-        }
-        public static SmallBulkEntry[] FletchingSmalls
-        {
-            get
-            {
-                return GetEntries("Fletching", "smalls");
-            }
-        }
-        public static SmallBulkEntry[] FletchingSmallsRegular
-        {
-            get
-            {
-                return GetEntries("Fletching", "smallsregular");
-            }
-        }
-        public static SmallBulkEntry[] AlchemySmalls
-        {
-            get
-            {
-                return GetEntries("Alchemy", "smalls");
-            }
-        }
+        public static SmallBulkEntry[] TinkeringSmalls => GetEntries("Tinkering", "smalls");
+        public static SmallBulkEntry[] TinkeringSmallsRegular => GetEntries("Tinkering", "smallsregular");
+        public static SmallBulkEntry[] CarpentrySmalls => GetEntries("Carpentry", "smalls");
+        public static SmallBulkEntry[] InscriptionSmalls => GetEntries("Inscription", "smalls");
+        public static SmallBulkEntry[] CookingSmalls => GetEntries("Cooking", "smalls");
+        public static SmallBulkEntry[] CookingSmallsRegular => GetEntries("Cooking", "smallsregular");
+        public static SmallBulkEntry[] FletchingSmalls => GetEntries("Fletching", "smalls");
+        public static SmallBulkEntry[] FletchingSmallsRegular => GetEntries("Fletching", "smallsregular");
+        public static SmallBulkEntry[] AlchemySmalls => GetEntries("Alchemy", "smalls");
         #endregion
-        public Type Type
-        {
-            get
-            {
-                return m_Type;
-            }
-        }
+        public Type Type => m_Type;
         public int Number
         {
             get
@@ -132,20 +48,8 @@ namespace Server.Engines.BulkOrders
                 m_Number = value;
             }
         }
-        public int Graphic
-        {
-            get
-            {
-                return m_Graphic;
-            }
-        }
-        public int Hue
-        {
-            get
-            {
-                return m_Hue;
-            }
-        }
+        public int Graphic => m_Graphic;
+        public int Hue => m_Hue;
         public static SmallBulkEntry[] GetEntries(string type, string name)
         {
             if (m_Cache == null)

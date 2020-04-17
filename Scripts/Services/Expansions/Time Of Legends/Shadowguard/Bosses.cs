@@ -18,10 +18,10 @@ namespace Server.Engines.Shadowguard
 
         private DateTime _NextSummon;
 
-        public virtual Type[] SummonTypes { get { return null; } }
-        public virtual Type[] ArtifactDrops { get { return _ArtifactTypes; } }
+        public virtual Type[] SummonTypes => null;
+        public virtual Type[] ArtifactDrops => _ArtifactTypes;
 
-        public virtual bool CanSummon { get { return Hits <= HitsMax - (HitsMax / 4); } }
+        public virtual bool CanSummon => Hits <= HitsMax - (HitsMax / 4);
 
         private readonly Type[] _ArtifactTypes = new Type[]
         {
@@ -49,8 +49,8 @@ namespace Server.Engines.Shadowguard
             Karma = -32000;
         }
 
-        public override Poison PoisonImmune { get { return Poison.Lethal; } }
-        public override bool AlwaysMurderer { get { return true; } }
+        public override Poison PoisonImmune => Poison.Lethal;
+        public override bool AlwaysMurderer => true;
 
         public override void GenerateLoot()
         {
@@ -343,13 +343,13 @@ namespace Server.Engines.Shadowguard
 
     public class Anon : ShadowguardBoss
     {
-        public override Type[] SummonTypes { get { return _SummonTypes; } }
+        public override Type[] SummonTypes => _SummonTypes;
         private readonly Type[] _SummonTypes = new Type[] { typeof(ElderGazer), typeof(EvilMage), typeof(Wisp) };
 
         private DateTime _LastChange;
         private Form _Form;
 
-        public bool CanChange { get { return _LastChange + TimeSpan.FromSeconds(Utility.RandomMinMax(75, 90)) < DateTime.UtcNow; } }
+        public bool CanChange => _LastChange + TimeSpan.FromSeconds(Utility.RandomMinMax(75, 90)) < DateTime.UtcNow;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Form Form
@@ -602,11 +602,11 @@ namespace Server.Engines.Shadowguard
 
     public class Juonar : ShadowguardBoss
     {
-        public override Type[] SummonTypes { get { return _SummonTypes; } }
+        public override Type[] SummonTypes => _SummonTypes;
         private readonly Type[] _SummonTypes = new Type[] { typeof(SkeletalDragon), typeof(LichLord), typeof(WailingBanshee), typeof(FleshGolem) };
 
-        public override bool CanDiscord { get { return true; } }
-        public override bool PlayInstrumentSound { get { return false; } }
+        public override bool CanDiscord => true;
+        public override bool PlayInstrumentSound => false;
 
         private DateTime _NextTeleport;
 
@@ -700,10 +700,10 @@ namespace Server.Engines.Shadowguard
 
     public class Virtuebane : ShadowguardBoss
     {
-        public override Type[] SummonTypes { get { return _SummonTypes; } }
+        public override Type[] SummonTypes => _SummonTypes;
         private readonly Type[] _SummonTypes = new Type[] { typeof(MinotaurCaptain), typeof(Daemon), typeof(Titan) };
 
-        public override bool BardImmune { get { return true; } }
+        public override bool BardImmune => true;
 
         private DateTime _NextNuke;
         private DateTime _NextDismount;
@@ -920,10 +920,10 @@ namespace Server.Engines.Shadowguard
 
     public class Ozymandias : ShadowguardBoss
     {
-        public override Type[] SummonTypes { get { return _SummonTypes; } }
+        public override Type[] SummonTypes => _SummonTypes;
         private readonly Type[] _SummonTypes = new Type[] { typeof(LesserHiryu), typeof(EliteNinja), typeof(TsukiWolf) };
 
-        public override double WeaponAbilityChance { get { return 0.4; } }
+        public override double WeaponAbilityChance => 0.4;
 
         [Constructable]
         public Ozymandias() : base(AIType.AI_Melee)

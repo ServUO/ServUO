@@ -2,9 +2,9 @@ namespace Server.Items
 {
     public class ExplodingTarPotion : BaseExplodingTarPotion
     {
-        public override int Radius { get { return 20; } }
+        public override int Radius => 20;
 
-        public override int LabelNumber { get { return 1095147; } } // a Greater Confusion Blast potion
+        public override int LabelNumber => 1095147;  // a Greater Confusion Blast potion
 
         [Constructable]
         public ExplodingTarPotion() : base(PotionEffect.ExplodingTarPotion)

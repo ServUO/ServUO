@@ -2,17 +2,17 @@
 {
     public class WardedDemonboneBracers : BoneArms
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1115775; } } // Warded Demonbone Bracers
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1115775;  // Warded Demonbone Bracers
 
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
-        public override int PhysicalResistance { get { return 6; } }
-        public override int FireResistance { get { return 8; } }
-        public override int ColdResistance { get { return 4; } }
-        public override int PoisonResistance { get { return 5; } }
-        public override int EnergyResistance { get { return 5; } }
+        public override int PhysicalResistance => 6;
+        public override int FireResistance => 8;
+        public override int ColdResistance => 4;
+        public override int PoisonResistance => 5;
+        public override int EnergyResistance => 5;
 
         [Constructable]
         public WardedDemonboneBracers()

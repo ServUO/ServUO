@@ -16,48 +16,18 @@ namespace Server.Engines.Quests
         }
 
         /* In the Belly of the Beast */
-        public override object Title
-        {
-            get
-            {
-                return 1073049;
-            }
-        }
+        public override object Title => 1073049;
         /* Oh, the trauma!  *weeps loudly*  My lucky dagger has been lost.  It was given to me by my father, as a 
         final gift before he died.  That blade has been an heirloom of my family for generations.  I must have it 
         back.  *sniffles pathetically*  Please, find my lucky dagger. */
-        public override object Description
-        {
-            get
-            {
-                return 1074658;
-            }
-        }
+        public override object Description => 1074658;
         /* *wailing cries* Then begone if you will not help a poor man in need. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1074659;
-            }
-        }
+        public override object Refuse => 1074659;
         /* *sniffles*  The dagger was stolen by some dishonest man.  Or perhaps I dropped it.  That doesn't matter 
         though.  All that matters is that you find my dagger and return it. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1074660;
-            }
-        }
+        public override object Uncomplete => 1074660;
         /* You've found it?  My lucky dagger! */
-        public override object Complete
-        {
-            get
-            {
-                return 1074661;
-            }
-        }
+        public override object Complete => 1074661;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -87,23 +57,11 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(InTheBellyOfTheBeastQuest),
                 };
-            }
-        }
-        protected override List<SBInfo> SBInfos
-        {
-            get
-            {
-                return this.m_SBInfos;
-            }
-        }
+        protected override List<SBInfo> SBInfos => this.m_SBInfos;
         public override void InitSBInfo()
         {
             this.m_SBInfos.Add(new SBJewel());

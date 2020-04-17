@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class DecorativeStableSet : Backpack
     {
-        public override int LabelNumber { get { return 1159272; } } // Decorative Stable Set
+        public override int LabelNumber => 1159272;  // Decorative Stable Set
 
         [Constructable]
         public DecorativeStableSet()

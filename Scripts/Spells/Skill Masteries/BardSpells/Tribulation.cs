@@ -19,13 +19,13 @@ namespace Server.Spells.SkillMasteries
                 9002
             );
 
-        public override double RequiredSkill { get { return 90; } }
-        public override double UpKeep { get { return 10; } }
-        public override int RequiredMana { get { return 24; } }
-        public override bool PartyEffects { get { return false; } }
-        public override double TickTime { get { return 2.0; } }
+        public override double RequiredSkill => 90;
+        public override double UpKeep => 10;
+        public override int RequiredMana => 24;
+        public override bool PartyEffects => false;
+        public override double TickTime => 2.0;
 
-        public override SkillName CastSkill { get { return SkillName.Discordance; } }
+        public override SkillName CastSkill => SkillName.Discordance;
 
         private int m_PropertyBonus;
         private double m_DamageChance;

@@ -16,13 +16,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new TallElvenBedSouthDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new TallElvenBedSouthDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -50,20 +44,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new TallElvenBedSouthAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1072858;
-            }
-        }// tall elven bed (south)
+        public override BaseAddon Addon => new TallElvenBedSouthAddon();
+        public override int LabelNumber => 1072858;// tall elven bed (south)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

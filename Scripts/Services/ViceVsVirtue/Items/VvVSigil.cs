@@ -18,9 +18,9 @@ namespace Server.Engines.VvV
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime LastStolen { get; set; }
 
-        public override int LabelNumber { get { return 1123391; } } // Sigil
-        public override bool HandlesOnMovement { get { return !Visible; } }
-        public bool CheckWhenHidden { get { return true; } }
+        public override int LabelNumber => 1123391;  // Sigil
+        public override bool HandlesOnMovement => !Visible;
+        public bool CheckWhenHidden => true;
 
         public VvVSigil(VvVBattle battle, Point3D home)
             : base(0x99C7)

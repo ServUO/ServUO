@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class LibraryFriendLantern : Lantern
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public LibraryFriendLantern()
             : base()
@@ -14,13 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073339;
-            }
-        }// Friends of the Library Reading Lantern
+        public override int LabelNumber => 1073339;// Friends of the Library Reading Lantern
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -38,7 +32,7 @@ namespace Server.Items
 
     public class LibraryFriendReadingChair : BigElvenChair
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public LibraryFriendReadingChair()
             : base()
@@ -50,13 +44,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073340;
-            }
-        }// Friends of the Library Reading Chair
+        public override int LabelNumber => 1073340;// Friends of the Library Reading Chair
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

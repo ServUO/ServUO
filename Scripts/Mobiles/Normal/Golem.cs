@@ -7,13 +7,7 @@ namespace Server.Mobiles
     public class Golem : BaseCreature, IRepairableMobile
     {
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual Type RepairResource
-        {
-            get
-            {
-                return typeof(IronIngot);
-            }
-        }
+        public virtual Type RepairResource => typeof(IronIngot);
 
         public double Scalar(Mobile m)
         {
@@ -119,14 +113,14 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool IsScaredOfScaryThings { get { return false; } }
-        public override bool IsScaryToPets { get { return !Controlled; } }
-        public override bool IsBondable { get { return false; } }
-        public override FoodType FavoriteFood { get { return FoodType.None; } }
-        public override bool DeleteOnRelease { get { return true; } }
-        public override bool AutoDispel { get { return !Controlled; } }
-        public override bool BleedImmune { get { return true; } }
-        public override Poison PoisonImmune { get { return Poison.Lethal; } }
+        public override bool IsScaredOfScaryThings => false;
+        public override bool IsScaryToPets => !Controlled;
+        public override bool IsBondable => false;
+        public override FoodType FavoriteFood => FoodType.None;
+        public override bool DeleteOnRelease => true;
+        public override bool AutoDispel => !Controlled;
+        public override bool BleedImmune => true;
+        public override Poison PoisonImmune => Poison.Lethal;
 
         public override void OnDeath(Container c)
         {

@@ -38,20 +38,8 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool BleedImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Regular;
-            }
-        }
+        public override bool BleedImmune => true;
+        public override Poison PoisonImmune => Poison.Regular;
 
         public override void GenerateLoot()
         {

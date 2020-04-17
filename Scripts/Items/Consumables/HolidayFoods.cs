@@ -9,7 +9,7 @@ namespace Server.Items
     {
         private static readonly Dictionary<Mobile, ToothAcheTimer> _ToothAches = new Dictionary<Mobile, ToothAcheTimer>();
 
-        public static Dictionary<Mobile, ToothAcheTimer> ToothAches { get { return _ToothAches; } }
+        public static Dictionary<Mobile, ToothAcheTimer> ToothAches => _ToothAches;
 
         private static ToothAcheTimer EnsureTimer(Mobile m, int acidity)
         {
@@ -49,8 +49,8 @@ namespace Server.Items
             return m != null && _ToothAches.Remove(m);
         }
 
-        public virtual bool GivesToothAche { get { return true; } }
-        public virtual int Acidity { get { return 32; } }
+        public virtual bool GivesToothAche => true;
+        public virtual int Acidity => 32;
 
         public BaseSweet(int itemID)
             : base(itemID)

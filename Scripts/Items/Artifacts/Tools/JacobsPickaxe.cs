@@ -26,7 +26,7 @@ namespace Server.Items
             }
         }
 
-        public override int LabelNumber { get { return 1077758; } } // Jacob's Pickaxe
+        public override int LabelNumber => 1077758;  // Jacob's Pickaxe
 
         [Constructable]
         public JacobsPickaxe()

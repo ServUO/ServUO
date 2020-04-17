@@ -33,34 +33,10 @@
             }
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1025453;
-            }
-        }/* water barrel */
-        public override int voidItem_ID
-        {
-            get
-            {
-                return EmptyID;
-            }
-        }
-        public override int fullItem_ID
-        {
-            get
-            {
-                return FilledID;
-            }
-        }
-        public override int MaxQuantity
-        {
-            get
-            {
-                return 100;
-            }
-        }
+        public override int LabelNumber => 1025453;/* water barrel */
+        public override int voidItem_ID => EmptyID;
+        public override int fullItem_ID => FilledID;
+        public override int MaxQuantity => 100;
 
         public override void Serialize(GenericWriter writer)
         {

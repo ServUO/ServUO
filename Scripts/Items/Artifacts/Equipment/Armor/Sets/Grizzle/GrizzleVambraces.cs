@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class GrizzleVambraces : BoneArms
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public GrizzleVambraces()
             : base()
@@ -30,62 +30,14 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074470;
-            }
-        }// Vambraces of the Grizzle
-        public override SetItem SetID
-        {
-            get
-            {
-                return SetItem.Grizzle;
-            }
-        }
-        public override int Pieces
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 6;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 7;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
+        public override int LabelNumber => 1074470;// Vambraces of the Grizzle
+        public override SetItem SetID => SetItem.Grizzle;
+        public override int Pieces => 5;
+        public override int BasePhysicalResistance => 6;
+        public override int BaseFireResistance => 10;
+        public override int BaseColdResistance => 5;
+        public override int BasePoisonResistance => 7;
+        public override int BaseEnergyResistance => 10;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

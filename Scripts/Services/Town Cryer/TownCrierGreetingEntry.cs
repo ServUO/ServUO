@@ -36,10 +36,10 @@ namespace Server.Services.TownCryer
         public bool CanEdit { get; private set; }
 
         [CommandProperty(AccessLevel.Administrator)]
-        public bool Expired { get { return Expires != DateTime.MinValue && Expires < DateTime.Now; } }
+        public bool Expired => Expires != DateTime.MinValue && Expires < DateTime.Now;
 
         [CommandProperty(AccessLevel.Administrator)]
-        public bool Saves { get { return !PreLoaded && Expires != DateTime.MinValue; } }
+        public bool Saves => !PreLoaded && Expires != DateTime.MinValue;
 
         public TownCryerGreetingEntry(TextDefinition body)
             : this(null, body, null, null, -1)

@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class CompassionsEye : GoldRing
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1153288; } } // Compassion's Eye
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1153288;  // Compassion's Eye
 
         [Constructable]
         public CompassionsEye()
@@ -37,8 +37,8 @@ namespace Server.Items
 
     public class UnicornManeWovenSandals : Sandals
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1153289; } } // Unicorn Mane Woven Sandals 
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1153289;  // Unicorn Mane Woven Sandals 
 
         [Constructable]
         public UnicornManeWovenSandals()
@@ -77,8 +77,8 @@ namespace Server.Items
 
     public class UnicornManeWovenTalons : LeatherTalons
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1153314; } } // Unicorn Mane Woven Talons
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1153314;  // Unicorn Mane Woven Talons
 
         [Constructable]
         public UnicornManeWovenTalons()
@@ -117,8 +117,8 @@ namespace Server.Items
 
     public class DespicableQuiver : BaseQuiver
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1153290; } } // Despicable Quiver
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1153290;  // Despicable Quiver
 
         [Constructable]
         public DespicableQuiver() : base(0x2B02)
@@ -162,17 +162,17 @@ namespace Server.Items
 
     public class UnforgivenVeil : GargishLeatherWingArmor
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1153291; } } // Unforgiven Veil 
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1153291;  // Unforgiven Veil 
 
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
-        public override int PhysicalResistance { get { return PhysicalBonus; } }
-        public override int FireResistance { get { return FireBonus; } }
-        public override int ColdResistance { get { return ColdBonus; } }
-        public override int PoisonResistance { get { return PoisonBonus; } }
-        public override int EnergyResistance { get { return EnergyBonus; } }
+        public override int PhysicalResistance => PhysicalBonus;
+        public override int FireResistance => FireBonus;
+        public override int ColdResistance => ColdBonus;
+        public override int PoisonResistance => PoisonBonus;
+        public override int EnergyResistance => EnergyBonus;
 
         [Constructable]
         public UnforgivenVeil()
@@ -213,11 +213,11 @@ namespace Server.Items
 
     public class HailstormHuman : WarFork
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1153292; } } // Hailstorm
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1153292;  // Hailstorm
 
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
         [Constructable]
         public HailstormHuman()
@@ -252,8 +252,8 @@ namespace Server.Items
 
     public class HailstormGargoyle : GargishWarFork
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1153292; } } // Hailstorm
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1153292;  // Hailstorm
 
         [Constructable]
         public HailstormGargoyle()

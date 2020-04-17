@@ -18,13 +18,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041243;
-            }
-        }// a contract of employment
+        public override int LabelNumber => 1041243;// a contract of employment
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

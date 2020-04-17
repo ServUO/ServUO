@@ -68,20 +68,8 @@ namespace Server.Items
         {
         }
 
-        public override string DefaultName
-        {
-            get
-            {
-                return "a item bless deed";
-            }
-        }
-        public override bool DisplayLootType
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override string DefaultName => "a item bless deed";
+        public override bool DisplayLootType => true;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

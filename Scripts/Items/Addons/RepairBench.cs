@@ -13,7 +13,7 @@ namespace Server.Items
 {
     public class RepairBenchComponent : LocalizedAddonComponent
     {
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         public RepairBenchComponent(int id)
             : base(id, 1158860) // Repair Bench
@@ -234,7 +234,7 @@ namespace Server.Items
 
     public class RepairBenchDeed : BaseAddonDeed, IRewardItem, IRewardOption
     {
-        public override int LabelNumber { get { return 1158860; } } // Repair Bench
+        public override int LabelNumber => 1158860;  // Repair Bench
 
         public override BaseAddon Addon
         {

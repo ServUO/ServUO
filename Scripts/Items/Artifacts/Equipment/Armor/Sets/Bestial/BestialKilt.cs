@@ -2,21 +2,21 @@ namespace Server.Items
 {
     public class BestialKilt : GargishClothKilt, ISetItem
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1151546; } } // Bestial Kilt
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1151546;  // Bestial Kilt
 
         #region ISetItem Members
-        public override SetItem SetID { get { return SetItem.Bestial; } }
-        public override int Pieces { get { return 4; } }
+        public override SetItem SetID => SetItem.Bestial;
+        public override int Pieces => 4;
         #endregion
 
-        public override int BasePhysicalResistance { get { return 24; } }
-        public override int BaseFireResistance { get { return 10; } }
-        public override int BaseColdResistance { get { return 9; } }
-        public override int BasePoisonResistance { get { return 10; } }
-        public override int BaseEnergyResistance { get { return 9; } }
-        public override int InitMinHits { get { return 125; } }
-        public override int InitMaxHits { get { return 125; } }
+        public override int BasePhysicalResistance => 24;
+        public override int BaseFireResistance => 10;
+        public override int BaseColdResistance => 9;
+        public override int BasePoisonResistance => 10;
+        public override int BaseEnergyResistance => 9;
+        public override int InitMinHits => 125;
+        public override int InitMaxHits => 125;
 
         [Constructable]
         public BestialKilt()

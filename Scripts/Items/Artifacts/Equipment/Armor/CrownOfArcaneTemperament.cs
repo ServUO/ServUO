@@ -2,10 +2,10 @@ namespace Server.Items
 {
     public class CrownOfArcaneTemperament : Circlet
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
 
-        public override Race RequiredRace { get { return null; } }
-        public override int LabelNumber { get { return 1113762; } } // Crown of Arcane Temperament
+        public override Race RequiredRace => null;
+        public override int LabelNumber => 1113762;  // Crown of Arcane Temperament
 
         [Constructable]
         public CrownOfArcaneTemperament()
@@ -22,14 +22,14 @@ namespace Server.Items
             : base(serial)
         {
         }
-        public override int BasePhysicalResistance { get { return 10; } }
-        public override int BaseFireResistance { get { return 14; } }
-        public override int BaseColdResistance { get { return 4; } }
-        public override int BasePoisonResistance { get { return 12; } }
-        public override int BaseEnergyResistance { get { return 7; } }
+        public override int BasePhysicalResistance => 10;
+        public override int BaseFireResistance => 14;
+        public override int BaseColdResistance => 4;
+        public override int BasePoisonResistance => 12;
+        public override int BaseEnergyResistance => 7;
 
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

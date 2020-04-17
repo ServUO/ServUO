@@ -44,10 +44,7 @@ namespace Server.Engines.CannedEvil
 
         private Dictionary<Mobile, int> m_DamageEntries;
 
-        public List<Mobile> Creatures
-        {
-            get { return m_Creatures; }
-        }
+        public List<Mobile> Creatures => m_Creatures;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public string GroupName { get; set; }
@@ -195,13 +192,7 @@ namespace Server.Engines.CannedEvil
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime RestartTime
-        {
-            get
-            {
-                return m_RestartTime;
-            }
-        }
+        public DateTime RestartTime => m_RestartTime;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public TimeSpan ExpireDelay
@@ -894,13 +885,7 @@ namespace Server.Engines.CannedEvil
             return Location;
         }
 
-        public int Rank
-        {
-            get
-            {
-                return ChampionSystem.RankForLevel(Level);
-            }
-        }
+        public int Rank => ChampionSystem.RankForLevel(Level);
 
         public int GetRankFor(Mobile m)
         {
@@ -1522,23 +1507,11 @@ namespace Server.Engines.CannedEvil
             EventSink.Login += OnLogin;
         }
 
-        public override bool YoungProtected
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool YoungProtected => false;
 
         private readonly ChampionSpawn m_Spawn;
 
-        public ChampionSpawn ChampionSpawn
-        {
-            get
-            {
-                return m_Spawn;
-            }
-        }
+        public ChampionSpawn ChampionSpawn => m_Spawn;
 
         public ChampionSpawnRegion(ChampionSpawn spawn)
             : base(null, spawn.Map, Region.Find(spawn.Location, spawn.Map), spawn.SpawnArea)
@@ -1630,21 +1603,9 @@ namespace Server.Engines.CannedEvil
     {
         private ChampionSpawn m_Spawn;
 
-        public ChampionSpawn Spawn
-        {
-            get
-            {
-                return m_Spawn;
-            }
-        }
+        public ChampionSpawn Spawn => m_Spawn;
 
-        public override string DefaultName
-        {
-            get
-            {
-                return "Idol of the Champion";
-            }
-        }
+        public override string DefaultName => "Idol of the Champion";
 
         public IdolOfTheChampion(ChampionSpawn spawn)
             : base(0x1F18)

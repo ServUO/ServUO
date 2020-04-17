@@ -13,13 +13,7 @@
         {
         }
 
-        public override int DefaultGumpID
-        {
-            get
-            {
-                return 0x3e;
-            }
-        }
+        public override int DefaultGumpID => 0x3e;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

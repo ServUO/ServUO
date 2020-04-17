@@ -8,28 +8,28 @@ namespace Server.Engines.Quests
     public class RightingWrongQuest : BaseQuest
     {
         /* Righting Wrong */
-        public override object Title { get { return 1158150; } }
+        public override object Title => 1158150;
 
         /*The situation at the Prison Dungeon Wrong seems to have gotten out of control. The article mentioned the Royal 
          * Britannian' Guard has started contracting adventuring groups to handle the situation. Perhaps it would be
          * prudent to inquire about opportunities with the Guard at the Court of Truth in Yew.*/
-        public override object Description { get { return 1158151; } }
+        public override object Description => 1158151;
 
         /* You decide against accepting the quest. */
-        public override object Refuse { get { return 1158130; } }
+        public override object Refuse => 1158130;
 
         /* Inquire about the events at Wrong with the Royal Britannian Guard at the Court of Truth in Yew. */
-        public override object Uncomplete { get { return 1158152; } }
+        public override object Uncomplete => 1158152;
 
-        public override object Complete { get { return 1158170; } }
+        public override object Complete => 1158170;
         /*You have brought Justice to the forgotten prison dungeon Wrong! The Royal Britannian Guard thanks you for your service,
          * and for not leaving the Lieutenant behind. You fought bravely this day and escaped the prison. As a thank you for your
          * service, and a testament to your accomplishment, you have been granted the title Warden of Wrong!*/
 
-        public override int CompleteMessage { get { return 1158291; } } // You've found the Royal Guard Captain! Speak to him to learn more!
+        public override int CompleteMessage => 1158291;  // You've found the Royal Guard Captain! Speak to him to learn more!
 
-        public override int AcceptSound { get { return 0x2E8; } }
-        public override bool DoneOnce { get { return true; } }
+        public override int AcceptSound => 0x2E8;
+        public override bool DoneOnce => true;
 
         public RightingWrongQuest()
         {
@@ -47,7 +47,7 @@ namespace Server.Engines.Quests
 
         private class InternalObjective : BaseObjective
         {
-            public override object ObjectiveDescription { get { return Quest.Uncomplete; } }
+            public override object ObjectiveDescription => Quest.Uncomplete;
 
             public InternalObjective()
                 : base(1)
@@ -72,32 +72,32 @@ namespace Server.Engines.Quests
 
     public class RightingWrongQuest2 : BaseQuest
     {
-        public override QuestChain ChainID { get { return QuestChain.RightingWrong; } }
-        public override Type NextQuest { get { return typeof(RightingWrongQuest3); } }
+        public override QuestChain ChainID => QuestChain.RightingWrong;
+        public override Type NextQuest => typeof(RightingWrongQuest3);
 
         /* Righting Wrong */
-        public override object Title { get { return 1158150; } }
+        public override object Title => 1158150;
 
         /*Another wanna-be guardsman expecting to wrangle this mess? You should know that inside Wrong there are many terrors.
          * Lizardman have squatted in the entire prison, eaten most of the prisoners and staff. The few staff that are left have
          * gone mad. If you expect to make it as a Guardsman you are going to need to thin out the heard. Head inside and kill 
          * the creatures within!*/
-        public override object Description { get { return 1158155; } }
+        public override object Description => 1158155;
 
         /* You decide against accepting the quest. */
-        public override object Refuse { get { return 1158130; } }
+        public override object Refuse => 1158130;
 
         /* Go inside the prison dungeon Wrong and slay the creatures within! */
-        public override object Uncomplete { get { return 1158156; } }
+        public override object Uncomplete => 1158156;
 
         /* Well then, I guess you aren't as useless as you look. Made quick work of the Lizards, that's fine work indeed! 
          * Your next test is going to require you travel deeper into the prison. Seems there is an ogre who has taken to mastering 
          * his cooking skills at the expense of the former prisoners. The Guard can't have that, so you need to go in there and make 
          * sure this cook is prepping his last meal! */
-        public override object Complete { get { return 1158157; } }
+        public override object Complete => 1158157;
 
-        public override int AcceptSound { get { return 0x2E8; } }
-        public override bool DoneOnce { get { return true; } }
+        public override int AcceptSound => 0x2E8;
+        public override bool DoneOnce => true;
 
         public RightingWrongQuest2()
         {
@@ -112,33 +112,33 @@ namespace Server.Engines.Quests
 
     public class RightingWrongQuest3 : BaseQuest
     {
-        public override QuestChain ChainID { get { return QuestChain.RightingWrong; } }
-        public override Type NextQuest { get { return typeof(RightingWrongQuest4); } }
+        public override QuestChain ChainID => QuestChain.RightingWrong;
+        public override Type NextQuest => typeof(RightingWrongQuest4);
 
         /* Righting Wrong */
-        public override object Title { get { return 1158150; } }
+        public override object Title => 1158150;
 
         /* Well then, I guess you aren't as useless as you look. Made quick work of the Lizards, that's fine work indeed! 
          * Your next test is going to require you travel deeper into the prison. Seems there is an ogre who has taken to mastering 
          * his cooking skills at the expense of the former prisoners. The Guard can't have that, so you need to go in there and make 
          * sure this cook is prepping his last meal! */
-        public override object Description { get { return 1158157; } }
+        public override object Description => 1158157;
 
         /* You decide against accepting the quest. */
-        public override object Refuse { get { return 1158130; } }
+        public override object Refuse => 1158130;
 
         /* Go inside the prison dungeon Wrong and slay Fezzik the Ogre Cook */
-        public override object Uncomplete { get { return 1158158; } }
+        public override object Uncomplete => 1158158;
 
         /* Looks like Fezzik won't be making anymore stew! Hah! Well done! Your final task is going to require you to learn the
          * most important lesson of being a Guardsman - we never leave a man behind. One of our comrades was captured by the 
          * demonic jailers and taken to the prison. You need to get yourself captured by the jailers and taken inside the deepest
          * part of the prison. Once inside, find our fallen comrade and escape. Here's a copy of his orders to help you find his corpse. */
-        public override object Complete { get { return 1158163; } }
+        public override object Complete => 1158163;
 
         //public override int CompleteMessage { get { return 1158291; } } // You've found the Royal Guard Captain! Speak to him to learn more!
 
-        public override int AcceptSound { get { return 0x2E8; } }
+        public override int AcceptSound => 0x2E8;
 
         public RightingWrongQuest3()
         {
@@ -150,37 +150,37 @@ namespace Server.Engines.Quests
 
     public class RightingWrongQuest4 : BaseQuest
     {
-        public override QuestChain ChainID { get { return QuestChain.RightingWrong; } }
+        public override QuestChain ChainID => QuestChain.RightingWrong;
 
         private RoyalBritannianGuardOrders Orders { get; set; }
 
         /* Righting Wrong */
-        public override object Title { get { return 1158150; } }
+        public override object Title => 1158150;
 
         /* Looks like Fezzik won't be making anymore stew! Hah! Well done! Your final task is going to require you to learn the
          * most important lesson of being a Guardsman - we never leave a man behind. One of our comrades was captured by the 
          * demonic jailers and taken to the prison. You need to get yourself captured by the jailers and taken inside the deepest
          * part of the prison. Once inside, find our fallen comrade and escape. Here's a copy of his orders to help you find his corpse. */
-        public override object Description { get { return 1158163; } }
+        public override object Description => 1158163;
 
         /* You decide against accepting the quest. */
-        public override object Refuse { get { return 1158130; } }
+        public override object Refuse => 1158130;
 
         /* Go inside the prison dungeon Wrong and get yourself captured by the Demonic Jailors. Once inside, find the fallen Guard and escape 
          * with his corpse. */
-        public override object Uncomplete { get { return 1158166; } }
+        public override object Uncomplete => 1158166;
 
         /* You have brought Justice to the forgotten prison dungeon Wrong! The Royal Britannian Guard thanks you for your service, 
          * and for not leaving the Lieutenant behind. You fought bravely this day and escaped the prison. As a thank you for your
          * service, and a testament to your accomplishment, you have been granted the title Warden of Wrong! */
-        public override object Complete { get { return 1158170; } }
+        public override object Complete => 1158170;
 
-        public override int CompleteMessage { get { return 1158169; } }
+        public override int CompleteMessage => 1158169;
         /*You have found the corpse of Lieutenant Bennet Yardley of the Royal Britannian Guard. Unfortunately, it seems there 
          * is not much left to return to the Field Commander. Regardless, you hold back your urge to become sick and gather his
          * remains. Escape the prison and return to the Field Commander.*/
 
-        public override int AcceptSound { get { return 0x2E8; } }
+        public override int AcceptSound => 0x2E8;
 
         public RightingWrongQuest4()
         {
@@ -221,7 +221,7 @@ namespace Server.Engines.Quests
 
         private class InternalObjective : BaseObjective
         {
-            public override object ObjectiveDescription { get { return 1158164; } } // Find the fallen Guard's corpse and escape the prison.
+            public override object ObjectiveDescription => 1158164;  // Find the fallen Guard's corpse and escape the prison.
 
             public InternalObjective()
                 : base(1)
@@ -264,7 +264,7 @@ namespace Server.Engines.Quests
 
     public class Arnold : MondainQuester
     {
-        public override Type[] Quests { get { return new Type[] { typeof(RightingWrongQuest2) }; } }
+        public override Type[] Quests => new Type[] { typeof(RightingWrongQuest2) };
 
         public static Arnold TramInstance { get; set; }
         public static Arnold FelInstance { get; set; }

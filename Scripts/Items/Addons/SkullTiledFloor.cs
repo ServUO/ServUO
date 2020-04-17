@@ -39,13 +39,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new SkullTiledFloorAddonDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new SkullTiledFloorAddonDeed();
 
         public override void Serialize(GenericWriter writer)
         {
@@ -76,15 +70,9 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber { get { return 1159020; } } // Skull Tiled Floor
+        public override int LabelNumber => 1159020;  // Skull Tiled Floor
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new SkullTiledFloorAddon(m_East);
-            }
-        }
+        public override BaseAddon Addon => new SkullTiledFloorAddon(m_East);
 
         public override void OnDoubleClick(Mobile from)
         {

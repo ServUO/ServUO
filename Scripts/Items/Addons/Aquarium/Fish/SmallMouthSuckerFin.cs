@@ -13,13 +13,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074590;
-            }
-        }// Small Mouth Sucker Fin
+        public override int LabelNumber => 1074590;// Small Mouth Sucker Fin
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

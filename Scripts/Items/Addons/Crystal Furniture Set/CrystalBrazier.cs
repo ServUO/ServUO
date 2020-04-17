@@ -13,7 +13,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed { get { return new CrystalBrazierDeed(); } }
+        public override BaseAddonDeed Deed => new CrystalBrazierDeed();
 
         public override void Serialize(GenericWriter writer)
         {
@@ -30,11 +30,11 @@ namespace Server.Items
 
     public class CrystalBrazierDeed : BaseAddonDeed
     {
-        public override int LabelNumber { get { return 1076667; } } // Crystal Brazier
+        public override int LabelNumber => 1076667;  // Crystal Brazier
 
-        public override bool ExcludeDeedHue { get { return true; } }
+        public override bool ExcludeDeedHue => true;
 
-        public override BaseAddon Addon { get { return new CrystalBrazierAddon(); } }
+        public override BaseAddon Addon => new CrystalBrazierAddon();
 
         [Constructable]
         public CrystalBrazierDeed()

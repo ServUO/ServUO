@@ -20,34 +20,10 @@ namespace Server.Mobiles
         {
         }
 
-        public override NpcGuild NpcGuild
-        {
-            get
-            {
-                return NpcGuild.BlacksmithsGuild;
-            }
-        }
-        public override bool IsActiveVendor
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool ClickTitle
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override VendorShoeType ShoeType
-        {
-            get
-            {
-                return VendorShoeType.ThighBoots;
-            }
-        }
+        public override NpcGuild NpcGuild => NpcGuild.BlacksmithsGuild;
+        public override bool IsActiveVendor => true;
+        public override bool ClickTitle => true;
+        public override VendorShoeType ShoeType => VendorShoeType.ThighBoots;
         public override void InitSBInfo()
         {
             SBInfos.Add(new SBBlacksmith());

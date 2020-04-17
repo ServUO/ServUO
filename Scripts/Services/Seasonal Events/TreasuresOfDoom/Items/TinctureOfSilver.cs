@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class TinctureOfSilver : Item
     {
-        public override int LabelNumber { get { return 1155619; } } // Tincture of Silver
+        public override int LabelNumber => 1155619;  // Tincture of Silver
 
         [Constructable]
         public TinctureOfSilver()

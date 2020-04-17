@@ -5,7 +5,7 @@ namespace Server.Engines.VvV
 {
     public class WrongTileAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new WrongTileDeed(); } }
+        public override BaseAddonDeed Deed => new WrongTileDeed();
 
         public TileType TileType { get; set; }
 
@@ -51,8 +51,8 @@ namespace Server.Engines.VvV
 
     public class WrongTileDeed : BaseAddonDeed, IRewardOption
     {
-        public override BaseAddon Addon { get { return new WrongTileAddon(TileType); } }
-        public override int LabelNumber { get { return 1155523; } } // Wrong Tile
+        public override BaseAddon Addon => new WrongTileAddon(TileType);
+        public override int LabelNumber => 1155523;  // Wrong Tile
 
         public TileType TileType { get; set; }
 

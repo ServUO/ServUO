@@ -25,41 +25,11 @@ namespace Server.Engines.Mahjong
             this.m_Wind = (MahjongWind)reader.ReadInt();
         }
 
-        public MahjongGame Game
-        {
-            get
-            {
-                return this.m_Game;
-            }
-        }
-        public Point2D Position
-        {
-            get
-            {
-                return this.m_Position;
-            }
-        }
-        public MahjongPieceDirection Direction
-        {
-            get
-            {
-                return this.m_Direction;
-            }
-        }
-        public MahjongWind Wind
-        {
-            get
-            {
-                return this.m_Wind;
-            }
-        }
-        public MahjongPieceDim Dimensions
-        {
-            get
-            {
-                return GetDimensions(this.m_Position, this.m_Direction);
-            }
-        }
+        public MahjongGame Game => this.m_Game;
+        public Point2D Position => this.m_Position;
+        public MahjongPieceDirection Direction => this.m_Direction;
+        public MahjongWind Wind => this.m_Wind;
+        public MahjongPieceDim Dimensions => GetDimensions(this.m_Position, this.m_Direction);
         public static MahjongPieceDim GetDimensions(Point2D position, MahjongPieceDirection direction)
         {
             if (direction == MahjongPieceDirection.Up || direction == MahjongPieceDirection.Down)

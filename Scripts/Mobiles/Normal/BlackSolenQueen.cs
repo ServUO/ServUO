@@ -56,13 +56,7 @@ namespace Server.Mobiles
         {
         }
 
-        public bool BurstSac
-        {
-            get
-            {
-                return this.m_BurstSac;
-            }
-        }
+        public bool BurstSac => this.m_BurstSac;
         public override int GetAngerSound()
         {
             return 0x259;
@@ -232,10 +226,7 @@ namespace Server.Mobiles
     {
         private SpawnTimer m_Timer;
 
-        public override string DefaultName
-        {
-            get { return "egg sac"; }
-        }
+        public override string DefaultName => "egg sac";
 
         [Constructable]
         public BSQEggSac()

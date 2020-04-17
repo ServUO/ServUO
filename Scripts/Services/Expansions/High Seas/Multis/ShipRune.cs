@@ -22,7 +22,7 @@ namespace Server.Items
             }
         }
 
-        public override int LabelNumber { get { return 1149570; } } //A Ship Rune
+        public override int LabelNumber => 1149570;  //A Ship Rune
 
         [Constructable]
         public ShipRune() : this(null)

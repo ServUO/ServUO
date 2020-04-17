@@ -20,47 +20,11 @@ namespace Server.Engines.Quests.Ninja
         {
         }
 
-        public override Type[] TypeReferenceTable
-        {
-            get
-            {
-                return m_TypeReferenceTable;
-            }
-        }
-        public override object Name
-        {
-            get
-            {
-                return 1063173; // Emino's Undertaking
-            }
-        }
-        public override object OfferMessage
-        {
-            get
-            {
-                return 1063174;
-            }
-        }
-        public override TimeSpan RestartDelay
-        {
-            get
-            {
-                return TimeSpan.MaxValue;
-            }
-        }
-        public override bool IsTutorial
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int Picture
-        {
-            get
-            {
-                return 0x15D5;
-            }
-        }
+        public override Type[] TypeReferenceTable => m_TypeReferenceTable;
+        public override object Name => 1063173; // Emino's Undertaking
+        public override object OfferMessage => 1063174;
+        public override TimeSpan RestartDelay => TimeSpan.MaxValue;
+        public override bool IsTutorial => true;
+        public override int Picture => 0x15D5;
     }
 }

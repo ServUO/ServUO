@@ -4,7 +4,7 @@ namespace Server.Items
     [Flipable(0xA4E3, 0xA4E4)]
     public class Feedbag : BaseContainer
     {
-        public override int LabelNumber { get { return 1126235; } } // feedbag
+        public override int LabelNumber => 1126235;  // feedbag
 
         public Feedbag()
             : base(0xA4E3)

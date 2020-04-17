@@ -49,20 +49,8 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool CanRummageCorpses
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 4;
-            }
-        }
+        public override bool CanRummageCorpses => true;
+        public override int TreasureMapLevel => 4;
         public override int GetAngerSound()
         {
             return 0x4E3;

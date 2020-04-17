@@ -44,34 +44,10 @@ namespace Server.Mobiles
         {
         }
 
-        public override double DispelDifficulty
-        {
-            get
-            {
-                return 70.0;
-            }
-        }
-        public override double DispelFocus
-        {
-            get
-            {
-                return 20.0;
-            }
-        }
-        public override PackInstinct PackInstinct
-        {
-            get
-            {
-                return PackInstinct.Daemon;
-            }
-        }
-        public override bool BleedImmune
-        {
-            get
-            {
-                return true;
-            }
-        }//TODO: Verify on OSI.  Guide says this.
+        public override double DispelDifficulty => 70.0;
+        public override double DispelFocus => 20.0;
+        public override PackInstinct PackInstinct => PackInstinct.Daemon;
+        public override bool BleedImmune => true;//TODO: Verify on OSI.  Guide says this.
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

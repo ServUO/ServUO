@@ -26,20 +26,8 @@ namespace Server.Items
             this.m_Amount = amount;
         }
 
-        public Type Type
-        {
-            get
-            {
-                return this.m_Type;
-            }
-        }
-        public int Amount
-        {
-            get
-            {
-                return this.m_Amount;
-            }
-        }
+        public Type Type => this.m_Type;
+        public int Amount => this.m_Amount;
         public static CrystalRechargeInfo Get(Type type)
         {
             foreach (CrystalRechargeInfo info in Table)
@@ -79,13 +67,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1060740;
-            }
-        }// communication crystal
+        public override int LabelNumber => 1060740;// communication crystal
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Active
         {
@@ -112,20 +94,8 @@ namespace Server.Items
                 this.InvalidateProperties();
             }
         }
-        public List<ReceiverCrystal> Receivers
-        {
-            get
-            {
-                return this.m_Receivers;
-            }
-        }
-        public override bool HandlesOnSpeech
-        {
-            get
-            {
-                return this.Active && this.Receivers.Count > 0 && (this.RootParent == null || this.RootParent is Mobile);
-            }
-        }
+        public List<ReceiverCrystal> Receivers => this.m_Receivers;
+        public override bool HandlesOnSpeech => this.Active && this.Receivers.Count > 0 && (this.RootParent == null || this.RootParent is Mobile);
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
@@ -325,13 +295,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1060740;
-            }
-        }// communication crystal
+        public override int LabelNumber => 1060740;// communication crystal
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Active
         {

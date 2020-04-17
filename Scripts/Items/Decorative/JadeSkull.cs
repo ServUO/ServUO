@@ -3,7 +3,7 @@ namespace Server.Items
     [FlipableAttribute(0x9A1C, 0x9A1D)]
     public class JadeSkull : Item
     {
-        public override int LabelNumber { get { return 1123476; } } // Jade Skull
+        public override int LabelNumber => 1123476;  // Jade Skull
 
         [Constructable]
         public JadeSkull()

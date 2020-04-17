@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class CrystalTeleporter : ClickTeleporter
     {
-        public override int LabelNumber { get { return 1027961; } } // magical crystal
+        public override int LabelNumber => 1027961;  // magical crystal
 
         [Constructable]
         public CrystalTeleporter()

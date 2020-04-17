@@ -7,7 +7,7 @@ namespace Server.Mobiles
 {
     public class FishMonger : MondainQuester
     {
-        public override Type[] Quests { get { return new Type[] { typeof(ProfessionalFisherQuest) }; } }
+        public override Type[] Quests => new Type[] { typeof(ProfessionalFisherQuest) };
 
         [Constructable]
         public FishMonger()

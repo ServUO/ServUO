@@ -16,17 +16,11 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(IngenuityQuest),
                     typeof(PointyEarsQuest)
                 };
-            }
-        }
         public override void InitBody()
         {
             this.Female = false;

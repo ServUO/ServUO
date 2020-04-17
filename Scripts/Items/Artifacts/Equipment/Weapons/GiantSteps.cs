@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class GiantSteps : GargishStoneLegs
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1113537; } } // Giant Steps
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113537;  // Giant Steps
 
         [Constructable]
         public GiantSteps()
@@ -22,55 +22,13 @@ namespace Server.Items
         {
         }
 
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 18;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 16;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 4;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 8;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 12;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int BasePhysicalResistance => 18;
+        public override int BaseFireResistance => 16;
+        public override int BaseColdResistance => 4;
+        public override int BasePoisonResistance => 8;
+        public override int BaseEnergyResistance => 12;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

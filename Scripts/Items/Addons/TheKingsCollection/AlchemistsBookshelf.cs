@@ -4,12 +4,12 @@ namespace Server.Items
 {
     public class AlchemistsBookshelfAddon : BaseAddonContainer
     {
-        public override BaseAddonContainerDeed Deed { get { return new AlchemistsBookshelfDeed(); } }
-        public override bool RetainDeedHue { get { return true; } }
-        public override int DefaultGumpID { get { return 0x4D; } }
-        public override int DefaultDropSound { get { return 0x42; } }
+        public override BaseAddonContainerDeed Deed => new AlchemistsBookshelfDeed();
+        public override bool RetainDeedHue => true;
+        public override int DefaultGumpID => 0x4D;
+        public override int DefaultDropSound => 0x42;
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         [Constructable]
         public AlchemistsBookshelfAddon(DirectionType type)
@@ -37,8 +37,8 @@ namespace Server.Items
 
     public class AlchemistsBookshelfDeed : BaseAddonContainerDeed, IRewardOption
     {
-        public override BaseAddonContainer Addon { get { return new AlchemistsBookshelfAddon(_Direction); } }
-        public override int LabelNumber { get { return 1154192; } } // Alchemist Bookcase
+        public override BaseAddonContainer Addon => new AlchemistsBookshelfAddon(_Direction);
+        public override int LabelNumber => 1154192;  // Alchemist Bookcase
 
         private DirectionType _Direction;
 

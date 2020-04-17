@@ -26,13 +26,7 @@ namespace Server.Items.MusicBox
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public MusicName Music
-        {
-            get
-            {
-                return this.m_Music;
-            }
-        }
+        public MusicName Music => this.m_Music;
         public static MusicBoxGears RandomMusixBoxGears(TrackRarity rarity)
         {
             return new MusicBoxGears(TrackInfo.RandomSong(rarity));

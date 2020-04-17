@@ -48,27 +48,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Meat
-        {
-            get
-            {
-                return 4;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Regular;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 5;
-            }
-        }
+        public override int Meat => 4;
+        public override Poison PoisonImmune => Poison.Regular;
+        public override int TreasureMapLevel => 5;
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.FilthyRich);

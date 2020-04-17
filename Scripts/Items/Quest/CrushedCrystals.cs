@@ -15,13 +15,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074262;
-            }
-        }// crushed crystal pieces
+        public override int LabelNumber => 1074262;// crushed crystal pieces
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

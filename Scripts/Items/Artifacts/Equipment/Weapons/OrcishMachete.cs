@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class OrcishMachete : ElvenMachete
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public OrcishMachete()
         {
@@ -15,13 +15,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073534;
-            }
-        }// Orcish Machete
+        public override int LabelNumber => 1073534;// Orcish Machete
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -2,7 +2,7 @@
 {
     public class UnknownBardSkeleton : BaseContainer
     {
-        public override int DefaultGumpID { get { return 0x9; } }
+        public override int DefaultGumpID => 0x9;
 
         [Constructable]
         public UnknownBardSkeleton()
@@ -54,7 +54,7 @@
 
     public class UnknownRogueSkeleton : BaseContainer
     {
-        public override int DefaultGumpID { get { return 0x9; } }
+        public override int DefaultGumpID => 0x9;
 
         [Constructable]
         public UnknownRogueSkeleton()
@@ -105,7 +105,7 @@
 
     public class UnknownMageSkeleton : BaseContainer
     {
-        public override int DefaultGumpID { get { return 0x9; } }
+        public override int DefaultGumpID => 0x9;
 
         [Constructable]
         public UnknownMageSkeleton()

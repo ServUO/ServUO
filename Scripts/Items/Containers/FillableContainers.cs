@@ -94,13 +94,13 @@ namespace Server.Items
         {
         }
 
-        public virtual int MinRespawnMinutes { get { return 5; } }
-        public virtual int MaxRespawnMinutes { get { return 30; } }
-        public virtual bool IsLockable { get { return true; } }
-        public virtual bool IsTrapable { get { return IsLockable; } }
-        public virtual int SpawnThreshold { get { return MaxSpawnCount - 1; } }
+        public virtual int MinRespawnMinutes => 5;
+        public virtual int MaxRespawnMinutes => 30;
+        public virtual bool IsLockable => true;
+        public virtual bool IsTrapable => IsLockable;
+        public virtual int SpawnThreshold => MaxSpawnCount - 1;
 
-        public virtual int AmountPerSpawn { get { return 1; } }
+        public virtual int AmountPerSpawn => 1;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int MaxSpawnCount { get; set; }
@@ -450,13 +450,7 @@ namespace Server.Items
         {
         }
 
-        public override bool IsLockable
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool IsLockable => false;
 
         public override void AcquireContent()
         {
@@ -639,13 +633,7 @@ namespace Server.Items
         {
         }
 
-        public override bool IsLockable
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool IsLockable => false;
 
         public void Pour(Mobile from, BaseBeverage beverage)
         {
@@ -869,20 +857,8 @@ namespace Server.Items
                 m_Types[i] = types[offset + i];
         }
 
-        public Type[] Types
-        {
-            get
-            {
-                return m_Types;
-            }
-        }
-        public int Weight
-        {
-            get
-            {
-                return m_Weight;
-            }
-        }
+        public Type[] Types => m_Types;
+        public int Weight => m_Weight;
         public virtual Item Construct()
         {
             Item item = Loot.Construct(m_Types);
@@ -912,13 +888,7 @@ namespace Server.Items
             m_Content = content;
         }
 
-        public BeverageType Content
-        {
-            get
-            {
-                return m_Content;
-            }
-        }
+        public BeverageType Content => m_Content;
         public override Item Construct()
         {
             Item item;
@@ -1663,27 +1633,9 @@ namespace Server.Items
                 m_Weight += entries[i].Weight;
         }
 
-        public int Level
-        {
-            get
-            {
-                return m_Level;
-            }
-        }
-        public Type[] Vendors
-        {
-            get
-            {
-                return m_Vendors;
-            }
-        }
-        public FillableContentType TypeID
-        {
-            get
-            {
-                return Lookup(this);
-            }
-        }
+        public int Level => m_Level;
+        public Type[] Vendors => m_Vendors;
+        public FillableContentType TypeID => Lookup(this);
         public static FillableContent Lookup(FillableContentType type)
         {
             int v = (int)type;

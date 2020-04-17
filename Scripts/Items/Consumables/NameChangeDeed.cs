@@ -19,13 +19,7 @@ namespace Server.Items
         {
         }
 
-        public override string DefaultName
-        {
-            get
-            {
-                return "a name change deed";
-            }
-        }
+        public override string DefaultName => "a name change deed";
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

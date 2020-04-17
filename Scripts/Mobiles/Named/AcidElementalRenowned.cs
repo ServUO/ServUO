@@ -51,34 +51,10 @@ namespace Server.Mobiles
         {
         }
 
-        public override Type[] UniqueSAList
-        {
-            get
-            {
-                return new Type[] { typeof(BreastplateOfTheBerserker), typeof(TerathanWarriorCostume) };
-            }
-        }
-        public override Type[] SharedSAList
-        {
-            get
-            {
-                return new Type[] { typeof(MysticsGarb) };
-            }
-        }
-        public override bool BleedImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
+        public override Type[] UniqueSAList => new Type[] { typeof(BreastplateOfTheBerserker), typeof(TerathanWarriorCostume) };
+        public override Type[] SharedSAList => new Type[] { typeof(MysticsGarb) };
+        public override bool BleedImmune => true;
+        public override Poison PoisonImmune => Poison.Lethal;
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Rich, 2);

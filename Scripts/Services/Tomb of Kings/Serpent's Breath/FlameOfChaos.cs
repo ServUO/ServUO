@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class FlameOfChaos : Item
     {
-        public override int LabelNumber { get { return 1112128; } } // Flame of Chaos
+        public override int LabelNumber => 1112128;  // Flame of Chaos
 
         private List<FireBarrier> m_Barriers;
 
@@ -26,7 +26,7 @@ namespace Server.Items
             }
         }
 
-        public override bool HandlesOnSpeech { get { return true; } }
+        public override bool HandlesOnSpeech => true;
 
         public override void OnSpeech(SpeechEventArgs e)
         {

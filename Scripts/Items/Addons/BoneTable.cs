@@ -14,13 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new BoneTableDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new BoneTableDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -50,20 +44,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new BoneTableAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074478;
-            }
-        }// Bone table
+        public override BaseAddon Addon => new BoneTableAddon();
+        public override int LabelNumber => 1074478;// Bone table
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

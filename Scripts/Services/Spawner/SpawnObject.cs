@@ -7,7 +7,7 @@ namespace Server.Mobiles
         public string SpawnName { get; set; }
         public int MaxCount { get; set; }
 
-        public int CurrentCount { get { return SpawnedObjects.Count; } }
+        public int CurrentCount => SpawnedObjects.Count;
 
         public List<ISpawnable> SpawnedObjects { get; set; }
 

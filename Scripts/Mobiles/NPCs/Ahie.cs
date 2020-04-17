@@ -14,47 +14,17 @@ namespace Server.Engines.Quests
         }
 
         /* The King of Clothing */
-        public override object Title
-        {
-            get
-            {
-                return 1073902;
-            }
-        }
+        public override object Title => 1073902;
         /* I have heard noble tales of a fine and proud human garment. An article of clothing 
         fit for both man and god alike. It is called a "kilt" I believe? Could you fetch for 
         me some of these kilts so I that I might revel in their majesty and glory? */
-        public override object Description
-        {
-            get
-            {
-                return 1074092;
-            }
-        }
+        public override object Description => 1074092;
         /* I will patiently await your reconsideration. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1073921;
-            }
-        }
+        public override object Refuse => 1073921;
         /* I will be in your debt if you bring me kilts. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1073948;
-            }
-        }
+        public override object Uncomplete => 1073948;
         /* I say truly - that is a magnificent garment! You have more than earned a reward. */
-        public override object Complete
-        {
-            get
-            {
-                return 1073974;
-            }
-        }
+        public override object Complete => 1073974;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -81,48 +51,18 @@ namespace Server.Engines.Quests
         }
 
         /* The Puffy Shirt */
-        public override object Title
-        {
-            get
-            {
-                return 1073903;
-            }
-        }
+        public override object Title => 1073903;
         /* We elves believe that beauty is expressed in all things, including the garments we 
         wear. I wish to understand more about human aesthetics, so please kind traveler - could 
         you bring to me magnificent examples of human fancy shirts? For my thanks, I could teach 
         you more about the beauty of elven vestements. */
-        public override object Description
-        {
-            get
-            {
-                return 1074093;
-            }
-        }
+        public override object Description => 1074093;
         /* I will patiently await your reconsideration. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1073921;
-            }
-        }
+        public override object Refuse => 1073921;
         /* I will be in your debt if you bring me fancy shirts. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1073949;
-            }
-        }
+        public override object Uncomplete => 1073949;
         /* I appreciate your service. Now, see what elven hands can create. */
-        public override object Complete
-        {
-            get
-            {
-                return 1073973;
-            }
-        }
+        public override object Complete => 1073973;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -149,48 +89,18 @@ namespace Server.Engines.Quests
         }
 
         /* From the Gaultier Collection */
-        public override object Title
-        {
-            get
-            {
-                return 1073905;
-            }
-        }
+        public override object Title => 1073905;
         /* It is my understanding, the females of humankind actually wear on certain occasions a 
         studded bustier? This is not simply a fanciful tale? Remarkable! It sounds hideously 
         uncomfortable as well as ludicrously impracticle. But perhaps, I simply do not understand 
         the nuances of human clothing. Perhaps, I need to see such a studded bustier for myself? */
-        public override object Description
-        {
-            get
-            {
-                return 1074095;
-            }
-        }
+        public override object Description => 1074095;
         /* I will patiently await your reconsideration. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1073921;
-            }
-        }
+        public override object Refuse => 1073921;
         /* I will be in your debt if you bring me studded bustiers. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1073951;
-            }
-        }
+        public override object Uncomplete => 1073951;
         /* Truly, it is worse than I feared. Still, I appreciate your efforts on my behalf. */
-        public override object Complete
-        {
-            get
-            {
-                return 1073976;
-            }
-        }
+        public override object Complete => 1073976;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -217,47 +127,17 @@ namespace Server.Engines.Quests
         }
 
         /* H'ute Couture */
-        public override object Title
-        {
-            get
-            {
-                return 1073901;
-            }
-        }
+        public override object Title => 1073901;
         /* Most human apparel is interesting to elven eyes. But there is one garment - the flower garland - 
         which sounds very elven indeed. Could I see how a human crafts such an object of beauty? In exchange, 
         I could share with you the wonders of elven garments. */
-        public override object Description
-        {
-            get
-            {
-                return 1074091;
-            }
-        }
+        public override object Description => 1074091;
         /* I will patiently await your reconsideration. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1073921;
-            }
-        }
+        public override object Refuse => 1073921;
         /* I will be in your debt if you bring me flower garlands. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1073947;
-            }
-        }
+        public override object Uncomplete => 1073947;
         /* I appreciate your service. Now, see what elven hands can create. */
-        public override object Complete
-        {
-            get
-            {
-                return 1073973;
-            }
-        }
+        public override object Complete => 1073973;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -288,19 +168,13 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(TheKingOfClothingQuest),
                     typeof(ThePuffyShirtQuest),
                     typeof(FromTheGaultierCollectionQuest),
                     typeof(HuteCoutureQuest)
                 };
-            }
-        }
         public override void InitBody()
         {
             InitStats(100, 100, 25);

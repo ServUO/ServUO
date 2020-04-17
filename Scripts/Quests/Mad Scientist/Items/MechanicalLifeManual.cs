@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class MechanicalLifeManual : Item
     {
-        public override int LabelNumber { get { return 1112874; } } // Mechanical Life Manual
+        public override int LabelNumber => 1112874;  // Mechanical Life Manual
 
         [Constructable]
         public MechanicalLifeManual()

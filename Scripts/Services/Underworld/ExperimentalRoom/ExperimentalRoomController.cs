@@ -6,7 +6,7 @@ namespace Server.Items
     public class ExperimentalRoomController : Item
     {
         private static ExperimentalRoomController m_Instance;
-        public static ExperimentalRoomController Instance { get { return m_Instance; } }
+        public static ExperimentalRoomController Instance => m_Instance;
 
         private static Dictionary<Mobile, DateTime> m_Table;
 

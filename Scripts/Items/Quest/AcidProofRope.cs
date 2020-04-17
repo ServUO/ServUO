@@ -14,13 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074886;
-            }
-        }// Acid Proof Rope
+        public override int LabelNumber => 1074886;// Acid Proof Rope
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

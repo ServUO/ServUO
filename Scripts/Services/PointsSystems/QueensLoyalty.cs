@@ -15,10 +15,10 @@ namespace Server.Engines.Points
             Noble
         }
 
-        public override PointsType Loyalty { get { return PointsType.QueensLoyalty; } }
-        public override TextDefinition Name { get { return m_Name; } }
-        public override bool AutoAdd { get { return true; } }
-        public override double MaxPoints { get { return 15000; } }
+        public override PointsType Loyalty => PointsType.QueensLoyalty;
+        public override TextDefinition Name => m_Name;
+        public override bool AutoAdd => true;
+        public override double MaxPoints => 15000;
 
         private readonly TextDefinition m_Name = new TextDefinition(1095163);
 

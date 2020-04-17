@@ -30,8 +30,8 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public SecureLevel Level { get; set; }
 
-        public override bool DisplaysContent { get { return false; } }
-        public override double DefaultWeight { get { return 1.0; } }
+        public override bool DisplaysContent => false;
+        public override double DefaultWeight => 1.0;
 
         public abstract Type ScrollType { get; }
 
@@ -183,8 +183,8 @@ namespace Server.Items
                 });
         }
 
-        public virtual Dictionary<SkillCat, List<SkillName>> SkillInfo { get { return null; } }
-        public virtual Dictionary<int, double> ValueInfo { get { return null; } }
+        public virtual Dictionary<SkillCat, List<SkillName>> SkillInfo => null;
+        public virtual Dictionary<int, double> ValueInfo => null;
 
         public static int GetCategoryLocalization(SkillCat category)
         {

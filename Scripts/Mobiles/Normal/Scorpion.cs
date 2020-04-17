@@ -51,41 +51,11 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override FoodType FavoriteFood
-        {
-            get
-            {
-                return FoodType.Meat;
-            }
-        }
-        public override PackInstinct PackInstinct
-        {
-            get
-            {
-                return PackInstinct.Arachnid;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Greater;
-            }
-        }
-        public override Poison HitPoison
-        {
-            get
-            {
-                return (0.8 >= Utility.RandomDouble() ? Poison.Greater : Poison.Deadly);
-            }
-        }
+        public override int Meat => 1;
+        public override FoodType FavoriteFood => FoodType.Meat;
+        public override PackInstinct PackInstinct => PackInstinct.Arachnid;
+        public override Poison PoisonImmune => Poison.Greater;
+        public override Poison HitPoison => (0.8 >= Utility.RandomDouble() ? Poison.Greater : Poison.Deadly);
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Meager);

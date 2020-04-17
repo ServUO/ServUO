@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class EthologistTitleDeed : BaseRewardTitleDeed
     {
-        public override TextDefinition Title { get { return 1157594; } } // Ethologist
+        public override TextDefinition Title => 1157594;  // Ethologist
 
         [Constructable]
         public EthologistTitleDeed()

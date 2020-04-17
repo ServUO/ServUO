@@ -14,13 +14,7 @@
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1151220;
-            }
-        }// table lamp
+        public override int LabelNumber => 1151220;// table lamp
 
         public override void OnDoubleClick(Mobile from)
         {

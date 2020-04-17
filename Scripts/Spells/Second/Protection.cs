@@ -19,20 +19,8 @@ namespace Server.Spells.Second
         {
         }
 
-        public static Hashtable Registry
-        {
-            get
-            {
-                return m_Registry;
-            }
-        }
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Second;
-            }
-        }
+        public static Hashtable Registry => m_Registry;
+        public override SpellCircle Circle => SpellCircle.Second;
         public static void Toggle(Mobile caster, Mobile target, bool archprotection)
         {
             /* Players under the protection spell effect can no longer have their spells "disrupted" when hit.

@@ -4,7 +4,7 @@ namespace Server.Engines.BulkOrders
 {
     public class LargeCarpentryBOD : LargeBOD
     {
-        public override BODType BODType { get { return BODType.Carpentry; } }
+        public override BODType BODType => BODType.Carpentry;
 
         public static double[] m_CarpentryingMaterialChances = new double[]
         {

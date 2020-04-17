@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class VioletCourage : FemalePlateChest
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public VioletCourage()
         {
@@ -18,62 +18,14 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1063471;
-            }
-        }
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 14;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 12;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 12;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 8;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 9;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int LabelNumber => 1063471;
+        public override int BasePhysicalResistance => 14;
+        public override int BaseFireResistance => 12;
+        public override int BaseColdResistance => 12;
+        public override int BasePoisonResistance => 8;
+        public override int BaseEnergyResistance => 9;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

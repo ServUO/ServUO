@@ -74,13 +74,7 @@ namespace Server.Items
             this.m_ItemIDs = itemIDs;
         }
 
-        public int[] ItemIDs
-        {
-            get
-            {
-                return this.m_ItemIDs;
-            }
-        }
+        public int[] ItemIDs => this.m_ItemIDs;
         public virtual void Flip(Item item)
         {
             if (this.m_ItemIDs == null)

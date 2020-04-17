@@ -117,13 +117,7 @@ namespace Server.Items
         {
         }
 
-        public override bool HandlesOnMovement
-        {
-            get
-            {
-                return true;
-            }
-        }// Tell the core that we implement OnMovement
+        public override bool HandlesOnMovement => true;// Tell the core that we implement OnMovement
         [Hue, CommandProperty(AccessLevel.GameMaster)]
         public override int Hue
         {
@@ -209,13 +203,7 @@ namespace Server.Items
             {
             }
 
-            public override bool HandlesOnMovement
-            {
-                get
-                {
-                    return true;
-                }
-            }// Tell the core that we implement OnMovement
+            public override bool HandlesOnMovement => true;// Tell the core that we implement OnMovement
             [Hue, CommandProperty(AccessLevel.GameMaster)]
             public override int Hue
             {
@@ -311,13 +299,7 @@ namespace Server.Items
         {
         }
 
-        public override bool HandlesOnMovement
-        {
-            get
-            {
-                return true;
-            }
-        }// Tell the core that we implement OnMovement
+        public override bool HandlesOnMovement => true;// Tell the core that we implement OnMovement
         [Hue, CommandProperty(AccessLevel.GameMaster)]
         public override int Hue
         {
@@ -404,13 +386,7 @@ namespace Server.Items
             {
             }
 
-            public override bool HandlesOnMovement
-            {
-                get
-                {
-                    return true;
-                }
-            }// Tell the core that we implement OnMovement
+            public override bool HandlesOnMovement => true;// Tell the core that we implement OnMovement
             [Hue, CommandProperty(AccessLevel.GameMaster)]
             public override int Hue
             {
@@ -483,7 +459,7 @@ namespace Server.Items
 
         private class MemorialStone : Item
         {
-            public override int LabelNumber { get { return 1071563; } } // Memorial Stone
+            public override int LabelNumber => 1071563;  // Memorial Stone
 
             [Constructable]
             public MemorialStone()
@@ -497,7 +473,7 @@ namespace Server.Items
             {
             }
 
-            public override bool HandlesOnMovement { get { return true; } }
+            public override bool HandlesOnMovement => true;
 
             public override void OnMovement(Mobile m, Point3D oldLocation)
             {

@@ -14,13 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new TableWithBlueClothDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new TableWithBlueClothDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -50,20 +44,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new TableWithBlueClothAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1076276;
-            }
-        }// Table With A Blue Tablecloth
+        public override BaseAddon Addon => new TableWithBlueClothAddon();
+        public override int LabelNumber => 1076276;// Table With A Blue Tablecloth
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

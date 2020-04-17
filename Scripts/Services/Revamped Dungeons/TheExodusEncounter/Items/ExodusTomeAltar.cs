@@ -13,17 +13,17 @@ namespace Server.Items
 {
     public class ExodusTomeAltar : BaseDecayingItem
     {
-        public override int LabelNumber { get { return 1153602; } } // Exodus Summoning Tome 
+        public override int LabelNumber => 1153602;  // Exodus Summoning Tome 
         public static ExodusTomeAltar Altar { get; set; }
-        public TimeSpan DelayExit { get { return TimeSpan.FromMinutes(10); } }
+        public TimeSpan DelayExit => TimeSpan.FromMinutes(10);
         private Point3D m_TeleportDest = new Point3D(764, 640, 0);
-        public override int Lifespan { get { return 420; } }
-        public override bool UseSeconds { get { return false; } }
+        public override int Lifespan => 420;
+        public override bool UseSeconds => false;
         private readonly List<RitualArray> m_Rituals;
         private Mobile m_Owner;
         private Item m_ExodusAlterAddon;
 
-        public List<RitualArray> Rituals { get { return m_Rituals; } }
+        public List<RitualArray> Rituals => m_Rituals;
         public Mobile Owner
         {
             get { return this.m_Owner; }

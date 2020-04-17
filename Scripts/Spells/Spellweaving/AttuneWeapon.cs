@@ -17,27 +17,9 @@ namespace Server.Spells.Spellweaving
         {
         }
 
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(1.0);
-            }
-        }
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 0.0;
-            }
-        }
-        public override int RequiredMana
-        {
-            get
-            {
-                return 24;
-            }
-        }
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(1.0);
+        public override double RequiredSkill => 0.0;
+        public override int RequiredMana => 24;
         public static void TryAbsorb(Mobile defender, ref int damage)
         {
             if (damage == 0 || !IsAbsorbing(defender) || defender.MeleeDamageAbsorb <= 0)

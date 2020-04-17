@@ -2,7 +2,7 @@
 {
     public class PumpkinPizza : CheesePizza
     {
-        public override int LabelNumber { get { return 1153775; } } // Pumpkin Pizza
+        public override int LabelNumber => 1153775;  // Pumpkin Pizza
 
         [Constructable]
         public PumpkinPizza()

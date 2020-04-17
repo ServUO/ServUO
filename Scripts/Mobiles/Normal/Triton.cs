@@ -6,9 +6,9 @@ namespace Server.Mobiles
 {
     public class TritonStatue : Item, ICreatureStatuette
     {
-        public override int LabelNumber { get { return 1158929; } } // Triton
+        public override int LabelNumber => 1158929;  // Triton
 
-        public Type CreatureType { get { return typeof(Triton); } }
+        public Type CreatureType => typeof(Triton);
 
         [Constructable]
         public TritonStatue()
@@ -115,10 +115,10 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool DeleteOnRelease { get { return true; } }
-        public override int Meat { get { return 3; } }
-        public override int Hides { get { return 10; } }
-        public override FoodType FavoriteFood { get { return FoodType.Meat; } }
+        public override bool DeleteOnRelease => true;
+        public override int Meat => 3;
+        public override int Hides => 10;
+        public override FoodType FavoriteFood => FoodType.Meat;
 
         public override void Serialize(GenericWriter writer)
         {

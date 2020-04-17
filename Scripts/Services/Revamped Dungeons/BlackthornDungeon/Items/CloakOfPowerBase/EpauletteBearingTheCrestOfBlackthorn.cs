@@ -2,9 +2,9 @@ namespace Server.Items
 {
     public class EpauletteBearingTheCrestOfBlackthorn4 : Cloak
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
 
-        public override int LabelNumber { get { return 1123325; } } // Epaulette
+        public override int LabelNumber => 1123325;  // Epaulette
 
         [Constructable]
         public EpauletteBearingTheCrestOfBlackthorn4()

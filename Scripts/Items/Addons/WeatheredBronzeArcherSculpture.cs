@@ -3,7 +3,7 @@ namespace Server.Items
     [Flipable(0x9D2E, 0x9D2F)]
     public class WeatheredBronzeArcherComponent : AddonComponent
     {
-        public override int LabelNumber { get { return 1156884; } } // weathered bronze archer sculpture
+        public override int LabelNumber => 1156884;  // weathered bronze archer sculpture
 
         public WeatheredBronzeArcherComponent()
             : base(0x9D2E)
@@ -30,8 +30,8 @@ namespace Server.Items
 
     public class WeatheredBronzeArcherAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new WeatheredBronzeArcherDeed(); } }
-        public override bool RetainDeedHue { get { return true; } }
+        public override BaseAddonDeed Deed => new WeatheredBronzeArcherDeed();
+        public override bool RetainDeedHue => true;
 
         [Constructable]
         public WeatheredBronzeArcherAddon()
@@ -59,8 +59,8 @@ namespace Server.Items
 
     public class WeatheredBronzeArcherDeed : BaseAddonDeed
     {
-        public override BaseAddon Addon { get { return new WeatheredBronzeArcherAddon(); } }
-        public override int LabelNumber { get { return 1156884; } } // weathered bronze archer sculpture
+        public override BaseAddon Addon => new WeatheredBronzeArcherAddon();
+        public override int LabelNumber => 1156884;  // weathered bronze archer sculpture
 
         [Constructable]
         public WeatheredBronzeArcherDeed()

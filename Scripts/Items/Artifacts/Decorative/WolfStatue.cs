@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class WolfStatue : Item
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public WolfStatue()
             : base(0x25D3)
@@ -16,13 +16,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073190;
-            }
-        }// A Wolf Contribution Statue from the Britannia Royal Zoo.
+        public override int LabelNumber => 1073190;// A Wolf Contribution Statue from the Britannia Royal Zoo.
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

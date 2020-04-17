@@ -16,13 +16,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1075299;
-            }
-        }// Prismatic Amber
+        public override int LabelNumber => 1075299;// Prismatic Amber
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);

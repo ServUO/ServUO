@@ -10,7 +10,7 @@ namespace Server.Items
 
     public class SpiritualityVirtueTileAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new SpiritualityVirtueTileDeed(); } }
+        public override BaseAddonDeed Deed => new SpiritualityVirtueTileDeed();
 
         private readonly SpiritualityTileType m_SpiritualityTileType;
 
@@ -56,8 +56,8 @@ namespace Server.Items
 
     public class SpiritualityVirtueTileDeed : BaseAddonDeed, IRewardOption
     {
-        public override BaseAddon Addon { get { return new SpiritualityVirtueTileAddon(m_SpiritualityTileType); } }
-        public override int LabelNumber { get { return 1080484; } } // Spirituality Virtue Tile Deed
+        public override BaseAddon Addon => new SpiritualityVirtueTileAddon(m_SpiritualityTileType);
+        public override int LabelNumber => 1080484;  // Spirituality Virtue Tile Deed
 
         private SpiritualityTileType m_SpiritualityTileType;
 

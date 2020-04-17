@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class SwordOfShatteredHopes : GlassSword
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1112770; } } // Sword of Shattered Hopes
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1112770;  // Sword of Shattered Hopes
 
         [Constructable]
         public SwordOfShatteredHopes()
@@ -22,27 +22,9 @@ namespace Server.Items
         {
         }
 
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int ArtifactRarity => 10;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

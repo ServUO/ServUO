@@ -21,13 +21,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public Map LinkMap { get { return m_LinkMap; } set { m_LinkMap = value; } }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1115929; // Endless Decanter of Water
-            }
-        }
+        public override int LabelNumber => 1115929; // Endless Decanter of Water
 
         public override int ComputeItemID()
         {

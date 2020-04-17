@@ -43,22 +43,10 @@ namespace Server.Mobiles
         {
         }
 
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Greater;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 4;
-            }
-        }
+        public override Poison PoisonImmune => Poison.Greater;
+        public override int TreasureMapLevel => 4;
 
-        public override TribeType Tribe { get { return TribeType.Ophidian; } }
+        public override TribeType Tribe => TribeType.Ophidian;
 
         public override void GenerateLoot()
         {

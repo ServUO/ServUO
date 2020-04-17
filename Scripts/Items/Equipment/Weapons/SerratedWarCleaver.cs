@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class SerratedWarCleaver : WarCleaver
     {
-        public override int LabelNumber { get { return 1073527; } }// serrated war cleaver
+        public override int LabelNumber => 1073527; // serrated war cleaver
 
         [Constructable]
         public SerratedWarCleaver()

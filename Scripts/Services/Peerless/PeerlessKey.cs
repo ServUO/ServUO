@@ -38,8 +38,8 @@ namespace Server.Items
         {
         }
 
-        public virtual int Lifespan { get { return 604800; } }
-        public virtual bool UseSeconds { get { return false; } }
+        public virtual int Lifespan => 604800;
+        public virtual bool UseSeconds => false;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int TimeLeft

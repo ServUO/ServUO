@@ -43,13 +43,7 @@ namespace Server.Mobiles
 
         public Item Item { get; }
         public int Price { get; }
-        public string FormattedPrice
-        {
-            get
-            {
-                return Price.ToString("N0", CultureInfo.GetCultureInfo("en-US"));
-            }
-        }
+        public string FormattedPrice => Price.ToString("N0", CultureInfo.GetCultureInfo("en-US"));
         public string Description
         {
             get
@@ -68,8 +62,8 @@ namespace Server.Mobiles
             }
         }
         public DateTime Created { get; }
-        public bool IsForSale { get { return Price >= 0; } }
-        public bool IsForFree { get { return Price == 0; } }
+        public bool IsForSale => Price >= 0;
+        public bool IsForFree => Price == 0;
         public bool Valid { get; private set; }
 
         public void Invalidate()
@@ -91,7 +85,7 @@ namespace Server.Mobiles
         {
         }
 
-        public override int DefaultMaxWeight { get { return 0; } }
+        public override int DefaultMaxWeight => 0;
 
         public override bool CheckHold(Mobile m, Item item, bool message, bool checkItems, int plusItems, int plusWeight)
         {
@@ -223,7 +217,7 @@ namespace Server.Mobiles
                 m_Item = item;
             }
 
-            public override bool NonLocalUse { get { return true; } }
+            public override bool NonLocalUse => true;
 
             public override void OnClick()
             {
@@ -242,8 +236,8 @@ namespace Server.Mobiles
         private string m_ShopName;
         private Timer m_PayTimer;
 
-        public double CommissionPerc { get { return 5.25; } }
-        public virtual bool IsCommission { get { return false; } }
+        public double CommissionPerc => 5.25;
+        public virtual bool IsCommission => false;
 
         public PlayerVendor(Mobile owner, BaseHouse house)
         {

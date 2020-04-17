@@ -5,13 +5,13 @@ namespace Server.Items
 {
     public class NiporailemsTreasure : Item
     {
-        public override int LabelNumber { get { return ItemID == 0x11EA ? 1112115 : 1112113; } }   //  Niporailem's Treasure : Treasure Sand
+        public override int LabelNumber => ItemID == 0x11EA ? 1112115 : 1112113;    //  Niporailem's Treasure : Treasure Sand
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public override bool Decays { get { return Link != null && !Link.Deleted ? base.Decays : true; } }
+        public override bool Decays => Link != null && !Link.Deleted ? base.Decays : true;
 
         [CommandProperty(AccessLevel.Decorator)]
-        public override TimeSpan DecayTime { get { return TimeSpan.FromMinutes(15); } }
+        public override TimeSpan DecayTime => TimeSpan.FromMinutes(15);
 
         [CommandProperty(AccessLevel.Decorator)]
         public Mobile Link { get; set; }

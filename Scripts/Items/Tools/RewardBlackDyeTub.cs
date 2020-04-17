@@ -16,13 +16,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1006008;
-            }
-        }// Black Dye Tub
+        public override int LabelNumber => 1006008;// Black Dye Tub
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsRewardItem
         {

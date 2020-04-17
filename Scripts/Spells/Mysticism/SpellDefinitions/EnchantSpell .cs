@@ -10,8 +10,8 @@ namespace Server.Spells.Mysticism
     {
         private static readonly string ModName = "EnchantAttribute";
 
-        public override SpellCircle Circle { get { return SpellCircle.Second; } }
-        public override bool ClearHandsOnCast { get { return false; } }
+        public override SpellCircle Circle => SpellCircle.Second;
+        public override bool ClearHandsOnCast => false;
 
         public BaseWeapon Weapon { get; set; }
         public AosWeaponAttribute Attribute { get; set; }

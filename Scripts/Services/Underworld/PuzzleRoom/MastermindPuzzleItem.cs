@@ -11,7 +11,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public MagicKey Key { get { return m_Key; } set { m_Key = value; } }
 
-        public override int LabelNumber { get { return 1113379; } }  // Puzzle Board
+        public override int LabelNumber => 1113379;   // Puzzle Board
 
         [Constructable]
         public MastermindPuzzleItem(MagicKey key) : base(0x2AAA)

@@ -23,26 +23,26 @@ namespace Server.Spells.SkillMasteries
         public List<Mobile> PartyList { get; set; }
         public DateTime Expires { get; set; }
 
-        public virtual double RequiredSkill { get { return 90.0; } }
-        public virtual double UpKeep { get { return 0; } }
-        public virtual int RequiredMana { get { return 10; } }
-        public virtual bool PartyEffects { get { return false; } }
-        public virtual int DamageThreshold { get { return 45; } }
-        public virtual bool DamageCanDisrupt { get { return false; } }
-        public virtual double TickTime { get { return 2; } }
-        public virtual int PartyRange { get { return 12; } }
+        public virtual double RequiredSkill => 90.0;
+        public virtual double UpKeep => 0;
+        public virtual int RequiredMana => 10;
+        public virtual bool PartyEffects => false;
+        public virtual int DamageThreshold => 45;
+        public virtual bool DamageCanDisrupt => false;
+        public virtual double TickTime => 2;
+        public virtual int PartyRange => 12;
 
-        public virtual int UpkeepCancelMessage { get { return 1156111; } } // You do not have enough mana to keep your ability active.
-        public virtual int OutOfRangeMessage { get { return 1156098; } } // Your target is no longer in range of your ability.
-        public virtual int DisruptMessage { get { return 1156110; } } // Your ability was canceled. 
+        public virtual int UpkeepCancelMessage => 1156111;  // You do not have enough mana to keep your ability active.
+        public virtual int OutOfRangeMessage => 1156098;  // Your target is no longer in range of your ability.
+        public virtual int DisruptMessage => 1156110;  // Your ability was canceled. 
 
-        public virtual bool CancelsWeaponAbility { get { return false; } }
-        public virtual bool CancelsSpecialMove { get { return CancelsWeaponAbility; } }
+        public virtual bool CancelsWeaponAbility => false;
+        public virtual bool CancelsSpecialMove => CancelsWeaponAbility;
 
-        public virtual bool RevealOnTick { get { return true; } }
+        public virtual bool RevealOnTick => true;
 
-        public virtual TimeSpan ExpirationPeriod { get { return TimeSpan.FromMinutes(30); } }
-        public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(2.25); } }
+        public virtual TimeSpan ExpirationPeriod => TimeSpan.FromMinutes(30);
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(2.25);
 
         public virtual double BaseSkillBonus
         {
@@ -55,16 +55,10 @@ namespace Server.Spells.SkillMasteries
             }
         }
 
-        public virtual double CollectiveBonus
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        public virtual double CollectiveBonus => 0;
 
-        public override bool ClearHandsOnCast { get { return false; } }
-        public override bool BlocksMovement { get { return true; } }
+        public override bool ClearHandsOnCast => false;
+        public override bool BlocksMovement => true;
 
         public SkillMasterySpell(Mobile caster, Item scroll, SpellInfo info) : base(caster, null, info)
         {
@@ -1226,7 +1220,7 @@ namespace Server.Spells.SkillMasteries
         {
             private readonly SkillMasterySpell m_Spell;
 
-            public SkillMasterySpell Spell { get { return m_Spell; } }
+            public SkillMasterySpell Spell => m_Spell;
 
             public UpkeepTimer(SkillMasterySpell spell) : base(TimeSpan.FromSeconds(spell.TickTime), TimeSpan.FromSeconds(spell.TickTime))
             {

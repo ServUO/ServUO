@@ -13,7 +13,7 @@ namespace Server.Gumps
         private readonly BaseCannon m_Cannon;
         private readonly Mobile m_From;
 
-        public BaseCannon Cannon { get { return m_Cannon; } }
+        public BaseCannon Cannon => m_Cannon;
 
         public CannonGump(BaseCannon cannon, Mobile from)
             : base(50, 50)

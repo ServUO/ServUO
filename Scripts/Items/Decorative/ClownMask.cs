@@ -13,13 +13,7 @@
         {
         }
 
-        public override string MaskName
-        {
-            get
-            {
-                return "Evil Clown Mask";
-            }
-        }
+        public override string MaskName => "Evil Clown Mask";
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

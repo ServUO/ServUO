@@ -49,7 +49,7 @@ namespace Server.Gumps
         private readonly List<Mobile> m_Mobiles;
         private int m_Page;
 
-        public bool EC { get { return m_Owner != null && m_Owner.NetState != null && m_Owner.NetState.IsEnhancedClient; } }
+        public bool EC => m_Owner != null && m_Owner.NetState != null && m_Owner.NetState.IsEnhancedClient;
 
         public WhoGump(Mobile owner, string filter)
             : this(owner, BuildList(owner, filter), 0)

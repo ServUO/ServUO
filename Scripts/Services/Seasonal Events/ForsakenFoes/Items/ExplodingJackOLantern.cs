@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class ExplodingJackOLantern : Item
     {
-        public override int LabelNumber { get { return 1159220; } } // Exploding Jack o' Lantern
+        public override int LabelNumber => 1159220;  // Exploding Jack o' Lantern
 
         [Constructable]
         public ExplodingJackOLantern()

@@ -1105,20 +1105,8 @@ namespace Server.Commands
             this.m_Extra = line;
         }
 
-        public Point3D Location
-        {
-            get
-            {
-                return this.m_Location;
-            }
-        }
-        public string Extra
-        {
-            get
-            {
-                return this.m_Extra;
-            }
-        }
+        public Point3D Location => this.m_Location;
+        public string Extra => this.m_Extra;
         public void Pop(out string v, ref string line)
         {
             int space = line.IndexOf(' ');

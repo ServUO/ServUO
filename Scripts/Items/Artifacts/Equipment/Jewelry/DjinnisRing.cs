@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class DjinnisRing : SilverRing
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public DjinnisRing()
         {
@@ -16,27 +16,9 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1094927;
-            }
-        }// Djinni's Ring [Replica]
-        public override int InitMinHits
-        {
-            get
-            {
-                return 150;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 150;
-            }
-        }
+        public override int LabelNumber => 1094927;// Djinni's Ring [Replica]
+        public override int InitMinHits => 150;
+        public override int InitMaxHits => 150;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -17,7 +17,7 @@ namespace Server.Items
 
         private Timer m_Timer;
 
-        public override int LabelNumber { get { return 1152602; } } // Magical Fish Finder
+        public override int LabelNumber => 1152602;  // Magical Fish Finder
 
         [Constructable]
         public MagicalFishFinder() : base(5366)

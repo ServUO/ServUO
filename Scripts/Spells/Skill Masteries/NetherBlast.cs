@@ -16,14 +16,14 @@ namespace Server.Spells.SkillMasteries
                 Reagent.DaemonBone
             );
 
-        public override double RequiredSkill { get { return 90; } }
-        public override double UpKeep { get { return 0; } }
-        public override int RequiredMana { get { return 40; } }
-        public override bool PartyEffects { get { return false; } }
-        public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(2.0); } }
-        public override double TickTime { get { return 1; } }
+        public override double RequiredSkill => 90;
+        public override double UpKeep => 0;
+        public override int RequiredMana => 40;
+        public override bool PartyEffects => false;
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(2.0);
+        public override double TickTime => 1;
 
-        public override SkillName CastSkill { get { return SkillName.Mysticism; } }
+        public override SkillName CastSkill => SkillName.Mysticism;
         public override SkillName DamageSkill
         {
             get
@@ -186,7 +186,7 @@ namespace Server.Spells.SkillMasteries
         [DispellableField]
         public class InternalItem : Item
         {
-            public override bool BlocksFit { get { return true; } }
+            public override bool BlocksFit => true;
 
             public InternalItem(Mobile caster, int itemID, Point3D loc, Map map)
                 : base(itemID)

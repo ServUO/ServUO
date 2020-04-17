@@ -6,13 +6,13 @@ namespace Server.Items
 {
     public class KoiLamp : BaseLight, IFlipable, IAddon
     {
-        public override int LabelNumber { get { return 1154190; } } // Koi Lamp
+        public override int LabelNumber => 1154190;  // Koi Lamp
 
-        public override int LitItemID { get { return ItemID == 0x4C48 ? 0x4C49 : 0x4C4B; } }
-        public override int UnlitItemID { get { return ItemID == 0x4C49 ? 0x4C48 : 0x4C4A; } }
+        public override int LitItemID => ItemID == 0x4C48 ? 0x4C49 : 0x4C4B;
+        public override int UnlitItemID => ItemID == 0x4C49 ? 0x4C48 : 0x4C4A;
 
-        public int NorthID { get { return Burning ? 0x4C49 : 0x4C48; } }
-        public int WestID { get { return Burning ? 0x4C4B : 0x4C4A; } }
+        public int NorthID => Burning ? 0x4C49 : 0x4C48;
+        public int WestID => Burning ? 0x4C4B : 0x4C4A;
 
         [Constructable]
         public KoiLamp()
@@ -25,7 +25,7 @@ namespace Server.Items
             Weight = 0.0;
         }
 
-        public Item Deed { get { return new KoiLampDeed(); } }
+        public Item Deed => new KoiLampDeed();
 
         public bool CouldFit(IPoint3D p, Map map)
         {
@@ -81,7 +81,7 @@ namespace Server.Items
 
     public class KoiLampDeed : Item
     {
-        public override int LabelNumber { get { return 1154190; } } // Koi Lamp
+        public override int LabelNumber => 1154190;  // Koi Lamp
 
         [Constructable]
         public KoiLampDeed()

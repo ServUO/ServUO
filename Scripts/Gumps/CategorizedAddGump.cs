@@ -33,41 +33,11 @@ namespace Server.Gumps
                 this.m_Hue = XmlConvert.ToInt32(xml.Value);
         }
 
-        public Type Type
-        {
-            get
-            {
-                return this.m_Type;
-            }
-        }
-        public int ItemID
-        {
-            get
-            {
-                return this.m_ItemID;
-            }
-        }
-        public int Hue
-        {
-            get
-            {
-                return this.m_Hue;
-            }
-        }
-        public CAGCategory Parent
-        {
-            get
-            {
-                return this.m_Parent;
-            }
-        }
-        public override string Caption
-        {
-            get
-            {
-                return (this.m_Type == null ? "bad type" : this.m_Type.Name);
-            }
-        }
+        public Type Type => this.m_Type;
+        public int ItemID => this.m_ItemID;
+        public int Hue => this.m_Hue;
+        public CAGCategory Parent => this.m_Parent;
+        public override string Caption => (this.m_Type == null ? "bad type" : this.m_Type.Name);
         public override void OnClick(Mobile from, int page)
         {
             if (this.m_Type == null)
@@ -142,34 +112,10 @@ namespace Server.Gumps
                 return m_Root;
             }
         }
-        public string Title
-        {
-            get
-            {
-                return this.m_Title;
-            }
-        }
-        public CAGNode[] Nodes
-        {
-            get
-            {
-                return this.m_Nodes;
-            }
-        }
-        public CAGCategory Parent
-        {
-            get
-            {
-                return this.m_Parent;
-            }
-        }
-        public override string Caption
-        {
-            get
-            {
-                return this.m_Title;
-            }
-        }
+        public string Title => this.m_Title;
+        public CAGNode[] Nodes => this.m_Nodes;
+        public CAGCategory Parent => this.m_Parent;
+        public override string Caption => this.m_Title;
         public static CAGCategory Load(string path)
         {
             if (File.Exists(path))

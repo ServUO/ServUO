@@ -25,7 +25,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed { get { return new CrystalTableDeed(); } }
+        public override BaseAddonDeed Deed => new CrystalTableDeed();
 
         public override void Serialize(GenericWriter writer)
         {
@@ -42,11 +42,11 @@ namespace Server.Items
 
     public class CrystalTableDeed : BaseAddonDeed, IRewardOption
     {
-        public override int LabelNumber { get { return 1076673; } } // Crystal Table
+        public override int LabelNumber => 1076673;  // Crystal Table
 
-        public override bool ExcludeDeedHue { get { return true; } }
+        public override bool ExcludeDeedHue => true;
 
-        public override BaseAddon Addon { get { return new CrystalTableAddon(_Direction); } }
+        public override BaseAddon Addon => new CrystalTableAddon(_Direction);
 
         private DirectionType _Direction;
 

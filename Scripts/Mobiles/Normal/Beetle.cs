@@ -7,13 +7,7 @@ namespace Server.Mobiles
     [CorpseName("a giant beetle corpse")]
     public class Beetle : BaseMount
     {
-        public virtual double BoostedSpeed
-        {
-            get
-            {
-                return 0.1;
-            }
-        }
+        public virtual double BoostedSpeed => 0.1;
 
         [Constructable]
         public Beetle()
@@ -21,20 +15,8 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool SubdueBeforeTame
-        {
-            get
-            {
-                return true;
-            }
-        }// Must be beaten into submission
-        public override bool ReduceSpeedWithDamage
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool SubdueBeforeTame => true;// Must be beaten into submission
+        public override bool ReduceSpeedWithDamage => false;
 
         [Constructable]
         public Beetle(string name)
@@ -103,15 +85,9 @@ namespace Server.Mobiles
             return 0x21D;
         }
 
-        public override FoodType FavoriteFood
-        {
-            get
-            {
-                return FoodType.Meat;
-            }
-        }
+        public override FoodType FavoriteFood => FoodType.Meat;
 
-        public override bool CanAutoStable { get { return (Backpack == null || Backpack.Items.Count == 0) && base.CanAutoStable; } }
+        public override bool CanAutoStable => (Backpack == null || Backpack.Items.Count == 0) && base.CanAutoStable;
 
         public Beetle(Serial serial)
             : base(serial)

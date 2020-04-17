@@ -554,13 +554,7 @@ namespace Server.Items
             set { m_DImodded = value; }
         }
 
-        public int[] BaseResists
-        {
-            get
-            {
-                return new int[] { 0, 0, 0, 0, 0 };
-            }
-        }
+        public int[] BaseResists => new int[] { 0, 0, 0, 0, 0 };
 
         public virtual void OnAfterImbued(Mobile m, int mod, int value)
         {
@@ -775,10 +769,10 @@ namespace Server.Items
             return false;
         }
 
-        public virtual Race RequiredRace { get { return null; } }
+        public virtual Race RequiredRace => null;
         //On OSI, there are no weapons with race requirements, this is for custom stuff
 
-        public virtual bool CanBeWornByGargoyles { get { return false; } }
+        public virtual bool CanBeWornByGargoyles => false;
 
         public override bool CanEquip(Mobile from)
         {
@@ -4407,7 +4401,7 @@ namespace Server.Items
             return m_AosAttributes.SpellChanneling > 0 || Enhancement.GetValue(from, AosAttribute.SpellChanneling) > 0;
         }
 
-        public virtual int ArtifactRarity { get { return 0; } }
+        public virtual int ArtifactRarity => 0;
 
         public override bool DisplayWeight
         {
@@ -5297,18 +5291,12 @@ namespace Server.Items
             return base.OnDragLift(from);
         }
 
-        public virtual SetItem SetID { get { return SetItem.None; } }
-        public virtual int Pieces { get { return 0; } }
+        public virtual SetItem SetID => SetItem.None;
+        public virtual int Pieces => 0;
 
-        public virtual bool BardMasteryBonus
-        {
-            get
-            {
-                return (SetID == SetItem.Virtuoso);
-            }
-        }
+        public virtual bool BardMasteryBonus => (SetID == SetItem.Virtuoso);
 
-        public bool IsSetItem { get { return SetID != SetItem.None; } }
+        public bool IsSetItem => SetID != SetItem.None;
 
         private int m_SetHue;
         private bool m_SetEquipped;

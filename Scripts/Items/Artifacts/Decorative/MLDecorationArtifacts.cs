@@ -2,8 +2,8 @@
 {
     public class AncientShipModelOfTheHMSCape : Item
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1063476; } }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1063476;
 
         [Constructable]
         public AncientShipModelOfTheHMSCape()

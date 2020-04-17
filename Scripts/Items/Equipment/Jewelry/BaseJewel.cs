@@ -303,13 +303,7 @@ namespace Server.Items
             set { m_GorgonLenseType = value; InvalidateProperties(); }
         }
 
-        public virtual int[] BaseResists
-        {
-            get
-            {
-                return new int[] { 0, 0, 0, 0, 0 };
-            }
-        }
+        public virtual int[] BaseResists => new int[] { 0, 0, 0, 0, 0 };
 
         public virtual void OnAfterImbued(Mobile m, int mod, int value)
         {
@@ -339,78 +333,18 @@ namespace Server.Items
         }
         #endregion
 
-        public override int PhysicalResistance
-        {
-            get
-            {
-                return m_AosResistances.Physical;
-            }
-        }
-        public override int FireResistance
-        {
-            get
-            {
-                return m_AosResistances.Fire;
-            }
-        }
-        public override int ColdResistance
-        {
-            get
-            {
-                return m_AosResistances.Cold;
-            }
-        }
-        public override int PoisonResistance
-        {
-            get
-            {
-                return m_AosResistances.Poison;
-            }
-        }
-        public override int EnergyResistance
-        {
-            get
-            {
-                return m_AosResistances.Energy;
-            }
-        }
-        public virtual int BaseGemTypeNumber
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        public override int PhysicalResistance => m_AosResistances.Physical;
+        public override int FireResistance => m_AosResistances.Fire;
+        public override int ColdResistance => m_AosResistances.Cold;
+        public override int PoisonResistance => m_AosResistances.Poison;
+        public override int EnergyResistance => m_AosResistances.Energy;
+        public virtual int BaseGemTypeNumber => 0;
 
-        public virtual int InitMinHits
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual int InitMaxHits
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        public virtual int InitMinHits => 0;
+        public virtual int InitMaxHits => 0;
 
-        public virtual Race RequiredRace
-        {
-            get
-            {
-                return null;
-            }
-        }
-        public virtual bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public virtual Race RequiredRace => null;
+        public virtual bool CanBeWornByGargoyles => true;
 
         public override int LabelNumber
         {
@@ -457,13 +391,7 @@ namespace Server.Items
             base.OnAfterDuped(newItem);
         }
 
-        public virtual int ArtifactRarity
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        public virtual int ArtifactRarity => 0;
 
         public override bool DisplayWeight
         {
@@ -658,8 +586,8 @@ namespace Server.Items
         {
         }
 
-        public virtual bool CanFortify { get { return IsImbued == false && NegativeAttributes.Antique < 4; } }
-        public virtual bool CanRepair { get { return m_NegativeAttributes.NoRepair == 0; } }
+        public virtual bool CanFortify => IsImbued == false && NegativeAttributes.Antique < 4;
+        public virtual bool CanRepair => m_NegativeAttributes.NoRepair == 0;
         #endregion
 
         public override void OnAdded(object parent)
@@ -1296,44 +1224,14 @@ namespace Server.Items
             return base.OnDragLift(from);
         }
 
-        public virtual SetItem SetID
-        {
-            get
-            {
-                return SetItem.None;
-            }
-        }
-        public virtual int Pieces
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        public virtual SetItem SetID => SetItem.None;
+        public virtual int Pieces => 0;
 
-        public virtual bool BardMasteryBonus
-        {
-            get
-            {
-                return (SetID == SetItem.Virtuoso);
-            }
-        }
+        public virtual bool BardMasteryBonus => (SetID == SetItem.Virtuoso);
 
-        public virtual bool MixedSet
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public virtual bool MixedSet => false;
 
-        public bool IsSetItem
-        {
-            get
-            {
-                return SetID == SetItem.None ? false : true;
-            }
-        }
+        public bool IsSetItem => SetID == SetItem.None ? false : true;
 
         private int m_SetHue;
         private bool m_SetEquipped;

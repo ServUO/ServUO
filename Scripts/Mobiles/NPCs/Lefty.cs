@@ -14,50 +14,20 @@ namespace Server.Engines.Quests
         }
 
         /* Wonders of the Natural World */
-        public override object Title
-        {
-            get
-            {
-                return 1074444;
-            }
-        }
+        public override object Title => 1074444;
         /* Step right up!  Step right up!  Lords and Ladies, this is your opportunity to view the find of a lifetime!  
         What magical energy caused the fascinating play of light and darkness within these subterranean passageways?  
         What mysterious forces are at work deep within the Prism of Light?  Admission tickets are good for a full day 
         of adventure and excitement and well worth the price at 10,000 gold. Whadda ya say? */
-        public override object Description
-        {
-            get
-            {
-                return 1074445;
-            }
-        }
+        public override object Description => 1074445;
         /* C'mon now Lords and Ladies -- you're passing up the opportunity of a lifetime.  Is 10,000 gold too much 
         to pay for your enlightenment? */
-        public override object Refuse
-        {
-            get
-            {
-                return 1074446;
-            }
-        }
+        public override object Refuse => 1074446;
         /* Dig into those pockets Lords and Ladies!  Just ten-thousand-shiny-gold-coins and you'll be walking in the 
         bootsteps of the famous Lord Denthe himself! */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1074447;
-            }
-        }
+        public override object Uncomplete => 1074447;
         /* Step right up!  Thank you, enjoy the amazing caverns. */
-        public override object Complete
-        {
-            get
-            {
-                return 1074448;
-            }
-        }
+        public override object Complete => 1074448;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -86,16 +56,10 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(WondersOfTheNaturalWorldQuest)
                 };
-            }
-        }
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);

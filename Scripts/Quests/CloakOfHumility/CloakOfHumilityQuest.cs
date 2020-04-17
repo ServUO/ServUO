@@ -13,35 +13,35 @@ namespace Server.Engines.Quests
             AddObjective(new QuestionAndAnswerObjective(4, m_EntryTable));
         }
 
-        public override bool ShowDescription { get { return false; } }
+        public override bool ShowDescription => false;
 
-        public override QuestChain ChainID { get { return QuestChain.CloakOfHumility; } }
-        public override Type NextQuest { get { return typeof(CommunityServiceMuseumQuest); } }
+        public override QuestChain ChainID => QuestChain.CloakOfHumility;
+        public override Type NextQuest => typeof(CommunityServiceMuseumQuest);
 
-        public override object Title { get { return 1075850; } } // Know Thy Humility
+        public override object Title => 1075850;  // Know Thy Humility
 
         /*Greetings my friend! My name is Gareth, and I represent a group of citizens who wish to rejuvenate interest in our
          * kingdom's noble heritage. 'Tis our belief that one of Britannia's greatest triumphs was the institution of the Virtues,
          * neglected though they be now. To that end I have a set of tasks prepared for one who would follow a truly Humble path. 
          * Art thou interested in joining our effort?*/
-        public override object Description { get { return 1075675; } }
+        public override object Description => 1075675;
 
         //I wish that thou wouldest reconsider.
-        public override object Refuse { get { return 1075677; } }
+        public override object Refuse => 1075677;
 
         //Wonderful! First, let us see if thou art reading from the same roll of parchment as we are. *smiles*
-        public override object Uncomplete { get { return 1075676; } }
+        public override object Uncomplete => 1075676;
 
         /*Very good! I can see that ye hath more than just a passing interest in our work. There are many trials before thee, but 
          * I have every hope that ye shall have the diligence and fortitude to carry on to the very end. Before we begin, please
          * prepare thyself by thinking about the virtue of Humility. Ponder not only its symbols, but also its meanings. Once ye 
          * believe that thou art ready, speak with me again.*/
-        public override object Complete { get { return 1075714; } }
+        public override object Complete => 1075714;
 
         /*Ah... no, that is not quite right. Truly, Humility is something that takes time and experience to understand. I wish to 
          * challenge thee to seek out more knowledge concerning this virtue, and tomorrow let us speak again about what thou hast 
          * learned.<br>*/
-        public override object FailedMsg { get { return 1075713; } }
+        public override object FailedMsg => 1075713;
 
         public override bool RenderObjective(MondainQuestGump g, bool offer)
         {
@@ -141,10 +141,10 @@ namespace Server.Engines.Quests
         }
 
         private static readonly QuestionAndAnswerEntry[] m_EntryTable = new QuestionAndAnswerEntry[7];
-        public static QuestionAndAnswerEntry[] EntryTable { get { return m_EntryTable; } }
+        public static QuestionAndAnswerEntry[] EntryTable => m_EntryTable;
 
         private static readonly Dictionary<Mobile, DateTime> m_CooldownTable = new Dictionary<Mobile, DateTime>();
-        public static Dictionary<Mobile, DateTime> CooldownTable { get { return m_CooldownTable; } }
+        public static Dictionary<Mobile, DateTime> CooldownTable => m_CooldownTable;
     }
 
     public class CommunityServiceMuseumQuest : BaseQuest
@@ -154,25 +154,25 @@ namespace Server.Engines.Quests
             AddObjective(new CollectionsObtainObjective(typeof(ShepherdsCrookOfHumility), "Shepherd's Crook of Humility", 1));
         }
 
-        public override QuestChain ChainID { get { return QuestChain.CloakOfHumility; } }
-        public override Type NextQuest { get { return typeof(CommunityServiceZooQuest); } }
+        public override QuestChain ChainID => QuestChain.CloakOfHumility;
+        public override Type NextQuest => typeof(CommunityServiceZooQuest);
 
         //Community Service - Museum
-        public override object Title { get { return 1075716; } }
+        public override object Title => 1075716;
 
         /*'Tis time to help out the community of Britannia. Visit the Vesper Museum and donate to their collection, and eventually thou will
          * be able to receive a replica of the Shepherd's Crook of Humility. Once ye have it, return to me. Art thou willing to do this?*/
-        public override object Description { get { return 1075717; } }
+        public override object Description => 1075717;
 
         //I wish that thou wouldest reconsider.
-        public override object Refuse { get { return 1075719; } }
+        public override object Refuse => 1075719;
 
         //Hello my friend. The museum sitteth in southern Vesper. If ye go downstairs, ye will discover a small donation chest.
         //That is the place where ye should leave thy donation.
-        public override object Uncomplete { get { return 1075720; } }
+        public override object Uncomplete => 1075720;
 
         /*Terrific! The Museum is a worthy cause. Many will benefit from the inspiration and learning that thine donation hath supported.*/
-        public override object Complete { get { return 1075721; } }
+        public override object Complete => 1075721;
 
         public override void Serialize(GenericWriter writer)
         {
@@ -197,25 +197,25 @@ namespace Server.Engines.Quests
             AddObjective(new CollectionsObtainObjective(typeof(ForTheLifeOfBritanniaSash), "Life of Britannia Sash", 1));
         }
 
-        public override QuestChain ChainID { get { return QuestChain.CloakOfHumility; } }
-        public override Type NextQuest { get { return typeof(CommunityServiceLibraryQuest); } }
+        public override QuestChain ChainID => QuestChain.CloakOfHumility;
+        public override Type NextQuest => typeof(CommunityServiceLibraryQuest);
 
         //Community Service – Zoo
-        public override object Title { get { return 1075722; } }
+        public override object Title => 1075722;
 
         /*Now, go on and donate to the Moonglow Zoo. Givest thou enough to receive a 'For the Life of Britannia' sash. Once ye have it, 
          * return it to me. Wilt thou continue?*/
-        public override object Description { get { return 1075723; } }
+        public override object Description => 1075723;
 
         //I wish that thou wouldest reconsider.
-        public override object Refuse { get { return 1075725; } }
+        public override object Refuse => 1075725;
 
         //Hello again. The zoo lies a short ways south of Moonglow. Close to the entrance thou wilt discover a small donation chest. 
         //That is where thou shouldest leave thy donation.
-        public override object Uncomplete { get { return 1075726; } }
+        public override object Uncomplete => 1075726;
 
         /*Wonderful! The Zoo is a very special place from which people young and old canst benefit. Thanks to thee, it can continue to thrive.*/
-        public override object Complete { get { return 1075727; } }
+        public override object Complete => 1075727;
 
         public override void Serialize(GenericWriter writer)
         {
@@ -240,26 +240,26 @@ namespace Server.Engines.Quests
             AddObjective(new CollectionsObtainObjective(typeof(SpecialPrintingOfVirtue), "Special Painint of 'Virtue' Book", 1));
         }
 
-        public override QuestChain ChainID { get { return QuestChain.CloakOfHumility; } }
-        public override Type NextQuest { get { return typeof(WhosMostHumbleQuest); } }
+        public override QuestChain ChainID => QuestChain.CloakOfHumility;
+        public override Type NextQuest => typeof(WhosMostHumbleQuest);
 
         //Community Service – Library
-        public override object Title { get { return 1075728; } }
+        public override object Title => 1075728;
 
         /*I have one more charity for thee, my diligent friend. Go forth and donate to the Britain Library and do that which is necessary to receive 
          * a special printing of ‘Virtue’, by Lord British. Once in hand, bring the book back with ye. Art thou ready?*/
-        public override object Description { get { return 1075729; } }
+        public override object Description => 1075729;
 
         //I wish that thou wouldest reconsider.
-        public override object Refuse { get { return 1075731; } }
+        public override object Refuse => 1075731;
 
         //Art thou having trouble? The Library lieth north of Castle British's gates. I believe the representatives in charge of the 
         //donations are easy enough to find. They await thy visit, amongst the many tomes of knowledge.
-        public override object Uncomplete { get { return 1075732; } }
+        public override object Uncomplete => 1075732;
 
         /*Very good! The library is of great import to the people of Britannia. Thou hath done a worthy deed and this is thy last 
          * required donation. I encourage thee to continue contributing to thine community, beyond the obligations of this endeavor.*/
-        public override object Complete { get { return 1075733; } }
+        public override object Complete => 1075733;
 
         public override void Serialize(GenericWriter writer)
         {
@@ -282,9 +282,9 @@ namespace Server.Engines.Quests
         private readonly List<Mobile> m_GivenTo = new List<Mobile>();
 
         private readonly Dictionary<int, HumilityQuestMobileInfo> m_Infos = new Dictionary<int, HumilityQuestMobileInfo>();
-        public Dictionary<int, HumilityQuestMobileInfo> Infos { get { return m_Infos; } }
+        public Dictionary<int, HumilityQuestMobileInfo> Infos => m_Infos;
 
-        public override bool CanRefuseReward { get { return true; } }
+        public override bool CanRefuseReward => true;
 
         public WhosMostHumbleQuest()
             : base()
@@ -293,28 +293,28 @@ namespace Server.Engines.Quests
             AddReward(new BaseReward(typeof(GoldShield), "A Gold Shield"));
         }
 
-        public override QuestChain ChainID { get { return QuestChain.CloakOfHumility; } }
+        public override QuestChain ChainID => QuestChain.CloakOfHumility;
 
         //Who's Most Humble
-        public override object Title { get { return 1075734; } }
+        public override object Title => 1075734;
 
         /*Thou art challenged to find seven citizens spread out among the towns of Britannia: Skara Brae, Minoc, Britain, and 
          * one of the towns upon an isle at sea. Each citizen wilt reveal some thought concerning Humility. But who doth best 
          * exemplify the virtue? Here, thou needeth wear this plain grey cloak, for they wilt know ye by it. Wilt thou continue?*/
-        public override object Description { get { return 1075735; } }
+        public override object Description => 1075735;
 
         //'Tis a difficult quest, but well worth it. Wilt thou reconsider?
-        public override object Refuse { get { return 1075737; } }
+        public override object Refuse => 1075737;
 
         /*There art no less than seven 'humble citizens' spread across the Britannia proper. I know that they can be found in the
          * towns of Minoc, Skara Brae and Britain. Another may be upon an island at sea, the name of which escapes me at the moment. 
          * Thou needeth visit all seven to solve the puzzle. Be diligent, for they have a tendency to wander about.<BR><BR><br>Dost 
          * thou wear the plain grey cloak?*/
-        public override object Uncomplete { get { return 1075738; } }
+        public override object Uncomplete => 1075738;
 
         /*Noble friend, thou hast performed tremendously! On behalf of the Rise of Britannia I wish to reward thee with this golden
          * shield, a symbol of accomplishment and pride for the many things that thou hast done for our people.<BR><BR><br>Dost thou accept?*/
-        public override object Complete { get { return 1075782; } }
+        public override object Complete => 1075782;
 
         public override void OnAccept()
         {

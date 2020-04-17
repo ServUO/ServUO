@@ -4,9 +4,9 @@ namespace Server.Items
     [Flipable(0x9AA, 0xE7D)]
     public class BoxOfShadowItems : BaseContainer
     {
-        public override int LabelNumber { get { return 1076713; } } // A Box of Shadow Items
+        public override int LabelNumber => 1076713;  // A Box of Shadow Items
 
-        public override int DefaultGumpID { get { return 0x43; } }
+        public override int DefaultGumpID => 0x43;
 
         [Constructable]
         public BoxOfShadowItems()

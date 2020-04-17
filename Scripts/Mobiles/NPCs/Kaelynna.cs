@@ -6,22 +6,10 @@ namespace Server.Engines.Quests
 {
     public class TheMagesApprenticeQuest : BaseQuest
     {
-        public override bool DoneOnce
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool DoneOnce => true;
 
         /* The Mage's Apprentice */
-        public override object Title
-        {
-            get
-            {
-                return 1077576;
-            }
-        }
+        public override object Title => 1077576;
 
         /* Head East out of town and go to Old Haven. Cast fireballs and lightning bolts against monsters there until you 
         have raised your Magery skill to 50. Greetings. You seek to unlock the secrets of the arcane art of Magery. The 
@@ -32,46 +20,22 @@ namespace Server.Engines.Quests
         reagents at the nearby Reagent shop, or you can find reagents growing in the nearby wooded areas. You can see which 
         reagents are required for each spell by looking in your spellbook. Come back to me once you feel that you are worthy 
         of the rank of Apprentice Mage and I will reward you with an arcane prize. */
-        public override object Description
-        {
-            get
-            {
-                return 1077577;
-            }
-        }
+        public override object Description => 1077577;
 
         /* Very well, come back to me when you are ready to practice Magery. You have so much arcane potential. 'Tis a shame 
         to see it go to waste. The New Haven Mage Council could really use your help. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1077578;
-            }
-        }
+        public override object Refuse => 1077578;
 
         /* You have not achieved the rank of Apprentice Mage. Come back to me once you feel that you are worthy of the rank 
         of Apprentice Mage and I will reward you with an arcane prize. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1077579;
-            }
-        }
+        public override object Uncomplete => 1077579;
 
         /* Well done! On behalf of the New Haven Mage Council I wish to present you with this staff. Normally a mage must 
         unequip weapons before spell casting. While wielding your new Ember Staff, however, you will be able to invoke your 
         Magery spells. Even if you do not currently possess skill in Mace Fighting, the Ember Staff will allow you to fight 
         as if you do. However, your Magery skill will be temporarily reduced while doing so. Finally, the Ember Staff 
         occasionally smites a foe with a Fireball while wielding it in melee combat. I hope the Ember Staff serves you well. */
-        public override object Complete
-        {
-            get
-            {
-                return 1077581;
-            }
-        }
+        public override object Complete => 1077581;
 
         public TheMagesApprenticeQuest()
             : base()
@@ -121,16 +85,10 @@ namespace Server.Engines.Quests
 
     public class Kaelynna : MondainQuester
     {
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(TheMagesApprenticeQuest)
                 };
-            }
-        }
 
         public override void InitSBInfo()
         {

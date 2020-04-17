@@ -15,13 +15,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1075301;
-            }
-        }// Bride's Letter
+        public override int LabelNumber => 1075301;// Bride's Letter
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

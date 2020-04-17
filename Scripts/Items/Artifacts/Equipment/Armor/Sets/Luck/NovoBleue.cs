@@ -2,10 +2,10 @@ namespace Server.Items
 {
     public class NovoBleue : GoldBracelet
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1080239; } } // Novo Bleue
-        public override SetItem SetID { get { return SetItem.Luck; } }
-        public override int Pieces { get { return 2; } }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1080239;  // Novo Bleue
+        public override SetItem SetID => SetItem.Luck;
+        public override int Pieces => 2;
         [Constructable]
         public NovoBleue() : base()
         {

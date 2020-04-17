@@ -5,9 +5,9 @@ namespace Server.Items
 {
     public class TreatiseonAlchemyTalisman : BaseTalisman
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1073353; } }// Library Talisman - Treatise on Alchemy
-        public override bool ForceShowName { get { return true; } }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1073353; // Library Talisman - Treatise on Alchemy
+        public override bool ForceShowName => true;
 
         [Constructable]
         public TreatiseonAlchemyTalisman()
@@ -40,9 +40,9 @@ namespace Server.Items
 
     public class PrimerOnArmsTalisman : BaseTalisman
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1073354; } }// Library Talisman - A Primer on Arms
-        public override bool ForceShowName { get { return true; } }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1073354; // Library Talisman - A Primer on Arms
+        public override bool ForceShowName => true;
 
         [Constructable]
         public PrimerOnArmsTalisman()
@@ -76,9 +76,9 @@ namespace Server.Items
 
     public class MyBookTalisman : BaseTalisman
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1073355; } }// Library Talisman - My Book
-        public override bool ForceShowName { get { return true; } }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1073355; // Library Talisman - My Book
+        public override bool ForceShowName => true;
 
         [Constructable]
         public MyBookTalisman()
@@ -112,9 +112,9 @@ namespace Server.Items
 
     public class TalkingtoWispsTalisman : BaseTalisman
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1073356; } }// Library Talisman - Talking to Wisps
-        public override bool ForceShowName { get { return true; } }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1073356; // Library Talisman - Talking to Wisps
+        public override bool ForceShowName => true;
 
         [Constructable]
         public TalkingtoWispsTalisman()
@@ -147,9 +147,9 @@ namespace Server.Items
 
     public class GrammarOfOrchishTalisman : BaseTalisman
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1073358; } }// Library Talisman - a Grammar of Orchish (Summoner)
-        public override bool ForceShowName { get { return true; } }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1073358; // Library Talisman - a Grammar of Orchish (Summoner)
+        public override bool ForceShowName => true;
 
         [Constructable]
         public GrammarOfOrchishTalisman()
@@ -183,9 +183,9 @@ namespace Server.Items
 
     public class BirdsofBritanniaTalisman : BaseTalisman
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1074892; } }// Library Talisman - Birds of Britannia Random Summoner
-        public override bool ForceShowName { get { return true; } }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1074892; // Library Talisman - Birds of Britannia Random Summoner
+        public override bool ForceShowName => true;
         public override Type GetSummoner() { return GetRandomSummonType(); }
 
         [Constructable]
@@ -219,9 +219,9 @@ namespace Server.Items
 
     public class TheLifeOfTravelingMinstrelTalisman : BaseTalisman
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1073360; } }// Library Talisman - The Life of a Traveling Minstrel
-        public override bool ForceShowName { get { return true; } }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1073360; // Library Talisman - The Life of a Traveling Minstrel
+        public override bool ForceShowName => true;
 
         [Constructable]
         public TheLifeOfTravelingMinstrelTalisman()

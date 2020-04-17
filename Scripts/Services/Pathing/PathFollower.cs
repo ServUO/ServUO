@@ -32,13 +32,7 @@ namespace Server
                 this.m_Mover = value;
             }
         }
-        public IPoint3D Goal
-        {
-            get
-            {
-                return this.m_Goal;
-            }
-        }
+        public IPoint3D Goal => this.m_Goal;
         public MoveResult Move(Direction d)
         {
             if (this.m_Mover == null)

@@ -6,10 +6,10 @@ namespace Server.Items
 {
     public class GenderChangeToken : Item, IPromotionalToken
     {
-        public override int LabelNumber { get { return 1070997; } } // a promotional token
-        public TextDefinition ItemName { get { return 1075252; } } // gender change
+        public override int LabelNumber => 1070997;  // a promotional token
+        public TextDefinition ItemName => 1075252;  // gender change
 
-        public Type GumpType { get { return typeof(GenderChangeConfirmGump); } }
+        public Type GumpType => typeof(GenderChangeConfirmGump);
 
         [Constructable]
         public GenderChangeToken()

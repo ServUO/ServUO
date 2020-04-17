@@ -16,20 +16,8 @@ namespace Server.Spells.Fourth
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Fourth;
-            }
-        }
-        public override bool DelayedDamage
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Fourth;
+        public override bool DelayedDamage => false;
         public override void OnCast()
         {
             Caster.Target = new InternalTarget(this);

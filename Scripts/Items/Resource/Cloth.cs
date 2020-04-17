@@ -22,27 +22,9 @@ namespace Server.Items
         {
         }
 
-        public override double DefaultWeight
-        {
-            get
-            {
-                return 0.1;
-            }
-        }
-        TextDefinition ICommodity.Description
-        {
-            get
-            {
-                return this.LabelNumber;
-            }
-        }
-        bool ICommodity.IsDeedable
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override double DefaultWeight => 0.1;
+        TextDefinition ICommodity.Description => this.LabelNumber;
+        bool ICommodity.IsDeedable => true;
         public bool Dye(Mobile from, DyeTub sender)
         {
             if (this.Deleted)
@@ -80,7 +62,7 @@ namespace Server.Items
 
     public class CutUpCloth : Item
     {
-        public override int LabelNumber { get { return 1044458; } } // cut-up cloth
+        public override int LabelNumber => 1044458;  // cut-up cloth
 
         [Constructable]
         public CutUpCloth()
@@ -123,7 +105,7 @@ namespace Server.Items
 
     public class CombineCloth : Item
     {
-        public override int LabelNumber { get { return 1044459; } } // combine cloth
+        public override int LabelNumber => 1044459;  // combine cloth
 
         [Constructable]
         public CombineCloth()

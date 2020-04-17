@@ -12,27 +12,9 @@ namespace Server.Engines.Mahjong
             this.m_Height = height;
         }
 
-        public Point2D Position
-        {
-            get
-            {
-                return this.m_Position;
-            }
-        }
-        public int Width
-        {
-            get
-            {
-                return this.m_Width;
-            }
-        }
-        public int Height
-        {
-            get
-            {
-                return this.m_Height;
-            }
-        }
+        public Point2D Position => this.m_Position;
+        public int Width => this.m_Width;
+        public int Height => this.m_Height;
         public bool IsValid()
         {
             return this.m_Position.X >= 0 && this.m_Position.Y >= 0 && this.m_Position.X + this.m_Width <= 670 && this.m_Position.Y + this.m_Height <= 670;

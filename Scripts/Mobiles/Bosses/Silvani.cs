@@ -43,36 +43,12 @@ namespace Server.Mobiles
         {
         }
 
-        public override TribeType Tribe { get { return TribeType.Fey; } }
+        public override TribeType Tribe => TribeType.Fey;
 
-        public override bool CanFly
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool Unprovokable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Regular;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 5;
-            }
-        }
+        public override bool CanFly => true;
+        public override bool Unprovokable => true;
+        public override Poison PoisonImmune => Poison.Regular;
+        public override int TreasureMapLevel => 5;
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.UltraRich, 2);

@@ -15,13 +15,7 @@ namespace Server.Items
         {
         }
 
-        public override TimeSpan GetUseDelay
-        {
-            get
-            {
-                return TimeSpan.Zero;
-            }
-        }
+        public override TimeSpan GetUseDelay => TimeSpan.Zero;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

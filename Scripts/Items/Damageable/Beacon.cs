@@ -40,8 +40,8 @@ namespace Server.Items
 
         public List<Item> Rubble { get; set; }
 
-        public override bool DeleteOnDestroy { get { return false; } }
-        public override double IDChange { get { return 0.50; } }
+        public override bool DeleteOnDestroy => false;
+        public override double IDChange => 0.50;
 
         public Beacon()
             : base(18212, 39299, 1)
@@ -309,7 +309,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public Beacon Beacon { get; set; }
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         public BeaconItem(Beacon beacon)
             : base(18223)

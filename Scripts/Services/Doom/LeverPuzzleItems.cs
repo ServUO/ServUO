@@ -120,13 +120,7 @@ namespace Server.Engines.Doom
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public UInt16 Code
-        {
-            get
-            {
-                return this.m_Code;
-            }
-        }
+        public UInt16 Code => this.m_Code;
         public override void OnDoubleClick(Mobile m)
         {
             if (m != null && this.m_Controller.Enabled)
@@ -179,13 +173,7 @@ namespace Server.Engines.Doom
         {
         }
 
-        public override bool HandlesOnMovement
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool HandlesOnMovement => true;
         public override bool OnMoveOver(Mobile m)
         {
             if (m != null && m is PlayerMobile)

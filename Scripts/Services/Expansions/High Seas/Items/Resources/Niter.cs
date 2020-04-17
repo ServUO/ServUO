@@ -44,7 +44,7 @@ namespace Server.Items
             }
         }
 
-        public override bool Decays { get { return true; } }
+        public override bool Decays => true;
 
         [Constructable]
         public NiterDeposit() : this(Utility.RandomMinMax(1, 5))

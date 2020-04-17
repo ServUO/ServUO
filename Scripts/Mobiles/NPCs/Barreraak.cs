@@ -6,15 +6,15 @@ namespace Server.Engines.Quests
     public class SomethingFishy : BaseQuest
     {
         /* SomethingFishy */
-        public override object Title { get { return 1095059; } }
+        public override object Title => 1095059;
 
-        public override object Description { get { return 1095043; } }
+        public override object Description => 1095043;
 
-        public override object Refuse { get { return 1095044; } }
+        public override object Refuse => 1095044;
 
-        public override object Uncomplete { get { return 1095045; } }
+        public override object Uncomplete => 1095045;
 
-        public override object Complete { get { return 1095048; } }
+        public override object Complete => 1095048;
 
         public SomethingFishy() : base()
         {
@@ -40,16 +40,10 @@ namespace Server.Engines.Quests
 
     public class Barreraak : MondainQuester
     {
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
             {
                 typeof( SomethingFishy )
             };
-            }
-        }
 
         [Constructable]
         public Barreraak()

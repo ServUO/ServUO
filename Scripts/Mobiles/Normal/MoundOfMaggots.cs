@@ -37,20 +37,8 @@ namespace Server.Mobiles
         {
         }
 
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 1;
-            }
-        }
+        public override Poison PoisonImmune => Poison.Lethal;
+        public override int TreasureMapLevel => 1;
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Meager);

@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class DrakeCostume : BaseCostume
     {
-        public override string CreatureName { get { return "drake"; } }
+        public override string CreatureName => "drake";
 
         [Constructable]
         public DrakeCostume() : base()
@@ -10,13 +10,7 @@ namespace Server.Items
             this.CostumeBody = 60;
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1114245;
-            }
-        }// drake costume
+        public override int LabelNumber => 1114245;// drake costume
 
         public DrakeCostume(Serial serial) : base(serial)
         {

@@ -14,13 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074505;
-            }
-        }// Mantra Effervescence Statuette
+        public override int LabelNumber => 1074505;// Mantra Effervescence Statuette
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

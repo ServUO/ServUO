@@ -5,7 +5,7 @@ namespace Server.Engines.VvV
 {
     public class ForgedRoyalPardon : Item
     {
-        public override int LabelNumber { get { return 1155524; } } // Forged Royal Pardon
+        public override int LabelNumber => 1155524;  // Forged Royal Pardon
 
         [Constructable]
         public ForgedRoyalPardon()

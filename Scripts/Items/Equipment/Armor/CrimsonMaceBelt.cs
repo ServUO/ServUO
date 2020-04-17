@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class CrimsonMaceBelt : MaceBelt
     {
-        public override int LabelNumber { get { return 1159211; } } // crimson mace belt
+        public override int LabelNumber => 1159211;  // crimson mace belt
 
         [Constructable]
         public CrimsonMaceBelt()

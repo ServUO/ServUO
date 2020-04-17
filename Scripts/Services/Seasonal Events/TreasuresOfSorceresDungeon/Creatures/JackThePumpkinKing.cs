@@ -115,8 +115,8 @@ namespace Server.Engines.SorcerersDungeon
         {
         }
 
-        public override bool AlwaysMurderer { get { return true; } }
-        public override Poison PoisonImmune { get { return Poison.Deadly; } }
+        public override bool AlwaysMurderer => true;
+        public override Poison PoisonImmune => Poison.Deadly;
 
         public override void GenerateLoot()
         {
@@ -155,13 +155,7 @@ namespace Server.Engines.SorcerersDungeon
         {
         }
 
-        public override string DefaultName
-        {
-            get
-            {
-                return "unholy pumpkin";
-            }
-        }
+        public override string DefaultName => "unholy pumpkin";
         public bool Carve(Mobile from, Item item)
         {
             Effects.PlaySound(GetWorldLocation(), Map, 0x48F);

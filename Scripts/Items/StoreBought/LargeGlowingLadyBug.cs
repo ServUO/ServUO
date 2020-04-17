@@ -4,25 +4,13 @@ namespace Server.Items
 {
     public class LargeGlowingLadyBug : BaseLight
     {
-        public override int LabelNumber { get { return 1071400; } } // Large Glowing Lady Bug
+        public override int LabelNumber => 1071400;  // Large Glowing Lady Bug
 
-        public override int LitItemID
-        {
-            get
-            {
-                return SouthFacing ? 0x2CFE : 0x2D00;
-            }
-        }
+        public override int LitItemID => SouthFacing ? 0x2CFE : 0x2D00;
 
-        public override int UnlitItemID
-        {
-            get
-            {
-                return SouthFacing ? 0x2CFD : 0x2CFF;
-            }
-        }
+        public override int UnlitItemID => SouthFacing ? 0x2CFD : 0x2CFF;
 
-        public bool SouthFacing { get { return ItemID == 0x2CFD || ItemID == 0x2CFE; } }
+        public bool SouthFacing => ItemID == 0x2CFD || ItemID == 0x2CFE;
 
         [Constructable]
         public LargeGlowingLadyBug()

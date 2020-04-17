@@ -20,34 +20,10 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool IsActiveVendor
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool CanTeach
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool IsInvulnerable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        protected override List<SBInfo> SBInfos
-        {
-            get
-            {
-                return this.m_SBInfos;
-            }
-        }
+        public override bool IsActiveVendor => false;
+        public override bool CanTeach => true;
+        public override bool IsInvulnerable => true;
+        protected override List<SBInfo> SBInfos => this.m_SBInfos;
         public override void InitSBInfo()
         {
         }

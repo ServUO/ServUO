@@ -56,20 +56,8 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool DeleteCorpseOnDeath
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Regular;
-            }
-        }
+        public override bool DeleteCorpseOnDeath => true;
+        public override Poison PoisonImmune => Poison.Regular;
         public override int GetIdleSound()
         {
             return 0x200;

@@ -15,34 +15,10 @@ namespace Server.Items
         {
         }
 
-        public override bool PassivelyTriggered
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override TimeSpan PassiveTriggerDelay
-        {
-            get
-            {
-                return TimeSpan.Zero;
-            }
-        }
-        public override int PassiveTriggerRange
-        {
-            get
-            {
-                return 3;
-            }
-        }
-        public override TimeSpan ResetDelay
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(0.0);
-            }
-        }
+        public override bool PassivelyTriggered => true;
+        public override TimeSpan PassiveTriggerDelay => TimeSpan.Zero;
+        public override int PassiveTriggerRange => 3;
+        public override TimeSpan ResetDelay => TimeSpan.FromSeconds(0.0);
         public override void OnTrigger(Mobile from)
         {
             if (from.IsStaff())

@@ -1865,16 +1865,10 @@ namespace Server.Mobiles
         public override int StamMax => base.StamMax + AosAttributes.GetValue(this, AosAttribute.BonusStam);
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public override int ManaMax
-        {
-            get
-            {
-                return base.ManaMax + AosAttributes.GetValue(this, AosAttribute.BonusMana) +
+        public override int ManaMax => base.ManaMax + AosAttributes.GetValue(this, AosAttribute.BonusMana) +
                        (Race == Race.Elf ? 20 : 0) +
                        MasteryInfo.IntuitionBonus(this) +
                        UraliTranceTonic.GetManaBuff(this);
-            }
-        }
         #endregion
 
         #region Stat Getters/Setters
@@ -4240,13 +4234,7 @@ namespace Server.Mobiles
             SetHairMods(-1, -1);
         }
 
-        public BOBFilter BOBFilter
-        {
-            get
-            {
-                return BulkOrderSystem.GetBOBFilter(this);
-            }
-        }
+        public BOBFilter BOBFilter => BulkOrderSystem.GetBOBFilter(this);
 
         public override void Deserialize(GenericReader reader)
         {
@@ -5159,21 +5147,9 @@ namespace Server.Mobiles
         #endregion
 
         #region Mondain's Legacy
-        public List<BaseQuest> Quests
-        {
-            get
-            {
-                return MondainQuestData.GetQuests(this);
-            }
-        }
+        public List<BaseQuest> Quests => MondainQuestData.GetQuests(this);
 
-        public Dictionary<QuestChain, BaseChain> Chains
-        {
-            get
-            {
-                return MondainQuestData.GetChains(this);
-            }
-        }
+        public Dictionary<QuestChain, BaseChain> Chains => MondainQuestData.GetChains(this);
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Peaced

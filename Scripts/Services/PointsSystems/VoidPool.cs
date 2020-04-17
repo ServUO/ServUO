@@ -7,10 +7,10 @@ namespace Server.Engines.Points
 {
     public class VoidPool : PointsSystem
     {
-        public override PointsType Loyalty { get { return PointsType.VoidPool; } }
-        public override TextDefinition Name { get { return m_Name; } }
-        public override bool AutoAdd { get { return true; } }
-        public override double MaxPoints { get { return double.MaxValue; } }
+        public override PointsType Loyalty => PointsType.VoidPool;
+        public override TextDefinition Name => m_Name;
+        public override bool AutoAdd => true;
+        public override double MaxPoints => double.MaxValue;
 
         private readonly TextDefinition m_Name = new TextDefinition(1152733);
 

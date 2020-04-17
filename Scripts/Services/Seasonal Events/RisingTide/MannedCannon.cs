@@ -9,13 +9,13 @@ namespace Server.Items
 {
     public abstract class MannedCannon : Item
     {
-        public virtual TimeSpan ScanDelay { get { return TimeSpan.FromSeconds(Utility.RandomMinMax(5, 10)); } }
+        public virtual TimeSpan ScanDelay => TimeSpan.FromSeconds(Utility.RandomMinMax(5, 10));
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Operator { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Direction Facing { get { return GetFacing(); } }
+        public Direction Facing => GetFacing();
 
         public DateTime NextScan { get; set; }
         public bool CanFireUnmanned { get; set; }
@@ -23,8 +23,8 @@ namespace Server.Items
         public abstract CannonPower Power { get; }
         public abstract int Range { get; }
 
-        public virtual AmmunitionType AmmoType { get { return AmmunitionType.Cannonball; } }
-        public virtual int LateralOffset { get { return 1; } }
+        public virtual AmmunitionType AmmoType => AmmunitionType.Cannonball;
+        public virtual int LateralOffset => 1;
 
         public MannedCannon(Mobile opera, Direction facing)
             : base(0)
@@ -455,8 +455,8 @@ namespace Server.Items
 
     public class MannedCulverin : MannedCannon
     {
-        public override int Range { get { return 10; } }
-        public override CannonPower Power { get { return CannonPower.Light; } }
+        public override int Range => 10;
+        public override CannonPower Power => CannonPower.Light;
 
         public MannedCulverin(Mobile oper, Direction facing)
             : base(oper, facing)
@@ -480,8 +480,8 @@ namespace Server.Items
 
     public class MannedCarronade : MannedCannon
     {
-        public override int Range { get { return 10; } }
-        public override CannonPower Power { get { return CannonPower.Heavy; } }
+        public override int Range => 10;
+        public override CannonPower Power => CannonPower.Heavy;
 
         public MannedCarronade(Mobile oper, Direction facing)
             : base(oper, facing)
@@ -505,10 +505,10 @@ namespace Server.Items
 
     public class MannedBlundercannon : MannedCannon
     {
-        public override int LabelNumber { get { return 1158942; } } // Blundercannon
+        public override int LabelNumber => 1158942;  // Blundercannon
 
-        public override int Range { get { return 12; } }
-        public override CannonPower Power { get { return CannonPower.Massive; } }
+        public override int Range => 12;
+        public override CannonPower Power => CannonPower.Massive;
 
         public MannedBlundercannon(Mobile oper, Direction facing)
             : base(oper, facing)

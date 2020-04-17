@@ -22,13 +22,7 @@ namespace Server.Engines.Reports
             return new PageInfo();
         }
 
-        public override PersistableType TypeID
-        {
-            get
-            {
-                return ThisTypeID;
-            }
-        }
+        public override PersistableType TypeID => ThisTypeID;
         #endregion
 
         private StaffHistory m_History;
@@ -133,13 +127,7 @@ namespace Server.Engines.Reports
                 this.m_PageType = value;
             }
         }
-        public PageResolution Resolution
-        {
-            get
-            {
-                return this.m_Resolution;
-            }
-        }
+        public PageResolution Resolution => this.m_Resolution;
 
         public DateTime TimeSent
         {
@@ -152,13 +140,7 @@ namespace Server.Engines.Reports
                 this.m_TimeSent = value;
             }
         }
-        public DateTime TimeResolved
-        {
-            get
-            {
-                return this.m_TimeResolved;
-            }
-        }
+        public DateTime TimeResolved => this.m_TimeResolved;
 
         public string SentBy
         {
@@ -175,13 +157,7 @@ namespace Server.Engines.Reports
             }
         }
 
-        public string ResolvedBy
-        {
-            get
-            {
-                return this.m_ResolvedBy;
-            }
-        }
+        public string ResolvedBy => this.m_ResolvedBy;
 
         public string Message
         {

@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class WoodworkersBench : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new WoodworkersBenchDeed(); } }
+        public override BaseAddonDeed Deed => new WoodworkersBenchDeed();
 
         [Constructable]
         public WoodworkersBench()
@@ -172,8 +172,8 @@ namespace Server.Items
 
     public class WoodworkersBenchDeed : BaseAddonDeed, IRewardOption
     {
-        public override int LabelNumber { get { return 1026641; } } // Woodworker's Bench
-        public override BaseAddon Addon { get { return new WoodworkersBench(m_East); } }
+        public override int LabelNumber => 1026641;  // Woodworker's Bench
+        public override BaseAddon Addon => new WoodworkersBench(m_East);
 
         private bool m_East;
 

@@ -23,20 +23,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new ParrotPerchAddonDeed(m_Parrot);
-            }
-        }
-        public override bool RetainDeedHue
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override BaseAddonDeed Deed => new ParrotPerchAddonDeed(m_Parrot);
+        public override bool RetainDeedHue => true;
         [CommandProperty(AccessLevel.GameMaster)]
         public PetParrot Parrot
         {
@@ -114,20 +102,8 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1072619;
-            }
-        }// A deed for a Parrot Perch		
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new ParrotPerchAddon(m_Parrot);
-            }
-        }
+        public override int LabelNumber => 1072619;// A deed for a Parrot Perch		
+        public override BaseAddon Addon => new ParrotPerchAddon(m_Parrot);
         [CommandProperty(AccessLevel.GameMaster)]
         public PetParrot Parrot
         {

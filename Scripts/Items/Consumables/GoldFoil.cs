@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class GoldFoil : Item
     {
-        public override int LabelNumber { get { return 1124032; } } // foil sheet
+        public override int LabelNumber => 1124032;  // foil sheet
 
         [Constructable]
         public GoldFoil() : this(1)

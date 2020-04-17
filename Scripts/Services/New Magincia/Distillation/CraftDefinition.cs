@@ -12,12 +12,12 @@ namespace Server.Engines.Distillation
         private readonly int[] m_Labels;
         private TimeSpan m_MaturationDuration;
 
-        public Group Group { get { return m_Group; } }
-        public Liquor Liquor { get { return m_Liquor; } }
-        public Type[] Ingredients { get { return m_Ingredients; } }
-        public int[] Amounts { get { return m_Amounts; } }
-        public int[] Labels { get { return m_Labels; } }
-        public TimeSpan MaturationDuration { get { return m_MaturationDuration; } }
+        public Group Group => m_Group;
+        public Liquor Liquor => m_Liquor;
+        public Type[] Ingredients => m_Ingredients;
+        public int[] Amounts => m_Amounts;
+        public int[] Labels => m_Labels;
+        public TimeSpan MaturationDuration => m_MaturationDuration;
 
         public CraftDefinition(Group group, Liquor liquor, Type[] ingredients, int[] amounts, TimeSpan matureperiod)
         {

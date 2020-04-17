@@ -23,20 +23,8 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1044567;
-            }
-        }// skillet
-        public override CraftSystem CraftSystem
-        {
-            get
-            {
-                return DefCooking.CraftSystem;
-            }
-        }
+        public override int LabelNumber => 1044567;// skillet
+        public override CraftSystem CraftSystem => DefCooking.CraftSystem;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -12,7 +12,7 @@ namespace Server.Items
 
     public class HolidayGiftToken2018 : Item, IRewardOption
     {
-        public override int LabelNumber { get { return 1158831; } } // 2018 Holiday Gift Token
+        public override int LabelNumber => 1158831;  // 2018 Holiday Gift Token
 
         public HolidayGift2018 Gift { get; set; }
 

@@ -44,13 +44,7 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool BleedImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool BleedImmune => true;
 
         public override int GetIdleSound()
         {

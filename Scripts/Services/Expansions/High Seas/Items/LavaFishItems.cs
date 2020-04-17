@@ -129,7 +129,7 @@ namespace Server.Items
 
     public class CrackedLavaRockSouth : Item
     {
-        public override int LabelNumber { get { return 1098151; } }
+        public override int LabelNumber => 1098151;
 
         [Constructable]
         public CrackedLavaRockSouth() : base(19279)
@@ -175,7 +175,7 @@ namespace Server.Items
 
     public class CrackedLavaRockEast : Item
     {
-        public override int LabelNumber { get { return 1098151; } }
+        public override int LabelNumber => 1098151;
 
         [Constructable]
         public CrackedLavaRockEast() : base(19275)
@@ -228,7 +228,7 @@ namespace Server.Items
 
     public class GeodeSouth : Item
     {
-        public override int LabelNumber { get { return 1098145; } }
+        public override int LabelNumber => 1098145;
 
         [Constructable]
         public GeodeSouth() : base(Utility.Random(19277, 2))
@@ -259,7 +259,7 @@ namespace Server.Items
 
     public class GeodeEast : Item
     {
-        public override int LabelNumber { get { return 1098145; } }
+        public override int LabelNumber => 1098145;
 
         [Constructable]
         public GeodeEast() : base(Utility.Random(19273, 2))
@@ -290,7 +290,7 @@ namespace Server.Items
 
     public class GeodeShardSouth : Item
     {
-        public override int LabelNumber { get { return 1098148; } }
+        public override int LabelNumber => 1098148;
 
         [Constructable]
         public GeodeShardSouth() : base(19276)
@@ -321,7 +321,7 @@ namespace Server.Items
 
     public class GeodeShardEast : Item
     {
-        public override int LabelNumber { get { return 1098148; } }
+        public override int LabelNumber => 1098148;
 
         [Constructable]
         public GeodeShardEast() : base(19272)
@@ -352,7 +352,7 @@ namespace Server.Items
 
     public class LavaRock : Item
     {
-        public override int LabelNumber { get { return 1151166; } }
+        public override int LabelNumber => 1151166;
 
         [Constructable]
         public LavaRock() : base(Utility.Random(4964, 6))
@@ -377,7 +377,7 @@ namespace Server.Items
 
     public class StonePaver : Item
     {
-        public override int LabelNumber { get { return 1097277; } }
+        public override int LabelNumber => 1097277;
 
         [Constructable]
         public StonePaver()

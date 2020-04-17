@@ -4,8 +4,8 @@ namespace Server.Engines.VvV
 {
     public class VvVEpaulette : Epaulette
     {
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
         public VvVEpaulette()
         {
@@ -36,8 +36,8 @@ namespace Server.Engines.VvV
 
     public class VvVGargishEpaulette : GargishEpaulette
     {
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
         public VvVGargishEpaulette()
         {

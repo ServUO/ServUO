@@ -15,77 +15,17 @@ namespace Server.Items
         {
         }
 
-        public override WeaponAbility PrimaryAbility
-        {
-            get
-            {
-                return WeaponAbility.Block;
-            }
-        }
-        public override WeaponAbility SecondaryAbility
-        {
-            get
-            {
-                return WeaponAbility.DoubleStrike;
-            }
-        }
-        public override int StrengthReq
-        {
-            get
-            {
-                return 15;
-            }
-        }
-        public override int MinDamage
-        {
-            get
-            {
-                return 12;
-            }
-        }
-        public override int MaxDamage
-        {
-            get
-            {
-                return 15;
-            }
-        }
-        public override float Speed
-        {
-            get
-            {
-                return 2.50f;
-            }
-        }
+        public override WeaponAbility PrimaryAbility => WeaponAbility.Block;
+        public override WeaponAbility SecondaryAbility => WeaponAbility.DoubleStrike;
+        public override int StrengthReq => 15;
+        public override int MinDamage => 12;
+        public override int MaxDamage => 15;
+        public override float Speed => 2.50f;
 
-        public override int DefHitSound
-        {
-            get
-            {
-                return 0x535;
-            }
-        }
-        public override int DefMissSound
-        {
-            get
-            {
-                return 0x239;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 40;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 55;
-            }
-        }
+        public override int DefHitSound => 0x535;
+        public override int DefMissSound => 0x239;
+        public override int InitMinHits => 40;
+        public override int InitMaxHits => 55;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

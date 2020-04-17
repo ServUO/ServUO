@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class Anniversary22GiftToken : Item, IRewardOption
     {
-        public override int LabelNumber { get { return 1159145; } } // 22nd Anniversary Gift Token
+        public override int LabelNumber => 1159145;  // 22nd Anniversary Gift Token
 
         [Constructable]
         public Anniversary22GiftToken()

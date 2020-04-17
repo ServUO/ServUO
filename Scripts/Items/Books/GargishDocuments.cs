@@ -10,10 +10,7 @@ namespace Server.Items
     {
         private SecureLevel m_Level;
 
-        public override int[] Contents
-        {
-            get { return new int[] { }; }
-        }
+        public override int[] Contents => new int[] { };
 
         [CommandProperty(AccessLevel.GameMaster)]
         public SecureLevel Level
@@ -63,7 +60,7 @@ namespace Server.Items
 
     public class GargishDocumentNote : Note
     {
-        public virtual int Title { get { return 0; } }
+        public virtual int Title => 0;
 
         public GargishDocumentNote()
             : base()
@@ -98,15 +95,9 @@ namespace Server.Items
 
     public class ChallengeRite : GargishDocumentBook
     {
-        public override object Title { get { return 1150904; } } // The Challenge Rite
-        public override object Author { get { return "unknown"; } }
-        public override int[] Contents
-        {
-            get
-            {
-                return new int[] { 1150915, 1150916, 1150917, 1150918, 1150919, 1150920, 1150921, 1150922 };
-            }
-        }
+        public override object Title => 1150904;  // The Challenge Rite
+        public override object Author => "unknown";
+        public override int[] Contents => new int[] { 1150915, 1150916, 1150917, 1150918, 1150919, 1150920, 1150921, 1150922 };
 
         [Constructable]
         public ChallengeRite()
@@ -133,15 +124,9 @@ namespace Server.Items
 
     public class OnTheVoid : GargishDocumentBook
     {
-        public override object Title { get { return 1150907; } } // On the Void
-        public override object Author { get { return "Prugyilonus"; } }
-        public override int[] Contents
-        {
-            get
-            {
-                return new int[] { 1150894, 1150895, 1150896 };
-            }
-        }
+        public override object Title => 1150907;  // On the Void
+        public override object Author => "Prugyilonus";
+        public override int[] Contents => new int[] { 1150894, 1150895, 1150896 };
 
         [Constructable]
         public OnTheVoid()
@@ -168,15 +153,9 @@ namespace Server.Items
 
     public class InMemory : GargishDocumentBook
     {
-        public override object Title { get { return 1150913; } } // In Memory
-        public override object Author { get { return "Queen Zhah"; } }
-        public override int[] Contents
-        {
-            get
-            {
-                return new int[] { 1151071, 1151072, 1151073 };
-            }
-        }
+        public override object Title => 1150913;  // In Memory
+        public override object Author => "Queen Zhah";
+        public override int[] Contents => new int[] { 1151071, 1151072, 1151073 };
 
         [Constructable]
         public InMemory()
@@ -218,9 +197,9 @@ namespace Server.Items
 
         private static readonly int[] m_Contents = new int[34];
 
-        public override object Title { get { return 1150914; } } // Chronicle of the Gargoyle Queen Vol. 1
-        public override object Author { get { return "Queen Zhah"; } }
-        public override int[] Contents { get { return m_Contents; } }
+        public override object Title => 1150914;  // Chronicle of the Gargoyle Queen Vol. 1
+        public override object Author => "Queen Zhah";
+        public override int[] Contents => m_Contents;
 
         private int m_Charges;
 
@@ -263,7 +242,7 @@ namespace Server.Items
 
     public class AnthenaeumDecree : GargishDocumentNote
     {
-        public override int Title { get { return 1150905; } } // Athenaeum Decree
+        public override int Title => 1150905;  // Athenaeum Decree
 
         [Constructable]
         public AnthenaeumDecree() : base(1150891)
@@ -289,7 +268,7 @@ namespace Server.Items
 
     public class LetterFromTheKing : GargishDocumentNote
     {
-        public override int Title { get { return 1150906; } } // A Letter from the King
+        public override int Title => 1150906;  // A Letter from the King
 
         private readonly string m_Content = "To Her Honor the High Broodmother, Lady Zhah from his majesty, King Trajalem:<br><br>	High Broodmother, I have received your latest petition regarding your desires and I once again must remind you that I have absolutely no interest in altering tradition or granting you the freedom from the slavery you have deluded yourself into believing makes up your life.<br><br>Please remember that your office may be stripped by me if you are deemed unfit to lead the other Broodmothers. Be happy with your place and do not forget it; this is the last time I will lower myself to respond to these ridiculous accusations and requests.";
 
@@ -318,7 +297,7 @@ namespace Server.Items
 
     public class ShilaxrinarsMemorial : GargishDocumentNote
     {
-        public override int Title { get { return 1150908; } } // Shilaxrinar's Memorial
+        public override int Title => 1150908;  // Shilaxrinar's Memorial
 
         [Constructable]
         public ShilaxrinarsMemorial() : base(1150899)
@@ -344,7 +323,7 @@ namespace Server.Items
 
     public class ToTheHighScholar : GargishDocumentNote
     {
-        public override int Title { get { return 1150909; } } // To the High Scholar
+        public override int Title => 1150909;  // To the High Scholar
 
         [Constructable]
         public ToTheHighScholar() : base(1151062)
@@ -370,7 +349,7 @@ namespace Server.Items
 
     public class ToTheHighBroodmother : GargishDocumentNote
     {
-        public override int Title { get { return 1150910; } } // To the High Broodmother
+        public override int Title => 1150910;  // To the High Broodmother
 
         [Constructable]
         public ToTheHighBroodmother() : base(1151064)
@@ -396,7 +375,7 @@ namespace Server.Items
 
     public class ReplyToTheHighScholar : GargishDocumentNote
     {
-        public override int Title { get { return 1150911; } } // Reply to the High Scholar
+        public override int Title => 1150911;  // Reply to the High Scholar
 
         [Constructable]
         public ReplyToTheHighScholar() : base(1151066)
@@ -422,7 +401,7 @@ namespace Server.Items
 
     public class AccessToTheIsle : GargishDocumentNote
     {
-        public override int Title { get { return 1150912; } } // Access to the Isle
+        public override int Title => 1150912;  // Access to the Isle
 
         [Constructable]
         public AccessToTheIsle() : base(1151069)

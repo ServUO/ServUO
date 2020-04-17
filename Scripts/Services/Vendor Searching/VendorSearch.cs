@@ -901,7 +901,7 @@ namespace Server.Engines.VendorSearching
     public class SearchCategory
     {
         public Category Category { get; private set; }
-        public int Label { get { return (int)Category; } }
+        public int Label => (int)Category;
 
         public List<Tuple<object, int, int>> Objects { get; private set; }
 
@@ -1006,10 +1006,7 @@ namespace Server.Engines.VendorSearching
             }*/
         }
 
-        public bool IsEmpty
-        {
-            get { return Details.Count == 0 && !EntryPrice && string.IsNullOrEmpty(SearchName) && SearchType == Layer.Invalid; }
-        }
+        public bool IsEmpty => Details.Count == 0 && !EntryPrice && string.IsNullOrEmpty(SearchName) && SearchType == Layer.Invalid;
 
         public SearchCriteria(GenericReader reader)
         {

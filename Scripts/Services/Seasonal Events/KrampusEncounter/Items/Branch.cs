@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class GoldBranch : Item
     {
-        public override int LabelNumber { get { return 1158835; } } // branch
+        public override int LabelNumber => 1158835;  // branch
 
         [Constructable]
         public GoldBranch()
@@ -30,7 +30,7 @@ namespace Server.Items
 
     public class SilverBranch : Item
     {
-        public override int LabelNumber { get { return 1158835; } } // branch
+        public override int LabelNumber => 1158835;  // branch
 
         [Constructable]
         public SilverBranch()

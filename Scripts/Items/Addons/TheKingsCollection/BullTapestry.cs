@@ -34,7 +34,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed { get { return new BullTapestryDeed(); } }
+        public override BaseAddonDeed Deed => new BullTapestryDeed();
 
         public override void Serialize(GenericWriter writer)
         {
@@ -51,7 +51,7 @@ namespace Server.Items
 
     public class BullTapestryDeed : BaseAddonDeed, IRewardOption
     {
-        public override int LabelNumber { get { return 1154148; } } // Bull Tapestry
+        public override int LabelNumber => 1154148;  // Bull Tapestry
 
         private DirectionType _Direction;
 
@@ -94,7 +94,7 @@ namespace Server.Items
                 base.OnDoubleClick(from);
         }
 
-        public override BaseAddon Addon { get { return new BullTapestryAddon(_Direction); } }
+        public override BaseAddon Addon => new BullTapestryAddon(_Direction);
 
         public override void Serialize(GenericWriter writer)
         {

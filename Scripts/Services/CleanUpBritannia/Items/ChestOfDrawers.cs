@@ -16,27 +16,9 @@
         {
         }
 
-        public override int DefaultGumpID
-        {
-            get
-            {
-                return 0x51;
-            }
-        }
-        public override int DefaultDropSound
-        {
-            get
-            {
-                return 0x42;
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1022604;
-            }
-        }// chest of drawers
+        public override int DefaultGumpID => 0x51;
+        public override int DefaultDropSound => 0x42;
+        public override int LabelNumber => 1022604;// chest of drawers
 
         public override void Serialize(GenericWriter writer)
         {

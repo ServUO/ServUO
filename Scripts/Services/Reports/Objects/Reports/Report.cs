@@ -10,13 +10,7 @@ namespace Server.Engines.Reports
             return new Report();
         }
 
-        public override PersistableType TypeID
-        {
-            get
-            {
-                return ThisTypeID;
-            }
-        }
+        public override PersistableType TypeID => ThisTypeID;
         #endregion
 
         private string m_Name;
@@ -46,20 +40,8 @@ namespace Server.Engines.Reports
                 this.m_Width = value;
             }
         }
-        public ReportColumnCollection Columns
-        {
-            get
-            {
-                return this.m_Columns;
-            }
-        }
-        public ReportItemCollection Items
-        {
-            get
-            {
-                return this.m_Items;
-            }
-        }
+        public ReportColumnCollection Columns => this.m_Columns;
+        public ReportItemCollection Items => this.m_Items;
 
         private Report()
             : this(null, null)

@@ -16,47 +16,17 @@ namespace Server.Engines.Quests
         }
 
         /* Crystalline Fragments */
-        public override object Title
-        {
-            get
-            {
-                return 1073054;
-            }
-        }
+        public override object Title => 1073054;
         /* You look strong and brave, my friend.  Are you strong and brave?  I only ask because I am known 
         to be too generous to those that find for me interesting -- things -- to use in my smithing.  What 
         do you say? */
-        public override object Description
-        {
-            get
-            {
-                return 1074662;
-            }
-        }
+        public override object Description => 1074662;
         /* *nods* */
-        public override object Refuse
-        {
-            get
-            {
-                return 1074663;
-            }
-        }
+        public override object Refuse => 1074663;
         /* I can't be generous, my friend, until you bring me those crystalline fragments. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1074665;
-            }
-        }
+        public override object Uncomplete => 1074665;
         /* My friend, you've returned -- with items for me, I hope?  I have a generous reward for you. */
-        public override object Complete
-        {
-            get
-            {
-                return 1074667;
-            }
-        }
+        public override object Complete => 1074667;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -83,47 +53,17 @@ namespace Server.Engines.Quests
         }
 
         /* Protector's Essence */
-        public override object Title
-        {
-            get
-            {
-                return 1073052;
-            }
-        }
+        public override object Title => 1073052;
         /* You look strong and brave, my friend.  Are you strong and brave?  I only ask because I am known 
         to be too generous to those that find for me interesting -- things -- to use in my smithing.  What 
         do you say? */
-        public override object Description
-        {
-            get
-            {
-                return 1074662;
-            }
-        }
+        public override object Description => 1074662;
         /* *nods* */
-        public override object Refuse
-        {
-            get
-            {
-                return 1074663;
-            }
-        }
+        public override object Refuse => 1074663;
         /* I can't be generous, my friend, until you bring me those essences. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1074664;
-            }
-        }
+        public override object Uncomplete => 1074664;
         /* My friend, you've returned -- with items for me, I hope?  I have a generous reward for you. */
-        public override object Complete
-        {
-            get
-            {
-                return 1074667;
-            }
-        }
+        public override object Complete => 1074667;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -150,47 +90,17 @@ namespace Server.Engines.Quests
         }
 
         /* Heart of Ice */
-        public override object Title
-        {
-            get
-            {
-                return 1073056;
-            }
-        }
+        public override object Title => 1073056;
         /* You look strong and brave, my friend.  Are you strong and brave?  I only ask because I am known 
         to be too generous to those that find for me interesting -- things -- to use in my smithing.  What 
         do you say? */
-        public override object Description
-        {
-            get
-            {
-                return 1074662;
-            }
-        }
+        public override object Description => 1074662;
         /* *nods* */
-        public override object Refuse
-        {
-            get
-            {
-                return 1074663;
-            }
-        }
+        public override object Refuse => 1074663;
         /* I can't be generous, my friend, until you bring me those icy hearts. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1074666;
-            }
-        }
+        public override object Uncomplete => 1074666;
         /* My friend, you've returned -- with items for me, I hope?  I have a generous reward for you. */
-        public override object Complete
-        {
-            get
-            {
-                return 1074667;
-            }
-        }
+        public override object Complete => 1074667;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -225,25 +135,13 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(CrystallineFragmentsQuest),
                     typeof(ProtectorsEssenceQuest),
                     typeof(HeartOfIceQuest)
                 };
-            }
-        }
-        protected override List<SBInfo> SBInfos
-        {
-            get
-            {
-                return this.m_SBInfos;
-            }
-        }
+        protected override List<SBInfo> SBInfos => this.m_SBInfos;
         public override void InitSBInfo()
         {
             this.m_SBInfos.Add(new SBBlacksmith());

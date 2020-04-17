@@ -13,13 +13,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new ElvenForgeDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new ElvenForgeDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -47,20 +41,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new ElvenForgeAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1072875;
-            }
-        }// squirrel statue (east)
+        public override BaseAddon Addon => new ElvenForgeAddon();
+        public override int LabelNumber => 1072875;// squirrel statue (east)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

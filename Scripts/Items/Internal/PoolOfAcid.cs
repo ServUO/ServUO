@@ -37,13 +37,7 @@ namespace Server.Items
         {
         }
 
-        public override string DefaultName
-        {
-            get
-            {
-                return "a pool of acid";
-            }
-        }
+        public override string DefaultName => "a pool of acid";
         public override void OnAfterDelete()
         {
             if (this.m_Timer != null)

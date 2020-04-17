@@ -16,7 +16,7 @@ namespace Server.Items
     [TypeAlias("Server.Items.RoseRugEastAddon", "Server.Items.RoseRugSouthAddon")]
     public class RoseRugAddon : BaseAddon, IRewardItem
     {
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         private bool m_IsRewardItem;
         private int m_ResourceCount;
@@ -176,7 +176,7 @@ namespace Server.Items
 
         private class InternalAddonComponent : AddonComponent
         {
-            public override int LabelNumber { get { return 1150121; } } // Rose Rug
+            public override int LabelNumber => 1150121;  // Rose Rug
 
             public InternalAddonComponent(int id)
                 : base(id)

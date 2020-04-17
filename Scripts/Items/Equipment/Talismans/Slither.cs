@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class Slither : BaseTalisman
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1114782; } }// Slither
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1114782; // Slither
 
         [Constructable]
         public Slither()

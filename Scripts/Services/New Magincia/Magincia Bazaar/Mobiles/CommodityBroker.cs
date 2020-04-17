@@ -8,7 +8,7 @@ namespace Server.Engines.NewMagincia
     public class CommodityBroker : BaseBazaarBroker
     {
         private readonly List<CommodityBrokerEntry> m_CommodityEntries = new List<CommodityBrokerEntry>();
-        public List<CommodityBrokerEntry> CommodityEntries { get { return m_CommodityEntries; } }
+        public List<CommodityBrokerEntry> CommodityEntries => m_CommodityEntries;
 
         public static readonly int MaxEntries = 50;
 

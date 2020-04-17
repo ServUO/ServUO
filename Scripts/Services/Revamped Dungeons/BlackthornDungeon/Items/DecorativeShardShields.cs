@@ -7,7 +7,7 @@ namespace Server.Items
 {
     public class DecorativeShardShield : Item, IAddon
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
 
         [Constructable]
         public DecorativeShardShield()
@@ -27,7 +27,7 @@ namespace Server.Items
         {
         }
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         public Item Deed
         {
@@ -38,13 +38,7 @@ namespace Server.Items
                 return deed;
             }
         }
-        public bool FacingEast
-        {
-            get
-            {
-                return this.ItemID <= 0x639A;
-            }
-        }
+        public bool FacingEast => this.ItemID <= 0x639A;
 
         void IChopable.OnChop(Mobile user)
         {
@@ -97,7 +91,7 @@ namespace Server.Items
 
     public class DecorativeShardShieldDeed : Item
     {
-        public override int LabelNumber { get { return 1153729; } } // Deed for a Decorative Shard Shield
+        public override int LabelNumber => 1153729;  // Deed for a Decorative Shard Shield
 
         [Constructable]
         public DecorativeShardShieldDeed()

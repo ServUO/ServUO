@@ -40,19 +40,19 @@ namespace Server.Mobiles
         public BaseCreature Creature { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public double TrainingProgressPercentile { get { return TrainingProgress / TrainingProgressMax; } }
+        public double TrainingProgressPercentile => TrainingProgress / TrainingProgressMax;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int ControlSlots { get { return Creature.ControlSlots; } }
+        public int ControlSlots => Creature.ControlSlots;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int ControlSlotsMin { get { return Creature.ControlSlotsMin; } }
+        public int ControlSlotsMin => Creature.ControlSlotsMin;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int ControlSlotsMax { get { return Creature.ControlSlotsMax; } }
+        public int ControlSlotsMax => Creature.ControlSlotsMax;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool CanApplyOptions { get { return HasBegunTraining && TrainingProgressPercentile >= 1.0; } }
+        public bool CanApplyOptions => HasBegunTraining && TrainingProgressPercentile >= 1.0;
 
         private int _TrainingPoints;
         private int _StartingTrainingPoints;

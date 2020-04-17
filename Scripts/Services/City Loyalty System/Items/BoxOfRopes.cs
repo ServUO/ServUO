@@ -12,7 +12,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public CityLoyaltySystem CitySystem { get { return CityLoyaltySystem.GetCityInstance(City); } set { } }
 
-        public override int LabelNumber { get { return 1152262; } } // a box of ropes
+        public override int LabelNumber => 1152262;  // a box of ropes
 
         public BoxOfRopes(City city) : base(3650)
         {

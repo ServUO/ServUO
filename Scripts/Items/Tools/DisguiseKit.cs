@@ -25,7 +25,7 @@ namespace Server.Items
             : base(serial)
         { }
 
-        public override int LabelNumber { get { return 1041078; } } // a disguise kit
+        public override int LabelNumber => 1041078;  // a disguise kit
 
         public override void Serialize(GenericWriter writer)
         {
@@ -287,7 +287,7 @@ namespace Server.Items
     {
         private static readonly Dictionary<Mobile, InternalTimer> m_Timers = new Dictionary<Mobile, InternalTimer>();
 
-        public static Dictionary<Mobile, InternalTimer> Timers { get { return m_Timers; } }
+        public static Dictionary<Mobile, InternalTimer> Timers => m_Timers;
 
         public static void CreateTimer(Mobile m, TimeSpan delay)
         {

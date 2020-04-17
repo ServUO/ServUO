@@ -26,13 +26,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new BrokenVanityDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new BrokenVanityDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -63,20 +57,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new BrokenVanityAddon(this.m_East);
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1076260;
-            }
-        }// Broken Vanity
+        public override BaseAddon Addon => new BrokenVanityAddon(this.m_East);
+        public override int LabelNumber => 1076260;// Broken Vanity
         public override void OnDoubleClick(Mobile from)
         {
             if (this.IsChildOf(from.Backpack))

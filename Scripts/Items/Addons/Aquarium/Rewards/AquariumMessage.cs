@@ -13,13 +13,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073894;
-            }
-        }// Message in a Bottle
+        public override int LabelNumber => 1073894;// Message in a Bottle
         public override void AddNameProperties(ObjectPropertyList list)
         {
             base.AddNameProperties(list);

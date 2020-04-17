@@ -6,8 +6,8 @@ namespace Server.Items
 {
     public class GalleonHold : Container, IGalleonFixture
     {
-        public override int LabelNumber { get { return 1149699; } } // cargo hold
-        public override bool ForceShowProperties { get { return true; } }
+        public override int LabelNumber => 1149699;  // cargo hold
+        public override bool ForceShowProperties => true;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public BaseGalleon Galleon { get; set; }
@@ -27,11 +27,11 @@ namespace Server.Items
             }
         }
 
-        public override bool IsDecoContainer { get { return false; } }
+        public override bool IsDecoContainer => false;
 
-        public override Rectangle2D Bounds { get { return new Rectangle2D(46, 74, 150, 110); } }
-        public override int DefaultGumpID { get { return 0x4C; } }
-        public override int DefaultDropSound { get { return 0x42; } }
+        public override Rectangle2D Bounds => new Rectangle2D(46, 74, 150, 110);
+        public override int DefaultGumpID => 0x4C;
+        public override int DefaultDropSound => 0x42;
 
         public GalleonHold(BaseGalleon galleon, int itemID) : base(itemID)
         {
@@ -83,8 +83,8 @@ namespace Server.Items
 
     public class HoldItem : Item, IGalleonFixture
     {
-        public override int LabelNumber { get { return 1149699; } } // cargo hold
-        public override bool ForceShowProperties { get { return true; } }
+        public override int LabelNumber => 1149699;  // cargo hold
+        public override bool ForceShowProperties => true;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public BaseGalleon Galleon { get; set; }

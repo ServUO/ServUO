@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class EnchantedSculptingToolAddon : CraftAddon
     {
-        public override CraftSystem CraftSystem { get { return DefMasonry.CraftSystem; } }
+        public override CraftSystem CraftSystem => DefMasonry.CraftSystem;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsRewardItem { get; set; }
@@ -64,7 +64,7 @@ namespace Server.Items
 
     public class EnchantedSculptingToolDeed : CraftAddonDeed, IRewardItem, IRewardOption
     {
-        public override int LabelNumber { get { return 1159421; } } // Enchanted Sculpting Tool
+        public override int LabelNumber => 1159421;  // Enchanted Sculpting Tool
 
         public override BaseAddon Addon
         {

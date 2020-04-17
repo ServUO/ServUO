@@ -12,10 +12,10 @@ namespace Server.Items
             this.Weight = 1;
         }
 
-        public override int Lifespan { get { return 604800; } }
-        public override bool UseSeconds { get { return false; } }
+        public override int Lifespan => 604800;
+        public override bool UseSeconds => false;
 
-        public override int LabelNumber { get { return 1153866; } } // Exotic Toolkit
+        public override int LabelNumber => 1153866;  // Exotic Toolkit
 
         public ExoticToolkit(Serial serial)
             : base(serial)

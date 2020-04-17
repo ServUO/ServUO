@@ -16,27 +16,9 @@ namespace Server.Items
         {
         }
 
-        public virtual int Bonus
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual StatType Type
-        {
-            get
-            {
-                return StatType.Str;
-            }
-        }
-        public override double DefaultWeight
-        {
-            get
-            {
-                return 1.0;
-            }
-        }
+        public virtual int Bonus => 0;
+        public virtual StatType Type => StatType.Str;
+        public override double DefaultWeight => 1.0;
         public virtual bool Apply(Mobile from)
         {
             bool applied = Spells.SpellHelper.AddStatOffset(from, this.Type, this.Bonus, TimeSpan.FromMinutes(1.0));
@@ -90,27 +72,9 @@ namespace Server.Items
         {
         }
 
-        public override int Bonus
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override StatType Type
-        {
-            get
-            {
-                return StatType.Int;
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041073;
-            }
-        }// prized fish
+        public override int Bonus => 5;
+        public override StatType Type => StatType.Int;
+        public override int LabelNumber => 1041073;// prized fish
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -142,27 +106,9 @@ namespace Server.Items
         {
         }
 
-        public override int Bonus
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override StatType Type
-        {
-            get
-            {
-                return StatType.Dex;
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041074;
-            }
-        }// wondrous fish
+        public override int Bonus => 5;
+        public override StatType Type => StatType.Dex;
+        public override int LabelNumber => 1041074;// wondrous fish
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -194,27 +140,9 @@ namespace Server.Items
         {
         }
 
-        public override int Bonus
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override StatType Type
-        {
-            get
-            {
-                return StatType.Str;
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041075;
-            }
-        }// truly rare fish
+        public override int Bonus => 5;
+        public override StatType Type => StatType.Str;
+        public override int LabelNumber => 1041075;// truly rare fish
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -246,13 +174,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041076;
-            }
-        }// highly peculiar fish
+        public override int LabelNumber => 1041076;// highly peculiar fish
         public override bool Apply(Mobile from)
         {
             from.Stam += 10;

@@ -35,13 +35,7 @@ namespace Server.Engines.Quests.Naturalist
                 return n;
             }
         }
-        public bool Special
-        {
-            get
-            {
-                return this.m_Special;
-            }
-        }
+        public bool Special => this.m_Special;
         public int ID
         {
             get

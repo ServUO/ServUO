@@ -3,7 +3,7 @@ using Server.Items;
 
 public class RoundBasketHandles : BaseContainer
 {
-    public override int LabelNumber { get { return 1112293; } } // round basket
+    public override int LabelNumber => 1112293;  // round basket
 
     [Constructable]
     public RoundBasketHandles()

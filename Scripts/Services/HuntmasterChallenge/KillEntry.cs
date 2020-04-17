@@ -12,19 +12,19 @@ namespace Server.Engines.HuntsmasterChallenge
         private readonly string m_Location;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile Owner { get { return m_Owner; } }
+        public Mobile Owner => m_Owner;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Measurement { get { return m_Measurement; } }
+        public int Measurement => m_Measurement;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int KillIndex { get { return m_KillIndex; } }
+        public int KillIndex => m_KillIndex;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime DateKilled { get { return m_DateKilled; } }
+        public DateTime DateKilled => m_DateKilled;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public string Location { get { return m_Location; } }
+        public string Location => m_Location;
 
         public HuntingKillEntry(Mobile owner, int measurement, DateTime DateKilled, int killindex, string location)
         {

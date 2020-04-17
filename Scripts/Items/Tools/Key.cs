@@ -39,7 +39,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
 
-        public bool PlayerConstructed { get { return true; } }
+        public bool PlayerConstructed => true;
 
         [Constructable]
         public Key()
@@ -394,7 +394,7 @@ namespace Server.Items
 
         private class RenamePrompt : Prompt
         {
-            public override int MessageCliloc { get { return 501665; } }
+            public override int MessageCliloc => 501665;
             private readonly Key m_Key;
             public RenamePrompt(Key key)
             {

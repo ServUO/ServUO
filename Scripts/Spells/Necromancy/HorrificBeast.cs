@@ -15,34 +15,10 @@ namespace Server.Spells.Necromancy
         {
         }
 
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(2.25);
-            }
-        }
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 40.0;
-            }
-        }
-        public override int RequiredMana
-        {
-            get
-            {
-                return 11;
-            }
-        }
-        public override int Body
-        {
-            get
-            {
-                return 746;
-            }
-        }
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(2.25);
+        public override double RequiredSkill => 40.0;
+        public override int RequiredMana => 11;
+        public override int Body => 746;
         public override void DoEffect(Mobile m)
         {
             m.PlaySound(0x165);

@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class ShipPaintingAddon : BaseAddon
     {
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime NextResourceCount { get; set; }
@@ -65,7 +65,7 @@ namespace Server.Items
             }
         }
 
-        public override BaseAddonDeed Deed { get { return new ShipPaintingDeed(); } }
+        public override BaseAddonDeed Deed => new ShipPaintingDeed();
 
         private class ShipPaintingComponent : LocalizedAddonComponent
         {
@@ -136,7 +136,7 @@ namespace Server.Items
 
     public class ShipPaintingDeed : BaseAddonDeed, IRewardOption
     {
-        public override int LabelNumber { get { return 1154180; } } // Ship Painting 
+        public override int LabelNumber => 1154180;  // Ship Painting 
 
         private DirectionType _Direction;
 
@@ -179,7 +179,7 @@ namespace Server.Items
                 base.OnDoubleClick(from);
         }
 
-        public override BaseAddon Addon { get { return new ShipPaintingAddon(_Direction); } }
+        public override BaseAddon Addon => new ShipPaintingAddon(_Direction);
 
         public override void Serialize(GenericWriter writer)
         {

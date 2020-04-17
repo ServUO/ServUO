@@ -24,24 +24,24 @@ namespace Server.Items
         private int m_TrophyID;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile Fisher { get { return m_Fisher; } }
+        public Mobile Fisher => m_Fisher;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int TrophyWeight { get { return m_Weight; } }
+        public int TrophyWeight => m_Weight;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime DateCaught { get { return m_DateCaught; } }
+        public DateTime DateCaught => m_DateCaught;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int TrophyName { get { return m_TrophyName; } }
+        public int TrophyName => m_TrophyName;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int DeedName { get { return m_DeedName; } }
+        public int DeedName => m_DeedName;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int TrophyID { get { return m_TrophyID; } }
+        public int TrophyID => m_TrophyID;
 
-        public override int LabelNumber { get { return m_DeedName; } }
+        public override int LabelNumber => m_DeedName;
 
         public FishTrophyDeed(int weight, Mobile fisher, DateTime caught, int deedname, int trophyname, int id) : base(0x14F0)
         {
@@ -201,13 +201,13 @@ namespace Server.Items
         private Type m_TypeName;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile Fisher { get { return m_Fisher; } }
+        public Mobile Fisher => m_Fisher;
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime DateCaught { get { return m_DateCaught; } }
+        public DateTime DateCaught => m_DateCaught;
         [CommandProperty(AccessLevel.GameMaster)]
-        public int FishWeight { get { return m_FishWeight; } }
+        public int FishWeight => m_FishWeight;
         [CommandProperty(AccessLevel.GameMaster)]
-        public Type TypeName { get { return m_TypeName; } }
+        public Type TypeName => m_TypeName;
 
         public FishTrophy(Type type, TrophyStyle style, bool north, int label, int weight, Mobile fisher, DateTime datecaught)
         {
@@ -376,7 +376,7 @@ namespace Server.Items
 
     public class TrophyComponent : LocalizedAddonComponent
     {
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         public TrophyComponent(int itemID, int label, int hue) : base(itemID, label)
         {

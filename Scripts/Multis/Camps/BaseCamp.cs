@@ -29,16 +29,13 @@ namespace Server.Multis
         [CommandProperty(AccessLevel.GameMaster)]
         public BaseContainer Treasure2 { get; set; }
 
-        public override bool HandlesOnMovement
-        {
-            get { return true; }
-        }
+        public override bool HandlesOnMovement => true;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual TimeSpan DecayDelay { get { return TimeSpan.FromMinutes(30.0); } }
+        public virtual TimeSpan DecayDelay => TimeSpan.FromMinutes(30.0);
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Decaying { get { return TimeOfDecay != DateTime.MinValue; } }
+        public bool Decaying => TimeOfDecay != DateTime.MinValue;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool ForceDecay
@@ -67,13 +64,7 @@ namespace Server.Multis
         {
         }
 
-        public virtual int EventRange
-        {
-            get
-            {
-                return 10;
-            }
-        }
+        public virtual int EventRange => 10;
 
         public void CheckAddComponents()
         {

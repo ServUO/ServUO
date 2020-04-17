@@ -165,7 +165,7 @@ namespace Server.Items
     [Furniture]
     public class TerMurStyleTable : Item
     {
-        public override int LabelNumber { get { return 1095321; } } // Ter-Mur style table
+        public override int LabelNumber => 1095321;  // Ter-Mur style table
 
         [Constructable]
         public TerMurStyleTable()

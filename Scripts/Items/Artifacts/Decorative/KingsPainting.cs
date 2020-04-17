@@ -2,12 +2,12 @@ namespace Server.Items
 {
     public class KingsPainting1 : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override bool ShowArtifactRarity { get { return false; } }
-        public override int ArtifactRarity { get { return 8; } }
+        public override bool IsArtifact => true;
+        public override bool ShowArtifactRarity => false;
+        public override int ArtifactRarity => 8;
 
-        public override double DefaultWeight { get { return 10.0; } }
-        public override string DefaultName { get { return "A Painting From The Personal Collection Of The King"; } }
+        public override double DefaultWeight => 10.0;
+        public override string DefaultName => "A Painting From The Personal Collection Of The King";
 
         [Constructable]
         public KingsPainting1()
@@ -37,12 +37,12 @@ namespace Server.Items
 
     public class KingsPainting2 : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override bool ShowArtifactRarity { get { return false; } }
-        public override int ArtifactRarity { get { return 8; } }
+        public override bool IsArtifact => true;
+        public override bool ShowArtifactRarity => false;
+        public override int ArtifactRarity => 8;
 
-        public override double DefaultWeight { get { return 10.0; } }
-        public override string DefaultName { get { return "A Painting From The Personal Collection Of The King"; } }
+        public override double DefaultWeight => 10.0;
+        public override string DefaultName => "A Painting From The Personal Collection Of The King";
 
         [Constructable]
         public KingsPainting2()

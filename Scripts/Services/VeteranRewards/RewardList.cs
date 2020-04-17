@@ -15,19 +15,7 @@ namespace Server.Engines.VeteranRewards
                 entries[i].List = this;
         }
 
-        public TimeSpan Age
-        {
-            get
-            {
-                return this.m_Age;
-            }
-        }
-        public RewardEntry[] Entries
-        {
-            get
-            {
-                return this.m_Entries;
-            }
-        }
+        public TimeSpan Age => this.m_Age;
+        public RewardEntry[] Entries => this.m_Entries;
     }
 }

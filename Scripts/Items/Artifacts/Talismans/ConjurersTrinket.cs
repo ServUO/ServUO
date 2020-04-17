@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class ConjurersTrinket : BaseTalisman
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1094800; } } // Conjurer's Trinket
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1094800;  // Conjurer's Trinket
 
         [Constructable]
         public ConjurersTrinket()

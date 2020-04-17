@@ -66,13 +66,7 @@ namespace Server.Items
             #endregion
         };
 
-        public static Type[] Creatures
-        {
-            get
-            {
-                return m_Creatures;
-            }
-        }
+        public static Type[] Creatures => m_Creatures;
 
         private Timer m_Timer;
         private DateTime m_NextSpawn;
@@ -80,13 +74,7 @@ namespace Server.Items
         private TimeSpan m_NextSpawnDelay;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime NextSpawn
-        {
-            get
-            {
-                return m_NextSpawn;
-            }
-        }
+        public DateTime NextSpawn => m_NextSpawn;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int SpawnRange
@@ -114,13 +102,7 @@ namespace Server.Items
             }
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1023633;
-            }
-        }// Brazier
+        public override int LabelNumber => 1023633;// Brazier
 
         [Constructable]
         public DeceitBrazier()
@@ -168,13 +150,7 @@ namespace Server.Items
             PublicOverheadMessage(MessageType.Regular, 0x3B2, 500761);// Heed this warning well, and use this brazier at your own peril.
         }
 
-        public override bool HandlesOnMovement
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool HandlesOnMovement => true;
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {

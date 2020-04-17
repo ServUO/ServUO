@@ -4,8 +4,8 @@ namespace Server.Items
 {
     public class SewingMachine : CraftAddon
     {
-        public override BaseAddonDeed Deed { get { return new SewingMachineDeed(Tools.Count > 0 ? Tools[0].UsesRemaining : 0); } }
-        public override CraftSystem CraftSystem { get { return DefTailoring.CraftSystem; } }
+        public override BaseAddonDeed Deed => new SewingMachineDeed(Tools.Count > 0 ? Tools[0].UsesRemaining : 0);
+        public override CraftSystem CraftSystem => DefTailoring.CraftSystem;
 
         [Constructable]
         public SewingMachine(bool south, int uses)
@@ -44,8 +44,8 @@ namespace Server.Items
 
     public class SewingMachineDeed : CraftAddonDeed
     {
-        public override int LabelNumber { get { return 1123504; } } // Sewing Machine
-        public override BaseAddon Addon { get { return new SewingMachine(_South, UsesRemaining); } }
+        public override int LabelNumber => 1123504;  // Sewing Machine
+        public override BaseAddon Addon => new SewingMachine(_South, UsesRemaining);
 
         private bool _South;
 

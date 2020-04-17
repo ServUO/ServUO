@@ -399,13 +399,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new ArcheryButteDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new ArcheryButteDeed();
 
         public override void Serialize(GenericWriter writer)
         {
@@ -436,21 +430,9 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new ArcheryButteAddon(Facing);
-            }
-        }
+        public override BaseAddon Addon => new ArcheryButteAddon(Facing);
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1080205;
-            }
-        }// archery butte
+        public override int LabelNumber => 1080205;// archery butte
 
         public override void OnDoubleClick(Mobile from)
         {

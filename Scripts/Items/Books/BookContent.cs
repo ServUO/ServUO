@@ -12,27 +12,9 @@ namespace Server.Items
             this.m_Pages = pages;
         }
 
-        public string Title
-        {
-            get
-            {
-                return this.m_Title;
-            }
-        }
-        public string Author
-        {
-            get
-            {
-                return this.m_Author;
-            }
-        }
-        public BookPageInfo[] Pages
-        {
-            get
-            {
-                return this.m_Pages;
-            }
-        }
+        public string Title => this.m_Title;
+        public string Author => this.m_Author;
+        public BookPageInfo[] Pages => this.m_Pages;
         public BookPageInfo[] Copy()
         {
             BookPageInfo[] copy = new BookPageInfo[this.m_Pages.Length];

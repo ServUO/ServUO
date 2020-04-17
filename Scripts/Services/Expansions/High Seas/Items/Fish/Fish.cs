@@ -4,13 +4,13 @@ namespace Server.Items
 {
     public class BaseHighseasFish : Item, ICarvable, ICommodity
     {
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
-        public virtual Item GetCarved { get { return new RawFishSteak(); } }
-        public virtual int GetCarvedAmount { get { return 4; } }
+        public virtual Item GetCarved => new RawFishSteak();
+        public virtual int GetCarvedAmount => 4;
 
-        public override double DefaultWeight { get { return 10.0; } }
+        public override double DefaultWeight => 10.0;
 
         public BaseHighseasFish(int itemID) : base(itemID)
         {
@@ -50,7 +50,7 @@ namespace Server.Items
             return Utility.RandomBool() ? 17619 : 17620;
         }
 
-        public static Type[] DeepWaterFish { get { return m_DeepWaterFish; } }
+        public static Type[] DeepWaterFish => m_DeepWaterFish;
         private static readonly Type[] m_DeepWaterFish = new Type[]
         {
             typeof(Haddock),            typeof(CapeCod),            typeof(BlackSeabass),
@@ -62,7 +62,7 @@ namespace Server.Items
         };
 
 
-        public static Type[] ShoreFish { get { return m_ShoreFish; } }
+        public static Type[] ShoreFish => m_ShoreFish;
         private static readonly Type[] m_ShoreFish = new Type[]
         {
             typeof(PumpkinSeedSunfish),     typeof(YellowPerch),        typeof(PikeFish),
@@ -71,7 +71,7 @@ namespace Server.Items
             typeof(GreenCatfish),           typeof(Walleye),            typeof(KokaneeSalmon),
         };
 
-        public static Type[] DungeonFish { get { return m_DungeonFish; } }
+        public static Type[] DungeonFish => m_DungeonFish;
         private static readonly Type[] m_DungeonFish = new Type[]
         {
             typeof(DungeonChub),        typeof(DemonTrout),         typeof(SnaggletoothBass),
@@ -80,7 +80,7 @@ namespace Server.Items
             typeof(InfernalTuna),       typeof(TormentedPike),      typeof(LurkerFish),
         };
 
-        public static Type[] LobstersAndCrabs { get { return m_LobstersAndCrabs; } }
+        public static Type[] LobstersAndCrabs => m_LobstersAndCrabs;
         private static readonly Type[] m_LobstersAndCrabs = new Type[]
         {
             typeof(DungeonessCrab),     typeof(BlueCrab),           typeof(KingCrab),
@@ -89,7 +89,7 @@ namespace Server.Items
             typeof(FredLobster),        typeof(CrustyLobster),      typeof(ShovelNoseLobster),
         };
 
-        public static Type[] Lobsters { get { return m_Lobsters; } }
+        public static Type[] Lobsters => m_Lobsters;
         private static readonly Type[] m_Lobsters = new Type[]
         {
             typeof(Lobster),
@@ -99,7 +99,7 @@ namespace Server.Items
             typeof(VoidLobster),
         };
 
-        public static Type[] Crabs { get { return m_Crabs; } }
+        public static Type[] Crabs => m_Crabs;
         private static readonly Type[] m_Crabs = new Type[]
         {
             typeof(Crab),
@@ -126,7 +126,7 @@ namespace Server.Items
 
     public class Amberjack : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116402; } }
+        public override int LabelNumber => 1116402;
 
         [Constructable]
         public Amberjack() : base(17606)
@@ -150,7 +150,7 @@ namespace Server.Items
 
     public class BlackSeabass : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116396; } }
+        public override int LabelNumber => 1116396;
 
         [Constructable]
         public BlackSeabass()
@@ -175,7 +175,7 @@ namespace Server.Items
 
     public class BlueGrouper : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116411; } }
+        public override int LabelNumber => 1116411;
 
         [Constructable]
         public BlueGrouper()
@@ -200,7 +200,7 @@ namespace Server.Items
 
     public class BlueFish : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116406; } }
+        public override int LabelNumber => 1116406;
 
         [Constructable]
         public BlueFish()
@@ -225,7 +225,7 @@ namespace Server.Items
 
     public class BluegillSunfish : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116417; } }
+        public override int LabelNumber => 1116417;
 
         [Constructable]
         public BluegillSunfish()
@@ -250,7 +250,7 @@ namespace Server.Items
 
     public class Bonefish : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116409; } }
+        public override int LabelNumber => 1116409;
 
         [Constructable]
         public Bonefish()
@@ -275,7 +275,7 @@ namespace Server.Items
 
     public class Bonito : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116405; } }
+        public override int LabelNumber => 1116405;
 
         [Constructable]
         public Bonito()
@@ -300,7 +300,7 @@ namespace Server.Items
 
     public class BrookTrout : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116415; } }
+        public override int LabelNumber => 1116415;
 
         [Constructable]
         public BrookTrout()
@@ -325,7 +325,7 @@ namespace Server.Items
 
     public class CapeCod : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116395; } }
+        public override int LabelNumber => 1116395;
 
         [Constructable]
         public CapeCod()
@@ -350,7 +350,7 @@ namespace Server.Items
 
     public class CaptainSnook : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116408; } }
+        public override int LabelNumber => 1116408;
 
         [Constructable]
         public CaptainSnook()
@@ -375,7 +375,7 @@ namespace Server.Items
 
     public class Cobia : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116400; } }
+        public override int LabelNumber => 1116400;
 
         [Constructable]
         public Cobia()
@@ -400,7 +400,7 @@ namespace Server.Items
 
     public class CragSnapper : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116432; } }
+        public override int LabelNumber => 1116432;
 
         [Constructable]
         public CragSnapper()
@@ -425,7 +425,7 @@ namespace Server.Items
 
     public class CutThroatTrout : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116427; } }
+        public override int LabelNumber => 1116427;
 
         [Constructable]
         public CutThroatTrout()
@@ -450,7 +450,7 @@ namespace Server.Items
 
     public class DarkFish : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116431; } }
+        public override int LabelNumber => 1116431;
 
         [Constructable]
         public DarkFish()
@@ -475,7 +475,7 @@ namespace Server.Items
 
     public class DemonTrout : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116425; } }
+        public override int LabelNumber => 1116425;
 
         [Constructable]
         public DemonTrout()
@@ -500,7 +500,7 @@ namespace Server.Items
 
     public class DrakeFish : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116429; } }
+        public override int LabelNumber => 1116429;
 
         [Constructable]
         public DrakeFish()
@@ -525,7 +525,7 @@ namespace Server.Items
 
     public class DungeonChub : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116424; } }
+        public override int LabelNumber => 1116424;
 
         [Constructable]
         public DungeonChub()
@@ -550,7 +550,7 @@ namespace Server.Items
 
     public class GraySnapper : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116399; } }
+        public override int LabelNumber => 1116399;
 
         [Constructable]
         public GraySnapper()
@@ -575,7 +575,7 @@ namespace Server.Items
 
     public class GreenCatfish : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116421; } }
+        public override int LabelNumber => 1116421;
 
         [Constructable]
         public GreenCatfish()
@@ -600,7 +600,7 @@ namespace Server.Items
 
     public class GrimCisco : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116428; } }
+        public override int LabelNumber => 1116428;
 
         [Constructable]
         public GrimCisco()
@@ -625,7 +625,7 @@ namespace Server.Items
 
     public class Haddock : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116394; } }
+        public override int LabelNumber => 1116394;
 
         [Constructable]
         public Haddock()
@@ -650,7 +650,7 @@ namespace Server.Items
 
     public class InfernalTuna : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116433; } }
+        public override int LabelNumber => 1116433;
 
         [Constructable]
         public InfernalTuna()
@@ -675,7 +675,7 @@ namespace Server.Items
 
     public class KokaneeSalmon : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116423; } }
+        public override int LabelNumber => 1116423;
 
         [Constructable]
         public KokaneeSalmon()
@@ -700,7 +700,7 @@ namespace Server.Items
 
     public class LurkerFish : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116435; } }
+        public override int LabelNumber => 1116435;
 
         [Constructable]
         public LurkerFish()
@@ -725,7 +725,7 @@ namespace Server.Items
 
     public class MahiMahi : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116401; } }
+        public override int LabelNumber => 1116401;
 
         [Constructable]
         public MahiMahi()
@@ -750,7 +750,7 @@ namespace Server.Items
 
     public class OrcBass : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116430; } }
+        public override int LabelNumber => 1116430;
 
         [Constructable]
         public OrcBass()
@@ -775,7 +775,7 @@ namespace Server.Items
 
     public class PikeFish : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116414; } }
+        public override int LabelNumber => 1116414;
 
         [Constructable]
         public PikeFish()
@@ -800,7 +800,7 @@ namespace Server.Items
 
     public class PumpkinSeedSunfish : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116412; } }
+        public override int LabelNumber => 1116412;
 
         [Constructable]
         public PumpkinSeedSunfish()
@@ -825,7 +825,7 @@ namespace Server.Items
 
     public class RainbowTrout : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116416; } }
+        public override int LabelNumber => 1116416;
 
         [Constructable]
         public RainbowTrout()
@@ -850,7 +850,7 @@ namespace Server.Items
 
     public class RedDrum : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116410; } }
+        public override int LabelNumber => 1116410;
 
         [Constructable]
         public RedDrum()
@@ -875,7 +875,7 @@ namespace Server.Items
 
     public class RedGrouper : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116407; } }
+        public override int LabelNumber => 1116407;
 
         [Constructable]
         public RedGrouper()
@@ -900,7 +900,7 @@ namespace Server.Items
 
     public class RedSnook : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116398; } }
+        public override int LabelNumber => 1116398;
 
         [Constructable]
         public RedSnook()
@@ -925,7 +925,7 @@ namespace Server.Items
 
     public class RedbellyBream : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116418; } }
+        public override int LabelNumber => 1116418;
 
         [Constructable]
         public RedbellyBream()
@@ -950,7 +950,7 @@ namespace Server.Items
 
     public class Shad : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116403; } }
+        public override int LabelNumber => 1116403;
 
         [Constructable]
         public Shad()
@@ -975,7 +975,7 @@ namespace Server.Items
 
     public class SmallmouthBass : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116419; } }
+        public override int LabelNumber => 1116419;
 
         [Constructable]
         public SmallmouthBass()
@@ -1000,7 +1000,7 @@ namespace Server.Items
 
     public class SnaggletoothBass : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116426; } }
+        public override int LabelNumber => 1116426;
 
         [Constructable]
         public SnaggletoothBass()
@@ -1025,7 +1025,7 @@ namespace Server.Items
 
     public class Tarpon : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116397; } }
+        public override int LabelNumber => 1116397;
 
         [Constructable]
         public Tarpon()
@@ -1050,7 +1050,7 @@ namespace Server.Items
 
     public class TormentedPike : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116434; } }
+        public override int LabelNumber => 1116434;
 
         [Constructable]
         public TormentedPike()
@@ -1075,7 +1075,7 @@ namespace Server.Items
 
     public class UncommonShiner : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116420; } }
+        public override int LabelNumber => 1116420;
 
         [Constructable]
         public UncommonShiner()
@@ -1100,7 +1100,7 @@ namespace Server.Items
 
     public class Walleye : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116422; } }
+        public override int LabelNumber => 1116422;
 
         [Constructable]
         public Walleye()
@@ -1125,7 +1125,7 @@ namespace Server.Items
 
     public class YellowPerch : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116413; } }
+        public override int LabelNumber => 1116413;
 
         [Constructable]
         public YellowPerch()
@@ -1150,7 +1150,7 @@ namespace Server.Items
 
     public class YellowfinTuna : BaseHighseasFish
     {
-        public override int LabelNumber { get { return 1116404; } }
+        public override int LabelNumber => 1116404;
 
         [Constructable]
         public YellowfinTuna()

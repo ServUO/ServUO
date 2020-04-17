@@ -135,15 +135,15 @@ namespace Server.Mobiles
             CantWalk = true;
         }
 
-        public override bool IsScaredOfScaryThings { get { return false; } }
-        public override bool IsBondable { get { return false; } }
-        public override FoodType FavoriteFood { get { return FoodType.FruitsAndVegies; } }
-        public override bool BleedImmune { get { return true; } }
-        public override bool DeleteOnRelease { get { return true; } }
-        public override bool BardImmune { get { return Controlled; } }
-        public override Poison PoisonImmune { get { return Poison.Lethal; } }
-        public override bool CanAngerOnTame { get { return true; } }
-        public override bool StatLossAfterTame { get { return true; } }
+        public override bool IsScaredOfScaryThings => false;
+        public override bool IsBondable => false;
+        public override FoodType FavoriteFood => FoodType.FruitsAndVegies;
+        public override bool BleedImmune => true;
+        public override bool DeleteOnRelease => true;
+        public override bool BardImmune => Controlled;
+        public override Poison PoisonImmune => Poison.Lethal;
+        public override bool CanAngerOnTame => true;
+        public override bool StatLossAfterTame => true;
 
         public override void GenerateLoot()
         {
@@ -183,9 +183,9 @@ namespace Server.Mobiles
 
             return base.GetHurtSound();
         }
-        public override int Meat { get { return 9; } }
-        public override int Hides { get { return 20; } }
-        public override HideType HideType { get { return HideType.Horned; } }
+        public override int Meat => 9;
+        public override int Hides => 20;
+        public override HideType HideType => HideType.Horned;
 
         public override void Serialize(GenericWriter writer)
         {

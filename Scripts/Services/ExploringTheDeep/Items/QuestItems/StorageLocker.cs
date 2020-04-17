@@ -16,7 +16,7 @@ namespace Server.Items
     [Flipable(0x285D, 0x285E)]
     public class StorageLocker : FillableContainer
     {
-        public override int LabelNumber { get { return 1154431; } } // Storage Locker
+        public override int LabelNumber => 1154431;  // Storage Locker
 
         private bool m_Active;
         private Parts m_Type;
@@ -49,15 +49,9 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime RestartTime
-        {
-            get
-            {
-                return m_RestartTime;
-            }
-        }
+        public DateTime RestartTime => m_RestartTime;
 
-        public override bool IsDecoContainer { get { return false; } }
+        public override bool IsDecoContainer => false;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Parts Type

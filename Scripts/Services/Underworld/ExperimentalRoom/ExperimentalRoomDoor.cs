@@ -4,7 +4,7 @@ namespace Server.Items
     public class ExperimentalRoomDoor : MetalDoor2
     {
 
-        public override string DefaultName { get { return "a door"; } }
+        public override string DefaultName => "a door";
 
         private Room m_Room;
 

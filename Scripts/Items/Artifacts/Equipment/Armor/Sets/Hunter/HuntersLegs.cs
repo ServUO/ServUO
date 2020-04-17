@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class HunterLegs : LeafLegs
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public HunterLegs()
             : base()
@@ -30,62 +30,14 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074301;
-            }
-        }// Hunter's Garb
-        public override SetItem SetID
-        {
-            get
-            {
-                return SetItem.Hunter;
-            }
-        }
-        public override int Pieces
-        {
-            get
-            {
-                return 4;
-            }
-        }
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 9;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 6;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 3;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 8;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 4;
-            }
-        }
+        public override int LabelNumber => 1074301;// Hunter's Garb
+        public override SetItem SetID => SetItem.Hunter;
+        public override int Pieces => 4;
+        public override int BasePhysicalResistance => 9;
+        public override int BaseFireResistance => 6;
+        public override int BaseColdResistance => 3;
+        public override int BasePoisonResistance => 8;
+        public override int BaseEnergyResistance => 4;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

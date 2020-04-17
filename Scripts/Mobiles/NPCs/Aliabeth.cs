@@ -18,13 +18,7 @@ namespace Server.Engines.Quests
         }
 
         /*The Exchange*/
-        public override object Title
-        {
-            get
-            {
-                return 1113777;
-            }
-        }
+        public override object Title => 1113777;
         //Hello there! Hail and well met, and all of that. I must apologize in advance for being
         //so impatient, but you must help me! You see, my mother and my eldest sister are visiting
         //soon, and I haven’t seen them in quite awhile, so I want to present them both with a
@@ -34,39 +28,15 @@ namespace Server.Engines.Quests
         //crafted gargish jewelry, but the jeweler hasn’t had her favorite jewel in stock for 
         //quite some time. If you could help me obtain five pieces of white chocolate and one
         //dark sapphire, I will reward you with a bag of hard to obtain imbuing ingredients.
-        public override object Description
-        {
-            get
-            {
-                return 1113778;
-            }
-        }
+        public override object Description => 1113778;
         //Oh, no, you must help me! Please say that you will!
-        public override object Refuse
-        {
-            get
-            {
-                return 1113779;
-            }
-        }
+        public override object Refuse => 1113779;
         //Remember, I need five pieces of white chocolate, and one dark sapphire. Please do hurry!
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1113780;
-            }
-        }
+        public override object Uncomplete => 1113780;
         //Oh, thank you so very much! I cannot begin to thank you enough for helping me find 
         //these presents. Here is your reward. You’ll have to excuse me while I set this dark
         //sapphire in a setting that will best highlight the cut. Farewell!
-        public override object Complete
-        {
-            get
-            {
-                return 1113781;
-            }
-        }
+        public override object Complete => 1113781;
 
         public override void Serialize(GenericWriter writer)
         {
@@ -96,13 +66,7 @@ namespace Server.Engines.Quests
         }
 
         /* A Worthy Proposition */
-        public override object Title
-        {
-            get
-            {
-                return 1113782;
-            }
-        }
+        public override object Title => 1113782;
 
         //Hello, welcome to the shop. I don't own it, but the gargoyles here are as keen to 
         //learn from me as I am from them. They've been helping me with the work on my latest
@@ -111,41 +75,17 @@ namespace Server.Engines.Quests
         //and nothing can beat elven fletching for strength in holding them together. If you 
         //would bring me, say, ten bamboo flutes and some elven fletching, I have some valuable
         //imbuing ingredients I’ll give you in exchange. What do you say?
-        public override object Description
-        {
-            get
-            {
-                return 1113783;
-            }
-        }
+        public override object Description => 1113783;
         //Well, if you change your mind, I’ll be here.
-        public override object Refuse
-        {
-            get
-            {
-                return 1113784;
-            }
-        }
+        public override object Refuse => 1113784;
         //Hmm, what is that? Oh yes, I would like you to bring me ten bamboo flutes and some elven
         //fletching for my fly… er, my invention.
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1113785;
-            }
-        }
+        public override object Uncomplete => 1113785;
         //These are of fine quality! I think they will work just fine to reinforce the floor of the 
         //basket. What’s that? Did I say basket? I meant, bakery! Yes, I am inventing a, um, floor 
         //for a bakery. There is a great need for that, you know! Ok, now please leave so I can get 
         //back to work. Thank you, bye, bye!
-        public override object Complete
-        {
-            get
-            {
-                return 1113786;
-            }
-        }
+        public override object Complete => 1113786;
 
         public override void Serialize(GenericWriter writer)
         {
@@ -184,17 +124,11 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(AWorthyPropositionQuest),
                     typeof(TheExchangeQuest),
                 };
-            }
-        }
         public override void InitBody()
         {
             this.Female = true;

@@ -11,10 +11,10 @@ namespace Server.Engines.Quests
             Spawn();
         }
 
-        public static Point3D HomeLocation { get { return new Point3D(1569, 1041, -7); } }
-        public static int HomeRange { get { return 5; } }
+        public static Point3D HomeLocation => new Point3D(1569, 1041, -7);
+        public static int HomeRange => 5;
 
-        public override Type[] Quests { get { return new Type[] { typeof(ResponsibilityQuest) }; } }
+        public override Type[] Quests => new Type[] { typeof(ResponsibilityQuest) };
 
         public static List<Lissbet> Instances { get; set; }
 

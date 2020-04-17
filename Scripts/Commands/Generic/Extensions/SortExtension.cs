@@ -14,13 +14,7 @@ namespace Server.Commands.Generic
             this.m_Orders = new List<OrderInfo>();
         }
 
-        public override ExtensionInfo Info
-        {
-            get
-            {
-                return ExtInfo;
-            }
-        }
+        public override ExtensionInfo Info => ExtInfo;
         public static void Initialize()
         {
             ExtensionInfo.Register(ExtInfo);

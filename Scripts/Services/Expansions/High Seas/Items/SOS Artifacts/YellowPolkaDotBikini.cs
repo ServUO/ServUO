@@ -2,7 +2,7 @@
 {
     public class YellowPolkaDotBikini : LeatherBustierArms
     {
-        public override int LabelNumber { get { return 1149962; } }
+        public override int LabelNumber => 1149962;
 
         [Constructable]
         public YellowPolkaDotBikini()

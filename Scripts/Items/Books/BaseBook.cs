@@ -104,13 +104,7 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int PagesCount
-        {
-            get
-            {
-                return m_Pages.Length;
-            }
-        }
+        public int PagesCount => m_Pages.Length;
 
         public string BookString
         {
@@ -118,13 +112,7 @@ namespace Server.Items
             set { BuildBookFromString(value); }
         }
 
-        public BookPageInfo[] Pages
-        {
-            get
-            {
-                return m_Pages;
-            }
-        }
+        public BookPageInfo[] Pages => m_Pages;
 
         [Constructable]
         public BaseBook(int itemID)
@@ -181,13 +169,7 @@ namespace Server.Items
             }
         }
 
-        public virtual BookContent DefaultContent
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public virtual BookContent DefaultContent => null;
 
         public void BuildBookFromString(string content)
         {

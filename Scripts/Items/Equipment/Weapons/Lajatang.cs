@@ -19,98 +19,20 @@ namespace Server.Items
         {
         }
 
-        public override WeaponAbility PrimaryAbility
-        {
-            get
-            {
-                return WeaponAbility.DefenseMastery;
-            }
-        }
-        public override WeaponAbility SecondaryAbility
-        {
-            get
-            {
-                return WeaponAbility.FrenziedWhirlwind;
-            }
-        }
-        public override int StrengthReq
-        {
-            get
-            {
-                return 65;
-            }
-        }
-        public override int MinDamage
-        {
-            get
-            {
-                return 16;
-            }
-        }
-        public override int MaxDamage
-        {
-            get
-            {
-                return 19;
-            }
-        }
-        public override float Speed
-        {
-            get
-            {
-                return 3.50f;
-            }
-        }
+        public override WeaponAbility PrimaryAbility => WeaponAbility.DefenseMastery;
+        public override WeaponAbility SecondaryAbility => WeaponAbility.FrenziedWhirlwind;
+        public override int StrengthReq => 65;
+        public override int MinDamage => 16;
+        public override int MaxDamage => 19;
+        public override float Speed => 3.50f;
 
-        public override int DefHitSound
-        {
-            get
-            {
-                return 0x232;
-            }
-        }
-        public override int DefMissSound
-        {
-            get
-            {
-                return 0x238;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 90;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 95;
-            }
-        }
-        public override SkillName DefSkill
-        {
-            get
-            {
-                return SkillName.Fencing;
-            }
-        }
-        public override WeaponType DefType
-        {
-            get
-            {
-                return WeaponType.Piercing;
-            }
-        }
-        public override WeaponAnimation DefAnimation
-        {
-            get
-            {
-                return WeaponAnimation.Pierce1H;
-            }
-        }
+        public override int DefHitSound => 0x232;
+        public override int DefMissSound => 0x238;
+        public override int InitMinHits => 90;
+        public override int InitMaxHits => 95;
+        public override SkillName DefSkill => SkillName.Fencing;
+        public override WeaponType DefType => WeaponType.Piercing;
+        public override WeaponAnimation DefAnimation => WeaponAnimation.Pierce1H;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

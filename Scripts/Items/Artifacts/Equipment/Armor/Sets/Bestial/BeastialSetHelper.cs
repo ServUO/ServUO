@@ -162,7 +162,7 @@ namespace Server
             public int StartHue { get; set; }
             public DateTime LastDamage { get; set; }
 
-            public int Level { get { return Math.Min(5, Math.Max(1, _DamageTaken / 50)); } }
+            public int Level => Math.Min(5, Math.Max(1, _DamageTaken / 50));
 
             public BerserkTimer(Mobile m) : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1))
             {

@@ -9,12 +9,12 @@ namespace Server.Mobiles
     [CorpseName("a dragon turtle corpse")]
     public class DragonTurtle : BaseChampion
     {
-        public override Type[] UniqueList { get { return new Type[] { }; } }
-        public override Type[] SharedList { get { return new Type[] { }; } }
-        public override Type[] DecorativeList { get { return new Type[] { }; } }
-        public override MonsterStatuetteType[] StatueTypes { get { return new MonsterStatuetteType[] { }; } }
+        public override Type[] UniqueList => new Type[] { };
+        public override Type[] SharedList => new Type[] { };
+        public override Type[] DecorativeList => new Type[] { };
+        public override MonsterStatuetteType[] StatueTypes => new MonsterStatuetteType[] { };
 
-        public override ChampionSkullType SkullType { get { return ChampionSkullType.None; } }
+        public override ChampionSkullType SkullType => ChampionSkullType.None;
 
         [Constructable]
         public DragonTurtle() : base(AIType.AI_Mage)
@@ -56,14 +56,14 @@ namespace Server.Mobiles
             AddLoot(LootPack.SuperBoss, 3);
         }
 
-        public override int Meat { get { return 1; } }
-        public override int Hides { get { return 33; } }
-        public override FoodType FavoriteFood { get { return FoodType.FruitsAndVegies; } }
-        public override bool TeleportsTo { get { return true; } }
-        public override TimeSpan TeleportDuration { get { return TimeSpan.FromSeconds(30); } }
-        public override int TeleportRange { get { return 10; } }
-        public override bool ReacquireOnMovement { get { return true; } }
-        public override int TreasureMapLevel { get { return 5; } }
+        public override int Meat => 1;
+        public override int Hides => 33;
+        public override FoodType FavoriteFood => FoodType.FruitsAndVegies;
+        public override bool TeleportsTo => true;
+        public override TimeSpan TeleportDuration => TimeSpan.FromSeconds(30);
+        public override int TeleportRange => 10;
+        public override bool ReacquireOnMovement => true;
+        public override int TreasureMapLevel => 5;
 
         public override void OnCarve(Mobile from, Corpse corpse, Item with)
         {

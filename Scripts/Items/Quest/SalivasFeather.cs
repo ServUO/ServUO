@@ -15,13 +15,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074234;
-            }
-        }// Saliva's Feather
+        public override int LabelNumber => 1074234;// Saliva's Feather
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

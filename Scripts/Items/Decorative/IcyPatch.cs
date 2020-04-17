@@ -24,20 +24,8 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1095159;
-            }
-        }//An Icy Patch
-        public override double DefaultWeight
-        {
-            get
-            {
-                return 5.0;
-            }
-        }
+        public override int LabelNumber => 1095159;//An Icy Patch
+        public override double DefaultWeight => 5.0;
         public override bool OnMoveOver(Mobile m)
         {
             if (m is PlayerMobile && m.Alive && m.IsPlayer())

@@ -123,16 +123,13 @@ namespace Server.Engines.ArenaSystem
         public DateTime EntryDeadline { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime EndTime { get { return StartTime + TimeSpan.FromMinutes((int)TimeLimit); } }
+        public DateTime EndTime => StartTime + TimeSpan.FromMinutes((int)TimeLimit);
 
         // used in team mode
-        public ArenaTeam TeamOrder { get { return Teams != null && Teams.Count > 0 ? Teams[0] : null; } }
-        public ArenaTeam TeamChaos { get { return Teams != null && Teams.Count > 1 ? Teams[1] : null; } }
+        public ArenaTeam TeamOrder => Teams != null && Teams.Count > 0 ? Teams[0] : null;
+        public ArenaTeam TeamChaos => Teams != null && Teams.Count > 1 ? Teams[1] : null;
 
-        public int ParticipantCount
-        {
-            get { return Teams.Sum(t => t.Count); }
-        }
+        public int ParticipantCount => Teams.Sum(t => t.Count);
 
         public ArenaDuel(PVPArena arena, PlayerMobile host)
         {

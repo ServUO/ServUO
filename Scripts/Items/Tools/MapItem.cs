@@ -55,10 +55,7 @@ namespace Server.Items
             set { m_Height = value; }
         }
 
-        public List<Point2D> Pins
-        {
-            get { return m_Pins; }
-        }
+        public List<Point2D> Pins => m_Pins;
 
         [Constructable]
         public MapItem() : this(Map.Trammel)

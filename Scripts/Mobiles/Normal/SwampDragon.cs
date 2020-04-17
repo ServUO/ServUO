@@ -198,62 +198,14 @@ namespace Server.Mobiles
             return base.GetResistance(type) + CalculateBardingResistance(type);
         }
 
-        public override bool ReacquireOnMovement
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool AutoDispel
-        {
-            get
-            {
-                return !Controlled;
-            }
-        }
-        public override FoodType FavoriteFood
-        {
-            get
-            {
-                return FoodType.Meat;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 19;
-            }
-        }
-        public override int Hides
-        {
-            get
-            {
-                return 20;
-            }
-        }
-        public override int Scales
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override ScaleType ScaleType
-        {
-            get
-            {
-                return ScaleType.Green;
-            }
-        }
-        public override bool CanAngerOnTame
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool ReacquireOnMovement => true;
+        public override bool AutoDispel => !Controlled;
+        public override FoodType FavoriteFood => FoodType.Meat;
+        public override int Meat => 19;
+        public override int Hides => 20;
+        public override int Scales => 5;
+        public override ScaleType ScaleType => ScaleType.Green;
+        public override bool CanAngerOnTame => true;
         public override bool OverrideBondingReqs()
         {
             return true;

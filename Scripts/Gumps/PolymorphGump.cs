@@ -38,41 +38,11 @@ namespace Server.Gumps
             this.m_Y = Y;
         }
 
-        public int ArtID
-        {
-            get
-            {
-                return this.m_Art;
-            }
-        }
-        public int BodyID
-        {
-            get
-            {
-                return this.m_Body;
-            }
-        }
-        public int LocNumber
-        {
-            get
-            {
-                return this.m_Num;
-            }
-        }
-        public int X
-        {
-            get
-            {
-                return this.m_X;
-            }
-        }
-        public int Y
-        {
-            get
-            {
-                return this.m_Y;
-            }
-        }
+        public int ArtID => this.m_Art;
+        public int BodyID => this.m_Body;
+        public int LocNumber => this.m_Num;
+        public int X => this.m_X;
+        public int Y => this.m_Y;
     }
 
     public class PolymorphGump : Gump
@@ -174,20 +144,8 @@ namespace Server.Gumps
                 this.m_Entries = entries;
             }
 
-            public PolymorphEntry[] Entries
-            {
-                get
-                {
-                    return this.m_Entries;
-                }
-            }
-            public int LocNumber
-            {
-                get
-                {
-                    return this.m_Num;
-                }
-            }
+            public PolymorphEntry[] Entries => this.m_Entries;
+            public int LocNumber => this.m_Num;
         }
     }
 

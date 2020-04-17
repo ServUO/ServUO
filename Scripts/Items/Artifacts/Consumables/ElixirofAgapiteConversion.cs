@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class ElixirofAgapiteConversion : Item
     {
-        public override int LabelNumber { get { return 1113008; } } // Elixir of Agapite Conversion
+        public override int LabelNumber => 1113008;  // Elixir of Agapite Conversion
 
         [Constructable]
         public ElixirofAgapiteConversion()

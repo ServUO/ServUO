@@ -2,12 +2,12 @@ namespace Server.Items
 {
     public class KingsGildedStatue : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override bool ShowArtifactRarity { get { return false; } }
-        public override int ArtifactRarity { get { return 8; } }
+        public override bool IsArtifact => true;
+        public override bool ShowArtifactRarity => false;
+        public override int ArtifactRarity => 8;
 
-        public override double DefaultWeight { get { return 10.0; } }
-        public override string DefaultName { get { return "A Gilded Statue from the Personal Collection of the King"; } }
+        public override double DefaultWeight => 10.0;
+        public override string DefaultName => "A Gilded Statue from the Personal Collection of the King";
 
         [Constructable]
         public KingsGildedStatue()

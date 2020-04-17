@@ -3,7 +3,7 @@ namespace Server.Items
     [Flipable(0xA493, 0xA494)]
     public class PillowTear : Item
     {
-        public override int LabelNumber { get { return 1025015; } } // pillow
+        public override int LabelNumber => 1025015;  // pillow
 
         [Constructable]
         public PillowTear()

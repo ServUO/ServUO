@@ -18,7 +18,7 @@ namespace Server.Items
         {
         }
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         public override void GetProperties(ObjectPropertyList list)
         {
@@ -164,13 +164,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1049773;
-            }
-        }// deed for a stone ankh
+        public override int LabelNumber => 1049773;// deed for a stone ankh
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsRewardItem
         {

@@ -13,8 +13,8 @@ namespace Server.Engines.Quests
         }
 
         public abstract object Message { get; }
-        public virtual QuestItemInfo[] Info { get { return null; } }
-        public virtual bool Logged { get { return true; } }
+        public virtual QuestItemInfo[] Info => null;
+        public virtual bool Logged => true;
 
         public QuestSystem System
         {

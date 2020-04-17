@@ -2,10 +2,10 @@ namespace Server.Items
 {
     public class SoleilRouge : GoldBracelet
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1154371; } } // Soleil Rouge
-        public override SetItem SetID { get { return SetItem.Luck2; } }
-        public override int Pieces { get { return 2; } }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1154371;  // Soleil Rouge
+        public override SetItem SetID => SetItem.Luck2;
+        public override int Pieces => 2;
         [Constructable]
         public SoleilRouge() : base()
         {

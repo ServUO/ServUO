@@ -3,7 +3,7 @@ namespace Server.Items
     [FlipableAttribute(0x4200, 0x4207)]
     public class GargishWoodenShield : BaseShield
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public GargishWoodenShield()
             : base(0x4200)
@@ -16,76 +16,16 @@ namespace Server.Items
         {
         }
 
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 20;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 25;
-            }
-        }
-        public override int StrReq
-        {
-            get
-            {
-                return 20;
-            }
-        }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
+        public override int BasePhysicalResistance => 0;
+        public override int BaseFireResistance => 0;
+        public override int BaseColdResistance => 0;
+        public override int BasePoisonResistance => 0;
+        public override int BaseEnergyResistance => 1;
+        public override int InitMinHits => 20;
+        public override int InitMaxHits => 25;
+        public override int StrReq => 20;
+        public override bool CanBeWornByGargoyles => true;
+        public override Race RequiredRace => Race.Gargoyle;
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);

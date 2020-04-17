@@ -14,20 +14,8 @@ namespace Server.Items
         {
         }
 
-        public override bool DisplayWeight
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1080279;
-            }
-        }// Bloody Pentagram
+        public override bool DisplayWeight => false;
+        public override int LabelNumber => 1080279;// Bloody Pentagram
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -153,13 +141,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1080384;
-            }
-        }// Bloody Pentagram
+        public override int LabelNumber => 1080384;// Bloody Pentagram
         public override BaseAddon Addon
         {
             get

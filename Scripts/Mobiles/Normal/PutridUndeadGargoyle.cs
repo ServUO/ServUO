@@ -59,41 +59,11 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override bool Unprovokable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool BardImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Deadly;
-            }
-        }
-        public override Poison HitPoison
-        {
-            get
-            {
-                return Poison.Deadly;
-            }
-        }
+        public override int Meat => 1;
+        public override bool Unprovokable => true;
+        public override bool BardImmune => true;
+        public override Poison PoisonImmune => Poison.Deadly;
+        public override Poison HitPoison => Poison.Deadly;
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich, 5);

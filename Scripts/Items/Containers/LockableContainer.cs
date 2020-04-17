@@ -111,13 +111,7 @@ namespace Server.Items
             }
         }
 
-        public override bool TrapOnOpen
-        {
-            get
-            {
-                return !m_TrapOnLockpick;
-            }
-        }
+        public override bool TrapOnOpen => !m_TrapOnLockpick;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool TrapOnLockpick
@@ -350,13 +344,7 @@ namespace Server.Items
             return true;
         }
 
-        public override bool DisplaysContent
-        {
-            get
-            {
-                return !m_Locked;
-            }
-        }
+        public override bool DisplaysContent => !m_Locked;
 
         public virtual bool CheckLocked(Mobile from)
         {

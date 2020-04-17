@@ -10,86 +10,20 @@ namespace Server.Items
                 Mobile.DefaultWeapon = new Fists();
         }
 
-        public override WeaponAbility PrimaryAbility
-        {
-            get
-            {
-                return WeaponAbility.Disarm;
-            }
-        }
-        public override WeaponAbility SecondaryAbility
-        {
-            get
-            {
-                return WeaponAbility.ParalyzingBlow;
-            }
-        }
+        public override WeaponAbility PrimaryAbility => WeaponAbility.Disarm;
+        public override WeaponAbility SecondaryAbility => WeaponAbility.ParalyzingBlow;
 
-        public override int StrengthReq
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override int MinDamage
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override int MaxDamage
-        {
-            get
-            {
-                return 6;
-            }
-        }
-        public override float Speed
-        {
-            get
-            {
-                return 2.50f;
-            }
-        }
+        public override int StrengthReq => 0;
+        public override int MinDamage => 1;
+        public override int MaxDamage => 6;
+        public override float Speed => 2.50f;
 
-        public override int DefHitSound
-        {
-            get
-            {
-                return -1;
-            }
-        }
-        public override int DefMissSound
-        {
-            get
-            {
-                return -1;
-            }
-        }
+        public override int DefHitSound => -1;
+        public override int DefMissSound => -1;
 
-        public override SkillName DefSkill
-        {
-            get
-            {
-                return SkillName.Wrestling;
-            }
-        }
-        public override WeaponType DefType
-        {
-            get
-            {
-                return WeaponType.Fists;
-            }
-        }
-        public override WeaponAnimation DefAnimation
-        {
-            get
-            {
-                return WeaponAnimation.Wrestle;
-            }
-        }
+        public override SkillName DefSkill => SkillName.Wrestling;
+        public override WeaponType DefType => WeaponType.Fists;
+        public override WeaponAnimation DefAnimation => WeaponAnimation.Wrestle;
 
         public Fists()
             : base(0)

@@ -18,11 +18,7 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(TheyreBreedingLikeRabbitsQuest),
                     typeof(ThinningTheHerdQuest),
@@ -38,8 +34,6 @@ namespace Server.Engines.Quests
                     typeof(ForkedTonguesQuest),
                     typeof(TrollingForTrollsQuest)
                 };
-            }
-        }
         public override void InitBody()
         {
             this.InitStats(100, 100, 25);

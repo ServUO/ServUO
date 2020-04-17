@@ -2,11 +2,11 @@ namespace Server.Items
 {
     public class ArmorEngravingToolToken : PromotionalToken
     {
-        public override TextDefinition ItemName { get { return 1080547; } } // Armor Engraving Tool
-        public override TextDefinition ItemReceiveMessage { get { return 1072223; } } // An item has been placed in your backpack.
-        public override TextDefinition ItemGumpName { get { return 1071163; } } // <center>Armor Engraving Tool</center>
+        public override TextDefinition ItemName => 1080547;  // Armor Engraving Tool
+        public override TextDefinition ItemReceiveMessage => 1072223;  // An item has been placed in your backpack.
+        public override TextDefinition ItemGumpName => 1071163;  // <center>Armor Engraving Tool</center>
 
-        public override bool PlaceInBank { get { return false; } }
+        public override bool PlaceInBank => false;
 
         [Constructable]
         public ArmorEngravingToolToken()

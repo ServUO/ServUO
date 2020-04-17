@@ -80,35 +80,11 @@ namespace Server.Items
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
-        public int MaxCharges
-        {
-            get
-            {
-                return 30;
-            }
-        }
+        public int MaxCharges => 30;
         [CommandProperty(AccessLevel.GameMaster)]
-        public int MaxRecharges
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public string TranslocationItemName
-        {
-            get
-            {
-                return "bag of sending";
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1054104;
-            }
-        }// a bag of sending
+        public int MaxRecharges => 255;
+        public string TranslocationItemName => "bag of sending";
+        public override int LabelNumber => 1054104;// a bag of sending
         [CommandProperty(AccessLevel.GameMaster)]
         public BagOfSendingHue BagOfSendingHue
         {

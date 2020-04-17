@@ -46,62 +46,14 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool ReacquireOnMovement
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Deadly;
-            }
-        }
-        public override Poison HitPoison
-        {
-            get
-            {
-                return Poison.Deadly;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 2;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int Hides
-        {
-            get
-            {
-                return 20;
-            }
-        }
-        public override HideType HideType
-        {
-            get
-            {
-                return HideType.Horned;
-            }
-        }
-        public override bool CanFly
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool ReacquireOnMovement => true;
+        public override Poison PoisonImmune => Poison.Deadly;
+        public override Poison HitPoison => Poison.Deadly;
+        public override int TreasureMapLevel => 2;
+        public override int Meat => 10;
+        public override int Hides => 20;
+        public override HideType HideType => HideType.Horned;
+        public override bool CanFly => true;
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Average);

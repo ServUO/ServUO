@@ -6,7 +6,7 @@ namespace Server.Spells.Mysticism
 {
     public class RisingColossusSpell : MysticSpell
     {
-        public override SpellCircle Circle { get { return SpellCircle.Eighth; } }
+        public override SpellCircle Circle => SpellCircle.Eighth;
 
         private static readonly SpellInfo m_Info = new SpellInfo(
                 "Rising Colossus", "Kal Vas Xen Corp Ylem",

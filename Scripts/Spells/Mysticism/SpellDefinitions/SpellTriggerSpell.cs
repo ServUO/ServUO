@@ -9,7 +9,7 @@ namespace Server.Spells.Mysticism
 {
     public class SpellTriggerSpell : MysticSpell
     {
-        public override SpellCircle Circle { get { return SpellCircle.Fifth; } }
+        public override SpellCircle Circle => SpellCircle.Fifth;
 
         private static readonly SpellInfo m_Info = new SpellInfo(
                 "Spell Trigger", "In Vas Ort Ex ",
@@ -158,7 +158,7 @@ namespace Server.Spells.Mysticism
                 new SpellTriggerDef( 688, "Bombard",            6, 1031689, 1095204, 0x2DA9 )
             };
 
-        public static SpellTriggerDef[] Definitions { get { return m_Definitions; } }
+        public static SpellTriggerDef[] Definitions => m_Definitions;
     }
 
     public class SpellTriggerDef
@@ -170,12 +170,12 @@ namespace Server.Spells.Mysticism
         private readonly int m_Tooltip;
         private readonly int m_ItemId;
 
-        public int SpellId { get { return m_SpellId; } }
-        public string Name { get { return m_Name; } }
-        public int Rank { get { return m_Rank; } }
-        public int Cliloc { get { return m_Cliloc; } }
-        public int Tooltip { get { return m_Tooltip; } }
-        public int ItemId { get { return m_ItemId; } }
+        public int SpellId => m_SpellId;
+        public string Name => m_Name;
+        public int Rank => m_Rank;
+        public int Cliloc => m_Cliloc;
+        public int Tooltip => m_Tooltip;
+        public int ItemId => m_ItemId;
 
         public SpellTriggerDef(int spellId, string name, int rank, int cliloc, int tooltip, int itemId)
         {
@@ -192,7 +192,7 @@ namespace Server.Spells.Mysticism
     {
         private SpellTriggerDef m_SpellDef;
 
-        public override bool Nontransferable { get { return true; } }
+        public override bool Nontransferable => true;
 
         [Constructable]
         public SpellStone(SpellTriggerDef spellDef)

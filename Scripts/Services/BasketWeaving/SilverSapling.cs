@@ -7,7 +7,7 @@ namespace Server.Items
 {
     public class SilverSapling : Item
     {
-        public override int LabelNumber { get { return 1113052; } } // The Silver Sapling
+        public override int LabelNumber => 1113052;  // The Silver Sapling
 
         [Constructable]
         public SilverSapling()
@@ -22,7 +22,7 @@ namespace Server.Items
         {
         }
 
-        public override bool HandlesOnMovement { get { return true; } }
+        public override bool HandlesOnMovement => true;
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
@@ -75,7 +75,7 @@ namespace Server.Items
 
     public class SilverSaplingSeed : Item
     {
-        public override int LabelNumber { get { return 1113053; } } // a seed of the Silver Sapling
+        public override int LabelNumber => 1113053;  // a seed of the Silver Sapling
 
         [Constructable]
         public SilverSaplingSeed()

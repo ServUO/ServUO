@@ -9,14 +9,9 @@ namespace Server.Engines.Quests.Zento
         {
         }
 
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 // Kill 10 Deathwatch Beetle Hatchlings and return to Ansella Gryen.
-                return 1063316;
-            }
-        }
+                1063316;
         public override void RenderProgress(BaseQuestGump gump)
         {
             if (!this.Completed)
@@ -52,18 +47,13 @@ namespace Server.Engines.Quests.Zento
         {
         }
 
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 /* Great job! One less terrible hatchling in the Waste!<BR><BR>
-                * 
-                * Once you've killed 10 of the Deathwatch Beetle Hatchlings,
-                * return to Ansella for your reward!
-                */
-                return 1063320;
-            }
-        }
+* 
+* Once you've killed 10 of the Deathwatch Beetle Hatchlings,
+* return to Ansella for your reward!
+*/
+                1063320;
         public override void RenderProgress(BaseQuestGump gump)
         {
             if (!this.Completed)
@@ -111,21 +101,10 @@ namespace Server.Engines.Quests.Zento
         {
         }
 
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 // Continue killing Deathwatch Beetle Hatchlings.
-                return 1063319;
-            }
-        }
-        public override int MaxProgress
-        {
-            get
-            {
-                return 10;
-            }
-        }
+                1063319;
+        public override int MaxProgress => 10;
         public override void RenderProgress(BaseQuestGump gump)
         {
             if (!this.Completed)
@@ -161,14 +140,9 @@ namespace Server.Engines.Quests.Zento
         {
         }
 
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 // Return to Ansella Gryen for your reward.
-                return 1063313;
-            }
-        }
+                1063313;
         public override void OnComplete()
         {
             this.System.AddConversation(new EndConversation());

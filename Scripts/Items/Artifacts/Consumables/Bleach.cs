@@ -14,13 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1075375;
-            }
-        }// Bleach
+        public override int LabelNumber => 1075375;// Bleach
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

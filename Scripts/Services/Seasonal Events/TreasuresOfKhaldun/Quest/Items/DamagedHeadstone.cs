@@ -13,7 +13,7 @@ namespace Server.Engines.Khaldun
 {
     public class DamagedHeadstone : Item, IForensicTarget
     {
-        public override int LabelNumber { get { return 1158561; } } // damaged headstone
+        public override int LabelNumber => 1158561;  // damaged headstone
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int GumpLocalization { get; private set; }

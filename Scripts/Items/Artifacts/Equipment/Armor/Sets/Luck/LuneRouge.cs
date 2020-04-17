@@ -2,10 +2,10 @@ namespace Server.Items
 {
     public class LuneRouge : GoldRing
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1154372; } } // Lune Rouge
-        public override SetItem SetID { get { return SetItem.Luck2; } }
-        public override int Pieces { get { return 2; } }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1154372;  // Lune Rouge
+        public override SetItem SetID => SetItem.Luck2;
+        public override int Pieces => 2;
         [Constructable]
         public LuneRouge() : base()
         {

@@ -12,14 +12,14 @@ namespace Server.Spells.SkillMasteries
                 9061
             );
 
-        public override double RequiredSkill { get { return 90; } }
-        public override double UpKeep { get { return 0; } }
-        public override int RequiredMana { get { return 40; } }
-        public override bool PartyEffects { get { return false; } }
-        public override bool RevealOnTick { get { return false; } }
+        public override double RequiredSkill => 90;
+        public override double UpKeep => 0;
+        public override int RequiredMana => 40;
+        public override bool PartyEffects => false;
+        public override bool RevealOnTick => false;
 
-        public override SkillName CastSkill { get { return SkillName.Spellweaving; } }
-        public override SkillName DamageSkill { get { return SkillName.Meditation; } }
+        public override SkillName CastSkill => SkillName.Spellweaving;
+        public override SkillName DamageSkill => SkillName.Meditation;
 
         public double Chance { get; set; }
 

@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class BODRewardTitleDeed : BaseRewardTitleDeed
     {
-        public override int LabelNumber { get { return 1155604; } } // A Deed for a Reward Title
-        public override TextDefinition Title { get { return _Title; } }
+        public override int LabelNumber => 1155604;  // A Deed for a Reward Title
+        public override TextDefinition Title => _Title;
 
         private TextDefinition _Title;
 

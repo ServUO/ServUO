@@ -18,13 +18,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074503;
-            }
-        }// Shimmering Effusion Statuette
+        public override int LabelNumber => 1074503;// Shimmering Effusion Statuette
         public override void PlaySound(Mobile to)
         {
             Effects.PlaySound(this.Location, this.Map, m_Sounds[Utility.Random(m_Sounds.Length)]);

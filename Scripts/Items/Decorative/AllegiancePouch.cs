@@ -13,7 +13,7 @@ namespace Server.Items
             set { m_IsRewardItem = value; }
         }
 
-        public override int LabelNumber { get { return 1113953; } } //Allegiance Pouch
+        public override int LabelNumber => 1113953;  //Allegiance Pouch
 
         [Constructable]
         public AllegiancePouch()

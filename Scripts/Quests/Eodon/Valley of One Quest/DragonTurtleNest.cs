@@ -8,7 +8,7 @@ namespace Server.Items
 {
     public class NestWithEgg : BaseAddon
     {
-        public TimeSpan ResetPeriod { get { return TimeSpan.FromSeconds(Utility.RandomMinMax(120, 360)); } }
+        public TimeSpan ResetPeriod => TimeSpan.FromSeconds(Utility.RandomMinMax(120, 360));
 
         public List<BaseCreature> Poachers { get; set; }
         public List<Mobile> FocusList { get; set; }
@@ -19,15 +19,9 @@ namespace Server.Items
 
         public Timer DeadlineTimer { get; set; }
 
-        public AddonComponent Egg
-        {
-            get
-            {
-                return Components.FirstOrDefault(c => c.ItemID == 16831);
-            }
-        }
+        public AddonComponent Egg => Components.FirstOrDefault(c => c.ItemID == 16831);
 
-        public bool IsInCooldown { get { return CooldownEnds != DateTime.MinValue && DateTime.UtcNow < CooldownEnds; } }
+        public bool IsInCooldown => CooldownEnds != DateTime.MinValue && DateTime.UtcNow < CooldownEnds;
 
         [Constructable]
         public NestWithEgg()
@@ -50,7 +44,7 @@ namespace Server.Items
             FocusList = new List<Mobile>();
         }
 
-        public override bool HandlesOnMovement { get { return !IsInCooldown; } }
+        public override bool HandlesOnMovement => !IsInCooldown;
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
             if (m is PlayerMobile && m.Location != oldLocation && m.InRange(this.Location, 3) && (!FocusList.Contains(m) || 0.015 > Utility.RandomDouble()))

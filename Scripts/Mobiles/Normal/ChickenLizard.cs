@@ -9,7 +9,7 @@ namespace Server.Mobiles
         private DateTime m_NextEgg;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime NextEgg { get { return m_NextEgg; } }
+        public DateTime NextEgg => m_NextEgg;
 
         [Constructable]
         public ChickenLizard()
@@ -45,9 +45,9 @@ namespace Server.Mobiles
                 PackItem(new ChickenLizardEgg());
         }
 
-        public override int Meat { get { return 3; } }
-        public override MeatType MeatType { get { return MeatType.Bird; } }
-        public override FoodType FavoriteFood { get { return FoodType.Meat; } }
+        public override int Meat => 3;
+        public override MeatType MeatType => MeatType.Bird;
+        public override FoodType FavoriteFood => FoodType.Meat;
 
         public override int GetIdleSound() { return 1511; }
         public override int GetAngerSound() { return 1508; }

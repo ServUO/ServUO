@@ -18,13 +18,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1153521;
-            }
-        }// Scroll of Valiant Commendation [Replica]
+        public override int LabelNumber => 1153521;// Scroll of Valiant Commendation [Replica]
 
         public override void AddNameProperties(ObjectPropertyList list)
         {

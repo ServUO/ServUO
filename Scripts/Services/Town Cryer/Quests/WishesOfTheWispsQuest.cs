@@ -8,24 +8,24 @@ namespace Server.Engines.Quests
     public class WishesOfTheWispQuest : BaseQuest
     {
         /*Wishes of Wisps*/
-        public override object Title { get { return 1158296; } }
+        public override object Title => 1158296;
 
         /*The story of the brothers Andros and Adrian is troubling, yet fascinates you. You have heard rumor of items 
          * traded by the mysterious wisps. Despite the dangers you decide you should venture to the dungeon Despise.*/
-        public override object Description { get { return 1158318; } }
+        public override object Description => 1158318;
 
         /* You decide against accepting the quest. */
-        public override object Refuse { get { return 1158130; } }
+        public override object Refuse => 1158130;
 
         /* Visit the Dungeon Despise and investigate. */
-        public override object Uncomplete { get { return 1158297; } }
+        public override object Uncomplete => 1158297;
 
         //public override object Complete { get { return 1158378; } }
 
-        public override int CompleteMessage { get { return 1156585; } } // You've completed a quest!
+        public override int CompleteMessage => 1156585;  // You've completed a quest!
 
-        public override int AcceptSound { get { return 0x2E8; } }
-        public override bool DoneOnce { get { return true; } }
+        public override int AcceptSound => 0x2E8;
+        public override bool DoneOnce => true;
 
         public WishesOfTheWispQuest()
         {
@@ -44,7 +44,7 @@ namespace Server.Engines.Quests
 
         private class InternalObjective : BaseObjective
         {
-            public override object ObjectiveDescription { get { return Quest.Uncomplete; } }
+            public override object ObjectiveDescription => Quest.Uncomplete;
 
             public InternalObjective()
                 : base(1)
@@ -70,30 +70,30 @@ namespace Server.Engines.Quests
     public class WhisperingWithWispsQuest : BaseQuest
     {
         /*Whispering with Wisps*/
-        public override object Title { get { return 1158300; } }
+        public override object Title => 1158300;
 
         /*The mysterious wisp seems friendly. You are taken by the mysterious creature and it's iridescent glow. The wisp directs
          * you inside the dungeon, but otherwise does not respond to your presence. You feel guided by your karma. Entering the
          * dungeon with negative karma will draw you to the depths of despise while entering with positive karma will draw you up
          * into the peaceful glades above. You have learned from the wisp you must venture inside the dungeon and seek an Ankh.*/
-        public override object Description { get { return 1158301; } }
+        public override object Description => 1158301;
 
         /* You decide against accepting the quest. */
-        public override object Refuse { get { return 1158130; } }
+        public override object Refuse => 1158130;
 
         /* Enter the appropriate level of despise based on your karma. Once inside, find and use an ankh. */
-        public override object Uncomplete { get { return 1158302; } }
+        public override object Uncomplete => 1158302;
 
         /*You have successfully freed Despise from the eternal feud between Andros and Adrian. Despite your efforts, you no doubt
         * believe their strong magics will compel them to battle once again. You rejoice, however, in your small albeit short
         * lived victory! The wisp seems eternally grateful and grants you a generous gift!*/
-        public override object Complete { get { return 1158323; } }
+        public override object Complete => 1158323;
 
-        public override int CompleteMessage { get { return 1158322; } }
+        public override int CompleteMessage => 1158322;
         // You have successfully slayed the brother and freed Despise from their eternal feud! Return to the Wisp outside the dungeon to claim your reward!
 
-        public override int AcceptSound { get { return 0x2E8; } }
-        public override bool DoneOnce { get { return true; } }
+        public override int AcceptSound => 0x2E8;
+        public override bool DoneOnce => true;
 
         public WhisperingWithWispsQuest()
         {
@@ -158,7 +158,7 @@ namespace Server.Engines.Quests
 
         private class InternalObjective : BaseObjective
         {
-            public override object ObjectiveDescription { get { return Quest.Uncomplete; } }
+            public override object ObjectiveDescription => Quest.Uncomplete;
 
             public InternalObjective()
                 : base(1)

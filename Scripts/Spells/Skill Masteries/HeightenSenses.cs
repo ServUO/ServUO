@@ -14,13 +14,13 @@ namespace Server.Spells.SkillMasteries
             9002
         );
 
-        public override double UpKeep { get { return 10; } }
-        public override int RequiredMana { get { return 10; } }
-        public override double TickTime { get { return 3; } }
-        public override bool BlocksMovement { get { return false; } }
-        public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(1.0); } }
+        public override double UpKeep => 10;
+        public override int RequiredMana => 10;
+        public override double TickTime => 3;
+        public override bool BlocksMovement => false;
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(1.0);
 
-        public override SkillName CastSkill { get { return SkillName.Parry; } }
+        public override SkillName CastSkill => SkillName.Parry;
 
         public HeightenedSensesSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)

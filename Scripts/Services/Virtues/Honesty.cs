@@ -419,7 +419,7 @@ namespace Server.Services.Virtues
 
     public class HonestyChest : Container
     {
-        public override int LabelNumber { get { return 1151529; } } // lost and found box
+        public override int LabelNumber => 1151529;  // lost and found box
 
         [Constructable]
         public HonestyChest()

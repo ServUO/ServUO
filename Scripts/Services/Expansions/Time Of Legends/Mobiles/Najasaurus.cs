@@ -3,7 +3,7 @@ namespace Server.Mobiles
     [CorpseName("a najasaurus corpse")]
     public class Najasaurus : BaseCreature
     {
-        public override bool AttacksFocus { get { return !Controlled; } }
+        public override bool AttacksFocus => !Controlled;
 
         [Constructable]
         public Najasaurus()
@@ -43,10 +43,10 @@ namespace Server.Mobiles
             MinTameSkill = 102.0;
         }
 
-        public override Poison HitPoison { get { return Poison.Lethal; } }
-        public override Poison PoisonImmune { get { return Poison.Lethal; } }
-        public override bool CanAngerOnTame { get { return true; } }
-        public override int TreasureMapLevel { get { return 2; } }
+        public override Poison HitPoison => Poison.Lethal;
+        public override Poison PoisonImmune => Poison.Lethal;
+        public override bool CanAngerOnTame => true;
+        public override int TreasureMapLevel => 2;
 
         public override void GenerateLoot()
         {

@@ -3,7 +3,7 @@ namespace Server.Items
     [Flipable(0x9D05, 0x9D07)]
     public class WeatheredBronzeManOnABenchComponent : AddonComponent
     {
-        public override int LabelNumber { get { return 1156882; } } // weathered bronze man on a bench sculpture
+        public override int LabelNumber => 1156882;  // weathered bronze man on a bench sculpture
 
         public WeatheredBronzeManOnABenchComponent()
             : base(0x9D05)
@@ -30,8 +30,8 @@ namespace Server.Items
 
     public class WeatheredBronzeManOnABenchAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new WeatheredBronzeManOnABenchDeed(); } }
-        public override bool RetainDeedHue { get { return true; } }
+        public override BaseAddonDeed Deed => new WeatheredBronzeManOnABenchDeed();
+        public override bool RetainDeedHue => true;
 
         [Constructable]
         public WeatheredBronzeManOnABenchAddon()
@@ -59,8 +59,8 @@ namespace Server.Items
 
     public class WeatheredBronzeManOnABenchDeed : BaseAddonDeed
     {
-        public override BaseAddon Addon { get { return new WeatheredBronzeManOnABenchAddon(); } }
-        public override int LabelNumber { get { return 1156882; } } // weathered bronze man on a bench sculpture
+        public override BaseAddon Addon => new WeatheredBronzeManOnABenchAddon();
+        public override int LabelNumber => 1156882;  // weathered bronze man on a bench sculpture
 
         [Constructable]
         public WeatheredBronzeManOnABenchDeed()

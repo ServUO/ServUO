@@ -12,10 +12,10 @@ namespace Server.Items
         private UnderworldPuzzleSolution m_CurrentSolution;
         private int m_Attempts;
 
-        public UnderworldPuzzleSolution Solution { get { return m_Solution; } }
+        public UnderworldPuzzleSolution Solution => m_Solution;
         public UnderworldPuzzleSolution CurrentSolution { get { return m_CurrentSolution; } set { m_CurrentSolution = value; } }
 
-        public override int LabelNumber { get { return 1113379; } } // Puzzle Board
+        public override int LabelNumber => 1113379;  // Puzzle Board
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int Attempts
@@ -38,7 +38,7 @@ namespace Server.Items
             }
         }
 
-        public override int Lifespan { get { return 1800; } }
+        public override int Lifespan => 1800;
 
         [Constructable]
         public UnderworldPuzzleItem()
@@ -158,13 +158,13 @@ namespace Server.Items
         public const int Length = 4;
 
         private readonly PuzzlePiece[] m_Rows = new PuzzlePiece[Length];
-        public PuzzlePiece[] Rows { get { return m_Rows; } }
+        public PuzzlePiece[] Rows => m_Rows;
 
         private int m_Index;
         private int m_MaxAttempts;
 
-        public int Index { get { return m_Index; } }
-        public int MaxAttempts { get { return m_MaxAttempts; } }
+        public int Index => m_Index;
+        public int MaxAttempts => m_MaxAttempts;
 
         public PuzzlePiece First { get { return m_Rows[0]; } set { m_Rows[0] = value; } }
         public PuzzlePiece Second { get { return m_Rows[1]; } set { m_Rows[1] = value; } }

@@ -48,30 +48,12 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool InitialInnocent
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 5;
-            }
-        }
+        public override bool InitialInnocent => true;
+        public override int TreasureMapLevel => 5;
 
-        public override TribeType Tribe { get { return TribeType.Fey; } }
+        public override TribeType Tribe => TribeType.Fey;
 
-        public override int Feathers
-        {
-            get
-            {
-                return 100;
-            }
-        }
+        public override int Feathers => 100;
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Rich, 3);

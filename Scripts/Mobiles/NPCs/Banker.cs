@@ -23,9 +23,9 @@ namespace Server.Mobiles
             : base(serial)
         { }
 
-        public override NpcGuild NpcGuild { get { return NpcGuild.MerchantsGuild; } }
+        public override NpcGuild NpcGuild => NpcGuild.MerchantsGuild;
 
-        protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }
+        protected override List<SBInfo> SBInfos => m_SBInfos;
 
         public static int GetBalance(Mobile m)
         {

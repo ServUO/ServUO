@@ -28,13 +28,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new StoneStatueDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new StoneStatueDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -65,20 +59,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new StoneStatueAddon(this.m_East);
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1076284;
-            }
-        }// Statue
+        public override BaseAddon Addon => new StoneStatueAddon(this.m_East);
+        public override int LabelNumber => 1076284;// Statue
         public override void OnDoubleClick(Mobile from)
         {
             if (this.IsChildOf(from.Backpack))

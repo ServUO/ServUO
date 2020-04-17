@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class GwennosHarp : LapHarp
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public GwennosHarp()
         {
@@ -16,27 +16,9 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1063480;
-            }
-        }
-        public override int InitMinUses
-        {
-            get
-            {
-                return 1600;
-            }
-        }
-        public override int InitMaxUses
-        {
-            get
-            {
-                return 1600;
-            }
-        }
+        public override int LabelNumber => 1063480;
+        public override int InitMinUses => 1600;
+        public override int InitMaxUses => 1600;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

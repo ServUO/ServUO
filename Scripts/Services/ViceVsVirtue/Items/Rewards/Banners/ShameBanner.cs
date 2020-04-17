@@ -6,13 +6,7 @@ namespace Server.Engines.VvV
     [FlipableAttribute(39347, 39348)]
     public class ShameBanner : Item
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1123371;
-            }
-        }
+        public override int LabelNumber => 1123371;
 
         [Constructable]
         public ShameBanner()

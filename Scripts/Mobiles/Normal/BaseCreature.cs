@@ -225,10 +225,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public bool CanMove { get; set; }
 
-        public virtual bool CanCallGuards
-        {
-            get { return !Deleted && Alive && !AlwaysMurderer && Kills < 5 && (Player || Body.IsHuman); }
-        }
+        public virtual bool CanCallGuards => !Deleted && Alive && !AlwaysMurderer && Kills < 5 && (Player || Body.IsHuman);
 
         #region Var declarations
         private BaseAI m_AI; // THE AI
@@ -469,10 +466,7 @@ namespace Server.Mobiles
             }
         }
 
-        public bool IsGolem
-        {
-            get { return this is IRepairableMobile; }
-        }
+        public bool IsGolem => this is IRepairableMobile;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsBonded
@@ -590,10 +584,7 @@ namespace Server.Mobiles
             }
         }
 
-        public virtual TrainingDefinition TrainingDefinition
-        {
-            get { return null; }
-        }
+        public virtual TrainingDefinition TrainingDefinition => null;
 
         public virtual void InitializeAbilities()
         {
@@ -1484,13 +1475,7 @@ namespace Server.Mobiles
             typeof(BoneKnight), typeof(Mummy), typeof(SkeletalMage), typeof(BoneMagi), typeof(PatchworkSkeleton)
         };
 
-        public virtual bool IsAnimatedDead
-        {
-            get
-            {
-                return Summoned && m_AnimateDeadTypes.Any(t => t == GetType());
-            }
-        }
+        public virtual bool IsAnimatedDead => Summoned && m_AnimateDeadTypes.Any(t => t == GetType());
 
         public virtual bool IsNecroFamiliar
         {
@@ -1646,45 +1631,15 @@ namespace Server.Mobiles
 
         public virtual Mobile ConstantFocus => null;
 
-        public virtual bool DisallowAllMoves
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public virtual bool DisallowAllMoves => false;
 
-        public virtual bool InitialInnocent
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public virtual bool InitialInnocent => false;
 
-        public virtual bool AlwaysMurderer
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public virtual bool AlwaysMurderer => false;
 
-        public virtual bool AlwaysAttackable
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public virtual bool AlwaysAttackable => false;
 
-        public virtual bool ForceNotoriety
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public virtual bool ForceNotoriety => false;
 
         public virtual bool HoldSmartSpawning => IsParagon;
         public virtual bool UseSmartAI => false;
@@ -1787,14 +1742,9 @@ namespace Server.Mobiles
 
         public virtual bool CanMoveOverObstacles => Body.IsMonster;
 
-        public virtual bool CanDestroyObstacles
-        {
-            get
-            {
+        public virtual bool CanDestroyObstacles =>
                 // to enable breaking of furniture, 'return CanMoveOverObstacles;'
-                return false;
-            }
-        }
+                false;
 
         public void Unpacify()
         {
@@ -5602,16 +5552,10 @@ namespace Server.Mobiles
             }
         }
 
-        public virtual bool IsAggressiveMonster
-        {
-            get
-            {
-                return IsMonster && (m_FightMode == FightMode.Closest ||
+        public virtual bool IsAggressiveMonster => IsMonster && (m_FightMode == FightMode.Closest ||
                                      m_FightMode == FightMode.Strongest ||
                                      m_FightMode == FightMode.Weakest ||
                                      m_FightMode == FightMode.Good);
-            }
-        }
 
         private class FKEntry
         {

@@ -61,21 +61,9 @@ namespace Server.Multis
 
         public override bool IsAosRules => true;
 
-        public override bool IsActive
-        {
-            get
-            {
-                return Customizer == null;
-            }
-        }
+        public override bool IsActive => Customizer == null;
 
-        public virtual int CustomizationCost
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        public virtual int CustomizationCost => 0;
 
         public bool IsFixture(Item item)
         {
@@ -556,13 +544,7 @@ namespace Server.Multis
             }
         }
 
-        public override Point3D BaseBanLocation
-        {
-            get
-            {
-                return new Point3D(Components.Min.X, Components.Height - 1 - Components.Center.Y, 0);
-            }
-        }
+        public override Point3D BaseBanLocation => new Point3D(Components.Min.X, Components.Height - 1 - Components.Center.Y, 0);
 
         public void CheckSignpost()
         {
@@ -715,13 +697,7 @@ namespace Server.Multis
 
         private int m_DefaultPrice;
 
-        public override int DefaultPrice
-        {
-            get
-            {
-                return m_DefaultPrice;
-            }
-        }
+        public override int DefaultPrice => m_DefaultPrice;
 
         public override void Deserialize(GenericReader reader)
         {

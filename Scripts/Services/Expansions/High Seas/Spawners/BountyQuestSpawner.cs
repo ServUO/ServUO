@@ -30,22 +30,16 @@ namespace Server.Engines.Quests
         private static readonly int[] GoldRange = new int[] { 1000, 10000 };
 
         private static BountyQuestSpawner m_Instance;
-        public static BountyQuestSpawner Instance
-        {
-            get
-            {
-                return m_Instance;
-            }
-        }
+        public static BountyQuestSpawner Instance => m_Instance;
 
         private static readonly Dictionary<Mobile, int> m_Bounties = new Dictionary<Mobile, int>();
-        public static Dictionary<Mobile, int> Bounties { get { return m_Bounties; } }
+        public static Dictionary<Mobile, int> Bounties => m_Bounties;
 
         private static readonly Dictionary<SpawnZone, SpawnDefinition> m_Zones = new Dictionary<SpawnZone, SpawnDefinition>();
-        public static Dictionary<SpawnZone, SpawnDefinition> Zones { get { return m_Zones; } }
+        public static Dictionary<SpawnZone, SpawnDefinition> Zones => m_Zones;
 
         private Timer m_Timer;
-        public Timer Timer { get { return m_Timer; } }
+        public Timer Timer => m_Timer;
 
         private static Dictionary<SpawnZone, List<BaseShipCaptain>> m_ActiveZones;
 
@@ -56,34 +50,34 @@ namespace Server.Engines.Quests
         private bool m_Active;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int aFelMoonglowCount { get { return m_ActiveZones[SpawnZone.FelMoonglow].Count; } }
+        public int aFelMoonglowCount => m_ActiveZones[SpawnZone.FelMoonglow].Count;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int aTramMoonglowCount { get { return m_ActiveZones[SpawnZone.TramMoonglow].Count; } }
+        public int aTramMoonglowCount => m_ActiveZones[SpawnZone.TramMoonglow].Count;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int aTramJhelomCount { get { return m_ActiveZones[SpawnZone.TramJhelom].Count; } }
+        public int aTramJhelomCount => m_ActiveZones[SpawnZone.TramJhelom].Count;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int aFelJhelomCount { get { return m_ActiveZones[SpawnZone.FelJhelom].Count; } }
+        public int aFelJhelomCount => m_ActiveZones[SpawnZone.FelJhelom].Count;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int aTokunoPirateCount { get { return m_ActiveZones[SpawnZone.TokunoPirate].Count; } }
+        public int aTokunoPirateCount => m_ActiveZones[SpawnZone.TokunoPirate].Count;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int aTramMerch1Count { get { return m_ActiveZones[SpawnZone.TramMerch1].Count; } }
+        public int aTramMerch1Count => m_ActiveZones[SpawnZone.TramMerch1].Count;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int aFelMerch1Count { get { return m_ActiveZones[SpawnZone.FelMerch1].Count; } }
+        public int aFelMerch1Count => m_ActiveZones[SpawnZone.FelMerch1].Count;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int aTramMerch2Count { get { return m_ActiveZones[SpawnZone.TramMerch2].Count; } }
+        public int aTramMerch2Count => m_ActiveZones[SpawnZone.TramMerch2].Count;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int aFelMerch2Count { get { return m_ActiveZones[SpawnZone.FelMerch2].Count; } }
+        public int aFelMerch2Count => m_ActiveZones[SpawnZone.FelMerch2].Count;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int aTokunoMerchCount { get { return m_ActiveZones[SpawnZone.TokunoMerch].Count; } }
+        public int aTokunoMerchCount => m_ActiveZones[SpawnZone.TokunoMerch].Count;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int MaxTram { get { return m_MaxTram; } set { m_MaxTram = value; } }
@@ -131,7 +125,7 @@ namespace Server.Engines.Quests
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int bPirateCount { get { return m_Bounties.Count; } }
+        public int bPirateCount => m_Bounties.Count;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Active
@@ -900,10 +894,10 @@ namespace Server.Engines.Quests
         private readonly SpawnZone m_Zone;
         private readonly Map m_Map;
 
-        public Rectangle2D SpawnRegion { get { return m_SpawnRegion; } }
-        public Point2D[][] Waypoints { get { return m_Waypoints; } }
-        public SpawnZone Zone { get { return m_Zone; } }
-        public Map Map { get { return m_Map; } }
+        public Rectangle2D SpawnRegion => m_SpawnRegion;
+        public Point2D[][] Waypoints => m_Waypoints;
+        public SpawnZone Zone => m_Zone;
+        public Map Map => m_Map;
 
         public SpawnDefinition(Rectangle2D spawnreg, Point2D[][] waypoints, SpawnZone type, Map map)
         {
@@ -936,7 +930,7 @@ namespace Server.Engines.Quests
             new SpawnDefinition(new Rectangle2D(425, 1335, 160, 80), m_MerchantTokunoCourses, SpawnZone.TokunoMerch, Map.Tokuno);
         }
 
-        public static Point2D[][] PirateTramFelCoursesJhelom { get { return m_PirateTramFelCoursesJhelom; } }
+        public static Point2D[][] PirateTramFelCoursesJhelom => m_PirateTramFelCoursesJhelom;
         private static readonly Point2D[][] m_PirateTramFelCoursesJhelom = new Point2D[][]
         {
             new Point2D[]{ new Point2D(1598, 3861), new Point2D(1520, 3470), new Point2D(1418, 3314), new Point2D(1159, 3277), new Point2D(1320, 3508), new Point2D(1527, 3584) },
@@ -948,7 +942,7 @@ namespace Server.Engines.Quests
             new Point2D[]{ new Point2D(1799, 4070), new Point2D(1810, 3727), new Point2D(2150, 3727), new Point2D(1691, 3916), },
         };
 
-        public static Point2D[][] PirateTramFelCoursesMoonglow { get { return m_PirateTramFelCoursesMoonglow; } }
+        public static Point2D[][] PirateTramFelCoursesMoonglow => m_PirateTramFelCoursesMoonglow;
         private static readonly Point2D[][] m_PirateTramFelCoursesMoonglow = new Point2D[][]
          {
             new Point2D[]{ new Point2D(4415, 792), new Point2D(3927, 900), new Point2D(4069, 1630), new Point2D(4799, 1670), new Point2D(4861, 1061), new Point2D(4533, 589) },
@@ -957,7 +951,7 @@ namespace Server.Engines.Quests
             new Point2D[]{ new Point2D(5043, 155), new Point2D(4447, 231), new Point2D(4531, 609) },
         };
 
-        public static Point2D[][] PirateTokunoCourses { get { return m_PirateTokunoCourses; } }
+        public static Point2D[][] PirateTokunoCourses => m_PirateTokunoCourses;
         private static readonly Point2D[][] m_PirateTokunoCourses = new Point2D[][]
         {
             new Point2D[]{ new Point2D(1324, 1178), new Point2D(1358, 1334), new Point2D(1032, 1358), new Point2D(1070, 1240) },
@@ -966,21 +960,21 @@ namespace Server.Engines.Quests
             new Point2D[]{ new Point2D(1320, 1378), new Point2D(1050, 1204), new Point2D(1356, 1088), new Point2D(1244, 1300) },
         };
 
-        public static Point2D[][] MerchantTokunoCourses { get { return m_MerchantTokunoCourses; } }
+        public static Point2D[][] MerchantTokunoCourses => m_MerchantTokunoCourses;
         private static readonly Point2D[][] m_MerchantTokunoCourses = new Point2D[][]
         {
             new Point2D[]{ new Point2D(460, 1408), new Point2D(878, 1408), new Point2D(500, 1408) },
             new Point2D[]{ new Point2D(460, 1408), new Point2D(460, 768), new Point2D(460, 1350) },
         };
 
-        public static Point2D[][] MerchantTramFelCourses1 { get { return m_MerchantTramFelCourses1; } }
+        public static Point2D[][] MerchantTramFelCourses1 => m_MerchantTramFelCourses1;
         private static readonly Point2D[][] m_MerchantTramFelCourses1 = new Point2D[][]
         {
             new Point2D[]{ new Point2D(2420, 1708), new Point2D(2420, 1400), new Point2D(3516, 1400), new Point2D(3516, 1696), new Point2D(2500, 1696) },
             new Point2D[]{ new Point2D(2420, 1708), new Point2D(2420, 2760), new Point2D(3164, 2760), new Point2D(3164, 1696), new Point2D(2500, 1696) },
         };
 
-        public static Point2D[][] MerchantTramFelCourses2 { get { return m_MerchantTramFelCourses2; } }
+        public static Point2D[][] MerchantTramFelCourses2 => m_MerchantTramFelCourses2;
         private static readonly Point2D[][] m_MerchantTramFelCourses2 = new Point2D[][]
         {
             new Point2D[]{ new Point2D(4129, 2367), new Point2D(4129, 1891), new Point2D(4773, 1891), new Point2D(4773, 2639), new Point2D(4129, 2639), new Point2D(4129, 2351) },

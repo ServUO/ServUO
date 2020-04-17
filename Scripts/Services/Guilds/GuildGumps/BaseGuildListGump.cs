@@ -18,27 +18,9 @@ namespace Server.Guilds
             this.m_Comparer = comparer;
         }
 
-        public TextDefinition Name
-        {
-            get
-            {
-                return this.m_Name;
-            }
-        }
-        public int Width
-        {
-            get
-            {
-                return this.m_Width;
-            }
-        }
-        public IComparer<T> Comparer
-        {
-            get
-            {
-                return this.m_Comparer;
-            }
-        }
+        public TextDefinition Name => this.m_Name;
+        public int Width => this.m_Width;
+        public IComparer<T> Comparer => this.m_Comparer;
     }
 
     public abstract class BaseGuildListGump<T> : BaseGuildGump
@@ -62,13 +44,7 @@ namespace Server.Guilds
             this.m_List = list;
         }
 
-        public virtual bool WillFilter
-        {
-            get
-            {
-                return (this.m_Filter.Length >= 0);
-            }
-        }
+        public virtual bool WillFilter => (this.m_Filter.Length >= 0);
         public override void PopulateGump()
         {
             base.PopulateGump();

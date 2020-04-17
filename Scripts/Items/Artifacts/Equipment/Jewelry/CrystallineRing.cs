@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class CrystallineRing : GoldRing
     {
-        public override int LabelNumber { get { return 1075096; } } // Crystalline Ring
-        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber => 1075096;  // Crystalline Ring
+        public override bool IsArtifact => true;
 
         [Constructable]
         public CrystallineRing()

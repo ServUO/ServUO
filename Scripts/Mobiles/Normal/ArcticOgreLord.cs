@@ -40,15 +40,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Regular;
-            }
-        }
+        public override Poison PoisonImmune => Poison.Regular;
 
-        public override int TreasureMapLevel { get { return 3; } }
+        public override int TreasureMapLevel => 3;
 
         public override void GenerateLoot()
         {

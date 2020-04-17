@@ -22,27 +22,9 @@ namespace Server.Items
         {
         }
 
-        public override MagicalFood FoodID
-        {
-            get
-            {
-                return MagicalFood.EnchantedApple;
-            }
-        }
-        public override TimeSpan Cooldown
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(30);
-            }
-        }
-        public override int EatMessage
-        {
-            get
-            {
-                return 1074846;
-            }
-        }// A tasty bite of the enchanted apple lifts all curses from your soul.
+        public override MagicalFood FoodID => MagicalFood.EnchantedApple;
+        public override TimeSpan Cooldown => TimeSpan.FromSeconds(30);
+        public override int EatMessage => 1074846;// A tasty bite of the enchanted apple lifts all curses from your soul.
 
         public override bool Eat(Mobile from)
         {

@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class MaceBelt : BaseWaist, IDyable
     {
-        public override int LabelNumber { get { return 1126020; } } // mace belt
+        public override int LabelNumber => 1126020;  // mace belt
 
         [Constructable]
         public MaceBelt()

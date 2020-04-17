@@ -43,10 +43,10 @@ namespace Server.Engines.VvV
 
         public static ViceVsVirtueSystem Instance { get; set; }
 
-        public override TextDefinition Name { get { return new TextDefinition("Vice Vs Virtue"); } }
-        public override PointsType Loyalty { get { return PointsType.ViceVsVirtue; } }
-        public override bool AutoAdd { get { return false; } }
-        public override double MaxPoints { get { return 10000; } }
+        public override TextDefinition Name => new TextDefinition("Vice Vs Virtue");
+        public override PointsType Loyalty => PointsType.ViceVsVirtue;
+        public override bool AutoAdd => false;
+        public override double MaxPoints => 10000;
 
         public bool HasGenerated { get; set; }
 
@@ -291,7 +291,7 @@ namespace Server.Engines.VvV
 
         #region Skill Loss
         public const double SkillLossFactor = 1.0 / 3;
-        public static TimeSpan SkillLossPeriod { get { return TimeSpan.FromMinutes(5); } }
+        public static TimeSpan SkillLossPeriod => TimeSpan.FromMinutes(5);
 
         private static readonly Dictionary<Mobile, SkillLossContext> m_SkillLoss = new Dictionary<Mobile, SkillLossContext>();
 
@@ -1031,13 +1031,7 @@ namespace Server.Engines.VvV
         public int DisarmedTraps { get; set; }
         public int StolenSigils { get; set; }
 
-        public Guild Guild
-        {
-            get
-            {
-                return Player != null ? Player.Guild as Guild : null;
-            }
-        }
+        public Guild Guild => Player != null ? Player.Guild as Guild : null;
 
         public bool Active
         {
@@ -1064,7 +1058,7 @@ namespace Server.Engines.VvV
         }
 
         public DateTime ResignExpiration { get; set; }
-        public bool Resigning { get { return ResignExpiration > DateTime.MinValue; } }
+        public bool Resigning => ResignExpiration > DateTime.MinValue;
 
         public VvVPlayerEntry(PlayerMobile pm)
             : base(pm)
@@ -1125,7 +1119,7 @@ namespace Server.Engines.VvV
             public int TimesKilled { get; set; }
             public DateTime Expires { get; set; }
 
-            public bool Expired { get { return Expires < DateTime.UtcNow; } }
+            public bool Expired => Expires < DateTime.UtcNow;
 
             public EnemyKilledEntry(Mobile killed)
             {
@@ -1219,7 +1213,7 @@ namespace Server.Engines.VvV
             }
         }
 
-        public bool Expired { get { return StartTime + TempCombatTime < DateTime.UtcNow; } }
+        public bool Expired => StartTime + TempCombatTime < DateTime.UtcNow;
 
         public TemporaryCombatant(Mobile from, Mobile friendlyTo)
         {

@@ -6,8 +6,8 @@ namespace Server.Items
 {
     public class PendantOfKhalAnkur : GargishNecklace
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1158731; } } // Pendant of Khal Ankur
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1158731;  // Pendant of Khal Ankur
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int ChargeTime { get; set; }
@@ -77,14 +77,14 @@ namespace Server.Items
                 StopTimer();
         }
 
-        public override int BasePhysicalResistance { get { return 15; } }
-        public override int BaseFireResistance { get { return 15; } }
-        public override int BaseColdResistance { get { return 15; } }
-        public override int BasePoisonResistance { get { return 15; } }
-        public override int BaseEnergyResistance { get { return 15; } }
+        public override int BasePhysicalResistance => 15;
+        public override int BaseFireResistance => 15;
+        public override int BaseColdResistance => 15;
+        public override int BasePoisonResistance => 15;
+        public override int BaseEnergyResistance => 15;
 
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
         public override void AddWeightProperty(ObjectPropertyList list)
         {

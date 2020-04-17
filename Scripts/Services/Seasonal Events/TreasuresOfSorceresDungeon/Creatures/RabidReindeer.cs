@@ -44,8 +44,8 @@ namespace Server.Engines.SorcerersDungeon
             SetSpecialAbility(SpecialAbility.VenomousBite);
         }
 
-        public override int Meat { get { return 6; } }
-        public override int Hides { get { return 15; } }
+        public override int Meat => 6;
+        public override int Hides => 15;
 
         public override int GetAttackSound()
         {
@@ -67,9 +67,9 @@ namespace Server.Engines.SorcerersDungeon
         {
         }
 
-        public override Poison HitPoison { get { return Poison.Lethal; } }
-        public override bool AlwaysMurderer { get { return true; } }
-        public override Poison PoisonImmune { get { return Poison.Lethal; } }
+        public override Poison HitPoison => Poison.Lethal;
+        public override bool AlwaysMurderer => true;
+        public override Poison PoisonImmune => Poison.Lethal;
 
         public override void GenerateLoot()
         {

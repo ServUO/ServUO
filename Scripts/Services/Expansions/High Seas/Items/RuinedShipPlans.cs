@@ -23,9 +23,9 @@ namespace Server.Items
         public PlanType Type { get { return m_PlanType; } set { m_PlanType = value; } }
 
         private readonly List<PlanType> m_Joined = new List<PlanType>();
-        public List<PlanType> Joined { get { return m_Joined; } }
+        public List<PlanType> Joined => m_Joined;
 
-        public override int LabelNumber { get { return 1116784; } }
+        public override int LabelNumber => 1116784;
 
         [Constructable]
         public RuinedShipPlans() : this((PlanType)Utility.RandomMinMax(1, 8))

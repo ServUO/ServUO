@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class ParoxysmusKey : MasterKey
     {
-        public override int LabelNumber { get { return 1074330; } } // slimy ointment
+        public override int LabelNumber => 1074330;  // slimy ointment
 
         public ParoxysmusKey()
             : base(0xEFB)
@@ -39,7 +39,7 @@ namespace Server.Items
             }
         }
 
-        public override int Lifespan { get { return 600; } }
+        public override int Lifespan => 600;
 
         public override void Serialize(GenericWriter writer)
         {

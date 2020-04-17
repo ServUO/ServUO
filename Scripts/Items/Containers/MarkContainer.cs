@@ -109,13 +109,7 @@ namespace Server.Items
                 this.m_Description = value;
             }
         }
-        public override bool IsDecoContainer
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool IsDecoContainer => false;
         [CommandProperty(AccessLevel.GameMaster)]
         public override bool Locked
         {
@@ -303,20 +297,8 @@ namespace Server.Items
                 this.Start();
             }
 
-            public MarkContainer Container
-            {
-                get
-                {
-                    return this.m_Container;
-                }
-            }
-            public DateTime RelockTime
-            {
-                get
-                {
-                    return this.m_RelockTime;
-                }
-            }
+            public MarkContainer Container => this.m_Container;
+            public DateTime RelockTime => this.m_RelockTime;
             protected override void OnTick()
             {
                 this.m_Container.Locked = true;

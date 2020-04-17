@@ -58,20 +58,8 @@ namespace Server.Items
                 }
             }
         }
-        public override CraftSystem CraftSystem
-        {
-            get
-            {
-                return DefBlacksmithy.CraftSystem;
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1045127;
-            }
-        }// ancient smithy hammer
+        public override CraftSystem CraftSystem => DefBlacksmithy.CraftSystem;
+        public override int LabelNumber => 1045127;// ancient smithy hammer
         public override void OnAdded(object parent)
         {
             base.OnAdded(parent);

@@ -16,87 +16,21 @@ namespace Server.Items
         {
         }
 
-        public override WeaponAbility PrimaryAbility
-        {
-            get
-            {
-                return WeaponAbility.Feint;
-            }
-        }
-        public override WeaponAbility SecondaryAbility
-        {
-            get
-            {
-                return WeaponAbility.DualWield;
-            }
-        }
-        public override int StrengthReq
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int MinDamage
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int MaxDamage
-        {
-            get
-            {
-                return 13;
-            }
-        }
-        public override float Speed
-        {
-            get
-            {
-                return 2.00f;
-            }
-        }
+        public override WeaponAbility PrimaryAbility => WeaponAbility.Feint;
+        public override WeaponAbility SecondaryAbility => WeaponAbility.DualWield;
+        public override int StrengthReq => 10;
+        public override int MinDamage => 10;
+        public override int MaxDamage => 13;
+        public override float Speed => 2.00f;
 
-        public override int DefHitSound
-        {
-            get
-            {
-                return 0x232;
-            }
-        }
-        public override int DefMissSound
-        {
-            get
-            {
-                return 0x238;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 55;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 60;
-            }
-        }
-        public override WeaponAnimation DefAnimation
-        {
-            get
-            {
-                return WeaponAnimation.Bash2H;
-            }
-        }
+        public override int DefHitSound => 0x232;
+        public override int DefMissSound => 0x238;
+        public override int InitMinHits => 55;
+        public override int InitMaxHits => 60;
+        public override WeaponAnimation DefAnimation => WeaponAnimation.Bash2H;
 
-        public override Race RequiredRace { get { return Race.Gargoyle; } }
-        public override bool CanBeWornByGargoyles { get { return true; } }
+        public override Race RequiredRace => Race.Gargoyle;
+        public override bool CanBeWornByGargoyles => true;
 
         public override void Serialize(GenericWriter writer)
         {

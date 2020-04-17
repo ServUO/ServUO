@@ -11,13 +11,13 @@ namespace Server.Spells.SkillMasteries
 {
     public class FistsOfFurySpell : SkillMasteryMove
     {
-        public override int BaseMana { get { return 20; } }
-        public override double RequiredSkill { get { return 90.0; } }
+        public override int BaseMana => 20;
+        public override double RequiredSkill => 90.0;
 
-        public override SkillName MoveSkill { get { return SkillName.Wrestling; } }
-        public override TextDefinition AbilityMessage { get { return new TextDefinition(1155895); } } // You ready yourself to unleash your fists of fury!
+        public override SkillName MoveSkill => SkillName.Wrestling;
+        public override TextDefinition AbilityMessage => new TextDefinition(1155895);  // You ready yourself to unleash your fists of fury!
 
-        public override TimeSpan CooldownPeriod { get { return TimeSpan.FromSeconds(20); } }
+        public override TimeSpan CooldownPeriod => TimeSpan.FromSeconds(20);
 
         private Dictionary<Mobile, FistsOfFuryContext> _Table;
 

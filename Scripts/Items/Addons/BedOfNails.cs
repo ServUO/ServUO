@@ -14,13 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074801;
-            }
-        }// Bed of Nails
+        public override int LabelNumber => 1074801;// Bed of Nails
         public override bool OnMoveOver(Mobile m)
         {
             bool allow = base.OnMoveOver(m);
@@ -65,13 +59,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new BedOfNailsDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new BedOfNailsDeed();
         public override bool OnMoveOver(Mobile m)
         {
             if (m.Alive && (m.IsPlayer() || !m.Hidden))
@@ -183,20 +171,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new BedOfNailsAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074801;
-            }
-        }// Bed of Nails
+        public override BaseAddon Addon => new BedOfNailsAddon();
+        public override int LabelNumber => 1074801;// Bed of Nails
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

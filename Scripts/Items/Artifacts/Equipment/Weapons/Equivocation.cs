@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class Equivocation : GnarledStaff
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1154473; } } // Equivocation
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1154473;  // Equivocation
 
         [Constructable]
         public Equivocation()
@@ -25,8 +25,8 @@ namespace Server.Items
             cold = nrgy = chaos = direct = fire = 0;
         }
 
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
         public Equivocation(Serial serial)
             : base(serial)
@@ -48,8 +48,8 @@ namespace Server.Items
 
     public class GargishEquivocation : GargishGnarledStaff
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1154473; } } // Equivocation
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1154473;  // Equivocation
 
         [Constructable]
         public GargishEquivocation()
@@ -71,8 +71,8 @@ namespace Server.Items
             cold = nrgy = chaos = direct = fire = 0;
         }
 
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
         public GargishEquivocation(Serial serial)
             : base(serial)

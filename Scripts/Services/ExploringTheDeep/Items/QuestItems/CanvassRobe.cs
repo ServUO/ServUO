@@ -4,8 +4,8 @@ namespace Server.Items
 {
     public class CanvassRobe : Robe
     {
-        public override int LabelNumber { get { return 1154238; } } // A Canvass Robe
-        public override bool CanBeWornByGargoyles { get { return true; } }
+        public override int LabelNumber => 1154238;  // A Canvass Robe
+        public override bool CanBeWornByGargoyles => true;
 
         [Constructable]
         public CanvassRobe()

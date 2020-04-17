@@ -72,11 +72,11 @@ namespace Server.Mobiles
         {
         }
 
-        public override double TeleportChance { get { return 0; } }
-        public override bool AlwaysMurderer { get { return true; } }
-        public override Poison PoisonImmune { get { return Poison.Parasitic; } }
-        public override Poison HitPoison { get { return Poison.Lethal; } }
-        public override int Meat { get { return 1; } }
+        public override double TeleportChance => 0;
+        public override bool AlwaysMurderer => true;
+        public override Poison PoisonImmune => Poison.Parasitic;
+        public override Poison HitPoison => Poison.Lethal;
+        public override int Meat => 1;
 
         public static void DistributeRandomArtifact(BaseCreature bc, Type[] typelist)
         {

@@ -8,13 +8,13 @@ namespace Server.Engines.Points
 {
     public class DoomData : PointsSystem
     {
-        public override PointsType Loyalty { get { return PointsType.Doom; } }
-        public override TextDefinition Name { get { return m_Name; } }
-        public override bool AutoAdd { get { return true; } }
-        public override double MaxPoints { get { return double.MaxValue; } }
-        public override bool ShowOnLoyaltyGump { get { return false; } }
+        public override PointsType Loyalty => PointsType.Doom;
+        public override TextDefinition Name => m_Name;
+        public override bool AutoAdd => true;
+        public override double MaxPoints => double.MaxValue;
+        public override bool ShowOnLoyaltyGump => false;
 
-        public bool InSeason { get { return SeasonalEventSystem.IsActive(EventType.TreasuresOfDoom); } }
+        public bool InSeason => SeasonalEventSystem.IsActive(EventType.TreasuresOfDoom);
 
         private readonly TextDefinition m_Name = null;
 

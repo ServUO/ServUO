@@ -512,27 +512,9 @@ namespace Server.Gumps
             Array.Sort(this.m_Skills, new SkillNameComparer());
         }
 
-        public static SkillsGumpGroup[] Groups
-        {
-            get
-            {
-                return m_Groups;
-            }
-        }
-        public string Name
-        {
-            get
-            {
-                return this.m_Name;
-            }
-        }
-        public SkillName[] Skills
-        {
-            get
-            {
-                return this.m_Skills;
-            }
-        }
+        public static SkillsGumpGroup[] Groups => m_Groups;
+        public string Name => this.m_Name;
+        public SkillName[] Skills => this.m_Skills;
 
         private class SkillNameComparer : IComparer
         {

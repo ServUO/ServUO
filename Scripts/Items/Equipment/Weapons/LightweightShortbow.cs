@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class LightweightShortbow : MagicalShortbow
     {
-        public override int LabelNumber { get { return 1073510; } }// lightweight shortbow
+        public override int LabelNumber => 1073510; // lightweight shortbow
 
         [Constructable]
         public LightweightShortbow()

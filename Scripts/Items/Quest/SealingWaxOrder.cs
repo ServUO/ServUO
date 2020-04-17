@@ -15,13 +15,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073132;
-            }
-        }// Sealing Wax Order addressed to Petrus
+        public override int LabelNumber => 1073132;// Sealing Wax Order addressed to Petrus
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -378,16 +378,16 @@ namespace Server.Mobiles
         public BODType Type { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int CachedDeeds { get { return Entry == null ? 0 : Entry.CachedDeeds; } }
+        public int CachedDeeds => Entry == null ? 0 : Entry.CachedDeeds;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime LastBulkOrder { get { return Entry == null ? DateTime.MinValue : Entry.LastBulkOrder; } }
+        public DateTime LastBulkOrder => Entry == null ? DateTime.MinValue : Entry.LastBulkOrder;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public double BankedPoints { get { return Entry == null ? 0 : Entry.BankedPoints; } }
+        public double BankedPoints => Entry == null ? 0 : Entry.BankedPoints;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int PendingRewardPoints { get { return Entry == null ? 0 : Entry.PendingRewardPoints; } }
+        public int PendingRewardPoints => Entry == null ? 0 : Entry.PendingRewardPoints;
 
         public BODData(BODType type, BODEntry entry)
         {

@@ -4,9 +4,9 @@ namespace Server.Mobiles
 {
     public class Maribel : HumilityQuestMobile
     {
-        public override int Greeting { get { return 1075754; } }
+        public override int Greeting => 1075754;
 
-        public override bool IsActiveVendor { get { return true; } }
+        public override bool IsActiveVendor => true;
 
         [Constructable]
         public Maribel()

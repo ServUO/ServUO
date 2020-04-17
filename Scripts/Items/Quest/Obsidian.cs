@@ -128,7 +128,7 @@ namespace Server.Engines.Quests.Collector
                 this.InvalidateProperties();
             }
         }
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         public static string RandomName(Mobile from)
         {

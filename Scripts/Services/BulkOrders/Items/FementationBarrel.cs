@@ -55,7 +55,7 @@ namespace Server.Items
         public bool Fermented { get { return _Fermented; } set { _Fermented = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool BadBatch { get { return _BadBatch; } }
+        public bool BadBatch => _BadBatch;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int BottlesRemaining { get { return _BottlesRemaining; } set { _BottlesRemaining = value; InvalidateProperties(); } }
@@ -66,9 +66,9 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Maker { get { return _Maker; } set { _Maker = value; } }
 
-        public bool HasYeast { get { return _BacterialResistance > 0; } }
+        public bool HasYeast => _BacterialResistance > 0;
 
-        public override int LabelNumber { get { return 1124526; } } // Fermentation Barrel
+        public override int LabelNumber => 1124526;  // Fermentation Barrel
 
         public override double DefaultWeight
         {

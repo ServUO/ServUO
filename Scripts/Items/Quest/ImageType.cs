@@ -67,41 +67,11 @@ namespace Server.Engines.Quests.Collector
             this.m_Y = y;
         }
 
-        public int Figurine
-        {
-            get
-            {
-                return this.m_Figurine;
-            }
-        }
-        public Type Type
-        {
-            get
-            {
-                return this.m_Type;
-            }
-        }
-        public int Name
-        {
-            get
-            {
-                return this.m_Figurine < 0x4000 ? 1020000 + this.m_Figurine : 1078872 + this.m_Figurine;
-            }
-        }
-        public int X
-        {
-            get
-            {
-                return this.m_X;
-            }
-        }
-        public int Y
-        {
-            get
-            {
-                return this.m_Y;
-            }
-        }
+        public int Figurine => this.m_Figurine;
+        public Type Type => this.m_Type;
+        public int Name => this.m_Figurine < 0x4000 ? 1020000 + this.m_Figurine : 1078872 + this.m_Figurine;
+        public int X => this.m_X;
+        public int Y => this.m_Y;
         public static ImageTypeInfo Get(ImageType image)
         {
             int index = (int)image;

@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class TortureRackComponent : AddonComponent, IArtifact
     {
-        public override int LabelNumber { get { return 1152307; } } // Torture Rack	
-        public virtual bool ShowArtifactRarity { get { return true; } }
+        public override int LabelNumber => 1152307;  // Torture Rack	
+        public virtual bool ShowArtifactRarity => true;
 
         public TortureRackComponent(int itemID)
             : base(itemID)
@@ -15,8 +15,8 @@ namespace Server.Items
         {
         }
 
-        public override bool ForceShowProperties { get { return true; } }
-        public virtual int ArtifactRarity { get { return 10; } }
+        public override bool ForceShowProperties => true;
+        public virtual int ArtifactRarity => 10;
 
         public override void GetProperties(ObjectPropertyList list)
         {
@@ -54,7 +54,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed { get { return new TortureRackEastDeed(); } }
+        public override BaseAddonDeed Deed => new TortureRackEastDeed();
 
         public override void Serialize(GenericWriter writer)
         {
@@ -71,7 +71,7 @@ namespace Server.Items
 
     public class TortureRackEastDeed : BaseAddonDeed
     {
-        public override int LabelNumber { get { return 1152305; } }
+        public override int LabelNumber => 1152305;
 
         [Constructable]
         public TortureRackEastDeed()
@@ -83,7 +83,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon { get { return new TortureRackEast(); } }
+        public override BaseAddon Addon => new TortureRackEast();
 
         public override void Serialize(GenericWriter writer)
         {
@@ -115,7 +115,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed { get { return new TortureRackSouthDeed(); } }
+        public override BaseAddonDeed Deed => new TortureRackSouthDeed();
 
         public override void Serialize(GenericWriter writer)
         {
@@ -132,7 +132,7 @@ namespace Server.Items
 
     public class TortureRackSouthDeed : BaseAddonDeed
     {
-        public override int LabelNumber { get { return 1152306; } }
+        public override int LabelNumber => 1152306;
 
         [Constructable]
         public TortureRackSouthDeed()
@@ -144,7 +144,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon { get { return new TortureRackSouth(); } }
+        public override BaseAddon Addon => new TortureRackSouth();
 
         public override void Serialize(GenericWriter writer)
         {

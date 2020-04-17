@@ -7,7 +7,7 @@ namespace Server.Engines.Khaldun
 {
     public class MysteriousBook : Item, IForensicTarget
     {
-        public override int LabelNumber { get { return 1158583; } } // mysterious book
+        public override int LabelNumber => 1158583;  // mysterious book
         public static readonly Point3D SpawnLocation = new Point3D(6240, 2885, 7);
 
         [CommandProperty(AccessLevel.GameMaster)]

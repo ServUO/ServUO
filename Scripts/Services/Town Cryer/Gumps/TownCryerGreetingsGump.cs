@@ -8,7 +8,7 @@ namespace Server.Services.TownCryer
     public class TownCryerGreetingsGump : BaseTownCryerGump
     {
         public int Page { get; private set; }
-        public int Pages { get { return TownCryerSystem.GreetingsEntries.Count; } }
+        public int Pages => TownCryerSystem.GreetingsEntries.Count;
 
         public TownCryerGreetingEntry Entry { get; private set; }
 

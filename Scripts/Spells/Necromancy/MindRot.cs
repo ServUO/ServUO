@@ -20,27 +20,9 @@ namespace Server.Spells.Necromancy
         {
         }
 
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(1.75);
-            }
-        }
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 30.0;
-            }
-        }
-        public override int RequiredMana
-        {
-            get
-            {
-                return 17;
-            }
-        }
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(1.75);
+        public override double RequiredSkill => 30.0;
+        public override int RequiredMana => 17;
         public static void ClearMindRotScalar(Mobile m)
         {
             if (!m_Table.ContainsKey(m))

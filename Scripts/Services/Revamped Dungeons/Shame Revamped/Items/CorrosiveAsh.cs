@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class CorrosiveAsh : Item
     {
-        public override int LabelNumber { get { return 1151809; } } // Corrosive Ash
+        public override int LabelNumber => 1151809;  // Corrosive Ash
 
         [Constructable]
         public CorrosiveAsh()

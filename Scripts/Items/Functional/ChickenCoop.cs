@@ -14,7 +14,7 @@ namespace Server.Items
     {
         public static readonly int MaxStables = 3;
 
-        public override int LabelNumber { get { return 1112570; } } // a chicken coop
+        public override int LabelNumber => 1112570;  // a chicken coop
 
         private SecureLevel m_Level;
         private readonly Dictionary<Mobile, List<BaseCreature>> m_Stored = new Dictionary<Mobile, List<BaseCreature>>();
@@ -26,7 +26,7 @@ namespace Server.Items
             set { m_Level = value; }
         }
 
-        public Dictionary<Mobile, List<BaseCreature>> Stored { get { return m_Stored; } }
+        public Dictionary<Mobile, List<BaseCreature>> Stored => m_Stored;
 
         [Constructable]
         public ChickenCoop()
@@ -124,7 +124,7 @@ namespace Server.Items
         {
         }
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         public override void GetProperties(ObjectPropertyList list)
         {
@@ -421,7 +421,7 @@ namespace Server.Items
             return IsLockedDown;
         }
 
-        public override bool HandlesOnSpeech { get { return true; } }
+        public override bool HandlesOnSpeech => true;
 
         public override void OnSpeech(SpeechEventArgs e)
         {

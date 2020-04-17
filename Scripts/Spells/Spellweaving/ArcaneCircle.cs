@@ -17,27 +17,9 @@ namespace Server.Spells.Spellweaving
         {
         }
 
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(0.5);
-            }
-        }
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 0.0;
-            }
-        }
-        public override int RequiredMana
-        {
-            get
-            {
-                return 24;
-            }
-        }
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(0.5);
+        public override double RequiredSkill => 0.0;
+        public override int RequiredMana => 24;
         public static bool IsValidTile(int itemID)
         {
             //Per OSI, Center tile only

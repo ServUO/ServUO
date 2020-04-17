@@ -14,13 +14,7 @@ namespace Server.Engines.Quests
             ReadType(xml["quest"], "type", ref this.m_Quest);
         }
 
-        public Type Quest
-        {
-            get
-            {
-                return this.m_Quest;
-            }
-        }
+        public Type Quest => this.m_Quest;
         public override void OnEnter(Mobile m)
         {
             base.OnEnter(m);

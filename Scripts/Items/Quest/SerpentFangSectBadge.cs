@@ -14,13 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073139;
-            }
-        }// A Serpent Fang Sect Badge
+        public override int LabelNumber => 1073139;// A Serpent Fang Sect Badge
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

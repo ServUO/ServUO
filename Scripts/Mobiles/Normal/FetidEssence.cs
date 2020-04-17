@@ -54,20 +54,8 @@ namespace Server.Mobiles
         {
         }
 
-        public override Poison HitPoison
-        {
-            get
-            {
-                return Poison.Deadly;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Deadly;
-            }
-        }
+        public override Poison HitPoison => Poison.Deadly;
+        public override Poison PoisonImmune => Poison.Deadly;
         public override void GenerateLoot() // Need to verify
         {
             AddLoot(LootPack.FilthyRich);

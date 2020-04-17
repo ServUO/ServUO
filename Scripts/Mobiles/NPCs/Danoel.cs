@@ -14,47 +14,17 @@ namespace Server.Engines.Quests
         }
 
         /* Instrument of War */
-        public override object Title
-        {
-            get
-            {
-                return 1074055;
-            }
-        }
+        public override object Title => 1074055;
         /* Pathetic, this human craftsmanship! Take their broadswords - overgrown butter knives, in reality. 
         No, I cannot do them justice - you must see for yourself. Bring me broadswords and I will demonstrate 
         their feebleness. */
-        public override object Description
-        {
-            get
-            {
-                return 1074149;
-            }
-        }
+        public override object Description => 1074149;
         /* Fine then, I'm shall find another to run my errands then. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1074063;
-            }
-        }
+        public override object Refuse => 1074063;
         /* Hurry up! I don't have all day to wait for you to bring what I desire! */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1074064;
-            }
-        }
+        public override object Uncomplete => 1074064;
         /* These human made goods are laughable! It offends so -- I must show you what elven skill is capable of! */
-        public override object Complete
-        {
-            get
-            {
-                return 1074065;
-            }
-        }
+        public override object Complete => 1074065;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -81,46 +51,16 @@ namespace Server.Engines.Quests
         }
 
         /* The Shield */
-        public override object Title
-        {
-            get
-            {
-                return 1074054;
-            }
-        }
+        public override object Title => 1074054;
         /* I doubt very much a human shield would stop a good stout elven arrow. You doubt me? I will show you - 
         get me some of these heater shields and I will piece them with sharp elven arrows! */
-        public override object Description
-        {
-            get
-            {
-                return 1074148;
-            }
-        }
+        public override object Description => 1074148;
         /* Fine then, I'm shall find another to run my errands then. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1074063;
-            }
-        }
+        public override object Refuse => 1074063;
         /* Hurry up! I don't have all day to wait for you to bring what I desire! */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1074064;
-            }
-        }
+        public override object Uncomplete => 1074064;
         /* These human made goods are laughable! It offends so -- I must show you what elven skill is capable of! */
-        public override object Complete
-        {
-            get
-            {
-                return 1074065;
-            }
-        }
+        public override object Complete => 1074065;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -147,47 +87,17 @@ namespace Server.Engines.Quests
         }
 
         /* Music to my Ears */
-        public override object Title
-        {
-            get
-            {
-                return 1074023;
-            }
-        }
+        public override object Title => 1074023;
         /* You think you know something of music? Laughable! Take your lap harp. Crude, indelicate instruments that 
         make a noise not unlike the wailing of a choleric child or a dying cat. I will show you - bring lap harps, 
         and I will demonstrate. */
-        public override object Description
-        {
-            get
-            {
-                return 1074117;
-            }
-        }
+        public override object Description => 1074117;
         /* Fine then, I'm shall find another to run my errands then. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1074063;
-            }
-        }
+        public override object Refuse => 1074063;
         /* Hurry up! I don't have all day to wait for you to bring what I desire! */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1074064;
-            }
-        }
+        public override object Uncomplete => 1074064;
         /* These human made goods are laughable! It offends so -- I must show you what elven skill is capable of! */
-        public override object Complete
-        {
-            get
-            {
-                return 1074065;
-            }
-        }
+        public override object Complete => 1074065;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -214,46 +124,16 @@ namespace Server.Engines.Quests
         }
 
         /* The Glass Eye */
-        public override object Title
-        {
-            get
-            {
-                return 1074050;
-            }
-        }
+        public override object Title => 1074050;
         /* Humans are so pathetically weak, they must be augmented by glass and metal! Imagine such a thing! 
         I must see one of these spyglasses for myself, to understand the pathetic limits of human sight! */
-        public override object Description
-        {
-            get
-            {
-                return 1074144;
-            }
-        }
+        public override object Description => 1074144;
         /* Fine then, I'm shall find another to run my errands then. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1074063;
-            }
-        }
+        public override object Refuse => 1074063;
         /* Hurry up! I don't have all day to wait for you to bring what I desire! */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1074064;
-            }
-        }
+        public override object Uncomplete => 1074064;
         /* These human made goods are laughable! It offends so -- I must show you what elven skill is capable of! */
-        public override object Complete
-        {
-            get
-            {
-                return 1074065;
-            }
-        }
+        public override object Complete => 1074065;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -280,47 +160,17 @@ namespace Server.Engines.Quests
         }
 
         /* Lazy Humans */
-        public override object Title
-        {
-            get
-            {
-                return 1074024;
-            }
-        }
+        public override object Title => 1074024;
         /* Human fancy knows no bounds!  It's pathetic that they are so weak that they must create a special stool 
         upon which to rest their feet when they recline!  Humans don't have any clue how to live.  Bring me some of 
         these foot stools to examine and I may teach you something worthwhile. */
-        public override object Description
-        {
-            get
-            {
-                return 1074118;
-            }
-        }
+        public override object Description => 1074118;
         /* Fine then, I'm shall find another to run my errands then. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1074063;
-            }
-        }
+        public override object Refuse => 1074063;
         /* Hurry up! I don't have all day to wait for you to bring what I desire! */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1074064;
-            }
-        }
+        public override object Uncomplete => 1074064;
         /* These human made goods are laughable! It offends so -- I must show you what elven skill is capable of! */
-        public override object Complete
-        {
-            get
-            {
-                return 1074065;
-            }
-        }
+        public override object Complete => 1074065;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -347,47 +197,17 @@ namespace Server.Engines.Quests
         }
 
         /* Inventive Tools */
-        public override object Title
-        {
-            get
-            {
-                return 1074048;
-            }
-        }
+        public override object Title => 1074048;
         /* Bring me some of these tinker's tools! I am certain, in the hands of an elf, they will fashion objects of 
         ingenuity and delight that will shame all human invention! Hurry, do this quickly and I might deign to show you 
         my skill.  */
-        public override object Description
-        {
-            get
-            {
-                return 1074142;
-            }
-        }
+        public override object Description => 1074142;
         /* Fine then, I'm shall find another to run my errands then. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1074063;
-            }
-        }
+        public override object Refuse => 1074063;
         /* Hurry up! I don't have all day to wait for you to bring what I desire! */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1074064;
-            }
-        }
+        public override object Uncomplete => 1074064;
         /* These human made goods are laughable! It offends so -- I must show you what elven skill is capable of! */
-        public override object Complete
-        {
-            get
-            {
-                return 1074065;
-            }
-        }
+        public override object Complete => 1074065;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -416,11 +236,7 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(ReptilianDentistQuest),
                     typeof(TickTockQuest),
@@ -436,8 +252,6 @@ namespace Server.Engines.Quests
                     typeof(CowardsQuest),
                     typeof(TokenOfLoveQuest)
                 };
-            }
-        }
         public override void InitBody()
         {
             InitStats(100, 100, 25);

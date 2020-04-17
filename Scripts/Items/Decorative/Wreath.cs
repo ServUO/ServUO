@@ -6,8 +6,8 @@ namespace Server.Items
     [FlipableAttribute(0xA12E, 0xA12F)]
     public class HolidayWreath : Item, IDyable
     {
-        public override int LabelNumber { get { return 1029004; } } // wreath
-        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber => 1029004;  // wreath
+        public override bool IsArtifact => true;
 
         public int MadeID { get; set; }
 

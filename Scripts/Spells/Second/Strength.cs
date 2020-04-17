@@ -16,13 +16,7 @@ namespace Server.Spells.Second
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Second;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Second;
 
         public override void OnCast()
         {

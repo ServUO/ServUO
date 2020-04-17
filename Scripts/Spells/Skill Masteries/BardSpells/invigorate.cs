@@ -19,11 +19,11 @@ namespace Server.Spells.SkillMasteries
                 9002
             );
 
-        public override double RequiredSkill { get { return 90; } }
-        public override double UpKeep { get { return 5; } }
-        public override int RequiredMana { get { return 22; } }
-        public override bool PartyEffects { get { return true; } }
-        public override SkillName CastSkill { get { return SkillName.Provocation; } }
+        public override double RequiredSkill => 90;
+        public override double UpKeep => 5;
+        public override int RequiredMana => 22;
+        public override bool PartyEffects => true;
+        public override SkillName CastSkill => SkillName.Provocation;
 
         private int m_HPBonus;
         private int m_StatBonus;

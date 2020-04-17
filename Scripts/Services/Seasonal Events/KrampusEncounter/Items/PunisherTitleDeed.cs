@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class PunisherTitleDeed : BaseRewardTitleDeed
     {
-        public override TextDefinition Title { get { return new TextDefinition(1158795); } } // Punisher
+        public override TextDefinition Title => new TextDefinition(1158795);  // Punisher
 
         [Constructable]
         public PunisherTitleDeed()

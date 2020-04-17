@@ -18,13 +18,7 @@ namespace Server.Items
         {
         }
 
-        public override string DefaultName
-        {
-            get
-            {
-                return "a resurrection gate";
-            }
-        }
+        public override string DefaultName => "a resurrection gate";
         public override bool OnMoveOver(Mobile m)
         {
             if (!m.Alive && m.Map != null && m.Map.CanFit(m.Location, 16, false, false))

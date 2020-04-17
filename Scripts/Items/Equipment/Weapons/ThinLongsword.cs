@@ -15,63 +15,15 @@ namespace Server.Items
         {
         }
 
-        public override int StrengthReq
-        {
-            get
-            {
-                return 35;
-            }
-        }
-        public override int MinDamage
-        {
-            get
-            {
-                return 15;
-            }
-        }
-        public override int MaxDamage
-        {
-            get
-            {
-                return 16;
-            }
-        }
-        public override float Speed
-        {
-            get
-            {
-                return 3.50f;
-            }
-        }
+        public override int StrengthReq => 35;
+        public override int MinDamage => 15;
+        public override int MaxDamage => 16;
+        public override float Speed => 3.50f;
 
-        public override int DefHitSound
-        {
-            get
-            {
-                return 0x237;
-            }
-        }
-        public override int DefMissSound
-        {
-            get
-            {
-                return 0x23A;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 31;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 110;
-            }
-        }
+        public override int DefHitSound => 0x237;
+        public override int DefMissSound => 0x23A;
+        public override int InitMinHits => 31;
+        public override int InitMaxHits => 110;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

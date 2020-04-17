@@ -119,7 +119,7 @@ namespace Server.Gumps
 
     public class ConfirmExitGump : BaseConfirmGump
     {
-        public override int LabelNumber { get { return 1075026; } } // Are you sure you wish to teleport?
+        public override int LabelNumber => 1075026;  // Are you sure you wish to teleport?
 
         private readonly object _Altar;
 

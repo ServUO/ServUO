@@ -3,8 +3,8 @@ namespace Server.Items
     [Furniture]
     public class FancyLoveseatSouthAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new FancyLoveseatSouthDeed(); } }
-        public override bool RetainDeedHue { get { return true; } }
+        public override BaseAddonDeed Deed => new FancyLoveseatSouthDeed();
+        public override bool RetainDeedHue => true;
 
         [Constructable]
         public FancyLoveseatSouthAddon()
@@ -33,8 +33,8 @@ namespace Server.Items
 
     public class FancyLoveseatSouthDeed : BaseAddonDeed
     {
-        public override BaseAddon Addon { get { return new FancyLoveseatSouthAddon(); } }
-        public override int LabelNumber { get { return 1154137; } } // Fancy Loveseat (South)
+        public override BaseAddon Addon => new FancyLoveseatSouthAddon();
+        public override int LabelNumber => 1154137;  // Fancy Loveseat (South)
 
         [Constructable]
         public FancyLoveseatSouthDeed()

@@ -7,23 +7,17 @@ namespace Server.Spells.SkillMasteries
     public abstract class BardSpell : SkillMasterySpell
     {
         private BaseInstrument m_Instrument;
-        public BaseInstrument Instrument { get { return m_Instrument; } }
+        public BaseInstrument Instrument => m_Instrument;
 
-        public virtual double SlayerBonus { get { return 1.5; } }
+        public virtual double SlayerBonus => 1.5;
 
-        public override double RequiredSkill { get { return 90; } }
-        public override double UpKeep { get { return 0; } }
-        public override int RequiredMana { get { return 0; } }
-        public override bool PartyEffects { get { return false; } }
-        public override bool DamageCanDisrupt { get { return true; } }
+        public override double RequiredSkill => 90;
+        public override double UpKeep => 0;
+        public override int RequiredMana => 0;
+        public override bool PartyEffects => false;
+        public override bool DamageCanDisrupt => true;
 
-        public override double BaseSkillBonus
-        {
-            get
-            {
-                return Math.Floor(2 + (((Caster.Skills[CastSkill].Base - 90) / 10) + ((Caster.Skills[DamageSkill].Base - 90) / 10)));
-            }
-        }
+        public override double BaseSkillBonus => Math.Floor(2 + (((Caster.Skills[CastSkill].Base - 90) / 10) + ((Caster.Skills[DamageSkill].Base - 90) / 10)));
 
         public override double CollectiveBonus
         {
@@ -55,11 +49,11 @@ namespace Server.Spells.SkillMasteries
             }
         }
 
-        public override SkillName DamageSkill { get { return SkillName.Musicianship; } }
+        public override SkillName DamageSkill => SkillName.Musicianship;
 
-        public override int UpkeepCancelMessage { get { return 1115665; } } // You do not have enough mana to continue infusing your song with magic.
-        public override int OutOfRangeMessage { get { return 1115771; } } // Your target is no longer in range of your spellsong.
-        public override int DisruptMessage { get { return 1115710; } } // Your spell song has been interrupted.
+        public override int UpkeepCancelMessage => 1115665;  // You do not have enough mana to continue infusing your song with magic.
+        public override int OutOfRangeMessage => 1115771;  // Your target is no longer in range of your spellsong.
+        public override int DisruptMessage => 1115710;  // Your spell song has been interrupted.
 
         public BardSpell(Mobile caster, Item scroll, SpellInfo info) : base(caster, null, info)
         {

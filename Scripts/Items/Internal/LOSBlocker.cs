@@ -16,13 +16,7 @@ namespace Server.Items
         {
         }
 
-        public override string DefaultName
-        {
-            get
-            {
-                return "no line of sight";
-            }
-        }
+        public override string DefaultName => "no line of sight";
         public static void Initialize()
         {
             TileData.ItemTable[0x21A2].Flags = TileFlag.Wall | TileFlag.NoShoot;

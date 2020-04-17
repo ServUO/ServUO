@@ -393,18 +393,12 @@ namespace Server.Accounting
         /// <summary>
         ///     List of account comments. Type of contained objects is AccountComment.
         /// </summary>
-        public List<AccountComment> Comments
-        {
-            get { return m_Comments ?? (m_Comments = new List<AccountComment>()); }
-        }
+        public List<AccountComment> Comments => m_Comments ?? (m_Comments = new List<AccountComment>());
 
         /// <summary>
         ///     List of account tags. Type of contained objects is AccountTag.
         /// </summary>
-        public List<AccountTag> Tags
-        {
-            get { return m_Tags ?? (m_Tags = new List<AccountTag>()); }
-        }
+        public List<AccountTag> Tags => m_Tags ?? (m_Tags = new List<AccountTag>());
 
         /// <summary>
         ///     Account password. Plain text. Case sensitive validation. May be null.
@@ -1602,10 +1596,7 @@ namespace Server.Accounting
         ///     0 to 999,999,999 by default.
         /// </summary>
         [CommandProperty(AccessLevel.Administrator)]
-        public int TotalGold
-        {
-            get { return (int)Math.Floor((TotalCurrency - Math.Truncate(TotalCurrency)) * Math.Max(1.0, CurrencyThreshold)); }
-        }
+        public int TotalGold => (int)Math.Floor((TotalCurrency - Math.Truncate(TotalCurrency)) * Math.Max(1.0, CurrencyThreshold));
 
         /// <summary>
         ///     This amount represents the current amount of Platinum owned by the player.

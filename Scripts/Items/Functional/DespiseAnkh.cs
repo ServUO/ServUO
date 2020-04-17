@@ -12,7 +12,7 @@ namespace Server.Engines.Despise
         [CommandProperty(AccessLevel.GameMaster)]
         public Alignment Alignment { get { return m_Alignment; } set { m_Alignment = value; } }
 
-        public override bool HandlesOnMovement { get { return true; } }
+        public override bool HandlesOnMovement => true;
 
         public DespiseAnkh(Alignment alignment)
         {

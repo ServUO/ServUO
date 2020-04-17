@@ -24,7 +24,7 @@ namespace Server.Items
             }
         }
 
-        public override bool Nontransferable { get { return true; } }
+        public override bool Nontransferable => true;
 
         public BrokenAutomatonHead(KotlAutomaton automaton)
             : base(0x9DB1)

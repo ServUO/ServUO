@@ -39,41 +39,11 @@ namespace Server.Engines.Mahjong
         {
         }
 
-        public MahjongTile[] Tiles
-        {
-            get
-            {
-                return this.m_Tiles;
-            }
-        }
-        public MahjongDealerIndicator DealerIndicator
-        {
-            get
-            {
-                return this.m_DealerIndicator;
-            }
-        }
-        public MahjongWallBreakIndicator WallBreakIndicator
-        {
-            get
-            {
-                return this.m_WallBreakIndicator;
-            }
-        }
-        public MahjongDices Dices
-        {
-            get
-            {
-                return this.m_Dices;
-            }
-        }
-        public MahjongPlayers Players
-        {
-            get
-            {
-                return this.m_Players;
-            }
-        }
+        public MahjongTile[] Tiles => this.m_Tiles;
+        public MahjongDealerIndicator DealerIndicator => this.m_DealerIndicator;
+        public MahjongWallBreakIndicator WallBreakIndicator => this.m_WallBreakIndicator;
+        public MahjongDices Dices => this.m_Dices;
+        public MahjongPlayers Players => this.m_Players;
         [CommandProperty(AccessLevel.GameMaster)]
         public SecureLevel Level
         {

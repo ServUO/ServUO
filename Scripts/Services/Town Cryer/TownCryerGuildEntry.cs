@@ -14,7 +14,7 @@ namespace Server.Services.TownCryer
         public DateTime Expires { get; private set; }
         public string EventLocation { get; set; }
 
-        public bool Expired { get { return DateTime.Now + TimeSpan.FromDays(32) < DateTime.Now; } }
+        public bool Expired => DateTime.Now + TimeSpan.FromDays(32) < DateTime.Now;
 
         public TownCryerGuildEntry(Mobile m, DateTime eventTime, string eventLocation, string title, string body)
         {

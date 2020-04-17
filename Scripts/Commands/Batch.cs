@@ -43,13 +43,7 @@ namespace Server.Commands
                 this.m_Condition = value;
             }
         }
-        public ArrayList BatchCommands
-        {
-            get
-            {
-                return this.m_BatchCommands;
-            }
-        }
+        public ArrayList BatchCommands => this.m_BatchCommands;
         public static void Initialize()
         {
             CommandSystem.Register("Batch", AccessLevel.Counselor, new CommandEventHandler(Batch_OnCommand));

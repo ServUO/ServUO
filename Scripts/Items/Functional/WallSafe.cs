@@ -28,10 +28,10 @@ namespace Server.Items
             set;
         }
 
-        public Item Deed { get { return new WallSafeDeed(); } }
+        public Item Deed => new WallSafeDeed();
 
-        public override int LabelNumber { get { return 1119751; } } // Wall Safe
-        public override bool ForceShowProperties { get { return true; } }
+        public override int LabelNumber => 1119751;  // Wall Safe
+        public override bool ForceShowProperties => true;
 
         public List<string> History { get; set; }
 
@@ -160,7 +160,7 @@ namespace Server.Items
 
     public class WallSafeDeed : Item
     {
-        public override int LabelNumber { get { return 1155857; } } // Currency Wall Safe
+        public override int LabelNumber => 1155857;  // Currency Wall Safe
 
         [Constructable]
         public WallSafeDeed() : base(0x14F0)

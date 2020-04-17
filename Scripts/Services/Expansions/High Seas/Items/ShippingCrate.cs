@@ -14,26 +14,14 @@ namespace Server.Items
         private BaseBoat m_Boat;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile Owner { get { return m_Owner; } }
+        public Mobile Owner => m_Owner;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public BaseBoat Boat { get { return m_Boat; } }
+        public BaseBoat Boat => m_Boat;
 
-        public override TimeSpan DecayTime
-        {
-            get
-            {
-                return TimeSpan.FromMinutes(DT);
-            }
-        }
+        public override TimeSpan DecayTime => TimeSpan.FromMinutes(DT);
 
-        public override bool Decays
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool Decays => true;
 
         public ShipCrate(Mobile owner, BaseBoat boat)
         {
@@ -127,7 +115,7 @@ namespace Server.Items
         {
             private readonly ShipCrate m_Crate;
 
-            public override int LabelNumber { get { return 1116523; } } // Are you sure you want to destroy your shipping crate and its contents?
+            public override int LabelNumber => 1116523;  // Are you sure you want to destroy your shipping crate and its contents?
 
             public InternalGump(ShipCrate crate)
             {

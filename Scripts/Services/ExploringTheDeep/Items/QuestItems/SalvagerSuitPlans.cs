@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class SalvagerSuitPlans : BaseDecayingItem
     {
-        public override int LabelNumber { get { return 1154229; } } // Plans to A Salvager Suit
+        public override int LabelNumber => 1154229;  // Plans to A Salvager Suit
 
         [Constructable]
         public SalvagerSuitPlans() : this(1)
@@ -35,8 +35,8 @@ namespace Server.Items
             list.Add(1072351); // Quest Item
         }
 
-        public override int Lifespan { get { return 18000; } }
-        public override bool UseSeconds { get { return false; } }
+        public override int Lifespan => 18000;
+        public override bool UseSeconds => false;
 
         public SalvagerSuitPlans(Serial serial) : base(serial)
         {

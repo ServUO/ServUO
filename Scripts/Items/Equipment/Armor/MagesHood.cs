@@ -2,16 +2,16 @@ namespace Server.Items
 {
     public class MagesHood : BaseHat
     {
-        public override int LabelNumber { get { return 1159227; } } // mage's hood
+        public override int LabelNumber => 1159227;  // mage's hood
 
-        public override int BasePhysicalResistance { get { return 0; } }
-        public override int BaseFireResistance { get { return 3; } }
-        public override int BaseColdResistance { get { return 5; } }
-        public override int BasePoisonResistance { get { return 8; } }
-        public override int BaseEnergyResistance { get { return 8; } }
+        public override int BasePhysicalResistance => 0;
+        public override int BaseFireResistance => 3;
+        public override int BaseColdResistance => 5;
+        public override int BasePoisonResistance => 8;
+        public override int BaseEnergyResistance => 8;
 
-        public override int InitMinHits { get { return 20; } }
-        public override int InitMaxHits { get { return 40; } }
+        public override int InitMinHits => 20;
+        public override int InitMaxHits => 40;
 
         [Constructable]
         public MagesHood()

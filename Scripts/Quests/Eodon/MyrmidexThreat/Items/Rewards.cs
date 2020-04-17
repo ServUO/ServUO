@@ -123,7 +123,7 @@ namespace Server.Items
             SetSecureLevelEntry.AddTo(from, this, list);
         }
 
-        public override int LabelNumber { get { return 1124143; } } // Moonstone Crystal
+        public override int LabelNumber => 1124143;  // Moonstone Crystal
 
         [Constructable]
         public MoonstoneCrystal() : base(0x9CBB)
@@ -251,7 +251,7 @@ namespace Server.Items
     [TypeAlias("Server.Items.KotlPowerCoil")]
     public class KotlPowerCore : Item
     {
-        public override int LabelNumber { get { return 1124179; } } // Kotl Power Core
+        public override int LabelNumber => 1124179;  // Kotl Power Core
 
         [Constructable]
         public KotlPowerCore() : base(40147)
@@ -278,7 +278,7 @@ namespace Server.Items
     [Flipable(40253, 40252)]
     public class EodonianWallMap : Item
     {
-        public override int LabelNumber { get { return 1156690; } } // Wall Map of Eodon
+        public override int LabelNumber => 1156690;  // Wall Map of Eodon
 
         [Constructable]
         public EodonianWallMap()
@@ -316,7 +316,7 @@ namespace Server.Items
 
     public class RawMoonstoneLargeAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new RawMoonstoneLargeAddonDeed(); } }
+        public override BaseAddonDeed Deed => new RawMoonstoneLargeAddonDeed();
 
         [Constructable]
         public RawMoonstoneLargeAddon()
@@ -344,9 +344,9 @@ namespace Server.Items
 
     public class RawMoonstoneLargeAddonDeed : BaseAddonDeed
     {
-        public override BaseAddon Addon { get { return new RawMoonstoneLargeAddon(); } }
+        public override BaseAddon Addon => new RawMoonstoneLargeAddon();
 
-        public override int LabelNumber { get { return 1156703; } }
+        public override int LabelNumber => 1156703;
 
         [Constructable]
         public RawMoonstoneLargeAddonDeed()
@@ -373,7 +373,7 @@ namespace Server.Items
 
     public class RawMoonstoneSmallAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new RawMoonstoneSmallAddonDeed(); } }
+        public override BaseAddonDeed Deed => new RawMoonstoneSmallAddonDeed();
 
         [Constructable]
         public RawMoonstoneSmallAddon()
@@ -401,9 +401,9 @@ namespace Server.Items
 
     public class RawMoonstoneSmallAddonDeed : BaseAddonDeed
     {
-        public override BaseAddon Addon { get { return new RawMoonstoneSmallAddon(); } }
+        public override BaseAddon Addon => new RawMoonstoneSmallAddon();
 
-        public override int LabelNumber { get { return 1156702; } }
+        public override int LabelNumber => 1156702;
 
         [Constructable]
         public RawMoonstoneSmallAddonDeed()

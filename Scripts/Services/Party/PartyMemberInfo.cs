@@ -10,13 +10,7 @@ namespace Server.Engines.PartySystem
             this.m_CanLoot = false;
         }
 
-        public Mobile Mobile
-        {
-            get
-            {
-                return this.m_Mobile;
-            }
-        }
+        public Mobile Mobile => this.m_Mobile;
         public bool CanLoot
         {
             get

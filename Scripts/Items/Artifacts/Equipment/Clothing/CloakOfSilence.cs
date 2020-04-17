@@ -3,7 +3,7 @@ namespace Server.Items
     [Flipable(0x2FB9, 0x3173)]
     public class CloakOfSilence : BaseOuterTorso
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
 
         [Constructable]
         public CloakOfSilence()
@@ -19,7 +19,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber { get { return 1112883; } }// Cloak of Silence
+        public override int LabelNumber => 1112883; // Cloak of Silence
 
         public override void Serialize(GenericWriter writer)
         {

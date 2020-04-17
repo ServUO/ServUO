@@ -44,7 +44,7 @@ namespace Server.Engines.Plants
             }
         }
 
-        public override int LabelNumber { get { return 1060810; } } // seed
+        public override int LabelNumber => 1060810;  // seed
 
         public static Seed RandomBonsaiSeed()
         {
@@ -89,7 +89,7 @@ namespace Server.Engines.Plants
         {
         }
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         public int GetLabel(out string args)
         {

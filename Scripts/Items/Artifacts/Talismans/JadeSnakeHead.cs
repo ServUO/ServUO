@@ -2,9 +2,9 @@
 {
     public class JadeSnakeHead : BaseTalisman
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1115647; } } // Jade Snake Head
-        public override int PoisonResistance { get { return 3; } }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1115647;  // Jade Snake Head
+        public override int PoisonResistance => 3;
 
         [Constructable]
         public JadeSnakeHead()

@@ -92,13 +92,7 @@ namespace Server.Items
                 this.m_CloseDelay = value;
             }
         }
-        public bool IsRaisable
-        {
-            get
-            {
-                return this.m_RaiseTimer == null;
-            }
-        }
+        public bool IsRaisable => this.m_RaiseTimer == null;
         public void Raise()
         {
             if (!this.IsRaisable)

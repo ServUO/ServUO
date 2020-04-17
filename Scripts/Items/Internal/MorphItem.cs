@@ -84,20 +84,8 @@ namespace Server.Items
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
-        public int CurrentRange
-        {
-            get
-            {
-                return ItemID == InactiveItemID ? RangeCheck : OutRange;
-            }
-        }
-        public override bool HandlesOnMovement
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public int CurrentRange => ItemID == InactiveItemID ? RangeCheck : OutRange;
+        public override bool HandlesOnMovement => true;
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
             if (Utility.InRange(m.Location, Location, CurrentRange) || Utility.InRange(oldLocation, Location, CurrentRange))

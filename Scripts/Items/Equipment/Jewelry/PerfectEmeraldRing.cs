@@ -21,13 +21,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073459;
-            }
-        }// perfect emerald ring
+        public override int LabelNumber => 1073459;// perfect emerald ring
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

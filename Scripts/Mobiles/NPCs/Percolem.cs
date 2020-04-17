@@ -4,7 +4,7 @@ namespace Server.Engines.Quests
 {
     public class Percolem : MondainQuester, ITierQuester
     {
-        public TierQuestInfo TierInfo { get { return TierQuestInfo.Percolem; } }
+        public TierQuestInfo TierInfo => TierQuestInfo.Percolem;
 
         [Constructable]
         public Percolem()
@@ -17,13 +17,7 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[] { };
-            }
-        }
+        public override Type[] Quests => new Type[] { };
 
         public override void InitBody()
         {

@@ -52,7 +52,7 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-        public override bool CanBeParagon { get { return false; } }
+        public override bool CanBeParagon => false;
         public override void OnDeath(Container c)
         {
             base.OnDeath(c);
@@ -64,13 +64,7 @@ namespace Server.Mobiles
                 c.DropItem(new DisintegratingThesisNotes());
         }
 
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 5;
-            }
-        }
+        public override int TreasureMapLevel => 5;
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.UltraRich, 3);

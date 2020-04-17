@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class BarkeepContract : Item
     {
-        public override int LabelNumber { get { return 1153779; } } // a barkeep contract
+        public override int LabelNumber => 1153779;  // a barkeep contract
 
         [Constructable]
         public BarkeepContract()

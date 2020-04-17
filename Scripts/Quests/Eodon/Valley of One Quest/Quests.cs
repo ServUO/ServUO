@@ -9,12 +9,12 @@ namespace Server.Engines.Quests
 {
     public class TimeIsOfTheEssenceQuest : BaseQuest
     {
-        public override QuestChain ChainID { get { return QuestChain.ValleyOfOne; } }
-        public override Type NextQuest { get { return typeof(UnitingTheTribesQuest); } }
+        public override QuestChain ChainID => QuestChain.ValleyOfOne;
+        public override Type NextQuest => typeof(UnitingTheTribesQuest);
 
-        public override object Title { get { return 1156512; } }            /*The Valley of One*/
+        public override object Title => 1156512;             /*The Valley of One*/
 
-        public override object Description { get { return 1156458; } }  /*Hawkwind: I'm afraid I have foreseen a most unfortunate timeline of events...
+        public override object Description => 1156458;   /*Hawkwind: I'm afraid I have foreseen a most unfortunate timeline of events...
 																		<br><br>Blackthorn: Tell me, what is it that troubles you?<br><br>Hawkwind: I 
 																		brought the Britannians to Shadowguard to aid in the battle against Minax, in 
 																		doing so I fear I may have placed the native peoples in grave peril. The 
@@ -41,12 +41,12 @@ namespace Server.Engines.Quests
 																		Take these orders to Sir Geoffrey at his camp near the Barrab Tribe in the Valley of 
 																		Eodon.  Godspeed!*/
 
-        public override object Refuse { get { return 1156460; } }           /* Tis unfortunate, in this time of great need we must look to our inner courage... */
+        public override object Refuse => 1156460;            /* Tis unfortunate, in this time of great need we must look to our inner courage... */
 
-        public override object Uncomplete { get { return 1156461; } }       /*There is little time to delay. Deliver the orders to Sir Geoffrey at his camp near 
+        public override object Uncomplete => 1156461;        /*There is little time to delay. Deliver the orders to Sir Geoffrey at his camp near 
 																		the Barrab Tribe in the Valley of Eodon.*/
 
-        public override object Complete { get { return 1156462; } }     /* Ahh, King Blackthorn sent you did he? */
+        public override object Complete => 1156462;      /* Ahh, King Blackthorn sent you did he? */
 
         public TimeIsOfTheEssenceQuest() : base()
         {
@@ -91,11 +91,11 @@ namespace Server.Engines.Quests
 
     public class UnitingTheTribesQuest : BaseQuest
     {
-        public override QuestChain ChainID { get { return QuestChain.ValleyOfOne; } }
+        public override QuestChain ChainID => QuestChain.ValleyOfOne;
 
-        public override object Title { get { return 1156463; } }            /* Uniting the Tribes */
+        public override object Title => 1156463;             /* Uniting the Tribes */
 
-        public override object Description { get { return 1156464; } }  /* *Sir Geoffrey looks up at you* What's this? Ah! Here to join the effort then?
+        public override object Description => 1156464;   /* *Sir Geoffrey looks up at you* What's this? Ah! Here to join the effort then?
 																		We've been trying for weeks to push through to the Barrab and get them to give 
 																		us the secrets to entering the Myrmidex pits, but alas we have had little luck.  
 																		King Blackthorn seems to think our only hope is to pressure the Barrab via the 
@@ -119,12 +119,12 @@ namespace Server.Engines.Quests
 																		tribes have agreed to join our cause and you'll be rewarded handsomely.  Or this jungle 
 																		will tear you apart, whichever happens first.  Good luck!*/
 
-        public override object Refuse { get { return 1156472; } }           /* Well then stop wasting my bloody time! Haven't you see we've got a war to win?! */
+        public override object Refuse => 1156472;            /* Well then stop wasting my bloody time! Haven't you see we've got a war to win?! */
 
-        public override object Uncomplete { get { return 1156518; } }       /* These tribes aren't going to unite themselves, best get on with it and visit the Sakkhra, 
+        public override object Uncomplete => 1156518;        /* These tribes aren't going to unite themselves, best get on with it and visit the Sakkhra, 
 																		Urali, Jukari, Kurak, and Barako tribes!  We've got a war to win! */
 
-        public override object Complete { get { return 1156519; } }     /*Well done! I don't know how you managed to pull it off but this is the break we've 
+        public override object Complete => 1156519;      /*Well done! I don't know how you managed to pull it off but this is the break we've 
 																		been waiting for! With the support of the other tribes we can begin to plan an offensive
 																		to quell the Myrmidex threat!  It will likely take some time before our troops and the
 																		Tribes are ready.  I will send word when the time to attack comes!*/
@@ -157,20 +157,20 @@ namespace Server.Engines.Quests
 
     public class TheGreatHuntQuest : BaseQuest
     {
-        public override object Title { get { return 1156521; } }            /* The Great Hunt */
+        public override object Title => 1156521;             /* The Great Hunt */
 
-        public override object Description { get { return 1156522; } }  /* *The Sakkhra High Chieftess looks at you apprehensively, 
+        public override object Description => 1156522;   /* *The Sakkhra High Chieftess looks at you apprehensively, 
 																		as the greeting Professor Rafkin's book taught you rolls from your tongue The 
 																		High Chief smiles and warms to you*  Rafkin say you can help Sakkhra.  Sakkhra 
 																		do not trust you.  You want Sakkhra trust, then you fight biggest of all dinosaur, 
 																		T Rex!  You survive the T Rex hunt, then Sakkhra trust you.  *The Chief motions you
 																		west to the nearby dinosaur plains* */
 
-        public override object Refuse { get { return 1156550; } }           /* *The Chieftess looks at you...* */
+        public override object Refuse => 1156550;            /* *The Chieftess looks at you...* */
 
-        public override object Uncomplete { get { return 1156531; } }       /* You not kill giant dino yet? Sakkhra will not help until you kill big dino! */
+        public override object Uncomplete => 1156531;        /* You not kill giant dino yet? Sakkhra will not help until you kill big dino! */
 
-        public override object Complete { get { return 1156557; } }     /* Ahh-Ooo! Ahh-Ooo!  Britainnian kill big dino! Show courage and strength!  Sakkrah trust you now! */
+        public override object Complete => 1156557;      /* Ahh-Ooo! Ahh-Ooo!  Britainnian kill big dino! Show courage and strength!  Sakkrah trust you now! */
 
         public TheGreatHuntQuest() : base()
         {
@@ -213,20 +213,20 @@ namespace Server.Engines.Quests
 
     public class EmptyNestQuest : BaseQuest
     {
-        public override object Title { get { return 1156523; } }            /* Empty Nest */
+        public override object Title => 1156523;             /* Empty Nest */
 
-        public override object Description { get { return 1156524; } }  /* *The Urali High Chieftess looks at you apprehensively, as the greeting Professor 
+        public override object Description => 1156524;   /* *The Urali High Chieftess looks at you apprehensively, as the greeting Professor 
 																		Rafkin's book taught you rolls from your tongue The Chieftess smiles and warms to you*  
 																		Rafkin say you can help Urali.  Urali do not trust you.  You want Urali trust, then you
 																		stop them taking Dragon Turtle Egg.  You stop Dragon Turtle Egg theft, then Urali trust you.  
 																		*The Chieftess motions you south towards the nearby nesting beach* */
 
 
-        public override object Refuse { get { return 1156550; } }           /* *The Chieftess looks at you...* */
+        public override object Refuse => 1156550;            /* *The Chieftess looks at you...* */
 
-        public override object Uncomplete { get { return 1156536; } }   /* You not save Dragon Turtle Hatchlings yet? Urali will not help until you save Dragon Turtle Hatchlings! */
+        public override object Uncomplete => 1156536;    /* You not save Dragon Turtle Hatchlings yet? Urali will not help until you save Dragon Turtle Hatchlings! */
 
-        public override object Complete { get { return 1156537; } }         /* Ahhh-OOO! Ahhh-OOO!  Dragon Turtle dig-dig and swim-swim! You good to Urali! Urali trust you! */
+        public override object Complete => 1156537;          /* Ahhh-OOO! Ahhh-OOO!  Dragon Turtle dig-dig and swim-swim! You good to Urali! Urali trust you! */
 
         public EmptyNestQuest() : base()
         {
@@ -318,20 +318,20 @@ namespace Server.Engines.Quests
 
     public class TheGreatVolcanoQuest : BaseQuest
     {
-        public override object Title { get { return 1156525; } }            /* The Great Volcano */
+        public override object Title => 1156525;             /* The Great Volcano */
 
-        public override object Description { get { return 1156526; } }  /* *The Jukari High Chief looks at you apprehensively, as the greeting Professor 
+        public override object Description => 1156526;   /* *The Jukari High Chief looks at you apprehensively, as the greeting Professor 
 																		Rafkin's book taught you rolls from your tongue The Chief smiles and warms to you* 
 																		Rafkin say you can help Jukari. Jukari do not trust you. You want Jukari trust, then 
 																		you mine Jukari Lavastone from Volcano.  Volcano no eat you, then Jukari trust you. 
 																		*The chief motions you east toward the Volcano* */
 
 
-        public override object Refuse { get { return 1156532; } }           /* *The Chief looks at you...* */
+        public override object Refuse => 1156532;            /* *The Chief looks at you...* */
 
-        public override object Uncomplete { get { return 1156540; } }   /* You afraid of Great Volcano? Ha Ha! Britannian afraid! */
+        public override object Uncomplete => 1156540;    /* You afraid of Great Volcano? Ha Ha! Britannian afraid! */
 
-        public override object Complete { get { return 1156541; } }         /* OOO!  You bring Jukari lava rock, mean Volcano no like your taste HA HA! Jukari help you! */
+        public override object Complete => 1156541;          /* OOO!  You bring Jukari lava rock, mean Volcano no like your taste HA HA! Jukari help you! */
 
         public TheGreatVolcanoQuest() : base()
         {
@@ -455,10 +455,7 @@ namespace Server.Engines.Quests
 
         private class InternalObjective : BaseObjective
         {
-            public override object ObjectiveDescription
-            {
-                get { return 1156538; } // Recover 5 lava rocks from the Caldera of the Great Volcano
-            }
+            public override object ObjectiveDescription => 1156538;
 
             public InternalObjective()
                 : base(5)
@@ -503,20 +500,20 @@ namespace Server.Engines.Quests
 
     public class PrideOfTheAmbushQuest : BaseQuest
     {
-        public override object Title { get { return 1156527; } }            /* The Pride of the Ambush */
+        public override object Title => 1156527;             /* The Pride of the Ambush */
 
-        public override object Description { get { return 1156528; } }  /* *The Kurak High Chief looks at you apprehensively, as the greeting Professor 
+        public override object Description => 1156528;   /* *The Kurak High Chief looks at you apprehensively, as the greeting Professor 
 																		Rafkin's book taught you rolls from your tongue The Chieftess smiles and warms 
 																		to you*  Rafkin say you can help Kurak.  Kurak do not trust you.  You want Kurak
 																		trust, then you free cubs from trappers.  You free cubs from trappers, then 
 																		Kurak trust you. *The chieftess motions you south to the lowlands* */
 
 
-        public override object Refuse { get { return 1156532; } }           /* *The Chief looks at you...* */
+        public override object Refuse => 1156532;            /* *The Chief looks at you...* */
 
-        public override object Uncomplete { get { return 1156545; } }   /* You save tiger cubs! They little and helpless! Kurak will not help until you save tiger cubs! */
+        public override object Uncomplete => 1156545;    /* You save tiger cubs! They little and helpless! Kurak will not help until you save tiger cubs! */
 
-        public override object Complete { get { return 1156546; } }     /* You save tiger cubs! Kurak thank you and help you! */
+        public override object Complete => 1156546;      /* You save tiger cubs! Kurak thank you and help you! */
 
         public PrideOfTheAmbushQuest() : base()
         {
@@ -611,9 +608,9 @@ namespace Server.Engines.Quests
 
     public class TheGreatApeQuest : BaseQuest
     {
-        public override object Title { get { return 1156529; } }            /* The Great Ape */
+        public override object Title => 1156529;             /* The Great Ape */
 
-        public override object Description { get { return 1156530; } }  /* *The Barako High Chief looks at you apprehensively, as the greeting 
+        public override object Description => 1156530;   /* *The Barako High Chief looks at you apprehensively, as the greeting 
 																		Professor Rafkin's book taught you rolls from your tongue The Chief smiles 
 																		and warms to you*  Rafkin say you can help Barako.  Barako do not trust you.
 																		You want Barako trust, then you battle Great Ape.  You go to banana cave and
@@ -621,11 +618,11 @@ namespace Server.Engines.Quests
 																		the nearby banana cave* */
 
 
-        public override object Refuse { get { return 1156532; } }           /* *The Chief looks at you...* */
+        public override object Refuse => 1156532;            /* *The Chief looks at you...* */
 
-        public override object Uncomplete { get { return 1156548; } }   /* *Thumps chest!* You battle Great Ape or Barako will not trust you! */
+        public override object Uncomplete => 1156548;    /* *Thumps chest!* You battle Great Ape or Barako will not trust you! */
 
-        public override object Complete { get { return 1156549; } }         /* *Thumps chest* You battle Great Ape and win! You strong and Barako respect and trust you! */
+        public override object Complete => 1156549;          /* *Thumps chest* You battle Great Ape and win! You strong and Barako respect and trust you! */
 
         public TheGreatApeQuest() : base()
         {

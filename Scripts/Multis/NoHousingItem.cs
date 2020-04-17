@@ -107,13 +107,7 @@ namespace Server.Items
                 this.Priority = TimerPriority.OneMinute;
             }
 
-            public static TimeSpan DefaultDelay
-            {
-                get
-                {
-                    return TimeSpan.FromMinutes(Utility.RandomMinMax(60, 120));
-                }
-            }
+            public static TimeSpan DefaultDelay => TimeSpan.FromMinutes(Utility.RandomMinMax(60, 120));
             protected override void OnTick()
             {
                 if (this.m_Item != null && !this.m_Item.Deleted)

@@ -12,13 +12,13 @@ namespace Server.Spells.SkillMasteries
                 9002
             );
 
-        public override double RequiredSkill { get { return 90; } }
-        public override double UpKeep { get { return 0; } } // get
-        public override int RequiredMana { get { return 25; } }
-        public override bool PartyEffects { get { return true; } }
+        public override double RequiredSkill => 90;
+        public override double UpKeep => 0;  // get
+        public override int RequiredMana => 25;
+        public override bool PartyEffects => true;
 
-        public override SkillName CastSkill { get { return SkillName.Archery; } }
-        public override SkillName DamageSkill { get { return SkillName.Tactics; } }
+        public override SkillName CastSkill => SkillName.Archery;
+        public override SkillName DamageSkill => SkillName.Tactics;
 
         private int _HCIBonus;
         private int _SSIBonus;

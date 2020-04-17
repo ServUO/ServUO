@@ -314,7 +314,7 @@ namespace Server.Items
 
     public class DailyMeatPie : Food
     {
-        public override int LabelNumber { get { return 1060141; } } // a tasty meat pie
+        public override int LabelNumber => 1060141;  // a tasty meat pie
 
         [Constructable]
         public DailyMeatPie()

@@ -17,9 +17,9 @@ namespace Server.Mobiles
     {
         private Dictionary<Mobile, DateTime> _Table;
 
-        public override bool NoHouseRestrictions { get { return true; } }
-        public override bool ClickTitle { get { return false; } }
-        public override bool IsInvulnerable { get { return true; } }
+        public override bool NoHouseRestrictions => true;
+        public override bool ClickTitle => false;
+        public override bool IsInvulnerable => true;
 
         private BaseHouse m_House;
         public Mobile Owner { get; set; }
@@ -243,7 +243,7 @@ namespace Server.Mobiles
 
         private class RenamePrompt : Prompt
         {
-            public override int MessageCliloc { get { return 1062433; } }
+            public override int MessageCliloc => 1062433;
             private readonly Mobile _Mannequin;
 
             public RenamePrompt(Mobile m)
@@ -542,7 +542,7 @@ namespace Server.Mobiles
             Layer = Layer.Backpack;
         }
 
-        public override int DefaultMaxWeight { get { return 400; } }
+        public override int DefaultMaxWeight => 400;
 
         public StewardBackpack(Serial serial)
             : base(serial)
@@ -773,7 +773,7 @@ namespace Server.Mobiles
     [Flipable(0x14F0, 0x14EF)]
     public class StewardDeed : Item
     {
-        public override int LabelNumber { get { return 1153344; } } // Steward Deed
+        public override int LabelNumber => 1153344;  // Steward Deed
 
         [Constructable]
         public StewardDeed()

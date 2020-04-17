@@ -6,15 +6,15 @@ namespace Server.Engines.Quests
     public class ScrapingtheBottom : BaseQuest
     {
         /* SomethingFishy */
-        public override object Title { get { return 1095059; } }
+        public override object Title => 1095059;
 
-        public override object Description { get { return 1095061; } }
+        public override object Description => 1095061;
 
-        public override object Refuse { get { return 1095062; } }
+        public override object Refuse => 1095062;
 
-        public override object Uncomplete { get { return 1095063; } }
+        public override object Uncomplete => 1095063;
 
-        public override object Complete { get { return 1095065; } }
+        public override object Complete => 1095065;
 
         public ScrapingtheBottom() : base()
         {
@@ -40,16 +40,10 @@ namespace Server.Engines.Quests
 
     public class Xenrr : MondainQuester
     {
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
             {
                 typeof( ScrapingtheBottom )
             };
-            }
-        }
 
         [Constructable]
         public Xenrr()

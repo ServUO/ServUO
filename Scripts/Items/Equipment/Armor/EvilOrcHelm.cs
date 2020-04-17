@@ -19,13 +19,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1062021;
-            }
-        }// an evil orc helm
+        public override int LabelNumber => 1062021;// an evil orc helm
         public override bool UseIntOrDexProperty
         {
             get
@@ -36,13 +30,7 @@ namespace Server.Items
                 return base.UseIntOrDexProperty;
             }
         }
-        public override int IntOrDexPropertyValue
-        {
-            get
-            {
-                return -10;
-            }
-        }
+        public override int IntOrDexPropertyValue => -10;
         public override bool OnEquip(Mobile from)
         {
             if (from.RawInt > from.RawDex)

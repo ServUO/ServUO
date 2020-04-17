@@ -52,10 +52,10 @@ namespace Server.Items
         public override int GetHurtSound() { return 0x2F1; }
         public override int GetDeathSound() { return 0x2F2; }
 
-        public override MeatType MeatType { get { return MeatType.Bird; } }
-        public override int Feathers { get { return 32; } }
-        public override int Meat { get { return 1; } }
-        public override FoodType FavoriteFood { get { return FoodType.FruitsAndVegies | FoodType.GrainsAndHay; } }
+        public override MeatType MeatType => MeatType.Bird;
+        public override int Feathers => 32;
+        public override int Meat => 1;
+        public override FoodType FavoriteFood => FoodType.FruitsAndVegies | FoodType.GrainsAndHay;
 
         public override void GenerateLoot()
         {

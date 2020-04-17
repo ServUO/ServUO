@@ -14,12 +14,12 @@ namespace Server.Spells.SkillMasteries
                 9002
             );
 
-        public override int RequiredMana { get { return 40; } }
-        public override int DisruptMessage { get { return 1156103; } } // Bodyguard has expired.
-        public override bool BlocksMovement { get { return false; } }
-        public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(1.0); } }
+        public override int RequiredMana => 40;
+        public override int DisruptMessage => 1156103;  // Bodyguard has expired.
+        public override bool BlocksMovement => false;
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(1.0);
 
-        public override SkillName CastSkill { get { return SkillName.Parry; } }
+        public override SkillName CastSkill => SkillName.Parry;
 
         private double _Block;
 

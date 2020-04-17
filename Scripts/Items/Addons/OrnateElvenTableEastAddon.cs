@@ -15,13 +15,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new OrnateElvenTableEastDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new OrnateElvenTableEastDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -49,20 +43,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new OrnateElvenTableEastAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073384;
-            }
-        }// ornate table (east)
+        public override BaseAddon Addon => new OrnateElvenTableEastAddon();
+        public override int LabelNumber => 1073384;// ornate table (east)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

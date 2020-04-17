@@ -10,10 +10,10 @@ namespace Server.Items
         private ChestTimer m_DeleteTimer;
         //public override bool Decays { get{ return true; } }
         //public override TimeSpan DecayTime{ get{ return TimeSpan.FromMinutes( Utility.Random( 10, 15 ) ); } }
-        public override int DefaultGumpID { get { return 0x42; } }
-        public override int DefaultDropSound { get { return 0x42; } }
-        public override Rectangle2D Bounds { get { return new Rectangle2D(20, 105, 150, 180); } }
-        public override bool IsDecoContainer { get { return false; } }
+        public override int DefaultGumpID => 0x42;
+        public override int DefaultDropSound => 0x42;
+        public override Rectangle2D Bounds => new Rectangle2D(20, 105, 150, 180);
+        public override bool IsDecoContainer => false;
 
         public BaseTreasureChestMod(int itemID) : base(itemID)
         {

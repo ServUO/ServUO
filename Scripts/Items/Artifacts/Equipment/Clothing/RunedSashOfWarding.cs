@@ -13,11 +13,11 @@ namespace Server.Items
     [Alterable(typeof(DefTailoring), typeof(GargishRunedSashOfWarding))]
     public class RunedSashOfWarding : BodySash
     {
-        public override bool IsArtifact { get { return true; } }
-        public static Dictionary<Mobile, WardingEffect> Table { get { return m_Table; } }
+        public override bool IsArtifact => true;
+        public static Dictionary<Mobile, WardingEffect> Table => m_Table;
         private static readonly Dictionary<Mobile, WardingEffect> m_Table = new Dictionary<Mobile, WardingEffect>();
 
-        public override int LabelNumber { get { return 1116231; } }
+        public override int LabelNumber => 1116231;
 
         private int m_Charges;
         private WardingEffect m_Ward;
@@ -28,8 +28,8 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public WardingEffect Ward { get { return m_Ward; } set { m_Ward = value; } }
 
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
         [Constructable]
         public RunedSashOfWarding()
@@ -138,8 +138,8 @@ namespace Server.Items
 
     public class GargishRunedSashOfWarding : RunedSashOfWarding
     {
-        public override Race RequiredRace { get { return Race.Gargoyle; } }
-        public override bool CanBeWornByGargoyles { get { return true; } }
+        public override Race RequiredRace => Race.Gargoyle;
+        public override bool CanBeWornByGargoyles => true;
 
         [Constructable]
         public GargishRunedSashOfWarding()

@@ -2,10 +2,10 @@ namespace Server.Items
 {
     public class SilverSerpentVenom : Item, ICommodity
     {
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
-        public override int LabelNumber { get { return 1112173; } }// silver serpent venom
+        public override int LabelNumber => 1112173; // silver serpent venom
 
         [Constructable]
         public SilverSerpentVenom()

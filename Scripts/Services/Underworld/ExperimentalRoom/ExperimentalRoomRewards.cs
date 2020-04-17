@@ -177,7 +177,7 @@ namespace Server.Items
 
     public class CanvaslessEasel : Item
     {
-        public override int LabelNumber { get { return 123467; } }
+        public override int LabelNumber => 123467;
 
         [Constructable]
         public CanvaslessEasel() : base(Utility.RandomBool() ? 3943 : 3945)

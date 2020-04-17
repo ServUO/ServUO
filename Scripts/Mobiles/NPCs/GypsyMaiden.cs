@@ -20,7 +20,7 @@ namespace Server.Mobiles
             : base(serial)
         { }
 
-        protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }
+        protected override List<SBInfo> SBInfos => m_SBInfos;
 
         public override bool GetGender()
         {

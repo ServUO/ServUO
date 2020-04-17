@@ -75,13 +75,7 @@ namespace Server.Items
             this.Hue = hue;
         }
 
-        public override bool DisplayLootType
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool DisplayLootType => false;
         public override bool VerifyMove(Mobile from)
         {
             return (from.AccessLevel >= AccessLevel.GameMaster);

@@ -6,13 +6,13 @@ namespace Server.Items
 {
     public class DragonLantern : BaseLight, IFlipable, IAddon
     {
-        public override int LabelNumber { get { return 1098392; } } // dragon lantern
+        public override int LabelNumber => 1098392;  // dragon lantern
 
-        public override int LitItemID { get { return ItemID == 0x4C40 ? 0x4C41 : 0x4C43; } }
-        public override int UnlitItemID { get { return ItemID == 0x4C41 ? 0x4C40 : 0x4C42; } }
+        public override int LitItemID => ItemID == 0x4C40 ? 0x4C41 : 0x4C43;
+        public override int UnlitItemID => ItemID == 0x4C41 ? 0x4C40 : 0x4C42;
 
-        public int NorthID { get { return Burning ? 0x4C41 : 0x4C40; } }
-        public int WestID { get { return Burning ? 0x4C43 : 0x4C42; } }
+        public int NorthID => Burning ? 0x4C41 : 0x4C40;
+        public int WestID => Burning ? 0x4C43 : 0x4C42;
 
         [Constructable]
         public DragonLantern()
@@ -25,7 +25,7 @@ namespace Server.Items
             Weight = 0.0;
         }
 
-        public Item Deed { get { return new DragonLanternDeed(); } }
+        public Item Deed => new DragonLanternDeed();
 
         public bool CouldFit(IPoint3D p, Map map)
         {
@@ -81,7 +81,7 @@ namespace Server.Items
 
     public class DragonLanternDeed : Item
     {
-        public override int LabelNumber { get { return 1098392; } } // dragon lantern
+        public override int LabelNumber => 1098392;  // dragon lantern
 
         [Constructable]
         public DragonLanternDeed()

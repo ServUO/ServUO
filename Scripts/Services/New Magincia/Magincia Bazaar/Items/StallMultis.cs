@@ -7,10 +7,7 @@ namespace Server.Engines.NewMagincia
     {
         private List<Item> m_Fillers;
 
-        public List<Item> Fillers
-        {
-            get { return m_Fillers; }
-        }
+        public List<Item> Fillers => m_Fillers;
 
         public BaseBazaarMulti(int id) : base(id)
         {

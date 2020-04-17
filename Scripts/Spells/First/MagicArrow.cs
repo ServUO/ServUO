@@ -15,28 +15,10 @@ namespace Server.Spells.First
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.First;
-            }
-        }
-        public override bool DelayedDamageStacking
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool DelayedDamage
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Type[] DelayDamageFamily { get { return new Type[] { typeof(Server.Spells.Mysticism.NetherBoltSpell) }; } }
+        public override SpellCircle Circle => SpellCircle.First;
+        public override bool DelayedDamageStacking => false;
+        public override bool DelayedDamage => true;
+        public override Type[] DelayDamageFamily => new Type[] { typeof(Server.Spells.Mysticism.NetherBoltSpell) };
         public override void OnCast()
         {
             Caster.Target = new InternalTarget(this);

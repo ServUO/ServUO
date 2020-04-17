@@ -25,20 +25,8 @@ namespace Server.Engines.Quests.Doom
         {
         }
 
-        public override Type[] TypeReferenceTable
-        {
-            get
-            {
-                return m_TypeReferenceTable;
-            }
-        }
-        public Victoria Victoria
-        {
-            get
-            {
-                return this.m_Victoria;
-            }
-        }
+        public override Type[] TypeReferenceTable => m_TypeReferenceTable;
+        public Victoria Victoria => this.m_Victoria;
         public bool WaitForSummon
         {
             get
@@ -50,67 +38,39 @@ namespace Server.Engines.Quests.Doom
                 this.m_WaitForSummon = value;
             }
         }
-        public override object Name
-        {
-            get
-            {
+        public override object Name =>
                 // The Summoning
-                return 1050025;
-            }
-        }
-        public override object OfferMessage
-        {
-            get
-            {
+                1050025;
+        public override object OfferMessage =>
                 /* <I>Victoria turns to you and smiles...</I><BR><BR>
-                * 
-                * Chyloth, eh?  He is the ferry man of lake <I>Mortis</I>, beyond which lies
-                * the nest of the <I>The Dark Father</I> - the fountainhead of all the evil
-                * that you see around you here.<BR><BR>
-                * 
-                * 800 and some years ago, my sisters and I persuaded the ferry man Chyloth
-                * to take us across the lake to battle the <I>The Dark Father</I>.
-                * My party was utterly destroyed, except for me.  For my insolence, I was
-                * cursed by the <I>The Dark Father</I> to wander these halls for eternity,
-                * unable to die - unable to leave.<BR><BR>
-                * 
-                * Chyloth usually only crosses over the souls of the undead, but he can be
-                * persuaded otherwise...with a token of gold, in the form of a human skull.
-                * Such a gem can be found only in the belly of the hellspawn known as
-                * <I>the devourer</I>.<BR><BR>
-                * 
-                * I can help you summon the beast from the depths of the abyss, but I require
-                * 1000 Daemon bones to do so.  If you accept my help, I will store the Daemon
-                * bones for you until you have collected all 1000 of them.  Once the bones
-                * are collected in full, I will summon the beast for you, which you must
-                * slay to claim your prize.<BR><BR>
-                * 
-                * Do you accept?
-                */
-                return 1050020;
-            }
-        }
-        public override bool IsTutorial
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override TimeSpan RestartDelay
-        {
-            get
-            {
-                return TimeSpan.Zero;
-            }
-        }
-        public override int Picture
-        {
-            get
-            {
-                return 0x15B5;
-            }
-        }
+* 
+* Chyloth, eh?  He is the ferry man of lake <I>Mortis</I>, beyond which lies
+* the nest of the <I>The Dark Father</I> - the fountainhead of all the evil
+* that you see around you here.<BR><BR>
+* 
+* 800 and some years ago, my sisters and I persuaded the ferry man Chyloth
+* to take us across the lake to battle the <I>The Dark Father</I>.
+* My party was utterly destroyed, except for me.  For my insolence, I was
+* cursed by the <I>The Dark Father</I> to wander these halls for eternity,
+* unable to die - unable to leave.<BR><BR>
+* 
+* Chyloth usually only crosses over the souls of the undead, but he can be
+* persuaded otherwise...with a token of gold, in the form of a human skull.
+* Such a gem can be found only in the belly of the hellspawn known as
+* <I>the devourer</I>.<BR><BR>
+* 
+* I can help you summon the beast from the depths of the abyss, but I require
+* 1000 Daemon bones to do so.  If you accept my help, I will store the Daemon
+* bones for you until you have collected all 1000 of them.  Once the bones
+* are collected in full, I will summon the beast for you, which you must
+* slay to claim your prize.<BR><BR>
+* 
+* Do you accept?
+*/
+                1050020;
+        public override bool IsTutorial => false;
+        public override TimeSpan RestartDelay => TimeSpan.Zero;
+        public override int Picture => 0x15B5;
         public static int GetDaemonBonesFor(BaseCreature creature)
         {
             if (creature == null || creature.Controlled || creature.Summoned)

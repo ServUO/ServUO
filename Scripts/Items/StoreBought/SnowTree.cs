@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class SnowTreeAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new SnowTreeDeed(); } }
+        public override BaseAddonDeed Deed => new SnowTreeDeed();
 
         [Constructable]
         public SnowTreeAddon(bool trunk)
@@ -41,8 +41,8 @@ namespace Server.Items
 
     public class SnowTreeDeed : BaseAddonDeed, IRewardOption
     {
-        public override BaseAddon Addon { get { return new SnowTreeAddon(m_Trunk); } }
-        public override int LabelNumber { get { return 1071103; } } // Snow Tree
+        public override BaseAddon Addon => new SnowTreeAddon(m_Trunk);
+        public override int LabelNumber => 1071103;  // Snow Tree
 
         private bool m_Trunk;
 

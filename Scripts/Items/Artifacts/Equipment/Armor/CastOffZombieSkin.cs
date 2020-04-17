@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class CastOffZombieSkin : GargishLeatherArms
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public CastOffZombieSkin()
         {
@@ -19,57 +19,15 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber { get { return 1113538; } }// Cast-off Zombie Skin
+        public override int LabelNumber => 1113538; // Cast-off Zombie Skin
 
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 13;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return -2;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 17;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 18;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 6;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int BasePhysicalResistance => 13;
+        public override int BaseFireResistance => -2;
+        public override int BaseColdResistance => 17;
+        public override int BasePoisonResistance => 18;
+        public override int BaseEnergyResistance => 6;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

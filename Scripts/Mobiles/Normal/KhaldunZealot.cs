@@ -77,41 +77,11 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool ClickTitle
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool ShowFameTitle
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool AlwaysMurderer
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool Unprovokable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Deadly;
-            }
-        }
+        public override bool ClickTitle => false;
+        public override bool ShowFameTitle => false;
+        public override bool AlwaysMurderer => true;
+        public override bool Unprovokable => true;
+        public override Poison PoisonImmune => Poison.Deadly;
         public override int GetIdleSound()
         {
             return 0x184;

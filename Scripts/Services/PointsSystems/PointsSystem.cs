@@ -64,7 +64,7 @@ namespace Server.Engines.Points
         public abstract bool AutoAdd { get; }
         public abstract double MaxPoints { get; }
 
-        public virtual bool ShowOnLoyaltyGump { get { return true; } }
+        public virtual bool ShowOnLoyaltyGump => true;
 
         public PointsSystem()
         {

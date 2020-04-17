@@ -14,17 +14,11 @@ namespace Server.Engines.Quests
             AddReward(new BaseReward(typeof(ElixirofGoldConversion), "Elixir of Gold Conversion"));
         }
 
-        public TierQuestInfo TierInfo { get { return TierQuestInfo.Thepem; } }
-        public override TimeSpan RestartDelay { get { return TierQuestInfo.GetCooldown(TierInfo, GetType()); } }
+        public TierQuestInfo TierInfo => TierQuestInfo.Thepem;
+        public override TimeSpan RestartDelay => TierQuestInfo.GetCooldown(TierInfo, GetType());
 
         /*All That Glitters*/
-        public override object Title
-        {
-            get
-            {
-                return 1112775;
-            }
-        }
+        public override object Title => 1112775;
         /*Ah, yes, welcome to our humble shop. Do you wish to buy some of our fine potions today, or perhaps have something of interest to sell?<br><br>No? Well, 
         I do have some specialty goods for sale that may be of interest to you. Unfortunately, specialty goods require specialty ingredients, which can be harder to come by.
         I'm not the adventurous sort, so if you are interested, you'll have to bring them to me.<br><br>
@@ -34,39 +28,15 @@ namespace Server.Engines.Quests
         I will need some specialty ingredients in addition to what we have in the shop. Of course, nothing one such as yourself cannot obtain with a small bit of effort.<br><br>
         Bring me five portions of congealed slug acid, and twenty gold ingots. I will need to inspect the ingots before I accept them, 
         so give those to me before we complete the transaction.  */
-        public override object Description
-        {
-            get
-            {
-                return 1112948;
-            }
-        }
+        public override object Description => 1112948;
         /*Ah, perhaps another time then.*/
-        public override object Refuse
-        {
-            get
-            {
-                return 1112949;
-            }
-        }
+        public override object Refuse => 1112949;
         /*I will need twenty gold ingots and some congealed slug acid, which can be found on... can you guess? Yes, that's right. Acid slugs.*/
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1112950;
-            }
-        }
+        public override object Uncomplete => 1112950;
         /*Hello, how may I help you? Oh, wait, you were interested in the elixir of gold conversion, right? If you have the materials I asked for ready,
         hand them over and I'll get to work on your elixir right away. After that, I have other tasks to finish for the mistress, 
         but you can return in a bit if you wish to make another purchase.*/
-        public override object Complete
-        {
-            get
-            {
-                return 1112951;
-            }
-        }
+        public override object Complete => 1112951;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -93,56 +63,26 @@ namespace Server.Engines.Quests
             AddReward(new BaseReward(typeof(TastyTreat), "Tasty Treat"));
         }
 
-        public TierQuestInfo TierInfo { get { return TierQuestInfo.Thepem; } }
-        public override TimeSpan RestartDelay { get { return TierQuestInfo.GetCooldown(TierInfo, GetType()); } }
+        public TierQuestInfo TierInfo => TierQuestInfo.Thepem;
+        public override TimeSpan RestartDelay => TierQuestInfo.GetCooldown(TierInfo, GetType());
 
         /*Tasty Treats*/
-        public override object Title
-        {
-            get
-            {
-                return 1112774;
-            }
-        }
+        public override object Title => 1112774;
         /*Ah, yes, welcome to our humble shop. Do you wish to buy some of our fine potions today, or perhaps have something of interest to sell?
         No? Well, I do have some specialty goods for sale that may be of interest to you. Unfortunately, specialty goods require specialty ingredients, 
         which can be harder to come by. I'm not the adventurous sort, so if you are interested, you'll have to bring them to me.
         Pets can be finicky eaters at times, but I have just the solution for that. I call them 'Tasty Treats', and they're sure to please your pet. 
         In fact, Fluffy will be so happy after eating one of these that you'll find that Fluffy's abilities are noticeably improved! Are you interested in some Tasty Treats? */
-        public override object Description
-        {
-            get
-            {
-                return 1112944;
-            }
-        }
+        public override object Description => 1112944;
         /*Ah, perhaps another time then.*/
-        public override object Refuse
-        {
-            get
-            {
-                return 1112945;
-            }
-        }
+        public override object Refuse => 1112945;
         /*You will need to bring me five boura skins and a bit of dough. You can find the boura all over Ter Mur, 
         though I have heard that the tougher variety have skin that is more likely to stay intact during its slaughter.*/
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1112946;
-            }
-        }
+        public override object Uncomplete => 1112946;
         /*Welcome back. Did you bring the ingredients I asked for? Ah, good. Depending on the quality of the boura skins, 
         I usually do not need all five to produce five tasty treats. You can consider what is left over as payment for my services.
         The rest, I shall use... for other purposes. I have other tasks to finish right now for the master, but you can return in a bit if you wish to purchase more.*/
-        public override object Complete
-        {
-            get
-            {
-                return 1112947;
-            }
-        }
+        public override object Complete => 1112947;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -172,17 +112,11 @@ namespace Server.Engines.Quests
             AddReward(new BaseReward(typeof(ElixirofMetalConversion), "Elixir of Metal Conversion"));
         }
 
-        public TierQuestInfo TierInfo { get { return TierQuestInfo.Thepem; } }
-        public override TimeSpan RestartDelay { get { return TierQuestInfo.GetCooldown(TierInfo, GetType()); } }
+        public TierQuestInfo TierInfo => TierQuestInfo.Thepem;
+        public override TimeSpan RestartDelay => TierQuestInfo.GetCooldown(TierInfo, GetType());
 
         /*Metal Head*/
-        public override object Title
-        {
-            get
-            {
-                return 1112776;
-            }
-        }
+        public override object Title => 1112776;
         /*Welcome back to our shop. As one of our valued customers, 
         I assume that you are here to make a specialty purchase? Mistress Zosilem has authorized me to make available to you a very special elixir 
         that is able to convert common iron into something a bit more valuable.<br><br
@@ -190,38 +124,14 @@ namespace Server.Engines.Quests
         In fact, the results are a bit unpredictable, but guaranteed to be worth your time. If you are interested, 
         I'll need you to bring me twenty each of the lesser four colored ingots, as well as ten undamaged iron beetle scales. 
         Does that sound good to you?<br><br>I will need to inspect the ingots before I accept them, so give those to me before we complete the transaction.*/
-        public override object Description
-        {
-            get
-            {
-                return 1112952;
-            }
-        }
+        public override object Description => 1112952;
         /*As always, feel free to return to our shop when you find yourself in need. Farewell.*/
-        public override object Refuse
-        {
-            get
-            {
-                return 1112957;
-            }
-        }
+        public override object Refuse => 1112957;
         /*I'll need you to bring me twenty each of the lesser four colored ingots, dull copper, shadow iron, copper and bronze, as well as ten undamaged iron beetle scales.*/
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1112954;
-            }
-        }
+        public override object Uncomplete => 1112954;
         /*I see that you have returned. Did you still want the elixir of metal conversion? Yes? Good, just hand over the ingredients I asked for, 
         and I'll mix this up for you immediately. I'll be busy for a couple hours, but return after that if you wish to purchase more.*/
-        public override object Complete
-        {
-            get
-            {
-                return 1112955;
-            }
-        }
+        public override object Complete => 1112955;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -248,53 +158,23 @@ namespace Server.Engines.Quests
             AddReward(new BaseReward(typeof(ElixirofAgapiteConversion), "Elixir of Agapite Conversion"));
         }
 
-        public TierQuestInfo TierInfo { get { return TierQuestInfo.Thepem; } }
-        public override TimeSpan RestartDelay { get { return TierQuestInfo.GetCooldown(TierInfo, GetType()); } }
+        public TierQuestInfo TierInfo => TierQuestInfo.Thepem;
+        public override TimeSpan RestartDelay => TierQuestInfo.GetCooldown(TierInfo, GetType());
 
         /*Pink Is The New Black */
-        public override object Title
-        {
-            get
-            {
-                return 1112777;
-            }
-        }
+        public override object Title => 1112777;
 
         /*It is good to see you. As one of our valued customers, Mistress Zosilem has given me permission to offer you another special elixir, 
         one able to convert the more common shadow iron into valuable agapite. I'll need twenty agapite ingots and some seared fire ant goo for the mixture. 
         Are you interested?<br><br>I will need to inspect the ingots before I accept them, so give those to me before we complete the transaction.*/
-        public override object Description
-        {
-            get
-            {
-                return 1112956;
-            }
-        }
+        public override object Description => 1112956;
         /*As always, feel free to return to our shop when you find yourself in need. Farewell.*/
-        public override object Refuse
-        {
-            get
-            {
-                return 1112957;
-            }
-        }
+        public override object Refuse => 1112957;
         /*I will need twenty agapite ingots and some seared fire ant goo which, unsurprisingly, can be found on fire ants.*/
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1112958;
-            }
-        }
+        public override object Uncomplete => 1112958;
         /*Good to see you again, have you come to bring me the ingredients for the elixir of agapite conversion? Good, 
         I'll take those in return for this elixir I made earlier. I'll be busy the rest of the day, but come back tomorrow if you need more.*/
-        public override object Complete
-        {
-            get
-            {
-                return 1112959;
-            }
-        }
+        public override object Complete => 1112959;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

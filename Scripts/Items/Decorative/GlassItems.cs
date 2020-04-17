@@ -161,7 +161,7 @@ namespace Server.Items
     [Flipable(0x1810, 0x1811)]
     public class SpinningHourglass : Item, IFlipable
     {
-        public override int LabelNumber { get { return 1044592; } } // gargoyle hourglass
+        public override int LabelNumber => 1044592;  // gargoyle hourglass
 
         [Constructable]
         public SpinningHourglass()
@@ -1318,7 +1318,7 @@ namespace Server.Items
 
     public class EmptyVenomVial : Item
     {
-        public override int LabelNumber { get { return 1112215; } } // empty venom vial
+        public override int LabelNumber => 1112215;  // empty venom vial
         [Constructable]
         public EmptyVenomVial()
             : base(0x0E24)
