@@ -1593,7 +1593,7 @@ namespace Server
             {
                 if (message)
                 {
-                    m.SendMessage("You do not own that item.");
+					m.SendLocalizedMessage(1153882); // You do not own that.
                 }
 
                 return false;
