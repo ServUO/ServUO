@@ -34,7 +34,7 @@ namespace Server.Items
             // break up the text into single line length pieces
             while (text != null && current < text.Length)
             {
-                int lineCount = 8;
+                int lineCount = 10;
                 string[] lines = new string[lineCount];
 
                 // place the line on the page
@@ -192,44 +192,42 @@ namespace Server.Items
             // get the number of available pages in the book
             int pageCount = pvSrc.ReadUInt16();
 
-            if (pageCount > book.PagesCount)
+            // Older clients handled multpile pages per packet
+            // Newer clients packets are 1 page per packet
+            if (pageCount != 1)
                 return;
 
-            for (int i = 0; i < pageCount; ++i)
+            // get the current page number being read
+            int index = pvSrc.ReadUInt16();
+
+            if (index >= 1 && index <= book.PagesCount)
             {
-                // get the current page number being read
-                int index = pvSrc.ReadUInt16();
+                --index;
 
-                if (index >= 1 && index <= book.PagesCount)
+                int lineCount = pvSrc.ReadUInt16();
+
+                if (lineCount <= 10)
                 {
-                    --index;
+                    string[] lines = new string[lineCount];
 
-                    int lineCount = pvSrc.ReadUInt16();
-
-                    if (lineCount <= 8)
+                    for (int j = 0; j < lineCount; ++j)
                     {
-                        string[] lines = new string[lineCount];
-
-                        for (int j = 0; j < lineCount; ++j)
-                        {
-                            if ((lines[j] = pvSrc.ReadUTF8StringSafe()).Length >= 80)
-                                return;
-
-                        }
-
-                        book.Pages[index].Lines = lines;
-
+                        if ((lines[j] = pvSrc.ReadUTF8StringSafe()).Length >= 80)
+                            return;
                     }
-                    else
-                    {
-                        return;
-                    }
+
+                    book.Pages[index].Lines = lines;
                 }
                 else
                 {
                     return;
                 }
             }
+            else
+            {
+                return;
+            }
+            
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             // add the book lines to the entry string
             for (int i = 0; i < book.PagesCount; ++i)
@@ -264,39 +262,39 @@ namespace Server.Items
             }
             else if (book.Writable && from.InRange(book.GetWorldLocation(), 1))
             {
-                if (pageCount > book.PagesCount)
+                // Older clients handled multpile pages per packet
+                // Newer clients packets are 1 page per packet
+                if (pageCount != 1)
                     return;
 
-                for (int i = 0; i < pageCount; ++i)
+                int index = pvSrc.ReadUInt16();
+
+                if (index >= 1 && index <= book.PagesCount)
                 {
-                    int index = pvSrc.ReadUInt16();
+                    --index;
 
-                    if (index >= 1 && index <= book.PagesCount)
+                    int lineCount = pvSrc.ReadUInt16();
+
+                    if (lineCount <= 10)
                     {
-                        --index;
+                        string[] lines = new string[lineCount];
 
-                        int lineCount = pvSrc.ReadUInt16();
+                        for (int j = 0; j < lineCount; ++j)
+                            if ((lines[j] = pvSrc.ReadUTF8StringSafe()).Length >= 80)
+                                return;
 
-                        if (lineCount <= 8)
-                        {
-                            string[] lines = new string[lineCount];
-
-                            for (int j = 0; j < lineCount; ++j)
-                                if ((lines[j] = pvSrc.ReadUTF8StringSafe()).Length >= 80)
-                                    return;
-
-                            book.Pages[index].Lines = lines;
-                        }
-                        else
-                        {
-                            return;
-                        }
+                        book.Pages[index].Lines = lines;
                     }
                     else
                     {
                         return;
                     }
                 }
+                else
+                {
+                    return;
+                }
+                
             }
         }
 #endif
