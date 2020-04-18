@@ -19,7 +19,7 @@ namespace Server.Items
         {
             m_Name = name;
             Hue = Utility.RandomList(m_Hues);
-            Fill(level);
+            Fill(level + 1);
         }
 
         public ParagonChest(Serial serial)
