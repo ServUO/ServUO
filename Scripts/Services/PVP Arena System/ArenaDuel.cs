@@ -531,13 +531,20 @@ namespace Server.Engines.ArenaSystem
         {
             foreach (Rectangle2D rec in Arena.Definition.EffectAreas)
             {
+                var list = new List<Item>(Arena.Blockers);
+
                 for (int x = rec.X; x < rec.X + rec.Width; x++)
                 {
                     for (int y = rec.Y; y < rec.Y + rec.Height; y++)
                     {
-                        Item blocker = Arena.Blockers.FirstOrDefault(bl => !bl.Deleted && bl.Map == Map.Internal);
+                        Item blocker;
 
-                        if (blocker == null)
+                        if (list.Count > 0)
+                        {
+                            blocker = list[0];
+                            list.RemoveAt(0);
+                        }
+                        else
                         {
                             blocker = new Blocker();
                             Arena.Blockers.Add(blocker);
