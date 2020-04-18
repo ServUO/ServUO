@@ -515,39 +515,40 @@ namespace Server.Items
 
             int pageCount = pvSrc.ReadUInt16();
 
-            if (pageCount > book.PagesCount)
+            // Older clients handled multpile pages per packet
+            // Newer clients packets are 1 page per packet
+            if (pageCount != 1)
                 return;
 
-            for (int i = 0; i < pageCount; ++i)
+            int index = pvSrc.ReadUInt16();
+
+            if (index >= 1 && index <= book.PagesCount)
             {
-                int index = pvSrc.ReadUInt16();
+                --index;
 
-                if (index >= 1 && index <= book.PagesCount)
+                int lineCount = pvSrc.ReadUInt16();
+
+                if (lineCount <= 10)
                 {
-                    --index;
+                    string[] lines = new string[lineCount];
 
-                    int lineCount = pvSrc.ReadUInt16();
-
-                    if (lineCount <= 8)
+                    for (int j = 0; j < lineCount; ++j)
                     {
-                        string[] lines = new string[lineCount];
-
-                        for (int j = 0; j < lineCount; ++j)
-                            if ((lines[j] = pvSrc.ReadUTF8StringSafe()).Length >= 80)
-                                return;
-
-                        book.Pages[index].Lines = lines;
+                        if ((lines[j] = pvSrc.ReadUTF8StringSafe()).Length >= 80)
+                            return;
                     }
-                    else
-                    {
-                        return;
-                    }
+
+                    book.Pages[index].Lines = lines;
                 }
                 else
                 {
                     return;
                 }
             }
+            else
+            {
+                return;
+            }           
         }
 
         #region ISecurable Members
