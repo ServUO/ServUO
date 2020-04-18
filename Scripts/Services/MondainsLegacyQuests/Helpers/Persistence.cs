@@ -90,14 +90,14 @@ namespace Server.Engines.Quests
                     writer.Write(0);
 
                     writer.Write(QuestData.Count);
-                    foreach (var kvp in QuestData)
+                    foreach (KeyValuePair<PlayerMobile, List<BaseQuest>> kvp in QuestData)
                     {
                         writer.Write(kvp.Key);
                         QuestWriter.Quests(writer, kvp.Value);
                     }
 
                     writer.Write(ChainData.Count);
-                    foreach (var kvp in ChainData)
+                    foreach (KeyValuePair<PlayerMobile, Dictionary<QuestChain, BaseChain>> kvp in ChainData)
                     {
                         writer.Write(kvp.Key);
                         QuestWriter.Chains(writer, kvp.Value);

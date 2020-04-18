@@ -7,13 +7,7 @@ namespace Server.Mobiles
     [CorpseName("a dryad's corpse")]
     public class MLDryad : BaseCreature
     {
-        public override bool InitialInnocent
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool InitialInnocent => true;
 
         [Constructable]
         public MLDryad()
@@ -64,13 +58,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.Rich);
         }
 
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
+        public override int Meat => 1;
 
         public override void OnThink()
         {
@@ -165,7 +153,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -178,13 +166,7 @@ namespace Server.Mobiles
     [CorpseName("an insane dryad corpse")]
     public class InsaneDryad : MLDryad
     {
-        public override bool InitialInnocent
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool InitialInnocent => false;
 
         [Constructable]
         public InsaneDryad()
@@ -215,7 +197,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

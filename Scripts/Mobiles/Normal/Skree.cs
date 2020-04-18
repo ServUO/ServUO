@@ -3,7 +3,7 @@ namespace Server.Mobiles
     [CorpseName("a skree corpse")]
     public class Skree : BaseCreature
     {
-        public override bool CanAngerOnTame { get { return true; } }
+        public override bool CanAngerOnTame => true;
 
         [Constructable]
         public Skree()
@@ -47,20 +47,11 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Meat
-        {
-            get { return 3; }
-        }
+        public override int Meat => 3;
 
-        public override MeatType MeatType
-        {
-            get { return MeatType.Bird; }
-        }
+        public override MeatType MeatType => MeatType.Bird;
 
-        public override int Hides
-        {
-            get { return 5; }
-        }
+        public override int Hides => 5;
 
         public override void GenerateLoot()
         {
@@ -96,7 +87,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            var version = reader.ReadInt();
+            int version = reader.ReadInt();
         }
     }
 }

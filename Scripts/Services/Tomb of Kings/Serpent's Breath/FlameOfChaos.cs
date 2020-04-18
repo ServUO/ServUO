@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class FlameOfChaos : Item
     {
-        public override int LabelNumber { get { return 1112128; } } // Flame of Chaos
+        public override int LabelNumber => 1112128;  // Flame of Chaos
 
         private List<FireBarrier> m_Barriers;
 
@@ -26,7 +26,7 @@ namespace Server.Items
             }
         }
 
-        public override bool HandlesOnSpeech { get { return true; } }
+        public override bool HandlesOnSpeech => true;
 
         public override void OnSpeech(SpeechEventArgs e)
         {
@@ -100,12 +100,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
-            writer.Write((int)m_Barriers.Count);
+            writer.Write(m_Barriers.Count);
 
             for (int i = 0; i < m_Barriers.Count; i++)
-                writer.Write((Item)m_Barriers[i]);
+                writer.Write(m_Barriers[i]);
         }
 
         public override void Deserialize(GenericReader reader)

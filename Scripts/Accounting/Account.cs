@@ -52,7 +52,7 @@ namespace Server.Accounting
                 long share = 0, shared;
                 int diff;
 
-                foreach (var a in Accounts.GetAccounts().OfType<Account>().Where(a => a.Count > 0))
+                foreach (Account a in Accounts.GetAccounts().OfType<Account>().Where(a => a.Count > 0))
                 {
                     try
                     {
@@ -62,7 +62,7 @@ namespace Server.Accounting
                             found += a.TotalCurrency * CurrencyThreshold;
                         }
 
-                        foreach (var m in a.m_Mobiles.Where(m => m != null))
+                        foreach (Mobile m in a.m_Mobiles.Where(m => m != null))
                         {
                             box = m.FindBankNoCreate();
 
@@ -73,7 +73,7 @@ namespace Server.Accounting
 
                             if (AccountGold.Enabled)
                             {
-                                foreach (var o in checks = box.FindItemsByType<BankCheck>())
+                                foreach (BankCheck o in checks = box.FindItemsByType<BankCheck>())
                                 {
                                     found += o.Worth;
 
@@ -89,7 +89,7 @@ namespace Server.Accounting
                                 checks.Clear();
                                 checks.TrimExcess();
 
-                                foreach (var o in gold = box.FindItemsByType<Gold>())
+                                foreach (Gold o in gold = box.FindItemsByType<Gold>())
                                 {
                                     found += o.Amount;
 
@@ -189,10 +189,10 @@ namespace Server.Accounting
         {
             Username = Utility.GetText(node["username"], "empty");
 
-            var plainPassword = Utility.GetText(node["password"], null);
-            var MD5Password = Utility.GetText(node["cryptPassword"], null);
-            var SHA1Password = Utility.GetText(node["newCryptPassword"], null);
-            var SHA512Password = Utility.GetText(node["newSecureCryptPassword"], null);
+            string plainPassword = Utility.GetText(node["password"], null);
+            string MD5Password = Utility.GetText(node["cryptPassword"], null);
+            string SHA1Password = Utility.GetText(node["newCryptPassword"], null);
+            string SHA512Password = Utility.GetText(node["newSecureCryptPassword"], null);
 
             switch (AccountHandler.ProtectPasswords)
             {
@@ -318,7 +318,7 @@ namespace Server.Accounting
                 m.Account = this;
             }
 
-            var totalGameTime = Utility.GetXMLTimeSpan(Utility.GetText(node["totalGameTime"], null), TimeSpan.Zero);
+            TimeSpan totalGameTime = Utility.GetXMLTimeSpan(Utility.GetText(node["totalGameTime"], null), TimeSpan.Zero);
 
             if (totalGameTime == TimeSpan.Zero)
             {
@@ -393,18 +393,12 @@ namespace Server.Accounting
         /// <summary>
         ///     List of account comments. Type of contained objects is AccountComment.
         /// </summary>
-        public List<AccountComment> Comments
-        {
-            get { return m_Comments ?? (m_Comments = new List<AccountComment>()); }
-        }
+        public List<AccountComment> Comments => m_Comments ?? (m_Comments = new List<AccountComment>());
 
         /// <summary>
         ///     List of account tags. Type of contained objects is AccountTag.
         /// </summary>
-        public List<AccountTag> Tags
-        {
-            get { return m_Tags ?? (m_Tags = new List<AccountTag>()); }
-        }
+        public List<AccountTag> Tags => m_Tags ?? (m_Tags = new List<AccountTag>());
 
         /// <summary>
         ///     Account password. Plain text. Case sensitive validation. May be null.
@@ -440,7 +434,7 @@ namespace Server.Accounting
         {
             get
             {
-                var isBanned = GetFlag(0);
+                bool isBanned = GetFlag(0);
 
                 if (!isBanned)
                 {
@@ -513,7 +507,7 @@ namespace Server.Accounting
                     return false;
                 }
 
-                var inactiveLength = DateTime.UtcNow - LastLogin;
+                TimeSpan inactiveLength = DateTime.UtcNow - LastLogin;
 
                 return inactiveLength > (Count == 0 ? EmptyInactiveDuration : InactiveDuration);
             }
@@ -528,7 +522,7 @@ namespace Server.Accounting
         {
             get
             {
-                foreach (var m in m_Mobiles.OfType<PlayerMobile>().Where(m => m.NetState != null))
+                foreach (PlayerMobile m in m_Mobiles.OfType<PlayerMobile>().Where(m => m.NetState != null))
                 {
                     return m_TotalGameTime + (DateTime.UtcNow - m.SessionStart);
                 }
@@ -563,9 +557,9 @@ namespace Server.Accounting
         {
             get
             {
-                var count = 0;
+                int count = 0;
 
-                for (var i = 0; i < Length; ++i)
+                for (int i = 0; i < Length; ++i)
                 {
                     if (this[i] != null)
                     {
@@ -603,7 +597,7 @@ namespace Server.Accounting
                     return null;
                 }
 
-                var m = m_Mobiles[index];
+                Mobile m = m_Mobiles[index];
 
                 if (m == null || !m.Deleted)
                 {
@@ -640,16 +634,16 @@ namespace Server.Accounting
         /// </summary>
         public void Delete()
         {
-            for (var i = 0; i < Length; ++i)
+            for (int i = 0; i < Length; ++i)
             {
-                var m = this[i];
+                Mobile m = this[i];
 
                 if (m == null)
                 {
                     continue;
                 }
 
-                var list = BaseHouse.GetHouses(m);
+                List<BaseHouse> list = BaseHouse.GetHouses(m);
 
                 foreach (BaseHouse h in list)
                 {
@@ -787,8 +781,8 @@ namespace Server.Accounting
                 m_HashBuffer = new byte[256];
             }
 
-            var length = Encoding.ASCII.GetBytes(phrase, 0, phrase.Length > 256 ? 256 : phrase.Length, m_HashBuffer, 0);
-            var hashed = m_MD5HashProvider.ComputeHash(m_HashBuffer, 0, length);
+            int length = Encoding.ASCII.GetBytes(phrase, 0, phrase.Length > 256 ? 256 : phrase.Length, m_HashBuffer, 0);
+            byte[] hashed = m_MD5HashProvider.ComputeHash(m_HashBuffer, 0, length);
 
             return BitConverter.ToString(hashed);
         }
@@ -805,8 +799,8 @@ namespace Server.Accounting
                 m_HashBuffer = new byte[256];
             }
 
-            var length = Encoding.ASCII.GetBytes(phrase, 0, phrase.Length > 256 ? 256 : phrase.Length, m_HashBuffer, 0);
-            var hashed = m_SHA1HashProvider.ComputeHash(m_HashBuffer, 0, length);
+            int length = Encoding.ASCII.GetBytes(phrase, 0, phrase.Length > 256 ? 256 : phrase.Length, m_HashBuffer, 0);
+            byte[] hashed = m_SHA1HashProvider.ComputeHash(m_HashBuffer, 0, length);
 
             return BitConverter.ToString(hashed);
         }
@@ -823,8 +817,8 @@ namespace Server.Accounting
                 m_HashBuffer = new byte[256];
             }
 
-            var length = Encoding.ASCII.GetBytes(phrase, 0, phrase.Length > 256 ? 256 : phrase.Length, m_HashBuffer, 0);
-            var hashed = m_SHA512HashProvider.ComputeHash(m_HashBuffer, 0, length);
+            int length = Encoding.ASCII.GetBytes(phrase, 0, phrase.Length > 256 ? 256 : phrase.Length, m_HashBuffer, 0);
+            byte[] hashed = m_SHA512HashProvider.ComputeHash(m_HashBuffer, 0, length);
 
             return BitConverter.ToString(hashed);
         }
@@ -844,7 +838,7 @@ namespace Server.Accounting
         public static string[] LoadAccessCheck(XmlElement node)
         {
             string[] stringList;
-            var accessCheck = node["accessCheck"];
+            XmlElement accessCheck = node["accessCheck"];
 
             if (accessCheck != null)
             {
@@ -871,11 +865,11 @@ namespace Server.Accounting
         public static IPAddress[] LoadAddressList(XmlElement node)
         {
             IPAddress[] list;
-            var addressList = node["addressList"];
+            XmlElement addressList = node["addressList"];
 
             if (addressList != null)
             {
-                var count = Utility.GetXMLInt32(Utility.GetAttribute(addressList, "count", "0"), 0);
+                int count = Utility.GetXMLInt32(Utility.GetAttribute(addressList, "count", "0"), 0);
 
                 list = new IPAddress[count];
 
@@ -899,10 +893,10 @@ namespace Server.Accounting
                     return list;
                 }
 
-                var old = list;
+                IPAddress[] old = list;
                 list = new IPAddress[count];
 
-                for (var i = 0; i < count && i < old.Length; ++i)
+                for (int i = 0; i < count && i < old.Length; ++i)
                 {
                     list[i] = old[i];
                 }
@@ -922,8 +916,8 @@ namespace Server.Accounting
         /// <returns>Mobile list. Value will never be null.</returns>
         public static Mobile[] LoadMobiles(XmlElement node)
         {
-            var list = new Mobile[7];
-            var chars = node["chars"];
+            Mobile[] list = new Mobile[7];
+            XmlElement chars = node["chars"];
 
             //int length = Accounts.GetInt32( Accounts.GetAttribute( chars, "length", "6" ), 6 );
             //list = new Mobile[length];
@@ -938,8 +932,8 @@ namespace Server.Accounting
             {
                 try
                 {
-                    var index = Utility.GetXMLInt32(Utility.GetAttribute(ele, "index", "0"), 0);
-                    var serial = Utility.GetXMLInt32(Utility.GetText(ele, "0"), 0);
+                    int index = Utility.GetXMLInt32(Utility.GetAttribute(ele, "index", "0"), 0);
+                    int serial = Utility.GetXMLInt32(Utility.GetText(ele, "0"), 0);
 
                     if (index >= 0 && index < list.Length)
                     {
@@ -960,14 +954,14 @@ namespace Server.Accounting
         /// <returns>Comment list. Value will never be null.</returns>
         public static List<AccountComment> LoadComments(XmlElement node)
         {
-            var comments = node["comments"];
+            XmlElement comments = node["comments"];
 
             if (comments == null)
             {
                 return null;
             }
 
-            var list = new List<AccountComment>();
+            List<AccountComment> list = new List<AccountComment>();
 
             foreach (XmlElement comment in comments.GetElementsByTagName("comment"))
             {
@@ -989,14 +983,14 @@ namespace Server.Accounting
         /// <returns>Tag list. Value will never be null.</returns>
         public static List<AccountTag> LoadTags(XmlElement node)
         {
-            var tags = node["tags"];
+            XmlElement tags = node["tags"];
 
             if (tags == null)
             {
                 return null;
             }
 
-            var list = new List<AccountTag>();
+            List<AccountTag> list = new List<AccountTag>();
 
             foreach (XmlElement tag in tags.GetElementsByTagName("tag"))
             {
@@ -1053,14 +1047,14 @@ namespace Server.Accounting
         /// <param name="name">Tag name to remove.</param>
         public void RemoveTag(string name)
         {
-            for (var i = Tags.Count - 1; i >= 0; --i)
+            for (int i = Tags.Count - 1; i >= 0; --i)
             {
                 if (i >= Tags.Count)
                 {
                     continue;
                 }
 
-                var tag = Tags[i];
+                AccountTag tag = Tags[i];
 
                 if (tag.Name == name)
                 {
@@ -1076,7 +1070,7 @@ namespace Server.Accounting
         /// <param name="value">Tag value.</param>
         public void SetTag(string name, string value)
         {
-            foreach (var tag in Tags.Where(tag => tag.Name == name))
+            foreach (AccountTag tag in Tags.Where(tag => tag.Name == name))
             {
                 tag.Value = value;
                 return;
@@ -1131,8 +1125,8 @@ namespace Server.Accounting
 
         public bool GetBanTags(out DateTime banTime, out TimeSpan banDuration)
         {
-            var tagTime = GetTag("BanTime");
-            var tagDuration = GetTag("BanDuration");
+            string tagTime = GetTag("BanTime");
+            string tagDuration = GetTag("BanDuration");
 
             banTime = tagTime != null ? Utility.GetXMLDateTime(tagTime, DateTime.MinValue) : DateTime.MinValue;
 
@@ -1156,7 +1150,7 @@ namespace Server.Accounting
         {
             Young = false;
 
-            foreach (var m in m_Mobiles.OfType<PlayerMobile>().Where(m => m.Young))
+            foreach (PlayerMobile m in m_Mobiles.OfType<PlayerMobile>().Where(m => m.Young))
             {
                 m.Young = false;
 
@@ -1196,11 +1190,11 @@ namespace Server.Accounting
 
         public bool HasAccess(IPAddress ipAddress)
         {
-            var level = AccountHandler.LockdownLevel;
+            AccessLevel level = AccountHandler.LockdownLevel;
 
             if (level >= AccessLevel.Counselor)
             {
-                var hasAccess = false;
+                bool hasAccess = false;
 
                 if (m_AccessLevel >= level)
                 {
@@ -1208,9 +1202,9 @@ namespace Server.Accounting
                 }
                 else
                 {
-                    for (var i = 0; !hasAccess && i < Length; ++i)
+                    for (int i = 0; !hasAccess && i < Length; ++i)
                     {
-                        var m = this[i];
+                        Mobile m = this[i];
 
                         if (m != null && m.AccessLevel >= level)
                         {
@@ -1225,9 +1219,9 @@ namespace Server.Accounting
                 }
             }
 
-            var accessAllowed = IPRestrictions.Length == 0 || IPLimiter.IsExempt(ipAddress);
+            bool accessAllowed = IPRestrictions.Length == 0 || IPLimiter.IsExempt(ipAddress);
 
-            for (var i = 0; !accessAllowed && i < IPRestrictions.Length; ++i)
+            for (int i = 0; !accessAllowed && i < IPRestrictions.Length; ++i)
             {
                 accessAllowed = Utility.IPMatch(IPRestrictions[i], ipAddress);
             }
@@ -1266,9 +1260,9 @@ namespace Server.Accounting
                 }
             }
 
-            var contains = false;
+            bool contains = false;
 
-            for (var i = 0; !contains && i < LoginIPs.Length; ++i)
+            for (int i = 0; !contains && i < LoginIPs.Length; ++i)
             {
                 contains = LoginIPs[i].Equals(ipAddress);
             }
@@ -1278,10 +1272,10 @@ namespace Server.Accounting
                 return;
             }
 
-            var old = LoginIPs;
+            IPAddress[] old = LoginIPs;
             LoginIPs = new IPAddress[old.Length + 1];
 
-            for (var i = 0; i < old.Length; ++i)
+            for (int i = 0; i < old.Length; ++i)
             {
                 LoginIPs[i] = old[i];
             }
@@ -1302,7 +1296,7 @@ namespace Server.Accounting
 
         public bool CheckAccess(IPAddress ipAddress)
         {
-            var hasAccess = HasAccess(ipAddress);
+            bool hasAccess = HasAccess(ipAddress);
 
             if (hasAccess)
             {
@@ -1380,9 +1374,9 @@ namespace Server.Accounting
 
             xml.WriteStartElement("chars");
 
-            for (var i = 0; i < m_Mobiles.Length; ++i)
+            for (int i = 0; i < m_Mobiles.Length; ++i)
             {
-                var m = m_Mobiles[i];
+                Mobile m = m_Mobiles[i];
 
                 if (m != null && !m.Deleted)
                 {
@@ -1488,7 +1482,7 @@ namespace Server.Accounting
 
         private static void EventSink_Connected(ConnectedEventArgs e)
         {
-            var acc = e.Mobile.Account as Account;
+            Account acc = e.Mobile.Account as Account;
 
             if (acc == null)
             {
@@ -1506,7 +1500,7 @@ namespace Server.Accounting
 
         private static void EventSink_Disconnected(DisconnectedEventArgs e)
         {
-            var acc = e.Mobile.Account as Account;
+            Account acc = e.Mobile.Account as Account;
 
             if (acc == null)
             {
@@ -1519,7 +1513,7 @@ namespace Server.Accounting
                 acc.m_YoungTimer = null;
             }
 
-            var m = e.Mobile as PlayerMobile;
+            PlayerMobile m = e.Mobile as PlayerMobile;
 
             if (m != null)
             {
@@ -1529,14 +1523,14 @@ namespace Server.Accounting
 
         private static void EventSink_Login(LoginEventArgs e)
         {
-            var m = e.Mobile as PlayerMobile;
+            PlayerMobile m = e.Mobile as PlayerMobile;
 
             if (m == null)
             {
                 return;
             }
 
-            var acc = m.Account as Account;
+            Account acc = m.Account as Account;
 
             if (acc == null)
             {
@@ -1548,8 +1542,8 @@ namespace Server.Accounting
                 return;
             }
 
-            var ts = YoungDuration - acc.TotalGameTime;
-            var hours = Math.Max((int)ts.TotalHours, 0);
+            TimeSpan ts = YoungDuration - acc.TotalGameTime;
+            int hours = Math.Max((int)ts.TotalHours, 0);
 
             m.SendAsciiMessage(
                 "You will enjoy the benefits and relatively safe status of a young player for {0} more hour{1}.",
@@ -1602,10 +1596,7 @@ namespace Server.Accounting
         ///     0 to 999,999,999 by default.
         /// </summary>
         [CommandProperty(AccessLevel.Administrator)]
-        public int TotalGold
-        {
-            get { return (int)Math.Floor((TotalCurrency - Math.Truncate(TotalCurrency)) * Math.Max(1.0, CurrencyThreshold)); }
-        }
+        public int TotalGold => (int)Math.Floor((TotalCurrency - Math.Truncate(TotalCurrency)) * Math.Max(1.0, CurrencyThreshold));
 
         /// <summary>
         ///     This amount represents the current amount of Platinum owned by the player.

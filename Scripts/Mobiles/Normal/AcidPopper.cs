@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class AcidPopper : Item
     {
-        public override int LabelNumber { get { return 1095058; } } // Acid Popper
+        public override int LabelNumber => 1095058;  // Acid Popper
 
         [Constructable]
         public AcidPopper()
@@ -56,7 +56,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

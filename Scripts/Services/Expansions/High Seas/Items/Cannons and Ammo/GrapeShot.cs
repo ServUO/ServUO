@@ -2,13 +2,13 @@ namespace Server.Items
 {
     public class Grapeshot : Item, ICommodity, ICannonAmmo
     {
-        public override int LabelNumber { get { return 1116030; } } // grapeshot
-        public override double DefaultWeight { get { return 3.5; } }
+        public override int LabelNumber => 1116030;  // grapeshot
+        public override double DefaultWeight => 3.5;
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
-        public AmmunitionType AmmoType { get { return AmmunitionType.Grapeshot; } }
+        public AmmunitionType AmmoType => AmmunitionType.Grapeshot;
 
         [Constructable]
         public Grapeshot()
@@ -32,7 +32,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -44,13 +44,13 @@ namespace Server.Items
 
     public class LightGrapeshot : Item, ICommodity, ICannonAmmo
     {
-        public override int LabelNumber { get { return 1116030; } }
-        public override double DefaultWeight { get { return 3.5; } }
+        public override int LabelNumber => 1116030;
+        public override double DefaultWeight => 3.5;
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
-        public AmmunitionType AmmoType { get { return AmmunitionType.Grapeshot; } }
+        public AmmunitionType AmmoType => AmmunitionType.Grapeshot;
 
         [Constructable]
         public LightGrapeshot() : this(1)
@@ -69,7 +69,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -83,13 +83,13 @@ namespace Server.Items
 
     public class HeavyGrapeshot : Item, ICommodity, ICannonAmmo
     {
-        public override int LabelNumber { get { return 1116166; } }
-        public override double DefaultWeight { get { return 7.0; } }
+        public override int LabelNumber => 1116166;
+        public override double DefaultWeight => 7.0;
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
-        public AmmunitionType AmmoType { get { return AmmunitionType.Grapeshot; } }
+        public AmmunitionType AmmoType => AmmunitionType.Grapeshot;
 
         [Constructable]
         public HeavyGrapeshot() : this(1)
@@ -108,7 +108,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

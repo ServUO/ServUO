@@ -41,29 +41,11 @@ namespace Server.Engines.Craft
 
     public class DefCarpentry : CraftSystem
     {
-        public override SkillName MainSkill
-        {
-            get
-            {
-                return SkillName.Carpentry;
-            }
-        }
+        public override SkillName MainSkill => SkillName.Carpentry;
 
-        public override int GumpTitleNumber
-        {
-            get
-            {
-                return 1044004;
-            }// <CENTER>CARPENTRY MENU</CENTER>
-        }
+        public override int GumpTitleNumber => 1044004;
 
-        public override CraftECA ECA
-        {
-            get
-            {
-                return CraftECA.ChanceMinusSixtyToFourtyFive;
-            }
-        }
+        public override CraftECA ECA => CraftECA.ChanceMinusSixtyToFourtyFive;
 
         private static CraftSystem m_CraftSystem;
 

@@ -5,7 +5,7 @@ namespace Server.Engines.VoidPool
 {
     public class VelaTheSorceress : BaseCreature
     {
-        public override bool IsInvulnerable { get { return true; } }
+        public override bool IsInvulnerable => true;
 
         [Constructable]
         public VelaTheSorceress()
@@ -51,7 +51,7 @@ namespace Server.Engines.VoidPool
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from is PlayerMobile && from.InRange(this.Location, 5))
+            if (from is PlayerMobile && from.InRange(Location, 5))
                 from.SendGump(new VoidPoolRewardGump(this, from as PlayerMobile));
         }
 

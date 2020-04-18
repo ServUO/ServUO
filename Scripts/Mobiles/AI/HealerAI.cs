@@ -28,7 +28,7 @@ namespace Server.Mobiles
             if (m_Mobile.Deleted)
                 return false;
 
-            var targ = m_Mobile.Target;
+            Target targ = m_Mobile.Target;
 
             if (targ != null)
             {
@@ -51,7 +51,7 @@ namespace Server.Mobiles
             }
             else
             {
-                var toHelp = Find(m_All);
+                Mobile toHelp = Find(m_All);
 
                 if (toHelp != null)
                 {
@@ -112,7 +112,7 @@ namespace Server.Mobiles
 
         private void ProcessTarget(Target targ, NeedDelegate[] func)
         {
-            var toHelp = Find(func);
+            Mobile toHelp = Find(func);
 
             if (toHelp != null)
             {
@@ -136,11 +136,11 @@ namespace Server.Mobiles
             if (m_Mobile.Deleted)
                 return null;
 
-            var map = m_Mobile.Map;
+            Map map = m_Mobile.Map;
 
             if (map != null)
             {
-                var prio = 0.0;
+                double prio = 0.0;
                 Mobile found = null;
                 IPooledEnumerable eable = m_Mobile.GetMobilesInRange(m_Mobile.RangePerception);
 
@@ -149,11 +149,11 @@ namespace Server.Mobiles
                     if (!m_Mobile.CanSee(m) || !(m is BaseCreature) || ((BaseCreature)m).Team != m_Mobile.Team)
                         continue;
 
-                    for (var i = 0; i < funcs.Length; ++i)
+                    for (int i = 0; i < funcs.Length; ++i)
                     {
                         if (funcs[i](m))
                         {
-                            var val = -m_Mobile.GetDistanceToSqrt(m);
+                            double val = -m_Mobile.GetDistanceToSqrt(m);
 
                             if (found == null || val > prio)
                             {

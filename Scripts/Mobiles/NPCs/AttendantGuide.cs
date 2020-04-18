@@ -309,56 +309,56 @@ namespace Server.Mobiles
             public GuideVertexEditGump(GuideVertex vertex, Map map, string town)
                 : base(50, 50)
             {
-                this.m_Vertex = vertex;
-                this.m_Map = map;
-                this.m_Town = town;
+                m_Vertex = vertex;
+                m_Map = map;
+                m_Town = town;
 
-                this.Closable = true;
-                this.Disposable = true;
-                this.Dragable = true;
-                this.Resizable = false;
+                Closable = true;
+                Disposable = true;
+                Dragable = true;
+                Resizable = false;
 
                 int size = m_ShopDefinitions.Count;
                 bool on = false;
 
-                this.AddPage(0);
-                this.AddBackground(0, 0, 540, 35 + size * 30 / 2, 9200);
-                this.AddAlphaRegion(15, 10, 510, 15 + size * 30 / 2);
+                AddPage(0);
+                AddBackground(0, 0, 540, 35 + size * 30 / 2, 9200);
+                AddAlphaRegion(15, 10, 510, 15 + size * 30 / 2);
 
                 for (int i = 0; i < size; i += 2)
                 {
-                    on = this.m_Vertex.Shops.Contains(i);
-                    this.AddButton(25, 25 + i * 30 / 2, on ? 2361 : 2360, on ? 2360 : 2361, i + 1, GumpButtonType.Reply, 0);
-                    this.AddHtmlLocalized(50, 20 + i * 30 / 2, 200, 20, m_ShopDefinitions[i], 0x7773, false, false);
+                    on = m_Vertex.Shops.Contains(i);
+                    AddButton(25, 25 + i * 30 / 2, on ? 2361 : 2360, on ? 2360 : 2361, i + 1, GumpButtonType.Reply, 0);
+                    AddHtmlLocalized(50, 20 + i * 30 / 2, 200, 20, m_ShopDefinitions[i], 0x7773, false, false);
 
                     if (i + 1 < size)
                     {
-                        on = this.m_Vertex.Shops.Contains(i + 1);
-                        this.AddButton(280, 25 + i * 30 / 2, on ? 2361 : 2360, on ? 2360 : 2361, i + 2, GumpButtonType.Reply, 0);
-                        this.AddHtmlLocalized(305, 20 + i * 30 / 2, 200, 20, m_ShopDefinitions[i + 1], 0x7773, false, false);
+                        on = m_Vertex.Shops.Contains(i + 1);
+                        AddButton(280, 25 + i * 30 / 2, on ? 2361 : 2360, on ? 2360 : 2361, i + 2, GumpButtonType.Reply, 0);
+                        AddHtmlLocalized(305, 20 + i * 30 / 2, 200, 20, m_ShopDefinitions[i + 1], 0x7773, false, false);
                     }
                 }
 
-                this.m_Item = new Item(0x1183);
-                this.m_Item.Visible = false;
-                this.m_Item.MoveToWorld(this.m_Vertex.Location, map);
+                m_Item = new Item(0x1183);
+                m_Item.Visible = false;
+                m_Item.MoveToWorld(m_Vertex.Location, map);
             }
 
             public override void OnResponse(NetState sender, RelayInfo info)
             {
                 if (info.ButtonID > 0)
                 {
-                    if (this.m_Vertex.Shops.Contains(info.ButtonID - 1))
-                        this.m_Vertex.Shops.Remove(info.ButtonID - 1);
+                    if (m_Vertex.Shops.Contains(info.ButtonID - 1))
+                        m_Vertex.Shops.Remove(info.ButtonID - 1);
                     else
-                        this.m_Vertex.Shops.Add(info.ButtonID - 1);
+                        m_Vertex.Shops.Add(info.ButtonID - 1);
 
-                    sender.Mobile.SendGump(new GuideVertexEditGump(this.m_Vertex, this.m_Map, this.m_Town));
+                    sender.Mobile.SendGump(new GuideVertexEditGump(m_Vertex, m_Map, m_Town));
                 }
-                else if (this.m_Item != null && !this.m_Item.Deleted)
+                else if (m_Item != null && !m_Item.Deleted)
                 {
-                    this.m_Item.Delete();
-                    this.Save(this.m_Town);
+                    m_Item.Delete();
+                    Save(m_Town);
                 }
             }
 
@@ -424,115 +424,97 @@ namespace Server.Mobiles
 
             public GuideVertex(int id, Point3D location)
             {
-                this.m_ID = id;
-                this.m_Location = location;
-                this.m_Previous = null;
-                this.m_Distance = Int32.MaxValue;
-                this.m_Visited = false;
-                this.m_Removed = false;
+                m_ID = id;
+                m_Location = location;
+                m_Previous = null;
+                m_Distance = Int32.MaxValue;
+                m_Visited = false;
+                m_Removed = false;
             }
 
-            public int ID
-            {
-                get
-                {
-                    return this.m_ID;
-                }
-            }
+            public int ID => m_ID;
             public Point3D Location
             {
                 get
                 {
-                    return this.m_Location;
+                    return m_Location;
                 }
                 set
                 {
-                    this.m_Location = value;
+                    m_Location = value;
                 }
             }
-            public List<GuideVertex> Vertices
-            {
-                get
-                {
-                    return this.m_Vertices;
-                }
-            }
-            public List<int> Shops
-            {
-                get
-                {
-                    return this.m_Shops;
-                }
-            }
+            public List<GuideVertex> Vertices => m_Vertices;
+            public List<int> Shops => m_Shops;
             public bool Teleporter
             {
                 get
                 {
-                    return this.m_Teleporter;
+                    return m_Teleporter;
                 }
                 set
                 {
-                    this.m_Teleporter = value;
+                    m_Teleporter = value;
                 }
             }
             public GuideVertex Previous
             {
                 get
                 {
-                    return this.m_Previous;
+                    return m_Previous;
                 }
                 set
                 {
-                    this.m_Previous = value;
+                    m_Previous = value;
                 }
             }
             public int Distance
             {
                 get
                 {
-                    return this.m_Distance;
+                    return m_Distance;
                 }
                 set
                 {
-                    this.m_Distance = value;
+                    m_Distance = value;
                 }
             }
             public bool Visited
             {
                 get
                 {
-                    return this.m_Visited;
+                    return m_Visited;
                 }
                 set
                 {
-                    this.m_Visited = value;
+                    m_Visited = value;
                 }
             }
             public bool Removed
             {
                 get
                 {
-                    return this.m_Removed;
+                    return m_Removed;
                 }
                 set
                 {
-                    this.m_Removed = value;
+                    m_Removed = value;
                 }
             }
             public int DistanceTo(GuideVertex to)
             {
-                return Math.Abs(this.m_Location.X - to.Location.X) + Math.Abs(this.m_Location.Y - to.Location.Y);
+                return Math.Abs(m_Location.X - to.Location.X) + Math.Abs(m_Location.Y - to.Location.Y);
             }
 
             public int DistanceTo(Point3D to)
             {
-                return Math.Abs(this.m_Location.X - to.X) + Math.Abs(this.m_Location.Y - to.Y);
+                return Math.Abs(m_Location.X - to.X) + Math.Abs(m_Location.Y - to.Y);
             }
 
             public int CompareTo(GuideVertex o)
             {
                 if (o != null)
-                    return this.m_Distance - o.Distance;
+                    return m_Distance - o.Distance;
 
                 return 0;
             }
@@ -543,41 +525,29 @@ namespace Server.Mobiles
             private readonly List<T> m_List;
             public Heap()
             {
-                this.m_List = new List<T>();
+                m_List = new List<T>();
             }
 
-            public int Count
-            {
-                get
-                {
-                    return this.m_List.Count;
-                }
-            }
-            public T Top
-            {
-                get
-                {
-                    return this.m_List[0];
-                }
-            }
+            public int Count => m_List.Count;
+            public T Top => m_List[0];
             public bool Contains(T item)
             {
-                return this.m_List.Contains(item);
+                return m_List.Contains(item);
             }
 
             public void Push(T item)
             {
-                this.m_List.Add(item);
+                m_List.Add(item);
 
-                int child = this.m_List.Count - 1;
+                int child = m_List.Count - 1;
                 int parent = (child - 1) / 2;
                 T temp;
 
-                while (item.CompareTo(this.m_List[parent]) < 0 && child > 0)
+                while (item.CompareTo(m_List[parent]) < 0 && child > 0)
                 {
-                    temp = this.m_List[child];
-                    this.m_List[child] = this.m_List[parent];
-                    this.m_List[parent] = temp;
+                    temp = m_List[child];
+                    m_List[child] = m_List[parent];
+                    m_List[parent] = temp;
 
                     child = parent;
                     parent = (child - 1) / 2;
@@ -586,15 +556,15 @@ namespace Server.Mobiles
 
             public void Fix(T item)
             {
-                int child = this.m_List.IndexOf(item);
+                int child = m_List.IndexOf(item);
                 int parent = (child - 1) / 2;
                 T temp;
 
-                while (item.CompareTo(this.m_List[parent]) < 0 && child > 0)
+                while (item.CompareTo(m_List[parent]) < 0 && child > 0)
                 {
-                    temp = this.m_List[child];
-                    this.m_List[child] = this.m_List[parent];
-                    this.m_List[parent] = temp;
+                    temp = m_List[child];
+                    m_List[child] = m_List[parent];
+                    m_List[parent] = temp;
 
                     child = parent;
                     parent = (child - 1) / 2;
@@ -603,14 +573,14 @@ namespace Server.Mobiles
 
             public T Pop()
             {
-                if (this.m_List.Count == 0)
+                if (m_List.Count == 0)
                     return default(T);
 
-                T top = this.m_List[0];
+                T top = m_List[0];
                 T temp;
 
-                this.m_List[0] = this.m_List[this.m_List.Count - 1];
-                this.m_List.RemoveAt(this.m_List.Count - 1);
+                m_List[0] = m_List[m_List.Count - 1];
+                m_List.RemoveAt(m_List.Count - 1);
 
                 int parent = 0;
                 int lchild;
@@ -624,44 +594,44 @@ namespace Server.Mobiles
                     rchild = parent * 2 + 2;
                     ltl = ltr = cltc = false;
 
-                    if (this.m_List.Count > lchild)
-                        ltl = (this.m_List[parent].CompareTo(this.m_List[lchild]) > 0);
+                    if (m_List.Count > lchild)
+                        ltl = (m_List[parent].CompareTo(m_List[lchild]) > 0);
 
-                    if (this.m_List.Count > rchild)
-                        ltr = (this.m_List[parent].CompareTo(this.m_List[rchild]) > 0);
+                    if (m_List.Count > rchild)
+                        ltr = (m_List[parent].CompareTo(m_List[rchild]) > 0);
 
                     if (ltl && ltr)
-                        cltc = (this.m_List[lchild].CompareTo(this.m_List[rchild]) > 0);
+                        cltc = (m_List[lchild].CompareTo(m_List[rchild]) > 0);
 
                     if (ltl && !ltr)
                     {
-                        temp = this.m_List[parent];
-                        this.m_List[parent] = this.m_List[lchild];
-                        this.m_List[lchild] = temp;
+                        temp = m_List[parent];
+                        m_List[parent] = m_List[lchild];
+                        m_List[lchild] = temp;
 
                         parent = lchild;
                     }
                     else if (!ltl && ltr)
                     {
-                        temp = this.m_List[parent];
-                        this.m_List[parent] = this.m_List[rchild];
-                        this.m_List[rchild] = temp;
+                        temp = m_List[parent];
+                        m_List[parent] = m_List[rchild];
+                        m_List[rchild] = temp;
 
                         parent = rchild;
                     }
                     else if (ltl && ltr && cltc)
                     {
-                        temp = this.m_List[parent];
-                        this.m_List[parent] = this.m_List[rchild];
-                        this.m_List[rchild] = temp;
+                        temp = m_List[parent];
+                        m_List[parent] = m_List[rchild];
+                        m_List[rchild] = temp;
 
                         parent = rchild;
                     }
                     else if (ltl && ltr)
                     {
-                        temp = this.m_List[parent];
-                        this.m_List[parent] = this.m_List[lchild];
-                        this.m_List[lchild] = temp;
+                        temp = m_List[parent];
+                        m_List[parent] = m_List[lchild];
+                        m_List[lchild] = temp;
 
                         parent = lchild;
                     }
@@ -679,7 +649,7 @@ namespace Server.Mobiles
         public AttendantGuide()
             : base("the Guide")
         {
-            this.m_Path = null;
+            m_Path = null;
         }
 
         public AttendantGuide(Serial serial)
@@ -687,18 +657,12 @@ namespace Server.Mobiles
         {
         }
 
-        public List<Vertex> Path
-        {
-            get
-            {
-                return this.m_Path;
-            }
-        }
+        public List<Vertex> Path => m_Path;
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.Alive && this.IsOwner(from))
+            if (from.Alive && IsOwner(from))
             {
-                Dictionary<int, Vertex> m_Shops = GuideHelper.FindShops(this.Region != null ? this.Region.Name : null, this.Location);
+                Dictionary<int, Vertex> m_Shops = GuideHelper.FindShops(Region != null ? Region.Name : null, Location);
 
                 if (m_Shops != null)
                 {
@@ -712,7 +676,7 @@ namespace Server.Mobiles
 
         public override void AddCustomContextEntries(Mobile from, List<ContextMenuEntry> list)
         {
-            if (from.Alive && this.IsOwner(from))
+            if (from.Alive && IsOwner(from))
                 list.Add(new AttendantUseEntry(this, 6249));
 
             base.AddCustomContextEntries(from, list);
@@ -722,42 +686,42 @@ namespace Server.Mobiles
         {
             base.OnThink();
 
-            if (this.ControlMaster != null && this.m_Path != null && this.m_Path.Count > 0)
+            if (ControlMaster != null && m_Path != null && m_Path.Count > 0)
             {
-                Vertex v = this.m_Path[this.m_Path.Count - 1];
-                Mobile m = this.ControlMaster;
+                Vertex v = m_Path[m_Path.Count - 1];
+                Mobile m = ControlMaster;
 
                 if (m.NetState != null)
                 {
-                    if (Math.Abs(v.DistanceTo(m.Location) - v.DistanceTo(this.Location)) > 10)
-                        this.Frozen = true;
+                    if (Math.Abs(v.DistanceTo(m.Location) - v.DistanceTo(Location)) > 10)
+                        Frozen = true;
                     else
-                        this.Frozen = false;
+                        Frozen = false;
 
-                    if (this.CurrentWayPoint == null)
+                    if (CurrentWayPoint == null)
                     {
-                        this.CurrentWayPoint = new WayPoint();
-                        this.CurrentWayPoint.MoveToWorld(v.Location, this.Map);
+                        CurrentWayPoint = new WayPoint();
+                        CurrentWayPoint.MoveToWorld(v.Location, Map);
                     }
 
-                    int dist = v.DistanceTo(this.Location);
+                    int dist = v.DistanceTo(Location);
 
                     if (dist < (v.Teleporter ? 1 : 3) || dist > 100)
                     {
-                        this.m_Path.RemoveAt(this.m_Path.Count - 1);
+                        m_Path.RemoveAt(m_Path.Count - 1);
 
-                        if (this.m_Path.Count > 0)
+                        if (m_Path.Count > 0)
                         {
-                            if (this.CurrentWayPoint == null)
-                                this.CurrentWayPoint = new WayPoint();
+                            if (CurrentWayPoint == null)
+                                CurrentWayPoint = new WayPoint();
 
-                            this.CurrentWayPoint.MoveToWorld(this.m_Path[this.m_Path.Count - 1].Location, this.Map);
+                            CurrentWayPoint.MoveToWorld(m_Path[m_Path.Count - 1].Location, Map);
                         }
                         else
                         {
                             Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(3), new TimerStateCallback<Mobile>(CommandFollow), m);
-                            this.Say(1076051); // We have reached our destination
-                            this.CommandStop(m);
+                            Say(1076051); // We have reached our destination
+                            CommandStop(m);
                         }
                     }
                 }
@@ -766,14 +730,14 @@ namespace Server.Mobiles
 
         public override void CommandFollow(Mobile by)
         {
-            this.StopGuiding();
+            StopGuiding();
 
             base.CommandFollow(by);
         }
 
         public override void CommandStop(Mobile by)
         {
-            this.StopGuiding();
+            StopGuiding();
 
             base.CommandStop(by);
         }
@@ -794,36 +758,36 @@ namespace Server.Mobiles
 
         public void StopGuiding()
         {
-            this.CurrentSpeed = this.PassiveSpeed;
+            CurrentSpeed = PassiveSpeed;
 
-            if (this.CurrentWayPoint != null)
-                this.CurrentWayPoint.Delete();
+            if (CurrentWayPoint != null)
+                CurrentWayPoint.Delete();
 
-            if (this.m_Path != null)
-                this.m_Path.Clear();
+            if (m_Path != null)
+                m_Path.Clear();
 
-            this.Controlled = true;
-            this.m_Path = null;
+            Controlled = true;
+            m_Path = null;
         }
 
         public void StartGuiding(List<Vertex> path)
         {
-            this.m_Path = path;
+            m_Path = path;
 
-            if (this.ControlMaster != null && this.m_Path != null && this.m_Path.Count > 0)
+            if (ControlMaster != null && m_Path != null && m_Path.Count > 0)
             {
-                if (this.m_Path.Count > 1)
-                    this.m_Path.RemoveAt(this.m_Path.Count - 1);
+                if (m_Path.Count > 1)
+                    m_Path.RemoveAt(m_Path.Count - 1);
 
-                if (this.CurrentWayPoint == null)
-                    this.CurrentWayPoint = new WayPoint();
+                if (CurrentWayPoint == null)
+                    CurrentWayPoint = new WayPoint();
 
-                this.CurrentWayPoint.MoveToWorld(this.m_Path[this.m_Path.Count - 1].Location, this.Map);
+                CurrentWayPoint.MoveToWorld(m_Path[m_Path.Count - 1].Location, Map);
 
-                this.AIObject.Action = ActionType.Wander;
-                this.CurrentSpeed = this.ActiveSpeed;
-                this.Controlled = false;
-                this.Say(1076114); // Please follow me.
+                AIObject.Action = ActionType.Wander;
+                CurrentSpeed = ActiveSpeed;
+                Controlled = false;
+                Say(1076114); // Please follow me.
             }
         }
 
@@ -836,19 +800,19 @@ namespace Server.Mobiles
             public InternalGump(AttendantGuide guide, Dictionary<int, Vertex> shops)
                 : base(60, 36)
             {
-                this.m_Guide = guide;
-                this.m_Shops = shops;
+                m_Guide = guide;
+                m_Shops = shops;
 
-                this.AddPage(0);
+                AddPage(0);
 
-                this.AddBackground(0, 0, 273, 84 + ShopsPerPage * ShopHeight, 0x13BE);
-                this.AddImageTiled(10, 10, 253, 20, 0xA40);
-                this.AddImageTiled(10, 40, 253, 4 + ShopsPerPage * ShopHeight, 0xA40);
-                this.AddImageTiled(10, 54 + ShopsPerPage * ShopHeight, 253, 20, 0xA40);
-                this.AddAlphaRegion(10, 10, 253, 64 + ShopsPerPage * ShopHeight);
-                this.AddButton(10, 54 + ShopsPerPage * ShopHeight, 0xFB1, 0xFB2, 0, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(45, 54 + ShopsPerPage * ShopHeight, 450, 20, 1060051, 0x7FFF, false, false); // CANCEL
-                this.AddHtmlLocalized(14, 12, 273, 20, 1076029, 0x7FFF, false, false); // What sort of shop do you seek?
+                AddBackground(0, 0, 273, 84 + ShopsPerPage * ShopHeight, 0x13BE);
+                AddImageTiled(10, 10, 253, 20, 0xA40);
+                AddImageTiled(10, 40, 253, 4 + ShopsPerPage * ShopHeight, 0xA40);
+                AddImageTiled(10, 54 + ShopsPerPage * ShopHeight, 253, 20, 0xA40);
+                AddAlphaRegion(10, 10, 253, 64 + ShopsPerPage * ShopHeight);
+                AddButton(10, 54 + ShopsPerPage * ShopHeight, 0xFB1, 0xFB2, 0, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(45, 54 + ShopsPerPage * ShopHeight, 450, 20, 1060051, 0x7FFF, false, false); // CANCEL
+                AddHtmlLocalized(14, 12, 273, 20, 1076029, 0x7FFF, false, false); // What sort of shop do you seek?
 
                 int i = 0;
                 int page = 0;
@@ -860,24 +824,24 @@ namespace Server.Mobiles
                     {
                         if (page > 0)
                         {
-                            this.AddButton(188, 54 + ShopsPerPage * ShopHeight, 0xFA5, 0xFA7, 0, GumpButtonType.Page, page + 1);
-                            this.AddHtmlLocalized(228, 56 + ShopsPerPage * ShopHeight, 60, 20, 1043353, 0x7FFF, false, false); // Next
+                            AddButton(188, 54 + ShopsPerPage * ShopHeight, 0xFA5, 0xFA7, 0, GumpButtonType.Page, page + 1);
+                            AddHtmlLocalized(228, 56 + ShopsPerPage * ShopHeight, 60, 20, 1043353, 0x7FFF, false, false); // Next
                         }
 
-                        this.AddPage(page + 1);
+                        AddPage(page + 1);
 
                         if (page > 0)
                         {
-                            this.AddButton(113, 54 + ShopsPerPage * ShopHeight, 0xFAE, 0xFB0, 0, GumpButtonType.Page, page);
-                            this.AddHtmlLocalized(153, 56 + ShopsPerPage * ShopHeight, 60, 20, 1011393, 0x7FFF, false, false); // Back
+                            AddButton(113, 54 + ShopsPerPage * ShopHeight, 0xFAE, 0xFB0, 0, GumpButtonType.Page, page);
+                            AddHtmlLocalized(153, 56 + ShopsPerPage * ShopHeight, 60, 20, 1011393, 0x7FFF, false, false); // Back
                         }
 
                         iPage = 0;
                         page++;
                     }
 
-                    this.AddButton(19, 49 + iPage * ShopHeight, 0x845, 0x846, 100 + kvp.Key, GumpButtonType.Reply, 0);
-                    this.AddHtmlLocalized(44, 47 + iPage * ShopHeight, 213, 20, GuideHelper.FindShopName(kvp.Key), 0x7FFF, false, false);
+                    AddButton(19, 49 + iPage * ShopHeight, 0x845, 0x846, 100 + kvp.Key, GumpButtonType.Reply, 0);
+                    AddHtmlLocalized(44, 47 + iPage * ShopHeight, 213, 20, GuideHelper.FindShopName(kvp.Key), 0x7FFF, false, false);
 
                     i++;
                     iPage++;
@@ -888,16 +852,16 @@ namespace Server.Mobiles
             {
                 int shop = info.ButtonID - 100;
 
-                if (this.m_Guide == null || this.m_Guide.Deleted || this.m_Guide.Region == null || info.ButtonID == 0)
+                if (m_Guide == null || m_Guide.Deleted || m_Guide.Region == null || info.ButtonID == 0)
                     return;
 
-                Vertex source = GuideHelper.ClosestVetrex(this.m_Guide.Region.Name, this.m_Guide.Location);
+                Vertex source = GuideHelper.ClosestVetrex(m_Guide.Region.Name, m_Guide.Location);
 
-                if (this.m_Shops.ContainsKey(shop))
+                if (m_Shops.ContainsKey(shop))
                 {
-                    Vertex destination = this.m_Shops[shop];
-                    List<Vertex> path = GuideHelper.Dijkstra(this.m_Guide.Region.Name, source, destination);
-                    this.m_Guide.StartGuiding(path);
+                    Vertex destination = m_Shops[shop];
+                    List<Vertex> path = GuideHelper.Dijkstra(m_Guide.Region.Name, source, destination);
+                    m_Guide.StartGuiding(path);
                 }
             }
         }
@@ -918,25 +882,25 @@ namespace Server.Mobiles
 
         public override void InitBody()
         {
-            this.SetStr(50, 60);
-            this.SetDex(20, 30);
-            this.SetInt(100, 110);
+            SetStr(50, 60);
+            SetDex(20, 30);
+            SetInt(100, 110);
 
-            this.Name = NameList.RandomName("male");
-            this.Female = false;
-            this.Race = Race.Human;
-            this.Hue = this.Race.RandomSkinHue();
+            Name = NameList.RandomName("male");
+            Female = false;
+            Race = Race.Human;
+            Hue = Race.RandomSkinHue();
 
-            this.HairItemID = this.Race.RandomHair(this.Female);
-            this.HairHue = this.Race.RandomHairHue();
+            HairItemID = Race.RandomHair(Female);
+            HairHue = Race.RandomHairHue();
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new SamuraiTabi());
-            this.AddItem(new Kasa());
-            this.AddItem(new MaleKimono(Utility.RandomGreenHue()));
-            this.AddItem(new ShepherdsCrook());
+            AddItem(new SamuraiTabi());
+            AddItem(new Kasa());
+            AddItem(new MaleKimono(Utility.RandomGreenHue()));
+            AddItem(new ShepherdsCrook());
         }
 
         public override void Serialize(GenericWriter writer)
@@ -969,29 +933,29 @@ namespace Server.Mobiles
 
         public override void InitBody()
         {
-            this.SetStr(50, 60);
-            this.SetDex(20, 30);
-            this.SetInt(100, 110);
+            SetStr(50, 60);
+            SetDex(20, 30);
+            SetInt(100, 110);
 
-            this.Name = NameList.RandomName("female");
-            this.Female = true;
-            this.Race = Race.Human;
-            this.Hue = this.Race.RandomSkinHue();
+            Name = NameList.RandomName("female");
+            Female = true;
+            Race = Race.Human;
+            Hue = Race.RandomSkinHue();
 
-            this.HairItemID = this.Race.RandomHair(this.Female);
-            this.HairHue = this.Race.RandomHairHue();
+            HairItemID = Race.RandomHair(Female);
+            HairHue = Race.RandomHairHue();
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Shoes(Utility.RandomBlueHue()));
-            this.AddItem(new Shirt(0x8FD));
-            this.AddItem(new FeatheredHat(Utility.RandomBlueHue()));
-            this.AddItem(new Kilt(Utility.RandomBlueHue()));
+            AddItem(new Shoes(Utility.RandomBlueHue()));
+            AddItem(new Shirt(0x8FD));
+            AddItem(new FeatheredHat(Utility.RandomBlueHue()));
+            AddItem(new Kilt(Utility.RandomBlueHue()));
 
             Item item = new Spellbook();
             item.Hue = Utility.RandomBlueHue();
-            this.AddItem(item);
+            AddItem(item);
         }
 
         public override void Serialize(GenericWriter writer)

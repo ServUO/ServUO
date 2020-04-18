@@ -93,13 +93,7 @@ namespace Server.Items
 
     public class CompassionPigment : Item, IUsesRemaining
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return CompassionPigmentInfo.GetInfo(m_Type).LabelNumber;
-            }
-        }
+        public override int LabelNumber => CompassionPigmentInfo.GetInfo(m_Type).LabelNumber;
 
         private CompassionPigmentType m_Type;
         private int m_UsesRemaining;
@@ -141,7 +135,7 @@ namespace Server.Items
 
         private static CompassionPigmentType GetRandomType()
         {
-            var values = Enum.GetValues(typeof(CompassionPigmentType));
+            Array values = Enum.GetValues(typeof(CompassionPigmentType));
             return (CompassionPigmentType)values.GetValue(Utility.Random(values.Length));
         }
 
@@ -190,10 +184,10 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write((int)m_Type);
-            writer.Write((int)m_UsesRemaining);
+            writer.Write(m_UsesRemaining);
         }
 
         public override void Deserialize(GenericReader reader)

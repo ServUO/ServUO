@@ -17,7 +17,7 @@ namespace Server.Spells.Mysticism
                 Reagent.SulfurousAsh
             );
 
-        public override SpellCircle Circle { get { return SpellCircle.Seventh; } }
+        public override SpellCircle Circle => SpellCircle.Seventh;
 
         public SpellPlagueSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
@@ -214,7 +214,7 @@ namespace Server.Spells.Mysticism
         private int m_Amount;
         private DateTime m_NextUse;
 
-        public Mobile Caster { get { return m_Caster; } }
+        public Mobile Caster => m_Caster;
         public int Amount
         {
             get { return m_Amount; }
@@ -236,7 +236,7 @@ namespace Server.Spells.Mysticism
             m_Owner = owner;
             m_Amount = 0;
             m_NextUse = DateTime.UtcNow;
-            this.Start();
+            Start();
         }
 
         protected override void OnTick()
@@ -246,7 +246,7 @@ namespace Server.Spells.Mysticism
 
         private void EndTimer()
         {
-            this.Stop();
+            Stop();
             SpellPlagueSpell.RemoveFromList(m_Owner);
         }
     }

@@ -95,7 +95,7 @@ namespace Server.Items
             get { return _CoverType; }
             set
             {
-                var current = _CoverType;
+                CoverType current = _CoverType;
 
                 if (current != value)
                 {
@@ -132,7 +132,7 @@ namespace Server.Items
 
         public void InvalidateHue()
         {
-            var info = CoverInfo.Infos.FirstOrDefault(x => x.Type == _CoverType);
+            CoverInfo info = CoverInfo.Infos.FirstOrDefault(x => x.Type == _CoverType);
 
             if (info != null)
             {
@@ -142,7 +142,7 @@ namespace Server.Items
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            var info = CoverInfo.Infos.FirstOrDefault(x => x.Type == _CoverType);
+            CoverInfo info = CoverInfo.Infos.FirstOrDefault(x => x.Type == _CoverType);
 
             if (info != null)
             {
@@ -181,7 +181,7 @@ namespace Server.Items
                     {
                         if (targeted is BulkOrderBook)
                         {
-                            var bob = (BulkOrderBook)targeted;
+                            BulkOrderBook bob = (BulkOrderBook)targeted;
 
                             if (bob.IsChildOf(m.Backpack))
                             {
@@ -221,7 +221,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1);
+            writer.Write(1);
 
             writer.Write(_UsesRemaining);
             writer.Write((int)_CoverType);
@@ -248,7 +248,7 @@ namespace Server.Items
 
     public class BagOfBulkOrderCovers : Bag
     {
-        public override int LabelNumber { get { return 1071116; } } // Bag of bulk order covers
+        public override int LabelNumber => 1071116;  // Bag of bulk order covers
 
         public BagOfBulkOrderCovers(int start, int end)
         {
@@ -270,7 +270,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

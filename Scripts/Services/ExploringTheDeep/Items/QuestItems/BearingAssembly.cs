@@ -2,14 +2,14 @@
 {
     public class BearingAssembly : BaseDecayingItem
     {
-        public override int LabelNumber { get { return 1154430; } } // Bearing Assembly
+        public override int LabelNumber => 1154430;  // Bearing Assembly
 
         [Constructable]
         public BearingAssembly()
             : base(0xE74)
         {
-            this.Weight = 1.0;
-            this.LootType = LootType.Blessed;
+            Weight = 1.0;
+            LootType = LootType.Blessed;
         }
 
         public override void GetProperties(ObjectPropertyList list)
@@ -19,7 +19,7 @@
             list.Add(1072351); // Quest Item
         }
 
-        public override int Lifespan { get { return 18000; } }
+        public override int Lifespan => 18000;
 
         public BearingAssembly(Serial serial)
             : base(serial)
@@ -30,7 +30,7 @@
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

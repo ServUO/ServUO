@@ -4,8 +4,8 @@ namespace Server.Items
 {
     public class SmithingPress : CraftAddon
     {
-        public override BaseAddonDeed Deed { get { return new SmithingPressDeed(Tools.Count > 0 ? Tools[0].UsesRemaining : 0); } }
-        public override CraftSystem CraftSystem { get { return DefBlacksmithy.CraftSystem; } }
+        public override BaseAddonDeed Deed => new SmithingPressDeed(Tools.Count > 0 ? Tools[0].UsesRemaining : 0);
+        public override CraftSystem CraftSystem => DefBlacksmithy.CraftSystem;
 
         [Constructable]
         public SmithingPress(bool south, int uses)
@@ -31,7 +31,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -44,8 +44,8 @@ namespace Server.Items
 
     public class SmithingPressDeed : CraftAddonDeed
     {
-        public override int LabelNumber { get { return 1123577; } } // smithing press
-        public override BaseAddon Addon { get { return new SmithingPress(_South, UsesRemaining); } }
+        public override int LabelNumber => 1123577;  // smithing press
+        public override BaseAddon Addon => new SmithingPress(_South, UsesRemaining);
 
         private bool _South;
 
@@ -80,7 +80,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

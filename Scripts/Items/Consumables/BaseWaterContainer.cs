@@ -17,29 +17,11 @@ namespace Server.Items
         public abstract int voidItem_ID { get; }
         public abstract int fullItem_ID { get; }
         public abstract int MaxQuantity { get; }
-        public override int DefaultGumpID
-        {
-            get
-            {
-                return 0x3e;
-            }
-        }
+        public override int DefaultGumpID => 0x3e;
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual bool IsEmpty
-        {
-            get
-            {
-                return (m_Quantity <= 0);
-            }
-        }
+        public virtual bool IsEmpty => (m_Quantity <= 0);
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual bool IsFull
-        {
-            get
-            {
-                return (m_Quantity >= MaxQuantity);
-            }
-        }
+        public virtual bool IsFull => (m_Quantity >= MaxQuantity);
         [CommandProperty(AccessLevel.GameMaster)]
         public virtual int Quantity
         {
@@ -118,8 +100,8 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
-            writer.Write((int)m_Quantity);
+            writer.Write(0); // version
+            writer.Write(m_Quantity);
         }
 
         public override void Deserialize(GenericReader reader)

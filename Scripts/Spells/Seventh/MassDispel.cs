@@ -20,40 +20,34 @@ namespace Server.Spells.Seventh
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Seventh;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Seventh;
         public override void OnCast()
         {
-            this.Caster.Target = new InternalTarget(this);
+            Caster.Target = new InternalTarget(this);
         }
 
         public void Target(IPoint3D p)
         {
-            if (!this.Caster.CanSee(p))
+            if (!Caster.CanSee(p))
             {
-                this.Caster.SendLocalizedMessage(500237); // Target can not be seen.
+                Caster.SendLocalizedMessage(500237); // Target can not be seen.
             }
-            else if (this.CheckSequence())
+            else if (CheckSequence())
             {
-                SpellHelper.Turn(this.Caster, p);
+                SpellHelper.Turn(Caster, p);
 
                 SpellHelper.GetSurfaceTop(ref p);
 
                 List<Mobile> targets = new List<Mobile>();
 
-                Map map = this.Caster.Map;
+                Map map = Caster.Map;
 
                 if (map != null)
                 {
                     IPooledEnumerable eable = map.GetMobilesInRange(new Point3D(p), 8);
 
                     foreach (Mobile m in eable)
-                        if (m is BaseCreature && (m as BaseCreature).IsDispellable && (((BaseCreature)m).SummonMaster == this.Caster || this.Caster.CanBeHarmful(m, false)))
+                        if (m is BaseCreature && (m as BaseCreature).IsDispellable && (((BaseCreature)m).SummonMaster == Caster || Caster.CanBeHarmful(m, false)))
                             targets.Add(m);
 
                     eable.Free();
@@ -68,7 +62,7 @@ namespace Server.Spells.Seventh
                     if (bc == null)
                         continue;
 
-                    double dispelChance = (50.0 + ((100 * (this.Caster.Skills.Magery.Value - bc.GetDispelDifficulty())) / (bc.DispelFocus * 2))) / 100;
+                    double dispelChance = (50.0 + ((100 * (Caster.Skills.Magery.Value - bc.GetDispelDifficulty())) / (bc.DispelFocus * 2))) / 100;
 
                     // Skill Masteries
                     dispelChance -= ((double)SkillMasteries.MasteryInfo.EnchantedSummoningBonus(bc) / 100);
@@ -82,14 +76,14 @@ namespace Server.Spells.Seventh
                     }
                     else
                     {
-                        this.Caster.DoHarmful(m);
+                        Caster.DoHarmful(m);
 
                         m.FixedEffect(0x3779, 10, 20);
                     }
                 }
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         public class InternalTarget : Target
@@ -98,7 +92,7 @@ namespace Server.Spells.Seventh
             public InternalTarget(MassDispelSpell owner)
                 : base(10, true, TargetFlags.None)
             {
-                this.m_Owner = owner;
+                m_Owner = owner;
             }
 
             protected override void OnTarget(Mobile from, object o)
@@ -106,12 +100,12 @@ namespace Server.Spells.Seventh
                 IPoint3D p = o as IPoint3D;
 
                 if (p != null)
-                    this.m_Owner.Target(p);
+                    m_Owner.Target(p);
             }
 
             protected override void OnTargetFinish(Mobile from)
             {
-                this.m_Owner.FinishSequence();
+                m_Owner.FinishSequence();
             }
         }
     }

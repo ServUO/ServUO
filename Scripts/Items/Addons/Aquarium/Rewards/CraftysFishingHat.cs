@@ -13,62 +13,14 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074572;
-            }
-        }// Crafty's Fishing Hat
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 9;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 20;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 30;
-            }
-        }
+        public override int LabelNumber => 1074572;// Crafty's Fishing Hat
+        public override int BasePhysicalResistance => 0;
+        public override int BaseFireResistance => 5;
+        public override int BaseColdResistance => 9;
+        public override int BasePoisonResistance => 5;
+        public override int BaseEnergyResistance => 5;
+        public override int InitMinHits => 20;
+        public override int InitMaxHits => 30;
         public override void AddNameProperties(ObjectPropertyList list)
         {
             base.AddNameProperties(list);
@@ -80,7 +32,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

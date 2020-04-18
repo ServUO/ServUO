@@ -23,7 +23,7 @@ namespace Server.Items
 
     public class ChickenLizardEgg : Item
     {
-        public virtual bool CanMutate { get { return true; } }
+        public virtual bool CanMutate => true;
 
         private DateTime m_IncubationStart;
         private TimeSpan m_TotalIncubationTime;
@@ -337,7 +337,7 @@ namespace Server.Items
             {
                 from.SendLocalizedMessage(1112478); //You hatch a battle chicken lizard!!
                 bc = new BattleChickenLizard();
-                bc.Hue = this.Hue;
+                bc.Hue = Hue;
             }
             else
             {
@@ -360,8 +360,8 @@ namespace Server.Items
             private readonly ChickenLizardEgg m_Egg;
             private readonly Mobile m_From;
 
-            public override int TitleNumber { get { return 1112444; } }
-            public override int LabelNumber { get { return 1112446; } }
+            public override int TitleNumber => 1112444;
+            public override int LabelNumber => 1112446;
 
             public ConfirmHatchGump1(Mobile from, ChickenLizardEgg egg)
             {
@@ -381,8 +381,8 @@ namespace Server.Items
             private readonly ChickenLizardEgg m_Egg;
             private readonly Mobile m_From;
 
-            public override int TitleNumber { get { return 1112444; } }
-            public override int LabelNumber { get { return 1112445; } }
+            public override int TitleNumber => 1112444;
+            public override int LabelNumber => 1112445;
 
             public ConfirmHatchGump2(Mobile from, ChickenLizardEgg egg)
             {
@@ -405,7 +405,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             writer.Write(m_IncubationStart);
             writer.Write(m_TotalIncubationTime);

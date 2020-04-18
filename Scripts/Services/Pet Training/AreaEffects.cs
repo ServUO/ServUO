@@ -8,13 +8,13 @@ namespace Server.Mobiles
 {
     public abstract class AreaEffect
     {
-        public virtual int ManaCost { get { return 20; } }
-        public virtual int MaxRange { get { return 3; } }
-        public virtual double TriggerChance { get { return 1.0; } }
-        public virtual TimeSpan CooldownDuration { get { return TimeSpan.FromSeconds(30); } }
-        public virtual bool RequiresCombatant { get { return true; } }
+        public virtual int ManaCost => 20;
+        public virtual int MaxRange => 3;
+        public virtual double TriggerChance => 1.0;
+        public virtual TimeSpan CooldownDuration => TimeSpan.FromSeconds(30);
+        public virtual bool RequiresCombatant => true;
 
-        public virtual int EffectRange { get { return 5; } }
+        public virtual int EffectRange => 5;
 
         public AreaEffect()
         {
@@ -22,13 +22,13 @@ namespace Server.Mobiles
 
         public static bool CheckThinkTrigger(BaseCreature bc)
         {
-            var profile = PetTrainingHelper.GetAbilityProfile(bc);
+            AbilityProfile profile = PetTrainingHelper.GetAbilityProfile(bc);
 
             if (profile != null)
             {
                 AreaEffect effect = null;
 
-                var effects = profile.GetAreaEffects().Where(a => !a.IsInCooldown(bc)).ToArray();
+                AreaEffect[] effects = profile.GetAreaEffects().Where(a => !a.IsInCooldown(bc)).ToArray();
 
                 if (effects != null && effects.Length > 0)
                 {
@@ -80,9 +80,9 @@ namespace Server.Mobiles
             if (creature.Map == null || creature.Map == Map.Internal)
                 return;
 
-            var count = 0;
+            int count = 0;
 
-            foreach (var m in FindValidTargets(creature, EffectRange))
+            foreach (Mobile m in FindValidTargets(creature, EffectRange))
             {
                 count++;
                 DoEffect(creature, m);
@@ -134,7 +134,7 @@ namespace Server.Mobiles
 
         public void AddToCooldown(BaseCreature bc)
         {
-            var cooldown = GetCooldown(bc);
+            TimeSpan cooldown = GetCooldown(bc);
 
             if (cooldown != TimeSpan.MinValue)
             {
@@ -156,7 +156,7 @@ namespace Server.Mobiles
             _Cooldown.Remove(m);
         }
 
-        public static AreaEffect[] Effects { get { return _Effects; } }
+        public static AreaEffect[] Effects => _Effects;
         private static readonly AreaEffect[] _Effects;
 
         static AreaEffect()
@@ -172,61 +172,19 @@ namespace Server.Mobiles
             _Effects[6] = new PoisonBreath();
         }
 
-        public static AreaEffect AuraOfEnergy
-        {
-            get
-            {
-                return _Effects[0];
-            }
-        }
+        public static AreaEffect AuraOfEnergy => _Effects[0];
 
-        public static AreaEffect AuraOfNausea
-        {
-            get
-            {
-                return _Effects[1];
-            }
-        }
+        public static AreaEffect AuraOfNausea => _Effects[1];
 
-        public static AreaEffect EssenceOfDisease
-        {
-            get
-            {
-                return _Effects[2];
-            }
-        }
+        public static AreaEffect EssenceOfDisease => _Effects[2];
 
-        public static AreaEffect EssenceOfEarth
-        {
-            get
-            {
-                return _Effects[3];
-            }
-        }
+        public static AreaEffect EssenceOfEarth => _Effects[3];
 
-        public static AreaEffect ExplosiveGoo
-        {
-            get
-            {
-                return _Effects[4];
-            }
-        }
+        public static AreaEffect ExplosiveGoo => _Effects[4];
 
-        public static AreaEffect AuraDamage
-        {
-            get
-            {
-                return _Effects[5];
-            }
-        }
+        public static AreaEffect AuraDamage => _Effects[5];
 
-        public static AreaEffect PoisonBreath
-        {
-            get
-            {
-                return _Effects[6];
-            }
-        }
+        public static AreaEffect PoisonBreath => _Effects[6];
     }
 
     public class AuraOfEnergy : AreaEffect
@@ -249,10 +207,10 @@ namespace Server.Mobiles
 
     public class AuraOfNausea : AreaEffect
     {
-        public override TimeSpan CooldownDuration { get { return TimeSpan.FromSeconds(40 + Utility.RandomDouble() * 30); } }
-        public override int MaxRange { get { return 4; } }
-        public override int EffectRange { get { return 4; } }
-        public override int ManaCost { get { return 100; } }
+        public override TimeSpan CooldownDuration => TimeSpan.FromSeconds(40 + Utility.RandomDouble() * 30);
+        public override int MaxRange => 4;
+        public override int EffectRange => 4;
+        public override int ManaCost => 100;
 
         public static Dictionary<Mobile, Timer> _Table;
 
@@ -345,7 +303,7 @@ namespace Server.Mobiles
 
     public class ExplosiveGoo : AreaEffect
     {
-        public override int ManaCost { get { return 30; } }
+        public override int ManaCost => 30;
 
         private bool _DoingEffect;
 
@@ -395,9 +353,9 @@ namespace Server.Mobiles
 
     public class PoisonBreath : AreaEffect
     {
-        public override double TriggerChance { get { return 0.4; } }
-        public override int EffectRange { get { return 10; } }
-        public override int ManaCost { get { return 50; } }
+        public override double TriggerChance => 0.4;
+        public override int EffectRange => 10;
+        public override int ManaCost => 50;
 
         public PoisonBreath()
         {
@@ -411,7 +369,7 @@ namespace Server.Mobiles
                 EffectItem.Create(m.Location, m.Map, EffectItem.DefaultDuration), 0x36B0, 1, 14, 63, 7, 9915, 0);
 
             Server.Effects.PlaySound(m.Location, m.Map, 0x229);
-            var damage = GetDamage(creature);
+            int damage = GetDamage(creature);
 
             if (damage > 0)
             {
@@ -424,7 +382,7 @@ namespace Server.Mobiles
         {
             if (creature.Controlled)
             {
-                var profile = PetTrainingHelper.GetAbilityProfile(creature);
+                AbilityProfile profile = PetTrainingHelper.GetAbilityProfile(creature);
 
                 if ((profile != null && profile.HasAbility(MagicalAbility.Poisoning)) || 0.2 > Utility.RandomDouble())
                     creature.CheckSkill(SkillName.Poisoning, 0, creature.Skills[SkillName.Poisoning].Cap);
@@ -464,10 +422,10 @@ namespace Server.Mobiles
 
     public class AuraDamage : AreaEffect
     {
-        public override double TriggerChance { get { return 0.4; } }
-        public override int EffectRange { get { return 10; } }
-        public override int ManaCost { get { return 0; } }
-        public override bool RequiresCombatant { get { return false; } }
+        public override double TriggerChance => 0.4;
+        public override int EffectRange => 10;
+        public override int ManaCost => 0;
+        public override bool RequiresCombatant => false;
 
         public AuraDamage()
         {
@@ -480,7 +438,7 @@ namespace Server.Mobiles
 
         public override void DoEffect(BaseCreature creature, Mobile m)
         {
-            var def = AuraDefinition.GetDefinition(creature);
+            AuraDefinition def = AuraDefinition.GetDefinition(creature);
 
             if (def.Damage > 0)
             {
@@ -580,7 +538,7 @@ namespace Server.Mobiles
 
             public static AuraDefinition GetDefinition(BaseCreature bc)
             {
-                var def = Definitions.FirstOrDefault(d => d.Uses.Any(t => t == bc.GetType()));
+                AuraDefinition def = Definitions.FirstOrDefault(d => d.Uses.Any(t => t == bc.GetType()));
 
                 if (def == null)
                 {

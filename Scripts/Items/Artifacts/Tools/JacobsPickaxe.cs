@@ -15,7 +15,7 @@ namespace Server.Items
 
         private static void Tick_Callback()
         {
-            foreach (var pickaxe in _Instances.Where(p => p != null && !p.Deleted))
+            foreach (JacobsPickaxe pickaxe in _Instances.Where(p => p != null && !p.Deleted))
             {
                 int charge = pickaxe.UsesRemaining + 10 > 20 ? 20 - pickaxe.UsesRemaining : 10;
 
@@ -26,7 +26,7 @@ namespace Server.Items
             }
         }
 
-        public override int LabelNumber { get { return 1077758; } } // Jacob's Pickaxe
+        public override int LabelNumber => 1077758;  // Jacob's Pickaxe
 
         [Constructable]
         public JacobsPickaxe()

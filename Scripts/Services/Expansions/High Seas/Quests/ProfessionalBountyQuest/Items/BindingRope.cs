@@ -23,7 +23,7 @@ namespace Server.Items
             set { m_Quest = value; }
         }
 
-        public override int LabelNumber { get { return 1116717; } }
+        public override int LabelNumber => 1116717;
 
         public BindingRope(ProfessionalBountyQuest quest) : base(5368)
         {
@@ -105,7 +105,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
             writer.Write(m_BoundMobile);
         }
 

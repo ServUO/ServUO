@@ -8,7 +8,7 @@ namespace Server.Items
     [TypeAlias("drNO.ThieveItems.GemOfSalvation")]
     public class GemOfSalvation : Item
     {
-        public override int LabelNumber { get { return 1094939; } } // Gem of Salvation
+        public override int LabelNumber => 1094939;  // Gem of Salvation
 
         [Constructable]
         public GemOfSalvation()
@@ -62,7 +62,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

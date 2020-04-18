@@ -18,79 +18,55 @@ namespace Server.Engines.Quests.Doom
         {
         }
 
-        public override int TalkNumber
-        {
-            get
-            {
-                return 6159;
-            }
-        }// Ask about Chyloth
-        public override bool ClickTitle
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool IsActiveVendor
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool DisallowAllMoves
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override int TalkNumber => 6159;// Ask about Chyloth
+        public override bool ClickTitle => true;
+        public override bool IsActiveVendor => true;
+        public override bool DisallowAllMoves => false;
         public SummoningAltar Altar
         {
             get
             {
-                if (this.m_Altar == null || this.m_Altar.Deleted || this.m_Altar.Map != this.Map || !Utility.InRange(this.m_Altar.Location, this.Location, AltarRange))
+                if (m_Altar == null || m_Altar.Deleted || m_Altar.Map != Map || !Utility.InRange(m_Altar.Location, Location, AltarRange))
                 {
-                    foreach (Item item in this.GetItemsInRange(AltarRange))
+                    foreach (Item item in GetItemsInRange(AltarRange))
                     {
                         if (item is SummoningAltar)
                         {
-                            this.m_Altar = (SummoningAltar)item;
+                            m_Altar = (SummoningAltar)item;
                             break;
                         }
                     }
                 }
 
-                return this.m_Altar;
+                return m_Altar;
             }
         }
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBMage());
+            m_SBInfos.Add(new SBMage());
         }
 
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = true;
-            this.Hue = 0x8835;
-            this.Body = 0x191;
+            Female = true;
+            Hue = 0x8835;
+            Body = 0x191;
 
-            this.Name = "Victoria";
+            Name = "Victoria";
         }
 
         public override void InitOutfit()
         {
-            this.EquipItem(new GrandGrimoire());
+            EquipItem(new GrandGrimoire());
 
-            this.EquipItem(this.SetHue(new Sandals(), 0x455));
-            this.EquipItem(this.SetHue(new SkullCap(), 0x455));
-            this.EquipItem(this.SetHue(new PlainDress(), 0x455));
+            EquipItem(SetHue(new Sandals(), 0x455));
+            EquipItem(SetHue(new SkullCap(), 0x455));
+            EquipItem(SetHue(new PlainDress(), 0x455));
 
-            this.HairItemID = 0x203C;
-            this.HairHue = 0x482;
+            HairItemID = 0x203C;
+            HairHue = 0x482;
         }
 
         public override bool OnDragDrop(Mobile from, Item dropped)
@@ -128,14 +104,14 @@ namespace Server.Engines.Quests.Doom
                                 if (!bones.Deleted)
                                 {
                                     // TODO: Accurate?
-                                    this.SayTo(from, 1050038); // You have already given me all the Daemon bones necessary to weave the spell.  Keep these for a later time.
+                                    SayTo(from, 1050038); // You have already given me all the Daemon bones necessary to weave the spell.  Keep these for a later time.
                                 }
                             }
                         }
                         else
                         {
                             // TODO: Accurate?
-                            this.SayTo(from, 1050038); // You have already given me all the Daemon bones necessary to weave the spell.  Keep these for a later time.
+                            SayTo(from, 1050038); // You have already given me all the Daemon bones necessary to weave the spell.  Keep these for a later time.
                         }
 
                         return false;
@@ -157,7 +133,7 @@ namespace Server.Engines.Quests.Doom
 
             if (qs == null && QuestSystem.CanOfferQuest(player, typeof(TheSummoningQuest)))
             {
-                this.Direction = this.GetDirectionTo(player);
+                Direction = GetDirectionTo(player);
                 new TheSummoningQuest(this, player).SendOffer();
             }
         }
@@ -166,7 +142,7 @@ namespace Server.Engines.Quests.Doom
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

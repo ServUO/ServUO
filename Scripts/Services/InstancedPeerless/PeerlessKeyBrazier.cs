@@ -101,7 +101,7 @@ namespace Server.Engines.InstancedPeerless
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             writer.Write(m_Platform);
             writer.Write(m_Key);

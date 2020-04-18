@@ -96,8 +96,8 @@ namespace Server
         public static void CheckRecipeDrop(CreatureDeathEventArgs e)
         {
             BaseCreature bc = e.Creature as BaseCreature;
-            var c = e.Corpse;
-            var killer = e.Killer;
+            Container c = e.Corpse;
+            Mobile killer = e.Killer;
 
             if (SpellHelper.IsEodon(c.Map, c.Location))
             {
@@ -132,14 +132,14 @@ namespace Server
             }
         }
 
-        public static Type[] ArmorDropTypes { get { return _ArmorDropTypes; } }
+        public static Type[] ArmorDropTypes => _ArmorDropTypes;
         private static readonly Type[] _ArmorDropTypes =
         {
             typeof(AloronsBustier), typeof(AloronsGorget), typeof(AloronsHelm), typeof(AloronsLegs), typeof(AloronsLongSkirt), typeof(AloronsSkirt), typeof(AloronsTunic),
             typeof(DardensBustier), typeof(DardensHelm), typeof(DardensLegs), typeof(DardensSleeves), typeof(DardensTunic)
         };
 
-        public static int[] RecipeTypes { get { return _RecipeTypes; } }
+        public static int[] RecipeTypes => _RecipeTypes;
         private static readonly int[] _RecipeTypes =
         {
             560, 561, 562, 563, 564, 565, 566,

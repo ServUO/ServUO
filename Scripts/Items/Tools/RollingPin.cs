@@ -8,14 +8,14 @@ namespace Server.Items
         public RollingPin()
             : base(0x1043)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         [Constructable]
         public RollingPin(int uses)
             : base(uses, 0x1043)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public RollingPin(Serial serial)
@@ -23,18 +23,12 @@ namespace Server.Items
         {
         }
 
-        public override CraftSystem CraftSystem
-        {
-            get
-            {
-                return DefCooking.CraftSystem;
-            }
-        }
+        public override CraftSystem CraftSystem => DefCooking.CraftSystem;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

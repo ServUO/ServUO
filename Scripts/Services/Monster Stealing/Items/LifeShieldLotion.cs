@@ -5,7 +5,7 @@ namespace Server.Items
     [TypeAlias("drNO.ThieveItems.LifeShieldLotion")]
     public class LifeShieldLotion : BaseBalmOrLotion
     {
-        public override int LabelNumber { get { return 1094945; } } // Life Shield Lotion
+        public override int LabelNumber => 1094945;  // Life Shield Lotion
 
         [Constructable]
         public LifeShieldLotion()
@@ -49,7 +49,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

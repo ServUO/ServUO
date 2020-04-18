@@ -13,7 +13,7 @@ namespace Server.Items
     {
         public abstract int Radius { get; }
 
-        public override bool RequireFreeHand { get { return false; } }
+        public override bool RequireFreeHand => false;
 
         public BaseExplodingTarPotion(PotionEffect effect) : base(0xF06, effect)
         {
@@ -57,7 +57,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -183,10 +183,7 @@ namespace Server.Items
         {
             private readonly BaseExplodingTarPotion m_Potion;
 
-            public BaseExplodingTarPotion Potion
-            {
-                get { return m_Potion; }
-            }
+            public BaseExplodingTarPotion Potion => m_Potion;
 
             public ThrowTarget(BaseExplodingTarPotion potion) : base(12, true, TargetFlags.None)
             {

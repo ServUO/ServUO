@@ -16,12 +16,12 @@ namespace Server
 
         public EnhancementAttributes(string title)
         {
-            this.Title = title;
-            this.Attributes = new AosAttributes(null);
-            this.WeaponAttributes = new AosWeaponAttributes(null);
-            this.ArmorAttributes = new AosArmorAttributes(null);
-            this.AbsorptionAttributes = new SAAbsorptionAttributes(null);
-            this.ExtendedWeaponAttributes = new ExtendedWeaponAttributes(null);
+            Title = title;
+            Attributes = new AosAttributes(null);
+            WeaponAttributes = new AosWeaponAttributes(null);
+            ArmorAttributes = new AosArmorAttributes(null);
+            AbsorptionAttributes = new SAAbsorptionAttributes(null);
+            ExtendedWeaponAttributes = new ExtendedWeaponAttributes(null);
         }
     }
 

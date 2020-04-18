@@ -64,7 +64,7 @@ namespace Server.Items
             {
                 m_Type = value;
 
-                var info = m_Table.FirstOrDefault(x => x.Type == m_Type);
+                HairDyeInfo info = m_Table.FirstOrDefault(x => x.Type == m_Type);
 
                 if (info != null)
                 {
@@ -79,7 +79,7 @@ namespace Server.Items
             }
         }
 
-        public override int LabelNumber { get { return 1071387; } } // Natural Hair Dye
+        public override int LabelNumber => 1071387;  // Natural Hair Dye
 
         public override void GetProperties(ObjectPropertyList list)
         {
@@ -105,7 +105,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.WriteEncodedInt((int)m_Type);
         }
@@ -119,7 +119,7 @@ namespace Server.Items
             Type = (HairDyeType)reader.ReadEncodedInt();
         }
 
-        public static HairDyeInfo[] Table { get { return m_Table; } }
+        public static HairDyeInfo[] Table => m_Table;
         private static readonly HairDyeInfo[] m_Table =
         {
             // Hue, Label

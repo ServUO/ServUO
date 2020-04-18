@@ -10,42 +10,24 @@ namespace Server.Gumps
         private string m_Name;
         public ParentNode(XmlTextReader xml, ParentNode parent)
         {
-            this.m_Parent = parent;
+            m_Parent = parent;
 
-            this.Parse(xml);
+            Parse(xml);
         }
 
-        public ParentNode Parent
-        {
-            get
-            {
-                return this.m_Parent;
-            }
-        }
-        public object[] Children
-        {
-            get
-            {
-                return this.m_Children;
-            }
-        }
-        public string Name
-        {
-            get
-            {
-                return this.m_Name;
-            }
-        }
+        public ParentNode Parent => m_Parent;
+        public object[] Children => m_Children;
+        public string Name => m_Name;
         private void Parse(XmlTextReader xml)
         {
             if (xml.MoveToAttribute("name"))
-                this.m_Name = xml.Value;
+                m_Name = xml.Value;
             else
-                this.m_Name = "empty";
+                m_Name = "empty";
 
             if (xml.IsEmptyElement)
             {
-                this.m_Children = new object[0];
+                m_Children = new object[0];
             }
             else
             {
@@ -68,7 +50,7 @@ namespace Server.Gumps
                     }
                 }
 
-                this.m_Children = children.ToArray();
+                m_Children = children.ToArray();
             }
         }
     }

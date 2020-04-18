@@ -10,20 +10,8 @@ namespace Server.Commands.Generic
         {
         }
 
-        public override ExtensionInfo Info
-        {
-            get
-            {
-                return ExtInfo;
-            }
-        }
-        public ObjectConditional Conditional
-        {
-            get
-            {
-                return this.m_Conditional;
-            }
-        }
+        public override ExtensionInfo Info => ExtInfo;
+        public ObjectConditional Conditional => m_Conditional;
         public static void Initialize()
         {
             ExtensionInfo.Register(ExtInfo);
@@ -34,7 +22,7 @@ namespace Server.Commands.Generic
             if (baseType == null)
                 throw new InvalidOperationException("Insanity.");
 
-            this.m_Conditional.Compile(ref assembly);
+            m_Conditional.Compile(ref assembly);
         }
 
         public override void Parse(Mobile from, string[] arguments, int offset, int size)
@@ -42,12 +30,12 @@ namespace Server.Commands.Generic
             if (size < 1)
                 throw new Exception("Invalid condition syntax.");
 
-            this.m_Conditional = ObjectConditional.ParseDirect(from, arguments, offset, size);
+            m_Conditional = ObjectConditional.ParseDirect(from, arguments, offset, size);
         }
 
         public override bool IsValid(object obj)
         {
-            return this.m_Conditional.CheckCondition(obj);
+            return m_Conditional.CheckCondition(obj);
         }
     }
 }

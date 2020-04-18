@@ -94,7 +94,7 @@ namespace Server.Engines.Craft
 
             m_AutoCraftTable[from] = this;
 
-            this.Start();
+            Start();
         }
 
         public AutoCraftTimer(Mobile from, CraftSystem system, CraftItem item, ITool tool, int amount)

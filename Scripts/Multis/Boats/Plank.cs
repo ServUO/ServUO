@@ -31,7 +31,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);//version
+            writer.Write(0);//version
 
             writer.Write(Boat);
             writer.Write((int)Side);
@@ -80,10 +80,10 @@ namespace Server.Items
         public uint KeyValue { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsOpen { get { return ItemID == 0x3ED5 || ItemID == 0x3ED4 || ItemID == 0x3E84 || ItemID == 0x3E89; } }
+        public bool IsOpen => ItemID == 0x3ED5 || ItemID == 0x3ED4 || ItemID == 0x3E84 || ItemID == 0x3E89;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Starboard { get { return Side == PlankSide.Starboard; } }
+        public bool Starboard => Side == PlankSide.Starboard;
 
         public void SetFacing(Direction dir)
         {

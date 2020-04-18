@@ -2,7 +2,7 @@
 {
     public class YellowPolkaDotBikini : LeatherBustierArms
     {
-        public override int LabelNumber { get { return 1149962; } }
+        public override int LabelNumber => 1149962;
 
         [Constructable]
         public YellowPolkaDotBikini()
@@ -24,7 +24,7 @@
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)

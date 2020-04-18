@@ -8,11 +8,7 @@ namespace Server.Mobiles
     [CorpseName("the corpse of niporailem")]
     public class Niporailem : BaseSABoss
     {
-        public override Type[] UniqueSAList
-        {
-            get
-            {
-                return new Type[] { typeof(HelmOfVillainousEpiphany), typeof(GorgetOfVillainousEpiphany), typeof(BreastplateOfVillainousEpiphany),
+        public override Type[] UniqueSAList => new Type[] { typeof(HelmOfVillainousEpiphany), typeof(GorgetOfVillainousEpiphany), typeof(BreastplateOfVillainousEpiphany),
                                                                         typeof(ArmsOfVillainousEpiphany), typeof(GauntletsOfVillainousEpiphany), typeof(LegsOfVillainousEpiphany),
                                                                         typeof(KiltOfVillainousEpiphany), typeof(EarringsOfVillainousEpiphany), typeof(GargishBreastplateOfVillainousEpiphany),
                                                                         typeof(GargishArmsOfVillainousEpiphany), typeof(NecklaceOfVillainousEpiphany), typeof(GargishLegsOfVillainousEpiphany),
@@ -20,10 +16,8 @@ namespace Server.Mobiles
                                                                         typeof(ArmsOfVirtuousEpiphany), typeof(GauntletsOfVirtuousEpiphany), typeof(LegsOfVirtuousEpiphany),
                                                                         typeof(KiltOfVirtuousEpiphany), typeof(EarringsOfVirtuousEpiphany), typeof(GargishBreastplateOfVirtuousEpiphany),
                                                                         typeof(GargishArmsOfVirtuousEpiphany), typeof(NecklaceOfVirtuousEpiphany), typeof(GargishLegsOfVirtuousEpiphany)};
-            }
-        }
 
-        public override Type[] SharedSAList { get { return new Type[] { typeof(BladeOfBattle), typeof(DemonBridleRing), typeof(GiantSteps), typeof(SwordOfShatteredHopes) }; } }
+        public override Type[] SharedSAList => new Type[] { typeof(BladeOfBattle), typeof(DemonBridleRing), typeof(GiantSteps), typeof(SwordOfShatteredHopes) };
 
         [Constructable]
         public Niporailem()
@@ -74,8 +68,8 @@ namespace Server.Mobiles
             AddLoot(LootPack.Gems, 6);
         }
 
-        public override int Meat { get { return 1; } }
-        public override bool AlwaysMurderer { get { return true; } }
+        public override int Meat => 1;
+        public override bool AlwaysMurderer => true;
 
         public override int GetIdleSound() { return 1609; }
         public override int GetAngerSound() { return 1606; }
@@ -90,7 +84,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write(1);
 
             writer.WriteMobileList(Helpers, true);
         }
@@ -120,7 +114,7 @@ namespace Server.Mobiles
             if (m_NextSpawn > DateTime.UtcNow || Helpers.Where(bc => bc.Deleted).Count() > 10)
                 return;
 
-            if (this.Hits > (this.HitsMax / 4))
+            if (Hits > (HitsMax / 4))
             {
                 if (0.25 >= Utility.RandomDouble())
                 {
@@ -155,18 +149,18 @@ namespace Server.Mobiles
 
         public void SpawnSpectralArmour(Mobile m)
         {
-            Map map = this.Map;
+            Map map = Map;
 
             if (map == null)
                 return;
 
             SpectralArmour spawned = new SpectralArmour();
 
-            spawned.Team = this.Team;
+            spawned.Team = Team;
             spawned.SummonMaster = this;
 
             bool validLocation = false;
-            Point3D loc = this.Location;
+            Point3D loc = Location;
 
             for (int j = 0; !validLocation && j < 10; ++j)
             {
@@ -174,7 +168,7 @@ namespace Server.Mobiles
                 int y = Y + Utility.Random(3) - 1;
                 int z = map.GetAverageZ(x, y);
 
-                if (validLocation = map.CanFit(x, y, this.Z, 16, false, false))
+                if (validLocation = map.CanFit(x, y, Z, 16, false, false))
                     loc = new Point3D(x, y, Z);
                 else if (validLocation = map.CanFit(x, y, z, 16, false, false))
                     loc = new Point3D(x, y, z);
@@ -190,7 +184,7 @@ namespace Server.Mobiles
 
         public void DeleteSpectralArmour(Mobile target)
         {
-            foreach (var m in Helpers.Where(bc => bc != null && !bc.Deleted))
+            foreach (BaseCreature m in Helpers.Where(bc => bc != null && !bc.Deleted))
             {
                 m.Delete();
             }
@@ -209,11 +203,11 @@ namespace Server.Mobiles
         {
             DoHarmful(m);
 
-            this.MovingParticles(m, 0xEEF, 9, 0, false, true, 0, 0, 9502, 6014, 0x11D, EffectLayer.Waist, 0);
+            MovingParticles(m, 0xEEF, 9, 0, false, true, 0, 0, 9502, 6014, 0x11D, EffectLayer.Waist, 0);
 
             Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
             {
-                var treasure = new NiporailemsTreasure(this);
+                NiporailemsTreasure treasure = new NiporailemsTreasure(this);
 
                 m.PlaySound(0x033);
                 m.AddToBackpack(treasure);

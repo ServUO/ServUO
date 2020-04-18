@@ -4,9 +4,9 @@ namespace Server.Items
 {
     public class TheRobeOfBritanniaAri : BaseOuterTorso, IRepairable
     {
-        public CraftSystem RepairSystem { get { return DefTailoring.CraftSystem; } }
+        public CraftSystem RepairSystem => DefTailoring.CraftSystem;
 
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public TheRobeOfBritanniaAri()
             : base(0x2684)
@@ -19,46 +19,16 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1094931;
-            }
-        }// The Robe of Britannia "Ari" [Replica]
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 150;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 150;
-            }
-        }
-        public override bool CanFortify
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override int LabelNumber => 1094931;// The Robe of Britannia "Ari" [Replica]
+        public override int BasePhysicalResistance => 10;
+        public override int InitMinHits => 150;
+        public override int InitMaxHits => 150;
+        public override bool CanFortify => false;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

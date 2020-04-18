@@ -5,16 +5,16 @@ namespace Server.Items
 {
     public class WineRack : LockableContainer, IFlipable, IDyable
     {
-        public override string DefaultName { get { return "Wine Rack"; } }
+        public override string DefaultName => "Wine Rack";
 
-        public override int DefaultGumpID { get { return 0x44; } }
+        public override int DefaultGumpID => 0x44;
 
-        public virtual int SouthID { get { return 0xA568; } }
-        public virtual int SouthEmptyID { get { return 0xA567; } }
-        public virtual int EastID { get { return 0xA56A; } }
-        public virtual int EastEmptyID { get { return 0xA569; } }
+        public virtual int SouthID => 0xA568;
+        public virtual int SouthEmptyID => 0xA567;
+        public virtual int EastID => 0xA56A;
+        public virtual int EastEmptyID => 0xA569;
 
-        public bool IsEmpty { get { return Items.Count == 0; } }
+        public bool IsEmpty => Items.Count == 0;
 
         public bool Dye(Mobile from, DyeTub sender)
         {
@@ -96,7 +96,7 @@ namespace Server.Items
             }
         }
 
-        public override bool DisplaysContent { get { return false; } }
+        public override bool DisplaysContent => false;
 
         public override void GetProperties(ObjectPropertyList list)
         {
@@ -164,7 +164,7 @@ namespace Server.Items
 
             if (house != null && IsSecure)
             {
-                var secure = house.GetSecureInfoFor(this);
+                SecureInfo secure = house.GetSecureInfoFor(this);
 
                 return secure != null && house.HasSecureAccess(from, secure);
             }
@@ -174,7 +174,7 @@ namespace Server.Items
 
         public virtual void OnItemDropped(Mobile from, Item item, BaseHouse house)
         {
-            var secure = house.GetSecureInfoFor(this);
+            SecureInfo secure = house.GetSecureInfoFor(this);
 
             if (secure != null && !house.HasSecureAccess(from, secure))
             {
@@ -204,7 +204,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

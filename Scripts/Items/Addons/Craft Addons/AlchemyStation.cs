@@ -4,8 +4,8 @@ namespace Server.Items
 {
     public class AlchemyStation : CraftAddon
     {
-        public override BaseAddonDeed Deed { get { return new AlchemyStationDeed(Tools.Count > 0 ? Tools[0].UsesRemaining : 0); } }
-        public override CraftSystem CraftSystem { get { return DefAlchemy.CraftSystem; } }
+        public override BaseAddonDeed Deed => new AlchemyStationDeed(Tools.Count > 0 ? Tools[0].UsesRemaining : 0);
+        public override CraftSystem CraftSystem => DefAlchemy.CraftSystem;
 
         [Constructable]
         public AlchemyStation(bool south, int uses)
@@ -31,7 +31,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -44,8 +44,8 @@ namespace Server.Items
 
     public class AlchemyStationDeed : CraftAddonDeed
     {
-        public override int LabelNumber { get { return 1157070; } } // Alchemy Station
-        public override BaseAddon Addon { get { return new AlchemyStation(_South, UsesRemaining); } }
+        public override int LabelNumber => 1157070;  // Alchemy Station
+        public override BaseAddon Addon => new AlchemyStation(_South, UsesRemaining);
 
         private bool _South;
 
@@ -80,7 +80,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

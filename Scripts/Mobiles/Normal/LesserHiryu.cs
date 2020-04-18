@@ -52,48 +52,12 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool StatLossAfterTame
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 3;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 16;
-            }
-        }
-        public override int Hides
-        {
-            get
-            {
-                return 60;
-            }
-        }
-        public override FoodType FavoriteFood
-        {
-            get
-            {
-                return FoodType.Meat;
-            }
-        }
-        public override bool CanAngerOnTame
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool StatLossAfterTame => true;
+        public override int TreasureMapLevel => 3;
+        public override int Meat => 16;
+        public override int Hides => 60;
+        public override FoodType FavoriteFood => FoodType.Meat;
+        public override bool CanAngerOnTame => true;
 
         public override bool OverrideBondingReqs()
         {
@@ -135,7 +99,7 @@ namespace Server.Mobiles
 
         public override double GetControlChance(Mobile m, bool useBaseSkill)
         {
-            var profile = PetTrainingHelper.GetAbilityProfile(this);
+            AbilityProfile profile = PetTrainingHelper.GetAbilityProfile(this);
 
             if (profile != null && profile.HasCustomized())
             {
@@ -167,7 +131,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)4);
+            writer.Write(4);
         }
 
         public override void Deserialize(GenericReader reader)

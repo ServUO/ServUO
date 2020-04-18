@@ -5,12 +5,12 @@ namespace Server.Items
 {
     public class HelmOfVirtuousEpiphany : PlateHelm, IEpiphanyArmor
     {
-        public Alignment Alignment { get { return Alignment.Good; } }
-        public SurgeType Type { get { return SurgeType.Mana; } }
-        public int Frequency { get { return EpiphanyHelper.GetFrequency(Parent as Mobile, this); } }
-        public int Bonus { get { return EpiphanyHelper.GetBonus(Parent as Mobile, this); } }
+        public Alignment Alignment => Alignment.Good;
+        public SurgeType Type => SurgeType.Mana;
+        public int Frequency => EpiphanyHelper.GetFrequency(Parent as Mobile, this);
+        public int Bonus => EpiphanyHelper.GetBonus(Parent as Mobile, this);
 
-        public override int LabelNumber { get { return 1150233; } } // Helm of Virtuous Epiphany
+        public override int LabelNumber => 1150233;  // Helm of Virtuous Epiphany
 
         [Constructable]
         public HelmOfVirtuousEpiphany()
@@ -32,7 +32,7 @@ namespace Server.Items
 
             if (canEquip)
             {
-                foreach (var armor in from.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in from.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -47,9 +47,9 @@ namespace Server.Items
 
             if (parent is Mobile)
             {
-                var m = (Mobile)parent;
+                Mobile m = (Mobile)parent;
 
-                foreach (var armor in m.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -75,12 +75,12 @@ namespace Server.Items
 
     public class GorgetOfVirtuousEpiphany : PlateGorget, IEpiphanyArmor
     {
-        public Alignment Alignment { get { return Alignment.Good; } }
-        public SurgeType Type { get { return SurgeType.Mana; } }
-        public int Frequency { get { return EpiphanyHelper.GetFrequency(Parent as Mobile, this); } }
-        public int Bonus { get { return EpiphanyHelper.GetBonus(Parent as Mobile, this); } }
+        public Alignment Alignment => Alignment.Good;
+        public SurgeType Type => SurgeType.Mana;
+        public int Frequency => EpiphanyHelper.GetFrequency(Parent as Mobile, this);
+        public int Bonus => EpiphanyHelper.GetBonus(Parent as Mobile, this);
 
-        public override int LabelNumber { get { return 1150234; } } // Gorget of Virtuous Epiphany
+        public override int LabelNumber => 1150234;  // Gorget of Virtuous Epiphany
 
         [Constructable]
         public GorgetOfVirtuousEpiphany()
@@ -102,7 +102,7 @@ namespace Server.Items
 
             if (canEquip)
             {
-                foreach (var armor in from.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in from.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -117,9 +117,9 @@ namespace Server.Items
 
             if (parent is Mobile)
             {
-                var m = (Mobile)parent;
+                Mobile m = (Mobile)parent;
 
-                foreach (var armor in m.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -145,12 +145,12 @@ namespace Server.Items
 
     public class BreastplateOfVirtuousEpiphany : PlateChest, IEpiphanyArmor
     {
-        public Alignment Alignment { get { return Alignment.Good; } }
-        public SurgeType Type { get { return SurgeType.Mana; } }
-        public int Frequency { get { return EpiphanyHelper.GetFrequency(Parent as Mobile, this); } }
-        public int Bonus { get { return EpiphanyHelper.GetBonus(Parent as Mobile, this); } }
+        public Alignment Alignment => Alignment.Good;
+        public SurgeType Type => SurgeType.Mana;
+        public int Frequency => EpiphanyHelper.GetFrequency(Parent as Mobile, this);
+        public int Bonus => EpiphanyHelper.GetBonus(Parent as Mobile, this);
 
-        public override int LabelNumber { get { return 1150235; } } // Breastplate of Virtuous Epiphany
+        public override int LabelNumber => 1150235;  // Breastplate of Virtuous Epiphany
 
         [Constructable]
         public BreastplateOfVirtuousEpiphany()
@@ -172,7 +172,7 @@ namespace Server.Items
 
             if (canEquip)
             {
-                foreach (var armor in from.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in from.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -187,9 +187,9 @@ namespace Server.Items
 
             if (parent is Mobile)
             {
-                var m = (Mobile)parent;
+                Mobile m = (Mobile)parent;
 
-                foreach (var armor in m.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -215,12 +215,12 @@ namespace Server.Items
 
     public class ArmsOfVirtuousEpiphany : PlateArms, IEpiphanyArmor
     {
-        public Alignment Alignment { get { return Alignment.Good; } }
-        public SurgeType Type { get { return SurgeType.Mana; } }
-        public int Frequency { get { return EpiphanyHelper.GetFrequency(Parent as Mobile, this); } }
-        public int Bonus { get { return EpiphanyHelper.GetBonus(Parent as Mobile, this); } }
+        public Alignment Alignment => Alignment.Good;
+        public SurgeType Type => SurgeType.Mana;
+        public int Frequency => EpiphanyHelper.GetFrequency(Parent as Mobile, this);
+        public int Bonus => EpiphanyHelper.GetBonus(Parent as Mobile, this);
 
-        public override int LabelNumber { get { return 1150236; } } // Arms of Virtuous Epiphany
+        public override int LabelNumber => 1150236;  // Arms of Virtuous Epiphany
 
         [Constructable]
         public ArmsOfVirtuousEpiphany()
@@ -242,7 +242,7 @@ namespace Server.Items
 
             if (canEquip)
             {
-                foreach (var armor in from.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in from.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -257,9 +257,9 @@ namespace Server.Items
 
             if (parent is Mobile)
             {
-                var m = (Mobile)parent;
+                Mobile m = (Mobile)parent;
 
-                foreach (var armor in m.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -285,12 +285,12 @@ namespace Server.Items
 
     public class GauntletsOfVirtuousEpiphany : PlateGloves, IEpiphanyArmor
     {
-        public Alignment Alignment { get { return Alignment.Good; } }
-        public SurgeType Type { get { return SurgeType.Mana; } }
-        public int Frequency { get { return EpiphanyHelper.GetFrequency(Parent as Mobile, this); } }
-        public int Bonus { get { return EpiphanyHelper.GetBonus(Parent as Mobile, this); } }
+        public Alignment Alignment => Alignment.Good;
+        public SurgeType Type => SurgeType.Mana;
+        public int Frequency => EpiphanyHelper.GetFrequency(Parent as Mobile, this);
+        public int Bonus => EpiphanyHelper.GetBonus(Parent as Mobile, this);
 
-        public override int LabelNumber { get { return 1150237; } } // Gauntlets of Virtuous Epiphany
+        public override int LabelNumber => 1150237;  // Gauntlets of Virtuous Epiphany
 
         [Constructable]
         public GauntletsOfVirtuousEpiphany()
@@ -312,7 +312,7 @@ namespace Server.Items
 
             if (canEquip)
             {
-                foreach (var armor in from.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in from.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -327,9 +327,9 @@ namespace Server.Items
 
             if (parent is Mobile)
             {
-                var m = (Mobile)parent;
+                Mobile m = (Mobile)parent;
 
-                foreach (var armor in m.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -355,12 +355,12 @@ namespace Server.Items
 
     public class LegsOfVirtuousEpiphany : PlateLegs, IEpiphanyArmor
     {
-        public Alignment Alignment { get { return Alignment.Good; } }
-        public SurgeType Type { get { return SurgeType.Mana; } }
-        public int Frequency { get { return EpiphanyHelper.GetFrequency(Parent as Mobile, this); } }
-        public int Bonus { get { return EpiphanyHelper.GetBonus(Parent as Mobile, this); } }
+        public Alignment Alignment => Alignment.Good;
+        public SurgeType Type => SurgeType.Mana;
+        public int Frequency => EpiphanyHelper.GetFrequency(Parent as Mobile, this);
+        public int Bonus => EpiphanyHelper.GetBonus(Parent as Mobile, this);
 
-        public override int LabelNumber { get { return 1150238; } } // Leggings of Virtuous Epiphany
+        public override int LabelNumber => 1150238;  // Leggings of Virtuous Epiphany
 
         [Constructable]
         public LegsOfVirtuousEpiphany()
@@ -382,7 +382,7 @@ namespace Server.Items
 
             if (canEquip)
             {
-                foreach (var armor in from.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in from.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -397,9 +397,9 @@ namespace Server.Items
 
             if (parent is Mobile)
             {
-                var m = (Mobile)parent;
+                Mobile m = (Mobile)parent;
 
-                foreach (var armor in m.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -425,12 +425,12 @@ namespace Server.Items
 
     public class KiltOfVirtuousEpiphany : GargishPlateKilt, IEpiphanyArmor
     {
-        public Alignment Alignment { get { return Alignment.Good; } }
-        public SurgeType Type { get { return SurgeType.Mana; } }
-        public int Frequency { get { return EpiphanyHelper.GetFrequency(Parent as Mobile, this); } }
-        public int Bonus { get { return EpiphanyHelper.GetBonus(Parent as Mobile, this); } }
+        public Alignment Alignment => Alignment.Good;
+        public SurgeType Type => SurgeType.Mana;
+        public int Frequency => EpiphanyHelper.GetFrequency(Parent as Mobile, this);
+        public int Bonus => EpiphanyHelper.GetBonus(Parent as Mobile, this);
 
-        public override int LabelNumber { get { return 1150262; } } // Kilt of Virtuous Epiphany
+        public override int LabelNumber => 1150262;  // Kilt of Virtuous Epiphany
 
         [Constructable]
         public KiltOfVirtuousEpiphany()
@@ -452,7 +452,7 @@ namespace Server.Items
 
             if (canEquip)
             {
-                foreach (var armor in from.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in from.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -467,9 +467,9 @@ namespace Server.Items
 
             if (parent is Mobile)
             {
-                var m = (Mobile)parent;
+                Mobile m = (Mobile)parent;
 
-                foreach (var armor in m.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -495,12 +495,12 @@ namespace Server.Items
 
     public class EarringsOfVirtuousEpiphany : GargishEarrings, IEpiphanyArmor
     {
-        public Alignment Alignment { get { return Alignment.Good; } }
-        public SurgeType Type { get { return SurgeType.Mana; } }
-        public int Frequency { get { return EpiphanyHelper.GetFrequency(Parent as Mobile, this); } }
-        public int Bonus { get { return EpiphanyHelper.GetBonus(Parent as Mobile, this); } }
+        public Alignment Alignment => Alignment.Good;
+        public SurgeType Type => SurgeType.Mana;
+        public int Frequency => EpiphanyHelper.GetFrequency(Parent as Mobile, this);
+        public int Bonus => EpiphanyHelper.GetBonus(Parent as Mobile, this);
 
-        public override int LabelNumber { get { return 1150262; } } // Earrings of Virtuous Epiphany
+        public override int LabelNumber => 1150262;  // Earrings of Virtuous Epiphany
 
         [Constructable]
         public EarringsOfVirtuousEpiphany()
@@ -522,7 +522,7 @@ namespace Server.Items
 
             if (canEquip)
             {
-                foreach (var armor in from.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in from.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -537,9 +537,9 @@ namespace Server.Items
 
             if (parent is Mobile)
             {
-                var m = (Mobile)parent;
+                Mobile m = (Mobile)parent;
 
-                foreach (var armor in m.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -565,12 +565,12 @@ namespace Server.Items
 
     public class GargishBreastplateOfVirtuousEpiphany : GargishPlateChest, IEpiphanyArmor
     {
-        public Alignment Alignment { get { return Alignment.Good; } }
-        public SurgeType Type { get { return SurgeType.Mana; } }
-        public int Frequency { get { return EpiphanyHelper.GetFrequency(Parent as Mobile, this); } }
-        public int Bonus { get { return EpiphanyHelper.GetBonus(Parent as Mobile, this); } }
+        public Alignment Alignment => Alignment.Good;
+        public SurgeType Type => SurgeType.Mana;
+        public int Frequency => EpiphanyHelper.GetFrequency(Parent as Mobile, this);
+        public int Bonus => EpiphanyHelper.GetBonus(Parent as Mobile, this);
 
-        public override int LabelNumber { get { return 1150235; } } // Breastplate of Virtuous Epiphany
+        public override int LabelNumber => 1150235;  // Breastplate of Virtuous Epiphany
 
         [Constructable]
         public GargishBreastplateOfVirtuousEpiphany()
@@ -591,7 +591,7 @@ namespace Server.Items
 
             if (canEquip)
             {
-                foreach (var armor in from.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in from.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -606,9 +606,9 @@ namespace Server.Items
 
             if (parent is Mobile)
             {
-                var m = (Mobile)parent;
+                Mobile m = (Mobile)parent;
 
-                foreach (var armor in m.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -634,12 +634,12 @@ namespace Server.Items
 
     public class GargishArmsOfVirtuousEpiphany : GargishPlateArms, IEpiphanyArmor
     {
-        public Alignment Alignment { get { return Alignment.Good; } }
-        public SurgeType Type { get { return SurgeType.Mana; } }
-        public int Frequency { get { return EpiphanyHelper.GetFrequency(Parent as Mobile, this); } }
-        public int Bonus { get { return EpiphanyHelper.GetBonus(Parent as Mobile, this); } }
+        public Alignment Alignment => Alignment.Good;
+        public SurgeType Type => SurgeType.Mana;
+        public int Frequency => EpiphanyHelper.GetFrequency(Parent as Mobile, this);
+        public int Bonus => EpiphanyHelper.GetBonus(Parent as Mobile, this);
 
-        public override int LabelNumber { get { return 1150236; } } // Arms of Virtuous Epiphany
+        public override int LabelNumber => 1150236;  // Arms of Virtuous Epiphany
 
         [Constructable]
         public GargishArmsOfVirtuousEpiphany()
@@ -660,7 +660,7 @@ namespace Server.Items
 
             if (canEquip)
             {
-                foreach (var armor in from.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in from.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -675,9 +675,9 @@ namespace Server.Items
 
             if (parent is Mobile)
             {
-                var m = (Mobile)parent;
+                Mobile m = (Mobile)parent;
 
-                foreach (var armor in m.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -703,12 +703,12 @@ namespace Server.Items
 
     public class NecklaceOfVirtuousEpiphany : GargishNecklace, IEpiphanyArmor
     {
-        public Alignment Alignment { get { return Alignment.Good; } }
-        public SurgeType Type { get { return SurgeType.Mana; } }
-        public int Frequency { get { return EpiphanyHelper.GetFrequency(Parent as Mobile, this); } }
-        public int Bonus { get { return EpiphanyHelper.GetBonus(Parent as Mobile, this); } }
+        public Alignment Alignment => Alignment.Good;
+        public SurgeType Type => SurgeType.Mana;
+        public int Frequency => EpiphanyHelper.GetFrequency(Parent as Mobile, this);
+        public int Bonus => EpiphanyHelper.GetBonus(Parent as Mobile, this);
 
-        public override int LabelNumber { get { return 1150261; } } // Necklace of Virtuous Epiphany
+        public override int LabelNumber => 1150261;  // Necklace of Virtuous Epiphany
 
         [Constructable]
         public NecklaceOfVirtuousEpiphany()
@@ -729,7 +729,7 @@ namespace Server.Items
 
             if (canEquip)
             {
-                foreach (var armor in from.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in from.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -744,9 +744,9 @@ namespace Server.Items
 
             if (parent is Mobile)
             {
-                var m = (Mobile)parent;
+                Mobile m = (Mobile)parent;
 
-                foreach (var armor in m.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -772,12 +772,12 @@ namespace Server.Items
 
     public class GargishLegsOfVirtuousEpiphany : GargishPlateLegs, IEpiphanyArmor
     {
-        public Alignment Alignment { get { return Alignment.Good; } }
-        public SurgeType Type { get { return SurgeType.Mana; } }
-        public int Frequency { get { return EpiphanyHelper.GetFrequency(Parent as Mobile, this); } }
-        public int Bonus { get { return EpiphanyHelper.GetBonus(Parent as Mobile, this); } }
+        public Alignment Alignment => Alignment.Good;
+        public SurgeType Type => SurgeType.Mana;
+        public int Frequency => EpiphanyHelper.GetFrequency(Parent as Mobile, this);
+        public int Bonus => EpiphanyHelper.GetBonus(Parent as Mobile, this);
 
-        public override int LabelNumber { get { return 1150238; } } // Legs of Virtuous Epiphany
+        public override int LabelNumber => 1150238;  // Legs of Virtuous Epiphany
 
         [Constructable]
         public GargishLegsOfVirtuousEpiphany()
@@ -798,7 +798,7 @@ namespace Server.Items
 
             if (canEquip)
             {
-                foreach (var armor in from.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in from.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }
@@ -813,9 +813,9 @@ namespace Server.Items
 
             if (parent is Mobile)
             {
-                var m = (Mobile)parent;
+                Mobile m = (Mobile)parent;
 
-                foreach (var armor in m.Items.Where(i => i is IEpiphanyArmor))
+                foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
                 }

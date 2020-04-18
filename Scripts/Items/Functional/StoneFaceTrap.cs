@@ -15,7 +15,7 @@ namespace Server.Items
         public StoneFaceTrap()
             : base(0x10FC)
         {
-            this.Light = LightType.Circle225;
+            Light = LightType.Circle225;
         }
 
         public StoneFaceTrap(Serial serial)
@@ -28,7 +28,7 @@ namespace Server.Items
         {
             get
             {
-                switch (this.ItemID)
+                switch (ItemID)
                 {
                     case 0x10F5:
                     case 0x10F6:
@@ -48,53 +48,29 @@ namespace Server.Items
             }
             set
             {
-                bool breathing = this.Breathing;
+                bool breathing = Breathing;
 
-                this.ItemID = (breathing ? GetFireID(value) : GetBaseID(value));
+                ItemID = (breathing ? GetFireID(value) : GetBaseID(value));
             }
         }
         public bool Breathing
         {
             get
             {
-                return (this.ItemID == GetFireID(this.Type));
+                return (ItemID == GetFireID(Type));
             }
             set
             {
                 if (value)
-                    this.ItemID = GetFireID(this.Type);
+                    ItemID = GetFireID(Type);
                 else
-                    this.ItemID = GetBaseID(this.Type);
+                    ItemID = GetBaseID(Type);
             }
         }
-        public override bool PassivelyTriggered
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override TimeSpan PassiveTriggerDelay
-        {
-            get
-            {
-                return TimeSpan.Zero;
-            }
-        }
-        public override int PassiveTriggerRange
-        {
-            get
-            {
-                return 2;
-            }
-        }
-        public override TimeSpan ResetDelay
-        {
-            get
-            {
-                return TimeSpan.Zero;
-            }
-        }
+        public override bool PassivelyTriggered => true;
+        public override TimeSpan PassiveTriggerDelay => TimeSpan.Zero;
+        public override int PassiveTriggerRange => 2;
+        public override TimeSpan ResetDelay => TimeSpan.Zero;
         public static int GetBaseID(StoneFaceTrapType type)
         {
             switch (type)
@@ -130,9 +106,9 @@ namespace Server.Items
             if (!from.Alive || from.IsStaff())
                 return;
 
-            Effects.PlaySound(this.Location, this.Map, 0x359);
+            Effects.PlaySound(Location, Map, 0x359);
 
-            this.Breathing = true;
+            Breathing = true;
 
             Timer.DelayCall(TimeSpan.FromSeconds(2.0), new TimerCallback(FinishBreath));
             Timer.DelayCall(TimeSpan.FromSeconds(1.0), new TimerCallback(TriggerDamage));
@@ -140,7 +116,7 @@ namespace Server.Items
 
         public virtual void FinishBreath()
         {
-            this.Breathing = false;
+            Breathing = false;
         }
 
         public virtual void TriggerDamage()
@@ -158,7 +134,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -167,7 +143,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            this.Breathing = false;
+            Breathing = false;
         }
     }
 
@@ -192,7 +168,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

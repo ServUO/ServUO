@@ -2,11 +2,8 @@ namespace Server.Items
 {
     public class InitiationSuitBag : Bag
     {
-        public override bool IsArtifact { get { return true; } }
-        public override string DefaultName
-        {
-            get { return "Initiation Suit Bag"; }
-        }
+        public override bool IsArtifact => true;
+        public override string DefaultName => "Initiation Suit Bag";
 
         [Constructable]
         public InitiationSuitBag()
@@ -29,7 +26,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

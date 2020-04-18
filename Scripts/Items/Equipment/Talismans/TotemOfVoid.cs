@@ -5,9 +5,9 @@ namespace Server.Items
 {
     public class TotemOfVoid : BaseTalisman
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1075035; } }// Totem of the Void
-        public override bool ForceShowName { get { return true; } }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1075035; // Totem of the Void
+        public override bool ForceShowName => true;
 
         [Constructable]
         public TotemOfVoid()
@@ -34,7 +34,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1); // version
+            writer.Write(1); // version
         }
 
         public override void Deserialize(GenericReader reader)

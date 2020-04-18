@@ -29,9 +29,9 @@ namespace Server.Items
         {
             if (copy != null)
             {
-                this.m_Type = copy.Type;
-                this.m_Name = copy.Name;
-                this.m_Amount = copy.Amount;
+                m_Type = copy.Type;
+                m_Name = copy.Name;
+                m_Amount = copy.Amount;
             }
         }
 
@@ -42,9 +42,9 @@ namespace Server.Items
 
         public TalismanAttribute(Type type, TextDefinition name, int amount)
         {
-            this.m_Type = type;
-            this.m_Name = name;
-            this.m_Amount = amount;
+            m_Type = type;
+            m_Name = name;
+            m_Amount = amount;
         }
 
         public TalismanAttribute(GenericReader reader)
@@ -54,13 +54,13 @@ namespace Server.Items
             SaveFlag flags = (SaveFlag)reader.ReadEncodedInt();
 
             if (GetSaveFlag(flags, SaveFlag.Type))
-                this.m_Type = ScriptCompiler.FindTypeByFullName(reader.ReadString(), false);
+                m_Type = ScriptCompiler.FindTypeByFullName(reader.ReadString(), false);
 
             if (GetSaveFlag(flags, SaveFlag.Name))
-                this.m_Name = TextDefinition.Deserialize(reader);
+                m_Name = TextDefinition.Deserialize(reader);
 
             if (GetSaveFlag(flags, SaveFlag.Amount))
-                this.m_Amount = reader.ReadEncodedInt();
+                m_Amount = reader.ReadEncodedInt();
         }
 
         [Flags]
@@ -76,11 +76,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Type;
+                return m_Type;
             }
             set
             {
-                this.m_Type = value;
+                m_Type = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -88,11 +88,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Name;
+                return m_Name;
             }
             set
             {
-                this.m_Name = value;
+                m_Name = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -100,63 +100,51 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Amount;
+                return m_Amount;
             }
             set
             {
-                this.m_Amount = value;
+                m_Amount = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsEmpty
-        {
-            get
-            {
-                return this.m_Type == null;
-            }
-        }
+        public bool IsEmpty => m_Type == null;
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsItem
-        {
-            get
-            {
-                return this.m_Type != null && this.m_Type.Namespace.Equals("Server.Items");
-            }
-        }
+        public bool IsItem => m_Type != null && m_Type.Namespace.Equals("Server.Items");
         public override string ToString()
         {
-            if (this.m_Type != null)
-                return this.m_Type.Name;
+            if (m_Type != null)
+                return m_Type.Name;
 
             return "None";
         }
 
         public virtual void Serialize(GenericWriter writer)
         {
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             SaveFlag flags = SaveFlag.None;
 
-            SetSaveFlag(ref flags, SaveFlag.Type, this.m_Type != null);
-            SetSaveFlag(ref flags, SaveFlag.Name, this.m_Name != null);
-            SetSaveFlag(ref flags, SaveFlag.Amount, this.m_Amount != 0);
+            SetSaveFlag(ref flags, SaveFlag.Type, m_Type != null);
+            SetSaveFlag(ref flags, SaveFlag.Name, m_Name != null);
+            SetSaveFlag(ref flags, SaveFlag.Amount, m_Amount != 0);
 
             writer.WriteEncodedInt((int)flags);
 
             if (GetSaveFlag(flags, SaveFlag.Type))
-                writer.Write(this.m_Type.FullName);
+                writer.Write(m_Type.FullName);
 
             if (GetSaveFlag(flags, SaveFlag.Name))
-                TextDefinition.Serialize(writer, this.m_Name);
+                TextDefinition.Serialize(writer, m_Name);
 
             if (GetSaveFlag(flags, SaveFlag.Amount))
-                writer.WriteEncodedInt(this.m_Amount);
+                writer.WriteEncodedInt(m_Amount);
         }
 
         public int DamageBonus(Mobile to)
         {
-            if (to != null && to.GetType() == this.m_Type)
-                return this.m_Amount;
+            if (to != null && to.GetType() == m_Type)
+                return m_Amount;
 
             return 0;
         }

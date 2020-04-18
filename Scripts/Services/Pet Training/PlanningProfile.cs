@@ -23,7 +23,7 @@ namespace Server.Mobiles
 
         public void AddToPlan(object tp, int value, int cost)
         {
-            var entry = Entries.FirstOrDefault(e => e.TrainPoint == tp);
+            PlanningEntry entry = Entries.FirstOrDefault(e => e.TrainPoint == tp);
 
             if (entry != null)
                 Entries.Remove(entry);
@@ -32,13 +32,13 @@ namespace Server.Mobiles
 
             if (tp is MagicalAbility && (MagicalAbility)tp <= MagicalAbility.WrestlingMastery)
             {
-                var trainingPoint = PetTrainingHelper.GetTrainingPoint(tp);
+                TrainingPoint trainingPoint = PetTrainingHelper.GetTrainingPoint(tp);
 
-                foreach (var en in Entries)
+                foreach (PlanningEntry en in Entries)
                 {
                     if (trainingPoint.Requirements != null && trainingPoint.Requirements.Length > 0)
                     {
-                        foreach (var req in trainingPoint.Requirements.Where(r => r != null))
+                        foreach (TrainingPointRequirement req in trainingPoint.Requirements.Where(r => r != null))
                         {
                             if ((req.Requirement is WeaponAbility && en.TrainPoint is WeaponAbility) ||
                                (req.Requirement is SpecialAbility && en.TrainPoint is SpecialAbility) ||
@@ -98,7 +98,7 @@ namespace Server.Mobiles
 
             for (int i = 0; i < Entries.Count; i++)
             {
-                var entry = Entries[i];
+                PlanningEntry entry = Entries[i];
                 object o = entry.TrainPoint;
 
                 if (o is MagicalAbility)

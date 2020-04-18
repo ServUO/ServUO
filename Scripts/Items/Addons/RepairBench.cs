@@ -13,7 +13,7 @@ namespace Server.Items
 {
     public class RepairBenchComponent : LocalizedAddonComponent
     {
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         public RepairBenchComponent(int id)
             : base(id, 1158860) // Repair Bench
@@ -188,11 +188,11 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write(1);
 
             writer.Write((int)Level);
 
-            writer.Write((bool)IsRewardItem);
+            writer.Write(IsRewardItem);
 
             writer.Write(Tools == null ? 0 : Tools.Count);
 
@@ -202,7 +202,7 @@ namespace Server.Items
                 {
                     writer.Write((int)x.Skill);
                     writer.Write((int)x.SkillValue);
-                    writer.Write((int)x.Charges);
+                    writer.Write(x.Charges);
                 });
             }
         }
@@ -234,7 +234,7 @@ namespace Server.Items
 
     public class RepairBenchDeed : BaseAddonDeed, IRewardItem, IRewardOption
     {
-        public override int LabelNumber { get { return 1158860; } } // Repair Bench
+        public override int LabelNumber => 1158860;  // Repair Bench
 
         public override BaseAddon Addon
         {
@@ -327,9 +327,9 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
-            writer.Write((bool)m_IsRewardItem);
+            writer.Write(m_IsRewardItem);
 
             writer.Write(Tools == null ? 0 : Tools.Count);
 
@@ -339,7 +339,7 @@ namespace Server.Items
                 {
                     writer.Write((int)x.Skill);
                     writer.Write((int)x.SkillValue);
-                    writer.Write((int)x.Charges);
+                    writer.Write(x.Charges);
                 });
             }
         }
@@ -424,7 +424,7 @@ namespace Server.Items
                 case 0: { m_Addon.Using = false; break; }
                 case 1:
                     {
-                        var tool = m_Addon.Tools.Find(x => x.Skill == m_Skill);
+                        RepairBenchDefinition tool = m_Addon.Tools.Find(x => x.Skill == m_Skill);
 
                         tool.SkillValue = 0;
                         tool.Charges = 0;
@@ -590,7 +590,7 @@ namespace Server.Items
                     }
                     else
                     {
-                        var tool = m_Addon.Tools.Find(x => x.Skill == deed.RepairSkill);
+                        RepairBenchDefinition tool = m_Addon.Tools.Find(x => x.Skill == deed.RepairSkill);
 
                         tool.SkillValue = deed.SkillLevel;
                         tool.Charges++;
@@ -616,7 +616,7 @@ namespace Server.Items
                             }
                             else if (m_Addon.Tools.Any(x => x.Skill == deed.RepairSkill && x.SkillValue == deed.SkillLevel))
                             {
-                                var tool = m_Addon.Tools.Find(x => x.Skill == deed.RepairSkill);
+                                RepairBenchDefinition tool = m_Addon.Tools.Find(x => x.Skill == deed.RepairSkill);
 
                                 tool.SkillValue = deed.SkillLevel;
                                 tool.Charges++;

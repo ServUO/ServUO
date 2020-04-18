@@ -14,26 +14,14 @@ namespace Server.Items
         private BaseBoat m_Boat;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile Owner { get { return m_Owner; } }
+        public Mobile Owner => m_Owner;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public BaseBoat Boat { get { return m_Boat; } }
+        public BaseBoat Boat => m_Boat;
 
-        public override TimeSpan DecayTime
-        {
-            get
-            {
-                return TimeSpan.FromMinutes(DT);
-            }
-        }
+        public override TimeSpan DecayTime => TimeSpan.FromMinutes(DT);
 
-        public override bool Decays
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool Decays => true;
 
         public ShipCrate(Mobile owner, BaseBoat boat)
         {
@@ -62,7 +50,7 @@ namespace Server.Items
             base.GetContextMenuEntries(from, list);
             list.Add(new DestroyCrate(from, this));
 
-            if (m_Boat != null && this.Items.Count > 0)
+            if (m_Boat != null && Items.Count > 0)
                 list.Add(new LoadShip(from, this));
         }
 
@@ -127,7 +115,7 @@ namespace Server.Items
         {
             private readonly ShipCrate m_Crate;
 
-            public override int LabelNumber { get { return 1116523; } } // Are you sure you want to destroy your shipping crate and its contents?
+            public override int LabelNumber => 1116523;  // Are you sure you want to destroy your shipping crate and its contents?
 
             public InternalGump(ShipCrate crate)
             {
@@ -156,7 +144,7 @@ namespace Server.Items
         {
             base.OnItemRemoved(item);
 
-            if (this.TotalItems == 0)
+            if (TotalItems == 0)
                 Delete();
         }
 
@@ -168,7 +156,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write(m_Owner);
             writer.Write(m_Boat);

@@ -96,7 +96,7 @@ namespace Server.Items
             }
         }
 
-        public virtual bool BreakOnDepletion { get { return true; } }
+        public virtual bool BreakOnDepletion => true;
 
         public abstract HarvestSystem HarvestSystem { get; }
 
@@ -316,12 +316,12 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
-            writer.Write((Mobile)m_Crafter);
+            writer.Write(m_Crafter);
             writer.Write((int)m_Quality);
 
-            writer.Write((int)m_UsesRemaining);
+            writer.Write(m_UsesRemaining);
         }
 
         public override void Deserialize(GenericReader reader)

@@ -2,26 +2,26 @@ namespace Server.Items
 {
     public class GreymistChest : LeatherChest
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public GreymistChest()
             : base()
         {
-            this.SetHue = 0xCB;
+            SetHue = 0xCB;
 
-            this.Attributes.BonusMana = 2;
-            this.Attributes.SpellDamage = 2;
+            Attributes.BonusMana = 2;
+            Attributes.SpellDamage = 2;
 
-            this.SetAttributes.Luck = 100;
-            this.SetAttributes.NightSight = 1;
+            SetAttributes.Luck = 100;
+            SetAttributes.NightSight = 1;
 
-            this.SetSelfRepair = 3;
+            SetSelfRepair = 3;
 
-            this.SetPhysicalBonus = 3;
-            this.SetFireBonus = 3;
-            this.SetColdBonus = 3;
-            this.SetPoisonBonus = 3;
-            this.SetEnergyBonus = 3;
+            SetPhysicalBonus = 3;
+            SetFireBonus = 3;
+            SetColdBonus = 3;
+            SetPoisonBonus = 3;
+            SetEnergyBonus = 3;
         }
 
         public GreymistChest(Serial serial)
@@ -29,67 +29,19 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074307;
-            }
-        }// Greymist Armor
-        public override SetItem SetID
-        {
-            get
-            {
-                return SetItem.Acolyte;
-            }
-        }
-        public override int Pieces
-        {
-            get
-            {
-                return 4;
-            }
-        }
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 7;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 7;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 3;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 4;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 4;
-            }
-        }
+        public override int LabelNumber => 1074307;// Greymist Armor
+        public override SetItem SetID => SetItem.Acolyte;
+        public override int Pieces => 4;
+        public override int BasePhysicalResistance => 7;
+        public override int BaseFireResistance => 7;
+        public override int BaseColdResistance => 3;
+        public override int BasePoisonResistance => 4;
+        public override int BaseEnergyResistance => 4;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

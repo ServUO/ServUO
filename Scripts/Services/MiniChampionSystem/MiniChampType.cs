@@ -49,7 +49,7 @@ namespace Server.Engines.MiniChamps
         public MiniChampLevelInfo[] Levels { get; set; }
         public Type EssenceType { get; set; }
 
-        public int MaxLevel { get { return Levels == null ? 0 : Levels.Length; } }
+        public int MaxLevel => Levels == null ? 0 : Levels.Length;
 
         public MiniChampInfo(Type essenceType, params MiniChampLevelInfo[] levels)
         {
@@ -67,7 +67,7 @@ namespace Server.Engines.MiniChamps
             return null;
         }
 
-        public static MiniChampInfo[] Table { get { return m_Table; } }
+        public static MiniChampInfo[] Table => m_Table;
 
         private static readonly MiniChampInfo[] m_Table = new MiniChampInfo[]
         {

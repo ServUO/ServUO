@@ -15,49 +15,19 @@ namespace Server.Engines.Quests
             AddReward(new BaseReward(typeof(DeliciouslyTastyTreat), 2, "Deliciously Tasty Treat"));
         }
 
-        public TierQuestInfo TierInfo { get { return TierQuestInfo.Zosilem; } }
-        public override TimeSpan RestartDelay { get { return TierQuestInfo.GetCooldown(TierInfo, GetType()); } }
+        public TierQuestInfo TierInfo => TierQuestInfo.Zosilem;
+        public override TimeSpan RestartDelay => TierQuestInfo.GetCooldown(TierInfo, GetType());
 
-        public override object Title
-        {
-            get
-            {
-                return 1112778;
-            }
-        }
-        public override object Description
-        {
-            get
-            {
-                return 1112963;
-            }
-        }
-        public override object Refuse
-        {
-            get
-            {
-                return 1112964;
-            }
-        }
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1112965;
-            }
-        }
-        public override object Complete
-        {
-            get
-            {
-                return 1112966;
-            }
-        }
+        public override object Title => 1112778;
+        public override object Description => 1112963;
+        public override object Refuse => 1112964;
+        public override object Uncomplete => 1112965;
+        public override object Complete => 1112966;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -81,49 +51,19 @@ namespace Server.Engines.Quests
             AddReward(new BaseReward(typeof(InfusedAlchemistsGem), "Infused Alchemist's Gem"));
         }
 
-        public TierQuestInfo TierInfo { get { return TierQuestInfo.Zosilem; } }
-        public override TimeSpan RestartDelay { get { return TierQuestInfo.GetCooldown(TierInfo, GetType()); } }
+        public TierQuestInfo TierInfo => TierQuestInfo.Zosilem;
+        public override TimeSpan RestartDelay => TierQuestInfo.GetCooldown(TierInfo, GetType());
 
-        public override object Title
-        {
-            get
-            {
-                return 1112779;
-            }
-        }
-        public override object Description
-        {
-            get
-            {
-                return 1112967;
-            }
-        }
-        public override object Refuse
-        {
-            get
-            {
-                return 1112968;
-            }
-        }
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1112969;
-            }
-        }
-        public override object Complete
-        {
-            get
-            {
-                return 1112970;
-            }
-        }
+        public override object Title => 1112779;
+        public override object Description => 1112967;
+        public override object Refuse => 1112968;
+        public override object Uncomplete => 1112969;
+        public override object Complete => 1112970;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -146,49 +86,19 @@ namespace Server.Engines.Quests
             AddReward(new BaseReward(typeof(VialofArmorEssence), 1, "Vial Of Armor Essence"));
         }
 
-        public TierQuestInfo TierInfo { get { return TierQuestInfo.Zosilem; } }
-        public override TimeSpan RestartDelay { get { return TierQuestInfo.GetCooldown(TierInfo, GetType()); } }
+        public TierQuestInfo TierInfo => TierQuestInfo.Zosilem;
+        public override TimeSpan RestartDelay => TierQuestInfo.GetCooldown(TierInfo, GetType());
 
-        public override object Title
-        {
-            get
-            {
-                return 1112780;
-            }
-        }
-        public override object Description
-        {
-            get
-            {
-                return 1112971;
-            }
-        }
-        public override object Refuse
-        {
-            get
-            {
-                return 1112972;
-            }
-        }
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1112973;
-            }
-        }
-        public override object Complete
-        {
-            get
-            {
-                return 1112974;
-            }
-        }
+        public override object Title => 1112780;
+        public override object Description => 1112971;
+        public override object Refuse => 1112972;
+        public override object Uncomplete => 1112973;
+        public override object Complete => 1112974;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -210,49 +120,19 @@ namespace Server.Engines.Quests
             AddReward(new BaseReward(typeof(ElixirofVeriteConversion), 1, "Elixir of Verite Conversion"));
         }
 
-        public TierQuestInfo TierInfo { get { return TierQuestInfo.Zosilem; } }
-        public override TimeSpan RestartDelay { get { return TierQuestInfo.GetCooldown(TierInfo, GetType()); } }
+        public TierQuestInfo TierInfo => TierQuestInfo.Zosilem;
+        public override TimeSpan RestartDelay => TierQuestInfo.GetCooldown(TierInfo, GetType());
 
-        public override object Title
-        {
-            get
-            {
-                return 1112781;
-            }
-        }
-        public override object Description
-        {
-            get
-            {
-                return 1112975;
-            }
-        }
-        public override object Refuse
-        {
-            get
-            {
-                return 1112976;
-            }
-        }
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1112977;
-            }
-        }
-        public override object Complete
-        {
-            get
-            {
-                return 1112978;
-            }
-        }
+        public override object Title => 1112781;
+        public override object Description => 1112975;
+        public override object Refuse => 1112976;
+        public override object Uncomplete => 1112977;
+        public override object Complete => 1112978;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -274,49 +154,19 @@ namespace Server.Engines.Quests
             AddReward(new BaseReward(typeof(ElixirofValoriteConversion), 1, "Elixir of Valorite Conversion"));
         }
 
-        public TierQuestInfo TierInfo { get { return TierQuestInfo.Zosilem; } }
-        public override TimeSpan RestartDelay { get { return TierQuestInfo.GetCooldown(TierInfo, GetType()); } }
+        public TierQuestInfo TierInfo => TierQuestInfo.Zosilem;
+        public override TimeSpan RestartDelay => TierQuestInfo.GetCooldown(TierInfo, GetType());
 
-        public override object Title
-        {
-            get
-            {
-                return 1112783;
-            }
-        }
-        public override object Description
-        {
-            get
-            {
-                return 1112983;
-            }
-        }
-        public override object Refuse
-        {
-            get
-            {
-                return 1112984;
-            }
-        }
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1112985;
-            }
-        }
-        public override object Complete
-        {
-            get
-            {
-                return 1112986;
-            }
-        }
+        public override object Title => 1112783;
+        public override object Description => 1112983;
+        public override object Refuse => 1112984;
+        public override object Uncomplete => 1112985;
+        public override object Complete => 1112986;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -339,50 +189,20 @@ namespace Server.Engines.Quests
             AddReward(new BaseReward(typeof(IrresistiblyTastyTreat), "Irresistibly Tasty Treat"));
         }
 
-        public TierQuestInfo TierInfo { get { return TierQuestInfo.Zosilem; } }
-        public override TimeSpan RestartDelay { get { return TierQuestInfo.GetCooldown(TierInfo, GetType()); } }
+        public TierQuestInfo TierInfo => TierQuestInfo.Zosilem;
+        public override TimeSpan RestartDelay => TierQuestInfo.GetCooldown(TierInfo, GetType());
 
-        public override object Title
-        {
-            get
-            {
-                return 1112782;
-            }
-        }
+        public override object Title => 1112782;
 
-        public override object Description
-        {
-            get
-            {
-                return 1112979;
-            }
-        }
-        public override object Refuse
-        {
-            get
-            {
-                return 1112979;
-            }
-        }
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1112980;
-            }
-        }
-        public override object Complete
-        {
-            get
-            {
-                return 1112982;
-            }
-        }
+        public override object Description => 1112979;
+        public override object Refuse => 1112979;
+        public override object Uncomplete => 1112980;
+        public override object Complete => 1112982;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

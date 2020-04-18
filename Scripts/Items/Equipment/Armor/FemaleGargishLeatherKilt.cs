@@ -25,23 +25,23 @@ namespace Server.Items
         {
         }
 
-        public override int BasePhysicalResistance { get { return 5; } }
-        public override int BaseFireResistance { get { return 6; } }
-        public override int BaseColdResistance { get { return 7; } }
-        public override int BasePoisonResistance { get { return 6; } }
-        public override int BaseEnergyResistance { get { return 6; } }
+        public override int BasePhysicalResistance => 5;
+        public override int BaseFireResistance => 6;
+        public override int BaseColdResistance => 7;
+        public override int BasePoisonResistance => 6;
+        public override int BaseEnergyResistance => 6;
 
-        public override int InitMinHits { get { return 30; } }
-        public override int InitMaxHits { get { return 50; } }
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 50;
 
-        public override int StrReq { get { return 25; } }
+        public override int StrReq => 25;
 
-        public override ArmorMeditationAllowance DefMedAllowance { get { return ArmorMeditationAllowance.All; } }
-        public override ArmorMaterialType MaterialType { get { return ArmorMaterialType.Leather; } }
-        public override CraftResource DefaultResource { get { return CraftResource.RegularLeather; } }
+        public override ArmorMeditationAllowance DefMedAllowance => ArmorMeditationAllowance.All;
+        public override ArmorMaterialType MaterialType => ArmorMaterialType.Leather;
+        public override CraftResource DefaultResource => CraftResource.RegularLeather;
 
-        public override Race RequiredRace { get { return Race.Gargoyle; } }
-        public override bool CanBeWornByGargoyles { get { return true; } }
+        public override Race RequiredRace => Race.Gargoyle;
+        public override bool CanBeWornByGargoyles => true;
 
         public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
@@ -69,7 +69,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

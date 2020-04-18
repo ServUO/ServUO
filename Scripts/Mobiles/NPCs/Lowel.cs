@@ -8,59 +8,29 @@ namespace Server.Engines.Quests
         public ComfortableSeatingQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(BambooChair), "straw chair", 1, 0xB5B));
+            AddObjective(new ObtainObjective(typeof(BambooChair), "straw chair", 1, 0xB5B));
 
-            this.AddReward(new BaseReward(typeof(CarpentersSatchel), 1074282)); // Craftsman's Satchel
+            AddReward(new BaseReward(typeof(CarpentersSatchel), 1074282)); // Craftsman's Satchel
         }
 
         /* Comfortable Seating */
-        public override object Title
-        {
-            get
-            {
-                return 1075517;
-            }
-        }
+        public override object Title => 1075517;
         /* Hail friend, hast thou a moment? A mishap with a saw hath left me in a sorry state, for it shall be a while 
         before I canst return to carpentry. In the meantime, I need a comfortable chair that I may rest. Could thou craft 
         a straw chair?  Only a tool, such as a dovetail saw, a few boards, and some skill as a carpenter is needed. Remember, 
         this is a piece of furniture, so please pay attention to detail. */
-        public override object Description
-        {
-            get
-            {
-                return 1075518;
-            }
-        }
+        public override object Description => 1075518;
         /* I quite understand your reluctance.  If you reconsider, I'll be here. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1072687;
-            }
-        }
+        public override object Refuse => 1072687;
         /* Is all going well? I look forward to the simple comforts in my very own home. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1075509;
-            }
-        }
+        public override object Uncomplete => 1075509;
         /* This is perfect! */
-        public override object Complete
-        {
-            get
-            {
-                return 1074720;
-            }
-        }
+        public override object Complete => 1074720;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -84,43 +54,37 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(ComfortableSeatingQuest)
                 };
-            }
-        }
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = false;
+            CantWalk = true;
+            Race = Race.Human;
 
-            this.Hue = 0x83F6;
-            this.HairItemID = 0x203C;
-            this.HairHue = 0x6B1;
+            Hue = 0x83F6;
+            HairItemID = 0x203C;
+            HairHue = 0x6B1;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Boots(0x543));
-            this.AddItem(new ShortPants(0x758));
-            this.AddItem(new FancyShirt(0x53A));
-            this.AddItem(new HalfApron(0x6D2));
+            AddItem(new Backpack());
+            AddItem(new Boots(0x543));
+            AddItem(new ShortPants(0x758));
+            AddItem(new FancyShirt(0x53A));
+            AddItem(new HalfApron(0x6D2));
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -137,10 +101,10 @@ namespace Server.Engines.Quests
         public CarpentersSatchel()
             : base()
         {
-            this.Hue = BaseReward.SatchelHue();
+            Hue = BaseReward.SatchelHue();
 
-            this.AddItem(new Board(10));
-            this.AddItem(new DovetailSaw());
+            AddItem(new Board(10));
+            AddItem(new DovetailSaw());
         }
 
         public CarpentersSatchel(Serial serial)
@@ -152,7 +116,7 @@ namespace Server.Engines.Quests
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

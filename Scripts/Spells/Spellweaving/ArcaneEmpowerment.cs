@@ -14,27 +14,9 @@ namespace Server.Spells.Spellweaving
         {
         }
 
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(3);
-            }
-        }
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 24.0;
-            }
-        }
-        public override int RequiredMana
-        {
-            get
-            {
-                return 50;
-            }
-        }
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(3);
+        public override double RequiredSkill => 24.0;
+        public override int RequiredMana => 50;
 
         public static double GetDispellBonus(Mobile m)
         {

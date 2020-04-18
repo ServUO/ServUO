@@ -4,11 +4,11 @@ namespace Server.Items
 {
     public class WeaponEngravingTool : BaseEngravingTool
     {
-        public override int LabelNumber { get { return 1076158; } } // Weapon Engraving Tool
+        public override int LabelNumber => 1076158;  // Weapon Engraving Tool
 
-        public override bool DeletedItem { get { return false; } }
-        public override int LowSkillMessage { get { return 1076178; } } // // Your tinkering skill is too low to fix this yourself.  An NPC tinkerer can help you repair this for a fee.
-        public override int VeteranRewardCliloc { get { return 1076224; } } // 8th Year Veteran Reward
+        public override bool DeletedItem => false;
+        public override int LowSkillMessage => 1076178;  // // Your tinkering skill is too low to fix this yourself.  An NPC tinkerer can help you repair this for a fee.
+        public override int VeteranRewardCliloc => 1076224;  // 8th Year Veteran Reward
 
         [Constructable]
         public WeaponEngravingTool()
@@ -22,21 +22,15 @@ namespace Server.Items
         {
         }
 
-        public override Type[] Engraves
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Engraves => new Type[]
                 {
                     typeof(BaseWeapon)
                 };
-            }
-        }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

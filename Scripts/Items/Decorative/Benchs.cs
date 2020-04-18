@@ -8,7 +8,7 @@ namespace Server.Items
         public WoodenBench()
             : base(0xB2D)
         {
-            this.Weight = 6;
+            Weight = 6;
         }
 
         public WoodenBench(Serial serial)
@@ -20,7 +20,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

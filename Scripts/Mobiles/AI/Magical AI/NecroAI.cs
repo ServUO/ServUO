@@ -7,8 +7,8 @@ namespace Server.Mobiles
 {
     public class NecroAI : MageAI
     {
-        public override SkillName CastSkill { get { return SkillName.Necromancy; } }
-        public override bool UsesMagery { get { return false; } }
+        public override SkillName CastSkill => SkillName.Necromancy;
+        public override bool UsesMagery => false;
 
         public NecroAI(BaseCreature m)
             : base(m)
@@ -16,8 +16,8 @@ namespace Server.Mobiles
 
         public override Spell GetRandomDamageSpell()
         {
-            var mana = m_Mobile.Mana;
-            var select = 1;
+            int mana = m_Mobile.Mana;
+            int select = 1;
 
             if (mana >= 29)
                 select = 4;
@@ -53,8 +53,8 @@ namespace Server.Mobiles
 
         public override Spell GetRandomCurseSpell()
         {
-            var mana = m_Mobile.Mana;
-            var select = 1;
+            int mana = m_Mobile.Mana;
+            int select = 1;
 
             if (mana >= 17)
                 select = 5;

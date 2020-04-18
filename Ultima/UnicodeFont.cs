@@ -86,10 +86,10 @@ namespace Ultima
             {
                 return null;
             }
-            var bmp = new Bitmap(Width, Height, Settings.PixelFormat);
+            Bitmap bmp = new Bitmap(Width, Height, Settings.PixelFormat);
             BitmapData bd = bmp.LockBits(
                 new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.WriteOnly, Settings.PixelFormat);
-            var line = (ushort*)bd.Scan0;
+            ushort* line = (ushort*)bd.Scan0;
             int delta = bd.Stride >> 1;
             for (int y = 0; y < Height; ++y, line += delta)
             {
@@ -129,7 +129,7 @@ namespace Ultima
             Bytes = new byte[bmp.Height * (((bmp.Width - 1) / 8) + 1)];
             BitmapData bd = bmp.LockBits(
                 new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.WriteOnly, Settings.PixelFormat);
-            var line = (ushort*)bd.Scan0;
+            ushort* line = (ushort*)bd.Scan0;
             //int delta = bd.Stride >> 1;
             for (int y = 0; y < bmp.Height; ++y)
             {
@@ -175,9 +175,9 @@ namespace Ultima
                     continue;
                 }
                 Fonts[i] = new UnicodeFont();
-                using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    using (var bin = new BinaryReader(fs))
+                    using (BinaryReader bin = new BinaryReader(fs))
                     {
                         for (int c = 0; c < 0x10000; ++c)
                         {
@@ -215,7 +215,7 @@ namespace Ultima
         /// <returns></returns>
         public static Bitmap WriteText(int fontId, string text)
         {
-            var result = new Bitmap(Fonts[fontId].GetWidth(text) + 2, Fonts[fontId].GetHeight(text) + 2);
+            Bitmap result = new Bitmap(Fonts[fontId].GetWidth(text) + 2, Fonts[fontId].GetHeight(text) + 2);
 
             int dx = 2;
             int dy = 2;
@@ -242,9 +242,9 @@ namespace Ultima
         public static string Save(string path, int filetype)
         {
             string FileName = Path.Combine(path, m_files[filetype]);
-            using (var fs = new FileStream(FileName, FileMode.Create, FileAccess.Write, FileShare.Write))
+            using (FileStream fs = new FileStream(FileName, FileMode.Create, FileAccess.Write, FileShare.Write))
             {
-                using (var bin = new BinaryWriter(fs))
+                using (BinaryWriter bin = new BinaryWriter(fs))
                 {
                     fs.Seek(0x10000 * 4, SeekOrigin.Begin);
                     bin.Write(0);

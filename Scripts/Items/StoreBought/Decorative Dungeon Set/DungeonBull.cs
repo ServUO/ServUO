@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class DungeonBullAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new DungeonBullDeed(); } }
+        public override BaseAddonDeed Deed => new DungeonBullDeed();
 
         [Constructable]
         public DungeonBullAddon()
@@ -42,7 +42,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -54,8 +54,8 @@ namespace Server.Items
 
     public class DungeonBullDeed : BaseAddonDeed, IRewardOption
     {
-        public override int LabelNumber { get { return 1159467; } } // Dungeon Bull
-        public override BaseAddon Addon { get { return new DungeonBullAddon(m_East); } }
+        public override int LabelNumber => 1159467;  // Dungeon Bull
+        public override BaseAddon Addon => new DungeonBullAddon(m_East);
 
         private bool m_East;
 
@@ -99,7 +99,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

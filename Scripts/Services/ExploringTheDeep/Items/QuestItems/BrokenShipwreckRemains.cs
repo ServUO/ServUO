@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class BrokenShipwreckRemains : BaseDecayingItem
     {
-        public override int LabelNumber { get { return 1154216; } } // Broken Remains of a Shipwreck
+        public override int LabelNumber => 1154216;  // Broken Remains of a Shipwreck
 
         [Constructable]
         public BrokenShipwreckRemains() : this(1)
@@ -14,10 +14,10 @@ namespace Server.Items
         [Constructable]
         public BrokenShipwreckRemains(int amount) : base(0xC2D)
         {
-            this.Hue = 2969;
-            this.Weight = 25.0;
-            this.Amount = amount;
-            this.LootType = LootType.Blessed;
+            Hue = 2969;
+            Weight = 25.0;
+            Amount = amount;
+            LootType = LootType.Blessed;
         }
 
         public override void GetProperties(ObjectPropertyList list)
@@ -27,7 +27,7 @@ namespace Server.Items
             list.Add(1072351); // Quest Item
         }
 
-        public override int Lifespan { get { return 3600; } }
+        public override int Lifespan => 3600;
 
         public override void OnDoubleClick(Mobile from)
         {
@@ -41,7 +41,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

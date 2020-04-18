@@ -5,8 +5,8 @@ namespace Server.Items
 {
     public abstract class BaseLocalizedBook : Item
     {
-        public virtual object Title { get { return "a book"; } }
-        public virtual object Author { get { return "unknown"; } }
+        public virtual object Title => "a book";
+        public virtual object Author => "unknown";
 
         public abstract int[] Contents { get; }
 
@@ -115,7 +115,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

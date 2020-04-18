@@ -16,21 +16,9 @@ namespace Server.Items
         private List<CollectionItem> m_Donations;
         private List<CollectionItem> m_Rewards;
 
-        public List<CollectionItem> Donations
-        {
-            get
-            {
-                return m_Donations;
-            }
-        }
+        public List<CollectionItem> Donations => m_Donations;
 
-        public List<CollectionItem> Rewards
-        {
-            get
-            {
-                return m_Rewards;
-            }
-        }
+        public List<CollectionItem> Rewards => m_Rewards;
 
         private long m_Points;
         private long m_StartTier;
@@ -136,24 +124,12 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Tier
-        {
-            get
-            {
-                return m_Tier;
-            }
-        }
+        public int Tier => m_Tier;
         #endregion
 
         private List<List<object>> m_Tiers;
 
-        public List<List<object>> Tiers
-        {
-            get
-            {
-                return m_Tiers;
-            }
-        }
+        public List<List<object>> Tiers => m_Tiers;
 
         public BaseCollectionItem(int itemID)
             : base(itemID)
@@ -201,19 +177,19 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
-            writer.Write((long)m_Points);
-            writer.Write((long)m_StartTier);
-            writer.Write((long)m_NextTier);
-            writer.Write((long)m_DailyDecay);
-            writer.Write((int)m_Tier);
+            writer.Write(m_Points);
+            writer.Write(m_StartTier);
+            writer.Write(m_NextTier);
+            writer.Write(m_DailyDecay);
+            writer.Write(m_Tier);
 
-            writer.Write((int)m_Tiers.Count);
+            writer.Write(m_Tiers.Count);
 
             for (int i = 0; i < m_Tiers.Count; i++)
             {
-                writer.Write((int)m_Tiers[i].Count);
+                writer.Write(m_Tiers[i].Count);
 
                 for (int j = 0; j < m_Tiers[i].Count; j++)
                     QuestWriter.Object(writer, m_Tiers[i][j]);

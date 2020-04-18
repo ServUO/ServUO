@@ -16,26 +16,20 @@ namespace Server.Spells.Second
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Second;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Second;
 
         public override void OnCast()
         {
-            this.Caster.Target = new InternalTarget(this);
+            Caster.Target = new InternalTarget(this);
         }
 
         public void Target(Mobile m)
         {
-            if (!this.Caster.CanSee(m))
+            if (!Caster.CanSee(m))
             {
-                this.Caster.SendLocalizedMessage(500237); // Target can not be seen.
+                Caster.SendLocalizedMessage(500237); // Target can not be seen.
             }
-            else if (this.CheckBSequence(m))
+            else if (CheckBSequence(m))
             {
                 int oldDex = SpellHelper.GetBuffOffset(m, StatType.Dex);
                 int newDex = SpellHelper.GetOffset(Caster, m, StatType.Dex, false, true);
@@ -46,11 +40,11 @@ namespace Server.Spells.Second
                 }
                 else
                 {
-                    SpellHelper.Turn(this.Caster, m);
+                    SpellHelper.Turn(Caster, m);
 
-                    SpellHelper.AddStatBonus(this.Caster, m, false, StatType.Dex);
-                    int percentage = (int)(SpellHelper.GetOffsetScalar(this.Caster, m, false) * 100);
-                    TimeSpan length = SpellHelper.GetDuration(this.Caster, m);
+                    SpellHelper.AddStatBonus(Caster, m, false, StatType.Dex);
+                    int percentage = (int)(SpellHelper.GetOffsetScalar(Caster, m, false) * 100);
+                    TimeSpan length = SpellHelper.GetDuration(Caster, m);
                     BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Agility, 1075841, length, m, percentage.ToString()));
 
                     m.FixedParticles(0x375A, 10, 15, 5010, EffectLayer.Waist);
@@ -58,7 +52,7 @@ namespace Server.Spells.Second
                 }
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         private class InternalTarget : Target
@@ -67,20 +61,20 @@ namespace Server.Spells.Second
             public InternalTarget(AgilitySpell owner)
                 : base(10, false, TargetFlags.Beneficial)
             {
-                this.m_Owner = owner;
+                m_Owner = owner;
             }
 
             protected override void OnTarget(Mobile from, object o)
             {
                 if (o is Mobile)
                 {
-                    this.m_Owner.Target((Mobile)o);
+                    m_Owner.Target((Mobile)o);
                 }
             }
 
             protected override void OnTargetFinish(Mobile from)
             {
-                this.m_Owner.FinishSequence();
+                m_Owner.FinishSequence();
             }
         }
     }

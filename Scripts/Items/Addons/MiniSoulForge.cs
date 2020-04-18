@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class MiniSoulForge : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new MiniSoulForgeDeed(); } }
+        public override BaseAddonDeed Deed => new MiniSoulForgeDeed();
 
         [Constructable]
         public MiniSoulForge()
@@ -18,7 +18,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -30,7 +30,7 @@ namespace Server.Items
     }
     public class MiniSoulForgeDeed : BaseAddonDeed
     {
-        public override BaseAddon Addon { get { return new MiniSoulForge(); } }
+        public override BaseAddon Addon => new MiniSoulForge();
 
         [Constructable]
         public MiniSoulForgeDeed()
@@ -46,7 +46,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

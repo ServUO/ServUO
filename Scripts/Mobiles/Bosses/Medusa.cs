@@ -10,7 +10,7 @@ namespace Server.Mobiles
     public class Medusa : BaseSABoss, ICarvable
     {
         private readonly List<Mobile> m_TurnedToStone = new List<Mobile>();
-        public List<Mobile> AffectedMobiles { get { return m_TurnedToStone; } }
+        public List<Mobile> AffectedMobiles => m_TurnedToStone;
 
         public List<Mobile> m_Helpers = new List<Mobile>();
 
@@ -72,22 +72,16 @@ namespace Server.Mobiles
         {
         }
 
-        public override Type[] UniqueSAList
-        {
-            get { return new Type[] { typeof(Slither), typeof(IronwoodCompositeBow), typeof(Venom), typeof(PetrifiedSnake), typeof(StoneDragonsTooth), typeof(MedusaFloorTileAddonDeed) }; }
-        }
+        public override Type[] UniqueSAList => new Type[] { typeof(Slither), typeof(IronwoodCompositeBow), typeof(Venom), typeof(PetrifiedSnake), typeof(StoneDragonsTooth), typeof(MedusaFloorTileAddonDeed) };
 
-        public override Type[] SharedSAList
-        {
-            get { return new Type[] { typeof(SummonersKilt) }; }
-        }
+        public override Type[] SharedSAList => new Type[] { typeof(SummonersKilt) };
 
-        public override bool IgnoreYoungProtection { get { return true; } }
-        public override bool AutoDispel { get { return true; } }
-        public override double AutoDispelChance { get { return 1.0; } }
-        public override bool BardImmune { get { return true; } }
-        public override Poison PoisonImmune { get { return Poison.Lethal; } }
-        public override Poison HitPoison { get { return (0.8 >= Utility.RandomDouble() ? Poison.Deadly : Poison.Lethal); } }
+        public override bool IgnoreYoungProtection => true;
+        public override bool AutoDispel => true;
+        public override double AutoDispelChance => 1.0;
+        public override bool BardImmune => true;
+        public override Poison PoisonImmune => Poison.Lethal;
+        public override Poison HitPoison => (0.8 >= Utility.RandomDouble() ? Poison.Deadly : Poison.Lethal);
 
         public override int GetIdleSound() { return 1557; }
         public override int GetAngerSound() { return 1554; }
@@ -142,7 +136,7 @@ namespace Server.Mobiles
         {
             List<Mobile> list = new List<Mobile>();
 
-            IPooledEnumerable eable = this.GetMobilesInRange(12);
+            IPooledEnumerable eable = GetMobilesInRange(12);
             foreach (Mobile m in eable)
             {
                 if (m == null || m == this || m_TurnedToStone.Contains(m) || !CanBeHarmful(m) || !InLOS(m) || m.AccessLevel > AccessLevel.Player)
@@ -556,9 +550,9 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
-            writer.Write((int)m_Scales);
+            writer.Write(m_Scales);
 
             writer.Write(m_Helpers.Count);
 
@@ -669,27 +663,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool DeleteCorpseOnDeath
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool ReacquireOnMovement
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool AlwaysMurderer
-        {
-            get
-            {
-                return !Frozen;
-            }
-        }
+        public override bool DeleteCorpseOnDeath => true;
+        public override bool ReacquireOnMovement => true;
+        public override bool AlwaysMurderer => !Frozen;
         public void Clone(Mobile m)
         {
             if (m == null)
@@ -774,7 +750,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

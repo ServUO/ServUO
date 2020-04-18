@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class BurningAmber : GoldRing
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1114790; } } // Burning Amber
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1114790;  // Burning Amber
 
         [Constructable]
         public BurningAmber()
@@ -24,7 +24,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

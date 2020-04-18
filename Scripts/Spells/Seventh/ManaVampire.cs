@@ -17,36 +17,30 @@ namespace Server.Spells.Seventh
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Seventh;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Seventh;
         public override void OnCast()
         {
-            this.Caster.Target = new InternalTarget(this);
+            Caster.Target = new InternalTarget(this);
         }
 
         public void Target(Mobile m)
         {
-            if (!this.Caster.CanSee(m))
+            if (!Caster.CanSee(m))
             {
-                this.Caster.SendLocalizedMessage(500237); // Target can not be seen.
+                Caster.SendLocalizedMessage(500237); // Target can not be seen.
             }
-            else if (this.CheckHSequence(m))
+            else if (CheckHSequence(m))
             {
-                SpellHelper.Turn(this.Caster, m);
+                SpellHelper.Turn(Caster, m);
 
-                SpellHelper.CheckReflect((int)this.Circle, this.Caster, ref m);
+                SpellHelper.CheckReflect((int)Circle, Caster, ref m);
 
                 if (m.Spell != null)
                     m.Spell.OnCasterHurt();
 
                 m.Paralyzed = false;
 
-                int toDrain = (int)(this.GetDamageSkill(this.Caster) - this.GetResistSkill(m));
+                int toDrain = (int)(GetDamageSkill(Caster) - GetResistSkill(m));
 
                 if (!m.Player)
                     toDrain /= 2;
@@ -56,21 +50,21 @@ namespace Server.Spells.Seventh
                 else if (toDrain > m.Mana)
                     toDrain = m.Mana;
 
-                if (toDrain > (this.Caster.ManaMax - this.Caster.Mana))
-                    toDrain = this.Caster.ManaMax - this.Caster.Mana;
+                if (toDrain > (Caster.ManaMax - Caster.Mana))
+                    toDrain = Caster.ManaMax - Caster.Mana;
 
                 m.Mana -= toDrain;
-                this.Caster.Mana += toDrain;
+                Caster.Mana += toDrain;
 
                 m.FixedParticles(0x374A, 1, 15, 5054, 23, 7, EffectLayer.Head);
                 m.PlaySound(0x1F9);
 
-                this.Caster.FixedParticles(0x0000, 10, 5, 2054, EffectLayer.Head);
+                Caster.FixedParticles(0x0000, 10, 5, 2054, EffectLayer.Head);
 
-                this.HarmfulSpell(m);
+                HarmfulSpell(m);
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         public override double GetResistPercent(Mobile target)
@@ -84,20 +78,20 @@ namespace Server.Spells.Seventh
             public InternalTarget(ManaVampireSpell owner)
                 : base(10, false, TargetFlags.Harmful)
             {
-                this.m_Owner = owner;
+                m_Owner = owner;
             }
 
             protected override void OnTarget(Mobile from, object o)
             {
                 if (o is Mobile)
                 {
-                    this.m_Owner.Target((Mobile)o);
+                    m_Owner.Target((Mobile)o);
                 }
             }
 
             protected override void OnTargetFinish(Mobile from)
             {
-                this.m_Owner.FinishSequence();
+                m_Owner.FinishSequence();
             }
         }
     }

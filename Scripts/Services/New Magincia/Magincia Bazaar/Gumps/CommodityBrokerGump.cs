@@ -806,7 +806,7 @@ namespace Server.Engines.NewMagincia
                     return;
                 case 500: // TRADE
                     {
-                        for (var i = 0; i < m_Entries.Count; i++)
+                        for (int i = 0; i < m_Entries.Count; i++)
                         {
                             int buyid = 2 + i;
                             int sellid = 102 + i;
@@ -904,8 +904,8 @@ namespace Server.Engines.NewMagincia
         private readonly CommodityBrokerEntry m_Entry;
         private readonly int m_Index;
 
-        public override string TitleString { get { return "Remove Commodity Confirmation"; } }
-        public override string LabelString { get { return "Are you sure you want to remove this entry from your commodity broker? Any unused stock will be placed in your bankbox."; } }
+        public override string TitleString => "Remove Commodity Confirmation";
+        public override string LabelString => "Are you sure you want to remove this entry from your commodity broker? Any unused stock will be placed in your bankbox.";
 
         public ConfirmRemoveEntryGump(CommodityBroker broker, int index)
         {

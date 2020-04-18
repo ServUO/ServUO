@@ -12,13 +12,7 @@ namespace Server.Engines.Reports
             return new SnapshotHistory();
         }
 
-        public override PersistableType TypeID
-        {
-            get
-            {
-                return ThisTypeID;
-            }
-        }
+        public override PersistableType TypeID => ThisTypeID;
         #endregion
 
         private SnapshotCollection m_Snapshots;
@@ -27,17 +21,17 @@ namespace Server.Engines.Reports
         {
             get
             {
-                return this.m_Snapshots;
+                return m_Snapshots;
             }
             set
             {
-                this.m_Snapshots = value;
+                m_Snapshots = value;
             }
         }
 
         public SnapshotHistory()
         {
-            this.m_Snapshots = new SnapshotCollection();
+            m_Snapshots = new SnapshotCollection();
         }
 
         public void Save()
@@ -66,14 +60,14 @@ namespace Server.Engines.Reports
 
         public override void SerializeChildren(PersistenceWriter op)
         {
-            for (int i = 0; i < this.m_Snapshots.Count; ++i)
-                this.m_Snapshots[i].Serialize(op);
+            for (int i = 0; i < m_Snapshots.Count; ++i)
+                m_Snapshots[i].Serialize(op);
         }
 
         public override void DeserializeChildren(PersistenceReader ip)
         {
             while (ip.HasChild)
-                this.m_Snapshots.Add(ip.GetChild() as Snapshot);
+                m_Snapshots.Add(ip.GetChild() as Snapshot);
         }
     }
 }

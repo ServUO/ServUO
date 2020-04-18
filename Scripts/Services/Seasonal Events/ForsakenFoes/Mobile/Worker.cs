@@ -37,11 +37,11 @@ namespace Server.Engines.Fellowship
                 FilePath,
                 writer =>
                 {
-                    writer.Write((int)0);
+                    writer.Write(0);
 
                     writer.Write(FellowshipChainList.Count);
 
-                    foreach (var chain in FellowshipChainList)
+                    foreach (KeyValuePair<Mobile, FellowshipChain> chain in FellowshipChainList)
                     {
                         writer.Write(chain.Key);
                         writer.Write((int)chain.Value);

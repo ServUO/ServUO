@@ -48,36 +48,12 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool InitialInnocent
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override HideType HideType
-        {
-            get
-            {
-                return HideType.Spined;
-            }
-        }
-        public override int Hides
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
+        public override bool InitialInnocent => true;
+        public override HideType HideType => HideType.Spined;
+        public override int Hides => 5;
+        public override int Meat => 1;
 
-        public override TribeType Tribe { get { return TribeType.Fey; } }
+        public override TribeType Tribe => TribeType.Fey;
 
         public override void GenerateLoot()
         {
@@ -96,7 +72,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

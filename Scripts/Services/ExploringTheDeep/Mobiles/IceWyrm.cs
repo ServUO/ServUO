@@ -94,14 +94,14 @@ namespace Server.Mobiles
             base.OnDeath(c);
         }
 
-        public override bool ReacquireOnMovement { get { return true; } }
-        public override int TreasureMapLevel { get { return 4; } }
-        public override int Meat { get { return 20; } }
-        public override int Hides { get { return 25; } }
-        public override HideType HideType { get { return HideType.Barbed; } }
-        public override FoodType FavoriteFood { get { return FoodType.Meat; } }
-        public override bool CanAngerOnTame { get { return true; } }
-        public override bool CanRummageCorpses { get { return true; } }
+        public override bool ReacquireOnMovement => true;
+        public override int TreasureMapLevel => 4;
+        public override int Meat => 20;
+        public override int Hides => 25;
+        public override HideType HideType => HideType.Barbed;
+        public override FoodType FavoriteFood => FoodType.Meat;
+        public override bool CanAngerOnTame => true;
+        public override bool CanRummageCorpses => true;
 
         public override void OnAfterDelete()
         {
@@ -118,7 +118,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

@@ -6,13 +6,13 @@ namespace Server.Items
 {
     public class SorcerersRewardChest : Item
     {
-        public override int LabelNumber { get { return 1023712; } } // strong box
+        public override int LabelNumber => 1023712;  // strong box
 
         [Constructable]
         public SorcerersRewardChest() : base(0x9AA)
         {
-            this.Movable = false;
-            this.Hue = 1912;
+            Movable = false;
+            Hue = 1912;
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -29,7 +29,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -41,7 +41,7 @@ namespace Server.Items
 
     public class StrongboxKey : BaseDecayingItem
     {
-        public override int LabelNumber { get { return 1154227; } } // Strongbox Key        
+        public override int LabelNumber => 1154227;  // Strongbox Key        
 
         [Constructable]
         public StrongboxKey() : base(0x410A)
@@ -52,8 +52,8 @@ namespace Server.Items
             LootType = LootType.Blessed;
         }
 
-        public override int Lifespan { get { return 3600; } }
-        public override bool UseSeconds { get { return false; } }
+        public override int Lifespan => 3600;
+        public override bool UseSeconds => false;
 
         public override void GetProperties(ObjectPropertyList list)
         {
@@ -71,7 +71,7 @@ namespace Server.Items
             if (!(from is PlayerMobile))
                 return;
 
-            if (!this.IsChildOf(from.Backpack))
+            if (!IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(1054107); // This item must be in your backpack.
                 return;
@@ -84,7 +84,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

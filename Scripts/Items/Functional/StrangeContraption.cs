@@ -10,7 +10,7 @@ namespace Server.Items
 {
     public class StrangeContraptionComponent : AddonComponent
     {
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         public StrangeContraptionComponent(int id, int hue = 0)
             : base(id)
@@ -195,7 +195,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

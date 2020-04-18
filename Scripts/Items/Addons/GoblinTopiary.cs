@@ -4,13 +4,13 @@ namespace Server.Items
     public class GoblinTopiary : Item
     {
 
-        public override int LabelNumber { get { return 1070878; } } // a decorative topiary
+        public override int LabelNumber => 1070878;  // a decorative topiary
 
         [Constructable]
         public GoblinTopiary() : base(0x4919)
         {
-            this.Weight = 1.0;
-            this.Name = ("a goblin topiary");
+            Weight = 1.0;
+            Name = ("a goblin topiary");
         }
 
         public GoblinTopiary(Serial serial) : base(serial)
@@ -21,7 +21,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

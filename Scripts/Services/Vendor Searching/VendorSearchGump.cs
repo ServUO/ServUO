@@ -225,9 +225,9 @@ namespace Server.Engines.VendorSearching
                         }
                         else
                         {
-                            var resultsTask = FindVendorItemsAsync(User, Criteria);
+                            Task<List<SearchItem>> resultsTask = FindVendorItemsAsync(User, Criteria);
 
-                            var pollingTimer = new TaskPollingTimer<List<SearchItem>>(resultsTask, (results) =>
+                            TaskPollingTimer<List<SearchItem>> pollingTimer = new TaskPollingTimer<List<SearchItem>>(resultsTask, (results) =>
                             {
                                 User.CloseGump(typeof(SearchWaitGump));
 
@@ -383,8 +383,8 @@ namespace Server.Engines.VendorSearching
     public class SearchResultsGump : BaseGump
     {
         public int PerPage = 5;
-        public int LabelColor { get { return 0x4BBD; } }
-        public int TextColor { get { return 0x6B55; } }
+        public int LabelColor => 0x4BBD;
+        public int TextColor => 0x6B55;
 
         public List<SearchItem> Items { get; set; }
         public int Index { get; set; }
@@ -414,8 +414,8 @@ namespace Server.Engines.VendorSearching
 
             for (int i = start; i < start + PerPage && i < Items.Count; i++)
             {
-                var item = Items[i].Item;
-                var price = Items[i].Price;
+                Item item = Items[i].Item;
+                int price = Items[i].Price;
 
                 Rectangle2D bounds = ItemBounds.Table[item.ItemID];
                 int y = 101 + (index * 75);

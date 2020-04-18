@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class GargishFancyBearingTheCrestOfBlackthorn3 : GargishFancyRobe
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
 
         [Constructable]
         public GargishFancyBearingTheCrestOfBlackthorn3()

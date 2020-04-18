@@ -28,7 +28,7 @@ namespace Server.Network
 
         private void SetCapacity(int capacity)
         {
-            var newBuffer = new byte[capacity];
+            byte[] newBuffer = new byte[capacity];
 
             if (m_Size > 0)
             {

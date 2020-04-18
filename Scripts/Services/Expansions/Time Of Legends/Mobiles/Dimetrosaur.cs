@@ -5,7 +5,7 @@ namespace Server.Mobiles
     [CorpseName("a dimetrosaur corpse")]
     public class Dimetrosaur : BaseCreature
     {
-        public override bool AttacksFocus { get { return !Controlled; } }
+        public override bool AttacksFocus => !Controlled;
 
         [Constructable]
         public Dimetrosaur()
@@ -76,7 +76,7 @@ namespace Server.Mobiles
             return 0x2C3;
         }
 
-        public override int TreasureMapLevel { get { return 6; } }
+        public override int TreasureMapLevel => 6;
 
         public override void SetToChampionSpawn()
         {
@@ -100,12 +100,12 @@ namespace Server.Mobiles
             }
         }
 
-        public override bool CanAngerOnTame { get { return true; } }
-        public override bool StatLossAfterTame { get { return true; } }
-        public override int Meat { get { return 1; } }
-        public override int Hides { get { return 11; } }
-        public override HideType HideType { get { return HideType.Spined; } }
-        public override FoodType FavoriteFood { get { return FoodType.FruitsAndVegies; } }
+        public override bool CanAngerOnTame => true;
+        public override bool StatLossAfterTame => true;
+        public override int Meat => 1;
+        public override int Hides => 11;
+        public override HideType HideType => HideType.Spined;
+        public override FoodType FavoriteFood => FoodType.FruitsAndVegies;
 
         public override void GenerateLoot()
         {

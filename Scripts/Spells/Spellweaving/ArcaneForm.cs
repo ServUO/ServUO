@@ -8,58 +8,16 @@ namespace Server.Spells.Spellweaving
         }
 
         public abstract int Body { get; }
-        public virtual int Hue
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual int PhysResistOffset
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual int FireResistOffset
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual int ColdResistOffset
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual int PoisResistOffset
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual int NrgyResistOffset
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual double TickRate
-        {
-            get
-            {
-                return 1.0;
-            }
-        }
+        public virtual int Hue => 0;
+        public virtual int PhysResistOffset => 0;
+        public virtual int FireResistOffset => 0;
+        public virtual int ColdResistOffset => 0;
+        public virtual int PoisResistOffset => 0;
+        public virtual int NrgyResistOffset => 0;
+        public virtual double TickRate => 1.0;
         public override bool CheckCast()
         {
-            if (!TransformationSpellHelper.CheckCast(this.Caster, this))
+            if (!TransformationSpellHelper.CheckCast(Caster, this))
                 return false;
 
             return base.CheckCast();
@@ -67,9 +25,9 @@ namespace Server.Spells.Spellweaving
 
         public override void OnCast()
         {
-            TransformationSpellHelper.OnCast(this.Caster, this);
+            TransformationSpellHelper.OnCast(Caster, this);
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         public virtual void OnTick(Mobile m)

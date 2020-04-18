@@ -7,8 +7,8 @@ namespace Server.Items
     {
         private int m_Span;
 
-        public override int Lifespan { get { return m_Span; } }
-        public override int LabelNumber { get { return 1113578; } } // a golden compass
+        public override int Lifespan => m_Span;
+        public override int LabelNumber => 1113578;  // a golden compass
 
         [Constructable]
         public GoldenCompass() : base(459)
@@ -51,7 +51,7 @@ namespace Server.Items
         {
             base.OnDelete();
 
-            Mobile m = this.RootParent as Mobile;
+            Mobile m = RootParent as Mobile;
 
             if (m != null)
                 m.CloseGump(typeof(Server.Gumps.CompassDirectionGump));
@@ -64,7 +64,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
             writer.Write(m_Span);
         }
 

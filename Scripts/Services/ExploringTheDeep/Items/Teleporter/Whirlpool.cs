@@ -8,7 +8,7 @@ namespace Server.Items
 {
     public class Whirlpool : Item
     {
-        public override int LabelNumber { get { return 1033459; } } // whirlpool
+        public override int LabelNumber => 1033459;  // whirlpool
 
         private bool m_Active, m_Creatures, m_CombatCheck, m_CriminalCheck;
         private Point3D m_PointDest;
@@ -252,7 +252,7 @@ namespace Server.Items
             {
                 Timer.DelayCall(TimeSpan.FromSeconds(1.0), () =>
                     {
-                        var spell = QuestHelper.GetQuest<ExploringTheDeepQuest>((PlayerMobile)m);
+                        ExploringTheDeepQuest spell = QuestHelper.GetQuest<ExploringTheDeepQuest>((PlayerMobile)m);
 
                         if (spell != null)
                         {

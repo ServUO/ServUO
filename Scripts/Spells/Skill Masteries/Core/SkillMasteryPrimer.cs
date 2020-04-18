@@ -13,7 +13,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int Volume { get; set; }
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         [Constructable]
         public SkillMasteryPrimer(SkillName skill, int volume) : base(7714)
@@ -125,7 +125,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
             writer.Write(Volume);
             writer.Write((int)Skill);

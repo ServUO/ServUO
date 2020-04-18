@@ -4,11 +4,11 @@ namespace Server.Items
 {
     public class GrapeVine : Item
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         private DateTime m_NextHarvest;
         private readonly double HarvestWait = 4;
 
-        public override int LabelNumber { get { return 1149954; } }
+        public override int LabelNumber => 1149954;
 
         [Constructable]
         public GrapeVine() : base(Utility.Random(3355, 10))
@@ -32,7 +32,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
             writer.Write(m_NextHarvest);
         }
 

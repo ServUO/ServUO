@@ -32,7 +32,7 @@ namespace Server.Engines.Quests
 
         private Rectangle2D m_Rec = new Rectangle2D(4273, 3696, 2, 2);
 
-        public override bool HandlesOnMovement { get { return true; } }
+        public override bool HandlesOnMovement => true;
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
@@ -62,7 +62,7 @@ namespace Server.Engines.Quests
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

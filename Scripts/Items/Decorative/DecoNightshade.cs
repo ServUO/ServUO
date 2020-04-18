@@ -6,8 +6,8 @@ namespace Server.Items
         public DecoNightshade()
             : base(0x18E7)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public DecoNightshade(Serial serial)
@@ -19,7 +19,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

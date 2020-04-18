@@ -184,15 +184,15 @@ namespace Server.Items
 
         public override void OnDamaged(int damage)
         {
-            if (m_Active && IsEquipped() && this.Mobile != null)
+            if (m_Active && IsEquipped() && Mobile != null)
             {
-                double mod = BaseFishPie.IsUnderEffects(this.Mobile, FishPieEffect.SoulCharge) ? .50 : .30;
-                this.Mobile.Mana += (int)Math.Min(this.Mobile.ManaMax, damage * mod);
+                double mod = BaseFishPie.IsUnderEffects(Mobile, FishPieEffect.SoulCharge) ? .50 : .30;
+                Mobile.Mana += (int)Math.Min(Mobile.ManaMax, damage * mod);
                 m_Active = false;
 
-                Server.Effects.SendTargetParticles(this.Mobile, 0x375A, 0x1, 0xA, 0x71, 0x2, 0x1AE9, 0, 0);
+                Server.Effects.SendTargetParticles(Mobile, 0x375A, 0x1, 0xA, 0x71, 0x2, 0x1AE9, 0, 0);
 
-                this.Mobile.SendLocalizedMessage(1113636); //The soul charge effect converts some of the damage you received into mana.
+                Mobile.SendLocalizedMessage(1113636); //The soul charge effect converts some of the damage you received into mana.
             }
         }
 
@@ -241,12 +241,12 @@ namespace Server.Items
             double cd = 0; double pod = 0;
             double ed = 0; double dd = 0;
 
-            double k = (double)GetValue(DamageType.Kinetic, this.Mobile) / 100;
-            double f = (double)GetValue(DamageType.Fire, this.Mobile) / 100;
-            double c = (double)GetValue(DamageType.Cold, this.Mobile) / 100;
-            double p = (double)GetValue(DamageType.Poison, this.Mobile) / 100;
-            double e = (double)GetValue(DamageType.Energy, this.Mobile) / 100;
-            double a = (double)GetValue(DamageType.AllTypes, this.Mobile) / 100;
+            double k = (double)GetValue(DamageType.Kinetic, Mobile) / 100;
+            double f = (double)GetValue(DamageType.Fire, Mobile) / 100;
+            double c = (double)GetValue(DamageType.Cold, Mobile) / 100;
+            double p = (double)GetValue(DamageType.Poison, Mobile) / 100;
+            double e = (double)GetValue(DamageType.Energy, Mobile) / 100;
+            double a = (double)GetValue(DamageType.AllTypes, Mobile) / 100;
 
             if (phys > 0 && (k > 0 || a > 0))
             {

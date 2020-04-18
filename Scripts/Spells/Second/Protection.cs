@@ -19,20 +19,8 @@ namespace Server.Spells.Second
         {
         }
 
-        public static Hashtable Registry
-        {
-            get
-            {
-                return m_Registry;
-            }
-        }
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Second;
-            }
-        }
+        public static Hashtable Registry => m_Registry;
+        public override SpellCircle Circle => SpellCircle.Second;
         public static void Toggle(Mobile caster, Mobile target, bool archprotection)
         {
             /* Players under the protection spell effect can no longer have their spells "disrupted" when hit.
@@ -107,10 +95,10 @@ namespace Server.Spells.Second
 
         public override void OnCast()
         {
-            if (this.CheckSequence())
-                Toggle(this.Caster, this.Caster, false);
+            if (CheckSequence())
+                Toggle(Caster, Caster, false);
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         #region SA
@@ -132,15 +120,15 @@ namespace Server.Spells.Second
                 else if (val > 240)
                     val = 240;
 
-                this.m_Caster = caster;
-                this.Delay = TimeSpan.FromSeconds(val);
-                this.Priority = TimerPriority.OneSecond;
+                m_Caster = caster;
+                Delay = TimeSpan.FromSeconds(val);
+                Priority = TimerPriority.OneSecond;
             }
 
             protected override void OnTick()
             {
-                ProtectionSpell.Registry.Remove(this.m_Caster);
-                DefensiveSpell.Nullify(this.m_Caster);
+                ProtectionSpell.Registry.Remove(m_Caster);
+                DefensiveSpell.Nullify(m_Caster);
             }
         }
     }

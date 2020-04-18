@@ -56,16 +56,16 @@ namespace Server
             }
         }
 
-        public Type Type { get { return m_Type; } } // image info
-        public int ItemID { get { return m_ItemID; } }
-        public int X { get { return m_X; } }
-        public int Y { get { return m_Y; } }
-        public int Width { get { return m_Width; } }
-        public int Height { get { return m_Height; } }
-        public int Tooltip { get { return m_Tooltip; } }
-        public int Hue { get { return m_Hue; } }
-        public double Points { get { return m_Points; } }
-        public bool QuestItem { get { return m_QuestItem; } }
+        public Type Type => m_Type;  // image info
+        public int ItemID => m_ItemID;
+        public int X => m_X;
+        public int Y => m_Y;
+        public int Width => m_Width;
+        public int Height => m_Height;
+        public int Tooltip => m_Tooltip;
+        public int Hue => m_Hue;
+        public double Points => m_Points;
+        public bool QuestItem => m_QuestItem;
 
         public virtual bool Validate(PlayerMobile from, Item item)
         {
@@ -92,7 +92,7 @@ namespace Server
             m_Hues = hues;
         }
 
-        public int[] Hues { get { return m_Hues; } }
+        public int[] Hues => m_Hues;
     }
 
     public class CollectionTitle : CollectionItem
@@ -105,7 +105,7 @@ namespace Server
             m_Title = title;
         }
 
-        public object Title { get { return m_Title; } }
+        public object Title => m_Title;
 
         public override void OnGiveReward(PlayerMobile to, Item item, IComunityCollection collection, int hue)
         {
@@ -133,7 +133,7 @@ namespace Server
             m_Level = level;
         }
 
-        public int Level { get { return m_Level; } }
+        public int Level => m_Level;
 
         public override bool Validate(PlayerMobile from, Item item)
         {
@@ -156,7 +156,7 @@ namespace Server
             m_Type = type;
         }
 
-        public SpellbookType SpellbookType { get { return m_Type; } }
+        public SpellbookType SpellbookType => m_Type;
 
         public override bool Validate(PlayerMobile from, Item item)
         {

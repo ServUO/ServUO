@@ -12,7 +12,7 @@ namespace Server.Engines.Despise
         [CommandProperty(AccessLevel.GameMaster)]
         public Alignment Alignment { get { return m_Alignment; } set { m_Alignment = value; } }
 
-        public override bool HandlesOnMovement { get { return true; } }
+        public override bool HandlesOnMovement => true;
 
         public DespiseAnkh(Alignment alignment)
         {
@@ -88,7 +88,7 @@ namespace Server.Engines.Despise
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
             writer.Write((int)m_Alignment);
         }
 

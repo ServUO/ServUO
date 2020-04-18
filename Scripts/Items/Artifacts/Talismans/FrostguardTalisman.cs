@@ -2,9 +2,9 @@
 {
     public class FrostguardTalisman : BaseTalisman
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1115516; } } // Frostguard Talisman
-        public override int ColdResistance { get { return 3; } }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1115516;  // Frostguard Talisman
+        public override int ColdResistance => 3;
 
         [Constructable]
         public FrostguardTalisman()
@@ -26,7 +26,7 @@
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

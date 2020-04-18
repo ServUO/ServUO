@@ -12,21 +12,21 @@ namespace Server.Items
         private Timer m_Timer;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile Caster { get { return m_Caster; } }
+        public Mobile Caster => m_Caster;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int LifeForce { get { return m_LifeForce; } set { m_LifeForce = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int MaxLifeForce { get { return m_MaxLifeForce; } }
+        public int MaxLifeForce => m_MaxLifeForce;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int MaxHeal { get { return m_MaxHeal; } }
+        public int MaxHeal => m_MaxHeal;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int MaxHealTotal { get { return m_MaxHealTotal; } }
+        public int MaxHealTotal => m_MaxHealTotal;
 
-        public override bool Nontransferable { get { return true; } }
+        public override bool Nontransferable => true;
 
         [Constructable]
         public HealingStone(Mobile caster, int amount, int maxHeal) : base(0x4078)
@@ -43,7 +43,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!from.InRange(this.GetWorldLocation(), 1))
+            if (!from.InRange(GetWorldLocation(), 1))
             {
                 from.SendLocalizedMessage(502138); // That is too far away for you to use
                 return;
@@ -88,7 +88,7 @@ namespace Server.Items
                     }
 
                     if (m_LifeForce <= 0)
-                        this.Consume();
+                        Consume();
 
                     Timer.DelayCall(TimeSpan.FromSeconds(2.0), new TimerStateCallback(ReleaseHealLock), from);
                     return;
@@ -109,7 +109,7 @@ namespace Server.Items
                 if (m_LifeForce <= 0)
                 {
                     from.SendLocalizedMessage(1115266); //The healing stone has used up all its energy and has been destroyed.
-                    this.Consume();
+                    Consume();
                 }
                 else
                 {
@@ -144,7 +144,7 @@ namespace Server.Items
             {
                 m_Stone = stone;
                 m_Ticks = 0;
-                this.Start();
+                Start();
             }
 
             protected override void OnTick()
@@ -154,7 +154,7 @@ namespace Server.Items
                 m_Stone.OnTick();
 
                 if (m_Ticks >= 15)
-                    this.Stop();
+                    Stop();
             }
         }
 
@@ -199,7 +199,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write(1);
 
             writer.Write(m_Caster);
             writer.Write(m_LifeForce);

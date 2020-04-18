@@ -72,7 +72,7 @@ namespace Server.Engines.Harvest
                     from.PlaySound(0x13E);
             }
             else if (m_System is Lumberjacking && targeted is ICarvable)
-                ((ICarvable)targeted).Carve(from, (Item)m_Tool);
+                ((ICarvable)targeted).Carve(from, m_Tool);
             else if (m_System is Lumberjacking && FurnitureAttribute.Check(targeted as Item))
                 DestroyFurniture(from, (Item)targeted);
             else if (m_System is Mining && targeted is TreasureMap)

@@ -140,7 +140,7 @@ namespace Server.Items
 
         public static void ApplyReforgedProperties(Item item, ReforgedPrefix prefix, ReforgedSuffix suffix, int budget, int perclow, int perchigh, int maxmods, int luckchance, BaseRunicTool tool, ReforgingOption option)
         {
-            var props = new List<int>(ItemPropertyInfo.LookupLootTable(item));
+            List<int> props = new List<int>(ItemPropertyInfo.LookupLootTable(item));
             ApplyReforgedProperties(item, props, prefix, suffix, budget, perclow, perchigh, maxmods, luckchance, tool, option);
             ColUtility.Free(props);
         }
@@ -346,7 +346,7 @@ namespace Server.Items
             //if (index != 0 && (index == prefix || index == suffix))
             //    return false;HasOption(options, ReforgingOption.StructuralAndFundamental, ReforgingOption.PowerfulAndFundamental)
 
-            var type = ItemPropertyInfo.GetItemType(toreforge);
+            ItemType type = ItemPropertyInfo.GetItemType(toreforge);
 
             if (type == ItemType.Melee)
             {
@@ -662,7 +662,7 @@ namespace Server.Items
 
         public static bool HasOption(ReforgingOption options, params ReforgingOption[] optionArray)
         {
-            foreach (var option in optionArray)
+            foreach (ReforgingOption option in optionArray)
             {
                 if ((options & option) == option)
                 {
@@ -775,7 +775,7 @@ namespace Server.Items
         private static bool ApplyPrefixSuffixAttribute(Item item, NamedInfoCol col, int resIndex, int preIndex, int percLow, int percHigh, ref int budget, int luckchance, bool reforged, bool powerful)
         {
             int start = budget;
-            var attribute = col.Attribute;
+            object attribute = col.Attribute;
 
             // Converts Collection entry into actual attribute
             if (attribute is string)
@@ -815,7 +815,7 @@ namespace Server.Items
 
         public static bool ApplyResistance(Item item, int value, AosElementAttribute attribute)
         {
-            var resists = GetElementalAttributes(item);
+            AosElementAttributes resists = GetElementalAttributes(item);
 
             if (!_Elements.ContainsKey(item))
             {
@@ -1110,13 +1110,13 @@ namespace Server.Items
             if (option == ReforgingOption.None)
                 return perclow;
 
-            return perclow + (int)((double)(perchi - perclow) * ((double)(GetPrerequisiteIndex(option) * 5.0) / 100.0));
+            return perclow + (int)((perchi - perclow) * (GetPrerequisiteIndex(option) * 5.0 / 100.0));
         }
 
         private static readonly Dictionary<Type, CraftSystem> m_AllowableTable = new Dictionary<Type, CraftSystem>();
         private static readonly Dictionary<int, NamedInfoCol[][]> m_PrefixSuffixInfo = new Dictionary<int, NamedInfoCol[][]>();
 
-        public static Dictionary<int, NamedInfoCol[][]> PrefixSuffixInfo { get { return m_PrefixSuffixInfo; } }
+        public static Dictionary<int, NamedInfoCol[][]> PrefixSuffixInfo => m_PrefixSuffixInfo;
 
         public static void Initialize()
         {
@@ -1511,14 +1511,14 @@ namespace Server.Items
 
             public NamedInfoCol(object attr, int[][] info, int[][] secondary = null)
             {
-                this.Attribute = attr;
+                Attribute = attr;
                 Info = info;
                 SecondaryInfo = secondary;
             }
 
             public NamedInfoCol(object attr, int hardcap)
             {
-                this.Attribute = attr;
+                Attribute = attr;
                 HardCap = hardcap;
             }
 
@@ -1529,8 +1529,8 @@ namespace Server.Items
 
                 int[] range = item is BaseRanged && SecondaryInfo != null ? SecondaryInfo[resIndex] : Info[resIndex];
 
-                var max = range[preIndex];
-                var min = Math.Max(ItemPropertyInfo.GetMinIntensity(item, id), (int)((double)range[0] * .75));
+                int max = range[preIndex];
+                int min = Math.Max(ItemPropertyInfo.GetMinIntensity(item, id), (int)(range[0] * .75));
                 int value;
 
                 if (Utility.RandomBool())
@@ -1542,7 +1542,7 @@ namespace Server.Items
                     value = Utility.RandomMinMax(min, max);
                 }
 
-                var scale = ItemPropertyInfo.GetScale(item, id);
+                int scale = ItemPropertyInfo.GetScale(item, id);
 
                 if (scale > 1 && value > scale)
                 {
@@ -1607,7 +1607,7 @@ namespace Server.Items
 
         private static SkillName GetRandomSkill(Item item)
         {
-            var skillbonuses = GetAosSkillBonuses(item);
+            AosSkillBonuses skillbonuses = GetAosSkillBonuses(item);
 
             if (skillbonuses == null)
             {
@@ -1702,7 +1702,7 @@ namespace Server.Items
             return NameTable[(int)suffix - 1][1];
         }
 
-        public static int[][] NameTable { get { return _NameTable; } }
+        public static int[][] NameTable => _NameTable;
         private static readonly int[][] _NameTable = new int[][]
         {
             new int[] { 1151682, 1151683 }, // Might
@@ -1971,7 +1971,7 @@ namespace Server.Items
                     }
                     else
                     {
-                        int maxmods = Math.Max(5, Math.Min(RandomItemGenerator.MaxProps - 1, (int)Math.Ceiling((double)budget / (double)Utility.RandomMinMax(100, 140))));
+                        int maxmods = Math.Max(5, Math.Min(RandomItemGenerator.MaxProps - 1, (int)Math.Ceiling(budget / (double)Utility.RandomMinMax(100, 140))));
                         int minmods = Math.Max(4, maxmods - 4);
 
                         mods = Math.Max(minmods, GetProperties(maxmods));
@@ -1988,7 +1988,7 @@ namespace Server.Items
                 if (mods < RandomItemGenerator.MaxProps - 1 && LootPack.CheckLuck(luckchance))
                     mods++;
 
-                var props = new List<int>(ItemPropertyInfo.LookupLootTable(item));
+                List<int> props = new List<int>(ItemPropertyInfo.LookupLootTable(item));
                 bool powerful = IsPowerful(budget);
 
                 ApplyReforgedProperties(item, props, prefix, suffix, budget, perclow, perchigh, mods, luckchance);
@@ -2021,14 +2021,14 @@ namespace Server.Items
                         ((IDurability)item).HitPoints = 255;
                     }
 
-                    var wepAttrs = GetAosWeaponAttributes(item);
+                    AosWeaponAttributes wepAttrs = GetAosWeaponAttributes(item);
 
                     if (wepAttrs != null && wepAttrs[AosWeaponAttribute.SelfRepair] > 0)
                     {
                         wepAttrs[AosWeaponAttribute.SelfRepair] = 0;
                     }
 
-                    var armAttrs = GetAosArmorAttributes(item);
+                    AosArmorAttributes armAttrs = GetAosArmorAttributes(item);
 
                     if (armAttrs != null && armAttrs[AosArmorAttribute.SelfRepair] > 0)
                     {
@@ -2036,7 +2036,7 @@ namespace Server.Items
                     }
                 }
 
-                var power = ApplyItemPower(item, false);
+                ItemPower power = ApplyItemPower(item, false);
 
                 if (artifact && power < ItemPower.LesserArtifact)
                 {
@@ -2267,7 +2267,7 @@ namespace Server.Items
 
             int random = GetRandomName(table);
 
-            while ((int)suffix != 0 && random == (int)suffix)
+            while (suffix != 0 && random == (int)suffix)
                 random = GetRandomName(table);
 
             return (ReforgedPrefix)random;
@@ -2295,7 +2295,7 @@ namespace Server.Items
 
             int random = GetRandomName(table);
 
-            while ((int)prefix != 0 && random == (int)prefix)
+            while (prefix != 0 && random == (int)prefix)
                 random = GetRandomName(table);
 
             return (ReforgedSuffix)random;
@@ -2305,15 +2305,15 @@ namespace Server.Items
         {
             int total = 0;
 
-            foreach (var kvp in table)
+            foreach (KeyValuePair<int, int> kvp in table)
             {
                 total += kvp.Value;
             }
 
-            var random = Utility.RandomMinMax(1, total);
+            int random = Utility.RandomMinMax(1, total);
             total = 0;
 
-            foreach (var kvp in table)
+            foreach (KeyValuePair<int, int> kvp in table)
             {
                 total += kvp.Value;
 
@@ -2566,7 +2566,7 @@ namespace Server.Items
 
             while (true)
             {
-                var random = props[Utility.Random(props.Count)];
+                int random = props[Utility.Random(props.Count)];
 
                 if (random == 1000)
                 {
@@ -3243,14 +3243,14 @@ namespace Server.Items
         {
             int fix = 0;
 
-            foreach (var item in World.Items.Values)
+            foreach (Item item in World.Items.Values)
             {
-                var neg = GetNegativeAttributes(item);
+                NegativeAttributes neg = GetNegativeAttributes(item);
 
                 if (neg != null && (neg.Brittle > 0 || neg.Antique > 0 || neg.NoRepair > 0))
                 {
-                    var wep = GetAosWeaponAttributes(item);
-                    var armor = GetAosArmorAttributes(item);
+                    AosWeaponAttributes wep = GetAosWeaponAttributes(item);
+                    AosArmorAttributes armor = GetAosArmorAttributes(item);
 
                     if (wep != null && wep.SelfRepair > 0)
                     {
@@ -3276,7 +3276,7 @@ namespace Server.Items
             int focus = 0;
             int brittle = 0;
 
-            foreach (var jewel in World.Items.Values.OfType<BaseJewel>().Where(j => j.ItemPower > ItemPower.None))
+            foreach (BaseJewel jewel in World.Items.Values.OfType<BaseJewel>().Where(j => j.ItemPower > ItemPower.None))
             {
                 if (jewel.Attributes.CastSpeed > 1)
                 {

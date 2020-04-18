@@ -19,21 +19,15 @@ namespace Server.Spells.Eighth
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Eighth;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Eighth;
         public override bool CheckCast()
         {
             if (!base.CheckCast())
                 return false;
 
-            if ((this.Caster.Followers + 4) > this.Caster.FollowersMax)
+            if ((Caster.Followers + 4) > Caster.FollowersMax)
             {
-                this.Caster.SendLocalizedMessage(1049645); // You have too many followers to summon that creature.
+                Caster.SendLocalizedMessage(1049645); // You have too many followers to summon that creature.
                 return false;
             }
 
@@ -42,16 +36,16 @@ namespace Server.Spells.Eighth
 
         public override void OnCast()
         {
-            if (this.CheckSequence())
+            if (CheckSequence())
             {
-                TimeSpan duration = TimeSpan.FromSeconds((2 * this.Caster.Skills.Magery.Fixed) / 5);
+                TimeSpan duration = TimeSpan.FromSeconds((2 * Caster.Skills.Magery.Fixed) / 5);
 
                 BaseCreature m_Daemon = new SummonedDaemon();
-                SpellHelper.Summon(m_Daemon, this.Caster, 0x216, duration, false, false);
+                SpellHelper.Summon(m_Daemon, Caster, 0x216, duration, false, false);
                 m_Daemon.FixedParticles(0x3728, 8, 20, 5042, EffectLayer.Head);
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
     }
 }

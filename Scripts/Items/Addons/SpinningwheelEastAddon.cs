@@ -24,25 +24,13 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new SpinningwheelEastDeed();
-            }
-        }
-        public bool Spinning
-        {
-            get
-            {
-                return m_Timer != null;
-            }
-        }
+        public override BaseAddonDeed Deed => new SpinningwheelEastDeed();
+        public bool Spinning => m_Timer != null;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -143,25 +131,13 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new SpinningwheelEastAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1044341;
-            }
-        }// spining wheel (east)
+        public override BaseAddon Addon => new SpinningwheelEastAddon();
+        public override int LabelNumber => 1044341;// spining wheel (east)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

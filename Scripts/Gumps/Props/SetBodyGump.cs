@@ -80,13 +80,13 @@ namespace Server.Gumps
             {
                 for (int i = 0, index = (ourPage * 12); i < 12 && index >= 0 && index < ourList.Count; ++i, ++index)
                 {
-                    var entry = (InternalEntry)ourList[index];
-                    var itemID = entry.ItemID;
+                    InternalEntry entry = (InternalEntry)ourList[index];
+                    int itemID = entry.ItemID;
 
-                    var bounds = ItemBounds.Table[itemID & 0x3FFF];
+                    Rectangle2D bounds = ItemBounds.Table[itemID & 0x3FFF];
 
-                    var x = 15 + ((i % 4) * 125);
-                    var y = 40 + ((i / 4) * 93);
+                    int x = 15 + ((i % 4) * 125);
+                    int y = 40 + ((i / 4) * 93);
 
                     AddItem(x + ((120 - bounds.Width) / 2) - bounds.X, y + ((69 - bounds.Height) / 2) - bounds.Y, itemID);
                     AddButton(x + 6, y + 66, 0x98D, 0x98D, 7 + index, GumpButtonType.Reply, 0);
@@ -121,7 +121,7 @@ namespace Server.Gumps
 
         public void AddTypeButton(int x, int y, int buttonID, string text, ModelBodyType type)
         {
-            var isSelection = (m_OurType == type);
+            bool isSelection = (m_OurType == type);
 
             AddButton(x, y - 1, isSelection ? 4006 : 4005, 4007, buttonID, GumpButtonType.Reply, 0);
             AddHtml(x + 35, y, 200, 20, Color(text, isSelection ? SelectedColor32 : LabelColor32), false, false);
@@ -129,7 +129,7 @@ namespace Server.Gumps
 
         public override void OnResponse(NetState sender, RelayInfo info)
         {
-            var index = info.ButtonID - 1;
+            int index = info.ButtonID - 1;
 
             if (index == -1)
             {
@@ -188,7 +188,7 @@ namespace Server.Gumps
                     {
                         try
                         {
-                            var entry = (InternalEntry)m_OurList[index];
+                            InternalEntry entry = (InternalEntry)m_OurList[index];
 
                             CommandLogging.LogChangeProperty(m_Mobile, m_Object, m_Property.Name, entry.Body.ToString());
                             m_Property.SetValue(m_Object, entry.Body, null);
@@ -213,12 +213,12 @@ namespace Server.Gumps
             m_Sea = new ArrayList();
             m_Human = new ArrayList();
 
-            var entries = Docs.LoadBodies();
+            System.Collections.Generic.List<BodyEntry> entries = Docs.LoadBodies();
 
-            for (var i = 0; i < entries.Count; ++i)
+            for (int i = 0; i < entries.Count; ++i)
             {
-                var oldEntry = entries[i];
-                var bodyID = oldEntry.Body.BodyID;
+                BodyEntry oldEntry = entries[i];
+                int bodyID = oldEntry.Body.BodyID;
 
                 if (((Body)bodyID).IsEmpty)
                     continue;
@@ -244,7 +244,7 @@ namespace Server.Gumps
                 if (list == null)
                     continue;
 
-                var itemID = ShrinkTable.Lookup(bodyID, -1);
+                int itemID = ShrinkTable.Lookup(bodyID, -1);
 
                 if (itemID != -1)
                     list.Add(new InternalEntry(bodyID, itemID, oldEntry.Name));
@@ -282,7 +282,7 @@ namespace Server.Gumps
 
                 m_DisplayName = name.ToLower();
 
-                for (var i = 0; i < m_GroupNames.Length; ++i)
+                for (int i = 0; i < m_GroupNames.Length; ++i)
                 {
                     if (m_DisplayName.StartsWith(m_GroupNames[i]))
                     {
@@ -294,16 +294,16 @@ namespace Server.Gumps
                 m_DisplayName = m_DisplayName.Replace('_', ' ');
             }
 
-            public int Body { get { return m_Body; } }
-            public int ItemID { get { return m_ItemID; } }
-            public string Name { get { return m_Name; } }
-            public string DisplayName { get { return m_DisplayName; } }
+            public int Body => m_Body;
+            public int ItemID => m_ItemID;
+            public string Name => m_Name;
+            public string DisplayName => m_DisplayName;
 
             public int CompareTo(object obj)
             {
-                var comp = (InternalEntry)obj;
+                InternalEntry comp = (InternalEntry)obj;
 
-                var v = m_Name.CompareTo(comp.m_Name);
+                int v = m_Name.CompareTo(comp.m_Name);
 
                 if (v == 0)
                     m_Body.CompareTo(comp.m_Body);

@@ -57,27 +57,15 @@ namespace Server.Mobiles
             SetWeaponAbility(WeaponAbility.BleedAttack);
         }
 
-        public override int TreasureMapLevel { get { return 3; } }
+        public override int TreasureMapLevel => 3;
 
-        public override int Meat
-        {
-            get { return 7; }
-        }
+        public override int Meat => 7;
 
-        public override int Hides
-        {
-            get { return 11; }
-        }
+        public override int Hides => 11;
 
-        public override HideType HideType
-        {
-            get { return HideType.Horned; }
-        }
+        public override HideType HideType => HideType.Horned;
 
-        public override PackInstinct PackInstinct
-        {
-            get { return PackInstinct.Ostard; }
-        }
+        public override PackInstinct PackInstinct => PackInstinct.Ostard;
 
         public override void GenerateLoot()
         {
@@ -145,13 +133,13 @@ namespace Server.Mobiles
                     // spawn new friends
 
                     BaseCreature friend = new Raptor(true);
-                    var loc = Location;
-                    var validLocation = false;
-                    for (var j = 0; !validLocation && j < 10; ++j)
+                    Point3D loc = Location;
+                    bool validLocation = false;
+                    for (int j = 0; !validLocation && j < 10; ++j)
                     {
-                        var x = X + Utility.Random(3) - 1;
-                        var y = Y + Utility.Random(3) - 1;
-                        var z = Map.GetAverageZ(x, y);
+                        int x = X + Utility.Random(3) - 1;
+                        int y = Y + Utility.Random(3) - 1;
+                        int z = Map.GetAverageZ(x, y);
 
                         if (validLocation = Map.CanFit(x, y, Z, 16, false, false))
                             loc = new Point3D(x, y, Z);
@@ -194,9 +182,9 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)2);
+            writer.Write(2);
 
-            writer.Write((bool)m_IsFriend);
+            writer.Write(m_IsFriend);
         }
 
         public override void Deserialize(GenericReader reader)

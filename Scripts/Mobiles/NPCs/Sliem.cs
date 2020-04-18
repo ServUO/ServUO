@@ -16,16 +16,10 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new[]
+        public override Type[] Quests => new[]
                 {
                     typeof (UnusualGoods)
                 };
-            }
-        }
 
         public override void InitBody()
         {
@@ -57,7 +51,7 @@ namespace Server.Engines.Quests
         {
             base.Deserialize(reader);
 
-            var version = reader.ReadInt();
+            int version = reader.ReadInt();
         }
     }
 }

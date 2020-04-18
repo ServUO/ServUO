@@ -48,7 +48,7 @@ namespace Server.Engines.Shadowguard
 
         public Timer Timer { get; set; }
 
-        public override int LabelNumber { get { return 1156235; } } // An Enchanting Crystal Ball
+        public override int LabelNumber => 1156235;  // An Enchanting Crystal Ball
 
         public static void Initialize()
         {
@@ -59,7 +59,7 @@ namespace Server.Engines.Shadowguard
                 {
                     if (Instance == null)
                     {
-                        var controller = new ShadowguardController();
+                        ShadowguardController controller = new ShadowguardController();
                         controller.MoveToWorld(new Point3D(501, 2192, 50), Map.TerMur);
 
                         e.Mobile.SendMessage("Shadowguard controller setup!");
@@ -110,7 +110,7 @@ namespace Server.Engines.Shadowguard
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from is PlayerMobile && from.InRange(this.Location, 3))
+            if (from is PlayerMobile && from.InRange(Location, 3))
             {
                 from.SendGump(new ShadowguardGump((PlayerMobile)from));
             }
@@ -171,7 +171,7 @@ namespace Server.Engines.Shadowguard
 
             if (!expired)
             {
-                foreach (var pm in encounter.Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+                foreach (PlayerMobile pm in encounter.Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
                 {
                     AddToTable(pm, encounter.Encounter);
                 }
@@ -621,7 +621,7 @@ namespace Server.Engines.Shadowguard
             int count = reader.ReadInt();
             for (int i = 0; i < count; i++)
             {
-                var encounter = ShadowguardEncounter.ConstructEncounter((EncounterType)reader.ReadInt());
+                ShadowguardEncounter encounter = ShadowguardEncounter.ConstructEncounter((EncounterType)reader.ReadInt());
                 encounter.Deserialize(reader);
 
                 AddEncounter(encounter);
@@ -723,7 +723,7 @@ namespace Server.Engines.Shadowguard
             door.Hue = 1779;
             door.MoveToWorld(new Point3D(519, 2193, 25), Map.TerMur);
 
-            var ankh = new AnkhWest();
+            AnkhWest ankh = new AnkhWest();
             ankh.MoveToWorld(new Point3D(503, 2191, 25), Map.TerMur);
 
             Item item = new Static(19343);

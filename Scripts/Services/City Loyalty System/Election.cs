@@ -20,34 +20,22 @@ namespace Server.Engines.CityLoyalty
         public bool ElectionEnded { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Ongoing { get { return CanNominate() || CanVote(); } }
+        public bool Ongoing => CanNominate() || CanVote();
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime AutoPickGovernor { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public string Time1
-        {
-            get { return StartTimes.Length > 0 ? StartTimes[0].ToShortDateString() : "Empty"; }
-        }
+        public string Time1 => StartTimes.Length > 0 ? StartTimes[0].ToShortDateString() : "Empty";
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public string Time2
-        {
-            get { return StartTimes.Length > 1 ? StartTimes[1].ToShortDateString() : "Empty"; }
-        }
+        public string Time2 => StartTimes.Length > 1 ? StartTimes[1].ToShortDateString() : "Empty";
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public string Time3
-        {
-            get { return StartTimes.Length > 2 ? StartTimes[2].ToShortDateString() : "Empty"; }
-        }
+        public string Time3 => StartTimes.Length > 2 ? StartTimes[2].ToShortDateString() : "Empty";
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public string Time4
-        {
-            get { return StartTimes.Length > 3 ? StartTimes[3].ToShortDateString() : "Empty"; }
-        }
+        public string Time4 => StartTimes.Length > 3 ? StartTimes[3].ToShortDateString() : "Empty";
 
         public List<BallotEntry> Candidates { get; set; }
 

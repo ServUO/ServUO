@@ -15,24 +15,24 @@ namespace Server
 
         public AssemblyEmitter(string assemblyName, bool canSave)
         {
-            this.m_AssemblyName = assemblyName;
+            m_AssemblyName = assemblyName;
 
-            this.m_AppDomain = AppDomain.CurrentDomain;
+            m_AppDomain = AppDomain.CurrentDomain;
 
-            this.m_AssemblyBuilder = this.m_AppDomain.DefineDynamicAssembly(
+            m_AssemblyBuilder = m_AppDomain.DefineDynamicAssembly(
                 new AssemblyName(assemblyName),
                 canSave ? AssemblyBuilderAccess.RunAndSave : AssemblyBuilderAccess.Run);
 
             if (canSave)
             {
-                this.m_ModuleBuilder = this.m_AssemblyBuilder.DefineDynamicModule(
+                m_ModuleBuilder = m_AssemblyBuilder.DefineDynamicModule(
                     assemblyName,
                     String.Format("{0}.dll", assemblyName.ToLower()),
                     false);
             }
             else
             {
-                this.m_ModuleBuilder = this.m_AssemblyBuilder.DefineDynamicModule(
+                m_ModuleBuilder = m_AssemblyBuilder.DefineDynamicModule(
                     assemblyName,
                     false);
             }
@@ -40,13 +40,13 @@ namespace Server
 
         public TypeBuilder DefineType(string typeName, TypeAttributes attrs, Type parentType)
         {
-            return this.m_ModuleBuilder.DefineType(typeName, attrs, parentType);
+            return m_ModuleBuilder.DefineType(typeName, attrs, parentType);
         }
 
         public void Save()
         {
-            this.m_AssemblyBuilder.Save(
-                String.Format("{0}.dll", this.m_AssemblyName.ToLower()));
+            m_AssemblyBuilder.Save(
+                String.Format("{0}.dll", m_AssemblyName.ToLower()));
         }
     }
 
@@ -59,21 +59,9 @@ namespace Server
 
         private Type[] m_ArgumentTypes;
 
-        public TypeBuilder Type
-        {
-            get
-            {
-                return this.m_TypeBuilder;
-            }
-        }
+        public TypeBuilder Type => m_TypeBuilder;
 
-        public ILGenerator Generator
-        {
-            get
-            {
-                return this.m_Generator;
-            }
-        }
+        public ILGenerator Generator => m_Generator;
 
         private class CallInfo
         {
@@ -88,7 +76,7 @@ namespace Server
                 this.type = type;
                 this.method = method;
 
-                this.parms = method.GetParameters();
+                parms = method.GetParameters();
             }
         }
 
@@ -97,92 +85,86 @@ namespace Server
 
         private readonly Dictionary<Type, Queue<LocalBuilder>> m_Temps;
 
-        public MethodBuilder Method
-        {
-            get
-            {
-                return this.m_Builder;
-            }
-        }
+        public MethodBuilder Method => m_Builder;
 
         public MethodEmitter(TypeBuilder typeBuilder)
         {
-            this.m_TypeBuilder = typeBuilder;
+            m_TypeBuilder = typeBuilder;
 
-            this.m_Temps = new Dictionary<Type, Queue<LocalBuilder>>();
+            m_Temps = new Dictionary<Type, Queue<LocalBuilder>>();
 
-            this.m_Stack = new Stack<Type>();
-            this.m_Calls = new Stack<CallInfo>();
+            m_Stack = new Stack<Type>();
+            m_Calls = new Stack<CallInfo>();
         }
 
         public void Define(string name, MethodAttributes attr, Type returnType, Type[] parms)
         {
-            this.m_Builder = this.m_TypeBuilder.DefineMethod(name, attr, returnType, parms);
-            this.m_Generator = this.m_Builder.GetILGenerator();
+            m_Builder = m_TypeBuilder.DefineMethod(name, attr, returnType, parms);
+            m_Generator = m_Builder.GetILGenerator();
 
-            this.m_ArgumentTypes = parms;
+            m_ArgumentTypes = parms;
         }
 
         public LocalBuilder CreateLocal(Type localType)
         {
-            return this.m_Generator.DeclareLocal(localType);
+            return m_Generator.DeclareLocal(localType);
         }
 
         public LocalBuilder AcquireTemp(Type localType)
         {
             Queue<LocalBuilder> list;
 
-            if (!this.m_Temps.TryGetValue(localType, out list))
-                this.m_Temps[localType] = list = new Queue<LocalBuilder>();
+            if (!m_Temps.TryGetValue(localType, out list))
+                m_Temps[localType] = list = new Queue<LocalBuilder>();
 
             if (list.Count > 0)
                 return list.Dequeue();
 
-            return this.CreateLocal(localType);
+            return CreateLocal(localType);
         }
 
         public void ReleaseTemp(LocalBuilder local)
         {
             Queue<LocalBuilder> list;
 
-            if (!this.m_Temps.TryGetValue(local.LocalType, out list))
-                this.m_Temps[local.LocalType] = list = new Queue<LocalBuilder>();
+            if (!m_Temps.TryGetValue(local.LocalType, out list))
+                m_Temps[local.LocalType] = list = new Queue<LocalBuilder>();
 
             list.Enqueue(local);
         }
 
         public void Branch(Label label)
         {
-            this.m_Generator.Emit(OpCodes.Br, label);
+            m_Generator.Emit(OpCodes.Br, label);
         }
 
         public void BranchIfFalse(Label label)
         {
-            this.Pop(typeof(object));
+            Pop(typeof(object));
 
-            this.m_Generator.Emit(OpCodes.Brfalse, label);
+            m_Generator.Emit(OpCodes.Brfalse, label);
         }
 
         public void BranchIfTrue(Label label)
         {
-            this.Pop(typeof(object));
+            Pop(typeof(object));
 
-            this.m_Generator.Emit(OpCodes.Brtrue, label);
+            m_Generator.Emit(OpCodes.Brtrue, label);
         }
 
         public Label CreateLabel()
         {
-            return this.m_Generator.DefineLabel();
+            return m_Generator.DefineLabel();
         }
 
         public void MarkLabel(Label label)
         {
-            this.m_Generator.MarkLabel(label);
+            m_Generator.MarkLabel(label);
         }
 
         public void Pop()
         {
-            this.m_Stack.Pop();
+            m_Stack.Pop();
         }
 
         public void Pop(Type expected)
@@ -190,7 +172,7 @@ namespace Server
             if (expected == null)
                 throw new InvalidOperationException("Expected type cannot be null.");
 
-            Type onStack = this.m_Stack.Pop();
+            Type onStack = m_Stack.Pop();
 
             if (expected == typeof(bool))
                 expected = typeof(int);
@@ -204,128 +186,128 @@ namespace Server
 
         public void Push(Type type)
         {
-            this.m_Stack.Push(type);
+            m_Stack.Push(type);
         }
 
         public void Return()
         {
-            if (this.m_Stack.Count != (this.m_Builder.ReturnType == typeof(void) ? 0 : 1))
+            if (m_Stack.Count != (m_Builder.ReturnType == typeof(void) ? 0 : 1))
                 throw new InvalidOperationException("Stack return mismatch.");
 
-            this.m_Generator.Emit(OpCodes.Ret);
+            m_Generator.Emit(OpCodes.Ret);
         }
 
         public void LoadNull()
         {
-            this.LoadNull(typeof(object));
+            LoadNull(typeof(object));
         }
 
         public void LoadNull(Type type)
         {
-            this.Push(type);
+            Push(type);
 
-            this.m_Generator.Emit(OpCodes.Ldnull);
+            m_Generator.Emit(OpCodes.Ldnull);
         }
 
         public void Load(string value)
         {
-            this.Push(typeof(string));
+            Push(typeof(string));
 
             if (value != null)
-                this.m_Generator.Emit(OpCodes.Ldstr, value);
+                m_Generator.Emit(OpCodes.Ldstr, value);
             else
-                this.m_Generator.Emit(OpCodes.Ldnull);
+                m_Generator.Emit(OpCodes.Ldnull);
         }
 
         public void Load(Enum value)
         {
             int toLoad = ((IConvertible)value).ToInt32(null);
-            this.Load(toLoad);
+            Load(toLoad);
 
-            this.Pop();
-            this.Push(value.GetType());
+            Pop();
+            Push(value.GetType());
         }
 
         public void Load(long value)
         {
-            this.Push(typeof(long));
+            Push(typeof(long));
 
-            this.m_Generator.Emit(OpCodes.Ldc_I8, value);
+            m_Generator.Emit(OpCodes.Ldc_I8, value);
         }
 
         public void Load(float value)
         {
-            this.Push(typeof(float));
+            Push(typeof(float));
 
-            this.m_Generator.Emit(OpCodes.Ldc_R4, value);
+            m_Generator.Emit(OpCodes.Ldc_R4, value);
         }
 
         public void Load(double value)
         {
-            this.Push(typeof(double));
+            Push(typeof(double));
 
-            this.m_Generator.Emit(OpCodes.Ldc_R8, value);
+            m_Generator.Emit(OpCodes.Ldc_R8, value);
         }
 
         public void Load(char value)
         {
-            this.Load((int)value);
+            Load((int)value);
 
-            this.Pop();
-            this.Push(typeof(char));
+            Pop();
+            Push(typeof(char));
         }
 
         public void Load(bool value)
         {
-            this.Push(typeof(bool));
+            Push(typeof(bool));
 
             if (value)
-                this.m_Generator.Emit(OpCodes.Ldc_I4_1);
+                m_Generator.Emit(OpCodes.Ldc_I4_1);
             else
-                this.m_Generator.Emit(OpCodes.Ldc_I4_0);
+                m_Generator.Emit(OpCodes.Ldc_I4_0);
         }
 
         public void Load(int value)
         {
-            this.Push(typeof(int));
+            Push(typeof(int));
 
             switch (value)
             {
                 case -1:
-                    this.m_Generator.Emit(OpCodes.Ldc_I4_M1);
+                    m_Generator.Emit(OpCodes.Ldc_I4_M1);
                     break;
                 case 0:
-                    this.m_Generator.Emit(OpCodes.Ldc_I4_0);
+                    m_Generator.Emit(OpCodes.Ldc_I4_0);
                     break;
                 case 1:
-                    this.m_Generator.Emit(OpCodes.Ldc_I4_1);
+                    m_Generator.Emit(OpCodes.Ldc_I4_1);
                     break;
                 case 2:
-                    this.m_Generator.Emit(OpCodes.Ldc_I4_2);
+                    m_Generator.Emit(OpCodes.Ldc_I4_2);
                     break;
                 case 3:
-                    this.m_Generator.Emit(OpCodes.Ldc_I4_3);
+                    m_Generator.Emit(OpCodes.Ldc_I4_3);
                     break;
                 case 4:
-                    this.m_Generator.Emit(OpCodes.Ldc_I4_4);
+                    m_Generator.Emit(OpCodes.Ldc_I4_4);
                     break;
                 case 5:
-                    this.m_Generator.Emit(OpCodes.Ldc_I4_5);
+                    m_Generator.Emit(OpCodes.Ldc_I4_5);
                     break;
                 case 6:
-                    this.m_Generator.Emit(OpCodes.Ldc_I4_6);
+                    m_Generator.Emit(OpCodes.Ldc_I4_6);
                     break;
                 case 7:
-                    this.m_Generator.Emit(OpCodes.Ldc_I4_7);
+                    m_Generator.Emit(OpCodes.Ldc_I4_7);
                     break;
                 case 8:
-                    this.m_Generator.Emit(OpCodes.Ldc_I4_8);
+                    m_Generator.Emit(OpCodes.Ldc_I4_8);
                     break;
                 default:
                     if (value >= sbyte.MinValue && value <= sbyte.MaxValue)
-                        this.m_Generator.Emit(OpCodes.Ldc_I4_S, (sbyte)value);
+                        m_Generator.Emit(OpCodes.Ldc_I4_S, (sbyte)value);
                     else
-                        this.m_Generator.Emit(OpCodes.Ldc_I4, value);
+                        m_Generator.Emit(OpCodes.Ldc_I4, value);
 
                     break;
             }
@@ -333,38 +315,38 @@ namespace Server
 
         public void LoadField(FieldInfo field)
         {
-            this.Pop(field.DeclaringType);
+            Pop(field.DeclaringType);
 
-            this.Push(field.FieldType);
+            Push(field.FieldType);
 
-            this.m_Generator.Emit(OpCodes.Ldfld, field);
+            m_Generator.Emit(OpCodes.Ldfld, field);
         }
 
         public void LoadLocal(LocalBuilder local)
         {
-            this.Push(local.LocalType);
+            Push(local.LocalType);
 
             int index = local.LocalIndex;
 
             switch (index)
             {
                 case 0:
-                    this.m_Generator.Emit(OpCodes.Ldloc_0);
+                    m_Generator.Emit(OpCodes.Ldloc_0);
                     break;
                 case 1:
-                    this.m_Generator.Emit(OpCodes.Ldloc_1);
+                    m_Generator.Emit(OpCodes.Ldloc_1);
                     break;
                 case 2:
-                    this.m_Generator.Emit(OpCodes.Ldloc_2);
+                    m_Generator.Emit(OpCodes.Ldloc_2);
                     break;
                 case 3:
-                    this.m_Generator.Emit(OpCodes.Ldloc_3);
+                    m_Generator.Emit(OpCodes.Ldloc_3);
                     break;
                 default:
                     if (index >= byte.MinValue && index <= byte.MinValue)
-                        this.m_Generator.Emit(OpCodes.Ldloc_S, (byte)index);
+                        m_Generator.Emit(OpCodes.Ldloc_S, (byte)index);
                     else
-                        this.m_Generator.Emit(OpCodes.Ldloc, (short)index);
+                        m_Generator.Emit(OpCodes.Ldloc, (short)index);
 
                     break;
             }
@@ -372,37 +354,37 @@ namespace Server
 
         public void StoreLocal(LocalBuilder local)
         {
-            this.Pop(local.LocalType);
+            Pop(local.LocalType);
 
-            this.m_Generator.Emit(OpCodes.Stloc, local);
+            m_Generator.Emit(OpCodes.Stloc, local);
         }
 
         public void LoadArgument(int index)
         {
             if (index > 0)
-                this.Push(this.m_ArgumentTypes[index - 1]);
+                Push(m_ArgumentTypes[index - 1]);
             else
-                this.Push(this.m_TypeBuilder);
+                Push(m_TypeBuilder);
 
             switch (index)
             {
                 case 0:
-                    this.m_Generator.Emit(OpCodes.Ldarg_0);
+                    m_Generator.Emit(OpCodes.Ldarg_0);
                     break;
                 case 1:
-                    this.m_Generator.Emit(OpCodes.Ldarg_1);
+                    m_Generator.Emit(OpCodes.Ldarg_1);
                     break;
                 case 2:
-                    this.m_Generator.Emit(OpCodes.Ldarg_2);
+                    m_Generator.Emit(OpCodes.Ldarg_2);
                     break;
                 case 3:
-                    this.m_Generator.Emit(OpCodes.Ldarg_3);
+                    m_Generator.Emit(OpCodes.Ldarg_3);
                     break;
                 default:
                     if (index >= byte.MinValue && index <= byte.MaxValue)
-                        this.m_Generator.Emit(OpCodes.Ldarg_S, (byte)index);
+                        m_Generator.Emit(OpCodes.Ldarg_S, (byte)index);
                     else
-                        this.m_Generator.Emit(OpCodes.Ldarg, (short)index);
+                        m_Generator.Emit(OpCodes.Ldarg, (short)index);
 
                     break;
             }
@@ -410,82 +392,76 @@ namespace Server
 
         public void CastAs(Type type)
         {
-            this.Pop(typeof(object));
-            this.Push(type);
+            Pop(typeof(object));
+            Push(type);
 
-            this.m_Generator.Emit(OpCodes.Isinst, type);
+            m_Generator.Emit(OpCodes.Isinst, type);
         }
 
         public void Neg()
         {
-            this.Pop(typeof(int));
+            Pop(typeof(int));
 
-            this.Push(typeof(int));
+            Push(typeof(int));
 
-            this.m_Generator.Emit(OpCodes.Neg);
+            m_Generator.Emit(OpCodes.Neg);
         }
 
         public void Compare(OpCode opCode)
         {
-            this.Pop();
-            this.Pop();
+            Pop();
+            Pop();
 
-            this.Push(typeof(int));
+            Push(typeof(int));
 
-            this.m_Generator.Emit(opCode);
+            m_Generator.Emit(opCode);
         }
 
         public void LogicalNot()
         {
-            this.Pop(typeof(int));
+            Pop(typeof(int));
 
-            this.Push(typeof(int));
+            Push(typeof(int));
 
-            this.m_Generator.Emit(OpCodes.Ldc_I4_0);
-            this.m_Generator.Emit(OpCodes.Ceq);
+            m_Generator.Emit(OpCodes.Ldc_I4_0);
+            m_Generator.Emit(OpCodes.Ceq);
         }
 
         public void Xor()
         {
-            this.Pop(typeof(int));
-            this.Pop(typeof(int));
+            Pop(typeof(int));
+            Pop(typeof(int));
 
-            this.Push(typeof(int));
+            Push(typeof(int));
 
-            this.m_Generator.Emit(OpCodes.Xor);
+            m_Generator.Emit(OpCodes.Xor);
         }
 
-        public Type Active
-        {
-            get
-            {
-                return this.m_Stack.Peek();
-            }
-        }
+        public Type Active => m_Stack.Peek();
 
         public void Chain(Property prop)
         {
             for (int i = 0; i < prop.Chain.Length; ++i)
-                this.Call(prop.Chain[i].GetGetMethod());
+                Call(prop.Chain[i].GetGetMethod());
         }
 
         public void Call(MethodInfo method)
         {
-            this.BeginCall(method);
+            BeginCall(method);
 
-            CallInfo call = this.m_Calls.Peek();
+            CallInfo call = m_Calls.Peek();
 
             if (call.parms.Length > 0)
                 throw new InvalidOperationException("Method requires parameters.");
 
-            this.FinishCall();
+            FinishCall();
         }
 
         public delegate void Callback();
 
         public bool CompareTo(int sign, Callback argGenerator)
         {
-            Type active = this.Active;
+            Type active = Active;
 
             MethodInfo compareTo = active.GetMethod("CompareTo", new Type[] { active });
 
@@ -548,14 +524,14 @@ namespace Server
                 * null.CompareTo( real ) = +1
                 * 
                 */
-                LocalBuilder aValue = this.AcquireTemp(active);
-                LocalBuilder bValue = this.AcquireTemp(active);
+                LocalBuilder aValue = AcquireTemp(active);
+                LocalBuilder bValue = AcquireTemp(active);
 
-                this.StoreLocal(aValue);
+                StoreLocal(aValue);
 
                 argGenerator();
 
-                this.StoreLocal(bValue);
+                StoreLocal(bValue);
 
                 /* if ( aValue == null )
                 * {
@@ -574,78 +550,78 @@ namespace Server
                 * }
                 */
 
-                Label store = this.CreateLabel();
+                Label store = CreateLabel();
 
-                Label aNotNull = this.CreateLabel();
+                Label aNotNull = CreateLabel();
 
-                this.LoadLocal(aValue);
-                this.BranchIfTrue(aNotNull);
+                LoadLocal(aValue);
+                BranchIfTrue(aNotNull);
                 // if ( aValue == null )
                 {
-                    Label bNotNull = this.CreateLabel();
+                    Label bNotNull = CreateLabel();
 
-                    this.LoadLocal(bValue);
-                    this.BranchIfTrue(bNotNull);
+                    LoadLocal(bValue);
+                    BranchIfTrue(bNotNull);
                     // if ( bValue == null )
                     {
-                        this.Load(0);
-                        this.Pop(typeof(int));
-                        this.Branch(store);
+                        Load(0);
+                        Pop(typeof(int));
+                        Branch(store);
                     }
-                    this.MarkLabel(bNotNull);
+                    MarkLabel(bNotNull);
                     // else
                     {
-                        this.Load(sign);
-                        this.Pop(typeof(int));
-                        this.Branch(store);
+                        Load(sign);
+                        Pop(typeof(int));
+                        Branch(store);
                     }
                 }
-                this.MarkLabel(aNotNull);
+                MarkLabel(aNotNull);
                 // else
                 {
-                    Label bNotNull = this.CreateLabel();
+                    Label bNotNull = CreateLabel();
 
-                    this.LoadLocal(bValue);
-                    this.BranchIfTrue(bNotNull);
+                    LoadLocal(bValue);
+                    BranchIfTrue(bNotNull);
                     // bValue == null
                     {
-                        this.Load(-sign);
-                        this.Pop(typeof(int));
-                        this.Branch(store);
+                        Load(-sign);
+                        Pop(typeof(int));
+                        Branch(store);
                     }
-                    this.MarkLabel(bNotNull);
+                    MarkLabel(bNotNull);
                     // else
                     {
-                        this.LoadLocal(aValue);
-                        this.BeginCall(compareTo);
+                        LoadLocal(aValue);
+                        BeginCall(compareTo);
 
-                        this.LoadLocal(bValue);
-                        this.ArgumentPushed();
+                        LoadLocal(bValue);
+                        ArgumentPushed();
 
-                        this.FinishCall();
+                        FinishCall();
 
                         if (sign == -1)
-                            this.Neg();
+                            Neg();
                     }
                 }
 
-                this.MarkLabel(store);
+                MarkLabel(store);
 
-                this.ReleaseTemp(aValue);
-                this.ReleaseTemp(bValue);
+                ReleaseTemp(aValue);
+                ReleaseTemp(bValue);
             }
             else
             {
-                this.BeginCall(compareTo);
+                BeginCall(compareTo);
 
                 argGenerator();
 
-                this.ArgumentPushed();
+                ArgumentPushed();
 
-                this.FinishCall();
+                FinishCall();
 
                 if (sign == -1)
-                    this.Neg();
+                    Neg();
             }
 
             return true;
@@ -656,58 +632,58 @@ namespace Server
             Type type;
 
             if ((method.CallingConvention & CallingConventions.HasThis) != 0)
-                type = this.m_Stack.Peek();
+                type = m_Stack.Peek();
             else
                 type = method.DeclaringType;
 
-            this.m_Calls.Push(new CallInfo(type, method));
+            m_Calls.Push(new CallInfo(type, method));
 
             if (type.IsValueType)
             {
-                LocalBuilder temp = this.AcquireTemp(type);
+                LocalBuilder temp = AcquireTemp(type);
 
-                this.m_Generator.Emit(OpCodes.Stloc, temp);
-                this.m_Generator.Emit(OpCodes.Ldloca, temp);
+                m_Generator.Emit(OpCodes.Stloc, temp);
+                m_Generator.Emit(OpCodes.Ldloca, temp);
 
-                this.ReleaseTemp(temp);
+                ReleaseTemp(temp);
             }
         }
 
         public void FinishCall()
         {
-            CallInfo call = this.m_Calls.Pop();
+            CallInfo call = m_Calls.Pop();
 
             if ((call.type.IsValueType || call.type.IsByRef) && call.method.DeclaringType != call.type)
-                this.m_Generator.Emit(OpCodes.Constrained, call.type);
+                m_Generator.Emit(OpCodes.Constrained, call.type);
 
             if (call.method.DeclaringType.IsValueType || call.method.IsStatic)
-                this.m_Generator.Emit(OpCodes.Call, call.method);
+                m_Generator.Emit(OpCodes.Call, call.method);
             else
-                this.m_Generator.Emit(OpCodes.Callvirt, call.method);
+                m_Generator.Emit(OpCodes.Callvirt, call.method);
 
             for (int i = call.parms.Length - 1; i >= 0; --i)
-                this.Pop(call.parms[i].ParameterType);
+                Pop(call.parms[i].ParameterType);
 
             if ((call.method.CallingConvention & CallingConventions.HasThis) != 0)
-                this.Pop(call.method.DeclaringType);
+                Pop(call.method.DeclaringType);
 
             if (call.method.ReturnType != typeof(void))
-                this.Push(call.method.ReturnType);
+                Push(call.method.ReturnType);
         }
 
         public void ArgumentPushed()
         {
-            CallInfo call = this.m_Calls.Peek();
+            CallInfo call = m_Calls.Peek();
 
             ParameterInfo parm = call.parms[call.index++];
 
-            Type argumentType = this.m_Stack.Peek();
+            Type argumentType = m_Stack.Peek();
 
             if (!parm.ParameterType.IsAssignableFrom(argumentType))
                 throw new InvalidOperationException("Parameter type mismatch.");
 
             if (argumentType.IsValueType && !parm.ParameterType.IsValueType)
-                this.m_Generator.Emit(OpCodes.Box, argumentType);
+                m_Generator.Emit(OpCodes.Box, argumentType);
         }
     }
 }

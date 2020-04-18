@@ -3,8 +3,8 @@ namespace Server.Items
     [TypeAlias("Server.Items.BarreraakRing")]
     public class BarreraaksRing : GoldRing
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1095049; } } // Barreraak’s Old Beat Up Ring
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1095049;  // Barreraak’s Old Beat Up Ring
 
         [Constructable]
         public BarreraaksRing()
@@ -63,7 +63,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -73,7 +73,7 @@ namespace Server.Items
 
             if (Parent is Mobile)
             {
-                var m = (Mobile)Parent;
+                Mobile m = (Mobile)Parent;
 
                 Timer.DelayCall(() =>
                     {

@@ -104,13 +104,7 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int PagesCount
-        {
-            get
-            {
-                return m_Pages.Length;
-            }
-        }
+        public int PagesCount => m_Pages.Length;
 
         public string BookString
         {
@@ -118,13 +112,7 @@ namespace Server.Items
             set { BuildBookFromString(value); }
         }
 
-        public BookPageInfo[] Pages
-        {
-            get
-            {
-                return m_Pages;
-            }
-        }
+        public BookPageInfo[] Pages => m_Pages;
 
         [Constructable]
         public BaseBook(int itemID)
@@ -181,13 +169,7 @@ namespace Server.Items
             }
         }
 
-        public virtual BookContent DefaultContent
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public virtual BookContent DefaultContent => null;
 
         public void BuildBookFromString(string content)
         {
@@ -282,7 +264,7 @@ namespace Server.Items
             if (content == null || !content.IsMatch(m_Pages))
                 flags |= SaveFlags.Content;
 
-            writer.Write((int)4); // version
+            writer.Write(4); // version
 
             writer.Write((int)m_SecureLevel);
 
@@ -592,7 +574,7 @@ namespace Server.Items
         {
             EnsureCapacity(256);
 
-            m_Stream.Write((int)book.Serial);
+            m_Stream.Write(book.Serial);
             m_Stream.Write((ushort)book.PagesCount);
 
             for (int i = 0; i < book.PagesCount; ++i)
@@ -617,7 +599,7 @@ namespace Server.Items
         {
             EnsureCapacity(256);
 
-            m_Stream.Write((int)book.Serial);
+            m_Stream.Write(book.Serial);
             m_Stream.Write((ushort)0x1);
 
             m_Stream.Write((ushort)page);
@@ -646,9 +628,9 @@ namespace Server.Items
 
             EnsureCapacity(15 + titleBuffer.Length + authorBuffer.Length);
 
-            m_Stream.Write((int)book.Serial);
-            m_Stream.Write((bool)true);
-            m_Stream.Write((bool)book.Writable && from.InRange(book.GetWorldLocation(), 1));
+            m_Stream.Write(book.Serial);
+            m_Stream.Write(true);
+            m_Stream.Write(book.Writable && from.InRange(book.GetWorldLocation(), 1));
             m_Stream.Write((ushort)book.PagesCount);
 
             m_Stream.Write((ushort)(titleBuffer.Length + 1));

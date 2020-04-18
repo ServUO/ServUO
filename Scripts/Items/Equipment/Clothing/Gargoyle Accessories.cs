@@ -13,7 +13,7 @@ namespace Server.Items
         public GargoyleTailMale(int hue)
             : base(0x450D, hue)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public GargoyleTailMale(Serial serial)
@@ -21,25 +21,13 @@ namespace Server.Items
         {
         }
 
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override Race RequiredRace => Race.Gargoyle;
+        public override bool CanBeWornByGargoyles => true;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -63,7 +51,7 @@ namespace Server.Items
         public GargoyleTailFemale(int hue)
             : base(0x44C1, hue)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public GargoyleTailFemale(Serial serial)
@@ -71,25 +59,13 @@ namespace Server.Items
         {
         }
 
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Gargoyle;
-            }
-        }
-        public override bool CanBeWornByGargoyles
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override Race RequiredRace => Race.Gargoyle;
+        public override bool CanBeWornByGargoyles => true;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

@@ -26,9 +26,9 @@ namespace Ultima
             string path = Files.GetFilePath("animdata.mul");
             if (path != null)
             {
-                using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    using (var bin = new BinaryReader(fs))
+                    using (BinaryReader bin = new BinaryReader(fs))
                     {
                         unsafe
                         {
@@ -66,7 +66,7 @@ namespace Ultima
                                     }
                                 }
                             }
-                            var remaining = (int)(bin.BaseStream.Length - bin.BaseStream.Position);
+                            int remaining = (int)(bin.BaseStream.Length - bin.BaseStream.Position);
                             if (remaining > 0)
                             {
                                 m_Unknown = bin.ReadBytes(remaining);
@@ -97,9 +97,9 @@ namespace Ultima
         public static void Save(string path)
         {
             string FileName = Path.Combine(path, "animdata.mul");
-            using (var fs = new FileStream(FileName, FileMode.Create, FileAccess.Write, FileShare.Write))
+            using (FileStream fs = new FileStream(FileName, FileMode.Create, FileAccess.Write, FileShare.Write))
             {
-                using (var bin = new BinaryWriter(fs))
+                using (BinaryWriter bin = new BinaryWriter(fs))
                 {
                     int id = 0;
                     int h = 0;

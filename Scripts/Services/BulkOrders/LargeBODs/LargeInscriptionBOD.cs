@@ -4,7 +4,7 @@ namespace Server.Engines.BulkOrders
 {
     public class LargeInscriptionBOD : LargeBOD
     {
-        public override BODType BODType { get { return BODType.Inscription; } }
+        public override BODType BODType => BODType.Inscription;
 
         [Constructable]
         public LargeInscriptionBOD()
@@ -48,18 +48,18 @@ namespace Server.Engines.BulkOrders
 
             int amountMax = Utility.RandomList(10, 15, 20, 20);
 
-            this.Hue = 2598;
-            this.AmountMax = amountMax;
-            this.Entries = entries;
+            Hue = 2598;
+            AmountMax = amountMax;
+            Entries = entries;
         }
 
         public LargeInscriptionBOD(int amountMax, bool reqExceptional, BulkMaterialType mat, LargeBulkEntry[] entries)
         {
-            this.Hue = 2598;
-            this.AmountMax = amountMax;
-            this.Entries = entries;
-            this.RequireExceptional = reqExceptional;
-            this.Material = mat;
+            Hue = 2598;
+            AmountMax = amountMax;
+            Entries = entries;
+            RequireExceptional = reqExceptional;
+            Material = mat;
         }
 
         public LargeInscriptionBOD(Serial serial)
@@ -116,7 +116,7 @@ namespace Server.Engines.BulkOrders
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

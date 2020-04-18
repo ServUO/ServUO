@@ -7,9 +7,9 @@ namespace Server.Spells.Mysticism
 {
     public class HailStormSpell : MysticSpell
     {
-        public override SpellCircle Circle { get { return SpellCircle.Seventh; } }
-        public override bool DelayedDamage { get { return true; } }
-        public override DamageType SpellDamageType { get { return DamageType.SpellAOE; } }
+        public override SpellCircle Circle => SpellCircle.Seventh;
+        public override bool DelayedDamage => true;
+        public override DamageType SpellDamageType => DamageType.SpellAOE;
 
         private static readonly SpellInfo m_Info = new SpellInfo(
                 "Hail Storm", "Kal Des Ylem",
@@ -67,10 +67,10 @@ namespace Server.Spells.Mysticism
                     }
                 }
 
-                var list = AcquireIndirectTargets(p, 2).ToList();
+                System.Collections.Generic.List<IDamageable> list = AcquireIndirectTargets(p, 2).ToList();
                 int count = list.Count;
 
-                foreach (var id in list)
+                foreach (IDamageable id in list)
                 {
                     if (id.Deleted)
                         continue;

@@ -11,23 +11,23 @@ namespace Server.Gumps
         public HouseTransferGump(Mobile from, Mobile to, BaseHouse house)
             : base(110, 100)
         {
-            this.m_From = from;
-            this.m_To = to;
-            this.m_House = house;
+            m_From = from;
+            m_To = to;
+            m_House = house;
 
-            this.Closable = false;
+            Closable = false;
 
-            this.AddPage(0);
+            AddPage(0);
 
-            this.AddBackground(0, 0, 420, 280, 5054);
+            AddBackground(0, 0, 420, 280, 5054);
 
-            this.AddImageTiled(10, 10, 400, 20, 2624);
-            this.AddAlphaRegion(10, 10, 400, 20);
+            AddImageTiled(10, 10, 400, 20, 2624);
+            AddAlphaRegion(10, 10, 400, 20);
 
-            this.AddHtmlLocalized(10, 10, 400, 20, 1060635, 30720, false, false); // <CENTER>WARNING</CENTER>
+            AddHtmlLocalized(10, 10, 400, 20, 1060635, 30720, false, false); // <CENTER>WARNING</CENTER>
 
-            this.AddImageTiled(10, 40, 400, 200, 2624);
-            this.AddAlphaRegion(10, 40, 400, 200);
+            AddImageTiled(10, 40, 400, 200, 2624);
+            AddAlphaRegion(10, 40, 400, 200);
 
             /* Another player is attempting to initiate a house trade with you.
             * In order for you to see this window, both you and the other person are standing within two paces of the house to be traded.
@@ -42,22 +42,22 @@ namespace Server.Gumps
             * If you are absolutely certain you wish to proceed, click the button next to OKAY below.
             * If you do not wish to trade for this house, click CANCEL.
             */
-            this.AddHtmlLocalized(10, 40, 400, 200, 1062086, 32512, false, true);
+            AddHtmlLocalized(10, 40, 400, 200, 1062086, 32512, false, true);
 
-            this.AddImageTiled(10, 250, 400, 20, 2624);
-            this.AddAlphaRegion(10, 250, 400, 20);
+            AddImageTiled(10, 250, 400, 20, 2624);
+            AddAlphaRegion(10, 250, 400, 20);
 
-            this.AddButton(10, 250, 4005, 4007, 1, GumpButtonType.Reply, 0);
-            this.AddHtmlLocalized(40, 250, 170, 20, 1011036, 32767, false, false); // OKAY
+            AddButton(10, 250, 4005, 4007, 1, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(40, 250, 170, 20, 1011036, 32767, false, false); // OKAY
 
-            this.AddButton(210, 250, 4005, 4007, 0, GumpButtonType.Reply, 0);
-            this.AddHtmlLocalized(240, 250, 170, 20, 1011012, 32767, false, false); // CANCEL
+            AddButton(210, 250, 4005, 4007, 0, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(240, 250, 170, 20, 1011012, 32767, false, false); // CANCEL
         }
 
         public override void OnResponse(NetState state, RelayInfo info)
         {
-            if (info.ButtonID == 1 && !this.m_House.Deleted)
-                this.m_House.EndConfirmTransfer(this.m_From, this.m_To);
+            if (info.ButtonID == 1 && !m_House.Deleted)
+                m_House.EndConfirmTransfer(m_From, m_To);
         }
     }
 }

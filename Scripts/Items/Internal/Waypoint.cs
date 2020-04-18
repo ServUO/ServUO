@@ -11,8 +11,8 @@ namespace Server.Items
         public WayPoint()
             : base(0x1f14)
         {
-            this.Hue = 0x498;
-            this.Visible = false;
+            Hue = 0x498;
+            Visible = false;
             //this.Movable = false;
         }
 
@@ -28,24 +28,18 @@ namespace Server.Items
         {
         }
 
-        public override string DefaultName
-        {
-            get
-            {
-                return "AI Way Point";
-            }
-        }
+        public override string DefaultName => "AI Way Point";
         [CommandProperty(AccessLevel.GameMaster)]
         public WayPoint NextPoint
         {
             get
             {
-                return this.m_Next;
+                return m_Next;
             }
             set
             {
-                if (this.m_Next != this)
-                    this.m_Next = value;
+                if (m_Next != this)
+                    m_Next = value;
             }
         }
         public static void Initialize()
@@ -79,7 +73,7 @@ namespace Server.Items
             {
                 case 0:
                     {
-                        this.m_Next = reader.ReadItem() as WayPoint;
+                        m_Next = reader.ReadItem() as WayPoint;
                         break;
                     }
             }
@@ -89,9 +83,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
 
-            writer.Write(this.m_Next);
+            writer.Write(m_Next);
         }
     }
 
@@ -101,14 +95,14 @@ namespace Server.Items
         public NextPointTarget(WayPoint pt)
             : base(-1, false, TargetFlags.None)
         {
-            this.m_Point = pt;
+            m_Point = pt;
         }
 
         protected override void OnTarget(Mobile from, object target)
         {
-            if (target is WayPoint && this.m_Point != null)
+            if (target is WayPoint && m_Point != null)
             {
-                this.m_Point.NextPoint = (WayPoint)target;
+                m_Point.NextPoint = (WayPoint)target;
             }
             else
             {
@@ -123,21 +117,21 @@ namespace Server.Items
         public WayPointSeqTarget(WayPoint last)
             : base(-1, true, TargetFlags.None)
         {
-            this.m_Last = last;
+            m_Last = last;
         }
 
         protected override void OnTarget(Mobile from, object targeted)
         {
             if (targeted is WayPoint)
             {
-                if (this.m_Last != null)
-                    this.m_Last.NextPoint = (WayPoint)targeted;
+                if (m_Last != null)
+                    m_Last.NextPoint = (WayPoint)targeted;
             }
             else if (targeted is IPoint3D)
             {
                 Point3D p = new Point3D((IPoint3D)targeted);
 
-                WayPoint point = new WayPoint(this.m_Last);
+                WayPoint point = new WayPoint(m_Last);
                 point.MoveToWorld(p, from.Map);
 
                 from.Target = new WayPointSeqTarget(point);

@@ -9,8 +9,8 @@ namespace Server.Mobiles
         public LizardmanSquatter()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = NameList.RandomName("lizardman");
-            this.Title = "the squatter";
+            Name = NameList.RandomName("lizardman");
+            Title = "the squatter";
             Body = Utility.RandomList(35, 36);
             BaseSoundID = 417;
 
@@ -62,7 +62,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

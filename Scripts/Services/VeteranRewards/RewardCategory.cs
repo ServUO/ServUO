@@ -9,36 +9,18 @@ namespace Server.Engines.VeteranRewards
         private readonly List<RewardEntry> m_Entries;
         public RewardCategory(int name)
         {
-            this.m_Name = name;
-            this.m_Entries = new List<RewardEntry>();
+            m_Name = name;
+            m_Entries = new List<RewardEntry>();
         }
 
         public RewardCategory(string name)
         {
-            this.m_NameString = name;
-            this.m_Entries = new List<RewardEntry>();
+            m_NameString = name;
+            m_Entries = new List<RewardEntry>();
         }
 
-        public int Name
-        {
-            get
-            {
-                return this.m_Name;
-            }
-        }
-        public string NameString
-        {
-            get
-            {
-                return this.m_NameString;
-            }
-        }
-        public List<RewardEntry> Entries
-        {
-            get
-            {
-                return this.m_Entries;
-            }
-        }
+        public int Name => m_Name;
+        public string NameString => m_NameString;
+        public List<RewardEntry> Entries => m_Entries;
     }
 }

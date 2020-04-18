@@ -6,7 +6,7 @@ namespace Server.Engines.BulkOrders
 {
     public class SmallInscriptionBOD : SmallBOD
     {
-        public override BODType BODType { get { return BODType.Inscription; } }
+        public override BODType BODType => BODType.Inscription;
 
         [Constructable]
         public SmallInscriptionBOD()
@@ -22,27 +22,27 @@ namespace Server.Engines.BulkOrders
 
                 SmallBulkEntry entry = entries[Utility.Random(entries.Length)];
 
-                this.Hue = 2598;
-                this.AmountMax = amountMax;
-                this.Type = entry.Type;
-                this.Number = entry.Number;
-                this.Graphic = entry.Graphic;
-                this.Material = material;
-                this.GraphicHue = entry.Hue;
+                Hue = 2598;
+                AmountMax = amountMax;
+                Type = entry.Type;
+                Number = entry.Number;
+                Graphic = entry.Graphic;
+                Material = material;
+                GraphicHue = entry.Hue;
             }
         }
 
         public SmallInscriptionBOD(int amountCur, int amountMax, Type type, int number, int graphic, bool reqExceptional, BulkMaterialType mat, int hue)
         {
-            this.Hue = 2598;
-            this.AmountMax = amountMax;
-            this.AmountCur = amountCur;
-            this.Type = type;
-            this.Number = number;
-            this.Graphic = graphic;
-            this.RequireExceptional = reqExceptional;
-            this.Material = mat;
-            this.GraphicHue = hue;
+            Hue = 2598;
+            AmountMax = amountMax;
+            AmountCur = amountCur;
+            Type = type;
+            Number = number;
+            Graphic = graphic;
+            RequireExceptional = reqExceptional;
+            Material = mat;
+            GraphicHue = hue;
         }
 
         public SmallInscriptionBOD(Serial serial)
@@ -52,12 +52,12 @@ namespace Server.Engines.BulkOrders
 
         private SmallInscriptionBOD(SmallBulkEntry entry, int amountMax)
         {
-            this.Hue = 2598;
-            this.AmountMax = amountMax;
-            this.Type = entry.Type;
-            this.Number = entry.Number;
-            this.Graphic = entry.Graphic;
-            this.GraphicHue = entry.Hue;
+            Hue = 2598;
+            AmountMax = amountMax;
+            Type = entry.Type;
+            Number = entry.Number;
+            Graphic = entry.Graphic;
+            GraphicHue = entry.Hue;
         }
 
         public static SmallInscriptionBOD CreateRandomFor(Mobile m)
@@ -159,7 +159,7 @@ namespace Server.Engines.BulkOrders
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

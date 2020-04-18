@@ -13,8 +13,8 @@ namespace Server.Items
         public UncutCloth(int amount)
             : base(0x1767)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public UncutCloth(Serial serial)
@@ -22,33 +22,15 @@ namespace Server.Items
         {
         }
 
-        public override double DefaultWeight
-        {
-            get
-            {
-                return 0.1;
-            }
-        }
-        TextDefinition ICommodity.Description
-        {
-            get
-            {
-                return this.LabelNumber;
-            }
-        }
-        bool ICommodity.IsDeedable
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override double DefaultWeight => 0.1;
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
         public bool Dye(Mobile from, DyeTub sender)
         {
-            if (this.Deleted)
+            if (Deleted)
                 return false;
 
-            this.Hue = sender.DyedHue;
+            Hue = sender.DyedHue;
 
             return true;
         }
@@ -57,7 +39,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -69,7 +51,7 @@ namespace Server.Items
 
         public bool Scissor(Mobile from, Scissors scissors)
         {
-            if (this.Deleted || !from.CanSee(this))
+            if (Deleted || !from.CanSee(this))
                 return false;
 
             base.ScissorHelper(from, new Bandage(), 1);

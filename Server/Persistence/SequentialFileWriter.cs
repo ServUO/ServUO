@@ -54,34 +54,10 @@ namespace Server
                 throw new InvalidOperationException();
             }
         }
-        public override bool CanRead
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool CanSeek
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool CanWrite
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override long Length
-        {
-            get
-            {
-                return this.Position;
-            }
-        }
+        public override bool CanRead => false;
+        public override bool CanSeek => false;
+        public override bool CanWrite => true;
+        public override long Length => this.Position;
         public override void Write(byte[] buffer, int offset, int size)
         {
             this.fileQueue.Enqueue(buffer, offset, size);

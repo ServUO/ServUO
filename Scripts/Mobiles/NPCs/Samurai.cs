@@ -8,75 +8,75 @@ namespace Server.Mobiles
         public Samurai()
             : base(AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Title = "the samurai";
+            Title = "the samurai";
 
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.SetSkill(SkillName.ArmsLore, 64.0, 80.0);
-            this.SetSkill(SkillName.Bushido, 64.0, 85.0);
-            this.SetSkill(SkillName.Parry, 64.0, 80.0);
-            this.SetSkill(SkillName.Swords, 64.0, 85.0);
+            SetSkill(SkillName.ArmsLore, 64.0, 80.0);
+            SetSkill(SkillName.Bushido, 64.0, 85.0);
+            SetSkill(SkillName.Parry, 64.0, 80.0);
+            SetSkill(SkillName.Swords, 64.0, 85.0);
 
-            this.SpeechHue = Utility.RandomDyedHue();
+            SpeechHue = Utility.RandomDyedHue();
 
-            this.Hue = Utility.RandomSkinHue();
+            Hue = Utility.RandomSkinHue();
 
-            if (this.Female = Utility.RandomBool())
+            if (Female = Utility.RandomBool())
             {
-                this.Body = 0x191;
-                this.Name = NameList.RandomName("female");
+                Body = 0x191;
+                Name = NameList.RandomName("female");
             }
             else
             {
-                this.Body = 0x190;
-                this.Name = NameList.RandomName("male");
+                Body = 0x190;
+                Name = NameList.RandomName("male");
             }
 
             switch (Utility.Random(3))
             {
                 case 0:
-                    this.AddItem(new Lajatang());
+                    AddItem(new Lajatang());
                     break;
                 case 1:
-                    this.AddItem(new Wakizashi());
+                    AddItem(new Wakizashi());
                     break;
                 case 2:
-                    this.AddItem(new NoDachi());
+                    AddItem(new NoDachi());
                     break;
             }
 
             switch (Utility.Random(3))
             {
                 case 0:
-                    this.AddItem(new LeatherSuneate());
+                    AddItem(new LeatherSuneate());
                     break;
                 case 1:
-                    this.AddItem(new PlateSuneate());
+                    AddItem(new PlateSuneate());
                     break;
                 case 2:
-                    this.AddItem(new StuddedHaidate());
+                    AddItem(new StuddedHaidate());
                     break;
             }
 
             switch (Utility.Random(4))
             {
                 case 0:
-                    this.AddItem(new LeatherJingasa());
+                    AddItem(new LeatherJingasa());
                     break;
                 case 1:
-                    this.AddItem(new ChainHatsuburi());
+                    AddItem(new ChainHatsuburi());
                     break;
                 case 2:
-                    this.AddItem(new HeavyPlateJingasa());
+                    AddItem(new HeavyPlateJingasa());
                     break;
                 case 3:
-                    this.AddItem(new DecorativePlateKabuto());
+                    AddItem(new DecorativePlateKabuto());
                     break;
             }
 
-            this.AddItem(new LeatherDo());
-            this.AddItem(new LeatherHiroSode());
-            this.AddItem(new SamuraiTabi(Utility.RandomNondyedHue())); // TODO: Hue
+            AddItem(new LeatherDo());
+            AddItem(new LeatherHiroSode());
+            AddItem(new SamuraiTabi(Utility.RandomNondyedHue())); // TODO: Hue
 
             int hairHue = Utility.RandomNondyedHue();
 
@@ -85,7 +85,7 @@ namespace Server.Mobiles
             if (Utility.Random(7) != 0)
                 Utility.AssignRandomFacialHair(this, hairHue);
 
-            this.PackGold(250, 300);
+            PackGold(250, 300);
         }
 
         public Samurai(Serial serial)
@@ -93,20 +93,8 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool CanTeach
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool ClickTitle
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool CanTeach => true;
+        public override bool ClickTitle => false;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

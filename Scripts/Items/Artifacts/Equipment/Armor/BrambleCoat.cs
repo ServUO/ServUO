@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class BrambleCoat : WoodlandChest
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public BrambleCoat()
         {
@@ -19,48 +19,12 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1072925;
-            }
-        }// Bramble Coat
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 8;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 7;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 8;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 7;
-            }
-        }
+        public override int LabelNumber => 1072925;// Bramble Coat
+        public override int BasePhysicalResistance => 10;
+        public override int BaseFireResistance => 8;
+        public override int BaseColdResistance => 7;
+        public override int BasePoisonResistance => 8;
+        public override int BaseEnergyResistance => 7;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

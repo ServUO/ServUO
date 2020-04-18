@@ -66,7 +66,7 @@ namespace Server.Engines.Auction
         public DateTime StartTime { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime EndTime { get { return StartTime + TimeSpan.FromMinutes(Duration); } }
+        public DateTime EndTime => StartTime + TimeSpan.FromMinutes(Duration);
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime ClaimPeriod { get; set; }
@@ -78,15 +78,15 @@ namespace Server.Engines.Auction
 
         public BidEntry HighestBid { get; set; }
 
-        public bool HasBegun { get { return StartTime != DateTime.MinValue; } }
-        public bool InClaimPeriod { get { return HasBegun && ClaimPeriod != DateTime.MinValue; } }
-        public bool CanModify { get { return !HasBegun; } }
+        public bool HasBegun => StartTime != DateTime.MinValue;
+        public bool InClaimPeriod => HasBegun && ClaimPeriod != DateTime.MinValue;
+        public bool CanModify => !HasBegun;
 
-        public int CurrentGoldBid { get { return (int)(CurrentBid >= Account.CurrencyThreshold ? CurrentBid - (CurrentPlatBid * Account.CurrencyThreshold) : CurrentBid); } }
-        public int CurrentPlatBid { get { return (int)(CurrentBid >= Account.CurrencyThreshold ? CurrentBid / Account.CurrencyThreshold : 0); } }
+        public int CurrentGoldBid => (int)(CurrentBid >= Account.CurrencyThreshold ? CurrentBid - (CurrentPlatBid * Account.CurrencyThreshold) : CurrentBid);
+        public int CurrentPlatBid => (int)(CurrentBid >= Account.CurrencyThreshold ? CurrentBid / Account.CurrencyThreshold : 0);
 
-        public int BuyoutGold { get { return (int)(Buyout >= Account.CurrencyThreshold ? Buyout - (BuyoutPlat * Account.CurrencyThreshold) : Buyout); } }
-        public int BuyoutPlat { get { return (int)(Buyout >= Account.CurrencyThreshold ? Buyout / Account.CurrencyThreshold : 0); } }
+        public int BuyoutGold => (int)(Buyout >= Account.CurrencyThreshold ? Buyout - (BuyoutPlat * Account.CurrencyThreshold) : Buyout);
+        public int BuyoutPlat => (int)(Buyout >= Account.CurrencyThreshold ? Buyout / Account.CurrencyThreshold : 0);
 
         public List<HistoryEntry> BidHistory { get; set; }
         public List<PlayerMobile> Viewers { get; set; }
@@ -200,7 +200,7 @@ namespace Server.Engines.Auction
                     else
                         name = String.Format("#{0}", AuctionItem.LabelNumber.ToString());
 
-                    var message = new NewMaginciaMessage(null, new TextDefinition(1156427), String.Format("{0}\t{1}\t{2}",
+                    NewMaginciaMessage message = new NewMaginciaMessage(null, new TextDefinition(1156427), String.Format("{0}\t{1}\t{2}",
                                                             name,
                                                             CurrentPlatBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")),
                                                             CurrentGoldBid.ToString("N0", CultureInfo.GetCultureInfo("en-US"))));
@@ -254,7 +254,7 @@ namespace Server.Engines.Auction
                 else
                 {
                     HighestBid = GetBidEntry(m, true);
-                    HighestBid.CurrentBid = Buyout - (int)((double)Buyout * .05);
+                    HighestBid.CurrentBid = Buyout - (int)(Buyout * .05);
                     CurrentBid = Buyout;
 
                     EndAuction();
@@ -360,7 +360,7 @@ namespace Server.Engines.Auction
                     else
                         name = String.Format("#{0}", item.LabelNumber.ToString());
 
-                    var mes = new NewMaginciaMessage(null, new TextDefinition(1156454), String.Format("{0}\t{1}\t{2}",
+                    NewMaginciaMessage mes = new NewMaginciaMessage(null, new TextDefinition(1156454), String.Format("{0}\t{1}\t{2}",
                                                                 CurrentPlatBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")),
                                                                 CurrentGoldBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")),
                                                                 name));

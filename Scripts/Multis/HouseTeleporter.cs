@@ -13,13 +13,7 @@ namespace Server.Items
         private SecureLevel m_Level;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public BaseHouse House
-        {
-            get
-            {
-                return BaseHouse.FindHouseAt(this);
-            }
-        }
+        public BaseHouse House => BaseHouse.FindHouseAt(this);
 
         [Constructable]
         public HouseTeleporter(int itemID)
@@ -122,11 +116,11 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
             writer.Write((int)m_Level);
 
-            writer.Write((Item)m_Target);
+            writer.Write(m_Target);
         }
 
         public override void Deserialize(GenericReader reader)

@@ -7,7 +7,7 @@
         {
         }
 
-        public override int[] UseableTiles { get { return Server.Engines.Harvest.Fishing.LavaTiles; } }
+        public override int[] UseableTiles => Server.Engines.Harvest.Fishing.LavaTiles;
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
@@ -19,7 +19,7 @@
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

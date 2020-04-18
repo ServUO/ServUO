@@ -41,7 +41,7 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool AlwaysMurderer { get { return true; } }
+        public override bool AlwaysMurderer => true;
 
         public override int Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
         {
@@ -50,7 +50,7 @@ namespace Server.Mobiles
 
             if (from is PlayerMobile)
             {
-                var pm = (PlayerMobile)from;
+                PlayerMobile pm = (PlayerMobile)from;
 
                 BaseQuest quest = QuestHelper.GetQuest(pm, typeof(GuiltyQuest));
 
@@ -71,7 +71,7 @@ namespace Server.Mobiles
 
             if (from is PlayerMobile)
             {
-                var pm = (PlayerMobile)from;
+                PlayerMobile pm = (PlayerMobile)from;
 
                 BaseQuest quest = QuestHelper.GetQuest(pm, typeof(GuiltyQuest));
 
@@ -110,7 +110,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

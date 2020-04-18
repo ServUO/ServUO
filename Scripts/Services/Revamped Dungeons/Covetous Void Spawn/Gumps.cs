@@ -61,7 +61,7 @@ namespace Server.Engines.VoidPool
             AddButton(140, 110, 4005, 4006, 3, GumpButtonType.Reply, 0);
             AddHtmlLocalized(180, 110, 200, 16, 1152537, Orange, false, false); 		//Overall Total Scores
 
-            var stats = VoidPoolStats.GetStats(Controller);
+            VoidPoolStats stats = VoidPoolStats.GetStats(Controller);
 
             if (stats.BestWave != null)
             {
@@ -78,7 +78,7 @@ namespace Server.Engines.VoidPool
 
         public override void OnResponse(Server.Network.NetState state, RelayInfo info)
         {
-            var stats = VoidPoolStats.GetStats(Controller);
+            VoidPoolStats stats = VoidPoolStats.GetStats(Controller);
 
             switch (info.ButtonID)
             {
@@ -127,12 +127,12 @@ namespace Server.Engines.VoidPool
             AddBackground(0, 0, 500, 620, 9350);
             AddPage(page);
 
-            var stats = VoidPoolStats.GetStats(Controller);
+            VoidPoolStats stats = VoidPoolStats.GetStats(Controller);
 
-            if (this.ScoreType == ScoreType.BestWave && stats.BestWave == null)
+            if (ScoreType == ScoreType.BestWave && stats.BestWave == null)
                 return;
 
-            switch (this.ScoreType)
+            switch (ScoreType)
             {
                 default:
                 case ScoreType.Current: Score = Controller.CurrentScore; loc = 1152535; break;
@@ -149,7 +149,7 @@ namespace Server.Engines.VoidPool
             else if (loc is string)
                 AddHtml(10, 50, 200, 16, String.Format("<basefont color=#8B0000>{0}", (string)loc), false, false);
 
-            if (this.ScoreType == ScoreType.BestWave)
+            if (ScoreType == ScoreType.BestWave)
             {
                 AddHtml(200, 30, 200, 16, String.Format("<basefont color=#8B0000>Total Waves: {0}", stats.BestWave.Waves.ToString()), false, false);
                 AddHtml(200, 50, 200, 16, String.Format("<basefont color=#8B0000>Total Score: {0}", stats.BestWave.TotalScore.ToString()), false, false);

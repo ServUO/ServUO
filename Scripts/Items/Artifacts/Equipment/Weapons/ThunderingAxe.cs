@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class ThunderingAxe : OrnateAxe
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public ThunderingAxe()
         {
@@ -14,13 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073547;
-            }
-        }// thundering axe
+        public override int LabelNumber => 1073547;// thundering axe
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

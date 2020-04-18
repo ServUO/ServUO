@@ -9,7 +9,7 @@ namespace Server.Items
         public ContractOfEmployment()
             : base(0x14F0)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
             //LootType = LootType.Blessed;
         }
 
@@ -18,18 +18,12 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041243;
-            }
-        }// a contract of employment
+        public override int LabelNumber => 1041243;// a contract of employment
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); //version
+            writer.Write(0); //version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -41,7 +35,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!this.IsChildOf(from.Backpack))
+            if (!IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
             }
@@ -58,7 +52,7 @@ namespace Server.Items
 
                 EventSink.InvokePlacePlayerVendor(new PlacePlayerVendorEventArgs(from, v));
 
-                this.Delete();
+                Delete();
             }
             else
             {
@@ -104,7 +98,7 @@ namespace Server.Items
 
                         EventSink.InvokePlacePlayerVendor(new PlacePlayerVendorEventArgs(from, v));
 
-                        this.Delete();
+                        Delete();
                     }
                 }
             }

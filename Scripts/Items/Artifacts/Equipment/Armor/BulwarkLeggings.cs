@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class BulwarkLeggings : RingmailLegs
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public BulwarkLeggings()
         {
@@ -16,48 +16,12 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1077727;
-            }
-        }// Bulwark Leggings
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 9;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 3;
-            }
-        }
+        public override int LabelNumber => 1077727;// Bulwark Leggings
+        public override int BasePhysicalResistance => 9;
+        public override int BaseFireResistance => 5;
+        public override int BaseColdResistance => 5;
+        public override int BasePoisonResistance => 5;
+        public override int BaseEnergyResistance => 3;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

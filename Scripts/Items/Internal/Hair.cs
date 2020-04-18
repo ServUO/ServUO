@@ -70,18 +70,12 @@ namespace Server.Items
         protected Hair(int itemID, int hue)
             : base(itemID)
         {
-            this.LootType = LootType.Blessed;
-            this.Layer = Layer.Hair;
-            this.Hue = hue;
+            LootType = LootType.Blessed;
+            Layer = Layer.Hair;
+            Hue = hue;
         }
 
-        public override bool DisplayLootType
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool DisplayLootType => false;
         public override bool VerifyMove(Mobile from)
         {
             return (from.AccessLevel >= AccessLevel.GameMaster);
@@ -90,8 +84,8 @@ namespace Server.Items
         public override DeathMoveResult OnParentDeath(Mobile parent)
         {
             //			Dupe( Amount );
-            parent.HairItemID = this.ItemID;
-            parent.HairHue = this.Hue;
+            parent.HairItemID = ItemID;
+            parent.HairHue = Hue;
 
             return DeathMoveResult.MoveToCorpse;
         }
@@ -100,13 +94,13 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
 
             int version = reader.ReadInt();
         }
@@ -133,7 +127,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -165,7 +159,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -197,7 +191,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -229,7 +223,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -261,7 +255,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -293,7 +287,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -325,7 +319,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -357,7 +351,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -389,7 +383,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -421,7 +415,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -453,7 +447,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

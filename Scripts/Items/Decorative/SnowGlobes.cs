@@ -73,8 +73,8 @@ namespace Server.Items
         public SnowGlobe()
             : base(0xE2F)
         {
-            this.LootType = LootType.Blessed;
-            this.Light = LightType.Circle150;
+            LootType = LootType.Blessed;
+            Light = LightType.Circle150;
         }
 
         public SnowGlobe(Serial serial)
@@ -82,18 +82,12 @@ namespace Server.Items
         {
         }
 
-        public override double DefaultWeight
-        {
-            get
-            {
-                return 1.0;
-            }
-        }
+        public override double DefaultWeight => 1.0;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -116,7 +110,7 @@ namespace Server.Items
         [Constructable]
         public SnowGlobeOne(SnowGlobeTypeOne type)
         {
-            this.m_Type = type;
+            m_Type = type;
         }
 
         public SnowGlobeOne(Serial serial)
@@ -129,27 +123,21 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Type;
+                return m_Type;
             }
             set
             {
-                this.m_Type = value;
-                this.InvalidateProperties();
+                m_Type = value;
+                InvalidateProperties();
             }
         }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041454 + (int)this.m_Type;
-            }
-        }
+        public override int LabelNumber => 1041454 + (int)m_Type;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
-            writer.WriteEncodedInt((int)this.m_Type);
+            writer.Write(0); // version
+            writer.WriteEncodedInt((int)m_Type);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -162,7 +150,7 @@ namespace Server.Items
             {
                 case 0:
                     {
-                        this.m_Type = (SnowGlobeTypeOne)reader.ReadEncodedInt();
+                        m_Type = (SnowGlobeTypeOne)reader.ReadEncodedInt();
                         break;
                     }
             }
@@ -204,7 +192,7 @@ namespace Server.Items
         [Constructable]
         public SnowGlobeTwo(SnowGlobeTypeTwo type)
         {
-            this.m_Type = type;
+            m_Type = type;
         }
 
         public SnowGlobeTwo(Serial serial)
@@ -217,19 +205,19 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Type;
+                return m_Type;
             }
             set
             {
-                this.m_Type = value;
-                this.InvalidateProperties();
+                m_Type = value;
+                InvalidateProperties();
             }
         }
         public override string DefaultName
         {
             get
             {
-                int idx = (int)this.m_Type;
+                int idx = (int)m_Type;
 
                 if (idx < 0 || idx >= m_PlaceNames.Length)
                     return "a snowy scene";
@@ -241,8 +229,8 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
-            writer.WriteEncodedInt((int)this.m_Type);
+            writer.Write(0); // version
+            writer.WriteEncodedInt((int)m_Type);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -255,7 +243,7 @@ namespace Server.Items
             {
                 case 0:
                     {
-                        this.m_Type = (SnowGlobeTypeTwo)reader.ReadEncodedInt();
+                        m_Type = (SnowGlobeTypeTwo)reader.ReadEncodedInt();
                         break;
                     }
             }
@@ -274,7 +262,7 @@ namespace Server.Items
         [Constructable]
         public SnowGlobeThree(SnowGlobeTypeThree type)
         {
-            this.m_Type = type;
+            m_Type = type;
         }
 
         public SnowGlobeThree(Serial serial)
@@ -287,30 +275,30 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Type;
+                return m_Type;
             }
             set
             {
-                this.m_Type = value;
-                this.InvalidateProperties();
+                m_Type = value;
+                InvalidateProperties();
             }
         }
         public override int LabelNumber
         {
             get
             {
-                if (this.m_Type >= SnowGlobeTypeThree.Covetous)
-                    return 1075440 + ((int)this.m_Type - 4);
+                if (m_Type >= SnowGlobeTypeThree.Covetous)
+                    return 1075440 + ((int)m_Type - 4);
 
-                return 1075294 + (int)this.m_Type;
+                return 1075294 + (int)m_Type;
             }
         }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
-            writer.WriteEncodedInt((int)this.m_Type);
+            writer.Write(0); // version
+            writer.WriteEncodedInt((int)m_Type);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -323,7 +311,7 @@ namespace Server.Items
             {
                 case 0:
                     {
-                        this.m_Type = (SnowGlobeTypeThree)reader.ReadEncodedInt();
+                        m_Type = (SnowGlobeTypeThree)reader.ReadEncodedInt();
                         break;
                     }
             }

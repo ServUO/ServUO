@@ -169,7 +169,7 @@ namespace Server.Engines.BulkOrders
 
             if (context != null && context.Entries.ContainsKey(type))
             {
-                var entry = context.Entries[type];
+                BODEntry entry = context.Entries[type];
 
                 if (entry != null)
                 {
@@ -392,7 +392,7 @@ namespace Server.Engines.BulkOrders
                 case BODType.Carpentry: points = CarpentryRewardCalculator.Instance.ComputePoints(bod); break;
             }
 
-            banked = (double)points * 0.02;
+            banked = points * 0.02;
         }
 
         public static void ComputePoints(LargeBOD bod, out int points, out double banked)
@@ -413,7 +413,7 @@ namespace Server.Engines.BulkOrders
                 case BODType.Carpentry: points = CarpentryRewardCalculator.Instance.ComputePoints(bod); break;
             }
 
-            banked = (double)points * .2;
+            banked = points * .2;
         }
 
         public static void AddToPending(Mobile m, BODType type, int points)
@@ -646,7 +646,7 @@ namespace Server.Engines.BulkOrders
 
         public static void OnTick()
         {
-            foreach (var kvp in Instance.BODPlayerData)
+            foreach (KeyValuePair<PlayerMobile, BODContext> kvp in Instance.BODPlayerData)
             {
                 kvp.Value.CheckCache();
             }
@@ -741,7 +741,7 @@ namespace Server.Engines.BulkOrders
 
         public bool CanClaimRewards()
         {
-            foreach (var kvp in Entries)
+            foreach (KeyValuePair<BODType, BODEntry> kvp in Entries)
             {
                 if (kvp.Value.PendingRewardPoints > 0)
                 {
@@ -757,7 +757,7 @@ namespace Server.Engines.BulkOrders
             int version = reader.ReadInt();
             ConfigEntries();
 
-            this.PointsMode = (PointsMode)reader.ReadInt();
+            PointsMode = (PointsMode)reader.ReadInt();
             BOBFilter = new BOBFilter(reader);
 
             int count = reader.ReadInt();
@@ -776,7 +776,7 @@ namespace Server.Engines.BulkOrders
         {
             writer.Write(0);
 
-            writer.Write((int)this.PointsMode);
+            writer.Write((int)PointsMode);
             BOBFilter.Serialize(writer);
 
             // Lets do this dynamically incase we add new bods in the future
@@ -804,7 +804,7 @@ namespace Server.Engines.BulkOrders
 
         public void CheckCache()
         {
-            foreach (var kvp in Entries)
+            foreach (KeyValuePair<BODType, BODEntry> kvp in Entries)
             {
                 kvp.Value.CheckCache();
             }

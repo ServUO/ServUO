@@ -3,7 +3,7 @@ namespace Server.Items
     [FlipableAttribute(0xA565, 0xA566)]
     public class GardenSculpture : Item, IDyable
     {
-        public override string DefaultName { get { return "Garden Sculpture"; } }
+        public override string DefaultName => "Garden Sculpture";
 
         [Constructable]
         public GardenSculpture()
@@ -29,7 +29,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

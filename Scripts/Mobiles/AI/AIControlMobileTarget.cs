@@ -24,7 +24,7 @@ namespace Server.Targets
             m_Mobile = ai.m_Mobile;
         }
 
-        public OrderType Order { get { return m_Order; } }
+        public OrderType Order => m_Order;
 
         public void AddAI(BaseAI ai)
         {
@@ -36,15 +36,15 @@ namespace Server.Targets
         {
             if (o is IDamageable)
             {
-                var dam = o as IDamageable;
+                IDamageable dam = o as IDamageable;
 
-                for (var i = 0; i < m_List.Count; ++i)
+                for (int i = 0; i < m_List.Count; ++i)
                     m_List[i].EndPickTarget(from, dam, m_Order);
             }
             else if (o is MoonglowDonationBox && m_Order == OrderType.Transfer && from is PlayerMobile)
             {
-                var pm = (PlayerMobile)from;
-                var box = (MoonglowDonationBox)o;
+                PlayerMobile pm = (PlayerMobile)from;
+                MoonglowDonationBox box = (MoonglowDonationBox)o;
 
                 pm.SendGump(new ConfirmTransferPetGump(box, from.Location, m_Mobile));
             }

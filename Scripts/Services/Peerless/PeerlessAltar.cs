@@ -16,11 +16,11 @@ namespace Server.Items
 
     public abstract class PeerlessAltar : Container
     {
-        public override bool IsPublicContainer { get { return true; } }
-        public override bool IsDecoContainer { get { return false; } }
+        public override bool IsPublicContainer => true;
+        public override bool IsDecoContainer => false;
 
-        public virtual TimeSpan TimeToSlay { get { return TimeSpan.FromMinutes(90); } }
-        public virtual TimeSpan DelayAfterBossSlain { get { return TimeSpan.FromMinutes(15); } }
+        public virtual TimeSpan TimeToSlay => TimeSpan.FromMinutes(90);
+        public virtual TimeSpan DelayAfterBossSlain => TimeSpan.FromMinutes(15);
 
         public abstract int KeyCount { get; }
         public abstract MasterKey MasterKey { get; }
@@ -55,10 +55,7 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int FighterCount
-        {
-            get { return Fighters != null ? Fighters.Count : 0; }
-        }
+        public int FighterCount => Fighters != null ? Fighters.Count : 0;
 
         public List<Mobile> Fighters { get; set; }
 
@@ -245,7 +242,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)5); // version
+            writer.Write(5); // version
 
             writer.Write(Owner);
 
@@ -254,7 +251,7 @@ namespace Server.Items
             // version 3 remove IsAvailable
 
             // version 1
-            writer.Write((bool)(m_Helpers != null));
+            writer.Write(m_Helpers != null);
 
             if (m_Helpers != null)
                 writer.WriteMobileList<BaseCreature>(m_Helpers);
@@ -358,7 +355,7 @@ namespace Server.Items
 
             if (party != null)
             {
-                foreach (var m in party.Members.Select(info => info.Mobile))
+                foreach (Mobile m in party.Members.Select(info => info.Mobile))
                 {
                     if (m.InRange(from.Location, 25) && CanEnter(m))
                     {
@@ -403,7 +400,7 @@ namespace Server.Items
                 // teleport party member's pets
                 if (fighter is PlayerMobile)
                 {
-                    foreach (var pet in ((PlayerMobile)fighter).AllFollowers.OfType<BaseCreature>().Where(pet => pet.Alive &&
+                    foreach (BaseCreature pet in ((PlayerMobile)fighter).AllFollowers.OfType<BaseCreature>().Where(pet => pet.Alive &&
                                                                                                                  pet.InRange(fighter.Location, 5) &&
                                                                                                                  !(pet is BaseMount &&
                                                                                                                  ((BaseMount)pet).Rider != null) &&
@@ -484,10 +481,10 @@ namespace Server.Items
             // teleport fighter
             if (fighter.NetState == null && MobileIsInBossArea(fighter.LogoutLocation))
             {
-                fighter.LogoutMap = this is CitadelAltar ? Map.Tokuno : this.Map;
+                fighter.LogoutMap = this is CitadelAltar ? Map.Tokuno : Map;
                 fighter.LogoutLocation = ExitDest;
             }
-            else if (MobileIsInBossArea(fighter) && fighter.Map == this.Map)
+            else if (MobileIsInBossArea(fighter) && fighter.Map == Map)
             {
                 fighter.FixedParticles(0x376A, 9, 32, 0x13AF, EffectLayer.Waist);
                 fighter.PlaySound(0x1FE);
@@ -501,7 +498,7 @@ namespace Server.Items
             // teleport his pets
             if (fighter is PlayerMobile)
             {
-                foreach (var pet in ((PlayerMobile)fighter).AllFollowers.OfType<BaseCreature>().Where(pet => pet != null &&
+                foreach (BaseCreature pet in ((PlayerMobile)fighter).AllFollowers.OfType<BaseCreature>().Where(pet => pet != null &&
                                                                                                              (pet.Alive || pet.IsBonded) &&
                                                                                                              pet.Map != Map.Internal &&
                                                                                                              MobileIsInBossArea(pet)))
@@ -683,10 +680,7 @@ namespace Server.Items
         #region Helpers
         private List<BaseCreature> m_Helpers = new List<BaseCreature>();
 
-        public List<BaseCreature> Helpers
-        {
-            get { return m_Helpers; }
-        }
+        public List<BaseCreature> Helpers => m_Helpers;
 
         public void AddHelper(BaseCreature helper)
         {

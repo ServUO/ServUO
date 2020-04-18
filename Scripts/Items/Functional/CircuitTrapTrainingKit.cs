@@ -7,18 +7,18 @@ namespace Server.Items
 {
     public class CircuitTrapTrainingKit : Item, ICircuitTrap, IRemoveTrapTrainingKit
     {
-        public override int LabelNumber { get { return 1159014; } } // Circuit Trap Training Kit
+        public override int LabelNumber => 1159014;  // Circuit Trap Training Kit
 
-        public int GumpTitle { get { return 1159005; } } // <center>Trap Disarm Mechanism</center>
-        public int GumpDescription { get { return 1159006; } } // // <center>disarm the trap</center>
+        public int GumpTitle => 1159005;  // <center>Trap Disarm Mechanism</center>
+        public int GumpDescription => 1159006;  // // <center>disarm the trap</center>
 
         private CircuitCount _Count;
-        public CircuitCount Count { get { return _Count; } }
+        public CircuitCount Count => _Count;
 
         public List<int> Path { get; set; } = new List<int>();
         public List<int> Progress { get; set; } = new List<int>();
 
-        public bool CanDecipher { get { return false; } }
+        public bool CanDecipher => false;
 
         [Constructable]
         public CircuitTrapTrainingKit()
@@ -40,7 +40,7 @@ namespace Server.Items
             {
                 if (Path == null || Path.Count == 0)
                 {
-                    var skill = m.Skills[SkillName.RemoveTrap].Base;
+                    double skill = m.Skills[SkillName.RemoveTrap].Base;
 
                     if (skill < 80.0)
                     {
@@ -128,7 +128,7 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            var count = reader.ReadInt();
+            int count = reader.ReadInt();
 
             for (int i = 0; i < count; i++)
             {

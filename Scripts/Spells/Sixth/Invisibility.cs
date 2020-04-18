@@ -19,13 +19,7 @@ namespace Server.Spells.Sixth
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Sixth;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Sixth;
         public static bool HasTimer(Mobile m)
         {
             return m_Table[m] != null;
@@ -44,24 +38,24 @@ namespace Server.Spells.Sixth
 
         public override void OnCast()
         {
-            this.Caster.Target = new InternalTarget(this);
+            Caster.Target = new InternalTarget(this);
         }
 
         public void Target(Mobile m)
         {
-            if (!this.Caster.CanSee(m))
+            if (!Caster.CanSee(m))
             {
-                this.Caster.SendLocalizedMessage(500237); // Target can not be seen.
+                Caster.SendLocalizedMessage(500237); // Target can not be seen.
             }
-            else if (m is Mobiles.BaseVendor || m is Mobiles.PlayerVendor || m is Mobiles.PlayerBarkeeper || m.AccessLevel > this.Caster.AccessLevel)
+            else if (m is Mobiles.BaseVendor || m is Mobiles.PlayerVendor || m is Mobiles.PlayerBarkeeper || m.AccessLevel > Caster.AccessLevel)
             {
-                this.Caster.SendLocalizedMessage(501857); // This spell won't work on that!
+                Caster.SendLocalizedMessage(501857); // This spell won't work on that!
             }
-            else if (this.CheckBSequence(m))
+            else if (CheckBSequence(m))
             {
-                SpellHelper.Turn(this.Caster, m);
+                SpellHelper.Turn(Caster, m);
 
-                Effects.SendLocationParticles(EffectItem.Create(new Point3D(m.X, m.Y, m.Z + 16), this.Caster.Map, EffectItem.DefaultDuration), 0x376A, 10, 15, 5045);
+                Effects.SendLocationParticles(EffectItem.Create(new Point3D(m.X, m.Y, m.Z + 16), Caster.Map, EffectItem.DefaultDuration), 0x376A, 10, 15, 5045);
                 m.PlaySound(0x3C4);
 
                 m.Hidden = true;
@@ -70,7 +64,7 @@ namespace Server.Spells.Sixth
 
                 RemoveTimer(m);
 
-                TimeSpan duration = TimeSpan.FromSeconds(((1.2 * this.Caster.Skills.Magery.Fixed) / 10));
+                TimeSpan duration = TimeSpan.FromSeconds(((1.2 * Caster.Skills.Magery.Fixed) / 10));
 
                 Timer t = new InternalTimer(m, duration);
 
@@ -82,7 +76,7 @@ namespace Server.Spells.Sixth
                 t.Start();
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         public class InternalTarget : Target
@@ -91,20 +85,20 @@ namespace Server.Spells.Sixth
             public InternalTarget(InvisibilitySpell owner)
                 : base(10, false, TargetFlags.Beneficial)
             {
-                this.m_Owner = owner;
+                m_Owner = owner;
             }
 
             protected override void OnTarget(Mobile from, object o)
             {
                 if (o is Mobile)
                 {
-                    this.m_Owner.Target((Mobile)o);
+                    m_Owner.Target((Mobile)o);
                 }
             }
 
             protected override void OnTargetFinish(Mobile from)
             {
-                this.m_Owner.FinishSequence();
+                m_Owner.FinishSequence();
             }
         }
 
@@ -114,14 +108,14 @@ namespace Server.Spells.Sixth
             public InternalTimer(Mobile m, TimeSpan duration)
                 : base(duration)
             {
-                this.Priority = TimerPriority.OneSecond;
-                this.m_Mobile = m;
+                Priority = TimerPriority.OneSecond;
+                m_Mobile = m;
             }
 
             protected override void OnTick()
             {
-                this.m_Mobile.RevealingAction();
-                RemoveTimer(this.m_Mobile);
+                m_Mobile.RevealingAction();
+                RemoveTimer(m_Mobile);
             }
         }
     }

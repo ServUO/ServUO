@@ -7,7 +7,7 @@ namespace Server.Items
 {
     public class BestKillBoard : Item
     {
-        public override string DefaultName { get { return "Top 10 Kill Board"; } }
+        public override string DefaultName => "Top 10 Kill Board";
 
         [Constructable]
         public BestKillBoard() : base(7775)
@@ -17,7 +17,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(this.Location, 3) && HuntingSystem.Instance != null && HuntingSystem.Instance.Active)
+            if (from.InRange(Location, 3) && HuntingSystem.Instance != null && HuntingSystem.Instance.Active)
             {
                 from.CloseGump(typeof(BestKillGump));
                 from.SendGump(new BestKillGump());
@@ -31,7 +31,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

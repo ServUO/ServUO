@@ -2,28 +2,28 @@ namespace Server.Items
 {
     public class InitiationGloves : LeatherGloves
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1116255; } } // Armor of Initiation
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1116255;  // Armor of Initiation
 
-        public override SetItem SetID { get { return SetItem.Initiation; } }
-        public override int Pieces { get { return 6; } }
+        public override SetItem SetID => SetItem.Initiation;
+        public override int Pieces => 6;
 
-        public override int BasePhysicalResistance { get { return 7; } }
-        public override int BaseFireResistance { get { return 4; } }
-        public override int BaseColdResistance { get { return 4; } }
-        public override int BasePoisonResistance { get { return 6; } }
-        public override int BaseEnergyResistance { get { return 4; } }
-        public override int InitMinHits { get { return 150; } }
-        public override int InitMaxHits { get { return 150; } }
+        public override int BasePhysicalResistance => 7;
+        public override int BaseFireResistance => 4;
+        public override int BaseColdResistance => 4;
+        public override int BasePoisonResistance => 6;
+        public override int BaseEnergyResistance => 4;
+        public override int InitMinHits => 150;
+        public override int InitMaxHits => 150;
 
         [Constructable]
         public InitiationGloves() : base()
         {
 
-            this.Weight = 1;
-            this.Hue = 0x9C4;
+            Weight = 1;
+            Hue = 0x9C4;
             //this.Attributes.Brittle = 1; //If you have imbuing add this part in!!!!
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
 
             SetHue = 0x30;
             SetPhysicalBonus = 2;
@@ -41,7 +41,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

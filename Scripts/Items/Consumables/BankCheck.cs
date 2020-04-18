@@ -11,7 +11,7 @@ namespace Server.Items
         {
             int count = 0;
 
-            var items = cont.FindItemsByType(typeof(BankCheck), recurse);
+            Item[] items = cont.FindItemsByType(typeof(BankCheck), recurse);
             foreach (BankCheck check in items)
             {
                 count += check.Worth;
@@ -22,7 +22,7 @@ namespace Server.Items
         {
             int left = amount;
 
-            var items = cont.FindItemsByType(typeof(BankCheck), recurse);
+            Item[] items = cont.FindItemsByType(typeof(BankCheck), recurse);
             foreach (BankCheck check in items)
             {
                 if (check.Worth <= left)
@@ -73,9 +73,9 @@ namespace Server.Items
             }
         }
 
-        public override bool DisplayLootType { get { return true; } }
+        public override bool DisplayLootType => true;
 
-        public override int LabelNumber { get { return 1041361; } } // A bank check
+        public override int LabelNumber => 1041361;  // A bank check
 
         public override void Serialize(GenericWriter writer)
         {
@@ -91,7 +91,7 @@ namespace Server.Items
             base.Deserialize(reader);
             LootType = LootType.Blessed;
 
-            var version = reader.ReadInt();
+            int version = reader.ReadInt();
 
             switch (version)
             {
@@ -137,7 +137,7 @@ namespace Server.Items
 
             if (parent is SecureTradeContainer && AccountGold.ConvertOnTrade)
             {
-                var trade = (SecureTradeContainer)parent;
+                SecureTradeContainer trade = (SecureTradeContainer)parent;
 
                 if (trade.Trade.From.Container == trade)
                 {
@@ -164,9 +164,9 @@ namespace Server.Items
             {
                 if (owner.NetState != null && !owner.NetState.NewSecureTrading)
                 {
-                    var total = Worth / Math.Max(1.0, Account.CurrencyThreshold);
-                    var plat = (int)Math.Truncate(total);
-                    var gold = (int)((total - plat) * Account.CurrencyThreshold);
+                    double total = Worth / Math.Max(1.0, Account.CurrencyThreshold);
+                    int plat = (int)Math.Truncate(total);
+                    int gold = (int)((total - plat) * Account.CurrencyThreshold);
 
                     tradeInfo.Plat += plat;
                     tradeInfo.Gold += gold;
@@ -190,7 +190,7 @@ namespace Server.Items
             // This probably isn't OSI accurate, but we can't just make the quests redundant.
             // Double-clicking the BankCheck in your pack will now credit your account.
 
-            var box = AccountGold.Enabled ? from.Backpack : from.FindBankNoCreate();
+            Container box = AccountGold.Enabled ? from.Backpack : from.FindBankNoCreate();
 
             if (box == null || !IsChildOf(box))
             {
@@ -201,8 +201,8 @@ namespace Server.Items
 
             Delete();
 
-            var deposited = 0;
-            var toAdd = m_Worth;
+            int deposited = 0;
+            int toAdd = m_Worth;
 
             if (AccountGold.Enabled && from.Account != null && from.Account.DepositGold(toAdd))
             {

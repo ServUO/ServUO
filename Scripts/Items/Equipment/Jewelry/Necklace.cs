@@ -14,18 +14,12 @@ namespace Server.Items
         {
         }
 
-        public override int BaseGemTypeNumber
-        {
-            get
-            {
-                return 1044241;
-            }
-        }// star sapphire necklace
+        public override int BaseGemTypeNumber => 1044241;// star sapphire necklace
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -54,7 +48,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -83,7 +77,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -112,7 +106,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -141,7 +135,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -170,7 +164,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -192,7 +186,7 @@ namespace Server.Items
 
         private void AssignRandomGem()
         {
-            var ran = Utility.RandomMinMax(1, 9);
+            int ran = Utility.RandomMinMax(1, 9);
             GemType = (GemType)ran;
         }
 
@@ -238,7 +232,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class GemologistsSatchel : Bag
     {
-        public override int LabelNumber { get { return 1113378; } } // Gemologist's Satchel
+        public override int LabelNumber => 1113378;  // Gemologist's Satchel
 
         [Constructable]
         public GemologistsSatchel()
@@ -46,7 +46,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

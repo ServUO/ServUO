@@ -9,13 +9,13 @@ namespace Server.Items
 {
     public abstract class MannedCannon : Item
     {
-        public virtual TimeSpan ScanDelay { get { return TimeSpan.FromSeconds(Utility.RandomMinMax(5, 10)); } }
+        public virtual TimeSpan ScanDelay => TimeSpan.FromSeconds(Utility.RandomMinMax(5, 10));
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Operator { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Direction Facing { get { return GetFacing(); } }
+        public Direction Facing => GetFacing();
 
         public DateTime NextScan { get; set; }
         public bool CanFireUnmanned { get; set; }
@@ -23,8 +23,8 @@ namespace Server.Items
         public abstract CannonPower Power { get; }
         public abstract int Range { get; }
 
-        public virtual AmmunitionType AmmoType { get { return AmmunitionType.Cannonball; } }
-        public virtual int LateralOffset { get { return 1; } }
+        public virtual AmmunitionType AmmoType => AmmunitionType.Cannonball;
+        public virtual int LateralOffset => 1;
 
         public MannedCannon(Mobile opera, Direction facing)
             : base(0)
@@ -71,19 +71,19 @@ namespace Server.Items
 
         public bool Scan(bool shoot)
         {
-            var targets = AcquireTarget();
+            Target[] targets = AcquireTarget();
             bool acquiredTarget = false;
 
             if (targets != null && targets.Length > 0)
             {
-                foreach (var t in targets)
+                foreach (Target t in targets)
                 {
                     if (t.Entity is BaseGalleon && AmmoType != AmmunitionType.Grapeshot)
                     {
                         if (shoot)
                         {
                             DoShootEffects();
-                            TimeSpan delay = TimeSpan.FromSeconds((double)t.Range / 10.0);
+                            TimeSpan delay = TimeSpan.FromSeconds(t.Range / 10.0);
 
                             Timer.DelayCall(delay, new TimerStateCallback(OnShipHit), new object[] { (BaseGalleon)t.Entity, t.Location, AmmoType });
                         }
@@ -92,12 +92,12 @@ namespace Server.Items
                     }
                     else if (t.Entity is Mobile && AmmoType == AmmunitionType.Grapeshot)
                     {
-                        var m = t.Entity as Mobile;
+                        Mobile m = t.Entity as Mobile;
 
                         if (shoot)
                         {
                             DoShootEffects();
-                            TimeSpan delay = TimeSpan.FromSeconds((double)t.Range / 10.0);
+                            TimeSpan delay = TimeSpan.FromSeconds(t.Range / 10.0);
 
                             Timer.DelayCall(delay, new TimerStateCallback(OnMobileHit), new object[] { m, t.Location, AmmoType });
                         }
@@ -143,7 +143,7 @@ namespace Server.Items
                 if (LateralOffset > 1 && currentRange % LateralOffset == 0)
                     lateralOffset++;
 
-                TimeSpan delay = TimeSpan.FromSeconds((double)currentRange / 10.0);
+                TimeSpan delay = TimeSpan.FromSeconds(currentRange / 10.0);
 
                 switch (AmmoType)
                 {
@@ -166,7 +166,7 @@ namespace Server.Items
 
                                 if (g != null && g.DamageTaken < DamageLevel.Severely && g.Owner is PlayerMobile)
                                 {
-                                    var target = new Target();
+                                    Target target = new Target();
                                     target.Entity = g;
                                     target.Location = newPoint;
                                     target.Range = currentRange;
@@ -190,7 +190,7 @@ namespace Server.Items
 
                                 foreach (Mobile m in GetTargets(newPoint, map))
                                 {
-                                    var target = new Target();
+                                    Target target = new Target();
                                     target.Entity = m;
                                     target.Location = newPoint;
                                     target.Range = currentRange;
@@ -200,7 +200,7 @@ namespace Server.Items
 
                                 if (mobiles.Count > 0 && ammo.SingleTarget)
                                 {
-                                    var toHit = mobiles[Utility.Random(mobiles.Count)];
+                                    Target toHit = mobiles[Utility.Random(mobiles.Count)];
                                     ColUtility.Free(mobiles);
                                     return new Target[] { toHit };
                                 }
@@ -294,7 +294,7 @@ namespace Server.Items
             BaseBoat target = list[0] as BaseBoat;
             Point3D pnt = (Point3D)list[1];
 
-            var ammoInfo = AmmoInfo.GetAmmoInfo((AmmunitionType)list[2]);
+            AmmoInfo ammoInfo = AmmoInfo.GetAmmoInfo((AmmunitionType)list[2]);
 
             if (ammoInfo != null && target != null)
             {
@@ -358,7 +358,7 @@ namespace Server.Items
                         List<Mobile> candidates = new List<Mobile>();
                         SecurityLevel highest = SecurityLevel.Passenger;
 
-                        foreach (var mob in target.GetMobilesOnBoard().OfType<PlayerMobile>().Where(pm => Operator.CanBeHarmful(pm, false)))
+                        foreach (PlayerMobile mob in target.GetMobilesOnBoard().OfType<PlayerMobile>().Where(pm => Operator.CanBeHarmful(pm, false)))
                         {
                             if (target is BaseGalleon && ((BaseGalleon)target).GetSecurityLevel(mob) > highest)
                             {
@@ -395,7 +395,7 @@ namespace Server.Items
 
             if (ammoInfo != null)
             {
-                int damage = (int)(Utility.RandomMinMax(ammoInfo.MinDamage, ammoInfo.MaxDamage));
+                int damage = Utility.RandomMinMax(ammoInfo.MinDamage, ammoInfo.MaxDamage);
 
                 if (Operator != null)
                 {
@@ -432,7 +432,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write(1);
 
             writer.Write(Operator);
             writer.Write(CanFireUnmanned);
@@ -455,8 +455,8 @@ namespace Server.Items
 
     public class MannedCulverin : MannedCannon
     {
-        public override int Range { get { return 10; } }
-        public override CannonPower Power { get { return CannonPower.Light; } }
+        public override int Range => 10;
+        public override CannonPower Power => CannonPower.Light;
 
         public MannedCulverin(Mobile oper, Direction facing)
             : base(oper, facing)
@@ -468,7 +468,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -480,8 +480,8 @@ namespace Server.Items
 
     public class MannedCarronade : MannedCannon
     {
-        public override int Range { get { return 10; } }
-        public override CannonPower Power { get { return CannonPower.Heavy; } }
+        public override int Range => 10;
+        public override CannonPower Power => CannonPower.Heavy;
 
         public MannedCarronade(Mobile oper, Direction facing)
             : base(oper, facing)
@@ -493,7 +493,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -505,10 +505,10 @@ namespace Server.Items
 
     public class MannedBlundercannon : MannedCannon
     {
-        public override int LabelNumber { get { return 1158942; } } // Blundercannon
+        public override int LabelNumber => 1158942;  // Blundercannon
 
-        public override int Range { get { return 12; } }
-        public override CannonPower Power { get { return CannonPower.Massive; } }
+        public override int Range => 12;
+        public override CannonPower Power => CannonPower.Massive;
 
         public MannedBlundercannon(Mobile oper, Direction facing)
             : base(oper, facing)
@@ -520,7 +520,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

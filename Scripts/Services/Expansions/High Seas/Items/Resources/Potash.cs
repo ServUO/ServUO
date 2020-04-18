@@ -2,10 +2,10 @@ namespace Server.Items
 {
     public class Potash : Item, ICommodity
     {
-        public override int LabelNumber { get { return 1116319; } } // potash
+        public override int LabelNumber => 1116319;  // potash
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
         [Constructable]
         public Potash()
@@ -30,7 +30,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

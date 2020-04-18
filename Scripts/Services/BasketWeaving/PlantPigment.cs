@@ -34,13 +34,7 @@ namespace Server.Items
         {
         }
 
-        public bool RetainsColorFrom
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public bool RetainsColorFrom => true;
         [CommandProperty(AccessLevel.GameMaster)]
         public PlantPigmentHue PigmentHue
         {
@@ -58,13 +52,7 @@ namespace Server.Items
                 InvalidateProperties();
             }
         }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1112132;
-            }
-        }// plant pigment
+        public override int LabelNumber => 1112132;// plant pigment
         public override void AddNameProperty(ObjectPropertyList list)
         {
             PlantPigmentHueInfo info = PlantPigmentHueInfo.GetInfo(m_Hue);
@@ -86,7 +74,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
             writer.Write((int)m_Hue);
         }

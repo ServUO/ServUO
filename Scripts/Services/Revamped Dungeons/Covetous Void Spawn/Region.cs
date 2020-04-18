@@ -24,7 +24,7 @@ namespace Server.Engines.VoidPool
 
         public void SendRegionMessage(int localization)
         {
-            foreach (var m in GetEnumeratedMobiles().Where(m => m.Player))
+            foreach (Mobile m in GetEnumeratedMobiles().Where(m => m.Player))
             {
                 m.SendLocalizedMessage(localization);
             }
@@ -32,7 +32,7 @@ namespace Server.Engines.VoidPool
 
         public void SendRegionMessage(int localization, int hue)
         {
-            foreach (var m in GetEnumeratedMobiles().Where(m => m.Player))
+            foreach (Mobile m in GetEnumeratedMobiles().Where(m => m.Player))
             {
                 m.SendLocalizedMessage(localization, "", hue);
             }
@@ -40,7 +40,7 @@ namespace Server.Engines.VoidPool
 
         public void SendRegionMessage(int localization, string args)
         {
-            foreach (var m in GetEnumeratedMobiles().Where(m => m.Player))
+            foreach (Mobile m in GetEnumeratedMobiles().Where(m => m.Player))
             {
                 m.SendLocalizedMessage(localization, args);
             }
@@ -48,7 +48,7 @@ namespace Server.Engines.VoidPool
 
         public void SendRegionMessage(string message)
         {
-            foreach (var m in GetEnumeratedMobiles().Where(m => m.Player))
+            foreach (Mobile m in GetEnumeratedMobiles().Where(m => m.Player))
             {
                 m.SendMessage(0x25, message);
             }
@@ -63,7 +63,7 @@ namespace Server.Engines.VoidPool
                 if (m is CovetousCreature && ((CovetousCreature)m).VoidSpawn)
                 {
                     int wave = ((CovetousCreature)m).Level;
-                    double bump = wave > 10 ? ((double)Math.Min(60, wave - 10) / 1000.0) : 0;
+                    double bump = wave > 10 ? (Math.Min(60, wave - 10) / 1000.0) : 0;
                     double chance = 0.001 + bump;
 
                     if (chance > Utility.RandomDouble())

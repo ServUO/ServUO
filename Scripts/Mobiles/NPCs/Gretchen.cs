@@ -6,15 +6,15 @@ namespace Server.Engines.Quests
     public class Curiosities : BaseQuest
     {
         /* Curiosities */
-        public override object Title { get { return "Curiosities"; } }
+        public override object Title => "Curiosities";
 
 
-        public override object Description { get { return 1094978; } }
-        public override object Refuse { get { return "You are Scared from this Task !! Muahahah"; } }
+        public override object Description => 1094978;
+        public override object Refuse => "You are Scared from this Task !! Muahahah";
 
-        public override object Uncomplete { get { return "I am sorry that you have not accepted!"; } }
+        public override object Uncomplete => "I am sorry that you have not accepted!";
 
-        public override object Complete { get { return 1094981; } }
+        public override object Complete => 1094981;
 
         public Curiosities() : base()
         {
@@ -28,7 +28,7 @@ namespace Server.Engines.Quests
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -41,16 +41,10 @@ namespace Server.Engines.Quests
 
     public class Gretchen : MondainQuester
     {
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
 {
             typeof( Curiosities )
 };
-            }
-        }
 
         [Constructable]
         public Gretchen() : base("Gretchen", "the Alchemist")
@@ -89,7 +83,7 @@ namespace Server.Engines.Quests
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
         }
 
         public override void Deserialize(GenericReader reader)

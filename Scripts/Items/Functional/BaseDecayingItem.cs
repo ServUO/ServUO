@@ -7,8 +7,8 @@ namespace Server.Items
         private int m_Lifespan;
         private Timer m_Timer;
 
-        public virtual int Lifespan { get { return 0; } }
-        public virtual bool UseSeconds { get { return true; } }
+        public virtual int Lifespan => 0;
+        public virtual bool UseSeconds => true;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int TimeLeft
@@ -28,7 +28,7 @@ namespace Server.Items
 
             if (Lifespan > 0)
             {
-                m_Lifespan = this.Lifespan;
+                m_Lifespan = Lifespan;
                 StartTimer();
             }
         }
@@ -45,7 +45,7 @@ namespace Server.Items
                 {
                     TimeSpan t = TimeSpan.FromSeconds(TimeLeft);
 
-                    int weeks = (int)t.Days / 7;
+                    int weeks = t.Days / 7;
                     int days = t.Days;
                     int hours = t.Hours;
                     int minutes = t.Minutes;
@@ -107,8 +107,8 @@ namespace Server.Items
             }
             else
             {
-                Effects.SendLocationParticles(EffectItem.Create(this.Location, this.Map, EffectItem.DefaultDuration), 0x3728, 8, 20, 5042);
-                Effects.PlaySound(this.Location, this.Map, 0x201);
+                Effects.SendLocationParticles(EffectItem.Create(Location, Map, EffectItem.DefaultDuration), 0x3728, 8, 20, 5042);
+                Effects.PlaySound(Location, Map, 0x201);
             }
 
             StopTimer();
@@ -123,8 +123,8 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
-            writer.Write((int)m_Lifespan);
+            writer.Write(0); // version
+            writer.Write(m_Lifespan);
         }
 
         public override void Deserialize(GenericReader reader)

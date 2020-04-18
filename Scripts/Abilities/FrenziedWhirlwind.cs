@@ -24,7 +24,7 @@ namespace Server.Items
         public override int BaseMana => 30;
 
         private static readonly Dictionary<Mobile, Timer> m_Registry = new Dictionary<Mobile, Timer>();
-        public static Dictionary<Mobile, Timer> Registry { get { return m_Registry; } }
+        public static Dictionary<Mobile, Timer> Registry => m_Registry;
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
@@ -43,7 +43,7 @@ namespace Server.Items
             if (weapon == null)
                 return;
 
-            var targets = SpellHelper.AcquireIndirectTargets(attacker, attacker.Location, attacker.Map, 2).OfType<Mobile>().ToList();
+            List<Mobile> targets = SpellHelper.AcquireIndirectTargets(attacker, attacker.Location, attacker.Map, 2).OfType<Mobile>().ToList();
 
             if (targets.Count > 0)
             {
@@ -60,7 +60,7 @@ namespace Server.Items
 
                 m_Registry[attacker] = new InternalTimer(attacker, targets);
 
-                foreach (var pm in targets.OfType<PlayerMobile>())
+                foreach (PlayerMobile pm in targets.OfType<PlayerMobile>())
                 {
                     BuffInfo.AddBuff(pm, new BuffInfo(BuffIcon.SplinteringEffect, 1153804, 1028852, TimeSpan.FromSeconds(2.0), pm));
                 }
@@ -133,7 +133,7 @@ namespace Server.Items
                         int skill = m_Attacker is BaseCreature ? (int)m_Attacker.Skills[SkillName.Ninjitsu].Value :
                                                               (int)Math.Max(m_Attacker.Skills[SkillName.Bushido].Value, m_Attacker.Skills[SkillName.Ninjitsu].Value);
 
-                        var baseMin = Math.Max(5, (skill / 50) * 5);
+                        int baseMin = Math.Max(5, (skill / 50) * 5);
                         AOS.Damage(m, m_Attacker, Utility.RandomMinMax(baseMin, (baseMin * 3) + 2), 100, 0, 0, 0, 0);
                     }
                 }

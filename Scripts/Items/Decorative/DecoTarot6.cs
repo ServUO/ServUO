@@ -6,8 +6,8 @@ namespace Server.Items
         public DecoTarot6()
             : base(0x12AA)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public DecoTarot6(Serial serial)
@@ -19,7 +19,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

@@ -17,31 +17,25 @@ namespace Server.Spells.Second
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Second;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Second;
         public override void OnCast()
         {
-            this.Caster.Target = new InternalTarget(this);
+            Caster.Target = new InternalTarget(this);
         }
 
         public void Target(TrapableContainer item)
         {
-            if (!this.Caster.CanSee(item))
+            if (!Caster.CanSee(item))
             {
-                this.Caster.SendLocalizedMessage(500237); // Target can not be seen.
+                Caster.SendLocalizedMessage(500237); // Target can not be seen.
             }
             else if (item.TrapType != TrapType.None && item.TrapType != TrapType.MagicTrap)
             {
                 base.DoFizzle();
             }
-            else if (this.CheckSequence())
+            else if (CheckSequence())
             {
-                SpellHelper.Turn(this.Caster, item);
+                SpellHelper.Turn(Caster, item);
 
                 item.TrapType = TrapType.MagicTrap;
                 item.TrapPower = Utility.RandomMinMax(10, 50);
@@ -58,7 +52,7 @@ namespace Server.Spells.Second
                 Effects.PlaySound(loc, item.Map, 0x1EF);
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         private class InternalTarget : Target
@@ -67,14 +61,14 @@ namespace Server.Spells.Second
             public InternalTarget(MagicTrapSpell owner)
                 : base(10, false, TargetFlags.None)
             {
-                this.m_Owner = owner;
+                m_Owner = owner;
             }
 
             protected override void OnTarget(Mobile from, object o)
             {
                 if (o is TrapableContainer)
                 {
-                    this.m_Owner.Target((TrapableContainer)o);
+                    m_Owner.Target((TrapableContainer)o);
                 }
                 else
                 {
@@ -84,7 +78,7 @@ namespace Server.Spells.Second
 
             protected override void OnTargetFinish(Mobile from)
             {
-                this.m_Owner.FinishSequence();
+                m_Owner.FinishSequence();
             }
         }
     }

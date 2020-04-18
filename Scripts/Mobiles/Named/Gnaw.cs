@@ -45,7 +45,7 @@ namespace Server.Mobiles
 
             SetSpecialAbility(SpecialAbility.Rage);
         }
-        public override bool CanBeParagon { get { return false; } }
+        public override bool CanBeParagon => false;
         public override void OnDeath(Container c)
         {
             base.OnDeath(c);
@@ -59,20 +59,8 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Hides
-        {
-            get
-            {
-                return 28;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 4;
-            }
-        }
+        public override int Hides => 28;
+        public override int Meat => 4;
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich, 2);
@@ -82,7 +70,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

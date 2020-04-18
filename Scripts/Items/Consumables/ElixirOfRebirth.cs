@@ -8,10 +8,10 @@ namespace Server.Items
         [Constructable]
         public ElixirOfRebirth() : base(0x24E2)
         {
-            this.Hue = 0x48E;
+            Hue = 0x48E;
         }
 
-        public override int LabelNumber { get { return 1112762; } } // elixir of rebirth
+        public override int LabelNumber => 1112762;  // elixir of rebirth
 
         public override void OnDoubleClick(Mobile from)
         {
@@ -33,7 +33,7 @@ namespace Server.Items
                 m_Potion = potion;
             }
 
-            public ElixirOfRebirth Potion { get { return m_Potion; } }
+            public ElixirOfRebirth Potion => m_Potion;
 
             protected override void OnTarget(Mobile from, object targeted)
             {

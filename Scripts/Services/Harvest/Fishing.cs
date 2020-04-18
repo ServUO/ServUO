@@ -26,13 +26,7 @@ namespace Server.Engines.Harvest
 
         private readonly HarvestDefinition m_Definition;
 
-        public HarvestDefinition Definition
-        {
-            get
-            {
-                return this.m_Definition;
-            }
-        }
+        public HarvestDefinition Definition => m_Definition;
 
         private Fishing()
         {
@@ -103,8 +97,8 @@ namespace Server.Engines.Harvest
                 new BonusHarvestResource(80.0, 1.0, 1072597, typeof(WhitePearl))
             };
 
-            this.m_Definition = fish;
-            this.Definitions.Add(fish);
+            m_Definition = fish;
+            Definitions.Add(fish);
             #endregion
         }
 
@@ -262,7 +256,7 @@ namespace Server.Engines.Harvest
             double skillBase = from.Skills[SkillName.Fishing].Base;
             double skillValue = from.Skills[SkillName.Fishing].Value;
 
-            var table = Siege.SiegeShard ? m_SiegeMutateTable : m_MutateTable;
+            MutateEntry[] table = Siege.SiegeShard ? m_SiegeMutateTable : m_MutateTable;
 
             for (int i = 0; i < table.Length; ++i)
             {
@@ -696,7 +690,7 @@ namespace Server.Engines.Harvest
             Map map;
             Point3D loc;
 
-            if (this.GetHarvestDetails(from, tool, toHarvest, out tileID, out map, out loc))
+            if (GetHarvestDetails(from, tool, toHarvest, out tileID, out map, out loc))
                 Timer.DelayCall(TimeSpan.FromSeconds(1.5),
                     delegate
                     {
@@ -776,7 +770,7 @@ namespace Server.Engines.Harvest
         };
 
         #region HighSeas
-        public static int[] LavaTiles { get { return m_LavaTiles; } }
+        public static int[] LavaTiles => m_LavaTiles;
         private static readonly int[] m_LavaTiles = new int[]
         {
             0x1F4, 0x1F5,
@@ -1000,7 +994,7 @@ namespace Server.Engines.Harvest
                 {
                     def.SendMessageTo(from, def.FailMessage);
 
-                    double skill = (double)from.Skills[SkillName.Fishing].Value / 50;
+                    double skill = from.Skills[SkillName.Fishing].Value / 50;
 
                     if (0.5 / skill > Utility.RandomDouble())
                         OnToolUsed(from, tool, false);

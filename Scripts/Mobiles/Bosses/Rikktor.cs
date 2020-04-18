@@ -50,76 +50,28 @@ namespace Server.Mobiles
         {
         }
 
-        public override ChampionSkullType SkullType
-        {
-            get
-            {
-                return ChampionSkullType.Power;
-            }
-        }
-        public override Type[] UniqueList
-        {
-            get
-            {
-                return new Type[] { typeof(CrownOfTalKeesh) };
-            }
-        }
-        public override Type[] SharedList
-        {
-            get
-            {
-                return new Type[]
+        public override ChampionSkullType SkullType => ChampionSkullType.Power;
+        public override Type[] UniqueList => new Type[] { typeof(CrownOfTalKeesh) };
+        public override Type[] SharedList => new Type[]
                 {
                     typeof(TheMostKnowledgePerson),
                     typeof(BraveKnightOfTheBritannia),
                     typeof(LieutenantOfTheBritannianRoyalGuard)
                 };
-            }
-        }
-        public override Type[] DecorativeList
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] DecorativeList => new Type[]
                 {
                     typeof(LavaTile),
                     typeof(MonsterStatuette),
                     typeof(MonsterStatuette)
                 };
-            }
-        }
-        public override MonsterStatuetteType[] StatueTypes
-        {
-            get
-            {
-                return new MonsterStatuetteType[]
+        public override MonsterStatuetteType[] StatueTypes => new MonsterStatuetteType[]
                 {
                     MonsterStatuetteType.OphidianArchMage,
                     MonsterStatuetteType.OphidianWarrior
                 };
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
-        public override ScaleType ScaleType
-        {
-            get
-            {
-                return ScaleType.All;
-            }
-        }
-        public override int Scales
-        {
-            get
-            {
-                return 20;
-            }
-        }
+        public override Poison PoisonImmune => Poison.Lethal;
+        public override ScaleType ScaleType => ScaleType.All;
+        public override int Scales => 20;
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 4);
@@ -130,12 +82,12 @@ namespace Server.Mobiles
             base.OnGaveMeleeAttack(defender);
 
             if (0.2 >= Utility.RandomDouble())
-                this.Earthquake();
+                Earthquake();
         }
 
         public void Earthquake()
         {
-            Map map = this.Map;
+            Map map = Map;
 
             if (map == null)
                 return;
@@ -146,10 +98,10 @@ namespace Server.Mobiles
 
             foreach (Mobile m in eable)
             {
-                if (m == this || !this.CanBeHarmful(m))
+                if (m == this || !CanBeHarmful(m))
                     continue;
 
-                if (m is BaseCreature && (((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned || ((BaseCreature)m).Team != this.Team))
+                if (m is BaseCreature && (((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned || ((BaseCreature)m).Team != Team))
                     targets.Add(m);
                 else if (m.Player)
                     targets.Add(m);
@@ -157,7 +109,7 @@ namespace Server.Mobiles
 
             eable.Free();
 
-            this.PlaySound(0x2F3);
+            PlaySound(0x2F3);
 
             for (int i = 0; i < targets.Count; ++i)
             {
@@ -170,7 +122,7 @@ namespace Server.Mobiles
                 else if (damage > 75.0)
                     damage = 75.0;
 
-                this.DoHarmful(m);
+                DoHarmful(m);
 
                 AOS.Damage(m, this, (int)damage, 100, 0, 0, 0, 0);
 
@@ -208,7 +160,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

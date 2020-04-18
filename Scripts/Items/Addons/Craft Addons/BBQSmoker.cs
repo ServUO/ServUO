@@ -4,8 +4,8 @@ namespace Server.Items
 {
     public class BBQSmoker : CraftAddon
     {
-        public override BaseAddonDeed Deed { get { return new BBQSmokerDeed(Tools.Count > 0 ? Tools[0].UsesRemaining : 0); } }
-        public override CraftSystem CraftSystem { get { return DefCooking.CraftSystem; } }
+        public override BaseAddonDeed Deed => new BBQSmokerDeed(Tools.Count > 0 ? Tools[0].UsesRemaining : 0);
+        public override CraftSystem CraftSystem => DefCooking.CraftSystem;
 
         [Constructable]
         public BBQSmoker(bool south, int uses)
@@ -31,7 +31,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -44,8 +44,8 @@ namespace Server.Items
 
     public class BBQSmokerDeed : CraftAddonDeed
     {
-        public override int LabelNumber { get { return 1157071; } } // BBQ Smoker
-        public override BaseAddon Addon { get { return new BBQSmoker(_South, UsesRemaining); } }
+        public override int LabelNumber => 1157071;  // BBQ Smoker
+        public override BaseAddon Addon => new BBQSmoker(_South, UsesRemaining);
 
         private bool _South;
 
@@ -80,7 +80,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

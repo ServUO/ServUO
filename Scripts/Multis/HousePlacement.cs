@@ -63,7 +63,7 @@ namespace Server.Multis
             }
             #endregion
 
-            var noHousingRegion = (NoHousingRegion)Region.Find(center, map).GetRegion(typeof(NoHousingRegion));
+            NoHousingRegion noHousingRegion = (NoHousingRegion)Region.Find(center, map).GetRegion(typeof(NoHousingRegion));
 
             if (noHousingRegion != null)
                 return HousePlacementResult.BadRegion;

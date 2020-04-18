@@ -19,36 +19,30 @@ namespace Server.Spells.Fourth
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Fourth;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Fourth;
         public override void OnCast()
         {
-            this.Caster.Target = new InternalTarget(this);
+            Caster.Target = new InternalTarget(this);
         }
 
         public void Target(Mobile m)
         {
-            if (!this.Caster.CanSee(m))
+            if (!Caster.CanSee(m))
             {
-                this.Caster.SendLocalizedMessage(500237); // Target can not be seen.
+                Caster.SendLocalizedMessage(500237); // Target can not be seen.
             }
-            else if (this.CheckHSequence(m))
+            else if (CheckHSequence(m))
             {
-                SpellHelper.Turn(this.Caster, m);
+                SpellHelper.Turn(Caster, m);
 
-                SpellHelper.CheckReflect((int)this.Circle, this.Caster, ref m);
+                SpellHelper.CheckReflect((int)Circle, Caster, ref m);
 
                 if (m.Spell != null)
                     m.Spell.OnCasterHurt();
 
                 m.Paralyzed = false;
 
-                int toDrain = 40 + (int)(this.GetDamageSkill(this.Caster) - this.GetResistSkill(m));
+                int toDrain = 40 + (int)(GetDamageSkill(Caster) - GetResistSkill(m));
 
                 if (toDrain < 0)
                     toDrain = 0;
@@ -68,10 +62,10 @@ namespace Server.Spells.Fourth
                     m_Table[m] = Timer.DelayCall(TimeSpan.FromSeconds(5.0), new TimerStateCallback(AosDelay_Callback), new object[] { m, toDrain });
                 }
 
-                this.HarmfulSpell(m);
+                HarmfulSpell(m);
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         public override double GetResistPercent(Mobile target)
@@ -103,18 +97,18 @@ namespace Server.Spells.Fourth
             public InternalTarget(ManaDrainSpell owner)
                 : base(10, false, TargetFlags.Harmful)
             {
-                this.m_Owner = owner;
+                m_Owner = owner;
             }
 
             protected override void OnTarget(Mobile from, object o)
             {
                 if (o is Mobile)
-                    this.m_Owner.Target((Mobile)o);
+                    m_Owner.Target((Mobile)o);
             }
 
             protected override void OnTargetFinish(Mobile from)
             {
-                this.m_Owner.FinishSequence();
+                m_Owner.FinishSequence();
             }
         }
     }

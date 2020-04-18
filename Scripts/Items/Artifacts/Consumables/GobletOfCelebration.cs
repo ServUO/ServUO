@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class GobletOfCelebration : Item
     {
-        public override int LabelNumber { get { return 1075430; } } // Goblet of Celebration
+        public override int LabelNumber => 1075430;  // Goblet of Celebration
 
         private bool m_Full;
         private DateTime m_NextFill;
@@ -92,7 +92,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             writer.Write(m_Full);
 

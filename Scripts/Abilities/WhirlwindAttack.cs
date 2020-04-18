@@ -27,7 +27,7 @@ namespace Server.Items
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
-            if (!this.Validate(attacker))
+            if (!Validate(attacker))
                 return;
 
             ClearCurrentAbility(attacker);
@@ -42,13 +42,13 @@ namespace Server.Items
             if (weapon == null)
                 return;
 
-            if (!this.CheckMana(attacker, true))
+            if (!CheckMana(attacker, true))
                 return;
 
             attacker.FixedEffect(0x3728, 10, 15);
             attacker.PlaySound(0x2A1);
 
-            var list = SpellHelper.AcquireIndirectTargets(attacker, attacker, attacker.Map, 1)
+            System.Collections.Generic.List<Mobile> list = SpellHelper.AcquireIndirectTargets(attacker, attacker, attacker.Map, 1)
                 .OfType<Mobile>()
                 .Where(m => attacker.InRange(m, weapon.MaxRange) && m != defender).ToList();
 
@@ -64,7 +64,7 @@ namespace Server.Items
 
                 attacker.RevealingAction();
 
-                foreach (var m in list)
+                foreach (Mobile m in list)
                 {
                     attacker.SendLocalizedMessage(1060161); // The whirling attack strikes a target!
                     m.SendLocalizedMessage(1060162); // You are struck by the whirling attack and take damage!

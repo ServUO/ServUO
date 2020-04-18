@@ -16,30 +16,18 @@ namespace Server.Mobiles
         {
         }
 
-        public override NpcGuild NpcGuild
-        {
-            get
-            {
-                return NpcGuild.TinkersGuild;
-            }
-        }
-        protected override List<SBInfo> SBInfos
-        {
-            get
-            {
-                return this.m_SBInfos;
-            }
-        }
+        public override NpcGuild NpcGuild => NpcGuild.TinkersGuild;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBArchitect());
+            m_SBInfos.Add(new SBArchitect());
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

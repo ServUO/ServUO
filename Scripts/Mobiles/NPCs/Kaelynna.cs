@@ -6,22 +6,10 @@ namespace Server.Engines.Quests
 {
     public class TheMagesApprenticeQuest : BaseQuest
     {
-        public override bool DoneOnce
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool DoneOnce => true;
 
         /* The Mage's Apprentice */
-        public override object Title
-        {
-            get
-            {
-                return 1077576;
-            }
-        }
+        public override object Title => 1077576;
 
         /* Head East out of town and go to Old Haven. Cast fireballs and lightning bolts against monsters there until you 
         have raised your Magery skill to 50. Greetings. You seek to unlock the secrets of the arcane art of Magery. The 
@@ -32,83 +20,59 @@ namespace Server.Engines.Quests
         reagents at the nearby Reagent shop, or you can find reagents growing in the nearby wooded areas. You can see which 
         reagents are required for each spell by looking in your spellbook. Come back to me once you feel that you are worthy 
         of the rank of Apprentice Mage and I will reward you with an arcane prize. */
-        public override object Description
-        {
-            get
-            {
-                return 1077577;
-            }
-        }
+        public override object Description => 1077577;
 
         /* Very well, come back to me when you are ready to practice Magery. You have so much arcane potential. 'Tis a shame 
         to see it go to waste. The New Haven Mage Council could really use your help. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1077578;
-            }
-        }
+        public override object Refuse => 1077578;
 
         /* You have not achieved the rank of Apprentice Mage. Come back to me once you feel that you are worthy of the rank 
         of Apprentice Mage and I will reward you with an arcane prize. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1077579;
-            }
-        }
+        public override object Uncomplete => 1077579;
 
         /* Well done! On behalf of the New Haven Mage Council I wish to present you with this staff. Normally a mage must 
         unequip weapons before spell casting. While wielding your new Ember Staff, however, you will be able to invoke your 
         Magery spells. Even if you do not currently possess skill in Mace Fighting, the Ember Staff will allow you to fight 
         as if you do. However, your Magery skill will be temporarily reduced while doing so. Finally, the Ember Staff 
         occasionally smites a foe with a Fireball while wielding it in melee combat. I hope the Ember Staff serves you well. */
-        public override object Complete
-        {
-            get
-            {
-                return 1077581;
-            }
-        }
+        public override object Complete => 1077581;
 
         public TheMagesApprenticeQuest()
             : base()
         {
-            this.AddObjective(new ApprenticeObjective(SkillName.Magery, 50, "Old Haven Training", 1077489, 1077583));
+            AddObjective(new ApprenticeObjective(SkillName.Magery, 50, "Old Haven Training", 1077489, 1077583));
 
             // 1077489 Your Magery potential is greatly enhanced while questing in this area.
             // 1077583 You are not in the quest area for Apprentice Magery. Your Magery potential is not enhanced here.
 
-            this.AddReward(new BaseReward(typeof(EmberStaff), 1077582));
+            AddReward(new BaseReward(typeof(EmberStaff), 1077582));
         }
 
         public override bool CanOffer()
         {
             #region Scroll of Alacrity
-            PlayerMobile pm = this.Owner as PlayerMobile;
+            PlayerMobile pm = Owner as PlayerMobile;
             if (pm.AcceleratedStart > DateTime.UtcNow)
             {
-                this.Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
+                Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
                 return false;
             }
             #endregion
             else
-                return this.Owner.Skills.Magery.Base < 50;
+                return Owner.Skills.Magery.Base < 50;
         }
 
         public override void OnCompleted()
         {
-            this.Owner.SendLocalizedMessage(1077580, null, 0x23); // You have achieved the rank of Apprentice Mage. Return to Kaelynna in New Haven to receive your arcane prize.
-            this.Owner.PlaySound(this.CompleteSound);
+            Owner.SendLocalizedMessage(1077580, null, 0x23); // You have achieved the rank of Apprentice Mage. Return to Kaelynna in New Haven to receive your arcane prize.
+            Owner.PlaySound(CompleteSound);
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -121,32 +85,26 @@ namespace Server.Engines.Quests
 
     public class Kaelynna : MondainQuester
     {
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(TheMagesApprenticeQuest)
                 };
-            }
-        }
 
         public override void InitSBInfo()
         {
-            this.SBInfos.Add(new SBMage());
+            SBInfos.Add(new SBMage());
         }
 
         [Constructable]
         public Kaelynna()
             : base("Kaelynna", "The Magery Instructor")
         {
-            this.SetSkill(SkillName.EvalInt, 120.0, 120.0);
-            this.SetSkill(SkillName.Inscribe, 120.0, 120.0);
-            this.SetSkill(SkillName.Magery, 120.0, 120.0);
-            this.SetSkill(SkillName.MagicResist, 120.0, 120.0);
-            this.SetSkill(SkillName.Wrestling, 120.0, 120.0);
-            this.SetSkill(SkillName.Meditation, 120.0, 120.0);
+            SetSkill(SkillName.EvalInt, 120.0, 120.0);
+            SetSkill(SkillName.Inscribe, 120.0, 120.0);
+            SetSkill(SkillName.Magery, 120.0, 120.0);
+            SetSkill(SkillName.MagicResist, 120.0, 120.0);
+            SetSkill(SkillName.Wrestling, 120.0, 120.0);
+            SetSkill(SkillName.Meditation, 120.0, 120.0);
         }
 
         public Kaelynna(Serial serial)
@@ -156,35 +114,35 @@ namespace Server.Engines.Quests
 
         public override void Advertise()
         {
-            this.Say(1078125); // Want to unlock the secrets of magery?
+            Say(1078125); // Want to unlock the secrets of magery?
         }
 
         public override void OnOfferFailed()
         {
-            this.Say(1077772); // I cannot teach you, for you know all I can teach!
+            Say(1077772); // I cannot teach you, for you know all I can teach!
         }
 
         public override void InitBody()
         {
-            this.Female = true;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = true;
+            CantWalk = true;
+            Race = Race.Human;
 
             base.InitBody();
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Robe(0x592));
-            this.AddItem(new Sandals());
+            AddItem(new Backpack());
+            AddItem(new Robe(0x592));
+            AddItem(new Sandals());
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

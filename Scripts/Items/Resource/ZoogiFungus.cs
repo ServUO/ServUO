@@ -12,9 +12,9 @@ namespace Server.Items
         public ZoogiFungus(int amount)
             : base(0x26B7)
         {
-            this.Stackable = true;
-            this.Weight = 0.1;
-            this.Amount = amount;
+            Stackable = true;
+            Weight = 0.1;
+            Amount = amount;
         }
 
         public ZoogiFungus(Serial serial)
@@ -22,25 +22,13 @@ namespace Server.Items
         {
         }
 
-        TextDefinition ICommodity.Description
-        {
-            get
-            {
-                return this.LabelNumber;
-            }
-        }
-        bool ICommodity.IsDeedable
-        {
-            get
-            {
-                return true;
-            }
-        }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

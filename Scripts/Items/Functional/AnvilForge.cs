@@ -8,7 +8,7 @@ namespace Server.Items
         public Anvil()
             : base(0xFAF)
         {
-            this.Movable = false;
+            Movable = false;
         }
 
         public Anvil(Serial serial)
@@ -20,7 +20,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -38,7 +38,7 @@ namespace Server.Items
         public Forge()
             : base(0xFB1)
         {
-            this.Movable = false;
+            Movable = false;
         }
 
         public Forge(Serial serial)
@@ -50,7 +50,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

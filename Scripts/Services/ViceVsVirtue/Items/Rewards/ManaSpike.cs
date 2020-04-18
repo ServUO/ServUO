@@ -4,7 +4,7 @@ namespace Server.Engines.VvV
 {
     public class ManaSpike : Item
     {
-        public override int LabelNumber { get { return 1155508; } }
+        public override int LabelNumber => 1155508;
 
         [Constructable]
         public ManaSpike() : base(2308)

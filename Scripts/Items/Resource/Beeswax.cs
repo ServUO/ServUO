@@ -12,9 +12,9 @@ namespace Server.Items
         public Beeswax(int amount)
             : base(0x1422)
         {
-            this.Weight = 1.0;
-            this.Stackable = true;
-            this.Amount = amount;
+            Weight = 1.0;
+            Stackable = true;
+            Amount = amount;
         }
 
         public Beeswax(Serial serial)
@@ -26,7 +26,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

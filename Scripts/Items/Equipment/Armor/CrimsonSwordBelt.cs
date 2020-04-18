@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class CrimsonSwordBelt : SwordBelt
     {
-        public override int LabelNumber { get { return 1159212; } } // crimson sword belt
+        public override int LabelNumber => 1159212;  // crimson sword belt
 
         [Constructable]
         public CrimsonSwordBelt()
@@ -21,7 +21,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

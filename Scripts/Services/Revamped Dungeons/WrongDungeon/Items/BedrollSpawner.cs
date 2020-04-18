@@ -251,7 +251,7 @@ namespace Server.Items
             base.OnDelete();
         }
 
-        public override string DefaultName { get { return "Wrong Bedrolls Spawner " + Map; } }
+        public override string DefaultName => "Wrong Bedrolls Spawner " + Map;
 
         public override void Serialize(GenericWriter writer)
         {
@@ -322,7 +322,7 @@ namespace Server.Items
                 Timer.DelayCall<Map>(TimeSpan.FromSeconds(5), map =>
                     {
                         EnchantedHotItem.SpawnChests(map);
-                        Console.WriteLine("Hot Item chests spawned for {0}.", this.Map);
+                        Console.WriteLine("Hot Item chests spawned for {0}.", Map);
                     }, Map);
             }
         }
@@ -338,8 +338,8 @@ namespace Server.Items
                 m_Type = type;
             }
 
-            public Point3D Location { get { return m_Location; } }
-            public Type Type { get { return m_Type; } }
+            public Point3D Location => m_Location;
+            public Type Type => m_Type;
         }
     }
 }

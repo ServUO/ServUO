@@ -13,13 +13,7 @@ namespace Server.Items
 {
     public class SoulStone : Item, ISecurable
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1030899;
-            }
-        }// soulstone
+        public override int LabelNumber => 1030899;// soulstone
 
         private int m_ActiveItemID;
         private int m_InactiveItemID;
@@ -139,13 +133,7 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsEmpty
-        {
-            get
-            {
-                return m_SkillValue <= 0.0;
-            }
-        }
+        public bool IsEmpty => m_SkillValue <= 0.0;
 
         [Constructable]
         public SoulStone()
@@ -826,7 +814,7 @@ namespace Server.Items
             writer.WriteEncodedInt(3); // version
 
             //version 3
-            writer.Write((string)m_LastUserName);
+            writer.Write(m_LastUserName);
 
             //version 2
             writer.Write((int)m_Level);
@@ -834,11 +822,11 @@ namespace Server.Items
             writer.Write(m_ActiveItemID);
             writer.Write(m_InactiveItemID);
 
-            writer.Write((string)m_Account);
-            writer.Write((DateTime)m_NextUse); //TODO: delete it in a harmless way
+            writer.Write(m_Account);
+            writer.Write(m_NextUse); //TODO: delete it in a harmless way
 
             writer.WriteEncodedInt((int)m_Skill);
-            writer.Write((double)m_SkillValue);
+            writer.Write(m_SkillValue);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -889,13 +877,7 @@ namespace Server.Items
     {
         private int m_UsesRemaining;
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1071000;
-            }
-        }// soulstone fragment
+        public override int LabelNumber => 1071000;// soulstone fragment
 
         [Constructable]
         public SoulstoneFragment()
@@ -1067,7 +1049,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1125,9 +1107,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
-            writer.Write((bool)m_IsRewardItem);
+            writer.Write(m_IsRewardItem);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1171,7 +1153,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

@@ -50,27 +50,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override Type[] UniqueSAList
-        {
-            get
-            {
-                return new Type[] { };
-            }
-        }
-        public override Type[] SharedSAList
-        {
-            get
-            {
-                return new Type[] { typeof(StormCaller), typeof(TorcOfTheGuardians), typeof(GiantSteps), typeof(CavalrysFolly) };
-            }
-        }
-        public override bool AllureImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override Type[] UniqueSAList => new Type[] { };
+        public override Type[] SharedSAList => new Type[] { typeof(StormCaller), typeof(TorcOfTheGuardians), typeof(GiantSteps), typeof(CavalrysFolly) };
+        public override bool AllureImmune => true;
 
         public override int GetAngerSound() { return 0x600; }
         public override int GetIdleSound() { return 0x600; }
@@ -86,7 +68,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)

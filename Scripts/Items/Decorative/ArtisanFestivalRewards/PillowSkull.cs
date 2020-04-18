@@ -3,7 +3,7 @@ namespace Server.Items
     [Flipable(0xA497, 0xA498)]
     public class PillowSkull : Item
     {
-        public override int LabelNumber { get { return 1025015; } } // pillow
+        public override int LabelNumber => 1025015;  // pillow
 
         [Constructable]
         public PillowSkull()
@@ -20,7 +20,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

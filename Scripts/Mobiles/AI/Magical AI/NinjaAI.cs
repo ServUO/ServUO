@@ -26,7 +26,7 @@ namespace Server.Mobiles
 
             if (!m_Mobile.Hidden && Core.TickCount - m_Mobile.NextSkillTime >= 0)
             {
-                var chance = 0.05;
+                double chance = 0.05;
 
                 if (m_Mobile.Hits < 20)
                     chance = 0.10;
@@ -56,7 +56,7 @@ namespace Server.Mobiles
 
         public virtual SpecialMove GetHiddenSpecialMove()
         {
-            var skill = (int)m_Mobile.Skills[SkillName.Ninjitsu].Value;
+            int skill = (int)m_Mobile.Skills[SkillName.Ninjitsu].Value;
 
             if (skill < 40)
                 return null;
@@ -72,12 +72,12 @@ namespace Server.Mobiles
 
         public virtual SpecialMove GetSpecialMove()
         {
-            var skill = (int)m_Mobile.Skills[SkillName.Ninjitsu].Value;
+            int skill = (int)m_Mobile.Skills[SkillName.Ninjitsu].Value;
 
             if (skill < 40)
                 return null;
 
-            var avail = 1;
+            int avail = 1;
 
             if (skill >= 85)
                 avail = 3;
@@ -99,22 +99,22 @@ namespace Server.Mobiles
 
         public void DoRangedAttack()
         {
-            var c = m_Mobile.Combatant as Mobile;
+            Mobile c = m_Mobile.Combatant as Mobile;
 
             if (c == null)
                 return;
 
-            var list = new List<INinjaWeapon>();
-            var d = (int)m_Mobile.GetDistanceToSqrt(c.Location);
+            List<INinjaWeapon> list = new List<INinjaWeapon>();
+            int d = (int)m_Mobile.GetDistanceToSqrt(c.Location);
 
-            foreach (var item in m_Mobile.Items)
+            foreach (Item item in m_Mobile.Items)
                 if (item is INinjaWeapon && ((INinjaWeapon)item).UsesRemaining > 0 && d >= ((INinjaWeapon)item).WeaponMinRange &&
                     d <= ((INinjaWeapon)item).WeaponMaxRange)
                     list.Add(item as INinjaWeapon);
 
             if (m_Mobile.Backpack != null)
             {
-                foreach (var item in m_Mobile.Backpack.Items)
+                foreach (Item item in m_Mobile.Backpack.Items)
                     if (item is INinjaWeapon && ((INinjaWeapon)item).UsesRemaining > 0 && d >= ((INinjaWeapon)item).WeaponMinRange &&
                         d <= ((INinjaWeapon)item).WeaponMaxRange)
                         list.Add(item as INinjaWeapon);
@@ -122,7 +122,7 @@ namespace Server.Mobiles
 
             if (list.Count > 0)
             {
-                var toUse = list[Utility.Random(list.Count)];
+                INinjaWeapon toUse = list[Utility.Random(list.Count)];
 
                 if (toUse != null)
                     NinjaWeapon.Shoot(m_Mobile, c, toUse);
@@ -150,7 +150,7 @@ namespace Server.Mobiles
             if (m_Mobile.Combatant == null)
                 return true;
 
-            var special = SpecialMove.GetCurrentMove(m_Mobile);
+            SpecialMove special = SpecialMove.GetCurrentMove(m_Mobile);
 
             if (special == null && m_NextCastTime < DateTime.UtcNow && 0.05 > Utility.RandomDouble())
             {
@@ -188,7 +188,7 @@ namespace Server.Mobiles
 
         public TimeSpan GetCastDelay()
         {
-            var skill = (int)m_Mobile.Skills[SkillName.Ninjitsu].Value;
+            int skill = (int)m_Mobile.Skills[SkillName.Ninjitsu].Value;
 
             if (skill >= 85)
                 return TimeSpan.FromSeconds(15);

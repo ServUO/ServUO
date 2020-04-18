@@ -33,13 +33,7 @@ namespace Server.Engines.Quests.Doom
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1050018;
-            }
-        }// bell of the dead
+        public override int LabelNumber => 1050018;// bell of the dead
         [CommandProperty(AccessLevel.GameMaster, AccessLevel.Administrator)]
         public Chyloth Chyloth
         {
@@ -82,7 +76,7 @@ namespace Server.Engines.Quests.Doom
             if (Instances == null)
                 return;
 
-            var bell = Instances.FirstOrDefault(x => x.Dragon == dragon);
+            BellOfTheDead bell = Instances.FirstOrDefault(x => x.Dragon == dragon);
 
             if (bell != null)
             {
@@ -157,10 +151,10 @@ namespace Server.Engines.Quests.Doom
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
-            writer.Write((Mobile)m_Chyloth);
-            writer.Write((Mobile)m_Dragon);
+            writer.Write(m_Chyloth);
+            writer.Write(m_Dragon);
         }
 
         public override void Deserialize(GenericReader reader)

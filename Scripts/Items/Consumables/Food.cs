@@ -246,13 +246,13 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)7); // version
+            writer.Write(7); // version
 
             writer.Write((int)_Quality);
 
             writer.Write(m_EngravedText);
 
-            writer.Write((bool)m_PlayerConstructed);
+            writer.Write(m_PlayerConstructed);
             writer.Write(m_Poisoner);
 
             Poison.Serialize(m_Poison, writer);
@@ -348,7 +348,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -384,7 +384,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -420,7 +420,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -435,13 +435,7 @@ namespace Server.Items
     {
         public override ItemQuality Quality { get { return ItemQuality.Normal; } set { } }
 
-        public override double DefaultWeight
-        {
-            get
-            {
-                return 0.1;
-            }
-        }
+        public override double DefaultWeight => 0.1;
 
         [Constructable]
         public FishSteak()
@@ -465,7 +459,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -478,13 +472,7 @@ namespace Server.Items
 
     public class CheeseWheel : Food
     {
-        public override double DefaultWeight
-        {
-            get
-            {
-                return 0.1;
-            }
-        }
+        public override double DefaultWeight => 0.1;
 
         [Constructable]
         public CheeseWheel()
@@ -508,7 +496,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -521,13 +509,7 @@ namespace Server.Items
 
     public class CheeseWedge : Food
     {
-        public override double DefaultWeight
-        {
-            get
-            {
-                return 0.1;
-            }
-        }
+        public override double DefaultWeight => 0.1;
 
         [Constructable]
         public CheeseWedge()
@@ -551,7 +533,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -564,13 +546,7 @@ namespace Server.Items
 
     public class CheeseSlice : Food
     {
-        public override double DefaultWeight
-        {
-            get
-            {
-                return 0.1;
-            }
-        }
+        public override double DefaultWeight => 0.1;
 
         [Constructable]
         public CheeseSlice()
@@ -594,7 +570,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -630,7 +606,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -668,7 +644,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -706,7 +682,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -742,7 +718,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -778,7 +754,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -814,7 +790,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -845,7 +821,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -883,7 +859,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -914,7 +890,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -945,7 +921,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -962,13 +938,7 @@ namespace Server.Items
     [TypeAlias("Server.Items.Pizza")]
     public class CheesePizza : Food
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1044516;
-            }
-        }// cheese pizza
+        public override int LabelNumber => 1044516;// cheese pizza
 
         [Constructable]
         public CheesePizza()
@@ -988,7 +958,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1001,13 +971,7 @@ namespace Server.Items
 
     public class SausagePizza : Food
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1044517;
-            }
-        }// sausage pizza
+        public override int LabelNumber => 1044517;// sausage pizza
 
         [Constructable]
         public SausagePizza()
@@ -1027,7 +991,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1071,13 +1035,7 @@ namespace Server.Items
 
     public class FruitPie : Food
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041346;
-            }
-        }// baked fruit pie
+        public override int LabelNumber => 1041346;// baked fruit pie
 
         [Constructable]
         public FruitPie()
@@ -1097,7 +1055,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1110,13 +1068,7 @@ namespace Server.Items
 
     public class MeatPie : Food
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041347;
-            }
-        }// baked meat pie
+        public override int LabelNumber => 1041347;// baked meat pie
 
         [Constructable]
         public MeatPie()
@@ -1136,7 +1088,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1149,13 +1101,7 @@ namespace Server.Items
 
     public class PumpkinPie : Food
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041348;
-            }
-        }// baked pumpkin pie
+        public override int LabelNumber => 1041348;// baked pumpkin pie
 
         [Constructable]
         public PumpkinPie()
@@ -1175,7 +1121,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1188,13 +1134,7 @@ namespace Server.Items
 
     public class ApplePie : Food
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041343;
-            }
-        }// baked apple pie
+        public override int LabelNumber => 1041343;// baked apple pie
 
         [Constructable]
         public ApplePie()
@@ -1214,7 +1154,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1227,13 +1167,7 @@ namespace Server.Items
 
     public class PeachCobbler : Food
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041344;
-            }
-        }// baked peach cobbler
+        public override int LabelNumber => 1041344;// baked peach cobbler
 
         [Constructable]
         public PeachCobbler()
@@ -1253,7 +1187,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1266,13 +1200,7 @@ namespace Server.Items
 
     public class Quiche : Food
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041345;
-            }
-        }// baked quiche
+        public override int LabelNumber => 1041345;// baked quiche
 
         [Constructable]
         public Quiche()
@@ -1292,7 +1220,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1330,7 +1258,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1368,7 +1296,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1405,7 +1333,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1442,7 +1370,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1479,7 +1407,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1516,7 +1444,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1552,7 +1480,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1581,7 +1509,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1600,7 +1528,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
 
-        public bool PlayerConstructed { get { return true; } }
+        public bool PlayerConstructed => true;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int Pieces
@@ -1615,7 +1543,7 @@ namespace Server.Items
             }
         }
 
-        public override int LabelNumber { get { return 1098235; } } // A Three Tiered Cake 
+        public override int LabelNumber => 1098235;  // A Three Tiered Cake 
 
         [Constructable]
         public ThreeTieredCake()
@@ -1636,7 +1564,7 @@ namespace Server.Items
         {
             if (IsChildOf(from.Backpack))
             {
-                var cake = new Cake();
+                Cake cake = new Cake();
                 cake.ItemID = 0x4BA4;
 
                 from.PrivateOverheadMessage(Network.MessageType.Regular, 1154, 1157341, from.NetState); // *You cut a slice from the cake.*
@@ -1667,7 +1595,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
             writer.Write((int)_Quality);
             writer.Write(_Pieces);
         }
@@ -1685,7 +1613,7 @@ namespace Server.Items
 
     public class Hamburger : Food
     {
-        public override int LabelNumber { get { return 1125202; } } // hamburger
+        public override int LabelNumber => 1125202;  // hamburger
 
         [Constructable]
         public Hamburger()
@@ -1709,7 +1637,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1723,7 +1651,7 @@ namespace Server.Items
     [Flipable(0xA0D8, 0xA0D9)]
     public class HotDog : Food
     {
-        public override int LabelNumber { get { return 1125201; } } // hot dog
+        public override int LabelNumber => 1125201;  // hot dog
 
         [Constructable]
         public HotDog()
@@ -1747,7 +1675,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1761,7 +1689,7 @@ namespace Server.Items
     [Flipable(0xA0D6, 0xA0D7)]
     public class CookableSausage : Food
     {
-        public override int LabelNumber { get { return 1125198; } } // sausage
+        public override int LabelNumber => 1125198;  // sausage
 
         [Constructable]
         public CookableSausage()
@@ -1779,7 +1707,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1792,7 +1720,7 @@ namespace Server.Items
 
     public class PulledPorkPlatter : Food
     {
-        public override int LabelNumber { get { return 1123351; } } // Pulled Pork Platter
+        public override int LabelNumber => 1123351;  // Pulled Pork Platter
 
         [Constructable]
         public PulledPorkPlatter()
@@ -1811,7 +1739,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1824,7 +1752,7 @@ namespace Server.Items
 
     public class PulledPorkSandwich : Food
     {
-        public override int LabelNumber { get { return 1123352; } } // Pulled Pork Sandwich
+        public override int LabelNumber => 1123352;  // Pulled Pork Sandwich
 
         [Constructable]
         public PulledPorkSandwich()
@@ -1842,7 +1770,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

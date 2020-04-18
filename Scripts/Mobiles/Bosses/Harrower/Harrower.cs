@@ -210,7 +210,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
             writer.Write(m_IsSpawned);
             writer.Write(m_TrueForm);
@@ -270,7 +270,7 @@ namespace Server.Mobiles
 
                     for (int j = 0; j < pm.JusticeProtectors.Count; ++j)
                     {
-                        Mobile prot = (Mobile)pm.JusticeProtectors[j];
+                        Mobile prot = pm.JusticeProtectors[j];
 
                         if (prot.Map != m.Map || prot.Murderer || prot.Criminal || !JusticeVirtue.CheckMapRegion(m, prot))
                             continue;

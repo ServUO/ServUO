@@ -27,7 +27,7 @@ namespace Server.Engines.ResortAndCasino
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (m is PlayerMobile && m.InRange(this.Location, 3))
+            if (m is PlayerMobile && m.InRange(Location, 3))
             {
                 m.SendGump(new PurchaseCasinoChipGump(m as PlayerMobile));
             }
@@ -55,11 +55,11 @@ namespace Server.Engines.ResortAndCasino
     {
         public Dictionary<PlayerMobile, BaseDiceGame> Players { get; set; }
 
-        public override bool IsInvulnerable { get { return true; } }
-        public override bool IsActiveVendor { get { return false; } }
+        public override bool IsInvulnerable => true;
+        public override bool IsActiveVendor => false;
 
         private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
-        protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }
+        protected override List<SBInfo> SBInfos => m_SBInfos;
 
         public override void InitSBInfo()
         {
@@ -310,11 +310,11 @@ namespace Server.Engines.ResortAndCasino
 
     public class CasinoWaitress : BaseVendor
     {
-        public override bool IsActiveVendor { get { return false; } }
-        public override double GetMoveDelay { get { return (double)Utility.RandomMinMax(2, 6); } }
+        public override bool IsActiveVendor => false;
+        public override double GetMoveDelay => Utility.RandomMinMax(2, 6);
 
         private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
-        protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }
+        protected override List<SBInfo> SBInfos => m_SBInfos;
 
         public Dictionary<Mobile, int> _Drinks { get; set; }
 
@@ -357,7 +357,7 @@ namespace Server.Engines.ResortAndCasino
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (!m.InRange(this.Location, 3))
+            if (!m.InRange(Location, 3))
                 return;
 
             if (_Drinks == null)
@@ -388,7 +388,7 @@ namespace Server.Engines.ResortAndCasino
         {
             base.OnThink();
 
-            IPooledEnumerable eable = this.Map.GetMobilesInRange(this.Location, 8);
+            IPooledEnumerable eable = Map.GetMobilesInRange(Location, 8);
             bool canspeak = _NextAdvertise < DateTime.UtcNow;
 
             if (!canspeak)

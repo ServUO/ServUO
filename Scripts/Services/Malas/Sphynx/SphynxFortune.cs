@@ -219,7 +219,7 @@ namespace Server.Engines.SphynxFortune
                 FilePath,
                 writer =>
                 {
-                    writer.Write((int)0);
+                    writer.Write(0);
 
                     writer.Write(Fountains.Count);
 

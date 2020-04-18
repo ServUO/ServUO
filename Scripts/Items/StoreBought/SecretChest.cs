@@ -21,9 +21,9 @@ namespace Server.Items
     {
         public List<SecretChestArray> list = new List<SecretChestArray>();
 
-        public override int LabelNumber { get { return 1151583; } } // Secret Chest
+        public override int LabelNumber => 1151583;  // Secret Chest
 
-        public override int DefaultGumpID { get { return 0x58E; } }
+        public override int DefaultGumpID => 0x58E;
 
         public int[] SecretKey { get; set; } = { 0, 0, 0, 0, 0 };
 
@@ -45,7 +45,7 @@ namespace Server.Items
 
         public bool CheckPermission(Mobile from)
         {
-            var p = list.FirstOrDefault(x => x.Mobile == from);
+            SecretChestArray p = list.FirstOrDefault(x => x.Mobile == from);
 
             return LockingPerson.Account == from.Account || p != null && p.Permission;
         }
@@ -54,7 +54,7 @@ namespace Server.Items
         {
             if (Locked && from.AccessLevel < AccessLevel.GameMaster && LockingPerson.Account != from.Account)
             {
-                var l = list.FirstOrDefault(x => x.Mobile == from);
+                SecretChestArray l = list.FirstOrDefault(x => x.Mobile == from);
 
                 if (l == null)
                 {
@@ -159,7 +159,7 @@ namespace Server.Items
             }
         }
 
-        public override bool DisplaysContent { get { return false; } }
+        public override bool DisplaysContent => false;
 
         public override void GetProperties(ObjectPropertyList list)
         {
@@ -215,7 +215,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write(LockingPerson);
 
@@ -330,7 +330,7 @@ namespace Server.Items
                     }
                 case 1:
                     {
-                        var l = Chest.list.FirstOrDefault(x => x.Mobile == from);
+                        SecretChestArray l = Chest.list.FirstOrDefault(x => x.Mobile == from);
 
                         if (l == null)
                             return;

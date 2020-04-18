@@ -64,34 +64,10 @@ namespace Server.Engines.BulkOrders
             }
         }
 
-        public bool RequireExceptional
-        {
-            get
-            {
-                return m_RequireExceptional;
-            }
-        }
-        public BODType DeedType
-        {
-            get
-            {
-                return m_DeedType;
-            }
-        }
-        public BulkMaterialType Material
-        {
-            get
-            {
-                return m_Material;
-            }
-        }
-        public int AmountMax
-        {
-            get
-            {
-                return m_AmountMax;
-            }
-        }
+        public bool RequireExceptional => m_RequireExceptional;
+        public BODType DeedType => m_DeedType;
+        public BulkMaterialType Material => m_Material;
+        public int AmountMax => m_AmountMax;
         public int Price
         {
             get
@@ -114,13 +90,7 @@ namespace Server.Engines.BulkOrders
                 m_GemType = value;
             }
         }
-        public BOBLargeSubEntry[] Entries
-        {
-            get
-            {
-                return m_Entries;
-            }
-        }
+        public BOBLargeSubEntry[] Entries => m_Entries;
         public Item Reconstruct()
         {
             LargeBOD bod = null;
@@ -149,14 +119,14 @@ namespace Server.Engines.BulkOrders
 
             writer.Write((int)m_GemType);
 
-            writer.Write((bool)m_RequireExceptional);
+            writer.Write(m_RequireExceptional);
 
             writer.WriteEncodedInt((int)m_DeedType);
             writer.WriteEncodedInt((int)m_Material);
-            writer.WriteEncodedInt((int)m_AmountMax);
-            writer.WriteEncodedInt((int)m_Price);
+            writer.WriteEncodedInt(m_AmountMax);
+            writer.WriteEncodedInt(m_Price);
 
-            writer.WriteEncodedInt((int)m_Entries.Length);
+            writer.WriteEncodedInt(m_Entries.Length);
 
             for (int i = 0; i < m_Entries.Length; ++i)
                 m_Entries[i].Serialize(writer);

@@ -28,7 +28,7 @@ namespace Server.SkillHandlers
         }
 
         private static readonly Dictionary<Mobile, ImbuingContext> m_ContextTable = new Dictionary<Mobile, ImbuingContext>();
-        public static Dictionary<Mobile, ImbuingContext> ContextTable { get { return m_ContextTable; } }
+        public static Dictionary<Mobile, ImbuingContext> ContextTable => m_ContextTable;
 
         public static TimeSpan OnUse(Mobile from)
         {
@@ -237,7 +237,7 @@ namespace Server.SkillHandlers
 
             Type type = item.GetType();
 
-            foreach (var t in _NonCraftables)
+            foreach (Type t in _NonCraftables)
             {
                 if (t == type)
                     return true;
@@ -319,20 +319,20 @@ namespace Server.SkillHandlers
             context.Imbue_Mod = id;
             context.Imbue_ModInt = value;
 
-            var def = ItemPropertyInfo.GetInfo(id);
+            ItemPropertyInfo def = ItemPropertyInfo.GetInfo(id);
 
             if (def == null)
                 return;
 
-            var gem = def.GemRes;
-            var primary = def.PrimaryRes;
-            var special = def.SpecialRes;
+            Type gem = def.GemRes;
+            Type primary = def.PrimaryRes;
+            Type special = def.SpecialRes;
 
             context.Imbue_ModVal = def.Weight;
 
-            var gemAmount = GetGemAmount(i, id, value);
-            var primResAmount = GetPrimaryAmount(i, id, value);
-            var specResAmount = GetSpecialAmount(i, id, value);
+            int gemAmount = GetGemAmount(i, id, value);
+            int primResAmount = GetPrimaryAmount(i, id, value);
+            int specResAmount = GetSpecialAmount(i, id, value);
 
             if (from.AccessLevel == AccessLevel.Player &&
                 (from.Backpack == null || from.Backpack.GetAmount(gem) < gemAmount ||
@@ -341,16 +341,16 @@ namespace Server.SkillHandlers
                 from.SendLocalizedMessage(1079773); //You do not have enough resources to imbue this item.     
             else
             {
-                var maxWeight = GetMaxWeight(i);
+                int maxWeight = GetMaxWeight(i);
                 context.Imbue_IWmax = maxWeight;
 
-                var trueWeight = GetTotalWeight(i, id, true, true);
-                var imbuingWeight = GetTotalWeight(i, id, false, true);
-                var totalItemMods = GetTotalMods(i, id);
-                var maxint = ItemPropertyInfo.GetMaxIntensity(i, id, true);
+                int trueWeight = GetTotalWeight(i, id, true, true);
+                int imbuingWeight = GetTotalWeight(i, id, false, true);
+                int totalItemMods = GetTotalMods(i, id);
+                int maxint = ItemPropertyInfo.GetMaxIntensity(i, id, true);
 
-                var propImbuingweight = (int)(((double)def.Weight / (double)maxint) * value);
-                var propTrueWeight = (int)(((double)propImbuingweight / (double)def.Weight) * 100);
+                int propImbuingweight = (int)((def.Weight / (double)maxint) * value);
+                int propTrueWeight = (int)((propImbuingweight / (double)def.Weight) * 100);
 
                 if ((imbuingWeight + propImbuingweight) > maxWeight)
                 {
@@ -413,7 +413,7 @@ namespace Server.SkillHandlers
 
             if (item is BaseWeapon)
             {
-                var wep = (BaseWeapon)item;
+                BaseWeapon wep = (BaseWeapon)item;
 
                 // New property replaces the old one, so lets set them all to 0
                 if (id >= 30 && id <= 34)
@@ -436,8 +436,8 @@ namespace Server.SkillHandlers
 
             if (item is BaseJewel && id >= 151 && id <= 183)
             {
-                var jewel = (BaseJewel)item;
-                var group = GetSkillGroup((SkillName)ItemPropertyInfo.GetAttribute(id));
+                BaseJewel jewel = (BaseJewel)item;
+                SkillName[] group = GetSkillGroup((SkillName)ItemPropertyInfo.GetAttribute(id));
 
                 //Removes skill bonus if that group already exists on the item
                 for (int j = 0; j < 5; j++)
@@ -463,7 +463,7 @@ namespace Server.SkillHandlers
             {
                 if (item is BaseArmor)
                 {
-                    var arm = (BaseArmor)item;
+                    BaseArmor arm = (BaseArmor)item;
 
                     switch (id)
                     {
@@ -476,7 +476,7 @@ namespace Server.SkillHandlers
                 }
                 else if (item is BaseClothing)
                 {
-                    var hat = (BaseClothing)item;
+                    BaseClothing hat = (BaseClothing)item;
 
                     switch (id)
                     {
@@ -491,7 +491,7 @@ namespace Server.SkillHandlers
 
             if (item is IImbuableEquipement)
             {
-                var imbuable = (IImbuableEquipement)item;
+                IImbuableEquipement imbuable = (IImbuableEquipement)item;
 
                 imbuable.OnAfterImbued(from, id, value);
                 imbuable.TimesImbued++;
@@ -505,7 +505,7 @@ namespace Server.SkillHandlers
             }
 
             // Removes self repair
-            var armorAttrs = RunicReforging.GetAosArmorAttributes(item);
+            AosArmorAttributes armorAttrs = RunicReforging.GetAosArmorAttributes(item);
 
             if (armorAttrs != null)
             {
@@ -513,7 +513,7 @@ namespace Server.SkillHandlers
             }
             else
             {
-                var wepAttrs = RunicReforging.GetAosWeaponAttributes(item);
+                AosWeaponAttributes wepAttrs = RunicReforging.GetAosWeaponAttributes(item);
 
                 if (wepAttrs != null)
                 {
@@ -719,9 +719,9 @@ namespace Server.SkillHandlers
                 else if (prop is SkillName)
                 {
                     SkillName skill = (SkillName)prop;
-                    var bonuses = jewel.SkillBonuses;
+                    AosSkillBonuses bonuses = jewel.SkillBonuses;
 
-                    var index = GetAvailableSkillIndex(bonuses);
+                    int index = GetAvailableSkillIndex(bonuses);
 
                     if (index >= 0 && index <= 4)
                     {
@@ -756,9 +756,9 @@ namespace Server.SkillHandlers
             ImbuingContext context = GetContext(from);
 
             Type resType = null;
-            var resAmount = Math.Max(1, weight / 100);
+            int resAmount = Math.Max(1, weight / 100);
 
-            var success = false;
+            bool success = false;
 
             if (weight >= 480 - bonus)
             {
@@ -923,7 +923,7 @@ namespace Server.SkillHandlers
             if (max == 1 && inc == 0)
                 return 5;
 
-            double v = Math.Floor(value / ((double)max / 5.0));
+            double v = Math.Floor(value / (max / 5.0));
 
             if (v > 5) v = 5;
             if (v < 1) v = 1;
@@ -935,7 +935,7 @@ namespace Server.SkillHandlers
         {
             int max = ItemPropertyInfo.GetMaxIntensity(item, id, true);
 
-            int intensity = (int)(((double)value / (double)max) * 100);
+            int intensity = (int)((value / (double)max) * 100);
 
             if (intensity >= 100)
             {
@@ -1206,7 +1206,7 @@ namespace Server.SkillHandlers
                 if (clothing.Resistances.Energy > clothing.EnergyNonImbuing && id != 55) { total++; }
             }
 
-            var type = item.GetType();
+            Type type = item.GetType();
 
             if (IsDerivedArmorOrClothing(type))
             {
@@ -1218,11 +1218,11 @@ namespace Server.SkillHandlers
                 }
                 else
                 {
-                    var baseType = type.BaseType;
+                    Type baseType = type.BaseType;
 
                     if (IsDerivedArmorOrClothing(baseType))
                     {
-                        var temp = Loot.Construct(baseType);
+                        Item temp = Loot.Construct(baseType);
 
                         if (temp != null)
                         {
@@ -1356,16 +1356,16 @@ namespace Server.SkillHandlers
             }
             else if (item is BaseArmor)
             {
-                var arm = (BaseArmor)item;
+                BaseArmor arm = (BaseArmor)item;
 
-                if (arm.PhysicalBonus > arm.PhysNonImbuing) { if (id != 51) { weight += ((double)(100.0 / 15) * (double)(arm.PhysicalBonus - arm.PhysNonImbuing)); } }
-                if (arm.FireBonus > arm.FireNonImbuing) { if (id != 52) { weight += ((double)(100.0 / 15) * (double)(arm.FireBonus - arm.FireNonImbuing)); } }
-                if (arm.ColdBonus > arm.ColdNonImbuing) { if (id != 53) { weight += ((double)(100.0 / 15) * (double)(arm.ColdBonus - arm.ColdNonImbuing)); } }
-                if (arm.PoisonBonus > arm.PoisonNonImbuing) { if (id != 54) { weight += ((double)(100.0 / 15) * (double)(arm.PoisonBonus - arm.PoisonNonImbuing)); } }
-                if (arm.EnergyBonus > arm.EnergyNonImbuing) { if (id != 55) { weight += ((double)(100.0 / 15) * (double)(arm.EnergyBonus - arm.EnergyNonImbuing)); } }
+                if (arm.PhysicalBonus > arm.PhysNonImbuing) { if (id != 51) { weight += (100.0 / 15 * (arm.PhysicalBonus - arm.PhysNonImbuing)); } }
+                if (arm.FireBonus > arm.FireNonImbuing) { if (id != 52) { weight += (100.0 / 15 * (arm.FireBonus - arm.FireNonImbuing)); } }
+                if (arm.ColdBonus > arm.ColdNonImbuing) { if (id != 53) { weight += (100.0 / 15 * (arm.ColdBonus - arm.ColdNonImbuing)); } }
+                if (arm.PoisonBonus > arm.PoisonNonImbuing) { if (id != 54) { weight += (100.0 / 15 * (arm.PoisonBonus - arm.PoisonNonImbuing)); } }
+                if (arm.EnergyBonus > arm.EnergyNonImbuing) { if (id != 55) { weight += (100.0 / 15 * (arm.EnergyBonus - arm.EnergyNonImbuing)); } }
             }
 
-            var type = item.GetType();
+            Type type = item.GetType();
 
             if (IsDerivedArmorOrClothing(type))
             {
@@ -1377,11 +1377,11 @@ namespace Server.SkillHandlers
                 }
                 else
                 {
-                    var baseType = type.BaseType;
+                    Type baseType = type.BaseType;
 
                     if (IsDerivedArmorOrClothing(baseType))
                     {
-                        var temp = Loot.Construct(baseType);
+                        Item temp = Loot.Construct(baseType);
 
                         if (temp != null)
                         {
@@ -1408,7 +1408,7 @@ namespace Server.SkillHandlers
                     {
                         if (id != 51 + i && resists[i] > 0)
                         {
-                            weight += ((double)(100.0 / 15) * (double)resists[i]);
+                            weight += (100.0 / 15 * resists[i]);
                         }
                     }
                 }
@@ -1571,17 +1571,17 @@ namespace Server.SkillHandlers
 
             if (skills != null)
             {
-                if (skills.GetBonus(0) > 0) { if (id < 151 || id > 155) { weight += ((double)(totalWeight / maxInt) * (double)skills.GetBonus(0)); } }
-                if (skills.GetBonus(1) > 0) { if (id < 156 || id > 160) { weight += ((double)(totalWeight / maxInt) * (double)skills.GetBonus(1)); } }
-                if (skills.GetBonus(2) > 0) { if (id < 161 || id > 166) { weight += ((double)(totalWeight / maxInt) * (double)skills.GetBonus(2)); } }
-                if (skills.GetBonus(3) > 0) { if (id < 167 || id > 173) { weight += ((double)(totalWeight / maxInt) * (double)skills.GetBonus(3)); } }
-                if (skills.GetBonus(4) > 0) { if (id < 174 || id > 180) { weight += ((double)(totalWeight / maxInt) * (double)skills.GetBonus(4)); } }
+                if (skills.GetBonus(0) > 0) { if (id < 151 || id > 155) { weight += (totalWeight / maxInt * skills.GetBonus(0)); } }
+                if (skills.GetBonus(1) > 0) { if (id < 156 || id > 160) { weight += (totalWeight / maxInt * skills.GetBonus(1)); } }
+                if (skills.GetBonus(2) > 0) { if (id < 161 || id > 166) { weight += (totalWeight / maxInt * skills.GetBonus(2)); } }
+                if (skills.GetBonus(3) > 0) { if (id < 167 || id > 173) { weight += (totalWeight / maxInt * skills.GetBonus(3)); } }
+                if (skills.GetBonus(4) > 0) { if (id < 174 || id > 180) { weight += (totalWeight / maxInt * skills.GetBonus(4)); } }
             }
 
             return (int)weight;
         }
 
-        public static SkillName[] PossibleSkills { get { return m_PossibleSkills; } }
+        public static SkillName[] PossibleSkills => m_PossibleSkills;
         private static readonly SkillName[] m_PossibleSkills = new SkillName[]
             {
                 SkillName.Swords,
@@ -1726,7 +1726,7 @@ namespace Server.SkillHandlers
             return true;
         }
 
-        public static Type[] IngredTypes { get { return m_IngredTypes; } }
+        public static Type[] IngredTypes => m_IngredTypes;
         private static readonly Type[] m_IngredTypes = new Type[]
         {
             typeof(MagicalResidue),     typeof(EnchantedEssence),       typeof(RelicFragment),
@@ -1832,7 +1832,7 @@ namespace Server.SkillHandlers
                 else if (attr is AosElementAttribute)
                 {
                     AosElementAttribute ele = (AosElementAttribute)attr;
-                    var value = 0;
+                    int value = 0;
 
                     switch (ele)
                     {
@@ -1858,7 +1858,7 @@ namespace Server.SkillHandlers
 
                 else if (attr is AosElementAttribute)
                 {
-                    var value = c.Resistances[(AosElementAttribute)attr];
+                    int value = c.Resistances[(AosElementAttribute)attr];
 
                     if (value > 0)
                     {
@@ -1906,7 +1906,7 @@ namespace Server.SkillHandlers
                 }
             }
 
-            var type = item.GetType();
+            Type type = item.GetType();
 
             if (id >= 51 && id <= 55 && IsDerivedArmorOrClothing(type))
             {
@@ -1918,11 +1918,11 @@ namespace Server.SkillHandlers
                 }
                 else
                 {
-                    var baseType = type.BaseType;
+                    Type baseType = type.BaseType;
 
                     if (IsDerivedArmorOrClothing(baseType))
                     {
-                        var temp = Loot.Construct(baseType);
+                        Item temp = Loot.Construct(baseType);
 
                         if (temp != null)
                         {
@@ -1998,7 +1998,7 @@ namespace Server.SkillHandlers
 
             if (id != checkID)
             {
-                var weight = trueWeight ? 100 : ItemPropertyInfo.GetWeight(id);
+                int weight = trueWeight ? 100 : ItemPropertyInfo.GetWeight(id);
 
                 if (weight == 0)
                 {
@@ -2007,7 +2007,7 @@ namespace Server.SkillHandlers
 
                 int max = ItemPropertyInfo.GetMaxIntensity(item, id, imbuing);
 
-                return (int)(((double)weight / max) * (double)value);
+                return (int)(((double)weight / max) * value);
             }
 
             return 0;

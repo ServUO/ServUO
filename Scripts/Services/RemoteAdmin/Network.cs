@@ -254,35 +254,29 @@ namespace Server.RemoteAdmin
 
         public EventTextWriter(OnConsoleChar onChar, OnConsoleLine onLine, OnConsoleStr onStr)
         {
-            this.m_OnChar = onChar;
-            this.m_OnLine = onLine;
-            this.m_OnStr = onStr;
+            m_OnChar = onChar;
+            m_OnLine = onLine;
+            m_OnStr = onStr;
         }
 
         public override void Write(char ch)
         {
-            if (this.m_OnChar != null)
-                this.m_OnChar(ch);
+            if (m_OnChar != null)
+                m_OnChar(ch);
         }
 
         public override void Write(string str)
         {
-            if (this.m_OnStr != null)
-                this.m_OnStr(str);
+            if (m_OnStr != null)
+                m_OnStr(str);
         }
 
         public override void WriteLine(string line)
         {
-            if (this.m_OnLine != null)
-                this.m_OnLine(line);
+            if (m_OnLine != null)
+                m_OnLine(line);
         }
 
-        public override System.Text.Encoding Encoding
-        {
-            get
-            {
-                return System.Text.Encoding.ASCII;
-            }
-        }
+        public override System.Text.Encoding Encoding => System.Text.Encoding.ASCII;
     }
 }

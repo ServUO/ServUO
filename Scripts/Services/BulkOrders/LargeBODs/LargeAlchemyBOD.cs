@@ -4,7 +4,7 @@ namespace Server.Engines.BulkOrders
 {
     public class LargeAlchemyBOD : LargeBOD
     {
-        public override BODType BODType { get { return BODType.Alchemy; } }
+        public override BODType BODType => BODType.Alchemy;
 
         [Constructable]
         public LargeAlchemyBOD()
@@ -33,18 +33,18 @@ namespace Server.Engines.BulkOrders
 
             int amountMax = Utility.RandomList(10, 15, 20, 20);
 
-            this.Hue = 2505;
-            this.AmountMax = amountMax;
-            this.Entries = entries;
+            Hue = 2505;
+            AmountMax = amountMax;
+            Entries = entries;
         }
 
         public LargeAlchemyBOD(int amountMax, bool reqExceptional, BulkMaterialType mat, LargeBulkEntry[] entries)
         {
-            this.Hue = 2505;
-            this.AmountMax = amountMax;
-            this.Entries = entries;
-            this.RequireExceptional = reqExceptional;
-            this.Material = mat;
+            Hue = 2505;
+            AmountMax = amountMax;
+            Entries = entries;
+            RequireExceptional = reqExceptional;
+            Material = mat;
         }
 
         public LargeAlchemyBOD(Serial serial)
@@ -101,7 +101,7 @@ namespace Server.Engines.BulkOrders
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

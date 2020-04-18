@@ -17,55 +17,13 @@ namespace Server.Spells.Chivalry
         {
         }
 
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(0.25);
-            }
-        }
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 35.0;
-            }
-        }
-        public override int RequiredMana
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int RequiredTithing
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int MantraNumber
-        {
-            get
-            {
-                return 1060721;
-            }
-        }// Dispiro Malas
-        public override bool BlocksMovement
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool DelayedDamage
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(0.25);
+        public override double RequiredSkill => 35.0;
+        public override int RequiredMana => 10;
+        public override int RequiredTithing => 10;
+        public override int MantraNumber => 1060721;// Dispiro Malas
+        public override bool BlocksMovement => false;
+        public override bool DelayedDamage => false;
         public override void SendCastEffect()
         {
             Caster.FixedEffect(0x37C4, 10, 7, 4, 3); // At player
@@ -73,7 +31,7 @@ namespace Server.Spells.Chivalry
 
         public override void OnCast()
         {
-            if (this.CheckSequence())
+            if (CheckSequence())
             {
                 Caster.PlaySound(0xF5);
                 Caster.PlaySound(0x299);
@@ -82,7 +40,7 @@ namespace Server.Spells.Chivalry
                 int dispelSkill = ComputePowerValue(2);
                 double chiv = Caster.Skills.Chivalry.Value;
 
-                foreach (var m in AcquireIndirectTargets(Caster.Location, 8).OfType<Mobile>())
+                foreach (Mobile m in AcquireIndirectTargets(Caster.Location, 8).OfType<Mobile>())
                 {
                     BaseCreature bc = m as BaseCreature;
 
@@ -125,7 +83,7 @@ namespace Server.Spells.Chivalry
                     if (context != null && context.Spell is NecromancerSpell)	//Trees are not evil!	TODO: OSI confirm?
                     {
                         // transformed ..
-                        double drainChance = 0.5 * (this.Caster.Skills.Chivalry.Value / Math.Max(m.Skills.Necromancy.Value, 1));
+                        double drainChance = 0.5 * (Caster.Skills.Chivalry.Value / Math.Max(m.Skills.Necromancy.Value, 1));
 
                         if (drainChance > Utility.RandomDouble())
                         {

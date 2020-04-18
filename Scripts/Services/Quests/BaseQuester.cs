@@ -11,15 +11,15 @@ namespace Server.Engines.Quests
         public TalkEntry(BaseQuester quester)
             : base(quester.TalkNumber)
         {
-            this.m_Quester = quester;
+            m_Quester = quester;
         }
 
         public override void OnClick()
         {
-            Mobile from = this.Owner.From;
+            Mobile from = Owner.From;
 
-            if (from.CheckAlive() && from is PlayerMobile && this.m_Quester.CanTalkTo((PlayerMobile)from))
-                this.m_Quester.OnTalk((PlayerMobile)from, true);
+            if (from.CheckAlive() && from is PlayerMobile && m_Quester.CanTalkTo((PlayerMobile)from))
+                m_Quester.OnTalk((PlayerMobile)from, true);
         }
     }
 
@@ -46,55 +46,13 @@ namespace Server.Engines.Quests
             // Don't morph me!
         }
 
-        public override bool IsActiveVendor
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool IsInvulnerable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool DisallowAllMoves
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool ClickTitle
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool CanTeach
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public virtual int TalkNumber
-        {
-            get
-            {
-                return 6146;
-            }
-        }// Talk
-        protected override List<SBInfo> SBInfos
-        {
-            get
-            {
-                return this.m_SBInfos;
-            }
-        }
+        public override bool IsActiveVendor => false;
+        public override bool IsInvulnerable => true;
+        public override bool DisallowAllMoves => true;
+        public override bool ClickTitle => false;
+        public override bool CanTeach => false;
+        public virtual int TalkNumber => 6146;// Talk
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public static Container GetNewContainer()
         {
             Bag bag = new Bag();
@@ -127,7 +85,7 @@ namespace Server.Engines.Quests
         {
             base.AddCustomContextEntries(from, list);
 
-            if (from.Alive && from is PlayerMobile && this.TalkNumber > 0 && this.CanTalkTo((PlayerMobile)from))
+            if (from.Alive && from is PlayerMobile && TalkNumber > 0 && CanTalkTo((PlayerMobile)from))
                 list.Add(new TalkEntry(this));
         }
 
@@ -137,10 +95,10 @@ namespace Server.Engines.Quests
             {
                 PlayerMobile pm = (PlayerMobile)m;
 
-                int range = this.GetAutoTalkRange(pm);
+                int range = GetAutoTalkRange(pm);
 
-                if (m.Alive && range >= 0 && this.InRange(m, range) && !this.InRange(oldLocation, range) && this.CanTalkTo(pm))
-                    this.OnTalk(pm, false);
+                if (m.Alive && range >= 0 && InRange(m, range) && !InRange(oldLocation, range) && CanTalkTo(pm))
+                    OnTalk(pm, false);
             }
         }
 
@@ -153,7 +111,7 @@ namespace Server.Engines.Quests
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

@@ -4,7 +4,7 @@ namespace Server.Items
     {
         private int m_Uses;
 
-        public override int LabelNumber { get { return 1080542; } } // Pepta's Satiety Cure
+        public override int LabelNumber => 1080542;  // Pepta's Satiety Cure
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int Uses
@@ -16,9 +16,9 @@ namespace Server.Items
         [Constructable]
         public SatietyCure() : base(0xEFC)
         {
-            this.Weight = 1.0;
-            this.Hue = 235;
-            this.LootType = LootType.Blessed;
+            Weight = 1.0;
+            Hue = 235;
+            LootType = LootType.Blessed;
             m_Uses = 10;
         }
 
@@ -59,7 +59,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
             writer.WriteEncodedInt(m_Uses);
         }
 

@@ -52,33 +52,21 @@ namespace Server.Mobiles
         {
         }
 
-        public override InhumanSpeech SpeechType
-        {
-            get
-            {
-                return InhumanSpeech.Wisp;
-            }
-        }
-        public override TimeSpan ReacquireDelay
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(1.0);
-            }
-        }
+        public override InhumanSpeech SpeechType => InhumanSpeech.Wisp;
+        public override TimeSpan ReacquireDelay => TimeSpan.FromSeconds(1.0);
 
-        public override TribeType Tribe { get { return TribeType.Fey; } }
+        public override TribeType Tribe => TribeType.Fey;
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich);
-            this.AddLoot(LootPack.Average);
+            AddLoot(LootPack.Rich);
+            AddLoot(LootPack.Average);
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

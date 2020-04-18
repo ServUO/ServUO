@@ -6,13 +6,7 @@ namespace Server.Engines.VvV
     [FlipableAttribute(39353, 39354)]
     public class HonestyBanner : Item
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1123377;
-            }
-        }
+        public override int LabelNumber => 1123377;
 
         [Constructable]
         public HonestyBanner() : base(39353)
@@ -21,7 +15,7 @@ namespace Server.Engines.VvV
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (m.InRange(this.GetWorldLocation(), 2))
+            if (m.InRange(GetWorldLocation(), 2))
             {
                 Gump g = new Gump(50, 50);
                 g.AddImage(0, 0, 30576);

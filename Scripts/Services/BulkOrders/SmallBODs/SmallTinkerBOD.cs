@@ -8,7 +8,7 @@ namespace Server.Engines.BulkOrders
 {
     public class SmallTinkerBOD : SmallBOD
     {
-        public override BODType BODType { get { return BODType.Tinkering; } }
+        public override BODType BODType => BODType.Tinkering;
 
         private GemType _GemType;
 
@@ -18,10 +18,10 @@ namespace Server.Engines.BulkOrders
             get { return _GemType; }
             set
             {
-                if (this.Type != null && this.Type.IsSubclassOf(typeof(BaseJewel)))
+                if (Type != null && Type.IsSubclassOf(typeof(BaseJewel)))
                 {
                     _GemType = value;
-                    AssignGemNumber(this.Type);
+                    AssignGemNumber(Type);
 
                     InvalidateProperties();
                 }
@@ -197,7 +197,7 @@ namespace Server.Engines.BulkOrders
                         material = BulkMaterialType.None;
                     }
 
-                    var bod = new SmallTinkerBOD(entry, material, amountMax, reqExceptional);
+                    SmallTinkerBOD bod = new SmallTinkerBOD(entry, material, amountMax, reqExceptional);
 
                     if (entry.Type.IsSubclassOf(typeof(BaseJewel)))
                     {
@@ -366,14 +366,14 @@ namespace Server.Engines.BulkOrders
                 loc = 1044203;
             }
 
-            this.Number = loc + offset;
+            Number = loc + offset;
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)2); // version
+            writer.Write(2); // version
 
             writer.Write((int)GemType);
         }
@@ -400,9 +400,9 @@ namespace Server.Engines.BulkOrders
                     Material = BulkMaterialType.None;
                 }
 
-                if (this.Type.IsSubclassOf(typeof(BaseJewel)))
+                if (Type.IsSubclassOf(typeof(BaseJewel)))
                 {
-                    AssignGemType(this.Type);
+                    AssignGemType(Type);
                 }
             }
         }

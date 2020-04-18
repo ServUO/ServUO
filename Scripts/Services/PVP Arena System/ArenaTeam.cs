@@ -9,10 +9,10 @@ namespace Server.Engines.ArenaSystem
         public Dictionary<PlayerMobile, PlayerStatsEntry> Players { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Count { get { return Players == null ? 0 : Players.Count; } }
+        public int Count => Players == null ? 0 : Players.Count;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Unoccupied { get { return Count == 0; } }
+        public bool Unoccupied => Count == 0;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public PlayerMobile PlayerZero { get; set; }
@@ -74,7 +74,7 @@ namespace Server.Engines.ArenaSystem
             // have to wait for everything else to deserialize :(
             Timer.DelayCall(() =>
             {
-                foreach (var pm in list)
+                foreach (PlayerMobile pm in list)
                 {
                     AddParticipant(pm);
                 }
@@ -86,7 +86,7 @@ namespace Server.Engines.ArenaSystem
             writer.Write(0);
 
             writer.Write(Players.Count);
-            foreach (var kvp in Players)
+            foreach (KeyValuePair<PlayerMobile, PlayerStatsEntry> kvp in Players)
             {
                 writer.Write(kvp.Key);
             }

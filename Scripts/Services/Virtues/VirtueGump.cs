@@ -83,7 +83,7 @@ namespace Server.Services.Virtues
                 return;
             }
 
-            var callback = (OnVirtueUsed)m_Callbacks[e.GumpID];
+            OnVirtueUsed callback = (OnVirtueUsed)m_Callbacks[e.GumpID];
 
             if (callback != null)
                 callback(e.Beholder);
@@ -93,7 +93,7 @@ namespace Server.Services.Virtues
 
         private static void EventSink_VirtueMacroRequest(VirtueMacroRequestEventArgs e)
         {
-            var virtueID = 0;
+            int virtueID = 0;
 
             switch (e.VirtueID)
             {
@@ -113,8 +113,8 @@ namespace Server.Services.Virtues
 
         private static void EventSink_VirtueGumpRequest(VirtueGumpRequestEventArgs e)
         {
-            var beholder = e.Beholder;
-            var beheld = e.Beheld;
+            Mobile beholder = e.Beholder;
+            Mobile beheld = e.Beheld;
 
             if (beholder == beheld && beholder.Murderer)
             {
@@ -132,7 +132,7 @@ namespace Server.Services.Virtues
             if (m_Beheld.Virtues.GetValue(index) == 0)
                 return 2402;
 
-            var value = m_Beheld.Virtues.GetValue(index);
+            int value = m_Beheld.Virtues.GetValue(index);
 
             if (value < 4000)
                 return 2402;

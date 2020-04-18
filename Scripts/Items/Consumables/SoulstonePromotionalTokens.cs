@@ -21,27 +21,9 @@ namespace Server.Items
         {
         }
 
-        public override TextDefinition ItemGumpName
-        {
-            get
-            {
-                return 1070999;
-            }
-        }// <center>Soulstone Fragment</center>
-        public override TextDefinition ItemName
-        {
-            get
-            {
-                return 1071000;
-            }
-        }//soulstone fragment
-        public override TextDefinition ItemReceiveMessage
-        {
-            get
-            {
-                return 1070976;
-            }
-        }// A soulstone fragment has been created in your bank box.
+        public override TextDefinition ItemGumpName => 1070999;// <center>Soulstone Fragment</center>
+        public override TextDefinition ItemName => 1071000;//soulstone fragment
+        public override TextDefinition ItemReceiveMessage => 1070976;// A soulstone fragment has been created in your bank box.
         public override Item CreateItemFor(Mobile from)
         {
             if (from != null && from.Account != null)
@@ -55,7 +37,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -104,13 +86,7 @@ namespace Server.Items
             }
         }
 
-        public override TextDefinition ItemGumpName
-        {
-            get
-            {
-                return 1030903;
-            }
-        }// <center>Soulstone</center>
+        public override TextDefinition ItemGumpName => 1030903;// <center>Soulstone</center>
         public override TextDefinition ItemName
         {
             get
@@ -125,13 +101,7 @@ namespace Server.Items
                 }
             }
         }//soulstone
-        public override TextDefinition ItemReceiveMessage
-        {
-            get
-            {
-                return 1070743;
-            }
-        }// A soulstone has been created in your bank box.
+        public override TextDefinition ItemReceiveMessage => 1070743;// A soulstone has been created in your bank box.
         public override Item CreateItemFor(Mobile from)
         {
             if (from != null && from.Account != null)
@@ -152,7 +122,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1);
+            writer.Write(1);
 
             writer.Write((int)Type);
         }

@@ -46,20 +46,8 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 5;
-            }
-        }
+        public override int Meat => 1;
+        public override int TreasureMapLevel => 5;
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich, 2);
@@ -69,7 +57,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

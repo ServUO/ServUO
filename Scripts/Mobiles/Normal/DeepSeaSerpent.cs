@@ -54,12 +54,12 @@ namespace Server.Mobiles
         {
         }
 
-        public override int TreasureMapLevel { get { return 2; } }
-        public override int Meat { get { return 10; } }
-        public override int Hides { get { return 10; } }
-        public override HideType HideType { get { return HideType.Horned; } }
-        public override int Scales { get { return 8; } }
-        public override ScaleType ScaleType { get { return ScaleType.Blue; } }
+        public override int TreasureMapLevel => 2;
+        public override int Meat => 10;
+        public override int Hides => 10;
+        public override HideType HideType => HideType.Horned;
+        public override int Scales => 8;
+        public override ScaleType ScaleType => ScaleType.Blue;
 
         public override void GenerateLoot()
         {
@@ -69,7 +69,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

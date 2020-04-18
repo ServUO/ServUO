@@ -12,10 +12,10 @@ namespace Server.Items
         public BindEntry[] Friends = new BindEntry[10];
         public BindEntry Pending { get; set; }
 
-        public bool IsFull { get { return Friends.FirstOrDefault(entry => entry == null) != null; } }
+        public bool IsFull => Friends.FirstOrDefault(entry => entry == null) != null;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public override int MaxRecharges { get { return -1; } }
+        public override int MaxRecharges => -1;
 
         [Constructable]
         public GreaterBraceletOfBinding()
@@ -32,13 +32,7 @@ namespace Server.Items
         }
 
 
-        public override string TranslocationItemName
-        {
-            get
-            {
-                return "greater bracelet of binding";
-            }
-        }
+        public override string TranslocationItemName => "greater bracelet of binding";
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
@@ -75,7 +69,7 @@ namespace Server.Items
 
         public bool IsBound(Mobile m)
         {
-            foreach (var e in Friends)
+            foreach (BindEntry e in Friends)
             {
                 if (e != null && m == e.Mobile)
                 {
@@ -319,7 +313,7 @@ namespace Server.Items
 
                             if (bracelet != null && bracelet.Friends[Index] != null)
                             {
-                                var entry = bracelet.Friends[Index];
+                                BindEntry entry = bracelet.Friends[Index];
 
                                 if (entry.Bracelet is GreaterBraceletOfBinding)
                                 {
@@ -330,7 +324,7 @@ namespace Server.Items
 
                                     if (pm != null && pm.NetState != null)
                                     {
-                                        var gump = pm.FindGump<GreaterBraceletOfBindingGump>();
+                                        GreaterBraceletOfBindingGump gump = pm.FindGump<GreaterBraceletOfBindingGump>();
 
                                         if (gump != null)
                                         {
@@ -349,10 +343,10 @@ namespace Server.Items
 
                             if (brac != null)
                             {
-                                var entry = new BindEntry(User, brac);
+                                BindEntry entry = new BindEntry(User, brac);
                                 Bracelet.Add(entry, Index);
 
-                                var g = From.FindGump<GreaterBraceletOfBindingGump>();
+                                GreaterBraceletOfBindingGump g = From.FindGump<GreaterBraceletOfBindingGump>();
 
                                 if (g != null)
                                 {
@@ -403,7 +397,7 @@ namespace Server.Items
                 writer.Write(0);
             }
 
-            foreach (var entry in Friends)
+            foreach (BindEntry entry in Friends)
             {
                 if (entry == null)
                 {

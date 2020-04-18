@@ -5,23 +5,17 @@ namespace Server.Commands.Generic
         private static RangeCommandImplementor m_Instance;
         public RangeCommandImplementor()
         {
-            this.Accessors = new string[] { "Range" };
-            this.SupportRequirement = CommandSupport.Area;
-            this.SupportsConditionals = true;
-            this.AccessLevel = AccessLevel.GameMaster;
-            this.Usage = "Range <range> <command> [condition]";
-            this.Description = "Invokes the command on all appropriate objects within a specified range of you. Optional condition arguments can further restrict the set of objects.";
+            Accessors = new string[] { "Range" };
+            SupportRequirement = CommandSupport.Area;
+            SupportsConditionals = true;
+            AccessLevel = AccessLevel.GameMaster;
+            Usage = "Range <range> <command> [condition]";
+            Description = "Invokes the command on all appropriate objects within a specified range of you. Optional condition arguments can further restrict the set of objects.";
 
             m_Instance = this;
         }
 
-        public static RangeCommandImplementor Instance
-        {
-            get
-            {
-                return m_Instance;
-            }
-        }
+        public static RangeCommandImplementor Instance => m_Instance;
         public override void Execute(CommandEventArgs e)
         {
             if (e.Length >= 2)
@@ -35,7 +29,7 @@ namespace Server.Commands.Generic
                 else
                 {
                     BaseCommand command = null;
-                    this.Commands.TryGetValue(e.GetString(1), out command);
+                    Commands.TryGetValue(e.GetString(1), out command);
 
                     if (command == null)
                     {
@@ -53,7 +47,7 @@ namespace Server.Commands.Generic
                         for (int i = 0; i < args.Length; ++i)
                             args[i] = oldArgs[i + 2];
 
-                        this.Process(range, e.Mobile, command, args);
+                        Process(range, e.Mobile, command, args);
                     }
                 }
             }

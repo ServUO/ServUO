@@ -36,32 +36,14 @@ namespace Server.Mobiles
         {
         }
 
-        public virtual TimeSpan MountAbilityDelay
-        {
-            get
-            {
-                return TimeSpan.Zero;
-            }
-        }
+        public virtual TimeSpan MountAbilityDelay => TimeSpan.Zero;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime NextMountAbility { get; set; }
 
-        public virtual bool AllowMaleRider
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public virtual bool AllowMaleRider => true;
 
-        public virtual bool AllowFemaleRider
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public virtual bool AllowFemaleRider => true;
 
         [Hue, CommandProperty(AccessLevel.GameMaster)]
         public override int Hue
@@ -362,7 +344,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
             writer.Write(NextMountAbility);
 
@@ -398,11 +380,11 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            var owner = GetMaster();
+            Mobile owner = GetMaster();
 
             if (owner != null && m_Table.ContainsKey(owner))
             {
-                var entry = m_Table[owner];
+                BlockEntry entry = m_Table[owner];
 
                 if (entry.m_Type >= BlockMountType.RidingSwipe && entry.m_Mount == this)
                 {
@@ -638,20 +620,8 @@ namespace Server.Mobiles
         {
         }
 
-        public override double DefaultWeight
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public IMount Mount
-        {
-            get
-            {
-                return m_Mount;
-            }
-        }
+        public override double DefaultWeight => 0;
+        public IMount Mount => m_Mount;
         public override void OnAfterDelete()
         {
             if (m_Mount != null)
@@ -674,7 +644,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             writer.Write(m_Mount);
         }

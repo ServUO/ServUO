@@ -54,10 +54,10 @@ namespace Server.Items
         public PowerScroll(SkillName skill, double value)
             : base(skill, value)
         {
-            this.Hue = 0x481;
+            Hue = 0x481;
 
-            if (this.Value == 105.0 || skill == Server.SkillName.Blacksmith || skill == Server.SkillName.Tailoring)
-                this.LootType = LootType.Regular;
+            if (Value == 105.0 || skill == Server.SkillName.Blacksmith || skill == Server.SkillName.Tailoring)
+                LootType = LootType.Regular;
         }
 
         public PowerScroll(Serial serial)
@@ -76,13 +76,7 @@ namespace Server.Items
                 return _Skills;
             }
         }
-        public override int Message
-        {
-            get
-            {
-                return 1049469;
-            }
-        }/* Using a scroll increases the maximum amount of a specific skill or your maximum statistics.
+        public override int Message => 1049469;/* Using a scroll increases the maximum amount of a specific skill or your maximum statistics.
         * When used, the effect is not immediately seen without a gain of points with that skill or statistics.
         * You can view your maximum skill values in your skills window.
         * You can view your maximum statistic value in your statistics window. */
@@ -90,9 +84,9 @@ namespace Server.Items
         {
             get
             {
-                double level = (this.Value - 105.0) / 5.0;
+                double level = (Value - 105.0) / 5.0;
 
-                if (level >= 0.0 && level <= 3.0 && this.Value % 5.0 == 0.0)
+                if (level >= 0.0 && level <= 3.0 && Value % 5.0 == 0.0)
                     return 1049635 + (int)level;	/* Wonderous Scroll (105 Skill): OR
                 * Exalted Scroll (110 Skill): OR
                 * Mythical Scroll (115 Skill): OR
@@ -101,13 +95,7 @@ namespace Server.Items
                 return 0;
             }
         }
-        public override string DefaultTitle
-        {
-            get
-            {
-                return String.Format("<basefont color=#FFFFFF>Power Scroll ({0} Skill):</basefont>", this.Value);
-            }
-        }
+        public override string DefaultTitle => String.Format("<basefont color=#FFFFFF>Power Scroll ({0} Skill):</basefont>", Value);
         public static PowerScroll CreateRandom(int min, int max)
         {
             min /= 5;
@@ -134,15 +122,15 @@ namespace Server.Items
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            double level = (this.Value - 105.0) / 5.0;
+            double level = (Value - 105.0) / 5.0;
 
-            if (level >= 0.0 && level <= 3.0 && this.Value % 5.0 == 0.0)
-                list.Add(1049639 + (int)level, this.GetNameLocalized());	/* a wonderous scroll of ~1_type~ (105 Skill) OR
+            if (level >= 0.0 && level <= 3.0 && Value % 5.0 == 0.0)
+                list.Add(1049639 + (int)level, GetNameLocalized());	/* a wonderous scroll of ~1_type~ (105 Skill) OR
             * an exalted scroll of ~1_type~ (110 Skill) OR
             * a mythical scroll of ~1_type~ (115 Skill) OR
             * a legendary scroll of ~1_type~ (120 Skill) */
             else
-                list.Add("a power scroll of {0} ({1} Skill)", this.GetName(), this.Value);
+                list.Add("a power scroll of {0} ({1} Skill)", GetName(), Value);
         }
 
         public override bool CanUse(Mobile from)
@@ -150,14 +138,14 @@ namespace Server.Items
             if (!base.CanUse(from))
                 return false;
 
-            Skill skill = from.Skills[this.Skill];
+            Skill skill = from.Skills[Skill];
 
             if (skill == null)
                 return false;
 
-            if (skill.Cap >= this.Value)
+            if (skill.Cap >= Value)
             {
-                from.SendLocalizedMessage(1049511, this.GetNameLocalized()); // Your ~1_type~ is too high for this power scroll.
+                from.SendLocalizedMessage(1049511, GetNameLocalized()); // Your ~1_type~ is too high for this power scroll.
                 return false;
             }
 
@@ -166,12 +154,12 @@ namespace Server.Items
 
         public override void Use(Mobile from)
         {
-            if (!this.CanUse(from))
+            if (!CanUse(from))
                 return;
 
-            from.SendLocalizedMessage(1049513, this.GetNameLocalized()); // You feel a surge of magic as the scroll enhances your ~1_type~!
+            from.SendLocalizedMessage(1049513, GetNameLocalized()); // You feel a surge of magic as the scroll enhances your ~1_type~!
 
-            from.Skills[this.Skill].Cap = this.Value;
+            from.Skills[Skill].Cap = Value;
 
             Effects.SendLocationParticles(EffectItem.Create(from.Location, from.Map, EffectItem.DefaultDuration), 0, 0, 0, 0, 0, 5060, 0);
             Effects.PlaySound(from.Location, from.Map, 0x243);
@@ -182,30 +170,30 @@ namespace Server.Items
 
             Effects.SendTargetParticles(from, 0x375A, 35, 90, 0x00, 0x00, 9502, (EffectLayer)255, 0x100);
 
-            this.Delete();
+            Delete();
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
 
-            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for SpecialScroll insertion
+            int version = (InheritsItem ? 0 : reader.ReadInt()); // Required for SpecialScroll insertion
 
-            if (this.Value == 105.0 || this.Skill == SkillName.Blacksmith || this.Skill == SkillName.Tailoring)
+            if (Value == 105.0 || Skill == SkillName.Blacksmith || Skill == SkillName.Tailoring)
             {
-                this.LootType = LootType.Regular;
+                LootType = LootType.Regular;
             }
             else
             {
-                this.LootType = LootType.Cursed;
-                this.Insured = false;
+                LootType = LootType.Cursed;
+                Insured = false;
             }
         }
     }

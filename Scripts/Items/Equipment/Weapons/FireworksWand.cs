@@ -14,8 +14,8 @@ namespace Server.Items
         [Constructable]
         public FireworksWand(int charges)
         {
-            this.m_Charges = charges;
-            this.LootType = LootType.Blessed;
+            m_Charges = charges;
+            LootType = LootType.Blessed;
         }
 
         public FireworksWand(Serial serial)
@@ -23,36 +23,30 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041424;
-            }
-        }// a fireworks wand
+        public override int LabelNumber => 1041424;// a fireworks wand
         [CommandProperty(AccessLevel.GameMaster)]
         public int Charges
         {
             get
             {
-                return this.m_Charges;
+                return m_Charges;
             }
             set
             {
-                this.m_Charges = value;
-                this.InvalidateProperties();
+                m_Charges = value;
+                InvalidateProperties();
             }
         }
         public override void AddNameProperties(ObjectPropertyList list)
         {
             base.AddNameProperties(list);
 
-            list.Add(1060741, this.m_Charges.ToString()); // charges: ~1_val~
+            list.Add(1060741, m_Charges.ToString()); // charges: ~1_val~
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            this.BeginLaunch(from, true);
+            BeginLaunch(from, true);
         }
 
         public void BeginLaunch(Mobile from, bool useCharges)
@@ -64,9 +58,9 @@ namespace Server.Items
 
             if (useCharges)
             {
-                if (this.Charges > 0)
+                if (Charges > 0)
                 {
-                    --this.Charges;
+                    --Charges;
                 }
                 else
                 {
@@ -77,7 +71,7 @@ namespace Server.Items
 
             from.SendLocalizedMessage(502615); // You launch a firework!
 
-            Point3D ourLoc = this.GetWorldLocation();
+            Point3D ourLoc = GetWorldLocation();
 
             Point3D startLoc = new Point3D(ourLoc.X, ourLoc.Y, ourLoc.Z + 10);
             Point3D endLoc = new Point3D(startLoc.X + Utility.RandomMinMax(-2, 2), startLoc.Y + Utility.RandomMinMax(-2, 2), startLoc.Z + 32);
@@ -92,9 +86,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
-            writer.Write((int)this.m_Charges);
+            writer.Write(m_Charges);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -107,7 +101,7 @@ namespace Server.Items
             {
                 case 0:
                     {
-                        this.m_Charges = reader.ReadInt();
+                        m_Charges = reader.ReadInt();
                         break;
                     }
             }

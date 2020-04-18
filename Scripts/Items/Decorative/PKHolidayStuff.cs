@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class Coal : Item
     {
-        public override int LabelNumber { get { return 1041426; } } // coal
+        public override int LabelNumber => 1041426;  // coal
 
         [Constructable]
         public Coal()
@@ -21,7 +21,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -35,7 +35,7 @@ namespace Server.Items
     {
         private static readonly int[] m_CardHues = new int[] { 0x45, 0x27, 0x3D0 };
 
-        public override int LabelNumber { get { return 1041428; } }// Maybe next year youll get a better...
+        public override int LabelNumber => 1041428; // Maybe next year youll get a better...
 
         [Constructable]
         public BadCard()
@@ -55,7 +55,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -83,7 +83,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

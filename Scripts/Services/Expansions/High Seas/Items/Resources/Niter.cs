@@ -44,7 +44,7 @@ namespace Server.Items
             }
         }
 
-        public override bool Decays { get { return true; } }
+        public override bool Decays => true;
 
         [Constructable]
         public NiterDeposit() : this(Utility.RandomMinMax(1, 5))
@@ -67,7 +67,7 @@ namespace Server.Items
             if (tool is IUsesRemaining && ((IUsesRemaining)tool).UsesRemaining < 1)
                 return;
 
-            from.Direction = from.GetDirectionTo(this.Location);
+            from.Direction = from.GetDirectionTo(Location);
             from.Animate(11, 5, 1, true, false, 0);
 
             Timer.DelayCall(TimeSpan.FromSeconds(1), new TimerStateCallback(DoMine), new object[] { from, tool });
@@ -192,7 +192,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
             writer.Write(m_Hits);
             writer.Write((int)m_Size);
 

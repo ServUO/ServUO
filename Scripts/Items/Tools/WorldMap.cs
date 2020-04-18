@@ -37,7 +37,7 @@ namespace Server.Items
                 SetDisplayByFacet();
         }
 
-        public override int LabelNumber { get { return 1015233; } } // world map
+        public override int LabelNumber => 1015233;  // world map
 
         public WorldMap(Serial serial) : base(serial)
         {
@@ -47,7 +47,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

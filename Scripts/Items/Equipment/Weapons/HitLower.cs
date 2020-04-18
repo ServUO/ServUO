@@ -39,7 +39,7 @@ namespace Server.Items
         {
             if (m_DefenseTable.ContainsKey(m))
             {
-                var timer = m_DefenseTable[m];
+                DefenseTimer timer = m_DefenseTable[m];
 
                 if (timer != null)
                 {
@@ -53,7 +53,7 @@ namespace Server.Items
             if (m is PlayerMobile)
             {
                 malus = 45 + BaseArmor.GetRefinedDefenseChance(m);
-                malus = malus - (int)((double)malus * .35);
+                malus = malus - (int)(malus * .35);
             }
             else
             {

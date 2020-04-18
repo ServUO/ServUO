@@ -135,12 +135,12 @@ namespace Server.Mobiles
             return base.OnBeforeDeath();
         }
 
-        public override bool CanBeParagon { get { return false; } }
-        public override bool Unprovokable { get { return true; } }
-        public virtual double ChangeCombatant { get { return 0.3; } }
-        public override bool AlwaysMurderer { get { return true; } }
-        public override Poison PoisonImmune { get { return Poison.Greater; } }
-        public override int TreasureMapLevel { get { return 5; } }
+        public override bool CanBeParagon => false;
+        public override bool Unprovokable => true;
+        public virtual double ChangeCombatant => 0.3;
+        public override bool AlwaysMurderer => true;
+        public override Poison PoisonImmune => Poison.Greater;
+        public override int TreasureMapLevel => 5;
 
         public override void GenerateLoot()
         {
@@ -222,8 +222,8 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
-            writer.Write((int)m_MinHits);
+            writer.Write(0);
+            writer.Write(m_MinHits);
         }
 
         public override void Deserialize(GenericReader reader)

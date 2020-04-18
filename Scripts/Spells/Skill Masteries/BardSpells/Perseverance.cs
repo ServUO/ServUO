@@ -13,11 +13,11 @@ namespace Server.Spells.SkillMasteries
                 9002
             );
 
-        public override double RequiredSkill { get { return 90; } }
-        public override double UpKeep { get { return 5; } }
-        public override int RequiredMana { get { return 18; } }
-        public override bool PartyEffects { get { return true; } }
-        public override SkillName CastSkill { get { return SkillName.Peacemaking; } }
+        public override double RequiredSkill => 90;
+        public override double UpKeep => 5;
+        public override int RequiredMana => 18;
+        public override bool PartyEffects => true;
+        public override SkillName CastSkill => SkillName.Peacemaking;
 
         private int m_PropertyBonus;
         private int m_PropertyBonus2;
@@ -29,7 +29,7 @@ namespace Server.Spells.SkillMasteries
 
         public override void OnCast()
         {
-            BardSpell spell = SkillMasterySpell.GetSpell(Caster, this.GetType()) as BardSpell;
+            BardSpell spell = SkillMasterySpell.GetSpell(Caster, GetType()) as BardSpell;
 
             if (spell != null)
             {

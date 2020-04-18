@@ -7,7 +7,7 @@ public class SmallSquareBasket : BaseContainer
     public SmallSquareBasket()
         : base(0x24D9)
     {
-        this.Weight = 1.0;
+        Weight = 1.0;
     }
 
     public SmallSquareBasket(Serial serial)
@@ -15,19 +15,13 @@ public class SmallSquareBasket : BaseContainer
     {
     }
 
-    public override int LabelNumber
-    {
-        get
-        {
-            return 1112296;
-        }
-    }// small square basket
+    public override int LabelNumber => 1112296;// small square basket
 
     public override void Serialize(GenericWriter writer)
     {
         base.Serialize(writer);
 
-        writer.Write((int)0); // version
+        writer.Write(0); // version
     }
 
     public override void Deserialize(GenericReader reader)

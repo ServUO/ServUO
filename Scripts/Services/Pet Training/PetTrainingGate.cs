@@ -5,15 +5,9 @@ namespace Server.Items
 {
     public class PetTrainingGate : Item
     {
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
-        public override string DefaultName
-        {
-            get
-            {
-                return "Pet Training Gate - You Must Start Pet Training Before Bringing Your Pet Through The Gate!";
-            }
-        }
+        public override string DefaultName => "Pet Training Gate - You Must Start Pet Training Before Bringing Your Pet Through The Gate!";
 
         [Constructable]
         public PetTrainingGate()
@@ -27,8 +21,8 @@ namespace Server.Items
         {
             if (m is BaseCreature)
             {
-                var bc = m as BaseCreature;
-                var profile = PetTrainingHelper.GetTrainingProfile(bc);
+                BaseCreature bc = m as BaseCreature;
+                TrainingProfile profile = PetTrainingHelper.GetTrainingProfile(bc);
 
                 if (bc.Controlled && bc.ControlMaster != null && bc.ControlMaster.InRange(bc.Location, 25)
                     && profile != null && profile.HasBegunTraining && profile.TrainingProgress < profile.TrainingProgressMax)
@@ -38,7 +32,7 @@ namespace Server.Items
 
                     if (bc.ControlMaster is PlayerMobile)
                     {
-                        var gump = bc.ControlMaster.FindGump<NewAnimalLoreGump>();
+                        NewAnimalLoreGump gump = bc.ControlMaster.FindGump<NewAnimalLoreGump>();
 
                         if (gump != null)
                             gump.Refresh();
@@ -71,15 +65,9 @@ namespace Server.Items
 
     public class PetBondRemoveGate : Item
     {
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
-        public override string DefaultName
-        {
-            get
-            {
-                return "Pet Bond Timer Remover";
-            }
-        }
+        public override string DefaultName => "Pet Bond Timer Remover";
 
         [Constructable]
         public PetBondRemoveGate()
@@ -93,8 +81,8 @@ namespace Server.Items
         {
             if (m is BaseCreature)
             {
-                var bc = m as BaseCreature;
-                var profile = PetTrainingHelper.GetTrainingProfile(bc);
+                BaseCreature bc = m as BaseCreature;
+                TrainingProfile profile = PetTrainingHelper.GetTrainingProfile(bc);
 
                 if (bc.Controlled && bc.ControlMaster != null && bc.ControlMaster.InRange(bc.Location, 25)
                     && !bc.IsBonded)
@@ -127,15 +115,9 @@ namespace Server.Items
 
     public class PowerScrollGiver : Item
     {
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
-        public override string DefaultName
-        {
-            get
-            {
-                return "+20 Power Scrolls";
-            }
-        }
+        public override string DefaultName => "+20 Power Scrolls";
 
         [Constructable]
         public PowerScrollGiver()
@@ -149,13 +131,13 @@ namespace Server.Items
         {
             if (m.InRange(Location, 3))
             {
-                var bag = new Bag();
-                foreach (var sk in PetTrainingHelper.MagicSkills)
+                Bag bag = new Bag();
+                foreach (SkillName sk in PetTrainingHelper.MagicSkills)
                 {
                     bag.DropItem(new PowerScroll(sk, 120));
                 }
 
-                foreach (var sk in PetTrainingHelper.CombatSkills)
+                foreach (SkillName sk in PetTrainingHelper.CombatSkills)
                 {
                     bag.DropItem(new PowerScroll(sk, 120));
                 }

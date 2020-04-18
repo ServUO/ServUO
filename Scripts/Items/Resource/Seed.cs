@@ -44,7 +44,7 @@ namespace Server.Engines.Plants
             }
         }
 
-        public override int LabelNumber { get { return 1060810; } } // seed
+        public override int LabelNumber => 1060810;  // seed
 
         public static Seed RandomBonsaiSeed()
         {
@@ -89,7 +89,7 @@ namespace Server.Engines.Plants
         {
         }
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         public int GetLabel(out string args)
         {
@@ -245,11 +245,11 @@ namespace Server.Engines.Plants
         {
             base.Serialize(writer);
 
-            writer.Write((int)2); // version
+            writer.Write(2); // version
 
             writer.Write((int)m_PlantType);
             writer.Write((int)m_PlantHue);
-            writer.Write((bool)m_ShowType);
+            writer.Write(m_ShowType);
         }
 
         public override void Deserialize(GenericReader reader)

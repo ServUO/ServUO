@@ -57,12 +57,12 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed { get { return new WoodStoveDeed(); } }
+        public override BaseAddonDeed Deed => new WoodStoveDeed();
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -74,9 +74,9 @@ namespace Server.Items
 
     public class WoodStoveDeed : BaseAddonDeed, IRewardOption
     {
-        public override int LabelNumber { get { return 1158967; } } // Wood Stove
+        public override int LabelNumber => 1158967;  // Wood Stove
 
-        public override BaseAddon Addon { get { return new WoodStoveAddon(_Direction); } }
+        public override BaseAddon Addon => new WoodStoveAddon(_Direction);
 
         private DirectionType _Direction;
 
@@ -122,7 +122,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

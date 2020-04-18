@@ -10,7 +10,7 @@ namespace Server.Engines.CityLoyalty
 {
     public class TradeOrderCrate : Container
     {
-        public override int LabelNumber { get { return CityTradeSystem.KrampusEncounterActive ? 1123594 : base.LabelNumber; } }
+        public override int LabelNumber => CityTradeSystem.KrampusEncounterActive ? 1123594 : base.LabelNumber;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public TradeEntry Entry { get; set; }
@@ -26,7 +26,7 @@ namespace Server.Engines.CityLoyalty
                 if (Entry == null)
                     return false;
 
-                foreach (var details in Entry.Details)
+                foreach (TradeEntry.TradeDetails details in Entry.Details)
                 {
                     if (GetAmount(details.ItemType) < details.Amount)
                         return false;
@@ -39,9 +39,9 @@ namespace Server.Engines.CityLoyalty
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime Expires { get; set; }
 
-        public bool Expired { get { return Expires < DateTime.UtcNow; } }
+        public bool Expired => Expires < DateTime.UtcNow;
 
-        public override int DefaultMaxWeight { get { return 1000; } }
+        public override int DefaultMaxWeight => 1000;
 
         public TradeOrderCrate(Mobile from, TradeEntry entry)
             : base(GetID())
@@ -89,7 +89,7 @@ namespace Server.Engines.CityLoyalty
             }
         }
 
-        public override bool DisplaysContent { get { return false; } }
+        public override bool DisplaysContent => false;
 
         public override void GetProperties(ObjectPropertyList list)
         {
@@ -144,7 +144,7 @@ namespace Server.Engines.CityLoyalty
         {
             bool canAdd = false;
 
-            foreach (var details in Entry.Details)
+            foreach (TradeEntry.TradeDetails details in Entry.Details)
             {
                 if (item.GetType() == details.ItemType)
                 {

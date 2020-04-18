@@ -96,20 +96,8 @@ namespace Server.Misc
             "osi",
             "origin"
         };
-        public static string[] StartDisallowed
-        {
-            get
-            {
-                return m_StartDisallowed;
-            }
-        }
-        public static string[] Disallowed
-        {
-            get
-            {
-                return m_Disallowed;
-            }
-        }
+        public static string[] StartDisallowed => m_StartDisallowed;
+        public static string[] Disallowed => m_Disallowed;
         public static void Initialize()
         {
             CommandSystem.Register("ValidateName", AccessLevel.Administrator, new CommandEventHandler(ValidateName_OnCommand));

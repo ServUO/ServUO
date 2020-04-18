@@ -46,50 +46,23 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool CanFly
-        {
-            get { return true; }
-        }
+        public override bool CanFly => true;
 
-        public override bool CanRummageCorpses
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Deadly;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
+        public override bool CanRummageCorpses => true;
+        public override Poison PoisonImmune => Poison.Deadly;
+        public override int TreasureMapLevel => 5;
+        public override int Meat => 1;
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich, 2);
-            this.AddLoot(LootPack.Rich);
-            this.AddLoot(LootPack.MedScrolls, 2);
+            AddLoot(LootPack.FilthyRich, 2);
+            AddLoot(LootPack.Rich);
+            AddLoot(LootPack.MedScrolls, 2);
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

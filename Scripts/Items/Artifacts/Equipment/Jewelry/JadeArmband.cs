@@ -2,11 +2,11 @@ namespace Server.Items
 {
     public class JadeArmband : GoldBracelet
     {
-        public override int LabelNumber { get { return 1112407; } } //Jade Armband [Replica]
-        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber => 1112407;  //Jade Armband [Replica]
+        public override bool IsArtifact => true;
 
-        public override int InitMinHits { get { return 150; } }
-        public override int InitMaxHits { get { return 150; } }
+        public override int InitMinHits => 150;
+        public override int InitMaxHits => 150;
 
         [Constructable]
         public JadeArmband()
@@ -25,7 +25,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

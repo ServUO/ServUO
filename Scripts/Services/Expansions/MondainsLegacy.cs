@@ -184,13 +184,7 @@ namespace Server
                 m_PublicDonations = value;
             }
         }
-        public static Type[] Artifacts
-        {
-            get
-            {
-                return m_Artifacts;
-            }
-        }
+        public static Type[] Artifacts => m_Artifacts;
         public static void Initialize()
         {
             EventSink.OnKilledBy += OnKilledBy;
@@ -268,13 +262,13 @@ namespace Server
 
             if (!FindItem(new Point3D(1431, 1696, 0), Map.Trammel, 0x307F))
             {
-                var addon = new ArcaneCircleAddon();
+                ArcaneCircleAddon addon = new ArcaneCircleAddon();
                 addon.MoveToWorld(new Point3D(1431, 1696, 0), Map.Trammel);
             }
 
             if (!FindItem(new Point3D(1431, 1696, 0), Map.Felucca, 0x307F))
             {
-                var addon = new ArcaneCircleAddon();
+                ArcaneCircleAddon addon = new ArcaneCircleAddon();
                 addon.MoveToWorld(new Point3D(1431, 1696, 0), Map.Felucca);
             }
         }
@@ -682,54 +676,54 @@ namespace Server
         public MondainsLegacyGump()
             : base(50, 50)
         {
-            this.Closable = true;
-            this.Disposable = true;
-            this.Dragable = true;
-            this.Resizable = false;
+            Closable = true;
+            Disposable = true;
+            Dragable = true;
+            Resizable = false;
 
-            this.AddPage(0);
-            this.AddBackground(0, 0, 308, 390, 0x2454);
+            AddPage(0);
+            AddBackground(0, 0, 308, 390, 0x2454);
 
             // title
-            this.AddLabel(125, 10, 150, "Settings");
-            this.AddImage(256, 5, 0x9E1);
+            AddLabel(125, 10, 150, "Settings");
+            AddImage(256, 5, 0x9E1);
 
             // dungeons			
-            this.AddButton(20, 60, MondainsLegacy.PalaceOfParoxysmus ? 0x939 : 0x938, MondainsLegacy.PalaceOfParoxysmus ? 0x939 : 0x938, 1, GumpButtonType.Reply, 0);
-            this.AddButton(20, 85, MondainsLegacy.TwistedWeald ? 0x939 : 0x938, MondainsLegacy.TwistedWeald ? 0x939 : 0x938, 2, GumpButtonType.Reply, 0);
-            this.AddButton(20, 110, MondainsLegacy.BlightedGrove ? 0x939 : 0x938, MondainsLegacy.BlightedGrove ? 0x939 : 0x938, 3, GumpButtonType.Reply, 0);
-            this.AddButton(20, 135, MondainsLegacy.Bedlam ? 0x939 : 0x938, MondainsLegacy.Bedlam ? 0x939 : 0x938, 4, GumpButtonType.Reply, 0);
-            this.AddButton(20, 160, MondainsLegacy.PrismOfLight ? 0x939 : 0x938, MondainsLegacy.PrismOfLight ? 0x939 : 0x938, 5, GumpButtonType.Reply, 0);
-            this.AddButton(20, 185, MondainsLegacy.Citadel ? 0x939 : 0x938, MondainsLegacy.Citadel ? 0x939 : 0x938, 6, GumpButtonType.Reply, 0);
-            this.AddButton(20, 210, MondainsLegacy.PaintedCaves ? 0x939 : 0x938, MondainsLegacy.PaintedCaves ? 0x939 : 0x938, 7, GumpButtonType.Reply, 0);
-            this.AddButton(20, 235, MondainsLegacy.Labyrinth ? 0x939 : 0x938, MondainsLegacy.Labyrinth ? 0x939 : 0x938, 8, GumpButtonType.Reply, 0);
-            this.AddButton(20, 260, MondainsLegacy.Sanctuary ? 0x939 : 0x938, MondainsLegacy.Sanctuary ? 0x939 : 0x938, 9, GumpButtonType.Reply, 0);
-            this.AddButton(20, 285, MondainsLegacy.StygianDragonLair ? 0x939 : 0x938, MondainsLegacy.StygianDragonLair ? 0x939 : 0x938, 10, GumpButtonType.Reply, 0);
-            this.AddButton(20, 310, MondainsLegacy.MedusasLair ? 0x939 : 0x938, MondainsLegacy.MedusasLair ? 0x939 : 0x938, 11, GumpButtonType.Reply, 0);
-            this.AddButton(20, 335, MondainsLegacy.Spellweaving ? 0x939 : 0x938, MondainsLegacy.Spellweaving ? 0x939 : 0x938, 12, GumpButtonType.Reply, 0);
-            this.AddButton(20, 360, MondainsLegacy.PublicDonations ? 0x939 : 0x938, MondainsLegacy.PublicDonations ? 0x939 : 0x938, 13, GumpButtonType.Reply, 0);
+            AddButton(20, 60, MondainsLegacy.PalaceOfParoxysmus ? 0x939 : 0x938, MondainsLegacy.PalaceOfParoxysmus ? 0x939 : 0x938, 1, GumpButtonType.Reply, 0);
+            AddButton(20, 85, MondainsLegacy.TwistedWeald ? 0x939 : 0x938, MondainsLegacy.TwistedWeald ? 0x939 : 0x938, 2, GumpButtonType.Reply, 0);
+            AddButton(20, 110, MondainsLegacy.BlightedGrove ? 0x939 : 0x938, MondainsLegacy.BlightedGrove ? 0x939 : 0x938, 3, GumpButtonType.Reply, 0);
+            AddButton(20, 135, MondainsLegacy.Bedlam ? 0x939 : 0x938, MondainsLegacy.Bedlam ? 0x939 : 0x938, 4, GumpButtonType.Reply, 0);
+            AddButton(20, 160, MondainsLegacy.PrismOfLight ? 0x939 : 0x938, MondainsLegacy.PrismOfLight ? 0x939 : 0x938, 5, GumpButtonType.Reply, 0);
+            AddButton(20, 185, MondainsLegacy.Citadel ? 0x939 : 0x938, MondainsLegacy.Citadel ? 0x939 : 0x938, 6, GumpButtonType.Reply, 0);
+            AddButton(20, 210, MondainsLegacy.PaintedCaves ? 0x939 : 0x938, MondainsLegacy.PaintedCaves ? 0x939 : 0x938, 7, GumpButtonType.Reply, 0);
+            AddButton(20, 235, MondainsLegacy.Labyrinth ? 0x939 : 0x938, MondainsLegacy.Labyrinth ? 0x939 : 0x938, 8, GumpButtonType.Reply, 0);
+            AddButton(20, 260, MondainsLegacy.Sanctuary ? 0x939 : 0x938, MondainsLegacy.Sanctuary ? 0x939 : 0x938, 9, GumpButtonType.Reply, 0);
+            AddButton(20, 285, MondainsLegacy.StygianDragonLair ? 0x939 : 0x938, MondainsLegacy.StygianDragonLair ? 0x939 : 0x938, 10, GumpButtonType.Reply, 0);
+            AddButton(20, 310, MondainsLegacy.MedusasLair ? 0x939 : 0x938, MondainsLegacy.MedusasLair ? 0x939 : 0x938, 11, GumpButtonType.Reply, 0);
+            AddButton(20, 335, MondainsLegacy.Spellweaving ? 0x939 : 0x938, MondainsLegacy.Spellweaving ? 0x939 : 0x938, 12, GumpButtonType.Reply, 0);
+            AddButton(20, 360, MondainsLegacy.PublicDonations ? 0x939 : 0x938, MondainsLegacy.PublicDonations ? 0x939 : 0x938, 13, GumpButtonType.Reply, 0);
 
-            this.AddLabel(45, 56, 0x226, "Palace of Paroxysmus");
-            this.AddLabel(45, 81, 0x226, "Twisted Weald");
-            this.AddLabel(45, 106, 0x226, "Blighted Grove");
-            this.AddLabel(45, 131, 0x226, "Bedlam");
-            this.AddLabel(45, 156, 0x226, "Prism of Light");
-            this.AddLabel(45, 181, 0x226, "The Citadel");
-            this.AddLabel(45, 206, 0x226, "Painted Caves");
-            this.AddLabel(45, 231, 0x226, "Labyrinth");
-            this.AddLabel(45, 256, 0x226, "Sanctuary");
-            this.AddLabel(45, 281, 0x226, "StygianDragonLair");
-            this.AddLabel(45, 306, 0x226, "MedusasLair");
-            this.AddLabel(45, 331, 0x226, "Spellweaving");
-            this.AddLabel(45, 356, 0x226, "PublicDonations");
+            AddLabel(45, 56, 0x226, "Palace of Paroxysmus");
+            AddLabel(45, 81, 0x226, "Twisted Weald");
+            AddLabel(45, 106, 0x226, "Blighted Grove");
+            AddLabel(45, 131, 0x226, "Bedlam");
+            AddLabel(45, 156, 0x226, "Prism of Light");
+            AddLabel(45, 181, 0x226, "The Citadel");
+            AddLabel(45, 206, 0x226, "Painted Caves");
+            AddLabel(45, 231, 0x226, "Labyrinth");
+            AddLabel(45, 256, 0x226, "Sanctuary");
+            AddLabel(45, 281, 0x226, "StygianDragonLair");
+            AddLabel(45, 306, 0x226, "MedusasLair");
+            AddLabel(45, 331, 0x226, "Spellweaving");
+            AddLabel(45, 356, 0x226, "PublicDonations");
 
             // legend
-            this.AddLabel(243, 205, 0x226, "Legend:");
+            AddLabel(243, 205, 0x226, "Legend:");
 
-            this.AddImage(218, 235, 0x938);
-            this.AddLabel(243, 231, 0x226, "disabled");
-            this.AddImage(218, 260, 0x939);
-            this.AddLabel(243, 256, 0x226, "enabled");
+            AddImage(218, 235, 0x938);
+            AddLabel(243, 231, 0x226, "disabled");
+            AddImage(218, 260, 0x939);
+            AddLabel(243, 256, 0x226, "enabled");
         }
 
         public override void OnResponse(NetState sender, RelayInfo info)

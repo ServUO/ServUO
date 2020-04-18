@@ -17,7 +17,7 @@ namespace Server.Misc
         public static void FatigueOnDamage(Mobile m, int damage, DFAlgorithm df)
         {
             double fatigue = 0.0;
-            var hits = Math.Max(1, m.Hits);
+            int hits = Math.Max(1, m.Hits);
 
             switch (m.DFA)
             {
@@ -33,7 +33,7 @@ namespace Server.Misc
                     break;
             }
 
-            var reduction = BaseArmor.GetInherentStaminaLossReduction(m) + 1;
+            double reduction = BaseArmor.GetInherentStaminaLossReduction(m) + 1;
 
             if (reduction > 1)
             {
@@ -88,7 +88,7 @@ namespace Server.Misc
                 return;
             }
 
-            var pm = from as PlayerMobile;
+            PlayerMobile pm = from as PlayerMobile;
 
             if (pm != null)
             {

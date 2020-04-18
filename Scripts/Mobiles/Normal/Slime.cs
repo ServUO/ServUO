@@ -44,27 +44,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lesser;
-            }
-        }
-        public override Poison HitPoison
-        {
-            get
-            {
-                return Poison.Lesser;
-            }
-        }
-        public override FoodType FavoriteFood
-        {
-            get
-            {
-                return FoodType.Meat | FoodType.Fish | FoodType.FruitsAndVegies | FoodType.GrainsAndHay | FoodType.Eggs;
-            }
-        }
+        public override Poison PoisonImmune => Poison.Lesser;
+        public override Poison HitPoison => Poison.Lesser;
+        public override FoodType FavoriteFood => FoodType.Meat | FoodType.Fish | FoodType.FruitsAndVegies | FoodType.GrainsAndHay | FoodType.Eggs;
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Poor);
@@ -85,7 +67,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)

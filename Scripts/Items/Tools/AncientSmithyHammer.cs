@@ -58,20 +58,8 @@ namespace Server.Items
                 }
             }
         }
-        public override CraftSystem CraftSystem
-        {
-            get
-            {
-                return DefBlacksmithy.CraftSystem;
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1045127;
-            }
-        }// ancient smithy hammer
+        public override CraftSystem CraftSystem => DefBlacksmithy.CraftSystem;
+        public override int LabelNumber => 1045127;// ancient smithy hammer
         public override void OnAdded(object parent)
         {
             base.OnAdded(parent);
@@ -108,9 +96,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
-            writer.Write((int)m_Bonus);
+            writer.Write(m_Bonus);
         }
 
         public override void Deserialize(GenericReader reader)

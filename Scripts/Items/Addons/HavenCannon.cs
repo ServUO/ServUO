@@ -63,13 +63,7 @@ namespace Server.Engines.Quests.Haven
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public CannonDirection CannonDirection
-        {
-            get
-            {
-                return m_CannonDirection;
-            }
-        }
+        public CannonDirection CannonDirection => m_CannonDirection;
         [CommandProperty(AccessLevel.GameMaster)]
         public MilitiaCanoneer Canoneer
         {
@@ -82,13 +76,7 @@ namespace Server.Engines.Quests.Haven
                 m_Canoneer = value;
             }
         }
-        public override bool HandlesOnMovement
-        {
-            get
-            {
-                return m_Canoneer != null && !m_Canoneer.Deleted && m_Canoneer.Active;
-            }
-        }
+        public override bool HandlesOnMovement => m_Canoneer != null && !m_Canoneer.Deleted && m_Canoneer.Active;
         public void DoFireEffect(IPoint3D target)
         {
             Point3D from;
@@ -158,10 +146,10 @@ namespace Server.Engines.Quests.Haven
 
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             writer.WriteEncodedInt((int)m_CannonDirection);
-            writer.Write((Mobile)m_Canoneer);
+            writer.Write(m_Canoneer);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -204,7 +192,7 @@ namespace Server.Engines.Quests.Haven
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

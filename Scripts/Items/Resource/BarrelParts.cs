@@ -15,7 +15,7 @@ namespace Server.Items
         public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool PlayerConstructed { get { return _Resource != CraftResource.None; } }
+        public bool PlayerConstructed => _Resource != CraftResource.None;
 
         [Constructable]
         public BarrelLid()
@@ -56,7 +56,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1);
+            writer.Write(1);
 
             writer.Write((int)_Resource);
             writer.Write((int)_Quality);
@@ -94,7 +94,7 @@ namespace Server.Items
         public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool PlayerConstructed { get { return _Resource != CraftResource.None; } }
+        public bool PlayerConstructed => _Resource != CraftResource.None;
 
         [Constructable]
         public BarrelStaves()
@@ -135,7 +135,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1);
+            writer.Write(1);
 
             writer.Write((int)_Resource);
             writer.Write((int)_Quality);
@@ -172,7 +172,7 @@ namespace Server.Items
         public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool PlayerConstructed { get { return _Resource != CraftResource.None; } }
+        public bool PlayerConstructed => _Resource != CraftResource.None;
 
         [Constructable]
         public BarrelHoops()
@@ -209,18 +209,12 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1011228;
-            }
-        }// Barrel hoops
+        public override int LabelNumber => 1011228;// Barrel hoops
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)2);
+            writer.Write(2);
 
             writer.Write((int)_Resource);
             writer.Write((int)_Quality);
@@ -261,7 +255,7 @@ namespace Server.Items
         public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool PlayerConstructed { get { return _Resource != CraftResource.None; } }
+        public bool PlayerConstructed => _Resource != CraftResource.None;
 
         [Constructable]
         public BarrelTap()
@@ -302,7 +296,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)2);
+            writer.Write(2);
 
             writer.Write((int)_Resource);
             writer.Write((int)_Quality);

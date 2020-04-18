@@ -7,7 +7,7 @@ namespace Server.Mobiles
 {
     public class GMEthereal : EtherealMount
     {
-        public override int FollowerSlots { get { return 0; } }
+        public override int FollowerSlots => 0;
 
         private static readonly EtherealInfo[] EthyItemTypes = new EtherealInfo[]
         {
@@ -122,7 +122,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1); // version
+            writer.Write(1); // version
             writer.Write((int)m_EthyType);
         }
 

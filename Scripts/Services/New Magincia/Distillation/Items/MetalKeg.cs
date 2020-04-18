@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class MetalKeg : Keg
     {
-        public override int LabelNumber { get { return 1150675; } }
+        public override int LabelNumber => 1150675;
 
         [Constructable]
         public MetalKeg()
@@ -17,7 +17,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

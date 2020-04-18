@@ -63,21 +63,9 @@ namespace Server.Engines.Craft
 
     public class DefTailoring : CraftSystem
     {
-        public override SkillName MainSkill
-        {
-            get
-            {
-                return SkillName.Tailoring;
-            }
-        }
+        public override SkillName MainSkill => SkillName.Tailoring;
 
-        public override int GumpTitleNumber
-        {
-            get
-            {
-                return 1044005;
-            }// <CENTER>TAILORING MENU</CENTER>
-        }
+        public override int GumpTitleNumber => 1044005;
 
         private static CraftSystem m_CraftSystem;
 
@@ -92,13 +80,7 @@ namespace Server.Engines.Craft
             }
         }
 
-        public override CraftECA ECA
-        {
-            get
-            {
-                return CraftECA.ChanceMinusSixtyToFourtyFive;
-            }
-        }
+        public override CraftECA ECA => CraftECA.ChanceMinusSixtyToFourtyFive;
 
         public override double GetChanceAtMin(CraftItem item)
         {
@@ -721,7 +703,7 @@ namespace Server.Engines.Craft
                     object num = null;
                     Container pack = m.Backpack;
 
-                    foreach (var item in pack.Items)
+                    foreach (Item item in pack.Items)
                     {
                         if (item.GetType() == typeof(BoltOfCloth))
                         {
@@ -744,14 +726,14 @@ namespace Server.Engines.Craft
                     }
                     else
                     {
-                        foreach (var item in toConsume)
+                        foreach (Item item in toConsume)
                         {
                             item.Delete();
                         }
 
-                        foreach (var kvp in bolts)
+                        foreach (KeyValuePair<int, int> kvp in bolts)
                         {
-                            var cloth = new UncutCloth(kvp.Value * 50);
+                            UncutCloth cloth = new UncutCloth(kvp.Value * 50);
                             cloth.Hue = kvp.Key;
 
                             DropItem(m, cloth, tool);
@@ -795,7 +777,7 @@ namespace Server.Engines.Craft
                     List<Item> toConsume = new List<Item>();
                     object num = null;
 
-                    foreach (var item in pack.Items)
+                    foreach (Item item in pack.Items)
                     {
                         Type t = item.GetType();
 
@@ -820,14 +802,14 @@ namespace Server.Engines.Craft
                     }
                     else
                     {
-                        foreach (var item in toConsume)
+                        foreach (Item item in toConsume)
                         {
                             item.Delete();
                         }
 
-                        foreach (var kvp in cloth)
+                        foreach (KeyValuePair<int, int> kvp in cloth)
                         {
-                            var c = new UncutCloth(kvp.Value);
+                            UncutCloth c = new UncutCloth(kvp.Value);
                             c.Hue = kvp.Key;
 
                             DropItem(m, c, tool);

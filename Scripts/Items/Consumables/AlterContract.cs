@@ -107,10 +107,10 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version 
+            writer.Write(0); // version 
 
             writer.Write((int)m_Type);
-            writer.Write((string)m_CrafterName);
+            writer.Write(m_CrafterName);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -120,7 +120,7 @@ namespace Server.Items
             int version = reader.ReadInt();
 
             m_Type = (RepairSkillType)reader.ReadInt();
-            m_CrafterName = (string)reader.ReadString();
+            m_CrafterName = reader.ReadString();
         }
     }
 }

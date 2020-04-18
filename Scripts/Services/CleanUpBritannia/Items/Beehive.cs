@@ -18,9 +18,9 @@ namespace Server.Items
 
         private SecureLevel m_Level;
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
-        public override int LabelNumber { get { return 1080263; } } // Beehive
+        public override int LabelNumber => 1080263;  // Beehive
 
         [CommandProperty(AccessLevel.GameMaster)]
         public SecureLevel Level { get { return m_Level; } set { m_Level = value; } }
@@ -160,11 +160,11 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)1); // version
+            writer.WriteEncodedInt(1); // version
 
-            writer.Write((Item)m_Bees);
-            writer.WriteEncodedInt((int)m_Honeypots);
-            writer.WriteDeltaTime((DateTime)m_NextSpawnTime);
+            writer.Write(m_Bees);
+            writer.WriteEncodedInt(m_Honeypots);
+            writer.WriteDeltaTime(m_NextSpawnTime);
             writer.WriteEncodedInt((int)m_Level);
         }
 

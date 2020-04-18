@@ -6,13 +6,7 @@ namespace Server.Engines.VvV
     [FlipableAttribute(39339, 39340)]
     public class DespiseBanner : Item
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1123363;
-            }
-        }
+        public override int LabelNumber => 1123363;
 
         [Constructable]
         public DespiseBanner()
@@ -22,7 +16,7 @@ namespace Server.Engines.VvV
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (m.InRange(this.GetWorldLocation(), 2))
+            if (m.InRange(GetWorldLocation(), 2))
             {
                 Gump g = new Gump(50, 50);
                 g.AddImage(0, 0, 30569);

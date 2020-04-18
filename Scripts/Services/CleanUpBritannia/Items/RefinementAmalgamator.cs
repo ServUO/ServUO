@@ -21,13 +21,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1154340;
-            }
-        }// Refinement Amalgamator
+        public override int LabelNumber => 1154340;// Refinement Amalgamator
 
         public override void OnDoubleClick(Mobile from)
         {
@@ -79,7 +73,7 @@ namespace Server.Items
 
                     if (ToCombine.Count >= GetCombineTotal(component.ModType) - 1) // -1 because we're counting ToUpgrade
                     {
-                        foreach (var comp in ToCombine)
+                        foreach (RefinementComponent comp in ToCombine)
                             comp.Delete();
 
                         ToUpgrade.ModType++;
@@ -102,9 +96,9 @@ namespace Server.Items
             if (ToCombine == null)
                 return;
 
-            var copy = new List<RefinementComponent>(ToCombine);
+            List<RefinementComponent> copy = new List<RefinementComponent>(ToCombine);
 
-            foreach (var comp in copy)
+            foreach (RefinementComponent comp in copy)
             {
                 if (comp == null || comp.Deleted || !comp.IsChildOf(m.Backpack))
                 {
@@ -197,7 +191,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

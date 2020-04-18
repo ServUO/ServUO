@@ -5,7 +5,7 @@ namespace Server.Mobiles
     [CorpseName("a troglodyte corpse")]
     public class Troglodyte : BaseCreature
     {
-        public override double HealChance { get { return 1.0; } }
+        public override double HealChance => 1.0;
 
         [Constructable]
         public Troglodyte()
@@ -54,17 +54,11 @@ namespace Server.Mobiles
         {
         }
 
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 2;
-            }
-        }
+        public override int TreasureMapLevel => 2;
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich);  // Need to verify
+            AddLoot(LootPack.Rich);  // Need to verify
         }
 
         public override void OnDeath(Container c)
@@ -78,7 +72,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

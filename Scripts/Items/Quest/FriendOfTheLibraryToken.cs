@@ -6,8 +6,8 @@ namespace Server.Items
         public FriendOfTheLibraryToken()
             : base(0x2F58)
         {
-            this.Weight = 1.0;
-            this.Hue = 0x28A;
+            Weight = 1.0;
+            Hue = 0x28A;
         }
 
         public FriendOfTheLibraryToken(Serial serial)
@@ -15,18 +15,12 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073136;
-            }
-        }// Friend of the Library Token (allows donations to be made)
+        public override int LabelNumber => 1073136;// Friend of the Library Token (allows donations to be made)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

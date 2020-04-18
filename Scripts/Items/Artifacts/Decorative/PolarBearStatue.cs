@@ -2,13 +2,13 @@ namespace Server.Items
 {
     public class PolarBearStatue : Item
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public PolarBearStatue()
             : base(0x20E1)
         {
-            this.LootType = LootType.Blessed;
-            this.Weight = 1.0;
+            LootType = LootType.Blessed;
+            Weight = 1.0;
         }
 
         public PolarBearStatue(Serial serial)
@@ -16,18 +16,12 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073193;
-            }
-        }// A Polar Bear Contribution Statue from the Britannia Royal Zoo.
+        public override int LabelNumber => 1073193;// A Polar Bear Contribution Statue from the Britannia Royal Zoo.
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

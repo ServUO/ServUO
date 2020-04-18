@@ -16,27 +16,9 @@ namespace Server.Spells.Bushido
         {
         }
 
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(0.25);
-            }
-        }
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 60.0;
-            }
-        }
-        public override int RequiredMana
-        {
-            get
-            {
-                return 10;
-            }
-        }
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(0.25);
+        public override double RequiredSkill => 60.0;
+        public override int RequiredMana => 10;
         public static bool VerifyCast(Mobile Caster, bool messages)
         {
             if (Caster == null) // Sanity
@@ -195,7 +177,7 @@ namespace Server.Spells.Bushido
 
         public override bool CheckCast()
         {
-            if (VerifyCast(this.Caster, true))
+            if (VerifyCast(Caster, true))
                 return base.CheckCast();
 
             return false;
@@ -205,26 +187,26 @@ namespace Server.Spells.Bushido
         {
             base.OnBeginCast();
 
-            this.Caster.FixedEffect(0x37C4, 10, 7, 4, 3);
+            Caster.FixedEffect(0x37C4, 10, 7, 4, 3);
         }
 
         public override void OnCast()
         {
-            if (this.CheckSequence())
+            if (CheckSequence())
             {
-                this.Caster.SendLocalizedMessage(1063120); // You feel that you might be able to deflect any attack!
-                this.Caster.FixedParticles(0x376A, 1, 20, 0x7F5, 0x960, 3, EffectLayer.Waist);
-                this.Caster.PlaySound(0x51B);
+                Caster.SendLocalizedMessage(1063120); // You feel that you might be able to deflect any attack!
+                Caster.FixedParticles(0x376A, 1, 20, 0x7F5, 0x960, 3, EffectLayer.Waist);
+                Caster.PlaySound(0x51B);
 
-                this.OnCastSuccessful(this.Caster);
+                OnCastSuccessful(Caster);
 
-                BeginEvasion(this.Caster);
+                BeginEvasion(Caster);
 
-                this.Caster.BeginAction(typeof(Evasion));
-                Timer.DelayCall(TimeSpan.FromSeconds(20.0), delegate { this.Caster.EndAction(typeof(Evasion)); });
+                Caster.BeginAction(typeof(Evasion));
+                Timer.DelayCall(TimeSpan.FromSeconds(20.0), delegate { Caster.EndAction(typeof(Evasion)); });
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         private class InternalTimer : Timer
@@ -233,14 +215,14 @@ namespace Server.Spells.Bushido
             public InternalTimer(Mobile m, TimeSpan delay)
                 : base(delay)
             {
-                this.m_Mobile = m;
-                this.Priority = TimerPriority.TwoFiftyMS;
+                m_Mobile = m;
+                Priority = TimerPriority.TwoFiftyMS;
             }
 
             protected override void OnTick()
             {
-                EndEvasion(this.m_Mobile);
-                this.m_Mobile.SendLocalizedMessage(1063121); // You no longer feel that you could deflect any attack.
+                EndEvasion(m_Mobile);
+                m_Mobile.SendLocalizedMessage(1063121); // You no longer feel that you could deflect any attack.
             }
         }
     }

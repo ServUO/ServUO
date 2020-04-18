@@ -213,13 +213,7 @@ namespace Server.Items
                 "gug, gug, gugh, guk,",
                 "guk,"));
 
-        public override BookContent DefaultContent
-        {
-            get
-            {
-                return Content;
-            }
-        }
+        public override BookContent DefaultContent => Content;
 
         [Constructable]
         public GrammarOfOrcish()
@@ -236,7 +230,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -384,13 +378,7 @@ namespace Server.Items
                 "Lord British for",
                 "some time now."));
 
-        public override BookContent DefaultContent
-        {
-            get
-            {
-                return Content;
-            }
-        }
+        public override BookContent DefaultContent => Content;
 
         [Constructable]
         public CallToAnarchy()
@@ -407,7 +395,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -564,13 +552,7 @@ namespace Server.Items
                 "which maketh looting",
                 "difficult!"));
 
-        public override BookContent DefaultContent
-        {
-            get
-            {
-                return Content;
-            }
-        }
+        public override BookContent DefaultContent => Content;
 
         [Constructable]
         public ArmsAndWeaponsPrimer()
@@ -587,7 +569,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -652,13 +634,7 @@ namespace Server.Items
             new BookPageInfo(
                 "Samlethe's day."));
 
-        public override BookContent DefaultContent
-        {
-            get
-            {
-                return Content;
-            }
-        }
+        public override BookContent DefaultContent => Content;
 
         [Constructable]
         public SongOfSamlethe()
@@ -675,7 +651,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -779,13 +755,7 @@ namespace Server.Items
                 "escaped and lived to",
                 "write it all down!"));
 
-        public override BookContent DefaultContent
-        {
-            get
-            {
-                return Content;
-            }
-        }
+        public override BookContent DefaultContent => Content;
 
         [Constructable]
         public TaleOfThreeTribes()
@@ -802,7 +772,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -974,13 +944,7 @@ namespace Server.Items
                 "White bar centered",
                 "down green field."));
 
-        public override BookContent DefaultContent
-        {
-            get
-            {
-                return Content;
-            }
-        }
+        public override BookContent DefaultContent => Content;
 
         [Constructable]
         public GuideToGuilds()
@@ -997,7 +961,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1261,13 +1225,7 @@ namespace Server.Items
                 "extraordinarily",
                 "beautiful song."));
 
-        public override BookContent DefaultContent
-        {
-            get
-            {
-                return Content;
-            }
-        }
+        public override BookContent DefaultContent => Content;
 
         [Constructable]
         public BirdsOfBritannia()
@@ -1284,7 +1242,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1463,13 +1421,7 @@ namespace Server.Items
                 "know means to forgo",
                 "paying a debt."));
 
-        public override BookContent DefaultContent
-        {
-            get
-            {
-                return Content;
-            }
-        }
+        public override BookContent DefaultContent => Content;
 
         [Constructable]
         public BritannianFlora()
@@ -1486,7 +1438,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1586,13 +1538,7 @@ namespace Server.Items
                 "never during the day."),
             new BookPageInfo());
 
-        public override BookContent DefaultContent
-        {
-            get
-            {
-                return Content;
-            }
-        }
+        public override BookContent DefaultContent => Content;
 
         [Constructable]
         public ChildrenTalesVol2()
@@ -1609,7 +1555,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1811,13 +1757,7 @@ namespace Server.Items
                 "Snakehills",
                 "Lest You Care to Die"));
 
-        public override BookContent DefaultContent
-        {
-            get
-            {
-                return Content;
-            }
-        }
+        public override BookContent DefaultContent => Content;
 
         [Constructable]
         public TalesOfVesperVol1()
@@ -1834,7 +1774,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1956,13 +1896,7 @@ namespace Server.Items
                 "into flame when one",
                 "passeth across it!"));
 
-        public override BookContent DefaultContent
-        {
-            get
-            {
-                return Content;
-            }
-        }
+        public override BookContent DefaultContent => Content;
 
         [Constructable]
         public DeceitDungeonOfHorror()
@@ -1979,7 +1913,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -2159,13 +2093,7 @@ namespace Server.Items
                 "thorny problem and",
                 "enlighten the world."));
 
-        public override BookContent DefaultContent
-        {
-            get
-            {
-                return Content;
-            }
-        }
+        public override BookContent DefaultContent => Content;
 
         [Constructable]
         public DimensionalTravel()
@@ -2182,7 +2110,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -2420,13 +2348,7 @@ namespace Server.Items
                 "Richard Garriott and",
                 "Herman Miller."));
 
-        public override BookContent DefaultContent
-        {
-            get
-            {
-                return Content;
-            }
-        }
+        public override BookContent DefaultContent => Content;
 
         [Constructable]
         public EthicalHedonism()
@@ -2443,7 +2365,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -2898,13 +2820,7 @@ namespace Server.Items
                 "and for our people in",
                 "these perilous times."));
 
-        public override BookContent DefaultContent
-        {
-            get
-            {
-                return Content;
-            }
-        }
+        public override BookContent DefaultContent => Content;
 
         [Constructable]
         public MyStory()
@@ -2921,7 +2837,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -3071,13 +2987,7 @@ namespace Server.Items
                 "ourselves in the",
                 "process."));
 
-        public override BookContent DefaultContent
-        {
-            get
-            {
-                return Content;
-            }
-        }
+        public override BookContent DefaultContent => Content;
 
         [Constructable]
         public DiversityOfOurLand()
@@ -3094,7 +3004,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -3451,13 +3361,7 @@ namespace Server.Items
                 "for the final three",
                 "Shrines."));
 
-        public override BookContent DefaultContent
-        {
-            get
-            {
-                return Content;
-            }
-        }
+        public override BookContent DefaultContent => Content;
 
         [Constructable]
         public QuestOfVirtues()
@@ -3474,7 +3378,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -3526,13 +3430,7 @@ namespace Server.Items
                 "which to sound an",
                 "alarum."));
 
-        public override BookContent DefaultContent
-        {
-            get
-            {
-                return Content;
-            }
-        }
+        public override BookContent DefaultContent => Content;
 
         [Constructable]
         public RegardingLlamas()
@@ -3549,7 +3447,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -3642,13 +3540,7 @@ namespace Server.Items
                 "language, but this is",
                 "of course unlikely."));
 
-        public override BookContent DefaultContent
-        {
-            get
-            {
-                return Content;
-            }
-        }
+        public override BookContent DefaultContent => Content;
 
         [Constructable]
         public TalkingToWisps()
@@ -3665,7 +3557,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -3749,13 +3641,7 @@ namespace Server.Items
                 "running away very",
                 "very fast."));
 
-        public override BookContent DefaultContent
-        {
-            get
-            {
-                return Content;
-            }
-        }
+        public override BookContent DefaultContent => Content;
 
         [Constructable]
         public TamingDragons()
@@ -3772,7 +3658,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -3913,13 +3799,7 @@ namespace Server.Items
                 "tale of the bold",
                 "stranger."));
 
-        public override BookContent DefaultContent
-        {
-            get
-            {
-                return Content;
-            }
-        }
+        public override BookContent DefaultContent => Content;
 
         [Constructable]
         public BoldStranger()
@@ -3936,7 +3816,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -4159,13 +4039,7 @@ namespace Server.Items
                 "Guildmaster of the",
                 "City of Trinsic"));
 
-        public override BookContent DefaultContent
-        {
-            get
-            {
-                return Content;
-            }
-        }
+        public override BookContent DefaultContent => Content;
 
         [Constructable]
         public BurningOfTrinsic()
@@ -4182,7 +4056,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -4313,13 +4187,7 @@ namespace Server.Items
                 "armor shining like",
                 "newly born stars."));
 
-        public override BookContent DefaultContent
-        {
-            get
-            {
-                return Content;
-            }
-        }
+        public override BookContent DefaultContent => Content;
 
         [Constructable]
         public TheFight()
@@ -4336,7 +4204,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -4509,13 +4377,7 @@ namespace Server.Items
             new BookPageInfo(
                 "limb."));
 
-        public override BookContent DefaultContent
-        {
-            get
-            {
-                return Content;
-            }
-        }
+        public override BookContent DefaultContent => Content;
 
         [Constructable]
         public LifeOfATravellingMinstrel()
@@ -4532,7 +4394,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -4706,13 +4568,7 @@ namespace Server.Items
                 "(beggars), Assassins,",
                 "Thieves"));
 
-        public override BookContent DefaultContent
-        {
-            get
-            {
-                return Content;
-            }
-        }
+        public override BookContent DefaultContent => Content;
 
         [Constructable]
         public MajorTradeAssociation()
@@ -4729,7 +4585,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -4823,13 +4679,7 @@ namespace Server.Items
                 "mastery of their",
                 "craft recently."));
 
-        public override BookContent DefaultContent
-        {
-            get
-            {
-                return Content;
-            }
-        }
+        public override BookContent DefaultContent => Content;
 
         [Constructable]
         public RankingsOfTrades()
@@ -4846,7 +4696,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -5006,13 +4856,7 @@ namespace Server.Items
                 "orc that she called",
                 "father."));
 
-        public override BookContent DefaultContent
-        {
-            get
-            {
-                return Content;
-            }
-        }
+        public override BookContent DefaultContent => Content;
 
         [Constructable]
         public WildGirlOfTheForest()
@@ -5029,7 +4873,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -5148,13 +4992,7 @@ namespace Server.Items
             new BookPageInfo(
                 "truly. Not once."));
 
-        public override BookContent DefaultContent
-        {
-            get
-            {
-                return Content;
-            }
-        }
+        public override BookContent DefaultContent => Content;
 
         [Constructable]
         public TreatiseOnAlchemy()
@@ -5171,7 +5009,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -5367,13 +5205,7 @@ namespace Server.Items
                 "Spirituality, and",
                 "Humility."));
 
-        public override BookContent DefaultContent
-        {
-            get
-            {
-                return Content;
-            }
-        }
+        public override BookContent DefaultContent => Content;
 
         [Constructable]
         public VirtueBook()
@@ -5390,7 +5222,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

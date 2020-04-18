@@ -7,35 +7,35 @@ namespace Server.Mobiles
         public BlackBear()
             : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a black bear";
-            this.Body = 211;
-            this.BaseSoundID = 0xA3;
+            Name = "a black bear";
+            Body = 211;
+            BaseSoundID = 0xA3;
 
-            this.SetStr(76, 100);
-            this.SetDex(56, 75);
-            this.SetInt(11, 14);
+            SetStr(76, 100);
+            SetDex(56, 75);
+            SetInt(11, 14);
 
-            this.SetHits(46, 60);
-            this.SetMana(0);
+            SetHits(46, 60);
+            SetMana(0);
 
-            this.SetDamage(4, 10);
+            SetDamage(4, 10);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 20, 25);
-            this.SetResistance(ResistanceType.Cold, 10, 15);
-            this.SetResistance(ResistanceType.Poison, 5, 10);
+            SetResistance(ResistanceType.Physical, 20, 25);
+            SetResistance(ResistanceType.Cold, 10, 15);
+            SetResistance(ResistanceType.Poison, 5, 10);
 
-            this.SetSkill(SkillName.MagicResist, 20.1, 40.0);
-            this.SetSkill(SkillName.Tactics, 40.1, 60.0);
-            this.SetSkill(SkillName.Wrestling, 40.1, 60.0);
+            SetSkill(SkillName.MagicResist, 20.1, 40.0);
+            SetSkill(SkillName.Tactics, 40.1, 60.0);
+            SetSkill(SkillName.Wrestling, 40.1, 60.0);
 
-            this.Fame = 450;
-            this.Karma = 0;
+            Fame = 450;
+            Karma = 0;
 
-            this.Tamable = true;
-            this.ControlSlots = 1;
-            this.MinTameSkill = 35.1;
+            Tamable = true;
+            ControlSlots = 1;
+            MinTameSkill = 35.1;
         }
 
         public BlackBear(Serial serial)
@@ -43,38 +43,14 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override int Hides
-        {
-            get
-            {
-                return 12;
-            }
-        }
-        public override FoodType FavoriteFood
-        {
-            get
-            {
-                return FoodType.Fish | FoodType.Meat | FoodType.FruitsAndVegies;
-            }
-        }
-        public override PackInstinct PackInstinct
-        {
-            get
-            {
-                return PackInstinct.Bear;
-            }
-        }
+        public override int Meat => 1;
+        public override int Hides => 12;
+        public override FoodType FavoriteFood => FoodType.Fish | FoodType.Meat | FoodType.FruitsAndVegies;
+        public override PackInstinct PackInstinct => PackInstinct.Bear;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

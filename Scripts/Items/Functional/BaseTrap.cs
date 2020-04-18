@@ -8,7 +8,7 @@ namespace Server.Items
         public BaseTrap(int itemID)
             : base(itemID)
         {
-            this.Movable = false;
+            Movable = false;
         }
 
         public BaseTrap(Serial serial)
@@ -16,48 +16,18 @@ namespace Server.Items
         {
         }
 
-        public virtual bool PassivelyTriggered
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public virtual TimeSpan PassiveTriggerDelay
-        {
-            get
-            {
-                return TimeSpan.Zero;
-            }
-        }
-        public virtual int PassiveTriggerRange
-        {
-            get
-            {
-                return -1;
-            }
-        }
-        public virtual TimeSpan ResetDelay
-        {
-            get
-            {
-                return TimeSpan.Zero;
-            }
-        }
-        public override bool HandlesOnMovement
-        {
-            get
-            {
-                return true;
-            }
-        }// Tell the core that we implement OnMovement
+        public virtual bool PassivelyTriggered => false;
+        public virtual TimeSpan PassiveTriggerDelay => TimeSpan.Zero;
+        public virtual int PassiveTriggerRange => -1;
+        public virtual TimeSpan ResetDelay => TimeSpan.Zero;
+        public override bool HandlesOnMovement => true;// Tell the core that we implement OnMovement
         public virtual void OnTrigger(Mobile from)
         {
         }
 
         public virtual int GetEffectHue()
         {
-            int hue = this.Hue & 0x3FFF;
+            int hue = Hue & 0x3FFF;
 
             if (hue < 2)
                 return 0;
@@ -67,13 +37,13 @@ namespace Server.Items
 
         public bool CheckRange(Point3D loc, Point3D oldLoc, int range)
         {
-            return this.CheckRange(loc, range) && !this.CheckRange(oldLoc, range);
+            return CheckRange(loc, range) && !CheckRange(oldLoc, range);
         }
 
         public bool CheckRange(Point3D loc, int range)
         {
-            return ((this.Z + 8) >= loc.Z && (loc.Z + 16) > this.Z) &&
-                   Utility.InRange(this.GetWorldLocation(), loc, range);
+            return ((Z + 8) >= loc.Z && (loc.Z + 16) > Z) &&
+                   Utility.InRange(GetWorldLocation(), loc, range);
         }
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
@@ -83,17 +53,17 @@ namespace Server.Items
             if (m.Location == oldLocation)
                 return;
 
-            if (this.CheckRange(m.Location, oldLocation, 0) && DateTime.UtcNow >= this.m_NextActiveTrigger)
+            if (CheckRange(m.Location, oldLocation, 0) && DateTime.UtcNow >= m_NextActiveTrigger)
             {
-                this.m_NextActiveTrigger = this.m_NextPassiveTrigger = DateTime.UtcNow + this.ResetDelay;
+                m_NextActiveTrigger = m_NextPassiveTrigger = DateTime.UtcNow + ResetDelay;
 
-                this.OnTrigger(m);
+                OnTrigger(m);
             }
-            else if (this.PassivelyTriggered && this.CheckRange(m.Location, oldLocation, this.PassiveTriggerRange) && DateTime.UtcNow >= this.m_NextPassiveTrigger)
+            else if (PassivelyTriggered && CheckRange(m.Location, oldLocation, PassiveTriggerRange) && DateTime.UtcNow >= m_NextPassiveTrigger)
             {
-                this.m_NextPassiveTrigger = DateTime.UtcNow + this.PassiveTriggerDelay;
+                m_NextPassiveTrigger = DateTime.UtcNow + PassiveTriggerDelay;
 
-                this.OnTrigger(m);
+                OnTrigger(m);
             }
         }
 
@@ -101,7 +71,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

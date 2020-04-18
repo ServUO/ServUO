@@ -17,14 +17,14 @@ namespace Server.Spells.SkillMasteries
                 9002
             );
 
-        public override int RequiredMana { get { return 40; } }
+        public override int RequiredMana => 40;
 
-        public override SkillName CastSkill { get { return SkillName.AnimalTaming; } }
-        public override SkillName DamageSkill { get { return SkillName.AnimalLore; } }
-        public override bool RevealOnTick { get { return false; } }
+        public override SkillName CastSkill => SkillName.AnimalTaming;
+        public override SkillName DamageSkill => SkillName.AnimalLore;
+        public override bool RevealOnTick => false;
 
         private int _EnhancedGainChance;
-        public int EnhancedGainChance { get { return _EnhancedGainChance; } }
+        public int EnhancedGainChance => _EnhancedGainChance;
 
         public WhisperingSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
@@ -33,10 +33,10 @@ namespace Server.Spells.SkillMasteries
 
         public override bool CheckCast()
         {
-            if (IsInCooldown(Caster, this.GetType()))
+            if (IsInCooldown(Caster, GetType()))
                 return false;
 
-            if (GetSpell(Caster, this.GetType()) != null) // does this expire or not let you cast it again?>
+            if (GetSpell(Caster, GetType()) != null) // does this expire or not let you cast it again?>
             {
                 Caster.SendLocalizedMessage(1155889); // You are already under the effect of this ability.
                 return false;

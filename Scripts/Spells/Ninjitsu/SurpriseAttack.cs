@@ -11,34 +11,10 @@ namespace Server.Spells.Ninjitsu
         {
         }
 
-        public override int BaseMana
-        {
-            get
-            {
-                return 20;
-            }
-        }
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 60;
-            }
-        }
-        public override TextDefinition AbilityMessage
-        {
-            get
-            {
-                return new TextDefinition(1063128);
-            }
-        }// You prepare to surprise your prey.
-        public override bool ValidatesDuringHit
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override int BaseMana => 20;
+        public override double RequiredSkill => 60;
+        public override TextDefinition AbilityMessage => new TextDefinition(1063128);// You prepare to surprise your prey.
+        public override bool ValidatesDuringHit => false;
         public static bool GetMalus(Mobile target, ref int malus)
         {
             SurpriseAttackInfo info = m_Table[target] as SurpriseAttackInfo;
@@ -63,7 +39,7 @@ namespace Server.Spells.Ninjitsu
 
         public override bool OnBeforeSwing(Mobile attacker, Mobile defender)
         {
-            bool valid = this.Validate(attacker) && this.CheckMana(attacker, true);
+            bool valid = Validate(attacker) && CheckMana(attacker, true);
 
             if (valid)
             {
@@ -107,7 +83,7 @@ namespace Server.Spells.Ninjitsu
 
             m_Table[defender] = info;
 
-            this.CheckGain(attacker);
+            CheckGain(attacker);
         }
 
         public override void OnMiss(Mobile attacker, Mobile defender)
@@ -138,8 +114,8 @@ namespace Server.Spells.Ninjitsu
             public Timer m_Timer;
             public SurpriseAttackInfo(Mobile target, int effect)
             {
-                this.m_Target = target;
-                this.m_Malus = effect;
+                m_Target = target;
+                m_Malus = effect;
             }
         }
     }

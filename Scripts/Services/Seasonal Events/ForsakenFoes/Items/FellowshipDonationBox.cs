@@ -6,9 +6,9 @@ namespace Server.Items
 {
     public class FellowshipDonationBox : BaseContainer
     {
-        public override int LabelNumber { get { return 1159042; } } // Fellowship Donation Box
+        public override int LabelNumber => 1159042;  // Fellowship Donation Box
 
-        public override int DefaultGumpID { get { return 0x10C; } }
+        public override int DefaultGumpID => 0x10C;
 
         public static string FilePath = Path.Combine("Saves/Misc", "FellowshipDonationBox.bin");
         private static readonly Dictionary<Mobile, int> Donations = new Dictionary<Mobile, int>();
@@ -86,7 +86,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -111,7 +111,7 @@ namespace Server.Items
                 FilePath,
                 writer =>
                 {
-                    writer.Write((int)0);
+                    writer.Write(0);
 
                     writer.Write(Donations.Count);
 

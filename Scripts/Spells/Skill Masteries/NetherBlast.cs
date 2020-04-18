@@ -16,14 +16,14 @@ namespace Server.Spells.SkillMasteries
                 Reagent.DaemonBone
             );
 
-        public override double RequiredSkill { get { return 90; } }
-        public override double UpKeep { get { return 0; } }
-        public override int RequiredMana { get { return 40; } }
-        public override bool PartyEffects { get { return false; } }
-        public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(2.0); } }
-        public override double TickTime { get { return 1; } }
+        public override double RequiredSkill => 90;
+        public override double UpKeep => 0;
+        public override int RequiredMana => 40;
+        public override bool PartyEffects => false;
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(2.0);
+        public override double TickTime => 1;
 
-        public override SkillName CastSkill { get { return SkillName.Mysticism; } }
+        public override SkillName CastSkill => SkillName.Mysticism;
         public override SkillName DamageSkill
         {
             get
@@ -49,7 +49,7 @@ namespace Server.Spells.SkillMasteries
 
         public override bool CheckCast()
         {
-            if (HasSpell(Caster, this.GetType()))
+            if (HasSpell(Caster, GetType()))
             {
                 Caster.SendMessage("You cannot use this ability until the last one has expired.");
                 return false;
@@ -95,7 +95,7 @@ namespace Server.Spells.SkillMasteries
 
                                   if (canFit)
                                   {
-                                      var item = new InternalItem(Caster, 0x37CC, loc, Caster.Map);
+                                      InternalItem item = new InternalItem(Caster, 0x37CC, loc, Caster.Map);
                                       item.ProcessDelta();
                                       Effects.SendLocationParticles(EffectItem.Create(loc, Caster.Map, EffectItem.DefaultDuration), 0x376A, 9, 10, 5048);
 
@@ -116,9 +116,9 @@ namespace Server.Spells.SkillMasteries
         {
             Dictionary<Mobile, InternalItem> list = new Dictionary<Mobile, InternalItem>();
 
-            foreach (var item in Items.Where(i => !i.Deleted))
+            foreach (InternalItem item in Items.Where(i => !i.Deleted))
             {
-                foreach (var m in AcquireIndirectTargets(item.Location, 1).OfType<Mobile>().Where(m =>
+                foreach (Mobile m in AcquireIndirectTargets(item.Location, 1).OfType<Mobile>().Where(m =>
                      (m.Z + 16) > item.Z &&
                      (item.Z + 12) > m.Z))
                 {
@@ -129,7 +129,7 @@ namespace Server.Spells.SkillMasteries
                 }
             }
 
-            foreach (var kvp in list)
+            foreach (KeyValuePair<Mobile, InternalItem> kvp in list)
             {
                 DoDamage(kvp.Key, kvp.Value);
             }
@@ -140,7 +140,7 @@ namespace Server.Spells.SkillMasteries
 
         public override void OnExpire()
         {
-            foreach (var item in Items)
+            foreach (InternalItem item in Items)
             {
                 item.Delete();
             }
@@ -186,7 +186,7 @@ namespace Server.Spells.SkillMasteries
         [DispellableField]
         public class InternalItem : Item
         {
-            public override bool BlocksFit { get { return true; } }
+            public override bool BlocksFit => true;
 
             public InternalItem(Mobile caster, int itemID, Point3D loc, Map map)
                 : base(itemID)
@@ -215,7 +215,7 @@ namespace Server.Spells.SkillMasteries
             {
                 base.Serialize(writer);
 
-                writer.Write((int)0); // version
+                writer.Write(0); // version
             }
 
             public override void Deserialize(GenericReader reader)

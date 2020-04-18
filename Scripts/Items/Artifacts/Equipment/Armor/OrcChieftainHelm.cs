@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class OrcChieftainHelm : OrcHelm
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public OrcChieftainHelm()
         {
@@ -22,74 +22,20 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1094924;
-            }
-        }// Orc Chieftain Helm [Replica]
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 23;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 23;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 3;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 150;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 150;
-            }
-        }
-        public override bool CanFortify
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override int LabelNumber => 1094924;// Orc Chieftain Helm [Replica]
+        public override int BasePhysicalResistance => 23;
+        public override int BaseFireResistance => 1;
+        public override int BaseColdResistance => 23;
+        public override int BasePoisonResistance => 3;
+        public override int BaseEnergyResistance => 5;
+        public override int InitMinHits => 150;
+        public override int InitMaxHits => 150;
+        public override bool CanFortify => false;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)1);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -98,9 +44,9 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (version < 1 && this.Hue == 0x3f) /* Pigmented? */
+            if (version < 1 && Hue == 0x3f) /* Pigmented? */
             {
-                this.Hue = 0x2a3;
+                Hue = 0x2a3;
             }
         }
     }

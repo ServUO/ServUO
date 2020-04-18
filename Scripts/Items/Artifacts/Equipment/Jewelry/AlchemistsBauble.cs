@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class AlchemistsBauble : GoldBracelet
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public AlchemistsBauble()
         {
@@ -18,18 +18,12 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1070638;
-            }
-        }
+        public override int LabelNumber => 1070638;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

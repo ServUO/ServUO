@@ -10,8 +10,8 @@ namespace Server.Engines.HuntsmasterChallenge
     public class HuntMaster : BaseVendor
     {
         private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
-        protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }
-        public override bool IsActiveVendor { get { return false; } }
+        protected override List<SBInfo> SBInfos => m_SBInfos;
+        public override bool IsActiveVendor => false;
 
         public override void InitSBInfo()
         {
@@ -27,7 +27,7 @@ namespace Server.Engines.HuntsmasterChallenge
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(this.Location, 4))
+            if (from.InRange(Location, 4))
             {
                 from.CloseGump(typeof(BasicInfoGump));
                 from.SendGump(new BasicInfoGump(1155750, 1155726));
@@ -90,7 +90,7 @@ namespace Server.Engines.HuntsmasterChallenge
 
             public override void OnClick()
             {
-                Mobile from = this.Owner.From;
+                Mobile from = Owner.From;
 
                 if (HuntingPermit.HasPermit(from))
                     from.SendLocalizedMessage(1155702); // You already have a hunting permit.
@@ -153,7 +153,7 @@ namespace Server.Engines.HuntsmasterChallenge
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

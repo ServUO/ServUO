@@ -47,29 +47,11 @@ namespace Server.Mobiles
         {
         }
 
-        public override TribeType Tribe { get { return TribeType.Fey; } }
+        public override TribeType Tribe => TribeType.Fey;
 
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override int Hides
-        {
-            get
-            {
-                return 8;
-            }
-        }
-        public override HideType HideType
-        {
-            get
-            {
-                return HideType.Spined;
-            }
-        }
+        public override int Meat => 1;
+        public override int Hides => 8;
+        public override HideType HideType => HideType.Spined;
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Rich);
@@ -80,7 +62,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

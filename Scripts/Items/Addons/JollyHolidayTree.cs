@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class JollyHolidayTreeAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new JollyHolidayTreeDeed(DisplayName); } }
-        public override bool ForceShowProperties { get { return true; } }
+        public override BaseAddonDeed Deed => new JollyHolidayTreeDeed(DisplayName);
+        public override bool ForceShowProperties => true;
 
         private string _DisplayName;
 
@@ -56,7 +56,7 @@ namespace Server.Items
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-                writer.Write((int)0);
+                writer.Write(0);
             }
 
             public override void Deserialize(GenericReader reader)
@@ -74,7 +74,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             writer.Write(_DisplayName);
         }
@@ -90,8 +90,8 @@ namespace Server.Items
 
     public class JollyHolidayTreeDeed : BaseAddonDeed
     {
-        public override BaseAddon Addon { get { return new JollyHolidayTreeAddon(DisplayName); } }
-        public override int LabelNumber { get { return 1159256; } } // Jolly Holiday Tree
+        public override BaseAddon Addon => new JollyHolidayTreeAddon(DisplayName);
+        public override int LabelNumber => 1159256;  // Jolly Holiday Tree
 
         private string _DisplayName;
 
@@ -141,7 +141,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             writer.Write(_DisplayName);
         }

@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class KatrinasCrook : ShepherdsCrook
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public KatrinasCrook()
             : base()
@@ -19,34 +19,10 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1079789;
-            }
-        }// Katrina's Crook
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 11;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int LabelNumber => 1079789;// Katrina's Crook
+        public override int ArtifactRarity => 11;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

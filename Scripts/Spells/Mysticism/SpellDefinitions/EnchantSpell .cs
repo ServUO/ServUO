@@ -10,8 +10,8 @@ namespace Server.Spells.Mysticism
     {
         private static readonly string ModName = "EnchantAttribute";
 
-        public override SpellCircle Circle { get { return SpellCircle.Second; } }
-        public override bool ClearHandsOnCast { get { return false; } }
+        public override SpellCircle Circle => SpellCircle.Second;
+        public override bool ClearHandsOnCast => false;
 
         public BaseWeapon Weapon { get; set; }
         public AosWeaponAttribute Attribute { get; set; }
@@ -32,7 +32,7 @@ namespace Server.Spells.Mysticism
         public EnchantSpell(Mobile caster, Item scroll, BaseWeapon weapon, AosWeaponAttribute attribute) : base(caster, scroll, m_Info)
         {
             Weapon = weapon;
-            this.Attribute = attribute;
+            Attribute = attribute;
         }
 
         public override bool CheckCast()
@@ -52,14 +52,14 @@ namespace Server.Spells.Mysticism
                         Caster.CloseGump(typeof(EnchantSpellGump));
                     }
 
-                    var gump = new EnchantSpellGump(Caster, Scroll, wep);
+                    EnchantSpellGump gump = new EnchantSpellGump(Caster, Scroll, wep);
                     int serial = gump.Serial;
 
                     Caster.SendGump(gump);
 
                     Timer.DelayCall(TimeSpan.FromSeconds(30), () =>
                     {
-                        var current = Caster.FindGump(typeof(EnchantSpellGump));
+                        Gump current = Caster.FindGump(typeof(EnchantSpellGump));
 
                         if (current != null && current.Serial == serial)
                         {
@@ -128,13 +128,13 @@ namespace Server.Spells.Mysticism
                 int sec = (int)Caster.Skills[DamageSkill].Value;
 
                 int value = (60 * (prim + sec)) / 240;
-                double duration = ((double)(prim + sec) / 2.0) + 30.0;
+                double duration = ((prim + sec) / 2.0) + 30.0;
                 int malus = 0;
 
                 if (Table == null)
                     Table = new Dictionary<Mobile, EnchantmentTimer>();
 
-                Enhancement.SetValue(Caster, this.Attribute, value, ModName);
+                Enhancement.SetValue(Caster, Attribute, value, ModName);
 
                 if (prim >= 80 && sec >= 80 && Weapon.Attributes.SpellChanneling == 0)
                 {
@@ -143,11 +143,11 @@ namespace Server.Spells.Mysticism
                     malus = 1;
                 }
 
-                Table[Caster] = new EnchantmentTimer(Caster, Weapon, this.Attribute, value, malus, duration);
+                Table[Caster] = new EnchantmentTimer(Caster, Weapon, Attribute, value, malus, duration);
 
                 int loc;
 
-                switch (this.Attribute)
+                switch (Attribute)
                 {
                     default:
                     case AosWeaponAttribute.HitLightning: loc = 1060423; break;
@@ -241,7 +241,7 @@ namespace Server.Spells.Mysticism
             AttributeValue = value;
             CastingMalus = malus;
 
-            this.Start();
+            Start();
         }
 
         protected override void OnTick()

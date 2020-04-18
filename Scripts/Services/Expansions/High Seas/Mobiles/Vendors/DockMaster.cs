@@ -11,11 +11,11 @@ namespace Server.Mobiles
         public static readonly int DryDockDistance = 300;
         public static readonly int DryDockAmount = 2500;
 
-        public override bool IsActiveVendor { get { return false; } }
-        public override bool IsInvulnerable { get { return true; } }
+        public override bool IsActiveVendor => false;
+        public override bool IsInvulnerable => true;
 
         private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
-        protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }
+        protected override List<SBInfo> SBInfos => m_SBInfos;
 
         public override void InitSBInfo()
         {
@@ -47,7 +47,7 @@ namespace Server.Mobiles
 
             public override void OnClick()
             {
-                var boat = BaseBoat.GetBoat(m_From);
+                BaseBoat boat = BaseBoat.GetBoat(m_From);
 
                 if (boat != null && m_DockMaster.InRange(boat.Location, 100))
                     boat.BeginDryDock(m_From, m_DockMaster);
@@ -81,7 +81,7 @@ namespace Server.Mobiles
                     return;
                 }
 
-                var boat = BaseBoat.GetBoat(m_From);
+                BaseBoat boat = BaseBoat.GetBoat(m_From);
 
                 if (boat != null && m_DockMaster.InRange(boat.Location, 50))
                     m_DockMaster.TryRetrieveHold(m_From, boat);
@@ -133,7 +133,7 @@ namespace Server.Mobiles
 
             Point3D pnt = Point3D.Zero;
 
-            if (!CanDropCrate(ref pnt, this.Map))
+            if (!CanDropCrate(ref pnt, Map))
             {
                 SayTo(from, 1116517); //Arrrgh!  My dock has no more room.  Please come back later.
                 from.BankBox.DropItem(crate);
@@ -143,7 +143,7 @@ namespace Server.Mobiles
             else
             {
                 from.SendLocalizedMessage(1116542, ShipCrate.DT.ToString()); //Yer ship has been unloaded to a crate inside this here warehouse.  You have ~1_time~ minutes to get yer goods or it be gone.
-                crate.MoveToWorld(pnt, this.Map);
+                crate.MoveToWorld(pnt, Map);
             }
 
             if (cantMove)
@@ -194,12 +194,12 @@ namespace Server.Mobiles
 
         public BaseBoat GetBoatInRegion(Mobile from)
         {
-            if (this.Map == null || this.Map == Map.Internal || this.Region == null)
+            if (Map == null || Map == Map.Internal || Region == null)
                 return null;
 
-            foreach (Rectangle3D rec in this.Region.Area)
+            foreach (Rectangle3D rec in Region.Area)
             {
-                IPooledEnumerable eable = this.Map.GetItemsInBounds(new Rectangle2D(rec.Start.X, rec.Start.Y, rec.Width, rec.Height));
+                IPooledEnumerable eable = Map.GetItemsInBounds(new Rectangle2D(rec.Start.X, rec.Start.Y, rec.Width, rec.Height));
 
                 foreach (Item item in eable)
                 {
@@ -223,7 +223,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

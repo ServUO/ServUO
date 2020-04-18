@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class AnniversaryBag18th : Bag
     {
-        public override int LabelNumber { get { return 1156141; } } // 18th Anniversary Gift Bag
+        public override int LabelNumber => 1156141;  // 18th Anniversary Gift Bag
 
         [Constructable]
         public AnniversaryBag18th()
@@ -28,7 +28,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

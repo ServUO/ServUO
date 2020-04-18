@@ -15,25 +15,13 @@ namespace Server.Items
         {
         }
 
-        public override int DexOffset
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override TimeSpan Duration
-        {
-            get
-            {
-                return TimeSpan.FromMinutes(2.0);
-            }
-        }
+        public override int DexOffset => 10;
+        public override TimeSpan Duration => TimeSpan.FromMinutes(2.0);
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

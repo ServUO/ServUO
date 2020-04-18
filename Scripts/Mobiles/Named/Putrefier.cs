@@ -9,43 +9,43 @@ namespace Server.Mobiles
         [Constructable]
         public Putrefier()
         {
-            this.Name = "Putrefier";
-            this.Hue = 63;
+            Name = "Putrefier";
+            Hue = 63;
 
-            this.SetStr(1057, 1400);
-            this.SetDex(232, 560);
-            this.SetInt(201, 440);
+            SetStr(1057, 1400);
+            SetDex(232, 560);
+            SetInt(201, 440);
 
-            this.SetHits(3010, 4092);
+            SetHits(3010, 4092);
 
-            this.SetDamage(27, 34);
+            SetDamage(27, 34);
 
-            this.SetDamageType(ResistanceType.Physical, 50);
-            this.SetDamageType(ResistanceType.Fire, 0);
-            this.SetDamageType(ResistanceType.Poison, 50);
-            this.SetDamageType(ResistanceType.Energy, 0);
+            SetDamageType(ResistanceType.Physical, 50);
+            SetDamageType(ResistanceType.Fire, 0);
+            SetDamageType(ResistanceType.Poison, 50);
+            SetDamageType(ResistanceType.Energy, 0);
 
-            this.SetResistance(ResistanceType.Physical, 65, 80);
-            this.SetResistance(ResistanceType.Fire, 65, 80);
-            this.SetResistance(ResistanceType.Cold, 50, 60);
-            this.SetResistance(ResistanceType.Poison, 100);
-            this.SetResistance(ResistanceType.Energy, 40, 50);
+            SetResistance(ResistanceType.Physical, 65, 80);
+            SetResistance(ResistanceType.Fire, 65, 80);
+            SetResistance(ResistanceType.Cold, 50, 60);
+            SetResistance(ResistanceType.Poison, 100);
+            SetResistance(ResistanceType.Energy, 40, 50);
 
-            this.SetSkill(SkillName.Wrestling, 111.2, 128.0);
-            this.SetSkill(SkillName.Tactics, 115.2, 125.2);
-            this.SetSkill(SkillName.MagicResist, 143.4, 170.0);
-            this.SetSkill(SkillName.Anatomy, 44.6, 67.0);
-            this.SetSkill(SkillName.Magery, 117.6, 118.8);
-            this.SetSkill(SkillName.EvalInt, 113.0, 128.8);
-            this.SetSkill(SkillName.Meditation, 41.4, 85.0);
-            this.SetSkill(SkillName.Poisoning, 45.0, 50.0);
+            SetSkill(SkillName.Wrestling, 111.2, 128.0);
+            SetSkill(SkillName.Tactics, 115.2, 125.2);
+            SetSkill(SkillName.MagicResist, 143.4, 170.0);
+            SetSkill(SkillName.Anatomy, 44.6, 67.0);
+            SetSkill(SkillName.Magery, 117.6, 118.8);
+            SetSkill(SkillName.EvalInt, 113.0, 128.8);
+            SetSkill(SkillName.Meditation, 41.4, 85.0);
+            SetSkill(SkillName.Poisoning, 45.0, 50.0);
 
-            this.Fame = 24000;
-            this.Karma = -24000;
+            Fame = 24000;
+            Karma = -24000;
 
             for (int i = 0; i < Utility.RandomMinMax(0, 2); i++)
             {
-                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
         }
 
@@ -67,37 +67,25 @@ namespace Server.Mobiles
                 c.DropItem(new ParagonChest(Name, 5));
         }
 
-        public override bool GivesMLMinorArtifact
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison HitPoison
-        {
-            get
-            {
-                return Poison.Deadly;
-            }
-        }// Becomes Lethal with Paragon bonus   
+        public override bool GivesMLMinorArtifact => true;
+        public override Poison HitPoison => Poison.Deadly;// Becomes Lethal with Paragon bonus   
         public override void OnDamagedBySpell(Mobile attacker)
         {
             base.OnDamagedBySpell(attacker);
 
-            this.DoCounter(attacker);
+            DoCounter(attacker);
         }
 
         public override void OnGotMeleeAttack(Mobile attacker)
         {
             base.OnGotMeleeAttack(attacker);
 
-            this.DoCounter(attacker);
+            DoCounter(attacker);
         }
 
         private void DoCounter(Mobile attacker)
         {
-            if (this.Map == null || (attacker is BaseCreature && ((BaseCreature)attacker).BardProvoked))
+            if (Map == null || (attacker is BaseCreature && ((BaseCreature)attacker).BardProvoked))
                 return;
 
             if (0.2 > Utility.RandomDouble())
@@ -121,17 +109,17 @@ namespace Server.Mobiles
                 if (target == null || !target.InRange(this, 25))
                     target = attacker;
 
-                this.Animate(10, 4, 1, true, false, 0);
+                Animate(10, 4, 1, true, false, 0);
 
                 List<Mobile> targets = new List<Mobile>();
                 IPooledEnumerable eable = target.GetMobilesInRange(8);
 
                 foreach (Mobile m in eable)
                 {
-                    if (m == this || !this.CanBeHarmful(m))
+                    if (m == this || !CanBeHarmful(m))
                         continue;
 
-                    if (m is BaseCreature && (((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned || ((BaseCreature)m).Team != this.Team))
+                    if (m is BaseCreature && (((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned || ((BaseCreature)m).Team != Team))
                         targets.Add(m);
                     else if (m.Player)
                         targets.Add(m);
@@ -140,9 +128,9 @@ namespace Server.Mobiles
 
                 for (int i = 0; i < targets.Count; ++i)
                 {
-                    Mobile m = (Mobile)targets[i];
+                    Mobile m = targets[i];
 
-                    this.DoHarmful(m);
+                    DoHarmful(m);
 
                     AOS.Damage(m, this, Utility.RandomMinMax(20, 25), true, 0, 0, 0, 100, 0);
 
@@ -157,15 +145,15 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.UltraRich, 3);
-            this.AddLoot(LootPack.MedScrolls, 2);
+            AddLoot(LootPack.UltraRich, 3);
+            AddLoot(LootPack.MedScrolls, 2);
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

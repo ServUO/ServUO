@@ -2,21 +2,15 @@ namespace Server.Items
 {
     public class SkitteringHopperCostume : BaseCostume
     {
-        public override string CreatureName { get { return "skittering hopper"; } }
+        public override string CreatureName => "skittering hopper";
 
         [Constructable]
         public SkitteringHopperCostume() : base()
         {
-            this.CostumeBody = 302;
+            CostumeBody = 302;
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1114240;
-            }
-        }// skittering hopper costume
+        public override int LabelNumber => 1114240;// skittering hopper costume
 
         public SkitteringHopperCostume(Serial serial) : base(serial)
         {
@@ -26,7 +20,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

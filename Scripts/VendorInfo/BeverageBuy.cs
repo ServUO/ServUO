@@ -24,13 +24,7 @@ namespace Server.Mobiles
                 Name = (1042965 + (int)content).ToString();
         }
 
-        public override bool CanCacheDisplay
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool CanCacheDisplay => false;
         public override IEntity GetEntity()
         {
             return (IEntity)Activator.CreateInstance(Type, new object[] { m_Content });

@@ -87,10 +87,10 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             writer.Write((int)m_State);
-            writer.Write((Item)m_Controller);
+            writer.Write(m_Controller);
             writer.Write((int)m_Type);
         }
 

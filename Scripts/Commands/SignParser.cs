@@ -134,10 +134,10 @@ namespace Server.Commands
 
             public SignEntry(string text, Point3D pt, int itemID, int mapLoc)
             {
-                this.m_Text = text;
-                this.m_Location = pt;
-                this.m_ItemID = itemID;
-                this.m_Map = mapLoc;
+                m_Text = text;
+                m_Location = pt;
+                m_ItemID = itemID;
+                m_Map = mapLoc;
             }
 
             public static int GetIdForMap(Map map)
@@ -322,18 +322,18 @@ namespace Server.Commands
             public BritGump(SignSaveTarget target)
                 : base(30, 20)
             {
-                this.m_Target = target;
-                this.Dragable = false;
-                this.Resizable = false;
-                this.Closable = false;
+                m_Target = target;
+                Dragable = false;
+                Resizable = false;
+                Closable = false;
 
-                this.AddPage(0);
-                this.AddBackground(0, 0, 550, 440, 5054);
-                this.AddBackground(10, 10, 530, 420, 3000);
+                AddPage(0);
+                AddBackground(0, 0, 550, 440, 5054);
+                AddBackground(10, 10, 530, 420, 3000);
 
-                this.AddLabel(20, 20, 0, "Add this sign to both facets?");
-                this.AddButton(20, 40, 2453, 2454, 0, GumpButtonType.Reply, 0);
-                this.AddButton(450, 40, 2450, 2451, 1, GumpButtonType.Reply, 0);
+                AddLabel(20, 20, 0, "Add this sign to both facets?");
+                AddButton(20, 40, 2453, 2454, 0, GumpButtonType.Reply, 0);
+                AddButton(450, 40, 2450, 2451, 1, GumpButtonType.Reply, 0);
             }
 
             public override void OnResponse(NetState sender, RelayInfo info)

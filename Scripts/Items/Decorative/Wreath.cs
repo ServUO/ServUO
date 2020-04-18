@@ -6,8 +6,8 @@ namespace Server.Items
     [FlipableAttribute(0xA12E, 0xA12F)]
     public class HolidayWreath : Item, IDyable
     {
-        public override int LabelNumber { get { return 1029004; } } // wreath
-        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber => 1029004;  // wreath
+        public override bool IsArtifact => true;
 
         public int MadeID { get; set; }
 
@@ -33,9 +33,9 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
-            writer.Write((int)MadeID);
+            writer.Write(MadeID);
         }
 
         public override void Deserialize(GenericReader reader)

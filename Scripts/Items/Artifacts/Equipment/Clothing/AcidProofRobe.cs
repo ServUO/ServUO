@@ -2,12 +2,12 @@ namespace Server.Items
 {
     public class AcidProofRobe : Robe
     {
-        public override int LabelNumber { get { return 1095236; } }// Acid-Proof Robe [Replica]
-        public override int BaseFireResistance { get { return 4; } }
-        public override int InitMinHits { get { return 150; } }
-        public override int InitMaxHits { get { return 150; } }
-        public override bool CanFortify { get { return false; } }
-        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber => 1095236; // Acid-Proof Robe [Replica]
+        public override int BaseFireResistance => 4;
+        public override int InitMinHits => 150;
+        public override int InitMaxHits => 150;
+        public override bool CanFortify => false;
+        public override bool IsArtifact => true;
 
         [Constructable]
         public AcidProofRobe()
@@ -24,7 +24,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)

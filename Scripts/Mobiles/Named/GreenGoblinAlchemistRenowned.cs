@@ -44,28 +44,10 @@ namespace Server.Mobiles
         {
         }
 
-        public override Type[] UniqueSAList
-        {
-            get
-            {
-                return new Type[] { typeof(ObsidianEarrings), typeof(TheImpalersPick) };
-            }
-        }
-        public override Type[] SharedSAList
-        {
-            get
-            {
-                return new Type[] { };
-            }
-        }
+        public override Type[] UniqueSAList => new Type[] { typeof(ObsidianEarrings), typeof(TheImpalersPick) };
+        public override Type[] SharedSAList => new Type[] { };
 
-        public override bool AllureImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool AllureImmune => true;
 
         public override int GetAngerSound() { return 0x600; }
         public override int GetIdleSound() { return 0x600; }
@@ -75,13 +57,13 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich, 2);
+            AddLoot(LootPack.FilthyRich, 2);
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

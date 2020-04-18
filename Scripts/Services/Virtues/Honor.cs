@@ -24,7 +24,7 @@ namespace Server.Services.Virtues
 
         public static void ActivateEmbrace(PlayerMobile pm)
         {
-            var duration = GetHonorDuration(pm);
+            int duration = GetHonorDuration(pm);
             int usedPoints;
 
             if (pm.Virtues.Honor < 4399)
@@ -99,12 +99,12 @@ namespace Server.Services.Virtues
                 return;
             }
 
-            var waitTime = DateTime.UtcNow - pm.LastHonorUse;
+            TimeSpan waitTime = DateTime.UtcNow - pm.LastHonorUse;
 
             if (waitTime < UseDelay)
             {
-                var remainingTime = UseDelay - waitTime;
-                var remainingMinutes = (int)Math.Ceiling(remainingTime.TotalMinutes);
+                TimeSpan remainingTime = UseDelay - waitTime;
+                int remainingMinutes = (int)Math.Ceiling(remainingTime.TotalMinutes);
 
                 pm.SendLocalizedMessage(
                     1063240,
@@ -117,9 +117,9 @@ namespace Server.Services.Virtues
 
         private static void Honor(PlayerMobile source, Mobile target)
         {
-            var honorTarget = target as IHonorTarget;
-            var reg = (GuardedRegion)source.Region.GetRegion(typeof(GuardedRegion));
-            var map = source.Map;
+            IHonorTarget honorTarget = target as IHonorTarget;
+            GuardedRegion reg = (GuardedRegion)source.Region.GetRegion(typeof(GuardedRegion));
+            Map map = source.Map;
 
             if (honorTarget == null)
                 return;
@@ -146,7 +146,7 @@ namespace Server.Services.Virtues
                 return;
             }
 
-            var cret = target as BaseCreature;
+            BaseCreature cret = target as BaseCreature;
 
             if (target.Body.IsHuman && (cret == null || (!cret.AlwaysAttackable && !cret.AlwaysMurderer)))
             {
@@ -196,7 +196,7 @@ namespace Server.Services.Virtues
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                var pm = from as PlayerMobile;
+                PlayerMobile pm = from as PlayerMobile;
 
                 if (pm == null)
                     return;
@@ -268,13 +268,13 @@ namespace Server.Services.Virtues
             Granted
         }
 
-        public PlayerMobile Source { get { return m_Source; } }
+        public PlayerMobile Source => m_Source;
 
-        public Mobile Target { get { return m_Target; } }
+        public Mobile Target => m_Target;
 
-        public int PerfectionDamageBonus { get { return m_Perfection; } }
+        public int PerfectionDamageBonus => m_Perfection;
 
-        public int PerfectionLuckBonus { get { return (m_Perfection * m_Perfection) / 10; } }
+        public int PerfectionLuckBonus => (m_Perfection * m_Perfection) / 10;
 
         public void OnSourceDamaged(Mobile from, int amount)
         {
@@ -328,12 +328,12 @@ namespace Server.Services.Virtues
             if (from != m_Source || m_Perfection == 100)
                 return;
 
-            var bushido = (int)from.Skills.Bushido.Value;
+            int bushido = (int)from.Skills.Bushido.Value;
 
             if (bushido < 50)
                 return;
 
-            var damagebonus = bushido / 10;
+            int damagebonus = bushido / 10;
 
             m_Perfection += damagebonus;
 
@@ -407,11 +407,11 @@ namespace Server.Services.Virtues
         {
             Cancel();
 
-            var targetFame = m_Target.Fame;
+            int targetFame = m_Target.Fame;
 
             if (m_Perfection > 0)
             {
-                var restore = Math.Min(m_Perfection * (targetFame + 5000) / 25000, 10);
+                int restore = Math.Min(m_Perfection * (targetFame + 5000) / 25000, 10);
 
                 m_Source.Hits += restore;
                 m_Source.Stam += restore;
@@ -421,14 +421,14 @@ namespace Server.Services.Virtues
             if (m_Source.Virtues.Honor > targetFame)
                 return;
 
-            var dGain = (targetFame / 100) * (m_HonorDamage / m_TotalDamage); //Initial honor gain is 100th of the monsters honor
+            double dGain = (targetFame / 100) * (m_HonorDamage / m_TotalDamage); //Initial honor gain is 100th of the monsters honor
 
             if (m_HonorDamage == m_TotalDamage && m_FirstHit == FirstHit.Granted)
                 dGain = dGain * 1.5; //honor gain is increased alot more if the combat was fully honorable
             else
                 dGain = dGain * 0.9;
 
-            var gain = Math.Min((int)dGain, 200);
+            int gain = Math.Min((int)dGain, 200);
 
             if (gain < 1)
                 gain = 1; // Minimum gain of 1 honor when the honor is under the monsters fame
@@ -439,7 +439,7 @@ namespace Server.Services.Virtues
                 return;
             }
 
-            var gainedPath = false;
+            bool gainedPath = false;
 
             if (VirtueHelper.Award(m_Source, VirtueName.Honor, gain, ref gainedPath))
             {

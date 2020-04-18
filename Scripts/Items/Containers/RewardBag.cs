@@ -39,18 +39,12 @@ namespace Server.Items
         {
         }
 
-        public virtual int ItemAmount
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        public virtual int ItemAmount => 0;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -74,18 +68,12 @@ namespace Server.Items
         {
         }
 
-        public override int ItemAmount
-        {
-            get
-            {
-                return 1;
-            }
-        }
+        public override int ItemAmount => 1;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -109,18 +97,12 @@ namespace Server.Items
         {
         }
 
-        public override int ItemAmount
-        {
-            get
-            {
-                return 2;
-            }
-        }
+        public override int ItemAmount => 2;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -144,18 +126,12 @@ namespace Server.Items
         {
         }
 
-        public override int ItemAmount
-        {
-            get
-            {
-                return 3;
-            }
-        }
+        public override int ItemAmount => 3;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -179,18 +155,12 @@ namespace Server.Items
         {
         }
 
-        public override int ItemAmount
-        {
-            get
-            {
-                return 4;
-            }
-        }
+        public override int ItemAmount => 4;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

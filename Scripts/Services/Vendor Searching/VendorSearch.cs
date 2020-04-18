@@ -137,7 +137,7 @@ namespace Server.Engines.VendorSearching
 
                 if (item is CommodityDeed && ((CommodityDeed)item).Commodity is ICommodity)
                 {
-                    var commodity = (ICommodity)((CommodityDeed)item).Commodity;
+                    ICommodity commodity = (ICommodity)((CommodityDeed)item).Commodity;
 
                     if (!string.IsNullOrEmpty(commodity.Description.String))
                     {
@@ -466,7 +466,7 @@ namespace Server.Engines.VendorSearching
 
             if (item is IResource)
             {
-                var resName = CraftResources.GetName(((IResource)item).Resource);
+                string resName = CraftResources.GetName(((IResource)item).Resource);
 
                 if (resName.ToLower().IndexOf(searchstring.ToLower()) >= 0)
                 {
@@ -476,7 +476,7 @@ namespace Server.Engines.VendorSearching
 
             if (item is ICommodity)
             {
-                var commodity = (ICommodity)item;
+                ICommodity commodity = (ICommodity)item;
 
                 string name = commodity.Description.String;
 
@@ -578,7 +578,7 @@ namespace Server.Engines.VendorSearching
 
                     if (Contexts != null)
                     {
-                        foreach (var kvp in Contexts.Where(kvp => !kvp.Value.IsEmpty))
+                        foreach (KeyValuePair<PlayerMobile, SearchCriteria> kvp in Contexts.Where(kvp => !kvp.Value.IsEmpty))
                         {
                             writer.Write(kvp.Key);
                             kvp.Value.Serialize(writer);
@@ -599,7 +599,7 @@ namespace Server.Engines.VendorSearching
                     for (int i = 0; i < count; i++)
                     {
                         PlayerMobile pm = reader.ReadMobile() as PlayerMobile;
-                        var criteria = new SearchCriteria(reader);
+                        SearchCriteria criteria = new SearchCriteria(reader);
 
                         if (pm != null)
                         {
@@ -901,7 +901,7 @@ namespace Server.Engines.VendorSearching
     public class SearchCategory
     {
         public Category Category { get; private set; }
-        public int Label { get { return (int)Category; } }
+        public int Label => (int)Category;
 
         public List<Tuple<object, int, int>> Objects { get; private set; }
 
@@ -1006,10 +1006,7 @@ namespace Server.Engines.VendorSearching
             }*/
         }
 
-        public bool IsEmpty
-        {
-            get { return Details.Count == 0 && !EntryPrice && string.IsNullOrEmpty(SearchName) && SearchType == Layer.Invalid; }
-        }
+        public bool IsEmpty => Details.Count == 0 && !EntryPrice && string.IsNullOrEmpty(SearchName) && SearchType == Layer.Invalid;
 
         public SearchCriteria(GenericReader reader)
         {
@@ -1040,8 +1037,8 @@ namespace Server.Engines.VendorSearching
         {
             writer.Write(2);
 
-            writer.Write((bool)Auction);
-            writer.Write((bool)EntryPrice);
+            writer.Write(Auction);
+            writer.Write(EntryPrice);
             writer.Write((int)SearchType);
             writer.Write(SearchName);
             writer.Write((int)SortBy);

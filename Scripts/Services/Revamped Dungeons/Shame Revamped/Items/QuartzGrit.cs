@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class QuartzGrit : Item
     {
-        public override int LabelNumber { get { return 1151808; } } // Quartz Grit
+        public override int LabelNumber => 1151808;  // Quartz Grit
 
         [Constructable]
         public QuartzGrit()
@@ -15,8 +15,8 @@ namespace Server.Items
         [Constructable]
         public QuartzGrit(int amount) : base(0x423A)
         {
-            this.Hue = 1151;
-            this.Weight = 1;
+            Hue = 1151;
+            Weight = 1;
 
             Stackable = true;
             Amount = amount;
@@ -35,7 +35,7 @@ namespace Server.Items
                 from.Backpack.ConsumeTotal(new Type[] { typeof(CursedOilstone), typeof(CorrosiveAsh) },
                                            new int[] { 1, 1 });
 
-                this.Consume();
+                Consume();
 
                 from.AddToBackpack(new WhetstoneOfEnervation());
                 from.SendLocalizedMessage(1151812); // You have managed to form the items into a rancid smelling, crag covered, hardened lump. In a moment of prescience, you realize what it must be named. The Whetstone of Enervation!

@@ -64,13 +64,7 @@ namespace Server.Items
         {
         }
 
-        public override bool DisplayLootType
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool DisplayLootType => true;
         [CommandProperty(AccessLevel.GameMaster)]
         public RepairSkillType RepairSkill
         {
@@ -142,7 +136,7 @@ namespace Server.Items
 
             list.Add(1071345, String.Format("{0:F1}", m_SkillLevel)); // Skill: ~1_val~
 
-            var desc = RepairSkillInfo.GetInfo(m_Skill).Description;
+            TextDefinition desc = RepairSkillInfo.GetInfo(m_Skill).Description;
 
             if (desc != null)
             {
@@ -230,7 +224,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             writer.Write((int)m_Skill);
             writer.Write(m_SkillLevel);
@@ -310,48 +304,12 @@ namespace Server.Items
         {
         }
 
-        public static RepairSkillInfo[] Table
-        {
-            get
-            {
-                return m_Table;
-            }
-        }
-        public TextDefinition NotNearbyMessage
-        {
-            get
-            {
-                return m_NotNearbyMessage;
-            }
-        }
-        public TextDefinition Name
-        {
-            get
-            {
-                return m_Name;
-            }
-        }
-        public TextDefinition Description
-        {
-            get
-            {
-                return m_Description;
-            }
-        }
-        public CraftSystem System
-        {
-            get
-            {
-                return m_System;
-            }
-        }
-        public Type[] NearbyTypes
-        {
-            get
-            {
-                return m_NearbyTypes;
-            }
-        }
+        public static RepairSkillInfo[] Table => m_Table;
+        public TextDefinition NotNearbyMessage => m_NotNearbyMessage;
+        public TextDefinition Name => m_Name;
+        public TextDefinition Description => m_Description;
+        public CraftSystem System => m_System;
+        public Type[] NearbyTypes => m_NearbyTypes;
         public static RepairSkillInfo GetInfo(RepairSkillType type)
         {
             int v = (int)type;

@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class PoppiesDust : Item, IUsesRemaining
     {
-        public override int LabelNumber { get { return 1095223; } } // poppies dust
+        public override int LabelNumber => 1095223;  // poppies dust
 
         private int m_UsesRemaining;
 
@@ -46,8 +46,8 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
-            writer.Write((int)m_UsesRemaining);
+            writer.Write(0);
+            writer.Write(m_UsesRemaining);
         }
 
         public override void Deserialize(GenericReader reader)

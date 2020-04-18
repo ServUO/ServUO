@@ -9,7 +9,7 @@ namespace Server.Items
     [FlipableAttribute(0x1EBA, 0x1EBB)]
     public class TaxidermyKit : Item
     {
-        public override int LabelNumber { get { return 1041279; } } // a taxidermy kit
+        public override int LabelNumber => 1041279;  // a taxidermy kit
 
         [Constructable]
         public TaxidermyKit() : base(0x1EBA)
@@ -25,7 +25,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -52,7 +52,7 @@ namespace Server.Items
             }
         }
 
-        public static TrophyInfo[] TrophyInfos { get { return m_Table; } }
+        public static TrophyInfo[] TrophyInfos => m_Table;
         private static readonly TrophyInfo[] m_Table = new TrophyInfo[]
         {
             new TrophyInfo( typeof( BrownBear ),      0x1E60,       1041093, 1041107 ),
@@ -118,10 +118,10 @@ namespace Server.Items
             private readonly int m_DeedNumber;
             private readonly int m_AddonNumber;
 
-            public Type CreatureType { get { return m_CreatureType; } }
-            public int NorthID { get { return m_NorthID; } }
-            public int DeedNumber { get { return m_DeedNumber; } }
-            public int AddonNumber { get { return m_AddonNumber; } }
+            public Type CreatureType => m_CreatureType;
+            public int NorthID => m_NorthID;
+            public int DeedNumber => m_DeedNumber;
+            public int AddonNumber => m_AddonNumber;
         }
 
 
@@ -260,7 +260,7 @@ namespace Server.Items
                                         return;
                                     }
                                     #endregion
-                                    var deed = new TrophyDeed(m_Table[i], hunter, weight);
+                                    TrophyDeed deed = new TrophyDeed(m_Table[i], hunter, weight);
 
                                     if (dateCaught != DateTime.MinValue)
                                     {
@@ -292,7 +292,7 @@ namespace Server.Items
 
     public class TrophyAddon : Item, IAddon
     {
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         private int m_WestID;
         private int m_NorthID;
@@ -323,7 +323,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime DateCaught { get; set; }
 
-        public override int LabelNumber { get { return m_AddonNumber; } }
+        public override int LabelNumber => m_AddonNumber;
 
         [Constructable]
         public TrophyAddon(Mobile from, int itemID, int westID, int northID, int deedNumber, int addonNumber) : this(from, itemID, westID, northID, deedNumber, addonNumber, null, 0, DateTime.MinValue)
@@ -366,21 +366,21 @@ namespace Server.Items
 
         public override void OnAosSingleClick(Mobile from)
         {
-            ObjectPropertyList opl = this.PropertyList;
+            ObjectPropertyList opl = PropertyList;
 
-            if (this.AddonNumber == 1041110)
+            if (AddonNumber == 1041110)
             {
-                from.Send(new UnicodeMessage(this.Serial, this.ItemID, MessageType.Label, 0x3B2, 3, "ENU", "", "A large fish trophy"));
+                from.Send(new UnicodeMessage(Serial, ItemID, MessageType.Label, 0x3B2, 3, "ENU", "", "A large fish trophy"));
 
-                if (this.Hunter != null)
-                    from.Send(new UnicodeMessage(this.Serial, this.ItemID, MessageType.Label, 0x3B2, 3, "ENU", "", "Caught by " + this.Hunter.Name));
+                if (Hunter != null)
+                    from.Send(new UnicodeMessage(Serial, ItemID, MessageType.Label, 0x3B2, 3, "ENU", "", "Caught by " + Hunter.Name));
 
-                from.Send(new UnicodeMessage(this.Serial, this.ItemID, MessageType.Label, 0x3B2, 3, "ENU", "", this.AnimalWeight + " stones"));
+                from.Send(new UnicodeMessage(Serial, ItemID, MessageType.Label, 0x3B2, 3, "ENU", "", AnimalWeight + " stones"));
             }
             else
             {
                 if (opl.Header > 0)
-                    from.Send(new MessageLocalized(this.Serial, this.ItemID, MessageType.Label, 0x3B2, 3, opl.Header, this.Name, opl.HeaderArgs));
+                    from.Send(new MessageLocalized(Serial, ItemID, MessageType.Label, 0x3B2, 3, opl.Header, Name, opl.HeaderArgs));
             }
         }
 
@@ -390,10 +390,10 @@ namespace Server.Items
 
         public bool CouldFit(IPoint3D p, Map map)
         {
-            if (!map.CanFit(p.X, p.Y, p.Z, this.ItemData.Height))
+            if (!map.CanFit(p.X, p.Y, p.Z, ItemData.Height))
                 return false;
 
-            if (this.ItemID == m_NorthID)
+            if (ItemID == m_NorthID)
                 return BaseAddon.IsWall(p.X, p.Y - 1, p.Z, map); // North wall
             else
                 return BaseAddon.IsWall(p.X - 1, p.Y, p.Z, map); // West wall
@@ -403,17 +403,17 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)2); // version
+            writer.Write(2); // version
 
             writer.Write(DateCaught);
 
-            writer.Write((Mobile)m_Hunter);
-            writer.Write((int)m_AnimalWeight);
+            writer.Write(m_Hunter);
+            writer.Write(m_AnimalWeight);
 
-            writer.Write((int)m_WestID);
-            writer.Write((int)m_NorthID);
-            writer.Write((int)m_DeedNumber);
-            writer.Write((int)m_AddonNumber);
+            writer.Write(m_WestID);
+            writer.Write(m_NorthID);
+            writer.Write(m_DeedNumber);
+            writer.Write(m_AddonNumber);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -450,31 +450,28 @@ namespace Server.Items
 
         private void FixMovingCrate()
         {
-            if (this.Deleted)
+            if (Deleted)
                 return;
 
-            if (this.Movable || this.IsLockedDown)
+            if (Movable || IsLockedDown)
             {
-                Item deed = this.Deed;
+                Item deed = Deed;
 
-                if (this.Parent is Item)
+                if (Parent is Item)
                 {
-                    ((Item)this.Parent).AddItem(deed);
-                    deed.Location = this.Location;
+                    ((Item)Parent).AddItem(deed);
+                    deed.Location = Location;
                 }
                 else
                 {
-                    deed.MoveToWorld(this.Location, this.Map);
+                    deed.MoveToWorld(Location, Map);
                 }
 
                 Delete();
             }
         }
 
-        public Item Deed
-        {
-            get { return new TrophyDeed(m_WestID, m_NorthID, m_DeedNumber, m_AddonNumber, m_Hunter, m_AnimalWeight, DateCaught); }
-        }
+        public Item Deed => new TrophyDeed(m_WestID, m_NorthID, m_DeedNumber, m_AddonNumber, m_Hunter, m_AnimalWeight, DateCaught);
 
         void IChopable.OnChop(Mobile user)
         {
@@ -489,7 +486,7 @@ namespace Server.Items
             {
                 if (from.InRange(GetWorldLocation(), 1))
                 {
-                    from.AddToBackpack(this.Deed);
+                    from.AddToBackpack(Deed);
                     Delete();
                 }
                 else
@@ -532,7 +529,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime DateCaught { get; set; }
 
-        public override int LabelNumber { get { return m_DeedNumber; } }
+        public override int LabelNumber => m_DeedNumber;
 
         [Constructable]
         public TrophyDeed(int westID, int northID, int deedNumber, int addonNumber)
@@ -577,17 +574,17 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)2); // version
+            writer.Write(2); // version
 
             writer.Write(DateCaught);
 
-            writer.Write((Mobile)m_Hunter);
-            writer.Write((int)m_AnimalWeight);
+            writer.Write(m_Hunter);
+            writer.Write(m_AnimalWeight);
 
-            writer.Write((int)m_WestID);
-            writer.Write((int)m_NorthID);
-            writer.Write((int)m_DeedNumber);
-            writer.Write((int)m_AddonNumber);
+            writer.Write(m_WestID);
+            writer.Write(m_NorthID);
+            writer.Write(m_DeedNumber);
+            writer.Write(m_AddonNumber);
         }
 
         public override void Deserialize(GenericReader reader)

@@ -6,9 +6,9 @@ namespace Server.Items
         public TuitionReimbursementForm()
             : base(0xE3A)
         {
-            this.LootType = LootType.Blessed;
-            this.Weight = 1;
-            this.Hue = 0x395;
+            LootType = LootType.Blessed;
+            Weight = 1;
+            Hue = 0x395;
         }
 
         public TuitionReimbursementForm(Serial serial)
@@ -16,18 +16,12 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074610;
-            }
-        }// Tuition Reimbursement Form (in triplicate)
+        public override int LabelNumber => 1074610;// Tuition Reimbursement Form (in triplicate)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

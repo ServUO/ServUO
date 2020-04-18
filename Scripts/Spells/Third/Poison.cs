@@ -10,13 +10,7 @@ namespace Server.Spells.Third
             9051,
             Reagent.Nightshade);
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Third;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Third;
 
         public PoisonSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)

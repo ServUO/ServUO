@@ -15,18 +15,12 @@ namespace Server.Multis
         {
         }
 
-        public override Mobile Brigands
-        {
-            get
-            {
-                return new ElfBrigand();
-            }
-        }
+        public override Mobile Brigands => new ElfBrigand();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

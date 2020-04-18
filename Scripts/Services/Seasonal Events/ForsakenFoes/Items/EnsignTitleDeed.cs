@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class EnsignTitleDeed : BaseRewardTitleDeed
     {
-        public override TextDefinition Title { get { return new TextDefinition(1159214); } } // Ensign
+        public override TextDefinition Title => new TextDefinition(1159214);  // Ensign
 
         [Constructable]
         public EnsignTitleDeed()
@@ -17,7 +17,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

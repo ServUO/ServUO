@@ -25,7 +25,7 @@ namespace Server.Items
             : base(serial)
         { }
 
-        public override int LabelNumber { get { return 1041078; } } // a disguise kit
+        public override int LabelNumber => 1041078;  // a disguise kit
 
         public override void Serialize(GenericWriter writer)
         {
@@ -43,7 +43,7 @@ namespace Server.Items
 
         public bool ValidateUse(Mobile from)
         {
-            var pm = from as PlayerMobile;
+            PlayerMobile pm = from as PlayerMobile;
 
             if (!IsChildOf(from.Backpack))
             {
@@ -170,24 +170,24 @@ namespace Server.Items
                 return;
             }
 
-            var switches = info.Switches;
+            int[] switches = info.Switches;
 
             if (switches.Length == 0)
             {
                 return;
             }
 
-            var switched = switches[0];
-            var type = switched % 2;
-            var index = switched / 2;
+            int switched = switches[0];
+            int type = switched % 2;
+            int index = switched / 2;
 
-            var hair = (type == 0);
+            bool hair = (type == 0);
 
-            var entries = (hair ? m_HairEntries : m_BeardEntries);
+            DisguiseEntry[] entries = (hair ? m_HairEntries : m_BeardEntries);
 
             if (index >= 0 && index < entries.Length)
             {
-                var entry = entries[index];
+                DisguiseEntry entry = entries[index];
 
                 if (entry == null)
                 {
@@ -208,7 +208,7 @@ namespace Server.Items
 
                 if (m_From is PlayerMobile)
                 {
-                    var pm = (PlayerMobile)m_From;
+                    PlayerMobile pm = (PlayerMobile)m_From;
 
                     if (hair)
                     {
@@ -241,17 +241,17 @@ namespace Server.Items
                 AddHtmlLocalized(180, 320, 150, 35, nextNumber, false, false);
             }
 
-            for (var i = 0; i < entries.Length; ++i)
+            for (int i = 0; i < entries.Length; ++i)
             {
-                var entry = entries[i];
+                DisguiseEntry entry = entries[i];
 
                 if (entry == null)
                 {
                     continue;
                 }
 
-                var x = (i % 2) * 205;
-                var y = (i / 2) * 55;
+                int x = (i % 2) * 205;
+                int y = (i / 2) * 55;
 
                 if (entry.m_GumpID != 0)
                 {
@@ -287,7 +287,7 @@ namespace Server.Items
     {
         private static readonly Dictionary<Mobile, InternalTimer> m_Timers = new Dictionary<Mobile, InternalTimer>();
 
-        public static Dictionary<Mobile, InternalTimer> Timers { get { return m_Timers; } }
+        public static Dictionary<Mobile, InternalTimer> Timers => m_Timers;
 
         public static void CreateTimer(Mobile m, TimeSpan delay)
         {
@@ -304,7 +304,7 @@ namespace Server.Items
         {
             if (m_Timers.ContainsKey(m))
             {
-                var t = m_Timers[m];
+                InternalTimer t = m_Timers[m];
 
                 if (t != null)
                 {
@@ -322,7 +322,7 @@ namespace Server.Items
         {
             if (m_Timers.ContainsKey(m))
             {
-                var t = m_Timers[m];
+                InternalTimer t = m_Timers[m];
 
                 if (t != null)
                 {
@@ -339,7 +339,7 @@ namespace Server.Items
         {
             if (m_Timers.ContainsKey(m))
             {
-                var t = m_Timers[m];
+                InternalTimer t = m_Timers[m];
 
                 if (t != null)
                 {
@@ -357,7 +357,7 @@ namespace Server.Items
         {
             if (m_Timers.ContainsKey(m))
             {
-                var t = m_Timers[m];
+                InternalTimer t = m_Timers[m];
 
                 if (t != null && t.Expires > DateTime.UtcNow)
                 {

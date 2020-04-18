@@ -7,7 +7,7 @@ namespace Server.Items
         public GargoyleFloorMirror()
             : base(0x403A)
         {
-            this.Weight = 10;
+            Weight = 10;
         }
 
         public GargoyleFloorMirror(Serial serial)
@@ -19,7 +19,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

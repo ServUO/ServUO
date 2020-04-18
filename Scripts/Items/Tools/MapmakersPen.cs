@@ -9,14 +9,14 @@ namespace Server.Items
         public MapmakersPen()
             : base(0x0FBF)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         [Constructable]
         public MapmakersPen(int uses)
             : base(uses, 0x0FBF)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public MapmakersPen(Serial serial)
@@ -24,25 +24,13 @@ namespace Server.Items
         {
         }
 
-        public override CraftSystem CraftSystem
-        {
-            get
-            {
-                return DefCartography.CraftSystem;
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1044167;
-            }
-        }// mapmaker's pen
+        public override CraftSystem CraftSystem => DefCartography.CraftSystem;
+        public override int LabelNumber => 1044167;// mapmaker's pen
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -51,8 +39,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (this.Weight == 2.0)
-                this.Weight = 1.0;
+            if (Weight == 2.0)
+                Weight = 1.0;
         }
     }
 }

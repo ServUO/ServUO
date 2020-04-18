@@ -14,42 +14,36 @@ namespace Server.Commands
         private string m_Condition;
         public Batch()
         {
-            this.Commands = new string[] { "Batch" };
-            this.ListOptimized = true;
+            Commands = new string[] { "Batch" };
+            ListOptimized = true;
 
-            this.m_BatchCommands = new ArrayList();
-            this.m_Condition = "";
+            m_BatchCommands = new ArrayList();
+            m_Condition = "";
         }
 
         public BaseCommandImplementor Scope
         {
             get
             {
-                return this.m_Scope;
+                return m_Scope;
             }
             set
             {
-                this.m_Scope = value;
+                m_Scope = value;
             }
         }
         public string Condition
         {
             get
             {
-                return this.m_Condition;
+                return m_Condition;
             }
             set
             {
-                this.m_Condition = value;
+                m_Condition = value;
             }
         }
-        public ArrayList BatchCommands
-        {
-            get
-            {
-                return this.m_BatchCommands;
-            }
-        }
+        public ArrayList BatchCommands => m_BatchCommands;
         public static void Initialize()
         {
             CommandSystem.Register("Batch", AccessLevel.Counselor, new CommandEventHandler(Batch_OnCommand));
@@ -68,25 +62,25 @@ namespace Server.Commands
         {
             if (list.Count == 0)
             {
-                this.LogFailure("Nothing was found to use this command on.");
+                LogFailure("Nothing was found to use this command on.");
                 return;
             }
 
             try
             {
-                BaseCommand[] commands = new BaseCommand[this.m_BatchCommands.Count];
-                CommandEventArgs[] eventArgs = new CommandEventArgs[this.m_BatchCommands.Count];
+                BaseCommand[] commands = new BaseCommand[m_BatchCommands.Count];
+                CommandEventArgs[] eventArgs = new CommandEventArgs[m_BatchCommands.Count];
 
-                for (int i = 0; i < this.m_BatchCommands.Count; ++i)
+                for (int i = 0; i < m_BatchCommands.Count; ++i)
                 {
-                    BatchCommand bc = (BatchCommand)this.m_BatchCommands[i];
+                    BatchCommand bc = (BatchCommand)m_BatchCommands[i];
 
                     string commandString, argString;
                     string[] args;
 
                     bc.GetDetails(out commandString, out argString, out args);
 
-                    BaseCommand command = this.m_Scope.Commands[commandString];
+                    BaseCommand command = m_Scope.Commands[commandString];
 
                     commands[i] = command;
                     eventArgs[i] = new CommandEventArgs(e.Mobile, commandString, argString, args);
@@ -101,7 +95,7 @@ namespace Server.Commands
                         e.Mobile.SendMessage("You do not have access to that command: {0}.", commandString);
                         return;
                     }
-                    else if (!command.ValidateArgs(this.m_Scope, eventArgs[i]))
+                    else if (!command.ValidateArgs(m_Scope, eventArgs[i]))
                     {
                         return;
                     }
@@ -110,7 +104,7 @@ namespace Server.Commands
                 for (int i = 0; i < commands.Length; ++i)
                 {
                     BaseCommand command = commands[i];
-                    BatchCommand bc = (BatchCommand)this.m_BatchCommands[i];
+                    BatchCommand bc = (BatchCommand)m_BatchCommands[i];
 
                     if (list.Count > 20)
                         CommandLogging.Enabled = false;
@@ -180,25 +174,25 @@ namespace Server.Commands
 
         public bool Run(Mobile from)
         {
-            if (this.m_Scope == null)
+            if (m_Scope == null)
             {
                 from.SendMessage("You must select the batch command scope.");
                 return false;
             }
-            else if (this.m_Condition.Length > 0 && !this.m_Scope.SupportsConditionals)
+            else if (m_Condition.Length > 0 && !m_Scope.SupportsConditionals)
             {
                 from.SendMessage("This command scope does not support conditionals.");
                 return false;
             }
-            else if (this.m_Condition.Length > 0 && !Utility.InsensitiveStartsWith(this.m_Condition, "where"))
+            else if (m_Condition.Length > 0 && !Utility.InsensitiveStartsWith(m_Condition, "where"))
             {
                 from.SendMessage("The condition field must start with \"where\".");
                 return false;
             }
 
-            string[] args = CommandSystem.Split(this.m_Condition);
+            string[] args = CommandSystem.Split(m_Condition);
 
-            this.m_Scope.Process(from, this, args);
+            m_Scope.Process(from, this, args);
 
             return true;
         }
@@ -210,47 +204,47 @@ namespace Server.Commands
         private string m_Object;
         public BatchCommand(string command, string obj)
         {
-            this.m_Command = command;
-            this.m_Object = obj;
+            m_Command = command;
+            m_Object = obj;
         }
 
         public string Command
         {
             get
             {
-                return this.m_Command;
+                return m_Command;
             }
             set
             {
-                this.m_Command = value;
+                m_Command = value;
             }
         }
         public string Object
         {
             get
             {
-                return this.m_Object;
+                return m_Object;
             }
             set
             {
-                this.m_Object = value;
+                m_Object = value;
             }
         }
         public void GetDetails(out string command, out string argString, out string[] args)
         {
-            int indexOf = this.m_Command.IndexOf(' ');
+            int indexOf = m_Command.IndexOf(' ');
 
             if (indexOf >= 0)
             {
-                argString = this.m_Command.Substring(indexOf + 1);
+                argString = m_Command.Substring(indexOf + 1);
 
-                command = this.m_Command.Substring(0, indexOf);
+                command = m_Command.Substring(0, indexOf);
                 args = CommandSystem.Split(argString);
             }
             else
             {
                 argString = "";
-                command = this.m_Command.ToLower();
+                command = m_Command.ToLower();
                 args = new string[0];
             }
         }
@@ -263,105 +257,105 @@ namespace Server.Commands
         public BatchGump(Mobile from, Batch batch)
             : base(30, 30)
         {
-            this.m_From = from;
-            this.m_Batch = batch;
+            m_From = from;
+            m_Batch = batch;
 
-            this.Render();
+            Render();
         }
 
         public void Render()
         {
-            this.AddNewPage();
+            AddNewPage();
 
             /* Header */
-            this.AddEntryHeader(20);
-            this.AddEntryHtml(180, this.Center("Batch Commands"));
-            this.AddEntryHeader(20);
-            this.AddNewLine();
+            AddEntryHeader(20);
+            AddEntryHtml(180, Center("Batch Commands"));
+            AddEntryHeader(20);
+            AddNewLine();
 
-            this.AddEntryHeader(9);
-            this.AddEntryLabel(191, "Run Batch");
-            this.AddEntryButton(20, ArrowRightID1, ArrowRightID2, this.GetButtonID(1, 0, 0), ArrowRightWidth, ArrowRightHeight);
-            this.AddNewLine();
+            AddEntryHeader(9);
+            AddEntryLabel(191, "Run Batch");
+            AddEntryButton(20, ArrowRightID1, ArrowRightID2, GetButtonID(1, 0, 0), ArrowRightWidth, ArrowRightHeight);
+            AddNewLine();
 
-            this.AddBlankLine();
+            AddBlankLine();
 
             /* Scope */
-            this.AddEntryHeader(20);
-            this.AddEntryHtml(180, this.Center("Scope"));
-            this.AddEntryHeader(20);
-            this.AddNewLine();
+            AddEntryHeader(20);
+            AddEntryHtml(180, Center("Scope"));
+            AddEntryHeader(20);
+            AddNewLine();
 
-            this.AddEntryHeader(9);
-            this.AddEntryLabel(191, this.m_Batch.Scope == null ? "Select Scope" : this.m_Batch.Scope.Accessors[0]);
-            this.AddEntryButton(20, ArrowRightID1, ArrowRightID2, this.GetButtonID(1, 0, 1), ArrowRightWidth, ArrowRightHeight);
-            this.AddNewLine();
+            AddEntryHeader(9);
+            AddEntryLabel(191, m_Batch.Scope == null ? "Select Scope" : m_Batch.Scope.Accessors[0]);
+            AddEntryButton(20, ArrowRightID1, ArrowRightID2, GetButtonID(1, 0, 1), ArrowRightWidth, ArrowRightHeight);
+            AddNewLine();
 
-            this.AddBlankLine();
+            AddBlankLine();
 
             /* Condition */
-            this.AddEntryHeader(20);
-            this.AddEntryHtml(180, this.Center("Condition"));
-            this.AddEntryHeader(20);
-            this.AddNewLine();
+            AddEntryHeader(20);
+            AddEntryHtml(180, Center("Condition"));
+            AddEntryHeader(20);
+            AddNewLine();
 
-            this.AddEntryHeader(9);
-            this.AddEntryText(202, 0, this.m_Batch.Condition);
-            this.AddEntryHeader(9);
-            this.AddNewLine();
+            AddEntryHeader(9);
+            AddEntryText(202, 0, m_Batch.Condition);
+            AddEntryHeader(9);
+            AddNewLine();
 
-            this.AddBlankLine();
+            AddBlankLine();
 
             /* Commands */
-            this.AddEntryHeader(20);
-            this.AddEntryHtml(180, this.Center("Commands"));
-            this.AddEntryHeader(20);
+            AddEntryHeader(20);
+            AddEntryHtml(180, Center("Commands"));
+            AddEntryHeader(20);
 
-            for (int i = 0; i < this.m_Batch.BatchCommands.Count; ++i)
+            for (int i = 0; i < m_Batch.BatchCommands.Count; ++i)
             {
-                BatchCommand bc = (BatchCommand)this.m_Batch.BatchCommands[i];
+                BatchCommand bc = (BatchCommand)m_Batch.BatchCommands[i];
 
-                this.AddNewLine();
+                AddNewLine();
 
-                this.AddImageTiled(this.CurrentX, this.CurrentY, 9, 2, 0x24A8);
-                this.AddImageTiled(this.CurrentX, this.CurrentY + 2, 2, this.EntryHeight + this.OffsetSize + this.EntryHeight - 4, 0x24A8);
-                this.AddImageTiled(this.CurrentX, this.CurrentY + this.EntryHeight + this.OffsetSize + this.EntryHeight - 2, 9, 2, 0x24A8);
-                this.AddImageTiled(this.CurrentX + 3, this.CurrentY + 3, 6, this.EntryHeight + this.EntryHeight - 4 - this.OffsetSize, this.HeaderGumpID);
+                AddImageTiled(CurrentX, CurrentY, 9, 2, 0x24A8);
+                AddImageTiled(CurrentX, CurrentY + 2, 2, EntryHeight + OffsetSize + EntryHeight - 4, 0x24A8);
+                AddImageTiled(CurrentX, CurrentY + EntryHeight + OffsetSize + EntryHeight - 2, 9, 2, 0x24A8);
+                AddImageTiled(CurrentX + 3, CurrentY + 3, 6, EntryHeight + EntryHeight - 4 - OffsetSize, HeaderGumpID);
 
-                this.IncreaseX(9);
-                this.AddEntryText(202, 1 + (i * 2), bc.Command);
-                this.AddEntryHeader(9, 2);
+                IncreaseX(9);
+                AddEntryText(202, 1 + (i * 2), bc.Command);
+                AddEntryHeader(9, 2);
 
-                this.AddNewLine();
+                AddNewLine();
 
-                this.IncreaseX(9);
-                this.AddEntryText(202, 2 + (i * 2), bc.Object);
+                IncreaseX(9);
+                AddEntryText(202, 2 + (i * 2), bc.Object);
             }
 
-            this.AddNewLine();
+            AddNewLine();
 
-            this.AddEntryHeader(9);
-            this.AddEntryLabel(191, "Add New Command");
-            this.AddEntryButton(20, ArrowRightID1, ArrowRightID2, this.GetButtonID(1, 0, 2), ArrowRightWidth, ArrowRightHeight);
+            AddEntryHeader(9);
+            AddEntryLabel(191, "Add New Command");
+            AddEntryButton(20, ArrowRightID1, ArrowRightID2, GetButtonID(1, 0, 2), ArrowRightWidth, ArrowRightHeight);
 
-            this.FinishPage();
+            FinishPage();
         }
 
         public override void OnResponse(NetState sender, RelayInfo info)
         {
             int type, index;
 
-            if (!this.SplitButtonID(info.ButtonID, 1, out type, out index))
+            if (!SplitButtonID(info.ButtonID, 1, out type, out index))
                 return;
 
             TextRelay entry = info.GetTextEntry(0);
 
             if (entry != null)
-                this.m_Batch.Condition = entry.Text;
+                m_Batch.Condition = entry.Text;
 
-            for (int i = this.m_Batch.BatchCommands.Count - 1; i >= 0; --i)
+            for (int i = m_Batch.BatchCommands.Count - 1; i >= 0; --i)
             {
-                BatchCommand sc = (BatchCommand)this.m_Batch.BatchCommands[i];
+                BatchCommand sc = (BatchCommand)m_Batch.BatchCommands[i];
 
                 entry = info.GetTextEntry(1 + (i * 2));
 
@@ -374,7 +368,7 @@ namespace Server.Commands
                     sc.Object = entry.Text;
 
                 if (sc.Command.Length == 0 && sc.Object.Length == 0)
-                    this.m_Batch.BatchCommands.RemoveAt(i);
+                    m_Batch.BatchCommands.RemoveAt(i);
             }
 
             switch (type)
@@ -385,17 +379,17 @@ namespace Server.Commands
                         {
                             case 0: // run
                                 {
-                                    this.m_Batch.Run(this.m_From);
+                                    m_Batch.Run(m_From);
                                     break;
                                 }
                             case 1: // set scope
                                 {
-                                    this.m_From.SendGump(new BatchScopeGump(this.m_From, this.m_Batch));
+                                    m_From.SendGump(new BatchScopeGump(m_From, m_Batch));
                                     return;
                                 }
                             case 2: // add command
                                 {
-                                    this.m_Batch.BatchCommands.Add(new BatchCommand("", ""));
+                                    m_Batch.BatchCommands.Add(new BatchCommand("", ""));
                                     break;
                                 }
                         }
@@ -404,7 +398,7 @@ namespace Server.Commands
                     }
             }
 
-            this.m_From.SendGump(new BatchGump(this.m_From, this.m_Batch));
+            m_From.SendGump(new BatchGump(m_From, m_Batch));
         }
     }
 
@@ -415,43 +409,43 @@ namespace Server.Commands
         public BatchScopeGump(Mobile from, Batch batch)
             : base(30, 30)
         {
-            this.m_From = from;
-            this.m_Batch = batch;
+            m_From = from;
+            m_Batch = batch;
 
-            this.Render();
+            Render();
         }
 
         public void Render()
         {
-            this.AddNewPage();
+            AddNewPage();
 
             /* Header */
-            this.AddEntryHeader(20);
-            this.AddEntryHtml(140, this.Center("Change Scope"));
-            this.AddEntryHeader(20);
+            AddEntryHeader(20);
+            AddEntryHtml(140, Center("Change Scope"));
+            AddEntryHeader(20);
 
             /* Options */
             for (int i = 0; i < BaseCommandImplementor.Implementors.Count; ++i)
             {
                 BaseCommandImplementor impl = BaseCommandImplementor.Implementors[i];
 
-                if (this.m_From.AccessLevel < impl.AccessLevel)
+                if (m_From.AccessLevel < impl.AccessLevel)
                     continue;
 
-                this.AddNewLine();
+                AddNewLine();
 
-                this.AddEntryLabel(20 + this.OffsetSize + 140, impl.Accessors[0]);
-                this.AddEntryButton(20, ArrowRightID1, ArrowRightID2, this.GetButtonID(1, 0, i), ArrowRightWidth, ArrowRightHeight);
+                AddEntryLabel(20 + OffsetSize + 140, impl.Accessors[0]);
+                AddEntryButton(20, ArrowRightID1, ArrowRightID2, GetButtonID(1, 0, i), ArrowRightWidth, ArrowRightHeight);
             }
 
-            this.FinishPage();
+            FinishPage();
         }
 
         public override void OnResponse(NetState sender, RelayInfo info)
         {
             int type, index;
 
-            if (this.SplitButtonID(info.ButtonID, 1, out type, out index))
+            if (SplitButtonID(info.ButtonID, 1, out type, out index))
             {
                 switch (type)
                 {
@@ -461,8 +455,8 @@ namespace Server.Commands
                             {
                                 BaseCommandImplementor impl = BaseCommandImplementor.Implementors[index];
 
-                                if (this.m_From.AccessLevel >= impl.AccessLevel)
-                                    this.m_Batch.Scope = impl;
+                                if (m_From.AccessLevel >= impl.AccessLevel)
+                                    m_Batch.Scope = impl;
                             }
 
                             break;
@@ -470,7 +464,7 @@ namespace Server.Commands
                 }
             }
 
-            this.m_From.SendGump(new BatchGump(this.m_From, this.m_Batch));
+            m_From.SendGump(new BatchGump(m_From, m_Batch));
         }
     }
 }

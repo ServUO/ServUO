@@ -14,13 +14,13 @@ namespace Server.Spells.SkillMasteries
                 9002
             );
 
-        public override int RequiredMana { get { return 30; } }
-        public override SkillName CastSkill { get { return SkillName.Fencing; } }
-        public override SkillName DamageSkill { get { return SkillName.Tactics; } }
+        public override int RequiredMana => 30;
+        public override SkillName CastSkill => SkillName.Fencing;
+        public override SkillName DamageSkill => SkillName.Tactics;
 
         private int _DefenseMod;
 
-        public int AttackModifier { get { return (GetMasteryLevel() * 6) * Phase; } }
+        public int AttackModifier => (GetMasteryLevel() * 6) * Phase;
         public int DefenseModifier
         {
             get
@@ -33,7 +33,7 @@ namespace Server.Spells.SkillMasteries
             }
         }
 
-        public int DefenseModDisplayed { get { return Math.Min(18, DefenseModifier); } }
+        public int DefenseModDisplayed => Math.Min(18, DefenseModifier);
 
         public int _Phase;
         public int Phase
@@ -71,7 +71,7 @@ namespace Server.Spells.SkillMasteries
                 return false;
             }
 
-            ThrustSpell spell = GetSpell(Caster, this.GetType()) as ThrustSpell;
+            ThrustSpell spell = GetSpell(Caster, GetType()) as ThrustSpell;
 
             if (spell != null)
             {
@@ -120,7 +120,7 @@ namespace Server.Spells.SkillMasteries
                 Phase++;
             }
 
-            damage = (int)((double)damage + ((double)damage * ((double)currentMod / 100.0)));
+            damage = (int)(damage + (damage * (currentMod / 100.0)));
             defender.FixedEffect(0x36BD, 0x1, 0xE, 0x776, 0);
 
             BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.ThrustDebuff, 1155989, 1156234, TimeSpan.FromSeconds(8), defender, DefenseModifier.ToString()));
@@ -139,7 +139,7 @@ namespace Server.Spells.SkillMasteries
         public override void OnGotHit(Mobile attacker, ref int damage)
         {
             if (Target == attacker && DefenseModifier > 0)
-                damage = (int)((double)damage - ((double)damage * ((double)DefenseModifier / 100.0)));
+                damage = (int)(damage - (damage * (DefenseModifier / 100.0)));
         }
 
         private bool CheckMana()

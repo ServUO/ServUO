@@ -61,21 +61,9 @@ namespace Server.Multis
 
         public override bool IsAosRules => true;
 
-        public override bool IsActive
-        {
-            get
-            {
-                return Customizer == null;
-            }
-        }
+        public override bool IsActive => Customizer == null;
 
-        public virtual int CustomizationCost
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        public virtual int CustomizationCost => 0;
 
         public bool IsFixture(Item item)
         {
@@ -556,13 +544,7 @@ namespace Server.Multis
             }
         }
 
-        public override Point3D BaseBanLocation
-        {
-            get
-            {
-                return new Point3D(Components.Min.X, Components.Height - 1 - Components.Center.Y, 0);
-            }
-        }
+        public override Point3D BaseBanLocation => new Point3D(Components.Min.X, Components.Height - 1 - Components.Center.Y, 0);
 
         public void CheckSignpost()
         {
@@ -694,16 +676,16 @@ namespace Server.Multis
 
         public override void Serialize(GenericWriter writer)
         {
-            writer.Write((int)5); // version
+            writer.Write(5); // version
 
             writer.Write(Signpost);
-            writer.Write((int)SignpostGraphic);
+            writer.Write(SignpostGraphic);
 
             writer.Write((int)Type);
 
             writer.Write(SignHanger);
 
-            writer.Write((int)LastRevision);
+            writer.Write(LastRevision);
             writer.Write(Fixtures, true);
 
             CurrentState.Serialize(writer);
@@ -715,13 +697,7 @@ namespace Server.Multis
 
         private int m_DefaultPrice;
 
-        public override int DefaultPrice
-        {
-            get
-            {
-                return m_DefaultPrice;
-            }
-        }
+        public override int DefaultPrice => m_DefaultPrice;
 
         public override void Deserialize(GenericReader reader)
         {
@@ -1696,7 +1672,7 @@ namespace Server.Multis
 
         public static void QueryDesignDetails(NetState state, PacketReader pvSrc)
         {
-            var multi = World.FindItem(pvSrc.ReadInt32()) as BaseMulti;
+            BaseMulti multi = World.FindItem(pvSrc.ReadInt32()) as BaseMulti;
 
             if (multi != null)
             {
@@ -1718,7 +1694,7 @@ namespace Server.Multis
 
             if (foundation != null && from.Map == foundation.Map)
             {
-                var range = foundation.GetUpdateRange(from);
+                int range = foundation.GetUpdateRange(from);
 
                 if (Utility.InRange(from.Location, foundation.GetWorldLocation(), range) && from.CanSee(foundation))
                 {
@@ -1898,25 +1874,25 @@ namespace Server.Multis
 
         public void Serialize(GenericWriter writer)
         {
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
             Components.Serialize(writer);
 
-            writer.Write((int)Fixtures.Length);
+            writer.Write(Fixtures.Length);
 
             for (int i = 0; i < Fixtures.Length; ++i)
             {
                 MultiTileEntry ent = Fixtures[i];
 
-                writer.Write((ushort)ent.m_ItemID);
-                writer.Write((short)ent.m_OffsetX);
-                writer.Write((short)ent.m_OffsetY);
-                writer.Write((short)ent.m_OffsetZ);
+                writer.Write(ent.m_ItemID);
+                writer.Write(ent.m_OffsetX);
+                writer.Write(ent.m_OffsetY);
+                writer.Write(ent.m_OffsetZ);
 
                 writer.Write((ulong)ent.m_Flags);
             }
 
-            writer.Write((int)Revision);
+            writer.Write(Revision);
         }
 
         public void OnRevised()
@@ -2233,7 +2209,7 @@ namespace Server.Multis
             EnsureCapacity(17);
 
             m_Stream.Write((short)0x20);
-            m_Stream.Write((int)house.Serial);
+            m_Stream.Write(house.Serial);
             m_Stream.Write((byte)0x04);
             m_Stream.Write((ushort)0x0000);
             m_Stream.Write((ushort)0xFFFF);
@@ -2250,7 +2226,7 @@ namespace Server.Multis
             EnsureCapacity(17);
 
             m_Stream.Write((short)0x20);
-            m_Stream.Write((int)house.Serial);
+            m_Stream.Write(house.Serial);
             m_Stream.Write((byte)0x05);
             m_Stream.Write((ushort)0x0000);
             m_Stream.Write((ushort)0xFFFF);
@@ -2267,8 +2243,8 @@ namespace Server.Multis
             EnsureCapacity(13);
 
             m_Stream.Write((short)0x1D);
-            m_Stream.Write((int)multi.Serial);
-            m_Stream.Write((int)state.Revision);
+            m_Stream.Write(multi.Serial);
+            m_Stream.Write(state.Revision);
         }
     }
 
@@ -2327,8 +2303,8 @@ namespace Server.Multis
 
             Write((byte)0x03); // Compression Type
             Write((byte)(response ? 0x01 : 0x00)); // Enable Response (0x00 or 0x01)
-            Write((int)serial); // Serial
-            Write((int)revision); // Revision Number
+            Write(serial); // Serial
+            Write(revision); // Revision Number
             Write((short)tiles.Length); // Tile Length
             Write((short)0); // Buffer length : reserved
             Write((byte)0); // Plane count : reserved

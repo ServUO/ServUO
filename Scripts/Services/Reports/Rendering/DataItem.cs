@@ -21,12 +21,12 @@ namespace Server.Engines.Reports
         private float _sweepSize;
         public DataItem(string label, string desc, float data, float start, float sweep, Color clr)
         {
-            this._label = label;
-            this._description = desc;
-            this._value = data;
-            this._startPos = start;
-            this._sweepSize = sweep;
-            this._color = clr;
+            _label = label;
+            _description = desc;
+            _value = data;
+            _startPos = start;
+            _sweepSize = sweep;
+            _color = clr;
         }
 
         private DataItem()
@@ -37,66 +37,66 @@ namespace Server.Engines.Reports
         {
             get
             {
-                return this._label;
+                return _label;
             }
             set
             {
-                this._label = value;
+                _label = value;
             }
         }
         public string Description
         {
             get
             {
-                return this._description;
+                return _description;
             }
             set
             {
-                this._description = value;
+                _description = value;
             }
         }
         public float Value
         {
             get
             {
-                return this._value;
+                return _value;
             }
             set
             {
-                this._value = value;
+                _value = value;
             }
         }
         public Color ItemColor
         {
             get
             {
-                return this._color;
+                return _color;
             }
             set
             {
-                this._color = value;
+                _color = value;
             }
         }
         public float StartPos
         {
             get
             {
-                return this._startPos;
+                return _startPos;
             }
             set
             {
-                this._startPos = value;
+                _startPos = value;
             }
         }
         public float SweepSize
         {
             get
             {
-                return this._sweepSize;
+                return _sweepSize;
             }
             set
             {
-                this._sweepSize = value;
+                _sweepSize = value;
             }
         }
     }
@@ -112,31 +112,31 @@ namespace Server.Engines.Reports
         {
             get
             {
-                return (DataItem)(this.List[index]);
+                return (DataItem)(List[index]);
             }
             set
             {
-                this.List[index] = value;
+                List[index] = value;
             }
         }
         public int Add(DataItem value)
         {
-            return this.List.Add(value);
+            return List.Add(value);
         }
 
         public int IndexOf(DataItem value)
         {
-            return this.List.IndexOf(value);
+            return List.IndexOf(value);
         }
 
         public bool Contains(DataItem value)
         {
-            return this.List.Contains(value);
+            return List.Contains(value);
         }
 
         public void Remove(DataItem value)
         {
-            this.List.Remove(value);
+            List.Remove(value);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Server.Misc
         public TreasuresOfTokunoPersistence()
             : base(1)
         {
-            this.Movable = false;
+            Movable = false;
 
             if (m_Instance == null || m_Instance.Deleted)
                 m_Instance = this;
@@ -21,20 +21,8 @@ namespace Server.Misc
             m_Instance = this;
         }
 
-        public static TreasuresOfTokunoPersistence Instance
-        {
-            get
-            {
-                return m_Instance;
-            }
-        }
-        public override string DefaultName
-        {
-            get
-            {
-                return "TreasuresOfTokuno Persistance - Internal";
-            }
-        }
+        public static TreasuresOfTokunoPersistence Instance => m_Instance;
+        public override string DefaultName => "TreasuresOfTokuno Persistance - Internal";
         public static void Initialize()
         {
             if (m_Instance == null)
@@ -45,7 +33,7 @@ namespace Server.Misc
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             writer.WriteEncodedInt((int)TreasuresOfTokuno.RewardEra);
             writer.WriteEncodedInt((int)TreasuresOfTokuno.DropEra);

@@ -74,30 +74,12 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int MaxCharges
-        {
-            get
-            {
-                return 999;
-            }
-        }
+        public int MaxCharges => 999;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual int MaxRecharges
-        {
-            get
-            {
-                return -1;
-            }
-        }
+        public virtual int MaxRecharges => -1;
 
-        public virtual string TranslocationItemName
-        {
-            get
-            {
-                return "bracelet of binding";
-            }
-        }
+        public virtual string TranslocationItemName => "bracelet of binding";
 
         [CommandProperty(AccessLevel.GameMaster)]
         public string Inscription
@@ -241,13 +223,13 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)1); // version
+            writer.WriteEncodedInt(1); // version
 
-            writer.WriteEncodedInt((int)m_Recharges);
+            writer.WriteEncodedInt(m_Recharges);
 
-            writer.WriteEncodedInt((int)m_Charges);
-            writer.Write((string)m_Inscription);
-            writer.Write((Item)Bound);
+            writer.WriteEncodedInt(m_Charges);
+            writer.Write(m_Inscription);
+            writer.Write(Bound);
         }
 
         public override void Deserialize(GenericReader reader)

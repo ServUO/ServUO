@@ -37,7 +37,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (m.InRange(this.GetWorldLocation(), 3))
+            if (m.InRange(GetWorldLocation(), 3))
             {
                 m.CloseGump(typeof(InternalGump));
                 m.SendGump(new InternalGump(this));
@@ -69,7 +69,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write(m_String);
             writer.Write(m_Number);

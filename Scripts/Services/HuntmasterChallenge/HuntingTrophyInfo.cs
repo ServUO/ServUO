@@ -44,7 +44,7 @@ namespace Server.Engines.HuntsmasterChallenge
     public class HuntingTrophyInfo
     {
         private static readonly List<HuntingTrophyInfo> m_Infos = new List<HuntingTrophyInfo>();
-        public static List<HuntingTrophyInfo> Infos { get { return m_Infos; } }
+        public static List<HuntingTrophyInfo> Infos => m_Infos;
 
         public static void Configure()
         {
@@ -88,34 +88,34 @@ namespace Server.Engines.HuntsmasterChallenge
         private readonly bool m_Complex;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public HuntType HuntType { get { return m_HuntType; } }
+        public HuntType HuntType => m_HuntType;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Type CreatureType { get { return m_CreatureType; } }
+        public Type CreatureType => m_CreatureType;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public MeasuredBy MeasuredBy { get { return m_MeasuredBy; } }
+        public MeasuredBy MeasuredBy => m_MeasuredBy;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int SouthID { get { return m_SouthID; } }
+        public int SouthID => m_SouthID;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int EastID { get { return m_EastID; } }
+        public int EastID => m_EastID;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public TextDefinition Species { get { return m_Species; } }
+        public TextDefinition Species => m_Species;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public TextDefinition TrophyName { get { return m_TrophyName; } }
+        public TextDefinition TrophyName => m_TrophyName;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int MinMeasurement { get { return m_MinMeasurement; } }
+        public int MinMeasurement => m_MinMeasurement;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int MaxMeasurement { get { return m_MaxMeasurement; } }
+        public int MaxMeasurement => m_MaxMeasurement;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Complex { get { return m_Complex; } }
+        public bool Complex => m_Complex;
 
         public HuntingTrophyInfo(HuntType type, Type creatureType, int southID, TextDefinition species, TextDefinition trophyName, int minMeasurement, int maxMeasurement, MeasuredBy measuredBy, bool complex)
             : this(type, creatureType, southID, southID + 1, species, trophyName, minMeasurement, maxMeasurement, measuredBy, complex)
@@ -151,7 +151,7 @@ namespace Server.Engines.HuntsmasterChallenge
         {
             for (int i = 0; i < HuntingTrophyInfo.Infos.Count; i++)
             {
-                var info = HuntingTrophyInfo.Infos[i];
+                HuntingTrophyInfo info = HuntingTrophyInfo.Infos[i];
 
                 if (info.Species.Number == number)
                 {

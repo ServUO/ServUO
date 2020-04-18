@@ -19,13 +19,7 @@ namespace Server.Engines.Reports
             return new BarGraph();
         }
 
-        public override PersistableType TypeID
-        {
-            get
-            {
-                return ThisTypeID;
-            }
-        }
+        public override PersistableType TypeID => ThisTypeID;
         #endregion
 
         private int m_Ticks;
@@ -43,22 +37,22 @@ namespace Server.Engines.Reports
         {
             get
             {
-                return this.m_Ticks;
+                return m_Ticks;
             }
             set
             {
-                this.m_Ticks = value;
+                m_Ticks = value;
             }
         }
         public BarGraphRenderMode RenderMode
         {
             get
             {
-                return this.m_RenderMode;
+                return m_RenderMode;
             }
             set
             {
-                this.m_RenderMode = value;
+                m_RenderMode = value;
             }
         }
 
@@ -66,22 +60,22 @@ namespace Server.Engines.Reports
         {
             get
             {
-                return this.m_xTitle;
+                return m_xTitle;
             }
             set
             {
-                this.m_xTitle = value;
+                m_xTitle = value;
             }
         }
         public string yTitle
         {
             get
             {
-                return this.m_yTitle;
+                return m_yTitle;
             }
             set
             {
-                this.m_yTitle = value;
+                m_yTitle = value;
             }
         }
 
@@ -89,22 +83,22 @@ namespace Server.Engines.Reports
         {
             get
             {
-                return this.m_FontSize;
+                return m_FontSize;
             }
             set
             {
-                this.m_FontSize = value;
+                m_FontSize = value;
             }
         }
         public int Interval
         {
             get
             {
-                return this.m_Interval;
+                return m_Interval;
             }
             set
             {
-                this.m_Interval = value;
+                m_Interval = value;
             }
         }
 
@@ -112,22 +106,22 @@ namespace Server.Engines.Reports
         {
             get
             {
-                return this.m_Regions;
+                return m_Regions;
             }
             set
             {
-                this.m_Regions = value;
+                m_Regions = value;
             }
         }
 
         public BarGraph(string name, string fileName, int ticks, string xTitle, string yTitle, BarGraphRenderMode rm)
         {
-            this.m_Name = name;
-            this.m_FileName = fileName;
-            this.m_Ticks = ticks;
-            this.m_xTitle = xTitle;
-            this.m_yTitle = yTitle;
-            this.m_RenderMode = rm;
+            m_Name = name;
+            m_FileName = fileName;
+            m_Ticks = ticks;
+            m_xTitle = xTitle;
+            m_yTitle = yTitle;
+            m_RenderMode = rm;
         }
 
         private BarGraph()
@@ -138,28 +132,28 @@ namespace Server.Engines.Reports
         {
             base.SerializeAttributes(op);
 
-            op.SetInt32("t", this.m_Ticks);
-            op.SetInt32("r", (int)this.m_RenderMode);
+            op.SetInt32("t", m_Ticks);
+            op.SetInt32("r", (int)m_RenderMode);
 
-            op.SetString("x", this.m_xTitle);
-            op.SetString("y", this.m_yTitle);
+            op.SetString("x", m_xTitle);
+            op.SetString("y", m_yTitle);
 
-            op.SetInt32("s", this.m_FontSize);
-            op.SetInt32("i", this.m_Interval);
+            op.SetInt32("s", m_FontSize);
+            op.SetInt32("i", m_Interval);
         }
 
         public override void DeserializeAttributes(PersistenceReader ip)
         {
             base.DeserializeAttributes(ip);
 
-            this.m_Ticks = ip.GetInt32("t");
-            this.m_RenderMode = (BarGraphRenderMode)ip.GetInt32("r");
+            m_Ticks = ip.GetInt32("t");
+            m_RenderMode = (BarGraphRenderMode)ip.GetInt32("r");
 
-            this.m_xTitle = Utility.Intern(ip.GetString("x"));
-            this.m_yTitle = Utility.Intern(ip.GetString("y"));
+            m_xTitle = Utility.Intern(ip.GetString("x"));
+            m_yTitle = Utility.Intern(ip.GetString("y"));
 
-            this.m_FontSize = ip.GetInt32("s");
-            this.m_Interval = ip.GetInt32("i");
+            m_FontSize = ip.GetInt32("s");
+            m_Interval = ip.GetInt32("i");
         }
 
         public static int LookupReportValue(Snapshot ss, string reportName, string valueName)

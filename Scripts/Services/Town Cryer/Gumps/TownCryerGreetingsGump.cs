@@ -8,7 +8,7 @@ namespace Server.Services.TownCryer
     public class TownCryerGreetingsGump : BaseTownCryerGump
     {
         public int Page { get; private set; }
-        public int Pages { get { return TownCryerSystem.GreetingsEntries.Count; } }
+        public int Pages => TownCryerSystem.GreetingsEntries.Count;
 
         public TownCryerGreetingEntry Entry { get; private set; }
 
@@ -22,7 +22,7 @@ namespace Server.Services.TownCryer
         {
             base.AddGumpLayout();
 
-            var list = new List<TownCryerGreetingEntry>(TownCryerSystem.GreetingsEntries);
+            List<TownCryerGreetingEntry> list = new List<TownCryerGreetingEntry>(TownCryerSystem.GreetingsEntries);
             list.Sort();
 
             Entry = list[0];
@@ -56,7 +56,7 @@ namespace Server.Services.TownCryer
             }
             else if (!String.IsNullOrEmpty(Entry.Body1.String))
             {
-                var str = Entry.Body1.String;
+                string str = Entry.Body1.String;
 
                 if (!String.IsNullOrEmpty(Entry.Body2))
                 {

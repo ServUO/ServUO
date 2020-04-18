@@ -1384,7 +1384,7 @@ namespace Server
         {
             if (Sockets != null)
             {
-                foreach (var socket in Sockets)
+                foreach (ItemSocket socket in Sockets)
                 {
                     socket.GetProperties(list);
                 }
@@ -1485,11 +1485,11 @@ namespace Server
 
             if (bounce != null)
             {
-                var stack = bounce.m_ParentStack;
+                object stack = bounce.m_ParentStack;
 
                 if (stack is Item)
                 {
-                    var s = (Item)stack;
+                    Item s = (Item)stack;
 
                     if (!s.Deleted)
                     {
@@ -1500,12 +1500,12 @@ namespace Server
                     }
                 }
 
-                var parent = bounce.m_Parent;
+                object parent = bounce.m_Parent;
 
                 if (parent is Item && !((Item)parent).Deleted)
                 {
                     Item p = (Item)parent;
-                    var root = p.RootParent;
+                    object root = p.RootParent;
 
                     if (p.IsAccessibleTo(from) && (!(root is Mobile) || ((Mobile)root).CheckNonlocalDrop(from, this, p)))
                     {
@@ -1580,7 +1580,7 @@ namespace Server
                 return true;
             }
 
-            var e = new CheckEquipItemEventArgs(m, this, message);
+            CheckEquipItemEventArgs e = new CheckEquipItemEventArgs(m, this, message);
 
             EventSink.InvokeCheckEquipItem(e);
 
@@ -1593,7 +1593,7 @@ namespace Server
             {
                 if (message)
                 {
-                    m.SendMessage("You do not own that item.");
+					m.SendLocalizedMessage(1153882); // You do not own that.
                 }
 
                 return false;
@@ -1799,7 +1799,7 @@ namespace Server
 
                     if (oldLocation.m_X != 0)
                     {
-                        var eable = m_Map.GetClientsInRange(oldLocation, Core.GlobalRadarRange - 4);
+                        IPooledEnumerable<NetState> eable = m_Map.GetClientsInRange(oldLocation, Core.GlobalRadarRange - 4);
 
                         foreach (NetState state in eable)
                         {
@@ -1820,7 +1820,7 @@ namespace Server
 
                 ReleaseWorldPackets();
 
-                var items = LookupItems();
+                List<Item> items = LookupItems();
 
                 if (items != null)
                 {
@@ -1841,7 +1841,7 @@ namespace Server
 
                 if (m_Map != null)
                 {
-                    var eable = m_Map.GetClientsInRange(m_Location, Core.GlobalRadarRange);
+                    IPooledEnumerable<NetState> eable = m_Map.GetClientsInRange(m_Location, Core.GlobalRadarRange);
 
                     foreach (NetState state in eable)
                     {
@@ -1946,10 +1946,7 @@ namespace Server
         ///		If true the item should be considered an artifact
         /// </summary>
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual bool IsArtifact
-        {
-            get { return this is IArtifact && ((IArtifact)this).ArtifactRarity > 0; }
-        }
+        public virtual bool IsArtifact => this is IArtifact && ((IArtifact)this).ArtifactRarity > 0;
 
         private static TimeSpan m_DDT = TimeSpan.FromMinutes(Config.Get("General.DefaultItemDecayTime", 60));
 
@@ -1965,22 +1962,10 @@ namespace Server
         public virtual TimeSpan DecayTime => TimeSpan.FromMinutes(m_DDT.TotalMinutes * DecayMultiplier);
 
         [CommandProperty(AccessLevel.Decorator)]
-        public virtual bool Decays
-        {
-            get
-            {
-                return DefaultDecaySetting && Movable && Visible && !HonestyItem;
-            }
-        }
+        public virtual bool Decays => DefaultDecaySetting && Movable && Visible && !HonestyItem;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public TimeSpan TimeToDecay
-        {
-            get
-            {
-                return TimeSpan.FromMinutes((DecayTime - (DateTime.UtcNow - LastMoved)).TotalMinutes);
-            }
-        }
+        public TimeSpan TimeToDecay => TimeSpan.FromMinutes((DecayTime - (DateTime.UtcNow - LastMoved)).TotalMinutes);
 
         public virtual bool OnDecay()
         {
@@ -2306,7 +2291,7 @@ namespace Server
                     {
                         Point3D worldLoc = GetWorldLocation();
 
-                        var eable = m_Map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
+                        IPooledEnumerable<NetState> eable = m_Map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
 
                         foreach (NetState state in eable)
                         {
@@ -2405,7 +2390,7 @@ namespace Server
                         SendRemovePacket();
                     }
 
-                    var items = LookupItems();
+                    List<Item> items = LookupItems();
 
                     if (items != null)
                     {
@@ -2494,7 +2479,7 @@ namespace Server
 
             if (Sockets != null)
             {
-                foreach (var socket in Sockets)
+                foreach (ItemSocket socket in Sockets)
                 {
                     ItemSocket.Save(socket, writer);
                 }
@@ -2541,8 +2526,8 @@ namespace Server
                 }
             }
 
-            var info = LookupCompactInfo();
-            var items = LookupItems();
+            CompactInfo info = LookupCompactInfo();
+            List<Item> items = LookupItems();
 
             if (m_Direction != Direction.North)
             {
@@ -2639,7 +2624,7 @@ namespace Server
                 }
             }
 
-            var implFlags = (m_Flags & (ImplFlag.Visible | ImplFlag.Movable | ImplFlag.Stackable | ImplFlag.Insured |
+            ImplFlag implFlags = (m_Flags & (ImplFlag.Visible | ImplFlag.Movable | ImplFlag.Stackable | ImplFlag.Insured |
                                         ImplFlag.PayedInsurance | ImplFlag.QuestItem));
 
             if (implFlags != (ImplFlag.Visible | ImplFlag.Movable))
@@ -2995,7 +2980,7 @@ namespace Server
             switch (version)
             {
                 case 14:
-                    var socketCount = reader.ReadInt();
+                    int socketCount = reader.ReadInt();
 
                     for (int i = 0; i < socketCount; i++)
                     {
@@ -3160,7 +3145,7 @@ namespace Server
 
                         if (GetSaveFlag(flags, SaveFlag.Items))
                         {
-                            var items = reader.ReadStrongItemList();
+                            List<Item> items = reader.ReadStrongItemList();
 
                             if (this is Container)
                             {
@@ -3349,7 +3334,7 @@ namespace Server
 
                         if (GetSaveFlag(flags, SaveFlag.Items))
                         {
-                            var items = reader.ReadStrongItemList();
+                            List<Item> items = reader.ReadStrongItemList();
 
                             if (this is Container)
                             {
@@ -3483,7 +3468,7 @@ namespace Server
 
                         if (count > 0)
                         {
-                            var items = new List<Item>(count);
+                            List<Item> items = new List<Item>(count);
 
                             for (int i = 0; i < count; ++i)
                             {
@@ -3765,7 +3750,7 @@ namespace Server
         {
             get
             {
-                var items = LookupItems();
+                List<Item> items = LookupItems();
 
                 if (items == null)
                 {
@@ -3781,7 +3766,7 @@ namespace Server
         {
             get
             {
-                var p = m_Parent;
+                object p = m_Parent;
 
                 while (p is Item)
                 {
@@ -3803,7 +3788,7 @@ namespace Server
 
         public bool ParentsContain<T>() where T : Item
         {
-            var p = m_Parent;
+            object p = m_Parent;
 
             while (p is Item)
             {
@@ -3871,7 +3856,7 @@ namespace Server
             item.Parent = this;
             item.Map = m_Map;
 
-            var items = AcquireItems();
+            List<Item> items = AcquireItems();
 
             items.Add(item);
 
@@ -4003,7 +3988,7 @@ namespace Server
                             }
                         }
 
-                        var openers = contParent.Openers;
+                        List<Mobile> openers = contParent.Openers;
 
                         if (openers != null)
                         {
@@ -4055,7 +4040,7 @@ namespace Server
                     Packet p = null;
                     Point3D worldLoc = GetWorldLocation();
 
-                    var eable = map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
+                    IPooledEnumerable<NetState> eable = map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
 
                     foreach (NetState state in eable)
                     {
@@ -4108,7 +4093,7 @@ namespace Server
                         Packet p = null;
                         Point3D worldLoc = GetWorldLocation();
 
-                        var eable = map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
+                        IPooledEnumerable<NetState> eable = map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
 
                         foreach (NetState state in eable)
                         {
@@ -4140,7 +4125,7 @@ namespace Server
                 if (sendOPLUpdate)
                 {
                     Point3D worldLoc = GetWorldLocation();
-                    var eable = map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
+                    IPooledEnumerable<NetState> eable = map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
 
                     foreach (NetState state in eable)
                     {
@@ -4168,7 +4153,7 @@ namespace Server
 
             _Processing = true;
 
-            var i = m_DeltaQueue.Count;
+            int i = m_DeltaQueue.Count;
 
             while (--i >= 0)
             {
@@ -4190,7 +4175,7 @@ namespace Server
                 Spawner = null;
             }
 
-            var region = Region.Find(GetWorldLocation(), Map);
+            Region region = Region.Find(GetWorldLocation(), Map);
 
             if (region != null)
             {
@@ -4224,7 +4209,7 @@ namespace Server
 
             OnDelete();
 
-            var items = LookupItems();
+            List<Item> items = LookupItems();
 
             if (items != null)
             {
@@ -4275,7 +4260,7 @@ namespace Server
                 Packet p = null;
                 Point3D worldLoc = GetWorldLocation();
 
-                var eable = m_Map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
+                IPooledEnumerable<NetState> eable = m_Map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
 
                 foreach (NetState state in eable)
                 {
@@ -4319,7 +4304,7 @@ namespace Server
                 Packet p = null;
                 Point3D worldLoc = GetWorldLocation();
 
-                var eable = m_Map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
+                IPooledEnumerable<NetState> eable = m_Map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
 
                 foreach (NetState state in eable)
                 {
@@ -4444,7 +4429,7 @@ namespace Server
 
         public virtual void RemoveItem(Item item)
         {
-            var items = LookupItems();
+            List<Item> items = LookupItems();
 
             if (items != null && items.Remove(item))
             {
@@ -4535,14 +4520,14 @@ namespace Server
         #region Location Location Location!
         public virtual void OnLocationChange(Point3D oldLocation)
         {
-            var items = Items;
+            List<Item> items = Items;
 
             if (items == null)
             {
                 return;
             }
 
-            var i = items.Count;
+            int i = items.Count;
 
             while (--i >= 0)
             {
@@ -4551,7 +4536,7 @@ namespace Server
                     continue;
                 }
 
-                var o = items[i];
+                Item o = items[i];
 
                 if (o != null)
                 {
@@ -4730,7 +4715,7 @@ namespace Server
                     return;
                 }
 
-                var oldParent = m_Parent;
+                object oldParent = m_Parent;
 
                 m_Parent = value;
 
@@ -4759,7 +4744,7 @@ namespace Server
                     oldParent = ((Item)oldParent).RootParent;
                 }
 
-                var root = RootParent as Mobile;
+                Mobile root = RootParent as Mobile;
 
                 if (root != null && oldParent != root)
                 {
@@ -4943,7 +4928,7 @@ namespace Server
                 return false;
             }
 
-            var root = target.RootParent;
+            object root = target.RootParent;
 
             if (from.AccessLevel < AccessLevel.GameMaster && !from.InRange(target.GetWorldLocation(), 2))
             {
@@ -5255,7 +5240,7 @@ namespace Server
             {
                 Point3D worldLoc = GetWorldLocation();
 
-                var eable = m_Map.GetClientsInRange(worldLoc, Core.GlobalRadarRange - 4);
+                IPooledEnumerable<NetState> eable = m_Map.GetClientsInRange(worldLoc, Core.GlobalRadarRange - 4);
 
                 foreach (NetState state in eable)
                 {
@@ -5278,7 +5263,7 @@ namespace Server
 
         public Point3D GetWorldLocation()
         {
-            var root = RootParent;
+            object root = RootParent;
 
             if (root == null)
             {
@@ -5296,7 +5281,7 @@ namespace Server
 
         public Point3D GetSurfaceTop()
         {
-            var root = RootParentEntity;
+            IEntity root = RootParentEntity;
 
             if (root == null)
             {
@@ -5310,7 +5295,7 @@ namespace Server
 
         public Point3D GetWorldTop()
         {
-            var root = RootParentEntity;
+            IEntity root = RootParentEntity;
 
             if (root == null)
             {
@@ -5534,7 +5519,7 @@ namespace Server
 
         public virtual void SendStatusTo(NetState state)
         {
-            var p = GetStatusPacketFor(state);
+            Packet p = GetStatusPacketFor(state);
 
             if (p != null)
             {
@@ -5576,7 +5561,7 @@ namespace Server
 
         public bool IsChildOf(object o, bool allowNull)
         {
-            var p = m_Parent;
+            object p = m_Parent;
 
             if ((p == null || o == null) && !allowNull)
             {
@@ -5715,7 +5700,7 @@ namespace Server
 
             int ourHue = Hue;
             Map thisMap = Map;
-            var thisParent = m_Parent;
+            object thisParent = m_Parent;
             Point3D worldLoc = GetWorldLocation();
             LootType type = LootType;
 
@@ -5923,7 +5908,7 @@ namespace Server
 
         public virtual void UpdateLight()
         {
-            var data = ItemData;
+            ItemData data = ItemData;
 
             if (!data.Flags.HasFlag(TileFlag.LightSource))
             {
@@ -5932,7 +5917,7 @@ namespace Server
 
             if (m_Light == LightType.Empty)
             {
-                var light = data.Quality;
+                int light = data.Quality;
 
                 if (light >= 0 && light <= 255)
                 {
@@ -5965,7 +5950,7 @@ namespace Server
 
         public bool RemoveSocket<T>()
         {
-            var socket = GetSocket(typeof(T));
+            ItemSocket socket = GetSocket(typeof(T));
 
             if (socket != null)
             {
@@ -6183,8 +6168,8 @@ namespace Server
 
         public static void Load(Item item, GenericReader reader)
         {
-            var typeName = ScriptCompiler.FindTypeByName(reader.ReadString());
-            var socket = Activator.CreateInstance(typeName) as ItemSocket;
+            Type typeName = ScriptCompiler.FindTypeByName(reader.ReadString());
+            ItemSocket socket = Activator.CreateInstance(typeName) as ItemSocket;
 
             socket.Deserialize(item, reader);
         }

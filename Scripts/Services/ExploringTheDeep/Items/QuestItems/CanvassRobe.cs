@@ -4,16 +4,16 @@ namespace Server.Items
 {
     public class CanvassRobe : Robe
     {
-        public override int LabelNumber { get { return 1154238; } } // A Canvass Robe
-        public override bool CanBeWornByGargoyles { get { return true; } }
+        public override int LabelNumber => 1154238;  // A Canvass Robe
+        public override bool CanBeWornByGargoyles => true;
 
         [Constructable]
         public CanvassRobe()
             : base()
         {
-            this.Hue = 2720;
-            this.LootType = LootType.Blessed;
-            this.StrRequirement = 10;
+            Hue = 2720;
+            LootType = LootType.Blessed;
+            StrRequirement = 10;
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -38,7 +38,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

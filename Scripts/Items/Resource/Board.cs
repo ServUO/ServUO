@@ -30,15 +30,9 @@ namespace Server.Items
             }
         }
 
-        TextDefinition ICommodity.Description
-        {
-            get
-            {
-                return LabelNumber;
-            }
-        }
+        TextDefinition ICommodity.Description => LabelNumber;
 
-        bool ICommodity.IsDeedable { get { return true; } }
+        bool ICommodity.IsDeedable => true;
 
         [Constructable]
         public BaseWoodBoard()
@@ -94,7 +88,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)4);
+            writer.Write(4);
 
             writer.Write((int)m_Resource);
         }
@@ -149,7 +143,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -184,7 +178,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -218,7 +212,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -252,7 +246,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -286,7 +280,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -320,7 +314,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -354,7 +348,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

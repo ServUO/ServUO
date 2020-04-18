@@ -14,7 +14,7 @@ namespace Server.Misc
 
         public static void AwardFame(Mobile m, int offset, bool message)
         {
-            var fame = m.Fame;
+            int fame = m.Fame;
 
             if (offset > 0)
             {
@@ -70,7 +70,7 @@ namespace Server.Misc
 
         public static void AwardKarma(Mobile m, int offset, bool message)
         {
-            var karma = m.Karma;
+            int karma = m.Karma;
 
             if (m.Talisman is BaseTalisman)
             {
@@ -453,8 +453,8 @@ namespace Server.Misc
 
         public FameEntry(int fame, KarmaEntry[] karma)
         {
-            this.m_Fame = fame;
-            this.m_Karma = karma;
+            m_Fame = fame;
+            m_Karma = karma;
         }
     }
 
@@ -465,8 +465,8 @@ namespace Server.Misc
 
         public KarmaEntry(int karma, string title)
         {
-            this.m_Karma = karma;
-            this.m_Title = title;
+            m_Karma = karma;
+            m_Title = title;
         }
     }
 

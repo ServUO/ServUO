@@ -28,10 +28,10 @@ namespace Server.Items
             set;
         }
 
-        public Item Deed { get { return new WallSafeDeed(); } }
+        public Item Deed => new WallSafeDeed();
 
-        public override int LabelNumber { get { return 1119751; } } // Wall Safe
-        public override bool ForceShowProperties { get { return true; } }
+        public override int LabelNumber => 1119751;  // Wall Safe
+        public override bool ForceShowProperties => true;
 
         public List<string> History { get; set; }
 
@@ -77,10 +77,10 @@ namespace Server.Items
 
         public bool CouldFit(IPoint3D p, Map map)
         {
-            if (!map.CanFit(p.X, p.Y, p.Z, this.ItemData.Height))
+            if (!map.CanFit(p.X, p.Y, p.Z, ItemData.Height))
                 return false;
 
-            if (this.ItemID == 0x2375)
+            if (ItemID == 0x2375)
                 return BaseAddon.IsWall(p.X, p.Y - 1, p.Z, map); // North wall
             else
                 return BaseAddon.IsWall(p.X - 1, p.Y, p.Z, map); // West wall
@@ -88,7 +88,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (m is PlayerMobile && m.InRange(this.Location, 3))
+            if (m is PlayerMobile && m.InRange(Location, 3))
             {
                 BaseHouse house = BaseHouse.FindHouseAt(m);
 
@@ -121,7 +121,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             writer.Write(Owner);
             writer.Write(HoldAmount);
@@ -160,7 +160,7 @@ namespace Server.Items
 
     public class WallSafeDeed : Item
     {
-        public override int LabelNumber { get { return 1155857; } } // Currency Wall Safe
+        public override int LabelNumber => 1155857;  // Currency Wall Safe
 
         [Constructable]
         public WallSafeDeed() : base(0x14F0)
@@ -237,7 +237,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

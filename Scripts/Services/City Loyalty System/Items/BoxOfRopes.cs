@@ -12,7 +12,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public CityLoyaltySystem CitySystem { get { return CityLoyaltySystem.GetCityInstance(City); } set { } }
 
-        public override int LabelNumber { get { return 1152262; } } // a box of ropes
+        public override int LabelNumber => 1152262;  // a box of ropes
 
         public BoxOfRopes(City city) : base(3650)
         {
@@ -27,11 +27,11 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (CityLoyaltySystem.Enabled && CityLoyaltySystem.IsSetup() && from.InRange(this.Location, 3))
+            if (CityLoyaltySystem.Enabled && CityLoyaltySystem.IsSetup() && from.InRange(Location, 3))
             {
                 if (_Cooldown == null || !_Cooldown.ContainsKey(from) || _Cooldown[from] < DateTime.UtcNow)
                 {
-                    var rope = new GuardsmansRope();
+                    GuardsmansRope rope = new GuardsmansRope();
                     from.AddToBackpack(rope);
 
                     from.SendLocalizedMessage(1152263); // You take a rope from the chest. Use it to arrest rioters and subdued raiders.

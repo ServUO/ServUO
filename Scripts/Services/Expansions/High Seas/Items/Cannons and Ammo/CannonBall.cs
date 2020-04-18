@@ -2,13 +2,13 @@ namespace Server.Items
 {
     public class Cannonball : Item, ICommodity, ICannonAmmo
     {
-        public override int LabelNumber { get { return 1116266; } }
-        public override double DefaultWeight { get { return 1.0; } }
+        public override int LabelNumber => 1116266;
+        public override double DefaultWeight => 1.0;
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
-        public virtual AmmunitionType AmmoType { get { return AmmunitionType.Cannonball; } }
+        public virtual AmmunitionType AmmoType => AmmunitionType.Cannonball;
 
         [Constructable]
         public Cannonball() : this(1)
@@ -33,7 +33,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -45,12 +45,12 @@ namespace Server.Items
 
     public class FrostCannonball : Cannonball, ICommodity
     {
-        public override int LabelNumber { get { return 1116267; } }
+        public override int LabelNumber => 1116267;
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
-        public override AmmunitionType AmmoType { get { return AmmunitionType.FrostCannonball; } }
+        public override AmmunitionType AmmoType => AmmunitionType.FrostCannonball;
 
         [Constructable]
         public FrostCannonball() : this(1)
@@ -75,7 +75,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -87,12 +87,12 @@ namespace Server.Items
 
     public class FlameCannonball : Cannonball, ICommodity
     {
-        public override int LabelNumber { get { return 1116759; } }
+        public override int LabelNumber => 1116759;
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
-        public override AmmunitionType AmmoType { get { return AmmunitionType.FlameCannonball; } }
+        public override AmmunitionType AmmoType => AmmunitionType.FlameCannonball;
 
         [Constructable]
         public FlameCannonball() : this(1)
@@ -117,7 +117,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -129,13 +129,13 @@ namespace Server.Items
 
     public class LightCannonball : Item, ICommodity, ICannonAmmo
     {
-        public override int LabelNumber { get { return 1116266; } }
-        public override double DefaultWeight { get { return 1.0; } }
+        public override int LabelNumber => 1116266;
+        public override double DefaultWeight => 1.0;
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
-        public virtual AmmunitionType AmmoType { get { return AmmunitionType.Cannonball; } }
+        public virtual AmmunitionType AmmoType => AmmunitionType.Cannonball;
 
         [Constructable]
         public LightCannonball() : this(1)
@@ -160,7 +160,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -174,13 +174,13 @@ namespace Server.Items
 
     public class HeavyCannonball : Item, ICommodity, ICannonAmmo
     {
-        public override int LabelNumber { get { return 1116267; } }
-        public override double DefaultWeight { get { return 1.0; } }
+        public override int LabelNumber => 1116267;
+        public override double DefaultWeight => 1.0;
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
-        public virtual AmmunitionType AmmoType { get { return AmmunitionType.Cannonball; } }
+        public virtual AmmunitionType AmmoType => AmmunitionType.Cannonball;
 
         [Constructable]
         public HeavyCannonball() : this(1)
@@ -203,7 +203,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -217,12 +217,12 @@ namespace Server.Items
 
     public class LightFlameCannonball : Cannonball, ICommodity
     {
-        public override int LabelNumber { get { return 1116759; } }
+        public override int LabelNumber => 1116759;
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
-        public override AmmunitionType AmmoType { get { return AmmunitionType.FlameCannonball; } }
+        public override AmmunitionType AmmoType => AmmunitionType.FlameCannonball;
 
         [Constructable]
         public LightFlameCannonball() : this(1)
@@ -239,7 +239,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -253,12 +253,12 @@ namespace Server.Items
 
     public class HeavyFlameCannonball : Cannonball, ICommodity
     {
-        public override int LabelNumber { get { return 1116267; } }
+        public override int LabelNumber => 1116267;
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
-        public override AmmunitionType AmmoType { get { return AmmunitionType.FlameCannonball; } }
+        public override AmmunitionType AmmoType => AmmunitionType.FlameCannonball;
 
         [Constructable]
         public HeavyFlameCannonball()
@@ -277,7 +277,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -291,12 +291,12 @@ namespace Server.Items
 
     public class LightFrostCannonball : Cannonball, ICommodity
     {
-        public override int LabelNumber { get { return 1116759; } }
+        public override int LabelNumber => 1116759;
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
-        public override AmmunitionType AmmoType { get { return AmmunitionType.FrostCannonball; } }
+        public override AmmunitionType AmmoType => AmmunitionType.FrostCannonball;
 
         [Constructable]
         public LightFrostCannonball()
@@ -315,7 +315,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -329,12 +329,12 @@ namespace Server.Items
 
     public class HeavyFrostCannonball : Cannonball, ICommodity
     {
-        public override int LabelNumber { get { return 1116267; } }
+        public override int LabelNumber => 1116267;
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
-        public override AmmunitionType AmmoType { get { return AmmunitionType.FrostCannonball; } }
+        public override AmmunitionType AmmoType => AmmunitionType.FrostCannonball;
 
         [Constructable]
         public HeavyFrostCannonball()
@@ -353,7 +353,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

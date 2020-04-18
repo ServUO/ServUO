@@ -4,11 +4,11 @@ namespace Server.Items
 {
     public class ElvenDresserAddonSouth : BaseAddonContainer
     {
-        public override BaseAddonContainerDeed Deed { get { return new ElvenDresserDeedSouth(); } }
+        public override BaseAddonContainerDeed Deed => new ElvenDresserDeedSouth();
 
-        public override int DefaultGumpID { get { return 0x51; } }
-        public override int DefaultDropSound { get { return 0x42; } }
-        public override bool RetainDeedHue { get { return true; } }
+        public override int DefaultGumpID => 0x51;
+        public override int DefaultDropSound => 0x42;
+        public override bool RetainDeedHue => true;
 
         [Constructable]
         public ElvenDresserAddonSouth()
@@ -39,8 +39,8 @@ namespace Server.Items
 
     public class ElvenDresserDeedSouth : BaseAddonContainerDeed
     {
-        public override BaseAddonContainer Addon { get { return new ElvenDresserAddonSouth(); } }
-        public override int LabelNumber { get { return 1072864; } }
+        public override BaseAddonContainer Addon => new ElvenDresserAddonSouth();
+        public override int LabelNumber => 1072864;
 
         [Constructable]
         public ElvenDresserDeedSouth()
@@ -72,8 +72,8 @@ namespace Server.Items
         [Constructable]
         public ElvenDresserSouthAddon()
         {
-            this.AddComponent(new AddonComponent(0x30E5), 0, 0, 0);
-            this.AddComponent(new AddonComponent(0x30E6), 1, 0, 0);
+            AddComponent(new AddonComponent(0x30E5), 0, 0, 0);
+            AddComponent(new AddonComponent(0x30E6), 1, 0, 0);
         }
 
         public ElvenDresserSouthAddon(Serial serial)
@@ -81,13 +81,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new ElvenDresserSouthDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new ElvenDresserSouthDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -110,13 +104,13 @@ namespace Server.Items
 
             if (house != null)
             {
-                Point3D p = this.Location;
-                Map map = this.Map;
+                Point3D p = Location;
+                Map map = Map;
 
                 house.Addons.Remove(this);
                 Delete();
 
-                var addon = new ElvenDresserAddonSouth();
+                ElvenDresserAddonSouth addon = new ElvenDresserAddonSouth();
                 addon.MoveToWorld(new Point3D(p.X + 1, p.Y, p.Z), map);
                 house.Addons[addon] = house.Owner;
             }
@@ -135,20 +129,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new ElvenDresserSouthAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1072864;
-            }
-        }// elven dresser (south)
+        public override BaseAddon Addon => new ElvenDresserSouthAddon();
+        public override int LabelNumber => 1072864;// elven dresser (south)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -167,19 +149,19 @@ namespace Server.Items
 
         private void Replace()
         {
-            Container c = this.Parent as Container;
+            Container c = Parent as Container;
 
             if (c != null)
             {
-                var deed = new ElvenDresserDeedSouth();
+                ElvenDresserDeedSouth deed = new ElvenDresserDeedSouth();
                 c.DropItem(deed);
             }
-            else if (this.Parent == null)
+            else if (Parent == null)
             {
                 Server.Multis.BaseHouse house = Server.Multis.BaseHouse.FindHouseAt(this);
 
-                var deed = new ElvenDresserDeedSouth();
-                deed.MoveToWorld(this.Location, this.Map);
+                ElvenDresserDeedSouth deed = new ElvenDresserDeedSouth();
+                deed.MoveToWorld(Location, Map);
 
                 deed.IsLockedDown = IsLockedDown;
                 deed.IsSecure = IsSecure;

@@ -30,7 +30,7 @@ namespace Server.Mobiles
         private bool m_Active;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Charydbis Charydbis { get { return m_Charydbis; } }
+        public Charydbis Charydbis => m_Charydbis;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime NextSpawn { get { return m_NextSpawn; } set { m_NextSpawn = value; } }
@@ -300,7 +300,7 @@ namespace Server.Mobiles
 
         public void Serialize(GenericWriter writer)
         {
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write(m_HasSpawned);
             writer.Write(m_LastAttempt);

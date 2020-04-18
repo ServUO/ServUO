@@ -15,7 +15,7 @@ namespace Server.Items
             base.ApplyEffect(pm);
         }
 
-        public override int LabelNumber { get { return 1094944; } } // Stone Skin Lotion
+        public override int LabelNumber => 1094944;  // Stone Skin Lotion
 
         [Constructable]
         public StoneSkinLotion()
@@ -33,7 +33,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

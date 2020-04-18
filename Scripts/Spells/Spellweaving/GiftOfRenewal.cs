@@ -10,28 +10,10 @@ namespace Server.Spells.Spellweaving
             "Gift of Renewal", "Olorisstra",
             -1);
 
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(3.0);
-            }
-        }
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(3.0);
 
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 0.0;
-            }
-        }
-        public override int RequiredMana
-        {
-            get
-            {
-                return 24;
-            }
-        }
+        public override double RequiredSkill => 0.0;
+        public override int RequiredMana => 24;
 
         public GiftOfRenewalSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
@@ -40,29 +22,29 @@ namespace Server.Spells.Spellweaving
 
         public override void OnCast()
         {
-            this.Caster.Target = new InternalTarget(this);
+            Caster.Target = new InternalTarget(this);
         }
 
         public void Target(Mobile m)
         {
-            if (!this.Caster.CanSee(m))
+            if (!Caster.CanSee(m))
             {
-                this.Caster.SendLocalizedMessage(500237); // Target can not be seen.
+                Caster.SendLocalizedMessage(500237); // Target can not be seen.
             }
             if (m_Table.ContainsKey(m))
             {
-                this.Caster.SendLocalizedMessage(501775); // This spell is already in effect.
+                Caster.SendLocalizedMessage(501775); // This spell is already in effect.
             }
-            else if (!this.Caster.CanBeginAction(typeof(GiftOfRenewalSpell)))
+            else if (!Caster.CanBeginAction(typeof(GiftOfRenewalSpell)))
             {
-                this.Caster.SendLocalizedMessage(501789); // You must wait before trying again.
+                Caster.SendLocalizedMessage(501789); // You must wait before trying again.
             }
-            else if (this.CheckBSequence(m))
+            else if (CheckBSequence(m))
             {
-                SpellHelper.Turn(this.Caster, m);
+                SpellHelper.Turn(Caster, m);
 
-                this.Caster.FixedEffect(0x374A, 10, 20);
-                this.Caster.PlaySound(0x5C9);
+                Caster.FixedEffect(0x374A, 10, 20);
+                Caster.PlaySound(0x5C9);
 
                 if (m.Poisoned)
                 {
@@ -70,12 +52,12 @@ namespace Server.Spells.Spellweaving
                 }
                 else
                 {
-                    double skill = this.Caster.Skills[SkillName.Spellweaving].Value;
+                    double skill = Caster.Skills[SkillName.Spellweaving].Value;
 
-                    int hitsPerRound = 5 + (int)(skill / 24) + this.FocusLevel;
-                    TimeSpan duration = TimeSpan.FromSeconds(30 + (this.FocusLevel * 10));
+                    int hitsPerRound = 5 + (int)(skill / 24) + FocusLevel;
+                    TimeSpan duration = TimeSpan.FromSeconds(30 + (FocusLevel * 10));
 
-                    GiftOfRenewalInfo info = new GiftOfRenewalInfo(this.Caster, m, hitsPerRound);
+                    GiftOfRenewalInfo info = new GiftOfRenewalInfo(Caster, m, hitsPerRound);
 
                     Timer.DelayCall(duration,
                         delegate
@@ -89,13 +71,13 @@ namespace Server.Spells.Spellweaving
 
                     m_Table[m] = info;
 
-                    this.Caster.BeginAction(typeof(GiftOfRenewalSpell));
+                    Caster.BeginAction(typeof(GiftOfRenewalSpell));
 
                     BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.GiftOfRenewal, 1031602, 1075797, duration, m, hitsPerRound.ToString()));
                 }
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         public static Dictionary<Mobile, GiftOfRenewalInfo> m_Table = new Dictionary<Mobile, GiftOfRenewalInfo>();
@@ -109,12 +91,12 @@ namespace Server.Spells.Spellweaving
 
             public GiftOfRenewalInfo(Mobile caster, Mobile mobile, int hitsPerRound)
             {
-                this.m_Caster = caster;
-                this.m_Mobile = mobile;
-                this.m_HitsPerRound = hitsPerRound;
+                m_Caster = caster;
+                m_Mobile = mobile;
+                m_HitsPerRound = hitsPerRound;
 
-                this.m_Timer = new InternalTimer(this);
-                this.m_Timer.Start();
+                m_Timer = new InternalTimer(this);
+                m_Timer.Start();
             }
         }
 
@@ -125,22 +107,22 @@ namespace Server.Spells.Spellweaving
             public InternalTimer(GiftOfRenewalInfo info)
                 : base(TimeSpan.FromSeconds(2.0), TimeSpan.FromSeconds(2.0))
             {
-                this.m_Info = info;
+                m_Info = info;
             }
 
             protected override void OnTick()
             {
-                Mobile m = this.m_Info.m_Mobile;
+                Mobile m = m_Info.m_Mobile;
 
                 if (!m_Table.ContainsKey(m))
                 {
-                    this.Stop();
+                    Stop();
                     return;
                 }
 
                 if (!m.Alive)
                 {
-                    this.Stop();
+                    Stop();
                     StopEffect(m);
                     return;
                 }
@@ -148,9 +130,9 @@ namespace Server.Spells.Spellweaving
                 if (m.Hits >= m.HitsMax)
                     return;
 
-                int toHeal = this.m_Info.m_HitsPerRound;
+                int toHeal = m_Info.m_HitsPerRound;
 
-                SpellHelper.Heal(toHeal, m, this.m_Info.m_Caster);
+                SpellHelper.Heal(toHeal, m, m_Info.m_Caster);
                 m.FixedParticles(0x376A, 9, 32, 5005, EffectLayer.Waist);
             }
         }
@@ -186,20 +168,20 @@ namespace Server.Spells.Spellweaving
             public InternalTarget(GiftOfRenewalSpell owner)
                 : base(10, false, TargetFlags.Beneficial)
             {
-                this.m_Owner = owner;
+                m_Owner = owner;
             }
 
             protected override void OnTarget(Mobile m, object o)
             {
                 if (o is Mobile)
                 {
-                    this.m_Owner.Target((Mobile)o);
+                    m_Owner.Target((Mobile)o);
                 }
             }
 
             protected override void OnTargetFinish(Mobile m)
             {
-                this.m_Owner.FinishSequence();
+                m_Owner.FinishSequence();
             }
         }
     }

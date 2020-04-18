@@ -6,7 +6,7 @@ namespace Server.Spells.Mysticism
 {
     public class MassSleepSpell : MysticSpell
     {
-        public override SpellCircle Circle { get { return SpellCircle.Fifth; } }
+        public override SpellCircle Circle => SpellCircle.Fifth;
 
         private static readonly SpellInfo m_Info = new SpellInfo(
                 "Mass Sleep", "Vas Zu",
@@ -61,7 +61,7 @@ namespace Server.Spells.Mysticism
                 if (map == null)
                     return;
 
-                foreach (var m in AcquireIndirectTargets(p, 3).OfType<Mobile>())
+                foreach (Mobile m in AcquireIndirectTargets(p, 3).OfType<Mobile>())
                 {
                     double duration = ((Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) / 20) + 3;
                     duration -= GetResistSkill(m) / 10;

@@ -26,19 +26,13 @@ namespace Server.Mobiles
         public abstract Type[] UniqueSAList { get; }
         public abstract Type[] SharedSAList { get; }
 
-        public virtual bool NoGoodies
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public virtual bool NoGoodies => false;
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

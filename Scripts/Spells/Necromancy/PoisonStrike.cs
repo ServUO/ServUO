@@ -19,36 +19,12 @@ namespace Server.Spells.Necromancy
         {
         }
 
-        public override DamageType SpellDamageType { get { return DamageType.SpellAOE; } }
+        public override DamageType SpellDamageType => DamageType.SpellAOE;
 
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(2.0);
-            }
-        }
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 50.0;
-            }
-        }
-        public override int RequiredMana
-        {
-            get
-            {
-                return 17;
-            }
-        }
-        public override bool DelayedDamage
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(2.0);
+        public override double RequiredSkill => 50.0;
+        public override int RequiredMana => 17;
+        public override bool DelayedDamage => false;
         public override void OnCast()
         {
             Caster.Target = new InternalTarget(this);
@@ -90,7 +66,7 @@ namespace Server.Spells.Necromancy
 
             if (map != null)
             {
-                foreach (var id in AcquireIndirectTargets(m.Location, 2))
+                foreach (IDamageable id in AcquireIndirectTargets(m.Location, 2))
                 {
                     int num;
 

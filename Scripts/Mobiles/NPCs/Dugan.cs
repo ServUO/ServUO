@@ -16,16 +16,10 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(Missing)
                 };
-            }
-        }
 
         public override void InitBody()
         {
@@ -57,7 +51,7 @@ namespace Server.Engines.Quests
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -73,7 +67,7 @@ namespace Server.Engines.Quests
 
                 Direction = Direction.Left;
 
-                var item = FindItemOnLayer(Layer.Shoes);
+                Item item = FindItemOnLayer(Layer.Shoes);
                 if (item != null)
                     item.Hue = 1819;
             }

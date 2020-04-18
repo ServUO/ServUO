@@ -15,7 +15,7 @@ namespace Server.Items
         private bool m_Enhanced;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Type BaitType { get { return m_BaitType; } }
+        public Type BaitType => m_BaitType;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int UsesRemaining { get { return m_UsesRemaining; } set { m_UsesRemaining = value; InvalidateProperties(); } }
@@ -245,7 +245,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write(m_UsesRemaining);
             writer.Write(m_Index);

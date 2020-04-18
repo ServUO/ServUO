@@ -107,7 +107,7 @@ namespace Server.Mobiles
         {
             int priceScalar = GetPriceScalar();
 
-            var buyinfo = (IBuyItemInfo[])m_ArmorBuyInfo.ToArray(typeof(IBuyItemInfo));
+            IBuyItemInfo[] buyinfo = (IBuyItemInfo[])m_ArmorBuyInfo.ToArray(typeof(IBuyItemInfo));
 
             if (buyinfo != null)
             {
@@ -261,7 +261,7 @@ namespace Server.Mobiles
                 if (!m_From.InRange(m_Vendor.Location, 3) || !(m_From is PlayerMobile))
                     return;
 
-                var context = BulkOrderSystem.GetContext(m_From);
+                BODContext context = BulkOrderSystem.GetContext(m_From);
                 int pending = context.GetPendingRewardFor(m_Vendor.BODType);
 
                 if (pending > 0)
@@ -698,7 +698,7 @@ namespace Server.Mobiles
                 return;
             }
 
-            var split = title.Split(' ');
+            string[] split = title.Split(' ');
 
             for (int i = 0; i < split.Length; ++i)
             {
@@ -868,7 +868,7 @@ namespace Server.Mobiles
         {
             m_LastRestock = DateTime.UtcNow;
 
-            var buyInfo = GetBuyInfo();
+            IBuyItemInfo[] buyInfo = GetBuyInfo();
 
             foreach (IBuyItemInfo bii in buyInfo)
             {
@@ -905,8 +905,8 @@ namespace Server.Mobiles
 
             int count = 0;
             List<BuyItemState> list;
-            var buyInfo = GetBuyInfo();
-            var sellInfo = GetSellInfo();
+            IBuyItemInfo[] buyInfo = GetBuyInfo();
+            IShopSellInfo[] sellInfo = GetSellInfo();
 
             list = new List<BuyItemState>(buyInfo.Length);
             Container cont = BuyPack;
@@ -957,7 +957,7 @@ namespace Server.Mobiles
                 }
             }
 
-            var playerItems = cont.Items;
+            List<Item> playerItems = cont.Items;
 
             for (int i = playerItems.Count - 1; i >= 0; --i)
             {
@@ -1101,13 +1101,13 @@ namespace Server.Mobiles
 
             if (pack != null)
             {
-                var info = GetSellInfo();
+                IShopSellInfo[] info = GetSellInfo();
 
                 Dictionary<Item, SellItemState> table = new Dictionary<Item, SellItemState>();
 
                 foreach (IShopSellInfo ssi in info)
                 {
-                    var items = pack.FindItemsByType(ssi.Types);
+                    Item[] items = pack.FindItemsByType(ssi.Types);
 
                     foreach (Item item in items)
                     {
@@ -1139,7 +1139,7 @@ namespace Server.Mobiles
         public override bool OnDragDrop(Mobile from, Item dropped)
         {
             #region Honesty Item Check
-            var honestySocket = dropped.GetSocket<HonestyItemSocket>();
+            HonestyItemSocket honestySocket = dropped.GetSocket<HonestyItemSocket>();
 
             if (honestySocket != null)
             {
@@ -1155,7 +1155,7 @@ namespace Server.Mobiles
                 }
                 else
                 {
-                    this.SayTo(from, 501550, 0x3B2); // I am not interested in this.
+                    SayTo(from, 501550, 0x3B2); // I am not interested in this.
                     return false;
                 }
             }
@@ -1233,15 +1233,15 @@ namespace Server.Mobiles
                     {
                         case PointsMode.Enabled:
                             context.AddPending(BODType, points);
-                            from.SendGump(new ConfirmBankPointsGump((PlayerMobile)from, this, this.BODType, points, banked));
+                            from.SendGump(new ConfirmBankPointsGump((PlayerMobile)from, this, BODType, points, banked));
                             break;
                         case PointsMode.Disabled:
                             context.AddPending(BODType, points);
-                            from.SendGump(new RewardsGump(this, (PlayerMobile)from, this.BODType, points));
+                            from.SendGump(new RewardsGump(this, (PlayerMobile)from, BODType, points));
                             break;
                         case PointsMode.Automatic:
-                            BulkOrderSystem.SetPoints(from, this.BODType, banked);
-                            from.SendGump(new RewardsGump(this, (PlayerMobile)from, this.BODType));
+                            BulkOrderSystem.SetPoints(from, BODType, banked);
+                            from.SendGump(new RewardsGump(this, (PlayerMobile)from, BODType));
                             break;
                     }
 
@@ -1309,31 +1309,31 @@ namespace Server.Mobiles
             }
             else
             {
-                this.SayTo(from, 1071971, String.Format("#{0}", dropped.LabelNumber.ToString()), 0x3B2); // Thou art giving me ~1_VAL~?
+                SayTo(from, 1071971, String.Format("#{0}", dropped.LabelNumber.ToString()), 0x3B2); // Thou art giving me ~1_VAL~?
             }
 
             if (dropped is Gold)
             {
-                this.SayTo(from, 501548, 0x3B2); // I thank thee.
+                SayTo(from, 501548, 0x3B2); // I thank thee.
                 Titles.AwardFame(from, dropped.Amount / 100, true);
 
                 return true;
             }
 
-            var info = GetSellInfo();
+            IShopSellInfo[] info = GetSellInfo();
 
             foreach (IShopSellInfo ssi in info)
             {
                 if (ssi.IsSellable(dropped))
                 {
-                    this.SayTo(from, 501548, 0x3B2); // I thank thee.
+                    SayTo(from, 501548, 0x3B2); // I thank thee.
                     Titles.AwardFame(from, ssi.GetSellPriceFor(dropped, this) * dropped.Amount, true);
 
                     return true;
                 }
             }
 
-            this.SayTo(from, 501550, 0x3B2); // I am not interested in this.
+            SayTo(from, 501550, 0x3B2); // I am not interested in this.
 
             return false;
         }
@@ -1446,7 +1446,7 @@ namespace Server.Mobiles
 
         private GenericBuyInfo LookupDisplayObject(object obj)
         {
-            var buyInfo = GetBuyInfo();
+            IBuyItemInfo[] buyInfo = GetBuyInfo();
 
             for (int i = 0; i < buyInfo.Length; ++i)
             {
@@ -1607,9 +1607,9 @@ namespace Server.Mobiles
             UpdateBuyInfo();
 
             //var buyInfo = GetBuyInfo();
-            var info = GetSellInfo();
-            var totalCost = 0.0;
-            var validBuy = new List<BuyItemResponse>(list.Count);
+            IShopSellInfo[] info = GetSellInfo();
+            double totalCost = 0.0;
+            List<BuyItemResponse> validBuy = new List<BuyItemResponse>(list.Count);
             Container cont;
             bool bought = false;
             bool fromBank = false;
@@ -1722,7 +1722,7 @@ namespace Server.Mobiles
             bought = buyer.AccessLevel >= AccessLevel.GameMaster;
             cont = buyer.Backpack;
 
-            var discount = 0.0;
+            double discount = 0.0;
 
             if (HasHonestyDiscount)
             {
@@ -1959,8 +1959,8 @@ namespace Server.Mobiles
 
         public static bool ConsumeGold(Container cont, double amount, bool recurse)
         {
-            var gold = new Queue<Gold>(FindGold(cont, recurse));
-            var total = gold.Aggregate(0.0, (c, g) => c + g.Amount);
+            Queue<Gold> gold = new Queue<Gold>(FindGold(cont, recurse));
+            double total = gold.Aggregate(0.0, (c, g) => c + g.Amount);
 
             if (total < amount)
             {
@@ -1969,11 +1969,11 @@ namespace Server.Mobiles
                 return false;
             }
 
-            var consume = amount;
+            double consume = amount;
 
             while (consume > 0)
             {
-                var g = gold.Dequeue();
+                Gold g = gold.Dequeue();
 
                 if (g.Amount > consume)
                 {
@@ -2011,7 +2011,7 @@ namespace Server.Mobiles
                 yield break;
             }
 
-            var count = cont.Items.Count;
+            int count = cont.Items.Count;
 
             while (--count >= 0)
             {
@@ -2020,7 +2020,7 @@ namespace Server.Mobiles
                     continue;
                 }
 
-                var item = cont.Items[count];
+                Item item = cont.Items[count];
 
                 if (item is Container)
                 {
@@ -2029,7 +2029,7 @@ namespace Server.Mobiles
                         continue;
                     }
 
-                    foreach (var gold in FindGold((Container)item, true))
+                    foreach (Gold gold in FindGold((Container)item, true))
                     {
                         yield return gold;
                     }
@@ -2083,8 +2083,8 @@ namespace Server.Mobiles
 
             seller.PlaySound(0x32);
 
-            var info = GetSellInfo();
-            var buyInfo = GetBuyInfo();
+            IShopSellInfo[] info = GetSellInfo();
+            IBuyItemInfo[] buyInfo = GetBuyInfo();
             int GiveGold = 0;
             int Sold = 0;
             Container cont;
@@ -2140,7 +2140,7 @@ namespace Server.Mobiles
                         {
                             bool found = false;
 
-                            foreach (var bii in buyInfo)
+                            foreach (IBuyItemInfo bii in buyInfo)
                             {
                                 if (bii.Restock(resp.Item, amount))
                                 {
@@ -2191,7 +2191,7 @@ namespace Server.Mobiles
                             }
                         }
 
-                        var singlePrice = ssi.GetSellPriceFor(resp.Item, this);
+                        int singlePrice = ssi.GetSellPriceFor(resp.Item, this);
                         GiveGold += singlePrice * amount;
 
                         EventSink.InvokeValidVendorSell(new ValidVendorSellEventArgs(seller, this, resp.Item, singlePrice));
@@ -2243,12 +2243,12 @@ namespace Server.Mobiles
             writer.Write(NextMultiplierDecay);
             writer.Write(RecentBribes);
 
-            var sbInfos = SBInfos;
+            List<SBInfo> sbInfos = SBInfos;
 
             for (int i = 0; sbInfos != null && i < sbInfos.Count; ++i)
             {
                 SBInfo sbInfo = sbInfos[i];
-                var buyInfo = sbInfo.BuyInfo;
+                List<GenericBuyInfo> buyInfo = sbInfo.BuyInfo;
 
                 for (int j = 0; buyInfo != null && j < buyInfo.Count; ++j)
                 {
@@ -2313,7 +2313,7 @@ namespace Server.Mobiles
 
             LoadSBInfo();
 
-            var sbInfos = SBInfos;
+            List<SBInfo> sbInfos = SBInfos;
 
             switch (version)
             {
@@ -2349,7 +2349,7 @@ namespace Server.Mobiles
                                 if (sbInfoIndex >= 0 && sbInfoIndex < sbInfos.Count)
                                 {
                                     SBInfo sbInfo = sbInfos[sbInfoIndex];
-                                    var buyInfo = sbInfo.BuyInfo;
+                                    List<GenericBuyInfo> buyInfo = sbInfo.BuyInfo;
 
                                     if (buyInfo != null && buyInfoIndex >= 0 && buyInfoIndex < buyInfo.Count)
                                     {
@@ -2465,7 +2465,7 @@ namespace Server.Mobiles
 
         private bool CheckConvertArmor(Mobile from, BaseArmor armor)
         {
-            var convert = GetConvert(from, armor);
+            PendingConvert convert = GetConvert(from, armor);
 
             if (convert == null || !(from is PlayerMobile))
                 return false;
@@ -2498,7 +2498,7 @@ namespace Server.Mobiles
                 },
                 (m, obj) =>
                 {
-                    var con = GetConvert(m, armor);
+                    PendingConvert con = GetConvert(m, armor);
 
                     if (con != null)
                     {
@@ -2533,7 +2533,7 @@ namespace Server.Mobiles
             {
                 from.SendLocalizedMessage(1154117); // Ah yes, I will convert this piece of armor but it's gonna cost you 250,000 gold coin. Payment is due immediately. Just hand me the armor.
 
-                var convert = GetConvert(from, armor);
+                PendingConvert convert = GetConvert(from, armor);
 
                 if (convert != null)
                 {

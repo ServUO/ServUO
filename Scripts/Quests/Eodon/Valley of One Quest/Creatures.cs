@@ -52,13 +52,13 @@ namespace Server.Mobiles
             SetSpecialAbility(SpecialAbility.TailSwipe);
         }
 
-        public override bool AutoDispel { get { return true; } }
-        public override Poison PoisonImmune { get { return Poison.Lethal; } }
-        public override bool UseSmartAI { get { return true; } }
-        public override bool ReacquireOnMovement { get { return true; } }
-        public override bool AttacksFocus { get { return true; } }
-        public override bool CanFlee { get { return false; } }
-        public override int TreasureMapLevel { get { return 7; } }
+        public override bool AutoDispel => true;
+        public override Poison PoisonImmune => Poison.Lethal;
+        public override bool UseSmartAI => true;
+        public override bool ReacquireOnMovement => true;
+        public override bool AttacksFocus => true;
+        public override bool CanFlee => false;
+        public override int TreasureMapLevel => 7;
 
         // Missing Tail Swipe Ability
 
@@ -162,7 +162,7 @@ namespace Server.Mobiles
             IPoint3D p = objs[0] as IPoint3D;
             Map map = objs[1] as Map;
 
-            var item = new FreezeItem(Utility.RandomList(6913, 6915, 6917, 6919), this);
+            FreezeItem item = new FreezeItem(Utility.RandomList(6913, 6915, 6917, 6919), this);
             Spells.SpellHelper.GetSurfaceTop(ref p);
 
             item.MoveToWorld(new Point3D(p), Map);
@@ -265,7 +265,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -360,10 +360,10 @@ namespace Server.Mobiles
             AddLoot(LootPack.SuperBoss, 2);
         }
 
-        public override bool AutoDispel { get { return true; } }
-        public override Poison PoisonImmune { get { return Poison.Lethal; } }
-        public override bool UseSmartAI { get { return true; } }
-        public override int TreasureMapLevel { get { return 7; } }
+        public override bool AutoDispel => true;
+        public override Poison PoisonImmune => Poison.Lethal;
+        public override bool UseSmartAI => true;
+        public override int TreasureMapLevel => 7;
 
         public GreatApe(Serial serial)
             : base(serial)
@@ -534,7 +534,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
             writer.Write(Teleports);
         }
 
@@ -617,9 +617,9 @@ namespace Server.Mobiles
             return base.Damage(amount, from, informMount, checkfizzle);
         }
 
-        public override int Meat { get { return 1; } }
-        public override FoodType FavoriteFood { get { return FoodType.Meat | FoodType.Fish; } }
-        public override PackInstinct PackInstinct { get { return PackInstinct.Feline; } }
+        public override int Meat => 1;
+        public override FoodType FavoriteFood => FoodType.Meat | FoodType.Fish;
+        public override PackInstinct PackInstinct => PackInstinct.Feline;
 
         public TigerCub(Serial serial)
             : base(serial)
@@ -630,7 +630,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)1);
+            writer.Write(1);
             writer.Write(Protector);
         }
 
@@ -692,7 +692,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -739,7 +739,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -827,7 +827,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

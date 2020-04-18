@@ -17,7 +17,7 @@ namespace Server.Items
         {
         }
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         public override void Serialize(GenericWriter writer)
         {
@@ -48,7 +48,7 @@ namespace Server.Items
         {
         }
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         public override void Serialize(GenericWriter writer)
         {
@@ -79,7 +79,7 @@ namespace Server.Items
         {
         }
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         public override void Serialize(GenericWriter writer)
         {
@@ -110,7 +110,7 @@ namespace Server.Items
         {
         }
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         public override void Serialize(GenericWriter writer)
         {
@@ -133,7 +133,7 @@ namespace Server.Items
         public SnowStatueDeed()
             : base(0x14F0)
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public SnowStatueDeed(Serial serial)
@@ -141,23 +141,11 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1114296;
-            }
-        }// snow statue deed
-        public override double DefaultWeight
-        {
-            get
-            {
-                return 1.0;
-            }
-        }
+        public override int LabelNumber => 1114296;// snow statue deed
+        public override double DefaultWeight => 1.0;
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.IsChildOf(from.Backpack))
+            if (IsChildOf(from.Backpack))
             {
                 from.CloseGump(typeof(InternalGump));
                 from.SendGump(new InternalGump(this));
@@ -188,40 +176,40 @@ namespace Server.Items
             public InternalGump(SnowStatueDeed deed)
                 : base(100, 200)
             {
-                this.m_Deed = deed;
+                m_Deed = deed;
 
-                this.Closable = true;
-                this.Disposable = true;
-                this.Dragable = true;
-                this.Resizable = false;
+                Closable = true;
+                Disposable = true;
+                Dragable = true;
+                Resizable = false;
 
-                this.AddPage(0);
-                this.AddBackground(0, 0, 360, 225, 0xA28);
+                AddPage(0);
+                AddBackground(0, 0, 360, 225, 0xA28);
 
-                this.AddPage(1);
-                this.AddLabel(45, 15, 0, "Select One:");
+                AddPage(1);
+                AddLabel(45, 15, 0, "Select One:");
 
-                this.AddItem(35, 75, 0x456E);
-                this.AddButton(65, 50, 0x845, 0x846, 1, GumpButtonType.Reply, 0);
+                AddItem(35, 75, 0x456E);
+                AddButton(65, 50, 0x845, 0x846, 1, GumpButtonType.Reply, 0);
 
-                this.AddItem(120, 75, 0x4578);
-                this.AddButton(135, 50, 0x845, 0x846, 2, GumpButtonType.Reply, 0);
+                AddItem(120, 75, 0x4578);
+                AddButton(135, 50, 0x845, 0x846, 2, GumpButtonType.Reply, 0);
 
-                this.AddItem(190, 75, 0x457A);
-                this.AddButton(205, 50, 0x845, 0x846, 3, GumpButtonType.Reply, 0);
+                AddItem(190, 75, 0x457A);
+                AddButton(205, 50, 0x845, 0x846, 3, GumpButtonType.Reply, 0);
 
-                this.AddItem(250, 75, 0x457C);
-                this.AddButton(275, 50, 0x845, 0x846, 4, GumpButtonType.Reply, 0);
+                AddItem(250, 75, 0x457C);
+                AddButton(275, 50, 0x845, 0x846, 4, GumpButtonType.Reply, 0);
             }
 
             public override void OnResponse(NetState sender, RelayInfo info)
             {
-                if (this.m_Deed == null || this.m_Deed.Deleted)
+                if (m_Deed == null || m_Deed.Deleted)
                     return;
 
                 Mobile from = sender.Mobile;
 
-                if (!this.m_Deed.IsChildOf(from.Backpack))
+                if (!m_Deed.IsChildOf(from.Backpack))
                 {
                     from.SendLocalizedMessage(1042038); // You must have the object in your backpack to use it
                     return;
@@ -255,7 +243,7 @@ namespace Server.Items
                 }
                 else
                 {
-                    this.m_Deed.Delete();
+                    m_Deed.Delete();
                 }
             }
         }

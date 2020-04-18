@@ -27,13 +27,13 @@ namespace Server.Engines.CityLoyalty
         public static readonly int AmbushWaitDuration = Config.Get("CityTrading.AmbushWaitDuration", 5);
         public static readonly int AmbusherDelete = Config.Get("CityTrading.AmbusherDelete", 10);
 
-        public override TextDefinition Name { get { return new TextDefinition("City Trading"); } }
-        public override PointsType Loyalty { get { return PointsType.CityTrading; } }
-        public override bool AutoAdd { get { return false; } }
-        public override double MaxPoints { get { return double.MaxValue; } }
-        public override bool ShowOnLoyaltyGump { get { return false; } }
+        public override TextDefinition Name => new TextDefinition("City Trading");
+        public override PointsType Loyalty => PointsType.CityTrading;
+        public override bool AutoAdd => false;
+        public override double MaxPoints => double.MaxValue;
+        public override bool ShowOnLoyaltyGump => false;
 
-        public static bool KrampusEncounterActive { get { return KrampusEncounter.Enabled && KrampusEncounter.Encounter != null; } }
+        public static bool KrampusEncounterActive => KrampusEncounter.Enabled && KrampusEncounter.Encounter != null;
 
         public static Dictionary<Mobile, TradeOrderCrate> ActiveTrades { get; private set; }
         public static Dictionary<BaseCreature, DateTime> Ambushers { get; private set; }
@@ -86,8 +86,8 @@ namespace Server.Engines.CityLoyalty
             }
             else if (KrampusEncounterActive && (KrampusEncounter.Encounter.Krampus != null || KrampusEncounter.Encounter.KrampusSpawning))
             {
-                var p = KrampusEncounter.Encounter.SpawnLocation;
-                var map = KrampusEncounter.Encounter.SpawnMap;
+                Point3D p = KrampusEncounter.Encounter.SpawnLocation;
+                Map map = KrampusEncounter.Encounter.SpawnMap;
 
                 minister.SayTo(
                     from,
@@ -353,7 +353,7 @@ namespace Server.Engines.CityLoyalty
             List<TradeOrderCrate> crates = new List<TradeOrderCrate>(ActiveTrades.Values);
             List<BaseCreature> toDelete = new List<BaseCreature>();
 
-            foreach (var c in crates)
+            foreach (TradeOrderCrate c in crates)
             {
                 if (c.Expired)
                 {

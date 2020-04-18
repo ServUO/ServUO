@@ -16,7 +16,7 @@ namespace Server.Items
 
         private static void Tick_Callback()
         {
-            foreach (var hammer in _Instances.Where(h => h != null && !h.Deleted && h.UsesRemaining < 20))
+            foreach (HammerOfHephaestus hammer in _Instances.Where(h => h != null && !h.Deleted && h.UsesRemaining < 20))
             {
                 hammer.UsesRemaining++;
                 hammer.InvalidateProperties();
@@ -45,13 +45,7 @@ namespace Server.Items
             _Instances.Remove(this);
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1077740;
-            }
-        }// Hammer of Hephaestus
+        public override int LabelNumber => 1077740;// Hammer of Hephaestus
 
         public override void OnDoubleClick(Mobile from)
         {

@@ -20,7 +20,7 @@ namespace Server.Items
             set { m_Galleon = value; }
         }
 
-        public override int LabelNumber { get { return 1116718; } }
+        public override int LabelNumber => 1116718;
 
         public override void Delete()
         {
@@ -46,7 +46,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

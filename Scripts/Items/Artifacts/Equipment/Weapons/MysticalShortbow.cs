@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class MysticalShortbow : MagicalShortbow
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public MysticalShortbow()
         {
@@ -15,13 +15,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073511;
-            }
-        }// mystical shortbow
+        public override int LabelNumber => 1073511;// mystical shortbow
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

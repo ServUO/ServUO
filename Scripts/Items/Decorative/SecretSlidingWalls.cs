@@ -6,7 +6,7 @@ namespace Server.Items
         public SecretShadowWallNS()
             : base(0x363A, 0x3619)
         {
-            this.Name = "secret door";
+            Name = "secret door";
         }
 
         public SecretShadowWallNS(Serial serial)
@@ -18,7 +18,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -35,7 +35,7 @@ namespace Server.Items
         public SecretDungeonWallNS()
             : base(0x0242, 0x0244)
         {
-            this.Name = "secret door";
+            Name = "secret door";
         }
 
         public SecretDungeonWallNS(Serial serial)
@@ -47,7 +47,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -64,8 +64,8 @@ namespace Server.Items
         public SecretStoneWallNS()
             : base(0x3C9, 0x3CA)
         {
-            this.Name = "secret door";
-            this.Hue = 744;
+            Name = "secret door";
+            Hue = 744;
         }
 
         public SecretStoneWallNS(Serial serial)
@@ -77,7 +77,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

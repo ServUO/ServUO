@@ -23,7 +23,7 @@ namespace Server.Engines.UOStore
         {
             get
             {
-                var profile = UltimaStore.GetProfile(User, false);
+                PlayerProfile profile = UltimaStore.GetProfile(User, false);
 
                 if (profile != null)
                 {
@@ -38,7 +38,7 @@ namespace Server.Engines.UOStore
         {
             get
             {
-                var profile = UltimaStore.GetProfile(User, false);
+                PlayerProfile profile = UltimaStore.GetProfile(User, false);
 
                 if (profile != null)
                 {
@@ -53,7 +53,7 @@ namespace Server.Engines.UOStore
         {
             get
             {
-                var profile = UltimaStore.GetProfile(User, false);
+                PlayerProfile profile = UltimaStore.GetProfile(User, false);
 
                 if (profile != null)
                 {
@@ -188,20 +188,20 @@ namespace Server.Engines.UOStore
 
             if (!Search && Category == StoreCategory.Cart)
             {
-                var profile = UltimaStore.GetProfile(User);
+                PlayerProfile profile = UltimaStore.GetProfile(User);
 
                 AddImage(167, 74, 0x9C4C);
 
                 if (profile != null && profile.Cart != null && profile.Cart.Count > 0)
                 {
-                    var i = 0;
+                    int i = 0;
 
-                    foreach (var kvp in profile.Cart)
+                    foreach (KeyValuePair<StoreEntry, int> kvp in profile.Cart)
                     {
-                        var entry = kvp.Key;
-                        var amount = kvp.Value;
+                        StoreEntry entry = kvp.Key;
+                        int amount = kvp.Value;
 
-                        var index = UltimaStore.Entries.IndexOf(entry);
+                        int index = UltimaStore.Entries.IndexOf(entry);
 
                         if (entry.Name[0].Number > 0)
                             AddHtmlLocalized(175, 84 + (35 * i), 256, 25, entry.Name[0].Number, 0x6B55, false, false);
@@ -247,15 +247,15 @@ namespace Server.Engines.UOStore
                     }
                 }
 
-                var listIndex = Page * 6;
-                var pageIndex = 0;
-                var pages = (int)Math.Ceiling((double)StoreList.Count / 6);
+                int listIndex = Page * 6;
+                int pageIndex = 0;
+                int pages = (int)Math.Ceiling((double)StoreList.Count / 6);
 
-                for (var i = listIndex; i < StoreList.Count && pageIndex < 6; i++)
+                for (int i = listIndex; i < StoreList.Count && pageIndex < 6; i++)
                 {
-                    var entry = StoreList[i];
-                    var x = _Offset[pageIndex][0];
-                    var y = _Offset[pageIndex][1];
+                    StoreEntry entry = StoreList[i];
+                    int x = _Offset[pageIndex][0];
+                    int y = _Offset[pageIndex][1];
 
                     AddButton(x, y, 0x9C4B, 0x9C4B, i + 1000, GumpButtonType.Reply, 0);
 
@@ -265,7 +265,7 @@ namespace Server.Engines.UOStore
                     }
                     else
                     {
-                        var item = UltimaStore.UltimaStoreContainer.FindDisplayItem(entry.ItemType);
+                        Item item = UltimaStore.UltimaStoreContainer.FindDisplayItem(entry.ItemType);
 
                         if (item != null)
                         {
@@ -288,7 +288,7 @@ namespace Server.Engines.UOStore
 
                     if (entry.ItemID > 0)
                     {
-                        var b = ItemBounds.Table[entry.ItemID];
+                        Rectangle2D b = ItemBounds.Table[entry.ItemID];
 
                         AddItem((x + 91) - b.Width / 2 - b.X, (y + 108) - b.Height / 2 - b.Y, entry.ItemID, entry.Hue);
                     }
@@ -359,7 +359,7 @@ namespace Server.Engines.UOStore
 
         public override void OnResponse(RelayInfo info)
         {
-            var id = info.ButtonID;
+            int id = info.ButtonID;
 
             if (id == 0)
             {
@@ -367,7 +367,7 @@ namespace Server.Engines.UOStore
                 return;
             }
 
-            var profile = UltimaStore.GetProfile(User);
+            PlayerProfile profile = UltimaStore.GetProfile(User);
 
             switch (id)
             {
@@ -381,7 +381,7 @@ namespace Server.Engines.UOStore
                     {
                         Search = false;
 
-                        var oldCat = profile.Category;
+                        StoreCategory oldCat = profile.Category;
 
                         profile.Category = (StoreCategory)id - 99;
 
@@ -426,7 +426,7 @@ namespace Server.Engines.UOStore
                 case 111:
                 case 112:
                     {
-                        var oldSort = profile.SortBy;
+                        SortBy oldSort = profile.SortBy;
 
                         profile.SortBy = (SortBy)id - 108;
 
@@ -464,7 +464,7 @@ namespace Server.Engines.UOStore
                 // Search
                 case 114:
                     {
-                        var searchTxt = info.GetTextEntry(0);
+                        TextRelay searchTxt = info.GetTextEntry(0);
 
                         if (searchTxt != null && !String.IsNullOrEmpty(searchTxt.Text))
                         {
@@ -531,7 +531,7 @@ namespace Server.Engines.UOStore
             {
                 Refresh();
 
-                var entry = StoreList[id - 1000];
+                StoreEntry entry = StoreList[id - 1000];
 
                 if (Cart == null || Cart.Count < 10)
                 {
@@ -545,14 +545,14 @@ namespace Server.Engines.UOStore
             {
                 Refresh();
 
-                var entry = UltimaStore.Entries[id - 2000];
+                StoreEntry entry = UltimaStore.Entries[id - 2000];
 
                 SendGump(new ConfirmCartGump(User, this, entry, Cart != null && Cart.ContainsKey(entry) ? Cart[entry] : 0));
                 return;
             }
             else if (id < 4000) // Remove From Cart
             {
-                var entry = UltimaStore.Entries[id - 3000];
+                StoreEntry entry = UltimaStore.Entries[id - 3000];
 
                 if (profile != null)
                 {
@@ -588,7 +588,7 @@ namespace Server.Engines.UOStore
             AddBackground(0, 0, 410, 200, 0x9C40);
             AddHtmlLocalized(10, 10, 400, 20, 1114513, "#1077826", 0x7FFF, false, false); // Quantity
 
-            for (var i = 0; i < Entry.Name.Length; i++)
+            for (int i = 0; i < Entry.Name.Length; i++)
             {
                 if (Entry.Name[i].Number > 0)
                 {
@@ -631,11 +631,11 @@ namespace Server.Engines.UOStore
         {
             if (info.ButtonID == 195)
             {
-                var amtText = info.GetTextEntry(0);
+                TextRelay amtText = info.GetTextEntry(0);
 
                 if (amtText != null && !String.IsNullOrWhiteSpace(amtText.Text))
                 {
-                    var amount = Utility.ToInt32(amtText.Text);
+                    int amount = Utility.ToInt32(amtText.Text);
 
                     if (amount > 0)
                     {
@@ -819,7 +819,7 @@ namespace Server.Engines.UOStore
         {
             if (info.ButtonID == 1)
             {
-                var text = info.GetTextEntry(1);
+                TextRelay text = info.GetTextEntry(1);
 
                 if (text != null && !String.IsNullOrEmpty(text.Text))
                 {

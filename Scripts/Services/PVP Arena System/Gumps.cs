@@ -34,7 +34,7 @@ namespace Server.Engines.ArenaSystem
 
             for (int i = 0; i < ArenaDefinition.Definitions.Length; i++)
             {
-                var def = ArenaDefinition.Definitions[i];
+                ArenaDefinition def = ArenaDefinition.Definitions[i];
                 bool exists = PVPArenaSystem.Arenas != null && PVPArenaSystem.Arenas.Any(arena => arena.Definition == def);
 
                 AddHtml(45, 105 + (i * 25), 200, 20, Color("#FFFFFF", String.Format("{0} [{1}]", def.Name, exists ? "Enabled" : PVPArenaSystem.Instance != null && PVPArenaSystem.Instance.IsBlocked(def) ? "Blocked" : "Disabled")), false, false);
@@ -54,7 +54,7 @@ namespace Server.Engines.ArenaSystem
 
             if (id >= 0 && id < ArenaDefinition.Definitions.Length)
             {
-                var def = ArenaDefinition.Definitions[id];
+                ArenaDefinition def = ArenaDefinition.Definitions[id];
                 bool exists = PVPArenaSystem.Arenas != null && PVPArenaSystem.Arenas.Any(arena => arena.Definition == def);
 
                 BaseGump.SendGump(new GenericConfirmCallbackGump<ArenaDefinition>(
@@ -75,7 +75,7 @@ namespace Server.Engines.ArenaSystem
                             {
                                 if (PVPArenaSystem.Arenas != null)
                                 {
-                                    var arena = PVPArenaSystem.Arenas.FirstOrDefault(a => a.Definition == d);
+                                    PVPArena arena = PVPArenaSystem.Arenas.FirstOrDefault(a => a.Definition == d);
 
                                     if (arena != null)
                                     {
@@ -99,7 +99,7 @@ namespace Server.Engines.ArenaSystem
             if (pm == null)
                 return;
 
-            var gump = BaseGump.GetGump<PVPArenaSystemSetupGump>(pm, null);
+            PVPArenaSystemSetupGump gump = BaseGump.GetGump<PVPArenaSystemSetupGump>(pm, null);
 
             if (gump == null)
             {
@@ -121,7 +121,7 @@ namespace Server.Engines.ArenaSystem
 
         public PVPArena Arena { get; private set; }
 
-        public override bool CloseOnMapChange { get { return true; } }
+        public override bool CloseOnMapChange => true;
 
         public BaseArenaGump(PlayerMobile pm, PVPArena arena)
             : base(pm, 30, 30)
@@ -230,7 +230,7 @@ namespace Server.Engines.ArenaSystem
             AddHtmlLocalized(0, 12, 300, 20, CenterLoc, "#1115619", 0xFFFF, false, false); // Arena Menu - Main
             AddHtmlLocalized(12, 47, 274, 40, 1115620, 0xFFFF, false, false); // You can host/join a duel or check your duel stats.
 
-            var entry = PVPArenaSystem.Instance.GetPlayerEntry<PlayerStatsEntry>(User);
+            PlayerStatsEntry entry = PVPArenaSystem.Instance.GetPlayerEntry<PlayerStatsEntry>(User);
 
             AddHtmlLocalized(45, 105, 200, 20, 1115621, 0xFFFF, false, false); // Host a duel
             AddHtmlLocalized(45, 130, 200, 20, 1115622, 0xFFFF, false, false); // Join a duel
@@ -291,7 +291,7 @@ namespace Server.Engines.ArenaSystem
                     BaseGump.SendGump(new ArenaRankingsGump(User, Arena));
                     break;
                 case 6: // ignore invites
-                    var entry = PVPArenaSystem.Instance.GetPlayerEntry<PlayerStatsEntry>(User);
+                    PlayerStatsEntry entry = PVPArenaSystem.Instance.GetPlayerEntry<PlayerStatsEntry>(User);
                     entry.IgnoreInvites = entry.IgnoreInvites ? false : true;
 
                     User.SendLocalizedMessage(entry.IgnoreInvites ? 1116210 : 1116211); // You are now ignoring invitations. / You are now accepting invitations.
@@ -467,7 +467,7 @@ namespace Server.Engines.ArenaSystem
                         BaseGump.SendGump(new PendingDuelGump(User, Duel, Arena));
                         PVPArenaSystem.SendMessage(User, 1115800); // You have created a new duel session.
 
-                        var entry = PVPArenaSystem.Instance.GetPlayerEntry<PlayerStatsEntry>(User);
+                        PlayerStatsEntry entry = PVPArenaSystem.Instance.GetPlayerEntry<PlayerStatsEntry>(User);
 
                         if (entry != null)
                         {
@@ -770,9 +770,9 @@ namespace Server.Engines.ArenaSystem
 
         public static void RefreshAll(ArenaDuel duel)
         {
-            foreach (var kvp in duel.GetParticipants())
+            foreach (KeyValuePair<PlayerMobile, PlayerStatsEntry> kvp in duel.GetParticipants())
             {
-                var pm = kvp.Key;
+                PlayerMobile pm = kvp.Key;
 
                 if (pm.HasGump(typeof(PendingDuelGump)))
                 {
@@ -802,8 +802,8 @@ namespace Server.Engines.ArenaSystem
                 }
                 else if (targeted is PlayerMobile)
                 {
-                    var pm = targeted as PlayerMobile;
-                    var entry = PVPArenaSystem.Instance.GetPlayerEntry<PlayerStatsEntry>(pm);
+                    PlayerMobile pm = targeted as PlayerMobile;
+                    PlayerStatsEntry entry = PVPArenaSystem.Instance.GetPlayerEntry<PlayerStatsEntry>(pm);
 
                     if (Duel.ParticipantCount >= Duel.Entries)
                     {
@@ -909,7 +909,7 @@ namespace Server.Engines.ArenaSystem
 
             for (int i = 0; i < PendingDuels.Count; i++)
             {
-                var duel = PendingDuels[i];
+                ArenaDuel duel = PendingDuels[i];
 
                 if (!PVPArenaSystem.BlockSameIP || !PVPArenaSystem.HasSameIP(User, duel))
                 {
@@ -954,7 +954,7 @@ namespace Server.Engines.ArenaSystem
 
                 if (id >= 0 && id < PendingDuels.Count)
                 {
-                    var duel = PendingDuels[id];
+                    ArenaDuel duel = PendingDuels[id];
 
                     if (!Arena.PendingDuels.ContainsKey(duel))
                     {
@@ -1138,7 +1138,7 @@ namespace Server.Engines.ArenaSystem
 
             for (int i = 0; i < BookedDuels.Count; i++)
             {
-                var duel = BookedDuels[i];
+                ArenaDuel duel = BookedDuels[i];
 
                 AddLabel(10, y, LabelHue, duel.Arena.Definition.Name);
                 AddLabel(100, y, LabelHue, duel.Host.Name);
@@ -1167,7 +1167,7 @@ namespace Server.Engines.ArenaSystem
         {
             if (info.ButtonID == 0)
             {
-                var duel = Arena.GetPendingDuel(User);
+                ArenaDuel duel = Arena.GetPendingDuel(User);
 
                 if (duel == null)
                 {
@@ -1291,7 +1291,7 @@ namespace Server.Engines.ArenaSystem
 
             for (int i = entry.Record.Count - 1; i >= 0; i--)
             {
-                var record = entry.Record[i];
+                PlayerStatsEntry.DuelRecord record = entry.Record[i];
 
                 if (i > entry.Record.Count - 6)
                 {
@@ -1318,7 +1318,7 @@ namespace Server.Engines.ArenaSystem
         {
             if (info.ButtonID == 0)
             {
-                var duel = Arena.GetPendingDuel(User);
+                ArenaDuel duel = Arena.GetPendingDuel(User);
 
                 if (duel == null)
                 {
@@ -1403,7 +1403,7 @@ namespace Server.Engines.ArenaSystem
 
             for (int i = index; i < Stats.Count && pageIndex < 10; i++)
             {
-                var stats = Stats[i];
+                ArenaStats stats = Stats[i];
                 int hue = stats.Owner == User ? 0x488 : LabelHue;
 
                 AddLabel(10, 98 + (pageIndex * 25), hue, (index + pageIndex + 1).ToString());
@@ -1431,7 +1431,7 @@ namespace Server.Engines.ArenaSystem
         {
             if (info.ButtonID == 0)
             {
-                var duel = Arena.GetPendingDuel(User);
+                ArenaDuel duel = Arena.GetPendingDuel(User);
 
                 if (duel == null)
                 {
@@ -1451,7 +1451,7 @@ namespace Server.Engines.ArenaSystem
                         Refresh();
                         break;
                     case 2:
-                        var stats = Stats.FirstOrDefault(s => s.Owner == User);
+                        ArenaStats stats = Stats.FirstOrDefault(s => s.Owner == User);
 
                         if (stats != null)
                         {
@@ -1531,7 +1531,7 @@ namespace Server.Engines.ArenaSystem
                 }
                 else
                 {
-                    var pm = Winners.PlayerZero;
+                    PlayerMobile pm = Winners.PlayerZero;
                     winner = pm == null ? "Someone" : pm.Name;
                 }
             }
@@ -1541,7 +1541,7 @@ namespace Server.Engines.ArenaSystem
 
             int i = 0;
 
-            foreach (var kvp in Duel.KillRecord)
+            foreach (KeyValuePair<string, string> kvp in Duel.KillRecord)
             {
                 AddLabel(15, 100 + (i * 25), LabelHue, kvp.Value);
                 AddHtmlLocalized(158, 100 + (i * 25), 100, 20, 1115986, 0xFFFF, false, false); // KILLED

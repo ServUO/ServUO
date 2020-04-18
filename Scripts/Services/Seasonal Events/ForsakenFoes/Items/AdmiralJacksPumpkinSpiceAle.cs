@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class AdmiralJacksPumpkinSpiceAle : BaseShield
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1159230; } } // Admiral Jack's Pumpkin Spice Ale
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1159230;  // Admiral Jack's Pumpkin Spice Ale
 
         [Constructable]
         public AdmiralJacksPumpkinSpiceAle()
@@ -22,7 +22,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

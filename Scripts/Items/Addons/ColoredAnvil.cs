@@ -15,8 +15,8 @@ namespace Server.Items
         public ColoredAnvil(int hue)
             : base(0xFAF)
         {
-            this.Hue = hue;
-            this.Weight = 20;
+            Hue = hue;
+            Weight = 20;
         }
 
         public ColoredAnvil(Serial serial)
@@ -27,7 +27,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

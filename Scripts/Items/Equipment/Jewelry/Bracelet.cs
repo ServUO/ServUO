@@ -14,18 +14,12 @@ namespace Server.Items
         {
         }
 
-        public override int BaseGemTypeNumber
-        {
-            get
-            {
-                return 1044221;
-            }
-        }// star sapphire bracelet
+        public override int BaseGemTypeNumber => 1044221;// star sapphire bracelet
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)2); // version
+            writer.Write(2); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -62,7 +56,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -75,7 +69,7 @@ namespace Server.Items
 
     public class SilverBracelet : BaseBracelet, IRepairable
     {
-        public CraftSystem RepairSystem { get { return DefTinkering.CraftSystem; } }
+        public CraftSystem RepairSystem => DefTinkering.CraftSystem;
 
         [Constructable]
         public SilverBracelet()
@@ -93,7 +87,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

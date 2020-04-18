@@ -6,8 +6,8 @@ namespace Server.Items
         public DecoSilverIngot()
             : base(0x1BF5)
         {
-            this.Movable = true;
-            this.Stackable = true;
+            Movable = true;
+            Stackable = true;
         }
 
         public DecoSilverIngot(Serial serial)
@@ -19,7 +19,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

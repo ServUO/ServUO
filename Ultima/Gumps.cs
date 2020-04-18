@@ -154,7 +154,7 @@ namespace Ultima
             {
                 return null;
             }
-            var buffer = new byte[length];
+            byte[] buffer = new byte[length];
             stream.Read(buffer, 0, length);
             stream.Close();
             return buffer;
@@ -229,10 +229,10 @@ namespace Ultima
                     {
                         fixed (byte* pbColorTable = colorTable)
                         {
-                            var pHueColors = (ushort*)psHueColors;
+                            ushort* pHueColors = (ushort*)psHueColors;
                             ushort* pHueColorsEnd = pHueColors + 32;
 
-                            var pColorTable = (ushort*)pbColorTable;
+                            ushort* pColorTable = (ushort*)pbColorTable;
 
                             ushort* pColorTableOpaque = pColorTable;
 
@@ -241,9 +241,9 @@ namespace Ultima
                                 *pColorTableOpaque++ = *pHueColors++;
                             }
 
-                            var pPixelDataStart = (ushort*)pbPixels;
+                            ushort* pPixelDataStart = (ushort*)pbPixels;
 
-                            var pLookup = (int*)pbStream;
+                            int* pLookup = (int*)pbStream;
                             int* pLookupEnd = pLookup + height;
                             int* pPixelRleStart = pLookup;
                             int* pPixelRle;
@@ -388,7 +388,7 @@ namespace Ultima
             {
                 return null;
             }
-            var bmp = new Bitmap(width, height, Settings.PixelFormat);
+            Bitmap bmp = new Bitmap(width, height, Settings.PixelFormat);
             BitmapData bd = bmp.LockBits(
                 new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, Settings.PixelFormat);
 
@@ -400,10 +400,10 @@ namespace Ultima
 
             fixed (byte* data = m_StreamBuffer)
             {
-                var lookup = (int*)data;
-                var dat = (ushort*)data;
+                int* lookup = (int*)data;
+                ushort* dat = (ushort*)data;
 
-                var line = (ushort*)bd.Scan0;
+                ushort* line = (ushort*)bd.Scan0;
                 int delta = bd.Stride >> 1;
                 int count = 0;
                 for (int y = 0; y < height; ++y, line += delta)
@@ -473,11 +473,11 @@ namespace Ultima
                         {
                             BitmapData bd = bmp.LockBits(
                                 new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, Settings.PixelFormat);
-                            var line = (ushort*)bd.Scan0;
+                            ushort* line = (ushort*)bd.Scan0;
                             int delta = bd.Stride >> 1;
 
                             binidx.Write((int)fsmul.Position); //lookup
-                            var length = (int)fsmul.Position;
+                            int length = (int)fsmul.Position;
                             int fill = 0;
                             for (int i = 0; i < bmp.Height; ++i)
                             {
@@ -488,7 +488,7 @@ namespace Ultima
                                 ushort* cur = line;
 
                                 int X = 0;
-                                var current = (int)fsmul.Position;
+                                int current = (int)fsmul.Position;
                                 fsmul.Seek(length + Y * 4, SeekOrigin.Begin);
                                 int offset = (current - length) / 4;
                                 binmul.Write(offset);

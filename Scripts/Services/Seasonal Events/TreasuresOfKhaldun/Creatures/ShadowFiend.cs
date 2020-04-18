@@ -68,20 +68,8 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool DeleteCorpseOnDeath
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool CanRummageCorpses
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool DeleteCorpseOnDeath => true;
+        public override bool CanRummageCorpses => true;
         public override int GetIdleSound()
         {
             return 0x37A;
@@ -119,7 +107,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

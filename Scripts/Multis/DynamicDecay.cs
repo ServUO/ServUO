@@ -18,13 +18,7 @@ namespace Server.Multis
             Register(DecayLevel.IDOC, TimeSpan.FromHours(12), TimeSpan.FromHours(24));
         }
 
-        public static bool Enabled
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public static bool Enabled => true;
         public static void Register(DecayLevel level, TimeSpan min, TimeSpan max)
         {
             DecayStageInfo info = new DecayStageInfo(min, max);
@@ -59,23 +53,11 @@ namespace Server.Multis
         private readonly TimeSpan m_MaxDuration;
         public DecayStageInfo(TimeSpan min, TimeSpan max)
         {
-            this.m_MinDuration = min;
-            this.m_MaxDuration = max;
+            m_MinDuration = min;
+            m_MaxDuration = max;
         }
 
-        public TimeSpan MinDuration
-        {
-            get
-            {
-                return this.m_MinDuration;
-            }
-        }
-        public TimeSpan MaxDuration
-        {
-            get
-            {
-                return this.m_MaxDuration;
-            }
-        }
+        public TimeSpan MinDuration => m_MinDuration;
+        public TimeSpan MaxDuration => m_MaxDuration;
     }
 }

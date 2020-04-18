@@ -4,7 +4,7 @@ namespace Server.Engines.BulkOrders
 {
     public class LargeFletchingBOD : LargeBOD
     {
-        public override BODType BODType { get { return BODType.Fletching; } }
+        public override BODType BODType => BODType.Fletching;
 
         public static double[] m_FletchingingMaterialChances = new double[]
         {
@@ -55,20 +55,20 @@ namespace Server.Engines.BulkOrders
             else
                 material = BulkMaterialType.None;
 
-            this.Hue = hue;
-            this.AmountMax = amountMax;
-            this.Entries = entries;
-            this.RequireExceptional = reqExceptional;
-            this.Material = material;
+            Hue = hue;
+            AmountMax = amountMax;
+            Entries = entries;
+            RequireExceptional = reqExceptional;
+            Material = material;
         }
 
         public LargeFletchingBOD(int amountMax, bool reqExceptional, BulkMaterialType mat, LargeBulkEntry[] entries)
         {
-            this.Hue = 1425;
-            this.AmountMax = amountMax;
-            this.Entries = entries;
-            this.RequireExceptional = reqExceptional;
-            this.Material = mat;
+            Hue = 1425;
+            AmountMax = amountMax;
+            Entries = entries;
+            RequireExceptional = reqExceptional;
+            Material = mat;
         }
 
         public LargeFletchingBOD(Serial serial)
@@ -125,7 +125,7 @@ namespace Server.Engines.BulkOrders
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

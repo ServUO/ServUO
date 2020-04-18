@@ -6,7 +6,7 @@ namespace Server.Items
         public LapHarp()
             : base(0xEB2, 0x45, 0x46)
         {
-            this.Weight = 10.0;
+            Weight = 10.0;
         }
 
         public LapHarp(Serial serial)
@@ -18,7 +18,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -27,8 +27,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (this.Weight == 3.0)
-                this.Weight = 10.0;
+            if (Weight == 3.0)
+                Weight = 10.0;
         }
     }
 }

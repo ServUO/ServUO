@@ -7,9 +7,9 @@ namespace Server.Mobiles
 {
     public class PaladinAI : MageAI
     {
-        public override SkillName CastSkill { get { return SkillName.Chivalry; } }
-        public override bool UsesMagery { get { return false; } }
-        public override double HealChance { get { return .1; } }
+        public override SkillName CastSkill => SkillName.Chivalry;
+        public override bool UsesMagery => false;
+        public override double HealChance => .1;
 
         public PaladinAI(BaseCreature m)
             : base(m)
@@ -33,8 +33,8 @@ namespace Server.Mobiles
 
         public override Spell GetRandomBuffSpell()
         {
-            var mana = m_Mobile.Mana;
-            var select = 1;
+            int mana = m_Mobile.Mana;
+            int select = 1;
 
             if (mana >= 15)
                 select = 3;

@@ -4,7 +4,7 @@ namespace Server.Items
     [Flipable(0xA4E3, 0xA4E4)]
     public class Feedbag : BaseContainer
     {
-        public override int LabelNumber { get { return 1126235; } } // feedbag
+        public override int LabelNumber => 1126235;  // feedbag
 
         public Feedbag()
             : base(0xA4E3)
@@ -19,7 +19,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

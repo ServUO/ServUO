@@ -1418,7 +1418,7 @@ namespace Server
             }
             else if (target is Item)
             {
-                var item = (Item)target;
+                Item item = (Item)target;
 
                 if (item.RootParent == this)
                 {
@@ -1519,7 +1519,7 @@ namespace Server
 
         public virtual int DefaultBloodHue => 0;
 
-        public virtual bool HasBlood { get { return Alive && BloodHue >= 0 && !Body.IsGhost && !Body.IsEquipment; } }
+        public virtual bool HasBlood => Alive && BloodHue >= 0 && !Body.IsGhost && !Body.IsEquipment;
 
         private int m_BloodHue = -1;
 
@@ -1824,7 +1824,7 @@ namespace Server
 
         public static bool GlobalRegenThroughPoison { get { return m_GlobalRegenThroughPoison; } set { m_GlobalRegenThroughPoison = value; } }
 
-        public virtual bool RegenThroughPoison { get { return m_GlobalRegenThroughPoison; } }
+        public virtual bool RegenThroughPoison => m_GlobalRegenThroughPoison;
 
         public virtual bool CanRegenHits => Alive && (RegenThroughPoison || !Poisoned);
         public virtual bool CanRegenStam => Alive;
@@ -2241,7 +2241,7 @@ namespace Server
 
             bool addAggressor = true;
 
-            var list = m_Aggressors;
+            List<AggressorInfo> list = m_Aggressors;
 
             for (int i = 0; i < list.Count; ++i)
             {
@@ -2348,7 +2348,7 @@ namespace Server
                 return;
             }
 
-            var list = m_Aggressed;
+            List<AggressorInfo> list = m_Aggressed;
 
             for (int i = 0; i < list.Count; ++i)
             {
@@ -2378,7 +2378,7 @@ namespace Server
                 return;
             }
 
-            var list = m_Aggressors;
+            List<AggressorInfo> list = m_Aggressors;
 
             for (int i = 0; i < list.Count; ++i)
             {
@@ -3257,7 +3257,7 @@ namespace Server
 
             if (m_Map != null)
             {
-                var eable = m_Map.GetObjectsInRange(m_Location, Core.GlobalMaxUpdateRange);
+                IPooledEnumerable<IEntity> eable = m_Map.GetObjectsInRange(m_Location, Core.GlobalMaxUpdateRange);
 
                 foreach (IEntity o in eable)
                 {
@@ -3288,7 +3288,7 @@ namespace Server
 
                 eable.Free();
 
-                var cache = m_MovingPacketCache;
+                Packet[][] cache = m_MovingPacketCache;
 
                 /*for( int i = 0; i < cache.Length; ++i )
 					for (int j = 0; j < cache[i].Length; ++j)
@@ -3927,11 +3927,11 @@ namespace Server
                 }
             }
 
-            var content = new List<Item>();
-            var equip = new List<Item>();
-            var moveToPack = new List<Item>();
+            List<Item> content = new List<Item>();
+            List<Item> equip = new List<Item>();
+            List<Item> moveToPack = new List<Item>();
 
-            var itemsCopy = new List<Item>(m_Items);
+            List<Item> itemsCopy = new List<Item>(m_Items);
 
             Container pack = Backpack;
 
@@ -3969,7 +3969,7 @@ namespace Server
 
             if (pack != null)
             {
-                var packCopy = new List<Item>(pack.Items);
+                List<Item> packCopy = new List<Item>(pack.Items);
 
                 for (int i = 0; i < packCopy.Count; ++i)
                 {
@@ -4018,7 +4018,7 @@ namespace Server
             {
                 Packet animPacket = null;
 
-                var eable = m_Map.GetClientsInRange(m_Location);
+                IPooledEnumerable<NetState> eable = m_Map.GetClientsInRange(m_Location);
 
                 foreach (NetState state in eable)
                 {
@@ -4072,9 +4072,9 @@ namespace Server
         {
             if (LastKiller != null)
             {
-                var items = LastKiller.Items;
+                List<Item> items = LastKiller.Items;
 
-                var i = items.Count;
+                int i = items.Count;
 
                 while (--i >= 0)
                 {
@@ -4083,7 +4083,7 @@ namespace Server
                         continue;
                     }
 
-                    var o = items[i];
+                    Item o = items[i];
 
                     if (o != null)
                     {
@@ -4254,7 +4254,7 @@ namespace Server
                 return;
             }
 
-            var root = item.RootParent;
+            object root = item.RootParent;
             bool okay = false;
 
             if (!Utility.InUpdateRange(this, item.GetWorldLocation()))
@@ -4424,7 +4424,7 @@ namespace Server
                         {
                             item.SetLastMoved();
 
-                            var itemGrid = item.GridLocation;
+                            byte itemGrid = item.GridLocation;
 
                             if (item.Spawner != null)
                             {
@@ -4455,7 +4455,7 @@ namespace Server
 
                             if (m_DragEffects && map != null && (root == null || root is Item))
                             {
-                                var eable = map.GetClientsInRange(from.Location);
+                                IPooledEnumerable<NetState> eable = map.GetClientsInRange(from.Location);
                                 Packet p = null;
 
                                 foreach (NetState ns in eable)
@@ -4618,7 +4618,7 @@ namespace Server
 
                 if (map != null && (root == null || root is Item))
                 {
-                    var eable = map.GetClientsInRange(m_Location);
+                    IPooledEnumerable<NetState> eable = map.GetClientsInRange(m_Location);
                     Packet p = null;
 
                     foreach (NetState ns in eable)
@@ -4998,12 +4998,12 @@ namespace Server
                 return;
             }
 
-            var hears = m_Hears;
-            var onSpeech = m_OnSpeech;
+            List<Mobile> hears = m_Hears;
+            List<IEntity> onSpeech = m_OnSpeech;
 
             if (m_Map != null)
             {
-                var eable = m_Map.GetObjectsInRange(m_Location, range);
+                IPooledEnumerable<IEntity> eable = m_Map.GetObjectsInRange(m_Location, range);
 
                 foreach (IEntity o in eable)
                 {
@@ -5338,7 +5338,7 @@ namespace Server
 
             if (master != null)
             {
-                var list = de.Responsible;
+                List<DamageEntry> list = de.Responsible;
 
                 if (list == null)
                 {
@@ -5512,7 +5512,7 @@ namespace Server
 
                         if (amount > 0 && (ourState != null || theirState != null))
                         {
-                            var p = Packet.Acquire(new DamagePacket(this, amount));
+                            Packet p = Packet.Acquire(new DamagePacket(this, amount));
 
                             if (ourState != null)
                             {
@@ -5551,9 +5551,9 @@ namespace Server
                 return;
             }
 
-            var eable = map.GetClientsInRange(m_Location);
+            IPooledEnumerable<NetState> eable = map.GetClientsInRange(m_Location);
 
-            var p = Packet.Acquire(new DamagePacket(this, amount));
+            Packet p = Packet.Acquire(new DamagePacket(this, amount));
 
             foreach (NetState ns in eable)
             {
@@ -6612,7 +6612,7 @@ namespace Server
                 item.SendRemovePacket();
             }
 
-            var equipped = FindItemOnLayer(item.Layer);
+            Item equipped = FindItemOnLayer(item.Layer);
 
             if (equipped != null && equipped != item)
             {
@@ -6710,7 +6710,7 @@ namespace Server
 
                 Packet p = null;
 
-                var eable = map.GetClientsInRange(m_Location);
+                IPooledEnumerable<NetState> eable = map.GetClientsInRange(m_Location);
 
                 foreach (NetState state in eable)
                 {
@@ -6740,7 +6740,7 @@ namespace Server
 
                 Packet p = null;
 
-                var eable = map.GetClientsInRange(m_Location);
+                IPooledEnumerable<NetState> eable = map.GetClientsInRange(m_Location);
 
                 foreach (NetState state in eable)
                 {
@@ -6869,7 +6869,7 @@ namespace Server
             {
                 Packet p = Packet.Acquire(new PlaySound(soundID, this));
 
-                var eable = m_Map.GetClientsInRange(m_Location);
+                IPooledEnumerable<NetState> eable = m_Map.GetClientsInRange(m_Location);
 
                 foreach (NetState state in eable)
                 {
@@ -7175,7 +7175,7 @@ namespace Server
         {
             if (m_Map != null)
             {
-                var eable = m_Map.GetClientsInRange(m_Location);
+                IPooledEnumerable<NetState> eable = m_Map.GetClientsInRange(m_Location);
 
                 foreach (NetState state in eable)
                 {
@@ -7195,7 +7195,7 @@ namespace Server
 
             if (m_Map != null && ns != null)
             {
-                var eable = m_Map.GetObjectsInRange(m_Location, Core.GlobalRadarRange - 4);
+                IPooledEnumerable<IEntity> eable = m_Map.GetObjectsInRange(m_Location, Core.GlobalRadarRange - 4);
 
                 foreach (IEntity o in eable)
                 {
@@ -7337,7 +7337,7 @@ namespace Server
 
             if (ns != null)
             {
-                var gumps = new List<Gump>(ns.Gumps);
+                List<Gump> gumps = new List<Gump>(ns.Gumps);
 
                 ns.ClearGumps();
 
@@ -7457,9 +7457,9 @@ namespace Server
 
             if (m_Map != null && ns != null)
             {
-                var eable = m_Map.GetObjectsInRange(m_Location, Core.GlobalRadarRange);
+                IPooledEnumerable<IEntity> eable = m_Map.GetObjectsInRange(m_Location, Core.GlobalRadarRange);
 
-                foreach (var o in eable)
+                foreach (IEntity o in eable)
                 {
                     if (o is Item)
                     {
@@ -8777,7 +8777,7 @@ namespace Server
 
             if (m_Map != null)
             {
-                var eable = m_Map.GetClientsInRange(m_Location);
+                IPooledEnumerable<NetState> eable = m_Map.GetClientsInRange(m_Location);
 
                 foreach (NetState state in eable)
                 {
@@ -9139,13 +9139,7 @@ namespace Server
         public string RawName { get { return m_Name; } set { Name = value; } }
 
         [CommandProperty(AccessLevel.Decorator)]
-        public virtual string TitleName
-        {
-            get
-            {
-                return m_Name;
-            }
-        }
+        public virtual string TitleName => m_Name;
 
         [CommandProperty(AccessLevel.Decorator)]
         public string Name
@@ -9876,7 +9870,7 @@ namespace Server
                 {
                     // First, send a remove message to everyone who can no longer see us. (inOldRange && !inNewRange)
 
-                    var eable = map.GetClientsInRange(oldLocation);
+                    IPooledEnumerable<NetState> eable = map.GetClientsInRange(oldLocation);
 
                     foreach (NetState ns in eable)
                     {
@@ -9899,7 +9893,7 @@ namespace Server
                     // Check to see if we are attached to a client
                     if (ourState != null)
                     {
-                        var eeable = map.GetObjectsInRange(newLocation, Core.GlobalRadarRange);
+                        IPooledEnumerable<IEntity> eeable = map.GetObjectsInRange(newLocation, Core.GlobalRadarRange);
 
                         // We are attached to a client, so it's a bit more complex. We need to send new items and people to ourself, and ourself to other clients
                         foreach (IEntity o in eeable)
@@ -10310,7 +10304,7 @@ namespace Server
 
         public Item FindItemOnLayer(Layer layer)
         {
-            var eq = m_Items;
+            List<Item> eq = m_Items;
             int count = eq.Count;
 
             for (int i = 0; i < count; ++i)
@@ -10483,7 +10477,7 @@ namespace Server
         {
             if (m_Map != null)
             {
-                var eable = m_Map.GetClientsInRange(m_Location);
+                IPooledEnumerable<NetState> eable = m_Map.GetClientsInRange(m_Location);
 
                 foreach (NetState state in eable)
                 {
@@ -11129,7 +11123,7 @@ namespace Server
                 sendFace = true;
             }
 
-            var cache = new Packet[2][] { new Packet[8], new Packet[8] };
+            Packet[][] cache = new Packet[2][] { new Packet[8], new Packet[8] };
 
             NetState ourState = m.m_NetState;
 
@@ -11274,7 +11268,7 @@ namespace Server
                 Packet faceRemovePacket = null;
                 Packet faceSendPacket = null;
 
-                var eable = m.Map.GetClientsInRange(m.m_Location);
+                IPooledEnumerable<NetState> eable = m.Map.GetClientsInRange(m.m_Location);
 
                 foreach (NetState state in eable)
                 {
@@ -11471,7 +11465,7 @@ namespace Server
 
             _Processing = true;
 
-            var i = m_DeltaQueue.Count;
+            int i = m_DeltaQueue.Count;
 
             while (--i >= 0)
             {
@@ -11636,7 +11630,7 @@ namespace Server
 
                 p.Acquire();
 
-                var eable = m_Map.GetClientsInRange(m_Location);
+                IPooledEnumerable<NetState> eable = m_Map.GetClientsInRange(m_Location);
 
                 foreach (NetState state in eable)
                 {
@@ -11668,7 +11662,7 @@ namespace Server
             {
                 Packet p = Packet.Acquire(new MessageLocalized(m_Serial, Body, type, hue, 3, number, Name, args));
 
-                var eable = m_Map.GetClientsInRange(m_Location);
+                IPooledEnumerable<NetState> eable = m_Map.GetClientsInRange(m_Location);
 
                 foreach (NetState state in eable)
                 {
@@ -11698,7 +11692,7 @@ namespace Server
                 Packet cp = null;
                 Packet ep = null;
 
-                var eable = m_Map.GetClientsInRange(m_Location);
+                IPooledEnumerable<NetState> eable = m_Map.GetClientsInRange(m_Location);
 
                 foreach (NetState state in eable)
                 {
@@ -11812,7 +11806,7 @@ namespace Server
             {
                 Packet p = Packet.Acquire(new MessageLocalized(m_Serial, Body, type, hue, 3, number, Name, args));
 
-                var eable = m_Map.GetClientsInRange(m_Location);
+                IPooledEnumerable<NetState> eable = m_Map.GetClientsInRange(m_Location);
 
                 foreach (NetState state in eable)
                 {
@@ -11845,7 +11839,7 @@ namespace Server
 
                 p.Acquire();
 
-                var eable = m_Map.GetClientsInRange(m_Location);
+                IPooledEnumerable<NetState> eable = m_Map.GetClientsInRange(m_Location);
 
                 foreach (NetState state in eable)
                 {
@@ -12329,29 +12323,11 @@ namespace Server
             }
         }
 
-        public Item Talisman
-        {
-            get
-            {
-                return FindItemOnLayer(Layer.Talisman) as Item;
-            }
-        }
+        public Item Talisman => FindItemOnLayer(Layer.Talisman) as Item;
 
-        public Item Ring
-        {
-            get
-            {
-                return FindItemOnLayer(Layer.Ring) as Item;
-            }
-        }
+        public Item Ring => FindItemOnLayer(Layer.Ring) as Item;
 
-        public Item Bracelet
-        {
-            get
-            {
-                return FindItemOnLayer(Layer.Bracelet) as Item;
-            }
-        }
+        public Item Bracelet => FindItemOnLayer(Layer.Bracelet) as Item;
         #endregion
 
         /// <summary>

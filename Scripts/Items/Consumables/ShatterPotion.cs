@@ -8,9 +8,9 @@ namespace Server.Items
 {
     public class ShatterPotion : BasePotion
     {
-        public override int LabelNumber { get { return 1115759; } } // Shatter Potion
+        public override int LabelNumber => 1115759;  // Shatter Potion
 
-        public override bool RequireFreeHand { get { return false; } }
+        public override bool RequireFreeHand => false;
 
         [Constructable]
         public ShatterPotion()
@@ -57,7 +57,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

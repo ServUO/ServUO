@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class SalvagerSuitPlans : BaseDecayingItem
     {
-        public override int LabelNumber { get { return 1154229; } } // Plans to A Salvager Suit
+        public override int LabelNumber => 1154229;  // Plans to A Salvager Suit
 
         [Constructable]
         public SalvagerSuitPlans() : this(1)
@@ -14,11 +14,11 @@ namespace Server.Items
         [Constructable]
         public SalvagerSuitPlans(int amount) : base(0x2258)
         {
-            this.Hue = 92;
-            this.Stackable = false;
-            this.Weight = 1.0;
-            this.Amount = amount;
-            this.LootType = LootType.Blessed;
+            Hue = 92;
+            Stackable = false;
+            Weight = 1.0;
+            Amount = amount;
+            LootType = LootType.Blessed;
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -35,8 +35,8 @@ namespace Server.Items
             list.Add(1072351); // Quest Item
         }
 
-        public override int Lifespan { get { return 18000; } }
-        public override bool UseSeconds { get { return false; } }
+        public override int Lifespan => 18000;
+        public override bool UseSeconds => false;
 
         public SalvagerSuitPlans(Serial serial) : base(serial)
         {
@@ -45,7 +45,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

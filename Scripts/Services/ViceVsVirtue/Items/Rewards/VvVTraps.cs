@@ -35,12 +35,12 @@ namespace Server.Engines.VvV
 
         public List<VvVTrap> Links { get; set; }
 
-        public override bool HandlesOnMovement { get { return true; } }
-        public bool CheckWhenHidden { get { return true; } }
+        public override bool HandlesOnMovement => true;
+        public bool CheckWhenHidden => true;
 
-        public virtual int MinDamage { get { return 0; } }
-        public virtual int MaxDamage { get { return 0; } }
-        public virtual VvVTrapType TrapType { get { return VvVTrapType.Explosion; } }
+        public virtual int MinDamage => 0;
+        public virtual int MaxDamage => 0;
+        public virtual VvVTrapType TrapType => VvVTrapType.Explosion;
 
         public static int HiddenID = 8600;
         public static int VisibleID = 39818;
@@ -68,7 +68,7 @@ namespace Server.Engines.VvV
                 {
                     Movement.Movement.Offset(path.Directions[i], ref x, ref y);
 
-                    Point3D p = new Point3D(x, y, this.Map.GetAverageZ(x, y));
+                    Point3D p = new Point3D(x, y, Map.GetAverageZ(x, y));
 
                     if (p == myLocation)
                         continue;
@@ -88,7 +88,7 @@ namespace Server.Engines.VvV
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (IsEnemy(m) && DeploymentType == DeploymentType.Proximaty && m.InRange(this.Location, 3) && ViceVsVirtueSystem.IsEnemy(m, Owner))
+            if (IsEnemy(m) && DeploymentType == DeploymentType.Proximaty && m.InRange(Location, 3) && ViceVsVirtueSystem.IsEnemy(m, Owner))
             {
                 Detonate(m);
             }
@@ -126,12 +126,12 @@ namespace Server.Engines.VvV
 
         public bool CheckPassiveDetect(Mobile m)
         {
-            if (m.InRange(this.Location, 6))
+            if (m.InRange(Location, 6))
             {
                 int skill = (int)m.Skills[SkillName.DetectHidden].Value;
 
                 if (skill >= 80 && Utility.Random(600) < skill)
-                    this.PrivateOverheadMessage(Server.Network.MessageType.Regular, 0x21, 500813, m.NetState); // [trapped]
+                    PrivateOverheadMessage(Server.Network.MessageType.Regular, 0x21, 500813, m.NetState); // [trapped]
             }
 
             return false;
@@ -229,8 +229,8 @@ namespace Server.Engines.VvV
 
     public class VvVExplosionTrap : VvVTrap
     {
-        public override int MinDamage { get { return 40; } }
-        public override int MaxDamage { get { return 50; } }
+        public override int MinDamage => 40;
+        public override int MaxDamage => 50;
 
         public VvVExplosionTrap(Mobile owner, DeploymentType type)
             : base(owner, type)
@@ -246,8 +246,8 @@ namespace Server.Engines.VvV
 
             AOS.Damage(m, Owner, dam, 50, 50, 0, 0, 0);
 
-            Effects.SendLocationEffect(this.GetWorldLocation(), this.Map, 0x36BD, 15, 10);
-            Effects.PlaySound(this.GetWorldLocation(), this.Map, 0x307);
+            Effects.SendLocationEffect(GetWorldLocation(), Map, 0x36BD, 15, 10);
+            Effects.PlaySound(GetWorldLocation(), Map, 0x307);
 
             base.Detonate(m);
         }
@@ -272,9 +272,9 @@ namespace Server.Engines.VvV
 
     public class VvVPoisonTrap : VvVTrap
     {
-        public override int MinDamage { get { return 25; } }
-        public override int MaxDamage { get { return 35; } }
-        public override VvVTrapType TrapType { get { return VvVTrapType.Poison; } }
+        public override int MinDamage => 25;
+        public override int MaxDamage => 35;
+        public override VvVTrapType TrapType => VvVTrapType.Poison;
 
         public VvVPoisonTrap(Mobile owner, DeploymentType type)
             : base(owner, type)
@@ -292,7 +292,7 @@ namespace Server.Engines.VvV
             m.ApplyPoison(Owner, Poison.Deadly);
 
             Effects.SendTargetEffect(m, 0x1145, 3, 16);
-            Effects.PlaySound(this.GetWorldLocation(), this.Map, 0x230);
+            Effects.PlaySound(GetWorldLocation(), Map, 0x230);
 
             base.Detonate(m);
         }
@@ -316,9 +316,9 @@ namespace Server.Engines.VvV
 
     public class VvVColdTrap : VvVTrap
     {
-        public override int MinDamage { get { return 25; } }
-        public override int MaxDamage { get { return 35; } }
-        public override VvVTrapType TrapType { get { return VvVTrapType.Cold; } }
+        public override int MinDamage => 25;
+        public override int MaxDamage => 35;
+        public override VvVTrapType TrapType => VvVTrapType.Cold;
 
         public VvVColdTrap(Mobile owner, DeploymentType type)
             : base(owner, type)
@@ -338,7 +338,7 @@ namespace Server.Engines.VvV
             m.Paralyze(TimeSpan.FromSeconds(5));
 
             Effects.SendLocationParticles(m, 0x374A, 1, 30, 97, 3, 9502, 0);
-            Effects.PlaySound(this.GetWorldLocation(), this.Map, 0x1FB);
+            Effects.PlaySound(GetWorldLocation(), Map, 0x1FB);
 
             base.Detonate(m);
         }
@@ -362,9 +362,9 @@ namespace Server.Engines.VvV
 
     public class VvVEnergyTrap : VvVTrap
     {
-        public override int MinDamage { get { return 25; } }
-        public override int MaxDamage { get { return 35; } }
-        public override VvVTrapType TrapType { get { return VvVTrapType.Energy; } }
+        public override int MinDamage => 25;
+        public override int MaxDamage => 35;
+        public override VvVTrapType TrapType => VvVTrapType.Energy;
 
         public VvVEnergyTrap(Mobile owner, DeploymentType type)
             : base(owner, type)
@@ -405,9 +405,9 @@ namespace Server.Engines.VvV
 
     public class VvVBladeTrap : VvVTrap
     {
-        public override int MinDamage { get { return 25; } }
-        public override int MaxDamage { get { return 35; } }
-        public override VvVTrapType TrapType { get { return VvVTrapType.Blade; } }
+        public override int MinDamage => 25;
+        public override int MaxDamage => 35;
+        public override VvVTrapType TrapType => VvVTrapType.Blade;
 
         public VvVBladeTrap(Mobile owner, DeploymentType type)
             : base(owner, type)

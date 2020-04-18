@@ -50,28 +50,10 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-        public override bool CanBeParagon { get { return false; } }
-        public override bool GivesMLMinorArtifact
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 4;
-            }
-        }
-        public override bool AllureImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool CanBeParagon => false;
+        public override bool GivesMLMinorArtifact => true;
+        public override int TreasureMapLevel => 4;
+        public override bool AllureImmune => true;
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 2);
@@ -81,7 +63,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

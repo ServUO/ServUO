@@ -12,13 +12,7 @@ namespace Server.Engines.Reports
             return new ResponseInfo();
         }
 
-        public override PersistableType TypeID
-        {
-            get
-            {
-                return ThisTypeID;
-            }
-        }
+        public override PersistableType TypeID => ThisTypeID;
         #endregion
 
         private DateTime m_TimeStamp;
@@ -30,11 +24,11 @@ namespace Server.Engines.Reports
         {
             get
             {
-                return this.m_TimeStamp;
+                return m_TimeStamp;
             }
             set
             {
-                this.m_TimeStamp = value;
+                m_TimeStamp = value;
             }
         }
 
@@ -42,22 +36,22 @@ namespace Server.Engines.Reports
         {
             get
             {
-                return this.m_SentBy;
+                return m_SentBy;
             }
             set
             {
-                this.m_SentBy = value;
+                m_SentBy = value;
             }
         }
         public string Message
         {
             get
             {
-                return this.m_Message;
+                return m_Message;
             }
             set
             {
-                this.m_Message = value;
+                m_Message = value;
             }
         }
 
@@ -67,25 +61,25 @@ namespace Server.Engines.Reports
 
         public ResponseInfo(string sentBy, string message)
         {
-            this.m_TimeStamp = DateTime.UtcNow;
-            this.m_SentBy = sentBy;
-            this.m_Message = message;
+            m_TimeStamp = DateTime.UtcNow;
+            m_SentBy = sentBy;
+            m_Message = message;
         }
 
         public override void SerializeAttributes(PersistenceWriter op)
         {
-            op.SetDateTime("t", this.m_TimeStamp);
+            op.SetDateTime("t", m_TimeStamp);
 
-            op.SetString("s", this.m_SentBy);
-            op.SetString("m", this.m_Message);
+            op.SetString("s", m_SentBy);
+            op.SetString("m", m_Message);
         }
 
         public override void DeserializeAttributes(PersistenceReader ip)
         {
-            this.m_TimeStamp = ip.GetDateTime("t");
+            m_TimeStamp = ip.GetDateTime("t");
 
-            this.m_SentBy = ip.GetString("s");
-            this.m_Message = ip.GetString("m");
+            m_SentBy = ip.GetString("s");
+            m_Message = ip.GetString("m");
         }
     }
 }

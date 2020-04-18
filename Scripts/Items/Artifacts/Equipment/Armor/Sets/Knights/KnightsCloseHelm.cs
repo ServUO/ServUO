@@ -2,40 +2,40 @@ namespace Server.Items
 {
     public class KnightsCloseHelm : CloseHelm
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1080156; } } // Knight's Close Helm
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1080156;  // Knight's Close Helm
 
-        public override SetItem SetID { get { return SetItem.Knights; } }
-        public override int Pieces { get { return 6; } }
+        public override SetItem SetID => SetItem.Knights;
+        public override int Pieces => 6;
 
-        public override int BasePhysicalResistance { get { return 7; } }
-        public override int BaseFireResistance { get { return 7; } }
-        public override int BaseColdResistance { get { return 7; } }
-        public override int BasePoisonResistance { get { return 7; } }
-        public override int BaseEnergyResistance { get { return 7; } }
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
+        public override int BasePhysicalResistance => 7;
+        public override int BaseFireResistance => 7;
+        public override int BaseColdResistance => 7;
+        public override int BasePoisonResistance => 7;
+        public override int BaseEnergyResistance => 7;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
         [Constructable]
         public KnightsCloseHelm() : base()
         {
-            this.Hue = 1150;
-            this.Weight = 5;
+            Hue = 1150;
+            Weight = 5;
 
-            this.Attributes.BonusHits = 1;
+            Attributes.BonusHits = 1;
 
-            this.SetAttributes.BonusHits = 6;
-            this.SetAttributes.RegenHits = 2;
-            this.SetAttributes.RegenMana = 2;
-            this.SetAttributes.AttackChance = 10;
-            this.SetAttributes.DefendChance = 10;
+            SetAttributes.BonusHits = 6;
+            SetAttributes.RegenHits = 2;
+            SetAttributes.RegenMana = 2;
+            SetAttributes.AttackChance = 10;
+            SetAttributes.DefendChance = 10;
 
-            this.SetHue = 1150;
-            this.SetPhysicalBonus = 28;
-            this.SetFireBonus = 28;
-            this.SetColdBonus = 28;
-            this.SetPoisonBonus = 28;
-            this.SetEnergyBonus = 28;
+            SetHue = 1150;
+            SetPhysicalBonus = 28;
+            SetFireBonus = 28;
+            SetColdBonus = 28;
+            SetPoisonBonus = 28;
+            SetEnergyBonus = 28;
         }
 
         public KnightsCloseHelm(Serial serial) : base(serial)
@@ -46,7 +46,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

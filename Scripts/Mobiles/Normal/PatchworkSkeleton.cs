@@ -45,27 +45,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool BleedImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 1;
-            }
-        }
+        public override bool BleedImmune => true;
+        public override Poison PoisonImmune => Poison.Lethal;
+        public override int TreasureMapLevel => 1;
 
         public override void GenerateLoot()
         {
@@ -75,7 +57,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

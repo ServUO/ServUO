@@ -16,37 +16,31 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override Type[] Quests => null;
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = true;
-            this.Race = Race.Human;
+            Female = true;
+            Race = Race.Human;
 
-            this.Hue = 0x8412;
-            this.HairItemID = 0x2049;
-            this.HairHue = 0x470;
+            Hue = 0x8412;
+            HairItemID = 0x2049;
+            HairHue = 0x470;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Sandals(0x8FD));
-            this.AddItem(new FancyDress(0x8FD));
+            AddItem(new Backpack());
+            AddItem(new Sandals(0x8FD));
+            AddItem(new FancyDress(0x8FD));
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

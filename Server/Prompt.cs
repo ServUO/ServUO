@@ -7,30 +7,15 @@ namespace Server.Prompts
         private readonly IEntity m_Sender;
         private readonly String m_MessageArgs;
 
-        public IEntity Sender
-        {
-            get { return m_Sender; }
-        }
+        public IEntity Sender => m_Sender;
 
-        public String MessageArgs
-        {
-            get { return m_MessageArgs; }
-        }
+        public String MessageArgs => m_MessageArgs;
 
-        public virtual int MessageCliloc
-        {
-            get { return 1042971; } // ~1_NOTHING~
-        }
+        public virtual int MessageCliloc => 1042971;
 
-        public virtual int MessageHue
-        {
-            get { return 0; }
-        }
+        public virtual int MessageHue => 0;
 
-        public virtual int TypeId
-        {
-            get { return GetType().FullName.GetHashCode(); }
-        }
+        public virtual int TypeId => GetType().FullName.GetHashCode();
 
         public Prompt()
             : this(null)

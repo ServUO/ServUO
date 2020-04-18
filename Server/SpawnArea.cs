@@ -49,16 +49,16 @@ namespace Server
 
         public static SpawnArea Instantiate(Region region, TileFlag filter, SpawnValidator validator, bool cache)
         {
-            var name = region.Name;
+            string name = region.Name;
 
             if (region.IsDefault || String.IsNullOrWhiteSpace(name))
             {
                 name = "Default";
             }
 
-            var filters = GetFilters(filter);
+            TileFlag[] filters = GetFilters(filter);
 
-            var hash = GetHashCode(region.Map, name, filters, validator);
+            int hash = GetHashCode(region.Map, name, filters, validator);
 
             SpawnArea o;
 
@@ -123,7 +123,7 @@ namespace Server
         {
             unchecked
             {
-                var hash = x + y;
+                int hash = x + y;
 
                 hash = (hash * 397) ^ x;
                 hash = (hash * 397) ^ y;
@@ -136,16 +136,16 @@ namespace Server
         {
             unchecked
             {
-                var hash = region.Length;
+                int hash = region.Length;
 
                 hash = region.Aggregate(hash, (v, c) => unchecked((v * 397) ^ Convert.ToInt32(c)));
 
                 hash = (hash * 397) ^ facet.MapID;
                 hash = (hash * 397) ^ facet.MapIndex;
 
-                var filter = TileFlag.None;
+                TileFlag filter = TileFlag.None;
 
-                foreach (var f in filters)
+                foreach (TileFlag f in filters)
                 {
                     filter |= f;
                 }
@@ -239,15 +239,15 @@ namespace Server
                         return _Image = _EmptyImage;
                 }
 
-                var map = new Bitmap(_Bounds.Width, _Bounds.Height, PixelFormat.Format16bppRgb555);
+                Bitmap map = new Bitmap(_Bounds.Width, _Bounds.Height, PixelFormat.Format16bppRgb555);
 
-                var b = new Rectangle(_Bounds.Start.X >> 3, _Bounds.Start.Y >> 3, _Bounds.Width >> 3, _Bounds.Height >> 3);
+                Rectangle b = new Rectangle(_Bounds.Start.X >> 3, _Bounds.Start.Y >> 3, _Bounds.Width >> 3, _Bounds.Height >> 3);
 
                 umap.GetImage(b.X, b.Y, b.Width, b.Height, map, true);
 
                 b = new Rectangle(Point.Empty, map.Size);
 
-                var data = map.LockBits(b, ImageLockMode.ReadWrite, map.PixelFormat);
+                BitmapData data = map.LockBits(b, ImageLockMode.ReadWrite, map.PixelFormat);
 
                 b = new Rectangle(_Bounds.Start.X, _Bounds.Start.Y, _Bounds.Width, _Bounds.Height);
 
@@ -261,8 +261,8 @@ namespace Server
 
         private static unsafe void SetPixel(int x, int y, BitmapData data)
         {
-            var index = (y * data.Stride) + (x * 2);
-            var pixel = (byte*)data.Scan0.ToPointer();
+            int index = (y * data.Stride) + (x * 2);
+            byte* pixel = (byte*)data.Scan0.ToPointer();
 
             pixel[index + 0] = (PixelColor >> 0) & 0xFF;
             pixel[index + 1] = (PixelColor >> 8) & 0xFF;
@@ -299,7 +299,7 @@ namespace Server
             }
             while (!Contains(x, y));
 
-            var z = Facet.GetAverageZ(x, y);
+            int z = Facet.GetAverageZ(x, y);
 
             if (Validator == null || Validator(Facet, x, y, z))
             {
@@ -338,9 +338,9 @@ namespace Server
 
             if (region.IsDefault)
             {
-                var fw = Facet.MapID <= 1 ? 5119 : Facet.Width;
-                var fh = Facet.MapID <= 1 ? 4095 : Facet.Height;
-                var fd = Server.Region.MaxZ - Server.Region.MinZ;
+                int fw = Facet.MapID <= 1 ? 5119 : Facet.Width;
+                int fh = Facet.MapID <= 1 ? 4095 : Facet.Height;
+                int fd = Server.Region.MaxZ - Server.Region.MinZ;
 
                 _Bounds = new Rectangle3D(0, 0, Server.Region.MinZ, fw, fh, fd);
 
@@ -351,7 +351,7 @@ namespace Server
                 int x1 = Int16.MaxValue, y1 = Int16.MaxValue, z1 = SByte.MaxValue;
                 int x2 = Int16.MinValue, y2 = Int16.MinValue, z2 = SByte.MinValue;
 
-                foreach (var o in region.Area)
+                foreach (Rectangle3D o in region.Area)
                 {
                     x1 = Math.Min(x1, o.Start.X);
                     y1 = Math.Min(y1, o.Start.Y);
@@ -375,10 +375,10 @@ namespace Server
             // Check all corners to skip large bodies of water.
             if (Filters.Contains(TileFlag.Wet))
             {
-                var land1 = Facet.Tiles.GetLandTile(area.Start.X, area.Start.Y); // TL
-                var land2 = Facet.Tiles.GetLandTile(area.End.X, area.Start.Y); // TR
-                var land3 = Facet.Tiles.GetLandTile(area.Start.X, area.End.Y); // BL
-                var land4 = Facet.Tiles.GetLandTile(area.End.X, area.End.Y); // BR
+                LandTile land1 = Facet.Tiles.GetLandTile(area.Start.X, area.Start.Y); // TL
+                LandTile land2 = Facet.Tiles.GetLandTile(area.End.X, area.Start.Y); // TR
+                LandTile land3 = Facet.Tiles.GetLandTile(area.Start.X, area.End.Y); // BL
+                LandTile land4 = Facet.Tiles.GetLandTile(area.End.X, area.End.Y); // BR
 
                 if ((land1.Ignored || TileData.LandTable[land1.ID].Flags.HasFlag(TileFlag.Wet)) &&
                     (land2.Ignored || TileData.LandTable[land2.ID].Flags.HasFlag(TileFlag.Wet)) &&
@@ -411,23 +411,23 @@ namespace Server
 
                     if (Filters.Length > 0)
                     {
-                        var land = Facet.Tiles.GetLandTile(x, y);
+                        LandTile land = Facet.Tiles.GetLandTile(x, y);
 
                         if (land.Ignored)
                         {
                             continue;
                         }
 
-                        var flags = TileData.LandTable[land.ID].Flags;
+                        TileFlag flags = TileData.LandTable[land.ID].Flags;
 
                         if (Filters.Any(f => flags.HasFlag(f)))
                         {
                             continue;
                         }
 
-                        var valid = true;
+                        bool valid = true;
 
-                        foreach (var tile in Facet.Tiles.GetStaticTiles(x, y))
+                        foreach (StaticTile tile in Facet.Tiles.GetStaticTiles(x, y))
                         {
                             flags = TileData.ItemTable[tile.ID].Flags;
 

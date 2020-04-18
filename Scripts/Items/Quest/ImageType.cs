@@ -61,47 +61,17 @@ namespace Server.Engines.Quests.Collector
         private readonly int m_Y;
         public ImageTypeInfo(int figurine, Type type, int x, int y)
         {
-            this.m_Figurine = figurine;
-            this.m_Type = type;
-            this.m_X = x;
-            this.m_Y = y;
+            m_Figurine = figurine;
+            m_Type = type;
+            m_X = x;
+            m_Y = y;
         }
 
-        public int Figurine
-        {
-            get
-            {
-                return this.m_Figurine;
-            }
-        }
-        public Type Type
-        {
-            get
-            {
-                return this.m_Type;
-            }
-        }
-        public int Name
-        {
-            get
-            {
-                return this.m_Figurine < 0x4000 ? 1020000 + this.m_Figurine : 1078872 + this.m_Figurine;
-            }
-        }
-        public int X
-        {
-            get
-            {
-                return this.m_X;
-            }
-        }
-        public int Y
-        {
-            get
-            {
-                return this.m_Y;
-            }
-        }
+        public int Figurine => m_Figurine;
+        public Type Type => m_Type;
+        public int Name => m_Figurine < 0x4000 ? 1020000 + m_Figurine : 1078872 + m_Figurine;
+        public int X => m_X;
+        public int Y => m_Y;
         public static ImageTypeInfo Get(ImageType image)
         {
             int index = (int)image;

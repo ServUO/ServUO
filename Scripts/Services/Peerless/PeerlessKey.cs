@@ -38,8 +38,8 @@ namespace Server.Items
         {
         }
 
-        public virtual int Lifespan { get { return 604800; } }
-        public virtual bool UseSeconds { get { return false; } }
+        public virtual int Lifespan => 604800;
+        public virtual bool UseSeconds => false;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int TimeLeft
@@ -78,7 +78,7 @@ namespace Server.Items
                 {
                     TimeSpan t = TimeSpan.FromSeconds(TimeLeft);
 
-                    int weeks = (int)t.Days / 7;
+                    int weeks = t.Days / 7;
                     int days = t.Days;
                     int hours = t.Hours;
                     int minutes = t.Minutes;
@@ -151,10 +151,10 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
             writer.Write(m_Map);
-            writer.Write((int)m_Lifespan);
+            writer.Write(m_Lifespan);
         }
 
         public override void Deserialize(GenericReader reader)

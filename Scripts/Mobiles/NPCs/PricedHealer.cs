@@ -14,7 +14,7 @@ namespace Server.Mobiles
         [Constructable]
         public PricedHealer(int price)
         {
-            this.m_Price = price;
+            m_Price = price;
         }
 
         public PricedHealer(Serial serial)
@@ -27,40 +27,28 @@ namespace Server.Mobiles
         {
             get
             {
-                return this.m_Price;
+                return m_Price;
             }
             set
             {
-                this.m_Price = value;
+                m_Price = value;
             }
         }
-        public override bool IsInvulnerable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool HealsYoungPlayers
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool IsInvulnerable => true;
+        public override bool HealsYoungPlayers => false;
         public override void InitSBInfo()
         {
         }
 
         public override void OfferResurrection(Mobile m)
         {
-            this.Direction = this.GetDirectionTo(m);
+            Direction = GetDirectionTo(m);
 
             m.PlaySound(0x214);
             m.FixedEffect(0x376A, 10, 16);
 
             m.CloseGump(typeof(ResurrectGump));
-            m.SendGump(new ResurrectGump(m, this, this.m_Price));
+            m.SendGump(new ResurrectGump(m, this, m_Price));
         }
 
         public override bool CheckResurrect(Mobile m)
@@ -72,9 +60,9 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
-            writer.Write((int)this.m_Price);
+            writer.Write(m_Price);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -87,7 +75,7 @@ namespace Server.Mobiles
             {
                 case 0:
                     {
-                        this.m_Price = reader.ReadInt();
+                        m_Price = reader.ReadInt();
                         break;
                     }
             }

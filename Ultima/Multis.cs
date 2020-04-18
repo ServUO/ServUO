@@ -128,8 +128,8 @@ namespace Ultima
 
         public static List<MultiComponentList> LoadFromCache(string FileName)
         {
-            var multilist = new List<MultiComponentList>();
-            using (var ip = new StreamReader(FileName))
+            List<MultiComponentList> multilist = new List<MultiComponentList>();
+            using (StreamReader ip = new StreamReader(FileName))
             {
                 string line;
                 while ((line = ip.ReadLine()) != null)
@@ -161,7 +161,7 @@ namespace Ultima
 
         public static List<Object[]> LoadFromDesigner(string FileName)
         {
-            var multilist = new List<Object[]>();
+            List<object[]> multilist = new List<Object[]>();
             string root = Path.GetFileNameWithoutExtension(FileName);
             string idx = String.Format("{0}.idx", root);
             string bin = String.Format("{0}.bin", root);
@@ -180,12 +180,12 @@ namespace Ultima
 
                     for (int i = 0; i < count; ++i)
                     {
-                        var data = new Object[2];
+                        object[] data = new Object[2];
                         switch (version)
                         {
                             case 0:
                                 data[0] = ReadUOAString(idxbin);
-                                var arr = new List<MultiComponentList.MultiTileEntry>();
+                                List<MultiComponentList.MultiTileEntry> arr = new List<MultiComponentList.MultiTileEntry>();
                                 data[0] += "-" + ReadUOAString(idxbin);
                                 data[0] += "-" + ReadUOAString(idxbin);
                                 int width = idxbin.ReadInt32();
@@ -220,7 +220,7 @@ namespace Ultima
                                             hue = binbin.ReadInt32();
                                             break;
                                     }
-                                    var tempitem = new MultiComponentList.MultiTileEntry();
+                                    MultiComponentList.MultiTileEntry tempitem = new MultiComponentList.MultiTileEntry();
                                     tempitem.m_ItemID = (ushort)index;
                                     tempitem.m_Flags = TileFlag.Background;
                                     tempitem.m_OffsetX = (short)x;
@@ -240,7 +240,7 @@ namespace Ultima
 
         public static List<MultiComponentList.MultiTileEntry> RebuildTiles(MultiComponentList.MultiTileEntry[] tiles)
         {
-            var newtiles = new List<MultiComponentList.MultiTileEntry>();
+            List<MultiComponentList.MultiTileEntry> newtiles = new List<MultiComponentList.MultiTileEntry>();
             newtiles.AddRange(tiles);
 
             if (newtiles[0].m_OffsetX == 0 && newtiles[0].m_OffsetY == 0 && newtiles[0].m_OffsetZ == 0) // found a centeritem
@@ -311,7 +311,7 @@ namespace Ultima
                     newtiles.RemoveAt(j);
                 }
             }
-            var invisitem = new MultiComponentList.MultiTileEntry();
+            MultiComponentList.MultiTileEntry invisitem = new MultiComponentList.MultiTileEntry();
             invisitem.m_ItemID = 0x1; // and create a new invis
             invisitem.m_OffsetX = 0;
             invisitem.m_OffsetY = 0;
@@ -389,15 +389,15 @@ namespace Ultima
 
         public static readonly MultiComponentList Empty = new MultiComponentList();
 
-        public Point Min { get { return m_Min; } }
-        public Point Max { get { return m_Max; } }
-        public Point Center { get { return m_Center; } }
-        public int Width { get { return m_Width; } }
-        public int Height { get { return m_Height; } }
-        public MTile[][][] Tiles { get { return m_Tiles; } }
-        public int maxHeight { get { return m_maxHeight; } }
-        public MultiTileEntry[] SortedTiles { get { return m_SortedTiles; } }
-        public int Surface { get { return m_Surface; } }
+        public Point Min => m_Min;
+        public Point Max => m_Max;
+        public Point Center => m_Center;
+        public int Width => m_Width;
+        public int Height => m_Height;
+        public MTile[][][] Tiles => m_Tiles;
+        public int maxHeight => m_maxHeight;
+        public MultiTileEntry[] SortedTiles => m_SortedTiles;
+        public int Surface => m_Surface;
 
         public struct MultiTileEntry
         {
@@ -478,7 +478,7 @@ namespace Ultima
                 }
             }
 
-            var canvas = new Bitmap(xMax - xMin, yMax - yMin);
+            Bitmap canvas = new Bitmap(xMax - xMin, yMax - yMin);
             Graphics gfx = Graphics.FromImage(canvas);
             gfx.Clear(Color.White);
             for (int x = 0; x < m_Width; ++x)
@@ -583,7 +583,7 @@ namespace Ultima
             {
                 case Multis.ImportType.TXT:
                     itemcount = 0;
-                    using (var ip = new StreamReader(FileName))
+                    using (StreamReader ip = new StreamReader(FileName))
                     {
                         string line;
                         while ((line = ip.ReadLine()) != null)
@@ -595,7 +595,7 @@ namespace Ultima
                     itemcount = 0;
                     m_Min.X = 10000;
                     m_Min.Y = 10000;
-                    using (var ip = new StreamReader(FileName))
+                    using (StreamReader ip = new StreamReader(FileName))
                     {
                         string line;
                         while ((line = ip.ReadLine()) != null)
@@ -672,7 +672,7 @@ namespace Ultima
                 case Multis.ImportType.UOA:
                     itemcount = 0;
 
-                    using (var ip = new StreamReader(FileName))
+                    using (StreamReader ip = new StreamReader(FileName))
                     {
                         string line;
                         while ((line = ip.ReadLine()) != null)
@@ -690,7 +690,7 @@ namespace Ultima
                     itemcount = 0;
                     m_Min.X = 10000;
                     m_Min.Y = 10000;
-                    using (var ip = new StreamReader(FileName))
+                    using (StreamReader ip = new StreamReader(FileName))
                     {
                         string line;
                         int i = -1;
@@ -769,9 +769,9 @@ namespace Ultima
 
                     break;
                 case Multis.ImportType.UOAB:
-                    using (var fs = new FileStream(FileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    using (FileStream fs = new FileStream(FileName, FileMode.Open, FileAccess.Read, FileShare.Read))
                     {
-                        using (var reader = new BinaryReader(fs))
+                        using (BinaryReader reader = new BinaryReader(fs))
                         {
                             if (reader.ReadInt16() != 1) //Version check
                             {
@@ -862,7 +862,7 @@ namespace Ultima
 
                 case Multis.ImportType.WSC:
                     itemcount = 0;
-                    using (var ip = new StreamReader(FileName))
+                    using (StreamReader ip = new StreamReader(FileName))
                     {
                         string line;
                         while ((line = ip.ReadLine()) != null)
@@ -878,10 +878,10 @@ namespace Ultima
                     itemcount = 0;
                     m_Min.X = 10000;
                     m_Min.Y = 10000;
-                    using (var ip = new StreamReader(FileName))
+                    using (StreamReader ip = new StreamReader(FileName))
                     {
                         string line;
-                        var tempitem = new MultiTileEntry();
+                        MultiTileEntry tempitem = new MultiTileEntry();
                         tempitem.m_ItemID = 0xFFFF;
                         tempitem.m_Flags = TileFlag.Background;
 
@@ -1131,7 +1131,7 @@ namespace Ultima
             m_Width = (m_Max.X - m_Min.X) + 1;
             m_Height = (m_Max.Y - m_Min.Y) + 1;
 
-            var tiles = new MTileList[m_Width][];
+            MTileList[][] tiles = new MTileList[m_Width][];
             m_Tiles = new MTile[m_Width][][];
 
             for (int x = 0; x < m_Width; ++x)
@@ -1241,7 +1241,7 @@ namespace Ultima
         public void ExportToTextFile(string FileName)
         {
             using (
-                var Tex = new StreamWriter(
+                StreamWriter Tex = new StreamWriter(
                     new FileStream(FileName, FileMode.Create, FileAccess.ReadWrite), Encoding.GetEncoding(1252)))
             {
                 for (int i = 0; i < m_SortedTiles.Length; ++i)
@@ -1261,7 +1261,7 @@ namespace Ultima
         public void ExportToWscFile(string FileName)
         {
             using (
-                var Tex = new StreamWriter(
+                StreamWriter Tex = new StreamWriter(
                     new FileStream(FileName, FileMode.Create, FileAccess.ReadWrite), Encoding.GetEncoding(1252)))
             {
                 for (int i = 0; i < m_SortedTiles.Length; ++i)
@@ -1281,7 +1281,7 @@ namespace Ultima
         public void ExportToUOAFile(string FileName)
         {
             using (
-                var Tex = new StreamWriter(
+                StreamWriter Tex = new StreamWriter(
                     new FileStream(FileName, FileMode.Create, FileAccess.ReadWrite), Encoding.GetEncoding(1252)))
             {
                 Tex.WriteLine("6 version");

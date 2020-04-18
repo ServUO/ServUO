@@ -7,16 +7,10 @@
         public OrnateElvenTapestry()
             : base(0x2D72)
         {
-            this.Weight = 1;
+            Weight = 1;
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1031633;
-            }
-        }// ornate elven tapestry
+        public override int LabelNumber => 1031633;// ornate elven tapestry
 
         public OrnateElvenTapestry(Serial serial)
             : base(serial)
@@ -27,7 +21,7 @@
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

@@ -16,7 +16,7 @@ namespace Ultima
         }
 
         private static short[] m_Colors;
-        public static short[] Colors { get { return m_Colors; } }
+        public static short[] Colors => m_Colors;
 
         public static short GetItemColor(int index)
         {
@@ -51,11 +51,11 @@ namespace Ultima
             string path = Files.GetFilePath("radarcol.mul");
             if (path != null)
             {
-                using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
                     m_Colors = new short[fs.Length / 2];
                     GCHandle gc = GCHandle.Alloc(m_Colors, GCHandleType.Pinned);
-                    var buffer = new byte[(int)fs.Length];
+                    byte[] buffer = new byte[(int)fs.Length];
                     fs.Read(buffer, 0, (int)fs.Length);
                     Marshal.Copy(buffer, 0, gc.AddrOfPinnedObject(), (int)fs.Length);
                     gc.Free();
@@ -69,9 +69,9 @@ namespace Ultima
 
         public static void Save(string FileName)
         {
-            using (var fs = new FileStream(FileName, FileMode.Create, FileAccess.Write, FileShare.Write))
+            using (FileStream fs = new FileStream(FileName, FileMode.Create, FileAccess.Write, FileShare.Write))
             {
-                using (var bin = new BinaryWriter(fs))
+                using (BinaryWriter bin = new BinaryWriter(fs))
                 {
                     for (int i = 0; i < m_Colors.Length; ++i)
                     {
@@ -84,7 +84,7 @@ namespace Ultima
         public static void ExportToCSV(string FileName)
         {
             using (
-                var Tex = new StreamWriter(
+                StreamWriter Tex = new StreamWriter(
                     new FileStream(FileName, FileMode.Create, FileAccess.ReadWrite), Encoding.GetEncoding(1252)))
             {
                 Tex.WriteLine("ID;Color");
@@ -102,7 +102,7 @@ namespace Ultima
             {
                 return;
             }
-            using (var sr = new StreamReader(FileName))
+            using (StreamReader sr = new StreamReader(FileName))
             {
                 string line;
                 int count = 0;
@@ -120,7 +120,7 @@ namespace Ultima
                 }
                 m_Colors = new short[count];
             }
-            using (var sr = new StreamReader(FileName))
+            using (StreamReader sr = new StreamReader(FileName))
             {
                 string line;
                 while ((line = sr.ReadLine()) != null)

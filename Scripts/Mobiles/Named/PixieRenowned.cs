@@ -10,41 +10,41 @@ namespace Server.Mobiles
         public PixieRenowned()
             : base(AIType.AI_Mage)
         {
-            this.Name = "Pixie";
-            this.Title = "[Renowned]";
-            this.Body = 128;
-            this.BaseSoundID = 0x467;
+            Name = "Pixie";
+            Title = "[Renowned]";
+            Body = 128;
+            BaseSoundID = 0x467;
 
-            this.SetStr(-350, 380);
-            this.SetDex(450, 600);
-            this.SetInt(700, 8500);
+            SetStr(-350, 380);
+            SetDex(450, 600);
+            SetInt(700, 8500);
 
-            this.SetHits(9100, 9200);
-            this.SetStam(450, 600);
-            this.SetMana(700, 800);
+            SetHits(9100, 9200);
+            SetStam(450, 600);
+            SetMana(700, 800);
 
-            this.SetDamage(9, 15);
+            SetDamage(9, 15);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 70, 90);
-            this.SetResistance(ResistanceType.Fire, 60, 70);
-            this.SetResistance(ResistanceType.Cold, 70, 80);
-            this.SetResistance(ResistanceType.Poison, 60, 70);
-            this.SetResistance(ResistanceType.Energy, 60, 70);
+            SetResistance(ResistanceType.Physical, 70, 90);
+            SetResistance(ResistanceType.Fire, 60, 70);
+            SetResistance(ResistanceType.Cold, 70, 80);
+            SetResistance(ResistanceType.Poison, 60, 70);
+            SetResistance(ResistanceType.Energy, 60, 70);
 
-            this.SetSkill(SkillName.EvalInt, 100.0, 100.0);
-            this.SetSkill(SkillName.Magery, 90.1, 110.0);
-            this.SetSkill(SkillName.Meditation, 100.0, 100.0);
-            this.SetSkill(SkillName.MagicResist, 110.5, 150.0);
-            this.SetSkill(SkillName.Tactics, 100.1, 120.0);
-            this.SetSkill(SkillName.Wrestling, 100.1, 120.0);
+            SetSkill(SkillName.EvalInt, 100.0, 100.0);
+            SetSkill(SkillName.Magery, 90.1, 110.0);
+            SetSkill(SkillName.Meditation, 100.0, 100.0);
+            SetSkill(SkillName.MagicResist, 110.5, 150.0);
+            SetSkill(SkillName.Tactics, 100.1, 120.0);
+            SetSkill(SkillName.Wrestling, 100.1, 120.0);
 
-            this.Fame = 7000;
-            this.Karma = 7000;
+            Fame = 7000;
+            Karma = 7000;
 
             if (0.02 > Utility.RandomDouble())
-                this.PackStatue();
+                PackStatue();
         }
 
         public PixieRenowned(Serial serial)
@@ -52,48 +52,12 @@ namespace Server.Mobiles
         {
         }
 
-        public override Type[] UniqueSAList
-        {
-            get
-            {
-                return new Type[] { typeof(DemonHuntersStandard), typeof(DragonJadeEarrings) };
-            }
-        }
-        public override Type[] SharedSAList
-        {
-            get
-            {
-                return new Type[] { typeof(PillarOfStrength), typeof(SwordOfShatteredHopes) };
-            }
-        }
-        public override bool InitialInnocent
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override HideType HideType
-        {
-            get
-            {
-                return HideType.Spined;
-            }
-        }
-        public override int Hides
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
+        public override Type[] UniqueSAList => new Type[] { typeof(DemonHuntersStandard), typeof(DragonJadeEarrings) };
+        public override Type[] SharedSAList => new Type[] { typeof(PillarOfStrength), typeof(SwordOfShatteredHopes) };
+        public override bool InitialInnocent => true;
+        public override HideType HideType => HideType.Spined;
+        public override int Hides => 5;
+        public override int Meat => 1;
 
         public override void GenerateLoot()
         {
@@ -103,7 +67,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

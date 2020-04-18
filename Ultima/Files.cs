@@ -1,4 +1,4 @@
-﻿#region References
+#region References
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -45,7 +45,7 @@ namespace Ultima
         /// <summary>
         ///     Gets a list of paths to the Client's data files.
         /// </summary>
-        public static string Directory { get { return m_Directory; } }
+        public static string Directory => m_Directory;
 
         /// <summary>
         ///     Contains the rootDir (so relative values are possible for <see cref="MulPath" />
@@ -360,10 +360,10 @@ namespace Ultima
             {
                 try
                 {
-                    using (var bin = new BinaryReader(new FileStream(FileName, FileMode.Open, FileAccess.Read, FileShare.Read)))
+                    using (BinaryReader bin = new BinaryReader(new FileStream(FileName, FileMode.Open, FileAccess.Read, FileShare.Read)))
                     {
                         int length = bin.ReadInt32();
-                        var buffer = new byte[length];
+                        byte[] buffer = new byte[length];
                         bin.Read(buffer, 0, length);
                         string hashold = BitConverter.ToString(buffer).Replace("-", "").ToLower();
                         return CompareMD5(GetFilePath(String.Format("{0}.mul", what)), hashold);

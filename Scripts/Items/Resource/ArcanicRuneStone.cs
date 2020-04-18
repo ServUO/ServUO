@@ -12,8 +12,8 @@ namespace Server.Items
         public ArcanicRuneStone(int amount)
             : base(0x573C)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public ArcanicRuneStone(Serial serial)
@@ -21,21 +21,15 @@ namespace Server.Items
         {
         }
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113352;
-            }
-        }// arcanic rune stone
+        public override int LabelNumber => 1113352;// arcanic rune stone
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

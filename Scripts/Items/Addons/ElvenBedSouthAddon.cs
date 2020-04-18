@@ -5,8 +5,8 @@ namespace Server.Items
         [Constructable]
         public ElvenBedSouthAddon()
         {
-            this.AddComponent(new AddonComponent(0x3050), 0, 0, 0);
-            this.AddComponent(new AddonComponent(0x3051), 0, -1, 0);
+            AddComponent(new AddonComponent(0x3050), 0, 0, 0);
+            AddComponent(new AddonComponent(0x3051), 0, -1, 0);
         }
 
         public ElvenBedSouthAddon(Serial serial)
@@ -14,13 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new ElvenBedSouthDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new ElvenBedSouthDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -48,20 +42,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new ElvenBedSouthAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1072860;
-            }
-        }// elven bed (south)
+        public override BaseAddon Addon => new ElvenBedSouthAddon();
+        public override int LabelNumber => 1072860;// elven bed (south)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

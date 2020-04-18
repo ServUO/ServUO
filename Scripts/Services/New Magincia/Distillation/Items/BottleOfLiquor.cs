@@ -22,7 +22,7 @@ namespace Server.Engines.Distillation
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Distiller { get { return m_Distiller; } set { m_Distiller = value; InvalidateProperties(); } }
 
-        public override bool ShowQuantity { get { return false; } }
+        public override bool ShowQuantity => false;
 
         [Constructable]
         public BottleOfLiquor() : this(Liquor.Whiskey, null, false, null)
@@ -67,7 +67,7 @@ namespace Server.Engines.Distillation
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write(1);
 
             writer.Write(m_IsStrong);
 

@@ -18,18 +18,12 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(TheSongOfTheWindQuest),
                     typeof(BeerGogglesQuest),
                     typeof(MessageInBottleQuest)
                 };
-            }
-        }
         public override void InitBody()
         {
             InitStats(100, 100, 25);
@@ -53,7 +47,7 @@ namespace Server.Engines.Quests
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

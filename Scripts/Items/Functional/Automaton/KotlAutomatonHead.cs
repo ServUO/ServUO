@@ -10,7 +10,7 @@ namespace Server.Items
         private CraftResource _Resource;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public CraftResource Resource { get { return _Resource; } set { _Resource = value; Hue = CraftResources.GetHue(this._Resource); InvalidateProperties(); } }
+        public CraftResource Resource { get { return _Resource; } set { _Resource = value; Hue = CraftResources.GetHue(_Resource); InvalidateProperties(); } }
 
         [Constructable]
         public KotlAutomatonHead()
@@ -94,7 +94,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

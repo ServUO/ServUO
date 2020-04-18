@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class MysticalPolymorphTotem : Item
     {
-        public override int LabelNumber { get { return 1158780; } } // Mystical Polymorph Totem
+        public override int LabelNumber => 1158780;  // Mystical Polymorph Totem
 
         private int m_Body = 0;
         private int m_Hue = -1;
@@ -186,11 +186,11 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write(CostumeCreatureName);
-            writer.Write((int)CostumeBody);
-            writer.Write((int)CostumeHue);
+            writer.Write(CostumeBody);
+            writer.Write(CostumeHue);
         }
 
         public override void Deserialize(GenericReader reader)

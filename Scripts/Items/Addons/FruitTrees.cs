@@ -24,23 +24,23 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Fruits;
+                return m_Fruits;
             }
             set
             {
                 if (value < 0)
-                    this.m_Fruits = 0;
+                    m_Fruits = 0;
                 else
-                    this.m_Fruits = value;
+                    m_Fruits = value;
             }
         }
         public override void OnComponentUsed(AddonComponent c, Mobile from)
         {
             if (from.InRange(c.Location, 2))
             {
-                if (this.m_Fruits > 0)
+                if (m_Fruits > 0)
                 {
-                    Item fruit = this.Fruit;
+                    Item fruit = Fruit;
 
                     if (fruit == null)
                         return;
@@ -52,7 +52,7 @@ namespace Server.Items
                     }
                     else
                     {
-                        if (--this.m_Fruits == 0)
+                        if (--m_Fruits == 0)
                             Timer.DelayCall(TimeSpan.FromMinutes(30), new TimerCallback(Respawn));
 
                         from.SendLocalizedMessage(501016); // You pick some fruit and put it in your backpack.
@@ -71,7 +71,7 @@ namespace Server.Items
 
             writer.WriteEncodedInt(0); // version
 
-            writer.Write((int)this.m_Fruits);
+            writer.Write(m_Fruits);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -80,15 +80,15 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            this.m_Fruits = reader.ReadInt();
+            m_Fruits = reader.ReadInt();
 
-            if (this.m_Fruits == 0)
-                this.Respawn();
+            if (m_Fruits == 0)
+                Respawn();
         }
 
         private void Respawn()
         {
-            this.m_Fruits = Utility.RandomMinMax(1, 4);
+            m_Fruits = Utility.RandomMinMax(1, 4);
         }
     }
 
@@ -98,8 +98,8 @@ namespace Server.Items
         public AppleTreeAddon()
             : base()
         {
-            this.AddComponent(new LocalizedAddonComponent(0xD98, 1076269), 0, 0, 0);
-            this.AddComponent(new LocalizedAddonComponent(0x3124, 1076269), 0, 0, 0);
+            AddComponent(new LocalizedAddonComponent(0xD98, 1076269), 0, 0, 0);
+            AddComponent(new LocalizedAddonComponent(0x3124, 1076269), 0, 0, 0);
         }
 
         public AppleTreeAddon(Serial serial)
@@ -107,20 +107,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new AppleTreeDeed();
-            }
-        }
-        public override Item Fruit
-        {
-            get
-            {
-                return new Apple();
-            }
-        }
+        public override BaseAddonDeed Deed => new AppleTreeDeed();
+        public override Item Fruit => new Apple();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -142,7 +130,7 @@ namespace Server.Items
         public AppleTreeDeed()
             : base()
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public AppleTreeDeed(Serial serial)
@@ -150,20 +138,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new AppleTreeAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1076269;
-            }
-        }// Apple Tree
+        public override BaseAddon Addon => new AppleTreeAddon();
+        public override int LabelNumber => 1076269;// Apple Tree
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -185,8 +161,8 @@ namespace Server.Items
         public PeachTreeAddon()
             : base()
         {
-            this.AddComponent(new LocalizedAddonComponent(0xD9C, 1076270), 0, 0, 0);
-            this.AddComponent(new LocalizedAddonComponent(0x3123, 1076270), 0, 0, 0);
+            AddComponent(new LocalizedAddonComponent(0xD9C, 1076270), 0, 0, 0);
+            AddComponent(new LocalizedAddonComponent(0x3123, 1076270), 0, 0, 0);
         }
 
         public PeachTreeAddon(Serial serial)
@@ -194,20 +170,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new PeachTreeDeed();
-            }
-        }
-        public override Item Fruit
-        {
-            get
-            {
-                return new Peach();
-            }
-        }
+        public override BaseAddonDeed Deed => new PeachTreeDeed();
+        public override Item Fruit => new Peach();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -229,7 +193,7 @@ namespace Server.Items
         public PeachTreeDeed()
             : base()
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public PeachTreeDeed(Serial serial)
@@ -237,20 +201,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new PeachTreeAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1076270;
-            }
-        }// Peach Tree
+        public override BaseAddon Addon => new PeachTreeAddon();
+        public override int LabelNumber => 1076270;// Peach Tree
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

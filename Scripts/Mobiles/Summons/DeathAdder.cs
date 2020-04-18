@@ -5,31 +5,31 @@ namespace Server.Mobiles
     {
         public DeathAdder()
         {
-            this.Name = "a death adder";
-            this.Body = 0x15;
-            this.Hue = 0x455;
-            this.BaseSoundID = 219;
+            Name = "a death adder";
+            Body = 0x15;
+            Hue = 0x455;
+            BaseSoundID = 219;
 
-            this.SetStr(70);
-            this.SetDex(150);
-            this.SetInt(100);
+            SetStr(70);
+            SetDex(150);
+            SetInt(100);
 
-            this.SetHits(50);
-            this.SetStam(150);
-            this.SetMana(0);
+            SetHits(50);
+            SetStam(150);
+            SetMana(0);
 
-            this.SetDamage(1, 4);
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamage(1, 4);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 10);
-            this.SetResistance(ResistanceType.Poison, 100);
+            SetResistance(ResistanceType.Physical, 10);
+            SetResistance(ResistanceType.Poison, 100);
 
-            this.SetSkill(SkillName.Wrestling, 90.0);
-            this.SetSkill(SkillName.Tactics, 50.0);
-            this.SetSkill(SkillName.MagicResist, 100.0);
-            this.SetSkill(SkillName.Poisoning, 150.0);
+            SetSkill(SkillName.Wrestling, 90.0);
+            SetSkill(SkillName.Tactics, 50.0);
+            SetSkill(SkillName.MagicResist, 100.0);
+            SetSkill(SkillName.Poisoning, 150.0);
 
-            this.ControlSlots = 1;
+            ControlSlots = 1;
         }
 
         public DeathAdder(Serial serial)
@@ -37,13 +37,7 @@ namespace Server.Mobiles
         {
         }
 
-        public override Poison HitPoison
-        {
-            get
-            {
-                return (0.8 >= Utility.RandomDouble() ? Poison.Greater : Poison.Deadly);
-            }
-        }
+        public override Poison HitPoison => (0.8 >= Utility.RandomDouble() ? Poison.Greater : Poison.Deadly);
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

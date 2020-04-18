@@ -9,36 +9,36 @@ namespace Server.Mobiles
         public TerathanDrone()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = "a terathan drone";
-            this.Body = 71;
-            this.BaseSoundID = 594;
+            Name = "a terathan drone";
+            Body = 71;
+            BaseSoundID = 594;
 
-            this.SetStr(36, 65);
-            this.SetDex(96, 145);
-            this.SetInt(21, 45);
+            SetStr(36, 65);
+            SetDex(96, 145);
+            SetInt(21, 45);
 
-            this.SetHits(22, 39);
-            this.SetMana(0);
+            SetHits(22, 39);
+            SetMana(0);
 
-            this.SetDamage(6, 12);
+            SetDamage(6, 12);
 
-            this.SetDamageType(ResistanceType.Physical, 100);
+            SetDamageType(ResistanceType.Physical, 100);
 
-            this.SetResistance(ResistanceType.Physical, 20, 25);
-            this.SetResistance(ResistanceType.Fire, 10, 20);
-            this.SetResistance(ResistanceType.Cold, 15, 25);
-            this.SetResistance(ResistanceType.Poison, 30, 40);
-            this.SetResistance(ResistanceType.Energy, 15, 25);
+            SetResistance(ResistanceType.Physical, 20, 25);
+            SetResistance(ResistanceType.Fire, 10, 20);
+            SetResistance(ResistanceType.Cold, 15, 25);
+            SetResistance(ResistanceType.Poison, 30, 40);
+            SetResistance(ResistanceType.Energy, 15, 25);
 
-            this.SetSkill(SkillName.Poisoning, 40.1, 60.0);
-            this.SetSkill(SkillName.MagicResist, 30.1, 45.0);
-            this.SetSkill(SkillName.Tactics, 30.1, 50.0);
-            this.SetSkill(SkillName.Wrestling, 40.1, 50.0);
+            SetSkill(SkillName.Poisoning, 40.1, 60.0);
+            SetSkill(SkillName.MagicResist, 30.1, 45.0);
+            SetSkill(SkillName.Tactics, 30.1, 50.0);
+            SetSkill(SkillName.Wrestling, 40.1, 50.0);
 
-            this.Fame = 2000;
-            this.Karma = -2000;
+            Fame = 2000;
+            Karma = -2000;
 
-            this.PackItem(new SpidersSilk(2));
+            PackItem(new SpidersSilk(2));
         }
 
         public TerathanDrone(Serial serial)
@@ -46,25 +46,19 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Meat
-        {
-            get
-            {
-                return 4;
-            }
-        }
+        public override int Meat => 4;
 
-        public override TribeType Tribe { get { return TribeType.Terathan; } }
+        public override TribeType Tribe => TribeType.Terathan;
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Meager);
+            AddLoot(LootPack.Meager);
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

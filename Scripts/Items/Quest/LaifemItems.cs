@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class LetterOfIntroduction : Item
     {
-        public override int LabelNumber { get { return 1113243; } } // Laifem's Letter of Introduction
+        public override int LabelNumber => 1113243;  // Laifem's Letter of Introduction
 
         [Constructable]
         public LetterOfIntroduction()
@@ -20,7 +20,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -32,7 +32,7 @@ namespace Server.Items
 
     public class MasteringWeaving : Item
     {
-        public override int LabelNumber { get { return 1113244; } } // Mastering the Art of Weaving
+        public override int LabelNumber => 1113244;  // Mastering the Art of Weaving
 
         [Constructable]
         public MasteringWeaving()
@@ -51,7 +51,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

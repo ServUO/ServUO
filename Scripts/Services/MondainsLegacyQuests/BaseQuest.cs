@@ -7,130 +7,34 @@ namespace Server.Engines.Quests
 {
     public class BaseQuest
     {
-        public virtual bool AllObjectives
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public virtual bool DoneOnce
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public virtual TimeSpan RestartDelay
-        {
-            get
-            {
-                return TimeSpan.Zero;
-            }
-        }
-        public virtual bool ForceRemember
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public virtual bool AllObjectives => true;
+        public virtual bool DoneOnce => false;
+        public virtual TimeSpan RestartDelay => TimeSpan.Zero;
+        public virtual bool ForceRemember => false;
 
-        public virtual int AcceptSound
-        {
-            get
-            {
-                return 0x5B4;
-            }
-        }
-        public virtual int ResignSound
-        {
-            get
-            {
-                return 0x5B3;
-            }
-        }
-        public virtual int CompleteSound
-        {
-            get
-            {
-                return 0x5B5;
-            }
-        }
-        public virtual int UpdateSound
-        {
-            get
-            {
-                return 0x5B6;
-            }
-        }
+        public virtual int AcceptSound => 0x5B4;
+        public virtual int ResignSound => 0x5B3;
+        public virtual int CompleteSound => 0x5B5;
+        public virtual int UpdateSound => 0x5B6;
 
-        public virtual int CompleteMessage
-        {
-            get
-            {
-                return 1072273; // You've completed a quest!  Don't forget to collect your reward.
-            }
-        }
+        public virtual int CompleteMessage => 1072273; // You've completed a quest!  Don't forget to collect your reward.
 
         #region Quest Chain
-        public virtual QuestChain ChainID
-        {
-            get
-            {
-                return QuestChain.None;
-            }
-        }
-        public virtual Type NextQuest
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public virtual QuestChain ChainID => QuestChain.None;
+        public virtual Type NextQuest => null;
         #endregion
 
-        public virtual object Title
-        {
-            get
-            {
-                return null;
-            }
-        }
-        public virtual object Description
-        {
-            get
-            {
-                return null;
-            }
-        }
-        public virtual object Refuse
-        {
-            get
-            {
-                return null;
-            }
-        }
-        public virtual object Uncomplete
-        {
-            get
-            {
-                return null;
-            }
-        }
-        public virtual object Complete
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public virtual object Title => null;
+        public virtual object Description => null;
+        public virtual object Refuse => null;
+        public virtual object Uncomplete => null;
+        public virtual object Complete => null;
 
-        public virtual object FailedMsg { get { return null; } }
+        public virtual object FailedMsg => null;
 
-        public virtual bool ShowDescription { get { return true; } }
-        public virtual bool ShowRewards { get { return true; } }
-        public virtual bool CanRefuseReward { get { return false; } }
+        public virtual bool ShowDescription => true;
+        public virtual bool ShowRewards => true;
+        public virtual bool CanRefuseReward => false;
 
         private List<BaseObjective> m_Objectives;
         private List<BaseReward> m_Rewards;
@@ -139,21 +43,9 @@ namespace Server.Engines.Quests
         private Type m_QuesterType;
         private Timer m_Timer;
 
-        public List<BaseObjective> Objectives
-        {
-            get
-            {
-                return m_Objectives;
-            }
-        }
+        public List<BaseObjective> Objectives => m_Objectives;
 
-        public List<BaseReward> Rewards
-        {
-            get
-            {
-                return m_Rewards;
-            }
-        }
+        public List<BaseReward> Rewards => m_Rewards;
 
         public PlayerMobile Owner
         {
@@ -194,21 +86,9 @@ namespace Server.Engines.Quests
             }
         }
 
-        public BaseQuestItem StartingItem
-        {
-            get
-            {
-                return m_Quester as BaseQuestItem;
-            }
-        }
+        public BaseQuestItem StartingItem => m_Quester as BaseQuestItem;
 
-        public MondainQuester StartingMobile
-        {
-            get
-            {
-                return m_Quester as MondainQuester;
-            }
-        }
+        public MondainQuester StartingMobile => m_Quester as MondainQuester;
 
         public bool Completed
         {
@@ -324,7 +204,7 @@ namespace Server.Engines.Quests
                     escort.StartFollow();
                     escort.AddHash(Owner);
 
-                    var region = escort.GetDestination();
+                    string region = escort.GetDestination();
 
                     if (!string.IsNullOrEmpty(region))
                         escort.Say(1042806, region); // Lead on! Payment will be made when we arrive at ~1_DESTINATION~!
@@ -552,20 +432,20 @@ namespace Server.Engines.Quests
 
         public virtual void Serialize(GenericWriter writer)
         {
-            writer.WriteEncodedInt((int)1); // version	
+            writer.WriteEncodedInt(1); // version	
 
             writer.Write(m_QuesterType == null ? null : m_QuesterType.Name);
 
             if (m_Quester == null)
-                writer.Write((int)0x0);
+                writer.Write(0x0);
             else if (m_Quester is Mobile)
             {
-                writer.Write((int)0x1);
+                writer.Write(0x1);
                 writer.Write((Mobile)m_Quester);
             }
             else if (m_Quester is Item)
             {
-                writer.Write((int)0x2);
+                writer.Write(0x2);
                 writer.Write((Item)m_Quester);
             }
 

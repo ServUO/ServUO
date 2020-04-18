@@ -42,9 +42,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool BleedImmune { get { return true; } }
-        public override Poison PoisonImmune { get { return Poison.Lesser; } }
-        public override TribeType Tribe { get { return TribeType.Undead; } }
+        public override bool BleedImmune => true;
+        public override Poison PoisonImmune => Poison.Lesser;
+        public override TribeType Tribe => TribeType.Undead;
 
         public override bool IsEnemy(Mobile m)
         {
@@ -91,7 +91,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

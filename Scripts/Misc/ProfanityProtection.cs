@@ -69,27 +69,9 @@ namespace Server.Misc
             "shit",
             "fuck"
         };
-        public static char[] Exceptions
-        {
-            get
-            {
-                return m_Exceptions;
-            }
-        }
-        public static string[] StartDisallowed
-        {
-            get
-            {
-                return m_StartDisallowed;
-            }
-        }
-        public static string[] Disallowed
-        {
-            get
-            {
-                return m_Disallowed;
-            }
-        }
+        public static char[] Exceptions => m_Exceptions;
+        public static string[] StartDisallowed => m_StartDisallowed;
+        public static string[] Disallowed => m_Disallowed;
         public static void Initialize()
         {
             if (Enabled)

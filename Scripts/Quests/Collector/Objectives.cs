@@ -23,31 +23,20 @@ namespace Server.Engines.Quests.Collector
         {
         }
 
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 // Fish up shellfish from Lake Haven and collect rainbow pearls.
-                return 1055084;
-            }
-        }
-        public override int MaxProgress
-        {
-            get
-            {
-                return 6;
-            }
-        }
+                1055084;
+        public override int MaxProgress => 6;
         public override void RenderProgress(BaseQuestGump gump)
         {
-            if (!this.Completed)
+            if (!Completed)
             {
                 // Rainbow pearls collected:
                 gump.AddHtmlObject(70, 260, 270, 100, 1055085, BaseQuestGump.Blue, false, false);
 
-                gump.AddLabel(70, 280, 0x64, this.CurProgress.ToString());
+                gump.AddLabel(70, 280, 0x64, CurProgress.ToString());
                 gump.AddLabel(100, 280, 0x64, "/");
-                gump.AddLabel(130, 280, 0x64, this.MaxProgress.ToString());
+                gump.AddLabel(130, 280, 0x64, MaxProgress.ToString());
             }
             else
             {
@@ -57,7 +46,7 @@ namespace Server.Engines.Quests.Collector
 
         public override void OnComplete()
         {
-            this.System.AddObjective(new ReturnPearlsObjective());
+            System.AddObjective(new ReturnPearlsObjective());
         }
     }
 
@@ -67,19 +56,14 @@ namespace Server.Engines.Quests.Collector
         {
         }
 
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 /* You've collected enough rainbow pearls. Speak to
-                * Elwood to give them to him and get your next task.
-                */
-                return 1055088;
-            }
-        }
+* Elwood to give them to him and get your next task.
+*/
+                1055088;
         public override void OnComplete()
         {
-            this.System.AddConversation(new ReturnPearlsConversation());
+            System.AddConversation(new ReturnPearlsConversation());
         }
     }
 
@@ -89,17 +73,12 @@ namespace Server.Engines.Quests.Collector
         {
         }
 
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 // Go to Vesper and speak to Alberta Giacco at the Colored Canvas.
-                return 1055091;
-            }
-        }
+                1055091;
         public override void OnComplete()
         {
-            this.System.AddConversation(new AlbertaPaintingConversation());
+            System.AddConversation(new AlbertaPaintingConversation());
         }
     }
 
@@ -110,44 +89,39 @@ namespace Server.Engines.Quests.Collector
         private DateTime m_Begin;
         public SitOnTheStoolObjective()
         {
-            this.m_Begin = DateTime.MaxValue;
+            m_Begin = DateTime.MaxValue;
         }
 
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 /* Sit on the stool in front of Alberta's easel so that she can
-                * paint your portrait. You'll need to sit there for about 30 seconds.
-                */
-                return 1055093;
-            }
-        }
+* paint your portrait. You'll need to sit there for about 30 seconds.
+*/
+                1055093;
         public override void CheckProgress()
         {
-            PlayerMobile pm = this.System.From;
+            PlayerMobile pm = System.From;
 
             if (pm.Map == m_StoolMap && pm.Location == m_StoolLocation)
             {
-                if (this.m_Begin == DateTime.MaxValue)
+                if (m_Begin == DateTime.MaxValue)
                 {
-                    this.m_Begin = DateTime.UtcNow;
+                    m_Begin = DateTime.UtcNow;
                 }
-                else if (DateTime.UtcNow - this.m_Begin > TimeSpan.FromSeconds(30.0))
+                else if (DateTime.UtcNow - m_Begin > TimeSpan.FromSeconds(30.0))
                 {
-                    this.Complete();
+                    Complete();
                 }
             }
-            else if (this.m_Begin != DateTime.MaxValue)
+            else if (m_Begin != DateTime.MaxValue)
             {
-                this.m_Begin = DateTime.MaxValue;
+                m_Begin = DateTime.MaxValue;
                 pm.SendLocalizedMessage(1055095, "", 0x26); // You must remain seated on the stool until the portrait is complete. Alberta will now have to start again with a fresh canvas.
             }
         }
 
         public override void OnComplete()
         {
-            this.System.AddConversation(new AlbertaEndPaintingConversation());
+            System.AddConversation(new AlbertaEndPaintingConversation());
         }
     }
 
@@ -157,17 +131,12 @@ namespace Server.Engines.Quests.Collector
         {
         }
 
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 // Return to Elwood and let him know that the painting is complete.
-                return 1055099;
-            }
-        }
+                1055099;
         public override void OnComplete()
         {
-            this.System.AddConversation(new ReturnPaintingConversation());
+            System.AddConversation(new ReturnPaintingConversation());
         }
     }
 
@@ -177,19 +146,14 @@ namespace Server.Engines.Quests.Collector
         {
         }
 
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 /* Go to Britain and obtain the autograph of renowned
-                * minstrel, Gabriel Piete. He is often found at the Conservatory of Music.
-                */
-                return 1055101;
-            }
-        }
+* minstrel, Gabriel Piete. He is often found at the Conservatory of Music.
+*/
+                1055101;
         public override void OnComplete()
         {
-            this.System.AddConversation(new GabrielAutographConversation());
+            System.AddConversation(new GabrielAutographConversation());
         }
     }
 
@@ -199,49 +163,44 @@ namespace Server.Engines.Quests.Collector
         public FindSheetMusicObjective(bool init)
         {
             if (init)
-                this.InitTheater();
+                InitTheater();
         }
 
         public FindSheetMusicObjective()
         {
         }
 
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 /* Find some sheet music for one of Gabriel's songs.
-                * Try speaking to an impresario from one of the theaters in the land.
-                */
-                return 1055104;
-            }
-        }
+* Try speaking to an impresario from one of the theaters in the land.
+*/
+                1055104;
         public void InitTheater()
         {
             switch (Utility.Random(3))
             {
                 case 1:
-                    this.m_Theater = Theater.Britain;
+                    m_Theater = Theater.Britain;
                     break;
                 case 2:
-                    this.m_Theater = Theater.Nujelm;
+                    m_Theater = Theater.Nujelm;
                     break;
                 default:
-                    this.m_Theater = Theater.Jhelom;
+                    m_Theater = Theater.Jhelom;
                     break;
             }
         }
 
         public bool IsInRightTheater()
         {
-            PlayerMobile player = this.System.From;
+            PlayerMobile player = System.From;
 
             Region region = Region.Find(player.Location, player.Map);
 
             if (region == null)
                 return false;
 
-            switch (this.m_Theater)
+            switch (m_Theater)
             {
                 case Theater.Britain:
                     return region.IsPartOf("Britain");
@@ -257,21 +216,21 @@ namespace Server.Engines.Quests.Collector
 
         public override void OnComplete()
         {
-            this.System.AddConversation(new GetSheetMusicConversation());
+            System.AddConversation(new GetSheetMusicConversation());
         }
 
         public override void ChildDeserialize(GenericReader reader)
         {
             int version = reader.ReadEncodedInt();
 
-            this.m_Theater = (Theater)reader.ReadEncodedInt();
+            m_Theater = (Theater)reader.ReadEncodedInt();
         }
 
         public override void ChildSerialize(GenericWriter writer)
         {
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
 
-            writer.WriteEncodedInt((int)this.m_Theater);
+            writer.WriteEncodedInt((int)m_Theater);
         }
     }
 
@@ -281,17 +240,12 @@ namespace Server.Engines.Quests.Collector
         {
         }
 
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 // Speak to Gabriel to have him autograph the sheet music.
-                return 1055110;
-            }
-        }
+                1055110;
         public override void OnComplete()
         {
-            this.System.AddConversation(new GabrielSheetMusicConversation());
+            System.AddConversation(new GabrielSheetMusicConversation());
         }
     }
 
@@ -301,17 +255,12 @@ namespace Server.Engines.Quests.Collector
         {
         }
 
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 // Speak to Elwood to give him the autographed sheet music.
-                return 1055114;
-            }
-        }
+                1055114;
         public override void OnComplete()
         {
-            this.System.AddConversation(new ReturnAutographConversation());
+            System.AddConversation(new ReturnAutographConversation());
         }
     }
 
@@ -321,17 +270,12 @@ namespace Server.Engines.Quests.Collector
         {
         }
 
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 // Go to Trinsic and speak to Tomas O'Neerlan, the famous toymaker.
-                return 1055117;
-            }
-        }
+                1055117;
         public override void OnComplete()
         {
-            this.System.AddConversation(new TomasToysConversation());
+            System.AddConversation(new TomasToysConversation());
         }
     }
 
@@ -343,8 +287,8 @@ namespace Server.Engines.Quests.Collector
         {
             if (init)
             {
-                this.m_Images = ImageTypeInfo.RandomList(4);
-                this.m_Done = new bool[4];
+                m_Images = ImageTypeInfo.RandomList(4);
+                m_Done = new bool[4];
             }
         }
 
@@ -352,21 +296,16 @@ namespace Server.Engines.Quests.Collector
         {
         }
 
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 // Use the enchanted paints to capture the image of all of the creatures listed below.
-                return 1055120;
-            }
-        }
+                1055120;
         public override bool Completed
         {
             get
             {
-                for (int i = 0; i < this.m_Done.Length; i++)
+                for (int i = 0; i < m_Done.Length; i++)
                 {
-                    if (!this.m_Done[i])
+                    if (!m_Done[i])
                         return false;
                 }
 
@@ -375,14 +314,14 @@ namespace Server.Engines.Quests.Collector
         }
         public override bool IgnoreYoungProtection(Mobile from)
         {
-            if (this.Completed)
+            if (Completed)
                 return false;
 
             Type fromType = from.GetType();
 
-            for (int i = 0; i < this.m_Images.Length; i++)
+            for (int i = 0; i < m_Images.Length; i++)
             {
-                ImageTypeInfo info = ImageTypeInfo.Get(this.m_Images[i]);
+                ImageTypeInfo info = ImageTypeInfo.Get(m_Images[i]);
 
                 if (info.Type == fromType)
                     return true;
@@ -393,44 +332,44 @@ namespace Server.Engines.Quests.Collector
 
         public CaptureResponse CaptureImage(Type type, out ImageType image)
         {
-            for (int i = 0; i < this.m_Images.Length; i++)
+            for (int i = 0; i < m_Images.Length; i++)
             {
-                ImageTypeInfo info = ImageTypeInfo.Get(this.m_Images[i]);
+                ImageTypeInfo info = ImageTypeInfo.Get(m_Images[i]);
 
                 if (info.Type == type)
                 {
-                    image = this.m_Images[i];
+                    image = m_Images[i];
 
-                    if (this.m_Done[i])
+                    if (m_Done[i])
                     {
                         return CaptureResponse.AlreadyDone;
                     }
                     else
                     {
-                        this.m_Done[i] = true;
+                        m_Done[i] = true;
 
-                        this.CheckCompletionStatus();
+                        CheckCompletionStatus();
 
                         return CaptureResponse.Valid;
                     }
                 }
             }
 
-            image = (ImageType)0;
+            image = 0;
             return CaptureResponse.Invalid;
         }
 
         public override void RenderProgress(BaseQuestGump gump)
         {
-            if (!this.Completed)
+            if (!Completed)
             {
-                for (int i = 0; i < this.m_Images.Length; i++)
+                for (int i = 0; i < m_Images.Length; i++)
                 {
-                    ImageTypeInfo info = ImageTypeInfo.Get(this.m_Images[i]);
+                    ImageTypeInfo info = ImageTypeInfo.Get(m_Images[i]);
 
                     gump.AddHtmlObject(70, 260 + 20 * i, 200, 100, info.Name, BaseQuestGump.Blue, false, false);
                     gump.AddLabel(200, 260 + 20 * i, 0x64, " : ");
-                    gump.AddHtmlObject(220, 260 + 20 * i, 100, 100, this.m_Done[i] ? 1055121 : 1055122, BaseQuestGump.Blue, false, false);
+                    gump.AddHtmlObject(220, 260 + 20 * i, 100, 100, m_Done[i] ? 1055121 : 1055122, BaseQuestGump.Blue, false, false);
                 }
             }
             else
@@ -441,7 +380,7 @@ namespace Server.Engines.Quests.Collector
 
         public override void OnComplete()
         {
-            this.System.AddObjective(new ReturnImagesObjective());
+            System.AddObjective(new ReturnImagesObjective());
         }
 
         public override void ChildDeserialize(GenericReader reader)
@@ -450,26 +389,26 @@ namespace Server.Engines.Quests.Collector
 
             int count = reader.ReadEncodedInt();
 
-            this.m_Images = new ImageType[count];
-            this.m_Done = new bool[count];
+            m_Images = new ImageType[count];
+            m_Done = new bool[count];
 
             for (int i = 0; i < count; i++)
             {
-                this.m_Images[i] = (ImageType)reader.ReadEncodedInt();
-                this.m_Done[i] = reader.ReadBool();
+                m_Images[i] = (ImageType)reader.ReadEncodedInt();
+                m_Done[i] = reader.ReadBool();
             }
         }
 
         public override void ChildSerialize(GenericWriter writer)
         {
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
 
-            writer.WriteEncodedInt((int)this.m_Images.Length);
+            writer.WriteEncodedInt(m_Images.Length);
 
-            for (int i = 0; i < this.m_Images.Length; i++)
+            for (int i = 0; i < m_Images.Length; i++)
             {
-                writer.WriteEncodedInt((int)this.m_Images[i]);
-                writer.Write((bool)this.m_Done[i]);
+                writer.WriteEncodedInt((int)m_Images[i]);
+                writer.Write(m_Done[i]);
             }
         }
     }
@@ -480,19 +419,14 @@ namespace Server.Engines.Quests.Collector
         {
         }
 
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 /* You now have all of the creature images you need.
-                * Return to Tomas O'Neerlan so that he can make the toy figurines.
-                */
-                return 1055128;
-            }
-        }
+* Return to Tomas O'Neerlan so that he can make the toy figurines.
+*/
+                1055128;
         public override void OnComplete()
         {
-            this.System.AddConversation(new ReturnImagesConversation());
+            System.AddConversation(new ReturnImagesConversation());
         }
     }
 
@@ -502,14 +436,9 @@ namespace Server.Engines.Quests.Collector
         {
         }
 
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 // Return to Elwood with news that the toy figurines will be delivered when ready.
-                return 1055132;
-            }
-        }
+                1055132;
     }
 
     public class MakeRoomObjective : QuestObjective
@@ -518,13 +447,8 @@ namespace Server.Engines.Quests.Collector
         {
         }
 
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 // Return to Elwood for your reward when you have some room in your backpack.
-                return 1055136;
-            }
-        }
+                1055136;
     }
 }

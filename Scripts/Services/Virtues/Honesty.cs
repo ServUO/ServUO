@@ -134,8 +134,8 @@ namespace Server.Services.Virtues
             if (map == null)
                 return Point3D.Zero;
 
-            var fw = map.MapID <= 1 ? 5119 : map.Width;
-            var fh = map.MapID <= 1 ? 4095 : map.Height;
+            int fw = map.MapID <= 1 ? 5119 : map.Width;
+            int fh = map.MapID <= 1 ? 4095 : map.Height;
 
             int x, y, z = 0;
 
@@ -152,15 +152,15 @@ namespace Server.Services.Virtues
 
         private static bool ValidateSpawnPoint(Map map, int x, int y, int z)
         {
-            var lt = map.Tiles.GetLandTile(x, y);
-            var ld = TileData.LandTable[lt.ID];
+            LandTile lt = map.Tiles.GetLandTile(x, y);
+            LandData ld = TileData.LandTable[lt.ID];
 
             if (lt.Ignored || (ld.Flags & TileFlag.Impassable) > 0 || (ld.Flags & TileFlag.Wet) > 0 || (ld.Flags & TileFlag.Roof) > 0)
             {
                 return false;
             }
 
-            for (var i = 0; i < HousePlacement.RoadIDs.Length; i += 2)
+            for (int i = 0; i < HousePlacement.RoadIDs.Length; i += 2)
             {
                 if (lt.ID >= HousePlacement.RoadIDs[i] && lt.ID <= HousePlacement.RoadIDs[i + 1])
                 {
@@ -168,9 +168,9 @@ namespace Server.Services.Virtues
                 }
             }
 
-            var p = new Point3D(x, y, lt.Z);
+            Point3D p = new Point3D(x, y, lt.Z);
 
-            var reg = Region.Find(p, map);
+            Region reg = Region.Find(p, map);
 
             //no-go in towns, houses, dungeons and champspawns
             if (reg != null)
@@ -205,8 +205,8 @@ namespace Server.Services.Virtues
             Console.WriteLine("[Honesty]: Generating...");
             Utility.PopColor();
 
-            var sw = new Stopwatch();
-            var s = 0.0;
+            Stopwatch sw = new Stopwatch();
+            double s = 0.0;
 
             if (UseSpawnArea)
             {
@@ -255,7 +255,7 @@ namespace Server.Services.Virtues
                 Point3D loc;
                 Item item;
 
-                var count = MaxGeneration - _Items.Count;
+                int count = MaxGeneration - _Items.Count;
 
                 if (count > 0)
                 {
@@ -265,9 +265,9 @@ namespace Server.Services.Virtues
 
                     sw.Restart();
 
-                    var spawned = new Item[count];
+                    Item[] spawned = new Item[count];
 
-                    for (var i = 0; i < spawned.Length; i++)
+                    for (int i = 0; i < spawned.Length; i++)
                     {
                         try
                         {
@@ -282,7 +282,7 @@ namespace Server.Services.Virtues
                         { }
                     }
 
-                    for (var i = 0; i < spawned.Length; i++)
+                    for (int i = 0; i < spawned.Length; i++)
                     {
                         item = spawned[i];
 
@@ -295,7 +295,7 @@ namespace Server.Services.Virtues
                         {
                             if (UseSpawnArea)
                             {
-                                var area = _TrammelArea != null && Utility.RandomBool() ? _TrammelArea : _FeluccaArea;
+                                SpawnArea area = _TrammelArea != null && Utility.RandomBool() ? _TrammelArea : _FeluccaArea;
                                 facet = area.Facet;
 
                                 loc = area.GetRandom();
@@ -366,7 +366,7 @@ namespace Server.Services.Virtues
 
                 if (!String.IsNullOrWhiteSpace(socket.HonestyRegion) && BaseVendor.AllVendors.Count >= 10)
                 {
-                    var matchedVendors = BaseVendor.AllVendors.Where(vendor => (vendor.Map == socket.Owner.Map && vendor.Region.IsPartOf(socket.HonestyRegion))).ToList<BaseVendor>();
+                    List<BaseVendor> matchedVendors = BaseVendor.AllVendors.Where(vendor => (vendor.Map == socket.Owner.Map && vendor.Region.IsPartOf(socket.HonestyRegion))).ToList<BaseVendor>();
 
                     if (matchedVendors != null && matchedVendors.Count > 0)
                     {
@@ -383,7 +383,7 @@ namespace Server.Services.Virtues
 
         private static void CheckChests()
         {
-            foreach (var loc in _ChestLocations)
+            foreach (Point3D loc in _ChestLocations)
             {
                 CheckLocation(loc, Map.Trammel);
                 CheckLocation(loc, Map.Felucca);
@@ -392,9 +392,9 @@ namespace Server.Services.Virtues
 
         private static void CheckLocation(Point3D pnt, Map map)
         {
-            var eable = map.GetItemsInRange(pnt, 0);
+            IPooledEnumerable<Item> eable = map.GetItemsInRange(pnt, 0);
 
-            foreach (var item in eable)
+            foreach (Item item in eable)
             {
                 if (item is HonestyChest)
                 {
@@ -405,7 +405,7 @@ namespace Server.Services.Virtues
 
             eable.Free();
 
-            var chest = new HonestyChest();
+            HonestyChest chest = new HonestyChest();
 
             chest.MoveToWorld(pnt, map);
         }
@@ -419,7 +419,7 @@ namespace Server.Services.Virtues
 
     public class HonestyChest : Container
     {
-        public override int LabelNumber { get { return 1151529; } } // lost and found box
+        public override int LabelNumber => 1151529;  // lost and found box
 
         [Constructable]
         public HonestyChest()
@@ -458,10 +458,10 @@ namespace Server.Services.Virtues
                 return false;
             }
 
-            var reg = Region.Find(Location, Map);
+            Region reg = Region.Find(Location, Map);
 
-            var gainedPath = false;
-            var honestySocket = item.GetSocket<HonestyItemSocket>();
+            bool gainedPath = false;
+            HonestyItemSocket honestySocket = item.GetSocket<HonestyItemSocket>();
 
             if (honestySocket != null && honestySocket.HonestyRegion == reg.Name)
             {

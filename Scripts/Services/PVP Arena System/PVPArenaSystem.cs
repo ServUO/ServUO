@@ -12,15 +12,15 @@ namespace Server.Engines.ArenaSystem
     public class PVPArenaSystem : PointsSystem
     {
         public static PVPArenaSystem Instance { get; set; }
-        public static bool Enabled { get { return true; } }
-        public static bool BlockSameIP { get { return true; } }
+        public static bool Enabled => true;
+        public static bool BlockSameIP => true;
 
-        public override PointsType Loyalty { get { return PointsType.PVPArena; } }
-        public override TextDefinition Name { get { return m_Name; } }
-        public override bool AutoAdd { get { return true; } }
-        public override double MaxPoints { get { return double.MaxValue; } }
+        public override PointsType Loyalty => PointsType.PVPArena;
+        public override TextDefinition Name => m_Name;
+        public override bool AutoAdd => true;
+        public override double MaxPoints => double.MaxValue;
 
-        public override bool ShowOnLoyaltyGump { get { return false; } }
+        public override bool ShowOnLoyaltyGump => false;
         private readonly TextDefinition m_Name = new TextDefinition("Arena Stats");
 
         public static List<PVPArena> Arenas { get; set; }
@@ -48,7 +48,7 @@ namespace Server.Engines.ArenaSystem
         {
             List<ArenaDuel> booked = new List<ArenaDuel>();
 
-            foreach (var arena in Arenas.Where(a => a.BookedDuels.Count > 0))
+            foreach (PVPArena arena in Arenas.Where(a => a.BookedDuels.Count > 0))
             {
                 booked.AddRange(arena.BookedDuels);
             }
@@ -58,9 +58,9 @@ namespace Server.Engines.ArenaSystem
 
         public ArenaDuel GetBookedDuel(PlayerMobile pm)
         {
-            foreach (var arena in Arenas.Where(a => a.BookedDuels.Count > 0))
+            foreach (PVPArena arena in Arenas.Where(a => a.BookedDuels.Count > 0))
             {
-                foreach (var duel in arena.BookedDuels.Where(d => d.IsParticipant(pm)))
+                foreach (ArenaDuel duel in arena.BookedDuels.Where(d => d.IsParticipant(pm)))
                 {
                     return duel;
                 }
@@ -131,7 +131,7 @@ namespace Server.Engines.ArenaSystem
                 Timer.DelayCall(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), () => Instance.OnTick());
             }
 
-            var arena = new PVPArena(def);
+            PVPArena arena = new PVPArena(def);
             Instance.Register(arena);
             Utility.WriteConsoleColor(ConsoleColor.Green, "Removing blocked EA PVP Arena: {0}", arena.Definition.Name);
             arena.ConfigureArena();
@@ -144,8 +144,8 @@ namespace Server.Engines.ArenaSystem
 
         public static bool IsEnemy(Mobile source, Mobile target)
         {
-            var sourceRegion = Region.Find(source.Location, source.Map) as ArenaRegion;
-            var targetRegion = Region.Find(target.Location, target.Map) as ArenaRegion;
+            ArenaRegion sourceRegion = Region.Find(source.Location, source.Map) as ArenaRegion;
+            ArenaRegion targetRegion = Region.Find(target.Location, target.Map) as ArenaRegion;
 
             if (sourceRegion != null && sourceRegion.Arena.CurrentDuel != null && sourceRegion == targetRegion)
             {
@@ -157,8 +157,8 @@ namespace Server.Engines.ArenaSystem
 
         public static bool IsFriendly(Mobile source, Mobile target)
         {
-            var sourceRegion = Region.Find(source.Location, source.Map) as ArenaRegion;
-            var targetRegion = Region.Find(target.Location, target.Map) as ArenaRegion;
+            ArenaRegion sourceRegion = Region.Find(source.Location, source.Map) as ArenaRegion;
+            ArenaRegion targetRegion = Region.Find(target.Location, target.Map) as ArenaRegion;
 
             if (sourceRegion != null && sourceRegion.Arena.CurrentDuel != null && sourceRegion == targetRegion)
             {
@@ -232,7 +232,7 @@ namespace Server.Engines.ArenaSystem
 
                         if (version >= 2)
                         {
-                            var arena = new PVPArena(GetDefinition(reader.ReadString()));
+                            PVPArena arena = new PVPArena(GetDefinition(reader.ReadString()));
                             Register(arena);
                             arena.Deserialize(reader);
                         }
@@ -247,7 +247,7 @@ namespace Server.Engines.ArenaSystem
 
         private ArenaDefinition GetDefinition(string name)
         {
-            var def = ArenaDefinition.Definitions.FirstOrDefault(d => d.Name == name);
+            ArenaDefinition def = ArenaDefinition.Definitions.FirstOrDefault(d => d.Name == name);
 
             if (def == null)
             {
@@ -269,7 +269,7 @@ namespace Server.Engines.ArenaSystem
 
         public static void SendParticipantMessage(ArenaDuel duel, int message, bool inRegion = false, string args = "", int hue = 0x1F)
         {
-            foreach (var part in duel.GetParticipants(inRegion))
+            foreach (KeyValuePair<PlayerMobile, PlayerStatsEntry> part in duel.GetParticipants(inRegion))
             {
                 SendMessage(part.Key, message, args, hue);
             }
@@ -277,7 +277,7 @@ namespace Server.Engines.ArenaSystem
 
         public void CheckTitle(PlayerMobile pm)
         {
-            var entry = GetPlayerEntry<PlayerStatsEntry>(pm);
+            PlayerStatsEntry entry = GetPlayerEntry<PlayerStatsEntry>(pm);
             int title = 0;
 
             switch (entry.TotalDuels)
@@ -301,7 +301,7 @@ namespace Server.Engines.ArenaSystem
             if (duel == null || m.AccessLevel > AccessLevel.Player)
                 return false;
 
-            foreach (var kvp in duel.GetParticipants())
+            foreach (KeyValuePair<PlayerMobile, PlayerStatsEntry> kvp in duel.GetParticipants())
             {
                 if (IsSameIP(m, kvp.Key))
                 {
@@ -317,8 +317,8 @@ namespace Server.Engines.ArenaSystem
             if (one.NetState == null || two.NetState == null || one.AccessLevel > AccessLevel.Player || two.AccessLevel > AccessLevel.Player)
                 return false;
 
-            var oneAddress = one.NetState.Address;
-            var twoAddress = two.NetState.Address;
+            System.Net.IPAddress oneAddress = one.NetState.Address;
+            System.Net.IPAddress twoAddress = two.NetState.Address;
 
             return one.NetState.Address == two.NetState.Address;
         }
@@ -335,7 +335,7 @@ namespace Server.Engines.ArenaSystem
 
                 if (Arenas != null)
                 {
-                    foreach (var arena in Arenas)
+                    foreach (PVPArena arena in Arenas)
                     {
                         arena.ConfigureArena();
                     }
@@ -377,7 +377,7 @@ namespace Server.Engines.ArenaSystem
         [Description("Gives gump for arena setup.")]
         public static void ArenaSetup(CommandEventArgs e)
         {
-            var pm = e.Mobile as PlayerMobile;
+            PlayerMobile pm = e.Mobile as PlayerMobile;
 
             if (pm != null)
             {
@@ -395,11 +395,11 @@ namespace Server.Engines.ArenaSystem
                 {
                     if (m is PlayerMobile && targeted is ArenaStone)
                     {
-                        var stone = (ArenaStone)targeted;
+                        ArenaStone stone = (ArenaStone)targeted;
 
                         if (stone.Arena != null)
                         {
-                            var arena = stone.Arena;
+                            PVPArena arena = stone.Arena;
 
                             BaseGump.SendGump(new GenericConfirmCallbackGump<PVPArena>((PlayerMobile)m,
                                 String.Format("Reset {0} Statistics?", arena.Definition.Name),
@@ -434,7 +434,7 @@ namespace Server.Engines.ArenaSystem
         public bool IgnoreInvites { get; set; }
         public bool OpenStats { get; set; }
 
-        public int TotalDuels { get { return SurvivalWins + SurvivalLosses + SurvivalDraws + TeamWins + TeamLosses + TeamDraws; } }
+        public int TotalDuels => SurvivalWins + SurvivalLosses + SurvivalDraws + TeamWins + TeamLosses + TeamDraws;
 
         public List<DuelRecord> Record { get; set; }
 

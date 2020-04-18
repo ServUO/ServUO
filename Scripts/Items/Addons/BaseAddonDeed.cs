@@ -24,9 +24,9 @@ namespace Server.Items
 
         public abstract BaseAddon Addon { get; }
 
-        public virtual bool UseCraftResource { get { return true; } }
+        public virtual bool UseCraftResource => true;
 
-        public virtual bool ExcludeDeedHue { get { return false; } }
+        public virtual bool ExcludeDeedHue => false;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public CraftResource Resource
@@ -225,7 +225,7 @@ namespace Server.Items
                     return null;
                 }
 
-                var galleon = BaseGalleon.FindGalleonAt(p, map);
+                BaseGalleon galleon = BaseGalleon.FindGalleonAt(p, map);
 
                 if (galleon != null && galleon.CanAddAddon(p))
                 {

@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class LongMetalTableEastAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new LongMetalTableEastDeed(); } }
-        public override bool RetainDeedHue { get { return true; } }
+        public override BaseAddonDeed Deed => new LongMetalTableEastDeed();
+        public override bool RetainDeedHue => true;
 
         [Constructable]
         public LongMetalTableEastAddon()
@@ -24,7 +24,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -36,8 +36,8 @@ namespace Server.Items
 
     public class LongMetalTableEastDeed : BaseAddonDeed
     {
-        public override BaseAddon Addon { get { return new LongMetalTableEastAddon(); } }
-        public override int LabelNumber { get { return 1154165; } } // Long Metal Table (East)
+        public override BaseAddon Addon => new LongMetalTableEastAddon();
+        public override int LabelNumber => 1154165;  // Long Metal Table (East)
 
         [Constructable]
         public LongMetalTableEastDeed()
@@ -52,7 +52,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

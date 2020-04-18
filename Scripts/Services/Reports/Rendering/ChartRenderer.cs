@@ -31,11 +31,11 @@ namespace Server.Engines.Reports
         {
             get
             {
-                return this._dataPoints;
+                return _dataPoints;
             }
             set
             {
-                this._dataPoints = value;
+                _dataPoints = value;
             }
         }
         // The implementation of this method is provided by derived classes
@@ -45,7 +45,7 @@ namespace Server.Engines.Reports
         {
             if (index < _colorLimit)
             {
-                this._color[index] = NewColor;
+                _color[index] = NewColor;
             }
             else
             {
@@ -58,11 +58,11 @@ namespace Server.Engines.Reports
             //return _color[index%_colorLimit];
             if (index < _colorLimit)
             {
-                return this._color[index];
+                return _color[index];
             }
             else
             {
-                return this._color[(index + 2) % _colorLimit];
+                return _color[(index + 2) % _colorLimit];
                 //throw new Exception("Color Limit is " + _colorLimit);
             }
         }

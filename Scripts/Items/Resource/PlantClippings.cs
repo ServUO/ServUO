@@ -10,7 +10,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public PlantHue PlantHue { get { return m_PlantHue; } set { m_PlantHue = value; InvalidatePlantHue(); InvalidateProperties(); } }
 
-        public override int LabelNumber { get { return 1112131; } } // plant clippings
+        public override int LabelNumber => 1112131;  // plant clippings
 
         [Constructable]
         public PlantClippings()
@@ -46,7 +46,7 @@ namespace Server.Items
         {
             PlantHueInfo info = PlantHueInfo.GetInfo(m_PlantHue);
 
-            if (this.Amount > 1)
+            if (Amount > 1)
                 list.Add(info.IsBright() ? 1113272 : 1113274, String.Format("{0}\t#{1}", Amount.ToString(), info.Name)); //~1_AMOUNT~ bright ~2_COLOR~ plant clippings
             else
                 list.Add(info.IsBright() ? 1112121 : 1112122, String.Format("#{0}", info.Name)); //bright ~1_COLOR~ plant clippings
@@ -60,7 +60,7 @@ namespace Server.Items
         public override void OnAfterDuped(Item newItem)
         {
             if (newItem is IPlantHue)
-                ((IPlantHue)newItem).PlantHue = this.PlantHue;
+                ((IPlantHue)newItem).PlantHue = PlantHue;
 
             base.OnAfterDuped(newItem);
         }
@@ -73,7 +73,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write(1);
 
             writer.Write((int)m_PlantHue);
         }

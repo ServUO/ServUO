@@ -581,44 +581,44 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Opposition;
+                return m_Opposition;
             }
             set
             {
-                this.m_Opposition = value;
+                m_Opposition = value;
             }
         }
         public SlayerEntry Super
         {
             get
             {
-                return this.m_Super;
+                return m_Super;
             }
             set
             {
-                this.m_Super = value;
+                m_Super = value;
             }
         }
         public SlayerEntry[] Entries
         {
             get
             {
-                return this.m_Entries;
+                return m_Entries;
             }
             set
             {
-                this.m_Entries = value;
+                m_Entries = value;
             }
         }
         public Type[] FoundOn
         {
             get
             {
-                return this.m_FoundOn;
+                return m_FoundOn;
             }
             set
             {
-                this.m_FoundOn = value;
+                m_FoundOn = value;
             }
         }
         public static SlayerEntry GetEntryByName(SlayerName name)
@@ -659,9 +659,9 @@ namespace Server.Items
 
         public bool OppositionSuperSlays(Mobile m)
         {
-            for (int i = 0; i < this.Opposition.Length; i++)
+            for (int i = 0; i < Opposition.Length; i++)
             {
-                if (this.Opposition[i].Super.Slays(m))
+                if (Opposition[i].Super.Slays(m))
                     return true;
             }
 

@@ -91,7 +91,7 @@ namespace Server.Engines.MyrmidexInvasion
             addon = new MoonstonePowerGeneratorAddon(true);
             addon.MoveToWorld(new Point3D(878, 2304, z), map);
 
-            var idol = new MyrmidexIdol();
+            MyrmidexIdol idol = new MyrmidexIdol();
             idol.MoveToWorld(new Point3D(488, 1856, 111), map);
 
             Teleporter teleporter = new Teleporter(new Point3D(487, 1857, 95), map);
@@ -145,7 +145,7 @@ namespace Server.Engines.MyrmidexInvasion
             teleporter = new Teleporter(new Point3D(225, 1725, 6), map);
             teleporter.MoveToWorld(new Point3D(855, 1776, 11), map);
 
-            var los = new LOSBlocker();
+            LOSBlocker los = new LOSBlocker();
             los.MoveToWorld(new Point3D(121, 1682, -3), map);
 
             los = new LOSBlocker();
@@ -154,7 +154,7 @@ namespace Server.Engines.MyrmidexInvasion
             los = new LOSBlocker();
             los.MoveToWorld(new Point3D(121, 1684, -3), map);
 
-            var allegianceIdol = new AllegianceIdol(Allegiance.Tribes);
+            AllegianceIdol allegianceIdol = new AllegianceIdol(Allegiance.Tribes);
             allegianceIdol.MoveToWorld(new Point3D(267, 1741, 85), map);
 
             allegianceIdol = new AllegianceIdol(Allegiance.Myrmidex);
@@ -188,7 +188,7 @@ namespace Server.Engines.MyrmidexInvasion
             bflag = new BattleFlag(0x42D, 2520);
             bflag.MoveToWorld(new Point3D(913, 1793, 6), Map.TerMur);
 
-            var sp = new XmlSpawner("Yar");
+            XmlSpawner sp = new XmlSpawner("Yar");
             sp.SpawnRange = 1;
             sp.HomeRange = 5;
             sp.MoveToWorld(new Point3D(169, 1813, 80), map);

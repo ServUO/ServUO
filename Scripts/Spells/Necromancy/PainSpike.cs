@@ -21,34 +21,10 @@ namespace Server.Spells.Necromancy
         {
         }
 
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(1.25);
-            }
-        }
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 20.0;
-            }
-        }
-        public override int RequiredMana
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override bool DelayedDamage
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(1.25);
+        public override double RequiredSkill => 20.0;
+        public override int RequiredMana => 5;
+        public override bool DelayedDamage => false;
         public override void OnCast()
         {
             Caster.Target = new InternalTarget(this);

@@ -60,34 +60,10 @@ namespace Server.Mobiles
         {
         }
 
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Greater;
-            }
-        }
-        public override Poison HitPoison
-        {
-            get
-            {
-                return Poison.Greater;
-            }
-        }
-        public override FoodType FavoriteFood
-        {
-            get
-            {
-                return FoodType.FruitsAndVegies | FoodType.GrainsAndHay;
-            }
-        }
-        public override bool CanAngerOnTame
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override Poison PoisonImmune => Poison.Greater;
+        public override Poison HitPoison => Poison.Greater;
+        public override FoodType FavoriteFood => FoodType.FruitsAndVegies | FoodType.GrainsAndHay;
+        public override bool CanAngerOnTame => true;
 
         public override int GetAngerSound()
         {
@@ -123,7 +99,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)3);
+            writer.Write(3);
         }
 
         public override void Deserialize(GenericReader reader)

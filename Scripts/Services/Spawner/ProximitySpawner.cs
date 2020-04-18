@@ -88,20 +88,8 @@ namespace Server.Mobiles
                 m_InstantFlag = value;
             }
         }
-        public override string DefaultName
-        {
-            get
-            {
-                return "Proximity Spawner";
-            }
-        }
-        public override bool HandlesOnMovement
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override string DefaultName => "Proximity Spawner";
+        public override bool HandlesOnMovement => true;
         public override void DoTimer(TimeSpan delay)
         {
             if (!Running)
@@ -175,7 +163,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             writer.Write(m_TriggerRange);
             TextDefinition.Serialize(writer, m_SpawnMessage);

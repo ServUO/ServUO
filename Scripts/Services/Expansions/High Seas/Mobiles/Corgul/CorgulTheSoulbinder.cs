@@ -16,24 +16,24 @@ namespace Server.Mobiles
         private CorgulAltar m_Altar;
         private readonly List<BaseCreature> m_Helpers = new List<BaseCreature>();
 
-        public override bool CanDamageBoats { get { return false; } }
-        public override bool TaintedLifeAura { get { return true; } }
-        public override int Meat { get { return 5; } }
-        public override double TreasureMapChance { get { return .25; } }
-        public override int TreasureMapLevel { get { return 7; } }
-        public override Poison PoisonImmune { get { return Poison.Deadly; } }
+        public override bool CanDamageBoats => false;
+        public override bool TaintedLifeAura => true;
+        public override int Meat => 5;
+        public override double TreasureMapChance => .25;
+        public override int TreasureMapLevel => 7;
+        public override Poison PoisonImmune => Poison.Deadly;
 
-        public override bool TeleportsTo { get { return true; } }
-        public override TimeSpan TeleportDuration { get { return TimeSpan.FromSeconds(Utility.RandomMinMax(10, 50)); } }
-        public override double TeleportProb { get { return 1.0; } }
-        public override bool TeleportsPets { get { return true; } }
+        public override bool TeleportsTo => true;
+        public override TimeSpan TeleportDuration => TimeSpan.FromSeconds(Utility.RandomMinMax(10, 50));
+        public override double TeleportProb => 1.0;
+        public override bool TeleportsPets => true;
 
-        public override Type[] UniqueList { get { return new Type[] { typeof(CorgulsEnchantedSash), typeof(CorgulsHandbookOnMysticism), typeof(CorgulsHandbookOnTheUndead) }; } }
-        public override Type[] SharedList { get { return new Type[] { typeof(HelmOfVengence), typeof(RingOfTheSoulbinder), typeof(RuneEngravedPegLeg), typeof(CullingBlade) }; } }
-        public override Type[] DecorativeList { get { return new Type[] { typeof(EnchantedBladeDeed), typeof(EnchantedVortexDeed) }; } }
+        public override Type[] UniqueList => new Type[] { typeof(CorgulsEnchantedSash), typeof(CorgulsHandbookOnMysticism), typeof(CorgulsHandbookOnTheUndead) };
+        public override Type[] SharedList => new Type[] { typeof(HelmOfVengence), typeof(RingOfTheSoulbinder), typeof(RuneEngravedPegLeg), typeof(CullingBlade) };
+        public override Type[] DecorativeList => new Type[] { typeof(EnchantedBladeDeed), typeof(EnchantedVortexDeed) };
 
-        public override bool NoGoodies { get { return true; } }
-        public override bool CanGivePowerscrolls { get { return false; } }
+        public override bool NoGoodies => true;
+        public override bool CanGivePowerscrolls => false;
 
         private readonly int _SpawnPerLoc = 15;
 
@@ -100,8 +100,8 @@ namespace Server.Mobiles
             m_NextReturn = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(120, 180));
         }
 
-        public double SharedChance { get { return Map != null && Map.Rules == MapRules.FeluccaRules ? .12 : .08; } }
-        public double DecorativeChance { get { return Map != null && Map.Rules == MapRules.FeluccaRules ? .40 : .25; } }
+        public double SharedChance => Map != null && Map.Rules == MapRules.FeluccaRules ? .12 : .08;
+        public double DecorativeChance => Map != null && Map.Rules == MapRules.FeluccaRules ? .40 : .25;
 
         public override bool OnBeforeDeath()
         {
@@ -143,7 +143,7 @@ namespace Server.Mobiles
 
         public void SpawnHelpers()
         {
-            foreach (var pnt in _SpawnLocs)
+            foreach (Point3D pnt in _SpawnLocs)
             {
                 for (int i = 0; i < _SpawnPerLoc; i++)
                 {
@@ -257,7 +257,7 @@ namespace Server.Mobiles
             PlaySound(0x2F3);
             for (int i = 0; i < targets.Count; ++i)
             {
-                Mobile m = (Mobile)targets[i];
+                Mobile m = targets[i];
 
                 if (m != null && !m.Deleted && m is PlayerMobile)
                 {
@@ -383,7 +383,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write(1);
             writer.Write(m_HasDone2ndSpawn);
             writer.Write(m_Altar);
             writer.Write(m_Helpers.Count);

@@ -27,7 +27,7 @@ namespace Server.Items
         {
         }
 
-        public virtual TalismanForm Form { get { return TalismanForm.Squirrel; } }
+        public virtual TalismanForm Form => TalismanForm.Squirrel;
 
         public static bool EntryEnabled(Mobile m, Type type)
         {
@@ -45,7 +45,7 @@ namespace Server.Items
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            list.Add(1075200, String.Format("#{0}", (int)this.Form));
+            list.Add(1075200, String.Format("#{0}", (int)Form));
         }
 
         public override void Serialize(GenericWriter writer)
@@ -75,7 +75,7 @@ namespace Server.Items
 
     public class FerretFormTalisman : BaseFormTalisman
     {
-        public override TalismanForm Form { get { return TalismanForm.Ferret; } }
+        public override TalismanForm Form => TalismanForm.Ferret;
 
         [Constructable]
         public FerretFormTalisman()
@@ -103,7 +103,7 @@ namespace Server.Items
 
     public class SquirrelFormTalisman : BaseFormTalisman
     {
-        public override TalismanForm Form { get { return TalismanForm.Squirrel; } }
+        public override TalismanForm Form => TalismanForm.Squirrel;
 
         [Constructable]
         public SquirrelFormTalisman()
@@ -131,7 +131,7 @@ namespace Server.Items
 
     public class CuSidheFormTalisman : BaseFormTalisman
     {
-        public override TalismanForm Form { get { return TalismanForm.CuSidhe; } }
+        public override TalismanForm Form => TalismanForm.CuSidhe;
 
         [Constructable]
         public CuSidheFormTalisman()
@@ -159,7 +159,7 @@ namespace Server.Items
 
     public class ReptalonFormTalisman : BaseFormTalisman
     {
-        public override TalismanForm Form { get { return TalismanForm.Reptalon; } }
+        public override TalismanForm Form => TalismanForm.Reptalon;
 
         [Constructable]
         public ReptalonFormTalisman()

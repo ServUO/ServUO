@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class WheatWort : Item
     {
-        public override int LabelNumber { get { return 1150275; } } // wheat wort
+        public override int LabelNumber => 1150275;  // wheat wort
 
         [Constructable]
         public WheatWort() : this(1)
@@ -25,7 +25,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)

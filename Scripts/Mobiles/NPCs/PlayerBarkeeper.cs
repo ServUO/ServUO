@@ -195,13 +195,13 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public string TipMessage { get { return m_TipMessage; } set { m_TipMessage = value; } }
 
-        public override bool IsActiveBuyer { get { return false; } }
-        public override bool IsActiveSeller { get { return (m_SBInfos.Count > 0); } }
-        public override bool DisallowAllMoves { get { return true; } }
-        public override bool NoHouseRestrictions { get { return true; } }
-        public BarkeeperRumor[] Rumors { get { return m_Rumors; } }
-        public override VendorShoeType ShoeType { get { return Utility.RandomBool() ? VendorShoeType.ThighBoots : VendorShoeType.Boots; } }
-        protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }
+        public override bool IsActiveBuyer => false;
+        public override bool IsActiveSeller => (m_SBInfos.Count > 0);
+        public override bool DisallowAllMoves => true;
+        public override bool NoHouseRestrictions => true;
+        public BarkeeperRumor[] Rumors => m_Rumors;
+        public override VendorShoeType ShoeType => Utility.RandomBool() ? VendorShoeType.ThighBoots : VendorShoeType.Boots;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
 
         public override bool GetGender()
         {
@@ -612,7 +612,7 @@ namespace Server.Mobiles
 
         private void ShoutNews_Callback(object state)
         {
-            var states = (object[])state;
+            object[] states = (object[])state;
             TownCrierEntry tce = (TownCrierEntry)states[0];
             int index = (int)states[1];
 
@@ -669,7 +669,7 @@ namespace Server.Mobiles
             from.CloseGump(typeof(BarkeeperGump));
             from.CloseGump(typeof(BarkeeperTitleGump));
 
-            var entries = m_Entries;
+            Entry[] entries = m_Entries;
 
             RenderBackground();
 
@@ -942,7 +942,7 @@ namespace Server.Mobiles
 
             AddHtml(250, 60, 500, 25, "Add or change a message", false, false);
 
-            var rumors = m_Barkeeper.Rumors;
+            BarkeeperRumor[] rumors = m_Barkeeper.Rumors;
 
             for (int i = 0; i < rumors.Length; ++i)
             {
@@ -968,7 +968,7 @@ namespace Server.Mobiles
 
             AddHtml(190, 60, 500, 25, "Choose the message you would like to remove", false, false);
 
-            var rumors = m_Barkeeper.Rumors;
+            BarkeeperRumor[] rumors = m_Barkeeper.Rumors;
 
             for (int i = 0; i < rumors.Length; ++i)
             {

@@ -8,7 +8,7 @@ namespace Server.Misc
 {
     public class VirtueArtifactsSystem : PointsSystem
     {
-        public static bool Enabled { get { return SeasonalEventSystem.IsActive(EventType.VirtueArtifacts); } }
+        public static bool Enabled => SeasonalEventSystem.IsActive(EventType.VirtueArtifacts);
 
         private static readonly Type[] m_VirtueArtifacts = new Type[]
             {
@@ -18,13 +18,13 @@ namespace Server.Misc
                 typeof( SpiritualityHelm ), typeof( HonorLegs ), typeof( SacrificeSollerets )
             };
 
-        public static Type[] Artifacts { get { return m_VirtueArtifacts; } }
+        public static Type[] Artifacts => m_VirtueArtifacts;
 
-        public override PointsType Loyalty { get { return PointsType.VAS; } }
-        public override TextDefinition Name { get { return m_Name; } }
-        public override bool AutoAdd { get { return true; } }
-        public override double MaxPoints { get { return double.MaxValue; } }
-        public override bool ShowOnLoyaltyGump { get { return false; } }
+        public override PointsType Loyalty => PointsType.VAS;
+        public override TextDefinition Name => m_Name;
+        public override bool AutoAdd => true;
+        public override double MaxPoints => double.MaxValue;
+        public override bool ShowOnLoyaltyGump => false;
 
         private readonly TextDefinition m_Name = new TextDefinition("Virtue Artifact System");
 
@@ -69,7 +69,7 @@ namespace Server.Misc
             int luck = Math.Max(0, pm.RealLuck);
             AwardPoints(pm, (int)Math.Max(0, (bc.Fame * (1 + Math.Sqrt(luck) / 100))));
 
-            var vapoints = GetPoints(pm);
+            double vapoints = GetPoints(pm);
             const double A = 0.000863316841;
             const double B = 0.00000425531915;
 

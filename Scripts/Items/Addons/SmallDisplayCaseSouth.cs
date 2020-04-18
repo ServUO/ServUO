@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class SmallDisplayCaseSouthAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new SmallDisplayCaseSouthDeed(); } }
+        public override BaseAddonDeed Deed => new SmallDisplayCaseSouthDeed();
 
         [Constructable]
         public SmallDisplayCaseSouthAddon()
@@ -19,7 +19,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -31,8 +31,8 @@ namespace Server.Items
 
     public class SmallDisplayCaseSouthDeed : BaseAddonDeed
     {
-        public override BaseAddon Addon { get { return new SmallDisplayCaseSouthAddon(); } }
-        public override int LabelNumber { get { return 1155842; } } // Small Display Case (South)
+        public override BaseAddon Addon => new SmallDisplayCaseSouthAddon();
+        public override int LabelNumber => 1155842;  // Small Display Case (South)
 
         [Constructable]
         public SmallDisplayCaseSouthDeed()
@@ -47,7 +47,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

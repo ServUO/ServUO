@@ -2,16 +2,16 @@ namespace Server.Items
 {
     public class DardensBustier : DragonTurtleHideBustier
     {
-        public override int LabelNumber { get { return 1156242; } } // Darden's Armor
+        public override int LabelNumber => 1156242;  // Darden's Armor
 
-        public override SetItem SetID { get { return SetItem.Darden; } }
-        public override int Pieces { get { return 4; } }
+        public override SetItem SetID => SetItem.Darden;
+        public override int Pieces => 4;
 
-        public override int BasePhysicalResistance { get { return 6; } }
-        public override int BaseFireResistance { get { return 7; } }
-        public override int BaseColdResistance { get { return 7; } }
-        public override int BasePoisonResistance { get { return 7; } }
-        public override int BaseEnergyResistance { get { return 7; } }
+        public override int BasePhysicalResistance => 6;
+        public override int BaseFireResistance => 7;
+        public override int BaseColdResistance => 7;
+        public override int BasePoisonResistance => 7;
+        public override int BaseEnergyResistance => 7;
 
         [Constructable]
         public DardensBustier()
@@ -48,7 +48,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

@@ -90,7 +90,7 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool PlayerConstructed { get { return m_Crafter != null; } }
+        public bool PlayerConstructed => m_Crafter != null;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Crafter
@@ -118,28 +118,10 @@ namespace Server.Items
             }
         }
 
-        public virtual int InitMinUses
-        {
-            get
-            {
-                return 350;
-            }
-        }
-        public virtual int InitMaxUses
-        {
-            get
-            {
-                return 450;
-            }
-        }
+        public virtual int InitMinUses => 350;
+        public virtual int InitMaxUses => 450;
 
-        public virtual TimeSpan ChargeReplenishRate
-        {
-            get
-            {
-                return TimeSpan.FromMinutes(5.0);
-            }
-        }
+        public virtual TimeSpan ChargeReplenishRate => TimeSpan.FromMinutes(5.0);
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int UsesRemaining
@@ -342,7 +324,7 @@ namespace Server.Items
             if (bc == null)
                 return false;
 
-            var profile = bc.AbilityProfile;
+            AbilityProfile profile = bc.AbilityProfile;
 
             if (profile != null)
             {
@@ -541,7 +523,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)4); // version
+            writer.Write(4); // version
 
             writer.Write((int)m_Resource);
 
@@ -555,10 +537,10 @@ namespace Server.Items
             writer.WriteEncodedInt((int)m_Slayer);
             writer.WriteEncodedInt((int)m_Slayer2);
 
-            writer.WriteEncodedInt((int)UsesRemaining);
+            writer.WriteEncodedInt(UsesRemaining);
 
-            writer.WriteEncodedInt((int)m_WellSound);
-            writer.WriteEncodedInt((int)m_BadlySound);
+            writer.WriteEncodedInt(m_WellSound);
+            writer.WriteEncodedInt(m_BadlySound);
         }
 
         public override void Deserialize(GenericReader reader)

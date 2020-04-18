@@ -3,8 +3,8 @@ namespace Server.Items
     [FlipableAttribute(0x143D, 0x143C)]
     public class TheImpalersPick : HammerPick
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1113822; } } // The Impaler's Pick
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113822;  // The Impaler's Pick
 
         [Constructable]
         public TheImpalersPick()
@@ -23,25 +23,13 @@ namespace Server.Items
         {
         }
 
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

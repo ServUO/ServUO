@@ -15,10 +15,10 @@ namespace Server.Spells.Chivalry
         public abstract int RequiredMana { get; }
         public abstract int RequiredTithing { get; }
         public abstract int MantraNumber { get; }
-        public override SkillName CastSkill { get { return SkillName.Chivalry; } }
-        public override SkillName DamageSkill { get { return SkillName.Chivalry; } }
-        public override bool ClearHandsOnCast { get { return false; } }
-        public override int CastRecoveryBase { get { return 7; } }
+        public override SkillName CastSkill => SkillName.Chivalry;
+        public override SkillName DamageSkill => SkillName.Chivalry;
+        public override bool ClearHandsOnCast => false;
+        public override int CastRecoveryBase => 7;
 
         public static int ComputePowerValue(Mobile from, int div)
         {

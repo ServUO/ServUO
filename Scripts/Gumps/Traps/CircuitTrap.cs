@@ -85,18 +85,18 @@ namespace Server.Gumps
                 Trap.Progress.Add(0);
             }
 
-            var sx = 110;
-            var sy = 135;
-            var count = (int)Count;
-            var sq = Math.Sqrt(count);
+            int sx = 110;
+            int sy = 135;
+            int count = (int)Count;
+            double sq = Math.Sqrt(count);
 
             for (int i = 0; i < count; i++)
             {
                 int line = (int)(i / sq);
                 int col = (int)(i % sq);
 
-                var x = sx + (col * 40);
-                var y = sy + (line * 40);
+                int x = sx + (col * 40);
+                int y = sy + (line * 40);
 
                 AddImage(x, y, i == count - 1 ? 0x9A8 : Progress.Contains(i) ? 0x868 : 0x25F8);
 
@@ -153,11 +153,11 @@ namespace Server.Gumps
 
             if (info.ButtonID > 0 && info.ButtonID < 5)
             {
-                var id = info.ButtonID;
-                var current = Progress[Progress.Count - 1];
-                var next = 35;
-                var count = (int)Count;
-                var perRow = (int)Math.Sqrt(count);
+                int id = info.ButtonID;
+                int current = Progress[Progress.Count - 1];
+                int next = 35;
+                int count = (int)Count;
+                int perRow = (int)Math.Sqrt(count);
                 int pick;
 
                 if (Progress.Count > 0 && Progress.Count < Path.Count)

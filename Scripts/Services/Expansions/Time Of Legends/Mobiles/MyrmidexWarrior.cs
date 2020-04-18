@@ -47,7 +47,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich, 2);
+            AddLoot(LootPack.Rich, 2);
         }
 
         public override bool OnBeforeDeath()
@@ -58,9 +58,9 @@ namespace Server.Mobiles
             return base.OnBeforeDeath();
         }
 
-        public override Poison HitPoison { get { return Poison.Deadly; } }
-        public override Poison PoisonImmune { get { return Poison.Deadly; } }
-        public override int TreasureMapLevel { get { return 2; } }
+        public override Poison HitPoison => Poison.Deadly;
+        public override Poison PoisonImmune => Poison.Deadly;
+        public override int TreasureMapLevel => 2;
 
         public override bool IsEnemy(Mobile m)
         {

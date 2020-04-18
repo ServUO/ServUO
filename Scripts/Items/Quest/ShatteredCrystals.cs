@@ -6,8 +6,8 @@ namespace Server.Items
         public ShatteredCrystals()
             : base(0x223F)
         {
-            this.Weight = 1;
-            this.Hue = 0x47E;
+            Weight = 1;
+            Hue = 0x47E;
         }
 
         public ShatteredCrystals(Serial serial)
@@ -15,18 +15,12 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074266;
-            }
-        }// shattered crystal
+        public override int LabelNumber => 1074266;// shattered crystal
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

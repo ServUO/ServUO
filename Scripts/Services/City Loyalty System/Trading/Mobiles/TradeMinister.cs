@@ -23,7 +23,7 @@ namespace Server.Engines.CityLoyalty
         [CommandProperty(AccessLevel.GameMaster)]
         public CityPetDonation DonationPost { get; set; }
 
-        public override bool IsInvulnerable { get { return true; } }
+        public override bool IsInvulnerable => true;
 
         [Constructable]
         public TradeMinister(City city) : base(AIType.AI_Vendor, FightMode.None, 10, 1, .4, .2)
@@ -49,11 +49,11 @@ namespace Server.Engines.CityLoyalty
             EquipItem(new Cloak(1157));
             EquipItem(new BodySash(1326));
 
-            var chest = new ChainChest();
+            ChainChest chest = new ChainChest();
             chest.Hue = 1908;
             EquipItem(chest);
 
-            var boots = new ThighBoots();
+            ThighBoots boots = new ThighBoots();
             boots.Hue = 1908;
             EquipItem(boots);
 
@@ -66,7 +66,7 @@ namespace Server.Engines.CityLoyalty
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(this.Location, 4))
+            if (from.InRange(Location, 4))
             {
                 from.SendGump(new InternalGump());
             }

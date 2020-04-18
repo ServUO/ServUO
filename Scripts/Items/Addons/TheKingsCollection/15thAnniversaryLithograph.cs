@@ -27,12 +27,12 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed { get { return new FifteenthAnniversaryLithographDeed(); } }
+        public override BaseAddonDeed Deed => new FifteenthAnniversaryLithographDeed();
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -44,7 +44,7 @@ namespace Server.Items
 
     public class FifteenthAnniversaryLithographDeed : BaseAddonDeed, IRewardOption
     {
-        public override int LabelNumber { get { return 1154129; } } // 15th Anniversary Lithograph
+        public override int LabelNumber => 1154129;  // 15th Anniversary Lithograph
 
         private DirectionType _Direction;
 
@@ -87,12 +87,12 @@ namespace Server.Items
                 base.OnDoubleClick(from);
         }
 
-        public override BaseAddon Addon { get { return new FifteenthAnniversaryLithographAddon(_Direction); } }
+        public override BaseAddon Addon => new FifteenthAnniversaryLithographAddon(_Direction);
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

@@ -11,8 +11,8 @@ namespace Server.Gumps
         private readonly Dictionary<Mobile, ParentNode> m_LastBranch;
         public LocationTree(string fileName, Map map)
         {
-            this.m_LastBranch = new Dictionary<Mobile, ParentNode>();
-            this.m_Map = map;
+            m_LastBranch = new Dictionary<Mobile, ParentNode>();
+            m_Map = map;
 
             string path = Path.Combine("Data/Locations/", fileName);
 
@@ -22,33 +22,15 @@ namespace Server.Gumps
 
                 xml.WhitespaceHandling = WhitespaceHandling.None;
 
-                this.m_Root = this.Parse(xml);
+                m_Root = Parse(xml);
 
                 xml.Close();
             }
         }
 
-        public Dictionary<Mobile, ParentNode> LastBranch
-        {
-            get
-            {
-                return this.m_LastBranch;
-            }
-        }
-        public Map Map
-        {
-            get
-            {
-                return this.m_Map;
-            }
-        }
-        public ParentNode Root
-        {
-            get
-            {
-                return this.m_Root;
-            }
-        }
+        public Dictionary<Mobile, ParentNode> LastBranch => m_LastBranch;
+        public Map Map => m_Map;
+        public ParentNode Root => m_Root;
         private ParentNode Parse(XmlTextReader xml)
         {
             xml.Read();

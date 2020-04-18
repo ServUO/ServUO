@@ -14,14 +14,14 @@ namespace Server.Spells.SkillMasteries
                 9061
             );
 
-        public override double RequiredSkill { get { return 90; } }
-        public override double UpKeep { get { return 0; } }
-        public override int RequiredMana { get { return 10; } }
+        public override double RequiredSkill => 90;
+        public override double UpKeep => 0;
+        public override int RequiredMana => 10;
 
-        public int RequiredTithing { get { return 100; } }
+        public int RequiredTithing => 100;
 
-        public override SkillName CastSkill { get { return SkillName.Chivalry; } }
-        public override SkillName DamageSkill { get { return SkillName.Chivalry; } }
+        public override SkillName CastSkill => SkillName.Chivalry;
+        public override SkillName DamageSkill => SkillName.Chivalry;
 
         public RejuvinateSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
@@ -81,7 +81,7 @@ namespace Server.Spells.SkillMasteries
                 }
                 else if (CheckBSequence(m))
                 {
-                    double rejuv = ((double)GetMasteryLevel() * 33.3) / 100;
+                    double rejuv = (GetMasteryLevel() * 33.3) / 100;
 
                     if (rejuv > 1.0) rejuv = 1.0;
 
@@ -189,7 +189,7 @@ namespace Server.Spells.SkillMasteries
 
         public override bool CheckSequence()
         {
-            int requiredTithing = this.RequiredTithing;
+            int requiredTithing = RequiredTithing;
 
             if (Caster is PlayerMobile && (Caster.Player && Caster.TithingPoints < requiredTithing))
             {

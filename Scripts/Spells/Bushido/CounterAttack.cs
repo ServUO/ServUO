@@ -16,27 +16,9 @@ namespace Server.Spells.Bushido
         {
         }
 
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(0.25);
-            }
-        }
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 40.0;
-            }
-        }
-        public override int RequiredMana
-        {
-            get
-            {
-                return 5;
-            }
-        }
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(0.25);
+        public override double RequiredSkill => 40.0;
+        public override int RequiredMana => 5;
         public static bool IsCountering(Mobile m)
         {
             return m_Table.Contains(m);
@@ -77,16 +59,16 @@ namespace Server.Spells.Bushido
             if (!base.CheckCast())
                 return false;
 
-            if (this.Caster.FindItemOnLayer(Layer.TwoHanded) as BaseShield != null)
+            if (Caster.FindItemOnLayer(Layer.TwoHanded) as BaseShield != null)
                 return true;
 
-            if (this.Caster.FindItemOnLayer(Layer.OneHanded) as BaseWeapon != null)
+            if (Caster.FindItemOnLayer(Layer.OneHanded) as BaseWeapon != null)
                 return true;
 
-            if (this.Caster.FindItemOnLayer(Layer.TwoHanded) as BaseWeapon != null)
+            if (Caster.FindItemOnLayer(Layer.TwoHanded) as BaseWeapon != null)
                 return true;
 
-            this.Caster.SendLocalizedMessage(1062944); // You must have a weapon or a shield equipped to use this ability!
+            Caster.SendLocalizedMessage(1062944); // You must have a weapon or a shield equipped to use this ability!
             return false;
         }
 
@@ -94,21 +76,21 @@ namespace Server.Spells.Bushido
         {
             base.OnBeginCast();
 
-            this.Caster.FixedEffect(0x37C4, 10, 7, 4, 3);
+            Caster.FixedEffect(0x37C4, 10, 7, 4, 3);
         }
 
         public override void OnCast()
         {
-            if (this.CheckSequence())
+            if (CheckSequence())
             {
-                this.Caster.SendLocalizedMessage(1063118); // You prepare to respond immediately to the next blocked blow.
+                Caster.SendLocalizedMessage(1063118); // You prepare to respond immediately to the next blocked blow.
 
-                this.OnCastSuccessful(this.Caster);
+                OnCastSuccessful(Caster);
 
-                StartCountering(this.Caster);
+                StartCountering(Caster);
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         private class InternalTimer : Timer
@@ -117,14 +99,14 @@ namespace Server.Spells.Bushido
             public InternalTimer(Mobile m)
                 : base(TimeSpan.FromSeconds(30.0))
             {
-                this.m_Mobile = m;
-                this.Priority = TimerPriority.TwoFiftyMS;
+                m_Mobile = m;
+                Priority = TimerPriority.TwoFiftyMS;
             }
 
             protected override void OnTick()
             {
-                StopCountering(this.m_Mobile);
-                this.m_Mobile.SendLocalizedMessage(1063119); // You return to your normal stance.
+                StopCountering(m_Mobile);
+                m_Mobile.SendLocalizedMessage(1063119); // You return to your normal stance.
             }
         }
     }

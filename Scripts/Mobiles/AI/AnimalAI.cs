@@ -38,7 +38,7 @@ namespace Server.Mobiles
 			return true;
 #endif
             // New, only flee @ 10%
-            var hitPercent = (double)m_Mobile.Hits / m_Mobile.HitsMax;
+            double hitPercent = (double)m_Mobile.Hits / m_Mobile.HitsMax;
 
             if (!m_Mobile.Summoned && !m_Mobile.Controlled && hitPercent < 0.1 && m_Mobile.CanFlee) // Less than 10% health
             {
@@ -62,7 +62,7 @@ namespace Server.Mobiles
 
         public override bool DoActionCombat()
         {
-            var combatant = m_Mobile.Combatant;
+            IDamageable combatant = m_Mobile.Combatant;
 
             if (combatant == null || combatant.Deleted || combatant.Map != m_Mobile.Map)
             {
@@ -93,7 +93,7 @@ namespace Server.Mobiles
 
             if (!m_Mobile.Controlled && !m_Mobile.Summoned && m_Mobile.CanFlee)
             {
-                var hitPercent = (double)m_Mobile.Hits / m_Mobile.HitsMax;
+                double hitPercent = (double)m_Mobile.Hits / m_Mobile.HitsMax;
 
                 if (hitPercent < 0.1)
                 {
@@ -107,7 +107,7 @@ namespace Server.Mobiles
 
         public override bool DoActionBackoff()
         {
-            var hitPercent = (double)m_Mobile.Hits / m_Mobile.HitsMax;
+            double hitPercent = (double)m_Mobile.Hits / m_Mobile.HitsMax;
 
             if (!m_Mobile.Summoned && !m_Mobile.Controlled && hitPercent < 0.1 && m_Mobile.CanFlee) // Less than 10% health
             {

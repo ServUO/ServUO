@@ -6,7 +6,7 @@ namespace Server.Engines.Astronomy
 {
     public class ConstellationLedger : Item
     {
-        public override int LabelNumber { get { return 1158520; } } // Constellation Ledger
+        public override int LabelNumber => 1158520;  // Constellation Ledger
 
         [Constructable]
         public ConstellationLedger()
@@ -27,7 +27,7 @@ namespace Server.Engines.Astronomy
         {
             public int Page { get; set; }
 
-            public int Pages { get { return (int)Math.Ceiling((double)AstronomySystem.DiscoveredConstellations.Count / 20.0); } }
+            public int Pages => (int)Math.Ceiling(AstronomySystem.DiscoveredConstellations.Count / 20.0);
 
             public ConstellationLedgerGump(PlayerMobile pm)
                 : base(pm, 100, 100)
@@ -54,7 +54,7 @@ namespace Server.Engines.Astronomy
 
                 for (int i = start; i < AstronomySystem.DiscoveredConstellations.Count && i <= start + 20; i++)
                 {
-                    var info = AstronomySystem.GetConstellation(AstronomySystem.DiscoveredConstellations[i]);
+                    ConstellationInfo info = AstronomySystem.GetConstellation(AstronomySystem.DiscoveredConstellations[i]);
 
                     AddHtml(15, y, 200, 18, Color("#0040FF", info.Name), false, false);
                     AddHtml(240, y, 112, 18, Color("#0040FF", info.DiscoveredBy != null ? info.DiscoveredBy.Name : "Unknown"), false, false);

@@ -13,23 +13,11 @@ namespace Server.Items
         /* DO NOT USE! Only used in serialization of special scrolls that originally derived from Item */
         private bool m_InheritsItem;
 
-        protected bool InheritsItem
-        {
-            get
-            {
-                return m_InheritsItem;
-            }
-        }
+        protected bool InheritsItem => m_InheritsItem;
         #endregion
 
         public abstract int Message { get; }
-        public virtual int Title
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        public virtual int Title => 0;
         public abstract string DefaultTitle { get; }
 
         public SpecialScroll(SkillName skill, double value)
@@ -71,7 +59,7 @@ namespace Server.Items
             {
                 m_Value = value;
 
-                m_Value = (double)Math.Floor(m_Value * 10) / 10.0;
+                m_Value = Math.Floor(m_Value * 10) / 10.0;
             }
         }
 
@@ -122,10 +110,10 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)2); // version
+            writer.Write(2); // version
 
             writer.Write((int)m_Skill);
-            writer.Write((double)m_Value);
+            writer.Write(m_Value);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -155,7 +143,7 @@ namespace Server.Items
                         if (this is ScrollOfAlacrity)
                             m_Value = 0.0;
                         else if (this is StatCapScroll)
-                            m_Value = (double)reader.ReadInt();
+                            m_Value = reader.ReadInt();
                         else
                             m_Value = reader.ReadDouble();
 
@@ -165,7 +153,7 @@ namespace Server.Items
 
             if (version == 1)
             {
-                m_Value = (double)Math.Floor(m_Value * 10) / 10.0;
+                m_Value = Math.Floor(m_Value * 10) / 10.0;
             }
         }
 

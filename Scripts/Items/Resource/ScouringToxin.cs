@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class ScouringToxin : Item, IUsesRemaining, ICommodity
     {
-        public override int LabelNumber { get { return 1112292; } } // scouring toxin
+        public override int LabelNumber => 1112292;  // scouring toxin
 
         private int m_UsesRemaining;
 
@@ -49,7 +49,7 @@ namespace Server.Items
         {
             if (targeted is Item)
             {
-                var item = (Item)targeted;
+                Item item = (Item)targeted;
 
                 if (item.Parent is Mobile)
                 {
@@ -177,14 +177,14 @@ namespace Server.Items
         {
         }
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)2); // version
+            writer.Write(2); // version
             writer.Write(m_UsesRemaining);
         }
 

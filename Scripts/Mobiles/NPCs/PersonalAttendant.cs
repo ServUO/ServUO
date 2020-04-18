@@ -14,15 +14,15 @@ namespace Server.Mobiles
         public PersonalAttendant(string title)
             : base(AIType.AI_Vendor, FightMode.None, 22, 1, 0.15, 0.2)
         {
-            this.Title = title;
-            this.Blessed = true;
-            this.ControlSlots = 0;
+            Title = title;
+            Blessed = true;
+            ControlSlots = 0;
 
-            this.InitBody();
-            this.InitOutfit();
+            InitBody();
+            InitOutfit();
 
-            this.m_Timer = new InternalTimer(this, TimeSpan.FromSeconds(2));
-            this.m_Timer.Start();
+            m_Timer = new InternalTimer(this, TimeSpan.FromSeconds(2));
+            m_Timer.Start();
         }
 
         public PersonalAttendant(Serial serial)
@@ -30,44 +30,20 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool ShowFameTitle
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool Commandable
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool NoHouseRestrictions
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool CanOpenDoors
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool ShowFameTitle => true;
+        public override bool Commandable => false;
+        public override bool NoHouseRestrictions => true;
+        public override bool CanOpenDoors => true;
         [CommandProperty(AccessLevel.GameMaster)]
         public bool BindedToPlayer
         {
             get
             {
-                return this.m_BindedToPlayer;
+                return m_BindedToPlayer;
             }
             set
             {
-                this.m_BindedToPlayer = value;
+                m_BindedToPlayer = value;
             }
         }
         public static bool CheckAttendant(Mobile owner)
@@ -100,25 +76,25 @@ namespace Server.Mobiles
 
         public virtual void CommandFollow(Mobile by)
         {
-            this.ControlOrder = OrderType.Follow;
-            this.ControlTarget = by;
+            ControlOrder = OrderType.Follow;
+            ControlTarget = by;
 
-            if (this.m_Timer != null)
+            if (m_Timer != null)
             {
-                this.m_Timer.Interval = TimeSpan.FromSeconds(2);
-                this.m_Timer.Priority = TimerPriority.OneSecond;
+                m_Timer.Interval = TimeSpan.FromSeconds(2);
+                m_Timer.Priority = TimerPriority.OneSecond;
             }
         }
 
         public virtual void CommandStop(Mobile by)
         {
-            this.ControlOrder = OrderType.Stay;
-            this.ControlTarget = null;
+            ControlOrder = OrderType.Stay;
+            ControlTarget = null;
 
-            if (this.m_Timer != null)
+            if (m_Timer != null)
             {
-                this.m_Timer.Interval = TimeSpan.FromSeconds(5);
-                this.m_Timer.Priority = TimerPriority.FiveSeconds;
+                m_Timer.Interval = TimeSpan.FromSeconds(5);
+                m_Timer.Priority = TimerPriority.FiveSeconds;
             }
         }
 
@@ -126,12 +102,12 @@ namespace Server.Mobiles
         {
             RemoveAttendant(owner);
 
-            if (this.m_BindedToPlayer)
+            if (m_BindedToPlayer)
                 owner.AddToBackpack(new PersonalAttendantDeed(owner));
             else
                 owner.AddToBackpack(new PersonalAttendantDeed());
 
-            this.Delete();
+            Delete();
         }
 
         public virtual bool InGreetingMode(Mobile owner)
@@ -141,12 +117,12 @@ namespace Server.Mobiles
 
         public virtual bool IsOwner(Mobile m)
         {
-            return (this.ControlMaster == null || this.ControlMaster == m);
+            return (ControlMaster == null || ControlMaster == m);
         }
 
         public override void AddCustomContextEntries(Mobile from, List<ContextMenuEntry> list)
         {
-            if (from.Alive && this.IsOwner(from))
+            if (from.Alive && IsOwner(from))
             {
                 list.Add(new AttendantFollowEntry(this));
                 list.Add(new AttendantStopEntry(this));
@@ -163,8 +139,8 @@ namespace Server.Mobiles
         {
             base.OnAfterDelete();
 
-            if (this.m_Timer != null)
-                this.m_Timer.Stop();
+            if (m_Timer != null)
+                m_Timer.Stop();
         }
 
         public override void Serialize(GenericWriter writer)
@@ -173,7 +149,7 @@ namespace Server.Mobiles
 
             writer.WriteEncodedInt(1); // version
 
-            writer.Write(this.m_BindedToPlayer);
+            writer.Write(m_BindedToPlayer);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -185,19 +161,19 @@ namespace Server.Mobiles
             switch (version)
             {
                 case 1:
-                    this.m_BindedToPlayer = reader.ReadBool();
+                    m_BindedToPlayer = reader.ReadBool();
                     break;
             }
 
             TimeSpan delay = TimeSpan.FromSeconds(2);
 
-            if (this.ControlOrder == OrderType.Stay)
+            if (ControlOrder == OrderType.Stay)
                 delay = TimeSpan.FromSeconds(5);
 
-            this.m_Timer = new InternalTimer(this, delay);
-            this.m_Timer.Start();
+            m_Timer = new InternalTimer(this, delay);
+            m_Timer.Start();
 
-            AddAttendant(this.ControlMaster, this);
+            AddAttendant(ControlMaster, this);
         }
 
         private class InternalTimer : Timer
@@ -206,22 +182,22 @@ namespace Server.Mobiles
             public InternalTimer(PersonalAttendant attendant, TimeSpan delay)
                 : base(delay, delay)
             {
-                this.m_Attendant = attendant;
+                m_Attendant = attendant;
 
-                this.Priority = TimerPriority.FiveSeconds;
+                Priority = TimerPriority.FiveSeconds;
             }
 
             protected override void OnTick()
             {
-                if (this.m_Attendant != null && !this.m_Attendant.Deleted)
+                if (m_Attendant != null && !m_Attendant.Deleted)
                 {
-                    Mobile m = this.m_Attendant.ControlMaster;
+                    Mobile m = m_Attendant.ControlMaster;
 
                     if (m != null)
                     {
-                        if ((m.NetState == null || !m.Alive) && !this.m_Attendant.InGreetingMode(m))
-                            this.m_Attendant.Dismiss(m);
-                        else if (this.m_Attendant.ControlOrder == OrderType.Follow && !m.InRange(this.m_Attendant.Location, 12))
+                        if ((m.NetState == null || !m.Alive) && !m_Attendant.InGreetingMode(m))
+                            m_Attendant.Dismiss(m);
+                        else if (m_Attendant.ControlOrder == OrderType.Follow && !m.InRange(m_Attendant.Location, 12))
                             Timer.DelayCall(TimeSpan.FromSeconds(1), new TimerStateCallback(CatchUp), m.Location);
                     }
                 }
@@ -229,13 +205,13 @@ namespace Server.Mobiles
 
             private void CatchUp(object obj)
             {
-                if (this.m_Attendant != null && !this.m_Attendant.Deleted)
+                if (m_Attendant != null && !m_Attendant.Deleted)
                 {
-                    this.m_Attendant.ControlOrder = OrderType.Follow;
-                    this.m_Attendant.ControlTarget = this.m_Attendant.ControlMaster;
+                    m_Attendant.ControlOrder = OrderType.Follow;
+                    m_Attendant.ControlTarget = m_Attendant.ControlMaster;
 
-                    if (obj is Point3D && this.m_Attendant.ControlMaster != null)
-                        this.m_Attendant.MoveToWorld((Point3D)obj, this.m_Attendant.ControlMaster.Map);
+                    if (obj is Point3D && m_Attendant.ControlMaster != null)
+                        m_Attendant.MoveToWorld((Point3D)obj, m_Attendant.ControlMaster.Map);
                 }
             }
         }
@@ -250,15 +226,15 @@ namespace Server.ContextMenus
         public AttendantFollowEntry(PersonalAttendant attendant)
             : base(6108)
         {
-            this.m_Attendant = attendant;
+            m_Attendant = attendant;
         }
 
         public override void OnClick()
         {
-            if (this.m_Attendant == null || this.m_Attendant.Deleted)
+            if (m_Attendant == null || m_Attendant.Deleted)
                 return;
 
-            this.m_Attendant.CommandFollow(this.Owner.From);
+            m_Attendant.CommandFollow(Owner.From);
         }
     }
 
@@ -268,15 +244,15 @@ namespace Server.ContextMenus
         public AttendantStopEntry(PersonalAttendant attendant)
             : base(6112)
         {
-            this.m_Attendant = attendant;
+            m_Attendant = attendant;
         }
 
         public override void OnClick()
         {
-            if (this.m_Attendant == null || this.m_Attendant.Deleted)
+            if (m_Attendant == null || m_Attendant.Deleted)
                 return;
 
-            this.m_Attendant.CommandStop(this.Owner.From);
+            m_Attendant.CommandStop(Owner.From);
         }
     }
 
@@ -286,15 +262,15 @@ namespace Server.ContextMenus
         public AttendantDismissEntry(PersonalAttendant attendant)
             : base(6228)
         {
-            this.m_Attendant = attendant;
+            m_Attendant = attendant;
         }
 
         public override void OnClick()
         {
-            if (this.m_Attendant == null || this.m_Attendant.Deleted)
+            if (m_Attendant == null || m_Attendant.Deleted)
                 return;
 
-            this.m_Attendant.Dismiss(this.Owner.From);
+            m_Attendant.Dismiss(Owner.From);
         }
     }
 
@@ -304,15 +280,15 @@ namespace Server.ContextMenus
         public AttendantUseEntry(PersonalAttendant attendant, int title)
             : base(title)
         {
-            this.m_Attendant = attendant;
+            m_Attendant = attendant;
         }
 
         public override void OnClick()
         {
-            if (this.m_Attendant == null || this.m_Attendant.Deleted)
+            if (m_Attendant == null || m_Attendant.Deleted)
                 return;
 
-            this.m_Attendant.OnDoubleClick(this.Owner.From);
+            m_Attendant.OnDoubleClick(Owner.From);
         }
     }
 }

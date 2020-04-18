@@ -12,13 +12,13 @@ namespace Server.Commands.Generic
     {
         public InterfaceCommand()
         {
-            this.AccessLevel = AccessLevel.GameMaster;
-            this.Supports = CommandSupport.Complex | CommandSupport.Simple;
-            this.Commands = new string[] { "Interface" };
-            this.ObjectTypes = ObjectTypes.Both;
-            this.Usage = "Interface [view <properties ...>]";
-            this.Description = "Opens an interface to interact with matched objects. Generally used with condition arguments.";
-            this.ListOptimized = true;
+            AccessLevel = AccessLevel.GameMaster;
+            Supports = CommandSupport.Complex | CommandSupport.Simple;
+            Commands = new string[] { "Interface" };
+            ObjectTypes = ObjectTypes.Both;
+            Usage = "Interface [view <properties ...>]";
+            Description = "Opens an interface to interact with matched objects. Generally used with condition arguments.";
+            ListOptimized = true;
         }
 
         public override void ExecuteList(CommandEventArgs e, ArrayList list)
@@ -44,7 +44,7 @@ namespace Server.Commands.Generic
             }
             else
             {
-                this.AddResponse("No matching objects found.");
+                AddResponse("No matching objects found.");
             }
         }
     }
@@ -60,75 +60,75 @@ namespace Server.Commands.Generic
         public InterfaceGump(Mobile from, string[] columns, ArrayList list, int page, object select)
             : base(30, 30)
         {
-            this.m_From = from;
+            m_From = from;
 
-            this.m_Columns = columns;
+            m_Columns = columns;
 
-            this.m_List = list;
-            this.m_Page = page;
+            m_List = list;
+            m_Page = page;
 
-            this.m_Select = select;
+            m_Select = select;
 
-            this.Render();
+            Render();
         }
 
         public void Render()
         {
-            this.AddNewPage();
+            AddNewPage();
 
-            if (this.m_Page > 0)
-                this.AddEntryButton(20, ArrowLeftID1, ArrowLeftID2, 1, ArrowLeftWidth, ArrowLeftHeight);
+            if (m_Page > 0)
+                AddEntryButton(20, ArrowLeftID1, ArrowLeftID2, 1, ArrowLeftWidth, ArrowLeftHeight);
             else
-                this.AddEntryHeader(20);
+                AddEntryHeader(20);
 
-            this.AddEntryHtml(40 + (this.m_Columns.Length * 130) - 20 + ((this.m_Columns.Length - 2) * this.OffsetSize), this.Center(String.Format("Page {0} of {1}", this.m_Page + 1, (this.m_List.Count + EntriesPerPage - 1) / EntriesPerPage)));
+            AddEntryHtml(40 + (m_Columns.Length * 130) - 20 + ((m_Columns.Length - 2) * OffsetSize), Center(String.Format("Page {0} of {1}", m_Page + 1, (m_List.Count + EntriesPerPage - 1) / EntriesPerPage)));
 
-            if ((this.m_Page + 1) * EntriesPerPage < this.m_List.Count)
-                this.AddEntryButton(20, ArrowRightID1, ArrowRightID2, 2, ArrowRightWidth, ArrowRightHeight);
+            if ((m_Page + 1) * EntriesPerPage < m_List.Count)
+                AddEntryButton(20, ArrowRightID1, ArrowRightID2, 2, ArrowRightWidth, ArrowRightHeight);
             else
-                this.AddEntryHeader(20);
+                AddEntryHeader(20);
 
-            if (this.m_Columns.Length > 1)
+            if (m_Columns.Length > 1)
             {
-                this.AddNewLine();
+                AddNewLine();
 
-                for (int i = 0; i < this.m_Columns.Length; ++i)
+                for (int i = 0; i < m_Columns.Length; ++i)
                 {
-                    if (i > 0 && this.m_List.Count > 0)
+                    if (i > 0 && m_List.Count > 0)
                     {
-                        object obj = this.m_List[0];
+                        object obj = m_List[0];
 
                         if (obj != null)
                         {
                             string failReason = null;
-                            PropertyInfo[] chain = Properties.GetPropertyInfoChain(this.m_From, obj.GetType(), this.m_Columns[i], PropertyAccess.Read, ref failReason);
+                            PropertyInfo[] chain = Properties.GetPropertyInfoChain(m_From, obj.GetType(), m_Columns[i], PropertyAccess.Read, ref failReason);
 
                             if (chain != null && chain.Length > 0)
                             {
-                                this.m_Columns[i] = "";
+                                m_Columns[i] = "";
 
                                 for (int j = 0; j < chain.Length; ++j)
                                 {
                                     if (j > 0)
-                                        this.m_Columns[i] += '.';
+                                        m_Columns[i] += '.';
 
-                                    this.m_Columns[i] += chain[j].Name;
+                                    m_Columns[i] += chain[j].Name;
                                 }
                             }
                         }
                     }
 
-                    this.AddEntryHtml(130 + (i == 0 ? 40 : 0), this.m_Columns[i]);
+                    AddEntryHtml(130 + (i == 0 ? 40 : 0), m_Columns[i]);
                 }
 
-                this.AddEntryHeader(20);
+                AddEntryHeader(20);
             }
 
-            for (int i = this.m_Page * EntriesPerPage, line = 0; line < EntriesPerPage && i < this.m_List.Count; ++i, ++line)
+            for (int i = m_Page * EntriesPerPage, line = 0; line < EntriesPerPage && i < m_List.Count; ++i, ++line)
             {
-                this.AddNewLine();
+                AddNewLine();
 
-                object obj = this.m_List[i];
+                object obj = m_List[i];
                 bool isDeleted = false;
 
                 if (obj is Item)
@@ -136,35 +136,35 @@ namespace Server.Commands.Generic
                     Item item = (Item)obj;
 
                     if (!(isDeleted = item.Deleted))
-                        this.AddEntryHtml(40 + 130, item.GetType().Name);
+                        AddEntryHtml(40 + 130, item.GetType().Name);
                 }
                 else if (obj is Mobile)
                 {
                     Mobile mob = (Mobile)obj;
 
                     if (!(isDeleted = mob.Deleted))
-                        this.AddEntryHtml(40 + 130, mob.Name);
+                        AddEntryHtml(40 + 130, mob.Name);
                 }
 
                 if (isDeleted)
                 {
-                    this.AddEntryHtml(40 + 130, "(deleted)");
+                    AddEntryHtml(40 + 130, "(deleted)");
 
-                    for (int j = 1; j < this.m_Columns.Length; ++j)
-                        this.AddEntryHtml(130, "---");
+                    for (int j = 1; j < m_Columns.Length; ++j)
+                        AddEntryHtml(130, "---");
 
-                    this.AddEntryHeader(20);
+                    AddEntryHeader(20);
                 }
                 else
                 {
-                    for (int j = 1; j < this.m_Columns.Length; ++j)
+                    for (int j = 1; j < m_Columns.Length; ++j)
                     {
                         object src = obj;
 
                         string value;
                         string failReason = "";
 
-                        PropertyInfo[] chain = Properties.GetPropertyInfoChain(this.m_From, src.GetType(), this.m_Columns[j], PropertyAccess.Read, ref failReason);
+                        PropertyInfo[] chain = Properties.GetPropertyInfoChain(m_From, src.GetType(), m_Columns[j], PropertyAccess.Read, ref failReason);
 
                         if (chain == null || chain.Length == 0)
                         {
@@ -180,16 +180,16 @@ namespace Server.Commands.Generic
                                 value = PropertiesGump.ValueToString(src, p);
                         }
 
-                        this.AddEntryHtml(130, value);
+                        AddEntryHtml(130, value);
                     }
 
-                    bool isSelected = (this.m_Select != null && obj == this.m_Select);
+                    bool isSelected = (m_Select != null && obj == m_Select);
 
-                    this.AddEntryButton(20, (isSelected ? 9762 : ArrowRightID1), (isSelected ? 9763 : ArrowRightID2), 3 + i, ArrowRightWidth, ArrowRightHeight);
+                    AddEntryButton(20, (isSelected ? 9762 : ArrowRightID1), (isSelected ? 9763 : ArrowRightID2), 3 + i, ArrowRightWidth, ArrowRightHeight);
                 }
             }
 
-            this.FinishPage();
+            FinishPage();
         }
 
         public override void OnResponse(NetState sender, RelayInfo info)
@@ -198,15 +198,15 @@ namespace Server.Commands.Generic
             {
                 case 1:
                     {
-                        if (this.m_Page > 0)
-                            this.m_From.SendGump(new InterfaceGump(this.m_From, this.m_Columns, this.m_List, this.m_Page - 1, this.m_Select));
+                        if (m_Page > 0)
+                            m_From.SendGump(new InterfaceGump(m_From, m_Columns, m_List, m_Page - 1, m_Select));
 
                         break;
                     }
                 case 2:
                     {
-                        if ((this.m_Page + 1) * EntriesPerPage < this.m_List.Count)
-                            this.m_From.SendGump(new InterfaceGump(this.m_From, this.m_Columns, this.m_List, this.m_Page + 1, this.m_Select));
+                        if ((m_Page + 1) * EntriesPerPage < m_List.Count)
+                            m_From.SendGump(new InterfaceGump(m_From, m_Columns, m_List, m_Page + 1, m_Select));
 
                         break;
                     }
@@ -214,23 +214,23 @@ namespace Server.Commands.Generic
                     {
                         int v = info.ButtonID - 3;
 
-                        if (v >= 0 && v < this.m_List.Count)
+                        if (v >= 0 && v < m_List.Count)
                         {
-                            object obj = this.m_List[v];
+                            object obj = m_List[v];
 
-                            if (!BaseCommand.IsAccessible(this.m_From, obj))
+                            if (!BaseCommand.IsAccessible(m_From, obj))
                             {
-                                this.m_From.SendMessage("That is not accessible.");
-                                this.m_From.SendGump(new InterfaceGump(this.m_From, this.m_Columns, this.m_List, this.m_Page, this.m_Select));
+                                m_From.SendMessage("That is not accessible.");
+                                m_From.SendGump(new InterfaceGump(m_From, m_Columns, m_List, m_Page, m_Select));
                                 break;
                             }
 
                             if (obj is Item && !((Item)obj).Deleted)
-                                this.m_From.SendGump(new InterfaceItemGump(this.m_From, this.m_Columns, this.m_List, this.m_Page, (Item)obj));
+                                m_From.SendGump(new InterfaceItemGump(m_From, m_Columns, m_List, m_Page, (Item)obj));
                             else if (obj is Mobile && !((Mobile)obj).Deleted)
-                                this.m_From.SendGump(new InterfaceMobileGump(this.m_From, this.m_Columns, this.m_List, this.m_Page, (Mobile)obj));
+                                m_From.SendGump(new InterfaceMobileGump(m_From, m_Columns, m_List, m_Page, (Mobile)obj));
                             else
-                                this.m_From.SendGump(new InterfaceGump(this.m_From, this.m_Columns, this.m_List, this.m_Page, this.m_Select));
+                                m_From.SendGump(new InterfaceGump(m_From, m_Columns, m_List, m_Page, m_Select));
                         }
 
                         break;
@@ -249,60 +249,60 @@ namespace Server.Commands.Generic
         public InterfaceItemGump(Mobile from, string[] columns, ArrayList list, int page, Item item)
             : base(30, 30)
         {
-            this.m_From = from;
+            m_From = from;
 
-            this.m_Columns = columns;
+            m_Columns = columns;
 
-            this.m_List = list;
-            this.m_Page = page;
+            m_List = list;
+            m_Page = page;
 
-            this.m_Item = item;
+            m_Item = item;
 
-            this.Render();
+            Render();
         }
 
         public void Render()
         {
-            this.AddNewPage();
+            AddNewPage();
 
-            this.AddEntryButton(20, ArrowLeftID1, ArrowLeftID2, 1, ArrowLeftWidth, ArrowLeftHeight);
-            this.AddEntryHtml(160, this.m_Item.GetType().Name);
-            this.AddEntryHeader(20);
+            AddEntryButton(20, ArrowLeftID1, ArrowLeftID2, 1, ArrowLeftWidth, ArrowLeftHeight);
+            AddEntryHtml(160, m_Item.GetType().Name);
+            AddEntryHeader(20);
 
-            this.AddNewLine();
-            this.AddEntryHtml(20 + this.OffsetSize + 160, "Properties");
-            this.AddEntryButton(20, ArrowRightID1, ArrowRightID2, 2, ArrowRightWidth, ArrowRightHeight);
+            AddNewLine();
+            AddEntryHtml(20 + OffsetSize + 160, "Properties");
+            AddEntryButton(20, ArrowRightID1, ArrowRightID2, 2, ArrowRightWidth, ArrowRightHeight);
 
-            this.AddNewLine();
-            this.AddEntryHtml(20 + this.OffsetSize + 160, "Delete");
-            this.AddEntryButton(20, ArrowRightID1, ArrowRightID2, 3, ArrowRightWidth, ArrowRightHeight);
+            AddNewLine();
+            AddEntryHtml(20 + OffsetSize + 160, "Delete");
+            AddEntryButton(20, ArrowRightID1, ArrowRightID2, 3, ArrowRightWidth, ArrowRightHeight);
 
-            this.AddNewLine();
-            this.AddEntryHtml(20 + this.OffsetSize + 160, "Go there");
-            this.AddEntryButton(20, ArrowRightID1, ArrowRightID2, 4, ArrowRightWidth, ArrowRightHeight);
+            AddNewLine();
+            AddEntryHtml(20 + OffsetSize + 160, "Go there");
+            AddEntryButton(20, ArrowRightID1, ArrowRightID2, 4, ArrowRightWidth, ArrowRightHeight);
 
-            this.AddNewLine();
-            this.AddEntryHtml(20 + this.OffsetSize + 160, "Move to target");
-            this.AddEntryButton(20, ArrowRightID1, ArrowRightID2, 5, ArrowRightWidth, ArrowRightHeight);
+            AddNewLine();
+            AddEntryHtml(20 + OffsetSize + 160, "Move to target");
+            AddEntryButton(20, ArrowRightID1, ArrowRightID2, 5, ArrowRightWidth, ArrowRightHeight);
 
-            this.AddNewLine();
-            this.AddEntryHtml(20 + this.OffsetSize + 160, "Bring to pack");
-            this.AddEntryButton(20, ArrowRightID1, ArrowRightID2, 6, ArrowRightWidth, ArrowRightHeight);
+            AddNewLine();
+            AddEntryHtml(20 + OffsetSize + 160, "Bring to pack");
+            AddEntryButton(20, ArrowRightID1, ArrowRightID2, 6, ArrowRightWidth, ArrowRightHeight);
 
-            this.FinishPage();
+            FinishPage();
         }
 
         public override void OnResponse(NetState sender, RelayInfo info)
         {
-            if (this.m_Item.Deleted)
+            if (m_Item.Deleted)
             {
-                this.m_From.SendGump(new InterfaceGump(this.m_From, this.m_Columns, this.m_List, this.m_Page, this.m_Item));
+                m_From.SendGump(new InterfaceGump(m_From, m_Columns, m_List, m_Page, m_Item));
                 return;
             }
-            else if (!BaseCommand.IsAccessible(this.m_From, this.m_Item))
+            else if (!BaseCommand.IsAccessible(m_From, m_Item))
             {
-                this.m_From.SendMessage("That is no longer accessible.");
-                this.m_From.SendGump(new InterfaceGump(this.m_From, this.m_Columns, this.m_List, this.m_Page, this.m_Item));
+                m_From.SendMessage("That is no longer accessible.");
+                m_From.SendGump(new InterfaceGump(m_From, m_Columns, m_List, m_Page, m_Item));
                 return;
             }
 
@@ -311,50 +311,50 @@ namespace Server.Commands.Generic
                 case 0:
                 case 1:
                     {
-                        this.m_From.SendGump(new InterfaceGump(this.m_From, this.m_Columns, this.m_List, this.m_Page, this.m_Item));
+                        m_From.SendGump(new InterfaceGump(m_From, m_Columns, m_List, m_Page, m_Item));
                         break;
                     }
                 case 2: // Properties
                     {
-                        this.m_From.SendGump(new InterfaceItemGump(this.m_From, this.m_Columns, this.m_List, this.m_Page, this.m_Item));
-                        this.m_From.SendGump(new PropertiesGump(this.m_From, this.m_Item));
+                        m_From.SendGump(new InterfaceItemGump(m_From, m_Columns, m_List, m_Page, m_Item));
+                        m_From.SendGump(new PropertiesGump(m_From, m_Item));
                         break;
                     }
                 case 3: // Delete
                     {
-                        CommandLogging.WriteLine(this.m_From, "{0} {1} deleting {2}", this.m_From.AccessLevel, CommandLogging.Format(this.m_From), CommandLogging.Format(this.m_Item));
-                        this.m_Item.Delete();
-                        this.m_From.SendGump(new InterfaceGump(this.m_From, this.m_Columns, this.m_List, this.m_Page, this.m_Item));
+                        CommandLogging.WriteLine(m_From, "{0} {1} deleting {2}", m_From.AccessLevel, CommandLogging.Format(m_From), CommandLogging.Format(m_Item));
+                        m_Item.Delete();
+                        m_From.SendGump(new InterfaceGump(m_From, m_Columns, m_List, m_Page, m_Item));
                         break;
                     }
                 case 4: // Go there
                     {
-                        this.m_From.SendGump(new InterfaceItemGump(this.m_From, this.m_Columns, this.m_List, this.m_Page, this.m_Item));
-                        this.InvokeCommand(String.Format("Go {0}", this.m_Item.Serial.Value));
+                        m_From.SendGump(new InterfaceItemGump(m_From, m_Columns, m_List, m_Page, m_Item));
+                        InvokeCommand(String.Format("Go {0}", m_Item.Serial.Value));
                         break;
                     }
                 case 5: // Move to target
                     {
-                        this.m_From.SendGump(new InterfaceItemGump(this.m_From, this.m_Columns, this.m_List, this.m_Page, this.m_Item));
-                        this.m_From.Target = new MoveTarget(this.m_Item);
+                        m_From.SendGump(new InterfaceItemGump(m_From, m_Columns, m_List, m_Page, m_Item));
+                        m_From.Target = new MoveTarget(m_Item);
                         break;
                     }
                 case 6: // Bring to pack
                     {
-                        Mobile owner = this.m_Item.RootParent as Mobile;
+                        Mobile owner = m_Item.RootParent as Mobile;
 
-                        if (owner != null && (owner.Map != null && owner.Map != Map.Internal) && !BaseCommand.IsAccessible(this.m_From, owner) /* !m_From.CanSee( owner )*/)
+                        if (owner != null && (owner.Map != null && owner.Map != Map.Internal) && !BaseCommand.IsAccessible(m_From, owner) /* !m_From.CanSee( owner )*/)
                         {
-                            this.m_From.SendMessage("You can not get what you can not see.");
+                            m_From.SendMessage("You can not get what you can not see.");
                         }
-                        else if (owner != null && (owner.Map == null || owner.Map == Map.Internal) && owner.Hidden && owner.AccessLevel >= this.m_From.AccessLevel)
+                        else if (owner != null && (owner.Map == null || owner.Map == Map.Internal) && owner.Hidden && owner.AccessLevel >= m_From.AccessLevel)
                         {
-                            this.m_From.SendMessage("You can not get what you can not see.");
+                            m_From.SendMessage("You can not get what you can not see.");
                         }
                         else
                         {
-                            this.m_From.SendGump(new InterfaceItemGump(this.m_From, this.m_Columns, this.m_List, this.m_Page, this.m_Item));
-                            this.m_From.AddToBackpack(this.m_Item);
+                            m_From.SendGump(new InterfaceItemGump(m_From, m_Columns, m_List, m_Page, m_Item));
+                            m_From.AddToBackpack(m_Item);
                         }
 
                         break;
@@ -364,7 +364,7 @@ namespace Server.Commands.Generic
 
         private void InvokeCommand(string ip)
         {
-            CommandSystem.Handle(this.m_From, String.Format("{0}{1}", CommandSystem.Prefix, ip));
+            CommandSystem.Handle(m_From, String.Format("{0}{1}", CommandSystem.Prefix, ip));
         }
     }
 
@@ -378,88 +378,88 @@ namespace Server.Commands.Generic
         public InterfaceMobileGump(Mobile from, string[] columns, ArrayList list, int page, Mobile mob)
             : base(30, 30)
         {
-            this.m_From = from;
+            m_From = from;
 
-            this.m_Columns = columns;
+            m_Columns = columns;
 
-            this.m_List = list;
-            this.m_Page = page;
+            m_List = list;
+            m_Page = page;
 
-            this.m_Mobile = mob;
+            m_Mobile = mob;
 
-            this.Render();
+            Render();
         }
 
         public void Render()
         {
-            this.AddNewPage();
+            AddNewPage();
 
-            this.AddEntryButton(20, ArrowLeftID1, ArrowLeftID2, 1, ArrowLeftWidth, ArrowLeftHeight);
-            this.AddEntryHtml(160, this.m_Mobile.Name);
-            this.AddEntryHeader(20);
+            AddEntryButton(20, ArrowLeftID1, ArrowLeftID2, 1, ArrowLeftWidth, ArrowLeftHeight);
+            AddEntryHtml(160, m_Mobile.Name);
+            AddEntryHeader(20);
 
-            this.AddNewLine();
-            this.AddEntryHtml(20 + this.OffsetSize + 160, "Properties");
-            this.AddEntryButton(20, ArrowRightID1, ArrowRightID2, 2, ArrowRightWidth, ArrowRightHeight);
+            AddNewLine();
+            AddEntryHtml(20 + OffsetSize + 160, "Properties");
+            AddEntryButton(20, ArrowRightID1, ArrowRightID2, 2, ArrowRightWidth, ArrowRightHeight);
 
-            if (!this.m_Mobile.Player)
+            if (!m_Mobile.Player)
             {
-                this.AddNewLine();
-                this.AddEntryHtml(20 + this.OffsetSize + 160, "Delete");
-                this.AddEntryButton(20, ArrowRightID1, ArrowRightID2, 3, ArrowRightWidth, ArrowRightHeight);
+                AddNewLine();
+                AddEntryHtml(20 + OffsetSize + 160, "Delete");
+                AddEntryButton(20, ArrowRightID1, ArrowRightID2, 3, ArrowRightWidth, ArrowRightHeight);
             }
 
-            if (this.m_Mobile != this.m_From)
+            if (m_Mobile != m_From)
             {
-                this.AddNewLine();
-                this.AddEntryHtml(20 + this.OffsetSize + 160, "Go to there");
-                this.AddEntryButton(20, ArrowRightID1, ArrowRightID2, 4, ArrowRightWidth, ArrowRightHeight);
+                AddNewLine();
+                AddEntryHtml(20 + OffsetSize + 160, "Go to there");
+                AddEntryButton(20, ArrowRightID1, ArrowRightID2, 4, ArrowRightWidth, ArrowRightHeight);
 
-                this.AddNewLine();
-                this.AddEntryHtml(20 + this.OffsetSize + 160, "Bring them here");
-                this.AddEntryButton(20, ArrowRightID1, ArrowRightID2, 5, ArrowRightWidth, ArrowRightHeight);
+                AddNewLine();
+                AddEntryHtml(20 + OffsetSize + 160, "Bring them here");
+                AddEntryButton(20, ArrowRightID1, ArrowRightID2, 5, ArrowRightWidth, ArrowRightHeight);
             }
 
-            this.AddNewLine();
-            this.AddEntryHtml(20 + this.OffsetSize + 160, "Move to target");
-            this.AddEntryButton(20, ArrowRightID1, ArrowRightID2, 6, ArrowRightWidth, ArrowRightHeight);
+            AddNewLine();
+            AddEntryHtml(20 + OffsetSize + 160, "Move to target");
+            AddEntryButton(20, ArrowRightID1, ArrowRightID2, 6, ArrowRightWidth, ArrowRightHeight);
 
-            if (this.m_From == this.m_Mobile || this.m_From.AccessLevel > this.m_Mobile.AccessLevel)
+            if (m_From == m_Mobile || m_From.AccessLevel > m_Mobile.AccessLevel)
             {
-                this.AddNewLine();
-                if (this.m_Mobile.Alive)
+                AddNewLine();
+                if (m_Mobile.Alive)
                 {
-                    this.AddEntryHtml(20 + this.OffsetSize + 160, "Kill");
-                    this.AddEntryButton(20, ArrowRightID1, ArrowRightID2, 7, ArrowRightWidth, ArrowRightHeight);
+                    AddEntryHtml(20 + OffsetSize + 160, "Kill");
+                    AddEntryButton(20, ArrowRightID1, ArrowRightID2, 7, ArrowRightWidth, ArrowRightHeight);
                 }
                 else
                 {
-                    this.AddEntryHtml(20 + this.OffsetSize + 160, "Resurrect");
-                    this.AddEntryButton(20, ArrowRightID1, ArrowRightID2, 8, ArrowRightWidth, ArrowRightHeight);
+                    AddEntryHtml(20 + OffsetSize + 160, "Resurrect");
+                    AddEntryButton(20, ArrowRightID1, ArrowRightID2, 8, ArrowRightWidth, ArrowRightHeight);
                 }
             }
 
-            if (this.m_Mobile.NetState != null)
+            if (m_Mobile.NetState != null)
             {
-                this.AddNewLine();
-                this.AddEntryHtml(20 + this.OffsetSize + 160, "Client");
-                this.AddEntryButton(20, ArrowRightID1, ArrowRightID2, 9, ArrowRightWidth, ArrowRightHeight);
+                AddNewLine();
+                AddEntryHtml(20 + OffsetSize + 160, "Client");
+                AddEntryButton(20, ArrowRightID1, ArrowRightID2, 9, ArrowRightWidth, ArrowRightHeight);
             }
 
-            this.FinishPage();
+            FinishPage();
         }
 
         public override void OnResponse(NetState sender, RelayInfo info)
         {
-            if (this.m_Mobile.Deleted)
+            if (m_Mobile.Deleted)
             {
-                this.m_From.SendGump(new InterfaceGump(this.m_From, this.m_Columns, this.m_List, this.m_Page, this.m_Mobile));
+                m_From.SendGump(new InterfaceGump(m_From, m_Columns, m_List, m_Page, m_Mobile));
                 return;
             }
-            else if (!BaseCommand.IsAccessible(this.m_From, this.m_Mobile))
+            else if (!BaseCommand.IsAccessible(m_From, m_Mobile))
             {
-                this.m_From.SendMessage("That is no longer accessible.");
-                this.m_From.SendGump(new InterfaceGump(this.m_From, this.m_Columns, this.m_List, this.m_Page, this.m_Mobile));
+                m_From.SendMessage("That is no longer accessible.");
+                m_From.SendGump(new InterfaceGump(m_From, m_Columns, m_List, m_Page, m_Mobile));
                 return;
             }
 
@@ -468,81 +468,81 @@ namespace Server.Commands.Generic
                 case 0:
                 case 1:
                     {
-                        this.m_From.SendGump(new InterfaceGump(this.m_From, this.m_Columns, this.m_List, this.m_Page, this.m_Mobile));
+                        m_From.SendGump(new InterfaceGump(m_From, m_Columns, m_List, m_Page, m_Mobile));
                         break;
                     }
                 case 2: // Properties
                     {
-                        this.m_From.SendGump(new InterfaceMobileGump(this.m_From, this.m_Columns, this.m_List, this.m_Page, this.m_Mobile));
-                        this.m_From.SendGump(new PropertiesGump(this.m_From, this.m_Mobile));
+                        m_From.SendGump(new InterfaceMobileGump(m_From, m_Columns, m_List, m_Page, m_Mobile));
+                        m_From.SendGump(new PropertiesGump(m_From, m_Mobile));
                         break;
                     }
                 case 3: // Delete
                     {
-                        if (!this.m_Mobile.Player)
+                        if (!m_Mobile.Player)
                         {
-                            CommandLogging.WriteLine(this.m_From, "{0} {1} deleting {2}", this.m_From.AccessLevel, CommandLogging.Format(this.m_From), CommandLogging.Format(this.m_Mobile));
-                            this.m_Mobile.Delete();
-                            this.m_From.SendGump(new InterfaceGump(this.m_From, this.m_Columns, this.m_List, this.m_Page, this.m_Mobile));
+                            CommandLogging.WriteLine(m_From, "{0} {1} deleting {2}", m_From.AccessLevel, CommandLogging.Format(m_From), CommandLogging.Format(m_Mobile));
+                            m_Mobile.Delete();
+                            m_From.SendGump(new InterfaceGump(m_From, m_Columns, m_List, m_Page, m_Mobile));
                         }
 
                         break;
                     }
                 case 4: // Go there
                     {
-                        this.m_From.SendGump(new InterfaceMobileGump(this.m_From, this.m_Columns, this.m_List, this.m_Page, this.m_Mobile));
-                        this.InvokeCommand(String.Format("Go {0}", this.m_Mobile.Serial.Value));
+                        m_From.SendGump(new InterfaceMobileGump(m_From, m_Columns, m_List, m_Page, m_Mobile));
+                        InvokeCommand(String.Format("Go {0}", m_Mobile.Serial.Value));
                         break;
                     }
                 case 5: // Bring them here
                     {
-                        if (this.m_From.Map == null || this.m_From.Map == Map.Internal)
+                        if (m_From.Map == null || m_From.Map == Map.Internal)
                         {
-                            this.m_From.SendMessage("You cannot bring that person here.");
+                            m_From.SendMessage("You cannot bring that person here.");
                         }
                         else
                         {
-                            this.m_From.SendGump(new InterfaceMobileGump(this.m_From, this.m_Columns, this.m_List, this.m_Page, this.m_Mobile));
-                            this.m_Mobile.MoveToWorld(this.m_From.Location, this.m_From.Map);
+                            m_From.SendGump(new InterfaceMobileGump(m_From, m_Columns, m_List, m_Page, m_Mobile));
+                            m_Mobile.MoveToWorld(m_From.Location, m_From.Map);
                         }
 
                         break;
                     }
                 case 6: // Move to target
                     {
-                        this.m_From.SendGump(new InterfaceMobileGump(this.m_From, this.m_Columns, this.m_List, this.m_Page, this.m_Mobile));
-                        this.m_From.Target = new MoveTarget(this.m_Mobile);
+                        m_From.SendGump(new InterfaceMobileGump(m_From, m_Columns, m_List, m_Page, m_Mobile));
+                        m_From.Target = new MoveTarget(m_Mobile);
                         break;
                     }
                 case 7: // Kill
                     {
-                        if (this.m_From == this.m_Mobile || this.m_From.AccessLevel > this.m_Mobile.AccessLevel)
-                            this.m_Mobile.Kill();
+                        if (m_From == m_Mobile || m_From.AccessLevel > m_Mobile.AccessLevel)
+                            m_Mobile.Kill();
 
-                        this.m_From.SendGump(new InterfaceMobileGump(this.m_From, this.m_Columns, this.m_List, this.m_Page, this.m_Mobile));
+                        m_From.SendGump(new InterfaceMobileGump(m_From, m_Columns, m_List, m_Page, m_Mobile));
 
                         break;
                     }
                 case 8: // Res
                     {
-                        if (this.m_From == this.m_Mobile || this.m_From.AccessLevel > this.m_Mobile.AccessLevel)
+                        if (m_From == m_Mobile || m_From.AccessLevel > m_Mobile.AccessLevel)
                         {
-                            this.m_Mobile.PlaySound(0x214);
-                            this.m_Mobile.FixedEffect(0x376A, 10, 16);
+                            m_Mobile.PlaySound(0x214);
+                            m_Mobile.FixedEffect(0x376A, 10, 16);
 
-                            this.m_Mobile.Resurrect();
+                            m_Mobile.Resurrect();
                         }
 
-                        this.m_From.SendGump(new InterfaceMobileGump(this.m_From, this.m_Columns, this.m_List, this.m_Page, this.m_Mobile));
+                        m_From.SendGump(new InterfaceMobileGump(m_From, m_Columns, m_List, m_Page, m_Mobile));
 
                         break;
                     }
                 case 9: // Client
                     {
-                        this.m_From.SendGump(new InterfaceMobileGump(this.m_From, this.m_Columns, this.m_List, this.m_Page, this.m_Mobile));
+                        m_From.SendGump(new InterfaceMobileGump(m_From, m_Columns, m_List, m_Page, m_Mobile));
 
-                        if (this.m_Mobile.NetState != null)
-                            this.m_From.SendGump(new ClientGump(this.m_From, this.m_Mobile.NetState));
+                        if (m_Mobile.NetState != null)
+                            m_From.SendGump(new ClientGump(m_From, m_Mobile.NetState));
 
                         break;
                     }
@@ -551,7 +551,7 @@ namespace Server.Commands.Generic
 
         private void InvokeCommand(string ip)
         {
-            CommandSystem.Handle(this.m_From, String.Format("{0}{1}", CommandSystem.Prefix, ip));
+            CommandSystem.Handle(m_From, String.Format("{0}{1}", CommandSystem.Prefix, ip));
         }
     }
 }

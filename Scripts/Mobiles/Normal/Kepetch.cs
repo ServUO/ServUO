@@ -49,19 +49,19 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Meat { get { return 5; } }
-        public override int Hides { get { return 14; } }
-        public override HideType HideType { get { return HideType.Spined; } }
-        public override FoodType FavoriteFood { get { return FoodType.FruitsAndVegies | FoodType.GrainsAndHay; } }
-        public override int DragonBlood { get { return 8; } }
-        public override int Fur { get { return GatheredFur ? 0 : 15; } }
-        public override FurType FurType { get { return FurType.Brown; } }
+        public override int Meat => 5;
+        public override int Hides => 14;
+        public override HideType HideType => HideType.Spined;
+        public override FoodType FavoriteFood => FoodType.FruitsAndVegies | FoodType.GrainsAndHay;
+        public override int DragonBlood => 8;
+        public override int Fur => GatheredFur ? 0 : 15;
+        public override FurType FurType => FurType.Brown;
 
         public bool Carve(Mobile from, Item item)
         {
             if (!GatheredFur)
             {
-                var fur = new Fur(FurType, Fur);
+                Fur fur = new Fur(FurType, Fur);
 
                 if (from.Backpack == null || !from.Backpack.TryDropItem(from, fur, false))
                 {
@@ -119,7 +119,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            var version = reader.ReadInt();
+            int version = reader.ReadInt();
 
             if (version == 1)
                 reader.ReadDeltaTime();

@@ -6,7 +6,7 @@ namespace Server.Items
         public PottedCactus()
             : base(0x1E0F)
         {
-            this.Weight = 100;
+            Weight = 100;
         }
 
         public PottedCactus(Serial serial)
@@ -18,7 +18,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -35,7 +35,7 @@ namespace Server.Items
         public PottedCactus1()
             : base(0x1E10)
         {
-            this.Weight = 100;
+            Weight = 100;
         }
 
         public PottedCactus1(Serial serial)
@@ -47,7 +47,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -64,7 +64,7 @@ namespace Server.Items
         public PottedCactus2()
             : base(0x1E11)
         {
-            this.Weight = 100;
+            Weight = 100;
         }
 
         public PottedCactus2(Serial serial)
@@ -76,7 +76,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -93,7 +93,7 @@ namespace Server.Items
         public PottedCactus3()
             : base(0x1E12)
         {
-            this.Weight = 100;
+            Weight = 100;
         }
 
         public PottedCactus3(Serial serial)
@@ -105,7 +105,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -122,7 +122,7 @@ namespace Server.Items
         public PottedCactus4()
             : base(0x1E13)
         {
-            this.Weight = 100;
+            Weight = 100;
         }
 
         public PottedCactus4(Serial serial)
@@ -134,7 +134,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -151,7 +151,7 @@ namespace Server.Items
         public PottedCactus5()
             : base(0x1E14)
         {
-            this.Weight = 100;
+            Weight = 100;
         }
 
         public PottedCactus5(Serial serial)
@@ -163,7 +163,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

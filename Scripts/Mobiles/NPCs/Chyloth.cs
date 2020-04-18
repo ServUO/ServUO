@@ -202,7 +202,7 @@ namespace Server.Engines.Quests.Doom
                 {
                     for (int i = 0; i < p.Members.Count; ++i)
                     {
-                        PartyMemberInfo pmi = (PartyMemberInfo)p.Members[i];
+                        PartyMemberInfo pmi = p.Members[i];
                         Mobile member = pmi.Mobile;
 
                         if (member != from && member.Map == Map.Malas && member.Region.IsPartOf("Doom"))
@@ -240,7 +240,7 @@ namespace Server.Engines.Quests.Doom
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

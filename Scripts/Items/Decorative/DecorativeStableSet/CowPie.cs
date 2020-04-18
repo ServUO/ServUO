@@ -3,7 +3,7 @@ namespace Server.Items
     [Flipable(0xA489, 0xA48A)]
     public class CowPie : Item
     {
-        public override int LabelNumber { get { return 1126237; } } // cow pie
+        public override int LabelNumber => 1126237;  // cow pie
 
         [Constructable]
         public CowPie()
@@ -31,7 +31,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

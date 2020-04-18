@@ -7,7 +7,7 @@ namespace Server.Engines.NewMagincia
     public class PetBroker : BaseBazaarBroker
     {
         private readonly List<PetBrokerEntry> m_BrokerEntries = new List<PetBrokerEntry>();
-        public List<PetBrokerEntry> BrokerEntries { get { return m_BrokerEntries; } }
+        public List<PetBrokerEntry> BrokerEntries => m_BrokerEntries;
 
         public static readonly int MaxEntries = 10;
 
@@ -18,7 +18,7 @@ namespace Server.Engines.NewMagincia
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(this.Location, 4) && Plot != null)
+            if (from.InRange(Location, 4) && Plot != null)
             {
                 if (Plot.Owner == from)
                 {
@@ -62,7 +62,7 @@ namespace Server.Engines.NewMagincia
 
         public override bool HasValidEntry(Mobile m)
         {
-            var hasValid = false;
+            bool hasValid = false;
 
             foreach (PetBrokerEntry entry in m_BrokerEntries)
             {
@@ -114,7 +114,7 @@ namespace Server.Engines.NewMagincia
                     total += entry.SalePrice;
             }
 
-            double perc = (double)total * .05;
+            double perc = total * .05;
             return (int)perc;
         }
 
@@ -126,7 +126,7 @@ namespace Server.Engines.NewMagincia
             }
 
             int cost = entry.SalePrice;
-            int toAdd = cost - (int)((double)cost * ((double)ComissionFee / 100.0));
+            int toAdd = cost - (int)(cost * (ComissionFee / 100.0));
             BaseCreature pet = entry.Pet;
 
             if (!m_BrokerEntries.Contains(entry) || entry.Pet == null || entry.Pet.Deleted)
@@ -243,7 +243,7 @@ namespace Server.Engines.NewMagincia
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write(m_BrokerEntries.Count);
             foreach (PetBrokerEntry entry in m_BrokerEntries)
@@ -261,7 +261,7 @@ namespace Server.Engines.NewMagincia
 
             Timer.DelayCall(TimeSpan.FromSeconds(10), () =>
                 {
-                    foreach (var entry in m_BrokerEntries)
+                    foreach (PetBrokerEntry entry in m_BrokerEntries)
                     {
                         if (entry.Pet != null && !entry.Pet.IsStabled)
                         {

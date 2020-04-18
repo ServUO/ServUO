@@ -20,33 +20,27 @@ namespace Server.Spells.Fourth
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Fourth;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Fourth;
         public override void OnCast()
         {
-            this.Caster.Target = new InternalTarget(this);
+            Caster.Target = new InternalTarget(this);
         }
 
         public void Target(IPoint3D p)
         {
-            if (!this.Caster.CanSee(p))
+            if (!Caster.CanSee(p))
             {
-                this.Caster.SendLocalizedMessage(500237); // Target can not be seen.
+                Caster.SendLocalizedMessage(500237); // Target can not be seen.
             }
-            else if (this.CheckSequence())
+            else if (CheckSequence())
             {
-                SpellHelper.Turn(this.Caster, p);
+                SpellHelper.Turn(Caster, p);
 
                 SpellHelper.GetSurfaceTop(ref p);
 
                 List<Mobile> targets = new List<Mobile>();
 
-                Map map = this.Caster.Map;
+                Map map = Caster.Map;
 
                 if (map != null)
                 {
@@ -54,28 +48,28 @@ namespace Server.Spells.Fourth
 
                     foreach (Mobile m in eable)
                     {
-                        if (this.Caster.CanBeBeneficial(m, false))
+                        if (Caster.CanBeBeneficial(m, false))
                             targets.Add(m);
                     }
 
                     eable.Free();
                 }
 
-                Party party = Party.Get(this.Caster);
+                Party party = Party.Get(Caster);
 
                 for (int i = 0; i < targets.Count; ++i)
                 {
                     Mobile m = targets[i];
 
-                    if (m == this.Caster || (party != null && party.Contains(m)))
+                    if (m == Caster || (party != null && party.Contains(m)))
                     {
-                        this.Caster.DoBeneficial(m);
-                        Spells.Second.ProtectionSpell.Toggle(this.Caster, m, true);
+                        Caster.DoBeneficial(m);
+                        Spells.Second.ProtectionSpell.Toggle(Caster, m, true);
                     }
                 }
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         private static readonly Dictionary<Mobile, Int32> _Table = new Dictionary<Mobile, Int32>();
@@ -105,15 +99,15 @@ namespace Server.Spells.Fourth
                 double time = caster.Skills[SkillName.Magery].Value * 1.2;
                 if (time > 144)
                     time = 144;
-                this.Delay = TimeSpan.FromSeconds(time);
-                this.Priority = TimerPriority.OneSecond;
+                Delay = TimeSpan.FromSeconds(time);
+                Priority = TimerPriority.OneSecond;
 
-                this.m_Owner = target;
+                m_Owner = target;
             }
 
             protected override void OnTick()
             {
-                ArchProtectionSpell.RemoveEntry(this.m_Owner);
+                ArchProtectionSpell.RemoveEntry(m_Owner);
             }
         }
 
@@ -123,7 +117,7 @@ namespace Server.Spells.Fourth
             public InternalTarget(ArchProtectionSpell owner)
                 : base(10, true, TargetFlags.None)
             {
-                this.m_Owner = owner;
+                m_Owner = owner;
             }
 
             protected override void OnTarget(Mobile from, object o)
@@ -131,12 +125,12 @@ namespace Server.Spells.Fourth
                 IPoint3D p = o as IPoint3D;
 
                 if (p != null)
-                    this.m_Owner.Target(p);
+                    m_Owner.Target(p);
             }
 
             protected override void OnTargetFinish(Mobile from)
             {
-                this.m_Owner.FinishSequence();
+                m_Owner.FinishSequence();
             }
         }
     }

@@ -27,7 +27,7 @@ namespace Server.Engines.SeasonalEvents
 
             for (int i = 0; i < SeasonalEventSystem.Entries.Count; i++)
             {
-                var entry = SeasonalEventSystem.Entries[i];
+                SeasonalEventEntry entry = SeasonalEventSystem.Entries[i];
 
                 int hue = entry.IsActive() ? 167 : 137;
 
@@ -64,7 +64,7 @@ namespace Server.Engines.SeasonalEvents
 
                 if (id >= 0 && id < SeasonalEventSystem.Entries.Count)
                 {
-                    var entry = SeasonalEventSystem.Entries[id];
+                    SeasonalEventEntry entry = SeasonalEventSystem.Entries[id];
 
                     if (entry.EventType == EventType.TreasuresOfTokuno)
                     {
@@ -205,7 +205,7 @@ namespace Server.Engines.SeasonalEvents
 
                     if (relay != null && !string.IsNullOrEmpty(relay.Text))
                     {
-                        var duration = Utility.ToInt32(relay.Text);
+                        int duration = Utility.ToInt32(relay.Text);
 
                         if (duration > 0)
                         {

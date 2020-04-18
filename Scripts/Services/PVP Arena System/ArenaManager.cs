@@ -6,10 +6,10 @@ namespace Server.Engines.ArenaSystem
 {
     public class ArenaManager : AnimalTrainer
     {
-        public override bool IsActiveVendor { get { return false; } }
-        public override bool IsActiveBuyer { get { return false; } }
-        public override bool IsActiveSeller { get { return false; } }
-        public override bool CanTeach { get { return false; } }
+        public override bool IsActiveVendor => false;
+        public override bool IsActiveBuyer => false;
+        public override bool IsActiveSeller => false;
+        public override bool CanTeach => false;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public PVPArena Arena { get; set; }
@@ -90,7 +90,7 @@ namespace Server.Engines.ArenaSystem
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

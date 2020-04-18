@@ -12,8 +12,8 @@ namespace Server.Engines.Quests
         public DynamicTeleporter(int itemID, int hue)
             : base(itemID)
         {
-            this.Movable = false;
-            this.Hue = hue;
+            Movable = false;
+            Hue = hue;
         }
 
         public DynamicTeleporter(Serial serial)
@@ -21,20 +21,8 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1049382;
-            }
-        }// a magical teleporter
-        public virtual int NotWorkingMessage
-        {
-            get
-            {
-                return 500309;
-            }
-        }// Nothing Happens.
+        public override int LabelNumber => 1049382;// a magical teleporter
+        public virtual int NotWorkingMessage => 500309;// Nothing Happens.
         public abstract bool GetDestination(PlayerMobile player, ref Point3D loc, ref Map map);
 
         public override bool OnMoveOver(Mobile m)
@@ -46,7 +34,7 @@ namespace Server.Engines.Quests
                 Point3D loc = Point3D.Zero;
                 Map map = null;
 
-                if (this.GetDestination(pm, ref loc, ref map))
+                if (GetDestination(pm, ref loc, ref map))
                 {
                     BaseCreature.TeleportPets(pm, loc, map);
 
@@ -57,7 +45,7 @@ namespace Server.Engines.Quests
                 }
                 else
                 {
-                    pm.SendLocalizedMessage(this.NotWorkingMessage);
+                    pm.SendLocalizedMessage(NotWorkingMessage);
                 }
             }
 
@@ -68,7 +56,7 @@ namespace Server.Engines.Quests
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

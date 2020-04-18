@@ -14,18 +14,12 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1072088;
-            }
-        }// The Mangled Head of Dread Horn
+        public override int LabelNumber => 1072088;// The Mangled Head of Dread Horn
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

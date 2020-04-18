@@ -60,7 +60,7 @@ namespace Server.Multis
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)6); // version
+            writer.Write(6); // version
 
             writer.Write(MultiID);
             writer.Write(Offset);
@@ -167,7 +167,7 @@ namespace Server.Multis
 
                     boat.OnAfterPlacement(false);
 
-                    var addon = LighthouseAddon.GetLighthouse(from);
+                    LighthouseAddon addon = LighthouseAddon.GetLighthouse(from);
 
                     if (addon != null)
                     {

@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class GrizzledMareStatuette : BaseImprisonedMobile
     {
-        public override int LabelNumber { get { return 1074475; } } // Grizzled Mare Statuette
+        public override int LabelNumber => 1074475;  // Grizzled Mare Statuette
 
         [Constructable]
         public GrizzledMareStatuette()
@@ -18,18 +18,12 @@ namespace Server.Items
         {
         }
 
-        public override BaseCreature Summon
-        {
-            get
-            {
-                return new GrizzledMare();
-            }
-        }
+        public override BaseCreature Summon => new GrizzledMare();
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -92,13 +86,13 @@ namespace Server.Mobiles
         {
         }
 
-        public override FoodType FavoriteFood { get { return FoodType.Meat; } }
-        public override bool DeleteOnRelease { get { return true; } }
+        public override FoodType FavoriteFood => FoodType.Meat;
+        public override bool DeleteOnRelease => true;
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)2); // version
+            writer.Write(2); // version
         }
 
         public override void Deserialize(GenericReader reader)

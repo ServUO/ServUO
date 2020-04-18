@@ -42,27 +42,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 4;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override bool CanFly
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override int TreasureMapLevel => 4;
+        public override int Meat => 1;
+        public override bool CanFly => true;
 
         public void AuraEffect(Mobile m)
         {
@@ -82,7 +64,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

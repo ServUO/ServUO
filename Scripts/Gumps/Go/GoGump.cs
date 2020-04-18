@@ -107,9 +107,9 @@ namespace Server.Gumps
 
             tree.LastBranch[from] = node;
 
-            this.m_Page = page;
-            this.m_Tree = tree;
-            this.m_Node = node;
+            m_Page = page;
+            m_Tree = tree;
+            m_Node = node;
 
             int x = BorderSize + OffsetSize;
             int y = BorderSize + OffsetSize;
@@ -123,22 +123,22 @@ namespace Server.Gumps
 
             int totalHeight = OffsetSize + ((EntryHeight + OffsetSize) * (count + 1));
 
-            this.AddPage(0);
+            AddPage(0);
 
-            this.AddBackground(0, 0, BackWidth, BorderSize + totalHeight + BorderSize, BackGumpID);
-            this.AddImageTiled(BorderSize, BorderSize, TotalWidth - (OldStyle ? SetWidth + OffsetSize : 0), totalHeight, OffsetGumpID);
+            AddBackground(0, 0, BackWidth, BorderSize + totalHeight + BorderSize, BackGumpID);
+            AddImageTiled(BorderSize, BorderSize, TotalWidth - (OldStyle ? SetWidth + OffsetSize : 0), totalHeight, OffsetGumpID);
 
             if (OldStyle)
-                this.AddImageTiled(x, y, TotalWidth - (OffsetSize * 3) - SetWidth, EntryHeight, HeaderGumpID);
+                AddImageTiled(x, y, TotalWidth - (OffsetSize * 3) - SetWidth, EntryHeight, HeaderGumpID);
             else
-                this.AddImageTiled(x, y, PrevWidth, EntryHeight, HeaderGumpID);
+                AddImageTiled(x, y, PrevWidth, EntryHeight, HeaderGumpID);
 
             if (node.Parent != null)
             {
-                this.AddButton(x + PrevOffsetX, y + PrevOffsetY, PrevButtonID1, PrevButtonID2, 1, GumpButtonType.Reply, 0);
+                AddButton(x + PrevOffsetX, y + PrevOffsetY, PrevButtonID1, PrevButtonID2, 1, GumpButtonType.Reply, 0);
 
                 if (PrevLabel)
-                    this.AddLabel(x + PrevLabelOffsetX, y + PrevLabelOffsetY, TextHue, "Previous");
+                    AddLabel(x + PrevLabelOffsetX, y + PrevLabelOffsetY, TextHue, "Previous");
             }
 
             x += PrevWidth + OffsetSize;
@@ -146,36 +146,36 @@ namespace Server.Gumps
             int emptyWidth = TotalWidth - (PrevWidth * 2) - NextWidth - (OffsetSize * 5) - (OldStyle ? SetWidth + OffsetSize : 0);
 
             if (!OldStyle)
-                this.AddImageTiled(x - (OldStyle ? OffsetSize : 0), y, emptyWidth + (OldStyle ? OffsetSize * 2 : 0), EntryHeight, EntryGumpID);
+                AddImageTiled(x - (OldStyle ? OffsetSize : 0), y, emptyWidth + (OldStyle ? OffsetSize * 2 : 0), EntryHeight, EntryGumpID);
 
-            this.AddHtml(x + TextOffsetX, y, emptyWidth - TextOffsetX, EntryHeight, String.Format("<center>{0}</center>", node.Name), false, false);
+            AddHtml(x + TextOffsetX, y, emptyWidth - TextOffsetX, EntryHeight, String.Format("<center>{0}</center>", node.Name), false, false);
 
             x += emptyWidth + OffsetSize;
 
             if (OldStyle)
-                this.AddImageTiled(x, y, TotalWidth - (OffsetSize * 3) - SetWidth, EntryHeight, HeaderGumpID);
+                AddImageTiled(x, y, TotalWidth - (OffsetSize * 3) - SetWidth, EntryHeight, HeaderGumpID);
             else
-                this.AddImageTiled(x, y, PrevWidth, EntryHeight, HeaderGumpID);
+                AddImageTiled(x, y, PrevWidth, EntryHeight, HeaderGumpID);
 
             if (page > 0)
             {
-                this.AddButton(x + PrevOffsetX, y + PrevOffsetY, PrevButtonID1, PrevButtonID2, 2, GumpButtonType.Reply, 0);
+                AddButton(x + PrevOffsetX, y + PrevOffsetY, PrevButtonID1, PrevButtonID2, 2, GumpButtonType.Reply, 0);
 
                 if (PrevLabel)
-                    this.AddLabel(x + PrevLabelOffsetX, y + PrevLabelOffsetY, TextHue, "Previous");
+                    AddLabel(x + PrevLabelOffsetX, y + PrevLabelOffsetY, TextHue, "Previous");
             }
 
             x += PrevWidth + OffsetSize;
 
             if (!OldStyle)
-                this.AddImageTiled(x, y, NextWidth, EntryHeight, HeaderGumpID);
+                AddImageTiled(x, y, NextWidth, EntryHeight, HeaderGumpID);
 
             if ((page + 1) * EntryCount < node.Children.Length)
             {
-                this.AddButton(x + NextOffsetX, y + NextOffsetY, NextButtonID1, NextButtonID2, 3, GumpButtonType.Reply, 1);
+                AddButton(x + NextOffsetX, y + NextOffsetY, NextButtonID1, NextButtonID2, 3, GumpButtonType.Reply, 1);
 
                 if (NextLabel)
-                    this.AddLabel(x + NextLabelOffsetX, y + NextLabelOffsetY, TextHue, "Next");
+                    AddLabel(x + NextLabelOffsetX, y + NextLabelOffsetY, TextHue, "Next");
             }
 
             for (int i = 0, index = page * EntryCount; i < EntryCount && index < node.Children.Length; ++i, ++index)
@@ -191,15 +191,15 @@ namespace Server.Gumps
                 else if (child is ChildNode)
                     name = ((ChildNode)child).Name;
 
-                this.AddImageTiled(x, y, EntryWidth, EntryHeight, EntryGumpID);
-                this.AddLabelCropped(x + TextOffsetX, y, EntryWidth - TextOffsetX, EntryHeight, TextHue, name);
+                AddImageTiled(x, y, EntryWidth, EntryHeight, EntryGumpID);
+                AddLabelCropped(x + TextOffsetX, y, EntryWidth - TextOffsetX, EntryHeight, TextHue, name);
 
                 x += EntryWidth + OffsetSize;
 
                 if (SetGumpID != 0)
-                    this.AddImageTiled(x, y, SetWidth, EntryHeight, SetGumpID);
+                    AddImageTiled(x, y, SetWidth, EntryHeight, SetGumpID);
 
-                this.AddButton(x + SetOffsetX, y + SetOffsetY, SetButtonID1, SetButtonID2, index + 4, GumpButtonType.Reply, 0);
+                AddButton(x + SetOffsetX, y + SetOffsetY, SetButtonID1, SetButtonID2, index + 4, GumpButtonType.Reply, 0);
             }
         }
 
@@ -211,22 +211,22 @@ namespace Server.Gumps
             {
                 case 1:
                     {
-                        if (this.m_Node.Parent != null)
-                            from.SendGump(new GoGump(0, from, this.m_Tree, this.m_Node.Parent));
+                        if (m_Node.Parent != null)
+                            from.SendGump(new GoGump(0, from, m_Tree, m_Node.Parent));
 
                         break;
                     }
                 case 2:
                     {
-                        if (this.m_Page > 0)
-                            from.SendGump(new GoGump(this.m_Page - 1, from, this.m_Tree, this.m_Node));
+                        if (m_Page > 0)
+                            from.SendGump(new GoGump(m_Page - 1, from, m_Tree, m_Node));
 
                         break;
                     }
                 case 3:
                     {
-                        if ((this.m_Page + 1) * EntryCount < this.m_Node.Children.Length)
-                            from.SendGump(new GoGump(this.m_Page + 1, from, this.m_Tree, this.m_Node));
+                        if ((m_Page + 1) * EntryCount < m_Node.Children.Length)
+                            from.SendGump(new GoGump(m_Page + 1, from, m_Tree, m_Node));
 
                         break;
                     }
@@ -234,19 +234,19 @@ namespace Server.Gumps
                     {
                         int index = info.ButtonID - 4;
 
-                        if (index >= 0 && index < this.m_Node.Children.Length)
+                        if (index >= 0 && index < m_Node.Children.Length)
                         {
-                            object o = this.m_Node.Children[index];
+                            object o = m_Node.Children[index];
 
                             if (o is ParentNode)
                             {
-                                from.SendGump(new GoGump(0, from, this.m_Tree, (ParentNode)o));
+                                from.SendGump(new GoGump(0, from, m_Tree, (ParentNode)o));
                             }
                             else
                             {
                                 ChildNode n = (ChildNode)o;
 
-                                from.MoveToWorld(n.Location, this.m_Tree.Map);
+                                from.MoveToWorld(n.Location, m_Tree.Map);
                             }
                         }
 

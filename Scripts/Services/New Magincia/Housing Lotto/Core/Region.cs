@@ -36,7 +36,7 @@ namespace Server.Engines.NewMagincia
                 }
             }
 
-            return MaginciaLottoSystem.IsFreeHousingZone(p, this.Map);
+            return MaginciaLottoSystem.IsFreeHousingZone(p, Map);
         }
     }
 }

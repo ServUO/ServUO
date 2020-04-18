@@ -2,21 +2,15 @@ namespace Server.Items
 {
     public class OphidianMatriarchCostume : BaseCostume
     {
-        public override string CreatureName { get { return "ophidian matriarch"; } }
+        public override string CreatureName => "ophidian matriarch";
 
         [Constructable]
         public OphidianMatriarchCostume() : base()
         {
-            this.CostumeBody = 87;
+            CostumeBody = 87;
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1114230;
-            }
-        }// ophidian matriarch costume
+        public override int LabelNumber => 1114230;// ophidian matriarch costume
 
         public OphidianMatriarchCostume(Serial serial) : base(serial)
         {
@@ -26,7 +20,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

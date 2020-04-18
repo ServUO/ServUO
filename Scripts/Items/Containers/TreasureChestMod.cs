@@ -9,14 +9,14 @@ namespace Server.Items
     [FlipableAttribute(0xe3e, 0xe3f)]
     public class TreasureLevel1 : BaseTreasureChestMod
     {
-        public override int DefaultGumpID { get { return 0x49; } }
+        public override int DefaultGumpID => 0x49;
 
         [Constructable]
         public TreasureLevel1() : base(Utility.RandomList(0xE3C, 0xE3E, 0x9a9))
         {
             RequiredSkill = 52;
-            LockLevel = this.RequiredSkill - Utility.Random(1, 10);
-            MaxLockLevel = this.RequiredSkill;
+            LockLevel = RequiredSkill - Utility.Random(1, 10);
+            MaxLockLevel = RequiredSkill;
             TrapType = TrapType.MagicTrap;
             TrapPower = 1 * Utility.Random(1, 25);
 
@@ -40,7 +40,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version 
+            writer.Write(0); // version 
         }
 
         public override void Deserialize(GenericReader reader)
@@ -56,14 +56,14 @@ namespace Server.Items
     [FlipableAttribute(0xe3e, 0xe3f)]
     public class TreasureLevel1h : BaseTreasureChestMod
     {
-        public override int DefaultGumpID { get { return 0x49; } }
+        public override int DefaultGumpID => 0x49;
 
         [Constructable]
         public TreasureLevel1h() : base(Utility.RandomList(0xE3C, 0xE3E, 0x9a9))
         {
             RequiredSkill = 56;
-            LockLevel = this.RequiredSkill - Utility.Random(1, 10);
-            MaxLockLevel = this.RequiredSkill;
+            LockLevel = RequiredSkill - Utility.Random(1, 10);
+            MaxLockLevel = RequiredSkill;
             TrapType = TrapType.MagicTrap;
             TrapPower = 1 * Utility.Random(1, 25);
 
@@ -91,7 +91,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version 
+            writer.Write(0); // version 
         }
 
         public override void Deserialize(GenericReader reader)
@@ -113,8 +113,8 @@ namespace Server.Items
         public TreasureLevel2() : base(Utility.RandomList(0xe3c, 0xE3E, 0x9a9, 0xe42, 0x9ab, 0xe40, 0xe7f, 0xe77))
         {
             RequiredSkill = 72;
-            LockLevel = this.RequiredSkill - Utility.Random(1, 10);
-            MaxLockLevel = this.RequiredSkill;
+            LockLevel = RequiredSkill - Utility.Random(1, 10);
+            MaxLockLevel = RequiredSkill;
             TrapType = TrapType.MagicTrap;
             TrapPower = 2 * Utility.Random(1, 25);
 
@@ -144,7 +144,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version 
+            writer.Write(0); // version 
         }
 
         public override void Deserialize(GenericReader reader)
@@ -160,14 +160,14 @@ namespace Server.Items
     [FlipableAttribute(0x9ab, 0xe7c)]
     public class TreasureLevel3 : BaseTreasureChestMod
     {
-        public override int DefaultGumpID { get { return 0x4A; } }
+        public override int DefaultGumpID => 0x4A;
 
         [Constructable]
         public TreasureLevel3() : base(Utility.RandomList(0x9ab, 0xe40, 0xe42))
         {
             RequiredSkill = 84;
-            LockLevel = this.RequiredSkill - Utility.Random(1, 10);
-            MaxLockLevel = this.RequiredSkill;
+            LockLevel = RequiredSkill - Utility.Random(1, 10);
+            MaxLockLevel = RequiredSkill;
             TrapType = TrapType.MagicTrap;
             TrapPower = 3 * Utility.Random(1, 25);
 
@@ -222,7 +222,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version 
+            writer.Write(0); // version 
         }
 
         public override void Deserialize(GenericReader reader)
@@ -242,8 +242,8 @@ namespace Server.Items
         public TreasureLevel4() : base(Utility.RandomList(0xe40, 0xe42, 0x9ab))
         {
             RequiredSkill = 92;
-            LockLevel = this.RequiredSkill - Utility.Random(1, 10);
-            MaxLockLevel = this.RequiredSkill;
+            LockLevel = RequiredSkill - Utility.Random(1, 10);
+            MaxLockLevel = RequiredSkill;
             TrapType = TrapType.MagicTrap;
             TrapPower = 4 * Utility.Random(1, 25);
 
@@ -294,7 +294,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version 
+            writer.Write(0); // version 
         }
 
         public override void Deserialize(GenericReader reader)

@@ -10,9 +10,9 @@ namespace Server.Misc
             GiftGiving.Register(new AnniversaryGiver18th());
         }
 
-        public override DateTime Start { get { return new DateTime(2016, 4, 08); } }
-        public override DateTime Finish { get { return new DateTime(2016, 12, 31); } }
-        public override TimeSpan MinimumAge { get { return TimeSpan.FromHours(12); } }
+        public override DateTime Start => new DateTime(2016, 4, 08);
+        public override DateTime Finish => new DateTime(2016, 12, 31);
+        public override TimeSpan MinimumAge => TimeSpan.FromHours(12);
 
         public override void GiveGift(Mobile mob)
         {

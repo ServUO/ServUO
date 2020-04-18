@@ -8,7 +8,7 @@ namespace Server.Items
     {
         private Parts m_key;
         private StorageLocker m_StorageLocker;
-        public override int LabelNumber { get { return 1023703; } } // barrel
+        public override int LabelNumber => 1023703;  // barrel
 
         [CommandProperty(AccessLevel.GameMaster)]
         public StorageLocker StorageLocker
@@ -114,7 +114,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1); //version
+            writer.Write(1); //version
 
             writer.Write((int)m_key);
             writer.Write(m_StorageLocker);
@@ -140,7 +140,7 @@ namespace Server.Items
 
     public class WoodenToMetalBarrel : DamageableItem
     {
-        public override int LabelNumber { get { return 1023703; } } // barrel
+        public override int LabelNumber => 1023703;  // barrel
         private StorageLocker m_StorageLocker;
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -180,7 +180,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1); //version
+            writer.Write(1); //version
 
             writer.Write(m_StorageLocker);
         }
@@ -204,7 +204,7 @@ namespace Server.Items
 
     public class MetalBarrel : Item
     {
-        public override int LabelNumber { get { return 1023703; } } // barrel
+        public override int LabelNumber => 1023703;  // barrel
 
         [Constructable]
         public MetalBarrel()
@@ -222,7 +222,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -265,7 +265,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

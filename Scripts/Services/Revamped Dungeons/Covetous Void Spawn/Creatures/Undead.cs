@@ -148,7 +148,7 @@ namespace Server.Mobiles
     [CorpseName("a revenant corpse")]
     public class CovetousRevenant : CovetousCreature
     {
-        public override bool AlwaysMurderer { get { return true; } }
+        public override bool AlwaysMurderer => true;
 
         [Constructable]
         public CovetousRevenant() : base(AIType.AI_Mage)
@@ -157,13 +157,13 @@ namespace Server.Mobiles
             Body = 400;
             Hue = 0x847E;
 
-            var shroud = new Server.Items.Robe();
+            Items.Robe shroud = new Server.Items.Robe();
             shroud.ItemID = 0x2683;
             shroud.Hue = 0x4001;
             shroud.Movable = false;
             SetWearable(shroud);
 
-            var boots = new Server.Items.Boots();
+            Items.Boots boots = new Server.Items.Boots();
             boots.Hue = 0x4001;
             boots.Movable = false;
             SetWearable(boots);

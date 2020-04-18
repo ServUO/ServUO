@@ -19,34 +19,10 @@ namespace Server.Spells.Spellweaving
         {
         }
 
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(4.0);
-            }
-        }
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 38.0;
-            }
-        }
-        public override int RequiredMana
-        {
-            get
-            {
-                return 70;
-            }
-        }
-        public double HitsScalar
-        {
-            get
-            {
-                return ((Caster.Skills.Spellweaving.Value / 2.4) + FocusLevel) / 100;
-            }
-        }
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(4.0);
+        public override double RequiredSkill => 38.0;
+        public override int RequiredMana => 70;
+        public double HitsScalar => ((Caster.Skills.Spellweaving.Value / 2.4) + FocusLevel) / 100;
         public static void Initialize()
         {
             EventSink.PlayerDeath += HandleDeath;
@@ -70,7 +46,7 @@ namespace Server.Spells.Spellweaving
 
             if (m_Table.ContainsKey(m))
             {
-                var timer = m_Table[m];
+                ExpireTimer timer = m_Table[m];
 
                 if (timer.EndTime > DateTime.UtcNow)
                 {
@@ -235,13 +211,7 @@ namespace Server.Spells.Spellweaving
                 EndTime = DateTime.UtcNow + delay;
             }
 
-            public GiftOfLifeSpell Spell
-            {
-                get
-                {
-                    return m_Spell;
-                }
-            }
+            public GiftOfLifeSpell Spell => m_Spell;
             public void DoExpire()
             {
                 Stop();

@@ -24,7 +24,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -67,13 +67,7 @@ namespace Server.Items
         public int TempHue { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsArcane
-        {
-            get
-            {
-                return (m_MaxArcaneCharges > 0 && m_CurArcaneCharges >= 0);
-            }
-        }
+        public bool IsArcane => (m_MaxArcaneCharges > 0 && m_CurArcaneCharges >= 0);
 
         public void Update()
         {
@@ -127,14 +121,14 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)2); // version
+            writer.Write(2); // version
 
             if (IsArcane)
             {
                 writer.Write(true);
                 writer.Write(TempHue);
-                writer.Write((int)m_CurArcaneCharges);
-                writer.Write((int)m_MaxArcaneCharges);
+                writer.Write(m_CurArcaneCharges);
+                writer.Write(m_MaxArcaneCharges);
             }
             else
             {
@@ -261,10 +255,10 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
-            writer.Write((int)m_LabelNumber);
-            writer.Write((bool)IsRewardItem);
+            writer.Write(m_LabelNumber);
+            writer.Write(IsRewardItem);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -308,7 +302,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -346,7 +340,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -383,7 +377,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -420,7 +414,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

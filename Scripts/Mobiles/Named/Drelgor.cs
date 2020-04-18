@@ -50,19 +50,19 @@ namespace Server.Mobiles
             switch (Utility.Random(5))
             {
                 case 0:
-                    this.PackItem(new BoneArms());
+                    PackItem(new BoneArms());
                     break;
                 case 1:
-                    this.PackItem(new BoneChest());
+                    PackItem(new BoneChest());
                     break;
                 case 2:
-                    this.PackItem(new BoneGloves());
+                    PackItem(new BoneGloves());
                     break;
                 case 3:
-                    this.PackItem(new BoneLegs());
+                    PackItem(new BoneLegs());
                     break;
                 case 4:
-                    this.PackItem(new BoneHelm());
+                    PackItem(new BoneHelm());
                     break;
             }
         }
@@ -73,7 +73,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.Meager);
         }
 
-        public override bool BleedImmune { get { return true; } }
+        public override bool BleedImmune => true;
 
         #region Start/Stop
         private void Start()
@@ -92,7 +92,7 @@ namespace Server.Mobiles
             {
                 Mobile m = state.Mobile;
 
-                if (m != null && this.Region.Name == "Old Haven Training" && m.Region.Name == "Old Haven Training")
+                if (m != null && Region.Name == "Old Haven Training" && m.Region.Name == "Old Haven Training")
                 {
                     m.SendLocalizedMessage(1077840, "", 34); // // Who dares to defile Haven? I am Drelgor the Impaler! I shall claim your souls as payment for this intrusion!
                     m.PlaySound(0x14);
@@ -125,7 +125,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
             writer.Write(init);
             writer.Write(m_NextMsgTime);
         }

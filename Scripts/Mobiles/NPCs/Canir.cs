@@ -9,7 +9,7 @@ namespace Server.Engines.Quests
         public Canir()
             : base("Canir", "the thaumaturgist")
         {
-            this.SetSkill(SkillName.Focus, 60.0, 83.0);
+            SetSkill(SkillName.Focus, 60.0, 83.0);
         }
 
         public Canir(Serial serial)
@@ -17,43 +17,37 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(TroglodytesQuest),
                     typeof(TrogAndHisDogQuest)
                 };
-            }
-        }
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = true;
-            this.CantWalk = true;
-            this.Race = Race.Elf;
+            Female = true;
+            CantWalk = true;
+            Race = Race.Elf;
 
-            this.Hue = 0x876C;
-            this.HairItemID = 0x2FD0;
-            this.HairHue = 0x33;
+            Hue = 0x876C;
+            HairItemID = 0x2FD0;
+            HairHue = 0x33;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Sandals(0x1BB));
-            this.AddItem(new MaleElvenRobe(0x5A5));
-            this.AddItem(new GemmedCirclet());
-            this.AddItem(RandomWand.CreateWand());
+            AddItem(new Sandals(0x1BB));
+            AddItem(new MaleElvenRobe(0x5A5));
+            AddItem(new GemmedCirclet());
+            AddItem(RandomWand.CreateWand());
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

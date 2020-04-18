@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class ElixirofGoldConversion : Item
     {
-        public override int LabelNumber { get { return 1113007; } } // Elixir of Gold Conversion
+        public override int LabelNumber => 1113007;  // Elixir of Gold Conversion
 
         [Constructable]
         public ElixirofGoldConversion()
@@ -34,7 +34,7 @@ namespace Server.Items
                     m_Ore1.Delete();
                     from.SendLocalizedMessage(1113048); // You've successfully converted the metal.
                     from.AddToBackpack(new GoldIngot(500));
-                    this.Delete();
+                    Delete();
                 }
                 else if ((m_Ore1.Amount < 500) || (m_Ore1.Amount > 500))
                 {
@@ -50,7 +50,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

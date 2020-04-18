@@ -17,7 +17,7 @@ namespace Server.Items
             {
                 _Charges = value;
 
-                if (_Charges <= 0 && this.RootParent is Mobile)
+                if (_Charges <= 0 && RootParent is Mobile)
                     ((Mobile)RootParent).SendLocalizedMessage(1152635); // The cauldron's magic is exhausted
 
                 InvalidateProperties();
@@ -29,7 +29,7 @@ namespace Server.Items
 
         public Timer DecayTimer { get; private set; }
 
-        public override bool RetainDeedHue { get { return true; } }
+        public override bool RetainDeedHue => true;
 
         public CauldronOfTransmutation()
         {
@@ -82,8 +82,8 @@ namespace Server.Items
             }
             else
             {
-                Effects.SendLocationParticles(EffectItem.Create(this.Location, this.Map, EffectItem.DefaultDuration), 0x3728, 8, 20, 5042);
-                Effects.PlaySound(this.Location, this.Map, 0x201);
+                Effects.SendLocationParticles(EffectItem.Create(Location, Map, EffectItem.DefaultDuration), 0x3728, 8, 20, 5042);
+                Effects.PlaySound(Location, Map, 0x201);
             }
 
             Delete();
@@ -131,7 +131,7 @@ namespace Server.Items
                         if (info != null && info.ResourceTypes.Length > 0)
                         {
                             int toDrop = Math.Min(Charges * 3, dropped.Amount);
-                            CraftResource newRes = (CraftResource)(int)res + 1;
+                            CraftResource newRes = (CraftResource)res + 1;
 
                             while (toDrop % 3 != 0)
                                 toDrop--;
@@ -194,7 +194,7 @@ namespace Server.Items
 
         private class InternalComponent : AddonComponent
         {
-            public override bool ForceShowProperties { get { return true; } }
+            public override bool ForceShowProperties => true;
 
             public InternalComponent(int id)
                 : base(id)
@@ -223,7 +223,7 @@ namespace Server.Items
                 list.Add(1072517, left.ToString()); // Lifespan: ~1_val~ seconds
 
                 CraftResource res = Addon.Resource;
-                CraftResource res2 = (CraftResource)(int)res + 1;
+                CraftResource res2 = (CraftResource)res + 1;
 
                 list.Add(1152630, String.Format("#{0}\t#{1}", CraftResources.GetLocalizationNumber(Addon.Resource), CraftResources.GetLocalizationNumber(res2))); // transmutes ~1_SOURCE~ to ~2_DEST~
                 list.Add(1152631, String.Format("3\t1")); // ratio ~1_INPUT~ to ~2_OUTPUT~
@@ -278,7 +278,7 @@ namespace Server.Items
 
     public class CauldronOfTransmutationDeed : BaseAddonDeed
     {
-        public override BaseAddon Addon { get { return new CauldronOfTransmutation(); } }
+        public override BaseAddon Addon => new CauldronOfTransmutation();
 
         public const int DecayPeriod = 24;
 
@@ -320,8 +320,8 @@ namespace Server.Items
             }
             else
             {
-                Effects.SendLocationParticles(EffectItem.Create(this.Location, this.Map, EffectItem.DefaultDuration), 0x3728, 8, 20, 5042);
-                Effects.PlaySound(this.Location, this.Map, 0x201);
+                Effects.SendLocationParticles(EffectItem.Create(Location, Map, EffectItem.DefaultDuration), 0x3728, 8, 20, 5042);
+                Effects.PlaySound(Location, Map, 0x201);
             }
 
             Delete();

@@ -8,10 +8,10 @@ namespace Server.Engines.Quests
     public class Vrulkax : BaseVendor
     {
         protected readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
-        protected override List<SBInfo> SBInfos { get { return this.m_SBInfos; } }
+        protected override List<SBInfo> SBInfos => m_SBInfos;
 
-        public override bool IsActiveVendor { get { return false; } }
-        public override bool IsInvulnerable { get { return true; } }
+        public override bool IsActiveVendor => false;
+        public override bool IsInvulnerable => true;
 
         public override void InitSBInfo()
         {
@@ -43,7 +43,7 @@ namespace Server.Engines.Quests
 
                     if (dur != null && dur.MaxHitPoints == 255 && dur.HitPoints == 255)
                     {
-                        var item = Loot.Construct(t[1]);
+                        Item item = Loot.Construct(t[1]);
 
                         if (item != null)
                         {
@@ -106,7 +106,7 @@ namespace Server.Engines.Quests
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

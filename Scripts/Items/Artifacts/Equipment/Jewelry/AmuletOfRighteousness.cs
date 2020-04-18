@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class AmuletOfRighteousness : SilverNecklace, IUsesRemaining
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         private int m_UsesRemaining;
         [Constructable]
         public AmuletOfRighteousness()
@@ -16,10 +16,10 @@ namespace Server.Items
         public AmuletOfRighteousness(int uses)
             : base()
         {
-            this.LootType = LootType.Blessed;
-            this.Weight = 1.0;
+            LootType = LootType.Blessed;
+            Weight = 1.0;
 
-            this.m_UsesRemaining = uses;
+            m_UsesRemaining = uses;
         }
 
         public AmuletOfRighteousness(Serial serial)
@@ -27,13 +27,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1075313;
-            }
-        }// Amulet of Righteousness
+        public override int LabelNumber => 1075313;// Amulet of Righteousness
         public virtual bool ShowUsesRemaining
         {
             get
@@ -49,24 +43,24 @@ namespace Server.Items
         {
             get
             {
-                return this.m_UsesRemaining;
+                return m_UsesRemaining;
             }
             set
             {
-                this.m_UsesRemaining = value;
-                this.InvalidateProperties();
+                m_UsesRemaining = value;
+                InvalidateProperties();
             }
         }
         public override void AddUsesRemainingProperties(ObjectPropertyList list)
         {
-            list.Add(1060584, this.m_UsesRemaining.ToString()); // uses remaining: ~1_val~
+            list.Add(1060584, m_UsesRemaining.ToString()); // uses remaining: ~1_val~
         }
 
         public override void OnDoubleClick(Mobile from)
         {
             base.OnDoubleClick(from);
 
-            if (this.IsChildOf(from.Backpack))
+            if (IsChildOf(from.Backpack))
                 from.Target = new InternalTarget(this);
             else
                 from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
@@ -76,9 +70,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
-            writer.Write((int)this.m_UsesRemaining);
+            writer.Write(m_UsesRemaining);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -87,7 +81,7 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            this.m_UsesRemaining = reader.ReadInt();
+            m_UsesRemaining = reader.ReadInt();
         }
 
         private class InternalTarget : Target
@@ -96,27 +90,27 @@ namespace Server.Items
             public InternalTarget(AmuletOfRighteousness amulet)
                 : base(12, false, TargetFlags.None)
             {
-                this.m_Amulet = amulet;
+                m_Amulet = amulet;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (this.m_Amulet == null || this.m_Amulet.Deleted)
+                if (m_Amulet == null || m_Amulet.Deleted)
                     return;
 
                 if (targeted is Mobile)
                 {
                     Mobile target = (Mobile)targeted;
 
-                    if (this.m_Amulet.UsesRemaining <= 0)
+                    if (m_Amulet.UsesRemaining <= 0)
                     {
                         from.SendLocalizedMessage(1042544); // This item is out of charges.
                         return;
                     }
 
                     target.BoltEffect(0);
-                    this.m_Amulet.UsesRemaining -= 1;
-                    this.m_Amulet.InvalidateProperties();
+                    m_Amulet.UsesRemaining -= 1;
+                    m_Amulet.InvalidateProperties();
                 }
             }
         }

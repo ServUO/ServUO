@@ -55,34 +55,34 @@ namespace Server.Mobiles.MannequinProperty
 
     public class ArmorSelfRepairProperty : AosArmorAttr
     {
-        public override Catalog Catalog { get { return Catalog.None; } }
-        public override int LabelNumber { get { return 1079709; } } // Self Repair
-        public override bool IsSpriteGraph { get { return true; } }
-        public override int SpriteW { get { return 0; } }
-        public override int SpriteH { get { return 300; } }
-        public override AosArmorAttribute Attribute { get { return AosArmorAttribute.SelfRepair; } }
+        public override Catalog Catalog => Catalog.None;
+        public override int LabelNumber => 1079709;  // Self Repair
+        public override bool IsSpriteGraph => true;
+        public override int SpriteW => 0;
+        public override int SpriteH => 300;
+        public override AosArmorAttribute Attribute => AosArmorAttribute.SelfRepair;
     }
 
     public class ArmorReactiveParalyzeProperty : AosArmorAttr
     {
-        public override Catalog Catalog { get { return Catalog.Combat1; } }
-        public override bool IsBoolen { get { return true; } }
-        public override int LabelNumber { get { return 1154660; } } // Reactive Paralyze
-        public override int Description { get { return 1152400; } } // This property provides a chance to cast a paralyze spell on an opponent.  The paralyze effect is similar to the magery fifth circle spell paralyze.  When the wielder effectively parries an attacker’s blow there is a chance that the attacker will be affected by the paralyze effect.   This property can be found on two handed weapons and shields.
-        public override AosArmorAttribute Attribute { get { return AosArmorAttribute.ReactiveParalyze; } }
-        public override int Hue { get { return 0x5E5D; } }
-        public override int SpriteW { get { return 270; } }
-        public override int SpriteH { get { return 120; } }
+        public override Catalog Catalog => Catalog.Combat1;
+        public override bool IsBoolen => true;
+        public override int LabelNumber => 1154660;  // Reactive Paralyze
+        public override int Description => 1152400;  // This property provides a chance to cast a paralyze spell on an opponent.  The paralyze effect is similar to the magery fifth circle spell paralyze.  When the wielder effectively parries an attacker’s blow there is a chance that the attacker will be affected by the paralyze effect.   This property can be found on two handed weapons and shields.
+        public override AosArmorAttribute Attribute => AosArmorAttribute.ReactiveParalyze;
+        public override int Hue => 0x5E5D;
+        public override int SpriteW => 270;
+        public override int SpriteH => 120;
     }
 
     public class SoulChargeProperty : AosArmorAttr
     {
-        public override Catalog Catalog { get { return Catalog.Casting; } }
-        public override int LabelNumber { get { return 1116536; } } // Soul Charge
-        public override int Description { get { return 1152382; } } // This property converts a percentage of the damage inflicted to a player into mana replenishment.  This effect can only be triggered once every 40 seconds.  This property is only found on shields.
-        public override AosArmorAttribute Attribute { get { return AosArmorAttribute.SoulCharge; } }
-        public override int Hue { get { return 0x1FF; } }
-        public override int SpriteW { get { return 240; } }
-        public override int SpriteH { get { return 60; } }
+        public override Catalog Catalog => Catalog.Casting;
+        public override int LabelNumber => 1116536;  // Soul Charge
+        public override int Description => 1152382;  // This property converts a percentage of the damage inflicted to a player into mana replenishment.  This effect can only be triggered once every 40 seconds.  This property is only found on shields.
+        public override AosArmorAttribute Attribute => AosArmorAttribute.SoulCharge;
+        public override int Hue => 0x1FF;
+        public override int SpriteW => 240;
+        public override int SpriteH => 60;
     }
 }

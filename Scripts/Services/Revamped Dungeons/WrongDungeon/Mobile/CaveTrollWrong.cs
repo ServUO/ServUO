@@ -10,7 +10,7 @@ namespace Server.Mobiles
             Name = "a Cave Troll";
             Body = Utility.RandomList(53, 54);
             BaseSoundID = 461;
-            this.Hue = 674;
+            Hue = 674;
 
             SetStr(118, 118);
             SetDex(58, 58);
@@ -55,7 +55,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

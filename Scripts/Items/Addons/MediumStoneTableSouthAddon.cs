@@ -11,9 +11,9 @@ namespace Server.Items
         [Constructable]
         public MediumStoneTableSouthAddon(int hue)
         {
-            this.AddComponent(new AddonComponent(0x1205), 0, 0, 0);
-            this.AddComponent(new AddonComponent(0x1204), 1, 0, 0);
-            this.Hue = hue;
+            AddComponent(new AddonComponent(0x1205), 0, 0, 0);
+            AddComponent(new AddonComponent(0x1204), 1, 0, 0);
+            Hue = hue;
         }
 
         public MediumStoneTableSouthAddon(Serial serial)
@@ -21,25 +21,13 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new MediumStoneTableSouthDeed();
-            }
-        }
-        public override bool RetainDeedHue
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override BaseAddonDeed Deed => new MediumStoneTableSouthDeed();
+        public override bool RetainDeedHue => true;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -62,25 +50,13 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new MediumStoneTableSouthAddon(this.Hue);
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1044509;
-            }
-        }// stone table (South)
+        public override BaseAddon Addon => new MediumStoneTableSouthAddon(Hue);
+        public override int LabelNumber => 1044509;// stone table (South)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

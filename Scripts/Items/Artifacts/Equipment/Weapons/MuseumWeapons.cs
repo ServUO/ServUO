@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class BlackthornsKryss : Kryss
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public BlackthornsKryss()
             : base()
@@ -20,32 +20,14 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073260;
-            }
-        }// Blackthorn's Kryss - Museum of Vesper Replica	
-        public override int InitMinHits
-        {
-            get
-            {
-                return 80;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 80;
-            }
-        }
+        public override int LabelNumber => 1073260;// Blackthorn's Kryss - Museum of Vesper Replica	
+        public override int InitMinHits => 80;
+        public override int InitMaxHits => 80;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -58,7 +40,7 @@ namespace Server.Items
 
     public class SwordOfJustice : VikingSword
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public SwordOfJustice()
             : base()
@@ -78,32 +60,14 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073261;
-            }
-        }// Sword of Justice - Museum of Vesper Replica
-        public override int InitMinHits
-        {
-            get
-            {
-                return 80;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 80;
-            }
-        }
+        public override int LabelNumber => 1073261;// Sword of Justice - Museum of Vesper Replica
+        public override int InitMinHits => 80;
+        public override int InitMaxHits => 80;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -116,7 +80,7 @@ namespace Server.Items
 
     public class GeoffreysAxe : ExecutionersAxe
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public GeoffreysAxe()
             : base()
@@ -137,32 +101,14 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073263;
-            }
-        }// Geoffrey's Axe - Museum of Vesper Replica
-        public override int InitMinHits
-        {
-            get
-            {
-                return 80;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 80;
-            }
-        }
+        public override int LabelNumber => 1073263;// Geoffrey's Axe - Museum of Vesper Replica
+        public override int InitMinHits => 80;
+        public override int InitMaxHits => 80;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

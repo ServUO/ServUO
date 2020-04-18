@@ -23,9 +23,9 @@ namespace Server.Items
         public PlanType Type { get { return m_PlanType; } set { m_PlanType = value; } }
 
         private readonly List<PlanType> m_Joined = new List<PlanType>();
-        public List<PlanType> Joined { get { return m_Joined; } }
+        public List<PlanType> Joined => m_Joined;
 
-        public override int LabelNumber { get { return 1116784; } }
+        public override int LabelNumber => 1116784;
 
         [Constructable]
         public RuinedShipPlans() : this((PlanType)Utility.RandomMinMax(1, 8))
@@ -86,7 +86,7 @@ namespace Server.Items
                 from.AddToBackpack(new OrcishGalleonDeed());
                 from.SendLocalizedMessage(1116788); //You have completed a deed for an Orc Ship!
 
-                this.Delete();
+                Delete();
             }
             else
                 from.Target = new InternalTarget(this);
@@ -132,7 +132,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
             writer.Write((int)m_PlanType);
 
             writer.Write(m_Joined.Count);

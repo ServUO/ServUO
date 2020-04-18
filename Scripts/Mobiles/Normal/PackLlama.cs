@@ -55,22 +55,10 @@ namespace Server.Mobiles
             AddItem(pack);
         }
 
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override FoodType FavoriteFood
-        {
-            get
-            {
-                return FoodType.FruitsAndVegies | FoodType.GrainsAndHay;
-            }
-        }
+        public override int Meat => 1;
+        public override FoodType FavoriteFood => FoodType.FruitsAndVegies | FoodType.GrainsAndHay;
 
-        public override bool CanAutoStable { get { return (Backpack == null || Backpack.Items.Count == 0) && base.CanAutoStable; } }
+        public override bool CanAutoStable => (Backpack == null || Backpack.Items.Count == 0) && base.CanAutoStable;
 
         public PackLlama(Serial serial)
             : base(serial)
@@ -133,7 +121,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

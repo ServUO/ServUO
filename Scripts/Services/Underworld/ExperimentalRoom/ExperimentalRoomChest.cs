@@ -8,10 +8,10 @@ namespace Server.Items
     {
         private Dictionary<Item, Mobile> m_Instancing;
 
-        public override bool DisplayWeight { get { return false; } }
-        public override bool DisplaysContent { get { return false; } }
-        public override bool Decays { get { return true; } }
-        public override TimeSpan DecayTime { get { return TimeSpan.FromMinutes(10.0); } }
+        public override bool DisplayWeight => false;
+        public override bool DisplaysContent => false;
+        public override bool Decays => true;
+        public override TimeSpan DecayTime => TimeSpan.FromMinutes(10.0);
 
         [Constructable]
         public ExperimentalRoomChest()
@@ -46,7 +46,7 @@ namespace Server.Items
 
         public override bool TryDropItem(Mobile from, Item dropped, bool message)
         {
-            if (dropped is ExperimentalGem && ((ExperimentalGem)dropped).Complete && from.InRange(this.Location, 2))
+            if (dropped is ExperimentalGem && ((ExperimentalGem)dropped).Complete && from.InRange(Location, 2))
             {
                 dropped.Delete();
 
@@ -98,7 +98,7 @@ namespace Server.Items
 
         public override bool OnDecay()
         {
-            List<Item> items = new List<Item>(this.Items);
+            List<Item> items = new List<Item>(Items);
 
             foreach (Item i in items)
             {
@@ -174,7 +174,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // ver
+            writer.Write(0); // ver
         }
 
         public override void Deserialize(GenericReader reader)

@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class VoiceOfTheFallenKing : LeatherGorget
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public VoiceOfTheFallenKing()
         {
@@ -17,53 +17,17 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1061094;
-            }
-        }// Voice of the Fallen King
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 11;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 18;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 18;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int LabelNumber => 1061094;// Voice of the Fallen King
+        public override int ArtifactRarity => 11;
+        public override int BaseColdResistance => 18;
+        public override int BaseEnergyResistance => 18;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)1);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -74,11 +38,11 @@ namespace Server.Items
 
             if (version < 1)
             {
-                if (this.Hue == 0x551)
-                    this.Hue = 0x76D;
+                if (Hue == 0x551)
+                    Hue = 0x76D;
 
-                this.ColdBonus = 0;
-                this.EnergyBonus = 0;
+                ColdBonus = 0;
+                EnergyBonus = 0;
             }
         }
     }

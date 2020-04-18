@@ -5,7 +5,7 @@ namespace Server.Engines.VvV
 {
     public class ShameTileAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new ShameTileDeed(); } }
+        public override BaseAddonDeed Deed => new ShameTileDeed();
 
         public TileType TileType { get; set; }
 
@@ -38,7 +38,7 @@ namespace Server.Engines.VvV
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -51,8 +51,8 @@ namespace Server.Engines.VvV
 
     public class ShameTileDeed : BaseAddonDeed, IRewardOption
     {
-        public override BaseAddon Addon { get { return new ShameTileAddon(TileType); } }
-        public override int LabelNumber { get { return 1155522; } } // Shame Tile
+        public override BaseAddon Addon => new ShameTileAddon(TileType);
+        public override int LabelNumber => 1155522;  // Shame Tile
 
         public TileType TileType { get; set; }
 
@@ -82,7 +82,7 @@ namespace Server.Engines.VvV
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

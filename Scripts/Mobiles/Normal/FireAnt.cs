@@ -45,7 +45,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.Average, 2);
         }
 
-        public override int TreasureMapLevel { get { return 3; } }
+        public override int TreasureMapLevel => 3;
 
         public override int GetIdleSound()
         {
@@ -86,7 +86,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            var version = reader.ReadInt();
+            int version = reader.ReadInt();
         }
     }
 }

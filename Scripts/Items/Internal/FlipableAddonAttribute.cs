@@ -15,19 +15,13 @@ namespace Server.Items
         private readonly Direction[] m_Directions;
         public FlipableAddonAttribute(params Direction[] directions)
         {
-            this.m_Directions = directions;
+            m_Directions = directions;
         }
 
-        public Direction[] Directions
-        {
-            get
-            {
-                return this.m_Directions;
-            }
-        }
+        public Direction[] Directions => m_Directions;
         public virtual void Flip(Mobile from, Item addon)
         {
-            if (this.m_Directions != null && this.m_Directions.Length > 1)
+            if (m_Directions != null && m_Directions.Length > 1)
             {
                 try
                 {
@@ -37,21 +31,21 @@ namespace Server.Items
                     {
                         int index = 0;
 
-                        for (int i = 0; i < this.m_Directions.Length; i++)
+                        for (int i = 0; i < m_Directions.Length; i++)
                         {
-                            if (addon.Direction == this.m_Directions[i])
+                            if (addon.Direction == m_Directions[i])
                             {
                                 index = i + 1;
                                 break;
                             }
                         }
 
-                        if (index >= this.m_Directions.Length)
+                        if (index >= m_Directions.Length)
                             index = 0;
 
-                        this.ClearComponents(addon);
+                        ClearComponents(addon);
 
-                        flipMethod.Invoke(addon, new object[2] { from, this.m_Directions[index] });
+                        flipMethod.Invoke(addon, new object[2] { from, m_Directions[index] });
 
                         BaseHouse house = null;
                         AddonFitResult result = AddonFitResult.Valid;
@@ -68,13 +62,13 @@ namespace Server.Items
                         if (result != AddonFitResult.Valid)
                         {
                             if (index == 0)
-                                index = this.m_Directions.Length - 1;
+                                index = m_Directions.Length - 1;
                             else
                                 index -= 1;
 
-                            this.ClearComponents(addon);
+                            ClearComponents(addon);
 
-                            flipMethod.Invoke(addon, new object[2] { from, this.m_Directions[index] });
+                            flipMethod.Invoke(addon, new object[2] { from, m_Directions[index] });
 
                             if (result == AddonFitResult.Blocked)
                                 from.SendLocalizedMessage(500269); // You cannot build that there.
@@ -88,7 +82,7 @@ namespace Server.Items
                                 from.SendLocalizedMessage(500268); // This object needs to be mounted on something.
                         }
 
-                        addon.Direction = this.m_Directions[index];
+                        addon.Direction = m_Directions[index];
                     }
                 }
                 catch

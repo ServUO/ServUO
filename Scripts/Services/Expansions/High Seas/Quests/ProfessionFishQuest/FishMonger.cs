@@ -7,7 +7,7 @@ namespace Server.Mobiles
 {
     public class FishMonger : MondainQuester
     {
-        public override Type[] Quests { get { return new Type[] { typeof(ProfessionalFisherQuest) }; } }
+        public override Type[] Quests => new Type[] { typeof(ProfessionalFisherQuest) };
 
         [Constructable]
         public FishMonger()
@@ -46,7 +46,7 @@ namespace Server.Mobiles
                 SayTo(player, 1116514); //Bring yer ship around, I might have some work for ye!);
             else
             {
-                bool inRange = InRange(boat.Location, distance) && boat.Map == this.Map;
+                bool inRange = InRange(boat.Location, distance) && boat.Map == Map;
 
                 if (!FishQuestHelper.HasFishQuest(player, this, inRange))
                 {
@@ -67,7 +67,7 @@ namespace Server.Mobiles
                             player.SendGump(new MondainQuestGump(quest));
 
                             if (boat.IsClassicBoat)
-                                this.SayTo(player, "Such a weak vessle can only catch a weak line.");
+                                SayTo(player, "Such a weak vessle can only catch a weak line.");
                         }
                     }
                 }
@@ -79,7 +79,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

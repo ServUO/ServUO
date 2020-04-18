@@ -39,7 +39,7 @@ namespace Server
             if (dead == null)
                 return 240;
 
-            var list = dead.GetLootingRights();
+            System.Collections.Generic.List<DamageStore> list = dead.GetLootingRights();
 
             DamageStore highest = null;
 
@@ -301,13 +301,13 @@ namespace Server
         #endregion
 
         #region Generic accessors
-        public static LootPack Poor { get { return LootPoor; } }
-        public static LootPack Meager { get { return LootMeager; } }
-        public static LootPack Average { get { return LootAverage; } }
-        public static LootPack Rich { get { return LootRich; } }
-        public static LootPack FilthyRich { get { return LootFilthyRich; } }
-        public static LootPack UltraRich { get { return LootUltraRich; } }
-        public static LootPack SuperBoss { get { return LootSuperBoss; } }
+        public static LootPack Poor => LootPoor;
+        public static LootPack Meager => LootMeager;
+        public static LootPack Average => LootAverage;
+        public static LootPack Rich => LootRich;
+        public static LootPack FilthyRich => LootFilthyRich;
+        public static LootPack UltraRich => LootUltraRich;
+        public static LootPack SuperBoss => LootSuperBoss;
         #endregion
 
         public static readonly LootPack LowScrolls = new LootPack(new[] { new LootPackEntry(false, LowScrollItems, 100.00, 1) });

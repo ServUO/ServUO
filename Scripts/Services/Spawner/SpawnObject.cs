@@ -7,7 +7,7 @@ namespace Server.Mobiles
         public string SpawnName { get; set; }
         public int MaxCount { get; set; }
 
-        public int CurrentCount { get { return SpawnedObjects.Count; } }
+        public int CurrentCount => SpawnedObjects.Count;
 
         public List<ISpawnable> SpawnedObjects { get; set; }
 
@@ -48,7 +48,7 @@ namespace Server.Mobiles
             writer.Write(0);
 
             writer.Write(SpawnedObjects.Count);
-            foreach (var sp in SpawnedObjects)
+            foreach (ISpawnable sp in SpawnedObjects)
             {
                 if (sp is Item)
                     writer.Write((Item)sp);

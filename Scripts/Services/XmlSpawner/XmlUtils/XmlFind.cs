@@ -604,7 +604,7 @@ namespace Server.Mobiles
                             else if (i is Spawner)
                             {
                                 // search the entries of the spawner
-                                foreach (var obj in ((Spawner)i).SpawnObjects)
+                                foreach (SpawnObject obj in ((Spawner)i).SpawnObjects)
                                 {
                                     string so = obj.SpawnName;
 
@@ -1456,27 +1456,27 @@ namespace Server.Mobiles
             {
                 if (Sorttype)
                 {
-                    this.m_SearchList.Sort(new ListTypeSorter(Descendingsort));
+                    m_SearchList.Sort(new ListTypeSorter(Descendingsort));
                 }
                 else
                     if (Sortname)
                 {
-                    this.m_SearchList.Sort(new ListNameSorter(Descendingsort));
+                    m_SearchList.Sort(new ListNameSorter(Descendingsort));
                 }
                 else
                         if (Sortmap)
                 {
-                    this.m_SearchList.Sort(new ListMapSorter(Descendingsort));
+                    m_SearchList.Sort(new ListMapSorter(Descendingsort));
                 }
                 else
                             if (Sortrange)
                 {
-                    this.m_SearchList.Sort(new ListRangeSorter(m_From, Descendingsort));
+                    m_SearchList.Sort(new ListRangeSorter(m_From, Descendingsort));
                 }
                 else
                                 if (Sortselect)
                 {
-                    this.m_SearchList.Sort(new ListSelectSorter(m_From, Descendingsort));
+                    m_SearchList.Sort(new ListSelectSorter(m_From, Descendingsort));
                 }
             }
         }
@@ -1760,9 +1760,9 @@ namespace Server.Mobiles
 
         private void Refresh(NetState state)
         {
-            state.Mobile.SendGump(new XmlFindGump(this.m_From, this.StartingLoc, this.StartingMap, false, this.m_ShowExtension, this.Descendingsort, this.m_SearchCriteria, this.m_SearchList, this.Selected, this.DisplayFrom, this.SaveFilename,
-                this.CommandString, this.Sorttype, this.Sortname, this.Sortrange,
-                this.Sortmap, this.Sortselect, this.SelectAll, this.X, this.Y));
+            state.Mobile.SendGump(new XmlFindGump(m_From, StartingLoc, StartingMap, false, m_ShowExtension, Descendingsort, m_SearchCriteria, m_SearchList, Selected, DisplayFrom, SaveFilename,
+                CommandString, Sorttype, Sortname, Sortrange,
+                Sortmap, Sortselect, SelectAll, X, Y));
         }
 
         private void ResetList()

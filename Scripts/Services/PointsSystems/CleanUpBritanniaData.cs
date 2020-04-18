@@ -12,11 +12,11 @@ namespace Server.Engines.Points
 {
     public class CleanUpBritanniaData : PointsSystem
     {
-        public override PointsType Loyalty { get { return PointsType.CleanUpBritannia; } }
-        public override TextDefinition Name { get { return m_Name; } }
-        public override bool AutoAdd { get { return true; } }
-        public override double MaxPoints { get { return double.MaxValue; } }
-        public override bool ShowOnLoyaltyGump { get { return false; } }
+        public override PointsType Loyalty => PointsType.CleanUpBritannia;
+        public override TextDefinition Name => m_Name;
+        public override bool AutoAdd => true;
+        public override double MaxPoints => double.MaxValue;
+        public override bool ShowOnLoyaltyGump => false;
 
         private readonly TextDefinition m_Name = null;
 
@@ -732,7 +732,7 @@ namespace Server.Engines.Points
 
                 if (system != null && system.CraftItems != null)
                 {
-                    var type = item.GetType();
+                    Type type = item.GetType();
 
                     if (type == typeof(SilverRing))
                     {
@@ -883,7 +883,7 @@ namespace Server.Engines.Points
 
             if (PointsExchange != null)
             {
-                foreach (var kvp in PointsExchange)
+                foreach (KeyValuePair<string, double> kvp in PointsExchange)
                 {
                     writer.Write(kvp.Key);
                     writer.Write(kvp.Value);
@@ -895,7 +895,7 @@ namespace Server.Engines.Points
         {
             base.Deserialize(reader);
 
-            if (this.Version >= 2)
+            if (Version >= 2)
             {
                 int version = reader.ReadInt();
 

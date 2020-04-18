@@ -97,13 +97,13 @@ namespace Server.Engines.CityLoyalty
         public static readonly int AnnouncementPeriod = Config.Get("CityLoyalty.AnnouncementPeriod", 48);
 
         public static readonly TimeSpan LoveAtrophyDuration = TimeSpan.FromHours(40);
-        public static Map SystemMap { get { return Siege.SiegeShard ? Map.Felucca : Map.Trammel; } }
+        public static Map SystemMap => Siege.SiegeShard ? Map.Felucca : Map.Trammel;
 
-        public override TextDefinition Name { get { return new TextDefinition(String.Format("{0}", this.City.ToString())); } }
-        public override bool AutoAdd { get { return false; } }
-        public override double MaxPoints { get { return double.MaxValue; } }
-        public override PointsType Loyalty { get { return PointsType.None; } }
-        public override bool ShowOnLoyaltyGump { get { return false; } }
+        public override TextDefinition Name => new TextDefinition(String.Format("{0}", City.ToString()));
+        public override bool AutoAdd => false;
+        public override double MaxPoints => double.MaxValue;
+        public override PointsType Loyalty => PointsType.None;
+        public override bool ShowOnLoyaltyGump => false;
 
         public override string ToString()
         {
@@ -275,7 +275,7 @@ namespace Server.Engines.CityLoyalty
 
         public override PointsEntry GetSystemEntry(PlayerMobile pm)
         {
-            return new CityLoyaltyEntry(pm, this.City);
+            return new CityLoyaltyEntry(pm, City);
         }
 
         public bool IsCitizen(Mobile from, bool staffIsCitizen = true)
@@ -657,7 +657,7 @@ namespace Server.Engines.CityLoyalty
             CommandSystem.Register("ElectionStartTime", AccessLevel.Administrator, e => Server.Gumps.BaseGump.SendGump(new ElectionStartTimeGump(e.Mobile as PlayerMobile)));
             CommandSystem.Register("RemoveWait", AccessLevel.Administrator, e =>
                 {
-                    foreach (var city in Cities)
+                    foreach (CityLoyaltySystem city in Cities)
                     {
                         city.RemoveWaitTime(e.Mobile);
                     }
@@ -785,7 +785,7 @@ namespace Server.Engines.CityLoyalty
             if (from.AccessLevel > AccessLevel.Player)
                 return true;
 
-            foreach (var city in Cities)
+            foreach (CityLoyaltySystem city in Cities)
             {
                 if (!city.CanAdd(from))
                     return false;
@@ -795,7 +795,7 @@ namespace Server.Engines.CityLoyalty
 
         public static int NextJoinCity(Mobile from)
         {
-            foreach (var city in Cities)
+            foreach (CityLoyaltySystem city in Cities)
             {
                 if (!city.CanAdd(from))
                 {
@@ -808,11 +808,11 @@ namespace Server.Engines.CityLoyalty
 
         public static void OnTick()
         {
-            foreach (var sys in Cities)
+            foreach (CityLoyaltySystem sys in Cities)
             {
                 List<Mobile> list = new List<Mobile>(sys.CitizenWait.Keys);
 
-                foreach (var m in list)
+                foreach (Mobile m in list)
                 {
                     if (sys.CitizenWait[m] < DateTime.UtcNow)
                     {
@@ -1140,8 +1140,8 @@ namespace Server.Engines.CityLoyalty
 
         public static void OnTradeComplete(Mobile from, TradeEntry entry)
         {
-            var dest = GetCityInstance(entry.Destination);
-            var origin = GetCityInstance(entry.Origin);
+            CityLoyaltySystem dest = GetCityInstance(entry.Destination);
+            CityLoyaltySystem origin = GetCityInstance(entry.Origin);
             int gold = entry.CalculateGold();
 
             if (gold > 0)
@@ -1166,8 +1166,8 @@ namespace Server.Engines.CityLoyalty
 
         public static void OnSlimTradeComplete(Mobile from, TradeEntry entry)
         {
-            var dest = GetCityInstance(entry.Destination);
-            var origin = GetCityInstance(entry.Origin);
+            CityLoyaltySystem dest = GetCityInstance(entry.Destination);
+            CityLoyaltySystem origin = GetCityInstance(entry.Origin);
 
             if (entry.Distance > 0)
             {
@@ -1211,7 +1211,7 @@ namespace Server.Engines.CityLoyalty
             writer.Write(2);
 
             writer.Write(CitizenWait.Count);
-            foreach (var kvp in CitizenWait)
+            foreach (KeyValuePair<Mobile, DateTime> kvp in CitizenWait)
             {
                 writer.Write(kvp.Key);
                 writer.Write(kvp.Value);
@@ -1287,7 +1287,7 @@ namespace Server.Engines.CityLoyalty
                     break;
             }
 
-            if (version == 0 && this.City == City.Britain)
+            if (version == 0 && City == City.Britain)
             {
                 int count = reader.ReadInt();
                 for (int i = 0; i < count; i++)
@@ -1327,7 +1327,7 @@ namespace Server.Engines.CityLoyalty
 
     public class Moonglow : CityLoyaltySystem
     {
-        public override PointsType Loyalty { get { return PointsType.Moonglow; } }
+        public override PointsType Loyalty => PointsType.Moonglow;
 
         public Moonglow() : base(City.Moonglow)
         {
@@ -1347,7 +1347,7 @@ namespace Server.Engines.CityLoyalty
 
     public class Britain : CityLoyaltySystem
     {
-        public override PointsType Loyalty { get { return PointsType.Britain; } }
+        public override PointsType Loyalty => PointsType.Britain;
 
         public Britain() : base(City.Britain)
         {
@@ -1367,7 +1367,7 @@ namespace Server.Engines.CityLoyalty
 
     public class Jhelom : CityLoyaltySystem
     {
-        public override PointsType Loyalty { get { return PointsType.Jhelom; } }
+        public override PointsType Loyalty => PointsType.Jhelom;
 
         public Jhelom() : base(City.Jhelom)
         {
@@ -1387,7 +1387,7 @@ namespace Server.Engines.CityLoyalty
 
     public class Yew : CityLoyaltySystem
     {
-        public override PointsType Loyalty { get { return PointsType.Yew; } }
+        public override PointsType Loyalty => PointsType.Yew;
 
         public Yew() : base(City.Yew)
         {
@@ -1407,7 +1407,7 @@ namespace Server.Engines.CityLoyalty
 
     public class Minoc : CityLoyaltySystem
     {
-        public override PointsType Loyalty { get { return PointsType.Minoc; } }
+        public override PointsType Loyalty => PointsType.Minoc;
 
         public Minoc() : base(City.Minoc)
         {
@@ -1427,7 +1427,7 @@ namespace Server.Engines.CityLoyalty
 
     public class Trinsic : CityLoyaltySystem
     {
-        public override PointsType Loyalty { get { return PointsType.Trinsic; } }
+        public override PointsType Loyalty => PointsType.Trinsic;
 
         public Trinsic() : base(City.Trinsic)
         {
@@ -1447,7 +1447,7 @@ namespace Server.Engines.CityLoyalty
 
     public class SkaraBrae : CityLoyaltySystem
     {
-        public override PointsType Loyalty { get { return PointsType.SkaraBrae; } }
+        public override PointsType Loyalty => PointsType.SkaraBrae;
 
         public SkaraBrae() : base(City.SkaraBrae)
         {
@@ -1468,7 +1468,7 @@ namespace Server.Engines.CityLoyalty
 
     public class NewMagincia : CityLoyaltySystem
     {
-        public override PointsType Loyalty { get { return PointsType.NewMagincia; } }
+        public override PointsType Loyalty => PointsType.NewMagincia;
 
         public NewMagincia() : base(City.NewMagincia)
         {
@@ -1489,7 +1489,7 @@ namespace Server.Engines.CityLoyalty
 
     public class Vesper : CityLoyaltySystem
     {
-        public override PointsType Loyalty { get { return PointsType.Vesper; } }
+        public override PointsType Loyalty => PointsType.Vesper;
 
         public Vesper() : base(City.Vesper)
         {

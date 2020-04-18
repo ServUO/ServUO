@@ -10,7 +10,7 @@ namespace Server.Items
     [FlipableAttribute(0x0FBF, 0x0FC0)]
     public class PenOfWisdom : Item, IUsesRemaining
     {
-        public override int LabelNumber { get { return 1115358; } } // Pen of Wisdom		
+        public override int LabelNumber => 1115358;  // Pen of Wisdom		
         private int m_UsesRemaining;
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -70,9 +70,9 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
-            writer.Write((int)m_UsesRemaining);
+            writer.Write(m_UsesRemaining);
         }
 
         public override void Deserialize(GenericReader reader)

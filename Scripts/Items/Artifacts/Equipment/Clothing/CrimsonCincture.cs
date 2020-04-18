@@ -5,7 +5,7 @@ namespace Server.Items
     [Alterable(typeof(DefTailoring), typeof(GargishCrimsonCincture))]
     public class CrimsonCincture : HalfApron
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public CrimsonCincture()
             : base()
@@ -21,18 +21,12 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1075043;
-            }
-        }// Crimson Cincture
+        public override int LabelNumber => 1075043;// Crimson Cincture
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -45,7 +39,7 @@ namespace Server.Items
 
     public class GargishCrimsonCincture : GargoyleHalfApron
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
 
         [Constructable]
         public GargishCrimsonCincture()
@@ -62,18 +56,12 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1075043;
-            }
-        }// Crimson Cincture
+        public override int LabelNumber => 1075043;// Crimson Cincture
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

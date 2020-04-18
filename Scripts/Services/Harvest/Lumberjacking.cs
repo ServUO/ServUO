@@ -22,13 +22,7 @@ namespace Server.Engines.Harvest
 
         private readonly HarvestDefinition m_Definition;
 
-        public HarvestDefinition Definition
-        {
-            get
-            {
-                return this.m_Definition;
-            }
-        }
+        public HarvestDefinition Definition => m_Definition;
 
         private Lumberjacking()
         {
@@ -115,14 +109,14 @@ namespace Server.Engines.Harvest
             lumber.RaceBonus = true;
             lumber.RandomizeVeins = true;
 
-            this.m_Definition = lumber;
-            this.Definitions.Add(lumber);
+            m_Definition = lumber;
+            Definitions.Add(lumber);
             #endregion
         }
 
         public override Type MutateType(Type type, Mobile from, Item tool, HarvestDefinition def, Map map, Point3D loc, HarvestResource resource)
         {
-            var newType = type;
+            Type newType = type;
 
             if (tool is HarvestersAxe && ((HarvestersAxe)tool).Charges > 0)
             {
@@ -161,9 +155,9 @@ namespace Server.Engines.Harvest
                 }
                 else
                 {
-                    foreach (var res in m_Definition.Resources.Where(r => r.Types != null))
+                    foreach (HarvestResource res in m_Definition.Resources.Where(r => r.Types != null))
                     {
-                        foreach (var type in res.Types)
+                        foreach (Type type in res.Types)
                         {
                             if (item.GetType() == type)
                             {

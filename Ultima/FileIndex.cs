@@ -238,14 +238,14 @@ namespace Ultima
 			 */
             if (MulPath != null && MulPath.EndsWith(".uop"))
             {
-                using (var index = new FileStream(MulPath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
+                using (FileStream index = new FileStream(MulPath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
                 {
                     Stream = new FileStream(MulPath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
 
-                    var fi = new FileInfo(MulPath);
+                    FileInfo fi = new FileInfo(MulPath);
                     string uopPattern = fi.Name.Replace(fi.Extension, "").ToLowerInvariant();
 
-                    using (var br = new BinaryReader(Stream))
+                    using (BinaryReader br = new BinaryReader(Stream))
                     {
                         br.BaseStream.Seek(0, SeekOrigin.Begin);
 
@@ -264,7 +264,7 @@ namespace Ultima
                             IdxLength = idxLength * 12;
                         }
 
-                        var hashes = new Dictionary<ulong, int>();
+                        Dictionary<ulong, int> hashes = new Dictionary<ulong, int>();
 
                         for (int i = 0; i < length; i++)
                         {
@@ -320,8 +320,8 @@ namespace Ultima
 
                                         byte[] extra = br.ReadBytes(8);
 
-                                        var extra1 = (ushort)((extra[3] << 24) | (extra[2] << 16) | (extra[1] << 8) | extra[0]);
-                                        var extra2 = (ushort)((extra[7] << 24) | (extra[6] << 16) | (extra[5] << 8) | extra[4]);
+                                        ushort extra1 = (ushort)((extra[3] << 24) | (extra[2] << 16) | (extra[1] << 8) | extra[0]);
+                                        ushort extra2 = (ushort)((extra[7] << 24) | (extra[6] << 16) | (extra[5] << 8) | extra[4]);
 
                                         Index[idx].lookup += 8;
                                         Index[idx].extra = extra1 << 16 | extra2;
@@ -337,13 +337,13 @@ namespace Ultima
             }
             else if ((idxPath != null) && (MulPath != null))
             {
-                using (var index = new FileStream(idxPath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
+                using (FileStream index = new FileStream(idxPath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
                 {
                     Stream = new FileStream(MulPath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
-                    var count = (int)(index.Length / 12);
+                    int count = (int)(index.Length / 12);
                     IdxLength = index.Length;
                     GCHandle gc = GCHandle.Alloc(Index, GCHandleType.Pinned);
-                    var buffer = new byte[index.Length];
+                    byte[] buffer = new byte[index.Length];
                     index.Read(buffer, 0, (int)index.Length);
                     Marshal.Copy(buffer, 0, gc.AddrOfPinnedObject(), (int)Math.Min(IdxLength, length * 12));
                     gc.Free();
@@ -425,14 +425,14 @@ namespace Ultima
 
             if ((idxPath != null) && (MulPath != null))
             {
-                using (var index = new FileStream(idxPath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
+                using (FileStream index = new FileStream(idxPath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
                 {
                     Stream = new FileStream(MulPath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
-                    var count = (int)(index.Length / 12);
+                    int count = (int)(index.Length / 12);
                     IdxLength = index.Length;
                     Index = new Entry3D[count];
                     GCHandle gc = GCHandle.Alloc(Index, GCHandleType.Pinned);
-                    var buffer = new byte[index.Length];
+                    byte[] buffer = new byte[index.Length];
                     index.Read(buffer, 0, (int)index.Length);
                     Marshal.Copy(buffer, 0, gc.AddrOfPinnedObject(), (int)index.Length);
                     gc.Free();

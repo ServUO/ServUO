@@ -6,7 +6,7 @@ namespace Server.Engines.BulkOrders
 {
     public class LargeTinkerBOD : LargeBOD
     {
-        public override BODType BODType { get { return BODType.Tinkering; } }
+        public override BODType BODType => BODType.Tinkering;
 
         private GemType _GemType;
 
@@ -168,7 +168,7 @@ namespace Server.Engines.BulkOrders
 
         public void AssignGemNumbers()
         {
-            foreach (var entry in Entries)
+            foreach (LargeBulkEntry entry in Entries)
             {
                 Type jewelType = entry.Details.Type;
 
@@ -198,7 +198,7 @@ namespace Server.Engines.BulkOrders
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
             writer.Write((int)_GemType);
         }

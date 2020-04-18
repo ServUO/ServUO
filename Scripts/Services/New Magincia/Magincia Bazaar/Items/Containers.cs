@@ -7,7 +7,7 @@ namespace Server.Engines.NewMagincia
         private Mobile m_Owner;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile Owner { get { return m_Owner; } }
+        public Mobile Owner => m_Owner;
 
         public WarehouseContainer(Mobile owner)
         {
@@ -21,7 +21,7 @@ namespace Server.Engines.NewMagincia
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write(m_Owner);
         }
@@ -50,7 +50,7 @@ namespace Server.Engines.NewMagincia
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

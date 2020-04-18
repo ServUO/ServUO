@@ -20,7 +20,7 @@ namespace Server.Spells.Seventh
         public PolymorphSpell(Mobile caster, Item scroll, int body)
             : base(caster, scroll, m_Info)
         {
-            this.m_NewBody = body;
+            m_NewBody = body;
         }
 
         public PolymorphSpell(Mobile caster, Item scroll)
@@ -28,13 +28,7 @@ namespace Server.Spells.Seventh
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Seventh;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Seventh;
         public static bool StopTimer(Mobile m)
         {
             Timer t = (Timer)m_Timers[m];
@@ -55,31 +49,31 @@ namespace Server.Spells.Seventh
                 Caster.SendLocalizedMessage(1113415); // You cannot use this ability while flying.
                 return false;
             }
-            else if (TransformationSpellHelper.UnderTransformation(this.Caster))
+            else if (TransformationSpellHelper.UnderTransformation(Caster))
             {
-                this.Caster.SendLocalizedMessage(1061633); // You cannot polymorph while in that form.
+                Caster.SendLocalizedMessage(1061633); // You cannot polymorph while in that form.
                 return false;
             }
-            else if (DisguiseTimers.IsDisguised(this.Caster))
+            else if (DisguiseTimers.IsDisguised(Caster))
             {
-                this.Caster.SendLocalizedMessage(502167); // You cannot polymorph while disguised.
+                Caster.SendLocalizedMessage(502167); // You cannot polymorph while disguised.
                 return false;
             }
-            else if (this.Caster.BodyMod == 183 || this.Caster.BodyMod == 184)
+            else if (Caster.BodyMod == 183 || Caster.BodyMod == 184)
             {
-                this.Caster.SendLocalizedMessage(1042512); // You cannot polymorph while wearing body paint
+                Caster.SendLocalizedMessage(1042512); // You cannot polymorph while wearing body paint
                 return false;
             }
-            else if (!this.Caster.CanBeginAction(typeof(PolymorphSpell)))
+            else if (!Caster.CanBeginAction(typeof(PolymorphSpell)))
             {
-                EndPolymorph(this.Caster);
+                EndPolymorph(Caster);
                 return false;
             }
-            else if (this.m_NewBody == 0)
+            else if (m_NewBody == 0)
             {
-                Gump gump = new NewPolymorphGump(this.Caster, this.Scroll);
+                Gump gump = new NewPolymorphGump(Caster, Scroll);
 
-                this.Caster.SendGump(gump);
+                Caster.SendGump(gump);
                 return false;
             }
 
@@ -92,58 +86,58 @@ namespace Server.Spells.Seventh
             {
                 Caster.SendLocalizedMessage(1113415); // You cannot use this ability while flying.
             }
-            else if (!this.Caster.CanBeginAction(typeof(PolymorphSpell)))
+            else if (!Caster.CanBeginAction(typeof(PolymorphSpell)))
             {
-                EndPolymorph(this.Caster);
+                EndPolymorph(Caster);
             }
-            else if (TransformationSpellHelper.UnderTransformation(this.Caster))
+            else if (TransformationSpellHelper.UnderTransformation(Caster))
             {
-                this.Caster.SendLocalizedMessage(1061633); // You cannot polymorph while in that form.
+                Caster.SendLocalizedMessage(1061633); // You cannot polymorph while in that form.
             }
-            else if (DisguiseTimers.IsDisguised(this.Caster))
+            else if (DisguiseTimers.IsDisguised(Caster))
             {
-                this.Caster.SendLocalizedMessage(502167); // You cannot polymorph while disguised.
+                Caster.SendLocalizedMessage(502167); // You cannot polymorph while disguised.
             }
-            else if (this.Caster.BodyMod == 183 || this.Caster.BodyMod == 184)
+            else if (Caster.BodyMod == 183 || Caster.BodyMod == 184)
             {
-                this.Caster.SendLocalizedMessage(1042512); // You cannot polymorph while wearing body paint
+                Caster.SendLocalizedMessage(1042512); // You cannot polymorph while wearing body paint
             }
-            else if (!this.Caster.CanBeginAction(typeof(IncognitoSpell)) || this.Caster.IsBodyMod)
+            else if (!Caster.CanBeginAction(typeof(IncognitoSpell)) || Caster.IsBodyMod)
             {
-                this.DoFizzle();
+                DoFizzle();
             }
-            else if (this.CheckSequence())
+            else if (CheckSequence())
             {
-                if (this.Caster.BeginAction(typeof(PolymorphSpell)))
+                if (Caster.BeginAction(typeof(PolymorphSpell)))
                 {
-                    if (this.m_NewBody != 0)
+                    if (m_NewBody != 0)
                     {
-                        if (!((Body)this.m_NewBody).IsHuman)
+                        if (!((Body)m_NewBody).IsHuman)
                         {
-                            Mobiles.IMount mt = this.Caster.Mount;
+                            Mobiles.IMount mt = Caster.Mount;
 
                             if (mt != null)
                                 mt.Rider = null;
                         }
 
-                        this.Caster.BodyMod = this.m_NewBody;
+                        Caster.BodyMod = m_NewBody;
 
-                        if (this.m_NewBody == 400 || this.m_NewBody == 401)
-                            this.Caster.HueMod = Utility.RandomSkinHue();
+                        if (m_NewBody == 400 || m_NewBody == 401)
+                            Caster.HueMod = Utility.RandomSkinHue();
                         else
-                            this.Caster.HueMod = 0;
+                            Caster.HueMod = 0;
 
-                        BaseArmor.ValidateMobile(this.Caster);
-                        BaseClothing.ValidateMobile(this.Caster);
+                        BaseArmor.ValidateMobile(Caster);
+                        BaseClothing.ValidateMobile(Caster);
                     }
                 }
                 else
                 {
-                    this.Caster.SendLocalizedMessage(1005559); // This spell is already in effect.
+                    Caster.SendLocalizedMessage(1005559); // This spell is already in effect.
                 }
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         private static TextDefinition GetArticleCliloc(int body)
@@ -199,20 +193,20 @@ namespace Server.Spells.Seventh
             public InternalTimer(Mobile owner)
                 : base(TimeSpan.FromSeconds(0))
             {
-                this.m_Owner = owner;
+                m_Owner = owner;
 
                 int val = (int)owner.Skills[SkillName.Magery].Value;
 
                 if (val > 120)
                     val = 120;
 
-                this.Delay = TimeSpan.FromSeconds(val);
-                this.Priority = TimerPriority.OneSecond;
+                Delay = TimeSpan.FromSeconds(val);
+                Priority = TimerPriority.OneSecond;
             }
 
             protected override void OnTick()
             {
-                EndPolymorph(this.m_Owner);
+                EndPolymorph(m_Owner);
             }
         }
     }

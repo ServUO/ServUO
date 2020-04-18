@@ -24,7 +24,7 @@ namespace Server.Engines.Khaldun
             if (!m.Player)
                 return;
 
-            var quest = QuestHelper.GetQuest<GoingGumshoeQuest2>((PlayerMobile)m);
+            GoingGumshoeQuest2 quest = QuestHelper.GetQuest<GoingGumshoeQuest2>((PlayerMobile)m);
 
             if (quest != null)
             {
@@ -94,7 +94,7 @@ namespace Server.Engines.Khaldun
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
             writer.Write(Door);
         }
 

@@ -39,11 +39,11 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public TimeCoordinate TimeCoordinate { get { return AstronomySystem.GetTimeCoordinate(this); } }
+        public TimeCoordinate TimeCoordinate => AstronomySystem.GetTimeCoordinate(this);
 
         public DateTime LastUse { get; set; }
 
-        public override int LabelNumber { get { return 1125284; } }
+        public override int LabelNumber => 1125284;
 
         [Constructable]
         public PersonalTelescope()
@@ -64,7 +64,7 @@ namespace Server.Items
 
             if (m.InRange(Location, 2))
             {
-                var house = BaseHouse.FindHouseAt(this);
+                BaseHouse house = BaseHouse.FindHouseAt(this);
 
                 if (house != null && house.HasSecureAccess(m, Level))
                 {
@@ -238,7 +238,7 @@ namespace Server.Items
 
         private void RenderConstellation()
         {
-            foreach (var pos in Constellation.StarPositions)
+            foreach (ConstellationInfo.StarPosition pos in Constellation.StarPositions)
             {
                 AddImage(pos.X, pos.Y, pos.ImageID);
             }
@@ -341,7 +341,7 @@ namespace Server.Items
                     User.SendSound(0x4A);
                     break;
                 case 70000: // View Coord
-                    if (Tele.RA > AstronomySystem.MaxRA || Tele.DEC > (double)AstronomySystem.MaxDEC)
+                    if (Tele.RA > AstronomySystem.MaxRA || Tele.DEC > AstronomySystem.MaxDEC)
                     {
                         User.SendLocalizedMessage(1158488); // You have entered invalid coordinates.
                         User.SendSound(81);
@@ -352,7 +352,7 @@ namespace Server.Items
                         Constellation = null;
                         ImageID = AstronomySystem.RandomSkyImage(User);
 
-                        var timeCoord = Tele.TimeCoordinate;
+                        TimeCoordinate timeCoord = Tele.TimeCoordinate;
 
                         if (timeCoord == TimeCoordinate.Day)
                         {
@@ -360,7 +360,7 @@ namespace Server.Items
                         }
                         else
                         {
-                            var constellation = AstronomySystem.GetConstellation(timeCoord, Tele.RA, Tele.DEC);
+                            ConstellationInfo constellation = AstronomySystem.GetConstellation(timeCoord, Tele.RA, Tele.DEC);
 
                             if (constellation != null)
                             {

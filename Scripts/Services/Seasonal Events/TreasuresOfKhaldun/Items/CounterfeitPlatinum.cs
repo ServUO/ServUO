@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class CounterfeitPlatinum : Item
     {
-        public override int LabelNumber { get { return 1158686; } } // counterfeit platinum
+        public override int LabelNumber => 1158686;  // counterfeit platinum
 
         [Constructable]
         public CounterfeitPlatinum()
@@ -21,7 +21,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

@@ -11,7 +11,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public MagicKey Key { get { return m_Key; } set { m_Key = value; } }
 
-        public override int LabelNumber { get { return 1113379; } }  // Puzzle Board
+        public override int LabelNumber => 1113379;   // Puzzle Board
 
         [Constructable]
         public MastermindPuzzleItem(MagicKey key) : base(0x2AAA)
@@ -82,8 +82,8 @@ namespace Server.Items
             }
             else
             {
-                Effects.SendLocationParticles(EffectItem.Create(this.Location, this.Map, EffectItem.DefaultDuration), 0x3728, 8, 20, 5042);
-                Effects.PlaySound(this.Location, this.Map, 0x201);
+                Effects.SendLocationParticles(EffectItem.Create(Location, Map, EffectItem.DefaultDuration), 0x3728, 8, 20, 5042);
+                Effects.PlaySound(Location, Map, 0x201);
             }
 
             if (m_Timer != null)
@@ -121,7 +121,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // ver
+            writer.Write(0); // ver
             writer.Write(m_Key);
         }
 

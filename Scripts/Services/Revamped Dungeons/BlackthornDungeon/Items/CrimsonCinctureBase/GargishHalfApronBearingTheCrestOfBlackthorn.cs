@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class GargishHalfApronBearingTheCrestOfBlackthorn2 : GargoyleHalfApron
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
 
         [Constructable]
         public GargishHalfApronBearingTheCrestOfBlackthorn2()

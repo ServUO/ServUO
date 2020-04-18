@@ -7,13 +7,13 @@ namespace Server.Engines.VvV
 {
     public class SilverTrader : BaseVendor
     {
-        public override bool IsActiveVendor { get { return false; } }
-        public override bool DisallowAllMoves { get { return true; } }
-        public override bool ClickTitle { get { return true; } }
-        public override bool CanTeach { get { return false; } }
+        public override bool IsActiveVendor => false;
+        public override bool DisallowAllMoves => true;
+        public override bool ClickTitle => true;
+        public override bool CanTeach => false;
 
         protected List<SBInfo> m_SBInfos = new List<SBInfo>();
-        protected override List<SBInfo> SBInfos { get { return this.m_SBInfos; } }
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo() { }
 
         [Constructable]
@@ -148,7 +148,7 @@ namespace Server.Engines.VvV
                 {
                     if (dropped is IVvVItem && from.Race == Race.Gargoyle)
                     {
-                        foreach (var t in _Table)
+                        foreach (Type[] t in _Table)
                         {
                             if (dropped.GetType() == t[0])
                             {
@@ -156,7 +156,7 @@ namespace Server.Engines.VvV
 
                                 if (dur != null && dur.MaxHitPoints == 255 && dur.HitPoints == 255)
                                 {
-                                    var item = Loot.Construct(t[1]);
+                                    Item item = Loot.Construct(t[1]);
 
                                     if (item != null)
                                     {

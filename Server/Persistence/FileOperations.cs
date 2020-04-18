@@ -56,21 +56,9 @@ namespace Server
             }
         }
 
-        public static bool AreSynchronous
-        {
-            get
-            {
-                return (concurrency < 1);
-            }
-        }
+        public static bool AreSynchronous => (concurrency < 1);
 
-        public static bool AreAsynchronous
-        {
-            get
-            {
-                return (concurrency > 0);
-            }
-        }
+        public static bool AreAsynchronous => (concurrency > 0);
 
         public static FileStream OpenSequentialStream(string path, FileMode mode, FileAccess access, FileShare share)
         {

@@ -10,7 +10,7 @@ namespace Server.Items
         public InvisibilityPotion()
             : base(0xF0A, PotionEffect.Invisibility)
         {
-            this.Hue = 0x48D;
+            Hue = 0x48D;
         }
 
         public InvisibilityPotion(Serial serial)
@@ -18,13 +18,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1072941;
-            }
-        }// Potion of Invisibility
+        public override int LabelNumber => 1072941;// Potion of Invisibility
         public static void Hide(Mobile m)
         {
             Effects.SendLocationParticles(EffectItem.Create(new Point3D(m.X, m.Y, m.Z + 16), m.Map, EffectItem.DefaultDuration), 0x376A, 10, 15, 5045);
@@ -82,7 +76,7 @@ namespace Server.Items
                 return;
             }
 
-            this.Consume();
+            Consume();
             Timer.DelayCall(TimeSpan.FromSeconds(2), new TimerStateCallback(Hide_Callback), from);
             PlayDrinkEffect(from);
         }
@@ -91,7 +85,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

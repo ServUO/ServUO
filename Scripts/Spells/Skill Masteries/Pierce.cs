@@ -11,11 +11,11 @@ namespace Server.Spells.SkillMasteries
 {
     public class PierceSpell : SkillMasteryMove
     {
-        public override int BaseMana { get { return 20; } }
-        public override double RequiredSkill { get { return 90.0; } }
+        public override int BaseMana => 20;
+        public override double RequiredSkill => 90.0;
 
-        public override SkillName MoveSkill { get { return SkillName.Fencing; } }
-        public override TextDefinition AbilityMessage { get { return new TextDefinition(1155991); } } // You ready yourself to pierce your opponent!
+        public override SkillName MoveSkill => SkillName.Fencing;
+        public override TextDefinition AbilityMessage => new TextDefinition(1155991);  // You ready yourself to pierce your opponent!
 
         private Dictionary<Mobile, Timer> _Table;
 
@@ -73,7 +73,7 @@ namespace Server.Spells.SkillMasteries
                 attacker.PrivateOverheadMessage(MessageType.Regular, 1150, 1155993, attacker.NetState); // You deliver a piercing blow!
                 defender.FixedEffect(0x36BD, 20, 10, 2725, 5);
 
-                int drain = (int)((double)defender.StamMax * ((double)toDrain / 100.0));
+                int drain = (int)(defender.StamMax * (toDrain / 100.0));
 
                 BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.Pierce, 1155994, 1155995, TimeSpan.FromSeconds(10), defender, (drain / 7).ToString()));
                 //-~1_VAL~ Stamina Regeneration.

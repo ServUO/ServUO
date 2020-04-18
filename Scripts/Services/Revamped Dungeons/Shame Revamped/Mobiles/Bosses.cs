@@ -70,9 +70,9 @@ namespace Server.Mobiles
             return amount;
         }
 
-        public override bool AutoDispel { get { return true; } }
-        public override bool AlwaysMurderer { get { return true; } }
-        public override Poison PoisonImmune { get { return Poison.Lethal; } }
+        public override bool AutoDispel => true;
+        public override bool AlwaysMurderer => true;
+        public override Poison PoisonImmune => Poison.Lethal;
 
         public ShameGuardian(Serial serial)
             : base(serial)
@@ -131,7 +131,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.UltraRich, 1);
+            AddLoot(LootPack.UltraRich, 1);
         }
 
         public override void OnDeath(Container c)
@@ -147,13 +147,7 @@ namespace Server.Mobiles
         {
         }
 
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 1;
-            }
-        }
+        public override int TreasureMapLevel => 1;
 
         public override void Serialize(GenericWriter writer)
         {
@@ -222,7 +216,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.UltraRich, 1);
+            AddLoot(LootPack.UltraRich, 1);
         }
 
         public override void OnDeath(Container c)
@@ -294,8 +288,8 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.UltraRich, 1);
-            this.AddLoot(LootPack.HighScrolls, Utility.RandomMinMax(3, 5));
+            AddLoot(LootPack.UltraRich, 1);
+            AddLoot(LootPack.HighScrolls, Utility.RandomMinMax(3, 5));
         }
 
         public override void OnDeath(Container c)

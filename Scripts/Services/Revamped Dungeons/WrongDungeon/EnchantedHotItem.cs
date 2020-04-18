@@ -72,7 +72,7 @@ namespace Server.Items
 
             for (int i = 0; i < ChestLocs.Length; i++)
             {
-                var chest = new HotItemChest(i <= 3 ? 3648 : 3649);
+                HotItemChest chest = new HotItemChest(i <= 3 ? 3648 : 3649);
 
                 chest.MoveToWorld(ChestLocs[i], map);
                 chest.SpawnLoot();
@@ -98,7 +98,7 @@ namespace Server.Items
         {
             List<Item> list = new List<Item>(Items);
 
-            foreach (var item in list)
+            foreach (Item item in list)
                 item.Delete();
 
             ColUtility.Free(list);
@@ -125,7 +125,7 @@ namespace Server.Items
                     int min = 400;
                     int max = 1400;
 
-                    RunicReforging.GenerateRandomItem(item, 0, min, max, this.Map);
+                    RunicReforging.GenerateRandomItem(item, 0, min, max, Map);
 
                     item.Hue = 1258;
                     item.AttachSocket(new EnchantedHotItemSocket(this));
@@ -160,7 +160,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version 
+            writer.Write(0); // version 
         }
 
         public override void Deserialize(GenericReader reader)

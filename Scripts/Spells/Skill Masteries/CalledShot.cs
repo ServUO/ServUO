@@ -12,12 +12,12 @@ namespace Server.Spells.SkillMasteries
                 9002
             );
 
-        public override double RequiredSkill { get { return 90; } }
-        public override double UpKeep { get { return 0; } }
-        public override int RequiredMana { get { return 40; } }
+        public override double RequiredSkill => 90;
+        public override double UpKeep => 0;
+        public override int RequiredMana => 40;
 
-        public override SkillName CastSkill { get { return SkillName.Throwing; } }
-        public override SkillName DamageSkill { get { return SkillName.Tactics; } }
+        public override SkillName CastSkill => SkillName.Throwing;
+        public override SkillName DamageSkill => SkillName.Tactics;
 
         private int _HCIBonus;
         private int _DamageBonus;
@@ -29,7 +29,7 @@ namespace Server.Spells.SkillMasteries
 
         public override bool CheckCast()
         {
-            if (IsInCooldown(Caster, this.GetType()))
+            if (IsInCooldown(Caster, GetType()))
                 return false;
 
             if (!CheckWeapon())
@@ -38,7 +38,7 @@ namespace Server.Spells.SkillMasteries
                 return false;
             }
 
-            CalledShotSpell spell = GetSpell(Caster, this.GetType()) as CalledShotSpell;
+            CalledShotSpell spell = GetSpell(Caster, GetType()) as CalledShotSpell;
 
             if (spell != null)
             {
@@ -90,7 +90,7 @@ namespace Server.Spells.SkillMasteries
             if (SpecialMove.GetCurrentMove(Caster) != null)
                 return;
 
-            damage = damage + (int)((double)damage * ((double)_DamageBonus / 100.0));
+            damage = damage + (int)(damage * (_DamageBonus / 100.0));
 
             if (defender is PlayerMobile && damage > 100)
                 damage = 100;

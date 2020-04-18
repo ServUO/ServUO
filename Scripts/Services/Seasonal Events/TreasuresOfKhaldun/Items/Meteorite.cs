@@ -29,7 +29,7 @@ namespace Server.Items
         }
 
 
-        public override int LabelNumber { get { return _Polished ? 1125446 : 1158640; } } // Polished/Rough Meteorite
+        public override int LabelNumber => _Polished ? 1125446 : 1158640;  // Polished/Rough Meteorite
 
         [Constructable]
         public Meteorite()
@@ -72,7 +72,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             writer.Write(_Polished);
         }

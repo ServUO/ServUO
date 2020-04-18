@@ -17,20 +17,8 @@ namespace Server.Menus.Questions
             m_Locations = locations;
         }
 
-        public int Name
-        {
-            get
-            {
-                return m_Name;
-            }
-        }
-        public Point3D[] Locations
-        {
-            get
-            {
-                return m_Locations;
-            }
-        }
+        public int Name => m_Name;
+        public Point3D[] Locations => m_Locations;
     }
 
     public class StuckMenu : Gump
@@ -295,7 +283,7 @@ namespace Server.Menus.Questions
                 Map fromMap = m_Mobile.LogoutMap;
                 Point3D fromLoc = m_Mobile.LogoutLocation;
 
-                var move = fromMap.GetMobilesInRange(fromLoc, 3).Where(m => m is BaseCreature).Cast<BaseCreature>()
+                System.Collections.Generic.List<BaseCreature> move = fromMap.GetMobilesInRange(fromLoc, 3).Where(m => m is BaseCreature).Cast<BaseCreature>()
                     .Where(pet => pet.Controlled && pet.ControlMaster == m_Mobile && pet.ControlOrder == OrderType.Guard || pet.ControlOrder == OrderType.Follow || pet.ControlOrder == OrderType.Come).ToList();
 
                 move.ForEach(x => x.MoveToWorld(dest, destMap));

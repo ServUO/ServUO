@@ -11,12 +11,12 @@ namespace Server.Gumps
 
         public StormLevelEntry(int name, Point3D[] locations)
         {
-            this.m_Name = name;
-            this.m_Locations = locations;
+            m_Name = name;
+            m_Locations = locations;
         }
 
-        public int Name { get { return this.m_Name; } }
-        public Point3D[] Locations { get { return this.m_Locations; } }
+        public int Name => m_Name;
+        public Point3D[] Locations => m_Locations;
     }
 
     public class StormLevelGump : Gump
@@ -175,11 +175,11 @@ namespace Server.Gumps
 
         public StormLevelGump(Mobile m) : base(50, 50)
         {
-            this.m_Mobile = m;
+            m_Mobile = m;
 
-            this.Closable = false;
-            this.Disposable = false;
-            this.Dragable = true;
+            Closable = false;
+            Disposable = false;
+            Dragable = true;
 
             AddPage(0);
             AddImage(0, 0, 206);
@@ -203,33 +203,33 @@ namespace Server.Gumps
 
                 if (i < 8)
                 {
-                    this.AddButton(34, 125 + 20 * i, 208, 209, i + 1, GumpButtonType.Reply, 0);
-                    this.AddHtmlLocalized(65, 125 + 20 * i, 335, 40, entry.Name, false, false);
+                    AddButton(34, 125 + 20 * i, 208, 209, i + 1, GumpButtonType.Reply, 0);
+                    AddHtmlLocalized(65, 125 + 20 * i, 335, 40, entry.Name, false, false);
                 }
                 else
                 {
-                    this.AddButton(210, 125 + 20 * (i - 8), 208, 209, i + 1, GumpButtonType.Reply, 0);
-                    this.AddHtmlLocalized(241, 125 + 20 * (i - 8), 335, 40, entry.Name, false, false);
+                    AddButton(210, 125 + 20 * (i - 8), 208, 209, i + 1, GumpButtonType.Reply, 0);
+                    AddHtmlLocalized(241, 125 + 20 * (i - 8), 335, 40, entry.Name, false, false);
                 }
             }
         }
 
         public void BeginClose()
         {
-            this.StopClose();
+            StopClose();
 
-            this.m_Timer = new CloseTimer(this.m_Mobile);
-            this.m_Timer.Start();
+            m_Timer = new CloseTimer(m_Mobile);
+            m_Timer.Start();
 
-            this.m_Mobile.Frozen = true;
+            m_Mobile.Frozen = true;
         }
 
         public void StopClose()
         {
-            if (this.m_Timer != null)
-                this.m_Timer.Stop();
+            if (m_Timer != null)
+                m_Timer.Stop();
 
-            this.m_Mobile.Frozen = false;
+            m_Mobile.Frozen = false;
         }
 
         private class CloseTimer : Timer
@@ -239,16 +239,16 @@ namespace Server.Gumps
             public CloseTimer(Mobile m)
                 : base(TimeSpan.Zero, TimeSpan.FromSeconds(1.0))
             {
-                this.m_Mobile = m;
-                this.m_End = DateTime.UtcNow + TimeSpan.FromSeconds(10.0);
+                m_Mobile = m;
+                m_End = DateTime.UtcNow + TimeSpan.FromSeconds(10.0);
             }
 
             protected override void OnTick()
             {
-                if (this.m_Mobile.NetState == null || DateTime.UtcNow > this.m_End)
+                if (m_Mobile.NetState == null || DateTime.UtcNow > m_End)
                 {
-                    this.m_Mobile.Frozen = false;
-                    this.m_Mobile.CloseGump(typeof(StormLevelGump));
+                    m_Mobile.Frozen = false;
+                    m_Mobile.CloseGump(typeof(StormLevelGump));
 
                     StormLevelEntry[] entries = m_Entries;
                     int id = Utility.Random(entries.Length);
@@ -256,11 +256,11 @@ namespace Server.Gumps
                     Point3D dest = entries[id].Locations[idx];
 
                     GoTo(m_Mobile, dest);
-                    this.Stop();
+                    Stop();
                 }
                 else
                 {
-                    this.m_Mobile.Frozen = true;
+                    m_Mobile.Frozen = true;
                 }
             }
         }
@@ -279,7 +279,7 @@ namespace Server.Gumps
                     Point3D dest = entries[index].Locations[Utility.Random(entries[index].Locations.Length)];
 
                     GoTo(from, dest);
-                    this.StopClose();
+                    StopClose();
                 }
             }
         }

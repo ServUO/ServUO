@@ -6,7 +6,7 @@
         public TableLamp()
             : base(0x49C2)
         {
-            this.Weight = 1;
+            Weight = 1;
         }
 
         public TableLamp(Serial serial)
@@ -14,27 +14,21 @@
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1151220;
-            }
-        }// table lamp
+        public override int LabelNumber => 1151220;// table lamp
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.ItemID == 0x49C2)
-                this.ItemID = 0x49C1;
-            else if (this.ItemID == 0x49C1)
-                this.ItemID = 0x49C2;
+            if (ItemID == 0x49C2)
+                ItemID = 0x49C1;
+            else if (ItemID == 0x49C1)
+                ItemID = 0x49C2;
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

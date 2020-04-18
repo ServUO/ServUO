@@ -114,13 +114,7 @@ namespace Server.Engines.BulkOrders
                 }
             }
         }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1045151;
-            }
-        }// a bulk order deed
+        public override int LabelNumber => 1045151;// a bulk order deed
         public static BulkMaterialType GetRandomMaterial(BulkMaterialType start, double[] chances)
         {
             double random = Utility.RandomDouble();
@@ -287,13 +281,13 @@ namespace Server.Engines.BulkOrders
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
             writer.Write(m_AmountMax);
             writer.Write(m_RequireExceptional);
             writer.Write((int)m_Material);
 
-            writer.Write((int)m_Entries.Length);
+            writer.Write(m_Entries.Length);
 
             for (int i = 0; i < m_Entries.Length; ++i)
                 m_Entries[i].Serialize(writer);

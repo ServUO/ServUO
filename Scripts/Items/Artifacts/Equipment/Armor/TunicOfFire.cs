@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class TunicOfFire : ChainChest
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public TunicOfFire()
         {
@@ -17,53 +17,17 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1061099;
-            }
-        }// Tunic of Fire
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 11;
-            }
-        }
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 24;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 34;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int LabelNumber => 1061099;// Tunic of Fire
+        public override int ArtifactRarity => 11;
+        public override int BasePhysicalResistance => 24;
+        public override int BaseFireResistance => 34;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)1);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -74,14 +38,14 @@ namespace Server.Items
 
             if (version < 1)
             {
-                if (this.Hue == 0x54E)
-                    this.Hue = 0x54F;
+                if (Hue == 0x54E)
+                    Hue = 0x54F;
 
-                if (this.Attributes.NightSight == 0)
-                    this.Attributes.NightSight = 1;
+                if (Attributes.NightSight == 0)
+                    Attributes.NightSight = 1;
 
-                this.PhysicalBonus = 0;
-                this.FireBonus = 0;
+                PhysicalBonus = 0;
+                FireBonus = 0;
             }
         }
     }

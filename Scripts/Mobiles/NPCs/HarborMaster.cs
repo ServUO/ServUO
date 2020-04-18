@@ -53,8 +53,8 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool CanTeach { get { return false; } }
-        public override bool ClickTitle { get { return false; } }
+        public override bool CanTeach => false;
+        public override bool ClickTitle => false;
 
         public override void AddCustomContextEntries(Mobile from, List<ContextMenuEntry> list)
         {
@@ -99,7 +99,7 @@ namespace Server.Mobiles
                 if (m_Vendor == null || m_Vendor.Deleted)
                     return;
 
-                var boat = BaseBoat.GetBoat(m_From);
+                BaseBoat boat = BaseBoat.GetBoat(m_From);
 
                 if (boat != null)
                 {
@@ -187,7 +187,7 @@ namespace Server.Mobiles
                         }
                     case 1:
                         {
-                            var boat = BaseBoat.GetBoat(from);
+                            BaseBoat boat = BaseBoat.GetBoat(from);
 
                             if (boat != null && !_Table.ContainsKey(from))
                             {
@@ -244,7 +244,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

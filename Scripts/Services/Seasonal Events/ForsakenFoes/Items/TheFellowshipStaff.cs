@@ -3,7 +3,7 @@ namespace Server.Items
     [Flipable(0xA343, 0xA344)]
     public class TheFellowshipStaff : BaseStaff
     {
-        public override int LabelNumber { get { return 1159034; } } // The Fellowship Staff
+        public override int LabelNumber => 1159034;  // The Fellowship Staff
 
         public static TheFellowshipStaff InstanceTram { get; set; }
         public static TheFellowshipStaff InstanceFel { get; set; }
@@ -15,15 +15,15 @@ namespace Server.Items
             Hue = 2721;
         }
 
-        public override WeaponAbility PrimaryAbility { get { return WeaponAbility.Block; } }
-        public override WeaponAbility SecondaryAbility { get { return WeaponAbility.ForceOfNature; } }
-        public override int StrengthReq { get { return 20; } }
-        public override int MinDamage { get { return 15; } }
-        public override int MaxDamage { get { return 18; } }
-        public override float Speed { get { return 3.25f; } }
+        public override WeaponAbility PrimaryAbility => WeaponAbility.Block;
+        public override WeaponAbility SecondaryAbility => WeaponAbility.ForceOfNature;
+        public override int StrengthReq => 20;
+        public override int MinDamage => 15;
+        public override int MaxDamage => 18;
+        public override float Speed => 3.25f;
 
-        public override int InitMinHits { get { return 30; } }
-        public override int InitMaxHits { get { return 60; } }
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 60;
 
         public override void GetDamageTypes(Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct)
         {

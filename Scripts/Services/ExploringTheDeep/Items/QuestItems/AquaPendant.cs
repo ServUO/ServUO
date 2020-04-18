@@ -4,13 +4,13 @@ namespace Server.Items
 {
     public class AquaPendant : GoldNecklace
     {
-        public override int LabelNumber { get { return 1154246; } } // Aqua Pendant
+        public override int LabelNumber => 1154246;  // Aqua Pendant
 
         [Constructable]
         public AquaPendant()
         {
-            this.Hue = 1916;
-            this.LootType = LootType.Blessed;
+            Hue = 1916;
+            LootType = LootType.Blessed;
         }
 
         public override void OnDoubleClick(Mobile from)

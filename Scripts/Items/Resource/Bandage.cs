@@ -381,7 +381,7 @@ namespace Server.Items
                             {
                                 bool found = false;
 
-                                var friends = petPatient.Friends;
+                                List<Mobile> friends = petPatient.Friends;
 
                                 for (int i = 0; friends != null && i < friends.Count; ++i)
                                 {
@@ -577,15 +577,9 @@ namespace Server.Items
             private readonly long m_Expires;
             private bool m_CheckedHealAndBleed;
 
-            public bool CanCheckAtHalf
-            {
-                get
-                {
-                    return m_Context != null && m_Context.Healer == m_Context.Patient &&
+            public bool CanCheckAtHalf => m_Context != null && m_Context.Healer == m_Context.Patient &&
                            m_Context.Healer.Skills[SkillName.Healing].Value >= 80 &&
                            m_Context.Healer.Skills[SkillName.Anatomy].Value >= 80;
-                }
-            }
 
             public InternalTimer(BandageContext context, TimeSpan delay)
                 : base(TimeSpan.FromMilliseconds(250), TimeSpan.FromMilliseconds(250))
@@ -648,7 +642,7 @@ namespace Server.Items
                     context.StopHeal();
                 }
 
-                var delay = GetDelay(healer, patient);
+                TimeSpan delay = GetDelay(healer, patient);
 
                 if (patient is PlayerMobile)
                     BuffInfo.AddBuff(healer, new BuffInfo(BuffIcon.Healing, 1002082, 1151400, delay, healer, String.Format("{0}", patient.Name)));
@@ -689,9 +683,9 @@ namespace Server.Items
 
         public static TimeSpan GetDelay(Mobile healer, Mobile patient, bool dead, SkillName skill)
         {
-            var resDelay = dead ? 5.0 : 0.0;
+            double resDelay = dead ? 5.0 : 0.0;
 
-            var dex = healer.Dex;
+            int dex = healer.Dex;
 
             double seconds;
 
@@ -724,7 +718,7 @@ namespace Server.Items
             m_Stream.Write((short)0x31);
             m_Stream.Write((short)0x01);
 
-            m_Stream.Write((int)0xE21);
+            m_Stream.Write(0xE21);
             m_Stream.Write(duration);
         }
     }

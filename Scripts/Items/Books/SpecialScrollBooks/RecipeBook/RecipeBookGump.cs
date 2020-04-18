@@ -103,7 +103,7 @@ namespace Server.Items
 
             for (int i = index; i >= 0 && i < list.Count; ++i)
             {
-                var recipe = list[i];
+                RecipeScrollDefinition recipe = list[i];
 
                 if (CheckFilter(recipe))
                 {
@@ -279,7 +279,7 @@ namespace Server.Items
 
             for (int i = index; i < (index + count) && i >= 0 && i < list.Count; ++i)
             {
-                var recipe = list[i];
+                RecipeScrollDefinition recipe = list[i];
 
                 if (!CheckFilter(recipe))
                     continue;
@@ -346,7 +346,7 @@ namespace Server.Items
 
             for (int i = index; i < (index + count) && i >= 0 && i < list.Count; ++i)
             {
-                var recipe = list[i];
+                RecipeScrollDefinition recipe = list[i];
 
                 if (!CheckFilter(recipe) || !Recipe.Recipes.ContainsKey(recipe.RecipeID))
                     continue;
@@ -411,7 +411,7 @@ namespace Server.Items
                         if (index < 0 || index >= m_List.Count)
                             break;
 
-                        var recipe = m_List[index];
+                        RecipeScrollDefinition recipe = m_List[index];
 
                         if (type == 0)
                         {

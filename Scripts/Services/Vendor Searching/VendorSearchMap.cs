@@ -35,7 +35,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime DeleteTime { get; set; }
 
-        public int TimeRemaining { get { return DeleteTime <= DateTime.UtcNow ? 0 : (int)(DeleteTime - DateTime.UtcNow).TotalMinutes; } }
+        public int TimeRemaining => DeleteTime <= DateTime.UtcNow ? 0 : (int)(DeleteTime - DateTime.UtcNow).TotalMinutes;
 
         public VendorSearchMap(Item item, bool auction)
             : base(item.Map)
@@ -61,7 +61,7 @@ namespace Server.Items
 
             Width = 300;
             Height = 300;
-            var size = item.Map == Map.Tokuno ? 300 : item.Map == Map.TerMur ? 200 : 600;
+            int size = item.Map == Map.Tokuno ? 300 : item.Map == Map.TerMur ? 200 : 600;
 
             Bounds = new Rectangle2D(p.X - size / 2, p.Y - size / 2, size, size);
             AddWorldPin(p.X, p.Y);
@@ -397,7 +397,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

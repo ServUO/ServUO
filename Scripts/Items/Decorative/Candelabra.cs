@@ -4,20 +4,8 @@ namespace Server.Items
 {
     public class Candelabra : BaseLight, IShipwreckedItem
     {
-        public override int LitItemID
-        {
-            get
-            {
-                return 0xB1D;
-            }
-        }
-        public override int UnlitItemID
-        {
-            get
-            {
-                return 0xA27;
-            }
-        }
+        public override int LitItemID => 0xB1D;
+        public override int UnlitItemID => 0xA27;
 
         [Constructable]
         public Candelabra()
@@ -37,9 +25,9 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write(1);
 
-            writer.Write(this.m_IsShipwreckedItem);
+            writer.Write(m_IsShipwreckedItem);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -51,7 +39,7 @@ namespace Server.Items
             {
                 case 1:
                     {
-                        this.m_IsShipwreckedItem = reader.ReadBool();
+                        m_IsShipwreckedItem = reader.ReadBool();
                         break;
                     }
             }
@@ -61,7 +49,7 @@ namespace Server.Items
         {
             base.AddNameProperties(list);
 
-            if (this.m_IsShipwreckedItem)
+            if (m_IsShipwreckedItem)
                 list.Add(1041645); // recovered from a shipwreck
         }
 
@@ -74,11 +62,11 @@ namespace Server.Items
         {
             get
             {
-                return this.m_IsShipwreckedItem;
+                return m_IsShipwreckedItem;
             }
             set
             {
-                this.m_IsShipwreckedItem = value;
+                m_IsShipwreckedItem = value;
             }
         }
         #endregion

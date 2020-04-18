@@ -71,7 +71,7 @@ namespace Server.Items
                             pillar.Type = PillarType.Three;
                     }
 
-                    this.TypeRestart = TimeSpan.FromHours(24.0); // The timers rotate among the three stone ruins randomly once a day
+                    TypeRestart = TimeSpan.FromHours(24.0); // The timers rotate among the three stone ruins randomly once a day
                 }
 
                 return ts;
@@ -194,13 +194,13 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
-            writer.Write((Mobile)m_Navrey);
+            writer.Write(m_Navrey);
 
-            writer.Write((Item)m_Pillars[0]);
-            writer.Write((Item)m_Pillars[1]);
-            writer.Write((Item)m_Pillars[2]);
+            writer.Write(m_Pillars[0]);
+            writer.Write(m_Pillars[1]);
+            writer.Write(m_Pillars[2]);
 
             writer.Write(TypeRestart);
         }

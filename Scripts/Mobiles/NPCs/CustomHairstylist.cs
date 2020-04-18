@@ -99,11 +99,11 @@ namespace Server.Mobiles
             : base(serial)
         { }
 
-        public override bool ClickTitle { get { return false; } }
-        public override bool IsActiveBuyer { get { return false; } }
-        public override bool IsActiveSeller { get { return true; } }
-        public override VendorShoeType ShoeType { get { return Utility.RandomBool() ? VendorShoeType.Shoes : VendorShoeType.Sandals; } }
-        protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }
+        public override bool ClickTitle => false;
+        public override bool IsActiveBuyer => false;
+        public override bool IsActiveSeller => true;
+        public override VendorShoeType ShoeType => Utility.RandomBool() ? VendorShoeType.Shoes : VendorShoeType.Sandals;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
 
         public override bool OnBuyItems(Mobile buyer, List<BuyItemResponse> list)
         {
@@ -187,12 +187,12 @@ namespace Server.Mobiles
             m_GumpArgs = args;
         }
 
-        public int Title { get { return m_Title; } }
-        public string TitleString { get { return m_TitleString; } }
-        public int Price { get { return m_Price; } }
-        public bool FacialHair { get { return m_FacialHair; } }
-        public Type GumpType { get { return m_GumpType; } }
-        public object[] GumpArgs { get { return m_GumpArgs; } }
+        public int Title => m_Title;
+        public string TitleString => m_TitleString;
+        public int Price => m_Price;
+        public bool FacialHair => m_FacialHair;
+        public Type GumpType => m_GumpType;
+        public object[] GumpArgs => m_GumpArgs;
     }
 
     public class HairstylistBuyGump : Gump
@@ -272,8 +272,8 @@ namespace Server.Mobiles
                 {
                     try
                     {
-                        var origArgs = buyInfo.GumpArgs;
-                        var args = new object[origArgs.Length];
+                        object[] origArgs = buyInfo.GumpArgs;
+                        object[] args = new object[origArgs.Length];
 
                         for (int i = 0; i < args.Length; ++i)
                         {
@@ -352,8 +352,8 @@ namespace Server.Mobiles
             }
         }
 
-        public string Name { get { return m_Name; } }
-        public int[] Hues { get { return m_Hues; } }
+        public string Name => m_Name;
+        public int[] Hues => m_Hues;
     }
 
     public class ChangeHairHueGump : Gump
@@ -401,7 +401,7 @@ namespace Server.Mobiles
             for (int i = 0; i < entries.Length; ++i)
             {
                 ChangeHairHueEntry entry = entries[i];
-                var hues = entry.Hues;
+                int[] hues = entry.Hues;
                 string name = entry.Name;
 
                 AddPage(1 + i);
@@ -418,7 +418,7 @@ namespace Server.Mobiles
         {
             if (info.ButtonID == 1)
             {
-                var switches = info.Switches;
+                int[] switches = info.Switches;
 
                 if (switches.Length > 0)
                 {
@@ -556,12 +556,12 @@ namespace Server.Mobiles
         private readonly int m_GumpID_Female;
         private readonly int m_X, m_Y;
 
-        public int ItemID_Male { get { return m_ItemID_Male; } }
-        public int ItemID_Female { get { return m_ItemID_Female; } }
-        public int GumpID_Male { get { return m_GumpID_Male; } }
-        public int GumpID_Female { get { return m_GumpID_Female; } }
-        public int X { get { return m_X; } }
-        public int Y { get { return m_Y; } }
+        public int ItemID_Male => m_ItemID_Male;
+        public int ItemID_Female => m_ItemID_Female;
+        public int GumpID_Male => m_GumpID_Male;
+        public int GumpID_Female => m_GumpID_Female;
+        public int X => m_X;
+        public int Y => m_Y;
 
         public ChangeHairstyleEntry(int gumpID, int x, int y, int itemID)
             : this(gumpID, gumpID, x, y, itemID, itemID)
@@ -686,7 +686,7 @@ namespace Server.Mobiles
             {
                 if (info.ButtonID == 1)
                 {
-                    var switches = info.Switches;
+                    int[] switches = info.Switches;
 
                     if (switches.Length > 0)
                     {

@@ -11,7 +11,7 @@ namespace Server.Engines.VeteranRewards
 {
     public class DaviesLockerAddon : BaseAddon, ISecurable
     {
-        public override BaseAddonDeed Deed { get { return new DaviesLockerAddonDeed(Entries); } }
+        public override BaseAddonDeed Deed => new DaviesLockerAddonDeed(Entries);
 
         public List<DaviesLockerEntry> Entries { get; private set; } = new List<DaviesLockerEntry>();
 
@@ -139,12 +139,12 @@ namespace Server.Engines.VeteranRewards
             foreach (DaviesLockerEntry entry in Entries)
             {
                 if (entry is SOSEntry)
-                    writer.Write((int)0);
+                    writer.Write(0);
                 else if (entry is TreasureMapEntry)
-                    writer.Write((int)1);
+                    writer.Write(1);
                 else
                 {
-                    writer.Write((int)2);
+                    writer.Write(2);
                     continue;
                 }
 
@@ -180,7 +180,7 @@ namespace Server.Engines.VeteranRewards
 
         public class DaviesLockerComponent : LocalizedAddonComponent
         {
-            public override bool ForceShowProperties { get { return true; } }
+            public override bool ForceShowProperties => true;
 
             public DaviesLockerComponent(int id)
                 : base(id, 1153534) // Davies' Locker
@@ -234,8 +234,8 @@ namespace Server.Engines.VeteranRewards
 
     public class DaviesLockerAddonDeed : BaseAddonDeed, IRewardOption
     {
-        public override BaseAddon Addon { get { return new DaviesLockerAddon(South, Entries); } }
-        public override int LabelNumber { get { return 1153535; } } // Deed to Davies' Locker
+        public override BaseAddon Addon => new DaviesLockerAddon(South, Entries);
+        public override int LabelNumber => 1153535;  // Deed to Davies' Locker
 
         public List<DaviesLockerEntry> Entries { get; private set; }
 
@@ -308,12 +308,12 @@ namespace Server.Engines.VeteranRewards
             foreach (DaviesLockerEntry entry in Entries)
             {
                 if (entry is SOSEntry)
-                    writer.Write((int)0);
+                    writer.Write(0);
                 else if (entry is TreasureMapEntry)
-                    writer.Write((int)1);
+                    writer.Write(1);
                 else
                 {
-                    writer.Write((int)2);
+                    writer.Write(2);
                     continue;
                 }
 
@@ -379,7 +379,7 @@ namespace Server.Engines.VeteranRewards
 
         public virtual void Serialize(GenericWriter writer)
         {
-            writer.Write((int)1);
+            writer.Write(1);
 
             writer.Write(QuestItem);
 
@@ -430,7 +430,7 @@ namespace Server.Engines.VeteranRewards
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write(IsAncient);
             writer.Write(MessageIndex);
@@ -485,7 +485,7 @@ namespace Server.Engines.VeteranRewards
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write(1);
 
             writer.Write((int)Package);
 
@@ -530,7 +530,7 @@ namespace Server.Engines.VeteranRewards
             AddHtmlLocalized(473, 40, 110, 20, 1153558, Blue, false, false); // <DIV ALIGN="CENTER">Status</DIV>
 
             int perPage = 10;
-            int totalPages = (int)Math.Ceiling((double)m_List.Count / 10.0);
+            int totalPages = (int)Math.Ceiling(m_List.Count / 10.0);
 
             if (totalPages < 1)
                 totalPages = 1;

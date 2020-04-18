@@ -41,59 +41,23 @@ namespace Server.Mobiles
         {
         }
 
-        public override double DispelDifficulty
-        {
-            get
-            {
-                return 125.0;
-            }
-        }
-        public override double DispelFocus
-        {
-            get
-            {
-                return 45.0;
-            }
-        }
-        public override bool CanRummageCorpses
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Regular;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 4;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
+        public override double DispelDifficulty => 125.0;
+        public override double DispelFocus => 45.0;
+        public override bool CanRummageCorpses => true;
+        public override Poison PoisonImmune => Poison.Regular;
+        public override int TreasureMapLevel => 4;
+        public override int Meat => 1;
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich);
-            this.AddLoot(LootPack.Average, 2);
-            this.AddLoot(LootPack.MedScrolls, 2);
+            AddLoot(LootPack.Rich);
+            AddLoot(LootPack.Average, 2);
+            AddLoot(LootPack.MedScrolls, 2);
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

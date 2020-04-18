@@ -5,7 +5,7 @@ namespace Server.Multis
     public class BoatMountItem : Item, IMountItem
     {
         private BaseBoat m_Mount;
-        public IMount Mount { get { return m_Mount; } }
+        public IMount Mount => m_Mount;
 
         public BoatMountItem(BaseBoat mount) : base(0x3E96)
         {
@@ -24,9 +24,9 @@ namespace Server.Multis
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
-            writer.Write((Item)m_Mount);
+            writer.Write(m_Mount);
         }
 
         public override void Deserialize(GenericReader reader)

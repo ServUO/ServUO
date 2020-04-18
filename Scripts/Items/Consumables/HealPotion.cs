@@ -13,32 +13,14 @@ namespace Server.Items
         {
         }
 
-        public override int MinHeal
-        {
-            get
-            {
-                return 13;
-            }
-        }
-        public override int MaxHeal
-        {
-            get
-            {
-                return 16;
-            }
-        }
-        public override double Delay
-        {
-            get
-            {
-                return 8.0;
-            }
-        }
+        public override int MinHeal => 13;
+        public override int MaxHeal => 16;
+        public override double Delay => 8.0;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

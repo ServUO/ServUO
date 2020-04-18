@@ -6,8 +6,8 @@ namespace Server.Mobiles
 {
     public class GBBigglesby : BaseVendor
     {
-        public override bool IsActiveVendor { get { return false; } }
-        protected override List<SBInfo> SBInfos { get { return new List<SBInfo>(); } }
+        public override bool IsActiveVendor => false;
+        protected override List<SBInfo> SBInfos => new List<SBInfo>();
 
         public override void InitSBInfo()
         {
@@ -72,7 +72,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

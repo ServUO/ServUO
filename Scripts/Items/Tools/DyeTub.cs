@@ -30,13 +30,13 @@ namespace Server.Items
         {
         }
 
-        public virtual CustomHuePicker CustomHuePicker { get { return null; } }
-        public virtual bool AllowRunebooks { get { return false; } }
-        public virtual bool AllowFurniture { get { return false; } }
-        public virtual bool AllowStatuettes { get { return false; } }
-        public virtual bool AllowLeather { get { return false; } }
-        public virtual bool AllowDyables { get { return true; } }
-        public virtual bool AllowMetal { get { return false; } }
+        public virtual CustomHuePicker CustomHuePicker => null;
+        public virtual bool AllowRunebooks => false;
+        public virtual bool AllowFurniture => false;
+        public virtual bool AllowStatuettes => false;
+        public virtual bool AllowLeather => false;
+        public virtual bool AllowDyables => true;
+        public virtual bool AllowMetal => false;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Redyable
@@ -66,17 +66,17 @@ namespace Server.Items
             set { m_SecureLevel = value; }
         }
 
-        public virtual int TargetMessage { get { return 500859; } } // Select the clothing to dye.        
-        public virtual int FailMessage { get { return 1042083; } } // You can not dye that.
+        public virtual int TargetMessage => 500859;  // Select the clothing to dye.        
+        public virtual int FailMessage => 1042083;  // You can not dye that.
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
             writer.Write((int)m_SecureLevel);
-            writer.Write((bool)m_Redyable);
-            writer.Write((int)m_DyedHue);
+            writer.Write(m_Redyable);
+            writer.Write(m_DyedHue);
         }
 
         public override void Deserialize(GenericReader reader)

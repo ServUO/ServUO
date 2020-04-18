@@ -9,7 +9,7 @@ namespace Server.Mobiles
         public Waiter()
             : base("the waiter")
         {
-            this.SetSkill(SkillName.Discordance, 36.0, 68.0);
+            SetSkill(SkillName.Discordance, 36.0, 68.0);
         }
 
         public Waiter(Serial serial)
@@ -17,30 +17,24 @@ namespace Server.Mobiles
         {
         }
 
-        protected override List<SBInfo> SBInfos
-        {
-            get
-            {
-                return this.m_SBInfos;
-            }
-        }
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBWaiter());
+            m_SBInfos.Add(new SBWaiter());
         }
 
         public override void InitOutfit()
         {
             base.InitOutfit();
 
-            this.AddItem(new Server.Items.HalfApron());
+            AddItem(new Server.Items.HalfApron());
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

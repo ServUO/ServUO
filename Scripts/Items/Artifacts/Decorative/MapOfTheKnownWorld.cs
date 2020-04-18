@@ -11,7 +11,7 @@ namespace Server.Items
     {
         private SecureLevel m_Level;
 
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public SecureLevel Level
@@ -64,7 +64,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
 
             writer.WriteEncodedInt((int)m_Level);
         }

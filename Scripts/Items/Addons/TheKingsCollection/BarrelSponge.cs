@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class BarrelSpongeAddon : BaseAddon, IDyable
     {
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime NextResourceCount { get; set; }
@@ -80,7 +80,7 @@ namespace Server.Items
             }
         }
 
-        public override BaseAddonDeed Deed { get { return new BarrelSpongeDeed(); } }
+        public override BaseAddonDeed Deed => new BarrelSpongeDeed();
 
         private class BarrelSpongeComponent : LocalizedAddonComponent
         {
@@ -131,7 +131,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             TryGiveResourceCount();
 
@@ -151,7 +151,7 @@ namespace Server.Items
 
     public class BarrelSpongeDeed : BaseAddonDeed
     {
-        public override int LabelNumber { get { return 1098376; } } // Barrel Sponge
+        public override int LabelNumber => 1098376;  // Barrel Sponge
 
         [Constructable]
         public BarrelSpongeDeed()
@@ -164,12 +164,12 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon { get { return new BarrelSpongeAddon(); } }
+        public override BaseAddon Addon => new BarrelSpongeAddon();
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

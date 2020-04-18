@@ -4,10 +4,10 @@ namespace Server.Mobiles
 {
     public class Kevin : HumilityQuestMobile
     {
-        public override int Greeting { get { return 1075759; } }
+        public override int Greeting => 1075759;
 
-        public override bool IsActiveVendor { get { return true; } }
-        public override bool CanTeach { get { return true; } }
+        public override bool IsActiveVendor => true;
+        public override bool CanTeach => true;
 
         [Constructable]
         public Kevin()
@@ -28,15 +28,15 @@ namespace Server.Mobiles
 
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.Race = Race.Human;
-            this.Body = 0x190;
+            Female = false;
+            Race = Race.Human;
+            Body = 0x190;
 
-            this.Hue = Race.RandomSkinHue();
-            this.HairItemID = Race.RandomHair(false);
-            this.HairHue = Race.RandomHairHue();
+            Hue = Race.RandomSkinHue();
+            HairItemID = Race.RandomHair(false);
+            HairHue = Race.RandomHairHue();
         }
 
         public override void InitOutfit()
@@ -51,7 +51,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

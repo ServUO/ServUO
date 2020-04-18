@@ -7,7 +7,7 @@ namespace Server.Items
         public DressformFront()
             : base(0xec6)
         {
-            this.Weight = 10;
+            Weight = 10;
         }
 
         public DressformFront(Serial serial)
@@ -18,7 +18,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -45,7 +45,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

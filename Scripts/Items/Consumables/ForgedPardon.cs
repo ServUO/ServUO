@@ -5,10 +5,10 @@ namespace Server.Items
 {
     public class ForgedPardon : Item
     {
-        public static Dictionary<Mobile, DateTime> Table { get { return m_Table; } }
+        public static Dictionary<Mobile, DateTime> Table => m_Table;
         private static readonly Dictionary<Mobile, DateTime> m_Table = new Dictionary<Mobile, DateTime>();
 
-        public override int LabelNumber { get { return 1116234; } }
+        public override int LabelNumber => 1116234;
 
         [Constructable]
         public ForgedPardon()
@@ -70,7 +70,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -81,7 +81,7 @@ namespace Server.Items
 
         public static void Save(GenericWriter writer)
         {
-            writer.Write((int)0);
+            writer.Write(0);
 
             Defrag();
             writer.Write(m_Table.Count);

@@ -6,8 +6,8 @@ namespace Server.Items
         public DryadsBlessing()
             : base(0x21C)
         {
-            this.Weight = 1.0;
-            this.Hue = 0x488; // TOOD check
+            Weight = 1.0;
+            Hue = 0x488; // TOOD check
         }
 
         public DryadsBlessing(Serial serial)
@@ -19,7 +19,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

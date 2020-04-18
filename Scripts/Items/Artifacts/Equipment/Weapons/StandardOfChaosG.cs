@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class StandardOfChaosG : DualPointedSpear
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1113522; } } // Standard of Chaos
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113522;  // Standard of Chaos
 
         [Constructable]
         public StandardOfChaosG()
@@ -25,26 +25,14 @@ namespace Server.Items
         }
 
         //TODO: DoubleBladedSpear
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

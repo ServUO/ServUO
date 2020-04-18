@@ -53,27 +53,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool BleedImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool CanRummageCorpses
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 4;
-            }
-        }
+        public override bool BleedImmune => true;
+        public override bool CanRummageCorpses => true;
+        public override int TreasureMapLevel => 4;
         public override int GetDeathSound()
         {
             return 0x370;
@@ -88,7 +70,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

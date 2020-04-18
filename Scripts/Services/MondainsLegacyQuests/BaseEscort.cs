@@ -106,7 +106,7 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             writer.Write(m_DeleteTimer != null);
 
@@ -363,7 +363,7 @@ namespace Server.Engines.Quests
             }
             else if (!m_Checked)
             {
-                var region = GetDestination();
+                string region = GetDestination();
 
                 if (region != null && Region.IsPartOf(region))
                 {
@@ -397,7 +397,7 @@ namespace Server.Engines.Quests
         {
             PlayerMobile pm = owner as PlayerMobile;
 
-            foreach (var escortquest in pm.Quests.Where(x => x.Quester is BaseEscort))
+            foreach (BaseQuest escortquest in pm.Quests.Where(x => x.Quester is BaseEscort))
             {
                 BaseEscort escort = (BaseEscort)escortquest.Quester;
 

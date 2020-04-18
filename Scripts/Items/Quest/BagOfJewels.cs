@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class BagOfJewels : Item
     {
-        public override int LabelNumber { get { return 1075307; } } // Bag of Jewels
-        public override bool HiddenQuestItemHue { get { return true; } }
+        public override int LabelNumber => 1075307;  // Bag of Jewels
+        public override bool HiddenQuestItemHue => true;
 
         [Constructable]
         public BagOfJewels()
@@ -29,7 +29,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

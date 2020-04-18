@@ -8,7 +8,7 @@ namespace Server.Items
         public ElvenAlchemyTable()
             : base(0x2DD3)
         {
-            this.Weight = 15.0;
+            Weight = 15.0;
         }
 
         public ElvenAlchemyTable(Serial serial)
@@ -16,18 +16,12 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1032407;
-            }
-        }// elven alchemy table
+        public override int LabelNumber => 1032407;// elven alchemy table
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

@@ -2,11 +2,11 @@
 {
     public class CharacterReincarnationToken : PromotionalToken
     {
-        public override TextDefinition ItemName { get { return 1156612; } } // Character Reincarnation
-        public override TextDefinition ItemReceiveMessage { get { return null; } }
-        public override TextDefinition ItemGumpName { get { return "<center>Character Reincarnation</center>"; } }
+        public override TextDefinition ItemName => 1156612;  // Character Reincarnation
+        public override TextDefinition ItemReceiveMessage => null;
+        public override TextDefinition ItemGumpName => "<center>Character Reincarnation</center>";
 
-        public override bool PlaceInBank { get { return false; } }
+        public override bool PlaceInBank => false;
 
         [Constructable]
         public CharacterReincarnationToken()
@@ -16,7 +16,7 @@
 
         public override Item CreateItemFor(Mobile from)
         {
-            var bag = new Bag();
+            Bag bag = new Bag();
 
             bag.DropItem(new GenderChangeToken());
             bag.DropItem(new NameChangeToken());

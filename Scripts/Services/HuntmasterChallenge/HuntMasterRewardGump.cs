@@ -17,7 +17,7 @@ namespace Server.Engines.HuntsmasterChallenge
             if (HuntingSystem.Instance == null)
                 return 0.0;
 
-            var sys = HuntingSystem.Instance;
+            HuntingSystem sys = HuntingSystem.Instance;
 
             if (sys.UnclaimedWinners.ContainsKey(m))
             {
@@ -39,7 +39,7 @@ namespace Server.Engines.HuntsmasterChallenge
             if (HuntingSystem.Instance == null)
                 return;
 
-            var sys = HuntingSystem.Instance;
+            HuntingSystem sys = HuntingSystem.Instance;
 
             if (sys.UnclaimedWinners.ContainsKey(User))
             {

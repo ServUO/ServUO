@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class LeggingsOfBane : ChainLegs
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public LeggingsOfBane()
         {
@@ -17,46 +17,16 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1061100;
-            }
-        }// Leggings of Bane
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 11;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 36;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int LabelNumber => 1061100;// Leggings of Bane
+        public override int ArtifactRarity => 11;
+        public override int BasePoisonResistance => 36;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)2);
+            writer.Write(2);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -67,19 +37,19 @@ namespace Server.Items
 
             if (version <= 1)
             {
-                if (this.HitPoints > 255 || this.MaxHitPoints > 255)
-                    this.HitPoints = this.MaxHitPoints = 255;
+                if (HitPoints > 255 || MaxHitPoints > 255)
+                    HitPoints = MaxHitPoints = 255;
             }
 
             if (version < 1)
             {
-                if (this.Hue == 0x559)
-                    this.Hue = 0x4F5;
+                if (Hue == 0x559)
+                    Hue = 0x4F5;
 
-                if (this.ArmorAttributes.DurabilityBonus == 0)
-                    this.ArmorAttributes.DurabilityBonus = 100;
+                if (ArmorAttributes.DurabilityBonus == 0)
+                    ArmorAttributes.DurabilityBonus = 100;
 
-                this.PoisonBonus = 0;
+                PoisonBonus = 0;
             }
         }
     }

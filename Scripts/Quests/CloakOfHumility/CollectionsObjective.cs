@@ -19,7 +19,7 @@ namespace Server.Engines.Quests
 
         public override bool Update(object o)
         {
-            if (this.Quest == null || this.Quest.Owner == null)
+            if (Quest == null || Quest.Owner == null)
                 return false;
 
             if (m_HasObtained)
@@ -51,7 +51,7 @@ namespace Server.Engines.Quests
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
             writer.Write(m_HasObtained);
         }
 

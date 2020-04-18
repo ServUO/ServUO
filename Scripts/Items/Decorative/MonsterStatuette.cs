@@ -87,7 +87,7 @@ namespace Server.Items
 
     public class MonsterStatuetteInfo
     {
-        public static MonsterStatuetteInfo[] Table { get { return m_Table; } }
+        public static MonsterStatuetteInfo[] Table => m_Table;
 
         private static readonly MonsterStatuetteInfo[] m_Table = new MonsterStatuetteInfo[]
         {
@@ -289,23 +289,11 @@ namespace Server.Items
             }
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return MonsterStatuetteInfo.GetInfo(m_Type).LabelNumber;
-            }
-        }
+        public override int LabelNumber => MonsterStatuetteInfo.GetInfo(m_Type).LabelNumber;
 
-        public override double DefaultWeight { get { return 1.0; } }
+        public override double DefaultWeight => 1.0;
 
-        public override bool HandlesOnMovement
-        {
-            get
-            {
-                return m_TurnedOn && IsLockedDown;
-            }
-        }
+        public override bool HandlesOnMovement => m_TurnedOn && IsLockedDown;
 
         #region IEngraveable
         private string m_EngravedText = string.Empty;
@@ -387,13 +375,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
             writer.Write(m_EngravedText);
 
             writer.WriteEncodedInt((int)m_Type);
-            writer.Write((bool)m_TurnedOn);
-            writer.Write((bool)IsRewardItem);
+            writer.Write(m_TurnedOn);
+            writer.Write(IsRewardItem);
         }
 
         public override void Deserialize(GenericReader reader)

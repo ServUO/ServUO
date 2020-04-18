@@ -123,7 +123,7 @@ namespace Server.Spells.SkillMasteries
         public SkillName MasterySkill { get; set; }
         public int NameLocalization { get; set; }
 
-        public bool Passive { get { return PassiveSpell != PassiveSpell.None; } }
+        public bool Passive => PassiveSpell != PassiveSpell.None;
         public PassiveSpell PassiveSpell { get; set; }
 
         public MasteryInfo(Type skillType, int spellID, SkillName masterySkill, PassiveSpell passive = PassiveSpell.None)
@@ -232,7 +232,7 @@ namespace Server.Spells.SkillMasteries
         {
             if (GetMasteryLevel(m, skill) < volume)
             {
-                m.Skills[skill].LearnMastery((int)volume);
+                m.Skills[skill].LearnMastery(volume);
                 return true;
             }
 
@@ -386,7 +386,7 @@ namespace Server.Spells.SkillMasteries
         {
             Mobile m = e.Mobile;
 
-            if ((int)m.Skills.CurrentMastery > 0)
+            if (m.Skills.CurrentMastery > 0)
                 OnMasteryChanged(m, m.Skills.CurrentMastery);
         }
 
@@ -480,7 +480,7 @@ namespace Server.Spells.SkillMasteries
             {
                 SkillName sk = m.Skills.CurrentMastery;
 
-                return (int)((GetMasteryLevel(m, sk) * 40) / 8);
+                return (GetMasteryLevel(m, sk) * 40) / 8;
             }
 
             return 0;
@@ -548,7 +548,7 @@ namespace Server.Spells.SkillMasteries
         #endregion
 
         #region Mastery Skills
-        public static SkillName[] Skills { get { return _Skills; } }
+        public static SkillName[] Skills => _Skills;
 
         private static readonly SkillName[] _Skills =
         {

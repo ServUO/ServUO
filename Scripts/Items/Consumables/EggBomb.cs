@@ -19,10 +19,10 @@ namespace Server.Items
             : base(serial)
         { }
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
-        public override int LabelNumber { get { return 1030249; } }
+        public override int LabelNumber => 1030249;
 
         public override void OnDoubleClick(Mobile from)
         {

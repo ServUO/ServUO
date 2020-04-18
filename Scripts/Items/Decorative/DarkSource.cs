@@ -6,8 +6,8 @@ namespace Server.Items
         public DarkSource()
             : base(0x1646)
         {
-            this.Layer = Layer.TwoHanded;
-            this.Movable = false;
+            Layer = Layer.TwoHanded;
+            Movable = false;
         }
 
         public DarkSource(Serial serial)
@@ -18,7 +18,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

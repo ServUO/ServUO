@@ -3,7 +3,7 @@ namespace Server.Items
     [Flipable(0xA4EA, 0xA4EB)]
     public class DecorativeDungeonChair : Item
     {
-        public override int LabelNumber { get { return 1159470; } } // decorative dungeon chair
+        public override int LabelNumber => 1159470;  // decorative dungeon chair
 
         [Constructable]
         public DecorativeDungeonChair()
@@ -21,7 +21,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

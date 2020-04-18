@@ -6,15 +6,15 @@ namespace Server.Engines.CityLoyalty
 {
     public class CityBanner : InterchangeableAddon
     {
-        public override BaseAddonDeed Deed { get { return new CityBannerDeed(City); } }
+        public override BaseAddonDeed Deed => new CityBannerDeed(City);
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public City City { get; private set; }
 
-        public override int EastID { get { return SouthID + 9; } }
-        public override int SouthID { get { return BannerInfo[City][0]; } }
+        public override int EastID => SouthID + 9;
+        public override int SouthID => BannerInfo[City][0];
 
         [Constructable]
         public CityBanner(City city)
@@ -63,12 +63,12 @@ namespace Server.Engines.CityLoyalty
 
     public class CityBannerDeed : InterchangeableAddonDeed
     {
-        public override BaseAddon Addon { get { return new CityBanner(City); } }
+        public override BaseAddon Addon => new CityBanner(City);
 
-        public override int LabelNumber { get { return CityBanner.BannerInfo[City][1]; } }
+        public override int LabelNumber => CityBanner.BannerInfo[City][1];
 
-        public override int EastID { get { return SouthID + 9; } }
-        public override int SouthID { get { return CityBanner.BannerInfo[City][0]; } }
+        public override int EastID => SouthID + 9;
+        public override int SouthID => CityBanner.BannerInfo[City][0];
 
         [CommandProperty(AccessLevel.GameMaster)]
         public City City { get; private set; }
@@ -85,14 +85,14 @@ namespace Server.Engines.CityLoyalty
         {
             if (IsChildOf(from.Backpack))
             {
-                CityLoyaltySystem sys = CityLoyaltySystem.GetCityInstance(this.City);
+                CityLoyaltySystem sys = CityLoyaltySystem.GetCityInstance(City);
 
-                if (CityLoyaltySystem.HasCitizenship(from, this.City) && sys.GetLoyaltyRating(from) >= LoyaltyRating.Commended)
+                if (CityLoyaltySystem.HasCitizenship(from, City) && sys.GetLoyaltyRating(from) >= LoyaltyRating.Commended)
                 {
                     base.OnDoubleClick(from);
                 }
                 else
-                    from.SendLocalizedMessage(1152361, String.Format("#{0}", CityLoyaltySystem.GetCityLocalization(this.City))); // You are not sufficiently loyal to ~1_CITY~ to use this.
+                    from.SendLocalizedMessage(1152361, String.Format("#{0}", CityLoyaltySystem.GetCityLocalization(City))); // You are not sufficiently loyal to ~1_CITY~ to use this.
             }
         }
 

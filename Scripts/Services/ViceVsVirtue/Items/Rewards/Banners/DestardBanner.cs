@@ -6,13 +6,7 @@ namespace Server.Engines.VvV
     [FlipableAttribute(39341, 39342)]
     public class DestardBanner : Item
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1123365;
-            }
-        }
+        public override int LabelNumber => 1123365;
 
         [Constructable]
         public DestardBanner()
@@ -22,7 +16,7 @@ namespace Server.Engines.VvV
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (m.InRange(this.GetWorldLocation(), 2))
+            if (m.InRange(GetWorldLocation(), 2))
             {
                 Gump g = new Gump(50, 50);
                 g.AddImage(0, 0, 30570);

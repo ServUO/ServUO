@@ -5,12 +5,12 @@ namespace Server.Items
 {
     public class DeathCertificate : Item
     {
-        public override int LabelNumber { get { return 1116716; } }
+        public override int LabelNumber => 1116716;
 
         private string m_Owner;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public string Owner { get { return m_Owner; } }
+        public string Owner => m_Owner;
 
         public DeathCertificate(Mobile owner)
             : base(0x14F0)
@@ -44,7 +44,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
             writer.Write(m_Owner);
         }
 

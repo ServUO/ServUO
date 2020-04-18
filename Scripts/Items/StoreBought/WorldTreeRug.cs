@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class SmallWorldTreeRugAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new SmallWorldTreeRugAddonDeed(); } }
+        public override BaseAddonDeed Deed => new SmallWorldTreeRugAddonDeed();
 
         [Constructable]
         public SmallWorldTreeRugAddon()
@@ -50,7 +50,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -63,8 +63,8 @@ namespace Server.Items
 
     public class SmallWorldTreeRugAddonDeed : BaseAddonDeed, IRewardOption
     {
-        public override BaseAddon Addon { get { return new SmallWorldTreeRugAddon(m_South); } }
-        public override int LabelNumber { get { return 1157206; } } // Small World Tree
+        public override BaseAddon Addon => new SmallWorldTreeRugAddon(m_South);
+        public override int LabelNumber => 1157206;  // Small World Tree
 
         [Constructable]
         public SmallWorldTreeRugAddonDeed()
@@ -74,10 +74,7 @@ namespace Server.Items
         private bool m_South;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool South
-        {
-            get { return m_South; }
-        }
+        public bool South => m_South;
 
         public void GetOptions(RewardOptionList list)
         {
@@ -113,7 +110,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -126,7 +123,7 @@ namespace Server.Items
 
     public class LargeWorldTreeRugAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new LargeWorldTreeRugAddonDeed(); } }
+        public override BaseAddonDeed Deed => new LargeWorldTreeRugAddonDeed();
 
         [Constructable]
         public LargeWorldTreeRugAddon()
@@ -182,7 +179,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -195,16 +192,13 @@ namespace Server.Items
 
     public class LargeWorldTreeRugAddonDeed : BaseAddonDeed, IRewardOption
     {
-        public override BaseAddon Addon { get { return new LargeWorldTreeRugAddon(m_South); } }
-        public override int LabelNumber { get { return 1157207; } } // Large World Tree
+        public override BaseAddon Addon => new LargeWorldTreeRugAddon(m_South);
+        public override int LabelNumber => 1157207;  // Large World Tree
 
         private bool m_South;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool South
-        {
-            get { return m_South; }
-        }
+        public bool South => m_South;
 
         public void GetOptions(RewardOptionList list)
         {
@@ -245,7 +239,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

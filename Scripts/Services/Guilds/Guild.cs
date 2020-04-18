@@ -48,17 +48,17 @@ namespace Server.Guilds
 			new RankDefinition(1062959, 4, RankFlags.All) //Leader
 		};
 
-        public static RankDefinition Leader { get { return Ranks[4]; } }
-        public static RankDefinition Member { get { return Ranks[1]; } }
-        public static RankDefinition Lowest { get { return Ranks[0]; } }
+        public static RankDefinition Leader => Ranks[4];
+        public static RankDefinition Member => Ranks[1];
+        public static RankDefinition Lowest => Ranks[0];
 
         private readonly TextDefinition m_Name;
         private readonly int m_Rank;
         private RankFlags m_Flags;
 
-        public TextDefinition Name { get { return m_Name; } }
-        public int Rank { get { return m_Rank; } }
-        public RankFlags Flags { get { return m_Flags; } }
+        public TextDefinition Name => m_Name;
+        public int Rank => m_Rank;
+        public RankFlags Flags => m_Flags;
 
         public RankDefinition(TextDefinition name, int rank, RankFlags flags)
         {
@@ -91,14 +91,14 @@ namespace Server.Guilds
     {
         private static readonly Dictionary<string, AllianceInfo> m_Alliances = new Dictionary<string, AllianceInfo>();
 
-        public static Dictionary<string, AllianceInfo> Alliances { get { return m_Alliances; } }
+        public static Dictionary<string, AllianceInfo> Alliances => m_Alliances;
 
         private readonly string m_Name;
         private Guild m_Leader;
         private readonly List<Guild> m_Members;
         private readonly List<Guild> m_PendingMembers;
 
-        public string Name { get { return m_Name; } }
+        public string Name => m_Name;
 
         public void CalculateAllianceLeader()
         {
@@ -141,10 +141,7 @@ namespace Server.Guilds
             }
         }
 
-        public List<Guild> Members
-        {
-            get { return m_Members; }
-        }
+        public List<Guild> Members => m_Members;
 
         public bool IsPendingMember(Guild g)
         {
@@ -435,7 +432,7 @@ namespace Server.Guilds
 
         public class AllianceRosterGump : GuildDiplomacyGump
         {
-            protected override bool AllowAdvancedSearch { get { return false; } }
+            protected override bool AllowAdvancedSearch => false;
 
             private readonly AllianceInfo m_Alliance;
 
@@ -501,8 +498,8 @@ namespace Server.Guilds
         public int Kills { get { return m_Kills; } set { m_Kills = value; } }
         public int MaxKills { get { return m_MaxKills; } set { m_MaxKills = value; } }
         public TimeSpan WarLength { get { return m_WarLength; } set { m_WarLength = value; } }
-        public Guild Opponent { get { return m_Opponent; } }
-        public Guild Guild { get { return m_Guild; } }
+        public Guild Opponent => m_Opponent;
+        public Guild Guild => m_Guild;
         public DateTime WarBeginning { get { return m_WarBeginning; } set { m_WarBeginning = value; } }
         public bool WarRequester { get { return m_WarRequester; } set { m_WarRequester = value; } }
 
@@ -895,8 +892,8 @@ namespace Server.Guilds
         #endregion
 
         #region New Wars
-        public List<WarDeclaration> PendingWars { get { return m_PendingWars; } }
-        public List<WarDeclaration> AcceptedWars { get { return m_AcceptedWars; } }
+        public List<WarDeclaration> PendingWars => m_PendingWars;
+        public List<WarDeclaration> AcceptedWars => m_AcceptedWars;
 
         public WarDeclaration FindPendingWar(Guild g)
         {
@@ -1210,7 +1207,7 @@ namespace Server.Guilds
             }
         }
 
-        public override bool Disbanded { get { return (m_Leader == null || m_Leader.Deleted); } }
+        public override bool Disbanded => (m_Leader == null || m_Leader.Deleted);
 
         public override void OnDelete(Mobile mob)
         {
@@ -1778,7 +1775,7 @@ namespace Server.Guilds
 
         public void CalculateGuildmaster()
         {
-            var votes = new Dictionary<Mobile, int>();
+            Dictionary<Mobile, int> votes = new Dictionary<Mobile, int>();
 
             int votingMembers = 0;
 
@@ -1827,7 +1824,7 @@ namespace Server.Guilds
             Mobile winner = null;
             int highVotes = 0;
 
-            foreach (var kvp in votes)
+            foreach (KeyValuePair<Mobile, int> kvp in votes)
             {
                 Mobile m = kvp.Key;
                 int val = kvp.Value;
@@ -1906,29 +1903,29 @@ namespace Server.Guilds
         public DateTime LastFealty { get { return m_LastFealty; } set { m_LastFealty = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime TypeLastChange { get { return m_TypeLastChange; } }
+        public DateTime TypeLastChange => m_TypeLastChange;
 
-        public List<Guild> Allies { get { return m_Allies; } }
+        public List<Guild> Allies => m_Allies;
 
-        public List<Guild> Enemies { get { return m_Enemies; } }
+        public List<Guild> Enemies => m_Enemies;
 
-        public List<Guild> AllyDeclarations { get { return m_AllyDeclarations; } }
+        public List<Guild> AllyDeclarations => m_AllyDeclarations;
 
-        public List<Guild> AllyInvitations { get { return m_AllyInvitations; } }
+        public List<Guild> AllyInvitations => m_AllyInvitations;
 
-        public List<Guild> WarDeclarations { get { return m_WarDeclarations; } }
+        public List<Guild> WarDeclarations => m_WarDeclarations;
 
-        public List<Guild> WarInvitations { get { return m_WarInvitations; } }
+        public List<Guild> WarInvitations => m_WarInvitations;
 
-        public List<Mobile> Candidates { get { return m_Candidates; } }
+        public List<Mobile> Candidates => m_Candidates;
 
-        public List<Mobile> Accepted { get { return m_Accepted; } }
+        public List<Mobile> Accepted => m_Accepted;
 
-        public List<Mobile> Members { get { return m_Members; } }
+        public List<Mobile> Members => m_Members;
 
-        public IEnumerable<Mobile> OnlineMembers { get { return m_Members.Where(o => o.NetState != null && o.NetState.Running); } }
+        public IEnumerable<Mobile> OnlineMembers => m_Members.Where(o => o.NetState != null && o.NetState.Running);
 
-        public int OnlineMembersCount { get { return m_Members.Count(o => o.NetState != null && o.NetState.Running); } }
+        public int OnlineMembersCount => m_Members.Count(o => o.NetState != null && o.NetState.Running);
         #endregion
     }
 }

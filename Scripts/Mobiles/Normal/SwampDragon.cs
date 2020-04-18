@@ -198,62 +198,14 @@ namespace Server.Mobiles
             return base.GetResistance(type) + CalculateBardingResistance(type);
         }
 
-        public override bool ReacquireOnMovement
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool AutoDispel
-        {
-            get
-            {
-                return !Controlled;
-            }
-        }
-        public override FoodType FavoriteFood
-        {
-            get
-            {
-                return FoodType.Meat;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 19;
-            }
-        }
-        public override int Hides
-        {
-            get
-            {
-                return 20;
-            }
-        }
-        public override int Scales
-        {
-            get
-            {
-                return 5;
-            }
-        }
-        public override ScaleType ScaleType
-        {
-            get
-            {
-                return ScaleType.Green;
-            }
-        }
-        public override bool CanAngerOnTame
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool ReacquireOnMovement => true;
+        public override bool AutoDispel => !Controlled;
+        public override FoodType FavoriteFood => FoodType.Meat;
+        public override int Meat => 19;
+        public override int Hides => 20;
+        public override int Scales => 5;
+        public override ScaleType ScaleType => ScaleType.Green;
+        public override bool CanAngerOnTame => true;
         public override bool OverrideBondingReqs()
         {
             return true;
@@ -281,7 +233,7 @@ namespace Server.Mobiles
 
         public override double GetControlChance(Mobile m, bool useBaseSkill)
         {
-            var profile = PetTrainingHelper.GetAbilityProfile(this);
+            AbilityProfile profile = PetTrainingHelper.GetAbilityProfile(this);
 
             if (profile != null && profile.HasCustomized())
             {
@@ -341,12 +293,12 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
-            writer.Write((bool)m_BardingExceptional);
-            writer.Write((Mobile)m_BardingCrafter);
-            writer.Write((bool)m_HasBarding);
-            writer.Write((int)m_BardingHP);
+            writer.Write(m_BardingExceptional);
+            writer.Write(m_BardingCrafter);
+            writer.Write(m_HasBarding);
+            writer.Write(m_BardingHP);
             writer.Write((int)m_BardingResource);
         }
 

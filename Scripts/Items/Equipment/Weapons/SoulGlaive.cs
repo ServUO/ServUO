@@ -15,73 +15,25 @@ namespace Server.Items
         {
         }
 
-        public override int MinThrowRange { get { return 8; } }
+        public override int MinThrowRange => 8;
 
-        public override WeaponAbility PrimaryAbility
-        {
-            get
-            {
-                return WeaponAbility.ArmorIgnore;
-            }
-        }
-        public override WeaponAbility SecondaryAbility
-        {
-            get
-            {
-                return WeaponAbility.MortalStrike;
-            }
-        }
-        public override int StrengthReq
-        {
-            get
-            {
-                return 60;
-            }
-        }
-        public override int MinDamage
-        {
-            get
-            {
-                return 16;
-            }
-        }
-        public override int MaxDamage
-        {
-            get
-            {
-                return 20;
-            }
-        }
-        public override float Speed
-        {
-            get
-            {
-                return 4.00f;
-            }
-        }
+        public override WeaponAbility PrimaryAbility => WeaponAbility.ArmorIgnore;
+        public override WeaponAbility SecondaryAbility => WeaponAbility.MortalStrike;
+        public override int StrengthReq => 60;
+        public override int MinDamage => 16;
+        public override int MaxDamage => 20;
+        public override float Speed => 4.00f;
 
-        public override int InitMinHits
-        {
-            get
-            {
-                return 31;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 65;
-            }
-        }
+        public override int InitMinHits => 31;
+        public override int InitMaxHits => 65;
 
-        public override Race RequiredRace { get { return Race.Gargoyle; } }
-        public override bool CanBeWornByGargoyles { get { return true; } }
+        public override Race RequiredRace => Race.Gargoyle;
+        public override bool CanBeWornByGargoyles => true;
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

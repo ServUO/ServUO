@@ -7,7 +7,7 @@ namespace Server.Spells.Mysticism
 {
     public class SleepSpell : MysticSpell
     {
-        public override SpellCircle Circle { get { return SpellCircle.Third; } }
+        public override SpellCircle Circle => SpellCircle.Third;
 
         private static readonly SpellInfo m_Info = new SpellInfo(
                 "Sleep", "In Zu",

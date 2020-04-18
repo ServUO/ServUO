@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class TalismanofGoblinSlaying : BaseTalisman
     {
-        public override int LabelNumber { get { return 1095011; } }//Talisman of Goblin Slaying
-        public override bool ForceShowName { get { return true; } }
+        public override int LabelNumber => 1095011; //Talisman of Goblin Slaying
+        public override bool ForceShowName => true;
 
         [Constructable]
         public TalismanofGoblinSlaying()

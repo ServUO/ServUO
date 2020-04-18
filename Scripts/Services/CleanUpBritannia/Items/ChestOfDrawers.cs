@@ -8,7 +8,7 @@
         public ChestOfDrawers()
             : base(0x0A2C)
         {
-            this.Weight = 25.0;
+            Weight = 25.0;
         }
 
         public ChestOfDrawers(Serial serial)
@@ -16,33 +16,15 @@
         {
         }
 
-        public override int DefaultGumpID
-        {
-            get
-            {
-                return 0x51;
-            }
-        }
-        public override int DefaultDropSound
-        {
-            get
-            {
-                return 0x42;
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1022604;
-            }
-        }// chest of drawers
+        public override int DefaultGumpID => 0x51;
+        public override int DefaultDropSound => 0x42;
+        public override int LabelNumber => 1022604;// chest of drawers
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

@@ -164,7 +164,7 @@ namespace Server.Engines.MyrmidexInvasion
             Dictionary<int, BaseCreature> hasBreached = new Dictionary<int, BaseCreature>();
             bool opposedBreach = false;
 
-            IPooledEnumerable eable = this.Map.GetMobilesInBounds(_MyrmidexObjective);
+            IPooledEnumerable eable = Map.GetMobilesInBounds(_MyrmidexObjective);
 
             foreach (Mobile m in eable)
             {
@@ -183,7 +183,7 @@ namespace Server.Engines.MyrmidexInvasion
 
             if (hasBreached.Count > 0 && !opposedBreach)
             {
-                foreach (var kvp in hasBreached)
+                foreach (KeyValuePair<int, BaseCreature> kvp in hasBreached)
                 {
                     ClearWave(Allegiance.Myrmidex, GetWave(MyrmidexTeam, kvp.Value));
                 }
@@ -198,7 +198,7 @@ namespace Server.Engines.MyrmidexInvasion
 
             if (winners == null)
             {
-                eable = this.Map.GetMobilesInBounds(_TribalObjective);
+                eable = Map.GetMobilesInBounds(_TribalObjective);
 
                 foreach (Mobile m in eable)
                 {
@@ -217,7 +217,7 @@ namespace Server.Engines.MyrmidexInvasion
 
                 if (hasBreached.Count > 0 && !opposedBreach)
                 {
-                    foreach (var kvp in hasBreached)
+                    foreach (KeyValuePair<int, BaseCreature> kvp in hasBreached)
                     {
                         ClearWave(Allegiance.Tribes, GetWave(TribeTeam, kvp.Value));
                     }
@@ -232,7 +232,7 @@ namespace Server.Engines.MyrmidexInvasion
 
             if (winners != null)
             {
-                foreach (var pm in winners.Where(pm => Players.ContainsKey(pm) && Players[pm] > MinCredit))
+                foreach (PlayerMobile pm in winners.Where(pm => Players.ContainsKey(pm) && Players[pm] > MinCredit))
                 {
                     AllianceEntry entry = MyrmidexInvasionSystem.GetEntry(pm);
 
@@ -266,7 +266,7 @@ namespace Server.Engines.MyrmidexInvasion
 
             if (list.ContainsKey(wave))
             {
-                foreach (var bc in list[wave].Where(bc => bc.Alive))
+                foreach (BaseCreature bc in list[wave].Where(bc => bc.Alive))
                 {
                     bc.Delete();
                 }
@@ -304,12 +304,12 @@ namespace Server.Engines.MyrmidexInvasion
 
         public void CheckWaves()
         {
-            var list = MyrmidexTeam.Keys.ToList();
+            List<int> list = MyrmidexTeam.Keys.ToList();
 
             for (int i = 0; i < list.Count; i++)
             {
-                var wave = list[i];
-                var bcList = MyrmidexTeam[wave];
+                int wave = list[i];
+                List<BaseCreature> bcList = MyrmidexTeam[wave];
 
                 if (bcList == null)
                     continue;
@@ -330,8 +330,8 @@ namespace Server.Engines.MyrmidexInvasion
 
             for (int i = 0; i < list.Count; i++)
             {
-                var wave = list[i];
-                var bcList = TribeTeam[wave];
+                int wave = list[i];
+                List<BaseCreature> bcList = TribeTeam[wave];
 
                 if (bcList == null)
                     continue;
@@ -494,7 +494,7 @@ namespace Server.Engines.MyrmidexInvasion
 
         public void RegionMessage(int message)
         {
-            foreach (var pm in BattleRegion.GetEnumeratedMobiles().OfType<PlayerMobile>())
+            foreach (PlayerMobile pm in BattleRegion.GetEnumeratedMobiles().OfType<PlayerMobile>())
             {
                 pm.SendLocalizedMessage(message);
             }
@@ -529,7 +529,7 @@ namespace Server.Engines.MyrmidexInvasion
 
             List<BaseCreature> bclist = new List<BaseCreature>();
 
-            foreach (var kvp in list)
+            foreach (KeyValuePair<int, List<BaseCreature>> kvp in list)
             {
                 bclist.AddRange(kvp.Value.Where(bc => bc != null && !bc.Deleted && bc.Alive));
             }
@@ -541,7 +541,7 @@ namespace Server.Engines.MyrmidexInvasion
         {
             List<DamageStore> rights = bc.GetLootingRights();
 
-            foreach (var ds in rights.Where(ds => ds.m_Mobile is PlayerMobile && ds.m_HasRight && MyrmidexInvasionSystem.AreEnemies(ds.m_Mobile, bc)))
+            foreach (DamageStore ds in rights.Where(ds => ds.m_Mobile is PlayerMobile && ds.m_HasRight && MyrmidexInvasionSystem.AreEnemies(ds.m_Mobile, bc)))
             {
                 if (MyrmidexInvasionSystem.IsAlliedWith(bc, Allegiance.Myrmidex))
                 {
@@ -597,27 +597,27 @@ namespace Server.Engines.MyrmidexInvasion
             int myrcount = 0;
             int trcount = 0;
 
-            foreach (var kvp in MyrmidexTeam)
+            foreach (KeyValuePair<int, List<BaseCreature>> kvp in MyrmidexTeam)
             {
                 myrcount += kvp.Value.Count;
             }
 
-            foreach (var kvp in TribeTeam)
+            foreach (KeyValuePair<int, List<BaseCreature>> kvp in TribeTeam)
             {
                 trcount += kvp.Value.Count;
             }
 
-            foreach (var kvp in MyrmidexTeam)
+            foreach (KeyValuePair<int, List<BaseCreature>> kvp in MyrmidexTeam)
             {
-                foreach (var bc in kvp.Value)
+                foreach (BaseCreature bc in kvp.Value)
                 {
                     AssignNavpoints(bc, Allegiance.Myrmidex);
                 }
             }
 
-            foreach (var kvp in TribeTeam)
+            foreach (KeyValuePair<int, List<BaseCreature>> kvp in TribeTeam)
             {
-                foreach (var bc in kvp.Value)
+                foreach (BaseCreature bc in kvp.Value)
                 {
                     AssignNavpoints(bc, Allegiance.Tribes);
                 }
@@ -758,7 +758,7 @@ namespace Server.Engines.MyrmidexInvasion
                 {
                     foreach (Point2D p in pss)
                     {
-                        var st = new Static(14089);
+                        Static st = new Static(14089);
                         st.Hue = hue;
                         st.MoveToWorld(new Point3D(p.X, p.Y, Map.TerMur.GetAverageZ(p.X, p.Y)), Map.TerMur);
                     }
@@ -772,7 +772,7 @@ namespace Server.Engines.MyrmidexInvasion
                 {
                     foreach (Point2D p in pss)
                     {
-                        var st = new Static(14089);
+                        Static st = new Static(14089);
                         st.Hue = hue;
                         st.MoveToWorld(new Point3D(p.X, p.Y, Map.TerMur.GetAverageZ(p.X, p.Y)), Map.TerMur);
                     }

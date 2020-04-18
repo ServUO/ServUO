@@ -65,7 +65,7 @@ namespace Server.Misc
                 Core.DataDirectories.Add(Console.ReadLine());
             }
 
-            foreach (var path in Core.DataDirectories)
+            foreach (string path in Core.DataDirectories)
             {
                 Files.SetMulPath(path);
             }
@@ -86,12 +86,12 @@ namespace Server.Misc
                 else
                     keyString = @"SOFTWARE\{0}";
 
-                using (var key = Registry.LocalMachine.OpenSubKey(String.Format(keyString, subName)))
+                using (RegistryKey key = Registry.LocalMachine.OpenSubKey(String.Format(keyString, subName)))
                 {
                     if (key == null)
                         return null;
 
-                    var v = key.GetValue(keyName) as string;
+                    string v = key.GetValue(keyName) as string;
 
                     if (String.IsNullOrEmpty(v))
                         return null;

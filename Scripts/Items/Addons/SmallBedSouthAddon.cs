@@ -5,8 +5,8 @@ namespace Server.Items
         [Constructable]
         public SmallBedSouthAddon()
         {
-            this.AddComponent(new AddonComponent(0xA63), 0, 0, 0);
-            this.AddComponent(new AddonComponent(0xA5C), 0, 1, 0);
+            AddComponent(new AddonComponent(0xA63), 0, 0, 0);
+            AddComponent(new AddonComponent(0xA5C), 0, 1, 0);
         }
 
         public SmallBedSouthAddon(Serial serial)
@@ -14,18 +14,12 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new SmallBedSouthDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new SmallBedSouthDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -48,25 +42,13 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new SmallBedSouthAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1044321;
-            }
-        }// small bed (south)
+        public override BaseAddon Addon => new SmallBedSouthAddon();
+        public override int LabelNumber => 1044321;// small bed (south)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

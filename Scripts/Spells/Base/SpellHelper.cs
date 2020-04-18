@@ -272,16 +272,16 @@ namespace Server.Spells
 
         public static bool CheckWater(Point3D p, Map map)
         {
-            var landTile = map.Tiles.GetLandTile(p.X, p.Y);
+            LandTile landTile = map.Tiles.GetLandTile(p.X, p.Y);
 
             if (landTile.Z == p.Z && ((landTile.ID >= 168 && landTile.ID <= 171) || (landTile.ID >= 310 && landTile.ID <= 311)))
             {
                 return false;
             }
 
-            var tiles = map.Tiles.GetStaticTiles(p.X, p.Y, true);
+            StaticTile[] tiles = map.Tiles.GetStaticTiles(p.X, p.Y, true);
 
-            foreach (var tile in tiles)
+            foreach (StaticTile tile in tiles)
             {
                 if (tile.Z == p.Z && tile.ID >= 0x1796 && tile.ID <= 0x17B2)
                 {
@@ -627,7 +627,7 @@ namespace Server.Spells
 
             IPooledEnumerable eable = map.GetObjectsInRange(new Point3D(p), range);
 
-            foreach (var id in eable.OfType<IDamageable>())
+            foreach (IDamageable id in eable.OfType<IDamageable>())
             {
                 if (id == caster)
                 {
@@ -1786,34 +1786,10 @@ namespace Server.Spells
         private readonly Type m_Type;
         private readonly ITransformationSpell m_Spell;
 
-        public Timer Timer
-        {
-            get
-            {
-                return m_Timer;
-            }
-        }
-        public List<ResistanceMod> Mods
-        {
-            get
-            {
-                return m_Mods;
-            }
-        }
-        public Type Type
-        {
-            get
-            {
-                return m_Type;
-            }
-        }
-        public ITransformationSpell Spell
-        {
-            get
-            {
-                return m_Spell;
-            }
-        }
+        public Timer Timer => m_Timer;
+        public List<ResistanceMod> Mods => m_Mods;
+        public Type Type => m_Type;
+        public ITransformationSpell Spell => m_Spell;
 
         public TransformContext(Timer timer, List<ResistanceMod> mods, Type type, ITransformationSpell spell)
         {

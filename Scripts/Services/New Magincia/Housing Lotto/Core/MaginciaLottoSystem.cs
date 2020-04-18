@@ -19,13 +19,13 @@ namespace Server.Engines.NewMagincia
         public static MaginciaLottoSystem Instance { get { return m_Instance; } set { m_Instance = value; } }
 
         private static readonly List<MaginciaHousingPlot> m_Plots = new List<MaginciaHousingPlot>();
-        public static List<MaginciaHousingPlot> Plots { get { return m_Plots; } }
+        public static List<MaginciaHousingPlot> Plots => m_Plots;
 
         private static Dictionary<Map, List<Rectangle2D>> m_FreeHousingZones;
-        public static Dictionary<Map, List<Rectangle2D>> FreeHousingZones { get { return m_FreeHousingZones; } }
+        public static Dictionary<Map, List<Rectangle2D>> FreeHousingZones => m_FreeHousingZones;
 
         private static readonly Dictionary<Mobile, List<NewMaginciaMessage>> m_MessageQueue = new Dictionary<Mobile, List<NewMaginciaMessage>>();
-        public static Dictionary<Mobile, List<NewMaginciaMessage>> MessageQueue { get { return m_MessageQueue; } }
+        public static Dictionary<Mobile, List<NewMaginciaMessage>> MessageQueue => m_MessageQueue;
 
         private Timer m_Timer;
         private TimeSpan m_LottoDuration;
@@ -249,7 +249,7 @@ namespace Server.Engines.NewMagincia
             }
         }
 
-        public static Rectangle2D[] MagHousingZones { get { return m_MagHousingZones; } }
+        public static Rectangle2D[] MagHousingZones => m_MagHousingZones;
         private static readonly Rectangle2D[] m_MagHousingZones = new Rectangle2D[]
         {
             new Rectangle2D(3686, 2125, 18, 18), // C1
@@ -538,7 +538,7 @@ namespace Server.Engines.NewMagincia
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             writer.Write(m_GoldSink);
             writer.Write(m_Enabled);
@@ -621,11 +621,11 @@ namespace Server.Engines.NewMagincia
         {
             for (int i = 0; i < m_Identifiers.Length; i++)
             {
-                var rec = m_MagHousingZones[i];
-                var id = m_Identifiers[i];
+                Rectangle2D rec = m_MagHousingZones[i];
+                string id = m_Identifiers[i];
 
-                var plotTram = m_Plots.FirstOrDefault(p => p.Identifier == id && p.Map == Map.Trammel);
-                var plotFel = m_Plots.FirstOrDefault(p => p.Identifier == id && p.Map == Map.Felucca);
+                MaginciaHousingPlot plotTram = m_Plots.FirstOrDefault(p => p.Identifier == id && p.Map == Map.Trammel);
+                MaginciaHousingPlot plotFel = m_Plots.FirstOrDefault(p => p.Identifier == id && p.Map == Map.Felucca);
 
                 if (plotTram == null && !m_FreeHousingZones[Map.Trammel].Contains(rec))
                 {

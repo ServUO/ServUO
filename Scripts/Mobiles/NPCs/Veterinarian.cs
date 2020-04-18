@@ -9,7 +9,7 @@ namespace Server.Mobiles
     public class Veterinarian : BaseVendor
     {
         private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
-        protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }
+        protected override List<SBInfo> SBInfos => m_SBInfos;
 
         [Constructable]
         public Veterinarian()
@@ -68,7 +68,7 @@ namespace Server.Mobiles
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (this.InRange(m, 3) && !this.InRange(oldLocation, 3) && this.InLOS(m))
+            if (InRange(m, 3) && !InRange(oldLocation, 3) && InLOS(m))
             {
                 BaseCreature[] pets = GetDeadPets(m);
 
@@ -109,7 +109,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

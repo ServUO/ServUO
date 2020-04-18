@@ -103,7 +103,7 @@ namespace Server.Items
             set { }
         }
 
-        public virtual bool BreakOnDepletion { get { return true; } }
+        public virtual bool BreakOnDepletion => true;
 
         public abstract CraftSystem CraftSystem { get; }
 
@@ -166,7 +166,7 @@ namespace Server.Items
                 return false;
             }
 
-            var num = 0;
+            int num = 0;
 
             bool res;
 
@@ -241,15 +241,15 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)4); // version
+            writer.Write(4); // version
 
             writer.Write(_PlayerConstructed);
 
             writer.Write((int)_Resource);
             writer.Write(m_RepairMode);
-            writer.Write((Mobile)m_Crafter);
+            writer.Write(m_Crafter);
             writer.Write((int)m_Quality);
-            writer.Write((int)m_UsesRemaining);
+            writer.Write(m_UsesRemaining);
         }
 
         public override void Deserialize(GenericReader reader)

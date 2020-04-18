@@ -117,13 +117,7 @@ namespace Server.Items
         public static readonly TimeSpan InstancedCorpseTime = TimeSpan.FromMinutes(3.0);
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual bool InstancedCorpse
-        {
-            get
-            {
-                return (DateTime.UtcNow < (m_TimeOfDeath + InstancedCorpseTime));
-            }
-        }
+        public virtual bool InstancedCorpse => (DateTime.UtcNow < (m_TimeOfDeath + InstancedCorpseTime));
 
         private Dictionary<Item, InstancedItemInfo> m_InstancedItems;
 
@@ -205,7 +199,7 @@ namespace Server.Items
 
         private void AssignInstancedLoot()
         {
-            AssignInstancedLoot(this.Items);
+            AssignInstancedLoot(Items);
         }
 
         public void AssignInstancedLoot(Item item)
@@ -225,10 +219,10 @@ namespace Server.Items
                 m_InstancedItems = new Dictionary<Item, InstancedItemInfo>();
             }
 
-            var stackables = new List<Item>();
-            var unstackables = new List<Item>();
+            List<Item> stackables = new List<Item>();
+            List<Item> unstackables = new List<Item>();
 
-            foreach (var item in items.Where(i => !m_InstancedItems.ContainsKey(i)))
+            foreach (Item item in items.Where(i => !m_InstancedItems.ContainsKey(i)))
             {
                 if (item.LootType != LootType.Cursed) //Don't have curesd items take up someone's item spot.. (?)
                 {
@@ -243,7 +237,7 @@ namespace Server.Items
                 }
             }
 
-            var attackers = new List<Mobile>(m_Aggressors);
+            List<Mobile> attackers = new List<Mobile>(m_Aggressors);
 
             for (int i = 1; i < attackers.Count - 1; i++) //randomize
             {
@@ -329,21 +323,21 @@ namespace Server.Items
             }
         }
 
-        public override bool IsDecoContainer { get { return false; } }
+        public override bool IsDecoContainer => false;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime TimeOfDeath { get { return m_TimeOfDeath; } set { m_TimeOfDeath = value; } }
 
-        public override bool DisplayWeight { get { return false; } }
+        public override bool DisplayWeight => false;
 
-        public HairInfo Hair { get { return m_Hair; } }
-        public FacialHairInfo FacialHair { get { return m_FacialHair; } }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsBones { get { return GetFlag(CorpseFlag.IsBones); } }
+        public HairInfo Hair => m_Hair;
+        public FacialHairInfo FacialHair => m_FacialHair;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Devoured { get { return (m_Devourer != null); } }
+        public bool IsBones => GetFlag(CorpseFlag.IsBones);
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool Devoured => (m_Devourer != null);
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Carved { get { return GetFlag(CorpseFlag.Carved); } set { SetFlag(CorpseFlag.Carved, value); } }
@@ -364,20 +358,20 @@ namespace Server.Items
         public bool LootCriminal { get { return GetFlag(CorpseFlag.LootCriminal); } set { SetFlag(CorpseFlag.LootCriminal, value); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public AccessLevel AccessLevel { get { return m_AccessLevel; } }
+        public AccessLevel AccessLevel => m_AccessLevel;
 
-        public List<Mobile> Aggressors { get { return m_Aggressors; } }
+        public List<Mobile> Aggressors => m_Aggressors;
 
-        public List<Mobile> Looters { get { return m_Looters; } }
+        public List<Mobile> Looters => m_Looters;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile Killer { get { return m_Killer; } }
+        public Mobile Killer => m_Killer;
 
-        public List<Item> EquipItems { get { return m_EquipItems; } }
+        public List<Item> EquipItems => m_EquipItems;
 
         public List<Item> RestoreEquip { get { return m_RestoreEquip; } set { m_RestoreEquip = value; } }
 
-        public Guild Guild { get { return m_Guild; } }
+        public Guild Guild => m_Guild;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int Kills { get { return m_Kills; } set { m_Kills = value; } }
@@ -389,7 +383,7 @@ namespace Server.Items
         public bool Murderer { get { return GetFlag(CorpseFlag.Murderer); } set { SetFlag(CorpseFlag.Murderer, value); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile Owner { get { return m_Owner; } }
+        public Mobile Owner => m_Owner;
 
         public void TurnToBones()
         {
@@ -477,7 +471,7 @@ namespace Server.Items
 
             Type t = m.GetType();
 
-            var attrs = t.GetCustomAttributes(typeof(CorpseNameAttribute), true);
+            object[] attrs = t.GetCustomAttributes(typeof(CorpseNameAttribute), true);
 
             if (attrs != null && attrs.Length > 0)
             {
@@ -563,7 +557,7 @@ namespace Server.Items
             return c;
         }
 
-        public override bool IsPublicContainer { get { return false; } }
+        public override bool IsPublicContainer => false;
 
         public Corpse(Mobile owner, List<Item> equipItems)
             : this(owner, null, null, equipItems)
@@ -658,7 +652,7 @@ namespace Server.Items
                     m_Aggressors.Add(master);
                 }
 
-                var rights = bc.GetLootingRights();
+                List<DamageStore> rights = bc.GetLootingRights();
                 for (int i = 0; i < rights.Count; ++i)
                 {
                     DamageStore ds = rights[i];
@@ -717,14 +711,14 @@ namespace Server.Items
 
             writer.WriteDeltaTime(m_TimeOfDeath);
 
-            var list = (m_RestoreTable == null ? null : new List<KeyValuePair<Item, Point3D>>(m_RestoreTable));
+            List<KeyValuePair<Item, Point3D>> list = (m_RestoreTable == null ? null : new List<KeyValuePair<Item, Point3D>>(m_RestoreTable));
             int count = (list == null ? 0 : list.Count);
 
             writer.Write(count);
 
             for (int i = 0; i < count; ++i)
             {
-                var kvp = list[i];
+                KeyValuePair<Item, Point3D> kvp = list[i];
                 Item item = kvp.Key;
                 Point3D loc = kvp.Value;
 
@@ -1022,7 +1016,7 @@ namespace Server.Items
                 return false;
             }
 
-            var canLoot = CanLoot(from, item);
+            bool canLoot = CanLoot(from, item);
 
             if (m_HasLooted == null)
                 m_HasLooted = new List<Item>();
@@ -1213,7 +1207,7 @@ namespace Server.Items
                 {
                     SetFlag(CorpseFlag.SelfLooted, true);
 
-                    var items = new List<Item>(Items);
+                    List<Item> items = new List<Item>(Items);
 
                     bool gathered = false;
 
@@ -1359,7 +1353,7 @@ namespace Server.Items
             return false;
         }
 
-        public override bool DisplaysContent { get { return false; } }
+        public override bool DisplaysContent => false;
 
         public override void AddNameProperty(ObjectPropertyList list)
         {

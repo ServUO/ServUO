@@ -74,215 +74,215 @@ namespace Server.Gumps
         public UnloadTrammelGump(CommandEventArgs e)
             : base(50, 50)
         {
-            this.m_CommandEventArgs = e;
-            this.Closable = true;
-            this.Dragable = true;
+            m_CommandEventArgs = e;
+            Closable = true;
+            Dragable = true;
 
-            this.AddPage(1);
+            AddPage(1);
 
             //grey background
-            this.AddBackground(0, 0, 240, 310, 5054);
+            AddBackground(0, 0, 240, 310, 5054);
 
             //----------
-            this.AddLabel(95, 2, 200, "TRAMMEL");
+            AddLabel(95, 2, 200, "TRAMMEL");
 
             //white background
             //x, y, largura, altura, item
-            this.AddImageTiled(10, 20, 220, 232, 3004);
+            AddImageTiled(10, 20, 220, 232, 3004);
 
             //----------
-            this.AddLabel(30, 27, 200, "Map name");
-            this.AddLabel(172, 27, 200, "Unload");
+            AddLabel(30, 27, 200, "Map name");
+            AddLabel(172, 27, 200, "Unload");
 
             //colunas
             //x, y, comprimento, ?, item
-            this.AddImageTiled(20, 25, 2, 222, 10003);
-            this.AddImageTiled(163, 25, 2, 222, 10003);
-            this.AddImageTiled(218, 25, 2, 222, 10003);
+            AddImageTiled(20, 25, 2, 222, 10003);
+            AddImageTiled(163, 25, 2, 222, 10003);
+            AddImageTiled(218, 25, 2, 222, 10003);
 
             //Linhas
             //x, y, comprimento, ?, item
-            this.AddImageTiled(20, 25, 200, 2, 10001);
-            this.AddImageTiled(20, 45, 200, 2, 10001);
-            this.AddImageTiled(20, 70, 200, 2, 10001);
-            this.AddImageTiled(20, 95, 200, 2, 10001);
-            this.AddImageTiled(20, 120, 200, 2, 10001);
-            this.AddImageTiled(20, 145, 200, 2, 10001);
-            this.AddImageTiled(20, 170, 200, 2, 10001);
-            this.AddImageTiled(20, 195, 200, 2, 10001);
-            this.AddImageTiled(20, 220, 200, 2, 10001);
-            this.AddImageTiled(20, 245, 200, 2, 10001);
+            AddImageTiled(20, 25, 200, 2, 10001);
+            AddImageTiled(20, 45, 200, 2, 10001);
+            AddImageTiled(20, 70, 200, 2, 10001);
+            AddImageTiled(20, 95, 200, 2, 10001);
+            AddImageTiled(20, 120, 200, 2, 10001);
+            AddImageTiled(20, 145, 200, 2, 10001);
+            AddImageTiled(20, 170, 200, 2, 10001);
+            AddImageTiled(20, 195, 200, 2, 10001);
+            AddImageTiled(20, 220, 200, 2, 10001);
+            AddImageTiled(20, 245, 200, 2, 10001);
 
             //Map names
-            this.AddLabel(35, 51, 200, "Blighted Grove");
-            this.AddLabel(35, 76, 200, "Britain Sewer");
-            this.AddLabel(35, 101, 200, "Covetous");
-            this.AddLabel(35, 126, 200, "Deceit");
-            this.AddLabel(35, 151, 200, "Despise");
-            this.AddLabel(35, 176, 200, "Destard");
-            this.AddLabel(35, 201, 200, "Fire");
-            this.AddLabel(35, 226, 200, "Graveyards");
+            AddLabel(35, 51, 200, "Blighted Grove");
+            AddLabel(35, 76, 200, "Britain Sewer");
+            AddLabel(35, 101, 200, "Covetous");
+            AddLabel(35, 126, 200, "Deceit");
+            AddLabel(35, 151, 200, "Despise");
+            AddLabel(35, 176, 200, "Destard");
+            AddLabel(35, 201, 200, "Fire");
+            AddLabel(35, 226, 200, "Graveyards");
 
             //Check boxes
-            this.AddCheck(182, 48, 210, 211, false, 101);
-            this.AddCheck(182, 73, 210, 211, false, 102);
-            this.AddCheck(182, 98, 210, 211, false, 103);
-            this.AddCheck(182, 123, 210, 211, false, 104);
-            this.AddCheck(182, 148, 210, 211, false, 105);
-            this.AddCheck(182, 173, 210, 211, false, 106);
-            this.AddCheck(182, 198, 210, 211, false, 107);
-            this.AddCheck(182, 223, 210, 211, false, 108);
+            AddCheck(182, 48, 210, 211, false, 101);
+            AddCheck(182, 73, 210, 211, false, 102);
+            AddCheck(182, 98, 210, 211, false, 103);
+            AddCheck(182, 123, 210, 211, false, 104);
+            AddCheck(182, 148, 210, 211, false, 105);
+            AddCheck(182, 173, 210, 211, false, 106);
+            AddCheck(182, 198, 210, 211, false, 107);
+            AddCheck(182, 223, 210, 211, false, 108);
 
-            this.AddLabel(110, 255, 200, "1/4");
-            this.AddButton(200, 255, 0xFA5, 0xFA7, 0, GumpButtonType.Page, 2);
+            AddLabel(110, 255, 200, "1/4");
+            AddButton(200, 255, 0xFA5, 0xFA7, 0, GumpButtonType.Page, 2);
 
-            this.AddPage(2);
+            AddPage(2);
 
             //grey background
-            this.AddBackground(0, 0, 240, 310, 5054);
+            AddBackground(0, 0, 240, 310, 5054);
 
             //----------
-            this.AddLabel(95, 2, 200, "TRAMMEL");
+            AddLabel(95, 2, 200, "TRAMMEL");
 
             //white background
             //x, y, largura, altura, item
-            this.AddImageTiled(10, 20, 220, 232, 3004);
+            AddImageTiled(10, 20, 220, 232, 3004);
 
             //----------
-            this.AddLabel(30, 27, 200, "Map name");
-            this.AddLabel(172, 27, 200, "Unload");
+            AddLabel(30, 27, 200, "Map name");
+            AddLabel(172, 27, 200, "Unload");
 
             //colunas
             //x, y, comprimento, ?, item
-            this.AddImageTiled(20, 25, 2, 222, 10003);
-            this.AddImageTiled(163, 25, 2, 222, 10003);
-            this.AddImageTiled(218, 25, 2, 222, 10003);
+            AddImageTiled(20, 25, 2, 222, 10003);
+            AddImageTiled(163, 25, 2, 222, 10003);
+            AddImageTiled(218, 25, 2, 222, 10003);
 
             //Linhas
             //x, y, comprimento, ?, item
-            this.AddImageTiled(20, 25, 200, 2, 10001);
-            this.AddImageTiled(20, 45, 200, 2, 10001);
-            this.AddImageTiled(20, 70, 200, 2, 10001);
-            this.AddImageTiled(20, 95, 200, 2, 10001);
-            this.AddImageTiled(20, 120, 200, 2, 10001);
-            this.AddImageTiled(20, 145, 200, 2, 10001);
-            this.AddImageTiled(20, 170, 200, 2, 10001);
-            this.AddImageTiled(20, 195, 200, 2, 10001);
-            this.AddImageTiled(20, 220, 200, 2, 10001);
-            this.AddImageTiled(20, 245, 200, 2, 10001);
+            AddImageTiled(20, 25, 200, 2, 10001);
+            AddImageTiled(20, 45, 200, 2, 10001);
+            AddImageTiled(20, 70, 200, 2, 10001);
+            AddImageTiled(20, 95, 200, 2, 10001);
+            AddImageTiled(20, 120, 200, 2, 10001);
+            AddImageTiled(20, 145, 200, 2, 10001);
+            AddImageTiled(20, 170, 200, 2, 10001);
+            AddImageTiled(20, 195, 200, 2, 10001);
+            AddImageTiled(20, 220, 200, 2, 10001);
+            AddImageTiled(20, 245, 200, 2, 10001);
 
             //Map names
-            this.AddLabel(35, 51, 200, "Hythloth");
-            this.AddLabel(35, 76, 200, "Ice");
-            this.AddLabel(35, 101, 200, "Lost Lands");
-            this.AddLabel(35, 126, 200, "Orc Caves");
-            this.AddLabel(35, 151, 200, "Outdoors");
-            this.AddLabel(35, 176, 200, "Painted Caves");
-            this.AddLabel(35, 201, 200, "Palace of Paroxysmus");
-            this.AddLabel(35, 226, 200, "Prism of Light");
+            AddLabel(35, 51, 200, "Hythloth");
+            AddLabel(35, 76, 200, "Ice");
+            AddLabel(35, 101, 200, "Lost Lands");
+            AddLabel(35, 126, 200, "Orc Caves");
+            AddLabel(35, 151, 200, "Outdoors");
+            AddLabel(35, 176, 200, "Painted Caves");
+            AddLabel(35, 201, 200, "Palace of Paroxysmus");
+            AddLabel(35, 226, 200, "Prism of Light");
 
             //Check boxes
-            this.AddCheck(182, 48, 210, 211, false, 109);
-            this.AddCheck(182, 73, 210, 211, false, 110);
-            this.AddCheck(182, 98, 210, 211, false, 111);
-            this.AddCheck(182, 123, 210, 211, false, 112);
-            this.AddCheck(182, 148, 210, 211, false, 113);
-            this.AddCheck(182, 173, 210, 211, false, 114);
-            this.AddCheck(182, 198, 210, 211, false, 115);
-            this.AddCheck(182, 223, 210, 211, false, 116);
+            AddCheck(182, 48, 210, 211, false, 109);
+            AddCheck(182, 73, 210, 211, false, 110);
+            AddCheck(182, 98, 210, 211, false, 111);
+            AddCheck(182, 123, 210, 211, false, 112);
+            AddCheck(182, 148, 210, 211, false, 113);
+            AddCheck(182, 173, 210, 211, false, 114);
+            AddCheck(182, 198, 210, 211, false, 115);
+            AddCheck(182, 223, 210, 211, false, 116);
 
-            this.AddLabel(110, 255, 200, "2/4");
-            this.AddButton(200, 255, 0xFA5, 0xFA7, 0, GumpButtonType.Page, 3);
-            this.AddButton(10, 255, 0xFAE, 0xFB0, 0, GumpButtonType.Page, 1);
+            AddLabel(110, 255, 200, "2/4");
+            AddButton(200, 255, 0xFA5, 0xFA7, 0, GumpButtonType.Page, 3);
+            AddButton(10, 255, 0xFAE, 0xFB0, 0, GumpButtonType.Page, 1);
 
-            this.AddPage(3);
+            AddPage(3);
 
             //grey background
-            this.AddBackground(0, 0, 240, 310, 5054);
+            AddBackground(0, 0, 240, 310, 5054);
 
             //----------
-            this.AddLabel(95, 2, 200, "TRAMMEL");
+            AddLabel(95, 2, 200, "TRAMMEL");
 
             //white background
             //x, y, largura, altura, item
-            this.AddImageTiled(10, 20, 220, 232, 3004);
+            AddImageTiled(10, 20, 220, 232, 3004);
 
             //----------
-            this.AddLabel(30, 27, 200, "Map name");
-            this.AddLabel(172, 27, 200, "Unload");
+            AddLabel(30, 27, 200, "Map name");
+            AddLabel(172, 27, 200, "Unload");
 
             //colunas
             //x, y, comprimento, ?, item
-            this.AddImageTiled(20, 25, 2, 222, 10003);
-            this.AddImageTiled(163, 25, 2, 222, 10003);
-            this.AddImageTiled(218, 25, 2, 222, 10003);
+            AddImageTiled(20, 25, 2, 222, 10003);
+            AddImageTiled(163, 25, 2, 222, 10003);
+            AddImageTiled(218, 25, 2, 222, 10003);
 
             //Linhas
             //x, y, comprimento, ?, item
-            this.AddImageTiled(20, 25, 200, 2, 10001);
-            this.AddImageTiled(20, 45, 200, 2, 10001);
-            this.AddImageTiled(20, 70, 200, 2, 10001);
-            this.AddImageTiled(20, 95, 200, 2, 10001);
-            this.AddImageTiled(20, 120, 200, 2, 10001);
-            this.AddImageTiled(20, 145, 200, 2, 10001);
-            this.AddImageTiled(20, 170, 200, 2, 10001);
-            this.AddImageTiled(20, 195, 200, 2, 10001);
-            this.AddImageTiled(20, 220, 200, 2, 10001);
-            this.AddImageTiled(20, 245, 200, 2, 10001);
+            AddImageTiled(20, 25, 200, 2, 10001);
+            AddImageTiled(20, 45, 200, 2, 10001);
+            AddImageTiled(20, 70, 200, 2, 10001);
+            AddImageTiled(20, 95, 200, 2, 10001);
+            AddImageTiled(20, 120, 200, 2, 10001);
+            AddImageTiled(20, 145, 200, 2, 10001);
+            AddImageTiled(20, 170, 200, 2, 10001);
+            AddImageTiled(20, 195, 200, 2, 10001);
+            AddImageTiled(20, 220, 200, 2, 10001);
+            AddImageTiled(20, 245, 200, 2, 10001);
 
             //Map names
-            this.AddLabel(35, 51, 200, "Sanctuary");
-            this.AddLabel(35, 76, 200, "Sea Life");
-            this.AddLabel(35, 101, 200, "Shame");
-            this.AddLabel(35, 126, 200, "Solen Hive");
-            this.AddLabel(35, 151, 200, "Terathan Keep");
-            this.AddLabel(35, 176, 200, "Towns Life");
-            this.AddLabel(35, 201, 200, "Towns People");
-            this.AddLabel(35, 226, 200, "Trinsic Passage");
+            AddLabel(35, 51, 200, "Sanctuary");
+            AddLabel(35, 76, 200, "Sea Life");
+            AddLabel(35, 101, 200, "Shame");
+            AddLabel(35, 126, 200, "Solen Hive");
+            AddLabel(35, 151, 200, "Terathan Keep");
+            AddLabel(35, 176, 200, "Towns Life");
+            AddLabel(35, 201, 200, "Towns People");
+            AddLabel(35, 226, 200, "Trinsic Passage");
 
             //Check boxes
-            this.AddCheck(182, 48, 210, 211, false, 117);
-            this.AddCheck(182, 73, 210, 211, false, 118);
-            this.AddCheck(182, 98, 210, 211, false, 119);
-            this.AddCheck(182, 123, 210, 211, false, 120);
-            this.AddCheck(182, 148, 210, 211, false, 121);
-            this.AddCheck(182, 173, 210, 211, false, 122);
-            this.AddCheck(182, 198, 210, 211, false, 123);
-            this.AddCheck(182, 223, 210, 211, false, 124);
+            AddCheck(182, 48, 210, 211, false, 117);
+            AddCheck(182, 73, 210, 211, false, 118);
+            AddCheck(182, 98, 210, 211, false, 119);
+            AddCheck(182, 123, 210, 211, false, 120);
+            AddCheck(182, 148, 210, 211, false, 121);
+            AddCheck(182, 173, 210, 211, false, 122);
+            AddCheck(182, 198, 210, 211, false, 123);
+            AddCheck(182, 223, 210, 211, false, 124);
 
-            this.AddLabel(110, 255, 200, "3/4");
-            this.AddButton(200, 255, 0xFA5, 0xFA7, 0, GumpButtonType.Page, 4);
-            this.AddButton(10, 255, 0xFAE, 0xFB0, 0, GumpButtonType.Page, 2);
+            AddLabel(110, 255, 200, "3/4");
+            AddButton(200, 255, 0xFA5, 0xFA7, 0, GumpButtonType.Page, 4);
+            AddButton(10, 255, 0xFAE, 0xFB0, 0, GumpButtonType.Page, 2);
 
-            this.AddPage(4);
+            AddPage(4);
 
             //grey background
-            this.AddBackground(0, 0, 240, 310, 5054);
+            AddBackground(0, 0, 240, 310, 5054);
 
             //----------
-            this.AddLabel(95, 2, 200, "TRAMMEL");
+            AddLabel(95, 2, 200, "TRAMMEL");
 
             //white background
             //x, y, largura, altura, item
-            this.AddImageTiled(10, 20, 220, 232, 3004);
+            AddImageTiled(10, 20, 220, 232, 3004);
 
             //----------
-            this.AddLabel(30, 27, 200, "Map name");
-            this.AddLabel(172, 27, 200, "Unload");
+            AddLabel(30, 27, 200, "Map name");
+            AddLabel(172, 27, 200, "Unload");
 
             //colunas
             //x, y, comprimento, ?, item
-            this.AddImageTiled(20, 25, 2, 97, 10003);
-            this.AddImageTiled(163, 25, 2, 97, 10003);
-            this.AddImageTiled(218, 25, 2, 97, 10003);
+            AddImageTiled(20, 25, 2, 97, 10003);
+            AddImageTiled(163, 25, 2, 97, 10003);
+            AddImageTiled(218, 25, 2, 97, 10003);
 
             //Linhas
             //x, y, comprimento, ?, item
-            this.AddImageTiled(20, 25, 200, 2, 10001);
-            this.AddImageTiled(20, 45, 200, 2, 10001);
-            this.AddImageTiled(20, 70, 200, 2, 10001);
-            this.AddImageTiled(20, 95, 200, 2, 10001);
-            this.AddImageTiled(20, 120, 200, 2, 10001);
+            AddImageTiled(20, 25, 200, 2, 10001);
+            AddImageTiled(20, 45, 200, 2, 10001);
+            AddImageTiled(20, 70, 200, 2, 10001);
+            AddImageTiled(20, 95, 200, 2, 10001);
+            AddImageTiled(20, 120, 200, 2, 10001);
             //AddImageTiled( 20, 145, 200, 2, 10001 );
             //AddImageTiled( 20, 170, 200, 2, 10001 );
             //AddImageTiled( 20, 195, 200, 2, 10001 );
@@ -290,9 +290,9 @@ namespace Server.Gumps
             //AddImageTiled( 20, 245, 200, 2, 10001 );
 
             //Map names
-            this.AddLabel(35, 51, 200, "Vendors");
-            this.AddLabel(35, 76, 200, "Wild Life");
-            this.AddLabel(35, 101, 200, "Wrong");
+            AddLabel(35, 51, 200, "Vendors");
+            AddLabel(35, 76, 200, "Wild Life");
+            AddLabel(35, 101, 200, "Wrong");
             //AddLabel( 35, 126, 200, "28" );
             //AddLabel( 35, 151, 200, "29" );
             //AddLabel( 35, 176, 200, "30" );
@@ -300,21 +300,21 @@ namespace Server.Gumps
             //AddLabel( 35, 226, 200, "32" );
 
             //Check boxes
-            this.AddCheck(182, 48, 210, 211, false, 125);
-            this.AddCheck(182, 73, 210, 211, false, 126);
-            this.AddCheck(182, 98, 210, 211, false, 127);
+            AddCheck(182, 48, 210, 211, false, 125);
+            AddCheck(182, 73, 210, 211, false, 126);
+            AddCheck(182, 98, 210, 211, false, 127);
             //AddCheck( 182, 123, 210, 211, false, 128 );
             //AddCheck( 182, 148, 210, 211, false, 129 );
             //AddCheck( 182, 173, 210, 211, false, 130 );
             //AddCheck( 182, 198, 210, 211, false, 131 );
             //AddCheck( 182, 223, 210, 211, false, 132 );
 
-            this.AddLabel(110, 255, 200, "4/4");
-            this.AddButton(10, 255, 0xFAE, 0xFB0, 0, GumpButtonType.Page, 3);
+            AddLabel(110, 255, 200, "4/4");
+            AddButton(10, 255, 0xFAE, 0xFB0, 0, GumpButtonType.Page, 3);
 
             //Ok, Cancel
-            this.AddButton(55, 280, 247, 249, 1, GumpButtonType.Reply, 0);
-            this.AddButton(125, 280, 241, 243, 0, GumpButtonType.Reply, 0);
+            AddButton(55, 280, 247, 249, 1, GumpButtonType.Reply, 0);
+            AddButton(125, 280, 241, 243, 0, GumpButtonType.Reply, 0);
         }
 
         public override void OnResponse(NetState state, RelayInfo info)
@@ -460,247 +460,247 @@ namespace Server.Gumps
         public UnloadFeluccaGump(CommandEventArgs e)
             : base(50, 50)
         {
-            this.m_CommandEventArgs = e;
-            this.Closable = true;
-            this.Dragable = true;
+            m_CommandEventArgs = e;
+            Closable = true;
+            Dragable = true;
 
-            this.AddPage(1);
+            AddPage(1);
 
             //grey background
-            this.AddBackground(0, 0, 240, 310, 5054);
+            AddBackground(0, 0, 240, 310, 5054);
 
             //----------
-            this.AddLabel(95, 2, 200, "FELUCCA");
+            AddLabel(95, 2, 200, "FELUCCA");
 
             //white background
             //x, y, largura, altura, item
-            this.AddImageTiled(10, 20, 220, 232, 3004);
+            AddImageTiled(10, 20, 220, 232, 3004);
 
             //----------
-            this.AddLabel(30, 27, 200, "Map name");
-            this.AddLabel(172, 27, 200, "Unload");
+            AddLabel(30, 27, 200, "Map name");
+            AddLabel(172, 27, 200, "Unload");
 
             //colunas
             //x, y, comprimento, ?, item
-            this.AddImageTiled(20, 25, 2, 222, 10003);
-            this.AddImageTiled(163, 25, 2, 222, 10003);
-            this.AddImageTiled(218, 25, 2, 222, 10003);
+            AddImageTiled(20, 25, 2, 222, 10003);
+            AddImageTiled(163, 25, 2, 222, 10003);
+            AddImageTiled(218, 25, 2, 222, 10003);
 
             //Linhas
             //x, y, comprimento, ?, item
-            this.AddImageTiled(20, 25, 200, 2, 10001);
-            this.AddImageTiled(20, 45, 200, 2, 10001);
-            this.AddImageTiled(20, 70, 200, 2, 10001);
-            this.AddImageTiled(20, 95, 200, 2, 10001);
-            this.AddImageTiled(20, 120, 200, 2, 10001);
-            this.AddImageTiled(20, 145, 200, 2, 10001);
-            this.AddImageTiled(20, 170, 200, 2, 10001);
-            this.AddImageTiled(20, 195, 200, 2, 10001);
-            this.AddImageTiled(20, 220, 200, 2, 10001);
-            this.AddImageTiled(20, 245, 200, 2, 10001);
+            AddImageTiled(20, 25, 200, 2, 10001);
+            AddImageTiled(20, 45, 200, 2, 10001);
+            AddImageTiled(20, 70, 200, 2, 10001);
+            AddImageTiled(20, 95, 200, 2, 10001);
+            AddImageTiled(20, 120, 200, 2, 10001);
+            AddImageTiled(20, 145, 200, 2, 10001);
+            AddImageTiled(20, 170, 200, 2, 10001);
+            AddImageTiled(20, 195, 200, 2, 10001);
+            AddImageTiled(20, 220, 200, 2, 10001);
+            AddImageTiled(20, 245, 200, 2, 10001);
 
             //Map names
-            this.AddLabel(35, 51, 200, "Blighted Grove");
-            this.AddLabel(35, 76, 200, "Britain Sewer");
-            this.AddLabel(35, 101, 200, "Covetous");
-            this.AddLabel(35, 126, 200, "Deceit");
-            this.AddLabel(35, 151, 200, "Despise");
-            this.AddLabel(35, 176, 200, "Destard");
-            this.AddLabel(35, 201, 200, "Fire");
-            this.AddLabel(35, 226, 200, "Graveyards");
+            AddLabel(35, 51, 200, "Blighted Grove");
+            AddLabel(35, 76, 200, "Britain Sewer");
+            AddLabel(35, 101, 200, "Covetous");
+            AddLabel(35, 126, 200, "Deceit");
+            AddLabel(35, 151, 200, "Despise");
+            AddLabel(35, 176, 200, "Destard");
+            AddLabel(35, 201, 200, "Fire");
+            AddLabel(35, 226, 200, "Graveyards");
 
             //Check boxes
-            this.AddCheck(182, 48, 210, 211, false, 101);
-            this.AddCheck(182, 73, 210, 211, false, 102);
-            this.AddCheck(182, 98, 210, 211, false, 103);
-            this.AddCheck(182, 123, 210, 211, false, 104);
-            this.AddCheck(182, 148, 210, 211, false, 105);
-            this.AddCheck(182, 173, 210, 211, false, 106);
-            this.AddCheck(182, 198, 210, 211, false, 107);
-            this.AddCheck(182, 223, 210, 211, false, 108);
+            AddCheck(182, 48, 210, 211, false, 101);
+            AddCheck(182, 73, 210, 211, false, 102);
+            AddCheck(182, 98, 210, 211, false, 103);
+            AddCheck(182, 123, 210, 211, false, 104);
+            AddCheck(182, 148, 210, 211, false, 105);
+            AddCheck(182, 173, 210, 211, false, 106);
+            AddCheck(182, 198, 210, 211, false, 107);
+            AddCheck(182, 223, 210, 211, false, 108);
 
-            this.AddLabel(110, 255, 200, "1/4");
-            this.AddButton(200, 255, 0xFA5, 0xFA7, 0, GumpButtonType.Page, 2);
+            AddLabel(110, 255, 200, "1/4");
+            AddButton(200, 255, 0xFA5, 0xFA7, 0, GumpButtonType.Page, 2);
 
-            this.AddPage(2);
+            AddPage(2);
 
             //grey background
-            this.AddBackground(0, 0, 240, 310, 5054);
+            AddBackground(0, 0, 240, 310, 5054);
 
             //----------
-            this.AddLabel(95, 2, 200, "FELUCCA");
+            AddLabel(95, 2, 200, "FELUCCA");
 
             //white background
             //x, y, largura, altura, item
-            this.AddImageTiled(10, 20, 220, 232, 3004);
+            AddImageTiled(10, 20, 220, 232, 3004);
 
             //----------
-            this.AddLabel(30, 27, 200, "Map name");
-            this.AddLabel(172, 27, 200, "Unload");
+            AddLabel(30, 27, 200, "Map name");
+            AddLabel(172, 27, 200, "Unload");
 
             //colunas
             //x, y, comprimento, ?, item
-            this.AddImageTiled(20, 25, 2, 222, 10003);
-            this.AddImageTiled(163, 25, 2, 222, 10003);
-            this.AddImageTiled(218, 25, 2, 222, 10003);
+            AddImageTiled(20, 25, 2, 222, 10003);
+            AddImageTiled(163, 25, 2, 222, 10003);
+            AddImageTiled(218, 25, 2, 222, 10003);
 
             //Linhas
             //x, y, comprimento, ?, item
-            this.AddImageTiled(20, 25, 200, 2, 10001);
-            this.AddImageTiled(20, 45, 200, 2, 10001);
-            this.AddImageTiled(20, 70, 200, 2, 10001);
-            this.AddImageTiled(20, 95, 200, 2, 10001);
-            this.AddImageTiled(20, 120, 200, 2, 10001);
-            this.AddImageTiled(20, 145, 200, 2, 10001);
-            this.AddImageTiled(20, 170, 200, 2, 10001);
-            this.AddImageTiled(20, 195, 200, 2, 10001);
-            this.AddImageTiled(20, 220, 200, 2, 10001);
-            this.AddImageTiled(20, 245, 200, 2, 10001);
+            AddImageTiled(20, 25, 200, 2, 10001);
+            AddImageTiled(20, 45, 200, 2, 10001);
+            AddImageTiled(20, 70, 200, 2, 10001);
+            AddImageTiled(20, 95, 200, 2, 10001);
+            AddImageTiled(20, 120, 200, 2, 10001);
+            AddImageTiled(20, 145, 200, 2, 10001);
+            AddImageTiled(20, 170, 200, 2, 10001);
+            AddImageTiled(20, 195, 200, 2, 10001);
+            AddImageTiled(20, 220, 200, 2, 10001);
+            AddImageTiled(20, 245, 200, 2, 10001);
 
             //Map names
-            this.AddLabel(35, 51, 200, "Hythloth");
-            this.AddLabel(35, 76, 200, "Ice");
-            this.AddLabel(35, 101, 200, "Khaldun");
-            this.AddLabel(35, 126, 200, "Lost Lands");
-            this.AddLabel(35, 151, 200, "Orc Caves");
-            this.AddLabel(35, 176, 200, "Outdoors");
-            this.AddLabel(35, 201, 200, "Painted Caves");
-            this.AddLabel(35, 226, 200, "Palace of Paroxysmus");
+            AddLabel(35, 51, 200, "Hythloth");
+            AddLabel(35, 76, 200, "Ice");
+            AddLabel(35, 101, 200, "Khaldun");
+            AddLabel(35, 126, 200, "Lost Lands");
+            AddLabel(35, 151, 200, "Orc Caves");
+            AddLabel(35, 176, 200, "Outdoors");
+            AddLabel(35, 201, 200, "Painted Caves");
+            AddLabel(35, 226, 200, "Palace of Paroxysmus");
 
             //Check boxes
-            this.AddCheck(182, 48, 210, 211, false, 109);
-            this.AddCheck(182, 73, 210, 211, false, 110);
-            this.AddCheck(182, 98, 210, 211, false, 111);
-            this.AddCheck(182, 123, 210, 211, false, 112);
-            this.AddCheck(182, 148, 210, 211, false, 113);
-            this.AddCheck(182, 173, 210, 211, false, 114);
-            this.AddCheck(182, 198, 210, 211, false, 115);
-            this.AddCheck(182, 223, 210, 211, false, 116);
+            AddCheck(182, 48, 210, 211, false, 109);
+            AddCheck(182, 73, 210, 211, false, 110);
+            AddCheck(182, 98, 210, 211, false, 111);
+            AddCheck(182, 123, 210, 211, false, 112);
+            AddCheck(182, 148, 210, 211, false, 113);
+            AddCheck(182, 173, 210, 211, false, 114);
+            AddCheck(182, 198, 210, 211, false, 115);
+            AddCheck(182, 223, 210, 211, false, 116);
 
-            this.AddLabel(110, 255, 200, "2/4");
-            this.AddButton(200, 255, 0xFA5, 0xFA7, 0, GumpButtonType.Page, 3);
-            this.AddButton(10, 255, 0xFAE, 0xFB0, 0, GumpButtonType.Page, 1);
+            AddLabel(110, 255, 200, "2/4");
+            AddButton(200, 255, 0xFA5, 0xFA7, 0, GumpButtonType.Page, 3);
+            AddButton(10, 255, 0xFAE, 0xFB0, 0, GumpButtonType.Page, 1);
 
-            this.AddPage(3);
+            AddPage(3);
 
             //grey background
-            this.AddBackground(0, 0, 240, 310, 5054);
+            AddBackground(0, 0, 240, 310, 5054);
 
             //----------
-            this.AddLabel(95, 2, 200, "FELUCCA");
+            AddLabel(95, 2, 200, "FELUCCA");
 
             //white background
             //x, y, largura, altura, item
-            this.AddImageTiled(10, 20, 220, 232, 3004);
+            AddImageTiled(10, 20, 220, 232, 3004);
 
             //----------
-            this.AddLabel(30, 27, 200, "Map name");
-            this.AddLabel(172, 27, 200, "Unload");
+            AddLabel(30, 27, 200, "Map name");
+            AddLabel(172, 27, 200, "Unload");
 
             //colunas
             //x, y, comprimento, ?, item
-            this.AddImageTiled(20, 25, 2, 222, 10003);
-            this.AddImageTiled(163, 25, 2, 222, 10003);
-            this.AddImageTiled(218, 25, 2, 222, 10003);
+            AddImageTiled(20, 25, 2, 222, 10003);
+            AddImageTiled(163, 25, 2, 222, 10003);
+            AddImageTiled(218, 25, 2, 222, 10003);
 
             //Linhas
             //x, y, comprimento, ?, item
-            this.AddImageTiled(20, 25, 200, 2, 10001);
-            this.AddImageTiled(20, 45, 200, 2, 10001);
-            this.AddImageTiled(20, 70, 200, 2, 10001);
-            this.AddImageTiled(20, 95, 200, 2, 10001);
-            this.AddImageTiled(20, 120, 200, 2, 10001);
-            this.AddImageTiled(20, 145, 200, 2, 10001);
-            this.AddImageTiled(20, 170, 200, 2, 10001);
-            this.AddImageTiled(20, 195, 200, 2, 10001);
-            this.AddImageTiled(20, 220, 200, 2, 10001);
-            this.AddImageTiled(20, 245, 200, 2, 10001);
+            AddImageTiled(20, 25, 200, 2, 10001);
+            AddImageTiled(20, 45, 200, 2, 10001);
+            AddImageTiled(20, 70, 200, 2, 10001);
+            AddImageTiled(20, 95, 200, 2, 10001);
+            AddImageTiled(20, 120, 200, 2, 10001);
+            AddImageTiled(20, 145, 200, 2, 10001);
+            AddImageTiled(20, 170, 200, 2, 10001);
+            AddImageTiled(20, 195, 200, 2, 10001);
+            AddImageTiled(20, 220, 200, 2, 10001);
+            AddImageTiled(20, 245, 200, 2, 10001);
 
             //Map names
-            this.AddLabel(35, 51, 200, "Prism of Light");
-            this.AddLabel(35, 76, 200, "Sanctuary");
-            this.AddLabel(35, 101, 200, "Sea Life");
-            this.AddLabel(35, 126, 200, "Shame");
-            this.AddLabel(35, 151, 200, "Solen Hive");
-            this.AddLabel(35, 176, 200, "Terathan Keep");
-            this.AddLabel(35, 201, 200, "Towns Life");
-            this.AddLabel(35, 226, 200, "Towns People");
+            AddLabel(35, 51, 200, "Prism of Light");
+            AddLabel(35, 76, 200, "Sanctuary");
+            AddLabel(35, 101, 200, "Sea Life");
+            AddLabel(35, 126, 200, "Shame");
+            AddLabel(35, 151, 200, "Solen Hive");
+            AddLabel(35, 176, 200, "Terathan Keep");
+            AddLabel(35, 201, 200, "Towns Life");
+            AddLabel(35, 226, 200, "Towns People");
 
             //Check boxes
-            this.AddCheck(182, 48, 210, 211, false, 117);
-            this.AddCheck(182, 73, 210, 211, false, 118);
-            this.AddCheck(182, 98, 210, 211, false, 119);
-            this.AddCheck(182, 123, 210, 211, false, 120);
-            this.AddCheck(182, 148, 210, 211, false, 121);
-            this.AddCheck(182, 173, 210, 211, false, 122);
-            this.AddCheck(182, 198, 210, 211, false, 123);
-            this.AddCheck(182, 223, 210, 211, false, 124);
+            AddCheck(182, 48, 210, 211, false, 117);
+            AddCheck(182, 73, 210, 211, false, 118);
+            AddCheck(182, 98, 210, 211, false, 119);
+            AddCheck(182, 123, 210, 211, false, 120);
+            AddCheck(182, 148, 210, 211, false, 121);
+            AddCheck(182, 173, 210, 211, false, 122);
+            AddCheck(182, 198, 210, 211, false, 123);
+            AddCheck(182, 223, 210, 211, false, 124);
 
-            this.AddLabel(110, 255, 200, "3/4");
-            this.AddButton(200, 255, 0xFA5, 0xFA7, 0, GumpButtonType.Page, 4);
-            this.AddButton(10, 255, 0xFAE, 0xFB0, 0, GumpButtonType.Page, 2);
+            AddLabel(110, 255, 200, "3/4");
+            AddButton(200, 255, 0xFA5, 0xFA7, 0, GumpButtonType.Page, 4);
+            AddButton(10, 255, 0xFAE, 0xFB0, 0, GumpButtonType.Page, 2);
 
-            this.AddPage(4);
+            AddPage(4);
 
             //grey background
-            this.AddBackground(0, 0, 240, 310, 5054);
+            AddBackground(0, 0, 240, 310, 5054);
 
             //----------
-            this.AddLabel(95, 2, 200, "FELUCCA");
+            AddLabel(95, 2, 200, "FELUCCA");
 
             //white background
             //x, y, largura, altura, item
-            this.AddImageTiled(10, 20, 220, 232, 3004);
+            AddImageTiled(10, 20, 220, 232, 3004);
 
             //----------
-            this.AddLabel(30, 27, 200, "Map name");
-            this.AddLabel(172, 27, 200, "Unload");
+            AddLabel(30, 27, 200, "Map name");
+            AddLabel(172, 27, 200, "Unload");
 
             //colunas
             //x, y, comprimento, ?, item
-            this.AddImageTiled(20, 25, 2, 122, 10003);
-            this.AddImageTiled(163, 25, 2, 122, 10003);
-            this.AddImageTiled(218, 25, 2, 122, 10003);
+            AddImageTiled(20, 25, 2, 122, 10003);
+            AddImageTiled(163, 25, 2, 122, 10003);
+            AddImageTiled(218, 25, 2, 122, 10003);
 
             //Linhas
             //x, y, comprimento, ?, item
-            this.AddImageTiled(20, 25, 200, 2, 10001);
-            this.AddImageTiled(20, 45, 200, 2, 10001);
-            this.AddImageTiled(20, 70, 200, 2, 10001);
-            this.AddImageTiled(20, 95, 200, 2, 10001);
-            this.AddImageTiled(20, 120, 200, 2, 10001);
-            this.AddImageTiled(20, 145, 200, 2, 10001);
+            AddImageTiled(20, 25, 200, 2, 10001);
+            AddImageTiled(20, 45, 200, 2, 10001);
+            AddImageTiled(20, 70, 200, 2, 10001);
+            AddImageTiled(20, 95, 200, 2, 10001);
+            AddImageTiled(20, 120, 200, 2, 10001);
+            AddImageTiled(20, 145, 200, 2, 10001);
             //AddImageTiled( 20, 170, 200, 2, 10001 );
             //AddImageTiled( 20, 195, 200, 2, 10001 );
             //AddImageTiled( 20, 220, 200, 2, 10001 );
             //AddImageTiled( 20, 245, 200, 2, 10001 );
 
             //Map names
-            this.AddLabel(35, 51, 200, "Trinsic Passage");
-            this.AddLabel(35, 76, 200, "Vendors");
-            this.AddLabel(35, 101, 200, "Wild Life");
-            this.AddLabel(35, 126, 200, "Wrong");
+            AddLabel(35, 51, 200, "Trinsic Passage");
+            AddLabel(35, 76, 200, "Vendors");
+            AddLabel(35, 101, 200, "Wild Life");
+            AddLabel(35, 126, 200, "Wrong");
             //AddLabel( 35, 151, 200, "29" );
             //AddLabel( 35, 176, 200, "30" );
             //AddLabel( 35, 201, 200, "31" );
             //AddLabel( 35, 226, 200, "32" );
 
             //Check boxes
-            this.AddCheck(182, 48, 210, 211, false, 125);
-            this.AddCheck(182, 73, 210, 211, false, 126);
-            this.AddCheck(182, 98, 210, 211, false, 127);
-            this.AddCheck(182, 123, 210, 211, false, 128);
+            AddCheck(182, 48, 210, 211, false, 125);
+            AddCheck(182, 73, 210, 211, false, 126);
+            AddCheck(182, 98, 210, 211, false, 127);
+            AddCheck(182, 123, 210, 211, false, 128);
             //AddCheck( 182, 148, 210, 211, false, 129 );
             //AddCheck( 182, 173, 210, 211, false, 130 );
             //AddCheck( 182, 198, 210, 211, false, 131 );
             //AddCheck( 182, 223, 210, 211, false, 132 );
 
-            this.AddLabel(110, 255, 200, "4/4");
-            this.AddButton(10, 255, 0xFAE, 0xFB0, 0, GumpButtonType.Page, 3);
+            AddLabel(110, 255, 200, "4/4");
+            AddButton(10, 255, 0xFAE, 0xFB0, 0, GumpButtonType.Page, 3);
 
             //Ok, Cancel
-            this.AddButton(55, 280, 247, 249, 1, GumpButtonType.Reply, 0);
-            this.AddButton(125, 280, 241, 243, 0, GumpButtonType.Reply, 0);
+            AddButton(55, 280, 247, 249, 1, GumpButtonType.Reply, 0);
+            AddButton(125, 280, 241, 243, 0, GumpButtonType.Reply, 0);
         }
 
         public override void OnResponse(NetState state, RelayInfo info)
@@ -850,121 +850,121 @@ namespace Server.Gumps
         public UnloadIlshenarGump(CommandEventArgs e)
             : base(50, 50)
         {
-            this.m_CommandEventArgs = e;
-            this.Closable = true;
-            this.Dragable = true;
+            m_CommandEventArgs = e;
+            Closable = true;
+            Dragable = true;
 
-            this.AddPage(1);
+            AddPage(1);
 
             //fundo cinza
-            this.AddBackground(0, 0, 243, 310, 5054);
+            AddBackground(0, 0, 243, 310, 5054);
             //----------
-            this.AddLabel(93, 2, 200, "ILSHENAR");
+            AddLabel(93, 2, 200, "ILSHENAR");
             //fundo branco
             //x, y, largura, altura, item
-            this.AddImageTiled(10, 20, 220, 232, 3004);
+            AddImageTiled(10, 20, 220, 232, 3004);
             //----------
-            this.AddLabel(30, 27, 200, "Map name");
-            this.AddLabel(172, 27, 200, "Unload");
+            AddLabel(30, 27, 200, "Map name");
+            AddLabel(172, 27, 200, "Unload");
             //colunas
             //x, y, comprimento, ?, item
-            this.AddImageTiled(20, 25, 2, 222, 10003);
-            this.AddImageTiled(163, 25, 2, 222, 10003);
-            this.AddImageTiled(220, 25, 2, 222, 10003);
+            AddImageTiled(20, 25, 2, 222, 10003);
+            AddImageTiled(163, 25, 2, 222, 10003);
+            AddImageTiled(220, 25, 2, 222, 10003);
 
             //Linhas
             //x, y, comprimento, ?, item
-            this.AddImageTiled(20, 25, 200, 2, 10001);
-            this.AddImageTiled(20, 45, 200, 2, 10001);
-            this.AddImageTiled(20, 70, 200, 2, 10001);
-            this.AddImageTiled(20, 95, 200, 2, 10001);
-            this.AddImageTiled(20, 120, 200, 2, 10001);
-            this.AddImageTiled(20, 145, 200, 2, 10001);
-            this.AddImageTiled(20, 170, 200, 2, 10001);
-            this.AddImageTiled(20, 195, 200, 2, 10001);
-            this.AddImageTiled(20, 220, 200, 2, 10001);
-            this.AddImageTiled(20, 245, 200, 2, 10001);
+            AddImageTiled(20, 25, 200, 2, 10001);
+            AddImageTiled(20, 45, 200, 2, 10001);
+            AddImageTiled(20, 70, 200, 2, 10001);
+            AddImageTiled(20, 95, 200, 2, 10001);
+            AddImageTiled(20, 120, 200, 2, 10001);
+            AddImageTiled(20, 145, 200, 2, 10001);
+            AddImageTiled(20, 170, 200, 2, 10001);
+            AddImageTiled(20, 195, 200, 2, 10001);
+            AddImageTiled(20, 220, 200, 2, 10001);
+            AddImageTiled(20, 245, 200, 2, 10001);
 
             //Map names
-            this.AddLabel(35, 51, 200, "Ancient Lair");
-            this.AddLabel(35, 76, 200, "Ankh");
-            this.AddLabel(35, 101, 200, "Blood");
-            this.AddLabel(35, 126, 200, "Exodus");
-            this.AddLabel(35, 151, 200, "Mushroom");
-            this.AddLabel(35, 176, 200, "Outdoors");
-            this.AddLabel(35, 201, 200, "Ratman cave");
-            this.AddLabel(35, 226, 200, "Rock");
+            AddLabel(35, 51, 200, "Ancient Lair");
+            AddLabel(35, 76, 200, "Ankh");
+            AddLabel(35, 101, 200, "Blood");
+            AddLabel(35, 126, 200, "Exodus");
+            AddLabel(35, 151, 200, "Mushroom");
+            AddLabel(35, 176, 200, "Outdoors");
+            AddLabel(35, 201, 200, "Ratman cave");
+            AddLabel(35, 226, 200, "Rock");
 
             //Options
-            this.AddCheck(182, 48, 210, 211, false, 101);
-            this.AddCheck(182, 73, 210, 211, false, 102);
-            this.AddCheck(182, 98, 210, 211, false, 103);
-            this.AddCheck(182, 123, 210, 211, false, 104);
-            this.AddCheck(182, 148, 210, 211, false, 105);
-            this.AddCheck(182, 173, 210, 211, false, 106);
-            this.AddCheck(182, 198, 210, 211, false, 107);
-            this.AddCheck(182, 223, 210, 211, false, 108);
+            AddCheck(182, 48, 210, 211, false, 101);
+            AddCheck(182, 73, 210, 211, false, 102);
+            AddCheck(182, 98, 210, 211, false, 103);
+            AddCheck(182, 123, 210, 211, false, 104);
+            AddCheck(182, 148, 210, 211, false, 105);
+            AddCheck(182, 173, 210, 211, false, 106);
+            AddCheck(182, 198, 210, 211, false, 107);
+            AddCheck(182, 223, 210, 211, false, 108);
 
-            this.AddLabel(110, 255, 200, "1/2");
-            this.AddButton(200, 255, 0xFA5, 0xFA7, 0, GumpButtonType.Page, 2);
+            AddLabel(110, 255, 200, "1/2");
+            AddButton(200, 255, 0xFA5, 0xFA7, 0, GumpButtonType.Page, 2);
 
-            this.AddPage(2);
+            AddPage(2);
 
             //fundo cinza
-            this.AddBackground(0, 0, 243, 310, 5054);
+            AddBackground(0, 0, 243, 310, 5054);
             //----------
-            this.AddLabel(93, 2, 200, "ILSHENAR");
+            AddLabel(93, 2, 200, "ILSHENAR");
             //fundo branco
             //x, y, largura, altura, item
-            this.AddImageTiled(10, 20, 220, 232, 3004);
+            AddImageTiled(10, 20, 220, 232, 3004);
             //----------
-            this.AddLabel(30, 27, 200, "Map name");
-            this.AddLabel(172, 27, 200, "Unload");
+            AddLabel(30, 27, 200, "Map name");
+            AddLabel(172, 27, 200, "Unload");
             //colunas
             //x, y, comprimento, ?, item
-            this.AddImageTiled(20, 25, 2, 171, 10003);
-            this.AddImageTiled(163, 25, 2, 171, 10003);
-            this.AddImageTiled(220, 25, 2, 171, 10003);
+            AddImageTiled(20, 25, 2, 171, 10003);
+            AddImageTiled(163, 25, 2, 171, 10003);
+            AddImageTiled(220, 25, 2, 171, 10003);
 
             //Linhas
             //x, y, comprimento, ?, item
-            this.AddImageTiled(20, 25, 200, 2, 10001);
-            this.AddImageTiled(20, 45, 200, 2, 10001);
-            this.AddImageTiled(20, 70, 200, 2, 10001);
-            this.AddImageTiled(20, 95, 200, 2, 10001);
-            this.AddImageTiled(20, 120, 200, 2, 10001);
-            this.AddImageTiled(20, 145, 200, 2, 10001);
-            this.AddImageTiled(20, 170, 200, 2, 10001);
-            this.AddImageTiled(20, 195, 200, 2, 10001);
+            AddImageTiled(20, 25, 200, 2, 10001);
+            AddImageTiled(20, 45, 200, 2, 10001);
+            AddImageTiled(20, 70, 200, 2, 10001);
+            AddImageTiled(20, 95, 200, 2, 10001);
+            AddImageTiled(20, 120, 200, 2, 10001);
+            AddImageTiled(20, 145, 200, 2, 10001);
+            AddImageTiled(20, 170, 200, 2, 10001);
+            AddImageTiled(20, 195, 200, 2, 10001);
             //AddImageTiled( 20, 220, 200, 2, 10001 );
             //AddImageTiled( 20, 245, 200, 2, 10001 );
 
             //----------
-            this.AddLabel(35, 51, 200, "Sorcerers");
-            this.AddLabel(35, 76, 200, "Spectre");
-            this.AddLabel(35, 101, 200, "Towns");
-            this.AddLabel(35, 126, 200, "Vendors");
-            this.AddLabel(35, 151, 200, "Wisp");
-            this.AddLabel(35, 176, 200, "Twisted Weald");
+            AddLabel(35, 51, 200, "Sorcerers");
+            AddLabel(35, 76, 200, "Spectre");
+            AddLabel(35, 101, 200, "Towns");
+            AddLabel(35, 126, 200, "Vendors");
+            AddLabel(35, 151, 200, "Wisp");
+            AddLabel(35, 176, 200, "Twisted Weald");
             //AddLabel( 35, 201, 200, "15" );
             //AddLabel( 35, 226, 200, "16" );
 
             //Options
-            this.AddCheck(182, 48, 210, 211, false, 109);
-            this.AddCheck(182, 73, 210, 211, false, 110);
-            this.AddCheck(182, 98, 210, 211, false, 111);
-            this.AddCheck(182, 123, 210, 211, false, 112);
-            this.AddCheck(182, 148, 210, 211, false, 113);
-            this.AddCheck(182, 173, 210, 211, false, 114);
+            AddCheck(182, 48, 210, 211, false, 109);
+            AddCheck(182, 73, 210, 211, false, 110);
+            AddCheck(182, 98, 210, 211, false, 111);
+            AddCheck(182, 123, 210, 211, false, 112);
+            AddCheck(182, 148, 210, 211, false, 113);
+            AddCheck(182, 173, 210, 211, false, 114);
             //AddCheck( 182, 198, 210, 211, false, 115 );
             //AddCheck( 182, 223, 210, 211, false, 116 );
 
-            this.AddLabel(110, 255, 200, "2/2");
-            this.AddButton(10, 255, 0xFAE, 0xFB0, 0, GumpButtonType.Page, 1);
+            AddLabel(110, 255, 200, "2/2");
+            AddButton(10, 255, 0xFAE, 0xFB0, 0, GumpButtonType.Page, 1);
 
             //Ok, Cancel
-            this.AddButton(55, 280, 247, 249, 1, GumpButtonType.Reply, 0);
-            this.AddButton(125, 280, 241, 243, 0, GumpButtonType.Reply, 0);
+            AddButton(55, 280, 247, 249, 1, GumpButtonType.Reply, 0);
+            AddButton(125, 280, 241, 243, 0, GumpButtonType.Reply, 0);
         }
 
         public override void OnResponse(NetState state, RelayInfo info)
@@ -1059,66 +1059,66 @@ namespace Server.Gumps
         public UnloadMalasGump(CommandEventArgs e)
             : base(50, 50)
         {
-            this.m_CommandEventArgs = e;
-            this.Closable = true;
-            this.Dragable = true;
+            m_CommandEventArgs = e;
+            Closable = true;
+            Dragable = true;
 
-            this.AddPage(1);
+            AddPage(1);
 
             //fundo cinza
             //alt era 310
-            this.AddBackground(0, 0, 243, 295, 5054);
+            AddBackground(0, 0, 243, 295, 5054);
             //----------
-            this.AddLabel(100, 2, 200, "MALAS");
+            AddLabel(100, 2, 200, "MALAS");
             //fundo branco
             //x, y, largura, altura, item
             //alt era 232
-            this.AddImageTiled(10, 20, 220, 235, 3004);
+            AddImageTiled(10, 20, 220, 235, 3004);
             //----------
-            this.AddLabel(30, 27, 200, "Map name");
-            this.AddLabel(172, 27, 200, "Unload");
+            AddLabel(30, 27, 200, "Map name");
+            AddLabel(172, 27, 200, "Unload");
             //colunas
             //x, y, comprimento, ?, item
             //comp era 222
-            this.AddImageTiled(20, 25, 2, 222, 10003);
-            this.AddImageTiled(163, 25, 2, 222, 10003);
-            this.AddImageTiled(220, 25, 2, 222, 10003);
+            AddImageTiled(20, 25, 2, 222, 10003);
+            AddImageTiled(163, 25, 2, 222, 10003);
+            AddImageTiled(220, 25, 2, 222, 10003);
             //Linhas
             //x, y, comprimento, ?, item
-            this.AddImageTiled(20, 25, 200, 2, 10001);
-            this.AddImageTiled(20, 45, 200, 2, 10001);
-            this.AddImageTiled(20, 70, 200, 2, 10001);
-            this.AddImageTiled(20, 95, 200, 2, 10001);
-            this.AddImageTiled(20, 120, 200, 2, 10001);
-            this.AddImageTiled(20, 145, 200, 2, 10001);
-            this.AddImageTiled(20, 170, 200, 2, 10001);
-            this.AddImageTiled(20, 195, 200, 2, 10001);
-            this.AddImageTiled(20, 220, 200, 2, 10001);
-            this.AddImageTiled(20, 245, 200, 2, 10001);
+            AddImageTiled(20, 25, 200, 2, 10001);
+            AddImageTiled(20, 45, 200, 2, 10001);
+            AddImageTiled(20, 70, 200, 2, 10001);
+            AddImageTiled(20, 95, 200, 2, 10001);
+            AddImageTiled(20, 120, 200, 2, 10001);
+            AddImageTiled(20, 145, 200, 2, 10001);
+            AddImageTiled(20, 170, 200, 2, 10001);
+            AddImageTiled(20, 195, 200, 2, 10001);
+            AddImageTiled(20, 220, 200, 2, 10001);
+            AddImageTiled(20, 245, 200, 2, 10001);
             //Map names
-            this.AddLabel(35, 51, 200, "Doom");
-            this.AddLabel(35, 76, 200, "North");
-            this.AddLabel(35, 101, 200, "OrcForts");
-            this.AddLabel(35, 126, 200, "South");
-            this.AddLabel(35, 151, 200, "Vendors");
-            this.AddLabel(35, 176, 200, "Citadel");
-            this.AddLabel(35, 201, 200, "Labyrinth");
-            this.AddLabel(35, 226, 200, "Bedlam");
+            AddLabel(35, 51, 200, "Doom");
+            AddLabel(35, 76, 200, "North");
+            AddLabel(35, 101, 200, "OrcForts");
+            AddLabel(35, 126, 200, "South");
+            AddLabel(35, 151, 200, "Vendors");
+            AddLabel(35, 176, 200, "Citadel");
+            AddLabel(35, 201, 200, "Labyrinth");
+            AddLabel(35, 226, 200, "Bedlam");
 
             //Options
-            this.AddCheck(182, 48, 210, 211, false, 101);
-            this.AddCheck(182, 73, 210, 211, false, 102);
-            this.AddCheck(182, 98, 210, 211, false, 103);
-            this.AddCheck(182, 123, 210, 211, false, 104);
-            this.AddCheck(182, 148, 210, 211, false, 105);
-            this.AddCheck(182, 173, 210, 211, false, 106);
-            this.AddCheck(182, 198, 210, 211, false, 107);
-            this.AddCheck(182, 223, 210, 211, false, 108);
+            AddCheck(182, 48, 210, 211, false, 101);
+            AddCheck(182, 73, 210, 211, false, 102);
+            AddCheck(182, 98, 210, 211, false, 103);
+            AddCheck(182, 123, 210, 211, false, 104);
+            AddCheck(182, 148, 210, 211, false, 105);
+            AddCheck(182, 173, 210, 211, false, 106);
+            AddCheck(182, 198, 210, 211, false, 107);
+            AddCheck(182, 223, 210, 211, false, 108);
 
             //Ok, Cancel
             // alt era 280
-            this.AddButton(55, 265, 247, 249, 1, GumpButtonType.Reply, 0);
-            this.AddButton(125, 265, 241, 243, 0, GumpButtonType.Reply, 0);
+            AddButton(55, 265, 247, 249, 1, GumpButtonType.Reply, 0);
+            AddButton(125, 265, 241, 243, 0, GumpButtonType.Reply, 0);
         }
 
         public override void OnResponse(NetState state, RelayInfo info)
@@ -1189,58 +1189,58 @@ namespace Server.Gumps
         public UnloadTokunoGump(CommandEventArgs e)
             : base(50, 50)
         {
-            this.m_CommandEventArgs = e;
-            this.Closable = true;
-            this.Dragable = true;
+            m_CommandEventArgs = e;
+            Closable = true;
+            Dragable = true;
 
-            this.AddPage(1);
+            AddPage(1);
 
             //fundo cinza
             //alt era 310
-            this.AddBackground(0, 0, 243, 250, 5054);
+            AddBackground(0, 0, 243, 250, 5054);
             //----------
-            this.AddLabel(95, 2, 200, "TOKUNO");
+            AddLabel(95, 2, 200, "TOKUNO");
             //fundo branco
             //x, y, largura, altura, item
-            this.AddImageTiled(10, 20, 220, 183, 3004);
+            AddImageTiled(10, 20, 220, 183, 3004);
             //----------
-            this.AddLabel(30, 27, 200, "Map name");
-            this.AddLabel(172, 27, 200, "Unload");
+            AddLabel(30, 27, 200, "Map name");
+            AddLabel(172, 27, 200, "Unload");
             //colunas
             //x, y, comprimento, ?, item
-            this.AddImageTiled(20, 25, 2, 172, 10003);
-            this.AddImageTiled(163, 25, 2, 172, 10003);
-            this.AddImageTiled(220, 25, 2, 172, 10003);
+            AddImageTiled(20, 25, 2, 172, 10003);
+            AddImageTiled(163, 25, 2, 172, 10003);
+            AddImageTiled(220, 25, 2, 172, 10003);
             //Linhas
             //x, y, comprimento, ?, item
-            this.AddImageTiled(20, 25, 200, 2, 10001);
-            this.AddImageTiled(20, 45, 200, 2, 10001);
-            this.AddImageTiled(20, 70, 200, 2, 10001);
-            this.AddImageTiled(20, 95, 200, 2, 10001);
-            this.AddImageTiled(20, 120, 200, 2, 10001);
-            this.AddImageTiled(20, 145, 200, 2, 10001);
-            this.AddImageTiled(20, 170, 200, 2, 10001);
-            this.AddImageTiled(20, 195, 200, 2, 10001);
+            AddImageTiled(20, 25, 200, 2, 10001);
+            AddImageTiled(20, 45, 200, 2, 10001);
+            AddImageTiled(20, 70, 200, 2, 10001);
+            AddImageTiled(20, 95, 200, 2, 10001);
+            AddImageTiled(20, 120, 200, 2, 10001);
+            AddImageTiled(20, 145, 200, 2, 10001);
+            AddImageTiled(20, 170, 200, 2, 10001);
+            AddImageTiled(20, 195, 200, 2, 10001);
             //Map names
-            this.AddLabel(35, 51, 200, "Fan Dancers Dojo");
-            this.AddLabel(35, 76, 200, "Outdoors");
-            this.AddLabel(35, 101, 200, "Towns Life");
-            this.AddLabel(35, 126, 200, "Vendors");
-            this.AddLabel(35, 151, 200, "Wild Life");
-            this.AddLabel(35, 176, 200, "Yomutso Mines");
+            AddLabel(35, 51, 200, "Fan Dancers Dojo");
+            AddLabel(35, 76, 200, "Outdoors");
+            AddLabel(35, 101, 200, "Towns Life");
+            AddLabel(35, 126, 200, "Vendors");
+            AddLabel(35, 151, 200, "Wild Life");
+            AddLabel(35, 176, 200, "Yomutso Mines");
 
             //Options
-            this.AddCheck(182, 48, 210, 211, false, 101);
-            this.AddCheck(182, 73, 210, 211, false, 102);
-            this.AddCheck(182, 98, 210, 211, false, 103);
-            this.AddCheck(182, 123, 210, 211, false, 104);
-            this.AddCheck(182, 148, 210, 211, false, 105);
-            this.AddCheck(182, 173, 210, 211, false, 106);
+            AddCheck(182, 48, 210, 211, false, 101);
+            AddCheck(182, 73, 210, 211, false, 102);
+            AddCheck(182, 98, 210, 211, false, 103);
+            AddCheck(182, 123, 210, 211, false, 104);
+            AddCheck(182, 148, 210, 211, false, 105);
+            AddCheck(182, 173, 210, 211, false, 106);
 
             //Ok, Cancel
             // alt era 280
-            this.AddButton(55, 220, 247, 249, 1, GumpButtonType.Reply, 0);
-            this.AddButton(125, 220, 241, 243, 0, GumpButtonType.Reply, 0);
+            AddButton(55, 220, 247, 249, 1, GumpButtonType.Reply, 0);
+            AddButton(125, 220, 241, 243, 0, GumpButtonType.Reply, 0);
         }
 
         public override void OnResponse(NetState state, RelayInfo info)
@@ -1303,302 +1303,302 @@ namespace Server.Gumps
         public UnloadTermurGump(CommandEventArgs e)
             : base(50, 50)
         {
-            this.m_CommandEventArgs = e;
-            this.Closable = true;
-            this.Dragable = true;
+            m_CommandEventArgs = e;
+            Closable = true;
+            Dragable = true;
 
-            this.AddPage(1);
+            AddPage(1);
 
             //grey background
-            this.AddBackground(0, 0, 240, 310, 5054);
+            AddBackground(0, 0, 240, 310, 5054);
 
             //----------
-            this.AddLabel(95, 2, 200, "TER MUR");
+            AddLabel(95, 2, 200, "TER MUR");
 
             //white background
             //x, y, largura, altura, item
-            this.AddImageTiled(10, 20, 220, 232, 3004);
+            AddImageTiled(10, 20, 220, 232, 3004);
 
             //----------
-            this.AddLabel(30, 27, 200, "Map name");
-            this.AddLabel(167, 27, 200, "Unload");
+            AddLabel(30, 27, 200, "Map name");
+            AddLabel(167, 27, 200, "Unload");
 
             //colunas
             //x, y, comprimento, ?, item
-            this.AddImageTiled(20, 25, 2, 222, 10003);
-            this.AddImageTiled(163, 25, 2, 222, 10003);
-            this.AddImageTiled(218, 25, 2, 222, 10003);
+            AddImageTiled(20, 25, 2, 222, 10003);
+            AddImageTiled(163, 25, 2, 222, 10003);
+            AddImageTiled(218, 25, 2, 222, 10003);
 
             //Linhas
             //x, y, comprimento, ?, item
-            this.AddImageTiled(20, 25, 200, 2, 10001);
-            this.AddImageTiled(20, 45, 200, 2, 10001);
-            this.AddImageTiled(20, 70, 200, 2, 10001);
-            this.AddImageTiled(20, 95, 200, 2, 10001);
-            this.AddImageTiled(20, 120, 200, 2, 10001);
-            this.AddImageTiled(20, 145, 200, 2, 10001);
-            this.AddImageTiled(20, 170, 200, 2, 10001);
-            this.AddImageTiled(20, 195, 200, 2, 10001);
-            this.AddImageTiled(20, 220, 200, 2, 10001);
-            this.AddImageTiled(20, 245, 200, 2, 10001);
+            AddImageTiled(20, 25, 200, 2, 10001);
+            AddImageTiled(20, 45, 200, 2, 10001);
+            AddImageTiled(20, 70, 200, 2, 10001);
+            AddImageTiled(20, 95, 200, 2, 10001);
+            AddImageTiled(20, 120, 200, 2, 10001);
+            AddImageTiled(20, 145, 200, 2, 10001);
+            AddImageTiled(20, 170, 200, 2, 10001);
+            AddImageTiled(20, 195, 200, 2, 10001);
+            AddImageTiled(20, 220, 200, 2, 10001);
+            AddImageTiled(20, 245, 200, 2, 10001);
 
             //Map names
-            this.AddLabel(35, 51, 200, "Crimson Veins");
-            this.AddLabel(35, 76, 200, "Enslaved Goblins");
-            this.AddLabel(35, 101, 200, "Fire Island Ruins");
-            this.AddLabel(35, 126, 200, "Fractured City");
-            this.AddLabel(35, 151, 200, "Lands of the Lich");
-            this.AddLabel(35, 176, 200, "Lava Caldera");
-            this.AddLabel(35, 201, 200, "Passage of Tears");
-            this.AddLabel(35, 226, 200, "Secret Garden");
+            AddLabel(35, 51, 200, "Crimson Veins");
+            AddLabel(35, 76, 200, "Enslaved Goblins");
+            AddLabel(35, 101, 200, "Fire Island Ruins");
+            AddLabel(35, 126, 200, "Fractured City");
+            AddLabel(35, 151, 200, "Lands of the Lich");
+            AddLabel(35, 176, 200, "Lava Caldera");
+            AddLabel(35, 201, 200, "Passage of Tears");
+            AddLabel(35, 226, 200, "Secret Garden");
 
             //Check boxes
-            this.AddCheck(182, 48, 210, 211, false, 101);
-            this.AddCheck(182, 73, 210, 211, false, 102);
-            this.AddCheck(182, 98, 210, 211, false, 103);
-            this.AddCheck(182, 123, 210, 211, false, 104);
-            this.AddCheck(182, 148, 210, 211, false, 105);
-            this.AddCheck(182, 173, 210, 211, false, 106);
-            this.AddCheck(182, 198, 210, 211, false, 107);
-            this.AddCheck(182, 223, 210, 211, false, 108);
+            AddCheck(182, 48, 210, 211, false, 101);
+            AddCheck(182, 73, 210, 211, false, 102);
+            AddCheck(182, 98, 210, 211, false, 103);
+            AddCheck(182, 123, 210, 211, false, 104);
+            AddCheck(182, 148, 210, 211, false, 105);
+            AddCheck(182, 173, 210, 211, false, 106);
+            AddCheck(182, 198, 210, 211, false, 107);
+            AddCheck(182, 223, 210, 211, false, 108);
 
-            this.AddLabel(110, 255, 200, "1/5");
-            this.AddButton(200, 255, 0xFA5, 0xFA7, 0, GumpButtonType.Page, 2);
+            AddLabel(110, 255, 200, "1/5");
+            AddButton(200, 255, 0xFA5, 0xFA7, 0, GumpButtonType.Page, 2);
 
-            this.AddPage(2);
+            AddPage(2);
 
             //grey background
-            this.AddBackground(0, 0, 240, 310, 5054);
+            AddBackground(0, 0, 240, 310, 5054);
 
             //----------
-            this.AddLabel(95, 2, 200, "TER MUR");
+            AddLabel(95, 2, 200, "TER MUR");
 
             //white background
             //x, y, largura, altura, item
-            this.AddImageTiled(10, 20, 220, 232, 3004);
+            AddImageTiled(10, 20, 220, 232, 3004);
 
             //----------
-            this.AddLabel(30, 27, 200, "Map name");
-            this.AddLabel(167, 27, 200, "Unload");
+            AddLabel(30, 27, 200, "Map name");
+            AddLabel(167, 27, 200, "Unload");
 
             //colunas
             //x, y, comprimento, ?, item
-            this.AddImageTiled(20, 25, 2, 222, 10003);
-            this.AddImageTiled(163, 25, 2, 222, 10003);
-            this.AddImageTiled(218, 25, 2, 222, 10003);
+            AddImageTiled(20, 25, 2, 222, 10003);
+            AddImageTiled(163, 25, 2, 222, 10003);
+            AddImageTiled(218, 25, 2, 222, 10003);
 
             //Linhas
             //x, y, comprimento, ?, item
-            this.AddImageTiled(20, 25, 200, 2, 10001);
-            this.AddImageTiled(20, 45, 200, 2, 10001);
-            this.AddImageTiled(20, 70, 200, 2, 10001);
-            this.AddImageTiled(20, 95, 200, 2, 10001);
-            this.AddImageTiled(20, 120, 200, 2, 10001);
-            this.AddImageTiled(20, 145, 200, 2, 10001);
-            this.AddImageTiled(20, 170, 200, 2, 10001);
-            this.AddImageTiled(20, 195, 200, 2, 10001);
-            this.AddImageTiled(20, 220, 200, 2, 10001);
-            this.AddImageTiled(20, 245, 200, 2, 10001);
+            AddImageTiled(20, 25, 200, 2, 10001);
+            AddImageTiled(20, 45, 200, 2, 10001);
+            AddImageTiled(20, 70, 200, 2, 10001);
+            AddImageTiled(20, 95, 200, 2, 10001);
+            AddImageTiled(20, 120, 200, 2, 10001);
+            AddImageTiled(20, 145, 200, 2, 10001);
+            AddImageTiled(20, 170, 200, 2, 10001);
+            AddImageTiled(20, 195, 200, 2, 10001);
+            AddImageTiled(20, 220, 200, 2, 10001);
+            AddImageTiled(20, 245, 200, 2, 10001);
 
             //Map names
-            this.AddLabel(35, 51, 200, "Cavern of the Discarded");
-            this.AddLabel(35, 76, 200, "Clan Scratch");
-            this.AddLabel(35, 101, 246, "Tomb of Kings");
-            this.AddLabel(35, 126, 246, "Underworld");
-            this.AddLabel(35, 151, 246, "Abyss");
-            this.AddLabel(35, 176, 200, "Atoll Blend");
-            this.AddLabel(35, 201, 200, "Chicken Chase");
-            this.AddLabel(35, 226, 200, "City Residential");
+            AddLabel(35, 51, 200, "Cavern of the Discarded");
+            AddLabel(35, 76, 200, "Clan Scratch");
+            AddLabel(35, 101, 246, "Tomb of Kings");
+            AddLabel(35, 126, 246, "Underworld");
+            AddLabel(35, 151, 246, "Abyss");
+            AddLabel(35, 176, 200, "Atoll Blend");
+            AddLabel(35, 201, 200, "Chicken Chase");
+            AddLabel(35, 226, 200, "City Residential");
 
             //Check boxes
-            this.AddCheck(182, 48, 210, 211, false, 109);
-            this.AddCheck(182, 73, 210, 211, false, 110);
-            this.AddCheck(182, 98, 210, 211, false, 111);
-            this.AddCheck(182, 123, 210, 211, false, 112);
-            this.AddCheck(182, 148, 210, 211, false, 113);
-            this.AddCheck(182, 173, 210, 211, false, 114);
-            this.AddCheck(182, 198, 210, 211, false, 115);
-            this.AddCheck(182, 223, 210, 211, false, 116);
+            AddCheck(182, 48, 210, 211, false, 109);
+            AddCheck(182, 73, 210, 211, false, 110);
+            AddCheck(182, 98, 210, 211, false, 111);
+            AddCheck(182, 123, 210, 211, false, 112);
+            AddCheck(182, 148, 210, 211, false, 113);
+            AddCheck(182, 173, 210, 211, false, 114);
+            AddCheck(182, 198, 210, 211, false, 115);
+            AddCheck(182, 223, 210, 211, false, 116);
 
-            this.AddLabel(110, 255, 200, "2/5");
-            this.AddButton(200, 255, 0xFA5, 0xFA7, 0, GumpButtonType.Page, 3);
-            this.AddButton(10, 255, 0xFAE, 0xFB0, 0, GumpButtonType.Page, 1);
+            AddLabel(110, 255, 200, "2/5");
+            AddButton(200, 255, 0xFA5, 0xFA7, 0, GumpButtonType.Page, 3);
+            AddButton(10, 255, 0xFAE, 0xFB0, 0, GumpButtonType.Page, 1);
 
-            this.AddPage(3);
+            AddPage(3);
 
             //grey background
-            this.AddBackground(0, 0, 240, 310, 5054);
+            AddBackground(0, 0, 240, 310, 5054);
 
             //----------
-            this.AddLabel(95, 2, 200, "TER MUR");
+            AddLabel(95, 2, 200, "TER MUR");
 
             //white background
             //x, y, largura, altura, item
-            this.AddImageTiled(10, 20, 220, 232, 3004);
+            AddImageTiled(10, 20, 220, 232, 3004);
 
             //----------
-            this.AddLabel(30, 27, 200, "Map name");
-            this.AddLabel(167, 27, 200, "Unload");
+            AddLabel(30, 27, 200, "Map name");
+            AddLabel(167, 27, 200, "Unload");
 
             //colunas
             //x, y, comprimento, ?, item
-            this.AddImageTiled(20, 25, 2, 222, 10003);
-            this.AddImageTiled(163, 25, 2, 222, 10003);
-            this.AddImageTiled(218, 25, 2, 222, 10003);
+            AddImageTiled(20, 25, 2, 222, 10003);
+            AddImageTiled(163, 25, 2, 222, 10003);
+            AddImageTiled(218, 25, 2, 222, 10003);
 
             //Linhas
             //x, y, comprimento, ?, item
-            this.AddImageTiled(20, 25, 200, 2, 10001);
-            this.AddImageTiled(20, 45, 200, 2, 10001);
-            this.AddImageTiled(20, 70, 200, 2, 10001);
-            this.AddImageTiled(20, 95, 200, 2, 10001);
-            this.AddImageTiled(20, 120, 200, 2, 10001);
-            this.AddImageTiled(20, 145, 200, 2, 10001);
-            this.AddImageTiled(20, 170, 200, 2, 10001);
-            this.AddImageTiled(20, 195, 200, 2, 10001);
-            this.AddImageTiled(20, 220, 200, 2, 10001);
-            this.AddImageTiled(20, 245, 200, 2, 10001);
+            AddImageTiled(20, 25, 200, 2, 10001);
+            AddImageTiled(20, 45, 200, 2, 10001);
+            AddImageTiled(20, 70, 200, 2, 10001);
+            AddImageTiled(20, 95, 200, 2, 10001);
+            AddImageTiled(20, 120, 200, 2, 10001);
+            AddImageTiled(20, 145, 200, 2, 10001);
+            AddImageTiled(20, 170, 200, 2, 10001);
+            AddImageTiled(20, 195, 200, 2, 10001);
+            AddImageTiled(20, 220, 200, 2, 10001);
+            AddImageTiled(20, 245, 200, 2, 10001);
 
             //Map names
-            this.AddLabel(35, 51, 200, "Coral Desert");
-            this.AddLabel(35, 76, 200, "Fisherman's Reach");
-            this.AddLabel(35, 101, 200, "Gated Isle");
-            this.AddLabel(35, 126, 200, "High Plains");
-            this.AddLabel(35, 151, 200, "Kepetch Waste");
-            this.AddLabel(35, 176, 200, "Lava Lake");
-            this.AddLabel(35, 201, 200, "Lava Pit Pyramid");
-            this.AddLabel(35, 226, 200, "Lost Settlement");
+            AddLabel(35, 51, 200, "Coral Desert");
+            AddLabel(35, 76, 200, "Fisherman's Reach");
+            AddLabel(35, 101, 200, "Gated Isle");
+            AddLabel(35, 126, 200, "High Plains");
+            AddLabel(35, 151, 200, "Kepetch Waste");
+            AddLabel(35, 176, 200, "Lava Lake");
+            AddLabel(35, 201, 200, "Lava Pit Pyramid");
+            AddLabel(35, 226, 200, "Lost Settlement");
 
             //Check boxes
-            this.AddCheck(182, 48, 210, 211, false, 117);
-            this.AddCheck(182, 73, 210, 211, false, 118);
-            this.AddCheck(182, 98, 210, 211, false, 119);
-            this.AddCheck(182, 123, 210, 211, false, 120);
-            this.AddCheck(182, 148, 210, 211, false, 121);
-            this.AddCheck(182, 173, 210, 211, false, 122);
-            this.AddCheck(182, 198, 210, 211, false, 123);
-            this.AddCheck(182, 223, 210, 211, false, 124);
+            AddCheck(182, 48, 210, 211, false, 117);
+            AddCheck(182, 73, 210, 211, false, 118);
+            AddCheck(182, 98, 210, 211, false, 119);
+            AddCheck(182, 123, 210, 211, false, 120);
+            AddCheck(182, 148, 210, 211, false, 121);
+            AddCheck(182, 173, 210, 211, false, 122);
+            AddCheck(182, 198, 210, 211, false, 123);
+            AddCheck(182, 223, 210, 211, false, 124);
 
-            this.AddLabel(110, 255, 200, "3/5");
-            this.AddButton(200, 255, 0xFA5, 0xFA7, 0, GumpButtonType.Page, 4);
-            this.AddButton(10, 255, 0xFAE, 0xFB0, 0, GumpButtonType.Page, 2);
+            AddLabel(110, 255, 200, "3/5");
+            AddButton(200, 255, 0xFA5, 0xFA7, 0, GumpButtonType.Page, 4);
+            AddButton(10, 255, 0xFAE, 0xFB0, 0, GumpButtonType.Page, 2);
 
-            this.AddPage(4);
+            AddPage(4);
 
             //grey background
-            this.AddBackground(0, 0, 240, 310, 5054);
+            AddBackground(0, 0, 240, 310, 5054);
 
             //----------
-            this.AddLabel(95, 2, 200, "TER MUR");
+            AddLabel(95, 2, 200, "TER MUR");
 
             //white background
             //x, y, largura, altura, item
-            this.AddImageTiled(10, 20, 220, 232, 3004);
+            AddImageTiled(10, 20, 220, 232, 3004);
 
             //----------
-            this.AddLabel(30, 27, 200, "Map name");
-            this.AddLabel(167, 27, 200, "Unload");
+            AddLabel(30, 27, 200, "Map name");
+            AddLabel(167, 27, 200, "Unload");
 
             //colunas
             //x, y, comprimento, ?, item
-            this.AddImageTiled(20, 25, 2, 222, 10003);
-            this.AddImageTiled(163, 25, 2, 222, 10003);
-            this.AddImageTiled(218, 25, 2, 222, 10003);
+            AddImageTiled(20, 25, 2, 222, 10003);
+            AddImageTiled(163, 25, 2, 222, 10003);
+            AddImageTiled(218, 25, 2, 222, 10003);
 
             //Linhas
             //x, y, comprimento, ?, item
-            this.AddImageTiled(20, 25, 200, 2, 10001);
-            this.AddImageTiled(20, 45, 200, 2, 10001);
-            this.AddImageTiled(20, 70, 200, 2, 10001);
-            this.AddImageTiled(20, 95, 200, 2, 10001);
-            this.AddImageTiled(20, 120, 200, 2, 10001);
-            this.AddImageTiled(20, 145, 200, 2, 10001);
-            this.AddImageTiled(20, 170, 200, 2, 10001);
-            this.AddImageTiled(20, 195, 200, 2, 10001);
-            this.AddImageTiled(20, 220, 200, 2, 10001);
-            this.AddImageTiled(20, 245, 200, 2, 10001);
+            AddImageTiled(20, 25, 200, 2, 10001);
+            AddImageTiled(20, 45, 200, 2, 10001);
+            AddImageTiled(20, 70, 200, 2, 10001);
+            AddImageTiled(20, 95, 200, 2, 10001);
+            AddImageTiled(20, 120, 200, 2, 10001);
+            AddImageTiled(20, 145, 200, 2, 10001);
+            AddImageTiled(20, 170, 200, 2, 10001);
+            AddImageTiled(20, 195, 200, 2, 10001);
+            AddImageTiled(20, 220, 200, 2, 10001);
+            AddImageTiled(20, 245, 200, 2, 10001);
 
             //Map names
-            this.AddLabel(35, 51, 200, "Northern Steppe");
-            this.AddLabel(35, 76, 200, "Raptor Isle");
-            this.AddLabel(35, 101, 200, "Slith Valley");
-            this.AddLabel(35, 126, 200, "Spider Island");
-            this.AddLabel(35, 151, 200, "Talon Point");
-            this.AddLabel(35, 176, 200, "Treefellow Course");
-            this.AddLabel(35, 201, 200, "Void Isle");
-            this.AddLabel(35, 226, 200, "Walled Circus");
+            AddLabel(35, 51, 200, "Northern Steppe");
+            AddLabel(35, 76, 200, "Raptor Isle");
+            AddLabel(35, 101, 200, "Slith Valley");
+            AddLabel(35, 126, 200, "Spider Island");
+            AddLabel(35, 151, 200, "Talon Point");
+            AddLabel(35, 176, 200, "Treefellow Course");
+            AddLabel(35, 201, 200, "Void Isle");
+            AddLabel(35, 226, 200, "Walled Circus");
 
             //Check boxes
-            this.AddCheck(182, 48, 210, 211, false, 125);
-            this.AddCheck(182, 73, 210, 211, false, 126);
-            this.AddCheck(182, 98, 210, 211, false, 127);
-            this.AddCheck(182, 123, 210, 211, false, 128);
-            this.AddCheck(182, 148, 210, 211, false, 129);
-            this.AddCheck(182, 173, 210, 211, false, 130);
-            this.AddCheck(182, 198, 210, 211, false, 131);
-            this.AddCheck(182, 223, 210, 211, false, 132);
+            AddCheck(182, 48, 210, 211, false, 125);
+            AddCheck(182, 73, 210, 211, false, 126);
+            AddCheck(182, 98, 210, 211, false, 127);
+            AddCheck(182, 123, 210, 211, false, 128);
+            AddCheck(182, 148, 210, 211, false, 129);
+            AddCheck(182, 173, 210, 211, false, 130);
+            AddCheck(182, 198, 210, 211, false, 131);
+            AddCheck(182, 223, 210, 211, false, 132);
 
-            this.AddLabel(110, 255, 200, "4/5");
-            this.AddButton(200, 255, 0xFA5, 0xFA7, 0, GumpButtonType.Page, 5);
-            this.AddButton(10, 255, 0xFAE, 0xFB0, 0, GumpButtonType.Page, 3);
+            AddLabel(110, 255, 200, "4/5");
+            AddButton(200, 255, 0xFA5, 0xFA7, 0, GumpButtonType.Page, 5);
+            AddButton(10, 255, 0xFAE, 0xFB0, 0, GumpButtonType.Page, 3);
 
-            this.AddPage(5);
+            AddPage(5);
 
             //fundo cinza
-            this.AddBackground(0, 0, 243, 310, 5054);
+            AddBackground(0, 0, 243, 310, 5054);
             //----------
-            this.AddLabel(93, 2, 200, "TER MUR");
+            AddLabel(93, 2, 200, "TER MUR");
             //fundo branco
             //x, y, largura, altura, item
-            this.AddImageTiled(10, 20, 220, 232, 3004);
+            AddImageTiled(10, 20, 220, 232, 3004);
             //----------
-            this.AddLabel(30, 27, 200, "Map name");
-            this.AddLabel(172, 27, 200, "Unload");
+            AddLabel(30, 27, 200, "Map name");
+            AddLabel(172, 27, 200, "Unload");
             //colunas
             //x, y, comprimento, ?, item
-            this.AddImageTiled(20, 25, 2, 171, 10003);
-            this.AddImageTiled(163, 25, 2, 171, 10003);
-            this.AddImageTiled(220, 25, 2, 171, 10003);
+            AddImageTiled(20, 25, 2, 171, 10003);
+            AddImageTiled(163, 25, 2, 171, 10003);
+            AddImageTiled(220, 25, 2, 171, 10003);
 
             //Linhas
             //x, y, comprimento, ?, item
-            this.AddImageTiled(20, 25, 200, 2, 10001);
-            this.AddImageTiled(20, 45, 200, 2, 10001);
-            this.AddImageTiled(20, 70, 200, 2, 10001);
-            this.AddImageTiled(20, 95, 200, 2, 10001);
-            this.AddImageTiled(20, 120, 200, 2, 10001);
-            this.AddImageTiled(20, 145, 200, 2, 10001);
-            this.AddImageTiled(20, 170, 200, 2, 10001);
-            this.AddImageTiled(20, 195, 200, 2, 10001);
+            AddImageTiled(20, 25, 200, 2, 10001);
+            AddImageTiled(20, 45, 200, 2, 10001);
+            AddImageTiled(20, 70, 200, 2, 10001);
+            AddImageTiled(20, 95, 200, 2, 10001);
+            AddImageTiled(20, 120, 200, 2, 10001);
+            AddImageTiled(20, 145, 200, 2, 10001);
+            AddImageTiled(20, 170, 200, 2, 10001);
+            AddImageTiled(20, 195, 200, 2, 10001);
             //AddImageTiled( 20, 220, 200, 2, 10001 );
             //AddImageTiled( 20, 245, 200, 2, 10001 );
 
             //Map names
-            this.AddLabel(35, 51, 200, "Waterfall Point");
-            this.AddLabel(35, 76, 246, "Shrine of Singularity");
-            this.AddLabel(35, 101, 200, "Toxic Desert");
-            this.AddLabel(35, 126, 200, "Vendor");
-            this.AddLabel(35, 151, 246, "Royal City");
-            this.AddLabel(35, 176, 246, "Holy City");
+            AddLabel(35, 51, 200, "Waterfall Point");
+            AddLabel(35, 76, 246, "Shrine of Singularity");
+            AddLabel(35, 101, 200, "Toxic Desert");
+            AddLabel(35, 126, 200, "Vendor");
+            AddLabel(35, 151, 246, "Royal City");
+            AddLabel(35, 176, 246, "Holy City");
             //AddLabel( 35, 201, 200, "39" );
             //AddLabel( 35, 226, 200, "40" );
 
             //Check boxes
-            this.AddCheck(182, 48, 210, 211, false, 133);
-            this.AddCheck(182, 73, 210, 211, false, 134);
-            this.AddCheck(182, 98, 210, 211, false, 135);
-            this.AddCheck(182, 123, 210, 211, false, 136);
-            this.AddCheck(182, 148, 210, 211, false, 137);
-            this.AddCheck(182, 173, 210, 211, false, 138);
+            AddCheck(182, 48, 210, 211, false, 133);
+            AddCheck(182, 73, 210, 211, false, 134);
+            AddCheck(182, 98, 210, 211, false, 135);
+            AddCheck(182, 123, 210, 211, false, 136);
+            AddCheck(182, 148, 210, 211, false, 137);
+            AddCheck(182, 173, 210, 211, false, 138);
             //AddCheck( 182, 198, 210, 211, false, 139 );
             //AddCheck( 182, 223, 210, 211, false, 140 ); 
 
-            this.AddLabel(110, 255, 200, "5/5");
-            this.AddButton(10, 255, 0xFAE, 0xFB0, 0, GumpButtonType.Page, 4);
+            AddLabel(110, 255, 200, "5/5");
+            AddButton(10, 255, 0xFAE, 0xFB0, 0, GumpButtonType.Page, 4);
 
             //Ok, Cancel
-            this.AddButton(55, 280, 247, 249, 1, GumpButtonType.Reply, 0);
-            this.AddButton(125, 280, 241, 243, 0, GumpButtonType.Reply, 0);
+            AddButton(55, 280, 247, 249, 1, GumpButtonType.Reply, 0);
+            AddButton(125, 280, 241, 243, 0, GumpButtonType.Reply, 0);
         }
 
         public override void OnResponse(NetState state, RelayInfo info)

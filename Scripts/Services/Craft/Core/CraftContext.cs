@@ -161,7 +161,7 @@ namespace Server.Engines.Craft
 
         public virtual void Serialize(GenericWriter writer)
         {
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write(Owner);
             writer.Write(GetSystemIndex(System));

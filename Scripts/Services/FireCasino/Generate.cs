@@ -53,7 +53,7 @@ namespace Server.Engines.ResortAndCasino
             WeakEntityCollection.Add(EntityName, mob);
             mob.MoveToWorld(list[7], map);
 
-            var xmlspawner = new XmlSpawner(8, 1, 2, 0, 25, "CasinoWaitress");
+            XmlSpawner xmlspawner = new XmlSpawner(8, 1, 2, 0, 25, "CasinoWaitress");
             WeakEntityCollection.Add(EntityName, xmlspawner);
             xmlspawner.MoveToWorld(list[8], map);
             xmlspawner.MaxCount = 8;
@@ -85,7 +85,7 @@ namespace Server.Engines.ResortAndCasino
 
         private static Point3D[] GetMalasPoints()
         {
-            var list = GetTramPoints();
+            Point3D[] list = GetTramPoints();
 
             return new Point3D[]
             {

@@ -18,7 +18,7 @@ namespace Server.Items
         {
             get
             {
-                switch (this.Type)
+                switch (Type)
                 {
                     default:
                     case ChocolateType.Milk: return _Wrapped ? 1156388 : 1156391;
@@ -48,7 +48,7 @@ namespace Server.Items
             : base(39952)
         {
             Wrapped = true;
-            this.Type = type;
+            Type = type;
         }
 
         private void InvalidateID()
@@ -100,7 +100,7 @@ namespace Server.Items
         {
             if (craftItem != null && craftItem.Data is ChocolateType)
             {
-                this.Type = (ChocolateType)craftItem.Data;
+                Type = (ChocolateType)craftItem.Data;
             }
 
             return quality;
@@ -115,7 +115,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
             writer.Write((int)_Type);
             writer.Write(_Wrapped);
         }

@@ -18,13 +18,7 @@ namespace Server.Spells.First
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.First;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.First;
         public static void EndArmor(Mobile m)
         {
             if (m_Table.Contains(m))
@@ -51,9 +45,9 @@ namespace Server.Spells.First
             * Reactive Armor, Protection, and Magic Reflection will stay on—even after logging out, even after dying—until you “turn them off” by casting them again. 
             * (+20 physical -5 elemental at 100 Inscription)
             */
-            if (this.CheckSequence())
+            if (CheckSequence())
             {
-                Mobile targ = this.Caster;
+                Mobile targ = Caster;
 
                 ResistanceMod[] mods = (ResistanceMod[])m_Table[targ];
 
@@ -79,7 +73,7 @@ namespace Server.Spells.First
                     int physresist = 15 + (int)(targ.Skills[SkillName.Inscribe].Value / 20);
                     string args = String.Format("{0}\t{1}\t{2}\t{3}\t{4}", physresist, 5, 5, 5, 5);
 
-                    BuffInfo.AddBuff(this.Caster, new BuffInfo(BuffIcon.ReactiveArmor, 1075812, 1075813, args.ToString()));
+                    BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.ReactiveArmor, 1075812, 1075813, args.ToString()));
                 }
                 else
                 {
@@ -91,11 +85,11 @@ namespace Server.Spells.First
                     for (int i = 0; i < mods.Length; ++i)
                         targ.RemoveResistanceMod(mods[i]);
 
-                    BuffInfo.RemoveBuff(this.Caster, BuffIcon.ReactiveArmor);
+                    BuffInfo.RemoveBuff(Caster, BuffIcon.ReactiveArmor);
                 }
             }
 
-            this.FinishSequence();
+            FinishSequence();
 
         }
 

@@ -8,14 +8,14 @@ namespace Server.Items
         public Inshave()
             : base(0x10E6)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         [Constructable]
         public Inshave(int uses)
             : base(uses, 0x10E6)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public Inshave(Serial serial)
@@ -23,18 +23,12 @@ namespace Server.Items
         {
         }
 
-        public override CraftSystem CraftSystem
-        {
-            get
-            {
-                return DefCarpentry.CraftSystem;
-            }
-        }
+        public override CraftSystem CraftSystem => DefCarpentry.CraftSystem;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

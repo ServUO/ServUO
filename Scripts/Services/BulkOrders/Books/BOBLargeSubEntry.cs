@@ -46,52 +46,22 @@ namespace Server.Engines.BulkOrders
             }
         }
 
-        public Type ItemType
-        {
-            get
-            {
-                return m_ItemType;
-            }
-        }
-        public int AmountCur
-        {
-            get
-            {
-                return m_AmountCur;
-            }
-        }
-        public int Number
-        {
-            get
-            {
-                return m_Number;
-            }
-        }
-        public int Graphic
-        {
-            get
-            {
-                return m_Graphic;
-            }
-        }
-        public int Hue
-        {
-            get
-            {
-                return m_Hue;
-            }
-        }
+        public Type ItemType => m_ItemType;
+        public int AmountCur => m_AmountCur;
+        public int Number => m_Number;
+        public int Graphic => m_Graphic;
+        public int Hue => m_Hue;
         public void Serialize(GenericWriter writer)
         {
             writer.WriteEncodedInt(1); // version
 
-            writer.WriteEncodedInt((int)m_Hue);
+            writer.WriteEncodedInt(m_Hue);
 
             writer.Write(m_ItemType == null ? null : m_ItemType.FullName);
 
-            writer.WriteEncodedInt((int)m_AmountCur);
-            writer.WriteEncodedInt((int)m_Number);
-            writer.WriteEncodedInt((int)m_Graphic);
+            writer.WriteEncodedInt(m_AmountCur);
+            writer.WriteEncodedInt(m_Number);
+            writer.WriteEncodedInt(m_Graphic);
         }
     }
 }

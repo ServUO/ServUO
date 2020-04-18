@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class ShepherdsCrookOfHumility : ShepherdsCrook
     {
-        public override int LabelNumber { get { return 1075856; } } // Shepherd's Crook of Humility (Replica)
+        public override int LabelNumber => 1075856;  // Shepherd's Crook of Humility (Replica)
 
         [Constructable]
         public ShepherdsCrookOfHumility()
@@ -18,7 +18,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

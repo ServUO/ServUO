@@ -16,13 +16,13 @@ namespace Server.Spells.SkillMasteries
                 Reagent.GraveDust
             );
 
-        public override double RequiredSkill { get { return 90; } }
-        public override double UpKeep { get { return 0; } }
-        public override int RequiredMana { get { return 40; } }
-        public override bool PartyEffects { get { return false; } }
+        public override double RequiredSkill => 90;
+        public override double UpKeep => 0;
+        public override int RequiredMana => 40;
+        public override bool PartyEffects => false;
 
-        public override SkillName CastSkill { get { return SkillName.Necromancy; } }
-        public override SkillName DamageSkill { get { return SkillName.SpiritSpeak; } }
+        public override SkillName CastSkill => SkillName.Necromancy;
+        public override SkillName DamageSkill => SkillName.SpiritSpeak;
 
         public int Strength { get; set; }
         public List<Item> Skulls { get; set; }
@@ -124,7 +124,7 @@ namespace Server.Spells.SkillMasteries
 
                     if (toAffect != null && callback != null)
                     {
-                        toAffect.ForEach(m => callback(m, (double)conduit.Strength / 100.0));
+                        toAffect.ForEach(m => callback(m, conduit.Strength / 100.0));
                         ColUtility.Free(toAffect);
                         return true;
                     }
@@ -150,7 +150,7 @@ namespace Server.Spells.SkillMasteries
             {
                 base.Serialize(writer);
 
-                writer.Write((int)0); // version
+                writer.Write(0); // version
             }
 
             public override void Deserialize(GenericReader reader)

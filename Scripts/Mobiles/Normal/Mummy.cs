@@ -49,41 +49,23 @@ namespace Server.Mobiles
         {
         }
 
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override bool BleedImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lesser;
-            }
-        }
+        public override int TreasureMapLevel => 1;
+        public override bool BleedImmune => true;
+        public override Poison PoisonImmune => Poison.Lesser;
 
-        public override TribeType Tribe { get { return TribeType.Undead; } }
+        public override TribeType Tribe => TribeType.Undead;
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich);
-            this.AddLoot(LootPack.Gems);
-            this.AddLoot(LootPack.Potions);
+            AddLoot(LootPack.Rich);
+            AddLoot(LootPack.Gems);
+            AddLoot(LootPack.Potions);
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

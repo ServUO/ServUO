@@ -45,7 +45,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime ChartedOn { get { return _ChartedOn; } set { _ChartedOn = value; } }
 
-        public override int LabelNumber { get { return _Constellation == -1 ? 1158743 : 1158493; } } // An Indecipherable Star Chart : Star Chart
+        public override int LabelNumber => _Constellation == -1 ? 1158743 : 1158493;  // An Indecipherable Star Chart : Star Chart
 
         [Constructable]
         public StarChart()
@@ -69,9 +69,9 @@ namespace Server.Items
                 {
                     if (!Deleted && IsChildOf(from.Backpack) && targeted is PersonalTelescope)
                     {
-                        var tele = (PersonalTelescope)targeted;
+                        PersonalTelescope tele = (PersonalTelescope)targeted;
 
-                        var constellation = AstronomySystem.GetConstellation(tele.TimeCoordinate, tele.RA, tele.DEC);
+                        ConstellationInfo constellation = AstronomySystem.GetConstellation(tele.TimeCoordinate, tele.RA, tele.DEC);
 
                         if (constellation != null)
                         {
@@ -127,7 +127,7 @@ namespace Server.Items
 
             public override void AddGumpLayout()
             {
-                var info = AstronomySystem.GetConstellation(Chart.Constellation);
+                ConstellationInfo info = AstronomySystem.GetConstellation(Chart.Constellation);
 
                 AddPage(0);
 
@@ -164,7 +164,7 @@ namespace Server.Items
 
                     if (relay != null && relay.Text != null)
                     {
-                        var text = relay.Text;
+                        string text = relay.Text;
 
                         if (Server.Guilds.BaseGuildGump.CheckProfanity(text) &&
                             !AstronomySystem.CheckNameExists(text) &&

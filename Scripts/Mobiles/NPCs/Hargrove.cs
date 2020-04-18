@@ -8,65 +8,29 @@ namespace Server.Engines.Quests
         public ChopChopOnTheDoubleQuest()
             : base()
         {
-            this.AddObjective(new ObtainObjective(typeof(Log), "log", 60, 0x1BDD));
+            AddObjective(new ObtainObjective(typeof(Log), "log", 60, 0x1BDD));
 
-            this.AddReward(new BaseReward(typeof(LumberjacksSatchel), 1074282)); // Craftsman's Satchel
+            AddReward(new BaseReward(typeof(LumberjacksSatchel), 1074282)); // Craftsman's Satchel
         }
 
-        public override TimeSpan RestartDelay
-        {
-            get
-            {
-                return TimeSpan.FromMinutes(3);
-            }
-        }
+        public override TimeSpan RestartDelay => TimeSpan.FromMinutes(3);
         /* Chop Chop, On The Double! */
-        public override object Title
-        {
-            get
-            {
-                return 1075537;
-            }
-        }
+        public override object Title => 1075537;
         /* That's right, move it! I need sixty logs on the double, and they need to be freshly cut! If you can get them to 
         me fast I'll have your payment in your hands before you have the scent of pine out from beneath your nostrils. Just 
         get a sharp axe and hack away at some of the trees in the land and your lumberjacking skill will rise in no time. */
-        public override object Description
-        {
-            get
-            {
-                return 1075538;
-            }
-        }
+        public override object Description => 1075538;
         /* Or perhaps you'd rather not. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1072981;
-            }
-        }
+        public override object Refuse => 1072981;
         /* You're not quite done yet.  Get back to work! */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1072271;
-            }
-        }
+        public override object Uncomplete => 1072271;
         /* Ahhh! The smell of fresh cut lumber. And look at you, all strong and proud, as if you had done an honest days work! */
-        public override object Complete
-        {
-            get
-            {
-                return 1075539;
-            }
-        }
+        public override object Complete => 1075539;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -90,50 +54,44 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(ChopChopOnTheDoubleQuest)
                 };
-            }
-        }
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = false;
+            CantWalk = true;
+            Race = Race.Human;
 
-            this.Hue = 0x83FF;
-            this.HairItemID = 0x203C;
-            this.HairHue = 0x0;
+            Hue = 0x83FF;
+            HairItemID = 0x203C;
+            HairHue = 0x0;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new BattleAxe());
-            this.AddItem(new Boots(0x901));
-            this.AddItem(new StuddedLegs());
-            this.AddItem(new Shirt(0x288));
-            this.AddItem(new Bandana(0x20));
+            AddItem(new Backpack());
+            AddItem(new BattleAxe());
+            AddItem(new Boots(0x901));
+            AddItem(new StuddedLegs());
+            AddItem(new Shirt(0x288));
+            AddItem(new Bandana(0x20));
 
             Item item;
 
             item = new PlateGloves();
             item.Hue = 0x21E;
-            this.AddItem(item);
+            AddItem(item);
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -150,10 +108,10 @@ namespace Server.Engines.Quests
         public LumberjacksSatchel()
             : base()
         {
-            this.Hue = BaseReward.SatchelHue();
+            Hue = BaseReward.SatchelHue();
 
-            this.AddItem(new Gold(15));
-            this.AddItem(new Hatchet());
+            AddItem(new Gold(15));
+            AddItem(new Hatchet());
         }
 
         public LumberjacksSatchel(Serial serial)
@@ -165,7 +123,7 @@ namespace Server.Engines.Quests
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

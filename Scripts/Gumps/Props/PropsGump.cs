@@ -177,7 +177,7 @@ namespace Server.Gumps
                 return;
             }
 
-            var peek = (StackEntry)stack.Peek();
+            StackEntry peek = (StackEntry)stack.Peek();
 
             if (peek.m_Property.CanWrite)
             {
@@ -221,7 +221,7 @@ namespace Server.Gumps
 
             if (o is Serial)
             {
-                var s = (Serial)o;
+                Serial s = (Serial)o;
 
                 if (s.IsValid)
                 {
@@ -263,7 +263,7 @@ namespace Server.Gumps
 
             if (o is Color)
             {
-                var c = (Color)o;
+                Color c = (Color)o;
 
                 if (c.IsNamedColor)
                 {
@@ -338,7 +338,7 @@ namespace Server.Gumps
                     return Color.FromArgb(val);
                 }
 
-                var rgb = s.Split(',');
+                string[] rgb = s.Split(',');
 
                 if (rgb.Length >= 3)
                 {
@@ -355,7 +355,7 @@ namespace Server.Gumps
 
             if (t.IsDefined(typeof(ParsableAttribute), false))
             {
-                var parseMethod = t.GetMethod("Parse", new[] { typeof(string) });
+                MethodInfo parseMethod = t.GetMethod("Parse", new[] { typeof(string) });
 
                 return parseMethod.Invoke(null, new object[] { s });
             }
@@ -365,7 +365,7 @@ namespace Server.Gumps
 
         public override void OnResponse(NetState state, RelayInfo info)
         {
-            var from = state.Mobile;
+            Mobile from = state.Mobile;
 
             if (!BaseCommand.IsAccessible(from, m_Object))
             {
@@ -379,7 +379,7 @@ namespace Server.Gumps
                     {
                         if (m_Stack != null && m_Stack.Count > 0)
                         {
-                            var entry = (StackEntry)m_Stack.Pop();
+                            StackEntry entry = (StackEntry)m_Stack.Pop();
 
                             from.SendGump(new PropertiesGump(from, entry.m_Object, m_Stack, null));
                         }
@@ -403,25 +403,25 @@ namespace Server.Gumps
                     break;
                 default:
                     {
-                        var index = (m_Page * EntryCount) + (info.ButtonID - 3);
+                        int index = (m_Page * EntryCount) + (info.ButtonID - 3);
 
                         if (index >= 0 && index < m_List.Count)
                         {
-                            var prop = m_List[index] as PropertyInfo;
+                            PropertyInfo prop = m_List[index] as PropertyInfo;
 
                             if (prop == null)
                             {
                                 return;
                             }
 
-                            var attr = GetCPA(prop);
+                            CPA attr = GetCPA(prop);
 
                             if (!prop.CanWrite || attr == null || from.AccessLevel < attr.WriteLevel || attr.ReadOnly)
                             {
                                 return;
                             }
 
-                            var type = prop.PropertyType;
+                            Type type = prop.PropertyType;
 
                             if (IsType(type, _TypeOfMobile) || IsType(type, _TypeOfItem) || type.IsAssignableFrom(typeof(IDamageable)))
                             {
@@ -493,7 +493,7 @@ namespace Server.Gumps
                             else if (IsType(type, _TypeOfMap))
                             {
                                 //Must explicitly cast collection to avoid potential covariant cast runtime exception
-                                var values = Map.GetMapValues().Cast<object>().ToArray();
+                                object[] values = Map.GetMapValues().Cast<object>().ToArray();
 
                                 from.SendGump(new SetListOptionGump(prop, from, m_Object, m_Stack, m_Page, m_List, Map.GetMapNames(), values));
                             }
@@ -512,7 +512,7 @@ namespace Server.Gumps
                             }
                             else if (HasAttribute(type, _TypeOfPropertyObject, true))
                             {
-                                var obj = prop.GetValue(m_Object, null);
+                                object obj = prop.GetValue(m_Object, null);
 
                                 from.SendGump(
                                     obj != null
@@ -527,9 +527,9 @@ namespace Server.Gumps
 
         private static object[] GetObjects(Array a)
         {
-            var list = new object[a.Length];
+            object[] list = new object[a.Length];
 
-            for (var i = 0; i < list.Length; ++i)
+            for (int i = 0; i < list.Length; ++i)
             {
                 list[i] = a.GetValue(i);
             }
@@ -544,14 +544,14 @@ namespace Server.Gumps
 
         private static string[] GetCustomEnumNames(Type type)
         {
-            var attrs = type.GetCustomAttributes(_TypeOfCustomEnum, false);
+            object[] attrs = type.GetCustomAttributes(_TypeOfCustomEnum, false);
 
             if (attrs.Length == 0)
             {
                 return new string[0];
             }
 
-            var ce = attrs[0] as CustomEnumAttribute;
+            CustomEnumAttribute ce = attrs[0] as CustomEnumAttribute;
 
             if (ce == null)
             {
@@ -578,7 +578,7 @@ namespace Server.Gumps
 
         private static CPA GetCPA(PropertyInfo prop)
         {
-            var attrs = prop.GetCustomAttributes(_TypeOfCPA, false);
+            object[] attrs = prop.GetCustomAttributes(_TypeOfCPA, false);
 
             return attrs.Length > 0 ? attrs[0] as CPA : null;
         }
@@ -607,7 +607,7 @@ namespace Server.Gumps
 
             if (o is Serial)
             {
-                var s = (Serial)o;
+                Serial s = (Serial)o;
 
                 if (s.IsValid)
                 {
@@ -652,7 +652,7 @@ namespace Server.Gumps
 
             if (o is Color)
             {
-                var c = (Color)o;
+                Color c = (Color)o;
 
                 if (c.IsNamedColor)
                 {
@@ -669,7 +669,7 @@ namespace Server.Gumps
         {
             m_Page = page;
 
-            var count = m_List.Count - (page * EntryCount);
+            int count = m_List.Count - (page * EntryCount);
 
             if (count < 0)
             {
@@ -680,14 +680,14 @@ namespace Server.Gumps
                 count = EntryCount;
             }
 
-            var lastIndex = (page * EntryCount) + count - 1;
+            int lastIndex = (page * EntryCount) + count - 1;
 
             if (lastIndex >= 0 && lastIndex < m_List.Count && m_List[lastIndex] == null)
             {
                 --count;
             }
 
-            var totalHeight = OffsetSize + ((EntryHeight + OffsetSize) * (count + 1));
+            int totalHeight = OffsetSize + ((EntryHeight + OffsetSize) * (count + 1));
 
             AddPage(0);
 
@@ -699,10 +699,10 @@ namespace Server.Gumps
                 totalHeight,
                 OffsetGumpID);
 
-            var x = BorderSize + OffsetSize;
-            var y = BorderSize + OffsetSize;
+            int x = BorderSize + OffsetSize;
+            int y = BorderSize + OffsetSize;
 
-            var emptyWidth = TotalWidth - PrevWidth - NextWidth - (OffsetSize * 4) - (OldStyle ? SetWidth + OffsetSize : 0);
+            int emptyWidth = TotalWidth - PrevWidth - NextWidth - (OffsetSize * 4) - (OldStyle ? SetWidth + OffsetSize : 0);
 
             if (OldStyle)
             {
@@ -764,11 +764,11 @@ namespace Server.Gumps
                 x = BorderSize + OffsetSize;
                 y += EntryHeight + OffsetSize;
 
-                var o = m_List[index];
+                object o = m_List[index];
 
                 if (o is Type)
                 {
-                    var type = (Type)o;
+                    Type type = (Type)o;
 
                     AddImageTiled(x, y, TypeWidth, EntryHeight, EntryGumpID);
                     AddLabelCropped(x + TextOffsetX, y, TypeWidth - TextOffsetX, EntryHeight, TextHue, type.Name);
@@ -781,7 +781,7 @@ namespace Server.Gumps
                 }
                 else if (o is PropertyInfo)
                 {
-                    var prop = (PropertyInfo)o;
+                    PropertyInfo prop = (PropertyInfo)o;
 
                     AddImageTiled(x, y, NameWidth, EntryHeight, EntryGumpID);
                     AddLabelCropped(x + TextOffsetX, y, NameWidth - TextOffsetX, EntryHeight, TextHue, prop.Name);
@@ -795,7 +795,7 @@ namespace Server.Gumps
                         AddImageTiled(x, y, SetWidth, EntryHeight, SetGumpID);
                     }
 
-                    var cpa = GetCPA(prop);
+                    CPA cpa = GetCPA(prop);
 
                     if (prop.CanWrite && cpa != null && m_Mobile.AccessLevel >= cpa.WriteLevel && !cpa.ReadOnly)
                     {
@@ -816,21 +816,21 @@ namespace Server.Gumps
 
         private ArrayList BuildList()
         {
-            var list = new ArrayList();
+            ArrayList list = new ArrayList();
 
             if (m_Type == null)
             {
                 return list;
             }
 
-            var props = m_Type.GetProperties(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public);
+            PropertyInfo[] props = m_Type.GetProperties(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public);
 
-            var groups = GetGroups(m_Type, props);
+            ArrayList groups = GetGroups(m_Type, props);
 
-            for (var i = 0; i < groups.Count; ++i)
+            for (int i = 0; i < groups.Count; ++i)
             {
-                var de = (DictionaryEntry)groups[i];
-                var groupList = (ArrayList)de.Value;
+                DictionaryEntry de = (DictionaryEntry)groups[i];
+                ArrayList groupList = (ArrayList)de.Value;
 
                 if (!HasAttribute((Type)de.Key, _TypeOfNoSort, false))
                 {
@@ -851,24 +851,24 @@ namespace Server.Gumps
 
         private ArrayList GetGroups(Type objectType, IEnumerable<PropertyInfo> props)
         {
-            var groups = new Hashtable();
+            Hashtable groups = new Hashtable();
 
-            foreach (var prop in props)
+            foreach (PropertyInfo prop in props)
             {
                 if (!prop.CanRead)
                 {
                     continue;
                 }
 
-                var attr = GetCPA(prop);
+                CPA attr = GetCPA(prop);
 
                 if (attr == null || m_Mobile.AccessLevel < attr.ReadLevel)
                 {
                     continue;
                 }
 
-                var type = prop.DeclaringType;
-                var die = false;
+                Type type = prop.DeclaringType;
+                bool die = false;
 
                 if (type == null)
                 {
@@ -877,7 +877,7 @@ namespace Server.Gumps
 
                 while (!die)
                 {
-                    var baseType = type.BaseType;
+                    Type baseType = type.BaseType;
 
                     if (baseType == null || baseType == _TypeOfObject)
                     {
@@ -893,7 +893,7 @@ namespace Server.Gumps
                     }
                 }
 
-                var list = groups[type] as ArrayList;
+                ArrayList list = groups[type] as ArrayList;
 
                 if (list == null)
                 {
@@ -903,7 +903,7 @@ namespace Server.Gumps
                 list.Add(prop);
             }
 
-            var sorted = new ArrayList(groups);
+            ArrayList sorted = new ArrayList(groups);
 
             sorted.Sort(new GroupComparer(objectType));
 
@@ -951,8 +951,8 @@ namespace Server.Gumps
                     throw new ArgumentException();
                 }
 
-                var a = (PropertyInfo)x;
-                var b = (PropertyInfo)y;
+                PropertyInfo a = (PropertyInfo)x;
+                PropertyInfo b = (PropertyInfo)y;
 
                 return String.Compare(a.Name, b.Name, StringComparison.Ordinal);
             }
@@ -989,18 +989,18 @@ namespace Server.Gumps
                     throw new ArgumentException();
                 }
 
-                var de1 = (DictionaryEntry)x;
-                var de2 = (DictionaryEntry)y;
+                DictionaryEntry de1 = (DictionaryEntry)x;
+                DictionaryEntry de2 = (DictionaryEntry)y;
 
-                var a = (Type)de1.Key;
-                var b = (Type)de2.Key;
+                Type a = (Type)de1.Key;
+                Type b = (Type)de2.Key;
 
                 return GetDistance(a).CompareTo(GetDistance(b));
             }
 
             private int GetDistance(Type type)
             {
-                var current = m_Start;
+                Type current = m_Start;
                 int dist;
 
                 for (dist = 0; current != null && current != _TypeOfObject && current != type; ++dist)

@@ -2,17 +2,17 @@ namespace Server.Items
 {
     public class SoldiersMedal : BaseTalisman
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
 
         [Constructable]
         public SoldiersMedal()
             : base(0x2F5B)
         {
-            this.Hue = 1902;
-            this.SkillBonuses.SetValues(0, SkillName.Tactics, 10.0);
-            this.Attributes.AttackChance = 5;
-            this.Attributes.RegenStam = 2;
-            this.Attributes.WeaponDamage = 20;
+            Hue = 1902;
+            SkillBonuses.SetValues(0, SkillName.Tactics, 10.0);
+            Attributes.AttackChance = 5;
+            Attributes.RegenStam = 2;
+            Attributes.WeaponDamage = 20;
         }
 
         public SoldiersMedal(Serial serial)
@@ -20,25 +20,13 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1154726;
-            }
-        }// Soldier's Medal
-        public override bool ForceShowName
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override int LabelNumber => 1154726;// Soldier's Medal
+        public override bool ForceShowName => true;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

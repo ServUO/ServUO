@@ -72,13 +72,7 @@ namespace Server.Items
             }
         }
 
-        public PuzzleChestCylinder[] Cylinders
-        {
-            get
-            {
-                return m_Cylinders;
-            }
-        }
+        public PuzzleChestCylinder[] Cylinders => m_Cylinders;
         public PuzzleChestCylinder First
         {
             get
@@ -197,9 +191,9 @@ namespace Server.Items
 
         public virtual void Serialize(GenericWriter writer)
         {
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
 
-            writer.WriteEncodedInt((int)m_Cylinders.Length);
+            writer.WriteEncodedInt(m_Cylinders.Length);
             for (int i = 0; i < m_Cylinders.Length; i++)
             {
                 writer.Write((int)m_Cylinders[i]);
@@ -224,18 +218,12 @@ namespace Server.Items
             m_When = reader.ReadDeltaTime();
         }
 
-        public DateTime When
-        {
-            get
-            {
-                return m_When;
-            }
-        }
+        public DateTime When => m_When;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
 
             writer.WriteDeltaTime(m_When);
         }
@@ -249,7 +237,7 @@ namespace Server.Items
         private PuzzleChestSolution m_Solution;
         private PuzzleChestCylinder[] m_Hints = new PuzzleChestCylinder[HintsCount];
 
-        public virtual int Label { get { return 1018309; } } // A Puzzle Lock
+        public virtual int Label => 1018309;  // A Puzzle Lock
 
         public PuzzleChest(int itemID)
             : base(itemID)
@@ -273,13 +261,7 @@ namespace Server.Items
                 InitHints();
             }
         }
-        public PuzzleChestCylinder[] Hints
-        {
-            get
-            {
-                return m_Hints;
-            }
-        }
+        public PuzzleChestCylinder[] Hints => m_Hints;
         public PuzzleChestCylinder FirstHint
         {
             get
@@ -313,13 +295,7 @@ namespace Server.Items
                 m_Hints[2] = value;
             }
         }
-        public override string DefaultName
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override string DefaultName => null;
         public override bool CheckLocked(Mobile from)
         {
             if (Locked)
@@ -441,17 +417,17 @@ namespace Server.Items
 
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
 
             m_Solution.Serialize(writer);
 
-            writer.WriteEncodedInt((int)m_Hints.Length);
+            writer.WriteEncodedInt(m_Hints.Length);
             for (int i = 0; i < m_Hints.Length; i++)
             {
                 writer.Write((int)m_Hints[i]);
             }
 
-            writer.WriteEncodedInt((int)m_Guesses.Count);
+            writer.WriteEncodedInt(m_Guesses.Count);
             foreach (KeyValuePair<Mobile, PuzzleChestSolutionAndTime> kvp in m_Guesses)
             {
                 writer.Write(kvp.Key);
@@ -866,7 +842,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -895,7 +871,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

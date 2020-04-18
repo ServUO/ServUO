@@ -13,13 +13,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1076257;
-            }
-        }// Broken Covered Chair
+        public override int LabelNumber => 1076257;// Broken Covered Chair
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -41,7 +35,7 @@ namespace Server.Items
         public BrokenCoveredChairAddon()
             : base()
         {
-            this.AddComponent(new BrokenCoveredChairComponent(), 0, 0, 0);
+            AddComponent(new BrokenCoveredChairComponent(), 0, 0, 0);
         }
 
         public BrokenCoveredChairAddon(Serial serial)
@@ -49,13 +43,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new BrokenCoveredChairDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new BrokenCoveredChairDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -77,7 +65,7 @@ namespace Server.Items
         public BrokenCoveredChairDeed()
             : base()
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public BrokenCoveredChairDeed(Serial serial)
@@ -85,20 +73,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new BrokenCoveredChairAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1076257;
-            }
-        }// Broken Covered Chair
+        public override BaseAddon Addon => new BrokenCoveredChairAddon();
+        public override int LabelNumber => 1076257;// Broken Covered Chair
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

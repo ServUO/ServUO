@@ -137,7 +137,7 @@ namespace Server.Items
 
         public static TextDefinition GetAmmoName(IShipCannon cannon)
         {
-            var info = Infos.Values.FirstOrDefault(i => i.AmmoType == cannon.AmmoType);
+            AmmoInfo info = Infos.Values.FirstOrDefault(i => i.AmmoType == cannon.AmmoType);
 
             if (info == null)
             {

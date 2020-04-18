@@ -13,20 +13,8 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074601;
-            }
-        }// Fish bones
-        public override double DefaultWeight
-        {
-            get
-            {
-                return 1.0;
-            }
-        }
+        public override int LabelNumber => 1074601;// Fish bones
+        public override double DefaultWeight => 1.0;
         public override void AddNameProperties(ObjectPropertyList list)
         {
             base.AddNameProperties(list);
@@ -38,7 +26,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

@@ -4,25 +4,13 @@ namespace Server.Items
 {
     public class FreshGreenLadyBug : BaseLight
     {
-        public override int LabelNumber { get { return 1071401; } } // Fresh Green Lady Bug
+        public override int LabelNumber => 1071401;  // Fresh Green Lady Bug
 
-        public override int LitItemID
-        {
-            get
-            {
-                return SouthFacing ? 0x2D04 : 0x2D02;
-            }
-        }
+        public override int LitItemID => SouthFacing ? 0x2D04 : 0x2D02;
 
-        public override int UnlitItemID
-        {
-            get
-            {
-                return SouthFacing ? 0x2D03 : 0x2D01;
-            }
-        }
+        public override int UnlitItemID => SouthFacing ? 0x2D03 : 0x2D01;
 
-        public bool SouthFacing { get { return ItemID == 0x2D03 || ItemID == 0x2D04; } }
+        public bool SouthFacing => ItemID == 0x2D03 || ItemID == 0x2D04;
 
         [Constructable]
         public FreshGreenLadyBug()
@@ -42,7 +30,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

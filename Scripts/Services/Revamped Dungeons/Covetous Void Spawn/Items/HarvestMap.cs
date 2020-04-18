@@ -36,7 +36,7 @@ namespace Server.Items
             {
                 _UsesRemaining = value;
 
-                if (_UsesRemaining <= 0 && this.RootParent is Mobile)
+                if (_UsesRemaining <= 0 && RootParent is Mobile)
                     ((Mobile)RootParent).SendMessage("Your map's magic is exhausted.");
 
                 InvalidateProperties();
@@ -56,7 +56,7 @@ namespace Server.Items
         public Map TargetMap { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsMinerMap { get { return _Resource >= CraftResource.Iron && _Resource <= CraftResource.Valorite; } }
+        public bool IsMinerMap => _Resource >= CraftResource.Iron && _Resource <= CraftResource.Valorite;
 
         [Constructable]
         public HarvestMap(CraftResource resource)
@@ -96,8 +96,8 @@ namespace Server.Items
             }
             else
             {
-                Effects.SendLocationParticles(EffectItem.Create(this.Location, this.Map, EffectItem.DefaultDuration), 0x3728, 8, 20, 5042);
-                Effects.PlaySound(this.Location, this.Map, 0x201);
+                Effects.SendLocationParticles(EffectItem.Create(Location, Map, EffectItem.DefaultDuration), 0x3728, 8, 20, 5042);
+                Effects.PlaySound(Location, Map, 0x201);
             }
 
             Delete();
@@ -247,7 +247,7 @@ namespace Server.Items
                     if (line.Length == 0 || line.StartsWith("#"))
                         continue;
 
-                    var split = line.Split('\t');
+                    string[] split = line.Split('\t');
 
                     int x, y = 0;
 

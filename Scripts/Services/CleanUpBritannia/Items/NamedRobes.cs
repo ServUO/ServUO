@@ -2,7 +2,7 @@
 {
     public class HumansAndElvesRobe : Robe
     {
-        public override int LabelNumber { get { return 1151202; } } // Humans & Elves are our friends!
+        public override int LabelNumber => 1151202;  // Humans & Elves are our friends!
 
         [Constructable]
         public HumansAndElvesRobe()
@@ -20,7 +20,7 @@
         {
             base.Serialize(writer);
 
-            writer.Write((int)1);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -33,7 +33,7 @@
 
     public class GargoylesAreOurFriendsRobe : Robe
     {
-        public override int LabelNumber { get { return 1151203; } } // Gargoyles are our friends!
+        public override int LabelNumber => 1151203;  // Gargoyles are our friends!
 
         [Constructable]
         public GargoylesAreOurFriendsRobe()
@@ -51,7 +51,7 @@
         {
             base.Serialize(writer);
 
-            writer.Write((int)1);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -64,7 +64,7 @@
 
     public class WeArePiratesRobe : Robe
     {
-        public override int LabelNumber { get { return 1151204; } } // We are pirates!
+        public override int LabelNumber => 1151204;  // We are pirates!
 
         [Constructable]
         public WeArePiratesRobe()
@@ -82,7 +82,7 @@
         {
             base.Serialize(writer);
 
-            writer.Write((int)1);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -95,7 +95,7 @@
 
     public class FollowerOfBaneRobe : Robe
     {
-        public override int LabelNumber { get { return 1151205; } } // Follower of Bane
+        public override int LabelNumber => 1151205;  // Follower of Bane
 
         [Constructable]
         public FollowerOfBaneRobe()
@@ -113,7 +113,7 @@
         {
             base.Serialize(writer);
 
-            writer.Write((int)1);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -126,7 +126,7 @@
 
     public class QueenDawnForeverRobe : Robe
     {
-        public override int LabelNumber { get { return 1151206; } } // Queen Dawn Forever
+        public override int LabelNumber => 1151206;  // Queen Dawn Forever
 
         [Constructable]
         public QueenDawnForeverRobe()
@@ -144,7 +144,7 @@
         {
             base.Serialize(writer);
 
-            writer.Write((int)1);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)

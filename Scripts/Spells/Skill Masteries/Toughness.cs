@@ -11,11 +11,11 @@ namespace Server.Spells.SkillMasteries
                 9002
             );
 
-        public override double UpKeep { get { return 20; } }
-        public override int RequiredMana { get { return 20; } }
+        public override double UpKeep => 20;
+        public override int RequiredMana => 20;
 
-        public override SkillName CastSkill { get { return SkillName.Macing; } }
-        public override SkillName DamageSkill { get { return SkillName.Tactics; } }
+        public override SkillName CastSkill => SkillName.Macing;
+        public override SkillName DamageSkill => SkillName.Tactics;
 
         private int _HPBonus;
 
@@ -32,7 +32,7 @@ namespace Server.Spells.SkillMasteries
                 return false;
             }
 
-            ToughnessSpell spell = GetSpell(Caster, this.GetType()) as ToughnessSpell;
+            ToughnessSpell spell = GetSpell(Caster, GetType()) as ToughnessSpell;
 
             if (spell != null)
             {

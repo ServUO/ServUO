@@ -23,7 +23,7 @@ namespace Server.Items
 
         public abstract int MinDamage { get; }
         public abstract int MaxDamage { get; }
-        public override bool RequireFreeHand { get { return false; } }
+        public override bool RequireFreeHand => false;
 
         public override void Serialize(GenericWriter writer)
         {
@@ -137,14 +137,14 @@ namespace Server.Items
             int min = Scale(from, MinDamage);
             int max = Scale(from, MaxDamage);
 
-            var list = SpellHelper.AcquireIndirectTargets(from, loc, map, ExplosionRange, false).OfType<Mobile>().ToList();
+            System.Collections.Generic.List<Mobile> list = SpellHelper.AcquireIndirectTargets(from, loc, map, ExplosionRange, false).OfType<Mobile>().ToList();
 
             if (from != null && damageThrower && !list.Contains(from))
             {
                 list.Add(from);
             }
 
-            foreach (var m in list)
+            foreach (Mobile m in list)
             {
                 if (from != null)
                 {
@@ -173,7 +173,7 @@ namespace Server.Items
                 return;
             }
 
-            var states = (object[])state;
+            object[] states = (object[])state;
             Mobile from = (Mobile)states[0];
             int timer = (int)states[1];
 
@@ -228,7 +228,7 @@ namespace Server.Items
                 return;
             }
 
-            var states = (object[])state;
+            object[] states = (object[])state;
             Mobile from = (Mobile)states[0];
             IPoint3D p = (IPoint3D)states[1];
             Map map = (Map)states[2];
@@ -247,7 +247,7 @@ namespace Server.Items
                 m_Potion = potion;
             }
 
-            public BaseExplosionPotion Potion { get { return m_Potion; } }
+            public BaseExplosionPotion Potion => m_Potion;
 
             protected override void OnTarget(Mobile from, object targeted)
             {

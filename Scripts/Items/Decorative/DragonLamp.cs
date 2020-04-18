@@ -5,11 +5,11 @@ namespace Server.Items
     [TypeAlias("Server.Items.CraftableDragonLamp")]
     public class DragonLamp : BaseLight, IFlipable
     {
-        public override int LitItemID { get { return ItemID == 0x4C4C ? 0x4C4D : 0x4C4F; } }
-        public override int UnlitItemID { get { return ItemID == 0x4C4D ? 0x4C4C : 0x4C4E; } }
+        public override int LitItemID => ItemID == 0x4C4C ? 0x4C4D : 0x4C4F;
+        public override int UnlitItemID => ItemID == 0x4C4D ? 0x4C4C : 0x4C4E;
 
-        public int NorthID { get { return Burning ? 0x4C4D : 0x4C4C; } }
-        public int WestID { get { return Burning ? 0x4C4F : 0x4C4E; } }
+        public int NorthID => Burning ? 0x4C4D : 0x4C4C;
+        public int WestID => Burning ? 0x4C4F : 0x4C4E;
 
         [Constructable]
         public DragonLamp()
@@ -37,7 +37,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

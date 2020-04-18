@@ -6,9 +6,9 @@ namespace Server.Items
         public PrismaticAmber()
             : base()
         {
-            this.LootType = LootType.Blessed;
-            this.Stackable = false;
-            this.Weight = 1;
+            LootType = LootType.Blessed;
+            Stackable = false;
+            Weight = 1;
         }
 
         public PrismaticAmber(Serial serial)
@@ -16,13 +16,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1075299;
-            }
-        }// Prismatic Amber
+        public override int LabelNumber => 1075299;// Prismatic Amber
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
@@ -35,7 +29,7 @@ namespace Server.Items
             bool ret = base.DropToWorld(from, p);
 
             if (ret)
-                this.DestroyItem(from);
+                DestroyItem(from);
 
             return ret;
         }
@@ -45,7 +39,7 @@ namespace Server.Items
             bool ret = base.DropToMobile(from, target, p);
 
             if (ret)
-                this.DestroyItem(from);
+                DestroyItem(from);
 
             return ret;
         }
@@ -54,8 +48,8 @@ namespace Server.Items
         {
             bool ret = base.DropToItem(from, target, p);
 
-            if (ret && this.Parent != from.Backpack)
-                this.DestroyItem(from);
+            if (ret && Parent != from.Backpack)
+                DestroyItem(from);
 
             return ret;
         }
@@ -63,14 +57,14 @@ namespace Server.Items
         public virtual void DestroyItem(Mobile from)
         {
             from.SendLocalizedMessage(500424); // You destroyed the item.
-            this.Delete();
+            Delete();
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

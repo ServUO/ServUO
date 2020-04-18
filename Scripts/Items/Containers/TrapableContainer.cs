@@ -62,13 +62,7 @@ namespace Server.Items
                 m_TrapLevel = value;
             }
         }
-        public virtual bool TrapOnOpen
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public virtual bool TrapOnOpen => true;
         public virtual bool ExecuteTrap(Mobile from)
         {
             if (m_TrapType != TrapType.None)
@@ -210,11 +204,11 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)2); // version
+            writer.Write(2); // version
 
-            writer.Write((int)m_TrapLevel);
+            writer.Write(m_TrapLevel);
 
-            writer.Write((int)m_TrapPower);
+            writer.Write(m_TrapPower);
             writer.Write((int)m_TrapType);
         }
 

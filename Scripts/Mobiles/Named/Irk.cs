@@ -43,7 +43,7 @@ namespace Server.Mobiles
 
             SetSpecialAbility(SpecialAbility.AngryFire);
         }
-        public override bool CanBeParagon { get { return false; } }
+        public override bool CanBeParagon => false;
         public override void OnDeath(Container c)
         {
             base.OnDeath(c);
@@ -60,20 +60,8 @@ namespace Server.Mobiles
         {
         }
 
-        public override string DefaultName
-        {
-            get
-            {
-                return "Irk";
-            }
-        }
-        public override int DefaultHue
-        {
-            get
-            {
-                return 0x489;
-            }
-        }
+        public override string DefaultName => "Irk";
+        public override int DefaultHue => 0x489;
 
         public override void GenerateLoot()
         {
@@ -84,7 +72,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

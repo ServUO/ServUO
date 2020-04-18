@@ -604,7 +604,7 @@ namespace Server.Gumps
                 {
                     List<Mobile> list = new List<Mobile>(house.CoOwners);
 
-                    foreach (var m in list)
+                    foreach (Mobile m in list)
                     {
                         house.RemoveCoOwner(from, m, false);
                     }
@@ -631,7 +631,7 @@ namespace Server.Gumps
                 {
                     List<Mobile> list = new List<Mobile>(house.Friends);
 
-                    foreach (var m in list)
+                    foreach (Mobile m in list)
                     {
                         house.RemoveFriend(from, m, false);
                     }
@@ -807,7 +807,7 @@ namespace Server.Gumps
 
         public static void SwapHouse_Callback(Mobile from, bool okay, object state)
         {
-            var house = state as BaseHouse;
+            BaseHouse house = state as BaseHouse;
 
             if (okay && house != null)
             {
@@ -1608,7 +1608,7 @@ namespace Server.Prompts
 {
     public class RenamePrompt : Prompt
     {
-        public override int MessageCliloc { get { return 501302; } }
+        public override int MessageCliloc => 501302;
         private readonly BaseHouse m_House;
         public RenamePrompt(BaseHouse house)
         {

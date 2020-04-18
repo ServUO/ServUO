@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class FocusingGemOfVirtueBane : Item
     {
-        public override int LabelNumber { get { return 1150004; } } // Focusing Gem of Virtue Bane
+        public override int LabelNumber => 1150004;  // Focusing Gem of Virtue Bane
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime Cooldown { get; private set; }
@@ -91,7 +91,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

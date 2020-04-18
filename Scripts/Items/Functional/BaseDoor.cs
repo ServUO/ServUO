@@ -177,13 +177,7 @@ namespace Server.Items
                 m_Link = value;
             }
         }
-        public virtual bool UseChainedFunctionality
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public virtual bool UseChainedFunctionality => false;
         // Called by RunUO
         public static void Initialize()
         {
@@ -337,7 +331,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             writer.Write(m_KeyValue);
 

@@ -44,10 +44,7 @@ namespace Server.Engines.CannedEvil
 
         private Dictionary<Mobile, int> m_DamageEntries;
 
-        public List<Mobile> Creatures
-        {
-            get { return m_Creatures; }
-        }
+        public List<Mobile> Creatures => m_Creatures;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public string GroupName { get; set; }
@@ -195,13 +192,7 @@ namespace Server.Engines.CannedEvil
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime RestartTime
-        {
-            get
-            {
-                return m_RestartTime;
-            }
-        }
+        public DateTime RestartTime => m_RestartTime;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public TimeSpan ExpireDelay
@@ -523,7 +514,7 @@ namespace Server.Engines.CannedEvil
             PlayerMobile pm = (PlayerMobile)killer;
             for (int j = 0; j < pm.JusticeProtectors.Count; ++j)
             {
-                Mobile prot = (Mobile)pm.JusticeProtectors[j];
+                Mobile prot = pm.JusticeProtectors[j];
 
                 if (prot.Map != killer.Map || prot.Murderer || prot.Criminal || !JusticeVirtue.CheckMapRegion(killer, prot))
                     continue;
@@ -646,12 +637,12 @@ namespace Server.Engines.CannedEvil
                                     if (Utility.RandomDouble() < ChampionSystem.TranscendenceChance)
                                     {
                                         ScrollOfTranscendence SoTF = CreateRandomSoT(true);
-                                        GiveScrollTo(pm, (SpecialScroll)SoTF);
+                                        GiveScrollTo(pm, SoTF);
                                     }
                                     else
                                     {
                                         PowerScroll PS = PowerScroll.CreateRandomNoCraft(5, 5);
-                                        GiveScrollTo(pm, (SpecialScroll)PS);
+                                        GiveScrollTo(pm, PS);
                                     }
                                 }
                             }
@@ -713,7 +704,7 @@ namespace Server.Engines.CannedEvil
 
             if (m_Timer != null && m_Timer.Running && _NextGhostCheck < DateTime.UtcNow)
             {
-                foreach (var ghost in m_Region.GetEnumeratedMobiles().OfType<PlayerMobile>().Where(pm => !pm.Alive && (pm.Corpse == null || pm.Corpse.Deleted)))
+                foreach (PlayerMobile ghost in m_Region.GetEnumeratedMobiles().OfType<PlayerMobile>().Where(pm => !pm.Alive && (pm.Corpse == null || pm.Corpse.Deleted)))
                 {
                     Map map = ghost.Map;
                     Point3D loc = ExorcismSpell.GetNearestShrine(ghost, ref map);
@@ -792,7 +783,7 @@ namespace Server.Engines.CannedEvil
 
             int currentLevel = Level;
             int currentRank = Rank;
-            int maxSpawn = (int)((double)MaxKills * 0.5d * SpawnMod);
+            int maxSpawn = (int)(MaxKills * 0.5d * SpawnMod);
             if (currentLevel >= 16)
                 maxSpawn = Math.Min(maxSpawn, MaxKills - m_Kills);
             if (maxSpawn < 3)
@@ -894,13 +885,7 @@ namespace Server.Engines.CannedEvil
             return Location;
         }
 
-        public int Rank
-        {
-            get
-            {
-                return ChampionSystem.RankForLevel(Level);
-            }
-        }
+        public int Rank => ChampionSystem.RankForLevel(Level);
 
         public int GetRankFor(Mobile m)
         {
@@ -1243,7 +1228,7 @@ namespace Server.Engines.CannedEvil
         {
             base.Serialize(writer);
 
-            writer.Write((int)8); // version
+            writer.Write(8); // version
 
             writer.Write(StartLevel);
 
@@ -1272,7 +1257,7 @@ namespace Server.Engines.CannedEvil
             // writer.Write( m_SpawnRange );
             writer.Write(m_Kills);
 
-            writer.Write((bool)m_Active);
+            writer.Write(m_Active);
             writer.Write((int)m_Type);
             writer.Write(m_Creatures, true);
             writer.Write(m_RedSkulls, true);
@@ -1522,23 +1507,11 @@ namespace Server.Engines.CannedEvil
             EventSink.Login += OnLogin;
         }
 
-        public override bool YoungProtected
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool YoungProtected => false;
 
         private readonly ChampionSpawn m_Spawn;
 
-        public ChampionSpawn ChampionSpawn
-        {
-            get
-            {
-                return m_Spawn;
-            }
-        }
+        public ChampionSpawn ChampionSpawn => m_Spawn;
 
         public ChampionSpawnRegion(ChampionSpawn spawn)
             : base(null, spawn.Map, Region.Find(spawn.Location, spawn.Map), spawn.SpawnArea)
@@ -1575,9 +1548,9 @@ namespace Server.Engines.CannedEvil
             {
                 if (m.Alive && m.Backpack != null)
                 {
-                    var list = new List<Item>(m.Backpack.Items.Where(i => i.LootType == LootType.Cursed));
+                    List<Item> list = new List<Item>(m.Backpack.Items.Where(i => i.LootType == LootType.Cursed));
 
-                    foreach (var item in list)
+                    foreach (Item item in list)
                     {
                         item.MoveToWorld(m.Location, m.Map);
                     }
@@ -1630,21 +1603,9 @@ namespace Server.Engines.CannedEvil
     {
         private ChampionSpawn m_Spawn;
 
-        public ChampionSpawn Spawn
-        {
-            get
-            {
-                return m_Spawn;
-            }
-        }
+        public ChampionSpawn Spawn => m_Spawn;
 
-        public override string DefaultName
-        {
-            get
-            {
-                return "Idol of the Champion";
-            }
-        }
+        public override string DefaultName => "Idol of the Champion";
 
         public IdolOfTheChampion(ChampionSpawn spawn)
             : base(0x1F18)
@@ -1670,7 +1631,7 @@ namespace Server.Engines.CannedEvil
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             writer.Write(m_Spawn);
         }

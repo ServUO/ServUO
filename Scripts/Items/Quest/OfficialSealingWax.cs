@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class OfficialSealingWax : Item
     {
-        public override int LabelNumber { get { return 1072744; } }// Official Sealing Wax
+        public override int LabelNumber => 1072744; // Official Sealing Wax
 
         [Constructable]
         public OfficialSealingWax()
@@ -21,7 +21,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

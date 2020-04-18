@@ -19,27 +19,9 @@ namespace Server.Spells.Spellweaving
         {
         }
 
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(2.5);
-            }
-        }
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 66.0;
-            }
-        }
-        public override int RequiredMana
-        {
-            get
-            {
-                return 50;
-            }
-        }
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(2.5);
+        public override double RequiredSkill => 66.0;
+        public override int RequiredMana => 50;
         public override void OnCast()
         {
             Caster.Target = new InternalTarget(this);
@@ -102,7 +84,7 @@ namespace Server.Spells.Spellweaving
         }
 
         private static readonly Dictionary<Mobile, long> m_Table = new Dictionary<Mobile, long>();
-        public static Dictionary<Mobile, long> Table { get { return m_Table; } }
+        public static Dictionary<Mobile, long> Table => m_Table;
 
         public static void DefragTable()
         {
@@ -168,7 +150,7 @@ namespace Server.Spells.Spellweaving
                     return;
 
                 m_LifeSpan -= 1;
-                var targets = GetTargets().Where(m => BaseHouse.FindHouseAt(m.Location, m.Map, 20) == null).ToList();
+                List<Mobile> targets = GetTargets().Where(m => BaseHouse.FindHouseAt(m.Location, m.Map, 20) == null).ToList();
                 int count = targets.Count;
 
                 foreach (Mobile m in targets)
@@ -184,7 +166,7 @@ namespace Server.Spells.Spellweaving
                     if (m is PlayerMobile && sdiBonus > .15)
                         sdiBonus = .15;
 
-                    int damage = m_Damage + (int)((double)m_Damage * sdiBonus);
+                    int damage = m_Damage + (int)(m_Damage * sdiBonus);
 
                     if (count > 1)
                         damage /= Math.Min(3, count);
@@ -222,7 +204,7 @@ namespace Server.Spells.Spellweaving
             {
                 base.Serialize(writer);
 
-                writer.Write((int)0); // version
+                writer.Write(0); // version
             }
 
             public override void Deserialize(GenericReader reader)

@@ -67,13 +67,7 @@ namespace Server.Engines.Doom
             typeof(SkeletalDragon), typeof(VampireBat), typeof(WailingBanshee), typeof(WandererOfTheVoid)
         };
 
-        public TimeSpan RollDelay
-        {
-            get
-            {
-                return TimeSpan.FromMinutes(Utility.RandomMinMax(12, 15));
-            }
-        }
+        public TimeSpan RollDelay => TimeSpan.FromMinutes(Utility.RandomMinMax(12, 15));
 
         public GaryRegion()
             : base("Gary Region", Map.Malas, Region.Find(_GaryLoc, Map.Malas), _Bounds)
@@ -101,7 +95,7 @@ namespace Server.Engines.Doom
 
         public void OnTick()
         {
-            if (NextRoll < DateTime.UtcNow /*&& (Spawn == null || !Spawn.Alive)*/ && this.GetEnumeratedMobiles().OfType<PlayerMobile>().Where(p => p.Alive).Count() > 0)
+            if (NextRoll < DateTime.UtcNow /*&& (Spawn == null || !Spawn.Alive)*/ && GetEnumeratedMobiles().OfType<PlayerMobile>().Where(p => p.Alive).Count() > 0)
             {
                 DoRoll();
                 NextRoll = DateTime.UtcNow + RollDelay;
@@ -110,14 +104,14 @@ namespace Server.Engines.Doom
 
         public void DoRoll()
         {
-            var g = GetGary();
-            var d = GetDice();
+            GaryTheDungeonMaster g = GetGary();
+            Sapphired20 d = GetDice();
             int roll = ForceRoll >= 0 && ForceRoll < 20 ? ForceRoll : Utility.Random(20);
 
             g.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1080099); // *Gary rolls the sapphire d20*
 
-            var door1 = GetDoor1();
-            var door2 = GetDoor2();
+            BaseDoor door1 = GetDoor1();
+            BaseDoor door2 = GetDoor2();
 
             door1.Locked = true;
             door2.Locked = true;
@@ -136,7 +130,7 @@ namespace Server.Engines.Doom
                     }
                     else
                     {
-                        foreach (var m in this.GetEnumeratedMobiles().OfType<PlayerMobile>())
+                        foreach (PlayerMobile m in GetEnumeratedMobiles().OfType<PlayerMobile>())
                         {
                             m.SendMessage("- {0} -", (roll + 1).ToString());
                         }
@@ -173,7 +167,7 @@ namespace Server.Engines.Doom
 
         public void ChangeStatues()
         {
-            foreach (var statue in GetStatues())
+            foreach (DisplayStatue statue in GetStatues())
             {
                 statue.AssignRandom();
             }
@@ -243,8 +237,8 @@ namespace Server.Engines.Doom
         {
             if (m == Spawn)
             {
-                var door1 = GetDoor1();
-                var door2 = GetDoor2();
+                BaseDoor door1 = GetDoor1();
+                BaseDoor door2 = GetDoor2();
 
                 door1.Locked = false;
                 door2.Locked = false;
@@ -257,7 +251,7 @@ namespace Server.Engines.Doom
 
         public override void OnEnter(Mobile m)
         {
-            var g = GetGary();
+            GaryTheDungeonMaster g = GetGary();
 
             g.SayTo(m, 1080098); // Ah... visitors!
         }
@@ -314,7 +308,7 @@ namespace Server.Engines.Doom
         {
             if (Dice == null || Dice.Deleted)
             {
-                Sapphired20 dice = this.GetEnumeratedItems().OfType<Sapphired20>().FirstOrDefault(i => !i.Deleted);
+                Sapphired20 dice = GetEnumeratedItems().OfType<Sapphired20>().FirstOrDefault(i => !i.Deleted);
 
                 if (dice != null)
                 {
@@ -343,7 +337,7 @@ namespace Server.Engines.Doom
             {
                 if (Statues[i] == null || Statues[i].Deleted)
                 {
-                    DisplayStatue s = this.GetEnumeratedItems().OfType<DisplayStatue>().FirstOrDefault(st => Array.IndexOf(Statues, st) == -1);
+                    DisplayStatue s = GetEnumeratedItems().OfType<DisplayStatue>().FirstOrDefault(st => Array.IndexOf(Statues, st) == -1);
 
                     if (s == null)
                     {
@@ -430,7 +424,7 @@ namespace Server.Engines.Doom
 
             if (!FindObject(typeof(UOBoard), _RulesLoc))
             {
-                var rules = new UOBoard();
+                UOBoard rules = new UOBoard();
                 rules.Movable = false;
                 rules.MoveToWorld(_RulesLoc, Map.Malas);
             }
@@ -439,13 +433,13 @@ namespace Server.Engines.Doom
 
             if (!FindObject(typeof(Static), p))
             {
-                var books = new Static(0x1E22);
+                Static books = new Static(0x1E22);
                 books.MoveToWorld(p, Map.Malas);
             }
 
             if (!FindObject(typeof(ScribesPen), p))
             {
-                var pen = new ScribesPen();
+                ScribesPen pen = new ScribesPen();
                 pen.ItemID = 4032;
                 pen.Movable = false;
                 pen.MoveToWorld(p, Map.Malas);
@@ -489,7 +483,7 @@ namespace Server.Engines.Doom
 
     public class Sapphired20 : Item
     {
-        public override int LabelNumber { get { return 1080096; } } // Star Sapphire d20
+        public override int LabelNumber => 1080096;  // Star Sapphire d20
 
         [Constructable]
         public Sapphired20()
@@ -499,7 +493,7 @@ namespace Server.Engines.Doom
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (this.GetRegion().IsPartOf<GaryRegion>())
+            if (GetRegion().IsPartOf<GaryRegion>())
             {
                 m.SendLocalizedMessage(1080097); // You're blasted back in a blaze of light! This d20 is not yours to roll...
 
@@ -627,7 +621,7 @@ namespace Server.Engines.Doom
             }
         }
 
-        public override int LabelNumber { get { return 1080085; } } // The Rulebook
+        public override int LabelNumber => 1080085;  // The Rulebook
 
         [Constructable]
         public UOBoard() : base(0xFAA)
@@ -694,7 +688,7 @@ namespace Server.Engines.Doom
         [CommandProperty(AccessLevel.GameMaster)]
         public GaryRegion RegionProps
         {
-            get { return this.Region as GaryRegion; }
+            get { return Region as GaryRegion; }
             set { }
         }
 

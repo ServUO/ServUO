@@ -43,7 +43,7 @@ namespace Server.Mobiles
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(this.Location, 10))
+            if (from.InRange(Location, 10))
                 from.SendGump(new RefinementHelpGump(m_RefineType));
         }
 
@@ -54,7 +54,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
             writer.Write((int)m_RefineType);
         }
 

@@ -26,20 +26,8 @@ namespace Server.Gumps
                 AddItem(150, 100, m_Item.ItemID, m_Item.Hue);
         }
 
-        public override int TitleNumber
-        {
-            get
-            {
-                return 1074974;
-            }
-        }// Confirm Selection
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074975;
-            }
-        }// Are you sure you wish to select this?
+        public override int TitleNumber => 1074974;// Confirm Selection
+        public override int LabelNumber => 1074975;// Are you sure you wish to select this?
         public override void Confirm(Mobile from)
         {
             if (m_Collection == null || !from.InRange(m_Location, 2))

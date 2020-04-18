@@ -43,13 +43,7 @@ namespace Server.Mobiles
 
         public Item Item { get; }
         public int Price { get; }
-        public string FormattedPrice
-        {
-            get
-            {
-                return Price.ToString("N0", CultureInfo.GetCultureInfo("en-US"));
-            }
-        }
+        public string FormattedPrice => Price.ToString("N0", CultureInfo.GetCultureInfo("en-US"));
         public string Description
         {
             get
@@ -68,8 +62,8 @@ namespace Server.Mobiles
             }
         }
         public DateTime Created { get; }
-        public bool IsForSale { get { return Price >= 0; } }
-        public bool IsForFree { get { return Price == 0; } }
+        public bool IsForSale => Price >= 0;
+        public bool IsForFree => Price == 0;
         public bool Valid { get; private set; }
 
         public void Invalidate()
@@ -91,7 +85,7 @@ namespace Server.Mobiles
         {
         }
 
-        public override int DefaultMaxWeight { get { return 0; } }
+        public override int DefaultMaxWeight => 0;
 
         public override bool CheckHold(Mobile m, Item item, bool message, bool checkItems, int plusItems, int plusWeight)
         {
@@ -204,7 +198,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -223,7 +217,7 @@ namespace Server.Mobiles
                 m_Item = item;
             }
 
-            public override bool NonLocalUse { get { return true; } }
+            public override bool NonLocalUse => true;
 
             public override void OnClick()
             {
@@ -242,8 +236,8 @@ namespace Server.Mobiles
         private string m_ShopName;
         private Timer m_PayTimer;
 
-        public double CommissionPerc { get { return 5.25; } }
-        public virtual bool IsCommission { get { return false; } }
+        public double CommissionPerc => 5.25;
+        public virtual bool IsCommission => false;
 
         public PlayerVendor(Mobile owner, BaseHouse house)
         {
@@ -390,7 +384,7 @@ namespace Server.Mobiles
 
                     if (trinket != null)
                     {
-                        return perDay - (int)((double)perDay * ((double)trinket.Bonus / 100));
+                        return perDay - (int)(perDay * ((double)trinket.Bonus / 100));
                     }
 
                     return perDay;
@@ -438,26 +432,26 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)2); // version
+            writer.Write(2); // version
 
-            writer.Write((bool)VendorSearch);
-            writer.Write((bool)BaseHouse.NewVendorSystem);
-            writer.Write((string)m_ShopName);
-            writer.WriteDeltaTime((DateTime)NextPayTime);
-            writer.Write((Item)House);
+            writer.Write(VendorSearch);
+            writer.Write(BaseHouse.NewVendorSystem);
+            writer.Write(m_ShopName);
+            writer.WriteDeltaTime(NextPayTime);
+            writer.Write(House);
 
-            writer.Write((Mobile)Owner);
-            writer.Write((int)BankAccount);
-            writer.Write((int)HoldGold);
+            writer.Write(Owner);
+            writer.Write(BankAccount);
+            writer.Write(HoldGold);
 
-            writer.Write((int)m_SellItems.Count);
+            writer.Write(m_SellItems.Count);
             foreach (VendorItem vi in m_SellItems.Values)
             {
-                writer.Write((Item)vi.Item);
-                writer.Write((int)vi.Price);
-                writer.Write((string)vi.Description);
+                writer.Write(vi.Item);
+                writer.Write(vi.Price);
+                writer.Write(vi.Description);
 
-                writer.Write((DateTime)vi.Created);
+                writer.Write(vi.Created);
             }
         }
 
@@ -1766,9 +1760,9 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.WriteEncodedInt((int)0);
+            writer.WriteEncodedInt(0);
 
-            writer.Write((Mobile)Vendor);
+            writer.Write(Vendor);
         }
 
         public override void Deserialize(GenericReader reader)

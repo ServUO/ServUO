@@ -6,8 +6,8 @@ namespace Server.Spells.Mysticism
 {
     public class NetherCycloneSpell : MysticSpell
     {
-        public override SpellCircle Circle { get { return SpellCircle.Eighth; } }
-        public override DamageType SpellDamageType { get { return DamageType.SpellAOE; } }
+        public override SpellCircle Circle => SpellCircle.Eighth;
+        public override DamageType SpellDamageType => DamageType.SpellAOE;
 
         private static readonly SpellInfo m_Info = new SpellInfo(
                 "Nether Cyclone", "Grav Hur",
@@ -62,7 +62,7 @@ namespace Server.Spells.Mysticism
                         }
                     }
 
-                    foreach (var d in AcquireIndirectTargets(p, 3))
+                    foreach (IDamageable d in AcquireIndirectTargets(p, 3))
                     {
                         Server.Effects.SendTargetParticles(d, 0x374A, 1, 15, 9502, 97, 3, (EffectLayer)255, 0);
 

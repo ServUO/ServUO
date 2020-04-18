@@ -2,7 +2,7 @@
 {
     public class CorgulsHandbookOnMysticism : MysticBook
     {
-        public override int LabelNumber { get { return 1149779; } }
+        public override int LabelNumber => 1149779;
 
         [Constructable]
         public CorgulsHandbookOnMysticism()
@@ -22,7 +22,7 @@
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

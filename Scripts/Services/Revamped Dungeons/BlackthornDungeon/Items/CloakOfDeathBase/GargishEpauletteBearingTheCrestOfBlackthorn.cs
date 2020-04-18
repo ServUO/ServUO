@@ -2,11 +2,11 @@ namespace Server.Items
 {
     public class GargishEpauletteBearingTheCrestOfBlackthorn6 : Cloak
     {
-        public override bool IsArtifact { get { return true; } }
-        public override Race RequiredRace { get { return Race.Gargoyle; } }
-        public override bool CanBeWornByGargoyles { get { return true; } }
+        public override bool IsArtifact => true;
+        public override Race RequiredRace => Race.Gargoyle;
+        public override bool CanBeWornByGargoyles => true;
 
-        public override int LabelNumber { get { return 1123326; } } // Gargish Epaulette
+        public override int LabelNumber => 1123326;  // Gargish Epaulette
 
         [Constructable]
         public GargishEpauletteBearingTheCrestOfBlackthorn6()

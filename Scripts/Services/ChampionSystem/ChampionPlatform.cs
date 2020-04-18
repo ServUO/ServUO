@@ -59,7 +59,7 @@ namespace Server.Engines.CannedEvil
         {
             base.Serialize(writer);
 
-            writer.Write((int)2); // version
+            writer.Write(2); // version
 
             writer.Write(m_Spawn);
         }
@@ -93,7 +93,7 @@ namespace Server.Engines.CannedEvil
 
         private void FixComponents()
         {
-            foreach (var comp in Components)
+            foreach (AddonComponent comp in Components)
             {
                 comp.Hue = 0x452;
 

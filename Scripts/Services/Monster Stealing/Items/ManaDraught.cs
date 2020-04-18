@@ -10,7 +10,7 @@ namespace Server.Items
         private static readonly Dictionary<PlayerMobile, DateTime> DaughtUsageList = new Dictionary<PlayerMobile, DateTime>();
         private static TimeSpan Cooldown = TimeSpan.FromMinutes(10);
 
-        public override int LabelNumber { get { return 1094938; } } // Mana Draught
+        public override int LabelNumber => 1094938;  // Mana Draught
 
         [Constructable]
         public ManaDraught()
@@ -80,7 +80,7 @@ namespace Server.Items
             toHeal = Math.Min(toHeal, diff);
 
             pm.Mana += toHeal;
-            this.Consume();
+            Consume();
             if (!DaughtUsageList.ContainsKey(pm))
             {
                 DaughtUsageList.Add(pm, DateTime.Now);
@@ -103,7 +103,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

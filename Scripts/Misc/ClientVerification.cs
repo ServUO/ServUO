@@ -174,7 +174,7 @@ namespace Server.Misc
 
         private static void EventSink_ClientTypeReceived(ClientTypeReceivedArgs e)
         {
-            var state = e.State;
+            NetState state = e.State;
             ClientVersion version = state.Version;
 
             if (state.IsEnhancedClient)

@@ -41,27 +41,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool CanRummageCorpses
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int Hides
-        {
-            get
-            {
-                return 8;
-            }
-        }
-        public override HideType HideType
-        {
-            get
-            {
-                return HideType.Spined;
-            }
-        }
+        public override bool CanRummageCorpses => true;
+        public override int Hides => 8;
+        public override HideType HideType => HideType.Spined;
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Rich);
@@ -71,7 +53,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

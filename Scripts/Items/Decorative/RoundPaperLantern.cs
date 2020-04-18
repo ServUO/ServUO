@@ -9,11 +9,11 @@ namespace Server.Items
         public RoundPaperLantern()
             : base(0x24CA)
         {
-            this.Movable = true;
-            this.Duration = TimeSpan.Zero; // Never burnt out
-            this.Burning = false;
-            this.Light = LightType.Circle150;
-            this.Weight = 3.0;
+            Movable = true;
+            Duration = TimeSpan.Zero; // Never burnt out
+            Burning = false;
+            Light = LightType.Circle150;
+            Weight = 3.0;
         }
 
         public RoundPaperLantern(Serial serial)
@@ -21,24 +21,12 @@ namespace Server.Items
         {
         }
 
-        public override int LitItemID
-        {
-            get
-            {
-                return 0x24C9;
-            }
-        }
-        public override int UnlitItemID
-        {
-            get
-            {
-                return 0x24CA;
-            }
-        }
+        public override int LitItemID => 0x24C9;
+        public override int UnlitItemID => 0x24CA;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

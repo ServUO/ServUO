@@ -17,27 +17,9 @@ namespace Server.Spells.Necromancy
         {
         }
 
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(2.25);
-            }
-        }
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 99.0;
-            }
-        }
-        public override int RequiredMana
-        {
-            get
-            {
-                return 23;
-            }
-        }
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(2.25);
+        public override double RequiredSkill => 99.0;
+        public override int RequiredMana => 23;
         public override int Body
         {
             get
@@ -50,23 +32,11 @@ namespace Server.Spells.Necromancy
                 return Caster.Female ? Caster.Race.FemaleBody : Caster.Race.MaleBody;
             }
         }
-        public override int Hue
-        {
-            get
-            {
-                return 0x847E;
-            }
-        }
-        public override int FireResistOffset
-        {
-            get
-            {
-                return -25;
-            }
-        }
+        public override int Hue => 0x847E;
+        public override int FireResistOffset => -25;
         public override void GetCastSkills(out double min, out double max)
         {
-            if (this.Caster.Skills[this.CastSkill].Value >= this.RequiredSkill)
+            if (Caster.Skills[CastSkill].Value >= RequiredSkill)
             {
                 min = 80.0;
                 max = 120.0;

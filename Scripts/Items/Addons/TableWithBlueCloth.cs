@@ -6,7 +6,7 @@ namespace Server.Items
         public TableWithBlueClothAddon()
             : base()
         {
-            this.AddComponent(new LocalizedAddonComponent(0x118C, 1076276), 0, 0, 0);
+            AddComponent(new LocalizedAddonComponent(0x118C, 1076276), 0, 0, 0);
         }
 
         public TableWithBlueClothAddon(Serial serial)
@@ -14,13 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new TableWithBlueClothDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new TableWithBlueClothDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -42,7 +36,7 @@ namespace Server.Items
         public TableWithBlueClothDeed()
             : base()
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public TableWithBlueClothDeed(Serial serial)
@@ -50,20 +44,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new TableWithBlueClothAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1076276;
-            }
-        }// Table With A Blue Tablecloth
+        public override BaseAddon Addon => new TableWithBlueClothAddon();
+        public override int LabelNumber => 1076276;// Table With A Blue Tablecloth
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

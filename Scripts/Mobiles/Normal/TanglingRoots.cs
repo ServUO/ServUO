@@ -54,8 +54,8 @@ namespace Server.Mobiles
         {
         }
 
-        public override Poison PoisonImmune { get { return Poison.Lesser; } }
-        public override bool DisallowAllMoves { get { return true; } }
+        public override Poison PoisonImmune => Poison.Lesser;
+        public override bool DisallowAllMoves => true;
 
         private static readonly List<Mobile> m_TangleCooldown = new List<Mobile>();
         private readonly Dictionary<Mobile, Timer> m_DamageTable = new Dictionary<Mobile, Timer>();
@@ -130,7 +130,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

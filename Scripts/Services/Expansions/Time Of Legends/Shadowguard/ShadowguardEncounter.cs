@@ -11,18 +11,18 @@ namespace Server.Engines.Shadowguard
     public abstract class ShadowguardEncounter
     {
         [CommandProperty(AccessLevel.GameMaster)]
-        public ShadowguardController Controller { get { return ShadowguardController.Instance; } }
+        public ShadowguardController Controller => ShadowguardController.Instance;
 
         public Rectangle2D[] Bounds { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public ShadowguardRegion Region { get { return Instance.Region; } }
+        public ShadowguardRegion Region => Instance.Region;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Point3D StartLoc { get { return Def.StartLoc; } }
+        public Point3D StartLoc => Def.StartLoc;
 
-        public Point3D[] SpawnPoints { get { return Def.SpawnPoints; } }
-        public Rectangle2D[] SpawnRecs { get { return Def.SpawnRecs; } }
+        public Point3D[] SpawnPoints => Def.SpawnPoints;
+        public Rectangle2D[] SpawnRecs => Def.SpawnRecs;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public EncounterType Encounter { get; set; }
@@ -71,13 +71,13 @@ namespace Server.Engines.Shadowguard
         public BaseAddon Addon { get; set; }
 
         public abstract Type AddonType { get; }
-        public EncounterDef Def { get { return Defs[Encounter]; } }
+        public EncounterDef Def => Defs[Encounter];
 
-        public virtual TimeSpan EncounterDuration { get { return TimeSpan.FromMinutes(30); } }
-        public virtual TimeSpan ResetDuration { get { return TimeSpan.FromSeconds(60); } }
+        public virtual TimeSpan EncounterDuration => TimeSpan.FromMinutes(30);
+        public virtual TimeSpan ResetDuration => TimeSpan.FromSeconds(60);
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Active { get { return Controller != null && Controller.Encounters.Contains(this); } }
+        public bool Active => Controller != null && Controller.Encounters.Contains(this);
 
         public List<PlayerMobile> Participants { get; private set; } = new List<PlayerMobile>();
 
@@ -97,10 +97,10 @@ namespace Server.Engines.Shadowguard
 
         public int PartySize()
         {
-            if (PartyLeader == null || this.Region == null)
+            if (PartyLeader == null || Region == null)
                 return 0;
 
-            int inRegion = this.Region.GetPlayerCount();
+            int inRegion = Region.GetPlayerCount();
 
             if (inRegion > 0)
                 return inRegion;
@@ -171,7 +171,7 @@ namespace Server.Engines.Shadowguard
 
                 if (p != null)
                 {
-                    foreach (var pm in p.Members.Select(x => x.Mobile))
+                    foreach (Mobile pm in p.Members.Select(x => x.Mobile))
                     {
                         AddPlayer(pm);
                     }
@@ -185,7 +185,7 @@ namespace Server.Engines.Shadowguard
         {
             if (HasBegun)
             {
-                foreach (var pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+                foreach (PlayerMobile pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
                 {
                     pm.SendLocalizedMessage(cliloc, null, hue);
                 }
@@ -208,7 +208,7 @@ namespace Server.Engines.Shadowguard
         {
             if (HasBegun)
             {
-                foreach (var pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+                foreach (PlayerMobile pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
                 {
                     pm.SendMessage(hue, message);
                 }
@@ -243,7 +243,7 @@ namespace Server.Engines.Shadowguard
 
         public void DoWarning()
         {
-            ColUtility.ForEach(this.Region.GetEnumeratedMobiles().Where(m => m is PlayerMobile), m =>
+            ColUtility.ForEach(Region.GetEnumeratedMobiles().Where(m => m is PlayerMobile), m =>
             {
                 m.SendLocalizedMessage(1156252); // You have 5 minutes remaining in the encounter!
             });
@@ -255,7 +255,7 @@ namespace Server.Engines.Shadowguard
         {
             if (message)
             {
-                ColUtility.ForEach(this.Region.GetEnumeratedMobiles().Where(m => m is PlayerMobile), m =>
+                ColUtility.ForEach(Region.GetEnumeratedMobiles().Where(m => m is PlayerMobile), m =>
                 {
                     m.SendLocalizedMessage(1156253, "", 0x32); // The encounter timer has expired!
                 });
@@ -359,7 +359,7 @@ namespace Server.Engines.Shadowguard
         {
             if (m is PlayerMobile)
             {
-                foreach (var pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+                foreach (PlayerMobile pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
                 {
                     if (pm.Alive && pm.NetState != null)
                     {

@@ -154,14 +154,11 @@ namespace Server.Engines.VvV
 
         public Timer Timer { get; private set; }
 
-        public int TrapCount { get { return Traps.Where(t => !t.Deleted).Count(); } }
-        public int TurretCount { get { return Turrets.Where(t => !t.Deleted).Count(); } }
+        public int TrapCount => Traps.Where(t => !t.Deleted).Count();
+        public int TurretCount => Turrets.Where(t => !t.Deleted).Count();
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool InCooldown
-        {
-            get { return CooldownEnds > DateTime.UtcNow; }
-        }
+        public bool InCooldown => CooldownEnds > DateTime.UtcNow;
 
         public DateTime NextCombatHeatCycle { get; private set; }
 
@@ -345,7 +342,7 @@ namespace Server.Engines.VvV
             UnContested = true;
             bool checkAggression = ViceVsVirtueSystem.EnhancedRules && NextCombatHeatCycle < DateTime.UtcNow;
 
-            foreach (PlayerMobile pm in this.Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+            foreach (PlayerMobile pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
             {
                 bool vvv = ViceVsVirtueSystem.IsVvV(pm);
 
@@ -360,7 +357,7 @@ namespace Server.Engines.VvV
 
                     if (g != null)
                     {
-                        var t = GetTeam(g);
+                        BattleTeam t = GetTeam(g);
 
                         if (team == null)
                         {
@@ -406,9 +403,9 @@ namespace Server.Engines.VvV
             if (BattleAggression == null)
                 return;
 
-            var list = new List<Mobile>(BattleAggression.Keys);
+            List<Mobile> list = new List<Mobile>(BattleAggression.Keys);
 
-            foreach (var m in list)
+            foreach (Mobile m in list)
             {
                 if (BattleAggression[m] < DateTime.UtcNow && !m.Region.IsPartOf(Region))
                 {
@@ -535,7 +532,7 @@ namespace Server.Engines.VvV
 
             leader.Silver += AwardSilver(WinSilver + (OppositionCount(leader.Guild) * 50));
 
-            foreach (Mobile m in this.Region.GetEnumeratedMobiles())
+            foreach (Mobile m in Region.GetEnumeratedMobiles())
             {
                 Guild g = m.Guild as Guild;
 
@@ -624,7 +621,7 @@ namespace Server.Engines.VvV
             if (Altars == null || Region == null)
                 return;
 
-            foreach (PlayerMobile pm in this.Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+            foreach (PlayerMobile pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
             {
                 if (pm.NetState != null && pm.QuestArrow == null)
                 {
@@ -792,7 +789,7 @@ namespace Server.Engines.VvV
 
         public int AwardSilver(int amount)
         {
-            return (int)((double)amount * SilverPenalty);
+            return (int)(amount * SilverPenalty);
         }
 
         public void RemovePriests()
@@ -957,7 +954,7 @@ namespace Server.Engines.VvV
 
             Region r = Region.Find(m.Location, m.Map);
 
-            return r == this.Region;
+            return r == Region;
         }
 
         public void OnEnterRegion(Mobile m)
@@ -984,7 +981,7 @@ namespace Server.Engines.VvV
             if (Region == null)
                 return;
 
-            foreach (PlayerMobile m in this.Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+            foreach (PlayerMobile m in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
             {
                 if (!ViceVsVirtueSystem.IsVvV(m) || m.NetState == null)
                     continue;
@@ -1007,12 +1004,12 @@ namespace Server.Engines.VvV
             if (Region == null)
                 return;
 
-            foreach (PlayerMobile m in this.Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+            foreach (PlayerMobile m in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
             {
                 if (ViceVsVirtueSystem.IsVvV(m))
                 {
                     m.CloseGump(typeof(VvVBattleStatusGump));
-                    m.SendGump(new BattleStatsGump((PlayerMobile)m, this));
+                    m.SendGump(new BattleStatsGump(m, this));
                 }
             }
         }

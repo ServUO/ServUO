@@ -131,12 +131,12 @@ namespace Server.Misc
 
         public static bool Mobile_SkillCheckLocation(Mobile from, SkillName skillName, double minSkill, double maxSkill)
         {
-            var skill = from.Skills[skillName];
+            Skill skill = from.Skills[skillName];
 
             if (skill == null)
                 return false;
 
-            var value = skill.Value;
+            double value = skill.Value;
 
             //TODO: Is there any other place this can go?
             if (skillName == SkillName.Fishing && BaseGalleon.FindGalleonAt(from, from.Map) is TokunoGalleon)
@@ -148,7 +148,7 @@ namespace Server.Misc
             if (value >= maxSkill)
                 return true; // No challenge
 
-            var chance = (value - minSkill) / (maxSkill - minSkill);
+            double chance = (value - minSkill) / (maxSkill - minSkill);
 
             CrystalBallOfKnowledge.TellSkillDifficulty(from, skillName, chance);
 
@@ -157,7 +157,7 @@ namespace Server.Misc
 
         public static bool Mobile_SkillCheckDirectLocation(Mobile from, SkillName skillName, double chance)
         {
-            var skill = from.Skills[skillName];
+            Skill skill = from.Skills[skillName];
 
             if (skill == null)
                 return false;
@@ -187,13 +187,13 @@ namespace Server.Misc
             if (from.Skills.Cap == 0)
                 return false;
 
-            var skill = from.Skills[sk];
-            var value = skill.Value;
-            var gains = 0;
+            Skill skill = from.Skills[sk];
+            double value = skill.Value;
+            int gains = 0;
 
             for (int i = 0; i < amount; i++)
             {
-                var gc = GetGainChance(from, skill, (value - minSkill) / (maxSkill - minSkill), value) / 10;
+                double gc = GetGainChance(from, skill, (value - minSkill) / (maxSkill - minSkill), value) / 10;
 
                 if (AllowGain(from, skill, new Point2D(from.Location.X / LocationSize, from.Location.Y / LocationSize)))
                 {
@@ -218,7 +218,7 @@ namespace Server.Misc
 
         private static double GetGainChance(Mobile from, Skill skill, double gains, double chance)
         {
-            var gc = (from.Skills.Cap - (from.Skills.Total + (gains * 10))) / from.Skills.Cap;
+            double gc = (from.Skills.Cap - (from.Skills.Total + (gains * 10))) / from.Skills.Cap;
 
             gc += (skill.Cap - (skill.Base + (gains * 10))) / skill.Cap;
             gc /= 4;
@@ -240,8 +240,8 @@ namespace Server.Misc
             if (from.Skills.Cap == 0)
                 return false;
 
-            var success = Utility.Random(100) <= (int)(chance * 100);
-            var gc = GetGainChance(from, skill, chance, success);
+            bool success = Utility.Random(100) <= (int)(chance * 100);
+            double gc = GetGainChance(from, skill, chance, success);
 
             if (AllowGain(from, skill, obj))
             {
@@ -258,7 +258,7 @@ namespace Server.Misc
 
         private static double GetGainChance(Mobile from, Skill skill, double chance, bool success)
         {
-            var gc = (double)(from.Skills.Cap - from.Skills.Total) / from.Skills.Cap;
+            double gc = (double)(from.Skills.Cap - from.Skills.Total) / from.Skills.Cap;
 
             gc += (skill.Cap - skill.Base) / skill.Cap;
             gc /= 2;
@@ -288,12 +288,12 @@ namespace Server.Misc
             double minSkill,
             double maxSkill)
         {
-            var skill = from.Skills[skillName];
+            Skill skill = from.Skills[skillName];
 
             if (skill == null)
                 return false;
 
-            var value = skill.Value;
+            double value = skill.Value;
 
             if (value < minSkill)
                 return false; // Too difficult
@@ -301,7 +301,7 @@ namespace Server.Misc
             if (value >= maxSkill)
                 return true; // No challenge
 
-            var chance = (value - minSkill) / (maxSkill - minSkill);
+            double chance = (value - minSkill) / (maxSkill - minSkill);
 
             CrystalBallOfKnowledge.TellSkillDifficulty(from, skillName, chance);
 
@@ -310,7 +310,7 @@ namespace Server.Misc
 
         public static bool Mobile_SkillCheckDirectTarget(Mobile from, SkillName skillName, object target, double chance)
         {
-            var skill = from.Skills[skillName];
+            Skill skill = from.Skills[skillName];
 
             if (skill == null)
                 return false;
@@ -372,11 +372,11 @@ namespace Server.Misc
 
             if (skill.Base < skill.Cap && skill.Lock == SkillLock.Up)
             {
-                var skills = from.Skills;
+                Skills skills = from.Skills;
 
                 if (from is PlayerMobile && Siege.SiegeShard)
                 {
-                    var minsPerGain = Siege.MinutesPerGain(from, skill);
+                    int minsPerGain = Siege.MinutesPerGain(from, skill);
 
                     if (minsPerGain > 0)
                     {
@@ -418,11 +418,11 @@ namespace Server.Misc
                 #region Skill Masteries
                 else if (from is BaseCreature && !(from is Server.Engines.Despise.DespiseCreature) && (((BaseCreature)from).Controlled || ((BaseCreature)from).Summoned))
                 {
-                    var master = ((BaseCreature)from).GetMaster();
+                    Mobile master = ((BaseCreature)from).GetMaster();
 
                     if (master != null)
                     {
-                        var spell = SkillMasterySpell.GetSpell(master, typeof(WhisperingSpell)) as WhisperingSpell;
+                        WhisperingSpell spell = SkillMasterySpell.GetSpell(master, typeof(WhisperingSpell)) as WhisperingSpell;
 
                         if (spell != null && master.InRange(from.Location, spell.PartyRange) && master.Map == from.Map &&
                             spell.EnhancedGainChance >= Utility.Random(100))
@@ -457,7 +457,7 @@ namespace Server.Misc
             if (skill.Lock == SkillLock.Up &&
                 (!Siege.SiegeShard || !(from is PlayerMobile) || Siege.CanGainStat((PlayerMobile)from)))
             {
-                var info = skill.Info;
+                SkillInfo info = skill.Info;
 
                 TryStatGain(info, from);
             }
@@ -467,7 +467,7 @@ namespace Server.Misc
         {
             if (skills.Total / skills.Cap >= Utility.RandomDouble())
             {
-                foreach (var toLower in skills)
+                foreach (Skill toLower in skills)
                 {
                     if (toLower != gainSKill && toLower.Lock == SkillLock.Down && toLower.BaseFixedPoint >= toGain)
                     {
@@ -498,8 +498,8 @@ namespace Server.Misc
             }
 
             // Selection
-            var primaryLock = StatLockType.Locked;
-            var secondaryLock = StatLockType.Locked;
+            StatLockType primaryLock = StatLockType.Locked;
+            StatLockType secondaryLock = StatLockType.Locked;
 
             switch (info.Primary)
             {
@@ -771,8 +771,8 @@ namespace Server.Misc
             if (!GGSActive)
                 return;
 
-            var list = (int)Math.Min(GGSTable.Length - 1, skill.Base / 5);
-            var column = from.Skills.Total >= 7000 ? 2 : from.Skills.Total >= 3500 ? 1 : 0;
+            int list = (int)Math.Min(GGSTable.Length - 1, skill.Base / 5);
+            int column = from.Skills.Total >= 7000 ? 2 : from.Skills.Total >= 3500 ? 1 : 0;
 
             skill.NextGGSGain = DateTime.UtcNow + TimeSpan.FromMinutes(GGSTable[list][column]);
         }

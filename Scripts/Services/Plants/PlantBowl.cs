@@ -6,7 +6,7 @@ namespace Server.Engines.Plants
 {
     public class PlantBowl : Item
     {
-        public override int LabelNumber { get { return 1060834; } } // a plant bowl
+        public override int LabelNumber => 1060834;  // a plant bowl
 
         [Constructable]
         public PlantBowl() : base(0x15FD)
@@ -116,7 +116,7 @@ namespace Server.Engines.Plants
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

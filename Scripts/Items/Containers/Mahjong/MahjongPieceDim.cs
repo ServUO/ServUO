@@ -7,54 +7,36 @@ namespace Server.Engines.Mahjong
         private readonly int m_Height;
         public MahjongPieceDim(Point2D position, int width, int height)
         {
-            this.m_Position = position;
-            this.m_Width = width;
-            this.m_Height = height;
+            m_Position = position;
+            m_Width = width;
+            m_Height = height;
         }
 
-        public Point2D Position
-        {
-            get
-            {
-                return this.m_Position;
-            }
-        }
-        public int Width
-        {
-            get
-            {
-                return this.m_Width;
-            }
-        }
-        public int Height
-        {
-            get
-            {
-                return this.m_Height;
-            }
-        }
+        public Point2D Position => m_Position;
+        public int Width => m_Width;
+        public int Height => m_Height;
         public bool IsValid()
         {
-            return this.m_Position.X >= 0 && this.m_Position.Y >= 0 && this.m_Position.X + this.m_Width <= 670 && this.m_Position.Y + this.m_Height <= 670;
+            return m_Position.X >= 0 && m_Position.Y >= 0 && m_Position.X + m_Width <= 670 && m_Position.Y + m_Height <= 670;
         }
 
         public bool IsOverlapping(MahjongPieceDim dim)
         {
-            return this.m_Position.X < dim.m_Position.X + dim.m_Width && this.m_Position.Y < dim.m_Position.Y + dim.m_Height && this.m_Position.X + this.m_Width > dim.m_Position.X && this.m_Position.Y + this.m_Height > dim.m_Position.Y;
+            return m_Position.X < dim.m_Position.X + dim.m_Width && m_Position.Y < dim.m_Position.Y + dim.m_Height && m_Position.X + m_Width > dim.m_Position.X && m_Position.Y + m_Height > dim.m_Position.Y;
         }
 
         public int GetHandArea()
         {
-            if (this.m_Position.X + this.m_Width > 150 && this.m_Position.X < 520 && this.m_Position.Y < 35)
+            if (m_Position.X + m_Width > 150 && m_Position.X < 520 && m_Position.Y < 35)
                 return 0;
 
-            if (this.m_Position.X + this.m_Width > 635 && this.m_Position.Y + this.m_Height > 150 && this.m_Position.Y < 520)
+            if (m_Position.X + m_Width > 635 && m_Position.Y + m_Height > 150 && m_Position.Y < 520)
                 return 1;
 
-            if (this.m_Position.X + this.m_Width > 150 && this.m_Position.X < 520 && this.m_Position.Y + this.m_Height > 635)
+            if (m_Position.X + m_Width > 150 && m_Position.X < 520 && m_Position.Y + m_Height > 635)
                 return 2;
 
-            if (this.m_Position.X < 35 && this.m_Position.Y + this.m_Height > 150 && this.m_Position.Y < 520)
+            if (m_Position.X < 35 && m_Position.Y + m_Height > 150 && m_Position.Y < 520)
                 return 3;
 
             return -1;

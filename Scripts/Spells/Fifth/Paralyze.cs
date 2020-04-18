@@ -19,37 +19,31 @@ namespace Server.Spells.Fifth
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Fifth;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Fifth;
         public override void OnCast()
         {
-            this.Caster.Target = new InternalTarget(this);
+            Caster.Target = new InternalTarget(this);
         }
 
         public void Target(Mobile m)
         {
-            if (!this.Caster.CanSee(m))
+            if (!Caster.CanSee(m))
             {
-                this.Caster.SendLocalizedMessage(500237); // Target can not be seen.
+                Caster.SendLocalizedMessage(500237); // Target can not be seen.
             }
             else if (m.Frozen || m.Paralyzed || (m.Spell != null && m.Spell.IsCasting && !(m.Spell is PaladinSpell)))
             {
-                this.Caster.SendLocalizedMessage(1061923); // The target is already frozen.
+                Caster.SendLocalizedMessage(1061923); // The target is already frozen.
             }
-            else if (this.CheckHSequence(m))
+            else if (CheckHSequence(m))
             {
-                SpellHelper.Turn(this.Caster, m);
+                SpellHelper.Turn(Caster, m);
 
-                SpellHelper.CheckReflect((int)this.Circle, this.Caster, ref m);
+                SpellHelper.CheckReflect((int)Circle, Caster, ref m);
 
                 double duration;
 
-                int secs = (int)((this.GetDamageSkill(this.Caster) / 10) - (this.GetResistSkill(m) / 10));
+                int secs = (int)((GetDamageSkill(Caster) / 10) - (GetResistSkill(m) / 10));
 
                 if (!m.Player)
                     secs *= 3;
@@ -61,7 +55,7 @@ namespace Server.Spells.Fifth
 
                 if (m is PlagueBeastLord)
                 {
-                    ((PlagueBeastLord)m).OnParalyzed(this.Caster);
+                    ((PlagueBeastLord)m).OnParalyzed(Caster);
                     duration = 120;
                 }
 
@@ -70,10 +64,10 @@ namespace Server.Spells.Fifth
                 m.PlaySound(0x204);
                 m.FixedEffect(0x376A, 6, 1);
 
-                this.HarmfulSpell(m);
+                HarmfulSpell(m);
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         public class InternalTarget : Target
@@ -82,18 +76,18 @@ namespace Server.Spells.Fifth
             public InternalTarget(ParalyzeSpell owner)
                 : base(10, false, TargetFlags.Harmful)
             {
-                this.m_Owner = owner;
+                m_Owner = owner;
             }
 
             protected override void OnTarget(Mobile from, object o)
             {
                 if (o is Mobile)
-                    this.m_Owner.Target((Mobile)o);
+                    m_Owner.Target((Mobile)o);
             }
 
             protected override void OnTargetFinish(Mobile from)
             {
-                this.m_Owner.FinishSequence();
+                m_Owner.FinishSequence();
             }
         }
     }

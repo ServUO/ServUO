@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class GoldBranch : Item
     {
-        public override int LabelNumber { get { return 1158835; } } // branch
+        public override int LabelNumber => 1158835;  // branch
 
         [Constructable]
         public GoldBranch()
@@ -18,7 +18,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -30,7 +30,7 @@ namespace Server.Items
 
     public class SilverBranch : Item
     {
-        public override int LabelNumber { get { return 1158835; } } // branch
+        public override int LabelNumber => 1158835;  // branch
 
         [Constructable]
         public SilverBranch()
@@ -46,7 +46,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

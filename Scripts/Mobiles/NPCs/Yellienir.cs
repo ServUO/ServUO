@@ -22,27 +22,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool CanTeach
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool IsInvulnerable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        protected override List<SBInfo> SBInfos
-        {
-            get
-            {
-                return m_SBInfos;
-            }
-        }
+        public override bool CanTeach => false;
+        public override bool IsInvulnerable => true;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
         }
@@ -93,7 +75,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

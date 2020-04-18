@@ -41,24 +41,12 @@ namespace Server.Mobiles
         {
         }
 
-        public override int DragonBlood { get { return 8; } }
+        public override int DragonBlood => 8;
 
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 2;
-            }
-        }
-        public override int Meat
-        {
-            get { return 6; }
-        }
+        public override int TreasureMapLevel => 2;
+        public override int Meat => 6;
 
-        public override int Hides
-        {
-            get { return 10; }
-        }
+        public override int Hides => 10;
 
         public override void GenerateLoot()
         {
@@ -97,7 +85,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            var version = reader.ReadInt();
+            int version = reader.ReadInt();
         }
     }
 }

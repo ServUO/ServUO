@@ -54,8 +54,8 @@ namespace Server.Multis
             return null;
         }
 
-        public virtual int ZSurface { get { return 0; } }
-        public virtual int RuneOffset { get { return 0; } }
+        public virtual int ZSurface => 0;
+        public virtual int RuneOffset => 0;
 
         private int m_ClientSpeed;
 
@@ -126,7 +126,7 @@ namespace Server.Multis
         public int Hits { get { return m_Hits; } set { m_Hits = value; ComputeDamage(); InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public double Durability { get { return m_Hits / (double)MaxHits * 100.0; } }
+        public double Durability => m_Hits / (double)MaxHits * 100.0;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Hold Hold { get; set; }
@@ -157,15 +157,15 @@ namespace Server.Multis
         private Timer m_MoveTimer;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsMoving { get { return (m_MoveTimer != null); } }
+        public bool IsMoving => (m_MoveTimer != null);
 
         private Timer m_TurnTimer;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsTurning { get { return m_TurnTimer != null; } }
+        public bool IsTurning => m_TurnTimer != null;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsPiloted { get { return Pilot != null; } }
+        public bool IsPiloted => Pilot != null;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int Speed { get; set; }
@@ -266,29 +266,29 @@ namespace Server.Multis
             }
         }
 
-        public virtual int NorthID { get { return 0; } }
-        public virtual int EastID { get { return 0; } }
-        public virtual int SouthID { get { return 0; } }
-        public virtual int WestID { get { return 0; } }
+        public virtual int NorthID => 0;
+        public virtual int EastID => 0;
+        public virtual int SouthID => 0;
+        public virtual int WestID => 0;
 
-        public virtual int HoldDistance { get { return 0; } }
-        public virtual int TillerManDistance { get { return 0; } }
-        public virtual Point2D StarboardOffset { get { return Point2D.Zero; } }
-        public virtual Point2D PortOffset { get { return Point2D.Zero; } }
-        public virtual Point3D MarkOffset { get { return Point3D.Zero; } }
+        public virtual int HoldDistance => 0;
+        public virtual int TillerManDistance => 0;
+        public virtual Point2D StarboardOffset => Point2D.Zero;
+        public virtual Point2D PortOffset => Point2D.Zero;
+        public virtual Point3D MarkOffset => Point3D.Zero;
 
         #region High Seas
-        public virtual bool IsClassicBoat { get { return true; } }
-        public virtual bool IsRowBoat { get { return false; } }
-        public virtual double TurnDelay { get { return 0.5; } }
-        public virtual int MaxHits { get { return 25000; } }
-        public virtual double ScuttleLevel { get { return 25.0; } }
+        public virtual bool IsClassicBoat => true;
+        public virtual bool IsRowBoat => false;
+        public virtual double TurnDelay => 0.5;
+        public virtual int MaxHits => 25000;
+        public virtual double ScuttleLevel => 25.0;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual bool Scuttled { get { return !IsUnderEmergencyRepairs() && Durability < ScuttleLevel; } }
+        public virtual bool Scuttled => !IsUnderEmergencyRepairs() && Durability < ScuttleLevel;
 
-        public virtual TimeSpan BoatDecayDelay { get { return TimeSpan.FromDays(13); } }
-        public virtual bool CanLinkToLighthouse { get { return true; } }
+        public virtual TimeSpan BoatDecayDelay => TimeSpan.FromDays(13);
+        public virtual bool CanLinkToLighthouse => true;
 
         #region IMount Members
         public Mobile Rider { get { return Pilot; } set { Pilot = value; } }
@@ -299,11 +299,11 @@ namespace Server.Multis
         #endregion
         #endregion
 
-        public virtual BaseDockedBoat DockedBoat { get { return null; } }
+        public virtual BaseDockedBoat DockedBoat => null;
 
         private static readonly List<BaseBoat> m_Instances = new List<BaseBoat>();
 
-        public static List<BaseBoat> Boats { get { return m_Instances; } }
+        public static List<BaseBoat> Boats => m_Instances;
 
         public BaseBoat(Direction direction)
             : this(direction, false)
@@ -355,13 +355,13 @@ namespace Server.Multis
         {
         }
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 
-            int health = (int)(Hits * 100 / MaxHits);
+            int health = Hits * 100 / MaxHits;
 
             if (health >= 75)
             {
@@ -512,18 +512,18 @@ namespace Server.Multis
         {
             base.Serialize(writer);
 
-            writer.Write((int)5);
+            writer.Write(5);
 
             writer.Write(m_Hits);
             writer.Write((int)m_DamageTaken);
 
             if (BoatCourse != null)
             {
-                writer.Write((int)1);
+                writer.Write(1);
                 BoatCourse.Serialize(writer);
             }
             else
-                writer.Write((int)0);
+                writer.Write(0);
 
             writer.Write(BoatItem);
 
@@ -531,8 +531,8 @@ namespace Server.Multis
             writer.Write(DoesDecay);
 
             // version 3
-            writer.Write((Item)MapItem);
-            writer.Write((int)NextNavPoint);
+            writer.Write(MapItem);
+            writer.Write(NextNavPoint);
 
             writer.Write((int)m_Facing);
 
@@ -699,7 +699,7 @@ namespace Server.Multis
             return value;
         }
 
-        public override bool AllowsRelativeDrop { get { return true; } }
+        public override bool AllowsRelativeDrop => true;
 
         public override void OnAfterDelete()
         {
@@ -875,12 +875,12 @@ namespace Server.Multis
         [CommandProperty(AccessLevel.GameMaster)]
         public int SlowInterval { get; set; } = 1000;
 
-        public TimeSpan FastInt { get { return TimeSpan.FromMilliseconds(FastInterval); } }
-        public TimeSpan NormalInt { get { return TimeSpan.FromMilliseconds(NormalInterval); } }
-        public TimeSpan SlowInt { get { return TimeSpan.FromMilliseconds(SlowInterval); } }
+        public TimeSpan FastInt => TimeSpan.FromMilliseconds(FastInterval);
+        public TimeSpan NormalInt => TimeSpan.FromMilliseconds(NormalInterval);
+        public TimeSpan SlowInt => TimeSpan.FromMilliseconds(SlowInterval);
 
-        public TimeSpan FastDriftInterval { get { return NormalInt; } }
-        public TimeSpan SlowDriftInterval { get { return SlowInt; } }
+        public TimeSpan FastDriftInterval => NormalInt;
+        public TimeSpan SlowDriftInterval => SlowInt;
 
         private static readonly Direction Forward = Direction.North;
         private static readonly Direction ForwardLeft = Direction.Up;
@@ -1033,7 +1033,7 @@ namespace Server.Multis
 
             DryDockResult res = DryDockResult.Valid;
 
-            foreach (var o in GetEntitiesOnBoard())
+            foreach (IEntity o in GetEntitiesOnBoard())
             {
                 if (o == this || IsComponentItem(o) || o is EffectItem || o == TillerMan)
                     continue;
@@ -1148,7 +1148,7 @@ namespace Server.Multis
 
         public virtual void OnDryDock(Mobile from)
         {
-            var addon = LighthouseAddon.GetLighthouse(Owner);
+            LighthouseAddon addon = LighthouseAddon.GetLighthouse(Owner);
 
             if (addon != null && Owner != null && Owner.NetState != null)
             {
@@ -1308,15 +1308,15 @@ namespace Server.Multis
                 if (secure != null) cloth += secure.GetAmount(type);
             }
 
-            double durability = ((double)Hits / (double)MaxHits) * 100;
+            double durability = (Hits / (double)MaxHits) * 100;
 
             //Now, how much do they need for 100% repair
             double woodNeeded = WoodPer * (100.0 - durability);
             double clothNeeded = ClothPer * (100.0 - durability);
 
             //Apply skill bonus
-            woodNeeded -= ((double)from.Skills[SkillName.Carpentry].Value / 200.0) * woodNeeded;
-            clothNeeded -= ((double)from.Skills[SkillName.Tailoring].Value / 200.0) * clothNeeded;
+            woodNeeded -= (from.Skills[SkillName.Carpentry].Value / 200.0) * woodNeeded;
+            clothNeeded -= (from.Skills[SkillName.Tailoring].Value / 200.0) * clothNeeded;
 
             //get 10% of needed repairs
             double minWood = woodNeeded / 10;
@@ -1706,7 +1706,7 @@ namespace Server.Multis
             return true;
         }
 
-        public override bool HandlesOnSpeech { get { return true; } }
+        public override bool HandlesOnSpeech => true;
 
         public override void OnSpeech(SpeechEventArgs e)
         {
@@ -1803,7 +1803,7 @@ namespace Server.Multis
 
             bool resume = false;
             bool fast = false;
-            var resumeDir = Direction.North;
+            Direction resumeDir = Direction.North;
 
             if (m_MoveTimer != null)
             {
@@ -2107,7 +2107,7 @@ namespace Server.Multis
                 item.ItemID > TileData.MaxItemValue ||
                 !item.Visible ||
                 item is Corpse ||
-                IsComponentItem((IEntity)item) ||
+                IsComponentItem(item) ||
                 item is EffectItem;
         }
 
@@ -2422,7 +2422,7 @@ namespace Server.Multis
                 // entities/boat block move packet
                 NoMoveHS = true;
 
-                foreach (var e in toMove)
+                foreach (IEntity e in toMove)
                 {
                     e.NoMoveHS = true;
                 }
@@ -2446,7 +2446,7 @@ namespace Server.Multis
                 }
 
                 // entities move/restores packet
-                foreach (var ent in toMove.Where(e => !IsComponentItem(e) && !CanMoveOver(e)))
+                foreach (IEntity ent in toMove.Where(e => !IsComponentItem(e) && !CanMoveOver(e)))
                 {
                     ent.Location = new Point3D(ent.X + xOffset, ent.Y + yOffset, ent.Z);
                 }
@@ -2455,7 +2455,7 @@ namespace Server.Multis
 
                 NoMoveHS = false;
 
-                foreach (var e in toMove)
+                foreach (IEntity e in toMove)
                     e.NoMoveHS = false;
 
                 SendContainerPacket();
@@ -2469,7 +2469,7 @@ namespace Server.Multis
 
         public void Teleport(int xOffset, int yOffset, int zOffset)
         {
-            foreach (var ent in GetEntitiesOnBoard().Where(e => !IsComponentItem(e) && !CanMoveOver(e) && e != TillerMan))
+            foreach (IEntity ent in GetEntitiesOnBoard().Where(e => !IsComponentItem(e) && !CanMoveOver(e) && e != TillerMan))
             {
                 ent.Location = new Point3D(ent.X + xOffset, ent.Y + yOffset, ent.Z + zOffset);
             }
@@ -2543,7 +2543,7 @@ namespace Server.Multis
                 }
             }
 
-            foreach (var comp in GetComponents().Where(comp => !toMove.Contains(comp)))
+            foreach (IEntity comp in GetComponents().Where(comp => !toMove.Contains(comp)))
             {
                 toMove.Add(comp);
             }
@@ -2560,7 +2560,7 @@ namespace Server.Multis
             if (Hold != null)
                 Hold.Location = new Point3D(X + (xOffset * HoldDistance), Y + (yOffset * HoldDistance), Hold.Z);
 
-            int count = (int)(m_Facing - old) & 0x7;
+            int count = m_Facing - old & 0x7;
             count /= 2;
 
             foreach (IEntity e in toMove.Where(e => e != null))
@@ -2968,7 +2968,7 @@ namespace Server.Multis
 
             if (CanLinkToLighthouse)
             {
-                var addon = LighthouseAddon.GetLighthouse(Owner);
+                LighthouseAddon addon = LighthouseAddon.GetLighthouse(Owner);
 
                 if (addon != null)
                 {
@@ -3037,7 +3037,7 @@ namespace Server.Multis
 
                 state.Send(RemovePacket);
 
-                foreach (var item in GetItemsOnBoard())
+                foreach (Item item in GetItemsOnBoard())
                 {
                     state.Send(item.RemovePacket);
                 }
@@ -3055,7 +3055,7 @@ namespace Server.Multis
             {
                 EnsureCapacity(18);
 
-                m_Stream.Write((int)boat.Serial);
+                m_Stream.Write(boat.Serial);
                 m_Stream.Write((byte)speed);
                 m_Stream.Write((byte)d);
                 m_Stream.Write((byte)boat.Facing);
@@ -3063,14 +3063,14 @@ namespace Server.Multis
                 m_Stream.Write((short)(boat.Y + yOffset));
                 m_Stream.Write((short)boat.Z);
 
-                var cp = m_Stream.Seek(0, SeekOrigin.Current);
+                long cp = m_Stream.Seek(0, SeekOrigin.Current);
                 short length = 0;
 
                 m_Stream.Write(length);
 
-                foreach (var ent in boat.GetEntitiesOnBoard().Where(e => e != boat))
+                foreach (IEntity ent in boat.GetEntitiesOnBoard().Where(e => e != boat))
                 {
-                    m_Stream.Write((int)ent.Serial);
+                    m_Stream.Write(ent.Serial);
                     m_Stream.Write((short)(ent.X + xOffset));
                     m_Stream.Write((short)(ent.Y + yOffset));
                     m_Stream.Write((short)ent.Z);
@@ -3097,16 +3097,16 @@ namespace Server.Multis
                 short c = 0;
                 m_Stream.Write(c);
 
-                foreach (var entity in entities)
+                foreach (IEntity entity in entities)
                 {
-                    var itemID = 0;
+                    int itemID = 0;
                     short amount = 0x01;
                     short hue = 0x00;
                     byte cmd = 0x0, light = 0x0, flags = 0x0;
 
                     if (entity is BaseMulti)
                     {
-                        var multi = entity as BaseMulti;
+                        BaseMulti multi = entity as BaseMulti;
 
                         cmd = 0x02;
                         itemID = multi.ItemID;
@@ -3116,7 +3116,7 @@ namespace Server.Multis
                     }
                     else if (entity is Item)
                     {
-                        var item = entity as Item;
+                        Item item = entity as Item;
 
                         cmd = (byte)(!item.Movable && item is IDamageable ? 0x03 : 0x00);
                         itemID = item.ItemID;
@@ -3128,7 +3128,7 @@ namespace Server.Multis
                     }
                     else if (entity is Mobile)
                     {
-                        var mobile = entity as Mobile;
+                        Mobile mobile = entity as Mobile;
 
                         cmd = 0x01;
                         itemID = mobile.BodyValue;
@@ -3220,7 +3220,7 @@ namespace Server.Multis
     public class BoatCourse
     {
         private readonly List<Point2D> m_Waypoints = new List<Point2D>();
-        public List<Point2D> Waypoints { get { return m_Waypoints; } }
+        public List<Point2D> Waypoints => m_Waypoints;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public BaseBoat Boat { get; set; }
@@ -3229,7 +3229,7 @@ namespace Server.Multis
         public Map Map { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int NumWaypoints { get { return m_Waypoints.Count; } }
+        public int NumWaypoints => m_Waypoints.Count;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool GivenMap { get; set; }
@@ -3368,7 +3368,7 @@ namespace Server.Multis
 
         public void Serialize(GenericWriter writer)
         {
-            writer.Write((int)0);
+            writer.Write(0);
             writer.Write(GivenMap);
 
             writer.Write(m_Waypoints.Count);

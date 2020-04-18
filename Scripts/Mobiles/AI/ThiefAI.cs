@@ -34,7 +34,7 @@ namespace Server.Mobiles
 
         public override bool DoActionCombat()
         {
-            var c = m_Mobile.Combatant as Mobile;
+            Mobile c = m_Mobile.Combatant as Mobile;
 
             if (c == null || c.Deleted || c.Map != m_Mobile.Map)
             {
@@ -83,11 +83,11 @@ namespace Server.Mobiles
                 }
                 else if (m_toDisarm == null && m_Mobile.NextSkillTime <= Core.TickCount)
                 {
-                    var cpack = c.Backpack;
+                    Container cpack = c.Backpack;
 
                     if (cpack != null)
                     {
-                        var steala = cpack.FindItemByType(typeof(Bandage));
+                        Item steala = cpack.FindItemByType(typeof(Bandage));
 
                         if (steala != null)
                         {
@@ -100,7 +100,7 @@ namespace Server.Mobiles
                             }
                         }
 
-                        var stealb = cpack.FindItemByType(typeof(Nightshade));
+                        Item stealb = cpack.FindItemByType(typeof(Nightshade));
 
                         if (stealb != null)
                         {
@@ -113,7 +113,7 @@ namespace Server.Mobiles
                             }
                         }
 
-                        var stealc = cpack.FindItemByType(typeof(BlackPearl));
+                        Item stealc = cpack.FindItemByType(typeof(BlackPearl));
 
                         if (stealc != null)
                         {
@@ -126,7 +126,7 @@ namespace Server.Mobiles
                             }
                         }
 
-                        var steald = cpack.FindItemByType(typeof(MandrakeRoot));
+                        Item steald = cpack.FindItemByType(typeof(MandrakeRoot));
 
                         if (steald != null)
                         {

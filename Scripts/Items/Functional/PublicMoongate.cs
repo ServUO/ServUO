@@ -33,7 +33,7 @@ namespace Server.Items
         {
             DeleteAll();
 
-            var count = 0;
+            int count = 0;
 
             if (!Siege.SiegeShard)
             {
@@ -51,9 +51,9 @@ namespace Server.Items
 
         private static int MoonGen(PMList list)
         {
-            foreach (var entry in list.Entries)
+            foreach (PMEntry entry in list.Entries)
             {
-                var o = new PublicMoongate();
+                PublicMoongate o = new PublicMoongate();
 
                 o.MoveToWorld(entry.Location, list.Map);
 
@@ -75,9 +75,9 @@ namespace Server.Items
 
         public static void DeleteAll()
         {
-            var count = Moongates.Count;
+            int count = Moongates.Count;
 
-            var index = count;
+            int index = count;
 
             while (--index >= 0)
             {
@@ -97,7 +97,7 @@ namespace Server.Items
         {
             PublicMoongate o;
 
-            var i = Moongates.Count;
+            int i = Moongates.Count;
 
             while (--i >= 0)
             {
@@ -114,10 +114,10 @@ namespace Server.Items
             }
         }
 
-        public override int LabelNumber { get { return 1023952; } } // Blue Moongate
+        public override int LabelNumber => 1023952;  // Blue Moongate
 
-        public override bool HandlesOnMovement { get { return true; } }
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool HandlesOnMovement => true;
+        public override bool ForceShowProperties => true;
 
         [Constructable]
         public PublicMoongate()
@@ -424,7 +424,7 @@ namespace Server.Items
 
         public static int IndexOfEntry(PMEntry entry)
         {
-            var list = AllLists.FirstOrDefault(o => o.Entries.Contains(entry));
+            PMList list = AllLists.FirstOrDefault(o => o.Entries.Contains(entry));
 
             return IndexOfEntry(list, entry);
         }
@@ -451,7 +451,7 @@ namespace Server.Items
 
         public static PMEntry FindEntry(Map map, Point3D loc)
         {
-            var list = GetList(map);
+            PMList list = GetList(map);
 
             if (list != null)
             {
@@ -474,10 +474,10 @@ namespace Server.Items
             m_Entries = entries;
         }
 
-        public int Number { get { return m_Number; } }
-        public int SelNumber { get { return m_SelNumber; } }
-        public Map Map { get { return m_Map; } }
-        public PMEntry[] Entries { get { return m_Entries; } }
+        public int Number => m_Number;
+        public int SelNumber => m_SelNumber;
+        public Map Map => m_Map;
+        public PMEntry[] Entries => m_Entries;
     }
 
     public class MoongateGump : Gump
@@ -510,7 +510,7 @@ namespace Server.Items
                 }
                 else
                 {
-                    var young = mobile is PlayerMobile && ((PlayerMobile)mobile).Young;
+                    bool young = mobile is PlayerMobile && ((PlayerMobile)mobile).Young;
 
                     checkLists = young ? PMList.ListsYoung : PMList.Lists;
                 }
@@ -522,16 +522,16 @@ namespace Server.Items
 
             m_Lists = new PMList[checkLists.Length];
 
-            for (var i = 0; i < m_Lists.Length; ++i)
+            for (int i = 0; i < m_Lists.Length; ++i)
             {
                 m_Lists[i] = checkLists[i];
             }
 
-            for (var i = 0; i < m_Lists.Length; ++i)
+            for (int i = 0; i < m_Lists.Length; ++i)
             {
                 if (m_Lists[i].Map == mobile.Map)
                 {
-                    var temp = m_Lists[i];
+                    PMList temp = m_Lists[i];
 
                     m_Lists[i] = m_Lists[0];
                     m_Lists[0] = temp;
@@ -552,7 +552,7 @@ namespace Server.Items
 
             AddHtmlLocalized(5, 5, 200, 20, 1012011, false, false); // Pick your destination:
 
-            for (var i = 0; i < checkLists.Length; ++i)
+            for (int i = 0; i < checkLists.Length; ++i)
             {
                 if (Siege.SiegeShard && checkLists[i].Number == 1012000) // Trammel
                 {
@@ -563,7 +563,7 @@ namespace Server.Items
                 AddHtmlLocalized(30, 35 + (i * 25), 150, 20, checkLists[i].Number, false, false);
             }
 
-            for (var i = 0; i < m_Lists.Length; ++i)
+            for (int i = 0; i < m_Lists.Length; ++i)
             {
                 RenderPage(i, Array.IndexOf(checkLists, m_Lists[i]));
             }
@@ -580,30 +580,30 @@ namespace Server.Items
                 return;
             }
 
-            var switches = info.Switches;
+            int[] switches = info.Switches;
 
             if (switches.Length == 0)
             {
                 return;
             }
 
-            var switchID = switches[0];
-            var listIndex = switchID / 100;
-            var listEntry = switchID % 100;
+            int switchID = switches[0];
+            int listIndex = switchID / 100;
+            int listEntry = switchID % 100;
 
             if (listIndex < 0 || listIndex >= m_Lists.Length)
             {
                 return;
             }
 
-            var list = m_Lists[listIndex];
+            PMList list = m_Lists[listIndex];
 
             if (listEntry < 0 || listEntry >= list.Entries.Length)
             {
                 return;
             }
 
-            var entry = list.Entries[listEntry];
+            PMEntry entry = list.Entries[listEntry];
 
             if (m_Mobile.Map == list.Map && m_Mobile.InRange(entry.Location, 1))
             {
@@ -660,7 +660,7 @@ namespace Server.Items
 
         private void RenderPage(int index, int offset)
         {
-            var list = m_Lists[index];
+            PMList list = m_Lists[index];
 
             if (Siege.SiegeShard && list.Number == 1012000) // Trammel
                 return;
@@ -670,9 +670,9 @@ namespace Server.Items
             AddButton(10, 35 + (offset * 25), 2117, 2118, 0, GumpButtonType.Page, index + 1);
             AddHtmlLocalized(30, 35 + (offset * 25), 150, 20, list.SelNumber, false, false);
 
-            var entries = list.Entries;
+            PMEntry[] entries = list.Entries;
 
-            for (var i = 0; i < entries.Length; ++i)
+            for (int i = 0; i < entries.Length; ++i)
             {
                 AddRadio(200, 35 + (i * 25), 210, 211, false, (index * 100) + i);
                 AddHtmlLocalized(225, 35 + (i * 25), 150, 20, entries[i].Number, false, false);

@@ -16,40 +16,16 @@ namespace Server.Engines.Quests
         {
             XmlElement questEl = xml["quest"];
 
-            ReadType(questEl, "type", ref this.m_Quest);
-            ReadType(questEl, "min", ref this.m_MinObjective, false);
-            ReadType(questEl, "max", ref this.m_MaxObjective, false);
-            ReadInt32(questEl, "message", ref this.m_Message, false);
+            ReadType(questEl, "type", ref m_Quest);
+            ReadType(questEl, "min", ref m_MinObjective, false);
+            ReadType(questEl, "max", ref m_MaxObjective, false);
+            ReadInt32(questEl, "message", ref m_Message, false);
         }
 
-        public Type Quest
-        {
-            get
-            {
-                return this.m_Quest;
-            }
-        }
-        public Type MinObjective
-        {
-            get
-            {
-                return this.m_MinObjective;
-            }
-        }
-        public Type MaxObjective
-        {
-            get
-            {
-                return this.m_MaxObjective;
-            }
-        }
-        public int Message
-        {
-            get
-            {
-                return this.m_Message;
-            }
-        }
+        public Type Quest => m_Quest;
+        public Type MinObjective => m_MinObjective;
+        public Type MaxObjective => m_MaxObjective;
+        public int Message => m_Message;
         public override bool OnMoveInto(Mobile m, Direction d, Point3D newLocation, Point3D oldLocation)
         {
             if (!base.OnMoveInto(m, d, newLocation, oldLocation))
@@ -66,21 +42,21 @@ namespace Server.Engines.Quests
                     return true;
             }
 
-            if (this.m_Quest == null)
+            if (m_Quest == null)
                 return true;
 
             PlayerMobile player = m as PlayerMobile;
 
-            if (player != null && player.Quest != null && player.Quest.GetType() == this.m_Quest &&
-                (this.m_MinObjective == null || player.Quest.FindObjective(this.m_MinObjective) != null) &&
-                (this.m_MaxObjective == null || player.Quest.FindObjective(this.m_MaxObjective) == null))
+            if (player != null && player.Quest != null && player.Quest.GetType() == m_Quest &&
+                (m_MinObjective == null || player.Quest.FindObjective(m_MinObjective) != null) &&
+                (m_MaxObjective == null || player.Quest.FindObjective(m_MaxObjective) == null))
             {
                 return true;
             }
             else
             {
-                if (this.m_Message != 0)
-                    m.SendLocalizedMessage(this.m_Message);
+                if (m_Message != 0)
+                    m.SendLocalizedMessage(m_Message);
 
                 return false;
             }

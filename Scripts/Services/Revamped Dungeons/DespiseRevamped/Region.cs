@@ -78,7 +78,7 @@ namespace Server.Engines.Despise
 
         public override bool OnBeforeDeath(Mobile m)
         {
-            if (m is DespiseCreature && m.Region != null && m.Region.IsPartOf(this.GetType()))
+            if (m is DespiseCreature && m.Region != null && m.Region.IsPartOf(GetType()))
             {
                 DespiseCreature dc = (DespiseCreature)m;
 
@@ -119,7 +119,7 @@ namespace Server.Engines.Despise
                         if (topdam != null && highest > 0)
                         {
                             int mobKarma = Math.Abs(dc.Karma);
-                            int karma = (int)(((double)mobKarma / 10) * (double)highest / (double)dc.HitsMax);
+                            int karma = (int)(((double)mobKarma / 10) * highest / dc.HitsMax);
 
                             if (karma < 1)
                                 karma = 1;
@@ -163,7 +163,7 @@ namespace Server.Engines.Despise
 
                             if (master != null && master.Map != null && master.Map != Map.Internal && master.Backpack != null)
                             {
-                                var heart = new PutridHeart(Utility.RandomMinMax(dc.Power * 8, dc.Power * 10));
+                                PutridHeart heart = new PutridHeart(Utility.RandomMinMax(dc.Power * 8, dc.Power * 10));
 
                                 if (!master.Backpack.TryDropItem(master, heart, false))
                                 {
@@ -300,7 +300,7 @@ namespace Server.Engines.Despise
                 int z = Map.Trammel.GetAverageZ(x, y);
                 Point3D p = new Point3D(x, y, z);
 
-                if (this.Map.CanSpawnMobile(p))
+                if (Map.CanSpawnMobile(p))
                 {
                     if (m.Corpse != null)
                         m.Corpse.MoveToWorld(p, Map.Trammel);

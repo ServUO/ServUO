@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class WoodlandBeltBearingTheCrestOfBlackthorn2 : WoodlandBelt
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
 
         [Constructable]
         public WoodlandBeltBearingTheCrestOfBlackthorn2()

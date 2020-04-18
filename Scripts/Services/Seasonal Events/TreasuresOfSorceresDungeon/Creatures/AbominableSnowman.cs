@@ -53,8 +53,8 @@ namespace Server.Engines.SorcerersDungeon
         {
         }
 
-        public override bool AlwaysMurderer { get { return true; } }
-        public override Poison PoisonImmune { get { return Poison.Deadly; } }
+        public override bool AlwaysMurderer => true;
+        public override Poison PoisonImmune => Poison.Deadly;
 
         public override void GenerateLoot()
         {
@@ -64,7 +64,7 @@ namespace Server.Engines.SorcerersDungeon
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

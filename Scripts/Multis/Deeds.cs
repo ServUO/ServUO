@@ -10,7 +10,7 @@ namespace Server.Multis.Deeds
         public HousePlacementTarget(HouseDeed deed)
             : base(deed.MultiID, deed.Offset)
         {
-            this.m_Deed = deed;
+            m_Deed = deed;
         }
 
         protected override void OnTarget(Mobile from, object o)
@@ -27,7 +27,7 @@ namespace Server.Multis.Deeds
                 Region reg = Region.Find(new Point3D(p), from.Map);
 
                 if (from.AccessLevel >= AccessLevel.GameMaster || reg.AllowHousing(from, p))
-                    this.m_Deed.OnPlacement(from, p);
+                    m_Deed.OnPlacement(from, p);
                 else if (reg.IsPartOf<TempNoHousingRegion>())
                     from.SendLocalizedMessage(501270); // Lord British has decreed a 'no build' period, thus you cannot build this house at this time.
                 else if (reg.IsPartOf<HouseRegion>())
@@ -47,11 +47,11 @@ namespace Server.Multis.Deeds
         public HouseDeed(int id, Point3D offset)
             : base(0x14F0)
         {
-            this.Weight = 1.0;
-            this.LootType = LootType.Newbied;
+            Weight = 1.0;
+            LootType = LootType.Newbied;
 
-            this.m_MultiID = id;
-            this.m_Offset = offset;
+            m_MultiID = id;
+            m_Offset = offset;
         }
 
         public HouseDeed(Serial serial)
@@ -64,11 +64,11 @@ namespace Server.Multis.Deeds
         {
             get
             {
-                return this.m_MultiID;
+                return m_MultiID;
             }
             set
             {
-                this.m_MultiID = value;
+                m_MultiID = value;
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -76,11 +76,11 @@ namespace Server.Multis.Deeds
         {
             get
             {
-                return this.m_Offset;
+                return m_Offset;
             }
             set
             {
-                this.m_Offset = value;
+                m_Offset = value;
             }
         }
         public abstract Rectangle2D[] Area { get; }
@@ -88,11 +88,11 @@ namespace Server.Multis.Deeds
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
-            writer.Write(this.m_Offset);
+            writer.Write(m_Offset);
 
-            writer.Write(this.m_MultiID);
+            writer.Write(m_MultiID);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -105,25 +105,25 @@ namespace Server.Multis.Deeds
             {
                 case 1:
                     {
-                        this.m_Offset = reader.ReadPoint3D();
+                        m_Offset = reader.ReadPoint3D();
 
                         goto case 0;
                     }
                 case 0:
                     {
-                        this.m_MultiID = reader.ReadInt();
+                        m_MultiID = reader.ReadInt();
 
                         break;
                     }
             }
 
-            if (this.Weight == 0.0)
-                this.Weight = 1.0;
+            if (Weight == 0.0)
+                Weight = 1.0;
         }
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!this.IsChildOf(from.Backpack))
+            if (!IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
             }
@@ -141,18 +141,18 @@ namespace Server.Multis.Deeds
 
         public void OnPlacement(Mobile from, Point3D p)
         {
-            if (this.Deleted)
+            if (Deleted)
                 return;
 
-            if (!this.IsChildOf(from.Backpack))
+            if (!IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
             }
             else
             {
                 ArrayList toMove;
-                Point3D center = new Point3D(p.X - this.m_Offset.X, p.Y - this.m_Offset.Y, p.Z - this.m_Offset.Z);
-                HousePlacementResult res = HousePlacement.Check(from, this.m_MultiID, center, out toMove);
+                Point3D center = new Point3D(p.X - m_Offset.X, p.Y - m_Offset.Y, p.Z - m_Offset.Z);
+                HousePlacementResult res = HousePlacement.Check(from, m_MultiID, center, out toMove);
 
                 switch (res)
                 {
@@ -160,9 +160,9 @@ namespace Server.Multis.Deeds
                         {
                             if (from.AccessLevel > AccessLevel.Player || BaseHouse.CheckAccountHouseLimit(from))
                             {
-                                BaseHouse house = this.GetHouse(from);
+                                BaseHouse house = GetHouse(from);
                                 house.MoveToWorld(center, from.Map);
-                                this.Delete();
+                                Delete();
 
                                 for (int i = 0; i < toMove.Count; ++i)
                                 {
@@ -227,20 +227,8 @@ namespace Server.Multis.Deeds
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041211;
-            }
-        }
-        public override Rectangle2D[] Area
-        {
-            get
-            {
-                return SmallOldHouse.AreaArray;
-            }
-        }
+        public override int LabelNumber => 1041211;
+        public override Rectangle2D[] Area => SmallOldHouse.AreaArray;
         public override BaseHouse GetHouse(Mobile owner)
         {
             return new SmallOldHouse(owner, 0x64);
@@ -250,7 +238,7 @@ namespace Server.Multis.Deeds
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -274,20 +262,8 @@ namespace Server.Multis.Deeds
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041212;
-            }
-        }
-        public override Rectangle2D[] Area
-        {
-            get
-            {
-                return SmallOldHouse.AreaArray;
-            }
-        }
+        public override int LabelNumber => 1041212;
+        public override Rectangle2D[] Area => SmallOldHouse.AreaArray;
         public override BaseHouse GetHouse(Mobile owner)
         {
             return new SmallOldHouse(owner, 0x66);
@@ -297,7 +273,7 @@ namespace Server.Multis.Deeds
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -321,20 +297,8 @@ namespace Server.Multis.Deeds
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041213;
-            }
-        }
-        public override Rectangle2D[] Area
-        {
-            get
-            {
-                return SmallOldHouse.AreaArray;
-            }
-        }
+        public override int LabelNumber => 1041213;
+        public override Rectangle2D[] Area => SmallOldHouse.AreaArray;
         public override BaseHouse GetHouse(Mobile owner)
         {
             return new SmallOldHouse(owner, 0x68);
@@ -344,7 +308,7 @@ namespace Server.Multis.Deeds
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -368,20 +332,8 @@ namespace Server.Multis.Deeds
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041214;
-            }
-        }
-        public override Rectangle2D[] Area
-        {
-            get
-            {
-                return SmallOldHouse.AreaArray;
-            }
-        }
+        public override int LabelNumber => 1041214;
+        public override Rectangle2D[] Area => SmallOldHouse.AreaArray;
         public override BaseHouse GetHouse(Mobile owner)
         {
             return new SmallOldHouse(owner, 0x6A);
@@ -391,7 +343,7 @@ namespace Server.Multis.Deeds
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -415,20 +367,8 @@ namespace Server.Multis.Deeds
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041215;
-            }
-        }
-        public override Rectangle2D[] Area
-        {
-            get
-            {
-                return SmallOldHouse.AreaArray;
-            }
-        }
+        public override int LabelNumber => 1041215;
+        public override Rectangle2D[] Area => SmallOldHouse.AreaArray;
         public override BaseHouse GetHouse(Mobile owner)
         {
             return new SmallOldHouse(owner, 0x6C);
@@ -438,7 +378,7 @@ namespace Server.Multis.Deeds
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -462,20 +402,8 @@ namespace Server.Multis.Deeds
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041216;
-            }
-        }
-        public override Rectangle2D[] Area
-        {
-            get
-            {
-                return SmallOldHouse.AreaArray;
-            }
-        }
+        public override int LabelNumber => 1041216;
+        public override Rectangle2D[] Area => SmallOldHouse.AreaArray;
         public override BaseHouse GetHouse(Mobile owner)
         {
             return new SmallOldHouse(owner, 0x6E);
@@ -485,7 +413,7 @@ namespace Server.Multis.Deeds
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -509,20 +437,8 @@ namespace Server.Multis.Deeds
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041219;
-            }
-        }
-        public override Rectangle2D[] Area
-        {
-            get
-            {
-                return GuildHouse.AreaArray;
-            }
-        }
+        public override int LabelNumber => 1041219;
+        public override Rectangle2D[] Area => GuildHouse.AreaArray;
         public override BaseHouse GetHouse(Mobile owner)
         {
             return new GuildHouse(owner);
@@ -532,7 +448,7 @@ namespace Server.Multis.Deeds
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -556,20 +472,8 @@ namespace Server.Multis.Deeds
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041220;
-            }
-        }
-        public override Rectangle2D[] Area
-        {
-            get
-            {
-                return TwoStoryHouse.AreaArray;
-            }
-        }
+        public override int LabelNumber => 1041220;
+        public override Rectangle2D[] Area => TwoStoryHouse.AreaArray;
         public override BaseHouse GetHouse(Mobile owner)
         {
             return new TwoStoryHouse(owner, 0x76);
@@ -579,7 +483,7 @@ namespace Server.Multis.Deeds
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -603,20 +507,8 @@ namespace Server.Multis.Deeds
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041221;
-            }
-        }
-        public override Rectangle2D[] Area
-        {
-            get
-            {
-                return TwoStoryHouse.AreaArray;
-            }
-        }
+        public override int LabelNumber => 1041221;
+        public override Rectangle2D[] Area => TwoStoryHouse.AreaArray;
         public override BaseHouse GetHouse(Mobile owner)
         {
             return new TwoStoryHouse(owner, 0x78);
@@ -626,7 +518,7 @@ namespace Server.Multis.Deeds
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -650,20 +542,8 @@ namespace Server.Multis.Deeds
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041222;
-            }
-        }
-        public override Rectangle2D[] Area
-        {
-            get
-            {
-                return Tower.AreaArray;
-            }
-        }
+        public override int LabelNumber => 1041222;
+        public override Rectangle2D[] Area => Tower.AreaArray;
         public override BaseHouse GetHouse(Mobile owner)
         {
             return new Tower(owner);
@@ -673,7 +553,7 @@ namespace Server.Multis.Deeds
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -697,20 +577,8 @@ namespace Server.Multis.Deeds
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041223;
-            }
-        }
-        public override Rectangle2D[] Area
-        {
-            get
-            {
-                return Keep.AreaArray;
-            }
-        }
+        public override int LabelNumber => 1041223;
+        public override Rectangle2D[] Area => Keep.AreaArray;
         public override BaseHouse GetHouse(Mobile owner)
         {
             return new Keep(owner);
@@ -720,7 +588,7 @@ namespace Server.Multis.Deeds
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -744,20 +612,8 @@ namespace Server.Multis.Deeds
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041224;
-            }
-        }
-        public override Rectangle2D[] Area
-        {
-            get
-            {
-                return Castle.AreaArray;
-            }
-        }
+        public override int LabelNumber => 1041224;
+        public override Rectangle2D[] Area => Castle.AreaArray;
         public override BaseHouse GetHouse(Mobile owner)
         {
             return new Castle(owner);
@@ -767,7 +623,7 @@ namespace Server.Multis.Deeds
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -791,20 +647,8 @@ namespace Server.Multis.Deeds
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041231;
-            }
-        }
-        public override Rectangle2D[] Area
-        {
-            get
-            {
-                return LargePatioHouse.AreaArray;
-            }
-        }
+        public override int LabelNumber => 1041231;
+        public override Rectangle2D[] Area => LargePatioHouse.AreaArray;
         public override BaseHouse GetHouse(Mobile owner)
         {
             return new LargePatioHouse(owner);
@@ -814,7 +658,7 @@ namespace Server.Multis.Deeds
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -838,20 +682,8 @@ namespace Server.Multis.Deeds
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041236;
-            }
-        }
-        public override Rectangle2D[] Area
-        {
-            get
-            {
-                return LargeMarbleHouse.AreaArray;
-            }
-        }
+        public override int LabelNumber => 1041236;
+        public override Rectangle2D[] Area => LargeMarbleHouse.AreaArray;
         public override BaseHouse GetHouse(Mobile owner)
         {
             return new LargeMarbleHouse(owner);
@@ -861,7 +693,7 @@ namespace Server.Multis.Deeds
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -885,20 +717,8 @@ namespace Server.Multis.Deeds
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041237;
-            }
-        }
-        public override Rectangle2D[] Area
-        {
-            get
-            {
-                return SmallTower.AreaArray;
-            }
-        }
+        public override int LabelNumber => 1041237;
+        public override Rectangle2D[] Area => SmallTower.AreaArray;
         public override BaseHouse GetHouse(Mobile owner)
         {
             return new SmallTower(owner);
@@ -908,7 +728,7 @@ namespace Server.Multis.Deeds
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -932,20 +752,8 @@ namespace Server.Multis.Deeds
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041238;
-            }
-        }
-        public override Rectangle2D[] Area
-        {
-            get
-            {
-                return LogCabin.AreaArray;
-            }
-        }
+        public override int LabelNumber => 1041238;
+        public override Rectangle2D[] Area => LogCabin.AreaArray;
         public override BaseHouse GetHouse(Mobile owner)
         {
             return new LogCabin(owner);
@@ -955,7 +763,7 @@ namespace Server.Multis.Deeds
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -979,20 +787,8 @@ namespace Server.Multis.Deeds
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041239;
-            }
-        }
-        public override Rectangle2D[] Area
-        {
-            get
-            {
-                return SandStonePatio.AreaArray;
-            }
-        }
+        public override int LabelNumber => 1041239;
+        public override Rectangle2D[] Area => SandStonePatio.AreaArray;
         public override BaseHouse GetHouse(Mobile owner)
         {
             return new SandStonePatio(owner);
@@ -1002,7 +798,7 @@ namespace Server.Multis.Deeds
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1026,20 +822,8 @@ namespace Server.Multis.Deeds
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041240;
-            }
-        }
-        public override Rectangle2D[] Area
-        {
-            get
-            {
-                return TwoStoryVilla.AreaArray;
-            }
-        }
+        public override int LabelNumber => 1041240;
+        public override Rectangle2D[] Area => TwoStoryVilla.AreaArray;
         public override BaseHouse GetHouse(Mobile owner)
         {
             return new TwoStoryVilla(owner);
@@ -1049,7 +833,7 @@ namespace Server.Multis.Deeds
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1073,20 +857,8 @@ namespace Server.Multis.Deeds
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041241;
-            }
-        }
-        public override Rectangle2D[] Area
-        {
-            get
-            {
-                return SmallShop.AreaArray2;
-            }
-        }
+        public override int LabelNumber => 1041241;
+        public override Rectangle2D[] Area => SmallShop.AreaArray2;
         public override BaseHouse GetHouse(Mobile owner)
         {
             return new SmallShop(owner, 0xA0);
@@ -1096,7 +868,7 @@ namespace Server.Multis.Deeds
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1120,20 +892,8 @@ namespace Server.Multis.Deeds
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041242;
-            }
-        }
-        public override Rectangle2D[] Area
-        {
-            get
-            {
-                return SmallShop.AreaArray1;
-            }
-        }
+        public override int LabelNumber => 1041242;
+        public override Rectangle2D[] Area => SmallShop.AreaArray1;
         public override BaseHouse GetHouse(Mobile owner)
         {
             return new SmallShop(owner, 0xA2);
@@ -1143,7 +903,7 @@ namespace Server.Multis.Deeds
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

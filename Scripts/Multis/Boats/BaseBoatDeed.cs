@@ -34,7 +34,7 @@ namespace Server.Multis
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             writer.Write(MultiID);
             writer.Write(Offset);
@@ -155,7 +155,7 @@ namespace Server.Multis
                     boat.MoveToWorld(p, map);
                     boat.OnAfterPlacement(true);
 
-                    var addon = LighthouseAddon.GetLighthouse(from);
+                    LighthouseAddon addon = LighthouseAddon.GetLighthouse(from);
 
                     if (addon != null)
                     {

@@ -3,13 +3,7 @@ namespace Server.Items
     [TypeAlias("Server.Items.goldcarpetAddon")]
     public class GoldCarpetAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new goldcarpetAddonDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new goldcarpetAddonDeed();
 
         [Constructable]
         public GoldCarpetAddon()
@@ -87,13 +81,7 @@ namespace Server.Items
 
     public class goldcarpetAddonDeed : BaseAddonDeed
     {
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new GoldCarpetAddon();
-            }
-        }
+        public override BaseAddon Addon => new GoldCarpetAddon();
 
         [Constructable]
         public goldcarpetAddonDeed()

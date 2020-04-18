@@ -16,20 +16,8 @@ namespace Server.Mobiles
         {
         }
 
-        public override VendorShoeType ShoeType
-        {
-            get
-            {
-                return VendorShoeType.ThighBoots;
-            }
-        }
-        protected override List<SBInfo> SBInfos
-        {
-            get
-            {
-                return m_SBInfos;
-            }
-        }
+        public override VendorShoeType ShoeType => VendorShoeType.ThighBoots;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
             m_SBInfos.Add(new SBGardener());
@@ -50,7 +38,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

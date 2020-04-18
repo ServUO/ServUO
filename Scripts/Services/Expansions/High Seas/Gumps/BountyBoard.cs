@@ -26,7 +26,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -93,7 +93,7 @@ namespace Server.Items
 
                 if (User.NetState != null && User.NetState.IsEnhancedClient && VendorSearch.StringList != null)
                 {
-                    var strList = VendorSearch.StringList;
+                    Ultima.StringList strList = VendorSearch.StringList;
 
                     args = String.Format("{0} {1} {2}", strList.GetString(capt.Adjective), strList.GetString(capt.Noun), capt.PirateName > 0 ? strList.GetString(capt.PirateName) : capt.Name);
 

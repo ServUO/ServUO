@@ -19,13 +19,13 @@ namespace Server.Spells.SkillMasteries
                 9002
             );
 
-        public override double RequiredSkill { get { return 90; } }
-        public override double UpKeep { get { return 10; } }
-        public override int RequiredMana { get { return 24; } }
-        public override bool PartyEffects { get { return false; } }
-        public override double TickTime { get { return 2.0; } }
+        public override double RequiredSkill => 90;
+        public override double UpKeep => 10;
+        public override int RequiredMana => 24;
+        public override bool PartyEffects => false;
+        public override double TickTime => 2.0;
 
-        public override SkillName CastSkill { get { return SkillName.Discordance; } }
+        public override SkillName CastSkill => SkillName.Discordance;
 
         private int m_PropertyBonus;
         private double m_DamageChance;
@@ -39,7 +39,7 @@ namespace Server.Spells.SkillMasteries
 
         public override void OnCast()
         {
-            BardSpell spell = SkillMasterySpell.GetSpell(Caster, this.GetType()) as BardSpell;
+            BardSpell spell = SkillMasterySpell.GetSpell(Caster, GetType()) as BardSpell;
 
             if (spell != null)
             {
@@ -62,7 +62,7 @@ namespace Server.Spells.SkillMasteries
             {
                 Caster.SendMessage("You cannot target yourself!");
             }
-            else if (BardSpell.HasHarmfulEffects(m, this.GetType()))
+            else if (BardSpell.HasHarmfulEffects(m, GetType()))
             {
                 Caster.SendLocalizedMessage(1115772); //Your target is already under the effect of this spellsong.
             }
@@ -88,7 +88,7 @@ namespace Server.Spells.SkillMasteries
                 BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.TribulationTarget, 1115740, 1115742, String.Format("{0}\t{1}\t{2}", m_PropertyBonus, m_PropertyBonus, (int)m_DamageChance)));
 
                 // Target: ~1_val~ <br> Damage Factor: ~2_val~% <br> Damage Chance: ~3_val~%
-                BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.TribulationCaster, 1115740, 1151388, String.Format("{0}\t{1}\t{2}", m.Name, (int)m_DamageFactor, (int)m_DamageChance)));
+                BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.TribulationCaster, 1115740, 1151388, String.Format("{0}\t{1}\t{2}", m.Name, m_DamageFactor, (int)m_DamageChance)));
 
                 BeginTimer();
             }
@@ -126,8 +126,8 @@ namespace Server.Spells.SkillMasteries
                 m_NextDamage = DateTime.UtcNow + TimeSpan.FromSeconds(1);
 
                 int damage = AOS.Scale(damageTaken, m_DamageFactor);
-                damage = (int)((double)damage * GetSlayerBonus()); // 1.5 slayer bonus
-                damage -= (int)((double)damage * DamageModifier(Target)); // resist modifier
+                damage = (int)(damage * GetSlayerBonus()); // 1.5 slayer bonus
+                damage -= (int)(damage * DamageModifier(Target)); // resist modifier
 
                 AOS.Damage(victim, Caster, damage, 0, 0, 0, 0, 0, 0, 100);
                 victim.FixedParticles(0x374A, 10, 15, 5038, 1181, 0, EffectLayer.Head);

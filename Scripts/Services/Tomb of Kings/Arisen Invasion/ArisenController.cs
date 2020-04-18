@@ -20,14 +20,14 @@ namespace Server.Items
             private TimeSpan m_MinDelay;
             private TimeSpan m_MaxDelay;
 
-            public Map Map { get { return m_Map; } }
-            public Point3D Location { get { return m_Location; } }
-            public string Creature { get { return m_Creature; } }
-            public int Amount { get { return m_Amount; } }
-            public int HomeRange { get { return m_HomeRange; } }
-            public int SpawnRange { get { return m_SpawnRange; } }
-            public TimeSpan MinDelay { get { return m_MinDelay; } }
-            public TimeSpan MaxDelay { get { return m_MaxDelay; } }
+            public Map Map => m_Map;
+            public Point3D Location => m_Location;
+            public string Creature => m_Creature;
+            public int Amount => m_Amount;
+            public int HomeRange => m_HomeRange;
+            public int SpawnRange => m_SpawnRange;
+            public TimeSpan MinDelay => m_MinDelay;
+            public TimeSpan MaxDelay => m_MaxDelay;
 
             public ArisenEntry(Map map, Point3D location, string creature, int amount, int homeRange, int spawnRange, TimeSpan minDelay, TimeSpan maxDelay)
             {
@@ -45,7 +45,7 @@ namespace Server.Items
             {
                 XmlSpawner spawner = new XmlSpawner(m_Amount, (int)m_MinDelay.TotalSeconds, (int)m_MaxDelay.TotalSeconds, 0, 20, 10, m_Creature);
 
-                spawner.MoveToWorld(this.Location, this.Map);
+                spawner.MoveToWorld(Location, Map);
 
                 return spawner;
             }
@@ -69,11 +69,11 @@ namespace Server.Items
                 new ArisenEntry( Map.TerMur, new Point3D( 997, 3951, -42 ), "PutridUndeadGargoyle", 1, 10,  5, TimeSpan.FromMinutes( 5.0 ),  TimeSpan.FromMinutes( 10.0 ) )
             };
 
-        public static ArisenEntry[] Entries { get { return m_Entries; } }
+        public static ArisenEntry[] Entries => m_Entries;
 
         private static ArisenController m_Instance;
 
-        public static ArisenController Instance { get { return m_Instance; } }
+        public static ArisenController Instance => m_Instance;
 
         public static void Initialize()
         {
@@ -226,7 +226,7 @@ namespace Server.Items
             writer.WriteEncodedInt(1); // version
 
             // Version 1
-            writer.Write((bool)m_ForceDeactivate);
+            writer.Write(m_ForceDeactivate);
 
             // Version 0
             writer.WriteEncodedInt(m_Spawners.Length);
@@ -257,7 +257,7 @@ namespace Server.Items
 
                         for (int i = 0; i < length; i++)
                         {
-                            var spawner = reader.ReadItem<XmlSpawner>();
+                            XmlSpawner spawner = reader.ReadItem<XmlSpawner>();
 
                             if (spawner == null)
                             {

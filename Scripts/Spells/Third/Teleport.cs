@@ -17,66 +17,60 @@ namespace Server.Spells.Third
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Third;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Third;
         public override bool CheckCast()
         {
-            if (Server.Misc.WeightOverloading.IsOverloaded(this.Caster))
+            if (Server.Misc.WeightOverloading.IsOverloaded(Caster))
             {
-                this.Caster.SendLocalizedMessage(502359, "", 0x22); // Thou art too encumbered to move.
+                Caster.SendLocalizedMessage(502359, "", 0x22); // Thou art too encumbered to move.
                 return false;
             }
 
-            return SpellHelper.CheckTravel(this.Caster, TravelCheckType.TeleportFrom);
+            return SpellHelper.CheckTravel(Caster, TravelCheckType.TeleportFrom);
         }
 
         public override void OnCast()
         {
-            this.Caster.Target = new InternalTarget(this);
+            Caster.Target = new InternalTarget(this);
         }
 
         public void Target(IPoint3D p)
         {
             IPoint3D orig = p;
-            Map map = this.Caster.Map;
+            Map map = Caster.Map;
 
             SpellHelper.GetSurfaceTop(ref p);
 
-            Point3D from = this.Caster.Location;
+            Point3D from = Caster.Location;
             Point3D to = new Point3D(p);
 
-            if (Server.Misc.WeightOverloading.IsOverloaded(this.Caster))
+            if (Server.Misc.WeightOverloading.IsOverloaded(Caster))
             {
-                this.Caster.SendLocalizedMessage(502359, "", 0x22); // Thou art too encumbered to move.
+                Caster.SendLocalizedMessage(502359, "", 0x22); // Thou art too encumbered to move.
             }
-            else if (!SpellHelper.CheckTravel(this.Caster, TravelCheckType.TeleportFrom))
+            else if (!SpellHelper.CheckTravel(Caster, TravelCheckType.TeleportFrom))
             {
             }
-            else if (!SpellHelper.CheckTravel(this.Caster, map, to, TravelCheckType.TeleportTo))
+            else if (!SpellHelper.CheckTravel(Caster, map, to, TravelCheckType.TeleportTo))
             {
             }
             else if (map == null || !map.CanSpawnMobile(p.X, p.Y, p.Z))
             {
-                this.Caster.SendLocalizedMessage(501942); // That location is blocked.
+                Caster.SendLocalizedMessage(501942); // That location is blocked.
             }
             else if (SpellHelper.CheckMulti(to, map))
             {
-                this.Caster.SendLocalizedMessage(502831); // Cannot teleport to that spot.
+                Caster.SendLocalizedMessage(502831); // Cannot teleport to that spot.
             }
             else if (Region.Find(to, map).GetRegion(typeof(HouseRegion)) != null)
             {
-                this.Caster.SendLocalizedMessage(502829); // Cannot teleport to that spot.
+                Caster.SendLocalizedMessage(502829); // Cannot teleport to that spot.
             }
-            else if (this.CheckSequence())
+            else if (CheckSequence())
             {
-                SpellHelper.Turn(this.Caster, orig);
+                SpellHelper.Turn(Caster, orig);
 
-                Mobile m = this.Caster;
+                Mobile m = Caster;
 
                 m.Location = to;
                 m.ProcessDelta();
@@ -104,7 +98,7 @@ namespace Server.Spells.Third
                 eable.Free();
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         public class InternalTarget : Target
@@ -113,7 +107,7 @@ namespace Server.Spells.Third
             public InternalTarget(TeleportSpell owner)
                 : base(11, true, TargetFlags.None)
             {
-                this.m_Owner = owner;
+                m_Owner = owner;
             }
 
             protected override void OnTarget(Mobile from, object o)
@@ -121,12 +115,12 @@ namespace Server.Spells.Third
                 IPoint3D p = o as IPoint3D;
 
                 if (p != null)
-                    this.m_Owner.Target(p);
+                    m_Owner.Target(p);
             }
 
             protected override void OnTargetFinish(Mobile from)
             {
-                this.m_Owner.FinishSequence();
+                m_Owner.FinishSequence();
             }
         }
     }

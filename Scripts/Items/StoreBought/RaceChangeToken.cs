@@ -8,10 +8,10 @@ namespace Server.Items
 {
     public class RaceChangeToken : Item, IPromotionalToken
     {
-        public override int LabelNumber { get { return 1070997; } } // a promotional token
-        public TextDefinition ItemName { get { return 1113656; } } // race change
+        public override int LabelNumber => 1070997;  // a promotional token
+        public TextDefinition ItemName => 1113656;  // race change
 
-        public Type GumpType { get { return typeof(RaceChangeConfirmGump); } }
+        public Type GumpType => typeof(RaceChangeConfirmGump);
         [Constructable]
         public RaceChangeToken()
             : base(0x2AAA)
@@ -97,7 +97,7 @@ namespace Server.Items
         {
             if (Pending != null && Pending.ContainsKey(m))
             {
-                var tuple = Pending[m];
+                Tuple<RaceChangeToken, Race> tuple = Pending[m];
 
                 if (!tuple.Item1.IsChildOf(m.Backpack))
                 {
@@ -116,7 +116,7 @@ namespace Server.Items
         {
             if (Pending != null && Pending.ContainsKey(m))
             {
-                var tuple = Pending[m];
+                Tuple<RaceChangeToken, Race> tuple = Pending[m];
 
                 if (tuple.Item1 != null && !tuple.Item1.Deleted)
                 {

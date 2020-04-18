@@ -14,45 +14,15 @@ namespace Server.Spells.Chivalry
         {
         }
 
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(1.0);
-            }
-        }
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 5.0;
-            }
-        }
-        public override int RequiredMana
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int RequiredTithing
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int MantraNumber
-        {
-            get
-            {
-                return 1060718;
-            }
-        }// Expor Flamus
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(1.0);
+        public override double RequiredSkill => 5.0;
+        public override int RequiredMana => 10;
+        public override int RequiredTithing => 10;
+        public override int MantraNumber => 1060718;// Expor Flamus
 
         public override void OnCast()
         {
-            this.Caster.Target = new InternalTarget(this);
+            Caster.Target = new InternalTarget(this);
         }
 
         public override bool CheckDisturb(DisturbType type, bool firstCircle, bool resistable)
@@ -64,11 +34,11 @@ namespace Server.Spells.Chivalry
         {
             if (!m.Poisoned)
             {
-                this.Caster.SendLocalizedMessage(1060176); // That creature is not poisoned!
+                Caster.SendLocalizedMessage(1060176); // That creature is not poisoned!
             }
-            else if (this.CheckBSequence(m))
+            else if (CheckBSequence(m))
             {
-                SpellHelper.Turn(this.Caster, m);
+                SpellHelper.Turn(Caster, m);
 
                 /* Cures the target of poisons, but causes the caster to be burned by fire damage for 13-55 hit points.
                 * The amount of fire damage is lessened if the caster has high Karma.
@@ -79,15 +49,15 @@ namespace Server.Spells.Chivalry
                 if (p != null)
                 {
                     // Cleanse by fire is now difficulty based 
-                    int chanceToCure = 10000 + (int)(this.Caster.Skills[SkillName.Chivalry].Value * 75) - ((p.RealLevel + 1) * 2000);
+                    int chanceToCure = 10000 + (int)(Caster.Skills[SkillName.Chivalry].Value * 75) - ((p.RealLevel + 1) * 2000);
                     chanceToCure /= 100;
 
                     if (chanceToCure > Utility.Random(100))
                     {
-                        if (m.CurePoison(this.Caster))
+                        if (m.CurePoison(Caster))
                         {
-                            if (this.Caster != m)
-                                this.Caster.SendLocalizedMessage(1010058); // You have cured the target of all poisons!
+                            if (Caster != m)
+                                Caster.SendLocalizedMessage(1010058); // You have cured the target of all poisons!
 
                             m.SendLocalizedMessage(1010059); // You have been cured of all poisons.
                         }
@@ -105,10 +75,10 @@ namespace Server.Spells.Chivalry
                 IEntity to = new Entity(Serial.Zero, new Point3D(m.X, m.Y, m.Z + 45), m.Map);
                 Effects.SendMovingParticles(from, to, 0x374B, 1, 0, false, false, 63, 2, 9501, 1, 0, EffectLayer.Head, 0x100);
 
-                this.Caster.PlaySound(0x208);
-                this.Caster.FixedParticles(0x3709, 1, 30, 9934, 0, 7, EffectLayer.Waist);
+                Caster.PlaySound(0x208);
+                Caster.FixedParticles(0x3709, 1, 30, 9934, 0, 7, EffectLayer.Waist);
 
-                int damage = 50 - this.ComputePowerValue(4);
+                int damage = 50 - ComputePowerValue(4);
 
                 // TODO: Should caps be applied?
                 if (damage < 13)
@@ -116,10 +86,10 @@ namespace Server.Spells.Chivalry
                 else if (damage > 55)
                     damage = 55;
 
-                AOS.Damage(this.Caster, this.Caster, damage, 0, 100, 0, 0, 0, true);
+                AOS.Damage(Caster, Caster, damage, 0, 100, 0, 0, 0, true);
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         private class InternalTarget : Target
@@ -128,18 +98,18 @@ namespace Server.Spells.Chivalry
             public InternalTarget(CleanseByFireSpell owner)
                 : base(10, false, TargetFlags.Beneficial)
             {
-                this.m_Owner = owner;
+                m_Owner = owner;
             }
 
             protected override void OnTarget(Mobile from, object o)
             {
                 if (o is Mobile)
-                    this.m_Owner.Target((Mobile)o);
+                    m_Owner.Target((Mobile)o);
             }
 
             protected override void OnTargetFinish(Mobile from)
             {
-                this.m_Owner.FinishSequence();
+                m_Owner.FinishSequence();
             }
         }
     }

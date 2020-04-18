@@ -8,13 +8,7 @@ namespace Server.Items
         /* DO NOT USE! Only used in serialization of special scrolls that originally derived from Item */
         private bool m_InheritsItem;
 
-        protected bool InheritsItem
-        {
-            get
-            {
-                return this.m_InheritsItem;
-            }
-        }
+        protected bool InheritsItem => m_InheritsItem;
         #endregion
 
         private Mobile m_Fisher;
@@ -49,7 +43,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber { get { return 1041112; } }// a big fish
+        public override int LabelNumber => 1041112; // a big fish
 
         public bool Carve(Mobile from, Item item)
         {
@@ -77,10 +71,10 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)3); // version
+            writer.Write(3); // version
 
             writer.Write(m_DateCaught);
-            writer.Write((Mobile)m_Fisher);
+            writer.Write(m_Fisher);
         }
 
         public override void Deserialize(GenericReader reader)

@@ -19,78 +19,72 @@ namespace Server.Engines.BulkOrders
             {
                 case 1:
                     {
-                        this.m_Type = reader.ReadEncodedInt();
-                        this.m_Quality = reader.ReadEncodedInt();
-                        this.m_Material = reader.ReadEncodedInt();
-                        this.m_Quantity = reader.ReadEncodedInt();
+                        m_Type = reader.ReadEncodedInt();
+                        m_Quality = reader.ReadEncodedInt();
+                        m_Material = reader.ReadEncodedInt();
+                        m_Quantity = reader.ReadEncodedInt();
 
                         break;
                     }
             }
         }
 
-        public bool IsDefault
-        {
-            get
-            {
-                return (this.m_Type == 0 && this.m_Quality == 0 && this.m_Material == 0 && this.m_Quantity == 0);
-            }
-        }
+        public bool IsDefault => (m_Type == 0 && m_Quality == 0 && m_Material == 0 && m_Quantity == 0);
         public int Type
         {
             get
             {
-                return this.m_Type;
+                return m_Type;
             }
             set
             {
-                this.m_Type = value;
+                m_Type = value;
             }
         }
         public int Quality
         {
             get
             {
-                return this.m_Quality;
+                return m_Quality;
             }
             set
             {
-                this.m_Quality = value;
+                m_Quality = value;
             }
         }
         public int Material
         {
             get
             {
-                return this.m_Material;
+                return m_Material;
             }
             set
             {
-                this.m_Material = value;
+                m_Material = value;
             }
         }
         public int Quantity
         {
             get
             {
-                return this.m_Quantity;
+                return m_Quantity;
             }
             set
             {
-                this.m_Quantity = value;
+                m_Quantity = value;
             }
         }
         public void Clear()
         {
-            this.m_Type = 0;
-            this.m_Quality = 0;
-            this.m_Material = 0;
-            this.m_Quantity = 0;
+            m_Type = 0;
+            m_Quality = 0;
+            m_Material = 0;
+            m_Quantity = 0;
         }
 
         public void Serialize(GenericWriter writer)
         {
-            if (this.IsDefault)
+            if (IsDefault)
             {
                 writer.WriteEncodedInt(0); // version
             }
@@ -98,10 +92,10 @@ namespace Server.Engines.BulkOrders
             {
                 writer.WriteEncodedInt(1); // version
 
-                writer.WriteEncodedInt(this.m_Type);
-                writer.WriteEncodedInt(this.m_Quality);
-                writer.WriteEncodedInt(this.m_Material);
-                writer.WriteEncodedInt(this.m_Quantity);
+                writer.WriteEncodedInt(m_Type);
+                writer.WriteEncodedInt(m_Quality);
+                writer.WriteEncodedInt(m_Material);
+                writer.WriteEncodedInt(m_Quantity);
             }
         }
     }

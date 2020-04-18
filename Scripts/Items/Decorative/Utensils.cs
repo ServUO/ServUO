@@ -10,7 +10,7 @@ namespace Server.Items
         private ItemQuality _Quality;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public CraftResource Resource { get { return _Resource; } set { _Resource = value; Hue = CraftResources.GetHue(this._Resource); InvalidateProperties(); } }
+        public CraftResource Resource { get { return _Resource; } set { _Resource = value; Hue = CraftResources.GetHue(_Resource); InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Crafter { get { return _Crafter; } set { _Crafter = value; InvalidateProperties(); } }
@@ -18,19 +18,13 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
 
-        public bool PlayerConstructed { get { return true; } }
+        public bool PlayerConstructed => true;
 
         #region Old Item Serialization Vars
         /* DO NOT USE! Only used in serialization of special scrolls that originally derived from Item */
         private bool m_InheritsItem;
 
-        protected bool InheritsItem
-        {
-            get
-            {
-                return this.m_InheritsItem;
-            }
-        }
+        protected bool InheritsItem => m_InheritsItem;
         #endregion
 
         public BaseUtensil(int itemID)
@@ -65,10 +59,10 @@ namespace Server.Items
 
         public virtual int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
-            this.Quality = (ItemQuality)quality;
+            Quality = (ItemQuality)quality;
 
             if (makersMark)
-                this.Crafter = from;
+                Crafter = from;
 
             if (!craftItem.ForceNonExceptional)
             {
@@ -90,7 +84,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
             writer.Write((int)_Resource);
             writer.Write(_Crafter);
@@ -125,7 +119,7 @@ namespace Server.Items
         public Fork()
             : base(0x9F4)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public Fork(Serial serial)
@@ -137,14 +131,14 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
 
-            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
+            int version = (InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
         }
     }
 
@@ -154,7 +148,7 @@ namespace Server.Items
         public ForkLeft()
             : base(0x9F4)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public ForkLeft(Serial serial)
@@ -166,14 +160,14 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
 
-            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
+            int version = (InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
         }
     }
 
@@ -183,7 +177,7 @@ namespace Server.Items
         public ForkRight()
             : base(0x9F5)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public ForkRight(Serial serial)
@@ -195,14 +189,14 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
 
-            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
+            int version = (InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
         }
     }
 
@@ -213,7 +207,7 @@ namespace Server.Items
         public Spoon()
             : base(0x9F8)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public Spoon(Serial serial)
@@ -225,14 +219,14 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
 
-            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
+            int version = (InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
         }
     }
 
@@ -242,7 +236,7 @@ namespace Server.Items
         public SpoonLeft()
             : base(0x9F8)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public SpoonLeft(Serial serial)
@@ -254,14 +248,14 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
 
-            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
+            int version = (InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
         }
     }
 
@@ -271,7 +265,7 @@ namespace Server.Items
         public SpoonRight()
             : base(0x9F9)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public SpoonRight(Serial serial)
@@ -283,14 +277,14 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
 
-            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
+            int version = (InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
         }
     }
 
@@ -301,7 +295,7 @@ namespace Server.Items
         public Knife()
             : base(0x9F6)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public Knife(Serial serial)
@@ -313,14 +307,14 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
 
-            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
+            int version = (InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
         }
     }
 
@@ -330,7 +324,7 @@ namespace Server.Items
         public KnifeLeft()
             : base(0x9F6)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public KnifeLeft(Serial serial)
@@ -342,14 +336,14 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
 
-            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
+            int version = (InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
         }
     }
 
@@ -359,7 +353,7 @@ namespace Server.Items
         public KnifeRight()
             : base(0x9F7)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public KnifeRight(Serial serial)
@@ -371,14 +365,14 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
 
-            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
+            int version = (InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
         }
     }
 
@@ -388,7 +382,7 @@ namespace Server.Items
         public Plate()
             : base(0x9D7)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public Plate(Serial serial)
@@ -400,14 +394,14 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
 
-            int version = (this.InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
+            int version = (InheritsItem ? 0 : reader.ReadInt()); // Required for BaseUtensil insertion
         }
     }
 }

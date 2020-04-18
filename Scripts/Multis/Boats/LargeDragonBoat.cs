@@ -2,20 +2,20 @@ namespace Server.Multis
 {
     public class LargeDragonBoat : BaseBoat
     {
-        public override int NorthID { get { return 0x14; } }
-        public override int EastID { get { return 0x15; } }
-        public override int SouthID { get { return 0x16; } }
-        public override int WestID { get { return 0x17; } }
+        public override int NorthID => 0x14;
+        public override int EastID => 0x15;
+        public override int SouthID => 0x16;
+        public override int WestID => 0x17;
 
-        public override int HoldDistance { get { return 5; } }
-        public override int TillerManDistance { get { return -5; } }
+        public override int HoldDistance => 5;
+        public override int TillerManDistance => -5;
 
-        public override Point2D StarboardOffset { get { return new Point2D(2, -1); } }
-        public override Point2D PortOffset { get { return new Point2D(-2, -1); } }
+        public override Point2D StarboardOffset => new Point2D(2, -1);
+        public override Point2D PortOffset => new Point2D(-2, -1);
 
-        public override Point3D MarkOffset { get { return new Point3D(0, 0, 3); } }
+        public override Point3D MarkOffset => new Point3D(0, 0, 3);
 
-        public override BaseDockedBoat DockedBoat { get { return new LargeDockedDragonBoat(this); } }
+        public override BaseDockedBoat DockedBoat => new LargeDockedDragonBoat(this);
 
         [Constructable]
         public LargeDragonBoat(Direction d) : base(d, true)
@@ -37,14 +37,14 @@ namespace Server.Multis
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
     }
 
     public class LargeDragonBoatDeed : BaseBoatDeed
     {
-        public override int LabelNumber { get { return 1041210; } }// large dragon ship deed
-        public override BaseBoat Boat { get { return new LargeDragonBoat(this.BoatDirection); } }
+        public override int LabelNumber => 1041210; // large dragon ship deed
+        public override BaseBoat Boat => new LargeDragonBoat(BoatDirection);
 
         [Constructable]
         public LargeDragonBoatDeed() : base(0x14, new Point3D(0, -1, 0))
@@ -66,14 +66,14 @@ namespace Server.Multis
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
     }
 
     public class LargeDockedDragonBoat : BaseDockedBoat
     {
-        public override int LabelNumber { get { return 1116746; } } //Large  Dragon Ship
-        public override BaseBoat Boat { get { return new LargeDragonBoat(this.BoatDirection); } }
+        public override int LabelNumber => 1116746;  //Large  Dragon Ship
+        public override BaseBoat Boat => new LargeDragonBoat(BoatDirection);
 
         public LargeDockedDragonBoat(BaseBoat boat) : base(0x14, new Point3D(0, -1, 0), boat)
         {
@@ -94,7 +94,7 @@ namespace Server.Multis
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
     }
 }

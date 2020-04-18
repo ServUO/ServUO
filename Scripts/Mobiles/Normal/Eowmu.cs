@@ -5,9 +5,9 @@ namespace Server.Mobiles
 {
     public class EowmuStatue : Item, ICreatureStatuette
     {
-        public override int LabelNumber { get { return 1158082; } } // Eowmu
+        public override int LabelNumber => 1158082;  // Eowmu
 
-        public Type CreatureType { get { return typeof(Eowmu); } }
+        public Type CreatureType => typeof(Eowmu);
 
         [Constructable]
         public EowmuStatue()
@@ -31,7 +31,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -90,14 +90,14 @@ namespace Server.Mobiles
         {
         }
 
-        public override int Meat { get { return 3; } }
-        public override int Hides { get { return 10; } }
-        public override FoodType FavoriteFood { get { return FoodType.FruitsAndVegies; } }
+        public override int Meat => 3;
+        public override int Hides => 10;
+        public override FoodType FavoriteFood => FoodType.FruitsAndVegies;
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

@@ -8,7 +8,7 @@ namespace Server.Items
         public Lever()
             : base(Utility.RandomList(0x108C, 0x108D, 0x108E, 0x1093, 0x1094, 0x1095, 0x108F, 0x1090, 0x1091, 0x1092))
         {
-            this.Movable = false;
+            Movable = false;
         }
 
         public Lever(Serial serial)
@@ -24,7 +24,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

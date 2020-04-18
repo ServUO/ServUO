@@ -23,12 +23,12 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed { get { return new CrystalRunnerStatueDeed(); } }
+        public override BaseAddonDeed Deed => new CrystalRunnerStatueDeed();
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -40,11 +40,11 @@ namespace Server.Items
 
     public class CrystalRunnerStatueDeed : BaseAddonDeed, IRewardOption
     {
-        public override int LabelNumber { get { return 1076670; } } // Crystal Runner Statue
+        public override int LabelNumber => 1076670;  // Crystal Runner Statue
 
-        public override bool ExcludeDeedHue { get { return true; } }
+        public override bool ExcludeDeedHue => true;
 
-        public override BaseAddon Addon { get { return new CrystalRunnerStatueAddon(_Direction); } }
+        public override BaseAddon Addon => new CrystalRunnerStatueAddon(_Direction);
 
         private DirectionType _Direction;
 
@@ -91,7 +91,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

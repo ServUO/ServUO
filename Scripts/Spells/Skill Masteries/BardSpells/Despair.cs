@@ -16,12 +16,12 @@ namespace Server.Spells.SkillMasteries
                 9002
             );
 
-        public override double RequiredSkill { get { return 90; } }
-        public override double UpKeep { get { return 12; } }
-        public override int RequiredMana { get { return 26; } }
-        public override bool PartyEffects { get { return false; } }
-        public override SkillName CastSkill { get { return SkillName.Discordance; } }
-        public override double SlayerBonus { get { return 3.0; } }
+        public override double RequiredSkill => 90;
+        public override double UpKeep => 12;
+        public override int RequiredMana => 26;
+        public override bool PartyEffects => false;
+        public override SkillName CastSkill => SkillName.Discordance;
+        public override double SlayerBonus => 3.0;
 
         private int m_StatMod;
         private int m_Damage;
@@ -33,7 +33,7 @@ namespace Server.Spells.SkillMasteries
 
         public override void OnCast()
         {
-            BardSpell spell = SkillMasterySpell.GetSpell(Caster, this.GetType()) as BardSpell;
+            BardSpell spell = SkillMasterySpell.GetSpell(Caster, GetType()) as BardSpell;
 
             if (spell != null)
             {
@@ -60,7 +60,7 @@ namespace Server.Spells.SkillMasteries
             {
                 // TODO: Message?
             }
-            else if (BardSpell.HasHarmfulEffects(m, this.GetType()))
+            else if (BardSpell.HasHarmfulEffects(m, GetType()))
             {
                 Caster.SendLocalizedMessage(1115772); //Your target is already under the effect of this spellsong.
             }
@@ -75,7 +75,7 @@ namespace Server.Spells.SkillMasteries
 
                 m.FixedParticles(0x374A, 10, 15, 5028, EffectLayer.Waist);
 
-                int rounds = 5 + (int)((double)BaseSkillBonus * .75);
+                int rounds = 5 + (int)(BaseSkillBonus * .75);
 
                 m_StatMod = (int)((BaseSkillBonus * 2) + CollectiveBonus);
                 m_Damage = (int)((BaseSkillBonus * 4.5) + (CollectiveBonus * 2));
@@ -123,8 +123,8 @@ namespace Server.Spells.SkillMasteries
             if (!Target.Player)
                 damage += AOS.Scale(damage, 50); // pvm = 1.5x
 
-            damage = (int)((double)damage * GetSlayerBonus()); // 3.0x slayer bonus
-            damage -= (int)((double)damage * DamageModifier(Target)); // resist modifier
+            damage = (int)(damage * GetSlayerBonus()); // 3.0x slayer bonus
+            damage -= (int)(damage * DamageModifier(Target)); // resist modifier
 
             AOS.Damage(Target, Caster, damage, 100, 0, 0, 0, 0); // Now only does physical
 

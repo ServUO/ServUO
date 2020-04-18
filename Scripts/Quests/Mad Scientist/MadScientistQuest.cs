@@ -34,7 +34,7 @@ namespace Server.Engines.Quests
 
             List<Item> toDelete = new List<Item>(World.Items.Values.Where(i => i is XmlSpawner && (i.Name == "PerfectTimingSpawner" || i.Name == "PerfectTimingSpawner2")));
 
-            foreach (var item in toDelete)
+            foreach (Item item in toDelete)
             {
                 item.Delete();
             }
@@ -165,11 +165,11 @@ namespace Server.Engines.Quests
             private Timer m_ExpireTimer;
             private readonly ClockworkMechanism m_Mechanism;
 
-            public Mobile Owner { get { return m_Owner; } }
-            public int IngredientsLeft { get { return m_IngredientsLeft; } }
-            public SutekIngredient CurrentIngredient { get { return m_CurrentIngredient; } }
-            public Timer ExpireTimer { get { return m_ExpireTimer; } }
-            public ClockworkMechanism Mechanism { get { return m_Mechanism; } }
+            public Mobile Owner => m_Owner;
+            public int IngredientsLeft => m_IngredientsLeft;
+            public SutekIngredient CurrentIngredient => m_CurrentIngredient;
+            public Timer ExpireTimer => m_ExpireTimer;
+            public ClockworkMechanism Mechanism => m_Mechanism;
 
             public QuestContext(Mobile from, ClockworkMechanism mechanism)
             {

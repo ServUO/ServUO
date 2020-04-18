@@ -8,7 +8,7 @@ namespace Server.Engines.Blackthorn
         [CommandProperty(AccessLevel.GameMaster)]
         public InvasionController Controller { get; set; }
 
-        public override bool CanDamage { get { return Controller == null || Controller.BeaconVulnerable; } }
+        public override bool CanDamage => Controller == null || Controller.BeaconVulnerable;
 
         public InvasionBeacon(InvasionController controller)
         {
@@ -19,7 +19,7 @@ namespace Server.Engines.Blackthorn
 
         public override void OnHalfDamage()
         {
-            IPooledEnumerable eable = this.Map.GetMobilesInRange(this.Location, 20);
+            IPooledEnumerable eable = Map.GetMobilesInRange(Location, 20);
 
             foreach (Mobile m in eable)
             {

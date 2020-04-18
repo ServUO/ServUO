@@ -6,7 +6,7 @@ namespace Server.Engines.Quests.Hag
         public MoonfireBrew()
             : base(0xF04)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public MoonfireBrew(Serial serial)
@@ -14,18 +14,12 @@ namespace Server.Engines.Quests.Hag
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1055065;
-            }
-        }// a bottle of magical moonfire brew
+        public override int LabelNumber => 1055065;// a bottle of magical moonfire brew
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

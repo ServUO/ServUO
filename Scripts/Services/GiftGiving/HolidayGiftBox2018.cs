@@ -5,8 +5,8 @@ namespace Server.Misc
 {
     public class HolidayGiftBox2018 : GiftGiver
     {
-        public override DateTime Start { get { return new DateTime(2018, 12, 30); } }
-        public override DateTime Finish { get { return new DateTime(2019, 1, 1); } }
+        public override DateTime Start => new DateTime(2018, 12, 30);
+        public override DateTime Finish => new DateTime(2019, 1, 1);
 
         public static void Initialize()
         {
@@ -17,7 +17,7 @@ namespace Server.Misc
         {
             HolidayGiftToken2018 gift = new HolidayGiftToken2018();
 
-            switch (this.GiveGift(mob, gift))
+            switch (GiveGift(mob, gift))
             {
                 case GiftResult.Backpack:
                     mob.SendMessage(0x482, "Happy Holidays from the team!  Gift items have been placed in your backpack.");

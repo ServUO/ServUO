@@ -686,7 +686,7 @@ namespace Server.Commands
             public AddTarget(string[] args)
                 : base(-1, true, TargetFlags.None)
             {
-                this.m_Args = args;
+                m_Args = args;
             }
 
             protected override void OnTarget(Mobile from, object o)
@@ -701,7 +701,7 @@ namespace Server.Commands
                         p = ((Mobile)p).Location;
 
                     Point3D point = new Point3D(p);
-                    Add.Invoke(from, point, point, this.m_Args);
+                    Add.Invoke(from, point, point, m_Args);
                 }
             }
         }
@@ -714,10 +714,10 @@ namespace Server.Commands
             public readonly bool m_Outline;
             public TileState(TileZType zType, int fixedZ, string[] args, bool outline)
             {
-                this.m_ZType = zType;
-                this.m_FixedZ = fixedZ;
-                this.m_Args = args;
-                this.m_Outline = outline;
+                m_ZType = zType;
+                m_FixedZ = fixedZ;
+                m_Args = args;
+                m_Outline = outline;
             }
         }
     }

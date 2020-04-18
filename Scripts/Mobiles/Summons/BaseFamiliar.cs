@@ -45,11 +45,11 @@ namespace Server.Mobiles
             : base(serial)
         { }
 
-        public override bool BardImmune { get { return true; } }
-        public override Poison PoisonImmune { get { return Poison.Lethal; } }
-        public override bool Commandable { get { return false; } }
-        public override bool PlayerRangeSensitive { get { return false; } }
-        public override bool CanDetectHidden { get { return false; } }
+        public override bool BardImmune => true;
+        public override Poison PoisonImmune => Poison.Lethal;
+        public override bool Commandable => false;
+        public override bool PlayerRangeSensitive => false;
+        public override bool CanDetectHidden => false;
 
         public virtual bool RangeCheck()
         {
@@ -221,7 +221,7 @@ namespace Server.Mobiles
 
             if (map != null && map != Map.Internal && pack != null)
             {
-                var list = new List<Item>(pack.Items);
+                List<Item> list = new List<Item>(pack.Items);
 
                 for (int i = 0; i < list.Count; ++i)
                 {
@@ -241,7 +241,7 @@ namespace Server.Mobiles
 
             if (attacker is PlayerMobile)
             {
-                foreach (var ts in ((PlayerMobile)attacker).AllFollowers.Where(m => m is BaseTalismanSummon && m.InRange(defender.Location, m.Weapon.MaxRange)))
+                foreach (Mobile ts in ((PlayerMobile)attacker).AllFollowers.Where(m => m is BaseTalismanSummon && m.InRange(defender.Location, m.Weapon.MaxRange)))
                 {
                     ts.Weapon.OnSwing(ts, defender);
                 }

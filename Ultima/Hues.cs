@@ -32,7 +32,7 @@ namespace Ultima
 
             if (path != null)
             {
-                using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
                     int blockCount = (int)fs.Length / 708;
 
@@ -42,7 +42,7 @@ namespace Ultima
                     }
                     m_Header = new int[blockCount];
                     int structsize = Marshal.SizeOf(typeof(HueDataMul));
-                    var buffer = new byte[blockCount * (4 + 8 * structsize)];
+                    byte[] buffer = new byte[blockCount * (4 + 8 * structsize)];
                     GCHandle gc = GCHandle.Alloc(buffer, GCHandleType.Pinned);
                     try
                     {
@@ -51,15 +51,15 @@ namespace Ultima
 
                         for (int i = 0; i < blockCount; ++i)
                         {
-                            var ptrheader = new IntPtr((long)gc.AddrOfPinnedObject() + currpos);
+                            IntPtr ptrheader = new IntPtr((long)gc.AddrOfPinnedObject() + currpos);
                             currpos += 4;
                             m_Header[i] = (int)Marshal.PtrToStructure(ptrheader, typeof(int));
 
                             for (int j = 0; j < 8; ++j, ++index)
                             {
-                                var ptr = new IntPtr((long)gc.AddrOfPinnedObject() + currpos);
+                                IntPtr ptr = new IntPtr((long)gc.AddrOfPinnedObject() + currpos);
                                 currpos += structsize;
-                                var cur = (HueDataMul)Marshal.PtrToStructure(ptr, typeof(HueDataMul));
+                                HueDataMul cur = (HueDataMul)Marshal.PtrToStructure(ptr, typeof(HueDataMul));
                                 List[index] = new Hue(index, cur);
                             }
                         }
@@ -80,9 +80,9 @@ namespace Ultima
         public static void Save(string path)
         {
             string mul = Path.Combine(path, "hues.mul");
-            using (var fsmul = new FileStream(mul, FileMode.Create, FileAccess.Write, FileShare.Write))
+            using (FileStream fsmul = new FileStream(mul, FileMode.Create, FileAccess.Write, FileShare.Write))
             {
-                using (var binmul = new BinaryWriter(fsmul))
+                using (BinaryWriter binmul = new BinaryWriter(fsmul))
                 {
                     int index = 0;
                     for (int i = 0; i < m_Header.Length; ++i)
@@ -97,7 +97,7 @@ namespace Ultima
 
                             binmul.Write((short)(List[index].TableStart ^ 0x8000));
                             binmul.Write((short)(List[index].TableEnd ^ 0x8000));
-                            var b = new byte[20];
+                            byte[] b = new byte[20];
                             if (List[index].Name != null)
                             {
                                 byte[] bb = Encoding.Default.GetBytes(List[index].Name);
@@ -142,17 +142,17 @@ namespace Ultima
             ushort origgreen = c.G;
             ushort origblue = c.B;
             const double scale = 31.0 / 255;
-            var newred = (ushort)(origred * scale);
+            ushort newred = (ushort)(origred * scale);
             if (newred == 0 && origred != 0)
             {
                 newred = 1;
             }
-            var newgreen = (ushort)(origgreen * scale);
+            ushort newgreen = (ushort)(origgreen * scale);
             if (newgreen == 0 && origgreen != 0)
             {
                 newgreen = 1;
             }
-            var newblue = (ushort)(origblue * scale);
+            ushort newblue = (ushort)(origblue * scale);
             if (newblue == 0 && origblue != 0)
             {
                 newblue = 1;
@@ -197,7 +197,7 @@ namespace Ultima
             int height = bd.Height;
             int delta = stride - width;
 
-            var pBuffer = (ushort*)bd.Scan0;
+            ushort* pBuffer = (ushort*)bd.Scan0;
             ushort* pLineEnd = pBuffer + width;
             ushort* pImageEnd = pBuffer + (stride * height);
 
@@ -287,14 +287,14 @@ namespace Ultima
             {
                 fixed (byte* buffer = m_Buffer)
                 {
-                    var buf = (ushort*)buffer;
+                    ushort* buf = (ushort*)buffer;
                     for (int i = 0; i < 32; ++i)
                     {
                         Colors[i] = (short)(*buf++ | 0x8000);
                     }
                     TableStart = (short)(*buf++ | 0x8000);
                     TableEnd = (short)(*buf++ | 0x8000);
-                    var sbuf = (byte*)buf;
+                    byte* sbuf = (byte*)buf;
                     int count;
                     for (count = 0; count < 20 && *sbuf != 0; ++count)
                     {
@@ -335,7 +335,7 @@ namespace Ultima
             int height = bd.Height;
             int delta = stride - width;
 
-            var pBuffer = (ushort*)bd.Scan0;
+            ushort* pBuffer = (ushort*)bd.Scan0;
             ushort* pLineEnd = pBuffer + width;
             ushort* pImageEnd = pBuffer + (stride * height);
 
@@ -392,7 +392,7 @@ namespace Ultima
         public void Export(string FileName)
         {
             using (
-                var Tex = new StreamWriter(
+                StreamWriter Tex = new StreamWriter(
                     new FileStream(FileName, FileMode.Create, FileAccess.ReadWrite), Encoding.GetEncoding(1252)))
             {
                 Tex.WriteLine(Name);
@@ -411,7 +411,7 @@ namespace Ultima
             {
                 return;
             }
-            using (var sr = new StreamReader(FileName))
+            using (StreamReader sr = new StreamReader(FileName))
             {
                 string line;
                 int i = -3;

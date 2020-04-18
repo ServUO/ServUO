@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class Anniversary22GiftToken : Item, IRewardOption
     {
-        public override int LabelNumber { get { return 1159145; } } // 22nd Anniversary Gift Token
+        public override int LabelNumber => 1159145;  // 22nd Anniversary Gift Token
 
         [Constructable]
         public Anniversary22GiftToken()
@@ -38,7 +38,7 @@ namespace Server.Items
 
         public void OnOptionSelected(Mobile from, int choice)
         {
-            var bag = new Bag();
+            Bag bag = new Bag();
             bag.Hue = 1286;
 
             bool chance = Utility.RandomDouble() < .1;
@@ -128,7 +128,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

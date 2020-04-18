@@ -16,8 +16,8 @@ namespace Server.Engines.Plants
         public static readonly int MaxSeeds = 5000;
         public static readonly int MaxUnique = 300;
 
-        public override int DefaultMaxItems { get { return MaxUnique; } }
-        public override bool DisplaysContent { get { return false; } }
+        public override int DefaultMaxItems => MaxUnique;
+        public override bool DisplaysContent => false;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsRewardItem { get; set; }
@@ -42,12 +42,9 @@ namespace Server.Engines.Plants
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int UniqueCount
-        {
-            get { return Entries == null ? 0 : Entries.Where(e => e != null && e.Seed != null && e.Seed.Amount > 0).Count(); }
-        }
+        public int UniqueCount => Entries == null ? 0 : Entries.Where(e => e != null && e.Seed != null && e.Seed.Amount > 0).Count();
 
-        public override double DefaultWeight { get { return 10.0; } }
+        public override double DefaultWeight => 10.0;
 
         [Constructable]
         public SeedBox() : base(19288)
@@ -66,7 +63,7 @@ namespace Server.Engines.Plants
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (IsChildOf(m.Backpack) || (CheckAccessible(m) && m.InRange(this.GetWorldLocation(), 3)))
+            if (IsChildOf(m.Backpack) || (CheckAccessible(m) && m.InRange(GetWorldLocation(), 3)))
             {
                 if (m is PlayerMobile)
                     BaseGump.SendGump(new SeedBoxGump((PlayerMobile)m, this));
@@ -123,7 +120,7 @@ namespace Server.Engines.Plants
             {
                 return false;
             }
-            else if (!from.InRange(this.GetWorldLocation(), 3) || from.Map != this.Map)
+            else if (!from.InRange(GetWorldLocation(), 3) || from.Map != Map)
             {
                 return false;
             }
@@ -176,7 +173,7 @@ namespace Server.Engines.Plants
 
                     if (from is PlayerMobile)
                     {
-                        var gump = new SeedBoxGump((PlayerMobile)from, this);
+                        SeedBoxGump gump = new SeedBoxGump((PlayerMobile)from, this);
                         gump.CheckPage(entry);
 
                         BaseGump.SendGump(gump);
@@ -297,14 +294,14 @@ namespace Server.Engines.Plants
 
         private void CheckEntries()
         {
-            List<Item> toDelete = new List<Item>(this.Items);
+            List<Item> toDelete = new List<Item>(Items);
 
-            foreach (var item in toDelete.Where(i => i != null && i.Amount == 0))
+            foreach (Item item in toDelete.Where(i => i != null && i.Amount == 0))
                 item.Delete();
 
             List<SeedEntry> entries = new List<SeedEntry>(Entries);
 
-            foreach (var entry in entries.Where(e => e != null && (e.Seed == null || e.Seed.Amount == 0 || e.Seed.Deleted)))
+            foreach (SeedEntry entry in entries.Where(e => e != null && (e.Seed == null || e.Seed.Amount == 0 || e.Seed.Deleted)))
                 Entries.Remove(entry);
 
             ColUtility.Free(entries);
@@ -331,7 +328,7 @@ namespace Server.Engines.Plants
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write(1);
 
             writer.Write(IsRewardItem);
             writer.Write((int)Level);
@@ -384,7 +381,7 @@ namespace Server.Engines.Plants
             Timer.DelayCall(
                 () =>
                 {
-                    foreach (var item in Items.Where(i => i.Movable))
+                    foreach (Item item in Items.Where(i => i.Movable))
                         item.Movable = false;
                 });
 

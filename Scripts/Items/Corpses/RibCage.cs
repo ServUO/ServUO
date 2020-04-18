@@ -7,8 +7,8 @@ namespace Server.Items
         public RibCage()
             : base(0x1B17 + Utility.Random(2))
         {
-            this.Stackable = false;
-            this.Weight = 5.0;
+            Stackable = false;
+            Weight = 5.0;
         }
 
         public RibCage(Serial serial)
@@ -20,7 +20,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -32,7 +32,7 @@ namespace Server.Items
 
         public bool Scissor(Mobile from, Scissors scissors)
         {
-            if (this.Deleted || !from.CanSee(this))
+            if (Deleted || !from.CanSee(this))
                 return false;
 
             base.ScissorHelper(from, new Bone(), Utility.RandomMinMax(3, 5));

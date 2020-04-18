@@ -5,8 +5,8 @@ namespace Server.Items
         [Constructable]
         public StoneFireplaceSouthAddon()
         {
-            this.AddComponent(new AddonComponent(0x967), -1, 0, 0);
-            this.AddComponent(new AddonComponent(0x961), 0, 0, 0);
+            AddComponent(new AddonComponent(0x967), -1, 0, 0);
+            AddComponent(new AddonComponent(0x961), 0, 0, 0);
         }
 
         public StoneFireplaceSouthAddon(Serial serial)
@@ -14,18 +14,12 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new StoneFireplaceSouthDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new StoneFireplaceSouthDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -48,25 +42,13 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new StoneFireplaceSouthAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1061849;
-            }
-        }// stone fireplace (south)
+        public override BaseAddon Addon => new StoneFireplaceSouthAddon();
+        public override int LabelNumber => 1061849;// stone fireplace (south)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

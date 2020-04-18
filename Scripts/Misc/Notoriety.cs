@@ -64,7 +64,7 @@ namespace Server.Misc
             if (from == null || target == null || from.IsStaff() || target.IsStaff())
                 return true;
 
-            var map = from.Map;
+            Map map = from.Map;
 
             if (ViceVsVirtueSystem.Enabled && ViceVsVirtueSystem.IsEnemy(from, target))
             {
@@ -88,8 +88,8 @@ namespace Server.Misc
                 (!(target is PlayerMobile) || !((PlayerMobile)target).Young))
                 return false; // Young players cannot perform beneficial actions towards older players
 
-            var fromGuild = from.Guild as Guild;
-            var targetGuild = target.Guild as Guild;
+            Guild fromGuild = from.Guild as Guild;
+            Guild targetGuild = target.Guild as Guild;
 
             if (fromGuild != null && targetGuild != null)
             {
@@ -102,12 +102,12 @@ namespace Server.Misc
 
         public static bool Mobile_AllowHarmful(Mobile from, IDamageable damageable)
         {
-            var target = damageable as Mobile;
+            Mobile target = damageable as Mobile;
 
             if (from == null || target == null || from.IsStaff() || target.IsStaff())
                 return true;
 
-            var map = from.Map;
+            Map map = from.Map;
 
             if (map != null && (map.Rules & MapRules.HarmfulRestrictions) == 0)
                 return true; // In felucca, anything goes
@@ -119,7 +119,7 @@ namespace Server.Misc
             if (target is BaseCreature && ((BaseCreature)target).Summoned && ((BaseCreature)target).SummonMaster != null)
                 target = ((BaseCreature)target).SummonMaster;
 
-            var bc = from as BaseCreature;
+            BaseCreature bc = from as BaseCreature;
 
             if (!from.Player && !(bc != null && bc.GetMaster() != null && bc.GetMaster().IsPlayer()))
             {
@@ -130,8 +130,8 @@ namespace Server.Misc
                 return true; // Uncontrolled NPCs are only restricted by the young system
             }
 
-            var fromGuild = GetGuildFor(from.Guild as Guild, from);
-            var targetGuild = GetGuildFor(target.Guild as Guild, target);
+            Guild fromGuild = GetGuildFor(from.Guild as Guild, from);
+            Guild targetGuild = GetGuildFor(target.Guild as Guild, target);
 
             if (fromGuild != null && targetGuild != null)
             {
@@ -165,9 +165,9 @@ namespace Server.Misc
 
         public static Guild GetGuildFor(Guild def, Mobile m)
         {
-            var g = def;
+            Guild g = def;
 
-            var c = m as BaseCreature;
+            BaseCreature c = m as BaseCreature;
 
             if (c != null && c.Controlled && c.ControlMaster != null && !c.ForceNotoriety)
             {
@@ -194,12 +194,12 @@ namespace Server.Misc
 
             Body body = target.Amount;
 
-            var cretOwner = target.Owner as BaseCreature;
+            BaseCreature cretOwner = target.Owner as BaseCreature;
 
             if (cretOwner != null)
             {
-                var sourceGuild = GetGuildFor(source.Guild as Guild, source);
-                var targetGuild = GetGuildFor(target.Guild, target.Owner);
+                Guild sourceGuild = GetGuildFor(source.Guild as Guild, source);
+                Guild targetGuild = GetGuildFor(target.Guild, target.Owner);
 
                 if (sourceGuild != null && targetGuild != null)
                 {
@@ -219,7 +219,7 @@ namespace Server.Misc
                 if (CheckHouseFlag(source, cretOwner, target.Location, target.Map))
                     return Notoriety.CanBeAttacked;
 
-                var actual = Notoriety.CanBeAttacked;
+                int actual = Notoriety.CanBeAttacked;
 
                 if (target.Murderer)
                     actual = Notoriety.Murderer;
@@ -231,9 +231,9 @@ namespace Server.Misc
                 if (DateTime.UtcNow >= (target.TimeOfDeath + Corpse.MonsterLootRightSacrifice))
                     return actual;
 
-                var sourceParty = Party.Get(source);
+                Party sourceParty = Party.Get(source);
 
-                foreach (var m in target.Aggressors)
+                foreach (Mobile m in target.Aggressors)
                 {
                     if (m == source || (sourceParty != null && Party.Get(m) == sourceParty) || (sourceGuild != null && m.Guild == sourceGuild))
                         return actual;
@@ -249,8 +249,8 @@ namespace Server.Misc
                 if (target.Criminal && target.Map != null && ((target.Map.Rules & MapRules.HarmfulRestrictions) == 0))
                     return Notoriety.Criminal;
 
-                var sourceGuild = GetGuildFor(source.Guild as Guild, source);
-                var targetGuild = GetGuildFor(target.Guild, target.Owner);
+                Guild sourceGuild = GetGuildFor(source.Guild as Guild, source);
+                Guild targetGuild = GetGuildFor(target.Guild, target.Owner);
 
                 if (sourceGuild != null && targetGuild != null)
                 {
@@ -267,9 +267,9 @@ namespace Server.Misc
                 if (!(target.Owner is PlayerMobile) && !IsPet(target.Owner as BaseCreature))
                     return Notoriety.CanBeAttacked;
 
-                var list = target.Aggressors;
+                List<Mobile> list = target.Aggressors;
 
-                foreach (var m in list)
+                foreach (Mobile m in list)
                 {
                     if (m == source)
                         return Notoriety.CanBeAttacked;
@@ -286,7 +286,7 @@ namespace Server.Misc
                 return Notoriety.Innocent;
             }
 
-            var target = damageable as Mobile;
+            Mobile target = damageable as Mobile;
 
             if (target == null)
                 return Notoriety.CanBeAttacked;
@@ -300,7 +300,7 @@ namespace Server.Misc
             if (target is PlayerVendor || target is TownCrier)
                 return Notoriety.Invulnerable;
 
-            var context = EnemyOfOneSpell.GetContext(source);
+            EnemyOfOneContext context = EnemyOfOneSpell.GetContext(source);
 
             if (context != null && context.IsEnemy(target))
                 return Notoriety.Enemy;
@@ -316,9 +316,9 @@ namespace Server.Misc
 
             if (source.Player && target is BaseCreature)
             {
-                var bc = (BaseCreature)target;
+                BaseCreature bc = (BaseCreature)target;
 
-                var master = bc.GetMaster();
+                Mobile master = bc.GetMaster();
 
                 if (master != null && master.IsStaff())
                     return Notoriety.CanBeAttacked;
@@ -358,8 +358,8 @@ namespace Server.Misc
             if (target.Criminal)
                 return Notoriety.Criminal;
 
-            var sourceGuild = GetGuildFor(source.Guild as Guild, source);
-            var targetGuild = GetGuildFor(target.Guild as Guild, target);
+            Guild sourceGuild = GetGuildFor(source.Guild as Guild, source);
+            Guild targetGuild = GetGuildFor(target.Guild as Guild, target);
 
             if (sourceGuild != null && targetGuild != null)
             {
@@ -406,7 +406,7 @@ namespace Server.Misc
 
             if (target is BaseCreature)
             {
-                var bc = (BaseCreature)target;
+                BaseCreature bc = (BaseCreature)target;
 
                 if (bc.Controlled && bc.ControlOrder == OrderType.Guard && bc.ControlTarget == source)
                     return Notoriety.CanBeAttacked;
@@ -414,8 +414,8 @@ namespace Server.Misc
 
             if (source is BaseCreature)
             {
-                var bc = (BaseCreature)source;
-                var master = bc.GetMaster();
+                BaseCreature bc = (BaseCreature)source;
+                Mobile master = bc.GetMaster();
 
                 if (master != null)
                 {
@@ -441,7 +441,7 @@ namespace Server.Misc
 
         public static bool CheckHouseFlag(Mobile from, Mobile m, Point3D p, Map map)
         {
-            var house = BaseHouse.FindHouseAt(p, map, 16);
+            BaseHouse house = BaseHouse.FindHouseAt(p, map, 16);
 
             if (house == null || house.Public || !house.IsFriend(from))
                 return false;
@@ -449,7 +449,7 @@ namespace Server.Misc
             if (m != null && house.IsFriend(m))
                 return false;
 
-            var c = m as BaseCreature;
+            BaseCreature c = m as BaseCreature;
 
             if (c != null && !c.Deleted && c.Controlled && c.ControlMaster != null)
                 return !house.IsFriend(c.ControlMaster);
@@ -469,7 +469,7 @@ namespace Server.Misc
 
         public static bool CheckAggressor(List<AggressorInfo> list, Mobile target)
         {
-            foreach (var o in list)
+            foreach (AggressorInfo o in list)
             {
                 if (o.Attacker == target)
                     return true;
@@ -480,7 +480,7 @@ namespace Server.Misc
 
         public static bool CheckAggressed(List<AggressorInfo> list, Mobile target)
         {
-            foreach (var info in list)
+            foreach (AggressorInfo info in list)
             {
                 if (!info.CriminalAggression && info.Defender == target)
                     return true;
@@ -491,7 +491,7 @@ namespace Server.Misc
 
         public static bool CheckPetAggressor(PlayerMobile source, Mobile target)
         {
-            foreach (var bc in source.AllFollowers)
+            foreach (Mobile bc in source.AllFollowers)
             {
                 if (CheckAggressor(bc.Aggressors, target))
                     return true;
@@ -502,7 +502,7 @@ namespace Server.Misc
 
         public static bool CheckPetAggressed(PlayerMobile source, Mobile target)
         {
-            foreach (var bc in source.AllFollowers)
+            foreach (Mobile bc in source.AllFollowers)
             {
                 if (CheckAggressed(bc.Aggressed, target))
                     return true;

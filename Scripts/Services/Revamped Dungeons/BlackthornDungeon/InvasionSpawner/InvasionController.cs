@@ -93,7 +93,7 @@ namespace Server.Engines.Blackthorn
         [CommandProperty(AccessLevel.GameMaster)]
         public int CurrentWave { get; private set; }
 
-        public bool BeaconVulnerable { get { return Beacon != null && (Spawn == null || Spawn.Count == 0); } }
+        public bool BeaconVulnerable => Beacon != null && (Spawn == null || Spawn.Count == 0);
 
         public InvasionController(Map map) : base(3796)
         {
@@ -146,25 +146,25 @@ namespace Server.Engines.Blackthorn
             {
                 newType = (InvasionType)Utility.Random(10);
             }
-            while (newType == this.InvasionType);
+            while (newType == InvasionType);
 
             do
             {
                 newCity = (City)Utility.Random(9);
             }
-            while (newCity == this.CurrentInvasion);
+            while (newCity == CurrentInvasion);
 
-            this.CurrentInvasion = newCity;
-            this.InvasionType = newType;
+            CurrentInvasion = newCity;
+            InvasionType = newType;
             SpawnZones = Defs[CurrentInvasion].SpawnRecs.ToList();
 
             Beacon = new InvasionBeacon(this);
-            Beacon.MoveToWorld(Defs[CurrentInvasion].BeaconLoc, this.Map);
+            Beacon.MoveToWorld(Defs[CurrentInvasion].BeaconLoc, Map);
 
             // Shuffle zones
             for (int i = 0; i < 8; i++)
             {
-                var rec = SpawnZones[Utility.Random(SpawnZones.Count)];
+                Rectangle2D rec = SpawnZones[Utility.Random(SpawnZones.Count)];
                 SpawnZones.Remove(rec);
                 SpawnZones.Insert(0, rec);
             }
@@ -186,7 +186,7 @@ namespace Server.Engines.Blackthorn
 
                 for (int i = 0; i < count; i++)
                 {
-                    BaseCreature bc = Activator.CreateInstance(_SpawnTable[(int)this.InvasionType][Utility.Random(_SpawnTable[(int)this.InvasionType].Length)]) as BaseCreature;
+                    BaseCreature bc = Activator.CreateInstance(_SpawnTable[(int)InvasionType][Utility.Random(_SpawnTable[(int)InvasionType].Length)]) as BaseCreature;
 
                     bc.Kills = 100;
 
@@ -202,7 +202,7 @@ namespace Server.Engines.Blackthorn
 
                 for (int i = 0; i < 3; i++)
                 {
-                    Invader invader = new Invader(this.InvasionType);
+                    Invader invader = new Invader(InvasionType);
 
                     if (SpawnMobile(invader, spawnrec))
                     {
@@ -212,7 +212,7 @@ namespace Server.Engines.Blackthorn
                         invader.Delete();
                 }
 
-                InvaderCaptain capt = new InvaderCaptain(this.InvasionType);
+                InvaderCaptain capt = new InvaderCaptain(InvasionType);
                 capt.Blessed = true;
 
                 if (SpawnMobile(capt, spawnrec) || SpawnMobile(capt, new Rectangle2D(Defs[CurrentInvasion].BeaconLoc.X - 10, Defs[CurrentInvasion].BeaconLoc.Y - 10, 20, 20)))
@@ -231,7 +231,7 @@ namespace Server.Engines.Blackthorn
             {
                 for (int i = 0; i < 25; i++)
                 {
-                    Point3D p = this.Map.GetRandomSpawnPoint(spawnrec);
+                    Point3D p = Map.GetRandomSpawnPoint(spawnrec);
                     bool exempt = false;
 
                     if (spawnrec.X == 6444 && spawnrec.Y == 2446)
@@ -240,9 +240,9 @@ namespace Server.Engines.Blackthorn
                         p.Z = -2;
                     }
 
-                    if (exempt || this.Map.CanFit(p.X, p.Y, p.Z, 16, false, false, true))
+                    if (exempt || Map.CanFit(p.X, p.Y, p.Z, 16, false, false, true))
                     {
-                        bc.MoveToWorld(p, this.Map);
+                        bc.MoveToWorld(p, Map);
                         bc.Home = Defs[CurrentInvasion].BeaconLoc;
                         bc.SeeksHome = true;
                         bc.RangeHome = Utility.RandomMinMax(5, 10);
@@ -337,10 +337,10 @@ namespace Server.Engines.Blackthorn
 
         private void DoMessage()
         {
-            if (this.Map == null)
+            if (Map == null)
                 return;
 
-            IPooledEnumerable eable = this.Map.GetMobilesInRange(Beacon.Location, 20);
+            IPooledEnumerable eable = Map.GetMobilesInRange(Beacon.Location, 20);
 
             foreach (Mobile m in eable)
             {

@@ -10,40 +10,28 @@ namespace Server.Engines.Reports
             return new ReportItem();
         }
 
-        public override PersistableType TypeID
-        {
-            get
-            {
-                return ThisTypeID;
-            }
-        }
+        public override PersistableType TypeID => ThisTypeID;
         #endregion
 
         private readonly ItemValueCollection m_Values;
 
-        public ItemValueCollection Values
-        {
-            get
-            {
-                return this.m_Values;
-            }
-        }
+        public ItemValueCollection Values => m_Values;
 
         public ReportItem()
         {
-            this.m_Values = new ItemValueCollection();
+            m_Values = new ItemValueCollection();
         }
 
         public override void SerializeChildren(PersistenceWriter op)
         {
-            for (int i = 0; i < this.m_Values.Count; ++i)
-                this.m_Values[i].Serialize(op);
+            for (int i = 0; i < m_Values.Count; ++i)
+                m_Values[i].Serialize(op);
         }
 
         public override void DeserializeChildren(PersistenceReader ip)
         {
             while (ip.HasChild)
-                this.m_Values.Add(ip.GetChild() as ItemValue);
+                m_Values.Add(ip.GetChild() as ItemValue);
         }
     }
 }

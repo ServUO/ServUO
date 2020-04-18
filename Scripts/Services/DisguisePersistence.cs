@@ -25,7 +25,7 @@ namespace Server.Items
 
                     writer.Write(DisguiseTimers.Timers.Count);
 
-                    foreach (var m in DisguiseTimers.Timers.Keys.OfType<Mobile>())
+                    foreach (Mobile m in DisguiseTimers.Timers.Keys.OfType<Mobile>())
                     {
                         writer.Write(m);
                         writer.Write(DisguiseTimers.TimeRemaining(m));
@@ -40,17 +40,17 @@ namespace Server.Items
                 FilePath,
                 reader =>
                 {
-                    var version = reader.ReadInt();
+                    int version = reader.ReadInt();
 
                     switch (version)
                     {
                         case 0:
                             {
-                                var count = reader.ReadInt();
+                                int count = reader.ReadInt();
 
-                                for (var i = 0; i < count; ++i)
+                                for (int i = 0; i < count; ++i)
                                 {
-                                    var m = reader.ReadMobile();
+                                    Mobile m = reader.ReadMobile();
                                     DisguiseTimers.CreateTimer(m, reader.ReadTimeSpan());
                                     m.NameMod = reader.ReadString();
                                 }

@@ -7,10 +7,10 @@ namespace Server.Items
 {
     public class MythicCharacterToken : Item, IPromotionalToken
     {
-        public override int LabelNumber { get { return 1070997; } } // a promotional token
-        public TextDefinition ItemName { get { return 1152353; } } // Mythic Character Token
+        public override int LabelNumber => 1070997;  // a promotional token
+        public TextDefinition ItemName => 1152353;  // Mythic Character Token
 
-        public Type GumpType { get { return typeof(MythicCharacterToken.InternalGump); } }
+        public Type GumpType => typeof(MythicCharacterToken.InternalGump);
 
         [Constructable]
         public MythicCharacterToken()
@@ -74,12 +74,12 @@ namespace Server.Items
             public static readonly int Width = 500;
             public static readonly int Height = 510;
 
-            public static int Green { get { return C32216(0x32CD32); } }
-            public static int LightGreen { get { return C32216(0x90EE90); } }
-            public static int Yellow { get { return C32216(0xFFE4C4); } }
-            public static int Beige { get { return C32216(0xF5F5DC); } }
-            public static int Gray { get { return C32216(0x696969); } }
-            public static int White { get { return 0x7FFF; } }
+            public static int Green => C32216(0x32CD32);
+            public static int LightGreen => C32216(0x90EE90);
+            public static int Yellow => C32216(0xFFE4C4);
+            public static int Beige => C32216(0xF5F5DC);
+            public static int Gray => C32216(0x696969);
+            public static int White => 0x7FFF;
 
             public bool HasAllFive
             {
@@ -88,7 +88,7 @@ namespace Server.Items
                     if (Selected == null)
                         return false;
 
-                    foreach (var sk in Selected)
+                    foreach (Skill sk in Selected)
                     {
                         if (sk == null)
                             return false;
@@ -244,7 +244,7 @@ namespace Server.Items
 
                             Effects.SendTargetParticles(User, 0x375A, 35, 90, 0x00, 0x00, 9502, (EffectLayer)255, 0x100);
 
-                            foreach (var sk in Selected)
+                            foreach (Skill sk in Selected)
                             {
                                 sk.Base = 90;
                             }
@@ -285,9 +285,9 @@ namespace Server.Items
 
             private void SetStats(RelayInfo info)
             {
-                var entry1 = info.GetTextEntry(1);
-                var entry2 = info.GetTextEntry(2);
-                var entry3 = info.GetTextEntry(3);
+                TextRelay entry1 = info.GetTextEntry(1);
+                TextRelay entry2 = info.GetTextEntry(2);
+                TextRelay entry3 = info.GetTextEntry(3);
 
                 if (entry1 != null)
                     Str = Math.Min(125, Math.Max(10, Utility.ToInt32(entry1.Text)));
@@ -301,7 +301,7 @@ namespace Server.Items
 
             private bool CanSelect(SkillName skill)
             {
-                foreach (var sk in Selected)
+                foreach (Skill sk in Selected)
                 {
                     if (User.Skills[skill] == sk)
                         return false;

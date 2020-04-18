@@ -25,16 +25,16 @@ namespace Server.Items
         public string DateKilled { get { return m_DateKilled; } set { m_DateKilled = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public TextDefinition Species { get { return Info.Species; } }
+        public TextDefinition Species => Info.Species;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public MeasuredBy MeasuredBy { get { return Info.MeasuredBy; } }
+        public MeasuredBy MeasuredBy => Info.MeasuredBy;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual int EastID { get { return Info.EastID; } }
+        public virtual int EastID => Info.EastID;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual int SouthID { get { return Info.SouthID; } }
+        public virtual int SouthID => Info.SouthID;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int Index
@@ -55,15 +55,9 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public HuntingTrophyInfo Info { get { return HuntingTrophyInfo.Infos[Index]; } }
+        public HuntingTrophyInfo Info => HuntingTrophyInfo.Infos[Index];
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return Info.TrophyName.Number;
-            }
-        }
+        public override int LabelNumber => Info.TrophyName.Number;
 
         public HuntTrophy(string name, int index, int measurement, string killed, string location)
         {
@@ -121,7 +115,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)2);
+            writer.Write(2);
 
             writer.Write(m_Index);
             writer.Write(m_Owner);
@@ -150,7 +144,7 @@ namespace Server.Items
                     m_Measurement = reader.ReadInt();
                     m_DateKilled = reader.ReadString();
                     m_Location = reader.ReadString();
-                    var td = TextDefinition.Deserialize(reader);
+                    TextDefinition td = TextDefinition.Deserialize(reader);
                     reader.ReadInt();
                     reader.ReadInt();
 
@@ -184,16 +178,16 @@ namespace Server.Items
         public string DateKilled { get { return m_DateKilled; } set { m_DateKilled = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public TextDefinition Species { get { return Info.Species; } }
+        public TextDefinition Species => Info.Species;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public MeasuredBy MeasuredBy { get { return Info.MeasuredBy; } }
+        public MeasuredBy MeasuredBy => Info.MeasuredBy;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual int EastID { get { return Info.EastID; } }
+        public virtual int EastID => Info.EastID;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual int SouthID { get { return Info.SouthID; } }
+        public virtual int SouthID => Info.SouthID;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int Index
@@ -214,7 +208,7 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public HuntingTrophyInfo Info { get { return HuntingTrophyInfo.Infos[Index]; } }
+        public HuntingTrophyInfo Info => HuntingTrophyInfo.Infos[Index];
 
         public override int LabelNumber
         {
@@ -331,7 +325,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)2);
+            writer.Write(2);
 
             writer.Write(m_Index);
             writer.Write(m_Owner);
@@ -360,7 +354,7 @@ namespace Server.Items
                     m_Measurement = reader.ReadInt();
                     m_DateKilled = reader.ReadString();
                     m_Location = reader.ReadString();
-                    var td = TextDefinition.Deserialize(reader);
+                    TextDefinition td = TextDefinition.Deserialize(reader);
                     reader.ReadInt();
                     reader.ReadInt();
 
@@ -376,7 +370,7 @@ namespace Server.Items
 
         private void Replace()
         {
-            var trophy = new HuntTrophy(m_Owner, Index, m_Measurement, m_DateKilled, m_Location);
+            HuntTrophy trophy = new HuntTrophy(m_Owner, Index, m_Measurement, m_DateKilled, m_Location);
 
             if (Parent is Container)
             {

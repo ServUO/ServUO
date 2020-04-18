@@ -20,47 +20,11 @@ namespace Server.Engines.Quests.Samurai
         {
         }
 
-        public override Type[] TypeReferenceTable
-        {
-            get
-            {
-                return m_TypeReferenceTable;
-            }
-        }
-        public override object Name
-        {
-            get
-            {
-                return 1063022; // Haochi's Trials
-            }
-        }
-        public override object OfferMessage
-        {
-            get
-            {
-                return 1063023;
-            }
-        }
-        public override TimeSpan RestartDelay
-        {
-            get
-            {
-                return TimeSpan.MaxValue;
-            }
-        }
-        public override bool IsTutorial
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int Picture
-        {
-            get
-            {
-                return 0x15D7;
-            }
-        }
+        public override Type[] TypeReferenceTable => m_TypeReferenceTable;
+        public override object Name => 1063022; // Haochi's Trials
+        public override object OfferMessage => 1063023;
+        public override TimeSpan RestartDelay => TimeSpan.MaxValue;
+        public override bool IsTutorial => true;
+        public override int Picture => 0x15D7;
     }
 }

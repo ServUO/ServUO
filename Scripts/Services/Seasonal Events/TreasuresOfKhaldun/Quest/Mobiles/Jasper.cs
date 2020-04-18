@@ -8,7 +8,7 @@ namespace Server.Engines.Khaldun
 {
     public class InspectorJasper : MondainQuester
     {
-        public override Type[] Quests { get { return null; } }
+        public override Type[] Quests => null;
 
         public static InspectorJasper TramInstance { get; set; }
 
@@ -134,7 +134,7 @@ namespace Server.Engines.Khaldun
         {
             if (m is PlayerMobile && InLOS(m) && InRange(m.Location, 3) && !InRange(oldLocation, 3))
             {
-                var quest = QuestHelper.GetQuest<GoingGumshoeQuest>((PlayerMobile)m);
+                GoingGumshoeQuest quest = QuestHelper.GetQuest<GoingGumshoeQuest>((PlayerMobile)m);
 
                 if (quest != null)
                 {
@@ -143,7 +143,7 @@ namespace Server.Engines.Khaldun
                 }
                 else
                 {
-                    var quest2 = QuestHelper.GetQuest<GoingGumshoeQuest4>((PlayerMobile)m);
+                    GoingGumshoeQuest4 quest2 = QuestHelper.GetQuest<GoingGumshoeQuest4>((PlayerMobile)m);
 
                     if (quest2 != null && quest2.IsComplete)
                     {
@@ -187,7 +187,7 @@ namespace Server.Engines.Khaldun
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

@@ -19,27 +19,9 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073407;
-            }
-        }// Please Contribute to the public Museum of Vesper.
-        public override Collection CollectionID
-        {
-            get
-            {
-                return Collection.VesperMuseum;
-            }
-        }
-        public override int MaxTier
-        {
-            get
-            {
-                return 12;
-            }
-        }
+        public override int LabelNumber => 1073407;// Please Contribute to the public Museum of Vesper.
+        public override Collection CollectionID => Collection.VesperMuseum;
+        public override int MaxTier => 12;
         public override void Init()
         {
             base.Init();
@@ -466,7 +448,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

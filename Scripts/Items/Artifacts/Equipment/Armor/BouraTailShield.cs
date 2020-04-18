@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class BouraTailShield : WoodenKiteShield
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public BouraTailShield()
         {
@@ -16,62 +16,20 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber { get { return 1112361; } }// boura tail shield
+        public override int LabelNumber => 1112361; // boura tail shield
 
-        public override int BasePhysicalResistance
-        {
-            get
-            {
-                return 8;
-            }
-        }
-        public override int BaseFireResistance
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override int BaseColdResistance
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override int BasePoisonResistance
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override int BaseEnergyResistance
-        {
-            get
-            {
-                return 1;
-            }
-        }
-        public override int InitMinHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
-        public override int InitMaxHits
-        {
-            get
-            {
-                return 255;
-            }
-        }
+        public override int BasePhysicalResistance => 8;
+        public override int BaseFireResistance => 0;
+        public override int BaseColdResistance => 0;
+        public override int BasePoisonResistance => 0;
+        public override int BaseEnergyResistance => 1;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

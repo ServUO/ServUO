@@ -129,7 +129,7 @@ namespace Server.Engines.Quests
 
         public static bool Delayed(PlayerMobile player, BaseQuest quest, object quester, bool message)
         {
-            var restartInfo = GetRestartInfo(player, quest.GetType());
+            QuestRestartInfo restartInfo = GetRestartInfo(player, quest.GetType());
 
             if (restartInfo != null)
             {
@@ -149,7 +149,7 @@ namespace Server.Engines.Quests
                 {
                     if (message && quester is Mobile)
                     {
-                        var ts = endTime - DateTime.UtcNow;
+                        TimeSpan ts = endTime - DateTime.UtcNow;
                         string str;
 
                         if (ts.TotalDays > 1)
@@ -207,7 +207,7 @@ namespace Server.Engines.Quests
         {
             if (type.IsSubclassOf(typeof(Item)))
             {
-                var info = player.DoneQuests.FirstOrDefault(x => x.QuestType == type);
+                QuestRestartInfo info = player.DoneQuests.FirstOrDefault(x => x.QuestType == type);
 
                 if (info != null)
                 {
@@ -250,7 +250,7 @@ namespace Server.Engines.Quests
 
         public static void Delay(PlayerMobile player, Type type, TimeSpan delay)
         {
-            var restartInfo = GetRestartInfo(player, type);
+            QuestRestartInfo restartInfo = GetRestartInfo(player, type);
 
             if (restartInfo != null)
             {
@@ -272,7 +272,7 @@ namespace Server.Engines.Quests
             if (quests == null)
                 return false;
 
-            var quest = player.Quests.FirstOrDefault(q => quests.Any(questerType => questerType == q.GetType()));
+            BaseQuest quest = player.Quests.FirstOrDefault(q => quests.Any(questerType => questerType == q.GetType()));
 
             if (quest != null)
             {
@@ -323,7 +323,7 @@ namespace Server.Engines.Quests
         /// <returns></returns>
         public static bool InProgress(PlayerMobile player, Mobile quester)
         {
-            var quest = player.Quests.FirstOrDefault(q => q.QuesterType == quester.GetType());
+            BaseQuest quest = player.Quests.FirstOrDefault(q => q.QuesterType == quester.GetType());
 
             if (quest != null)
             {
@@ -741,9 +741,9 @@ namespace Server.Engines.Quests
 
         public static bool CheckRewardItem(PlayerMobile player, Item item)
         {
-            foreach (var quest in player.Quests.Where(q => q.Objectives.Any(obj => obj is ObtainObjective)))
+            foreach (BaseQuest quest in player.Quests.Where(q => q.Objectives.Any(obj => obj is ObtainObjective)))
             {
-                foreach (var obtain in quest.Objectives.OfType<ObtainObjective>())
+                foreach (ObtainObjective obtain in quest.Objectives.OfType<ObtainObjective>())
                 {
                     if (obtain.IsObjective(item))
                     {

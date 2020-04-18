@@ -18,16 +18,10 @@ namespace Server.Spells.Sixth
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Sixth;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Sixth;
         public override void OnCast()
         {
-            this.Caster.Target = new InternalTarget(this);
+            Caster.Target = new InternalTarget(this);
         }
 
         public class InternalTarget : Target
@@ -36,7 +30,7 @@ namespace Server.Spells.Sixth
             public InternalTarget(DispelSpell owner)
                 : base(10, false, TargetFlags.Harmful)
             {
-                this.m_Owner = owner;
+                m_Owner = owner;
             }
 
             protected override void OnTarget(Mobile from, object o)
@@ -81,7 +75,7 @@ namespace Server.Spells.Sixth
 
             protected override void OnTargetFinish(Mobile from)
             {
-                this.m_Owner.FinishSequence();
+                m_Owner.FinishSequence();
             }
         }
     }

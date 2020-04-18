@@ -98,10 +98,7 @@ namespace Server.Mobiles
             Action = ActionType.Wander;
         }
 
-        public bool CanRun
-        {
-            get { return m_Mobile.SupportsRunAnimation; }
-        }
+        public bool CanRun => m_Mobile.SupportsRunAnimation;
 
         public ActionType Action
         {
@@ -115,7 +112,7 @@ namespace Server.Mobiles
 
         public virtual bool WasNamed(string speech)
         {
-            var name = m_Mobile.Name;
+            string name = m_Mobile.Name;
 
             return (name != null && Insensitive.StartsWith(speech, name));
         }
@@ -157,8 +154,8 @@ namespace Server.Mobiles
                         return;
                     }
 
-                    var isOwner = (m_From == m_Mobile.ControlMaster);
-                    var isFriend = (!isOwner && m_Mobile.IsPetFriend(m_From));
+                    bool isOwner = (m_From == m_Mobile.ControlMaster);
+                    bool isFriend = (!isOwner && m_Mobile.IsPetFriend(m_From));
 
                     if (!isOwner && !isFriend)
                     {
@@ -278,8 +275,8 @@ namespace Server.Mobiles
                 return;
             }
 
-            var isOwner = (from == m_Mobile.ControlMaster);
-            var isFriend = (!isOwner && m_Mobile.IsPetFriend(from));
+            bool isOwner = (from == m_Mobile.ControlMaster);
+            bool isFriend = (!isOwner && m_Mobile.IsPetFriend(from));
 
             if (!isOwner && !isFriend)
             {
@@ -309,7 +306,7 @@ namespace Server.Mobiles
             }
             else if (from.Target is AIControlMobileTarget)
             {
-                var t = (AIControlMobileTarget)from.Target;
+                AIControlMobileTarget t = (AIControlMobileTarget)from.Target;
 
                 if (t.Order == order)
                 {
@@ -320,7 +317,7 @@ namespace Server.Mobiles
 
         public virtual void OnAggressiveAction(Mobile aggressor)
         {
-            var currentCombat = m_Mobile.Combatant as Mobile;
+            Mobile currentCombat = m_Mobile.Combatant as Mobile;
 
             if (currentCombat != null && !aggressor.Hidden && currentCombat != aggressor &&
                 m_Mobile.GetDistanceToSqrt(currentCombat) > m_Mobile.GetDistanceToSqrt(aggressor))
@@ -337,8 +334,8 @@ namespace Server.Mobiles
                 return;
             }
 
-            var isOwner = (from == m_Mobile.ControlMaster);
-            var isFriend = (!isOwner && m_Mobile.IsPetFriend(from));
+            bool isOwner = (from == m_Mobile.ControlMaster);
+            bool isFriend = (!isOwner && m_Mobile.IsPetFriend(from));
 
             if (!isOwner && !isFriend)
             {
@@ -353,7 +350,7 @@ namespace Server.Mobiles
             {
                 if (target is BaseCreature)
                 {
-                    var bc = (BaseCreature)target;
+                    BaseCreature bc = (BaseCreature)target;
 
                     if (bc.IsScaryToPets && m_Mobile.IsScaredOfScaryThings)
                     {
@@ -451,19 +448,19 @@ namespace Server.Mobiles
                     }
                     else
                     {
-                        var foundSomething = false;
+                        bool foundSomething = false;
 
-                        var ourSkills = m_Mobile.Skills;
-                        var theirSkills = e.Mobile.Skills;
+                        Skills ourSkills = m_Mobile.Skills;
+                        Skills theirSkills = e.Mobile.Skills;
 
-                        for (var i = 0; i < ourSkills.Length && i < theirSkills.Length; ++i)
+                        for (int i = 0; i < ourSkills.Length && i < theirSkills.Length; ++i)
                         {
-                            var skill = ourSkills[i];
-                            var theirSkill = theirSkills[i];
+                            Skill skill = ourSkills[i];
+                            Skill theirSkill = theirSkills[i];
 
                             if (skill != null && theirSkill != null && skill.Base >= 60.0 && m_Mobile.CheckTeach(skill.SkillName, e.Mobile))
                             {
-                                var toTeach = skill.Base / 3.0;
+                                double toTeach = skill.Base / 3.0;
 
                                 if (toTeach > 42.0)
                                 {
@@ -472,7 +469,7 @@ namespace Server.Mobiles
 
                                 if (toTeach > theirSkill.Base)
                                 {
-                                    var number = 1043059 + i;
+                                    int number = 1043059 + i;
 
                                     if (number > 1043107)
                                     {
@@ -499,11 +496,11 @@ namespace Server.Mobiles
                 }
                 else
                 {
-                    var toTrain = (SkillName)(-1);
+                    SkillName toTrain = (SkillName)(-1);
 
-                    for (var i = 0; toTrain == (SkillName)(-1) && i < e.Keywords.Length; ++i)
+                    for (int i = 0; toTrain == (SkillName)(-1) && i < e.Keywords.Length; ++i)
                     {
-                        var keyword = e.Keywords[i];
+                        int keyword = e.Keywords[i];
 
                         if (keyword == 0x154)
                         {
@@ -511,7 +508,7 @@ namespace Server.Mobiles
                         }
                         else if (keyword >= 0x6D && keyword <= 0x9C)
                         {
-                            var index = keyword - 0x6D;
+                            int index = keyword - 0x6D;
 
                             if (index >= 0 && index < m_KeywordTable.Length)
                             {
@@ -529,8 +526,8 @@ namespace Server.Mobiles
                         }
                         else
                         {
-                            var skills = m_Mobile.Skills;
-                            var skill = skills[toTrain];
+                            Skills skills = m_Mobile.Skills;
+                            Skill skill = skills[toTrain];
 
                             if (skill == null || skill.Base < 60.0 || !m_Mobile.CheckTeach(toTrain, e.Mobile))
                             {
@@ -549,20 +546,20 @@ namespace Server.Mobiles
             {
                 m_Mobile.DebugSay("Listening...");
 
-                var isOwner = (e.Mobile == m_Mobile.ControlMaster);
-                var isFriend = (!isOwner && m_Mobile.IsPetFriend(e.Mobile));
+                bool isOwner = (e.Mobile == m_Mobile.ControlMaster);
+                bool isFriend = (!isOwner && m_Mobile.IsPetFriend(e.Mobile));
 
                 if (e.Mobile.Alive && (isOwner || isFriend))
                 {
                     m_Mobile.DebugSay("It's from my master");
 
-                    var keywords = e.Keywords;
-                    var speech = e.Speech;
+                    int[] keywords = e.Keywords;
+                    string speech = e.Speech;
 
                     // First, check the all*
-                    for (var i = 0; i < keywords.Length; ++i)
+                    for (int i = 0; i < keywords.Length; ++i)
                     {
-                        var keyword = keywords[i];
+                        int keyword = keywords[i];
 
                         switch (keyword)
                         {
@@ -643,9 +640,9 @@ namespace Server.Mobiles
                     }
 
                     // No all*, so check *command
-                    for (var i = 0; i < keywords.Length; ++i)
+                    for (int i = 0; i < keywords.Length; ++i)
                     {
-                        var keyword = keywords[i];
+                        int keyword = keywords[i];
 
                         switch (keyword)
                         {
@@ -847,12 +844,12 @@ namespace Server.Mobiles
 
                     if (m_Mobile.FindMyName(e.Speech, true))
                     {
-                        var str = e.Speech.Split(' ');
+                        string[] str = e.Speech.Split(' ');
                         int i;
 
                         for (i = 0; i < str.Length; i++)
                         {
-                            var word = str[i];
+                            string word = str[i];
 
                             if (Insensitive.Equals(word, "obey"))
                             {
@@ -958,13 +955,13 @@ namespace Server.Mobiles
 
         public virtual void CheckNavPoint()
         {
-            var map = m_Mobile.Map;
+            Map map = m_Mobile.Map;
 
             if (map != null && m_Mobile.NavPoints != null && m_Mobile.NavPoints.ContainsKey(map))
             {
                 if (m_Mobile.CurrentNavPoint >= 0 && m_Mobile.CurrentNavPoint < m_Mobile.NavPoints[map].Count - 1)
                 {
-                    var next = m_Mobile.NavPoints[map][m_Mobile.CurrentNavPoint + 1];
+                    Point2D next = m_Mobile.NavPoints[map][m_Mobile.CurrentNavPoint + 1];
 
                     if (m_Mobile.InRange(next, 15))
                         m_Mobile.CurrentNavPoint++;
@@ -979,8 +976,8 @@ namespace Server.Mobiles
 
         public virtual bool DoActionWander()
         {
-            var followRange = m_Mobile.FollowRange;
-            var map = m_Mobile.Map;
+            int followRange = m_Mobile.FollowRange;
+            Map map = m_Mobile.Map;
 
             if (CheckHerding())
             {
@@ -990,12 +987,12 @@ namespace Server.Mobiles
             {
                 if (m_Mobile.CurrentNavPoint >= 0 && m_Mobile.CurrentNavPoint < m_Mobile.NavPoints[map].Count)
                 {
-                    var point = m_Mobile.NavPoints[map][m_Mobile.CurrentNavPoint];
+                    Point2D point = m_Mobile.NavPoints[map][m_Mobile.CurrentNavPoint];
                     if (point.X != m_Mobile.X || point.Y != m_Mobile.Y)
                     {
                         m_Mobile.DebugSay(String.Format("I will move towards my navpoint: {0}", point));
                         //DoMove(m_Mobile.GetDirectionTo(point));
-                        var res = DoMoveImpl(m_Mobile.GetDirectionTo(point));
+                        MoveResult res = DoMoveImpl(m_Mobile.GetDirectionTo(point));
 
                         if (res == MoveResult.Blocked)
                         {
@@ -1017,7 +1014,7 @@ namespace Server.Mobiles
             }
             else if (m_Mobile.CurrentWayPoint != null)
             {
-                var point = m_Mobile.CurrentWayPoint;
+                WayPoint point = m_Mobile.CurrentWayPoint;
                 if ((point.X != m_Mobile.Location.X || point.Y != m_Mobile.Location.Y) && point.Map == map &&
                     point.Parent == null && !point.Deleted)
                 {
@@ -1037,7 +1034,7 @@ namespace Server.Mobiles
             else if (m_Mobile.IsAnimatedDead || m_Mobile.FollowRange > 0)
             {
                 // animated dead follow their master
-                var master = m_Mobile.SummonMaster;
+                Mobile master = m_Mobile.SummonMaster;
 
                 if (master != null && master.Map == m_Mobile.Map &&
                     master.InRange(m_Mobile, m_Mobile.RangePerception + followRange))
@@ -1074,7 +1071,7 @@ namespace Server.Mobiles
             }
             else
             {
-                var c = m_Mobile.Combatant;
+                IDamageable c = m_Mobile.Combatant;
 
                 if (c == null || c.Deleted || c.Map != m_Mobile.Map || !c.Alive || (c is Mobile && ((Mobile)c).IsDeadBondedPet))
                 {
@@ -1111,7 +1108,7 @@ namespace Server.Mobiles
 
         public virtual bool DoActionFlee()
         {
-            var c = m_Mobile.Combatant as Mobile;
+            Mobile c = m_Mobile.Combatant as Mobile;
 
             // We only want enemies we know want to attack us, not those we want to attack
             if (AcquireFocusMob(m_Mobile.RangePerception, FightMode.Aggressor, false) || c != null)
@@ -1255,7 +1252,7 @@ namespace Server.Mobiles
                     m_Mobile.Warmode = true;
                     m_Mobile.Combatant = null;
                     m_Mobile.ControlTarget = null;
-                    var petname = String.Format("{0}", m_Mobile.Name);
+                    string petname = String.Format("{0}", m_Mobile.Name);
                     m_Mobile.ControlMaster.SendLocalizedMessage(1049671, petname); //~1_PETNAME~ is now guarding you.
                     break;
                 case OrderType.Attack:
@@ -1342,7 +1339,7 @@ namespace Server.Mobiles
         {
             if (m_Mobile.ControlMaster != null && !m_Mobile.ControlMaster.Deleted)
             {
-                var iCurrDist = (int)m_Mobile.GetDistanceToSqrt(m_Mobile.ControlMaster);
+                int iCurrDist = (int)m_Mobile.GetDistanceToSqrt(m_Mobile.ControlMaster);
 
                 if (iCurrDist > m_Mobile.RangePerception)
                 {
@@ -1355,7 +1352,7 @@ namespace Server.Mobiles
                     m_Mobile.DebugSay("My master told me come");
 
                     // Not exactly OSI style, but better than nothing.
-                    var bRun = CanRun && (iCurrDist > 5);
+                    bool bRun = CanRun && (iCurrDist > 5);
 
                     if (WalkMobileRange(m_Mobile.ControlMaster, 1, bRun, 0, 1))
                     {
@@ -1387,13 +1384,13 @@ namespace Server.Mobiles
 
             m_Mobile.DebugSay("I drop my stuff for my master");
 
-            var pack = m_Mobile.Backpack;
+            Container pack = m_Mobile.Backpack;
 
             if (pack != null)
             {
-                var list = pack.Items;
+                List<Item> list = pack.Items;
 
-                for (var i = list.Count - 1; i >= 0; --i)
+                for (int i = list.Count - 1; i >= 0; --i)
                 {
                     if (i < list.Count)
                     {
@@ -1410,7 +1407,7 @@ namespace Server.Mobiles
 
         public virtual bool CheckCharming()
         {
-            var target = m_Mobile.CharmTarget;
+            Point2D target = m_Mobile.CharmTarget;
 
             if (target == Point2D.Zero)
                 return false;
@@ -1423,14 +1420,14 @@ namespace Server.Mobiles
 
         public virtual bool CheckHerding()
         {
-            var target = m_Mobile.TargetLocation;
+            IPoint2D target = m_Mobile.TargetLocation;
 
             if (target == null)
             {
                 return false; // Creature is not being herded
             }
 
-            var distance = m_Mobile.GetDistanceToSqrt(target);
+            double distance = m_Mobile.GetDistanceToSqrt(target);
 
             if (distance < 1 || distance > 15)
             {
@@ -1451,7 +1448,7 @@ namespace Server.Mobiles
             }
             else if (m_Mobile.ControlTarget != null && !m_Mobile.ControlTarget.Deleted && m_Mobile.ControlTarget != m_Mobile)
             {
-                var iCurrDist = (int)m_Mobile.GetDistanceToSqrt(m_Mobile.ControlTarget);
+                int iCurrDist = (int)m_Mobile.GetDistanceToSqrt(m_Mobile.ControlTarget);
 
                 if (iCurrDist > m_Mobile.RangePerception * 5)
                 {
@@ -1475,7 +1472,7 @@ namespace Server.Mobiles
                     m_Mobile.DebugSay("My master told me to follow: {0}", m_Mobile.ControlTarget.Name);
 
                     // Not exactly OSI style, but better than nothing.
-                    var bRun = (iCurrDist > 5);
+                    bool bRun = (iCurrDist > 5);
 
                     if (WalkMobileRange(m_Mobile.ControlTarget, 1, bRun, 0, 1))
                     {
@@ -1508,8 +1505,8 @@ namespace Server.Mobiles
 
         public virtual bool DoOrderFriend()
         {
-            var from = m_Mobile.ControlMaster;
-            var to = m_Mobile.ControlTarget as Mobile;
+            Mobile from = m_Mobile.ControlMaster;
+            Mobile to = m_Mobile.ControlTarget as Mobile;
 
             if (from == null || to == null || from == to || from.Deleted || to.Deleted || !to.Player)
             {
@@ -1517,8 +1514,8 @@ namespace Server.Mobiles
             }
             else
             {
-                var youngFrom = from is PlayerMobile ? ((PlayerMobile)from).Young : false;
-                var youngTo = to is PlayerMobile ? ((PlayerMobile)to).Young : false;
+                bool youngFrom = from is PlayerMobile ? ((PlayerMobile)from).Young : false;
+                bool youngTo = to is PlayerMobile ? ((PlayerMobile)to).Young : false;
 
                 if (youngFrom && !youngTo)
                 {
@@ -1579,8 +1576,8 @@ namespace Server.Mobiles
 
         public virtual bool DoOrderUnfriend()
         {
-            var from = m_Mobile.ControlMaster;
-            var to = m_Mobile.ControlTarget as Mobile;
+            Mobile from = m_Mobile.ControlMaster;
+            Mobile to = m_Mobile.ControlTarget as Mobile;
 
             if (from == null || to == null || from == to || from.Deleted || to.Deleted || !to.Player)
             {
@@ -1616,24 +1613,24 @@ namespace Server.Mobiles
                 return true;
             }
 
-            var controlMaster = m_Mobile.ControlMaster;
+            Mobile controlMaster = m_Mobile.ControlMaster;
 
             if (controlMaster == null || controlMaster.Deleted)
             {
                 return true;
             }
 
-            var combatant = m_Mobile.Combatant as Mobile;
+            Mobile combatant = m_Mobile.Combatant as Mobile;
 
             if (combatant != null && !ValidGuardTarget(combatant))
                 combatant = null;
 
             Mobile closestMob = combatant;
-            var closestDist = combatant == null ? m_Mobile.RangePerception : combatant.GetDistanceToSqrt(controlMaster);
+            double closestDist = combatant == null ? m_Mobile.RangePerception : combatant.GetDistanceToSqrt(controlMaster);
 
-            foreach (var aggressor in controlMaster.Aggressors.Select(x => x.Attacker).Where(m => ValidGuardTarget(m)))
+            foreach (Mobile aggressor in controlMaster.Aggressors.Select(x => x.Attacker).Where(m => ValidGuardTarget(m)))
             {
-                var dist = aggressor.GetDistanceToSqrt(controlMaster);
+                double dist = aggressor.GetDistanceToSqrt(controlMaster);
 
                 if (closestMob == null || dist < closestDist)
                 {
@@ -1642,9 +1639,9 @@ namespace Server.Mobiles
                 }
             }
 
-            foreach (var aggressed in controlMaster.Aggressed.Select(x => x.Defender).Where(m => ValidGuardTarget(m)))
+            foreach (Mobile aggressed in controlMaster.Aggressed.Select(x => x.Defender).Where(m => ValidGuardTarget(m)))
             {
-                var dist = aggressed.GetDistanceToSqrt(controlMaster);
+                double dist = aggressed.GetDistanceToSqrt(controlMaster);
 
                 if (closestMob == null || dist < closestDist)
                 {
@@ -1719,11 +1716,11 @@ namespace Server.Mobiles
                 if (m_Mobile.FightMode == FightMode.Closest || m_Mobile.FightMode == FightMode.Aggressor)
                 {
                     Mobile newCombatant = null;
-                    var newScore = 0.0;
+                    double newScore = 0.0;
 
-                    var eable = m_Mobile.GetMobilesInRange(m_Mobile.RangePerception);
+                    IPooledEnumerable<Mobile> eable = m_Mobile.GetMobilesInRange(m_Mobile.RangePerception);
 
-                    foreach (var aggr in eable)
+                    foreach (Mobile aggr in eable)
                     {
                         if (!m_Mobile.CanSee(aggr) || aggr.Combatant != m_Mobile)
                         {
@@ -1735,7 +1732,7 @@ namespace Server.Mobiles
                             continue;
                         }
 
-                        var aggrScore = m_Mobile.GetFightModeRanking(aggr, FightMode.Closest, false);
+                        double aggrScore = m_Mobile.GetFightModeRanking(aggr, FightMode.Closest, false);
 
                         if ((newCombatant == null || aggrScore > newScore || (aggrScore == newScore && !aggr.Player && newCombatant.Player)) && m_Mobile.InLOS(aggr))
                         {
@@ -1780,7 +1777,7 @@ namespace Server.Mobiles
             m_Mobile.DebugSay("I have been released");
 
             m_Mobile.PlaySound(m_Mobile.GetAngerSound());
-            var master = m_Mobile.ControlMaster;
+            Mobile master = m_Mobile.ControlMaster;
 
             if (m_Mobile.DeleteOnRelease)
             {
@@ -1799,7 +1796,7 @@ namespace Server.Mobiles
             m_Mobile.OwnerAbandonTime = DateTime.MinValue;
             m_Mobile.IsBonded = false;
 
-            var se = m_Mobile.Spawner as SpawnEntry;
+            SpawnEntry se = m_Mobile.Spawner as SpawnEntry;
             if (se != null && se.HomeLocation != Point3D.Zero)
             {
                 m_Mobile.Home = se.HomeLocation;
@@ -1906,7 +1903,7 @@ namespace Server.Mobiles
             {
                 base.Deserialize(reader);
 
-                var version = reader.ReadInt();
+                int version = reader.ReadInt();
 
                 Delete();
             }
@@ -1942,8 +1939,8 @@ namespace Server.Mobiles
                     return false;
                 }
 
-                var youngFrom = from is PlayerMobile ? ((PlayerMobile)from).Young : false;
-                var youngTo = to is PlayerMobile ? ((PlayerMobile)to).Young : false;
+                bool youngFrom = from is PlayerMobile ? ((PlayerMobile)from).Young : false;
+                bool youngTo = to is PlayerMobile ? ((PlayerMobile)to).Young : false;
 
                 if (accepted && youngFrom && !youngTo)
                 {
@@ -1955,7 +1952,7 @@ namespace Server.Mobiles
                 }
                 else if (accepted && !m_Creature.CanBeControlledBy(to))
                 {
-                    var args = String.Format("{0}\t{1}\t ", to.Name, from.Name);
+                    string args = String.Format("{0}\t{1}\t ", to.Name, from.Name);
 
                     from.SendLocalizedMessage(1043248, args);
                     // The pet refuses to be transferred because it will not obey ~1_NAME~.~3_BLANK~
@@ -1966,7 +1963,7 @@ namespace Server.Mobiles
                 }
                 else if (accepted && !m_Creature.CanBeControlledBy(from))
                 {
-                    var args = String.Format("{0}\t{1}\t ", to.Name, from.Name);
+                    string args = String.Format("{0}\t{1}\t ", to.Name, from.Name);
 
                     from.SendLocalizedMessage(1043250, args);
                     // The pet refuses to be transferred because it will not obey you sufficiently.~3_BLANK~
@@ -2028,7 +2025,7 @@ namespace Server.Mobiles
 
                         m_Creature.PlaySound(m_Creature.GetIdleSound());
 
-                        var args = String.Format("{0}\t{1}\t{2}", from.Name, m_Creature.Name, to.Name);
+                        string args = String.Format("{0}\t{1}\t{2}", from.Name, m_Creature.Name, to.Name);
 
                         from.SendLocalizedMessage(1043253, args); // You have transferred your pet to ~3_GETTER~.
                         to.SendLocalizedMessage(1043252, args); // ~1_NAME~ has transferred the allegiance of ~2_PET_NAME~ to you.
@@ -2044,15 +2041,15 @@ namespace Server.Mobiles
                 return true;
             }
 
-            var from = m_Mobile.ControlMaster;
-            var to = m_Mobile.ControlTarget as Mobile;
+            Mobile from = m_Mobile.ControlMaster;
+            Mobile to = m_Mobile.ControlTarget as Mobile;
 
             if (from != to && from != null && !from.Deleted && to != null && !to.Deleted && to.Player)
             {
                 m_Mobile.DebugSay("Begin transfer with {0}", to.Name);
 
-                var youngFrom = from is PlayerMobile ? ((PlayerMobile)from).Young : false;
-                var youngTo = to is PlayerMobile ? ((PlayerMobile)to).Young : false;
+                bool youngFrom = from is PlayerMobile ? ((PlayerMobile)from).Young : false;
+                bool youngTo = to is PlayerMobile ? ((PlayerMobile)to).Young : false;
 
                 if (youngFrom && !youngTo)
                 {
@@ -2064,7 +2061,7 @@ namespace Server.Mobiles
                 }
                 else if (!m_Mobile.CanBeControlledBy(to))
                 {
-                    var args = String.Format("{0}\t{1}\t ", to.Name, from.Name);
+                    string args = String.Format("{0}\t{1}\t ", to.Name, from.Name);
 
                     from.SendLocalizedMessage(1043248, args);
                     // The pet refuses to be transferred because it will not obey ~1_NAME~.~3_BLANK~
@@ -2073,7 +2070,7 @@ namespace Server.Mobiles
                 }
                 else if (!m_Mobile.CanBeControlledBy(from))
                 {
-                    var args = String.Format("{0}\t{1}\t ", to.Name, from.Name);
+                    string args = String.Format("{0}\t{1}\t ", to.Name, from.Name);
 
                     from.SendLocalizedMessage(1043250, args);
                     // The pet refuses to be transferred because it will not obey you sufficiently.~3_BLANK~
@@ -2184,7 +2181,7 @@ namespace Server.Mobiles
 
             if (m_Mobile.CanFly && Utility.Random(8 * iChanceToNotMove) <= 8)
             {
-                var p = Point3D.Zero;
+                Point3D p = Point3D.Zero;
 
                 for (int i = 0; i < 10; i++)
                 {
@@ -2202,11 +2199,11 @@ namespace Server.Mobiles
                 }
             }
 
-            for (var i = 0; i < iSteps; i++)
+            for (int i = 0; i < iSteps; i++)
             {
                 if (Utility.Random(8 * iChanceToNotMove) <= 8)
                 {
-                    var iRndMove = Utility.Random(0, 8 + (9 * iChanceToDir));
+                    int iRndMove = Utility.Random(0, 8 + (9 * iChanceToDir));
 
                     switch (iRndMove)
                     {
@@ -2248,7 +2245,7 @@ namespace Server.Mobiles
 
             if (double.IsNaN(delay))
             {
-                using (var op = new StreamWriter("nan_transform.txt", true))
+                using (StreamWriter op = new StreamWriter("nan_transform.txt", true))
                 {
                     op.WriteLine(
                         "NaN in TransformMoveDelay: {0}, {1}, {2}, {3}",
@@ -2278,7 +2275,7 @@ namespace Server.Mobiles
 
         public virtual bool DoMove(Direction d, bool badStateOk)
         {
-            var res = DoMoveImpl(d);
+            MoveResult res = DoMoveImpl(d);
 
             return (res == MoveResult.Success || res == MoveResult.SuccessAutoTurn ||
                     (badStateOk && res == MoveResult.BadState));
@@ -2299,10 +2296,10 @@ namespace Server.Mobiles
                 return MoveResult.BadState;
             }
 
-            var delay = (int)(TransformMoveDelay(m_Mobile.CurrentSpeed) * 1000);
+            int delay = (int)(TransformMoveDelay(m_Mobile.CurrentSpeed) * 1000);
 
-            var mounted = (m_Mobile.Mounted || m_Mobile.Flying);
-            var running = CanRun && (mounted ? (delay < Mobile.WalkMount) : (delay < Mobile.WalkFoot));
+            bool mounted = (m_Mobile.Mounted || m_Mobile.Flying);
+            bool running = CanRun && (mounted ? (delay < Mobile.WalkMount) : (delay < Mobile.WalkFoot));
 
             if (running)
             {
@@ -2325,32 +2322,32 @@ namespace Server.Mobiles
 
             if ((m_Mobile.Direction & Direction.Mask) != (d & Direction.Mask))
             {
-                var v = m_Mobile.Move(d);
+                bool v = m_Mobile.Move(d);
 
                 MoveImpl.IgnoreMovableImpassables = false;
                 return (v ? MoveResult.Success : MoveResult.Blocked);
             }
             if (!m_Mobile.Move(d))
             {
-                var wasPushing = m_Mobile.Pushing;
+                bool wasPushing = m_Mobile.Pushing;
 
-                var blocked = true;
+                bool blocked = true;
 
-                var canOpenDoors = m_Mobile.CanOpenDoors;
-                var canDestroyObstacles = m_Mobile.CanDestroyObstacles;
+                bool canOpenDoors = m_Mobile.CanOpenDoors;
+                bool canDestroyObstacles = m_Mobile.CanDestroyObstacles;
 
                 if (canOpenDoors || canDestroyObstacles)
                 {
                     m_Mobile.DebugSay("My movement was blocked, I will try to clear some obstacles.");
 
-                    var map = m_Mobile.Map;
+                    Map map = m_Mobile.Map;
 
                     if (map != null)
                     {
                         int x = m_Mobile.X, y = m_Mobile.Y;
                         Movement.Movement.Offset(d, ref x, ref y);
 
-                        var destroyables = 0;
+                        int destroyables = 0;
 
                         IPooledEnumerable eable = map.GetItemsInRange(new Point3D(x, y, m_Mobile.Location.Z), 1);
 
@@ -2364,7 +2361,7 @@ namespace Server.Mobiles
                                     continue;
                                 }
 
-                                var door = (BaseDoor)item;
+                                BaseDoor door = (BaseDoor)item;
 
                                 if (!door.Locked || !door.UseLocks())
                                 {
@@ -2403,7 +2400,7 @@ namespace Server.Mobiles
 
                         while (m_Obstacles.Count > 0)
                         {
-                            var item = m_Obstacles.Dequeue();
+                            Item item = m_Obstacles.Dequeue();
 
                             if (item is BaseDoor)
                             {
@@ -2418,11 +2415,11 @@ namespace Server.Mobiles
 
                                 if (item is Container)
                                 {
-                                    var cont = (Container)item;
+                                    Container cont = (Container)item;
 
-                                    for (var i = 0; i < cont.Items.Count; ++i)
+                                    for (int i = 0; i < cont.Items.Count; ++i)
                                     {
-                                        var check = cont.Items[i];
+                                        Item check = cont.Items[i];
 
                                         if (check.Movable && check.ItemData.Impassable && (item.Z + check.ItemData.Height) > m_Mobile.Z)
                                         {
@@ -2448,9 +2445,9 @@ namespace Server.Mobiles
 
                 if (blocked)
                 {
-                    var offset = (Utility.RandomDouble() >= 0.6 ? 1 : -1);
+                    int offset = (Utility.RandomDouble() >= 0.6 ? 1 : -1);
 
-                    for (var i = 0; i < 2; ++i)
+                    for (int i = 0; i < 2; ++i)
                     {
                         m_Mobile.TurnInternal(offset);
 
@@ -2510,11 +2507,11 @@ namespace Server.Mobiles
             }
             else
             {
-                for (var i = 0; i < iSteps; i++)
+                for (int i = 0; i < iSteps; i++)
                 {
                     if (m_Mobile.RangeHome != 0)
                     {
-                        var iCurrDist = (int)m_Mobile.GetDistanceToSqrt(m_Mobile.Home);
+                        int iCurrDist = (int)m_Mobile.GetDistanceToSqrt(m_Mobile.Home);
 
                         if (iCurrDist < m_Mobile.RangeHome * 2 / 3)
                         {
@@ -2551,7 +2548,7 @@ namespace Server.Mobiles
         {
             if (m_Mobile.CheckFlee())
             {
-                var combatant = m_Mobile.Combatant as Mobile;
+                Mobile combatant = m_Mobile.Combatant as Mobile;
 
                 if (combatant == null)
                 {
@@ -2559,7 +2556,7 @@ namespace Server.Mobiles
                 }
                 else
                 {
-                    var d = combatant.GetDirectionTo(m_Mobile);
+                    Direction d = combatant.GetDirectionTo(m_Mobile);
 
                     d = (Direction)((int)d + Utility.RandomMinMax(-1, +1));
 
@@ -2593,7 +2590,7 @@ namespace Server.Mobiles
 
             if (!m_Mobile.Controlled && m_Mobile.ForceStayHome)
             {
-                var rangeHome = Math.Min(10, m_Mobile.RangeHome);
+                int rangeHome = Math.Min(10, m_Mobile.RangeHome);
 
                 if (!Utility.InRange(new Point3D(p), m_Mobile.Home, rangeHome) || 0.025 < Utility.RandomDouble())
                 {
@@ -2654,15 +2651,15 @@ namespace Server.Mobiles
 
             if (p != null)
             {
-                for (var i = 0; i < iSteps; i++)
+                for (int i = 0; i < iSteps; i++)
                 {
                     // Get the curent distance
-                    var iCurrDist = (int)m_Mobile.GetDistanceToSqrt(p);
+                    int iCurrDist = (int)m_Mobile.GetDistanceToSqrt(p);
 
                     if (iCurrDist < iWantDistMin || iCurrDist > iWantDistMax)
                     {
-                        var needCloser = (iCurrDist > iWantDistMax);
-                        var needFurther = !needCloser;
+                        bool needCloser = (iCurrDist > iWantDistMax);
+                        bool needFurther = !needCloser;
 
                         if (needCloser && m_Path != null && m_Path.Goal == p)
                         {
@@ -2713,7 +2710,7 @@ namespace Server.Mobiles
                 }
 
                 // Get the curent distance
-                var iNewDist = (int)m_Mobile.GetDistanceToSqrt(p);
+                int iNewDist = (int)m_Mobile.GetDistanceToSqrt(p);
 
                 if (iNewDist >= iWantDistMin && iNewDist <= iWantDistMax)
                 {
@@ -2807,17 +2804,17 @@ namespace Server.Mobiles
 
             m_Mobile.DebugSay("Acquiring...");
 
-            var map = m_Mobile.Map;
+            Map map = m_Mobile.Map;
 
             if (map != null)
             {
                 Mobile newFocusMob = null;
-                var val = double.MinValue;
+                double val = double.MinValue;
                 double theirVal;
 
-                var eable = map.GetMobilesInRange(m_Mobile.Location, iRange);
+                IPooledEnumerable<Mobile> eable = map.GetMobilesInRange(m_Mobile.Location, iRange);
 
-                foreach (var m in eable)
+                foreach (Mobile m in eable)
                 {
                     if (m.Deleted || m.Blessed)
                     {
@@ -2924,7 +2921,7 @@ namespace Server.Mobiles
             {
                 m_Timer.Stop();
 
-                var se = m_Mobile.Spawner as SpawnEntry;
+                SpawnEntry se = m_Mobile.Spawner as SpawnEntry;
 
                 if (se != null && se.ReturnOnDeactivate && !m_Mobile.Controlled)
                 {
@@ -2945,11 +2942,11 @@ namespace Server.Mobiles
 
         private void ReturnToHome()
         {
-            var se = m_Mobile.Spawner as SpawnEntry;
+            SpawnEntry se = m_Mobile.Spawner as SpawnEntry;
 
             if (se != null)
             {
-                var loc = se.RandomSpawnLocation(16, !m_Mobile.CantWalk, m_Mobile.CanSwim);
+                Point3D loc = se.RandomSpawnLocation(16, !m_Mobile.CantWalk, m_Mobile.CanSwim);
 
                 if (loc != Point3D.Zero)
                 {
@@ -3014,7 +3011,7 @@ namespace Server.Mobiles
                 }
                 if (m_Owner.m_Mobile.PlayerRangeSensitive) //have to check this in the timer....
                 {
-                    var sect = m_Owner.m_Mobile.Map.GetSector(m_Owner.m_Mobile);
+                    Sector sect = m_Owner.m_Mobile.Map.GetSector(m_Owner.m_Mobile);
                     if (!sect.Active)
                     {
                         m_Owner.Deactivate();

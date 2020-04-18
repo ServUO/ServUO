@@ -23,7 +23,7 @@ namespace Server.Mobiles
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.Alive && this.IsOwner(from))
+            if (from.Alive && IsOwner(from))
             {
                 from.CloseGump(typeof(InternalGump));
                 from.SendGump(new InternalGump(this));
@@ -34,7 +34,7 @@ namespace Server.Mobiles
 
         public override void AddCustomContextEntries(Mobile from, List<ContextMenuEntry> list)
         {
-            if (from.Alive && this.IsOwner(from))
+            if (from.Alive && IsOwner(from))
                 list.Add(new AttendantUseEntry(this, 6244));
 
             base.AddCustomContextEntries(from, list);
@@ -65,54 +65,54 @@ namespace Server.Mobiles
             public InternalGump(AttendantLuckyDealer dealer, int dice, int faces)
                 : base(60, 36)
             {
-                this.m_Dealer = dealer;
+                m_Dealer = dealer;
 
-                this.AddHtmlLocalized(14, 12, 273, 20, 1075995, 0x7FFF, false, false); // Lucky Dealer
+                AddHtmlLocalized(14, 12, 273, 20, 1075995, 0x7FFF, false, false); // Lucky Dealer
 
-                this.AddPage(0);
+                AddPage(0);
 
-                this.AddBackground(0, 0, 273, 324, 0x13BE);
-                this.AddImageTiled(10, 10, 253, 20, 0xA40);
-                this.AddImageTiled(10, 40, 253, 244, 0xA40);
-                this.AddImageTiled(10, 294, 253, 20, 0xA40);
-                this.AddAlphaRegion(10, 10, 253, 304);
-                this.AddButton(10, 294, 0xFB1, 0xFB2, 0, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(45, 294, 80, 20, 1060051, 0x7FFF, false, false); // CANCEL
-                this.AddButton(130, 294, 0xFB7, 0xFB9, 1, GumpButtonType.Reply, 0);
-                this.AddHtmlLocalized(165, 294, 80, 20, 1076002, 0x7FFF, false, false); // Roll
+                AddBackground(0, 0, 273, 324, 0x13BE);
+                AddImageTiled(10, 10, 253, 20, 0xA40);
+                AddImageTiled(10, 40, 253, 244, 0xA40);
+                AddImageTiled(10, 294, 253, 20, 0xA40);
+                AddAlphaRegion(10, 10, 253, 304);
+                AddButton(10, 294, 0xFB1, 0xFB2, 0, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(45, 294, 80, 20, 1060051, 0x7FFF, false, false); // CANCEL
+                AddButton(130, 294, 0xFB7, 0xFB9, 1, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(165, 294, 80, 20, 1076002, 0x7FFF, false, false); // Roll
 
-                this.AddHtmlLocalized(14, 50, 120, 20, 1076000, 0x7FFF, false, false); // Number of dice
-                this.AddGroup(0);
-                this.AddRadio(14, 70, 0xD2, 0xD3, dice == 1, 1001);
-                this.AddLabel(44, 70, 0x481, "1");
-                this.AddRadio(14, 100, 0xD2, 0xD3, dice == 2, 1002);
-                this.AddLabel(44, 100, 0x481, "2");
-                this.AddRadio(14, 130, 0xD2, 0xD3, dice == 3, 1003);
-                this.AddLabel(44, 130, 0x481, "3");
-                this.AddRadio(14, 160, 0xD2, 0xD3, dice == 4, 1004);
-                this.AddLabel(44, 160, 0x481, "4");
+                AddHtmlLocalized(14, 50, 120, 20, 1076000, 0x7FFF, false, false); // Number of dice
+                AddGroup(0);
+                AddRadio(14, 70, 0xD2, 0xD3, dice == 1, 1001);
+                AddLabel(44, 70, 0x481, "1");
+                AddRadio(14, 100, 0xD2, 0xD3, dice == 2, 1002);
+                AddLabel(44, 100, 0x481, "2");
+                AddRadio(14, 130, 0xD2, 0xD3, dice == 3, 1003);
+                AddLabel(44, 130, 0x481, "3");
+                AddRadio(14, 160, 0xD2, 0xD3, dice == 4, 1004);
+                AddLabel(44, 160, 0x481, "4");
 
-                this.AddHtmlLocalized(130, 50, 120, 20, 1076001, 0x7FFF, false, false); // Number of faces
-                this.AddGroup(1);
-                this.AddRadio(130, 70, 0xD2, 0xD3, faces == 4, 4);
-                this.AddLabel(160, 70, 0x481, "4");
-                this.AddRadio(130, 100, 0xD2, 0xD3, faces == 6, 6);
-                this.AddLabel(160, 100, 0x481, "6");
-                this.AddRadio(130, 130, 0xD2, 0xD3, faces == 8, 8);
-                this.AddLabel(160, 130, 0x481, "8");
-                this.AddRadio(130, 160, 0xD2, 0xD3, faces == 10, 10);
-                this.AddLabel(160, 160, 0x481, "10");
-                this.AddRadio(130, 190, 0xD2, 0xD3, faces == 12, 12);
-                this.AddLabel(160, 190, 0x481, "12");
-                this.AddRadio(130, 220, 0xD2, 0xD3, faces == 20, 20);
-                this.AddLabel(160, 220, 0x481, "20");
-                this.AddRadio(130, 250, 0xD2, 0xD3, faces == 100, 100);
-                this.AddLabel(160, 250, 0x481, "100");
+                AddHtmlLocalized(130, 50, 120, 20, 1076001, 0x7FFF, false, false); // Number of faces
+                AddGroup(1);
+                AddRadio(130, 70, 0xD2, 0xD3, faces == 4, 4);
+                AddLabel(160, 70, 0x481, "4");
+                AddRadio(130, 100, 0xD2, 0xD3, faces == 6, 6);
+                AddLabel(160, 100, 0x481, "6");
+                AddRadio(130, 130, 0xD2, 0xD3, faces == 8, 8);
+                AddLabel(160, 130, 0x481, "8");
+                AddRadio(130, 160, 0xD2, 0xD3, faces == 10, 10);
+                AddLabel(160, 160, 0x481, "10");
+                AddRadio(130, 190, 0xD2, 0xD3, faces == 12, 12);
+                AddLabel(160, 190, 0x481, "12");
+                AddRadio(130, 220, 0xD2, 0xD3, faces == 20, 20);
+                AddLabel(160, 220, 0x481, "20");
+                AddRadio(130, 250, 0xD2, 0xD3, faces == 100, 100);
+                AddLabel(160, 250, 0x481, "100");
             }
 
             public override void OnResponse(NetState sender, RelayInfo info)
             {
-                if (this.m_Dealer == null || this.m_Dealer.Deleted)
+                if (m_Dealer == null || m_Dealer.Deleted)
                     return;
 
                 if (info.ButtonID == 1)
@@ -126,7 +126,7 @@ namespace Server.Mobiles
                         faces = info.Switches[1];
                     }
 
-                    if (this.m_Dealer.m_NextUse < DateTime.UtcNow)
+                    if (m_Dealer.m_NextUse < DateTime.UtcNow)
                     {
                         if (dice > 0 && faces > 0)
                         {
@@ -140,22 +140,22 @@ namespace Server.Mobiles
                                 sum += roll;
                             }
 
-                            this.m_Dealer.Say(1076071, String.Format("{0}\t{1}\t{2}\t{3}\t{4}", sender.Mobile.Name, dice, faces, text, sum)); // ~1_NAME~ rolls ~2_DICE~d~3_FACES~: ~4_ROLLS~ (Total: ~5_TOTAL~)
+                            m_Dealer.Say(1076071, String.Format("{0}\t{1}\t{2}\t{3}\t{4}", sender.Mobile.Name, dice, faces, text, sum)); // ~1_NAME~ rolls ~2_DICE~d~3_FACES~: ~4_ROLLS~ (Total: ~5_TOTAL~)
                         }
 
-                        if (this.m_Dealer.m_Count > 0 && DateTime.UtcNow - this.m_Dealer.m_NextUse < TimeSpan.FromSeconds(this.m_Dealer.m_Count))
-                            this.m_Dealer.m_NextUse = DateTime.UtcNow + TimeSpan.FromSeconds(3);
+                        if (m_Dealer.m_Count > 0 && DateTime.UtcNow - m_Dealer.m_NextUse < TimeSpan.FromSeconds(m_Dealer.m_Count))
+                            m_Dealer.m_NextUse = DateTime.UtcNow + TimeSpan.FromSeconds(3);
 
-                        if (this.m_Dealer.m_Count++ == 5)
+                        if (m_Dealer.m_Count++ == 5)
                         {
-                            this.m_Dealer.m_NextUse = DateTime.UtcNow;
-                            this.m_Dealer.m_Count = 0;
+                            m_Dealer.m_NextUse = DateTime.UtcNow;
+                            m_Dealer.m_Count = 0;
                         }
                     }
                     else
                         sender.Mobile.SendLocalizedMessage(501789); // You must wait before trying again.
 
-                    sender.Mobile.SendGump(new InternalGump(this.m_Dealer, dice, faces));
+                    sender.Mobile.SendGump(new InternalGump(m_Dealer, dice, faces));
                 }
             }
         }
@@ -176,25 +176,25 @@ namespace Server.Mobiles
 
         public override void InitBody()
         {
-            this.SetStr(50, 60);
-            this.SetDex(20, 30);
-            this.SetInt(100, 110);
+            SetStr(50, 60);
+            SetDex(20, 30);
+            SetInt(100, 110);
 
-            this.Name = NameList.RandomName("male");
-            this.Female = false;
-            this.Race = Race.Human;
-            this.Hue = this.Race.RandomSkinHue();
+            Name = NameList.RandomName("male");
+            Female = false;
+            Race = Race.Human;
+            Hue = Race.RandomSkinHue();
 
-            this.HairItemID = this.Race.RandomHair(this.Female);
-            this.HairHue = this.Race.RandomHairHue();
+            HairItemID = Race.RandomHair(Female);
+            HairHue = Race.RandomHairHue();
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Boots());
-            this.AddItem(new ShortPants());
-            this.AddItem(new JesterHat());
-            this.AddItem(new JesterSuit());
+            AddItem(new Boots());
+            AddItem(new ShortPants());
+            AddItem(new JesterHat());
+            AddItem(new JesterSuit());
         }
 
         public override void Serialize(GenericWriter writer)
@@ -227,25 +227,25 @@ namespace Server.Mobiles
 
         public override void InitBody()
         {
-            this.SetStr(50, 60);
-            this.SetDex(20, 30);
-            this.SetInt(100, 110);
+            SetStr(50, 60);
+            SetDex(20, 30);
+            SetInt(100, 110);
 
-            this.Name = NameList.RandomName("female");
-            this.Female = true;
-            this.Race = Race.Elf;
-            this.Hue = this.Race.RandomSkinHue();
+            Name = NameList.RandomName("female");
+            Female = true;
+            Race = Race.Elf;
+            Hue = Race.RandomSkinHue();
 
-            this.HairItemID = this.Race.RandomHair(this.Female);
-            this.HairHue = this.Race.RandomHairHue();
+            HairItemID = Race.RandomHair(Female);
+            HairHue = Race.RandomHairHue();
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new ElvenBoots());
-            this.AddItem(new ElvenPants());
-            this.AddItem(new ElvenShirt());
-            this.AddItem(new JesterHat());
+            AddItem(new ElvenBoots());
+            AddItem(new ElvenPants());
+            AddItem(new ElvenShirt());
+            AddItem(new JesterHat());
         }
 
         public override void Serialize(GenericWriter writer)

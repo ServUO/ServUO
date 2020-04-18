@@ -12,8 +12,8 @@ namespace Server.Mobiles
         public Bowyer()
             : base("the bowyer")
         {
-            this.SetSkill(SkillName.Fletching, 80.0, 100.0);
-            this.SetSkill(SkillName.Archery, 80.0, 100.0);
+            SetSkill(SkillName.Fletching, 80.0, 100.0);
+            SetSkill(SkillName.Archery, 80.0, 100.0);
         }
 
         public Bowyer(Serial serial)
@@ -21,20 +21,8 @@ namespace Server.Mobiles
         {
         }
 
-        public override VendorShoeType ShoeType
-        {
-            get
-            {
-                return this.Female ? VendorShoeType.ThighBoots : VendorShoeType.Boots;
-            }
-        }
-        protected override List<SBInfo> SBInfos
-        {
-            get
-            {
-                return this.m_SBInfos;
-            }
-        }
+        public override VendorShoeType ShoeType => Female ? VendorShoeType.ThighBoots : VendorShoeType.Boots;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override int GetShoeHue()
         {
             return 0;
@@ -44,21 +32,21 @@ namespace Server.Mobiles
         {
             base.InitOutfit();
 
-            this.AddItem(new Server.Items.Bow());
-            this.AddItem(new Server.Items.LeatherGorget());
+            AddItem(new Server.Items.Bow());
+            AddItem(new Server.Items.LeatherGorget());
         }
 
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBBowyer());
-            this.m_SBInfos.Add(new SBRangedWeapon());
+            m_SBInfos.Add(new SBBowyer());
+            m_SBInfos.Add(new SBRangedWeapon());
 
-            if (this.IsTokunoVendor)
-                this.m_SBInfos.Add(new SBSEBowyer());
+            if (IsTokunoVendor)
+                m_SBInfos.Add(new SBSEBowyer());
         }
 
         #region Bulk Orders
-        public override BODType BODType { get { return BODType.Fletching; } }
+        public override BODType BODType => BODType.Fletching;
 
         public override bool IsValidBulkOrder(Item item)
         {
@@ -82,7 +70,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class AnniversaryPlate : Item
     {
-        public override int LabelNumber { get { return 1156149; } } // An Ornately Decorated Commemorative Plate
+        public override int LabelNumber => 1156149;  // An Ornately Decorated Commemorative Plate
 
         [CommandProperty(AccessLevel.GameMaster)]
         public TextDefinition LabelType { get; set; }
@@ -51,7 +51,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             TextDefinition.Serialize(writer, LabelType);
         }

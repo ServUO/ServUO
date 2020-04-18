@@ -88,11 +88,7 @@ namespace Server
             }
         }
 
-        public DateTime Next
-        {
-            // Obnoxious
-            get { return DateTime.UtcNow.AddMilliseconds(m_Next - Core.TickCount); }
-        }
+        public DateTime Next => DateTime.UtcNow.AddMilliseconds(m_Next - Core.TickCount);
 
         public TimeSpan Delay
         {
@@ -142,18 +138,18 @@ namespace Server
 
             public static void DumpInfo2(TextWriter tw)
             {
-                for (var i = 0; i < 8; ++i)
+                for (int i = 0; i < 8; ++i)
                 {
                     tw.WriteLine("Priority: {0}", (TimerPriority)i);
                     tw.WriteLine();
 
-                    var hash = new Dictionary<string, List<Timer>>();
+                    Dictionary<string, List<Timer>> hash = new Dictionary<string, List<Timer>>();
 
-                    for (var j = 0; j < m_Timers[i].Count; ++j)
+                    for (int j = 0; j < m_Timers[i].Count; ++j)
                     {
-                        var t = m_Timers[i][j];
+                        Timer t = m_Timers[i][j];
 
-                        var key = t.ToString();
+                        string key = t.ToString();
 
                         List<Timer> list;
                         hash.TryGetValue(key, out list);
@@ -166,10 +162,10 @@ namespace Server
                         list.Add(t);
                     }
 
-                    foreach (var kv in hash)
+                    foreach (KeyValuePair<string, List<Timer>> kv in hash)
                     {
-                        var key = kv.Key;
-                        var list = kv.Value;
+                        string key = kv.Key;
+                        List<Timer> list = kv.Value;
 
                         tw.WriteLine(
                             "Type: {0}; Count: {1}; Percent: {2}%",
@@ -268,12 +264,12 @@ namespace Server
             {
                 lock (m_Changed)
                 {
-                    var curTicks = Core.TickCount;
+                    long curTicks = Core.TickCount;
 
-                    foreach (var tce in m_Changed.Values)
+                    foreach (TimerChangeEntry tce in m_Changed.Values)
                     {
-                        var timer = tce.m_Timer;
-                        var newIndex = tce.m_NewIndex;
+                        Timer timer = tce.m_Timer;
+                        int newIndex = tce.m_NewIndex;
 
                         if (timer.m_List != null)
                         {
@@ -341,7 +337,7 @@ namespace Server
 
                         for (j = 0; j < m_Timers[i].Count; j++)
                         {
-                            var t = m_Timers[i][j];
+                            Timer t = m_Timers[i][j];
 
                             if (t.m_Queued || now <= t.m_Next)
                             {
@@ -393,12 +389,12 @@ namespace Server
             {
                 m_QueueCountAtSlice = m_Queue.Count;
 
-                var index = 0;
+                int index = 0;
 
                 while (index < m_BreakCount && m_Queue.Count != 0)
                 {
-                    var t = m_Queue.Dequeue();
-                    var prof = t.GetProfile();
+                    Timer t = m_Queue.Dequeue();
+                    TimerProfile prof = t.GetProfile();
 
                     if (prof != null)
                     {
@@ -429,7 +425,7 @@ namespace Server
 
         public void RegCreation()
         {
-            var prof = GetProfile();
+            TimerProfile prof = GetProfile();
 
             if (prof != null)
             {
@@ -890,7 +886,7 @@ namespace Server
 
             TimerThread.AddTimer(this);
 
-            var prof = GetProfile();
+            TimerProfile prof = GetProfile();
 
             if (prof != null)
             {
@@ -909,7 +905,7 @@ namespace Server
 
             TimerThread.RemoveTimer(this);
 
-            var prof = GetProfile();
+            TimerProfile prof = GetProfile();
 
             if (prof != null)
             {

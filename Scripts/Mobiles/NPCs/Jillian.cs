@@ -6,22 +6,10 @@ namespace Server.Engines.Quests
 {
     public class ScribingArcaneKnowledgeQuest : BaseQuest
     {
-        public override bool DoneOnce
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool DoneOnce => true;
 
         /* Scribing Arcane Knowledge */
-        public override object Title
-        {
-            get
-            {
-                return 1077615;
-            }
-        }
+        public override object Title => 1077615;
 
         /* While Here ar the New Haven Magery Library, use scribe's pen and scribe 3rd and 4th circle Magery scrolls that 
         you have in your spellbook. Remeber, you will need blank scrolls aswell. Do this until you have raised your Inscription 
@@ -39,32 +27,14 @@ namespace Server.Engines.Quests
         I suggest you begin scribing any 3rd and 4th circle spells that you know. If you don't possess ant, you can alwayers barter 
         with one of the local mage merchants or a fellow adventurer that is a seasoned Scribe. Come back to me once you feel that 
         you are the worthy rankof Apprentice Scribe and i will reward you with an arcane prize. */
-        public override object Description
-        {
-            get
-            {
-                return 1077616;
-            }
-        }
+        public override object Description => 1077616;
 
         /* I understand. When you are ready, feel free to return to me for Inscription training. Thanks for stopping by! */
-        public override object Refuse
-        {
-            get
-            {
-                return 1077617;
-            }
-        }
+        public override object Refuse => 1077617;
 
         /* You have not achived the rank of Apprentice Scribe. Come back to me once you feel that you are worthy of the rank 
         Apprentice Scribe and i will reward you with a arcane prize. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1077631;
-            }
-        }
+        public override object Uncomplete => 1077631;
 
         /* Scribing is a very fulfilling pursuit. I am please to see you embark on this journey. You sling a pen well! On behalf 
         of the New Haven Mage Council I wish to present you with this spellbook. When equipped, the Hallowed Spellbook greatly 
@@ -72,50 +42,44 @@ namespace Server.Engines.Quests
         you invoke powerful spells and abilities vs Humanoids, such as other humans, orcs, ettins, and trolls. Your offensive 
         spells will diminish in effectiveness. I suggest unequipping the Hallowed Spellbook when battling Humanoids. I hope this 
         spellbook serves you well. */
-        public override object Complete
-        {
-            get
-            {
-                return 1077619;
-            }
-        }
+        public override object Complete => 1077619;
 
         public ScribingArcaneKnowledgeQuest()
             : base()
         {
-            this.AddObjective(new ApprenticeObjective(SkillName.Inscribe, 50, "Haven Library", 1077493, 1077587));
+            AddObjective(new ApprenticeObjective(SkillName.Inscribe, 50, "Haven Library", 1077493, 1077587));
 
             // 1077493 Your Inscription potential is greatly enhanced while questing in this area.
             // 1077587 You are not in the quest area for Apprentice Scribe. Your Inscription potential is not enhanced here.
 
-            this.AddReward(new BaseReward(typeof(HallowedSpellbook), 1077620));
+            AddReward(new BaseReward(typeof(HallowedSpellbook), 1077620));
         }
 
         public override bool CanOffer()
         {
             #region Scroll of Alacrity
-            PlayerMobile pm = this.Owner as PlayerMobile;
+            PlayerMobile pm = Owner as PlayerMobile;
             if (pm.AcceleratedStart > DateTime.UtcNow)
             {
-                this.Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
+                Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
                 return false;
             }
             #endregion
             else
-                return this.Owner.Skills.Inscribe.Base < 50;
+                return Owner.Skills.Inscribe.Base < 50;
         }
 
         public override void OnCompleted()
         {
-            this.Owner.SendLocalizedMessage(1077618, null, 0x23); // You have achieved the rank of Apprentice Scribe. Return to Jillian in New Haven to receive your arcane prize.
-            this.Owner.PlaySound(this.CompleteSound);
+            Owner.SendLocalizedMessage(1077618, null, 0x23); // You have achieved the rank of Apprentice Scribe. Return to Jillian in New Haven to receive your arcane prize.
+            Owner.PlaySound(CompleteSound);
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -128,27 +92,21 @@ namespace Server.Engines.Quests
 
     public class Jillian : MondainQuester
     {
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(ScribingArcaneKnowledgeQuest)
                 };
-            }
-        }
 
         [Constructable]
         public Jillian()
             : base("Jillian", "The Inscription Instructor")
         {
-            this.SetSkill(SkillName.EvalInt, 120.0, 120.0);
-            this.SetSkill(SkillName.Inscribe, 120.0, 120.0);
-            this.SetSkill(SkillName.Magery, 120.0, 120.0);
-            this.SetSkill(SkillName.MagicResist, 120.0, 120.0);
-            this.SetSkill(SkillName.Wrestling, 120.0, 120.0);
-            this.SetSkill(SkillName.Meditation, 120.0, 120.0);
+            SetSkill(SkillName.EvalInt, 120.0, 120.0);
+            SetSkill(SkillName.Inscribe, 120.0, 120.0);
+            SetSkill(SkillName.Magery, 120.0, 120.0);
+            SetSkill(SkillName.MagicResist, 120.0, 120.0);
+            SetSkill(SkillName.Wrestling, 120.0, 120.0);
+            SetSkill(SkillName.Meditation, 120.0, 120.0);
         }
 
         public Jillian(Serial serial)
@@ -158,35 +116,35 @@ namespace Server.Engines.Quests
 
         public override void Advertise()
         {
-            this.Say(1078129); // I can teach you how to scribe magic scrolls.
+            Say(1078129); // I can teach you how to scribe magic scrolls.
         }
 
         public override void OnOfferFailed()
         {
-            this.Say(1077772); // I cannot teach you, for you know all I can teach!
+            Say(1077772); // I cannot teach you, for you know all I can teach!
         }
 
         public override void InitBody()
         {
-            this.Female = true;
-            this.CantWalk = true;
-            this.Race = Race.Human;
+            Female = true;
+            CantWalk = true;
+            Race = Race.Human;
 
             base.InitBody();
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Backpack());
-            this.AddItem(new Robe(0x479));
-            this.AddItem(new Sandals());
+            AddItem(new Backpack());
+            AddItem(new Robe(0x479));
+            AddItem(new Sandals());
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

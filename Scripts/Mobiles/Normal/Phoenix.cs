@@ -50,11 +50,11 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool CanAngerOnTame { get { return true; } }
-        public override int Meat { get { return 1; } }
-        public override MeatType MeatType { get { return MeatType.Bird; } }
-        public override int Feathers { get { return 36; } }
-        public override bool CanFly { get { return true; } }
+        public override bool CanAngerOnTame => true;
+        public override int Meat => 1;
+        public override MeatType MeatType => MeatType.Bird;
+        public override int Feathers => 36;
+        public override bool CanFly => true;
 
         public void AuraEffect(Mobile m)
         {
@@ -65,7 +65,7 @@ namespace Server.Mobiles
         {
             base.OnAfterTame(tamer);
 
-            var profile = PetTrainingHelper.GetAbilityProfile(this);
+            AbilityProfile profile = PetTrainingHelper.GetAbilityProfile(this);
 
             if (profile != null)
             {
@@ -82,7 +82,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

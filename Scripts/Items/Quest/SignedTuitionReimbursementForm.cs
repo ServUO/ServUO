@@ -6,8 +6,8 @@ namespace Server.Items
         public SignedTuitionReimbursementForm()
             : base(0x14F0)
         {
-            this.LootType = LootType.Blessed;
-            this.Weight = 1;
+            LootType = LootType.Blessed;
+            Weight = 1;
         }
 
         public SignedTuitionReimbursementForm(Serial serial)
@@ -15,18 +15,12 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074614;
-            }
-        }// Signed Tuition Reimbursement Form
+        public override int LabelNumber => 1074614;// Signed Tuition Reimbursement Form
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

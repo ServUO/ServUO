@@ -15,28 +15,10 @@ namespace Server.Spells.Necromancy
             Reagent.GraveDust,
             Reagent.DaemonBlood);
 
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(1.75);
-            }
-        }
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(1.75);
 
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 40.0;
-            }
-        }
-        public override int RequiredMana
-        {
-            get
-            {
-                return 23;
-            }
-        }
+        public override double RequiredSkill => 40.0;
+        public override int RequiredMana => 23;
 
         public AnimateDeadSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
@@ -45,8 +27,8 @@ namespace Server.Spells.Necromancy
 
         public override void OnCast()
         {
-            this.Caster.Target = new InternalTarget(this);
-            this.Caster.SendLocalizedMessage(1061083); // Animate what corpse?
+            Caster.Target = new InternalTarget(this);
+            Caster.SendLocalizedMessage(1061083); // Animate what corpse?
         }
 
         private class CreatureGroup
@@ -56,8 +38,8 @@ namespace Server.Spells.Necromancy
 
             public CreatureGroup(Type[] types, SummonEntry[] entries)
             {
-                this.m_Types = types;
-                this.m_Entries = entries;
+                m_Types = types;
+                m_Entries = entries;
             }
         }
 
@@ -68,8 +50,8 @@ namespace Server.Spells.Necromancy
 
             public SummonEntry(int requirement, params Type[] toSummon)
             {
-                this.m_ToSummon = toSummon;
-                this.m_Requirement = requirement;
+                m_ToSummon = toSummon;
+                m_Requirement = requirement;
             }
         }
 
@@ -172,7 +154,7 @@ namespace Server.Spells.Necromancy
 
             if (c == null)
             {
-                this.Caster.SendLocalizedMessage(1061084); // You cannot animate that.
+                Caster.SendLocalizedMessage(1061084); // You cannot animate that.
             }
             else
             {
@@ -185,7 +167,7 @@ namespace Server.Spells.Necromancy
 
                 if (c.ItemID != 0x2006 || c.Animated || c.Channeled || type == typeof(PlayerMobile) || type == null || (c.Owner != null && c.Owner.Fame < 100) || ((c.Owner != null) && (c.Owner is BaseCreature) && (((BaseCreature)c.Owner).Summoned || ((BaseCreature)c.Owner).IsBonded)))
                 {
-                    this.Caster.SendLocalizedMessage(1061085); // There's not enough life force there to animate.
+                    Caster.SendLocalizedMessage(1061085); // There's not enough life force there to animate.
                 }
                 else
                 {
@@ -195,9 +177,9 @@ namespace Server.Spells.Necromancy
                     {
                         if (group.m_Entries.Length == 0 || type == typeof(DemonKnight))
                         {
-                            this.Caster.SendLocalizedMessage(1061086); // You cannot animate undead remains.
+                            Caster.SendLocalizedMessage(1061086); // You cannot animate undead remains.
                         }
-                        else if (this.CheckSequence())
+                        else if (CheckSequence())
                         {
                             Point3D p = c.GetWorldLocation();
                             Map map = c.Map;
@@ -207,14 +189,14 @@ namespace Server.Spells.Necromancy
                                 Effects.PlaySound(p, map, 0x1FB);
                                 Effects.SendLocationParticles(EffectItem.Create(p, map, EffectItem.DefaultDuration), 0x3789, 1, 40, 0x3F, 3, 9907, 0);
 
-                                Timer.DelayCall(TimeSpan.FromSeconds(2.0), new TimerStateCallback(SummonDelay_Callback), new object[] { this.Caster, c, p, map, group });
+                                Timer.DelayCall(TimeSpan.FromSeconds(2.0), new TimerStateCallback(SummonDelay_Callback), new object[] { Caster, c, p, map, group });
                             }
                         }
                     }
                 }
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         private static readonly Dictionary<Mobile, List<Mobile>> m_Table = new Dictionary<Mobile, List<Mobile>>();
@@ -403,17 +385,17 @@ namespace Server.Spells.Necromancy
             public InternalTarget(AnimateDeadSpell owner)
                 : base(10, false, TargetFlags.None)
             {
-                this.m_Owner = owner;
+                m_Owner = owner;
             }
 
             protected override void OnTarget(Mobile from, object o)
             {
-                this.m_Owner.Target(o);
+                m_Owner.Target(o);
             }
 
             protected override void OnTargetFinish(Mobile from)
             {
-                this.m_Owner.FinishSequence();
+                m_Owner.FinishSequence();
             }
         }
     }

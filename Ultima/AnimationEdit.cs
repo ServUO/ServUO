@@ -251,7 +251,7 @@ namespace Ultima
             int index;
             GetFileIndex(body, filetype, 0, 0, out fileIndex, out index);
             int animlength = Animations.GetAnimLength(body, filetype) * 5;
-            var entries = new Entry3D[animlength];
+            Entry3D[] entries = new Entry3D[animlength];
 
             for (int i = 0; i < animlength; ++i)
             {
@@ -276,9 +276,9 @@ namespace Ultima
             FileIndex fileIndex;
             int index;
             GetFileIndex(body, filetype, 0, 0, out fileIndex, out index);
-            using (var fs = new FileStream(file, FileMode.Create, FileAccess.Write, FileShare.Write))
+            using (FileStream fs = new FileStream(file, FileMode.Create, FileAccess.Write, FileShare.Write))
             {
-                using (var bin = new BinaryWriter(fs))
+                using (BinaryWriter bin = new BinaryWriter(fs))
                 {
                     bin.Write((short)6);
                     int animlength = Animations.GetAnimLength(body, filetype);
@@ -421,17 +421,17 @@ namespace Ultima
             }
 
             idxextra = extra;
-            using (var bin = new BinaryReader(stream))
+            using (BinaryReader bin = new BinaryReader(stream))
             {
                 for (int i = 0; i < 0x100; ++i)
                 {
                     Palette[i] = (ushort)(bin.ReadUInt16() ^ 0x8000);
                 }
 
-                var start = (int)bin.BaseStream.Position;
+                int start = (int)bin.BaseStream.Position;
                 int frameCount = bin.ReadInt32();
 
-                var lookups = new int[frameCount];
+                int[] lookups = new int[frameCount];
 
                 for (int i = 0; i < frameCount; ++i)
                 {
@@ -458,10 +458,10 @@ namespace Ultima
                 Palette[i] = (ushort)(bin.ReadUInt16() ^ 0x8000);
             }
 
-            var start = (int)bin.BaseStream.Position;
+            int start = (int)bin.BaseStream.Position;
             int frameCount = bin.ReadInt32();
 
-            var lookups = new int[frameCount];
+            int[] lookups = new int[frameCount];
 
             for (int i = 0; i < frameCount; ++i)
             {
@@ -483,7 +483,7 @@ namespace Ultima
             {
                 return null;
             }
-            var bits = new Bitmap[Frames.Count];
+            Bitmap[] bits = new Bitmap[Frames.Count];
             for (int i = 0; i < bits.Length; ++i)
             {
                 FrameEdit frame = Frames[i];
@@ -493,10 +493,10 @@ namespace Ultima
                 {
                     continue;
                 }
-                var bmp = new Bitmap(width, height, Settings.PixelFormat);
+                Bitmap bmp = new Bitmap(width, height, Settings.PixelFormat);
                 BitmapData bd = bmp.LockBits(
                     new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, Settings.PixelFormat);
-                var line = (ushort*)bd.Scan0;
+                ushort* line = (ushort*)bd.Scan0;
                 int delta = bd.Stride >> 1;
 
                 int xBase = frame.Center.X - 0x200;
@@ -615,10 +615,10 @@ namespace Ultima
         public unsafe void GetImagePalette(Bitmap bit)
         {
             int count = 0;
-            var bmp = new Bitmap(bit);
+            Bitmap bmp = new Bitmap(bit);
             BitmapData bd = bmp.LockBits(
                 new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, Settings.PixelFormat);
-            var line = (ushort*)bd.Scan0;
+            ushort* line = (ushort*)bd.Scan0;
             int delta = bd.Stride >> 1;
             ushort* cur = line;
             int i = 0;
@@ -789,7 +789,7 @@ namespace Ultima
             switch (type)
             {
                 case 0:
-                    using (var Tex = new StreamWriter(new FileStream(filename, FileMode.Create, FileAccess.ReadWrite)))
+                    using (StreamWriter Tex = new StreamWriter(new FileStream(filename, FileMode.Create, FileAccess.ReadWrite)))
                     {
                         for (int i = 0; i < 0x100; ++i)
                         {
@@ -799,10 +799,10 @@ namespace Ultima
                     break;
                 case 1:
                     {
-                        var bmp = new Bitmap(0x100, 20, Settings.PixelFormat);
+                        Bitmap bmp = new Bitmap(0x100, 20, Settings.PixelFormat);
                         BitmapData bd = bmp.LockBits(
                             new Rectangle(0, 0, 0x100, 20), ImageLockMode.WriteOnly, Settings.PixelFormat);
-                        var line = (ushort*)bd.Scan0;
+                        ushort* line = (ushort*)bd.Scan0;
                         int delta = bd.Stride >> 1;
                         for (int y = 0; y < bd.Height; ++y, line += delta)
                         {
@@ -813,7 +813,7 @@ namespace Ultima
                             }
                         }
                         bmp.UnlockBits(bd);
-                        var b = new Bitmap(bmp);
+                        Bitmap b = new Bitmap(bmp);
                         b.Save(filename, ImageFormat.Bmp);
                         b.Dispose();
                         bmp.Dispose();
@@ -821,10 +821,10 @@ namespace Ultima
                     }
                 case 2:
                     {
-                        var bmp = new Bitmap(0x100, 20, Settings.PixelFormat);
+                        Bitmap bmp = new Bitmap(0x100, 20, Settings.PixelFormat);
                         BitmapData bd = bmp.LockBits(
                             new Rectangle(0, 0, 0x100, 20), ImageLockMode.WriteOnly, Settings.PixelFormat);
-                        var line = (ushort*)bd.Scan0;
+                        ushort* line = (ushort*)bd.Scan0;
                         int delta = bd.Stride >> 1;
                         for (int y = 0; y < bd.Height; ++y, line += delta)
                         {
@@ -835,7 +835,7 @@ namespace Ultima
                             }
                         }
                         bmp.UnlockBits(bd);
-                        var b = new Bitmap(bmp);
+                        Bitmap b = new Bitmap(bmp);
                         b.Save(filename, ImageFormat.Tiff);
                         b.Dispose();
                         bmp.Dispose();
@@ -956,10 +956,10 @@ namespace Ultima
             }
             int header;
 
-            var tmp = new List<Raw>();
+            List<Raw> tmp = new List<Raw>();
             while ((header = bin.ReadInt32()) != 0x7FFF7FFF)
             {
-                var raw = new Raw();
+                Raw raw = new Raw();
                 header ^= DoubleXor;
                 raw.run = (header & 0xFFF);
                 raw.offy = ((header >> 12) & 0x3FF);
@@ -984,9 +984,9 @@ namespace Ultima
             height = bit.Height;
             BitmapData bd = bit.LockBits(
                 new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly, Settings.PixelFormat);
-            var line = (ushort*)bd.Scan0;
+            ushort* line = (ushort*)bd.Scan0;
             int delta = bd.Stride >> 1;
-            var tmp = new List<Raw>();
+            List<Raw> tmp = new List<Raw>();
 
             int X = 0;
             for (int Y = 0; Y < bit.Height; ++Y, line += delta)
@@ -1019,7 +1019,7 @@ namespace Ultima
                                 break;
                             }
                         }
-                        var raw = new Raw();
+                        Raw raw = new Raw();
                         raw.run = j - i;
                         raw.offx = j - raw.run - centerx;
                         raw.offx += 512;

@@ -7,9 +7,9 @@ namespace Server.Engines.TreasuresOfDoom
 {
     public class Carey : BaseTurnInMobile
     {
-        public override int TitleLocalization { get { return 1155595; } } // Artifacts of Doom
-        public override int CancelLocalization { get { return 1155591; } }	// Bring me items of Doom and I will reward you with valuable items.
-        public override int TurnInLocalization { get { return 1155595; } } // Artifacts of Doom
+        public override int TitleLocalization => 1155595;  // Artifacts of Doom
+        public override int CancelLocalization => 1155591; 	// Bring me items of Doom and I will reward you with valuable items.
+        public override int TurnInLocalization => 1155595;  // Artifacts of Doom
 
         public static Carey Instance { get; set; }
         public static readonly Point3D SpawnLocation = new Point3D(2373, 1278, -90);

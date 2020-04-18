@@ -24,7 +24,7 @@ namespace Server.Items
         }
 
         private static HighSeasPersistance m_Instance;
-        public static HighSeasPersistance Instance { get { return m_Instance; } }
+        public static HighSeasPersistance Instance => m_Instance;
 
         public bool HighSeasActive { get; set; }
 
@@ -41,7 +41,7 @@ namespace Server.Items
                 FilePath,
                 writer =>
                 {
-                    writer.Write((int)1);
+                    writer.Write(1);
 
                     Server.Regions.SeaMarketRegion.Save(writer);
 

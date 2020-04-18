@@ -32,7 +32,7 @@ namespace Server.Gumps
 
             for (int i = 0; i < Skills.Length; i++)
             {
-                var skill = Skills[i];
+                SkillName skill = Skills[i];
 
                 AddButton(15, y, 4005, 4007, i + 100, GumpButtonType.Reply, 0);
                 AddHtmlLocalized(50, y, 200, 20, SkillInfo.Table[(int)skill].Localization, 0x7FFF, false, false);

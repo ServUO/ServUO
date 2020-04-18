@@ -18,7 +18,7 @@ namespace Server.Network
 
         public MessagePump()
         {
-            var ipep = Listener.EndPoints;
+            System.Net.IPEndPoint[] ipep = Listener.EndPoints;
 
             Listeners = new Listener[ipep.Length];
 
@@ -51,7 +51,7 @@ namespace Server.Network
 
         public void AddListener(Listener l)
         {
-            var old = Listeners;
+            Listener[] old = Listeners;
 
             Listeners = new Listener[old.Length + 1];
 
@@ -67,7 +67,7 @@ namespace Server.Network
         {
             foreach (Listener l in Listeners)
             {
-                var accepted = l.Slice();
+                Socket[] accepted = l.Slice();
 
                 foreach (Socket s in accepted)
                 {
@@ -92,7 +92,7 @@ namespace Server.Network
 
             string state = ns.ToString();
 
-            foreach (var str in _NoDisplay)
+            foreach (string str in _NoDisplay)
             {
                 if (str == state)
                     return false;
@@ -121,7 +121,7 @@ namespace Server.Network
 
             lock (this)
             {
-                var temp = m_WorkingQueue;
+                Queue<NetState> temp = m_WorkingQueue;
                 m_WorkingQueue = m_Queue;
                 m_Queue = temp;
             }
@@ -160,7 +160,7 @@ namespace Server.Network
 
             if (buffer.Length >= 4)
             {
-                var m_Peek = new byte[4];
+                byte[] m_Peek = new byte[4];
 
                 buffer.Dequeue(m_Peek, 0, 4);
 
@@ -234,7 +234,7 @@ namespace Server.Network
 
                     if (handler == null)
                     {
-                        var data = new byte[length];
+                        byte[] data = new byte[length];
                         length = buffer.Dequeue(data, 0, length);
                         new PacketReader(data, length, false).Trace(ns);
                         return;

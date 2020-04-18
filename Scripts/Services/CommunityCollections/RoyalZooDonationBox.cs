@@ -22,34 +22,10 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073436;
-            }
-        }// Donation Box
-        public override Collection CollectionID
-        {
-            get
-            {
-                return Collection.MoonglowZoo;
-            }
-        }
-        public override int MaxTier
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override bool HandlesOnSpeech
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override int LabelNumber => 1073436;// Donation Box
+        public override Collection CollectionID => Collection.MoonglowZoo;
+        public override int MaxTier => 10;
+        public override bool HandlesOnSpeech => true;
         public override void Init()
         {
             base.Init();
@@ -137,7 +113,7 @@ namespace Server.Items
 
         public static bool HasGroup(Type type, Type colType)
         {
-            foreach (var typeList in _PetGroups)
+            foreach (Type[] typeList in _PetGroups)
             {
                 if (typeList.Any(x => type == x) && typeList.Any(x => colType == x))
                 {
@@ -310,7 +286,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

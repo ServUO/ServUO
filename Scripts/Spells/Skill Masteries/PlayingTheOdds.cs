@@ -12,13 +12,13 @@ namespace Server.Spells.SkillMasteries
                 9002
             );
 
-        public override double RequiredSkill { get { return 90; } }
-        public override double UpKeep { get { return 0; } } // get
-        public override int RequiredMana { get { return 25; } }
-        public override bool PartyEffects { get { return true; } }
+        public override double RequiredSkill => 90;
+        public override double UpKeep => 0;  // get
+        public override int RequiredMana => 25;
+        public override bool PartyEffects => true;
 
-        public override SkillName CastSkill { get { return SkillName.Archery; } }
-        public override SkillName DamageSkill { get { return SkillName.Tactics; } }
+        public override SkillName CastSkill => SkillName.Archery;
+        public override SkillName DamageSkill => SkillName.Tactics;
 
         private int _HCIBonus;
         private int _SSIBonus;
@@ -37,7 +37,7 @@ namespace Server.Spells.SkillMasteries
 
         public override bool CheckCast()
         {
-            if (IsInCooldown(Caster, this.GetType()))
+            if (IsInCooldown(Caster, GetType()))
                 return false;
 
             if (!CheckWeapon())
@@ -82,7 +82,7 @@ namespace Server.Spells.SkillMasteries
 
                 AddToCooldown(TimeSpan.FromSeconds(90));
 
-                foreach (var mob in AcquireIndirectTargets(Caster.Location, 5).OfType<Mobile>())
+                foreach (Mobile mob in AcquireIndirectTargets(Caster.Location, 5).OfType<Mobile>())
                 {
                     if (HitLower.ApplyDefense(mob))
                     {
@@ -120,7 +120,7 @@ namespace Server.Spells.SkillMasteries
         {
             if (PartyList != null)
             {
-                foreach (var m in PartyList)
+                foreach (Mobile m in PartyList)
                 {
                     RemovePartyEffects(m);
                 }

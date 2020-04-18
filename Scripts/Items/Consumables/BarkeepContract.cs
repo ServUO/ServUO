@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class BarkeepContract : Item
     {
-        public override int LabelNumber { get { return 1153779; } } // a barkeep contract
+        public override int LabelNumber => 1153779;  // a barkeep contract
 
         [Constructable]
         public BarkeepContract()
@@ -24,7 +24,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); //version
+            writer.Write(0); //version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -35,7 +35,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!this.IsChildOf(from.Backpack))
+            if (!IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
             }
@@ -48,7 +48,7 @@ namespace Server.Items
                 v.Direction = from.Direction & Direction.Mask;
                 v.MoveToWorld(from.Location, from.Map);
 
-                this.Delete();
+                Delete();
             }
             else
             {
@@ -82,7 +82,7 @@ namespace Server.Items
                         v.Direction = from.Direction & Direction.Mask;
                         v.MoveToWorld(from.Location, from.Map);
 
-                        this.Delete();
+                        Delete();
                     }
                 }
             }

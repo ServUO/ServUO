@@ -17,7 +17,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -31,7 +31,7 @@ namespace Server.Items
         {
             if (from.Stam < from.StamMax)
             {
-                from.Stam += Scale(from, (int)(this.Refresh * from.StamMax));
+                from.Stam += Scale(from, (int)(Refresh * from.StamMax));
 
                 PlayDrinkEffect(from);
                 Consume();

@@ -16,9 +16,9 @@ namespace Server.Spells.Spellweaving
             if (!base.CheckCast())
                 return false;
 
-            if ((this.Caster.Followers + 1) > this.Caster.FollowersMax)
+            if ((Caster.Followers + 1) > Caster.FollowersMax)
             {
-                this.Caster.SendLocalizedMessage(1074270); // You have too many followers to summon another one.
+                Caster.SendLocalizedMessage(1074270); // You have too many followers to summon another one.
                 return false;
             }
 
@@ -27,10 +27,10 @@ namespace Server.Spells.Spellweaving
 
         public override void OnCast()
         {
-            if (this.CheckSequence())
+            if (CheckSequence())
             {
-                TimeSpan duration = TimeSpan.FromMinutes(this.Caster.Skills.Spellweaving.Value / 24 + this.FocusLevel * 2);
-                int summons = Math.Min(1 + this.FocusLevel, this.Caster.FollowersMax - this.Caster.Followers);
+                TimeSpan duration = TimeSpan.FromMinutes(Caster.Skills.Spellweaving.Value / 24 + FocusLevel * 2);
+                int summons = Math.Min(1 + FocusLevel, Caster.FollowersMax - Caster.Followers);
 
                 for (int i = 0; i < summons; i++)
                 {
@@ -45,10 +45,10 @@ namespace Server.Spells.Spellweaving
                         break;
                     }
 
-                    SpellHelper.Summon(bc, this.Caster, this.Sound, duration, false, false);
+                    SpellHelper.Summon(bc, Caster, Sound, duration, false, false);
                 }
 
-                this.FinishSequence();
+                FinishSequence();
             }
         }
     }

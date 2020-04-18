@@ -39,7 +39,7 @@ namespace Server.Mobiles
 
             for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
             {
-                this.PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
+                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
             }
         }
 
@@ -48,7 +48,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.UltraRich, 2);
         }
 
-        public override int TreasureMapLevel { get { return 4; } }
+        public override int TreasureMapLevel => 4;
 
         public MinotaurGeneral(Serial serial)
             : base(serial)
@@ -58,7 +58,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

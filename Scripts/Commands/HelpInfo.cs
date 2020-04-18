@@ -14,20 +14,8 @@ namespace Server.Commands
     {
         private static readonly Dictionary<string, CommandInfo> m_HelpInfos = new Dictionary<string, CommandInfo>();
         private static List<CommandInfo> m_SortedHelpInfo = new List<CommandInfo>();//No need for SortedList cause it's only sorted once at creation...
-        public static Dictionary<string, CommandInfo> HelpInfos
-        {
-            get
-            {
-                return m_HelpInfos;
-            }
-        }
-        public static List<CommandInfo> SortedHelpInfo
-        {
-            get
-            {
-                return m_SortedHelpInfo;
-            }
-        }
+        public static Dictionary<string, CommandInfo> HelpInfos => m_HelpInfos;
+        public static List<CommandInfo> SortedHelpInfo => m_SortedHelpInfo;
         [CallPriority(100)]
         public static void Initialize()
         {
@@ -241,62 +229,62 @@ namespace Server.Commands
             public CommandListGump(int page, Mobile from, List<CommandInfo> list)
                 : base(30, 30)
             {
-                this.m_Page = page;
+                m_Page = page;
 
                 if (list == null)
                 {
-                    this.m_List = new List<CommandInfo>();
+                    m_List = new List<CommandInfo>();
 
                     foreach (CommandInfo c in m_SortedHelpInfo)
                     {
                         if (from.AccessLevel >= c.AccessLevel)
-                            this.m_List.Add(c);
+                            m_List.Add(c);
                     }
                 }
                 else
-                    this.m_List = list;
+                    m_List = list;
 
-                this.AddNewPage();
+                AddNewPage();
 
-                if (this.m_Page > 0)
-                    this.AddEntryButton(20, ArrowLeftID1, ArrowLeftID2, 1, ArrowLeftWidth, ArrowLeftHeight);
+                if (m_Page > 0)
+                    AddEntryButton(20, ArrowLeftID1, ArrowLeftID2, 1, ArrowLeftWidth, ArrowLeftHeight);
                 else
-                    this.AddEntryHeader(20);
+                    AddEntryHeader(20);
 
-                this.AddEntryHtml(160, this.Center(String.Format("Page {0} of {1}", this.m_Page + 1, (this.m_List.Count + EntriesPerPage - 1) / EntriesPerPage)));
+                AddEntryHtml(160, Center(String.Format("Page {0} of {1}", m_Page + 1, (m_List.Count + EntriesPerPage - 1) / EntriesPerPage)));
 
-                if ((this.m_Page + 1) * EntriesPerPage < this.m_List.Count)
-                    this.AddEntryButton(20, ArrowRightID1, ArrowRightID2, 2, ArrowRightWidth, ArrowRightHeight);
+                if ((m_Page + 1) * EntriesPerPage < m_List.Count)
+                    AddEntryButton(20, ArrowRightID1, ArrowRightID2, 2, ArrowRightWidth, ArrowRightHeight);
                 else
-                    this.AddEntryHeader(20);
+                    AddEntryHeader(20);
 
                 int last = (int)AccessLevel.Player - 1;
 
-                for (int i = this.m_Page * EntriesPerPage, line = 0; line < EntriesPerPage && i < this.m_List.Count; ++i, ++line)
+                for (int i = m_Page * EntriesPerPage, line = 0; line < EntriesPerPage && i < m_List.Count; ++i, ++line)
                 {
-                    CommandInfo c = this.m_List[i];
+                    CommandInfo c = m_List[i];
                     if (from.AccessLevel >= c.AccessLevel)
                     {
                         if ((int)c.AccessLevel != last)
                         {
-                            this.AddNewLine();
+                            AddNewLine();
 
-                            this.AddEntryHtml(20 + this.OffsetSize + 160, this.Color(c.AccessLevel.ToString(), 0xFF0000));
-                            this.AddEntryHeader(20);
+                            AddEntryHtml(20 + OffsetSize + 160, Color(c.AccessLevel.ToString(), 0xFF0000));
+                            AddEntryHeader(20);
                             line++;
                         }
 
                         last = (int)c.AccessLevel;
 
-                        this.AddNewLine();
+                        AddNewLine();
 
-                        this.AddEntryHtml(20 + this.OffsetSize + 160, c.Name);
+                        AddEntryHtml(20 + OffsetSize + 160, c.Name);
 
-                        this.AddEntryButton(20, ArrowRightID1, ArrowRightID2, 3 + i, ArrowRightWidth, ArrowRightHeight);
+                        AddEntryButton(20, ArrowRightID1, ArrowRightID2, 3 + i, ArrowRightWidth, ArrowRightHeight);
                     }
                 }
 
-                this.FinishPage();
+                FinishPage();
             }
 
             public override void OnResponse(NetState sender, RelayInfo info)
@@ -311,15 +299,15 @@ namespace Server.Commands
                         }
                     case 1:
                         {
-                            if (this.m_Page > 0)
-                                m.SendGump(new CommandListGump(this.m_Page - 1, m, this.m_List));
+                            if (m_Page > 0)
+                                m.SendGump(new CommandListGump(m_Page - 1, m, m_List));
 
                             break;
                         }
                     case 2:
                         {
-                            if ((this.m_Page + 1) * EntriesPerPage < m_SortedHelpInfo.Count)
-                                m.SendGump(new CommandListGump(this.m_Page + 1, m, this.m_List));
+                            if ((m_Page + 1) * EntriesPerPage < m_SortedHelpInfo.Count)
+                                m.SendGump(new CommandListGump(m_Page + 1, m, m_List));
 
                             break;
                         }
@@ -327,19 +315,19 @@ namespace Server.Commands
                         {
                             int v = info.ButtonID - 3;
 
-                            if (v >= 0 && v < this.m_List.Count)
+                            if (v >= 0 && v < m_List.Count)
                             {
-                                CommandInfo c = this.m_List[v];
+                                CommandInfo c = m_List[v];
 
                                 if (m.AccessLevel >= c.AccessLevel)
                                 {
                                     m.SendGump(new CommandInfoGump(c));
-                                    m.SendGump(new CommandListGump(this.m_Page, m, this.m_List));
+                                    m.SendGump(new CommandListGump(m_Page, m, m_List));
                                 }
                                 else
                                 {
                                     m.SendMessage("You no longer have access to that command.");
-                                    m.SendGump(new CommandListGump(this.m_Page, m, null));
+                                    m.SendGump(new CommandListGump(m_Page, m, null));
                                 }
                             }
                             break;
@@ -361,17 +349,17 @@ namespace Server.Commands
                 : base(300, 50)
             {
                 m_Info = info;
-                this.AddPage(0);
+                AddPage(0);
 
-                this.AddBackground(0, 0, width, height, 5054);
+                AddBackground(0, 0, width, height, 5054);
 
-                this.AddHtml(10, 10, width - 20, 20, this.Color(this.Center(info.Name), 0xFF0000), false, false);
+                AddHtml(10, 10, width - 20, 20, Color(Center(info.Name), 0xFF0000), false, false);
 
-                this.AddHtml(10, height - 30, 50, 20, this.Color("Params:", 0x00FF00), false, false);
-                this.AddAlphaRegion(65, height - 34, 170, 28);
-                this.AddTextEntry(70, height - 30, 160, 20, 789, 0, "");
-                this.AddHtml(250, height - 30, 30, 20, this.Color("Go", 0x00FF00), false, false);
-                this.AddButton(280, height - 30, 0xFA6, 0xFA7, 99, GumpButtonType.Reply, 0);
+                AddHtml(10, height - 30, 50, 20, Color("Params:", 0x00FF00), false, false);
+                AddAlphaRegion(65, height - 34, 170, 28);
+                AddTextEntry(70, height - 30, 160, 20, 789, 0, "");
+                AddHtml(250, height - 30, 30, 20, Color("Go", 0x00FF00), false, false);
+                AddButton(280, height - 30, 0xFA6, 0xFA7, 99, GumpButtonType.Reply, 0);
 
                 StringBuilder sb = new StringBuilder();
 
@@ -403,7 +391,7 @@ namespace Server.Commands
 
                 sb.Append(info.Description);
 
-                this.AddHtml(10, 40, width - 20, height - 80, sb.ToString(), false, true);
+                AddHtml(10, 40, width - 20, height - 80, sb.ToString(), false, true);
                 //AddImageTiled( 10, height - 30, width - 20, 20, 2624 );
                 //AddAlphaRegion( 10, height - 30, width - 20, 20 );
             }

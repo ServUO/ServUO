@@ -15,42 +15,36 @@ namespace Server.Spells.Second
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Second;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Second;
 
         public override void OnCast()
         {
-            this.Caster.Target = new InternalTarget(this);
+            Caster.Target = new InternalTarget(this);
         }
 
         public void Target(Mobile m)
         {
-            if (!this.Caster.CanSee(m))
+            if (!Caster.CanSee(m))
             {
-                this.Caster.SendLocalizedMessage(500237); // Target can not be seen.
+                Caster.SendLocalizedMessage(500237); // Target can not be seen.
             }
-            else if (this.CheckBSequence(m))
+            else if (CheckBSequence(m))
             {
-                SpellHelper.Turn(this.Caster, m);
+                SpellHelper.Turn(Caster, m);
 
                 Poison p = m.Poison;
 
                 if (p != null)
                 {
-                    int chanceToCure = 10000 + (int)(this.Caster.Skills[SkillName.Magery].Value * 75) - ((p.RealLevel + 1) * (p.RealLevel < 4 ? 3300 : 3100));
+                    int chanceToCure = 10000 + (int)(Caster.Skills[SkillName.Magery].Value * 75) - ((p.RealLevel + 1) * (p.RealLevel < 4 ? 3300 : 3100));
                     chanceToCure /= 100;
 
                     if (chanceToCure > Utility.Random(100))
                     {
-                        if (m.CurePoison(this.Caster))
+                        if (m.CurePoison(Caster))
                         {
-                            if (this.Caster != m)
-                                this.Caster.SendLocalizedMessage(1010058); // You have cured the target of all poisons!
+                            if (Caster != m)
+                                Caster.SendLocalizedMessage(1010058); // You have cured the target of all poisons!
 
                             m.SendLocalizedMessage(1010059); // You have been cured of all poisons.
                         }
@@ -65,7 +59,7 @@ namespace Server.Spells.Second
                 m.PlaySound(0x1E0);
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         public class InternalTarget : Target
@@ -74,20 +68,20 @@ namespace Server.Spells.Second
             public InternalTarget(CureSpell owner)
                 : base(10, false, TargetFlags.Beneficial)
             {
-                this.m_Owner = owner;
+                m_Owner = owner;
             }
 
             protected override void OnTarget(Mobile from, object o)
             {
                 if (o is Mobile)
                 {
-                    this.m_Owner.Target((Mobile)o);
+                    m_Owner.Target((Mobile)o);
                 }
             }
 
             protected override void OnTargetFinish(Mobile from)
             {
-                this.m_Owner.FinishSequence();
+                m_Owner.FinishSequence();
             }
         }
     }

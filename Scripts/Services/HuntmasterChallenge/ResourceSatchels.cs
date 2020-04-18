@@ -32,7 +32,7 @@ namespace Server.Items
             int total = base.GetTotal(type);
 
             if (type == TotalType.Weight)
-                total -= total * (int)((double)_WeightReduction / 100.0);
+                total -= total * (int)(_WeightReduction / 100.0);
 
             return total;
         }
@@ -54,7 +54,7 @@ namespace Server.Items
         {
             Type type = item.GetType();
 
-            foreach (var t in HoldTypes)
+            foreach (Type t in HoldTypes)
             {
                 if (type == t || type.IsSubclassOf(t))
                 {
@@ -114,9 +114,9 @@ namespace Server.Items
     [Flipable(0xA272, 0xA273)]
     public class MinersSatchel : BaseResourceSatchel
     {
-        public override int LabelNumber { get { return 1158773; } } // Miner's Satchel
+        public override int LabelNumber => 1158773;  // Miner's Satchel
 
-        public override Type[] HoldTypes { get { return new Type[] { typeof(BaseOre), typeof(BaseIngot), typeof(Granite), typeof(Saltpeter) }; } }
+        public override Type[] HoldTypes => new Type[] { typeof(BaseOre), typeof(BaseIngot), typeof(Granite), typeof(Saltpeter) };
 
         [Constructable]
         public MinersSatchel()
@@ -145,9 +145,9 @@ namespace Server.Items
     [Flipable(0xA274, 0xA275)]
     public class LumbjacksSatchel : BaseResourceSatchel
     {
-        public override int LabelNumber { get { return 1158772; } } // Lumberjack's Satchel
+        public override int LabelNumber => 1158772;  // Lumberjack's Satchel
 
-        public override Type[] HoldTypes { get { return new Type[] { typeof(BaseLog), typeof(Board) }; } }
+        public override Type[] HoldTypes => new Type[] { typeof(BaseLog), typeof(Board) };
 
         [Constructable]
         public LumbjacksSatchel()

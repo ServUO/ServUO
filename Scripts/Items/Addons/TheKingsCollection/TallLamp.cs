@@ -6,13 +6,13 @@ namespace Server.Items
 {
     public class TallLamp : BaseLight, IFlipable, IAddon
     {
-        public override int LabelNumber { get { return 1098410; } } // tall lamp
+        public override int LabelNumber => 1098410;  // tall lamp
 
-        public override int LitItemID { get { return ItemID == 0x4C52 ? 0x4C53 : 0x4C55; } }
-        public override int UnlitItemID { get { return ItemID == 0x4C53 ? 0x4C52 : 0x4C54; } }
+        public override int LitItemID => ItemID == 0x4C52 ? 0x4C53 : 0x4C55;
+        public override int UnlitItemID => ItemID == 0x4C53 ? 0x4C52 : 0x4C54;
 
-        public int NorthID { get { return Burning ? 0x4C53 : 0x4C52; } }
-        public int WestID { get { return Burning ? 0x4C55 : 0x4C54; } }
+        public int NorthID => Burning ? 0x4C53 : 0x4C52;
+        public int WestID => Burning ? 0x4C55 : 0x4C54;
 
         [Constructable]
         public TallLamp()
@@ -25,7 +25,7 @@ namespace Server.Items
             Weight = 0.0;
         }
 
-        public Item Deed { get { return new TallLampDeed(); } }
+        public Item Deed => new TallLampDeed();
 
         public bool CouldFit(IPoint3D p, Map map)
         {
@@ -34,7 +34,7 @@ namespace Server.Items
 
         void IChopable.OnChop(Mobile from)
         {
-            var house = BaseHouse.FindHouseAt(this);
+            BaseHouse house = BaseHouse.FindHouseAt(this);
 
             if (house != null && (house.IsOwner(from) || (house.Addons.ContainsKey(this) && house.Addons[this] == from)))
             {
@@ -69,7 +69,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -81,7 +81,7 @@ namespace Server.Items
 
     public class TallLampDeed : Item
     {
-        public override int LabelNumber { get { return 1098410; } } // tall lamp
+        public override int LabelNumber => 1098410;  // tall lamp
 
         [Constructable]
         public TallLampDeed()
@@ -98,7 +98,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

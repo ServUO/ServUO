@@ -28,7 +28,7 @@ namespace Server.Items
             {
                 int baseRange = MaxThrowRange;
 
-                var attacker = Parent as Mobile;
+                Mobile attacker = Parent as Mobile;
 
                 if (attacker != null)
                 {
@@ -108,7 +108,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1); // version
+            writer.Write(1); // version
         }
 
         public override void Deserialize(GenericReader reader)

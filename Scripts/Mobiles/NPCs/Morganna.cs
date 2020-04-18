@@ -6,22 +6,10 @@ namespace Server.Engines.Quests
 {
     public class ChannelingTheSupernaturalQuest : BaseQuest
     {
-        public override bool DoneOnce
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool DoneOnce => true;
 
         /* Channeling the Supernatural */
-        public override object Title
-        {
-            get
-            {
-                return 1078044;
-            }
-        }
+        public override object Title => 1078044;
 
         /* Head East out of town and go to Old Haven. Use Spirit Speak and channel energy from either yourself or nearby corpses 
         there. You can also cast Necromancy spells as well to raise Spirit Speak. Do these activities until you have raised your 
@@ -32,79 +20,55 @@ namespace Server.Engines.Quests
         Undead currently reside there. Use Spirit Speak and channel energy from either yourself or nearby corpses. You can also 
         cast Necromancy spells as well to raise Spirit Speak.<br><br>Come back to me once you feel that you are worthy of the 
         rank of Apprentice Medium and I will reward you with something useful. */
-        public override object Description
-        {
-            get
-            {
-                return 1078047;
-            }
-        }
+        public override object Description => 1078047;
 
         /* Channeling the supernatural isn't for everyone. It is a dark art. See me if you ever wish to pursue the life of a Medium. */
-        public override object Refuse
-        {
-            get
-            {
-                return 1078048;
-            }
-        }
+        public override object Refuse => 1078048;
 
         /* Back so soon? You have not achieved the rank of Apprentice Medium. Come back to me once you feel that you are worthy of 
         the rank of Apprentice Medium and I will reward you with something useful. */
-        public override object Uncomplete
-        {
-            get
-            {
-                return 1078049;
-            }
-        }
+        public override object Uncomplete => 1078049;
 
         /* Well done! Channeling the supernatural is taxing, indeed. As promised, I will reward you with this bag of Necromancer 
         reagents. You will need these if you wish to also pursue the dark magic of Necromancy. Good journey to you. */
-        public override object Complete
-        {
-            get
-            {
-                return 1078051;
-            }
-        }
+        public override object Complete => 1078051;
 
         public ChannelingTheSupernaturalQuest()
             : base()
         {
-            this.AddObjective(new ApprenticeObjective(SkillName.SpiritSpeak, 50, "Old Haven Training", 1078045, 1078046));
+            AddObjective(new ApprenticeObjective(SkillName.SpiritSpeak, 50, "Old Haven Training", 1078045, 1078046));
 
             // 1078045 You ability to channel the supernatural is greatly enhanced while questing in this area.
             // 1078046 You are not in the quest area for Apprentice Medium. Your ability to channel the supernatural potential is not enhanced here.
 
-            this.AddReward(new BaseReward(typeof(BagOfNecroReagents), 1078053));
+            AddReward(new BaseReward(typeof(BagOfNecroReagents), 1078053));
         }
 
         public override bool CanOffer()
         {
             #region Scroll of Alacrity
-            PlayerMobile pm = this.Owner as PlayerMobile;
+            PlayerMobile pm = Owner as PlayerMobile;
             if (pm.AcceleratedStart > DateTime.UtcNow)
             {
-                this.Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
+                Owner.SendLocalizedMessage(1077951); // You are already under the effect of an accelerated skillgain scroll.
                 return false;
             }
             #endregion
             else
-                return this.Owner.Skills.SpiritSpeak.Base < 50;
+                return Owner.Skills.SpiritSpeak.Base < 50;
         }
 
         public override void OnCompleted()
         {
-            this.Owner.SendLocalizedMessage(1078050, null, 0x23); // You have achieved the rank of Apprentice Medium. Return to Morganna in New Haven to receive your reward.
-            this.Owner.PlaySound(this.CompleteSound);
+            Owner.SendLocalizedMessage(1078050, null, 0x23); // You have achieved the rank of Apprentice Medium. Return to Morganna in New Haven to receive your reward.
+            Owner.PlaySound(CompleteSound);
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -117,16 +81,10 @@ namespace Server.Engines.Quests
 
     public class Morganna : MondainQuester
     {
-        public override Type[] Quests
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Quests => new Type[]
                 {
                     typeof(ChannelingTheSupernaturalQuest)
                 };
-            }
-        }
 
         public override void InitSBInfo()
         {
@@ -180,7 +138,7 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

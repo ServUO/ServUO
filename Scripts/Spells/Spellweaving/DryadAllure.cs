@@ -15,27 +15,9 @@ namespace Server.Spells.Spellweaving
         {
         }
 
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(3);
-            }
-        }
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 52.0;
-            }
-        }
-        public override int RequiredMana
-        {
-            get
-            {
-                return 40;
-            }
-        }
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(3);
+        public override double RequiredSkill => 52.0;
+        public override int RequiredMana => 40;
         public static bool IsValidTarget(BaseCreature bc)
         {
             if (bc == null || bc.IsParagon || (bc.Controlled && !bc.Allured) || bc.Summoned || bc.AllureImmune)
@@ -51,31 +33,31 @@ namespace Server.Spells.Spellweaving
 
         public override void OnCast()
         {
-            this.Caster.Target = new InternalTarget(this);
+            Caster.Target = new InternalTarget(this);
         }
 
         public void Target(BaseCreature bc)
         {
-            if (!this.Caster.CanSee(bc.Location) || !this.Caster.InLOS(bc))
+            if (!Caster.CanSee(bc.Location) || !Caster.InLOS(bc))
             {
-                this.Caster.SendLocalizedMessage(500237); // Target can not be seen.
+                Caster.SendLocalizedMessage(500237); // Target can not be seen.
             }
             else if (!IsValidTarget(bc))
             {
-                this.Caster.SendLocalizedMessage(1074379); // You cannot charm that!
+                Caster.SendLocalizedMessage(1074379); // You cannot charm that!
             }
-            else if (this.Caster.Followers + 3 > this.Caster.FollowersMax)
+            else if (Caster.Followers + 3 > Caster.FollowersMax)
             {
-                this.Caster.SendLocalizedMessage(1049607); // You have too many followers to control that creature.
+                Caster.SendLocalizedMessage(1049607); // You have too many followers to control that creature.
             }
             else if (bc.Allured)
             {
-                this.Caster.SendLocalizedMessage(1074380); // This humanoid is already controlled by someone else.				
+                Caster.SendLocalizedMessage(1074380); // This humanoid is already controlled by someone else.				
             }
-            else if (this.CheckSequence())
+            else if (CheckSequence())
             {
-                int level = GetFocusLevel(this.Caster);
-                double skill = this.Caster.Skills[this.CastSkill].Value;
+                int level = GetFocusLevel(Caster);
+                double skill = Caster.Skills[CastSkill].Value;
 
                 double chance = (skill / 150.0) + (level / 50.0);
 
@@ -84,13 +66,13 @@ namespace Server.Spells.Spellweaving
                     bc.ControlSlots = 3;
                     bc.Combatant = null;
 
-                    if (this.Caster.Combatant == bc)
+                    if (Caster.Combatant == bc)
                     {
-                        this.Caster.Combatant = null;
-                        this.Caster.Warmode = false;
+                        Caster.Combatant = null;
+                        Caster.Warmode = false;
                     }
 
-                    if (bc.SetControlMaster(this.Caster))
+                    if (bc.SetControlMaster(Caster))
                     {
                         bc.PlaySound(0x5C4);
                         bc.Allured = true;
@@ -108,21 +90,21 @@ namespace Server.Spells.Spellweaving
                             }
                         }
 
-                        this.Caster.SendLocalizedMessage(1074377); // You allure the humanoid to follow and protect you.
+                        Caster.SendLocalizedMessage(1074377); // You allure the humanoid to follow and protect you.
                     }
                 }
                 else
                 {
                     bc.PlaySound(0x5C5);
-                    bc.ControlTarget = this.Caster;
+                    bc.ControlTarget = Caster;
                     bc.ControlOrder = OrderType.Attack;
-                    bc.Combatant = this.Caster;
+                    bc.Combatant = Caster;
 
-                    this.Caster.SendLocalizedMessage(1074378); // The humanoid becomes enraged by your charming attempt and attacks you.
+                    Caster.SendLocalizedMessage(1074378); // The humanoid becomes enraged by your charming attempt and attacks you.
                 }
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         public class InternalTarget : Target
@@ -131,14 +113,14 @@ namespace Server.Spells.Spellweaving
             public InternalTarget(DryadAllureSpell owner)
                 : base(12, false, TargetFlags.None)
             {
-                this.m_Owner = owner;
+                m_Owner = owner;
             }
 
             protected override void OnTarget(Mobile m, object o)
             {
                 if (o is BaseCreature)
                 {
-                    this.m_Owner.Target((BaseCreature)o);
+                    m_Owner.Target((BaseCreature)o);
                 }
                 else
                 {
@@ -148,7 +130,7 @@ namespace Server.Spells.Spellweaving
 
             protected override void OnTargetFinish(Mobile m)
             {
-                this.m_Owner.FinishSequence();
+                m_Owner.FinishSequence();
             }
         }
     }

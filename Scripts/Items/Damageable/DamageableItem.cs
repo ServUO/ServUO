@@ -43,7 +43,7 @@ namespace Server.Items
             {
                 m_ItemLevel = value;
 
-                double bonus = (double)(((int)m_ItemLevel * 100.0) * ((int)m_ItemLevel * 5));
+                double bonus = ((int)m_ItemLevel * 100.0) * ((int)m_ItemLevel * 5);
 
                 HitsMax = ((int)(100 + bonus));
                 Hits = ((int)(100 + bonus));
@@ -196,20 +196,20 @@ namespace Server.Items
 
         public Dictionary<Mobile, int> DamageStore { get; set; }
 
-        public virtual int HitEffect { get { return -1; } }
-        public virtual int DestroySound { get { return 0x3B3; } }
-        public virtual double IDChange { get { return 0.5; } }
-        public virtual bool DeleteOnDestroy { get { return true; } }
-        public virtual bool Alive { get { return !Destroyed; } }
-        public virtual bool CanDamage { get { return true; } }
+        public virtual int HitEffect => -1;
+        public virtual int DestroySound => 0x3B3;
+        public virtual double IDChange => 0.5;
+        public virtual bool DeleteOnDestroy => true;
+        public virtual bool Alive => !Destroyed;
+        public virtual bool CanDamage => true;
 
-        public override int PhysicalResistance { get { return ResistBasePhys; } }
-        public override int FireResistance { get { return ResistBaseFire; } }
-        public override int ColdResistance { get { return ResistBaseCold; } }
-        public override int PoisonResistance { get { return ResistBasePoison; } }
-        public override int EnergyResistance { get { return ResistBaseEnergy; } }
+        public override int PhysicalResistance => ResistBasePhys;
+        public override int FireResistance => ResistBaseFire;
+        public override int ColdResistance => ResistBaseCold;
+        public override int PoisonResistance => ResistBasePoison;
+        public override int EnergyResistance => ResistBaseEnergy;
 
-        public override bool ForceShowProperties { get { return false; } }
+        public override bool ForceShowProperties => false;
 
         [Constructable]
         public DamageableItem(int startID)
@@ -267,7 +267,7 @@ namespace Server.Items
 
         public virtual void UpdateDelta()
         {
-            var eable = Map.GetClientsInRange(Location);
+            IPooledEnumerable<NetState> eable = Map.GetClientsInRange(Location);
             Mobile beholder = null;
 
             Packet status = Packet.Acquire(new MobileHitsN(this));
@@ -425,7 +425,7 @@ namespace Server.Items
             {
                 Packet p = Packet.Acquire(new PlaySound(soundID, this));
 
-                var eable = Map.GetClientsInRange(Location);
+                IPooledEnumerable<NetState> eable = Map.GetClientsInRange(Location);
 
                 foreach (NetState state in eable)
                 {
@@ -593,14 +593,14 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
-            writer.Write((int)m_StartID);
-            writer.Write((int)m_HalfHitsID);
-            writer.Write((int)m_DestroyedID);
+            writer.Write(m_StartID);
+            writer.Write(m_HalfHitsID);
+            writer.Write(m_DestroyedID);
             writer.Write((int)m_ItemLevel);
-            writer.Write((int)m_Hits);
-            writer.Write((int)m_HitsMax);
+            writer.Write(m_Hits);
+            writer.Write(m_HitsMax);
             writer.Write(Destroyed);
 
             writer.Write(ResistBasePhys);
@@ -616,12 +616,12 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            m_StartID = (int)reader.ReadInt();
-            m_HalfHitsID = (int)reader.ReadInt();
-            m_DestroyedID = (int)reader.ReadInt();
+            m_StartID = reader.ReadInt();
+            m_HalfHitsID = reader.ReadInt();
+            m_DestroyedID = reader.ReadInt();
             m_ItemLevel = (ItemLevel)reader.ReadInt();
-            m_Hits = (int)reader.ReadInt();
-            m_HitsMax = (int)reader.ReadInt();
+            m_Hits = reader.ReadInt();
+            m_HitsMax = reader.ReadInt();
             Destroyed = reader.ReadBool();
 
             ResistBasePhys = reader.ReadInt();
@@ -649,7 +649,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

@@ -14,14 +14,14 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            this.SendLocalizedMessageTo(from, 500208); // It appears to be blank.
+            SendLocalizedMessageTo(from, 500208); // It appears to be blank.
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

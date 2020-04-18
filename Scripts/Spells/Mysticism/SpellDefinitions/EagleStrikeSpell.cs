@@ -5,9 +5,9 @@ namespace Server.Spells.Mysticism
 {
     public class EagleStrikeSpell : MysticSpell
     {
-        public override SpellCircle Circle { get { return SpellCircle.Third; } }
-        public override bool DelayedDamage { get { return true; } }
-        public override bool DelayedDamageStacking { get { return false; } }
+        public override SpellCircle Circle => SpellCircle.Third;
+        public override bool DelayedDamage => true;
+        public override bool DelayedDamageStacking => false;
 
         private static readonly SpellInfo m_Info = new SpellInfo(
                 "Eagle Strike", "Kal Por Xen",
@@ -64,7 +64,7 @@ namespace Server.Spells.Mysticism
                     Caster.PlaySound(0x64D);
                 });
 
-                SpellHelper.Damage(this, target, (int)GetNewAosDamage(19, 1, 5, target), 0, 0, 0, 0, 100);
+                SpellHelper.Damage(this, target, GetNewAosDamage(19, 1, 5, target), 0, 0, 0, 0, 100);
             }
 
             FinishSequence();

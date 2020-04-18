@@ -10,7 +10,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile LastDamager { get; set; }
 
-        public override bool CanDamage { get { return Controller == null || Controller.BeaconVulnerable; } }
+        public override bool CanDamage => Controller == null || Controller.BeaconVulnerable;
 
         public PlunderBeacon(PlunderBeaconAddon controller)
         {
@@ -64,13 +64,13 @@ namespace Server.Items
         {
             if (DamageStore != null)
             {
-                var eligables = DamageStore.Keys.Where(m => m.InRange(Location, 20)).ToList();
+                System.Collections.Generic.List<Mobile> eligables = DamageStore.Keys.Where(m => m.InRange(Location, 20)).ToList();
 
                 for (int i = 0; i < eligables.Count; i++)
                 {
                     if (0.25 > Utility.RandomDouble())
                     {
-                        var winner = eligables[i];
+                        Mobile winner = eligables[i];
 
                         winner.AddToBackpack(new MaritimeCargo(CargoQuality.Mythical));
                         winner.SendLocalizedMessage(1158907); // You recover maritime trade cargo!

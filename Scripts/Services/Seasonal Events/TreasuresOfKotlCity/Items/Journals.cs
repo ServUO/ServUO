@@ -4,7 +4,7 @@ namespace Server.Engines.TreasuresOfKotlCity
 {
     public class JournalDrSpector1 : BaseJournal
     {
-        public override TextDefinition Body { get { return 1157036; } }
+        public override TextDefinition Body => 1157036;
         /*Week 1<br><br>As I begin my journey across this strange land, I am not completely sure how to proceed. My supplies are limited, 
          * so I will likely need to search for food or find people with whom to trade. I also worry about becoming lost in the wilds. This 
          * is dangerous, especially without any weapons.<br> <br>I have managed to identify several fixed constellations by which to align
@@ -22,7 +22,7 @@ namespace Server.Engines.TreasuresOfKotlCity
          * Turtle did not seem as intelligent as the draconic creatures of legend, and will thus give me no answers, so I will head out in a 
          * few days to 17° North 54° West.*/
 
-        public override TextDefinition Title { get { return 1157034; } } // The Journal of Dr. Spector - Collection I
+        public override TextDefinition Title => 1157034;  // The Journal of Dr. Spector - Collection I
 
         [Constructable]
         public JournalDrSpector1()
@@ -49,7 +49,7 @@ namespace Server.Engines.TreasuresOfKotlCity
 
     public class JournalDrSpector2 : BaseJournal
     {
-        public override TextDefinition Body { get { return 1157037; } }
+        public override TextDefinition Body => 1157037;
         /*Week 4<br><br>The Sakkhra both imitate and hunt the dinosaurs that thunder constantly in their section of Eodon. Given the great 
          * size of these creatures, the Sakkhra have chosen to use powerful bows to bring down the creatures from a distance. When the 
          * dinosaurs wander into their camp, the tribe forces the creature back with spears dipped in poison. In cases of stampede or 
@@ -66,7 +66,7 @@ namespace Server.Engines.TreasuresOfKotlCity
          * offended when I asked for more information.<br> <br>While the Myrmidex may have answers to my questions, or possibly a Moonstone 
          * to return me home, I do not wish to be eaten alive by such creatures. I will move on to 20° South 67° West.*/
 
-        public override TextDefinition Title { get { return 1157035; } } // The Journal of Dr. Spector - Collection II
+        public override TextDefinition Title => 1157035;  // The Journal of Dr. Spector - Collection II
 
         [Constructable]
         public JournalDrSpector2()
@@ -93,7 +93,7 @@ namespace Server.Engines.TreasuresOfKotlCity
 
     public class JournalDrSpector3 : BaseJournal
     {
-        public override TextDefinition Body { get { return 1157054; } }
+        public override TextDefinition Body => 1157054;
         /*Week 6<br><br>The Kurak may be the rivals of the Barako tribe, but I did not feel any hostility directed at me. While they are 
          * proud of their tiger totem and the animal they emulate, they were not as cruel as these predator cats. I did manage to see a 
          * demonstration of the strange claws they use for hunting and combat, and I am glad I stayed on their good side. I learned about
@@ -111,7 +111,7 @@ namespace Server.Engines.TreasuresOfKotlCity
          * these spirits. It is almost as if someone or something else built it. I must investigate further. I hope to find some way to the
          * lower chambers of the Pyramid. */
 
-        public override TextDefinition Title { get { return 1157052; } } // The Journal of Dr. Spector - Collection III
+        public override TextDefinition Title => 1157052;  // The Journal of Dr. Spector - Collection III
 
         [Constructable]
         public JournalDrSpector3()
@@ -138,7 +138,7 @@ namespace Server.Engines.TreasuresOfKotlCity
 
     public class JournalDrSpector4 : BaseJournal
     {
-        public override TextDefinition Body { get { return 1157055; } }
+        public override TextDefinition Body => 1157055;
         /*Week 9<br><br>In my travels around Eodon, I heard stories of the city of the World-Builders. While the passage at the top of the
          * Pyramid was sealed, I found a crack near the base of the structure. As I shimmied into the narrow tunnel, I disturbed a stone 
          * that was holding up a wall. While I was able to avoid injury, the collapse blocked my way out of the Pyramid. With only a single 
@@ -156,7 +156,7 @@ namespace Server.Engines.TreasuresOfKotlCity
          * the changes, hidden parts of the city now allow me access. I have found what appears to be a sort of stasis chamber. I will put 
          * myself inside and hope someone can help me. */
 
-        public override TextDefinition Title { get { return 1157053; } } // The Journal of Dr. Spector - Collection IV
+        public override TextDefinition Title => 1157053;  // The Journal of Dr. Spector - Collection IV
 
         [Constructable]
         public JournalDrSpector4()
@@ -183,7 +183,7 @@ namespace Server.Engines.TreasuresOfKotlCity
 
     public class HistoryOfTheGreatWok1 : BaseJournal
     {
-        public override TextDefinition Body { get { return 1157060; } }
+        public override TextDefinition Body => 1157060;
         /*The Great Moonstone and the Destruction of the First Home<br><br>Spoken by the Memory of Katalkotl<br><br>Transcribed by Professor
          * Ellie Rafkin<br><br>Eodon was not the cradle of the Kotl. Before, there was Akaktolan, the First Home. While much is forgotten,
          * it was there where the Kotl learned the fundamentals of magic and lore. The First Home was struck by a great meteorite, and the 
@@ -197,7 +197,7 @@ namespace Server.Engines.TreasuresOfKotlCity
          * threshold into the new reality. When they left, they took the Great Moonstone with them, thus closing the door to the First Home
          * forever. */
 
-        public override TextDefinition Title { get { return 1157056; } } // History of the Great Work I
+        public override TextDefinition Title => 1157056;  // History of the Great Work I
 
         [Constructable]
         public HistoryOfTheGreatWok1()
@@ -224,7 +224,7 @@ namespace Server.Engines.TreasuresOfKotlCity
 
     public class HistoryOfTheGreatWok2 : BaseJournal
     {
-        public override TextDefinition Body { get { return 1157061; } }
+        public override TextDefinition Body => 1157061;
         /*The Founding of Kotlan and the Myrmidex<br><br>Spoken by the Memory of Katalkotl<br><br>Transcribed by Professor Ellie Rafkin<br><br>
          * While the valley of Eodon was warm and filled with bountiful life and food, it was still untamed and wild. The Kotl wished to r
          * ebuild their civilization, so they bored into the earth to tap veins of iron and gold. These tunnels became the oldest parts of 
@@ -238,7 +238,7 @@ namespace Server.Engines.TreasuresOfKotlCity
          * only the ants’ warlike nature. The Myrmidex broke free of their captivity and fled the city of the Kotl. Thus, the World-Builders
          * were forced to look elsewhere for their labor.*/
 
-        public override TextDefinition Title { get { return 1157057; } } // History of the Great Work II
+        public override TextDefinition Title => 1157057;  // History of the Great Work II
 
         [Constructable]
         public HistoryOfTheGreatWok2()
@@ -265,7 +265,7 @@ namespace Server.Engines.TreasuresOfKotlCity
 
     public class HistoryOfTheGreatWok3 : BaseJournal
     {
-        public override TextDefinition Body { get { return 1157062; } }
+        public override TextDefinition Body => 1157062;
         /*The Worldwalker and Humanity<br><br>Spoken by the Memory of Katalkotl<br><br>Transcribed by Professor Ellie Rafkin<br><br>After 
          * the failure of the Myrmidex, the Kotl took more care in their manipulation of living things. They turned the power of the
          * moonstone outward beyond Eodon. They constructed the Moon Chamber as a focal point for all of Eodon’s mana. The artificial origin 
@@ -281,7 +281,7 @@ namespace Server.Engines.TreasuresOfKotlCity
          * Some tried to resist openly and directly, only to be stopped by the automatons. A few succeeded in undermining the rulers of Eodon 
          * in secret.*/
 
-        public override TextDefinition Title { get { return 1157058; } } // History of the Great Work III
+        public override TextDefinition Title => 1157058;  // History of the Great Work III
 
         [Constructable]
         public HistoryOfTheGreatWok3()
@@ -308,7 +308,7 @@ namespace Server.Engines.TreasuresOfKotlCity
 
     public class HistoryOfTheGreatWok4 : BaseJournal
     {
-        public override TextDefinition Body { get { return 1157063; } }
+        public override TextDefinition Body => 1157063;
         /*The Fall of the World-Builders<br><br>Spoken by the Memory of Katalkotl<br><br>Transcribed by Professor Ellie Rafkin<br><br>Initially,
          * the Kotl viewed the escaped Myrmidex as a minor nuisance, like any other beast of Eodon. The Myrmidex should have been no threat to
          * the Kotl, who protected their settlements with energy fields powered by the Great Moonstone. Still, the Myrmidex were persistent in 
@@ -324,7 +324,7 @@ namespace Server.Engines.TreasuresOfKotlCity
          * everything in their path: every crystal, every relic, and any trace of Kotl magic. The Myrmidex killed everyone in the city, Kotl
          * and human. Then the Myrmidex left, and the city closed up behind them.*/
 
-        public override TextDefinition Title { get { return 1157059; } } // History of the Great Work IV
+        public override TextDefinition Title => 1157059;  // History of the Great Work IV
 
         [Constructable]
         public HistoryOfTheGreatWok4()

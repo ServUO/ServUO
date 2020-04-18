@@ -2,10 +2,10 @@ namespace Server.Items
 {
     public class WorkableGlass : Item, ICommodity
     {
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
-        public override int LabelNumber { get { return 1154170; } } // workable glass
+        public override int LabelNumber => 1154170;  // workable glass
 
         [Constructable]
         public WorkableGlass() : this(1)
@@ -29,7 +29,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
         }
 
         public override void Deserialize(GenericReader reader)

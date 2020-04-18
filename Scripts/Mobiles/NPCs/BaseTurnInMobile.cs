@@ -8,19 +8,19 @@ namespace Server.Mobiles
 {
     public abstract class BaseTurnInMobile : ShrineHealer
     {
-        public override bool IsInvulnerable { get { return true; } }
-        public override bool DisallowAllMoves { get { return true; } }
-        public override bool ClickTitle { get { return true; } }
-        public override bool CanTeach { get { return false; } }
+        public override bool IsInvulnerable => true;
+        public override bool DisallowAllMoves => true;
+        public override bool ClickTitle => true;
+        public override bool CanTeach => false;
 
-        public virtual int TitleLocalization { get { return 0; } }
-        public virtual int CancelLocalization { get { return 0; } }
-        public virtual int TurnInLocalization { get { return 0; } }
-        public virtual int ClaimLocalization { get { return 1155593; } } // Claim Rewards
+        public virtual int TitleLocalization => 0;
+        public virtual int CancelLocalization => 0;
+        public virtual int TurnInLocalization => 0;
+        public virtual int ClaimLocalization => 1155593;  // Claim Rewards
 
-        public virtual bool IsShrineHealer { get { return true; } }
+        public virtual bool IsShrineHealer => true;
 
-        public virtual int TurnInPoints { get { return 1; } }
+        public virtual int TurnInPoints => 1;
 
         public BaseTurnInMobile(string title)
         {
@@ -32,7 +32,7 @@ namespace Server.Mobiles
             if (m == null || m.Backpack == null)
                 yield break;
 
-            foreach (var item in m.Backpack.Items)
+            foreach (Item item in m.Backpack.Items)
             {
                 if (IsRedeemableItem(item))
                     yield return new ItemTileButtonInfo(item);
@@ -148,7 +148,7 @@ namespace Server.Mobiles
     public class TurnInGump : BaseImageTileButtonsGump
     {
         private readonly BaseTurnInMobile m_Collector;
-        public BaseTurnInMobile Collector { get { return m_Collector; } }
+        public BaseTurnInMobile Collector => m_Collector;
 
         public TurnInGump(BaseTurnInMobile collector, IEnumerable<ItemTileButtonInfo> buttons)
             : base(collector.TitleLocalization, buttons.ToArray())
@@ -162,7 +162,7 @@ namespace Server.Mobiles
 
             Item item = ((ItemTileButtonInfo)buttonInfo).Item;
 
-            if (!(pm != null && item.IsChildOf(pm.Backpack) && pm.InRange(this.m_Collector.Location, 7)))
+            if (!(pm != null && item.IsChildOf(pm.Backpack) && pm.InRange(m_Collector.Location, 7)))
                 return;
 
             m_Collector.AwardPoints(pm, item, m_Collector.TurnInPoints);

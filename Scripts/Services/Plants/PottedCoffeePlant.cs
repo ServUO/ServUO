@@ -8,7 +8,7 @@ namespace Server.Items
 {
     public class CoffeeGrounds : Item
     {
-        public override int LabelNumber { get { return 1155735; } } // Coffee Grounds
+        public override int LabelNumber => 1155735;  // Coffee Grounds
 
         [Constructable]
         public CoffeeGrounds()
@@ -33,7 +33,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -45,7 +45,7 @@ namespace Server.Items
 
     public class CoffeePod : Item
     {
-        public override int LabelNumber { get { return 1123484; } } // Coffee Pod
+        public override int LabelNumber => 1123484;  // Coffee Pod
 
         [Constructable]
         public CoffeePod()
@@ -69,7 +69,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -83,7 +83,7 @@ namespace Server.Items
     {
         public static readonly TimeSpan CheckDelay = TimeSpan.FromHours(23.0);
 
-        public override int LabelNumber { get { return 1123480; } } // Potted Coffee Plant
+        public override int LabelNumber => 1123480;  // Potted Coffee Plant
 
         private PlantStatus m_PlantStatus;
         private Timer m_Timer;
@@ -210,10 +210,10 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
             writer.Write((int)PlantStatus);
             writer.Write((int)Level);
-            writer.Write((DateTime)NextGrowth);
+            writer.Write(NextGrowth);
         }
 
         public override void Deserialize(GenericReader reader)

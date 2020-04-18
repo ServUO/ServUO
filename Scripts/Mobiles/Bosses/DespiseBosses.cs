@@ -8,14 +8,14 @@ namespace Server.Engines.Despise
     {
         public static readonly int ArtifactChance = 5;
 
-        public virtual BaseCreature SummonWisp { get { return null; } }
-        public virtual double WispScalar { get { return 0.33; } }
+        public virtual BaseCreature SummonWisp => null;
+        public virtual double WispScalar => 0.33;
 
         private BaseCreature m_Wisp;
         private Timer m_SummonTimer;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public BaseCreature Wisp { get { return m_Wisp; } }
+        public BaseCreature Wisp => m_Wisp;
 
         public DespiseBoss(AIType ai, FightMode fightmode) : base(ai, fightmode, 10, 1, .1, .2)
         {
@@ -42,7 +42,7 @@ namespace Server.Engines.Despise
         {
             if (mob is PlayerMobile)
             {
-                int chance = ArtifactChance + (int)Math.Min(10, ((PlayerMobile)mob).Luck / 180);
+                int chance = ArtifactChance + Math.Min(10, ((PlayerMobile)mob).Luck / 180);
 
                 if (chance >= Utility.Random(100))
                 {
@@ -74,7 +74,7 @@ namespace Server.Engines.Despise
             base.AlterMeleeDamageTo(to, ref damage);
 
             if (m_Wisp != null && !m_Wisp.Deleted && m_Wisp.Alive)
-                damage += (int)((double)damage * WispScalar);
+                damage += (int)(damage * WispScalar);
         }
 
         public override void AlterMeleeDamageFrom(Mobile from, ref int damage)
@@ -82,7 +82,7 @@ namespace Server.Engines.Despise
             base.AlterMeleeDamageFrom(from, ref damage);
 
             if (m_Wisp != null && !m_Wisp.Deleted && m_Wisp.Alive)
-                damage -= (int)((double)damage * WispScalar);
+                damage -= (int)(damage * WispScalar);
         }
 
         public override void AlterSpellDamageTo(Mobile to, ref int damage)
@@ -90,7 +90,7 @@ namespace Server.Engines.Despise
             base.AlterSpellDamageTo(to, ref damage);
 
             if (m_Wisp != null && !m_Wisp.Deleted && m_Wisp.Alive)
-                damage += (int)((double)damage * WispScalar);
+                damage += (int)(damage * WispScalar);
         }
 
         public override void AlterSpellDamageFrom(Mobile from, ref int damage)
@@ -98,7 +98,7 @@ namespace Server.Engines.Despise
             base.AlterSpellDamageFrom(from, ref damage);
 
             if (m_Wisp != null && !m_Wisp.Deleted && m_Wisp.Alive)
-                damage -= (int)((double)damage * WispScalar);
+                damage -= (int)(damage * WispScalar);
         }
 
         public override void OnThink()
@@ -114,7 +114,7 @@ namespace Server.Engines.Despise
         public void SummonWisp_Callback()
         {
             m_Wisp = SummonWisp;
-            BaseCreature.Summon(m_Wisp, true, this, this.Location, 0, TimeSpan.FromMinutes(90));
+            BaseCreature.Summon(m_Wisp, true, this, Location, 0, TimeSpan.FromMinutes(90));
 
             m_SummonTimer = null;
         }
@@ -127,7 +127,7 @@ namespace Server.Engines.Despise
                 m_Wisp.Kill();
         }
 
-        public static Type[] Artifacts { get { return m_Artifacts; } }
+        public static Type[] Artifacts => m_Artifacts;
 
         private static readonly Type[] m_Artifacts = new Type[]
         {
@@ -147,7 +147,7 @@ namespace Server.Engines.Despise
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
             writer.Write(m_Wisp);
         }
 
@@ -219,8 +219,8 @@ namespace Server.Engines.Despise
             SetNonMovable(new Doublet(1281));
         }
 
-        public override bool InitialInnocent { get { return true; } }
-        public override BaseCreature SummonWisp { get { return new EnsorcledWisp(); } }
+        public override bool InitialInnocent => true;
+        public override BaseCreature SummonWisp => new EnsorcledWisp();
 
         public override void GenerateLoot()
         {
@@ -234,7 +234,7 @@ namespace Server.Engines.Despise
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -302,8 +302,8 @@ namespace Server.Engines.Despise
             SetNonMovable(staff);
         }
 
-        public override bool AlwaysMurderer { get { return true; } }
-        public override BaseCreature SummonWisp { get { return new CorruptedWisp(); } }
+        public override bool AlwaysMurderer => true;
+        public override BaseCreature SummonWisp => new CorruptedWisp();
 
         public override void GenerateLoot()
         {
@@ -318,7 +318,7 @@ namespace Server.Engines.Despise
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -387,7 +387,7 @@ namespace Server.Engines.Despise
             return base.OnBeforeDeath();
         }
 
-        public override bool InitialInnocent { get { return true; } }
+        public override bool InitialInnocent => true;
         //public override bool ForceNotoriety { get { return true; } }
 
         public EnsorcledWisp(Serial serial) : base(serial)
@@ -397,7 +397,7 @@ namespace Server.Engines.Despise
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -466,7 +466,7 @@ namespace Server.Engines.Despise
             return base.OnBeforeDeath();
         }
 
-        public override bool AlwaysMurderer { get { return true; } }
+        public override bool AlwaysMurderer => true;
         //public override bool ForceNotoriety { get { return true; } }
 
         public CorruptedWisp(Serial serial) : base(serial)
@@ -476,7 +476,7 @@ namespace Server.Engines.Despise
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

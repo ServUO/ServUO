@@ -22,13 +22,7 @@ namespace Server.Engines.Reports
             return new PageInfo();
         }
 
-        public override PersistableType TypeID
-        {
-            get
-            {
-                return ThisTypeID;
-            }
-        }
+        public override PersistableType TypeID => ThisTypeID;
         #endregion
 
         private StaffHistory m_History;
@@ -39,22 +33,22 @@ namespace Server.Engines.Reports
         {
             get
             {
-                return this.m_Resolver;
+                return m_Resolver;
             }
             set
             {
-                if (this.m_Resolver == value)
+                if (m_Resolver == value)
                     return;
 
                 lock (StaffHistory.RenderLock)
                 {
-                    if (this.m_Resolver != null)
-                        this.m_Resolver.Unregister(this);
+                    if (m_Resolver != null)
+                        m_Resolver.Unregister(this);
 
-                    this.m_Resolver = value;
+                    m_Resolver = value;
 
-                    if (this.m_Resolver != null)
-                        this.m_Resolver.Register(this);
+                    if (m_Resolver != null)
+                        m_Resolver.Register(this);
                 }
             }
         }
@@ -63,22 +57,22 @@ namespace Server.Engines.Reports
         {
             get
             {
-                return this.m_Sender;
+                return m_Sender;
             }
             set
             {
-                if (this.m_Sender == value)
+                if (m_Sender == value)
                     return;
 
                 lock (StaffHistory.RenderLock)
                 {
-                    if (this.m_Sender != null)
-                        this.m_Sender.Unregister(this);
+                    if (m_Sender != null)
+                        m_Sender.Unregister(this);
 
-                    this.m_Sender = value;
+                    m_Sender = value;
 
-                    if (this.m_Sender != null)
-                        this.m_Sender.Register(this);
+                    if (m_Sender != null)
+                        m_Sender.Register(this);
                 }
             }
         }
@@ -99,25 +93,25 @@ namespace Server.Engines.Reports
         {
             get
             {
-                return this.m_History;
+                return m_History;
             }
             set
             {
-                if (this.m_History == value)
+                if (m_History == value)
                     return;
 
-                if (this.m_History != null)
+                if (m_History != null)
                 {
-                    this.Sender = null;
-                    this.Resolver = null;
+                    Sender = null;
+                    Resolver = null;
                 }
 
-                this.m_History = value;
+                m_History = value;
 
-                if (this.m_History != null)
+                if (m_History != null)
                 {
-                    this.Sender = this.m_History.GetUserInfo(this.m_SentBy);
-                    this.UpdateResolver();
+                    Sender = m_History.GetUserInfo(m_SentBy);
+                    UpdateResolver();
                 }
             }
         }
@@ -126,83 +120,65 @@ namespace Server.Engines.Reports
         {
             get
             {
-                return this.m_PageType;
+                return m_PageType;
             }
             set
             {
-                this.m_PageType = value;
+                m_PageType = value;
             }
         }
-        public PageResolution Resolution
-        {
-            get
-            {
-                return this.m_Resolution;
-            }
-        }
+        public PageResolution Resolution => m_Resolution;
 
         public DateTime TimeSent
         {
             get
             {
-                return this.m_TimeSent;
+                return m_TimeSent;
             }
             set
             {
-                this.m_TimeSent = value;
+                m_TimeSent = value;
             }
         }
-        public DateTime TimeResolved
-        {
-            get
-            {
-                return this.m_TimeResolved;
-            }
-        }
+        public DateTime TimeResolved => m_TimeResolved;
 
         public string SentBy
         {
             get
             {
-                return this.m_SentBy;
+                return m_SentBy;
             }
             set
             {
-                this.m_SentBy = value;
+                m_SentBy = value;
 
-                if (this.m_History != null)
-                    this.Sender = this.m_History.GetUserInfo(this.m_SentBy);
+                if (m_History != null)
+                    Sender = m_History.GetUserInfo(m_SentBy);
             }
         }
 
-        public string ResolvedBy
-        {
-            get
-            {
-                return this.m_ResolvedBy;
-            }
-        }
+        public string ResolvedBy => m_ResolvedBy;
 
         public string Message
         {
             get
             {
-                return this.m_Message;
+                return m_Message;
             }
             set
             {
-                this.m_Message = value;
+                m_Message = value;
             }
         }
         public ResponseInfoCollection Responses
         {
             get
             {
-                return this.m_Responses;
+                return m_Responses;
             }
             set
             {
-                this.m_Responses = value;
+                m_Responses = value;
             }
         }
 
@@ -210,16 +186,16 @@ namespace Server.Engines.Reports
         {
             string resolvedBy;
             DateTime timeResolved;
-            PageResolution res = this.GetResolution(out resolvedBy, out timeResolved);
+            PageResolution res = GetResolution(out resolvedBy, out timeResolved);
 
-            if (this.m_History != null && this.IsStaffResolution(res))
-                this.Resolver = this.m_History.GetStaffInfo(resolvedBy);
+            if (m_History != null && IsStaffResolution(res))
+                Resolver = m_History.GetStaffInfo(resolvedBy);
             else
-                this.Resolver = null;
+                Resolver = null;
 
-            this.m_ResolvedBy = resolvedBy;
-            this.m_TimeResolved = timeResolved;
-            this.m_Resolution = res;
+            m_ResolvedBy = resolvedBy;
+            m_TimeResolved = timeResolved;
+            m_Resolution = res;
         }
 
         public bool IsStaffResolution(PageResolution res)
@@ -246,9 +222,9 @@ namespace Server.Engines.Reports
 
         public PageResolution GetResolution(out string resolvedBy, out DateTime timeResolved)
         {
-            for (int i = this.m_Responses.Count - 1; i >= 0; --i)
+            for (int i = m_Responses.Count - 1; i >= 0; --i)
             {
-                ResponseInfo resp = this.m_Responses[i];
+                ResponseInfo resp = m_Responses[i];
                 PageResolution res = ResFromResp(resp.Message);
 
                 if (res != PageResolution.None)
@@ -259,8 +235,8 @@ namespace Server.Engines.Reports
                 }
             }
 
-            resolvedBy = this.m_SentBy;
-            timeResolved = this.m_TimeSent;
+            resolvedBy = m_SentBy;
+            timeResolved = m_TimeSent;
             return PageResolution.None;
         }
 
@@ -279,53 +255,53 @@ namespace Server.Engines.Reports
 
         public PageInfo()
         {
-            this.m_Responses = new ResponseInfoCollection();
+            m_Responses = new ResponseInfoCollection();
         }
 
         public PageInfo(PageEntry entry)
         {
-            this.m_PageType = entry.Type;
+            m_PageType = entry.Type;
 
-            this.m_TimeSent = entry.Sent;
-            this.m_SentBy = GetAccount(entry.Sender);
+            m_TimeSent = entry.Sent;
+            m_SentBy = GetAccount(entry.Sender);
 
-            this.m_Message = entry.Message;
-            this.m_Responses = new ResponseInfoCollection();
+            m_Message = entry.Message;
+            m_Responses = new ResponseInfoCollection();
         }
 
         public override void SerializeAttributes(PersistenceWriter op)
         {
-            op.SetInt32("p", (int)this.m_PageType);
+            op.SetInt32("p", (int)m_PageType);
 
-            op.SetDateTime("ts", this.m_TimeSent);
-            op.SetString("s", this.m_SentBy);
+            op.SetDateTime("ts", m_TimeSent);
+            op.SetString("s", m_SentBy);
 
-            op.SetString("m", this.m_Message);
+            op.SetString("m", m_Message);
         }
 
         public override void DeserializeAttributes(PersistenceReader ip)
         {
-            this.m_PageType = (PageType)ip.GetInt32("p");
+            m_PageType = (PageType)ip.GetInt32("p");
 
-            this.m_TimeSent = ip.GetDateTime("ts");
-            this.m_SentBy = ip.GetString("s");
+            m_TimeSent = ip.GetDateTime("ts");
+            m_SentBy = ip.GetString("s");
 
-            this.m_Message = ip.GetString("m");
+            m_Message = ip.GetString("m");
         }
 
         public override void SerializeChildren(PersistenceWriter op)
         {
             lock (this)
             {
-                for (int i = 0; i < this.m_Responses.Count; ++i)
-                    this.m_Responses[i].Serialize(op);
+                for (int i = 0; i < m_Responses.Count; ++i)
+                    m_Responses[i].Serialize(op);
             }
         }
 
         public override void DeserializeChildren(PersistenceReader ip)
         {
             while (ip.HasChild)
-                this.m_Responses.Add(ip.GetChild() as ResponseInfo);
+                m_Responses.Add(ip.GetChild() as ResponseInfo);
         }
     }
 }

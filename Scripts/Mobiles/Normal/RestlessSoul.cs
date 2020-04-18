@@ -44,23 +44,11 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool BleedImmune
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 2;
-            }
-        }
+        public override bool BleedImmune => true;
+        public override int TreasureMapLevel => 2;
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Poor);
+            AddLoot(LootPack.Poor);
         }
 
         public override void DisplayPaperdollTo(Mobile to)
@@ -96,7 +84,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

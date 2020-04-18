@@ -6,10 +6,10 @@ namespace Server.Items
         public BlueKey1()
             : base(0x1012)
         {
-            this.Weight = 1.0;
-            this.Hue = 0x5D; // TODO check
-            this.LootType = LootType.Blessed;
-            this.Movable = false;
+            Weight = 1.0;
+            Hue = 0x5D; // TODO check
+            LootType = LootType.Blessed;
+            Movable = false;
         }
 
         public BlueKey1(Serial serial)
@@ -17,20 +17,8 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1111646;
-            }
-        }// Blue Key Fragment
-        public override int Lifespan
-        {
-            get
-            {
-                return 21600;
-            }
-        }
+        public override int LabelNumber => 1111646;// Blue Key Fragment
+        public override int Lifespan => 21600;
         public override void OnDoubleClick(Mobile m)
         {
             Item a = m.Backpack.FindItemByType(typeof(RedKey1));
@@ -42,7 +30,7 @@ namespace Server.Items
                     m.AddToBackpack(new TripartiteKey());
                     a.Delete();
                     b.Delete();
-                    this.Delete();
+                    Delete();
                     m.SendLocalizedMessage(1111649);
                 }
             }
@@ -52,7 +40,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

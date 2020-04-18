@@ -12,8 +12,8 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Owner { get { return m_Owner; } set { m_Owner = value; } }
 
-        public override int LabelNumber { get { return 1113296; } } // Armed Floor Trap
-        public bool CheckWhenHidden { get { return true; } }
+        public override int LabelNumber => 1113296;  // Armed Floor Trap
+        public bool CheckWhenHidden => true;
 
         [Constructable]
         public GoblinFloorTrap() : this(null)
@@ -27,10 +27,10 @@ namespace Server.Items
             Visible = false;
         }
 
-        public override bool PassivelyTriggered { get { return true; } }
-        public override TimeSpan PassiveTriggerDelay { get { return TimeSpan.FromSeconds(1.0); } }
-        public override int PassiveTriggerRange { get { return 1; } }
-        public override TimeSpan ResetDelay { get { return TimeSpan.FromSeconds(1.0); } }
+        public override bool PassivelyTriggered => true;
+        public override TimeSpan PassiveTriggerDelay => TimeSpan.FromSeconds(1.0);
+        public override int PassiveTriggerRange => 1;
+        public override TimeSpan ResetDelay => TimeSpan.FromSeconds(1.0);
 
         public override void OnTrigger(Mobile from)
         {
@@ -78,7 +78,7 @@ namespace Server.Items
             {
                 if (m.NetState != null)
                 {
-                    Packet p = new MessageLocalized(this.Serial, this.ItemID, Network.MessageType.Regular, 0x65, 3, 500813, this.Name, String.Empty);
+                    Packet p = new MessageLocalized(Serial, ItemID, Network.MessageType.Regular, 0x65, 3, 500813, Name, String.Empty);
                     p.Acquire();
                     m.NetState.Send(p);
                     Packet.Release(p);
@@ -110,7 +110,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
             writer.Write(m_Owner);
         }
 
@@ -208,7 +208,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

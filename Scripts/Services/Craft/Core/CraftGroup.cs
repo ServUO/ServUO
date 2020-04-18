@@ -7,20 +7,20 @@ namespace Server.Engines.Craft
         private readonly int m_NameNumber;
         public CraftGroup(TextDefinition groupName)
         {
-            this.m_NameNumber = groupName;
-            this.m_NameString = groupName;
-            this.m_arCraftItem = new CraftItemCol();
+            m_NameNumber = groupName;
+            m_NameString = groupName;
+            m_arCraftItem = new CraftItemCol();
         }
 
-        public CraftItemCol CraftItems => this.m_arCraftItem;
+        public CraftItemCol CraftItems => m_arCraftItem;
 
-        public string NameString => this.m_NameString;
+        public string NameString => m_NameString;
 
-        public int NameNumber => this.m_NameNumber;
+        public int NameNumber => m_NameNumber;
 
         public void AddCraftItem(CraftItem craftItem)
         {
-            this.m_arCraftItem.Add(craftItem);
+            m_arCraftItem.Add(craftItem);
         }
     }
 }

@@ -19,18 +19,18 @@ namespace Server.SkillHandlers
         private readonly int m_IncAmount;
         private readonly int m_Description;
 
-        public object Attribute { get { return m_Attribute; } }
-        public int AttributeName { get { return m_AttributeName; } }
-        public int Weight { get { return m_Weight; } }
-        public Type PrimaryRes { get { return m_PrimaryRes; } }
-        public Type GemRes { get { return m_GemRes; } }
-        public Type SpecialRes { get { return m_SpecialRes; } }
-        public int PrimaryName { get { return m_PrimaryName; } }
-        public int GemName { get { return m_GemName; } }
-        public int SpecialName { get { return m_SpecialName; } }
-        public int MaxIntensity { get { return m_MaxIntensity; } }
-        public int IncAmount { get { return m_IncAmount; } }
-        public int Description { get { return m_Description; } }
+        public object Attribute => m_Attribute;
+        public int AttributeName => m_AttributeName;
+        public int Weight => m_Weight;
+        public Type PrimaryRes => m_PrimaryRes;
+        public Type GemRes => m_GemRes;
+        public Type SpecialRes => m_SpecialRes;
+        public int PrimaryName => m_PrimaryName;
+        public int GemName => m_GemName;
+        public int SpecialName => m_SpecialName;
+        public int MaxIntensity => m_MaxIntensity;
+        public int IncAmount => m_IncAmount;
+        public int Description => m_Description;
 
         public bool Melee { get; set; }
         public bool Ranged { get; set; }

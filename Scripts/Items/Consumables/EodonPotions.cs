@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class EodonPotionContext
     {
-        public PotionEffect Type { get { return Potion.PotionEffect; } }
+        public PotionEffect Type => Potion.PotionEffect;
         public DateTime StartTime { get; set; }
         public DateTime Expires { get; set; }
         public EodonianPotion Potion { get; set; }
@@ -45,13 +45,13 @@ namespace Server.Items
         public static Dictionary<Mobile, List<EodonPotionContext>> Contexts { get; set; }
         public static Timer Timer { get; set; }
 
-        public virtual TimeSpan Cooldown { get { return TimeSpan.FromMinutes(20); } }
+        public virtual TimeSpan Cooldown => TimeSpan.FromMinutes(20);
 
         public override int LabelNumber
         {
             get
             {
-                switch (this.PotionEffect)
+                switch (PotionEffect)
                 {
                     default:
                     case PotionEffect.Barrab: return 1156724;
@@ -94,7 +94,7 @@ namespace Server.Items
 
         public virtual bool CanDoEffects(Mobile m)
         {
-            if (IsUnderEffects(m, this.PotionEffect))
+            if (IsUnderEffects(m, PotionEffect))
             {
                 m.SendLocalizedMessage(502173); // You are already under a similar effect.
                 return false;
@@ -124,7 +124,7 @@ namespace Server.Items
 
         public void RemoveContext(Mobile m)
         {
-            EodonPotionContext context = GetContext(m, this.PotionEffect);
+            EodonPotionContext context = GetContext(m, PotionEffect);
 
             if (context != null)
                 RemoveContext(m, context);
@@ -132,7 +132,7 @@ namespace Server.Items
 
         public virtual void AddBuff(Mobile m)
         {
-            switch (this.PotionEffect)
+            switch (PotionEffect)
             {
                 case PotionEffect.Barrab:
                     BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.BarrabHemolymphConcentrate, LabelNumber, 1156738, "100\t10\t10\t5")); break;
@@ -151,7 +151,7 @@ namespace Server.Items
 
         public virtual void RemoveBuff(Mobile m)
         {
-            switch (this.PotionEffect)
+            switch (PotionEffect)
             {
                 case PotionEffect.Barrab:
                     BuffInfo.RemoveBuff(m, BuffIcon.BarrabHemolymphConcentrate); break;
@@ -243,13 +243,13 @@ namespace Server.Items
                 EndTimer();
             else
             {
-                var dictionary = new Dictionary<Mobile, List<EodonPotionContext>>(Contexts);
+                Dictionary<Mobile, List<EodonPotionContext>> dictionary = new Dictionary<Mobile, List<EodonPotionContext>>(Contexts);
 
-                foreach (var kvp in dictionary)
+                foreach (KeyValuePair<Mobile, List<EodonPotionContext>> kvp in dictionary)
                 {
-                    var contexts = new List<EodonPotionContext>(kvp.Value);
+                    List<EodonPotionContext> contexts = new List<EodonPotionContext>(kvp.Value);
 
-                    foreach (var context in contexts)
+                    foreach (EodonPotionContext context in contexts)
                     {
                         context.OnTick(kvp.Key);
                     }
@@ -415,7 +415,7 @@ namespace Server.Items
 
     public class KurakAmbushersEssence : EodonianPotion
     {
-        public override TimeSpan Cooldown { get { return TimeSpan.FromMinutes(10); } }
+        public override TimeSpan Cooldown => TimeSpan.FromMinutes(10);
 
         [Constructable]
         public KurakAmbushersEssence() : this(1) { }
@@ -517,7 +517,7 @@ namespace Server.Items
 
         public override void OnTick(Mobile m)
         {
-            var context = GetContext(m, this.PotionEffect);
+            EodonPotionContext context = GetContext(m, PotionEffect);
 
             if (context != null && context.StartTime + TimeSpan.FromMinutes(10) > DateTime.UtcNow)
             {
@@ -604,7 +604,7 @@ namespace Server.Items
     // resources
     public class MyrmidexEggsac : Item, ICommodity
     {
-        public override int LabelNumber { get { return 1156725; } } // Myrmidex Eggsac
+        public override int LabelNumber => 1156725;  // Myrmidex Eggsac
 
         [Constructable]
         public MyrmidexEggsac() : this(1) { }
@@ -623,8 +623,8 @@ namespace Server.Items
         {
         }
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
         public override void Serialize(GenericWriter writer)
         {
@@ -642,7 +642,7 @@ namespace Server.Items
     public class LavaBerry : Item
     {
         // TODO: Harvested near Jukari Village
-        public override int LabelNumber { get { return 1156727; } } // Lava Berry
+        public override int LabelNumber => 1156727;  // Lava Berry
 
         [Constructable]
         public LavaBerry() : this(1) { }
@@ -678,7 +678,7 @@ namespace Server.Items
     public class LavaBerryBush : Item
     {
         // TODO: Harvested near Jukari Village
-        public override int LabelNumber { get { return 1156735; } } // Lava Berry Bush
+        public override int LabelNumber => 1156735;  // Lava Berry Bush
 
         [Constructable]
         public LavaBerryBush()
@@ -691,9 +691,9 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(this.Location, 2))
+            if (from.InRange(Location, 2))
             {
-                var berry = new LavaBerry(1);
+                LavaBerry berry = new LavaBerry(1);
                 from.AddToBackpack(berry);
                 from.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1154, 1156736, "#1156727", from.NetState);
 
@@ -723,7 +723,7 @@ namespace Server.Items
 
     public class PerfectBanana : Item
     {
-        public override int LabelNumber { get { return 1156730; } } // Perfect Bananas
+        public override int LabelNumber => 1156730;  // Perfect Bananas
 
         [Constructable]
         public PerfectBanana() : this(1) { }
@@ -758,7 +758,7 @@ namespace Server.Items
     public class RiverMossDecorate : Item
     {
         // TODO: Harvested near Urali Village
-        public override int LabelNumber { get { return 1156731; } } // River Moss
+        public override int LabelNumber => 1156731;  // River Moss
 
         [Constructable]
         public RiverMossDecorate()
@@ -771,9 +771,9 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(this.Location, 2))
+            if (from.InRange(Location, 2))
             {
-                var rm = new RiverMoss(1);
+                RiverMoss rm = new RiverMoss(1);
                 from.AddToBackpack(rm);
                 from.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1154, 1156736, "#1156731", from.NetState);
 
@@ -804,7 +804,7 @@ namespace Server.Items
     public class RiverMoss : Item, ICommodity
     {
         // TODO: Harvested near Urali Village
-        public override int LabelNumber { get { return 1156731; } } // River Moss
+        public override int LabelNumber => 1156731;  // River Moss
 
         [Constructable]
         public RiverMoss() : this(1) { }
@@ -823,8 +823,8 @@ namespace Server.Items
         {
         }
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
         public override void Serialize(GenericWriter writer)
         {
@@ -842,7 +842,7 @@ namespace Server.Items
     public class BlueCorn : EarOfCorn
     {
         // TODO: Harvestable from Sakkhra corn fields
-        public override int LabelNumber { get { return 1156733; } } // Blue Corn
+        public override int LabelNumber => 1156733;  // Blue Corn
 
         [Constructable]
         public BlueCorn() : this(1) { }
@@ -874,7 +874,7 @@ namespace Server.Items
 
     public class CornStalk : Item
     {
-        public override int LabelNumber { get { return 1035639; } } // corn stalk
+        public override int LabelNumber => 1035639;  // corn stalk
         private int m_Used;
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -894,7 +894,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(this.Location, 3))
+            if (from.InRange(Location, 3))
             {
                 Item corn;
 
@@ -936,7 +936,7 @@ namespace Server.Items
             base.Serialize(writer);
             writer.Write(0);
 
-            writer.Write((int)m_Used);
+            writer.Write(m_Used);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -950,7 +950,7 @@ namespace Server.Items
 
     public class MoonstoneCrystalShard : Item
     {
-        public override int LabelNumber { get { return 1124142; } } // Moonstone Crystal Shards
+        public override int LabelNumber => 1124142;  // Moonstone Crystal Shards
 
         [Constructable]
         public MoonstoneCrystalShard() : this(1) { }

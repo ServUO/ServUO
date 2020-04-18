@@ -7,7 +7,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int Bonus { get { return _Bonus; } set { _Bonus = value; InvalidateProperties(); } }
 
-        public override int LabelNumber { get { return 1157228; } } // Master Chef's Apron
+        public override int LabelNumber => 1157228;  // Master Chef's Apron
 
         [Constructable]
         public MasterChefsApron()
@@ -34,7 +34,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             writer.Write(_Bonus);
         }

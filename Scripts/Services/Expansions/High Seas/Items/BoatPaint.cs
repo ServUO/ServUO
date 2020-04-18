@@ -5,8 +5,8 @@ namespace Server.Items
 {
     public class BoatPaint : Item
     {
-        public override int LabelNumber { get { return 1116236; } }
-        public override double DefaultWeight { get { return 10.0; } }
+        public override int LabelNumber => 1116236;
+        public override double DefaultWeight => 10.0;
 
         private bool m_Permanent;
 
@@ -82,7 +82,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -94,7 +94,7 @@ namespace Server.Items
 
     public class PermanentBoatPaint : BoatPaint
     {
-        public override int LabelNumber { get { return 1116768; } }
+        public override int LabelNumber => 1116768;
 
         [Constructable]
         public PermanentBoatPaint()
@@ -118,7 +118,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

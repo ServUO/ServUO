@@ -8,10 +8,10 @@ namespace Server.Engines.TreasuresOfKotlCity
     public class KotlCityPuzzle : BaseAddon
     {
         public static KotlCityPuzzle Puzzle { get; set; }
-        public override BaseAddonDeed Deed { get { return null; } }
+        public override BaseAddonDeed Deed => null;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Next { get { return _Order == null || _Order.Count == 0 ? -1 : _Order[0]; } }
+        public int Next => _Order == null || _Order.Count == 0 ? -1 : _Order[0];
 
         private List<int> _Order;
         private int _Index;
@@ -24,7 +24,7 @@ namespace Server.Engines.TreasuresOfKotlCity
             get { return _Complete; }
             set
             {
-                foreach (var comp in Components.OfType<KotlCityPuzzleComponent>().Where(c => (value && c.Active) || (!value && !c.Active)))
+                foreach (KotlCityPuzzleComponent comp in Components.OfType<KotlCityPuzzleComponent>().Where(c => (value && c.Active) || (!value && !c.Active)))
                     comp.Active = !value;
 
                 if (_Complete && !value)
@@ -57,7 +57,7 @@ namespace Server.Engines.TreasuresOfKotlCity
         private void RandomizeOrder()
         {
             _Order = new List<int>();
-            var list = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            List<int> list = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             int count = Utility.RandomMinMax(5, 10);
 
             int ran = 0;
@@ -187,7 +187,7 @@ namespace Server.Engines.TreasuresOfKotlCity
 
     public class KotlCityPuzzleComponent : AddonComponent
     {
-        public override int LabelNumber { get { return 1124182; } }
+        public override int LabelNumber => 1124182;
 
         public bool _Active;
 
@@ -201,12 +201,12 @@ namespace Server.Engines.TreasuresOfKotlCity
 
                 if (_Active && ItemID != 0x9CDE)
                 {
-                    Effects.PlaySound(this.Location, this.Map, 0x051);
+                    Effects.PlaySound(Location, Map, 0x051);
                     ItemID = 0x9CDE;
                 }
                 else if (!_Active && ItemID != 0x9D0B)
                 {
-                    Effects.PlaySound(this.Location, this.Map, 0x051);
+                    Effects.PlaySound(Location, Map, 0x051);
                     ItemID = 0x9D0B;
                 }
             }

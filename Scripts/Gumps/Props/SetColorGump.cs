@@ -84,11 +84,11 @@ namespace Server.Gumps
                 TotalHeight,
                 OffsetGumpID);
 
-            var name = m_OldColor.IsNamedColor ? m_OldColor.Name : m_OldColor.IsEmpty ? "Empty" : "";
+            string name = m_OldColor.IsNamedColor ? m_OldColor.Name : m_OldColor.IsEmpty ? "Empty" : "";
 
-            var rgb = "#" + (m_OldColor.ToArgb() & 0x00FFFFFF).ToString("X6");
+            string rgb = "#" + (m_OldColor.ToArgb() & 0x00FFFFFF).ToString("X6");
 
-            var val = String.Format("{0} ({1}) ({2},{3},{4})", name, rgb, m_OldColor.R, m_OldColor.G, m_OldColor.B);
+            string val = String.Format("{0} ({1}) ({2},{3},{4})", name, rgb, m_OldColor.R, m_OldColor.G, m_OldColor.B);
 
             AddRect(0, prop.Name, 0, -1);
             AddRect(1, val, 0, -1);
@@ -100,8 +100,8 @@ namespace Server.Gumps
 
         private void AddRect(int index, string str, int button, int text)
         {
-            var x = BorderSize + OffsetSize;
-            var y = BorderSize + OffsetSize + (index * (EntryHeight + OffsetSize));
+            int x = BorderSize + OffsetSize;
+            int y = BorderSize + OffsetSize + (index * (EntryHeight + OffsetSize));
 
             AddImageTiled(x, y, EntryWidth, EntryHeight, EntryGumpID);
             AddLabelCropped(x + TextOffsetX, y, EntryWidth - TextOffsetX, EntryHeight, TextHue, str);
@@ -126,24 +126,24 @@ namespace Server.Gumps
 
         public override void OnResponse(NetState sender, RelayInfo info)
         {
-            var toSet = Color.Empty;
-            var shouldSet = false;
+            Color toSet = Color.Empty;
+            bool shouldSet = false;
 
-            var name = "";
+            string name = "";
 
             if (info.ButtonID == 1)
             {
                 name = info.GetTextEntry(0).Text;
             }
 
-            var rgb = "";
+            string rgb = "";
 
             if (info.ButtonID == 2)
             {
                 rgb = info.GetTextEntry(1).Text;
             }
 
-            var hex = "";
+            string hex = "";
 
             if (info.ButtonID == 3)
             {
@@ -154,7 +154,7 @@ namespace Server.Gumps
             {
                 case 1: // Name
                     {
-                        var toapply = name != string.Empty
+                        string toapply = name != string.Empty
                             ? name
                             : m_OldColor.IsNamedColor
                                 ? m_OldColor.Name
@@ -169,9 +169,9 @@ namespace Server.Gumps
                     break;
                 case 2: // RGB
                     {
-                        var toapply = rgb != string.Empty ? rgb : String.Format("{0},{1},{2}", m_OldColor.R, m_OldColor.G, m_OldColor.B);
+                        string toapply = rgb != string.Empty ? rgb : String.Format("{0},{1},{2}", m_OldColor.R, m_OldColor.G, m_OldColor.B);
 
-                        var args = toapply.Split(',');
+                        string[] args = toapply.Split(',');
 
                         if (args.Length >= 3)
                         {
@@ -187,7 +187,7 @@ namespace Server.Gumps
                     break;
                 case 3: // Hex
                     {
-                        var toapply = hex != string.Empty ? hex : String.Format("#{0:X6}", m_OldColor.ToArgb() & 0x00FFFFFF);
+                        string toapply = hex != string.Empty ? hex : String.Format("#{0:X6}", m_OldColor.ToArgb() & 0x00FFFFFF);
 
                         int val;
 

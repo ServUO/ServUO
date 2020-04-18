@@ -3,7 +3,7 @@
     public class EnchantedBladeAddon : BaseAddon
     {
 
-        public override BaseAddonDeed Deed { get { return new EnchantedBladeDeed(); } }
+        public override BaseAddonDeed Deed => new EnchantedBladeDeed();
 
         [Constructable]
         public EnchantedBladeAddon()
@@ -19,7 +19,7 @@
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -31,7 +31,7 @@
 
     public class EnchantedBladeDeed : BaseAddonDeed
     {
-        public override BaseAddon Addon { get { return new EnchantedBladeAddon(); } }
+        public override BaseAddon Addon => new EnchantedBladeAddon();
 
         [Constructable]
         public EnchantedBladeDeed()

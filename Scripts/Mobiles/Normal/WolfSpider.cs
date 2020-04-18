@@ -52,34 +52,10 @@ namespace Server.Mobiles
         {
         }
 
-        public override FoodType FavoriteFood
-        {
-            get
-            {
-                return FoodType.Meat;
-            }
-        }
-        public override PackInstinct PackInstinct
-        {
-            get
-            {
-                return PackInstinct.Arachnid;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Regular;
-            }
-        }
-        public override Poison HitPoison
-        {
-            get
-            {
-                return Poison.Regular;
-            }
-        }
+        public override FoodType FavoriteFood => FoodType.Meat;
+        public override PackInstinct PackInstinct => PackInstinct.Arachnid;
+        public override Poison PoisonImmune => Poison.Regular;
+        public override Poison HitPoison => Poison.Regular;
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Rich);
@@ -117,7 +93,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)2);
+            writer.Write(2);
         }
 
         public override void Deserialize(GenericReader reader)

@@ -6,11 +6,11 @@ namespace Server.Items
         public MinotaurArtifact()
             : base(Utility.RandomList(0xB46, 0xB48, 0x9ED))
         {
-            if (this.ItemID == 0x9ED)
-                this.Weight = 30;
+            if (ItemID == 0x9ED)
+                Weight = 30;
 
-            this.LootType = LootType.Blessed;
-            this.Hue = 0x100;
+            LootType = LootType.Blessed;
+            Hue = 0x100;
         }
 
         public MinotaurArtifact(Serial serial)
@@ -18,25 +18,13 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074826;
-            }
-        }// Minotaur Artifact
-        public override double DefaultWeight
-        {
-            get
-            {
-                return 5.0;
-            }
-        }
+        public override int LabelNumber => 1074826;// Minotaur Artifact
+        public override double DefaultWeight => 5.0;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

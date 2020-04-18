@@ -55,8 +55,8 @@ namespace Server.Mobiles
                 c.DropItem(new LuckyCoin());
         }
 
-        public override FoodType FavoriteFood { get { return FoodType.Meat; } }
-        public override PackInstinct PackInstinct { get { return PackInstinct.Arachnid; } }
+        public override FoodType FavoriteFood => FoodType.Meat;
+        public override PackInstinct PackInstinct => PackInstinct.Arachnid;
 
         public SentinelSpider(Serial serial) : base(serial)
         {
@@ -65,7 +65,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)

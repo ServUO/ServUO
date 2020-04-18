@@ -14,12 +14,12 @@ namespace Server.Spells.SkillMasteries
                 9061
             );
 
-        public override double RequiredSkill { get { return 90; } }
-        public override double UpKeep { get { return 0; } }
-        public override int RequiredMana { get { return 50; } }
-        public override bool PartyEffects { get { return false; } }
+        public override double RequiredSkill => 90;
+        public override double UpKeep => 0;
+        public override int RequiredMana => 50;
+        public override bool PartyEffects => false;
 
-        public override SkillName CastSkill { get { return SkillName.Spellweaving; } }
+        public override SkillName CastSkill => SkillName.Spellweaving;
 
         public SummonReaperSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
@@ -66,12 +66,12 @@ namespace Server.Spells.SkillMasteries
 
                 if (map == null || !map.CanSpawnMobile(p.X, p.Y, p.Z))
                 {
-                    this.Caster.SendLocalizedMessage(501942); // That location is blocked.
+                    Caster.SendLocalizedMessage(501942); // That location is blocked.
                 }
-                else if (SpellHelper.CheckTown(p, this.Caster) && this.CheckSequence())
+                else if (SpellHelper.CheckTown(p, Caster) && CheckSequence())
                 {
                     TimeSpan duration = TimeSpan.FromSeconds(((Caster.Skills[CastSkill].Value + (ArcanistSpell.GetFocusLevel(Caster) * 20)) / 240) * 75);
-                    BaseCreature.Summon(new SummonedReaper(Caster, this), false, this.Caster, new Point3D(p), 442, duration);
+                    BaseCreature.Summon(new SummonedReaper(Caster, this), false, Caster, new Point3D(p), 442, duration);
                 }
             }
         }
@@ -82,8 +82,8 @@ namespace Server.Spells.SkillMasteries
     {
         private readonly int m_DispelDifficulty;
 
-        public override double DispelDifficulty { get { return m_DispelDifficulty; } }
-        public override double DispelFocus { get { return 45.0; } }
+        public override double DispelDifficulty => m_DispelDifficulty;
+        public override double DispelFocus => 45.0;
 
         private long _NextAura;
 
@@ -95,7 +95,7 @@ namespace Server.Spells.SkillMasteries
             Body = 47;
             BaseSoundID = 442;
 
-            double scale = 1.0 + ((caster.Skills[spell.CastSkill].Value + (double)(spell.GetMasteryLevel() * 40) + (double)(ArcanistSpell.GetFocusLevel(caster) * 20))) / 1000.0;
+            double scale = 1.0 + ((caster.Skills[spell.CastSkill].Value + spell.GetMasteryLevel() * 40 + ArcanistSpell.GetFocusLevel(caster) * 20)) / 1000.0;
 
             SetStr((int)(450 * scale), (int)(500 * scale));
             SetDex((int)(130 * scale));
@@ -142,9 +142,9 @@ namespace Server.Spells.SkillMasteries
             SetWeaponAbility(WeaponAbility.WhirlwindAttack);
         }
 
-        public override Poison PoisonImmune { get { return Poison.Greater; } }
-        public override bool DisallowAllMoves { get { return true; } }
-        public override bool AlwaysMurderer { get { return true; } }
+        public override Poison PoisonImmune => Poison.Greater;
+        public override bool DisallowAllMoves => true;
+        public override bool AlwaysMurderer => true;
 
         public override void OnThink()
         {
@@ -179,7 +179,7 @@ namespace Server.Spells.SkillMasteries
                 Effects.SendLocationEffect(pnt, map, 0x3709, 0x14, 0x1, 0x8AF, 4);
             });
 
-            Server.Misc.Geometry.Circle2D(Location, this.Map, 5, (pnt, map) =>
+            Server.Misc.Geometry.Circle2D(Location, Map, 5, (pnt, map) =>
             {
                 Effects.SendLocationEffect(pnt, map, 0x3709, 0x14, 0x1, 0x8AF, 4);
             });
@@ -193,7 +193,7 @@ namespace Server.Spells.SkillMasteries
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

@@ -10,13 +10,7 @@ namespace Server.Engines.Reports
             return new ItemValue();
         }
 
-        public override PersistableType TypeID
-        {
-            get
-            {
-                return ThisTypeID;
-            }
-        }
+        public override PersistableType TypeID => ThisTypeID;
         #endregion
 
         private string m_Value;
@@ -26,22 +20,22 @@ namespace Server.Engines.Reports
         {
             get
             {
-                return this.m_Value;
+                return m_Value;
             }
             set
             {
-                this.m_Value = value;
+                m_Value = value;
             }
         }
         public string Format
         {
             get
             {
-                return this.m_Format;
+                return m_Format;
             }
             set
             {
-                this.m_Format = value;
+                m_Format = value;
             }
         }
 
@@ -56,23 +50,23 @@ namespace Server.Engines.Reports
 
         public ItemValue(string value, string format)
         {
-            this.m_Value = value;
-            this.m_Format = format;
+            m_Value = value;
+            m_Format = format;
         }
 
         public override void SerializeAttributes(PersistenceWriter op)
         {
-            op.SetString("v", this.m_Value);
-            op.SetString("f", this.m_Format);
+            op.SetString("v", m_Value);
+            op.SetString("f", m_Format);
         }
 
         public override void DeserializeAttributes(PersistenceReader ip)
         {
-            this.m_Value = ip.GetString("v");
-            this.m_Format = Utility.Intern(ip.GetString("f"));
+            m_Value = ip.GetString("v");
+            m_Format = Utility.Intern(ip.GetString("f"));
 
-            if (this.m_Format == null)
-                Utility.Intern(ref this.m_Value);
+            if (m_Format == null)
+                Utility.Intern(ref m_Value);
         }
     }
 }

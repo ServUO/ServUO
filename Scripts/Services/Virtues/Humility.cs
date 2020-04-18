@@ -25,7 +25,7 @@ namespace Server.Services.Virtues
 
         public static void EventSink_Speech(SpeechEventArgs e)
         {
-            var speech = e.Speech;
+            string speech = e.Speech;
 
             if (speech.IndexOf("lum lum lum", StringComparison.OrdinalIgnoreCase) >= 0)
             {
@@ -48,7 +48,7 @@ namespace Server.Services.Virtues
                     {
                         if (targeted is BaseCreature)
                         {
-                            var bc = (BaseCreature)targeted;
+                            BaseCreature bc = (BaseCreature)targeted;
 
                             if (!bc.Alive)
                             {
@@ -101,7 +101,7 @@ namespace Server.Services.Virtues
                                     {
                                         if (mob != null && ActiveTable.ContainsKey(mob))
                                         {
-                                            var user = ActiveTable[mob];
+                                            Mobile user = ActiveTable[mob];
                                             ActiveTable.Remove(mob);
 
                                             BuffInfo.RemoveBuff(user, BuffIcon.Humility);
@@ -147,7 +147,7 @@ namespace Server.Services.Virtues
                         TimeSpan.FromSeconds(3),
                         () =>
                         {
-                            foreach (var mob in ActiveTable.Keys)
+                            foreach (Mobile mob in ActiveTable.Keys)
                             {
                                 mob.FixedParticles(0x376A, 9, 32, 5005, EffectLayer.Waist);
                             }
@@ -163,7 +163,7 @@ namespace Server.Services.Virtues
             if (ActiveTable == null || !ActiveTable.ContainsKey(mobile))
                 return 0;
 
-            var user = ActiveTable[mobile];
+            Mobile user = ActiveTable[mobile];
 
             if (user != null)
             {
@@ -199,7 +199,7 @@ namespace Server.Services.Virtues
             }
             else
             {
-                var pm = from as PlayerMobile;
+                PlayerMobile pm = from as PlayerMobile;
 
                 if (pm != null)
                 {
@@ -218,11 +218,11 @@ namespace Server.Services.Virtues
 
         public static void RegisterKill(Mobile attacker, BaseCreature killed, int count)
         {
-            var points = Math.Min(60, Math.Max(1, (killed.Fame / 5000) * 10)) / count;
+            int points = Math.Min(60, Math.Max(1, (killed.Fame / 5000) * 10)) / count;
 
             if (attacker != null && HuntTable.ContainsKey(attacker))
             {
-                var gainedPath = false;
+                bool gainedPath = false;
 
                 if (VirtueHelper.Award(attacker, VirtueName.Humility, points, ref gainedPath))
                 {
@@ -276,18 +276,12 @@ namespace Server.Services.Virtues
 
             private bool _Expiring;
 
-            public ResistanceMod[] GetMod
-            {
-                get
-                {
-                    return new[]
+            public ResistanceMod[] GetMod => new[]
                     {
                         new ResistanceMod(ResistanceType.Physical, -70), new ResistanceMod(ResistanceType.Fire, -70),
                         new ResistanceMod(ResistanceType.Poison, -70), new ResistanceMod(ResistanceType.Cold, -70),
                         new ResistanceMod(ResistanceType.Energy, -70)
                     };
-                }
-            }
 
             public bool Expiring
             {
@@ -309,11 +303,11 @@ namespace Server.Services.Virtues
 
                 Table = new Dictionary<Mobile, ResistanceMod[]>();
 
-                var mod = GetMod;
+                ResistanceMod[] mod = GetMod;
 
                 owner.FixedEffect(0x373A, 10, 16);
 
-                foreach (var mods in mod)
+                foreach (ResistanceMod mods in mod)
                     owner.AddResistanceMod(mods);
 
                 Table[owner] = mod;
@@ -322,7 +316,7 @@ namespace Server.Services.Virtues
                     {
                         mod = GetMod;
 
-                        foreach (var mods in mod)
+                        foreach (ResistanceMod mods in mod)
                             m.AddResistanceMod(mods);
 
                         m.FixedEffect(0x373A, 10, 16);
@@ -334,11 +328,11 @@ namespace Server.Services.Virtues
             {
                 if (!_Expiring && !Table.ContainsKey(pet))
                 {
-                    var mod = GetMod;
+                    ResistanceMod[] mod = GetMod;
 
                     pet.FixedEffect(0x373A, 10, 16);
 
-                    foreach (var mods in mod)
+                    foreach (ResistanceMod mods in mod)
                         pet.AddResistanceMod(mods);
 
                     Table[pet] = mod;
@@ -347,9 +341,9 @@ namespace Server.Services.Virtues
 
             private void DoExpire()
             {
-                foreach (var kvp in Table)
+                foreach (KeyValuePair<Mobile, ResistanceMod[]> kvp in Table)
                 {
-                    foreach (var mod in kvp.Value)
+                    foreach (ResistanceMod mod in kvp.Value)
                         kvp.Key.RemoveResistanceMod(mod);
 
                     BuffInfo.RemoveBuff(kvp.Key, BuffIcon.HumilityDebuff);

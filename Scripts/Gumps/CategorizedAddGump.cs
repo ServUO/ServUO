@@ -21,64 +21,34 @@ namespace Server.Gumps
         private readonly CAGCategory m_Parent;
         public CAGObject(CAGCategory parent, XmlTextReader xml)
         {
-            this.m_Parent = parent;
+            m_Parent = parent;
 
             if (xml.MoveToAttribute("type"))
-                this.m_Type = ScriptCompiler.FindTypeByFullName(xml.Value, false);
+                m_Type = ScriptCompiler.FindTypeByFullName(xml.Value, false);
 
             if (xml.MoveToAttribute("gfx"))
-                this.m_ItemID = XmlConvert.ToInt32(xml.Value);
+                m_ItemID = XmlConvert.ToInt32(xml.Value);
 
             if (xml.MoveToAttribute("hue"))
-                this.m_Hue = XmlConvert.ToInt32(xml.Value);
+                m_Hue = XmlConvert.ToInt32(xml.Value);
         }
 
-        public Type Type
-        {
-            get
-            {
-                return this.m_Type;
-            }
-        }
-        public int ItemID
-        {
-            get
-            {
-                return this.m_ItemID;
-            }
-        }
-        public int Hue
-        {
-            get
-            {
-                return this.m_Hue;
-            }
-        }
-        public CAGCategory Parent
-        {
-            get
-            {
-                return this.m_Parent;
-            }
-        }
-        public override string Caption
-        {
-            get
-            {
-                return (this.m_Type == null ? "bad type" : this.m_Type.Name);
-            }
-        }
+        public Type Type => m_Type;
+        public int ItemID => m_ItemID;
+        public int Hue => m_Hue;
+        public CAGCategory Parent => m_Parent;
+        public override string Caption => (m_Type == null ? "bad type" : m_Type.Name);
         public override void OnClick(Mobile from, int page)
         {
-            if (this.m_Type == null)
+            if (m_Type == null)
             {
                 from.SendMessage("That is an invalid type name.");
             }
             else
             {
-                CommandSystem.Handle(from, String.Format("{0}Add {1}", CommandSystem.Prefix, this.m_Type.Name));
+                CommandSystem.Handle(from, String.Format("{0}Add {1}", CommandSystem.Prefix, m_Type.Name));
 
-                from.SendGump(new CategorizedAddGump(from, this.m_Parent, page));
+                from.SendGump(new CategorizedAddGump(from, m_Parent, page));
             }
         }
     }
@@ -91,19 +61,19 @@ namespace Server.Gumps
         private readonly CAGCategory m_Parent;
         public CAGCategory(CAGCategory parent, XmlTextReader xml)
         {
-            this.m_Parent = parent;
+            m_Parent = parent;
 
             if (xml.MoveToAttribute("title"))
-                this.m_Title = xml.Value;
+                m_Title = xml.Value;
             else
-                this.m_Title = "empty";
+                m_Title = "empty";
 
-            if (this.m_Title == "Docked")
-                this.m_Title = "Docked 2";
+            if (m_Title == "Docked")
+                m_Title = "Docked 2";
 
             if (xml.IsEmptyElement)
             {
-                this.m_Nodes = new CAGNode[0];
+                m_Nodes = new CAGNode[0];
             }
             else
             {
@@ -122,14 +92,14 @@ namespace Server.Gumps
                         xml.Skip();
                 }
 
-                this.m_Nodes = (CAGNode[])nodes.ToArray(typeof(CAGNode));
+                m_Nodes = (CAGNode[])nodes.ToArray(typeof(CAGNode));
             }
         }
 
         private CAGCategory()
         {
-            this.m_Title = "no data";
-            this.m_Nodes = new CAGNode[0];
+            m_Title = "no data";
+            m_Nodes = new CAGNode[0];
         }
 
         public static CAGCategory Root
@@ -142,34 +112,10 @@ namespace Server.Gumps
                 return m_Root;
             }
         }
-        public string Title
-        {
-            get
-            {
-                return this.m_Title;
-            }
-        }
-        public CAGNode[] Nodes
-        {
-            get
-            {
-                return this.m_Nodes;
-            }
-        }
-        public CAGCategory Parent
-        {
-            get
-            {
-                return this.m_Parent;
-            }
-        }
-        public override string Caption
-        {
-            get
-            {
-                return this.m_Title;
-            }
-        }
+        public string Title => m_Title;
+        public CAGNode[] Nodes => m_Nodes;
+        public CAGCategory Parent => m_Parent;
+        public override string Caption => m_Title;
         public static CAGCategory Load(string path)
         {
             if (File.Exists(path))
@@ -252,17 +198,17 @@ namespace Server.Gumps
         {
             owner.CloseGump(typeof(WhoGump));
 
-            this.m_Owner = owner;
-            this.m_Category = category;
+            m_Owner = owner;
+            m_Category = category;
 
-            this.Initialize(page);
+            Initialize(page);
         }
 
         public void Initialize(int page)
         {
-            this.m_Page = page;
+            m_Page = page;
 
-            CAGNode[] nodes = this.m_Category.Nodes;
+            CAGNode[] nodes = m_Category.Nodes;
 
             int count = nodes.Length - (page * EntryCount);
 
@@ -273,25 +219,25 @@ namespace Server.Gumps
 
             int totalHeight = OffsetSize + ((EntryHeight + OffsetSize) * (count + 1));
 
-            this.AddPage(0);
+            AddPage(0);
 
-            this.AddBackground(0, 0, BackWidth, BorderSize + totalHeight + BorderSize, BackGumpID);
-            this.AddImageTiled(BorderSize, BorderSize, TotalWidth - (OldStyle ? SetWidth + OffsetSize : 0), totalHeight, OffsetGumpID);
+            AddBackground(0, 0, BackWidth, BorderSize + totalHeight + BorderSize, BackGumpID);
+            AddImageTiled(BorderSize, BorderSize, TotalWidth - (OldStyle ? SetWidth + OffsetSize : 0), totalHeight, OffsetGumpID);
 
             int x = BorderSize + OffsetSize;
             int y = BorderSize + OffsetSize;
 
             if (OldStyle)
-                this.AddImageTiled(x, y, TotalWidth - (OffsetSize * 3) - SetWidth, EntryHeight, HeaderGumpID);
+                AddImageTiled(x, y, TotalWidth - (OffsetSize * 3) - SetWidth, EntryHeight, HeaderGumpID);
             else
-                this.AddImageTiled(x, y, PrevWidth, EntryHeight, HeaderGumpID);
+                AddImageTiled(x, y, PrevWidth, EntryHeight, HeaderGumpID);
 
-            if (this.m_Category.Parent != null)
+            if (m_Category.Parent != null)
             {
-                this.AddButton(x + PrevOffsetX, y + PrevOffsetY, PrevButtonID1, PrevButtonID2, 1, GumpButtonType.Reply, 0);
+                AddButton(x + PrevOffsetX, y + PrevOffsetY, PrevButtonID1, PrevButtonID2, 1, GumpButtonType.Reply, 0);
 
                 if (PrevLabel)
-                    this.AddLabel(x + PrevLabelOffsetX, y + PrevLabelOffsetY, TextHue, "Previous");
+                    AddLabel(x + PrevLabelOffsetX, y + PrevLabelOffsetY, TextHue, "Previous");
             }
 
             x += PrevWidth + OffsetSize;
@@ -299,36 +245,36 @@ namespace Server.Gumps
             int emptyWidth = TotalWidth - (PrevWidth * 2) - NextWidth - (OffsetSize * 5) - (OldStyle ? SetWidth + OffsetSize : 0);
 
             if (!OldStyle)
-                this.AddImageTiled(x - (OldStyle ? OffsetSize : 0), y, emptyWidth + (OldStyle ? OffsetSize * 2 : 0), EntryHeight, EntryGumpID);
+                AddImageTiled(x - (OldStyle ? OffsetSize : 0), y, emptyWidth + (OldStyle ? OffsetSize * 2 : 0), EntryHeight, EntryGumpID);
 
-            this.AddHtml(x + TextOffsetX, y + ((EntryHeight - 20) / 2), emptyWidth - TextOffsetX, EntryHeight, String.Format("<center>{0}</center>", this.m_Category.Caption), false, false);
+            AddHtml(x + TextOffsetX, y + ((EntryHeight - 20) / 2), emptyWidth - TextOffsetX, EntryHeight, String.Format("<center>{0}</center>", m_Category.Caption), false, false);
 
             x += emptyWidth + OffsetSize;
 
             if (OldStyle)
-                this.AddImageTiled(x, y, TotalWidth - (OffsetSize * 3) - SetWidth, EntryHeight, HeaderGumpID);
+                AddImageTiled(x, y, TotalWidth - (OffsetSize * 3) - SetWidth, EntryHeight, HeaderGumpID);
             else
-                this.AddImageTiled(x, y, PrevWidth, EntryHeight, HeaderGumpID);
+                AddImageTiled(x, y, PrevWidth, EntryHeight, HeaderGumpID);
 
             if (page > 0)
             {
-                this.AddButton(x + PrevOffsetX, y + PrevOffsetY, PrevButtonID1, PrevButtonID2, 2, GumpButtonType.Reply, 0);
+                AddButton(x + PrevOffsetX, y + PrevOffsetY, PrevButtonID1, PrevButtonID2, 2, GumpButtonType.Reply, 0);
 
                 if (PrevLabel)
-                    this.AddLabel(x + PrevLabelOffsetX, y + PrevLabelOffsetY, TextHue, "Previous");
+                    AddLabel(x + PrevLabelOffsetX, y + PrevLabelOffsetY, TextHue, "Previous");
             }
 
             x += PrevWidth + OffsetSize;
 
             if (!OldStyle)
-                this.AddImageTiled(x, y, NextWidth, EntryHeight, HeaderGumpID);
+                AddImageTiled(x, y, NextWidth, EntryHeight, HeaderGumpID);
 
             if ((page + 1) * EntryCount < nodes.Length)
             {
-                this.AddButton(x + NextOffsetX, y + NextOffsetY, NextButtonID1, NextButtonID2, 3, GumpButtonType.Reply, 1);
+                AddButton(x + NextOffsetX, y + NextOffsetY, NextButtonID1, NextButtonID2, 3, GumpButtonType.Reply, 1);
 
                 if (NextLabel)
-                    this.AddLabel(x + NextLabelOffsetX, y + NextLabelOffsetY, TextHue, "Next");
+                    AddLabel(x + NextLabelOffsetX, y + NextLabelOffsetY, TextHue, "Next");
             }
 
             for (int i = 0, index = page * EntryCount; i < EntryCount && index < nodes.Length; ++i, ++index)
@@ -338,15 +284,15 @@ namespace Server.Gumps
 
                 CAGNode node = nodes[index];
 
-                this.AddImageTiled(x, y, EntryWidth, EntryHeight, EntryGumpID);
-                this.AddLabelCropped(x + TextOffsetX, y + ((EntryHeight - 20) / 2), EntryWidth - TextOffsetX, EntryHeight, TextHue, node.Caption);
+                AddImageTiled(x, y, EntryWidth, EntryHeight, EntryGumpID);
+                AddLabelCropped(x + TextOffsetX, y + ((EntryHeight - 20) / 2), EntryWidth - TextOffsetX, EntryHeight, TextHue, node.Caption);
 
                 x += EntryWidth + OffsetSize;
 
                 if (SetGumpID != 0)
-                    this.AddImageTiled(x, y, SetWidth, EntryHeight, SetGumpID);
+                    AddImageTiled(x, y, SetWidth, EntryHeight, SetGumpID);
 
-                this.AddButton(x + SetOffsetX, y + SetOffsetY, SetButtonID1, SetButtonID2, i + 4, GumpButtonType.Reply, 0);
+                AddButton(x + SetOffsetX, y + SetOffsetY, SetButtonID1, SetButtonID2, i + 4, GumpButtonType.Reply, 0);
 
                 if (node is CAGObject)
                 {
@@ -358,9 +304,9 @@ namespace Server.Gumps
                     if (itemID != 1 && bounds.Height < (EntryHeight * 2))
                     {
                         if (bounds.Height < EntryHeight)
-                            this.AddItem(x - OffsetSize - 22 - ((i % 2) * 44) - (bounds.Width / 2) - bounds.X, y + (EntryHeight / 2) - (bounds.Height / 2) - bounds.Y, itemID);
+                            AddItem(x - OffsetSize - 22 - ((i % 2) * 44) - (bounds.Width / 2) - bounds.X, y + (EntryHeight / 2) - (bounds.Height / 2) - bounds.Y, itemID);
                         else
-                            this.AddItem(x - OffsetSize - 22 - ((i % 2) * 44) - (bounds.Width / 2) - bounds.X, y + EntryHeight - 1 - bounds.Height - bounds.Y, itemID);
+                            AddItem(x - OffsetSize - 22 - ((i % 2) * 44) - (bounds.Width / 2) - bounds.X, y + EntryHeight - 1 - bounds.Height - bounds.Y, itemID);
                     }
                 }
             }
@@ -368,7 +314,7 @@ namespace Server.Gumps
 
         public override void OnResponse(NetState state, RelayInfo info)
         {
-            Mobile from = this.m_Owner;
+            Mobile from = m_Owner;
 
             switch (info.ButtonID)
             {
@@ -378,38 +324,38 @@ namespace Server.Gumps
                     }
                 case 1: // Up
                     {
-                        if (this.m_Category.Parent != null)
+                        if (m_Category.Parent != null)
                         {
-                            int index = Array.IndexOf(this.m_Category.Parent.Nodes, this.m_Category) / EntryCount;
+                            int index = Array.IndexOf(m_Category.Parent.Nodes, m_Category) / EntryCount;
 
                             if (index < 0)
                                 index = 0;
 
-                            from.SendGump(new CategorizedAddGump(from, this.m_Category.Parent, index));
+                            from.SendGump(new CategorizedAddGump(from, m_Category.Parent, index));
                         }
 
                         break;
                     }
                 case 2: // Previous
                     {
-                        if (this.m_Page > 0)
-                            from.SendGump(new CategorizedAddGump(from, this.m_Category, this.m_Page - 1));
+                        if (m_Page > 0)
+                            from.SendGump(new CategorizedAddGump(from, m_Category, m_Page - 1));
 
                         break;
                     }
                 case 3: // Next
                     {
-                        if ((this.m_Page + 1) * EntryCount < this.m_Category.Nodes.Length)
-                            from.SendGump(new CategorizedAddGump(from, this.m_Category, this.m_Page + 1));
+                        if ((m_Page + 1) * EntryCount < m_Category.Nodes.Length)
+                            from.SendGump(new CategorizedAddGump(from, m_Category, m_Page + 1));
 
                         break;
                     }
                 default:
                     {
-                        int index = (this.m_Page * EntryCount) + (info.ButtonID - 4);
+                        int index = (m_Page * EntryCount) + (info.ButtonID - 4);
 
-                        if (index >= 0 && index < this.m_Category.Nodes.Length)
-                            this.m_Category.Nodes[index].OnClick(from, this.m_Page);
+                        if (index >= 0 && index < m_Category.Nodes.Length)
+                            m_Category.Nodes[index].OnClick(from, m_Page);
 
                         break;
                     }

@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class PileOfGlacialSnow : Item
     {
-        public override int LabelNumber { get { return 1070874; } }// a Pile of Glacial Snow
+        public override int LabelNumber => 1070874; // a Pile of Glacial Snow
 
         [Constructable]
         public PileOfGlacialSnow()
@@ -24,7 +24,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1); // version
+            writer.Write(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -42,7 +42,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!this.IsChildOf(from.Backpack))
+            if (!IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(1042010); // You must have the object in your backpack to use it.
             }
@@ -66,12 +66,12 @@ namespace Server.Items
             public InternalTimer(Mobile from)
                 : base(TimeSpan.FromSeconds(5.0))
             {
-                this.m_From = from;
+                m_From = from;
             }
 
             protected override void OnTick()
             {
-                this.m_From.EndAction(typeof(SnowPile));
+                m_From.EndAction(typeof(SnowPile));
             }
         }
 
@@ -82,8 +82,8 @@ namespace Server.Items
             public SnowTarget(Mobile thrower, Item snow)
                 : base(10, false, TargetFlags.None)
             {
-                this.m_Thrower = thrower;
-                this.m_Snow = snow;
+                m_Thrower = thrower;
+                m_Snow = snow;
             }
 
             protected override void OnTarget(Mobile from, object target)

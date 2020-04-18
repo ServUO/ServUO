@@ -23,7 +23,7 @@ namespace Server.Engines.CityLoyalty
         [CommandProperty(AccessLevel.GameMaster)]
         public CityLoyaltySystem CitySystem { get { return CityLoyaltySystem.GetCityInstance(City); } set { } }
 
-        public override bool IsInvulnerable { get { return true; } }
+        public override bool IsInvulnerable => true;
 
         private Dictionary<PlayerMobile, DateTime> _BannerCooldown;
 
@@ -64,7 +64,7 @@ namespace Server.Engines.CityLoyalty
         {
             if (CitySystem != null && m is PlayerMobile && InRange(m.Location, 2))
             {
-                Raider raider = ((PlayerMobile)m).AllFollowers.FirstOrDefault(mob => mob is Raider && mob.InRange(this.Location, 2)) as Raider;
+                Raider raider = ((PlayerMobile)m).AllFollowers.FirstOrDefault(mob => mob is Raider && mob.InRange(Location, 2)) as Raider;
 
                 if (raider != null)
                 {
@@ -160,7 +160,7 @@ namespace Server.Engines.CityLoyalty
         {
             if (_BannerCooldown != null && m is PlayerMobile)
             {
-                if (_BannerCooldown.ContainsKey((PlayerMobile)m))
+                if (_BannerCooldown.ContainsKey(m))
                     return _BannerCooldown[m] > DateTime.UtcNow;
             }
 

@@ -13,9 +13,9 @@ namespace Server.Items
         public Gears(int amount)
             : base(0x1053)
         {
-            this.Stackable = true;
-            this.Amount = amount;
-            this.Weight = 1.0;
+            Stackable = true;
+            Amount = amount;
+            Weight = 1.0;
         }
 
         public Gears(Serial serial)
@@ -27,7 +27,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

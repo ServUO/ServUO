@@ -4,12 +4,12 @@ namespace Server.Items
 {
     public class ArcaneBookShelfAddonEast : BaseAddonContainer
     {
-        public override BaseAddonContainerDeed Deed { get { return new ArcaneBookShelfDeedEast(); } }
-        public override bool RetainDeedHue { get { return true; } }
-        public override int DefaultGumpID { get { return 0x107; } }
-        public override int DefaultDropSound { get { return 0x42; } }
+        public override BaseAddonContainerDeed Deed => new ArcaneBookShelfDeedEast();
+        public override bool RetainDeedHue => true;
+        public override int DefaultGumpID => 0x107;
+        public override int DefaultDropSound => 0x42;
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         [Constructable]
         public ArcaneBookShelfAddonEast()
@@ -40,8 +40,8 @@ namespace Server.Items
 
     public class ArcaneBookShelfDeedEast : BaseAddonContainerDeed
     {
-        public override BaseAddonContainer Addon { get { return new ArcaneBookShelfAddonEast(); } }
-        public override int LabelNumber { get { return 1073371; } } // arcane bookshelf (east)
+        public override BaseAddonContainer Addon => new ArcaneBookShelfAddonEast();
+        public override int LabelNumber => 1073371;  // arcane bookshelf (east)
 
         [Constructable]
         public ArcaneBookShelfDeedEast()
@@ -74,8 +74,8 @@ namespace Server.Items
         [Constructable]
         public ArcaneBookshelfEastAddon()
         {
-            this.AddComponent(new AddonComponent(0x3084), 0, 0, 0);
-            this.AddComponent(new AddonComponent(0x3085), -1, 0, 0);
+            AddComponent(new AddonComponent(0x3084), 0, 0, 0);
+            AddComponent(new AddonComponent(0x3085), -1, 0, 0);
         }
 
         public ArcaneBookshelfEastAddon(Serial serial)
@@ -83,13 +83,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new ArcaneBookshelfEastDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new ArcaneBookshelfEastDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -112,13 +106,13 @@ namespace Server.Items
 
             if (house != null)
             {
-                Point3D p = this.Location;
-                Map map = this.Map;
+                Point3D p = Location;
+                Map map = Map;
 
                 house.Addons.Remove(this);
                 Delete();
 
-                var addon = new ArcaneBookShelfAddonSouth();
+                ArcaneBookShelfAddonSouth addon = new ArcaneBookShelfAddonSouth();
                 addon.MoveToWorld(p, map);
                 house.Addons[addon] = house.Owner;
             }
@@ -137,20 +131,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new ArcaneBookshelfEastAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073371;
-            }
-        }// arcane bookshelf (east)
+        public override BaseAddon Addon => new ArcaneBookshelfEastAddon();
+        public override int LabelNumber => 1073371;// arcane bookshelf (east)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -169,19 +151,19 @@ namespace Server.Items
 
         private void Replace()
         {
-            Container c = this.Parent as Container;
+            Container c = Parent as Container;
 
             if (c != null)
             {
-                var deed = new ArcaneBookShelfDeedEast();
+                ArcaneBookShelfDeedEast deed = new ArcaneBookShelfDeedEast();
                 c.DropItem(deed);
             }
-            else if (this.Parent == null)
+            else if (Parent == null)
             {
                 Server.Multis.BaseHouse house = Server.Multis.BaseHouse.FindHouseAt(this);
 
-                var deed = new ArcaneBookShelfDeedEast();
-                deed.MoveToWorld(this.Location, this.Map);
+                ArcaneBookShelfDeedEast deed = new ArcaneBookShelfDeedEast();
+                deed.MoveToWorld(Location, Map);
 
                 deed.IsLockedDown = IsLockedDown;
                 deed.IsSecure = IsSecure;

@@ -15,17 +15,11 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074482;
-            }
-        }// Mounted pixie
+        public override int LabelNumber => 1074482;// Mounted pixie
         public override void OnDoubleClick(Mobile from)
         {
-            if (Utility.InRange(this.Location, from.Location, 2))
-                Effects.PlaySound(this.Location, this.Map, Utility.RandomMinMax(0x558, 0x55B));
+            if (Utility.InRange(Location, from.Location, 2))
+                Effects.PlaySound(Location, Map, Utility.RandomMinMax(0x558, 0x55B));
             else
                 from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
         }
@@ -50,7 +44,7 @@ namespace Server.Items
         public MountedPixieOrangeAddon()
             : base()
         {
-            this.AddComponent(new MountedPixieOrangeComponent(), 0, 0, 0);
+            AddComponent(new MountedPixieOrangeComponent(), 0, 0, 0);
         }
 
         public MountedPixieOrangeAddon(Serial serial)
@@ -58,13 +52,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new MountedPixieOrangeDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new MountedPixieOrangeDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -86,7 +74,7 @@ namespace Server.Items
         public MountedPixieOrangeDeed()
             : base()
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public MountedPixieOrangeDeed(Serial serial)
@@ -94,20 +82,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new MountedPixieOrangeAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074482;
-            }
-        }// Mounted pixie
+        public override BaseAddon Addon => new MountedPixieOrangeAddon();
+        public override int LabelNumber => 1074482;// Mounted pixie
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

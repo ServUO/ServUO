@@ -18,23 +18,11 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074161;
-            }
-        }// Access to Bedlam by invitation only
+        public override int LabelNumber => 1074161;// Access to Bedlam by invitation only
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
-        public virtual Type Quest
-        {
-            get
-            {
-                return typeof(MistakenIdentityQuest);
-            }
-        }
+        public virtual Type Quest => typeof(MistakenIdentityQuest);
         public override void OnDoubleClick(Mobile from)
         {
             if (!MondainsLegacy.Bedlam && (int)from.AccessLevel < (int)AccessLevel.GameMaster)
@@ -49,8 +37,8 @@ namespace Server.Items
 
                 if (player.Bedlam)
                 {
-                    BaseCreature.TeleportPets(player, new Point3D(121, 1682, 0), this.Map);
-                    player.MoveToWorld(new Point3D(121, 1682, 0), this.Map);
+                    BaseCreature.TeleportPets(player, new Point3D(121, 1682, 0), Map);
+                    player.MoveToWorld(new Point3D(121, 1682, 0), Map);
                 }
                 else
                 {
@@ -63,7 +51,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

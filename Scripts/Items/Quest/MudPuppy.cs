@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class MudPuppy : BigFish
     {
-        public override int LabelNumber { get { return 1095117; } } // Britain Crown Fish
+        public override int LabelNumber => 1095117;  // Britain Crown Fish
 
         [Constructable]
         public MudPuppy()
@@ -19,7 +19,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

@@ -11,13 +11,7 @@ namespace Server.Items
         public abstract int MinDamage { get; }
         public abstract int MaxDamage { get; }
 
-        public override bool RequireFreeHand
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool RequireFreeHand => false;
 
         public BaseConflagrationPotion(PotionEffect effect)
             : base(0xF06, effect)
@@ -63,7 +57,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -160,13 +154,7 @@ namespace Server.Items
         {
             private readonly BaseConflagrationPotion m_Potion;
 
-            public BaseConflagrationPotion Potion
-            {
-                get
-                {
-                    return m_Potion;
-                }
-            }
+            public BaseConflagrationPotion Potion => m_Potion;
 
             public ThrowTarget(BaseConflagrationPotion potion)
                 : base(12, true, TargetFlags.None)
@@ -213,21 +201,9 @@ namespace Server.Items
             private DateTime m_End;
             private Timer m_Timer;
 
-            public Mobile From
-            {
-                get
-                {
-                    return m_From;
-                }
-            }
+            public Mobile From => m_From;
 
-            public override bool BlocksFit
-            {
-                get
-                {
-                    return true;
-                }
-            }
+            public override bool BlocksFit => true;
 
             public InternalItem(Mobile from, Point3D loc, Map map, int min, int max)
                 : base(0x398C)
@@ -286,12 +262,12 @@ namespace Server.Items
             {
                 base.Serialize(writer);
 
-                writer.Write((int)0); // version
+                writer.Write(0); // version
 
-                writer.Write((Mobile)m_From);
-                writer.Write((DateTime)m_End);
-                writer.Write((int)m_MinDamage);
-                writer.Write((int)m_MaxDamage);
+                writer.Write(m_From);
+                writer.Write(m_End);
+                writer.Write(m_MinDamage);
+                writer.Write(m_MaxDamage);
             }
 
             public override void Deserialize(GenericReader reader)

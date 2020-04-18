@@ -14,13 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074431;
-            }
-        }// An aquarium flake sphere
+        public override int LabelNumber => 1074431;// An aquarium flake sphere
         public override void AddNameProperties(ObjectPropertyList list)
         {
             base.AddNameProperties(list);
@@ -32,7 +26,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -41,8 +35,8 @@ namespace Server.Items
 
             int version = reader.ReadInt();
 
-            if (version < 1 && this.ItemID == 0x971)
-                this.ItemID = 0x973;
+            if (version < 1 && ItemID == 0x971)
+                ItemID = 0x973;
         }
     }
 }

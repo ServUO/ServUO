@@ -65,7 +65,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich, 1);
+            AddLoot(LootPack.Rich, 1);
         }
 
         public MudPie(Serial serial)
@@ -135,17 +135,11 @@ namespace Server.Mobiles
                 c.DropItem(new ShameCrystal());
         }
 
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 2;
-            }
-        }
+        public override int TreasureMapLevel => 2;
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich, 2);
+            AddLoot(LootPack.FilthyRich, 2);
         }
 
         public StoneElemental(Serial serial)
@@ -223,8 +217,8 @@ namespace Server.Mobiles
             SetWeaponAbility(WeaponAbility.ArmorIgnore);
         }
 
-        public override MeatType MeatType { get { return MeatType.Ribs; } }
-        public override int Meat { get { return 2; } }
+        public override MeatType MeatType => MeatType.Ribs;
+        public override int Meat => 2;
 
         public override void OnDeath(Container c)
         {
@@ -237,17 +231,11 @@ namespace Server.Mobiles
                 c.DropItem(new ShameCrystal());
         }
 
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 1;
-            }
-        }
+        public override int TreasureMapLevel => 1;
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich, 2);
+            AddLoot(LootPack.Rich, 2);
         }
 
         public CaveTroll(Serial serial)
@@ -319,7 +307,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich, 2);
+            AddLoot(LootPack.Rich, 2);
         }
 
         public ClayGolem(Serial serial)
@@ -379,7 +367,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich, 1);
+            AddLoot(LootPack.Rich, 1);
         }
 
         public GreaterEarthElemental(Serial serial)
@@ -446,7 +434,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich, 2);
+            AddLoot(LootPack.Rich, 2);
         }
 
         public MudElemental(Serial serial)
@@ -506,7 +494,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich, 2);
+            AddLoot(LootPack.Rich, 2);
         }
 
         public GreaterAirElemental(Serial serial)
@@ -571,7 +559,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich, 2);
+            AddLoot(LootPack.Rich, 2);
         }
 
         public MoltenEarthElemental(Serial serial)
@@ -651,17 +639,11 @@ namespace Server.Mobiles
                 c.DropItem(new ShameCrystal());
         }
 
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 2;
-            }
-        }
+        public override int TreasureMapLevel => 2;
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich, 2);
+            AddLoot(LootPack.Rich, 2);
         }
 
         public LesserFlameElemental(Serial serial)
@@ -733,7 +715,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich, 2);
+            AddLoot(LootPack.Rich, 2);
         }
 
         public LesserWindElemental(Serial serial)
@@ -786,8 +768,8 @@ namespace Server.Mobiles
             SetSkill(SkillName.EvalInt, 120, 130);
         }
 
-        public override MeatType MeatType { get { return MeatType.Ribs; } }
-        public override int Meat { get { return 1; } }
+        public override MeatType MeatType => MeatType.Ribs;
+        public override int Meat => 1;
 
         public override void AlterSpellDamageFrom(Mobile from, ref int damage)
         {
@@ -815,7 +797,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich, 3);
+            AddLoot(LootPack.Rich, 3);
         }
 
         public EternalGazer(Serial serial)
@@ -883,8 +865,8 @@ namespace Server.Mobiles
             SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
-        public override bool CanRummageCorpses { get { return true; } }
-        public override bool AlwaysMurderer { get { return true; } }
+        public override bool CanRummageCorpses => true;
+        public override bool AlwaysMurderer => true;
 
         public override void OnDeath(Container c)
         {
@@ -1023,14 +1005,14 @@ namespace Server.Mobiles
             AddItem(new Sandals());
 
             Utility.AssignRandomHair(this);
-            Hue = this.Race.RandomSkinHue();
+            Hue = Race.RandomSkinHue();
 
             Fame = 15000;
             Karma = -15000;
         }
 
-        public override bool CanRummageCorpses { get { return true; } }
-        public override bool AlwaysMurderer { get { return true; } }
+        public override bool CanRummageCorpses => true;
+        public override bool AlwaysMurderer => true;
 
         public override void OnDamagedBySpell(Mobile from)
         {
@@ -1110,7 +1092,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich, 2);
+            AddLoot(LootPack.FilthyRich, 2);
         }
 
         public CrazedMage(Serial serial)
@@ -1165,8 +1147,8 @@ namespace Server.Mobiles
             SetSkill(SkillName.Meditation, 100, 110);
         }
 
-        public override bool CanRummageCorpses { get { return true; } }
-        public override bool AlwaysMurderer { get { return true; } }
+        public override bool CanRummageCorpses => true;
+        public override bool AlwaysMurderer => true;
 
         public override void OnDamagedBySpell(Mobile from)
         {
@@ -1244,17 +1226,11 @@ namespace Server.Mobiles
                 c.DropItem(new ShameCrystal(3));
         }
 
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 2;
-            }
-        }
+        public override int TreasureMapLevel => 2;
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich, 2);
+            AddLoot(LootPack.Rich, 2);
         }
 
         public CorruptedMage(Serial serial)
@@ -1316,7 +1292,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich, 2);
+            AddLoot(LootPack.Rich, 2);
         }
 
         public VileMage(Serial serial)
@@ -1387,9 +1363,9 @@ namespace Server.Mobiles
             return 0x28;
         }
 
-        public override bool AlwaysMurderer { get { return true; } }
-        public override bool BleedImmune { get { return true; } }
-        public override Poison PoisonImmune { get { return Poison.Lethal; } }
+        public override bool AlwaysMurderer => true;
+        public override bool BleedImmune => true;
+        public override Poison PoisonImmune => Poison.Lethal;
 
         private DateTime NextTeleport { get; set; }
 
@@ -1424,11 +1400,11 @@ namespace Server.Mobiles
 
                 for (int i = 0; i < 25; i++)
                 {
-                    x = Utility.RandomMinMax(this.X - 1, this.X + 1);
-                    y = Utility.RandomMinMax(this.Y - 1, this.Y + 1);
-                    z = this.Map.GetAverageZ(x, y);
+                    x = Utility.RandomMinMax(X - 1, X + 1);
+                    y = Utility.RandomMinMax(Y - 1, Y + 1);
+                    z = Map.GetAverageZ(x, y);
 
-                    if (this.Map.CanSpawnMobile(x, y, z) && (x != this.X || y != this.Y))
+                    if (Map.CanSpawnMobile(x, y, z) && (x != X || y != Y))
                     {
                         p = new Point3D(x, y, z);
                         break;
@@ -1436,14 +1412,14 @@ namespace Server.Mobiles
                 }
 
                 if (p == Point3D.Zero)
-                    p = this.Location;
+                    p = Location;
 
                 Point3D from = m.Location;
 
                 Effects.SendLocationParticles(EffectItem.Create(from, m.Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 2023);
                 Effects.SendLocationParticles(EffectItem.Create(p, m.Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 5023);
 
-                m.MoveToWorld(p, this.Map);
+                m.MoveToWorld(p, Map);
 
                 m.PlaySound(0x1FE);
             }
@@ -1461,7 +1437,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich, 2);
+            AddLoot(LootPack.FilthyRich, 2);
         }
 
         public ChaosVortex(Serial serial)
@@ -1517,9 +1493,9 @@ namespace Server.Mobiles
             Karma = -22500;
         }
 
-        public override bool AlwaysMurderer { get { return true; } }
-        public override bool BleedImmune { get { return true; } }
-        public override Poison PoisonImmune { get { return Poison.Lethal; } }
+        public override bool AlwaysMurderer => true;
+        public override bool BleedImmune => true;
+        public override Poison PoisonImmune => Poison.Lethal;
 
         public override int GetAngerSound()
         {
@@ -1564,11 +1540,11 @@ namespace Server.Mobiles
 
                 for (int i = 0; i < 25; i++)
                 {
-                    x = Utility.RandomMinMax(this.X - 1, this.X + 1);
-                    y = Utility.RandomMinMax(this.Y - 1, this.Y + 1);
-                    z = this.Map.GetAverageZ(x, y);
+                    x = Utility.RandomMinMax(X - 1, X + 1);
+                    y = Utility.RandomMinMax(Y - 1, Y + 1);
+                    z = Map.GetAverageZ(x, y);
 
-                    if (this.Map.CanSpawnMobile(x, y, z) && (x != this.X || y != this.Y))
+                    if (Map.CanSpawnMobile(x, y, z) && (x != X || y != Y))
                     {
                         p = new Point3D(x, y, z);
                         break;
@@ -1576,14 +1552,14 @@ namespace Server.Mobiles
                 }
 
                 if (p == Point3D.Zero)
-                    p = this.Location;
+                    p = Location;
 
                 Point3D from = m.Location;
 
                 Effects.SendLocationParticles(EffectItem.Create(from, m.Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 2023);
                 Effects.SendLocationParticles(EffectItem.Create(p, m.Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 5023);
 
-                m.MoveToWorld(p, this.Map);
+                m.MoveToWorld(p, Map);
 
                 m.PlaySound(0x1FE);
             }
@@ -1604,7 +1580,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.UltraRich, 2);
+            AddLoot(LootPack.UltraRich, 2);
         }
 
         public UnboundEnergyVortex(Serial serial)
@@ -1674,12 +1650,12 @@ namespace Server.Mobiles
             SetSpecialAbility(SpecialAbility.LifeLeech);
         }
 
-        public override bool AutoDispel { get { return true; } }
-        public override double AutoDispelChance { get { return 1.0; } }
-        public override int TreasureMapLevel { get { return 5; } }
-        public override double TreasureMapChance { get { return 1.0; } }
-        public override Poison HitPoison { get { return Poison.Lethal; } }
-        public override Poison PoisonImmune { get { return Poison.Parasitic; } }
+        public override bool AutoDispel => true;
+        public override double AutoDispelChance => 1.0;
+        public override int TreasureMapLevel => 5;
+        public override double TreasureMapChance => 1.0;
+        public override Poison HitPoison => Poison.Lethal;
+        public override Poison PoisonImmune => Poison.Parasitic;
 
         public override void OnDeath(Container c)
         {
@@ -1691,8 +1667,8 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich, 2);
-            this.AddLoot(LootPack.HighScrolls, Utility.RandomMinMax(1, 8));
+            AddLoot(LootPack.FilthyRich, 2);
+            AddLoot(LootPack.HighScrolls, Utility.RandomMinMax(1, 8));
         }
 
         public DiseasedBloodElemental(Serial serial)
@@ -1748,7 +1724,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich, 1);
+            AddLoot(LootPack.Rich, 1);
         }
 
         public override void OnDeath(Container c)
@@ -1767,7 +1743,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1813,8 +1789,8 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.UltraRich, 1);
-            this.AddLoot(LootPack.FilthyRich, 1);
+            AddLoot(LootPack.UltraRich, 1);
+            AddLoot(LootPack.FilthyRich, 1);
         }
 
         public override void OnDeath(Container c)
@@ -1833,7 +1809,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1876,8 +1852,8 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.UltraRich, 1);
-            this.AddLoot(LootPack.FilthyRich, 1);
+            AddLoot(LootPack.UltraRich, 1);
+            AddLoot(LootPack.FilthyRich, 1);
         }
 
         public override void OnDeath(Container c)
@@ -1896,7 +1872,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -1940,7 +1916,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich, 1);
+            AddLoot(LootPack.Rich, 1);
         }
 
         public ShameEarthElemental(Serial serial)

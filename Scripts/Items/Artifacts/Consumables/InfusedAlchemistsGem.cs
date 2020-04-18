@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class InfusedAlchemistsGem : Item
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public InfusedAlchemistsGem()
             : base(0x1EA7)
@@ -15,13 +15,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113006;
-            }
-        }
+        public override int LabelNumber => 1113006;
         public override void AddNameProperties(ObjectPropertyList list)
         {
             base.AddNameProperties(list);
@@ -33,14 +27,14 @@ namespace Server.Items
         {
             from.Skills[SkillName.Alchemy].Base += 1;
             from.SendMessage("You have increased your Alchemy Skill by 1 Point !.");
-            this.Delete();
+            Delete();
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

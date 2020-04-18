@@ -3,7 +3,7 @@ namespace Server.Items
     [Flipable(0xA339, 0xA33A)]
     public class DecorativeHourglass : Item
     {
-        public override int LabelNumber { get { return 1125809; } } // hourglass
+        public override int LabelNumber => 1125809;  // hourglass
 
         [Constructable]
         public DecorativeHourglass()
@@ -20,7 +20,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

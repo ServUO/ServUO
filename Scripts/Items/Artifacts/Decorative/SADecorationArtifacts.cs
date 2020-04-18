@@ -3,21 +3,9 @@ namespace Server.Items
     #region GargishBentasVaseArtifact
     public class GargishBentasVaseArtifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1095947;
-            }
-        }// gargish bentas vase
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 7;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1095947;// gargish bentas vase
+        public override int ArtifactRarity => 7;
 
         [Constructable]
         public GargishBentasVaseArtifact()
@@ -49,21 +37,9 @@ namespace Server.Items
     #region GargishPortraitArtifact
     public class GargishPortraitArtifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1095950;
-            }
-        }// gargish portrait
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 7;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1095950;// gargish portrait
+        public override int ArtifactRarity => 7;
 
         [Constructable]
         public GargishPortraitArtifact()
@@ -95,21 +71,9 @@ namespace Server.Items
     #region DyingPlantArtifact
     public class DyingPlantArtifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1095954;
-            }
-        }// dying plant
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 5;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1095954;// dying plant
+        public override int ArtifactRarity => 5;
 
         [Constructable]
         public DyingPlantArtifact()
@@ -141,21 +105,9 @@ namespace Server.Items
     #region LargeDyingPlantArtifact
     public class LargeDyingPlantArtifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1095953;
-            }
-        }// large dying plant
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 6;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1095953;// large dying plant
+        public override int ArtifactRarity => 6;
 
         [Constructable]
         public LargeDyingPlantArtifact()
@@ -187,21 +139,9 @@ namespace Server.Items
     #region GargishLuckTotemArtifact
     public class GargishLuckTotemArtifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1095960;
-            }
-        }// gargish luck totem
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 6;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1095960;// gargish luck totem
+        public override int ArtifactRarity => 6;
 
         [Constructable]
         public GargishLuckTotemArtifact()
@@ -233,21 +173,9 @@ namespace Server.Items
     #region GargishKnowledgeTotemArtifact
     public class GargishKnowledgeTotemArtifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1095961;
-            }
-        }// gargish knowledge totem
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 7;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1095961;// gargish knowledge totem
+        public override int ArtifactRarity => 7;
 
         [Constructable]
         public GargishKnowledgeTotemArtifact()
@@ -279,21 +207,9 @@ namespace Server.Items
     #region BookOfTruthArtifact
     public class BookOfTruthArtifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1095959;
-            }
-        }// Book of Truth
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 6;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1095959;// Book of Truth
+        public override int ArtifactRarity => 6;
 
         [Constructable]
         public BookOfTruthArtifact()
@@ -325,21 +241,9 @@ namespace Server.Items
     #region GargishTraditionalVaseArtifact
     public class GargishTraditionalVaseArtifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1095946;
-            }
-        }// gargish traditional vase
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 6;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1095946;// gargish traditional vase
+        public override int ArtifactRarity => 6;
 
         [Constructable]
         public GargishTraditionalVaseArtifact()
@@ -371,21 +275,9 @@ namespace Server.Items
     #region GargishProtectiveTotemArtifact
     public class GargishProtectiveTotemArtifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1095955;
-            }
-        }// gargish protective totem
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 6;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1095955;// gargish protective totem
+        public override int ArtifactRarity => 6;
 
         [Constructable]
         public GargishProtectiveTotemArtifact()
@@ -417,21 +309,9 @@ namespace Server.Items
     #region PushmePullyuArtifact
     public class PushmePullyuArtifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1095445;
-            }
-        }// pushme pullyu
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 8;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1095445;// pushme pullyu
+        public override int ArtifactRarity => 8;
 
         [Constructable]
         public PushmePullyuArtifact()
@@ -463,21 +343,9 @@ namespace Server.Items
     #region LargePewterBowlArtifact
     public class LargePewterBowlArtifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1095958;
-            }
-        }// large pewter bowl
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 5;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1095958;// large pewter bowl
+        public override int ArtifactRarity => 5;
 
         [Constructable]
         public LargePewterBowlArtifact()
@@ -509,21 +377,9 @@ namespace Server.Items
     #region GargishMemorialStatueArtifact
     public class GargishMemorialStatueArtifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1095962;
-            }
-        }// gargish warrior statue
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 7;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1095962;// gargish warrior statue
+        public override int ArtifactRarity => 7;
 
         [Constructable]
         public GargishMemorialStatueArtifact()
@@ -555,21 +411,9 @@ namespace Server.Items
     #region StolenBottlesOfLiquor1Artifact
     public class StolenBottlesOfLiquor1Artifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113667;
-            }
-        }// stolen bottles of liquor (2)
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 4;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113667;// stolen bottles of liquor (2)
+        public override int ArtifactRarity => 4;
 
         [Constructable]
         public StolenBottlesOfLiquor1Artifact()
@@ -601,21 +445,9 @@ namespace Server.Items
     #region StolenBottlesOfLiquor2Artifact
     public class StolenBottlesOfLiquor2Artifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113667;
-            }
-        }// stolen bottles of liquor (2)
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 4;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113667;// stolen bottles of liquor (2)
+        public override int ArtifactRarity => 4;
 
         [Constructable]
         public StolenBottlesOfLiquor2Artifact()
@@ -647,21 +479,9 @@ namespace Server.Items
     #region StolenBottlesOfLiquor3Artifact
     public class StolenBottlesOfLiquor3Artifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113666;
-            }
-        }// stolen bottles of liquor (3)
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 7;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113666;// stolen bottles of liquor (3)
+        public override int ArtifactRarity => 7;
 
         [Constructable]
         public StolenBottlesOfLiquor3Artifact()
@@ -693,21 +513,9 @@ namespace Server.Items
     #region StolenBottlesOfLiquor4Artifact
     public class StolenBottlesOfLiquor4Artifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113668;
-            }
-        }// stolen bottles of liquor (4)
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 8;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113668;// stolen bottles of liquor (4)
+        public override int ArtifactRarity => 8;
 
         [Constructable]
         public StolenBottlesOfLiquor4Artifact()
@@ -739,21 +547,9 @@ namespace Server.Items
     #region BottlesOfSpoiledWine1Artifact
     public class BottlesOfSpoiledWine1Artifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113676;
-            }
-        }// bottles of spoiled wine (2)
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 4;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113676;// bottles of spoiled wine (2)
+        public override int ArtifactRarity => 4;
 
         [Constructable]
         public BottlesOfSpoiledWine1Artifact()
@@ -785,21 +581,9 @@ namespace Server.Items
     #region BottlesOfSpoiledWine2Artifact
     public class BottlesOfSpoiledWine2Artifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113677;
-            }
-        }// bottles of spoiled wine (3)
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 6;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113677;// bottles of spoiled wine (3)
+        public override int ArtifactRarity => 6;
 
         [Constructable]
         public BottlesOfSpoiledWine2Artifact()
@@ -831,21 +615,9 @@ namespace Server.Items
     #region BottlesOfSpoiledWine3Artifact
     public class BottlesOfSpoiledWine3Artifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113678;
-            }
-        }// bottles of spoiled wine (4)
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 7;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113678;// bottles of spoiled wine (4)
+        public override int ArtifactRarity => 7;
 
         [Constructable]
         public BottlesOfSpoiledWine3Artifact()
@@ -877,21 +649,9 @@ namespace Server.Items
     #region NaverysWeb1Artifact
     public class NaverysWeb1Artifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113671;
-            }
-        }// Navrey's web (1)
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 4;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113671;// Navrey's web (1)
+        public override int ArtifactRarity => 4;
 
         [Constructable]
         public NaverysWeb1Artifact()
@@ -923,21 +683,9 @@ namespace Server.Items
     #region NaverysWeb2Artifact
     public class NaverysWeb2Artifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113672;
-            }
-        }// Navrey's web (2)
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 4;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113672;// Navrey's web (2)
+        public override int ArtifactRarity => 4;
 
         [Constructable]
         public NaverysWeb2Artifact()
@@ -969,21 +717,9 @@ namespace Server.Items
     #region NaverysWeb3Artifact
     public class NaverysWeb3Artifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113673;
-            }
-        }// Navrey's web (3)
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 5;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113673;// Navrey's web (3)
+        public override int ArtifactRarity => 5;
 
         [Constructable]
         public NaverysWeb3Artifact()
@@ -1015,21 +751,9 @@ namespace Server.Items
     #region NaverysWeb4Artifact 
     public class NaverysWeb4Artifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113675;
-            }
-        }// Navrey's Web (4)
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 5;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113675;// Navrey's Web (4)
+        public override int ArtifactRarity => 5;
 
         [Constructable]
         public NaverysWeb4Artifact()
@@ -1061,21 +785,9 @@ namespace Server.Items
     #region NaverysWeb5Artifact
     public class NaverysWeb5Artifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113672;
-            }
-        }// Navrey's web (2)
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 5;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113672;// Navrey's web (2)
+        public override int ArtifactRarity => 5;
 
         [Constructable]
         public NaverysWeb5Artifact()
@@ -1107,21 +819,9 @@ namespace Server.Items
     #region NaverysWeb6Artifact
     public class NaverysWeb6Artifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113671;
-            }
-        }// Navrey's web (1)
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 5;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113671;// Navrey's web (1)
+        public override int ArtifactRarity => 5;
 
         [Constructable]
         public NaverysWeb6Artifact()
@@ -1153,21 +853,9 @@ namespace Server.Items
     #region RottedOarsArtifact
     public class RottedOarsArtifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113665;
-            }
-        }// rotted oars
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 8;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113665;// rotted oars
+        public override int ArtifactRarity => 8;
 
         [Constructable]
         public RottedOarsArtifact()
@@ -1199,21 +887,9 @@ namespace Server.Items
     #region BloodySpoonArtifact
     public class BloodySpoonArtifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113664;
-            }
-        }// bloody spoon
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 5;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113664;// bloody spoon
+        public override int ArtifactRarity => 5;
 
         [Constructable]
         public BloodySpoonArtifact()
@@ -1245,21 +921,9 @@ namespace Server.Items
     #region MysteriousSupperArtifact
     public class MysteriousSupperArtifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113663;
-            }
-        }// mysterious supper
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 3;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113663;// mysterious supper
+        public override int ArtifactRarity => 3;
 
         [Constructable]
         public MysteriousSupperArtifact()
@@ -1291,21 +955,9 @@ namespace Server.Items
     #region DriedUpInkWellArtifact
     public class DriedUpInkWellArtifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113662;
-            }
-        }// dried up ink well
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 7;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113662;// dried up ink well
+        public override int ArtifactRarity => 7;
 
         [Constructable]
         public DriedUpInkWellArtifact()
@@ -1337,21 +989,9 @@ namespace Server.Items
     #region TyballsFlaskStandArtifact
     public class TyballsFlaskStandArtifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113659;
-            }
-        }// Tyball's flask stand
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 9;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113659;// Tyball's flask stand
+        public override int ArtifactRarity => 9;
 
         [Constructable]
         public TyballsFlaskStandArtifact()
@@ -1383,21 +1023,9 @@ namespace Server.Items
     #region BlockAndTackleArtifact
     public class BlockAndTackleArtifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113660;
-            }
-        }// block and tackle
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 9;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113660;// block and tackle
+        public override int ArtifactRarity => 9;
 
         [Constructable]
         public BlockAndTackleArtifact()
@@ -1429,21 +1057,9 @@ namespace Server.Items
     #region RemnantsOfMeatLoafArtifact
     public class RemnantsOfMeatLoafArtifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113661;
-            }
-        }// remnants of meat loaf
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 5;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113661;// remnants of meat loaf
+        public override int ArtifactRarity => 5;
 
         [Constructable]
         public RemnantsOfMeatLoafArtifact()
@@ -1475,21 +1091,9 @@ namespace Server.Items
     #region HalfEatenSupperArtifact
     public class HalfEatenSupperArtifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113658;
-            }
-        }// half eaten supper
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 5;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113658;// half eaten supper
+        public override int ArtifactRarity => 5;
 
         [Constructable]
         public HalfEatenSupperArtifact()
@@ -1521,21 +1125,9 @@ namespace Server.Items
     #region PricelessTreasureArtifact
     public class PricelessTreasureArtifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113680;
-            }
-        }// priceless treasure
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 8;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113680;// priceless treasure
+        public override int ArtifactRarity => 8;
 
         [Constructable]
         public PricelessTreasureArtifact()
@@ -1567,21 +1159,9 @@ namespace Server.Items
     #region FakeCopperIngotsArtifact
     public class FakeCopperIngotsArtifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113679;
-            }
-        }// fake copper ingots
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 7;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113679;// fake copper ingots
+        public override int ArtifactRarity => 7;
 
         [Constructable]
         public FakeCopperIngotsArtifact()
@@ -1613,21 +1193,9 @@ namespace Server.Items
     #region JugsOfGoblinRotgutArtifact
     public class JugsOfGoblinRotgutArtifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113681;
-            }
-        }// jugs of goblin rotgut
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 3;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113681;// jugs of goblin rotgut
+        public override int ArtifactRarity => 3;
 
         [Constructable]
         public JugsOfGoblinRotgutArtifact()
@@ -1659,21 +1227,9 @@ namespace Server.Items
     #region BatteredPanArtifact
     public class BatteredPanArtifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113669;
-            }
-        }// battered pan
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 6;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113669;// battered pan
+        public override int ArtifactRarity => 6;
 
         [Constructable]
         public BatteredPanArtifact()
@@ -1705,21 +1261,9 @@ namespace Server.Items
     #region RustedPanArtifact
     public class RustedPanArtifact : BaseDecorationArtifact
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1113670;
-            }
-        }// rusted pan
-        public override int ArtifactRarity
-        {
-            get
-            {
-                return 6;
-            }
-        }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1113670;// rusted pan
+        public override int ArtifactRarity => 6;
 
         [Constructable]
         public RustedPanArtifact()

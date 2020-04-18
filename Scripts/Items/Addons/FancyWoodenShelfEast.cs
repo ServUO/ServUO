@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class FancyWoodenShelfEastAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new FancyWoodenShelfEastDeed(); } }
-        public override bool RetainDeedHue { get { return true; } }
+        public override BaseAddonDeed Deed => new FancyWoodenShelfEastDeed();
+        public override bool RetainDeedHue => true;
 
         [Constructable]
         public FancyWoodenShelfEastAddon()
@@ -19,7 +19,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -31,8 +31,8 @@ namespace Server.Items
 
     public class FancyWoodenShelfEastDeed : BaseAddonDeed
     {
-        public override BaseAddon Addon { get { return new FancyWoodenShelfEastAddon(); } }
-        public override int LabelNumber { get { return 1154159; } } // Fancy Wooden Shelf (East)
+        public override BaseAddon Addon => new FancyWoodenShelfEastAddon();
+        public override int LabelNumber => 1154159;  // Fancy Wooden Shelf (East)
 
         [Constructable]
         public FancyWoodenShelfEastDeed()
@@ -47,7 +47,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

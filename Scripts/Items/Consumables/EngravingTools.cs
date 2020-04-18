@@ -72,21 +72,21 @@ namespace Server.Items
         {
         }
 
-        public virtual bool DeletedItem { get { return true; } }
-        public virtual int LowSkillMessage { get { return 0; } }
-        public virtual int VeteranRewardCliloc { get { return 0; } }
+        public virtual bool DeletedItem => true;
+        public virtual int LowSkillMessage => 0;
+        public virtual int VeteranRewardCliloc => 0;
 
-        public virtual Type[] Engraves { get { return null; } }
-        public virtual int GumpTitle { get { return 1072359; } } // <CENTER>Engraving Tool</CENTER>
+        public virtual Type[] Engraves => null;
+        public virtual int GumpTitle => 1072359;  // <CENTER>Engraving Tool</CENTER>
 
-        public virtual int SuccessMessage { get { return 1072361; } } // You engraved the object.
-        public virtual int TargetMessage { get { return 1072357; } } // Select an object to engrave.
-        public virtual int RemoveMessage { get { return 1072362; } } // You remove the engraving from the object.
-        public virtual int ReChargesMessage { get { return 1076166; } } // You do not have a blue diamond needed to recharge the engraving tool.
-        public virtual int OutOfChargesMessage { get { return 1076163; } } // There are no charges left on this engraving tool.
-        public virtual int NotAccessibleMessage { get { return 1072310; } } // The selected item is not accessible to engrave.
-        public virtual int CannotEngraveMessage { get { return 1072309; } } // The selected item cannot be engraved by this engraving tool.
-        public virtual int ObjectWasNotMessage { get { return 1072363; } } // The object was not engraved.        
+        public virtual int SuccessMessage => 1072361;  // You engraved the object.
+        public virtual int TargetMessage => 1072357;  // Select an object to engrave.
+        public virtual int RemoveMessage => 1072362;  // You remove the engraving from the object.
+        public virtual int ReChargesMessage => 1076166;  // You do not have a blue diamond needed to recharge the engraving tool.
+        public virtual int OutOfChargesMessage => 1076163;  // There are no charges left on this engraving tool.
+        public virtual int NotAccessibleMessage => 1072310;  // The selected item is not accessible to engrave.
+        public virtual int CannotEngraveMessage => 1072309;  // The selected item cannot be engraved by this engraving tool.
+        public virtual int ObjectWasNotMessage => 1072363;  // The object was not engraved.        
 
         public virtual bool CheckType(IEntity entity)
         {
@@ -257,10 +257,10 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)2); // version
+            writer.Write(2); // version
 
-            writer.Write((int)m_UsesRemaining);
-            writer.Write((bool)m_IsRewardItem);
+            writer.Write(m_UsesRemaining);
+            writer.Write(m_IsRewardItem);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -500,27 +500,15 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1072152;
-            }
-        }// leather container engraving tool
-        public override Type[] Engraves
-        {
-            get
-            {
-                return new Type[]
+        public override int LabelNumber => 1072152;// leather container engraving tool
+        public override Type[] Engraves => new Type[]
                 {
                     typeof(Pouch), typeof(Backpack), typeof(Bag)
                 };
-            }
-        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -532,7 +520,7 @@ namespace Server.Items
 
     public class WoodenContainerEngraver : BaseEngravingTool
     {
-        public override int LabelNumber { get { return 1072153; } } // wooden container engraving tool
+        public override int LabelNumber => 1072153;  // wooden container engraving tool
 
         [Constructable]
         public WoodenContainerEngraver()
@@ -545,11 +533,7 @@ namespace Server.Items
         {
         }
 
-        public override Type[] Engraves
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Engraves => new Type[]
                 {
                     typeof(WoodenBox), typeof(LargeCrate), typeof(MediumCrate),
                     typeof(SmallCrate), typeof(WoodenChest), typeof(EmptyBookcase),
@@ -561,12 +545,10 @@ namespace Server.Items
                     typeof(DecorativeBox), typeof(FancyElvenArmoire), typeof(RarewoodChest),
                     typeof(RewardSign), typeof(GargoyleWoodenChest)
                 };
-            }
-        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -578,7 +560,7 @@ namespace Server.Items
 
     public class MetalContainerEngraver : BaseEngravingTool
     {
-        public override int LabelNumber { get { return 1072154; } } // metal container engraving tool
+        public override int LabelNumber => 1072154;  // metal container engraving tool
 
         [Constructable]
         public MetalContainerEngraver()
@@ -591,20 +573,14 @@ namespace Server.Items
         {
         }
 
-        public override Type[] Engraves
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Engraves => new Type[]
                 {
                     typeof(ParagonChest), typeof(MetalChest), typeof(MetalGoldenChest), typeof(MetalBox)
                 };
-            }
-        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -616,7 +592,7 @@ namespace Server.Items
 
     public class FoodEngraver : BaseEngravingTool
     {
-        public override int LabelNumber { get { return 1072951; } } // food decoration tool
+        public override int LabelNumber => 1072951;  // food decoration tool
 
         [Constructable]
         public FoodEngraver()
@@ -629,21 +605,15 @@ namespace Server.Items
         {
         }
 
-        public override Type[] Engraves
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Engraves => new Type[]
                 {
                     typeof(Cake), typeof(CheesePizza), typeof(SausagePizza),
                     typeof(Cookies)
                 };
-            }
-        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -655,7 +625,7 @@ namespace Server.Items
 
     public class SpellbookEngraver : BaseEngravingTool
     {
-        public override int LabelNumber { get { return 1072151; } } // spellbook engraving tool
+        public override int LabelNumber => 1072151;  // spellbook engraving tool
 
         [Constructable]
         public SpellbookEngraver()
@@ -668,20 +638,14 @@ namespace Server.Items
         {
         }
 
-        public override Type[] Engraves
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Engraves => new Type[]
                 {
                     typeof(Spellbook)
                 };
-            }
-        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -693,7 +657,7 @@ namespace Server.Items
 
     public class StatuetteEngravingTool : BaseEngravingTool
     {
-        public override int LabelNumber { get { return 1080201; } } // Statuette Engraving Tool
+        public override int LabelNumber => 1080201;  // Statuette Engraving Tool
 
         [Constructable]
         public StatuetteEngravingTool()
@@ -707,20 +671,14 @@ namespace Server.Items
         {
         }
 
-        public override Type[] Engraves
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Engraves => new Type[]
                 {
                     typeof(MonsterStatuette)
                 };
-            }
-        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -732,7 +690,7 @@ namespace Server.Items
 
     public class ArmorEngravingTool : BaseEngravingTool
     {
-        public override int LabelNumber { get { return 1080547; } }// Armor Engraving Tool
+        public override int LabelNumber => 1080547; // Armor Engraving Tool
 
         [Constructable]
         public ArmorEngravingTool()
@@ -746,9 +704,9 @@ namespace Server.Items
         {
         }
 
-        public override int GumpTitle { get { return 1071163; } } // <center>Armor Engraving Tool</center>
+        public override int GumpTitle => 1071163;  // <center>Armor Engraving Tool</center>
 
-        public override Type[] Engraves { get { return new Type[] { typeof(BaseArmor) }; } }
+        public override Type[] Engraves => new Type[] { typeof(BaseArmor) };
 
         public override bool CheckType(IEntity entity)
         {
@@ -765,7 +723,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -777,11 +735,11 @@ namespace Server.Items
 
     public class ShieldEngravingTool : BaseEngravingTool
     {
-        public override int LabelNumber { get { return 1159004; } } // Shield Engraving Tool
+        public override int LabelNumber => 1159004;  // Shield Engraving Tool
 
-        public override bool DeletedItem { get { return false; } }
-        public override int LowSkillMessage { get { return 1076178; } } // // Your tinkering skill is too low to fix this yourself.  An NPC tinkerer can help you repair this for a fee.
-        public override int VeteranRewardCliloc { get { return 0; } }
+        public override bool DeletedItem => false;
+        public override int LowSkillMessage => 1076178;  // // Your tinkering skill is too low to fix this yourself.  An NPC tinkerer can help you repair this for a fee.
+        public override int VeteranRewardCliloc => 0;
 
         [Constructable]
         public ShieldEngravingTool()
@@ -795,21 +753,15 @@ namespace Server.Items
         {
         }
 
-        public override Type[] Engraves
-        {
-            get
-            {
-                return new Type[]
+        public override Type[] Engraves => new Type[]
                 {
                     typeof(BaseShield)
                 };
-            }
-        }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

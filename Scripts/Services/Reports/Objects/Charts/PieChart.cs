@@ -10,13 +10,7 @@ namespace Server.Engines.Reports
             return new PieChart();
         }
 
-        public override PersistableType TypeID
-        {
-            get
-            {
-                return ThisTypeID;
-            }
-        }
+        public override PersistableType TypeID => ThisTypeID;
         #endregion
 
         private bool m_ShowPercents;
@@ -25,19 +19,19 @@ namespace Server.Engines.Reports
         {
             get
             {
-                return this.m_ShowPercents;
+                return m_ShowPercents;
             }
             set
             {
-                this.m_ShowPercents = value;
+                m_ShowPercents = value;
             }
         }
 
         public PieChart(string name, string fileName, bool showPercents)
         {
-            this.m_Name = name;
-            this.m_FileName = fileName;
-            this.m_ShowPercents = showPercents;
+            m_Name = name;
+            m_FileName = fileName;
+            m_ShowPercents = showPercents;
         }
 
         private PieChart()
@@ -48,14 +42,14 @@ namespace Server.Engines.Reports
         {
             base.SerializeAttributes(op);
 
-            op.SetBoolean("p", this.m_ShowPercents);
+            op.SetBoolean("p", m_ShowPercents);
         }
 
         public override void DeserializeAttributes(PersistenceReader ip)
         {
             base.DeserializeAttributes(ip);
 
-            this.m_ShowPercents = ip.GetBoolean("p");
+            m_ShowPercents = ip.GetBoolean("p");
         }
     }
 }

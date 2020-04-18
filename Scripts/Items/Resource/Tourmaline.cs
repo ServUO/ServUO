@@ -12,8 +12,8 @@ namespace Server.Items
         public Tourmaline(int amount)
             : base(0x0F18)
         {
-            this.Stackable = true;
-            this.Amount = amount;
+            Stackable = true;
+            Amount = amount;
         }
 
         public Tourmaline(Serial serial)
@@ -21,18 +21,12 @@ namespace Server.Items
         {
         }
 
-        public override double DefaultWeight
-        {
-            get
-            {
-                return 0.1;
-            }
-        }
+        public override double DefaultWeight => 0.1;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
         }
 
         public override void Deserialize(GenericReader reader)

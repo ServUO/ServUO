@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class Soap : Item
     {
-        public override int LabelNumber { get { return 1152267; } } // soap
+        public override int LabelNumber => 1152267;  // soap
 
         [Constructable]
         public Soap()
@@ -14,10 +14,10 @@ namespace Server.Items
         public Soap(int amount)
             : base(0x1422)
         {
-            this.Hue = 1285;
-            this.Weight = 1.0;
-            this.Stackable = true;
-            this.Amount = amount;
+            Hue = 1285;
+            Weight = 1.0;
+            Stackable = true;
+            Amount = amount;
         }
 
         public Soap(Serial serial)
@@ -28,7 +28,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

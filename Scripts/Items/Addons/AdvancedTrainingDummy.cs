@@ -40,7 +40,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -53,7 +53,7 @@ namespace Server.Items
 
     public class AdvancedTrainingDummyEastAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new AdvancedTrainingDummyEastDeed(); } }
+        public override BaseAddonDeed Deed => new AdvancedTrainingDummyEastDeed();
 
         [Constructable]
         public AdvancedTrainingDummyEastAddon()
@@ -78,7 +78,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -91,8 +91,8 @@ namespace Server.Items
 
     public class AdvancedTrainingDummyEastDeed : BaseAddonDeed
     {
-        public override BaseAddon Addon { get { return new AdvancedTrainingDummyEastAddon(); } }
-        public override int LabelNumber { get { return 1150596; } } // advanced training dummy (east)
+        public override BaseAddon Addon => new AdvancedTrainingDummyEastAddon();
+        public override int LabelNumber => 1150596;  // advanced training dummy (east)
 
         [Constructable]
         public AdvancedTrainingDummyEastDeed()
@@ -108,7 +108,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -121,7 +121,7 @@ namespace Server.Items
 
     public class AdvancedTrainingDummySouthAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new AdvancedTrainingDummySouthDeed(); } }
+        public override BaseAddonDeed Deed => new AdvancedTrainingDummySouthDeed();
 
         [Constructable]
         public AdvancedTrainingDummySouthAddon()
@@ -147,7 +147,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -160,8 +160,8 @@ namespace Server.Items
 
     public class AdvancedTrainingDummySouthDeed : BaseAddonDeed
     {
-        public override BaseAddon Addon { get { return new AdvancedTrainingDummySouthAddon(); } }
-        public override int LabelNumber { get { return 1150595; } } // advanced training dummy (south)
+        public override BaseAddon Addon => new AdvancedTrainingDummySouthAddon();
+        public override int LabelNumber => 1150595;  // advanced training dummy (south)
 
         [Constructable]
         public AdvancedTrainingDummySouthDeed()
@@ -177,7 +177,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

@@ -16,76 +16,16 @@ namespace Server.Spells.Necromancy
         {
         }
 
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(2.25);
-            }
-        }
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 20.0;
-            }
-        }
-        public override int RequiredMana
-        {
-            get
-            {
-                return 17;
-            }
-        }
-        public override int Body
-        {
-            get
-            {
-                return this.Caster.Female ? 747 : 748;
-            }
-        }
-        public override int Hue
-        {
-            get
-            {
-                return this.Caster.Female ? 0 : 0x4001;
-            }
-        }
-        public override int PhysResistOffset
-        {
-            get
-            {
-                return +15;
-            }
-        }
-        public override int FireResistOffset
-        {
-            get
-            {
-                return -5;
-            }
-        }
-        public override int ColdResistOffset
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override int PoisResistOffset
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override int NrgyResistOffset
-        {
-            get
-            {
-                return -5;
-            }
-        }
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(2.25);
+        public override double RequiredSkill => 20.0;
+        public override int RequiredMana => 17;
+        public override int Body => Caster.Female ? 747 : 748;
+        public override int Hue => Caster.Female ? 0 : 0x4001;
+        public override int PhysResistOffset => +15;
+        public override int FireResistOffset => -5;
+        public override int ColdResistOffset => 0;
+        public override int PoisResistOffset => 0;
+        public override int NrgyResistOffset => -5;
         public override void DoEffect(Mobile m)
         {
             if (m is PlayerMobile)

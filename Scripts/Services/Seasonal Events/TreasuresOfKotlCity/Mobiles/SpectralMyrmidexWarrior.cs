@@ -57,11 +57,11 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich, 2);
+            AddLoot(LootPack.Rich, 2);
         }
 
-        public override Poison HitPoison { get { return Poison.Deadly; } }
-        public override Poison PoisonImmune { get { return Poison.Deadly; } }
+        public override Poison HitPoison => Poison.Deadly;
+        public override Poison PoisonImmune => Poison.Deadly;
 
         public override bool IsEnemy(Mobile m)
         {

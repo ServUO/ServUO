@@ -11,8 +11,8 @@ namespace Server.Engines.Khaldun
         public static SageHumbolt TramInstance { get; set; }
 
         protected readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
-        protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }
-        public override bool IsActiveVendor { get { return false; } }
+        protected override List<SBInfo> SBInfos => m_SBInfos;
+        public override bool IsActiveVendor => false;
 
         public override void InitSBInfo()
         {
@@ -50,18 +50,18 @@ namespace Server.Engines.Khaldun
         {
             AddItem(new Backpack());
 
-            var robe = new DeathRobe();
+            DeathRobe robe = new DeathRobe();
             robe.ItemID = 9863;
             SetWearable(robe);
         }
 
         public bool OnSpiritSpeak(Mobile m)
         {
-            var pm = m as PlayerMobile;
+            PlayerMobile pm = m as PlayerMobile;
 
             if (pm != null)
             {
-                var quest = QuestHelper.GetQuest<GoingGumshoeQuest4>(pm);
+                GoingGumshoeQuest4 quest = QuestHelper.GetQuest<GoingGumshoeQuest4>(pm);
 
                 if (quest != null && !quest.IsComplete)
                 {
@@ -124,7 +124,7 @@ namespace Server.Engines.Khaldun
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

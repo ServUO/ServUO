@@ -11,8 +11,8 @@ namespace Server.Engines.PartySystem
         private DeclineTimer(Mobile m, Mobile leader)
             : base(TimeSpan.FromSeconds(30.0))
         {
-            this.m_Mobile = m;
-            this.m_Leader = leader;
+            m_Mobile = m;
+            m_Leader = leader;
         }
 
         public static void Start(Mobile m, Mobile leader)
@@ -28,10 +28,10 @@ namespace Server.Engines.PartySystem
 
         protected override void OnTick()
         {
-            m_Table.Remove(this.m_Mobile);
+            m_Table.Remove(m_Mobile);
 
-            if (this.m_Mobile.Party == this.m_Leader && PartyCommands.Handler != null)
-                PartyCommands.Handler.OnDecline(this.m_Mobile, this.m_Leader);
+            if (m_Mobile.Party == m_Leader && PartyCommands.Handler != null)
+                PartyCommands.Handler.OnDecline(m_Mobile, m_Leader);
         }
     }
 }

@@ -26,9 +26,9 @@ namespace Server.Engines.NewMagincia
             }
         }
 
-        public virtual int ComissionFee { get { return MaginciaBazaar.DefaultComissionFee; } }
+        public virtual int ComissionFee => MaginciaBazaar.DefaultComissionFee;
 
-        public override bool IsInvulnerable { get { return true; } }
+        public override bool IsInvulnerable => true;
 
         public BaseBazaarBroker(MaginciaBazaarPlot plot) : base(AIType.AI_Vendor, FightMode.None, 2, 1, 0.5, 2)
         {
@@ -190,7 +190,7 @@ namespace Server.Engines.NewMagincia
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write(m_BankBalance);
             writer.Write(m_NextFee);

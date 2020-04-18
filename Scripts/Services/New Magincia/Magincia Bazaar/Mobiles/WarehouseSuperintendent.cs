@@ -10,7 +10,7 @@ namespace Server.Engines.NewMagincia
 {
     public class WarehouseSuperintendent : BaseCreature
     {
-        public override bool IsInvulnerable { get { return true; } }
+        public override bool IsInvulnerable => true;
 
         [Constructable]
         public WarehouseSuperintendent() : base(AIType.AI_Vendor, FightMode.None, 2, 1, 0.5, 2)
@@ -297,7 +297,7 @@ namespace Server.Engines.NewMagincia
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)

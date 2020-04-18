@@ -12,7 +12,7 @@ namespace Server.Mobiles
                 .Cast<WarriorType>()
                 .ToArray();
 
-        public static WarriorType RandomType { get { return Types[Utility.Random(Types.Length)]; } }
+        public static WarriorType RandomType => Types[Utility.Random(Types.Length)];
 
         public enum WarriorType
         {
@@ -165,8 +165,8 @@ namespace Server.Mobiles
             base.OnBeforeDamage(from, ref totalDamage, type);
         }
 
-        public override bool AlwaysMurderer { get { return true; } }
-        public override bool ShowFameTitle { get { return false; } }
+        public override bool AlwaysMurderer => true;
+        public override bool ShowFameTitle => false;
 
         public KhalAnkurWarriors(Serial serial)
             : base(serial)

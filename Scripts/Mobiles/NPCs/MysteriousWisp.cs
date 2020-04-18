@@ -102,7 +102,7 @@ namespace Server.Mobiles
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(this.Location, 5))
+            if (from.InRange(Location, 5))
             {
                 if (!m_Conversation.ContainsKey(from))
                 {
@@ -113,11 +113,11 @@ namespace Server.Mobiles
 
             if (from is PlayerMobile)
             {
-                var pm = from as PlayerMobile;
+                PlayerMobile pm = from as PlayerMobile;
 
                 if (QuestHelper.CheckDoneOnce(pm, typeof(WishesOfTheWispQuest), null, false))
                 {
-                    var q = QuestHelper.GetQuest<WhisperingWithWispsQuest>(pm);
+                    WhisperingWithWispsQuest q = QuestHelper.GetQuest<WhisperingWithWispsQuest>(pm);
 
                     if (q == null)
                     {
@@ -231,7 +231,7 @@ namespace Server.Mobiles
 
         private void DoRestock()
         {
-            List<Item> list = new List<Item>(this.Backpack.Items);
+            List<Item> list = new List<Item>(Backpack.Items);
             m_ItemTable.Clear();
 
             InternalGump.Clear();
@@ -291,7 +291,7 @@ namespace Server.Mobiles
 
                 m_ItemTable[item] = (int)((weight + Server.SkillHandlers.Imbuing.GetTotalWeight(item, -1, false, true)) * 31.5);
                 item.Movable = false;
-                this.Backpack.DropItem(item);
+                Backpack.DropItem(item);
             }
 
             m_NextRestock = DateTime.UtcNow + TimeSpan.FromMinutes(Utility.RandomMinMax(m_RestockMin, m_RestockMax));
@@ -307,7 +307,7 @@ namespace Server.Mobiles
 
         public void TryBuyItem(Mobile from, Item item)
         {
-            if (item.Deleted || !this.Backpack.Items.Contains(item) || !m_ItemTable.ContainsKey(item))
+            if (item.Deleted || !Backpack.Items.Contains(item) || !m_ItemTable.ContainsKey(item))
             {
                 from.SendMessage("This item is no longer available.");
                 return;
@@ -371,7 +371,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write(m_ItemCountMin);
             writer.Write(m_ItemCountMax);
@@ -403,7 +403,7 @@ namespace Server.Mobiles
                 Weight = 1.0;
             }
 
-            public override int DefaultMaxWeight { get { return 0; } }
+            public override int DefaultMaxWeight => 0;
 
             public override bool IsAccessibleTo(Mobile m)
             {
@@ -439,7 +439,7 @@ namespace Server.Mobiles
             {
                 base.Serialize(writer);
 
-                writer.Write((int)0); // version
+                writer.Write(0); // version
             }
 
             public override void Deserialize(GenericReader reader)

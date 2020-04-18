@@ -58,22 +58,10 @@ namespace Server.Items
                 InvalidateProperties();
             }
         }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1112136;
-            }
-        }// natural dye
-        public bool RetainsColorFrom
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override int LabelNumber => 1112136;// natural dye
+        public bool RetainsColorFrom => true;
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         public override void GetProperties(ObjectPropertyList list)
         {
@@ -96,10 +84,10 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
             writer.Write((int)m_Hue);
-            writer.Write((int)m_UsesRemaining);
+            writer.Write(m_UsesRemaining);
         }
 
         public override void Deserialize(GenericReader reader)

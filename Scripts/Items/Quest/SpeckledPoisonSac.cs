@@ -6,8 +6,8 @@ namespace Server.Items
         public SpeckledPoisonSac()
             : base(0x23A)
         {
-            this.LootType = LootType.Blessed;
-            this.Weight = 2.0;
+            LootType = LootType.Blessed;
+            Weight = 2.0;
         }
 
         public SpeckledPoisonSac(Serial serial)
@@ -15,18 +15,12 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073133;
-            }
-        }// Speckled Poison Sac
+        public override int LabelNumber => 1073133;// Speckled Poison Sac
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

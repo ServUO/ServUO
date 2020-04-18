@@ -3,7 +3,7 @@ namespace Server.Items
     [Flipable(0x9D09, 0x9D0A)]
     public class WeatheredBronzeFairySculptureComponent : AddonComponent
     {
-        public override int LabelNumber { get { return 1156883; } } // weathered bronze fairy sculpture
+        public override int LabelNumber => 1156883;  // weathered bronze fairy sculpture
 
         public WeatheredBronzeFairySculptureComponent()
             : base(0x9D09)
@@ -30,8 +30,8 @@ namespace Server.Items
 
     public class WeatheredBronzeFairySculptureAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new WeatheredBronzeFairySculptureDeed(); } }
-        public override bool RetainDeedHue { get { return true; } }
+        public override BaseAddonDeed Deed => new WeatheredBronzeFairySculptureDeed();
+        public override bool RetainDeedHue => true;
 
         [Constructable]
         public WeatheredBronzeFairySculptureAddon()
@@ -47,7 +47,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -59,8 +59,8 @@ namespace Server.Items
 
     public class WeatheredBronzeFairySculptureDeed : BaseAddonDeed
     {
-        public override BaseAddon Addon { get { return new WeatheredBronzeFairySculptureAddon(); } }
-        public override int LabelNumber { get { return 1156883; } } // weathered bronze fairy sculpture
+        public override BaseAddon Addon => new WeatheredBronzeFairySculptureAddon();
+        public override int LabelNumber => 1156883;  // weathered bronze fairy sculpture
 
         [Constructable]
         public WeatheredBronzeFairySculptureDeed()
@@ -75,7 +75,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

@@ -13,9 +13,9 @@ namespace Server.Items
         public SeveredHumanEars(int amount)
             : base(Utility.RandomList(0x312F, 0x3130))
         {
-            this.Stackable = true;
-            this.Amount = amount;
-            this.Weight = 1;
+            Stackable = true;
+            Amount = amount;
+            Weight = 1;
         }
 
         public SeveredHumanEars(Serial serial)
@@ -27,7 +27,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

@@ -31,7 +31,7 @@ namespace Server.Items
                 SetDisplayByFacet();
         }
 
-        public override int LabelNumber { get { return 1015232; } } // sea chart
+        public override int LabelNumber => 1015232;  // sea chart
 
         public SeaChart(Serial serial) : base(serial)
         {
@@ -41,7 +41,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

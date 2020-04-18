@@ -13,13 +13,13 @@ namespace Server.Spells.SkillMasteries
                 Reagent.MandrakeRoot
             );
 
-        public override double RequiredSkill { get { return 90; } }
-        public override double UpKeep { get { return 0; } }
-        public override int RequiredMana { get { return 0; } }
-        public override bool PartyEffects { get { return false; } }
+        public override double RequiredSkill => 90;
+        public override double UpKeep => 0;
+        public override int RequiredMana => 0;
+        public override bool PartyEffects => false;
 
-        public override SkillName CastSkill { get { return SkillName.Magery; } }
-        public override SkillName DamageSkill { get { return SkillName.EvalInt; } }
+        public override SkillName CastSkill => SkillName.Magery;
+        public override SkillName DamageSkill => SkillName.EvalInt;
 
         public EtherealBurstSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
@@ -33,7 +33,7 @@ namespace Server.Spells.SkillMasteries
                 Caster.Mana = Caster.ManaMax;
 
                 int duration = 120;
-                double skill = ((double)(Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) / 2.1) + GetMasteryLevel() * 2;
+                double skill = ((Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) / 2.1) + GetMasteryLevel() * 2;
 
                 if (skill >= 120)
                     duration = 30;

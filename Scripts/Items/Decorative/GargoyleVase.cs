@@ -7,7 +7,7 @@ namespace Server.Items
         public GargoyleVase()
             : base(0x4042)
         {
-            this.Weight = 10;
+            Weight = 10;
         }
 
         public GargoyleVase(Serial serial)
@@ -15,13 +15,13 @@ namespace Server.Items
         {
         }
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

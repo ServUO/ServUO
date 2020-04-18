@@ -5,21 +5,21 @@ namespace Server.Multis
 {
     public class RowBoat : BaseBoat
     {
-        public override int NorthID { get { return 0x3C; } }
-        public override int EastID { get { return 0x3D; } }
-        public override int SouthID { get { return 0x3E; } }
-        public override int WestID { get { return 0x3F; } }
+        public override int NorthID => 0x3C;
+        public override int EastID => 0x3D;
+        public override int SouthID => 0x3E;
+        public override int WestID => 0x3F;
 
-        public override int HoldDistance { get { return -1; } }
-        public override int TillerManDistance { get { return -4; } }
+        public override int HoldDistance => -1;
+        public override int TillerManDistance => -4;
 
-        public override Point3D MarkOffset { get { return new Point3D(0, 1, 3); } }
+        public override Point3D MarkOffset => new Point3D(0, 1, 3);
 
-        public override BaseDockedBoat DockedBoat { get { return new DockedRowBoat(this); } }
+        public override BaseDockedBoat DockedBoat => new DockedRowBoat(this);
 
-        public override bool IsClassicBoat { get { return false; } }
-        public override bool IsRowBoat { get { return true; } }
-        public override bool CanLinkToLighthouse { get { return false; } }
+        public override bool IsClassicBoat => false;
+        public override bool IsRowBoat => true;
+        public override bool CanLinkToLighthouse => false;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public MooringLine Line { get; private set; }
@@ -169,7 +169,7 @@ namespace Server.Multis
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write(Rudder);
             writer.Write(Line);
@@ -189,11 +189,11 @@ namespace Server.Multis
 
     public class Rudder : TillerMan
     {
-        public override int LabelNumber { get { return 1149698; } } // wheel
+        public override int LabelNumber => 1149698;  // wheel
 
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
-        public override bool Babbles { get { return false; } }
+        public override bool Babbles => false;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public RudderHandle Handle { get; set; }
@@ -261,7 +261,7 @@ namespace Server.Multis
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write(Handle);
         }
@@ -329,7 +329,7 @@ namespace Server.Multis
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
             writer.Write(Rudder);
         }
 
@@ -343,8 +343,8 @@ namespace Server.Multis
 
     public class RowBoatDeed : BaseBoatDeed
     {
-        public override int LabelNumber { get { return 1116491; } }
-        public override BaseBoat Boat { get { return new RowBoat(BoatDirection); } }
+        public override int LabelNumber => 1116491;
+        public override BaseBoat Boat => new RowBoat(BoatDirection);
 
         [Constructable]
         public RowBoatDeed()
@@ -366,13 +366,13 @@ namespace Server.Multis
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
     }
 
     public class DockedRowBoat : BaseDockedBoat
     {
-        public override BaseBoat Boat { get { return new RowBoat(BoatDirection); } }
+        public override BaseBoat Boat => new RowBoat(BoatDirection);
 
         public DockedRowBoat(BaseBoat boat)
             : base(0x3C, Point3D.Zero, boat)
@@ -393,7 +393,7 @@ namespace Server.Multis
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
     }
 }

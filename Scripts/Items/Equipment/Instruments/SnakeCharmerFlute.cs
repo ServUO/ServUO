@@ -9,27 +9,15 @@ namespace Server.Items
 {
     public class SnakeCharmerFlute : BambooFlute
     {
-        public override int LabelNumber { get { return 1112174; } } // snake charmer flute
+        public override int LabelNumber => 1112174;  // snake charmer flute
 
-        public override int InitMinUses
-        {
-            get
-            {
-                return 50;
-            }
-        }
-        public override int InitMaxUses
-        {
-            get
-            {
-                return 80;
-            }
-        }
+        public override int InitMinUses => 50;
+        public override int InitMaxUses => 80;
 
         [Constructable]
         public SnakeCharmerFlute()
         {
-            this.Hue = 0x187;
+            Hue = 0x187;
         }
 
         public SnakeCharmerFlute(Serial serial)
@@ -154,7 +142,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

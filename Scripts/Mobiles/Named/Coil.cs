@@ -59,41 +59,11 @@ namespace Server.Mobiles
         {
         }
 
-        public override Poison HitPoison
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
-        public override bool GivesMLMinorArtifact
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int Hides
-        {
-            get
-            {
-                return 48;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 1;
-            }
-        }
+        public override Poison HitPoison => Poison.Lethal;
+        public override Poison PoisonImmune => Poison.Lethal;
+        public override bool GivesMLMinorArtifact => true;
+        public override int Hides => 48;
+        public override int Meat => 1;
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 3);
@@ -132,7 +102,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

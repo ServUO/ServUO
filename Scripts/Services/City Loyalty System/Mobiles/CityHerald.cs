@@ -14,7 +14,7 @@ namespace Server.Engines.CityLoyalty
         [CommandProperty(AccessLevel.GameMaster)]
         public CityLoyaltySystem CitySystem { get { return CityLoyaltySystem.GetCityInstance(City); } set { } }
 
-        public override bool IsInvulnerable { get { return true; } }
+        public override bool IsInvulnerable => true;
 
         private string _Announcement;
 
@@ -87,7 +87,7 @@ namespace Server.Engines.CityLoyalty
             EquipItem(new FeatheredHat(1157));
             EquipItem(new LongPants(1908));
 
-            var boots = new Boots();
+            Boots boots = new Boots();
             boots.Hue = 2012;
             EquipItem(boots);
 

@@ -119,40 +119,16 @@ namespace Server.Engines.Plants
 
         private PlantPigmentHueInfo(PlantHue planthue, int hue, int name, PlantPigmentHue pigmentHue)
         {
-            this.m_PlantHue = planthue;
-            this.m_Hue = hue;
-            this.m_Name = name;
-            this.m_PlantPigmentHue = pigmentHue;
+            m_PlantHue = planthue;
+            m_Hue = hue;
+            m_Name = name;
+            m_PlantPigmentHue = pigmentHue;
         }
 
-        public PlantHue PlantHue
-        {
-            get
-            {
-                return this.m_PlantHue;
-            }
-        }
-        public int Hue
-        {
-            get
-            {
-                return this.m_Hue;
-            }
-        }
-        public int Name
-        {
-            get
-            {
-                return this.m_Name;
-            }
-        }
-        public PlantPigmentHue PlantPigmentHue
-        {
-            get
-            {
-                return this.m_PlantPigmentHue;
-            }
-        }
+        public PlantHue PlantHue => m_PlantHue;
+        public int Hue => m_Hue;
+        public int Name => m_Name;
+        public PlantPigmentHue PlantPigmentHue => m_PlantPigmentHue;
         public static PlantPigmentHue HueFromPlantHue(PlantHue hue)
         {
             if (hue == PlantHue.None || hue == PlantHue.Plain)
@@ -243,17 +219,17 @@ namespace Server.Engines.Plants
 
         public bool IsMixable()
         {
-            return IsMixable(this.m_PlantPigmentHue);
+            return IsMixable(m_PlantPigmentHue);
         }
 
         public bool IsBright()
         {
-            return IsBright(this.m_PlantPigmentHue);
+            return IsBright(m_PlantPigmentHue);
         }
 
         public bool IsPrimary()
         {
-            return IsPrimary(this.m_PlantPigmentHue);
+            return IsPrimary(m_PlantPigmentHue);
         }
     }
 }

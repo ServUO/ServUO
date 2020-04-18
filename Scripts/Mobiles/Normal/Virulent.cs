@@ -58,27 +58,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool GivesMLMinorArtifact
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override Poison PoisonImmune
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
-        public override Poison HitPoison
-        {
-            get
-            {
-                return Poison.Lethal;
-            }
-        }
+        public override bool GivesMLMinorArtifact => true;
+        public override Poison PoisonImmune => Poison.Lethal;
+        public override Poison HitPoison => Poison.Lethal;
 
         public override void GenerateLoot()
         {
@@ -110,7 +92,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

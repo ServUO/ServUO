@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class DecorativeKitchenSet : Backpack
     {
-        public override int LabelNumber { get { return 1158970; } } // Decorative Kitchen Set
+        public override int LabelNumber => 1158970;  // Decorative Kitchen Set
 
         [Constructable]
         public DecorativeKitchenSet()

@@ -2,20 +2,20 @@ namespace Server.Items
 {
     public class GargishNecklace : BaseArmor
     {
-        public override Race RequiredRace { get { return Race.Gargoyle; } }
-        public override bool CanBeWornByGargoyles { get { return true; } }
+        public override Race RequiredRace => Race.Gargoyle;
+        public override bool CanBeWornByGargoyles => true;
 
-        public override ArmorMaterialType MaterialType { get { return ArmorMaterialType.Chainmail; } }
-        public override ArmorMeditationAllowance DefMedAllowance { get { return ArmorMeditationAllowance.All; } }
+        public override ArmorMaterialType MaterialType => ArmorMaterialType.Chainmail;
+        public override ArmorMeditationAllowance DefMedAllowance => ArmorMeditationAllowance.All;
 
-        public override int BasePhysicalResistance { get { return 1; } }
-        public override int BaseFireResistance { get { return 2; } }
-        public override int BaseColdResistance { get { return 2; } }
-        public override int BasePoisonResistance { get { return 2; } }
-        public override int BaseEnergyResistance { get { return 3; } }
+        public override int BasePhysicalResistance => 1;
+        public override int BaseFireResistance => 2;
+        public override int BaseColdResistance => 2;
+        public override int BasePoisonResistance => 2;
+        public override int BaseEnergyResistance => 3;
 
-        public override int InitMinHits { get { return 30; } }
-        public override int InitMaxHits { get { return 40; } }
+        public override int InitMinHits => 30;
+        public override int InitMaxHits => 40;
 
         [Constructable]
         public GargishNecklace()
@@ -48,7 +48,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -74,7 +74,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -86,14 +86,14 @@ namespace Server.Items
 
     public class GargishStoneAmulet : GargishNecklace
     {
-        public override ArmorMaterialType MaterialType { get { return ArmorMaterialType.Stone; } }
-        public override int StrReq { get { return 40; } }
+        public override ArmorMaterialType MaterialType => ArmorMaterialType.Stone;
+        public override int StrReq => 40;
 
         [Constructable]
         public GargishStoneAmulet()
             : base(0x4D0A)
         {
-            this.Hue = 2500;
+            Hue = 2500;
         }
 
         public GargishStoneAmulet(Serial serial)
@@ -104,7 +104,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

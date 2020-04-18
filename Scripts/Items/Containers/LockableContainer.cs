@@ -111,13 +111,7 @@ namespace Server.Items
             }
         }
 
-        public override bool TrapOnOpen
-        {
-            get
-            {
-                return !m_TrapOnLockpick;
-            }
-        }
+        public override bool TrapOnOpen => !m_TrapOnLockpick;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool TrapOnLockpick
@@ -166,7 +160,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)8); // version
+            writer.Write(8); // version
 
             writer.Write(m_PlayerConstructed);
             writer.Write((int)m_Resource);
@@ -176,15 +170,15 @@ namespace Server.Items
 
             writer.Write(m_IsShipwreckedItem);
 
-            writer.Write((bool)m_TrapOnLockpick);
+            writer.Write(m_TrapOnLockpick);
 
-            writer.Write((int)m_RequiredSkill);
+            writer.Write(m_RequiredSkill);
 
-            writer.Write((int)m_MaxLockLevel);
+            writer.Write(m_MaxLockLevel);
 
             writer.Write(m_KeyValue);
-            writer.Write((int)m_LockLevel);
-            writer.Write((bool)m_Locked);
+            writer.Write(m_LockLevel);
+            writer.Write(m_Locked);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -350,13 +344,7 @@ namespace Server.Items
             return true;
         }
 
-        public override bool DisplaysContent
-        {
-            get
-            {
-                return !m_Locked;
-            }
-        }
+        public override bool DisplaysContent => !m_Locked;
 
         public virtual bool CheckLocked(Mobile from)
         {

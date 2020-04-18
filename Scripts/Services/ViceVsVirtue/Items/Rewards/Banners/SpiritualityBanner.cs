@@ -6,13 +6,7 @@ namespace Server.Engines.VvV
     [FlipableAttribute(39363, 39364)]
     public class SpiritualityBanner : Item
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1123387;
-            }
-        }
+        public override int LabelNumber => 1123387;
 
         [Constructable]
         public SpiritualityBanner() : base(39363)
@@ -21,7 +15,7 @@ namespace Server.Engines.VvV
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (m.InRange(this.GetWorldLocation(), 2))
+            if (m.InRange(GetWorldLocation(), 2))
             {
                 Gump g = new Gump(50, 50);
                 g.AddImage(0, 0, 30581);

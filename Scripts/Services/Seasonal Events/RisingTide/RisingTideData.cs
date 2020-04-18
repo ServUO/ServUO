@@ -8,13 +8,13 @@ namespace Server.Engines.Points
 {
     public class RisingTide : PointsSystem
     {
-        public override PointsType Loyalty { get { return PointsType.RisingTide; } }
-        public override TextDefinition Name { get { return m_Name; } }
-        public override bool AutoAdd { get { return true; } }
-        public override double MaxPoints { get { return double.MaxValue; } }
-        public override bool ShowOnLoyaltyGump { get { return false; } }
+        public override PointsType Loyalty => PointsType.RisingTide;
+        public override TextDefinition Name => m_Name;
+        public override bool AutoAdd => true;
+        public override double MaxPoints => double.MaxValue;
+        public override bool ShowOnLoyaltyGump => false;
 
-        public bool InSeason { get { return SeasonalEventSystem.IsActive(EventType.RisingTide); } }
+        public bool InSeason => SeasonalEventSystem.IsActive(EventType.RisingTide);
         private readonly TextDefinition m_Name = null;
 
         public static readonly double CargoChance = 0.1;
@@ -32,8 +32,8 @@ namespace Server.Engines.Points
         {
             if (Enabled && victim is BaseCreature && damager is PlayerMobile)
             {
-                var bc = victim as BaseCreature;
-                var beacon = GetPlunderBeacon(bc);
+                BaseCreature bc = victim as BaseCreature;
+                PlunderBeaconAddon beacon = GetPlunderBeacon(bc);
 
                 if (beacon != null)
                 {
@@ -54,7 +54,7 @@ namespace Server.Engines.Points
 
                     if (chance > Utility.RandomDouble())
                     {
-                        var corpse = victim.Corpse;
+                        Container corpse = victim.Corpse;
 
                         if (corpse != null)
                         {
@@ -74,9 +74,9 @@ namespace Server.Engines.Points
         {
             if (PlunderBeaconSpawner.Spawner != null)
             {
-                foreach (var list in PlunderBeaconSpawner.Spawner.PlunderBeacons.Values)
+                foreach (System.Collections.Generic.List<PlunderBeaconAddon> list in PlunderBeaconSpawner.Spawner.PlunderBeacons.Values)
                 {
-                    var addon = list.FirstOrDefault(beacon => beacon.Crew.Contains(bc) || (beacon.Spawn.ContainsKey(bc) && beacon.Spawn[bc]));
+                    PlunderBeaconAddon addon = list.FirstOrDefault(beacon => beacon.Crew.Contains(bc) || (beacon.Spawn.ContainsKey(bc) && beacon.Spawn[bc]));
 
                     if (addon != null)
                     {
@@ -118,7 +118,7 @@ namespace Server.Engines.Points
 
             if (reader.ReadInt() == 0)
             {
-                var spawner = new PlunderBeaconSpawner();
+                PlunderBeaconSpawner spawner = new PlunderBeaconSpawner();
                 spawner.Deserialize(reader);
             }
         }

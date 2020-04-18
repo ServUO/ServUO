@@ -6,7 +6,7 @@ namespace Server.Items
         [Constructable]
         public LeatherDyeTub()
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public LeatherDyeTub(Serial serial)
@@ -14,63 +14,27 @@ namespace Server.Items
         {
         }
 
-        public override bool AllowDyables
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool AllowLeather
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int TargetMessage
-        {
-            get
-            {
-                return 1042416;
-            }
-        }// Select the leather item to dye.
-        public override int FailMessage
-        {
-            get
-            {
-                return 1042418;
-            }
-        }// You can only dye leather with this tub.
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041284;
-            }
-        }// Leather Dye Tub
-        public override CustomHuePicker CustomHuePicker
-        {
-            get
-            {
-                return CustomHuePicker.LeatherDyeTub;
-            }
-        }
+        public override bool AllowDyables => false;
+        public override bool AllowLeather => true;
+        public override int TargetMessage => 1042416;// Select the leather item to dye.
+        public override int FailMessage => 1042418;// You can only dye leather with this tub.
+        public override int LabelNumber => 1041284;// Leather Dye Tub
+        public override CustomHuePicker CustomHuePicker => CustomHuePicker.LeatherDyeTub;
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsRewardItem
         {
             get
             {
-                return this.m_IsRewardItem;
+                return m_IsRewardItem;
             }
             set
             {
-                this.m_IsRewardItem = value;
+                m_IsRewardItem = value;
             }
         }
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.m_IsRewardItem && !Engines.VeteranRewards.RewardSystem.CheckIsUsableBy(from, this, null))
+            if (m_IsRewardItem && !Engines.VeteranRewards.RewardSystem.CheckIsUsableBy(from, this, null))
                 return;
 
             base.OnDoubleClick(from);
@@ -80,7 +44,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if (this.m_IsRewardItem)
+            if (m_IsRewardItem)
                 list.Add(1076218); // 2nd Year Veteran Reward
         }
 
@@ -88,9 +52,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
-            writer.Write((bool)this.m_IsRewardItem);
+            writer.Write(m_IsRewardItem);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -103,7 +67,7 @@ namespace Server.Items
             {
                 case 1:
                     {
-                        this.m_IsRewardItem = reader.ReadBool();
+                        m_IsRewardItem = reader.ReadBool();
                         break;
                     }
             }

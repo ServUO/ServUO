@@ -31,12 +31,12 @@ namespace Server.Regions
 
             Container pack = from.Backpack;
 
-            if (pack != null && this.ContainsDeed(pack))
+            if (pack != null && ContainsDeed(pack))
                 return true;
 
             BankBox bank = from.FindBankNoCreate();
 
-            if (bank != null && this.ContainsDeed(bank))
+            if (bank != null && ContainsDeed(bank))
                 return true;
 
             return false;

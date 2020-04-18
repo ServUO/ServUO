@@ -211,7 +211,7 @@ namespace Server
         {
             if (m_Mobiles != null)
             {
-                var sandbox = new List<Mobile>(m_Mobiles);
+                List<Mobile> sandbox = new List<Mobile>(m_Mobiles);
 
                 foreach (Mobile mob in sandbox)
                 {
@@ -360,8 +360,8 @@ namespace Server
 
         public Map Owner => m_Owner;
 
-        public int X { get { return m_X; } }
+        public int X => m_X;
 
-        public int Y { get { return m_Y; } }
+        public int Y => m_Y;
     }
 }

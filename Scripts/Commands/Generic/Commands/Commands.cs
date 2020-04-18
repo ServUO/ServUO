@@ -18,7 +18,7 @@ namespace Server.Commands.Generic
     {
         private static readonly List<BaseCommand> m_AllCommands = new List<BaseCommand>();
 
-        public static List<BaseCommand> AllCommands { get { return m_AllCommands; } }
+        public static List<BaseCommand> AllCommands => m_AllCommands;
 
         public static void Initialize()
         {
@@ -65,11 +65,11 @@ namespace Server.Commands.Generic
         {
             m_AllCommands.Add(command);
 
-            var impls = BaseCommandImplementor.Implementors;
+            List<BaseCommandImplementor> impls = BaseCommandImplementor.Implementors;
 
-            for (var i = 0; i < impls.Count; ++i)
+            for (int i = 0; i < impls.Count; ++i)
             {
-                var impl = impls[i];
+                BaseCommandImplementor impl = impls[i];
 
                 if ((command.Supports & impl.SupportRequirement) != 0)
                     impl.Register(command);
@@ -94,10 +94,10 @@ namespace Server.Commands.Generic
         {
             try
             {
-                var args = e.Arguments;
-                var condition = ObjectConditional.Parse(e.Mobile, ref args);
+                string[] args = e.Arguments;
+                ObjectConditional condition = ObjectConditional.Parse(e.Mobile, ref args);
 
-                for (var i = 0; i < list.Count; ++i)
+                for (int i = 0; i < list.Count; ++i)
                 {
                     if (condition.CheckCondition(list[i]))
                         AddResponse("True - that object matches the condition.");
@@ -126,7 +126,7 @@ namespace Server.Commands.Generic
 
         public override void Execute(CommandEventArgs e, object obj)
         {
-            var item = obj as Item;
+            Item item = obj as Item;
 
             if (item != null)
             {
@@ -154,7 +154,7 @@ namespace Server.Commands.Generic
         {
             if (obj is HouseSign)
             {
-                var house = ((HouseSign)obj).Owner;
+                BaseHouse house = ((HouseSign)obj).Owner;
 
                 if (house == null)
                 {
@@ -210,10 +210,10 @@ namespace Server.Commands.Generic
 
         public static void OpenBrowser_Callback(Mobile from, bool okay, object state)
         {
-            var states = (object[])state;
-            var gm = (Mobile)states[0];
-            var url = (string)states[1];
-            var echo = (bool)states[2];
+            object[] states = (object[])state;
+            Mobile gm = (Mobile)states[0];
+            string url = (string)states[1];
+            bool echo = (bool)states[2];
 
             if (okay)
             {
@@ -235,12 +235,12 @@ namespace Server.Commands.Generic
         {
             if (e.Length == 1)
             {
-                var mob = (Mobile)obj;
-                var from = e.Mobile;
+                Mobile mob = (Mobile)obj;
+                Mobile from = e.Mobile;
 
                 if (mob.Player)
                 {
-                    var ns = mob.NetState;
+                    NetState ns = mob.NetState;
 
                     if (ns == null)
                     {
@@ -248,7 +248,7 @@ namespace Server.Commands.Generic
                     }
                     else
                     {
-                        var url = e.GetString(0);
+                        string url = e.GetString(0);
 
                         CommandLogging.WriteLine(
                             from,
@@ -293,7 +293,7 @@ namespace Server.Commands.Generic
 
         public override void ExecuteList(CommandEventArgs e, ArrayList list)
         {
-            for (var i = 0; i < list.Count; ++i)
+            for (int i = 0; i < list.Count; ++i)
                 Execute(e, list[i], false);
         }
     }
@@ -318,7 +318,7 @@ namespace Server.Commands.Generic
             }
             else if (e.Length >= 2)
             {
-                var result = Properties.IncreaseValue(e.Mobile, obj, e.Arguments);
+                string result = Properties.IncreaseValue(e.Mobile, obj, e.Arguments);
 
                 if (result == "The property has been increased." || result == "The properties have been increased." ||
                     result == "The property has been decreased." || result == "The properties have been decreased." ||
@@ -348,12 +348,12 @@ namespace Server.Commands.Generic
 
         public override void Execute(CommandEventArgs e, object obj)
         {
-            var from = e.Mobile;
+            Mobile from = e.Mobile;
 
             if (e.Length == 1)
             {
-                var index = e.GetInt32(0);
-                var mob = (Mobile)obj;
+                int index = e.GetInt32(0);
+                Mobile mob = (Mobile)obj;
 
                 CommandLogging.WriteLine(
                     from,
@@ -399,8 +399,8 @@ namespace Server.Commands.Generic
 
         public override void Execute(CommandEventArgs e, object obj)
         {
-            var mob = (Mobile)obj;
-            var from = e.Mobile;
+            Mobile mob = (Mobile)obj;
+            Mobile from = e.Mobile;
 
             CommandLogging.WriteLine(
                 from,
@@ -437,11 +437,11 @@ namespace Server.Commands.Generic
             if (e.Arguments.Length == 0)
                 return;
 
-            var packs = new List<Container>(list.Count);
+            List<Container> packs = new List<Container>(list.Count);
 
-            for (var i = 0; i < list.Count; ++i)
+            for (int i = 0; i < list.Count; ++i)
             {
-                var obj = list[i];
+                object obj = list[i];
                 Container cont = null;
 
                 if (obj is Mobile)
@@ -476,13 +476,13 @@ namespace Server.Commands.Generic
         {
             if (e.Length >= 1)
             {
-                var t = ScriptCompiler.FindTypeByName(e.GetString(0));
+                Type t = ScriptCompiler.FindTypeByName(e.GetString(0));
 
                 if (t == null)
                 {
                     e.Mobile.SendMessage("No type with that name was found.");
 
-                    var match = e.GetString(0).Trim();
+                    string match = e.GetString(0).Trim();
 
                     if (match.Length < 3)
                     {
@@ -509,7 +509,7 @@ namespace Server.Commands.Generic
 
         public override void Execute(CommandEventArgs e, object obj)
         {
-            var p = obj as IPoint3D;
+            IPoint3D p = obj as IPoint3D;
 
             if (p == null)
                 return;
@@ -537,19 +537,19 @@ namespace Server.Commands.Generic
 
         public override void Execute(CommandEventArgs e, object obj)
         {
-            var p = obj as IPoint3D;
+            IPoint3D p = obj as IPoint3D;
 
             if (p == null)
                 return;
 
-            var from = e.Mobile;
+            Mobile from = e.Mobile;
 
             SpellHelper.GetSurfaceTop(ref p);
 
             //CommandLogging.WriteLine( from, "{0} {1} teleporting to {2}", from.AccessLevel, CommandLogging.Format( from ), new Point3D( p ) );
 
-            var fromLoc = from.Location;
-            var toLoc = new Point3D(p);
+            Point3D fromLoc = from.Location;
+            Point3D toLoc = new Point3D(p);
 
             from.Location = toLoc;
             from.ProcessDelta();
@@ -583,8 +583,8 @@ namespace Server.Commands.Generic
 
         public override void Execute(CommandEventArgs e, object obj)
         {
-            var from = e.Mobile;
-            var mob = (Mobile)obj;
+            Mobile from = e.Mobile;
+            Mobile mob = (Mobile)obj;
 
             CommandLogging.WriteLine(
                 from,
@@ -593,15 +593,15 @@ namespace Server.Commands.Generic
                 CommandLogging.Format(from),
                 CommandLogging.Format(mob));
 
-            var takenAction = false;
+            bool takenAction = false;
 
-            for (var i = 0; i < mob.Items.Count; ++i)
+            for (int i = 0; i < mob.Items.Count; ++i)
             {
-                var item = mob.Items[i];
+                Item item = mob.Items[i];
 
                 if (item is IMountItem)
                 {
-                    var mount = ((IMountItem)item).Mount;
+                    IMount mount = ((IMountItem)item).Mount;
 
                     if (mount != null)
                     {
@@ -614,9 +614,9 @@ namespace Server.Commands.Generic
                 }
             }
 
-            for (var i = 0; i < mob.Items.Count; ++i)
+            for (int i = 0; i < mob.Items.Count; ++i)
             {
-                var item = mob.Items[i];
+                Item item = mob.Items[i];
 
                 if (item.Layer == Layer.Mount)
                 {
@@ -687,7 +687,7 @@ namespace Server.Commands.Generic
             }
             else
             {
-                var type = obj.GetType();
+                Type type = obj.GetType();
 
                 if (type.DeclaringType == null)
                     AddResponse(String.Format("The type of that object is {0}.", type.Name));
@@ -713,9 +713,9 @@ namespace Server.Commands.Generic
         {
             if (e.Length >= 1)
             {
-                for (var i = 0; i < e.Length; ++i)
+                for (int i = 0; i < e.Length; ++i)
                 {
-                    var result = Properties.GetValue(e.Mobile, obj, e.GetString(i));
+                    string result = Properties.GetValue(e.Mobile, obj, e.GetString(i));
 
                     if (result == "Property not found." || result == "Property is write only." ||
                         result.StartsWith("Getting this property"))
@@ -758,7 +758,7 @@ namespace Server.Commands.Generic
 
         public override void Execute(CommandEventArgs e, object obj)
         {
-            var result = Properties.SetValue(e.Mobile, obj, m_Name, m_Value);
+            string result = Properties.SetValue(e.Mobile, obj, m_Name, m_Value);
 
             if (result == "Property has been set.")
                 AddResponse(result);
@@ -783,9 +783,9 @@ namespace Server.Commands.Generic
         {
             if (e.Length >= 2)
             {
-                for (var i = 0; (i + 1) < e.Length; i += 2)
+                for (int i = 0; (i + 1) < e.Length; i += 2)
                 {
-                    var result = Properties.SetValue(e.Mobile, obj, e.GetString(i), e.GetString(i + 1));
+                    string result = Properties.SetValue(e.Mobile, obj, e.GetString(i), e.GetString(i + 1));
 
                     if (result == "Property has been set.")
                         AddResponse(result);
@@ -816,11 +816,11 @@ namespace Server.Commands.Generic
 
         private void OnConfirmCallback(Mobile from, bool okay, object state)
         {
-            var states = (object[])state;
-            var e = (CommandEventArgs)states[0];
-            var list = (ArrayList)states[1];
+            object[] states = (object[])state;
+            CommandEventArgs e = (CommandEventArgs)states[0];
+            ArrayList list = (ArrayList)states[1];
 
-            var flushToLog = false;
+            bool flushToLog = false;
 
             if (okay)
             {
@@ -832,14 +832,14 @@ namespace Server.Commands.Generic
                     NetState.Pause();
                 }
 
-                foreach (var o in list)
+                foreach (object o in list)
                 {
                     _DeleteConfirm.Add(o);
                 }
 
                 base.ExecuteList(e, list);
 
-                foreach (var o in list)
+                foreach (object o in list)
                 {
                     _DeleteConfirm.Remove(o);
                 }
@@ -863,7 +863,7 @@ namespace Server.Commands.Generic
         {
             if (list.Count > 1)
             {
-                var message = String.Format(
+                string message = String.Format(
                     "You are about to delete {0} objects. " + "This cannot be undone without a full server revert.<br><br>Continue?",
                     list.Count);
 
@@ -876,7 +876,7 @@ namespace Server.Commands.Generic
 
             if (list.Count > 0)
             {
-                var obj = list[0];
+                object obj = list[0];
 
                 if (obj != null && !_DeleteConfirm.Contains(obj))
                 {
@@ -914,7 +914,7 @@ namespace Server.Commands.Generic
                         message = String.Format("Confirm deletion of {0}", obj);
                     }
 
-                    var list = new ArrayList
+                    ArrayList list = new ArrayList
                     {
                         obj
                     };
@@ -985,8 +985,8 @@ namespace Server.Commands.Generic
 
         public override void Execute(CommandEventArgs e, object obj)
         {
-            var mob = (Mobile)obj;
-            var from = e.Mobile;
+            Mobile mob = (Mobile)obj;
+            Mobile from = e.Mobile;
 
             if (m_Value)
             {
@@ -1015,7 +1015,7 @@ namespace Server.Commands.Generic
             {
                 if (mob.IsDeadBondedPet)
                 {
-                    var bc = mob as BaseCreature;
+                    BaseCreature bc = mob as BaseCreature;
 
                     if (bc != null)
                     {
@@ -1085,7 +1085,7 @@ namespace Server.Commands.Generic
 
         public override void Execute(CommandEventArgs e, object obj)
         {
-            var m = (Mobile)obj;
+            Mobile m = (Mobile)obj;
 
             CommandLogging.WriteLine(
                 e.Mobile,
@@ -1132,9 +1132,9 @@ namespace Server.Commands.Generic
 
         public override void Execute(CommandEventArgs e, object obj)
         {
-            var from = e.Mobile;
-            var targ = (Mobile)obj;
-            var state = targ.NetState;
+            Mobile from = e.Mobile;
+            Mobile targ = (Mobile)obj;
+            NetState state = targ.NetState;
 
             if (state != null)
             {
@@ -1189,8 +1189,8 @@ namespace Server.Commands.Generic
 
         public override void Execute(CommandEventArgs e, object obj)
         {
-            var from = e.Mobile;
-            var targ = (Mobile)obj;
+            Mobile from = e.Mobile;
+            Mobile targ = (Mobile)obj;
 
             if (from.AccessLevel > targ.AccessLevel)
             {
@@ -1198,8 +1198,8 @@ namespace Server.Commands.Generic
 
                 if (fromState != null && targState != null)
                 {
-                    var fromAccount = fromState.Account as Account;
-                    var targAccount = targState.Account as Account;
+                    Account fromAccount = fromState.Account as Account;
+                    Account targAccount = targState.Account as Account;
 
                     if (fromAccount != null && targAccount != null)
                     {
@@ -1251,7 +1251,7 @@ namespace Server.Commands.Generic
 
         public override void Execute(CommandEventArgs e, object obj)
         {
-            var item = obj as Item;
+            Item item = obj as Item;
 
             if (item == null)
                 return;
@@ -1262,7 +1262,7 @@ namespace Server.Commands.Generic
                 return;
             }
 
-            foreach (var house in BaseHouse.AllHouses)
+            foreach (BaseHouse house in BaseHouse.AllHouses)
             {
                 if (house.IsSecure(item) || house.IsLockedDown(item))
                 {

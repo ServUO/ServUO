@@ -10,27 +10,9 @@ namespace Server.Spells.Bushido
         {
         }
 
-        public override int BaseMana
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 25.0;
-            }
-        }
-        public override TextDefinition AbilityMessage
-        {
-            get
-            {
-                return new TextDefinition(1063122);
-            }
-        }// You better kill your enemy with your next hit or you'll be rather sorry...
+        public override int BaseMana => 0;
+        public override double RequiredSkill => 25.0;
+        public override TextDefinition AbilityMessage => new TextDefinition(1063122);// You better kill your enemy with your next hit or you'll be rather sorry...
         public static int GetSwingBonus(Mobile target)
         {
             HonorableExecutionInfo info = m_Table[target] as HonorableExecutionInfo;
@@ -76,7 +58,7 @@ namespace Server.Spells.Bushido
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
-            if (!this.Validate(attacker) || !this.CheckMana(attacker, true))
+            if (!Validate(attacker) || !CheckMana(attacker, true))
                 return;
 
             ClearCurrentMove(attacker);
@@ -130,7 +112,7 @@ namespace Server.Spells.Bushido
             }
 
             attacker.Delta(MobileDelta.WeaponDamage);
-            this.CheckGain(attacker);
+            CheckGain(attacker);
         }
 
         public void EndEffect(object state)
@@ -162,43 +144,43 @@ namespace Server.Spells.Bushido
 
             public HonorableExecutionInfo(Mobile from, int swingBonus, ArrayList mods, bool penalty)
             {
-                this.m_Mobile = from;
-                this.m_SwingBonus = swingBonus;
-                this.m_Mods = mods;
-                this.m_Penalty = penalty;
+                m_Mobile = from;
+                m_SwingBonus = swingBonus;
+                m_Mods = mods;
+                m_Penalty = penalty;
 
-                this.Apply();
+                Apply();
             }
 
             public void Apply()
             {
-                if (this.m_Mods == null)
+                if (m_Mods == null)
                     return;
 
-                for (int i = 0; i < this.m_Mods.Count; ++i)
+                for (int i = 0; i < m_Mods.Count; ++i)
                 {
-                    object mod = this.m_Mods[i];
+                    object mod = m_Mods[i];
 
                     if (mod is ResistanceMod)
-                        this.m_Mobile.AddResistanceMod((ResistanceMod)mod);
+                        m_Mobile.AddResistanceMod((ResistanceMod)mod);
                     else if (mod is SkillMod)
-                        this.m_Mobile.AddSkillMod((SkillMod)mod);
+                        m_Mobile.AddSkillMod((SkillMod)mod);
                 }
             }
 
             public void Clear()
             {
-                if (this.m_Mods == null)
+                if (m_Mods == null)
                     return;
 
-                for (int i = 0; i < this.m_Mods.Count; ++i)
+                for (int i = 0; i < m_Mods.Count; ++i)
                 {
-                    object mod = this.m_Mods[i];
+                    object mod = m_Mods[i];
 
                     if (mod is ResistanceMod)
-                        this.m_Mobile.RemoveResistanceMod((ResistanceMod)mod);
+                        m_Mobile.RemoveResistanceMod((ResistanceMod)mod);
                     else if (mod is SkillMod)
-                        this.m_Mobile.RemoveSkillMod((SkillMod)mod);
+                        m_Mobile.RemoveSkillMod((SkillMod)mod);
                 }
             }
         }

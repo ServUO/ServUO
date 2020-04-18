@@ -11,8 +11,8 @@ namespace Server.Items
         public DeathVortexTrap()
             : base(0x3789)
         {
-            this.Hue = 2070;
-            this.Movable = false;
+            Hue = 2070;
+            Movable = false;
 
             m_Timer = new InternalTimer(this);
             m_Timer.Start();
@@ -30,17 +30,17 @@ namespace Server.Items
             base.OnDelete();
         }
 
-        public override bool PassivelyTriggered { get { return true; } }
-        public override TimeSpan PassiveTriggerDelay { get { return TimeSpan.FromSeconds(2.0); } }
-        public override int PassiveTriggerRange { get { return 3; } }
-        public override TimeSpan ResetDelay { get { return TimeSpan.FromSeconds(0.2); } }
+        public override bool PassivelyTriggered => true;
+        public override TimeSpan PassiveTriggerDelay => TimeSpan.FromSeconds(2.0);
+        public override int PassiveTriggerRange => 3;
+        public override TimeSpan ResetDelay => TimeSpan.FromSeconds(0.2);
 
         public override void OnTrigger(Mobile from)
         {
             if (from.IsStaff())
                 return;
 
-            if (from.Alive && this.CheckRange(from.Location, 1) && !(from is ClockworkExodus))
+            if (from.Alive && CheckRange(from.Location, 1) && !(from is ClockworkExodus))
                 StamManaDrain(from);
         }
 
@@ -96,7 +96,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

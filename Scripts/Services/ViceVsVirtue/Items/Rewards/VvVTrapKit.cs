@@ -14,7 +14,7 @@ namespace Server.Engines.VvV
         [CommandProperty(AccessLevel.GameMaster)]
         public VvVTrapType TrapType { get; set; }
 
-        public override int LabelNumber { get { return 1154944; } } // Trap Kit
+        public override int LabelNumber => 1154944;  // Trap Kit
 
         private static readonly Dictionary<Mobile, DateTime> _Cooldown = new Dictionary<Mobile, DateTime>();
 
@@ -93,7 +93,7 @@ namespace Server.Engines.VvV
         {
             VvVTrap trap = null;
 
-            if (this.DeploymentType == DeploymentType.Tripwire)
+            if (DeploymentType == DeploymentType.Tripwire)
             {
                 m.SendLocalizedMessage(1155410); // Target the location to run the tripwire...
                 m.BeginTarget(5, true, TargetFlags.None, (from, targeted) =>
@@ -171,13 +171,13 @@ namespace Server.Engines.VvV
 
         public VvVTrap ConstructTrap(Mobile m)
         {
-            switch (this.TrapType)
+            switch (TrapType)
             {
-                case VvVTrapType.Explosion: return new VvVExplosionTrap(m, this.DeploymentType);
-                case VvVTrapType.Poison: return new VvVPoisonTrap(m, this.DeploymentType);
-                case VvVTrapType.Cold: return new VvVColdTrap(m, this.DeploymentType);
-                case VvVTrapType.Energy: return new VvVEnergyTrap(m, this.DeploymentType);
-                case VvVTrapType.Blade: return new VvVBladeTrap(m, this.DeploymentType);
+                case VvVTrapType.Explosion: return new VvVExplosionTrap(m, DeploymentType);
+                case VvVTrapType.Poison: return new VvVPoisonTrap(m, DeploymentType);
+                case VvVTrapType.Cold: return new VvVColdTrap(m, DeploymentType);
+                case VvVTrapType.Energy: return new VvVEnergyTrap(m, DeploymentType);
+                case VvVTrapType.Blade: return new VvVBladeTrap(m, DeploymentType);
             }
 
             return null;
@@ -192,8 +192,8 @@ namespace Server.Engines.VvV
         {
             base.GetProperties(list);
 
-            list.Add(1154938, String.Format("#{0}", ((int)this.DeploymentType).ToString())); // Deployment Type: ~1_DEPLOYTYPE~
-            list.Add(1154941, String.Format("#{0}", ((int)this.TrapType).ToString())); // Damage Type: ~1_DMGTYPE~
+            list.Add(1154938, String.Format("#{0}", ((int)DeploymentType).ToString())); // Deployment Type: ~1_DEPLOYTYPE~
+            list.Add(1154941, String.Format("#{0}", ((int)TrapType).ToString())); // Damage Type: ~1_DMGTYPE~
             list.Add(1154937); // VvV Item
         }
 

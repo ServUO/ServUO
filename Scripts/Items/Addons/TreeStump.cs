@@ -8,7 +8,7 @@ namespace Server.Items
 {
     public class TreeStump : BaseAddon, IRewardItem
     {
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         private bool m_IsRewardItem;
         private int m_Logs;
@@ -190,8 +190,8 @@ namespace Server.Items
 
             TryGiveResourceCount();
 
-            writer.Write((bool)m_IsRewardItem);
-            writer.Write((int)m_Logs);
+            writer.Write(m_IsRewardItem);
+            writer.Write(m_Logs);
             writer.Write(NextResourceCount);
         }
 
@@ -234,13 +234,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1080406;
-            }
-        }// a deed for a tree stump decoration
+        public override int LabelNumber => 1080406;// a deed for a tree stump decoration
         public override BaseAddon Addon
         {
             get
@@ -306,8 +300,8 @@ namespace Server.Items
 
             writer.WriteEncodedInt(0); // version
 
-            writer.Write((bool)m_IsRewardItem);
-            writer.Write((int)m_Logs);
+            writer.Write(m_IsRewardItem);
+            writer.Write(m_Logs);
         }
 
         public override void Deserialize(GenericReader reader)

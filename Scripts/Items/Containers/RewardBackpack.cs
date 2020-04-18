@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class BaseRewardBackpack : Backpack
     {
-        public virtual int Level { get { return 1; } }
+        public virtual int Level => 1;
 
         public BaseRewardBackpack()
             : base()
@@ -65,7 +65,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -78,7 +78,7 @@ namespace Server.Items
 
     public class DustyAdventurersBackpack : BaseRewardBackpack
     {
-        public override int LabelNumber { get { return 1113189; } } // Dusty Adventurer's Backpack
+        public override int LabelNumber => 1113189;  // Dusty Adventurer's Backpack
 
         [Constructable]
         public DustyAdventurersBackpack()
@@ -95,7 +95,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -108,8 +108,8 @@ namespace Server.Items
 
     public class DustyExplorersBackpack : BaseRewardBackpack
     {
-        public override int LabelNumber { get { return 1113190; } } // Dusty Explorer's Backpack
-        public override int Level { get { return 2; } }
+        public override int LabelNumber => 1113190;  // Dusty Explorer's Backpack
+        public override int Level => 2;
 
         [Constructable]
         public DustyExplorersBackpack()
@@ -126,7 +126,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -139,8 +139,8 @@ namespace Server.Items
 
     public class DustyHuntersBackpack : BaseRewardBackpack
     {
-        public override int LabelNumber { get { return 1113191; } } // Dusty Hunter's Backpack
-        public override int Level { get { return 3; } }
+        public override int LabelNumber => 1113191;  // Dusty Hunter's Backpack
+        public override int Level => 3;
 
         [Constructable]
         public DustyHuntersBackpack()
@@ -157,7 +157,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

@@ -6,8 +6,8 @@ namespace Server.Items
         public ThorvaldsMedallion()
             : base(0x2AAA)
         {
-            this.LootType = LootType.Blessed;
-            this.Hue = 0x47F; // TODO check
+            LootType = LootType.Blessed;
+            Hue = 0x47F; // TODO check
         }
 
         public ThorvaldsMedallion(Serial serial)
@@ -15,18 +15,12 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074232;
-            }
-        }// Thorvald's Medallion
+        public override int LabelNumber => 1074232;// Thorvald's Medallion
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

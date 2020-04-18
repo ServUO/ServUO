@@ -5,7 +5,7 @@ namespace Server.Items
         [Constructable]
         public SquirrelStatueSouthAddon()
         {
-            this.AddComponent(new AddonComponent(0x2D11), 0, 0, 0);
+            AddComponent(new AddonComponent(0x2D11), 0, 0, 0);
         }
 
         public SquirrelStatueSouthAddon(Serial serial)
@@ -13,13 +13,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new SquirrelStatueSouthDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new SquirrelStatueSouthDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -47,20 +41,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new SquirrelStatueSouthAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1072884;
-            }
-        }// squirrel statue (south)
+        public override BaseAddon Addon => new SquirrelStatueSouthAddon();
+        public override int LabelNumber => 1072884;// squirrel statue (south)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

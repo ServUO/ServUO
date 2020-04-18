@@ -4,15 +4,15 @@ namespace Server.Items
 {
     public class AquaGem : BaseDecayingItem
     {
-        public override int LabelNumber { get { return 1154244; } } // Aqua Gem
+        public override int LabelNumber => 1154244;  // Aqua Gem
 
         [Constructable]
         public AquaGem() : base(0x4B48)
         {
-            this.Stackable = false;
-            this.Weight = 1.0;
-            this.Hue = 1916;
-            this.LootType = LootType.Blessed;
+            Stackable = false;
+            Weight = 1.0;
+            Hue = 1916;
+            LootType = LootType.Blessed;
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -29,7 +29,7 @@ namespace Server.Items
             list.Add(1072351); // Quest Item
         }
 
-        public override int Lifespan { get { return 3600; } }
+        public override int Lifespan => 3600;
 
         public AquaGem(Serial serial) : base(serial)
         {
@@ -38,7 +38,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
         public override void Deserialize(GenericReader reader)
         {

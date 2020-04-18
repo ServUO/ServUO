@@ -64,9 +64,9 @@ namespace Server.Engines.CannedEvil
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
-            writer.Write((byte)m_Code);
+            writer.Write(m_Code);
             writer.Write(m_Controller);
         }
 
@@ -157,29 +157,11 @@ namespace Server.Engines.CannedEvil
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile Successful
-        {
-            get
-            {
-                return m_Successful;
-            }
-        }
+        public Mobile Successful => m_Successful;
         [CommandProperty(AccessLevel.GameMaster)]
-        public long Key
-        {
-            get
-            {
-                return m_Key;
-            }
-        }
+        public long Key => m_Key;
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Active
-        {
-            get
-            {
-                return (!Deleted && null != m_Altar && m_Altar.Active);
-            }
-        }
+        public bool Active => (!Deleted && null != m_Altar && m_Altar.Active);
         [CommandProperty(AccessLevel.GameMaster)]
         public ChampionSpawn ChampionAltar
         {
@@ -192,13 +174,7 @@ namespace Server.Engines.CannedEvil
                 m_Altar = value;
             }
         }
-        public override string DefaultName
-        {
-            get
-            {
-                return "puzzle control";
-            }
-        }
+        public override string DefaultName => "puzzle control";
         public static void Initialize()
         {
             CommandSystem.Register("GenLichPuzzle", AccessLevel.Administrator, new CommandEventHandler(GenLichPuzzle_OnCommand));
@@ -326,12 +302,12 @@ namespace Server.Engines.CannedEvil
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
-            writer.Write((PrimevalLichPuzzle)m_Instance);
-            writer.Write((ChampionSpawn)m_Altar);
-            writer.Write((long)m_Key);
-            writer.Write((Mobile)m_Successful);
+            writer.Write(m_Instance);
+            writer.Write(m_Altar);
+            writer.Write(m_Key);
+            writer.Write(m_Successful);
             writer.WriteItemList(m_Levers, true);
         }
 

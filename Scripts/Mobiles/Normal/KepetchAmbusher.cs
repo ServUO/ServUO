@@ -5,7 +5,7 @@ namespace Server.Mobiles
     [CorpseName("a kepetch corpse")]
     public class KepetchAmbusher : BaseCreature, ICarvable
     {
-        public override bool CanStealth { get { return true; } } //Stays Hidden until Combatant in range.
+        public override bool CanStealth => true;  //Stays Hidden until Combatant in range.
         public bool GatheredFur { get; set; }
 
         [Constructable]
@@ -50,7 +50,7 @@ namespace Server.Mobiles
         {
             if (!GatheredFur)
             {
-                var fur = new Fur(FurType, Fur);
+                Fur fur = new Fur(FurType, Fur);
 
                 if (from.Backpack == null || !from.Backpack.TryDropItem(from, fur, false))
                 {
@@ -88,30 +88,18 @@ namespace Server.Mobiles
             base.OnDamagedBySpell(from);
         }
 
-        public override int Meat
-        {
-            get { return 7; }
-        }
+        public override int Meat => 7;
 
-        public override int Hides
-        {
-            get { return 12; }
-        }
+        public override int Hides => 12;
 
-        public override HideType HideType
-        {
-            get { return HideType.Horned; }
-        }
+        public override HideType HideType => HideType.Horned;
 
-        public override FoodType FavoriteFood
-        {
-            get { return FoodType.FruitsAndVegies | FoodType.GrainsAndHay; }
-        }
+        public override FoodType FavoriteFood => FoodType.FruitsAndVegies | FoodType.GrainsAndHay;
 
-        public override int DragonBlood { get { return 8; } }
+        public override int DragonBlood => 8;
 
-        public override int Fur { get { return GatheredFur ? 0 : 15; } }
-        public override FurType FurType { get { return FurType.Brown; } }
+        public override int Fur => GatheredFur ? 0 : 15;
+        public override FurType FurType => FurType.Brown;
 
         public override void GenerateLoot()
         {
@@ -151,21 +139,21 @@ namespace Server.Mobiles
         public override void OnThink()
         {
 
-            if (!this.Alive || this.Deleted)
+            if (!Alive || Deleted)
             {
                 return;
             }
 
-            if (!this.Hidden)
+            if (!Hidden)
             {
                 double chance = 0.05;
 
-                if (this.Hits < 20)
+                if (Hits < 20)
                 {
                     chance = 0.1;
                 }
 
-                if (this.Poisoned)
+                if (Poisoned)
                 {
                     chance = 0.01;
                 }
@@ -180,15 +168,15 @@ namespace Server.Mobiles
 
         private void HideSelf()
         {
-            if (Core.TickCount >= this.NextSkillTime)
+            if (Core.TickCount >= NextSkillTime)
             {
                 Effects.SendLocationParticles(
-                    EffectItem.Create(this.Location, this.Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 2023);
+                    EffectItem.Create(Location, Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 2023);
 
-                this.PlaySound(0x22F);
-                this.Hidden = true;
+                PlaySound(0x22F);
+                Hidden = true;
 
-                this.UseSkill(SkillName.Stealth);
+                UseSkill(SkillName.Stealth);
             }
         }
 
@@ -203,7 +191,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            var version = reader.ReadInt();
+            int version = reader.ReadInt();
 
             if (version == 1)
                 reader.ReadDeltaTime();

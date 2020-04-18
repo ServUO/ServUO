@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class PetBondingPotion : Item
     {
-        public override int LabelNumber { get { return 1152921; } } // Pet Bonding Potion
+        public override int LabelNumber => 1152921;  // Pet Bonding Potion
 
         [Constructable]
         public PetBondingPotion() : base(0x0F04)
@@ -35,7 +35,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version 
+            writer.Write(0); // version 
         }
 
         public override void Deserialize(GenericReader reader)

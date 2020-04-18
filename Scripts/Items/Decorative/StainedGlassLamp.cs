@@ -4,8 +4,8 @@ namespace Server.Items
 {
     public class StainedGlassLamp : BaseLight
     {
-        public override int LitItemID { get { return 0x4C51; } }
-        public override int UnlitItemID { get { return 0x4C50; } }
+        public override int LitItemID => 0x4C51;
+        public override int UnlitItemID => 0x4C50;
 
         [Constructable]
         public StainedGlassLamp()
@@ -25,7 +25,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

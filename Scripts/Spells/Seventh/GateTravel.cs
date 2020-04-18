@@ -31,13 +31,7 @@ namespace Server.Spells.Seventh
             m_Entry = entry;
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Seventh;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Seventh;
         public override void OnCast()
         {
             if (m_Entry == null)
@@ -258,13 +252,7 @@ namespace Server.Spells.Seventh
             {
             }
 
-            public override bool ShowFeluccaWarning
-            {
-                get
-                {
-                    return true;
-                }
-            }
+            public override bool ShowFeluccaWarning => true;
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);

@@ -5,15 +5,15 @@ namespace Server.Items
         [Constructable]
         public PentagramAddon()
         {
-            this.AddComponent(new AddonComponent(0xFE7), -1, -1, 0);
-            this.AddComponent(new AddonComponent(0xFE8), 0, -1, 0);
-            this.AddComponent(new AddonComponent(0xFEB), 1, -1, 0);
-            this.AddComponent(new AddonComponent(0xFE6), -1, 0, 0);
-            this.AddComponent(new AddonComponent(0xFEA), 0, 0, 0);
-            this.AddComponent(new AddonComponent(0xFEE), 1, 0, 0);
-            this.AddComponent(new AddonComponent(0xFE9), -1, 1, 0);
-            this.AddComponent(new AddonComponent(0xFEC), 0, 1, 0);
-            this.AddComponent(new AddonComponent(0xFED), 1, 1, 0);
+            AddComponent(new AddonComponent(0xFE7), -1, -1, 0);
+            AddComponent(new AddonComponent(0xFE8), 0, -1, 0);
+            AddComponent(new AddonComponent(0xFEB), 1, -1, 0);
+            AddComponent(new AddonComponent(0xFE6), -1, 0, 0);
+            AddComponent(new AddonComponent(0xFEA), 0, 0, 0);
+            AddComponent(new AddonComponent(0xFEE), 1, 0, 0);
+            AddComponent(new AddonComponent(0xFE9), -1, 1, 0);
+            AddComponent(new AddonComponent(0xFEC), 0, 1, 0);
+            AddComponent(new AddonComponent(0xFED), 1, 1, 0);
         }
 
         public PentagramAddon(Serial serial)
@@ -21,18 +21,12 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new PentagramDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new PentagramDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -55,25 +49,13 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new PentagramAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1044328;
-            }
-        }// pentagram
+        public override BaseAddon Addon => new PentagramAddon();
+        public override int LabelNumber => 1044328;// pentagram
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

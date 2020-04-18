@@ -99,7 +99,7 @@ namespace Ultima
 
         public static int Read(ProcessStream pc, int bytes)
         {
-            var buffer = new byte[bytes];
+            byte[] buffer = new byte[bytes];
 
             pc.Read(buffer, 0, bytes);
 
@@ -137,7 +137,7 @@ namespace Ultima
 
             pc.BeginAccess();
 
-            var read = new byte[readSize];
+            byte[] read = new byte[readSize];
 
             for (int i = 0; ; ++i)
             {
@@ -177,7 +177,7 @@ namespace Ultima
 
             pc.BeginAccess();
 
-            var read = new byte[readSize];
+            byte[] read = new byte[readSize];
 
             for (int i = 0; ; ++i)
             {
@@ -230,7 +230,7 @@ namespace Ultima
                 return;
             }
 
-            var buffer = new byte[12];
+            byte[] buffer = new byte[12];
 
             buffer[0] = (byte)z;
             buffer[1] = (byte)(z >> 8);
@@ -395,7 +395,7 @@ namespace Ultima
         ///     Whether or not the Client is currently running.
         ///     <seealso cref="ClientHandle" />
         /// </summary>
-        public static bool Running { get { return (!Handle.IsInvalid); } }
+        public static bool Running => (!Handle.IsInvalid);
 
         /// <summary>
         ///     Is Client Iris2

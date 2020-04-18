@@ -22,12 +22,12 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed { get { return new ShelfSpongeDeed(); } }
+        public override BaseAddonDeed Deed => new ShelfSpongeDeed();
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -39,7 +39,7 @@ namespace Server.Items
 
     public class ShelfSpongeDeed : BaseAddonDeed
     {
-        public override int LabelNumber { get { return 1098375; } } // Shelf Sponge
+        public override int LabelNumber => 1098375;  // Shelf Sponge
 
         [Constructable]
         public ShelfSpongeDeed()
@@ -52,12 +52,12 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon { get { return new ShelfSpongeAddon(); } }
+        public override BaseAddon Addon => new ShelfSpongeAddon();
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

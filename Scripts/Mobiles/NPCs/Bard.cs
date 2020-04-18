@@ -9,12 +9,12 @@ namespace Server.Mobiles
         public Bard()
             : base("the bard")
         {
-            this.SetSkill(SkillName.Discordance, 64.0, 100.0);
-            this.SetSkill(SkillName.Musicianship, 64.0, 100.0);
-            this.SetSkill(SkillName.Peacemaking, 65.0, 88.0);
-            this.SetSkill(SkillName.Provocation, 60.0, 83.0);
-            this.SetSkill(SkillName.Archery, 36.0, 68.0);
-            this.SetSkill(SkillName.Swords, 36.0, 68.0);
+            SetSkill(SkillName.Discordance, 64.0, 100.0);
+            SetSkill(SkillName.Musicianship, 64.0, 100.0);
+            SetSkill(SkillName.Peacemaking, 65.0, 88.0);
+            SetSkill(SkillName.Provocation, 60.0, 83.0);
+            SetSkill(SkillName.Archery, 36.0, 68.0);
+            SetSkill(SkillName.Swords, 36.0, 68.0);
         }
 
         public Bard(Serial serial)
@@ -22,30 +22,18 @@ namespace Server.Mobiles
         {
         }
 
-        public override NpcGuild NpcGuild
-        {
-            get
-            {
-                return NpcGuild.BardsGuild;
-            }
-        }
-        protected override List<SBInfo> SBInfos
-        {
-            get
-            {
-                return this.m_SBInfos;
-            }
-        }
+        public override NpcGuild NpcGuild => NpcGuild.BardsGuild;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBBard());
+            m_SBInfos.Add(new SBBard());
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

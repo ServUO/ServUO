@@ -6,8 +6,8 @@
         public DecoFullJar()
             : base(0x1006)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public DecoFullJar(Serial serial)
@@ -19,7 +19,7 @@
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -36,8 +36,8 @@
         public DecoFullJars3()
             : base(0xE4a)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public DecoFullJars3(Serial serial)
@@ -49,7 +49,7 @@
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -66,8 +66,8 @@
         public DecoFullJars4()
             : base(0xE4b)
         {
-            this.Movable = true;
-            this.Stackable = false;
+            Movable = true;
+            Stackable = false;
         }
 
         public DecoFullJars4(Serial serial)
@@ -79,7 +79,7 @@
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

@@ -9,7 +9,7 @@ namespace Server.Mobiles
     [CorpseName("an orcish corpse")]
     public class OrcScout : BaseCreature
     {
-        public override double HealChance { get { return 1.0; } }
+        public override double HealChance => 1.0;
 
         [Constructable]
         public OrcScout()
@@ -72,12 +72,12 @@ namespace Server.Mobiles
             : base(serial)
         { }
 
-        public override bool CanRummageCorpses { get { return true; } }
-        public override bool CanStealth { get { return true; } }
-        public override int Meat { get { return 1; } }
+        public override bool CanRummageCorpses => true;
+        public override bool CanStealth => true;
+        public override int Meat => 1;
 
-        public override InhumanSpeech SpeechType { get { return InhumanSpeech.Orc; } }
-        public override TribeType Tribe { get { return TribeType.Orc; } }
+        public override InhumanSpeech SpeechType => InhumanSpeech.Orc;
+        public override TribeType Tribe => TribeType.Orc;
         public override void GenerateLoot()
 
         {

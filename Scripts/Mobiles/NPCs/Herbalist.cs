@@ -9,9 +9,9 @@ namespace Server.Mobiles
         public Herbalist()
             : base("the herbalist")
         {
-            this.SetSkill(SkillName.Alchemy, 80.0, 100.0);
-            this.SetSkill(SkillName.Cooking, 80.0, 100.0);
-            this.SetSkill(SkillName.TasteID, 80.0, 100.0);
+            SetSkill(SkillName.Alchemy, 80.0, 100.0);
+            SetSkill(SkillName.Cooking, 80.0, 100.0);
+            SetSkill(SkillName.TasteID, 80.0, 100.0);
         }
 
         public Herbalist(Serial serial)
@@ -19,37 +19,19 @@ namespace Server.Mobiles
         {
         }
 
-        public override NpcGuild NpcGuild
-        {
-            get
-            {
-                return NpcGuild.MagesGuild;
-            }
-        }
-        public override VendorShoeType ShoeType
-        {
-            get
-            {
-                return Utility.RandomBool() ? VendorShoeType.Shoes : VendorShoeType.Sandals;
-            }
-        }
-        protected override List<SBInfo> SBInfos
-        {
-            get
-            {
-                return this.m_SBInfos;
-            }
-        }
+        public override NpcGuild NpcGuild => NpcGuild.MagesGuild;
+        public override VendorShoeType ShoeType => Utility.RandomBool() ? VendorShoeType.Shoes : VendorShoeType.Sandals;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBHerbalist());
+            m_SBInfos.Add(new SBHerbalist());
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version 
+            writer.Write(0); // version 
         }
 
         public override void Deserialize(GenericReader reader)

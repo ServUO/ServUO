@@ -29,8 +29,8 @@ namespace Server.Mobiles
             : base(serial)
         { }
 
-        protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }
-        public override VendorShoeType ShoeType { get { return Female ? VendorShoeType.ThighBoots : VendorShoeType.Boots; } }
+        protected override List<SBInfo> SBInfos => m_SBInfos;
+        public override VendorShoeType ShoeType => Female ? VendorShoeType.ThighBoots : VendorShoeType.Boots;
 
         public override void InitSBInfo()
         {
@@ -103,7 +103,7 @@ namespace Server.Mobiles
         {
             for (int i = 0; i < _Quests.Length; i++)
             {
-                var quest = player.Quests.FirstOrDefault(q => q.GetType() == _Quests[i]);
+                BaseQuest quest = player.Quests.FirstOrDefault(q => q.GetType() == _Quests[i]);
 
                 if (quest != null)
                 {
@@ -141,10 +141,10 @@ namespace Server.Mobiles
 
         public static int GetMaxStabled(Mobile from)
         {
-            var taming = from.Skills[SkillName.AnimalTaming].Value;
-            var anlore = from.Skills[SkillName.AnimalLore].Value;
-            var vetern = from.Skills[SkillName.Veterinary].Value;
-            var sklsum = taming + anlore + vetern;
+            double taming = from.Skills[SkillName.AnimalTaming].Value;
+            double anlore = from.Skills[SkillName.AnimalLore].Value;
+            double vetern = from.Skills[SkillName.Veterinary].Value;
+            double sklsum = taming + anlore + vetern;
 
             int max = from is PlayerMobile ? ((PlayerMobile)from).RewardStableSlots : 0;
 
@@ -197,11 +197,11 @@ namespace Server.Mobiles
                 return;
             }
 
-            var list = new List<BaseCreature>();
+            List<BaseCreature> list = new List<BaseCreature>();
 
-            for (var i = 0; i < from.Stabled.Count; ++i)
+            for (int i = 0; i < from.Stabled.Count; ++i)
             {
-                var pet = from.Stabled[i] as BaseCreature;
+                BaseCreature pet = from.Stabled[i] as BaseCreature;
 
                 if (pet == null || pet.Deleted)
                 {
@@ -361,14 +361,14 @@ namespace Server.Mobiles
                 return;
             }
 
-            var claimed = false;
-            var stabled = 0;
+            bool claimed = false;
+            int stabled = 0;
 
-            var claimByName = (petName != null);
+            bool claimByName = (petName != null);
 
-            for (var i = 0; i < from.Stabled.Count; ++i)
+            for (int i = 0; i < from.Stabled.Count; ++i)
             {
-                var pet = from.Stabled[i] as BaseCreature;
+                BaseCreature pet = from.Stabled[i] as BaseCreature;
 
                 if (pet == null || pet.Deleted)
                 {
@@ -474,7 +474,7 @@ namespace Server.Mobiles
 
                 CloseClaimList(e.Mobile);
 
-                var index = e.Speech.IndexOf(' ');
+                int index = e.Speech.IndexOf(' ');
 
                 if (index != -1)
                 {
@@ -570,9 +570,9 @@ namespace Server.Mobiles
                     false,
                     false);
 
-                for (var i = 0; i < list.Count; ++i)
+                for (int i = 0; i < list.Count; ++i)
                 {
-                    var pet = list[i];
+                    BaseCreature pet = list[i];
 
                     if (pet == null || pet.Deleted)
                     {
@@ -593,7 +593,7 @@ namespace Server.Mobiles
 
             public override void OnResponse(NetState sender, RelayInfo info)
             {
-                var index = info.ButtonID - 1;
+                int index = info.ButtonID - 1;
 
                 if (index >= 0 && index < m_List.Count)
                 {

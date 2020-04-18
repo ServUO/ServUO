@@ -12,12 +12,12 @@ namespace Server.Items
         public CharacterStatueMaker(StatueType type)
             : base(0x32F0)
         {
-            this.m_Type = type;
+            m_Type = type;
 
-            this.InvalidateHue();
+            InvalidateHue();
 
-            this.LootType = LootType.Blessed;
-            this.Weight = 5.0;
+            LootType = LootType.Blessed;
+            Weight = 5.0;
         }
 
         public CharacterStatueMaker(Serial serial)
@@ -25,24 +25,18 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1076173;
-            }
-        }// Character Statue Maker
+        public override int LabelNumber => 1076173;// Character Statue Maker
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsRewardItem
         {
             get
             {
-                return this.m_IsRewardItem;
+                return m_IsRewardItem;
             }
             set
             {
-                this.m_IsRewardItem = value;
-                this.InvalidateProperties();
+                m_IsRewardItem = value;
+                InvalidateProperties();
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
@@ -50,25 +44,25 @@ namespace Server.Items
         {
             get
             {
-                return this.m_Type;
+                return m_Type;
             }
             set
             {
-                this.m_Type = value;
-                this.InvalidateHue();
+                m_Type = value;
+                InvalidateHue();
             }
         }
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.m_IsRewardItem && !RewardSystem.CheckIsUsableBy(from, this, new object[] { this.m_Type }))
+            if (m_IsRewardItem && !RewardSystem.CheckIsUsableBy(from, this, new object[] { m_Type }))
                 return;
 
-            if (this.IsChildOf(from.Backpack))
+            if (IsChildOf(from.Backpack))
             {
                 if (!from.IsBodyMod)
                 {
                     from.SendLocalizedMessage(1076194); // Select a place where you would like to put your statue.
-                    from.Target = new CharacterStatueTarget(this, this.m_Type);
+                    from.Target = new CharacterStatueTarget(this, m_Type);
                 }
                 else
                     from.SendLocalizedMessage(1073648); // You may only proceed while in your original state...
@@ -81,7 +75,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if (this.m_IsRewardItem)
+            if (m_IsRewardItem)
                 list.Add(1076222); // 6th Year Veteran Reward
         }
 
@@ -89,10 +83,10 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
 
-            writer.Write((bool)this.m_IsRewardItem);
-            writer.Write((int)this.m_Type);
+            writer.Write(m_IsRewardItem);
+            writer.Write((int)m_Type);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -101,13 +95,13 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            this.m_IsRewardItem = reader.ReadBool();
-            this.m_Type = (StatueType)reader.ReadInt();
+            m_IsRewardItem = reader.ReadBool();
+            m_Type = (StatueType)reader.ReadInt();
         }
 
         public void InvalidateHue()
         {
-            this.Hue = 0xB8F + (int)this.m_Type * 4;
+            Hue = 0xB8F + (int)m_Type * 4;
         }
     }
 
@@ -128,7 +122,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -156,7 +150,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -184,7 +178,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

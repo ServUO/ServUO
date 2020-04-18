@@ -302,13 +302,7 @@ namespace Server.Items
             }
         }
 
-        public double ArmorRatingScaled
-        {
-            get
-            {
-                return (ArmorRating * ArmorScalar);
-            }
-        }
+        public double ArmorRatingScaled => (ArmorRating * ArmorScalar);
 
         #region Publish 81 Armor Refinement
         private int m_RefinedPhysical;
@@ -333,13 +327,13 @@ namespace Server.Items
         public int RefinedEnergy { get { return m_RefinedEnergy; } set { m_RefinedEnergy = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int RefinedDefenseChance { get { return -(m_RefinedPhysical + m_RefinedFire + m_RefinedCold + m_RefinedPoison + m_RefinedEnergy); } }
+        public int RefinedDefenseChance => -(m_RefinedPhysical + m_RefinedFire + m_RefinedCold + m_RefinedPoison + m_RefinedEnergy);
 
         public static int GetRefinedResist(Mobile from, ResistanceType attr)
         {
             int value = 0;
 
-            foreach (var armor in from.Items.OfType<BaseArmor>())
+            foreach (BaseArmor armor in from.Items.OfType<BaseArmor>())
             {
                 switch (attr)
                 {
@@ -358,7 +352,7 @@ namespace Server.Items
         {
             int value = 0;
 
-            foreach (var armor in from.Items.OfType<BaseArmor>())
+            foreach (BaseArmor armor in from.Items.OfType<BaseArmor>())
             {
                 value += armor.RefinedDefenseChance;
             }
@@ -454,7 +448,7 @@ namespace Server.Items
             double toReduce = 0.0;
             int count = 0;
 
-            foreach (var armor in from.Items.OfType<BaseArmor>().OrderBy(arm => -GetArmorRatingReduction(arm)))
+            foreach (BaseArmor armor in from.Items.OfType<BaseArmor>().OrderBy(arm => -GetArmorRatingReduction(arm)))
             {
                 if (count == 5)
                     break;
@@ -567,7 +561,7 @@ namespace Server.Items
         {
             get
             {
-                var list = new int[5];
+                int[] list = new int[5];
 
                 list[0] = BasePhysicalResistance;
                 list[1] = BaseFireResistance;
@@ -1332,7 +1326,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)16); // version
+            writer.Write(16); // version
 
             // Version 16 - Removed Pre-AOS Armor Properties
             // Version 14 - removed VvV Item (handled in VvV System) and BlockRepair (Handled as negative attribute)
@@ -1348,7 +1342,7 @@ namespace Server.Items
             writer.Write(m_RefinedEnergy);
 
             //Version 10
-            writer.Write((bool)m_IsImbued);
+            writer.Write(m_IsImbued);
 
             // Version 9
             #region Runic Reforging
@@ -1368,11 +1362,11 @@ namespace Server.Items
             writer.Write(m_EnergyNonImbuing);
 
             // Version 8
-            writer.Write((int)m_TimesImbued);
+            writer.Write(m_TimesImbued);
 
             #endregion
 
-            writer.Write((Mobile)m_BlessedBy);
+            writer.Write(m_BlessedBy);
 
             SetFlag sflags = SetFlag.None;
 
@@ -1397,31 +1391,31 @@ namespace Server.Items
                 m_SetSkillBonuses.Serialize(writer);
 
             if (GetSaveFlag(sflags, SetFlag.PhysicalBonus))
-                writer.WriteEncodedInt((int)m_SetPhysicalBonus);
+                writer.WriteEncodedInt(m_SetPhysicalBonus);
 
             if (GetSaveFlag(sflags, SetFlag.FireBonus))
-                writer.WriteEncodedInt((int)m_SetFireBonus);
+                writer.WriteEncodedInt(m_SetFireBonus);
 
             if (GetSaveFlag(sflags, SetFlag.ColdBonus))
-                writer.WriteEncodedInt((int)m_SetColdBonus);
+                writer.WriteEncodedInt(m_SetColdBonus);
 
             if (GetSaveFlag(sflags, SetFlag.PoisonBonus))
-                writer.WriteEncodedInt((int)m_SetPoisonBonus);
+                writer.WriteEncodedInt(m_SetPoisonBonus);
 
             if (GetSaveFlag(sflags, SetFlag.EnergyBonus))
-                writer.WriteEncodedInt((int)m_SetEnergyBonus);
+                writer.WriteEncodedInt(m_SetEnergyBonus);
 
             if (GetSaveFlag(sflags, SetFlag.Hue))
-                writer.WriteEncodedInt((int)m_SetHue);
+                writer.WriteEncodedInt(m_SetHue);
 
             if (GetSaveFlag(sflags, SetFlag.LastEquipped))
-                writer.Write((bool)m_LastEquipped);
+                writer.Write(m_LastEquipped);
 
             if (GetSaveFlag(sflags, SetFlag.SetEquipped))
-                writer.Write((bool)m_SetEquipped);
+                writer.Write(m_SetEquipped);
 
             if (GetSaveFlag(sflags, SetFlag.SetSelfRepair))
-                writer.WriteEncodedInt((int)m_SetSelfRepair);
+                writer.WriteEncodedInt(m_SetSelfRepair);
 
             // Version 7
             SaveFlag flags = SaveFlag.None;
@@ -1477,28 +1471,28 @@ namespace Server.Items
                 m_AosArmorAttributes.Serialize(writer);
 
             if (GetSaveFlag(flags, SaveFlag.PhysicalBonus))
-                writer.WriteEncodedInt((int)m_PhysicalBonus);
+                writer.WriteEncodedInt(m_PhysicalBonus);
 
             if (GetSaveFlag(flags, SaveFlag.FireBonus))
-                writer.WriteEncodedInt((int)m_FireBonus);
+                writer.WriteEncodedInt(m_FireBonus);
 
             if (GetSaveFlag(flags, SaveFlag.ColdBonus))
-                writer.WriteEncodedInt((int)m_ColdBonus);
+                writer.WriteEncodedInt(m_ColdBonus);
 
             if (GetSaveFlag(flags, SaveFlag.PoisonBonus))
-                writer.WriteEncodedInt((int)m_PoisonBonus);
+                writer.WriteEncodedInt(m_PoisonBonus);
 
             if (GetSaveFlag(flags, SaveFlag.EnergyBonus))
-                writer.WriteEncodedInt((int)m_EnergyBonus);
+                writer.WriteEncodedInt(m_EnergyBonus);
 
             if (GetSaveFlag(flags, SaveFlag.MaxHitPoints))
-                writer.WriteEncodedInt((int)m_MaxHitPoints);
+                writer.WriteEncodedInt(m_MaxHitPoints);
 
             if (GetSaveFlag(flags, SaveFlag.HitPoints))
-                writer.WriteEncodedInt((int)m_HitPoints);
+                writer.WriteEncodedInt(m_HitPoints);
 
             if (GetSaveFlag(flags, SaveFlag.Crafter))
-                writer.Write((Mobile)m_Crafter);
+                writer.Write(m_Crafter);
 
             if (GetSaveFlag(flags, SaveFlag.Quality))
                 writer.WriteEncodedInt((int)m_Quality);
@@ -1507,25 +1501,25 @@ namespace Server.Items
                 writer.WriteEncodedInt((int)m_Resource);
 
             if (GetSaveFlag(flags, SaveFlag.BaseArmor))
-                writer.WriteEncodedInt((int)m_ArmorBase);
+                writer.WriteEncodedInt(m_ArmorBase);
 
             if (GetSaveFlag(flags, SaveFlag.StrBonus))
-                writer.WriteEncodedInt((int)m_StrBonus);
+                writer.WriteEncodedInt(m_StrBonus);
 
             if (GetSaveFlag(flags, SaveFlag.DexBonus))
-                writer.WriteEncodedInt((int)m_DexBonus);
+                writer.WriteEncodedInt(m_DexBonus);
 
             if (GetSaveFlag(flags, SaveFlag.IntBonus))
-                writer.WriteEncodedInt((int)m_IntBonus);
+                writer.WriteEncodedInt(m_IntBonus);
 
             if (GetSaveFlag(flags, SaveFlag.StrReq))
-                writer.WriteEncodedInt((int)m_StrReq);
+                writer.WriteEncodedInt(m_StrReq);
 
             if (GetSaveFlag(flags, SaveFlag.DexReq))
-                writer.WriteEncodedInt((int)m_DexReq);
+                writer.WriteEncodedInt(m_DexReq);
 
             if (GetSaveFlag(flags, SaveFlag.IntReq))
-                writer.WriteEncodedInt((int)m_IntReq);
+                writer.WriteEncodedInt(m_IntReq);
 
             if (GetSaveFlag(flags, SaveFlag.MedAllowance))
                 writer.WriteEncodedInt((int)m_Meditate);
@@ -2907,19 +2901,19 @@ namespace Server.Items
             }
             else
             {
-                if (this.m_SetPhysicalBonus != 0)
+                if (m_SetPhysicalBonus != 0)
                     list.Add(1080361, ((BasePhysicalResistance * Pieces) + m_SetPhysicalBonus).ToString()); // physical resist ~1_val~% (total)
 
-                if (this.m_SetFireBonus != 0)
+                if (m_SetFireBonus != 0)
                     list.Add(1080362, ((BaseFireResistance * Pieces) + m_SetFireBonus).ToString()); // fire resist ~1_val~% (total)
 
-                if (this.m_SetColdBonus != 0)
+                if (m_SetColdBonus != 0)
                     list.Add(1080363, ((BaseColdResistance * Pieces) + m_SetColdBonus).ToString()); // cold resist ~1_val~% (total)
 
-                if (this.m_SetPoisonBonus != 0)
+                if (m_SetPoisonBonus != 0)
                     list.Add(1080364, ((BasePoisonResistance * Pieces) + m_SetPoisonBonus).ToString()); // poison resist ~1_val~% (total)
 
-                if (this.m_SetEnergyBonus != 0)
+                if (m_SetEnergyBonus != 0)
                     list.Add(1080365, ((BaseEnergyResistance * Pieces) + m_SetEnergyBonus).ToString()); // energy resist ~1_val~% (total)
             }
 

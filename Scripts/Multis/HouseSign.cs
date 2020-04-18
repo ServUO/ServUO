@@ -31,13 +31,7 @@ namespace Server.Multis
             return Name;
         }
 
-        public BaseHouse Owner
-        {
-            get
-            {
-                return m_Owner;
-            }
-        }
+        public BaseHouse Owner => m_Owner;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool RestrictDecay
@@ -54,13 +48,7 @@ namespace Server.Multis
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile OriginalOwner
-        {
-            get
-            {
-                return m_OrgOwner;
-            }
-        }
+        public Mobile OriginalOwner => m_OrgOwner;
 
         public override void OnAfterDelete()
         {
@@ -79,13 +67,7 @@ namespace Server.Multis
 
         private bool m_GettingProperties;
 
-        public bool GettingProperties
-        {
-            get
-            {
-                return m_GettingProperties;
-            }
-        }
+        public bool GettingProperties => m_GettingProperties;
 
         public override void GetProperties(ObjectPropertyList list)
         {
@@ -256,7 +238,7 @@ namespace Server.Multis
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             writer.Write(m_Owner);
             writer.Write(m_OrgOwner);

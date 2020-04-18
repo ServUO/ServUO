@@ -322,17 +322,17 @@ namespace Server.Engines.Plants
         private readonly int m_SeedLabel;
         private readonly int m_SeedLabelPlural;
 
-        public int ItemID { get { return m_ItemID; } }
-        public int OffsetX { get { return m_OffsetX; } }
-        public int OffsetY { get { return m_OffsetY; } }
-        public PlantType PlantType { get { return m_PlantType; } }
-        public PlantCategory PlantCategory { get { return m_PlantCategory; } }
-        public int Name { get { return (m_ItemID < 0x4000) ? 1020000 + m_ItemID : 1078872 + m_ItemID; } }
+        public int ItemID => m_ItemID;
+        public int OffsetX => m_OffsetX;
+        public int OffsetY => m_OffsetY;
+        public PlantType PlantType => m_PlantType;
+        public PlantCategory PlantCategory => m_PlantCategory;
+        public int Name => (m_ItemID < 0x4000) ? 1020000 + m_ItemID : 1078872 + m_ItemID;
 
-        public bool ContainsPlant { get { return m_ContainsPlant; } }
-        public bool Flowery { get { return m_Flowery; } }
-        public bool Crossable { get { return m_Crossable; } }
-        public bool Reproduces { get { return m_Reproduces; } }
+        public bool ContainsPlant => m_ContainsPlant;
+        public bool Flowery => m_Flowery;
+        public bool Crossable => m_Crossable;
+        public bool Reproduces => m_Reproduces;
 
         private PlantTypeInfo(int itemID, int offsetX, int offsetY, PlantType plantType, bool containsPlant, bool flowery, bool crossable, bool reproduces, PlantCategory plantCategory)
             : this(itemID, offsetX, offsetY, plantType, containsPlant, flowery, crossable, reproduces, plantCategory, -1, -1, -1, -1, -1, -1)

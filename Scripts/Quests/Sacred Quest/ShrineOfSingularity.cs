@@ -23,13 +23,7 @@ namespace Server.Items
         {
         }
 
-        public override bool HandlesOnSpeech
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool HandlesOnSpeech => true;
         public override void OnSpeech(SpeechEventArgs e)
         {
             PlayerMobile pm = e.Mobile as PlayerMobile;
@@ -99,7 +93,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)2); // version
+            writer.Write(2); // version
 
             Timer.DelayCall(TimeSpan.FromSeconds(10), new TimerCallback(DefragDelays_Callback));
         }

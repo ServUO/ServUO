@@ -24,9 +24,9 @@ namespace Server.Items
         public PowderOfTranslocation(int amount)
             : base(0x26B8)
         {
-            this.Stackable = true;
-            this.Weight = 0.1;
-            this.Amount = amount;
+            Stackable = true;
+            Weight = 0.1;
+            Amount = amount;
         }
 
         public PowderOfTranslocation(Serial serial)
@@ -34,12 +34,12 @@ namespace Server.Items
         {
         }
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(this.GetWorldLocation(), 2))
+            if (from.InRange(GetWorldLocation(), 2))
             {
                 from.Target = new InternalTarget(this);
             }
@@ -53,7 +53,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -69,15 +69,15 @@ namespace Server.Items
             public InternalTarget(PowderOfTranslocation powder)
                 : base(-1, false, TargetFlags.None)
             {
-                this.m_Powder = powder;
+                m_Powder = powder;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (this.m_Powder.Deleted)
+                if (m_Powder.Deleted)
                     return;
 
-                if (!from.InRange(this.m_Powder.GetWorldLocation(), 2))
+                if (!from.InRange(m_Powder.GetWorldLocation(), 2))
                 {
                     from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
                 }
@@ -87,27 +87,27 @@ namespace Server.Items
 
                     if (transItem.Charges >= transItem.MaxCharges)
                     {
-                        MessageHelper.SendLocalizedMessageTo(this.m_Powder, from, 1054137, 0x59); // This item cannot absorb any more powder of translocation.
+                        MessageHelper.SendLocalizedMessageTo(m_Powder, from, 1054137, 0x59); // This item cannot absorb any more powder of translocation.
                     }
                     else if (transItem.MaxRecharges != -1 && transItem.Recharges >= transItem.MaxRecharges)
                     {
-                        MessageHelper.SendLocalizedMessageTo(this.m_Powder, from, 1054138, 0x59); // This item has been oversaturated with powder of translocation and can no longer be recharged.
+                        MessageHelper.SendLocalizedMessageTo(m_Powder, from, 1054138, 0x59); // This item has been oversaturated with powder of translocation and can no longer be recharged.
                     }
                     else
                     {
-                        if (transItem.Charges + this.m_Powder.Amount > transItem.MaxCharges)
+                        if (transItem.Charges + m_Powder.Amount > transItem.MaxCharges)
                         {
                             int delta = transItem.MaxCharges - transItem.Charges;
 
-                            this.m_Powder.Amount -= delta;
+                            m_Powder.Amount -= delta;
                             transItem.Charges = transItem.MaxCharges;
                             transItem.Recharges += delta;
                         }
                         else
                         {
-                            transItem.Charges += this.m_Powder.Amount;
-                            transItem.Recharges += this.m_Powder.Amount;
-                            this.m_Powder.Delete();
+                            transItem.Charges += m_Powder.Amount;
+                            transItem.Recharges += m_Powder.Amount;
+                            m_Powder.Delete();
                         }
 
                         if (transItem is Item)
@@ -119,7 +119,7 @@ namespace Server.Items
                 }
                 else
                 {
-                    MessageHelper.SendLocalizedMessageTo(this.m_Powder, from, 1054140, 0x59); // Powder of translocation has no effect on this item.
+                    MessageHelper.SendLocalizedMessageTo(m_Powder, from, 1054140, 0x59); // Powder of translocation has no effect on this item.
                 }
             }
         }

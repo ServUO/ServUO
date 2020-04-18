@@ -19,7 +19,7 @@ namespace Server.Engines.MiniChamps
         [Description("MiniChampion Generator")]
         public static void GenStoneRuins_OnCommand(CommandEventArgs e)
         {
-            foreach (var controller in Controllers)
+            foreach (MiniChamp controller in Controllers)
             {
                 controller.Delete();
             }
@@ -218,7 +218,7 @@ namespace Server.Engines.MiniChamps
 
         public void Despawn()
         {
-            foreach (var toDespawn in Despawns)
+            foreach (Mobile toDespawn in Despawns)
             {
                 toDespawn.Delete();
             }
@@ -234,7 +234,7 @@ namespace Server.Engines.MiniChamps
             bool changed = false;
             bool done = true;
 
-            foreach (var spawn in Spawn)
+            foreach (MiniChampSpawnInfo spawn in Spawn)
             {
                 if (spawn.Slice() && !changed)
                 {
@@ -254,7 +254,7 @@ namespace Server.Engines.MiniChamps
 
             if (m_Active)
             {
-                foreach (var spawn in Spawn)
+                foreach (MiniChampSpawnInfo spawn in Spawn)
                 {
                     if (spawn.Respawn() && !changed)
                     {
@@ -271,9 +271,9 @@ namespace Server.Engines.MiniChamps
 
         public void ClearSpawn()
         {
-            foreach (var spawn in Spawn)
+            foreach (MiniChampSpawnInfo spawn in Spawn)
             {
-                foreach (var creature in spawn.Creatures)
+                foreach (Mobile creature in spawn.Creatures)
                 {
                     Despawns.Add(creature);
                 }
@@ -298,7 +298,7 @@ namespace Server.Engines.MiniChamps
                     MinotaurShouts();
                 }
 
-                foreach (var type in levelInfo.Types)
+                foreach (MiniChampTypeInfo type in levelInfo.Types)
                 {
                     Spawn.Add(new MiniChampSpawnInfo(this, type));
                 }
@@ -391,16 +391,16 @@ namespace Server.Engines.MiniChamps
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             writer.Write(BossSpawnPoint);
-            writer.Write((bool)m_Active);
+            writer.Write(m_Active);
             writer.Write((int)m_Type);
-            writer.Write((int)m_Level);
-            writer.Write((int)m_SpawnRange);
-            writer.Write((TimeSpan)m_RestartDelay);
+            writer.Write(m_Level);
+            writer.Write(m_SpawnRange);
+            writer.Write(m_RestartDelay);
 
-            writer.Write((int)Spawn.Count);
+            writer.Write(Spawn.Count);
 
             for (int i = 0; i < Spawn.Count; i++)
             {

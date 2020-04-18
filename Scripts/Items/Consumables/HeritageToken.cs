@@ -18,16 +18,10 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1076596;
-            }
-        }// A Heritage Token
+        public override int LabelNumber => 1076596;// A Heritage Token
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.IsChildOf(from.Backpack))
+            if (IsChildOf(from.Backpack))
             {
                 from.CloseGump(typeof(HeritageTokenGump));
                 from.SendGump(new HeritageTokenGump(this, from));
@@ -47,7 +41,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

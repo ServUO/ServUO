@@ -12,19 +12,19 @@ namespace Server.Engines.HuntsmasterChallenge
         private readonly string m_Location;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile Owner { get { return m_Owner; } }
+        public Mobile Owner => m_Owner;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Measurement { get { return m_Measurement; } }
+        public int Measurement => m_Measurement;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int KillIndex { get { return m_KillIndex; } }
+        public int KillIndex => m_KillIndex;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime DateKilled { get { return m_DateKilled; } }
+        public DateTime DateKilled => m_DateKilled;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public string Location { get { return m_Location; } }
+        public string Location => m_Location;
 
         public HuntingKillEntry(Mobile owner, int measurement, DateTime DateKilled, int killindex, string location)
         {
@@ -43,8 +43,8 @@ namespace Server.Engines.HuntsmasterChallenge
             HuntingTrophyInfo info1 = HuntingTrophyInfo.Infos[((HuntingKillEntry)o).KillIndex];
             HuntingTrophyInfo info2 = HuntingTrophyInfo.Infos[m_KillIndex];
 
-            double perc1 = (double)((double)((HuntingKillEntry)o).Measurement / info1.MaxMeasurement);
-            double perc2 = (double)((double)m_Measurement / info2.MaxMeasurement);
+            double perc1 = (double)((HuntingKillEntry)o).Measurement / info1.MaxMeasurement;
+            double perc2 = (double)m_Measurement / info2.MaxMeasurement;
 
             return (int)((perc1 * 100) - (perc2 * 100));
         }
@@ -62,7 +62,7 @@ namespace Server.Engines.HuntsmasterChallenge
 
         public void Serialize(GenericWriter writer)
         {
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write(m_Owner);
             writer.Write(m_Measurement);

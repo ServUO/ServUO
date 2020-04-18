@@ -12,23 +12,11 @@ namespace Server.Regions
         private SpawnPersistence()
             : base(1)
         {
-            this.Movable = false;
+            Movable = false;
         }
 
-        public SpawnPersistence Instance
-        {
-            get
-            {
-                return m_Instance;
-            }
-        }
-        public override string DefaultName
-        {
-            get
-            {
-                return "Region spawn persistence - Internal";
-            }
-        }
+        public SpawnPersistence Instance => m_Instance;
+        public override string DefaultName => "Region spawn persistence - Internal";
         public static void EnsureExistence()
         {
             if (m_Instance == null)
@@ -41,10 +29,10 @@ namespace Server.Regions
 
             writer.WriteEncodedInt(0); // version
 
-            writer.Write((int)SpawnEntry.Table.Values.Count);
+            writer.Write(SpawnEntry.Table.Values.Count);
             foreach (SpawnEntry entry in SpawnEntry.Table.Values)
             {
-                writer.Write((int)entry.ID);
+                writer.Write(entry.ID);
 
                 entry.Serialize(writer);
             }

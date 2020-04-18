@@ -40,40 +40,40 @@ namespace Server.Engines.Reports
         private readonly string m_Title;
         public XmlPersistenceWriter(string filePath, string title)
         {
-            this.m_RealFilePath = filePath;
-            this.m_TempFilePath = Path.ChangeExtension(filePath, ".tmp");
+            m_RealFilePath = filePath;
+            m_TempFilePath = Path.ChangeExtension(filePath, ".tmp");
 
-            this.m_Writer = new StreamWriter(this.m_TempFilePath);
-            this.m_Xml = new XmlTextWriter(this.m_Writer);
+            m_Writer = new StreamWriter(m_TempFilePath);
+            m_Xml = new XmlTextWriter(m_Writer);
 
-            this.m_Title = title;
+            m_Title = title;
         }
 
         public override void SetInt32(string key, int value)
         {
-            this.m_Xml.WriteAttributeString(key, XmlConvert.ToString(value));
+            m_Xml.WriteAttributeString(key, XmlConvert.ToString(value));
         }
 
         public override void SetBoolean(string key, bool value)
         {
-            this.m_Xml.WriteAttributeString(key, XmlConvert.ToString(value));
+            m_Xml.WriteAttributeString(key, XmlConvert.ToString(value));
         }
 
         public override void SetString(string key, string value)
         {
             if (value != null)
-                this.m_Xml.WriteAttributeString(key, value);
+                m_Xml.WriteAttributeString(key, value);
         }
 
         public override void SetDateTime(string key, DateTime value)
         {
             if (value != DateTime.MinValue)
-                this.m_Xml.WriteAttributeString(key, XmlConvert.ToString(value, XmlDateTimeSerializationMode.Utc));
+                m_Xml.WriteAttributeString(key, XmlConvert.ToString(value, XmlDateTimeSerializationMode.Utc));
         }
 
         public override void BeginObject(PersistableType typeID)
         {
-            this.m_Xml.WriteStartElement(typeID.Name);
+            m_Xml.WriteStartElement(typeID.Name);
         }
 
         public override void BeginChildren()
@@ -86,43 +86,43 @@ namespace Server.Engines.Reports
 
         public override void FinishObject()
         {
-            this.m_Xml.WriteEndElement();
+            m_Xml.WriteEndElement();
         }
 
         public override void WriteDocument(PersistableObject root)
         {
-            Console.WriteLine("Reports: {0}: Save started", this.m_Title);
+            Console.WriteLine("Reports: {0}: Save started", m_Title);
 
-            this.m_Xml.Formatting = Formatting.Indented;
-            this.m_Xml.IndentChar = '\t';
-            this.m_Xml.Indentation = 1;
+            m_Xml.Formatting = Formatting.Indented;
+            m_Xml.IndentChar = '\t';
+            m_Xml.Indentation = 1;
 
-            this.m_Xml.WriteStartDocument(true);
+            m_Xml.WriteStartDocument(true);
 
             root.Serialize(this);
 
-            Console.WriteLine("Reports: {0}: Save complete", this.m_Title);
+            Console.WriteLine("Reports: {0}: Save complete", m_Title);
         }
 
         public override void Close()
         {
-            this.m_Xml.Close();
-            this.m_Writer.Close();
+            m_Xml.Close();
+            m_Writer.Close();
 
             try
             {
                 string renamed = null;
 
-                if (File.Exists(this.m_RealFilePath))
+                if (File.Exists(m_RealFilePath))
                 {
-                    renamed = Path.ChangeExtension(this.m_RealFilePath, ".rem");
-                    File.Move(this.m_RealFilePath, renamed);
-                    File.Move(this.m_TempFilePath, this.m_RealFilePath);
+                    renamed = Path.ChangeExtension(m_RealFilePath, ".rem");
+                    File.Move(m_RealFilePath, renamed);
+                    File.Move(m_TempFilePath, m_RealFilePath);
                     File.Delete(renamed);
                 }
                 else
                 {
-                    File.Move(this.m_TempFilePath, this.m_RealFilePath);
+                    File.Move(m_TempFilePath, m_RealFilePath);
                 }
             }
             catch (Exception ex)

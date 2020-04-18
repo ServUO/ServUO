@@ -4,13 +4,7 @@ namespace Server.Items
 {
     public abstract class BasePigmentsOfTokuno : Item, IUsesRemaining
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1070933;
-            }
-        }// Pigments of Tokuno
+        public override int LabelNumber => 1070933;// Pigments of Tokuno
 
         private int m_UsesRemaining;
         private TextDefinition m_Label;
@@ -32,13 +26,7 @@ namespace Server.Items
         /* DO NOT USE! Only used in serialization of pigments that originally derived from Item */
         private bool m_InheritsItem;
 
-        protected bool InheritsItem
-        {
-            get
-            {
-                return m_InheritsItem;
-            }
-        }
+        protected bool InheritsItem => m_InheritsItem;
         #endregion
 
         public BasePigmentsOfTokuno()
@@ -149,7 +137,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1);
+            writer.Write(1);
 
             writer.WriteEncodedInt(m_UsesRemaining);
         }

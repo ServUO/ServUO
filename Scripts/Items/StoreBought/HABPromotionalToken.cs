@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class HABPromotionalToken : Item, IAccountRestricted
     {
-        public override int LabelNumber { get { return 1070997; } } // A promotional token
+        public override int LabelNumber => 1070997;  // A promotional token
 
         [CommandProperty(AccessLevel.GameMaster)]
         public string Account { get; set; }
@@ -317,7 +317,7 @@ namespace Server.Items
 
                 if (info.ButtonID == 1)
                 {
-                    var switches = info.Switches;
+                    int[] switches = info.Switches;
 
                     if (switches.Length > 0)
                     {

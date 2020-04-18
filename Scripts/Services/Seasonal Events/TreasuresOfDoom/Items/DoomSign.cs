@@ -11,8 +11,8 @@ namespace Server.Items
         public List<Mobile> Revealed { get; set; }
         public Dictionary<Mobile, DateTime> NextMessage { get; set; }
 
-        public override bool ForceShowProperties { get { return true; } }
-        public bool CheckWhenHidden { get { return false; } }
+        public override bool ForceShowProperties => true;
+        public bool CheckWhenHidden => false;
 
         [Constructable]
         public DoomSign()
@@ -25,7 +25,7 @@ namespace Server.Items
         {
             if (PointsSystem.TreasuresOfDoom.InSeason && m.InRange(GetWorldLocation(), 2))
             {
-                var gump = new Gump(150, 150);
+                Gump gump = new Gump(150, 150);
 
                 gump.AddImage(0, 0, HasRevealed(m) ? 0x7779 : 0x7724);
 
@@ -33,7 +33,7 @@ namespace Server.Items
             }
         }
 
-        public override bool HandlesOnMovement { get { return PointsSystem.TreasuresOfDoom.InSeason; } }
+        public override bool HandlesOnMovement => PointsSystem.TreasuresOfDoom.InSeason;
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
@@ -96,9 +96,9 @@ namespace Server.Items
                 return;
             }
 
-            var list = new List<Mobile>(NextMessage.Keys);
+            List<Mobile> list = new List<Mobile>(NextMessage.Keys);
 
-            foreach (var m in list)
+            foreach (Mobile m in list)
             {
                 if (NextMessage[m] < DateTime.UtcNow)
                 {

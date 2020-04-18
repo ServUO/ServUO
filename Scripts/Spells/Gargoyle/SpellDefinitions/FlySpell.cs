@@ -12,15 +12,15 @@ namespace Server.Spells
         {
         }
 
-        public override bool ClearHandsOnCast { get { return false; } }
-        public override bool RevealOnCast { get { return false; } }
-        public override double CastDelayFastScalar { get { return 0; } }
-        public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(2.0); } }
+        public override bool ClearHandsOnCast => false;
+        public override bool RevealOnCast => false;
+        public override double CastDelayFastScalar => 0;
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(2.0);
         public override TimeSpan GetCastRecovery() { return TimeSpan.Zero; }
         public override int GetMana() { return 0; }
         public override bool ConsumeReagents() { return true; }
         public override bool CheckFizzle() { return true; }
-        public override bool CheckNextSpellTime { get { return false; } }
+        public override bool CheckNextSpellTime => false;
 
         public override bool CheckDisturb(DisturbType type, bool checkFirst, bool resistable)
         {
@@ -37,7 +37,7 @@ namespace Server.Spells
         public override void OnDisturb(DisturbType type, bool message)
         {
             Caster.Flying = false;
-            BuffInfo.RemoveBuff(this.Caster, BuffIcon.Fly);
+            BuffInfo.RemoveBuff(Caster, BuffIcon.Fly);
 
             if (message)
                 Caster.SendLocalizedMessage(1113192); // You have been disrupted while attempting to fly!

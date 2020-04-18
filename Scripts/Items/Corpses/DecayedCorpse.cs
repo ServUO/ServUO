@@ -10,10 +10,10 @@ namespace Server.Items
         public DecayedCorpse(string name)
             : base(Utility.Random(0xECA, 9))
         {
-            this.Movable = false;
-            this.Name = name;
+            Movable = false;
+            Name = name;
 
-            this.BeginDecay(m_DefaultDecayTime);
+            BeginDecay(m_DefaultDecayTime);
         }
 
         public DecayedCorpse(Serial serial)
@@ -22,30 +22,24 @@ namespace Server.Items
         }
 
         // Do not display (x items, y stones)
-        public override bool DisplaysContent
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool DisplaysContent => false;
         public void BeginDecay(TimeSpan delay)
         {
-            if (this.m_DecayTimer != null)
-                this.m_DecayTimer.Stop();
+            if (m_DecayTimer != null)
+                m_DecayTimer.Stop();
 
-            this.m_DecayTime = DateTime.UtcNow + delay;
+            m_DecayTime = DateTime.UtcNow + delay;
 
-            this.m_DecayTimer = new InternalTimer(this, delay);
-            this.m_DecayTimer.Start();
+            m_DecayTimer = new InternalTimer(this, delay);
+            m_DecayTimer.Start();
         }
 
         public override void OnAfterDelete()
         {
-            if (this.m_DecayTimer != null)
-                this.m_DecayTimer.Stop();
+            if (m_DecayTimer != null)
+                m_DecayTimer.Stop();
 
-            this.m_DecayTimer = null;
+            m_DecayTimer = null;
         }
 
         // Do not display (x items, y stones)
@@ -56,19 +50,19 @@ namespace Server.Items
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            list.Add(1046414, this.Name); // the remains of ~1_NAME~
+            list.Add(1046414, Name); // the remains of ~1_NAME~
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
-            writer.Write(this.m_DecayTimer != null);
+            writer.Write(m_DecayTimer != null);
 
-            if (this.m_DecayTimer != null)
-                writer.WriteDeltaTime(this.m_DecayTime);
+            if (m_DecayTimer != null)
+                writer.WriteDeltaTime(m_DecayTime);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -81,14 +75,14 @@ namespace Server.Items
             {
                 case 0:
                     {
-                        this.BeginDecay(m_DefaultDecayTime);
+                        BeginDecay(m_DefaultDecayTime);
 
                         break;
                     }
                 case 1:
                     {
                         if (reader.ReadBool())
-                            this.BeginDecay(reader.ReadDeltaTime() - DateTime.UtcNow);
+                            BeginDecay(reader.ReadDeltaTime() - DateTime.UtcNow);
 
                         break;
                     }
@@ -101,13 +95,13 @@ namespace Server.Items
             public InternalTimer(DecayedCorpse c, TimeSpan delay)
                 : base(delay)
             {
-                this.m_Corpse = c;
-                this.Priority = TimerPriority.FiveSeconds;
+                m_Corpse = c;
+                Priority = TimerPriority.FiveSeconds;
             }
 
             protected override void OnTick()
             {
-                this.m_Corpse.Delete();
+                m_Corpse.Delete();
             }
         }
     }

@@ -8,7 +8,7 @@ namespace Server.Items
 {
     public class SingingBall : Item, ISecurable
     {
-        public override int LabelNumber { get { return 1041245; } } // Singing Ball
+        public override int LabelNumber => 1041245;  // Singing Ball
 
         private bool m_TurnedOn;
 
@@ -76,7 +76,7 @@ namespace Server.Items
         {
         }
 
-        public override bool HandlesOnMovement { get { return m_TurnedOn && IsLockedDown; } }
+        public override bool HandlesOnMovement => m_TurnedOn && IsLockedDown;
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
@@ -119,10 +119,10 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
             writer.Write((int)Level);
-            writer.Write((bool)m_TurnedOn);
+            writer.Write(m_TurnedOn);
         }
 
         public override void Deserialize(GenericReader reader)

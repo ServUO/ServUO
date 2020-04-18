@@ -17,49 +17,43 @@ namespace Server
         private MoveMethod m_Mover;
         public PathFollower(Mobile from, IPoint3D goal)
         {
-            this.m_From = from;
-            this.m_Goal = goal;
+            m_From = from;
+            m_Goal = goal;
         }
 
         public MoveMethod Mover
         {
             get
             {
-                return this.m_Mover;
+                return m_Mover;
             }
             set
             {
-                this.m_Mover = value;
+                m_Mover = value;
             }
         }
-        public IPoint3D Goal
-        {
-            get
-            {
-                return this.m_Goal;
-            }
-        }
+        public IPoint3D Goal => m_Goal;
         public MoveResult Move(Direction d)
         {
-            if (this.m_Mover == null)
-                return (this.m_From.Move(d) ? MoveResult.Success : MoveResult.Blocked);
+            if (m_Mover == null)
+                return (m_From.Move(d) ? MoveResult.Success : MoveResult.Blocked);
 
-            return this.m_Mover(d);
+            return m_Mover(d);
         }
 
         public Point3D GetGoalLocation()
         {
-            if (this.m_Goal is Item)
-                return ((Item)this.m_Goal).GetWorldLocation();
+            if (m_Goal is Item)
+                return ((Item)m_Goal).GetWorldLocation();
 
-            return new Point3D(this.m_Goal);
+            return new Point3D(m_Goal);
         }
 
         public void Advance(ref Point3D p, int index)
         {
-            if (this.m_Path != null && this.m_Path.Success)
+            if (m_Path != null && m_Path.Success)
             {
-                Direction[] dirs = this.m_Path.Directions;
+                Direction[] dirs = m_Path.Directions;
 
                 if (index >= 0 && index < dirs.Length)
                 {
@@ -75,7 +69,7 @@ namespace Server
 
         public void ForceRepath()
         {
-            this.m_Path = null;
+            m_Path = null;
         }
 
         public bool CheckPath()
@@ -85,27 +79,27 @@ namespace Server
 
             bool repath = false;
 
-            Point3D goal = this.GetGoalLocation();
+            Point3D goal = GetGoalLocation();
 
-            if (this.m_Path == null)
+            if (m_Path == null)
                 repath = true;
-            else if ((!this.m_Path.Success || goal != this.m_LastGoalLoc) && (this.m_LastPathTime + RepathDelay) <= DateTime.UtcNow)
+            else if ((!m_Path.Success || goal != m_LastGoalLoc) && (m_LastPathTime + RepathDelay) <= DateTime.UtcNow)
                 repath = true;
-            else if (this.m_Path.Success && this.Check(this.m_From.Location, this.m_LastGoalLoc, 0))
+            else if (m_Path.Success && Check(m_From.Location, m_LastGoalLoc, 0))
                 repath = true;
 
             if (!repath)
                 return false;
 
-            this.m_LastPathTime = DateTime.UtcNow;
-            this.m_LastGoalLoc = goal;
+            m_LastPathTime = DateTime.UtcNow;
+            m_LastGoalLoc = goal;
 
-            this.m_Path = new MovementPath(this.m_From, goal);
+            m_Path = new MovementPath(m_From, goal);
 
-            this.m_Index = 0;
-            this.m_Next = this.m_From.Location;
+            m_Index = 0;
+            m_Next = m_From.Location;
 
-            this.Advance(ref this.m_Next, this.m_Index);
+            Advance(ref m_Next, m_Index);
 
             return true;
         }
@@ -123,84 +117,84 @@ namespace Server
 
         public bool Follow(bool run, int range)
         {
-            Point3D goal = this.GetGoalLocation();
+            Point3D goal = GetGoalLocation();
             Direction d;
 
-            if (this.Check(this.m_From.Location, goal, range))
+            if (Check(m_From.Location, goal, range))
                 return true;
 
-            bool repathed = this.CheckPath();
+            bool repathed = CheckPath();
 
-            if (!Enabled || !this.m_Path.Success)
+            if (!Enabled || !m_Path.Success)
             {
-                d = this.m_From.GetDirectionTo(goal);
+                d = m_From.GetDirectionTo(goal);
 
                 if (run)
                     d |= Direction.Running;
 
-                this.m_From.SetDirection(d);
-                this.Move(d);
+                m_From.SetDirection(d);
+                Move(d);
 
-                return this.Check(this.m_From.Location, goal, range);
+                return Check(m_From.Location, goal, range);
             }
 
-            d = this.m_From.GetDirectionTo(this.m_Next);
+            d = m_From.GetDirectionTo(m_Next);
 
             if (run)
                 d |= Direction.Running;
 
-            this.m_From.SetDirection(d);
+            m_From.SetDirection(d);
 
-            MoveResult res = this.Move(d);
+            MoveResult res = Move(d);
 
             if (res == MoveResult.Blocked)
             {
                 if (repathed)
                     return false;
 
-                this.m_Path = null;
-                this.CheckPath();
+                m_Path = null;
+                CheckPath();
 
-                if (!this.m_Path.Success)
+                if (!m_Path.Success)
                 {
-                    d = this.m_From.GetDirectionTo(goal);
+                    d = m_From.GetDirectionTo(goal);
 
                     if (run)
                         d |= Direction.Running;
 
-                    this.m_From.SetDirection(d);
-                    this.Move(d);
+                    m_From.SetDirection(d);
+                    Move(d);
 
-                    return this.Check(this.m_From.Location, goal, range);
+                    return Check(m_From.Location, goal, range);
                 }
 
-                d = this.m_From.GetDirectionTo(this.m_Next);
+                d = m_From.GetDirectionTo(m_Next);
 
                 if (run)
                     d |= Direction.Running;
 
-                this.m_From.SetDirection(d);
+                m_From.SetDirection(d);
 
-                res = this.Move(d);
+                res = Move(d);
 
                 if (res == MoveResult.Blocked)
                     return false;
             }
 
-            if (this.m_From.X == this.m_Next.X && this.m_From.Y == this.m_Next.Y)
+            if (m_From.X == m_Next.X && m_From.Y == m_Next.Y)
             {
-                if (this.m_From.Z == this.m_Next.Z)
+                if (m_From.Z == m_Next.Z)
                 {
-                    ++this.m_Index;
-                    this.Advance(ref this.m_Next, this.m_Index);
+                    ++m_Index;
+                    Advance(ref m_Next, m_Index);
                 }
                 else
                 {
-                    this.m_Path = null;
+                    m_Path = null;
                 }
             }
 
-            return this.Check(this.m_From.Location, goal, range);
+            return Check(m_From.Location, goal, range);
         }
     }
 }

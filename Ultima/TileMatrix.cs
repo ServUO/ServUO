@@ -291,16 +291,16 @@ namespace Ultima
             {
                 return;
             }
-            using (var index = new FileStream(indexPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (FileStream index = new FileStream(indexPath, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 m_Statics = new FileStream(staticsPath, FileMode.Open, FileAccess.Read, FileShare.Read);
-                var count = (int)(index.Length / 12);
+                int count = (int)(index.Length / 12);
                 GCHandle gc = GCHandle.Alloc(m_StaticIndex, GCHandleType.Pinned);
-                var buffer = new byte[index.Length];
+                byte[] buffer = new byte[index.Length];
                 index.Read(buffer, 0, (int)index.Length);
                 Marshal.Copy(buffer, 0, gc.AddrOfPinnedObject(), (int)Math.Min(index.Length, BlockHeight * BlockWidth * 12));
                 gc.Free();
-                for (var i = (int)Math.Min(index.Length, BlockHeight * BlockWidth); i < BlockHeight * BlockWidth; ++i)
+                for (int i = (int)Math.Min(index.Length, BlockHeight * BlockWidth); i < BlockHeight * BlockWidth; ++i)
                 {
                     m_StaticIndex[i].lookup = -1;
                     m_StaticIndex[i].length = -1;
@@ -379,12 +379,12 @@ namespace Ultima
 
                         for (int i = 0; i < count; ++i)
                         {
-                            var ptr = new IntPtr((long)gc.AddrOfPinnedObject() + i * sizeof(StaticTile));
-                            var cur = (StaticTile)Marshal.PtrToStructure(ptr, typeof(StaticTile));
+                            IntPtr ptr = new IntPtr((long)gc.AddrOfPinnedObject() + i * sizeof(StaticTile));
+                            StaticTile cur = (StaticTile)Marshal.PtrToStructure(ptr, typeof(StaticTile));
                             lists[cur.m_X & 0x7][cur.m_Y & 0x7].Add(Art.GetLegalItemID(cur.m_ID), cur.m_Hue, cur.m_Z);
                         }
 
-                        var tiles = new HuedTile[8][][];
+                        HuedTile[][][] tiles = new HuedTile[8][][];
 
                         for (int i = 0; i < 8; ++i)
                         {
@@ -433,7 +433,7 @@ namespace Ultima
         }
 
         private UOPFile[] UOPFiles { get; set; }
-        private long UOPLength { get { return m_Map.Length; } }
+        private long UOPLength => m_Map.Length;
 
         private void ReadUOPFiles(string pattern)
         {
@@ -453,7 +453,7 @@ namespace Ultima
 
             UOPFiles = new UOPFile[count];
 
-            var hashes = new Dictionary<ulong, int>();
+            Dictionary<ulong, int> hashes = new Dictionary<ulong, int>();
 
             for (int i = 0; i < count; i++)
             {
@@ -545,14 +545,14 @@ namespace Ultima
 
                 if (IsUOPFormat && mapPath != null && !IsUOPAlreadyRead)
                 {
-                    var fi = new FileInfo(mapPath);
+                    FileInfo fi = new FileInfo(mapPath);
                     string uopPattern = fi.Name.Replace(fi.Extension, "").ToLowerInvariant();
 
                     ReadUOPFiles(uopPattern);
                     IsUOPAlreadyRead = true;
                 }
             }
-            var tiles = new Tile[64];
+            Tile[] tiles = new Tile[64];
             if (m_Map != null)
             {
                 long offset = ((x * BlockHeight) + y) * 196 + 4;
@@ -731,7 +731,7 @@ namespace Ultima
         internal TileFlag m_Flag;
         internal int m_Solver;
 
-        public ushort ID { get { return m_ID; } }
+        public ushort ID => m_ID;
         public int Z { get { return m_Z; } set { m_Z = (sbyte)value; } }
 
         public TileFlag Flag { get { return m_Flag; } set { m_Flag = value; } }
@@ -778,7 +778,7 @@ namespace Ultima
                 throw new ArgumentNullException();
             }
 
-            var a = (MTile)x;
+            MTile a = (MTile)x;
 
             ItemData ourData = TileData.ItemTable[m_ID];
             ItemData theirData = TileData.ItemTable[a.ID];
@@ -825,7 +825,7 @@ namespace Ultima
         internal ushort m_ID;
         internal sbyte m_Z;
 
-        public ushort ID { get { return m_ID; } }
+        public ushort ID => m_ID;
         public int Z { get { return m_Z; } set { m_Z = (sbyte)value; } }
 
         public Tile(ushort id, sbyte z)
@@ -864,7 +864,7 @@ namespace Ultima
                 throw new ArgumentNullException();
             }
 
-            var a = (Tile)x;
+            Tile a = (Tile)x;
 
             if (m_Z > a.m_Z)
             {

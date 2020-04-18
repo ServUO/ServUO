@@ -71,20 +71,20 @@ namespace Server.Items
         {
             Light = light;
 
-            foreach (var c in Components)
+            foreach (AddonComponent c in Components)
             {
                 c.Light = light;
             }
         }
 
-        public virtual bool RetainDeedHue { get { return Hue != 0 && CraftResources.GetHue(Resource) != Hue; } }
+        public virtual bool RetainDeedHue => Hue != 0 && CraftResources.GetHue(Resource) != Hue;
 
         public virtual void OnChop(Mobile from)
         {
-            var house = BaseHouse.FindHouseAt(this);
+            BaseHouse house = BaseHouse.FindHouseAt(this);
 
             #region High Seas
-            var boat = BaseBoat.FindBoatAt(from, from.Map);
+            BaseBoat boat = BaseBoat.FindBoatAt(from, from.Map);
             if (boat != null && boat is BaseGalleon)
             {
                 ((BaseGalleon)boat).OnChop(this, from);
@@ -97,13 +97,13 @@ namespace Server.Items
                 Effects.PlaySound(GetWorldLocation(), Map, 0x3B3);
                 from.SendLocalizedMessage(500461); // You destroy the item.
 
-                var hue = 0;
+                int hue = 0;
 
                 if (RetainDeedHue)
                 {
-                    for (var i = 0; hue == 0 && i < m_Components.Count; ++i)
+                    for (int i = 0; hue == 0 && i < m_Components.Count; ++i)
                     {
-                        var c = m_Components[i];
+                        AddonComponent c = m_Components[i];
 
                         if (c.Hue != 0)
                             hue = c.Hue;
@@ -114,7 +114,7 @@ namespace Server.Items
 
                 house.Addons.Remove(this);
 
-                var deed = GetDeed();
+                BaseAddonDeed deed = GetDeed();
 
                 if (deed != null)
                 {
@@ -134,11 +134,11 @@ namespace Server.Items
             }
         }
 
-        public virtual BaseAddonDeed Deed { get { return null; } }
+        public virtual BaseAddonDeed Deed => null;
 
         public virtual BaseAddonDeed GetDeed()
         {
-            var deed = Deed;
+            BaseAddonDeed deed = Deed;
 
             if (deed != null)
             {
@@ -148,9 +148,9 @@ namespace Server.Items
             return deed;
         }
 
-        Item IAddon.Deed { get { return GetDeed(); } }
+        Item IAddon.Deed => GetDeed();
 
-        public List<AddonComponent> Components { get { return m_Components; } }
+        public List<AddonComponent> Components => m_Components;
 
         public BaseAddon(Serial serial)
             : base(serial)
@@ -167,9 +167,9 @@ namespace Server.Items
             if (Deleted)
                 return AddonFitResult.Blocked;
 
-            foreach (var c in m_Components)
+            foreach (AddonComponent c in m_Components)
             {
-                var p3D = new Point3D(p.X + c.Offset.X, p.Y + c.Offset.Y, p.Z + c.Offset.Z);
+                Point3D p3D = new Point3D(p.X + c.Offset.X, p.Y + c.Offset.Y, p.Z + c.Offset.Z);
 
                 if (!map.CanFit(p3D.X, p3D.Y, p3D.Z, c.ItemData.Height, false, true, (c.Z == 0)))
                     return AddonFitResult.Blocked;
@@ -178,7 +178,7 @@ namespace Server.Items
 
                 if (c.NeedsWall)
                 {
-                    var wall = c.WallPosition;
+                    Point3D wall = c.WallPosition;
 
                     if (!IsWall(p3D.X + wall.X, p3D.Y + wall.Y, p3D.Z + wall.Z, map))
                         return AddonFitResult.NoWall;
@@ -187,19 +187,19 @@ namespace Server.Items
 
             if (house != null)
             {
-                var doors = house.Doors;
+                List<Item> doors = house.Doors;
 
-                for (var i = 0; i < doors.Count; ++i)
+                for (int i = 0; i < doors.Count; ++i)
                 {
-                    var door = doors[i] as BaseDoor;
+                    BaseDoor door = doors[i] as BaseDoor;
 
-                    var doorLoc = door.GetWorldLocation();
-                    var doorHeight = door.ItemData.CalcHeight;
+                    Point3D doorLoc = door.GetWorldLocation();
+                    int doorHeight = door.ItemData.CalcHeight;
 
-                    foreach (var c in m_Components)
+                    foreach (AddonComponent c in m_Components)
                     {
-                        var addonLoc = new Point3D(p.X + c.Offset.X, p.Y + c.Offset.Y, p.Z + c.Offset.Z);
-                        var addonHeight = c.ItemData.CalcHeight;
+                        Point3D addonLoc = new Point3D(p.X + c.Offset.X, p.Y + c.Offset.Y, p.Z + c.Offset.Z);
+                        int addonHeight = c.ItemData.CalcHeight;
 
                         if (Utility.InRange(doorLoc, addonLoc, 1) && (addonLoc.Z == doorLoc.Z ||
                                                                       ((addonLoc.Z + addonHeight) > doorLoc.Z && (doorLoc.Z + doorHeight) > addonLoc.Z)))
@@ -226,12 +226,12 @@ namespace Server.Items
             if (map == null)
                 return false;
 
-            var tiles = map.Tiles.GetStaticTiles(x, y, true);
+            StaticTile[] tiles = map.Tiles.GetStaticTiles(x, y, true);
 
-            for (var i = 0; i < tiles.Length; ++i)
+            for (int i = 0; i < tiles.Length; ++i)
             {
-                var t = tiles[i];
-                var id = TileData.ItemTable[t.ID & TileData.MaxItemValue];
+                StaticTile t = tiles[i];
+                ItemData id = TileData.ItemTable[t.ID & TileData.MaxItemValue];
 
                 if ((id.Flags & TileFlag.Wall) != 0 && (z + 16) > t.Z && (t.Z + t.Height) > z)
                     return true;
@@ -251,7 +251,7 @@ namespace Server.Items
             if (Deleted)
                 return;
 
-            foreach (var c in m_Components)
+            foreach (AddonComponent c in m_Components)
                 c.Location = new Point3D(X + c.Offset.X, Y + c.Offset.Y, Z + c.Offset.Z);
         }
 
@@ -260,7 +260,7 @@ namespace Server.Items
             if (Deleted)
                 return;
 
-            foreach (var c in m_Components)
+            foreach (AddonComponent c in m_Components)
                 c.Map = Map;
         }
 
@@ -268,11 +268,11 @@ namespace Server.Items
         {
             base.OnAfterDelete();
 
-            foreach (var c in m_Components)
+            foreach (AddonComponent c in m_Components)
                 c.Delete();
         }
 
-        public virtual bool ShareHue { get { return true; } }
+        public virtual bool ShareHue => true;
 
         [Hue, CommandProperty(AccessLevel.Decorator)]
         public override int Hue
@@ -286,7 +286,7 @@ namespace Server.Items
 
                     if (!Deleted && ShareHue && m_Components != null)
                     {
-                        foreach (var c in m_Components)
+                        foreach (AddonComponent c in m_Components)
                             c.Hue = value;
                     }
                 }
@@ -297,7 +297,7 @@ namespace Server.Items
         {
             InvalidateProperties();
 
-            foreach (var o in Components)
+            foreach (AddonComponent o in Components)
             {
                 o.InvalidateProperties();
             }
@@ -322,7 +322,7 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-            var version = reader.ReadInt();
+            int version = reader.ReadInt();
 
             switch (version)
             {

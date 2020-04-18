@@ -17,7 +17,7 @@ namespace Server.Gumps
         public PlayerMobile User { get; private set; }
         public bool Open { get; set; }
 
-        public virtual bool CloseOnMapChange { get { return false; } }
+        public virtual bool CloseOnMapChange => false;
 
         public Gump Parent
         {
@@ -87,12 +87,12 @@ namespace Server.Gumps
             Children = null;
             Parent = null;
 
-            foreach (var kvp in _TextTooltips)
+            foreach (KeyValuePair<string, Spoof> kvp in _TextTooltips)
             {
                 kvp.Value.Free();
             }
 
-            foreach (var kvp in _ClilocTooltips)
+            foreach (KeyValuePair<Dictionary<int, string>, Spoof> kvp in _ClilocTooltips)
             {
                 kvp.Value.Free();
             }
@@ -214,7 +214,7 @@ namespace Server.Gumps
 
         public static IEnumerable<T> EnumerateGumps<T>(PlayerMobile pm, Func<T, bool> predicate = null) where T : Gump
         {
-            var ns = pm.NetState;
+            NetState ns = pm.NetState;
 
             if (ns == null)
                 yield break;
@@ -228,7 +228,7 @@ namespace Server.Gumps
 
         public static List<T> GetGumps<T>(PlayerMobile pm) where T : Gump
         {
-            var ns = pm.NetState;
+            NetState ns = pm.NetState;
             List<T> list = new List<T>();
 
             if (ns == null)
@@ -244,7 +244,7 @@ namespace Server.Gumps
 
         public static List<BaseGump> GetGumps(PlayerMobile pm, bool checkOpen = false)
         {
-            var ns = pm.NetState;
+            NetState ns = pm.NetState;
             List<BaseGump> list = new List<BaseGump>();
 
             if (ns == null)
@@ -260,11 +260,11 @@ namespace Server.Gumps
 
         public static void CheckCloseGumps(PlayerMobile pm, bool checkOpen = false)
         {
-            var ns = pm.NetState;
+            NetState ns = pm.NetState;
 
             if (ns != null)
             {
-                var gumps = GetGumps(pm, checkOpen);
+                List<BaseGump> gumps = GetGumps(pm, checkOpen);
 
                 foreach (BaseGump gump in gumps.Where(g => g.CloseOnMapChange))
                 {
@@ -431,7 +431,7 @@ namespace Server.Gumps
 
         public void AddTooltip(string[] args)
         {
-            var clilocs = new int[Math.Min(Spoof.EmptyClilocs.Length, args.Length)];
+            int[] clilocs = new int[Math.Min(Spoof.EmptyClilocs.Length, args.Length)];
 
             for (int i = 0; i < args.Length; i++)
             {
@@ -446,19 +446,19 @@ namespace Server.Gumps
 
         public void AddTooltip(int[] clilocs, string[] args)
         {
-            var dictionary = new Dictionary<int, string>();
+            Dictionary<int, string> dictionary = new Dictionary<int, string>();
             int emptyIndex = 0;
 
             for (int i = 0; i < clilocs.Length; i++)
             {
-                var str = String.Empty;
+                string str = String.Empty;
 
                 if (i < args.Length)
                 {
                     str = args[i] ?? String.Empty;
                 }
 
-                var cliloc = clilocs[i];
+                int cliloc = clilocs[i];
 
                 if (cliloc <= 0)
                 {
@@ -561,7 +561,7 @@ namespace Server.Gumps
                 }
                 else
                 {
-                    var spoof = _SpoofPool[0];
+                    Spoof spoof = _SpoofPool[0];
                     _SpoofPool.Remove(spoof);
 
                     return spoof;
@@ -592,13 +592,13 @@ namespace Server.Gumps
 
                         if (!String.IsNullOrEmpty(Text))
                         {
-                            var text = StripHtmlBreaks(Text, true);
+                            string text = StripHtmlBreaks(Text, true);
 
                             if (text.IndexOf('\n') >= 0)
                             {
-                                var lines = text.Split(_Split);
+                                string[] lines = text.Split(_Split);
 
-                                foreach (var str in lines)
+                                foreach (string str in lines)
                                 {
                                     _PropertyList.Add(str);
                                 }
@@ -610,10 +610,10 @@ namespace Server.Gumps
                         }
                         else if (_ClilocTable != null)
                         {
-                            foreach (var kvp in _ClilocTable)
+                            foreach (KeyValuePair<int, string> kvp in _ClilocTable)
                             {
-                                var cliloc = kvp.Key;
-                                var args = kvp.Value;
+                                int cliloc = kvp.Key;
+                                string args = kvp.Value;
 
                                 if (cliloc <= 0 && !String.IsNullOrEmpty(args))
                                 {

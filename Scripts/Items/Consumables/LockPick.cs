@@ -17,8 +17,8 @@ namespace Server.Items
     [FlipableAttribute(0x14fc, 0x14fb)]
     public class Lockpick : Item
     {
-        public virtual bool IsSkeletonKey { get { return false; } }
-        public virtual int SkillBonus { get { return 0; } }
+        public virtual bool IsSkeletonKey => false;
+        public virtual int SkillBonus => 0;
 
         [Constructable]
         public Lockpick()
@@ -43,7 +43,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)1); // version
+            writer.Write(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -155,7 +155,7 @@ namespace Server.Items
 
                 if (item is TreasureMapChest)
                 {
-                    var chest = (TreasureMapChest)item;
+                    TreasureMapChest chest = (TreasureMapChest)item;
 
                     if (TreasureMapInfo.NewSystem)
                     {

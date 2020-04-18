@@ -5,7 +5,7 @@ namespace Server.Engines.Astronomy
 {
     public class PrimerOnBritannianAstronomy : Item
     {
-        public override int LabelNumber { get { return 1158515; } } // Looking to the Heavens: A Primer on Britannian Astronomy
+        public override int LabelNumber => 1158515;  // Looking to the Heavens: A Primer on Britannian Astronomy
 
         [Constructable]
         public PrimerOnBritannianAstronomy()
@@ -18,7 +18,7 @@ namespace Server.Engines.Astronomy
         {
             if (m is PlayerMobile && m.InRange(GetWorldLocation(), 3))
             {
-                var gump = new Gump(100, 100);
+                Gump gump = new Gump(100, 100);
                 gump.AddImage(0, 0, 0x761C);
                 gump.AddImage(95, 40, 0x69E);
                 gump.AddHtmlLocalized(115, 200, 350, 400, 1158516, "#1158516", 0x1, false, true);

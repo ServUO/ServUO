@@ -71,7 +71,7 @@ namespace Server.Items
 
             for (int i = index; i >= 0 && i < list.Count; ++i)
             {
-                var recipe = list[i];
+                Item recipe = list[i];
 
                 if (CheckFilter(recipe))
                 {
@@ -124,7 +124,7 @@ namespace Server.Items
 
             for (int i = index; i < (index + count) && i >= 0 && i < m_List.Count; ++i)
             {
-                var item = m_List[i];
+                Item item = m_List[i];
 
                 if (!CheckFilter(item))
                     continue;

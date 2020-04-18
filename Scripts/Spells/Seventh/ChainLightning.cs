@@ -7,7 +7,7 @@ namespace Server.Spells.Seventh
 {
     public class ChainLightningSpell : MagerySpell
     {
-        public override DamageType SpellDamageType { get { return DamageType.SpellAOE; } }
+        public override DamageType SpellDamageType => DamageType.SpellAOE;
 
         private static readonly SpellInfo m_Info = new SpellInfo(
             "Chain Lightning", "Vas Ort Grav",
@@ -23,20 +23,8 @@ namespace Server.Spells.Seventh
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Seventh;
-            }
-        }
-        public override bool DelayedDamage
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Seventh;
+        public override bool DelayedDamage => true;
         public override void OnCast()
         {
             Caster.Target = new InternalTarget(this);
@@ -55,13 +43,13 @@ namespace Server.Spells.Seventh
                 if (p is Item)
                     p = ((Item)p).GetWorldLocation();
 
-                var targets = AcquireIndirectTargets(p, 2).ToList();
-                var count = Math.Max(1, targets.Count);
+                System.Collections.Generic.List<IDamageable> targets = AcquireIndirectTargets(p, 2).ToList();
+                int count = Math.Max(1, targets.Count);
 
-                foreach (var dam in targets)
+                foreach (IDamageable dam in targets)
                 {
-                    var id = dam;
-                    var m = id as Mobile;
+                    IDamageable id = dam;
+                    Mobile m = id as Mobile;
                     double damage = GetNewAosDamage(51, 1, 5, id is PlayerMobile, id);
 
                     if (count > 2)

@@ -8,9 +8,9 @@ namespace Server.Engines.Quests
 {
     public class JourneyToTheAthenaeumIsleQuest : BaseQuest
     {
-        public override object Title { get { return 1150929; } }        // Journey to the Athenaeum Isle
+        public override object Title => 1150929;         // Journey to the Athenaeum Isle
 
-        public override object Description { get { return 1150902; } }  /*Greetings, adventurer. <br><br>	As you know, my people have suffered the 
+        public override object Description => 1150902;   /*Greetings, adventurer. <br><br>	As you know, my people have suffered the 
                                                                          * incessant onslaught of the Void and its minions for as long as Gargish 
                                                                          * history exists. Protecting Ter Mur from the darkness, and its desire to
                                                                          * consume the land completely, is a burden passed down from one ruler to another
@@ -36,11 +36,11 @@ namespace Server.Engines.Quests
                                                                          * in the Royal City.<br><br>	Slay the beasts and return to me any documents that 
                                                                          * you acquire.<br><br>	Be careful, and go with honor.*/
 
-        public override object Refuse { get { return 1150930; } }       // Understood. Perhaps you are not as brave as I initially thought. Be on your way, then.
+        public override object Refuse => 1150930;        // Understood. Perhaps you are not as brave as I initially thought. Be on your way, then.
 
-        public override object Uncomplete { get { return 1150931; } }   // You have returned. Did you manage to slay the beasts and obtain any documents that may be of interest?
+        public override object Uncomplete => 1150931;    // You have returned. Did you manage to slay the beasts and obtain any documents that may be of interest?
 
-        public override object Complete { get { return 1150903; } }     /*You have returned! I cannot thank you enough for the service you have done me, 
+        public override object Complete => 1150903;      /*You have returned! I cannot thank you enough for the service you have done me, 
                                                                          * adventurer. <br><br>	The documents that you have retrieved may seem unimportant 
                                                                          * to you, as they are naught but random letters and doctrines. But they each 
                                                                          * represent an echo of the past, musings of our ancestors. I had always meant to 
@@ -73,7 +73,7 @@ namespace Server.Engines.Quests
         {
             int offset = 163;
             int page = 1;
-            var slay = Objectives.FirstOrDefault(o => o is SlayObjective) as SlayObjective;
+            SlayObjective slay = Objectives.FirstOrDefault(o => o is SlayObjective) as SlayObjective;
 
             if (offer)
                 gump.AddHtmlLocalized(130, 45, 270, 16, 1049010, 0xFFFFFF, false, false); // Quest Offer

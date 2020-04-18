@@ -2,42 +2,42 @@ namespace Server.Items
 {
     public class SorcererLegs : LeatherLegs
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1080489; } } // Sorcerer's Leggings
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1080489;  // Sorcerer's Leggings
 
-        public override SetItem SetID { get { return SetItem.Sorcerer; } }
-        public override int Pieces { get { return 6; } }
+        public override SetItem SetID => SetItem.Sorcerer;
+        public override int Pieces => 6;
 
-        public override int BasePhysicalResistance { get { return 7; } }
-        public override int BaseFireResistance { get { return 7; } }
-        public override int BaseColdResistance { get { return 7; } }
-        public override int BasePoisonResistance { get { return 7; } }
-        public override int BaseEnergyResistance { get { return 7; } }
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
+        public override int BasePhysicalResistance => 7;
+        public override int BaseFireResistance => 7;
+        public override int BaseColdResistance => 7;
+        public override int BasePoisonResistance => 7;
+        public override int BaseEnergyResistance => 7;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
         [Constructable]
         public SorcererLegs() : base()
         {
-            this.Hue = 1165;
-            this.Weight = 4;
+            Hue = 1165;
+            Weight = 4;
 
-            this.Attributes.BonusInt = 1;
-            this.Attributes.LowerRegCost = 10;
+            Attributes.BonusInt = 1;
+            Attributes.LowerRegCost = 10;
 
-            this.SetAttributes.BonusInt = 6;
-            this.SetAttributes.RegenMana = 2;
-            this.SetAttributes.DefendChance = 10;
-            this.SetAttributes.LowerManaCost = 5;
-            this.SetAttributes.LowerRegCost = 40;
+            SetAttributes.BonusInt = 6;
+            SetAttributes.RegenMana = 2;
+            SetAttributes.DefendChance = 10;
+            SetAttributes.LowerManaCost = 5;
+            SetAttributes.LowerRegCost = 40;
 
-            this.SetHue = 1165;
+            SetHue = 1165;
 
-            this.SetPhysicalBonus = 28;
-            this.SetFireBonus = 28;
-            this.SetColdBonus = 28;
-            this.SetPoisonBonus = 28;
-            this.SetEnergyBonus = 28;
+            SetPhysicalBonus = 28;
+            SetFireBonus = 28;
+            SetColdBonus = 28;
+            SetPoisonBonus = 28;
+            SetEnergyBonus = 28;
         }
 
         public SorcererLegs(Serial serial) : base(serial)
@@ -48,7 +48,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

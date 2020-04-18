@@ -13,18 +13,12 @@ namespace Server.Items
         {
         }
 
-        public override double Refresh
-        {
-            get
-            {
-                return 1.0;
-            }
-        }
+        public override double Refresh => 1.0;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

@@ -15,38 +15,26 @@ namespace Server.Spells.Seventh
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Seventh;
-            }
-        }
-        public override bool DelayedDamage
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Seventh;
+        public override bool DelayedDamage => true;
         public override void OnCast()
         {
-            this.Caster.Target = new InternalTarget(this);
+            Caster.Target = new InternalTarget(this);
         }
 
         public void Target(IDamageable m)
         {
-            if (!this.Caster.CanSee(m))
+            if (!Caster.CanSee(m))
             {
-                this.Caster.SendLocalizedMessage(500237); // Target can not be seen.
+                Caster.SendLocalizedMessage(500237); // Target can not be seen.
             }
-            else if (this.CheckHSequence(m))
+            else if (CheckHSequence(m))
             {
-                SpellHelper.Turn(this.Caster, m);
+                SpellHelper.Turn(Caster, m);
 
-                Mobile source = this.Caster;
+                Mobile source = Caster;
 
-                SpellHelper.CheckReflect((int)this.Circle, ref source, ref m);
+                SpellHelper.CheckReflect((int)Circle, ref source, ref m);
 
                 double damage = GetNewAosDamage(48, 1, 5, m);
 
@@ -62,7 +50,7 @@ namespace Server.Spells.Seventh
                 }
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         private class InternalTarget : Target
@@ -71,20 +59,20 @@ namespace Server.Spells.Seventh
             public InternalTarget(FlameStrikeSpell owner)
                 : base(10, false, TargetFlags.Harmful)
             {
-                this.m_Owner = owner;
+                m_Owner = owner;
             }
 
             protected override void OnTarget(Mobile from, object o)
             {
                 if (o is IDamageable)
                 {
-                    this.m_Owner.Target((IDamageable)o);
+                    m_Owner.Target((IDamageable)o);
                 }
             }
 
             protected override void OnTargetFinish(Mobile from)
             {
-                this.m_Owner.FinishSequence();
+                m_Owner.FinishSequence();
             }
         }
     }

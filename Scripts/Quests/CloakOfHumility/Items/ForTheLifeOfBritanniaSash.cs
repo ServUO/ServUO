@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class ForTheLifeOfBritanniaSash : BodySash
     {
-        public override int LabelNumber { get { return 1075792; } } // For the Life of Britannia Sash
+        public override int LabelNumber => 1075792;  // For the Life of Britannia Sash
 
         [Constructable]
         public ForTheLifeOfBritanniaSash()
@@ -18,7 +18,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

@@ -13,13 +13,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041234;
-            }
-        }// Ticket for a piece of phoenix armor
+        public override int LabelNumber => 1041234;// Ticket for a piece of phoenix armor
 
         public override void OnDoubleClick(Mobile from)
         {
@@ -38,7 +32,7 @@ namespace Server.Items
                     case 4: from.AddToBackpack(new PhoenixHelm()); break;
                     case 5: from.AddToBackpack(new PhoenixLegs()); break;
                 }
-                this.Delete();
+                Delete();
                 from.SendLocalizedMessage(502064); // A piece of phoenix armor has been placed in your backpack.
             }
 
@@ -47,7 +41,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

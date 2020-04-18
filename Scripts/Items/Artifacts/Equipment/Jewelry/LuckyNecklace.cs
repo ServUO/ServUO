@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class LuckyNecklace : BaseJewel
     {
-        public override int LabelNumber { get { return 1075239; } } //Lucky Necklace
+        public override int LabelNumber => 1075239;  //Lucky Necklace
 
         [Constructable]
         public LuckyNecklace()
@@ -21,7 +21,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

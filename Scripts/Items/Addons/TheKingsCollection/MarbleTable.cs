@@ -38,12 +38,12 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed { get { return new MarbleTableDeed(); } }
+        public override BaseAddonDeed Deed => new MarbleTableDeed();
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -55,7 +55,7 @@ namespace Server.Items
 
     public class MarbleTableDeed : BaseAddonDeed, IRewardOption
     {
-        public override int LabelNumber { get { return 1154152; } } // Marble Table
+        public override int LabelNumber => 1154152;  // Marble Table
 
         private DirectionType _Direction;
 
@@ -98,12 +98,12 @@ namespace Server.Items
                 base.OnDoubleClick(from);
         }
 
-        public override BaseAddon Addon { get { return new MarbleTableAddon(_Direction); } }
+        public override BaseAddon Addon => new MarbleTableAddon(_Direction);
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

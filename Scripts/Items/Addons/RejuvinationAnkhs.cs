@@ -25,19 +25,19 @@ namespace Server.Items
                 if (random == 1 || random == 4)
                 {
                     from.Hits = from.HitsMax;
-                    this.SendLocalizedMessageTo(from, 500801); // A sense of warmth fills your body!
+                    SendLocalizedMessageTo(from, 500801); // A sense of warmth fills your body!
                 }
 
                 if (random == 2 || random == 4)
                 {
                     from.Mana = from.ManaMax;
-                    this.SendLocalizedMessageTo(from, 500802); // A feeling of power surges through your veins!
+                    SendLocalizedMessageTo(from, 500802); // A feeling of power surges through your veins!
                 }
 
                 if (random == 3 || random == 4)
                 {
                     from.Stam = from.StamMax;
-                    this.SendLocalizedMessageTo(from, 500803); // You feel as though you've slept for days!
+                    SendLocalizedMessageTo(from, 500803); // You feel as though you've slept for days!
                 }
 
                 Timer.DelayCall(TimeSpan.FromHours(2.0), new TimerStateCallback(ReleaseUseLock_Callback), new object[] { from, random });
@@ -58,7 +58,7 @@ namespace Server.Items
                 from.Hits = from.HitsMax;
                 from.Mana = from.ManaMax;
                 from.Stam = from.StamMax;
-                this.SendLocalizedMessageTo(from, 500807); // You feel completely rejuvinated!
+                SendLocalizedMessageTo(from, 500807); // You feel completely rejuvinated!
             }
         }
 
@@ -66,7 +66,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -89,25 +89,19 @@ namespace Server.Items
         {
         }
 
-        public override bool HandlesOnMovement
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool HandlesOnMovement => true;
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
             base.OnMovement(m, oldLocation);
 
-            if (m.Player && Utility.InRange(this.Location, m.Location, 3) && !Utility.InRange(this.Location, oldLocation, 3))
+            if (m.Player && Utility.InRange(Location, m.Location, 3) && !Utility.InRange(Location, oldLocation, 3))
             {
-                if (DateTime.UtcNow >= this.m_NextMessage)
+                if (DateTime.UtcNow >= m_NextMessage)
                 {
-                    if (this.Components.Count > 0)
-                        ((AddonComponent)this.Components[0]).SendLocalizedMessageTo(m, 1010061); // An overwhelming sense of peace fills you.
+                    if (Components.Count > 0)
+                        Components[0].SendLocalizedMessageTo(m, 1010061); // An overwhelming sense of peace fills you.
 
-                    this.m_NextMessage = DateTime.UtcNow + TimeSpan.FromSeconds(25.0);
+                    m_NextMessage = DateTime.UtcNow + TimeSpan.FromSeconds(25.0);
                 }
             }
         }
@@ -116,7 +110,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -132,8 +126,8 @@ namespace Server.Items
         [Constructable]
         public RejuvinationAnkhWest()
         {
-            this.AddComponent(new RejuvinationAddonComponent(0x3), 0, 0, 0);
-            this.AddComponent(new RejuvinationAddonComponent(0x2), 0, 1, 0);
+            AddComponent(new RejuvinationAddonComponent(0x3), 0, 0, 0);
+            AddComponent(new RejuvinationAddonComponent(0x2), 0, 1, 0);
         }
 
         public RejuvinationAnkhWest(Serial serial)
@@ -145,7 +139,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -161,8 +155,8 @@ namespace Server.Items
         [Constructable]
         public RejuvinationAnkhNorth()
         {
-            this.AddComponent(new RejuvinationAddonComponent(0x4), 0, 0, 0);
-            this.AddComponent(new RejuvinationAddonComponent(0x5), 1, 0, 0);
+            AddComponent(new RejuvinationAddonComponent(0x4), 0, 0, 0);
+            AddComponent(new RejuvinationAddonComponent(0x5), 1, 0, 0);
         }
 
         public RejuvinationAnkhNorth(Serial serial)
@@ -174,7 +168,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

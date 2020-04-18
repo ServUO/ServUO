@@ -20,9 +20,9 @@ namespace Ultima
             string path = Files.GetFilePath("Multimap.rle");
             if (path != null)
             {
-                using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    using (var bin = new BinaryReader(fs))
+                    using (BinaryReader bin = new BinaryReader(fs))
                     {
                         int width, height;
                         byte pixel;
@@ -32,14 +32,14 @@ namespace Ultima
                         ushort c = 0;
                         width = bin.ReadInt32();
                         height = bin.ReadInt32();
-                        var multimap = new Bitmap(width, height, Settings.PixelFormat);
+                        Bitmap multimap = new Bitmap(width, height, Settings.PixelFormat);
                         BitmapData bd = multimap.LockBits(
                             new Rectangle(0, 0, multimap.Width, multimap.Height), ImageLockMode.WriteOnly, Settings.PixelFormat);
-                        var line = (ushort*)bd.Scan0;
+                        ushort* line = (ushort*)bd.Scan0;
                         int delta = bd.Stride >> 1;
 
                         ushort* cur = line;
-                        var len = (int)(bin.BaseStream.Length - bin.BaseStream.Position);
+                        int len = (int)(bin.BaseStream.Length - bin.BaseStream.Position);
                         if (m_StreamBuffer == null || m_StreamBuffer.Length < len)
                         {
                             m_StreamBuffer = new byte[len];
@@ -91,7 +91,7 @@ namespace Ultima
             ushort curcolor = 0;
             BitmapData bd = image.LockBits(
                 new Rectangle(0, 0, image.Width, image.Height), ImageLockMode.ReadOnly, Settings.PixelFormat);
-            var line = (ushort*)bd.Scan0;
+            ushort* line = (ushort*)bd.Scan0;
             int delta = bd.Stride >> 1;
             ushort* cur = line;
             curcolor = cur[0]; //init
@@ -161,7 +161,7 @@ namespace Ultima
             string path = Files.GetFilePath(String.Format("facet0{0}.mul", id));
             if (path != null)
             {
-                using (var reader = new BinaryReader(new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read)))
+                using (BinaryReader reader = new BinaryReader(new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read)))
                 {
                     int width = reader.ReadInt16();
                     int height = reader.ReadInt16();
@@ -169,7 +169,7 @@ namespace Ultima
                     bmp = new Bitmap(width, height);
                     BitmapData bd = bmp.LockBits(
                         new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.WriteOnly, Settings.PixelFormat);
-                    var line = (ushort*)bd.Scan0;
+                    ushort* line = (ushort*)bd.Scan0;
                     int delta = bd.Stride >> 1;
 
                     for (int y = 0; y < height; y++, line += delta)
@@ -211,13 +211,13 @@ namespace Ultima
             int height = sourceBitmap.Height;
 
             using (
-                var writer = new BinaryWriter(new FileStream(path, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite)))
+                BinaryWriter writer = new BinaryWriter(new FileStream(path, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite)))
             {
                 writer.Write((short)width);
                 writer.Write((short)height);
                 BitmapData bd = sourceBitmap.LockBits(
                     new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly, Settings.PixelFormat);
-                var line = (ushort*)bd.Scan0;
+                ushort* line = (ushort*)bd.Scan0;
                 int delta = bd.Stride >> 1;
                 for (int y = 0; y < height; y++, line += delta)
                 {

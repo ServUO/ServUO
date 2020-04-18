@@ -159,7 +159,7 @@ namespace Server.Items
             }
         }
 
-        public override int LabelNumber { get { return 1026095; } } // teleporter
+        public override int LabelNumber => 1026095;  // teleporter
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
@@ -608,7 +608,7 @@ namespace Server.Items
             }
         }
 
-        public override bool HandlesOnSpeech { get { return true; } }
+        public override bool HandlesOnSpeech => true;
 
         public override void OnSpeech(SpeechEventArgs e)
         {
@@ -878,8 +878,8 @@ namespace Server.Items
                 m_Timer = t;
             }
 
-            public WaitTeleporter Teleporter { get { return m_Teleporter; } }
-            public Timer Timer { get { return m_Timer; } }
+            public WaitTeleporter Teleporter => m_Teleporter;
+            public Timer Timer => m_Timer;
         }
     }
 
@@ -959,7 +959,7 @@ namespace Server.Items
             writer.Write(m_TimeoutDelay);
             writer.Write(m_Teleporting.Count);
 
-            foreach (var kvp in m_Teleporting)
+            foreach (KeyValuePair<Mobile, Timer> kvp in m_Teleporting)
             {
                 writer.Write(kvp.Key);
                 writer.Write(kvp.Value.Next);
@@ -1020,7 +1020,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public TimeoutTeleporter Teleporter { get { return m_Teleporter; } set { m_Teleporter = value; } }
 
-        public override string DefaultName { get { return "timeout teleporter goal"; } }
+        public override string DefaultName => "timeout teleporter goal";
 
         public override bool OnMoveOver(Mobile m)
         {

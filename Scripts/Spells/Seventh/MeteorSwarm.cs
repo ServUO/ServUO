@@ -8,7 +8,7 @@ namespace Server.Spells.Seventh
 {
     public class MeteorSwarmSpell : MagerySpell
     {
-        public override DamageType SpellDamageType { get { return DamageType.SpellAOE; } }
+        public override DamageType SpellDamageType => DamageType.SpellAOE;
         public Item Item { get; set; }
 
         private static readonly SpellInfo m_Info = new SpellInfo(
@@ -40,20 +40,8 @@ namespace Server.Spells.Seventh
             return base.GetMana();
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.Seventh;
-            }
-        }
-        public override bool DelayedDamage
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.Seventh;
+        public override bool DelayedDamage => true;
         public override void OnCast()
         {
             Caster.Target = new InternalTarget(this, Item);
@@ -85,15 +73,15 @@ namespace Server.Spells.Seventh
                 if (p is Item)
                     p = ((Item)p).GetWorldLocation();
 
-                var targets = AcquireIndirectTargets(p, 2).ToList();
-                var count = Math.Max(1, targets.Count);
+                System.Collections.Generic.List<IDamageable> targets = AcquireIndirectTargets(p, 2).ToList();
+                int count = Math.Max(1, targets.Count);
 
                 if (count > 0)
                 {
                     Effects.PlaySound(p, Caster.Map, 0x160);
                 }
 
-                foreach (var id in targets)
+                foreach (IDamageable id in targets)
                 {
                     Mobile m = id as Mobile;
                     double damage = GetNewAosDamage(51, 1, 5, id is PlayerMobile, id);

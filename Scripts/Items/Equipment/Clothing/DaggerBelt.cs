@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class DaggerBelt : BaseWaist, IDyable
     {
-        public override int LabelNumber { get { return 1159210; } } // dagger belt
+        public override int LabelNumber => 1159210;  // dagger belt
 
         [Constructable]
         public DaggerBelt()

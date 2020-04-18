@@ -8,12 +8,12 @@ namespace Server.Engines.Quests.RitualQuest
 {
     public class ScalesOfADreamSerpentQuest : BaseQuest
     {
-        public override QuestChain ChainID { get { return QuestChain.Ritual; } }
-        public override Type NextQuest { get { return typeof(TearsOfASoulbinderQuest); } }
+        public override QuestChain ChainID => QuestChain.Ritual;
+        public override Type NextQuest => typeof(TearsOfASoulbinderQuest);
 
-        public override object Title { get { return 1151122; } } // Ritual: Scales of a Dream Serpent
+        public override object Title => 1151122;  // Ritual: Scales of a Dream Serpent
 
-        public override object Description { get { return 1151123; } }
+        public override object Description => 1151123;
         /*Greetings, adventurer.  Our  queen has need of your services again, should you be willing to come to her aid.<br><br>	
 		As you may know, her Majesty has spent the past thousand years diligently researching ways in which she could defeat the
 		Defiler.  I have personally assisted her in this effort and we have discovered a ritual which will magnify the cleansing
@@ -33,13 +33,13 @@ namespace Server.Engines.Quests.RitualQuest
 		ask for its aid, but do not harm it. When you have acquired the scales, return to me and I shall reward you and guide you
 		towards the second component.*/
 
-        public override object Refuse { get { return 1151124; } }
+        public override object Refuse => 1151124;
         /*You do not wish to assist us? Then we shall wait for someone who does not wish to sit idly by while our people suffer. 
 		Be gone from my sight, coward.*/
 
-        public override object Uncomplete { get { return 1151125; } } // Were you able to acquire the scales? Please do not dally, adventurer!
+        public override object Uncomplete => 1151125;  // Were you able to acquire the scales? Please do not dally, adventurer!
 
-        public override object Complete { get { return 1151126; } }
+        public override object Complete => 1151126;
         /*You have the scales? Excellent! <br><br>	We are now one step closer to completing the list of components for the ritual,
 		my friend. With your assistance, I believe we will be able to acquire all of them just in time.<br><br>	Now, on to the next
 		component.*/
@@ -65,12 +65,12 @@ namespace Server.Engines.Quests.RitualQuest
 
     public class TearsOfASoulbinderQuest : BaseQuest
     {
-        public override QuestChain ChainID { get { return QuestChain.Ritual; } }
-        public override Type NextQuest { get { return typeof(PristineCrystalLotusQuest); } }
+        public override QuestChain ChainID => QuestChain.Ritual;
+        public override Type NextQuest => typeof(PristineCrystalLotusQuest);
 
-        public override object Title { get { return 1151131; } } // Ritual: Tears of a Soulbinder
+        public override object Title => 1151131;  // Ritual: Tears of a Soulbinder
 
-        public override object Description { get { return 1151132; } }
+        public override object Description => 1151132;
         /*I fear I must now send you to convene with a creature that may not prove as willing to help as the ones you have encountered 
 		previously, my friend. I require the crystallized tear of a Soulbinder, a malevolent creature that prefers to roam the desolate
 		edges of Ter Mur where the Void has consumed much of the area.<br><br><br>	Spawned from the depths of the Abyss, the 
@@ -82,13 +82,13 @@ namespace Server.Engines.Quests.RitualQuest
 		but I have been unable to discern anything beyond its location. Be on your guard, adventurer, and be prepared to do battle
 		should the beast prove hostile.<br><br><br>*/
 
-        public override object Refuse { get { return 1151124; } }
+        public override object Refuse => 1151124;
         /*You do not wish to assist us? Then we shall wait for someone who does not wish to sit idly by while our people suffer. 
 		Be gone from my sight, coward.*/
 
-        public override object Uncomplete { get { return 1151133; } } // Were you able to obtain the Soulbinder's Tear?
+        public override object Uncomplete => 1151133;  // Were you able to obtain the Soulbinder's Tear?
 
-        public override object Complete { get { return 1151134; } }
+        public override object Complete => 1151134;
         /*You continue to amaze me, my friend. I will admit I was concerned that the Soulbinder would prove to be too much of a 
 		challenge and, yet, here you are. <br><br>Are you ready to go after the next component?*/
 
@@ -113,12 +113,12 @@ namespace Server.Engines.Quests.RitualQuest
 
     public class PristineCrystalLotusQuest : BaseQuest
     {
-        public override QuestChain ChainID { get { return QuestChain.Ritual; } }
-        public override Type NextQuest { get { return null; } }
+        public override QuestChain ChainID => QuestChain.Ritual;
+        public override Type NextQuest => null;
 
-        public override object Title { get { return 1151136; } } // Ritual: Pristine Crystal Lotus
+        public override object Title => 1151136;  // Ritual: Pristine Crystal Lotus
 
-        public override object Description { get { return 1151135; } }
+        public override object Description => 1151135;
         /*Now, you must traverse the northern desert. On the far edge, you will find a teleporter similar to that which you took
 		to the Athenaeum Isle.  This will take you to a barren, small, and twisted piece of land that was long ago drained by the
 		Void. <br><br>	The next component will be found there: a pristine crystal lotus. Long ago, what is now desert was a 
@@ -134,13 +134,13 @@ namespace Server.Engines.Quests.RitualQuest
 		friend, and please obtain the lotus. If anyone can do it, I have faith that it is you.<br><br>	Be well, and I look
 		forward to your return.<br><br>*/
 
-        public override object Refuse { get { return 1151124; } }
+        public override object Refuse => 1151124;
         /*You do not wish to assist us? Then we shall wait for someone who does not wish to sit idly by while our people suffer. 
 		Be gone from my sight, coward.*/
 
-        public override object Uncomplete { get { return 1151137; } } // Have you solved the secret of the lotus, my friend?
+        public override object Uncomplete => 1151137;  // Have you solved the secret of the lotus, my friend?
 
-        public override object Complete { get { return 1151138; } }
+        public override object Complete => 1151138;
         /*Once again, you astound me with your perserverance and triumph! I cannot thank you enough. You are truly proving
 		yourself a loyal friend.<br><br>Now, only two components remain.*/
 
@@ -176,9 +176,9 @@ namespace Server.Engines.Quests.RitualQuest
 
     public class CatchMeIfYouCanQuest : BaseQuest
     {
-        public override object Title { get { return 1151144; } } // Catch Me If You Can!
+        public override object Title => 1151144;  // Catch Me If You Can!
 
-        public override object Description { get { return 1151145; } }
+        public override object Description => 1151145;
         /*Oh, have you come to see me?<br><br>	This is wonderful! I haven’t spoken to a mortal in so long.  It can get pretty 
 		droll here in the realm of dreams, and I have no one to play with! There aren’t many of us left. <br><br>	What’s that?
 		You want something? <br><br>	My scales! Ha ha! You mortals are so silly, always after something or other. <br><br>	
@@ -187,11 +187,11 @@ namespace Server.Engines.Quests.RitualQuest
 		and it will take you to my favorite place to play! <br><br>	So, shall we play? Excellent! Be sure to put away your pets
 		before you teleport with me!<br>*/
 
-        public override object Refuse { get { return 1151146; } } // You don’t want to play? Boo! Go away!
+        public override object Refuse => 1151146;  // You don’t want to play? Boo! Go away!
 
-        public override object Uncomplete { get { return 1151147; } } // Ah ha! Looks like you are not very fast. Want to play again?
+        public override object Uncomplete => 1151147;  // Ah ha! Looks like you are not very fast. Want to play again?
 
-        public override object Complete { get { return 1151148; } }
+        public override object Complete => 1151148;
         /*Boo, I don’t like to lose! But wasn’t that fun? <br><br>	Here are some of my scales; give them to the Gargoyle Queen with 
 		my blessing and tell her she needs to come play a game with me sometime!*/
 
@@ -224,7 +224,7 @@ namespace Server.Engines.Quests.RitualQuest
 
         public class InternalObjective : BaseObjective
         {
-            public override object ObjectiveDescription { get { return 1151213; } } // Hit the Dream Serpent 6 times before the time is up.
+            public override object ObjectiveDescription => 1151213;  // Hit the Dream Serpent 6 times before the time is up.
 
             public InternalObjective()
                 : base(6)
@@ -277,7 +277,7 @@ namespace Server.Engines.Quests.RitualQuest
 
             private void SetupRegion()
             {
-                var map = Map.TerMur;
+                Map map = Map.TerMur;
 
                 for (int x = 390; x < 408; x++)
                 {
@@ -285,14 +285,14 @@ namespace Server.Engines.Quests.RitualQuest
 
                     if (map.FindItem<Blocker>(new Point3D(x, 3360, z)) == null)
                     {
-                        var blocker = new Blocker();
+                        Blocker blocker = new Blocker();
                         blocker.MoveToWorld(new Point3D(x, 3360, z), map);
                     }
                 }
 
                 if (!GetEnumeratedMobiles().Any(m => m is BexilPunchingBag && !m.Deleted))
                 {
-                    var bex = new BexilPunchingBag();
+                    BexilPunchingBag bex = new BexilPunchingBag();
                     bex.MoveToWorld(new Point3D(403, 3391, 38), Map.TerMur);
                 }
             }
@@ -322,9 +322,9 @@ namespace Server.Engines.Quests.RitualQuest
 
     public class FilthyLifeStealersQuest : BaseQuest
     {
-        public override object Title { get { return 1151155; } } // Filthy Lifestealers!
+        public override object Title => 1151155;  // Filthy Lifestealers!
 
-        public override object Description { get { return 1151154; } }
+        public override object Description => 1151154;
         /*Ah, what do we have here? <br><br><br>	Bah! I was so hoping you would be something other than a human, gargoyle,
 		or elf. Do you know how many of them I have eaten? Your souls have filled me but, now, they are no longer appealing.
 		You are in luck that I have recently eaten, however, or else I would have devoured you anyway. <br><br><br>	You want 
@@ -339,13 +339,13 @@ namespace Server.Engines.Quests.RitualQuest
 		the lifestealers you find there.  When you have thinned them out, return to me and I will give you what you seek.
 		<br><br><br>*/
 
-        public override object Refuse { get { return 1151156; } }
+        public override object Refuse => 1151156;
         /*You dare refuse me? You are truly an imbecile. Ah well, I guess I shall eat you, after all! Just as soon as I finish 
 		digesting my last meal, that is.*/
 
-        public override object Uncomplete { get { return 1151157; } } // Have you killed the Lifestealers yet? Don’t try my patience, or I will eat you!
+        public override object Uncomplete => 1151157;  // Have you killed the Lifestealers yet? Don’t try my patience, or I will eat you!
 
-        public override object Complete { get { return 1151158; } }
+        public override object Complete => 1151158;
         /*I can smell their deaths upon you, mortal. Each Lifestealer you killed let loose all of the souls that they had taken, 
 		and I was able to draw them here with my magic. I am so full, now! I think this will hold me over for quite some time. 
 		<br><br><br>	Here, take what you came for. While you were gone, the thought of those Lifestealers dying was enough to

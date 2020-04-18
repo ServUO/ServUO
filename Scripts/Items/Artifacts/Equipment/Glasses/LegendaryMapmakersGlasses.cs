@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class LegendaryMapmakersGlasses : ElvenGlasses
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1159023; } } //Legendary Mapmaker's Glasses
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1159023;  //Legendary Mapmaker's Glasses
 
         [Constructable]
         public LegendaryMapmakersGlasses()
@@ -20,7 +20,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

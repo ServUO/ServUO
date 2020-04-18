@@ -5,7 +5,7 @@ namespace Server.Spells.Mysticism
 {
     public class NetherBoltSpell : MysticSpell
     {
-        public override SpellCircle Circle { get { return SpellCircle.First; } }
+        public override SpellCircle Circle => SpellCircle.First;
 
         private static readonly SpellInfo m_Info = new SpellInfo(
                 "Nether Bolt", "In Corp Ylem",
@@ -19,9 +19,9 @@ namespace Server.Spells.Mysticism
         {
         }
 
-        public override bool DelayedDamage { get { return true; } }
-        public override bool DelayedDamageStacking { get { return false; } }
-        public override Type[] DelayDamageFamily { get { return new Type[] { typeof(Server.Spells.First.MagicArrowSpell) }; } }
+        public override bool DelayedDamage => true;
+        public override bool DelayedDamageStacking => false;
+        public override Type[] DelayDamageFamily => new Type[] { typeof(Server.Spells.First.MagicArrowSpell) };
 
         public override void OnCast()
         {

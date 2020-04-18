@@ -5,7 +5,7 @@ namespace Server.Spells.Chivalry
 {
     public class HolyLightSpell : PaladinSpell
     {
-        public override DamageType SpellDamageType { get { return DamageType.SpellAOE; } }
+        public override DamageType SpellDamageType => DamageType.SpellAOE;
 
         private static readonly SpellInfo m_Info = new SpellInfo(
             "Holy Light", "Augus Luminos",
@@ -17,60 +17,18 @@ namespace Server.Spells.Chivalry
         {
         }
 
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(1.75);
-            }
-        }
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 55.0;
-            }
-        }
-        public override int RequiredMana
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int RequiredTithing
-        {
-            get
-            {
-                return 10;
-            }
-        }
-        public override int MantraNumber
-        {
-            get
-            {
-                return 1060724;
-            }
-        }// Augus Luminos
-        public override bool BlocksMovement
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool DelayedDamage
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(1.75);
+        public override double RequiredSkill => 55.0;
+        public override int RequiredMana => 10;
+        public override int RequiredTithing => 10;
+        public override int MantraNumber => 1060724;// Augus Luminos
+        public override bool BlocksMovement => false;
+        public override bool DelayedDamage => false;
         public override void OnCast()
         {
             if (CheckSequence())
             {
-                foreach (var id in AcquireIndirectTargets(Caster.Location, 3))
+                foreach (IDamageable id in AcquireIndirectTargets(Caster.Location, 3))
                 {
                     Mobile m = id as Mobile;
 

@@ -123,22 +123,19 @@ namespace Server.Engines.ArenaSystem
         public DateTime EntryDeadline { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime EndTime { get { return StartTime + TimeSpan.FromMinutes((int)TimeLimit); } }
+        public DateTime EndTime => StartTime + TimeSpan.FromMinutes((int)TimeLimit);
 
         // used in team mode
-        public ArenaTeam TeamOrder { get { return Teams != null && Teams.Count > 0 ? Teams[0] : null; } }
-        public ArenaTeam TeamChaos { get { return Teams != null && Teams.Count > 1 ? Teams[1] : null; } }
+        public ArenaTeam TeamOrder => Teams != null && Teams.Count > 0 ? Teams[0] : null;
+        public ArenaTeam TeamChaos => Teams != null && Teams.Count > 1 ? Teams[1] : null;
 
-        public int ParticipantCount
-        {
-            get { return Teams.Sum(t => t.Count); }
-        }
+        public int ParticipantCount => Teams.Sum(t => t.Count);
 
         public ArenaDuel(PVPArena arena, PlayerMobile host)
         {
             Host = host;
 
-            var entry = PVPArenaSystem.Instance.GetPlayerEntry<PlayerStatsEntry>(host);
+            PlayerStatsEntry entry = PVPArenaSystem.Instance.GetPlayerEntry<PlayerStatsEntry>(host);
 
             if (entry.Profile != null)
                 ConfigureFromProfile(entry.Profile);
@@ -207,9 +204,9 @@ namespace Server.Engines.ArenaSystem
             if (Teams == null || Teams.Count == 0)
                 yield break;
 
-            foreach (var team in Teams)
+            foreach (ArenaTeam team in Teams)
             {
-                foreach (var player in team.Players.Where(p => !inArena || InArena(p.Key)))
+                foreach (KeyValuePair<PlayerMobile, PlayerStatsEntry> player in team.Players.Where(p => !inArena || InArena(p.Key)))
                 {
                     yield return player;
                 }
@@ -220,7 +217,7 @@ namespace Server.Engines.ArenaSystem
         {
             List<PlayerMobile> list = new List<PlayerMobile>();
 
-            foreach (var part in GetParticipants())
+            foreach (KeyValuePair<PlayerMobile, PlayerStatsEntry> part in GetParticipants())
             {
                 list.Add(part.Key);
             }
@@ -238,7 +235,7 @@ namespace Server.Engines.ArenaSystem
 
         public PlayerStatsEntry GetStats(PlayerMobile check)
         {
-            foreach (var kvp in GetParticipants())
+            foreach (KeyValuePair<PlayerMobile, PlayerStatsEntry> kvp in GetParticipants())
             {
                 if (kvp.Key == check)
                     return kvp.Value;
@@ -324,7 +321,7 @@ namespace Server.Engines.ArenaSystem
 
         public void RemovePlayer(PlayerMobile pm, bool ban = false)
         {
-            var team = GetTeam(pm);
+            ArenaTeam team = GetTeam(pm);
 
             if (team != null)
             {
@@ -386,9 +383,9 @@ namespace Server.Engines.ArenaSystem
 
             bool allin = true;
 
-            foreach (var team in Teams)
+            foreach (ArenaTeam team in Teams)
             {
-                foreach (var player in team.Players.Keys)
+                foreach (PlayerMobile player in team.Players.Keys)
                 {
                     if (!InArena(player))
                     {
@@ -439,7 +436,7 @@ namespace Server.Engines.ArenaSystem
             PVPArenaSystem.SendParticipantMessage(this, 1115875);
             // The arena gate has opened near the arena stone. You have ninety seconds to use the gate or you will be removed from this duel.
 
-            foreach (var kvp in GetParticipants())
+            foreach (KeyValuePair<PlayerMobile, PlayerStatsEntry> kvp in GetParticipants())
             {
                 BaseGump.SendGump(new OfferDuelGump(kvp.Key, this, Arena, false, true));
             }
@@ -486,7 +483,7 @@ namespace Server.Engines.ArenaSystem
 
                     InPreFight = false;
 
-                    foreach (var part in GetParticipants(true))
+                    foreach (KeyValuePair<PlayerMobile, PlayerStatsEntry> part in GetParticipants(true))
                     {
                         part.Key.Delta(MobileDelta.Noto);
                     }
@@ -499,15 +496,15 @@ namespace Server.Engines.ArenaSystem
         {
             _StartPoints = new Dictionary<PlayerMobile, Rectangle2D>();
 
-            var pm1 = Teams[0].PlayerZero;
-            var pm2 = Teams[1].PlayerZero;
+            PlayerMobile pm1 = Teams[0].PlayerZero;
+            PlayerMobile pm2 = Teams[1].PlayerZero;
 
             _StartPoints[pm1] = Arena.Definition.StartLocations[0];
             _StartPoints[pm2] = Arena.Definition.StartLocations[1];
 
             List<PlayerMobile> partList = ParticipantList();
 
-            foreach (var pm in partList.Where(p => p != pm1 && p != pm2))
+            foreach (PlayerMobile pm in partList.Where(p => p != pm1 && p != pm2))
             {
                 _StartPoints[pm] = Arena.Definition.StartLocations[_StartPoints.Count];
             }
@@ -517,9 +514,9 @@ namespace Server.Engines.ArenaSystem
         {
             List<ArenaTeam> present = new List<ArenaTeam>();
 
-            foreach (var part in GetParticipants(true))
+            foreach (KeyValuePair<PlayerMobile, PlayerStatsEntry> part in GetParticipants(true))
             {
-                var team = GetTeam(part.Key);
+                ArenaTeam team = GetTeam(part.Key);
 
                 if (!present.Contains(team))
                 {
@@ -532,7 +529,7 @@ namespace Server.Engines.ArenaSystem
 
         public void PlaceBlockers()
         {
-            foreach (var rec in Arena.Definition.EffectAreas)
+            foreach (Rectangle2D rec in Arena.Definition.EffectAreas)
             {
                 for (int x = rec.X; x < rec.X + rec.Width; x++)
                 {
@@ -554,7 +551,7 @@ namespace Server.Engines.ArenaSystem
 
         public void RemoveBlockers()
         {
-            foreach (var item in Arena.Blockers)
+            foreach (Item item in Arena.Blockers)
             {
                 item.Z -= 20;
             }
@@ -562,7 +559,7 @@ namespace Server.Engines.ArenaSystem
 
         public void DoStartEffects()
         {
-            foreach (var rec in Arena.Definition.EffectAreas)
+            foreach (Rectangle2D rec in Arena.Definition.EffectAreas)
             {
                 for (int x = rec.X; x < rec.X + rec.Width; x++)
                 {
@@ -618,7 +615,7 @@ namespace Server.Engines.ArenaSystem
 
             if (refund && EntryFee > EntryFee.Zero)
             {
-                foreach (var part in GetParticipants())
+                foreach (KeyValuePair<PlayerMobile, PlayerStatsEntry> part in GetParticipants())
                 {
                     Banker.Deposit(part.Key, (int)EntryFee, true);
                     PVPArenaSystem.SendMessage(part.Key, 1149606); // The entry fee has been refunded to your bank box.
@@ -640,7 +637,7 @@ namespace Server.Engines.ArenaSystem
 
             if (winner != null)
             {
-                foreach (var pm in winner.Players.Keys)
+                foreach (PlayerMobile pm in winner.Players.Keys)
                 {
                     if (Pot > 0)
                     {
@@ -656,9 +653,9 @@ namespace Server.Engines.ArenaSystem
                 }
             }
 
-            foreach (var team in Teams.Where(t => t != winner))
+            foreach (ArenaTeam team in Teams.Where(t => t != winner))
             {
-                foreach (var pm in team.Players.Keys)
+                foreach (PlayerMobile pm in team.Players.Keys)
                 {
                     PVPArenaSystem.SendMessage(pm, team.Count == 1 ? 1116489 : 1116488); // You have lost the duel... : Your team has lost the duel...
                 }
@@ -676,7 +673,7 @@ namespace Server.Engines.ArenaSystem
 
         public void RemovePlayers(ArenaTeam winners)
         {
-            foreach (var part in GetParticipants(true))
+            foreach (KeyValuePair<PlayerMobile, PlayerStatsEntry> part in GetParticipants(true))
             {
                 Arena.RemovePlayer(part.Key, winners != null && winners.Contains(part.Key));
                 PVPArenaSystem.Instance.CheckTitle(part.Key);
@@ -690,10 +687,10 @@ namespace Server.Engines.ArenaSystem
 
         public void RecordStats(ArenaTeam winner)
         {
-            foreach (var kvp in GetParticipants(true))
+            foreach (KeyValuePair<PlayerMobile, PlayerStatsEntry> kvp in GetParticipants(true))
             {
-                var team = Teams.FirstOrDefault(t => t.Contains(kvp.Key));
-                var stats = kvp.Value;
+                ArenaTeam team = Teams.FirstOrDefault(t => t.Contains(kvp.Key));
+                PlayerStatsEntry stats = kvp.Value;
 
                 if (winner == null)
                 {
@@ -756,7 +753,7 @@ namespace Server.Engines.ArenaSystem
 
                 List<ArenaTeam> stillAlive = new List<ArenaTeam>();
 
-                foreach (var team in Teams)
+                foreach (ArenaTeam team in Teams)
                 {
                     if (CheckTeamAlive((PlayerMobile)victim, team))
                         stillAlive.Add(team);
@@ -778,7 +775,7 @@ namespace Server.Engines.ArenaSystem
 
         public void SendResults(ArenaTeam winner)
         {
-            foreach (var part in GetParticipants())
+            foreach (KeyValuePair<PlayerMobile, PlayerStatsEntry> part in GetParticipants())
             {
                 BaseGump.SendGump(new DuelResultsGump(part.Key, this, winner));
             }
@@ -788,9 +785,9 @@ namespace Server.Engines.ArenaSystem
         {
             if (HasBegun && !Complete)
             {
-                foreach (var part in GetParticipants(true))
+                foreach (KeyValuePair<PlayerMobile, PlayerStatsEntry> part in GetParticipants(true))
                 {
-                    var pm = part.Key;
+                    PlayerMobile pm = part.Key;
 
                     if (!RidingFlyingAllowed && pm.Mounted)
                     {
@@ -838,11 +835,11 @@ namespace Server.Engines.ArenaSystem
 
                     if (!SummonSpellsAllowed)
                     {
-                        foreach (var mob in Arena.Region.GetEnumeratedMobiles())
+                        foreach (Mobile mob in Arena.Region.GetEnumeratedMobiles())
                         {
                             if (mob is BaseCreature && ((BaseCreature)mob).Summoned)
                             {
-                                var master = ((BaseCreature)mob).GetMaster();
+                                Mobile master = ((BaseCreature)mob).GetMaster();
 
                                 if (master != null)
                                 {
@@ -885,8 +882,8 @@ namespace Server.Engines.ArenaSystem
 
             if (pm1 != null && pm2 != null)
             {
-                var team1 = GetTeam(pm1);
-                var team2 = GetTeam(pm2);
+                ArenaTeam team1 = GetTeam(pm1);
+                ArenaTeam team2 = GetTeam(pm2);
 
                 return team1 != null && team2 != null && team1 != team2;
             }
@@ -910,8 +907,8 @@ namespace Server.Engines.ArenaSystem
 
             if (pm1 != null && pm2 != null)
             {
-                var team1 = GetTeam(pm1);
-                var team2 = GetTeam(pm2);
+                ArenaTeam team1 = GetTeam(pm1);
+                ArenaTeam team2 = GetTeam(pm2);
 
                 return team1 != null && team2 != null && team1 == team2;
             }
@@ -921,7 +918,7 @@ namespace Server.Engines.ArenaSystem
 
         public void Closeout()
         {
-            foreach (var team in Teams)
+            foreach (ArenaTeam team in Teams)
             {
                 team.Players.Clear();
                 team.Players = null;
@@ -1030,14 +1027,14 @@ namespace Server.Engines.ArenaSystem
             }
 
             writer.Write(KillRecord.Count);
-            foreach (var kvp in KillRecord)
+            foreach (KeyValuePair<string, string> kvp in KillRecord)
             {
                 writer.Write(kvp.Key);
                 writer.Write(kvp.Value);
             }
 
             writer.Write(Warned.Count);
-            foreach (var pm in Warned)
+            foreach (PlayerMobile pm in Warned)
             {
                 writer.Write(pm);
             }

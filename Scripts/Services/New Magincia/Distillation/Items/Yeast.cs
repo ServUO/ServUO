@@ -19,7 +19,7 @@ namespace Server.Items
             }
         }
 
-        public override int LabelNumber { get { return 1150453; } } // yeast
+        public override int LabelNumber => 1150453;  // yeast
 
         [Constructable]
         public Yeast() : base(3624)
@@ -72,7 +72,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write(m_BacterialResistance);
         }

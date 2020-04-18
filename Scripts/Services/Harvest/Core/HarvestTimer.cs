@@ -15,19 +15,19 @@ namespace Server.Engines.Harvest
         public HarvestTimer(Mobile from, Item tool, HarvestSystem system, HarvestDefinition def, object toHarvest, object locked)
             : base(TimeSpan.Zero, def.EffectDelay)
         {
-            this.m_From = from;
-            this.m_Tool = tool;
-            this.m_System = system;
-            this.m_Definition = def;
-            this.m_ToHarvest = toHarvest;
-            this.m_Locked = locked;
-            this.m_Count = Utility.RandomList(def.EffectCounts);
+            m_From = from;
+            m_Tool = tool;
+            m_System = system;
+            m_Definition = def;
+            m_ToHarvest = toHarvest;
+            m_Locked = locked;
+            m_Count = Utility.RandomList(def.EffectCounts);
         }
 
         protected override void OnTick()
         {
-            if (!this.m_System.OnHarvesting(this.m_From, this.m_Tool, this.m_Definition, this.m_ToHarvest, this.m_Locked, ++this.m_Index == this.m_Count))
-                this.Stop();
+            if (!m_System.OnHarvesting(m_From, m_Tool, m_Definition, m_ToHarvest, m_Locked, ++m_Index == m_Count))
+                Stop();
         }
     }
 }

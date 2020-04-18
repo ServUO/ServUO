@@ -6,7 +6,7 @@ namespace Server.Items
     {
         public Container Container { get; set; }
 
-        public override TimeSpan TickDuration { get { return TimeSpan.FromSeconds(3); } }
+        public override TimeSpan TickDuration => TimeSpan.FromSeconds(3);
 
         public EnchantedHotItemSocket()
         {
@@ -78,7 +78,7 @@ namespace Server.Items
 
                 m.Backpack.Items.IterateReverse(i =>
                 {
-                    var socket = i.GetSocket<EnchantedHotItemSocket>();
+                    EnchantedHotItemSocket socket = i.GetSocket<EnchantedHotItemSocket>();
 
                     if (socket != null)
                     {
@@ -96,7 +96,7 @@ namespace Server.Items
 
         public static bool CheckDrop(Mobile from, Container droppedTo, Item dropped)
         {
-            var socket = dropped.GetSocket<EnchantedHotItemSocket>();
+            EnchantedHotItemSocket socket = dropped.GetSocket<EnchantedHotItemSocket>();
 
             if (socket != null)
             {
@@ -124,7 +124,7 @@ namespace Server.Items
 
         public static bool CheckDrop(Mobile from, Item dropped)
         {
-            var socket = dropped.GetSocket<EnchantedHotItemSocket>();
+            EnchantedHotItemSocket socket = dropped.GetSocket<EnchantedHotItemSocket>();
 
             if (socket != null)
             {

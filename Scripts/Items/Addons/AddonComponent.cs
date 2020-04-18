@@ -88,7 +88,7 @@ namespace Server.Items
             }
         }
 
-        public override int LabelNumber { get { return m_LabelNumber; } }
+        public override int LabelNumber => m_LabelNumber;
 
         public override void Serialize(GenericWriter writer)
         {
@@ -103,7 +103,7 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-            var version = reader.ReadInt();
+            int version = reader.ReadInt();
 
             switch (version)
             {
@@ -118,7 +118,7 @@ namespace Server.Items
 
     public class AddonComponent : Item, IChopable
     {
-        public override bool ForceShowProperties { get { return Addon != null && Addon.ForceShowProperties; } }
+        public override bool ForceShowProperties => Addon != null && Addon.ForceShowProperties;
 
         private static readonly LightEntry[] m_Entries =
         {
@@ -204,22 +204,22 @@ namespace Server.Items
             }
         }
 
-        public virtual bool NeedsWall { get { return false; } }
-        public virtual Point3D WallPosition { get { return Point3D.Zero; } }
+        public virtual bool NeedsWall => false;
+        public virtual Point3D WallPosition => Point3D.Zero;
 
         public static void ApplyLightTo(Item item)
         {
             if ((item.ItemData.Flags & TileFlag.LightSource) == 0)
                 return; // not a light source
 
-            var itemID = item.ItemID;
+            int itemID = item.ItemID;
 
-            foreach (var entry in m_Entries)
+            foreach (LightEntry entry in m_Entries)
             {
-                var toMatch = entry.m_ItemIDs;
-                var contains = false;
+                int[] toMatch = entry.m_ItemIDs;
+                bool contains = false;
 
-                for (var j = 0; !contains && j < toMatch.Length; ++j)
+                for (int j = 0; !contains && j < toMatch.Length; ++j)
                     contains = (itemID == toMatch[j]);
 
                 if (contains)
@@ -298,7 +298,7 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-            var version = reader.ReadInt();
+            int version = reader.ReadInt();
 
             switch (version)
             {

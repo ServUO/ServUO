@@ -16,7 +16,7 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(this.Location, 3))
+            if (from.InRange(Location, 3))
             {
                 if (from.AccessLevel == AccessLevel.Player && IsInCooldown(from))
                     from.SendLocalizedMessage(1113413); // You have recently participated in this challenge. You must wait 24 hours to try again.
@@ -56,7 +56,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

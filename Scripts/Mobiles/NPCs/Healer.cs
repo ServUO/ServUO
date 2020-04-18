@@ -17,27 +17,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool CanTeach
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool IsActiveVendor
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override bool IsInvulnerable
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool CanTeach => true;
+        public override bool IsActiveVendor => true;
+        public override bool IsInvulnerable => true;
         public override bool CheckTeach(SkillName skill, Mobile from)
         {
             if (!base.CheckTeach(skill, from))
@@ -51,24 +33,24 @@ namespace Server.Mobiles
 
         public override void InitSBInfo()
         {
-            this.SBInfos.Add(new SBHealer());
+            SBInfos.Add(new SBHealer());
         }
 
         public override bool CheckResurrect(Mobile m)
         {
             if (m.Criminal)
             {
-                this.Say(501222); // Thou art a criminal.  I shall not resurrect thee.
+                Say(501222); // Thou art a criminal.  I shall not resurrect thee.
                 return false;
             }
             else if (m.Murderer)
             {
-                this.Say(501223); // Thou'rt not a decent and good person. I shall not resurrect thee.
+                Say(501223); // Thou'rt not a decent and good person. I shall not resurrect thee.
                 return false;
             }
             else if (m.Karma < 0)
             {
-                this.Say(501224); // Thou hast strayed from the path of virtue, but thou still deservest a second chance.
+                Say(501224); // Thou hast strayed from the path of virtue, but thou still deservest a second chance.
             }
 
             return true;
@@ -77,7 +59,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

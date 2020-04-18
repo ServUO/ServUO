@@ -38,7 +38,7 @@ namespace Server
 
         public static void OnLogin(LoginEventArgs args)
         {
-            var m = args.Mobile;
+            Mobile m = args.Mobile;
 
             if (m != null)
                 m.CheckLightLevels(true);
@@ -83,19 +83,19 @@ namespace Server
 
         public static void CheckLightLevels()
         {
-            var i = NetState.Instances.Count;
+            int i = NetState.Instances.Count;
 
             while (--i >= 0)
             {
                 if (i >= NetState.Instances.Count)
                     continue;
 
-                var ns = NetState.Instances[i];
+                NetState ns = NetState.Instances[i];
 
                 if (ns == null)
                     continue;
 
-                var m = ns.Mobile;
+                Mobile m = ns.Mobile;
 
                 if (m != null)
                     m.CheckLightLevels(false);

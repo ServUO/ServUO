@@ -11,16 +11,10 @@ namespace Server.Commands.Generic
         private IComparer m_Comparer;
         public SortExtension()
         {
-            this.m_Orders = new List<OrderInfo>();
+            m_Orders = new List<OrderInfo>();
         }
 
-        public override ExtensionInfo Info
-        {
-            get
-            {
-                return ExtInfo;
-            }
-        }
+        public override ExtensionInfo Info => ExtInfo;
         public static void Initialize()
         {
             ExtensionInfo.Register(ExtInfo);
@@ -31,7 +25,7 @@ namespace Server.Commands.Generic
             if (baseType == null)
                 throw new Exception("The ordering extension may only be used in combination with an object conditional.");
 
-            foreach (OrderInfo order in this.m_Orders)
+            foreach (OrderInfo order in m_Orders)
             {
                 order.Property.BindTo(baseType, PropertyAccess.Read);
                 order.Property.CheckAccess(from);
@@ -40,7 +34,7 @@ namespace Server.Commands.Generic
             if (assembly == null)
                 assembly = new AssemblyEmitter("__dynamic", false);
 
-            this.m_Comparer = SortCompiler.Compile(assembly, baseType, this.m_Orders.ToArray());
+            m_Comparer = SortCompiler.Compile(assembly, baseType, m_Orders.ToArray());
         }
 
         public override void Parse(Mobile from, string[] arguments, int offset, int size)
@@ -90,16 +84,16 @@ namespace Server.Commands.Generic
 
                 Property property = new Property(binding);
 
-                this.m_Orders.Add(new OrderInfo(property, isAscending));
+                m_Orders.Add(new OrderInfo(property, isAscending));
             }
         }
 
         public override void Filter(ArrayList list)
         {
-            if (this.m_Comparer == null)
+            if (m_Comparer == null)
                 throw new InvalidOperationException("The extension must first be optimized.");
 
-            list.Sort(this.m_Comparer);
+            list.Sort(m_Comparer);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Server.Engines.Khaldun
     public class CaddelliteVendor : BaseVendor
     {
         private readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
-        protected override List<SBInfo> SBInfos { get { return this.m_SBInfos; } }
+        protected override List<SBInfo> SBInfos => m_SBInfos;
 
         public override void InitSBInfo()
         {
@@ -83,8 +83,8 @@ namespace Server.Engines.Khaldun
             m_BuyInfo = new InternalBuyInfo(owner);
         }
 
-        public override IShopSellInfo SellInfo { get { return m_SellInfo; } }
-        public override List<GenericBuyInfo> BuyInfo { get { return m_BuyInfo; } }
+        public override IShopSellInfo SellInfo => m_SellInfo;
+        public override List<GenericBuyInfo> BuyInfo => m_BuyInfo;
 
         public class InternalBuyInfo : List<GenericBuyInfo>
         {

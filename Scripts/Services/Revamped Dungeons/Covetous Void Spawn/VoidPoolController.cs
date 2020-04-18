@@ -64,7 +64,7 @@ namespace Server.Engines.VoidPool
                 {
                     if (Region == null)
                     {
-                        Region = new VoidPoolRegion(this, this.Map);
+                        Region = new VoidPoolRegion(this, Map);
                         Region.Register();
                     }
 
@@ -221,7 +221,7 @@ namespace Server.Engines.VoidPool
                     SpawnWave();
                 }
 
-                IPooledEnumerable eable = this.Map.GetMobilesInBounds(PoolWalls);
+                IPooledEnumerable eable = Map.GetMobilesInBounds(PoolWalls);
                 foreach (Mobile m in eable)
                 {
                     if (!OnGoing)
@@ -251,9 +251,9 @@ namespace Server.Engines.VoidPool
                 {
                     int x = start.X + Utility.RandomMinMax(start.X - (StartPointVariance / 2), start.X + (StartPointVariance / 2));
                     int y = start.Y + Utility.RandomMinMax(start.Y - (StartPointVariance / 2), start.Y + (StartPointVariance / 2));
-                    int z = this.Map.GetAverageZ(x, y);
+                    int z = Map.GetAverageZ(x, y);
 
-                    if (this.Map.CanSpawnMobile(x, y, z))
+                    if (Map.CanSpawnMobile(x, y, z))
                     {
                         start = new Point3D(x, y, z);
                         break;
@@ -281,11 +281,11 @@ namespace Server.Engines.VoidPool
                 if (bc != null)
                 {
                     bc.NoLootOnDeath = true;
-                    Timer.DelayCall(TimeSpan.FromSeconds((double)i * .75), () =>
+                    Timer.DelayCall(TimeSpan.FromSeconds(i * .75), () =>
                     {
                         if (OnGoing)
                         {
-                            bc.MoveToWorld(start, this.Map);
+                            bc.MoveToWorld(start, Map);
                             bc.Home = EndPoint;
                             bc.RangeHome = 1;
 
@@ -299,11 +299,11 @@ namespace Server.Engines.VoidPool
                 }
             }
 
-            var gate1 = new VoidPoolGate();
+            VoidPoolGate gate1 = new VoidPoolGate();
             gate1.MoveToWorld(StartPoint1, Map);
             Effects.PlaySound(StartPoint1, Map, 0x20E);
 
-            var gate2 = new VoidPoolGate();
+            VoidPoolGate gate2 = new VoidPoolGate();
             gate2.MoveToWorld(StartPoint2, Map);
             Effects.PlaySound(StartPoint2, Map, 0x20E);
 
@@ -325,7 +325,7 @@ namespace Server.Engines.VoidPool
 
         public WayPoint GetNearestWaypoint(Mobile m, int range = 15)
         {
-            IPooledEnumerable eable = this.Map.GetItemsInRange(m.Location, range);
+            IPooledEnumerable eable = Map.GetItemsInRange(m.Location, range);
 
             int closestRange = 15;
             WayPoint closest = null;
@@ -350,7 +350,7 @@ namespace Server.Engines.VoidPool
 
         public Item GetNearestVoidPoolWall(Mobile m)
         {
-            IPooledEnumerable eable = this.Map.GetItemsInRange(m.Location, 5);
+            IPooledEnumerable eable = Map.GetItemsInRange(m.Location, 5);
 
             int closestRange = 5;
             Item closest = null;
@@ -429,7 +429,7 @@ namespace Server.Engines.VoidPool
 
                 if (m is PlayerMobile)
                 {
-                    var quest = QuestHelper.GetQuest<AForcedSacraficeQuest>((PlayerMobile)m);
+                    AForcedSacraficeQuest quest = QuestHelper.GetQuest<AForcedSacraficeQuest>((PlayerMobile)m);
 
                     if (quest != null)
                     {
@@ -478,9 +478,9 @@ namespace Server.Engines.VoidPool
 
                     if (info.Creatures.Count == 0)
                     {
-                        foreach (Mobile m in info.Credit.Where(m => m.Region == this.Region && m is PlayerMobile))
+                        foreach (Mobile m in info.Credit.Where(m => m.Region == Region && m is PlayerMobile))
                         {
-                            double award = Math.Max(0, this.Map == Map.Felucca ? Stage * 2 : Stage);
+                            double award = Math.Max(0, Map == Map.Felucca ? Stage * 2 : Stage);
 
                             if (award > 0)
                             {
@@ -569,9 +569,9 @@ namespace Server.Engines.VoidPool
 
             int points = 0;
 
-            foreach (var info in Waves.Where(i => i.Credit.Contains(from)))
+            foreach (WaveInfo info in Waves.Where(i => i.Credit.Contains(from)))
             {
-                points += this.Map == Map.Felucca ? Stage * 2 : Stage;
+                points += Map == Map.Felucca ? Stage * 2 : Stage;
             }
 
             return points;
@@ -616,10 +616,10 @@ namespace Server.Engines.VoidPool
                 Timer = null;
             }
 
-            foreach (var wp in WaypointsA.Where(w => w != null && !w.Deleted))
+            foreach (WayPoint wp in WaypointsA.Where(w => w != null && !w.Deleted))
                 wp.Delete();
 
-            foreach (var wp in WaypointsB.Where(w => w != null && !w.Deleted))
+            foreach (WayPoint wp in WaypointsB.Where(w => w != null && !w.Deleted))
                 wp.Delete();
 
             if (Level3Spawner != null)
@@ -638,7 +638,7 @@ namespace Server.Engines.VoidPool
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)2);
+            writer.Write(2);
 
             if (Level3Spawner != null)
             {

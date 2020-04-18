@@ -9,30 +9,19 @@ namespace Server.Engines.Quests.Ambitious
         {
         }
 
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 // Kill 5 red/black solen queens.
-                return ((AmbitiousQueenQuest)this.System).RedSolen ? 1054062 : 1054063;
-            }
-        }
-        public override int MaxProgress
-        {
-            get
-            {
-                return 5;
-            }
-        }
+                ((AmbitiousQueenQuest)System).RedSolen ? 1054062 : 1054063;
+        public override int MaxProgress => 5;
         public override void RenderProgress(BaseQuestGump gump)
         {
-            if (!this.Completed)
+            if (!Completed)
             {
                 // Red/Black Solen Queens killed:
-                gump.AddHtmlLocalized(70, 260, 270, 100, ((AmbitiousQueenQuest)this.System).RedSolen ? 1054064 : 1054065, BaseQuestGump.Blue, false, false);
-                gump.AddLabel(70, 280, 0x64, this.CurProgress.ToString());
+                gump.AddHtmlLocalized(70, 260, 270, 100, ((AmbitiousQueenQuest)System).RedSolen ? 1054064 : 1054065, BaseQuestGump.Blue, false, false);
+                gump.AddLabel(70, 280, 0x64, CurProgress.ToString());
                 gump.AddLabel(100, 280, 0x64, "/");
-                gump.AddLabel(130, 280, 0x64, this.MaxProgress.ToString());
+                gump.AddLabel(130, 280, 0x64, MaxProgress.ToString());
             }
             else
             {
@@ -42,10 +31,10 @@ namespace Server.Engines.Quests.Ambitious
 
         public override bool IgnoreYoungProtection(Mobile from)
         {
-            if (this.Completed)
+            if (Completed)
                 return false;
 
-            bool redSolen = ((AmbitiousQueenQuest)this.System).RedSolen;
+            bool redSolen = ((AmbitiousQueenQuest)System).RedSolen;
 
             if (redSolen)
                 return from is RedSolenQueen;
@@ -55,23 +44,23 @@ namespace Server.Engines.Quests.Ambitious
 
         public override void OnKill(BaseCreature creature, Container corpse)
         {
-            bool redSolen = ((AmbitiousQueenQuest)this.System).RedSolen;
+            bool redSolen = ((AmbitiousQueenQuest)System).RedSolen;
 
             if (redSolen)
             {
                 if (creature is RedSolenQueen)
-                    this.CurProgress++;
+                    CurProgress++;
             }
             else
             {
                 if (creature is BlackSolenQueen)
-                    this.CurProgress++;
+                    CurProgress++;
             }
         }
 
         public override void OnComplete()
         {
-            this.System.AddObjective(new ReturnAfterKillsObjective());
+            System.AddObjective(new ReturnAfterKillsObjective());
         }
     }
 
@@ -81,19 +70,14 @@ namespace Server.Engines.Quests.Ambitious
         {
         }
 
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 /* You've completed your task of slaying solen queens. Return to
-                * the ambitious queen who asked for your help.
-                */
-                return 1054067;
-            }
-        }
+* the ambitious queen who asked for your help.
+*/
+                1054067;
         public override void OnComplete()
         {
-            this.System.AddConversation(new GatherFungiConversation());
+            System.AddConversation(new GatherFungiConversation());
         }
     }
 
@@ -103,19 +87,14 @@ namespace Server.Engines.Quests.Ambitious
         {
         }
 
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 /* Gather zoogi fungus until you have 50 of them, then give them
-                * to the ambitious queen you are helping.
-                */
-                return 1054069;
-            }
-        }
+* to the ambitious queen you are helping.
+*/
+                1054069;
         public override void OnComplete()
         {
-            this.System.AddConversation(new EndConversation());
+            System.AddConversation(new EndConversation());
         }
     }
 
@@ -126,77 +105,72 @@ namespace Server.Engines.Quests.Ambitious
         private bool m_Gold;
         public GetRewardObjective(bool bagOfSending, bool powderOfTranslocation, bool gold)
         {
-            this.m_BagOfSending = bagOfSending;
-            this.m_PowderOfTranslocation = powderOfTranslocation;
-            this.m_Gold = gold;
+            m_BagOfSending = bagOfSending;
+            m_PowderOfTranslocation = powderOfTranslocation;
+            m_Gold = gold;
         }
 
         public GetRewardObjective()
         {
         }
 
-        public override object Message
-        {
-            get
-            {
+        public override object Message =>
                 // Return to the ambitious solen queen for your reward.
-                return 1054148;
-            }
-        }
+                1054148;
         public bool BagOfSending
         {
             get
             {
-                return this.m_BagOfSending;
+                return m_BagOfSending;
             }
             set
             {
-                this.m_BagOfSending = value;
+                m_BagOfSending = value;
             }
         }
         public bool PowderOfTranslocation
         {
             get
             {
-                return this.m_PowderOfTranslocation;
+                return m_PowderOfTranslocation;
             }
             set
             {
-                this.m_PowderOfTranslocation = value;
+                m_PowderOfTranslocation = value;
             }
         }
         public bool Gold
         {
             get
             {
-                return this.m_Gold;
+                return m_Gold;
             }
             set
             {
-                this.m_Gold = value;
+                m_Gold = value;
             }
         }
         public override void OnComplete()
         {
-            this.System.AddConversation(new End2Conversation());
+            System.AddConversation(new End2Conversation());
         }
 
         public override void ChildDeserialize(GenericReader reader)
         {
             int version = reader.ReadEncodedInt();
 
-            this.m_BagOfSending = reader.ReadBool();
-            this.m_PowderOfTranslocation = reader.ReadBool();
-            this.m_Gold = reader.ReadBool();
+            m_BagOfSending = reader.ReadBool();
+            m_PowderOfTranslocation = reader.ReadBool();
+            m_Gold = reader.ReadBool();
         }
 
         public override void ChildSerialize(GenericWriter writer)
         {
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
 
-            writer.Write((bool)this.m_BagOfSending);
-            writer.Write((bool)this.m_PowderOfTranslocation);
-            writer.Write((bool)this.m_Gold);
+            writer.Write(m_BagOfSending);
+            writer.Write(m_PowderOfTranslocation);
+            writer.Write(m_Gold);
         }
     }
 }

@@ -50,34 +50,10 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool DeathAdderCharmable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 4;
-            }
-        }
-        public override int Hides
-        {
-            get
-            {
-                return 15;
-            }
-        }
-        public override HideType HideType
-        {
-            get
-            {
-                return HideType.Spined;
-            }
-        }
+        public override bool DeathAdderCharmable => true;
+        public override int Meat => 4;
+        public override int Hides => 15;
+        public override HideType HideType => HideType.Spined;
 
         public void AuraEffect(Mobile m)
         {
@@ -92,7 +68,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

@@ -25,7 +25,7 @@ namespace Server.Items
         public WrongBedrollBase(int id)
             : base(id)
         {
-            this.Movable = false;
+            Movable = false;
         }
 
         public WrongBedrollBase(Serial serial)
@@ -43,12 +43,12 @@ namespace Server.Items
 
             from.RevealingAction();
 
-            if (this.PointDest != Point3D.Zero)
+            if (PointDest != Point3D.Zero)
             {
                 MysteriousTunnel mt = new MysteriousTunnel();
                 Effects.PlaySound(from.Location, from.Map, 0x3BD);
 
-                mt.PointDest = this.PointDest;
+                mt.PointDest = PointDest;
                 mt.MoveToWorld(Location, Map);
                 m_Spawner.MysteriousTunnels.Add(mt);
             }
@@ -56,10 +56,10 @@ namespace Server.Items
             {
                 if (Utility.RandomDouble() < 0.5)
                 {
-                    Point3D loc = this.GetWorldLocation();
-                    Map facet = this.Map;
+                    Point3D loc = GetWorldLocation();
+                    Map facet = Map;
 
-                    this.SendMessageTo(from, 502999, 0x3B2); // You set off a trap!
+                    SendMessageTo(from, 502999, 0x3B2); // You set off a trap!
                     AOS.Damage(from, 40, 0, 100, 0, 0, 0);
 
                     switch (Utility.Random(3))
@@ -72,12 +72,12 @@ namespace Server.Items
                             }
                         case 1:
                             {
-                                Effects.PlaySound(loc, this.Map, 0x307);
-                                Effects.SendLocationEffect(new Point3D(loc.X - 1, loc.Y, loc.Z), this.Map, 0x36BD, 15);
-                                Effects.SendLocationEffect(new Point3D(loc.X + 1, loc.Y, loc.Z), this.Map, 0x36BD, 15);
-                                Effects.SendLocationEffect(new Point3D(loc.X, loc.Y - 1, loc.Z), this.Map, 0x36BD, 15);
-                                Effects.SendLocationEffect(new Point3D(loc.X, loc.Y + 1, loc.Z), this.Map, 0x36BD, 15);
-                                Effects.SendLocationEffect(new Point3D(loc.X + 1, loc.Y + 1, loc.Z + 11), this.Map, 0x36BD, 15);
+                                Effects.PlaySound(loc, Map, 0x307);
+                                Effects.SendLocationEffect(new Point3D(loc.X - 1, loc.Y, loc.Z), Map, 0x36BD, 15);
+                                Effects.SendLocationEffect(new Point3D(loc.X + 1, loc.Y, loc.Z), Map, 0x36BD, 15);
+                                Effects.SendLocationEffect(new Point3D(loc.X, loc.Y - 1, loc.Z), Map, 0x36BD, 15);
+                                Effects.SendLocationEffect(new Point3D(loc.X, loc.Y + 1, loc.Z), Map, 0x36BD, 15);
+                                Effects.SendLocationEffect(new Point3D(loc.X + 1, loc.Y + 1, loc.Z + 11), Map, 0x36BD, 15);
                                 break;
                             }
                         case 2:
@@ -103,7 +103,7 @@ namespace Server.Items
                         }
                         else
                         {
-                            soap.MoveToWorld(this.Location, this.Map);
+                            soap.MoveToWorld(Location, Map);
                         }
                     }
                     else
@@ -114,32 +114,32 @@ namespace Server.Items
                 }
             }
 
-            this.Delete();
+            Delete();
         }
 
         private void SendMessageTo(Mobile to, int number, int hue)
         {
-            if (this.Deleted || !to.CanSee(this))
+            if (Deleted || !to.CanSee(this))
                 return;
 
-            to.Send(new Network.MessageLocalized(this.Serial, this.ItemID, Network.MessageType.Regular, hue, 3, number, "", ""));
+            to.Send(new Network.MessageLocalized(Serial, ItemID, Network.MessageType.Regular, hue, 3, number, "", ""));
         }
 
         private void SendMessageTo(Mobile to, string text, int hue)
         {
-            if (this.Deleted || !to.CanSee(this))
+            if (Deleted || !to.CanSee(this))
                 return;
 
-            to.Send(new Network.UnicodeMessage(this.Serial, this.ItemID, Network.MessageType.Regular, hue, 3, "ENU", "", text));
+            to.Send(new Network.UnicodeMessage(Serial, ItemID, Network.MessageType.Regular, hue, 3, "ENU", "", text));
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
-            writer.Write(this.m_Spawner);
-            writer.Write(this.m_PointDest);
+            writer.Write(m_Spawner);
+            writer.Write(m_PointDest);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -147,14 +147,14 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            this.m_Spawner = (BedrollSpawner)reader.ReadItem();
-            this.m_PointDest = reader.ReadPoint3D();
+            m_Spawner = (BedrollSpawner)reader.ReadItem();
+            m_PointDest = reader.ReadPoint3D();
         }
     }
 
     public class WrongBedrollSouth : WrongBedrollBase
     {
-        public override int LabelNumber { get { return 1022645; } } // bedroll
+        public override int LabelNumber => 1022645;  // bedroll
 
         [Constructable]
         public WrongBedrollSouth()
@@ -170,7 +170,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -182,7 +182,7 @@ namespace Server.Items
 
     public class WrongBedrollEast : WrongBedrollBase
     {
-        public override int LabelNumber { get { return 1022645; } } // bedroll
+        public override int LabelNumber => 1022645;  // bedroll
 
         [Constructable]
         public WrongBedrollEast()
@@ -198,7 +198,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

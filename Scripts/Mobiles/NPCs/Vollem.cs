@@ -5,7 +5,7 @@ namespace Server.Mobiles
     [CorpseName("a vollem corpse")]
     public class Vollem : BaseCreature, IRepairableMobile
     {
-        public Type RepairResource { get { return typeof(Server.Items.IronIngot); } }
+        public Type RepairResource => typeof(Server.Items.IronIngot);
 
         [Constructable]
         public Vollem()
@@ -43,18 +43,18 @@ namespace Server.Mobiles
             SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
-        public override bool IsScaredOfScaryThings { get { return false; } }
-        public override bool IsScaryToPets { get { return true; } }
-        public override bool IsBondable { get { return false; } }
-        public override bool DeleteOnRelease { get { return true; } }
-        public override bool AutoDispel { get { return !Controlled; } }
-        public override bool BleedImmune { get { return true; } }
-        public override bool BardImmune { get { return Controlled; } }
-        public override Poison PoisonImmune { get { return Poison.Lethal; } }
+        public override bool IsScaredOfScaryThings => false;
+        public override bool IsScaryToPets => true;
+        public override bool IsBondable => false;
+        public override bool DeleteOnRelease => true;
+        public override bool AutoDispel => !Controlled;
+        public override bool BleedImmune => true;
+        public override bool BardImmune => Controlled;
+        public override Poison PoisonImmune => Poison.Lethal;
 
-        public override FoodType FavoriteFood { get { return FoodType.Meat; } }
-        public override int Meat { get { return 5; } }
-        public override int Hides { get { return 10; } }
+        public override FoodType FavoriteFood => FoodType.Meat;
+        public override int Meat => 5;
+        public override int Hides => 10;
 
         public override int GetAngerSound()
         {
@@ -125,7 +125,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

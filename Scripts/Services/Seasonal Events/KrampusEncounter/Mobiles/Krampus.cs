@@ -10,7 +10,7 @@ namespace Server.Mobiles
     [CorpseName("the corpse of krampus")]
     public class Krampus : BaseCreature
     {
-        public override bool TeleportsTo { get { return true; } }
+        public override bool TeleportsTo => true;
 
         public List<BaseCreature> SummonedHelpers { get; set; }
         public List<BaseCreature> InitialSpawn { get; set; }
@@ -23,7 +23,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public Point3D SpawnLocation { get; set; }
 
-        public bool IsKrampusEncounter { get { return KrampusEncounter.Encounter != null && KrampusEncounter.Encounter.Krampus == this; } }
+        public bool IsKrampusEncounter => KrampusEncounter.Encounter != null && KrampusEncounter.Encounter.Krampus == this;
 
         [Constructable]
         public Krampus()
@@ -86,7 +86,7 @@ namespace Server.Mobiles
             if (target == null || (!initial && InitialSpawn != null && InitialSpawn.Count > 0))
                 return;
 
-            var map = Map;
+            Map map = Map;
 
             if (map == null || TotalSummons() > MaxSummons)
                 return;
@@ -127,7 +127,7 @@ namespace Server.Mobiles
                         spawn.MoveToWorld(p, map);
                         spawn.Home = p;
                         spawn.RangeHome = 5;
-                        spawn.Team = this.Team;
+                        spawn.Team = Team;
                         spawn.SummonMaster = this;
 
                         if (!initial)
@@ -265,7 +265,7 @@ namespace Server.Mobiles
             {
                 if (Utility.RandomBool())
                 {
-                    var target = GetTeleportTarget();
+                    Mobile target = GetTeleportTarget();
 
                     if (target != null)
                     {
@@ -279,9 +279,9 @@ namespace Server.Mobiles
 
                     PlaySound(0x20D);
 
-                    foreach (var m in SpellHelper.AcquireIndirectTargets(this, Location, Map, 10).OfType<Mobile>())
+                    foreach (Mobile m in SpellHelper.AcquireIndirectTargets(this, Location, Map, 10).OfType<Mobile>())
                     {
-                        var range = (int)GetDistanceToSqrt(m);
+                        int range = (int)GetDistanceToSqrt(m);
 
                         if (range < 1) range = 1;
                         if (range > 4) range = 4;
@@ -310,11 +310,11 @@ namespace Server.Mobiles
         {
             if (IsKrampusEncounter)
             {
-                var rights = GetLootingRights();
+                List<DamageStore> rights = GetLootingRights();
 
-                foreach (var ds in rights.Where(s => s.m_Mobile is PlayerMobile && s.m_HasRight))
+                foreach (DamageStore ds in rights.Where(s => s.m_Mobile is PlayerMobile && s.m_HasRight))
                 {
-                    var m = ds.m_Mobile as PlayerMobile;
+                    PlayerMobile m = ds.m_Mobile as PlayerMobile;
                     int ordersComplete = 0;
 
                     if (KrampusEncounter.Encounter.CompleteTable.ContainsKey(m))
@@ -384,7 +384,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write(SpawnLocation);
 

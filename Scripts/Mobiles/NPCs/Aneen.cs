@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public Aneen()
             : base("the keeper of tradition")
         {
-            this.Name = "Lorekeeper Aneen";
+            Name = "Lorekeeper Aneen";
         }
 
         public Aneen(Serial serial)
@@ -18,55 +18,37 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool CanTeach
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool IsInvulnerable
-        {
-            get
-            {
-                return true;
-            }
-        }
-        protected override List<SBInfo> SBInfos
-        {
-            get
-            {
-                return this.m_SBInfos;
-            }
-        }
+        public override bool CanTeach => false;
+        public override bool IsInvulnerable => true;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
         }
 
         public override void InitBody()
         {
-            this.InitStats(100, 100, 25);
+            InitStats(100, 100, 25);
 
-            this.Female = false;
-            this.Race = Race.Elf;
+            Female = false;
+            Race = Race.Elf;
 
-            this.Hue = 0x83E5;
-            this.HairItemID = 0x2FBF;
-            this.HairHue = 0x90;
+            Hue = 0x83E5;
+            HairItemID = 0x2FBF;
+            HairHue = 0x90;
         }
 
         public override void InitOutfit()
         {
-            this.AddItem(new Sandals(0x1BB));
-            this.AddItem(new MaleElvenRobe(0x48F));
-            this.AddItem(new Item(0xDF2));
+            AddItem(new Sandals(0x1BB));
+            AddItem(new MaleElvenRobe(0x48F));
+            AddItem(new Item(0xDF2));
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

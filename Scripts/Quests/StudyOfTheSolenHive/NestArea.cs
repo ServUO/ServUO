@@ -18,8 +18,8 @@ namespace Server.Engines.Quests.Naturalist
         private readonly Rectangle2D[] m_Rects;
         private NestArea(bool special, params Rectangle2D[] rects)
         {
-            this.m_Special = special;
-            this.m_Rects = rects;
+            m_Special = special;
+            m_Rects = rects;
         }
 
         public static int NonSpecialCount
@@ -35,13 +35,7 @@ namespace Server.Engines.Quests.Naturalist
                 return n;
             }
         }
-        public bool Special
-        {
-            get
-            {
-                return this.m_Special;
-            }
-        }
+        public bool Special => m_Special;
         public int ID
         {
             get
@@ -74,7 +68,7 @@ namespace Server.Engines.Quests.Naturalist
 
         public bool Contains(IPoint2D p)
         {
-            foreach (Rectangle2D rect in this.m_Rects)
+            foreach (Rectangle2D rect in m_Rects)
             {
                 if (rect.Contains(p))
                     return true;

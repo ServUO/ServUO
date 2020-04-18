@@ -8,7 +8,7 @@ namespace Server.Items
     {
         private int m_UsesRemaining;
 
-        public override int LabelNumber { get { return 1149868; } } // Forged Metal of Artifacts
+        public override int LabelNumber => 1149868;  // Forged Metal of Artifacts
 
         [Constructable]
         public ForgedMetalOfArtifacts(int uses)
@@ -42,9 +42,9 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
-            writer.Write((int)m_UsesRemaining);
+            writer.Write(m_UsesRemaining);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -92,11 +92,11 @@ namespace Server.Items
             {
                 from.NextEnhanceSuccess = true;
                 from.SendLocalizedMessage(1149956); // A magical aura surrounds you and you feel your next item enhancing attempt will most certainly be successful.
-                this.m_UsesRemaining -= 1;
+                m_UsesRemaining -= 1;
                 InvalidateProperties();
-                if (this.m_UsesRemaining <= 0)
+                if (m_UsesRemaining <= 0)
                 {
-                    this.Delete();
+                    Delete();
                     from.SendLocalizedMessage(1044038); // You have worn out your tool!
                 }
             }

@@ -50,7 +50,7 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
-        public override bool CanBeParagon { get { return false; } }
+        public override bool CanBeParagon => false;
         public override void OnDeath(Container c)
         {
             base.OnDeath(c);
@@ -80,7 +80,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

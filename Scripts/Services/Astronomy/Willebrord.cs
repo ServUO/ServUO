@@ -11,8 +11,8 @@ namespace Server.Engines.Astronomy
         public static Willebrord TramInstance { get; set; }
 
         protected readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
-        protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }
-        public override bool IsActiveVendor { get { return false; } }
+        protected override List<SBInfo> SBInfos => m_SBInfos;
+        public override bool IsActiveVendor => false;
 
         public override void InitSBInfo()
         {
@@ -28,34 +28,34 @@ namespace Server.Engines.Astronomy
 
             if (Map.Trammel.FindItem<AstronomyTent>(new Point3D(4707, 1127, 0)) == null)
             {
-                var tent = new AstronomyTent();
+                AstronomyTent tent = new AstronomyTent();
                 tent.MoveToWorld(new Point3D(4707, 1127, 0), Map.Trammel);
             }
 
             if (Map.Trammel.FindItem<PersonalTelescope>(new Point3D(4705, 1128, 0)) == null)
             {
-                var tele = new PersonalTelescope();
+                PersonalTelescope tele = new PersonalTelescope();
                 tele.Movable = false;
                 tele.MoveToWorld(new Point3D(4705, 1128, 0), Map.Trammel);
             }
 
             if (Map.Trammel.FindItem<BrassOrrery>(new Point3D(4705, 1126, 0)) == null)
             {
-                var orrery = new BrassOrrery();
+                BrassOrrery orrery = new BrassOrrery();
                 orrery.Movable = false;
                 orrery.MoveToWorld(new Point3D(4705, 1126, 0), Map.Trammel);
             }
 
             if (Map.Trammel.FindItem<ConstellationLedger>(new Point3D(4709, 1127, 0)) == null)
             {
-                var ledger = new ConstellationLedger();
+                ConstellationLedger ledger = new ConstellationLedger();
                 ledger.Movable = false;
                 ledger.MoveToWorld(new Point3D(4709, 1127, 4), Map.Trammel);
             }
 
             if (Map.Trammel.FindItem<PrimerOnBritannianAstronomy>(new Point3D(4709, 1126, 0)) == null)
             {
-                var book = new PrimerOnBritannianAstronomy();
+                PrimerOnBritannianAstronomy book = new PrimerOnBritannianAstronomy();
                 book.Movable = false;
                 book.MoveToWorld(new Point3D(4709, 1126, 4), Map.Trammel);
             }
@@ -90,7 +90,7 @@ namespace Server.Engines.Astronomy
         {
             if (m.InRange(Location, 3) && InLOS(m))
             {
-                var gump = new Gump(100, 100);
+                Gump gump = new Gump(100, 100);
                 gump.AddBackground(0, 0, 720, 270, 0x2454);
                 gump.AddImage(0, 0, 0x69D);
 
@@ -105,7 +105,7 @@ namespace Server.Engines.Astronomy
         {
             if (dropped is StarChart)
             {
-                var chart = (StarChart)dropped;
+                StarChart chart = (StarChart)dropped;
 
                 if (chart.Constellation >= 0 && chart.Constellation < AstronomySystem.MaxConstellations)
                 {
@@ -115,11 +115,11 @@ namespace Server.Engines.Astronomy
                     }
                     else
                     {
-                        var info = AstronomySystem.GetConstellation(chart.Constellation);
+                        ConstellationInfo info = AstronomySystem.GetConstellation(chart.Constellation);
 
                         if (info != null)
                         {
-                            var gump = new Gump(100, 100);
+                            Gump gump = new Gump(100, 100);
                             gump.AddBackground(0, 0, 720, 270, 0x2454);
                             gump.AddImage(0, 0, 0x69D);
                             gump.AddHtmlLocalized(290, 14, 418, 18, 1114513, "#1158517", 0xC63, false, false); // Willebrord the Astronomer

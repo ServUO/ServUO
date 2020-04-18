@@ -20,11 +20,11 @@ namespace Server.Engines.VvV
         {
             get
             {
-                switch (this.SteedType)
+                switch (SteedType)
                 {
                     default:
-                    case SteedType.Ostard: return new VvVMount("a war ostard", 0xDA, 0x3EA4, this.Hue);
-                    case SteedType.WarHorse: return new VvVMount("a war horse", 0xE2, 0x3EA0, this.Hue);
+                    case SteedType.Ostard: return new VvVMount("a war ostard", 0xDA, 0x3EA4, Hue);
+                    case SteedType.WarHorse: return new VvVMount("a war horse", 0xE2, 0x3EA0, Hue);
                 }
             }
         }
@@ -125,7 +125,7 @@ namespace Server.Engines.VvV
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime NextReadinessAtrophy { get; set; }
 
-        public override bool DeleteOnRelease { get { return true; } }
+        public override bool DeleteOnRelease => true;
 
         public VvVMount(string name, int id, int itemid, int hue)
             : base(name, id, itemid, AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.4, .2)
@@ -137,7 +137,7 @@ namespace Server.Engines.VvV
             else
                 BaseSoundID = 0xA8;
 
-            this.InitStats(Utility.Random(300, 100), 125, 60);
+            InitStats(Utility.Random(300, 100), 125, 60);
 
             SetStr(400);
             SetDex(125);
@@ -241,21 +241,9 @@ namespace Server.Engines.VvV
             return false;
         }
 
-        public override int Meat
-        {
-            get
-            {
-                return 3;
-            }
-        }
+        public override int Meat => 3;
 
-        public override int Hides
-        {
-            get
-            {
-                return 10;
-            }
-        }
+        public override int Hides => 10;
 
         public override FoodType FavoriteFood
         {

@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class MysteriousTunnel : Item
     {
-        public override int LabelNumber { get { return 1152265; } } // mysterious tunnel       
+        public override int LabelNumber => 1152265;  // mysterious tunnel       
         private Point3D m_PointDest;
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -18,7 +18,7 @@ namespace Server.Items
         public MysteriousTunnel()
             : base(0x1B71)
         {
-            this.Movable = false;
+            Movable = false;
         }
 
         public MysteriousTunnel(Serial serial)
@@ -31,8 +31,8 @@ namespace Server.Items
             if (m is PlayerMobile)
             {
                 Point3D loc = PointDest;
-                m.MoveToWorld(loc, this.Map);
-                BaseCreature.TeleportPets(m, loc, this.Map);
+                m.MoveToWorld(loc, Map);
+                BaseCreature.TeleportPets(m, loc, Map);
 
                 return false;
             }
@@ -43,9 +43,9 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
-            writer.Write(this.m_PointDest);
+            writer.Write(m_PointDest);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -53,7 +53,7 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            this.m_PointDest = reader.ReadPoint3D();
+            m_PointDest = reader.ReadPoint3D();
         }
     }
 }

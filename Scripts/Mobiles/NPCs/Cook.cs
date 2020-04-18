@@ -11,8 +11,8 @@ namespace Server.Mobiles
         public Cook()
             : base("the cook")
         {
-            this.SetSkill(SkillName.Cooking, 90.0, 100.0);
-            this.SetSkill(SkillName.TasteID, 75.0, 98.0);
+            SetSkill(SkillName.Cooking, 90.0, 100.0);
+            SetSkill(SkillName.TasteID, 75.0, 98.0);
         }
 
         public Cook(Serial serial)
@@ -20,37 +20,25 @@ namespace Server.Mobiles
         {
         }
 
-        public override VendorShoeType ShoeType
-        {
-            get
-            {
-                return Utility.RandomBool() ? VendorShoeType.Sandals : VendorShoeType.Shoes;
-            }
-        }
-        protected override List<SBInfo> SBInfos
-        {
-            get
-            {
-                return this.m_SBInfos;
-            }
-        }
+        public override VendorShoeType ShoeType => Utility.RandomBool() ? VendorShoeType.Sandals : VendorShoeType.Shoes;
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBCook());
+            m_SBInfos.Add(new SBCook());
 
-            if (this.IsTokunoVendor)
-                this.m_SBInfos.Add(new SBSECook());
+            if (IsTokunoVendor)
+                m_SBInfos.Add(new SBSECook());
         }
 
         public override void InitOutfit()
         {
             base.InitOutfit();
 
-            this.AddItem(new Server.Items.HalfApron());
+            AddItem(new Server.Items.HalfApron());
         }
 
         #region Bulk Orders
-        public override BODType BODType { get { return BODType.Cooking; } }
+        public override BODType BODType => BODType.Cooking;
 
         public override bool IsValidBulkOrder(Item item)
         {
@@ -74,7 +62,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

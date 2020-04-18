@@ -61,15 +61,15 @@ namespace Server.Mobiles
             m_NextAIChange = DateTime.UtcNow;
         }
 
-        public override Poison PoisonImmune { get { return Poison.Parasitic; } }
-        public override bool AlwaysMurderer { get { return true; } }
-        public override bool ReacquireOnMovement { get { return true; } }
-        public override bool AcquireOnApproach { get { return true; } }
-        public override int AcquireOnApproachRange { get { return 8; } }
+        public override Poison PoisonImmune => Poison.Parasitic;
+        public override bool AlwaysMurderer => true;
+        public override bool ReacquireOnMovement => true;
+        public override bool AcquireOnApproach => true;
+        public override int AcquireOnApproachRange => 8;
 
         public override WeaponAbility GetWeaponAbility()
         {
-            if (this.Weapon is BaseWeapon)
+            if (Weapon is BaseWeapon)
             {
                 if (Utility.RandomBool())
                     return ((BaseWeapon)Weapon).PrimaryAbility;
@@ -81,9 +81,9 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.UltraRich, 3);
-            this.AddLoot(LootPack.MedScrolls, 2);
-            this.AddLoot(LootPack.HighScrolls, 3);
+            AddLoot(LootPack.UltraRich, 3);
+            AddLoot(LootPack.MedScrolls, 2);
+            AddLoot(LootPack.HighScrolls, 3);
         }
 
         private DateTime m_NextSummon;
@@ -96,7 +96,7 @@ namespace Server.Mobiles
             if (Combatant == null)
                 return;
 
-            if (m_NextSummon < DateTime.UtcNow && this.Mana > 40 && this.Followers + 5 <= this.FollowersMax)
+            if (m_NextSummon < DateTime.UtcNow && Mana > 40 && Followers + 5 <= FollowersMax)
             {
                 Spell spell = new RisingColossusSpell(this, null);
                 spell.Cast();
@@ -138,7 +138,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write(m_Type);
         }

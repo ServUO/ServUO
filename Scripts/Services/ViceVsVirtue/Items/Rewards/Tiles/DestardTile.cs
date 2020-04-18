@@ -5,7 +5,7 @@ namespace Server.Engines.VvV
 {
     public class DestardTileAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new DestardTileDeed(); } }
+        public override BaseAddonDeed Deed => new DestardTileDeed();
 
         public TileType TileType { get; set; }
 
@@ -38,7 +38,7 @@ namespace Server.Engines.VvV
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -51,8 +51,8 @@ namespace Server.Engines.VvV
 
     public class DestardTileDeed : BaseAddonDeed, IRewardOption
     {
-        public override BaseAddon Addon { get { return new DestardTileAddon(TileType); } }
-        public override int LabelNumber { get { return 1155519; } } // Destard Tile
+        public override BaseAddon Addon => new DestardTileAddon(TileType);
+        public override int LabelNumber => 1155519;  // Destard Tile
 
         public TileType TileType { get; set; }
 
@@ -82,7 +82,7 @@ namespace Server.Engines.VvV
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

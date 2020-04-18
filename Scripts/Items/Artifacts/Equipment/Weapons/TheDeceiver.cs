@@ -3,8 +3,8 @@ namespace Server.Items
     [FlipableAttribute(0x1443, 0x1442)]
     public class TheDeceiver : TwoHandedAxe
     {
-        public override int LabelNumber { get { return 1157344; } } // the deceiver
-        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber => 1157344;  // the deceiver
+        public override bool IsArtifact => true;
 
         [Constructable]
         public TheDeceiver()
@@ -29,14 +29,14 @@ namespace Server.Items
         {
         }
 
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

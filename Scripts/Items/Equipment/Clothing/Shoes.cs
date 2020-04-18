@@ -5,13 +5,7 @@ namespace Server.Items
     #region Reward Clothing
     public class ZooMemberThighBoots : ThighBoots
     {
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1073221;
-            }
-        }// Britannia Royal Zoo Member
+        public override int LabelNumber => 1073221;// Britannia Royal Zoo Member
 
         [Constructable]
         public ZooMemberThighBoots()
@@ -40,7 +34,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -72,7 +66,7 @@ namespace Server.Items
 
         public override bool Scissor(Mobile from, Scissors scissors)
         {
-            if (this.DefaultResource == CraftResource.None)
+            if (DefaultResource == CraftResource.None)
                 return base.Scissor(from, scissors);
 
             from.SendLocalizedMessage(502440); // Scissors can not be used on that to produce anything.
@@ -83,7 +77,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)2); // version
+            writer.Write(2); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -98,12 +92,12 @@ namespace Server.Items
                     break; // empty, resource removed
                 case 1:
                     {
-                        this.m_Resource = (CraftResource)reader.ReadInt();
+                        m_Resource = (CraftResource)reader.ReadInt();
                         break;
                     }
                 case 0:
                     {
-                        this.m_Resource = this.DefaultResource;
+                        m_Resource = DefaultResource;
                         break;
                     }
             }
@@ -124,7 +118,7 @@ namespace Server.Items
         public FurBoots(int hue)
             : base(0x2307, hue)
         {
-            this.Weight = 3.0;
+            Weight = 3.0;
         }
 
         public FurBoots(Serial serial)
@@ -136,7 +130,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -151,13 +145,7 @@ namespace Server.Items
     [FlipableAttribute(0x170b, 0x170c)]
     public class Boots : BaseShoes
     {
-        public override CraftResource DefaultResource
-        {
-            get
-            {
-                return CraftResource.RegularLeather;
-            }
-        }
+        public override CraftResource DefaultResource => CraftResource.RegularLeather;
 
         [Constructable]
         public Boots()
@@ -169,7 +157,7 @@ namespace Server.Items
         public Boots(int hue)
             : base(0x170B, hue)
         {
-            this.Weight = 3.0;
+            Weight = 3.0;
         }
 
         public Boots(Serial serial)
@@ -181,7 +169,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -229,13 +217,7 @@ namespace Server.Items
         public int TempHue { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsArcane
-        {
-            get
-            {
-                return m_MaxArcaneCharges > 0 && m_CurArcaneCharges >= 0;
-            }
-        }
+        public bool IsArcane => m_MaxArcaneCharges > 0 && m_CurArcaneCharges >= 0;
 
         public override void AddCraftedProperties(ObjectPropertyList list)
         {
@@ -269,13 +251,7 @@ namespace Server.Items
 
         #endregion
 
-        public override CraftResource DefaultResource
-        {
-            get
-            {
-                return CraftResource.RegularLeather;
-            }
-        }
+        public override CraftResource DefaultResource => CraftResource.RegularLeather;
 
         [Constructable]
         public ThighBoots()
@@ -298,14 +274,14 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)2); // version
+            writer.Write(2); // version
 
             if (IsArcane)
             {
                 writer.Write(true);
                 writer.Write(TempHue);
-                writer.Write((int)m_CurArcaneCharges);
-                writer.Write((int)m_MaxArcaneCharges);
+                writer.Write(m_CurArcaneCharges);
+                writer.Write(m_MaxArcaneCharges);
             }
             else
             {
@@ -349,13 +325,7 @@ namespace Server.Items
     [FlipableAttribute(0x170f, 0x1710)]
     public class Shoes : BaseShoes
     {
-        public override CraftResource DefaultResource
-        {
-            get
-            {
-                return CraftResource.RegularLeather;
-            }
-        }
+        public override CraftResource DefaultResource => CraftResource.RegularLeather;
 
         [Constructable]
         public Shoes()
@@ -367,7 +337,7 @@ namespace Server.Items
         public Shoes(int hue)
             : base(0x170F, hue)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public Shoes(Serial serial)
@@ -379,7 +349,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -394,13 +364,7 @@ namespace Server.Items
     [FlipableAttribute(0x170d, 0x170e)]
     public class Sandals : BaseShoes
     {
-        public override CraftResource DefaultResource
-        {
-            get
-            {
-                return CraftResource.RegularLeather;
-            }
-        }
+        public override CraftResource DefaultResource => CraftResource.RegularLeather;
 
         [Constructable]
         public Sandals()
@@ -412,7 +376,7 @@ namespace Server.Items
         public Sandals(int hue)
             : base(0x170D, hue)
         {
-            this.Weight = 1.0;
+            Weight = 1.0;
         }
 
         public Sandals(Serial serial)
@@ -424,7 +388,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -449,7 +413,7 @@ namespace Server.Items
         public NinjaTabi(int hue)
             : base(0x2797, hue)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public NinjaTabi(Serial serial)
@@ -461,7 +425,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -486,7 +450,7 @@ namespace Server.Items
         public SamuraiTabi(int hue)
             : base(0x2796, hue)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public SamuraiTabi(Serial serial)
@@ -498,7 +462,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -523,7 +487,7 @@ namespace Server.Items
         public Waraji(int hue)
             : base(0x2796, hue)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public Waraji(Serial serial)
@@ -535,7 +499,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -550,21 +514,9 @@ namespace Server.Items
     [FlipableAttribute(0x2FC4, 0x317A)]
     public class ElvenBoots : BaseShoes
     {
-        public override CraftResource DefaultResource
-        {
-            get
-            {
-                return CraftResource.RegularLeather;
-            }
-        }
+        public override CraftResource DefaultResource => CraftResource.RegularLeather;
 
-        public override Race RequiredRace
-        {
-            get
-            {
-                return Race.Elf;
-            }
-        }
+        public override Race RequiredRace => Race.Elf;
 
         [Constructable]
         public ElvenBoots()
@@ -576,7 +528,7 @@ namespace Server.Items
         public ElvenBoots(int hue)
             : base(0x2FC4, hue)
         {
-            this.Weight = 2.0;
+            Weight = 2.0;
         }
 
         public ElvenBoots(Serial serial)
@@ -607,7 +559,7 @@ namespace Server.Items
     [Alterable(typeof(DefTailoring), typeof(LeatherTalons), true)]
     public class JesterShoes : BaseShoes
     {
-        public override int LabelNumber { get { return 1109617; } } // Jester Shoes
+        public override int LabelNumber => 1109617;  // Jester Shoes
 
         [Constructable]
         public JesterShoes()
@@ -629,7 +581,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

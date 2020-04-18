@@ -28,7 +28,7 @@ namespace Server.Engines.Khaldun
 
         public static void CheckEnabled(bool timed = false)
         {
-            var khaldun = PointsSystem.Khaldun;
+            KhaldunData khaldun = PointsSystem.Khaldun;
 
             if (khaldun.Enabled && !khaldun.InSeason)
             {
@@ -142,16 +142,16 @@ namespace Server.Engines.Khaldun
 
         public static void GenerateQuestContent()
         {
-            var map = Siege.SiegeShard ? Map.Felucca : Map.Trammel;
+            Map map = Siege.SiegeShard ? Map.Felucca : Map.Trammel;
 
-            var addon = new KhaldunDecorationAddon();
+            KhaldunDecorationAddon addon = new KhaldunDecorationAddon();
             addon.MoveToWorld(new Point3D(6232, 2887, -1), map);
 
             // Britain
-            var door = new TrapDoor("boreas", new Point3D(6242, 2892, 17), map);
-            var book = new MysteriousBook(door);
-            var dust = new DustPile(door);
-            var teleporter = new Teleporter(new Point3D(1369, 1465, 10), map);
+            TrapDoor door = new TrapDoor("boreas", new Point3D(6242, 2892, 17), map);
+            MysteriousBook book = new MysteriousBook(door);
+            DustPile dust = new DustPile(door);
+            Teleporter teleporter = new Teleporter(new Point3D(1369, 1465, 10), map);
 
             door.MoveToWorld(new Point3D(1369, 1465, 10), map);
             book.MoveToWorld(new Point3D(6240, 2885, 8), map);
@@ -237,7 +237,7 @@ namespace Server.Engines.Khaldun
             new GumshoeTools().MoveToWorld(new Point3D(6294, 2889, 6), map);
 
             // Gravestones
-            var grave = new DamagedHeadstone(1158607); // brit
+            DamagedHeadstone grave = new DamagedHeadstone(1158607); // brit
             grave.MoveToWorld(new Point3D(1378, 1445, 10), map);
 
             grave = new DamagedHeadstone(1158608); // vesper
@@ -251,7 +251,7 @@ namespace Server.Engines.Khaldun
             grave.MoveToWorld(new Point3D(723, 1104, 0), map);
 
             // footprints
-            var footprints = new BloodyFootPrints(0x1E06);
+            BloodyFootPrints footprints = new BloodyFootPrints(0x1E06);
             footprints.MoveToWorld(new Point3D(1383, 1452, 10), map);
 
             footprints = new BloodyFootPrints(0x1E06);
@@ -266,7 +266,7 @@ namespace Server.Engines.Khaldun
             footprints = new BloodyFootPrints(0x1E03);
             footprints.MoveToWorld(new Point3D(1378, 1464, 10), map);
 
-            var st = new Static(0x2006);
+            Static st = new Static(0x2006);
             st.Stackable = true;
             st.Amount = 0x191;
             st.Hue = 0x47E;

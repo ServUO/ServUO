@@ -28,7 +28,7 @@ namespace Server.Services.Virtues
 
         public static void CheckAtrophy(Mobile from)
         {
-            var pm = from as PlayerMobile;
+            PlayerMobile pm = from as PlayerMobile;
 
             if (pm == null)
                 return;
@@ -49,7 +49,7 @@ namespace Server.Services.Virtues
 
         public static void Valor(Mobile from, object targ)
         {
-            var idol = targ as IdolOfTheChampion;
+            IdolOfTheChampion idol = targ as IdolOfTheChampion;
 
             if (idol == null || idol.Deleted || idol.Spawn == null || idol.Spawn.Deleted)
                 from.SendLocalizedMessage(1054035); // You must target a Champion Idol to challenge the Champion's spawn!
@@ -59,7 +59,7 @@ namespace Server.Services.Virtues
                 from.SendLocalizedMessage(1054038); // The Champion of this region has already been challenged!
             else
             {
-                var vl = VirtueHelper.GetLevel(from, VirtueName.Valor);
+                VirtueLevel vl = VirtueHelper.GetLevel(from, VirtueName.Valor);
 
                 if (idol.Spawn.Active)
                 {

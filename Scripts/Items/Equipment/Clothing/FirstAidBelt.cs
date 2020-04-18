@@ -5,13 +5,13 @@ namespace Server.Items
 {
     public class FirstAidBelt : Container
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1158681; } } // First Aid Belt
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1158681;  // First Aid Belt
 
-        public override int DefaultGumpID { get { return 0x3C; } }
-        public override int DefaultMaxItems { get { return 1; } }
-        public override int DefaultMaxWeight { get { return 100; } }
-        public override double DefaultWeight { get { return 2.0; } }
+        public override int DefaultGumpID => 0x3C;
+        public override int DefaultMaxItems => 1;
+        public override int DefaultMaxWeight => 100;
+        public override double DefaultWeight => 2.0;
 
         private int m_WeightReduction;
         private int m_HealingBonus;
@@ -42,8 +42,8 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public AosAttributes Attributes { get { return m_Attributes; } set { } }
 
-        public Item Bandage { get { return Items.Count > 0 ? Items[0] : null; } }
-        public int MaxBandage { get { return DefaultMaxWeight * 10; } }
+        public Item Bandage => Items.Count > 0 ? Items[0] : null;
+        public int MaxBandage => DefaultMaxWeight * 10;
 
         [Constructable]
         public FirstAidBelt()
@@ -56,7 +56,7 @@ namespace Server.Items
 
         public override void OnAfterDuped(Item newItem)
         {
-            var belt = newItem as FirstAidBelt;
+            FirstAidBelt belt = newItem as FirstAidBelt;
 
             if (belt != null)
             {
@@ -71,7 +71,7 @@ namespace Server.Items
         {
         }
 
-        public override bool DisplaysContent { get { return false; } }
+        public override bool DisplaysContent => false;
 
         public override void UpdateTotal(Item sender, TotalType type, int delta)
         {

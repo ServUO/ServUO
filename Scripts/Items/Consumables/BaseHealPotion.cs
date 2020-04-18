@@ -22,7 +22,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -34,8 +34,8 @@ namespace Server.Items
 
         public void DoHeal(Mobile from)
         {
-            int min = Scale(from, this.MinHeal);
-            int max = Scale(from, this.MaxHeal);
+            int min = Scale(from, MinHeal);
+            int max = Scale(from, MaxHeal);
 
             from.Heal(Utility.RandomMinMax(min, max));
         }
@@ -56,7 +56,7 @@ namespace Server.Items
                         PlayDrinkEffect(from);
                         Consume();
 
-                        Timer.DelayCall(TimeSpan.FromSeconds(this.Delay), new TimerStateCallback(ReleaseHealLock), from);
+                        Timer.DelayCall(TimeSpan.FromSeconds(Delay), new TimerStateCallback(ReleaseHealLock), from);
                     }
                     else
                     {

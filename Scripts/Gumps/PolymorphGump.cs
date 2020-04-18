@@ -31,48 +31,18 @@ namespace Server.Gumps
         private readonly int m_Y;
         private PolymorphEntry(int Art, int Body, int LocNum, int X, int Y)
         {
-            this.m_Art = Art;
-            this.m_Body = Body;
-            this.m_Num = LocNum;
-            this.m_X = X;
-            this.m_Y = Y;
+            m_Art = Art;
+            m_Body = Body;
+            m_Num = LocNum;
+            m_X = X;
+            m_Y = Y;
         }
 
-        public int ArtID
-        {
-            get
-            {
-                return this.m_Art;
-            }
-        }
-        public int BodyID
-        {
-            get
-            {
-                return this.m_Body;
-            }
-        }
-        public int LocNumber
-        {
-            get
-            {
-                return this.m_Num;
-            }
-        }
-        public int X
-        {
-            get
-            {
-                return this.m_X;
-            }
-        }
-        public int Y
-        {
-            get
-            {
-                return this.m_Y;
-            }
-        }
+        public int ArtID => m_Art;
+        public int BodyID => m_Body;
+        public int LocNumber => m_Num;
+        public int X => m_X;
+        public int Y => m_Y;
     }
 
     public class PolymorphGump : Gump
@@ -105,32 +75,32 @@ namespace Server.Gumps
         public PolymorphGump(Mobile caster, Item scroll)
             : base(50, 50)
         {
-            this.m_Caster = caster;
-            this.m_Scroll = scroll;
+            m_Caster = caster;
+            m_Scroll = scroll;
 
             int x, y;
-            this.AddPage(0);
-            this.AddBackground(0, 0, 585, 393, 5054);
-            this.AddBackground(195, 36, 387, 275, 3000);
-            this.AddHtmlLocalized(0, 0, 510, 18, 1015234, false, false); // <center>Polymorph Selection Menu</center>
-            this.AddHtmlLocalized(60, 355, 150, 18, 1011036, false, false); // OKAY
-            this.AddButton(25, 355, 4005, 4007, 1, GumpButtonType.Reply, 1);
-            this.AddHtmlLocalized(320, 355, 150, 18, 1011012, false, false); // CANCEL
-            this.AddButton(285, 355, 4005, 4007, 0, GumpButtonType.Reply, 2);
+            AddPage(0);
+            AddBackground(0, 0, 585, 393, 5054);
+            AddBackground(195, 36, 387, 275, 3000);
+            AddHtmlLocalized(0, 0, 510, 18, 1015234, false, false); // <center>Polymorph Selection Menu</center>
+            AddHtmlLocalized(60, 355, 150, 18, 1011036, false, false); // OKAY
+            AddButton(25, 355, 4005, 4007, 1, GumpButtonType.Reply, 1);
+            AddHtmlLocalized(320, 355, 150, 18, 1011012, false, false); // CANCEL
+            AddButton(285, 355, 4005, 4007, 0, GumpButtonType.Reply, 2);
 
             y = 35;
             for (int i = 0; i < Categories.Length; i++)
             {
                 PolymorphCategory cat = Categories[i];
-                this.AddHtmlLocalized(5, y, 150, 25, cat.LocNumber, true, false);
-                this.AddButton(155, y, 4005, 4007, 0, GumpButtonType.Page, i + 1);
+                AddHtmlLocalized(5, y, 150, 25, cat.LocNumber, true, false);
+                AddButton(155, y, 4005, 4007, 0, GumpButtonType.Page, i + 1);
                 y += 25;
             }
 
             for (int i = 0; i < Categories.Length; i++)
             {
                 PolymorphCategory cat = Categories[i];
-                this.AddPage(i + 1);
+                AddPage(i + 1);
 
                 for (int c = 0; c < cat.Entries.Length; c++)
                 {
@@ -138,9 +108,9 @@ namespace Server.Gumps
                     x = 198 + (c % 3) * 129;
                     y = 38 + (c / 3) * 67;
 
-                    this.AddHtmlLocalized(x, y, 100, 18, entry.LocNumber, false, false);
-                    this.AddItem(x + 20, y + 25, entry.ArtID);
-                    this.AddRadio(x, y + 20, 210, 211, false, (c << 8) + i);
+                    AddHtmlLocalized(x, y, 100, 18, entry.LocNumber, false, false);
+                    AddItem(x + 20, y + 25, entry.ArtID);
+                    AddRadio(x, y + 20, 210, 211, false, (c << 8) + i);
                 }
             }
         }
@@ -157,7 +127,7 @@ namespace Server.Gumps
                 {
                     if (ent >= 0 && ent < Categories[cat].Entries.Length)
                     {
-                        Spell spell = new PolymorphSpell(this.m_Caster, this.m_Scroll, Categories[cat].Entries[ent].BodyID);
+                        Spell spell = new PolymorphSpell(m_Caster, m_Scroll, Categories[cat].Entries[ent].BodyID);
                         spell.Cast();
                     }
                 }
@@ -170,24 +140,12 @@ namespace Server.Gumps
             private readonly PolymorphEntry[] m_Entries;
             public PolymorphCategory(int num, params PolymorphEntry[] entries)
             {
-                this.m_Num = num;
-                this.m_Entries = entries;
+                m_Num = num;
+                m_Entries = entries;
             }
 
-            public PolymorphEntry[] Entries
-            {
-                get
-                {
-                    return this.m_Entries;
-                }
-            }
-            public int LocNumber
-            {
-                get
-                {
-                    return this.m_Num;
-                }
-            }
+            public PolymorphEntry[] Entries => m_Entries;
+            public int LocNumber => m_Num;
         }
     }
 
@@ -219,21 +177,21 @@ namespace Server.Gumps
         public NewPolymorphGump(Mobile caster, Item scroll)
             : base(0, 0)
         {
-            this.m_Caster = caster;
-            this.m_Scroll = scroll;
+            m_Caster = caster;
+            m_Scroll = scroll;
 
-            this.AddPage(0);
+            AddPage(0);
 
-            this.AddBackground(0, 0, 520, 404, 0x13BE);
-            this.AddImageTiled(10, 10, 500, 20, 0xA40);
-            this.AddImageTiled(10, 40, 500, 324, 0xA40);
-            this.AddImageTiled(10, 374, 500, 20, 0xA40);
-            this.AddAlphaRegion(10, 10, 500, 384);
+            AddBackground(0, 0, 520, 404, 0x13BE);
+            AddImageTiled(10, 10, 500, 20, 0xA40);
+            AddImageTiled(10, 40, 500, 324, 0xA40);
+            AddImageTiled(10, 374, 500, 20, 0xA40);
+            AddAlphaRegion(10, 10, 500, 384);
 
-            this.AddHtmlLocalized(14, 12, 500, 20, 1015234, 0x7FFF, false, false); // <center>Polymorph Selection Menu</center>
+            AddHtmlLocalized(14, 12, 500, 20, 1015234, 0x7FFF, false, false); // <center>Polymorph Selection Menu</center>
 
-            this.AddButton(10, 374, 0xFB1, 0xFB2, 0, GumpButtonType.Reply, 0);
-            this.AddHtmlLocalized(45, 376, 450, 20, 1060051, 0x7FFF, false, false); // CANCEL
+            AddButton(10, 374, 0xFB1, 0xFB2, 0, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(45, 376, 450, 20, 1060051, 0x7FFF, false, false); // CANCEL
 
             for (int i = 0; i < m_Entries.Length; i++)
             {
@@ -246,24 +204,24 @@ namespace Server.Gumps
                 {
                     if (page > 1)
                     {
-                        this.AddButton(400, 374, 0xFA5, 0xFA7, 0, GumpButtonType.Page, page);
-                        this.AddHtmlLocalized(440, 376, 60, 20, 1043353, 0x7FFF, false, false); // Next
+                        AddButton(400, 374, 0xFA5, 0xFA7, 0, GumpButtonType.Page, page);
+                        AddHtmlLocalized(440, 376, 60, 20, 1043353, 0x7FFF, false, false); // Next
                     }
 
-                    this.AddPage(page);
+                    AddPage(page);
 
                     if (page > 1)
                     {
-                        this.AddButton(300, 374, 0xFAE, 0xFB0, 0, GumpButtonType.Page, 1);
-                        this.AddHtmlLocalized(340, 376, 60, 20, 1011393, 0x7FFF, false, false); // Back
+                        AddButton(300, 374, 0xFAE, 0xFB0, 0, GumpButtonType.Page, 1);
+                        AddHtmlLocalized(340, 376, 60, 20, 1011393, 0x7FFF, false, false); // Back
                     }
                 }
 
                 int x = (pos % 2 == 0) ? 14 : 264;
                 int y = (pos / 2) * 64 + 44;
 
-                this.AddImageTiledButton(x, y, 0x918, 0x919, i + 1, GumpButtonType.Reply, 0, entry.ArtID, 0x0, entry.X, entry.Y);
-                this.AddHtmlLocalized(x + 84, y, 250, 60, entry.LocNumber, 0x7FFF, false, false);
+                AddImageTiledButton(x, y, 0x918, 0x919, i + 1, GumpButtonType.Reply, 0, entry.ArtID, 0x0, entry.X, entry.Y);
+                AddHtmlLocalized(x + 84, y, 250, 60, entry.LocNumber, 0x7FFF, false, false);
             }
         }
 
@@ -274,7 +232,7 @@ namespace Server.Gumps
             if (idx < 0 || idx >= m_Entries.Length)
                 return;
 
-            Spell spell = new PolymorphSpell(this.m_Caster, this.m_Scroll, m_Entries[idx].BodyID);
+            Spell spell = new PolymorphSpell(m_Caster, m_Scroll, m_Entries[idx].BodyID);
             spell.Cast();
         }
     }

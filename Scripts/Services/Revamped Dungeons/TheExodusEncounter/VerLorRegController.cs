@@ -27,9 +27,9 @@ namespace Server.Engines.Exodus
 
         public VerLorRegController(Map map) : base(7107)
         {
-            this.Name = "Ver Lor Reg Controller";
-            this.Visible = false;
-            this.Movable = false;
+            Name = "Ver Lor Reg Controller";
+            Visible = false;
+            Movable = false;
 
             Start();
         }
@@ -51,9 +51,9 @@ namespace Server.Engines.Exodus
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
-            writer.Write((bool)m_Active);
+            writer.Write(m_Active);
             writer.WriteMobile(m_Mobile);
         }
 

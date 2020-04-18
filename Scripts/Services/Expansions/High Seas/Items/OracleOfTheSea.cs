@@ -6,7 +6,7 @@ namespace Server.Items
     {
         public static readonly int MaxUses = 5;
 
-        public override int LabelNumber { get { return 1150184; } }
+        public override int LabelNumber => 1150184;
 
         private int m_UsesRemaining;
 
@@ -42,7 +42,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
             writer.Write(m_UsesRemaining);
         }
 

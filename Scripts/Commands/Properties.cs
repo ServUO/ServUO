@@ -47,7 +47,7 @@ namespace Server.Commands
 
         public static CPA GetCPA(PropertyInfo p)
         {
-            var attrs = p.GetCustomAttributes(_TypeOfCPA, false);
+            object[] attrs = p.GetCustomAttributes(_TypeOfCPA, false);
 
             return attrs.Length == 0 ? null : attrs[0] as CPA;
         }
@@ -55,14 +55,14 @@ namespace Server.Commands
         public static PropertyInfo[] GetPropertyInfoChain(
             Mobile m, Type type, string propertyString, PropertyAccess endAccess, ref string failReason)
         {
-            var split = propertyString.Split('.');
+            string[] split = propertyString.Split('.');
 
             if (split.Length == 0)
             {
                 return null;
             }
 
-            var info = new PropertyInfo[split.Length];
+            PropertyInfo[] info = new PropertyInfo[split.Length];
 
             for (int i = 0; i < info.Length; ++i)
             {
@@ -73,7 +73,7 @@ namespace Server.Commands
                     continue;
                 }
 
-                var props = type.GetProperties(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public);
+                PropertyInfo[] props = type.GetProperties(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public);
 
                 bool isFinal = i == info.Length - 1;
 
@@ -147,7 +147,7 @@ namespace Server.Commands
         public static PropertyInfo GetPropertyInfo(
             Mobile m, ref object obj, string propertyName, PropertyAccess access, ref string failReason)
         {
-            var chain = GetPropertyInfoChain(m, obj.GetType(), propertyName, access, ref failReason);
+            PropertyInfo[] chain = GetPropertyInfoChain(m, obj.GetType(), propertyName, access, ref failReason);
 
             return chain == null ? null : GetPropertyInfo(ref obj, chain, ref failReason);
         }
@@ -185,7 +185,7 @@ namespace Server.Commands
         {
             string failReason = "";
 
-            var chain = GetPropertyInfoChain(from, o.GetType(), name, PropertyAccess.Read, ref failReason);
+            PropertyInfo[] chain = GetPropertyInfoChain(from, o.GetType(), name, PropertyAccess.Read, ref failReason);
 
             if (chain == null || chain.Length == 0)
             {
@@ -201,9 +201,9 @@ namespace Server.Commands
         {
             int len = args.Length / 2;
 
-            var realObjs = new object[len];
-            var realProps = new PropertyInfo[len];
-            var realValues = new int[len];
+            object[] realObjs = new object[len];
+            PropertyInfo[] realProps = new PropertyInfo[len];
+            int[] realValues = new int[len];
 
             bool positive = false, negative = false;
 
@@ -609,7 +609,7 @@ namespace Server.Commands
                 return String.Format("{0} = {1}", p.Name, toString);
             }
 
-            var concat = new string[chain.Length * 2 + 1];
+            string[] concat = new string[chain.Length * 2 + 1];
 
             for (int i = 0; i < chain.Length; ++i)
             {
@@ -805,7 +805,7 @@ namespace Server
         public PropertyAccess Access { get; private set; }
         public string Binding { get; private set; }
 
-        public bool IsBound { get { return _Chain != null; } }
+        public bool IsBound => _Chain != null;
 
         public PropertyInfo[] Chain
         {
@@ -898,8 +898,8 @@ namespace Server
                 throw new AlreadyBoundException(this);
             }
 
-            var split = Binding.Split('.');
-            var chain = new PropertyInfo[split.Length];
+            string[] split = Binding.Split('.');
+            PropertyInfo[] chain = new PropertyInfo[split.Length];
 
             for (int i = 0; i < split.Length; ++i)
             {
@@ -943,7 +943,7 @@ namespace Server
                 return Binding;
             }
 
-            var toJoin = new string[_Chain.Length];
+            string[] toJoin = new string[_Chain.Length];
 
             for (int i = 0; i < toJoin.Length; ++i)
             {

@@ -45,7 +45,7 @@ namespace Server.Multis
             int xoffset = mcl.Min.X;
             int y = mcl.Height - 1 - mcl.Center.Y;
 
-            Item signpost = new Static((int)9);
+            Item signpost = new Static(9);
             signpost.MoveToWorld(new Point3D(X + xoffset, Y + y, Z + 7), Map);
             m_Components.Add(signpost);
 
@@ -53,11 +53,11 @@ namespace Server.Multis
             xoffset = Components.Min.X;
             y = Components.Height - Components.Center.Y;
 
-            Item signhanger = new Static((int)0xB98);
+            Item signhanger = new Static(0xB98);
             signhanger.MoveToWorld(new Point3D(X + xoffset, Y + y, Z + 7), Map);
             m_Components.Add(signhanger);
 
-            Item housesign = new Static((int)0xBD2);
+            Item housesign = new Static(0xBD2);
             housesign.MoveToWorld(new Point3D(X + xoffset, Y + y, Z + 7), Map);
             m_Components.Add(housesign);
         }
@@ -75,7 +75,7 @@ namespace Server.Multis
 
             for (int x = 1; x < mclNew.Width; ++x)
             {
-                Item stair = new Static((int)0x751);
+                Item stair = new Static(0x751);
                 stair.MoveToWorld(new Point3D(x - xCenter, y - yCenter, 0), Map);
                 m_Components.Add(stair);
             }
@@ -150,7 +150,7 @@ namespace Server.Multis
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
             writer.Write(m_Components);
         }

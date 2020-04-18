@@ -99,8 +99,8 @@ namespace Server.Gumps
 
         private void AddRect(int index, string str, int button, int text)
         {
-            var x = BorderSize + OffsetSize;
-            var y = BorderSize + OffsetSize + (index * (EntryHeight + OffsetSize));
+            int x = BorderSize + OffsetSize;
+            int y = BorderSize + OffsetSize + (index * (EntryHeight + OffsetSize));
 
             AddImageTiled(x, y, EntryWidth, EntryHeight, EntryGumpID);
             AddLabelCropped(x + TextOffsetX, y, EntryWidth - TextOffsetX, EntryHeight, TextHue, str);
@@ -128,35 +128,35 @@ namespace Server.Gumps
             DateTime toSet;
             bool shouldSet, shouldSend;
 
-            var year = "";
+            string year = "";
 
             if (info.ButtonID == 2 || info.ButtonID == 3 || info.ButtonID == 5)
             {
                 year = info.GetTextEntry(0).Text;
             }
 
-            var month = "";
+            string month = "";
 
             if (info.ButtonID == 2 || info.ButtonID == 3 || info.ButtonID == 6)
             {
                 month = info.GetTextEntry(1).Text;
             }
 
-            var day = "";
+            string day = "";
 
             if (info.ButtonID == 2 || info.ButtonID == 3 || info.ButtonID == 7)
             {
                 day = info.GetTextEntry(2).Text;
             }
 
-            var hour = "";
+            string hour = "";
 
             if (info.ButtonID == 2 || info.ButtonID == 4 || info.ButtonID == 8)
             {
                 hour = info.GetTextEntry(3).Text;
             }
 
-            var min = "";
+            string min = "";
 
             if (info.ButtonID == 2 || info.ButtonID == 4 || info.ButtonID == 9)
             {
@@ -175,8 +175,8 @@ namespace Server.Gumps
                     }
                 case 2: // From YYYY MM DD H:M
                     {
-                        var successfulParse = false;
-                        var toapply = String.Format(
+                        bool successfulParse = false;
+                        string toapply = String.Format(
                             "{0}/{1}/{2} {3}:{4}:00",
                             (year != string.Empty ? year : String.Format("{0:yyyy}", m_OldDT)),
                             (month != string.Empty ? month : String.Format("{0:MM}", m_OldDT)),

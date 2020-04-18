@@ -269,68 +269,38 @@ namespace Server.Misc
             public InternationalCode(string code, string language, string country)
                 : this(code, language, country, null, null)
             {
-                this.m_HasLocalInfo = false;
+                m_HasLocalInfo = false;
             }
 
             public InternationalCode(string code, string language, string country, string language_localname, string country_localname)
             {
-                this.m_Code = code;
-                this.m_Language = language;
-                this.m_Country = country;
-                this.m_Language_LocalName = language_localname;
-                this.m_Country_LocalName = country_localname;
-                this.m_HasLocalInfo = true;
+                m_Code = code;
+                m_Language = language;
+                m_Country = country;
+                m_Language_LocalName = language_localname;
+                m_Country_LocalName = country_localname;
+                m_HasLocalInfo = true;
             }
 
-            public string Code
-            {
-                get
-                {
-                    return this.m_Code;
-                }
-            }
-            public string Language
-            {
-                get
-                {
-                    return this.m_Language;
-                }
-            }
-            public string Country
-            {
-                get
-                {
-                    return this.m_Country;
-                }
-            }
-            public string Language_LocalName
-            {
-                get
-                {
-                    return this.m_Language_LocalName;
-                }
-            }
-            public string Country_LocalName
-            {
-                get
-                {
-                    return this.m_Country_LocalName;
-                }
-            }
+            public string Code => m_Code;
+            public string Language => m_Language;
+            public string Country => m_Country;
+            public string Language_LocalName => m_Language_LocalName;
+            public string Country_LocalName => m_Country_LocalName;
             public string GetName()
             {
                 string s;
 
-                if (this.m_HasLocalInfo)
+                if (m_HasLocalInfo)
                 {
-                    s = String.Format("{0}‎ - {1}", DefaultLocalNames ? this.m_Language_LocalName : this.m_Language, DefaultLocalNames ? this.m_Country_LocalName : this.m_Country);
+                    s = String.Format("{0}‎ - {1}", DefaultLocalNames ? m_Language_LocalName : m_Language, DefaultLocalNames ? m_Country_LocalName : m_Country);
 
                     if (ShowAlternatives)
-                        s += String.Format("‎ 【{0}‎ - {1}‎】", DefaultLocalNames ? this.m_Language : this.m_Language_LocalName, DefaultLocalNames ? this.m_Country : this.m_Country_LocalName);
+                        s += String.Format("‎ 【{0}‎ - {1}‎】", DefaultLocalNames ? m_Language : m_Language_LocalName, DefaultLocalNames ? m_Country : m_Country_LocalName);
                 }
                 else
                 {
-                    s = String.Format("{0}‎ - {1}", this.m_Language, this.m_Country);
+                    s = String.Format("{0}‎ - {1}", m_Language, m_Country);
                 }
 
                 return s;
@@ -343,27 +313,15 @@ namespace Server.Misc
             private int m_Count;
             public InternationalCodeCounter(string code)
             {
-                this.m_Code = code;
-                this.m_Count = 1;
+                m_Code = code;
+                m_Count = 1;
             }
 
-            public string Code
-            {
-                get
-                {
-                    return this.m_Code;
-                }
-            }
-            public int Count
-            {
-                get
-                {
-                    return this.m_Count;
-                }
-            }
+            public string Code => m_Code;
+            public int Count => m_Count;
             public void Increase()
             {
-                this.m_Count++;
+                m_Count++;
             }
         }
 

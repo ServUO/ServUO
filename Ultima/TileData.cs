@@ -350,25 +350,25 @@ namespace Ultima
         ///     Whether or not this item is flagged as '<see cref="TileFlag.Background" />'.
         ///     <seealso cref="TileFlag" />
         /// </summary>
-        public bool Background { get { return ((m_Flags & TileFlag.Background) != 0); } }
+        public bool Background => ((m_Flags & TileFlag.Background) != 0);
 
         /// <summary>
         ///     Whether or not this item is flagged as '<see cref="TileFlag.Bridge" />'.
         ///     <seealso cref="TileFlag" />
         /// </summary>
-        public bool Bridge { get { return ((m_Flags & TileFlag.Bridge) != 0); } }
+        public bool Bridge => ((m_Flags & TileFlag.Bridge) != 0);
 
         /// <summary>
         ///     Whether or not this item is flagged as '<see cref="TileFlag.Impassable" />'.
         ///     <seealso cref="TileFlag" />
         /// </summary>
-        public bool Impassable { get { return ((m_Flags & TileFlag.Impassable) != 0); } }
+        public bool Impassable => ((m_Flags & TileFlag.Impassable) != 0);
 
         /// <summary>
         ///     Whether or not this item is flagged as '<see cref="TileFlag.Surface" />'.
         ///     <seealso cref="TileFlag" />
         /// </summary>
-        public bool Surface { get { return ((m_Flags & TileFlag.Surface) != 0); } }
+        public bool Surface => ((m_Flags & TileFlag.Surface) != 0);
 
         /// <summary>
         ///     Gets the weight of this item.
@@ -446,7 +446,7 @@ namespace Ultima
         ///     Whether or not this item is wearable as '<see cref="TileFlag.Wearable" />'.
         ///     <seealso cref="TileFlag" />
         /// </summary>
-        public bool Wearable { get { return ((m_Flags & TileFlag.Wearable) != 0); } }
+        public bool Wearable => ((m_Flags & TileFlag.Wearable) != 0);
 
         public void ReadData(string[] split)
         {
@@ -822,7 +822,7 @@ namespace Ultima
         /// </summary>
         public static ItemData[] ItemTable { get { return m_ItemData; } set { m_ItemData = value; } }
 
-        public static int[] HeightTable { get { return m_HeightTable; } }
+        public static int[] HeightTable => m_HeightTable;
 
         private static readonly byte[] m_StringBuffer = new byte[20];
 
@@ -865,14 +865,14 @@ namespace Ultima
 
             if (filePath != null)
             {
-                using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
                     bool useNeWTileDataFormat = Art.IsUOAHS();
                     landheader = new int[512];
                     int j = 0;
                     m_LandData = new LandData[0x4000];
 
-                    var buffer = new byte[fs.Length];
+                    byte[] buffer = new byte[fs.Length];
                     GCHandle gc = GCHandle.Alloc(buffer, GCHandleType.Pinned);
                     long currpos = 0;
                     try
@@ -880,22 +880,22 @@ namespace Ultima
                         fs.Read(buffer, 0, buffer.Length);
                         for (int i = 0; i < 0x4000; i += 32)
                         {
-                            var ptrheader = new IntPtr((long)gc.AddrOfPinnedObject() + currpos);
+                            IntPtr ptrheader = new IntPtr((long)gc.AddrOfPinnedObject() + currpos);
                             currpos += 4;
                             landheader[j++] = (int)Marshal.PtrToStructure(ptrheader, typeof(int));
                             for (int count = 0; count < 32; ++count)
                             {
-                                var ptr = new IntPtr((long)gc.AddrOfPinnedObject() + currpos);
+                                IntPtr ptr = new IntPtr((long)gc.AddrOfPinnedObject() + currpos);
                                 if (useNeWTileDataFormat)
                                 {
                                     currpos += sizeof(NewLandTileDataMul);
-                                    var cur = (NewLandTileDataMul)Marshal.PtrToStructure(ptr, typeof(NewLandTileDataMul));
+                                    NewLandTileDataMul cur = (NewLandTileDataMul)Marshal.PtrToStructure(ptr, typeof(NewLandTileDataMul));
                                     m_LandData[i + count] = new LandData(cur);
                                 }
                                 else
                                 {
                                     currpos += sizeof(OldLandTileDataMul);
-                                    var cur = (OldLandTileDataMul)Marshal.PtrToStructure(ptr, typeof(OldLandTileDataMul));
+                                    OldLandTileDataMul cur = (OldLandTileDataMul)Marshal.PtrToStructure(ptr, typeof(OldLandTileDataMul));
                                     m_LandData[i + count] = new LandData(cur);
                                 }
                             }
@@ -912,23 +912,23 @@ namespace Ultima
                         j = 0;
                         for (int i = 0; i < itemlength; i += 32)
                         {
-                            var ptrheader = new IntPtr((long)gc.AddrOfPinnedObject() + currpos);
+                            IntPtr ptrheader = new IntPtr((long)gc.AddrOfPinnedObject() + currpos);
                             currpos += 4;
                             itemheader[j++] = (int)Marshal.PtrToStructure(ptrheader, typeof(int));
                             for (int count = 0; count < 32; ++count)
                             {
-                                var ptr = new IntPtr((long)gc.AddrOfPinnedObject() + currpos);
+                                IntPtr ptr = new IntPtr((long)gc.AddrOfPinnedObject() + currpos);
                                 if (useNeWTileDataFormat)
                                 {
                                     currpos += sizeof(NewItemTileDataMul);
-                                    var cur = (NewItemTileDataMul)Marshal.PtrToStructure(ptr, typeof(NewItemTileDataMul));
+                                    NewItemTileDataMul cur = (NewItemTileDataMul)Marshal.PtrToStructure(ptr, typeof(NewItemTileDataMul));
                                     m_ItemData[i + count] = new ItemData(cur);
                                     m_HeightTable[i + count] = cur.height;
                                 }
                                 else
                                 {
                                     currpos += sizeof(OldItemTileDataMul);
-                                    var cur = (OldItemTileDataMul)Marshal.PtrToStructure(ptr, typeof(OldItemTileDataMul));
+                                    OldItemTileDataMul cur = (OldItemTileDataMul)Marshal.PtrToStructure(ptr, typeof(OldItemTileDataMul));
                                     m_ItemData[i + count] = new ItemData(cur);
                                     m_HeightTable[i + count] = cur.height;
                                 }
@@ -949,9 +949,9 @@ namespace Ultima
         /// <param name="FileName"></param>
         public static void SaveTileData(string FileName)
         {
-            using (var fs = new FileStream(FileName, FileMode.Create, FileAccess.Write, FileShare.Write))
+            using (FileStream fs = new FileStream(FileName, FileMode.Create, FileAccess.Write, FileShare.Write))
             {
-                using (var bin = new BinaryWriter(fs))
+                using (BinaryWriter bin = new BinaryWriter(fs))
                 {
                     int j = 0;
                     bool useNewTileDataFormat = Art.IsUOAHS();
@@ -969,7 +969,7 @@ namespace Ultima
                         }
 
                         bin.Write(m_LandData[i].TextureID);
-                        var b = new byte[20];
+                        byte[] b = new byte[20];
                         if (m_LandData[i].Name != null)
                         {
                             byte[] bb = Encoding.Default.GetBytes(m_LandData[i].Name);
@@ -1006,7 +1006,7 @@ namespace Ultima
                         bin.Write(m_ItemData[i].StackingOffset); //unk4
                         bin.Write(m_ItemData[i].Value); //unk5
                         bin.Write(m_ItemData[i].Height);
-                        var b = new byte[20];
+                        byte[] b = new byte[20];
                         if (m_ItemData[i].Name != null)
                         {
                             byte[] bb = Encoding.Default.GetBytes(m_ItemData[i].Name);
@@ -1029,7 +1029,7 @@ namespace Ultima
         public static void ExportItemDataToCSV(string FileName)
         {
             using (
-                var Tex = new StreamWriter(
+                StreamWriter Tex = new StreamWriter(
                     new FileStream(FileName, FileMode.Create, FileAccess.ReadWrite), Encoding.GetEncoding(1252)))
             {
                 Tex.Write(
@@ -1098,7 +1098,7 @@ namespace Ultima
         /// <param name="FileName"></param>
         public static void ExportLandDataToCSV(string FileName)
         {
-            using (var Tex = new StreamWriter(new FileStream(FileName, FileMode.Create, FileAccess.ReadWrite)))
+            using (StreamWriter Tex = new StreamWriter(new FileStream(FileName, FileMode.Create, FileAccess.ReadWrite)))
             {
                 Tex.Write("ID;Name;TextureID;HSAUnk1");
                 Tex.Write(";Background;Weapon;Transparent;Translucent;Wall;Damage;Impassible;Wet;Unknow1");
@@ -1172,7 +1172,7 @@ namespace Ultima
             {
                 return;
             }
-            using (var sr = new StreamReader(FileName))
+            using (StreamReader sr = new StreamReader(FileName))
             {
                 string line;
                 while ((line = sr.ReadLine()) != null)
@@ -1208,7 +1208,7 @@ namespace Ultima
             {
                 return;
             }
-            using (var sr = new StreamReader(FileName))
+            using (StreamReader sr = new StreamReader(FileName))
             {
                 string line;
                 while ((line = sr.ReadLine()) != null)

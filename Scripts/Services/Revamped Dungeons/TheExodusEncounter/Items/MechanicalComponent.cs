@@ -6,14 +6,14 @@ namespace Server.Items
         public MechanicalComponent()
             : base(0x2DD7)
         {
-            this.Hue = 2500;
-            this.Weight = 1;
+            Hue = 2500;
+            Weight = 1;
         }
 
-        public override int Lifespan { get { return 259200; } }
-        public override bool UseSeconds { get { return false; } }
+        public override int Lifespan => 259200;
+        public override bool UseSeconds => false;
 
-        public override int LabelNumber { get { return 1153865; } } // Mechanical Component
+        public override int LabelNumber => 1153865;  // Mechanical Component
 
         public MechanicalComponent(Serial serial)
             : base(serial)
@@ -25,7 +25,7 @@ namespace Server.Items
             if (from.Skills[SkillName.Tinkering].Value >= 80.0)
             {
                 from.AddToBackpack(new ExoticToolkit());
-                this.Delete();
+                Delete();
                 from.SendLocalizedMessage(1152369); // You successfully convert the component into an exotic tool kit.
             }
             else
@@ -37,7 +37,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

@@ -8,23 +8,17 @@ namespace Server.Commands.Generic
         private static AreaCommandImplementor m_Instance;
         public AreaCommandImplementor()
         {
-            this.Accessors = new string[] { "Area", "Group" };
-            this.SupportRequirement = CommandSupport.Area;
-            this.SupportsConditionals = true;
-            this.AccessLevel = AccessLevel.GameMaster;
-            this.Usage = "Area <command> [condition]";
-            this.Description = "Invokes the command on all appropriate objects in a targeted area. Optional condition arguments can further restrict the set of objects.";
+            Accessors = new string[] { "Area", "Group" };
+            SupportRequirement = CommandSupport.Area;
+            SupportsConditionals = true;
+            AccessLevel = AccessLevel.GameMaster;
+            Usage = "Area <command> [condition]";
+            Description = "Invokes the command on all appropriate objects in a targeted area. Optional condition arguments can further restrict the set of objects.";
 
             m_Instance = this;
         }
 
-        public static AreaCommandImplementor Instance
-        {
-            get
-            {
-                return m_Instance;
-            }
-        }
+        public static AreaCommandImplementor Instance => m_Instance;
         public override void Process(Mobile from, BaseCommand command, string[] args)
         {
             BoundingBoxPicker.Begin(from, new BoundingBoxCallback(OnTarget), new object[] { command, args });
@@ -44,7 +38,7 @@ namespace Server.Commands.Generic
 
                 bool items, mobiles;
 
-                if (!this.CheckObjectTypes(from, command, ext, out items, out mobiles))
+                if (!CheckObjectTypes(from, command, ext, out items, out mobiles))
                     return;
 
                 IPooledEnumerable eable;
@@ -73,7 +67,7 @@ namespace Server.Commands.Generic
 
                 ext.Filter(objs);
 
-                this.RunCommand(from, objs, command, args);
+                RunCommand(from, objs, command, args);
             }
             catch (Exception ex)
             {

@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class ClimbingVine : Item
     {
-        public override int LabelNumber { get { return 1023307; } } // vines
+        public override int LabelNumber => 1023307;  // vines
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Point3D ClimbLocation { get; set; }
@@ -24,7 +24,7 @@ namespace Server.Items
         {
             from.SayTo(from, 1156290, 1153); // *The vines looks as though they may be strong enough to support climbing...*
 
-            if (ClimbLocation != Point3D.Zero && from.InRange(this.GetWorldLocation(), 2) && Z >= from.Z)
+            if (ClimbLocation != Point3D.Zero && from.InRange(GetWorldLocation(), 2) && Z >= from.Z)
             {
                 from.MoveToWorld(ClimbLocation, Map);
             }
@@ -39,7 +39,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
             writer.Write(ClimbLocation);
         }
 

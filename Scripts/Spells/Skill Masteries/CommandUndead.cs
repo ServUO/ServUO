@@ -15,15 +15,15 @@ namespace Server.Spells.SkillMasteries
                 Reagent.BatWing
             );
 
-        public override double RequiredSkill { get { return 90; } }
-        public override double UpKeep { get { return 0; } }
-        public override int RequiredMana { get { return 40; } }
-        public override bool PartyEffects { get { return false; } }
+        public override double RequiredSkill => 90;
+        public override double UpKeep => 0;
+        public override int RequiredMana => 40;
+        public override bool PartyEffects => false;
 
-        public override SkillName CastSkill { get { return SkillName.Necromancy; } }
-        public override SkillName DamageSkill { get { return SkillName.SpiritSpeak; } }
+        public override SkillName CastSkill => SkillName.Necromancy;
+        public override SkillName DamageSkill => SkillName.SpiritSpeak;
 
-        public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(3.0); } }
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(3.0);
 
         public CommandUndeadSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
@@ -110,8 +110,8 @@ namespace Server.Spells.SkillMasteries
             //FinishSequence();
         }
 
-        public static Type[] CommandTypes { get { return _CommandTypes; } }
-        public static Type[] NoCommandTypes { get { return _NoCommandTypes; } }
+        public static Type[] CommandTypes => _CommandTypes;
+        public static Type[] NoCommandTypes => _NoCommandTypes;
 
         private static readonly Type[] _CommandTypes =
         {
@@ -137,13 +137,13 @@ namespace Server.Spells.SkillMasteries
             if (bc is BaseRenowned || bc is BaseChampion || bc is Server.Engines.Shadowguard.ShadowguardBoss)
                 return false;
 
-            foreach (var t in _CommandTypes)
+            foreach (Type t in _CommandTypes)
             {
                 if (t == bc.GetType())
                     return true;
             }
 
-            foreach (var t in _NoCommandTypes)
+            foreach (Type t in _NoCommandTypes)
             {
                 if (t == bc.GetType())
                     return false;

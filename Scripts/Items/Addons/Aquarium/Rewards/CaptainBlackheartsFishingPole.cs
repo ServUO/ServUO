@@ -13,13 +13,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074571;
-            }
-        }// Captain Blackheart's Fishing Pole
+        public override int LabelNumber => 1074571;// Captain Blackheart's Fishing Pole
         public override void AddNameProperties(ObjectPropertyList list)
         {
             base.AddNameProperties(list);
@@ -31,7 +25,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

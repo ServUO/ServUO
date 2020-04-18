@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class EnchantedWheelbarrow : Item, IFlipable, ISecurable
     {
-        public override int LabelNumber { get { return 1125214; } } // enchanted wheelbarrow
+        public override int LabelNumber => 1125214;  // enchanted wheelbarrow
 
         private bool m_Harvest;
         [CommandProperty(AccessLevel.GameMaster)]
@@ -150,11 +150,11 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
-            writer.Write((bool)m_Harvest);
+            writer.Write(m_Harvest);
             writer.Write((int)Level);
-            writer.Write((DateTime)NextHarvest);
+            writer.Write(NextHarvest);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -173,7 +173,7 @@ namespace Server.Items
 
     public class DecorativePlant : Item
     {
-        public override int LabelNumber { get { return 1125205; } } // decorative plant
+        public override int LabelNumber => 1125205;  // decorative plant
 
         private static readonly int[] DecorativePlants = new[]
         {
@@ -200,7 +200,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -227,7 +227,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -254,7 +254,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -281,7 +281,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -308,7 +308,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -335,7 +335,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

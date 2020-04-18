@@ -2,10 +2,10 @@
 {
     public class CullingBlade : BoneHarvester
     {
-        public override int LabelNumber { get { return 1116630; } }
+        public override int LabelNumber => 1116630;
 
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
         [Constructable]
         public CullingBlade()
@@ -32,7 +32,7 @@
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

@@ -10,8 +10,8 @@ namespace Server.Spells.SkillMasteries
     {
         public Dictionary<Mobile, DateTime> Cooldown { get; set; }
 
-        public virtual TimeSpan CooldownPeriod { get { return TimeSpan.MinValue; } }
-        public override bool ValidatesDuringHit { get { return false; } }
+        public virtual TimeSpan CooldownPeriod => TimeSpan.MinValue;
+        public override bool ValidatesDuringHit => false;
 
         public SkillMasteryMove()
         {
@@ -29,7 +29,7 @@ namespace Server.Spells.SkillMasteries
         {
             SkillMasteryMove move = SpecialMove.GetCurrentMove(from) as SkillMasteryMove;
 
-            if ((move == null || move.GetType() != this.GetType()) && !CheckCooldown(from))
+            if ((move == null || move.GetType() != GetType()) && !CheckCooldown(from))
                 return false;
 
             if (from.Player && from.Skills.CurrentMastery != MoveSkill)

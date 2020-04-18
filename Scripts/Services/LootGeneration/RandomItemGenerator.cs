@@ -9,7 +9,7 @@ namespace Server.Items
 {
     public class RandomItemGenerator
     {
-        public static bool Enabled { get { return true; } }
+        public static bool Enabled => true;
         public static int FeluccaLuckBonus { get; private set; }
         public static int FeluccaBudgetBonus { get; private set; }
 
@@ -62,10 +62,10 @@ namespace Server.Items
         public static void GenerateRandomItem(Item item, int luckChance, int attributeCount, int minIntensity, int maxIntensity)
         {
             int min = (attributeCount * 2) * minIntensity;
-            min = min + (int)((double)min * ((double)Utility.RandomMinMax(1, 4) / 10));
+            min = min + (int)(min * ((double)Utility.RandomMinMax(1, 4) / 10));
 
             int max = (attributeCount * 2) * maxIntensity;
-            max = max + (int)((double)max * ((double)Utility.RandomMinMax(1, 4) / 10));
+            max = max + (int)(max * ((double)Utility.RandomMinMax(1, 4) / 10));
 
             RunicReforging.GenerateRandomItem(item, luckChance, min, max);
         }
@@ -119,7 +119,7 @@ namespace Server.Items
 
         public static void CheckBoss(BaseCreature bc, ref int budget)
         {
-            foreach (var entry in Entries)
+            foreach (BossEntry entry in Entries)
             {
                 if (entry.List.FirstOrDefault(t => t == bc.GetType() || bc.GetType().IsSubclassOf(t)) != null)
                 {

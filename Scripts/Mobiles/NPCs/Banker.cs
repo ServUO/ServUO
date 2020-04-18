@@ -23,9 +23,9 @@ namespace Server.Mobiles
             : base(serial)
         { }
 
-        public override NpcGuild NpcGuild { get { return NpcGuild.MerchantsGuild; } }
+        public override NpcGuild NpcGuild => NpcGuild.MerchantsGuild;
 
-        protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }
+        protected override List<SBInfo> SBInfos => m_SBInfos;
 
         public static int GetBalance(Mobile m)
         {
@@ -46,8 +46,8 @@ namespace Server.Mobiles
 
             if (bank != null)
             {
-                var gold = bank.FindItemsByType<Gold>();
-                var checks = bank.FindItemsByType<BankCheck>();
+                List<Gold> gold = bank.FindItemsByType<Gold>();
+                List<BankCheck> checks = bank.FindItemsByType<BankCheck>();
 
                 balance += gold.Aggregate(0.0, (c, t) => c + t.Amount);
                 balance += checks.Aggregate(0.0, (c, t) => c + t.Worth);
@@ -102,14 +102,14 @@ namespace Server.Mobiles
             }
 
             Item[] gold, checks;
-            var balance = GetBalance(from, out gold, out checks);
+            int balance = GetBalance(from, out gold, out checks);
 
             if (balance < amount)
             {
                 return false;
             }
 
-            for (var i = 0; amount > 0 && i < gold.Length; ++i)
+            for (int i = 0; amount > 0 && i < gold.Length; ++i)
             {
                 if (gold[i].Amount <= amount)
                 {
@@ -123,9 +123,9 @@ namespace Server.Mobiles
                 }
             }
 
-            for (var i = 0; amount > 0 && i < checks.Length; ++i)
+            for (int i = 0; amount > 0 && i < checks.Length; ++i)
             {
-                var check = (BankCheck)checks[i];
+                BankCheck check = (BankCheck)checks[i];
 
                 if (check.Worth <= amount)
                 {
@@ -156,14 +156,14 @@ namespace Server.Mobiles
                 return true;
             }
 
-            var box = from.Player ? from.BankBox : from.FindBankNoCreate();
+            BankBox box = from.Player ? from.BankBox : from.FindBankNoCreate();
 
             if (box == null)
             {
                 return false;
             }
 
-            var items = new List<Item>();
+            List<Item> items = new List<Item>();
 
             while (amount > 0)
             {
@@ -191,7 +191,7 @@ namespace Server.Mobiles
                 else
                 {
                     item.Delete();
-                    foreach (var curItem in items)
+                    foreach (Item curItem in items)
                     {
                         curItem.Delete();
                     }
@@ -217,14 +217,14 @@ namespace Server.Mobiles
                 return amount;
             }
 
-            var box = from.Player ? from.BankBox : from.FindBankNoCreate();
+            BankBox box = from.Player ? from.BankBox : from.FindBankNoCreate();
 
             if (box == null)
             {
                 return 0;
             }
 
-            var amountLeft = amount;
+            int amountLeft = amount;
             while (amountLeft > 0)
             {
                 Item item;
@@ -317,7 +317,7 @@ namespace Server.Mobiles
                     return;
                 }
 
-                foreach (var keyword in e.Keywords)
+                foreach (int keyword in e.Keywords)
                 {
                     switch (keyword)
                     {
@@ -332,13 +332,13 @@ namespace Server.Mobiles
                                     break;
                                 }
 
-                                var split = e.Speech.Split(' ');
+                                string[] split = e.Speech.Split(' ');
 
                                 if (split.Length >= 2)
                                 {
                                     int amount;
 
-                                    var pack = e.Mobile.Backpack;
+                                    Container pack = e.Mobile.Backpack;
 
                                     if (!int.TryParse(split[1], out amount))
                                     {
@@ -358,7 +358,7 @@ namespace Server.Mobiles
                                     }
                                     else if (amount > 0)
                                     {
-                                        var box = e.Mobile.Player ? e.Mobile.BankBox : e.Mobile.FindBankNoCreate();
+                                        BankBox box = e.Mobile.Player ? e.Mobile.BankBox : e.Mobile.FindBankNoCreate();
 
                                         if (box == null || !Withdraw(e.Mobile, amount))
                                         {
@@ -433,7 +433,7 @@ namespace Server.Mobiles
                                     break;
                                 }
 
-                                var split = e.Speech.Split(' ');
+                                string[] split = e.Speech.Split(' ');
 
                                 if (split.Length >= 2)
                                 {
@@ -456,9 +456,9 @@ namespace Server.Mobiles
                                     }
                                     else
                                     {
-                                        var check = new BankCheck(amount);
+                                        BankCheck check = new BankCheck(amount);
 
-                                        var box = e.Mobile.BankBox;
+                                        BankBox box = e.Mobile.BankBox;
 
                                         if (!box.TryDropItem(e.Mobile, check, false))
                                         {
@@ -490,7 +490,7 @@ namespace Server.Mobiles
         {
             if (from.Alive)
             {
-                var entry = new OpenBankEntry(this);
+                OpenBankEntry entry = new OpenBankEntry(this);
 
                 entry.Enabled = from.Map.Rules == MapRules.FeluccaRules || CheckVendorAccess(from);
 

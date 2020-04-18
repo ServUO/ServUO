@@ -115,7 +115,7 @@ namespace Server.Mobiles
 
     public static class PetTrainingHelper
     {
-        public static List<TrainingPoint> TrainingPoints { get { return _TrainingPoints; } }
+        public static List<TrainingPoint> TrainingPoints => _TrainingPoints;
         public static List<TrainingPoint> _TrainingPoints;
 
         public static TrainingDefinition[] Definitions { get; private set; }
@@ -163,7 +163,7 @@ namespace Server.Mobiles
 
         public static TrainingPoint GetTrainingPoint(object o)
         {
-            foreach (var tp in _TrainingPoints)
+            foreach (TrainingPoint tp in _TrainingPoints)
             {
                 if (tp.TrainPoint is PetStat && o is PetStat && (PetStat)tp.TrainPoint == (PetStat)o)
                     return tp;
@@ -192,7 +192,7 @@ namespace Server.Mobiles
 
         public static AbilityProfile GetAbilityProfile(BaseCreature bc, bool create = false)
         {
-            var profile = bc.AbilityProfile;
+            AbilityProfile profile = bc.AbilityProfile;
 
             if (profile == null && create)
                 bc.AbilityProfile = profile = new AbilityProfile(bc);
@@ -202,7 +202,7 @@ namespace Server.Mobiles
 
         public static TrainingProfile GetTrainingProfile(BaseCreature bc, bool create = false)
         {
-            var profile = bc.TrainingProfile;
+            TrainingProfile profile = bc.TrainingProfile;
 
             if (profile == null && create)
                 bc.TrainingProfile = profile = new TrainingProfile(bc);
@@ -212,7 +212,7 @@ namespace Server.Mobiles
 
         public static PlanningProfile GetPlanningProfile(BaseCreature bc, bool create = false)
         {
-            var profile = GetTrainingProfile(bc, create);
+            TrainingProfile profile = GetTrainingProfile(bc, create);
 
             if (profile != null)
                 return profile.PlanningProfile;
@@ -954,7 +954,7 @@ namespace Server.Mobiles
 
             for (int i = 0; i < WeaponAbilities.Length; i++)
             {
-                var ability = WeaponAbilities[i];
+                WeaponAbility ability = WeaponAbilities[i];
                 TrainingPointRequirement requirement = null;
 
                 if (ability == WeaponAbility.NerveStrike)
@@ -978,7 +978,7 @@ namespace Server.Mobiles
         #region Training Helpers
         public static bool CanControl(Mobile m, BaseCreature bc, TrainingProfile trainProfile)
         {
-            var projected = Math.Min(BaseCreature.MaxTameRequirement, bc.CurrentTameSkill + trainProfile.GetRequirementIncrease(!trainProfile.HasIncreasedControlSlot));
+            double projected = Math.Min(BaseCreature.MaxTameRequirement, bc.CurrentTameSkill + trainProfile.GetRequirementIncrease(!trainProfile.HasIncreasedControlSlot));
 
             return m.Skills[SkillName.AnimalTaming].Value >= projected;
         }
@@ -1005,50 +1005,50 @@ namespace Server.Mobiles
 
         public static int GetTotalStatWeight(BaseCreature bc)
         {
-            var str = GetTrainingPoint(PetStat.Str);
-            var dex = GetTrainingPoint(PetStat.Dex);
-            var intel = GetTrainingPoint(PetStat.Int);
+            TrainingPoint str = GetTrainingPoint(PetStat.Str);
+            TrainingPoint dex = GetTrainingPoint(PetStat.Dex);
+            TrainingPoint intel = GetTrainingPoint(PetStat.Int);
 
-            int v = (int)(Math.Min((double)bc.RawStr * str.Weight, str.GetMax(bc) * str.Weight) +
-                Math.Min((double)bc.RawDex * dex.Weight, dex.GetMax(bc) * dex.Weight) +
-                Math.Min((double)bc.RawInt * intel.Weight, intel.GetMax(bc) * intel.Weight));
+            int v = (int)(Math.Min(bc.RawStr * str.Weight, str.GetMax(bc) * str.Weight) +
+                Math.Min(bc.RawDex * dex.Weight, dex.GetMax(bc) * dex.Weight) +
+                Math.Min(bc.RawInt * intel.Weight, intel.GetMax(bc) * intel.Weight));
 
             return v;
         }
 
         public static int GetTotalAttributeWeight(BaseCreature bc)
         {
-            var hits = GetTrainingPoint(PetStat.Hits);
-            var stam = GetTrainingPoint(PetStat.Stam);
-            var mana = GetTrainingPoint(PetStat.Mana);
+            TrainingPoint hits = GetTrainingPoint(PetStat.Hits);
+            TrainingPoint stam = GetTrainingPoint(PetStat.Stam);
+            TrainingPoint mana = GetTrainingPoint(PetStat.Mana);
 
-            int v = (int)(Math.Min((double)bc.HitsMax * hits.Weight, hits.GetMax(bc) * hits.Weight) +
-                Math.Min((double)bc.StamMax * stam.Weight, stam.GetMax(bc) * stam.Weight) +
-                Math.Min((double)bc.ManaMax * mana.Weight, mana.GetMax(bc) * mana.Weight));
+            int v = (int)(Math.Min(bc.HitsMax * hits.Weight, hits.GetMax(bc) * hits.Weight) +
+                Math.Min(bc.StamMax * stam.Weight, stam.GetMax(bc) * stam.Weight) +
+                Math.Min(bc.ManaMax * mana.Weight, mana.GetMax(bc) * mana.Weight));
 
             return v;
         }
 
         public static int GetTotalResistWeight(BaseCreature bc)
         {
-            var phys = GetTrainingPoint(ResistanceType.Physical);
-            var fire = GetTrainingPoint(ResistanceType.Fire);
-            var cold = GetTrainingPoint(ResistanceType.Cold);
-            var pois = GetTrainingPoint(ResistanceType.Poison);
-            var nrgy = GetTrainingPoint(ResistanceType.Energy);
+            TrainingPoint phys = GetTrainingPoint(ResistanceType.Physical);
+            TrainingPoint fire = GetTrainingPoint(ResistanceType.Fire);
+            TrainingPoint cold = GetTrainingPoint(ResistanceType.Cold);
+            TrainingPoint pois = GetTrainingPoint(ResistanceType.Poison);
+            TrainingPoint nrgy = GetTrainingPoint(ResistanceType.Energy);
 
-            return (int)(((double)bc.PhysicalResistanceSeed * phys.Weight) +
-                   ((double)bc.FireResistSeed * fire.Weight) +
-                   ((double)bc.ColdResistSeed * cold.Weight) +
-                   ((double)bc.PoisonResistSeed * pois.Weight) +
-                   ((double)bc.EnergyResistSeed * nrgy.Weight));
+            return (int)((bc.PhysicalResistanceSeed * phys.Weight) +
+                   (bc.FireResistSeed * fire.Weight) +
+                   (bc.ColdResistSeed * cold.Weight) +
+                   (bc.PoisonResistSeed * pois.Weight) +
+                   (bc.EnergyResistSeed * nrgy.Weight));
         }
 
         public static int GetMaxDamagePerSecond(BaseCreature bc)
         {
             int slots = bc.ControlSlots;
 
-            var profile = GetTrainingProfile(bc);
+            TrainingProfile profile = GetTrainingProfile(bc);
 
             if (profile != null && !profile.HasIncreasedControlSlot)
             {
@@ -1114,7 +1114,7 @@ namespace Server.Mobiles
             {
                 if (tp.TrainPoint is PetStat)
                 {
-                    var profile = GetAbilityProfile(bc, true);
+                    AbilityProfile profile = GetAbilityProfile(bc, true);
 
                     switch ((PetStat)tp.TrainPoint)
                     {
@@ -1188,11 +1188,11 @@ namespace Server.Mobiles
 
         public static int GetTotalCost(TrainingPoint tp, BaseCreature bc, int value, int startValue)
         {
-            int cost = (int)((double)value * tp.Weight);
+            int cost = (int)(value * tp.Weight);
 
             if (tp.Requirements != null && tp.Requirements.Length > 0)
             {
-                foreach (var req in tp.Requirements.Where(r => r != null))
+                foreach (TrainingPointRequirement req in tp.Requirements.Where(r => r != null))
                 {
                     if (req.Requirement is SkillName && bc.Skills[(SkillName)req.Requirement].Base > 0)
                         continue;
@@ -1203,7 +1203,7 @@ namespace Server.Mobiles
 
             if (startValue > 0)
             {
-                cost -= (int)((double)startValue * tp.Weight);
+                cost -= (int)(startValue * tp.Weight);
             }
 
             return cost;
@@ -1211,7 +1211,7 @@ namespace Server.Mobiles
 
         public static bool ApplyTrainingPoint(BaseCreature bc, TrainingPoint trainingPoint, int value)
         {
-            var profile = GetAbilityProfile(bc, true);
+            AbilityProfile profile = GetAbilityProfile(bc, true);
 
             if (trainingPoint.TrainPoint is PetStat)
             {
@@ -1314,7 +1314,7 @@ namespace Server.Mobiles
 
         public static bool ValidateTrainingPoint(BaseCreature bc, MagicalAbility ability)
         {
-            var def = GetTrainingDefinition(bc);
+            TrainingDefinition def = GetTrainingDefinition(bc);
 
             if (def == null)
                 return false;
@@ -1324,7 +1324,7 @@ namespace Server.Mobiles
 
         public static bool ValidateTrainingPoint(BaseCreature bc, SpecialAbility ability)
         {
-            var def = GetTrainingDefinition(bc);
+            TrainingDefinition def = GetTrainingDefinition(bc);
 
             if (def == null)
                 return false;
@@ -1332,14 +1332,14 @@ namespace Server.Mobiles
             if (def.SpecialAbilities.Any(a => a == ability))
                 return true;
 
-            var profile = GetAbilityProfile(bc);
+            AbilityProfile profile = GetAbilityProfile(bc);
 
             return profile != null && (ability == SpecialAbility.ViciousBite || ability == SpecialAbility.VenomousBite) && profile.HasAbility(MagicalAbility.Poisoning);
         }
 
         public static bool ValidateTrainingPoint(BaseCreature bc, AreaEffect ability)
         {
-            var def = GetTrainingDefinition(bc);
+            TrainingDefinition def = GetTrainingDefinition(bc);
 
             if (def == null)
                 return false;
@@ -1347,14 +1347,14 @@ namespace Server.Mobiles
             if (def.AreaEffects.Any(a => a == ability))
                 return true;
 
-            var profile = GetAbilityProfile(bc);
+            AbilityProfile profile = GetAbilityProfile(bc);
 
             return profile != null && ability == AreaEffect.PoisonBreath && profile.HasAbility(MagicalAbility.Poisoning);
         }
 
         public static bool ValidateTrainingPoint(BaseCreature bc, WeaponAbility ability)
         {
-            var def = GetTrainingDefinition(bc);
+            TrainingDefinition def = GetTrainingDefinition(bc);
 
             if (def == null)
                 return false;
@@ -1371,7 +1371,7 @@ namespace Server.Mobiles
         {
             if (bc.Controlled)
             {
-                var profile = GetAbilityProfile(bc);
+                AbilityProfile profile = GetAbilityProfile(bc);
 
                 if (profile != null && profile.TokunoTame)
                 {
@@ -1388,7 +1388,7 @@ namespace Server.Mobiles
         {
             if (bc.Controlled)
             {
-                var profile = GetAbilityProfile(bc);
+                AbilityProfile profile = GetAbilityProfile(bc);
 
                 if (profile != null/* && profile.TokunoTame*/)
                 {
@@ -1446,7 +1446,7 @@ namespace Server.Mobiles
         /// Omit or make null to keep it from showing in the animal lore gump
         /// </summary>
 
-        public static TextDefinition[][] MagicalAbilityLocalizations { get { return _MagicalAbilityLocalizations; } }
+        public static TextDefinition[][] MagicalAbilityLocalizations => _MagicalAbilityLocalizations;
         private static readonly TextDefinition[][] _MagicalAbilityLocalizations =
         {
             new TextDefinition[] { 1157559, 1157392 }, // piercing
@@ -1467,7 +1467,7 @@ namespace Server.Mobiles
             new TextDefinition[] { 1002106, 1157391 }  // magery
         };
 
-        public static TextDefinition[][] SpecialAbilityLocalizations { get { return _SpecialAbilityLocalizations; } }
+        public static TextDefinition[][] SpecialAbilityLocalizations => _SpecialAbilityLocalizations;
         private static readonly TextDefinition[][] _SpecialAbilityLocalizations =
         {
             new TextDefinition[] { 1157412, 1157413 }, // Angry Fire
@@ -1496,7 +1496,7 @@ namespace Server.Mobiles
             new TextDefinition[] { 1153798, 0       }, // Blood Disease
         };
 
-        public static TextDefinition[][] AreaEffectLocalizations { get { return _AreaEffectLocalizations; } }
+        public static TextDefinition[][] AreaEffectLocalizations => _AreaEffectLocalizations;
         private static readonly TextDefinition[][] _AreaEffectLocalizations =
         {
             new TextDefinition[] { 1157459, 1157460 }, // Aura of Energy
@@ -1508,7 +1508,7 @@ namespace Server.Mobiles
             new TextDefinition[] { 1157475, 1157476 }, // Poison Breath
         };
 
-        public static TextDefinition[][] WeaponAbilityLocalizations { get { return _WeaponAbilityLocalizations; } }
+        public static TextDefinition[][] WeaponAbilityLocalizations => _WeaponAbilityLocalizations;
         private static readonly TextDefinition[][] _WeaponAbilityLocalizations =
         {
             new TextDefinition[] { 1028855, 1157436 }, // Nerve Strike
@@ -1544,7 +1544,7 @@ namespace Server.Mobiles
 
         public static TextDefinition[] GetLocalization(object o)
         {
-            var tp = GetTrainingPoint(o);
+            TrainingPoint tp = GetTrainingPoint(o);
 
             if (tp != null)
             {
@@ -1571,7 +1571,7 @@ namespace Server.Mobiles
 
         public static TextDefinition[] GetLocalization(MagicalAbility ability)
         {
-            foreach (var abil in Enum.GetValues(typeof(MagicalAbility)))
+            foreach (object abil in Enum.GetValues(typeof(MagicalAbility)))
             {
                 if ((ability & (MagicalAbility)abil) != 0)
                     return GetMagicialAbilityLocalization((MagicalAbility)abil);
@@ -1643,7 +1643,7 @@ namespace Server.Mobiles
 
         public static TextDefinition[] GetLocalization(SkillName skill)
         {
-            var tp = _TrainingPoints.FirstOrDefault(t => t.TrainPoint is SkillName && (SkillName)t.TrainPoint == skill);
+            TrainingPoint tp = _TrainingPoints.FirstOrDefault(t => t.TrainPoint is SkillName && (SkillName)t.TrainPoint == skill);
 
             if (tp != null)
             {
@@ -1687,7 +1687,7 @@ namespace Server.Mobiles
 
             if (o is SkillName)
             {
-                foreach (var skill in CombatSkills)
+                foreach (SkillName skill in CombatSkills)
                 {
                     if ((SkillName)o == skill)
                     {

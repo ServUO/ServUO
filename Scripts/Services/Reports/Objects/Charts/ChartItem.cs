@@ -10,13 +10,7 @@ namespace Server.Engines.Reports
             return new ChartItem();
         }
 
-        public override PersistableType TypeID
-        {
-            get
-            {
-                return ThisTypeID;
-            }
-        }
+        public override PersistableType TypeID => ThisTypeID;
         #endregion
 
         private string m_Name;
@@ -26,22 +20,22 @@ namespace Server.Engines.Reports
         {
             get
             {
-                return this.m_Name;
+                return m_Name;
             }
             set
             {
-                this.m_Name = value;
+                m_Name = value;
             }
         }
         public int Value
         {
             get
             {
-                return this.m_Value;
+                return m_Value;
             }
             set
             {
-                this.m_Value = value;
+                m_Value = value;
             }
         }
 
@@ -51,20 +45,20 @@ namespace Server.Engines.Reports
 
         public ChartItem(string name, int value)
         {
-            this.m_Name = name;
-            this.m_Value = value;
+            m_Name = name;
+            m_Value = value;
         }
 
         public override void SerializeAttributes(PersistenceWriter op)
         {
-            op.SetString("n", this.m_Name);
-            op.SetInt32("v", this.m_Value);
+            op.SetString("n", m_Name);
+            op.SetInt32("v", m_Value);
         }
 
         public override void DeserializeAttributes(PersistenceReader ip)
         {
-            this.m_Name = Utility.Intern(ip.GetString("n"));
-            this.m_Value = ip.GetInt32("v");
+            m_Name = Utility.Intern(ip.GetString("n"));
+            m_Value = ip.GetInt32("v");
         }
     }
 }

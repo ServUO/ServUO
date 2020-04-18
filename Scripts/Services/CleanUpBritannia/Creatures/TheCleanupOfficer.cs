@@ -6,14 +6,14 @@ namespace Server.Engines.CleanUpBritannia
 {
     public class TheCleanupOfficer : BaseVendor
     {
-        public override bool IsActiveVendor { get { return false; } }
-        public override bool IsInvulnerable { get { return true; } }
-        public override bool DisallowAllMoves { get { return true; } }
-        public override bool ClickTitle { get { return true; } }
-        public override bool CanTeach { get { return false; } }
+        public override bool IsActiveVendor => false;
+        public override bool IsInvulnerable => true;
+        public override bool DisallowAllMoves => true;
+        public override bool ClickTitle => true;
+        public override bool CanTeach => false;
 
         protected List<SBInfo> m_SBInfos = new List<SBInfo>();
-        protected override List<SBInfo> SBInfos { get { return this.m_SBInfos; } }
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo() { }
 
         [Constructable]
@@ -62,7 +62,7 @@ namespace Server.Engines.CleanUpBritannia
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from is PlayerMobile && from.InRange(this.Location, 5))
+            if (from is PlayerMobile && from.InRange(Location, 5))
                 from.SendGump(new CleanUpBritanniaRewardGump(this, from as PlayerMobile));
         }
 

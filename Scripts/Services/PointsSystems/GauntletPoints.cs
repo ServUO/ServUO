@@ -6,11 +6,11 @@ namespace Server.Engines.Points
 {
     public class DoomGauntlet : PointsSystem
     {
-        public override PointsType Loyalty { get { return PointsType.GauntletPoints; } }
-        public override TextDefinition Name { get { return m_Name; } }
-        public override bool AutoAdd { get { return true; } }
-        public override double MaxPoints { get { return double.MaxValue; } }
-        public override bool ShowOnLoyaltyGump { get { return false; } }
+        public override PointsType Loyalty => PointsType.GauntletPoints;
+        public override TextDefinition Name => m_Name;
+        public override bool AutoAdd => true;
+        public override double MaxPoints => double.MaxValue;
+        public override bool ShowOnLoyaltyGump => false;
 
         private readonly TextDefinition m_Name = new TextDefinition("Gauntlet Points");
 
@@ -98,7 +98,7 @@ namespace Server.Engines.Points
             }
         }
 
-        public static Type[] DoomArtifact { get { return m_DoomArtifact; } }
+        public static Type[] DoomArtifact => m_DoomArtifact;
         private static readonly Type[] m_DoomArtifact = new Type[]
         {
             typeof(LegacyOfTheDreadLord),       typeof(TheTaskmaster),              typeof(TheDragonSlayer),
@@ -114,7 +114,7 @@ namespace Server.Engines.Points
             typeof(HatOfTheMagi),               typeof(HuntersHeaddress),           typeof(SpiritOfTheTotem)
         };
 
-        public static Type[][] RewardTable { get { return m_RewardTable; } }
+        public static Type[][] RewardTable => m_RewardTable;
         private static readonly Type[][] m_RewardTable = new Type[][]
         {
             new Type[] { typeof(HatOfTheMagi) },            new Type[] { typeof(StaffOfTheMagi) },      new Type[] { typeof(OrnamentOfTheMagician) },

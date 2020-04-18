@@ -17,40 +17,16 @@ namespace Server.Spells.Ninjitsu
         {
         }
 
-        public override TimeSpan CastDelayBase
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(1.0);
-            }
-        }
-        public override double RequiredSkill
-        {
-            get
-            {
-                return 50.0;
-            }
-        }
-        public override int RequiredMana
-        {
-            get
-            {
-                return 15;
-            }
-        }
-        public override bool BlockedByAnimalForm
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(1.0);
+        public override double RequiredSkill => 50.0;
+        public override int RequiredMana => 15;
+        public override bool BlockedByAnimalForm => false;
         public override bool CheckCast()
         {
-            PlayerMobile pm = this.Caster as PlayerMobile; // IsStealthing should be moved to Server.Mobiles
+            PlayerMobile pm = Caster as PlayerMobile; // IsStealthing should be moved to Server.Mobiles
             if (!pm.IsStealthing)
             {
-                this.Caster.SendLocalizedMessage(1063087); // You must be in stealth mode to use this ability.
+                Caster.SendLocalizedMessage(1063087); // You must be in stealth mode to use this ability.
                 return false;
             }
 
@@ -64,50 +40,50 @@ namespace Server.Spells.Ninjitsu
 
         public override void OnCast()
         {
-            this.Caster.SendLocalizedMessage(1063088); // You prepare to perform a Shadowjump.
-            this.Caster.Target = new InternalTarget(this);
+            Caster.SendLocalizedMessage(1063088); // You prepare to perform a Shadowjump.
+            Caster.Target = new InternalTarget(this);
         }
 
         public void Target(IPoint3D p)
         {
             IPoint3D orig = p;
-            Map map = this.Caster.Map;
+            Map map = Caster.Map;
 
             SpellHelper.GetSurfaceTop(ref p);
 
-            Point3D from = this.Caster.Location;
+            Point3D from = Caster.Location;
             Point3D to = new Point3D(p);
 
-            PlayerMobile pm = this.Caster as PlayerMobile; // IsStealthing should be moved to Server.Mobiles
+            PlayerMobile pm = Caster as PlayerMobile; // IsStealthing should be moved to Server.Mobiles
 
             if (!pm.IsStealthing)
             {
-                this.Caster.SendLocalizedMessage(1063087); // You must be in stealth mode to use this ability.
+                Caster.SendLocalizedMessage(1063087); // You must be in stealth mode to use this ability.
             }
-            else if (Server.Misc.WeightOverloading.IsOverloaded(this.Caster))
+            else if (Server.Misc.WeightOverloading.IsOverloaded(Caster))
             {
-                this.Caster.SendLocalizedMessage(502359, "", 0x22); // Thou art too encumbered to move.
+                Caster.SendLocalizedMessage(502359, "", 0x22); // Thou art too encumbered to move.
             }
-            else if (!SpellHelper.CheckTravel(this.Caster, TravelCheckType.TeleportFrom) || !SpellHelper.CheckTravel(this.Caster, map, to, TravelCheckType.TeleportTo))
+            else if (!SpellHelper.CheckTravel(Caster, TravelCheckType.TeleportFrom) || !SpellHelper.CheckTravel(Caster, map, to, TravelCheckType.TeleportTo))
             {
             }
             else if (map == null || !map.CanSpawnMobile(p.X, p.Y, p.Z))
             {
-                this.Caster.SendLocalizedMessage(502831); // Cannot teleport to that spot.
+                Caster.SendLocalizedMessage(502831); // Cannot teleport to that spot.
             }
             else if (SpellHelper.CheckMulti(to, map, true, 5))
             {
-                this.Caster.SendLocalizedMessage(502831); // Cannot teleport to that spot.
+                Caster.SendLocalizedMessage(502831); // Cannot teleport to that spot.
             }
             else if (Region.Find(to, map).GetRegion(typeof(HouseRegion)) != null)
             {
-                this.Caster.SendLocalizedMessage(502829); // Cannot teleport to that spot.
+                Caster.SendLocalizedMessage(502829); // Cannot teleport to that spot.
             }
-            else if (this.CheckSequence())
+            else if (CheckSequence())
             {
-                SpellHelper.Turn(this.Caster, orig);
+                SpellHelper.Turn(Caster, orig);
 
-                Mobile m = this.Caster;
+                Mobile m = Caster;
 
                 m.Location = to;
                 m.ProcessDelta();
@@ -119,7 +95,7 @@ namespace Server.Spells.Ninjitsu
                 Server.SkillHandlers.Stealth.OnUse(m); // stealth check after the a jump
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
 
         public class InternalTarget : Target
@@ -128,7 +104,7 @@ namespace Server.Spells.Ninjitsu
             public InternalTarget(Shadowjump owner)
                 : base(11, true, TargetFlags.None)
             {
-                this.m_Owner = owner;
+                m_Owner = owner;
             }
 
             protected override void OnTarget(Mobile from, object o)
@@ -136,12 +112,12 @@ namespace Server.Spells.Ninjitsu
                 IPoint3D p = o as IPoint3D;
 
                 if (p != null)
-                    this.m_Owner.Target(p);
+                    m_Owner.Target(p);
             }
 
             protected override void OnTargetFinish(Mobile from)
             {
-                this.m_Owner.FinishSequence();
+                m_Owner.FinishSequence();
             }
         }
     }

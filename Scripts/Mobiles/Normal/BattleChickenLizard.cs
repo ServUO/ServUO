@@ -34,9 +34,9 @@ namespace Server.Mobiles
             MinTameSkill = 0.0;
         }
 
-        public override int Meat { get { return 3; } }
-        public override MeatType MeatType { get { return MeatType.Bird; } }
-        public override FoodType FavoriteFood { get { return FoodType.GrainsAndHay; } }
+        public override int Meat => 3;
+        public override MeatType MeatType => MeatType.Bird;
+        public override FoodType FavoriteFood => FoodType.GrainsAndHay;
 
         public override int GetIdleSound() { return 1511; }
         public override int GetAngerSound() { return 1508; }
@@ -94,7 +94,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

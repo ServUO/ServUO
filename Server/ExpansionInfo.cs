@@ -247,7 +247,7 @@ namespace Server
 
         public static FeatureFlags GetFeatures(Expansion ex)
         {
-            var info = GetInfo(ex);
+            ExpansionInfo info = GetInfo(ex);
 
             if (info != null)
             {
@@ -292,7 +292,7 @@ namespace Server
 
         public static ExpansionInfo GetInfo(int ex)
         {
-            var v = ex;
+            int v = ex;
 
             if (v < 0 || v >= Table.Length)
             {

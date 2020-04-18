@@ -9,9 +9,9 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public CityLoyaltySystem CitySystem { get { return CityLoyaltySystem.GetCityInstance(City); } set { } }
 
-        public override int LabelNumber { get { return 1027774; } } // bulletin board
-        public override bool Public { get { return true; } }
-        public override bool ForceShowProperties { get { return true; } }
+        public override int LabelNumber => 1027774;  // bulletin board
+        public override bool Public => true;
+        public override bool ForceShowProperties => true;
 
         [Constructable]
         public CityMessageBoard(City city, int id) : base(id)
@@ -22,7 +22,7 @@ namespace Server.Items
 
         public override bool CanPostGreeting(Server.Multis.BaseHouse house, Mobile m)
         {
-            var sys = CitySystem;
+            CityLoyaltySystem sys = CitySystem;
 
             return sys != null && (m.AccessLevel >= AccessLevel.GameMaster || sys.Governor == m);
         }
@@ -34,7 +34,7 @@ namespace Server.Items
 
             if (CitySystem.IsCitizen(from, true))
             {
-                if (from.InRange(this.Location, 3))
+                if (from.InRange(Location, 3))
                 {
                     from.SendGump(new PlayerBBGump(from, null, this, 0));
                 }

@@ -9,11 +9,11 @@ namespace Server.Mobiles
         public LizardmanDefender()
             : base(AIType.AI_Archer, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            this.Name = NameList.RandomName("lizardman");
-            this.Title = "the defender";
-            this.Body = Utility.RandomList(35, 36);
-            this.BaseSoundID = 417;
-            this.Hue = 1949;
+            Name = NameList.RandomName("lizardman");
+            Title = "the defender";
+            Body = Utility.RandomList(35, 36);
+            BaseSoundID = 417;
+            Hue = 1949;
 
             SetStr(157, 180);
             SetDex(105, 108);
@@ -63,7 +63,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

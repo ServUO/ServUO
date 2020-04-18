@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class CultistsRitualTome : Spellbook
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1158717; } } // Cultist's Ritual Tome
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1158717;  // Cultist's Ritual Tome
 
         [Constructable]
         public CultistsRitualTome()
@@ -28,7 +28,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

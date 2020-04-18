@@ -5,7 +5,7 @@ namespace Server.Items
     [Alterable(typeof(DefTailoring), typeof(WingArmorOfLight))]
     public class CloakOfLight : Cloak
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
         [Constructable]
         public CloakOfLight()
         {
@@ -19,12 +19,12 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber { get { return 1155608; } }// Cloak of Light
+        public override int LabelNumber => 1155608; // Cloak of Light
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -36,7 +36,7 @@ namespace Server.Items
 
     public class WingArmorOfLight : GargishClothWingArmor
     {
-        public override bool IsArtifact { get { return true; } }
+        public override bool IsArtifact => true;
 
         [Constructable]
         public WingArmorOfLight()
@@ -51,12 +51,12 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber { get { return 1155683; } }// Wing Armor of Light
+        public override int LabelNumber => 1155683; // Wing Armor of Light
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

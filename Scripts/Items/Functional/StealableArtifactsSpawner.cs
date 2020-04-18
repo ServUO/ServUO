@@ -237,26 +237,20 @@ namespace Server.Items
         private StealableArtifactsSpawner()
             : base(1)
         {
-            this.Movable = false;
+            Movable = false;
 
-            this.m_Artifacts = new StealableInstance[m_Entries.Length];
-            this.m_Table = new Hashtable(m_Entries.Length);
+            m_Artifacts = new StealableInstance[m_Entries.Length];
+            m_Table = new Hashtable(m_Entries.Length);
 
             for (int i = 0; i < m_Entries.Length; i++)
             {
-                this.m_Artifacts[i] = new StealableInstance(m_Entries[i]);
+                m_Artifacts[i] = new StealableInstance(m_Entries[i]);
             }
 
-            this.m_RespawnTimer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromMinutes(15.0), new TimerCallback(CheckRespawn));
+            m_RespawnTimer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromMinutes(15.0), new TimerCallback(CheckRespawn));
         }
 
-        public static StealableEntry[] Entries
-        {
-            get
-            {
-                return m_Entries;
-            }
-        }
+        public static StealableEntry[] Entries => m_Entries;
         public static Type[] TypesOfEntires
         {
             get
@@ -272,20 +266,8 @@ namespace Server.Items
                 return m_TypesOfEntries;
             }
         }
-        public static StealableArtifactsSpawner Instance
-        {
-            get
-            {
-                return m_Instance;
-            }
-        }
-        public override string DefaultName
-        {
-            get
-            {
-                return "Stealable Artifacts Spawner - Internal";
-            }
-        }
+        public static StealableArtifactsSpawner Instance => m_Instance;
+        public override string DefaultName => "Stealable Artifacts Spawner - Internal";
         public static void Initialize()
         {
             CommandSystem.Register("GenStealArties", AccessLevel.Administrator, new CommandEventHandler(GenStealArties_OnCommand));
@@ -336,13 +318,13 @@ namespace Server.Items
         {
             base.OnDelete();
 
-            if (this.m_RespawnTimer != null)
+            if (m_RespawnTimer != null)
             {
-                this.m_RespawnTimer.Stop();
-                this.m_RespawnTimer = null;
+                m_RespawnTimer.Stop();
+                m_RespawnTimer = null;
             }
 
-            foreach (StealableInstance si in this.m_Artifacts)
+            foreach (StealableInstance si in m_Artifacts)
             {
                 if (si.Item != null)
                     si.Item.Delete();
@@ -353,7 +335,7 @@ namespace Server.Items
 
         public void CheckRespawn()
         {
-            foreach (StealableInstance si in this.m_Artifacts)
+            foreach (StealableInstance si in m_Artifacts)
             {
                 si.CheckRespawn();
             }
@@ -365,14 +347,14 @@ namespace Server.Items
 
             writer.WriteEncodedInt(0); // version
 
-            writer.WriteEncodedInt(this.m_Artifacts.Length);
+            writer.WriteEncodedInt(m_Artifacts.Length);
 
-            for (int i = 0; i < this.m_Artifacts.Length; i++)
+            for (int i = 0; i < m_Artifacts.Length; i++)
             {
-                StealableInstance si = this.m_Artifacts[i];
+                StealableInstance si = m_Artifacts[i];
 
-                writer.Write((Item)si.Item);
-                writer.WriteDeltaTime((DateTime)si.NextRespawn);
+                writer.Write(si.Item);
+                writer.WriteDeltaTime(si.NextRespawn);
             }
         }
 
@@ -382,8 +364,8 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            this.m_Artifacts = new StealableInstance[m_Entries.Length];
-            this.m_Table = new Hashtable(m_Entries.Length);
+            m_Artifacts = new StealableInstance[m_Entries.Length];
+            m_Table = new Hashtable(m_Entries.Length);
 
             int length = reader.ReadEncodedInt();
 
@@ -392,22 +374,22 @@ namespace Server.Items
                 Item item = reader.ReadItem();
                 DateTime nextRespawn = reader.ReadDeltaTime();
 
-                if (i < this.m_Artifacts.Length)
+                if (i < m_Artifacts.Length)
                 {
                     StealableInstance si = new StealableInstance(m_Entries[i], item, nextRespawn);
-                    this.m_Artifacts[i] = si;
+                    m_Artifacts[i] = si;
 
                     if (si.Item != null)
-                        this.m_Table[si.Item] = si;
+                        m_Table[si.Item] = si;
                 }
             }
 
             for (int i = length; i < m_Entries.Length; i++)
             {
-                this.m_Artifacts[i] = new StealableInstance(m_Entries[i]);
+                m_Artifacts[i] = new StealableInstance(m_Entries[i]);
             }
 
-            this.m_RespawnTimer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromMinutes(15.0), new TimerCallback(CheckRespawn));
+            m_RespawnTimer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromMinutes(15.0), new TimerCallback(CheckRespawn));
         }
 
         private static int GetLampPostHue()
@@ -457,65 +439,29 @@ namespace Server.Items
 
             public StealableEntry(Map map, Point3D location, int minDelay, int maxDelay, Type type, int hue)
             {
-                this.m_Map = map;
-                this.m_Location = location;
-                this.m_MinDelay = minDelay;
-                this.m_MaxDelay = maxDelay;
-                this.m_Type = type;
-                this.m_Hue = hue;
+                m_Map = map;
+                m_Location = location;
+                m_MinDelay = minDelay;
+                m_MaxDelay = maxDelay;
+                m_Type = type;
+                m_Hue = hue;
             }
 
-            public Map Map
-            {
-                get
-                {
-                    return this.m_Map;
-                }
-            }
-            public Point3D Location
-            {
-                get
-                {
-                    return this.m_Location;
-                }
-            }
-            public int MinDelay
-            {
-                get
-                {
-                    return this.m_MinDelay;
-                }
-            }
-            public int MaxDelay
-            {
-                get
-                {
-                    return this.m_MaxDelay;
-                }
-            }
-            public Type Type
-            {
-                get
-                {
-                    return this.m_Type;
-                }
-            }
-            public int Hue
-            {
-                get
-                {
-                    return this.m_Hue;
-                }
-            }
+            public Map Map => m_Map;
+            public Point3D Location => m_Location;
+            public int MinDelay => m_MinDelay;
+            public int MaxDelay => m_MaxDelay;
+            public Type Type => m_Type;
+            public int Hue => m_Hue;
             public Item CreateInstance()
             {
-                Item item = (Item)Activator.CreateInstance(this.m_Type);
+                Item item = (Item)Activator.CreateInstance(m_Type);
 
-                if (this.m_Hue > 0)
-                    item.Hue = this.m_Hue;
+                if (m_Hue > 0)
+                    item.Hue = m_Hue;
 
                 item.Movable = false;
-                item.MoveToWorld(this.Location, this.Map);
+                item.MoveToWorld(Location, Map);
 
                 return item;
             }
@@ -533,73 +479,67 @@ namespace Server.Items
 
             public StealableInstance(StealableEntry entry, Item item, DateTime nextRespawn)
             {
-                this.m_Item = item;
-                this.m_NextRespawn = nextRespawn;
-                this.m_Entry = entry;
+                m_Item = item;
+                m_NextRespawn = nextRespawn;
+                m_Entry = entry;
             }
 
-            public StealableEntry Entry
-            {
-                get
-                {
-                    return this.m_Entry;
-                }
-            }
+            public StealableEntry Entry => m_Entry;
             public Item Item
             {
                 get
                 {
-                    return this.m_Item;
+                    return m_Item;
                 }
                 set
                 {
-                    if (this.m_Item != null && value == null)
+                    if (m_Item != null && value == null)
                     {
-                        int delay = Utility.RandomMinMax(this.Entry.MinDelay, this.Entry.MaxDelay);
-                        this.NextRespawn = DateTime.UtcNow + TimeSpan.FromMinutes(delay);
+                        int delay = Utility.RandomMinMax(Entry.MinDelay, Entry.MaxDelay);
+                        NextRespawn = DateTime.UtcNow + TimeSpan.FromMinutes(delay);
                     }
 
                     if (Instance != null)
                     {
-                        if (this.m_Item != null)
-                            Instance.m_Table.Remove(this.m_Item);
+                        if (m_Item != null)
+                            Instance.m_Table.Remove(m_Item);
 
                         if (value != null)
                             Instance.m_Table[value] = this;
                     }
 
-                    this.m_Item = value;
+                    m_Item = value;
                 }
             }
             public DateTime NextRespawn
             {
                 get
                 {
-                    return this.m_NextRespawn;
+                    return m_NextRespawn;
                 }
                 set
                 {
-                    this.m_NextRespawn = value;
+                    m_NextRespawn = value;
                 }
             }
             public void CheckRespawn()
             {
-                if (this.Item != null && (this.Item.Deleted || this.Item.Movable || this.Item.Parent != null))
-                    this.Item = null;
+                if (Item != null && (Item.Deleted || Item.Movable || Item.Parent != null))
+                    Item = null;
 
-                if (this.Item == null && DateTime.UtcNow >= this.NextRespawn)
+                if (Item == null && DateTime.UtcNow >= NextRespawn)
                 {
-                    this.Item = this.Entry.CreateInstance();
+                    Item = Entry.CreateInstance();
                 }
             }
             public void ForceRespawn()
             {
-                if (this.Item != null && (this.Item.Deleted || this.Item.Movable || this.Item.Parent != null))
-                    this.Item = null;
+                if (Item != null && (Item.Deleted || Item.Movable || Item.Parent != null))
+                    Item = null;
 
-                if (this.Item == null)
+                if (Item == null)
                 {
-                    this.Item = this.Entry.CreateInstance();
+                    Item = Entry.CreateInstance();
                 }
             }
         }

@@ -92,7 +92,7 @@ namespace Server.Items
 
                 if (_MessageItem is BaseAddon)
                 {
-                    foreach (var comp in ((BaseAddon)_MessageItem).Components)
+                    foreach (AddonComponent comp in ((BaseAddon)_MessageItem).Components)
                     {
                         comp.InvalidateProperties();
                     }

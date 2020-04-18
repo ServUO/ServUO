@@ -14,66 +14,42 @@ namespace Server.Commands.Generic
 
         private IConditional[] m_Conditionals;
 
-        public Type Type
-        {
-            get
-            {
-                return this.m_ObjectType;
-            }
-        }
+        public Type Type => m_ObjectType;
 
-        public bool IsItem
-        {
-            get
-            {
-                return (this.m_ObjectType == null || this.m_ObjectType == typeofItem || this.m_ObjectType.IsSubclassOf(typeofItem));
-            }
-        }
+        public bool IsItem => (m_ObjectType == null || m_ObjectType == typeofItem || m_ObjectType.IsSubclassOf(typeofItem));
 
-        public bool IsMobile
-        {
-            get
-            {
-                return (this.m_ObjectType == null || this.m_ObjectType == typeofMobile || this.m_ObjectType.IsSubclassOf(typeofMobile));
-            }
-        }
+        public bool IsMobile => (m_ObjectType == null || m_ObjectType == typeofMobile || m_ObjectType.IsSubclassOf(typeofMobile));
 
         public static readonly ObjectConditional Empty = new ObjectConditional(null, null);
 
-        public bool HasCompiled
-        {
-            get
-            {
-                return (this.m_Conditionals != null);
-            }
-        }
+        public bool HasCompiled => (m_Conditionals != null);
 
         public void Compile(ref AssemblyEmitter emitter)
         {
             if (emitter == null)
                 emitter = new AssemblyEmitter("__dynamic", false);
 
-            this.m_Conditionals = new IConditional[this.m_Conditions.Length];
+            m_Conditionals = new IConditional[m_Conditions.Length];
 
-            for (int i = 0; i < this.m_Conditionals.Length; ++i)
-                this.m_Conditionals[i] = ConditionalCompiler.Compile(emitter, this.m_ObjectType, this.m_Conditions[i], i);
+            for (int i = 0; i < m_Conditionals.Length; ++i)
+                m_Conditionals[i] = ConditionalCompiler.Compile(emitter, m_ObjectType, m_Conditions[i], i);
         }
 
         public bool CheckCondition(object obj)
         {
-            if (this.m_ObjectType == null)
+            if (m_ObjectType == null)
                 return true; // null type means no condition
 
-            if (!this.HasCompiled)
+            if (!HasCompiled)
             {
                 AssemblyEmitter emitter = null;
 
-                this.Compile(ref emitter);
+                Compile(ref emitter);
             }
 
-            for (int i = 0; i < this.m_Conditionals.Length; ++i)
+            for (int i = 0; i < m_Conditionals.Length; ++i)
             {
-                if (this.m_Conditionals[i].Verify(obj))
+                if (m_Conditionals[i].Verify(obj))
                     return true;
             }
 
@@ -255,8 +231,8 @@ namespace Server.Commands.Generic
 
         public ObjectConditional(Type objectType, ICondition[][] conditions)
         {
-            this.m_ObjectType = objectType;
-            this.m_Conditions = conditions;
+            m_ObjectType = objectType;
+            m_Conditions = conditions;
         }
     }
 }

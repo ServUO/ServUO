@@ -6,7 +6,7 @@ namespace Server.Mobiles
 {
     public class QueenZhah : MondainQuester
     {
-        public override Type[] Quests { get { return new Type[] { typeof(JourneyToTheAthenaeumIsleQuest) }; } }
+        public override Type[] Quests => new Type[] { typeof(JourneyToTheAthenaeumIsleQuest) };
 
         [Constructable]
         public QueenZhah() : base("Zhah", "the Gargoyle Queen")
@@ -58,7 +58,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

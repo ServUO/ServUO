@@ -6,8 +6,8 @@ namespace Server.Mobiles
         public MinerGuildmaster()
             : base("miner")
         {
-            this.SetSkill(SkillName.ItemID, 60.0, 83.0);
-            this.SetSkill(SkillName.Mining, 90.0, 100.0);
+            SetSkill(SkillName.ItemID, 60.0, 83.0);
+            SetSkill(SkillName.Mining, 90.0, 100.0);
         }
 
         public MinerGuildmaster(Serial serial)
@@ -15,18 +15,12 @@ namespace Server.Mobiles
         {
         }
 
-        public override NpcGuild NpcGuild
-        {
-            get
-            {
-                return NpcGuild.MinersGuild;
-            }
-        }
+        public override NpcGuild NpcGuild => NpcGuild.MinersGuild;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

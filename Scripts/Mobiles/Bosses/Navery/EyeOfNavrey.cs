@@ -6,9 +6,9 @@ namespace Server.Items
         public EyeOfNavrey()
             : base(0x318D)
         {
-            this.Weight = 1;
-            this.Hue = 68;
-            this.LootType = LootType.Blessed;
+            Weight = 1;
+            Hue = 68;
+            LootType = LootType.Blessed;
         }
 
         public EyeOfNavrey(Serial serial)
@@ -16,18 +16,12 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1095154;
-            }
-        }// Eye of Navrey Night-Eyes
+        public override int LabelNumber => 1095154;// Eye of Navrey Night-Eyes
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

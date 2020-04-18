@@ -69,14 +69,14 @@ namespace Server.Engines.Quests
                 FilePath,
                 writer =>
                 {
-                    writer.Write((int)0);
+                    writer.Write(0);
 
                     writer.Write(PurchaseList.Count);
 
                     PurchaseList.ForEach(s =>
                     {
                         writer.Write(s.Account);
-                        writer.Write((int)s.Purchase);
+                        writer.Write(s.Purchase);
                     });
                 });
         }
@@ -107,14 +107,14 @@ namespace Server.Engines.Quests
     public class MiningCooperativeMerchant : BaseVendor
     {
         protected readonly List<SBInfo> m_SBInfos = new List<SBInfo>();
-        protected override List<SBInfo> SBInfos { get { return m_SBInfos; } }
+        protected override List<SBInfo> SBInfos => m_SBInfos;
 
-        public override bool IsActiveVendor { get { return false; } }
-        public override bool IsInvulnerable { get { return true; } }
+        public override bool IsActiveVendor => false;
+        public override bool IsInvulnerable => true;
 
-        public int MaxAmount { get { return 5000; } }
-        public int Price { get { return 112; } }
-        public int Quantity { get { return 500; } }
+        public int MaxAmount => 5000;
+        public int Price => 112;
+        public int Quantity => 500;
 
         public static MiningCooperativeMerchant InstanceTram { get; set; }
         public static MiningCooperativeMerchant InstanceFel { get; set; }
@@ -151,7 +151,7 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

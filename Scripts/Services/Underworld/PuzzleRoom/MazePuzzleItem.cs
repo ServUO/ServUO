@@ -11,16 +11,16 @@ namespace Server.Items
 
         public List<int> Path { get; set; }
         public List<int> Progress { get; set; }
-        public CircuitCount Count { get { return CircuitCount.ThirtySix; } }
-        public int GumpTitle { get { return 1153747; } } // <center>GENERATOR CONTROL PANEL</center>
-        public int GumpDescription { get { return 1153749; } } // // <center>Close the Grid Circuit</center>
-        public bool CanDecipher { get { return true; } }
+        public CircuitCount Count => CircuitCount.ThirtySix;
+        public int GumpTitle => 1153747;  // <center>GENERATOR CONTROL PANEL</center>
+        public int GumpDescription => 1153749;  // // <center>Close the Grid Circuit</center>
+        public bool CanDecipher => true;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public MagicKey Key { get { return m_Key; } set { m_Key = value; } }
 
-        public override int LabelNumber { get { return 1113379; } } // Puzzle Board
-        public override int Lifespan { get { return 600; } }
+        public override int LabelNumber => 1113379;  // Puzzle Board
+        public override int Lifespan => 600;
 
         [Constructable]
         public MazePuzzleItem(MagicKey key) : base(0x2AAA)
@@ -94,14 +94,14 @@ namespace Server.Items
 
         public void ApplyShock(Mobile m, int tick)
         {
-            if (m == null || !m.Alive || this.Deleted)
+            if (m == null || !m.Alive || Deleted)
             {
                 if (m_DamageTimer != null)
                     m_DamageTimer.Stop();
             }
             else
             {
-                int damage = (int)(75 / Math.Max(1, tick - 1)) + Utility.RandomMinMax(1, 9);
+                int damage = 75 / Math.Max(1, tick - 1) + Utility.RandomMinMax(1, 9);
 
                 AOS.Damage(m, damage, 0, 0, 0, 0, 100);
 
@@ -141,7 +141,7 @@ namespace Server.Items
 
                 if (m_From == null || m_Item == null || !m_From.Alive || m_Item.Deleted)
                 {
-                    this.Stop();
+                    Stop();
                     return;
                 }
 
@@ -159,7 +159,7 @@ namespace Server.Items
                         delay = 6;
 
                     if (m_Tick >= 10)
-                        this.Stop();
+                        Stop();
                     else
                         m_NextDamage = DateTime.UtcNow + TimeSpan.FromSeconds(delay);
                 }
@@ -200,7 +200,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // ver
+            writer.Write(0); // ver
             writer.Write(m_Key);
         }
 

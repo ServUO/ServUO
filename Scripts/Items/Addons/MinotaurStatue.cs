@@ -21,23 +21,23 @@ namespace Server.Items
             switch (type)
             {
                 case MinotaurStatueType.AttackSouth:
-                    this.AddComponent(new AddonComponent(0x306C), 0, 0, 0);
-                    this.AddComponent(new AddonComponent(0x306D), -1, 0, 0);
-                    this.AddComponent(new AddonComponent(0x306E), 0, -1, 0);
+                    AddComponent(new AddonComponent(0x306C), 0, 0, 0);
+                    AddComponent(new AddonComponent(0x306D), -1, 0, 0);
+                    AddComponent(new AddonComponent(0x306E), 0, -1, 0);
                     break;
                 case MinotaurStatueType.AttackEast:
-                    this.AddComponent(new AddonComponent(0x3074), 0, 0, 0);
-                    this.AddComponent(new AddonComponent(0x3075), -1, 0, 0);
-                    this.AddComponent(new AddonComponent(0x3076), 0, -1, 0);
+                    AddComponent(new AddonComponent(0x3074), 0, 0, 0);
+                    AddComponent(new AddonComponent(0x3075), -1, 0, 0);
+                    AddComponent(new AddonComponent(0x3076), 0, -1, 0);
                     break;
                 case MinotaurStatueType.DefendSouth:
-                    this.AddComponent(new AddonComponent(0x3072), 0, 0, 0);
-                    this.AddComponent(new AddonComponent(0x3073), 0, -1, 0);
+                    AddComponent(new AddonComponent(0x3072), 0, 0, 0);
+                    AddComponent(new AddonComponent(0x3073), 0, -1, 0);
                     break;
                 case MinotaurStatueType.DefendEast:
-                    this.AddComponent(new AddonComponent(0x306F), 0, 0, 0);
-                    this.AddComponent(new AddonComponent(0x3070), -1, 0, 0);
-                    this.AddComponent(new AddonComponent(0x3071), 0, -1, 0);
+                    AddComponent(new AddonComponent(0x306F), 0, 0, 0);
+                    AddComponent(new AddonComponent(0x3070), -1, 0, 0);
+                    AddComponent(new AddonComponent(0x3071), 0, -1, 0);
                     break;
             }
         }
@@ -52,7 +52,7 @@ namespace Server.Items
             get
             {
                 MinotaurStatueDeed deed = new MinotaurStatueDeed();
-                deed.IsRewardItem = this.m_IsRewardItem;
+                deed.IsRewardItem = m_IsRewardItem;
 
                 return deed;
             }
@@ -62,12 +62,12 @@ namespace Server.Items
         {
             get
             {
-                return this.m_IsRewardItem;
+                return m_IsRewardItem;
             }
             set
             {
-                this.m_IsRewardItem = value;
-                this.InvalidateProperties();
+                m_IsRewardItem = value;
+                InvalidateProperties();
             }
         }
         public override void Serialize(GenericWriter writer)
@@ -76,7 +76,7 @@ namespace Server.Items
 
             writer.WriteEncodedInt(0); // version
 
-            writer.Write((bool)this.m_IsRewardItem);
+            writer.Write(m_IsRewardItem);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -85,7 +85,7 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            this.m_IsRewardItem = reader.ReadBool();
+            m_IsRewardItem = reader.ReadBool();
         }
     }
 
@@ -97,7 +97,7 @@ namespace Server.Items
         public MinotaurStatueDeed()
             : base()
         {
-            this.LootType = LootType.Blessed;
+            LootType = LootType.Blessed;
         }
 
         public MinotaurStatueDeed(Serial serial)
@@ -105,19 +105,13 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1080409;
-            }
-        }// Minotaur Statue Deed
+        public override int LabelNumber => 1080409;// Minotaur Statue Deed
         public override BaseAddon Addon
         {
             get
             {
-                MinotaurStatue addon = new MinotaurStatue(this.m_StatueType);
-                addon.IsRewardItem = this.m_IsRewardItem;
+                MinotaurStatue addon = new MinotaurStatue(m_StatueType);
+                addon.IsRewardItem = m_IsRewardItem;
 
                 return addon;
             }
@@ -127,20 +121,20 @@ namespace Server.Items
         {
             get
             {
-                return this.m_IsRewardItem;
+                return m_IsRewardItem;
             }
             set
             {
-                this.m_IsRewardItem = value;
-                this.InvalidateProperties();
+                m_IsRewardItem = value;
+                InvalidateProperties();
             }
         }
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.m_IsRewardItem && !RewardSystem.CheckIsUsableBy(from, this, null))
+            if (m_IsRewardItem && !RewardSystem.CheckIsUsableBy(from, this, null))
                 return;
 
-            if (this.IsChildOf(from.Backpack))
+            if (IsChildOf(from.Backpack))
             {
                 from.CloseGump(typeof(RewardOptionGump));
                 from.SendGump(new RewardOptionGump(this));
@@ -153,7 +147,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if (this.m_IsRewardItem)
+            if (m_IsRewardItem)
                 list.Add(1076218); // 2nd Year Veteran Reward
         }
 
@@ -163,7 +157,7 @@ namespace Server.Items
 
             writer.WriteEncodedInt(0); // version
 
-            writer.Write((bool)this.m_IsRewardItem);
+            writer.Write(m_IsRewardItem);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -172,7 +166,7 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            this.m_IsRewardItem = reader.ReadBool();
+            m_IsRewardItem = reader.ReadBool();
         }
 
         public void GetOptions(RewardOptionList list)
@@ -185,9 +179,9 @@ namespace Server.Items
 
         public void OnOptionSelected(Mobile from, int option)
         {
-            this.m_StatueType = (MinotaurStatueType)option;
+            m_StatueType = (MinotaurStatueType)option;
 
-            if (!this.Deleted)
+            if (!Deleted)
                 base.OnDoubleClick(from);
         }
     }

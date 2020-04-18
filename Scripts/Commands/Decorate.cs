@@ -11,10 +11,7 @@ namespace Server.Commands
     public class Decorate
     {
         private static string m_Key;
-        public static string Key
-        {
-            get { return m_Key; }
-        }
+        public static string Key => m_Key;
 
         public static void Initialize()
         {
@@ -51,7 +48,7 @@ namespace Server.Commands
 
             for (int i = 0; i < files.Length; ++i)
             {
-                var list = DecorationList.ReadAll(files[i]);
+                List<DecorationList> list = DecorationList.ReadAll(files[i]);
 
                 m_List = list;
 
@@ -71,7 +68,7 @@ namespace Server.Commands
             if (!File.Exists(path))
                 return;
 
-            var list = DecorationList.ReadAll(path);
+            List<DecorationList> list = DecorationList.ReadAll(path);
             int count = 0;
 
             m_List = list;
@@ -97,7 +94,7 @@ namespace Server.Commands
 
             for (int i = 0; i < files.Length; ++i)
             {
-                var list = DecorationList.ReadRestricted(files[i], restrictType, derivesFrom);
+                List<DecorationList> list = DecorationList.ReadRestricted(files[i], restrictType, derivesFrom);
 
                 m_List = list;
 
@@ -143,13 +140,7 @@ namespace Server.Commands
 
         private Item m_Constructed;
 
-        public Item Constructed
-        {
-            get
-            {
-                return m_Constructed;
-            }
-        }
+        public Item Constructed => m_Constructed;
 
         public int ID
         {
@@ -1273,7 +1264,7 @@ namespace Server.Commands
         {
             using (StreamReader ip = new StreamReader(path))
             {
-                var list = new List<DecorationList>();
+                List<DecorationList> list = new List<DecorationList>();
 
                 for (DecorationList v = Read(ip); v != null; v = Read(ip))
                     list.Add(v);
@@ -1354,20 +1345,8 @@ namespace Server.Commands
         private readonly Point3D m_Location;
         private readonly string m_Extra;
 
-        public Point3D Location
-        {
-            get
-            {
-                return m_Location;
-            }
-        }
-        public string Extra
-        {
-            get
-            {
-                return m_Extra;
-            }
-        }
+        public Point3D Location => m_Location;
+        public string Extra => m_Extra;
 
         public DecorationEntry(string line)
         {

@@ -103,7 +103,7 @@ namespace Ultima
             IsCached_NoStatics_NoPatch = false;
         }
 
-        public bool LoadedMatrix { get { return (m_Tiles != null); } }
+        public bool LoadedMatrix => (m_Tiles != null);
 
         public TileMatrix Tiles
         {
@@ -120,9 +120,9 @@ namespace Ultima
 
         public int Width { get { return m_Width; } set { m_Width = value; } }
 
-        public int Height { get { return m_Height; } }
+        public int Height => m_Height;
 
-        public int FileIndex { get { return m_FileIndex; } }
+        public int FileIndex => m_FileIndex;
 
         /// <summary>
         ///     Returns Bitmap with Statics
@@ -148,7 +148,7 @@ namespace Ultima
         /// <returns></returns>
         public Bitmap GetImage(int x, int y, int width, int height, bool statics)
         {
-            var bmp = new Bitmap(width << 3, height << 3, PixelFormat.Format16bppRgb555);
+            Bitmap bmp = new Bitmap(width << 3, height << 3, PixelFormat.Format16bppRgb555);
 
             GetImage(x, y, width, height, bmp, statics);
 
@@ -337,7 +337,7 @@ namespace Ultima
 
         private unsafe short[] RenderBlock(int x, int y, bool drawStatics, bool diff)
         {
-            var data = new short[64];
+            short[] data = new short[64];
 
             Tile[] tiles = m_Tiles.GetLandBlock(x, y, diff);
 
@@ -500,18 +500,18 @@ namespace Ultima
             int stride = bd.Stride;
             int blockStride = stride << 3;
 
-            var pStart = (byte*)bd.Scan0;
+            byte* pStart = (byte*)bd.Scan0;
 
             for (int oy = 0, by = y; oy < height; ++oy, ++by, pStart += blockStride)
             {
-                var pRow0 = (int*)(pStart + (0 * stride));
-                var pRow1 = (int*)(pStart + (1 * stride));
-                var pRow2 = (int*)(pStart + (2 * stride));
-                var pRow3 = (int*)(pStart + (3 * stride));
-                var pRow4 = (int*)(pStart + (4 * stride));
-                var pRow5 = (int*)(pStart + (5 * stride));
-                var pRow6 = (int*)(pStart + (6 * stride));
-                var pRow7 = (int*)(pStart + (7 * stride));
+                int* pRow0 = (int*)(pStart + (0 * stride));
+                int* pRow1 = (int*)(pStart + (1 * stride));
+                int* pRow2 = (int*)(pStart + (2 * stride));
+                int* pRow3 = (int*)(pStart + (3 * stride));
+                int* pRow4 = (int*)(pStart + (4 * stride));
+                int* pRow5 = (int*)(pStart + (5 * stride));
+                int* pRow6 = (int*)(pStart + (6 * stride));
+                int* pRow7 = (int*)(pStart + (7 * stride));
 
                 for (int ox = 0, bx = x; ox < width; ++ox, ++bx)
                 {
@@ -519,7 +519,7 @@ namespace Ultima
 
                     fixed (short* pData = data)
                     {
-                        var pvData = (int*)pData;
+                        int* pvData = (int*)pData;
 
                         *pRow0++ = *pvData++;
                         *pRow0++ = *pvData++;
@@ -606,8 +606,8 @@ namespace Ultima
                 FileStream fsidx = new FileStream(idx, FileMode.Create, FileAccess.Write, FileShare.Write),
                            fsmul = new FileStream(mul, FileMode.Create, FileAccess.Write, FileShare.Write))
             {
-                var memidx = new MemoryStream();
-                var memmul = new MemoryStream();
+                MemoryStream memidx = new MemoryStream();
+                MemoryStream memmul = new MemoryStream();
                 using (BinaryWriter binidx = new BinaryWriter(memidx), binmul = new BinaryWriter(memmul))
                 {
                     for (int x = 0; x < blockx; ++x)
@@ -634,7 +634,7 @@ namespace Ultima
                                         m_Statics.Seek(lookup, SeekOrigin.Begin);
                                     }
 
-                                    var fsmullength = (int)binmul.BaseStream.Position;
+                                    int fsmullength = (int)binmul.BaseStream.Position;
                                     int count = length / 7;
                                     if (!remove) //without duplicate remove
                                     {
@@ -691,11 +691,11 @@ namespace Ultima
                                     }
                                     else //with duplicate remove
                                     {
-                                        var tilelist = new StaticTile[count];
+                                        StaticTile[] tilelist = new StaticTile[count];
                                         int j = 0;
                                         for (int i = 0; i < count; ++i)
                                         {
-                                            var tile = new StaticTile();
+                                            StaticTile tile = new StaticTile();
                                             tile.m_ID = m_StaticsReader.ReadUInt16();
                                             tile.m_X = m_StaticsReader.ReadByte();
                                             tile.m_Y = m_StaticsReader.ReadByte();
@@ -832,10 +832,10 @@ namespace Ultima
             int blocky = height >> 3;
 
             string mul = Path.Combine(path, String.Format("map{0}.mul", map));
-            using (var fsmul = new FileStream(mul, FileMode.Create, FileAccess.Write, FileShare.Write))
+            using (FileStream fsmul = new FileStream(mul, FileMode.Create, FileAccess.Write, FileShare.Write))
             {
-                var memmul = new MemoryStream();
-                using (var binmul = new BinaryWriter(memmul))
+                MemoryStream memmul = new MemoryStream();
+                using (BinaryWriter binmul = new BinaryWriter(memmul))
                 {
                     for (int x = 0; x < blockx; ++x)
                     {
@@ -895,7 +895,7 @@ namespace Ultima
         {
             reportfile = Path.Combine(reportfile, String.Format("staticReport-{0}.csv", m_MapID));
             using (
-                var Tex = new StreamWriter(
+                StreamWriter Tex = new StreamWriter(
                     new FileStream(reportfile, FileMode.Create, FileAccess.ReadWrite), Encoding.GetEncoding(1252)))
             {
                 Tex.WriteLine("x;y;z;Static");
@@ -923,7 +923,7 @@ namespace Ultima
         {
             reportfile = Path.Combine(reportfile, String.Format("ReportInvalidMapIDs-{0}.csv", m_MapID));
             using (
-                var Tex = new StreamWriter(
+                StreamWriter Tex = new StreamWriter(
                     new FileStream(reportfile, FileMode.Create, FileAccess.ReadWrite), Encoding.GetEncoding(1252)))
             {
                 Tex.WriteLine("x;y;z;Static;LandTile");

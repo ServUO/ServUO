@@ -44,7 +44,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime NextRecharge { get; set; }
 
-        public override int LabelNumber { get { return 1150418; } } // a chest of sending
+        public override int LabelNumber => 1150418;  // a chest of sending
 
         [Constructable]
         public ChestOfSending() : base(0x4910)
@@ -202,7 +202,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)2); // version
+            writer.Write(2); // version
 
             writer.Write((int)m_Level);
             writer.Write(m_Charges);

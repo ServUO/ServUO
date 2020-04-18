@@ -59,15 +59,15 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich);
-            this.AddLoot(LootPack.Average, 2);
-            this.AddLoot(LootPack.MedScrolls, 2);
+            AddLoot(LootPack.FilthyRich);
+            AddLoot(LootPack.Average, 2);
+            AddLoot(LootPack.MedScrolls, 2);
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

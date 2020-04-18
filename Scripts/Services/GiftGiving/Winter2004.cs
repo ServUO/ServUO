@@ -5,20 +5,8 @@ namespace Server.Misc
 {
     public class WinterGiftGiver2004 : GiftGiver
     {
-        public override DateTime Start
-        {
-            get
-            {
-                return new DateTime(2004, 12, 24);
-            }
-        }
-        public override DateTime Finish
-        {
-            get
-            {
-                return new DateTime(2005, 1, 1);
-            }
-        }
+        public override DateTime Start => new DateTime(2004, 12, 24);
+        public override DateTime Finish => new DateTime(2005, 1, 1);
         public static void Initialize()
         {
             GiftGiving.Register(new WinterGiftGiver2004());
@@ -41,7 +29,7 @@ namespace Server.Misc
             else
                 box.DropItem(new SnowyTree());
 
-            switch (this.GiveGift(mob, box))
+            switch (GiveGift(mob, box))
             {
                 case GiftResult.Backpack:
                     mob.SendMessage(0x482, "Happy Holidays from the team!  Gift items have been placed in your backpack.");

@@ -7,11 +7,11 @@ namespace Server.Engines.Points
 {
     public class BlackthornData : PointsSystem
     {
-        public override PointsType Loyalty { get { return PointsType.Blackthorn; } }
-        public override TextDefinition Name { get { return m_Name; } }
-        public override bool AutoAdd { get { return true; } }
-        public override double MaxPoints { get { return double.MaxValue; } }
-        public override bool ShowOnLoyaltyGump { get { return false; } }
+        public override PointsType Loyalty => PointsType.Blackthorn;
+        public override TextDefinition Name => m_Name;
+        public override bool AutoAdd => true;
+        public override double MaxPoints => double.MaxValue;
+        public override bool ShowOnLoyaltyGump => false;
 
         private readonly TextDefinition m_Name = null;
 
@@ -27,7 +27,7 @@ namespace Server.Engines.Points
 
         public override void ProcessKill(Mobile victim, Mobile damager)
         {
-            var bc = victim as BaseCreature;
+            BaseCreature bc = victim as BaseCreature;
 
             if (bc == null || bc.Controlled || bc.Summoned || !damager.Alive || damager.Deleted)
                 return;

@@ -143,7 +143,7 @@
             )
         );
 
-        public override BookContent DefaultContent { get { return Content; } }
+        public override BookContent DefaultContent => Content;
 
         public FishingGuideBook3(Serial serial) : base(serial)
         {
@@ -153,7 +153,7 @@
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

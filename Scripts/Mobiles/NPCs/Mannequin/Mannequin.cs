@@ -12,9 +12,9 @@ namespace Server.Mobiles
 {
     public class Mannequin : BaseCreature
     {
-        public override bool NoHouseRestrictions { get { return true; } }
-        public override bool ClickTitle { get { return false; } }
-        public override bool IsInvulnerable { get { return true; } }
+        public override bool NoHouseRestrictions => true;
+        public override bool ClickTitle => false;
+        public override bool IsInvulnerable => true;
 
         public Mobile Owner { get; set; }
         public string Description { get; set; }
@@ -164,14 +164,14 @@ namespace Server.Mobiles
 
         public static List<ValuedProperty> FindItemsProperty(List<Item> item)
         {
-            var ll = System.Reflection.Assembly.GetExecutingAssembly().GetTypes()
+            List<Type> ll = System.Reflection.Assembly.GetExecutingAssembly().GetTypes()
               .ToList().Where(r => r.FullName.Contains("MannequinProperty") && r.IsClass == true && r.IsAbstract == false).ToList();
 
             List<ValuedProperty> cat = new List<ValuedProperty>();
 
             ll.ForEach(x =>
             {
-                var CI = Activator.CreateInstance(Type.GetType(x.FullName));
+                object CI = Activator.CreateInstance(Type.GetType(x.FullName));
 
                 if (CI is ValuedProperty)
                 {
@@ -187,14 +187,14 @@ namespace Server.Mobiles
 
         public static List<ValuedProperty> FindItemProperty(Item item, bool visible = false)
         {
-            var ll = System.Reflection.Assembly.GetExecutingAssembly().GetTypes()
+            List<Type> ll = System.Reflection.Assembly.GetExecutingAssembly().GetTypes()
               .ToList().Where(r => r.FullName.Contains("MannequinProperty") && r.IsClass == true && r.IsAbstract == false).ToList();
 
             List<ValuedProperty> cat = new List<ValuedProperty>();
 
             ll.ForEach(x =>
             {
-                var CI = Activator.CreateInstance(Type.GetType(x.FullName));
+                object CI = Activator.CreateInstance(Type.GetType(x.FullName));
 
                 if (CI is ValuedProperty)
                 {
@@ -254,7 +254,7 @@ namespace Server.Mobiles
                     toAdd.AddRange(mobile.Backpack.Items);
                 }
 
-                foreach (var item in toAdd)
+                foreach (Item item in toAdd)
                 {
                     house.DropToMovingCrate(item);
                 }
@@ -567,7 +567,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)1); // version
+            writer.Write(1); // version
 
             writer.Write(Description);
             writer.Write(Owner);
@@ -601,7 +601,7 @@ namespace Server.Mobiles
     [Flipable(0x14F0, 0x14EF)]
     public class MannequinDeed : Item
     {
-        public override int LabelNumber { get { return 1151602; } } // Mannequin Deed
+        public override int LabelNumber => 1151602;  // Mannequin Deed
 
         [Constructable]
         public MannequinDeed()
@@ -647,7 +647,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

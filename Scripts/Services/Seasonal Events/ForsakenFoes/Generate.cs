@@ -57,7 +57,7 @@ namespace Server.Engines.Fellowship
 
         public static void CheckEnabled(bool timed = false)
         {
-            var fellowship = PointsSystem.FellowshipData;
+            FellowshipData fellowship = PointsSystem.FellowshipData;
 
             if (fellowship.Enabled && !fellowship.InSeason)
             {

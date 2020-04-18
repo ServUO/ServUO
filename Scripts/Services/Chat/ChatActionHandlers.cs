@@ -85,7 +85,7 @@ namespace Server.Engines.Chat
 
         private static void CreateAndJoin(ChatUser from, string name)
         {
-            var joined = Channel.FindChannelByName(name);
+            Channel joined = Channel.FindChannelByName(name);
 
             if (joined == null)
             {

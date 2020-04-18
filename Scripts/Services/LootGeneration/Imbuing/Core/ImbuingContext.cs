@@ -32,7 +32,7 @@ namespace Server
 
         public void Serialize(GenericWriter writer)
         {
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write(LastImbued);
             writer.Write(Imbue_Mod);

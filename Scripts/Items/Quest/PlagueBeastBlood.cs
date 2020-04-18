@@ -9,7 +9,7 @@ namespace Server.Items
         public PlagueBeastBlood()
             : base(0x122C, 0)
         {
-            this.m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(1.5), TimeSpan.FromSeconds(1.5), 3, new TimerCallback(Hemorrhage));
+            m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(1.5), TimeSpan.FromSeconds(1.5), 3, new TimerCallback(Hemorrhage));
         }
 
         public PlagueBeastBlood(Serial serial)
@@ -17,54 +17,42 @@ namespace Server.Items
         {
         }
 
-        public bool Patched
-        {
-            get
-            {
-                return this.ItemID == 0x1765;
-            }
-        }
-        public bool Starting
-        {
-            get
-            {
-                return this.ItemID == 0x122C;
-            }
-        }
+        public bool Patched => ItemID == 0x1765;
+        public bool Starting => ItemID == 0x122C;
         public override void OnAfterDelete()
         {
-            if (this.m_Timer != null && this.m_Timer.Running)
-                this.m_Timer.Stop();
+            if (m_Timer != null && m_Timer.Running)
+                m_Timer.Stop();
         }
 
         public override bool OnBandage(Mobile from)
         {
-            if (this.IsAccessibleTo(from) && !this.Patched)
+            if (IsAccessibleTo(from) && !Patched)
             {
-                if (this.m_Timer != null && this.m_Timer.Running)
-                    this.m_Timer.Stop();
+                if (m_Timer != null && m_Timer.Running)
+                    m_Timer.Stop();
 
-                if (this.Starting)
+                if (Starting)
                 {
-                    this.X += 2;
-                    this.Y -= 9;
+                    X += 2;
+                    Y -= 9;
 
-                    if (this.Organ is PlagueBeastRubbleOrgan)
-                        this.Y -= 5;
-                    else if (this.Organ is PlagueBeastBackupOrgan)
-                        this.X += 7;
+                    if (Organ is PlagueBeastRubbleOrgan)
+                        Y -= 5;
+                    else if (Organ is PlagueBeastBackupOrgan)
+                        X += 7;
                 }
                 else
                 {
-                    this.X -= 4;
-                    this.Y -= 2;
+                    X -= 4;
+                    Y -= 2;
                 }
 
-                this.ItemID = 0x1765;
+                ItemID = 0x1765;
 
-                if (this.Owner != null)
+                if (Owner != null)
                 {
-                    Container pack = this.Owner.Backpack;
+                    Container pack = Owner.Backpack;
 
                     if (pack != null)
                     {
@@ -78,7 +66,7 @@ namespace Server.Items
                     }
                 }
 
-                this.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1071916); // * You patch up the wound with a bandage *
+                PublicOverheadMessage(MessageType.Regular, 0x3B2, 1071916); // * You patch up the wound with a bandage *
 
                 return true;
             }
@@ -102,29 +90,29 @@ namespace Server.Items
 
         private void Hemorrhage()
         {
-            if (this.Patched)
+            if (Patched)
                 return;
 
-            if (this.Owner != null)
-                this.Owner.PlaySound(0x25);
+            if (Owner != null)
+                Owner.PlaySound(0x25);
 
-            if (this.ItemID == 0x122A)
+            if (ItemID == 0x122A)
             {
-                if (this.Owner != null)
+                if (Owner != null)
                 {
-                    this.Owner.Unfreeze();
-                    this.Owner.Kill();
+                    Owner.Unfreeze();
+                    Owner.Kill();
                 }
             }
             else
             {
-                if (this.Starting)
+                if (Starting)
                 {
-                    this.X += 8;
-                    this.Y -= 10;
+                    X += 8;
+                    Y -= 10;
                 }
 
-                this.ItemID--;
+                ItemID--;
             }
         }
     }

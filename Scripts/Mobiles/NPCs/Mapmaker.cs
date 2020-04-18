@@ -9,7 +9,7 @@ namespace Server.Mobiles
         public Mapmaker()
             : base("the mapmaker")
         {
-            this.SetSkill(SkillName.Cartography, 90.0, 100.0);
+            SetSkill(SkillName.Cartography, 90.0, 100.0);
         }
 
         public Mapmaker(Serial serial)
@@ -17,23 +17,17 @@ namespace Server.Mobiles
         {
         }
 
-        protected override List<SBInfo> SBInfos
-        {
-            get
-            {
-                return this.m_SBInfos;
-            }
-        }
+        protected override List<SBInfo> SBInfos => m_SBInfos;
         public override void InitSBInfo()
         {
-            this.m_SBInfos.Add(new SBMapmaker());
+            m_SBInfos.Add(new SBMapmaker());
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

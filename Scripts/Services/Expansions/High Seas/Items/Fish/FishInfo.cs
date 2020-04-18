@@ -56,7 +56,7 @@ namespace Server.Items
             Timer.DelayCall(TimeSpan.FromSeconds(10), new TimerCallback(InvalidateLocations));
         }
 
-        public static List<FishInfo> FishInfos { get { return m_FishInfos; } }
+        public static List<FishInfo> FishInfos => m_FishInfos;
         private static readonly List<FishInfo> m_FishInfos = new List<FishInfo>();
 
         private readonly int m_Hue;
@@ -67,13 +67,13 @@ namespace Server.Items
         private readonly double m_BaseChance;
         private readonly double m_MinSkill;
 
-        public int Hue { get { return m_Hue; } }
-        public Type Type { get { return m_Type; } }
-        public object LabelNumber { get { return m_Label; } }
+        public int Hue => m_Hue;
+        public Type Type => m_Type;
+        public object LabelNumber => m_Label;
         public object Location { get { return m_Location; } set { m_Location = value; } }
-        public bool RequiresDeepWater { get { return m_RequiresDeepWater; } }
-        public double BaseChance { get { return m_BaseChance; } }
-        public double MinSkill { get { return m_MinSkill; } }
+        public bool RequiresDeepWater => m_RequiresDeepWater;
+        public double BaseChance => m_BaseChance;
+        public double MinSkill => m_MinSkill;
 
         public static readonly double RareChance = 0.0075;
         public static readonly double LegendaryChance = 0.001;
@@ -347,7 +347,7 @@ namespace Server.Items
 
         public double GetBaitStrength(Type baitType, Mobile from, bool enhanced)
         {
-            if (baitType != this.Type)
+            if (baitType != Type)
                 return 1.0;
 
             double str = enhanced ? 3.0 : 2.0;
@@ -361,7 +361,7 @@ namespace Server.Items
                     {
                         if (((ISetItem)item).SetEquipped)
                         {
-                            str += ((double)((IFishingAttire)item).SetBonus / 100) / (double)((ISetItem)item).Pieces;
+                            str += ((double)((IFishingAttire)item).SetBonus / 100) / ((ISetItem)item).Pieces;
                         }
                         else
                         {
@@ -433,7 +433,7 @@ namespace Server.Items
             return map == Map.Malas && ((p.X >= 1440 && p.X <= 1863 && p.Y >= 1527 && p.Y <= 1746) || (p.X >= 1381 && p.X <= 1596 && p.Y >= 1565 && p.Y <= 1789));
         }
 
-        public static Type[] SOSArtifacts { get { return m_SOSArtifacts; } }
+        public static Type[] SOSArtifacts => m_SOSArtifacts;
         private static readonly Type[] m_SOSArtifacts = new Type[]
         {
             typeof(AntiqueWeddingDress), typeof(GrapeVine),

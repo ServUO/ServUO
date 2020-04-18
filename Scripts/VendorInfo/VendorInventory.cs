@@ -102,13 +102,7 @@ namespace Server.Mobiles
                 m_Owner = value;
             }
         }
-        public List<Item> Items
-        {
-            get
-            {
-                return m_Items;
-            }
-        }
+        public List<Item> Items => m_Items;
         public int Gold
         {
             get
@@ -120,13 +114,7 @@ namespace Server.Mobiles
                 m_Gold = value;
             }
         }
-        public DateTime ExpireTime
-        {
-            get
-            {
-                return m_ExpireTime;
-            }
-        }
+        public DateTime ExpireTime => m_ExpireTime;
         public void AddItem(Item item)
         {
             item.Internalize();
@@ -153,12 +141,12 @@ namespace Server.Mobiles
         {
             writer.WriteEncodedInt(0); // version
 
-            writer.Write((Mobile)m_Owner);
-            writer.Write((string)m_VendorName);
-            writer.Write((string)m_ShopName);
+            writer.Write(m_Owner);
+            writer.Write(m_VendorName);
+            writer.Write(m_ShopName);
 
             writer.Write(m_Items, true);
-            writer.Write((int)m_Gold);
+            writer.Write(m_Gold);
 
             writer.WriteDeltaTime(m_ExpireTime);
         }

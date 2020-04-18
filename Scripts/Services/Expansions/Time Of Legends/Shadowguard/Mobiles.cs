@@ -56,7 +56,7 @@ namespace Server.Engines.Shadowguard
             AddLoot(LootPack.Rich, 3);
         }
 
-        public override bool AlwaysMurderer { get { return true; } }
+        public override bool AlwaysMurderer => true;
         public bool BlockReflect { get; set; }
 
         public override int Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
@@ -66,7 +66,7 @@ namespace Server.Engines.Shadowguard
             if (!BlockReflect && from != null && dam > 0)
             {
                 BlockReflect = true;
-                AOS.Damage(from, this, Math.Max(1, (int)((double)dam * .37)), 0, 0, 0, 0, 0, 0, 100);
+                AOS.Damage(from, this, Math.Max(1, (int)(dam * .37)), 0, 0, 0, 0, 0, 0, 100);
                 BlockReflect = false;
 
                 from.PlaySound(0x1F1);
@@ -140,7 +140,7 @@ namespace Server.Engines.Shadowguard
 
     public class VileWaterElemental : WaterElemental
     {
-        public override bool CanMoveOverObstacles { get { return false; } }
+        public override bool CanMoveOverObstacles => false;
 
         [Constructable]
         public VileWaterElemental()
@@ -150,7 +150,7 @@ namespace Server.Engines.Shadowguard
             Body = 13;
         }
 
-        public override bool DeleteCorpseOnDeath { get { return true; } }
+        public override bool DeleteCorpseOnDeath => true;
 
         public override bool OnBeforeDeath()
         {
@@ -158,7 +158,7 @@ namespace Server.Engines.Shadowguard
 
             if (encounter != null)
             {
-                var canal = new ShadowguardCanal();
+                ShadowguardCanal canal = new ShadowguardCanal();
                 canal.MoveToWorld(Location, Map);
                 encounter.AddShadowguardCanal(canal);
             }
@@ -185,7 +185,7 @@ namespace Server.Engines.Shadowguard
 
     public class HurricaneElemental : VileWaterElemental
     {
-        public override bool CanMoveOverObstacles { get { return false; } }
+        public override bool CanMoveOverObstacles => false;
 
         [Constructable]
         public HurricaneElemental()
@@ -346,31 +346,31 @@ namespace Server.Engines.Shadowguard
             SetSkill(SkillName.Tactics, 125.0);
             SetSkill(SkillName.Lumberjacking, 125.0);
 
-            var helm = new CloseHelm();
+            CloseHelm helm = new CloseHelm();
             helm.Hue = 0x96D;
             AddItem(helm);
 
-            var arms = new PlateArms();
+            PlateArms arms = new PlateArms();
             arms.Hue = 0x96D;
             AddItem(arms);
 
-            var legs = new PlateLegs();
+            PlateLegs legs = new PlateLegs();
             legs.Hue = 0x96D;
             AddItem(legs);
 
-            var tunic = new PlateChest();
+            PlateChest tunic = new PlateChest();
             tunic.Hue = 0x96D;
             AddItem(tunic);
 
-            var gorget = new PlateGorget();
+            PlateGorget gorget = new PlateGorget();
             gorget.Hue = 0x96D;
             AddItem(gorget);
 
-            var golves = new PlateGloves();
+            PlateGloves golves = new PlateGloves();
             golves.Hue = 0x96D;
             AddItem(golves);
 
-            var halberd = new Halberd();
+            Halberd halberd = new Halberd();
             halberd.Hue = 0x96D;
             AddItem(halberd);
 
@@ -380,7 +380,7 @@ namespace Server.Engines.Shadowguard
             Karma = -8500;
         }
 
-        public override bool AlwaysMurderer { get { return true; } }
+        public override bool AlwaysMurderer => true;
 
         public override bool OnBeforeDeath()
         {
@@ -492,7 +492,7 @@ namespace Server.Engines.Shadowguard
             SetSkill(SkillName.Parry, 120.0);
         }
 
-        public override double TeleportChance { get { return 0; } }
+        public override double TeleportChance => 0;
 
         public override void OnThink()
         {
@@ -674,8 +674,8 @@ namespace Server.Engines.Shadowguard
             SetWearable(new LeatherGloves(), 1157);
         }
 
-        public override bool AlwaysMurderer { get { return true; } }
-        public override double TeleportChance { get { return 0; } }
+        public override bool AlwaysMurderer => true;
+        public override double TeleportChance => 0;
 
         protected override bool OnMove(Direction d)
         {

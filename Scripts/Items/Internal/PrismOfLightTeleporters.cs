@@ -38,7 +38,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -90,7 +90,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -107,7 +107,7 @@ namespace Server.Items
         public CrystalFieldTele()
             : base(0x3818)
         {
-            this.Movable = false;
+            Movable = false;
         }
 
         public CrystalFieldTele(Serial serial)
@@ -115,13 +115,7 @@ namespace Server.Items
         {
         }
 
-        public override TimeSpan DecayTime
-        {
-            get
-            {
-                return TimeSpan.FromMinutes(1);
-            }
-        }
+        public override TimeSpan DecayTime => TimeSpan.FromMinutes(1);
         public override bool OnMoveOver(Mobile m)
         {
             if (m.Player)
@@ -133,7 +127,7 @@ namespace Server.Items
                     m.MoveToWorld(p, m.Map);
                 }
 
-                this.Delete();
+                Delete();
                 return false;
             }
             else
@@ -144,7 +138,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

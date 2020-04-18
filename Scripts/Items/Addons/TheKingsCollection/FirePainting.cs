@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class FirePaintingAddon : BaseAddon
     {
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime NextResourceCount { get; set; }
@@ -65,7 +65,7 @@ namespace Server.Items
             }
         }
 
-        public override BaseAddonDeed Deed { get { return new FirePaintingDeed(); } }
+        public override BaseAddonDeed Deed => new FirePaintingDeed();
 
         private class FirePaintingComponent : LocalizedAddonComponent
         {
@@ -116,7 +116,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
             TryGiveResourceCount();
 
@@ -136,7 +136,7 @@ namespace Server.Items
 
     public class FirePaintingDeed : BaseAddonDeed, IRewardOption
     {
-        public override int LabelNumber { get { return 1154182; } } // Fire Painting
+        public override int LabelNumber => 1154182;  // Fire Painting
 
         private DirectionType _Direction;
 
@@ -179,12 +179,12 @@ namespace Server.Items
                 base.OnDoubleClick(from);
         }
 
-        public override BaseAddon Addon { get { return new FirePaintingAddon(_Direction); } }
+        public override BaseAddon Addon => new FirePaintingAddon(_Direction);
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

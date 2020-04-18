@@ -418,7 +418,7 @@ namespace Server
 
                 m_Owner.Owner.ValidateSkillMods();
 
-                var mods = m_Owner.Owner.SkillMods;
+                List<SkillMod> mods = m_Owner.Owner.SkillMods;
 
                 double bonusObey = 0.0, bonusNotObey = 0.0;
 
@@ -466,13 +466,7 @@ namespace Server
             }
         }
 
-        public bool IsMastery
-        {
-            get
-            {
-                return m_Info.IsMastery;
-            }
-        }
+        public bool IsMastery => m_Info.IsMastery;
 
         public bool LearnMastery(int volume)
         {
@@ -994,7 +988,7 @@ namespace Server
             m_Owner = owner;
             m_Cap = Config.Get("PlayerCaps.TotalSkillCap", 7000); ;
 
-            var info = SkillInfo.Table;
+            SkillInfo[] info = SkillInfo.Table;
 
             m_Skills = new Skill[info.Length];
 
@@ -1033,7 +1027,7 @@ namespace Server
                             reader.ReadInt();
                         }
 
-                        var info = SkillInfo.Table;
+                        SkillInfo[] info = SkillInfo.Table;
 
                         m_Skills = new Skill[info.Length];
 

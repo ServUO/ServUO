@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class MysteriousNote : Item
     {
-        public override int LabelNumber { get { return 1151753; } } // A Mysterious Note
+        public override int LabelNumber => 1151753;  // A Mysterious Note
 
         [Constructable]
         public MysteriousNote()

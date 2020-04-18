@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class SoulForge : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new SoulForgeDeed(); } }
+        public override BaseAddonDeed Deed => new SoulForgeDeed();
 
         [Constructable]
         public SoulForge()
@@ -36,7 +36,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -49,8 +49,8 @@ namespace Server.Items
 
     public class SoulForgeDeed : BaseAddonDeed
     {
-        public override BaseAddon Addon { get { return new SoulForge(); } }
-        public override int LabelNumber { get { return 1031696; } }
+        public override BaseAddon Addon => new SoulForge();
+        public override int LabelNumber => 1031696;
 
         [Constructable]
         public SoulForgeDeed()
@@ -65,7 +65,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

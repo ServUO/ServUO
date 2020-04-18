@@ -18,17 +18,17 @@ namespace Server.Spells.SkillMasteries
                 9002
             );
 
-        public override double RequiredSkill { get { return 90; } }
-        public override int RequiredMana { get { return 50; } }
+        public override double RequiredSkill => 90;
+        public override int RequiredMana => 50;
 
-        public override SkillName CastSkill { get { return SkillName.Chivalry; } }
-        public override SkillName DamageSkill { get { return SkillName.Chivalry; } }
+        public override SkillName CastSkill => SkillName.Chivalry;
+        public override SkillName DamageSkill => SkillName.Chivalry;
 
-        public int RequiredTithing { get { return 100; } }
+        public int RequiredTithing => 100;
 
-        public override bool DelayedDamage { get { return true; } }
+        public override bool DelayedDamage => true;
 
-        public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(2.5); } }
+        public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(2.5);
 
         public HolyFistSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
@@ -124,7 +124,7 @@ namespace Server.Spells.SkillMasteries
 
         public override bool CheckSequence()
         {
-            int requiredTithing = this.RequiredTithing;
+            int requiredTithing = RequiredTithing;
 
             if (Caster is PlayerMobile && Caster.TithingPoints < requiredTithing)
             {

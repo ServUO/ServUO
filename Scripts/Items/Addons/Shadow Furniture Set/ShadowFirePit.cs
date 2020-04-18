@@ -36,12 +36,12 @@ namespace Server.Items
             }
         }
 
-        public override BaseAddonDeed Deed { get { return new ShadowFirePitDeed(); } }
+        public override BaseAddonDeed Deed => new ShadowFirePitDeed();
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -53,9 +53,9 @@ namespace Server.Items
 
     public class ShadowFirePitDeed : BaseAddonDeed
     {
-        public override int LabelNumber { get { return 1076680; } } // Shadow Fire Pit
+        public override int LabelNumber => 1076680;  // Shadow Fire Pit
 
-        public override bool ExcludeDeedHue { get { return true; } }
+        public override bool ExcludeDeedHue => true;
 
         [Constructable]
         public ShadowFirePitDeed()
@@ -69,13 +69,13 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon { get { return new ShadowFirePitAddon(); } }
+        public override BaseAddon Addon => new ShadowFirePitAddon();
 
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

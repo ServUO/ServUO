@@ -23,7 +23,7 @@ namespace Server.Engines.Points
 
             int y = 40;
 
-            foreach (var sys in PointsSystem.Systems.Where(sys => sys.ShowOnLoyaltyGump))
+            foreach (PointsSystem sys in PointsSystem.Systems.Where(sys => sys.ShowOnLoyaltyGump))
             {
                 if (sys.Name.Number > 0)
                     AddHtmlLocalized(50, y, 150, 20, sys.Name.Number, false, false);

@@ -15,8 +15,8 @@ namespace Server.Gumps
         public double Points { get; protected set; }
         public List<CollectionItem> Collection { get; protected set; }
 
-        public virtual int PointsName { get { return 1072843; } } // Your Reward Points:
-        public virtual int RewardLabel { get { return 1072844; } } // Please Choose a Reward:
+        public virtual int PointsName => 1072843;  // Your Reward Points:
+        public virtual int RewardLabel => 1072844;  // Please Choose a Reward:
 
         public BaseRewardGump(Mobile owner, PlayerMobile user, List<CollectionItem> col, int title, double points = -1.0)
             : base(50, 50)
@@ -147,6 +147,7 @@ namespace Server.Gumps
 
                 if (item != null && item.Points <= points)
                 {
+                    from.CloseGump(typeof(aConfirmRewardGump));
                     from.SendGump(new aConfirmRewardGump(Owner, item, info.ButtonID - 200, OnConfirmed));
                 }
                 else
@@ -214,8 +215,8 @@ namespace Server.Gumps
 
     public class aConfirmRewardGump : BaseConfirmGump
     {
-        public override int TitleNumber { get { return 1074974; } }
-        public override int LabelNumber { get { return 1074975; } }
+        public override int TitleNumber => 1074974;
+        public override int LabelNumber => 1074975;
 
         public Mobile Owner { get; set; }
         public int Index { get; set; }

@@ -412,28 +412,21 @@ namespace Server.Mobiles
             AddTypeKeyword("SENDMSG");
             AddTypeKeyword("SENDASCIIMSG");
             AddTypeKeyword("RESURRECT");
-            AddTypeKeyword("POISON");
             AddTypeKeyword("DAMAGE");
-            AddTypeKeyword("SOUND");
             AddTypeKeyword("EFFECT");
             AddTypeKeyword("MEFFECT");
-            AddTypeKeyword("MUSIC");
             AddTypeKeyword("WAITUNTIL");
             AddTypeKeyword("WHILE");
             AddTypeKeyword("IF");
             AddTypeKeyword("GOTO");
             AddTypeKeyword("CAST");
             AddTypeKeyword("BCAST");
-            AddTypeKeyword("BSOUND");
             AddTypeKeyword("COMMAND");
             AddTypeKeyword("SPAWN");
             AddTypeKeyword("DESPAWN");
 
             // Typemod keywords
             // used in place of properties as modifiers of the primary object type
-            AddTypemodKeyword("MUSIC");
-            AddTypemodKeyword("SOUND");
-            AddTypemodKeyword("POISON");
             AddTypemodKeyword("DAMAGE");
             AddTypemodKeyword("EFFECT");
             AddTypemodKeyword("BOLTEFFECT");
@@ -606,7 +599,7 @@ namespace Server.Mobiles
                     m_Timer.Stop();
                 }
 
-                this.Deleted = true;
+                Deleted = true;
 
                 // and remove it from the list
                 RemoveFromTagList(m_Spawner, this);
@@ -671,7 +664,7 @@ namespace Server.Mobiles
                             m_Timeout = reader.ReadTimeSpan();
                             m_TrigMob = reader.ReadMobile();
 
-                            this.DoTimer(delay, m_Delay, m_Condition, m_Goto);
+                            DoTimer(delay, m_Delay, m_Condition, m_Goto);
                         }
                         break;
                 }
@@ -713,10 +706,6 @@ namespace Server.Mobiles
 
                         if (TestItemProperty(m_Spawner, m_Spawner, m_Condition, trigmob, out status_str))
                         {
-
-                            // release the hold on spawning
-                            //m_Spawner.OnHold = false;
-
                             // spawn the designated subgroup if specified
                             if (m_Goto >= 0 && m_Spawner != null && !m_Spawner.Deleted)
                             {
@@ -726,9 +715,6 @@ namespace Server.Mobiles
 
                                 // spawn the subgroup
                                 m_Spawner.SpawnSubGroup(m_Goto, 0);
-
-                                // advance sequential spawning to that group
-                                //m_Spawner.SequentialSpawn = m_Goto;
                             }
 
                             // get rid of the temporary tag
@@ -740,19 +726,14 @@ namespace Server.Mobiles
                         }
                         else
                         {
-
                             // otherwise restart it and keep on holding
                             if (m_Tag != null && !m_Tag.Deleted)
                             {
-                                //if(m_Tag.m_Timeout > TimeSpan.Zero)
                                 // check the timeout if applicable
                                 if (m_Tag.m_Timeout > TimeSpan.Zero && m_Tag.m_TimeoutEnd < DateTime.UtcNow)
                                 {
                                     // release the hold on spawning and delete the tag
                                     m_Tag.Delete();
-
-                                    //m_Spawner.OnHold = false;
-
                                 }
                                 else
                                 {
@@ -1066,11 +1047,8 @@ namespace Server.Mobiles
                     return "Invalid SKILL format";
                 }
                 SkillName skillname;
-#if Framework_4_0
-				if(Enum.TryParse(keywordargs[1], true, out skillname))
-#else
+
                 if (TryParse(keywordargs[1], true, out skillname))
-#endif
                 {
                     if (o is Mobile)
                     {
@@ -1130,10 +1108,6 @@ namespace Server.Mobiles
 
                 if (plookup != null)
                 {
-
-                    //if ( !plookup.CanWrite )
-                    //return "Property is read only.";
-
                     if (BaseXmlSpawner.IsProtected(type, propname))
                         return "Property is protected.";
 
@@ -1150,14 +1124,6 @@ namespace Server.Mobiles
                     {
                         if (Insensitive.Equals(p.Name, propname))
                         {
-                            //CPA pattr = Properties.GetCPA( p );
-
-                            //if ( pattr == null )
-                            //return "Property not found.";
-
-                            //if ( !p.CanWrite )
-                            //return "Property is read only.";
-
                             if (BaseXmlSpawner.IsProtected(type, propname))
                                 return "Property is protected.";
 
@@ -1167,7 +1133,6 @@ namespace Server.Mobiles
 
                             // now set the nested attribute using the new property list
                             return (SetPropertyValue(spawner, po, arglist[1], value));
-
                         }
                     }
                 }
@@ -1396,11 +1361,8 @@ namespace Server.Mobiles
                     return "Invalid SKILL format";
                 }
                 SkillName skillname;
-#if Framework_4_0
-					if(Enum.TryParse(keywordargs[1], true, out skillname))
-#else
+
                 if (TryParse(keywordargs[1], true, out skillname))
-#endif
                 {
                     if (o is Mobile)
                     {
@@ -1415,10 +1377,8 @@ namespace Server.Mobiles
                 else
                 { return "Skill not found."; }
             }
-            else
-                    if (keywordargs[0] == "SERIAL")
+            else if (keywordargs[0] == "SERIAL")
             {
-
                 bool found = true;
                 try
                 {
@@ -1443,18 +1403,15 @@ namespace Server.Mobiles
                 if (!found)
                     return "Serial not found.";
             }
-            else
-                        if (keywordargs[0] == "TYPE")
+            else if (keywordargs[0] == "TYPE")
             {
                 ptype = typeof(Type);
 
                 return String.Format("Type = {0}", o.GetType().Name);
 
             }
-            else
-                            if (keywordargs[0] == "STEALABLE")
+            else if (keywordargs[0] == "STEALABLE")
             {
-
                 bool found = true;
                 try
                 {
@@ -1472,8 +1429,6 @@ namespace Server.Mobiles
                 if (!found)
                     return "Stealable flag not found.";
             }
-
-
 
             // do a bit of parsing to handle array references
             string[] arraystring = arglist[0].Split('[');
@@ -1500,12 +1455,8 @@ namespace Server.Mobiles
 
                 if (plookup != null)
                 {
-
                     if (!plookup.CanRead)
                         return "Property is write only.";
-
-                    //if ( BaseXmlSpawner.IsProtected(type, propname) )
-                    //return "Property is protected.";
 
                     ptype = plookup.PropertyType;
                     if (ptype.IsPrimitive)
@@ -1582,7 +1533,6 @@ namespace Server.Mobiles
                     // its just a simple single property
                     foreach (PropertyInfo p in props)
                     {
-
                         //if ( Insensitive.Equals( p.Name, name ) )
                         if (Insensitive.Equals(p.Name, propname))
                         {
@@ -2055,7 +2005,6 @@ namespace Server.Mobiles
                                             status_str = "GETONTRIGMOB error: " + resultstr;
                                             no_error = false;
                                         }
-
                                     }
                                     else
                                     {
@@ -2186,7 +2135,6 @@ namespace Server.Mobiles
                                 // note this will be an arg to some property
                                 if (value_keywordargs.Length > 1)
                                 {
-
                                     if (refobject != null)
                                     {
                                         string resultstr = ApplyToProperty(spawner, refobject, o, value_keywordargs[1], arglist[0]);
@@ -2541,13 +2489,12 @@ namespace Server.Mobiles
                                         status_str = arglist[0] + " : " + result;
                                         no_error = false;
                                     }
-
                                 }
                                 else
                                 {
-
                                     no_error = false;
                                 }
+
                                 if (arglist.Length < 3) break;
                                 remainder = arglist[2];
                             }
@@ -2711,7 +2658,6 @@ namespace Server.Mobiles
                             {
                                 if (value_keywordargs.Length > 1)
                                 {
-
                                     string result = SetPropertyValue(spawner, o, arglist[0], NameList.RandomName(value_keywordargs[1]));
                                     // see if it was successful
                                     if (result != "Property has been set.")
@@ -2722,7 +2668,6 @@ namespace Server.Mobiles
                                 }
                                 else
                                 {
-
                                     no_error = false;
                                 }
                                 if (arglist.Length < 3) break;
@@ -2732,49 +2677,10 @@ namespace Server.Mobiles
                         else if (IsTypemodKeyword(keywordargs[0]))
                         {
                             typemodKeyword kw = typemodKeywordHash[keywordargs[0]];
-
-                            if (kw == typemodKeyword.MUSIC)
-                            {
-                                SendMusicToPlayers(arglist[0], trigmob, refobject, out status_str);
-                                if (status_str != null)
-                                {
-                                    no_error = false;
-                                }
-                                if (arglist.Length < 2) break;
-                                remainder = singlearglist[1];
-                            }
-                            //
-                            //  SOUND keyword
-                            //
-                            else if (kw == typemodKeyword.SOUND)
-                            {
-                                int sound = -1;
-                                // try to get the soundnumber argument
-                                if (keywordargs.Length < 2)
-                                {
-                                    status_str = "Missing sound number";
-                                    no_error = false;
-                                }
-                                else
-                                {
-                                    if (!int.TryParse(keywordargs[1], out sound))
-                                    { status_str = "Improper sound number format"; no_error = false; }
-                                }
-                                try
-                                {
-                                    if (sound >= 0 && o is IEntity)
-                                    {
-                                        Effects.PlaySound(((IEntity)o).Location, ((IEntity)o).Map, sound);
-                                    }
-                                }
-                                catch { }
-                                if (arglist.Length < 2) break;
-                                remainder = singlearglist[1];
-                            }
                             //
                             //  EFFECT keyword
                             //
-                            else if (kw == typemodKeyword.EFFECT)
+                            if (kw == typemodKeyword.EFFECT)
                             {
                                 int effect = -1;
                                 int duration = 1;
@@ -2877,7 +2783,6 @@ namespace Server.Mobiles
                                 bool hasloc = false;
                                 // syntax is MEFFECT,itemid[,speed][,x,y,z][,x2,y2,z2]
 
-
                                 // try to get the effect argument
                                 if (keywordargs.Length < 2)
                                 {
@@ -2943,8 +2848,6 @@ namespace Server.Mobiles
                                 else
                                     if (effect >= 0 && refobject is IEntity && o is IEntity)
                                 {
-                                    //Effects.SendLocationEffect(eloc, emap, effect, duration);
-                                    //public static void SendMovingEffect( IEntity from, IEntity to, int itemID, int speed, int duration, bool fixedDirection, bool explodes )
                                     Effects.SendMovingEffect((IEntity)refobject, (IEntity)o, effect, speed, duration, false, false);
                                 }
                                 if (arglist.Length < 2) break;
@@ -3014,23 +2917,8 @@ namespace Server.Mobiles
                                 remainder = singlearglist[1];
                             }
                             //
-                            //  POISON keyword
+                            //  Damage keyword
                             //
-                            else if (kw == typemodKeyword.POISON)
-                            {
-
-                                ApplyPoisonToPlayers(arglist[0], o as Mobile, o, out status_str);
-
-
-                                //ApplyPoisonToPlayers(arglist[0], trigmob, refobject, out status_str);
-
-                                if (status_str != null)
-                                {
-                                    no_error = false;
-                                }
-                                if (arglist.Length < 2) break;
-                                remainder = singlearglist[1];
-                            }
                             else if (kw == typemodKeyword.DAMAGE)
                             {
                                 // the syntax is DAMAGE,damage,phys,fire,cold,pois,energy[,range][,playeronly]
@@ -3046,18 +2934,14 @@ namespace Server.Mobiles
                             }
                             else if (kw == typemodKeyword.ADD)
                             {
-
                                 no_error = AddItemToTarget(spawner, o, keywordargs, arglist, trigmob, refobject, false, out remainder, out status_str);
-
                             }
                             else if (kw == typemodKeyword.EQUIP)
                             {
                                 no_error = AddItemToTarget(spawner, o, keywordargs, arglist, trigmob, refobject, true, out remainder, out status_str);
-
                             }
                             else if (kw == typemodKeyword.DELETE)
                             {
-
                                 if (o is Item)
                                 {
                                     ((Item)o).Delete();
@@ -3093,11 +2977,7 @@ namespace Server.Mobiles
 
                                 if (keywordargs.Length > 1)
                                 {
-#if Framework_4_0
-									if(!Enum.TryParse(keywordargs[1], true, out layer))
-#else
                                     if (!TryParse(keywordargs[1], true, out layer))
-#endif
                                     { status_str = "Invalid layer"; }
                                 }
 
@@ -3220,7 +3100,6 @@ namespace Server.Mobiles
                                         else
                                             if (o is Item)
                                             PublicOverheadItemMessage((Item)o, MessageType.Regular, hue, font, msgstr);
-
                                     }
                                 }
                                 if (arglist.Length < 3) break;
@@ -3743,7 +3622,6 @@ namespace Server.Mobiles
 
             // need to handle comma args that may be grouped with the () such as the (ATTACHMENT,args) arg
 
-            //string[] arglist = ParseString(groupedarglist[0],4,",");
             string[] arglist = groupedarglist[0].Trim().Split(',');
             if (groupargstring != null && groupargstring.Length > 0)
             {
@@ -3769,16 +3647,12 @@ namespace Server.Mobiles
                 }
                 return str;
             }
-            else
-                // or a string
-                if (startc == '"' || startc == '(')
+            else if (startc == '"' || startc == '(')
             {
                 ptype = typeof(String);
                 return str;
             }
-            else
-                    // or an enum
-                    if (startc == '#')
+            else if (startc == '#')
             {
                 ptype = typeof(String);
                 return str.Substring(1);
@@ -3846,7 +3720,6 @@ namespace Server.Mobiles
                     {
                         testitem = FindItemByName(spawner, arglist[1], typestr);
                     }
-
 
                     string getvalue = GetPropertyValue(spawner, testitem, propname, out ptype);
 
@@ -4113,7 +3986,6 @@ namespace Server.Mobiles
                     // return the list entry as the value
 
                     return arglist[randindex];
-
                 }
                 else if ((kw == valueKeyword.AMOUNTCARRIED) && arglist.Length > 1)
                 {
@@ -4280,14 +4152,12 @@ namespace Server.Mobiles
                     string[] arglist2 = arglist[1].Trim().Split(" ".ToCharArray(), 2);
 
                     return arglist2[0];
-
                 }
                 else
                 {
                     // for everything else
                     // pass on as is
                     return arglist[1].Trim();
-
                 }
             }
             else
@@ -4552,11 +4422,8 @@ namespace Server.Mobiles
                     }
                 }
             }
-            else
-                    // and do the type dependent comparisons
-                    if (IsNumeric(ptype2) && IsNumeric(ptype1))
+            else if (IsNumeric(ptype2) && IsNumeric(ptype1))
             {
-                //TODO: howto convert with tryparse?
                 if (hasequal)
                 {
                     try
@@ -4596,10 +4463,8 @@ namespace Server.Mobiles
                     catch { status_str = "invalid int comparison : {0}" + testString; }
                 }
             }
-            else
-                        if ((ptype2 == typeof(double)) && IsNumeric(ptype1))
+            else if ((ptype2 == typeof(double)) && IsNumeric(ptype1))
             {
-                //TODO: howto convert correctly with int64.tryparse?
                 if (hasequal)
                 {
                     try
@@ -4611,8 +4476,7 @@ namespace Server.Mobiles
                         status_str = "invalid int comparison : {0}" + testString;
                     }
                 }
-                else
-                    if (hasnotequals)
+                else if (hasnotequals)
                 {
                     try
                     {
@@ -4623,8 +4487,7 @@ namespace Server.Mobiles
                         status_str = "invalid int comparison : {0}" + testString;
                     }
                 }
-                else
-                        if (hasgreaterthan)
+                else if (hasgreaterthan)
                 {
                     try
                     {
@@ -4632,8 +4495,7 @@ namespace Server.Mobiles
                     }
                     catch { status_str = "invalid int comparison : {0}" + testString; }
                 }
-                else
-                            if (haslessthan)
+                else if (haslessthan)
                 {
                     try
                     {
@@ -4642,10 +4504,8 @@ namespace Server.Mobiles
                     catch { status_str = "invalid int comparison : {0}" + testString; }
                 }
             }
-            else
-                            if ((ptype1 == typeof(double)) && IsNumeric(ptype2))
+            else if ((ptype1 == typeof(double)) && IsNumeric(ptype2))
             {
-                //TODO: howto convert correctly with  int64.tryparse?
                 if (hasequal)
                 {
                     try
@@ -4657,8 +4517,7 @@ namespace Server.Mobiles
                         status_str = "invalid int comparison : {0}" + testString;
                     }
                 }
-                else
-                    if (hasnotequals)
+                else if (hasnotequals)
                 {
                     try
                     {
@@ -4669,8 +4528,7 @@ namespace Server.Mobiles
                         status_str = "invalid int comparison : {0}" + testString;
                     }
                 }
-                else
-                        if (hasgreaterthan)
+                else if (hasgreaterthan)
                 {
                     try
                     {
@@ -4678,8 +4536,7 @@ namespace Server.Mobiles
                     }
                     catch { status_str = "invalid int comparison : {0}" + testString; }
                 }
-                else
-                            if (haslessthan)
+                else if (haslessthan)
                 {
                     try
                     {
@@ -4688,8 +4545,7 @@ namespace Server.Mobiles
                     catch { status_str = "invalid int comparison : {0}" + testString; }
                 }
             }
-            else
-                                if ((ptype1 == typeof(double)) && (ptype2 == typeof(double)))
+            else if ((ptype1 == typeof(double)) && (ptype2 == typeof(double)))
             {
                 double val1 = 0, val2 = 0;
                 if (hasequal)
@@ -4735,8 +4591,7 @@ namespace Server.Mobiles
                     else { status_str = "invalid int comparison : {0}" + testString; }
                 }
             }
-            else
-                                    if (ptype2 == typeof(Boolean) && ptype1 == typeof(Boolean))
+            else if (ptype2 == typeof(Boolean) && ptype1 == typeof(Boolean))
             {
                 bool val1, val2;
                 if (hasequal)
@@ -4756,8 +4611,7 @@ namespace Server.Mobiles
                     else { status_str = "invalid bool comparison : {0}" + testString; }
                 }
             }
-            else
-                                        if (ptype2 == typeof(Double) || ptype2 == typeof(Double))
+            else if (ptype2 == typeof(Double) || ptype2 == typeof(Double))
             {
                 double val1 = 0, val2 = 0;
                 if (hasequal)
@@ -5523,7 +5377,6 @@ namespace Server.Mobiles
                 return founditem;
             }
 
-
             Type targettype = null;
             if (typestr != null)
             {
@@ -5904,7 +5757,6 @@ namespace Server.Mobiles
                     // also need to deal with nested cases of ADD/<args/ADD/<args>>  and ADD/<args/ADD/<args>/ADD<args>>
                     string additemstr = arglist[1];
 
-
                     if (arglist.Length > 2)
                         additemstr = arglist[1] + "/" + arglist[2];
 
@@ -6044,7 +5896,6 @@ namespace Server.Mobiles
                     sb.Append(remaining);
                     break;
                 }
-
 
                 // might be a substitution, check for keywords
                 int endindex = remaining.Substring(startindex + 1).IndexOf("}");
@@ -6236,7 +6087,6 @@ namespace Server.Mobiles
 
         public static string[] ParseSpaceArgs(string str, int nitems)
         {
-
             if (str == null) return null;
 
             string[] args = null;
@@ -6247,7 +6097,6 @@ namespace Server.Mobiles
 
             return args;
         }
-
 
         public static string[] ParseCommaArgs(string str, int nitems)
         {
@@ -6277,7 +6126,6 @@ namespace Server.Mobiles
 
         public static string[] ParseSemicolonArgs(string str, int nitems)
         {
-
             if (str == null) return null;
 
             string[] args = null;
@@ -6288,7 +6136,6 @@ namespace Server.Mobiles
 
             return args;
         }
-
 
         public static string[] SplitString(string str, string separator)
         {
@@ -6338,21 +6185,6 @@ namespace Server.Mobiles
                 if (m != null && m.AccessLevel >= ac)
                     //m.SendMessage(hue, message);
                     m.Send(new AsciiMessage(Serial.MinusOne, -1, MessageType.Regular, hue, font, "System", message));
-            }
-        }
-
-        public static void BroadcastSound(AccessLevel ac, int soundid)
-        {
-            foreach (NetState state in NetState.Instances)
-            {
-                Mobile m = state.Mobile;
-
-                if (m != null && m.AccessLevel >= ac)
-                {
-                    m.ProcessDelta();
-
-                    state.Send(new PlaySound(soundid, m.Location));
-                }
             }
         }
 
@@ -6418,123 +6250,6 @@ namespace Server.Mobiles
             }
         }
 
-        // modified from 1.0.0 core packet.cs
-        public sealed class XmlPlayMusic : Packet
-        {
-            public XmlPlayMusic(short number)
-                : base(0x6D, 3)
-            {
-                UnderlyingStream.Write(number);
-            }
-        }
-
-        public static void SendMusicToPlayers(string arglist, Mobile triggermob, object refobject, out string status_str)
-        {
-            status_str = null;
-            Item refitem = null;
-            Mobile refmob = null;
-
-            if (refobject is Item)
-            {
-                refitem = (Item)refobject;
-            }
-            else
-                if (refobject is Mobile)
-            {
-                refmob = (Mobile)refobject;
-            }
-            // look for the other args
-            string[] musicstr = ParseString(arglist, 3, ",");
-            int range = 0;
-            if (musicstr.Length < 2)
-            {
-                status_str = "missing musicname in MUSIC";
-            }
-            if (musicstr.Length > 2)
-            {
-                // get the range arg
-                if (!int.TryParse(musicstr[2], out range))
-                    status_str = "bad range arg in MUSIC";
-            }
-
-            if ((range > 0) || (triggermob != null && !triggermob.Deleted))
-            {
-                // send the music to all players within range if range is > 0
-                if (range > 0)
-                {
-                    IPooledEnumerable rangelist = null;
-                    if (refitem != null && !refitem.Deleted)
-                    {
-                        rangelist = refitem.GetClientsInRange(range);
-                    }
-                    else if (refmob != null && !refmob.Deleted)
-                    {
-                        rangelist = refmob.GetClientsInRange(range);
-                    }
-                    if (rangelist != null)
-                    {
-                        foreach (NetState p in rangelist)
-                        {
-                            if (p != null)
-                            {
-                                // stop any ongoing music
-                                p.Send(PlayMusic.InvalidInstance);
-                                // and play the new music
-                                short musicnumber = -1;
-                                if (!short.TryParse(musicstr[1], out musicnumber))
-                                    musicnumber = -1;
-
-                                if (musicnumber == -1)
-                                {
-                                    MusicName music;
-#if Framework_4_0
-									if(Enum.TryParse(musicstr[1], true, out music))
-#else
-                                    if (TryParse(musicstr[1], true, out music))
-#endif
-                                        p.Send(PlayMusic.GetInstance(music));
-                                }
-                                else
-                                {
-                                    p.Send(new XmlPlayMusic(musicnumber));
-                                }
-                            }
-                        }
-                        rangelist.Free();
-                    }
-                }
-                else
-                {
-                    // just send it to the mob who triggered
-                    // stop any ongoing music
-
-                    triggermob.Send(PlayMusic.InvalidInstance);
-                    // and play the new music
-                    //triggermob.Send(PlayMusic.GetInstance((MusicName)Enum.Parse(typeof(MusicName), musicstr[1], true)));
-                    //m_mob_who_triggered.Region.Music = (MusicName)Enum.Parse(typeof(MusicName), musicstr[1]);
-                    // and play the new music
-                    short musicnumber = -1;
-                    if (!short.TryParse(musicstr[1], out musicnumber))
-                        musicnumber = -1;
-
-                    if (musicnumber == -1)
-                    {
-                        MusicName music;
-#if Framework_4_0
-						if(Enum.TryParse(musicstr[1], true, out music))
-#else
-                        if (TryParse(musicstr[1], true, out music))
-#endif
-                            triggermob.Send(PlayMusic.GetInstance(music));
-                    }
-                    else
-                    {
-                        triggermob.Send(new XmlPlayMusic(musicnumber));
-                    }
-                }
-            }
-        }
-
         public static void ResurrectPlayers(string arglist, Mobile triggermob, object refobject, out string status_str)
         {
             status_str = null;
@@ -6573,7 +6288,6 @@ namespace Server.Mobiles
             {
                 if ((range > 0) || (triggermob != null && !triggermob.Deleted))
                 {
-                    // resurrect all players within range if range is > 0
                     if (range > 0)
                     {
                         IPooledEnumerable rangelist = null;
@@ -6607,84 +6321,6 @@ namespace Server.Mobiles
                         // just send it to the mob who triggered
                         if (triggermob.Body.IsGhost)
                             triggermob.Resurrect();
-
-                    }
-                }
-            }
-            catch { }
-        }
-
-        public static void ApplyPoisonToPlayers(string arglist, Mobile triggermob, object refobject, out string status_str)
-        {
-            status_str = null;
-            Item refitem = null;
-            Mobile refmob = null;
-
-            if (refobject is Item)
-            {
-                refitem = (Item)refobject;
-            }
-            else if (refobject is Mobile)
-            {
-                refmob = (Mobile)refobject;
-            }
-
-            // look for the other args
-            string[] str = ParseString(arglist, 4, ",");
-            bool playeronly = false;
-            int range = 0;
-            if (str.Length < 2)
-            {
-                status_str = "missing poisontype in POISON";
-            }
-            if (str.Length > 2)
-            {
-                // get the range arg
-                if (!int.TryParse(str[2], out range))
-                    status_str = "bad range arg in POISON";
-            }
-            if (str.Length > 3)
-            {
-                if (str[3].ToLower() == "playeronly")
-                    playeronly = true;
-                else bool.TryParse(str[3], out playeronly);
-            }
-            try
-            {
-                if ((range > 0) || (triggermob != null && !triggermob.Deleted))
-                {
-                    // apply the poison to all players within range if range is > 0
-                    if (range > 0)
-                    {
-
-                        IPooledEnumerable rangelist = null;
-                        if (refitem != null && !refitem.Deleted)
-                        {
-                            rangelist = refitem.GetMobilesInRange(range);
-
-                        }
-                        else if (refmob != null && !refmob.Deleted)
-                        {
-
-                            rangelist = refmob.GetMobilesInRange(range);
-
-                        }
-
-                        if (rangelist != null)
-                        {
-                            foreach (Mobile p in rangelist)
-                            {
-
-                                if (p is PlayerMobile || !playeronly)
-                                    p.ApplyPoison(p, Poison.Parse(str[1]));
-                            }
-                            rangelist.Free();
-                        }
-                    }
-                    else
-                    {
-                        // just apply it to the mob who triggered
-                        triggermob.ApplyPoison(triggermob, Poison.Parse(str[1]));
 
                     }
                 }
@@ -6803,7 +6439,6 @@ namespace Server.Mobiles
 
             foreach (NetState state in eable)
             {
-
                 if (Effects.SendParticlesTo(state))
                 {
                     if (preEffect == null)
@@ -6909,15 +6544,13 @@ namespace Server.Mobiles
                 catch { }
             }
         }
-
-
         #endregion
 
         #region Spawn methods
 
 
         public static void AddSpawnItem(XmlSpawner spawner, XmlSpawner.SpawnObject theSpawn, Item item, Point3D location, Map map, Mobile trigmob, bool requiresurface,
-    string propertyString, out string status_str)
+            string propertyString, out string status_str)
         {
             AddSpawnItem(spawner, spawner, theSpawn, item, location, map, trigmob, requiresurface, null, propertyString, false, out status_str);
         }
@@ -6952,11 +6585,9 @@ namespace Server.Mobiles
             AddSpawnItem(spawner, spawner, theSpawn, item, location, map, trigmob, requiresurface, spawnpositioning, propertyString, smartspawn, out status_str);
         }
 
-
         public static void AddSpawnItem(XmlSpawner spawner, object invoker, XmlSpawner.SpawnObject theSpawn, Item item, Point3D location, Map map, Mobile trigmob, bool requiresurface,
             List<XmlSpawner.SpawnPositionInfo> spawnpositioning, string propertyString, bool smartspawn, out string status_str)
         {
-
             status_str = null;
             if (item == null || theSpawn == null) return;
 
@@ -7047,10 +6678,6 @@ namespace Server.Mobiles
             // apply the parsed arguments from the typestring using setcommand
             // be sure to do this after setting map and location so that errors dont place the mob on the internal map
             BaseXmlSpawner.ApplyObjectStringProperties(spawner, propertyString, item, trigmob, spawner, out status_str);
-
-            // if the object has an OnAfterSpawnAndModify method, then invoke it
-            //InvokeOnAfterSpawnAndModify(item);
-
         }
 
         public static bool SpawnTypeKeyword(object invoker, XmlSpawner.SpawnObject TheSpawn, string typeName, string substitutedtypeName, bool requiresurface,
@@ -8217,10 +7844,7 @@ namespace Server.Mobiles
                                     }
                                     spawner.SpawnSubGroup(thengroup, (byte)(loops + 1));
                                     // advance the sequence to that group
-                                    //spawner.SequentialSpawn = thengroup;
                                 }
-                                // and suppress sequential advancement
-                                //spawner.HoldSequence = true;
                             }
                             else
                             {
@@ -8235,10 +7859,7 @@ namespace Server.Mobiles
                                     }
                                     spawner.SpawnSubGroup(elsegroup, (byte)(loops + 1));
                                     // advance the sequence to that group
-                                    //spawner.SequentialSpawn = elsegroup;
                                 }
-                                // and suppress sequential advancement
-                                //spawner.HoldSequence = true;
                             }
                             TheSpawn.SpawnedObjects.Add(new KeywordTag(substitutedtypeName, spawner));
 
@@ -8435,59 +8056,6 @@ namespace Server.Mobiles
 
                             break;
                         }
-                    case typeKeyword.MUSIC:
-                        {
-                            // the syntax is MUSIC,name,range
-                            string[] arglist = ParseSlashArgs(substitutedtypeName, 3);
-                            if (arglist.Length > 0)
-                            {
-                                SendMusicToPlayers(arglist[0], triggermob, invoker, out status_str);
-                                if (status_str != null)
-                                {
-                                    return false;
-                                }
-                            }
-
-                            TheSpawn.SpawnedObjects.Add(new KeywordTag(substitutedtypeName, spawner));
-
-                            break;
-                        }
-                    case typeKeyword.SOUND:
-                        {
-                            string[] arglist = ParseSlashArgs(substitutedtypeName, 3);
-
-                            if (arglist.Length > 0)
-                            {
-                                // Syntax is SOUND,soundnumber
-                                string[] keywordargs = ParseString(arglist[0], 3, ",");
-                                int sound = -1;
-                                // try to get the soundnumber argument
-                                if (keywordargs.Length < 2)
-                                {
-                                    status_str = "Missing sound number";
-                                }
-                                else
-                                {
-                                    if (!int.TryParse(keywordargs[1], out sound))
-                                    {
-                                        status_str = "Improper sound number format";
-                                        sound = -1;
-                                    }
-                                }
-                                if (sound >= 0 && invoker is IEntity)
-                                {
-                                    Effects.PlaySound(((IEntity)invoker).Location, ((IEntity)invoker).Map, sound);
-                                }
-                                if (status_str != null)
-                                {
-                                    return false;
-                                }
-                            }
-
-                            TheSpawn.SpawnedObjects.Add(new KeywordTag(substitutedtypeName, spawner));
-
-                            break;
-                        }
                     //
                     //  MEFFECT keyword
                     //
@@ -8605,23 +8173,6 @@ namespace Server.Mobiles
                                 if (effect >= 0)
                                 {
                                     Effects.SendLocationEffect(eloc, emap, effect, duration);
-                                }
-                            }
-
-                            TheSpawn.SpawnedObjects.Add(new KeywordTag(substitutedtypeName, spawner));
-
-                            break;
-                        }
-                    case typeKeyword.POISON:
-                        {
-                            // the syntax is POISON,name,range
-                            string[] arglist = ParseSlashArgs(substitutedtypeName, 3);
-                            if (arglist.Length > 0)
-                            {
-                                ApplyPoisonToPlayers(arglist[0], triggermob, invoker, out status_str);
-                                if (status_str != null)
-                                {
-                                    return false;
                                 }
                             }
 
@@ -8879,36 +8430,6 @@ namespace Server.Mobiles
                                 return false;
                             }
 
-                            TheSpawn.SpawnedObjects.Add(new KeywordTag(substitutedtypeName, spawner));
-
-                            break;
-                        }
-                    case typeKeyword.BSOUND:
-                        {
-                            // syntax is BSOUND,soundid
-
-                            string[] arglist = ParseSlashArgs(substitutedtypeName, 3);
-
-                            int soundid = -1;
-
-                            if (arglist.Length > 0)
-                            {
-                                string[] keywordargs = ParseString(arglist[0], 2, ",");
-                                if (keywordargs.Length > 1)
-                                {
-                                    if (!int.TryParse(keywordargs[1], out soundid))
-                                    {
-                                        status_str = "invalid soundid arg to BSOUND";
-                                        soundid = -1;
-                                    }
-                                }
-
-                                if (soundid >= 0)
-                                {
-                                    // broadcast a sound to all players
-                                    BroadcastSound(AccessLevel.Player, soundid);
-                                }
-                            }
                             TheSpawn.SpawnedObjects.Add(new KeywordTag(substitutedtypeName, spawner));
 
                             break;

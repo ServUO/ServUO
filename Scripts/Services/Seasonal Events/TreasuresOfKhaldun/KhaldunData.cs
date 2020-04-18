@@ -8,13 +8,13 @@ namespace Server.Engines.Points
 {
     public class KhaldunData : PointsSystem
     {
-        public override PointsType Loyalty { get { return PointsType.Khaldun; } }
-        public override TextDefinition Name { get { return m_Name; } }
-        public override bool AutoAdd { get { return true; } }
-        public override double MaxPoints { get { return double.MaxValue; } }
-        public override bool ShowOnLoyaltyGump { get { return false; } }
+        public override PointsType Loyalty => PointsType.Khaldun;
+        public override TextDefinition Name => m_Name;
+        public override bool AutoAdd => true;
+        public override double MaxPoints => double.MaxValue;
+        public override bool ShowOnLoyaltyGump => false;
 
-        public bool InSeason { get { return SeasonalEventSystem.IsActive(EventType.TreasuresOfKhaldun); } }
+        public bool InSeason => SeasonalEventSystem.IsActive(EventType.TreasuresOfKhaldun);
 
         public bool Enabled { get; set; }
         public bool QuestContentGenerated { get; set; }
@@ -33,7 +33,7 @@ namespace Server.Engines.Points
 
         public override void ProcessKill(Mobile victim, Mobile damager)
         {
-            var bc = victim as BaseCreature;
+            BaseCreature bc = victim as BaseCreature;
 
             if (!InSeason || bc == null || bc.Controlled || bc.Summoned || !damager.Alive || damager.Deleted || !bc.IsChampionSpawn)
                 return;

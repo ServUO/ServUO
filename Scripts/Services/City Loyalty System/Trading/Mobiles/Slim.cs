@@ -9,7 +9,7 @@ namespace Server.Engines.CityLoyalty
 {
     public class SlimTheFence : BaseCreature
     {
-        public override bool IsInvulnerable { get { return true; } }
+        public override bool IsInvulnerable => true;
 
         [Constructable]
         public SlimTheFence() : base(AIType.AI_Vendor, FightMode.None, 10, 1, .4, .2)
@@ -36,7 +36,7 @@ namespace Server.Engines.CityLoyalty
             EquipItem(new FancyShirt(1932));
             EquipItem(new LongPants(1));
 
-            var boots = new Boots();
+            Boots boots = new Boots();
             boots.Hue = 1;
             EquipItem(boots);
 
@@ -131,7 +131,7 @@ namespace Server.Engines.CityLoyalty
                     int min, max;
                     TreasureMapChest.GetRandomItemStat(out min, out max, 1.0);
 
-                    RunicReforging.GenerateRandomItem(item, 0, min, max, this.Map);
+                    RunicReforging.GenerateRandomItem(item, 0, min, max, Map);
                     return item;
                 case 2:
                     return ScrollOfTranscendence.CreateRandom(1, 10);

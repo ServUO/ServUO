@@ -528,7 +528,7 @@ namespace Server.Items
 
         public static List<Spellbook> FindAllSpellbooks(Mobile from)
         {
-            var list = new List<Spellbook>();
+            List<Spellbook> list = new List<Spellbook>();
 
             Item item = from.FindItemOnLayer(Layer.OneHanded);
 
@@ -939,8 +939,8 @@ namespace Server.Items
 
             list.Add(1042886, m_Count.ToString()); // ~1_NUMBERS_OF_SPELLS~ Spells
 
-            if (this.m_MaxHitPoints > 0)
-                list.Add(1060639, "{0}\t{1}", this.m_HitPoints, this.m_MaxHitPoints); // durability ~1_val~ / ~2_val~
+            if (m_MaxHitPoints > 0)
+                list.Add(1060639, "{0}\t{1}", m_HitPoints, m_MaxHitPoints); // durability ~1_val~ / ~2_val~
         }
 
         public virtual void AddProperty(ObjectPropertyList list)

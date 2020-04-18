@@ -71,19 +71,13 @@ namespace Server.Items
 
         public FlipableAttribute(params int[] itemIDs)
         {
-            this.m_ItemIDs = itemIDs;
+            m_ItemIDs = itemIDs;
         }
 
-        public int[] ItemIDs
-        {
-            get
-            {
-                return this.m_ItemIDs;
-            }
-        }
+        public int[] ItemIDs => m_ItemIDs;
         public virtual void Flip(Item item)
         {
-            if (this.m_ItemIDs == null)
+            if (m_ItemIDs == null)
             {
                 try
                 {
@@ -98,19 +92,19 @@ namespace Server.Items
             else
             {
                 int index = 0;
-                for (int i = 0; i < this.m_ItemIDs.Length; i++)
+                for (int i = 0; i < m_ItemIDs.Length; i++)
                 {
-                    if (item.ItemID == this.m_ItemIDs[i])
+                    if (item.ItemID == m_ItemIDs[i])
                     {
                         index = i + 1;
                         break;
                     }
                 }
 
-                if (index > this.m_ItemIDs.Length - 1)
+                if (index > m_ItemIDs.Length - 1)
                     index = 0;
 
-                item.ItemID = this.m_ItemIDs[index];
+                item.ItemID = m_ItemIDs[index];
             }
         }
     }

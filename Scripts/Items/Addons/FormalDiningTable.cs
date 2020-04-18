@@ -45,12 +45,12 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed { get { return new FormalDiningTableDeed(); } }
+        public override BaseAddonDeed Deed => new FormalDiningTableDeed();
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -62,9 +62,9 @@ namespace Server.Items
 
     public class FormalDiningTableDeed : BaseAddonDeed, IRewardOption
     {
-        public override int LabelNumber { get { return 1157069; } } // Formal Dining Table
+        public override int LabelNumber => 1157069;  // Formal Dining Table
 
-        public override BaseAddon Addon { get { return new FormalDiningTableAddon(_Direction); } }
+        public override BaseAddon Addon => new FormalDiningTableAddon(_Direction);
 
         private DirectionType _Direction;
 
@@ -110,7 +110,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

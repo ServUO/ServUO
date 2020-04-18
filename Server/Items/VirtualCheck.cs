@@ -68,7 +68,7 @@ namespace Server
 
         public override bool IsAccessibleTo(Mobile check)
         {
-            var c = GetSecureTradeCont();
+            Items.SecureTradeContainer c = GetSecureTradeCont();
 
             if (check == null || c == null)
             {
@@ -113,7 +113,7 @@ namespace Server
 
         public void UpdateTrade(Mobile user)
         {
-            var c = GetSecureTradeCont();
+            Items.SecureTradeContainer c = GetSecureTradeCont();
 
             if (c == null || c.Trade == null)
             {
@@ -258,7 +258,7 @@ namespace Server
                 AddImage(10, 8, 113);
                 AddImage(360, 8, 113);
 
-                var title = String.Format(
+                string title = String.Format(
                     "<BASEFONT COLOR=#{0:X6}><CENTER>BANK OF {1}</CENTER>",
                     Color.DarkSlateGray.ToArgb() & 0x00FFFFFF,
                     User.RawName.ToUpper());
@@ -317,8 +317,8 @@ namespace Server
                         break;
                     case Buttons.Accept:
                         {
-                            var platText = info.GetTextEntry(0).Text;
-                            var goldText = info.GetTextEntry(1).Text;
+                            string platText = info.GetTextEntry(0).Text;
+                            string goldText = info.GetTextEntry(1).Text;
 
                             if (!Int32.TryParse(platText, out _Plat))
                             {
@@ -332,8 +332,8 @@ namespace Server
                             }
                             else
                             {
-                                var cur = User.Account.TotalCurrency;
-                                var off = _Plat + (_Gold / Math.Max(1.0, AccountGold.CurrencyThreshold));
+                                double cur = User.Account.TotalCurrency;
+                                double off = _Plat + (_Gold / Math.Max(1.0, AccountGold.CurrencyThreshold));
 
                                 if (off > cur)
                                 {

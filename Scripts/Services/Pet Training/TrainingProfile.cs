@@ -40,19 +40,19 @@ namespace Server.Mobiles
         public BaseCreature Creature { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public double TrainingProgressPercentile { get { return TrainingProgress / TrainingProgressMax; } }
+        public double TrainingProgressPercentile => TrainingProgress / TrainingProgressMax;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int ControlSlots { get { return Creature.ControlSlots; } }
+        public int ControlSlots => Creature.ControlSlots;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int ControlSlotsMin { get { return Creature.ControlSlotsMin; } }
+        public int ControlSlotsMin => Creature.ControlSlotsMin;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int ControlSlotsMax { get { return Creature.ControlSlotsMax; } }
+        public int ControlSlotsMax => Creature.ControlSlotsMax;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool CanApplyOptions { get { return HasBegunTraining && TrainingProgressPercentile >= 1.0; } }
+        public bool CanApplyOptions => HasBegunTraining && TrainingProgressPercentile >= 1.0;
 
         private int _TrainingPoints;
         private int _StartingTrainingPoints;
@@ -252,8 +252,8 @@ namespace Server.Mobiles
             {
                 case 1: gains = int.MaxValue; break;
                 case 2: gains = int.MaxValue; break;
-                case 3: gains = (int)(((double)MaxTrainingProgress / toGain) / 2.0); break;
-                default: gains = (int)(((double)MaxTrainingProgress / toGain) / 4.0); break;
+                case 3: gains = (int)((MaxTrainingProgress / toGain) / 2.0); break;
+                default: gains = (int)((MaxTrainingProgress / toGain) / 4.0); break;
             }
 
             if (gains < int.MaxValue)
@@ -269,9 +269,9 @@ namespace Server.Mobiles
             if (ControlSlots >= ControlSlotsMax || !HasBegunTraining || TrainingProgress >= TrainingProgressMax || Creature.ControlMaster == null)
                 return;
 
-            var ourDif = Creature.BardingDifficulty;
-            var theirDif = bc.BardingDifficulty;
-            var master = Creature.ControlMaster;
+            double ourDif = Creature.BardingDifficulty;
+            double theirDif = bc.BardingDifficulty;
+            Mobile master = Creature.ControlMaster;
 
             if (Utility.Random(100) < 8 - (1 + (ControlSlots - ControlSlotsMin)))
             {
@@ -339,7 +339,7 @@ namespace Server.Mobiles
 
         private double GetAdvance(double difficulty)
         {
-            var advance = difficulty / 64;
+            double advance = difficulty / 64;
 
             if (advance >= 2.5)
                 advance = 2.5;

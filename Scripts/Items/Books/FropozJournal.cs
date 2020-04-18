@@ -123,13 +123,7 @@ namespace Server.Items
         {
         }
 
-        public override BookContent DefaultContent
-        {
-            get
-            {
-                return Content;
-            }
-        }
+        public override BookContent DefaultContent => Content;
         public override void AddNameProperty(ObjectPropertyList list)
         {
             list.Add("Fropoz's Journal");
@@ -139,7 +133,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt((int)0); // version
+            writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

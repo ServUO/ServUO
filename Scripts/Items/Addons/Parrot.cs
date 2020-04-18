@@ -14,8 +14,8 @@ namespace Server.Items
         public ParrotItem()
             : base(0x20EE)
         {
-            this.Weight = 1;
-            this.Hue = Utility.RandomList(m_Hues);
+            Weight = 1;
+            Hue = Utility.RandomList(m_Hues);
         }
 
         public ParrotItem(Serial serial)
@@ -23,16 +23,10 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1074281;
-            }
-        }// pet parrot
+        public override int LabelNumber => 1074281;// pet parrot
         public override void OnDoubleClick(Mobile from)
         {
-            if (this.IsChildOf(from.Backpack))
+            if (IsChildOf(from.Backpack))
             {
                 from.Target = new InternalTarget(this);
                 from.SendLocalizedMessage(1072612); // Target the Parrot Perch you wish to place this Parrot upon.
@@ -45,7 +39,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -61,7 +55,7 @@ namespace Server.Items
             public InternalTarget(ParrotItem parrot)
                 : base(2, false, TargetFlags.None)
             {
-                this.m_Parrot = parrot;
+                m_Parrot = parrot;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
@@ -81,12 +75,12 @@ namespace Server.Items
                             if (perch.Parrot == null || perch.Parrot.Deleted)
                             {
                                 PetParrot parrot = new PetParrot();
-                                parrot.Hue = this.m_Parrot.Hue;
+                                parrot.Hue = m_Parrot.Hue;
                                 parrot.MoveToWorld(perch.Location, perch.Map);
                                 parrot.Z += 12;
 
                                 perch.Parrot = parrot;
-                                this.m_Parrot.Delete();
+                                m_Parrot.Delete();
                             }
                             else
                                 from.SendLocalizedMessage(1072616); //That Parrot Perch already has a Parrot.

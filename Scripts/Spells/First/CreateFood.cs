@@ -30,33 +30,27 @@ namespace Server.Spells.First
         {
         }
 
-        public override SpellCircle Circle
-        {
-            get
-            {
-                return SpellCircle.First;
-            }
-        }
+        public override SpellCircle Circle => SpellCircle.First;
         public override void OnCast()
         {
-            if (this.CheckSequence())
+            if (CheckSequence())
             {
                 FoodInfo foodInfo = m_Food[Utility.Random(m_Food.Length)];
                 Item food = foodInfo.Create();
 
                 if (food != null)
                 {
-                    this.Caster.AddToBackpack(food);
+                    Caster.AddToBackpack(food);
 
                     // You magically create food in your backpack:
-                    this.Caster.SendLocalizedMessage(1042695, true, " " + foodInfo.Name);
+                    Caster.SendLocalizedMessage(1042695, true, " " + foodInfo.Name);
 
-                    this.Caster.FixedParticles(0, 10, 5, 2003, EffectLayer.RightHand);
-                    this.Caster.PlaySound(0x1E2);
+                    Caster.FixedParticles(0, 10, 5, 2003, EffectLayer.RightHand);
+                    Caster.PlaySound(0x1E2);
                 }
             }
 
-            this.FinishSequence();
+            FinishSequence();
         }
     }
 
@@ -66,30 +60,30 @@ namespace Server.Spells.First
         private string m_Name;
         public FoodInfo(Type type, string name)
         {
-            this.m_Type = type;
-            this.m_Name = name;
+            m_Type = type;
+            m_Name = name;
         }
 
         public Type Type
         {
             get
             {
-                return this.m_Type;
+                return m_Type;
             }
             set
             {
-                this.m_Type = value;
+                m_Type = value;
             }
         }
         public string Name
         {
             get
             {
-                return this.m_Name;
+                return m_Name;
             }
             set
             {
-                this.m_Name = value;
+                m_Name = value;
             }
         }
         public Item Create()
@@ -98,7 +92,7 @@ namespace Server.Spells.First
 
             try
             {
-                item = (Item)Activator.CreateInstance(this.m_Type);
+                item = (Item)Activator.CreateInstance(m_Type);
             }
             catch
             {

@@ -2,8 +2,8 @@
 {
     public class BootsOfTheLavaLizard : Boots
     {
-        public override int LabelNumber { get { return 1151207; } } // Boots Of The Lava Lizard
-        public override bool IsArtifact { get { return true; } }
+        public override int LabelNumber => 1151207;  // Boots Of The Lava Lizard
+        public override bool IsArtifact => true;
 
         [Constructable]
         public BootsOfTheLavaLizard()
@@ -21,7 +21,7 @@
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

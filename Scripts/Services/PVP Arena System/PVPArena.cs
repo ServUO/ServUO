@@ -30,7 +30,7 @@ namespace Server.Engines.ArenaSystem
         public ArenaDefinition Definition { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool InUse { get { return CurrentDuel != null; } }
+        public bool InUse => CurrentDuel != null;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public ArenaDuel CurrentDuel { get; set; }
@@ -145,7 +145,7 @@ namespace Server.Engines.ArenaSystem
                 CurrentDuel.OnTick();
             }
 
-            foreach (var kvp in PendingDuels)
+            foreach (KeyValuePair<ArenaDuel, DateTime> kvp in PendingDuels)
             {
                 if (kvp.Value < DateTime.UtcNow)
                 {
@@ -155,7 +155,7 @@ namespace Server.Engines.ArenaSystem
 
             if (_Remove.Count > 0)
             {
-                foreach (var duel in _Remove)
+                foreach (ArenaDuel duel in _Remove)
                 {
                     if (PendingDuels.ContainsKey(duel))
                         PendingDuels.Remove(duel);
@@ -219,7 +219,7 @@ namespace Server.Engines.ArenaSystem
         {
             CurrentDuel = null;
 
-            foreach (var corpse in Region.GetEnumeratedItems().OfType<Corpse>())
+            foreach (Corpse corpse in Region.GetEnumeratedItems().OfType<Corpse>())
             {
                 if (corpse.Owner != null && corpse.Owner.InRange(corpse.Location, 30))
                 {
@@ -233,7 +233,7 @@ namespace Server.Engines.ArenaSystem
 
             if (BookedDuels.Count > 0)
             {
-                var newDuel = BookedDuels[0];
+                ArenaDuel newDuel = BookedDuels[0];
                 CurrentDuel = newDuel;
 
                 PVPArenaSystem.SendParticipantMessage(newDuel, 1153141); // Your session has been booked. Please wait a few moments to start the fight.
@@ -258,7 +258,7 @@ namespace Server.Engines.ArenaSystem
             // lets remove pets, too
             if (m is PlayerMobile && ((PlayerMobile)m).AllFollowers.Count > 0)
             {
-                foreach (var mob in ((PlayerMobile)m).AllFollowers.Where(pet => pet.Region.IsPartOf<ArenaRegion>()))
+                foreach (Mobile mob in ((PlayerMobile)m).AllFollowers.Where(pet => pet.Region.IsPartOf<ArenaRegion>()))
                 {
                     mob.MoveToWorld(p, map);
                     mob.Delta(MobileDelta.Noto);
@@ -323,9 +323,9 @@ namespace Server.Engines.ArenaSystem
             else
                 rankings = SurvivalRankings;
 
-            foreach (var part in duel.GetParticipants())
+            foreach (KeyValuePair<PlayerMobile, PlayerStatsEntry> part in duel.GetParticipants())
             {
-                var pm = part.Key;
+                PlayerMobile pm = part.Key;
                 ArenaStats stats = rankings.FirstOrDefault(r => r.Owner == pm);
 
                 if (stats == null)
@@ -334,7 +334,7 @@ namespace Server.Engines.ArenaSystem
                     rankings.Add(stats);
                 }
 
-                var team = duel.GetTeam(pm);
+                ArenaTeam team = duel.GetTeam(pm);
 
                 if (team != winners)
                 {
@@ -354,19 +354,19 @@ namespace Server.Engines.ArenaSystem
             writer.Write(0);
 
             writer.Write(SurvivalRankings.Count);
-            foreach (var ranking in SurvivalRankings)
+            foreach (ArenaStats ranking in SurvivalRankings)
             {
                 ranking.Serialize(writer);
             }
 
             writer.Write(TeamRankings.Count);
-            foreach (var ranking in TeamRankings)
+            foreach (ArenaStats ranking in TeamRankings)
             {
                 ranking.Serialize(writer);
             }
 
             writer.Write(Blockers.Count);
-            foreach (var blocker in Blockers)
+            foreach (Item blocker in Blockers)
             {
                 writer.Write(blocker);
             }
@@ -377,14 +377,14 @@ namespace Server.Engines.ArenaSystem
             writer.Write(Banner2);
 
             writer.Write(PendingDuels.Count);
-            foreach (var kvp in PendingDuels)
+            foreach (KeyValuePair<ArenaDuel, DateTime> kvp in PendingDuels)
             {
                 kvp.Key.Serialize(writer);
                 writer.WriteDeltaTime(kvp.Value);
             }
 
             writer.Write(BookedDuels.Count);
-            foreach (var duel in BookedDuels)
+            foreach (ArenaDuel duel in BookedDuels)
             {
                 duel.Serialize(writer);
             }

@@ -12,7 +12,7 @@ namespace Server.Regions
         private Rectangle2D m_Bounds;
         private List<Item> m_Markers;
 
-        public Rectangle2D Bounds { get { return m_Bounds; } }
+        public Rectangle2D Bounds => m_Bounds;
 
         public CorgulWarpRegion(CorgulAltar ped, Rectangle2D rec)
             : base("Corgul Warp Region", ped.Map, Region.DefaultPriority, new Rectangle2D[] { rec })
@@ -39,7 +39,7 @@ namespace Server.Regions
                         if (t >= 10)
                         {
                             MarkerItem i = new MarkerItem(14089);
-                            i.MoveToWorld(new Point3D(x, y, -5), this.Map);
+                            i.MoveToWorld(new Point3D(x, y, -5), Map);
                             m_Markers.Add(i);
                             t = 0;
                         }
@@ -63,7 +63,7 @@ namespace Server.Regions
 
         public void CheckEnter(BaseBoat boat)
         {
-            if (boat == null || this.Map == null || this.Map == Map.Internal)
+            if (boat == null || Map == null || Map == Map.Internal)
                 return;
 
             //Do not enter corgul region if we aren't in this region anymore
@@ -71,21 +71,21 @@ namespace Server.Regions
             if (r != null && !r.IsPartOf(this))
                 return;
 
-            Map map = this.Map;
+            Map map = Map;
 
             List<PlayerMobile> pms = new List<PlayerMobile>();
             bool hasMap = false;
 
-            foreach (var i in boat.GetEntitiesOnBoard().OfType<PlayerMobile>().Where(pm => pm.NetState != null))
+            foreach (PlayerMobile i in boat.GetEntitiesOnBoard().OfType<PlayerMobile>().Where(pm => pm.NetState != null))
             {
-                pms.Add((PlayerMobile)i);
-                PlayerMobile pm = (PlayerMobile)i;
+                pms.Add(i);
+                PlayerMobile pm = i;
 
                 if (pm.Backpack == null)
                     continue;
 
                 Item item = pm.Backpack.FindItemByType(typeof(CorgulIslandMap));
-                if (item != null && item is CorgulIslandMap && this.Contains(((CorgulIslandMap)item).DestinationPoint))
+                if (item != null && item is CorgulIslandMap && Contains(((CorgulIslandMap)item).DestinationPoint))
                 {
                     hasMap = true;
                     break;
@@ -104,7 +104,7 @@ namespace Server.Regions
                 int offsetY = ePnt.Y - boat.Y;
                 int offsetZ = map.GetAverageZ(ePnt.X, ePnt.Y) - boat.Z;
 
-                if (boat.CanFit(ePnt, this.Map, boat.ItemID))
+                if (boat.CanFit(ePnt, Map, boat.ItemID))
                 {
                     boat.Teleport(offsetX, offsetY, offsetZ);
 
@@ -140,7 +140,7 @@ namespace Server.Regions
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

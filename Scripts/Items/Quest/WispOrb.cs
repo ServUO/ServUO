@@ -25,7 +25,7 @@ namespace Server.Engines.Despise
 
     public class WispOrb : Item
     {
-        public override int LabelNumber { get { return 1153273; } } // A Wisp Orb
+        public override int LabelNumber => 1153273;  // A Wisp Orb
 
         private static readonly int MinPowerToConscript = 4;
 
@@ -38,10 +38,7 @@ namespace Server.Engines.Despise
         private bool m_Conscripted;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile Owner
-        {
-            get { return m_Owner; }
-        }
+        public Mobile Owner => m_Owner;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DespiseCreature Pet
@@ -222,7 +219,7 @@ namespace Server.Engines.Despise
         {
             List<WispOrb> list = new List<WispOrb>(c.Items.OfType<WispOrb>());
 
-            foreach (var orb in list)
+            foreach (WispOrb orb in list)
             {
                 m.SendLocalizedMessage(1153233); // The Wisp Orb vanishes to whence it came...
                 orb.Delete();
@@ -521,7 +518,7 @@ namespace Server.Engines.Despise
             if (m_Pet == null)
                 return 0;
 
-            int power = ((DespiseCreature)m_Pet).Power;
+            int power = m_Pet.Power;
             return power * power;
         }
 
@@ -548,7 +545,7 @@ namespace Server.Engines.Despise
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write(m_Owner);
             writer.Write(m_Pet);
@@ -559,12 +556,12 @@ namespace Server.Engines.Despise
 
             if (m_Anchor is Mobile)
             {
-                writer.Write((int)1);
+                writer.Write(1);
                 writer.Write((Mobile)m_Anchor);
             }
             else if (m_Anchor is Item)
             {
-                writer.Write((int)2);
+                writer.Write(2);
                 writer.Write((Item)m_Anchor);
             }
             else
@@ -588,8 +585,8 @@ namespace Server.Engines.Despise
             switch (reader.ReadInt())
             {
                 case 0: break;
-                case 1: m_Anchor = (IEntity)reader.ReadMobile(); break;
-                case 2: m_Anchor = (IEntity)reader.ReadItem(); break;
+                case 1: m_Anchor = reader.ReadMobile(); break;
+                case 2: m_Anchor = reader.ReadItem(); break;
             }
 
             if (m_Anchor == null && m_Pet != null)
@@ -601,6 +598,6 @@ namespace Server.Engines.Despise
         }
 
         private static readonly List<WispOrb> m_Orbs = new List<WispOrb>();
-        public static List<WispOrb> Orbs { get { return m_Orbs; } }
+        public static List<WispOrb> Orbs => m_Orbs;
     }
 }

@@ -31,11 +31,11 @@ namespace Server.Commands
             NetState.FlushAll();
             NetState.Pause();
 
-            var startTime = DateTime.UtcNow;
+            DateTime startTime = DateTime.UtcNow;
 
-            var generated = Document();
+            bool generated = Document();
 
-            var endTime = DateTime.UtcNow;
+            DateTime endTime = DateTime.UtcNow;
 
             NetState.Resume();
 
@@ -67,17 +67,17 @@ namespace Server.Commands
                     return 0;
                 }
 
-                var aCtor = x as ConstructorInfo;
-                var bCtor = y as ConstructorInfo;
+                ConstructorInfo aCtor = x as ConstructorInfo;
+                ConstructorInfo bCtor = y as ConstructorInfo;
 
-                var aProp = x as PropertyInfo;
-                var bProp = y as PropertyInfo;
+                PropertyInfo aProp = x as PropertyInfo;
+                PropertyInfo bProp = y as PropertyInfo;
 
-                var aMethod = x as MethodInfo;
-                var bMethod = y as MethodInfo;
+                MethodInfo aMethod = x as MethodInfo;
+                MethodInfo bMethod = y as MethodInfo;
 
-                var aStatic = GetStaticFor(aCtor, aProp, aMethod);
-                var bStatic = GetStaticFor(bCtor, bProp, bMethod);
+                bool aStatic = GetStaticFor(aCtor, aProp, aMethod);
+                bool bStatic = GetStaticFor(bCtor, bProp, bMethod);
 
                 if (aStatic && !bStatic)
                 {
@@ -89,7 +89,7 @@ namespace Server.Commands
                     return 1;
                 }
 
-                var v = 0;
+                int v = 0;
 
                 if (aCtor != null)
                 {
@@ -148,8 +148,8 @@ namespace Server.Commands
 
                 if (prop != null)
                 {
-                    var getMethod = prop.GetGetMethod();
-                    var setMethod = prop.GetGetMethod();
+                    MethodInfo getMethod = prop.GetGetMethod();
+                    MethodInfo setMethod = prop.GetGetMethod();
 
                     return (getMethod != null && getMethod.IsStatic) || (setMethod != null && setMethod.IsStatic);
                 }
@@ -233,8 +233,8 @@ namespace Server.Commands
                 //				m_Writer = Docs.GetWriter( "docs/types/", m_FileName );
             }
 
-            public string FileName { get { return m_FileName; } }
-            public string TypeName { get { return m_TypeName; } }
+            public string FileName => m_FileName;
+            public string TypeName => m_TypeName;
 
             public string LinkName(string dirRoot)
             {
@@ -249,9 +249,9 @@ namespace Server.Commands
         {
             if (name.IndexOfAny(ReplaceChars) >= 0)
             {
-                var sb = new StringBuilder(name);
+                StringBuilder sb = new StringBuilder(name);
 
-                foreach (var c in ReplaceChars)
+                foreach (char c in ReplaceChars)
                 {
                     sb.Replace(c, '-');
                 }
@@ -259,8 +259,8 @@ namespace Server.Commands
                 name = sb.ToString();
             }
 
-            var index = 0;
-            var file = String.Concat(name, ext);
+            int index = 0;
+            string file = String.Concat(name, ext);
 
             while (File.Exists(Path.Combine(root, file)))
             {
@@ -328,10 +328,10 @@ namespace Server.Commands
 
         public static string GetPair(Type varType, string name, bool ignoreRef)
         {
-            var prepend = "";
-            var append = new StringBuilder();
+            string prepend = "";
+            StringBuilder append = new StringBuilder();
 
-            var realType = varType;
+            Type realType = varType;
 
             if (varType.IsByRef)
             {
@@ -353,7 +353,7 @@ namespace Server.Commands
                     {
                         append.Append('[');
 
-                        for (var i = 1; i < realType.GetArrayRank(); ++i)
+                        for (int i = 1; i < realType.GetArrayRank(); ++i)
                         {
                             append.Append(',');
                         }
@@ -378,7 +378,7 @@ namespace Server.Commands
                 {
                     append.Append('[');
 
-                    for (var i = 1; i < realType.GetArrayRank(); ++i)
+                    for (int i = 1; i < realType.GetArrayRank(); ++i)
                     {
                         append.Append(',');
                     }
@@ -396,7 +396,7 @@ namespace Server.Commands
                 append.Append(' ');
             }
 
-            var fullName = realType.FullName;
+            string fullName = realType.FullName;
             string aliased = null; // = realType.Name;
 
             TypeInfo info = null;
@@ -419,7 +419,7 @@ namespace Server.Commands
                 }
                 else
                 {
-                    for (var i = 0; i < m_AliasLength; ++i)
+                    for (int i = 0; i < m_AliasLength; ++i)
                     {
                         if (m_Aliases[i, 0] == fullName)
                         {
@@ -435,7 +435,7 @@ namespace Server.Commands
                 }
             }
 
-            var retval = String.Concat(prepend, aliased, append, name);
+            string retval = String.Concat(prepend, aliased, append, name);
             //Console.WriteLine(">> getpair: "+retval);
             return retval;
         }
@@ -476,16 +476,16 @@ namespace Server.Commands
             m_Types = new Dictionary<Type, TypeInfo>();
             m_Namespaces = new Dictionary<string, List<TypeInfo>>();
 
-            var assemblies = new List<Assembly>
+            List<Assembly> assemblies = new List<Assembly>
             {
                 Core.Assembly
             };
 
             assemblies.AddRange(ScriptCompiler.Assemblies);
 
-            var asms = assemblies.ToArray();
+            Assembly[] asms = assemblies.ToArray();
 
-            foreach (var a in asms)
+            foreach (Assembly a in asms)
             {
                 LoadTypes(a, asms);
             }
@@ -503,7 +503,7 @@ namespace Server.Commands
 
         private static void GenerateStyles()
         {
-            using (var css = GetWriter("docs/", "styles.css"))
+            using (StreamWriter css = GetWriter("docs/", "styles.css"))
             {
                 css.WriteLine("body { background-color: #FFFFFF; font-family: verdana, arial; font-size: 11px; }");
                 css.WriteLine("a { color: #28435E; }");
@@ -535,7 +535,7 @@ namespace Server.Commands
 
         private static void GenerateIndex()
         {
-            using (var html = GetWriter("docs/", "index.html"))
+            using (StreamWriter html = GetWriter("docs/", "index.html"))
             {
                 html.WriteLine("<!DOCTYPE html>");
                 html.WriteLine("<html>");
@@ -614,7 +614,7 @@ namespace Server.Commands
 
         private static void DocumentBulkOrders()
         {
-            using (var html = GetWriter("docs/bods/", "bod_smith_rewards.html"))
+            using (StreamWriter html = GetWriter("docs/bods/", "bod_smith_rewards.html"))
             {
                 html.WriteLine("<!DOCTYPE html>");
                 html.WriteLine("<html>");
@@ -650,7 +650,7 @@ namespace Server.Commands
                 WriteSmithBODHeader(html, "(Small) Armor: Normal");
 
                 sbod.RequireExceptional = false;
-                for (var mat = BulkMaterialType.None; mat <= BulkMaterialType.Valorite; ++mat)
+                for (BulkMaterialType mat = BulkMaterialType.None; mat <= BulkMaterialType.Valorite; ++mat)
                 {
                     sbod.Material = mat;
                     sbod.AmountMax = 10;
@@ -664,11 +664,11 @@ namespace Server.Commands
                 WriteSmithBODHeader(html, "(Small) Armor: Exceptional");
 
                 sbod.RequireExceptional = true;
-                for (var mat = BulkMaterialType.None; mat <= BulkMaterialType.Valorite; ++mat)
+                for (BulkMaterialType mat = BulkMaterialType.None; mat <= BulkMaterialType.Valorite; ++mat)
                 {
                     sbod.Material = mat;
 
-                    for (var amt = 15; amt <= 20; amt += 5)
+                    for (int amt = 15; amt <= 20; amt += 5)
                     {
                         sbod.AmountMax = amt;
                         DocumentSmithBOD(html, sbod.ComputeRewards(true), amt == 20 ? "20" : "10, 15", sbod.Material);
@@ -690,7 +690,7 @@ namespace Server.Commands
                 html.WriteLine("</html>");
             }
 
-            using (var html = GetWriter("docs/bods/", "bod_tailor_rewards.html"))
+            using (StreamWriter html = GetWriter("docs/bods/", "bod_tailor_rewards.html"))
             {
                 html.WriteLine("<!DOCTYPE html>");
                 html.WriteLine("<html>");
@@ -721,7 +721,7 @@ namespace Server.Commands
                 DocumentTailorBOD(html, sbod.ComputeRewards(true), "10, 15", sbod.Material, sbod.Type);
 
                 sbod.Type = typeof(LeatherCap);
-                for (var mat = BulkMaterialType.None; mat <= BulkMaterialType.Barbed; ++mat)
+                for (BulkMaterialType mat = BulkMaterialType.None; mat <= BulkMaterialType.Barbed; ++mat)
                 {
                     if (mat >= BulkMaterialType.DullCopper && mat <= BulkMaterialType.Valorite)
                     {
@@ -744,7 +744,7 @@ namespace Server.Commands
                 DocumentTailorBOD(html, sbod.ComputeRewards(true), "20", sbod.Material, sbod.Type);
 
                 sbod.Type = typeof(LeatherCap);
-                for (var mat = BulkMaterialType.None; mat <= BulkMaterialType.Barbed; ++mat)
+                for (BulkMaterialType mat = BulkMaterialType.None; mat <= BulkMaterialType.Barbed; ++mat)
                 {
                     if (mat >= BulkMaterialType.DullCopper && mat <= BulkMaterialType.Valorite)
                     {
@@ -768,7 +768,7 @@ namespace Server.Commands
                 DocumentTailorBOD(html, sbod.ComputeRewards(true), "10, 15", sbod.Material, sbod.Type);
 
                 sbod.Type = typeof(LeatherCap);
-                for (var mat = BulkMaterialType.None; mat <= BulkMaterialType.Barbed; ++mat)
+                for (BulkMaterialType mat = BulkMaterialType.None; mat <= BulkMaterialType.Barbed; ++mat)
                 {
                     if (mat >= BulkMaterialType.DullCopper && mat <= BulkMaterialType.Valorite)
                     {
@@ -791,7 +791,7 @@ namespace Server.Commands
                 DocumentTailorBOD(html, sbod.ComputeRewards(true), "20", sbod.Material, sbod.Type);
 
                 sbod.Type = typeof(LeatherCap);
-                for (var mat = BulkMaterialType.None; mat <= BulkMaterialType.Barbed; ++mat)
+                for (BulkMaterialType mat = BulkMaterialType.None; mat <= BulkMaterialType.Barbed; ++mat)
                 {
                     if (mat >= BulkMaterialType.DullCopper && mat <= BulkMaterialType.Valorite)
                     {
@@ -832,9 +832,9 @@ namespace Server.Commands
 
             lbod.Entries = LargeBulkEntry.ConvertEntries(lbod, entries);
 
-            var type = entries[0].Type;
+            Type type = entries[0].Type;
 
-            var showCloth = !(type.IsSubclassOf(typeof(BaseArmor)) || type.IsSubclassOf(typeof(BaseShoes)));
+            bool showCloth = !(type.IsSubclassOf(typeof(BaseArmor)) || type.IsSubclassOf(typeof(BaseShoes)));
 
             html.WriteLine("         <tr>");
             html.WriteLine("            <td style=\"width: 850px;\" colspan=\"21\" class=\"entry\"><b>Regular</b></td>");
@@ -876,7 +876,7 @@ namespace Server.Commands
                 DocumentTailorBOD(html, lbod.ComputeRewards(true), "10, 15, 20", lbod.Material, typeof(LeatherCap));
             }
 
-            for (var mat = BulkMaterialType.Spined; mat <= BulkMaterialType.Barbed; ++mat)
+            for (BulkMaterialType mat = BulkMaterialType.Spined; mat <= BulkMaterialType.Barbed; ++mat)
             {
                 lbod.Material = mat;
                 lbod.AmountMax = 10;
@@ -925,7 +925,7 @@ namespace Server.Commands
                 DocumentTailorBOD(html, lbod.ComputeRewards(true), "10, 15, 20", lbod.Material, typeof(LeatherCap));
             }
 
-            for (var mat = BulkMaterialType.Spined; mat <= BulkMaterialType.Barbed; ++mat)
+            for (BulkMaterialType mat = BulkMaterialType.Spined; mat <= BulkMaterialType.Barbed; ++mat)
             {
                 lbod.Material = mat;
                 lbod.AmountMax = 10;
@@ -1051,9 +1051,9 @@ namespace Server.Commands
             BulkMaterialType material,
             Type type)
         {
-            var rewards = new bool[20];
+            bool[] rewards = new bool[20];
 
-            foreach (var item in items)
+            foreach (Item item in items)
             {
                 if (item is Sandals)
                 {
@@ -1089,7 +1089,7 @@ namespace Server.Commands
                 }
                 else if (item is PowerScroll)
                 {
-                    var ps = (PowerScroll)item;
+                    PowerScroll ps = (PowerScroll)item;
 
                     if (ps.Value == 105.0)
                     {
@@ -1133,7 +1133,7 @@ namespace Server.Commands
                 }
                 else if (item is RunicSewingKit)
                 {
-                    var rkit = (RunicSewingKit)item;
+                    RunicSewingKit rkit = (RunicSewingKit)item;
 
                     rewards[16 + CraftResources.GetIndex(rkit.Resource)] = true;
                 }
@@ -1181,7 +1181,7 @@ namespace Server.Commands
                 name,
                 amt);
 
-            var index = 0;
+            int index = 0;
 
             while (index < 20)
             {
@@ -1192,7 +1192,7 @@ namespace Server.Commands
                 }
                 else
                 {
-                    var count = 0;
+                    int count = 0;
 
                     while (index < 20 && !rewards[index])
                     {
@@ -1226,7 +1226,7 @@ namespace Server.Commands
             WriteSmithBODHeader(html, String.Format("(Large) {0}: Normal", name));
 
             lbod.RequireExceptional = false;
-            for (var mat = BulkMaterialType.None; mat <= BulkMaterialType.Valorite; ++mat)
+            for (BulkMaterialType mat = BulkMaterialType.None; mat <= BulkMaterialType.Valorite; ++mat)
             {
                 lbod.Material = mat;
                 lbod.AmountMax = 10;
@@ -1240,11 +1240,11 @@ namespace Server.Commands
             WriteSmithBODHeader(html, String.Format("(Large) {0}: Exceptional", name));
 
             lbod.RequireExceptional = true;
-            for (var mat = BulkMaterialType.None; mat <= BulkMaterialType.Valorite; ++mat)
+            for (BulkMaterialType mat = BulkMaterialType.None; mat <= BulkMaterialType.Valorite; ++mat)
             {
                 lbod.Material = mat;
 
-                for (var amt = 15; amt <= 20; amt += 5)
+                for (int amt = 15; amt <= 20; amt += 5)
                 {
                     lbod.AmountMax = amt;
                     DocumentSmithBOD(html, lbod.ComputeRewards(true), amt == 20 ? "20" : "10, 15", lbod.Material);
@@ -1362,9 +1362,9 @@ namespace Server.Commands
             string amt,
             BulkMaterialType material)
         {
-            var rewards = new bool[24];
+            bool[] rewards = new bool[24];
 
-            foreach (var item in items)
+            foreach (Item item in items)
             {
                 if (item is SturdyPickaxe || item is SturdyShovel)
                 {
@@ -1400,7 +1400,7 @@ namespace Server.Commands
                 }
                 else if (item is PowerScroll)
                 {
-                    var ps = (PowerScroll)item;
+                    PowerScroll ps = (PowerScroll)item;
 
                     if (ps.Value == 105.0)
                     {
@@ -1421,13 +1421,13 @@ namespace Server.Commands
                 }
                 else if (item is RunicHammer)
                 {
-                    var rh = (RunicHammer)item;
+                    RunicHammer rh = (RunicHammer)item;
 
                     rewards[11 + CraftResources.GetIndex(rh.Resource)] = true;
                 }
                 else if (item is AncientSmithyHammer)
                 {
-                    var ash = (AncientSmithyHammer)item;
+                    AncientSmithyHammer ash = (AncientSmithyHammer)item;
 
                     if (ash.Bonus == 10)
                     {
@@ -1499,7 +1499,7 @@ namespace Server.Commands
                 name,
                 amt);
 
-            var index = 0;
+            int index = 0;
 
             while (index < 24)
             {
@@ -1510,7 +1510,7 @@ namespace Server.Commands
                 }
                 else
                 {
-                    var count = 0;
+                    int count = 0;
 
                     while (index < 24 && !rewards[index])
                     {
@@ -1539,13 +1539,13 @@ namespace Server.Commands
         #region Bodies
         public static List<BodyEntry> LoadBodies()
         {
-            var list = new List<BodyEntry>();
+            List<BodyEntry> list = new List<BodyEntry>();
 
-            var path = Path.Combine(Core.BaseDirectory, "Data/models.txt");
+            string path = Path.Combine(Core.BaseDirectory, "Data/models.txt");
 
             if (File.Exists(path))
             {
-                using (var ip = new StreamReader(path))
+                using (StreamReader ip = new StreamReader(path))
                 {
                     string line;
 
@@ -1558,7 +1558,7 @@ namespace Server.Commands
                             continue;
                         }
 
-                        var split = line.Split('\t');
+                        string[] split = line.Split('\t');
 
                         if (split.Length < 3)
                         {
@@ -1579,9 +1579,9 @@ namespace Server.Commands
                             type = ModelBodyType.Invalid;
                         }
 
-                        var name = String.Join(" ", split.Skip(2).Select(n => !String.IsNullOrWhiteSpace(n) ? n : "unknown"));
+                        string name = String.Join(" ", split.Skip(2).Select(n => !String.IsNullOrWhiteSpace(n) ? n : "unknown"));
 
-                        var entry = new BodyEntry(body, type, name);
+                        BodyEntry entry = new BodyEntry(body, type, name);
 
                         if (!list.Contains(entry))
                         {
@@ -1596,9 +1596,9 @@ namespace Server.Commands
 
         private static void DocumentBodies()
         {
-            var list = LoadBodies();
+            List<BodyEntry> list = LoadBodies();
 
-            using (var html = GetWriter("docs/", "bodies.html"))
+            using (StreamWriter html = GetWriter("docs/", "bodies.html"))
             {
                 html.WriteLine("<!DOCTYPE html>");
                 html.WriteLine("<html>");
@@ -1623,11 +1623,11 @@ namespace Server.Commands
 
                     list.Sort(new BodyEntrySorter());
 
-                    var lastType = ModelBodyType.Invalid;
+                    ModelBodyType lastType = ModelBodyType.Invalid;
 
-                    foreach (var entry in list)
+                    foreach (BodyEntry entry in list)
                     {
-                        var type = entry.BodyType;
+                        ModelBodyType type = entry.BodyType;
 
                         if (type != lastType)
                         {
@@ -1692,9 +1692,9 @@ namespace Server.Commands
         #region Speech
         private static void DocumentKeywords()
         {
-            var tables = LoadSpeechFile();
+            List<Dictionary<int, SpeechEntry>> tables = LoadSpeechFile();
 
-            using (var html = GetWriter("docs/", "keywords.html"))
+            using (StreamWriter html = GetWriter("docs/", "keywords.html"))
             {
                 html.WriteLine("<!DOCTYPE html>");
                 html.WriteLine("<html>");
@@ -1712,9 +1712,9 @@ namespace Server.Commands
                 html.WriteLine("      <h4><a href=\"index.html\">Back to the index</a></h4>");
                 html.WriteLine("      <h2>Speech Keywords</h2>");
 
-                for (var p = 0; p < 1 && p < tables.Count; ++p)
+                for (int p = 0; p < 1 && p < tables.Count; ++p)
                 {
-                    var table = tables[p];
+                    Dictionary<int, SpeechEntry> table = tables[p];
 
                     if (p > 0)
                     {
@@ -1726,25 +1726,25 @@ namespace Server.Commands
                     html.WriteLine("      <table cellpadding=\"4\" cellspacing=\"1\">");
                     html.WriteLine("         <tr><td class=\"header\">Number</td><td class=\"header\">Text</td></tr>");
 
-                    var list = new List<SpeechEntry>(table.Values);
+                    List<SpeechEntry> list = new List<SpeechEntry>(table.Values);
                     list.Sort(new SpeechEntrySorter());
 
-                    foreach (var entry in list)
+                    foreach (SpeechEntry entry in list)
                     {
                         html.Write("         <tr><td class=\"lentry\">0x{0:X4}</td><td class=\"rentry\">", entry.Index);
 
                         entry.Strings.Sort(); //( new EnglishPrioStringSorter() );
 
-                        for (var j = 0; j < entry.Strings.Count; ++j)
+                        for (int j = 0; j < entry.Strings.Count; ++j)
                         {
                             if (j > 0)
                             {
                                 html.Write("<br />");
                             }
 
-                            var v = entry.Strings[j];
+                            string v = entry.Strings[j];
 
-                            foreach (var c in v)
+                            foreach (char c in v)
                             {
                                 switch (c)
                                 {
@@ -1795,8 +1795,8 @@ namespace Server.Commands
             private readonly int m_Index;
             private readonly List<string> m_Strings;
 
-            public int Index { get { return m_Index; } }
-            public List<string> Strings { get { return m_Strings; } }
+            public int Index => m_Index;
+            public List<string> Strings => m_Strings;
 
             public SpeechEntry(int index)
             {
@@ -1815,24 +1815,24 @@ namespace Server.Commands
 
         private static List<Dictionary<int, SpeechEntry>> LoadSpeechFile()
         {
-            var tables = new List<Dictionary<int, SpeechEntry>>();
-            var lastIndex = -1;
+            List<Dictionary<int, SpeechEntry>> tables = new List<Dictionary<int, SpeechEntry>>();
+            int lastIndex = -1;
 
             Dictionary<int, SpeechEntry> table = null;
 
-            var path = Core.FindDataFile("speech.mul");
+            string path = Core.FindDataFile("speech.mul");
 
             if (File.Exists(path))
             {
-                using (var ip = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (FileStream ip = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    var bin = new BinaryReader(ip);
+                    BinaryReader bin = new BinaryReader(ip);
 
                     while (bin.PeekChar() >= 0)
                     {
-                        var index = (bin.ReadByte() << 8) | bin.ReadByte();
-                        var length = (bin.ReadByte() << 8) | bin.ReadByte();
-                        var text = Encoding.UTF8.GetString(bin.ReadBytes(length)).Trim();
+                        int index = (bin.ReadByte() << 8) | bin.ReadByte();
+                        int length = (bin.ReadByte() << 8) | bin.ReadByte();
+                        string text = Encoding.UTF8.GetString(bin.ReadBytes(length)).Trim();
 
                         if (text.Length == 0)
                         {
@@ -1879,11 +1879,11 @@ namespace Server.Commands
             private readonly string m_Usage;
             private readonly string m_Description;
 
-            public AccessLevel AccessLevel { get { return m_AccessLevel; } }
-            public string Name { get { return m_Name; } }
-            public string[] Aliases { get { return m_CmdAliases; } }
-            public string Usage { get { return m_Usage; } }
-            public string Description { get { return m_Description; } }
+            public AccessLevel AccessLevel => m_AccessLevel;
+            public string Name => m_Name;
+            public string[] Aliases => m_CmdAliases;
+            public string Usage => m_Usage;
+            public string Description => m_Description;
 
             public DocCommandEntry(AccessLevel accessLevel, string name, string[] aliases, string usage, string description)
             {
@@ -1899,7 +1899,7 @@ namespace Server.Commands
         {
             public int Compare(DocCommandEntry a, DocCommandEntry b)
             {
-                var v = b.AccessLevel.CompareTo(a.AccessLevel);
+                int v = b.AccessLevel.CompareTo(a.AccessLevel);
 
                 if (v == 0)
                 {
@@ -1912,7 +1912,7 @@ namespace Server.Commands
 
         private static void DocumentCommands()
         {
-            using (var html = GetWriter("docs/", "commands.html"))
+            using (StreamWriter html = GetWriter("docs/", "commands.html"))
             {
                 html.WriteLine("<!DOCTYPE html>");
                 html.WriteLine("<html>");
@@ -1932,25 +1932,25 @@ namespace Server.Commands
                 html.WriteLine("      <h4><a href=\"index.html\">Back to the index</a></h4>");
                 html.WriteLine("      <h2>Commands</h2>");
 
-                var commands = new List<CommandEntry>(CommandSystem.Entries.Values);
-                var list = new List<DocCommandEntry>();
+                List<CommandEntry> commands = new List<CommandEntry>(CommandSystem.Entries.Values);
+                List<DocCommandEntry> list = new List<DocCommandEntry>();
 
                 commands.Sort();
                 commands.Reverse();
                 Clean(commands);
 
-                foreach (var e in commands)
+                foreach (CommandEntry e in commands)
                 {
-                    var mi = e.Handler.Method;
+                    MethodInfo mi = e.Handler.Method;
 
-                    var attrs = mi.GetCustomAttributes(typeof(UsageAttribute), false);
+                    object[] attrs = mi.GetCustomAttributes(typeof(UsageAttribute), false);
 
                     if (attrs.Length == 0)
                     {
                         continue;
                     }
 
-                    var usage = attrs[0] as UsageAttribute;
+                    UsageAttribute usage = attrs[0] as UsageAttribute;
 
                     attrs = mi.GetCustomAttributes(typeof(DescriptionAttribute), false);
 
@@ -1959,7 +1959,7 @@ namespace Server.Commands
                         continue;
                     }
 
-                    var desc = attrs[0] as DescriptionAttribute;
+                    DescriptionAttribute desc = attrs[0] as DescriptionAttribute;
 
                     if (usage == null || desc == null)
                     {
@@ -1968,9 +1968,9 @@ namespace Server.Commands
 
                     attrs = mi.GetCustomAttributes(typeof(AliasesAttribute), false);
 
-                    var aliases = (attrs.Length == 0 ? null : attrs[0] as AliasesAttribute);
+                    AliasesAttribute aliases = (attrs.Length == 0 ? null : attrs[0] as AliasesAttribute);
 
-                    var descString = desc.Description.Replace("<", "&lt;").Replace(">", "&gt;");
+                    string descString = desc.Description.Replace("<", "&lt;").Replace(">", "&gt;");
 
                     list.Add(
                         aliases == null
@@ -1978,21 +1978,21 @@ namespace Server.Commands
                             : new DocCommandEntry(e.AccessLevel, e.Command, aliases.Aliases, usage.Usage, descString));
                 }
 
-                foreach (var command in TargetCommands.AllCommands)
+                foreach (BaseCommand command in TargetCommands.AllCommands)
                 {
-                    var usage = command.Usage;
-                    var desc = command.Description;
+                    string usage = command.Usage;
+                    string desc = command.Description;
 
                     if (usage == null || desc == null)
                     {
                         continue;
                     }
 
-                    var cmds = command.Commands;
-                    var cmd = cmds[0];
-                    var aliases = new string[cmds.Length - 1];
+                    string[] cmds = command.Commands;
+                    string cmd = cmds[0];
+                    string[] aliases = new string[cmds.Length - 1];
 
-                    for (var j = 0; j < aliases.Length; ++j)
+                    for (int j = 0; j < aliases.Length; ++j)
                     {
                         aliases[j] = cmds[j + 1];
                     }
@@ -2001,7 +2001,7 @@ namespace Server.Commands
 
                     if (command.Supports != CommandSupport.Single)
                     {
-                        var sb = new StringBuilder(50 + desc.Length);
+                        StringBuilder sb = new StringBuilder(50 + desc.Length);
 
                         sb.Append("Modifiers: ");
 
@@ -2050,23 +2050,23 @@ namespace Server.Commands
                     list.Add(new DocCommandEntry(command.AccessLevel, cmd, aliases, usage, desc));
                 }
 
-                var commandImpls = BaseCommandImplementor.Implementors;
+                List<BaseCommandImplementor> commandImpls = BaseCommandImplementor.Implementors;
 
-                foreach (var command in commandImpls)
+                foreach (BaseCommandImplementor command in commandImpls)
                 {
-                    var usage = command.Usage;
-                    var desc = command.Description;
+                    string usage = command.Usage;
+                    string desc = command.Description;
 
                     if (usage == null || desc == null)
                     {
                         continue;
                     }
 
-                    var cmds = command.Accessors;
-                    var cmd = cmds[0];
-                    var aliases = new string[cmds.Length - 1];
+                    string[] cmds = command.Accessors;
+                    string cmd = cmds[0];
+                    string[] aliases = new string[cmds.Length - 1];
 
-                    for (var j = 0; j < aliases.Length; ++j)
+                    for (int j = 0; j < aliases.Length; ++j)
                     {
                         aliases[j] = cmds[j + 1];
                     }
@@ -2078,9 +2078,9 @@ namespace Server.Commands
 
                 list.Sort(new CommandEntrySorter());
 
-                var last = AccessLevel.Player;
+                AccessLevel last = AccessLevel.Player;
 
-                foreach (var e in list)
+                foreach (DocCommandEntry e in list)
                 {
                     if (e.AccessLevel != last)
                     {
@@ -2136,13 +2136,13 @@ namespace Server.Commands
 
         public static void Clean(List<CommandEntry> list)
         {
-            for (var i = 0; i < list.Count; ++i)
+            for (int i = 0; i < list.Count; ++i)
             {
-                var e = list[i];
+                CommandEntry e = list[i];
 
-                for (var j = i + 1; j < list.Count; ++j)
+                for (int j = i + 1; j < list.Count; ++j)
                 {
-                    var c = list[j];
+                    CommandEntry c = list[j];
 
                     if (e.Handler.Method == c.Handler.Method)
                     {
@@ -2155,9 +2155,9 @@ namespace Server.Commands
 
         private static void DocumentCommand(StreamWriter html, DocCommandEntry e)
         {
-            var usage = e.Usage;
-            var desc = e.Description;
-            var aliases = e.Aliases;
+            string usage = e.Usage;
+            string desc = e.Description;
+            string[] aliases = e.Aliases;
 
             html.Write("         <tr><a name=\"{0}\" /><td class=\"lentry\">{0}</td>", e.Name);
 
@@ -2175,7 +2175,7 @@ namespace Server.Commands
                     usage.Replace("<", "&lt;").Replace(">", "&gt;"),
                     aliases.Length == 1 ? "" : "es");
 
-                for (var i = 0; i < aliases.Length; ++i)
+                for (int i = 0; i < aliases.Length; ++i)
                 {
                     if (i != 0)
                     {
@@ -2194,18 +2194,18 @@ namespace Server.Commands
 
         private static void LoadTypes(Assembly a, Assembly[] asms)
         {
-            var types = a.GetTypes();
+            Type[] types = a.GetTypes();
 
-            foreach (var type in types)
+            foreach (Type type in types)
             {
-                var nspace = type.Namespace;
+                string nspace = type.Namespace;
 
                 if (nspace == null || type.IsSpecialName)
                 {
                     continue;
                 }
 
-                var info = new TypeInfo(type);
+                TypeInfo info = new TypeInfo(type);
                 m_Types[type] = info;
 
                 List<TypeInfo> nspaces;
@@ -2218,7 +2218,7 @@ namespace Server.Commands
 
                 nspaces.Add(info);
 
-                var baseType = info.m_BaseType;
+                Type baseType = info.m_BaseType;
 
                 if (baseType != null && InAssemblies(baseType, asms))
                 {
@@ -2238,7 +2238,7 @@ namespace Server.Commands
                     baseInfo.m_Derived.Add(info);
                 }
 
-                var decType = info.m_Declaring;
+                Type decType = info.m_Declaring;
 
                 if (decType != null)
                 {
@@ -2258,7 +2258,7 @@ namespace Server.Commands
                     decInfo.m_Nested.Add(info);
                 }
 
-                foreach (var iface in info.m_Interfaces)
+                foreach (Type iface in info.m_Interfaces)
                 {
                     if (!InAssemblies(iface, asms))
                     {
@@ -2313,12 +2313,12 @@ namespace Server.Commands
 
         private static void DocumentConstructableObjects()
         {
-            var types = new List<TypeInfo>(m_Types.Values);
+            List<TypeInfo> types = new List<TypeInfo>(m_Types.Values);
             types.Sort(new TypeComparer());
 
             ArrayList items = new ArrayList(), mobiles = new ArrayList();
 
-            foreach (var t in types.Select(ti => ti.m_Type))
+            foreach (Type t in types.Select(ti => ti.m_Type))
             {
                 bool isItem;
 
@@ -2327,10 +2327,10 @@ namespace Server.Commands
                     continue;
                 }
 
-                var ctors = t.GetConstructors();
-                var anyConstructable = false;
+                ConstructorInfo[] ctors = t.GetConstructors();
+                bool anyConstructable = false;
 
-                for (var j = 0; !anyConstructable && j < ctors.Length; ++j)
+                for (int j = 0; !anyConstructable && j < ctors.Length; ++j)
                 {
                     anyConstructable = IsConstructable(ctors[j]);
                 }
@@ -2344,7 +2344,7 @@ namespace Server.Commands
                 (isItem ? items : mobiles).Add(ctors);
             }
 
-            using (var html = GetWriter("docs/", "objects.html"))
+            using (StreamWriter html = GetWriter("docs/", "objects.html"))
             {
                 html.WriteLine("<!DOCTYPE html>");
                 html.WriteLine("<html>");
@@ -2368,7 +2368,7 @@ namespace Server.Commands
                 html.WriteLine("      <table cellpadding=\"4\" cellspacing=\"1\">");
                 html.WriteLine("         <tr><td class=\"header\">Item Name</td><td class=\"header\">Usage</td></tr>");
 
-                for (var i = 0; i < items.Count; i += 2)
+                for (int i = 0; i < items.Count; i += 2)
                 {
                     DocumentConstructableObject(html, (Type)items[i], (ConstructorInfo[])items[i + 1]);
                 }
@@ -2381,7 +2381,7 @@ namespace Server.Commands
                 html.WriteLine("      <table width=\"100%\" cellpadding=\"4\" cellspacing=\"1\">");
                 html.WriteLine("         <tr><td class=\"header\">Mobile Name</td><td class=\"header\">Usage</td></tr>");
 
-                for (var i = 0; i < mobiles.Count; i += 2)
+                for (int i = 0; i < mobiles.Count; i += 2)
                 {
                     DocumentConstructableObject(html, (Type)mobiles[i], (ConstructorInfo[])mobiles[i + 1]);
                 }
@@ -2397,9 +2397,9 @@ namespace Server.Commands
         {
             html.Write("         <tr><td class=\"lentry\">{0}</td><td class=\"rentry\">", t.Name);
 
-            var first = true;
+            bool first = true;
 
-            foreach (var ctor in ctors.Where(IsConstructable))
+            foreach (ConstructorInfo ctor in ctors.Where(IsConstructable))
             {
                 if (!first)
                 {
@@ -2410,9 +2410,9 @@ namespace Server.Commands
 
                 html.Write("{0}Add {1}", CommandSystem.Prefix, t.Name);
 
-                var parms = ctor.GetParameters();
+                ParameterInfo[] parms = ctor.GetParameters();
 
-                foreach (var p in parms)
+                foreach (ParameterInfo p in parms)
                 {
                     html.Write(" <a ");
 
@@ -2463,11 +2463,11 @@ namespace Server.Commands
 
         private static string GetTooltipFor(ParameterInfo param)
         {
-            var paramType = param.ParameterType;
+            Type paramType = param.ParameterType;
 
-            for (var i = 0; i < m_Tooltips.GetLength(0); ++i)
+            for (int i = 0; i < m_Tooltips.GetLength(0); ++i)
             {
-                var checkType = (Type)m_Tooltips[i, 0];
+                Type checkType = (Type)m_Tooltips[i, 0];
 
                 if (paramType == checkType)
                 {
@@ -2477,13 +2477,13 @@ namespace Server.Commands
 
             if (paramType.IsEnum)
             {
-                var sb = new StringBuilder();
+                StringBuilder sb = new StringBuilder();
 
                 sb.AppendFormat("Enumeration value or name. Possible named values include:{0}", HtmlNewLine);
 
-                var names = Enum.GetNames(paramType);
+                string[] names = Enum.GetNames(paramType);
 
-                foreach (var n in names)
+                foreach (string n in names)
                 {
                     sb.AppendFormat("{0}- {1}", HtmlNewLine, n);
                 }
@@ -2493,21 +2493,21 @@ namespace Server.Commands
 
             if (paramType.IsDefined(typeofCustomEnum, false))
             {
-                var attributes = paramType.GetCustomAttributes(typeofCustomEnum, false);
+                object[] attributes = paramType.GetCustomAttributes(typeofCustomEnum, false);
 
                 if (attributes.Length > 0)
                 {
-                    var attr = attributes[0] as CustomEnumAttribute;
+                    CustomEnumAttribute attr = attributes[0] as CustomEnumAttribute;
 
                     if (attr != null)
                     {
-                        var sb = new StringBuilder();
+                        StringBuilder sb = new StringBuilder();
 
                         sb.AppendFormat("Enumeration value or name. Possible named values include:{0}", HtmlNewLine);
 
-                        var names = attr.Names;
+                        string[] names = attr.Names;
 
-                        foreach (var n in names)
+                        foreach (string n in names)
                         {
                             sb.AppendFormat("{0}- {1}", HtmlNewLine, n);
                         }
@@ -2518,13 +2518,13 @@ namespace Server.Commands
             }
             else if (paramType == typeofMap)
             {
-                var sb = new StringBuilder();
+                StringBuilder sb = new StringBuilder();
 
                 sb.AppendFormat("Enumeration value or name. Possible named values include:{0}", HtmlNewLine);
 
-                var names = Map.GetMapNames();
+                string[] names = Map.GetMapNames();
 
-                foreach (var n in names)
+                foreach (string n in names)
                 {
                     sb.AppendFormat("{0}- {1}", HtmlNewLine, n);
                 }
@@ -2551,7 +2551,7 @@ namespace Server.Commands
 
         private static void DocumentLoadedTypes()
         {
-            using (var indexHtml = GetWriter("docs/", "overview.html"))
+            using (StreamWriter indexHtml = GetWriter("docs/", "overview.html"))
             {
                 indexHtml.WriteLine("<!DOCTYPE html>");
                 indexHtml.WriteLine("<html>");
@@ -2567,9 +2567,9 @@ namespace Server.Commands
                 indexHtml.WriteLine("      <h4><a href=\"index.html\">Back to the index</a></h4>");
                 indexHtml.WriteLine("      <h2>Namespaces</h2>");
 
-                var nspaces = new SortedList<string, List<TypeInfo>>(m_Namespaces);
+                SortedList<string, List<TypeInfo>> nspaces = new SortedList<string, List<TypeInfo>>(m_Namespaces);
 
-                foreach (var kvp in nspaces)
+                foreach (KeyValuePair<string, List<TypeInfo>> kvp in nspaces)
                 {
                     kvp.Value.Sort(new TypeComparer());
 
@@ -2583,11 +2583,11 @@ namespace Server.Commands
 
         private static void SaveNamespace(string name, IEnumerable<TypeInfo> types, StreamWriter indexHtml)
         {
-            var fileName = GetFileName("docs/namespaces/", name, ".html");
+            string fileName = GetFileName("docs/namespaces/", name, ".html");
 
             indexHtml.WriteLine("      <a href=\"namespaces/{0}\">{1}</a><br />", fileName, name);
 
-            using (var nsHtml = GetWriter("docs/namespaces/", fileName))
+            using (StreamWriter nsHtml = GetWriter("docs/namespaces/", fileName))
             {
                 nsHtml.WriteLine("<!DOCTYPE html>");
                 nsHtml.WriteLine("<html>");
@@ -2603,7 +2603,7 @@ namespace Server.Commands
                 nsHtml.WriteLine("      <h4><a href=\"../overview.html\">Back to the namespace index</a></h4>");
                 nsHtml.WriteLine("      <h2>{0}</h2>", name);
 
-                foreach (var t in types)
+                foreach (TypeInfo t in types)
                 {
                     SaveType(t, nsHtml, fileName, name);
                 }
@@ -2620,7 +2620,7 @@ namespace Server.Commands
                 nsHtml.WriteLine("      <!-- DBG-ST -->" + info.LinkName("../types/") + "<br />");
             }
 
-            using (var typeHtml = GetWriter(info.FileName))
+            using (StreamWriter typeHtml = GetWriter(info.FileName))
             {
                 typeHtml.WriteLine("<!DOCTYPE html>");
                 typeHtml.WriteLine("<html>");
@@ -2652,19 +2652,19 @@ namespace Server.Commands
         #region Write[...]
         private static void WriteEnum(TypeInfo info, StreamWriter typeHtml)
         {
-            var type = info.m_Type;
+            Type type = info.m_Type;
 
             typeHtml.WriteLine("      <h2>{0} (Enum)</h2>", info.TypeName);
 
-            var names = Enum.GetNames(type);
+            string[] names = Enum.GetNames(type);
 
-            var flags = type.IsDefined(typeof(FlagsAttribute), false);
+            bool flags = type.IsDefined(typeof(FlagsAttribute), false);
 
-            var format = flags ? "      {0:G} = 0x{1:X}{2}<br />" : "      {0:G} = {1:D}{2}<br />";
+            string format = flags ? "      {0:G} = 0x{1:X}{2}<br />" : "      {0:G} = {1:D}{2}<br />";
 
-            for (var i = 0; i < names.Length; ++i)
+            for (int i = 0; i < names.Length; ++i)
             {
-                var value = Enum.Parse(type, names[i]);
+                object value = Enum.Parse(type, names[i]);
 
                 typeHtml.WriteLine(format, names[i], value, i < (names.Length - 1) ? "," : "");
             }
@@ -2672,11 +2672,11 @@ namespace Server.Commands
 
         private static void WriteType(TypeInfo info, StreamWriter typeHtml)
         {
-            var type = info.m_Type;
+            Type type = info.m_Type;
 
             typeHtml.Write("      <h2>");
 
-            var decType = info.m_Declaring;
+            Type decType = info.m_Declaring;
 
             if (decType != null)
             {
@@ -2694,10 +2694,10 @@ namespace Server.Commands
 
             typeHtml.Write(info.TypeName);
 
-            var ifaces = info.m_Interfaces;
-            var baseType = info.m_BaseType;
+            Type[] ifaces = info.m_Interfaces;
+            Type baseType = info.m_BaseType;
 
-            var extendCount = 0;
+            int extendCount = 0;
 
             if (baseType != null && baseType != typeof(object) && baseType != typeof(ValueType) && !baseType.IsPrimitive)
             {
@@ -2725,7 +2725,7 @@ namespace Server.Commands
                     typeHtml.Write(" : ");
                 }
 
-                foreach (var iface in ifaces)
+                foreach (Type iface in ifaces)
                 {
                     TypeInfo ifaceInfo;
                     m_Types.TryGetValue(iface, out ifaceInfo);
@@ -2753,7 +2753,7 @@ namespace Server.Commands
 
             typeHtml.WriteLine("</h2>");
 
-            var derived = info.m_Derived;
+            List<TypeInfo> derived = info.m_Derived;
 
             if (derived != null)
             {
@@ -2761,9 +2761,9 @@ namespace Server.Commands
 
                 derived.Sort(new TypeComparer());
 
-                for (var i = 0; i < derived.Count; ++i)
+                for (int i = 0; i < derived.Count; ++i)
                 {
-                    var derivedInfo = derived[i];
+                    TypeInfo derivedInfo = derived[i];
 
                     if (i != 0)
                     {
@@ -2777,7 +2777,7 @@ namespace Server.Commands
                 typeHtml.WriteLine("</h4>");
             }
 
-            var nested = info.m_Nested;
+            List<TypeInfo> nested = info.m_Nested;
 
             if (nested != null)
             {
@@ -2785,9 +2785,9 @@ namespace Server.Commands
 
                 nested.Sort(new TypeComparer());
 
-                for (var i = 0; i < nested.Count; ++i)
+                for (int i = 0; i < nested.Count; ++i)
                 {
-                    var nestedInfo = nested[i];
+                    TypeInfo nestedInfo = nested[i];
 
                     if (i != 0)
                     {
@@ -2801,14 +2801,14 @@ namespace Server.Commands
                 typeHtml.WriteLine("</h4>");
             }
 
-            var membs =
+            MemberInfo[] membs =
                 type.GetMembers(
                     BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance |
                     BindingFlags.DeclaredOnly);
 
             Array.Sort(membs, new MemberComparer());
 
-            foreach (var mi in membs)
+            foreach (MemberInfo mi in membs)
             {
                 if (mi is PropertyInfo)
                 {
@@ -2829,8 +2829,8 @@ namespace Server.Commands
         {
             html.Write("      ");
 
-            var getMethod = pi.GetGetMethod();
-            var setMethod = pi.GetSetMethod();
+            MethodInfo getMethod = pi.GetGetMethod();
+            MethodInfo setMethod = pi.GetSetMethod();
 
             if ((getMethod != null && getMethod.IsStatic) || (setMethod != null && setMethod.IsStatic))
             {
@@ -2865,15 +2865,15 @@ namespace Server.Commands
             html.Write(name);
             html.Write('(');
 
-            var parms = ctor.GetParameters();
+            ParameterInfo[] parms = ctor.GetParameters();
 
             if (parms.Length > 0)
             {
                 html.Write(' ');
 
-                for (var i = 0; i < parms.Length; ++i)
+                for (int i = 0; i < parms.Length; ++i)
                 {
-                    var pi = parms[i];
+                    ParameterInfo pi = parms[i];
 
                     if (i != 0)
                     {
@@ -2920,15 +2920,15 @@ namespace Server.Commands
             html.Write(GetPair(mi.ReturnType, mi.Name, false));
             html.Write('(');
 
-            var parms = mi.GetParameters();
+            ParameterInfo[] parms = mi.GetParameters();
 
             if (parms.Length > 0)
             {
                 html.Write(' ');
 
-                for (var i = 0; i < parms.Length; ++i)
+                for (int i = 0; i < parms.Length; ++i)
                 {
-                    var pi = parms[i];
+                    ParameterInfo pi = parms[i];
 
                     if (i != 0)
                     {
@@ -2962,16 +2962,16 @@ namespace Server.Commands
 
             if (type.IsGenericType)
             {
-                var index = type.Name.IndexOf('`');
+                int index = type.Name.IndexOf('`');
 
                 if (index > 0)
                 {
-                    var rootType = type.Name.Substring(0, index);
+                    string rootType = type.Name.Substring(0, index);
 
-                    var nameBuilder = new StringBuilder(rootType);
-                    var fnamBuilder = new StringBuilder("docs/types/" + SanitizeType(rootType));
+                    StringBuilder nameBuilder = new StringBuilder(rootType);
+                    StringBuilder fnamBuilder = new StringBuilder("docs/types/" + SanitizeType(rootType));
 
-                    var linkBuilder =
+                    StringBuilder linkBuilder =
                         new StringBuilder(
                             DontLink(type)
                                 ? ("<span style=\"color: blue;\">" + rootType + "</span>")
@@ -2981,9 +2981,9 @@ namespace Server.Commands
                     fnamBuilder.Append("-");
                     linkBuilder.Append("&lt;");
 
-                    var typeArguments = type.GetGenericArguments();
+                    Type[] typeArguments = type.GetGenericArguments();
 
-                    for (var i = 0; i < typeArguments.Length; i++)
+                    for (int i = 0; i < typeArguments.Length; i++)
                     {
                         if (i != 0)
                         {
@@ -2992,8 +2992,8 @@ namespace Server.Commands
                             linkBuilder.Append(',');
                         }
 
-                        var sanitizedName = SanitizeType(typeArguments[i].Name);
-                        var aliasedName = AliasForName(sanitizedName);
+                        string sanitizedName = SanitizeType(typeArguments[i].Name);
+                        string aliasedName = AliasForName(sanitizedName);
 
                         nameBuilder.Append(sanitizedName);
                         fnamBuilder.Append("T");
@@ -3050,10 +3050,10 @@ namespace Server.Commands
 
         public static string SanitizeType(string name)
         {
-            var anonymousType = name.Contains("<");
-            var sb = new StringBuilder(name);
+            bool anonymousType = name.Contains("<");
+            StringBuilder sb = new StringBuilder(name);
 
-            foreach (var c in ReplaceChars)
+            foreach (char c in ReplaceChars)
             {
                 sb.Replace(c, '-');
             }
@@ -3068,7 +3068,7 @@ namespace Server.Commands
 
         public static string AliasForName(string name)
         {
-            for (var i = 0; i < m_AliasLength; ++i)
+            for (int i = 0; i < m_AliasLength; ++i)
             {
                 if (m_Aliases[i, 0] == name)
                 {
@@ -3123,7 +3123,7 @@ namespace Server.Commands
 
         public override bool Equals(object obj)
         {
-            var e = (BodyEntry)obj;
+            BodyEntry e = (BodyEntry)obj;
 
             return (Body == e.Body && BodyType == e.BodyType && Name == e.Name);
         }
@@ -3138,7 +3138,7 @@ namespace Server.Commands
     {
         public int Compare(BodyEntry a, BodyEntry b)
         {
-            var v = a.BodyType.CompareTo(b.BodyType);
+            int v = a.BodyType.CompareTo(b.BodyType);
 
             if (v == 0)
             {

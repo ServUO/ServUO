@@ -54,7 +54,7 @@ namespace Ultima
         /// <returns></returns>
         public static short SwapEndian(short x)
         {
-            var y = (ushort)x;
+            ushort y = (ushort)x;
             return (short)((y >> 8) | (y << 8));
         }
 

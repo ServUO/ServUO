@@ -35,8 +35,8 @@ namespace Server.Engines.ShameRevamped
 
         public void OnTrollKilled()
         {
-            this.Z -= 50;
-            this.Visible = false;
+            Z -= 50;
+            Visible = false;
 
             Timer.DelayCall(TimeSpan.FromMinutes(2), Reset);
 
@@ -77,13 +77,13 @@ namespace Server.Engines.ShameRevamped
             if (map == null || map == Map.Internal)
                 return;
 
-            foreach (var component in wall.Components)
+            foreach (AddonComponent component in wall.Components)
             {
                 foreach (Point3D[] pnts in _TeleportLocs)
                 {
                     if (component.Location == pnts[0])
                     {
-                        var oldtele = map.FindItem<ConditionTeleporter>(new Point3D(pnts[1]));
+                        ConditionTeleporter oldtele = map.FindItem<ConditionTeleporter>(new Point3D(pnts[1]));
 
                         if (oldtele != null)
                         {
@@ -91,7 +91,7 @@ namespace Server.Engines.ShameRevamped
                             oldtele.Delete();
                         }
 
-                        var teleporter = new ShameWallTeleporter(pnts[2], map);
+                        ShameWallTeleporter teleporter = new ShameWallTeleporter(pnts[2], map);
                         teleporter.MoveToWorld(pnts[1], map);
 
                         WeakEntityCollection.Add("newshame", teleporter);
@@ -124,7 +124,7 @@ namespace Server.Engines.ShameRevamped
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)3);
+            writer.Write(3);
 
             writer.Write(Troll);
             writer.Write(StartSpot);
@@ -145,7 +145,7 @@ namespace Server.Engines.ShameRevamped
             if (Troll != null)
                 Troll.Wall = this;
 
-            if (this.Location != StartSpot || Troll == null || Troll.Deleted || !Troll.Alive)
+            if (Location != StartSpot || Troll == null || Troll.Deleted || !Troll.Alive)
                 Reset();
 
             if (version == 2)

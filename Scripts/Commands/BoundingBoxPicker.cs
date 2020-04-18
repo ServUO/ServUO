@@ -27,11 +27,11 @@ namespace Server
             public PickTarget(Point3D store, bool first, Map map, BoundingBoxCallback callback, object state)
                 : base(-1, true, TargetFlags.None)
             {
-                this.m_Store = store;
-                this.m_First = first;
-                this.m_Map = map;
-                this.m_Callback = callback;
-                this.m_State = state;
+                m_Store = store;
+                m_First = first;
+                m_Map = map;
+                m_Callback = callback;
+                m_State = state;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
@@ -43,23 +43,23 @@ namespace Server
                 else if (p is Item)
                     p = ((Item)p).GetWorldTop();
 
-                if (this.m_First)
+                if (m_First)
                 {
                     from.SendMessage("Target another location to complete the bounding box.");
-                    from.Target = new PickTarget(new Point3D(p), false, from.Map, this.m_Callback, this.m_State);
+                    from.Target = new PickTarget(new Point3D(p), false, from.Map, m_Callback, m_State);
                 }
-                else if (from.Map != this.m_Map)
+                else if (from.Map != m_Map)
                 {
                     from.SendMessage("Both locations must reside on the same map.");
                 }
-                else if (this.m_Map != null && this.m_Map != Map.Internal && this.m_Callback != null)
+                else if (m_Map != null && m_Map != Map.Internal && m_Callback != null)
                 {
-                    Point3D start = this.m_Store;
+                    Point3D start = m_Store;
                     Point3D end = new Point3D(p);
 
                     Utility.FixPoints(ref start, ref end);
 
-                    this.m_Callback(from, this.m_Map, start, end, this.m_State);
+                    m_Callback(from, m_Map, start, end, m_State);
                 }
             }
         }

@@ -110,19 +110,19 @@ namespace Server.Services.Community_Collections
             writer.Write(0); // version
 
             writer.Write((int)Collection);
-            writer.Write((long)Points);
-            writer.Write((long)StartTier);
-            writer.Write((long)NextTier);
-            writer.Write((long)DailyDecay);
-            writer.Write((int)Tier);
+            writer.Write(Points);
+            writer.Write(StartTier);
+            writer.Write(NextTier);
+            writer.Write(DailyDecay);
+            writer.Write(Tier);
 
             QuestWriter.Object(writer, DonationTitle);
 
-            writer.Write((int)Tiers.Count);
+            writer.Write(Tiers.Count);
 
             for (int i = 0; i < Tiers.Count; i++)
             {
-                writer.Write((int)Tiers[i].Count);
+                writer.Write(Tiers[i].Count);
 
                 for (int j = 0; j < Tiers[i].Count; j++)
                     QuestWriter.Object(writer, Tiers[i][j]);

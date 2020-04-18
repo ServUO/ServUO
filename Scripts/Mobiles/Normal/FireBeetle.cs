@@ -49,48 +49,12 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool SubdueBeforeTame
-        {
-            get
-            {
-                return true;
-            }
-        }// Must be beaten into submission
-        public override bool StatLossAfterTame
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public virtual double BoostedSpeed
-        {
-            get
-            {
-                return 0.1;
-            }
-        }
-        public override bool ReduceSpeedWithDamage
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override int Meat
-        {
-            get
-            {
-                return 16;
-            }
-        }
-        public override FoodType FavoriteFood
-        {
-            get
-            {
-                return FoodType.Meat;
-            }
-        }
+        public override bool SubdueBeforeTame => true;// Must be beaten into submission
+        public override bool StatLossAfterTame => true;
+        public virtual double BoostedSpeed => 0.1;
+        public override bool ReduceSpeedWithDamage => false;
+        public override int Meat => 16;
+        public override FoodType FavoriteFood => FoodType.Meat;
         public override void OnHarmfulSpell(Mobile from)
         {
             if (!Controlled && ControlMaster == null)
@@ -135,7 +99,7 @@ namespace Server.Mobiles
 
         public override double GetControlChance(Mobile m, bool useBaseSkill)
         {
-            var profile = PetTrainingHelper.GetAbilityProfile(this);
+            AbilityProfile profile = PetTrainingHelper.GetAbilityProfile(this);
 
             if (profile != null && profile.HasCustomized())
             {
@@ -158,7 +122,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)3); // version
+            writer.Write(3); // version
         }
 
         public override void Deserialize(GenericReader reader)

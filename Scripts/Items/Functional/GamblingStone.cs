@@ -31,13 +31,7 @@ namespace Server.Items
                 InvalidateProperties();
             }
         }
-        public override string DefaultName
-        {
-            get
-            {
-                return "a gambling stone";
-            }
-        }
+        public override string DefaultName => "a gambling stone";
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
@@ -104,9 +98,9 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
 
-            writer.Write((int)m_GamblePot);
+            writer.Write(m_GamblePot);
         }
 
         public override void Deserialize(GenericReader reader)

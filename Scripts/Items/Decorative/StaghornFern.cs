@@ -7,7 +7,7 @@ namespace Server.Items
 {
     public class StaghornFernAddon : Item
     {
-        public override int LabelNumber { get { return 1154460; } } // Staghorn Fern
+        public override int LabelNumber => 1154460;  // Staghorn Fern
 
         [Constructable]
         public StaghornFernAddon()
@@ -22,12 +22,12 @@ namespace Server.Items
         {
         }
 
-        public Item Deed { get { return new StaghornFernDeed(); } }
+        public Item Deed => new StaghornFernDeed();
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -83,7 +83,7 @@ namespace Server.Items
     [Flipable(0x14F0, 0x14EF)]
     public class StaghornFernDeed : Item
     {
-        public override int LabelNumber { get { return 1154460; } } // Staghorn Fern
+        public override int LabelNumber => 1154460;  // Staghorn Fern
 
         [Constructable]
         public StaghornFernDeed()
@@ -100,7 +100,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

@@ -6,7 +6,7 @@
         public Bamboo()
             : base(0x246D)
         {
-            this.Weight = 10;
+            Weight = 10;
         }
 
         public Bamboo(Serial serial)
@@ -14,18 +14,12 @@
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1029324;
-            }
-        }// bamboo
+        public override int LabelNumber => 1029324;// bamboo
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

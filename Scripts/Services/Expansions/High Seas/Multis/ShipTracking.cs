@@ -10,7 +10,7 @@ namespace Server.Multis
 
         private readonly Mobile m_Mobile;
 
-        public List<BoatTrackingArrow> Arrows { get { return m_Arrows; } }
+        public List<BoatTrackingArrow> Arrows => m_Arrows;
         private readonly List<BoatTrackingArrow> m_Arrows = new List<BoatTrackingArrow>();
 
         public ShipTrackingContext(Mobile mobile, List<BoatTrackingArrow> arrows)
@@ -99,9 +99,9 @@ namespace Server.Multis
         private readonly Timer m_Timer;
         private readonly Item m_Boat;
 
-        public Mobile From { get { return m_From; } }
-        public Timer Timer { get { return m_Timer; } }
-        public Item Boat { get { return m_Boat; } }
+        public Mobile From => m_From;
+        public Timer Timer => m_Timer;
+        public Item Boat => m_Boat;
 
         public BoatTrackingArrow(Mobile from, Item boat, int range) : base(from, boat)
         {
@@ -156,7 +156,7 @@ namespace Server.Multis
                 return;
             }
 
-            var targets = new List<Item>();
+            List<Item> targets = new List<Item>();
             Map map = from.Map;
 
             if (map == null || map == Map.Internal)
@@ -225,13 +225,13 @@ namespace Server.Multis
         {
             if (!m_Arrow.Running)
             {
-                this.Stop();
+                Stop();
                 return;
             }
             else if (m_From.NetState == null || m_From.Deleted || m_Target.Deleted || m_From.Map != m_Target.Map || !m_From.InRange(m_Target, m_Range))
             {
                 m_Arrow.Stop();
-                this.Stop();
+                Stop();
                 return;
             }
 

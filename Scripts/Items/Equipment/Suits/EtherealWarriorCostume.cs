@@ -2,21 +2,15 @@ namespace Server.Items
 {
     public class EtherealWarriorCostume : BaseCostume
     {
-        public override string CreatureName { get { return "ethereal warrior"; } }
+        public override string CreatureName => "ethereal warrior";
 
         [Constructable]
         public EtherealWarriorCostume() : base()
         {
-            this.CostumeBody = 123;
+            CostumeBody = 123;
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1114243;
-            }
-        }// ethereal warrior costume
+        public override int LabelNumber => 1114243;// ethereal warrior costume
 
         public EtherealWarriorCostume(Serial serial) : base(serial)
         {
@@ -26,7 +20,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0);
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)

@@ -47,7 +47,7 @@ namespace Server.Items
             m_WebVictims.Remove(m);
         }
 
-        public override bool BlocksFit { get { return true; } }
+        public override bool BlocksFit => true;
 
         public override void OnDelete()
         {
@@ -57,9 +57,9 @@ namespace Server.Items
                 m_Timer = null;
             }
 
-            var list = new List<Mobile>(m_WebVictims);
+            List<Mobile> list = new List<Mobile>(m_WebVictims);
 
-            foreach (var m in list)
+            foreach (Mobile m in list)
             {
                 RemoveEffects(m);
             }
@@ -73,7 +73,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

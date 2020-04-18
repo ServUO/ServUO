@@ -10,7 +10,7 @@ namespace Server.Engines.Shadowguard
     {
         public const int LiquorCount = 10;
 
-        public override Type AddonType { get { return typeof(BarAddon); } }
+        public override Type AddonType => typeof(BarAddon);
 
         public List<Mobile> Pirates { get; set; }
         public int Wave { get; set; }
@@ -117,7 +117,7 @@ namespace Server.Engines.Shadowguard
                 }
                 else if (Wave == 4)
                 {
-                    var pirate = new ShantyThePirate();
+                    ShantyThePirate pirate = new ShantyThePirate();
                     Point3D p = SpawnPoints[Utility.Random(SpawnPoints.Length)];
                     ConvertOffset(ref p);
                     pirate.MoveToWorld(p, Map.TerMur);
@@ -134,7 +134,7 @@ namespace Server.Engines.Shadowguard
             {
                 List<ShadowguardBottleOfLiquor> list = new List<ShadowguardBottleOfLiquor>(Bottles.Where(b => b != null && !b.Deleted));
 
-                foreach (var bottle in list)
+                foreach (ShadowguardBottleOfLiquor bottle in list)
                     bottle.Delete();
 
                 ColUtility.Free(list);
@@ -210,7 +210,7 @@ namespace Server.Engines.Shadowguard
         public Item Bones { get; set; }
         public ShadowguardApple Apple { get; set; }
 
-        public override Type AddonType { get { return typeof(OrchardAddon); } }
+        public override Type AddonType => typeof(OrchardAddon);
 
         public OrchardEncounter()
             : base(EncounterType.Orchard)
@@ -294,7 +294,7 @@ namespace Server.Engines.Shadowguard
             {
                 List<BaseCreature> list = new List<BaseCreature>(Spawn.Where(e => e != null && e.Alive));
 
-                foreach (var spawn in list)
+                foreach (BaseCreature spawn in list)
                     spawn.Delete();
 
                 ColUtility.Free(list);
@@ -323,7 +323,7 @@ namespace Server.Engines.Shadowguard
             {
                 List<ShadowguardCypress> list = new List<ShadowguardCypress>(Trees.Where(t => t != null && !t.Deleted));
 
-                foreach (var tree in list)
+                foreach (ShadowguardCypress tree in list)
                     tree.Delete();
 
                 ColUtility.Free(list);
@@ -344,7 +344,7 @@ namespace Server.Engines.Shadowguard
             if (Trees == null)
                 return;
 
-            foreach (var tree in Trees.Where(t => t != null && !t.Deleted))
+            foreach (ShadowguardCypress tree in Trees.Where(t => t != null && !t.Deleted))
             {
                 if (tree.Foilage != null)
                 {
@@ -358,7 +358,7 @@ namespace Server.Engines.Shadowguard
             if (Trees == null)
                 return;
 
-            foreach (var tree in Trees.Where(t => t != null && !t.Deleted))
+            foreach (ShadowguardCypress tree in Trees.Where(t => t != null && !t.Deleted))
             {
                 if (tree.Foilage != null)
                 {
@@ -420,7 +420,7 @@ namespace Server.Engines.Shadowguard
         public List<Item> Items { get; set; }
         public List<BaseCreature> Spawn { get; set; }
 
-        public override Type AddonType { get { return typeof(ArmoryAddon); } }
+        public override Type AddonType => typeof(ArmoryAddon);
 
         public ArmoryEncounter()
             : base(EncounterType.Armory)
@@ -445,7 +445,7 @@ namespace Server.Engines.Shadowguard
             {
                 ConvertOffset(ref p);
 
-                var armor = new CursedSuitOfArmor(this);
+                CursedSuitOfArmor armor = new CursedSuitOfArmor(this);
                 armor.MoveToWorld(p, Map.TerMur);
                 Armor.Add(armor);
 
@@ -600,7 +600,7 @@ namespace Server.Engines.Shadowguard
 
                 if (Map.TerMur.CanSpawnMobile(x, y, z))
                 {
-                    var armor = new EnsorcelledArmor(this);
+                    EnsorcelledArmor armor = new EnsorcelledArmor(this);
                     armor.MoveToWorld(new Point3D(x, y, z), Map.TerMur);
                     Spawn.Add(armor);
                     break;
@@ -714,7 +714,7 @@ namespace Server.Engines.Shadowguard
 
         public DateTime _NextSpawn;
 
-        public override Type AddonType { get { return typeof(ShadowguardFountainAddon); } }
+        public override Type AddonType => typeof(ShadowguardFountainAddon);
 
         public FountainEncounter()
             : base(EncounterType.Fountain)
@@ -811,7 +811,7 @@ namespace Server.Engines.Shadowguard
             {
                 List<BaseCreature> list = new List<BaseCreature>(Elementals.Where(t => t != null && !t.Deleted));
 
-                foreach (var elemental in list)
+                foreach (BaseCreature elemental in list)
                     elemental.Delete();
 
                 ColUtility.Free(list);
@@ -827,7 +827,7 @@ namespace Server.Engines.Shadowguard
             {
                 List<Item> list = new List<Item>(ShadowguardCanals.Where(i => i != null && !i.Deleted));
 
-                foreach (var canal in list)
+                foreach (Item canal in list)
                     canal.Delete();
 
                 ColUtility.Free(list);
@@ -922,7 +922,7 @@ namespace Server.Engines.Shadowguard
             private readonly ShadowguardSpigot _Spigot;
             private ShadowguardDrain _Drain;
 
-            public bool Complete { get { return _Spigot != null && _Drain != null; } }
+            public bool Complete => _Spigot != null && _Drain != null;
 
             public FlowChecker(ShadowguardSpigot start, FountainEncounter encounter)
             {
@@ -1208,7 +1208,7 @@ namespace Server.Engines.Shadowguard
         public ShadowguardGreaterDragon Dragon { get; set; }
         public List<Item> Bells { get; set; }
 
-        public override Type AddonType { get { return typeof(BelfryAddon); } }
+        public override Type AddonType => typeof(BelfryAddon);
 
         public BelfryEncounter()
             : base(EncounterType.Belfry)
@@ -1284,7 +1284,7 @@ namespace Server.Engines.Shadowguard
 
                 if (Map.TerMur.CanSpawnMobile(x, y, z))
                 {
-                    var drake = new VileDrake();
+                    VileDrake drake = new VileDrake();
                     drake.MoveToWorld(new Point3D(x, y, z), Map.TerMur);
 
                     Timer.DelayCall(TimeSpan.FromSeconds(.5), () => drake.Combatant = from);
@@ -1316,7 +1316,7 @@ namespace Server.Engines.Shadowguard
             {
                 List<BaseCreature> list = new List<BaseCreature>(Drakes.Where(d => d != null && !d.Deleted));
 
-                foreach (var drake in list)
+                foreach (BaseCreature drake in list)
                     drake.Delete();
 
                 ColUtility.Free(list);
@@ -1329,7 +1329,7 @@ namespace Server.Engines.Shadowguard
             {
                 List<Item> list = new List<Item>(Bells.Where(b => b != null && !b.Deleted));
 
-                foreach (var bell in list)
+                foreach (Item bell in list)
                     bell.Delete();
 
                 ColUtility.Free(list);
@@ -1405,10 +1405,10 @@ namespace Server.Engines.Shadowguard
 
         private readonly Type[] _Bosses = new Type[] { typeof(Anon), typeof(Virtuebane), typeof(Ozymandias), typeof(Juonar) };
 
-        public override TimeSpan EncounterDuration { get { return TimeSpan.MaxValue; } }
-        public override TimeSpan ResetDuration { get { return TimeSpan.FromMinutes(5); } }
+        public override TimeSpan EncounterDuration => TimeSpan.MaxValue;
+        public override TimeSpan ResetDuration => TimeSpan.FromMinutes(5);
 
-        public override Type AddonType { get { return null; } }
+        public override Type AddonType => null;
 
         public override void Setup()
         {
@@ -1455,7 +1455,7 @@ namespace Server.Engines.Shadowguard
         {
             base.CompleteEncounter();
 
-            foreach (var pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+            foreach (PlayerMobile pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
             {
                 Controller.CompleteRoof(pm);
             }
@@ -1486,7 +1486,7 @@ namespace Server.Engines.Shadowguard
             if (m == null)
                 return;
 
-            foreach (var pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+            foreach (PlayerMobile pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
             {
                 pm.AddRewardTitle(1156318); // Destroyer of the Time Rift
             }

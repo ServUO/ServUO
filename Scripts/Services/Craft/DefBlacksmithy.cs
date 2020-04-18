@@ -63,18 +63,15 @@ namespace Server.Engines.Craft
 
     public class DefBlacksmithy : CraftSystem
     {
-        public override SkillName MainSkill { get { return SkillName.Blacksmith; } }
+        public override SkillName MainSkill => SkillName.Blacksmith;
 
-        public override int GumpTitleNumber
-        {
-            get { return 1044002; } // <CENTER>BLACKSMITHY MENU</CENTER>
-        }
+        public override int GumpTitleNumber => 1044002;
 
         private static CraftSystem m_CraftSystem;
 
-        public static CraftSystem CraftSystem { get { return m_CraftSystem ?? (m_CraftSystem = new DefBlacksmithy()); } }
+        public static CraftSystem CraftSystem => m_CraftSystem ?? (m_CraftSystem = new DefBlacksmithy());
 
-        public override CraftECA ECA { get { return CraftECA.ChanceMinusSixtyToFourtyFive; } }
+        public override CraftECA ECA => CraftECA.ChanceMinusSixtyToFourtyFive;
 
         public override double GetChanceAtMin(CraftItem item)
         {
@@ -149,7 +146,7 @@ namespace Server.Engines.Craft
             {
                 for (int y = -range; (!anvil || !forge) && y <= range; ++y)
                 {
-                    var tiles = map.Tiles.GetStaticTiles(from.X + x, from.Y + y, true);
+                    StaticTile[] tiles = map.Tiles.GetStaticTiles(from.X + x, from.Y + y, true);
 
                     for (int i = 0; (!anvil || !forge) && i < tiles.Length; ++i)
                     {

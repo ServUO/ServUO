@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class EtherealSand : Item, ICommodity
     {
-        public override int LabelNumber { get { return 1125984; } } // ethereal sand
-        public override double DefaultWeight { get { return 0.1; } }
+        public override int LabelNumber => 1125984;  // ethereal sand
+        public override double DefaultWeight => 0.1;
 
         [Constructable]
         public EtherealSand(int amountFrom, int amountTo)
@@ -30,13 +30,13 @@ namespace Server.Items
         {
         }
 
-        TextDefinition ICommodity.Description { get { return LabelNumber; } }
-        bool ICommodity.IsDeedable { get { return true; } }
+        TextDefinition ICommodity.Description => LabelNumber;
+        bool ICommodity.IsDeedable => true;
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

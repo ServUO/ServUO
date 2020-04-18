@@ -28,7 +28,7 @@ namespace Server.Engines.Help
 
                     writer.Write(ResponseEntry.Entries.Count);
 
-                    foreach (var entry in ResponseEntry.Entries)
+                    foreach (ResponseEntry entry in ResponseEntry.Entries)
                         entry.Serialize(writer);
 
                     writer.Write(PageQueue.List.Count);
@@ -53,15 +53,15 @@ namespace Server.Engines.Help
                 _FilePath,
                 reader =>
                 {
-                    var version = reader.ReadInt();
+                    int version = reader.ReadInt();
 
                     switch (version)
                     {
                         case 1:
                             {
-                                var c = reader.ReadInt();
+                                int c = reader.ReadInt();
 
-                                for (var i = 0; i < c; ++i)
+                                for (int i = 0; i < c; ++i)
                                 {
                                     new ResponseEntry(reader);
                                 }
@@ -69,13 +69,13 @@ namespace Server.Engines.Help
                             goto case 0;
                         case 0:
                             {
-                                var count = reader.ReadInt();
+                                int count = reader.ReadInt();
 
-                                for (var i = 0; i < count; ++i)
+                                for (int i = 0; i < count; ++i)
                                 {
-                                    var sender = reader.ReadMobile();
-                                    var message = reader.ReadString();
-                                    var type = (PageType)reader.ReadInt();
+                                    Mobile sender = reader.ReadMobile();
+                                    string message = reader.ReadString();
+                                    PageType type = (PageType)reader.ReadInt();
                                     PageEntry pe = new PageEntry(sender, message, type)
                                     {
                                         Handler = reader.ReadMobile(),

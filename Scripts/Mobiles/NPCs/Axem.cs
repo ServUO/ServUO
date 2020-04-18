@@ -16,30 +16,15 @@ namespace Server.Engines.Quests
 
         /*A Broken Vase */
 
-        public override object Title
-        {
-            get { return 1112795; }
-        }
+        public override object Title => 1112795;
 
-        public override object Description
-        {
-            get { return 1112917; }
-        }
+        public override object Description => 1112917;
 
-        public override object Refuse
-        {
-            get { return 1112918; }
-        }
+        public override object Refuse => 1112918;
 
-        public override object Uncomplete
-        {
-            get { return 1112919; }
-        }
+        public override object Uncomplete => 1112919;
 
-        public override object Complete
-        {
-            get { return 1112920; }
-        }
+        public override object Complete => 1112920;
 
         public override void Serialize(GenericWriter writer)
         {
@@ -52,7 +37,7 @@ namespace Server.Engines.Quests
         {
             base.Deserialize(reader);
 
-            var version = reader.ReadInt();
+            int version = reader.ReadInt();
         }
     }
 
@@ -68,30 +53,15 @@ namespace Server.Engines.Quests
 
         /* Putting The Pieces Together */
 
-        public override object Title
-        {
-            get { return 1112796; }
-        }
+        public override object Title => 1112796;
 
-        public override object Description
-        {
-            get { return 1112921; }
-        }
+        public override object Description => 1112921;
 
-        public override object Refuse
-        {
-            get { return 1112922; }
-        }
+        public override object Refuse => 1112922;
 
-        public override object Uncomplete
-        {
-            get { return 1112923; }
-        }
+        public override object Uncomplete => 1112923;
 
-        public override object Complete
-        {
-            get { return 1112924; }
-        }
+        public override object Complete => 1112924;
 
         public override void Serialize(GenericWriter writer)
         {
@@ -104,7 +74,7 @@ namespace Server.Engines.Quests
         {
             base.Deserialize(reader);
 
-            var version = reader.ReadInt();
+            int version = reader.ReadInt();
         }
     }
 
@@ -120,30 +90,15 @@ namespace Server.Engines.Quests
 
         /* Ye Olde Gargish */
 
-        public override object Title
-        {
-            get { return 1112797; }
-        }
+        public override object Title => 1112797;
 
-        public override object Description
-        {
-            get { return 1112925; }
-        }
+        public override object Description => 1112925;
 
-        public override object Refuse
-        {
-            get { return 1112926; }
-        }
+        public override object Refuse => 1112926;
 
-        public override object Uncomplete
-        {
-            get { return 1112927; }
-        }
+        public override object Uncomplete => 1112927;
 
-        public override object Complete
-        {
-            get { return 1112928; }
-        }
+        public override object Complete => 1112928;
 
         public override void Serialize(GenericWriter writer)
         {
@@ -156,7 +111,7 @@ namespace Server.Engines.Quests
         {
             base.Deserialize(reader);
 
-            var version = reader.ReadInt();
+            int version = reader.ReadInt();
         }
     }
 
@@ -175,18 +130,12 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests
-        {
-            get
-            {
-                return new[]
+        public override Type[] Quests => new[]
                 {
                     typeof (ABrokenVaseQuest),
                     typeof (PuttingThePiecesTogetherQuest),
                     typeof (YeOldeGargishQuest)
                 };
-            }
-        }
 
         public override void InitBody()
         {
@@ -219,7 +168,7 @@ namespace Server.Engines.Quests
         {
             base.Deserialize(reader);
 
-            var version = reader.ReadInt();
+            int version = reader.ReadInt();
         }
     }
 }

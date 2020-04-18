@@ -9,7 +9,7 @@ namespace Server.Items
 {
     public class SpikedEggNog : Item, ISecurable
     {
-        public override int LabelNumber { get { return 1157647; } } // Spiked Egg Nog
+        public override int LabelNumber => 1157647;  // Spiked Egg Nog
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime NextUseTime { get; set; }
@@ -160,7 +160,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0);
+            writer.Write(0);
 
             writer.Write(NextUseTime);
             writer.Write((int)Level);

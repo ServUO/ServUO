@@ -2,12 +2,12 @@ namespace Server.Items
 {
     public class PropheticManuscript : BaseJournal
     {
-        public override int LabelNumber { get { return 1155631; } } // Prophetic Manuscript
+        public override int LabelNumber => 1155631;  // Prophetic Manuscript
 
         public int Index { get; set; }
 
-        public override TextDefinition Title { get { return 1155638 + Index; } }
-        public override TextDefinition Body { get { return 1155632 + Index; } }
+        public override TextDefinition Title => 1155638 + Index;
+        public override TextDefinition Body => 1155632 + Index;
 
         [Constructable]
         public PropheticManuscript()

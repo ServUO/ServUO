@@ -12,7 +12,7 @@ namespace Server.Items
 
     public class KoiPondAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new KoiPondDeed(); } }
+        public override BaseAddonDeed Deed => new KoiPondDeed();
 
         [Constructable]
         public KoiPondAddon(KoiPondSize size)
@@ -93,7 +93,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -105,8 +105,8 @@ namespace Server.Items
 
     public class KoiPondDeed : BaseAddonDeed
     {
-        public override int LabelNumber { get { return 1157996; } } // Koi Pond
-        public override BaseAddon Addon { get { return new KoiPondAddon(m_Size); } }
+        public override int LabelNumber => 1157996;  // Koi Pond
+        public override BaseAddon Addon => new KoiPondAddon(m_Size);
         public KoiPondSize m_Size;
 
         [Constructable]

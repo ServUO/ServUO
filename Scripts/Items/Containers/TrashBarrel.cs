@@ -24,32 +24,14 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1041064;
-            }
-        }// a trash barrel
-        public override int DefaultMaxWeight
-        {
-            get
-            {
-                return 0;
-            }
-        }// A value of 0 signals unlimited weight
-        public override bool IsDecoContainer
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override int LabelNumber => 1041064;// a trash barrel
+        public override int DefaultMaxWeight => 0;// A value of 0 signals unlimited weight
+        public override bool IsDecoContainer => false;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -156,7 +138,7 @@ namespace Server.Items
 
                 if (m_Cleanup.Any(x => x.mobiles != null))
                 {
-                    foreach (var m in m_Cleanup.Select(x => x.mobiles).Distinct())
+                    foreach (Mobile m in m_Cleanup.Select(x => x.mobiles).Distinct())
                     {
                         if (m_Cleanup.Find(x => x.mobiles == m && x.confirm) != null)
                         {

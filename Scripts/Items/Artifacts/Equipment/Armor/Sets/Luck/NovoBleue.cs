@@ -2,26 +2,26 @@ namespace Server.Items
 {
     public class NovoBleue : GoldBracelet
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1080239; } } // Novo Bleue
-        public override SetItem SetID { get { return SetItem.Luck; } }
-        public override int Pieces { get { return 2; } }
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1080239;  // Novo Bleue
+        public override SetItem SetID => SetItem.Luck;
+        public override int Pieces => 2;
         [Constructable]
         public NovoBleue() : base()
         {
-            this.Weight = 1.0;
-            this.Hue = 1165;
+            Weight = 1.0;
+            Hue = 1165;
 
-            this.Attributes.Luck = 150;
-            this.Attributes.CastSpeed = 1;
-            this.Attributes.CastRecovery = 1;
+            Attributes.Luck = 150;
+            Attributes.CastSpeed = 1;
+            Attributes.CastRecovery = 1;
 
-            this.SetHue = 1165;
-            this.SetAttributes.Luck = 100;
-            this.SetAttributes.RegenHits = 2;
-            this.SetAttributes.RegenMana = 2;
-            this.SetAttributes.CastSpeed = 1;
-            this.SetAttributes.CastRecovery = 4;
+            SetHue = 1165;
+            SetAttributes.Luck = 100;
+            SetAttributes.RegenHits = 2;
+            SetAttributes.RegenMana = 2;
+            SetAttributes.CastSpeed = 1;
+            SetAttributes.CastRecovery = 4;
         }
 
         public NovoBleue(Serial serial) : base(serial)
@@ -32,7 +32,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write((int)0); // version
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)

@@ -2,8 +2,8 @@ namespace Server.Items
 {
     public class Slither : BaseTalisman
     {
-        public override bool IsArtifact { get { return true; } }
-        public override int LabelNumber { get { return 1114782; } }// Slither
+        public override bool IsArtifact => true;
+        public override int LabelNumber => 1114782; // Slither
 
         [Constructable]
         public Slither()
@@ -30,7 +30,7 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write((int)0); //version
+            writer.Write(0); //version
         }
     }
 }

@@ -112,53 +112,47 @@ namespace Server.Accounting
         private int m_Counts;
         public InvalidAccountAccessLog(IPAddress address)
         {
-            this.m_Address = address;
-            this.RefreshAccessTime();
+            m_Address = address;
+            RefreshAccessTime();
         }
 
         public IPAddress Address
         {
             get
             {
-                return this.m_Address;
+                return m_Address;
             }
             set
             {
-                this.m_Address = value;
+                m_Address = value;
             }
         }
         public DateTime LastAccessTime
         {
             get
             {
-                return this.m_LastAccessTime;
+                return m_LastAccessTime;
             }
             set
             {
-                this.m_LastAccessTime = value;
+                m_LastAccessTime = value;
             }
         }
-        public bool HasExpired
-        {
-            get
-            {
-                return (DateTime.UtcNow >= (this.m_LastAccessTime + TimeSpan.FromHours(1.0)));
-            }
-        }
+        public bool HasExpired => (DateTime.UtcNow >= (m_LastAccessTime + TimeSpan.FromHours(1.0)));
         public int Counts
         {
             get
             {
-                return this.m_Counts;
+                return m_Counts;
             }
             set
             {
-                this.m_Counts = value;
+                m_Counts = value;
             }
         }
         public void RefreshAccessTime()
         {
-            this.m_LastAccessTime = DateTime.UtcNow;
+            m_LastAccessTime = DateTime.UtcNow;
         }
     }
 }

@@ -5,7 +5,7 @@ namespace Server.Items
         [Constructable]
         public ArcanistStatueEastAddon()
         {
-            this.AddComponent(new AddonComponent(0x2D0E), 0, 0, 0);
+            AddComponent(new AddonComponent(0x2D0E), 0, 0, 0);
         }
 
         public ArcanistStatueEastAddon(Serial serial)
@@ -13,13 +13,7 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddonDeed Deed
-        {
-            get
-            {
-                return new ArcanistStatueEastDeed();
-            }
-        }
+        public override BaseAddonDeed Deed => new ArcanistStatueEastDeed();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -47,20 +41,8 @@ namespace Server.Items
         {
         }
 
-        public override BaseAddon Addon
-        {
-            get
-            {
-                return new ArcanistStatueEastAddon();
-            }
-        }
-        public override int LabelNumber
-        {
-            get
-            {
-                return 1072886;
-            }
-        }// arcanist statue (east)
+        public override BaseAddon Addon => new ArcanistStatueEastAddon();
+        public override int LabelNumber => 1072886;// arcanist statue (east)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
