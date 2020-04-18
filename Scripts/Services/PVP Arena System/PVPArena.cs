@@ -351,7 +351,7 @@ namespace Server.Engines.ArenaSystem
 
         public void Serialize(GenericWriter writer)
         {
-            writer.Write(1);
+            writer.Write(0);
 
             writer.Write(SurvivalRankings.Count);
             foreach (ArenaStats ranking in SurvivalRankings)
@@ -467,19 +467,6 @@ namespace Server.Engines.ArenaSystem
 
             if (Banner2 != null)
                 Banner2.Arena = this;
-
-            if (version == 0)
-            {
-                foreach (var blocker in Blockers)
-                {
-                    if (blocker != null)
-                    {
-                        blocker.Delete();
-                    }
-                }
-
-                ColUtility.Free(Blockers);
-            }
         }
     }
 
