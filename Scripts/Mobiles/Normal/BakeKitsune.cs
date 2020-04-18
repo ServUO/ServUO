@@ -111,20 +111,20 @@ namespace Server.Mobiles
             switch (Utility.Random(4))
             {
                 case 0:
-                    AddItem(new Shoes(Utility.RandomNeutralHue()));
+                    SetWearable(new Shoes(Utility.RandomNeutralHue()));
                     break;
                 case 1:
-                    AddItem(new Boots(Utility.RandomNeutralHue()));
+                    SetWearable(new Boots(Utility.RandomNeutralHue()));
                     break;
                 case 2:
-                    AddItem(new Sandals(Utility.RandomNeutralHue()));
+                    SetWearable(new Sandals(Utility.RandomNeutralHue()));
                     break;
                 case 3:
-                    AddItem(new ThighBoots(Utility.RandomNeutralHue()));
+                    SetWearable(new ThighBoots(Utility.RandomNeutralHue()));
                     break;
             }
 
-            AddItem(new Robe(Utility.RandomNondyedHue()));
+            SetWearable(new Robe(Utility.RandomNondyedHue()));
 
             m_DisguiseTimer = null;
             m_DisguiseTimer = Timer.DelayCall(TimeSpan.FromSeconds(75), new TimerCallback(RemoveDisguise));
@@ -132,17 +132,18 @@ namespace Server.Mobiles
 
         public void RemoveDisguise()
         {
-            if (!IsBodyMod)
-                return;
-
             Name = "a bake kitsune";
             Title = null;
-            BodyMod = 0;
-            Hue = 0;
-            HairItemID = 0;
-            HairHue = 0;
-            FacialHairItemID = 0;
-            FacialHairHue = 0;
+
+            if (IsBodyMod)
+            {
+                BodyMod = 0;
+                Hue = 0;
+                HairItemID = 0;
+                HairHue = 0;
+                FacialHairItemID = 0;
+                FacialHairHue = 0;
+            }
 
             DeleteItemOnLayer(Layer.OuterTorso);
             DeleteItemOnLayer(Layer.Shoes);
