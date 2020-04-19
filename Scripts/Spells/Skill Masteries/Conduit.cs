@@ -42,7 +42,7 @@ namespace Server.Spells.SkillMasteries
 
         public override void OnCast()
         {
-            Caster.Target = new MasteryTarget(this, 10, true, Server.Targeting.TargetFlags.None);
+            Caster.Target = new MasteryTarget(this, 10, true, Targeting.TargetFlags.None);
         }
 
         protected override void OnTarget(object o)

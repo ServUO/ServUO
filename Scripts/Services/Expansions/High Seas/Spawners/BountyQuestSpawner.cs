@@ -99,7 +99,7 @@ namespace Server.Engines.Quests
                 if (m_Timer != null)
                     m_Timer.Stop();
 
-                m_Timer = Timer.DelayCall(m_SpawnTime, m_SpawnTime, new TimerCallback(OnTick));
+                m_Timer = Timer.DelayCall(m_SpawnTime, m_SpawnTime, OnTick);
 
             }
         }
@@ -143,7 +143,7 @@ namespace Server.Engines.Quests
                             m_Timer = null;
                         }
 
-                        m_Timer = Timer.DelayCall(m_SpawnTime, m_SpawnTime, new TimerCallback(OnTick));
+                        m_Timer = Timer.DelayCall(m_SpawnTime, m_SpawnTime, OnTick);
                     }
                     else
                     {
@@ -764,7 +764,7 @@ namespace Server.Engines.Quests
             m_Instance = this;
 
             if (m_Active)
-                m_Timer = Timer.DelayCall(m_SpawnTime, m_SpawnTime, new TimerCallback(OnTick));
+                m_Timer = Timer.DelayCall(m_SpawnTime, m_SpawnTime, OnTick);
         }
 
         public override void OnDoubleClick(Mobile from)

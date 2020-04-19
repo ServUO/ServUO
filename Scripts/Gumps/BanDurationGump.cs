@@ -71,7 +71,7 @@ namespace Server.Gumps
             AddTextField(x + 35, y + 20, 100, 20, idx);
         }
 
-        public override void OnResponse(Server.Network.NetState sender, RelayInfo info)
+        public override void OnResponse(Network.NetState sender, RelayInfo info)
         {
             Mobile from = sender.Mobile;
 

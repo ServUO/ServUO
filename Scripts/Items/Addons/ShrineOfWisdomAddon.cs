@@ -32,7 +32,7 @@ namespace Server.Items
         }
     }
 
-    [Server.Engines.Craft.Forge]
+    [Engines.Craft.Forge]
     public class ShrineOfWisdomComponent : AddonComponent
     {
         [Constructable]

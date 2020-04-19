@@ -268,7 +268,7 @@ namespace Server.Engines.Despise
 
         private void KickPet(Mobile m)
         {
-            Timer.DelayCall<BaseCreature>(TimeSpan.FromSeconds(0.5), bc =>
+            Timer.DelayCall(TimeSpan.FromSeconds(0.5), bc =>
             {
                 if (bc.Summoned)
                     bc.Delete();

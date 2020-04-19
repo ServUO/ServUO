@@ -113,7 +113,7 @@ namespace Server.Items
         public static void IncreaseStage_OnCommand(CommandEventArgs e)
         {
             e.Mobile.SendMessage("Target the egg.");
-            e.Mobile.BeginTarget(12, false, Server.Targeting.TargetFlags.None, new TargetCallback(IncreaseStage_OnTarget));
+            e.Mobile.BeginTarget(12, false, Targeting.TargetFlags.None, new TargetCallback(IncreaseStage_OnTarget));
         }
 
         public static void IncreaseStage_OnTarget(Mobile from, object targeted)

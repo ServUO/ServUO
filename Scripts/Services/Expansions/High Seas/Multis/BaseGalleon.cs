@@ -100,7 +100,7 @@ namespace Server.Multis
             AddFixtures(true);
 
             AddGalleonPilot(direction);
-            Timer.DelayCall(TimeSpan.FromSeconds(2), new TimerCallback(MarkRunes));
+            Timer.DelayCall(TimeSpan.FromSeconds(2), MarkRunes);
         }
 
         private void AddFixtures(bool fromConstruct)
@@ -1401,11 +1401,11 @@ namespace Server.Multis
                 foreach (KeyValuePair<Item, DeckItem> kvp in Addons)
                 {
                     writer.Write(kvp.Key);
-                    writer.WriteItem<DeckItem>(kvp.Value);
+                    writer.WriteItem(kvp.Value);
                 }
             }
 
-            Timer.DelayCall(TimeSpan.FromSeconds(25), new TimerCallback(CheckPaintDecay));
+            Timer.DelayCall(TimeSpan.FromSeconds(25), CheckPaintDecay);
         }
 
         public override void Deserialize(GenericReader reader)

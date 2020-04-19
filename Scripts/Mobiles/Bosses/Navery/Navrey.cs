@@ -13,7 +13,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public bool UsedPillars { get; set; }
 
-        private static readonly Type[] m_Artifact = new Type[]
+        private static readonly Type[] m_Artifact = new[]
         {
             typeof(NightEyes),
             typeof(Tangle1)

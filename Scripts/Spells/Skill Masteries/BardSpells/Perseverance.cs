@@ -29,7 +29,7 @@ namespace Server.Spells.SkillMasteries
 
         public override void OnCast()
         {
-            BardSpell spell = SkillMasterySpell.GetSpell(Caster, GetType()) as BardSpell;
+            BardSpell spell = GetSpell(Caster, GetType()) as BardSpell;
 
             if (spell != null)
             {

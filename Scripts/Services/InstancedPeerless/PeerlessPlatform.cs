@@ -1,4 +1,4 @@
-﻿using Server.Engines.PartySystem;
+using Server.Engines.PartySystem;
 using Server.Gumps;
 using Server.Items;
 using System;
@@ -230,7 +230,7 @@ namespace Server.Engines.InstancedPeerless
             writer.Write(m_Braziers.Count);
 
             for (int i = 0; i < m_Braziers.Count; i++)
-                writer.WriteItem<PeerlessKeyBrazier>(m_Braziers[i]);
+                writer.WriteItem(m_Braziers[i]);
 
             writer.Write(m_Instances.Count);
 

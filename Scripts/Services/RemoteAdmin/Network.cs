@@ -18,10 +18,10 @@ namespace Server.RemoteAdmin
 
         public static void Configure()
         {
-            PacketHandlers.Register(0xF1, 0, false, new OnPacketReceive(OnReceive));
+            PacketHandlers.Register(0xF1, 0, false, OnReceive);
 
-            Core.MultiConsoleOut.Add(new EventTextWriter(new EventTextWriter.OnConsoleChar(OnConsoleChar), new EventTextWriter.OnConsoleLine(OnConsoleLine), new EventTextWriter.OnConsoleStr(OnConsoleString)));
-            Timer.DelayCall(TimeSpan.FromMinutes(2.5), TimeSpan.FromMinutes(2.5), new TimerCallback(CleanUp));
+            Core.MultiConsoleOut.Add(new EventTextWriter(OnConsoleChar, OnConsoleLine, OnConsoleString));
+            Timer.DelayCall(TimeSpan.FromMinutes(2.5), TimeSpan.FromMinutes(2.5), CleanUp);
         }
 
         public static void OnConsoleString(string str)

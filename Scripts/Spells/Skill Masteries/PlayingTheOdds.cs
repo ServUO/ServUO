@@ -46,7 +46,7 @@ namespace Server.Spells.SkillMasteries
                 return false;
             }
 
-            if (SkillMasterySpell.UnderPartyEffects(Caster, typeof(PlayingTheOddsSpell)))
+            if (UnderPartyEffects(Caster, typeof(PlayingTheOddsSpell)))
             {
                 Caster.SendLocalizedMessage(1062945); // That ability is already in effect.
                 return false;

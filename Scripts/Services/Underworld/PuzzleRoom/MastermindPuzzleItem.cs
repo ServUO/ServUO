@@ -21,7 +21,7 @@ namespace Server.Items
             m_Lifespan = 600;
             Movable = true;
 
-            m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), new TimerCallback(Slice));
+            m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), Slice);
             m_Timer.Start();
 
             LootType = LootType.Blessed;
@@ -96,7 +96,7 @@ namespace Server.Items
         {
             base.LockPick(from);
 
-            Timer.DelayCall(TimeSpan.FromSeconds(3), new TimerCallback(Delete));
+            Timer.DelayCall(TimeSpan.FromSeconds(3), Delete);
 
             if (m_Key != null)
                 m_Key.Decay();
@@ -131,7 +131,7 @@ namespace Server.Items
             int version = reader.ReadInt();
             m_Key = reader.ReadItem() as MagicKey;
 
-            m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), new TimerCallback(Slice));
+            m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), Slice);
             m_Timer.Start();
         }
     }

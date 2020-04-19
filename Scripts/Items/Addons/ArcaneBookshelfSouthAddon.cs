@@ -102,7 +102,7 @@ namespace Server.Items
 
         private void Replace()
         {
-            Server.Multis.BaseHouse house = Server.Multis.BaseHouse.FindHouseAt(this);
+            Multis.BaseHouse house = Multis.BaseHouse.FindHouseAt(this);
 
             if (house != null)
             {
@@ -160,7 +160,7 @@ namespace Server.Items
             }
             else if (Parent == null)
             {
-                Server.Multis.BaseHouse house = Server.Multis.BaseHouse.FindHouseAt(this);
+                Multis.BaseHouse house = Multis.BaseHouse.FindHouseAt(this);
 
                 ArcaneBookShelfDeedSouth deed = new ArcaneBookShelfDeedSouth();
                 deed.MoveToWorld(Location, Map);

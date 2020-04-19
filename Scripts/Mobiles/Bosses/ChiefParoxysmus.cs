@@ -38,7 +38,7 @@ namespace Server.Mobiles
 
             PackResources(8);
             PackTalismans(5);
-            Timer.DelayCall(TimeSpan.FromSeconds(1), new TimerCallback(SpawnBulbous));  //BulbousPutrification
+            Timer.DelayCall(TimeSpan.FromSeconds(1), SpawnBulbous);  //BulbousPutrification
 
             Fame = 25000;
             Karma = -25000;

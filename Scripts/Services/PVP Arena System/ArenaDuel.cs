@@ -587,7 +587,7 @@ namespace Server.Engines.ArenaSystem
             {
                 for (int i = 0; i < 5; i++)
                 {
-                    Timer.DelayCall<int>(TimeSpan.FromMilliseconds(i * 100), index =>
+                    Timer.DelayCall(TimeSpan.FromMilliseconds(i * 100), index =>
                         {
                             Server.Misc.Geometry.Circle2D(loc, pmmap, index, (pnt, map) =>
                             {
@@ -637,7 +637,7 @@ namespace Server.Engines.ArenaSystem
 
         public void EndDuel(ArenaTeam winner)
         {
-            Timer.DelayCall<ArenaTeam>(KickTime, RemovePlayers, winner);
+            Timer.DelayCall(KickTime, RemovePlayers, winner);
             Complete = true;
 
             SendResults(winner);
@@ -653,7 +653,7 @@ namespace Server.Engines.ArenaSystem
 
                     PVPArenaSystem.SendMessage(pm, 1115975); // Congratulations! You have won the duel!
 
-                    Timer.DelayCall<PlayerMobile>(TimeSpan.FromSeconds(1), player =>
+                    Timer.DelayCall(TimeSpan.FromSeconds(1), player =>
                         {
                             DoWinEffects(player);
                         }, pm);
@@ -768,7 +768,7 @@ namespace Server.Engines.ArenaSystem
 
                 if (stillAlive.Count == 1)
                 {
-                    Timer.DelayCall<ArenaTeam>(TimeSpan.FromSeconds(5), EndDuel, stillAlive[0]);
+                    Timer.DelayCall(TimeSpan.FromSeconds(5), EndDuel, stillAlive[0]);
                 }
 
                 ColUtility.Free(stillAlive);

@@ -23,13 +23,13 @@ namespace Server.Engines.Quests
     {
         public static void Initialize()
         {
-            Timer.DelayCall(TimeSpan.Zero, new TimerCallback(Override));
+            Timer.DelayCall(TimeSpan.Zero, Override);
         }
 
         public static void Override()
         {
-            PacketHandlers.RegisterEncoded(0x32, true, new OnEncodedPacketReceive(QuestButton));
-            PacketHandlers.RegisterExtended(0x2A, true, new OnPacketReceive(HeritageTransform));
+            PacketHandlers.RegisterEncoded(0x32, true, QuestButton);
+            PacketHandlers.RegisterExtended(0x2A, true, HeritageTransform);
         }
 
         public static void QuestButton(NetState state, IEntity e, EncodedReader reader)

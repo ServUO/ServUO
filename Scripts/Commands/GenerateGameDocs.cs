@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -89,7 +89,7 @@ namespace Server.Commands
             if (creature == null)
                 return;
 
-            Server.Items.BambooFlute flute = new Items.BambooFlute();
+            Items.BambooFlute flute = new Items.BambooFlute();
 
             csv.AddRow();
             csv.AddValue("Type", creature.GetType().Name);

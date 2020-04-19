@@ -1,4 +1,4 @@
-﻿namespace Server.Items
+namespace Server.Items
 {
     class Bucket : BaseWaterContainer
     {
@@ -12,7 +12,7 @@
 
         [Constructable]
         public Bucket(bool filled)
-            : base((filled) ? Bucket.fItemID : Bucket.vItemID, filled)
+            : base((filled) ? fItemID : vItemID, filled)
         {
         }
 

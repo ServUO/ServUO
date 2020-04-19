@@ -16,7 +16,7 @@ namespace Server
         {
             WeakEntityCollection.Delete("sa");
 
-            Server.Engines.ExploringTheDeep.GenerateExploringTheDeep.Delete(e);
+            Engines.ExploringTheDeep.GenerateExploringTheDeep.Delete(e);
 
             SpawnerPersistence.RemoveSpawnsFromXmlFile("Spawns", "GravewaterLake");
         }
@@ -32,13 +32,13 @@ namespace Server
             Decorate.Generate("sa", "Data/Decoration/Stygian Abyss/Felucca", Map.Felucca);
 
             NavreysController.GenNavery(e.Mobile);
-            CommandSystem.Handle(e.Mobile, Server.Commands.CommandSystem.Prefix + "GenToK");
-            CommandSystem.Handle(e.Mobile, Server.Commands.CommandSystem.Prefix + "GenSutek");
+            CommandSystem.Handle(e.Mobile, CommandSystem.Prefix + "GenToK");
+            CommandSystem.Handle(e.Mobile, CommandSystem.Prefix + "GenSutek");
 
             GenerateUnderworldRooms.Generate();
 
-            Server.Engines.ResortAndCasino.FireCasinoGenerator.Generate(e);
-            Server.Engines.ExploringTheDeep.GenerateExploringTheDeep.Generate(e);
+            Engines.ResortAndCasino.FireCasinoGenerator.Generate(e);
+            Engines.ExploringTheDeep.GenerateExploringTheDeep.Generate(e);
 
             e.Mobile.SendMessage("Stygian Abyss world generation complete.");
         }

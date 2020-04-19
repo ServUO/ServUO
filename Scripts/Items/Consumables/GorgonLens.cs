@@ -123,11 +123,11 @@ namespace Server.Items
                 from.SendLocalizedMessage(1112594); //You cannot place gorgon lenses on this.
         }
 
-        private class InternalTarget : Server.Targeting.Target
+        private class InternalTarget : Targeting.Target
         {
             private readonly GorgonLense m_Lense;
 
-            public InternalTarget(GorgonLense lense) : base(-1, false, Server.Targeting.TargetFlags.None)
+            public InternalTarget(GorgonLense lense) : base(-1, false, Targeting.TargetFlags.None)
             {
                 m_Lense = lense;
             }

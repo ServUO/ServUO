@@ -4472,7 +4472,7 @@ namespace Server.Mobiles
                     }
                     else if (AllowedStealthSteps-- <= 0)
                     {
-                        Server.SkillHandlers.Stealth.OnUse(this);
+                        Stealth.OnUse(this);
                     }
                 }
                 else
@@ -6801,8 +6801,8 @@ namespace Server.Mobiles
                     Point3D from = toTeleport.Location;
                     toTeleport.MoveToWorld(to, Map);
 
-                    Server.Spells.SpellHelper.Turn(this, toTeleport);
-                    Server.Spells.SpellHelper.Turn(toTeleport, this);
+                    SpellHelper.Turn(this, toTeleport);
+                    SpellHelper.Turn(toTeleport, this);
 
                     toTeleport.ProcessDelta();
 

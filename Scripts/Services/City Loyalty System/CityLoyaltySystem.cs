@@ -654,7 +654,7 @@ namespace Server.Engines.CityLoyalty
             EventSink.Login += OnLogin;
             Timer.DelayCall(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), OnTick);
 
-            CommandSystem.Register("ElectionStartTime", AccessLevel.Administrator, e => Server.Gumps.BaseGump.SendGump(new ElectionStartTimeGump(e.Mobile as PlayerMobile)));
+            CommandSystem.Register("ElectionStartTime", AccessLevel.Administrator, e => Gumps.BaseGump.SendGump(new ElectionStartTimeGump(e.Mobile as PlayerMobile)));
             CommandSystem.Register("RemoveWait", AccessLevel.Administrator, e =>
                 {
                     foreach (CityLoyaltySystem city in Cities)
@@ -668,7 +668,7 @@ namespace Server.Engines.CityLoyalty
                 if (e.Mobile is PlayerMobile)
                 {
                     e.Mobile.CloseGump(typeof(SystemInfoGump));
-                    Server.Gumps.BaseGump.SendGump(new SystemInfoGump((PlayerMobile)e.Mobile));
+                    Gumps.BaseGump.SendGump(new SystemInfoGump((PlayerMobile)e.Mobile));
                 }
             });
         }
@@ -773,7 +773,7 @@ namespace Server.Engines.CityLoyalty
 
             rights.ForEach(store =>
                 {
-                    CityLoyaltySystem city = CityLoyaltySystem.GetCitizenship(store.m_Mobile, false);
+                    CityLoyaltySystem city = GetCitizenship(store.m_Mobile, false);
 
                     if (city != null)
                         city.AwardLove(store.m_Mobile, 1 * (spawnLevel + 1), 0.10 > Utility.RandomDouble());
@@ -1451,7 +1451,7 @@ namespace Server.Engines.CityLoyalty
 
         public SkaraBrae() : base(City.SkaraBrae)
         {
-            CityLoyaltySystem.SkaraBrae = this;
+            SkaraBrae = this;
             Definition = new CityDefinition(
                              City.SkaraBrae,
                              new Point3D(587, 2153, 0),
@@ -1472,7 +1472,7 @@ namespace Server.Engines.CityLoyalty
 
         public NewMagincia() : base(City.NewMagincia)
         {
-            CityLoyaltySystem.NewMagincia = this;
+            NewMagincia = this;
             Definition = new CityDefinition(
                              City.NewMagincia,
                              new Point3D(3795, 2247, 20),
@@ -1493,7 +1493,7 @@ namespace Server.Engines.CityLoyalty
 
         public Vesper() : base(City.Vesper)
         {
-            CityLoyaltySystem.Vesper = this;
+            Vesper = this;
             Definition = new CityDefinition(
                              City.Vesper,
                              new Point3D(2891, 683, 0),

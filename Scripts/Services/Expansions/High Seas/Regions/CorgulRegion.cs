@@ -1,4 +1,4 @@
-﻿using Server.Items;
+using Server.Items;
 using Server.Mobiles;
 using Server.Multis;
 using System;
@@ -11,7 +11,7 @@ namespace Server.Regions
     {
         public static void Initialize()
         {
-            EventSink.Login += new LoginEventHandler(OnLogin);
+            EventSink.Login += OnLogin;
 
             Timer.DelayCall(TimeSpan.FromSeconds(30), () =>
             {

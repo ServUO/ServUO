@@ -12,11 +12,9 @@ namespace Server.Engines.Events
         public static TimeSpan OneSecond = TimeSpan.FromSeconds(1);
         public static void Initialize()
         {
-            DateTime now = DateTime.UtcNow;
-
             if (DateTime.UtcNow >= HolidaySettings.StartHalloween && DateTime.UtcNow <= HolidaySettings.FinishHalloween)
             {
-                EventSink.Speech += new SpeechEventHandler(EventSink_Speech);
+                EventSink.Speech += EventSink_Speech;
             }
         }
 
@@ -50,7 +48,7 @@ namespace Server.Engines.Events
             {
                 target.SolidHueOverride = Utility.RandomMinMax(2501, 2644);
 
-                Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(10), new TimerStateCallback<Mobile>(RemoveHueMod), target);
+                Timer.DelayCall(TimeSpan.FromSeconds(10), RemoveHueMod, target);
             }
         }
 
@@ -62,7 +60,7 @@ namespace Server.Engines.Events
             {
                 Mobile twin = new NaughtyTwin(m_From);
 
-                if (twin != null && !twin.Deleted)
+                if (!twin.Deleted)
                 {
                     foreach (Item item in m_From.Items)
                     {
@@ -109,7 +107,7 @@ namespace Server.Engines.Events
 
                     twin.MoveToWorld(m_From.Map.CanSpawnMobile(point) ? point : m_From.Location, m_From.Map);
 
-                    Timer.DelayCall(TimeSpan.FromSeconds(5), new TimerStateCallback<Mobile>(DeleteTwin), twin);
+                    Timer.DelayCall(TimeSpan.FromSeconds(5), DeleteTwin, twin);
                 }
             }
         }
@@ -222,15 +220,15 @@ namespace Server.Engines.Events
 
                                 if (m_Action == 0)
                                 {
-                                    Timer.DelayCall<Mobile>(OneSecond, OneSecond, 10, new TimerStateCallback<Mobile>(Bleeding), from);
+                                    Timer.DelayCall(OneSecond, OneSecond, 10, Bleeding, from);
                                 }
                                 else if (m_Action == 1)
                                 {
-                                    Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(2), new TimerStateCallback<Mobile>(SolidHueMobile), from);
+                                    Timer.DelayCall(TimeSpan.FromSeconds(2), SolidHueMobile, from);
                                 }
                                 else
                                 {
-                                    Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(2), new TimerStateCallback<Mobile>(MakeTwin), from);
+                                    Timer.DelayCall(TimeSpan.FromSeconds(2), MakeTwin, from);
                                 }
                             }
                         }
@@ -291,7 +289,7 @@ namespace Server.Engines.Events
                 m_From = from;
                 Name = String.Format("{0}\'s Naughty Twin", from.Name);
 
-                Timer.DelayCall<Mobile>(TrickOrTreat.OneSecond, Utility.RandomBool() ? new TimerStateCallback<Mobile>(StealCandy) : new TimerStateCallback<Mobile>(ToGate), m_From);
+                Timer.DelayCall(TrickOrTreat.OneSecond, Utility.RandomBool() ? StealCandy : new TimerStateCallback<Mobile>(ToGate), m_From);
             }
         }
 
@@ -346,8 +344,6 @@ namespace Server.Engines.Events
 
         public static Point3D RandomMoongate(Mobile target)
         {
-            Map map = target.Map;
-
             switch (target.Map.MapID)
             {
                 case 2:

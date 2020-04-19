@@ -131,7 +131,7 @@ namespace Server.Items
             base.GetContextMenuEntries(from, list);
 
             if (from.Alive)
-                list.Add(new ContextMenus.EatEntry(from, this));
+                list.Add(new EatEntry(from, this));
         }
 
         public virtual bool TryEat(Mobile from)

@@ -27,7 +27,7 @@ namespace Server.Spells.SkillMasteries
 
         public override bool Validate(Mobile from)
         {
-            SkillMasteryMove move = SpecialMove.GetCurrentMove(from) as SkillMasteryMove;
+            SkillMasteryMove move = GetCurrentMove(from) as SkillMasteryMove;
 
             if ((move == null || move.GetType() != GetType()) && !CheckCooldown(from))
                 return false;

@@ -19,7 +19,7 @@ namespace Server.Engines.Despise
 
         public DespiseBoss(AIType ai, FightMode fightmode) : base(ai, fightmode, 10, 1, .1, .2)
         {
-            m_SummonTimer = Timer.DelayCall(TimeSpan.FromSeconds(5), new TimerCallback(SummonWisp_Callback));
+            m_SummonTimer = Timer.DelayCall(TimeSpan.FromSeconds(5), SummonWisp_Callback);
 
             FollowersMax = 100;
         }
@@ -107,7 +107,7 @@ namespace Server.Engines.Despise
 
             if (m_SummonTimer == null && (m_Wisp == null || !m_Wisp.Alive || m_Wisp.Deleted))
             {
-                m_SummonTimer = Timer.DelayCall(TimeSpan.FromSeconds(Utility.RandomMinMax(40, 60)), new TimerCallback(SummonWisp_Callback));
+                m_SummonTimer = Timer.DelayCall(TimeSpan.FromSeconds(Utility.RandomMinMax(40, 60)), SummonWisp_Callback);
             }
         }
 
@@ -129,7 +129,7 @@ namespace Server.Engines.Despise
 
         public static Type[] Artifacts => m_Artifacts;
 
-        private static readonly Type[] m_Artifacts = new Type[]
+        private static readonly Type[] m_Artifacts = new[]
         {
             typeof(CompassionsEye),
             typeof(UnicornManeWovenSandals),

@@ -318,7 +318,7 @@ namespace Server.Engines.VvV
                 AddToCooldown(m);
             }
 
-            Timer.DelayCall<Mobile>(TimeSpan.FromMilliseconds(500), DrinkEffects, m);
+            Timer.DelayCall(TimeSpan.FromMilliseconds(500), DrinkEffects, m);
         }
 
         public virtual void DrinkEffects(Mobile m)

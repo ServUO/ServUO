@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Server.Items
@@ -41,7 +41,7 @@ namespace Server.Items
                 from.SendLocalizedMessage(1116587); //You must wait 24 hours before using another forged pardon.
                 return false;
             }
-            if (Server.Spells.SpellHelper.CheckCombat(from))
+            if (Spells.SpellHelper.CheckCombat(from))
             {
                 from.SendLocalizedMessage(1116588); //You cannot use a forged pardon while in combat.
                 return false;

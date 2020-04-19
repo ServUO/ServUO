@@ -76,9 +76,9 @@ namespace Server.Mobiles
 
         public override ChampionSkullType SkullType => ChampionSkullType.None;
 
-        public override Type[] UniqueList => new Type[] { typeof(BansheesCall), typeof(CastOffZombieSkin), typeof(ChannelersDefender), typeof(LightsRampart) };
-        public override Type[] SharedList => new Type[] { typeof(TokenOfHolyFavor), typeof(TheMostKnowledgePerson), typeof(LieutenantOfTheBritannianRoyalGuard), typeof(ProtectoroftheBattleMage) };
-        public override Type[] DecorativeList => new Type[] { typeof(MummifiedCorpse) };
+        public override Type[] UniqueList => new[] { typeof(BansheesCall), typeof(CastOffZombieSkin), typeof(ChannelersDefender), typeof(LightsRampart) };
+        public override Type[] SharedList => new[] { typeof(TokenOfHolyFavor), typeof(TheMostKnowledgePerson), typeof(LieutenantOfTheBritannianRoyalGuard), typeof(ProtectoroftheBattleMage) };
+        public override Type[] DecorativeList => new[] { typeof(MummifiedCorpse) };
         public override MonsterStatuetteType[] StatueTypes => new MonsterStatuetteType[] { };
 
         public override void GenerateLoot()
@@ -145,7 +145,7 @@ namespace Server.Mobiles
         #region Blast Radius
         private static readonly int BlastRange = 16;
 
-        private static readonly double[] BlastChance = new double[]
+        private static readonly double[] BlastChance = new[]
             {
                 0.0, 0.0, 0.05, 0.95, 0.95, 0.95, 0.05, 0.95, 0.95,
                 0.95, 0.05, 0.95, 0.95, 0.95, 0.05, 0.95, 0.95
@@ -166,14 +166,12 @@ namespace Server.Mobiles
 
                     if (dist <= BlastRange && BlastChance[dist] > Utility.RandomDouble())
                     {
-                        Timer.DelayCall(TimeSpan.FromSeconds(0.1 * dist), new TimerCallback(
-                            delegate
-                            {
-                                int hue = Utility.RandomList(90, 95);
+                        Timer.DelayCall(TimeSpan.FromSeconds(0.1 * dist), delegate
+                        {
+                            int hue = Utility.RandomList(90, 95);
 
-                                Effects.SendPacket(loc, Map, new HuedEffect(EffectType.FixedXYZ, Serial.Zero, Serial.Zero, 0x3709, p, p, 20, 30, true, false, hue, 4));
-                            }
-                        ));
+                            Effects.SendPacket(loc, Map, new HuedEffect(EffectType.FixedXYZ, Serial.Zero, Serial.Zero, 0x3709, p, p, 20, 30, true, false, hue, 4));
+                        });
                     }
                 }
             }
@@ -250,7 +248,7 @@ namespace Server.Mobiles
         {
             private readonly Mobile m_Owner;
 
-            private static readonly int[] m_Offsets = new int[]
+            private static readonly int[] m_Offsets = new[]
             {
                 -1, -1,
                 -1,  0,
@@ -396,13 +394,12 @@ namespace Server.Mobiles
 
                 ApplyMods(target, mods);
 
-                m_UnholyTouched[target] = Timer.DelayCall(TimeSpan.FromSeconds(30), new TimerCallback(
-                    delegate
-                    {
-                        ClearMods(target, mods);
+                m_UnholyTouched[target] = Timer.DelayCall(TimeSpan.FromSeconds(30), delegate
+                {
+                    ClearMods(target, mods);
 
-                        m_UnholyTouched.Remove(target);
-                    }));
+                    m_UnholyTouched.Remove(target);
+                });
             }
 
             m_NextDiscordTime = DateTime.UtcNow + TimeSpan.FromSeconds(5 + Utility.RandomDouble() * 22);

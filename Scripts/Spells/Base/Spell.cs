@@ -239,7 +239,7 @@ namespace Server.Spells
 
         public virtual void OnCasterHurt()
         {
-            CheckCasterDisruption(false, 0, 0, 0, 0, 0);
+            CheckCasterDisruption();
         }
 
         public virtual void CheckCasterDisruption(bool checkElem = false, int phys = 0, int fire = 0, int cold = 0, int pois = 0, int nrgy = 0)
@@ -623,7 +623,7 @@ namespace Server.Spells
         public virtual bool CheckCast()
         {
             #region High Seas
-            if (Server.Multis.BaseBoat.IsDriving(m_Caster) && m_Caster.AccessLevel == AccessLevel.Player)
+            if (Multis.BaseBoat.IsDriving(m_Caster) && m_Caster.AccessLevel == AccessLevel.Player)
             {
                 m_Caster.SendLocalizedMessage(1049616); // You are too busy to do that at the moment.
                 return false;
@@ -824,7 +824,7 @@ namespace Server.Spells
 
             if (types != null)
             {
-                Type targetType = types.FirstOrDefault(t => t.IsSubclassOf(typeof(Server.Targeting.Target)));
+                Type targetType = types.FirstOrDefault(t => t.IsSubclassOf(typeof(Target)));
 
                 if (targetType != null)
                 {
@@ -902,7 +902,7 @@ namespace Server.Spells
                 scalar = 1.0;
             }
 
-            if (Mysticism.PurgeMagicSpell.IsUnderCurseEffects(Caster))
+            if (PurgeMagicSpell.IsUnderCurseEffects(Caster))
             {
                 scalar += .5;
             }
@@ -1307,7 +1307,9 @@ namespace Server.Spells
                 }
             }
             catch
-            { }
+            {
+                // ignored
+            }
         }
     }
 }

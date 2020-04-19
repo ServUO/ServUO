@@ -141,7 +141,7 @@ namespace Server.Engines.NewMagincia
         public void Reset()
         {
             if (m_PlotMulti != null)
-                Timer.DelayCall(TimeSpan.FromMinutes(2), new TimerCallback(DeleteMulti_Callback));
+                Timer.DelayCall(TimeSpan.FromMinutes(2), DeleteMulti_Callback);
 
             EndTempMultiTimer();
 

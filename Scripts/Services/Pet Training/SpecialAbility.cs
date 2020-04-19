@@ -568,14 +568,14 @@ namespace Server.Mobiles
                     Mobile m = i == 0 ? target : list[Utility.Random(list.Count)];
 
                     list.Remove(m);
-                    Timer.DelayCall(TimeSpan.FromSeconds(def.EffectDelay), new TimerStateCallback<BaseCreature, Mobile, DragonBreathDefinition>(BreathEffect_Callback), creature, m, def);
+                    Timer.DelayCall(TimeSpan.FromSeconds(def.EffectDelay), BreathEffect_Callback, creature, m, def);
                 }
 
                 ColUtility.Free(list);
             }
             else
             {
-                Timer.DelayCall(TimeSpan.FromSeconds(def.EffectDelay), new TimerStateCallback<BaseCreature, Mobile, DragonBreathDefinition>(BreathEffect_Callback), creature, target, def);
+                Timer.DelayCall(TimeSpan.FromSeconds(def.EffectDelay), BreathEffect_Callback, creature, target, def);
             }
         }
 
@@ -601,7 +601,7 @@ namespace Server.Mobiles
                 def.EffectHue,
                 def.EffectRenderMode);
 
-            Timer.DelayCall(TimeSpan.FromSeconds(def.DamageDelay), new TimerStateCallback<BaseCreature, Mobile, DragonBreathDefinition>(BreathDamage_Callback), creature, target, def);
+            Timer.DelayCall(TimeSpan.FromSeconds(def.DamageDelay), BreathDamage_Callback, creature, target, def);
         }
 
         public void BreathDamage_Callback(BaseCreature creature, Mobile target, DragonBreathDefinition def)

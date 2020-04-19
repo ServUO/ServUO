@@ -64,7 +64,7 @@ namespace Server.Spells.SkillMasteries
             }
             else
             {
-                Caster.BeginTarget(8, false, Server.Targeting.TargetFlags.None, (m, o) =>
+                Caster.BeginTarget(8, false, Targeting.TargetFlags.None, (m, o) =>
                     {
                         if (!Caster.CanSee(o))
                         {
@@ -303,7 +303,7 @@ namespace Server.Spells.SkillMasteries
             AddImageTiled(0, 0, 1, 217, 9155);
         }
 
-        public override void OnResponse(Server.Network.NetState sender, RelayInfo info)
+        public override void OnResponse(Network.NetState sender, RelayInfo info)
         {
             if (info.ButtonID == 2)
             {

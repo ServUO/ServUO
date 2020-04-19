@@ -13,10 +13,10 @@ namespace Server
     {
         public static void Initialize()
         {
-            CommandSystem.Register("DecorateTOL", AccessLevel.GameMaster, new CommandEventHandler(DecorateTOL_OnCommand));
+            CommandSystem.Register("DecorateTOL", AccessLevel.GameMaster, DecorateTOL_OnCommand);
 
             if (DateTime.UtcNow < _EndCurrencyWarning)
-                EventSink.Login += new LoginEventHandler(OnLogin);
+                EventSink.Login += OnLogin;
 
             EventSink.CreatureDeath += CheckRecipeDrop;
         }

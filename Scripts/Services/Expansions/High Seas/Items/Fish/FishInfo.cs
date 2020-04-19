@@ -53,7 +53,7 @@ namespace Server.Items
             m_FishInfos.Add(new FishInfo(1170, typeof(Charydbis), 1150208, "cannotfishup", true, LegendaryChance, 120.0));
 
             m_InvalidatedLocations = false;
-            Timer.DelayCall(TimeSpan.FromSeconds(10), new TimerCallback(InvalidateLocations));
+            Timer.DelayCall(TimeSpan.FromSeconds(10), InvalidateLocations);
         }
 
         public static List<FishInfo> FishInfos => m_FishInfos;

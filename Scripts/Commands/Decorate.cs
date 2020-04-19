@@ -609,9 +609,9 @@ namespace Server.Commands
                 if (m_ItemID > 0)
                     item.ItemID = m_ItemID;
             }
-            else if (item is Server.Mobiles.Spawner)
+            else if (item is Mobiles.Spawner)
             {
-                Server.Mobiles.Spawner sp = (Server.Mobiles.Spawner)item;
+                Mobiles.Spawner sp = (Mobiles.Spawner)item;
 
                 sp.NextSpawn = TimeSpan.Zero;
 
@@ -622,7 +622,7 @@ namespace Server.Commands
                         int indexOf = m_Params[i].IndexOf('=');
 
                         if (indexOf >= 0)
-                            sp.SpawnObjects.Add(new Server.Mobiles.SpawnObject(m_Params[i].Substring(++indexOf)));
+                            sp.SpawnObjects.Add(new Mobiles.SpawnObject(m_Params[i].Substring(++indexOf)));
                     }
                     else if (m_Params[i].StartsWith("MinDelay"))
                     {

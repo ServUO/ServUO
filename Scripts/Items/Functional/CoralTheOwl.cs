@@ -4,7 +4,7 @@ using System;
 
 namespace Server.Items
 {
-    public class CoralTheOwl : Item, Server.Engines.VeteranRewards.IRewardItem
+    public class CoralTheOwl : Item, Engines.VeteranRewards.IRewardItem
     {
         public override int LabelNumber => 1123603;  // Coral the Owl
 

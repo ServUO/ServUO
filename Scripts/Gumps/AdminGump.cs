@@ -402,7 +402,7 @@ namespace Server.Gumps
 
                         AddHtml(20, 150, 380, 80, Color("When enabled, only clients with an access level equal to or greater than the specified lockdown level may access the server. After setting a lockdown level, use the <em>Purge Invalid Clients</em> button to disconnect those clients without access.", LabelColor32), false, false);
 
-                        AccessLevel level = Misc.AccountHandler.LockdownLevel;
+                        AccessLevel level = AccountHandler.LockdownLevel;
                         bool isLockedDown = (level > AccessLevel.VIP);
 
                         AddSelectedButton(20, 230, GetButtonID(3, 500), "Not Locked Down", !isLockedDown);
@@ -1667,7 +1667,7 @@ namespace Server.Gumps
             from.SendGump(new AdminGump(from, AdminGumpPage.AccountDetails_Access_ClientIPs, 0, null, notice, a));
         }
 
-        public override void OnResponse(Server.Network.NetState sender, RelayInfo info)
+        public override void OnResponse(NetState sender, RelayInfo info)
         {
             int val = info.ButtonID - 1;
 
@@ -2000,9 +2000,9 @@ namespace Server.Gumps
                             case 503:
                             case 504:
                                 {
-                                    Misc.AccountHandler.LockdownLevel = (AccessLevel)(index - 500);
+                                    AccountHandler.LockdownLevel = (AccessLevel)(index - 500);
 
-                                    if (Misc.AccountHandler.LockdownLevel > AccessLevel.VIP)
+                                    if (AccountHandler.LockdownLevel > AccessLevel.VIP)
                                         notice = "The lockdown level has been changed.";
                                     else
                                         notice = "The server is now accessible to everyone.";
@@ -2012,7 +2012,7 @@ namespace Server.Gumps
 
                             case 510:
                                 {
-                                    AccessLevel level = Misc.AccountHandler.LockdownLevel;
+                                    AccessLevel level = AccountHandler.LockdownLevel;
 
                                     if (level > AccessLevel.VIP)
                                     {

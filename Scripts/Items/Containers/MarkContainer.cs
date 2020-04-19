@@ -159,7 +159,7 @@ namespace Server.Items
 
             e.Mobile.SendMessage("Secret mark containers have been created.");
 
-            Server.Engines.GenerateForgottenPyramid.Generate(e.Mobile);
+            Engines.GenerateForgottenPyramid.Generate(e.Mobile);
         }
 
         public void StopTimer()
