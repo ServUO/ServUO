@@ -11,7 +11,7 @@ namespace Server.Items
     {
         public static void Initialize()
         {
-            SkillInfo.Table[(int)SkillName.ItemID].Callback = new SkillUseCallback(OnUse);
+            SkillInfo.Table[(int)SkillName.ItemID].Callback = OnUse;
         }
 
         public static TimeSpan OnUse(Mobile from)

@@ -1,6 +1,6 @@
-using Server.Mobiles;
 using System;
 using System.Collections.Generic;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -24,10 +24,6 @@ namespace Server.Items
                 Target = defender;
                 DamageBonus = bonus;
             }
-        }
-
-        public Focus()
-        {
         }
 
         public static void OnLogin(LoginEventArgs e)

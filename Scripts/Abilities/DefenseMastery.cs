@@ -9,9 +9,6 @@ namespace Server.Items
     public class DefenseMastery : WeaponAbility
     {
         private static readonly Hashtable m_Table = new Hashtable();
-        public DefenseMastery()
-        {
-        }
 
         public override int BaseMana => 20;
 

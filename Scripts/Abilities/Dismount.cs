@@ -13,9 +13,6 @@ namespace Server.Items
     {
         public static readonly TimeSpan DefenderRemountDelay = TimeSpan.FromSeconds(10.0);
         public static readonly TimeSpan AttackerRemountDelay = TimeSpan.FromSeconds(3.0);
-        public Dismount()
-        {
-        }
 
         public override int BaseMana => 25;
 
@@ -48,7 +45,7 @@ namespace Server.Items
 
             IMount mount = defender.Mount;
 
-            if (mount == null && !defender.Flying && !Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(defender))
+            if (mount == null && !defender.Flying && !Spells.Ninjitsu.AnimalForm.UnderTransformation(defender))
             {
                 attacker.SendLocalizedMessage(1060848); // This attack only works on mounted or flying targets
                 return;
@@ -83,7 +80,7 @@ namespace Server.Items
 
             if (defender is PlayerMobile)
             {
-                if (Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(defender))
+                if (Spells.Ninjitsu.AnimalForm.UnderTransformation(defender))
                 {
                     defender.SendLocalizedMessage(1114066, attacker.Name); // ~1_NAME~ knocked you out of animal form!
                 }

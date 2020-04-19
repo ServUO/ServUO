@@ -25,7 +25,7 @@ namespace Server.Items
 
             IMount mount = defender.Mount;
 
-            if ((defender.Mounted || defender.Flying || Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(defender)) && !attacker.Mounted && !attacker.Flying && !(defender is ChaosDragoon) && !(defender is ChaosDragoonElite))
+            if ((defender.Mounted || defender.Flying || Spells.Ninjitsu.AnimalForm.UnderTransformation(defender)) && !attacker.Mounted && !attacker.Flying && !(defender is ChaosDragoon) && !(defender is ChaosDragoonElite))
             {
                 defender.PlaySound(0x140);
                 defender.FixedParticles(0x3728, 10, 15, 9955, EffectLayer.Waist);

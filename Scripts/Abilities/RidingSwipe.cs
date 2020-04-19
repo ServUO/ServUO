@@ -10,10 +10,6 @@ namespace Server.Items
     /// </summary>
     public class RidingSwipe : WeaponAbility
     {
-        public RidingSwipe()
-        {
-        }
-
         public override int BaseMana => 25;
 
         public override bool CheckSkills(Mobile from)
@@ -29,7 +25,7 @@ namespace Server.Items
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
-            if (!defender.Mounted && !defender.Flying && !Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(defender))
+            if (!defender.Mounted && !defender.Flying && !Spells.Ninjitsu.AnimalForm.UnderTransformation(defender))
             {
                 attacker.SendLocalizedMessage(1060848); // This attack only works on mounted targets
                 ClearCurrentAbility(attacker);

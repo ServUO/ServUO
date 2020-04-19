@@ -76,15 +76,7 @@ namespace Server.Items
 
             if (!allowableSpecial)
             {
-                foreach (CraftSystem system in CraftSystem.Systems)
-                {
-                    if (system == crsystem && system != null && system.CraftItems != null)
-                        crItem = system.CraftItems.SearchFor(item.GetType());
-
-                    if (crItem != null)
-                        break;
-
-                }
+                crItem = CraftItem.GetCraftItem(item);
             }
 
             if (crItem == null && !allowableSpecial)

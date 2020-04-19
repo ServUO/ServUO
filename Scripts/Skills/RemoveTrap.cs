@@ -18,7 +18,7 @@ namespace Server.SkillHandlers
     {
         public static void Initialize()
         {
-            SkillInfo.Table[(int)SkillName.RemoveTrap].Callback = new SkillUseCallback(OnUse);
+            SkillInfo.Table[(int)SkillName.RemoveTrap].Callback = OnUse;
         }
 
         public static TimeSpan OnUse(Mobile m)
@@ -57,7 +57,7 @@ namespace Server.SkillHandlers
 
                     from.Direction = from.GetDirectionTo(targ);
 
-                    if (targ.TrapType == Server.Items.TrapType.None)
+                    if (targ.TrapType == TrapType.None)
                     {
                         from.SendLocalizedMessage(502373); // That doesn't appear to be trapped
                     }
@@ -138,7 +138,7 @@ namespace Server.SkillHandlers
                                 }
                             }
 
-                            from.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1154, 1155413, from.NetState);
+                            from.PrivateOverheadMessage(MessageType.Regular, 1154, 1155413, from.NetState);
                         }
                         else if (.1 > Utility.RandomDouble())
                         {

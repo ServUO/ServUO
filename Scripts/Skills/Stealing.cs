@@ -323,7 +323,7 @@ namespace Server.SkillHandlers
 
                     if (target is BaseCreature && from is PlayerMobile)
                     {
-                        Server.Engines.CreatureStealing.StealingHandler.HandleSteal(target as BaseCreature, from as PlayerMobile);
+                        Engines.CreatureStealing.StealingHandler.HandleSteal(target as BaseCreature, from as PlayerMobile);
                     }
                 }
                 else
@@ -335,7 +335,7 @@ namespace Server.SkillHandlers
                 {
                     if (stolen is AddonComponent)
                     {
-                        BaseAddon addon = ((AddonComponent)stolen).Addon as BaseAddon;
+                        BaseAddon addon = ((AddonComponent)stolen).Addon;
                         from.AddToBackpack(addon.Deed);
                         addon.Delete();
                     }

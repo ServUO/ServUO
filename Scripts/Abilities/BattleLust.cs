@@ -1,6 +1,6 @@
-using Server.Mobiles;
 using System;
 using System.Collections.Generic;
+using Server.Mobiles;
 
 namespace Server
 {
@@ -31,9 +31,9 @@ namespace Server
         {
             if (damage < 30)
                 return;
-            else if (AosWeaponAttributes.GetValue(m, AosWeaponAttribute.BattleLust) == 0)
+            if (AosWeaponAttributes.GetValue(m, AosWeaponAttribute.BattleLust) == 0)
                 return;
-            else if (m_Table.ContainsKey(m))
+            if (m_Table.ContainsKey(m))
             {
                 if (m_Table[m].CanGain)
                 {

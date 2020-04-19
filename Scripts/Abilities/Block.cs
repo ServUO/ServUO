@@ -18,10 +18,6 @@ namespace Server.Items
     {
         private static Dictionary<Mobile, BlockInfo> _Table;
 
-        public Block()
-        {
-        }
-
         public override int BaseMana => 20;
 
         public override int AccuracyBonus => -15;

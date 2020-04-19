@@ -638,17 +638,6 @@ namespace Server.Multis
 
             m_Instances.Add(this);
 
-            if (version == 6)
-            {
-                if (MapItem != null)
-                {
-                    Timer.DelayCall(TimeSpan.FromSeconds(10), delegate
-                    {
-                        BoatCourse = new BoatCourse(this, MapItem);
-                    });
-                }
-            }
-
             if (version == 4)
             {
                 Timer.DelayCall(() => Hits = MaxHits);
@@ -1611,7 +1600,7 @@ namespace Server.Multis
                 StopMove(false);
 
                 MapItem = map;
-                NextNavPoint = -1;
+                NextNavPoint = 0;
 
                 BoatCourse = new BoatCourse(this, map);
 
@@ -2271,7 +2260,7 @@ namespace Server.Multis
 
                 return false;
             }
-            else if ((Map != Map.Trammel && Map != Map.Felucca && Map != Map.Tokuno) || NextNavPoint < 0 || NextNavPoint >= BoatCourse.Waypoints.Count)
+            else if ((Map != Map.Trammel && Map != Map.Felucca && Map != Map.Tokuno) || NextNavPoint < 0 || NextNavPoint >= BoatCourse.Waypoints.Count || Region.Find(Location, Map).IsPartOf<CorgulRegion>())
             {
                 if (message && TillerMan != null)
                     TillerManSay(1042551); // I don't see that navpoint, sir.

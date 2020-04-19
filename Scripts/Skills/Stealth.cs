@@ -27,7 +27,7 @@ namespace Server.SkillHandlers
 
         public static void Initialize()
         {
-            SkillInfo.Table[(int)SkillName.Stealth].Callback = new SkillUseCallback(OnUse);
+            SkillInfo.Table[(int)SkillName.Stealth].Callback = OnUse;
         }
 
         public static int GetArmorRating(Mobile m)

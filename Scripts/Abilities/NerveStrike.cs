@@ -8,10 +8,6 @@ namespace Server.Items
     /// </summary>
     public class NerveStrike : WeaponAbility
     {
-        public NerveStrike()
-        {
-        }
-
         public override int BaseMana => 30;
 
         public override bool CheckSkills(Mobile from)

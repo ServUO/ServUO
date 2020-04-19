@@ -12,9 +12,6 @@ namespace Server.Items
     public class Disarm : WeaponAbility
     {
         public static readonly TimeSpan BlockEquipDuration = TimeSpan.FromSeconds(5.0);
-        public Disarm()
-        {
-        }
 
         public override int BaseMana => 20;
 

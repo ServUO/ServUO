@@ -7,7 +7,7 @@ namespace Server.SkillHandlers
     {
         public static void Initialize()
         {
-            SkillInfo.Table[46].Callback = new SkillUseCallback(OnUse);
+            SkillInfo.Table[46].Callback = OnUse;
         }
 
         public static bool CheckOkayHolding(Item item)
@@ -43,7 +43,7 @@ namespace Server.SkillHandlers
 
                 return TimeSpan.FromSeconds(10.0);
             }
-            else if (Server.Misc.RegenRates.GetArmorOffset(m) > 0)
+            else if (Misc.RegenRates.GetArmorOffset(m) > 0)
             {
                 m.SendLocalizedMessage(500135); // Regenative forces cannot penetrate your armor!
 

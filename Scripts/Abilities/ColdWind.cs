@@ -1,6 +1,6 @@
-using Server.Network;
 using System;
 using System.Collections.Generic;
+using Server.Network;
 
 namespace Server.Items
 {
@@ -10,10 +10,6 @@ namespace Server.Items
     public class ColdWind : WeaponAbility
     {
         private static readonly Dictionary<Mobile, ExpireTimer> m_Table = new Dictionary<Mobile, ExpireTimer>();
-
-        public ColdWind()
-        {
-        }
 
         public override int BaseMana => 20;
 

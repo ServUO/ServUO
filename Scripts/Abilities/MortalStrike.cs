@@ -16,10 +16,6 @@ namespace Server.Items
         private static readonly Dictionary<Mobile, Timer> m_Table = new Dictionary<Mobile, Timer>();
         private static readonly List<Mobile> m_EffectReduction = new List<Mobile>();
 
-        public MortalStrike()
-        {
-        }
-
         public override int BaseMana => 30;
 
         public static bool IsWounded(Mobile m)

@@ -11,7 +11,7 @@ namespace Server.SkillHandlers
     {
         public static void Configure()
         {
-            Container.SnoopHandler = new ContainerSnoopHandler(Container_Snoop);
+            Container.SnoopHandler = Container_Snoop;
         }
 
         public static bool CheckSnoopAllowed(Mobile from, Mobile to)

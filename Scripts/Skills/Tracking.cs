@@ -14,7 +14,7 @@ namespace Server.SkillHandlers
         private static readonly Dictionary<Mobile, TrackingInfo> m_Table = new Dictionary<Mobile, TrackingInfo>();
         public static void Initialize()
         {
-            SkillInfo.Table[(int)SkillName.Tracking].Callback = new SkillUseCallback(OnUse);
+            SkillInfo.Table[(int)SkillName.Tracking].Callback = OnUse;
         }
 
         public static TimeSpan OnUse(Mobile m)
@@ -118,10 +118,10 @@ namespace Server.SkillHandlers
     {
         private static readonly TrackTypeDelegate[] m_Delegates = new TrackTypeDelegate[]
         {
-            new TrackTypeDelegate(IsAnimal),
-            new TrackTypeDelegate(IsMonster),
-            new TrackTypeDelegate(IsHumanNPC),
-            new TrackTypeDelegate(IsPlayer)
+            IsAnimal,
+            IsMonster,
+            IsHumanNPC,
+            IsPlayer
         };
         private readonly Mobile m_From;
         private readonly int m_Range;

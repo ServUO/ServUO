@@ -15,7 +15,7 @@ namespace Server.SkillHandlers
             SkillInfo.Table[32].Callback = OnUse;
         }
 
-        public static Dictionary<Mobile, Timer> _Table;
+        public static Dictionary<Mobile, Timer> Table;
 
         public static TimeSpan OnUse(Mobile m)
         {
@@ -31,27 +31,9 @@ namespace Server.SkillHandlers
             return TimeSpan.Zero;
         }
 
-        private class SpiritSpeakTimer : Timer
-        {
-            private readonly Mobile m_Owner;
-
-            public SpiritSpeakTimer(Mobile m)
-                : base(TimeSpan.FromMinutes(2.0))
-            {
-                m_Owner = m;
-                Priority = TimerPriority.FiveSeconds;
-            }
-
-            protected override void OnTick()
-            {
-                m_Owner.CanHearGhosts = false;
-                m_Owner.SendLocalizedMessage(502445); //You feel your contact with the neitherworld fading.
-            }
-        }
-
         public static bool BeginSpiritSpeak(Mobile m)
         {
-            if (_Table == null || !_Table.ContainsKey(m))
+            if (Table == null || !Table.ContainsKey(m))
             {
                 m.Freeze(TimeSpan.FromSeconds(1));
 
@@ -59,10 +41,10 @@ namespace Server.SkillHandlers
                 m.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1062074, "", false); // Anh Mi Sah Ko
                 m.PlaySound(0x24A);
 
-                if (_Table == null)
-                    _Table = new Dictionary<Mobile, Timer>();
+                if (Table == null)
+                    Table = new Dictionary<Mobile, Timer>();
 
-                _Table[m] = new SpiritSpeakTimerNew(m);
+                Table[m] = new SpiritSpeakTimerNew(m);
                 return true;
             }
 
@@ -71,27 +53,27 @@ namespace Server.SkillHandlers
 
         public static bool IsInSpiritSpeak(Mobile m)
         {
-            return _Table != null && _Table.ContainsKey(m);
+            return Table != null && Table.ContainsKey(m);
         }
 
         public static void Remove(Mobile m)
         {
-            if (_Table != null && _Table.ContainsKey(m))
+            if (Table != null && Table.ContainsKey(m))
             {
-                if (_Table[m] != null)
-                    _Table[m].Stop();
+                if (Table[m] != null)
+                    Table[m].Stop();
 
                 m.SendSpeedControl(SpeedControlType.Disable);
-                _Table.Remove(m);
+                Table.Remove(m);
 
-                if (_Table.Count == 0)
-                    _Table = null;
+                if (Table.Count == 0)
+                    Table = null;
             }
         }
 
         public static void CheckDisrupt(Mobile m)
         {
-            if (_Table != null && _Table.ContainsKey(m))
+            if (Table != null && Table.ContainsKey(m))
             {
                 if (m is PlayerMobile)
                 {
@@ -131,12 +113,12 @@ namespace Server.SkillHandlers
                         toChannel = (Corpse)objs;
                         break;
                     }
-                    else if (objs is Server.Engines.Khaldun.SageHumbolt)
+                    else if (objs is Engines.Khaldun.SageHumbolt)
                     {
-                        if (((Server.Engines.Khaldun.SageHumbolt)objs).OnSpiritSpeak(Caster))
+                        if (((Engines.Khaldun.SageHumbolt)objs).OnSpiritSpeak(Caster))
                         {
                             eable.Free();
-                            SpiritSpeak.Remove(Caster);
+                            Remove(Caster);
                             Stop();
                             return;
                         }
@@ -196,7 +178,7 @@ namespace Server.SkillHandlers
                     }
                 }
 
-                SpiritSpeak.Remove(Caster);
+                Remove(Caster);
                 Stop();
             }
         }

@@ -5,10 +5,6 @@ namespace Server.Items
     /// </summary>
     public class CrushingBlow : WeaponAbility
     {
-        public CrushingBlow()
-        {
-        }
-
         public override int BaseMana => 20;
 
         public override double DamageScalar => 1.5;

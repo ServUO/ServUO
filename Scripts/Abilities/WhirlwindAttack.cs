@@ -9,10 +9,6 @@ namespace Server.Items
     /// </summary>
     public class WhirlwindAttack : WeaponAbility
     {
-        public WhirlwindAttack()
-        {
-        }
-
         public override int BaseMana => 15;
 
         public override bool OnBeforeDamage(Mobile attacker, Mobile defender)

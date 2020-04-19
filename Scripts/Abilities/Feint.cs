@@ -12,10 +12,6 @@ namespace Server.Items
         private static readonly Dictionary<Mobile, FeintTimer> m_Registry = new Dictionary<Mobile, FeintTimer>();
         public static Dictionary<Mobile, FeintTimer> Registry => m_Registry;
 
-        public Feint()
-        {
-        }
-
         public override int BaseMana => 30;
 
         public override SkillName GetSecondarySkill(Mobile from)

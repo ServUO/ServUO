@@ -420,7 +420,7 @@ namespace Server.SkillHandlers
                 Mobile targ = info.m_Target;
                 info.Clear();
 
-                Discordance.RemoveEffects(targ);
+                RemoveEffects(targ);
             }
         }
     }

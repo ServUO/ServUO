@@ -13,9 +13,6 @@ namespace Server.Items
         public static readonly TimeSpan FreezeDelayDuration = TimeSpan.FromSeconds(8.0);
         // No longer active in pub21:
         private static readonly Hashtable m_Table = new Hashtable();
-        public ParalyzingBlow()
-        {
-        }
 
         public override int BaseMana => 30;
 

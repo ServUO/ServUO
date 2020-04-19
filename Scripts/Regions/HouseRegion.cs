@@ -11,7 +11,7 @@ namespace Server.Regions
 {
     public class HouseRegion : BaseRegion
     {
-        public static readonly int HousePriority = Region.DefaultPriority + 1;
+        public static readonly int HousePriority = DefaultPriority + 1;
         public static TimeSpan CombatHeatDelay = TimeSpan.FromSeconds(30.0);
         private bool m_Recursion;
 
@@ -30,7 +30,7 @@ namespace Server.Regions
 
         public static void Initialize()
         {
-            EventSink.Login += new LoginEventHandler(OnLogin);
+            EventSink.Login += OnLogin;
         }
 
         public static void OnLogin(LoginEventArgs e)
@@ -63,10 +63,10 @@ namespace Server.Regions
         {
             Item item = e as Item;
 
-            if ((m.PublicHouseContent && House.Public) ||
-                    House.IsInside(m) ||
-                    ExcludeItem(item) ||
-                    (item.RootParent != null && m.CanSee(item.RootParent)))
+            if (item != null && ((m.PublicHouseContent && House.Public) ||
+                                 House.IsInside(m) ||
+                                 ExcludeItem(item) ||
+                                 (item.RootParent != null && m.CanSee(item.RootParent))))
             {
                 return true;
             }
@@ -304,23 +304,12 @@ namespace Server.Regions
 
             else if (e.HasKeyword(0x33)) // remove thyself
             {
-                if (isFriend)
-                {
-                    from.SendLocalizedMessage(501326); // Target the individual to eject from this house.
-                    from.Target = new HouseKickTarget(House);
-                }
-                else
-                {
-                    from.SendLocalizedMessage(502094); // You must be in your house to do this.
-                }
+                from.SendLocalizedMessage(501326); // Target the individual to eject from this house.
+                from.Target = new HouseKickTarget(House);
             }
             else if (e.HasKeyword(0x34)) // I ban thee
             {
-                if (!isFriend)
-                {
-                    from.SendLocalizedMessage(502094); // You must be in your house to do this.
-                }
-                else if (!House.Public && House.IsAosRules)
+                if (!House.Public && House.IsAosRules)
                 {
                     from.SendLocalizedMessage(1062521); // You cannot ban someone from a private house.  Revoke their access instead.
                 }
@@ -332,27 +321,13 @@ namespace Server.Regions
             }
             else if (e.HasKeyword(0x23)) // I wish to lock this down
             {
-                if (isFriend)
-                {
-                    from.SendLocalizedMessage(502097); // Lock what down?
-                    from.Target = new LockdownTarget(false, House);
-                }
-                else
-                {
-                    from.SendLocalizedMessage(502094); // You must be in your house to do this.
-                }
+                from.SendLocalizedMessage(502097); // Lock what down?
+                from.Target = new LockdownTarget(false, House);
             }
             else if (e.HasKeyword(0x24)) // I wish to release this
             {
-                if (isFriend)
-                {
-                    from.SendLocalizedMessage(502100); // Choose the item you wish to release
-                    from.Target = new LockdownTarget(true, House);
-                }
-                else
-                {
-                    from.SendLocalizedMessage(502094); // You must be in your house to do this. 
-                }
+                from.SendLocalizedMessage(502100); // Choose the item you wish to release
+                from.Target = new LockdownTarget(true, House);
             }
             else if (e.HasKeyword(0x25)) // I wish to secure this
             {
@@ -388,13 +363,9 @@ namespace Server.Regions
                 {
                     House.AddStrongBox(from);
                 }
-                else if (isFriend)
-                {
-                    from.SendLocalizedMessage(1010587); // You are not a co-owner of this house.
-                }
                 else
                 {
-                    from.SendLocalizedMessage(502094); // You must be in your house to do this. 
+                    from.SendLocalizedMessage(1010587); // You are not a co-owner of this house.
                 }
             }
             else if (e.HasKeyword(0x28)) // trash barrel
@@ -403,13 +374,9 @@ namespace Server.Regions
                 {
                     House.AddTrashBarrel(from);
                 }
-                else if (isFriend)
-                {
-                    from.SendLocalizedMessage(1010587); // You are not a co-owner of this house.
-                }
                 else
                 {
-                    from.SendLocalizedMessage(502094); // You must be in your house to do this. 
+                    from.SendLocalizedMessage(1010587); // You are not a co-owner of this house.
                 }
             }
         }
@@ -449,7 +416,6 @@ namespace Server.Regions
         {
             int x = house.X;
             int y = house.Y;
-            int z = house.Z;
 
             Rectangle2D[] houseArea = house.Area;
             Rectangle3D[] area = new Rectangle3D[houseArea.Length];
@@ -457,7 +423,7 @@ namespace Server.Regions
             for (int i = 0; i < area.Length; i++)
             {
                 Rectangle2D rect = houseArea[i];
-                area[i] = Region.ConvertTo3D(new Rectangle2D(x + rect.Start.X, y + rect.Start.Y, rect.Width, rect.Height));
+                area[i] = ConvertTo3D(new Rectangle2D(x + rect.Start.X, y + rect.Start.Y, rect.Width, rect.Height));
             }
 
             return area;
