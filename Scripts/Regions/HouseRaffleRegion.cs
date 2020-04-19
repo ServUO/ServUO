@@ -13,7 +13,7 @@ namespace Server.Regions
         public HouseRaffleStone Stone => m_Stone;
 
         public HouseRaffleRegion(HouseRaffleStone stone)
-            : base(null, stone.PlotFacet, Region.DefaultPriority, stone.PlotBounds)
+            : base(null, stone.PlotFacet, DefaultPriority, stone.PlotBounds)
         {
             m_Stone = stone;
         }

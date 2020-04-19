@@ -12,10 +12,6 @@ namespace Server.Items
     /// </summary>
     public class FrenziedWhirlwind : WeaponAbility
     {
-        public FrenziedWhirlwind()
-        {
-        }
-
         public override SkillName GetSecondarySkill(Mobile from)
         {
             return from.Skills[SkillName.Ninjitsu].Base > from.Skills[SkillName.Bushido].Base ? SkillName.Ninjitsu : SkillName.Bushido;
@@ -114,7 +110,7 @@ namespace Server.Items
                 if (!m_Attacker.Alive || m_Start + 2000 < Core.TickCount)
                 {
                     ColUtility.Free(m_List);
-                    Server.Items.FrenziedWhirlwind.RemoveFromRegistry(m_Attacker);
+                    RemoveFromRegistry(m_Attacker);
                 }
             }
 

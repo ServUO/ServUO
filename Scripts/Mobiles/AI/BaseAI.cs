@@ -317,6 +317,11 @@ namespace Server.Mobiles
 
         public virtual void OnAggressiveAction(Mobile aggressor)
         {
+            if (m_Mobile.Controlled && m_Mobile.ControlOrder == OrderType.Attack)
+            {
+                return;
+            }
+
             Mobile currentCombat = m_Mobile.Combatant as Mobile;
 
             if (currentCombat != null && !aggressor.Hidden && currentCombat != aggressor &&

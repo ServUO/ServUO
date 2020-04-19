@@ -15,7 +15,7 @@ namespace Server.SkillHandlers
     {
         public static void Initialize()
         {
-            SkillInfo.Table[(int)SkillName.Forensics].Callback = new SkillUseCallback(OnUse);
+            SkillInfo.Table[(int)SkillName.Forensics].Callback = OnUse;
         }
 
         public static TimeSpan OnUse(Mobile m)
@@ -149,7 +149,7 @@ namespace Server.SkillHandlers
                     if (honestySocket != null)
                     {
                         if (honestySocket.HonestyOwner == null)
-                            Server.Services.Virtues.HonestyVirtue.AssignOwner(honestySocket);
+                            Services.Virtues.HonestyVirtue.AssignOwner(honestySocket);
 
                         if (from.CheckTargetSkill(SkillName.Forensics, target, 41.0, 100.0))
                         {
@@ -157,7 +157,10 @@ namespace Server.SkillHandlers
 
                             if (from.Skills.Forensics.Value >= 61.0)
                             {
-                                from.SendLocalizedMessage(1151521, String.Format("{0}\t{1}", honestySocket.HonestyOwner.Name, region)); // This item belongs to ~1_val~ who lives in ~2_val~.
+                                if (honestySocket.HonestyOwner != null)
+								{
+                                    from.SendLocalizedMessage(1151521, String.Format("{0}\t{1}", honestySocket.HonestyOwner.Name, region)); // This item belongs to ~1_val~ who lives in ~2_val~.
+								}
                             }
                             else
                             {

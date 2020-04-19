@@ -10,9 +10,6 @@ namespace Server.Items
     public class TalonStrike : WeaponAbility
     {
         private static readonly Hashtable m_Registry = new Hashtable();
-        public TalonStrike()
-        {
-        }
 
         public override SkillName GetSecondarySkill(Mobile from)
         {
@@ -73,7 +70,7 @@ namespace Server.Items
                 if (!m_Defender.Alive || m_DamageRemaining <= 0)
                 {
                     Stop();
-                    Server.Items.TalonStrike.Registry.Remove(m_Defender);
+                    Registry.Remove(m_Defender);
                     return;
                 }
 
@@ -95,7 +92,7 @@ namespace Server.Items
                 if (!m_Defender.Alive || m_DamageRemaining <= 0)
                 {
                     Stop();
-                    Server.Items.TalonStrike.Registry.Remove(m_Defender);
+                    Registry.Remove(m_Defender);
                 }
             }
         }

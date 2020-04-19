@@ -10,10 +10,6 @@ namespace Server.Items
     {
         private static readonly Dictionary<Mobile, DualWieldTimer> m_Registry = new Dictionary<Mobile, DualWieldTimer>();
 
-        public DualWield()
-        {
-        }
-
         public static Dictionary<Mobile, DualWieldTimer> Registry => m_Registry;
 
         public override int BaseMana => 20;

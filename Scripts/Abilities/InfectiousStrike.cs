@@ -12,10 +12,6 @@ namespace Server.Items
     /// </summary>
     public class InfectiousStrike : WeaponAbility
     {
-        public InfectiousStrike()
-        {
-        }
-
         public override int BaseMana => 20;
 
         public override bool RequiresSecondarySkill(Mobile from)
@@ -52,7 +48,7 @@ namespace Server.Items
                 return;
 
             // Skill Masteries
-            int noChargeChance = Server.Spells.SkillMasteries.MasteryInfo.NonPoisonConsumeChance(attacker);
+            int noChargeChance = Spells.SkillMasteries.MasteryInfo.NonPoisonConsumeChance(attacker);
 
             if (noChargeChance == 0 || noChargeChance < Utility.Random(100))
                 --weapon.PoisonCharges;

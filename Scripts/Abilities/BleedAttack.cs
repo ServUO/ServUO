@@ -16,10 +16,6 @@ namespace Server.Items
     {
         private static readonly Dictionary<Mobile, BleedTimer> m_BleedTable = new Dictionary<Mobile, BleedTimer>();
 
-        public BleedAttack()
-        {
-        }
-
         public override int BaseMana => 30;
 
         public static bool IsBleeding(Mobile m)
@@ -125,7 +121,7 @@ namespace Server.Items
             TransformContext context = TransformationSpellHelper.GetContext(defender);
 
             if ((context != null && (context.Type == typeof(LichFormSpell) || context.Type == typeof(WraithFormSpell))) ||
-                (defender is BaseCreature && ((BaseCreature)defender).BleedImmune) || Server.Spells.Mysticism.StoneFormSpell.CheckImmunity(defender))
+                (defender is BaseCreature && ((BaseCreature)defender).BleedImmune) || Spells.Mysticism.StoneFormSpell.CheckImmunity(defender))
             {
                 attacker.SendLocalizedMessage(1062052); // Your target is not affected by the bleed attack!
                 return;
@@ -163,7 +159,7 @@ namespace Server.Items
                 {
                     int damage = 0;
 
-                    if (!Server.Spells.SkillMasteries.WhiteTigerFormSpell.HasBleedMod(m_From, out damage))
+                    if (!Spells.SkillMasteries.WhiteTigerFormSpell.HasBleedMod(m_From, out damage))
                         damage = Math.Max(1, Utility.RandomMinMax(5 - m_Count, (5 - m_Count) * 2));
 
                     DoBleed(m_Mobile, m_From, damage, m_BloodDrinker);

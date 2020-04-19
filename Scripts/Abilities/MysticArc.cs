@@ -63,7 +63,7 @@ namespace Server.Items
                 if (weapon == null)
                     return;
 
-                if (WeaponAbility.GetCurrentAbility(m_Mobile) is MysticArc)
+                if (GetCurrentAbility(m_Mobile) is MysticArc)
                     ClearCurrentAbility(m_Mobile);
 
                 if (weapon.CheckHit(m_Mobile, m_Target))

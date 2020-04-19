@@ -7,6 +7,8 @@ namespace Server.Mobiles
     [CorpseName("a travesty's corpse")]
     public class Travesty : BasePeerless
     {
+        public override double WeaponAbilityChance => IsBodyMod ? base.WeaponAbilityChance : 0.1;
+
         public override WeaponAbility GetWeaponAbility()
         {
             if (Weapon == null)
@@ -172,6 +174,10 @@ namespace Server.Mobiles
             int version = reader.ReadInt();
         }
 
+        public override void ClearHands()
+        {
+        }
+
         public void ChangeBody()
         {
             List<Mobile> list = new List<Mobile>();
@@ -215,19 +221,29 @@ namespace Server.Mobiles
                 {
                     if (FindItemOnLayer(item.Layer) == null)
                     {
-                        if (item is BaseRanged)
+                        if (item is BaseWeapon)
                         {
-                            Item i = FindItemOnLayer(Layer.TwoHanded);
+                            var crItem = Server.Engines.Craft.CraftItem.GetCraftItem(item.GetType(), true);
 
-                            if (i != null)
-                                i.Delete();
+                            if (crItem != null)
+                            {
+                                // Is this necessary? Was this check already done?
+                                Item i = FindItemOnLayer(Layer.TwoHanded);
 
-                            i = FindItemOnLayer(Layer.OneHanded);
+                                if (i != null)
+                                    i.Delete();
 
-                            if (i != null)
-                                i.Delete();
+                                i = FindItemOnLayer(Layer.OneHanded);
 
-                            AddItem(Loot.Construct(item.GetType()));
+                                if (i != null)
+                                    i.Delete();
+
+                                AddItem(Loot.Construct(crItem.ItemType));
+                            }
+                            else
+                            {
+                                AddItem(new ClonedItem(item));
+                            }
                         }
                         else
                         {
@@ -297,11 +313,11 @@ namespace Server.Mobiles
 
         public void DeleteItems()
         {
-            ColUtility.SafeDelete(Items, item => item is ClonedItem || item is BaseRanged);
+            ColUtility.SafeDelete(Items, item => item is ClonedItem || item is BaseWeapon);
 
             if (Backpack != null)
             {
-                ColUtility.SafeDelete(Backpack.Items, item => item is ClonedItem || item is BaseRanged);
+                ColUtility.SafeDelete(Backpack.Items, item => item is ClonedItem || item is BaseWeapon);
             }
         }
 

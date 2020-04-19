@@ -10,10 +10,6 @@ namespace Server.Items
     {
         public static Dictionary<Mobile, Timer> _Table = new Dictionary<Mobile, Timer>();
 
-        public ArmorPierce()
-        {
-        }
-
         public override SkillName GetSecondarySkill(Mobile from)
         {
             return from.Skills[SkillName.Ninjitsu].Base > from.Skills[SkillName.Bushido].Base ? SkillName.Ninjitsu : SkillName.Bushido;
@@ -44,7 +40,7 @@ namespace Server.Items
             }
 
             BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.ArmorPierce, 1028860, 1154367, TimeSpan.FromSeconds(3), defender, "10"));
-            _Table[defender] = Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(3), RemoveEffects, defender);
+            _Table[defender] = Timer.DelayCall(TimeSpan.FromSeconds(3), RemoveEffects, defender);
 
             defender.PlaySound(0x28E);
             defender.FixedParticles(0x3728, 1, 26, 0x26D6, 0, 0, EffectLayer.Waist);

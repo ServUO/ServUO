@@ -134,6 +134,40 @@ namespace Server.Engines.Craft
             Skills.Add(craftSkill);
         }
 
+        public static CraftItem GetCraftItem(Item item, bool subClass = false)
+        {
+            return GetCraftItem(item.GetType(), subClass);
+        }
+
+        public static CraftItem GetCraftItem(Type type, bool subClass = false)
+        {
+            CraftItem crItem = null;
+
+            for (int i = 0; i < CraftSystem.Systems.Count; i++)
+            {
+                var system = CraftSystem.Systems[i];
+
+                if (system.CraftItems == null)
+                {
+                    continue;
+                }
+
+                crItem = system.CraftItems.SearchFor(type);
+
+                if (crItem == null && subClass)
+                {
+                    crItem = system.CraftItems.SearchForSubclass(type);
+                }
+
+                if (crItem != null)
+                {
+                    break;
+                }
+            }
+
+            return crItem;
+        }
+
         private static readonly Dictionary<Type, int> _itemIds = new Dictionary<Type, int>();
 
         public static int ItemIDOf(Type type)

@@ -5,10 +5,6 @@ namespace Server.Items
 {
     public class PsychicAttack : WeaponAbility
     {
-        public PsychicAttack()
-        {
-        }
-
         public override int BaseMana => 30;
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)

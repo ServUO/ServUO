@@ -7,10 +7,6 @@ namespace Server.Items
     /// </summary>
     public class ArmorIgnore : WeaponAbility
     {
-        public ArmorIgnore()
-        {
-        }
-
         public override int BaseMana => 30;
 
         public override double DamageScalar => 0.9;

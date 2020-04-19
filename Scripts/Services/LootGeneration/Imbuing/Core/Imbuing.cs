@@ -188,13 +188,7 @@ namespace Server.SkillHandlers
 
             foreach (CraftSystem system in CraftSystem.Systems)
             {
-                CraftItem crItem = null;
-
-                if (system != null && system.CraftItems != null)
-                    crItem = system.CraftItems.SearchFor(item.GetType());
-
-                if (crItem != null)
-                    return false;
+                var crItem = CraftItem.GetCraftItem(item);
             }
 
             return true;

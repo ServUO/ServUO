@@ -202,7 +202,7 @@ namespace Server.Items
 
             if (shield != null && shield.ArmorAttributes.SoulCharge > 0 && shield.ArmorAttributes.SoulCharge > Utility.Random(100))
             {
-                SoulChargeContext sc = PropertyEffect.GetContext<SoulChargeContext>(defender, EffectsType.SoulCharge);
+                SoulChargeContext sc = GetContext<SoulChargeContext>(defender, EffectsType.SoulCharge);
 
                 if (sc == null)
                     sc = new SoulChargeContext(defender, shield);
@@ -377,7 +377,7 @@ namespace Server.Items
 
         public static void CheckDamage(Mobile from, int damage, int phys, int fire, int cold, int pois, int ergy, int direct)
         {
-            DamageEaterContext context = PropertyEffect.GetContext<DamageEaterContext>(from, EffectsType.DamageEater);
+            DamageEaterContext context = GetContext<DamageEaterContext>(from, EffectsType.DamageEater);
 
             if (context == null && HasValue(from))
                 context = new DamageEaterContext(from);
@@ -441,7 +441,7 @@ namespace Server.Items
             if (defender == null || ability == WeaponAbility.Disarm || ability == WeaponAbility.InfectiousStrike || SkillMasterySpell.HasSpell(attacker, typeof(SkillMasterySpell)))
                 return false;
 
-            SplinteringWeaponContext context = PropertyEffect.GetContext<SplinteringWeaponContext>(attacker, defender, EffectsType.Splintering);
+            SplinteringWeaponContext context = GetContext<SplinteringWeaponContext>(attacker, defender, EffectsType.Splintering);
 
             if (context == null)
             {
@@ -479,7 +479,7 @@ namespace Server.Items
 
         public static void CheckHit(Mobile attacker, Mobile defender)
         {
-            SearingWeaponContext context = PropertyEffect.GetContext<SearingWeaponContext>(attacker, defender, EffectsType.Searing);
+            SearingWeaponContext context = GetContext<SearingWeaponContext>(attacker, defender, EffectsType.Searing);
 
             if (context == null)
                 new SearingWeaponContext(attacker, defender);
@@ -487,7 +487,7 @@ namespace Server.Items
 
         public static bool HasContext(Mobile defender)
         {
-            return PropertyEffect.GetContext<SearingWeaponContext>(defender, EffectsType.Searing) != null;
+            return GetContext<SearingWeaponContext>(defender, EffectsType.Searing) != null;
         }
     }
 
@@ -538,7 +538,7 @@ namespace Server.Items
 
             if (20 > Utility.Random(100))
             {
-                BoneBreakerContext context = PropertyEffect.GetContext<BoneBreakerContext>(attacker, defender, EffectsType.BoneBreaker);
+                BoneBreakerContext context = GetContext<BoneBreakerContext>(attacker, defender, EffectsType.BoneBreaker);
 
                 if (context == null)
                 {
@@ -604,7 +604,7 @@ namespace Server.Items
                 return;
             }
 
-            SwarmContext context = PropertyEffect.GetContext<SwarmContext>(attacker, defender, EffectsType.Swarm);
+            SwarmContext context = GetContext<SwarmContext>(attacker, defender, EffectsType.Swarm);
 
             if (context != null)
             {
@@ -655,7 +655,7 @@ namespace Server.Items
 
         public static void CheckRemove(Mobile victim)
         {
-            ColUtility.ForEach(PropertyEffect.GetContexts<SwarmContext>(victim, EffectsType.Swarm), context =>
+            ColUtility.ForEach(GetContexts<SwarmContext>(victim, EffectsType.Swarm), context =>
             {
                 context.RemoveEffects();
             });
@@ -705,7 +705,7 @@ namespace Server.Items
                 return;
             }
 
-            SparksContext context = PropertyEffect.GetContext<SparksContext>(attacker, defender, EffectsType.Sparks);
+            SparksContext context = GetContext<SparksContext>(attacker, defender, EffectsType.Sparks);
 
             if (context == null)
             {

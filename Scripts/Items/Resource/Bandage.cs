@@ -337,7 +337,7 @@ namespace Server.Items
                 double chance = ((healing - 68.0) / 50.0) - (m_Slips * 0.02);
 
                 if (((checkSkills = (healing >= 80.0 && anatomy >= 80.0)) && chance > Utility.RandomDouble()) ||
-                    (Server.Engines.VvV.ViceVsVirtueSystem.Enabled && petPatient is Server.Engines.VvV.VvVMount && petPatient.ControlMaster == m_Healer))
+                    (Engines.VvV.ViceVsVirtueSystem.Enabled && petPatient is Engines.VvV.VvVMount && petPatient.ControlMaster == m_Healer))
                 {
                     if (m_Patient.Map == null || !m_Patient.Map.CanFit(m_Patient.Location, 16, false, false))
                     {
@@ -510,7 +510,7 @@ namespace Server.Items
 
                     toHeal -= toHeal * m_Slips * 0.35; // TODO: Verify algorithm
 
-                    if (Server.Engines.CityLoyalty.CityLoyaltySystem.HasTradeDeal(m_Healer, Server.Engines.CityLoyalty.TradeDeal.GuildOfHealers))
+                    if (Engines.CityLoyalty.CityLoyaltySystem.HasTradeDeal(m_Healer, Engines.CityLoyalty.TradeDeal.GuildOfHealers))
                         toHeal += (int)Math.Ceiling(toHeal * 0.05);
 
                     if (m_HealedPoisonOrBleed > 0)

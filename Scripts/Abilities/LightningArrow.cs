@@ -5,10 +5,6 @@ namespace Server.Items
 {
     public class LightningArrow : WeaponAbility
     {
-        public LightningArrow()
-        {
-        }
-
         public override int BaseMana => 20;
 
         public override bool ConsumeAmmo => false;

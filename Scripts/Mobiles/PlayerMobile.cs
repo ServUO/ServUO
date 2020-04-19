@@ -2059,7 +2059,8 @@ namespace Server.Mobiles
 
             BestialSetHelper.OnHeal(this, from, ref amount);
 
-            if (amount > 0 && from != null && from != this)
+            // Removed until we can figure out the endless loop, or do a complete refactor
+            /*if (amount > 0 && from != null && from != this)
             {
                 for (int i = Aggressed.Count - 1; i >= 0; i--)
                 {
@@ -2090,7 +2091,7 @@ namespace Server.Mobiles
                         from.DoHarmful(info.Attacker, true);
                     }
                 }
-            }
+            }*/
         }
 
         public override bool AllowItemUse(Item item)

@@ -24,7 +24,7 @@ namespace Server.SkillHandlers
     {
         public static void Initialize()
         {
-            SkillInfo.Table[(int)SkillName.DetectHidden].Callback = new SkillUseCallback(OnUse);
+            SkillInfo.Table[(int)SkillName.DetectHidden].Callback = OnUse;
         }
 
         public static TimeSpan OnUse(Mobile src)
@@ -79,7 +79,7 @@ namespace Server.SkillHandlers
                         {
                             double ss = srcSkill + Utility.Random(21) - 10;
                             double ts = trg.Skills[SkillName.Hiding].Value + Utility.Random(21) - 10;
-                            double shadow = Server.Spells.SkillMasteries.ShadowSpell.GetDifficultyFactor(trg);
+                            double shadow = Spells.SkillMasteries.ShadowSpell.GetDifficultyFactor(trg);
                             bool houseCheck = inHouse && house.IsInside(trg);
 
                             if (src.AccessLevel >= trg.AccessLevel && (ss >= ts || houseCheck) && Utility.RandomDouble() > shadow)
@@ -102,7 +102,7 @@ namespace Server.SkillHandlers
 
                     foreach (Item item in itemsInRange)
                     {
-                        if (item is LibraryBookcase && Server.Engines.Khaldun.GoingGumshoeQuest3.CheckBookcase(src, item))
+                        if (item is LibraryBookcase && Engines.Khaldun.GoingGumshoeQuest3.CheckBookcase(src, item))
                         {
                             foundAnyone = true;
                         }
@@ -192,7 +192,7 @@ namespace Server.SkillHandlers
                 return false;
 
             // pet owner, guild/alliance, party
-            if (!Server.Spells.SpellHelper.ValidIndirectTarget(target, src))
+            if (!Spells.SpellHelper.ValidIndirectTarget(target, src))
                 return false;
 
             // Checked aggressed/aggressors

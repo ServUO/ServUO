@@ -20,7 +20,7 @@ namespace Server.SkillHandlers
         }
         public static void Initialize()
         {
-            SkillInfo.Table[21].Callback = new SkillUseCallback(OnUse);
+            SkillInfo.Table[21].Callback = OnUse;
         }
 
         public static TimeSpan OnUse(Mobile m)
@@ -31,7 +31,7 @@ namespace Server.SkillHandlers
                 return TimeSpan.FromSeconds(1.0);
             }
 
-            if (Server.Engines.VvV.ManaSpike.UnderEffects(m))
+            if (Engines.VvV.ManaSpike.UnderEffects(m))
             {
                 return TimeSpan.FromSeconds(1.0);
             }
@@ -93,8 +93,8 @@ namespace Server.SkillHandlers
                 {
                     m.Hidden = true;
                     m.Warmode = false;
-                    Server.Spells.Sixth.InvisibilitySpell.RemoveTimer(m);
-                    Server.Items.InvisibilityPotion.RemoveTimer(m);
+                    Spells.Sixth.InvisibilitySpell.RemoveTimer(m);
+                    Items.InvisibilityPotion.RemoveTimer(m);
                     m.LocalOverheadMessage(MessageType.Regular, 0x1F4, 501240); // You have hidden yourself well.
                 }
                 else

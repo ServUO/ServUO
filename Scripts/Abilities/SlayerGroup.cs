@@ -13,10 +13,6 @@ namespace Server.Items
         private SlayerEntry[] m_Entries;
         private Type[] m_FoundOn;
 
-        public SlayerGroup()
-        {
-        }
-
         static SlayerGroup()
         {
             SlayerGroup humanoid = new SlayerGroup();

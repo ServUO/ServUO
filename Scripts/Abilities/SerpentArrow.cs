@@ -2,10 +2,6 @@ namespace Server.Items
 {
     public class SerpentArrow : WeaponAbility
     {
-        public SerpentArrow()
-        {
-        }
-
         public override int BaseMana => 25;
 
         public override SkillName GetSecondarySkill(Mobile from)

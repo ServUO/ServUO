@@ -7,10 +7,6 @@ namespace Server.Items
     /// </summary>
     public class ConcussionBlow : WeaponAbility
     {
-        public ConcussionBlow()
-        {
-        }
-
         public override int BaseMana => 20;
 
         public override bool OnBeforeDamage(Mobile attacker, Mobile defender)

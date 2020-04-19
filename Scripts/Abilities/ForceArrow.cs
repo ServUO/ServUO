@@ -6,10 +6,6 @@ namespace Server.Items
 {
     public class ForceArrow : WeaponAbility
     {
-        public ForceArrow()
-        {
-        }
-
         public override int BaseMana => 20;
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)

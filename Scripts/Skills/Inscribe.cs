@@ -10,7 +10,7 @@ namespace Server.SkillHandlers
         private static readonly Hashtable m_UseTable = new Hashtable();
         public static void Initialize()
         {
-            SkillInfo.Table[(int)SkillName.Inscribe].Callback = new SkillUseCallback(OnUse);
+            SkillInfo.Table[(int)SkillName.Inscribe].Callback = OnUse;
         }
 
         public static TimeSpan OnUse(Mobile m)
@@ -84,9 +84,9 @@ namespace Server.SkillHandlers
 
                 if (book != null)
                 {
-                    if (Inscribe.IsEmpty(book))
+                    if (IsEmpty(book))
                         from.SendLocalizedMessage(501611); // Can't copy an empty book.
-                    else if (Inscribe.GetUser(book) != null)
+                    else if (GetUser(book) != null)
                         from.SendLocalizedMessage(501621); // Someone else is inscribing that item.
                     else
                     {
@@ -94,12 +94,12 @@ namespace Server.SkillHandlers
                         from.Target = target;
                         from.SendLocalizedMessage(501612); // Select a book to copy this to.
                         target.BeginTimeout(from, TimeSpan.FromMinutes(1.0));
-                        Inscribe.SetUser(book, from);
+                        SetUser(book, from);
                     }
                 }
-                else if (targeted is Server.Engines.Khaldun.MysteriousBook)
+                else if (targeted is Engines.Khaldun.MysteriousBook)
                 {
-                    ((Server.Engines.Khaldun.MysteriousBook)targeted).OnInscribeTarget(from);
+                    ((Engines.Khaldun.MysteriousBook)targeted).OnInscribeTarget(from);
                 }
                 else
                 {
@@ -132,19 +132,19 @@ namespace Server.SkillHandlers
 
                 if (bookDst == null)
                     from.SendLocalizedMessage(1046296); // That is not a book
-                else if (Inscribe.IsEmpty(m_BookSrc))
+                else if (IsEmpty(m_BookSrc))
                     from.SendLocalizedMessage(501611); // Can't copy an empty book.
                 else if (bookDst == m_BookSrc)
                     from.SendLocalizedMessage(501616); // Cannot copy a book onto itself.
                 else if (!bookDst.Writable)
                     from.SendLocalizedMessage(501614); // Cannot write into that book.
-                else if (Inscribe.GetUser(bookDst) != null)
+                else if (GetUser(bookDst) != null)
                     from.SendLocalizedMessage(501621); // Someone else is inscribing that item.
                 else
                 {
                     if (from.CheckTargetSkill(SkillName.Inscribe, bookDst, 0, 50))
                     {
-                        Inscribe.Copy(m_BookSrc, bookDst);
+                        Copy(m_BookSrc, bookDst);
 
                         from.SendLocalizedMessage(501618); // You make a copy of the book.
                         from.PlaySound(0x249);
@@ -164,7 +164,7 @@ namespace Server.SkillHandlers
 
             protected override void OnTargetFinish(Mobile from)
             {
-                Inscribe.CancelUser(m_BookSrc);
+                CancelUser(m_BookSrc);
             }
         }
     }
