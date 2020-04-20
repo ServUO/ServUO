@@ -254,7 +254,7 @@ namespace Server.Items
             writer.Write(m_Helpers != null);
 
             if (m_Helpers != null)
-                writer.WriteMobileList<BaseCreature>(m_Helpers);
+                writer.WriteMobileList(m_Helpers);
 
             // version 0			
             writer.Write(Peerless);

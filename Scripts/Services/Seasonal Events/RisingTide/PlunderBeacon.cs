@@ -104,7 +104,7 @@ namespace Server.Items
             base.Serialize(writer);
             writer.Write(0);
 
-            writer.WriteItem<PlunderBeaconAddon>(Controller);
+            writer.WriteItem(Controller);
         }
 
         public override void Deserialize(GenericReader reader)

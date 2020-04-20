@@ -269,7 +269,7 @@ namespace Server.Guilds
                 return;
 
             if (AllowAdvancedSearch && info.ButtonID == 8)
-                pm.SendGump(new GuildAdvancedSearchGump(pm, guild, m_Display, new SearchSelectionCallback(AdvancedSearch_Callback)));
+                pm.SendGump(new GuildAdvancedSearchGump(pm, guild, m_Display, AdvancedSearch_Callback));
         }
 
         public void AdvancedSearch_Callback(GuildDisplayType display)

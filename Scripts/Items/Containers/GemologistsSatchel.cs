@@ -23,7 +23,7 @@ namespace Server.Items
 
             for (int i = 0; i < 5; i++)
             {
-                Type type = Server.SkillHandlers.Imbuing.IngredTypes[Utility.Random(Server.SkillHandlers.Imbuing.IngredTypes.Length)];
+                Type type = SkillHandlers.Imbuing.IngredTypes[Utility.Random(SkillHandlers.Imbuing.IngredTypes.Length)];
 
                 if (type != null)
                 {

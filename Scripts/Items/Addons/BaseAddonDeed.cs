@@ -171,7 +171,7 @@ namespace Server.Items
                 {
                     BaseAddon addon = m_Deed.Addon;
 
-                    Server.Spells.SpellHelper.GetSurfaceTop(ref p);
+                    Spells.SpellHelper.GetSurfaceTop(ref p);
 
                     BaseHouse house = null;
                     BaseGalleon galleon = CheckGalleonPlacement(from, addon, new Point3D(p), map);

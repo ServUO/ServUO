@@ -51,20 +51,20 @@ namespace Server.Mobiles
         }
 
         public override ChampionSkullType SkullType => ChampionSkullType.Power;
-        public override Type[] UniqueList => new Type[] { typeof(CrownOfTalKeesh) };
-        public override Type[] SharedList => new Type[]
+        public override Type[] UniqueList => new[] { typeof(CrownOfTalKeesh) };
+        public override Type[] SharedList => new[]
                 {
                     typeof(TheMostKnowledgePerson),
                     typeof(BraveKnightOfTheBritannia),
                     typeof(LieutenantOfTheBritannianRoyalGuard)
                 };
-        public override Type[] DecorativeList => new Type[]
+        public override Type[] DecorativeList => new[]
                 {
                     typeof(LavaTile),
                     typeof(MonsterStatuette),
                     typeof(MonsterStatuette)
                 };
-        public override MonsterStatuetteType[] StatueTypes => new MonsterStatuetteType[]
+        public override MonsterStatuetteType[] StatueTypes => new[]
                 {
                     MonsterStatuetteType.OphidianArchMage,
                     MonsterStatuetteType.OphidianWarrior

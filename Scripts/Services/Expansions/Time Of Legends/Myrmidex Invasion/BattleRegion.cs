@@ -23,7 +23,7 @@ namespace Server.Engines.MyrmidexInvasion
 
             if (BattleSpawner.Instance != null && BattleSpawner.Instance.Active && nomaster && Spawner != null)
             {
-                Timer.DelayCall<BaseCreature>(TimeSpan.FromSeconds(.25), Spawner.RegisterDeath, (BaseCreature)m);
+                Timer.DelayCall(TimeSpan.FromSeconds(.25), Spawner.RegisterDeath, (BaseCreature)m);
             }
 
             // the delay ensures the corpse is created after death

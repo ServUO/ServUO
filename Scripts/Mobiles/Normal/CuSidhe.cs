@@ -160,7 +160,7 @@ namespace Server.Mobiles
 
             if (version < 3 && Controlled && RawStr >= 1200 && ControlSlots == ControlSlotsMin)
             {
-                Server.SkillHandlers.AnimalTaming.ScaleStats(this, 0.5);
+                SkillHandlers.AnimalTaming.ScaleStats(this, 0.5);
             }
 
             if (version < 1 && Name == "a Cu Sidhe")

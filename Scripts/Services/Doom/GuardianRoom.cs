@@ -86,7 +86,7 @@ namespace Server.Engines.Doom
 
             if (m is PlayerMobile && Active)
             {
-                Timer.DelayCall<PlayerMobile>(TimeSpan.FromSeconds(3), MoveDeadPlayer, (PlayerMobile)m);
+                Timer.DelayCall(TimeSpan.FromSeconds(3), MoveDeadPlayer, (PlayerMobile)m);
             }
         }
 

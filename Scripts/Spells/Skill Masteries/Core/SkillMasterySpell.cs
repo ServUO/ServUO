@@ -811,12 +811,12 @@ namespace Server.Spells.SkillMasteries
             if (move != null)
                 move.OnDamaged(damager, victim, type, ref damage);
 
-            PerseveranceSpell preserve = SkillMasterySpell.GetSpellForParty(victim, typeof(PerseveranceSpell)) as PerseveranceSpell;
+            PerseveranceSpell preserve = GetSpellForParty(victim, typeof(PerseveranceSpell)) as PerseveranceSpell;
 
             if (preserve != null)
                 preserve.AbsorbDamage(ref damage);
 
-            InspireSpell inspire = SkillMasterySpell.GetSpellForParty(damager, typeof(InspireSpell)) as InspireSpell;
+            InspireSpell inspire = GetSpellForParty(damager, typeof(InspireSpell)) as InspireSpell;
 
             if (inspire != null)
                 inspire.DoDamage(ref damage);
@@ -1091,11 +1091,11 @@ namespace Server.Spells.SkillMasteries
             switch (attr)
             {
                 case AosAttribute.AttackChance:
-                    spell = SkillMasterySpell.GetSpellForParty(m, typeof(InspireSpell));
+                    spell = GetSpellForParty(m, typeof(InspireSpell));
                     if (spell != null)
                         value += spell.PropertyBonus();
 
-                    spell = SkillMasterySpell.GetSpellForParty(m, typeof(TribulationSpell));
+                    spell = GetSpellForParty(m, typeof(TribulationSpell));
                     if (spell != null)
                         value += spell.PropertyBonus();
 
@@ -1107,36 +1107,36 @@ namespace Server.Spells.SkillMasteries
                     value += MasteryInfo.SavingThrowChance(m, attr);
                     break;
                 case AosAttribute.DefendChance:
-                    spell = SkillMasterySpell.GetSpellForParty(m, typeof(PerseveranceSpell));
+                    spell = GetSpellForParty(m, typeof(PerseveranceSpell));
 
                     if (spell != null)
                         value += spell.PropertyBonus();
 
-                    if (Server.Spells.SkillMasteries.WhiteTigerFormSpell.IsActive(m))
+                    if (WhiteTigerFormSpell.IsActive(m))
                         value += 20;
 
                     value += MasteryInfo.SavingThrowChance(m, attr);
                     break;
                 case AosAttribute.RegenHits:
-                    spell = SkillMasterySpell.GetSpellForParty(m, typeof(ResilienceSpell));
+                    spell = GetSpellForParty(m, typeof(ResilienceSpell));
 
                     if (spell != null)
                         value += spell.PropertyBonus();
                     break;
                 case AosAttribute.RegenStam:
-                    spell = SkillMasterySpell.GetSpellForParty(m, typeof(ResilienceSpell));
+                    spell = GetSpellForParty(m, typeof(ResilienceSpell));
 
                     if (spell != null)
                         value += spell.PropertyBonus();
                     break;
                 case AosAttribute.RegenMana:
-                    spell = SkillMasterySpell.GetSpellForParty(m, typeof(ResilienceSpell));
+                    spell = GetSpellForParty(m, typeof(ResilienceSpell));
 
                     if (spell != null)
                         value += spell.PropertyBonus();
                     break;
                 case AosAttribute.WeaponDamage:
-                    spell = SkillMasterySpell.GetSpellForParty(m, typeof(InspireSpell));
+                    spell = GetSpellForParty(m, typeof(InspireSpell));
 
                     if (spell != null)
                         value += spell.DamageBonus();
@@ -1144,7 +1144,7 @@ namespace Server.Spells.SkillMasteries
                     value += MasteryInfo.SavingThrowChance(m, attr);
                     break;
                 case AosAttribute.SpellDamage:
-                    spell = SkillMasterySpell.GetSpellForParty(m, typeof(InspireSpell));
+                    spell = GetSpellForParty(m, typeof(InspireSpell));
 
                     if (spell != null)
                         value += spell.PropertyBonus();
@@ -1169,7 +1169,7 @@ namespace Server.Spells.SkillMasteries
             switch (attr)
             {
                 case SAAbsorptionAttribute.CastingFocus:
-                    SkillMasterySpell spell = SkillMasterySpell.GetSpellForParty(m, typeof(PerseveranceSpell));
+                    SkillMasterySpell spell = GetSpellForParty(m, typeof(PerseveranceSpell));
 
                     if (spell != null)
                         value += spell.PropertyBonus2();

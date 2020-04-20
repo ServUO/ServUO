@@ -49,16 +49,16 @@ namespace Server.Engines.PartySystem
         }
         public static void Initialize()
         {
-            EventSink.Logout += new LogoutEventHandler(EventSink_Logout);
-            EventSink.Login += new LoginEventHandler(EventSink_Login);
-            EventSink.PlayerDeath += new PlayerDeathEventHandler(EventSink_PlayerDeath);
+            EventSink.Logout += EventSink_Logout;
+            EventSink.Login += EventSink_Login;
+            EventSink.PlayerDeath += EventSink_PlayerDeath;
 
-            CommandSystem.Register("ListenToParty", AccessLevel.GameMaster, new CommandEventHandler(ListenToParty_OnCommand));
+            CommandSystem.Register("ListenToParty", AccessLevel.GameMaster, ListenToParty_OnCommand);
         }
 
         public static void ListenToParty_OnCommand(CommandEventArgs e)
         {
-            e.Mobile.BeginTarget(-1, false, TargetFlags.None, new TargetCallback(ListenToParty_OnTarget));
+            e.Mobile.BeginTarget(-1, false, TargetFlags.None, ListenToParty_OnTarget);
             e.Mobile.SendMessage("Target a partied player.");
         }
 

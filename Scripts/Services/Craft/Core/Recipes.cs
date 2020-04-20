@@ -67,8 +67,8 @@ namespace Server.Engines.Craft
         }
         public static void Initialize()
         {
-            CommandSystem.Register("LearnAllRecipes", AccessLevel.GameMaster, new CommandEventHandler(LearnAllRecipes_OnCommand));
-            CommandSystem.Register("ForgetAllRecipes", AccessLevel.GameMaster, new CommandEventHandler(ForgetAllRecipes_OnCommand));
+            CommandSystem.Register("LearnAllRecipes", AccessLevel.GameMaster, LearnAllRecipes_OnCommand);
+            CommandSystem.Register("ForgetAllRecipes", AccessLevel.GameMaster, ForgetAllRecipes_OnCommand);
         }
 
         [Usage("LearnAllRecipes")]
@@ -78,21 +78,20 @@ namespace Server.Engines.Craft
             Mobile m = e.Mobile;
             m.SendMessage("Target a player to teach them all of the recipies.");
 
-            m.BeginTarget(-1, false, Server.Targeting.TargetFlags.None, new TargetCallback(
-                delegate (Mobile from, object targeted)
+            m.BeginTarget(-1, false, Server.Targeting.TargetFlags.None, delegate (Mobile from, object targeted)
+            {
+                if (targeted is PlayerMobile)
                 {
-                    if (targeted is PlayerMobile)
-                    {
-                        foreach (KeyValuePair<int, Recipe> kvp in m_Recipes)
-                            ((PlayerMobile)targeted).AcquireRecipe(kvp.Key);
+                    foreach (KeyValuePair<int, Recipe> kvp in m_Recipes)
+                        ((PlayerMobile)targeted).AcquireRecipe(kvp.Key);
 
-                        m.SendMessage("You teach them all of the recipies.");
-                    }
-                    else
-                    {
-                        m.SendMessage("That is not a player!");
-                    }
-                }));
+                    m.SendMessage("You teach them all of the recipies.");
+                }
+                else
+                {
+                    m.SendMessage("That is not a player!");
+                }
+            });
         }
 
         [Usage("ForgetAllRecipes")]
@@ -102,20 +101,19 @@ namespace Server.Engines.Craft
             Mobile m = e.Mobile;
             m.SendMessage("Target a player to have them forget all of the recipies they've learned.");
 
-            m.BeginTarget(-1, false, Server.Targeting.TargetFlags.None, new TargetCallback(
-                delegate (Mobile from, object targeted)
+            m.BeginTarget(-1, false, Server.Targeting.TargetFlags.None, delegate (Mobile from, object targeted)
+            {
+                if (targeted is PlayerMobile)
                 {
-                    if (targeted is PlayerMobile)
-                    {
-                        ((PlayerMobile)targeted).ResetRecipes();
+                    ((PlayerMobile)targeted).ResetRecipes();
 
-                        m.SendMessage("They forget all their recipies.");
-                    }
-                    else
-                    {
-                        m.SendMessage("That is not a player!");
-                    }
-                }));
+                    m.SendMessage("They forget all their recipies.");
+                }
+                else
+                {
+                    m.SendMessage("That is not a player!");
+                }
+            });
         }
     }
 }

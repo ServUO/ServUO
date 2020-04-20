@@ -565,7 +565,7 @@ namespace Server.Items
                             MaxHitPoints -= wear;
 
                             if (Parent is Mobile)
-                                ((Mobile)Parent).LocalOverheadMessage(Server.Network.MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
+                                ((Mobile)Parent).LocalOverheadMessage(Network.MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
                         }
                         else
                         {

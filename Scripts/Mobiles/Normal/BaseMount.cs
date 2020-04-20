@@ -166,7 +166,7 @@ namespace Server.Mobiles
 
         public static void Dismount(Mobile dismounter, Mobile dismounted, BlockMountType blockmounttype, TimeSpan delay, bool message)
         {
-            if (!dismounted.Mounted && !Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(dismounted) && !dismounted.Flying)
+            if (!dismounted.Mounted && !Spells.Ninjitsu.AnimalForm.UnderTransformation(dismounted) && !dismounted.Flying)
                 return;
 
             if (dismounted is ChaosDragoonElite)
@@ -431,7 +431,7 @@ namespace Server.Mobiles
 
             if (from.IsBodyMod && !from.Body.IsHuman)
             {
-                PrivateOverheadMessage(Network.MessageType.Regular, 0x3B2, 1062061, from.NetState);
+                PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1062061, from.NetState);
 
                 return;
             }
@@ -463,7 +463,7 @@ namespace Server.Mobiles
                 return;
             }
 
-            if (!Multis.DesignContext.Check(from))
+            if (!DesignContext.Check(from))
                 return;
 
             if (from.HasTrade)
@@ -481,19 +481,19 @@ namespace Server.Mobiles
                 if (canAccess)
                 {
                     if (Poisoned)
-                        PrivateOverheadMessage(Network.MessageType.Regular, 0x3B2, 1049692, from.NetState); // This mount is too ill to ride.
+                        PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1049692, from.NetState); // This mount is too ill to ride.
                     else
                         Rider = from;
                 }
                 else if (!Controlled && !Summoned)
                 {
                     // That mount does not look broken! You would have to tame it to ride it.
-                    PrivateOverheadMessage(Network.MessageType.Regular, 0x3B2, 501263, from.NetState);
+                    PrivateOverheadMessage(MessageType.Regular, 0x3B2, 501263, from.NetState);
                 }
                 else
                 {
                     // This isn't your mount; it refuses to let you ride.
-                    PrivateOverheadMessage(Network.MessageType.Regular, 0x3B2, 501264, from.NetState);
+                    PrivateOverheadMessage(MessageType.Regular, 0x3B2, 501264, from.NetState);
                 }
             }
             else
@@ -567,21 +567,21 @@ namespace Server.Mobiles
                                 {
                                     if (m_Mount is Mobile && ((Mobile)m_Mount).Hits >= ((Mobile)m_Mount).HitsMax)
                                     {
-                                        BaseMount.ExpireMountPrevention(m_Mobile);
+                                        ExpireMountPrevention(m_Mobile);
                                         return true;
                                     }
                                 }
                                 break;
                             case BlockMountType.RidingSwipeEthereal:
                                 {
-                                    BaseMount.ExpireMountPrevention(m_Mobile);
+                                    ExpireMountPrevention(m_Mobile);
                                     return true;
                                 }
                             case BlockMountType.RidingSwipeFlying:
                                 {
                                     if (m_Mobile.Hits >= m_Mobile.HitsMax)
                                     {
-                                        BaseMount.ExpireMountPrevention(m_Mobile);
+                                        ExpireMountPrevention(m_Mobile);
                                         return true;
                                     }
                                 }
@@ -594,7 +594,7 @@ namespace Server.Mobiles
 
                 if (DateTime.UtcNow >= m_Expiration)
                 {
-                    BaseMount.ExpireMountPrevention(m_Mobile);
+                    ExpireMountPrevention(m_Mobile);
                     return true;
                 }
 

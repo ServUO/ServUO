@@ -368,7 +368,7 @@ namespace Server.Items
                         {
                             spell.Cast();
                         }
-                        else if (!Server.Spells.SkillMasteries.MasteryInfo.IsPassiveMastery(spellID))
+                        else if (!Spells.SkillMasteries.MasteryInfo.IsPassiveMastery(spellID))
                         {
                             from.SendLocalizedMessage(502345); // This spell has been temporarily disabled.
                         }
@@ -1297,7 +1297,7 @@ namespace Server.Items
                     {
                         spell.Cast();
                     }
-                    else if (!Server.Spells.SkillMasteries.MasteryInfo.IsPassiveMastery(spellID))
+                    else if (!Spells.SkillMasteries.MasteryInfo.IsPassiveMastery(spellID))
                     {
                         from.SendLocalizedMessage(502345); // This spell has been temporarily disabled.
                     }

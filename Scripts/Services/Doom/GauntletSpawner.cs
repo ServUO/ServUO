@@ -209,7 +209,7 @@ namespace Server.Engines.Doom
                     CreateRegion();
                     FullSpawn();
 
-                    m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0), new TimerCallback(Slice));
+                    m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0), Slice);
                 }
                 else
                 {
@@ -265,8 +265,8 @@ namespace Server.Engines.Doom
 
         public static void Initialize()
         {
-            CommandSystem.Register("GenGauntlet", AccessLevel.Administrator, new CommandEventHandler(GenGauntlet_OnCommand));
-            CommandSystem.Register("DeleteGauntlet", AccessLevel.Administrator, new CommandEventHandler(DeleteGauntlet_OnCommand));
+            CommandSystem.Register("GenGauntlet", AccessLevel.Administrator, GenGauntlet_OnCommand);
+            CommandSystem.Register("DeleteGauntlet", AccessLevel.Administrator, DeleteGauntlet_OnCommand);
         }
 
         private static bool FindObject<T>(Map map, Point3D p, int range, out T value) where T : IEntity
@@ -878,14 +878,14 @@ namespace Server.Engines.Doom
 
             writer.Write(m_RegionBounds);
 
-            writer.WriteItemList<BaseTrap>(m_Traps, false);
+            writer.WriteItemList(m_Traps, false);
 
             writer.Write(m_Creatures, false);
 
             writer.Write(m_TypeName);
-            writer.WriteItem<BaseDoor>(m_Door);
-            writer.WriteItem<BaseAddon>(m_Addon);
-            writer.WriteItem<GauntletSpawner>(m_Sequence);
+            writer.WriteItem(m_Door);
+            writer.WriteItem(m_Addon);
+            writer.WriteItem(m_Sequence);
 
             writer.Write((int)m_State);
         }

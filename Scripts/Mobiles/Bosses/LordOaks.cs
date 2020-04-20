@@ -52,8 +52,8 @@ namespace Server.Mobiles
         }
 
         public override ChampionSkullType SkullType => ChampionSkullType.Enlightenment;
-        public override Type[] UniqueList => new Type[] { typeof(OrcChieftainHelm) };
-        public override Type[] SharedList => new Type[]
+        public override Type[] UniqueList => new[] { typeof(OrcChieftainHelm) };
+        public override Type[] SharedList => new[]
                 {
                     typeof(RoyalGuardSurvivalKnife),
                     typeof(DjinnisRing),
@@ -62,7 +62,7 @@ namespace Server.Mobiles
                     typeof(DetectiveBoots),
                     typeof(TheMostKnowledgePerson)
                 };
-        public override Type[] DecorativeList => new Type[]
+        public override Type[] DecorativeList => new[]
                 {
                     typeof(WaterTile),
                     typeof(WindSpirit),

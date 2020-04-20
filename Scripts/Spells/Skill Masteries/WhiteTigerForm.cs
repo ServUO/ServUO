@@ -88,7 +88,7 @@ namespace Server.Spells.SkillMasteries
                 AnimalFormContext context = AnimalForm.GetContext(Caster);
                 int mana = ScaleMana(RequiredMana);
 
-                Ninjitsu.AnimalForm.AddLastAnimalForm(Caster, 16);
+                AnimalForm.AddLastAnimalForm(Caster, 16);
 
                 if (mana > Caster.Mana)
                 {
@@ -190,8 +190,7 @@ namespace Server.Spells.SkillMasteries
         {
             CheckTable();
 
-            int damage;
-            if (!HasBleedMod(attacker, out damage) || (_Table != null && _Table.ContainsKey(attacker)))
+            if (!HasBleedMod(attacker, out _) || (_Table != null && _Table.ContainsKey(attacker)))
                 return;
 
             double bleedchance = (attacker.Skills.Ninjitsu.Value + attacker.Skills.Stealth.Value + (MasteryInfo.GetMasteryLevel(attacker, SkillName.Ninjitsu) * 40)) / 3.0 / 15.0;

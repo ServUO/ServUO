@@ -108,7 +108,7 @@ namespace Server.Guilds
                         {
                             pm.SendLocalizedMessage(1013071); // Enter the new guild charter (50 characters max):
 
-                            pm.BeginPrompt(new PromptCallback(SetCharter_Callback), true);	//Have the same callback handle both canceling and deletion cause the 2nd callback would just get a text of ""
+                            pm.BeginPrompt(SetCharter_Callback, true);	//Have the same callback handle both canceling and deletion cause the 2nd callback would just get a text of ""
                         }
                         break;
                     }
@@ -117,7 +117,7 @@ namespace Server.Guilds
                         if (IsLeader(pm, guild))
                         {
                             pm.SendLocalizedMessage(1013072); // Enter the new website for the guild (50 characters max):
-                            pm.BeginPrompt(new PromptCallback(SetWebsite_Callback), true);	//Have the same callback handle both canceling and deletion cause the 2nd callback would just get a text of ""
+                            pm.BeginPrompt(SetWebsite_Callback, true);	//Have the same callback handle both canceling and deletion cause the 2nd callback would just get a text of ""
                         }
                         break;
                     }

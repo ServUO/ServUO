@@ -114,7 +114,7 @@ namespace Server.Engines.CannedEvil
             SpawnRadius = 35;
             SpawnMod = 1;
 
-            Timer.DelayCall(TimeSpan.Zero, new TimerCallback(SetInitialSpawnArea));
+            Timer.DelayCall(TimeSpan.Zero, SetInitialSpawnArea);
         }
 
         public void SetInitialSpawnArea()
@@ -678,7 +678,7 @@ namespace Server.Engines.CannedEvil
 
                                 info.Award(m_Type, mobSubLevel);
 
-                                Server.Engines.CityLoyalty.CityLoyaltySystem.OnSpawnCreatureKilled(m as BaseCreature, mobSubLevel);
+                                CityLoyalty.CityLoyaltySystem.OnSpawnCreatureKilled(m as BaseCreature, mobSubLevel);
                             }
                         }
                     }
@@ -1248,7 +1248,7 @@ namespace Server.Engines.CannedEvil
             }
 
             writer.Write(m_ConfinedRoaming);
-            writer.WriteItem<IdolOfTheChampion>(m_Idol);
+            writer.WriteItem(m_Idol);
             writer.Write(m_HasBeenAdvanced);
             writer.Write(m_SpawnArea);
 
@@ -1262,8 +1262,8 @@ namespace Server.Engines.CannedEvil
             writer.Write(m_Creatures, true);
             writer.Write(m_RedSkulls, true);
             writer.Write(m_WhiteSkulls, true);
-            writer.WriteItem<ChampionPlatform>(m_Platform);
-            writer.WriteItem<ChampionAltar>(m_Altar);
+            writer.WriteItem(m_Platform);
+            writer.WriteItem(m_Altar);
             writer.Write(m_ExpireDelay);
             writer.WriteDeltaTime(m_ExpireTime);
             writer.Write(m_Champion);
@@ -1392,7 +1392,7 @@ namespace Server.Engines.CannedEvil
                 bc.IsChampionSpawn = true;
             }
 
-            Timer.DelayCall(TimeSpan.Zero, new TimerCallback(UpdateRegion));
+            Timer.DelayCall(TimeSpan.Zero, UpdateRegion);
         }
 
         public void SendGump(Mobile mob)
@@ -1474,7 +1474,7 @@ namespace Server.Engines.CannedEvil
                 {
                     damagers.Add(new Damager(mob, spawn.m_DamageEntries[mob]));
                 }
-                damagers = damagers.OrderByDescending(x => x.Damage).ToList<Damager>();
+                damagers = damagers.OrderByDescending(x => x.Damage).ToList();
 
                 foreach (Damager damager in damagers)
                 {
@@ -1514,7 +1514,7 @@ namespace Server.Engines.CannedEvil
         public ChampionSpawn ChampionSpawn => m_Spawn;
 
         public ChampionSpawnRegion(ChampionSpawn spawn)
-            : base(null, spawn.Map, Region.Find(spawn.Location, spawn.Map), spawn.SpawnArea)
+            : base(null, spawn.Map, Find(spawn.Location, spawn.Map), spawn.SpawnArea)
         {
             m_Spawn = spawn;
         }

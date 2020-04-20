@@ -52,7 +52,7 @@ namespace Server.Spells.SkillMasteries
 
         public override void OnCast()
         {
-            Caster.Target = new MasteryTarget(this, 10, true, Server.Targeting.TargetFlags.None);
+            Caster.Target = new MasteryTarget(this, 10, true, Targeting.TargetFlags.None);
         }
 
         protected override void OnTarget(object o)
@@ -174,12 +174,12 @@ namespace Server.Spells.SkillMasteries
 
         private void DoEffects()
         {
-            Server.Misc.Geometry.Circle2D(Location, Map, 4, (pnt, map) =>
+            Misc.Geometry.Circle2D(Location, Map, 4, (pnt, map) =>
             {
                 Effects.SendLocationEffect(pnt, map, 0x3709, 0x14, 0x1, 0x8AF, 4);
             });
 
-            Server.Misc.Geometry.Circle2D(Location, Map, 5, (pnt, map) =>
+            Misc.Geometry.Circle2D(Location, Map, 5, (pnt, map) =>
             {
                 Effects.SendLocationEffect(pnt, map, 0x3709, 0x14, 0x1, 0x8AF, 4);
             });

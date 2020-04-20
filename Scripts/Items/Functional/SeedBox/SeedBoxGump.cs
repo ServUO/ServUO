@@ -128,7 +128,7 @@ namespace Server.Engines.Plants
                             return;
 
                         Refresh();
-                        BaseGump.SendGump(new SeedInfoGump(User, Box, entry, this));
+                        SendGump(new SeedInfoGump(User, Box, entry, this));
                     }
                     break;
             }

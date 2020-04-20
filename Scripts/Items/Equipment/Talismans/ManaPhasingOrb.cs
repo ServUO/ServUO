@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace Server.Items
 {
-    public class ManaPhasingOrb : BaseTalisman, Server.Engines.Craft.IRepairable
+    public class ManaPhasingOrb : BaseTalisman, Engines.Craft.IRepairable
     {
         public override int LabelNumber => 1116230;
-        public Server.Engines.Craft.CraftSystem RepairSystem => Server.Engines.Craft.DefTinkering.CraftSystem;
+        public Engines.Craft.CraftSystem RepairSystem => Engines.Craft.DefTinkering.CraftSystem;
         public override int InitMinHits => 255;
         public override int InitMaxHits => 255;
 

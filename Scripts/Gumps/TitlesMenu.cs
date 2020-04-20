@@ -943,7 +943,7 @@ namespace Server.Gumps
             }
         }
 
-        public override void OnResponse(Server.Network.NetState state, RelayInfo info)
+        public override void OnResponse(Network.NetState state, RelayInfo info)
         {
             GumpButton button = ButtonCallbacks.Keys.FirstOrDefault(b => b.ButtonID == info.ButtonID);
 

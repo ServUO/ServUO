@@ -182,7 +182,7 @@ namespace Server.Services.TownCryer
         {
             if (Enabled && e.Mobile is PlayerMobile && !IsExempt(e.Mobile))
             {
-                Timer.DelayCall<PlayerMobile>(TimeSpan.FromSeconds(1), player =>
+                Timer.DelayCall(TimeSpan.FromSeconds(1), player =>
                 {
                     if (HasCustomEntries())
                     {

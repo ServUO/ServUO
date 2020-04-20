@@ -55,7 +55,7 @@ namespace Server.Spells.SkillMasteries
                 }
                 else if (CheckSequence())
                 {
-                    double difficulty = Items.BaseInstrument.GetBaseDifficulty(bc);
+                    double difficulty = BaseInstrument.GetBaseDifficulty(bc);
                     double skill = ((Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) / 2) + (GetMasteryLevel() * 3) + 1;
 
                     double chance = (skill - (difficulty - 25)) / ((difficulty + 25) - (difficulty - 25));
@@ -91,7 +91,7 @@ namespace Server.Spells.SkillMasteries
 
                             if (bc is SkeletalDragon)
                             {
-                                Server.Engines.Quests.Doom.BellOfTheDead.TryRemoveDragon((SkeletalDragon)bc);
+                                Engines.Quests.Doom.BellOfTheDead.TryRemoveDragon((SkeletalDragon)bc);
                             }
 
                             Caster.PlaySound(0x5C4);
@@ -134,7 +134,7 @@ namespace Server.Spells.SkillMasteries
 
         public static bool ValidateTarget(BaseCreature bc)
         {
-            if (bc is BaseRenowned || bc is BaseChampion || bc is Server.Engines.Shadowguard.ShadowguardBoss)
+            if (bc is BaseRenowned || bc is BaseChampion || bc is Engines.Shadowguard.ShadowguardBoss)
                 return false;
 
             foreach (Type t in _CommandTypes)

@@ -10,7 +10,7 @@ namespace Server.Items
             : base(0x2F5B)
         {
             Hue = 0x587;
-            Blessed = RandomTalisman.GetRandomBlessed();
+            Blessed = GetRandomBlessed();
             Attributes.BonusHits = 10;
             Attributes.RegenHits = 2;
             Attributes.DefendChance = 10;

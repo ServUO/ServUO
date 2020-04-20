@@ -10,7 +10,7 @@ namespace Server.Mobiles
     public class Harrower : BaseCreature
     {
         private readonly int m_StatCap = Config.Get("PlayerCaps.TotalStatCap", 225);
-        private static readonly SpawnEntry[] m_Entries = new SpawnEntry[]
+        private static readonly SpawnEntry[] m_Entries = new[]
         {
             new SpawnEntry(new Point3D(5242, 945, -40), new Point3D(1176, 2638, 0)), // Destard
             new SpawnEntry(new Point3D(5225, 798, 0), new Point3D(1176, 2638, 0)), // Destard
@@ -29,7 +29,7 @@ namespace Server.Mobiles
             new SpawnEntry(new Point3D(5579, 1858, 0), new Point3D(2499, 919, 0))// Covetous
         };
         private static readonly ArrayList m_Instances = new ArrayList();
-        private static readonly double[] m_Offsets = new double[]
+        private static readonly double[] m_Offsets = new[]
         {
             Math.Cos(000.0 / 180.0 * Math.PI), Math.Sin(000.0 / 180.0 * Math.PI),
             Math.Cos(040.0 / 180.0 * Math.PI), Math.Sin(040.0 / 180.0 * Math.PI),
@@ -90,11 +90,11 @@ namespace Server.Mobiles
 
         public static bool CanSpawn => (m_Instances.Count == 0);
 
-        public Type[] UniqueList => new Type[] { typeof(AcidProofRobe) };
+        public Type[] UniqueList => new[] { typeof(AcidProofRobe) };
 
-        public Type[] SharedList => new Type[] { typeof(TheRobeOfBritanniaAri) };
+        public Type[] SharedList => new[] { typeof(TheRobeOfBritanniaAri) };
 
-        public Type[] DecorativeList => new Type[] { typeof(EvilIdolSkull), typeof(SkullPole) };
+        public Type[] DecorativeList => new[] { typeof(EvilIdolSkull), typeof(SkullPole) };
 
         public override bool AutoDispel => true;
 
@@ -215,7 +215,7 @@ namespace Server.Mobiles
             writer.Write(m_IsSpawned);
             writer.Write(m_TrueForm);
             writer.Write(m_GateItem);
-            writer.WriteMobileList<HarrowerTentacles>(m_Tentacles);
+            writer.WriteMobileList(m_Tentacles);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -332,8 +332,6 @@ namespace Server.Mobiles
                 if (!NoKillAwards)
                 {
                     GivePowerScrolls();
-
-                    Map map = Map;
 
                     GoldShower.DoForHarrower(Location, Map);
 

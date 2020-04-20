@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -319,7 +319,7 @@ namespace Server.Items
 
             if (version == 0)
             {
-                Timer.DelayCall<Map>(TimeSpan.FromSeconds(5), map =>
+                Timer.DelayCall(TimeSpan.FromSeconds(5), map =>
                     {
                         EnchantedHotItem.SpawnChests(map);
                         Console.WriteLine("Hot Item chests spawned for {0}.", Map);

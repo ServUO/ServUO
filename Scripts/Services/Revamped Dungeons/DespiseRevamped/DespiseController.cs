@@ -11,8 +11,8 @@ namespace Server.Engines.Despise
     {
         public static void Initialize()
         {
-            EventSink.Login += new LoginEventHandler(OnLogin);
-            EventSink.OnEnterRegion += new OnEnterRegionEventHandler(OnEnterRegion);
+            EventSink.Login += OnLogin;
+            EventSink.OnEnterRegion += OnEnterRegion;
 
             if (m_Instance != null)
                 CommandSystem.Register("CheckSpawnersVersion3", AccessLevel.Administrator, m_Instance.CheckSpawnersVersion3);
@@ -126,7 +126,7 @@ namespace Server.Engines.Despise
         {
             EndTimer();
 
-            m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), new TimerCallback(OnTick));
+            m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), OnTick);
 
             m_LowerRegion = new DespiseRegion("Despise Lower", m_LowerLevelBounds, true);
             m_EvilRegion = new DespiseRegion("Despise Evil", m_EvilBounds);
@@ -218,7 +218,7 @@ namespace Server.Engines.Despise
                 ColUtility.Free(players);
                 m_SequenceAlignment = strongest;
 
-                Timer.DelayCall(TimeSpan.FromSeconds(60), new TimerCallback(BeginSequence));
+                Timer.DelayCall(TimeSpan.FromSeconds(60), BeginSequence);
                 m_NextBossEncounter = DateTime.MinValue;
                 m_Sequencing = true;
             }
@@ -347,7 +347,7 @@ namespace Server.Engines.Despise
             BeginSequenceTimer();
             KickFromBossRegion(false);
 
-            Timer.DelayCall(TimeSpan.FromSeconds(60), new TimerCallback(TransportPlayers));
+            Timer.DelayCall(TimeSpan.FromSeconds(60), TransportPlayers);
 
             Timer.DelayCall(TimeSpan.FromSeconds(12), new TimerStateCallback(SendReadyMessage_Callback), 1153339); // You have been called to assist in a fight of good versus evil. Fight your way to the Lake, and defeat the enemy overlord and its lieutenants!
             Timer.DelayCall(TimeSpan.FromSeconds(24), new TimerStateCallback(SendReadyMessage_Callback), 1153340); // The Overlord is shielded from all attacks by players, but not by creatures possessed by Wisp Orbs. You must protect your controlled creature as it fights.
@@ -380,12 +380,12 @@ namespace Server.Engines.Despise
                 EndSequenceTimer();
                 SendRegionMessage(m_LowerRegion, 1153348); // You were unable to defeat the enemy overlord in the time allotted. He has activated a Doom Spell!
 
-                Timer.DelayCall(TimeSpan.FromSeconds(1), new TimerCallback(EndSequence));
+                Timer.DelayCall(TimeSpan.FromSeconds(1), EndSequence);
             }
             else if (m_PlayersInSequence && !HasPlayers(m_LowerRegion))
             {
                 EndSequenceTimer();
-                Timer.DelayCall(TimeSpan.FromSeconds(1), new TimerCallback(EndSequence));
+                Timer.DelayCall(TimeSpan.FromSeconds(1), EndSequence);
             }
         }
 
@@ -513,7 +513,7 @@ namespace Server.Engines.Despise
         {
             EndSequenceTimer();
 
-            m_SequenceTimer = Timer.DelayCall(TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), new TimerCallback(OnSequenceTick));
+            m_SequenceTimer = Timer.DelayCall(TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), OnSequenceTick);
             m_SequenceTimer.Start();
         }
 
@@ -529,7 +529,7 @@ namespace Server.Engines.Despise
         public void BeginCleanupTimer()
         {
             EndCleanupTimer();
-            m_CleanupTimer = Timer.DelayCall(TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5), new TimerCallback(EndSequence));
+            m_CleanupTimer = Timer.DelayCall(TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5), EndSequence);
             m_CleanupTimer.Start();
 
             foreach (Mobile m in m_LowerRegion.GetMobiles())

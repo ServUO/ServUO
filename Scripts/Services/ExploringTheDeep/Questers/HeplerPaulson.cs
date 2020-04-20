@@ -141,7 +141,7 @@ namespace Server.Mobiles
     {
         public static void Initialize()
         {
-            CommandSystem.Register("HeplerPaulson", AccessLevel.GameMaster, new CommandEventHandler(HeplerPaulsonGump_OnCommand));
+            CommandSystem.Register("HeplerPaulson", AccessLevel.GameMaster, HeplerPaulsonGump_OnCommand);
         }
 
         private static void HeplerPaulsonGump_OnCommand(CommandEventArgs e)
@@ -169,7 +169,7 @@ namespace Server.Mobiles
     {
         public static void Initialize()
         {
-            CommandSystem.Register("HeplerPaulsonComplete", AccessLevel.GameMaster, new CommandEventHandler(HeplerPaulsonCompleteGump_OnCommand));
+            CommandSystem.Register("HeplerPaulsonComplete", AccessLevel.GameMaster, HeplerPaulsonCompleteGump_OnCommand);
         }
 
         private static readonly PageData[] GumpInfo =
@@ -193,7 +193,7 @@ namespace Server.Mobiles
     {
         public static void Initialize()
         {
-            CommandSystem.Register("HeplerPaulsonCollectComplete", AccessLevel.GameMaster, new CommandEventHandler(HeplerPaulsonCollectCompleteGump_OnCommand));
+            CommandSystem.Register("HeplerPaulsonCollectComplete", AccessLevel.GameMaster, HeplerPaulsonCollectCompleteGump_OnCommand);
         }
 
         private static void HeplerPaulsonCollectCompleteGump_OnCommand(CommandEventArgs e)

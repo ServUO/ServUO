@@ -145,7 +145,7 @@ namespace Server.Items
                 if (m_Item.Deleted)
                     return;
 
-                if (CookableFood.IsHeatSource(targeted))
+                if (IsHeatSource(targeted))
                 {
                     if (from.BeginAction(typeof(CookableFood)))
                     {

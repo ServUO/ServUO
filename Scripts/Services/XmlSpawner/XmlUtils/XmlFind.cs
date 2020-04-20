@@ -189,7 +189,7 @@ namespace Server.Mobiles
 
         public static void Initialize()
         {
-            CommandSystem.Register("XmlFind", AccessLevel.GameMaster, new CommandEventHandler(XmlFind_OnCommand));
+            CommandSystem.Register("XmlFind", AccessLevel.GameMaster, XmlFind_OnCommand);
         }
 
         private static bool TestRange(object o, int range, Map currentmap, Point3D currentloc)
@@ -2017,7 +2017,7 @@ namespace Server.Mobiles
 
                         //m_SearchList = Search(m_SearchCriteria, out status_str);
                         XmlFindThread tobj = new XmlFindThread(state.Mobile, m_SearchCriteria, CommandString);
-                        Thread find = new Thread(new ThreadStart(tobj.XmlFindThreadMain));
+                        Thread find = new Thread(tobj.XmlFindThreadMain);
                         find.Name = "XmlFind Thread";
                         find.Start();
 

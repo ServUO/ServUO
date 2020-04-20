@@ -118,7 +118,7 @@ namespace Server.Items
                     bool noGo = false;
                     int antique = 0;
 
-                    if (!Server.Engines.Craft.Repair.AllowsRepair(item, null) || (item is BaseJewel && !CanPOFJewelry))
+                    if (!Engines.Craft.Repair.AllowsRepair(item, null) || (item is BaseJewel && !CanPOFJewelry))
                     {
                         from.SendLocalizedMessage(1049083); // You cannot use the powder on that item.
                         return;

@@ -75,14 +75,14 @@ namespace Server.Items
 
         private void Unwrap(Mobile from)
         {
-            from.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1154, 1156393, from.NetState); // *You carefully peel back the wrapper...*
+            from.PrivateOverheadMessage(Network.MessageType.Regular, 1154, 1156393, from.NetState); // *You carefully peel back the wrapper...*
             from.PlaySound(Utility.Random(0x21F, 4));
 
             Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
             {
                 if (0.10 > Utility.RandomDouble())
                 {
-                    from.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1154, 1156439, from.NetState); // *You peel back to the wrapper to reveal a Card of Semidar!*
+                    from.PrivateOverheadMessage(Network.MessageType.Regular, 1154, 1156439, from.NetState); // *You peel back to the wrapper to reveal a Card of Semidar!*
                     from.AddToBackpack(new CardOfSemidar());
                 }
 

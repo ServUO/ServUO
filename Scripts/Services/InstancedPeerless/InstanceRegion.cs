@@ -1,4 +1,4 @@
-﻿using Server.Spells.Chivalry;
+using Server.Spells.Chivalry;
 using Server.Spells.Fourth;
 using System;
 
@@ -12,7 +12,7 @@ namespace Server.Engines.InstancedPeerless
 
         public static void Initialize()
         {
-            EventSink.Logout += new LogoutEventHandler(EventSink_Logout);
+            EventSink.Logout += EventSink_Logout;
         }
 
         public override bool OnBeginSpellCast(Mobile m, ISpell s)

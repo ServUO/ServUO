@@ -871,7 +871,7 @@ namespace Server.Items
         }
 
         public CraftableStoneHouseDoor(DoorType type, DoorFacing facing)
-            : base(facing, 0x324 + (2 * (int)facing), 0x325 + (2 * (int)facing), 0xED, 0xF4, BaseDoor.GetOffset(facing))
+            : base(facing, 0x324 + (2 * (int)facing), 0x325 + (2 * (int)facing), 0xED, 0xF4, GetOffset(facing))
         {
             Type = type;
             Movable = true;

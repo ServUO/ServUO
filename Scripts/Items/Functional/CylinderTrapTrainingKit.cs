@@ -33,9 +33,9 @@ namespace Server.Items
             else
                 solution = new PuzzleChestSolution(PuzzleChestCylinder.None, PuzzleChestCylinder.None, PuzzleChestCylinder.None, PuzzleChestCylinder.None, PuzzleChestCylinder.None);
 
-            from.CloseGump(typeof(PuzzleChest.PuzzleGump));
-            from.CloseGump(typeof(PuzzleChest.StatusGump));
-            from.SendGump(new PuzzleChest.PuzzleGump(from, this, solution, 0));
+            from.CloseGump(typeof(PuzzleGump));
+            from.CloseGump(typeof(StatusGump));
+            from.SendGump(new PuzzleGump(from, this, solution, 0));
         }
 
         public override void DoDamage(Mobile to)

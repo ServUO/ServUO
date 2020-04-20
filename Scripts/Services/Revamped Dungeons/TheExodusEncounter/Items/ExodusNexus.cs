@@ -242,7 +242,7 @@ namespace Server.Items
             from.AddToBackpack(new PunchCard());
 
             Hue = 0;
-            Timer.DelayCall(TimeSpan.FromMinutes(10), new TimerCallback(delegate { Hue = 1987; }));
+            Timer.DelayCall(TimeSpan.FromMinutes(10), delegate { Hue = 1987; });
         }
 
         public class DamageTimer : Timer
@@ -322,7 +322,7 @@ namespace Server.Items
             }
 
             if (Hue == 0)
-                Timer.DelayCall(TimeSpan.FromMinutes(10), new TimerCallback(delegate { Hue = 1987; }));
+                Timer.DelayCall(TimeSpan.FromMinutes(10), delegate { Hue = 1987; });
         }
 
         public class NexusGameGump : Gump

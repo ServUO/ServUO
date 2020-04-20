@@ -207,7 +207,7 @@ namespace Server.Items
                 m_KeyStage = 1;
                 from.SendLocalizedMessage(1116585); // Your offering has been accepted. The price of blood will be taken when your -world map- is marked with the secret location.
 
-                m_KeyResetTimer = Timer.DelayCall(TimeSpan.FromSeconds(30), new TimerCallback(ResetKeys));
+                m_KeyResetTimer = Timer.DelayCall(TimeSpan.FromSeconds(30), ResetKeys);
             }
 
             item.Delete();
@@ -260,7 +260,7 @@ namespace Server.Items
 
         public void OnBossKilled()
         {
-            m_ResetTimer = Timer.DelayCall(CompleteTime, new TimerCallback(Reset));
+            m_ResetTimer = Timer.DelayCall(CompleteTime, Reset);
 
             EndDeadLineTimer();
 

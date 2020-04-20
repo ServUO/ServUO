@@ -59,12 +59,12 @@ namespace Server.Mobiles
         {
         }
 
-        public override Type[] UniqueSAList => new Type[]
+        public override Type[] UniqueSAList => new[]
                 {
                     typeof(BurningAmber), typeof(DraconisWrath), typeof(DragonHideShield), typeof(FallenMysticsSpellbook),
                     typeof(LifeSyphon), typeof(GargishSignOfOrder), typeof(HumanSignOfOrder), typeof(VampiricEssence)
                 };
-        public override Type[] SharedSAList => new Type[]
+        public override Type[] SharedSAList => new[]
                 {
                     typeof(AxesOfFury), typeof(SummonersKilt), typeof(GiantSteps),
                     typeof(TokenOfHolyFavor)
@@ -304,7 +304,7 @@ namespace Server.Mobiles
                 m_Destroy = DateTime.UtcNow + TimeSpan.FromSeconds(duration);
 
                 m_Owner = owner;
-                m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), new TimerCallback(OnTick));
+                m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), OnTick);
             }
 
             private static int GetItemID(bool south)

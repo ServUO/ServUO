@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -65,7 +65,7 @@ namespace Server
         {
             if (_Table != null && _Table.ContainsKey(m) && _Table[m].Running && item is ISetItem && ((ISetItem)item).SetID == SetItem.Bestial)
             {
-                item.Hue = BestialSetHelper.BerserkHue + _Table[m].Level;
+                item.Hue = BerserkHue + _Table[m].Level;
             }
         }
 
@@ -140,18 +140,18 @@ namespace Server
 
                     if (level < Level)
                     {
-                        int hue = BestialSetHelper.BerserkHue + Level;
+                        int hue = BerserkHue + Level;
 
-                        BestialSetHelper.DoHue(Mobile, hue);
+                        DoHue(Mobile, hue);
 
                         if (level < 5)
                             Mobile.SendLocalizedMessage(1151533, "", hue); //Your rage grows!
                     }
                     else if (level > Level && level > 0)
                     {
-                        int hue = BestialSetHelper.BerserkHue + Level;
+                        int hue = BerserkHue + Level;
 
-                        BestialSetHelper.DoHue(Mobile, hue);
+                        DoHue(Mobile, hue);
 
                         if (level > 1)
                             Mobile.SendLocalizedMessage(1151534, "", hue); //Your rage recedes.
@@ -169,7 +169,7 @@ namespace Server
                 Mobile = m;
                 StartHue = m.HueMod;
 
-                Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
+                DelayCall(TimeSpan.FromSeconds(1), () =>
                     {
                         LastDamage = DateTime.UtcNow;
                         Start();
@@ -188,7 +188,7 @@ namespace Server
                 }
                 else if (Mobile.HueMod == StartHue || Mobile.HueMod == -1)
                 {
-                    BestialSetHelper.DoHue(Mobile, BestialSetHelper.BerserkHue);
+                    DoHue(Mobile, BerserkHue);
 
                     Mobile.SendLocalizedMessage(1151532); //You enter a berserk rage!
                 }
@@ -196,7 +196,7 @@ namespace Server
 
             public void EndBerserk()
             {
-                BestialSetHelper.RemoveBerserk(Mobile);
+                RemoveBerserk(Mobile);
 
                 Mobile.HueMod = StartHue;
                 Mobile.SendLocalizedMessage(1151535); //Your berserk rage has subsided. 

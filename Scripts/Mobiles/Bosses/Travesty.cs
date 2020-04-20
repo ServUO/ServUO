@@ -308,7 +308,7 @@ namespace Server.Mobiles
             if (m_Timer != null)
                 m_Timer.Stop();
 
-            m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(1.0), new TimerCallback(RestoreBody));
+            m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(1.0), RestoreBody);
         }
 
         public void DeleteItems()

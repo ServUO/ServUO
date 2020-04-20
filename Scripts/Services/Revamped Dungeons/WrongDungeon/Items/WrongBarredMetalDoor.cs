@@ -1,4 +1,4 @@
-﻿using Server.Network;
+using Server.Network;
 using Server.Spells.Third;
 using System;
 

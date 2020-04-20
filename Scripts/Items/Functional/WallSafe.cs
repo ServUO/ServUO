@@ -171,7 +171,7 @@ namespace Server.Items
         {
             if (IsChildOf(m.Backpack))
             {
-                m.BeginTarget(8, false, Server.Targeting.TargetFlags.None, (from, targeted) =>
+                m.BeginTarget(8, false, Targeting.TargetFlags.None, (from, targeted) =>
                     {
                         if (targeted is IPoint3D)
                         {
@@ -296,7 +296,7 @@ namespace Server.Items
             }
         }
 
-        public override void OnResponse(Server.Network.NetState state, RelayInfo info)
+        public override void OnResponse(Network.NetState state, RelayInfo info)
         {
             Account account = User.Account as Account;
             int secureAmount = 0;

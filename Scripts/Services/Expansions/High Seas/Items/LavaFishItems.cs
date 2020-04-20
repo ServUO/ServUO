@@ -4,7 +4,7 @@ namespace Server.Items
     {
         public static void Initialize()
         {
-            EventSink.Movement += new MovementEventHandler(EventSink_Movement);
+            EventSink.Movement += EventSink_Movement;
         }
 
         [Constructable]

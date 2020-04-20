@@ -130,7 +130,7 @@ namespace Server.Items
             m_CurrentRoom = Room.RoomOne;
             m_ToComplete = Utility.RandomMinMax(5, 8);
 
-            Timer.DelayCall(TimeSpan.FromSeconds(5), new TimerCallback(BeginRoom_Callback));
+            Timer.DelayCall(TimeSpan.FromSeconds(5), BeginRoom_Callback);
 
             from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1113405); // Your gem is now active. You may enter the Experimental Room.
 
@@ -214,7 +214,7 @@ namespace Server.Items
 
                     if (m_Completed < m_ToComplete)
                     {
-                        Timer.DelayCall(HueToHueDelay, new TimerCallback(SelectNewHue));
+                        Timer.DelayCall(HueToHueDelay, SelectNewHue);
                         m.PlaySound(0x51);
                     }
                 }
@@ -256,7 +256,7 @@ namespace Server.Items
                         }
 
                         m_LastIndex = -1;
-                        Timer.DelayCall(RoomToRoomDelay, new TimerCallback(SelectNewHue));
+                        Timer.DelayCall(RoomToRoomDelay, SelectNewHue);
 
                         m.PlaySound(0x1FF);
                         m.LocalOverheadMessage(MessageType.Regular, 0x21, 1113402); // The next room has been unlocked! Hurry through the door before your gem's state changes again!

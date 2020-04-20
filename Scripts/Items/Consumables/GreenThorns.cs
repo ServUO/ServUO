@@ -118,7 +118,7 @@ namespace Server.Items
                         from.NonlocalOverheadMessage(MessageType.Emote, 0x961, 1061915, from.Name); // * ~1_PLAYER_NAME~ pushes a strange green thorn into the ground. *
 
                         from.BeginAction(typeof(GreenThorns));
-                        new GreenThorns.EndActionTimer(from).Start();
+                        new EndActionTimer(from).Start();
 
                         effect.Start();
                     }

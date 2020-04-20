@@ -138,7 +138,7 @@ namespace Server.Engines.ArenaSystem
 
             if (Arena != null)
             {
-                Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(.2), mob => Arena.RemovePlayer(mob), m);
+                Timer.DelayCall(TimeSpan.FromSeconds(.2), mob => Arena.RemovePlayer(mob), m);
             }
 
             return res;

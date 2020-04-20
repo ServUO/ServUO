@@ -35,7 +35,7 @@ namespace Server.Spells.SkillMasteries
 
         public override void OnCast()
         {
-            BardSpell spell = SkillMasterySpell.GetSpell(Caster, GetType()) as BardSpell;
+            BardSpell spell = GetSpell(Caster, GetType()) as BardSpell;
 
             if (spell != null)
             {
@@ -137,7 +137,7 @@ namespace Server.Spells.SkillMasteries
 
         public static int GetHPBonus(Mobile m)
         {
-            SkillMasterySpell spell = SkillMasterySpell.GetSpellForParty(m, typeof(InvigorateSpell));
+            SkillMasterySpell spell = GetSpellForParty(m, typeof(InvigorateSpell));
 
             if (spell != null)
                 return spell.StatBonus();

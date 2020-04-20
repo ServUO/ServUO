@@ -16,7 +16,7 @@ namespace Server.Engines.Reports
         public static StaffHistory StaffHistory => m_StaffHistory;
         public static void Initialize()
         {
-            CommandSystem.Register("GenReports", AccessLevel.Administrator, new CommandEventHandler(GenReports_OnCommand));
+            CommandSystem.Register("GenReports", AccessLevel.Administrator, GenReports_OnCommand);
 
             m_StatsHistory = new SnapshotHistory();
             m_StatsHistory.Load();
@@ -34,7 +34,7 @@ namespace Server.Engines.Reports
 
             m_GenerateTime = date + TimeSpan.FromHours(Math.Ceiling(timeOfDay.TotalHours));
 
-            Timer.DelayCall(TimeSpan.FromMinutes(0.5), TimeSpan.FromMinutes(0.5), new TimerCallback(CheckRegenerate));
+            Timer.DelayCall(TimeSpan.FromMinutes(0.5), TimeSpan.FromMinutes(0.5), CheckRegenerate);
         }
 
         public static void CheckRegenerate()
@@ -64,7 +64,7 @@ namespace Server.Engines.Reports
             m_StatsHistory.Snapshots.Add(ss);
             m_StaffHistory.QueueStats.Add(new QueueStatus(Engines.Help.PageQueue.List.Count));
 
-            ThreadPool.QueueUserWorkItem(new WaitCallback(UpdateOutput), ss);
+            ThreadPool.QueueUserWorkItem(UpdateOutput, ss);
         }
 
         public static void FillSnapshot(Snapshot ss)
