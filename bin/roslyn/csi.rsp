@@ -1,7 +1,8 @@
-﻿/r:System
-/r:System.Core
-/r:Microsoft.CSharp
-/r:System.ValueTuple.dll
+﻿/r:System.dll
+/r:System.Core.dll
+/r:Microsoft.CSharp.dll
+/r:Facades/System.Runtime.dll
+/r:Facades/netstandard.dll
 /u:System
 /u:System.IO
 /u:System.Collections.Generic
