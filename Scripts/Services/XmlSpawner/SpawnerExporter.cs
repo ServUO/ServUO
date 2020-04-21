@@ -24,7 +24,7 @@ namespace Server.Mobiles
         public static void Initialize()
         {
             TargetCommands.Register(new ExportSpawnerCommand());
-            CommandSystem.Register("ImportSpawners", AccessLevel.Administrator, new CommandEventHandler(ImportSpawners_OnCommand));
+            CommandSystem.Register("ImportSpawners", AccessLevel.Administrator, ImportSpawners_OnCommand);
         }
 
         public class ExportSpawnerCommand : BaseCommand

@@ -221,7 +221,7 @@ namespace Server.Items
         public override bool ShareHue => false;
         public static void Initialize()
         {
-            CommandSystem.Register("SHTelGen", AccessLevel.Administrator, new CommandEventHandler(SHTelGen_OnCommand));
+            CommandSystem.Register("SHTelGen", AccessLevel.Administrator, SHTelGen_OnCommand);
         }
 
         [Usage("SHTelGen")]

@@ -75,7 +75,7 @@ namespace Server.Items
         {
             if (IsChildOf(from.Backpack))
             {
-                from.BeginTarget(6, false, TargetFlags.None, new TargetCallback(OnTarget));
+                from.BeginTarget(6, false, TargetFlags.None, OnTarget);
                 from.SendLocalizedMessage(1053024); // Select the swamp dragon you wish to place the barding on.
             }
             else

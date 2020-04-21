@@ -1,4 +1,4 @@
-﻿using Server.Commands;
+using Server.Commands;
 using Server.Gumps;
 using Server.Network;
 
@@ -44,7 +44,7 @@ namespace Server.Items
     {
         public static void Initialize()
         {
-            CommandSystem.Register("EliseTrentScroll", AccessLevel.GameMaster, new CommandEventHandler(EliseTrentGump_OnCommand));
+            CommandSystem.Register("EliseTrentScroll", AccessLevel.GameMaster, EliseTrentGump_OnCommand);
         }
 
         private static void EliseTrentGump_OnCommand(CommandEventArgs e)

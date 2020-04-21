@@ -170,7 +170,7 @@ namespace Server.Engines.Quests
 
             Dispellable = false;
 
-            Timer.DelayCall(TimeSpan.FromSeconds(10.0), new TimerCallback(Delete));
+            Timer.DelayCall(TimeSpan.FromSeconds(10.0), Delete);
         }
 
         public HornOfRetreatMoongate(Serial serial)

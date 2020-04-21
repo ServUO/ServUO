@@ -58,8 +58,8 @@ namespace Server.Misc
 
         public static void Initialize()
         {
-            EventSink.ClientVersionReceived += new ClientVersionReceivedHandler(EventSink_ClientVersionReceived);
-            EventSink.ClientTypeReceived += new ClientTypeReceivedHandler(EventSink_ClientTypeReceived);
+            EventSink.ClientVersionReceived += EventSink_ClientVersionReceived;
+            EventSink.ClientTypeReceived += EventSink_ClientTypeReceived;
 
             m_RequiredEC = new ClientVersion(67, 0, 59, 0, ClientType.SA);
 

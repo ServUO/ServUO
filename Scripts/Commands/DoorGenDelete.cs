@@ -327,7 +327,7 @@ namespace Server
         private static int m_Count;
         public static void Initialize()
         {
-            CommandSystem.Register("DoorGenDelete", AccessLevel.Administrator, new CommandEventHandler(DoorGenDelete_OnCommand));
+            CommandSystem.Register("DoorGenDelete", AccessLevel.Administrator, DoorGenDelete_OnCommand);
         }
 
         [Usage("DoorGenDelete")]

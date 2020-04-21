@@ -20,7 +20,7 @@ namespace Server.Items
 
         public static void Initialize()
         {
-            EventSink.PlayerDeath += new PlayerDeathEventHandler(PlayerDeath);
+            EventSink.PlayerDeath += PlayerDeath;
         }
 
         public static void PlayerDeath(PlayerDeathEventArgs args)

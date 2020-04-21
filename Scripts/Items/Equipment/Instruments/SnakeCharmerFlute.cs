@@ -100,8 +100,7 @@ namespace Server.Items
 
                             from.BeginAction(typeof(SnakeCharmerFlute));
 
-                            Timer.DelayCall(TimeSpan.FromSeconds(5.0), new TimerCallback(
-                                delegate { from.EndAction(typeof(SnakeCharmerFlute)); }));
+                            Timer.DelayCall(TimeSpan.FromSeconds(5.0), delegate { @from.EndAction(typeof(SnakeCharmerFlute)); });
 
                             m_Flute.PlayInstrumentWell(from);
                             m_Flute.UsesRemaining--;

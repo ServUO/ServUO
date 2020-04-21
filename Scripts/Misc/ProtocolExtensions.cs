@@ -10,10 +10,10 @@ namespace Server.Misc
         private static readonly PacketHandler[] m_Handlers = new PacketHandler[0x100];
         public static void Initialize()
         {
-            PacketHandlers.Register(0xF0, 0, false, new OnPacketReceive(DecodeBundledPacket));
+            PacketHandlers.Register(0xF0, 0, false, DecodeBundledPacket);
 
-            Register(0x00, true, new OnPacketReceive(QueryPartyLocations));
-            Register(0x01, true, new OnPacketReceive(QueryGuildsLocations));
+            Register(0x00, true, QueryPartyLocations);
+            Register(0x01, true, QueryGuildsLocations);
         }
 
         public static void QueryPartyLocations(NetState state, PacketReader pvSrc)

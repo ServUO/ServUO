@@ -238,11 +238,10 @@ namespace Server.Spells.Mysticism
         public void Use(Mobile from)
         {
             m_CooldownTable[from] = DateTime.UtcNow + TimeSpan.FromSeconds(300.0);
-            Timer.DelayCall(TimeSpan.FromSeconds(300.0), new TimerCallback(
-                delegate
-                {
-                    m_CooldownTable.Remove(from);
-                }));
+            Timer.DelayCall(TimeSpan.FromSeconds(300.0), delegate
+            {
+                m_CooldownTable.Remove(@from);
+            });
 
             Delete();
         }

@@ -19,13 +19,13 @@ namespace Server.Spells.Spellweaving
         public override int Hue => 0x48F;
         public static void Initialize()
         {
-            EventSink.AggressiveAction += new AggressiveActionEventHandler(delegate (AggressiveActionEventArgs e)
+            EventSink.AggressiveAction += delegate (AggressiveActionEventArgs e)
             {
                 if (TransformationSpellHelper.UnderTransformation(e.Aggressor, typeof(EtherealVoyageSpell)))
                 {
                     TransformationSpellHelper.RemoveContext(e.Aggressor, true);
                 }
-            });
+            };
         }
 
         public override bool CheckCast()
@@ -59,7 +59,7 @@ namespace Server.Spells.Spellweaving
 
             TimeSpan duration = TimeSpan.FromSeconds(12 + (int)(skill / 24) + (FocusLevel * 2));
 
-            Timer.DelayCall<Mobile>(duration, new TimerStateCallback<Mobile>(RemoveEffect), Caster);
+            Timer.DelayCall<Mobile>(duration, RemoveEffect, Caster);
 
             Caster.BeginAction(typeof(EtherealVoyageSpell));	//Cannot cast this spell for another 5 minutes(300sec) after effect removed.
 

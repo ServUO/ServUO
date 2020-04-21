@@ -84,7 +84,7 @@ namespace Server.Mobiles
             MovingEffect(m, 0x36D4, 1, 0, false, false, 0x3F, 0);
 
             TimeSpan delay = TimeSpan.FromSeconds(GetDistanceToSqrt(m) / 5.0);
-            Timer.DelayCall<Mobile>(delay, new TimerStateCallback<Mobile>(EndAcidBreath), m);
+            Timer.DelayCall<Mobile>(delay, EndAcidBreath, m);
 
             m_NextAcidBreath = DateTime.Now + TimeSpan.FromSeconds(5);
         }

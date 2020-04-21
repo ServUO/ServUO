@@ -115,12 +115,10 @@ namespace Server.Engines.Quests
 
         public void TalkTimer()
         {
-            Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(15.0), new TimerCallback(
-                delegate
-                {
-                    Say(1113224 + Utility.Random(15));
-                }
-            ));
+            Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(15.0), delegate
+            {
+                Say(1113224 + Utility.Random(15));
+            });
         }
 
         public override void Serialize(GenericWriter writer)

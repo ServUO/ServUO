@@ -11,7 +11,7 @@ namespace Server.Commands
     {
         public static void Initialize()
         {
-            CommandSystem.Register("DecorateDelete", AccessLevel.Administrator, new CommandEventHandler(DecorateDelete_OnCommand));
+            CommandSystem.Register("DecorateDelete", AccessLevel.Administrator, DecorateDelete_OnCommand);
         }
 
         [Usage("DecorateDelete")]
@@ -111,10 +111,6 @@ namespace Server.Commands
             }
         }
         #endregion
-
-        public DecorationListDelete()
-        {
-        }
 
         private static readonly Type typeofStatic = typeof(Static);
         private static readonly Type typeofLocalizedStatic = typeof(LocalizedStatic);
@@ -1179,7 +1175,7 @@ namespace Server.Commands
     {
         public static void Initialize()
         {
-            CommandSystem.Register("DecorateMLDelete", AccessLevel.Administrator, new CommandEventHandler(DecorateMLDelete_OnCommand));
+            CommandSystem.Register("DecorateMLDelete", AccessLevel.Administrator, DecorateMLDelete_OnCommand);
         }
 
         [Usage("DecorateMLDelete")]

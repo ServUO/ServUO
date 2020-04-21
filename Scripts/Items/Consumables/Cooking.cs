@@ -606,7 +606,7 @@ namespace Server.Items
             if (!Movable)
                 return;
 
-            from.BeginTarget(4, false, TargetFlags.None, new TargetCallback(OnTarget));
+            from.BeginTarget(4, false, TargetFlags.None, OnTarget);
         }
 
         public virtual void OnTarget(Mobile from, object obj)

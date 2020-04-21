@@ -1,4 +1,4 @@
-﻿using Server.Targeting;
+using Server.Targeting;
 using System;
 
 namespace Server.Items
@@ -20,7 +20,7 @@ namespace Server.Items
             if (IsChildOf(from.Backpack))
             {
                 from.SendMessage("Target a corpse you'd like to net.");
-                from.BeginTarget(10, false, TargetFlags.None, new TargetCallback(Net_OnTarget));
+                from.BeginTarget(10, false, TargetFlags.None, Net_OnTarget);
             }
         }
 

@@ -21,57 +21,57 @@ namespace Server.Commands
         {
             CommandSystem.Prefix = "[";
 
-            Register("Go", AccessLevel.Counselor, new CommandEventHandler(Go_OnCommand));
+            Register("Go", AccessLevel.Counselor, Go_OnCommand);
 
-            Register("DropHolding", AccessLevel.Counselor, new CommandEventHandler(DropHolding_OnCommand));
+            Register("DropHolding", AccessLevel.Counselor, DropHolding_OnCommand);
 
-            Register("GetFollowers", AccessLevel.GameMaster, new CommandEventHandler(GetFollowers_OnCommand));
+            Register("GetFollowers", AccessLevel.GameMaster, GetFollowers_OnCommand);
 
-            Register("ClearFacet", AccessLevel.Administrator, new CommandEventHandler(ClearFacet_OnCommand));
+            Register("ClearFacet", AccessLevel.Administrator, ClearFacet_OnCommand);
 
-            Register("Where", AccessLevel.Counselor, new CommandEventHandler(Where_OnCommand));
+            Register("Where", AccessLevel.Counselor, Where_OnCommand);
 
-            Register("AutoPageNotify", AccessLevel.Counselor, new CommandEventHandler(APN_OnCommand));
-            Register("APN", AccessLevel.Counselor, new CommandEventHandler(APN_OnCommand));
+            Register("AutoPageNotify", AccessLevel.Counselor, APN_OnCommand);
+            Register("APN", AccessLevel.Counselor, APN_OnCommand);
 
-            Register("Animate", AccessLevel.GameMaster, new CommandEventHandler(Animate_OnCommand));
+            Register("Animate", AccessLevel.GameMaster, Animate_OnCommand);
 
-            Register("Cast", AccessLevel.Counselor, new CommandEventHandler(Cast_OnCommand));
+            Register("Cast", AccessLevel.Counselor, Cast_OnCommand);
 
-            Register("Stuck", AccessLevel.Counselor, new CommandEventHandler(Stuck_OnCommand));
+            Register("Stuck", AccessLevel.Counselor, Stuck_OnCommand);
 
-            Register("Help", AccessLevel.Player, new CommandEventHandler(Help_OnCommand));
+            Register("Help", AccessLevel.Player, Help_OnCommand);
 
-            Register("Save", AccessLevel.Administrator, new CommandEventHandler(Save_OnCommand));
-            Register("BackgroundSave", AccessLevel.Administrator, new CommandEventHandler(BackgroundSave_OnCommand));
-            Register("BGSave", AccessLevel.Administrator, new CommandEventHandler(BackgroundSave_OnCommand));
-            Register("SaveBG", AccessLevel.Administrator, new CommandEventHandler(BackgroundSave_OnCommand));
+            Register("Save", AccessLevel.Administrator, Save_OnCommand);
+            Register("BackgroundSave", AccessLevel.Administrator, BackgroundSave_OnCommand);
+            Register("BGSave", AccessLevel.Administrator, BackgroundSave_OnCommand);
+            Register("SaveBG", AccessLevel.Administrator, BackgroundSave_OnCommand);
 
-            Register("Move", AccessLevel.GameMaster, new CommandEventHandler(Move_OnCommand));
-            Register("Client", AccessLevel.Counselor, new CommandEventHandler(Client_OnCommand));
+            Register("Move", AccessLevel.GameMaster, Move_OnCommand);
+            Register("Client", AccessLevel.Counselor, Client_OnCommand);
 
-            Register("SMsg", AccessLevel.Counselor, new CommandEventHandler(StaffMessage_OnCommand));
-            Register("SM", AccessLevel.Counselor, new CommandEventHandler(StaffMessage_OnCommand));
-            Register("S", AccessLevel.Counselor, new CommandEventHandler(StaffMessage_OnCommand));
+            Register("SMsg", AccessLevel.Counselor, StaffMessage_OnCommand);
+            Register("SM", AccessLevel.Counselor, StaffMessage_OnCommand);
+            Register("S", AccessLevel.Counselor, StaffMessage_OnCommand);
 
-            Register("BCast", AccessLevel.GameMaster, new CommandEventHandler(BroadcastMessage_OnCommand));
-            Register("BC", AccessLevel.GameMaster, new CommandEventHandler(BroadcastMessage_OnCommand));
-            Register("B", AccessLevel.GameMaster, new CommandEventHandler(BroadcastMessage_OnCommand));
+            Register("BCast", AccessLevel.GameMaster, BroadcastMessage_OnCommand);
+            Register("BC", AccessLevel.GameMaster, BroadcastMessage_OnCommand);
+            Register("B", AccessLevel.GameMaster, BroadcastMessage_OnCommand);
 
-            Register("Bank", AccessLevel.GameMaster, new CommandEventHandler(Bank_OnCommand));
+            Register("Bank", AccessLevel.GameMaster, Bank_OnCommand);
 
-            Register("Echo", AccessLevel.Counselor, new CommandEventHandler(Echo_OnCommand));
+            Register("Echo", AccessLevel.Counselor, Echo_OnCommand);
 
-            Register("Sound", AccessLevel.GameMaster, new CommandEventHandler(Sound_OnCommand));
+            Register("Sound", AccessLevel.GameMaster, Sound_OnCommand);
 
-            Register("ViewEquip", AccessLevel.GameMaster, new CommandEventHandler(ViewEquip_OnCommand));
+            Register("ViewEquip", AccessLevel.GameMaster, ViewEquip_OnCommand);
 
-            Register("Light", AccessLevel.Counselor, new CommandEventHandler(Light_OnCommand));
-            Register("Stats", AccessLevel.Counselor, new CommandEventHandler(Stats_OnCommand));
+            Register("Light", AccessLevel.Counselor, Light_OnCommand);
+            Register("Stats", AccessLevel.Counselor, Stats_OnCommand);
 
-            Register("ReplaceBankers", AccessLevel.Administrator, new CommandEventHandler(ReplaceBankers_OnCommand));
+            Register("ReplaceBankers", AccessLevel.Administrator, ReplaceBankers_OnCommand);
 
-            Register("SpeedBoost", AccessLevel.Counselor, new CommandEventHandler(SpeedBoost_OnCommand));
+            Register("SpeedBoost", AccessLevel.Counselor, SpeedBoost_OnCommand);
         }
 
         public static void Register(string command, AccessLevel access, CommandEventHandler handler)
@@ -114,7 +114,7 @@ namespace Server.Commands
         [Description("Drops the item, if any, that a targeted player is holding. The item is placed into their backpack, or if that's full, at their feet.")]
         public static void DropHolding_OnCommand(CommandEventArgs e)
         {
-            e.Mobile.BeginTarget(-1, false, TargetFlags.None, new TargetCallback(DropHolding_OnTarget));
+            e.Mobile.BeginTarget(-1, false, TargetFlags.None, DropHolding_OnTarget);
             e.Mobile.SendMessage("Target the player to drop what they are holding.");
         }
 
@@ -158,7 +158,7 @@ namespace Server.Commands
             }
             else
             {
-                from.BeginTarget(-1, false, TargetFlags.None, new TargetCallback(DropHolding_OnTarget));
+                from.BeginTarget(-1, false, TargetFlags.None, DropHolding_OnTarget);
                 from.SendMessage("That is not a player. Try again.");
             }
         }
@@ -216,7 +216,7 @@ namespace Server.Commands
                     new WarningGump(1060635, 30720,
                         String.Format("You are about to delete {0} object{1} from this facet.  Do you really wish to continue?",
                             list.Count, list.Count == 1 ? "" : "s"),
-                        0xFFC000, 360, 260, new WarningGumpCallback(DeleteList_Callback), list));
+                        0xFFC000, 360, 260, DeleteList_Callback, list));
             }
             else
             {
@@ -228,7 +228,7 @@ namespace Server.Commands
         [Description("Teleports all pets of a targeted player to your location.")]
         public static void GetFollowers_OnCommand(CommandEventArgs e)
         {
-            e.Mobile.BeginTarget(-1, false, TargetFlags.None, new TargetCallback(GetFollowers_OnTarget));
+            e.Mobile.BeginTarget(-1, false, TargetFlags.None, GetFollowers_OnTarget);
             e.Mobile.SendMessage("Target a player to get their pets.");
         }
 
@@ -299,7 +299,7 @@ namespace Server.Commands
             }
             else
             {
-                from.BeginTarget(-1, false, TargetFlags.None, new TargetCallback(GetFollowers_OnTarget));
+                from.BeginTarget(-1, false, TargetFlags.None, GetFollowers_OnTarget);
                 from.SendMessage("That is not a player. Try again.");
             }
         }

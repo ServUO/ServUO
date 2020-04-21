@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,7 +9,7 @@ namespace Server.Mobiles
         public static void Initialize()
         {
             CleanUntamedPets();
-            Timer.DelayCall(TimeSpan.FromHours(12.0), TimeSpan.FromHours(12.0), new TimerCallback(CleanUntamedPets));
+            Timer.DelayCall(TimeSpan.FromHours(12.0), TimeSpan.FromHours(12.0), CleanUntamedPets);
         }
 
         private static void CleanUntamedPets()

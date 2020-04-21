@@ -3,7 +3,7 @@ namespace Server.Engines.Reports
     public class ChartItem : PersistableObject
     {
         #region Type Identification
-        public static readonly PersistableType ThisTypeID = new PersistableType("ci", new ConstructCallback(Construct));
+        public static readonly PersistableType ThisTypeID = new PersistableType("ci", Construct);
 
         private static PersistableObject Construct()
         {

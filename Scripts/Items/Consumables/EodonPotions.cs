@@ -66,7 +66,7 @@ namespace Server.Items
 
         public static void Initialize()
         {
-            EventSink.PlayerDeath += new PlayerDeathEventHandler(EventSink_PlayerDeath);
+            EventSink.PlayerDeath += EventSink_PlayerDeath;
         }
 
         public EodonianPotion(int id, PotionEffect effect)

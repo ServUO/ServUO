@@ -17,15 +17,15 @@ namespace Server.Commands
         }
         public static void Initialize()
         {
-            CommandSystem.Register("Wipe", AccessLevel.GameMaster, new CommandEventHandler(WipeAll_OnCommand));
-            CommandSystem.Register("WipeItems", AccessLevel.GameMaster, new CommandEventHandler(WipeItems_OnCommand));
-            CommandSystem.Register("WipeNPCs", AccessLevel.GameMaster, new CommandEventHandler(WipeNPCs_OnCommand));
-            CommandSystem.Register("WipeMultis", AccessLevel.GameMaster, new CommandEventHandler(WipeMultis_OnCommand));
+            CommandSystem.Register("Wipe", AccessLevel.GameMaster, WipeAll_OnCommand);
+            CommandSystem.Register("WipeItems", AccessLevel.GameMaster, WipeItems_OnCommand);
+            CommandSystem.Register("WipeNPCs", AccessLevel.GameMaster, WipeNPCs_OnCommand);
+            CommandSystem.Register("WipeMultis", AccessLevel.GameMaster, WipeMultis_OnCommand);
         }
 
         public static void BeginWipe(Mobile from, WipeType type)
         {
-            BoundingBoxPicker.Begin(from, new BoundingBoxCallback(WipeBox_Callback), type);
+            BoundingBoxPicker.Begin(from, WipeBox_Callback, type);
         }
 
         public static void DoWipe(Mobile from, Map map, Point3D start, Point3D end, WipeType type)

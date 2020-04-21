@@ -70,7 +70,7 @@ namespace Server.Spells.SkillMasteries
 
             if (m_Instrument == null)
             {
-                BaseInstrument.PickInstrument(Caster, new InstrumentPickedCallback(OnPickedInstrument));
+                BaseInstrument.PickInstrument(Caster, OnPickedInstrument);
                 return false;
             }
 

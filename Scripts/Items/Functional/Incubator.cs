@@ -107,13 +107,13 @@ namespace Server.Items
 
         public static void Initialize()
         {
-            CommandSystem.Register("IncreaseStage", AccessLevel.Counselor, new CommandEventHandler(IncreaseStage_OnCommand));
+            CommandSystem.Register("IncreaseStage", AccessLevel.Counselor, IncreaseStage_OnCommand);
         }
 
         public static void IncreaseStage_OnCommand(CommandEventArgs e)
         {
             e.Mobile.SendMessage("Target the egg.");
-            e.Mobile.BeginTarget(12, false, Targeting.TargetFlags.None, new TargetCallback(IncreaseStage_OnTarget));
+            e.Mobile.BeginTarget(12, false, Targeting.TargetFlags.None, IncreaseStage_OnTarget);
         }
 
         public static void IncreaseStage_OnTarget(Mobile from, object targeted)
@@ -139,7 +139,7 @@ namespace Server.Items
             writer.Write((int)m_Level);
 
             if (Items.Count > 0)
-                Timer.DelayCall(TimeSpan.FromSeconds(10), new TimerCallback(CheckEggs_Callback));
+                Timer.DelayCall(TimeSpan.FromSeconds(10), CheckEggs_Callback);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -151,7 +151,7 @@ namespace Server.Items
             m_Level = (SecureLevel)reader.ReadInt();
 
             if (Items.Count > 0)
-                Timer.DelayCall(TimeSpan.FromSeconds(60), new TimerCallback(CheckEggs_Callback));
+                Timer.DelayCall(TimeSpan.FromSeconds(60), CheckEggs_Callback);
         }
     }
 }

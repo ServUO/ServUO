@@ -177,8 +177,8 @@ namespace Server.Engines.CannedEvil
         public override string DefaultName => "puzzle control";
         public static void Initialize()
         {
-            CommandSystem.Register("GenLichPuzzle", AccessLevel.Administrator, new CommandEventHandler(GenLichPuzzle_OnCommand));
-            CommandSystem.Register("DeleteLichPuzzle", AccessLevel.Administrator, new CommandEventHandler(DeleteLichPuzzle_OnCommand));
+            CommandSystem.Register("GenLichPuzzle", AccessLevel.Administrator, GenLichPuzzle_OnCommand);
+            CommandSystem.Register("DeleteLichPuzzle", AccessLevel.Administrator, DeleteLichPuzzle_OnCommand);
         }
 
         [Usage("DeleteLichPuzzle")]
@@ -281,7 +281,7 @@ namespace Server.Engines.CannedEvil
             // stop and restart the lever reset timer
             if (null != l_Timer)
                 l_Timer.Stop();
-            l_Timer = Timer.DelayCall(TimeSpan.FromSeconds(30.0), new TimerCallback(ResetLevers));
+            l_Timer = Timer.DelayCall(TimeSpan.FromSeconds(30.0), ResetLevers);
 
             // if this is the last key, check for correct solution and give messages/rewards
             if (6 == m_NextKey++)

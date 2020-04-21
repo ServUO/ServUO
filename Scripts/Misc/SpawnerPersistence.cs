@@ -413,7 +413,7 @@ namespace Server
         #region Version 11
         public static void AddSphinx()
         {
-            Server.Engines.GenerateForgottenPyramid.Generate(null);
+            Engines.GenerateForgottenPyramid.Generate(null);
             ToConsole("Generated Fortune Sphinx.");
         }
         #endregion
@@ -1082,7 +1082,7 @@ namespace Server
         {
             string filename = "Spawns";
 
-            if (System.IO.Directory.Exists(filename) == true)
+            if (Directory.Exists(filename) == true)
             {
                 List<string> files = null;
                 string[] dirs = null;
@@ -1307,7 +1307,7 @@ namespace Server
         {
             string filename = "Spawns";
 
-            if (System.IO.Directory.Exists(filename) == true)
+            if (Directory.Exists(filename) == true)
             {
                 List<string> files = null;
                 string[] dirs = null;
@@ -1417,7 +1417,7 @@ namespace Server
         /// <param name="filename"></param>
         public static void RemoveSpawnsFromXmlFile(string directory, string filename)
         {
-            if (System.IO.Directory.Exists(directory) == true)
+            if (Directory.Exists(directory) == true)
             {
                 List<string> files = null;
 
@@ -1506,7 +1506,7 @@ namespace Server
         {
             string filename = "Spawns";
 
-            if (System.IO.Directory.Exists(filename) == true)
+            if (Directory.Exists(filename) == true)
             {
                 List<string> files = null;
                 string[] dirs = null;

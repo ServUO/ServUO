@@ -8,8 +8,8 @@ namespace Server.Commands
         private static int m_Count;
         public static void Initialize()
         {
-            CommandSystem.Register("GenKhaldun", AccessLevel.Administrator, new CommandEventHandler(GenKhaldun_OnCommand));
-            CommandSystem.Register("DeleteKhaldun", AccessLevel.Administrator, new CommandEventHandler(DeleteKhaldun_OnCommand));
+            CommandSystem.Register("GenKhaldun", AccessLevel.Administrator, GenKhaldun_OnCommand);
+            CommandSystem.Register("DeleteKhaldun", AccessLevel.Administrator, DeleteKhaldun_OnCommand);
         }
 
         public static bool FindMorphItem(int x, int y, int z, int inactiveItemID, int activeItemID)

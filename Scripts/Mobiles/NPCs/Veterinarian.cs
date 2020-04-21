@@ -76,7 +76,7 @@ namespace Server.Mobiles
                 {
                     m.Frozen = true;
 
-                    m_ExpireTable[m] = Timer.DelayCall(TimeSpan.FromMinutes(1.0), new TimerStateCallback<Mobile>(ResetExpire), m);
+                    m_ExpireTable[m] = Timer.DelayCall(TimeSpan.FromMinutes(1.0), ResetExpire, m);
 
                     m.CloseGump(typeof(VetResurrectGump));
                     m.SendGump(new VetResurrectGump(this, pets));

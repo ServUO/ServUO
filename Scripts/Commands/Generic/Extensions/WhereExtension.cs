@@ -6,9 +6,6 @@ namespace Server.Commands.Generic
     {
         public static ExtensionInfo ExtInfo = new ExtensionInfo(20, "Where", -1, delegate () { return new WhereExtension(); });
         private ObjectConditional m_Conditional;
-        public WhereExtension()
-        {
-        }
 
         public override ExtensionInfo Info => ExtInfo;
         public ObjectConditional Conditional => m_Conditional;

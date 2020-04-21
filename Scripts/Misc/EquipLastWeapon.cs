@@ -7,7 +7,7 @@ namespace Server.Network
     {
         public static void Initialize()
         {
-            PacketHandlers.RegisterEncoded(0x1E, true, new OnEncodedPacketReceive(EquipLastWeaponRequest));
+            PacketHandlers.RegisterEncoded(0x1E, true, EquipLastWeaponRequest);
         }
 
         public static void EquipLastWeaponRequest(NetState state, IEntity e, EncodedReader reader)

@@ -338,7 +338,7 @@ namespace Server.Items
 
         public static void Initialize()
         {
-            PacketHandlers.Register(0x56, 11, true, new OnPacketReceive(OnMapCommand));
+            PacketHandlers.Register(0x56, 11, true, OnMapCommand);
         }
 
         private static void OnMapCommand(NetState state, PacketReader pvSrc)

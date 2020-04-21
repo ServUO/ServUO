@@ -37,10 +37,10 @@ namespace Server.Items
 
                 Effects.PlaySound(GetWorldLocation(), Map, 0x387);
 
-                Timer.DelayCall(TimeSpan.FromSeconds(0.25), new TimerCallback(Down1));
-                Timer.DelayCall(TimeSpan.FromSeconds(0.50), new TimerCallback(Down2));
+                Timer.DelayCall(TimeSpan.FromSeconds(0.25), Down1);
+                Timer.DelayCall(TimeSpan.FromSeconds(0.50), Down2);
 
-                Timer.DelayCall(TimeSpan.FromSeconds(5.00), new TimerCallback(BackUp));
+                Timer.DelayCall(TimeSpan.FromSeconds(5.00), BackUp);
 
                 m_NextUse = DateTime.UtcNow + TimeSpan.FromSeconds(10.0);
             }

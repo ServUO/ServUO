@@ -254,7 +254,7 @@
     <Compile Include="Commands\VisibilityList.cs">
       <SubType>Code</SubType>
     </Compile>
-	  <Compile Include="Commands\WhatIsIt.cs">
+    <Compile Include="Commands\WhatIsIt.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Commands\Wipe.cs">
@@ -2033,7 +2033,7 @@
     <Compile Include="Mobiles\Named\Thrasher.cs" />
     <Compile Include="Mobiles\Named\TikitaviRenowned.cs" />
     <Compile Include="Mobiles\Named\Twaulo.cs" />
-	<Compile Include="Mobiles\Named\TyballsShadow.cs" />
+    <Compile Include="Mobiles\Named\TyballsShadow.cs" />
     <Compile Include="Mobiles\Named\VitaviRenowned.cs" />
     <Compile Include="Mobiles\Named\WyvernRenowned.cs" />
     <Compile Include="Mobiles\Normal\AbysmalHorror.cs" />
@@ -8472,7 +8472,7 @@
     <Compile Include="Misc\CrashGuard.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Misc\CurrentExpansion.cs">
+    <Compile Include="Misc\ShardSettings.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Misc\DataPath.cs">

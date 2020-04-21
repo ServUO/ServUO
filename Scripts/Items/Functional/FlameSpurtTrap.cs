@@ -21,7 +21,7 @@ namespace Server.Items
         public virtual void StartTimer()
         {
             if (m_Timer == null)
-                m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0), new TimerCallback(Refresh));
+                m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0), Refresh);
         }
 
         public virtual void StopTimer()

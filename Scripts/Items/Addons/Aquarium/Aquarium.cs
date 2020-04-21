@@ -171,7 +171,7 @@ namespace Server.Items
 
             m_Events = new List<int>();
 
-            m_Timer = Timer.DelayCall(EvaluationInterval, EvaluationInterval, new TimerCallback(Evaluate));
+            m_Timer = Timer.DelayCall(EvaluationInterval, EvaluationInterval, Evaluate);
         }
 
         public Aquarium(Serial serial)
@@ -443,7 +443,7 @@ namespace Server.Items
                         if (next < DateTime.UtcNow)
                             next = DateTime.UtcNow;
 
-                        m_Timer = Timer.DelayCall(next - DateTime.UtcNow, EvaluationInterval, new TimerCallback(Evaluate));
+                        m_Timer = Timer.DelayCall(next - DateTime.UtcNow, EvaluationInterval, Evaluate);
 
                         goto case 0;
                     }

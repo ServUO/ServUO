@@ -205,8 +205,8 @@ namespace Server.Engines.Help
         {
             Entries = new List<ResponseEntry>();
 
-            EventSink.Login += new LoginEventHandler(Login);
-            EventSink.BeforeWorldSave += new BeforeWorldSaveEventHandler(BeforeSave);
+            EventSink.Login += Login;
+            EventSink.BeforeWorldSave += BeforeSave;
         }
 
         public static void Login(LoginEventArgs args)

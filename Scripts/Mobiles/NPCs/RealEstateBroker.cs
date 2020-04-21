@@ -62,7 +62,7 @@ namespace Server.Mobiles
             if (!e.Handled && e.Mobile.Alive && e.HasKeyword(0x38)) // *appraise*
             {
                 PublicOverheadMessage(MessageType.Regular, 0x3B2, 500608); // Which deed would you like appraised?
-                e.Mobile.BeginTarget(12, false, TargetFlags.None, new TargetCallback(Appraise_OnTarget));
+                e.Mobile.BeginTarget(12, false, TargetFlags.None, Appraise_OnTarget);
                 e.Handled = true;
             }
 

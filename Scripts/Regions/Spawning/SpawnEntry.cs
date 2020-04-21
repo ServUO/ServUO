@@ -112,14 +112,14 @@ namespace Server.Regions
 
             SpawnPersistence.EnsureExistence();
 
-            CommandSystem.Register("RespawnAllRegions", AccessLevel.Administrator, new CommandEventHandler(RespawnAllRegions_OnCommand));
-            CommandSystem.Register("RespawnRegion", AccessLevel.GameMaster, new CommandEventHandler(RespawnRegion_OnCommand));
-            CommandSystem.Register("DelAllRegionSpawns", AccessLevel.Administrator, new CommandEventHandler(DelAllRegionSpawns_OnCommand));
-            CommandSystem.Register("DelRegionSpawns", AccessLevel.GameMaster, new CommandEventHandler(DelRegionSpawns_OnCommand));
-            CommandSystem.Register("StartAllRegionSpawns", AccessLevel.Administrator, new CommandEventHandler(StartAllRegionSpawns_OnCommand));
-            CommandSystem.Register("StartRegionSpawns", AccessLevel.GameMaster, new CommandEventHandler(StartRegionSpawns_OnCommand));
-            CommandSystem.Register("StopAllRegionSpawns", AccessLevel.Administrator, new CommandEventHandler(StopAllRegionSpawns_OnCommand));
-            CommandSystem.Register("StopRegionSpawns", AccessLevel.GameMaster, new CommandEventHandler(StopRegionSpawns_OnCommand));
+            CommandSystem.Register("RespawnAllRegions", AccessLevel.Administrator, RespawnAllRegions_OnCommand);
+            CommandSystem.Register("RespawnRegion", AccessLevel.GameMaster, RespawnRegion_OnCommand);
+            CommandSystem.Register("DelAllRegionSpawns", AccessLevel.Administrator, DelAllRegionSpawns_OnCommand);
+            CommandSystem.Register("DelRegionSpawns", AccessLevel.GameMaster, DelRegionSpawns_OnCommand);
+            CommandSystem.Register("StartAllRegionSpawns", AccessLevel.Administrator, StartAllRegionSpawns_OnCommand);
+            CommandSystem.Register("StartRegionSpawns", AccessLevel.GameMaster, StartRegionSpawns_OnCommand);
+            CommandSystem.Register("StopAllRegionSpawns", AccessLevel.Administrator, StopAllRegionSpawns_OnCommand);
+            CommandSystem.Register("StopRegionSpawns", AccessLevel.GameMaster, StopRegionSpawns_OnCommand);
         }
 
         public Point3D RandomSpawnLocation(int spawnHeight, bool land, bool water)
@@ -230,7 +230,7 @@ namespace Server.Regions
                         m_SpawnTimer.Stop();
 
                     TimeSpan delay = m_NextSpawn - DateTime.UtcNow;
-                    m_SpawnTimer = Timer.DelayCall(delay > TimeSpan.Zero ? delay : TimeSpan.Zero, new TimerCallback(TimerCallback));
+                    m_SpawnTimer = Timer.DelayCall(delay > TimeSpan.Zero ? delay : TimeSpan.Zero, TimerCallback);
                 }
             }
 
@@ -418,7 +418,7 @@ namespace Server.Regions
                 if (m_SpawnTimer == null)
                 {
                     TimeSpan time = RandomTime();
-                    m_SpawnTimer = Timer.DelayCall(time, new TimerCallback(TimerCallback));
+                    m_SpawnTimer = Timer.DelayCall(time, TimerCallback);
                     m_NextSpawn = DateTime.UtcNow + time;
                 }
             }

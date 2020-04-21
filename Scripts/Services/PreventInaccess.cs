@@ -31,7 +31,7 @@ namespace Server.Misc
             m_MoveHistory = new Dictionary<Mobile, LocationInfo>();
 
             if (Enabled)
-                EventSink.Login += new LoginEventHandler(OnLogin);
+                EventSink.Login += OnLogin;
         }
 
         public static void OnLogin(LoginEventArgs e)

@@ -307,7 +307,7 @@ namespace Server.Items
             protected override void OnTargetCancel(Mobile from, TargetCancelType cancelType)
             {
                 if (cancelType == TargetCancelType.Canceled)
-                    from.CloseGump(typeof(InteriorDecorator.InternalGump));
+                    from.CloseGump(typeof(InternalGump));
             }
 
             private static void Turn(Item item, Mobile from)

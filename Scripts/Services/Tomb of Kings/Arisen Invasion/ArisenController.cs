@@ -77,8 +77,8 @@ namespace Server.Items
 
         public static void Initialize()
         {
-            CommandSystem.Register("ArisenGenerate", AccessLevel.Owner, new CommandEventHandler(ArisenGenerate_OnCommand));
-            CommandSystem.Register("ArisenDelete", AccessLevel.Owner, new CommandEventHandler(ArisenDelete_OnCommand));
+            CommandSystem.Register("ArisenGenerate", AccessLevel.Owner, ArisenGenerate_OnCommand);
+            CommandSystem.Register("ArisenDelete", AccessLevel.Owner, ArisenDelete_OnCommand);
         }
 
         [Usage("ArisenGenerate")]

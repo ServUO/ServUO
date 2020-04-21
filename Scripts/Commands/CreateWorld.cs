@@ -85,15 +85,11 @@ namespace Server.Commands
 
         public static bool WorldCreating { get; set; }
 
-        public CreateWorld()
-        {
-        }
-
         public static void Initialize()
         {
-            CommandSystem.Register("Createworld", AccessLevel.Administrator, new CommandEventHandler(Create_OnCommand));
-            CommandSystem.Register("DeleteWorld", AccessLevel.Administrator, new CommandEventHandler(Delete_OnCommand));
-            CommandSystem.Register("RecreateWorld", AccessLevel.Administrator, new CommandEventHandler(Recreate_OnCommand));
+            CommandSystem.Register("Createworld", AccessLevel.Administrator, Create_OnCommand);
+            CommandSystem.Register("DeleteWorld", AccessLevel.Administrator, Delete_OnCommand);
+            CommandSystem.Register("RecreateWorld", AccessLevel.Administrator, Recreate_OnCommand);
         }
 
         [Usage("CreateWorld [nogump]")]

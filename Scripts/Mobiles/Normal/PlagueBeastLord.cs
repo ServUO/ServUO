@@ -181,7 +181,7 @@ namespace Server.Mobiles
             m_Timer = new DecayTimer(this);
             m_Timer.Start();
 
-            Timer.DelayCall(TimeSpan.Zero, new TimerCallback(BroadcastMessage));
+            Timer.DelayCall(TimeSpan.Zero, BroadcastMessage);
         }
 
         public virtual bool IsAccessibleTo(Mobile check)
@@ -226,7 +226,7 @@ namespace Server.Mobiles
                 }
 
                 from.LocalOverheadMessage(MessageType.Regular, 0x21, 1071904); // * You slice through the plague beast's amorphous tissue *
-                Timer.DelayCall<Mobile>(TimeSpan.Zero, new TimerStateCallback<Mobile>(pack.Open), from);
+                Timer.DelayCall<Mobile>(TimeSpan.Zero, pack.Open, from);
 
                 return true;
             }

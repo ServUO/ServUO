@@ -1,4 +1,4 @@
-﻿using Server.Commands;
+using Server.Commands;
 using Server.Gumps;
 using Server.Network;
 
@@ -44,7 +44,7 @@ namespace Server.Items
     {
         public static void Initialize()
         {
-            CommandSystem.Register("CalculationsLetter", AccessLevel.GameMaster, new CommandEventHandler(CalculationsGump_OnCommand));
+            CommandSystem.Register("CalculationsLetter", AccessLevel.GameMaster, CalculationsGump_OnCommand);
         }
 
         private static void CalculationsGump_OnCommand(CommandEventArgs e)

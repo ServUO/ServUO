@@ -73,7 +73,7 @@ namespace Server.Items
 
             if (m_Statue == null || m_Statue.SculptedBy == null || Map == Map.Internal)
             {
-                Timer.DelayCall(TimeSpan.Zero, new TimerCallback(Delete));
+                Timer.DelayCall(TimeSpan.Zero, Delete);
             }
         }
 

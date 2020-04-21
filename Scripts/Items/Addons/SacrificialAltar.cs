@@ -51,7 +51,7 @@ namespace Server.Items
                 if (m_Timer != null)
                     m_Timer.Stop();
 
-                m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(3), new TimerCallback(Empty));
+                m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(3), Empty);
             }
 
             return true;
@@ -74,7 +74,7 @@ namespace Server.Items
                 if (m_Timer != null)
                     m_Timer.Stop();
 
-                m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(3), new TimerCallback(Empty));
+                m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(3), Empty);
             }
 
             return true;
@@ -92,7 +92,7 @@ namespace Server.Items
             int version = reader.ReadEncodedInt();
 
             if (Items.Count > 0)
-                m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(3), new TimerCallback(Empty));
+                m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(3), Empty);
 
             m_Cleanup = new List<CleanupArray>();
         }

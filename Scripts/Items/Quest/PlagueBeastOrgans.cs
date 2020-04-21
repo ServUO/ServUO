@@ -24,7 +24,7 @@ namespace Server.Items
 
             Movable = false;
 
-            Timer.DelayCall(TimeSpan.Zero, new TimerCallback(Initialize));
+            Timer.DelayCall(TimeSpan.Zero, Initialize);
         }
 
         public PlagueBeastOrgan(Serial serial)
@@ -80,7 +80,7 @@ namespace Server.Items
             {
                 if (!m_Opened && m_Timer == null)
                 {
-                    m_Timer = Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(3), new TimerStateCallback<Mobile>(FinishOpening), from);
+                    m_Timer = Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(3), FinishOpening, from);
                     scissors.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1071897); // You carefully cut into the organ.
                     return true;
                 }
@@ -416,7 +416,7 @@ namespace Server.Items
             if (to.Hue == 0x1 && m_Gland == null && item is PlagueBeastGland)
             {
                 m_Gland = item;
-                m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(3), new TimerCallback(FinishHealing));
+                m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(3), FinishHealing);
                 from.SendAsciiMessage(0x3B2, "* You place the healthy gland inside the organ sac *");
                 item.Movable = false;
 
@@ -445,7 +445,7 @@ namespace Server.Items
             for (int i = 0; i < 7 && i < Components.Count; i++)
                 Components[i].Hue = 0x6;
 
-            m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(2), new TimerCallback(OpenOrgan));
+            m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(2), OpenOrgan);
         }
 
         public void OpenOrgan()

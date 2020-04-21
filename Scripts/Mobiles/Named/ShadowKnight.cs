@@ -172,7 +172,7 @@ namespace Server.Mobiles
                         Effects.PlaySound(to, map, 0x1FE);
 
                         m_HasTeleportedAway = true;
-                        m_SoundTimer = Timer.DelayCall(TimeSpan.FromSeconds(5.0), TimeSpan.FromSeconds(2.5), new TimerCallback(SendTrackingSound));
+                        m_SoundTimer = Timer.DelayCall(TimeSpan.FromSeconds(5.0), TimeSpan.FromSeconds(2.5), SendTrackingSound);
 
                         Frozen = true;
 

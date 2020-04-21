@@ -247,7 +247,7 @@ namespace Server.Items
                 m_Artifacts[i] = new StealableInstance(m_Entries[i]);
             }
 
-            m_RespawnTimer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromMinutes(15.0), new TimerCallback(CheckRespawn));
+            m_RespawnTimer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromMinutes(15.0), CheckRespawn);
         }
 
         public static StealableEntry[] Entries => m_Entries;
@@ -270,9 +270,9 @@ namespace Server.Items
         public override string DefaultName => "Stealable Artifacts Spawner - Internal";
         public static void Initialize()
         {
-            CommandSystem.Register("GenStealArties", AccessLevel.Administrator, new CommandEventHandler(GenStealArties_OnCommand));
-            CommandSystem.Register("RemoveStealArties", AccessLevel.Administrator, new CommandEventHandler(RemoveStealArties_OnCommand));
-            CommandSystem.Register("StealArtiesForceRespawn", AccessLevel.GameMaster, new CommandEventHandler(StealArtiesForceRespawn_OnCommand));
+            CommandSystem.Register("GenStealArties", AccessLevel.Administrator, GenStealArties_OnCommand);
+            CommandSystem.Register("RemoveStealArties", AccessLevel.Administrator, RemoveStealArties_OnCommand);
+            CommandSystem.Register("StealArtiesForceRespawn", AccessLevel.GameMaster, StealArtiesForceRespawn_OnCommand);
         }
 
         private static void StealArtiesForceRespawn_OnCommand(CommandEventArgs e)
@@ -389,7 +389,7 @@ namespace Server.Items
                 m_Artifacts[i] = new StealableInstance(m_Entries[i]);
             }
 
-            m_RespawnTimer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromMinutes(15.0), new TimerCallback(CheckRespawn));
+            m_RespawnTimer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromMinutes(15.0), CheckRespawn);
         }
 
         private static int GetLampPostHue()

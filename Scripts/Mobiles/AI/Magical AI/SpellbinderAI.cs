@@ -88,12 +88,12 @@ namespace Server.Mobiles
                 }
                 else if (!m_Mobile.Summoned)
                 {
-                    if (m_Mobile.Hits < (m_Mobile.HitsMax - 50))
+                    if (m_Mobile.Hits < m_Mobile.HitsMax - 50)
                     {
                         if (!new GreaterHealSpell(m_Mobile, null).Cast())
                             new HealSpell(m_Mobile, null).Cast();
                     }
-                    else if (m_Mobile.Hits < (m_Mobile.HitsMax - 10))
+                    else if (m_Mobile.Hits < m_Mobile.HitsMax - 10)
                     {
                         new HealSpell(m_Mobile, null).Cast();
                     }
@@ -157,7 +157,7 @@ namespace Server.Mobiles
 
         public void Run(Direction d)
         {
-            if ((m_Mobile.Spell != null && m_Mobile.Spell.IsCasting) || !m_Mobile.CanMove || m_Mobile.Paralyzed ||
+            if (m_Mobile.Spell != null && m_Mobile.Spell.IsCasting || !m_Mobile.CanMove || m_Mobile.Paralyzed ||
                 m_Mobile.Frozen || m_Mobile.DisallowAllMoves)
                 return;
 
@@ -240,7 +240,7 @@ namespace Server.Mobiles
             }
 
             Mobile mob = c as Mobile;
-            double damage = ((m_Mobile.Skills[SkillName.SpiritSpeak].Value - mob.Skills[SkillName.MagicResist].Value) / 10) +
+            double damage = (m_Mobile.Skills[SkillName.SpiritSpeak].Value - mob.Skills[SkillName.MagicResist].Value) / 10 +
                          (mob.Player ? 18 : 30);
 
             if (damage > c.Hits)
@@ -310,7 +310,7 @@ namespace Server.Mobiles
             IDamageable c = m_Mobile.Combatant;
             m_Mobile.Warmode = true;
 
-            if (c == null || c.Deleted || !c.Alive || (c is Mobile && ((Mobile)c).IsDeadBondedPet) || !m_Mobile.CanSee(c) ||
+            if (c == null || c.Deleted || !c.Alive || c is Mobile && ((Mobile)c).IsDeadBondedPet || !m_Mobile.CanSee(c) ||
                 !m_Mobile.CanBeHarmful(c, false) || c.Map != m_Mobile.Map)
             {
                 // Our combatant is deleted, dead, hidden, or we cannot hurt them
@@ -459,14 +459,14 @@ namespace Server.Mobiles
                 {
                     new CureSpell(m_Mobile, null).Cast();
                 }
-                else if (!m_Mobile.Summoned && ((ScaleByMagery(HealChance) > Utility.RandomDouble())))
+                else if (!m_Mobile.Summoned && ScaleByMagery(HealChance) > Utility.RandomDouble())
                 {
-                    if (m_Mobile.Hits < (m_Mobile.HitsMax - 50))
+                    if (m_Mobile.Hits < m_Mobile.HitsMax - 50)
                     {
                         if (!new GreaterHealSpell(m_Mobile, null).Cast())
                             new HealSpell(m_Mobile, null).Cast();
                     }
-                    else if (m_Mobile.Hits < (m_Mobile.HitsMax - 10))
+                    else if (m_Mobile.Hits < m_Mobile.HitsMax - 10)
                     {
                         new HealSpell(m_Mobile, null).Cast();
                     }
@@ -488,7 +488,7 @@ namespace Server.Mobiles
         {
             Mobile c = m_Mobile.Combatant as Mobile;
 
-            if ((m_Mobile.Mana > 20 || m_Mobile.Mana == m_Mobile.ManaMax) && m_Mobile.Hits > (m_Mobile.HitsMax / 2))
+            if ((m_Mobile.Mana > 20 || m_Mobile.Mana == m_Mobile.ManaMax) && m_Mobile.Hits > m_Mobile.HitsMax / 2)
             {
                 // If I have a target, go back and fight them
                 if (c != null && m_Mobile.GetDistanceToSqrt(c) <= m_Mobile.RangePerception * 2)
@@ -624,8 +624,8 @@ namespace Server.Mobiles
 
         public bool CanDispel(Mobile m)
         {
-            return (m is BaseCreature && ((BaseCreature)m).Summoned && m_Mobile.CanBeHarmful(m, false) &&
-                    !((BaseCreature)m).IsAnimatedDead);
+            return m is BaseCreature && ((BaseCreature)m).Summoned && m_Mobile.CanBeHarmful(m, false) &&
+                   !((BaseCreature)m).IsAnimatedDead;
         }
 
         private Spell CheckCastHealingSpell()
@@ -649,14 +649,14 @@ namespace Server.Mobiles
 
             Spell spell = null;
 
-            if (m_Mobile.Hits < (m_Mobile.HitsMax - 50))
+            if (m_Mobile.Hits < m_Mobile.HitsMax - 50)
             {
                 spell = new GreaterHealSpell(m_Mobile, null);
 
                 if (spell == null)
                     spell = new HealSpell(m_Mobile, null);
             }
-            else if (m_Mobile.Hits < (m_Mobile.HitsMax - 10))
+            else if (m_Mobile.Hits < m_Mobile.HitsMax - 10)
                 spell = new HealSpell(m_Mobile, null);
 
             double delay;
@@ -676,17 +676,17 @@ namespace Server.Mobiles
         private TimeSpan GetDelay()
         {
             double del = ScaleByMagery(3.0);
-            double min = 6.0 - (del * 0.75);
-            double max = 6.0 - (del * 1.25);
+            double min = 6.0 - del * 0.75;
+            double max = 6.0 - del * 1.25;
 
-            return TimeSpan.FromSeconds(min + ((max - min) * Utility.RandomDouble()));
+            return TimeSpan.FromSeconds(min + (max - min) * Utility.RandomDouble());
         }
 
         private void ProcessTarget(Target targ)
         {
-            bool isDispel = (targ is DispelSpell.InternalTarget);
-            bool isParalyze = (targ is ParalyzeSpell.InternalTarget);
-            bool isTeleport = (targ is TeleportSpell.InternalTarget);
+            bool isDispel = targ is DispelSpell.InternalTarget;
+            bool isParalyze = targ is ParalyzeSpell.InternalTarget;
+            bool isTeleport = targ is TeleportSpell.InternalTarget;
             bool teleportAway = false;
 
             Mobile toTarget;

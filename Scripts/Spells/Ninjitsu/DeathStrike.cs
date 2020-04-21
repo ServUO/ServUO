@@ -147,7 +147,7 @@ namespace Server.Spells.Ninjitsu
 
         public static void Initialize()
         {
-            EventSink.Movement += new MovementEventHandler(EventSink_Movement);
+            EventSink.Movement += EventSink_Movement;
         }
 
         public static void EventSink_Movement(MovementEventArgs e)

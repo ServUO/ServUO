@@ -63,7 +63,7 @@ namespace Server.Items
 
         public static void Initialize()
         {
-            CommandSystem.Register("RandomTalisman", AccessLevel.GameMaster, new CommandEventHandler(RandomTalisman_OnCommand));
+            CommandSystem.Register("RandomTalisman", AccessLevel.GameMaster, RandomTalisman_OnCommand);
         }
 
         [Usage("RandomTalisman <count>")]
@@ -1201,7 +1201,7 @@ namespace Server.Items
         public virtual void StartTimer()
         {
             if (m_Timer == null || !m_Timer.Running)
-                m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), new TimerCallback(Slice));
+                m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), Slice);
         }
 
         public virtual void StopTimer()

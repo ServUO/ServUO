@@ -11,8 +11,8 @@ namespace Server.Items
 
         public static void Initialize()
         {
-            CommandSystem.Register("Stealable", AccessLevel.GameMaster, new CommandEventHandler(SetStealable_OnCommand));
-            CommandSystem.Register("Flag", AccessLevel.GameMaster, new CommandEventHandler(GetFlag_OnCommand));
+            CommandSystem.Register("Stealable", AccessLevel.GameMaster, SetStealable_OnCommand);
+            CommandSystem.Register("Flag", AccessLevel.GameMaster, GetFlag_OnCommand);
         }
 
         public static void SetStealable(Item target, bool value)

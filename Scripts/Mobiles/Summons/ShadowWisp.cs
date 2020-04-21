@@ -55,7 +55,7 @@ namespace Server.Mobiles
             FixedEffect(0x37C4, 1, 12, 1109, 6);
             PlaySound(0x1D3);
 
-            Timer.DelayCall(TimeSpan.FromSeconds(0.5), new TimerCallback(Flare));
+            Timer.DelayCall(TimeSpan.FromSeconds(0.5), Flare);
         }
 
         public override void Serialize(GenericWriter writer)

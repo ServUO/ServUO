@@ -8,7 +8,7 @@ namespace Server.Commands
 
         public static void Initialize()
         {
-            CommandSystem.Register("WhatIsIt", AccessLevel.Player, new CommandEventHandler(GenericCommand_OnCommand));
+            CommandSystem.Register("WhatIsIt", AccessLevel.Player, GenericCommand_OnCommand);
         }
 
         public class WhatIsItTarget : Target

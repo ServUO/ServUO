@@ -122,10 +122,10 @@ namespace Server.Items
             {
                 BraceletOfBinding bound = Bound;
 
-                list.Add(new BraceletEntry(new BraceletCallback(Activate), 6170, bound != null));
-                list.Add(new BraceletEntry(new BraceletCallback(Search), 6171, bound != null));
-                list.Add(new BraceletEntry(new BraceletCallback(Bind), bound == null ? 6173 : 6174, true));
-                list.Add(new BraceletEntry(new BraceletCallback(Inscribe), 6175, true));
+                list.Add(new BraceletEntry(Activate, 6170, bound != null));
+                list.Add(new BraceletEntry(Search, 6171, bound != null));
+                list.Add(new BraceletEntry(Bind, bound == null ? 6173 : 6174, true));
+                list.Add(new BraceletEntry(Inscribe, 6175, true));
             }
         }
 
@@ -307,17 +307,17 @@ namespace Server.Items
                 from.SendLocalizedMessage(1005564, "", 0x22); // Wouldst thou flee during the heat of battle??
                 return false;
             }
-            else if (Server.Misc.WeightOverloading.IsOverloaded(from))
+            else if (Misc.WeightOverloading.IsOverloaded(from))
             {
                 from.SendLocalizedMessage(502359, "", 0x22); // Thou art too encumbered to move.
                 return false;
             }
-            else if (from.Region.IsPartOf<Server.Regions.Jail>())
+            else if (from.Region.IsPartOf<Regions.Jail>())
             {
                 from.SendLocalizedMessage(1114345, "", 0x35); // You'll need a better jailbreak plan than that!
                 return false;
             }
-            else if (boundRoot.Region.IsPartOf<Server.Regions.Jail>())
+            else if (boundRoot.Region.IsPartOf<Regions.Jail>())
             {
                 from.SendLocalizedMessage(1019004); // You are not allowed to travel there.
                 return false;

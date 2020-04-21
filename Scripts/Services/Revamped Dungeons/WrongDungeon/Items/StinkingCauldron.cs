@@ -14,7 +14,7 @@ namespace Server.Items
             Movable = false;
             Hue = 363;
             Weight = 0.0;
-            Timer.DelayCall(TimeSpan.FromSeconds(10), new TimerCallback(GooeyMaggotsSpawn));
+            Timer.DelayCall(TimeSpan.FromSeconds(10), GooeyMaggotsSpawn);
         }
 
         private void GooeyMaggotsSpawn()
@@ -50,7 +50,7 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadEncodedInt();
 
-            Timer.DelayCall(TimeSpan.FromSeconds(10), new TimerCallback(GooeyMaggotsSpawn));
+            Timer.DelayCall(TimeSpan.FromSeconds(10), GooeyMaggotsSpawn);
         }
     }
 }

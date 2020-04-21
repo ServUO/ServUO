@@ -79,6 +79,13 @@ namespace Server.Items
             SetSecureLevelEntry.AddTo(from, this, list);
         }
 
+        public override bool OnDragDropInto(Mobile from, Item item, Point3D p)
+        {
+            from.SendMessage("HACKER! GET YOUR STEAM OUT OF HERE!!!");
+
+            return false;
+        }
+
         public override bool OnDragDrop(Mobile m, Item dropped)
         {
             if (m.InRange(GetWorldLocation(), 2))

@@ -41,7 +41,7 @@ namespace Server.Items
             if (IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(1112348); // Which item do you wish to scour?
-                from.BeginTarget(-1, false, Server.Targeting.TargetFlags.None, new TargetCallback(OnTarget));
+                from.BeginTarget(-1, false, Server.Targeting.TargetFlags.None, OnTarget);
             }
         }
 

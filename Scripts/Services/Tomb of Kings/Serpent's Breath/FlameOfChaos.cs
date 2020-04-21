@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Server.Items
@@ -41,7 +41,7 @@ namespace Server.Items
                     barrier.Active = false;
                 }
 
-                Timer.DelayCall(TimeSpan.FromMinutes(2.0), new TimerCallback(RestoreBarrier));
+                Timer.DelayCall(TimeSpan.FromMinutes(2.0), RestoreBarrier);
             }
         }
 
@@ -121,7 +121,7 @@ namespace Server.Items
                 m_Barriers.Add(reader.ReadItem() as FireBarrier);
 
             if (!Visible)
-                Timer.DelayCall(TimeSpan.Zero, new TimerCallback(RestoreBarrier));
+                Timer.DelayCall(TimeSpan.Zero, RestoreBarrier);
         }
     }
 }

@@ -209,7 +209,7 @@ namespace Server.Engines.SphynxFortune
             if (m_Timer != null && m_Timer.Running)
                 return;
 
-            m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), new TimerCallback(DefragTables));
+            m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), DefragTables);
             m_Timer.Start();
         }
 

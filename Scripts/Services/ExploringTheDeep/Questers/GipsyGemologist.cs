@@ -104,7 +104,7 @@ namespace Server.Gumps
     {
         public static void Initialize()
         {
-            CommandSystem.Register("ZaliaQuest", AccessLevel.GameMaster, new CommandEventHandler(ZaliaQuestGump_OnCommand));
+            CommandSystem.Register("ZaliaQuest", AccessLevel.GameMaster, ZaliaQuestGump_OnCommand);
         }
 
         private static void ZaliaQuestGump_OnCommand(CommandEventArgs e)
@@ -191,7 +191,7 @@ namespace Server.Gumps
     {
         public static void Initialize()
         {
-            CommandSystem.Register("ZaliaQuestComplete", AccessLevel.GameMaster, new CommandEventHandler(ZaliaQuestCompleteGump_OnCommand));
+            CommandSystem.Register("ZaliaQuestComplete", AccessLevel.GameMaster, ZaliaQuestCompleteGump_OnCommand);
         }
 
         private static void ZaliaQuestCompleteGump_OnCommand(CommandEventArgs e)

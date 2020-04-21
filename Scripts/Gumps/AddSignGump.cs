@@ -192,7 +192,7 @@ namespace Server.Gumps
 
         public static void Initialize()
         {
-            CommandSystem.Register("AddSign", AccessLevel.GameMaster, new CommandEventHandler(AddSign_OnCommand));
+            CommandSystem.Register("AddSign", AccessLevel.GameMaster, AddSign_OnCommand);
         }
 
         [Usage("AddSign")]

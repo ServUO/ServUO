@@ -5,7 +5,7 @@ namespace Server.Engines.Reports
     public class ResponseInfo : PersistableObject
     {
         #region Type Identification
-        public static readonly PersistableType ThisTypeID = new PersistableType("rs", new ConstructCallback(Construct));
+        public static readonly PersistableType ThisTypeID = new PersistableType("rs", Construct);
 
         private static PersistableObject Construct()
         {

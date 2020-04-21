@@ -518,10 +518,6 @@ namespace Server.Gumps
 
         private class SkillNameComparer : IComparer
         {
-            public SkillNameComparer()
-            {
-            }
-
             public int Compare(object x, object y)
             {
                 SkillName a = (SkillName)x;

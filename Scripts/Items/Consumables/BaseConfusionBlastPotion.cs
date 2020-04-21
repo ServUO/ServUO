@@ -96,7 +96,7 @@ namespace Server.Items
             // Effects
             Effects.PlaySound(loc, map, 0x207);
 
-            Geometry.Circle2D(loc, map, Radius, new DoEffect_Callback(BlastEffect), 270, 90);
+            Geometry.Circle2D(loc, map, Radius, BlastEffect, 270, 90);
 
             Timer.DelayCall(TimeSpan.FromSeconds(0.3), new TimerStateCallback(CircleEffect2), new object[] { loc, map });
             IPooledEnumerable eable = map.GetMobilesInRange(loc, Radius);
@@ -127,7 +127,7 @@ namespace Server.Items
         {
             object[] states = (object[])state;
 
-            Geometry.Circle2D((Point3D)states[0], (Map)states[1], Radius, new DoEffect_Callback(BlastEffect), 90, 270);
+            Geometry.Circle2D((Point3D)states[0], (Map)states[1], Radius, BlastEffect, 90, 270);
         }
 
         #endregion

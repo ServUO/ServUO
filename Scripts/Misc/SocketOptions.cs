@@ -24,7 +24,7 @@ namespace Server
         {
             SendQueue.CoalesceBufferSize = CoalesceBufferSize;
 
-            EventSink.SocketConnect += new SocketConnectEventHandler(EventSink_SocketConnect);
+            EventSink.SocketConnect += EventSink_SocketConnect;
 
             Listener.EndPoints = m_ListenerEndPoints;
         }

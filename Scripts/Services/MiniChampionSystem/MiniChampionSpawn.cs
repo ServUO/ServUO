@@ -10,7 +10,7 @@ namespace Server.Engines.MiniChamps
     {
         public static void Initialize()
         {
-            CommandSystem.Register("GenMiniChamp", AccessLevel.Administrator, new CommandEventHandler(GenStoneRuins_OnCommand));
+            CommandSystem.Register("GenMiniChamp", AccessLevel.Administrator, GenStoneRuins_OnCommand);
         }
 
         private static readonly List<MiniChamp> Controllers = new List<MiniChamp>();
@@ -307,7 +307,7 @@ namespace Server.Engines.MiniChamps
             {
                 Stop();
 
-                m_RestartTimer = Timer.DelayCall(m_RestartDelay, new TimerCallback(Start));
+                m_RestartTimer = Timer.DelayCall(m_RestartDelay, Start);
             }
         }
 
@@ -445,7 +445,7 @@ namespace Server.Engines.MiniChamps
                         }
                         else
                         {
-                            m_RestartTimer = Timer.DelayCall(m_RestartDelay, new TimerCallback(Start));
+                            m_RestartTimer = Timer.DelayCall(m_RestartDelay, Start);
                         }
 
                         break;

@@ -1,4 +1,4 @@
-﻿using Server.Events.Halloween;
+using Server.Events.Halloween;
 using Server.Items;
 using Server.Mobiles;
 using System;
@@ -63,11 +63,11 @@ namespace Server.Engines.Events
 
             if (today >= HolidaySettings.StartHalloween && today <= HolidaySettings.FinishHalloween)
             {
-                m_Timer = Timer.DelayCall(tick, tick, new TimerCallback(Timer_Callback));
+                m_Timer = Timer.DelayCall(tick, tick, Timer_Callback);
 
-                m_ClearTimer = Timer.DelayCall(clear, clear, new TimerCallback(Clear_Callback));
+                m_ClearTimer = Timer.DelayCall(clear, clear, Clear_Callback);
 
-                EventSink.PlayerDeath += new PlayerDeathEventHandler(EventSink_PlayerDeath);
+                EventSink.PlayerDeath += EventSink_PlayerDeath;
             }
         }
 

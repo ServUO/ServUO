@@ -145,7 +145,7 @@ namespace Server.Items
             }
 
             if (version == 0)
-                Timer.DelayCall(TimeSpan.FromSeconds(30.0), new TimerCallback(Construct));
+                Timer.DelayCall(TimeSpan.FromSeconds(30.0), Construct);
         }
     }
 

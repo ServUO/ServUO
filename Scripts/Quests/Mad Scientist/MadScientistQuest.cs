@@ -1,4 +1,4 @@
-﻿using Server.Commands;
+using Server.Commands;
 using Server.Items;
 using Server.Mobiles;
 using Server.Network;
@@ -13,7 +13,7 @@ namespace Server.Engines.Quests
         #region Generation
         public static void Initialize()
         {
-            CommandSystem.Register("GenSutek", AccessLevel.Developer, new CommandEventHandler(GenQuest_Command));
+            CommandSystem.Register("GenSutek", AccessLevel.Developer, GenQuest_Command);
         }
 
         private static void GenQuest_Command(CommandEventArgs e)
@@ -182,7 +182,7 @@ namespace Server.Engines.Quests
                 if (m_ExpireTimer != null)
                     m_ExpireTimer.Stop();
 
-                m_ExpireTimer = Timer.DelayCall(Timeout, new TimerCallback(OnExpired));
+                m_ExpireTimer = Timer.DelayCall(Timeout, OnExpired);
 
                 SutekIngredient[] ingredients = (SutekIngredient[])Enum.GetValues(typeof(SutekIngredient));
                 m_CurrentIngredient = ingredients[Utility.Random(ingredients.Length)];

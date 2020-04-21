@@ -13,9 +13,9 @@ namespace Server.Commands
         private static readonly Queue<Item> m_ToDelete = new Queue<Item>();
         public static void Initialize()
         {
-            CommandSystem.Register("SignGen", AccessLevel.Administrator, new CommandEventHandler(SignGen_OnCommand));
-            CommandSystem.Register("SignSave", AccessLevel.Administrator, new CommandEventHandler(SignSave_OnCommand));
-            CommandSystem.Register("SignRemove", AccessLevel.Administrator, new CommandEventHandler(SignRemove_OnCommand));
+            CommandSystem.Register("SignGen", AccessLevel.Administrator, SignGen_OnCommand);
+            CommandSystem.Register("SignSave", AccessLevel.Administrator, SignSave_OnCommand);
+            CommandSystem.Register("SignRemove", AccessLevel.Administrator, SignRemove_OnCommand);
         }
 
         [Usage("SignRemove")]

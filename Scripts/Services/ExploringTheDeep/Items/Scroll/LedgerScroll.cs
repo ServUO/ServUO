@@ -1,4 +1,4 @@
-﻿using Server.Commands;
+using Server.Commands;
 using Server.Gumps;
 using Server.Network;
 
@@ -44,7 +44,7 @@ namespace Server.Items
     {
         public static void Initialize()
         {
-            CommandSystem.Register("LedgerLetter", AccessLevel.GameMaster, new CommandEventHandler(LedgerGump_OnCommand));
+            CommandSystem.Register("LedgerLetter", AccessLevel.GameMaster, LedgerGump_OnCommand);
         }
 
         private static void LedgerGump_OnCommand(CommandEventArgs e)

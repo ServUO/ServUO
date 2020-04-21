@@ -1,4 +1,4 @@
-﻿using Server.Commands;
+using Server.Commands;
 using Server.Gumps;
 using Server.Network;
 
@@ -44,7 +44,7 @@ namespace Server.Items
     {
         public static void Initialize()
         {
-            CommandSystem.Register("CaptainsLogLetter", AccessLevel.GameMaster, new CommandEventHandler(CaptainsLogGump_OnCommand));
+            CommandSystem.Register("CaptainsLogLetter", AccessLevel.GameMaster, CaptainsLogGump_OnCommand);
         }
 
         private static void CaptainsLogGump_OnCommand(CommandEventArgs e)

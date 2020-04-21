@@ -59,7 +59,7 @@ namespace Server.Spells.Mysticism
             m.PlaySound(0x65A);
             m.FixedParticles(0x3728, 1, 13, 9918, 92, 3, EffectLayer.Head);
 
-            Timer.DelayCall(new TimerCallback(MobileDelta_Callback));
+            Timer.DelayCall(MobileDelta_Callback);
             m_Effected.Add(m);
 
             string args = String.Format("{0}\t{1}\t{2}\t{3}\t{4}", "-10", "-2", GetResBonus(m).ToString(), GetMaxResistance(m).ToString(), GetDamBonus(m).ToString());

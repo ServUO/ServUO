@@ -66,7 +66,7 @@ namespace Server.Items.MusicBox
         {
             if (IsChildOf(from.Backpack))
             {
-                from.BeginTarget(3, false, TargetFlags.None, new TargetCallback(OnTarget));
+                from.BeginTarget(3, false, TargetFlags.None, OnTarget);
                 from.SendMessage("Select a Dawn's music box to add this gears to.");
             }
             else

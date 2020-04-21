@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Server.Items
@@ -69,7 +69,7 @@ namespace Server.Items
                 m_Blockers.Clear();
                 m_LOSBlockers.Clear();
 
-                Timer.DelayCall(TimeSpan.FromMinutes(2.0), new TimerCallback(RestoreBarrier));
+                Timer.DelayCall(TimeSpan.FromMinutes(2.0), RestoreBarrier);
             }
         }
 
@@ -203,7 +203,7 @@ namespace Server.Items
                 m_MsgTriggers.Add(reader.ReadItem() as SBMessageTrigger);
 
             if (!Visible)
-                Timer.DelayCall(TimeSpan.Zero, new TimerCallback(RestoreBarrier));
+                Timer.DelayCall(TimeSpan.Zero, RestoreBarrier);
         }
     }
 }

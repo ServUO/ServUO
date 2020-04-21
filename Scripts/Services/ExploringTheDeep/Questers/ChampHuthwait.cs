@@ -106,7 +106,7 @@ namespace Server.Gumps
     {
         public static void Initialize()
         {
-            CommandSystem.Register("ChampHuthwait", AccessLevel.GameMaster, new CommandEventHandler(ChampHuthwaitGump_OnCommand));
+            CommandSystem.Register("ChampHuthwait", AccessLevel.GameMaster, ChampHuthwaitGump_OnCommand);
         }
 
         private static void ChampHuthwaitGump_OnCommand(CommandEventArgs e)
@@ -193,7 +193,7 @@ namespace Server.Gumps
     {
         public static void Initialize()
         {
-            CommandSystem.Register("ChampHuthwaitComplete", AccessLevel.GameMaster, new CommandEventHandler(ChampHuthwaitCompleteGump_OnCommand));
+            CommandSystem.Register("ChampHuthwaitComplete", AccessLevel.GameMaster, ChampHuthwaitCompleteGump_OnCommand);
         }
 
         private static void ChampHuthwaitCompleteGump_OnCommand(CommandEventArgs e)

@@ -1634,6 +1634,7 @@ namespace Server.Mobiles
         public virtual bool DisallowAllMoves => false;
 
         public virtual bool InitialInnocent => false;
+        public virtual bool AlwaysInnocent => false;
 
         public virtual bool AlwaysMurderer => false;
 
@@ -4142,25 +4143,75 @@ namespace Server.Mobiles
 
         public override void AggressiveAction(Mobile aggressor, bool criminal)
         {
-            base.AggressiveAction(aggressor, criminal);
-
             if (ControlMaster != null && ControlMaster != aggressor)
             {
-                if (NotorietyHandlers.CheckAggressor(Aggressors, aggressor))
+                var master = ControlMaster;
+                AggressorInfo info = master.Aggressors.FirstOrDefault(i => i.Attacker == aggressor);
+
+                if (info != null)
                 {
-                    ControlMaster.Aggressors.Add(AggressorInfo.Create(aggressor, ControlMaster, criminal));
-                    ControlMaster.Delta(MobileDelta.Noto);
+                    // already in the list, so we're refreshing it
+                    info.Refresh();
+                    info.CriminalAggression = criminal;
+                }
+                else
+                {
+                    // not in the list, so we're adding it
+                    master.Aggressors.Add(AggressorInfo.Create(aggressor, master, criminal));
 
-                    if (NotorietyHandlers.CheckAggressed(aggressor.Aggressed, this))
-                        aggressor.Aggressed.Add(AggressorInfo.Create(aggressor, ControlMaster, criminal));
-
-                    if (aggressor is PlayerMobile || (aggressor is BaseCreature && !((BaseCreature)aggressor).IsMonster))
+                    if (CanSee(aggressor) && NetState != null)
                     {
-                        BuffInfo.AddBuff(ControlMaster, new BuffInfo(BuffIcon.HeatOfBattleStatus, 1153801, 1153827, Aggression.CombatHeatDelay, ControlMaster, true));
-                        BuffInfo.AddBuff(aggressor, new BuffInfo(BuffIcon.HeatOfBattleStatus, 1153801, 1153827, Aggression.CombatHeatDelay, aggressor, true));
+                        master.NetState.Send(MobileIncoming.Create(NetState, master, aggressor));
                     }
+
+                    master.UpdateAggrExpire();
+                }
+
+                // Now, if the master is in the aggressor list, it needs to be refreshed
+                info = aggressor.Aggressors.FirstOrDefault(i => i.Attacker == master);
+
+                if (info != null)
+                {
+                    info.Refresh();
+                }
+
+                info = master.Aggressed.FirstOrDefault(i => i.Defender == aggressor);
+
+                if (info != null)
+                {
+                    info.Refresh();
+                }
+
+                // next lets find out if our master is on the aggressors aggressed list
+                info = aggressor.Aggressed.FirstOrDefault(i => i.Defender == master);
+
+                if (info != null)
+                {
+                    // already in the list, so we're refreshing it
+                    info.Refresh();
+                    info.CriminalAggression = criminal;
+                }
+                else
+                {
+                    // not in the list, so we're adding it
+                    aggressor.Aggressed.Add(AggressorInfo.Create(aggressor, master, criminal));
+
+                    if (CanSee(aggressor) && NetState != null)
+                    {
+                        master.NetState.Send(MobileIncoming.Create(NetState, master, aggressor));
+                    }
+
+                    master.UpdateAggrExpire();
+                }
+
+                if (aggressor is PlayerMobile || (aggressor is BaseCreature && !((BaseCreature)aggressor).IsMonster))
+                {
+                    BuffInfo.AddBuff(master, new BuffInfo(BuffIcon.HeatOfBattleStatus, 1153801, 1153827, Aggression.CombatHeatDelay, master, true));
+                    BuffInfo.AddBuff(aggressor, new BuffInfo(BuffIcon.HeatOfBattleStatus, 1153801, 1153827, Aggression.CombatHeatDelay, aggressor, true));
                 }
             }
+
+            base.AggressiveAction(aggressor, criminal);
 
             OrderType ct = m_ControlOrder;
 

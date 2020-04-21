@@ -57,6 +57,8 @@ namespace Server.Mobiles
 
         public override bool UseSmartAI => true;
 
+        public override bool AlwaysInnocent => true;
+
         public virtual bool IsActiveVendor => true;
         public virtual bool IsActiveBuyer => IsActiveVendor && !Siege.SiegeShard; // response to vendor SELL
         public virtual bool IsActiveSeller => IsActiveVendor; // repsonse to vendor BUY

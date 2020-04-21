@@ -82,7 +82,7 @@ namespace Server.Items
             else if (!IsChildOf(from.Backpack))
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
             else
-                from.SendGump(new WarningGump(1060635, 30720, 1062202, 32512, 420, 280, new WarningGumpCallback(BlessWarning_Callback), this));
+                from.SendGump(new WarningGump(1060635, 30720, 1062202, 32512, 420, 280, BlessWarning_Callback, this));
         }
 
         private static void BlessWarning_Callback(Mobile from, bool okay, object state)

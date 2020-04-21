@@ -1104,16 +1104,5 @@ namespace Server.Items
                     break;
             }
         }
-
-        private static int AssignElementalDamage(BaseWeapon weapon, AosElementAttribute attr, int totalDamage)
-        {
-            if (totalDamage <= 0)
-                return 0;
-
-            int random = Utility.Random(totalDamage / 10 + 1) * 10;
-            weapon.AosElementDamages[attr] = random;
-
-            return (totalDamage - random);
-        }
     }
 }

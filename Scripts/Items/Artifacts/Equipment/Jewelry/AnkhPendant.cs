@@ -21,7 +21,7 @@ namespace Server.Items
     {
         public static void Initialize()
         {
-            EventSink.Speech += new SpeechEventHandler(EventSink_Speech);
+            EventSink.Speech += EventSink_Speech;
         }
 
         public override int LabelNumber => 1079525;  // Ankh Pendant

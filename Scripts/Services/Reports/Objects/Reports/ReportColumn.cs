@@ -3,7 +3,7 @@ namespace Server.Engines.Reports
     public class ReportColumn : PersistableObject
     {
         #region Type Identification
-        public static readonly PersistableType ThisTypeID = new PersistableType("rc", new ConstructCallback(Construct));
+        public static readonly PersistableType ThisTypeID = new PersistableType("rc", Construct);
 
         private static PersistableObject Construct()
         {

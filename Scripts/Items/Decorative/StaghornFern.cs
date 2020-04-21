@@ -35,7 +35,7 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            Timer.DelayCall(TimeSpan.Zero, new TimerCallback(FixMovingCrate));
+            Timer.DelayCall(TimeSpan.Zero, FixMovingCrate);
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -115,7 +115,7 @@ namespace Server.Items
 
             if (house != null && house.IsCoOwner(from))
             {
-                from.BeginTarget(-1, true, TargetFlags.None, new TargetStateCallback(Placement_OnTarget), null);
+                from.BeginTarget(-1, true, TargetFlags.None, Placement_OnTarget, null);
             }
             else
             {

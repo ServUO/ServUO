@@ -23,7 +23,7 @@ namespace Server.Commands
         public static StreamWriter Output => m_Output;
         public static void Initialize()
         {
-            EventSink.Command += new CommandEventHandler(EventSink_Command);
+            EventSink.Command += EventSink_Command;
 
             if (!Directory.Exists("Logs"))
                 Directory.CreateDirectory("Logs");

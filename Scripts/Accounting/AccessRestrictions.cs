@@ -9,7 +9,7 @@ namespace Server
     {
         public static void Initialize()
         {
-            EventSink.SocketConnect += new SocketConnectEventHandler(EventSink_SocketConnect);
+            EventSink.SocketConnect += EventSink_SocketConnect;
         }
 
         private static void EventSink_SocketConnect(SocketConnectEventArgs e)

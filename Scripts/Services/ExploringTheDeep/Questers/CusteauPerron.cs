@@ -47,38 +47,38 @@ namespace Server.Mobiles
             list.Add(1072269); // Quest Giver
         }
 
-        public override void OnDoubleClick(Mobile m)
+        public override void OnDoubleClick(Mobile from)
         {
-            if (!(m is PlayerMobile))
+            if (!(from is PlayerMobile))
                 return;
 
-            PlayerMobile pm = (PlayerMobile)m;
+            PlayerMobile pm = (PlayerMobile)from;
 
             if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CusteauPerronHouse)
             {
-                if (!m.HasGump(typeof(CousteauPerronGump)))
+                if (!from.HasGump(typeof(CousteauPerronGump)))
                 {
-                    m.SendGump(new CousteauPerronGump(m));
+                    from.SendGump(new CousteauPerronGump(from));
                     pm.ExploringTheDeepQuest = ExploringTheDeepQuestChain.CusteauPerron;
                 }
             }
             else if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.Sorcerers)
             {
-                if (!m.HasGump(typeof(CousteauPerronCompleteGump)))
+                if (!from.HasGump(typeof(CousteauPerronCompleteGump)))
                 {
-                    m.SendGump(new CousteauPerronCompleteGump(m));
+                    from.SendGump(new CousteauPerronCompleteGump(from));
                 }
             }
             else if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
             {
-                if (!m.HasGump(typeof(CousteauPerronPlansGump)))
+                if (!from.HasGump(typeof(CousteauPerronPlansGump)))
                 {
-                    m.SendGump(new CousteauPerronPlansGump(m));
+                    from.SendGump(new CousteauPerronPlansGump(from));
                 }
             }
             else
             {
-                m.SendLocalizedMessage(1154325); // You feel as though by doing this you are missing out on an important part of your journey...
+                from.SendLocalizedMessage(1154325); // You feel as though by doing this you are missing out on an important part of your journey...
             }
         }
 
@@ -133,7 +133,7 @@ namespace Server.Gumps
     {
         public static void Initialize()
         {
-            CommandSystem.Register("CousteauPerron", AccessLevel.GameMaster, new CommandEventHandler(CousteauPerronGump_OnCommand));
+            CommandSystem.Register("CousteauPerron", AccessLevel.GameMaster, CousteauPerronGump_OnCommand);
         }
 
         private static void CousteauPerronGump_OnCommand(CommandEventArgs e)
@@ -194,10 +194,8 @@ namespace Server.Gumps
 
         }
 
-        public override void OnResponse(NetState state, RelayInfo info) //Function for GumpButtonType.Reply Buttons 
+        public override void OnResponse(NetState sender, RelayInfo info) //Function for GumpButtonType.Reply Buttons 
         {
-            Mobile from = state.Mobile;
-
             switch (info.ButtonID)
             {
                 case 0:
@@ -213,7 +211,7 @@ namespace Server.Gumps
     {
         public static void Initialize()
         {
-            CommandSystem.Register("CousteauPerronComplete", AccessLevel.GameMaster, new CommandEventHandler(CousteauPerronCompleteGump_OnCommand));
+            CommandSystem.Register("CousteauPerronComplete", AccessLevel.GameMaster, CousteauPerronCompleteGump_OnCommand);
         }
 
         private static void CousteauPerronCompleteGump_OnCommand(CommandEventArgs e)
@@ -257,10 +255,8 @@ namespace Server.Gumps
             AddButton(345, 440, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
         }
 
-        public override void OnResponse(NetState state, RelayInfo info)
+        public override void OnResponse(NetState sender, RelayInfo info)
         {
-            Mobile from = state.Mobile;
-
             switch (info.ButtonID)
             {
                 case 0:
@@ -276,7 +272,7 @@ namespace Server.Gumps
     {
         public static void Initialize()
         {
-            CommandSystem.Register("CousteauPerronPlans", AccessLevel.GameMaster, new CommandEventHandler(CousteauPerronPlansGump_OnCommand));
+            CommandSystem.Register("CousteauPerronPlans", AccessLevel.GameMaster, CousteauPerronPlansGump_OnCommand);
         }
 
         private static void CousteauPerronPlansGump_OnCommand(CommandEventArgs e)
@@ -315,15 +311,13 @@ namespace Server.Gumps
             AddHtmlLocalized(140, 45, 250, 24, 1154327, 0x7FFF, false, false); // Exploring the Deep
 
             AddPage(1);
-            AddHtmlLocalized(107, 140, 300, 150, 1154293, 0x7FFF, false, true); // This is exactly what I was talking about! How did you ever find such a thing! No matter! *reads the plans carefully*  It’s all here by golly, detailed instructions on how to craft each item.  There are a number of professionals throughout the realm who will be able to assist you in crafting such things – I’ve written them down on this list here *hands you a note* Simply seek the professionals I have listed and you should be well on your way!
+            AddHtmlLocalized(107, 140, 300, 150, 1154293, 0x7FFF, false, true); // This is exactly what I was talking about! How did you ever find such a thing! No matter! *reads the plans carefully*  Itâ€™s all here by golly, detailed instructions on how to craft each item.  There are a number of professionals throughout the realm who will be able to assist you in crafting such things â€“ Iâ€™ve written them down on this list here *hands you a note* Simply seek the professionals I have listed and you should be well on your way!
 
             AddButton(345, 440, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
         }
 
-        public override void OnResponse(NetState state, RelayInfo info)
+        public override void OnResponse(NetState sender, RelayInfo info)
         {
-            Mobile from = state.Mobile;
-
             switch (info.ButtonID)
             {
                 case 0:

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Server.Items
 {
@@ -43,11 +43,10 @@ namespace Server.Items
             {
                 ItemID = 1; // no draw
 
-                Timer.DelayCall(TimeSpan.FromSeconds(120.0), new TimerCallback(
-                    delegate
-                    {
-                        ItemID = m_ClosedId;
-                    }));
+                Timer.DelayCall(TimeSpan.FromSeconds(120.0), delegate
+                {
+                    ItemID = m_ClosedId;
+                });
             }
         }
 

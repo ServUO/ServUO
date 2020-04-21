@@ -10,7 +10,7 @@ namespace Server.Items
         public UnsettlingPortraitComponent()
             : base(0x2A65)
         {
-            m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(3), TimeSpan.FromMinutes(3), new TimerCallback(ChangeDirection));
+            m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(3), TimeSpan.FromMinutes(3), ChangeDirection);
         }
 
         public UnsettlingPortraitComponent(Serial serial)
@@ -48,7 +48,7 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(3), TimeSpan.FromMinutes(3), new TimerCallback(ChangeDirection));
+            m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(3), TimeSpan.FromMinutes(3), ChangeDirection);
         }
 
         private void ChangeDirection()

@@ -21,7 +21,7 @@ namespace Server.Commands.Generic
         public static AreaCommandImplementor Instance => m_Instance;
         public override void Process(Mobile from, BaseCommand command, string[] args)
         {
-            BoundingBoxPicker.Begin(from, new BoundingBoxCallback(OnTarget), new object[] { command, args });
+            BoundingBoxPicker.Begin(from, OnTarget, new object[] { command, args });
         }
 
         public void OnTarget(Mobile from, Map map, Point3D start, Point3D end, object state)

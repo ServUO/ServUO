@@ -9,13 +9,13 @@ namespace Server.Commands
     {
         public static void Initialize()
         {
-            CommandSystem.Register("DumpTimers", AccessLevel.Administrator, new CommandEventHandler(DumpTimers_OnCommand));
-            CommandSystem.Register("CountObjects", AccessLevel.Administrator, new CommandEventHandler(CountObjects_OnCommand));
-            CommandSystem.Register("ProfileWorld", AccessLevel.Administrator, new CommandEventHandler(ProfileWorld_OnCommand));
-            CommandSystem.Register("TraceInternal", AccessLevel.Administrator, new CommandEventHandler(TraceInternal_OnCommand));
-            CommandSystem.Register("TraceExpanded", AccessLevel.Administrator, new CommandEventHandler(TraceExpanded_OnCommand));
-            CommandSystem.Register("WriteProfiles", AccessLevel.Administrator, new CommandEventHandler(WriteProfiles_OnCommand));
-            CommandSystem.Register("SetProfiles", AccessLevel.Administrator, new CommandEventHandler(SetProfiles_OnCommand));
+            CommandSystem.Register("DumpTimers", AccessLevel.Administrator, DumpTimers_OnCommand);
+            CommandSystem.Register("CountObjects", AccessLevel.Administrator, CountObjects_OnCommand);
+            CommandSystem.Register("ProfileWorld", AccessLevel.Administrator, ProfileWorld_OnCommand);
+            CommandSystem.Register("TraceInternal", AccessLevel.Administrator, TraceInternal_OnCommand);
+            CommandSystem.Register("TraceExpanded", AccessLevel.Administrator, TraceExpanded_OnCommand);
+            CommandSystem.Register("WriteProfiles", AccessLevel.Administrator, WriteProfiles_OnCommand);
+            CommandSystem.Register("SetProfiles", AccessLevel.Administrator, SetProfiles_OnCommand);
         }
 
         [Usage("WriteProfiles")]

@@ -57,7 +57,7 @@ namespace Server.Items
         public override void OnDoubleClick(Mobile from)
         {
             if (!from.InRange(GetWorldLocation(), 2))
-                from.LocalOverheadMessage(Network.MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
+                from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
             else if (!from.Region.IsPartOf<HouseRegion>())
                 from.SendLocalizedMessage(502092); // You must be in your house to do this.
             else if (!IsLockedDown && !IsSecure)
@@ -144,7 +144,7 @@ namespace Server.Items
                 {
                     from.SendLocalizedMessage(1150422, "#1150424"); // The ~1_NAME~ will not function while being traded.
                 }
-                else if (!item.VerifyMove(from) || item is Server.Engines.Quests.QuestItem)
+                else if (!item.VerifyMove(from) || item is Engines.Quests.QuestItem)
                 {
                     from.SendLocalizedMessage(1150421, "#1150424"); // The ~1_NAME~ rejects that item.
                 }

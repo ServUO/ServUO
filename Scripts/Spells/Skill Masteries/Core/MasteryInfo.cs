@@ -34,7 +34,7 @@ namespace Server.Spells.SkillMasteries
         {
             Infos = new List<MasteryInfo>();
 
-            EventSink.Login += new LoginEventHandler(OnLogin);
+            EventSink.Login += OnLogin;
 
             Infos.Add(new MasteryInfo(typeof(InspireSpell), 700, SkillName.Provocation));
             Infos.Add(new MasteryInfo(typeof(InvigorateSpell), 701, SkillName.Provocation));

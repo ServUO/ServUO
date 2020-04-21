@@ -44,7 +44,7 @@ namespace Server.Items
         }
         public static void Initialize()
         {
-            CommandSystem.Register("WayPointSeq", AccessLevel.GameMaster, new CommandEventHandler(WayPointSeq_OnCommand));
+            CommandSystem.Register("WayPointSeq", AccessLevel.GameMaster, WayPointSeq_OnCommand);
         }
 
         public static void WayPointSeq_OnCommand(CommandEventArgs arg)

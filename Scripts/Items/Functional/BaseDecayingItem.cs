@@ -69,7 +69,7 @@ namespace Server.Items
             if (m_Timer != null || Lifespan == 0)
                 return;
 
-            m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), new TimerCallback(Slice));
+            m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), Slice);
             m_Timer.Priority = TimerPriority.OneSecond;
         }
 

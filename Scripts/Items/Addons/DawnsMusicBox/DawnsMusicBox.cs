@@ -261,7 +261,7 @@ namespace Server.Items
                 m_ItemID = ItemID;
 
             m.Send(new PlayMusic(music));
-            m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(0.5), TimeSpan.FromSeconds(0.5), 4, new TimerCallback(Animate));
+            m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(0.5), TimeSpan.FromSeconds(0.5), 4, Animate);
         }
 
         public void EndMusic(Mobile m)

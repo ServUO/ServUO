@@ -326,7 +326,7 @@ namespace Server
         private static int m_Count;
         public static void Initialize()
         {
-            CommandSystem.Register("DoorGen", AccessLevel.Administrator, new CommandEventHandler(DoorGen_OnCommand));
+            CommandSystem.Register("DoorGen", AccessLevel.Administrator, DoorGen_OnCommand);
         }
 
         [Usage("DoorGen")]

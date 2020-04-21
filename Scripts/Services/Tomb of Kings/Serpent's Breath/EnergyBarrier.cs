@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Server.Items
 {
@@ -32,7 +32,7 @@ namespace Server.Items
 
             MoveToWorld(location, map);
 
-            m_SoundTimer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(Utility.RandomMinMax(5, 50)), new TimerCallback(PlaySound));
+            m_SoundTimer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(Utility.RandomMinMax(5, 50)), PlaySound);
             m_SoundTimer.Start();
         }
 
@@ -68,7 +68,7 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            m_SoundTimer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(5.0), new TimerCallback(PlaySound));
+            m_SoundTimer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(5.0), PlaySound);
             m_SoundTimer.Start();
         }
     }

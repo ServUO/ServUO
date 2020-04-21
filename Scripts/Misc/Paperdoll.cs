@@ -6,7 +6,7 @@ namespace Server.Misc
     {
         public static void Initialize()
         {
-            EventSink.PaperdollRequest += new PaperdollRequestEventHandler(EventSink_PaperdollRequest);
+            EventSink.PaperdollRequest += EventSink_PaperdollRequest;
         }
 
         public static void EventSink_PaperdollRequest(PaperdollRequestEventArgs e)

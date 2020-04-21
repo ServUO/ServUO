@@ -9,7 +9,7 @@ namespace Server.Items
         public PlagueBeastBlood()
             : base(0x122C, 0)
         {
-            m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(1.5), TimeSpan.FromSeconds(1.5), 3, new TimerCallback(Hemorrhage));
+            m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(1.5), TimeSpan.FromSeconds(1.5), 3, Hemorrhage);
         }
 
         public PlagueBeastBlood(Serial serial)

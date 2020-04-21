@@ -18,7 +18,7 @@ namespace Server.Commands.Generic
             base.Register(command);
 
             for (int i = 0; i < command.Commands.Length; ++i)
-                CommandSystem.Register(command.Commands[i], command.AccessLevel, new CommandEventHandler(Redirect));
+                CommandSystem.Register(command.Commands[i], command.AccessLevel, Redirect);
         }
 
         public void Redirect(CommandEventArgs e)

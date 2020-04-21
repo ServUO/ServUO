@@ -1,4 +1,4 @@
-﻿using Server.Commands;
+using Server.Commands;
 using Server.Gumps;
 using Server.Network;
 
@@ -44,7 +44,7 @@ namespace Server.Items
     {
         public static void Initialize()
         {
-            CommandSystem.Register("JosefSkimmonsScroll", AccessLevel.GameMaster, new CommandEventHandler(JosefSkimmonsPrivateGump_OnCommand));
+            CommandSystem.Register("JosefSkimmonsScroll", AccessLevel.GameMaster, JosefSkimmonsPrivateGump_OnCommand);
         }
 
         private static void JosefSkimmonsPrivateGump_OnCommand(CommandEventArgs e)

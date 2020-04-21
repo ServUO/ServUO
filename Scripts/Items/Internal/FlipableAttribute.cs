@@ -9,7 +9,7 @@ namespace Server.Items
     {
         public static void Initialize()
         {
-            CommandSystem.Register("Flip", AccessLevel.GameMaster, new CommandEventHandler(Flip_OnCommand));
+            CommandSystem.Register("Flip", AccessLevel.GameMaster, Flip_OnCommand);
         }
 
         [Usage("Flip")]

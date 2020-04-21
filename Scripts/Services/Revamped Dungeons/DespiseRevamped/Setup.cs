@@ -8,8 +8,8 @@ namespace Server.Engines.Despise
     {
         public static void Initialize()
         {
-            CommandSystem.Register("SetupDespise", AccessLevel.GameMaster, new CommandEventHandler(SetupDespise_OnCommand));
-            CommandSystem.Register("DeleteDespise", AccessLevel.GameMaster, new CommandEventHandler(DeleteDespise_OnCommand));
+            CommandSystem.Register("SetupDespise", AccessLevel.GameMaster, SetupDespise_OnCommand);
+            CommandSystem.Register("DeleteDespise", AccessLevel.GameMaster, DeleteDespise_OnCommand);
         }
 
         private static void DeleteDespise_OnCommand(CommandEventArgs e)

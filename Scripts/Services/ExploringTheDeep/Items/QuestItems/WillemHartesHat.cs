@@ -1,4 +1,4 @@
-﻿using Server.Network;
+using Server.Network;
 using System;
 
 namespace Server.Items
@@ -79,7 +79,7 @@ namespace Server.Items
             if (m_Timer != null)
                 return;
 
-            m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), new TimerCallback(Slice));
+            m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), Slice);
             m_Timer.Priority = TimerPriority.OneSecond;
         }
 

@@ -71,7 +71,7 @@ namespace Server.Items
         {
             m_Charges = charges;
 
-            m_Timer = Timer.DelayCall(RechargeTime, RechargeTime, new TimerCallback(Recharge));
+            m_Timer = Timer.DelayCall(RechargeTime, RechargeTime, Recharge);
         }
 
         public FountainOfLife(Serial serial)
@@ -175,9 +175,9 @@ namespace Server.Items
             DateTime next = reader.ReadDateTime();
 
             if (next < DateTime.UtcNow)
-                m_Timer = Timer.DelayCall(TimeSpan.Zero, RechargeTime, new TimerCallback(Recharge));
+                m_Timer = Timer.DelayCall(TimeSpan.Zero, RechargeTime, Recharge);
             else
-                m_Timer = Timer.DelayCall(next - DateTime.UtcNow, RechargeTime, new TimerCallback(Recharge));
+                m_Timer = Timer.DelayCall(next - DateTime.UtcNow, RechargeTime, Recharge);
         }
 
         public void Recharge()

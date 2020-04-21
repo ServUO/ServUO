@@ -86,7 +86,7 @@ namespace Server.Items
                 m_Entry = entry;
                 m_BlanketOfDarkness = BlanketOfDarkness;
 
-                m_CloseTimer = Timer.DelayCall(TimeSpan.FromSeconds(10.0), new TimerCallback(CloseGump));
+                m_CloseTimer = Timer.DelayCall(TimeSpan.FromSeconds(10.0), CloseGump);
 
                 AddBackground(0, 0, 400, 350, 0xA28);
 

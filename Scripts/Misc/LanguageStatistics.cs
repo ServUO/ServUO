@@ -166,7 +166,7 @@ namespace Server.Misc
         private static readonly bool CountAccounts = true;// will consider only first character's valid language
         public static void Initialize()
         {
-            CommandSystem.Register("LanguageStatistics", AccessLevel.Administrator, new CommandEventHandler(LanguageStatistics_OnCommand));
+            CommandSystem.Register("LanguageStatistics", AccessLevel.Administrator, LanguageStatistics_OnCommand);
         }
 
         [Usage("LanguageStatistics")]

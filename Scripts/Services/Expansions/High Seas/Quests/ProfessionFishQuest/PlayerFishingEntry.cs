@@ -1,4 +1,4 @@
-﻿using Server.Commands;
+using Server.Commands;
 using System;
 using System.Collections.Generic;
 
@@ -8,7 +8,7 @@ namespace Server.Engines.Quests
     {
         public static void Initialize()
         {
-            CommandSystem.Register("FishMongerStatus", AccessLevel.Player, new CommandEventHandler(FishMongerStatus_OnCommand));
+            CommandSystem.Register("FishMongerStatus", AccessLevel.Player, FishMongerStatus_OnCommand);
         }
 
         private readonly Mobile m_Player;

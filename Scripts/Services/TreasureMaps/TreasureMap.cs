@@ -1028,7 +1028,7 @@ namespace Server.Items
             writer.Write(ChestLocation);
 
             if (!Completed && NextReset != DateTime.MinValue && NextReset < DateTime.UtcNow)
-                Timer.DelayCall(TimeSpan.FromSeconds(30), new TimerCallback(ResetLocation));
+                Timer.DelayCall(TimeSpan.FromSeconds(30), ResetLocation);
         }
 
         public override void Deserialize(GenericReader reader)

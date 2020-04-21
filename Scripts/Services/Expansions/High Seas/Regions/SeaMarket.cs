@@ -323,7 +323,7 @@ namespace Server.Regions
         {
             RestrictBoats = m_RestrictBoats;
 
-            m_BlabTimer = Timer.DelayCall(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), new TimerCallback(CheckBlab_Callback));
+            m_BlabTimer = Timer.DelayCall(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), CheckBlab_Callback);
             m_BlabTimer.Priority = TimerPriority.OneSecond;
         }
         #endregion
@@ -341,7 +341,7 @@ namespace Server.Regions
 
             m_RestrictBoats = reader.ReadBool();
 
-            Timer.DelayCall(TimeSpan.FromSeconds(30), new TimerCallback(StartTimers_Callback));
+            Timer.DelayCall(TimeSpan.FromSeconds(30), StartTimers_Callback);
         }
 
         public static void GetBoatInfo_OnCommand(CommandEventArgs e)

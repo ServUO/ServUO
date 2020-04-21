@@ -1,4 +1,4 @@
-﻿using Server.Commands;
+using Server.Commands;
 using Server.Network;
 using System;
 
@@ -23,7 +23,7 @@ namespace Server.Gumps
     {
         public static void Initialize()
         {
-            CommandSystem.Register("StormLevelGump", AccessLevel.Administrator, new CommandEventHandler(StormLevel_OnCommand));
+            CommandSystem.Register("StormLevelGump", AccessLevel.Administrator, StormLevel_OnCommand);
         }
 
         [Usage("StormLevelGump")]

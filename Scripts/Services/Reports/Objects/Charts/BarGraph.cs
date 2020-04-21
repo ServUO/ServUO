@@ -12,7 +12,7 @@ namespace Server.Engines.Reports
     public class BarGraph : Chart
     {
         #region Type Identification
-        public static readonly PersistableType ThisTypeID = new PersistableType("bg", new ConstructCallback(Construct));
+        public static readonly PersistableType ThisTypeID = new PersistableType("bg", Construct);
 
         private static PersistableObject Construct()
         {

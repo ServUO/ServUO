@@ -8,13 +8,13 @@ namespace Server
     {
         public static void Initialize()
         {
-            EventSink.ClientVersionReceived += new ClientVersionReceivedHandler(delegate (ClientVersionReceivedArgs args)
+            EventSink.ClientVersionReceived += delegate (ClientVersionReceivedArgs args)
             {
                 PlayerMobile pm = args.State.Mobile as PlayerMobile;
 
                 if (pm != null)
                     Timer.DelayCall(TimeSpan.Zero, pm.ResendBuffs);
-            });
+            };
         }
 
         public static int Blank => 1114057;  // ~1_val~
@@ -74,16 +74,15 @@ namespace Server
             m_TimeLength = length;
             m_TimeStart = DateTime.UtcNow;
 
-            m_Timer = Timer.DelayCall(length, new TimerCallback(
-                delegate
-                {
-                    PlayerMobile pm = m as PlayerMobile;
+            m_Timer = Timer.DelayCall(length, delegate
+            {
+                PlayerMobile pm = m as PlayerMobile;
 
-                    if (pm == null)
-                        return;
+                if (pm == null)
+                    return;
 
-                    pm.RemoveBuff(this);
-                }));
+                pm.RemoveBuff(this);
+            });
         }
 
         public BuffInfo(BuffIcon iconID, int titleCliloc, int secondaryCliloc, TimeSpan length, Mobile m, bool notimer)

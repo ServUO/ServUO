@@ -216,7 +216,7 @@ namespace Server.Engines.NewMagincia
 
                 m_Pet.IsStabled = true;
 
-                Timer.DelayCall(TimeSpan.FromSeconds(10), new TimerCallback(Internalize));
+                Timer.DelayCall(TimeSpan.FromSeconds(10), Internalize);
             }
         }
 

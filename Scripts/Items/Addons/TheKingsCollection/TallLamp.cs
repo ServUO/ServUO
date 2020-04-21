@@ -113,7 +113,7 @@ namespace Server.Items
 
             if (house != null && house.IsCoOwner(from))
             {
-                from.BeginTarget(-1, true, TargetFlags.None, new TargetStateCallback(Placement_OnTarget), null);
+                from.BeginTarget(-1, true, TargetFlags.None, Placement_OnTarget, null);
             }
             else
             {

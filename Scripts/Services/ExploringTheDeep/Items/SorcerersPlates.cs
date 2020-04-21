@@ -1,4 +1,4 @@
-﻿using Server.Commands;
+using Server.Commands;
 using Server.Engines.Quests;
 using Server.Mobiles;
 using Server.Network;
@@ -12,8 +12,8 @@ namespace Server.Items
 
         public static void Initialize()
         {
-            CommandSystem.Register("GenSorcerersPlate", AccessLevel.Developer, new CommandEventHandler(GenSorcerersPlate_Command));
-            CommandSystem.Register("DelSorcerersPlate", AccessLevel.Developer, new CommandEventHandler(DelSorcerersPlate_Command));
+            CommandSystem.Register("GenSorcerersPlate", AccessLevel.Developer, GenSorcerersPlate_Command);
+            CommandSystem.Register("DelSorcerersPlate", AccessLevel.Developer, DelSorcerersPlate_Command);
         }
 
         [Usage("GenSorcerersPlate")]

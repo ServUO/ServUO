@@ -1680,32 +1680,83 @@ namespace Server.Mobiles
         public override void OnSubItemRemoved(Item item)
         {
             if (Engines.UOStore.UltimaStore.HasPendingItem(this))
-                Timer.DelayCall<PlayerMobile>(TimeSpan.FromSeconds(1.5), Engines.UOStore.UltimaStore.CheckPendingItem, this);
+                Timer.DelayCall(TimeSpan.FromSeconds(1.5), Engines.UOStore.UltimaStore.CheckPendingItem, this);
         }
 
         public override void AggressiveAction(Mobile aggressor, bool criminal)
         {
-            base.AggressiveAction(aggressor, criminal);
-
+            // This will update aggressor for the aggressors master
             if (aggressor is BaseCreature && ((BaseCreature)aggressor).ControlMaster != null && ((BaseCreature)aggressor).ControlMaster != this)
             {
                 Mobile aggressiveMaster = ((BaseCreature)aggressor).ControlMaster;
 
-                if (NotorietyHandlers.CheckAggressor(Aggressors, aggressor))
+                // First lets find out if the creatures master is in our aggressor list
+                AggressorInfo info = Aggressors.FirstOrDefault(i => i.Attacker == aggressiveMaster);
+
+                if (info != null)
                 {
+                    // already in the list, so we're refreshing it
+                    info.Refresh();
+                    info.CriminalAggression = criminal;
+                }
+                else
+                {
+                    // not in the list, so we're adding it
                     Aggressors.Add(AggressorInfo.Create(aggressiveMaster, this, criminal));
-                    aggressiveMaster.Delta(MobileDelta.Noto);
 
-                    if (NotorietyHandlers.CheckAggressed(aggressor.Aggressed, this))
-                        aggressiveMaster.Aggressed.Add(AggressorInfo.Create(aggressiveMaster, this, criminal));
-
-                    if (aggressiveMaster is PlayerMobile || (aggressiveMaster is BaseCreature && !((BaseCreature)aggressiveMaster).IsMonster))
+                    if (CanSee(aggressiveMaster) && NetState != null)
                     {
-                        BuffInfo.AddBuff(this, new BuffInfo(BuffIcon.HeatOfBattleStatus, 1153801, 1153827, Aggression.CombatHeatDelay, this, true));
-                        BuffInfo.AddBuff(aggressiveMaster, new BuffInfo(BuffIcon.HeatOfBattleStatus, 1153801, 1153827, Aggression.CombatHeatDelay, aggressiveMaster, true));
+                        NetState.Send(MobileIncoming.Create(NetState, this, aggressiveMaster));
                     }
+
+                    UpdateAggrExpire();
+                }
+
+                // Now, if I am in the creatures master aggressor list, it needs to be refreshed
+                info = aggressiveMaster.Aggressors.FirstOrDefault(i => i.Attacker == this);
+
+                if (info != null)
+                {
+                    info.Refresh();
+                }
+
+                info = Aggressed.FirstOrDefault(i => i.Defender == aggressiveMaster);
+
+                if (info != null)
+                {
+                    info.Refresh();
+                }
+
+                // next lets find out if we're on the creatures master aggressed list
+                info = aggressiveMaster.Aggressed.FirstOrDefault(i => i.Defender == this);
+
+                if (info != null)
+                {
+                    // already in the list, so we're refreshing it
+                    info.Refresh();
+                    info.CriminalAggression = criminal;
+                }
+                else
+                {
+                    // not in the list, so we're adding it
+                    aggressor.Aggressed.Add(AggressorInfo.Create(aggressiveMaster, this, criminal));
+
+                    if (CanSee(aggressiveMaster) && NetState != null)
+                    {
+                        NetState.Send(MobileIncoming.Create(NetState, this, aggressiveMaster));
+                    }
+
+                    UpdateAggrExpire();
+                }
+
+                if (aggressiveMaster is PlayerMobile || (aggressiveMaster is BaseCreature && !((BaseCreature)aggressiveMaster).IsMonster))
+                {
+                    BuffInfo.AddBuff(this, new BuffInfo(BuffIcon.HeatOfBattleStatus, 1153801, 1153827, Aggression.CombatHeatDelay, this, true));
+                    BuffInfo.AddBuff(aggressiveMaster, new BuffInfo(BuffIcon.HeatOfBattleStatus, 1153801, 1153827, Aggression.CombatHeatDelay, aggressiveMaster, true));
                 }
             }
+
+            base.AggressiveAction(aggressor, criminal);
         }
 
         public override void DoHarmful(IDamageable damageable, bool indirect)
@@ -1879,8 +1930,6 @@ namespace Server.Mobiles
             {
                 if (IsPlayer())
                 {
-                    int str = base.Str;
-
                     return Math.Min(base.Str, StrMaxCap);
                 }
 
@@ -2059,8 +2108,7 @@ namespace Server.Mobiles
 
             BestialSetHelper.OnHeal(this, from, ref amount);
 
-            // Removed until we can figure out the endless loop, or do a complete refactor
-            /*if (amount > 0 && from != null && from != this)
+            if (amount > 0 && from != null && from != this)
             {
                 for (int i = Aggressed.Count - 1; i >= 0; i--)
                 {
@@ -2091,7 +2139,7 @@ namespace Server.Mobiles
                         from.DoHarmful(info.Attacker, true);
                     }
                 }
-            }*/
+            }
         }
 
         public override bool AllowItemUse(Item item)
@@ -2419,7 +2467,7 @@ namespace Server.Mobiles
             if (item == null || !item.IsChildOf(this))
             {
                 if (target)
-                    BeginTarget(-1, false, TargetFlags.None, new TargetCallback(ToggleItemInsurance_Callback));
+                    BeginTarget(-1, false, TargetFlags.None, ToggleItemInsurance_Callback);
 
                 SendLocalizedMessage(1060871, "", 0x23); // You can only insure items that you have equipped or that are in your backpack
             }
@@ -2431,14 +2479,14 @@ namespace Server.Mobiles
 
                 if (target)
                 {
-                    BeginTarget(-1, false, TargetFlags.None, new TargetCallback(ToggleItemInsurance_Callback));
+                    BeginTarget(-1, false, TargetFlags.None, ToggleItemInsurance_Callback);
                     SendLocalizedMessage(1060868, "", 0x23); // Target the item you wish to toggle insurance status on <ESC> to cancel
                 }
             }
             else if (!CanInsure(item))
             {
                 if (target)
-                    BeginTarget(-1, false, TargetFlags.None, new TargetCallback(ToggleItemInsurance_Callback));
+                    BeginTarget(-1, false, TargetFlags.None, ToggleItemInsurance_Callback);
 
                 SendLocalizedMessage(1060869, "", 0x23); // You cannot insure that
             }
@@ -2466,7 +2514,7 @@ namespace Server.Mobiles
 
                 if (target)
                 {
-                    BeginTarget(-1, false, TargetFlags.None, new TargetCallback(ToggleItemInsurance_Callback));
+                    BeginTarget(-1, false, TargetFlags.None, ToggleItemInsurance_Callback);
                     SendLocalizedMessage(1060868, "", 0x23); // Target the item you wish to toggle insurance status on <ESC> to cancel
                 }
             }
@@ -2900,7 +2948,7 @@ namespace Server.Mobiles
 
             if (house != null && house.IsCoOwner(this))
             {
-                SendGump(new WarningGump(1060635, 30720, 1062006, 32512, 420, 280, new WarningGumpCallback(ClearCoOwners_Callback), house));
+                SendGump(new WarningGump(1060635, 30720, 1062006, 32512, 420, 280, ClearCoOwners_Callback, house));
             }
         }
 
@@ -5919,25 +5967,6 @@ namespace Server.Mobiles
 
         [CommandProperty(AccessLevel.GameMaster)]
         public ChampionTitleInfo ChampionTitles { get { return m_ChampionTitles; } set { } }
-
-        private void ToggleChampionTitleDisplay()
-        {
-            if (!CheckAlive())
-            {
-                return;
-            }
-
-            if (DisplayChampionTitle)
-            {
-                SendLocalizedMessage(1062419, "", 0x23); // You have chosen to hide your monster kill title.
-            }
-            else
-            {
-                SendLocalizedMessage(1062418, "", 0x23); // You have chosen to display your monster kill title.
-            }
-
-            DisplayChampionTitle = !DisplayChampionTitle;
-        }
 
         [PropertyObject]
         public class ChampionTitleInfo

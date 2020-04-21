@@ -8,7 +8,7 @@ namespace Server.Bounds
     {
         public static void Initialize()
         {
-            CommandSystem.Register("GenBounds", AccessLevel.Administrator, new CommandEventHandler(GenBounds_OnCommand));
+            CommandSystem.Register("GenBounds", AccessLevel.Administrator, GenBounds_OnCommand);
         }
 
         [Usage("GenBounds")]

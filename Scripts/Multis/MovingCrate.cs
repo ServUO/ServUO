@@ -199,7 +199,7 @@ namespace Server.Multis
             if (m_House != null)
             {
                 m_House.MovingCrate = this;
-                Timer.DelayCall(TimeSpan.Zero, new TimerCallback(Hide));
+                Timer.DelayCall(TimeSpan.Zero, Hide);
             }
             else
             {

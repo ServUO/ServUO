@@ -998,7 +998,7 @@ namespace Server.Gumps
                             case 3: // Clear Co-Owner List
                                 {
                                     if (isOwner)
-                                        from.SendGump(new WarningGump(1060635, 30720, 1060736, 32512, 420, 280, new WarningGumpCallback(ClearCoOwners_Callback), m_House));
+                                        from.SendGump(new WarningGump(1060635, 30720, 1060736, 32512, 420, 280, ClearCoOwners_Callback, m_House));
 
                                     break;
                                 }
@@ -1028,7 +1028,7 @@ namespace Server.Gumps
                             case 7: // Clear Friend List
                                 {
                                     if (isCoOwner)
-                                        from.SendGump(new WarningGump(1060635, 30720, 1018039, 32512, 420, 280, new WarningGumpCallback(ClearFriends_Callback), m_House));
+                                        from.SendGump(new WarningGump(1060635, 30720, 1018039, 32512, 420, 280, ClearFriends_Callback, m_House));
 
                                     break;
                                 }
@@ -1040,7 +1040,7 @@ namespace Server.Gumps
                                 }
                             case 9: // Clear Ban List
                                 {
-                                    from.SendGump(new WarningGump(1060635, 30720, 1060753, 32512, 420, 280, new WarningGumpCallback(ClearBans_Callback), m_House));
+                                    from.SendGump(new WarningGump(1060635, 30720, 1060753, 32512, 420, 280, ClearBans_Callback, m_House));
 
                                     break;
                                 }
@@ -1052,7 +1052,7 @@ namespace Server.Gumps
                                 }
                             case 11: // Clear Access List
                                 {
-                                    from.SendGump(new WarningGump(1060635, 30720, 1061842, 32512, 420, 280, new WarningGumpCallback(ClearAccess_Callback), m_House));
+                                    from.SendGump(new WarningGump(1060635, 30720, 1061842, 32512, 420, 280, ClearAccess_Callback, m_House));
 
                                     break;
                                 }
@@ -1063,14 +1063,14 @@ namespace Server.Gumps
                                         if (m_House.PlayerVendors.Count > 0)
                                         {
                                             // You have vendors working out of this building. It cannot be declared private until there are no vendors in place.
-                                            from.SendGump(new NoticeGump(1060637, 30720, 501887, 32512, 320, 180, new NoticeGumpCallback(PublicPrivateNotice_Callback), m_House));
+                                            from.SendGump(new NoticeGump(1060637, 30720, 501887, 32512, 320, 180, PublicPrivateNotice_Callback, m_House));
                                             break;
                                         }
 
                                         if (m_House.VendorRentalContracts.Count > 0)
                                         {
                                             // You cannot currently take this action because you have vendor contracts locked down in your home.  You must remove them first.
-                                            from.SendGump(new NoticeGump(1060637, 30720, 1062351, 32512, 320, 180, new NoticeGumpCallback(PublicPrivateNotice_Callback), m_House));
+                                            from.SendGump(new NoticeGump(1060637, 30720, 1062351, 32512, 320, 180, PublicPrivateNotice_Callback, m_House));
                                             break;
                                         }
 
@@ -1086,7 +1086,7 @@ namespace Server.Gumps
                                         m_House.ChangeLocks(from);
 
                                         // This house is now private.
-                                        from.SendGump(new NoticeGump(1060637, 30720, 501888, 32512, 320, 180, new NoticeGumpCallback(PublicPrivateNotice_Callback), m_House));
+                                        from.SendGump(new NoticeGump(1060637, 30720, 501888, 32512, 320, 180, PublicPrivateNotice_Callback, m_House));
 
                                         Region r = m_House.Region;
                                         List<Mobile> list = r.GetMobiles();
@@ -1114,11 +1114,11 @@ namespace Server.Gumps
                                         if (BaseHouse.NewVendorSystem)
                                         {
                                             // This house is now public. The owner may now place vendors and vendor rental contracts.
-                                            from.SendGump(new NoticeGump(1060637, 30720, 501886, 32512, 320, 180, new NoticeGumpCallback(PublicPrivateNotice_Callback), m_House));
+                                            from.SendGump(new NoticeGump(1060637, 30720, 501886, 32512, 320, 180, PublicPrivateNotice_Callback, m_House));
                                         }
                                         else
                                         {
-                                            from.SendGump(new NoticeGump(1060637, 30720, "This house is now public. Friends of the house may now have vendors working out of this building.", 0xF8C000, 320, 180, new NoticeGumpCallback(PublicPrivateNotice_Callback), m_House));
+                                            from.SendGump(new NoticeGump(1060637, 30720, "This house is now public. Friends of the house may now have vendors working out of this building.", 0xF8C000, 320, 180, PublicPrivateNotice_Callback, m_House));
                                         }
 
                                         Region r = m_House.Region;
@@ -1150,13 +1150,13 @@ namespace Server.Gumps
                                         if (m_House.HasRentedVendors)
                                         {
                                             // You cannot perform this action while you still have vendors rented out in this house.
-                                            from.SendGump(new NoticeGump(1060637, 30720, 1062395, 32512, 320, 180, new NoticeGumpCallback(CustomizeNotice_Callback), m_House));
+                                            from.SendGump(new NoticeGump(1060637, 30720, 1062395, 32512, 320, 180, CustomizeNotice_Callback, m_House));
                                         }
                                         else if (m_House.HasAddonContainers)
                                         {
                                             // The house can not be customized when add-on containers such as aquariums, elven furniture containers, vanities, and boiling cauldrons 
                                             // are present in the house.  Please re-deed the add-on containers before customizing the house.
-                                            from.SendGump(new NoticeGump(1060637, 30720, 1074863, 32512, 320, 180, new NoticeGumpCallback(CustomizeNotice_Callback), m_House));
+                                            from.SendGump(new NoticeGump(1060637, 30720, 1074863, 32512, 320, 180, CustomizeNotice_Callback, m_House));
                                         }
                                         else if (m_House.Map == Map.TerMur && !Engines.Points.PointsSystem.QueensLoyalty.IsNoble(from))
                                         {
@@ -1176,7 +1176,7 @@ namespace Server.Gumps
                                                 * Your house will be leveled to its foundation, and you will be able to build new walls, windows, doors, and stairs.
                                                 * Are you sure you wish to continue?
                                                 */
-                                                from.SendGump(new WarningGump(1060635, 30720, 1060013, 32512, 420, 280, new WarningGumpCallback(ConvertHouse_Callback), m_House));
+                                                from.SendGump(new WarningGump(1060635, 30720, 1060013, 32512, 420, 280, ConvertHouse_Callback, m_House));
                                             }
                                         }
                                     }
@@ -1190,14 +1190,14 @@ namespace Server.Gumps
                                         if (m_House.HasRentedVendors)
                                         {
                                             // You cannot perform this action while you still have vendors rented out in this house.
-                                            from.SendGump(new NoticeGump(1060637, 30720, 1062395, 32512, 320, 180, new NoticeGumpCallback(CustomizeNotice_Callback), m_House));
+                                            from.SendGump(new NoticeGump(1060637, 30720, 1062395, 32512, 320, 180, CustomizeNotice_Callback, m_House));
                                         }
                                         #region Mondain's Legacy
                                         else if (m_House.HasAddonContainers)
                                         {
                                             // The house can not be customized when add-on containers such as aquariums, elven furniture containers, vanities, and boiling cauldrons 
                                             // are present in the house.  Please re-deed the add-on containers before customizing the house.
-                                            from.SendGump(new NoticeGump(1060637, 30720, 1074863, 32512, 320, 180, new NoticeGumpCallback(CustomizeNotice_Callback), m_House));
+                                            from.SendGump(new NoticeGump(1060637, 30720, 1074863, 32512, 320, 180, CustomizeNotice_Callback, m_House));
                                         }
                                         #endregion
                                         else if (m_House.HasActiveAuction)
@@ -1277,13 +1277,13 @@ namespace Server.Gumps
                                         if (m_House.HasRentedVendors)
                                         {
                                             // You cannot perform this action while you still have vendors rented out in this house.
-                                            from.SendGump(new NoticeGump(1060637, 30720, 1062395, 32512, 320, 180, new NoticeGumpCallback(CustomizeNotice_Callback), m_House));
+                                            from.SendGump(new NoticeGump(1060637, 30720, 1062395, 32512, 320, 180, CustomizeNotice_Callback, m_House));
                                         }
                                         else if (m_House.HasAddonContainers)
                                         {
                                             /*The house cannot be swapped when certain special house add-ons including aquariums, raised garden beds, house_only items, goza mats, and special 
                                              * temporary add-ons are present in the house. Please re-deed or remove the special add-ons before swapping the house.*/
-                                            from.SendGump(new NoticeGump(1060637, 30720, 1158659, 32512, 320, 180, new NoticeGumpCallback(CustomizeNotice_Callback), m_House));
+                                            from.SendGump(new NoticeGump(1060637, 30720, 1158659, 32512, 320, 180, CustomizeNotice_Callback, m_House));
                                         }
                                         else
                                         {
@@ -1291,7 +1291,7 @@ namespace Server.Gumps
                                              * in the house will be transported to a Moving Crate. Deed-based house add-ons will be converted back into deeds. Vendors and barkeeps will
                                              * also be stored in the Moving Crate. Are you sure you wish to continue?
                                             */
-                                            from.SendGump(new WarningGump(1060635, 30720, 1158658, 32512, 420, 280, new WarningGumpCallback(SwapHouse_Callback), m_House));
+                                            from.SendGump(new WarningGump(1060635, 30720, 1158658, 32512, 420, 280, SwapHouse_Callback, m_House));
                                         }
                                     }
 

@@ -170,7 +170,7 @@ namespace Server.Engines.Quests
             if (m_Timer != null)
                 return;
 
-            m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(0.5), TimeSpan.FromSeconds(0.5), new TimerCallback(Slice));
+            m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(0.5), TimeSpan.FromSeconds(0.5), Slice);
         }
 
         public virtual void StopTimer()
@@ -333,12 +333,12 @@ namespace Server.Engines.Quests
         public virtual void GetContextMenuEntries(List<ContextMenuEntry> list)
         {
             if (m_Objectives.Count > 0)
-                list.Add(new QuestCallbackEntry(6154, new QuestCallback(ShowQuestLog))); // View Quest Log
+                list.Add(new QuestCallbackEntry(6154, ShowQuestLog)); // View Quest Log
 
             if (m_Conversations.Count > 0)
-                list.Add(new QuestCallbackEntry(6156, new QuestCallback(ShowQuestConversation))); // Quest Conversation
+                list.Add(new QuestCallbackEntry(6156, ShowQuestConversation)); // Quest Conversation
 
-            list.Add(new QuestCallbackEntry(6155, new QuestCallback(BeginCancelQuest))); // Cancel Quest
+            list.Add(new QuestCallbackEntry(6155, BeginCancelQuest)); // Cancel Quest
         }
 
         public virtual void ShowQuestLogUpdated()

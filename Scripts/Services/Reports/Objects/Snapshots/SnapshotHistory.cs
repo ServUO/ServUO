@@ -5,7 +5,7 @@ namespace Server.Engines.Reports
     public class SnapshotHistory : PersistableObject
     {
         #region Type Identification
-        public static readonly PersistableType ThisTypeID = new PersistableType("sh", new ConstructCallback(Construct));
+        public static readonly PersistableType ThisTypeID = new PersistableType("sh", Construct);
 
         private static PersistableObject Construct()
         {

@@ -192,7 +192,7 @@ namespace Server.Spells.Spellweaving
                 : base(Utility.RandomBool() ? 0x398C : 0x3996)
             {
                 Movable = false;
-                Timer.DelayCall(TimeSpan.FromSeconds(duration), new TimerCallback(Delete));
+                Timer.DelayCall(TimeSpan.FromSeconds(duration), Delete);
             }
 
             public FireItem(Serial serial)

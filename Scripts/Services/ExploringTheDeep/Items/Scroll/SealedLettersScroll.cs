@@ -1,4 +1,4 @@
-﻿using Server.Commands;
+using Server.Commands;
 using Server.Gumps;
 using Server.Network;
 
@@ -44,7 +44,7 @@ namespace Server.Items
     {
         public static void Initialize()
         {
-            CommandSystem.Register("SealedLettersEntry", AccessLevel.GameMaster, new CommandEventHandler(SealedLettersEntryGump_OnCommand));
+            CommandSystem.Register("SealedLettersEntry", AccessLevel.GameMaster, SealedLettersEntryGump_OnCommand);
         }
 
         private static void SealedLettersEntryGump_OnCommand(CommandEventArgs e)

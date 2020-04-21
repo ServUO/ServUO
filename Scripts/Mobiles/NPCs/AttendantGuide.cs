@@ -54,7 +54,7 @@ namespace Server.Mobiles
 
         public static void Initialize()
         {
-            CommandSystem.Register("GuideEdit", AccessLevel.GameMaster, new CommandEventHandler(VertexEdit_OnCommand));
+            CommandSystem.Register("GuideEdit", AccessLevel.GameMaster, VertexEdit_OnCommand);
 
             try
             {
@@ -719,7 +719,7 @@ namespace Server.Mobiles
                         }
                         else
                         {
-                            Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(3), new TimerStateCallback<Mobile>(CommandFollow), m);
+                            Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(3), CommandFollow, m);
                             Say(1076051); // We have reached our destination
                             CommandStop(m);
                         }

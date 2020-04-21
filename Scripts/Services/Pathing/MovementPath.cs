@@ -73,12 +73,12 @@ namespace Server
         public bool Success => (m_Directions != null && m_Directions.Length > 0);
         public static void Initialize()
         {
-            CommandSystem.Register("Path", AccessLevel.GameMaster, new CommandEventHandler(Path_OnCommand));
+            CommandSystem.Register("Path", AccessLevel.GameMaster, Path_OnCommand);
         }
 
         public static void Path_OnCommand(CommandEventArgs e)
         {
-            e.Mobile.BeginTarget(-1, true, TargetFlags.None, new TargetCallback(Path_OnTarget));
+            e.Mobile.BeginTarget(-1, true, TargetFlags.None, Path_OnTarget);
             e.Mobile.SendMessage("Target a location and a path will be drawn there.");
         }
 

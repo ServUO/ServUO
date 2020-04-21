@@ -1,4 +1,4 @@
-﻿using Server.Commands;
+using Server.Commands;
 using Server.Gumps;
 using Server.Network;
 
@@ -45,7 +45,7 @@ namespace Server.Items
     {
         public static void Initialize()
         {
-            CommandSystem.Register("MTSchematics", AccessLevel.GameMaster, new CommandEventHandler(MTSchematicsGump_OnCommand));
+            CommandSystem.Register("MTSchematics", AccessLevel.GameMaster, MTSchematicsGump_OnCommand);
         }
 
         private static void MTSchematicsGump_OnCommand(CommandEventArgs e)
