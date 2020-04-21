@@ -869,6 +869,54 @@ namespace Server
             return RandomImpl.NextBool();
         }
 
+        public static TEnum RandomEnum<TEnum>() where TEnum : Enum
+        {
+            if (Enum.GetValues(typeof(TEnum)) is TEnum[] values && values.Length > 0)
+                return RandomList(values);
+
+            return default;
+        }
+
+        public static TEnum RandomMinMax<TEnum>(TEnum min, TEnum max) where TEnum : Enum
+        {
+            if (Enum.GetValues(typeof(TEnum)) is TEnum[] values && values.Length > 0)
+            {
+                var curIdx = -1;
+                var minIdx = -1;
+                var maxIdx = -1;
+
+                foreach (var val in values)
+                {
+                    ++curIdx;
+
+                    if (Equals(val, min))
+                        minIdx = curIdx;
+                    else if (Equals(val, max))
+                        maxIdx = curIdx;
+                }
+
+                if (minIdx == 0 && maxIdx == values.Length - 1)
+                    return RandomList(values);
+
+                curIdx = -1;
+
+                if (minIdx >= 0)
+                {
+                    if (minIdx == maxIdx)
+                        curIdx = minIdx;
+                    else if (maxIdx > minIdx)
+                        curIdx = RandomMinMax(minIdx, maxIdx);
+                }
+
+                if (curIdx >= 0 && curIdx < values.Length)
+                    return values[curIdx];
+
+                return RandomList(min, max);
+            }
+
+            return default;
+        }
+
         public static double RandomMinMax(double min, double max)
         {
             if (min > max)
