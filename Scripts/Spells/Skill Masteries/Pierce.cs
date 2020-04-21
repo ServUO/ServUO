@@ -62,7 +62,7 @@ namespace Server.Spells.SkillMasteries
                 int toDrain = (int)(attacker.Skills[MoveSkill].Value + attacker.Skills[SkillName.Tactics].Value + (MasteryInfo.GetMasteryLevel(attacker, SkillName.Fencing) * 40) / 3);
                 toDrain /= 3;
 
-                Server.Timer t;
+                Timer t;
 
                 if (_Table == null)
                     _Table = new Dictionary<Mobile, Timer>();

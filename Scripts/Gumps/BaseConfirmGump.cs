@@ -64,7 +64,7 @@ namespace Server.Gumps
         public virtual string TitleString => null;
         public virtual string LabelString => null;
 
-        public override void OnResponse(Server.Network.NetState state, RelayInfo info)
+        public override void OnResponse(Network.NetState state, RelayInfo info)
         {
             if (info.ButtonID == (int)Buttons.Confirm)
             {

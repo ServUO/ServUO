@@ -43,7 +43,7 @@ namespace Server.Engines.Exodus
                     m.SendLocalizedMessage(1010589);
                 }
 
-                Timer.DelayCall(m_Delay, new TimerCallback(m_region.MoveLocation));
+                Timer.DelayCall(m_Delay, m_region.MoveLocation);
             }
         }
 

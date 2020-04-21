@@ -102,7 +102,7 @@ namespace Server.Items
             if (!CanUse(from))
                 return;
 
-            from.CloseGump(typeof(SpecialScroll.InternalGump));
+            from.CloseGump(typeof(InternalGump));
             from.SendGump(new InternalGump(from, this));
         }
 

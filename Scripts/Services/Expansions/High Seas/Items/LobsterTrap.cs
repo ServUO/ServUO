@@ -1,4 +1,4 @@
-﻿using Server.Engines.PartySystem;
+using Server.Engines.PartySystem;
 using Server.Mobiles;
 using Server.Network;
 using Server.Targeting;
@@ -132,7 +132,7 @@ namespace Server.Items
                 else
                 {
                     from.SendLocalizedMessage(500974); //What water do you want to fish in?
-                    from.BeginTarget(-1, true, TargetFlags.None, new TargetCallback(OnTarget));
+                    from.BeginTarget(-1, true, TargetFlags.None, OnTarget);
                 }
             }
             else if (ItemID == BuoyID)
@@ -211,7 +211,7 @@ namespace Server.Items
             if (m_Timer != null)
                 m_Timer.Stop();
 
-            m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), new TimerCallback(OnTick));
+            m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), OnTick);
         }
 
         public void EndTimer(Mobile from)

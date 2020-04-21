@@ -386,7 +386,7 @@ namespace Server.Engines.Shadowguard
         {
             writer.Write(2);
 
-            writer.WriteMobileList<PlayerMobile>(Participants);
+            writer.WriteMobileList(Participants);
 
             writer.WriteDeltaTime(StartTime);
             writer.Write(Completed);

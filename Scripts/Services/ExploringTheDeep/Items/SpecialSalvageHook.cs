@@ -107,7 +107,7 @@ namespace Server.Items
                 if (!m_InUse)
                 {
                     from.SendLocalizedMessage(1154219); // Where do you wish to use this?
-                    from.BeginTarget(-1, true, TargetFlags.None, new TargetCallback(OnTarget));
+                    from.BeginTarget(-1, true, TargetFlags.None, OnTarget);
                 }
             }
             else

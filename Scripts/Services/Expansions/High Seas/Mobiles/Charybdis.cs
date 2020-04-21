@@ -125,7 +125,7 @@ namespace Server.Mobiles
 
             DoAreaLightningAttack(combatant);
 
-            Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(3), FinishTeleport, combatant);
+            Timer.DelayCall(TimeSpan.FromSeconds(3), FinishTeleport, combatant);
             m_NextTeleport = DateTime.UtcNow + TeleportRate;
         }
 
@@ -375,7 +375,7 @@ namespace Server.Mobiles
                 SetResistance(ResistanceType.Poison, 100);
                 SetResistance(ResistanceType.Energy, 100);
 
-                Timer.DelayCall(TimeSpan.FromSeconds(2), new TimerCallback(DoDelete));
+                Timer.DelayCall(TimeSpan.FromSeconds(2), DoDelete);
             }
 
             public override bool DeleteCorpseOnDeath => true;

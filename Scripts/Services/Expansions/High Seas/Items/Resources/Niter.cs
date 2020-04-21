@@ -1,4 +1,4 @@
-﻿using Server.Engines.Harvest;
+using Server.Engines.Harvest;
 using System;
 using System.Collections.Generic;
 
@@ -196,7 +196,7 @@ namespace Server.Items
             writer.Write(m_Hits);
             writer.Write((int)m_Size);
 
-            Timer.DelayCall(TimeSpan.FromSeconds(30), new TimerCallback(DefragBanks));
+            Timer.DelayCall(TimeSpan.FromSeconds(30), DefragBanks);
         }
 
         public override void Deserialize(GenericReader reader)

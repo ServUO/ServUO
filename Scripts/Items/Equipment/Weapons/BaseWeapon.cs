@@ -2726,7 +2726,7 @@ namespace Server.Items
             int percentage = -10; //(int)(SpellHelper.GetOffsetScalar(Caster, m, true) * 100);
             string args = String.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}", percentage, percentage, percentage, 10, 10, 10, 10);
 
-            Server.Spells.Fourth.CurseSpell.AddEffect(defender, duration, 10, 10, 10);
+            Spells.Fourth.CurseSpell.AddEffect(defender, duration, 10, 10, 10);
             BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.Curse, 1075835, 1075836, duration, defender, args));
 
             if (ProcessingMultipleHits)
@@ -4617,11 +4617,11 @@ namespace Server.Items
             #region Stygian Abyss
             if (EnchantedWeilder != null)
             {
-                if (Server.Spells.Mysticism.EnchantSpell.IsUnderSpellEffects(EnchantedWeilder, this))
+                if (Spells.Mysticism.EnchantSpell.IsUnderSpellEffects(EnchantedWeilder, this))
                 {
-                    bonus = Server.Spells.Mysticism.EnchantSpell.BonusAttribute(EnchantedWeilder);
-                    enchantBonus = Server.Spells.Mysticism.EnchantSpell.BonusValue(EnchantedWeilder);
-                    fcMalus = Server.Spells.Mysticism.EnchantSpell.CastingMalus(EnchantedWeilder, this);
+                    bonus = Spells.Mysticism.EnchantSpell.BonusAttribute(EnchantedWeilder);
+                    enchantBonus = Spells.Mysticism.EnchantSpell.BonusValue(EnchantedWeilder);
+                    fcMalus = Spells.Mysticism.EnchantSpell.CastingMalus(EnchantedWeilder, this);
                 }
             }
             #endregion

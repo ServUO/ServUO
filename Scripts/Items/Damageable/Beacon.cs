@@ -129,7 +129,7 @@ namespace Server.Items
             {
                 Timer.DelayCall(TimeSpan.FromMilliseconds(i * 50), o =>
                     {
-                        Server.Misc.Geometry.Circle2D(Location, Map, o, (pnt, map) =>
+                        Misc.Geometry.Circle2D(Location, Map, o, (pnt, map) =>
                         {
                             Effects.SendLocationEffect(pnt, map, 0x3709, 30, 20, 0, 2);
                         });
@@ -141,7 +141,7 @@ namespace Server.Items
             {
                 for (int i = 0; i < range + 3; i++)
                 {
-                    Server.Misc.Geometry.Circle2D(Location, Map, i, (pnt, map) =>
+                    Misc.Geometry.Circle2D(Location, Map, i, (pnt, map) =>
                     {
                         Effects.SendLocationEffect(pnt, map, 0x36CB, 14, 10, 2498, 2);
                     });
@@ -155,7 +155,7 @@ namespace Server.Items
                 {
                     Timer.DelayCall(TimeSpan.FromMilliseconds(i * 50), o =>
                     {
-                        Server.Misc.Geometry.Circle2D(Location, Map, o, (pnt, map) =>
+                        Misc.Geometry.Circle2D(Location, Map, o, (pnt, map) =>
                         {
                             Effects.SendLocationEffect(pnt, map, Utility.RandomBool() ? 14000 : 14013, 14, 20, 2018, 0);
                         });
@@ -254,7 +254,7 @@ namespace Server.Items
                 AOS.Damage(m, null, Utility.RandomMinMax(80, 90), 0, 0, 0, 0, 100);
 
                 if (m.NetState != null)
-                    m.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1154, 1154552, m.NetState); // *The beacon blasts a surge of energy at you!"
+                    m.PrivateOverheadMessage(Network.MessageType.Regular, 1154, 1154552, m.NetState); // *The beacon blasts a surge of energy at you!"
             });
 
             ColUtility.Free(list);

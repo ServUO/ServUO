@@ -161,7 +161,7 @@ namespace Server.Items
 
             public override void OnClick()
             {
-                if (BaseBoard.ValidateDefault(m_From, m_Board))
+                if (ValidateDefault(m_From, m_Board))
                     m_Board.Reset();
             }
         }

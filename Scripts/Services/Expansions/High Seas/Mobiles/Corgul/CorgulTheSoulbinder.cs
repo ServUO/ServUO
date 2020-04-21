@@ -341,7 +341,7 @@ namespace Server.Mobiles
 
             protected override void OnTick()
             {
-                Geometry.Circle2D(m_Mobile.Location, m_Mobile.Map, m_Tick, new DoEffect_Callback(m_Mobile.DoEffect));
+                Geometry.Circle2D(m_Mobile.Location, m_Mobile.Map, m_Tick, m_Mobile.DoEffect);
 
                 m_Tick++;
             }

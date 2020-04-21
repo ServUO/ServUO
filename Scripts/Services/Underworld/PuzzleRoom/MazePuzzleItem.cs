@@ -190,7 +190,7 @@ namespace Server.Items
                 //TODO: Message/Effects?
             }
 
-            Timer.DelayCall(TimeSpan.FromSeconds(3), new TimerCallback(Delete));
+            Timer.DelayCall(TimeSpan.FromSeconds(3), Delete);
         }
 
         public MazePuzzleItem(Serial serial) : base(serial)

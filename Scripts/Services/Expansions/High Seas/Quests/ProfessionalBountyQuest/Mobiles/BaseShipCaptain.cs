@@ -110,7 +110,7 @@ namespace Server.Mobiles
             SetResistance(ResistanceType.Energy, 45, 55);
 
             if (galleon == null)
-                Timer.DelayCall(TimeSpan.FromSeconds(.5), new TimerCallback(SpawnShip));
+                Timer.DelayCall(TimeSpan.FromSeconds(.5), SpawnShip);
         }
 
         public void SpawnShip()
@@ -231,7 +231,7 @@ namespace Server.Mobiles
         {
             if (!m_WillResume)
             {
-                Timer.DelayCall(ts, new TimerCallback(ResumeCourse));
+                Timer.DelayCall(ts, ResumeCourse);
                 m_WillResume = true;
             }
         }

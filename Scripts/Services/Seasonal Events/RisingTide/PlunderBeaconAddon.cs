@@ -366,7 +366,7 @@ namespace Server.Items
 
             writer.Write(InitialSpawn);
 
-            writer.WriteItem<PlunderBeacon>(Beacon);
+            writer.WriteItem(Beacon);
 
             writer.WriteItemList(Cannons, true);
             writer.WriteMobileList(Crew, true);

@@ -251,7 +251,7 @@ namespace Server.Items
 
         public override bool DropToWorld(Mobile m, Point3D p)
         {
-            Server.Engines.Despise.WispOrb.CheckDrop(this, m);
+            Engines.Despise.WispOrb.CheckDrop(this, m);
 
             return base.DropToWorld(m, p);
         }
@@ -663,7 +663,7 @@ namespace Server.Items
                 if (Items.Count > 0)
                 {
                     from.SendLocalizedMessage(500848); // Couldn't pour it there.  It was already full.
-                    beverage.PrivateOverheadMessage(Server.Network.MessageType.Regular, 0, 500841, from.NetState); // that has somethign in it.
+                    beverage.PrivateOverheadMessage(MessageType.Regular, 0, 500841, from.NetState); // that has somethign in it.
                 }
                 else
                 {
@@ -851,7 +851,7 @@ namespace Server.Items
 
                 AOS.Damage(from, damage, 100, 0, 0, 0, 0);
 
-                from.LocalOverheadMessage(Network.MessageType.Regular, 0x62, 502998); // A dart imbeds itself in your flesh!
+                from.LocalOverheadMessage(MessageType.Regular, 0x62, 502998); // A dart imbeds itself in your flesh!
                 Effects.PlaySound(p, map, 0x223);
 
                 return true;

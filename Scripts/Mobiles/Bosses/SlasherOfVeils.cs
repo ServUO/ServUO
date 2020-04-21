@@ -7,14 +7,14 @@ namespace Server.Mobiles
     [CorpseName("a slasher of veils corpse")]
     public class SlasherOfVeils : BaseSABoss
     {
-        private static readonly int[] m_North = new int[]
+        private static readonly int[] m_North = new[]
         {
             -1, -1,
             1, -1,
             -1, 2,
             1, 2
         };
-        private static readonly int[] m_East = new int[]
+        private static readonly int[] m_East = new[]
         {
             -1, 0,
             2, 0
@@ -72,8 +72,8 @@ namespace Server.Mobiles
         {
         }
 
-        public override Type[] UniqueSAList => new Type[] { typeof(ClawsOfTheBerserker), typeof(Lavaliere), typeof(Mangler), typeof(HumanSignOfChaos), typeof(GargishSignOfChaos), typeof(StandardOfChaosG), typeof(StandardOfChaos) };
-        public override Type[] SharedSAList => new Type[] { typeof(AxesOfFury), typeof(BladeOfBattle), typeof(DemonBridleRing), typeof(PetrifiedSnake), typeof(PillarOfStrength), typeof(SwordOfShatteredHopes), typeof(SummonersKilt) };
+        public override Type[] UniqueSAList => new[] { typeof(ClawsOfTheBerserker), typeof(Lavaliere), typeof(Mangler), typeof(HumanSignOfChaos), typeof(GargishSignOfChaos), typeof(StandardOfChaosG), typeof(StandardOfChaos) };
+        public override Type[] SharedSAList => new[] { typeof(AxesOfFury), typeof(BladeOfBattle), typeof(DemonBridleRing), typeof(PetrifiedSnake), typeof(PillarOfStrength), typeof(SwordOfShatteredHopes), typeof(SummonersKilt) };
 
         public override bool Unprovokable => false;
         public override bool BardImmune => false;
@@ -105,18 +105,6 @@ namespace Server.Mobiles
             AddLoot(LootPack.Gems, 8);
         }
 
-
-        public override void OnThink()
-        {
-            base.OnThink();
-
-            //if (Combatant == null)
-            //    return;
-
-            //if (Hits > 0.6 * HitsMax && Utility.RandomDouble() < 0.05)
-            //    FireRing();
-        }
-
         public override void FireRing()
         {
             for (int i = 0; i < m_North.Length; i += 2)
@@ -126,7 +114,7 @@ namespace Server.Mobiles
                 p.X += m_North[i];
                 p.Y += m_North[i + 1];
 
-                IPoint3D po = p as IPoint3D;
+                IPoint3D po = p;
 
                 SpellHelper.GetSurfaceTop(ref po);
 
@@ -140,7 +128,7 @@ namespace Server.Mobiles
                 p.X += m_East[i];
                 p.Y += m_East[i + 1];
 
-                IPoint3D po = p as IPoint3D;
+                IPoint3D po = p;
 
                 SpellHelper.GetSurfaceTop(ref po);
 

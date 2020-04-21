@@ -197,7 +197,7 @@ namespace Server.Items
                     return;
 
                 // Add delay
-                BaseConfusionBlastPotion.AddDelay(from);
+                AddDelay(from);
 
                 SpellHelper.GetSurfaceTop(ref p);
 

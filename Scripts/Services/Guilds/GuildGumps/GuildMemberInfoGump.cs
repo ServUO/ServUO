@@ -129,7 +129,7 @@ namespace Server.Guilds
                         {
                             pm.SendLocalizedMessage(1011128); // Enter the new title for this guild member or 'none' to remove a title:
 
-                            pm.BeginPrompt(new PromptCallback(SetTitle_Callback));
+                            pm.BeginPrompt(SetTitle_Callback);
                         }
                         else if (m_Member.GuildTitle == null || m_Member.GuildTitle.Length <= 0)
                         {

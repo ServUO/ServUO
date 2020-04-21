@@ -66,7 +66,7 @@ namespace Server.Items
             if (IsAccessibleTo(from) && from.InRange(GetWorldLocation(), 3))
             {
                 from.SendLocalizedMessage(1070929); // Select the artifact or enhanced magic item to dye.
-                from.BeginTarget(3, false, Server.Targeting.TargetFlags.None, new TargetStateCallback(InternalCallback), this);
+                from.BeginTarget(3, false, Targeting.TargetFlags.None, new TargetStateCallback(InternalCallback), this);
             }
             else
                 from.SendLocalizedMessage(502436); // That is not accessible.

@@ -5,7 +5,7 @@ namespace Server.Mobiles
     [CorpseName("a clockwork scorpion corpse")]
     public class ClockworkScorpion : BaseCreature, IRepairableMobile
     {
-        public Type RepairResource => typeof(Server.Items.IronIngot);
+        public Type RepairResource => typeof(Items.IronIngot);
 
         [Constructable]
         public ClockworkScorpion()

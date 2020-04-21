@@ -1,4 +1,4 @@
-﻿using Server.Commands;
+using Server.Commands;
 using Server.Items;
 using Server.Mobiles;
 
@@ -8,7 +8,7 @@ namespace Server.Engines.TombOfKings
     {
         public static void Initialize()
         {
-            CommandSystem.Register("GenToK", AccessLevel.Developer, new CommandEventHandler(GenToK_Command));
+            CommandSystem.Register("GenToK", AccessLevel.Developer, GenToK_Command);
         }
 
         [Usage("GenToK")]

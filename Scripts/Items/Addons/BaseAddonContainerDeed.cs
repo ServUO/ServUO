@@ -127,7 +127,7 @@ namespace Server.Items
                     BaseAddonContainer addon = m_Deed.Addon;
                     addon.Resource = m_Deed.Resource;
 
-                    Server.Spells.SpellHelper.GetSurfaceTop(ref p);
+                    Spells.SpellHelper.GetSurfaceTop(ref p);
 
                     BaseHouse house = null;
 

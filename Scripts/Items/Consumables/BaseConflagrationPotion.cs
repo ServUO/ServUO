@@ -175,7 +175,7 @@ namespace Server.Items
                 // Add delay
                 if (from.AccessLevel == AccessLevel.Player)
                 {
-                    BaseConflagrationPotion.AddDelay(from);
+                    AddDelay(from);
                 }
                 SpellHelper.GetSurfaceTop(ref p);
 

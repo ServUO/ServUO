@@ -56,7 +56,7 @@ namespace Server.Items
         {
             Hue = 0x481;
 
-            if (Value == 105.0 || skill == Server.SkillName.Blacksmith || skill == Server.SkillName.Tailoring)
+            if (Value == 105.0 || skill == SkillName.Blacksmith || skill == SkillName.Tailoring)
                 LootType = LootType.Regular;
         }
 

@@ -86,7 +86,7 @@ namespace Server.Commands.Generic
         public static ObjectConditional ParseDirect(Mobile from, string[] args, int offset, int size)
         {
             if (args == null || size == 0)
-                return ObjectConditional.Empty;
+                return Empty;
 
             int index = 0;
 

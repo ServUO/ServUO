@@ -405,7 +405,7 @@ namespace Server.Items
             return m_Time.ToString("MMM dd, yyyy");
         }
 
-        public override bool CheckTarget(Mobile from, Server.Targeting.Target targ, object targeted)
+        public override bool CheckTarget(Mobile from, Targeting.Target targ, object targeted)
         {
             return false;
         }

@@ -189,10 +189,10 @@ namespace Server
         {
             EventSink.OnKilledBy += OnKilledBy;
 
-            CommandSystem.Register("DecorateML", AccessLevel.Administrator, new CommandEventHandler(DecorateML_OnCommand));
-            CommandSystem.Register("DecorateMLDelete", AccessLevel.Administrator, new CommandEventHandler(DecorateMLDelete_OnCommand));
-            CommandSystem.Register("SettingsML", AccessLevel.Administrator, new CommandEventHandler(SettingsML_OnCommand));
-            CommandSystem.Register("Quests", AccessLevel.GameMaster, new CommandEventHandler(Quests_OnCommand));
+            CommandSystem.Register("DecorateML", AccessLevel.Administrator, DecorateML_OnCommand);
+            CommandSystem.Register("DecorateMLDelete", AccessLevel.Administrator, DecorateMLDelete_OnCommand);
+            CommandSystem.Register("SettingsML", AccessLevel.Administrator, SettingsML_OnCommand);
+            CommandSystem.Register("Quests", AccessLevel.GameMaster, Quests_OnCommand);
 
             LoadSettings();
         }
@@ -660,14 +660,13 @@ namespace Server
             Mobile m = e.Mobile;
             m.SendMessage("Target a player to view their quests.");
 
-            m.BeginTarget(-1, false, Server.Targeting.TargetFlags.None, new TargetCallback(
-                delegate (Mobile from, object targeted)
-                {
-                    if (targeted is PlayerMobile)
-                        m.SendGump(new MondainQuestGump((PlayerMobile)targeted));
-                    else
-                        m.SendMessage("That is not a player!");
-                }));
+            m.BeginTarget(-1, false, Server.Targeting.TargetFlags.None, delegate (Mobile from, object targeted)
+            {
+                if (targeted is PlayerMobile)
+                    m.SendGump(new MondainQuestGump((PlayerMobile)targeted));
+                else
+                    m.SendMessage("That is not a player!");
+            });
         }
     }
 

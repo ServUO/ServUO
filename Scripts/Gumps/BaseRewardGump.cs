@@ -136,7 +136,7 @@ namespace Server.Gumps
             }
         }
 
-        public override void OnResponse(Server.Network.NetState state, RelayInfo info)
+        public override void OnResponse(Network.NetState state, RelayInfo info)
         {
             Mobile from = state.Mobile;
 

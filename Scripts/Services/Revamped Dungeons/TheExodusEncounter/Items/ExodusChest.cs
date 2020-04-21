@@ -84,7 +84,7 @@ namespace Server.Items
                 DropItem(item);
             }
 
-            m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(5), new TimerCallback(Delete));
+            m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(5), Delete);
             m_Timer.Start();
         }
 
@@ -205,7 +205,7 @@ namespace Server.Items
             if (!Locked)
                 Delete();
 
-            Timer.DelayCall(TimeSpan.Zero, new TimerCallback(UpdateRegion));
+            Timer.DelayCall(TimeSpan.Zero, UpdateRegion);
         }
     }
 

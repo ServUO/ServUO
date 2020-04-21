@@ -1,4 +1,4 @@
-﻿using Server.Commands;
+using Server.Commands;
 using Server.Mobiles;
 using System;
 
@@ -232,7 +232,7 @@ namespace Server.Items
             writer.WriteEncodedInt(m_Spawners.Length);
 
             for (int i = 0; i < m_Spawners.Length; i++)
-                writer.WriteItem<XmlSpawner>(m_Spawners[i]);
+                writer.WriteItem(m_Spawners[i]);
         }
 
         public override void Deserialize(GenericReader reader)

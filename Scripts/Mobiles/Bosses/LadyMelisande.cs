@@ -43,7 +43,7 @@ namespace Server.Mobiles
             PackResources(8);
             PackTalismans(5);
 
-            Timer.DelayCall(TimeSpan.FromSeconds(1), new TimerCallback(SpawnSatyrs));
+            Timer.DelayCall(TimeSpan.FromSeconds(1), SpawnSatyrs);
 
             Fame = 25000;
             Karma = -25000;

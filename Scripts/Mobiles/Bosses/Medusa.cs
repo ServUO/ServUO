@@ -72,9 +72,9 @@ namespace Server.Mobiles
         {
         }
 
-        public override Type[] UniqueSAList => new Type[] { typeof(Slither), typeof(IronwoodCompositeBow), typeof(Venom), typeof(PetrifiedSnake), typeof(StoneDragonsTooth), typeof(MedusaFloorTileAddonDeed) };
+        public override Type[] UniqueSAList => new[] { typeof(Slither), typeof(IronwoodCompositeBow), typeof(Venom), typeof(PetrifiedSnake), typeof(StoneDragonsTooth), typeof(MedusaFloorTileAddonDeed) };
 
-        public override Type[] SharedSAList => new Type[] { typeof(SummonersKilt) };
+        public override Type[] SharedSAList => new[] { typeof(SummonersKilt) };
 
         public override bool IgnoreYoungProtection => true;
         public override bool AutoDispel => true;
@@ -768,7 +768,7 @@ namespace Server.Commands
     {
         public static void Initialize()
         {
-            CommandSystem.Register("addclone", AccessLevel.Seer, new CommandEventHandler(AddClone_OnCommand));
+            CommandSystem.Register("addclone", AccessLevel.Seer, AddClone_OnCommand);
         }
 
         [Description("")]

@@ -510,7 +510,7 @@ namespace Server.Commands
         [Description("View some stats about the server.")]
         public static void Stats_OnCommand(CommandEventArgs e)
         {
-            e.Mobile.SendMessage("Open Connections: {0}", Network.NetState.Instances.Count);
+            e.Mobile.SendMessage("Open Connections: {0}", NetState.Instances.Count);
             e.Mobile.SendMessage("Mobiles: {0}", World.Mobiles.Count);
             e.Mobile.SendMessage("Items: {0}", World.Items.Count);
         }
@@ -866,7 +866,7 @@ namespace Server.Commands
 
                     public override void OnCancel(NetState state)
                     {
-                        state.Mobile.SendMenu(new EquipMenu(state.Mobile, m_Mobile, ViewEqTarget.GetEquip(m_Mobile)));
+                        state.Mobile.SendMenu(new EquipMenu(state.Mobile, m_Mobile, GetEquip(m_Mobile)));
                     }
 
                     public override void OnResponse(NetState state, int index)

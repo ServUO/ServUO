@@ -58,10 +58,10 @@ namespace Server.Mobiles
         }
 
         public override ChampionSkullType SkullType => ChampionSkullType.None;
-        public override Type[] UniqueList => new Type[] { typeof(TongueOfTheBeast), typeof(DeathsHead), typeof(WallOfHungryMouths), typeof(AbyssalBlade) };
-        public override Type[] SharedList => new Type[] { typeof(RoyalGuardInvestigatorsCloak), typeof(DetectiveBoots), typeof(JadeArmband) };
-        public override Type[] DecorativeList => new Type[] { typeof(MagicalDoor) };
-        public override MonsterStatuetteType[] StatueTypes => new MonsterStatuetteType[] { MonsterStatuetteType.AbyssalInfernal, MonsterStatuetteType.ArchDemon };
+        public override Type[] UniqueList => new[] { typeof(TongueOfTheBeast), typeof(DeathsHead), typeof(WallOfHungryMouths), typeof(AbyssalBlade) };
+        public override Type[] SharedList => new[] { typeof(RoyalGuardInvestigatorsCloak), typeof(DetectiveBoots), typeof(JadeArmband) };
+        public override Type[] DecorativeList => new[] { typeof(MagicalDoor) };
+        public override MonsterStatuetteType[] StatueTypes => new[] { MonsterStatuetteType.AbyssalInfernal, MonsterStatuetteType.ArchDemon };
 
         public override Poison PoisonImmune => Poison.Lethal;
 
@@ -151,7 +151,7 @@ namespace Server.Mobiles
         }
 
         #region Condemn
-        private static readonly Point3D[] _Locs = new Point3D[]
+        private static readonly Point3D[] _Locs = new[]
         {
             new Point3D(6949, 701, 32),
             new Point3D(6941, 761, 32),
@@ -295,7 +295,7 @@ namespace Server.Mobiles
         #region Spawn
         public List<BaseCreature> SummonedHelpers { get; set; }
 
-        private static readonly Type[] SummonTypes = new Type[]
+        private static readonly Type[] SummonTypes = new[]
         {
             typeof(HellHound),      typeof(Phoenix),
             typeof(FireSteed),      typeof(FireElemental),

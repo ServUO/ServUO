@@ -33,7 +33,7 @@ namespace Server.Engines.NewMagincia
 
         public static void Initialize()
         {
-            EventSink.Login += new LoginEventHandler(OnLogin);
+            EventSink.Login += OnLogin;
 
             if (m_Instance != null)
                 m_Instance.CheckMessages();
@@ -113,7 +113,7 @@ namespace Server.Engines.NewMagincia
             if (m_Timer != null)
                 m_Timer.Stop();
 
-            m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), new TimerCallback(ProcessTick));
+            m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), ProcessTick);
             m_Timer.Priority = TimerPriority.OneMinute;
             m_Timer.Start();
         }
@@ -566,7 +566,7 @@ namespace Server.Engines.NewMagincia
                     message.Serialize(writer);
             }
 
-            Timer.DelayCall(TimeSpan.FromSeconds(30), new TimerCallback(CheckMessages));
+            Timer.DelayCall(TimeSpan.FromSeconds(30), CheckMessages);
         }
 
         public override void Deserialize(GenericReader reader)

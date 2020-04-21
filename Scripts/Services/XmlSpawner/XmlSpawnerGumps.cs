@@ -1443,7 +1443,7 @@ namespace Server.Mobiles
                             args[4] = m_ShowGump;
                             args[5] = page;
 
-                            XmlTextEntryBook book = new XmlTextEntryBook(0, String.Empty, m_Spawner.Name, 20, true, new XmlTextEntryBookCallback(ProcessSpawnerBookEntry), args);
+                            XmlTextEntryBook book = new XmlTextEntryBook(0, String.Empty, m_Spawner.Name, 20, true, ProcessSpawnerBookEntry, args);
 
                             m_Spawner.m_TextEntryBook.Add(book);
 

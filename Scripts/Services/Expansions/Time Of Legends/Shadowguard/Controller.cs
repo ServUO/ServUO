@@ -52,8 +52,8 @@ namespace Server.Engines.Shadowguard
 
         public static void Initialize()
         {
-            EventSink.Login += new LoginEventHandler(OnLogin);
-            EventSink.Disconnected += new DisconnectedEventHandler(OnDisconnected);
+            EventSink.Login += OnLogin;
+            EventSink.Disconnected += OnDisconnected;
 
             CommandSystem.Register("AddController", AccessLevel.Administrator, e =>
                 {
@@ -357,7 +357,7 @@ namespace Server.Engines.Shadowguard
 
             Queue.Add(m, encounter);
 
-            int order = Array.IndexOf<Mobile>(Queue.Keys.ToArray(), m) + 1;
+            int order = Array.IndexOf(Queue.Keys.ToArray(), m) + 1;
 
             m.SendLocalizedMessage(1156182, order > 1 ? order.ToString() : "next");
             /* The fortress is currently full right now. You are currently ~1_NUM~ in the queue.  

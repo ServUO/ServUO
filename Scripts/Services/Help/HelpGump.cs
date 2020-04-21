@@ -163,7 +163,7 @@ namespace Server.Engines.Help
 
         public static void Initialize()
         {
-            EventSink.HelpRequest += new HelpRequestEventHandler(EventSink_HelpRequest);
+            EventSink.HelpRequest += EventSink_HelpRequest;
         }
 
         public static bool CheckCombat(Mobile m)

@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Server.Items
 {
-    public abstract class CraftAddon : BaseAddon, Server.Gumps.ISecurable
+    public abstract class CraftAddon : BaseAddon, Gumps.ISecurable
     {
         public List<AddonToolComponent> Tools { get; set; }
 
@@ -78,7 +78,7 @@ namespace Server.Items
                     {
                         Point3D wall = c.WallPosition;
 
-                        if (!BaseAddon.IsWall(p3D.X + wall.X, p3D.Y + wall.Y, p3D.Z + wall.Z, map))
+                        if (!IsWall(p3D.X + wall.X, p3D.Y + wall.Y, p3D.Z + wall.Z, map))
                             return AddonFitResult.NoWall;
                     }
                 }

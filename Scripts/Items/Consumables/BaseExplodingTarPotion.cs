@@ -201,7 +201,7 @@ namespace Server.Items
                     return;
 
                 // Add delay
-                BaseExplodingTarPotion.AddDelay(from);
+                AddDelay(from);
 
                 SpellHelper.GetSurfaceTop(ref p);
 

@@ -403,7 +403,7 @@ namespace Server.Engines.MyrmidexInvasion
 
                     if (type.IsSubclassOf(typeof(BaseEodonTribesman)))
                     {
-                        EodonTribe tribe = Utility.RandomList<EodonTribe>(EodonTribe.Jukari, EodonTribe.Kurak, EodonTribe.Barako, EodonTribe.Urali, EodonTribe.Sakkhra);
+                        EodonTribe tribe = Utility.RandomList(EodonTribe.Jukari, EodonTribe.Kurak, EodonTribe.Barako, EodonTribe.Urali, EodonTribe.Sakkhra);
                         bc = Activator.CreateInstance(type, new object[] { tribe }) as BaseCreature;
                     }
                     else

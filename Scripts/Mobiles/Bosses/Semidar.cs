@@ -54,9 +54,9 @@ namespace Server.Mobiles
         }
 
         public override ChampionSkullType SkullType => ChampionSkullType.Pain;
-        public override Type[] UniqueList => new Type[] { typeof(GladiatorsCollar) };
-        public override Type[] SharedList => new Type[] { typeof(RoyalGuardSurvivalKnife), typeof(TheMostKnowledgePerson), typeof(LieutenantOfTheBritannianRoyalGuard) };
-        public override Type[] DecorativeList => new Type[] { typeof(LavaTile), typeof(DemonSkull) };
+        public override Type[] UniqueList => new[] { typeof(GladiatorsCollar) };
+        public override Type[] SharedList => new[] { typeof(RoyalGuardSurvivalKnife), typeof(TheMostKnowledgePerson), typeof(LieutenantOfTheBritannianRoyalGuard) };
+        public override Type[] DecorativeList => new[] { typeof(LavaTile), typeof(DemonSkull) };
         public override MonsterStatuetteType[] StatueTypes => new MonsterStatuetteType[] { };
         public override Poison PoisonImmune => Poison.Lethal;
 
@@ -71,12 +71,6 @@ namespace Server.Mobiles
             if (!caster.Female && !caster.IsBodyMod)
                 reflect = true; // Always reflect if caster isn't female
         }
-
-        /*public override void AlterDamageScalarFrom(Mobile caster, ref double scalar)
-        {
-            if (caster.Body.IsMale)
-                scalar = 20; // Male bodies always reflect.. damage scaled 20x
-        }*/
 
         public override void Serialize(GenericWriter writer)
         {

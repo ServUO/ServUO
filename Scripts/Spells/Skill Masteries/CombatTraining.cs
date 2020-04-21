@@ -352,7 +352,7 @@ namespace Server.Spells.SkillMasteries
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is Server.Engines.Despise.DespiseCreature)
+                if (targeted is Engines.Despise.DespiseCreature)
                 {
                     return;
                 }

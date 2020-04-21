@@ -642,7 +642,7 @@ namespace Server.Items
                 if (Items.Count > 0)
                 {
                     from.SendLocalizedMessage(500848); // Couldn't pour it there.  It was already full.
-                    beverage.PrivateOverheadMessage(Server.Network.MessageType.Regular, 0, 500841, from.NetState); // that has somethign in it.
+                    beverage.PrivateOverheadMessage(Network.MessageType.Regular, 0, 500841, from.NetState); // that has somethign in it.
                 }
                 else
                 {
@@ -926,7 +926,7 @@ namespace Server.Items
             1,
             new Type[]
             {
-                typeof(Mobiles.Alchemist)
+                typeof(Alchemist)
             },
             new FillableEntry[]
             {

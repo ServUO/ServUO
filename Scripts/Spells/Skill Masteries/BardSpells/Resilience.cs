@@ -27,7 +27,7 @@ namespace Server.Spells.SkillMasteries
 
         public override void OnCast()
         {
-            BardSpell spell = SkillMasterySpell.GetSpell(Caster, GetType()) as BardSpell;
+            BardSpell spell = GetSpell(Caster, GetType()) as BardSpell;
 
             if (spell != null)
             {
@@ -93,7 +93,7 @@ namespace Server.Spells.SkillMasteries
 
         public static bool UnderEffects(Mobile m)
         {
-            return SkillMasterySpell.UnderPartyEffects(m, typeof(ResilienceSpell));
+            return UnderPartyEffects(m, typeof(ResilienceSpell));
         }
     }
 }

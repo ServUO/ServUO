@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class SummonersKilt : GargishClothKilt, IRepairable
     {
-        public Server.Engines.Craft.CraftSystem RepairSystem => DefTailoring.CraftSystem;
+        public CraftSystem RepairSystem => DefTailoring.CraftSystem;
 
         public override bool IsArtifact => true;
         public override int LabelNumber => 1113540;  // Summoner's Kilt
