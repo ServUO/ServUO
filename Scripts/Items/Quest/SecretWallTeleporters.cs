@@ -164,7 +164,7 @@ namespace Server.Items
                 {
                     ItemID += 1;
 
-                    Timer.DelayCall(TimeSpan.FromSeconds(10), new TimerCallback(Lock));
+                    Timer.DelayCall(TimeSpan.FromSeconds(10), Lock);
                 }
 
                 m_TurnedOn = !m_TurnedOn;

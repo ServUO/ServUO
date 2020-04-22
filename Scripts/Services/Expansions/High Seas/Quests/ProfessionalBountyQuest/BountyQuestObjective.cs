@@ -1,4 +1,4 @@
-﻿using Server.Items;
+using Server.Items;
 using Server.Mobiles;
 using System;
 
@@ -57,7 +57,7 @@ namespace Server.Engines.Quests
             m_Captured = reader.ReadBool();
             m_CapturedCaptain = reader.ReadMobile();
 
-            Timer.DelayCall(TimeSpan.FromSeconds(10), new TimerCallback(ValidateCaught));
+            Timer.DelayCall(TimeSpan.FromSeconds(10), ValidateCaught);
         }
 
         private void ValidateCaught()

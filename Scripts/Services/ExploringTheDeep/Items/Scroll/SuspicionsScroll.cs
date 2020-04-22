@@ -1,4 +1,4 @@
-﻿using Server.Commands;
+using Server.Commands;
 using Server.Gumps;
 using Server.Network;
 
@@ -44,7 +44,7 @@ namespace Server.Items
     {
         public static void Initialize()
         {
-            CommandSystem.Register("SuspicionsLetters", AccessLevel.GameMaster, new CommandEventHandler(SuspicionsGump_OnCommand));
+            CommandSystem.Register("SuspicionsLetters", AccessLevel.GameMaster, SuspicionsGump_OnCommand);
         }
 
         private static void SuspicionsGump_OnCommand(CommandEventArgs e)

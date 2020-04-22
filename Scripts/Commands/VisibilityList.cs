@@ -9,11 +9,11 @@ namespace Server.Commands
     {
         public static void Initialize()
         {
-            EventSink.Login += new LoginEventHandler(OnLogin);
+            EventSink.Login += OnLogin;
 
-            CommandSystem.Register("Vis", AccessLevel.Counselor, new CommandEventHandler(Vis_OnCommand));
-            CommandSystem.Register("VisList", AccessLevel.Counselor, new CommandEventHandler(VisList_OnCommand));
-            CommandSystem.Register("VisClear", AccessLevel.Counselor, new CommandEventHandler(VisClear_OnCommand));
+            CommandSystem.Register("Vis", AccessLevel.Counselor, Vis_OnCommand);
+            CommandSystem.Register("VisList", AccessLevel.Counselor, VisList_OnCommand);
+            CommandSystem.Register("VisClear", AccessLevel.Counselor, VisClear_OnCommand);
         }
 
         public static void OnLogin(LoginEventArgs e)

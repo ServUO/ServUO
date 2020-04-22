@@ -9,7 +9,7 @@ namespace Server.Commands
     {
         public static void Initialize()
         {
-            CommandSystem.Register("GMbody", AccessLevel.Counselor, new CommandEventHandler(GM_OnCommand));
+            CommandSystem.Register("GMbody", AccessLevel.Counselor, GM_OnCommand);
         }
 
         [Usage("GMbody")]

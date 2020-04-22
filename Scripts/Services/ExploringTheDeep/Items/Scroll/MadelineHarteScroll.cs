@@ -1,4 +1,4 @@
-﻿using Server.Commands;
+using Server.Commands;
 using Server.Gumps;
 using Server.Network;
 
@@ -44,7 +44,7 @@ namespace Server.Items
     {
         public static void Initialize()
         {
-            CommandSystem.Register("MadelineHarteScroll", AccessLevel.GameMaster, new CommandEventHandler(MadelineHarteGump_OnCommand));
+            CommandSystem.Register("MadelineHarteScroll", AccessLevel.GameMaster, MadelineHarteGump_OnCommand);
         }
 
         private static void MadelineHarteGump_OnCommand(CommandEventArgs e)

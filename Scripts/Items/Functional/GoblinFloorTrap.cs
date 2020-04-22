@@ -55,7 +55,7 @@ namespace Server.Items
                 from.DoHarmful(m_Owner);
 
             Visible = true;
-            Timer.DelayCall(TimeSpan.FromSeconds(10), new TimerCallback(Rehide_Callback));
+            Timer.DelayCall(TimeSpan.FromSeconds(10), Rehide_Callback);
 
             PublicOverheadMessage(MessageType.Regular, 0x65, 500813); // [Trapped]
 
@@ -94,7 +94,7 @@ namespace Server.Items
         {
             Visible = true;
 
-            Timer.DelayCall(TimeSpan.FromSeconds(10), new TimerCallback(Rehide_Callback));
+            Timer.DelayCall(TimeSpan.FromSeconds(10), Rehide_Callback);
         }
 
         public void Rehide_Callback()

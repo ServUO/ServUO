@@ -15,9 +15,9 @@ namespace Server.Accounting
             if (!Enabled)
                 return;
 
-            PacketHandlers.RegisterThrottler(0x80, new ThrottlePacketCallback(Throttle_Callback));
-            PacketHandlers.RegisterThrottler(0x91, new ThrottlePacketCallback(Throttle_Callback));
-            PacketHandlers.RegisterThrottler(0xCF, new ThrottlePacketCallback(Throttle_Callback));
+            PacketHandlers.RegisterThrottler(0x80, Throttle_Callback);
+            PacketHandlers.RegisterThrottler(0x91, Throttle_Callback);
+            PacketHandlers.RegisterThrottler(0xCF, Throttle_Callback);
         }
 
         public static bool Throttle_Callback(NetState ns, out bool drop)

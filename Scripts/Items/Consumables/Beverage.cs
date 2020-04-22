@@ -1097,7 +1097,7 @@ namespace Server.Items
 
         public static void Initialize()
         {
-            EventSink.Login += new LoginEventHandler(EventSink_Login);
+            EventSink.Login += EventSink_Login;
         }
 
         private static void EventSink_Login(LoginEventArgs e)
@@ -1394,12 +1394,12 @@ namespace Server.Items
                 if (!Fillable || !ValidateUse(from, true))
                     return;
 
-                from.BeginTarget(-1, true, TargetFlags.None, new TargetCallback(Fill_OnTarget));
+                from.BeginTarget(-1, true, TargetFlags.None, Fill_OnTarget);
                 SendLocalizedMessageTo(from, 500837); // Fill from what?
             }
             else if (Pourable && ValidateUse(from, true))
             {
-                from.BeginTarget(-1, true, TargetFlags.None, new TargetCallback(Pour_OnTarget));
+                from.BeginTarget(-1, true, TargetFlags.None, Pour_OnTarget);
                 from.SendLocalizedMessage(1010086); // What do you want to use this on?
             }
         }

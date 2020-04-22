@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Server.Engines.TombOfKings
@@ -25,7 +25,7 @@ namespace Server.Engines.TombOfKings
         public static void Initialize()
         {
             // we should call it after deserialize the levers
-            Timer.DelayCall(TimeSpan.Zero, new TimerCallback(Generate));
+            Timer.DelayCall(TimeSpan.Zero, Generate);
         }
 
         public static void Generate()

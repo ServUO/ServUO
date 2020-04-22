@@ -95,7 +95,7 @@ namespace Server.Items
 
             writer.Write(2); // version
 
-            Timer.DelayCall(TimeSpan.FromSeconds(10), new TimerCallback(DefragDelays_Callback));
+            Timer.DelayCall(TimeSpan.FromSeconds(10), DefragDelays_Callback);
         }
 
         public override void Deserialize(GenericReader reader)

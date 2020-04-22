@@ -190,6 +190,11 @@ namespace Server.Engines.Blackthorn
 
                     bc.Kills = 100;
 
+                    if (bc.FightMode == FightMode.Evil)
+                    {
+                        bc.FightMode = FightMode.Aggressor;
+                    }
+
                     if (SpawnMobile(bc, spawnrec))
                     {
                         list.Add(bc);

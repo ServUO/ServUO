@@ -122,12 +122,11 @@ namespace Server.Mobiles
                 from.SendSpeedControl(SpeedControlType.WalkSpeed);
                 from.SendLocalizedMessage(1152144); // You suddenly find yourself unable to run.
 
-                Timer.DelayCall(TimeSpan.FromSeconds(1), new TimerCallback(
-                    delegate
-                    {
-                        from.SendSpeedControl(SpeedControlType.Disable);
-                        from.SendLocalizedMessage(1152145); // You are are free to move again.
-                    }));
+                Timer.DelayCall(TimeSpan.FromSeconds(1), delegate
+                {
+                    @from.SendSpeedControl(SpeedControlType.Disable);
+                    @from.SendLocalizedMessage(1152145); // You are are free to move again.
+                });
 
                 Delete();
             }

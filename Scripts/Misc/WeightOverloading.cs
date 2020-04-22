@@ -10,7 +10,7 @@ namespace Server.Misc
 
         public static void Initialize()
         {
-            EventSink.Movement += new MovementEventHandler(EventSink_Movement);
+            EventSink.Movement += EventSink_Movement;
             Mobile.FatigueHandler = FatigueOnDamage;
         }
 
@@ -28,7 +28,7 @@ namespace Server.Misc
                     break;
                 case DFAlgorithm.PainSpike:
                     {
-                        fatigue = (damage * ((m.HitsMax / hits) + ((50.0 + m.Stam) / m.StamMax) - 1.0)) - 5;
+                        fatigue = (damage * (m.HitsMax / hits + ((50.0 + m.Stam) / m.StamMax) - 1.0)) - 5;
                     }
                     break;
             }

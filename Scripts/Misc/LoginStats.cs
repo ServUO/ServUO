@@ -7,7 +7,7 @@ namespace Server.Misc
         public static void Initialize()
         {
             // Register our event handler
-            EventSink.Login += new LoginEventHandler(EventSink_Login);
+            EventSink.Login += EventSink_Login;
         }
 
         private static void EventSink_Login(LoginEventArgs args)

@@ -69,8 +69,8 @@ namespace Server.Gumps
 
         public static void Initialize()
         {
-            CommandSystem.Register("Who", AccessLevel.Counselor, new CommandEventHandler(WhoList_OnCommand));
-            CommandSystem.Register("WhoList", AccessLevel.Counselor, new CommandEventHandler(WhoList_OnCommand));
+            CommandSystem.Register("Who", AccessLevel.Counselor, WhoList_OnCommand);
+            CommandSystem.Register("WhoList", AccessLevel.Counselor, WhoList_OnCommand);
         }
 
         public static List<Mobile> BuildList(Mobile owner, string filter)
@@ -275,9 +275,6 @@ namespace Server.Gumps
         private class InternalComparer : IComparer<Mobile>
         {
             public static readonly IComparer<Mobile> Instance = new InternalComparer();
-            public InternalComparer()
-            {
-            }
 
             public int Compare(Mobile x, Mobile y)
             {

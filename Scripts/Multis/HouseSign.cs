@@ -157,7 +157,7 @@ namespace Server.Multis
                     * another house or have another house transferred to you for the
                     * next 7 days.  Do you wish to claim this house?
                     */
-                    m.SendGump(new WarningGump(501036, 32512, 1049719, 32512, 420, 280, new WarningGumpCallback(ClaimGump_Callback), null));
+                    m.SendGump(new WarningGump(501036, 32512, 1049719, 32512, 420, 280, ClaimGump_Callback, null));
                 }
             }
 

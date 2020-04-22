@@ -102,7 +102,7 @@ namespace Server.Items
                 else
                 {
                     base.GetContextMenuEntries(from, list);
-                    StaffOrb.GetContextMenuEntries(from, this, list);
+                    GetContextMenuEntries(from, this, list);
                 }
             }
         }

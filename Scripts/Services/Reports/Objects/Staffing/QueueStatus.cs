@@ -5,7 +5,7 @@ namespace Server.Engines.Reports
     public class QueueStatus : PersistableObject
     {
         #region Type Identification
-        public static readonly PersistableType ThisTypeID = new PersistableType("qs", new ConstructCallback(Construct));
+        public static readonly PersistableType ThisTypeID = new PersistableType("qs", Construct);
 
         private static PersistableObject Construct()
         {

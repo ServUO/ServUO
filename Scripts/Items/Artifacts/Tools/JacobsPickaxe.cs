@@ -10,7 +10,7 @@ namespace Server.Items
 
         public static void Initialize()
         {
-            Timer.DelayCall(TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5), new TimerCallback(Tick_Callback));
+            Timer.DelayCall(TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5), Tick_Callback);
         }
 
         private static void Tick_Callback()

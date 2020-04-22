@@ -111,13 +111,13 @@ namespace Server.Items
             {
                 if (Pet == null)
                 {
-                    list.Add(new BallEntry(new BallCallback(LinkPet), 6180));
+                    list.Add(new BallEntry(LinkPet, 6180));
                 }
                 else
                 {
-                    list.Add(new BallEntry(new BallCallback(CastSummonPet), 6181));
-                    list.Add(new BallEntry(new BallCallback(UpdatePetName), 6183));
-                    list.Add(new BallEntry(new BallCallback(UnlinkPet), 6182));
+                    list.Add(new BallEntry(CastSummonPet, 6181));
+                    list.Add(new BallEntry(UpdatePetName, 6183));
+                    list.Add(new BallEntry(UnlinkPet, 6182));
                 }
             }
         }
@@ -371,7 +371,7 @@ namespace Server.Items
             private static readonly SpellInfo m_Info = new SpellInfo("Ball Of Summoning", "", 230);
             private readonly BallOfSummoning m_Ball;
             private readonly Mobile m_Caster;
-            private bool m_Stop;
+
             public PetSummoningSpell(BallOfSummoning ball, Mobile caster)
                 : base(caster, null, m_Info)
             {
@@ -403,12 +403,6 @@ namespace Server.Items
                 return true;
             }
 
-            public void Stop()
-            {
-                m_Stop = true;
-                Disturb(DisturbType.Hurt, false, false);
-            }
-
             public override bool CheckDisturb(DisturbType type, bool checkFirst, bool resistable)
             {
                 if (type == DisturbType.EquipRequest || type == DisturbType.UseRequest/* || type == DisturbType.Hurt*/)
@@ -417,21 +411,9 @@ namespace Server.Items
                 return true;
             }
 
-            public override void DoHurtFizzle()
-            {
-                if (!m_Stop)
-                    base.DoHurtFizzle();
-            }
-
-            public override void DoFizzle()
-            {
-                if (!m_Stop)
-                    base.DoFizzle();
-            }
-
             public override void OnDisturb(DisturbType type, bool message)
             {
-                if (message && !m_Stop)
+                if (message)
                     Caster.SendLocalizedMessage(1080074); // You have been disrupted while attempting to summon your pet!
             }
 

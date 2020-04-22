@@ -41,7 +41,7 @@ namespace Server.Items
         {
             if (IsChildOf(from.Backpack))
             {
-                from.BeginTarget(-1, false, TargetFlags.None, new TargetCallback(OnTarget));
+                from.BeginTarget(-1, false, TargetFlags.None, OnTarget);
                 from.SendLocalizedMessage(1005424); // Select the weapon or armor you wish to use the cloth on.
             }
             else

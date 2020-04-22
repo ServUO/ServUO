@@ -75,7 +75,7 @@ namespace Server.Misc
         public static void Initialize()
         {
             if (Enabled)
-                EventSink.Speech += new SpeechEventHandler(EventSink_Speech);
+                EventSink.Speech += EventSink_Speech;
         }
 
         private static bool OnProfanityDetected(Mobile from, string speech)

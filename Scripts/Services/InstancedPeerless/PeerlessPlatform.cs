@@ -49,7 +49,7 @@ namespace Server.Engines.InstancedPeerless
             {
                 if (!Validate(brazier))
                 {
-                    m_KeyExpireTimer = Timer.DelayCall(TimeSpan.FromMinutes(1.0), new TimerCallback(delegate { Clear(false); }));
+                    m_KeyExpireTimer = Timer.DelayCall(TimeSpan.FromMinutes(1.0), delegate { Clear(false); });
                     return;
                 }
             }
@@ -195,8 +195,7 @@ namespace Server.Engines.InstancedPeerless
                     {
                         member.SendGump(new RejoinInstanceGump(instance, OfferGumpTitle, OfferGumpDesc));
 
-                        Timer.DelayCall(TimeSpan.FromMinutes(1.0), new TimerCallback(
-                            delegate { member.CloseGump(typeof(RejoinInstanceGump)); }));
+                        Timer.DelayCall(TimeSpan.FromMinutes(1.0), delegate { member.CloseGump(typeof(RejoinInstanceGump)); });
                     }
                 }
             }

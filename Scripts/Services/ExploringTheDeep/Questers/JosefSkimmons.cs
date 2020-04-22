@@ -41,23 +41,23 @@ namespace Server.Mobiles
         {
         }
 
-        public override void OnDoubleClick(Mobile m)
+        public override void OnDoubleClick(Mobile from)
         {
-            if (!(m is PlayerMobile))
+            if (!(from is PlayerMobile))
                 return;
 
-            PlayerMobile pm = (PlayerMobile)m;
+            PlayerMobile pm = (PlayerMobile)from;
 
             if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
             {
-                if (!m.HasGump(typeof(JosefSkimmonsGump)))
+                if (!from.HasGump(typeof(JosefSkimmonsGump)))
                 {
-                    m.SendGump(new JosefSkimmonsGump(m));
+                    from.SendGump(new JosefSkimmonsGump(from));
                 }
             }
             else
             {
-                m.SendLocalizedMessage(1154325); // You feel as though by doing this you are missing out on an important part of your journey...
+                from.SendLocalizedMessage(1154325); // You feel as though by doing this you are missing out on an important part of your journey...
             }
         }
 
@@ -121,7 +121,7 @@ namespace Server.Gumps
     {
         public static void Initialize()
         {
-            CommandSystem.Register("JosefSkimmonsComplete", AccessLevel.GameMaster, new CommandEventHandler(JosefSkimmonsCompleteGump_OnCommand));
+            CommandSystem.Register("JosefSkimmonsComplete", AccessLevel.GameMaster, JosefSkimmonsCompleteGump_OnCommand);
         }
 
         private static void JosefSkimmonsCompleteGump_OnCommand(CommandEventArgs e)
@@ -165,10 +165,8 @@ namespace Server.Gumps
             AddButton(345, 440, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
         }
 
-        public override void OnResponse(NetState state, RelayInfo info) //Function for GumpButtonType.Reply Buttons 
+        public override void OnResponse(NetState sender, RelayInfo info) //Function for GumpButtonType.Reply Buttons 
         {
-            Mobile from = state.Mobile;
-
             switch (info.ButtonID)
             {
                 case 0:
@@ -184,7 +182,7 @@ namespace Server.Gumps
     {
         public static void Initialize()
         {
-            CommandSystem.Register("JosefSkimmons", AccessLevel.GameMaster, new CommandEventHandler(JosefSkimmonsGump_OnCommand));
+            CommandSystem.Register("JosefSkimmons", AccessLevel.GameMaster, JosefSkimmonsGump_OnCommand);
         }
 
         private static void JosefSkimmonsGump_OnCommand(CommandEventArgs e)
@@ -223,7 +221,7 @@ namespace Server.Gumps
             AddHtmlLocalized(140, 45, 250, 24, 1154327, 0x7FFF, false, false); // Exploring the Deep
 
             AddPage(1);
-            AddHtmlLocalized(107, 140, 300, 150, 1154294, 0x7FFF, false, true); // Hello there...what’s this? *reads the note* Look at these lenses! Cousteau drew these up did she...hrmm…well in any case I might be able to craft these lenses if you would be willing to assist me...
+            AddHtmlLocalized(107, 140, 300, 150, 1154294, 0x7FFF, false, true); // Hello there...whatâ€™s this? *reads the note* Look at these lenses! Cousteau drew these up did she...hrmmâ€¦well in any case I might be able to craft these lenses if you would be willing to assist me...
 
             AddHtmlLocalized(145, 300, 250, 24, 1154295, 0x7FFF, false, false); // What do you need assistance with?
             AddButton(115, 300, 0x26B0, 0x26B1, 0, GumpButtonType.Page, 2);
@@ -231,7 +229,7 @@ namespace Server.Gumps
             AddButton(345, 440, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
 
             AddPage(2);
-            AddHtmlLocalized(107, 140, 300, 150, 1154296, 0x7FFF, false, true); // I’m looking to expand my operation here, before I can do that though I need a more reliable source of raw ore.  Rumor has it the Orcs have a new machine they are using to drill huge quantities of ore!
+            AddHtmlLocalized(107, 140, 300, 150, 1154296, 0x7FFF, false, true); // Iâ€™m looking to expand my operation here, before I can do that though I need a more reliable source of raw ore.  Rumor has it the Orcs have a new machine they are using to drill huge quantities of ore!
 
             AddHtmlLocalized(145, 300, 250, 24, 1154297, 0x7FFF, false, false); // An orcish machine?
             AddButton(115, 300, 0x26B0, 0x26B1, 0, GumpButtonType.Page, 3);
@@ -239,15 +237,13 @@ namespace Server.Gumps
             AddButton(345, 440, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
 
             AddPage(3);
-            AddHtmlLocalized(107, 140, 300, 150, 1154298, 0x7FFF, false, true); // Yes! That’s exactly what I’m talking about! Drill baby drill! You get me some schematics to make that machine and I’ll strike your lenses for you...I bet those Orcs are holed up in their cave outside Yew.
+            AddHtmlLocalized(107, 140, 300, 150, 1154298, 0x7FFF, false, true); // Yes! Thatâ€™s exactly what Iâ€™m talking about! Drill baby drill! You get me some schematics to make that machine and Iâ€™ll strike your lenses for you...I bet those Orcs are holed up in their cave outside Yew.
 
             AddButton(345, 440, 0xF7, 0xF8, 0, GumpButtonType.Reply, 0);//OK
         }
 
-        public override void OnResponse(NetState state, RelayInfo info) //Function for GumpButtonType.Reply Buttons 
+        public override void OnResponse(NetState sender, RelayInfo info) //Function for GumpButtonType.Reply Buttons 
         {
-            Mobile from = state.Mobile;
-
             switch (info.ButtonID)
             {
                 case 0:

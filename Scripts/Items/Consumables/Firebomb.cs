@@ -64,7 +64,7 @@ namespace Server.Items
 
             if (m_Timer == null)
             {
-                m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), new TimerCallback(OnFirebombTimerTick));
+                m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), OnFirebombTimerTick);
                 m_LitBy = from;
                 from.SendLocalizedMessage(1060582); // You light the firebomb.  Throw it now!
             }
@@ -243,7 +243,7 @@ namespace Server.Items
             m_LitBy = litBy;
             m_Expire = DateTime.UtcNow + TimeSpan.FromSeconds(10);
             m_Burning = toDamage;
-            m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0), new TimerCallback(OnFirebombFieldTimerTick));
+            m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0), OnFirebombFieldTimerTick);
         }
 
         public FirebombField(Serial serial)

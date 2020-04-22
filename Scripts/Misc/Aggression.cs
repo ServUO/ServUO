@@ -107,7 +107,7 @@ namespace Server.Misc
 
         public static bool CheckHasAggression(Mobile m, bool aggressedOnly = false)
         {
-            if (Server.Engines.VvV.ViceVsVirtueSystem.HasBattleAggression(m))
+            if (Engines.VvV.ViceVsVirtueSystem.HasBattleAggression(m))
             {
                 return true;
             }

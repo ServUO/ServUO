@@ -215,7 +215,7 @@ namespace Server.Items
                 }
 
                 // Altar Delete
-                Timer.DelayCall(TimeSpan.FromSeconds(2), new TimerCallback(Delete));
+                Timer.DelayCall(TimeSpan.FromSeconds(2), Delete);
             }
             else
             {
@@ -235,7 +235,7 @@ namespace Server.Items
     {
         public static void Initialize()
         {
-            CommandSystem.Register("TomeAltarGump", AccessLevel.Administrator, new CommandEventHandler(TomeAltarGump_OnCommand));
+            CommandSystem.Register("TomeAltarGump", AccessLevel.Administrator, TomeAltarGump_OnCommand);
         }
 
         [Usage("TomeAltarGump")]

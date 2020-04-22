@@ -24,7 +24,7 @@ namespace Server.Items
 
             if (Facet == Map.Trammel || Facet == Map.Felucca)
             {
-                if (Server.Spells.SpellHelper.IsAnyT2A(Facet, from.Location))
+                if (Spells.SpellHelper.IsAnyT2A(Facet, from.Location))
                 {
                     Bounds = new Rectangle2D(5120, 2304, 1024, 1792);
                     Width = size;

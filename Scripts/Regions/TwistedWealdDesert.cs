@@ -14,7 +14,7 @@ namespace Server.Regions
 
         public static void Initialize()
         {
-            EventSink.Login += new LoginEventHandler(Desert_OnLogin);
+            EventSink.Login += Desert_OnLogin;
         }
 
         public override void OnEnter(Mobile m)

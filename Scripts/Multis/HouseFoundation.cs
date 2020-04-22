@@ -780,27 +780,27 @@ namespace Server.Multis
         public static void Initialize()
         {
             EventSink.MultiDesign += QueryDesignDetails;
-            PacketHandlers.RegisterExtended(0x1E, true, new OnPacketReceive(QueryDesignDetails));
+            PacketHandlers.RegisterExtended(0x1E, true, QueryDesignDetails);
 
-            PacketHandlers.RegisterEncoded(0x02, true, new OnEncodedPacketReceive(Designer_Backup));
-            PacketHandlers.RegisterEncoded(0x03, true, new OnEncodedPacketReceive(Designer_Restore));
-            PacketHandlers.RegisterEncoded(0x04, true, new OnEncodedPacketReceive(Designer_Commit));
-            PacketHandlers.RegisterEncoded(0x05, true, new OnEncodedPacketReceive(Designer_Delete));
-            PacketHandlers.RegisterEncoded(0x06, true, new OnEncodedPacketReceive(Designer_Build));
-            PacketHandlers.RegisterEncoded(0x0A, true, new OnEncodedPacketReceive(Designer_Action)); // WTF does this do?
-            PacketHandlers.RegisterEncoded(0x0C, true, new OnEncodedPacketReceive(Designer_Close));
-            PacketHandlers.RegisterEncoded(0x0D, true, new OnEncodedPacketReceive(Designer_Stairs));
-            PacketHandlers.RegisterEncoded(0x0E, true, new OnEncodedPacketReceive(Designer_Sync));
-            PacketHandlers.RegisterEncoded(0x0F, true, new OnEncodedPacketReceive(Designer_Action)); // WTF does this do?
-            PacketHandlers.RegisterEncoded(0x10, true, new OnEncodedPacketReceive(Designer_Clear));
-            PacketHandlers.RegisterEncoded(0x12, true, new OnEncodedPacketReceive(Designer_Level));
+            PacketHandlers.RegisterEncoded(0x02, true, Designer_Backup);
+            PacketHandlers.RegisterEncoded(0x03, true, Designer_Restore);
+            PacketHandlers.RegisterEncoded(0x04, true, Designer_Commit);
+            PacketHandlers.RegisterEncoded(0x05, true, Designer_Delete);
+            PacketHandlers.RegisterEncoded(0x06, true, Designer_Build);
+            PacketHandlers.RegisterEncoded(0x0A, true, Designer_Action); // WTF does this do?
+            PacketHandlers.RegisterEncoded(0x0C, true, Designer_Close);
+            PacketHandlers.RegisterEncoded(0x0D, true, Designer_Stairs);
+            PacketHandlers.RegisterEncoded(0x0E, true, Designer_Sync);
+            PacketHandlers.RegisterEncoded(0x0F, true, Designer_Action); // WTF does this do?
+            PacketHandlers.RegisterEncoded(0x10, true, Designer_Clear);
+            PacketHandlers.RegisterEncoded(0x12, true, Designer_Level);
 
-            PacketHandlers.RegisterEncoded(0x13, true, new OnEncodedPacketReceive(Designer_Roof)); // Samurai Empire roof
-            PacketHandlers.RegisterEncoded(0x14, true, new OnEncodedPacketReceive(Designer_RoofDelete)); // Samurai Empire roof
+            PacketHandlers.RegisterEncoded(0x13, true, Designer_Roof); // Samurai Empire roof
+            PacketHandlers.RegisterEncoded(0x14, true, Designer_RoofDelete); // Samurai Empire roof
 
-            PacketHandlers.RegisterEncoded(0x1A, true, new OnEncodedPacketReceive(Designer_Revert));
+            PacketHandlers.RegisterEncoded(0x1A, true, Designer_Revert);
 
-            EventSink.Speech += new SpeechEventHandler(EventSink_Speech);
+            EventSink.Speech += EventSink_Speech;
         }
 
         private static void EventSink_Speech(SpeechEventArgs e)
@@ -2548,7 +2548,7 @@ namespace Server.Multis
             m_SendQueueSyncRoot = ((ICollection)m_SendQueue).SyncRoot;
             m_Sync = new AutoResetEvent(false);
 
-            m_Thread = new Thread(new ThreadStart(CompressionThread));
+            m_Thread = new Thread(CompressionThread);
             m_Thread.Name = "Housing Compression Thread";
             m_Thread.Start();
         }

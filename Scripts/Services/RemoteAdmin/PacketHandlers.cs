@@ -11,10 +11,10 @@ namespace Server.RemoteAdmin
         static RemoteAdminHandlers()
         {
             //0x02 = login request, handled by AdminNetwork
-            Register(0x04, new OnPacketReceive(ServerInfoRequest));
-            Register(0x05, new OnPacketReceive(AccountSearch));
-            Register(0x06, new OnPacketReceive(RemoveAccount));
-            Register(0x07, new OnPacketReceive(UpdateAccount));
+            Register(0x04, ServerInfoRequest);
+            Register(0x05, AccountSearch);
+            Register(0x06, RemoveAccount);
+            Register(0x07, UpdateAccount);
         }
 
         public enum AcctSearchType : byte

@@ -110,7 +110,7 @@ namespace Server.Items
             ChargeTime = 300;
 
             if (m_Timer == null || !m_Timer.Running)
-                m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), new TimerCallback(Slice));
+                m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), Slice);
         }
 
         public virtual void StopTimer()
@@ -152,7 +152,7 @@ namespace Server.Items
             ChargeTime = reader.ReadInt();
 
             if (Parent != null && Parent is Mobile && ChargeTime > 0)
-                m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), new TimerCallback(Slice));
+                m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), Slice);
         }
     }
 }

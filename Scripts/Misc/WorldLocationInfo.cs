@@ -7,7 +7,7 @@ namespace Server
     {
         public static void Initialize()
         {
-            CommandSystem.Register("GetLocation", AccessLevel.Administrator, new CommandEventHandler(GetLocation_OnCommand));
+            CommandSystem.Register("GetLocation", AccessLevel.Administrator, GetLocation_OnCommand);
         }
 
         private readonly string m_RegionName;

@@ -125,7 +125,7 @@ namespace Server.Mobiles
                 killer.SendLocalizedMessage(1154489); // You received a Quest Item!
             }
 
-            Timer.DelayCall(TimeSpan.FromMinutes(10.0), new TimerCallback(m_Controller.CreateSorcerersPlates));
+            Timer.DelayCall(TimeSpan.FromMinutes(10.0), m_Controller.CreateSorcerersPlates);
 
             return base.OnBeforeDeath();
         }

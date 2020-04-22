@@ -7,8 +7,8 @@ namespace Server
     {
         public static void Initialize()
         {
-            CommandSystem.Register("DecorateSA", AccessLevel.Administrator, new CommandEventHandler(DecorateSA_OnCommand));
-            CommandSystem.Register("DecorateSADelete", AccessLevel.Administrator, new CommandEventHandler(DecorateSADelete_OnCommand));
+            CommandSystem.Register("DecorateSA", AccessLevel.Administrator, DecorateSA_OnCommand);
+            CommandSystem.Register("DecorateSADelete", AccessLevel.Administrator, DecorateSADelete_OnCommand);
         }
         [Usage("DecorateSADelete")]
         [Description("Deletes Stygian Abyss world decoration.")]

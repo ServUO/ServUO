@@ -23,7 +23,7 @@ namespace Server.Engines.InstancedPeerless
             Hue = 0x484;
             Light = LightType.Circle300;
 
-            Timer.DelayCall(TimeSpan.FromMinutes(1.0), new TimerCallback(Delete));
+            Timer.DelayCall(TimeSpan.FromMinutes(1.0), Delete);
         }
 
         public override bool OnMoveOver(Mobile m)

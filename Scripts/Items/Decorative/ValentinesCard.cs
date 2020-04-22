@@ -1,4 +1,4 @@
-﻿using Server.Mobiles;
+using Server.Mobiles;
 using Server.Targeting;
 using System;
 
@@ -69,7 +69,7 @@ namespace Server.Items
             {
                 if (IsChildOf(from))
                 {
-                    from.BeginTarget(10, false, TargetFlags.None, new TargetCallback(OnTarget));
+                    from.BeginTarget(10, false, TargetFlags.None, OnTarget);
 
                     from.SendLocalizedMessage(1077497); //To whom do you wish to give this card?
                 }

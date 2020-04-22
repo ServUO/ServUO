@@ -1,4 +1,4 @@
-﻿using Server.Commands;
+using Server.Commands;
 using Server.Gumps;
 using Server.Network;
 
@@ -44,7 +44,7 @@ namespace Server.Items
     {
         public static void Initialize()
         {
-            CommandSystem.Register("CousteauPerronScroll", AccessLevel.GameMaster, new CommandEventHandler(CousteauPerronInformationGump_OnCommand));
+            CommandSystem.Register("CousteauPerronScroll", AccessLevel.GameMaster, CousteauPerronInformationGump_OnCommand);
         }
 
         private static void CousteauPerronInformationGump_OnCommand(CommandEventArgs e)

@@ -107,7 +107,7 @@ namespace Server.Engines.Plants
         {
             base.Die();
 
-            Timer.DelayCall(TimeSpan.FromMinutes(Utility.RandomMinMax(2, 5)), new TimerCallback(Delete));
+            Timer.DelayCall(TimeSpan.FromMinutes(Utility.RandomMinMax(2, 5)), Delete);
         }
 
         public override void Delete()
@@ -140,7 +140,7 @@ namespace Server.Engines.Plants
 
         public void StartTimer()
         {
-            m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(2), new TimerCallback(Delete));
+            m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(2), Delete);
         }
 
         public override bool PlantSeed(Mobile from, Seed seed)

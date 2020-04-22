@@ -58,7 +58,7 @@ namespace Server.Items
                         if (tub.CustomHuePicker == null)
                             from.SendHuePicker(new InternalPicker(tub));
                         else
-                            from.SendGump(new CustomHuePickerGump(from, tub.CustomHuePicker, new CustomHuePickerCallback(SetTubHue), tub));
+                            from.SendGump(new CustomHuePickerGump(from, tub.CustomHuePicker, SetTubHue, tub));
                     }
                     else if (tub is BlackDyeTub)
                     {

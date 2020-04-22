@@ -193,7 +193,7 @@ namespace Server.Items
 
         public void DoLavaDamageDelayed(Mobile m)
         {
-            Timer.DelayCall(TimeSpan.FromSeconds(.25), new TimerStateCallback<Mobile>(DoLavaDamage), m);
+            Timer.DelayCall(TimeSpan.FromSeconds(.25), DoLavaDamage, m);
         }
     }
 

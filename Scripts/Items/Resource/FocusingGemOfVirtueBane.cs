@@ -37,7 +37,7 @@ namespace Server.Items
             {
                 if (messagecheck)
                 {
-                    from.BeginTarget(2, false, TargetFlags.None, new TargetCallback(OnTarget));
+                    from.BeginTarget(2, false, TargetFlags.None, OnTarget);
                 }
             }
         }

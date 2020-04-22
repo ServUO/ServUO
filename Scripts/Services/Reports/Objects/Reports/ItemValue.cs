@@ -3,7 +3,7 @@ namespace Server.Engines.Reports
     public class ItemValue : PersistableObject
     {
         #region Type Identification
-        public static readonly PersistableType ThisTypeID = new PersistableType("iv", new ConstructCallback(Construct));
+        public static readonly PersistableType ThisTypeID = new PersistableType("iv", Construct);
 
         private static PersistableObject Construct()
         {

@@ -11,9 +11,6 @@ namespace Server.Items
     /// </summary>
     public class Dismount : WeaponAbility
     {
-        public static readonly TimeSpan DefenderRemountDelay = TimeSpan.FromSeconds(10.0);
-        public static readonly TimeSpan AttackerRemountDelay = TimeSpan.FromSeconds(3.0);
-
         public override int BaseMana => 25;
 
         public override bool Validate(Mobile from)

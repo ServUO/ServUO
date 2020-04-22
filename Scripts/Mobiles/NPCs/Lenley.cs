@@ -159,7 +159,7 @@ namespace Server.Engines.Quests
 
             if (Hidden)
             {
-                Timer.DelayCall(TimeSpan.Zero, new TimerCallback(UpdateLenleyRegion));
+                Timer.DelayCall(TimeSpan.Zero, UpdateLenleyRegion);
             }
         }
     }

@@ -7,7 +7,7 @@ namespace Server.Engines.Reports
     public class StaffHistory : PersistableObject
     {
         #region Type Identification
-        public static readonly PersistableType ThisTypeID = new PersistableType("stfhst", new ConstructCallback(Construct));
+        public static readonly PersistableType ThisTypeID = new PersistableType("stfhst", Construct);
 
         private static PersistableObject Construct()
         {

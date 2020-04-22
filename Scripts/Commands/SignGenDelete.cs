@@ -9,7 +9,7 @@ namespace Server.Commands
         private static readonly Queue<Item> m_ToDelete = new Queue<Item>();
         public static void Initialize()
         {
-            CommandSystem.Register("SignGenDelete", AccessLevel.Administrator, new CommandEventHandler(SignGenDelete_OnCommand));
+            CommandSystem.Register("SignGenDelete", AccessLevel.Administrator, SignGenDelete_OnCommand);
         }
 
         [Usage("SignGenDelete")]

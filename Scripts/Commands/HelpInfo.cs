@@ -19,7 +19,7 @@ namespace Server.Commands
         [CallPriority(100)]
         public static void Initialize()
         {
-            CommandSystem.Register("HelpInfo", AccessLevel.Player, new CommandEventHandler(HelpInfo_OnCommand));
+            CommandSystem.Register("HelpInfo", AccessLevel.Player, HelpInfo_OnCommand);
 
             FillTable();
         }

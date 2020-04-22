@@ -181,10 +181,10 @@ namespace Server.Items
         // Called by RunUO
         public static void Initialize()
         {
-            EventSink.OpenDoorMacroUsed += new OpenDoorMacroEventHandler(EventSink_OpenDoorMacroUsed);
+            EventSink.OpenDoorMacroUsed += EventSink_OpenDoorMacroUsed;
 
-            CommandSystem.Register("Link", AccessLevel.GameMaster, new CommandEventHandler(Link_OnCommand));
-            CommandSystem.Register("ChainLink", AccessLevel.GameMaster, new CommandEventHandler(ChainLink_OnCommand));
+            CommandSystem.Register("Link", AccessLevel.GameMaster, Link_OnCommand);
+            CommandSystem.Register("ChainLink", AccessLevel.GameMaster, ChainLink_OnCommand);
         }
 
         public static Point3D GetOffset(DoorFacing facing)
@@ -379,7 +379,7 @@ namespace Server.Items
         [Description("Links two targeted doors together.")]
         private static void Link_OnCommand(CommandEventArgs e)
         {
-            e.Mobile.BeginTarget(-1, false, TargetFlags.None, new TargetCallback(Link_OnFirstTarget));
+            e.Mobile.BeginTarget(-1, false, TargetFlags.None, Link_OnFirstTarget);
             e.Mobile.SendMessage("Target the first door to link.");
         }
 
@@ -389,7 +389,7 @@ namespace Server.Items
 
             if (door == null)
             {
-                from.BeginTarget(-1, false, TargetFlags.None, new TargetCallback(Link_OnFirstTarget));
+                from.BeginTarget(-1, false, TargetFlags.None, Link_OnFirstTarget);
                 from.SendMessage("That is not a door. Try again.");
             }
             else

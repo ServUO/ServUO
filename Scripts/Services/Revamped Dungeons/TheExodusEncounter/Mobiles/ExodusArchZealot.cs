@@ -35,24 +35,21 @@ namespace Server.Mobiles
             AddItem(beard);
         }
 
+        public ExodusArchZealot(Serial serial) : base(serial)
+        {
+        }
+
         public override bool OnDragDrop(Mobile from, Item dropped)
         {
-            if (from.InRange(Location, 2))
+            if (from.InRange(Location, 2) && from.Race == Race.Gargoyle && dropped.GetType() == typeof(ExodusSacrificalDagger))
             {
-                if (from.Race == Race.Gargoyle && dropped.GetType() == typeof(ExodusSacrificalDagger))
-                {
-                    dropped.Delete();
-                    from.AddToBackpack(new ExodusSacrificalGargishDagger());
+                dropped.Delete();
+                from.AddToBackpack(new ExodusSacrificalGargishDagger());
 
-                    return true;
-                }
+                return true;
             }
 
             return base.OnDragDrop(from, dropped);
-        }
-
-        public ExodusArchZealot(Serial serial) : base(serial)
-        {
         }
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
@@ -76,12 +73,10 @@ namespace Server.Mobiles
         public class ExodusArchZealotGumpEntry : ContextMenuEntry
         {
             private readonly Mobile m_Mobile;
-            private readonly Mobile m_Giver;
 
             public ExodusArchZealotGumpEntry(Mobile from, Mobile giver) : base(6146, 3)
             {
                 m_Mobile = from;
-                m_Giver = giver;
             }
 
             public override void OnClick()
@@ -106,7 +101,7 @@ namespace Server.Mobiles
 
         public static void Initialize()
         {
-            CommandSystem.Register("ExodusArchZealotGump", AccessLevel.GameMaster, new CommandEventHandler(ExodusArchZealotGump_OnCommand));
+            CommandSystem.Register("ExodusArchZealotGump", AccessLevel.GameMaster, ExodusArchZealotGump_OnCommand);
         }
 
         private static void ExodusArchZealotGump_OnCommand(CommandEventArgs e)
@@ -140,7 +135,7 @@ namespace Server.Mobiles
             AddImage(136, 84, 96);
 
             AddPage(1);
-            AddHtmlLocalized(107, 110, 300, 230, 1153671, White, false, true); // Greetings Traveler *sly grin* Can you feel it? Can you feel the awesome power that emanates from this place...surely Lord Exodus will join us again soon, why – that’s why you’re here isn’t it? To perform the Ritual?
+            AddHtmlLocalized(107, 110, 300, 230, 1153671, White, false, true); // Greetings Traveler *sly grin* Can you feel it? Can you feel the awesome power that emanates from this place...surely Lord Exodus will join us again soon, why â€“ thatâ€™s why youâ€™re here isnâ€™t it? To perform the Ritual?
 
             AddHtmlLocalized(155, 260, 250, 24, 1153672, White, false, false);
             AddButton(125, 260, 0x26B0, 0x26B1, 0, GumpButtonType.Page, 2);//Ritual?
@@ -267,7 +262,7 @@ namespace Server.Mobiles
 
             //// START PAGE 8 WARRIOR
             AddPage(8);
-            AddHtmlLocalized(107, 110, 300, 230, 1153685, White, false, true); // Deep within Exodus Dungeon, minions of Lord Exodus battle fiercely against Lord Dupre’s men...slay either one to collect the Keys.
+            AddHtmlLocalized(107, 110, 300, 230, 1153685, White, false, true); // Deep within Exodus Dungeon, minions of Lord Exodus battle fiercely against Lord Dupreâ€™s men...slay either one to collect the Keys.
 
             AddHtmlLocalized(155, 340, 250, 24, 1153686, White, false, false);
             AddButton(125, 340, 0x26B0, 0x26B1, 0, GumpButtonType.Page, 9);//The Rogue?
@@ -298,9 +293,9 @@ namespace Server.Mobiles
 
         }
 
-        public override void OnResponse(NetState state, RelayInfo info) //Function for GumpButtonType.Reply Buttons 
+        public override void OnResponse(NetState sender, RelayInfo info) //Function for GumpButtonType.Reply Buttons 
         {
-            Mobile from = state.Mobile;
+            Mobile from = sender.Mobile;
 
             switch (info.ButtonID)
             {

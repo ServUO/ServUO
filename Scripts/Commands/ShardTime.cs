@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Server.Commands
 {
@@ -6,7 +6,7 @@ namespace Server.Commands
     {
         public static void Initialize()
         {
-            CommandSystem.Register("Time", AccessLevel.Player, new CommandEventHandler(Time_OnCommand));
+            CommandSystem.Register("Time", AccessLevel.Player, Time_OnCommand);
         }
 
         [Usage("Time")]

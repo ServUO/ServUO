@@ -1,4 +1,4 @@
-﻿using Server.Mobiles;
+using Server.Mobiles;
 using System;
 using System.Collections.Generic;
 
@@ -87,7 +87,7 @@ namespace Server.Engines.InstancedPeerless
         {
             State = InstanceState.Reserved;
 
-            Timer.DelayCall(TimeSpan.FromMinutes(1.0), new TimerCallback(StartFight));
+            Timer.DelayCall(TimeSpan.FromMinutes(1.0), StartFight);
         }
 
         private void StartFight()
@@ -101,7 +101,7 @@ namespace Server.Engines.InstancedPeerless
             m_SliceTimer = new SliceTimer(this);
             m_SliceTimer.Start();
 
-            m_KickTimer = Timer.DelayCall(TimeSpan.FromHours(2.0), new TimerCallback(Kick));
+            m_KickTimer = Timer.DelayCall(TimeSpan.FromHours(2.0), Kick);
         }
 
         public void OnSlice()
@@ -117,7 +117,7 @@ namespace Server.Engines.InstancedPeerless
                 if (m_KickTimer != null)
                     m_KickTimer.Stop();
 
-                m_KickTimer = Timer.DelayCall(TimeSpan.FromMinutes(15.0), new TimerCallback(Kick));
+                m_KickTimer = Timer.DelayCall(TimeSpan.FromMinutes(15.0), Kick);
 
                 State = InstanceState.Looting;
             }

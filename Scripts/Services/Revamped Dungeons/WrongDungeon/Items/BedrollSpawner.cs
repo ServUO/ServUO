@@ -160,7 +160,7 @@ namespace Server.Items
             Bedrolls = new List<WrongBedrollBase>();
             MysteriousTunnels = new List<MysteriousTunnel>();
             Timer.DelayCall(TimeSpan.FromSeconds(10), CheckRespawn);
-            m_Timer = Timer.DelayCall(RestartDelay, RestartDelay, new TimerCallback(CheckRespawn));
+            m_Timer = Timer.DelayCall(RestartDelay, RestartDelay, CheckRespawn);
             m_Timer.Start();
 
             if (Instances == null)
@@ -293,7 +293,7 @@ namespace Server.Items
             if (next < DateTime.UtcNow)
                 next = DateTime.UtcNow;
 
-            m_Timer = Timer.DelayCall(next - DateTime.UtcNow, RestartDelay, new TimerCallback(CheckRespawn));
+            m_Timer = Timer.DelayCall(next - DateTime.UtcNow, RestartDelay, CheckRespawn);
             m_Timer.Start();
 
             Bedrolls = new List<WrongBedrollBase>();

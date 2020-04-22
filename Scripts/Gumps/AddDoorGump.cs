@@ -120,7 +120,7 @@ namespace Server.Gumps
 
         public static void Initialize()
         {
-            CommandSystem.Register("AddDoor", AccessLevel.GameMaster, new CommandEventHandler(AddDoor_OnCommand));
+            CommandSystem.Register("AddDoor", AccessLevel.GameMaster, AddDoor_OnCommand);
         }
 
         [Usage("AddDoor")]

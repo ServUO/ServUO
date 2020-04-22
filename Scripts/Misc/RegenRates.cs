@@ -24,9 +24,9 @@ namespace Server.Misc
             Mobile.DefaultStamRate = TimeSpan.FromSeconds(7.0);
             Mobile.DefaultManaRate = TimeSpan.FromSeconds(7.0);
 
-            Mobile.ManaRegenRateHandler = new RegenRateHandler(Mobile_ManaRegenRate);
-            Mobile.StamRegenRateHandler = new RegenRateHandler(Mobile_StamRegenRate);
-            Mobile.HitsRegenRateHandler = new RegenRateHandler(Mobile_HitsRegenRate);
+            Mobile.ManaRegenRateHandler = Mobile_ManaRegenRate;
+            Mobile.StamRegenRateHandler = Mobile_StamRegenRate;
+            Mobile.HitsRegenRateHandler = Mobile_HitsRegenRate;
         }
 
         public static double GetArmorOffset(Mobile from)

@@ -150,6 +150,13 @@ namespace Server.Engines.HuntsmasterChallenge
         {
         }
 
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            list.Add(1155725); // Double Click to Join Huntmaster's Challenge
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

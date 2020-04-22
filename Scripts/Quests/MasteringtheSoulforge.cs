@@ -5,7 +5,6 @@ namespace Server.Engines.Quests
     public class MasteringtheSoulforge : BaseQuest
     {
         public MasteringtheSoulforge()
-            : base()
         {
             AddObjective(new ObtainObjective(typeof(RelicFragment), "Relic Fragments", 50, 0x2DB3));
 

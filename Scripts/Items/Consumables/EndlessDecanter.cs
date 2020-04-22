@@ -1,4 +1,4 @@
-﻿using Server.ContextMenus;
+using Server.ContextMenus;
 using Server.Mobiles;
 using Server.Targeting;
 using System;
@@ -163,7 +163,7 @@ namespace Server.Items
 
                 m_From.SendLocalizedMessage(1115892);   // Target a water trough you wish to link.
 
-                m_From.BeginTarget(10, false, TargetFlags.None, new TargetCallback(Link_OnTarget));
+                m_From.BeginTarget(10, false, TargetFlags.None, Link_OnTarget);
             }
 
             private void Link_OnTarget(Mobile from, object targ)

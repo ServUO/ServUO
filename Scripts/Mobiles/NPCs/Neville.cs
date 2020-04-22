@@ -90,11 +90,10 @@ namespace Server.Engines.Quests
             if (Instances != null && Instances.Contains(this))
                 Instances.Remove(this);
 
-            Timer.DelayCall(TimeSpan.FromSeconds(3), new TimerCallback(
-                delegate
-                {
-                    Spawn();
-                }));
+            Timer.DelayCall(TimeSpan.FromSeconds(3), delegate
+            {
+                Spawn();
+            });
 
             base.OnDelete();
         }

@@ -137,7 +137,7 @@ namespace Server.Mobiles
             Say(true, "Beware, mortals!  You have provoked my wrath!");
             FixedParticles(0x376A, 10, 10, 9537, 33, 0, EffectLayer.Waist);
 
-            Timer.DelayCall(TimeSpan.FromSeconds(5.0), new TimerCallback(DoAreaLeech_Finish));
+            Timer.DelayCall(TimeSpan.FromSeconds(5.0), DoAreaLeech_Finish);
         }
 
         private void DoAreaLeech_Finish()

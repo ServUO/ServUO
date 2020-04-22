@@ -98,7 +98,7 @@ namespace Server.Items
 
         public static void Initialize()
         {
-            PacketHandlers.Register(0x71, 0, true, new OnPacketReceive(BBClientRequest));
+            PacketHandlers.Register(0x71, 0, true, BBClientRequest);
         }
 
         public static void BBClientRequest(NetState state, PacketReader pvSrc)

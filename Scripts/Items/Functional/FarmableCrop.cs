@@ -48,7 +48,7 @@ namespace Server.Items
 
             Unlink();
 
-            Timer.DelayCall(TimeSpan.FromMinutes(5.0), new TimerCallback(Delete));
+            Timer.DelayCall(TimeSpan.FromMinutes(5.0), Delete);
         }
 
         public void Unlink()

@@ -28,7 +28,7 @@ namespace Server.Items
             m_Entries = new ArrayList();
 
             m_Created = DateTime.UtcNow;
-            m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0), new TimerCallback(OnTick));
+            m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0), OnTick);
         }
 
         public Campfire(Serial serial)

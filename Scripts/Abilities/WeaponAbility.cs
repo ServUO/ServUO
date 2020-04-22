@@ -403,7 +403,7 @@ namespace Server.Items
 
         public static void Initialize()
         {
-            EventSink.SetAbility += new SetAbilityEventHandler(EventSink_SetAbility);
+            EventSink.SetAbility += EventSink_SetAbility;
         }
 
         private static void EventSink_SetAbility(SetAbilityEventArgs e)

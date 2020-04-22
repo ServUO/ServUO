@@ -43,7 +43,7 @@ namespace Server.Items
             }
             else
             {
-                from.BeginTarget(2, false, Targeting.TargetFlags.None, new TargetCallback(OnTargetGears));
+                from.BeginTarget(2, false, Targeting.TargetFlags.None, OnTargetGears);
                 from.SendMessage("Select the gears you wish to use.");
             }
         }

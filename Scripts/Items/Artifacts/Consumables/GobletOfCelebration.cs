@@ -31,7 +31,7 @@ namespace Server.Items
                     {
                         m_NextFill = DateTime.Now + TimeSpan.FromDays(1.0);
 
-                        m_FillTimer = Timer.DelayCall(TimeSpan.FromDays(1.0), new TimerCallback(delegate { Full = true; }));
+                        m_FillTimer = Timer.DelayCall(TimeSpan.FromDays(1.0), delegate { Full = true; });
                     }
                 }
             }
@@ -113,7 +113,7 @@ namespace Server.Items
             {
                 m_NextFill = reader.ReadDateTime();
 
-                m_FillTimer = Timer.DelayCall(m_NextFill - DateTime.Now, new TimerCallback(delegate { Full = true; }));
+                m_FillTimer = Timer.DelayCall(m_NextFill - DateTime.Now, delegate { Full = true; });
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿using Server.Mobiles;
+using Server.Mobiles;
 using System;
 using System.Collections.Generic;
 
@@ -53,7 +53,7 @@ namespace Server.Engines.TombOfKings
 
             MoveToWorld(loc, map);
             Respawn();
-            m_RespawnTimer = Timer.DelayCall(TimeSpan.FromMinutes(15.0), TimeSpan.FromMinutes(15.0), new TimerCallback(CheckSpawn));
+            m_RespawnTimer = Timer.DelayCall(TimeSpan.FromMinutes(15.0), TimeSpan.FromMinutes(15.0), CheckSpawn);
         }
 
         public override void AddNameProperties(ObjectPropertyList list)
@@ -143,7 +143,7 @@ namespace Server.Engines.TombOfKings
                     m_Creatures.Add(m);
             }
 
-            m_RespawnTimer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromMinutes(15.0), new TimerCallback(CheckSpawn));
+            m_RespawnTimer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromMinutes(15.0), CheckSpawn);
         }
     }
 }

@@ -101,7 +101,7 @@ namespace Server.Mobiles
             PlaySound(0x511);
             FixedParticles(0x376A, 1, 14, 5045, EffectLayer.Waist);
 
-            Timer.DelayCall(TimeSpan.FromSeconds(60), new TimerCallback(EndMorph));
+            Timer.DelayCall(TimeSpan.FromSeconds(60), EndMorph);
         }
 
         public void EndMorph()

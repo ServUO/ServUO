@@ -173,7 +173,7 @@ namespace Server.Items
             if (m_Timer != null)
                 return;
 
-            m_Timer = Timer.DelayCall(TimeSpan.FromHours(1.0), TimeSpan.FromHours(1.0), new TimerCallback(OnTick));
+            m_Timer = Timer.DelayCall(TimeSpan.FromHours(1.0), TimeSpan.FromHours(1.0), OnTick);
         }
 
         public override void OnDoubleClick(Mobile from)

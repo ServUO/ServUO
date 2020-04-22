@@ -6,7 +6,7 @@ namespace Server.Commands
     {
         public static void Initialize()
         {
-            CommandSystem.Register("TimeStamp", AccessLevel.Player, new CommandEventHandler(CheckTime_OnCommand));
+            CommandSystem.Register("TimeStamp", AccessLevel.Player, CheckTime_OnCommand);
         }
 
         [Usage("TimeStamp")]

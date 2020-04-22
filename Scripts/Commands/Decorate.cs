@@ -15,7 +15,7 @@ namespace Server.Commands
 
         public static void Initialize()
         {
-            CommandSystem.Register("Decorate", AccessLevel.Administrator, new CommandEventHandler(Decorate_OnCommand));
+            CommandSystem.Register("Decorate", AccessLevel.Administrator, Decorate_OnCommand);
         }
 
         [Usage("Decorate")]
@@ -159,10 +159,6 @@ namespace Server.Commands
 
                 return 0;
             }
-        }
-
-        public DecorationList()
-        {
         }
 
         private static readonly Type typeofStatic = typeof(Static);

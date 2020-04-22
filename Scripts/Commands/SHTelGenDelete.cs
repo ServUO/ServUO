@@ -5,13 +5,9 @@ namespace Server.Commands
 {
     public class SHGenTeleporterDelete
     {
-        public SHGenTeleporterDelete()
-        {
-        }
-
         public static void Initialize()
         {
-            CommandSystem.Register("SHTelGenDelete", AccessLevel.Administrator, new CommandEventHandler(SHTelGenDelete_OnCommand));
+            CommandSystem.Register("SHTelGenDelete", AccessLevel.Administrator, SHTelGenDelete_OnCommand);
         }
 
         [Usage("SHTelGenDelete")]

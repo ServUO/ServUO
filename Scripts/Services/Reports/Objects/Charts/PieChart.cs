@@ -3,7 +3,7 @@ namespace Server.Engines.Reports
     public class PieChart : Chart
     {
         #region Type Identification
-        public static readonly PersistableType ThisTypeID = new PersistableType("pc", new ConstructCallback(Construct));
+        public static readonly PersistableType ThisTypeID = new PersistableType("pc", Construct);
 
         private static PersistableObject Construct()
         {

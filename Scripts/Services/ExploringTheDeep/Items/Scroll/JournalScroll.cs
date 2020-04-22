@@ -1,4 +1,4 @@
-﻿using Server.Commands;
+using Server.Commands;
 using Server.Gumps;
 using Server.Network;
 
@@ -44,7 +44,7 @@ namespace Server.Items
     {
         public static void Initialize()
         {
-            CommandSystem.Register("JournalLetter", AccessLevel.GameMaster, new CommandEventHandler(JournalGump_OnCommand));
+            CommandSystem.Register("JournalLetter", AccessLevel.GameMaster, JournalGump_OnCommand);
         }
 
         private static void JournalGump_OnCommand(CommandEventArgs e)

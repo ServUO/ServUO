@@ -159,7 +159,7 @@ namespace Server.Items
                 if (Utility.InRange(m.Location, Location, 1) && !Utility.InRange(oldLocation, Location, 1) && m.Player && !(m.IsStaff() || m.Hidden))
                 {
                     if (m_Timer == null || !m_Timer.Running)
-                        m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(2), new TimerCallback(HeedWarning));
+                        m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(2), HeedWarning);
                 }
             }
 

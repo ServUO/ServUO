@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Server.Items
@@ -34,7 +34,7 @@ namespace Server.Items
 
             MoveToWorld(location, map);
 
-            m_SoundTimer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(Utility.RandomMinMax(5, 50)), new TimerCallback(PlaySound));
+            m_SoundTimer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(Utility.RandomMinMax(5, 50)), PlaySound);
             m_SoundTimer.Start();
         }
 
@@ -59,7 +59,7 @@ namespace Server.Items
             if (m.InRange(this, 1) && !m_DamageTable.ContainsKey(m))
             {
                 // Should start the timer
-                m_DamageTable[m] = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(5.0), new TimerStateCallback<Mobile>(Damage), m);
+                m_DamageTable[m] = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(5.0), Damage, m);
             }
         }
 
@@ -102,7 +102,7 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            m_SoundTimer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(5.0), new TimerCallback(PlaySound));
+            m_SoundTimer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(5.0), PlaySound);
             m_SoundTimer.Start();
         }
     }

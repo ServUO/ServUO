@@ -65,10 +65,10 @@ namespace Server.Mobiles
         protected TimeSpan GetDelay(Spell spell)
         {
             double del = ScaleBySkill(3.0, spell != null ? spell.CastSkill : CastSkill);
-            double min = 6.0 - (del * 0.75);
-            double max = 6.0 - (del * 1.25);
+            double min = 6.0 - del * 0.75;
+            double max = 6.0 - del * 1.25;
 
-            return TimeSpan.FromSeconds(min + ((max - min) * Utility.RandomDouble()));
+            return TimeSpan.FromSeconds(min + (max - min) * Utility.RandomDouble());
         }
 
         protected virtual DateTime GetCastDelay(Spell spell)
@@ -142,7 +142,7 @@ namespace Server.Mobiles
             if (m_Mobile.Target != null)
                 ProcessTarget();
 
-            if (c == null || c.Deleted || !c.Alive || (c is Mobile && ((Mobile)c).IsDeadBondedPet) || !m_Mobile.CanSee(c) ||
+            if (c == null || c.Deleted || !c.Alive || c is Mobile && ((Mobile)c).IsDeadBondedPet || !m_Mobile.CanSee(c) ||
                 !m_Mobile.CanBeHarmful(c, false) || c.Map != m_Mobile.Map)
             {
                 // Our combatant is deleted, dead, hidden, or we cannot hurt them
@@ -297,7 +297,7 @@ namespace Server.Mobiles
         {
             Mobile c = m_Mobile.Combatant as Mobile;
 
-            if ((m_Mobile.Mana > 20 || m_Mobile.Mana == m_Mobile.ManaMax) && m_Mobile.Hits > (m_Mobile.HitsMax / 2))
+            if ((m_Mobile.Mana > 20 || m_Mobile.Mana == m_Mobile.ManaMax) && m_Mobile.Hits > m_Mobile.HitsMax / 2)
             {
                 // If I have a target, go back and fight them
                 if (c != null && m_Mobile.GetDistanceToSqrt(c) <= m_Mobile.RangePerception * 2)
@@ -382,7 +382,7 @@ namespace Server.Mobiles
 
         public void Run(Direction d)
         {
-            if ((m_Mobile.Spell != null && m_Mobile.Spell.IsCasting) || m_Mobile.Paralyzed || m_Mobile.Frozen ||
+            if (m_Mobile.Spell != null && m_Mobile.Spell.IsCasting || m_Mobile.Paralyzed || m_Mobile.Frozen ||
                 m_Mobile.DisallowAllMoves)
                 return;
 
@@ -476,12 +476,12 @@ namespace Server.Mobiles
                 return null;
             }
 
-            if (m_Mobile.Hits == m_Mobile.HitsMax || (!SmartAI && ScaleByCastSkill(HealChance) < Utility.RandomDouble()))
+            if (m_Mobile.Hits == m_Mobile.HitsMax || !SmartAI && ScaleByCastSkill(HealChance) < Utility.RandomDouble())
             {
                 return null;
             }
 
-            if (Utility.Random(0, 4 + (m_Mobile.Hits == 0 ? m_Mobile.HitsMax : (m_Mobile.HitsMax / m_Mobile.Hits))) < 3)
+            if (Utility.Random(0, 4 + (m_Mobile.Hits == 0 ? m_Mobile.HitsMax : m_Mobile.HitsMax / m_Mobile.Hits)) < 3)
             {
                 return null;
             }
@@ -610,7 +610,7 @@ namespace Server.Mobiles
                     {
                         double prio = m_Mobile.GetDistanceToSqrt(m);
 
-                        if (!activeOnly && (inactive == null || prio < inactPrio))
+                        if (inactive == null || prio < inactPrio)
                         {
                             inactive = m;
                             inactPrio = prio;
@@ -634,8 +634,8 @@ namespace Server.Mobiles
 
         public bool CanDispel(Mobile m)
         {
-            return (m is BaseCreature && ((BaseCreature)m).Summoned && m_Mobile.CanBeHarmful(m, false) &&
-                    !((BaseCreature)m).IsAnimatedDead);
+            return m is BaseCreature && ((BaseCreature)m).Summoned && m_Mobile.CanBeHarmful(m, false) &&
+                   !((BaseCreature)m).IsAnimatedDead;
         }
 
         public Spell CheckCastDispelField()
@@ -758,7 +758,7 @@ namespace Server.Mobiles
                 if (spell != null)
                     return spell;
 
-                if (spell == null && m_Mobile.RawInt >= 80)
+                if (m_Mobile.RawInt >= 80)
                     spell = CheckCastDispelField();
 
                 switch (Utility.Random(15))
@@ -924,8 +924,6 @@ namespace Server.Mobiles
             if (circle > 8)
                 circle = 8;
 
-            double skill = (100.0 / 7.0) * circle;
-
             return m_Mobile.Mana >= m_ManaTable[circle - 1];
         }
 
@@ -1041,7 +1039,7 @@ namespace Server.Mobiles
             if (Utility.RandomBool() && CheckCanCastMagery(7))
                 return new ManaVampireSpell(m_Mobile, null);
 
-            if ((CheckCanCastMagery(4)))
+            if (CheckCanCastMagery(4))
                 return new ManaDrainSpell(m_Mobile, null);
 
             return null;
@@ -1091,7 +1089,7 @@ namespace Server.Mobiles
         {
             Spell spell = null;
 
-            if (m_Mobile.Hits < (m_Mobile.HitsMax - 50))
+            if (m_Mobile.Hits < m_Mobile.HitsMax - 50)
             {
                 if (CheckCanCastMagery(4))
                 {
@@ -1102,7 +1100,7 @@ namespace Server.Mobiles
                     spell = new HealSpell(m_Mobile, null);
                 }
             }
-            else if (m_Mobile.Hits < (m_Mobile.HitsMax - 10))
+            else if (m_Mobile.Hits < m_Mobile.HitsMax - 10)
             {
                 spell = new HealSpell(m_Mobile, null);
             }
@@ -1278,15 +1276,14 @@ namespace Server.Mobiles
 
             if (UsesMagery)
             {
-                bool isDispel = (targ is DispelSpell.InternalTarget || targ is MassDispelSpell.InternalTarget);
-                bool isParalyze = (targ is ParalyzeSpell.InternalTarget);
-                bool isTeleport = (targ is TeleportSpell.InternalTarget);
-                bool isSummon = (targ is EnergyVortexSpell.InternalTarget || targ is BladeSpiritsSpell.InternalTarget ||
-                                targ is NatureFurySpell.InternalTarget);
-                bool isField = (targ is FireFieldSpell.InternalTarget || targ is PoisonFieldSpell.InternalTarget ||
-                               targ is ParalyzeFieldSpell.InternalTarget);
-                bool isAnimate = (targ is AnimateDeadSpell.InternalTarget);
-                bool isDispelField = (targ is DispelFieldSpell.InternalTarget);
+                bool isDispel = targ is DispelSpell.InternalTarget || targ is MassDispelSpell.InternalTarget;
+                bool isTeleport = targ is TeleportSpell.InternalTarget;
+                bool isSummon = targ is EnergyVortexSpell.InternalTarget || targ is BladeSpiritsSpell.InternalTarget ||
+                                targ is NatureFurySpell.InternalTarget;
+                bool isField = targ is FireFieldSpell.InternalTarget || targ is PoisonFieldSpell.InternalTarget ||
+                               targ is ParalyzeFieldSpell.InternalTarget;
+                bool isAnimate = targ is AnimateDeadSpell.InternalTarget;
+                bool isDispelField = targ is DispelFieldSpell.InternalTarget;
                 bool teleportAway = false;
 
                 if (isTeleport && m_Mobile.CanSwim)
@@ -1355,7 +1352,7 @@ namespace Server.Mobiles
                     int y = m_Mobile.Y;
                     int z = m_Mobile.Z;
 
-                    if (toTarget == null || m_Mobile.InRange(toTarget.Location, 3))
+                    if (m_Mobile.InRange(toTarget.Location, 3))
                     {
                         targ.Invoke(m_Mobile, toTarget);
                         return true;
@@ -1548,7 +1545,7 @@ namespace Server.Mobiles
                     BaseCreature owner = c.Owner as BaseCreature;
 
                     if ((c.ItemID < 0xECA || c.ItemID > 0xED5) && m_Mobile.InLOS(c) && !c.Channeled && type != typeof(PlayerMobile) &&
-                        type != null && (owner == null || (!owner.Summoned && !owner.IsBonded)))
+                        type != null && (owner == null || !owner.Summoned && !owner.IsBonded))
                     {
                         eable.Free();
                         return item;

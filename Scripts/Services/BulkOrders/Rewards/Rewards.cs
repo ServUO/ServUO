@@ -348,17 +348,17 @@ namespace Server.Engines.BulkOrders
         }
 
         #region Constructors
-        private static readonly ConstructCallback SmithHammer = new ConstructCallback(CreateSmithHammer);
-        private static readonly ConstructCallback SturdyShovel = new ConstructCallback(CreateSturdyShovel);
-        private static readonly ConstructCallback SturdyPickaxe = new ConstructCallback(CreateSturdyPickaxe);
-        private static readonly ConstructCallback MiningGloves = new ConstructCallback(CreateMiningGloves);
-        private static readonly ConstructCallback GargoylesPickaxe = new ConstructCallback(CreateGargoylesPickaxe);
-        private static readonly ConstructCallback ProspectorsTool = new ConstructCallback(CreateProspectorsTool);
-        private static readonly ConstructCallback PowderOfTemperament = new ConstructCallback(CreatePowderOfTemperament);
-        private static readonly ConstructCallback RunicHammer = new ConstructCallback(CreateRunicHammer);
-        private static readonly ConstructCallback PowerScroll = new ConstructCallback(CreatePowerScroll);
-        private static readonly ConstructCallback ColoredAnvil = new ConstructCallback(CreateColoredAnvil);
-        private static readonly ConstructCallback AncientHammer = new ConstructCallback(CreateAncientHammer);
+        private static readonly ConstructCallback SmithHammer = CreateSmithHammer;
+        private static readonly ConstructCallback SturdyShovel = CreateSturdyShovel;
+        private static readonly ConstructCallback SturdyPickaxe = CreateSturdyPickaxe;
+        private static readonly ConstructCallback MiningGloves = CreateMiningGloves;
+        private static readonly ConstructCallback GargoylesPickaxe = CreateGargoylesPickaxe;
+        private static readonly ConstructCallback ProspectorsTool = CreateProspectorsTool;
+        private static readonly ConstructCallback PowderOfTemperament = CreatePowderOfTemperament;
+        private static readonly ConstructCallback RunicHammer = CreateRunicHammer;
+        private static readonly ConstructCallback PowerScroll = CreatePowerScroll;
+        private static readonly ConstructCallback ColoredAnvil = CreateColoredAnvil;
+        private static readonly ConstructCallback AncientHammer = CreateAncientHammer;
 
         private static Item CreateSmithHammer(int type)
         {
@@ -677,16 +677,16 @@ namespace Server.Engines.BulkOrders
         }
 
         #region Constructors
-        private static readonly ConstructCallback SewingKit = new ConstructCallback(CreateSewingKit);
-        private static readonly ConstructCallback Cloth = new ConstructCallback(CreateCloth);
-        private static readonly ConstructCallback Sandals = new ConstructCallback(CreateSandals);
-        private static readonly ConstructCallback StretchedHide = new ConstructCallback(CreateStretchedHide);
-        private static readonly ConstructCallback RunicKit = new ConstructCallback(CreateRunicKit);
-        private static readonly ConstructCallback Tapestry = new ConstructCallback(CreateTapestry);
-        private static readonly ConstructCallback PowerScroll = new ConstructCallback(CreatePowerScroll);
-        private static readonly ConstructCallback BearRug = new ConstructCallback(CreateBearRug);
-        private static readonly ConstructCallback ClothingBlessDeed = new ConstructCallback(CreateCBD);
-        private static readonly ConstructCallback CraftsmanTalisman = new ConstructCallback(CreateCraftsmanTalisman);
+        private static readonly ConstructCallback SewingKit = CreateSewingKit;
+        private static readonly ConstructCallback Cloth = CreateCloth;
+        private static readonly ConstructCallback Sandals = CreateSandals;
+        private static readonly ConstructCallback StretchedHide = CreateStretchedHide;
+        private static readonly ConstructCallback RunicKit = CreateRunicKit;
+        private static readonly ConstructCallback Tapestry = CreateTapestry;
+        private static readonly ConstructCallback PowerScroll = CreatePowerScroll;
+        private static readonly ConstructCallback BearRug = CreateBearRug;
+        private static readonly ConstructCallback ClothingBlessDeed = CreateCBD;
+        private static readonly ConstructCallback CraftsmanTalisman = CreateCraftsmanTalisman;
 
         private static Item CreateSewingKit(int type)
         {

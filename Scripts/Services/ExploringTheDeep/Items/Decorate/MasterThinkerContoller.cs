@@ -1,4 +1,4 @@
-﻿using Server.Commands;
+using Server.Commands;
 using Server.Engines.Quests;
 using Server.Mobiles;
 using Server.Network;
@@ -18,7 +18,7 @@ namespace Server.Items
     {
         public static void Initialize()
         {
-            CommandSystem.Register("GenMasterThinker", AccessLevel.Developer, new CommandEventHandler(GenMasterThinker_Command));
+            CommandSystem.Register("GenMasterThinker", AccessLevel.Developer, GenMasterThinker_Command);
         }
 
         [Usage("GenMasterThinker")]

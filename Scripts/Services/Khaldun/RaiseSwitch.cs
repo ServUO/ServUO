@@ -216,7 +216,7 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            Timer.DelayCall(TimeSpan.Zero, new TimerCallback(Refresh));
+            Timer.DelayCall(TimeSpan.Zero, Refresh);
         }
 
         protected override void Flip()

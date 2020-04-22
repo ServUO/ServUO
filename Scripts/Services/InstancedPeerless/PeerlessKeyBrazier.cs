@@ -1,4 +1,4 @@
-﻿using Server.Items;
+using Server.Items;
 using Server.Targeting;
 
 namespace Server.Engines.InstancedPeerless
@@ -47,7 +47,7 @@ namespace Server.Engines.InstancedPeerless
             else
             {
                 from.SendAsciiMessage("What would you like to sacrifice?");
-                from.BeginTarget(10, false, TargetFlags.None, new TargetCallback(Sacrifice_Callback));
+                from.BeginTarget(10, false, TargetFlags.None, Sacrifice_Callback);
             }
         }
 

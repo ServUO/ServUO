@@ -150,12 +150,12 @@ namespace Server.Mobiles
                     }
                     else if (ScaleBySkill(HealChance, SkillName.Magery) > Utility.RandomDouble())
                     {
-                        if (m_Mobile.Hits < (m_Mobile.HitsMax - 50))
+                        if (m_Mobile.Hits < m_Mobile.HitsMax - 50)
                         {
                             if (!new GreaterHealSpell(m_Mobile, null).Cast())
                                 new HealSpell(m_Mobile, null).Cast();
                         }
-                        else if (m_Mobile.Hits < (m_Mobile.HitsMax - 10))
+                        else if (m_Mobile.Hits < m_Mobile.HitsMax - 10)
                         {
                             new HealSpell(m_Mobile, null).Cast();
                         }

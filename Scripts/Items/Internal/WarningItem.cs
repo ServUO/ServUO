@@ -139,7 +139,7 @@ namespace Server.Items
                     list[i].Broadcast(triggerer);
             }
 
-            Timer.DelayCall(TimeSpan.Zero, new TimerCallback(InternalCallback));
+            Timer.DelayCall(TimeSpan.Zero, InternalCallback);
         }
 
         public override void OnMovement(Mobile m, Point3D oldLocation)

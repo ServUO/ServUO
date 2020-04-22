@@ -369,6 +369,7 @@ namespace Server
     }
 
     [CustomEnum(new[] { "North", "Right", "East", "Down", "South", "Left", "West", "Up" })]
+    [Flags]
     public enum Direction : byte
     {
         North = 0x0,
@@ -1131,7 +1132,7 @@ namespace Server
         public virtual void GetChildNameProperties(ObjectPropertyList list, Item item)
         { }
 
-        private void UpdateAggrExpire()
+        public void UpdateAggrExpire()
         {
             if (m_Deleted || (m_Aggressors.Count == 0 && m_Aggressed.Count == 0))
             {
@@ -12210,17 +12211,7 @@ namespace Server
         public virtual bool CanTarget => true;
         public virtual bool ClickTitle => true;
 
-        public virtual bool PropertyTitle => m_OldPropertyTitles ? ClickTitle : true;
-
-        private static bool m_DisableHiddenSelfClick = true;
-        private static bool m_AsciiClickMessage = true;
-        private static bool m_GuildClickMessage = true;
-        private static bool m_OldPropertyTitles;
-
-        public static bool DisableHiddenSelfClick { get { return m_DisableHiddenSelfClick; } set { m_DisableHiddenSelfClick = value; } }
-        public static bool AsciiClickMessage { get { return m_AsciiClickMessage; } set { m_AsciiClickMessage = value; } }
-        public static bool GuildClickMessage { get { return m_GuildClickMessage; } set { m_GuildClickMessage = value; } }
-        public static bool OldPropertyTitles { get { return m_OldPropertyTitles; } set { m_OldPropertyTitles = value; } }
+        public virtual bool PropertyTitle => true;
 
         public virtual bool ShowFameTitle => true;
         public virtual bool ShowAccessTitle => false;

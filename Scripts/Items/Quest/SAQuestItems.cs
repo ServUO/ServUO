@@ -586,8 +586,6 @@ namespace Server.Items
         public SearedFireAntGoo(int amount)
             : base(0x122E)
         {
-            Stackable = true;
-            Amount = amount;
             Hue = 1359;
         }
 
@@ -609,9 +607,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (ItemID != 0x122E)
-                ItemID = 0x122E;
         }
     }
 

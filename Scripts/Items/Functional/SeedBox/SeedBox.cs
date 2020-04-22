@@ -114,6 +114,13 @@ namespace Server.Engines.Plants
             }
         }
 
+        public override bool OnDragDropInto(Mobile from, Item item, Point3D p)
+        {
+            from.SendMessage("HACKER! GET YOUR STEAM OUT OF HERE!!!");
+
+            return false;
+        }
+
         public bool TryAddSeed(Mobile from, Seed seed, int index = -1)
         {
             if (!from.Backpack.CheckHold(from, seed, true, true) || seed.Amount <= 0)

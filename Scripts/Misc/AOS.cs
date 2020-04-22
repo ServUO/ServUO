@@ -101,7 +101,7 @@ namespace Server
                 return 0;
 
             if (m != null && phys == 0 && fire == 100 && cold == 0 && pois == 0 && nrgy == 0)
-                Mobiles.MeerMage.StopEffect(m, true);
+                MeerMage.StopEffect(m, true);
 
             if (m != null)
             {
@@ -272,7 +272,7 @@ namespace Server
 
             if (m.Hidden && type >= DamageType.Spell)
             {
-                int chance = (int)Math.Min(33, 100 - (Server.Spells.SkillMasteries.ShadowSpell.GetDifficultyFactor(m) * 100));
+                int chance = (int)Math.Min(33, 100 - (ShadowSpell.GetDifficultyFactor(m) * 100));
 
                 if (Utility.Random(100) < chance)
                 {
@@ -392,7 +392,7 @@ namespace Server
             {
                 if (context.Type == typeof(WraithFormSpell))
                 {
-                    int manaLeech = AOS.Scale(damageGiven, Math.Min(target.Mana, Math.Max(8, 5 + (int)(0.16 * from.Skills.SpiritSpeak.Value))));
+                    int manaLeech = Scale(damageGiven, Math.Min(target.Mana, Math.Max(8, 5 + (int)(0.16 * from.Skills.SpiritSpeak.Value))));
 
                     if (manaLeech != 0)
                     {
@@ -406,12 +406,12 @@ namespace Server
                 {
                     if (target is BaseCreature && ((BaseCreature)target).TaintedLifeAura)
                     {
-                        AOS.Damage(from, target, AOS.Scale(damageGiven, 20), false, 0, 0, 0, 0, 0, 0, 100, false, false, false);
+                        Damage(from, target, Scale(damageGiven, 20), false, 0, 0, 0, 0, 0, 0, 100, false, false, false);
                         from.SendLocalizedMessage(1116778); //The tainted life force energy damages you as your body tries to absorb it.
                     }
                     else
                     {
-                        from.Hits += AOS.Scale(damageGiven, 20);
+                        from.Hits += Scale(damageGiven, 20);
                         from.PlaySound(0x44D);
                     }
                 }
@@ -446,8 +446,8 @@ namespace Server
                 case 19: return Math.Min(50, AosAttributes.GetValue(from, AosAttribute.EnhancePotions)); // enhance pots
 
                 case 20: return AosAttributes.GetValue(from, AosAttribute.BonusStr) + from.GetStatOffset(StatType.Str); // str inc
-                case 21: return AosAttributes.GetValue(from, AosAttribute.BonusDex) + from.GetStatOffset(StatType.Dex); ; // dex inc
-                case 22: return AosAttributes.GetValue(from, AosAttribute.BonusInt) + from.GetStatOffset(StatType.Int); ; // int inc
+                case 21: return AosAttributes.GetValue(from, AosAttribute.BonusDex) + from.GetStatOffset(StatType.Dex); // dex inc
+                case 22: return AosAttributes.GetValue(from, AosAttribute.BonusInt) + from.GetStatOffset(StatType.Int); // int inc
 
                 case 23: return 0; // hits neg
                 case 24: return 0; // stam neg
@@ -579,11 +579,11 @@ namespace Server
                 int discordanceEffect = 0;
 
                 // Defense Mastery gives a -50%/-80% malus to damage.
-                if (Server.Items.DefenseMastery.GetMalus(m, ref defenseMasteryMalus))
+                if (DefenseMastery.GetMalus(m, ref defenseMasteryMalus))
                     value -= defenseMasteryMalus;
 
                 // Discordance gives a -2%/-48% malus to damage.
-                if (SkillHandlers.Discordance.GetEffect(m, ref discordanceEffect))
+                if (Discordance.GetEffect(m, ref discordanceEffect))
                     value -= discordanceEffect * 2;
 
                 if (Block.IsBlocking(m))
@@ -668,7 +668,7 @@ namespace Server
                 int discordanceEffect = 0;
 
                 // Discordance gives a malus of -0/-28% to swing speed.
-                if (SkillHandlers.Discordance.GetEffect(m, ref discordanceEffect))
+                if (Discordance.GetEffect(m, ref discordanceEffect))
                     value -= discordanceEffect;
 
                 if (EssenceOfWindSpell.IsDebuffed(m))
@@ -741,7 +741,7 @@ namespace Server
                     value -= surpriseMalus;
 
                 // Defender loses -0/-28% if under the effect of Discordance.
-                if (SkillHandlers.Discordance.GetEffect(m, ref discordanceEffect))
+                if (Discordance.GetEffect(m, ref discordanceEffect))
                     value -= discordanceEffect;
 
                 if (BaseFishPie.IsUnderEffects(m, FishPieEffect.DefChance))
@@ -3105,7 +3105,7 @@ namespace Server
                         dur.MaxHitPoints--;
 
                         if (item.Parent is Mobile)
-                            ((Mobile)item.Parent).LocalOverheadMessage(Server.Network.MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
+                            ((Mobile)item.Parent).LocalOverheadMessage(Network.MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
                     }
                     else
                     {

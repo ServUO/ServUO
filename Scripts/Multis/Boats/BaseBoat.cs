@@ -2007,8 +2007,6 @@ namespace Server.Multis
                     if (dif >= 0 && dif <= 1 && ((landTile.ID >= 168 && landTile.ID <= 171) || (landTile.ID >= 310 && landTile.ID <= 311)))
                         hasWater = true;
 
-                    int z = p.Z;
-
                     for (int i = 0; i < tiles.Length; ++i)
                     {
                         StaticTile tile = tiles[i];
@@ -2630,9 +2628,9 @@ namespace Server.Multis
         public static void Initialize()
         {
             new UpdateAllTimer().Start();
-            EventSink.WorldSave += new WorldSaveEventHandler(EventSink_WorldSave);
-            EventSink.Disconnected += new DisconnectedEventHandler(EventSink_Disconnected);
-            EventSink.PlayerDeath += new PlayerDeathEventHandler(EventSink_PlayerDeath);
+            EventSink.WorldSave += EventSink_WorldSave;
+            EventSink.Disconnected += EventSink_Disconnected;
+            EventSink.PlayerDeath += EventSink_PlayerDeath;
         }
 
         private static void EventSink_WorldSave(WorldSaveEventArgs e)

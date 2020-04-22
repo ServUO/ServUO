@@ -683,8 +683,6 @@ namespace Server.Items
 
         public static TimeSpan GetDelay(Mobile healer, Mobile patient, bool dead, SkillName skill)
         {
-            double resDelay = dead ? 5.0 : 0.0;
-
             int dex = healer.Dex;
 
             double seconds;

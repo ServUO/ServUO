@@ -108,9 +108,9 @@ namespace Server.Items
                     {
                         m_Wool.Consume();
                         if (m_Wool is TaintedWool)
-                            wheel.BeginSpin(new SpinCallback(TaintedWool.OnSpun), from, m_Wool.Hue);
+                            wheel.BeginSpin(TaintedWool.OnSpun, from, m_Wool.Hue);
                         else
-                            wheel.BeginSpin(new SpinCallback(Wool.OnSpun), from, m_Wool.Hue);
+                            wheel.BeginSpin(Wool.OnSpun, from, m_Wool.Hue);
                     }
                 }
                 else

@@ -24,7 +24,7 @@ namespace Server
         static ValidationQueue()
         {
             m_Queue = new List<T>();
-            ValidationQueue.StartValidation += new ValidationEventHandler(ValidateAll);
+            ValidationQueue.StartValidation += ValidateAll;
         }
 
         public static void Add(T obj)

@@ -521,7 +521,7 @@ namespace Server.Mobiles
                 }
                 else
                 {
-                    Timer.DelayCall(TimeSpan.Zero, new TimerCallback(FixDresswear));
+                    Timer.DelayCall(TimeSpan.Zero, FixDresswear);
                 }
 
                 if (!IsCommission)
@@ -1772,7 +1772,7 @@ namespace Server.Mobiles
 
             Vendor = (PlayerVendor)reader.ReadMobile();
 
-            Timer.DelayCall(TimeSpan.Zero, new TimerCallback(Delete));
+            Timer.DelayCall(TimeSpan.Zero, Delete);
         }
 
         private class ExpireTimer : Timer

@@ -37,10 +37,6 @@ namespace Server.Commands.Generic
 
     public sealed class Extensions : List<BaseExtension>
     {
-        public Extensions()
-        {
-        }
-
         public static Extensions Parse(Mobile from, ref string[] args)
         {
             Extensions parsed = new Extensions();

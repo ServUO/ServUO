@@ -58,7 +58,7 @@ namespace Server.Gumps
 
         public static void Initialize()
         {
-            CommandSystem.Register("ToTAdmin", AccessLevel.Administrator, new CommandEventHandler(ToTAdmin_OnCommand));
+            CommandSystem.Register("ToTAdmin", AccessLevel.Administrator, ToTAdmin_OnCommand);
         }
 
         [Usage("ToTAdmin")]

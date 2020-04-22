@@ -928,7 +928,7 @@ namespace Server.Engines.Quests
                 return;
 
             Owner.From.SendLocalizedMessage(1072352); // Target the item you wish to toggle Quest Item status on <ESC> to cancel			
-            Owner.From.BeginTarget(-1, false, TargetFlags.None, new TargetCallback(ToggleQuestItem_Callback));
+            Owner.From.BeginTarget(-1, false, TargetFlags.None, ToggleQuestItem_Callback);
         }
 
         private void ToggleQuestItem_Callback(Mobile from, object obj)
@@ -952,7 +952,7 @@ namespace Server.Engines.Quests
                 else
                     player.SendLocalizedMessage(1074769); // An item must be in your backpack (and not in a container within) to be toggled as a quest item.
 
-                player.BeginTarget(-1, false, TargetFlags.None, new TargetCallback(ToggleQuestItem_Callback));
+                player.BeginTarget(-1, false, TargetFlags.None, ToggleQuestItem_Callback);
             }
         }
     }

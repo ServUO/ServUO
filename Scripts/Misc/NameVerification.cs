@@ -100,7 +100,7 @@ namespace Server.Misc
         public static string[] Disallowed => m_Disallowed;
         public static void Initialize()
         {
-            CommandSystem.Register("ValidateName", AccessLevel.Administrator, new CommandEventHandler(ValidateName_OnCommand));
+            CommandSystem.Register("ValidateName", AccessLevel.Administrator, ValidateName_OnCommand);
         }
 
         [Usage("ValidateName")]

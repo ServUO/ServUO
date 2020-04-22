@@ -13,7 +13,7 @@ namespace Server
 
                 if (parent == null)
                 {
-                    Server.Multis.BaseHouse house = Server.Multis.BaseHouse.FindHouseAt(oldItem);
+                    Multis.BaseHouse house = Multis.BaseHouse.FindHouseAt(oldItem);
 
                     newItem.MoveToWorld(oldItem.Location, oldItem.Map);
 

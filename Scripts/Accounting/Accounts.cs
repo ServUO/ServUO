@@ -11,8 +11,8 @@ namespace Server.Accounting
 
         public static void Configure()
         {
-            EventSink.WorldLoad += new WorldLoadEventHandler(Load);
-            EventSink.WorldSave += new WorldSaveEventHandler(Save);
+            EventSink.WorldLoad += Load;
+            EventSink.WorldSave += Save;
         }
 
         static Accounts()

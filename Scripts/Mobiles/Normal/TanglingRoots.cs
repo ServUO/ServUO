@@ -74,14 +74,14 @@ namespace Server.Mobiles
 
                     m_TangleCooldown.Add(m);
 
-                    Timer.DelayCall(TimeSpan.FromSeconds(Utility.RandomMinMax(3, 6)), new TimerStateCallback<Mobile>(Untangle), m);
-                    Timer.DelayCall(TimeSpan.FromSeconds(15.0), new TimerStateCallback<Mobile>(RemoveCooldown), m);
+                    Timer.DelayCall(TimeSpan.FromSeconds(Utility.RandomMinMax(3, 6)), Untangle, m);
+                    Timer.DelayCall(TimeSpan.FromSeconds(15.0), RemoveCooldown, m);
                 }
 
                 if (m.InRange(this, 1) && !m_DamageTable.ContainsKey(m))
                 {
                     // Should start the timer
-                    m_DamageTable[m] = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(1.0), new TimerStateCallback<Mobile>(DoDamage), m);
+                    m_DamageTable[m] = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(1.0), DoDamage, m);
                 }
             }
         }

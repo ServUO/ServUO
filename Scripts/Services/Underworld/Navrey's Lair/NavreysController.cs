@@ -1,4 +1,4 @@
-﻿using Server.Commands;
+using Server.Commands;
 using Server.Mobiles;
 using Server.Network;
 using System;
@@ -10,7 +10,7 @@ namespace Server.Items
         #region Generation
         public static void Initialize()
         {
-            CommandSystem.Register("GenNavrey", AccessLevel.Developer, new CommandEventHandler(GenNavrey_Command));
+            CommandSystem.Register("GenNavrey", AccessLevel.Developer, GenNavrey_Command);
         }
 
         [Usage("GenNavrey")]
@@ -128,7 +128,7 @@ namespace Server.Items
         {
             SetAllPillars(NavreysPillarState.Off);
 
-            Timer.DelayCall(TimeSpan.FromMinutes(10.0), new TimerCallback(Respawn));
+            Timer.DelayCall(TimeSpan.FromMinutes(10.0), Respawn);
         }
 
         public void Respawn()
@@ -172,7 +172,7 @@ namespace Server.Items
                 t.Start();
 
                 SetAllPillars(NavreysPillarState.Off);
-                Timer.DelayCall(TimeSpan.FromMinutes(5.0), new TimerCallback(ResetPillars));
+                Timer.DelayCall(TimeSpan.FromMinutes(5.0), ResetPillars);
             }
         }
 
@@ -222,7 +222,7 @@ namespace Server.Items
             TypeRestart = reader.ReadTimeSpan();
 
             if (m_Navrey == null)
-                Timer.DelayCall(TimeSpan.Zero, new TimerCallback(Respawn));
+                Timer.DelayCall(TimeSpan.Zero, Respawn);
             else
                 SetAllPillars(NavreysPillarState.On);
         }

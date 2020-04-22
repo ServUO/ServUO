@@ -1,7 +1,6 @@
 #region References
 using Server.Engines.ArenaSystem;
 using Server.Engines.PartySystem;
-using Server.Engines.Quests;
 using Server.Engines.VvV;
 using Server.Guilds;
 using Server.Items;
@@ -11,6 +10,7 @@ using Server.SkillHandlers;
 using Server.Spells.Chivalry;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 #endregion
 
 namespace Server.Misc
@@ -281,11 +281,6 @@ namespace Server.Misc
 
         public static int MobileNotoriety(Mobile source, IDamageable damageable)
         {
-            if (damageable is PublicMoongate)
-            {
-                return Notoriety.Innocent;
-            }
-
             Mobile target = damageable as Mobile;
 
             if (target == null)
@@ -314,10 +309,10 @@ namespace Server.Misc
             if (target.IsStaff())
                 return Notoriety.CanBeAttacked;
 
-            if (source.Player && target is BaseCreature)
-            {
-                BaseCreature bc = (BaseCreature)target;
+            var bc = target as BaseCreature;
 
+            if (source.Player && bc != null)
+            {
                 Mobile master = bc.GetMaster();
 
                 if (master != null && master.IsStaff())
@@ -340,20 +335,16 @@ namespace Server.Misc
             if (target.Murderer)
                 return Notoriety.Murderer;
 
-            if (target.Body.IsMonster && IsSummoned(target as BaseCreature))
+            if (target.Body.IsMonster && IsSummoned(bc))
             {
                 if (!(target is BaseFamiliar) && !(target is ArcaneFey) && !(target is Golem))
                     return Notoriety.Murderer;
             }
 
-            if (target is BaseCreature)
+            if (bc != null && (bc.AlwaysMurderer || bc.IsAnimatedDead))
             {
-                if (((BaseCreature)target).AlwaysMurderer || ((BaseCreature)target).IsAnimatedDead)
-                    return Notoriety.Murderer;
+                return Notoriety.Murderer;
             }
-
-            if (source.Player && target is BaseEscort)
-                return Notoriety.Innocent;
 
             if (target.Criminal)
                 return Notoriety.Criminal;
@@ -379,14 +370,16 @@ namespace Server.Misc
             if (Stealing.ClassicMode && target is PlayerMobile && ((PlayerMobile)target).PermaFlags.Contains(source))
                 return Notoriety.CanBeAttacked;
 
-            if (target is BaseCreature && ((BaseCreature)target).AlwaysAttackable)
+            if (bc != null && bc.AlwaysAttackable)
+            {
                 return Notoriety.CanBeAttacked;
+            }
 
             if (CheckHouseFlag(source, target, target.Location, target.Map))
                 return Notoriety.CanBeAttacked;
 
             //If Target is NOT A baseCreature, OR it's a BC and the BC is initial innocent...
-            if (!(target is BaseCreature && ((BaseCreature)target).InitialInnocent))
+            if (!(bc != null && ((BaseCreature)target).InitialInnocent))
             {
                 if (!target.Body.IsHuman && !target.Body.IsGhost && !IsPet(target as BaseCreature) && !(target is PlayerMobile))
                     return Notoriety.CanBeAttacked;
@@ -404,18 +397,21 @@ namespace Server.Misc
             if (source is PlayerMobile && CheckPetAggressed((PlayerMobile)source, target))
                 return Notoriety.CanBeAttacked;
 
-            if (target is BaseCreature)
+            if (bc != null)
             {
-                BaseCreature bc = (BaseCreature)target;
-
-                if (bc.Controlled && bc.ControlOrder == OrderType.Guard && bc.ControlTarget == source)
+                if (bc.AlwaysInnocent)
+                {
+                    return Notoriety.Innocent;
+                }
+                else if (bc.Controlled && bc.ControlOrder == OrderType.Guard && bc.ControlTarget == source)
+                {
                     return Notoriety.CanBeAttacked;
+                }
             }
 
             if (source is BaseCreature)
             {
-                BaseCreature bc = (BaseCreature)source;
-                Mobile master = bc.GetMaster();
+                Mobile master = ((BaseCreature)source).GetMaster();
 
                 if (master != null)
                 {
@@ -469,46 +465,22 @@ namespace Server.Misc
 
         public static bool CheckAggressor(List<AggressorInfo> list, Mobile target)
         {
-            foreach (AggressorInfo o in list)
-            {
-                if (o.Attacker == target)
-                    return true;
-            }
-
-            return false;
+            return list != null && list.Any(info => info.Attacker == target);
         }
 
         public static bool CheckAggressed(List<AggressorInfo> list, Mobile target)
         {
-            foreach (AggressorInfo info in list)
-            {
-                if (!info.CriminalAggression && info.Defender == target)
-                    return true;
-            }
-
-            return false;
+            return list != null && list.Any(info => info.CriminalAggression && info.Defender == target);
         }
 
         public static bool CheckPetAggressor(PlayerMobile source, Mobile target)
         {
-            foreach (Mobile bc in source.AllFollowers)
-            {
-                if (CheckAggressor(bc.Aggressors, target))
-                    return true;
-            }
-
-            return false;
+            return source.AllFollowers.Any(follower => CheckAggressor(follower.Aggressors, target));
         }
 
         public static bool CheckPetAggressed(PlayerMobile source, Mobile target)
         {
-            foreach (Mobile bc in source.AllFollowers)
-            {
-                if (CheckAggressed(bc.Aggressed, target))
-                    return true;
-            }
-
-            return false;
+            return source.AllFollowers.Any(follower => CheckAggressed(follower.Aggressed, target));
         }
     }
 }

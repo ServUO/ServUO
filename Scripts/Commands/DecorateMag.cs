@@ -13,7 +13,7 @@ namespace Server.Commands
         private static int m_Count;
         public static void Initialize()
         {
-            CommandSystem.Register("DecorateMag", AccessLevel.Administrator, new CommandEventHandler(DecorateMag_OnCommand));
+            CommandSystem.Register("DecorateMag", AccessLevel.Administrator, DecorateMag_OnCommand);
         }
 
         public static void Generate(string folder, params Map[] maps)
@@ -68,9 +68,6 @@ namespace Server.Commands
         private int m_ItemID;
         private string[] m_Params;
         private ArrayList m_Entries;
-        public DecorationListMag()
-        {
-        }
 
         public static ArrayList ReadAll(string path)
         {

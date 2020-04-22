@@ -25,8 +25,8 @@ namespace Server.Misc
 
         public static void Initialize()
         {
-            CommandSystem.Register("Restart", AccessLevel.Administrator, new CommandEventHandler(Restart_OnCommand));
-            CommandSystem.Register("Shutdown", AccessLevel.Administrator, new CommandEventHandler(Shutdown_OnCommand));
+            CommandSystem.Register("Restart", AccessLevel.Administrator, Restart_OnCommand);
+            CommandSystem.Register("Shutdown", AccessLevel.Administrator, Shutdown_OnCommand);
 
             if (Enabled)
             {
@@ -59,7 +59,7 @@ namespace Server.Misc
 
                 StopTimer();
 
-                Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
+                DelayCall(TimeSpan.FromSeconds(1), () =>
                     {
                         AutoSave.Save();
 
@@ -81,7 +81,7 @@ namespace Server.Misc
 
                 StopTimer();
 
-                Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
+                DelayCall(TimeSpan.FromSeconds(1), () =>
                 {
                     AutoSave.Save();
                     Restarting = true;
@@ -135,7 +135,7 @@ namespace Server.Misc
         private static void TimedShutdown(bool restart)
         {
             World.Broadcast(0x22, true, String.Format("The server will be going down in about {0} seconds!", RestartDelay.TotalSeconds.ToString()));
-            Timer.DelayCall(RestartDelay, rest =>
+            DelayCall(RestartDelay, rest =>
                 {
                     Core.Kill(rest);
                 },
