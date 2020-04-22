@@ -156,7 +156,7 @@ namespace Server.SkillHandlers
                 {
                     Mobile targ = (Mobile)target;
 
-                    if (targ == from || !from.CanBeHarmful(targ, false) ||
+                    if (targ == from || !from.CanBeHarmful(targ, false, false, true) ||
                         (targ is BaseCreature && ((BaseCreature)targ).BardImmune && ((BaseCreature)targ).ControlMaster != from))
                     {
                         from.SendLocalizedMessage(1049535); // A song of discord would have no effect on that.

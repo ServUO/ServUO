@@ -163,12 +163,9 @@ namespace Server.Services.Virtues
             Region reg = Region.Find(p, map);
 
             //no-go in towns, houses, dungeons and champspawns
-            if (reg != null)
+            if (reg != null && (reg.IsPartOf<TownRegion>() || reg.IsPartOf<DungeonRegion>() || reg.IsPartOf<ChampionSpawnRegion>() || reg.IsPartOf<HouseRegion>()))
             {
-                if (reg.IsPartOf<TownRegion>() || reg.IsPartOf<DungeonRegion>() || reg.IsPartOf<ChampionSpawnRegion>() || reg.IsPartOf<HouseRegion>())
-                {
-                    return false;
-                }
+                return false;
             }
 
             //check for house within 5 tiles
@@ -355,9 +352,9 @@ namespace Server.Services.Virtues
 
                 if (!String.IsNullOrWhiteSpace(socket.HonestyRegion) && BaseVendor.AllVendors.Count >= 10)
                 {
-                    List<BaseVendor> matchedVendors = BaseVendor.AllVendors.Where(vendor => (vendor.Map == socket.Owner.Map && vendor.Region.IsPartOf(socket.HonestyRegion))).ToList<BaseVendor>();
+                    List<BaseVendor> matchedVendors = BaseVendor.AllVendors.Where(vendor => (vendor.Map == socket.Owner.Map && vendor.Region.IsPartOf(socket.HonestyRegion))).ToList();
 
-                    if (matchedVendors != null && matchedVendors.Count > 0)
+                    if (matchedVendors.Count > 0)
                     {
                         socket.HonestyOwner = matchedVendors[Utility.Random(matchedVendors.Count)];
                     }

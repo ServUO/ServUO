@@ -80,7 +80,7 @@ namespace Server.Commands.Generic
                 }
             }
 
-            return ParseDirect(from, conditionArgs, 0, conditionArgs.Length);
+            return ParseDirect(from, conditionArgs, 0, conditionArgs == null ? 0 : conditionArgs.Length);
         }
 
         public static ObjectConditional ParseDirect(Mobile from, string[] args, int offset, int size)

@@ -28,12 +28,19 @@ namespace Server.Gumps
 
                 if (_Parent != null)
                 {
-                    if (_Parent is BaseGump && !((BaseGump)_Parent).Children.Contains(this))
-                        ((BaseGump)_Parent).Children.Add(this);
-                }
-                else if (_Parent is BaseGump && ((BaseGump)_Parent).Children.Contains(this))
-                {
-                    ((BaseGump)_Parent).Children.Remove(this);
+                    if (_Parent is BaseGump)
+                    {
+                        var bGump = (BaseGump)_Parent;
+
+                        if (!bGump.Children.Contains(this))
+                        {
+                            bGump.Children.Add(this);
+                        }
+                        else
+                        {
+                            bGump.Children.Remove(this);
+                        }
+                    }
                 }
             }
         }
@@ -577,8 +584,6 @@ namespace Server.Gumps
 
                 _SpoofPool.Add(this);
             }
-
-            public int UID { get { return Serial.Value; } private set { } }
 
             private ObjectPropertyList _PropertyList;
 

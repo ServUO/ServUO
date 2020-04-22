@@ -522,9 +522,11 @@ namespace Server.Accounting
         {
             get
             {
-                foreach (PlayerMobile m in m_Mobiles.OfType<PlayerMobile>().Where(m => m.NetState != null))
+                var online = m_Mobiles.OfType<PlayerMobile>().FirstOrDefault(pm => pm.NetState != null);
+
+                if (online != null)
                 {
-                    return m_TotalGameTime + (DateTime.UtcNow - m.SessionStart);
+                    return m_TotalGameTime + (DateTime.UtcNow - online.SessionStart);
                 }
 
                 return m_TotalGameTime;
@@ -1070,13 +1072,16 @@ namespace Server.Accounting
         /// <param name="value">Tag value.</param>
         public void SetTag(string name, string value)
         {
-            foreach (AccountTag tag in Tags.Where(tag => tag.Name == name))
+            var tag = Tags.FirstOrDefault(t => t.Name == name);
+
+            if (tag != null)
             {
                 tag.Value = value;
-                return;
             }
-
-            AddTag(name, value);
+            else
+            {
+                AddTag(name, value);
+            }
         }
 
         /// <summary>
