@@ -77,7 +77,7 @@ namespace Server.Gumps
         {
             if (filter != null && (filter = filter.Trim()).Length == 0)
                 filter = null;
-            else
+            else if(filter != null)
                 filter = filter.ToLower();
 
             List<Mobile> list = new List<Mobile>();

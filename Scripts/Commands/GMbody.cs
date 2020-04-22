@@ -166,7 +166,7 @@ namespace Server.Commands
 
             private static void EquipItem(Item item, bool mustEquip)
             {
-                if (m_Mobile != null && m_Mobile.EquipItem(item))
+                if (m_Mobile == null || m_Mobile.EquipItem(item))
                     return;
 
                 Container pack = m_Mobile.Backpack;

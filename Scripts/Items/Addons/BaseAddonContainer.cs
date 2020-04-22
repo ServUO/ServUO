@@ -230,6 +230,9 @@ namespace Server.Items
                 {
                     BaseDoor door = doors[i] as BaseDoor;
 
+                    if (door == null)
+                        continue;
+
                     if (door != null && door.Open)
                         return AddonFitResult.DoorsNotClosed;
 

@@ -379,11 +379,6 @@ namespace Server
             Center = new Point2D(_Bounds.Start.X + (_Bounds.Width / 2), _Bounds.Start.Y + (_Bounds.Height / 2));
         }
 
-        private IEnumerable<Point3D> Compute(object area)
-        {
-            return Compute((Rectangle3D)area);
-        }
-
         private IEnumerable<Point3D> Compute(Rectangle3D area)
         {
             // Check all corners to skip large bodies of water.

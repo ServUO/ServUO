@@ -4980,8 +4980,6 @@ namespace Server.Multis
             Register();
 
             m_RegionOwner = regionowner;
-
-            Timer.DelayCall(house.RestrictedPlacingTime, Unregister);
         }
 
         public override bool AllowHousing(Mobile from, Point3D p)

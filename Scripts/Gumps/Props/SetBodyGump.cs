@@ -250,7 +250,11 @@ namespace Server.Gumps
                     list.Add(new InternalEntry(bodyID, itemID, oldEntry.Name));
             }
 
-            m_Monster.Sort();
+            if (m_Monster != null)
+            {
+                m_Monster.Sort();
+            }
+
             m_Animal.Sort();
             m_Sea.Sort();
             m_Human.Sort();
@@ -306,7 +310,7 @@ namespace Server.Gumps
                 int v = m_Name.CompareTo(comp.m_Name);
 
                 if (v == 0)
-                    m_Body.CompareTo(comp.m_Body);
+                    return m_Body.CompareTo(comp.m_Body);
 
                 return v;
             }

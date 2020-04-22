@@ -45,7 +45,7 @@ namespace Server.SkillHandlers
             {
                 from.RevealingAction();
 
-                if (targeted is BaseCreature && from.CanBeHarmful((Mobile)targeted, true))
+                if (targeted is BaseCreature && from.CanBeHarmful((Mobile)targeted, true, false, true))
                 {
                     BaseCreature creature = (BaseCreature)targeted;
 
@@ -137,7 +137,7 @@ namespace Server.SkillHandlers
                             diff -= (music - 100.0) * 0.5;
                         }
 
-                        if (questTargets || (from.CanBeHarmful(m_Creature, true) && from.CanBeHarmful(target, true)))
+                        if (questTargets || (from.CanBeHarmful(m_Creature, true, false, true) && from.CanBeHarmful(target, true, false, true)))
                         {
                             if (from.Player && !BaseInstrument.CheckMusicianship(from))
                             {

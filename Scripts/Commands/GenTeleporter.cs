@@ -7,10 +7,11 @@ namespace Server.Commands
 {
     class Location : IComparable
     {
-        public int X;
-        public int Y;
-        public int Z;
-        public Map Map;
+        public int X { get; set; }
+        public int Y { get; set; }
+        public int Z { get; set; }
+        public Map Map { get; set; }
+
         public Location(int x, int y, int z, Map m)
         {
             X = x;
@@ -39,6 +40,11 @@ namespace Server.Commands
             string hashString = String.Format("{0}-{1}-{2}-{3}",
                 X, Y, Z, Map.MapID);
             return hashString.GetHashCode();
+        }
+
+        public override bool Equals(object o)
+        {
+            return o is Location && ((Location)o).X == X && ((Location)o).Y == Y && ((Location)o).Z == Z && ((Location)o).Map == Map;
         }
     }
     class TelDef

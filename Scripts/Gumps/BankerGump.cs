@@ -1,4 +1,4 @@
-﻿using Server.Accounting;
+using Server.Accounting;
 using Server.Mobiles;
 using Server.Network;
 using System;
@@ -108,9 +108,6 @@ namespace Server.Gumps
                                     from.SendLocalizedMessage(1155867); // The amount entered is invalid. Verify that there are sufficient funds to complete this transaction.
                                 else if (account != null)
                                 {
-                                    if (v > canHold)
-                                        v = canHold;
-
                                     Banker.Withdraw(from, v, true);
                                     account.DepositToSecure(from, v);
 

@@ -181,7 +181,7 @@ namespace Server.SkillHandlers
 
         public static bool CanDetect(Mobile src, Mobile target)
         {
-            if (src.Map == null || target.Map == null || !src.CanBeHarmful(target, false))
+            if (src.Map == null || target.Map == null || !src.CanBeHarmful(target, false, false, true))
                 return false;
 
             // No invulnerable NPC's
