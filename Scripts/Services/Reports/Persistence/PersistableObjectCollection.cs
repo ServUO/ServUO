@@ -19,14 +19,6 @@ namespace Server.Engines.Reports
     public class ObjectCollection : System.Collections.CollectionBase
     {
         /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public ObjectCollection()
-            : base()
-        {
-        }
-
-        /// <summary>
         /// Gets or sets the value of the Server.Engines.Reports.PersistableObject at a specific position in the ObjectCollection.
         /// </summary>
         public Server.Engines.Reports.PersistableObject this[int index]

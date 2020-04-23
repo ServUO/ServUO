@@ -46,7 +46,11 @@ namespace Server.Items
 
             if (m_Target != null)
             {
-                defender.MovingEffect(m_Target, weapon.ItemID, 18, 1, false, false);
+                if (defender != null)
+                {
+                    defender.MovingEffect(m_Target, weapon.ItemID, 18, 1, false, false);
+                }
+
                 Timer.DelayCall(TimeSpan.FromMilliseconds(333.0), ThrowAgain);
                 m_Mobile = attacker;
             }

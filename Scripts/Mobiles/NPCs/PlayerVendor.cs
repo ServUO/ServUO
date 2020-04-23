@@ -17,9 +17,6 @@ namespace Server.Mobiles
     [AttributeUsage(AttributeTargets.Class)]
     public class PlayerVendorTargetAttribute : Attribute
     {
-        public PlayerVendorTargetAttribute()
-        {
-        }
     }
 
     public class VendorItem

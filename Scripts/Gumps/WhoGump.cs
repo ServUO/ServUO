@@ -77,8 +77,10 @@ namespace Server.Gumps
         {
             if (filter != null && (filter = filter.Trim()).Length == 0)
                 filter = null;
-            else if(filter != null)
-                filter = filter.ToLower();
+            else
+            {
+                filter = filter?.ToLower();
+            }
 
             List<Mobile> list = new List<Mobile>();
             List<NetState> states = NetState.Instances;

@@ -281,7 +281,7 @@ namespace Server
 
         private static readonly Type[] m_PaladinScrollTypes = new Type[0];
 
-        private static readonly Type[] m_MysticScrollTypes = new Type[]
+        private static readonly Type[] m_MysticScrollTypes = new[]
         {
             typeof( NetherBoltScroll ),     typeof( HealingStoneScroll ),   typeof( PurgeMagicScroll ),         typeof( EnchantScroll ),
             typeof( SleepScroll ),          typeof( EagleStrikeScroll ),   typeof( AnimatedWeaponScroll ),      typeof( StoneFormScroll ),

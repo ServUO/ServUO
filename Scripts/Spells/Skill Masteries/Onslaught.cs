@@ -14,10 +14,6 @@ namespace Server.Spells.SkillMasteries
         public override SkillName MoveSkill => SkillName.Swords;
         public override TextDefinition AbilityMessage => new TextDefinition(1156007);  // *You ready an onslaught!*
 
-        public OnslaughtSpell()
-        {
-        }
-
         public override bool Validate(Mobile from)
         {
             if (!CheckWeapon(from))

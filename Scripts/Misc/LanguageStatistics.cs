@@ -328,9 +328,6 @@ namespace Server.Misc
         private class InternationalCodeComparer : IComparer<InternationalCodeCounter>
         {
             public static readonly InternationalCodeComparer Instance = new InternationalCodeComparer();
-            public InternationalCodeComparer()
-            {
-            }
 
             public int Compare(InternationalCodeCounter x, InternationalCodeCounter y)
             {

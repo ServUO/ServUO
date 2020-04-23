@@ -19,14 +19,6 @@ namespace Server.Engines.Reports
     public class PageInfoCollection : System.Collections.CollectionBase
     {
         /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public PageInfoCollection()
-            : base()
-        {
-        }
-
-        /// <summary>
         /// Gets or sets the value of the Server.Engines.Reports.PageInfo at a specific position in the PageInfoCollection.
         /// </summary>
         public Server.Engines.Reports.PageInfo this[int index]

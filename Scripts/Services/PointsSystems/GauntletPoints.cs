@@ -14,10 +14,6 @@ namespace Server.Engines.Points
 
         private readonly TextDefinition m_Name = new TextDefinition("Gauntlet Points");
 
-        public DoomGauntlet()
-        {
-        }
-
         public override void SendMessage(PlayerMobile from, double old, double points, bool quest)
         {
         }

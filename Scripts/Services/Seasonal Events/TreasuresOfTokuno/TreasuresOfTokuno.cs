@@ -28,10 +28,6 @@ namespace Server.Misc
 
         private readonly TextDefinition m_Name = new TextDefinition("Treasures of Tokuno");
 
-        public TreasuresOfTokuno()
-        {
-        }
-
         public const int ItemsPerReward = 10;
 
         private static readonly Type[] m_LesserArtifactsTotal = new Type[]

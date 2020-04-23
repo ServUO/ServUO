@@ -25,7 +25,7 @@ namespace Server.Misc
 
                 if (targ is BaseCreature)
                 {
-                    exceptions = new char[] { ' ' };
+                    exceptions = new[] { ' ' };
                     numExceptions = 5;
                 }
 

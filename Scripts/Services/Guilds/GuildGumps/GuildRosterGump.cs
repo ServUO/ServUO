@@ -13,10 +13,6 @@ namespace Server.Guilds
         {
             public static readonly IComparer<PlayerMobile> Instance = new NameComparer();
 
-            public NameComparer()
-            {
-            }
-
             public int Compare(PlayerMobile x, PlayerMobile y)
             {
                 if (x == null && y == null)
@@ -33,10 +29,6 @@ namespace Server.Guilds
         private class LastOnComparer : IComparer<PlayerMobile>
         {
             public static readonly IComparer<PlayerMobile> Instance = new LastOnComparer();
-
-            public LastOnComparer()
-            {
-            }
 
             public int Compare(PlayerMobile x, PlayerMobile y)
             {
@@ -65,10 +57,6 @@ namespace Server.Guilds
         {
             public static readonly IComparer<PlayerMobile> Instance = new TitleComparer();
 
-            public TitleComparer()
-            {
-            }
-
             public int Compare(PlayerMobile x, PlayerMobile y)
             {
                 if (x == null && y == null)
@@ -85,10 +73,6 @@ namespace Server.Guilds
         private class RankComparer : IComparer<PlayerMobile>
         {
             public static readonly IComparer<PlayerMobile> Instance = new RankComparer();
-
-            public RankComparer()
-            {
-            }
 
             public int Compare(PlayerMobile x, PlayerMobile y)
             {

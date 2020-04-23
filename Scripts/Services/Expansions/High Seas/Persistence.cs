@@ -31,10 +31,6 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public CharydbisSpawner CharydbisSpawner { get { return CharydbisSpawner.SpawnInstance; } set { } }
 
-        public HighSeasPersistance()
-        {
-        }
-
         public static void OnSave(WorldSaveEventArgs e)
         {
             Persistence.Serialize(

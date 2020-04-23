@@ -12,10 +12,6 @@ namespace Server.Engines.Craft
 
     public class Repair
     {
-        public Repair()
-        {
-        }
-
         public static void Do(Mobile from, CraftSystem craftSystem, ITool tool)
         {
             from.Target = new InternalTarget(craftSystem, tool);

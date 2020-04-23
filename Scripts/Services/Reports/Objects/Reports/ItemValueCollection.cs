@@ -19,14 +19,6 @@ namespace Server.Engines.Reports
     public class ItemValueCollection : System.Collections.CollectionBase
     {
         /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public ItemValueCollection()
-            : base()
-        {
-        }
-
-        /// <summary>
         /// Gets or sets the value of the Server.Engines.Reports.ItemValue at a specific position in the ItemValueCollection.
         /// </summary>
         public Server.Engines.Reports.ItemValue this[int index]

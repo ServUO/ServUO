@@ -6,10 +6,6 @@ namespace Server.Engines.Reports
 {
     public abstract class PersistenceWriter
     {
-        public PersistenceWriter()
-        {
-        }
-
         public abstract void SetInt32(string key, int value);
 
         public abstract void SetBoolean(string key, bool value);

@@ -270,10 +270,6 @@ namespace Server.Spells
             m_Table.Remove(m);
         }
 
-        public SpecialMove()
-        {
-        }
-
         private static readonly Dictionary<Mobile, SpecialMoveContext> m_PlayersTable = new Dictionary<Mobile, SpecialMoveContext>();
 
         private static void AddContext(Mobile m, SpecialMoveContext context)

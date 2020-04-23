@@ -4,10 +4,6 @@ namespace Server.Spells.Ninjitsu
 {
     public class FocusAttack : NinjaMove
     {
-        public FocusAttack()
-        {
-        }
-
         public override int BaseMana => 10;
         public override double RequiredSkill => 30.0;
         public override TextDefinition AbilityMessage => new TextDefinition(1063095);// You prepare to focus all of your abilities into your next strike.

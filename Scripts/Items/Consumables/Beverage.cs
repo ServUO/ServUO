@@ -569,7 +569,7 @@ namespace Server.Items
     public class Pitcher : BaseBeverage
     {
         public override int BaseLabelNumber => 1048128;// a Pitcher of Ale
-        public override int MaxQuantity => Content == BeverageType.Water ? 5 : 5;
+        public override int MaxQuantity => 5;
 
         public override int ComputeItemID()
         {

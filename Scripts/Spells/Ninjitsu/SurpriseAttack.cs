@@ -7,9 +7,6 @@ namespace Server.Spells.Ninjitsu
     public class SurpriseAttack : NinjaMove
     {
         private static readonly Hashtable m_Table = new Hashtable();
-        public SurpriseAttack()
-        {
-        }
 
         public override int BaseMana => 20;
         public override double RequiredSkill => 60;

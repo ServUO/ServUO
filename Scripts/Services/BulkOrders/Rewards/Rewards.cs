@@ -260,10 +260,6 @@ namespace Server.Engines.BulkOrders
         {
             return new WoodsmansTalisman((CraftResource)type);
         }
-
-        public RewardCalculator()
-        {
-        }
     }
 
     #region Smith Rewards

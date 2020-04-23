@@ -5536,7 +5536,7 @@ namespace Server.Mobiles
         {
             if (IsPlayer())
             {
-                IgnoreMobiles = false;
+                IgnoreMobiles = TransformationSpellHelper.UnderTransformation(this, typeof(WraithFormSpell));
             }
             else
             {

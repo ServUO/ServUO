@@ -5,10 +5,6 @@ namespace Server.Engines.Quests.Ambitious
 {
     public class KillQueensObjective : QuestObjective
     {
-        public KillQueensObjective()
-        {
-        }
-
         public override object Message =>
                 // Kill 5 red/black solen queens.
                 ((AmbitiousQueenQuest)System).RedSolen ? 1054062 : 1054063;
@@ -66,10 +62,6 @@ namespace Server.Engines.Quests.Ambitious
 
     public class ReturnAfterKillsObjective : QuestObjective
     {
-        public ReturnAfterKillsObjective()
-        {
-        }
-
         public override object Message =>
                 /* You've completed your task of slaying solen queens. Return to
 * the ambitious queen who asked for your help.
@@ -83,10 +75,6 @@ namespace Server.Engines.Quests.Ambitious
 
     public class GatherFungiObjective : QuestObjective
     {
-        public GatherFungiObjective()
-        {
-        }
-
         public override object Message =>
                 /* Gather zoogi fungus until you have 50 of them, then give them
 * to the ambitious queen you are helping.

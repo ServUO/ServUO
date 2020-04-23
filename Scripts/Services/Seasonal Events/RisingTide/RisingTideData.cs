@@ -19,10 +19,6 @@ namespace Server.Engines.Points
 
         public static readonly double CargoChance = 0.1;
 
-        public RisingTide()
-        {
-        }
-
         public override void SendMessage(PlayerMobile from, double old, double points, bool quest)
         {
             from.SendLocalizedMessage(1158910, ((int)points).ToString()); // You have ~1_COUNT~ doubloons!

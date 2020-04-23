@@ -111,10 +111,6 @@ namespace Server.Gumps
         {
             public Type EntryType;
             public ParameterInfo[] Parameters;
-
-            public SearchEntry()
-            {
-            }
         }
         private static void Match(string match, Type[] types, ArrayList results)
         {

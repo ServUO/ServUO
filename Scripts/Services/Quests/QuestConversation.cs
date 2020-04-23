@@ -8,9 +8,6 @@ namespace Server.Engines.Quests
     {
         private QuestSystem m_System;
         private bool m_HasBeenRead;
-        public QuestConversation()
-        {
-        }
 
         public abstract object Message { get; }
         public virtual QuestItemInfo[] Info => null;

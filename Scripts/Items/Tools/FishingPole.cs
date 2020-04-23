@@ -225,12 +225,13 @@ namespace Server.Items
 
         public void OnFishedHarvest(Mobile from, bool caughtAnything)
         {
-            if (m_HookType != HookType.None)
+            if (m_HookType == HookType.None)
+            {
+                from.SendLocalizedMessage(1149854); //As the magic of the hook fades, it transforms to a normal fishhook.  The fishing pole returns to normal.
+            }
+            else
             {
                 HookUses--;
-
-                if (m_HookType == HookType.None)
-                    from.SendLocalizedMessage(1149854); //As the magic of the hook fades, it transforms to a normal fishhook.  The fishing pole returns to normal.
             }
 
             if (caughtAnything && m_BaitType != null)

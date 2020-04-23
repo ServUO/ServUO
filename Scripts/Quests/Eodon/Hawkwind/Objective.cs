@@ -10,10 +10,6 @@ namespace Server.Engines.Quests.TimeLord
 
         public override int MaxProgress => 1;
 
-        public TimeForLegendsObjective()
-        {
-        }
-
         public override void RenderProgress(BaseQuestGump gump)
         {
             if (System is TimeForLegendsQuest)

@@ -19,14 +19,6 @@ namespace Server.Engines.Reports
     public class ReportItemCollection : System.Collections.CollectionBase
     {
         /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public ReportItemCollection()
-            : base()
-        {
-        }
-
-        /// <summary>
         /// Gets or sets the value of the Server.Engines.Reports.ReportItem at a specific position in the ReportItemCollection.
         /// </summary>
         public Server.Engines.Reports.ReportItem this[int index]

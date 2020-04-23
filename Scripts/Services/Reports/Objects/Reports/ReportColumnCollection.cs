@@ -19,14 +19,6 @@ namespace Server.Engines.Reports
     public class ReportColumnCollection : System.Collections.CollectionBase
     {
         /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public ReportColumnCollection()
-            : base()
-        {
-        }
-
-        /// <summary>
         /// Gets or sets the value of the Server.Engines.Reports.ReportColumn at a specific position in the ReportColumnCollection.
         /// </summary>
         public Server.Engines.Reports.ReportColumn this[int index]

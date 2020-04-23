@@ -53,15 +53,20 @@ namespace Server.Items
 
         public void OnTick(BaseCreature lizard, Mobile owner)
         {
-            if (lizard != null && lizard.Controlled)
+            if (lizard != null)
             {
-                lizard.Frozen = false;
+                if (lizard.Controlled)
+                {
+                    lizard.Frozen = false;
 
-                m_Timer.Stop();
-                m_Timer = null;
+                    m_Timer.Stop();
+                    m_Timer = null;
+                }
+                else
+                {
+                    lizard.FixedEffect(0x376A, 1, 32);
+                }
             }
-            else
-                lizard.FixedEffect(0x376A, 1, 32);
         }
 
         public void EndTimer(BaseCreature lizard, Mobile owner)

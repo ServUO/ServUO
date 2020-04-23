@@ -168,10 +168,6 @@ namespace Server.Engines.Quests.Naturalist
 
     public class ReturnToNaturalistObjective : QuestObjective
     {
-        public ReturnToNaturalistObjective()
-        {
-        }
-
         public override object Message =>
                 /* You have studied enough Solen Egg Nests to gather a fair amount of
 * useful information. Return to the Naturalist who gave you this task.

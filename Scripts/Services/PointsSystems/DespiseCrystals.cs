@@ -11,10 +11,6 @@ namespace Server.Engines.Points
 
         private readonly TextDefinition m_Name = new TextDefinition(1151673);
 
-        public DespiseCrystals()
-        {
-        }
-
         public override void SendMessage(PlayerMobile from, double old, double points, bool quest)
         {
             from.SendLocalizedMessage(1153423, ((int)points).ToString()); // You have gained ~1_AMT~ Dungeon Crystal Points of Despise.

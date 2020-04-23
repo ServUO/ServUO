@@ -7,9 +7,6 @@ namespace Server.Spells.Ninjitsu
     public class KiAttack : NinjaMove
     {
         private static readonly Hashtable m_Table = new Hashtable();
-        public KiAttack()
-        {
-        }
 
         public override int BaseMana => 25;
         public override double RequiredSkill => 80.0;

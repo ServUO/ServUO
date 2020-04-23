@@ -28,10 +28,6 @@ namespace Server.Misc
 
         private readonly TextDefinition m_Name = new TextDefinition("Virtue Artifact System");
 
-        public VirtueArtifactsSystem()
-        {
-        }
-
         private bool CheckLocation(Mobile m)
         {
             Region r = m.Region;

@@ -6,9 +6,6 @@ namespace Server.Spells.Bushido
     public class HonorableExecution : SamuraiMove
     {
         private static readonly Hashtable m_Table = new Hashtable();
-        public HonorableExecution()
-        {
-        }
 
         public override int BaseMana => 0;
         public override double RequiredSkill => 25.0;

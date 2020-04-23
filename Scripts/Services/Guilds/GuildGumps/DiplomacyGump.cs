@@ -20,10 +20,6 @@ namespace Server.Guilds
         {
             public static readonly IComparer<Guild> Instance = new NameComparer();
 
-            public NameComparer()
-            {
-            }
-
             public int Compare(Guild x, Guild y)
             {
                 if (x == null && y == null)
@@ -80,10 +76,6 @@ namespace Server.Guilds
         private class AbbrevComparer : IComparer<Guild>
         {
             public static readonly IComparer<Guild> Instance = new AbbrevComparer();
-
-            public AbbrevComparer()
-            {
-            }
 
             public int Compare(Guild x, Guild y)
             {

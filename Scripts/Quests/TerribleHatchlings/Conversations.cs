@@ -2,10 +2,6 @@ namespace Server.Engines.Quests.Zento
 {
     public class AcceptConversation : QuestConversation
     {
-        public AcceptConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I><U>Important Quest Information</U></I><BR><BR>
 * 
@@ -38,10 +34,6 @@ namespace Server.Engines.Quests.Zento
 
     public class DirectionConversation : QuestConversation
     {
-        public DirectionConversation()
-        {
-        }
-
         public override object Message =>
                 // The Deathwatch Beetle Hatchlings live in The Waste - the desert close to this city.
                 1063323;
@@ -50,10 +42,6 @@ namespace Server.Engines.Quests.Zento
 
     public class TakeCareConversation : QuestConversation
     {
-        public TakeCareConversation()
-        {
-        }
-
         public override object Message =>
                 // I know you can take care of those nasty Deathwatch Beetle Hatchlings! No get to it!
                 1063324;
@@ -62,10 +50,6 @@ namespace Server.Engines.Quests.Zento
 
     public class EndConversation : QuestConversation
     {
-        public EndConversation()
-        {
-        }
-
         public override object Message =>
                 /* Thank you for helping me get rid of these vile beasts!
 * You have been rewarded for your good deeds. If you wish to

@@ -6,10 +6,6 @@ namespace Server.Engines.Reports
 {
     public abstract class PersistenceReader
     {
-        public PersistenceReader()
-        {
-        }
-
         public abstract bool HasChild { get; }
         public abstract int GetInt32(string key);
 

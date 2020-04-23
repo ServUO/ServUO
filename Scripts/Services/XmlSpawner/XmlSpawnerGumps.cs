@@ -438,10 +438,6 @@ namespace Server.Mobiles
             public string Typename;
             public int Index;
             public int Color;
-
-            public ReplacementEntry()
-            {
-            }
         }
 
         public XmlSpawnerGump(XmlSpawner spawner, int X, int Y, int extension, int textextension, int newpage)

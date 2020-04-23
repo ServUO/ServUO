@@ -27,10 +27,6 @@ namespace Server.Mobiles
         private static GlobalTownCrierEntryList m_Instance;
         private List<TownCrierEntry> m_Entries;
 
-        public GlobalTownCrierEntryList()
-        {
-        }
-
         public static GlobalTownCrierEntryList Instance
         {
             get

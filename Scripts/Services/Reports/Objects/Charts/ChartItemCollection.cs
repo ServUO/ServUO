@@ -19,14 +19,6 @@ namespace Server.Engines.Reports
     public class ChartItemCollection : System.Collections.CollectionBase
     {
         /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public ChartItemCollection()
-            : base()
-        {
-        }
-
-        /// <summary>
         /// Gets or sets the value of the Server.Engines.Reports.ChartItem at a specific position in the ChartItemCollection.
         /// </summary>
         public Server.Engines.Reports.ChartItem this[int index]

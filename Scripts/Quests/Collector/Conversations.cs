@@ -2,10 +2,6 @@ namespace Server.Engines.Quests.Collector
 {
     public class DontOfferConversation : QuestConversation
     {
-        public DontOfferConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>Elwood looks up from his ale as you greet him.</I><BR><BR>
 * 
@@ -17,10 +13,6 @@ namespace Server.Engines.Quests.Collector
 
     public class DeclineConversation : QuestConversation
     {
-        public DeclineConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>Elwood looks a bit flustered and nearly knocks over his
 * bottle of ale.</I><BR><BR>
@@ -37,10 +29,6 @@ namespace Server.Engines.Quests.Collector
 
     public class AcceptConversation : QuestConversation
     {
-        public AcceptConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>Elwood slaps his knee and grins at you.</I><BR><BR>
 * 
@@ -80,10 +68,6 @@ namespace Server.Engines.Quests.Collector
 
     public class ElwoodDuringFishConversation : QuestConversation
     {
-        public ElwoodDuringFishConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>Elwood looks up as you tap him on the shoulder.</I><BR><BR>
 * 
@@ -97,10 +81,6 @@ namespace Server.Engines.Quests.Collector
 
     public class ReturnPearlsConversation : QuestConversation
     {
-        public ReturnPearlsConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>Elwood jumps slightly when you call his name.</I><BR><BR>
 * 
@@ -128,10 +108,6 @@ namespace Server.Engines.Quests.Collector
 
     public class AlbertaPaintingConversation : QuestConversation
     {
-        public AlbertaPaintingConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>Alberta looks up from the painting she is working on and
 * faces you.</I><BR><BR>
@@ -155,10 +131,6 @@ namespace Server.Engines.Quests.Collector
 
     public class AlbertaStoolConversation : QuestConversation
     {
-        public AlbertaStoolConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>Alberta looks at you sympathetically.</I><BR><BR>
 * 
@@ -174,10 +146,6 @@ namespace Server.Engines.Quests.Collector
 
     public class AlbertaEndPaintingConversation : QuestConversation
     {
-        public AlbertaEndPaintingConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>Alberta stands back from the canvas and surveys her
 * work.</I><BR><BR>
@@ -200,10 +168,6 @@ namespace Server.Engines.Quests.Collector
 
     public class AlbertaAfterPaintingConversation : QuestConversation
     {
-        public AlbertaAfterPaintingConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>Alberta stops cleaning her brushes and looks your way.</I><BR><BR>
 * 
@@ -216,10 +180,6 @@ namespace Server.Engines.Quests.Collector
 
     public class ElwoodDuringPainting1Conversation : QuestConversation
     {
-        public ElwoodDuringPainting1Conversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>Elwood yawns and stretches, then focuses his gaze
 * on you.</I><BR><BR>
@@ -236,10 +196,6 @@ namespace Server.Engines.Quests.Collector
 
     public class ElwoodDuringPainting2Conversation : QuestConversation
     {
-        public ElwoodDuringPainting2Conversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>Elwood drums his fingers on the counter then looks
 * up at you expectantly.</I><BR><BR>
@@ -262,10 +218,6 @@ namespace Server.Engines.Quests.Collector
 
     public class ReturnPaintingConversation : QuestConversation
     {
-        public ReturnPaintingConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>Elwood notices you immediately and waves you over.</I><BR><BR>
 * 
@@ -298,10 +250,6 @@ namespace Server.Engines.Quests.Collector
 
     public class GabrielAutographConversation : QuestConversation
     {
-        public GabrielAutographConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>Gabriel sighs loudly as you address him and stops whatever
 * it was that he was doing.</I><BR><BR>
@@ -329,10 +277,6 @@ namespace Server.Engines.Quests.Collector
 
     public class GabrielNoSheetMusicConversation : QuestConversation
     {
-        public GabrielNoSheetMusicConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>Gabriel does not look happy to see you.</I><BR><BR>
 * 
@@ -345,10 +289,6 @@ namespace Server.Engines.Quests.Collector
 
     public class NoSheetMusicConversation : QuestConversation
     {
-        public NoSheetMusicConversation()
-        {
-        }
-
         public override object Message =>
                 /* Sheet music for a Gabriel Piete song? No, I'm sorry, but we've run out.
 * We might get some more after he performs here again, but right now
@@ -360,10 +300,6 @@ namespace Server.Engines.Quests.Collector
 
     public class GetSheetMusicConversation : QuestConversation
     {
-        public GetSheetMusicConversation()
-        {
-        }
-
         public override object Message =>
                 // The theater impresario hands you some sheet of music for one of Gabriel Piete's songs.
                 1055109;
@@ -375,10 +311,6 @@ namespace Server.Engines.Quests.Collector
 
     public class GabrielSheetMusicConversation : QuestConversation
     {
-        public GabrielSheetMusicConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>Gabriel looks up impatiently as you approach.</I><BR><BR>
 * 
@@ -396,10 +328,6 @@ namespace Server.Engines.Quests.Collector
 
     public class GabrielIgnoreConversation : QuestConversation
     {
-        public GabrielIgnoreConversation()
-        {
-        }
-
         public override object Message =>
                 // <I>Gabriel ignores you.</I>
                 1055118;
@@ -408,10 +336,6 @@ namespace Server.Engines.Quests.Collector
 
     public class ElwoodDuringAutograph1Conversation : QuestConversation
     {
-        public ElwoodDuringAutograph1Conversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>Elwood jumps and almost falls from his stool when you
 * tap his shoulder.</I><BR><BR>
@@ -434,10 +358,6 @@ namespace Server.Engines.Quests.Collector
 
     public class ElwoodDuringAutograph2Conversation : QuestConversation
     {
-        public ElwoodDuringAutograph2Conversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>Elwood seems to be studying the bottom of his bottle of ale
 * as you approach.</I><BR><BR>
@@ -456,10 +376,6 @@ namespace Server.Engines.Quests.Collector
 
     public class ElwoodDuringAutograph3Conversation : QuestConversation
     {
-        public ElwoodDuringAutograph3Conversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>Elwood scratches his ear then notices you.</I><BR><BR>
 * 
@@ -473,10 +389,6 @@ namespace Server.Engines.Quests.Collector
 
     public class ReturnAutographConversation : QuestConversation
     {
-        public ReturnAutographConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>Elwood looks up eagerly as you tell him about the autographed
 * sheet music.</I><BR><BR>
@@ -500,10 +412,6 @@ namespace Server.Engines.Quests.Collector
 
     public class TomasToysConversation : QuestConversation
     {
-        public TomasToysConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>Tomas smiles freely as you speak to him.</I><BR><BR>
 * 
@@ -527,10 +435,6 @@ namespace Server.Engines.Quests.Collector
 
     public class TomasDuringCollectingConversation : QuestConversation
     {
-        public TomasDuringCollectingConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>Tomas greets you warmly as you approach.</I><BR><BR>
 * 
@@ -545,10 +449,6 @@ namespace Server.Engines.Quests.Collector
 
     public class ReturnImagesConversation : QuestConversation
     {
-        public ReturnImagesConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>Tomas grins as you walk toward him.</I><BR><BR>
 * 
@@ -568,10 +468,6 @@ namespace Server.Engines.Quests.Collector
 
     public class ElwoodDuringToys1Conversation : QuestConversation
     {
-        public ElwoodDuringToys1Conversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>You watch as Elwood spins around blissfully on his stool.</I><BR><BR>
 * 
@@ -589,10 +485,6 @@ namespace Server.Engines.Quests.Collector
 
     public class ElwoodDuringToys2Conversation : QuestConversation
     {
-        public ElwoodDuringToys2Conversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>Elwood suddenly stops and beckons you over to him.</I><BR><BR>
 * 
@@ -612,10 +504,6 @@ namespace Server.Engines.Quests.Collector
 
     public class ElwoodDuringToys3Conversation : QuestConversation
     {
-        public ElwoodDuringToys3Conversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>Elwood is singing as you greet him.</I><BR><BR>
 * 
@@ -632,10 +520,6 @@ namespace Server.Engines.Quests.Collector
 
     public class EndConversation : QuestConversation
     {
-        public EndConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>Elwood takes a sip of his ale as you address him.</I><BR><BR>
 * 

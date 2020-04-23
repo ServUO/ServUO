@@ -118,11 +118,6 @@ namespace Server.Mobiles
             public bool ShowExtension;
 
             public bool IgnoreUpdate;
-
-
-            public DefaultEntry()
-            {
-            }
         }
         public static ArrayList DefaultEntryList;
 

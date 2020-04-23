@@ -158,11 +158,6 @@ namespace Server.Gumps
 
     public class RewardOptionList : List<RewardOption>
     {
-        public RewardOptionList()
-            : base()
-        {
-        }
-
         public void Add(int id, TextDefinition cliloc)
         {
             Add(new RewardOption(id, cliloc, null));

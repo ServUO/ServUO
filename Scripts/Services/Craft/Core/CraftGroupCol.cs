@@ -2,10 +2,6 @@ namespace Server.Engines.Craft
 {
     public class CraftGroupCol : System.Collections.CollectionBase
     {
-        public CraftGroupCol()
-        {
-        }
-
         public int Add(CraftGroup craftGroup)
         {
             return List.Add(craftGroup);

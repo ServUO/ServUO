@@ -2,10 +2,6 @@ namespace Server.Engines.Quests.Hag
 {
     public class DontOfferConversation : QuestConversation
     {
-        public DontOfferConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>The ancient, wrinkled hag looks up from her vile-smelling cauldron.
 * Her single, unblinking eye attempts to focus in on you, but to
@@ -29,10 +25,6 @@ namespace Server.Engines.Quests.Hag
 
     public class AcceptConversation : QuestConversation
     {
-        public AcceptConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>Somewhat out of character for the vile old witch, she actually seems
 * delighted that you've accepted her offer.</I><BR><BR>
@@ -59,10 +51,6 @@ namespace Server.Engines.Quests.Hag
 
     public class HagDuringCorpseSearchConversation : QuestConversation
     {
-        public HagDuringCorpseSearchConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>The wrinkled hag looks up at you with venom in her eyes.</I><BR><BR>
 * 
@@ -77,10 +65,6 @@ namespace Server.Engines.Quests.Hag
 
     public class ApprenticeCorpseConversation : QuestConversation
     {
-        public ApprenticeCorpseConversation()
-        {
-        }
-
         public override object Message =>
                 /* You inspect the charred and bloodied corpse, recognizing it from the
 * Hag's description as the lost Apprentice you were tasked to
@@ -102,10 +86,6 @@ namespace Server.Engines.Quests.Hag
 
     public class MurderConversation : QuestConversation
     {
-        public MurderConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>The wrinkled old Hag looks up from her cauldron of boiling
 * innards.</I><BR><BR>
@@ -144,10 +124,6 @@ namespace Server.Engines.Quests.Hag
 
     public class HagDuringImpSearchConversation : QuestConversation
     {
-        public HagDuringImpSearchConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>The sickly old hag looks up from her boiling cauldron.</I><BR><BR>
 * 
@@ -218,10 +194,6 @@ namespace Server.Engines.Quests.Hag
 
     public class ZeefzorpulConversation : QuestConversation
     {
-        public ZeefzorpulConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>In a puff of smoke that smells of brimstone, the imp Zeefzorpul
 * appears.</I><BR><BR>
@@ -260,10 +232,6 @@ namespace Server.Engines.Quests.Hag
 
     public class RecipeConversation : QuestConversation
     {
-        public RecipeConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>The wart-covered witch looks up from pouring fetid scraps of meat
 * into her cauldron.</I><BR><BR>
@@ -292,10 +260,6 @@ namespace Server.Engines.Quests.Hag
 
     public class HagDuringIngredientsConversation : QuestConversation
     {
-        public HagDuringIngredientsConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>The ancient crone looks up from her bubbling brew, staring you down
 * with her one good eye.</I><BR><BR>
@@ -321,10 +285,6 @@ namespace Server.Engines.Quests.Hag
 
     public class BlackheartFirstConversation : QuestConversation
     {
-        public BlackheartFirstConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>The bawdy old pirate captain looks up from his bottle of Wild Harpy
 * whiskey, as drunk as any man you've ever seen.<BR><BR>
@@ -575,10 +535,6 @@ namespace Server.Engines.Quests.Hag
 
     public class EndConversation : QuestConversation
     {
-        public EndConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>The horrible wretch of a witch looks up from her vile experiments
 * and focuses her one good eye on you.</I><BR><BR>
@@ -622,10 +578,6 @@ namespace Server.Engines.Quests.Hag
 
     public class RecentlyFinishedConversation : QuestConversation
     {
-        public RecentlyFinishedConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>The wrinkled old crone stops stirring her noxious stew, looking up at
 * you with an annoyed expression on her face.</I><BR><BR>

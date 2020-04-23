@@ -79,10 +79,6 @@ namespace Server.Items
         {
             public override int MessageCliloc => 1155661;
 
-            public DoomPlaquePrompt()
-            {
-            }
-
             public override void OnResponse(Mobile from, string text)
             {
                 if (!string.IsNullOrEmpty(text) && text.Trim().ToLower() == "wolfgang")

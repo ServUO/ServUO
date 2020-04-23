@@ -229,9 +229,6 @@ namespace Server.Gumps
         private class NameComparer : IComparer<RaffleEntry>
         {
             public static readonly IComparer<RaffleEntry> Instance = new NameComparer();
-            public NameComparer()
-            {
-            }
 
             public int Compare(RaffleEntry x, RaffleEntry y)
             {
@@ -257,9 +254,6 @@ namespace Server.Gumps
         private class AccountComparer : IComparer<RaffleEntry>
         {
             public static readonly IComparer<RaffleEntry> Instance = new AccountComparer();
-            public AccountComparer()
-            {
-            }
 
             public int Compare(RaffleEntry x, RaffleEntry y)
             {
@@ -295,9 +289,6 @@ namespace Server.Gumps
         private class AddressComparer : IComparer<RaffleEntry>
         {
             public static readonly IComparer<RaffleEntry> Instance = new AddressComparer();
-            public AddressComparer()
-            {
-            }
 
             public int Compare(RaffleEntry x, RaffleEntry y)
             {

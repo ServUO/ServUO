@@ -19,14 +19,6 @@ namespace Server.Engines.Reports
     public class SnapshotCollection : System.Collections.CollectionBase
     {
         /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public SnapshotCollection()
-            : base()
-        {
-        }
-
-        /// <summary>
         /// Gets or sets the value of the Server.Engines.Reports.Snapshot at a specific position in the SnapshotCollection.
         /// </summary>
         public Server.Engines.Reports.Snapshot this[int index]

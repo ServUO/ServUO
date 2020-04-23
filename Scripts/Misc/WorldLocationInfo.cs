@@ -23,9 +23,9 @@ namespace Server
         }
 
         public static WorldLocationInfo[][] Locations => m_Locations;
-        private static readonly WorldLocationInfo[][] m_Locations = new WorldLocationInfo[][]
+        private static readonly WorldLocationInfo[][] m_Locations = new[]
         {
-            new WorldLocationInfo[] // Felucca
+            new[] // Felucca
 			{
                 new WorldLocationInfo("an island southeast of Britain", new Rectangle2D(1620, 1900, 594, 150),
                                                                         new Rectangle2D(1810, 2040, 200, 120),
@@ -85,7 +85,7 @@ namespace Server
 
                 new WorldLocationInfo("somewhere in the Lost Lands", new Rectangle2D(5120, 2300, 1020, 1800))
             },
-            new WorldLocationInfo[] // Trammel
+            new[] // Trammel
 			{
                 new WorldLocationInfo("an island southeast of Britain", new Rectangle2D(1620, 1900, 594, 150),
                                                                         new Rectangle2D(1810, 2040, 200, 120),
@@ -147,19 +147,19 @@ namespace Server
 
                 new WorldLocationInfo("somewhere in the Lost Lands", new Rectangle2D(5120, 2300, 1020, 1800))
             },
-            new WorldLocationInfo[] // Ilshenar
+            new[] // Ilshenar
 			{
                 new WorldLocationInfo("somewhere in Ilshenar", new Rectangle2D(0, 0, 2300, 1598))
             },
-            new WorldLocationInfo[] // Malas
+            new[] // Malas
 			{
                 new WorldLocationInfo("somewhere in Malas", new Rectangle2D(0, 0, 2558, 2046))
             },
-            new WorldLocationInfo[] // Tokuno
+            new[] // Tokuno
 			{
                 new WorldLocationInfo("somewhere in Tokuno", new Rectangle2D(0, 0, 1446, 1446))
             },
-            new WorldLocationInfo[] // TerMur
+            new[] // TerMur
 			{
                 new WorldLocationInfo("somewhere in TerMur", new Rectangle2D(270, 2754, 1000, 1339))
             },
