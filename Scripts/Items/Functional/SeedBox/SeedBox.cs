@@ -4,6 +4,7 @@ using Server.Gumps;
 using Server.Items;
 using Server.Mobiles;
 using Server.Multis;
+using Server.Gumps;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -140,8 +141,6 @@ namespace Server.Engines.Plants
                 {
                     entry.Seed.Amount += seed.Amount;
                     seed.Delete();
-
-                    entry.Seed.InvalidateProperties();
                 }
                 else if (UniqueCount < MaxUnique)
                 {
@@ -149,7 +148,6 @@ namespace Server.Engines.Plants
                     DropItem(seed);
 
                     seed.Movable = false;
-                    seed.InvalidateProperties();
                 }
                 else
                 {
@@ -158,6 +156,8 @@ namespace Server.Engines.Plants
 
                 if (entry != null)
                 {
+                    InvalidateProperties();
+
                     if (Entries.Contains(entry))
                     {
                         if (index > -1 && index < Entries.Count - 1)
@@ -180,13 +180,22 @@ namespace Server.Engines.Plants
 
                     if (from is PlayerMobile)
                     {
-                        SeedBoxGump gump = new SeedBoxGump((PlayerMobile)from, this);
-                        gump.CheckPage(entry);
+                        var gump = from.FindGump<SeedBoxGump>();
 
-                        BaseGump.SendGump(gump);
+                        if (gump != null)
+                        {
+                            gump.CheckPage(entry);
+                            gump.Refresh();
+                        }
+                        else
+                        {
+                            gump = new SeedBoxGump((PlayerMobile)from, this);
+                            gump.CheckPage(entry);
+
+                            BaseGump.SendGump(gump);
+                        }
                     }
 
-                    InvalidateProperties();
                     return true;
                 }
             }
@@ -243,6 +252,11 @@ namespace Server.Engines.Plants
 
         public void DropSeed(Mobile from, SeedEntry entry, int amount)
         {
+            if (!from.InRange(GetWorldLocation(), 3))
+            {
+                return;
+            }
+
             if (amount > entry.Seed.Amount)
                 amount = entry.Seed.Amount;
 

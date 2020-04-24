@@ -6,10 +6,6 @@ namespace Server.Engines.Quests.Doom
 {
     public class CollectBonesObjective : QuestObjective
     {
-        public CollectBonesObjective()
-        {
-        }
-
         public override object Message =>
                 /* Find 1000 Daemon bones and hand them
 * to Victoria as you find them.

@@ -8,10 +8,6 @@ namespace Server.Mobiles
         private readonly List<GenericBuyInfo> m_BuyInfo = new InternalBuyInfo();
         private readonly IShopSellInfo m_SellInfo = new InternalSellInfo();
 
-        public SBGardener()
-        {
-        }
-
         public override IShopSellInfo SellInfo => m_SellInfo;
         public override List<GenericBuyInfo> BuyInfo => m_BuyInfo;
 

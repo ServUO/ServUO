@@ -25,9 +25,6 @@ namespace Server.Items
         private int m_Maintain;
         private int m_Improve;
         private int m_Added;
-        public AquariumState()
-        {
-        }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int State

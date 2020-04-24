@@ -19,10 +19,6 @@ namespace Server.Spells.SkillMasteries
 
         private Dictionary<Mobile, Timer> _Table;
 
-        public PierceSpell()
-        {
-        }
-
         public override bool Validate(Mobile from)
         {
             if (!CheckWeapon(from))

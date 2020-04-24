@@ -734,10 +734,6 @@ namespace Server
     [AttributeUsage(AttributeTargets.Class)]
     public class FurnitureAttribute : Attribute
     {
-        public FurnitureAttribute()
-        {
-        }
-
         private static bool IsNotChoppables(Item item)
         {
             return _NotChoppables.Any(t => t == item.GetType());

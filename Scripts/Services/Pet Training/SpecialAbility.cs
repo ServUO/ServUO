@@ -26,10 +26,6 @@ namespace Server.Mobiles
 
         public abstract void DoEffects(BaseCreature creature, Mobile defender, ref int damage);
 
-        public SpecialAbility()
-        {
-        }
-
         public static void CheckCombatTrigger(Mobile attacker, Mobile defender, ref int damage, DamageType type)
         {
             if (defender == null)
@@ -331,10 +327,6 @@ namespace Server.Mobiles
         public override bool TriggerOnDoMeleeDamage => true;
         public override int ManaCost => 30;
 
-        public AngryFire()
-        {
-        }
-
         public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
         {
             int d = Utility.RandomMinMax(30, 40);
@@ -354,10 +346,6 @@ namespace Server.Mobiles
         public override int ManaCost => 30;
 
         private static Dictionary<Mobile, ExpireTimer> _Table;
-
-        public ConductiveBlast()
-        {
-        }
 
         public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
         {
@@ -437,10 +425,6 @@ namespace Server.Mobiles
 
         private static Dictionary<Mobile, ExpireTimer> _Table;
 
-        public FlurryForce()
-        {
-        }
-
         public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
         {
             ExpireTimer timer = null;
@@ -516,10 +500,6 @@ namespace Server.Mobiles
         public override int MaxRange => 12;
         public override bool TriggerOnThink => true;
         public override int ManaCost => 30;
-
-        public DragonBreath()
-        {
-        }
 
         public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
         {
@@ -1018,10 +998,6 @@ namespace Server.Mobiles
         public override int ManaCost => 25;
         public override bool TriggerOnDoMeleeDamage => true;
 
-        public HowlOfCacophony()
-        {
-        }
-
         public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
         {
             if (_Table != null && _Table.ContainsKey(defender))
@@ -1078,10 +1054,6 @@ namespace Server.Mobiles
         public override int ManaCost => 30;
 
         public static Dictionary<Mobile, ExpireTimer> _Table;
-
-        public GraspingClaw()
-        {
-        }
 
         public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
         {
@@ -1158,10 +1130,6 @@ namespace Server.Mobiles
 
         public static Dictionary<Mobile, ExpireTimer> _Table;
 
-        public Inferno()
-        {
-        }
-
         public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
         {
             if (_Table == null)
@@ -1236,10 +1204,6 @@ namespace Server.Mobiles
         public override bool TriggerOnDoMeleeDamage => true;
         public override int ManaCost => 30;
 
-        public LightningForce()
-        {
-        }
-
         public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
         {
             Server.Effects.SendBoltEffect(defender, true);
@@ -1251,10 +1215,6 @@ namespace Server.Mobiles
     {
         public override bool TriggerOnGotMeleeDamage => true;
         public override bool TriggerOnDoMeleeDamage => true;
-
-        public ManaDrain()
-        {
-        }
 
         public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
         {
@@ -1294,10 +1254,6 @@ namespace Server.Mobiles
         public static Dictionary<Mobile, InternalTimer> _Table;
         public override bool TriggerOnDoMeleeDamage => true;
         public override int ManaCost => 30;
-
-        public RagingBreath()
-        {
-        }
 
         public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
         {
@@ -1400,10 +1356,6 @@ namespace Server.Mobiles
         public override bool TriggerOnGotSpellDamage => true;
         public override int ManaCost => 30;
 
-        public Repel()
-        {
-        }
-
         public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
         {
             defender.SendLocalizedMessage(1070844); // The creature repels the attack back at you.
@@ -1419,10 +1371,6 @@ namespace Server.Mobiles
         private static Dictionary<Mobile, InternalTimer> _Table;
         public override int ManaCost => 25;
         public override bool TriggerOnDoMeleeDamage => true;
-
-        public SearingWounds()
-        {
-        }
 
         public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
         {
@@ -1473,10 +1421,6 @@ namespace Server.Mobiles
         public override bool TriggerOnDoMeleeDamage => true;
         public override int ManaCost => 30;
 
-        public StealLife()
-        {
-        }
-
         public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
         {
             defender.FixedParticles(0x374A, 1, 15, 5054, 23, 7, EffectLayer.Head);
@@ -1519,10 +1463,6 @@ namespace Server.Mobiles
         public override int ManaCost => 30;
         public override bool TriggerOnDoMeleeDamage => true;
         public override MagicalAbility RequiredSchool => MagicalAbility.Poisoning;
-
-        public VenomousBite()
-        {
-        }
 
         public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
         {
@@ -1571,10 +1511,6 @@ namespace Server.Mobiles
         public override int ManaCost => 20;
 
         private static Dictionary<Mobile, InternalTimer> _Table;
-
-        public ViciousBite()
-        {
-        }
 
         public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
         {
@@ -1630,10 +1566,6 @@ namespace Server.Mobiles
 
         public override bool TriggerOnDoMeleeDamage => true;
         public override int ManaCost => 30;
-
-        public RuneCorruption()
-        {
-        }
 
         public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
         {
@@ -1745,10 +1677,6 @@ namespace Server.Mobiles
 
         public static Dictionary<Mobile, InternalTimer> _Table;
 
-        public LifeLeech()
-        {
-        }
-
         public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
         {
             if (_Table == null)
@@ -1826,10 +1754,6 @@ namespace Server.Mobiles
         public override bool TriggerOnDoMeleeDamage => true;
         public override bool TriggerOnGotMeleeDamage => true;
 
-        public Webbing()
-        {
-        }
-
         public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
         {
             if (creature.Map == null)
@@ -1868,10 +1792,6 @@ namespace Server.Mobiles
         public override int ManaCost => 0;
 
         private static Dictionary<Mobile, ExpireTimer> _Table;
-
-        public Anemia()
-        {
-        }
 
         public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
         {
@@ -1963,10 +1883,6 @@ namespace Server.Mobiles
 
         private static Dictionary<Mobile, ExpireTimer> _Table;
 
-        public BloodDisease()
-        {
-        }
-
         public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
         {
             if (_Table == null)
@@ -2037,10 +1953,6 @@ namespace Server.Mobiles
 
         public static List<Mobile> _Table;
 
-        public StickySkin()
-        {
-        }
-
         public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
         {
             //TODO: Effects/Sound
@@ -2075,10 +1987,6 @@ namespace Server.Mobiles
         public override int ManaCost => 30;
         public override bool TriggerOnDoMeleeDamage => true;
 
-        public TailSwipe()
-        {
-        }
-
         public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
         {
             if (Utility.RandomBool())
@@ -2110,10 +2018,6 @@ namespace Server.Mobiles
         public override int ManaCost => 0;
 
         private static Dictionary<Mobile, ExpireTimer> _Table;
-
-        public Rage()
-        {
-        }
 
         public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
         {
@@ -2188,10 +2092,6 @@ namespace Server.Mobiles
         public override TimeSpan CooldownDuration => TimeSpan.MinValue;
         public override bool NaturalAbility => true;
 
-        public Heal()
-        {
-        }
-
         public override bool Trigger(BaseCreature creature, Mobile defender, ref int damage)
         {
             if (CheckMana(creature) && Validate(creature, defender) && TriggerChance >= Utility.RandomDouble())
@@ -2222,10 +2122,6 @@ namespace Server.Mobiles
         public override bool NaturalAbility => true;
         public override int ManaCost => 0;
 
-        public PoisonSpit()
-        {
-        }
-
         public override void DoEffects(BaseCreature creature, Mobile target, ref int damage)
         {
             Effects.SendMovingEffect(creature, target, 0x36D4, 5, 0, false, true, 63, 0);
@@ -2247,10 +2143,6 @@ namespace Server.Mobiles
         public override bool NaturalAbility => true;
         public override int ManaCost => 0;
         public override TimeSpan CooldownDuration => TimeSpan.FromMinutes(Utility.RandomMinMax(1, 3));
-
-        public TrueFear()
-        {
-        }
 
         public override void DoEffects(BaseCreature creature, Mobile target, ref int damage)
         {
@@ -2290,10 +2182,6 @@ namespace Server.Mobiles
         public override double TriggerChance => 0.3;
         public override TimeSpan CooldownDuration => TimeSpan.FromSeconds(10);
 
-        public ColossalBlow()
-        {
-        }
-
         public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
         {
             defender.Animate(AnimationType.Die, 0);
@@ -2326,10 +2214,6 @@ namespace Server.Mobiles
         public override bool TriggerOnGotMeleeDamage => true;
         public override bool NaturalAbility => true;
         public override TimeSpan CooldownDuration => TimeSpan.FromSeconds(1);
-
-        public LifeDrain()
-        {
-        }
 
         public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
         {
@@ -2391,10 +2275,6 @@ namespace Server.Mobiles
         public override int ManaCost => 0;
         public override double TriggerChance => .5;
         public override TimeSpan CooldownDuration => TimeSpan.FromSeconds(15);
-
-        public ColossalRage()
-        {
-        }
 
         public override bool Validate(BaseCreature attacker, Mobile defender)
         {

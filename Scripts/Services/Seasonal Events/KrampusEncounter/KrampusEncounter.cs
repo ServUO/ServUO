@@ -123,10 +123,6 @@ namespace Server.Engines.SeasonalEvents
         [CommandProperty(AccessLevel.GameMaster)]
         public Map SpawnMap { get; set; }
 
-        public KrampusEncounter()
-        {
-        }
-
         public void OnTradeComplete(Mobile m, TradeEntry entry)
         {
             bool distCheck = entry.Distance > 0;

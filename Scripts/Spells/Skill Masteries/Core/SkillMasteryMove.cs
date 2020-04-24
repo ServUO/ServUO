@@ -13,10 +13,6 @@ namespace Server.Spells.SkillMasteries
         public virtual TimeSpan CooldownPeriod => TimeSpan.MinValue;
         public override bool ValidatesDuringHit => false;
 
-        public SkillMasteryMove()
-        {
-        }
-
         public override void SendAbilityMessage(Mobile m)
         {
             if (AbilityMessage.Number > 0)

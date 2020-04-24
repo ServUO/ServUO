@@ -21,10 +21,6 @@ namespace Server.Engines.TreasuresOfDoom
 
         public static VaseSpawner Instance { get; set; }
 
-        public VaseSpawner()
-        {
-        }
-
         public void Remove(ISpawnable spawn)
         {
             if (spawn is AncientClayVase)

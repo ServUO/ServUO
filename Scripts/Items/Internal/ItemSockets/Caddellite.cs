@@ -10,10 +10,6 @@ namespace Server.Items
 {
     public class Caddellite : ItemSocket
     {
-        public Caddellite()
-        {
-        }
-
         public override void GetProperties(ObjectPropertyList list)
         {
             if (Owner != null && !(Owner is ICombatEquipment) && !(Owner is Spellbook))

@@ -15,10 +15,6 @@ namespace Server.Items
 
         public override TimeSpan TickDuration => TimeSpan.FromSeconds(5);
 
-        public HonestyItemSocket()
-        {
-        }
-
         public void StartHonestyTimer()
         {
             HonestyTimerTicking = true;

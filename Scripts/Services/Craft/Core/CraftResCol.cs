@@ -2,10 +2,6 @@ namespace Server.Engines.Craft
 {
     public class CraftResCol : System.Collections.CollectionBase
     {
-        public CraftResCol()
-        {
-        }
-
         public void Add(CraftRes craftRes)
         {
             List.Add(craftRes);

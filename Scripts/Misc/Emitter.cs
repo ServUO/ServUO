@@ -463,7 +463,7 @@ namespace Server
         {
             Type active = Active;
 
-            MethodInfo compareTo = active.GetMethod("CompareTo", new Type[] { active });
+            MethodInfo compareTo = active.GetMethod("CompareTo", new[] { active });
 
             if (compareTo == null)
             {
@@ -498,7 +498,7 @@ namespace Server
 
                 if (ifaces.Length > 0)
                 {
-                    compareTo = ifaces[0].GetMethod("CompareTo", new Type[] { active });
+                    compareTo = ifaces[0].GetMethod("CompareTo", new[] { active });
                 }
                 else
                 {
@@ -508,7 +508,7 @@ namespace Server
                     }, null);
 
                     if (ifaces.Length > 0)
-                        compareTo = ifaces[0].GetMethod("CompareTo", new Type[] { active });
+                        compareTo = ifaces[0].GetMethod("CompareTo", new[] { active });
                 }
             }
 

@@ -19,10 +19,6 @@ namespace Server.Engines.Quests.Collector
 
     public class FishPearlsObjective : QuestObjective
     {
-        public FishPearlsObjective()
-        {
-        }
-
         public override object Message =>
                 // Fish up shellfish from Lake Haven and collect rainbow pearls.
                 1055084;
@@ -52,10 +48,6 @@ namespace Server.Engines.Quests.Collector
 
     public class ReturnPearlsObjective : QuestObjective
     {
-        public ReturnPearlsObjective()
-        {
-        }
-
         public override object Message =>
                 /* You've collected enough rainbow pearls. Speak to
 * Elwood to give them to him and get your next task.
@@ -69,10 +61,6 @@ namespace Server.Engines.Quests.Collector
 
     public class FindAlbertaObjective : QuestObjective
     {
-        public FindAlbertaObjective()
-        {
-        }
-
         public override object Message =>
                 // Go to Vesper and speak to Alberta Giacco at the Colored Canvas.
                 1055091;
@@ -127,10 +115,6 @@ namespace Server.Engines.Quests.Collector
 
     public class ReturnPaintingObjective : QuestObjective
     {
-        public ReturnPaintingObjective()
-        {
-        }
-
         public override object Message =>
                 // Return to Elwood and let him know that the painting is complete.
                 1055099;
@@ -142,10 +126,6 @@ namespace Server.Engines.Quests.Collector
 
     public class FindGabrielObjective : QuestObjective
     {
-        public FindGabrielObjective()
-        {
-        }
-
         public override object Message =>
                 /* Go to Britain and obtain the autograph of renowned
 * minstrel, Gabriel Piete. He is often found at the Conservatory of Music.
@@ -236,10 +216,6 @@ namespace Server.Engines.Quests.Collector
 
     public class ReturnSheetMusicObjective : QuestObjective
     {
-        public ReturnSheetMusicObjective()
-        {
-        }
-
         public override object Message =>
                 // Speak to Gabriel to have him autograph the sheet music.
                 1055110;
@@ -251,10 +227,6 @@ namespace Server.Engines.Quests.Collector
 
     public class ReturnAutographObjective : QuestObjective
     {
-        public ReturnAutographObjective()
-        {
-        }
-
         public override object Message =>
                 // Speak to Elwood to give him the autographed sheet music.
                 1055114;
@@ -266,10 +238,6 @@ namespace Server.Engines.Quests.Collector
 
     public class FindTomasObjective : QuestObjective
     {
-        public FindTomasObjective()
-        {
-        }
-
         public override object Message =>
                 // Go to Trinsic and speak to Tomas O'Neerlan, the famous toymaker.
                 1055117;
@@ -415,10 +383,6 @@ namespace Server.Engines.Quests.Collector
 
     public class ReturnImagesObjective : QuestObjective
     {
-        public ReturnImagesObjective()
-        {
-        }
-
         public override object Message =>
                 /* You now have all of the creature images you need.
 * Return to Tomas O'Neerlan so that he can make the toy figurines.
@@ -432,10 +396,6 @@ namespace Server.Engines.Quests.Collector
 
     public class ReturnToysObjective : QuestObjective
     {
-        public ReturnToysObjective()
-        {
-        }
-
         public override object Message =>
                 // Return to Elwood with news that the toy figurines will be delivered when ready.
                 1055132;
@@ -443,10 +403,6 @@ namespace Server.Engines.Quests.Collector
 
     public class MakeRoomObjective : QuestObjective
     {
-        public MakeRoomObjective()
-        {
-        }
-
         public override object Message =>
                 // Return to Elwood for your reward when you have some room in your backpack.
                 1055136;

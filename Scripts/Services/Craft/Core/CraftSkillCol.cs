@@ -2,10 +2,6 @@ namespace Server.Engines.Craft
 {
     public class CraftSkillCol : System.Collections.CollectionBase
     {
-        public CraftSkillCol()
-        {
-        }
-
         public void Add(CraftSkill craftSkill)
         {
             List.Add(craftSkill);

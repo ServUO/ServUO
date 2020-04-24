@@ -5,10 +5,6 @@ namespace Server.Engines.Quests.Zento
 {
     public class FirstKillObjective : QuestObjective
     {
-        public FirstKillObjective()
-        {
-        }
-
         public override object Message =>
                 // Kill 10 Deathwatch Beetle Hatchlings and return to Ansella Gryen.
                 1063316;
@@ -43,10 +39,6 @@ namespace Server.Engines.Quests.Zento
 
     public class SecondKillObjective : QuestObjective
     {
-        public SecondKillObjective()
-        {
-        }
-
         public override object Message =>
                 /* Great job! One less terrible hatchling in the Waste!<BR><BR>
 * 
@@ -136,10 +128,6 @@ namespace Server.Engines.Quests.Zento
 
     public class ReturnObjective : QuestObjective
     {
-        public ReturnObjective()
-        {
-        }
-
         public override object Message =>
                 // Return to Ansella Gryen for your reward.
                 1063313;

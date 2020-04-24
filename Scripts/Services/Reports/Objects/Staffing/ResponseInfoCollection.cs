@@ -19,14 +19,6 @@ namespace Server.Engines.Reports
     public class ResponseInfoCollection : System.Collections.CollectionBase
     {
         /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public ResponseInfoCollection()
-            : base()
-        {
-        }
-
-        /// <summary>
         /// Gets or sets the value of the Server.Engines.Reports.ResponseInfo at a specific position in the ResponseInfoCollection.
         /// </summary>
         public Server.Engines.Reports.ResponseInfo this[int index]

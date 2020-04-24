@@ -5,10 +5,6 @@ namespace Server.Engines.Quests.Matriarch
 {
     public class KillInfiltratorsObjective : QuestObjective
     {
-        public KillInfiltratorsObjective()
-        {
-        }
-
         public override object Message =>
                 // Kill 7 black/red solen infiltrators.
                 ((SolenMatriarchQuest)System).RedSolen ? 1054086 : 1054085;
@@ -66,10 +62,6 @@ namespace Server.Engines.Quests.Matriarch
 
     public class ReturnAfterKillsObjective : QuestObjective
     {
-        public ReturnAfterKillsObjective()
-        {
-        }
-
         public override object Message =>
                 /* You've completed your task of slaying solen infiltrators. Return to the
 * Matriarch who gave you this task.
@@ -83,10 +75,6 @@ namespace Server.Engines.Quests.Matriarch
 
     public class GatherWaterObjective : QuestObjective
     {
-        public GatherWaterObjective()
-        {
-        }
-
         public override object Message =>
                 // Gather 8 gallons of water for the water vats of the solen ant lair.
                 1054092;
@@ -114,10 +102,6 @@ namespace Server.Engines.Quests.Matriarch
 
     public class ReturnAfterWaterObjective : QuestObjective
     {
-        public ReturnAfterWaterObjective()
-        {
-        }
-
         public override object Message =>
                 // You've completed your task of gathering water. Return to the Matriarch who gave you this task.
                 1054095;
@@ -139,10 +123,6 @@ namespace Server.Engines.Quests.Matriarch
 
     public class ProcessFungiObjective : QuestObjective
     {
-        public ProcessFungiObjective()
-        {
-        }
-
         public override object Message =>
                 // Give the Solen Matriarch a stack of zoogi fungus to process into powder of translocation.
                 1054098;
@@ -161,10 +141,6 @@ namespace Server.Engines.Quests.Matriarch
 
     public class GetRewardObjective : QuestObjective
     {
-        public GetRewardObjective()
-        {
-        }
-
         public override object Message =>
                 // Return to the solen matriarch for your reward.
                 1054149;

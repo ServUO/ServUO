@@ -2,10 +2,6 @@ namespace Server.Engines.Quests.Naturalist
 {
     public class DontOfferConversation : QuestConversation
     {
-        public DontOfferConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>The Naturalist looks up from his scribbled notes.</I><BR><BR>
 * 
@@ -24,10 +20,6 @@ namespace Server.Engines.Quests.Naturalist
 
     public class AcceptConversation : QuestConversation
     {
-        public AcceptConversation()
-        {
-        }
-
         public override object Message =>
                 /* Ah! This is splendid news! Each time an assistant travels into the
 * Solen Hive to gather information for me, I feel as if I am one step
@@ -48,10 +40,6 @@ namespace Server.Engines.Quests.Naturalist
 
     public class NaturalistDuringStudyConversation : QuestConversation
     {
-        public NaturalistDuringStudyConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>The Naturalist looks up from his notes with a frustrated look
 * on his face.</I><BR><BR>
@@ -73,10 +61,6 @@ namespace Server.Engines.Quests.Naturalist
 
     public class EndConversation : QuestConversation
     {
-        public EndConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>The Naturalist looks up from his notes with a pleased expression
 * on his face.</I><BR><BR>
@@ -108,10 +92,6 @@ namespace Server.Engines.Quests.Naturalist
 
     public class SpecialEndConversation : QuestConversation
     {
-        public SpecialEndConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>The Naturalist looks up from his notes with an ecstatic look upon
 * his face.</I><BR><BR>
@@ -148,10 +128,6 @@ namespace Server.Engines.Quests.Naturalist
 
     public class FullBackpackConversation : QuestConversation
     {
-        public FullBackpackConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>The Naturalist looks at you with a friendly expression.</I><BR><BR>
 * 

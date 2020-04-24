@@ -55,9 +55,6 @@ namespace Server.Items
     [AttributeUsage(AttributeTargets.Class)]
     public class DynamicFlipingAttribute : Attribute
     {
-        public DynamicFlipingAttribute()
-        {
-        }
     }
 
     [AttributeUsage(AttributeTargets.Class)]

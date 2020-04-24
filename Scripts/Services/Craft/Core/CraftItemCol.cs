@@ -4,10 +4,6 @@ namespace Server.Engines.Craft
 {
     public class CraftItemCol : System.Collections.CollectionBase
     {
-        public CraftItemCol()
-        {
-        }
-
         public int Add(CraftItem craftItem)
         {
             return List.Add(craftItem);

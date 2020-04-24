@@ -21,10 +21,6 @@ namespace Server.Spells.SkillMasteries
 
         private Dictionary<Mobile, FistsOfFuryContext> _Table;
 
-        public FistsOfFurySpell()
-        {
-        }
-
         public override bool Validate(Mobile from)
         {
             if (!CheckWeapon(from))

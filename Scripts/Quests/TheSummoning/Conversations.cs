@@ -4,10 +4,6 @@ namespace Server.Engines.Quests.Doom
 {
     public class AcceptConversation : QuestConversation
     {
-        public AcceptConversation()
-        {
-        }
-
         public override object Message =>
                 /* You have accepted Victoria's help.  She requires 1000 Daemon
 * bones to summon the devourer.<BR><BR>
@@ -29,10 +25,6 @@ namespace Server.Engines.Quests.Doom
 
     public class VanquishDaemonConversation : QuestConversation
     {
-        public VanquishDaemonConversation()
-        {
-        }
-
         public override object Message =>
                 /* Well done brave soul.   I shall summon the beast to the circle
 * of stones just South-East of here.  Take great care - the beast

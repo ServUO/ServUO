@@ -8,9 +8,6 @@ namespace Server.Spells.Ninjitsu
     public class DeathStrike : NinjaMove
     {
         private static readonly Hashtable m_Table = new Hashtable();
-        public DeathStrike()
-        {
-        }
 
         public override int BaseMana => 30;
         public override double RequiredSkill => 85.0;

@@ -256,9 +256,6 @@ namespace Server.Mobiles
 
             public class InternalSellInfo : GenericSellInfo
             {
-                public InternalSellInfo()
-                {
-                }
             }
         }
 
@@ -349,9 +346,6 @@ namespace Server.Mobiles
 
             public class InternalSellInfo : GenericSellInfo
             {
-                public InternalSellInfo()
-                {
-                }
             }
         }
 

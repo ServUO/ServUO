@@ -19,14 +19,6 @@ namespace Server.Engines.Reports
     public class QueueStatusCollection : System.Collections.CollectionBase
     {
         /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public QueueStatusCollection()
-            : base()
-        {
-        }
-
-        /// <summary>
         /// Gets or sets the value of the Server.Engines.Reports.QueueStatus at a specific position in the QueueStatusCollection.
         /// </summary>
         public Server.Engines.Reports.QueueStatus this[int index]

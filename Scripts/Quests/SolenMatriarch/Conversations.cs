@@ -59,10 +59,6 @@ namespace Server.Engines.Quests.Matriarch
 
     public class AcceptConversation : QuestConversation
     {
-        public AcceptConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>The Solen Matriarch looks pleased that you've accepted.</I><BR><BR>
 * 
@@ -80,10 +76,6 @@ namespace Server.Engines.Quests.Matriarch
 
     public class DuringKillInfiltratorsConversation : QuestConversation
     {
-        public DuringKillInfiltratorsConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>The Solen Matriarch looks up as you approach.</I><BR><BR>
 * 
@@ -98,10 +90,6 @@ namespace Server.Engines.Quests.Matriarch
 
     public class GatherWaterConversation : QuestConversation
     {
-        public GatherWaterConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>The Solen Matriarch nods favorably as you approach her.</I><BR><BR>
 * 
@@ -123,10 +111,6 @@ namespace Server.Engines.Quests.Matriarch
 
     public class DuringWaterGatheringConversation : QuestConversation
     {
-        public DuringWaterGatheringConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>The Solen Matriarch looks up as you approach.</I><BR><BR>
 * 
@@ -212,10 +196,6 @@ namespace Server.Engines.Quests.Matriarch
 
     public class DuringFungiProcessConversation : QuestConversation
     {
-        public DuringFungiProcessConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>The Solen Matriarch smiles as you greet her.</I><BR><BR>
 * 
@@ -259,10 +239,6 @@ namespace Server.Engines.Quests.Matriarch
 
     public class EndConversation : QuestConversation
     {
-        public EndConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>The Solen Matriarch smiles as you greet her.</I><BR><BR>
 * 

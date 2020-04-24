@@ -10,8 +10,6 @@ namespace Server.Mobiles
         private readonly List<GenericBuyInfo> m_BuyInfo;
         private readonly IShopSellInfo m_SellInfo = new InternalSellInfo();
 
-
-
         public SBShipwright(Mobile m)
         {
             if (m != null)

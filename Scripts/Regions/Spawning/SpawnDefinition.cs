@@ -10,10 +10,6 @@ namespace Server.Regions
 {
     public abstract class SpawnDefinition
     {
-        protected SpawnDefinition()
-        {
-        }
-
         public static SpawnDefinition GetSpawnDefinition(XmlElement xml)
         {
             switch (xml.Name)

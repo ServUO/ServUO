@@ -16,10 +16,6 @@ namespace Server.Spells.SkillMasteries
 
         private static Dictionary<Mobile, int> _Table;
 
-        public StaggerSpell()
-        {
-        }
-
         public override bool Validate(Mobile from)
         {
             if (!CheckWeapon(from))

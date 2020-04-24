@@ -13,10 +13,6 @@ namespace Server.Engines.Craft
 
     public class Resmelt
     {
-        public Resmelt()
-        {
-        }
-
         public static void Do(Mobile from, CraftSystem craftSystem, ITool tool)
         {
             int num = craftSystem.CanCraft(from, tool, null);

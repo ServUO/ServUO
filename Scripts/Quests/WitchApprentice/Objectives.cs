@@ -117,10 +117,6 @@ namespace Server.Engines.Quests.Hag
 
     public class FindGrizeldaAboutMurderObjective : QuestObjective
     {
-        public FindGrizeldaAboutMurderObjective()
-        {
-        }
-
         public override object Message =>
                 /* Return to the Hag to tell her of the vile imp Zeefzorpul's role
 * in the murder of her Apprentice, and the subsequent theft of a mysterious
@@ -269,10 +265,6 @@ namespace Server.Engines.Quests.Hag
 
     public class ReturnRecipeObjective : QuestObjective
     {
-        public ReturnRecipeObjective()
-        {
-        }
-
         public override object Message =>
                 /* Return to the old Hag and tell her you have recovered her Magic
 * Brew Recipe from the bizarre imp named Zeefzorpul.
@@ -464,10 +456,6 @@ namespace Server.Engines.Quests.Hag
 
     public class ReturnIngredientsObjective : QuestObjective
     {
-        public ReturnIngredientsObjective()
-        {
-        }
-
         public override object Message =>
                 /* You have gathered all the ingredients listed in the Hag's Magic Brew
 * Recipe.  Return to the Hag and tell her you have completed her task.

@@ -14,10 +14,6 @@ namespace Server.Engines.Points
 
         private readonly TextDefinition m_Name = new TextDefinition(1153485); // Fortune's Fire Resort & Casino
 
-        public CasinoData()
-        {
-        }
-
         public override void SendMessage(PlayerMobile from, double old, double points, bool quest)
         {
             //from.SendLocalizedMessage(1153189, ((int)points).ToString());

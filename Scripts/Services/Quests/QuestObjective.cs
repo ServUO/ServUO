@@ -12,9 +12,6 @@ namespace Server.Engines.Quests
         private bool m_HasBeenRead;
         private int m_CurProgress;
         private bool m_HasCompleted;
-        public QuestObjective()
-        {
-        }
 
         public abstract object Message { get; }
         public virtual int MaxProgress => 1;

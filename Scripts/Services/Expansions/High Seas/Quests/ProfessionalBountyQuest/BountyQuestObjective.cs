@@ -12,10 +12,6 @@ namespace Server.Engines.Quests
         public bool Captured { get { return m_Captured; } set { m_Captured = value; } }
         public Mobile CapturedCaptain { get { return m_CapturedCaptain; } set { m_CapturedCaptain = value; } }
 
-        public BountyQuestObjective()
-        {
-        }
-
         public override bool Update(object obj)
         {
             Mobile from = (Mobile)obj;

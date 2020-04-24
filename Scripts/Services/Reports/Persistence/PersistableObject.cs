@@ -2,10 +2,6 @@ namespace Server.Engines.Reports
 {
     public abstract class PersistableObject
     {
-        public PersistableObject()
-        {
-        }
-
         public abstract PersistableType TypeID { get; }
         public virtual void SerializeAttributes(PersistenceWriter op)
         {

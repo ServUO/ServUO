@@ -7736,7 +7736,7 @@ namespace Server
 
         public virtual bool CanBeHarmful(IDamageable target, bool message)
         {
-            return CanBeHarmful(target, message, false, false);
+            return CanBeHarmful(target, message, false);
         }
 
         public virtual bool CanBeHarmful(IDamageable target, bool message, bool ignoreOurBlessedness)

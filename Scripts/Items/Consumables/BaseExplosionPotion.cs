@@ -97,24 +97,21 @@ namespace Server.Items
 
         public void Explode(Mobile from, bool direct, Point3D loc, Map map)
         {
-            if (Deleted)
+            if (Deleted || from == null)
             {
                 return;
             }
 
             bool damageThrower = false;
 
-            if (from != null)
+            if (from.Target is ThrowTarget && ((ThrowTarget)from.Target).Potion == this)
             {
-                if (from.Target is ThrowTarget && ((ThrowTarget)from.Target).Potion == this)
-                {
-                    Target.Cancel(from);
-                }
+                Target.Cancel(from);
+            }
 
-                if (IsChildOf(from.Backpack) || Parent == from)
-                {
-                    damageThrower = true;
-                }
+            if (IsChildOf(from.Backpack) || Parent == from)
+            {
+                damageThrower = true;
             }
 
             Consume();
@@ -139,17 +136,14 @@ namespace Server.Items
 
             System.Collections.Generic.List<Mobile> list = SpellHelper.AcquireIndirectTargets(from, loc, map, ExplosionRange, false).OfType<Mobile>().ToList();
 
-            if (from != null && damageThrower && !list.Contains(from))
+            if (damageThrower && !list.Contains(from))
             {
                 list.Add(from);
             }
 
             foreach (Mobile m in list)
             {
-                if (from != null)
-                {
-                    from.DoHarmful(m);
-                }
+                from.DoHarmful(m);
 
                 int damage = Utility.RandomMinMax(min, max);
 

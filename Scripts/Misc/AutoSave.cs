@@ -6,7 +6,7 @@ namespace Server.Misc
 {
     public static class AutoSave
     {
-        private static readonly string[] m_Backups = new string[]
+        private static readonly string[] m_Backups = new[]
         {
             "Third Backup",
             "Second Backup",

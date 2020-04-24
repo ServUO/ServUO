@@ -9,9 +9,6 @@ namespace Server.Mobiles
     {
         private readonly Dictionary<Type, int> m_Table = new Dictionary<Type, int>();
         private Type[] m_Types;
-        public GenericSellInfo()
-        {
-        }
 
         public Type[] Types
         {

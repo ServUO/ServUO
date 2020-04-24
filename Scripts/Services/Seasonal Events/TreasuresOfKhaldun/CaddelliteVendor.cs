@@ -97,9 +97,6 @@ namespace Server.Engines.Khaldun
         }
         public class InternalSellInfo : GenericSellInfo
         {
-            public InternalSellInfo()
-            {
-            }
         }
 
     }

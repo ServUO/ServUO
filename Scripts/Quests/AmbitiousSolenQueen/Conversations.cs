@@ -2,10 +2,6 @@ namespace Server.Engines.Quests.Ambitious
 {
     public class DontOfferConversation : QuestConversation
     {
-        public DontOfferConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>The Solen queen considers you for a moment then says,</I><BR><BR>
 * 
@@ -19,10 +15,6 @@ namespace Server.Engines.Quests.Ambitious
 
     public class AcceptConversation : QuestConversation
     {
-        public AcceptConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>The Solen queen smiles as you decide to help her.</I><BR><BR>
 * 
@@ -47,10 +39,6 @@ namespace Server.Engines.Quests.Ambitious
 
     public class DuringKillQueensConversation : QuestConversation
     {
-        public DuringKillQueensConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>The Solen queen looks up as you approach.</I><BR><BR>
 * 
@@ -68,10 +56,6 @@ namespace Server.Engines.Quests.Ambitious
 
     public class GatherFungiConversation : QuestConversation
     {
-        public GatherFungiConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>The Solen queen looks pleased to see you.</I><BR><BR>
 * 
@@ -93,10 +77,6 @@ namespace Server.Engines.Quests.Ambitious
 
     public class DuringFungiGatheringConversation : QuestConversation
     {
-        public DuringFungiGatheringConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>The Solen queen looks up as you approach.</I><BR><BR>
 * 
@@ -110,10 +90,6 @@ namespace Server.Engines.Quests.Ambitious
 
     public class EndConversation : QuestConversation
     {
-        public EndConversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>The Solen queen smiles as she takes the zoogi fungus from you.</I><BR><BR>
 * 
@@ -202,10 +178,6 @@ namespace Server.Engines.Quests.Ambitious
 
     public class End2Conversation : QuestConversation
     {
-        public End2Conversation()
-        {
-        }
-
         public override object Message =>
                 /* <I>The Solen queen looks up as you approach.</I><BR><BR>
 * 

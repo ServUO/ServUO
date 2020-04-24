@@ -246,10 +246,13 @@ namespace Server.Items
 
                         if (m_Decorator.Command == DecorateCommand.Turn)
                         {
-                            FlipableAddonAttribute[] attributes = (FlipableAddonAttribute[])addon.GetType().GetCustomAttributes(typeof(FlipableAddonAttribute), false);
+                            if (addon != null)
+                            {
+                                FlipableAddonAttribute[] attributes = (FlipableAddonAttribute[])addon.GetType().GetCustomAttributes(typeof(FlipableAddonAttribute), false);
 
-                            if (attributes.Length > 0)
-                                isDecorableComponent = true;
+                                if (attributes.Length > 0)
+                                    isDecorableComponent = true;
+                            }
                         }
                     }
                     else if (item is Banner && m_Decorator.Command != DecorateCommand.Turn)
@@ -329,12 +332,15 @@ namespace Server.Items
                     else if (item is BaseAddonContainer)
                         addon = (BaseAddonContainer)item;
 
-                    FlipableAddonAttribute[] aAttributes = (FlipableAddonAttribute[])addon.GetType().GetCustomAttributes(typeof(FlipableAddonAttribute), false);
-
-                    if (aAttributes.Length > 0)
+                    if (addon != null)
                     {
-                        aAttributes[0].Flip(from, (Item)addon);
-                        return;
+                        FlipableAddonAttribute[] aAttributes = (FlipableAddonAttribute[])addon.GetType().GetCustomAttributes(typeof(FlipableAddonAttribute), false);
+
+                        if (aAttributes.Length > 0)
+                        {
+                            aAttributes[0].Flip(@from, (Item)addon);
+                            return;
+                        }
                     }
                 }
 

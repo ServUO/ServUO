@@ -248,17 +248,21 @@ namespace Server.Items
                             }
 
                             int amount = Math.Min(10, m_Ore);
-                            ingots.Amount = amount;
 
-                            if (!from.PlaceInBackpack(ingots))
+                            if (ingots != null)
                             {
-                                ingots.Delete();
-                                from.SendLocalizedMessage(1078837); // Your backpack is full! Please make room and try again.
-                            }
-                            else
-                            {
-                                PublicOverheadMessage(MessageType.Regular, 0, 1094724, amount.ToString()); // Ore: ~1_COUNT~
-                                m_Ore -= amount;
+                                ingots.Amount = amount;
+
+                                if (!from.PlaceInBackpack(ingots))
+                                {
+                                    ingots.Delete();
+                                    from.SendLocalizedMessage(1078837); // Your backpack is full! Please make room and try again.
+                                }
+                                else
+                                {
+                                    PublicOverheadMessage(MessageType.Regular, 0, 1094724, amount.ToString()); // Ore: ~1_COUNT~
+                                    m_Ore -= amount;
+                                }
                             }
                         }
                         else

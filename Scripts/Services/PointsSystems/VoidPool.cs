@@ -14,10 +14,6 @@ namespace Server.Engines.Points
 
         private readonly TextDefinition m_Name = new TextDefinition(1152733);
 
-        public VoidPool()
-        {
-        }
-
         public override void SendMessage(PlayerMobile from, double old, double points, bool quest)
         {
             from.SendLocalizedMessage(1152649, String.Format("{0}\t{1}", from.Map.ToString(), points));
