@@ -203,7 +203,6 @@ namespace Ultima
                 using (BinaryWriter binidx = new BinaryWriter(memidx), binmul = new BinaryWriter(memmul))
                 {
                     SHA256Managed sha = new SHA256Managed();
-                    //StreamWriter Tex = new StreamWriter(new FileStream("d:/texlog.txt", FileMode.Create, FileAccess.ReadWrite));
                     for (int index = 0; index < GetIdxLength(); ++index)
                     {
                         if (m_Cache[index] == null)
@@ -229,8 +228,6 @@ namespace Ultima
                                 binidx.Write(sum.pos); //lookup
                                 binidx.Write(sum.length);
                                 binidx.Write(0);
-                                //Tex.WriteLine(System.String.Format("0x{0:X4} : 0x{1:X4} 0x{2:X4}", index, (int)sum.pos, (int)sum.length));
-                                //Tex.WriteLine(System.String.Format("0x{0:X4} -> 0x{1:X4}", sum.index, index));
                                 continue;
                             }
                             BitmapData bd = bmp.LockBits(
@@ -261,7 +258,6 @@ namespace Ultima
                                 checksum = checksum,
                                 index = index
                             };
-                            //Tex.WriteLine(System.String.Format("0x{0:X4} : 0x{1:X4} 0x{2:X4}", index, start, length));
                             checksums.Add(s);
                         }
                     }

@@ -333,13 +333,9 @@ namespace Server.Items
                     return; // They are customizing
                 }
 
-                Spellbook book = null;
                 int spellID = e.SpellID;
 
-                if (book == null || !book.HasSpell(spellID))
-                {
-                    book = Find(from, spellID);
-                }
+                Spellbook book = Find(from, spellID);
 
                 if (book != null && book.HasSpell(spellID))
                 {

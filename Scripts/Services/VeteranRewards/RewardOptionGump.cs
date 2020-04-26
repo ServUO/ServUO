@@ -89,7 +89,7 @@ namespace Server.Gumps
         }
 
         public AddonOptionGump(IRewardOption option, int title)
-            : this(option, title, 300, 80)
+            : this(option, title, 300, 180)
         {
         }
 

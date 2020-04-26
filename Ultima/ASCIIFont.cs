@@ -4,8 +4,6 @@ using System.Drawing.Imaging;
 using System.IO;
 #endregion
 
-// ascii text support written by arul
-
 namespace Ultima
 {
     public sealed class ASCIIFont

@@ -206,21 +206,26 @@ namespace Server.Mobiles
             for (int i = 0; i < targets.Count; ++i)
             {
                 Mobile m = (Mobile)targets[i];
-                if (m != null && !m.Deleted && m is PlayerMobile)
+
+                if (m == null || m.Deleted)
+                    continue;
+
+                if (m is PlayerMobile pm && pm.Mounted)
                 {
-                    PlayerMobile pm = m as PlayerMobile;
-                    if (pm != null && pm.Mounted)
-                    {
-                        pm.SetMountBlock(BlockMountType.DismountRecovery, TimeSpan.FromSeconds(10), true);
-                    }
+                    pm.SetMountBlock(BlockMountType.DismountRecovery, TimeSpan.FromSeconds(10), true);
                 }
+
                 double damage = m.Hits * 0.6;//was .6
+
                 if (damage < 10.0)
                     damage = 10.0;
                 else if (damage > 75.0)
                     damage = 75.0;
+
                 DoHarmful(m);
+
                 AOS.Damage(m, this, (int)damage, 100, 0, 0, 0, 0);
+
                 if (m.Alive && m.Body.IsHuman && !m.Mounted)
                     m.Animate(20, 7, 1, true, false, 0); // take hit
             }

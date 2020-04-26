@@ -255,9 +255,20 @@ namespace Server.Gumps
                 m_Monster.Sort();
             }
 
-            m_Animal.Sort();
-            m_Sea.Sort();
-            m_Human.Sort();
+            if (m_Animal != null)
+            {
+                m_Animal.Sort();
+            }
+
+            if (m_Sea != null)
+            {
+                m_Sea.Sort();
+            }
+
+            if (m_Human != null)
+            {
+                m_Human.Sort();
+            }
         }
 
         private class InternalEntry : IComparable

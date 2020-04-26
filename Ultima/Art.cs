@@ -465,7 +465,6 @@ namespace Ultima
             {
                 ushort* bindata = (ushort*)data;
                 int count = 2;
-                //bin.ReadInt32();
                 int width = bindata[count++];
                 int height = bindata[count++];
 
@@ -587,7 +586,6 @@ namespace Ultima
                 MemoryStream memidx = new MemoryStream();
                 MemoryStream memmul = new MemoryStream();
                 SHA256Managed sha = new SHA256Managed();
-                //StreamWriter Tex = new StreamWriter(new FileStream("d:/artlog.txt", FileMode.Create, FileAccess.ReadWrite));
 
                 using (BinaryWriter binidx = new BinaryWriter(memidx), binmul = new BinaryWriter(memmul))
                 {
@@ -611,7 +609,6 @@ namespace Ultima
                             binidx.Write(-1); // lookup
                             binidx.Write(0); // length
                             binidx.Write(-1); // extra
-                                              //Tex.WriteLine(System.String.Format("0x{0:X4} : 0x{1:X4} 0x{2:X4}", index, (int)-1, (int)-1));
                         }
                         else if (index < 0x4000)
                         {
@@ -624,8 +621,6 @@ namespace Ultima
                                 binidx.Write(sum.pos); //lookup
                                 binidx.Write(sum.length);
                                 binidx.Write(0);
-                                //Tex.WriteLine(System.String.Format("0x{0:X4} : 0x{1:X4} 0x{2:X4}", index, (int)sum.pos, (int)sum.length));
-                                //Tex.WriteLine(System.String.Format("0x{0:X4} -> 0x{1:X4}", sum.index, index));
                                 continue;
                             }
                             //land
@@ -672,7 +667,6 @@ namespace Ultima
                                 checksum = checksum,
                                 index = index
                             };
-                            //Tex.WriteLine(System.String.Format("0x{0:X4} : 0x{1:X4} 0x{2:X4}", index, start, length));
                             checksumsLand.Add(s);
                         }
                         else
@@ -686,8 +680,6 @@ namespace Ultima
                                 binidx.Write(sum.pos); //lookup
                                 binidx.Write(sum.length);
                                 binidx.Write(0);
-                                //Tex.WriteLine(System.String.Format("0x{0:X4} -> 0x{1:X4}", sum.index, index));
-                                //Tex.WriteLine(System.String.Format("0x{0:X4} : 0x{1:X4} 0x{2:X4}", index, sum.pos, sum.length));
                                 continue;
                             }
 
@@ -767,7 +759,6 @@ namespace Ultima
                                 checksum = checksum,
                                 index = index
                             };
-                            //Tex.WriteLine(System.String.Format("0x{0:X4} : 0x{1:X4} 0x{2:X4}", index, start, length));
                             checksumsStatic.Add(s);
                         }
                     }

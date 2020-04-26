@@ -40,7 +40,7 @@ namespace Ultima
                             byte fstart;
                             sbyte[] fdata;
                             m_Header = new int[bin.BaseStream.Length / (4 + 8 * (64 + 4))];
-                            while (h < m_Header.Length /*bin.BaseStream.Length != bin.BaseStream.Position*/)
+                            while (h < m_Header.Length)
                             {
                                 m_Header[h++] = bin.ReadInt32(); // chunk header
                                                                  // Read 8 tiles

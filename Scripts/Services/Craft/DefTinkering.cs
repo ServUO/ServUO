@@ -2,6 +2,7 @@ using Server.Items;
 using Server.Mobiles;
 using Server.Targeting;
 using System;
+using Server.Services.BasketWeaving.Baskets;
 
 namespace Server.Engines.Craft
 {

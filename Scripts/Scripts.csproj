@@ -10093,15 +10093,6 @@
     <Compile Include="Services\Quests\BaseQuester.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Quests\Items\DynamicTeleporter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Quests\Items\EnchantedSextant.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Quests\Items\HornOfRetreat.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\Quests\Items\QuestItem.cs">
       <SubType>Code</SubType>
     </Compile>

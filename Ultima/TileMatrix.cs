@@ -580,7 +580,6 @@ namespace Ultima
                 {
                     gc.Free();
                 }
-                //m_Map.Close();
             }
 
             return tiles;
