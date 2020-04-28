@@ -1,4 +1,6 @@
-namespace Server.Items
+using Server.Items;
+
+namespace Server.Services.BasketWeaving.Baskets
 {
     public class BasketCraftable : BaseContainer
     {

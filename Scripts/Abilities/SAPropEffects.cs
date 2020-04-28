@@ -52,11 +52,14 @@ namespace Server.Items
             m_Effect = effect;
             m_Duration = duration;
             m_TickDuration = tickduration;
+        }
 
-            m_Effects.Add(this);
+        protected static void AddEffects(PropertyEffect effect)
+        {
+            m_Effects.Add(effect);
 
-            if (m_TickDuration > TimeSpan.MinValue)
-                StartTimer();
+            if (effect.m_TickDuration > TimeSpan.MinValue)
+                effect.StartTimer();
         }
 
         public virtual void RemoveEffects()
@@ -205,7 +208,9 @@ namespace Server.Items
                 SoulChargeContext sc = GetContext<SoulChargeContext>(defender, EffectsType.SoulCharge);
 
                 if (sc == null)
-                    sc = new SoulChargeContext(defender, shield);
+                {
+                    AddEffects(sc = new SoulChargeContext(defender, shield));
+                }
 
                 sc.OnDamaged(damage);
             }
@@ -380,7 +385,7 @@ namespace Server.Items
             DamageEaterContext context = GetContext<DamageEaterContext>(from, EffectsType.DamageEater);
 
             if (context == null && HasValue(from))
-                context = new DamageEaterContext(from);
+                AddEffects(context = new DamageEaterContext(from));
 
             if (context != null)
                 context.OnDamage(damage, phys, fire, cold, pois, ergy, direct);
@@ -445,7 +450,7 @@ namespace Server.Items
 
             if (context == null)
             {
-                new SplinteringWeaponContext(attacker, defender, weapon);
+                AddEffects(new SplinteringWeaponContext(attacker, defender, weapon));
                 return true;
             }
 
@@ -482,7 +487,7 @@ namespace Server.Items
             SearingWeaponContext context = GetContext<SearingWeaponContext>(attacker, defender, EffectsType.Searing);
 
             if (context == null)
-                new SearingWeaponContext(attacker, defender);
+                AddEffects(new SearingWeaponContext(attacker, defender));
         }
 
         public static bool HasContext(Mobile defender)
@@ -542,7 +547,7 @@ namespace Server.Items
 
                 if (context == null)
                 {
-                    new BoneBreakerContext(attacker, defender, null);
+                    AddEffects(new BoneBreakerContext(attacker, defender, null));
                     defender.SendLocalizedMessage(1157363); // Your bones are broken! Stamina drain over time!
 
                     defender.PlaySound(0x204);
@@ -611,7 +616,7 @@ namespace Server.Items
                 context.RemoveEffects();
             }
 
-            context = new SwarmContext(attacker, defender, null);
+            AddEffects(context = new SwarmContext(attacker, defender, null));
 
             defender.NonlocalOverheadMessage(MessageType.Regular, 0x5C, 1114447, defender.Name); // * ~1_NAME~ is stung by a swarm of insects *
             defender.LocalOverheadMessage(MessageType.Regular, 0x5C, 1071905); // * The swarm of insects bites and stings your flesh! *
@@ -709,7 +714,7 @@ namespace Server.Items
 
             if (context == null)
             {
-                context = new SparksContext(attacker, defender, null);
+                AddEffects(context = new SparksContext(attacker, defender, null));
 
                 attacker.PlaySound(0x20A);
                 defender.FixedParticles(0x3818, 1, 11, 0x13A8, 0, 0, EffectLayer.Waist);

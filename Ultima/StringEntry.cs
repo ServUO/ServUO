@@ -83,18 +83,7 @@ namespace Ultima
             {
                 m_Args[i + 1] = args[i];
             }
-            return String.Format(m_FmtTxt, m_Args);
-            /*
-			{
-				StringBuilder sb = new StringBuilder();
-				sb.Append( m_FmtTxt );
-				for(int i=0;i<args.Length;i++)
-				{
-					sb.Append( "|" );
-					sb.Append( args[i] == null ? "-null-" : args[i] );
-				}
-				throw new Exception( sb.ToString() );
-			}*/
+            return String.Format(m_FmtTxt, m_Args);		
         }
     }
 }

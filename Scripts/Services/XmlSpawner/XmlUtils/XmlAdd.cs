@@ -93,17 +93,8 @@ namespace Server.Mobiles
 
             // these are additional defaults that are not set by XmlAdd but can be used by other routines such as the custom properties gump to determine 
             // whether properties have been changed from spawner default values
-            public string ConfigFile = null;
-            public int StackAmount = 1;
-            public string MobTriggerName = null;
-            public string MobTriggerProp = null;
-            public string RegionName = null;
             public bool Running = true;
             public Item SetItem = null;
-            public AccessLevel TriggerAccessLevel = AccessLevel.Player;
-            public Item TriggerObject = null;
-            public WayPoint WayPoint = null;
-            public bool ShowBounds = false;
 
             public bool AutoNumber = false;
             public int AutoNumberValue = 0;

@@ -6509,12 +6509,15 @@ namespace Server.Mobiles
 
                 if (pet == null || pet.Deleted)
                 {
-                    pet.IsStabled = false;
-                    pet.StabledBy = null;
-
-                    if (Stabled.Contains(pet))
+                    if (pet != null)
                     {
-                        Stabled.Remove(pet);
+                        pet.IsStabled = false;
+                        pet.StabledBy = null;
+
+                        if (Stabled.Contains(pet))
+                        {
+                            Stabled.Remove(pet);
+                        }
                     }
 
                     continue;

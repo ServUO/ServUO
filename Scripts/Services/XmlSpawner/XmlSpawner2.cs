@@ -203,14 +203,9 @@ namespace Server.Mobiles
         private bool m_HoldSequence = false;
         private bool m_SpawnOnTrigger = false;
 
-        private DateTime m_FirstModified;
-        private DateTime m_LastModified;
-
         private List<MovementInfo> m_MovementList;
         private MovementTimer m_MovementTimer;
         internal List<BaseXmlSpawner.KeywordTag> m_KeywordTagList = new List<BaseXmlSpawner.KeywordTag>();
-        private string m_FirstModifiedBy = null;
-        private string m_LastModifiedBy = null;
 
         public List<XmlSpawner> RecentSpawnerSearchList = null;
         public List<Item> RecentItemSearchList = null;
@@ -607,10 +602,6 @@ namespace Server.Mobiles
                 return 0;
             }
         }
-
-        public DateTime FirstModified => m_FirstModified;
-
-        public DateTime LastModified => m_LastModified;
 
         public bool PlayerCreated
         {
@@ -1799,29 +1790,6 @@ namespace Server.Mobiles
             set { m_mob_who_triggered = value; }
         }
 
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public string FirstModifiedBy
-        {
-            get { return m_FirstModifiedBy; }
-            set
-            {
-                m_FirstModifiedBy = value;
-                m_FirstModified = DateTime.UtcNow;
-            }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public string LastModifiedBy
-        {
-            get { return m_LastModifiedBy; }
-            set
-            {
-                m_LastModifiedBy = value;
-                m_LastModified = DateTime.UtcNow;
-            }
-        }
-
         [CommandProperty(AccessLevel.GameMaster)]
         public bool SmartSpawning
         {
@@ -1941,12 +1909,7 @@ namespace Server.Mobiles
         public override void OnDoubleClick(Mobile from)
         {
             if (from == null || from.Deleted || from.AccessLevel < AccessLevel.GameMaster || (m_SpawnerGump != null && SomeOneHasGumpOpen)) return;
-
-            // flag the first person to open the spawner as the placer
-            if (FirstModifiedBy == null) FirstModifiedBy = from.Name;
-
-            LastModifiedBy = from.Name;
-
+            
             // clear any text entry books that might still be around
             DeleteTextEntryBook();
 
@@ -5086,10 +5049,7 @@ namespace Server.Mobiles
                     }
 
                     spawner.m_PlayerCreated = true;
-                    string fromname = null;
-                    if (from != null) fromname = from.Name;
-                    spawner.LastModifiedBy = fromname;
-                    spawner.FirstModifiedBy = fromname;
+
                     spawner.MoveToWorld(new Point3D(x, y, z), spawnmap);
                     if (spawner.Map == Map.Internal)
                     {
@@ -5117,8 +5077,6 @@ namespace Server.Mobiles
                         spawner.SpawnRange = spawnrange;
                         spawner.m_PlayerCreated = true;
 
-                        spawner.LastModifiedBy = fromname;
-                        spawner.FirstModifiedBy = fromname;
                         spawner.MoveToWorld(new Point3D(x, y, z), spawnmap);
                         if (spawner.Map == Map.Internal)
                         {
@@ -5347,10 +5305,7 @@ namespace Server.Mobiles
                     }
 
                     spawner.m_PlayerCreated = true;
-                    string fromname = null;
-                    if (from != null) fromname = from.Name;
-                    spawner.LastModifiedBy = fromname;
-                    spawner.FirstModifiedBy = fromname;
+
                     spawner.MoveToWorld(new Point3D(x, y, z), spawnmap);
                     if (spawner.Map == Map.Internal)
                     {
@@ -5378,8 +5333,6 @@ namespace Server.Mobiles
                         spawner.SpawnRange = spawnrange;
                         spawner.m_PlayerCreated = true;
 
-                        spawner.LastModifiedBy = fromname;
-                        spawner.FirstModifiedBy = fromname;
                         spawner.MoveToWorld(new Point3D(x, y, z), spawnmap);
                         if (spawner.Map == Map.Internal)
                         {
@@ -5506,10 +5459,6 @@ namespace Server.Mobiles
                 spawner.SpawnRange = homeRange;
             }
             spawner.m_PlayerCreated = true;
-            string fromname = null;
-            if (from != null) fromname = from.Name;
-            spawner.LastModifiedBy = fromname;
-            spawner.FirstModifiedBy = fromname;
 
             spawner.MoveToWorld(location, map);
             if (!IsValidMapLocation(location, spawner.Map))
@@ -5767,11 +5716,7 @@ namespace Server.Mobiles
 
             spawner.SpawnRange = spawnRange;
             spawner.m_PlayerCreated = true;
-            string fromname = null;
-            if (from != null) fromname = from.Name;
-            spawner.LastModifiedBy = fromname;
-            spawner.FirstModifiedBy = fromname;
-
+            
             // Try to find a valid Z height if required (Z == -999)
 
             if (location.Z == -999)
@@ -6460,10 +6405,6 @@ namespace Server.Mobiles
                                 TheSpawn.m_DisableGlobalAutoReset = TickReset;
                                 //TheSpawn.Group = SpawnIsGroup;\
 
-                                string fromname = null;
-                                if (from != null) fromname = from.Name;
-                                TheSpawn.LastModifiedBy = fromname;
-                                TheSpawn.FirstModifiedBy = fromname;
 
                                 // Try to find a valid Z height if required (SpawnCentreZ = short.MinValue)
                                 int NewZ = 0;
@@ -11402,7 +11343,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write(31); // version
+            writer.Write(32); // version
                               // version 31
             writer.Write(m_DisableGlobalAutoReset);
             // Version 30
@@ -11447,8 +11388,6 @@ namespace Server.Mobiles
 
             // Version 26
             writer.Write(m_SpawnOnTrigger);
-            writer.Write(m_FirstModified);
-            writer.Write(m_LastModified);
 
             // Version 24
             if (m_SpawnObjects != null)
@@ -11504,8 +11443,6 @@ namespace Server.Mobiles
             writer.Write(m_ConfigFile);
             writer.Write(m_OnHold);
             writer.Write(m_HoldSequence);
-            writer.Write(m_FirstModifiedBy);
-            writer.Write(m_LastModifiedBy);
             // compute the number of tags to save
             int tagcount = 0;
             for (int i = 0; i < m_KeywordTagList.Count; i++)
@@ -11693,6 +11630,7 @@ namespace Server.Mobiles
 
             switch (version)
             {
+                case 32:
                 case 31:
                     {
                         m_DisableGlobalAutoReset = reader.ReadBool();
@@ -11743,8 +11681,13 @@ namespace Server.Mobiles
                 case 26:
                     {
                         m_SpawnOnTrigger = reader.ReadBool();
-                        m_FirstModified = reader.ReadDateTime();
-                        m_LastModified = reader.ReadDateTime();
+
+                        if (version < 32)
+                        {
+                            // Delete First & Last Modified
+                            reader.ReadDateTime();
+                            reader.ReadDateTime();
+                        }
                         goto case 25;
                     }
                 case 25:
@@ -11816,8 +11759,15 @@ namespace Server.Mobiles
                         m_ConfigFile = reader.ReadString();
                         m_OnHold = reader.ReadBool();
                         m_HoldSequence = reader.ReadBool();
-                        m_FirstModifiedBy = reader.ReadString();
-                        m_LastModifiedBy = reader.ReadString();
+
+                        if (version < 32)
+                        {
+                            // // Delete First & Last Modified By
+                            // // Delete First & Last Modified By
+                            reader.ReadString();
+                            reader.ReadString();
+                        }
+
                         // deserialize the keyword tag list
                         int tagcount = reader.ReadInt();
                         m_KeywordTagList = new List<BaseXmlSpawner.KeywordTag>(tagcount);

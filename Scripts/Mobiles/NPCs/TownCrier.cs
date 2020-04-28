@@ -357,47 +357,50 @@ namespace Server.Mobiles
             }
             else
             {
-                for (int i = 0; i < entries.Count; ++i)
+                if (entries != null)
                 {
-                    TownCrierEntry tce = entries[i];
-
-                    TimeSpan toExpire = tce.ExpireTime - DateTime.UtcNow;
-
-                    if (toExpire < TimeSpan.Zero)
-                        toExpire = TimeSpan.Zero;
-
-                    StringBuilder sb = new StringBuilder();
-
-                    sb.Append("[Expires: ");
-
-                    if (toExpire.TotalHours >= 1)
+                    for (int i = 0; i < entries.Count; ++i)
                     {
-                        sb.Append((int)toExpire.TotalHours);
+                        TownCrierEntry tce = entries[i];
+
+                        TimeSpan toExpire = tce.ExpireTime - DateTime.UtcNow;
+
+                        if (toExpire < TimeSpan.Zero)
+                            toExpire = TimeSpan.Zero;
+
+                        StringBuilder sb = new StringBuilder();
+
+                        sb.Append("[Expires: ");
+
+                        if (toExpire.TotalHours >= 1)
+                        {
+                            sb.Append((int) toExpire.TotalHours);
+                            sb.Append(':');
+                            sb.Append(toExpire.Minutes.ToString("D2"));
+                        }
+                        else
+                        {
+                            sb.Append(toExpire.Minutes);
+                        }
+
                         sb.Append(':');
-                        sb.Append(toExpire.Minutes.ToString("D2"));
+                        sb.Append(toExpire.Seconds.ToString("D2"));
+
+                        sb.Append("] ");
+
+                        for (int j = 0; j < tce.Lines.Length; ++j)
+                        {
+                            if (j > 0)
+                                sb.Append("<br>");
+
+                            sb.Append(tce.Lines[j]);
+                        }
+
+                        AddHtml(8, 35 + (i * 85), 254, 80, sb.ToString(), true, true);
+
+                        AddButton(300 - 8 - 26, 35 + (i * 85), 0x15E1, 0x15E5, 2 + i, GumpButtonType.Reply, 0);
+                        AddTooltip(3005101); // Edit
                     }
-                    else
-                    {
-                        sb.Append(toExpire.Minutes);
-                    }
-
-                    sb.Append(':');
-                    sb.Append(toExpire.Seconds.ToString("D2"));
-
-                    sb.Append("] ");
-
-                    for (int j = 0; j < tce.Lines.Length; ++j)
-                    {
-                        if (j > 0)
-                            sb.Append("<br>");
-
-                        sb.Append(tce.Lines[j]);
-                    }
-
-                    AddHtml(8, 35 + (i * 85), 254, 80, sb.ToString(), true, true);
-
-                    AddButton(300 - 8 - 26, 35 + (i * 85), 0x15E1, 0x15E5, 2 + i, GumpButtonType.Reply, 0);
-                    AddTooltip(3005101); // Edit
                 }
             }
         }

@@ -373,19 +373,14 @@ namespace Ultima
     public sealed class Animations
     {
         private static FileIndex m_FileIndex = new FileIndex("Anim.idx", "Anim.mul", 0x40000, 6);
-        //public static FileIndex FileIndex{ get{ return m_FileIndex; } }
 
         private static FileIndex m_FileIndex2 = new FileIndex("Anim2.idx", "Anim2.mul", 0x10000, -1);
-        //public static FileIndex FileIndex2{ get{ return m_FileIndex2; } }
 
         private static FileIndex m_FileIndex3 = new FileIndex("Anim3.idx", "Anim3.mul", 0x20000, -1);
-        //public static FileIndex FileIndex3{ get{ return m_FileIndex3; } }
 
         private static FileIndex m_FileIndex4 = new FileIndex("Anim4.idx", "Anim4.mul", 0x20000, -1);
-        //public static FileIndex FileIndex4{ get{ return m_FileIndex4; } }
 
         private static FileIndex m_FileIndex5 = new FileIndex("Anim5.idx", "Anim5.mul", 0x20000, -1);
-        //public static FileIndex FileIndex5 { get { return m_FileIndex5; } }
 
         private static byte[] m_StreamBuffer;
         private static MemoryStream m_MemoryStream;
@@ -939,7 +934,6 @@ namespace Ultima
         private const int DoubleXor = (0x200 << 22) | (0x200 << 12);
 
         public static readonly Frame Empty = new Frame();
-        //public static readonly Frame[] EmptyFrames = new Frame[1] { Empty };
 
         private Frame()
         {

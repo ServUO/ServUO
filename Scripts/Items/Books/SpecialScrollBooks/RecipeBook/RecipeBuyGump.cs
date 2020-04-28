@@ -40,9 +40,7 @@ namespace Server.Items
         {
             if (info.ButtonID == 2)
             {
-                PlayerVendor pv = m_Book.RootParent as PlayerVendor;
-
-                if (pv != null)
+                if (m_Book.RootParent is PlayerVendor pv)
                 {
                     int price = 0;
 
@@ -71,12 +69,12 @@ namespace Server.Items
 
                         Container pack = m_From.Backpack;
 
-                        if ((pack != null && pack.ConsumeTotal(typeof(Gold), price)) || Banker.Withdraw(m_From, price))
+                        if (pack != null && pack.ConsumeTotal(typeof(Gold), price) || Banker.Withdraw(m_From, price))
                         {
                             m_Book.Recipes.ForEach(x =>
                             {
                                 if (x.RecipeID == m_Recipe.RecipeID)
-                                    x.Amount = x.Amount - 1;
+                                    x.Amount -= 1;
                             });
 
                             m_Book.InvalidateProperties();
@@ -102,10 +100,7 @@ namespace Server.Items
                 {
                     m_Book.Using = false;
 
-                    if (pv == null)
-                        m_From.SendLocalizedMessage(1158821); // The recipe selected is not available.
-                    else
-                        pv.SayTo(m_From, 1158821); // The recipe selected is not available.
+                    m_From.SendLocalizedMessage(1158821); // The recipe selected is not available.
                 }
             }
             else

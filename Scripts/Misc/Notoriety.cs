@@ -112,22 +112,27 @@ namespace Server.Misc
             if (map != null && (map.Rules & MapRules.HarmfulRestrictions) == 0)
                 return true; // In felucca, anything goes
 
-            // Summons should follow the same rules as their masters
-            if (from is BaseCreature && ((BaseCreature)from).Summoned && ((BaseCreature)from).SummonMaster != null)
-                from = ((BaseCreature)from).SummonMaster;
-
-            if (target is BaseCreature && ((BaseCreature)target).Summoned && ((BaseCreature)target).SummonMaster != null)
-                target = ((BaseCreature)target).SummonMaster;
-
             BaseCreature bc = from as BaseCreature;
 
             if (!from.Player && !(bc != null && bc.GetMaster() != null && bc.GetMaster().IsPlayer()))
             {
-                if (!CheckAggressor(from.Aggressors, target) && !CheckAggressed(from.Aggressed, target) && target is PlayerMobile &&
-                    ((PlayerMobile)target).CheckYoungProtection(from))
+                if (!CheckAggressor(from.Aggressors, target) && !CheckAggressed(from.Aggressed, target) && target is PlayerMobile && ((PlayerMobile)target).CheckYoungProtection(from))
+                {
                     return false;
+                }
 
                 return true; // Uncontrolled NPCs are only restricted by the young system
+            }
+
+            // Summons should follow the same rules as their masters
+            if (from is BaseCreature && ((BaseCreature)from).Summoned && ((BaseCreature)from).SummonMaster != null)
+            {
+                from = ((BaseCreature)from).SummonMaster;
+            }
+
+            if (target is BaseCreature && ((BaseCreature)target).Summoned && ((BaseCreature)target).SummonMaster != null)
+            {
+                target = ((BaseCreature)target).SummonMaster;
             }
 
             Guild fromGuild = GetGuildFor(from.Guild as Guild, from);

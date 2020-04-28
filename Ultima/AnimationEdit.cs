@@ -5,8 +5,6 @@ using System.Drawing.Imaging;
 using System.IO;
 #endregion
 
-//using System.Windows.Media.Imaging;
-
 namespace Ultima
 {
     public sealed class AnimationEdit

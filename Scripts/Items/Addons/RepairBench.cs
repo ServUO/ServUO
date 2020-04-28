@@ -72,7 +72,40 @@ namespace Server.Items
         public SecureLevel Level { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Using { get; set; }
+        public Mobile User { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool Using
+        {
+            get
+            {
+                if (User != null)
+                {
+                    if (User.InRange(Location, 2))
+                    {
+                        return true;
+                    }
+
+                    User = null;
+                }
+
+                return false;
+            }
+        }
+
+        public override bool HandlesOnMovement => User != null;
+
+        public override void OnMovement(Mobile m, Point3D oldLocation)
+        {
+            if (m == User && !m.InRange(GetWorldLocation(), 2))
+            {
+                User = null;
+
+                m.CloseGump(typeof(ConfirmRemoveGump));
+                m.CloseGump(typeof(RepairBenchGump));
+                Target.Cancel(m);
+            }
+        }
 
         [Constructable]
         public RepairBenchAddon(DirectionType type, List<RepairBenchDefinition> tools)
@@ -158,9 +191,9 @@ namespace Server.Items
                         if (from.HasGump(typeof(RepairBenchGump)))
                             return;
 
-                        if (!Using)
+                        if (!Using || from == User)
                         {
-                            Using = true;
+                            User = from;
                             from.CloseGump(typeof(RepairBenchGump));
                             from.SendGump(new RepairBenchGump(from, this));
                         }
@@ -421,7 +454,7 @@ namespace Server.Items
 
             switch (index)
             {
-                case 0: { m_Addon.Using = false; break; }
+                case 0: { m_Addon.User = null; break; }
                 case 1:
                     {
                         RepairBenchDefinition tool = m_Addon.Tools.Find(x => x.Skill == m_Skill);
@@ -521,7 +554,7 @@ namespace Server.Items
 
             StopTimer(from);
 
-            m_Addon.Using = false;
+            m_Addon.User = null;
 
             if (from != null && !from.Deleted)
             {
@@ -548,7 +581,7 @@ namespace Server.Items
             return m_Addon.Tools.Find(x => x.Skill == skill).Charges;
         }
 
-        private class InternalTarget : Target
+        public class InternalTarget : Target
         {
             private readonly RepairBenchAddon m_Addon;
             private readonly RepairBenchGump m_Gump;
@@ -562,14 +595,14 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (m_Addon == null || m_Addon.Deleted)
+                if (m_Addon == null || m_Addon.Deleted || (targeted is Item && !from.InRange(((Item)targeted).GetWorldLocation(), 2)))
                 {
                     return;
                 }
 
                 if (!m_Addon.CheckAccessible(from, m_Addon))
                 {
-                    m_Addon.Using = false;
+                    m_Addon.User = null;
                     m_Addon.AccessibleFailMessage(from);
                     return;
                 }
@@ -638,7 +671,7 @@ namespace Server.Items
 
             protected override void OnTargetCancel(Mobile from, TargetCancelType cancelType)
             {
-                if (m_Addon != null && !m_Addon.Deleted)
+                if (m_Addon != null && !m_Addon.Deleted && from.InRange(m_Addon.GetWorldLocation(), 2))
                 {
                     m_Gump.StopTimer(from);
                     from.CloseGump(typeof(RepairBenchGump));
@@ -655,7 +688,7 @@ namespace Server.Items
 
             if (index == 0)
             {
-                m_Addon.Using = false;
+                m_Addon.User = null;
             }
             else if (index == 1)
             {
@@ -682,7 +715,7 @@ namespace Server.Items
                 else
                 {
                     from.SendLocalizedMessage(1005213); // You can't do that
-                    m_Addon.Using = false;
+                    m_Addon.User = null;
                 }
             }
         }
