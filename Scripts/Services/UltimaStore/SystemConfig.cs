@@ -17,7 +17,6 @@ namespace Server.Engines.UOStore
     public static class Configuration
     {
         public static bool Enabled { get; set; }
-        public static Expansion Expansion { get; set; }
         public static string Website { get; set; }
 
         /// <summary>
@@ -41,7 +40,6 @@ namespace Server.Engines.UOStore
         static Configuration()
         {
             Enabled = Config.Get("Store.Enabled", true);
-            Expansion = Config.GetEnum("Store.Expansion", Expansion.TOL);
             Website = Config.Get("Store.Website", "https://uo.com/ultima-store/");
 
             ResolveCurrency = Config.GetDelegate("Store.ResolveCurrency", (CustomCurrencyHandler)null);

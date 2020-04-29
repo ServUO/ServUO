@@ -44,13 +44,6 @@ namespace Server.Engines.CleanUpBritannia
             SetWearable(new Doublet(), 50);
             SetWearable(new FancyShirt(), 1644);
             SetWearable(new Necklace());
-
-            if (Backpack == null)
-            {
-                Item backpack = new Backpack();
-                backpack.Movable = false;
-                AddItem(backpack);
-            }
         }
 
         public override void GetProperties(ObjectPropertyList list)

@@ -52,8 +52,6 @@ namespace Server.Mobiles
 
             Utility.AssignRandomHair(this);
             Utility.AssignRandomFacialHair(this, HairHue);
-
-            PackGold(100, 200);
         }
 
         public override void Serialize(GenericWriter writer)

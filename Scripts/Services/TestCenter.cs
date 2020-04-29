@@ -187,24 +187,10 @@ namespace Server.Misc
                 m.Skills[PowerScroll.Skills[i]].Cap = 120.0;
 
             m.StatCap = 250;
+			
+			PlaceItemIn(bank, 18, 169, new BankCheck(1560000));
 
             Container cont;
-
-            // Begin box of money
-            cont = new WoodenBox();
-            cont.ItemID = 0xE7D;
-            cont.Hue = 0x489;
-
-            PlaceItemIn(cont, 16, 51, new BankCheck(500000));
-            PlaceItemIn(cont, 28, 51, new BankCheck(250000));
-            PlaceItemIn(cont, 40, 51, new BankCheck(100000));
-            PlaceItemIn(cont, 52, 51, new BankCheck(100000));
-            PlaceItemIn(cont, 64, 51, new BankCheck(50000));
-
-            PlaceItemIn(cont, 34, 115, new Gold(60000));
-
-            PlaceItemIn(bank, 18, 169, cont);
-            // End box of money
 
             // Begin bag of potion kegs
             cont = new Backpack();
@@ -359,12 +345,8 @@ namespace Server.Misc
             cont.Name = "Bag Of Ethy's!";
 
             PlaceItemIn(cont, 45, 66, new EtherealHorse());
-            PlaceItemIn(cont, 69, 82, new EtherealOstard());
             PlaceItemIn(cont, 93, 99, new EtherealLlama());
-            PlaceItemIn(cont, 117, 115, new EtherealKirin());
             PlaceItemIn(cont, 45, 132, new EtherealUnicorn());
-            PlaceItemIn(cont, 69, 66, new EtherealRidgeback());
-            PlaceItemIn(cont, 93, 82, new EtherealSwampDragon());
             PlaceItemIn(cont, 117, 99, new EtherealBeetle());
 
             PlaceItemIn(bank, 38, 124, cont);

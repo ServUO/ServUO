@@ -497,8 +497,10 @@
     <Compile Include="Items\Addons\BuffetTable.cs" />
     <Compile Include="Items\Addons\FormalDiningTable.cs" />
     <Compile Include="Items\Addons\GadgetryTable.cs" />
-    <Compile Include="Items\Consumables\DecorativeKitchenSet.cs" />
-    <Compile Include="Items\Consumables\DecorativeStableSet.cs" />
+    <Compile Include="Items\StoreBought\DecorativeDungeonSet\DecorativeDungeonSet.cs" />
+    <Compile Include="Items\StoreBought\DecorativeKitchenSet.cs" />
+    <Compile Include="Items\StoreBought\DecorativeStableSet\DecorativeStableFencing.cs" />
+    <Compile Include="Items\StoreBought\DecorativeStableSet\DecorativeStableSet.cs" />
     <Compile Include="Items\Consumables\EmbroideryTool.cs" />
     <Compile Include="Items\Damageable\Beacon.cs" />
     <Compile Include="Items\Damageable\DamageableItem.cs" />
@@ -520,12 +522,12 @@
     <Compile Include="Items\Decorative\ArtisanFestivalRewards\SculptureWoodEven.cs" />
     <Compile Include="Items\Decorative\ArtisanFestivalRewards\SculptureWoodScept.cs" />
     <Compile Include="Items\Decorative\DecorativeHourglass.cs" />
-    <Compile Include="Items\Decorative\DecorativeStableSet\ChickenStatue.cs" />
-    <Compile Include="Items\Decorative\DecorativeStableSet\CowPie.cs" />
-    <Compile Include="Items\Decorative\DecorativeStableSet\CowStatue.cs" />
-    <Compile Include="Items\Decorative\DecorativeStableSet\Feedbag.cs" />
-    <Compile Include="Items\Decorative\DecorativeStableSet\HorseStatue.cs" />
-    <Compile Include="Items\Decorative\DecorativeStableSet\MetalTub.cs" />
+    <Compile Include="Items\StoreBought\DecorativeStableSet\ChickenStatue.cs" />
+    <Compile Include="Items\StoreBought\DecorativeStableSet\CowPie.cs" />
+    <Compile Include="Items\StoreBought\DecorativeStableSet\CowStatue.cs" />
+    <Compile Include="Items\StoreBought\DecorativeStableSet\Feedbag.cs" />
+    <Compile Include="Items\StoreBought\DecorativeStableSet\HorseStatue.cs" />
+    <Compile Include="Items\StoreBought\DecorativeStableSet\MetalTub.cs" />
     <Compile Include="Items\Decorative\DoveCage.cs" />
     <Compile Include="Items\Decorative\Countertop.cs" />
     <Compile Include="Items\Decorative\ButcherBlock.cs" />
@@ -572,13 +574,13 @@
     <Compile Include="Items\Resource\VileTentacles.cs" />
     <Compile Include="Items\Resource\EtherealSand.cs" />
     <Compile Include="Items\StoreBought\BarrelMailbox.cs" />
-    <Compile Include="Items\StoreBought\Decorative Dungeon Set\DecorativeDungeonChair.cs" />
-    <Compile Include="Items\StoreBought\Decorative Dungeon Set\DecorativeDungeonStool.cs" />
-    <Compile Include="Items\StoreBought\Decorative Dungeon Set\DecorativeWallHook.cs" />
-    <Compile Include="Items\StoreBought\Decorative Dungeon Set\DecorativeStocks.cs" />
-    <Compile Include="Items\StoreBought\Decorative Dungeon Set\DecorativeDungeonMask.cs" />
-    <Compile Include="Items\StoreBought\Decorative Dungeon Set\DungeonFountain.cs" />
-    <Compile Include="Items\StoreBought\Decorative Dungeon Set\DungeonBull.cs" />
+    <Compile Include="Items\StoreBought\DecorativeDungeonSet\DecorativeDungeonChair.cs" />
+    <Compile Include="Items\StoreBought\DecorativeDungeonSet\DecorativeDungeonStool.cs" />
+    <Compile Include="Items\StoreBought\DecorativeDungeonSet\DecorativeWallHook.cs" />
+    <Compile Include="Items\StoreBought\DecorativeDungeonSet\DecorativeStocks.cs" />
+    <Compile Include="Items\StoreBought\DecorativeDungeonSet\DecorativeDungeonMask.cs" />
+    <Compile Include="Items\StoreBought\DecorativeDungeonSet\DungeonFountain.cs" />
+    <Compile Include="Items\StoreBought\DecorativeDungeonSet\DungeonBull.cs" />
     <Compile Include="Items\StoreBought\GardenSculpture.cs" />
     <Compile Include="Items\StoreBought\MetalLadder.cs" />
     <Compile Include="Items\StoreBought\PetWhistle.cs" />
@@ -8629,9 +8631,6 @@
     <Compile Include="Misc\WeightOverloading.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Misc\WelcomeTimer.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Abilities\Enhancement.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -11495,6 +11494,7 @@
   <ItemGroup>
     <None Include="Services\TreasureMaps\desktop.ini" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.targets" />
   <ProjectExtensions>
     <VisualStudio AllowExistingFolder="true" />

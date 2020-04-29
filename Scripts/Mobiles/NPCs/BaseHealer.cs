@@ -47,10 +47,6 @@ namespace Server.Mobiles
 
             Fame = 1000;
             Karma = 10000;
-
-            PackItem(new Bandage(Utility.RandomMinMax(5, 10)));
-            PackItem(new HealPotion());
-            PackItem(new CurePotion());
         }
 
         public BaseHealer(Serial serial)
@@ -146,15 +142,6 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            if (!IsInvulnerable)
-            {
-                AI = AIType.AI_Mage;
-                ActiveSpeed = 0.2;
-                PassiveSpeed = 0.8;
-                RangePerception = BaseCreature.DefaultRangePerception;
-                FightMode = FightMode.Aggressor;
-            }
         }
     }
 }

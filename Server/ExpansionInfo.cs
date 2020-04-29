@@ -160,83 +160,6 @@ namespace Server
             {
                 new ExpansionInfo(
                     0,
-                    "None",
-                    ClientFlags.None,
-                    FeatureFlags.ExpansionNone,
-                    CharacterListFlags.ExpansionNone,
-                    HousingFlags.None),
-                new ExpansionInfo(
-                    1,
-                    "The Second Age",
-                    ClientFlags.Felucca,
-                    FeatureFlags.ExpansionT2A,
-                    CharacterListFlags.ExpansionT2A,
-                    HousingFlags.None),
-                new ExpansionInfo(
-                    2,
-                    "Renaissance",
-                    ClientFlags.Trammel,
-                    FeatureFlags.ExpansionUOR,
-                    CharacterListFlags.ExpansionUOR,
-                    HousingFlags.None),
-                new ExpansionInfo(
-                    3,
-                    "Third Dawn",
-                    ClientFlags.Ilshenar,
-                    FeatureFlags.ExpansionUOTD,
-                    CharacterListFlags.ExpansionUOTD,
-                    HousingFlags.None),
-                new ExpansionInfo(
-                    4,
-                    "Blackthorn's Revenge",
-                    ClientFlags.Ilshenar,
-                    FeatureFlags.ExpansionLBR,
-                    CharacterListFlags.ExpansionLBR,
-                    HousingFlags.None),
-                new ExpansionInfo(
-                    5,
-                    "Age of Shadows",
-                    ClientFlags.Malas,
-                    FeatureFlags.ExpansionAOS,
-                    CharacterListFlags.ExpansionAOS,
-                    HousingFlags.HousingAOS),
-                new ExpansionInfo(
-                    6,
-                    "Samurai Empire",
-                    ClientFlags.Tokuno,
-                    FeatureFlags.ExpansionSE,
-                    CharacterListFlags.ExpansionSE,
-                    HousingFlags.HousingSE),
-                new ExpansionInfo(
-                    7,
-                    "Mondain's Legacy",
-                    new ClientVersion("5.0.0a"),
-                    FeatureFlags.ExpansionML,
-                    CharacterListFlags.ExpansionML,
-                    HousingFlags.HousingML),
-                new ExpansionInfo(
-                    8,
-                    "Stygian Abyss",
-                    ClientFlags.TerMur,
-                    FeatureFlags.ExpansionSA,
-                    CharacterListFlags.ExpansionSA,
-                    HousingFlags.HousingSA),
-                new ExpansionInfo(
-                    9,
-                    "High Seas",
-                    new ClientVersion("7.0.9.0"),
-                    FeatureFlags.ExpansionHS,
-                    CharacterListFlags.ExpansionHS,
-                    HousingFlags.HousingHS),
-                new ExpansionInfo(
-                    10,
-                    "Time of Legends",
-                    new ClientVersion("7.0.45.65"),
-                    FeatureFlags.ExpansionTOL,
-                    CharacterListFlags.ExpansionTOL,
-                    HousingFlags.HousingTOL),
-                new ExpansionInfo(
-                    11,
                     "Endless Journey",
                     new ClientVersion("7.0.61.0"),
                     FeatureFlags.ExpansionEJ,
@@ -254,35 +177,7 @@ namespace Server
                 return info.SupportedFeatures;
             }
 
-            switch (ex)
-            {
-                case Expansion.None:
-                    return FeatureFlags.ExpansionNone;
-                case Expansion.T2A:
-                    return FeatureFlags.ExpansionT2A;
-                case Expansion.UOR:
-                    return FeatureFlags.ExpansionUOR;
-                case Expansion.UOTD:
-                    return FeatureFlags.ExpansionUOTD;
-                case Expansion.LBR:
-                    return FeatureFlags.ExpansionLBR;
-                case Expansion.AOS:
-                    return FeatureFlags.ExpansionAOS;
-                case Expansion.SE:
-                    return FeatureFlags.ExpansionSE;
-                case Expansion.ML:
-                    return FeatureFlags.ExpansionML;
-                case Expansion.SA:
-                    return FeatureFlags.ExpansionSA;
-                case Expansion.HS:
-                    return FeatureFlags.ExpansionHS;
-                case Expansion.TOL:
-                    return FeatureFlags.ExpansionTOL;
-                case Expansion.EJ:
-                    return FeatureFlags.ExpansionEJ;
-            }
-
-            return FeatureFlags.ExpansionNone;
+            return FeatureFlags.ExpansionEJ;
         }
 
         public static ExpansionInfo GetInfo(Expansion ex)
