@@ -18,7 +18,7 @@ namespace Server.Mobiles
         public ArcherGuard(Mobile target)
             : base(target)
         {
-            InitStats(100, 125, 25);
+            InitStats(150, 150, 150);
             Title = "the guard";
 
             SpeechHue = Utility.RandomDyedHue();
@@ -63,7 +63,6 @@ namespace Server.Mobiles
             arrows.LootType = LootType.Newbied;
 
             pack.DropItem(arrows);
-            pack.DropItem(new Gold(10, 25));
 
             AddItem(pack);
 
@@ -160,7 +159,6 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             writer.Write(m_Focus);
@@ -169,7 +167,6 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
             switch (version)
@@ -301,50 +298,6 @@ namespace Server.Mobiles
                     m_Owner.Focus = null;
                     Stop();
                 } // </instakill>
-                /*else if ( !m_Owner.InRange( target, 20 ) )
-                {
-                m_Shooting = false;
-                m_Owner.Focus = null;
-                }
-                else if ( !m_Owner.InLOS( target ) )
-                {
-                m_Shooting = false;
-                TeleportTo( target );
-                }
-                else if ( !m_Owner.CanSee( target ) )
-                {
-                m_Shooting = false;
-                if ( !m_Owner.InRange( target, 2 ) )
-                {
-                if ( !m_Owner.Move( m_Owner.GetDirectionTo( target ) | Direction.Running ) && OutOfMaxDistance( target ) )
-                TeleportTo( target );
-                }
-                else
-                {
-                if ( !m_Owner.UseSkill( SkillName.DetectHidden ) && Utility.Random( 50 ) == 0 )
-                m_Owner.Say( "Reveal!" );
-                }
-                }
-                else
-                {
-                if ( m_Shooting && (TimeToSpare() || OutOfMaxDistance( target )) )
-                m_Shooting = false;
-                else if ( !m_Shooting && InMinDistance( target ) )
-                m_Shooting = true;
-                if ( !m_Shooting )
-                {
-                if ( m_Owner.InRange( target, 1 ) )
-                {
-                if ( !m_Owner.Move( (Direction)(m_Owner.GetDirectionTo( target ) - 4) | Direction.Running ) && OutOfMaxDistance( target ) ) // Too close, move away
-                TeleportTo( target );
-                }
-                else if ( !m_Owner.InRange( target, 2 ) )
-                {
-                if ( !m_Owner.Move( m_Owner.GetDirectionTo( target ) | Direction.Running ) && OutOfMaxDistance( target ) )
-                TeleportTo( target );
-                }
-                }
-                }*/
             }
 
             private bool TimeToSpare()

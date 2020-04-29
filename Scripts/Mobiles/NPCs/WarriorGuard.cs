@@ -18,7 +18,7 @@ namespace Server.Mobiles
         public WarriorGuard(Mobile target)
             : base(target)
         {
-            InitStats(1000, 1000, 1000);
+            InitStats(150, 150, 150);
             Title = "the guard";
 
             SpeechHue = Utility.RandomDyedHue();
@@ -99,8 +99,6 @@ namespace Server.Mobiles
             Container pack = new Backpack();
 
             pack.Movable = false;
-
-            pack.DropItem(new Gold(10, 25));
 
             AddItem(pack);
 
@@ -197,7 +195,6 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             writer.Write(m_Focus);
@@ -206,7 +203,6 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
             switch (version)
@@ -337,24 +333,6 @@ namespace Server.Mobiles
                     m_Owner.Focus = null;
                     Stop();
                 } // </instakill>
-                /*else if ( !m_Owner.InRange( target, 20 ) )
-                {
-                m_Owner.Focus = null;
-                }
-                else if ( !m_Owner.InRange( target, 10 ) || !m_Owner.InLOS( target ) )
-                {
-                TeleportTo( target );
-                }
-                else if ( !m_Owner.InRange( target, 1 ) )
-                {
-                if ( !m_Owner.Move( m_Owner.GetDirectionTo( target ) | Direction.Running ) )
-                TeleportTo( target );
-                }
-                else if ( !m_Owner.CanSee( target ) )
-                {
-                if ( !m_Owner.UseSkill( SkillName.DetectHidden ) && Utility.Random( 50 ) == 0 )
-                m_Owner.Say( "Reveal!" );
-                }*/
             }
 
             private void TeleportTo(Mobile target)

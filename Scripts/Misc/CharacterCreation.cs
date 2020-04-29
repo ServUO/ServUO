@@ -276,8 +276,6 @@ namespace Server.Misc
             Console.WriteLine(" - Character: {0} (serial={1})", newChar.Name, newChar.Serial);
             Console.WriteLine(" - Started: {0} {1} in {2}", city.City, city.Location, city.Map);
             Utility.PopColor();
-
-            new WelcomeTimer(newChar).Start();
         }
 
         private static void FixStats(ref int str, ref int dex, ref int intel, int max)

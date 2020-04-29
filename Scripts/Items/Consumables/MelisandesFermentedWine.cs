@@ -16,11 +16,6 @@ namespace Server.Items
         }
 
         public override int LabelNumber => 1072114;// Melisande's Fermented Wine
-        public override void Drink(Mobile from)
-        {
-            if (MondainsLegacy.CheckML(from))
-                base.Drink(from);
-        }
 
         public override void GetProperties(ObjectPropertyList list)
         {
@@ -32,14 +27,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

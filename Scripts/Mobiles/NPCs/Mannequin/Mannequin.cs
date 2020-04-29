@@ -4,6 +4,7 @@ using Server.Items;
 using Server.Multis;
 using Server.Network;
 using Server.Targeting;
+using Server.Misc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,10 +46,10 @@ namespace Server.Mobiles
 
         public bool IsOwner(Mobile m)
         {
-            if (m.AccessLevel >= AccessLevel.GameMaster)
+            if (m == Owner || m.AccessLevel >= AccessLevel.GameMaster)
                 return true;
 
-            return m == Owner;
+            return AccountHandler.CheckAccount(m, Owner);
         }
 
         public override bool CanBeDamaged()
@@ -212,7 +213,7 @@ namespace Server.Mobiles
         {
             base.GetContextMenuEntries(from, list);
 
-            if (IsOwner(Owner))
+            if (IsOwner(from))
             {
                 if (from.Alive && from.InRange(this, 2))
                 {

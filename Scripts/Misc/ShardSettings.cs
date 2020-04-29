@@ -11,8 +11,6 @@ namespace Server
         [CallPriority(Int32.MinValue)]
         public static void Configure()
         {
-            Core.Expansion = Expansion.EJ;
-
             AccountGold.Enabled = true;
             AccountGold.ConvertOnBank = true;
             AccountGold.ConvertOnTrade = false;

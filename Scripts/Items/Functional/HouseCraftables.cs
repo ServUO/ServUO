@@ -32,15 +32,7 @@ namespace Server.Items
         CurledMetalSignHanger,
         FlourishedMetalSignHanger,
         InwardCurledMetalSignHanger,
-        EndCurledMetalSignHanger,
-        //DecorativeStableSet
-        Arch,
-        NWCornerPiece,
-        SouthFacingPieces,
-        EastFacingPieces,
-        GateSouth,
-        GateEast,
-        CornerPiece,
+        EndCurledMetalSignHanger
     }
 
     public class CraftableHouseItem : Item, IFlipable, ICraftable
@@ -70,13 +62,6 @@ namespace Server.Items
 			new int[] { 1155852, 2973, 2974 },              // FlourishedCurledSignHanger
 			new int[] { 1155853, 2975, 2976 },              // InwardCurledCurledMetalSIgnHanger
 			new int[] { 1155854, 2977, 2978 },              // EndCurledMetalSignHanger
-            new int[] { 1126213, 42189, 42190 },            // Arch
-			new int[] { 1126197, 42171 },                   // NWCornerPiece
-			new int[] { 1126197, 42172, 42173 },            // SouthFacingPieces
-			new int[] { 1126197, 42173, 42172 },            // EastFacingPieces
-			new int[] { 1126211, 42176 },                   // GateSouth
-			new int[] { 1126211, 42187 },                   // GateEast
-			new int[] { 1126197, 42174 },                   // CornerPiece
 		};
 
         private CraftableItemType _Type;

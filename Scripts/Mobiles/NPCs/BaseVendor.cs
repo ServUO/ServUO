@@ -729,6 +729,13 @@ namespace Server.Mobiles
 
         public virtual void InitOutfit()
         {
+            if (Backpack == null)
+            {
+                Item backpack = new Backpack();
+                backpack.Movable = false;
+                AddItem(backpack);
+            }
+
             switch (Utility.Random(3))
             {
                 case 0:
@@ -798,9 +805,6 @@ namespace Server.Mobiles
                         break;
                 }
             }
-
-            if (!Siege.SiegeShard)
-                PackGold(100, 200);
         }
 
         #region SA
