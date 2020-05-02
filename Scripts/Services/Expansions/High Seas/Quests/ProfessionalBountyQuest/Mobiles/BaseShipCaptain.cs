@@ -208,7 +208,7 @@ namespace Server.Mobiles
             if (gal == null)
                 return;
 
-            if (gal.PlayerCount() > 0)
+            if (gal.PlayerCount > 0)
             {
                 Timer.DelayCall(DecayRetry, new TimerStateCallback(TryDecayGalleon), gal);
                 return;

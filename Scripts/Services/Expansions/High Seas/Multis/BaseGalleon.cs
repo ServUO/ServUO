@@ -765,10 +765,10 @@ namespace Server.Multis
             }
         }
 
-        public override TimeSpan GetMovementInterval(bool fast, bool drifting, out int clientSpeed)
+        public override TimeSpan GetMovementInterval(bool fast, out int clientSpeed)
         {
             if (DamageTaken < DamageLevel.Heavily)
-                return base.GetMovementInterval(fast, drifting, out clientSpeed);
+                return base.GetMovementInterval(fast, out clientSpeed);
 
             if (fast)
             {

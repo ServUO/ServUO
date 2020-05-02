@@ -21,12 +21,6 @@ namespace Server
             m_From = new SecureTradeInfo(this, from, new SecureTradeContainer(this));
             m_To = new SecureTradeInfo(this, to, new SecureTradeContainer(this));
 
-            bool from6017 = (from.NetState != null && from.NetState.ContainerGridLines);
-            bool to6017 = (to.NetState != null && to.NetState.ContainerGridLines);
-
-            bool from704565 = (from.NetState != null && from.NetState.NewSecureTrading);
-            bool to704565 = (to.NetState != null && to.NetState.NewSecureTrading);
-
             from.Send(new MobileStatus(from, to));
             from.Send(new UpdateSecureTrade(m_From.Container, false, false));
 
@@ -39,7 +33,7 @@ namespace Server
             from.Send(new DisplaySecureTrade(to, m_From.Container, m_To.Container, to.Name));
             from.Send(new UpdateSecureTrade(m_From.Container, false, false));
 
-            if (from.Account != null && from704565)
+            if (from.Account != null)
             {
                 from.Send(
                     new UpdateSecureTrade(m_From.Container, TradeFlag.UpdateLedger, from.Account.TotalGold, from.Account.TotalPlat));
@@ -57,7 +51,7 @@ namespace Server
             to.Send(new DisplaySecureTrade(from, m_To.Container, m_From.Container, from.Name));
             to.Send(new UpdateSecureTrade(m_To.Container, false, false));
 
-            if (to.Account != null && to704565)
+            if (to.Account != null)
             {
                 to.Send(new UpdateSecureTrade(m_To.Container, TradeFlag.UpdateLedger, to.Account.TotalGold, to.Account.TotalPlat));
             }
@@ -167,7 +161,7 @@ namespace Server
             NetState ls = left.Mobile != null ? left.Mobile.NetState : null;
             NetState rs = right.Mobile != null ? right.Mobile.NetState : null;
 
-            if (ls != null && ls.NewSecureTrading)
+            if (ls != null)
             {
                 int plat = left.Mobile.Account.TotalPlat;
                 int gold = left.Mobile.Account.TotalGold;
@@ -175,7 +169,7 @@ namespace Server
                 ls.Send(new UpdateSecureTrade(left.Container, TradeFlag.UpdateLedger, gold, plat));
             }
 
-            if (rs != null && rs.NewSecureTrading)
+            if (rs != null)
             {
                 rs.Send(new UpdateSecureTrade(right.Container, TradeFlag.UpdateGold, left.Gold, left.Plat));
             }

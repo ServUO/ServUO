@@ -273,7 +273,7 @@ namespace Server.Engines.HuntsmasterChallenge
             m_Leaders.Clear();
 
             DateTime now = DateTime.Now;
-            DateTime ends = DateTime.Now + TimeSpan.FromDays(30);
+            DateTime ends = DateTime.Now + TimeSpan.FromDays(32);
 
             m_SeasonEnds = new DateTime(ends.Year, ends.Month, 1, 0, 0, 0);
             m_SeasonBegins = new DateTime(now.Year, now.Month, 1, 0, 0, 0);

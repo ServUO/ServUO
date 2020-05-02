@@ -4609,49 +4609,6 @@ namespace Server
 
             return item;
         }
-
-        public virtual void SendDropEffect(Item item)
-        {
-            if (m_DragEffects && !item.Deleted)
-            {
-                Map map = m_Map;
-                object root = item.RootParent;
-
-                if (map != null && (root == null || root is Item))
-                {
-                    IPooledEnumerable<NetState> eable = map.GetClientsInRange(m_Location);
-                    Packet p = null;
-
-                    foreach (NetState ns in eable)
-                    {
-                        if (ns.StygianAbyss)
-                            continue;
-
-                        if (ns.Mobile != this && ns.Mobile.CanSee(this) && ns.Mobile.InLOS(this) && ns.Mobile.CanSee(root))
-                        {
-                            if (p == null)
-                            {
-                                IEntity trg;
-
-                                if (root == null)
-                                    trg = new Entity(Serial.Zero, item.Location, map);
-                                else
-                                    trg = new Entity(((Item)root).Serial, ((Item)root).Location, map);
-
-                                p = Packet.Acquire(new DragEffect(this, trg, item.ItemID, item.Hue, item.Amount));
-                            }
-
-                            ns.Send(p);
-                        }
-                    }
-
-                    Packet.Release(p);
-
-                    eable.Free();
-                }
-            }
-        }
-
         public virtual bool Drop(Item to, Point3D loc)
         {
             Mobile from = this;
@@ -4680,11 +4637,6 @@ namespace Server
             }
 
             item.ClearBounce();
-
-            if (!bounced)
-            {
-                SendDropEffect(item);
-            }
 
             return !bounced;
         }
@@ -4718,11 +4670,6 @@ namespace Server
 
             item.ClearBounce();
 
-            if (!bounced)
-            {
-                SendDropEffect(item);
-            }
-
             return !bounced;
         }
 
@@ -4754,11 +4701,6 @@ namespace Server
             }
 
             item.ClearBounce();
-
-            if (!bounced)
-            {
-                SendDropEffect(item);
-            }
 
             return !bounced;
         }
@@ -7496,7 +7438,7 @@ namespace Server
                                 ns.Send(new HealthbarPoisonEC(m));
                                 ns.Send(new HealthbarYellowEC(m));
                             }
-                            else if (ns.StygianAbyss)
+                            else
                             {
                                 ns.Send(new HealthbarPoison(m));
                                 ns.Send(new HealthbarYellow(m));
@@ -9870,7 +9812,7 @@ namespace Server
                     m_Map.OnMove(oldLocation, this);
                 }
 
-                if (isTeleport && m_NetState != null && (!m_NetState.HighSeas || !NoMoveHS))
+                if (isTeleport && m_NetState != null && !NoMoveHS)
                 {
                     m_NetState.Sequence = 0;
 
@@ -9941,7 +9883,7 @@ namespace Server
                                     update = false;
                                 }
 
-                                if (m.m_NetState != null && (update || (isTeleport && (!m.m_NetState.HighSeas || !NoMoveHS))) && m.CanSee(this))
+                                if (m.m_NetState != null && (update || (isTeleport && !NoMoveHS)) && m.CanSee(this))
                                 {
                                     m.m_NetState.Send(MobileIncoming.Create(m.m_NetState, m, this));
 
@@ -9950,7 +9892,7 @@ namespace Server
                                         m.m_NetState.Send(hbpKRPacket);
                                         m.m_NetState.Send(hbyKRPacket);
                                     }
-                                    else if (m.m_NetState.StygianAbyss)
+                                    else
                                     {
                                         m.m_NetState.Send(hbpPacket);
                                         m.m_NetState.Send(hbyPacket);
@@ -9982,7 +9924,7 @@ namespace Server
                                         ourState.Send(new HealthbarPoisonEC(m));
                                         ourState.Send(new HealthbarYellowEC(m));
                                     }
-                                    else if (ourState.StygianAbyss)
+                                    else
                                     {
                                         ourState.Send(new HealthbarPoison(m));
                                         ourState.Send(new HealthbarYellow(m));
@@ -10014,7 +9956,7 @@ namespace Server
                                 update = false;
                             }
 
-                            if ((update || (isTeleport && (!ns.HighSeas || !NoMoveHS))) && ns.Mobile.CanSee(this))
+                            if ((update || (isTeleport && !NoMoveHS)) && ns.Mobile.CanSee(this))
                             {
                                 ns.Send(MobileIncoming.Create(ns, ns.Mobile, this));
 
@@ -10023,7 +9965,7 @@ namespace Server
                                     ns.Send(hbpKRPacket);
                                     ns.Send(hbyKRPacket);
                                 }
-                                else if (ns.StygianAbyss)
+                                else
                                 {
                                     ns.Send(hbpPacket);
                                     ns.Send(hbyPacket);
@@ -10503,18 +10445,27 @@ namespace Server
                     {
                         state.Send(MobileIncoming.Create(state, state.Mobile, this));
 
-                        if (state.StygianAbyss)
+                        if (m_Poison != null)
                         {
-                            if (m_Poison != null)
+                            if (state.IsEnhancedClient)
                             {
-                                state.Send(new HealthbarPoison(this));
                                 state.Send(new HealthbarPoisonEC(this));
                             }
+                            else
+                            {
+                                state.Send(new HealthbarPoison(this));
+                            }
+                        }
 
-                            if (m_Blessed || m_YellowHealthbar)
+                        if (m_Blessed || m_YellowHealthbar)
+                        {
+                            if (state.IsEnhancedClient)
+                            {
+                                state.Send(new HealthbarYellowEC(this));
+                            }
+                            else
                             {
                                 state.Send(new HealthbarYellow(this));
-                                state.Send(new HealthbarYellowEC(this));
                             }
                         }
 
@@ -11181,7 +11132,7 @@ namespace Server
 
                 if (sendPublicStats || sendPrivateStats)
                 {
-                    ourState.Send(new MobileStatusExtended(m, m_NetState));
+                    ourState.Send(new MobileStatus(m));
                 }
                 else if (sendAll)
                 {
@@ -12145,7 +12096,7 @@ namespace Server
         {
             if (from.Map == Map && Utility.InUpdateRange(this, from) && from.CanSee(this))
             {
-                from.Send(new MobileStatus(from, this, m_NetState));
+                from.Send(new MobileStatus(from, this));
             }
 
             if (from == this)

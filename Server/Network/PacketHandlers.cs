@@ -38,20 +38,16 @@ namespace Server.Network
     public static class PacketHandlers
     {
         private static readonly PacketHandler[] m_Handlers;
-        private static readonly PacketHandler[] m_6017Handlers;
 
         private static readonly PacketHandler[] m_ExtendedHandlersLow;
         private static readonly Dictionary<int, PacketHandler> m_ExtendedHandlersHigh;
 
         private static readonly EncodedPacketHandler[] m_EncodedHandlersLow;
         private static readonly Dictionary<int, EncodedPacketHandler> m_EncodedHandlersHigh;
-
-        public static PacketHandler[] Handlers => m_Handlers;
-
+        
         static PacketHandlers()
         {
             m_Handlers = new PacketHandler[0x100];
-            m_6017Handlers = new PacketHandler[0x100];
 
             m_ExtendedHandlersLow = new PacketHandler[0x100];
             m_ExtendedHandlersHigh = new Dictionary<int, PacketHandler>();
@@ -67,7 +63,7 @@ namespace Server.Network
             Register(0x05, 5, true, AttackReq);
             Register(0x06, 5, true, UseReq);
             Register(0x07, 7, true, LiftReq);
-            Register(0x08, 14, true, DropReq);
+            Register(0x08, 15, true, DropReq);
             Register(0x09, 5, true, LookReq);
             Register(0x0A, 11, true, Edit);
             Register(0x12, 0, true, TextCommand);
@@ -130,7 +126,7 @@ namespace Server.Network
             //Register(0xFA, 1, true, Unhandled); // Currently Handled in UltimaStore.cs
             Register(0xFB, 2, false, PublicHouseContent);
 
-            Register6017(0x08, 15, true, DropReq6017);
+            
             Register(0x8D, 0, false, ECCreateCharacter);
 
             RegisterExtended(0x05, false, ScreenSize);
@@ -167,26 +163,11 @@ namespace Server.Network
         public static void Register(int packetID, int length, bool ingame, OnPacketReceive onReceive)
         {
             m_Handlers[packetID] = new PacketHandler(packetID, length, ingame, onReceive);
-
-            if (m_6017Handlers[packetID] == null)
-            {
-                m_6017Handlers[packetID] = new PacketHandler(packetID, length, ingame, onReceive);
-            }
         }
 
         public static PacketHandler GetHandler(int packetID)
         {
             return m_Handlers[packetID];
-        }
-
-        public static void Register6017(int packetID, int length, bool ingame, OnPacketReceive onReceive)
-        {
-            m_6017Handlers[packetID] = new PacketHandler(packetID, length, ingame, onReceive);
-        }
-
-        public static PacketHandler Get6017Handler(int packetID)
-        {
-            return m_6017Handlers[packetID];
         }
 
         public static void RegisterExtended(int packetID, bool ingame, OnPacketReceive onReceive)
@@ -268,13 +249,6 @@ namespace Server.Network
         public static void RegisterThrottler(int packetID, ThrottlePacketCallback t)
         {
             PacketHandler ph = GetHandler(packetID);
-
-            if (ph != null)
-            {
-                ph.ThrottleCallback = t;
-            }
-
-            ph = Get6017Handler(packetID);
 
             if (ph != null)
             {
@@ -1116,53 +1090,6 @@ namespace Server.Network
 
         public static void DropReq(NetState state, PacketReader pvSrc)
         {
-            Serial serial = pvSrc.ReadInt32(); // serial, ignored
-            int x = pvSrc.ReadInt16();
-            int y = pvSrc.ReadInt16();
-            int z = pvSrc.ReadSByte();
-            byte gridloc = pvSrc.ReadByte(); // grid location
-            Serial dest = pvSrc.ReadInt32();
-
-            Point3D loc = new Point3D(x, y, z);
-            Mobile from = state.Mobile;
-
-            if (serial.IsItem)
-            {
-                Item dropped = World.FindItem(serial);
-
-                if (dropped != null)
-                {
-                    dropped.GridLocation = gridloc;
-                }
-            }
-
-            if (dest.IsMobile)
-            {
-                from.Drop(World.FindMobile(dest), loc);
-            }
-            else if (dest.IsItem)
-            {
-                Item item = World.FindItem(dest);
-
-                if (item is BaseMulti && ((BaseMulti)item).AllowsRelativeDrop)
-                {
-                    loc.m_X += item.X;
-                    loc.m_Y += item.Y;
-                    from.Drop(loc);
-                }
-                else
-                {
-                    from.Drop(item, loc);
-                }
-            }
-            else
-            {
-                from.Drop(loc);
-            }
-        }
-
-        public static void DropReq6017(NetState state, PacketReader pvSrc)
-        {
             Serial serial = pvSrc.ReadInt32();
             int x = pvSrc.ReadInt16();
             int y = pvSrc.ReadInt16();
@@ -1295,13 +1222,10 @@ namespace Server.Network
 
                                     bool valid = false;
 
-                                    if (state.HighSeas)
+                                    ItemData id = TileData.ItemTable[graphic & TileData.MaxItemValue];
+                                    if (id.Surface)
                                     {
-                                        ItemData id = TileData.ItemTable[graphic & TileData.MaxItemValue];
-                                        if (id.Surface)
-                                        {
-                                            z -= id.Height;
-                                        }
+                                        z -= id.Height;
                                     }
 
                                     for (int i = 0; !valid && i < tiles.Length; ++i)
@@ -2573,18 +2497,9 @@ namespace Server.Network
 			*/
 
             bool female = ((genderRace % 2) != 0);
-
-            Race race = null;
-
-            if (state.StygianAbyss)
-            {
-                byte raceID = (byte)(genderRace < 4 ? 0 : ((genderRace / 2) - 1));
-                race = Race.Races[raceID];
-            }
-            else
-            {
-                race = Race.Races[(byte)(genderRace / 2)];
-            }
+            
+            byte raceID = (byte)(genderRace < 4 ? 0 : ((genderRace / 2) - 1));
+            Race race = Race.Races[raceID];
 
             if (race == null)
             {

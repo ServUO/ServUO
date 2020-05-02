@@ -58,7 +58,6 @@ namespace Server.Commands
             new CommandEntry("Moongates",           "Moongen",          "MoonGenDelete",        Category.Decoration,      Expansion.None,   101),
             new CommandEntry("Doors",               "DoorGen",          "DoorGenDelete",        Category.Decoration,      Expansion.None,   102),
             new CommandEntry("Signs",               "SignGen",          "SignGenDelete",        Category.Decoration,      Expansion.None,   103),
-            new CommandEntry("Teleporters",         "TelGen",           "TelGenDelete",         Category.Decoration,      Expansion.None,   104),
             new CommandEntry("Doom Lamp",           "GenLeverPuzzle",   "LampPuzzleDelete",     Category.System,          Expansion.AOS,    105),
             new CommandEntry("Doom Gauntlet",       "GenGauntlet",      "DeleteGauntlet",       Category.Dungeon,         Expansion.AOS,    106),
             new CommandEntry("Khaldun",             "GenKhaldun",       "DeleteKhaldun",        Category.Dungeon,         Expansion.None,   107),
@@ -499,8 +498,6 @@ namespace Server.Gumps
                     return WeakEntityCollection.HasCollection("door");
                 case 103:
                     return WeakEntityCollection.HasCollection("sign");
-                case 104:
-                    return WeakEntityCollection.HasCollection("tel");
                 case 105:
                     return WeakEntityCollection.HasCollection("LeverPuzzleController");
                 case 106:

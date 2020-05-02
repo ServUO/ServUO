@@ -956,14 +956,7 @@ namespace Server.Items
 
             if (((Body)Amount).IsHuman && ItemID == 0x2006)
             {
-                if (state.ContainerGridLines)
-                {
-                    state.Send(new CorpseContent6017(state.Mobile, this));
-                }
-                else
-                {
-                    state.Send(new CorpseContent(state.Mobile, this));
-                }
+                state.Send(new CorpseContent(state.Mobile, this));
 
                 state.Send(new CorpseEquip(state.Mobile, this));
             }

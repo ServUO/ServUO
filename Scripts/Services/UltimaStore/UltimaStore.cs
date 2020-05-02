@@ -383,12 +383,6 @@ namespace Server.Engines.UOStore
                 return;
             }
 
-            if (!user.NetState.UltimaStore)
-            {
-                user.SendMessage("You must update Ultima Online in order to use the in game store.");
-                return;
-            }
-
             if (user.AccessLevel < AccessLevel.Counselor && !CanSearch(user))
             {
                 // Before using the in game store, you must be in a safe log-out location
