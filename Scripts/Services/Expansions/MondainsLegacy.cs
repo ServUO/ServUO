@@ -18,6 +18,7 @@ namespace Server
 
     public static class MondainsLegacy
     {
+        public static Type[] Artifacts { get { return m_Artifacts; } }
         private static readonly Type[] m_Artifacts = new Type[]
         {
             typeof(AegisOfGrace), typeof(BladeDance), typeof(BloodwoodSpirit), typeof(Bonesmasher),
@@ -184,7 +185,7 @@ namespace Server
                 m_PublicDonations = value;
             }
         }
-        public static Type[] Artifacts => m_Artifacts;
+
         public static void Initialize()
         {
             EventSink.OnKilledBy += OnKilledBy;

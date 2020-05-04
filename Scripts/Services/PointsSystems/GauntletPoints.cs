@@ -94,7 +94,7 @@ namespace Server.Engines.Points
             }
         }
 
-        public static Type[] DoomArtifact => m_DoomArtifact;
+        public static Type[] DoomArtifacts => m_DoomArtifact;
         private static readonly Type[] m_DoomArtifact = new Type[]
         {
             typeof(LegacyOfTheDreadLord),       typeof(TheTaskmaster),              typeof(TheDragonSlayer),

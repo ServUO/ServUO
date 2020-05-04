@@ -321,7 +321,14 @@ namespace Server.Mobiles
 
                 protected override void OnTarget(Mobile from, object targeted)
                 {
-                    from.SendGump(new MannequinCompareGump(_Mannequin, (Item)targeted));
+                    if (targeted is Item)
+                        from.SendGump(new MannequinCompareGump(_Mannequin, (Item)targeted));
+                    else
+                    {
+                        // TODO : Action
+                        // This was a temporary crash fix
+                    }
+
                 }
             }
         }

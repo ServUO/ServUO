@@ -63,10 +63,21 @@ namespace Server.Engines.Craft
 
     public class DefTailoring : CraftSystem
     {
-        public override SkillName MainSkill => SkillName.Tailoring;
+        #region Statics
+        private static readonly Type[] m_TailorColorables = new Type[]
+   {
+            typeof(GozaMatEastDeed), typeof(GozaMatSouthDeed),
+            typeof(SquareGozaMatEastDeed), typeof(SquareGozaMatSouthDeed),
+            typeof(BrocadeGozaMatEastDeed), typeof(BrocadeGozaMatSouthDeed),
+            typeof(BrocadeSquareGozaMatEastDeed), typeof(BrocadeSquareGozaMatSouthDeed)
+   };
 
-        public override int GumpTitleNumber => 1044005;
+        private static readonly Type[] m_TailorClothNonColorables = new Type[]
+        {
+            typeof(DeerMask), typeof(BearMask), typeof(OrcMask), typeof(TribalMask), typeof(HornedTribalMask)
+        };
 
+        // singleton instance
         private static CraftSystem m_CraftSystem;
 
         public static CraftSystem CraftSystem
@@ -79,6 +90,20 @@ namespace Server.Engines.Craft
                 return m_CraftSystem;
             }
         }
+        #endregion
+
+        #region Constructor
+        private DefTailoring()
+            : base(1, 1, 1.25)// base( 1, 1, 4.5 )
+        {
+        }
+
+        #endregion
+
+        #region Overrides
+        public override SkillName MainSkill => SkillName.Tailoring;
+
+        public override int GumpTitleNumber => 1044005;
 
         public override CraftECA ECA => CraftECA.ChanceMinusSixtyToFourtyFive;
 
@@ -89,11 +114,6 @@ namespace Server.Engines.Craft
                 return 0.05; // 5%
 
             return 0.5; // 50%
-        }
-
-        private DefTailoring()
-            : base(1, 1, 1.25)// base( 1, 1, 4.5 )
-        {
         }
 
         public override int CanCraft(Mobile from, ITool tool, Type itemType)
@@ -108,14 +128,6 @@ namespace Server.Engines.Craft
             return 0;
         }
 
-        private static readonly Type[] m_TailorColorables = new Type[]
-        {
-            typeof(GozaMatEastDeed), typeof(GozaMatSouthDeed),
-            typeof(SquareGozaMatEastDeed), typeof(SquareGozaMatSouthDeed),
-            typeof(BrocadeGozaMatEastDeed), typeof(BrocadeGozaMatSouthDeed),
-            typeof(BrocadeSquareGozaMatEastDeed), typeof(BrocadeSquareGozaMatSouthDeed)
-        };
-
         public override bool RetainsColorFrom(CraftItem item, Type type)
         {
             if (type != typeof(Cloth) && type != typeof(UncutCloth) && type != typeof(AbyssalCloth))
@@ -127,6 +139,22 @@ namespace Server.Engines.Craft
 
             for (int i = 0; !contains && i < m_TailorColorables.Length; ++i)
                 contains = (m_TailorColorables[i] == type);
+
+            return contains;
+        }
+
+        public override bool RetainsColorFromException(CraftItem item, Type type)
+        {
+            if (item == null || type == null)
+                return false;
+
+            if (type != typeof(Cloth) && type != typeof(UncutCloth) && type != typeof(AbyssalCloth))
+                return false;
+
+            bool contains = false;
+
+            for (int i = 0; !contains && i < m_TailorClothNonColorables.Length; ++i)
+                contains = (m_TailorClothNonColorables[i] == item.ItemType);
 
             return contains;
         }
@@ -685,7 +713,8 @@ namespace Server.Engines.Craft
             Repair = true;
             CanEnhance = true;
             CanAlter = true;
-        }
+        } 
+        #endregion
 
         private void CutUpCloth(Mobile m, CraftItem craftItem, ITool tool)
         {

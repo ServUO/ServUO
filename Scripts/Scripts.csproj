@@ -477,6 +477,7 @@
     <Compile Include="Items\Consumables\CommissionPlayerVendorDeed.cs" />
     <Compile Include="Items\Consumables\FearEssence.cs" />
     <Compile Include="Items\Consumables\ShatterPotion.cs" />
+    <Compile Include="Items\Containers\BagOfMysticRegs.cs" />
     <Compile Include="Items\Containers\BoxOfCrystalItems.cs" />
     <Compile Include="Items\Containers\BoxOfShadowItems.cs" />
     <Compile Include="Items\Addons\Shadow Furniture Set\ShadowAltar.cs" />

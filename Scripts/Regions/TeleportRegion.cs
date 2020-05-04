@@ -165,7 +165,7 @@ namespace Server.Regions
 
                 TeleportRegion teleRegion;
 
-                if (!Siege.SiegeShard && locMap.Rules != MapRules.FeluccaRules && teleMap.Rules == MapRules.FeluccaRules)
+                if (!Siege.SiegeShard && locMap != null && locMap.Rules != MapRules.FeluccaRules && teleMap.Rules == MapRules.FeluccaRules)
                 {
                     teleRegion = new TeleportRegionPVPWarning(string.Format("Teleport Region {0}", unique.ToString()), locMap, recs, list);
                 }

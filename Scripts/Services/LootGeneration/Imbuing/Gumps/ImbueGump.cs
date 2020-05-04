@@ -63,7 +63,7 @@ namespace Server.Gumps
                 m_Value = maxInt;
             }
 
-            double currentIntensity = Math.Floor((m_Value / (double)maxInt) * 100);
+            double currentIntensity = Math.Floor((m_Value / (double)maxInt) * m_Info.Weight);
 
             // Set context
             context.LastImbued = m_Item;
@@ -76,7 +76,7 @@ namespace Server.Gumps
             m_TotalProps = Imbuing.GetTotalMods(m_Item, m_ID);
 
             if (maxInt <= 1)
-                currentIntensity = 100;
+                currentIntensity = m_Info.Weight;
 
             int propWeight = (int)Math.Floor((weight / (double)maxInt) * m_Value);
 
@@ -92,28 +92,29 @@ namespace Server.Gumps
             int specResAmount = Imbuing.GetSpecialAmount(m_Item, m_ID, m_Value);
 
             AddPage(0);
-            AddBackground(0, 0, 520, 440, 5054);
-            AddImageTiled(10, 10, 500, 420, 2624);
 
-            AddImageTiled(10, 30, 500, 10, 5058);
-            AddImageTiled(250, 40, 10, 290, 5058);
-            AddImageTiled(10, 180, 500, 10, 5058);
-            AddImageTiled(10, 330, 500, 10, 5058);
-            AddImageTiled(10, 400, 500, 10, 5058);
+            AddBackground(0, 0, 520, 440, 5054);
+            AddImageTiled(10, 10, 500, 20, 2624);
+            AddImageTiled(10, 40, 245, 140, 2624);
+            AddImageTiled(265, 40, 245, 140, 2624);
+            AddImageTiled(10, 190, 245, 140, 2624);
+            AddImageTiled(265, 190, 245, 140, 2624);
+            AddImageTiled(10, 340, 500, 60, 2624);
+            AddImageTiled(10, 410, 500, 20, 2624);
 
             AddAlphaRegion(10, 10, 500, 420);
 
             AddHtmlLocalized(10, 12, 520, 20, 1079717, LabelColor, false, false); // <CENTER>IMBUING CONFIRMATION</CENTER>
-            AddHtmlLocalized(50, 50, 200, 20, 1114269, LabelColor, false, false); // PROPERTY INFORMATION
+            AddHtmlLocalized(50, 50, 250, 20, 1114269, LabelColor, false, false); // PROPERTY INFORMATION
 
-            AddHtmlLocalized(25, 80, 80, 20, 1114270, LabelColor, false, false);  // Property:
+            AddHtmlLocalized(25, 80, 390, 20, 1114270, LabelColor, false, false);  // Property:
 
             if (m_Info.AttributeName != null)
             {
                 AddHtmlLocalized(95, 80, 150, 20, 1114057, m_Info.AttributeName.ToString(), LabelColor, false, false);
             }
 
-            AddHtmlLocalized(25, 100, 80, 20, 1114271, LabelColor, false, false); // Replaces:
+            AddHtmlLocalized(25, 100, 390, 20, 1114271, LabelColor, false, false); // Replaces:
             TextDefinition replace = WhatReplacesWhat(m_ID, m_Item);
 
             if (replace != null)
@@ -122,40 +123,40 @@ namespace Server.Gumps
             }
 
             // Weight Modifier
-            AddHtmlLocalized(25, 120, 80, 20, 1114272, 0xFFFFFF, false, false); // Weight:
+            AddHtmlLocalized(25, 120, 200, 20, 1114272, 0xFFFFFF, false, false); // Weight:
             AddLabel(95, 120, IceHue, String.Format("{0}x", (m_Info.Weight / 100.0).ToString("0.0")));
 
-            AddHtmlLocalized(25, 140, 80, 20, 1114273, LabelColor, false, false); // Intensity:
+            AddHtmlLocalized(25, 140, 200, 20, 1114273, LabelColor, false, false); // Intensity:
             AddLabel(95, 140, IceHue, String.Format("{0}%", currentIntensity));
 
             // Materials needed
-            AddHtmlLocalized(10, 200, 245, 20, 1044055, LabelColor, false, false); // <CENTER>MATERIALS</CENTER>
+            AddHtmlLocalized(100, 200, 80, 20, 1044055, LabelColor, false, false); // <CENTER>MATERIALS</CENTER>
 
-            AddHtmlLocalized(40, 230, 180, 20, m_Info.PrimaryName, LabelColor, false, false);
-            AddLabel(210, 230, IceHue, primResAmount.ToString());
+            AddHtmlLocalized(40, 220, 390, 20, 1114057, string.Format("#{0}", m_Info.PrimaryName.Number), LabelColor, false, false);
+            AddLabel(210, 220, IceHue, primResAmount.ToString());
 
-            AddHtmlLocalized(40, 255, 180, 20, m_Info.GemName, LabelColor, false, false);
-            AddLabel(210, 255, IceHue, gemAmount.ToString());
+            AddHtmlLocalized(40, 240, 390, 20, 1114057, string.Format("#{0}", m_Info.GemName.Number), LabelColor, false, false);
+            AddLabel(210, 240, IceHue, gemAmount.ToString());
 
             if (specResAmount > 0)
             {
-                AddHtmlLocalized(40, 280, 180, 17, m_Info.SpecialName, LabelColor, false, false);
-                AddLabel(210, 280, IceHue, specResAmount.ToString());
+                AddHtmlLocalized(40, 260, 390, 20, 1114057, string.Format("#{0}", m_Info.SpecialName.Number), LabelColor, false, false);
+                AddLabel(210, 260, IceHue, specResAmount.ToString());
             }
 
             // Mod Description
-            AddHtmlLocalized(280, 55, 200, 110, m_Info.Description, LabelColor, false, false);
+            AddHtmlLocalized(280, 55, 205, 115, m_Info.Description, LabelColor, false, false);
 
-            AddHtmlLocalized(350, 200, 150, 20, 1113650, LabelColor, false, false); // RESULTS
+            AddHtmlLocalized(350, 200, 65, 20, 1113650, LabelColor, false, false); // RESULTS
 
-            AddHtmlLocalized(280, 220, 150, 20, 1113645, LabelColor, false, false); // Properties:
+            AddHtmlLocalized(280, 220, 140, 20, 1113645, LabelColor, false, false); // Properties:
             AddLabel(430, 220, GetColor(m_TotalProps + 1, 5), String.Format("{0}/{1}", m_TotalProps + 1, Imbuing.GetMaxProps(m_Item)));
 
             int projWeight = m_TotalItemWeight + propWeight;
-            AddHtmlLocalized(280, 240, 150, 20, 1113646, LabelColor, false, false); // Total Property Weight:
+            AddHtmlLocalized(280, 240, 260, 20, 1113646, LabelColor, false, false); // Total Property Weight:
             AddLabel(430, 240, GetColor(projWeight, m_MaxWeight), String.Format("{0}/{1}", projWeight, m_MaxWeight));
 
-            AddHtmlLocalized(280, 260, 150, 20, 1113647, LabelColor, false, false); // Times Imbued:
+            AddHtmlLocalized(280, 260, 200, 20, 1113647, LabelColor, false, false); // Times Imbued:
             AddLabel(430, 260, GetColor(timesImbued, 20), String.Format("{0}/20", timesImbued));
 
             // ===== CALCULATE DIFFICULTY =====
@@ -164,21 +165,21 @@ namespace Server.Gumps
 
             double suc = Imbuing.GetSuccessChance(User, m_Item, trueTotalWeight, truePropWeight, bonus);
 
-            AddHtmlLocalized(300, 300, 150, 20, 1044057, 0xFFFFFF, false, false); // Success Chance:
+            AddHtmlLocalized(300, 300, 250, 20, 1044057, 0xFFFFFF, false, false); // Success Chance:
             AddLabel(420, 300, GetSuccessChanceHue(suc), String.Format("{0}%", suc.ToString("0.0")));
 
             // - Attribute Level
             if (maxInt > 1)
             {
-                AddHtmlLocalized(235, 350, 100, 17, 1062300, LabelColor, false, false); // New Value:
+                AddHtmlLocalized(235, 350, 200, 20, 1062300, LabelColor, false, false); // New Value:
 
                 if (m_ID == 41)                                                    // - Mage Weapon Value ( i.e [Mage Weapon -25] )
                 {
-                    AddLabel(250, 370, IceHue, String.Format("-{0}", 30 - m_Value));
+                    AddLabel(250, 370, IceHue, string.Format("-{0}", 30 - m_Value));
                 }
                 else if (maxInt <= 8 || m_ID == 21 || m_ID == 17)                 // - Show Property Value as just Number ( i.e [Mana Regen 2] )
                 {
-                    AddLabel(256, 370, IceHue, String.Format("{0}", m_Value));      // - Show Property Value as % ( i.e [Hit Fireball 25%] )
+                    AddLabel(m_Value > 9 ? 252 : 256, 370, IceHue, string.Format("{0}", m_Value));      // - Show Property Value as % ( i.e [Hit Fireball 25%] )
                 }
                 else
                 {
@@ -198,7 +199,7 @@ namespace Server.Gumps
                         }
                     }
 
-                    AddLabel(256, 370, IceHue, String.Format("{0}%", val));
+                    AddLabel(val > 9 ? 252 : 256, 370, IceHue, string.Format("{0}%", val));
                 }
 
                 // Buttons
@@ -240,20 +241,21 @@ namespace Server.Gumps
             }
 
             AddButton(15, 410, 4005, 4007, 10099, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(50, 410, 100, 18, 1114268, LabelColor, false, false); // Back 
+            AddHtmlLocalized(50, 412, 100, 20, 1114268, LabelColor, false, false); // Back 
 
             AddButton(390, 410, 4005, 4007, 10100, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(425, 410, 120, 18, 1114267, LabelColor, false, false); // Imbue Item
+            AddHtmlLocalized(425, 412, 120, 18, 1114267, LabelColor, false, false); // Imbue Item
         }
 
         private int GetColor(int value, int limit)
         {
             if (value < limit)
                 return Green;
-            else if (value == limit)
+
+            if (value == limit)
                 return Yellow;
-            else
-                return Red;
+
+            return Red;
         }
 
         private int GetSuccessChanceHue(double suc)
