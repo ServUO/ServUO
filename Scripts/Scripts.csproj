@@ -726,6 +726,7 @@
     <Compile Include="Misc\ArchivedSaves.cs" />
     <Compile Include="Misc\Replacer.cs" />
     <Compile Include="Misc\TaskPollingTimer.cs" />
+    <Compile Include="Misc\WorldLocation.cs" />
     <Compile Include="Mobiles\Normal\CoconutCrab.cs" />
     <Compile Include="Mobiles\Normal\HungryCoconutCrab.cs" />
     <Compile Include="Mobiles\Normal\SkeletalCat.cs" />
@@ -8834,6 +8835,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Regions\Spawning\SpawnPersistence.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Regions\TeleportRegion.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Regions\TownRegion.cs">

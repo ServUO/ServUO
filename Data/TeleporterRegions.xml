@@ -1,0 +1,3254 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<TeleporterRegions count="789">
+	<Teleporter>
+		<tiles from="(1018, 2915, 38)" frommap="TerMur" to="(1050, 2940, 38)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1050, 2940, 38)" frommap="TerMur" to="(1018, 2915, 38)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(512, 1559, 0)" frommap="Felucca" to="(5394, 127, 0)" tomap="Felucca" />
+		<tiles from="(513, 1559, 0)" frommap="Felucca" to="(5395, 127, 0)" tomap="Felucca" />
+		<tiles from="(514, 1559, 0)" frommap="Felucca" to="(5396, 127, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5394, 127, 0)" frommap="Felucca" to="(512, 1559, 0)" tomap="Felucca" />
+		<tiles from="(5395, 127, 0)" frommap="Felucca" to="(513, 1559, 0)" tomap="Felucca" />
+		<tiles from="(5396, 127, 0)" frommap="Felucca" to="(514, 1559, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5514, 10, 5)" frommap="Felucca" to="(5490, 19, -25)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5875, 19, -5)" frommap="Felucca" to="(5507, 162, 5)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5507, 162, 5)" frommap="Felucca" to="(5875, 19, -5)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5514, 147, 25)" frommap="Felucca" to="(5604, 102, 5)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5513, 176, 5)" frommap="Felucca" to="(5540, 187, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(4721, 3813, 0)" frommap="Felucca" to="(5904, 21, 44)" tomap="Felucca" />
+		<tiles from="(4722, 3813, 0)" frommap="Felucca" to="(5905, 21, 44)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5904, 16, 64)" frommap="Felucca" to="(4721, 3814, 0)" tomap="Felucca" />
+		<tiles from="(5905, 16, 64)" frommap="Felucca" to="(4722, 3814, 0)" tomap="Felucca" />
+		<tiles from="(5906, 16, 64)" frommap="Felucca" to="(4723, 3814, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6040, 192, 12)" frommap="Felucca" to="(6059, 88, 24)" tomap="Felucca" />
+		<tiles from="(6040, 193, 12)" frommap="Felucca" to="(6059, 89, 24)" tomap="Felucca" />
+		<tiles from="(6040, 194, 12)" frommap="Felucca" to="(6059, 90, 24)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6059, 88, 24)" frommap="Felucca" to="(6040, 192, 12)" tomap="Felucca" />
+		<tiles from="(6059, 89, 24)" frommap="Felucca" to="(6040, 193, 12)" tomap="Felucca" />
+		<tiles from="(6059, 90, 24)" frommap="Felucca" to="(6040, 194, 12)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5920, 168, 16)" frommap="Felucca" to="(6083, 144, -20)" tomap="Felucca" />
+		<tiles from="(5920, 169, 16)" frommap="Felucca" to="(6083, 145, -20)" tomap="Felucca" />
+		<tiles from="(5920, 170, 16)" frommap="Felucca" to="(6083, 146, -20)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6083, 144, -20)" frommap="Felucca" to="(5920, 168, 22)" tomap="Felucca" />
+		<tiles from="(6083, 145, -20)" frommap="Felucca" to="(5920, 169, 22)" tomap="Felucca" />
+		<tiles from="(6083, 146, -20)" frommap="Felucca" to="(5920, 170, 22)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5972, 168, 0)" frommap="Felucca" to="(5905, 100, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5906, 96, 0)" frommap="Felucca" to="(5977, 169, 0)" tomap="Felucca" />
+		<tiles from="(5905, 97, 0)" frommap="Felucca" to="(5977, 169, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2498, 916, 0)" frommap="Felucca" to="(5455, 1864, 0)" tomap="Felucca" />
+		<tiles from="(2499, 916, 0)" frommap="Felucca" to="(5456, 1864, 0)" tomap="Felucca" />
+		<tiles from="(2500, 916, 0)" frommap="Felucca" to="(5457, 1864, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5455, 1864, 0)" frommap="Felucca" to="(2498, 916, 0)" tomap="Felucca" />
+		<tiles from="(5456, 1864, 0)" frommap="Felucca" to="(2499, 916, 0)" tomap="Felucca" />
+		<tiles from="(5457, 1864, 0)" frommap="Felucca" to="(2500, 916, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2384, 836, 0)" frommap="Felucca" to="(5615, 1996, 0)" tomap="Felucca" />
+		<tiles from="(2384, 837, 0)" frommap="Felucca" to="(5615, 1997, 0)" tomap="Felucca" />
+		<tiles from="(2384, 838, 0)" frommap="Felucca" to="(5615, 1998, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5615, 1996, 0)" frommap="Felucca" to="(2384, 836, 0)" tomap="Felucca" />
+		<tiles from="(5615, 1997, 0)" frommap="Felucca" to="(2384, 837, 0)" tomap="Felucca" />
+		<tiles from="(5615, 1998, 0)" frommap="Felucca" to="(2384, 838, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2420, 883, 0)" frommap="Felucca" to="(5392, 1959, 0)" tomap="Felucca" />
+		<tiles from="(2421, 883, 0)" frommap="Felucca" to="(5393, 1959, 0)" tomap="Felucca" />
+		<tiles from="(2422, 883, 0)" frommap="Felucca" to="(5394, 1959, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5392, 1959, 0)" frommap="Felucca" to="(2420, 883, 0)" tomap="Felucca" />
+		<tiles from="(5393, 1959, 0)" frommap="Felucca" to="(2421, 883, 0)" tomap="Felucca" />
+		<tiles from="(5394, 1959, 0)" frommap="Felucca" to="(2422, 883, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2455, 858, 0)" frommap="Felucca" to="(5388, 2027, 0)" tomap="Felucca" />
+		<tiles from="(2456, 858, 0)" frommap="Felucca" to="(5389, 2027, 0)" tomap="Felucca" />
+		<tiles from="(2457, 858, 0)" frommap="Felucca" to="(5390, 2027, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5388, 2027, 0)" frommap="Felucca" to="(2455, 858, 0)" tomap="Felucca" />
+		<tiles from="(5389, 2027, 0)" frommap="Felucca" to="(2456, 858, 0)" tomap="Felucca" />
+		<tiles from="(5390, 2027, 0)" frommap="Felucca" to="(2457, 858, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2544, 850, 0)" frommap="Felucca" to="(5578, 1927, 0)" tomap="Felucca" />
+		<tiles from="(2545, 850, 0)" frommap="Felucca" to="(5579, 1927, 0)" tomap="Felucca" />
+		<tiles from="(2546, 850, 0)" frommap="Felucca" to="(5580, 1927, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5578, 1927, 0)" frommap="Felucca" to="(2544, 850, 0)" tomap="Felucca" />
+		<tiles from="(5579, 1927, 0)" frommap="Felucca" to="(2545, 850, 0)" tomap="Felucca" />
+		<tiles from="(5580, 1927, 0)" frommap="Felucca" to="(2546, 850, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5551, 1805, 12)" frommap="Felucca" to="(5556, 1825, -3)" tomap="Felucca" />
+		<tiles from="(5552, 1805, 12)" frommap="Felucca" to="(5557, 1825, -3)" tomap="Felucca" />
+		<tiles from="(5553, 1805, 12)" frommap="Felucca" to="(5557, 1825, -3)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5556, 1826, -10)" frommap="Felucca" to="(5551, 1806, 7)" tomap="Felucca" />
+		<tiles from="(5557, 1826, -10)" frommap="Felucca" to="(5552, 1806, 7)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5466, 1804, 12)" frommap="Felucca" to="(5593, 1840, -3)" tomap="Felucca" />
+		<tiles from="(5466, 1805, 12)" frommap="Felucca" to="(5593, 1841, -3)" tomap="Felucca" />
+		<tiles from="(5466, 1806, 12)" frommap="Felucca" to="(5593, 1842, -3)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5594, 1840, -8)" frommap="Felucca" to="(5467, 1804, 7)" tomap="Felucca" />
+		<tiles from="(5594, 1841, -8)" frommap="Felucca" to="(5467, 1805, 7)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2041, 215, 14)" frommap="Felucca" to="(5824, 631, 5)" tomap="Felucca" />
+		<tiles from="(2042, 215, 14)" frommap="Felucca" to="(5825, 631, 5)" tomap="Felucca" />
+		<tiles from="(2043, 215, 14)" frommap="Felucca" to="(5825, 631, 5)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(4110, 430, 5)" frommap="Felucca" to="(5187, 639, 0)" tomap="Felucca" />
+		<tiles from="(4111, 430, 5)" frommap="Felucca" to="(5188, 639, 0)" tomap="Felucca" />
+		<tiles from="(4112, 430, 5)" frommap="Felucca" to="(5189, 639, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5187, 639, 0)" frommap="Felucca" to="(4110, 430, 5)" tomap="Felucca" />
+		<tiles from="(5188, 639, 0)" frommap="Felucca" to="(4111, 430, 5)" tomap="Felucca" />
+		<tiles from="(5189, 639, 0)" frommap="Felucca" to="(4112, 430, 5)" tomap="Felucca" />
+		<tiles from="(5186, 639, 0)" frommap="Felucca" to="(4110, 430, 5)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5216, 586, -13)" frommap="Felucca" to="(5304, 533, 2)" tomap="Felucca" />
+		<tiles from="(5217, 586, -13)" frommap="Felucca" to="(5305, 533, 2)" tomap="Felucca" />
+		<tiles from="(5218, 586, -13)" frommap="Felucca" to="(5306, 533, 2)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5304, 532, 7)" frommap="Felucca" to="(5216, 585, -8)" tomap="Felucca" />
+		<tiles from="(5305, 532, 7)" frommap="Felucca" to="(5217, 585, -8)" tomap="Felucca" />
+		<tiles from="(5306, 532, 7)" frommap="Felucca" to="(5218, 585, -8)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5218, 761, -28)" frommap="Felucca" to="(5305, 651, 7)" tomap="Felucca" />
+		<tiles from="(5219, 761, -28)" frommap="Felucca" to="(5306, 651, 7)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5305, 650, 12)" frommap="Felucca" to="(5218, 760, -23)" tomap="Felucca" />
+		<tiles from="(5306, 650, 12)" frommap="Felucca" to="(5219, 760, -23)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5346, 578, 5)" frommap="Felucca" to="(5137, 649, 5)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5137, 649, 5)" frommap="Felucca" to="(5346, 578, 5)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5504, 569, 46)" frommap="Felucca" to="(5574, 628, 37)" tomap="Felucca" />
+		<tiles from="(5504, 570, 46)" frommap="Felucca" to="(5574, 629, 37)" tomap="Felucca" />
+		<tiles from="(5504, 571, 46)" frommap="Felucca" to="(5574, 630, 37)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5572, 632, 17)" frommap="Felucca" to="(5521, 672, 27)" tomap="Felucca" />
+		<tiles from="(5572, 633, 17)" frommap="Felucca" to="(5521, 673, 27)" tomap="Felucca" />
+		<tiles from="(5572, 634, 17)" frommap="Felucca" to="(5521, 674, 27)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5573, 628, 42)" frommap="Felucca" to="(5503, 569, 51)" tomap="Felucca" />
+		<tiles from="(5573, 629, 42)" frommap="Felucca" to="(5503, 570, 51)" tomap="Felucca" />
+		<tiles from="(5573, 630, 42)" frommap="Felucca" to="(5503, 571, 51)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5588, 632, 30)" frommap="Felucca" to="(1296, 1082, 0)" tomap="Felucca" />
+		<tiles from="(5588, 631, 30)" frommap="Felucca" to="(1296, 1081, 0)" tomap="Felucca" />
+		<tiles from="(5588, 630, 30)" frommap="Felucca" to="(1296, 1080, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1296, 1082, 0)" frommap="Felucca" to="(5588, 632, 30)" tomap="Felucca" />
+		<tiles from="(1296, 1081, 0)" frommap="Felucca" to="(5588, 631, 30)" tomap="Felucca" />
+		<tiles from="(1296, 1080, 0)" frommap="Felucca" to="(5588, 630, 30)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5522, 672, 32)" frommap="Felucca" to="(5573, 632, 22)" tomap="Felucca" />
+		<tiles from="(5522, 673, 32)" frommap="Felucca" to="(5573, 633, 22)" tomap="Felucca" />
+		<tiles from="(5522, 674, 32)" frommap="Felucca" to="(5573, 634, 22)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5386, 756, -8)" frommap="Felucca" to="(5408, 859, 47)" tomap="Felucca" />
+		<tiles from="(5386, 757, -8)" frommap="Felucca" to="(5408, 860, 47)" tomap="Felucca" />
+		<tiles from="(5386, 755, -8)" frommap="Felucca" to="(5408, 858, 47)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5409, 860, 52)" frommap="Felucca" to="(5387, 757, -3)" tomap="Felucca" />
+		<tiles from="(5409, 859, 52)" frommap="Felucca" to="(5387, 756, -3)" tomap="Felucca" />
+		<tiles from="(5409, 858, 52)" frommap="Felucca" to="(5387, 755, -3)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5242, 1007, 0)" frommap="Felucca" to="(1175, 2635, 0)" tomap="Felucca" />
+		<tiles from="(5243, 1007, 0)" frommap="Felucca" to="(1176, 2635, 0)" tomap="Felucca" />
+		<tiles from="(5244, 1007, 0)" frommap="Felucca" to="(1177, 2635, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1175, 2635, 0)" frommap="Felucca" to="(5242, 1007, 0)" tomap="Felucca" />
+		<tiles from="(1176, 2635, 0)" frommap="Felucca" to="(5243, 1007, 0)" tomap="Felucca" />
+		<tiles from="(1177, 2635, 0)" frommap="Felucca" to="(5244, 1007, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5142, 797, 22)" frommap="Felucca" to="(5129, 908, -23)" tomap="Felucca" />
+		<tiles from="(5143, 797, 22)" frommap="Felucca" to="(5130, 908, -23)" tomap="Felucca" />
+		<tiles from="(5144, 797, 22)" frommap="Felucca" to="(5131, 908, -23)" tomap="Felucca" />
+		<tiles from="(5145, 797, 22)" frommap="Felucca" to="(5132, 908, -23)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5153, 808, -25)" frommap="Felucca" to="(5134, 984, 17)" tomap="Felucca" />
+		<tiles from="(5153, 809, -25)" frommap="Felucca" to="(5134, 985, 17)" tomap="Felucca" />
+		<tiles from="(5153, 810, -25)" frommap="Felucca" to="(5134, 986, 17)" tomap="Felucca" />
+		<tiles from="(5153, 811, -25)" frommap="Felucca" to="(5134, 987, 17)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5129, 909, -28)" frommap="Felucca" to="(5142, 798, 17)" tomap="Felucca" />
+		<tiles from="(5130, 909, -28)" frommap="Felucca" to="(5143, 798, 17)" tomap="Felucca" />
+		<tiles from="(5131, 909, -28)" frommap="Felucca" to="(5144, 798, 17)" tomap="Felucca" />
+		<tiles from="(5132, 909, -28)" frommap="Felucca" to="(5145, 798, 17)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5133, 984, 22)" frommap="Felucca" to="(5152, 808, -19)" tomap="Felucca" />
+		<tiles from="(5133, 985, 22)" frommap="Felucca" to="(5152, 809, -19)" tomap="Felucca" />
+		<tiles from="(5133, 986, 22)" frommap="Felucca" to="(5152, 810, -19)" tomap="Felucca" />
+		<tiles from="(5133, 987, 22)" frommap="Felucca" to="(5152, 811, -19)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2603, 2121, -20)" frommap="Felucca" to="(2605, 2130, 8)" tomap="Felucca" />
+		<tiles from="(2603, 2120, -20)" frommap="Felucca" to="(2605, 2130, 8)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2669, 2071, -20)" frommap="Felucca" to="(2666, 2099, 3)" tomap="Felucca" />
+		<tiles from="(2669, 2072, -20)" frommap="Felucca" to="(2666, 2099, 3)" tomap="Felucca" />
+		<tiles from="(2669, 2073, -20)" frommap="Felucca" to="(2666, 2099, 3)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2676, 2241, -18)" frommap="Felucca" to="(2691, 2234, 2)" tomap="Felucca" />
+		<tiles from="(2676, 2242, -18)" frommap="Felucca" to="(2691, 2234, 2)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2758, 2092, -20)" frommap="Felucca" to="(2756, 2097, 38)" tomap="Felucca" />
+		<tiles from="(2759, 2092, -20)" frommap="Felucca" to="(2756, 2097, 38)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2685, 2063, 39)" frommap="Felucca" to="(2685, 2063, -20)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5217, 18, 15)" frommap="Felucca" to="(5204, 74, 17)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5200, 71, 17)" frommap="Felucca" to="(5211, 22, 15)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1997, 81, 7)" frommap="Felucca" to="(5881, 242, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5705, 146, -45)" frommap="Felucca" to="(5705, 305, 7)" tomap="Felucca" />
+		<tiles from="(5705, 147, -45)" frommap="Felucca" to="(5705, 306, 7)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5874, 146, 27)" frommap="Felucca" to="(5208, 2323, 31)" tomap="Felucca" />
+		<tiles from="(5875, 146, 27)" frommap="Felucca" to="(5208, 2322, 32)" tomap="Felucca" />
+		<tiles from="(5876, 146, 27)" frommap="Felucca" to="(5208, 2322, 32)" tomap="Felucca" />
+		<tiles from="(5877, 146, 27)" frommap="Felucca" to="(5208, 2322, 32)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2398, 198, 0)" frommap="Felucca" to="(5751, 436, 80)" tomap="Felucca" />
+		<tiles from="(2399, 198, 0)" frommap="Felucca" to="(5752, 436, 77)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5191, 152, 0)" frommap="Felucca" to="(1367, 891, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5849, 239, -25)" frommap="Felucca" to="(5831, 324, 27)" tomap="Felucca" />
+		<tiles from="(5850, 239, -25)" frommap="Felucca" to="(5832, 324, 26)" tomap="Felucca" />
+		<tiles from="(5851, 239, -25)" frommap="Felucca" to="(5833, 324, 28)" tomap="Felucca" />
+		<tiles from="(5852, 239, -25)" frommap="Felucca" to="(5834, 324, 27)" tomap="Felucca" />
+		<tiles from="(5853, 239, -23)" frommap="Felucca" to="(5835, 324, 27)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5882, 241, 0)" frommap="Felucca" to="(1998, 81, 5)" tomap="Felucca" />
+		<tiles from="(5882, 242, 0)" frommap="Felucca" to="(1998, 81, 5)" tomap="Felucca" />
+		<tiles from="(5882, 243, 0)" frommap="Felucca" to="(1998, 81, 5)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5706, 305, 12)" frommap="Felucca" to="(5705, 146, -45)" tomap="Felucca" />
+		<tiles from="(5706, 306, 12)" frommap="Felucca" to="(5705, 147, -45)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5748, 362, 2)" frommap="Felucca" to="(313, 786, -24)" tomap="Felucca" />
+		<tiles from="(5749, 362, 0)" frommap="Felucca" to="(313, 786, -24)" tomap="Felucca" />
+		<tiles from="(5750, 362, 3)" frommap="Felucca" to="(314, 786, -24)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5753, 324, 21)" frommap="Felucca" to="(5672, 2390, 60)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5831, 323, 34)" frommap="Felucca" to="(5849, 238, -25)" tomap="Felucca" />
+		<tiles from="(5832, 323, 34)" frommap="Felucca" to="(5850, 238, -25)" tomap="Felucca" />
+		<tiles from="(5833, 323, 33)" frommap="Felucca" to="(5851, 238, -25)" tomap="Felucca" />
+		<tiles from="(5834, 323, 33)" frommap="Felucca" to="(5852, 238, -25)" tomap="Felucca" />
+		<tiles from="(5835, 323, 33)" frommap="Felucca" to="(5853, 238, -23)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5658, 423, 8)" frommap="Felucca" to="(5697, 3659, 2)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5686, 385, 2)" frommap="Felucca" to="(2777, 894, -23)" tomap="Felucca" />
+		<tiles from="(5686, 386, 2)" frommap="Felucca" to="(2777, 894, -23)" tomap="Felucca" />
+		<tiles from="(5686, 387, 2)" frommap="Felucca" to="(2777, 895, -23)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5730, 445, -22)" frommap="Felucca" to="(6087, 3676, 18)" tomap="Felucca" />
+		<tiles from="(5731, 445, -22)" frommap="Felucca" to="(6087, 3676, 18)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5751, 437, 78)" frommap="Felucca" to="(2398, 199, 0)" tomap="Felucca" />
+		<tiles from="(5752, 437, 77)" frommap="Felucca" to="(2399, 199, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5850, 432, 0)" frommap="Felucca" to="(5127, 3143, 97)" tomap="Felucca" />
+		<tiles from="(5850, 433, -2)" frommap="Felucca" to="(5127, 3143, 97)" tomap="Felucca" />
+		<tiles from="(5850, 434, -1)" frommap="Felucca" to="(5127, 3143, 97)" tomap="Felucca" />
+		<tiles from="(5850, 431, 2)" frommap="Felucca" to="(5127, 3143, 97)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5826, 465, -1)" frommap="Felucca" to="(1987, 2063, -40)" tomap="Felucca" />
+		<tiles from="(5827, 465, -1)" frommap="Felucca" to="(1988, 2063, -40)" tomap="Felucca" />
+		<tiles from="(5828, 465, 0)" frommap="Felucca" to="(1989, 2063, -40)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(313, 786, -24)" frommap="Felucca" to="(5748, 361, 2)" tomap="Felucca" />
+		<tiles from="(314, 786, -24)" frommap="Felucca" to="(5749, 361, 2)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2776, 895, -23)" frommap="Felucca" to="(5685, 387, 2)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(4540, 898, 32)" frommap="Felucca" to="(4442, 1122, 5)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(4300, 968, 5)" frommap="Felucca" to="(4442, 1122, 5)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(4436, 1107, 5)" frommap="Felucca" to="(4300, 992, 5)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(4443, 1137, 5)" frommap="Felucca" to="(4487, 1475, 5)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(4449, 1107, 5)" frommap="Felucca" to="(4539, 890, 28)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(4449, 1115, 5)" frommap="Felucca" to="(4671, 1135, 10)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(4663, 1134, 13)" frommap="Felucca" to="(4442, 1122, 5)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5701, 1320, 16)" frommap="Felucca" to="(5786, 1336, -8)" tomap="Felucca" />
+		<tiles from="(5702, 1320, 16)" frommap="Felucca" to="(5787, 1336, -8)" tomap="Felucca" />
+		<tiles from="(5703, 1320, 16)" frommap="Felucca" to="(5788, 1336, -8)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5786, 1335, -13)" frommap="Felucca" to="(5701, 1319, 13)" tomap="Felucca" />
+		<tiles from="(5787, 1335, -13)" frommap="Felucca" to="(5702, 1319, 13)" tomap="Felucca" />
+		<tiles from="(5788, 1335, -13)" frommap="Felucca" to="(5703, 1319, 13)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6005, 1380, 1)" frommap="Felucca" to="(5151, 4063, 37)" tomap="Felucca" />
+		<tiles from="(6005, 1379, 2)" frommap="Felucca" to="(5151, 4062, 37)" tomap="Felucca" />
+		<tiles from="(6005, 1378, 0)" frommap="Felucca" to="(5151, 4062, 37)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6025, 1344, -26)" frommap="Felucca" to="(5137, 3664, 27)" tomap="Felucca" />
+		<tiles from="(6025, 1345, -26)" frommap="Felucca" to="(5137, 3664, 27)" tomap="Felucca" />
+		<tiles from="(6025, 1346, -26)" frommap="Felucca" to="(5137, 3665, 31)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5687, 1424, 38)" frommap="Felucca" to="(2923, 3406, 8)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5792, 1417, 41)" frommap="Felucca" to="(5758, 2909, 15)" tomap="Felucca" />
+		<tiles from="(5792, 1416, 41)" frommap="Felucca" to="(5758, 2907, 15)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5899, 1411, 43)" frommap="Felucca" to="(1630, 3320, 0)" tomap="Felucca" />
+		<tiles from="(5900, 1411, 42)" frommap="Felucca" to="(1630, 3320, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5918, 1412, -31)" frommap="Felucca" to="(5962, 1409, 56)" tomap="Felucca" />
+		<tiles from="(5918, 1411, -31)" frommap="Felucca" to="(5962, 1408, 58)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5961, 1408, 57)" frommap="Felucca" to="(5917, 1411, -29)" tomap="Felucca" />
+		<tiles from="(5961, 1409, 56)" frommap="Felucca" to="(5917, 1412, -29)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6125, 1411, 15)" frommap="Felucca" to="(6075, 3332, 0)" tomap="Felucca" />
+		<tiles from="(6126, 1411, 15)" frommap="Felucca" to="(6075, 3332, 0)" tomap="Felucca" />
+		<tiles from="(6127, 1411, 15)" frommap="Felucca" to="(6075, 3332, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6137, 1409, 2)" frommap="Felucca" to="(6140, 1432, 4)" tomap="Felucca" />
+		<tiles from="(6138, 1409, 2)" frommap="Felucca" to="(6140, 1432, 4)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6140, 1431, 4)" frommap="Felucca" to="(6137, 1408, 2)" tomap="Felucca" />
+		<tiles from="(6141, 1431, 4)" frommap="Felucca" to="(6138, 1408, 2)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(4496, 1475, 15)" frommap="Felucca" to="(4442, 1122, 5)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6031, 1501, 42)" frommap="Felucca" to="(1491, 1642, 24)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6031, 1499, 42)" frommap="Felucca" to="(1491, 1640, 24)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1491, 1640, 24)" frommap="Felucca" to="(6032, 1499, 31)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1491, 1642, 24)" frommap="Felucca" to="(6032, 1501, 31)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5340, 1599, 40)" frommap="Felucca" to="(5426, 3122, -74)" tomap="Felucca" />
+		<tiles from="(5341, 1599, 40)" frommap="Felucca" to="(5426, 3122, -74)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1987, 2062, -40)" frommap="Felucca" to="(5826, 464, 0)" tomap="Felucca" />
+		<tiles from="(1988, 2062, -40)" frommap="Felucca" to="(5827, 464, -1)" tomap="Felucca" />
+		<tiles from="(1989, 2062, -40)" frommap="Felucca" to="(5828, 464, -1)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5203, 2327, 27)" frommap="Felucca" to="(5876, 147, 25)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5207, 2322, 27)" frommap="Felucca" to="(5877, 147, 25)" tomap="Felucca" />
+		<tiles from="(5207, 2323, 26)" frommap="Felucca" to="(5876, 147, 25)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5670, 2391, 40)" frommap="Felucca" to="(5753, 325, 10)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5757, 2908, 14)" frommap="Felucca" to="(5791, 1416, 38)" tomap="Felucca" />
+		<tiles from="(5757, 2909, 15)" frommap="Felucca" to="(5791, 1417, 40)" tomap="Felucca" />
+		<tiles from="(5757, 2907, 15)" frommap="Felucca" to="(5791, 1415, 38)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1653, 2963, 0)" frommap="Felucca" to="(1677, 2987, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1677, 2987, 0)" frommap="Felucca" to="(1675, 2987, 20)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5426, 3123, -80)" frommap="Felucca" to="(5341, 1602, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5126, 3143, 99)" frommap="Felucca" to="(5849, 432, 1)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1629, 3320, 0)" frommap="Felucca" to="(5899, 1411, 43)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6075, 3332, 0)" frommap="Felucca" to="(6126, 1410, 15)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2923, 3405, 6)" frommap="Felucca" to="(5687, 1423, 39)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1142, 3621, 5)" frommap="Felucca" to="(1414, 3828, 5)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5137, 3664, 27)" frommap="Felucca" to="(6025, 1344, -26)" tomap="Felucca" />
+		<tiles from="(5137, 3665, 31)" frommap="Felucca" to="(6025, 1345, -26)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5697, 3660, -5)" frommap="Felucca" to="(5658, 424, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6086, 3675, 15)" frommap="Felucca" to="(5731, 446, -16)" tomap="Felucca" />
+		<tiles from="(6086, 3676, 15)" frommap="Felucca" to="(5731, 446, -16)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1409, 3824, 5)" frommap="Felucca" to="(1124, 3623, 5)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1419, 3832, 5)" frommap="Felucca" to="(1466, 4015, 5)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1406, 3996, 5)" frommap="Felucca" to="(1414, 3828, 5)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5150, 4062, 38)" frommap="Felucca" to="(6005, 1378, 0)" tomap="Felucca" />
+		<tiles from="(5150, 4063, 38)" frommap="Felucca" to="(6005, 1380, 1)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5906, 4069, 26)" frommap="Felucca" to="(2494, 3576, 5)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2494, 3576, 5)" frommap="Felucca" to="(5906, 4069, 26)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6172, 21, 0)" frommap="Felucca" to="(765, 1645, 0)" tomap="Felucca" />
+		<tiles from="(6172, 22, 0)" frommap="Felucca" to="(765, 1646, 0)" tomap="Felucca" />
+		<tiles from="(6172, 23, 0)" frommap="Felucca" to="(765, 1647, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6260, 87, -10)" frommap="Felucca" to="(6256, 87, -8)" tomap="Felucca" />
+		<tiles from="(6260, 88, -10)" frommap="Felucca" to="(6256, 88, -8)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6173, 176, -10)" frommap="Felucca" to="(6233, 15, -10)" tomap="Felucca" />
+		<tiles from="(6174, 176, -10)" frommap="Felucca" to="(6234, 15, -10)" tomap="Felucca" />
+		<tiles from="(6175, 176, -10)" frommap="Felucca" to="(6235, 15, -10)" tomap="Felucca" />
+		<tiles from="(6176, 176, -10)" frommap="Felucca" to="(6236, 15, -10)" tomap="Felucca" />
+		<tiles from="(6177, 176, -10)" frommap="Felucca" to="(6237, 15, -10)" tomap="Felucca" />
+		<tiles from="(6178, 176, -10)" frommap="Felucca" to="(6238, 15, -10)" tomap="Felucca" />
+		<tiles from="(6179, 176, -10)" frommap="Felucca" to="(6239, 15, -10)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6233, 14, -10)" frommap="Felucca" to="(6172, 174, -10)" tomap="Felucca" />
+		<tiles from="(6234, 14, -10)" frommap="Felucca" to="(6173, 174, -10)" tomap="Felucca" />
+		<tiles from="(6235, 14, -10)" frommap="Felucca" to="(6174, 174, -10)" tomap="Felucca" />
+		<tiles from="(6236, 14, -10)" frommap="Felucca" to="(6175, 174, -10)" tomap="Felucca" />
+		<tiles from="(6237, 14, -10)" frommap="Felucca" to="(6176, 174, -10)" tomap="Felucca" />
+		<tiles from="(6238, 14, -10)" frommap="Felucca" to="(6177, 174, -10)" tomap="Felucca" />
+		<tiles from="(6239, 14, -10)" frommap="Felucca" to="(6177, 174, -10)" tomap="Felucca" />
+		<tiles from="(6240, 14, -10)" frommap="Felucca" to="(6178, 174, -10)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6256, 97, -4)" frommap="Felucca" to="(6257, 95, -10)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6260, 97, -4)" frommap="Felucca" to="(6260, 95, -10)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6263, 97, -4)" frommap="Felucca" to="(6262, 95, -10)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6269, 97, -4)" frommap="Felucca" to="(6269, 95, -10)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6273, 97, -4)" frommap="Felucca" to="(6272, 95, -10)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6262, 95, -10)" frommap="Felucca" to="(6262, 99, -10)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6159, 130, 0)" frommap="Felucca" to="(6317, 63, -20)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6164, 73, 0)" frommap="Felucca" to="(6320, 22, -20)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6161, 163, -10)" frommap="Felucca" to="(6321, 106, -20)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6276, 40, -10)" frommap="Felucca" to="(6374, 124, -20)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6211, 106, 0)" frommap="Felucca" to="(6355, 34, -20)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6316, 62, -5)" frommap="Felucca" to="(6160, 131, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6319, 19, -20)" frommap="Felucca" to="(6165, 74, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6356, 32, -9)" frommap="Felucca" to="(6210, 105, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6374, 125, -20)" frommap="Felucca" to="(6277, 41, -10)" tomap="Felucca" />
+		<tiles from="(6375, 124, -20)" frommap="Felucca" to="(6277, 41, -10)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6373, 49, -20)" frommap="Felucca" to="(801, 1682, 0)" tomap="Felucca" />
+		<tiles from="(6374, 49, -20)" frommap="Felucca" to="(801, 1682, 0)" tomap="Felucca" />
+		<tiles from="(6375, 49, -20)" frommap="Felucca" to="(801, 1682, 0)" tomap="Felucca" />
+		<tiles from="(6376, 49, -20)" frommap="Felucca" to="(801, 1682, 0)" tomap="Felucca" />
+		<tiles from="(6377, 49, -20)" frommap="Felucca" to="(801, 1682, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6310, 890, 0)" frommap="Felucca" to="(1715, 2996, 0)" tomap="Felucca" />
+		<tiles from="(6310, 891, 0)" frommap="Felucca" to="(1715, 2996, 0)" tomap="Felucca" />
+		<tiles from="(6310, 892, 0)" frommap="Felucca" to="(1715, 2997, 0)" tomap="Felucca" />
+		<tiles from="(6310, 893, 0)" frommap="Felucca" to="(1715, 2997, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(512, 1559, 0)" frommap="Trammel" to="(5394, 127, 0)" tomap="Trammel" />
+		<tiles from="(513, 1559, 0)" frommap="Trammel" to="(5395, 127, 0)" tomap="Trammel" />
+		<tiles from="(514, 1559, 0)" frommap="Trammel" to="(5396, 127, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5394, 127, 0)" frommap="Trammel" to="(512, 1559, 0)" tomap="Trammel" />
+		<tiles from="(5395, 127, 0)" frommap="Trammel" to="(513, 1559, 0)" tomap="Trammel" />
+		<tiles from="(5396, 127, 0)" frommap="Trammel" to="(514, 1559, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5514, 10, 5)" frommap="Trammel" to="(5490, 19, -25)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5875, 19, -5)" frommap="Trammel" to="(5507, 162, 5)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5507, 162, 5)" frommap="Trammel" to="(5875, 19, -5)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5514, 147, 25)" frommap="Trammel" to="(5604, 102, 5)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5513, 176, 5)" frommap="Trammel" to="(5540, 187, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(4721, 3813, 0)" frommap="Trammel" to="(5904, 21, 44)" tomap="Trammel" />
+		<tiles from="(4722, 3813, 0)" frommap="Trammel" to="(5905, 21, 44)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5904, 16, 64)" frommap="Trammel" to="(4721, 3814, 0)" tomap="Trammel" />
+		<tiles from="(5905, 16, 64)" frommap="Trammel" to="(4722, 3814, 0)" tomap="Trammel" />
+		<tiles from="(5906, 16, 64)" frommap="Trammel" to="(4723, 3814, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6040, 192, 12)" frommap="Trammel" to="(6059, 88, 24)" tomap="Trammel" />
+		<tiles from="(6040, 193, 12)" frommap="Trammel" to="(6059, 89, 24)" tomap="Trammel" />
+		<tiles from="(6040, 194, 12)" frommap="Trammel" to="(6059, 90, 24)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6059, 88, 24)" frommap="Trammel" to="(6040, 192, 12)" tomap="Trammel" />
+		<tiles from="(6059, 89, 24)" frommap="Trammel" to="(6040, 193, 12)" tomap="Trammel" />
+		<tiles from="(6059, 90, 24)" frommap="Trammel" to="(6040, 194, 12)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5920, 168, 16)" frommap="Trammel" to="(6083, 144, -20)" tomap="Trammel" />
+		<tiles from="(5920, 169, 16)" frommap="Trammel" to="(6083, 145, -20)" tomap="Trammel" />
+		<tiles from="(5920, 170, 16)" frommap="Trammel" to="(6083, 146, -20)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6083, 144, -20)" frommap="Trammel" to="(5920, 168, 22)" tomap="Trammel" />
+		<tiles from="(6083, 145, -20)" frommap="Trammel" to="(5920, 169, 22)" tomap="Trammel" />
+		<tiles from="(6083, 146, -20)" frommap="Trammel" to="(5920, 170, 22)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5972, 168, 0)" frommap="Trammel" to="(5905, 100, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5906, 96, 0)" frommap="Trammel" to="(5977, 169, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2498, 916, 0)" frommap="Trammel" to="(5455, 1864, 0)" tomap="Trammel" />
+		<tiles from="(2499, 916, 0)" frommap="Trammel" to="(5456, 1864, 0)" tomap="Trammel" />
+		<tiles from="(2500, 916, 0)" frommap="Trammel" to="(5457, 1864, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5455, 1864, 0)" frommap="Trammel" to="(2498, 916, 0)" tomap="Trammel" />
+		<tiles from="(5456, 1864, 0)" frommap="Trammel" to="(2499, 916, 0)" tomap="Trammel" />
+		<tiles from="(5457, 1864, 0)" frommap="Trammel" to="(2500, 916, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2384, 836, 0)" frommap="Trammel" to="(5615, 1996, 0)" tomap="Trammel" />
+		<tiles from="(2384, 837, 0)" frommap="Trammel" to="(5615, 1997, 0)" tomap="Trammel" />
+		<tiles from="(2384, 838, 0)" frommap="Trammel" to="(5615, 1998, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5615, 1996, 0)" frommap="Trammel" to="(2384, 836, 0)" tomap="Trammel" />
+		<tiles from="(5615, 1997, 0)" frommap="Trammel" to="(2384, 837, 0)" tomap="Trammel" />
+		<tiles from="(5615, 1998, 0)" frommap="Trammel" to="(2384, 838, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2420, 883, 0)" frommap="Trammel" to="(5392, 1959, 0)" tomap="Trammel" />
+		<tiles from="(2421, 883, 0)" frommap="Trammel" to="(5393, 1959, 0)" tomap="Trammel" />
+		<tiles from="(2422, 883, 0)" frommap="Trammel" to="(5394, 1959, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5392, 1959, 0)" frommap="Trammel" to="(2420, 883, 0)" tomap="Trammel" />
+		<tiles from="(5393, 1959, 0)" frommap="Trammel" to="(2421, 883, 0)" tomap="Trammel" />
+		<tiles from="(5394, 1959, 0)" frommap="Trammel" to="(2422, 883, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2455, 858, 0)" frommap="Trammel" to="(5388, 2027, 0)" tomap="Trammel" />
+		<tiles from="(2456, 858, 0)" frommap="Trammel" to="(5389, 2027, 0)" tomap="Trammel" />
+		<tiles from="(2457, 858, 0)" frommap="Trammel" to="(5390, 2027, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5388, 2027, 0)" frommap="Trammel" to="(2455, 858, 0)" tomap="Trammel" />
+		<tiles from="(5389, 2027, 0)" frommap="Trammel" to="(2456, 858, 0)" tomap="Trammel" />
+		<tiles from="(5390, 2027, 0)" frommap="Trammel" to="(2457, 858, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2544, 850, 0)" frommap="Trammel" to="(5578, 1927, 0)" tomap="Trammel" />
+		<tiles from="(2545, 850, 0)" frommap="Trammel" to="(5579, 1927, 0)" tomap="Trammel" />
+		<tiles from="(2546, 850, 0)" frommap="Trammel" to="(5580, 1927, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5578, 1927, 0)" frommap="Trammel" to="(2544, 850, 0)" tomap="Trammel" />
+		<tiles from="(5579, 1927, 0)" frommap="Trammel" to="(2545, 850, 0)" tomap="Trammel" />
+		<tiles from="(5580, 1927, 0)" frommap="Trammel" to="(2546, 850, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5551, 1805, 12)" frommap="Trammel" to="(5556, 1825, -3)" tomap="Trammel" />
+		<tiles from="(5552, 1805, 12)" frommap="Trammel" to="(5557, 1825, -3)" tomap="Trammel" />
+		<tiles from="(5553, 1805, 12)" frommap="Trammel" to="(5557, 1825, -3)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5556, 1826, -10)" frommap="Trammel" to="(5551, 1806, 7)" tomap="Trammel" />
+		<tiles from="(5557, 1826, -10)" frommap="Trammel" to="(5552, 1806, 7)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5466, 1804, 12)" frommap="Trammel" to="(5593, 1840, -3)" tomap="Trammel" />
+		<tiles from="(5466, 1805, 12)" frommap="Trammel" to="(5593, 1841, -3)" tomap="Trammel" />
+		<tiles from="(5466, 1806, 12)" frommap="Trammel" to="(5593, 1842, -3)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5594, 1840, -8)" frommap="Trammel" to="(5467, 1804, 7)" tomap="Trammel" />
+		<tiles from="(5594, 1841, -8)" frommap="Trammel" to="(5467, 1805, 7)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2041, 215, 14)" frommap="Trammel" to="(5824, 631, 5)" tomap="Trammel" />
+		<tiles from="(2042, 215, 14)" frommap="Trammel" to="(5825, 631, 5)" tomap="Trammel" />
+		<tiles from="(2043, 215, 14)" frommap="Trammel" to="(5825, 631, 5)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(4110, 430, 5)" frommap="Trammel" to="(5187, 639, 0)" tomap="Trammel" />
+		<tiles from="(4111, 430, 5)" frommap="Trammel" to="(5188, 639, 0)" tomap="Trammel" />
+		<tiles from="(4112, 430, 5)" frommap="Trammel" to="(5189, 639, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5187, 639, 0)" frommap="Trammel" to="(4110, 430, 5)" tomap="Trammel" />
+		<tiles from="(5188, 639, 0)" frommap="Trammel" to="(4111, 430, 5)" tomap="Trammel" />
+		<tiles from="(5189, 639, 0)" frommap="Trammel" to="(4112, 430, 5)" tomap="Trammel" />
+		<tiles from="(5186, 639, 0)" frommap="Trammel" to="(4110, 430, 5)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5216, 586, -13)" frommap="Trammel" to="(5304, 533, 2)" tomap="Trammel" />
+		<tiles from="(5217, 586, -13)" frommap="Trammel" to="(5305, 533, 2)" tomap="Trammel" />
+		<tiles from="(5218, 586, -13)" frommap="Trammel" to="(5306, 533, 2)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5304, 532, 7)" frommap="Trammel" to="(5216, 585, -8)" tomap="Trammel" />
+		<tiles from="(5305, 532, 7)" frommap="Trammel" to="(5217, 585, -8)" tomap="Trammel" />
+		<tiles from="(5306, 532, 7)" frommap="Trammel" to="(5218, 585, -8)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5218, 761, -28)" frommap="Trammel" to="(5305, 651, 7)" tomap="Trammel" />
+		<tiles from="(5219, 761, -28)" frommap="Trammel" to="(5306, 651, 7)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5305, 650, 12)" frommap="Trammel" to="(5218, 760, -23)" tomap="Trammel" />
+		<tiles from="(5306, 650, 12)" frommap="Trammel" to="(5219, 760, -23)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5346, 578, 5)" frommap="Trammel" to="(5137, 649, 5)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5137, 649, 5)" frommap="Trammel" to="(5346, 578, 5)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5504, 569, 46)" frommap="Trammel" to="(5574, 628, 37)" tomap="Trammel" />
+		<tiles from="(5504, 570, 46)" frommap="Trammel" to="(5574, 629, 37)" tomap="Trammel" />
+		<tiles from="(5504, 571, 46)" frommap="Trammel" to="(5574, 630, 37)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5572, 632, 17)" frommap="Trammel" to="(5521, 672, 27)" tomap="Trammel" />
+		<tiles from="(5572, 633, 17)" frommap="Trammel" to="(5521, 673, 27)" tomap="Trammel" />
+		<tiles from="(5572, 634, 17)" frommap="Trammel" to="(5521, 674, 27)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5573, 628, 42)" frommap="Trammel" to="(5503, 569, 51)" tomap="Trammel" />
+		<tiles from="(5573, 629, 42)" frommap="Trammel" to="(5503, 570, 51)" tomap="Trammel" />
+		<tiles from="(5573, 630, 42)" frommap="Trammel" to="(5503, 571, 51)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1296, 1082, 0)" frommap="Trammel" to="(5588, 632, 30)" tomap="Trammel" />
+		<tiles from="(1296, 1081, 0)" frommap="Trammel" to="(5588, 631, 30)" tomap="Trammel" />
+		<tiles from="(1296, 1080, 0)" frommap="Trammel" to="(5588, 630, 30)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5522, 672, 32)" frommap="Trammel" to="(5573, 632, 22)" tomap="Trammel" />
+		<tiles from="(5522, 673, 32)" frommap="Trammel" to="(5573, 633, 22)" tomap="Trammel" />
+		<tiles from="(5522, 674, 32)" frommap="Trammel" to="(5573, 634, 22)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5386, 756, -8)" frommap="Trammel" to="(5408, 859, 47)" tomap="Trammel" />
+		<tiles from="(5386, 757, -8)" frommap="Trammel" to="(5408, 860, 47)" tomap="Trammel" />
+		<tiles from="(5386, 755, -8)" frommap="Trammel" to="(5408, 858, 47)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5242, 1007, 0)" frommap="Trammel" to="(1175, 2635, 0)" tomap="Trammel" />
+		<tiles from="(5243, 1007, 0)" frommap="Trammel" to="(1176, 2635, 0)" tomap="Trammel" />
+		<tiles from="(5244, 1007, 0)" frommap="Trammel" to="(1177, 2635, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1175, 2635, 0)" frommap="Trammel" to="(5242, 1007, 0)" tomap="Trammel" />
+		<tiles from="(1176, 2635, 0)" frommap="Trammel" to="(5243, 1007, 0)" tomap="Trammel" />
+		<tiles from="(1177, 2635, 0)" frommap="Trammel" to="(5244, 1007, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5142, 797, 22)" frommap="Trammel" to="(5129, 908, -23)" tomap="Trammel" />
+		<tiles from="(5143, 797, 22)" frommap="Trammel" to="(5130, 908, -23)" tomap="Trammel" />
+		<tiles from="(5144, 797, 22)" frommap="Trammel" to="(5131, 908, -23)" tomap="Trammel" />
+		<tiles from="(5145, 797, 22)" frommap="Trammel" to="(5132, 908, -23)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5153, 808, -25)" frommap="Trammel" to="(5134, 984, 17)" tomap="Trammel" />
+		<tiles from="(5153, 809, -25)" frommap="Trammel" to="(5134, 985, 17)" tomap="Trammel" />
+		<tiles from="(5153, 810, -25)" frommap="Trammel" to="(5134, 986, 17)" tomap="Trammel" />
+		<tiles from="(5153, 811, -25)" frommap="Trammel" to="(5134, 987, 17)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5129, 909, -28)" frommap="Trammel" to="(5142, 798, 17)" tomap="Trammel" />
+		<tiles from="(5130, 909, -28)" frommap="Trammel" to="(5143, 798, 17)" tomap="Trammel" />
+		<tiles from="(5131, 909, -28)" frommap="Trammel" to="(5144, 798, 17)" tomap="Trammel" />
+		<tiles from="(5132, 909, -28)" frommap="Trammel" to="(5145, 798, 17)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5133, 984, 22)" frommap="Trammel" to="(5152, 808, -19)" tomap="Trammel" />
+		<tiles from="(5133, 985, 22)" frommap="Trammel" to="(5152, 809, -19)" tomap="Trammel" />
+		<tiles from="(5133, 986, 22)" frommap="Trammel" to="(5152, 810, -19)" tomap="Trammel" />
+		<tiles from="(5133, 987, 22)" frommap="Trammel" to="(5152, 811, -19)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2603, 2121, -20)" frommap="Trammel" to="(2605, 2130, 8)" tomap="Trammel" />
+		<tiles from="(2603, 2120, -20)" frommap="Trammel" to="(2605, 2130, 8)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2669, 2071, -20)" frommap="Trammel" to="(2666, 2099, 3)" tomap="Trammel" />
+		<tiles from="(2669, 2072, -20)" frommap="Trammel" to="(2666, 2099, 3)" tomap="Trammel" />
+		<tiles from="(2669, 2073, -20)" frommap="Trammel" to="(2666, 2099, 3)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2676, 2241, -18)" frommap="Trammel" to="(2691, 2234, 2)" tomap="Trammel" />
+		<tiles from="(2676, 2242, -18)" frommap="Trammel" to="(2691, 2234, 2)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2758, 2092, -20)" frommap="Trammel" to="(2756, 2097, 38)" tomap="Trammel" />
+		<tiles from="(2759, 2092, -20)" frommap="Trammel" to="(2756, 2097, 38)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2685, 2063, 39)" frommap="Trammel" to="(2685, 2063, -20)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5217, 18, 15)" frommap="Trammel" to="(5204, 74, 17)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5200, 71, 17)" frommap="Trammel" to="(5211, 22, 15)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1997, 81, 7)" frommap="Trammel" to="(5881, 242, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5705, 146, -45)" frommap="Trammel" to="(5705, 305, 7)" tomap="Trammel" />
+		<tiles from="(5705, 147, -45)" frommap="Trammel" to="(5705, 306, 7)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5874, 146, 27)" frommap="Trammel" to="(5208, 2323, 31)" tomap="Trammel" />
+		<tiles from="(5875, 146, 27)" frommap="Trammel" to="(5208, 2322, 32)" tomap="Trammel" />
+		<tiles from="(5876, 146, 27)" frommap="Trammel" to="(5208, 2322, 32)" tomap="Trammel" />
+		<tiles from="(5877, 146, 27)" frommap="Trammel" to="(5208, 2322, 32)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2398, 198, 0)" frommap="Trammel" to="(5751, 436, 80)" tomap="Trammel" />
+		<tiles from="(2399, 198, 0)" frommap="Trammel" to="(5752, 436, 77)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5191, 152, 0)" frommap="Trammel" to="(1367, 891, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5849, 239, -25)" frommap="Trammel" to="(5831, 324, 27)" tomap="Trammel" />
+		<tiles from="(5850, 239, -25)" frommap="Trammel" to="(5832, 324, 26)" tomap="Trammel" />
+		<tiles from="(5851, 239, -25)" frommap="Trammel" to="(5833, 324, 28)" tomap="Trammel" />
+		<tiles from="(5852, 239, -25)" frommap="Trammel" to="(5834, 324, 27)" tomap="Trammel" />
+		<tiles from="(5853, 239, -23)" frommap="Trammel" to="(5835, 324, 27)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5882, 241, 0)" frommap="Trammel" to="(1998, 81, 5)" tomap="Trammel" />
+		<tiles from="(5882, 242, 0)" frommap="Trammel" to="(1998, 81, 5)" tomap="Trammel" />
+		<tiles from="(5882, 243, 0)" frommap="Trammel" to="(1998, 81, 5)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5706, 305, 12)" frommap="Trammel" to="(5705, 146, -45)" tomap="Trammel" />
+		<tiles from="(5706, 306, 12)" frommap="Trammel" to="(5705, 147, -45)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5748, 362, 2)" frommap="Trammel" to="(313, 786, -24)" tomap="Trammel" />
+		<tiles from="(5749, 362, 0)" frommap="Trammel" to="(313, 786, -24)" tomap="Trammel" />
+		<tiles from="(5750, 362, 3)" frommap="Trammel" to="(314, 786, -24)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5753, 324, 21)" frommap="Trammel" to="(5672, 2390, 60)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5831, 323, 34)" frommap="Trammel" to="(5849, 238, -25)" tomap="Trammel" />
+		<tiles from="(5832, 323, 34)" frommap="Trammel" to="(5850, 238, -25)" tomap="Trammel" />
+		<tiles from="(5833, 323, 33)" frommap="Trammel" to="(5851, 238, -25)" tomap="Trammel" />
+		<tiles from="(5834, 323, 33)" frommap="Trammel" to="(5852, 238, -25)" tomap="Trammel" />
+		<tiles from="(5835, 323, 33)" frommap="Trammel" to="(5853, 238, -23)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5658, 423, 8)" frommap="Trammel" to="(5697, 3659, 2)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5686, 385, 2)" frommap="Trammel" to="(2777, 894, -23)" tomap="Trammel" />
+		<tiles from="(5686, 386, 2)" frommap="Trammel" to="(2777, 894, -23)" tomap="Trammel" />
+		<tiles from="(5686, 387, 2)" frommap="Trammel" to="(2777, 895, -23)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5730, 445, -22)" frommap="Trammel" to="(6087, 3676, 18)" tomap="Trammel" />
+		<tiles from="(5731, 445, -22)" frommap="Trammel" to="(6087, 3676, 18)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5751, 437, 81)" frommap="Trammel" to="(2398, 199, 0)" tomap="Trammel" />
+		<tiles from="(5752, 437, 77)" frommap="Trammel" to="(2399, 199, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5850, 432, 0)" frommap="Trammel" to="(5127, 3143, 97)" tomap="Trammel" />
+		<tiles from="(5850, 433, -2)" frommap="Trammel" to="(5127, 3143, 97)" tomap="Trammel" />
+		<tiles from="(5850, 434, -1)" frommap="Trammel" to="(5127, 3143, 97)" tomap="Trammel" />
+		<tiles from="(5850, 431, 2)" frommap="Trammel" to="(5127, 3143, 97)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5826, 465, -1)" frommap="Trammel" to="(1987, 2063, -40)" tomap="Trammel" />
+		<tiles from="(5827, 465, -1)" frommap="Trammel" to="(1988, 2063, -40)" tomap="Trammel" />
+		<tiles from="(5828, 465, 0)" frommap="Trammel" to="(1989, 2063, -40)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(313, 786, -24)" frommap="Trammel" to="(5748, 361, 2)" tomap="Trammel" />
+		<tiles from="(314, 786, -24)" frommap="Trammel" to="(5749, 361, 2)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2776, 895, -23)" frommap="Trammel" to="(5685, 387, 2)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(4540, 898, 32)" frommap="Trammel" to="(4442, 1122, 5)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(4300, 968, 5)" frommap="Trammel" to="(4442, 1122, 5)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(4436, 1107, 5)" frommap="Trammel" to="(4300, 992, 5)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(4443, 1137, 5)" frommap="Trammel" to="(4487, 1475, 5)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(4449, 1107, 5)" frommap="Trammel" to="(4539, 890, 28)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(4449, 1115, 5)" frommap="Trammel" to="(4671, 1135, 10)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(4663, 1134, 13)" frommap="Trammel" to="(4442, 1122, 5)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5701, 1320, 16)" frommap="Trammel" to="(5786, 1336, -8)" tomap="Trammel" />
+		<tiles from="(5702, 1320, 16)" frommap="Trammel" to="(5787, 1336, -8)" tomap="Trammel" />
+		<tiles from="(5703, 1320, 16)" frommap="Trammel" to="(5788, 1336, -8)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5786, 1335, -13)" frommap="Trammel" to="(5701, 1319, 13)" tomap="Trammel" />
+		<tiles from="(5787, 1335, -13)" frommap="Trammel" to="(5702, 1319, 13)" tomap="Trammel" />
+		<tiles from="(5788, 1335, -13)" frommap="Trammel" to="(5703, 1319, 13)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6005, 1380, 1)" frommap="Trammel" to="(5151, 4063, 37)" tomap="Trammel" />
+		<tiles from="(6005, 1379, 2)" frommap="Trammel" to="(5151, 4062, 37)" tomap="Trammel" />
+		<tiles from="(6005, 1378, 0)" frommap="Trammel" to="(5151, 4062, 37)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6025, 1344, -26)" frommap="Trammel" to="(5137, 3664, 27)" tomap="Trammel" />
+		<tiles from="(6025, 1345, -26)" frommap="Trammel" to="(5137, 3664, 27)" tomap="Trammel" />
+		<tiles from="(6025, 1346, -26)" frommap="Trammel" to="(5137, 3665, 31)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5687, 1424, 38)" frommap="Trammel" to="(2923, 3406, 8)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5792, 1417, 41)" frommap="Trammel" to="(5758, 2909, 15)" tomap="Trammel" />
+		<tiles from="(5792, 1416, 41)" frommap="Trammel" to="(5758, 2907, 15)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5899, 1411, 43)" frommap="Trammel" to="(1630, 3320, 0)" tomap="Trammel" />
+		<tiles from="(5900, 1411, 42)" frommap="Trammel" to="(1630, 3320, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5918, 1412, -31)" frommap="Trammel" to="(5962, 1409, 56)" tomap="Trammel" />
+		<tiles from="(5918, 1411, -31)" frommap="Trammel" to="(5962, 1408, 58)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5961, 1408, 57)" frommap="Trammel" to="(5917, 1411, -29)" tomap="Trammel" />
+		<tiles from="(5961, 1409, 56)" frommap="Trammel" to="(5917, 1412, -29)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6125, 1411, 15)" frommap="Trammel" to="(6075, 3332, 0)" tomap="Trammel" />
+		<tiles from="(6126, 1411, 15)" frommap="Trammel" to="(6075, 3332, 0)" tomap="Trammel" />
+		<tiles from="(6127, 1411, 15)" frommap="Trammel" to="(6075, 3332, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6137, 1409, 2)" frommap="Trammel" to="(6140, 1432, 4)" tomap="Trammel" />
+		<tiles from="(6138, 1409, 2)" frommap="Trammel" to="(6140, 1432, 4)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6140, 1431, 4)" frommap="Trammel" to="(6137, 1408, 2)" tomap="Trammel" />
+		<tiles from="(6141, 1431, 4)" frommap="Trammel" to="(6138, 1408, 2)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(4496, 1475, 15)" frommap="Trammel" to="(4442, 1122, 5)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6031, 1501, 42)" frommap="Trammel" to="(1491, 1642, 24)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6031, 1499, 42)" frommap="Trammel" to="(1491, 1640, 24)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1491, 1640, 24)" frommap="Trammel" to="(6032, 1499, 31)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1491, 1642, 24)" frommap="Trammel" to="(6032, 1501, 31)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5340, 1599, 40)" frommap="Trammel" to="(5426, 3122, -74)" tomap="Trammel" />
+		<tiles from="(5341, 1599, 40)" frommap="Trammel" to="(5426, 3122, -74)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1987, 2062, -40)" frommap="Trammel" to="(5826, 464, 0)" tomap="Trammel" />
+		<tiles from="(1988, 2062, -40)" frommap="Trammel" to="(5827, 464, -1)" tomap="Trammel" />
+		<tiles from="(1989, 2062, -40)" frommap="Trammel" to="(5828, 464, -1)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5203, 2327, 27)" frommap="Trammel" to="(5876, 147, 25)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5207, 2322, 27)" frommap="Trammel" to="(5877, 147, 25)" tomap="Trammel" />
+		<tiles from="(5207, 2323, 26)" frommap="Trammel" to="(5876, 147, 25)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5670, 2391, 40)" frommap="Trammel" to="(5753, 325, 10)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5757, 2908, 14)" frommap="Trammel" to="(5791, 1416, 38)" tomap="Trammel" />
+		<tiles from="(5757, 2909, 15)" frommap="Trammel" to="(5791, 1417, 40)" tomap="Trammel" />
+		<tiles from="(5757, 2907, 15)" frommap="Trammel" to="(5791, 1415, 38)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1653, 2963, 0)" frommap="Trammel" to="(1677, 2987, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1677, 2987, 0)" frommap="Trammel" to="(1675, 2987, 20)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5426, 3123, -80)" frommap="Trammel" to="(5341, 1602, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5126, 3143, 99)" frommap="Trammel" to="(5849, 432, 1)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1629, 3320, 0)" frommap="Trammel" to="(5899, 1411, 43)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6075, 3332, 0)" frommap="Trammel" to="(6126, 1410, 15)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2923, 3405, 6)" frommap="Trammel" to="(5687, 1423, 39)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1142, 3621, 5)" frommap="Trammel" to="(1414, 3828, 5)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5137, 3664, 27)" frommap="Trammel" to="(6025, 1344, -26)" tomap="Trammel" />
+		<tiles from="(5137, 3665, 31)" frommap="Trammel" to="(6025, 1345, -26)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5697, 3660, -5)" frommap="Trammel" to="(5658, 424, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6086, 3675, 15)" frommap="Trammel" to="(5731, 446, -16)" tomap="Trammel" />
+		<tiles from="(6086, 3676, 15)" frommap="Trammel" to="(5731, 446, -16)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1409, 3824, 5)" frommap="Trammel" to="(1124, 3623, 5)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1419, 3832, 5)" frommap="Trammel" to="(1466, 4015, 5)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1406, 3996, 5)" frommap="Trammel" to="(1414, 3828, 5)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5150, 4062, 38)" frommap="Trammel" to="(6005, 1378, 0)" tomap="Trammel" />
+		<tiles from="(5150, 4063, 38)" frommap="Trammel" to="(6005, 1380, 1)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5906, 4069, 26)" frommap="Trammel" to="(2494, 3576, 5)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2494, 3576, 5)" frommap="Trammel" to="(5906, 4069, 26)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6172, 21, 0)" frommap="Trammel" to="(765, 1645, 0)" tomap="Trammel" />
+		<tiles from="(6172, 22, 0)" frommap="Trammel" to="(765, 1646, 0)" tomap="Trammel" />
+		<tiles from="(6172, 23, 0)" frommap="Trammel" to="(765, 1647, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6260, 87, -10)" frommap="Trammel" to="(6256, 87, -8)" tomap="Trammel" />
+		<tiles from="(6260, 88, -10)" frommap="Trammel" to="(6256, 88, -8)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6173, 176, -10)" frommap="Trammel" to="(6233, 15, -10)" tomap="Trammel" />
+		<tiles from="(6174, 176, -10)" frommap="Trammel" to="(6234, 15, -10)" tomap="Trammel" />
+		<tiles from="(6175, 176, -10)" frommap="Trammel" to="(6235, 15, -10)" tomap="Trammel" />
+		<tiles from="(6176, 176, -10)" frommap="Trammel" to="(6236, 15, -10)" tomap="Trammel" />
+		<tiles from="(6177, 176, -10)" frommap="Trammel" to="(6237, 15, -10)" tomap="Trammel" />
+		<tiles from="(6178, 176, -10)" frommap="Trammel" to="(6238, 15, -10)" tomap="Trammel" />
+		<tiles from="(6179, 176, -10)" frommap="Trammel" to="(6239, 15, -10)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6233, 14, -10)" frommap="Trammel" to="(6172, 174, -10)" tomap="Trammel" />
+		<tiles from="(6234, 14, -10)" frommap="Trammel" to="(6173, 174, -10)" tomap="Trammel" />
+		<tiles from="(6235, 14, -10)" frommap="Trammel" to="(6174, 174, -10)" tomap="Trammel" />
+		<tiles from="(6236, 14, -10)" frommap="Trammel" to="(6175, 174, -10)" tomap="Trammel" />
+		<tiles from="(6237, 14, -10)" frommap="Trammel" to="(6176, 174, -10)" tomap="Trammel" />
+		<tiles from="(6238, 14, -10)" frommap="Trammel" to="(6177, 174, -10)" tomap="Trammel" />
+		<tiles from="(6239, 14, -10)" frommap="Trammel" to="(6177, 174, -10)" tomap="Trammel" />
+		<tiles from="(6240, 14, -10)" frommap="Trammel" to="(6178, 174, -10)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6256, 97, -4)" frommap="Trammel" to="(6257, 95, -10)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6260, 97, -4)" frommap="Trammel" to="(6260, 95, -10)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6263, 97, -4)" frommap="Trammel" to="(6262, 95, -10)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6269, 97, -4)" frommap="Trammel" to="(6269, 95, -10)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6273, 97, -4)" frommap="Trammel" to="(6272, 95, -10)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6262, 95, -10)" frommap="Trammel" to="(6262, 99, -10)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6159, 130, 0)" frommap="Trammel" to="(6317, 63, -20)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6164, 73, 0)" frommap="Trammel" to="(6320, 22, -20)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6161, 163, -10)" frommap="Trammel" to="(6321, 106, -20)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6276, 40, -10)" frommap="Trammel" to="(6374, 124, -20)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6211, 106, 0)" frommap="Trammel" to="(6355, 34, -20)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6316, 62, -5)" frommap="Trammel" to="(6160, 131, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6319, 19, -20)" frommap="Trammel" to="(6165, 74, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6356, 32, -9)" frommap="Trammel" to="(6210, 105, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6374, 125, -20)" frommap="Trammel" to="(6277, 41, -10)" tomap="Trammel" />
+		<tiles from="(6375, 124, -20)" frommap="Trammel" to="(6277, 41, -10)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6373, 49, -20)" frommap="Trammel" to="(801, 1682, 0)" tomap="Trammel" />
+		<tiles from="(6374, 49, -20)" frommap="Trammel" to="(801, 1682, 0)" tomap="Trammel" />
+		<tiles from="(6375, 49, -20)" frommap="Trammel" to="(801, 1682, 0)" tomap="Trammel" />
+		<tiles from="(6376, 49, -20)" frommap="Trammel" to="(801, 1682, 0)" tomap="Trammel" />
+		<tiles from="(6377, 49, -20)" frommap="Trammel" to="(801, 1682, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6310, 890, 0)" frommap="Trammel" to="(1715, 2996, 0)" tomap="Trammel" />
+		<tiles from="(6310, 891, 0)" frommap="Trammel" to="(1715, 2996, 0)" tomap="Trammel" />
+		<tiles from="(6310, 892, 0)" frommap="Trammel" to="(1715, 2997, 0)" tomap="Trammel" />
+		<tiles from="(6310, 893, 0)" frommap="Trammel" to="(1715, 2997, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(3508, 2777, 26)" frommap="Trammel" to="(5912, 355, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5912, 355, 0)" frommap="Trammel" to="(3508, 2777, 26)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5140, 1773, 0)" frommap="Felucca" to="(5171, 1586, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6992, 1367, -15)" frommap="Felucca" to="(511, 585, 11)" tomap="TerMur" />
+		<tiles from="(6993, 1367, -15)" frommap="Felucca" to="(512, 585, 11)" tomap="TerMur" />
+		<tiles from="(6994, 1367, -15)" frommap="Felucca" to="(513, 585, 11)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2186, 294, -27)" frommap="Ilshenar" to="(2186, 33, -27)" tomap="Ilshenar" />
+		<tiles from="(2187, 294, -27)" frommap="Ilshenar" to="(2187, 33, -27)" tomap="Ilshenar" />
+		<tiles from="(2188, 294, -27)" frommap="Ilshenar" to="(2188, 33, -27)" tomap="Ilshenar" />
+		<tiles from="(2189, 294, -27)" frommap="Ilshenar" to="(2189, 33, -27)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2186, 33, -27)" frommap="Ilshenar" to="(2186, 294, -27)" tomap="Ilshenar" />
+		<tiles from="(2187, 33, -27)" frommap="Ilshenar" to="(2187, 294, -27)" tomap="Ilshenar" />
+		<tiles from="(2188, 33, -27)" frommap="Ilshenar" to="(2188, 294, -27)" tomap="Ilshenar" />
+		<tiles from="(2189, 33, -27)" frommap="Ilshenar" to="(2189, 294, -27)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2189, 320, -7)" frommap="Ilshenar" to="(1788, 569, 74)" tomap="Ilshenar" />
+		<tiles from="(2188, 320, -7)" frommap="Ilshenar" to="(1787, 569, 74)" tomap="Ilshenar" />
+		<tiles from="(2187, 320, -7)" frommap="Ilshenar" to="(1787, 569, 74)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1788, 569, 74)" frommap="Ilshenar" to="(2189, 320, -7)" tomap="Ilshenar" />
+		<tiles from="(1787, 569, 74)" frommap="Ilshenar" to="(2188, 320, -7)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1419, 909, -10)" frommap="Ilshenar" to="(1784, 994, -28)" tomap="Ilshenar" />
+		<tiles from="(1420, 909, -10)" frommap="Ilshenar" to="(1785, 994, -28)" tomap="Ilshenar" />
+		<tiles from="(1421, 909, -10)" frommap="Ilshenar" to="(1786, 994, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1784, 994, -28)" frommap="Ilshenar" to="(1419, 909, -10)" tomap="Ilshenar" />
+		<tiles from="(1785, 994, -28)" frommap="Ilshenar" to="(1420, 909, -10)" tomap="Ilshenar" />
+		<tiles from="(1786, 994, -28)" frommap="Ilshenar" to="(1421, 909, -10)" tomap="Ilshenar" />
+		<tiles from="(1787, 994, -28)" frommap="Ilshenar" to="(1421, 909, -10)" tomap="Ilshenar" />
+		<tiles from="(1788, 994, -28)" frommap="Ilshenar" to="(1421, 909, -10)" tomap="Ilshenar" />
+		<tiles from="(1783, 994, -28)" frommap="Ilshenar" to="(1419, 909, -10)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1861, 980, -28)" frommap="Ilshenar" to="(1490, 877, 10)" tomap="Ilshenar" />
+		<tiles from="(1861, 981, -28)" frommap="Ilshenar" to="(1490, 878, 10)" tomap="Ilshenar" />
+		<tiles from="(1861, 982, -28)" frommap="Ilshenar" to="(1490, 879, 10)" tomap="Ilshenar" />
+		<tiles from="(1861, 983, -28)" frommap="Ilshenar" to="(1490, 880, 10)" tomap="Ilshenar" />
+		<tiles from="(1861, 984, -28)" frommap="Ilshenar" to="(1490, 880, 10)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1490, 877, 10)" frommap="Ilshenar" to="(1861, 980, -28)" tomap="Ilshenar" />
+		<tiles from="(1490, 878, 10)" frommap="Ilshenar" to="(1861, 981, -28)" tomap="Ilshenar" />
+		<tiles from="(1490, 879, 10)" frommap="Ilshenar" to="(1861, 982, -28)" tomap="Ilshenar" />
+		<tiles from="(1490, 880, 10)" frommap="Ilshenar" to="(1861, 983, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1516, 879, 10)" frommap="Ilshenar" to="(1363, 1105, -26)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1363, 1105, -26)" frommap="Ilshenar" to="(1516, 879, 10)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1362, 1031, -13)" frommap="Ilshenar" to="(1981, 1107, -16)" tomap="Ilshenar" />
+		<tiles from="(1363, 1031, -13)" frommap="Ilshenar" to="(1982, 1107, -16)" tomap="Ilshenar" />
+		<tiles from="(1364, 1031, -13)" frommap="Ilshenar" to="(1983, 1107, -16)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1981, 1107, -16)" frommap="Ilshenar" to="(1362, 1031, -13)" tomap="Ilshenar" />
+		<tiles from="(1982, 1107, -16)" frommap="Ilshenar" to="(1363, 1031, -13)" tomap="Ilshenar" />
+		<tiles from="(1983, 1107, -16)" frommap="Ilshenar" to="(1364, 1031, -13)" tomap="Ilshenar" />
+		<tiles from="(1980, 1107, -16)" frommap="Ilshenar" to="(1362, 1031, -13)" tomap="Ilshenar" />
+		<tiles from="(1984, 1107, -16)" frommap="Ilshenar" to="(1364, 1031, -13)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1745, 1236, -30)" frommap="Ilshenar" to="(2113, 829, -11)" tomap="Ilshenar" />
+		<tiles from="(1746, 1236, -30)" frommap="Ilshenar" to="(2114, 829, -11)" tomap="Ilshenar" />
+		<tiles from="(1747, 1236, -30)" frommap="Ilshenar" to="(2115, 829, -11)" tomap="Ilshenar" />
+		<tiles from="(1748, 1236, -30)" frommap="Ilshenar" to="(2116, 829, -11)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2113, 829, -11)" frommap="Ilshenar" to="(1746, 1236, -30)" tomap="Ilshenar" />
+		<tiles from="(2114, 829, -11)" frommap="Ilshenar" to="(1747, 1236, -30)" tomap="Ilshenar" />
+		<tiles from="(2115, 829, -11)" frommap="Ilshenar" to="(1748, 1236, -30)" tomap="Ilshenar" />
+		<tiles from="(2116, 829, -11)" frommap="Ilshenar" to="(1748, 1236, -30)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1456, 1328, -27)" frommap="Ilshenar" to="(1479, 1494, -28)" tomap="Ilshenar" />
+		<tiles from="(1456, 1329, -27)" frommap="Ilshenar" to="(1479, 1495, -28)" tomap="Ilshenar" />
+		<tiles from="(1456, 1330, -27)" frommap="Ilshenar" to="(1479, 1496, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1479, 1494, -28)" frommap="Ilshenar" to="(1456, 1328, -27)" tomap="Ilshenar" />
+		<tiles from="(1479, 1495, -28)" frommap="Ilshenar" to="(1456, 1329, -27)" tomap="Ilshenar" />
+		<tiles from="(1479, 1496, -28)" frommap="Ilshenar" to="(1456, 1330, -27)" tomap="Ilshenar" />
+		<tiles from="(1479, 1493, -28)" frommap="Ilshenar" to="(1456, 1328, -27)" tomap="Ilshenar" />
+		<tiles from="(1479, 1497, -28)" frommap="Ilshenar" to="(1456, 1330, -27)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1029, 1155, -24)" frommap="Ilshenar" to="(1349, 1512, -3)" tomap="Ilshenar" />
+		<tiles from="(1029, 1154, -24)" frommap="Ilshenar" to="(1349, 1511, -3)" tomap="Ilshenar" />
+		<tiles from="(1029, 1153, -24)" frommap="Ilshenar" to="(1349, 1510, -3)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1349, 1512, -3)" frommap="Ilshenar" to="(1029, 1155, -24)" tomap="Ilshenar" />
+		<tiles from="(1349, 1511, -3)" frommap="Ilshenar" to="(1029, 1154, -24)" tomap="Ilshenar" />
+		<tiles from="(1349, 1510, -3)" frommap="Ilshenar" to="(1029, 1153, -24)" tomap="Ilshenar" />
+		<tiles from="(1349, 1509, -3)" frommap="Ilshenar" to="(1030, 1153, -24)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1268, 1508, -28)" frommap="Ilshenar" to="(1250, 1508, -28)" tomap="Ilshenar" />
+		<tiles from="(1268, 1509, -28)" frommap="Ilshenar" to="(1250, 1509, -28)" tomap="Ilshenar" />
+		<tiles from="(1268, 1510, -28)" frommap="Ilshenar" to="(1250, 1510, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1250, 1508, -28)" frommap="Ilshenar" to="(1268, 1508, -28)" tomap="Ilshenar" />
+		<tiles from="(1250, 1509, -28)" frommap="Ilshenar" to="(1268, 1509, -28)" tomap="Ilshenar" />
+		<tiles from="(1250, 1510, -28)" frommap="Ilshenar" to="(1268, 1510, -28)" tomap="Ilshenar" />
+		<tiles from="(1250, 1511, -28)" frommap="Ilshenar" to="(1268, 1510, -28)" tomap="Ilshenar" />
+		<tiles from="(1250, 1512, -28)" frommap="Ilshenar" to="(1268, 1510, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(810, 874, -39)" frommap="Ilshenar" to="(532, 1532, -7)" tomap="Ilshenar" />
+		<tiles from="(811, 874, -39)" frommap="Ilshenar" to="(533, 1532, -7)" tomap="Ilshenar" />
+		<tiles from="(812, 874, -39)" frommap="Ilshenar" to="(534, 1532, -7)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(531, 1533, -4)" frommap="Ilshenar" to="(810, 875, -40)" tomap="Ilshenar" />
+		<tiles from="(532, 1533, -4)" frommap="Ilshenar" to="(811, 875, -39)" tomap="Ilshenar" />
+		<tiles from="(533, 1533, -4)" frommap="Ilshenar" to="(812, 875, -39)" tomap="Ilshenar" />
+		<tiles from="(534, 1533, -4)" frommap="Ilshenar" to="(813, 875, -40)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(393, 1587, -13)" frommap="Ilshenar" to="(78, 1366, -36)" tomap="Ilshenar" />
+		<tiles from="(394, 1587, -13)" frommap="Ilshenar" to="(79, 1366, -36)" tomap="Ilshenar" />
+		<tiles from="(395, 1587, -13)" frommap="Ilshenar" to="(80, 1366, -36)" tomap="Ilshenar" />
+		<tiles from="(396, 1587, -13)" frommap="Ilshenar" to="(81, 1366, -36)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(78, 1365, -41)" frommap="Ilshenar" to="(393, 1586, -16)" tomap="Ilshenar" />
+		<tiles from="(79, 1365, -41)" frommap="Ilshenar" to="(394, 1586, -16)" tomap="Ilshenar" />
+		<tiles from="(80, 1365, -41)" frommap="Ilshenar" to="(395, 1586, -16)" tomap="Ilshenar" />
+		<tiles from="(81, 1365, -41)" frommap="Ilshenar" to="(396, 1586, -16)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(668, 928, -84)" frommap="Ilshenar" to="(3, 1267, -8)" tomap="Ilshenar" />
+		<tiles from="(668, 929, -84)" frommap="Ilshenar" to="(3, 1268, -8)" tomap="Ilshenar" />
+		<tiles from="(668, 930, -82)" frommap="Ilshenar" to="(3, 1269, -8)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(3, 1267, -8)" frommap="Ilshenar" to="(668, 928, -84)" tomap="Ilshenar" />
+		<tiles from="(3, 1268, -8)" frommap="Ilshenar" to="(668, 929, -84)" tomap="Ilshenar" />
+		<tiles from="(3, 1269, -8)" frommap="Ilshenar" to="(668, 930, -82)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(575, 1156, -121)" frommap="Ilshenar" to="(154, 1473, -8)" tomap="Ilshenar" />
+		<tiles from="(576, 1156, -121)" frommap="Ilshenar" to="(155, 1473, -8)" tomap="Ilshenar" />
+		<tiles from="(577, 1156, -121)" frommap="Ilshenar" to="(156, 1473, -8)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(154, 1472, -8)" frommap="Ilshenar" to="(575, 1155, -121)" tomap="Ilshenar" />
+		<tiles from="(155, 1472, -8)" frommap="Ilshenar" to="(576, 1155, -120)" tomap="Ilshenar" />
+		<tiles from="(156, 1472, -8)" frommap="Ilshenar" to="(577, 1155, -120)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(10, 872, -28)" frommap="Ilshenar" to="(10, 1518, -27)" tomap="Ilshenar" />
+		<tiles from="(11, 872, -28)" frommap="Ilshenar" to="(11, 1518, -28)" tomap="Ilshenar" />
+		<tiles from="(12, 872, -27)" frommap="Ilshenar" to="(12, 1518, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(10, 1519, -28)" frommap="Ilshenar" to="(10, 873, -28)" tomap="Ilshenar" />
+		<tiles from="(11, 1519, -27)" frommap="Ilshenar" to="(11, 873, -28)" tomap="Ilshenar" />
+		<tiles from="(12, 1519, -27)" frommap="Ilshenar" to="(12, 873, -27)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(636, 813, -62)" frommap="Ilshenar" to="(164, 743, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(164, 746, -16)" frommap="Ilshenar" to="(636, 815, -52)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(348, 1427, 15)" frommap="Ilshenar" to="(18, 1198, -5)" tomap="Ilshenar" />
+		<tiles from="(349, 1427, 15)" frommap="Ilshenar" to="(19, 1198, -5)" tomap="Ilshenar" />
+		<tiles from="(350, 1427, 15)" frommap="Ilshenar" to="(20, 1198, -5)" tomap="Ilshenar" />
+		<tiles from="(351, 1427, 15)" frommap="Ilshenar" to="(21, 1198, -5)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(18, 1198, -5)" frommap="Ilshenar" to="(348, 1427, 15)" tomap="Ilshenar" />
+		<tiles from="(19, 1198, -5)" frommap="Ilshenar" to="(349, 1427, 15)" tomap="Ilshenar" />
+		<tiles from="(20, 1198, -5)" frommap="Ilshenar" to="(350, 1427, 15)" tomap="Ilshenar" />
+		<tiles from="(21, 1198, -5)" frommap="Ilshenar" to="(351, 1427, 15)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(712, 1490, -3)" frommap="Ilshenar" to="(686, 1490, -28)" tomap="Ilshenar" />
+		<tiles from="(712, 1491, -3)" frommap="Ilshenar" to="(686, 1491, -28)" tomap="Ilshenar" />
+		<tiles from="(712, 1492, -3)" frommap="Ilshenar" to="(686, 1492, -28)" tomap="Ilshenar" />
+		<tiles from="(712, 1493, -3)" frommap="Ilshenar" to="(686, 1493, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(694, 1490, -53)" frommap="Ilshenar" to="(719, 1490, -28)" tomap="Ilshenar" />
+		<tiles from="(694, 1491, -53)" frommap="Ilshenar" to="(719, 1491, -28)" tomap="Ilshenar" />
+		<tiles from="(694, 1492, -53)" frommap="Ilshenar" to="(719, 1492, -28)" tomap="Ilshenar" />
+		<tiles from="(694, 1493, -53)" frommap="Ilshenar" to="(719, 1493, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(775, 1467, -28)" frommap="Ilshenar" to="(658, 1498, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(838, 1550, -6)" frommap="Ilshenar" to="(728, 1505, -28)" tomap="Ilshenar" />
+		<tiles from="(838, 1551, -6)" frommap="Ilshenar" to="(728, 1506, -28)" tomap="Ilshenar" />
+		<tiles from="(838, 1552, -6)" frommap="Ilshenar" to="(728, 1507, -28)" tomap="Ilshenar" />
+		<tiles from="(838, 1553, -6)" frommap="Ilshenar" to="(728, 1508, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(722, 1505, -53)" frommap="Ilshenar" to="(833, 1550, -28)" tomap="Ilshenar" />
+		<tiles from="(722, 1506, -53)" frommap="Ilshenar" to="(833, 1551, -28)" tomap="Ilshenar" />
+		<tiles from="(722, 1507, -53)" frommap="Ilshenar" to="(833, 1552, -28)" tomap="Ilshenar" />
+		<tiles from="(722, 1508, -53)" frommap="Ilshenar" to="(833, 1553, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(954, 1425, -53)" frommap="Ilshenar" to="(874, 1490, 2)" tomap="Ilshenar" />
+		<tiles from="(954, 1426, -53)" frommap="Ilshenar" to="(874, 1491, 2)" tomap="Ilshenar" />
+		<tiles from="(954, 1427, -53)" frommap="Ilshenar" to="(874, 1492, 2)" tomap="Ilshenar" />
+		<tiles from="(954, 1428, -53)" frommap="Ilshenar" to="(874, 1493, 2)" tomap="Ilshenar" />
+		<tiles from="(954, 1429, -53)" frommap="Ilshenar" to="(874, 1493, 2)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(879, 1490, 24)" frommap="Ilshenar" to="(960, 1425, -28)" tomap="Ilshenar" />
+		<tiles from="(879, 1491, 24)" frommap="Ilshenar" to="(960, 1426, -28)" tomap="Ilshenar" />
+		<tiles from="(879, 1492, 24)" frommap="Ilshenar" to="(960, 1427, -28)" tomap="Ilshenar" />
+		<tiles from="(879, 1493, 24)" frommap="Ilshenar" to="(960, 1428, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(948, 1464, -56)" frommap="Ilshenar" to="(951, 1442, -6)" tomap="Ilshenar" />
+		<tiles from="(948, 1465, -56)" frommap="Ilshenar" to="(951, 1443, -6)" tomap="Ilshenar" />
+		<tiles from="(948, 1466, -56)" frommap="Ilshenar" to="(951, 1444, -6)" tomap="Ilshenar" />
+		<tiles from="(948, 1467, -56)" frommap="Ilshenar" to="(951, 1445, -6)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(951, 1442, -6)" frommap="Ilshenar" to="(948, 1464, -56)" tomap="Ilshenar" />
+		<tiles from="(951, 1443, -6)" frommap="Ilshenar" to="(948, 1465, -56)" tomap="Ilshenar" />
+		<tiles from="(951, 1444, -6)" frommap="Ilshenar" to="(948, 1466, -56)" tomap="Ilshenar" />
+		<tiles from="(951, 1445, -6)" frommap="Ilshenar" to="(948, 1467, -56)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(871, 1433, -6)" frommap="Ilshenar" to="(897, 1449, -28)" tomap="Ilshenar" />
+		<tiles from="(871, 1434, -6)" frommap="Ilshenar" to="(897, 1450, -28)" tomap="Ilshenar" />
+		<tiles from="(871, 1435, -6)" frommap="Ilshenar" to="(897, 1451, -28)" tomap="Ilshenar" />
+		<tiles from="(871, 1436, -6)" frommap="Ilshenar" to="(897, 1452, -28)" tomap="Ilshenar" />
+		<tiles from="(871, 1437, -6)" frommap="Ilshenar" to="(897, 1453, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(892, 1449, -51)" frommap="Ilshenar" to="(866, 1433, -28)" tomap="Ilshenar" />
+		<tiles from="(892, 1450, -51)" frommap="Ilshenar" to="(866, 1434, -28)" tomap="Ilshenar" />
+		<tiles from="(892, 1451, -51)" frommap="Ilshenar" to="(866, 1435, -28)" tomap="Ilshenar" />
+		<tiles from="(892, 1452, -51)" frommap="Ilshenar" to="(866, 1436, -28)" tomap="Ilshenar" />
+		<tiles from="(892, 1453, -51)" frommap="Ilshenar" to="(866, 1437, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(812, 1546, -6)" frommap="Ilshenar" to="(848, 1434, -28)" tomap="Ilshenar" />
+		<tiles from="(812, 1547, -6)" frommap="Ilshenar" to="(848, 1435, -28)" tomap="Ilshenar" />
+		<tiles from="(812, 1548, -6)" frommap="Ilshenar" to="(848, 1436, -28)" tomap="Ilshenar" />
+		<tiles from="(812, 1549, -6)" frommap="Ilshenar" to="(848, 1437, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(843, 1434, -51)" frommap="Ilshenar" to="(807, 1546, -28)" tomap="Ilshenar" />
+		<tiles from="(843, 1435, -51)" frommap="Ilshenar" to="(807, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(843, 1436, -51)" frommap="Ilshenar" to="(807, 1548, -28)" tomap="Ilshenar" />
+		<tiles from="(843, 1437, -51)" frommap="Ilshenar" to="(807, 1549, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(751, 1473, -28)" frommap="Ilshenar" to="(763, 1479, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(751, 1479, -28)" frommap="Ilshenar" to="(763, 1555, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(752, 1549, -28)" frommap="Ilshenar" to="(751, 1484, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(775, 1492, -28)" frommap="Ilshenar" to="(827, 1515, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(904, 1360, -21)" frommap="Ilshenar" to="(1014, 1506, 0)" tomap="Ilshenar" />
+		<tiles from="(904, 1361, -21)" frommap="Ilshenar" to="(1014, 1507, 0)" tomap="Ilshenar" />
+		<tiles from="(904, 1362, -21)" frommap="Ilshenar" to="(1014, 1508, 0)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1014, 1506, 0)" frommap="Ilshenar" to="(904, 1360, -21)" tomap="Ilshenar" />
+		<tiles from="(1014, 1507, 0)" frommap="Ilshenar" to="(904, 1361, -21)" tomap="Ilshenar" />
+		<tiles from="(1014, 1508, 0)" frommap="Ilshenar" to="(904, 1362, -21)" tomap="Ilshenar" />
+		<tiles from="(1014, 1509, 0)" frommap="Ilshenar" to="(904, 1362, -21)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(650, 1297, -58)" frommap="Ilshenar" to="(626, 1526, -28)" tomap="Ilshenar" />
+		<tiles from="(651, 1297, -58)" frommap="Ilshenar" to="(627, 1526, -28)" tomap="Ilshenar" />
+		<tiles from="(652, 1297, -58)" frommap="Ilshenar" to="(628, 1526, -28)" tomap="Ilshenar" />
+		<tiles from="(653, 1297, -58)" frommap="Ilshenar" to="(629, 1526, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(626, 1527, -28)" frommap="Ilshenar" to="(650, 1298, -58)" tomap="Ilshenar" />
+		<tiles from="(627, 1527, -28)" frommap="Ilshenar" to="(651, 1298, -59)" tomap="Ilshenar" />
+		<tiles from="(628, 1527, -28)" frommap="Ilshenar" to="(652, 1298, -58)" tomap="Ilshenar" />
+		<tiles from="(629, 1527, -28)" frommap="Ilshenar" to="(653, 1298, -58)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(747, 1539, -28)" frommap="Ilshenar" to="(785, 1514, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(785, 1524, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(747, 1555, -28)" frommap="Ilshenar" to="(785, 1570, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(784, 1580, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(791, 1548, -28)" frommap="Ilshenar" to="(781, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(791, 1549, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(791, 1550, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(782, 1550, -28)" frommap="Ilshenar" to="(783, 1538, -28)" tomap="Ilshenar" />
+		<tiles from="(781, 1549, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(781, 1551, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(780, 1550, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(783, 1539, -28)" frommap="Ilshenar" to="(787, 1542, -28)" tomap="Ilshenar" />
+		<tiles from="(782, 1538, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(783, 1537, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(784, 1538, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(787, 1543, -28)" frommap="Ilshenar" to="(781, 1554, -28)" tomap="Ilshenar" />
+		<tiles from="(788, 1542, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(787, 1541, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(786, 1542, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(781, 1555, -28)" frommap="Ilshenar" to="(789, 1556, -28)" tomap="Ilshenar" />
+		<tiles from="(780, 1554, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(781, 1553, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(782, 1554, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(789, 1557, -28)" frommap="Ilshenar" to="(785, 1550, -28)" tomap="Ilshenar" />
+		<tiles from="(788, 1556, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(789, 1555, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(790, 1556, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(784, 1550, -28)" frommap="Ilshenar" to="(777, 1554, -28)" tomap="Ilshenar" />
+		<tiles from="(785, 1549, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(785, 1551, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(786, 1550, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(778, 1554, -28)" frommap="Ilshenar" to="(787, 1538, -28)" tomap="Ilshenar" />
+		<tiles from="(777, 1555, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(777, 1553, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(787, 1537, -28)" frommap="Ilshenar" to="(781, 1546, -28)" tomap="Ilshenar" />
+		<tiles from="(786, 1538, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(787, 1539, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(788, 1538, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(781, 1545, -28)" frommap="Ilshenar" to="(789, 1552, -28)" tomap="Ilshenar" />
+		<tiles from="(780, 1546, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(781, 1547, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(782, 1546, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(789, 1553, -28)" frommap="Ilshenar" to="(789, 1546, -28)" tomap="Ilshenar" />
+		<tiles from="(788, 1552, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(789, 1551, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(790, 1552, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(789, 1545, -28)" frommap="Ilshenar" to="(779, 1541, -28)" tomap="Ilshenar" />
+		<tiles from="(790, 1546, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(788, 1546, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(789, 1547, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(791, 1545, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(791, 1546, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(791, 1547, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(785, 1555, -28)" frommap="Ilshenar" to="(783, 1542, -28)" tomap="Ilshenar" />
+		<tiles from="(784, 1554, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(785, 1553, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(786, 1554, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(782, 1542, -28)" frommap="Ilshenar" to="(785, 1546, -28)" tomap="Ilshenar" />
+		<tiles from="(783, 1543, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(784, 1542, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(783, 1541, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(784, 1546, -28)" frommap="Ilshenar" to="(776, 1548, -28)" tomap="Ilshenar" />
+		<tiles from="(785, 1545, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(786, 1546, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(785, 1547, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(776, 1549, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(777, 1548, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(777, 1547, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(776, 1546, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(778, 1541, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(779, 1540, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(779, 1542, -28)" frommap="Ilshenar" to="(798, 1547, -28)" tomap="Ilshenar" />
+		<tiles from="(780, 1541, -28)" frommap="Ilshenar" to="(785, 1554, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(546, 455, -40)" frommap="Ilshenar" to="(426, 113, -28)" tomap="Ilshenar" />
+		<tiles from="(547, 455, -40)" frommap="Ilshenar" to="(427, 113, -28)" tomap="Ilshenar" />
+		<tiles from="(548, 455, -40)" frommap="Ilshenar" to="(428, 113, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(426, 113, -28)" frommap="Ilshenar" to="(546, 455, -40)" tomap="Ilshenar" />
+		<tiles from="(427, 113, -28)" frommap="Ilshenar" to="(547, 455, -40)" tomap="Ilshenar" />
+		<tiles from="(428, 113, -28)" frommap="Ilshenar" to="(548, 455, -40)" tomap="Ilshenar" />
+		<tiles from="(429, 113, -28)" frommap="Ilshenar" to="(548, 455, -40)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(242, 27, -16)" frommap="Ilshenar" to="(372, 31, -31)" tomap="Ilshenar" />
+		<tiles from="(242, 26, -16)" frommap="Ilshenar" to="(372, 30, -31)" tomap="Ilshenar" />
+		<tiles from="(242, 25, -16)" frommap="Ilshenar" to="(372, 29, -31)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(371, 31, -36)" frommap="Ilshenar" to="(241, 27, -18)" tomap="Ilshenar" />
+		<tiles from="(371, 30, -36)" frommap="Ilshenar" to="(241, 26, -18)" tomap="Ilshenar" />
+		<tiles from="(371, 29, -36)" frommap="Ilshenar" to="(241, 25, -18)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(272, 141, -16)" frommap="Ilshenar" to="(555, 427, -1)" tomap="Ilshenar" />
+		<tiles from="(273, 141, -16)" frommap="Ilshenar" to="(556, 427, -1)" tomap="Ilshenar" />
+		<tiles from="(274, 141, -16)" frommap="Ilshenar" to="(557, 427, -1)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(555, 426, -6)" frommap="Ilshenar" to="(272, 140, -21)" tomap="Ilshenar" />
+		<tiles from="(556, 426, -6)" frommap="Ilshenar" to="(273, 140, -21)" tomap="Ilshenar" />
+		<tiles from="(557, 426, -6)" frommap="Ilshenar" to="(274, 140, -21)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(265, 130, -31)" frommap="Ilshenar" to="(284, 72, -21)" tomap="Ilshenar" />
+		<tiles from="(266, 130, -31)" frommap="Ilshenar" to="(285, 72, -21)" tomap="Ilshenar" />
+		<tiles from="(267, 130, -31)" frommap="Ilshenar" to="(286, 72, -21)" tomap="Ilshenar" />
+		<tiles from="(268, 130, -31)" frommap="Ilshenar" to="(287, 72, -21)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(284, 73, -16)" frommap="Ilshenar" to="(265, 131, -28)" tomap="Ilshenar" />
+		<tiles from="(285, 73, -16)" frommap="Ilshenar" to="(266, 131, -28)" tomap="Ilshenar" />
+		<tiles from="(286, 73, -16)" frommap="Ilshenar" to="(267, 131, -28)" tomap="Ilshenar" />
+		<tiles from="(287, 73, -16)" frommap="Ilshenar" to="(268, 131, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(284, 67, -30)" frommap="Ilshenar" to="(131, 128, -21)" tomap="Ilshenar" />
+		<tiles from="(285, 67, -30)" frommap="Ilshenar" to="(132, 128, -21)" tomap="Ilshenar" />
+		<tiles from="(286, 67, -30)" frommap="Ilshenar" to="(133, 128, -21)" tomap="Ilshenar" />
+		<tiles from="(287, 67, -30)" frommap="Ilshenar" to="(134, 128, -21)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(131, 129, -16)" frommap="Ilshenar" to="(284, 68, -28)" tomap="Ilshenar" />
+		<tiles from="(132, 129, -16)" frommap="Ilshenar" to="(285, 68, -28)" tomap="Ilshenar" />
+		<tiles from="(133, 129, -16)" frommap="Ilshenar" to="(286, 68, -28)" tomap="Ilshenar" />
+		<tiles from="(134, 129, -16)" frommap="Ilshenar" to="(287, 68, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(358, 40, -36)" frommap="Ilshenar" to="(156, 88, -18)" tomap="Ilshenar" />
+		<tiles from="(358, 41, -36)" frommap="Ilshenar" to="(156, 89, -18)" tomap="Ilshenar" />
+		<tiles from="(358, 42, -36)" frommap="Ilshenar" to="(156, 90, -18)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(155, 88, -16)" frommap="Ilshenar" to="(357, 40, -31)" tomap="Ilshenar" />
+		<tiles from="(155, 89, -16)" frommap="Ilshenar" to="(357, 41, -31)" tomap="Ilshenar" />
+		<tiles from="(155, 90, -16)" frommap="Ilshenar" to="(357, 42, -31)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(938, 494, -40)" frommap="Ilshenar" to="(83, 749, -23)" tomap="Ilshenar" />
+		<tiles from="(939, 494, -40)" frommap="Ilshenar" to="(84, 749, -23)" tomap="Ilshenar" />
+		<tiles from="(940, 494, -40)" frommap="Ilshenar" to="(85, 749, -23)" tomap="Ilshenar" />
+		<tiles from="(941, 494, -40)" frommap="Ilshenar" to="(86, 749, -23)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(83, 749, -23)" frommap="Ilshenar" to="(938, 494, -40)" tomap="Ilshenar" />
+		<tiles from="(84, 749, -23)" frommap="Ilshenar" to="(939, 494, -40)" tomap="Ilshenar" />
+		<tiles from="(85, 749, -23)" frommap="Ilshenar" to="(940, 494, -40)" tomap="Ilshenar" />
+		<tiles from="(86, 749, -23)" frommap="Ilshenar" to="(941, 494, -40)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(313, 1329, -40)" frommap="Ilshenar" to="(327, 1593, -13)" tomap="Ilshenar" />
+		<tiles from="(314, 1329, -38)" frommap="Ilshenar" to="(328, 1593, -13)" tomap="Ilshenar" />
+		<tiles from="(315, 1329, -36)" frommap="Ilshenar" to="(329, 1593, -13)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(327, 1593, -13)" frommap="Ilshenar" to="(313, 1329, -40)" tomap="Ilshenar" />
+		<tiles from="(328, 1593, -13)" frommap="Ilshenar" to="(314, 1329, -38)" tomap="Ilshenar" />
+		<tiles from="(329, 1593, -13)" frommap="Ilshenar" to="(315, 1329, -36)" tomap="Ilshenar" />
+		<tiles from="(330, 1593, -13)" frommap="Ilshenar" to="(315, 1329, -35)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(265, 1587, -28)" frommap="Ilshenar" to="(225, 1334, -20)" tomap="Ilshenar" />
+		<tiles from="(266, 1587, -28)" frommap="Ilshenar" to="(226, 1334, -20)" tomap="Ilshenar" />
+		<tiles from="(267, 1587, -28)" frommap="Ilshenar" to="(227, 1334, -20)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(225, 1334, -20)" frommap="Ilshenar" to="(265, 1587, -28)" tomap="Ilshenar" />
+		<tiles from="(226, 1334, -20)" frommap="Ilshenar" to="(266, 1587, -28)" tomap="Ilshenar" />
+		<tiles from="(227, 1334, -20)" frommap="Ilshenar" to="(267, 1587, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1139, 592, -80)" frommap="Ilshenar" to="(1238, 583, -19)" tomap="Ilshenar" />
+		<tiles from="(1140, 592, -80)" frommap="Ilshenar" to="(1238, 584, -19)" tomap="Ilshenar" />
+		<tiles from="(1141, 592, -80)" frommap="Ilshenar" to="(1238, 585, -19)" tomap="Ilshenar" />
+		<tiles from="(1142, 592, -80)" frommap="Ilshenar" to="(1238, 585, -19)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1237, 583, -19)" frommap="Ilshenar" to="(1139, 593, -80)" tomap="Ilshenar" />
+		<tiles from="(1237, 584, -19)" frommap="Ilshenar" to="(1140, 593, -80)" tomap="Ilshenar" />
+		<tiles from="(1237, 585, -19)" frommap="Ilshenar" to="(1141, 593, -80)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(709, 667, -39)" frommap="Ilshenar" to="(912, 451, -80)" tomap="Ilshenar" />
+		<tiles from="(710, 667, -39)" frommap="Ilshenar" to="(912, 452, -80)" tomap="Ilshenar" />
+		<tiles from="(711, 667, -39)" frommap="Ilshenar" to="(912, 453, -80)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(911, 451, -80)" frommap="Ilshenar" to="(709, 668, -39)" tomap="Ilshenar" />
+		<tiles from="(911, 452, -80)" frommap="Ilshenar" to="(710, 668, -39)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(827, 777, -80)" frommap="Ilshenar" to="(1975, 114, -28)" tomap="Ilshenar" />
+		<tiles from="(827, 778, -80)" frommap="Ilshenar" to="(1975, 114, -28)" tomap="Ilshenar" />
+		<tiles from="(827, 779, -80)" frommap="Ilshenar" to="(1975, 114, -28)" tomap="Ilshenar" />
+		<tiles from="(828, 777, -80)" frommap="Ilshenar" to="(1975, 114, -28)" tomap="Ilshenar" />
+		<tiles from="(828, 778, -80)" frommap="Ilshenar" to="(1975, 114, -28)" tomap="Ilshenar" />
+		<tiles from="(828, 779, -80)" frommap="Ilshenar" to="(1975, 114, -28)" tomap="Ilshenar" />
+		<tiles from="(829, 777, -80)" frommap="Ilshenar" to="(1975, 114, -28)" tomap="Ilshenar" />
+		<tiles from="(829, 778, -80)" frommap="Ilshenar" to="(1975, 114, -28)" tomap="Ilshenar" />
+		<tiles from="(829, 779, -80)" frommap="Ilshenar" to="(1975, 114, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1978, 114, -28)" frommap="Ilshenar" to="(835, 778, -80)" tomap="Ilshenar" />
+		<tiles from="(1978, 115, -28)" frommap="Ilshenar" to="(835, 778, -80)" tomap="Ilshenar" />
+		<tiles from="(1978, 116, -28)" frommap="Ilshenar" to="(835, 778, -80)" tomap="Ilshenar" />
+		<tiles from="(1978, 117, -28)" frommap="Ilshenar" to="(835, 778, -80)" tomap="Ilshenar" />
+		<tiles from="(1979, 114, -28)" frommap="Ilshenar" to="(835, 778, -80)" tomap="Ilshenar" />
+		<tiles from="(1979, 115, -28)" frommap="Ilshenar" to="(835, 778, -80)" tomap="Ilshenar" />
+		<tiles from="(1979, 116, -28)" frommap="Ilshenar" to="(835, 778, -80)" tomap="Ilshenar" />
+		<tiles from="(1979, 117, -28)" frommap="Ilshenar" to="(835, 778, -80)" tomap="Ilshenar" />
+		<tiles from="(1980, 114, -28)" frommap="Ilshenar" to="(835, 778, -80)" tomap="Ilshenar" />
+		<tiles from="(1980, 115, -28)" frommap="Ilshenar" to="(835, 778, -80)" tomap="Ilshenar" />
+		<tiles from="(1980, 116, -28)" frommap="Ilshenar" to="(835, 778, -80)" tomap="Ilshenar" />
+		<tiles from="(1980, 117, -28)" frommap="Ilshenar" to="(835, 778, -80)" tomap="Ilshenar" />
+		<tiles from="(1981, 114, -28)" frommap="Ilshenar" to="(835, 778, -80)" tomap="Ilshenar" />
+		<tiles from="(1981, 115, -28)" frommap="Ilshenar" to="(835, 778, -80)" tomap="Ilshenar" />
+		<tiles from="(1981, 116, -28)" frommap="Ilshenar" to="(835, 778, -80)" tomap="Ilshenar" />
+		<tiles from="(1981, 117, -28)" frommap="Ilshenar" to="(835, 778, -80)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2317, 1269, -110)" frommap="Malas" to="(381, 132, 33)" tomap="Malas" />
+		<tiles from="(2317, 1268, -110)" frommap="Malas" to="(381, 132, 33)" tomap="Malas" />
+		<tiles from="(2317, 1267, -110)" frommap="Malas" to="(381, 132, 33)" tomap="Malas" />
+		<tiles from="(2317, 1266, -110)" frommap="Malas" to="(381, 132, 33)" tomap="Malas" />
+		<tiles from="(2316, 1269, -110)" frommap="Malas" to="(381, 132, 33)" tomap="Malas" />
+		<tiles from="(2315, 1269, -110)" frommap="Malas" to="(381, 132, 33)" tomap="Malas" />
+		<tiles from="(2315, 1268, -110)" frommap="Malas" to="(381, 132, 33)" tomap="Malas" />
+		<tiles from="(2315, 1267, -109)" frommap="Malas" to="(381, 132, 33)" tomap="Malas" />
+		<tiles from="(2316, 1267, -110)" frommap="Malas" to="(381, 132, 33)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(496, 49, 6)" frommap="Malas" to="(2350, 1270, -85)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(3, 128, -1)" frommap="Malas" to="(259, 785, 64)" tomap="Tokuno" />
+		<tiles from="(4, 128, -1)" frommap="Malas" to="(259, 785, 64)" tomap="Tokuno" />
+		<tiles from="(5, 128, -1)" frommap="Malas" to="(259, 785, 64)" tomap="Tokuno" />
+		<tiles from="(6, 128, -1)" frommap="Malas" to="(259, 785, 64)" tomap="Tokuno" />
+		<tiles from="(7, 128, -1)" frommap="Malas" to="(259, 785, 64)" tomap="Tokuno" />
+		<tiles from="(8, 128, -1)" frommap="Malas" to="(259, 785, 64)" tomap="Tokuno" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(64, 336, 11)" frommap="Malas" to="(983, 195, 24)" tomap="Tokuno" />
+		<tiles from="(64, 337, 11)" frommap="Malas" to="(983, 195, 24)" tomap="Tokuno" />
+		<tiles from="(64, 338, 11)" frommap="Malas" to="(983, 195, 24)" tomap="Tokuno" />
+		<tiles from="(64, 339, 11)" frommap="Malas" to="(983, 195, 24)" tomap="Tokuno" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(66, 351, -7)" frommap="Malas" to="(63, 524, -1)" tomap="Malas" />
+		<tiles from="(66, 352, -7)" frommap="Malas" to="(63, 524, -1)" tomap="Malas" />
+		<tiles from="(66, 353, -7)" frommap="Malas" to="(63, 524, -1)" tomap="Malas" />
+		<tiles from="(66, 354, -7)" frommap="Malas" to="(63, 524, -1)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(61, 523, 6)" frommap="Malas" to="(63, 352, -3)" tomap="Malas" />
+		<tiles from="(61, 524, 6)" frommap="Malas" to="(63, 352, -3)" tomap="Malas" />
+		<tiles from="(61, 525, 6)" frommap="Malas" to="(63, 352, -3)" tomap="Malas" />
+		<tiles from="(61, 526, 6)" frommap="Malas" to="(63, 352, -3)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(103, 555, -6)" frommap="Malas" to="(76, 691, -1)" tomap="Malas" />
+		<tiles from="(103, 556, -6)" frommap="Malas" to="(76, 691, -1)" tomap="Malas" />
+		<tiles from="(103, 557, -6)" frommap="Malas" to="(76, 691, -1)" tomap="Malas" />
+		<tiles from="(103, 558, -6)" frommap="Malas" to="(76, 691, -1)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(73, 688, 6)" frommap="Malas" to="(100, 556, -2)" tomap="Malas" />
+		<tiles from="(73, 689, 6)" frommap="Malas" to="(100, 556, -2)" tomap="Malas" />
+		<tiles from="(73, 690, 6)" frommap="Malas" to="(100, 556, -2)" tomap="Malas" />
+		<tiles from="(73, 691, 6)" frommap="Malas" to="(100, 556, -2)" tomap="Malas" />
+		<tiles from="(73, 692, 6)" frommap="Malas" to="(100, 556, -2)" tomap="Malas" />
+		<tiles from="(73, 693, 6)" frommap="Malas" to="(100, 556, -2)" tomap="Malas" />
+		<tiles from="(73, 694, 6)" frommap="Malas" to="(100, 556, -2)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(384, 810, -5)" frommap="Malas" to="(403, 1167, 0)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(403, 1169, 0)" frommap="Malas" to="(385, 811, -1)" tomap="Malas" />
+		<tiles from="(404, 1169, 0)" frommap="Malas" to="(385, 808, -1)" tomap="Malas" />
+		<tiles from="(405, 1169, 0)" frommap="Malas" to="(385, 808, -1)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(328, 1972, 5)" frommap="Malas" to="(1731, 978, -80)" tomap="Malas" />
+		<tiles from="(328, 1973, 5)" frommap="Malas" to="(1731, 978, -80)" tomap="Malas" />
+		<tiles from="(328, 1974, 5)" frommap="Malas" to="(1731, 978, -80)" tomap="Malas" />
+		<tiles from="(328, 1975, 5)" frommap="Malas" to="(1731, 978, -80)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(84, 1673, -2)" frommap="Malas" to="(156, 1613, 0)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(156, 1609, 17)" frommap="Malas" to="(87, 1673, 0)" tomap="Malas" />
+		<tiles from="(157, 1609, 17)" frommap="Malas" to="(87, 1673, 0)" tomap="Malas" />
+		<tiles from="(156, 1608, 22)" frommap="Malas" to="(85, 1673, 2)" tomap="Malas" />
+		<tiles from="(157, 1608, 22)" frommap="Malas" to="(85, 1673, 2)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(257, 783, 63)" frommap="Tokuno" to="(5, 128, -1)" tomap="Malas" />
+		<tiles from="(258, 783, 63)" frommap="Tokuno" to="(5, 128, -1)" tomap="Malas" />
+		<tiles from="(259, 783, 63)" frommap="Tokuno" to="(5, 128, -1)" tomap="Malas" />
+		<tiles from="(260, 783, 63)" frommap="Tokuno" to="(5, 128, -1)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(988, 194, 15)" frommap="Tokuno" to="(67, 337, -1)" tomap="Malas" />
+		<tiles from="(988, 195, 15)" frommap="Tokuno" to="(67, 337, -1)" tomap="Malas" />
+		<tiles from="(987, 196, 15)" frommap="Tokuno" to="(67, 337, -1)" tomap="Malas" />
+		<tiles from="(988, 197, 18)" frommap="Tokuno" to="(67, 337, -1)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1126, 1076, 15)" frommap="TerMur" to="(521, 920, 39)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(519, 919, 39)" frommap="TerMur" to="(1125, 1076, -117)" tomap="TerMur" />
+		<tiles from="(520, 919, 39)" frommap="TerMur" to="(1126, 1076, -117)" tomap="TerMur" />
+		<tiles from="(521, 919, 39)" frommap="TerMur" to="(1126, 1075, -117)" tomap="TerMur" />
+		<tiles from="(522, 919, 36)" frommap="TerMur" to="(1126, 1075, -117)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(996, 3841, -41)" frommap="TerMur" to="(33, 240, 5)" tomap="TerMur" />
+		<tiles from="(997, 3841, -41)" frommap="TerMur" to="(34, 240, 5)" tomap="TerMur" />
+		<tiles from="(998, 3841, -41)" frommap="TerMur" to="(35, 240, 5)" tomap="TerMur" />
+		<tiles from="(999, 3841, -41)" frommap="TerMur" to="(36, 240, 5)" tomap="TerMur" />
+		<tiles from="(1000, 3841, -41)" frommap="TerMur" to="(37, 240, 5)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(33, 241, 7)" frommap="TerMur" to="(996, 3842, -41)" tomap="TerMur" />
+		<tiles from="(34, 241, 7)" frommap="TerMur" to="(997, 3842, -41)" tomap="TerMur" />
+		<tiles from="(35, 241, 7)" frommap="TerMur" to="(998, 3842, -41)" tomap="TerMur" />
+		<tiles from="(36, 241, 7)" frommap="TerMur" to="(999, 3842, -41)" tomap="TerMur" />
+		<tiles from="(37, 241, 7)" frommap="TerMur" to="(1000, 3842, -41)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(511, 584, 11)" frommap="TerMur" to="(6992, 1367, -15)" tomap="Felucca" />
+		<tiles from="(512, 584, 11)" frommap="TerMur" to="(6992, 1367, -15)" tomap="Felucca" />
+		<tiles from="(513, 584, 11)" frommap="TerMur" to="(6993, 1367, -15)" tomap="Felucca" />
+		<tiles from="(514, 584, 11)" frommap="TerMur" to="(6993, 1367, -15)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1125, 1215, 5)" frommap="TerMur" to="(4194, 3261, 5)" tomap="Trammel" />
+		<tiles from="(1126, 1215, 5)" frommap="TerMur" to="(4194, 3261, 5)" tomap="Trammel" />
+		<tiles from="(1127, 1215, 5)" frommap="TerMur" to="(4194, 3261, 5)" tomap="Trammel" />
+		<tiles from="(1128, 1215, 5)" frommap="TerMur" to="(4194, 3261, 5)" tomap="Trammel" />
+		<tiles from="(1129, 1215, 5)" frommap="TerMur" to="(4195, 3261, 5)" tomap="Trammel" />
+		<tiles from="(1130, 1215, 5)" frommap="TerMur" to="(4195, 3261, 5)" tomap="Trammel" />
+		<tiles from="(1131, 1215, 5)" frommap="TerMur" to="(4195, 3261, 5)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1080, 974, -20)" frommap="TerMur" to="(1081, 883, -5)" tomap="TerMur" />
+		<tiles from="(1080, 975, -20)" frommap="TerMur" to="(1081, 883, -5)" tomap="TerMur" />
+		<tiles from="(1081, 974, -20)" frommap="TerMur" to="(1081, 883, -5)" tomap="TerMur" />
+		<tiles from="(1081, 975, -20)" frommap="TerMur" to="(1081, 883, -5)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1079, 882, 0)" frommap="TerMur" to="(1080, 977, -21)" tomap="TerMur" />
+		<tiles from="(1079, 883, 0)" frommap="TerMur" to="(1080, 977, -21)" tomap="TerMur" />
+		<tiles from="(1079, 884, 0)" frommap="TerMur" to="(1080, 977, -21)" tomap="TerMur" />
+		<tiles from="(1079, 885, 0)" frommap="TerMur" to="(1080, 977, -21)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(841, 272, 30)" frommap="TerMur" to="(434, 152, 0)" tomap="TerMur" />
+		<tiles from="(841, 273, 30)" frommap="TerMur" to="(434, 153, 0)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(841, 287, 30)" frommap="TerMur" to="(433, 167, 0)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(843, 286, 22)" frommap="TerMur" to="(433, 166, 0)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(442, 152, -38)" frommap="TerMur" to="(850, 272, -11)" tomap="TerMur" />
+		<tiles from="(442, 153, -38)" frommap="TerMur" to="(850, 273, -11)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(442, 166, -38)" frommap="TerMur" to="(850, 286, -11)" tomap="TerMur" />
+		<tiles from="(442, 167, -38)" frommap="TerMur" to="(850, 287, -11)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2618, 977, 5)" frommap="Trammel" to="(2727, 2133, 5)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2727, 2133, 5)" frommap="Trammel" to="(2618, 977, 5)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(4619, 1203, 0)" frommap="Trammel" to="(4622, 1204, 23)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(4627, 1207, 20)" frommap="Trammel" to="(4633, 1202, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1593, 2488, 17)" frommap="Trammel" to="(1600, 2489, 12)" tomap="Trammel" />
+		<tiles from="(1594, 2488, 17)" frommap="Trammel" to="(1600, 2489, 12)" tomap="Trammel" />
+		<tiles from="(1595, 2488, 17)" frommap="Trammel" to="(1600, 2489, 12)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5691, 1348, 0)" frommap="Trammel" to="(5690, 1352, -26)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5690, 1352, -26)" frommap="Trammel" to="(5691, 1348, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1166, 2237, 60)" frommap="Trammel" to="(1163, 2205, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1165, 2204, 40)" frommap="Trammel" to="(1163, 2211, 60)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1163, 2208, 0)" frommap="Trammel" to="(1165, 2214, 19)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1163, 2204, 60)" frommap="Trammel" to="(1171, 2202, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5926, 145, 22)" frommap="Trammel" to="(5970, 147, 22)" tomap="Trammel" />
+		<tiles from="(5926, 146, 22)" frommap="Trammel" to="(5970, 147, 22)" tomap="Trammel" />
+		<tiles from="(5926, 147, 22)" frommap="Trammel" to="(5970, 147, 22)" tomap="Trammel" />
+		<tiles from="(5926, 148, 22)" frommap="Trammel" to="(5970, 147, 22)" tomap="Trammel" />
+		<tiles from="(5926, 149, 22)" frommap="Trammel" to="(5970, 147, 22)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5933, 146, 22)" frommap="Trammel" to="(5970, 147, 22)" tomap="Trammel" />
+		<tiles from="(5933, 145, 22)" frommap="Trammel" to="(5970, 147, 22)" tomap="Trammel" />
+		<tiles from="(5933, 147, 22)" frommap="Trammel" to="(5970, 147, 22)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5933, 149, 22)" frommap="Trammel" to="(5970, 147, 22)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5944, 148, 22)" frommap="Trammel" to="(5970, 147, 22)" tomap="Trammel" />
+		<tiles from="(5944, 147, 22)" frommap="Trammel" to="(5970, 147, 22)" tomap="Trammel" />
+		<tiles from="(5944, 146, 22)" frommap="Trammel" to="(5970, 147, 22)" tomap="Trammel" />
+		<tiles from="(5944, 145, 22)" frommap="Trammel" to="(5970, 147, 22)" tomap="Trammel" />
+		<tiles from="(5944, 144, 22)" frommap="Trammel" to="(5970, 147, 22)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5955, 148, 22)" frommap="Trammel" to="(5970, 147, 22)" tomap="Trammel" />
+		<tiles from="(5955, 149, 22)" frommap="Trammel" to="(5970, 147, 22)" tomap="Trammel" />
+		<tiles from="(5955, 150, 22)" frommap="Trammel" to="(5970, 147, 22)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5955, 146, 22)" frommap="Trammel" to="(5970, 147, 22)" tomap="Trammel" />
+		<tiles from="(5955, 145, 22)" frommap="Trammel" to="(5970, 147, 22)" tomap="Trammel" />
+		<tiles from="(5955, 144, 22)" frommap="Trammel" to="(5970, 147, 22)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5963, 146, 22)" frommap="Trammel" to="(5970, 147, 22)" tomap="Trammel" />
+		<tiles from="(5963, 145, 22)" frommap="Trammel" to="(5970, 147, 22)" tomap="Trammel" />
+		<tiles from="(5963, 144, 22)" frommap="Trammel" to="(5970, 147, 22)" tomap="Trammel" />
+		<tiles from="(5963, 147, 22)" frommap="Trammel" to="(5970, 147, 22)" tomap="Trammel" />
+		<tiles from="(5963, 148, 22)" frommap="Trammel" to="(5970, 147, 22)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6044, 226, 44)" frommap="Trammel" to="(6041, 204, 22)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6039, 204, 22)" frommap="Trammel" to="(6050, 227, 44)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6115, 176, 0)" frommap="Trammel" to="(6107, 176, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6107, 179, 0)" frommap="Trammel" to="(6124, 155, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1013, 1433, 0)" frommap="Trammel" to="(5138, 2016, 0)" tomap="Trammel" />
+		<tiles from="(1013, 1434, 0)" frommap="Trammel" to="(5138, 2016, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5139, 2015, 0)" frommap="Trammel" to="(1014, 1434, 0)" tomap="Trammel" />
+		<tiles from="(5139, 2016, 0)" frommap="Trammel" to="(1014, 1434, 0)" tomap="Trammel" />
+		<tiles from="(5139, 2017, 0)" frommap="Trammel" to="(1014, 1434, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5129, 1946, 0)" frommap="Trammel" to="(5332, 1379, 0)" tomap="Trammel" />
+		<tiles from="(5130, 1946, 0)" frommap="Trammel" to="(5332, 1379, 0)" tomap="Trammel" />
+		<tiles from="(5132, 1946, 0)" frommap="Trammel" to="(5332, 1379, 0)" tomap="Trammel" />
+		<tiles from="(5134, 1946, 0)" frommap="Trammel" to="(5332, 1379, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5329, 1381, 7)" frommap="Trammel" to="(5132, 1947, 0)" tomap="Trammel" />
+		<tiles from="(5330, 1381, 7)" frommap="Trammel" to="(5132, 1947, 0)" tomap="Trammel" />
+		<tiles from="(5331, 1381, 7)" frommap="Trammel" to="(5133, 1947, 0)" tomap="Trammel" />
+		<tiles from="(5332, 1381, 7)" frommap="Trammel" to="(5133, 1947, 0)" tomap="Trammel" />
+		<tiles from="(5333, 1381, 7)" frommap="Trammel" to="(5134, 1947, 0)" tomap="Trammel" />
+		<tiles from="(5334, 1381, 7)" frommap="Trammel" to="(5134, 1947, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5363, 1289, 3)" frommap="Trammel" to="(5272, 2041, 3)" tomap="Trammel" />
+		<tiles from="(5364, 1289, 3)" frommap="Trammel" to="(5272, 2041, 3)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5272, 2043, 3)" frommap="Trammel" to="(5363, 1290, 3)" tomap="Trammel" />
+		<tiles from="(5273, 2043, 3)" frommap="Trammel" to="(5363, 1290, 3)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2618, 977, 5)" frommap="Felucca" to="(2727, 2133, 5)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2727, 2133, 5)" frommap="Felucca" to="(2618, 977, 5)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(4619, 1203, 0)" frommap="Felucca" to="(4622, 1204, 23)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(4627, 1207, 20)" frommap="Felucca" to="(4633, 1202, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1593, 2488, 17)" frommap="Felucca" to="(1600, 2489, 12)" tomap="Felucca" />
+		<tiles from="(1594, 2488, 17)" frommap="Felucca" to="(1600, 2489, 12)" tomap="Felucca" />
+		<tiles from="(1595, 2488, 17)" frommap="Felucca" to="(1600, 2489, 12)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5691, 1348, 0)" frommap="Felucca" to="(5690, 1352, -26)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5690, 1352, -26)" frommap="Felucca" to="(5691, 1348, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1166, 2237, 60)" frommap="Felucca" to="(1163, 2205, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1165, 2204, 40)" frommap="Felucca" to="(1163, 2211, 60)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1163, 2208, 0)" frommap="Felucca" to="(1165, 2214, 19)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1163, 2204, 60)" frommap="Felucca" to="(1171, 2202, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5926, 145, 22)" frommap="Felucca" to="(5970, 147, 22)" tomap="Felucca" />
+		<tiles from="(5926, 146, 22)" frommap="Felucca" to="(5970, 147, 22)" tomap="Felucca" />
+		<tiles from="(5926, 147, 22)" frommap="Felucca" to="(5970, 147, 22)" tomap="Felucca" />
+		<tiles from="(5926, 148, 22)" frommap="Felucca" to="(5970, 147, 22)" tomap="Felucca" />
+		<tiles from="(5926, 149, 22)" frommap="Felucca" to="(5970, 147, 22)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5933, 146, 22)" frommap="Felucca" to="(5970, 147, 22)" tomap="Felucca" />
+		<tiles from="(5933, 145, 22)" frommap="Felucca" to="(5970, 147, 22)" tomap="Felucca" />
+		<tiles from="(5933, 147, 22)" frommap="Felucca" to="(5970, 147, 22)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5933, 149, 22)" frommap="Felucca" to="(5970, 147, 22)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5944, 148, 22)" frommap="Felucca" to="(5970, 147, 22)" tomap="Felucca" />
+		<tiles from="(5944, 147, 22)" frommap="Felucca" to="(5970, 147, 22)" tomap="Felucca" />
+		<tiles from="(5944, 146, 22)" frommap="Felucca" to="(5970, 147, 22)" tomap="Felucca" />
+		<tiles from="(5944, 145, 22)" frommap="Felucca" to="(5970, 147, 22)" tomap="Felucca" />
+		<tiles from="(5944, 144, 22)" frommap="Felucca" to="(5970, 147, 22)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5955, 148, 22)" frommap="Felucca" to="(5970, 147, 22)" tomap="Felucca" />
+		<tiles from="(5955, 149, 22)" frommap="Felucca" to="(5970, 147, 22)" tomap="Felucca" />
+		<tiles from="(5955, 150, 22)" frommap="Felucca" to="(5970, 147, 22)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5955, 146, 22)" frommap="Felucca" to="(5970, 147, 22)" tomap="Felucca" />
+		<tiles from="(5955, 145, 22)" frommap="Felucca" to="(5970, 147, 22)" tomap="Felucca" />
+		<tiles from="(5955, 144, 22)" frommap="Felucca" to="(5970, 147, 22)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5963, 146, 22)" frommap="Felucca" to="(5970, 147, 22)" tomap="Felucca" />
+		<tiles from="(5963, 145, 22)" frommap="Felucca" to="(5970, 147, 22)" tomap="Felucca" />
+		<tiles from="(5963, 144, 22)" frommap="Felucca" to="(5970, 147, 22)" tomap="Felucca" />
+		<tiles from="(5963, 147, 22)" frommap="Felucca" to="(5970, 147, 22)" tomap="Felucca" />
+		<tiles from="(5963, 148, 22)" frommap="Felucca" to="(5970, 147, 22)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6044, 226, 44)" frommap="Felucca" to="(6041, 204, 22)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6039, 204, 22)" frommap="Felucca" to="(6050, 227, 44)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6115, 176, 0)" frommap="Felucca" to="(6107, 176, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6107, 179, 0)" frommap="Felucca" to="(6124, 155, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1013, 1433, 0)" frommap="Felucca" to="(5138, 2016, 0)" tomap="Felucca" />
+		<tiles from="(1013, 1434, 0)" frommap="Felucca" to="(5138, 2016, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5139, 2015, 0)" frommap="Felucca" to="(1014, 1434, 0)" tomap="Felucca" />
+		<tiles from="(5139, 2016, 0)" frommap="Felucca" to="(1014, 1434, 0)" tomap="Felucca" />
+		<tiles from="(5139, 2017, 0)" frommap="Felucca" to="(1014, 1434, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5132, 1946, 0)" frommap="Felucca" to="(5329, 1379, 0)" tomap="Felucca" />
+		<tiles from="(5133, 1946, 0)" frommap="Felucca" to="(5331, 1379, 0)" tomap="Felucca" />
+		<tiles from="(5134, 1946, 0)" frommap="Felucca" to="(5333, 1379, 0)" tomap="Felucca" />
+		<tiles from="(5135, 1946, 0)" frommap="Felucca" to="(5335, 1379, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5329, 1381, 7)" frommap="Felucca" to="(5132, 1947, 0)" tomap="Felucca" />
+		<tiles from="(5330, 1381, 7)" frommap="Felucca" to="(5132, 1947, 0)" tomap="Felucca" />
+		<tiles from="(5331, 1381, 7)" frommap="Felucca" to="(5133, 1947, 0)" tomap="Felucca" />
+		<tiles from="(5332, 1381, 7)" frommap="Felucca" to="(5133, 1947, 0)" tomap="Felucca" />
+		<tiles from="(5333, 1381, 7)" frommap="Felucca" to="(5134, 1947, 0)" tomap="Felucca" />
+		<tiles from="(5334, 1381, 7)" frommap="Felucca" to="(5134, 1947, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5363, 1289, 3)" frommap="Felucca" to="(5272, 2041, 3)" tomap="Felucca" />
+		<tiles from="(5364, 1289, 3)" frommap="Felucca" to="(5272, 2041, 3)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5272, 2043, 3)" frommap="Felucca" to="(5363, 1290, 3)" tomap="Felucca" />
+		<tiles from="(5273, 2043, 3)" frommap="Felucca" to="(5363, 1290,  3)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5571, 1299, 0)" frommap="Felucca" to="(6012, 3786, 25)" tomap="Felucca" />
+		<tiles from="(5572, 1299, 0)" frommap="Felucca" to="(6013, 3786, 25)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6011, 3787, 22)" frommap="Felucca" to="(5570, 1300, 0)" tomap="Felucca" />
+		<tiles from="(6012, 3787, 20)" frommap="Felucca" to="(5571, 1300, 0)" tomap="Felucca" />
+		<tiles from="(6013, 3787, 20)" frommap="Felucca" to="(5572, 1300, 0)" tomap="Felucca" />
+		<tiles from="(6014, 3787, 21)" frommap="Felucca" to="(5573, 1300, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5878, 3817, -2)" frommap="Felucca" to="(5399, 1289, 0)" tomap="Felucca" />
+		<tiles from="(5878, 3818, -2)" frommap="Felucca" to="(5399, 1290, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5400, 1288, 0)" frommap="Felucca" to="(5879, 3817, 0)" tomap="Felucca" />
+		<tiles from="(5400, 1289, 0)" frommap="Felucca" to="(5879, 3817, 0)" tomap="Felucca" />
+		<tiles from="(5400, 1290, 0)" frommap="Felucca" to="(5879, 3818, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5543, 1355, 0)" frommap="Felucca" to="(5572, 1307, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5527, 1340, 0)" frommap="Felucca" to="(5412, 1396, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5557, 1317, 0)" frommap="Felucca" to="(5396, 1297, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5566, 1337, 0)" frommap="Felucca" to="(5620, 1341, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5451, 1360, 5)" frommap="Felucca" to="(5435, 1341, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5453, 1360, 5)" frommap="Felucca" to="(5436, 1341, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6577, 159, 13)" frommap="Felucca" to="(6577, 177, 30)" tomap="Felucca" />
+		<tiles from="(6578, 159, 12)" frommap="Felucca" to="(6577, 177, 30)" tomap="Felucca" />
+		<tiles from="(6579, 159, 7)" frommap="Felucca" to="(6577, 177, 30)" tomap="Felucca" />
+		<tiles from="(6578, 160, 12)" frommap="Felucca" to="(6577, 178, 30)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6582, 109, 0)" frommap="Felucca" to="(6553, 142, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6554, 104, 0)" frommap="Felucca" to="(6555, 116, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6469, 97, -50)" frommap="Felucca" to="(6503, 88, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6568, 77, -10)" frommap="Felucca" to="(6576, 73, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6589, 178, 25)" frommap="Felucca" to="(6519, 116, -20)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6540, 116, -15)" frommap="Felucca" to="(6537, 138, -20)" tomap="Felucca" />
+		<tiles from="(6540, 117, -15)" frommap="Felucca" to="(6537, 139, -20)" tomap="Felucca" />
+		<tiles from="(6541, 117, -15)" frommap="Felucca" to="(6523, 136, -20)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6488, 849, 40)" frommap="Felucca" to="(6587, 867, 0)" tomap="Felucca" />
+		<tiles from="(6488, 850, 41)" frommap="Felucca" to="(6587, 868, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6575, 889, 0)" frommap="Felucca" to="(6473, 869, 20)" tomap="Felucca" />
+		<tiles from="(6574, 889, 0)" frommap="Felucca" to="(6472, 869, 20)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(311, 786, 0)" frommap="Felucca" to="(5750, 350, 5)" tomap="Felucca" />
+		<tiles from="(311, 786, -24)" frommap="Felucca" to="(314, 784, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5443, 2325, 35)" frommap="Felucca" to="(5814, 3548, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5996, 2367, 45)" frommap="Felucca" to="(5522, 3921, 37)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6053, 2407, 27)" frommap="Felucca" to="(5958, 2345, 25)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6080, 2340, 26)" frommap="Felucca" to="(6089, 2400, 24)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5503, 3971, 40)" frommap="Felucca" to="(5972, 2418, 26)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5731, 3420, 14)" frommap="Felucca" to="(5490, 2348, 20)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5265, 683, 0)" frommap="Felucca" to="(5606, 802, 60)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5265, 669, 0)" frommap="Felucca" to="(5876, 1378, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5506, 814, 60)" frommap="Felucca" to="(5164, 1009, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5506, 817, 60)" frommap="Felucca" to="(5201, 1564, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5145, 973, 0)" frommap="Felucca" to="(5201, 1564, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5140, 973, 0)" frommap="Felucca" to="(5331, 707, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5682, 1440, 0)" frommap="Felucca" to="(5606, 802, 60)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5682, 1437, 0)" frommap="Felucca" to="(5164, 1009, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5360, 1540, 0)" frommap="Felucca" to="(5876, 1378, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5356, 1540, 0)" frommap="Felucca" to="(5331, 707, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6972, 802, 28)" frommap="Felucca" to="(5905, 21, 44)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(7049, 709, 28)" frommap="Felucca" to="(2923, 3406, 8)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5304, 676, -20)" frommap="Felucca" to="(7109, 1097, 18)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(7045, 1090, -15)" frommap="Felucca" to="(5405, 2640, -5)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6941, 987, -15)" frommap="Felucca" to="(5524, 3353, 10)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(7149, 756, 25)" frommap="Felucca" to="(974, 419, -21)" tomap="TerMur" />
+		<tiles from="(7150, 756, 26)" frommap="Felucca" to="(975, 419, -21)" tomap="TerMur" />
+		<tiles from="(7151, 756, 25)" frommap="Felucca" to="(976, 419, -21)" tomap="TerMur" />
+		<tiles from="(7152, 756, 25)" frommap="Felucca" to="(977, 419, -21)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(974, 419, -21)" frommap="TerMur" to="(7149, 756, 25)" tomap="Felucca" />
+		<tiles from="(975, 419, -21)" frommap="TerMur" to="(7150, 756, 26)" tomap="Felucca" />
+		<tiles from="(976, 419, -21)" frommap="TerMur" to="(7151, 756, 25)" tomap="Felucca" />
+		<tiles from="(977, 419, -21)" frommap="TerMur" to="(7152, 756, 25)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6026, 196, 22)" frommap="Felucca" to="(6987, 805, 24)" tomap="Felucca" />
+		<tiles from="(6026, 197, 25)" frommap="Felucca" to="(6987, 805, 24)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5172, 1589, -2)" frommap="Felucca" to="(5143, 1774, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1037, 579, -73)" frommap="Ilshenar" to="(1790, 66, -26)" tomap="Ilshenar" />
+		<tiles from="(1037, 580, -73)" frommap="Ilshenar" to="(1790, 67, -26)" tomap="Ilshenar" />
+		<tiles from="(1037, 581, -73)" frommap="Ilshenar" to="(1790, 68, -26)" tomap="Ilshenar" />
+		<tiles from="(1038, 578, -73)" frommap="Ilshenar" to="(1786, 70, -26)" tomap="Ilshenar" />
+		<tiles from="(1038, 579, -73)" frommap="Ilshenar" to="(1786, 70, -26)" tomap="Ilshenar" />
+		<tiles from="(1038, 581, -73)" frommap="Ilshenar" to="(1786, 65, -26)" tomap="Ilshenar" />
+		<tiles from="(1038, 582, -73)" frommap="Ilshenar" to="(1786, 65, -26)" tomap="Ilshenar" />
+		<tiles from="(1039, 578, -73)" frommap="Ilshenar" to="(1787, 70, -26)" tomap="Ilshenar" />
+		<tiles from="(1039, 582, -73)" frommap="Ilshenar" to="(1787, 65, -26)" tomap="Ilshenar" />
+		<tiles from="(1040, 578, -73)" frommap="Ilshenar" to="(1788, 70, -26)" tomap="Ilshenar" />
+		<tiles from="(1040, 579, -73)" frommap="Ilshenar" to="(1788, 70, -26)" tomap="Ilshenar" />
+		<tiles from="(1040, 581, -73)" frommap="Ilshenar" to="(1788, 65, -26)" tomap="Ilshenar" />
+		<tiles from="(1040, 582, -73)" frommap="Ilshenar" to="(1788, 65, -26)" tomap="Ilshenar" />
+		<tiles from="(1041, 581, -73)" frommap="Ilshenar" to="(1785, 68, -26)" tomap="Ilshenar" />
+		<tiles from="(1041, 580, -73)" frommap="Ilshenar" to="(1785, 67, -26)" tomap="Ilshenar" />
+		<tiles from="(1041, 579, -73)" frommap="Ilshenar" to="(1785, 66, -26)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1786, 66, -26)" frommap="Ilshenar" to="(1038, 583, -78)" tomap="Ilshenar" />
+		<tiles from="(1786, 67, -26)" frommap="Ilshenar" to="(1042, 579, -78)" tomap="Ilshenar" />
+		<tiles from="(1786, 68, -26)" frommap="Ilshenar" to="(1042, 580, -78)" tomap="Ilshenar" />
+		<tiles from="(1786, 69, -26)" frommap="Ilshenar" to="(1042, 581, -78)" tomap="Ilshenar" />
+		<tiles from="(1787, 66, -26)" frommap="Ilshenar" to="(1039, 583, -78)" tomap="Ilshenar" />
+		<tiles from="(1788, 66, -26)" frommap="Ilshenar" to="(1040, 583, -78)" tomap="Ilshenar" />
+		<tiles from="(1789, 66, -26)" frommap="Ilshenar" to="(1041, 583, -78)" tomap="Ilshenar" />
+		<tiles from="(1787, 69, -26)" frommap="Ilshenar" to="(1038, 577, -78)" tomap="Ilshenar" />
+		<tiles from="(1788, 69, -26)" frommap="Ilshenar" to="(1039, 577, -78)" tomap="Ilshenar" />
+		<tiles from="(1789, 67, -26)" frommap="Ilshenar" to="(1036, 579, -78)" tomap="Ilshenar" />
+		<tiles from="(1789, 68, -26)" frommap="Ilshenar" to="(1036, 578, -78)" tomap="Ilshenar" />
+		<tiles from="(1789, 69, -26)" frommap="Ilshenar" to="(1036, 581, -78)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(375, 802, 1)" frommap="Malas" to="(770, 1209, 25)" tomap="Tokuno" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(412, 1123, 0)" frommap="Malas" to="(417, 806, -1)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(411, 1117, 0)" frommap="Malas" to="(422, 806, -1)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(421, 1092, 0)" frommap="Malas" to="(391, 803, -1)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(412, 1086, 0)" frommap="Malas" to="(391, 803, -1)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(389, 704, -1)" frommap="Malas" to="(384, 733, -1)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(426, 780, -1)" frommap="Malas" to="(384, 733, -1)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(331, 769, -1)" frommap="Malas" to="(384, 733, -1)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(355, 745, -1)" frommap="Malas" to="(384, 733, -1)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(330, 706, -1)" frommap="Malas" to="(384, 733, -1)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(391, 777, -1)" frommap="Malas" to="(770, 1209, 25)" tomap="Tokuno" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(407, 254, 2)" frommap="Malas" to="(428, 318, 2)" tomap="Malas" />
+		<tiles from="(408, 254, 2)" frommap="Malas" to="(428, 318, 2)" tomap="Malas" />
+		<tiles from="(409, 254, 2)" frommap="Malas" to="(428, 318, 2)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(427, 321, 2)" frommap="Malas" to="(422, 327, -1)" tomap="Malas" />
+		<tiles from="(428, 321, 2)" frommap="Malas" to="(422, 327, -1)" tomap="Malas" />
+		<tiles from="(429, 321, 2)" frommap="Malas" to="(422, 327, -1)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(344, 146, 5)" frommap="TerMur" to="(349, 138, 60)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(317, 136, 65)" frommap="TerMur" to="(310, 159, 85)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(345, 131, 85)" frommap="TerMur" to="(345, 128, 100)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(344, 172, 5)" frommap="TerMur" to="(349, 180, 60)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(317, 182, 65)" frommap="TerMur" to="(346, 192, 105)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(79, 379, 5)" frommap="TerMur" to="(52, 389, 65)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(52, 389, 65)" frommap="TerMur" to="(79, 379, 5)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(52, 343, 65)" frommap="TerMur" to="(80, 338, 85)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(80, 338, 85)" frommap="TerMur" to="(52, 343, 64)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(45, 366, 85)" frommap="TerMur" to="(81, 399, 105)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(81, 399, 105)" frommap="TerMur" to="(45, 366, 85)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(40, 366, 105)" frommap="TerMur" to="(79, 353, 5)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(79, 353, 5)" frommap="TerMur" to="(40, 366, 105)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(79, 577, 5)" frommap="TerMur" to="(52, 587, 65)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(52, 587, 65)" frommap="TerMur" to="(79, 577, 5)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(52, 541, 65)" frommap="TerMur" to="(80, 536, 85)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(80, 536, 85)" frommap="TerMur" to="(52, 541, 64)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(45, 564, 85)" frommap="TerMur" to="(81, 597, 105)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(81, 597, 105)" frommap="TerMur" to="(45, 564, 85)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(40, 564, 105)" frommap="TerMur" to="(79, 551, 5)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(79, 551, 5)" frommap="TerMur" to="(40, 564, 105)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(79, 785, 5)" frommap="TerMur" to="(52, 795, 65)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(52, 795, 65)" frommap="TerMur" to="(79, 785, 5)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(52, 749, 65)" frommap="TerMur" to="(80, 744, 85)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(80, 744, 85)" frommap="TerMur" to="(52, 749, 64)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(45, 772, 85)" frommap="TerMur" to="(81, 805, 105)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(81, 805, 105)" frommap="TerMur" to="(45, 772, 85)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(40, 772, 105)" frommap="TerMur" to="(79, 759, 5)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(79, 759, 5)" frommap="TerMur" to="(40, 772, 105)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(644, 3857, -43)" frommap="TerMur" to="(594, 3846, -31)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(594, 3846, -31)" frommap="TerMur" to="(644, 3857, -43)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1006, 1110, -42)" frommap="TerMur" to="(1012, 1071, -32)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1006, 1127, -42)" frommap="TerMur" to="(1010, 1144, -65)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1010, 1144, -65)" frommap="TerMur" to="(1006, 1127, -42)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1012, 1071, -32)" frommap="TerMur" to="(1006, 1110, -42)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1042, 1047, -33)" frommap="TerMur" to="(1238, 1151, -42)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1238, 1151, -42)" frommap="TerMur" to="(1140, 951, -42)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1206, 1181, -47)" frommap="TerMur" to="(1204, 1181, -45)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1202, 1183, -45)" frommap="TerMur" to="(1202, 1185, -45)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1198, 1187, -45)" frommap="TerMur" to="(1196, 1187, -45)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1183, 1189, -44)" frommap="TerMur" to="(1183, 1187, -45)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1183, 1187, -45)" frommap="TerMur" to="(1183, 1189, -44)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1183, 1182, -47)" frommap="TerMur" to="(1183, 1180, -45)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1183, 1180, -45)" frommap="TerMur" to="(1183, 1182, -47)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1184, 1177, -47)" frommap="TerMur" to="(1186, 1177, -45)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1186, 1177, -45)" frommap="TerMur" to="(1184, 1177, -47)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1187, 1175, -45)" frommap="TerMur" to="(1187, 1173, -47)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1187, 1173, -47)" frommap="TerMur" to="(1187, 1175, -45)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1203, 1190, -74)" frommap="TerMur" to="(1201, 1190, -73)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1201, 1189, -71)" frommap="TerMur" to="(1201, 1186, -68)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1200, 1187, -66)" frommap="TerMur" to="(1200, 1190, -64)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1197, 1189, -58)" frommap="TerMur" to="(1195, 1189, -56)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1192, 1186, -40)" frommap="TerMur" to="(1190, 1186, -41)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1190, 1185, -40)" frommap="TerMur" to="(1190, 1183, -40)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1186, 1183, -40)" frommap="TerMur" to="(1184, 1183, -43)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1187, 1126, -42)" frommap="TerMur" to="(1180, 884, 0)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1180, 885, 0)" frommap="TerMur" to="(1187, 1127, -42)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1162, 1120, -42)" frommap="TerMur" to="(1147, 1089, -42)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(4194, 3260, 5)" frommap="TerMur" to="(1128, 1213, -2)" tomap="TerMur" />
+		<tiles from="(4195, 3260, 5)" frommap="TerMur" to="(1129, 1213, -2)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6577, 159, 13)" frommap="Trammel" to="(6577, 177, 30)" tomap="Trammel" />
+		<tiles from="(6578, 159, 12)" frommap="Trammel" to="(6577, 177, 30)" tomap="Trammel" />
+		<tiles from="(6579, 159, 7)" frommap="Trammel" to="(6577, 177, 30)" tomap="Trammel" />
+		<tiles from="(6578, 160, 12)" frommap="Trammel" to="(6577, 178, 30)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6582, 109, 0)" frommap="Trammel" to="(6553, 142, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6554, 104, 0)" frommap="Trammel" to="(6555, 116, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6469, 97, -50)" frommap="Trammel" to="(6503, 88, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6568, 77, -10)" frommap="Trammel" to="(6576, 73, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6589, 178, 25)" frommap="Trammel" to="(6519, 116, -20)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6540, 116, -15)" frommap="Trammel" to="(6537, 138, -20)" tomap="Trammel" />
+		<tiles from="(6540, 117, -15)" frommap="Trammel" to="(6537, 139, -20)" tomap="Trammel" />
+		<tiles from="(6541, 117, -15)" frommap="Trammel" to="(6523, 136, -20)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6488, 849, 40)" frommap="Trammel" to="(6587, 867, 0)" tomap="Trammel" />
+		<tiles from="(6488, 850, 41)" frommap="Trammel" to="(6587, 868, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6575, 889, 0)" frommap="Trammel" to="(6473, 869, 20)" tomap="Trammel" />
+		<tiles from="(6574, 889, 0)" frommap="Trammel" to="(6472, 869, 20)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6440, 2677, 20)" frommap="Trammel" to="(1477, 1471, -8)" tomap="Trammel" />
+		<tiles from="(6440, 2678, 20)" frommap="Trammel" to="(1477, 1472, -8)" tomap="Trammel" />
+		<tiles from="(6440, 2679, 20)" frommap="Trammel" to="(1477, 1473, -8)" tomap="Trammel" />
+		<tiles from="(6440, 2680, 20)" frommap="Trammel" to="(1477, 1474, -8)" tomap="Trammel" />
+		<tiles from="(6440, 2681, 20)" frommap="Trammel" to="(1477, 1475, -8)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1477, 1471, -8)" frommap="Trammel" to="(6432, 2677, 0)" tomap="Trammel" />
+		<tiles from="(1477, 1472, -8)" frommap="Trammel" to="(6432, 2678, 0)" tomap="Trammel" />
+		<tiles from="(1477, 1473, -8)" frommap="Trammel" to="(6432, 2679, 0)" tomap="Trammel" />
+		<tiles from="(1477, 1474, -8)" frommap="Trammel" to="(6432, 2680, 0)" tomap="Trammel" />
+		<tiles from="(1477, 1475, -8)" frommap="Trammel" to="(6432, 2681, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5260, 1841, 0)" frommap="Trammel" to="(3613, 2592, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(311, 786, 0)" frommap="Trammel" to="(5750, 350, 5)" tomap="Trammel" />
+		<tiles from="(311, 786, -24)" frommap="Trammel" to="(314, 784, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(4194, 3260, 5)" frommap="Trammel" to="(1127, 1215, 5)" tomap="TerMur" />
+		<tiles from="(4195, 3260, 5)" frommap="Trammel" to="(1129, 1215, 5)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5571, 1299, 0)" frommap="Trammel" to="(6012, 3786, 25)" tomap="Trammel" />
+		<tiles from="(5572, 1299, 0)" frommap="Trammel" to="(6013, 3786, 25)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6011, 3787, 22)" frommap="Trammel" to="(5570, 1300, 0)" tomap="Trammel" />
+		<tiles from="(6012, 3787, 20)" frommap="Trammel" to="(5571, 1300, 0)" tomap="Trammel" />
+		<tiles from="(6013, 3787, 20)" frommap="Trammel" to="(5572, 1300, 0)" tomap="Trammel" />
+		<tiles from="(6014, 3787, 21)" frommap="Trammel" to="(5573, 1300, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5878, 3817, -2)" frommap="Trammel" to="(5399, 1289, 0)" tomap="Trammel" />
+		<tiles from="(5878, 3818, -2)" frommap="Trammel" to="(5399, 1290, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5400, 1288, 0)" frommap="Trammel" to="(5879, 3817, 0)" tomap="Trammel" />
+		<tiles from="(5400, 1289, 0)" frommap="Trammel" to="(5879, 3817, 0)" tomap="Trammel" />
+		<tiles from="(5400, 1290, 0)" frommap="Trammel" to="(5879, 3818, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5543, 1355, 0)" frommap="Trammel" to="(5572, 1307, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5527, 1340, 0)" frommap="Trammel" to="(5412, 1396, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5557, 1317, 0)" frommap="Trammel" to="(5396, 1297, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5566, 1337, 0)" frommap="Trammel" to="(5620, 1341, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5451, 1360, 5)" frommap="Trammel" to="(5435, 1341, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5453, 1360, 5)" frommap="Trammel" to="(5436, 1341, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(390, 407, -1)" frommap="Malas" to="(394, 405, -1)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(471, 428, -1)" frommap="Malas" to="(474, 428, -1)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(462, 494, -1)" frommap="Malas" to="(462, 498, -1)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(403, 502, -1)" frommap="Malas" to="(399, 506, -1)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(357, 476, -1)" frommap="Malas" to="(356, 480, -1)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(361, 433, -1)" frommap="Malas" to="(357, 434, -1)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(236, 113, -28)" frommap="Ilshenar" to="(248, 71, -28)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6477, 862, 10)" frommap="Trammel" to="(587, 1641, -1)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(535, 992, 0)" frommap="Trammel" to="(6985, 340, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6984, 338, 0)" frommap="Trammel" to="(535, 994, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6303, 328, 65)" frommap="Trammel" to="(5623, 3038, 15)" tomap="Trammel" />
+		<tiles from="(6304, 328, 65)" frommap="Trammel" to="(5623, 3038, 15)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6506, 89, -4)" frommap="Trammel" to="(6502, 87, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6508, 84, -4)" frommap="Trammel" to="(6502, 87, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6509, 86, -4)" frommap="Trammel" to="(6502, 87, 0)" tomap="Trammel" />
+		<tiles from="(6510, 87, -4)" frommap="Trammel" to="(6502, 87, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6512, 87, -4)" frommap="Trammel" to="(6502, 87, 0)" tomap="Trammel" />
+		<tiles from="(6513, 88, -4)" frommap="Trammel" to="(6502, 87, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6512, 83, -4)" frommap="Trammel" to="(6502, 87, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6537, 175, 0)" frommap="Trammel" to="(6514, 184, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6515, 184, 0)" frommap="Trammel" to="(6536, 177, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6477, 94, -49)" frommap="Trammel" to="(6476, 76, -35)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6471, 75, -23)" frommap="Trammel" to="(6476, 94, -49)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6577, 176, 30)" frommap="Trammel" to="(6579, 159, 7)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6471, 187, 15)" frommap="Trammel" to="(3784, 1097, 14)" tomap="Trammel" />
+		<tiles from="(6472, 187, 15)" frommap="Trammel" to="(3784, 1098, 14)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6523, 136, -20)" frommap="Trammel" to="(6541, 117, -15)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6243, 56, -10)" frommap="Trammel" to="(6241, 60, -10)" tomap="Trammel" />
+		<tiles from="(6244, 56, -10)" frommap="Trammel" to="(6244, 59, -10)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6252, 54, -10)" frommap="Trammel" to="(6252, 56, -10)" tomap="Trammel" />
+		<tiles from="(6253, 55, -10)" frommap="Trammel" to="(6253, 58, -10)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6258, 87, -10)" frommap="Trammel" to="(6261, 87, -10)" tomap="Trammel" />
+		<tiles from="(6258, 88, -10)" frommap="Trammel" to="(6261, 87, -10)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6244, 59, -10)" frommap="Trammel" to="(6245, 54, -10)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6253, 57, -10)" frommap="Trammel" to="(6253, 54, -10)" tomap="Trammel" />
+		<tiles from="(6254, 57, -10)" frommap="Trammel" to="(6254, 53, -10)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6244, 41, -9)" frommap="Trammel" to="(6242, 41, -3)" tomap="Trammel" />
+		<tiles from="(6244, 40, -10)" frommap="Trammel" to="(6240, 40, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6239, 33, -10)" frommap="Trammel" to="(6238, 36, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6241, 40, 0)" frommap="Trammel" to="(6245, 41, -9)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6237, 35, 0)" frommap="Trammel" to="(6239, 32, -10)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6180, 59, 0)" frommap="Trammel" to="(6177, 61, 0)" tomap="Trammel" />
+		<tiles from="(6181, 60, 0)" frommap="Trammel" to="(6178, 61, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6178, 98, 0)" frommap="Trammel" to="(6176, 94, 0)" tomap="Trammel" />
+		<tiles from="(6179, 97, 0)" frommap="Trammel" to="(6175, 96, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6179, 61, 0)" frommap="Trammel" to="(6181, 58, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6176, 96, 0)" frommap="Trammel" to="(6179, 98, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6197, 125, -10)" frommap="Trammel" to="(6199, 127, -10)" tomap="Trammel" />
+		<tiles from="(6196, 125, -10)" frommap="Trammel" to="(6199, 128, -10)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6187, 131, -10)" frommap="Trammel" to="(6190, 131, -10)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6187, 133, -10)" frommap="Trammel" to="(6190, 133, -10)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6195, 128, -10)" frommap="Trammel" to="(6195, 124, -10)" tomap="Trammel" />
+		<tiles from="(6196, 128, -10)" frommap="Trammel" to="(6196, 124, -10)" tomap="Trammel" />
+		<tiles from="(6197, 128, -10)" frommap="Trammel" to="(6196, 124, -10)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6189, 131, -10)" frommap="Trammel" to="(6186, 131, -10)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6189, 133, -10)" frommap="Trammel" to="(6186, 133, -10)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6477, 862, 10)" frommap="Felucca" to="(587, 1641, -1)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(535, 992, 0)" frommap="Felucca" to="(6985, 340, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6984, 338, 0)" frommap="Felucca" to="(535, 994, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6303, 328, 65)" frommap="Felucca" to="(5623, 3038, 15)" tomap="Felucca" />
+		<tiles from="(6304, 328, 65)" frommap="Felucca" to="(5623, 3038, 15)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6506, 89, -4)" frommap="Felucca" to="(6502, 87, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6508, 84, -4)" frommap="Felucca" to="(6502, 87, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6509, 86, -4)" frommap="Felucca" to="(6502, 87, 0)" tomap="Felucca" />
+		<tiles from="(6510, 87, -4)" frommap="Felucca" to="(6502, 87, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6512, 87, -4)" frommap="Felucca" to="(6502, 87, 0)" tomap="Felucca" />
+		<tiles from="(6513, 88, -4)" frommap="Felucca" to="(6502, 87, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6512, 83, -4)" frommap="Felucca" to="(6502, 87, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6537, 175, 0)" frommap="Felucca" to="(6514, 184, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6515, 184, 0)" frommap="Felucca" to="(6536, 177, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6477, 94, -49)" frommap="Felucca" to="(6476, 76, -35)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6471, 75, -23)" frommap="Felucca" to="(6476, 94, -49)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6577, 176, 30)" frommap="Felucca" to="(6579, 159, 7)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6471, 187, 15)" frommap="Felucca" to="(3784, 1097, 14)" tomap="Felucca" />
+		<tiles from="(6472, 187, 15)" frommap="Felucca" to="(3784, 1098, 14)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6523, 136, -20)" frommap="Felucca" to="(6541, 117, -15)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6243, 56, -10)" frommap="Felucca" to="(6241, 60, -10)" tomap="Felucca" />
+		<tiles from="(6244, 56, -10)" frommap="Felucca" to="(6244, 59, -10)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6252, 54, -10)" frommap="Felucca" to="(6252, 56, -10)" tomap="Felucca" />
+		<tiles from="(6253, 55, -10)" frommap="Felucca" to="(6253, 58, -10)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6258, 87, -10)" frommap="Felucca" to="(6261, 87, -10)" tomap="Felucca" />
+		<tiles from="(6258, 88, -10)" frommap="Felucca" to="(6261, 87, -10)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6244, 59, -10)" frommap="Felucca" to="(6245, 54, -10)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6253, 57, -10)" frommap="Felucca" to="(6253, 54, -10)" tomap="Felucca" />
+		<tiles from="(6254, 57, -10)" frommap="Felucca" to="(6254, 53, -10)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6244, 41, -9)" frommap="Felucca" to="(6242, 41, -3)" tomap="Felucca" />
+		<tiles from="(6244, 40, -10)" frommap="Felucca" to="(6240, 40, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6239, 33, -10)" frommap="Felucca" to="(6238, 36, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6241, 40, 0)" frommap="Felucca" to="(6245, 41, -9)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6237, 35, 0)" frommap="Felucca" to="(6239, 32, -10)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6180, 59, 0)" frommap="Felucca" to="(6177, 61, 0)" tomap="Felucca" />
+		<tiles from="(6181, 60, 0)" frommap="Felucca" to="(6178, 61, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6178, 98, 0)" frommap="Felucca" to="(6176, 94, 0)" tomap="Felucca" />
+		<tiles from="(6179, 97, 0)" frommap="Felucca" to="(6175, 96, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6179, 61, 0)" frommap="Felucca" to="(6181, 58, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6176, 96, 0)" frommap="Felucca" to="(6179, 98, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6197, 125, -10)" frommap="Felucca" to="(6199, 127, -10)" tomap="Felucca" />
+		<tiles from="(6196, 125, -10)" frommap="Felucca" to="(6199, 128, -10)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6187, 131, -10)" frommap="Felucca" to="(6190, 131, -10)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6187, 133, -10)" frommap="Felucca" to="(6190, 133, -10)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6195, 128, -10)" frommap="Felucca" to="(6195, 124, -10)" tomap="Felucca" />
+		<tiles from="(6196, 128, -10)" frommap="Felucca" to="(6196, 124, -10)" tomap="Felucca" />
+		<tiles from="(6197, 128, -10)" frommap="Felucca" to="(6196, 124, -10)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6189, 131, -10)" frommap="Felucca" to="(6186, 131, -10)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6189, 133, -10)" frommap="Felucca" to="(6186, 133, -10)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2187, 1251, 2)" frommap="Ilshenar" to="(1450, 1474, -24)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2139, 1263, -60)" frommap="Ilshenar" to="(2139, 1265, -57)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(2139, 1265, -57)" frommap="Ilshenar" to="(2139, 1263, -60)" tomap="Ilshenar" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(117, 1684, 0)" frommap="Malas" to="(2068, 1372, -75)" tomap="Malas" />
+		<tiles from="(118, 1684, 0)" frommap="Malas" to="(2068, 1372, -75)" tomap="Malas" />
+		<tiles from="(119, 1684, 0)" frommap="Malas" to="(2068, 1372, -75)" tomap="Malas" />
+		<tiles from="(120, 1684, 0)" frommap="Malas" to="(2068, 1372, -75)" tomap="Malas" />
+		<tiles from="(121, 1684, 0)" frommap="Malas" to="(2068, 1372, -75)" tomap="Malas" />
+		<tiles from="(122, 1684, 0)" frommap="Malas" to="(2068, 1372, -75)" tomap="Malas" />
+		<tiles from="(123, 1684, 0)" frommap="Malas" to="(2068, 1372, -75)" tomap="Malas" />
+		<tiles from="(124, 1684, 0)" frommap="Malas" to="(2068, 1372, -75)" tomap="Malas" />
+		<tiles from="(125, 1684, 0)" frommap="Malas" to="(2068, 1372, -75)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(85, 1880, 0)" frommap="Malas" to="(100, 1875, 0)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(90, 1919, 0)" frommap="Malas" to="(100, 1875, 0)" tomap="Malas" />
+		<tiles from="(90, 1920, -7)" frommap="Malas" to="(164, 1976, 0)" tomap="Malas" />
+		<tiles from="(90, 1921, -7)" frommap="Malas" to="(164, 1976, 0)" tomap="Malas" />
+		<tiles from="(91, 1918, 15)" frommap="Malas" to="(144, 1901, 0)" tomap="Malas" />
+		<tiles from="(91, 1917, 15)" frommap="Malas" to="(144, 1901, 0)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(122, 1869, 0)" frommap="Malas" to="(100, 1875, 0)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(137, 1916, 0)" frommap="Malas" to="(100, 1875, 0)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(83, 1883, -8)" frommap="Malas" to="(182, 1929, 0)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(180, 1932, 12)" frommap="Malas" to="(83, 1885, 0)" tomap="Malas" />
+		<tiles from="(181, 1932, 12)" frommap="Malas" to="(83, 1885, 0)" tomap="Malas" />
+		<tiles from="(182, 1932, 12)" frommap="Malas" to="(83, 1885, 0)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(175, 1894, -13)" frommap="Malas" to="(102, 1921, 0)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(101, 1925, 17)" frommap="Malas" to="(175, 1897, 0)" tomap="Malas" />
+		<tiles from="(102, 1925, 17)" frommap="Malas" to="(175, 1897, 0)" tomap="Malas" />
+		<tiles from="(103, 1925, 17)" frommap="Malas" to="(175, 1897, 0)" tomap="Malas" />
+		<tiles from="(104, 1925, 17)" frommap="Malas" to="(175, 1897, 0)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(174, 1880, 0)" frommap="Malas" to="(182, 1950, 30)" tomap="Malas" />
+		<tiles from="(174, 1879, 0)" frommap="Malas" to="(182, 1950, 30)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(159, 1976, 17)" frommap="Malas" to="(87, 1921, 0)" tomap="Malas" />
+		<tiles from="(159, 1975, 17)" frommap="Malas" to="(87, 1921, 0)" tomap="Malas" />
+		<tiles from="(159, 1974, 17)" frommap="Malas" to="(87, 1921, 0)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(142, 1901, -7)" frommap="Malas" to="(87, 1918, 0)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(123, 1877, -11)" frommap="Malas" to="(161, 1921, 2)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(125, 1877, -11)" frommap="Malas" to="(161, 1921, 2)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(161, 1919, 12)" frommap="Malas" to="(123, 1874, -1)" tomap="Malas" />
+		<tiles from="(162, 1919, 12)" frommap="Malas" to="(123, 1874, -1)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(161, 1924, -12)" frommap="Malas" to="(129, 1975, 0)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(129, 1972, 12)" frommap="Malas" to="(161, 1921, 2)" tomap="Malas" />
+		<tiles from="(130, 1972, 12)" frommap="Malas" to="(161, 1921, 2)" tomap="Malas" />
+		<tiles from="(131, 1972, 12)" frommap="Malas" to="(161, 1921, 2)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(114, 1907, 20)" frommap="Malas" to="(118, 1921, 0)" tomap="Malas" />
+		<tiles from="(115, 1907, 20)" frommap="Malas" to="(118, 1921, 0)" tomap="Malas" />
+		<tiles from="(116, 1907, 20)" frommap="Malas" to="(118, 1921, 0)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(118, 1918, -14)" frommap="Malas" to="(114, 1902, 0)" tomap="Malas" />
+		<tiles from="(119, 1918, -14)" frommap="Malas" to="(114, 1902, 0)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(106, 1881, 0)" frommap="Malas" to="(1355, 779, 17)" tomap="Tokuno" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1775, 971, -85)" frommap="Malas" to="(1723, 1158, -90)" tomap="Malas" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1097, 1173, 1)" frommap="TerMur" to="(1097, 1175, 0)" tomap="TerMur" />
+		<tiles from="(1098, 1173, 1)" frommap="TerMur" to="(1098, 1175, 0)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(980, 1064, -42)" frommap="TerMur" to="(996, 1117, -42)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6321, 1710, -35)" frommap="Trammel" to="(6445, 1743, 0)" tomap="Trammel" />
+		<tiles from="(6321, 1711, -35)" frommap="Trammel" to="(6445, 1743, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6447, 1741, 1)" frommap="Trammel" to="(6322, 1710, -35)" tomap="Trammel" />
+		<tiles from="(6447, 1742, 1)" frommap="Trammel" to="(6322, 1710, -35)" tomap="Trammel" />
+		<tiles from="(6447, 1743, 1)" frommap="Trammel" to="(6322, 1710, -35)" tomap="Trammel" />
+		<tiles from="(6447, 1744, 1)" frommap="Trammel" to="(6322, 1710, -35)" tomap="Trammel" />
+		<tiles from="(6447, 1745, 1)" frommap="Trammel" to="(6322, 1710, -35)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6440, 2677, 20)" frommap="Felucca" to="(1517, 1417, 9)" tomap="Felucca" />
+		<tiles from="(6440, 2678, 20)" frommap="Felucca" to="(1517, 1418, 9)" tomap="Felucca" />
+		<tiles from="(6440, 2679, 20)" frommap="Felucca" to="(1517, 1419, 9)" tomap="Felucca" />
+		<tiles from="(6440, 2680, 20)" frommap="Felucca" to="(1517, 1420, 9)" tomap="Felucca" />
+		<tiles from="(6440, 2681, 20)" frommap="Felucca" to="(1517, 1420, 9)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(1517, 1417, 9)" frommap="Felucca" to="(6440, 2677, 20)" tomap="Felucca" />
+		<tiles from="(1517, 1418, 9)" frommap="Felucca" to="(6440, 2678, 20)" tomap="Felucca" />
+		<tiles from="(1517, 1419, 9)" frommap="Felucca" to="(6440, 2679, 20)" tomap="Felucca" />
+		<tiles from="(1517, 1420, 12)" frommap="Felucca" to="(6440, 2680, 20)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(912, 2022, 87)" frommap="TerMur" to="(544, 2198, -18)" tomap="TerMur" />
+		<tiles from="(912, 2021, 87)" frommap="TerMur" to="(544, 2197, -18)" tomap="TerMur" />
+		<tiles from="(912, 2020, 87)" frommap="TerMur" to="(544, 2196, -18)" tomap="TerMur" />
+		<tiles from="(912, 2019, 87)" frommap="TerMur" to="(544, 2195, -18)" tomap="TerMur" />
+		<tiles from="(912, 2018, 87)" frommap="TerMur" to="(544, 2194, -18)" tomap="TerMur" />
+		<tiles from="(912, 2017, 87)" frommap="TerMur" to="(544, 2193, -18)" tomap="TerMur" />
+		<tiles from="(912, 2016, 87)" frommap="TerMur" to="(544, 2192, -18)" tomap="TerMur" />
+		<tiles from="(912, 2015, 87)" frommap="TerMur" to="(544, 2191, -18)" tomap="TerMur" />
+		<tiles from="(912, 2014, 87)" frommap="TerMur" to="(544, 2190, -18)" tomap="TerMur" />
+		<tiles from="(912, 2013, 87)" frommap="TerMur" to="(544, 2189, -18)" tomap="TerMur" />
+		<tiles from="(912, 2012, 87)" frommap="TerMur" to="(544, 2188, -18)" tomap="TerMur" />
+		<tiles from="(912, 2011, 87)" frommap="TerMur" to="(544, 2187, -18)" tomap="TerMur" />
+		<tiles from="(912, 2010, 87)" frommap="TerMur" to="(544, 2186, -18)" tomap="TerMur" />
+		<tiles from="(912, 2009, 87)" frommap="TerMur" to="(544, 2185, -18)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(544, 2198, -18)" frommap="TerMur" to="(912, 2022, 87)" tomap="TerMur" />
+		<tiles from="(544, 2197, -18)" frommap="TerMur" to="(912, 2021, 87)" tomap="TerMur" />
+		<tiles from="(544, 2196, -18)" frommap="TerMur" to="(912, 2020, 87)" tomap="TerMur" />
+		<tiles from="(544, 2195, -18)" frommap="TerMur" to="(912, 2019, 87)" tomap="TerMur" />
+		<tiles from="(544, 2194, -18)" frommap="TerMur" to="(912, 2018, 87)" tomap="TerMur" />
+		<tiles from="(544, 2193, -18)" frommap="TerMur" to="(912, 2017, 87)" tomap="TerMur" />
+		<tiles from="(544, 2192, -18)" frommap="TerMur" to="(912, 2016, 87)" tomap="TerMur" />
+		<tiles from="(544, 2191, -18)" frommap="TerMur" to="(912, 2015, 87)" tomap="TerMur" />
+		<tiles from="(544, 2190, -18)" frommap="TerMur" to="(912, 2014, 87)" tomap="TerMur" />
+		<tiles from="(544, 2189, -18)" frommap="TerMur" to="(912, 2013, 87)" tomap="TerMur" />
+		<tiles from="(544, 2188, -18)" frommap="TerMur" to="(912, 2012, 87)" tomap="TerMur" />
+		<tiles from="(544, 2187, -18)" frommap="TerMur" to="(912, 2011, 87)" tomap="TerMur" />
+		<tiles from="(544, 2186, -18)" frommap="TerMur" to="(912, 2010, 87)" tomap="TerMur" />
+		<tiles from="(544, 2185, -18)" frommap="TerMur" to="(912, 2009, 87)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(726, 1594, 35)" frommap="TerMur" to="(921, 1469, 0)" tomap="TerMur" />
+		<tiles from="(727, 1594, 35)" frommap="TerMur" to="(922, 1469, 0)" tomap="TerMur" />
+		<tiles from="(728, 1594, 35)" frommap="TerMur" to="(923, 1469, 0)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(924, 1470, 0)" frommap="TerMur" to="(726, 1594, 35)" tomap="TerMur" />
+		<tiles from="(925, 1470, 0)" frommap="TerMur" to="(727, 1594, 35)" tomap="TerMur" />
+		<tiles from="(926, 1470, 0)" frommap="TerMur" to="(728, 1594, 35)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(877, 2101, 40)" frommap="TerMur" to="(964, 1715, 0)" tomap="TerMur" />
+		<tiles from="(878, 2101, 40)" frommap="TerMur" to="(965, 1715, 0)" tomap="TerMur" />
+		<tiles from="(879, 2101, 40)" frommap="TerMur" to="(966, 1715, 0)" tomap="TerMur" />
+		<tiles from="(880, 2101, 40)" frommap="TerMur" to="(967, 1715, 0)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(963, 1716, 2)" frommap="TerMur" to="(877, 2101, 40)" tomap="TerMur" />
+		<tiles from="(964, 1716, 0)" frommap="TerMur" to="(878, 2101, 40)" tomap="TerMur" />
+		<tiles from="(965, 1716, 0)" frommap="TerMur" to="(879, 2101, 40)" tomap="TerMur" />
+		<tiles from="(966, 1716, 0)" frommap="TerMur" to="(880, 2101, 40)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(6945, 1813, 80)" frommap="Felucca" to="(5813, 2960, 14)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(7013, 1956, 40)" frommap="Felucca" to="(5319, 981, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(7007, 2060, 5)" frommap="Felucca" to="(7162, 1906, 45)" tomap="Felucca" />
+		<tiles from="(7007, 2059, 5)" frommap="Felucca" to="(7162, 1905, 45)" tomap="Felucca" />
+		<tiles from="(7007, 2058, 5)" frommap="Felucca" to="(7162, 1904, 45)" tomap="Felucca" />
+		<tiles from="(7007, 2057, 5)" frommap="Felucca" to="(7162, 1903, 45)" tomap="Felucca" />
+		<tiles from="(7007, 2056, 5)" frommap="Felucca" to="(7162, 1902, 45)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(7166, 1906, 45)" frommap="Felucca" to="(7008, 2060, 5)" tomap="Felucca" />
+		<tiles from="(7166, 1905, 45)" frommap="Felucca" to="(7008, 2059, 5)" tomap="Felucca" />
+		<tiles from="(7166, 1904, 45)" frommap="Felucca" to="(7008, 2058, 5)" tomap="Felucca" />
+		<tiles from="(7166, 1903, 45)" frommap="Felucca" to="(7008, 2057, 5)" tomap="Felucca" />
+		<tiles from="(7166, 1902, 45)" frommap="Felucca" to="(7008, 2056, 5)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(7034, 2100, 0)" frommap="Felucca" to="(5135, 994, 0)" tomap="Felucca" />
+		<tiles from="(7034, 2099, 0)" frommap="Felucca" to="(5135, 993, 0)" tomap="Felucca" />
+		<tiles from="(7034, 2098, 0)" frommap="Felucca" to="(5135, 992, 0)" tomap="Felucca" />
+		<tiles from="(7034, 2097, 0)" frommap="Felucca" to="(5135, 991, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5135, 994, 0)" frommap="Felucca" to="(7031, 2099, 0)" tomap="Felucca" />
+		<tiles from="(5135, 993, 0)" frommap="Felucca" to="(7031, 2098, 0)" tomap="Felucca" />
+		<tiles from="(5135, 992, 0)" frommap="Felucca" to="(7031, 2097, 0)" tomap="Felucca" />
+		<tiles from="(5135, 991, 0)" frommap="Felucca" to="(7031, 2096, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(896, 2304, 45)" frommap="TerMur" to="(487, 1857, 95)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(711, 2302, 0)" frommap="TerMur" to="(120, 1682, -1)" tomap="TerMur" />
+		<tiles from="(711, 2303, 0)" frommap="TerMur" to="(120, 1683, 1)" tomap="TerMur" />
+		<tiles from="(711, 2304, 0)" frommap="TerMur" to="(120, 1684, 2)" tomap="TerMur" />
+		<tiles from="(711, 2305, 0)" frommap="TerMur" to="(120, 1684, 2)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(985, 1887, 0)" frommap="TerMur" to="(176, 1834, 90)" tomap="TerMur" />
+		<tiles from="(986, 1887, 0)" frommap="TerMur" to="(177, 1834, 90)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(853, 1776, 11)" frommap="TerMur" to="(225, 1724, 6)" tomap="TerMur" />
+		<tiles from="(854, 1776, 11)" frommap="TerMur" to="(225, 1725, 6)" tomap="TerMur" />
+		<tiles from="(855, 1776, 11)" frommap="TerMur" to="(225, 1725, 6)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5827, 590, 1)" frommap="Felucca" to="(5690, 569, 25)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5690, 573, 25)" frommap="Felucca" to="(5829, 595, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5872, 532, 24)" frommap="Felucca" to="(5690, 569, 25)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5732, 554, 24)" frommap="Felucca" to="(5827, 593, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5708, 625, 0)" frommap="Felucca" to="(5703, 639, 0)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5698, 662, 0)" frommap="Felucca" to="(5792, 526, 10)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5824, 631, 5)" frommap="Felucca" to="(2041, 215, 14)" tomap="Felucca" />
+		<tiles from="(5825, 631, 5)" frommap="Felucca" to="(2043, 215, 14)" tomap="Felucca" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5827, 590, 1)" frommap="Trammel" to="(5690, 569, 25)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5690, 573, 25)" frommap="Trammel" to="(5829, 595, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5872, 532, 24)" frommap="Trammel" to="(5690, 569, 25)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5732, 554, 24)" frommap="Trammel" to="(5827, 593, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5708, 625, 0)" frommap="Trammel" to="(5703, 639, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5698, 662, 0)" frommap="Trammel" to="(5792, 526, 10)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(5824, 631, 5)" frommap="Trammel" to="(2041, 215, 14)" tomap="Trammel" />
+		<tiles from="(5825, 631, 5)" frommap="Trammel" to="(2043, 215, 14)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(492, 1613, 40)" frommap="TerMur" to="(542, 2478, 0)" tomap="TerMur" />
+		<tiles from="(493, 1613, 40)" frommap="TerMur" to="(543, 2478, 0)" tomap="TerMur" />
+		<tiles from="(492, 1614, 40)" frommap="TerMur" to="(542, 2479, 0)" tomap="TerMur" />
+		<tiles from="(493, 1614, 40)" frommap="TerMur" to="(543, 2479, 0)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(542, 2478, 0)" frommap="TerMur" to="(492, 1613, 40)" tomap="TerMur" />
+		<tiles from="(543, 2478, 0)" frommap="TerMur" to="(493, 1613, 40)" tomap="TerMur" />
+		<tiles from="(542, 2479, 0)" frommap="TerMur" to="(492, 1614, 40)" tomap="TerMur" />
+		<tiles from="(543, 2479, 0)" frommap="TerMur" to="(493, 1614, 40)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(643, 2307, 0)" frommap="TerMur" to="(542, 2478, 0)" tomap="TerMur" />
+		<tiles from="(644, 2307, 0)" frommap="TerMur" to="(543, 2478, 0)" tomap="TerMur" />
+		<tiles from="(643, 2308, 0)" frommap="TerMur" to="(542, 2479, 0)" tomap="TerMur" />
+		<tiles from="(644, 2308, 0)" frommap="TerMur" to="(543, 2479, 2)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(638, 2399, 0)" frommap="TerMur" to="(631, 2423, -20)" tomap="TerMur" />
+		<tiles from="(639, 2399, 0)" frommap="TerMur" to="(632, 2423, -20)" tomap="TerMur" />
+		<tiles from="(638, 2400, 0)" frommap="TerMur" to="(631, 2424, -20)" tomap="TerMur" />
+		<tiles from="(639, 2400, 0)" frommap="TerMur" to="(632, 2424, -20)" tomap="TerMur" />
+	</Teleporter>
+	<Teleporter>
+		<tiles from="(575, 2463, 0)" frommap="TerMur" to="(543, 2303, 0)" tomap="TerMur" />
+		<tiles from="(576, 2463, 0)" frommap="TerMur" to="(544, 2303, 0)" tomap="TerMur" />
+		<tiles from="(575, 2464, 0)" frommap="TerMur" to="(543, 2304, 0)" tomap="TerMur" />
+		<tiles from="(576, 2464, 0)" frommap="TerMur" to="(544, 2304, 0)" tomap="TerMur" />
+	</Teleporter>
+	<SiegeTeleporter>
+		<tiles from="(4596, 3568, 75)" frommap="Felucca" to="(1128, 1212, -2)" tomap="TerMur" ItemID="0xF6C" Hue="1175" />
+	</SiegeTeleporter>
+	<SiegeTeleporter>
+		<tiles from="(1128, 1212, -2)" frommap="TerMur" to="(4596, 3568, 75)" tomap="Felucca" ItemID="0xF6C" Hue="1175" />
+	</SiegeTeleporter>
+</TeleporterRegions>

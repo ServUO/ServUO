@@ -648,15 +648,7 @@ namespace Server.Engines.Harvest
                         name = item.ItemData.Name;
                 }
 
-                NetState ns = from.NetState;
-
-                if (ns == null)
-                    return;
-
-                if (number == 1043297 || ns.HighSeas)
-                    from.SendLocalizedMessage(number, name);
-                else
-                    from.SendLocalizedMessage(number, true, name);
+                from.SendLocalizedMessage(number, name);
             }
         }
 

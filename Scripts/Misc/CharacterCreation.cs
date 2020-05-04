@@ -327,7 +327,7 @@ namespace Server.Misc
 
         private static void SetStats(Mobile m, NetState state, int str, int dex, int intel)
         {
-            int max = state.NewCharacterCreation ? 90 : 80;
+            int max = 90;
 
             FixStats(ref str, ref dex, ref intel, max);
 

@@ -26,9 +26,6 @@ namespace Server.Engines.XmlSpawner2
         public static void ContentChangeOverride()
         {
             PacketHandlers.Register(0x66, 0, true, XmlTextEntryBook.ContentChange);
-#if(CLIENT6017)
-            PacketHandlers.Register6017(0x66, 0, true, XmlTextEntryBook.ContentChange);
-#endif
         }
     }
 }

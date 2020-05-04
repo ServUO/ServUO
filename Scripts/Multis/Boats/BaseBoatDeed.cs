@@ -122,7 +122,7 @@ namespace Server.Multis
                 {
                     if (boat.IsRowBoat)
                     {
-                        BaseBoat lastrowboat = World.Items.Values.OfType<BaseBoat>().Where(x => x.Owner == from && x.IsRowBoat && x.Map != Map.Internal && !x.GetMobilesOnBoard().Any()).OrderByDescending(y => y.Serial).FirstOrDefault();
+                        BaseBoat lastrowboat = World.Items.Values.OfType<BaseBoat>().Where(x => x.Owner == from && x.IsRowBoat && x.Map != Map.Internal && !x.MobilesOnBoard.Any()).OrderByDescending(y => y.Serial).FirstOrDefault();
 
                         if (lastrowboat != null)
                             lastrowboat.Delete();

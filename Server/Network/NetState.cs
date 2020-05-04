@@ -37,29 +37,18 @@ namespace Server.Network
 
         public static event NetStateCreatedCallback CreatedCallback;
 
-        private readonly IPAddress m_Address;
-        private ByteQueue m_Buffer;
         private byte[] m_RecvBuffer;
         private readonly SendQueue m_SendQueue;
-        private bool m_Running;
-
         private AsyncCallback m_OnReceive, m_OnSend;
 
         private readonly MessagePump m_MessagePump;
-        private List<Gump> m_Gumps;
-        private List<HuePicker> m_HuePickers;
-        private List<IMenu> m_Menus;
-        private readonly List<SecureTrade> m_Trades;
         private readonly string m_ToString;
-        private ClientVersion m_Version;
-
-        private readonly DateTime m_ConnectedOn;
 
         [CommandProperty(AccessLevel.Administrator, true)]
-        public DateTime ConnectedOn => m_ConnectedOn;
+        public DateTime ConnectedOn { get; }
 
         [CommandProperty(AccessLevel.Administrator, true)]
-        public TimeSpan ConnectedFor => (DateTime.UtcNow - m_ConnectedOn);
+        public TimeSpan ConnectedFor => (DateTime.UtcNow - ConnectedOn);
 
         [CommandProperty(AccessLevel.Administrator, true)]
         public uint AuthID { get; set; }
@@ -68,7 +57,7 @@ namespace Server.Network
         public uint Seed { get; set; }
 
         [CommandProperty(AccessLevel.Administrator)]
-        public IPAddress Address => m_Address;
+        public IPAddress Address { get; }
 
         private static bool m_Paused;
 
@@ -98,210 +87,31 @@ namespace Server.Network
         public ClientFlags Flags { get; set; }
 
         [CommandProperty(AccessLevel.Administrator, true)]
-        public ClientVersion Version
-        {
-            get { return m_Version; }
-            set
-            {
-                m_Version = value;
-
-                if (value >= m_Version70610)
-                {
-                    _ProtocolChanges = ProtocolChanges.Version70610;
-                }
-                else if (value >= m_Version70500)
-                {
-                    _ProtocolChanges = ProtocolChanges.Version70500;
-                }
-                else if (value >= m_Version704565)
-                {
-                    _ProtocolChanges = ProtocolChanges.Version704565;
-                }
-                else if (value >= m_Version70331)
-                {
-                    _ProtocolChanges = ProtocolChanges.Version70331;
-                }
-                else if (value >= m_Version70300)
-                {
-                    _ProtocolChanges = ProtocolChanges.Version70300;
-                }
-                else if (value >= m_Version70160)
-                {
-                    _ProtocolChanges = ProtocolChanges.Version70160;
-                }
-                else if (value >= m_Version70130)
-                {
-                    _ProtocolChanges = ProtocolChanges.Version70130;
-                }
-                else if (value >= m_Version7090)
-                {
-                    _ProtocolChanges = ProtocolChanges.Version7090;
-                }
-                else if (value >= m_Version7000)
-                {
-                    _ProtocolChanges = ProtocolChanges.Version7000;
-                }
-                else if (value >= m_Version60142)
-                {
-                    _ProtocolChanges = ProtocolChanges.Version60142;
-                }
-                else if (value >= m_Version6017)
-                {
-                    _ProtocolChanges = ProtocolChanges.Version6017;
-                }
-                else if (value >= m_Version6000)
-                {
-                    _ProtocolChanges = ProtocolChanges.Version6000;
-                }
-                else if (value >= m_Version502b)
-                {
-                    _ProtocolChanges = ProtocolChanges.Version502b;
-                }
-                else if (value >= m_Version500a)
-                {
-                    _ProtocolChanges = ProtocolChanges.Version500a;
-                }
-                else if (value >= m_Version407a)
-                {
-                    _ProtocolChanges = ProtocolChanges.Version407a;
-                }
-                else if (value >= m_Version400a)
-                {
-                    _ProtocolChanges = ProtocolChanges.Version400a;
-                }
-            }
-        }
-
-        private static readonly ClientVersion m_Version400a = new ClientVersion("4.0.0a");
-        private static readonly ClientVersion m_Version407a = new ClientVersion("4.0.7a");
-        private static readonly ClientVersion m_Version500a = new ClientVersion("5.0.0a");
-        private static readonly ClientVersion m_Version502b = new ClientVersion("5.0.2b");
-        private static readonly ClientVersion m_Version6000 = new ClientVersion("6.0.0.0");
-        private static readonly ClientVersion m_Version6017 = new ClientVersion("6.0.1.7");
-        private static readonly ClientVersion m_Version60142 = new ClientVersion("6.0.14.2");
-        private static readonly ClientVersion m_Version7000 = new ClientVersion("7.0.0.0");
-        private static readonly ClientVersion m_Version7090 = new ClientVersion("7.0.9.0");
-        private static readonly ClientVersion m_Version70130 = new ClientVersion("7.0.13.0");
-        private static readonly ClientVersion m_Version70160 = new ClientVersion("7.0.16.0");
-        private static readonly ClientVersion m_Version70300 = new ClientVersion("7.0.30.0");
-        private static readonly ClientVersion m_Version70331 = new ClientVersion("7.0.33.1");
-        private static readonly ClientVersion m_Version704565 = new ClientVersion("7.0.45.65");
-        private static readonly ClientVersion m_Version70500 = new ClientVersion("7.0.50.0");
-        private static readonly ClientVersion m_Version70610 = new ClientVersion("7.0.61.0");
-
-        private ProtocolChanges _ProtocolChanges;
-
-        private enum ProtocolChanges
-        {
-            NewSpellbook = 0x00000001,
-            DamagePacket = 0x00000002,
-            Unpack = 0x00000004,
-            BuffIcon = 0x00000008,
-            NewHaven = 0x00000010,
-            ContainerGridLines = 0x00000020,
-            ExtendedSupportedFeatures = 0x00000040,
-            StygianAbyss = 0x00000080,
-            HighSeas = 0x00000100,
-            NewCharacterList = 0x00000200,
-            NewCharacterCreation = 0x00000400,
-            ExtendedStatus = 0x00000800,
-            NewMobileIncoming = 0x00001000,
-            NewSecureTrading = 0x00002000,
-            UltimaStore = 0x00004000,
-            EndlessJourney = 0x00008000,
-
-            Version400a = NewSpellbook,
-            Version407a = Version400a | DamagePacket,
-            Version500a = Version407a | Unpack,
-            Version502b = Version500a | BuffIcon,
-            Version6000 = Version502b | NewHaven,
-            Version6017 = Version6000 | ContainerGridLines,
-            Version60142 = Version6017 | ExtendedSupportedFeatures,
-            Version7000 = Version60142 | StygianAbyss,
-            Version7090 = Version7000 | HighSeas,
-            Version70130 = Version7090 | NewCharacterList,
-            Version70160 = Version70130 | NewCharacterCreation,
-            Version70300 = Version70160 | ExtendedStatus,
-            Version70331 = Version70300 | NewMobileIncoming,
-            Version704565 = Version70331 | NewSecureTrading,
-            Version70500 = Version704565 | UltimaStore,
-            Version70610 = Version70500 | EndlessJourney
-        }
+        public ClientVersion Version { get; set; }
 
         [CommandProperty(AccessLevel.Administrator, true)]
-        public bool NewSpellbook => ((_ProtocolChanges & ProtocolChanges.NewSpellbook) != 0);
-
+        public bool IsUOTDClient => ((Flags & ClientFlags.UOTD) != 0 || (Version != null && Version.Type == ClientType.UOTD));
+        
         [CommandProperty(AccessLevel.Administrator, true)]
-        public bool DamagePacket => ((_ProtocolChanges & ProtocolChanges.DamagePacket) != 0);
+        public bool IsEnhancedClient => IsUOTDClient || (Version != null && Version.Major >= 67);
 
-        [CommandProperty(AccessLevel.Administrator, true)]
-        public bool Unpack => ((_ProtocolChanges & ProtocolChanges.Unpack) != 0);
-
-        [CommandProperty(AccessLevel.Administrator, true)]
-        public bool BuffIcon => ((_ProtocolChanges & ProtocolChanges.BuffIcon) != 0);
-
-        [CommandProperty(AccessLevel.Administrator, true)]
-        public bool NewHaven => ((_ProtocolChanges & ProtocolChanges.NewHaven) != 0);
-
-        [CommandProperty(AccessLevel.Administrator, true)]
-        public bool ContainerGridLines => ((_ProtocolChanges & ProtocolChanges.ContainerGridLines) != 0);
-
-        [CommandProperty(AccessLevel.Administrator, true)]
-        public bool ExtendedSupportedFeatures => ((_ProtocolChanges & ProtocolChanges.ExtendedSupportedFeatures) != 0);
-
-        [CommandProperty(AccessLevel.Administrator, true)]
-        public bool StygianAbyss => ((_ProtocolChanges & ProtocolChanges.StygianAbyss) != 0);
-
-        [CommandProperty(AccessLevel.Administrator, true)]
-        public bool HighSeas => ((_ProtocolChanges & ProtocolChanges.HighSeas) != 0);
-
-        [CommandProperty(AccessLevel.Administrator, true)]
-        public bool NewCharacterList => ((_ProtocolChanges & ProtocolChanges.NewCharacterList) != 0);
-
-        [CommandProperty(AccessLevel.Administrator, true)]
-        public bool NewCharacterCreation => ((_ProtocolChanges & ProtocolChanges.NewCharacterCreation) != 0);
-
-        [CommandProperty(AccessLevel.Administrator, true)]
-        public bool ExtendedStatus => ((_ProtocolChanges & ProtocolChanges.ExtendedStatus) != 0);
-
-        [CommandProperty(AccessLevel.Administrator, true)]
-        public bool NewMobileIncoming => ((_ProtocolChanges & ProtocolChanges.NewMobileIncoming) != 0);
-
-        [CommandProperty(AccessLevel.Administrator, true)]
-        public bool NewSecureTrading => ((_ProtocolChanges & ProtocolChanges.NewSecureTrading) != 0);
-
-        [CommandProperty(AccessLevel.Administrator, true)]
-        public bool UltimaStore => ((_ProtocolChanges & ProtocolChanges.UltimaStore) != 0);
-
-        [CommandProperty(AccessLevel.Administrator, true)]
-        public bool EndlessJourney => ((_ProtocolChanges & ProtocolChanges.EndlessJourney) != 0);
-
-        [CommandProperty(AccessLevel.Administrator, true)]
-        public bool IsUOTDClient => ((Flags & ClientFlags.UOTD) != 0 || (m_Version != null && m_Version.Type == ClientType.UOTD));
-
-        [CommandProperty(AccessLevel.Administrator, true)]
-        public bool IsSAClient => (m_Version != null && m_Version.Type == ClientType.SA);
-
-        [CommandProperty(AccessLevel.Administrator, true)]
-        public bool IsEnhancedClient => IsUOTDClient || (m_Version != null && m_Version.Major >= 67);
-
-        public List<SecureTrade> Trades => m_Trades;
+        public List<SecureTrade> Trades { get; }
 
         public void ValidateAllTrades()
         {
-            if (m_Trades == null)
+            if (Trades == null)
             {
                 return;
             }
 
-            for (int i = m_Trades.Count - 1; i >= 0; --i)
+            for (int i = Trades.Count - 1; i >= 0; --i)
             {
-                if (i >= m_Trades.Count)
+                if (i >= Trades.Count)
                 {
                     continue;
                 }
 
-                SecureTrade trade = m_Trades[i];
+                SecureTrade trade = Trades[i];
 
                 if (trade.From.Mobile.Deleted || trade.To.Mobile.Deleted || !trade.From.Mobile.Alive || !trade.To.Mobile.Alive ||
                     !trade.From.Mobile.InRange(trade.To.Mobile, 2) || trade.From.Mobile.Map != trade.To.Mobile.Map)
@@ -313,36 +123,36 @@ namespace Server.Network
 
         public void CancelAllTrades()
         {
-            if (m_Trades == null)
+            if (Trades == null)
             {
                 return;
             }
 
-            for (int i = m_Trades.Count - 1; i >= 0; --i)
+            for (int i = Trades.Count - 1; i >= 0; --i)
             {
-                if (i < m_Trades.Count)
+                if (i < Trades.Count)
                 {
-                    m_Trades[i].Cancel();
+                    Trades[i].Cancel();
                 }
             }
         }
 
         public void RemoveTrade(SecureTrade trade)
         {
-            if (m_Trades != null)
+            if (Trades != null)
             {
-                m_Trades.Remove(trade);
+                Trades.Remove(trade);
             }
         }
 
         public SecureTrade FindTrade(Mobile m)
         {
-            if (m_Trades == null)
+            if (Trades == null)
             {
                 return null;
             }
 
-            foreach (SecureTrade trade in m_Trades)
+            foreach (SecureTrade trade in Trades)
             {
                 if (trade.From.Mobile == m || trade.To.Mobile == m)
                 {
@@ -355,12 +165,12 @@ namespace Server.Network
 
         public SecureTradeContainer FindTradeContainer(Mobile m)
         {
-            if (m_Trades == null)
+            if (Trades == null)
             {
                 return null;
             }
 
-            foreach (SecureTrade trade in m_Trades)
+            foreach (SecureTrade trade in Trades)
             {
                 SecureTradeInfo from = trade.From;
                 SecureTradeInfo to = trade.To;
@@ -381,15 +191,15 @@ namespace Server.Network
 
         public SecureTradeContainer AddTrade(NetState state)
         {
-            if (m_Trades == null || state.m_Trades == null)
+            if (Trades == null || state.Trades == null)
             {
                 return null;
             }
 
             SecureTrade newTrade = new SecureTrade(Mobile, state.Mobile);
 
-            m_Trades.Add(newTrade);
-            state.m_Trades.Add(newTrade);
+            Trades.Add(newTrade);
+            state.Trades.Add(newTrade);
 
             return newTrade.From.Container;
         }
@@ -400,9 +210,9 @@ namespace Server.Network
         [CommandProperty(AccessLevel.Administrator, true)]
         public int Sequence { get; set; }
 
-        public List<Gump> Gumps => m_Gumps;
-        public List<HuePicker> HuePickers => m_HuePickers;
-        public List<IMenu> Menus => m_Menus;
+        public List<Gump> Gumps { get; private set; }
+        public List<HuePicker> HuePickers { get; private set; }
+        public List<IMenu> Menus { get; private set; }
 
         private static int m_GumpCap = 512, m_HuePickerCap = 512, m_MenuCap = 512;
 
@@ -425,14 +235,14 @@ namespace Server.Network
 
         public void AddMenu(IMenu menu)
         {
-            if (m_Menus == null)
+            if (Menus == null)
             {
-                m_Menus = new List<IMenu>();
+                Menus = new List<IMenu>();
             }
 
-            if (m_Menus.Count < m_MenuCap)
+            if (Menus.Count < m_MenuCap)
             {
-                m_Menus.Add(menu);
+                Menus.Add(menu);
             }
             else
             {
@@ -445,38 +255,38 @@ namespace Server.Network
 
         public void RemoveMenu(IMenu menu)
         {
-            if (m_Menus != null)
+            if (Menus != null)
             {
-                m_Menus.Remove(menu);
+                Menus.Remove(menu);
             }
         }
 
         public void RemoveMenu(int index)
         {
-            if (m_Menus != null)
+            if (Menus != null)
             {
-                m_Menus.RemoveAt(index);
+                Menus.RemoveAt(index);
             }
         }
 
         public void ClearMenus()
         {
-            if (m_Menus != null)
+            if (Menus != null)
             {
-                m_Menus.Clear();
+                Menus.Clear();
             }
         }
 
         public void AddHuePicker(HuePicker huePicker)
         {
-            if (m_HuePickers == null)
+            if (HuePickers == null)
             {
-                m_HuePickers = new List<HuePicker>();
+                HuePickers = new List<HuePicker>();
             }
 
-            if (m_HuePickers.Count < m_HuePickerCap)
+            if (HuePickers.Count < m_HuePickerCap)
             {
-                m_HuePickers.Add(huePicker);
+                HuePickers.Add(huePicker);
             }
             else
             {
@@ -489,38 +299,38 @@ namespace Server.Network
 
         public void RemoveHuePicker(HuePicker huePicker)
         {
-            if (m_HuePickers != null)
+            if (HuePickers != null)
             {
-                m_HuePickers.Remove(huePicker);
+                HuePickers.Remove(huePicker);
             }
         }
 
         public void RemoveHuePicker(int index)
         {
-            if (m_HuePickers != null)
+            if (HuePickers != null)
             {
-                m_HuePickers.RemoveAt(index);
+                HuePickers.RemoveAt(index);
             }
         }
 
         public void ClearHuePickers()
         {
-            if (m_HuePickers != null)
+            if (HuePickers != null)
             {
-                m_HuePickers.Clear();
+                HuePickers.Clear();
             }
         }
 
         public void AddGump(Gump gump)
         {
-            if (m_Gumps == null)
+            if (Gumps == null)
             {
-                m_Gumps = new List<Gump>();
+                Gumps = new List<Gump>();
             }
 
-            if (m_Gumps.Count < m_GumpCap)
+            if (Gumps.Count < m_GumpCap)
             {
-                m_Gumps.Add(gump);
+                Gumps.Add(gump);
             }
             else
             {
@@ -533,25 +343,25 @@ namespace Server.Network
 
         public void RemoveGump(Gump gump)
         {
-            if (m_Gumps != null)
+            if (Gumps != null)
             {
-                m_Gumps.Remove(gump);
+                Gumps.Remove(gump);
             }
         }
 
         public void RemoveGump(int index)
         {
-            if (m_Gumps != null)
+            if (Gumps != null)
             {
-                m_Gumps.RemoveAt(index);
+                Gumps.RemoveAt(index);
             }
         }
 
         public void ClearGumps()
         {
-            if (m_Gumps != null)
+            if (Gumps != null)
             {
-                m_Gumps.Clear();
+                Gumps.Clear();
             }
         }
 
@@ -592,15 +402,15 @@ namespace Server.Network
         public NetState(Socket socket, MessagePump messagePump)
         {
             Socket = socket;
-            m_Buffer = new ByteQueue();
+            Buffer = new ByteQueue();
 
             m_RecvBuffer = m_ReceiveBufferPool.AcquireBuffer();
             m_MessagePump = messagePump;
 
-            m_Gumps = new List<Gump>();
-            m_HuePickers = new List<HuePicker>();
-            m_Menus = new List<IMenu>();
-            m_Trades = new List<SecureTrade>();
+            Gumps = new List<Gump>();
+            HuePickers = new List<HuePicker>();
+            Menus = new List<IMenu>();
+            Trades = new List<SecureTrade>();
 
             m_SendQueue = new SendQueue();
 
@@ -610,17 +420,17 @@ namespace Server.Network
 
             try
             {
-                m_Address = Utility.Intern(((IPEndPoint)Socket.RemoteEndPoint).Address);
-                m_ToString = m_Address.ToString();
+                Address = Utility.Intern(((IPEndPoint)Socket.RemoteEndPoint).Address);
+                m_ToString = Address.ToString();
             }
             catch (Exception ex)
             {
                 TraceException(ex);
-                m_Address = IPAddress.None;
+                Address = IPAddress.None;
                 m_ToString = "(error)";
             }
 
-            m_ConnectedOn = DateTime.UtcNow;
+            ConnectedOn = DateTime.UtcNow;
 
             UpdateRange = Core.GlobalUpdateRange;
 
@@ -772,7 +582,7 @@ namespace Server.Network
             m_OnReceive = OnReceive;
             m_OnSend = OnSend;
 
-            m_Running = true;
+            Running = true;
 
             if (Socket == null || m_Paused)
             {
@@ -832,8 +642,8 @@ namespace Server.Network
                         PacketEncoder.DecodeIncomingPacket(this, ref buffer, ref byteCount);
                     }
 
-                    lock (m_Buffer)
-                        m_Buffer.Enqueue(buffer, 0, byteCount);
+                    lock (Buffer)
+                        Buffer.Enqueue(buffer, 0, byteCount);
 
                     m_MessagePump.OnReceive(this);
 
@@ -1016,11 +826,6 @@ namespace Server.Network
 
         public PacketHandler GetHandler(int packetID)
         {
-            if (ContainerGridLines)
-            {
-                return PacketHandlers.Get6017Handler(packetID);
-            }
-
             return PacketHandlers.GetHandler(packetID);
         }
 
@@ -1142,13 +947,13 @@ namespace Server.Network
             PacketEncoder = null;
             PacketEncryptor = null;
 
-            m_Buffer = null;
+            Buffer = null;
             m_RecvBuffer = null;
 
             m_OnReceive = null;
             m_OnSend = null;
 
-            m_Running = false;
+            Running = false;
 
             lock (m_Disposed)
             {
@@ -1214,9 +1019,9 @@ namespace Server.Network
                         ns.Mobile = null;
                     }
 
-                    ns.m_Gumps.Clear();
-                    ns.m_Menus.Clear();
-                    ns.m_HuePickers.Clear();
+                    ns.Gumps.Clear();
+                    ns.Menus.Clear();
+                    ns.HuePickers.Clear();
                     ns.Account = null;
                     ns.ServerInfo = null;
                     ns.CityInfo = null;
@@ -1240,14 +1045,14 @@ namespace Server.Network
         }
 
         [CommandProperty(AccessLevel.Administrator, true)]
-        public bool Running => m_Running;
+        public bool Running { get; private set; }
 
         [CommandProperty(AccessLevel.Administrator, true)]
         public bool Seeded { get; set; }
 
         public Socket Socket { get; private set; }
 
-        public ByteQueue Buffer => m_Buffer;
+        public ByteQueue Buffer { get; private set; }
 
         public ExpansionInfo ExpansionInfo
         {

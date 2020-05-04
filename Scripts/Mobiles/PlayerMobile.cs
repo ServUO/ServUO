@@ -6369,7 +6369,7 @@ namespace Server.Mobiles
 
             NetState state = NetState;
 
-            if (state != null && state.BuffIcon)
+            if (state != null)
             {
                 foreach (BuffInfo info in m_BuffTable.Values)
                 {
@@ -6398,7 +6398,7 @@ namespace Server.Mobiles
 
             NetState state = NetState;
 
-            if (state != null && state.BuffIcon)
+            if (state != null)
             {
                 state.Send(new AddBuffPacket(this, b));
             }
@@ -6432,7 +6432,7 @@ namespace Server.Mobiles
 
             NetState state = NetState;
 
-            if (state != null && state.BuffIcon)
+            if (state != null)
             {
                 state.Send(new RemoveBuffPacket(this, b));
             }

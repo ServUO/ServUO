@@ -1137,6 +1137,21 @@ namespace Server
             return null;
         }
 
+        public IEnumerable<TItem> FindItems<TItem>(Point3D p, int range = 0) where TItem : Item
+        {
+            IPooledEnumerable<Item> eable = GetItemsInRange(p, range);
+
+            foreach (Item item in eable)
+            {
+                if (item.GetType() == typeof(TItem))
+                {
+                    yield return item as TItem;
+                }
+            }
+
+            eable.Free();
+        }
+
         public TMob FindMobile<TMob>(Point3D p, int range = 0) where TMob : Mobile
         {
             IPooledEnumerable<Mobile> eable = GetMobilesInRange(p, range);
@@ -1152,6 +1167,21 @@ namespace Server
 
             eable.Free();
             return null;
+        }
+
+        public IEnumerable<TMob> FindMobiles<TMob>(Point3D p, int range = 0) where TMob : Mobile
+        {
+            IPooledEnumerable<Mobile> eable = GetMobilesInRange(p, range);
+
+            foreach (Mobile m in eable)
+            {
+                if (m.GetType() == typeof(TMob))
+                {
+                    yield return m as TMob;
+                }
+            }
+
+            eable.Free();
         }
         #endregion
 

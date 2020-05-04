@@ -4594,7 +4594,7 @@ namespace Server
                                 Mobile m = state.Mobile;
 
                                 if (m.CanSee(this) && m.InUpdateRange(m_Location) &&
-                                    (!state.HighSeas || !m_NoMoveHS || (m_DeltaFlags & ItemDelta.Update) != 0 ||
+                                    (!m_NoMoveHS || (m_DeltaFlags & ItemDelta.Update) != 0 ||
                                      !m.InRange(oldLoc, GetUpdateRange(m))))
                                 {
                                     SendInfoTo(state);
@@ -5529,7 +5529,7 @@ namespace Server
 
         public virtual Packet GetStatusPacketFor(NetState state)
         {
-            if (this is IDamageable && state != null && state.Mobile != null && state.HighSeas)
+            if (this is IDamageable && state != null && state.Mobile != null)
             {
                 return new MobileStatusCompact(CanBeRenamedBy(state.Mobile), (IDamageable)this);
             }

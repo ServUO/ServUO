@@ -94,16 +94,6 @@ namespace Server.Items
 
             if (tradeInfo != null)
             {
-                if (owner.NetState != null && !owner.NetState.NewSecureTrading)
-                {
-                    double total = Amount / Math.Max(1.0, Account.CurrencyThreshold);
-                    int plat = (int)Math.Truncate(total);
-                    int gold = (int)((total - plat) * Account.CurrencyThreshold);
-
-                    tradeInfo.Plat += plat;
-                    tradeInfo.Gold += gold;
-                }
-
                 if (tradeInfo.VirtualCheck != null)
                 {
                     tradeInfo.VirtualCheck.UpdateTrade(tradeInfo.Mobile);

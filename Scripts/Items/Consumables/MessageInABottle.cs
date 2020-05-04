@@ -19,7 +19,7 @@ namespace Server.Items
 
         [Constructable]
         public MessageInABottle(Map map, int level)
-            : base(0x099F)
+            : base(0xA30C)
         {
             Weight = 1.0;
             m_TargetMap = map;
@@ -67,18 +67,15 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(3); // version
 
             writer.Write(m_Level);
-
             writer.Write(m_TargetMap);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
             switch (version)
@@ -101,11 +98,7 @@ namespace Server.Items
                     }
             }
 
-            if (version < 2)
-                m_Level = GetRandomLevel();
-
-            if (version < 3 && m_TargetMap == Map.Tokuno)
-                m_TargetMap = Map.Trammel;
+            ItemID = 0xA30C;
         }
 
         public override void OnDoubleClick(Mobile from)

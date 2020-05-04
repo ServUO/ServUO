@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using Server.Regions;
 
 /* This script has a purpose, and please adhere to the advice before adding versions.
  * This is used for modifying, removing, adding existing spawners, etc for existing shards,
@@ -38,7 +39,8 @@ namespace Server
             LifeStealers = 0x00000100,
             LootNerf2 = 0x00000200,
             RemoveUnused = 0x00000400,
-            RemoveUnused2 = 0x00000800,
+            RemoveUnused2 =     0x00000800,
+            RemoveTeleporters = 0x00001000,
         }
 
         public static string FilePath = Path.Combine("Saves/Misc", "SpawnerPresistence.bin");
@@ -164,6 +166,12 @@ namespace Server
             {
                 case 12:
                 case 11:
+                    if ((VersionFlag & SpawnerVersion.RemoveTeleporters) == 0)
+                    {
+                        RemoveTeleporters();
+                        VersionFlag |= SpawnerVersion.RemoveTeleporters;
+                    }
+
                     if ((VersionFlag & SpawnerVersion.RemoveUnused2) == 0)
                     {
                         RemoveUnused2();
@@ -276,6 +284,34 @@ namespace Server
             Console.WriteLine("[Spawner Persistence v{0}] {1}", _Version.ToString(), str);
             Utility.PopColor();
         }
+
+        #region Remove Teleporters
+        public static void RemoveTeleporters()
+        {
+            WeakEntityCollection.Delete("tel");
+            var delCount = 0;
+
+            Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
+            {
+                IPooledEnumerable eable = null;
+                foreach (var reg in Region.Regions.OfType<TeleportRegion>())
+                {
+                    foreach (var rec in reg.Area)
+                    {
+                        eable = reg.Map.GetItemsInBounds(new Rectangle2D(rec.Start.X, rec.Start.Y, rec.Width, rec.Height));
+
+                        foreach (var tele in eable.OfType<Teleporter>())
+                        {
+                            delCount++;
+                            tele.Delete();
+                        }
+                    }
+                }
+
+                ToConsole(String.Format("{0} additional Teleporters deleted.", delCount));
+            });
+        }
+        #endregion
 
         #region Remove Unused 2
         public static void RemoveUnused2()
