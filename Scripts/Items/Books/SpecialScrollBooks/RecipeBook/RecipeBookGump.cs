@@ -465,6 +465,7 @@ namespace Server.Items
                             {
                                 from.Prompt = new SetPricePrompt(m_Book, recipe, m_Page, m_List);
                                 from.SendLocalizedMessage(1062383); // Type in a price for the deed:
+                                m_Book.Using = false;
                             }
                             else if (m_Book.RootParent is PlayerVendor)
                             {

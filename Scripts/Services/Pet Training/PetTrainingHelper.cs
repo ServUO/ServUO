@@ -1749,12 +1749,12 @@ namespace Server.Mobiles
                                 {
                                     bc.PrivateOverheadMessage(Server.Network.MessageType.Regular, 0x3B2, 502799, m.NetState);
                                     // It seems to accept you as master.
-                                    bc.Owners.Add(m);
+                                    bc.OnAfterTame(m);
 
                                     bc.SetControlMaster(m);
                                     bc.IsBonded = true;
 
-                                    bc.OnAfterTame(m);
+                                    bc.Owners.Add(m);
 
                                     PetTrainingHelper.GetAbilityProfile(bc, true).OnTame();
                                 });

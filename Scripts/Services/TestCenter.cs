@@ -5,6 +5,12 @@ using Server.Mobiles;
 using Server.Network;
 using System;
 using System.Text;
+using Server.Engines.Points;
+using Server.SkillHandlers;
+using Server.Spells.SkillMasteries;
+using Server.Engines.Craft;
+using Server.Engines.Plants;
+using Server.Accounting;
 
 namespace Server.Misc
 {
@@ -54,6 +60,65 @@ namespace Server.Misc
                         }
                     }
                 }
+                else if(Insensitive.StartsWith(args.Speech, "give"))
+                {
+                    Mobile from = args.Mobile;
+
+                    string[] split = args.Speech.Split(' ');
+
+                    if (split.Length == 2)
+                    {
+                        string name = split[1];
+
+                        if (Insensitive.Equals(name, "resources"))
+                        {
+                            if (CanGive(from, "Resources"))
+                            {
+                                GiveResources(from);
+                                from.SendMessage("Resources have been added to your bank");
+                            }
+                        }
+                        else if (Insensitive.Equals(name, "arties"))
+                        {
+                            if (CanGive(from, "Artifacts"))
+                            {
+                                GiveArtifacts(from);
+                                from.SendMessage("Artifacts have been added to your bank");
+                            }
+                        }
+                        else if (Insensitive.Equals(name, "air"))
+                        {
+                            if (CanGive(from, "Air"))
+                            {
+                                GiveAirFreshner(from);
+                                from.SendMessage("Air Freshner has been added to your bank.");
+                            }
+                        }
+                        else if (Insensitive.Equals(name, "seeds"))
+                        {
+                            if (CanGive(from, "Seeds"))
+                            {
+                                GiveSeeds(from);
+                                from.SendMessage("Seeds have been added to your bank.");
+                            }
+                        }
+                        else if (Insensitive.Equals(name, "tokens"))
+                        {
+                            if (CanGive(from, "Tokens"))
+                            {
+                                GiveTokens(from);
+                            }
+                        }
+                        else if (Insensitive.Equals(name, "masteries"))
+                        {
+                            if (CanGive(from, "Masteries"))
+                            {
+                                GiveMasteries(from);
+                                from.SendMessage("Masteries have been added to your bank.");
+                            }
+                        }
+                    }
+                }
                 else if (Insensitive.Equals(args.Speech, "help"))
                 {
                     args.Mobile.SendGump(new TCHelpGump());
@@ -61,6 +126,24 @@ namespace Server.Misc
                     args.Handled = true;
                 }
             }
+        }
+
+        private static bool CanGive(Mobile m, string tagName)
+        {
+            Account a = m.Account as Account;
+
+            if (a != null)
+            {
+                var tag = a.GetTag(m.Serial.ToString() + ' ' + tagName);
+
+                if (tag == null)
+                {
+                    a.AddTag(m.Serial.ToString() + ' ' + tagName, DateTime.Now.ToString());
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static void ChangeStrength(Mobile from, int value)
@@ -162,6 +245,461 @@ namespace Server.Misc
             }
         }
 
+        public static void GiveResources(Mobile from)
+        {
+            var box = new WoodenBox();
+            box.Hue = 1193;
+            box.Name = "General Resources";
+
+            PlaceItemIn(box, 115, 63, new PowderOfTemperament(30000));
+
+            Container bag = new Bag();
+            bag.Hue = 75;
+            bag.Name = "Bag of Imbuing Materials";
+
+            for (int i = 0; i < Imbuing.IngredTypes.Length; i++)
+            {
+                var item = Loot.Construct(Imbuing.IngredTypes[i]);
+
+                if (item != null)
+                {
+                    if (item.Stackable)
+                    {
+                        item.Amount = 1000;
+                        bag.DropItem(item);
+                    }
+                    else
+                    {
+                        bag.DropItem(item);
+
+                        for (int j = 0; j < 10; j++)
+                        {
+                            bag.DropItem(Loot.Construct(Imbuing.IngredTypes[j]));
+                        }
+                    }
+                }
+            }
+
+            PlaceItemIn(box, 17, 67, bag);
+
+            bag = new Bag();
+            bag.Hue = 1195;
+            bag.Name = "Bag of Elven Materials";
+
+            for (int i = 0; i < Loot.RareGemTypes.Length; i++)
+            {
+                var item = Loot.Construct(Loot.RareGemTypes[i]);
+                item.Amount = 200;
+
+                bag.DropItem(item);
+            }
+
+            bag.DropItem(new LardOfParoxysmus(200));
+            bag.DropItem(new CapturedEssence(200));
+            bag.DropItem(new LuminescentFungi(200));
+            bag.DropItem(new Putrefaction(200));
+            bag.DropItem(new Blight(200));
+            bag.DropItem(new LardOfParoxysmus(200));
+            bag.DropItem(new Taint(200));
+            bag.DropItem(new Corruption(200));
+            bag.DropItem(new BarkFragment(200));
+            bag.DropItem(new Corruption(200));
+            bag.DropItem(new ParasiticPlant(200));
+            bag.DropItem(new Muculent(200));
+            bag.DropItem(new PristineDreadHorn(200));
+            bag.DropItem(new EyeOfTheTravesty(200));
+            bag.DropItem(new GrizzledBones(200));
+            bag.DropItem(new Scourge(200));
+
+            PlaceItemIn(box, 40, 67, bag);
+
+            bag = new Backpack();
+            bag.Name = "Runic Tool Bag";
+
+            PlaceItemIn(bag, 54, 74, new RunicHammer(CraftResource.DullCopper, 30000));
+            PlaceItemIn(bag, 64, 74, new RunicHammer(CraftResource.ShadowIron, 30000));
+            PlaceItemIn(bag, 74, 74, new RunicHammer(CraftResource.Copper, 30000));
+            PlaceItemIn(bag, 84, 74, new RunicHammer(CraftResource.Bronze, 30000));
+            PlaceItemIn(bag, 94, 74, new RunicHammer(CraftResource.Gold, 30000));
+            PlaceItemIn(bag, 104, 74, new RunicHammer(CraftResource.Agapite, 30000));
+            PlaceItemIn(bag, 114, 74, new RunicHammer(CraftResource.Verite, 30000));
+            PlaceItemIn(bag, 124, 74, new RunicHammer(CraftResource.Valorite, 30000));
+
+            PlaceItemIn(bag, 54, 90, new RunicSewingKit(CraftResource.SpinedLeather, 30000));
+            PlaceItemIn(bag, 64, 90, new RunicSewingKit(CraftResource.HornedLeather, 30000));
+            PlaceItemIn(bag, 64, 90, new RunicSewingKit(CraftResource.BarbedLeather, 30000));
+
+            PlaceItemIn(bag, 74, 90, new RunicDovetailSaw(CraftResource.OakWood, 30000));
+            PlaceItemIn(bag, 84, 90, new RunicDovetailSaw(CraftResource.AshWood, 30000));
+            PlaceItemIn(bag, 94, 90, new RunicDovetailSaw(CraftResource.YewWood, 30000));
+            PlaceItemIn(bag, 104, 90, new RunicDovetailSaw(CraftResource.Heartwood, 30000));
+
+            PlaceItemIn(bag, 54, 107, new RunicFletcherTool(CraftResource.OakWood, 30000));
+            PlaceItemIn(bag, 64, 107, new RunicFletcherTool(CraftResource.AshWood, 30000));
+            PlaceItemIn(bag, 74, 107, new RunicFletcherTool(CraftResource.YewWood, 30000));
+            PlaceItemIn(bag, 84, 107, new RunicFletcherTool(CraftResource.Heartwood, 30000));
+
+            PlaceItemIn(box, 65, 67, bag);
+
+            bag = new Bag();
+            bag.Name = "Raw Materials Bag";
+
+            PlaceItemIn(bag, 92, 59, new BarbedLeather(5000));
+            PlaceItemIn(bag, 92, 68, new HornedLeather(5000));
+            PlaceItemIn(bag, 92, 76, new SpinedLeather(5000));
+            PlaceItemIn(bag, 92, 84, new Leather(5000));
+
+            PlaceItemIn(bag, 30, 118, new Cloth(5000));
+            PlaceItemIn(bag, 30, 84, new Board(5000));
+            PlaceItemIn(bag, 57, 80, new BlankScroll(500));
+
+            PlaceItemIn(bag, 30, 35, new DullCopperIngot(5000));
+            PlaceItemIn(bag, 37, 35, new ShadowIronIngot(5000));
+            PlaceItemIn(bag, 44, 35, new CopperIngot(5000));
+            PlaceItemIn(bag, 51, 35, new BronzeIngot(5000));
+            PlaceItemIn(bag, 58, 35, new GoldIngot(5000));
+            PlaceItemIn(bag, 65, 35, new AgapiteIngot(5000));
+            PlaceItemIn(bag, 72, 35, new VeriteIngot(5000));
+            PlaceItemIn(bag, 79, 35, new ValoriteIngot(5000));
+            PlaceItemIn(bag, 86, 35, new IronIngot(5000));
+
+            PlaceItemIn(bag, 30, 59, new RedScales(5000));
+            PlaceItemIn(bag, 36, 59, new YellowScales(5000));
+            PlaceItemIn(bag, 42, 59, new BlackScales(5000));
+            PlaceItemIn(bag, 48, 59, new GreenScales(5000));
+            PlaceItemIn(bag, 54, 59, new WhiteScales(5000));
+            PlaceItemIn(bag, 60, 59, new BlueScales(5000));
+
+            PlaceItemIn(box, 40, 93, bag);
+
+            bag = new Bag();
+            bag.Name = "Bag of Archery Ammo";
+
+            PlaceItemIn(bag, 48, 76, new Arrow(5000));
+            PlaceItemIn(bag, 72, 76, new Bolt(5000));
+
+            PlaceItemIn(box, 65, 93, bag);
+
+            bag = new Bag();
+            bag.Name = "Tool Bag";
+
+            PlaceItemIn(bag, 30, 35, new TinkerTools(30000));
+            PlaceItemIn(bag, 60, 35, new HousePlacementTool());
+            PlaceItemIn(bag, 90, 35, new DovetailSaw(30000));
+            PlaceItemIn(bag, 30, 68, new Scissors());
+            PlaceItemIn(bag, 45, 68, new MortarPestle(30000));
+            PlaceItemIn(bag, 75, 68, new ScribesPen(30000));
+            PlaceItemIn(bag, 90, 68, new SmithHammer(30000));
+            PlaceItemIn(bag, 30, 118, new TwoHandedAxe());
+            PlaceItemIn(bag, 60, 118, new FletcherTools(30000));
+            PlaceItemIn(bag, 90, 118, new SewingKit(30000));
+            PlaceItemIn(bag, 70, 85, new Clippers(30000));
+            PlaceItemIn(bag, 61, 76, new MalletAndChisel(30000));
+
+            PlaceItemIn(box, 90, 93, bag);
+
+            bag = new Bag();
+            bag.Name = "Bag of Recipes";
+            bag.Hue = 2301;
+
+            foreach (var recipe in Recipe.Recipes.Values)
+            {
+                bag.DropItem(new RecipeScroll(recipe));
+            }
+
+            PlaceItemIn(box, 115, 93, bag);
+
+            bag = new Bag();
+            bag.Name = "Bag of Wood";
+            bag.Hue = 1321;
+
+            bag.DropItem(new Board(5000));
+            bag.DropItem(new OakBoard(5000));
+            bag.DropItem(new AshBoard(5000));
+            bag.DropItem(new YewBoard(5000));
+            bag.DropItem(new OakBoard(5000));
+            bag.DropItem(new BloodwoodBoard(5000));
+            bag.DropItem(new HeartwoodBoard(5000));
+            bag.DropItem(new FrostwoodBoard(5000));
+
+            PlaceItemIn(box, 139, 93, bag);
+
+            PlaceItemIn(from.BankBox, 88, 142, box);
+        }
+
+        public static void GiveArtifacts(Mobile from)
+        {
+            var box = new WoodenBox();
+            box.Hue = 1170;
+            box.Name = "Artifacts";
+
+            Container bag = new Bag();
+            bag.Hue = 2075;
+            bag.Name = "SA Major Artifacts Human";
+
+            bag.DropItem(new AnimatedLegsoftheInsaneTinker());
+            bag.DropItem(new ResonantStaffofEnlightenment());
+            bag.DropItem(new JadeWarAxe());
+            bag.DropItem(new DemonHuntersStandard());
+            bag.DropItem(new WallOfHungryMouths());
+            bag.DropItem(new HumanSignOfChaos());
+            bag.DropItem(new GargishSignOfChaos());
+            bag.DropItem(new IronwoodCompositeBow());
+            bag.DropItem(new ClawsOfTheBerserker());
+            bag.DropItem(new StandardOfChaos());
+            bag.DropItem(new DefenderOfTheMagus());
+            bag.DropItem(new TheImpalersPick());
+            bag.DropItem(new CavalrysFolly());
+            bag.DropItem(new AxeOfAbandon());
+            bag.DropItem(new ProtectoroftheBattleMage());
+            bag.DropItem(new FallenMysticsSpellbook());
+            bag.DropItem(new CrownOfArcaneTemperament());
+            bag.DropItem(new VampiricEssence());
+
+            PlaceItemIn(box, 17, 57, bag);
+
+            bag = new Bag();
+            bag.Hue = 1159;
+            bag.Name = "Eodon Artifacts";
+
+            bag.DropItem(new AnonsBoots());
+            bag.DropItem(new AnonsBootsGargoyle());
+            bag.DropItem(new AnonsSpellbook());
+            bag.DropItem(new BalakaisShamanStaff());
+            bag.DropItem(new BalakaisShamanStaffGargoyle());
+            bag.DropItem(new EnchantressCameo());
+            bag.DropItem(new GrugorsShield());
+            bag.DropItem(new GrugorsShieldGargoyle());
+            bag.DropItem(new HalawasHuntingBow());
+            bag.DropItem(new HalawasHuntingBowGargoyle());
+            bag.DropItem(new HawkwindsRobe());
+            bag.DropItem(new JumusSacredHide());
+            bag.DropItem(new JumusSacredHideGargoyle());
+            bag.DropItem(new JuonarsGrimoire());
+            bag.DropItem(new LereisHuntingSpear());
+            bag.DropItem(new LereisHuntingSpearGargoyle());
+            bag.DropItem(new MinaxsSandles());
+            bag.DropItem(new MinaxsSandlesGargoyle());
+            bag.DropItem(new OzymandiasObi());
+            bag.DropItem(new OzymandiasObiGargoyle());
+            bag.DropItem(new ShantysWaders());
+            bag.DropItem(new ShantysWadersGargoyle());
+            bag.DropItem(new TotemOfTheTribe());
+            bag.DropItem(new WamapsBoneEarrings());
+            bag.DropItem(new WamapsBoneEarringsGargoyle());
+            bag.DropItem(new UnstableTimeRift());
+            bag.DropItem(new MocapotlsObsidianSword());
+
+            PlaceItemIn(box, 40, 57, bag);
+
+            bag = new Bag();
+            bag.Hue = 1266;
+            bag.Name = "Major Artifacts";
+
+            bag.DropItem(new TitansHammer());
+            bag.DropItem(new InquisitorsResolution());
+            bag.DropItem(new BladeOfTheRighteous());
+            bag.DropItem(new ZyronicClaw());
+
+            for (int i = 0; i < DoomGauntlet.DoomArtifacts.Length; i++)
+            {
+                bag.DropItem(Loot.Construct(DoomGauntlet.DoomArtifacts[i]));
+            }
+
+            PlaceItemIn(box, 65, 57, bag);
+
+            bag = new Bag();
+            bag.Hue = 1281;
+            bag.Name = "Tokuno Major Artifacts";
+
+            bag.DropItem(new SwordsOfProsperity());
+            bag.DropItem(new SwordOfTheStampede());
+            bag.DropItem(new WindsEdge());
+            bag.DropItem(new DarkenedSky());
+            bag.DropItem(new RuneBeetleCarapace());
+            bag.DropItem(new KasaOfTheRajin());
+            bag.DropItem(new Stormgrip());
+            bag.DropItem(new TomeOfLostKnowledge());
+            bag.DropItem(new PigmentsOfTokuno(PigmentType.ParagonGold));
+            bag.DropItem(new PigmentsOfTokuno(PigmentType.VioletCouragePurple));
+            bag.DropItem(new PigmentsOfTokuno(PigmentType.InvulnerabilityBlue));
+            bag.DropItem(new PigmentsOfTokuno(PigmentType.LunaWhite));
+            bag.DropItem(new PigmentsOfTokuno(PigmentType.DryadGreen));
+            bag.DropItem(new PigmentsOfTokuno(PigmentType.ShadowDancerBlack));
+            bag.DropItem(new PigmentsOfTokuno(PigmentType.BerserkerRed));
+            bag.DropItem(new PigmentsOfTokuno(PigmentType.NoxGreen));
+            bag.DropItem(new PigmentsOfTokuno(PigmentType.RumRed));
+            bag.DropItem(new PigmentsOfTokuno(PigmentType.FireOrange));
+            bag.DropItem(new PigmentsOfTokuno(PigmentType.FadedCoal));
+            bag.DropItem(new PigmentsOfTokuno(PigmentType.Coal));
+            bag.DropItem(new PigmentsOfTokuno(PigmentType.FadedGold));
+            bag.DropItem(new PigmentsOfTokuno(PigmentType.StormBronze));
+            bag.DropItem(new PigmentsOfTokuno(PigmentType.Rose));
+            bag.DropItem(new PigmentsOfTokuno(PigmentType.MidnightCoal));
+            bag.DropItem(new PigmentsOfTokuno(PigmentType.FadedBronze));
+            bag.DropItem(new PigmentsOfTokuno(PigmentType.FadedRose));
+            bag.DropItem(new PigmentsOfTokuno(PigmentType.DeepRose));
+
+            PlaceItemIn(box, 115, 57, bag);
+
+            bag = new Bag();
+            bag.Hue = 1167;
+            bag.Name = "Minor Artifacts";
+
+            for (int i = 0; i < MondainsLegacy.Artifacts.Length; i++)
+            {
+                bag.DropItem(Loot.Construct(MondainsLegacy.Artifacts[i]));
+            }
+
+            PlaceItemIn(box, 90, 57, bag);
+
+            bag = new Bag();
+            bag.Hue = 55;
+            bag.Name = "Replicas";
+
+            bag.DropItem(new RoyalGuardInvestigatorsCloak());
+            bag.DropItem(new TongueOfTheBeast());
+            bag.DropItem(new TheMostKnowledgePerson());
+            bag.DropItem(new ShroudOfDeceit());
+            bag.DropItem(new ANecromancerShroud());
+            bag.DropItem(new LightsRampart());
+            bag.DropItem(new AcidProofRobe());
+            bag.DropItem(new ObiDiEnse());
+            bag.DropItem(new TheRobeOfBritanniaAri());
+            bag.DropItem(new GauntletsOfAnger());
+            bag.DropItem(new JadeArmband());
+            bag.DropItem(new Subdue());
+            bag.DropItem(new CrownOfTalKeesh());
+            bag.DropItem(new DjinnisRing());
+            bag.DropItem(new EmbroideredOakLeafCloak());
+            bag.DropItem(new GladiatorsCollar());
+            bag.DropItem(new LieutenantOfTheBritannianRoyalGuard());
+            bag.DropItem(new CaptainJohnsHat());
+            bag.DropItem(new BraveKnightOfTheBritannia());
+            bag.DropItem(new Pacify());
+            bag.DropItem(new OblivionsNeedle());
+            bag.DropItem(new RoyalGuardSurvivalKnife());
+            bag.DropItem(new Quell());
+            bag.DropItem(new Calm());
+            bag.DropItem(new OrcChieftainHelm());
+            bag.DropItem(new FangOfRactus());
+            bag.DropItem(new DetectiveBoots());
+
+            PlaceItemIn(box, 90, 139, bag);
+
+            bag = new Bag();
+            bag.Hue = 2731;
+            bag.Name = "Doom Upgrade Arties";
+
+            bag.DropItem(new BritchesOfWarding());
+            bag.DropItem(new BowOfTheInfiniteSwarm());
+            bag.DropItem(new GlovesOfFeudalGrip());
+            bag.DropItem(new Glenda());
+            bag.DropItem(new CuffsOfTheArchmage());
+            bag.DropItem(new TheScholarsHalo());
+            bag.DropItem(new TheDeceiver());
+            bag.DropItem(new BraceletOfPrimalConsumption());
+
+            PlaceItemIn(box, 17, 83, bag);
+            PlaceItemIn(from.BankBox, 63, 106, box);
+        }
+
+        public static void GiveAirFreshner(Mobile from)
+        {
+        }
+
+        public static void GiveSeeds(Mobile from)
+        {
+            var box = new WoodenBox();
+            box.Hue = 578;
+            box.Name = "Box of Seeds";
+
+            box.DropItem(new FertileDirt(5000));
+            box.DropItem(new GreenThorns(15));
+
+            Container bag = new Bag();
+
+            for (int i = 0; i < 10; i++)
+            {
+                bag.DropItem(new Seed(PlantType.CocoaTree, PlantHue.Plain, false));
+            }
+
+            PlaceItemIn(box, 47, 83, bag);
+
+            bag = new Bag();
+
+            for (int i = 0; i < 10; i++)
+            {
+                bag.DropItem(Seed.RandomPeculiarSeed(Utility.Random(3)));
+            }
+
+            PlaceItemIn(box, 78, 83, bag);
+
+            bag = new Bag();
+
+            for (int i = 0; i < 5; i++)
+            {
+                bag.DropItem(new Seed(PlantTypeInfo.RandomFirstGeneration(), PlantHue.White, false));
+            }
+
+            for (int i = 0; i < 5; i++)
+            {
+                bag.DropItem(new Seed(PlantTypeInfo.RandomFirstGeneration(), PlantHue.Black, false));
+            }
+
+            for (int i = 0; i < 5; i++)
+            {
+                bag.DropItem(new Seed(PlantTypeInfo.RandomFirstGeneration(), PlantHue.FireRed, false));
+            }
+
+            // TODO: Plant Spawners
+
+            PlaceItemIn(box, 109, 83, bag);
+
+            PlaceItemIn(from.BankBox, 83, 106, box);
+        }
+
+        public static void GiveTokens(Mobile from)
+        {
+            from.SendLocalizedMessage(1075549); // A token has been placed in your backpack. Double-click it to redeem your promotion.
+
+            for (int i = 0; i < 10; i++)
+            {
+                from.AddToBackpack(new HeritageToken());
+            }
+
+            from.AddToBackpack(new AnniversaryPromotionalToken(AnniversaryType.ShadowItems));
+            from.AddToBackpack(new AnniversaryPromotionalToken(AnniversaryType.CrystalItems));
+            from.AddToBackpack(new PersonalAttendantToken());
+        }
+
+        public static void GiveMasteries(Mobile from)
+        {
+            var backpack = new Backpack();
+            backpack.Hue = 1154;
+            backpack.Name = "Skill Masteries";
+
+            Bag bag = null;
+
+            for (int i = 0; i < MasteryInfo.Skills.Length; i++)
+            {
+                var skill = MasteryInfo.Skills[i];
+
+                bag = new Bag();
+                bag.Name = String.Format("{0} Mastery", SkillInfo.Table[(int)skill].Name);
+
+                for (int j = 1; j <= 3; j++)
+                {
+                    bag.DropItem(new SkillMasteryPrimer(skill, j));
+                }
+
+                backpack.DropItem(bag);
+            }
+
+            PlaceItemIn(backpack, 83, 106, new BookOfMasteries());
+            PlaceItemIn(from.BankBox, 103, 106, backpack);
+        }
+
         private static void PlaceItemIn(Container parent, int x, int y, Item item)
         {
             parent.AddItem(item);
@@ -187,159 +725,144 @@ namespace Server.Misc
                 m.Skills[PowerScroll.Skills[i]].Cap = 120.0;
 
             m.StatCap = 250;
-			
-			PlaceItemIn(bank, 18, 169, new BankCheck(1560000));
+
+            var book = new Runebook(9999);
+            book.CurCharges = book.MaxCharges;
+            book.Entries.Add(new RunebookEntry(new Point3D(1438, 1695, 0), Map.Trammel, "Britain Bank", null));
+            book.Entries.Add(new RunebookEntry(new Point3D(1821, 2821, 0), Map.Trammel, "Trinsic Bank", null));
+            book.Entries.Add(new RunebookEntry(new Point3D(1492, 1628, 13), Map.Trammel, "Britain Sweet Dreams", null));
+            book.Entries.Add(new RunebookEntry(new Point3D(1388, 1507, 10), Map.Trammel, "Britain Graveyard", null));
+            book.Entries.Add(new RunebookEntry(new Point3D(1300, 1080, 0), Map.Trammel, "Dungeon Despise", null));
+            book.Entries.Add(new RunebookEntry(new Point3D(1171, 2639, 0), Map.Trammel, "Dungeon Destard", null));
+            book.Entries.Add(new RunebookEntry(new Point3D(1260, 2296, 0), Map.Trammel, "Hedge Maze", null));
+
+            m.AddToBackpack(book);
+
+            #region Gold
+            var account = m.Account as Account;
+
+            if (account != null && account.GetTag("TCGold") == null)
+            {
+                account.AddTag("TCGold", "Gold Given");
+
+                Banker.Deposit(m, 30000000, false);
+            }
+            #endregion
+
+            #region Bank Level Items
+            bank.DropItem(new Robe(443));
+            bank.DropItem(new Dagger());
+            bank.DropItem(new Candle());
+            bank.DropItem(new FireworksWand() { Name = "Mininova Fireworks Wand" });
+            #endregion
 
             Container cont;
 
-            // Begin bag of potion kegs
-            cont = new Backpack();
-            cont.Name = "Various Potion Kegs";
-
-            PlaceItemIn(cont, 45, 149, MakePotionKeg(PotionEffect.CureGreater, 0x2D));
-            PlaceItemIn(cont, 69, 149, MakePotionKeg(PotionEffect.HealGreater, 0x499));
-            PlaceItemIn(cont, 93, 149, MakePotionKeg(PotionEffect.PoisonDeadly, 0x46));
-            PlaceItemIn(cont, 117, 149, MakePotionKeg(PotionEffect.RefreshTotal, 0x21));
-            PlaceItemIn(cont, 141, 149, MakePotionKeg(PotionEffect.ExplosionGreater, 0x74));
-
-            PlaceItemIn(cont, 93, 82, new Bottle(1000));
-
-            PlaceItemIn(bank, 53, 169, cont);
-            // End bag of potion kegs
-
-            // Begin bag of tools
+            #region TMaps
             cont = new Bag();
-            cont.Name = "Tool Bag";
+            cont.Name = "Bag of Treasure Maps";
 
-            PlaceItemIn(cont, 30, 35, new TinkerTools(1000));
-            PlaceItemIn(cont, 60, 35, new HousePlacementTool());
-            PlaceItemIn(cont, 90, 35, new DovetailSaw(1000));
-            PlaceItemIn(cont, 30, 68, new Scissors());
-            PlaceItemIn(cont, 45, 68, new MortarPestle(1000));
-            PlaceItemIn(cont, 75, 68, new ScribesPen(1000));
-            PlaceItemIn(cont, 90, 68, new SmithHammer(1000));
-            PlaceItemIn(cont, 30, 118, new TwoHandedAxe());
-            PlaceItemIn(cont, 60, 118, new FletcherTools(1000));
-            PlaceItemIn(cont, 90, 118, new SewingKit(1000));
+            for (int i = 0; i < 10; i++)
+            {
+                PlaceItemIn(cont, 30 + (i * 6), 35, new TreasureMap(Utility.Random(3), Map.Trammel));
+            }
 
-            PlaceItemIn(cont, 36, 51, new RunicHammer(CraftResource.DullCopper, 1000));
-            PlaceItemIn(cont, 42, 51, new RunicHammer(CraftResource.ShadowIron, 1000));
-            PlaceItemIn(cont, 48, 51, new RunicHammer(CraftResource.Copper, 1000));
-            PlaceItemIn(cont, 54, 51, new RunicHammer(CraftResource.Bronze, 1000));
-            PlaceItemIn(cont, 61, 51, new RunicHammer(CraftResource.Gold, 1000));
-            PlaceItemIn(cont, 67, 51, new RunicHammer(CraftResource.Agapite, 1000));
-            PlaceItemIn(cont, 73, 51, new RunicHammer(CraftResource.Verite, 1000));
-            PlaceItemIn(cont, 79, 51, new RunicHammer(CraftResource.Valorite, 1000));
+            for (int i = 0; i < 10; i++)
+            {
+                PlaceItemIn(cont, 30 + (i * 6), 51, new TreasureMap(Utility.Random(3), Map.Trammel));
+            }
 
-            PlaceItemIn(cont, 36, 55, new RunicSewingKit(CraftResource.SpinedLeather, 1000));
-            PlaceItemIn(cont, 42, 55, new RunicSewingKit(CraftResource.HornedLeather, 1000));
-            PlaceItemIn(cont, 48, 55, new RunicSewingKit(CraftResource.BarbedLeather, 1000));
+            for (int i = 0; i < 20; i++)
+            {
+                PlaceItemIn(cont, 76, 91, new MessageInABottle());
+            }
 
-            PlaceItemIn(bank, 118, 169, cont);
-            // End bag of tools
-
-            // Begin bag of archery ammo
-            cont = new Bag();
-            cont.Name = "Bag Of Archery Ammo";
-
-            PlaceItemIn(cont, 48, 76, new Arrow(5000));
-            PlaceItemIn(cont, 72, 76, new Bolt(5000));
-
-            PlaceItemIn(bank, 118, 124, cont);
-            // End bag of archery ammo
-
-            // Begin bag of treasure maps
-            cont = new Bag();
-            cont.Name = "Bag Of Treasure Maps";
-
-            PlaceItemIn(cont, 30, 35, new TreasureMap(1, Map.Trammel));
-            PlaceItemIn(cont, 45, 35, new TreasureMap(2, Map.Trammel));
-            PlaceItemIn(cont, 60, 35, new TreasureMap(3, Map.Trammel));
-            PlaceItemIn(cont, 75, 35, new TreasureMap(4, Map.Trammel));
-            PlaceItemIn(cont, 90, 35, new TreasureMap(5, Map.Trammel));
-            PlaceItemIn(cont, 90, 35, new TreasureMap(6, Map.Trammel));
-
-            PlaceItemIn(cont, 30, 50, new TreasureMap(1, Map.Trammel));
-            PlaceItemIn(cont, 45, 50, new TreasureMap(2, Map.Trammel));
-            PlaceItemIn(cont, 60, 50, new TreasureMap(3, Map.Trammel));
-            PlaceItemIn(cont, 75, 50, new TreasureMap(4, Map.Trammel));
-            PlaceItemIn(cont, 90, 50, new TreasureMap(5, Map.Trammel));
-            PlaceItemIn(cont, 90, 50, new TreasureMap(6, Map.Trammel));
-
-            PlaceItemIn(cont, 55, 100, new Lockpick(30));
-            PlaceItemIn(cont, 60, 100, new Pickaxe());
+            PlaceItemIn(cont, 22, 77, new Shovel(30000));
+            PlaceItemIn(cont, 57, 97, new Lockpick(3));
 
             PlaceItemIn(bank, 98, 124, cont);
-            // End bag of treasure maps
+            #endregion
 
-            // Begin bag of raw materials
+            #region Trans Powder
             cont = new Bag();
-            cont.Hue = 0x835;
-            cont.Name = "Raw Materials Bag";
 
-            PlaceItemIn(cont, 92, 60, new BarbedLeather(5000));
-            PlaceItemIn(cont, 92, 68, new HornedLeather(5000));
-            PlaceItemIn(cont, 92, 76, new SpinedLeather(5000));
-            PlaceItemIn(cont, 92, 84, new Leather(5000));
+            PlaceItemIn(cont, 117, 147, new PowderOfTranslocation(100));
+            PlaceItemIn(bank, 117, 147, cont);
+            #endregion
 
-            PlaceItemIn(cont, 30, 118, new Cloth(5000));
-            PlaceItemIn(cont, 30, 84, new Board(5000));
-            PlaceItemIn(cont, 57, 80, new BlankScroll(500));
+            #region Magery Items
+            cont = new WoodenBox();
+            cont.Hue = 1195;
+            cont.Name = "Magery Items";
 
-            PlaceItemIn(cont, 30, 35, new DullCopperIngot(5000));
-            PlaceItemIn(cont, 37, 35, new ShadowIronIngot(5000));
-            PlaceItemIn(cont, 44, 35, new CopperIngot(5000));
-            PlaceItemIn(cont, 51, 35, new BronzeIngot(5000));
-            PlaceItemIn(cont, 58, 35, new GoldIngot(5000));
-            PlaceItemIn(cont, 65, 35, new AgapiteIngot(5000));
-            PlaceItemIn(cont, 72, 35, new VeriteIngot(5000));
-            PlaceItemIn(cont, 79, 35, new ValoriteIngot(5000));
-            PlaceItemIn(cont, 86, 35, new IronIngot(5000));
+            PlaceItemIn(cont, 78, 88, new CrimsonCincture() { Hue = 232 });
+            PlaceItemIn(cont, 102, 90, new CrystallineRing());
 
-            PlaceItemIn(cont, 30, 59, new RedScales(5000));
-            PlaceItemIn(cont, 36, 59, new YellowScales(5000));
-            PlaceItemIn(cont, 42, 59, new BlackScales(5000));
-            PlaceItemIn(cont, 48, 59, new GreenScales(5000));
-            PlaceItemIn(cont, 54, 59, new WhiteScales(5000));
-            PlaceItemIn(cont, 60, 59, new BlueScales(5000));
+            var brac = new GoldBracelet();
+            brac.Name = "Farmer's Bank of Mastery";
+            brac.Attributes.CastRecovery = 3;
+            brac.Attributes.CastSpeed = 1;
+            PlaceItemIn(cont, 139, 30, brac);
 
-            PlaceItemIn(bank, 98, 169, cont);
-            // End bag of raw materials
+            Container bag = new Backpack();
+            bag.Hue = 1152;
+            bag.Name = "Spell Casting Stuff";
 
-            // Begin bag of spell casting stuff
-            cont = new Backpack();
-            cont.Hue = 0x480;
-            cont.Name = "Spell Casting Stuff";
+            PlaceItemIn(bag, 45, 107, new Spellbook(UInt64.MaxValue));
+            PlaceItemIn(bag, 65, 107, new NecromancerSpellbook((UInt64)0xFFFF));
+            PlaceItemIn(bag, 85, 107, new BookOfChivalry((UInt64)0x3FF));
+            PlaceItemIn(bag, 105, 107, new BookOfBushido());	//Default ctor = full
+            PlaceItemIn(bag, 125, 107, new BookOfNinjitsu()); //Default ctor = full
 
-            PlaceItemIn(cont, 45, 105, new Spellbook(UInt64.MaxValue));
-            PlaceItemIn(cont, 65, 105, new NecromancerSpellbook((UInt64)0xFFFF));
-            PlaceItemIn(cont, 85, 105, new BookOfChivalry((UInt64)0x3FF));
-            PlaceItemIn(cont, 105, 105, new BookOfBushido());	//Default ctor = full
-            PlaceItemIn(cont, 125, 105, new BookOfNinjitsu()); //Default ctor = full
+            PlaceItemIn(bag, 102, 122, new SpellweavingBook((1ul << 16) - 1));
+            PlaceItemIn(bag, 122, 122, new MysticBook((1ul << 16) - 1));
 
-            Runebook runebook = new Runebook(10);
+            Runebook runebook = new Runebook(20);
             runebook.CurCharges = runebook.MaxCharges;
-            PlaceItemIn(cont, 145, 105, runebook);
+            PlaceItemIn(bag, 145, 105, runebook);
 
-            Item toHue = new BagOfAllReagents(150);
+            Item toHue = new BagOfReagents(5000);
             toHue.Hue = 0x2D;
-            PlaceItemIn(cont, 45, 150, toHue);
+            PlaceItemIn(bag, 45, 128, toHue);
 
-            toHue = new BagOfNecroReagents(150);
+            toHue = new BagOfNecroReagents(3000);
             toHue.Hue = 0x488;
-            PlaceItemIn(cont, 65, 150, toHue);
+            PlaceItemIn(bag, 64, 125, toHue);
 
-            PlaceItemIn(cont, 140, 150, new BagOfAllReagents(500));
+            toHue = new BagOfMysticReagents(3000);
+            toHue.Hue = 1167;
+            PlaceItemIn(bag, 141, 128, toHue);
 
             for (int i = 0; i < 9; ++i)
-                PlaceItemIn(cont, 45 + (i * 10), 75, new RecallRune());
+                PlaceItemIn(bag, 45 + (i * 10), 74, new RecallRune());
 
-            PlaceItemIn(cont, 141, 74, new FireHorn());
+            PlaceItemIn(cont, 47, 91, bag);
 
-            PlaceItemIn(bank, 78, 169, cont);
-            // End bag of spell casting stuff
+            bag = new Backpack();
+            bag.Name = "Various Potion Kegs";
 
-            // Begin bag of ethereals
+            PlaceItemIn(bag, 45, 149, MakePotionKeg(PotionEffect.CureGreater, 0x2D));
+            PlaceItemIn(bag, 69, 149, MakePotionKeg(PotionEffect.HealGreater, 0x499));
+            PlaceItemIn(bag, 93, 149, MakePotionKeg(PotionEffect.PoisonDeadly, 0x46));
+            PlaceItemIn(bag, 117, 149, MakePotionKeg(PotionEffect.RefreshTotal, 0x21));
+            PlaceItemIn(bag, 141, 149, MakePotionKeg(PotionEffect.ExplosionGreater, 0x74));
+
+            PlaceItemIn(bag, 93, 82, new Bottle(1000));
+
+            PlaceItemIn(cont, 53, 169, bag);
+
+            PlaceItemIn(bank, 63, 142, cont);
+            #endregion
+
+            #region Silver - No Mas Silver
+            /*cont = new WoodenBox();
+            cont.Hue = 1161;
+
+            PlaceItemIn(cont, 47, 91, new Silver(9000));
+            PlaceItemIn(bank, 38, 142, cont);*/
+            #endregion
+
+            #region Ethys
             cont = new Backpack();
             cont.Hue = 0x490;
             cont.Name = "Bag Of Ethy's!";
@@ -350,154 +873,7 @@ namespace Server.Misc
             PlaceItemIn(cont, 117, 99, new EtherealBeetle());
 
             PlaceItemIn(bank, 38, 124, cont);
-            // End bag of ethereals
-
-            // Begin first bag of artifacts
-            cont = new Backpack();
-            cont.Hue = 0x48F;
-            cont.Name = "Bag of Artifacts";
-
-            PlaceItemIn(cont, 45, 66, new TitansHammer());
-            PlaceItemIn(cont, 69, 82, new InquisitorsResolution());
-            PlaceItemIn(cont, 93, 99, new BladeOfTheRighteous());
-            PlaceItemIn(cont, 117, 115, new ZyronicClaw());
-
-            PlaceItemIn(bank, 58, 124, cont);
-            // End first bag of artifacts
-
-            // Begin second bag of artifacts
-            cont = new Backpack();
-            cont.Hue = 0x48F;
-            cont.Name = "Bag of Artifacts";
-
-            PlaceItemIn(cont, 45, 66, new GauntletsOfNobility());
-            PlaceItemIn(cont, 69, 82, new MidnightBracers());
-            PlaceItemIn(cont, 93, 99, new VoiceOfTheFallenKing());
-            PlaceItemIn(cont, 117, 115, new OrnateCrownOfTheHarrower());
-            PlaceItemIn(cont, 45, 132, new HelmOfInsight());
-            PlaceItemIn(cont, 69, 66, new HolyKnightsBreastplate());
-            PlaceItemIn(cont, 93, 82, new ArmorOfFortune());
-            PlaceItemIn(cont, 117, 99, new TunicOfFire());
-            PlaceItemIn(cont, 45, 115, new LeggingsOfBane());
-            PlaceItemIn(cont, 69, 132, new ArcaneShield());
-            PlaceItemIn(cont, 93, 66, new Aegis());
-            PlaceItemIn(cont, 117, 82, new RingOfTheVile());
-            PlaceItemIn(cont, 45, 99, new BraceletOfHealth());
-            PlaceItemIn(cont, 69, 115, new RingOfTheElements());
-            PlaceItemIn(cont, 93, 132, new OrnamentOfTheMagician());
-            PlaceItemIn(cont, 117, 66, new DivineCountenance());
-            PlaceItemIn(cont, 45, 82, new JackalsCollar());
-            PlaceItemIn(cont, 69, 99, new HuntersHeaddress());
-            PlaceItemIn(cont, 93, 115, new HatOfTheMagi());
-            PlaceItemIn(cont, 117, 132, new ShadowDancerLeggings());
-            PlaceItemIn(cont, 45, 66, new SpiritOfTheTotem());
-            PlaceItemIn(cont, 69, 82, new BladeOfInsanity());
-            PlaceItemIn(cont, 93, 99, new AxeOfTheHeavens());
-            PlaceItemIn(cont, 117, 115, new TheBeserkersMaul());
-            PlaceItemIn(cont, 45, 132, new Frostbringer());
-            PlaceItemIn(cont, 69, 66, new BreathOfTheDead());
-            PlaceItemIn(cont, 93, 82, new TheDragonSlayer());
-            PlaceItemIn(cont, 117, 99, new BoneCrusher());
-            PlaceItemIn(cont, 45, 115, new StaffOfTheMagi());
-            PlaceItemIn(cont, 69, 132, new SerpentsFang());
-            PlaceItemIn(cont, 93, 66, new LegacyOfTheDreadLord());
-            PlaceItemIn(cont, 117, 82, new TheTaskmaster());
-            PlaceItemIn(cont, 45, 99, new TheDryadBow());
-
-            PlaceItemIn(bank, 78, 124, cont);
-            // End second bag of artifacts
-
-            // Begin bag of minor artifacts
-            cont = new Backpack();
-            cont.Hue = 0x48F;
-            cont.Name = "Bag of Minor Artifacts";
-
-            PlaceItemIn(cont, 45, 66, new LunaLance());
-            PlaceItemIn(cont, 69, 82, new VioletCourage());
-            PlaceItemIn(cont, 93, 99, new CavortingClub());
-            PlaceItemIn(cont, 117, 115, new CaptainQuacklebushsCutlass());
-            PlaceItemIn(cont, 45, 132, new NightsKiss());
-            PlaceItemIn(cont, 69, 66, new ShipModelOfTheHMSCape());
-            PlaceItemIn(cont, 93, 82, new AdmiralsHeartyRum());
-            PlaceItemIn(cont, 117, 99, new CandelabraOfSouls());
-            PlaceItemIn(cont, 45, 115, new IolosLute());
-            PlaceItemIn(cont, 69, 132, new GwennosHarp());
-            PlaceItemIn(cont, 93, 66, new ArcticDeathDealer());
-            PlaceItemIn(cont, 117, 82, new EnchantedTitanLegBone());
-            PlaceItemIn(cont, 45, 99, new NoxRangersHeavyCrossbow());
-            PlaceItemIn(cont, 69, 115, new BlazeOfDeath());
-            PlaceItemIn(cont, 93, 132, new DreadPirateHat());
-            PlaceItemIn(cont, 117, 66, new BurglarsBandana());
-            PlaceItemIn(cont, 45, 82, new GoldBricks());
-            PlaceItemIn(cont, 69, 99, new AlchemistsBauble());
-            PlaceItemIn(cont, 93, 115, new PhillipsWoodenSteed());
-            PlaceItemIn(cont, 117, 132, new PolarBearMask());
-            PlaceItemIn(cont, 45, 66, new BowOfTheJukaKing());
-            PlaceItemIn(cont, 69, 82, new GlovesOfThePugilist());
-            PlaceItemIn(cont, 93, 99, new OrcishVisage());
-            PlaceItemIn(cont, 117, 115, new StaffOfPower());
-            PlaceItemIn(cont, 45, 132, new ShieldOfInvulnerability());
-            PlaceItemIn(cont, 69, 66, new HeartOfTheLion());
-            PlaceItemIn(cont, 93, 82, new ColdBlood());
-            PlaceItemIn(cont, 117, 99, new GhostShipAnchor());
-            PlaceItemIn(cont, 45, 115, new SeahorseStatuette());
-            PlaceItemIn(cont, 69, 132, new WrathOfTheDryad());
-            PlaceItemIn(cont, 93, 66, new PixieSwatter());
-
-            for (int i = 0; i < 10; i++)
-                PlaceItemIn(cont, 117, 128, new MessageInABottle(Utility.RandomBool() ? Map.Trammel : Map.Felucca, 4));
-
-            PlaceItemIn(bank, 18, 124, cont);
-
-            cont = new Bag();
-            cont.Hue = 0x501;
-            cont.Name = "Tokuno Minor Artifacts";
-
-            PlaceItemIn(cont, 42, 70, new Exiler());
-            PlaceItemIn(cont, 38, 53, new HanzosBow());
-            PlaceItemIn(cont, 45, 40, new TheDestroyer());
-            PlaceItemIn(cont, 92, 80, new DragonNunchaku());
-            PlaceItemIn(cont, 42, 56, new PeasantsBokuto());
-            PlaceItemIn(cont, 44, 71, new TomeOfEnlightenment());
-            PlaceItemIn(cont, 35, 35, new ChestOfHeirlooms());
-            PlaceItemIn(cont, 29, 0, new HonorableSwords());
-            PlaceItemIn(cont, 49, 85, new AncientUrn());
-            PlaceItemIn(cont, 51, 58, new FluteOfRenewal());
-            PlaceItemIn(cont, 70, 51, new PigmentsOfTokuno());
-            PlaceItemIn(cont, 40, 79, new AncientSamuraiDo());
-            PlaceItemIn(cont, 51, 61, new LegsOfStability());
-            PlaceItemIn(cont, 88, 78, new GlovesOfTheSun());
-            PlaceItemIn(cont, 55, 62, new AncientFarmersKasa());
-            PlaceItemIn(cont, 55, 83, new ArmsOfTacticalExcellence());
-            PlaceItemIn(cont, 50, 85, new DaimyosHelm());
-            PlaceItemIn(cont, 52, 78, new BlackLotusHood());
-            PlaceItemIn(cont, 52, 79, new DemonForks());
-            PlaceItemIn(cont, 33, 49, new PilferedDancerFans());
-
-            PlaceItemIn(bank, 58, 124, cont);
-
-            cont = new Bag();
-            cont.Name = "Bag of Bows";
-
-            PlaceItemIn(cont, 31, 84, new Bow());
-            PlaceItemIn(cont, 78, 74, new CompositeBow());
-            PlaceItemIn(cont, 53, 71, new Crossbow());
-            PlaceItemIn(cont, 56, 39, new HeavyCrossbow());
-            PlaceItemIn(cont, 82, 72, new RepeatingCrossbow());
-            PlaceItemIn(cont, 49, 45, new Yumi());
-
-            for (int i = 0; i < cont.Items.Count; i++)
-            {
-                BaseRanged bow = cont.Items[i] as BaseRanged;
-
-                if (bow != null)
-                {
-                    bow.Attributes.WeaponSpeed = 35;
-                    bow.Attributes.WeaponDamage = 35;
-                }
-            }
-
-            PlaceItemIn(bank, 108, 135, cont);
+            #endregion
         }
 
         public static void FillBankbox(Mobile m)

@@ -496,6 +496,11 @@ namespace Server.Engines.Craft
 
         public bool RetainsColorFrom(CraftSystem system, Type type)
         {
+            if (system.RetainsColorFromException(this, type))
+            {
+                return false;
+            }
+
             if (system.RetainsColorFrom(this, type))
             {
                 return true;

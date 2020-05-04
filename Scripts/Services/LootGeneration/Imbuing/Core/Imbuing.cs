@@ -1259,7 +1259,7 @@ namespace Server.SkillHandlers
             return false;
         }
 
-        private static bool IsInSkillGroup(SkillName skill, int index)
+        /*private static bool IsInSkillGroup(SkillName skill, int index)
         {
             if (index < 0 || index >= m_SkillGroups.Length)
                 return false;
@@ -1270,7 +1270,7 @@ namespace Server.SkillHandlers
                     return true;
             }
             return false;
-        }
+        }*/
 
         private static int GetSkillBonuses(AosSkillBonuses bonus, object prop)
         {
@@ -1280,7 +1280,7 @@ namespace Server.SkillHandlers
             {
                 if (bonus.GetBonus(j) > 0)
                 {
-                    if (!(prop is SkillName) || !IsInSkillGroup((SkillName)prop, j))
+                    if (!(prop is SkillName) || !IsInSkillGroup(bonus.GetSkill(j), (SkillName)prop))
                         id += 1;
                 }
             }
@@ -1548,26 +1548,36 @@ namespace Server.SkillHandlers
         private static int CheckSkillBonuses(Item item, int check, bool trueWeight, bool imbuing)
         {
             double weight = 0;
-            int id = -1;
 
             AosSkillBonuses skills = RunicReforging.GetAosSkillBonuses(item);
 
-            if (item is BaseJewel)
-            {
-                id = check;
-            }
-
-            // Place Holder. THis is in case the skill weight/max intensity every changes
-            int totalWeight = trueWeight ? 100 : ItemPropertyInfo.GetWeight(151);
-            int maxInt = ItemPropertyInfo.GetMaxIntensity(item, 151, imbuing);
-
             if (skills != null)
             {
-                if (skills.GetBonus(0) > 0) { if (id < 151 || id > 155) { weight += (totalWeight / maxInt * skills.GetBonus(0)); } }
-                if (skills.GetBonus(1) > 0) { if (id < 156 || id > 160) { weight += (totalWeight / maxInt * skills.GetBonus(1)); } }
-                if (skills.GetBonus(2) > 0) { if (id < 161 || id > 166) { weight += (totalWeight / maxInt * skills.GetBonus(2)); } }
-                if (skills.GetBonus(3) > 0) { if (id < 167 || id > 173) { weight += (totalWeight / maxInt * skills.GetBonus(3)); } }
-                if (skills.GetBonus(4) > 0) { if (id < 174 || id > 180) { weight += (totalWeight / maxInt * skills.GetBonus(4)); } }
+                int id = -1;
+
+                if (item is BaseJewel)
+                {
+                    id = check;
+                }
+
+                // Place Holder. THis is in case the skill weight/max intensity every changes
+                int totalWeight = trueWeight ? 100 : ItemPropertyInfo.GetWeight(151);
+                int maxInt = ItemPropertyInfo.GetMaxIntensity(item, 151, imbuing);
+
+                for (int i = 0; i < 5; i++)
+                {
+                    double bonus = skills.GetBonus(i);
+
+                    if (bonus > 0)
+                    {
+                        var attr = ItemPropertyInfo.GetAttribute(id);
+
+                        if ((id < 151 && id > 183) || !(attr is SkillName) || !IsInSkillGroup(skills.GetSkill(i), (SkillName)attr))
+                        {
+                            weight += (totalWeight / maxInt * bonus);
+                        }
+                    }
+                }
             }
 
             return (int)weight;
@@ -1632,7 +1642,28 @@ namespace Server.SkillHandlers
                 }
             }
 
-            return 01;
+            return -1;
+        }
+
+        public static int GetSkillGroupIndex(SkillName skill)
+        {
+            for (int i = 0; i < m_SkillGroups.Length; i++)
+            {
+                if (m_SkillGroups[i].Any(sk => sk == skill))
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
+        public static bool IsInSkillGroup(SkillName one, SkillName two)
+        {
+            var skillGroup1 = GetSkillGroupIndex(one);
+            var skillGroup2 = GetSkillGroupIndex(two);
+
+            return skillGroup1 != -1 && skillGroup2 != -1 && skillGroup1 == skillGroup2;
         }
 
         public static bool CheckSoulForge(Mobile from, int range)
@@ -1723,7 +1754,7 @@ namespace Server.SkillHandlers
         {
             typeof(MagicalResidue),     typeof(EnchantedEssence),       typeof(RelicFragment),
 
-            typeof(SeedOfRenewal),        typeof(ChagaMushroom),          typeof(CrystalShards),
+            typeof(SeedOfRenewal),      typeof(ChagaMushroom),          typeof(CrystalShards),
             typeof(BottleIchor),        typeof(ReflectiveWolfEye),      typeof(FaeryDust),
             typeof(BouraPelt),          typeof(SilverSnakeSkin),        typeof(ArcanicRuneStone),
             typeof(SlithTongue),        typeof(VoidOrb),                typeof(RaptorTeeth),
