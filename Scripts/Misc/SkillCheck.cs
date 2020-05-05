@@ -173,7 +173,6 @@ namespace Server.Misc
             return CheckSkill(from, skill, new Point2D(from.Location.X / LocationSize, from.Location.Y / LocationSize), chance);
         }
 
-        #region Craft All Gains
         /// <summary>
         /// This should be a successful skill check, where a system can register several skill gains at once. Only system
         /// using this currently is UseAllRes for CraftItem.cs
@@ -193,14 +192,17 @@ namespace Server.Misc
 
             for (int i = 0; i < amount; i++)
             {
-                double gc = GetGainChance(from, skill, (value - minSkill) / (maxSkill - minSkill), value) / 10;
+                double chance = (value - minSkill) / (maxSkill - minSkill);
+                double gc = GetGainChance(from, skill, chance, Utility.Random(100) <= (int)(chance * 100)) / (value / 4);
 
                 if (AllowGain(from, skill, new Point2D(from.Location.X / LocationSize, from.Location.Y / LocationSize)))
                 {
-                    if (from.Alive && (skill.Base < 10.0 || Utility.RandomDouble() <= gc || CheckGGS(from, skill)))
+                    if (from.Alive && (skill.Base + (value - skill.Value) < 10.0 || Utility.RandomDouble() <= gc || CheckGGS(from, skill)))
                     {
                         gains++;
                         value += 0.1;
+
+                        UpdateGGS(from, skill);
                     }
                 }
 
@@ -215,25 +217,6 @@ namespace Server.Misc
 
             return false;
         }
-
-        private static double GetGainChance(Mobile from, Skill skill, double gains, double chance)
-        {
-            double gc = (from.Skills.Cap - (from.Skills.Total + (gains * 10))) / from.Skills.Cap;
-
-            gc += (skill.Cap - (skill.Base + (gains * 10))) / skill.Cap;
-            gc /= 4;
-
-            gc *= skill.Info.GainFactor;
-
-            if (gc < 0.01)
-                gc = 0.01;
-
-            if (gc > 1.00)
-                gc = 1.00;
-
-            return gc;
-        }
-        #endregion
 
         public static bool CheckSkill(Mobile from, Skill skill, object obj, double chance)
         {
@@ -333,13 +316,11 @@ namespace Server.Misc
 
             if (from is PlayerMobile)
             {
-                #region SA
                 if (skill.Info.SkillID == (int)SkillName.Archery && from.Race == Race.Gargoyle)
                     return false;
 
                 if (skill.Info.SkillID == (int)SkillName.Throwing && @from.Race != Race.Gargoyle)
                     return false;
-                #endregion
 
                 if (_AntiMacroCode && UseAntiMacro[skill.Info.SkillID])
                     return ((PlayerMobile)from).AntiMacroCheck(skill, obj);
@@ -445,21 +426,20 @@ namespace Server.Misc
                     EventSink.InvokeSkillGain(new SkillGainEventArgs(from, skill, toGain));
 
                     if (from is PlayerMobile)
+                    {
                         UpdateGGS(from, skill);
+                    }
                 }
             }
 
-            #region Mondain's Legacy
             if (from is PlayerMobile)
-                QuestHelper.CheckSkill((PlayerMobile)from, skill);
-            #endregion
-
-            if (skill.Lock == SkillLock.Up &&
-                (!Siege.SiegeShard || !(from is PlayerMobile) || Siege.CanGainStat((PlayerMobile)from)))
             {
-                SkillInfo info = skill.Info;
+                QuestHelper.CheckSkill((PlayerMobile)from, skill);
+            }
 
-                TryStatGain(info, from);
+            if (skill.Lock == SkillLock.Up && (!Siege.SiegeShard || !(from is PlayerMobile) || Siege.CanGainStat((PlayerMobile)from)))
+            {
+                TryStatGain(skill.Info, from);
             }
         }
 
