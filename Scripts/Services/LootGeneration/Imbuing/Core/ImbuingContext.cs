@@ -8,8 +8,6 @@ namespace Server
         public int Imbue_ModInt { get; set; }
         public int Imbue_ModVal { get; set; }
         public int ImbMenu_Cat { get; set; }
-        public int ImbMenu_ModInc { get; set; }
-        public int Imbue_IWmax { get; set; }
 
         public ImbuingContext(Mobile mob)
         {
@@ -21,26 +19,37 @@ namespace Server
             int v = reader.ReadInt();
 
             Player = owner;
-            LastImbued = reader.ReadItem();
-            Imbue_Mod = reader.ReadInt();
-            Imbue_ModInt = reader.ReadInt();
-            Imbue_ModVal = reader.ReadInt();
-            Imbue_IWmax = reader.ReadInt();
-            ImbMenu_Cat = reader.ReadInt();
-            ImbMenu_ModInc = reader.ReadInt();
+
+            switch (v)
+            {
+                case 1:
+                    LastImbued = reader.ReadItem();
+                    Imbue_Mod = reader.ReadInt();
+                    Imbue_ModInt = reader.ReadInt();
+                    Imbue_ModVal = reader.ReadInt();
+                    ImbMenu_Cat = reader.ReadInt();
+                    break;
+                case 0:
+                    LastImbued = reader.ReadItem();
+                    Imbue_Mod = reader.ReadInt();
+                    Imbue_ModInt = reader.ReadInt();
+                    Imbue_ModVal = reader.ReadInt();
+                    reader.ReadInt();
+                    ImbMenu_Cat = reader.ReadInt();
+                    reader.ReadInt();
+                    break;
+            }
         }
 
         public void Serialize(GenericWriter writer)
         {
-            writer.Write(0);
+            writer.Write(1);
 
             writer.Write(LastImbued);
             writer.Write(Imbue_Mod);
             writer.Write(Imbue_ModInt);
             writer.Write(Imbue_ModVal);
-            writer.Write(Imbue_IWmax);
             writer.Write(ImbMenu_Cat);
-            writer.Write(ImbMenu_ModInc);
         }
     }
 }

@@ -38,6 +38,11 @@ namespace Server.Items
         {
         }
 
+        public PropInfo(int itemRef, int scale, int sMax, int lMax, int[] powerfulRange)
+            : this((ItemType)itemRef, scale, sMax, lMax, powerfulRange)
+        {
+        }
+
         public PropInfo(ItemType type, int scale, int sMax, int lMax, int[] powerfulRange)
         {
             ItemType = type;
@@ -342,19 +347,19 @@ namespace Server.Items
                 new PropInfo(1, 50, 50, new int[] { 55, 60, 65, 70 }), new PropInfo(2, 50, 50, new int[] { 55, 60, 65, 70 })));
 
             Register(35, new ItemPropertyInfo(AosWeaponAttribute.HitMagicArrow, 1079706, 120, typeof(RelicFragment), typeof(Amber), typeof(EssenceFeeling), 1, 2, 50, 1111963,
-                new PropInfo(1, 50, 50, new int[] { 55, 60, 65, 70 }), new PropInfo(2, 50, 50, new int[] { 55, 60, 65, 70 })));
+                new PropInfo(1, 2, 50, 50, new int[] { 55, 60, 65, 70 }), new PropInfo(2, 2, 50, 50, new int[] { 55, 60, 65, 70 })));
 
             Register(36, new ItemPropertyInfo(AosWeaponAttribute.HitHarm, 1079704, 110, typeof(EnchantedEssence), typeof(Emerald), typeof(ParasiticPlant), 1, 2, 50, 1111961,
-                new PropInfo(1, 50, 50, new int[] { 55, 60, 65, 70 }), new PropInfo(2, 50, 50, new int[] { 55, 60, 65, 70 })));
+                new PropInfo(1, 2, 50, 50, new int[] { 55, 60, 65, 70 }), new PropInfo(2, 2, 50, 50, new int[] { 55, 60, 65, 70 })));
 
             Register(37, new ItemPropertyInfo(AosWeaponAttribute.HitFireball, 1079703, 140, typeof(EnchantedEssence), typeof(Ruby), typeof(FireRuby), 1, 2, 50, 1111960,
-                new PropInfo(1, 50, 50, new int[] { 55, 60, 65, 70 }), new PropInfo(2, 50, 50, new int[] { 55, 60, 65, 70 })));
+                new PropInfo(1, 2, 50, 50, new int[] { 55, 60, 65, 70 }), new PropInfo(2, 2, 50, 50, new int[] { 55, 60, 65, 70 })));
 
             Register(38, new ItemPropertyInfo(AosWeaponAttribute.HitLightning, 1079705, 140, typeof(RelicFragment), typeof(Amethyst), typeof(EssencePassion), 1, 2, 50, 1111962,
-                new PropInfo(1, 50, 50, new int[] { 55, 60, 65, 70 }), new PropInfo(2, 50, 50, new int[] { 55, 60, 65, 70 })));
+                new PropInfo(1, 2, 50, 50, new int[] { 55, 60, 65, 70 }), new PropInfo(2, 2, 50, 50, new int[] { 55, 60, 65, 70 })));
 
             Register(39, new ItemPropertyInfo(AosWeaponAttribute.HitDispel, 1079702, 100, typeof(MagicalResidue), typeof(Amber), typeof(SlithTongue), 1, 2, 50, 1111959,
-                new PropInfo(1, 50, 50, new int[] { 55, 60, 65, 70 }), new PropInfo(2, 50, 50, new int[] { 55, 60, 65, 70 })));
+                new PropInfo(1, 2, 50, 50, new int[] { 55, 60, 65, 70 }), new PropInfo(2, 2, 50, 50, new int[] { 55, 60, 65, 70 })));
 
             Register(40, new ItemPropertyInfo(AosWeaponAttribute.UseBestSkill, 1079592, 150, typeof(EnchantedEssence), typeof(Amber), typeof(DelicateScales), 0, 1, 1, 1111946,
                 new PropInfo(1, 1, 1)));
@@ -392,7 +397,7 @@ namespace Server.Items
             Register(55, new ItemPropertyInfo(AosElementAttribute.Energy, 1061162, 100, typeof(MagicalResidue), typeof(Amethyst), typeof(BouraPelt), 1, 1, 15, 1112008,
                 new PropInfo(1, 10, 100, 100), new PropInfo(2, 10, 100, 100), new PropInfo(3, 15, 15, new int[] { 20, 25, 30 }), new PropInfo(4, 15, 15), new PropInfo(5, 15, 15, new int[] { 20, 25, 30 }), new PropInfo(6, 15, 15, new int[] { 20 })));
 
-            Register(60, new ItemPropertyInfo("WeaponVelocity", 1080416, 140, typeof(RelicFragment), typeof(Tourmaline), typeof(EssenceDirection), 1, 2, 50, 1112048,
+            Register(60, new ItemPropertyInfo("WeaponVelocity", 1080416, 140, typeof(RelicFragment), typeof(Tourmaline), typeof(EssenceDirection), 1, 11, 50, 1112048,
                 new PropInfo(2, 50, 50)));
 
             Register(61, new ItemPropertyInfo(AosAttribute.BalancedWeapon, 1072792, 150, typeof(RelicFragment), typeof(Amber), typeof(EssenceBalance), 0, 1, 1, 1112047,

@@ -52,6 +52,8 @@ namespace Server.Gumps
             int minInt = ItemPropertyInfo.GetMinIntensity(m_Item, m_ID);
             int maxInt = ItemPropertyInfo.GetMaxIntensity(m_Item, m_ID, true);
             int weight = m_Info.Weight;
+            int scale = ItemPropertyInfo.GetScale(m_Item, m_ID);
+            int start = minInt - scale;
 
             if (m_Value < minInt)
             {
@@ -63,13 +65,12 @@ namespace Server.Gumps
                 m_Value = maxInt;
             }
 
-            double currentIntensity = Math.Floor((m_Value / (double)maxInt) * m_Info.Weight);
+            double currentIntensity = Math.Floor(((m_Value - start) / ((double)maxInt - start)) * m_Info.Weight);
 
             // Set context
             context.LastImbued = m_Item;
             context.Imbue_Mod = m_ID;
             context.Imbue_ModVal = weight;
-            context.ImbMenu_ModInc = ItemPropertyInfo.GetScale(m_Item, m_ID);
 
             // Current Mod Weight
             m_TotalItemWeight = Imbuing.GetTotalWeight(m_Item, m_ID, false, true);
@@ -285,7 +286,7 @@ namespace Server.Gumps
                     }
                 case 10051: // Decrease Mod Value [<]
                     {
-                        m_Value = Math.Max(ItemPropertyInfo.GetMinIntensity(m_Item, m_Info.ID), m_Value - 1);
+                        m_Value = Math.Max(ItemPropertyInfo.GetMinIntensity(m_Item, m_Info.ID), m_Value - ItemPropertyInfo.GetScale(m_Item, m_Info.ID));
                         Refresh();
 
                         break;
@@ -306,7 +307,7 @@ namespace Server.Gumps
                     }
                 case 10054: // Increase Mod Value [>]
                     {
-                        m_Value = Math.Min(ItemPropertyInfo.GetMaxIntensity(m_Item, m_Info.ID, true), m_Value + 1);
+                        m_Value = Math.Min(ItemPropertyInfo.GetMaxIntensity(m_Item, m_Info.ID, true), m_Value + ItemPropertyInfo.GetScale(m_Item, m_Info.ID));
                         Refresh();
 
                         break;
@@ -333,8 +334,6 @@ namespace Server.Gumps
                     }
                 case 10100:  // Imbue the Item
                     {
-                        context.Imbue_IWmax = m_MaxWeight;
-
                         if (Imbuing.OnBeforeImbue(User, m_Item, m_ID, m_Value, m_TotalProps, Imbuing.GetMaxProps(m_Item), m_TotalItemWeight, m_MaxWeight))
                         {
                             Imbuing.TryImbueItem(User, m_Item, m_ID, m_Value);
@@ -421,67 +420,6 @@ namespace Server.Gumps
                         }
                     }
                 }
-
-                // SkillGroup1 replace SkillGroup1
-                /*if (id >= 151 && id <= 155)
-                {
-                    if (i.SkillBonuses.GetBonus(0) > 0)
-                    {
-                        foreach (SkillName sk in Imbuing.PossibleSkills)
-                        {
-                            if (i.SkillBonuses.GetSkill(0) == sk)
-                                return GetNameForAttribute(sk);
-                        }
-                    }
-                }
-                // SkillGroup2 replace SkillGroup2
-                if (id >= 156 && id <= 160)
-                {
-                    if (i.SkillBonuses.GetBonus(1) > 0)
-                    {
-                        foreach (SkillName sk in Imbuing.PossibleSkills)
-                        {
-                            if (i.SkillBonuses.GetSkill(1) == sk)
-                                return GetNameForAttribute(sk);
-                        }
-                    }
-                }
-                // SkillGroup3 replace SkillGroup3
-                if (id >= 161 && id <= 166)
-                {
-                    if (i.SkillBonuses.GetBonus(2) > 0)
-                    {
-                        foreach (SkillName sk in Imbuing.PossibleSkills)
-                        {
-                            if (i.SkillBonuses.GetSkill(2) == sk)
-                                return GetNameForAttribute(sk);
-                        }
-                    }
-                }
-                // SkillGroup4 replace SkillGroup4
-                if (id >= 167 && id <= 172)
-                {
-                    if (i.SkillBonuses.GetBonus(3) > 0)
-                    {
-                        foreach (SkillName sk in Imbuing.PossibleSkills)
-                        {
-                            if (i.SkillBonuses.GetSkill(3) == sk)
-                                return GetNameForAttribute(sk);
-                        }
-                    }
-                }
-                // SkillGroup5 replace SkillGroup5
-                if (id >= 173 && id <= 178)
-                {
-                    if (i.SkillBonuses.GetBonus(4) > 0)
-                    {
-                        foreach (SkillName sk in Imbuing.PossibleSkills)
-                        {
-                            if (i.SkillBonuses.GetSkill(4) == sk)
-                                return GetNameForAttribute(sk);
-                        }
-                    }
-                }*/
             }
 
             return null;
