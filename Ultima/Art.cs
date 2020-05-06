@@ -35,8 +35,8 @@ namespace Ultima
 
         static Art()
         {
-            m_Cache = new Bitmap[0xFFFF];
-            m_Removed = new bool[0xFFFF];
+            m_Cache = new Bitmap[0x10000];
+            m_Removed = new bool[0x10000];
         }
 
         public static int GetMaxItemID()
@@ -89,8 +89,8 @@ namespace Ultima
         {
             m_FileIndex = new FileIndex(
                 "Artidx.mul", "Art.mul", "artLegacyMUL.uop", 0x10000 /*0x13FDC*/, 4, ".tga", 0x13FDC, false);
-            m_Cache = new Bitmap[0xFFFF];
-            m_Removed = new bool[0xFFFF];
+            m_Cache = new Bitmap[0x10000];
+            m_Removed = new bool[0x10000];
             m_patched.Clear();
             Modified = false;
         }
