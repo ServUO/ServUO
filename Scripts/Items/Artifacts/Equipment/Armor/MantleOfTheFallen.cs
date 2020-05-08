@@ -4,6 +4,13 @@ namespace Server.Items
     {
         public override bool IsArtifact => true;
         public override int LabelNumber => 1113819; // Mantle of the Fallen
+        public override int BasePhysicalResistance => 5;
+        public override int BaseFireResistance => 8;
+        public override int BaseColdResistance => 11;
+        public override int BasePoisonResistance => 12;
+        public override int BaseEnergyResistance => 8;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
         [Constructable]
         public MantleOfTheFallen()
@@ -22,13 +29,6 @@ namespace Server.Items
         {
         }
 
-        public override int BasePhysicalResistance => 5;
-        public override int BaseFireResistance => 8;
-        public override int BaseColdResistance => 11;
-        public override int BasePoisonResistance => 12;
-        public override int BaseEnergyResistance => 8;
-        public override int InitMinHits => 255;
-        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

@@ -85,7 +85,7 @@ namespace Server.Items
 
             if (0.2 > Utility.RandomDouble())
             {
-                switch (Utility.Random(3))
+                switch (Utility.Random(7))
                 {
                     case 0:
                         item = new ZombiePainting(); break;
@@ -93,6 +93,14 @@ namespace Server.Items
                         item = new SkeletonPortrait(); break;
                     case 2:
                         item = new LichPainting(); break;
+                    case 3:
+                        item = new RelicOfHydros(); break;
+                    case 4:
+                        item = new RelicOfLithos(); break;
+                    case 5:
+                        item = new RelicOfPyros(); break;
+                    case 6:
+                        item = new RelicOfStratos(); break;
                 }
 
                 DropItem(item);

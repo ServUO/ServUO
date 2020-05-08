@@ -3,6 +3,12 @@ namespace Server.Items
     public class MidnightBracers : BoneArms
     {
         public override bool IsArtifact => true;
+        public override int LabelNumber => 1061093;// Midnight Bracers
+        public override int ArtifactRarity => 11;
+        public override int BasePhysicalResistance => 23;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
+
         [Constructable]
         public MidnightBracers()
         {
@@ -17,26 +23,16 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber => 1061093;// Midnight Bracers
-        public override int ArtifactRarity => 11;
-        public override int BasePhysicalResistance => 23;
-        public override int InitMinHits => 255;
-        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (version < 1)
-                PhysicalBonus = 0;
         }
     }
 }

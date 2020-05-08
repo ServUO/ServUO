@@ -1040,7 +1040,6 @@
     <Compile Include="Items\Quest\CreepyWeeds.cs" />
     <Compile Include="Items\Quest\CrystalBallOfKnowledge.cs" />
     <Compile Include="Items\Quest\EnchantedPaints.cs" />
-    <Compile Include="Items\Quest\FoolishGold.cs" />
     <Compile Include="Items\Quest\GamanHorn.cs" />
     <Compile Include="Items\Quest\GaramonsBook.cs" />
     <Compile Include="Items\Quest\GaramonsBook1.cs" />
@@ -2000,6 +1999,7 @@
     <Compile Include="Mobiles\Named\Gnaw.cs" />
     <Compile Include="Mobiles\Named\GrayGoblinMageRenowned.cs" />
     <Compile Include="Mobiles\Named\GreenGoblinAlchemistRenowned.cs" />
+	<Compile Include="Mobiles\Named\Niporailem.cs" />
     <Compile Include="Mobiles\Named\NightTerror.cs" />
     <Compile Include="Mobiles\Named\Grim.cs" />
     <Compile Include="Mobiles\Named\Grobu.cs" />
@@ -2134,6 +2134,8 @@
     <Compile Include="Mobiles\Normal\CrystalVortex.cs" />
     <Compile Include="Mobiles\Normal\CrystalWisp.cs" />
     <Compile Include="Mobiles\Normal\Cursed.cs" />
+	<Compile Include="Mobiles\Normal\CursedMetallicKnight.cs" />
+	<Compile Include="Mobiles\Normal\CursedMetallicMage.cs" />
     <Compile Include="Mobiles\Normal\CursedSoul.cs" />
     <Compile Include="Mobiles\Normal\CuSidhe.cs" />
     <Compile Include="Mobiles\Normal\Cyclops.cs" />
@@ -2307,7 +2309,6 @@
     <Compile Include="Mobiles\Normal\MountainGoat.cs" />
     <Compile Include="Mobiles\Normal\Mummy.cs" />
     <Compile Include="Mobiles\Normal\Nightmare.cs" />
-    <Compile Include="Mobiles\Normal\Niporailem.cs" />
     <Compile Include="Mobiles\Normal\Ogre.cs" />
     <Compile Include="Mobiles\Normal\OgreLord.cs" />
     <Compile Include="Mobiles\Normal\Oni.cs" />
@@ -9634,6 +9635,7 @@
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Items\KhaldunEntranceAddon.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Items\KhaldunFirstAidBelt.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Items\KhaldunPainting.cs" />
+    <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Items\KhaldunRareRelic.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Items\KhaldunTastyTreat.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Items\MaskOfKhalAnkur.cs" />
     <Compile Include="Services\Seasonal Events\TreasuresOfKhaldun\Items\Meteorite.cs" />
