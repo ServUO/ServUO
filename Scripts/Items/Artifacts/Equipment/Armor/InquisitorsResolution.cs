@@ -3,6 +3,13 @@ namespace Server.Items
     public class InquisitorsResolution : PlateGloves
     {
         public override bool IsArtifact => true;
+        public override int LabelNumber => 1060206;// The Inquisitor's Resolution
+        public override int ArtifactRarity => 10;
+        public override int BaseColdResistance => 22;
+        public override int BaseEnergyResistance => 17;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
+
         [Constructable]
         public InquisitorsResolution()
         {
@@ -17,30 +24,16 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber => 1060206;// The Inquisitor's Resolution
-        public override int ArtifactRarity => 10;
-        public override int BaseColdResistance => 22;
-        public override int BaseEnergyResistance => 17;
-        public override int InitMinHits => 255;
-        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (version < 1)
-            {
-                ColdBonus = 0;
-                EnergyBonus = 0;
-            }
         }
     }
 }

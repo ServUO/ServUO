@@ -4,6 +4,13 @@ namespace Server.Items
     {
         public override bool IsArtifact => true;
         public override int LabelNumber => 1113868;  // Void Infused Kilt
+        public override int BasePhysicalResistance => 13;
+        public override int BaseFireResistance => 12;
+        public override int BaseColdResistance => 8;
+        public override int BasePoisonResistance => 9;
+        public override int BaseEnergyResistance => 9;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
         [Constructable]
         public VoidInfusedKilt()
@@ -23,13 +30,6 @@ namespace Server.Items
         {
         }
 
-        public override int BasePhysicalResistance => 13;
-        public override int BaseFireResistance => 12;
-        public override int BaseColdResistance => 8;
-        public override int BasePoisonResistance => 9;
-        public override int BaseEnergyResistance => 9;
-        public override int InitMinHits => 255;
-        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

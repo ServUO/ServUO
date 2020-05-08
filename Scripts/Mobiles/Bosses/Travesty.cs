@@ -31,6 +31,7 @@ namespace Server.Mobiles
         public override bool CanDiscord => _CanDiscord;
         public override bool CanPeace => _CanPeace;
         public override bool CanProvoke => _CanProvoke;
+        public override bool AlwaysAttackable => true;
 
         [Constructable]
         public Travesty()

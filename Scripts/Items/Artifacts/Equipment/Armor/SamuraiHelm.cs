@@ -4,6 +4,16 @@ namespace Server.Items
     public class SamuraiHelm : BaseArmor
     {
         public override bool IsArtifact => true;
+        public override int LabelNumber => 1062923;// Ancient Samurai Helm
+        public override int BasePhysicalResistance => 15;
+        public override int BaseFireResistance => 10;
+        public override int BaseColdResistance => 10;
+        public override int BasePoisonResistance => 15;
+        public override int BaseEnergyResistance => 10;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
+        public override ArmorMaterialType MaterialType => ArmorMaterialType.Plate;
+
         [Constructable]
         public SamuraiHelm()
             : base(0x236C)
@@ -21,26 +31,15 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber => 1062923;// Ancient Samurai Helm
-        public override int BasePhysicalResistance => 15;
-        public override int BaseFireResistance => 10;
-        public override int BaseColdResistance => 10;
-        public override int BasePoisonResistance => 15;
-        public override int BaseEnergyResistance => 10;
-        public override int InitMinHits => 255;
-        public override int InitMaxHits => 255;
-        public override ArmorMaterialType MaterialType => ArmorMaterialType.Plate;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadEncodedInt();
         }
     }

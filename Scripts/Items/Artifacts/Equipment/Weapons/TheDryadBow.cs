@@ -3,6 +3,11 @@ namespace Server.Items
     public class TheDryadBow : Bow
     {
         public override bool IsArtifact => true;
+		public override int LabelNumber => 1061090;// The Dryad Bow
+        public override int ArtifactRarity => 11;
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
+		
         private static readonly SkillName[] m_PossibleBonusSkills = new SkillName[]
         {
             SkillName.Archery,
@@ -28,25 +33,16 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber => 1061090;// The Dryad Bow
-        public override int ArtifactRarity => 11;
-        public override int InitMinHits => 255;
-        public override int InitMaxHits => 255;
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (version < 1)
-                SkillBonuses.SetValues(0, m_PossibleBonusSkills[Utility.Random(m_PossibleBonusSkills.Length)], (Utility.Random(4) == 0 ? 10.0 : 5.0));
         }
     }
 }

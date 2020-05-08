@@ -4,6 +4,17 @@ namespace Server.Items
     {
         public override int LabelNumber => 1075047;  // Aegis of Grace
         public override bool IsArtifact => true;
+        public override int BasePhysicalResistance => 10;
+        public override int BaseFireResistance => 9;
+        public override int BaseColdResistance => 7;
+        public override int BasePoisonResistance => 7;
+        public override int BaseEnergyResistance => 15;
+
+        public override ArmorMaterialType MaterialType => ArmorMaterialType.Dragon;
+        public override CraftResource DefaultResource => CraftResource.Iron;
+
+        public override int InitMinHits => 255;
+        public override int InitMaxHits => 255;
 
         [Constructable]
         public AegisOfGrace()
@@ -27,18 +38,6 @@ namespace Server.Items
         {
         }
 
-        public override int BasePhysicalResistance => 10;
-        public override int BaseFireResistance => 9;
-        public override int BaseColdResistance => 7;
-        public override int BasePoisonResistance => 7;
-        public override int BaseEnergyResistance => 15;
-
-        public override ArmorMaterialType MaterialType => ArmorMaterialType.Dragon;
-        public override CraftResource DefaultResource => CraftResource.Iron;
-
-        public override int InitMinHits => 255;
-        public override int InitMaxHits => 255;
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -49,11 +48,6 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadEncodedInt();
-
-            if (version == 0 && ItemID == 0x2B6E)
-            {
-                MeditationAllowance = ArmorMeditationAllowance.All;
-            }
         }
     }
 }

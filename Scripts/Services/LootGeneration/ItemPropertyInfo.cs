@@ -317,34 +317,34 @@ namespace Server.Items
                 new PropInfo(3, 1, 1), new PropInfo(5, 1, 1), new PropInfo(6, 1, 1)));
 
             Register(25, new ItemPropertyInfo(AosWeaponAttribute.HitLeechHits, 1079698, 110, typeof(MagicalResidue), typeof(Ruby), typeof(VoidOrb), 1, 2, 50, 1111964,
-                new PropInfo(1, 10, 50, 50), new PropInfo(2, 10, 50, 50)));
+                new PropInfo(1, 2, 50, 50), new PropInfo(2, 2, 50, 50)));
 
             Register(26, new ItemPropertyInfo(AosWeaponAttribute.HitLeechStam, 1079707, 100, typeof(MagicalResidue), typeof(Diamond), typeof(VoidOrb), 1, 2, 50, 1111992,
-                new PropInfo(1, 10, 50, 50), new PropInfo(2, 10, 50, 50)));
+                new PropInfo(1, 2, 50, 50), new PropInfo(2, 2, 50, 50)));
 
             Register(27, new ItemPropertyInfo(AosWeaponAttribute.HitLeechMana, 1079701, 110, typeof(MagicalResidue), typeof(Sapphire), typeof(VoidOrb), 1, 2, 50, 1111967,
-                new PropInfo(1, 10, 50, 50), new PropInfo(2, 10, 50, 50)));
+                new PropInfo(1, 2, 50, 50), new PropInfo(2, 2, 50, 50)));
 
             Register(28, new ItemPropertyInfo(AosWeaponAttribute.HitLowerAttack, 1079699, 110, typeof(EnchantedEssence), typeof(Emerald), typeof(ParasiticPlant), 1, 2, 50, 1111965,
                 new PropInfo(1, 50, 50, new int[] { 55, 60, 65, 70 }), new PropInfo(2, 50, 50, new int[] { 55, 60, 65, 70 })));
 
             Register(29, new ItemPropertyInfo(AosWeaponAttribute.HitLowerDefend, 1079700, 130, typeof(EnchantedEssence), typeof(Tourmaline), typeof(ParasiticPlant), 1, 2, 50, 1111966,
-                 new PropInfo(1, 50, 50, new int[] { 55, 60, 65, 70 }), new PropInfo(2, 50, 50, new int[] { 55, 60, 65, 70 })));
+                new PropInfo(1, 2, 50, 50, new int[] { 55, 60, 65, 70 }), new PropInfo(2, 2, 50, 50, new int[] { 55, 60, 65, 70 })));
 
             Register(30, new ItemPropertyInfo(AosWeaponAttribute.HitPhysicalArea, 1079696, 100, typeof(MagicalResidue), typeof(Diamond), typeof(RaptorTeeth), 1, 2, 50, 1111956,
-                new PropInfo(1, 50, 50, new int[] { 55, 60, 65, 70 }), new PropInfo(2, 50, 50, new int[] { 55, 60, 65, 70 })));
+                new PropInfo(1, 2, 50, 50, new int[] { 55, 60, 65, 70 }), new PropInfo(2, 2, 50, 50, new int[] { 55, 60, 65, 70 })));
 
             Register(31, new ItemPropertyInfo(AosWeaponAttribute.HitFireArea, 1079695, 100, typeof(MagicalResidue), typeof(Ruby), typeof(RaptorTeeth), 1, 2, 50, 1111955,
-                new PropInfo(1, 50, 50, new int[] { 55, 60, 65, 70 }), new PropInfo(2, 50, 50, new int[] { 55, 60, 65, 70 })));
+                new PropInfo(1, 2, 50, 50, new int[] { 55, 60, 65, 70 }), new PropInfo(2, 2, 50, 50, new int[] { 55, 60, 65, 70 })));
 
             Register(32, new ItemPropertyInfo(AosWeaponAttribute.HitColdArea, 1079693, 100, typeof(MagicalResidue), typeof(Sapphire), typeof(RaptorTeeth), 1, 2, 50, 1111953,
-                new PropInfo(1, 50, 50, new int[] { 55, 60, 65, 70 }), new PropInfo(2, 50, 50, new int[] { 55, 60, 65, 70 })));
+                new PropInfo(1, 2, 50, 50, new int[] { 55, 60, 65, 70 }), new PropInfo(2, 2, 50, 50, new int[] { 55, 60, 65, 70 })));
 
             Register(33, new ItemPropertyInfo(AosWeaponAttribute.HitPoisonArea, 1079697, 100, typeof(MagicalResidue), typeof(Emerald), typeof(RaptorTeeth), 1, 2, 50, 1111957,
-                new PropInfo(1, 50, 50, new int[] { 55, 60, 65, 70 }), new PropInfo(2, 50, 50, new int[] { 55, 60, 65, 70 })));
+                new PropInfo(1, 2, 50, 50, new int[] { 55, 60, 65, 70 }), new PropInfo(2, 2, 50, 50, new int[] { 55, 60, 65, 70 })));
 
             Register(34, new ItemPropertyInfo(AosWeaponAttribute.HitEnergyArea, 1079694, 100, typeof(MagicalResidue), typeof(Amethyst), typeof(RaptorTeeth), 1, 2, 50, 1111954,
-                new PropInfo(1, 50, 50, new int[] { 55, 60, 65, 70 }), new PropInfo(2, 50, 50, new int[] { 55, 60, 65, 70 })));
+                new PropInfo(1, 2, 50, 50, new int[] { 55, 60, 65, 70 }), new PropInfo(2, 2, 50, 50, new int[] { 55, 60, 65, 70 })));
 
             Register(35, new ItemPropertyInfo(AosWeaponAttribute.HitMagicArrow, 1079706, 120, typeof(RelicFragment), typeof(Amber), typeof(EssenceFeeling), 1, 2, 50, 1111963,
                 new PropInfo(1, 2, 50, 50, new int[] { 55, 60, 65, 70 }), new PropInfo(2, 2, 50, 50, new int[] { 55, 60, 65, 70 })));

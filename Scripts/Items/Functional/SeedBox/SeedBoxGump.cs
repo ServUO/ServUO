@@ -1,5 +1,6 @@
 using Server.Gumps;
 using Server.Mobiles;
+using Server.Prompts;
 using Server.Targeting;
 using System;
 
@@ -12,7 +13,8 @@ namespace Server.Engines.Plants
 
         public int Pages => (int)Math.Ceiling(Box.Entries.Count / 20.0);
 
-        public SeedBoxGump(PlayerMobile user, SeedBox box, int page = 1) : base(user, 100, 100)
+        public SeedBoxGump(PlayerMobile user, SeedBox box, int page = 1)
+            : base(user, 150, 200)
         {
             Box = box;
             Page = page;
@@ -22,22 +24,14 @@ namespace Server.Engines.Plants
 
         public override void AddGumpLayout()
         {
-            AddImage(0, 0, 2172);
+            AddPage(0);
+
+            AddImage(30, 30, 2172);
+
+            AddPage(1);
 
             int start = (Page - 1) * 20;
-            int index = 0;
-
-            AddHtmlLocalized(100, 345, 300, 20, 1151850, String.Format("{0}\t{1}", Page.ToString(), Pages.ToString()), 0xFFFF, false, false);
-
-            if (Page > 1)
-            {
-                AddButton(45, 345, 5603, 5603, 1, GumpButtonType.Reply, 0);
-            }
-
-            if (Page < Pages)
-            {
-                AddButton(235, 345, 5601, 5601, 2, GumpButtonType.Reply, 0);
-            }
+            int index = 0;            
 
             for (int i = start; i < Box.Entries.Count && i < start + 20; i++)
             {
@@ -53,37 +47,49 @@ namespace Server.Engines.Plants
 
                 if (index < 4)
                 {
-                    x = 15 + (index * 70);
-                    y = 15;
+                    x = 46 + (index * 70);
+                    y = 41;
                 }
                 else if (index < 8)
                 {
-                    x = 15 + ((index - 4) * 70);
-                    y = 82;
+                    x = 46 + ((index - 4) * 70);
+                    y = 106;
                 }
                 else if (index < 12)
                 {
-                    x = 15 + ((index - 8) * 70);
-                    y = 149;
+                    x = 46 + ((index - 8) * 70);
+                    y = 171;
                 }
                 else if (index < 16)
                 {
-                    x = 15 + ((index - 12) * 70);
-                    y = 216;
+                    x = 46 + ((index - 12) * 70);
+                    y = 236;
                 }
                 else
                 {
-                    x = 15 + ((index - 16) * 70);
-                    y = 283;
+                    x = 46 + ((index - 16) * 70);
+                    y = 301;
                 }
 
-                AddButton(x, y, entry.Image, entry.Image, i + 100, GumpButtonType.Reply, 0);
-                AddItem(x, y + 30, 0xDCF, entry.Seed.Hue);
-
-                entry.Seed.InvalidateProperties();
-                AddItemProperty(entry.Seed);
+                AddImageTiledButton(x, y, entry.Image, entry.Image, i + 100, GumpButtonType.Reply, 0, 0xDCF, entry.Seed.Hue, 3, 30);
+                AddTooltip(entry.Seed.GetLabel(out string args), args);
 
                 index++;
+            }
+
+            if (Pages > 1)
+            {
+                AddHtmlLocalized(136, 373, 100, 25, 1151850, string.Format("@{0}@{1}", Page.ToString(), Pages.ToString()), 0x6F7B, false, false);
+
+                if (Page > 1)
+                {
+                    AddButton(66, 375, 5603, 5603, 1, GumpButtonType.Reply, 0);
+                }
+
+                if (Page < Pages)
+                {
+                    AddButton(276, 375, 5601, 5601, 2, GumpButtonType.Reply, 0);
+                }
             }
         }
 
@@ -141,9 +147,10 @@ namespace Server.Engines.Plants
         public SeedBox Box { get; set; }
         public SeedEntry Entry { get; set; }
 
-        public static int TextHue = 0x696969;
+        public static int TextHue = 0x1CE7;
 
-        public SeedInfoGump(PlayerMobile user, SeedBox box, SeedEntry entry, SeedBoxGump par) : base(user, parent: par)
+        public SeedInfoGump(PlayerMobile user, SeedBox box, SeedEntry entry, SeedBoxGump par)
+            : base(user, parent: par)
         {
             Box = box;
             Entry = entry;
@@ -159,51 +166,90 @@ namespace Server.Engines.Plants
                 return;
             }
 
-            AddBackground(0, 0, 300, 280, 5170);
+            AddBackground(0, 0, 280, 225, 5170);
 
-            string args;
-            int seedloc = Entry.Seed.GetLabel(out args);
+            int seedloc = Entry.Seed.GetLabel(out string args);
             int index = Box.Entries.IndexOf(Entry);
 
-            AddHtmlLocalized(30, 25, 270, 20, seedloc, args, C32216(TextHue), false, false);
+            int hue = Entry.Seed.Hue;
 
-            AddHtmlLocalized(50, 60, 150, 20, 1151840, C32216(TextHue), false, false); // Remove: 1
-            AddButton(30, 60, 10740, 10740, 1, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(25, 25, 200, 20, seedloc, args, TextHue, false, false); // ~1_COLOR~ ~2_TYPE~ seed
 
-            AddHtmlLocalized(50, 90, 150, 20, 1151841, Entry.Seed.Amount.ToString(), C32216(TextHue), false, false); // Remove: ~1_val~
-            AddButton(30, 90, 10740, 10740, 2, GumpButtonType.Reply, 0);
+            AddPage(1);
 
-            if (index > 0)
+            AddImageTiledButton(28, 54, 10740, 10740, 1, GumpButtonType.Reply, 0, 0xDCF, hue, -20, 2);
+            AddHtmlLocalized(53, 52, 100, 20, 1151840, TextHue, false, false); // Remove: 1
+
+            AddImageTiledButton(128, 54, 10740, 10740, 2, GumpButtonType.Reply, 0, 0xDCF, hue, -20, 2);
+            AddHtmlLocalized(153, 52, 100, 20, 1158411, TextHue, false, false); // Remove Quantity
+
+            AddImageTiledButton(28, 79, 10740, 10740, 3, GumpButtonType.Reply, 0, 0xDCF, hue, -20, 2);
+            AddHtmlLocalized(53, 77, 100, 20, 1151841, Entry.Seed.Amount.ToString(), TextHue, false, false); // Remove: ~1_val~
+            
+            if (index >= 0)
             {
-                AddHtmlLocalized(50, 120, 150, 20, 1151851, C32216(TextHue), false, false); // Insert Seed Before
-                AddButton(30, 120, 10740, 10740, 3, GumpButtonType.Reply, 0);
+                AddImageTiledButton(28, 104, 10740, 10740, 4, GumpButtonType.Reply, 0, 0xDCF, hue, -20, 2);                
             }
-            else
-                AddImage(30, 120, 10740);
+
+            AddHtmlLocalized(53, 102, 150, 20, 1151851, TextHue, false, false); // Insert Seed Before
 
             if (Box.Entries.Count < SeedBox.MaxUnique)
             {
-                AddHtmlLocalized(50, 150, 150, 20, 1151852, C32216(TextHue), false, false); // Insert Seed After
-                AddButton(30, 150, 10740, 10740, 4, GumpButtonType.Reply, 0);
+                AddImageTiledButton(28, 129, 10740, 10740, 5, GumpButtonType.Reply, 0, 0xDCF, hue, -20, 2);                
             }
-            else
-                AddImage(30, 150, 10740);
+
+            AddHtmlLocalized(53, 127, 150, 20, 1151852, TextHue, false, false); // Insert Seed After
 
             if (index < Box.Entries.Count && Box.Entries.Count < SeedBox.MaxUnique)
             {
-                AddHtmlLocalized(50, 180, 150, 20, 1151842, C32216(TextHue), false, false); // Shift Right
-                AddButton(30, 180, 10740, 10740, 5, GumpButtonType.Reply, 0);
+                AddImageTiledButton(28, 154, 10740, 10740, 6, GumpButtonType.Reply, 0, 0xDCF, hue, -20, 2);                
             }
-            else
-                AddImage(30, 180, 10740);
+
+            AddHtmlLocalized(53, 152, 100, 20, 1151842, TextHue, false, false); // Shift Right
 
             if (index > 0 && Box.Entries[index - 1] == null)
             {
-                AddHtmlLocalized(50, 210, 150, 20, 1151843, C32216(TextHue), false, false); // Shift Left
-                AddButton(30, 210, 10740, 10740, 6, GumpButtonType.Reply, 0);
+                AddImageTiledButton(28, 179, 10740, 10740, 7, GumpButtonType.Reply, 0, 0xDCF, hue, -20, 2);                
             }
-            else
-                AddImage(30, 210, 10740);
+
+            AddHtmlLocalized(53, 177, 100, 20, 1151843, TextHue, false, false); // Shift Right
+        }
+
+        private class QuanitityRemovePrompt : Prompt
+        {
+            public override int MessageCliloc => 1158424; // How many seeds would you like to remove?
+            private readonly SeedBox m_Box;
+            private readonly SeedEntry m_Entry;
+
+            public QuanitityRemovePrompt(SeedBox box, SeedEntry entry)
+            {
+                m_Box = box;
+                m_Entry = entry;
+            }
+
+            public override void OnResponse(Mobile from, string text)
+            {
+                if (m_Box == null)
+                {
+                    return;
+                }
+
+                var amount = Utility.ToInt32(text);
+
+                if (amount <= 0 || amount > m_Entry.Seed.Amount)
+                {
+                    from.SendLocalizedMessage(1158425); // You may not remove that quantity of seeds.
+                }
+                else
+                {
+                    m_Box.DropSeed(from, m_Entry, amount);
+
+                    from.SendLocalizedMessage(1158426, amount.ToString()); // You remove ~1_quant~ seed(s) from the seedbox.
+
+                    if (from is PlayerMobile pm)
+                        SendGump(new SeedBoxGump(pm, m_Box));
+                }
+            }
         }
 
         public override void OnResponse(RelayInfo info)
@@ -222,11 +268,14 @@ namespace Server.Engines.Plants
                     RefreshParent();
                     break;
                 case 2:
+                    User.Prompt = new QuanitityRemovePrompt(Box, Entry);
+                    break;
+                case 3:
                     Box.DropSeed(User, Entry, Entry.Seed.Amount);
 
                     RefreshParent();
                     break;
-                case 3:
+                case 4:
                     User.SendLocalizedMessage(1151849); // Click this button and target a seed to add it here.
                     User.BeginTarget(-1, false, TargetFlags.None, (from, targeted) =>
                         {
@@ -234,7 +283,7 @@ namespace Server.Engines.Plants
 
                             if (seed != null)
                             {
-                                if (Box != null && !Box.Deleted && index > 0)
+                                if (Box != null && !Box.Deleted && index >= 0)
                                 {
                                     Box.TryAddSeed(User, seed, index);
                                 }
@@ -245,7 +294,7 @@ namespace Server.Engines.Plants
                             RefreshParent();
                         });
                     break;
-                case 4:
+                case 5:
                     if (Box.Entries.Count < SeedBox.MaxUnique)
                     {
                         User.SendLocalizedMessage(1151849); // Click this button and target a seed to add it here.
@@ -255,7 +304,7 @@ namespace Server.Engines.Plants
 
                                 if (seed != null)
                                 {
-                                    if (Box != null && !Box.Deleted && index > 0)
+                                    if (Box != null && !Box.Deleted && index >= 0)
                                     {
                                         Box.TryAddSeed(User, seed, index + 1);
                                     }
@@ -267,29 +316,28 @@ namespace Server.Engines.Plants
                             });
                     }
                     break;
-                case 5:  // shift right
+                case 6:  // shift right
                     if (index >= 0 && index < Box.Entries.Count && Box.Entries.Count < SeedBox.MaxUnique)
                     {
                         Box.Entries.Insert(index, null);
 
-                        if (index + 2 < Box.Entries.Count && Box.Entries[index + 2] == null)
-                            Box.Entries.RemoveAt(index + 2);
-
                         if (Parent is SeedBoxGump)
                             ((SeedBoxGump)Parent).CheckPage(Entry);
 
-                        RefreshParent(true);
+                        RefreshParent(false);
                     }
                     break;
-                case 6: // shift left
+                case 7: // shift left
                     if (index >= 0 && index < Box.Entries.Count && Box.Entries[index - 1] == null)
                     {
-                        Box.Entries.Remove(Entry);
-                        Box.Entries.Insert(index - 1, Entry);
+                        Box.Entries.RemoveAt(index - 1);
+
                         Box.TrimEntries();
+
                         if (Parent is SeedBoxGump)
                             ((SeedBoxGump)Parent).CheckPage(Entry);
-                        RefreshParent(true);
+
+                        RefreshParent(false);
                     }
                     break;
             }
