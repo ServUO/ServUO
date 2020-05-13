@@ -27,6 +27,7 @@ namespace Server.Items
         public override int InitMaxHits => 65;
         public override int StrReq => 70;
         public override ArmorMaterialType MaterialType => ArmorMaterialType.Plate;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

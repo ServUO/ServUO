@@ -374,8 +374,9 @@ namespace Server.Engines.Harvest
                             spawned.Combatant = from;
                         }
                     }
-                    catch
+                    catch (Exception e)
                     {
+                        Server.Diagnostics.ExceptionLogging.LogException(e);
                     }
                 }
             }

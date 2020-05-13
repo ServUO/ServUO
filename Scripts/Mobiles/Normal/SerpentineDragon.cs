@@ -39,9 +39,6 @@ namespace Server.Mobiles
             Fame = 15000;
             Karma = 15000;
 
-            if (Utility.RandomDouble() < .33)
-                PackItem(Engines.Plants.Seed.RandomPeculiarSeed(3));
-
             Tamable = true;
             ControlSlots = 3;
             MinTameSkill = 108.0;
@@ -71,6 +68,7 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.FilthyRich, 2);
             AddLoot(LootPack.Gems, 2);
+            AddLoot(LootPack.PeculiarSeed3);
         }
 
         public override int GetIdleSound()

@@ -40,11 +40,6 @@ namespace Server.Mobiles
             Fame = 22000;
             Karma = -22000;
 
-            if (Utility.RandomDouble() < .50)
-                PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
-
-            PackItem(new Eggs(2));
-
             SetWeaponAbility(WeaponAbility.DoubleStrike);
         }
 
@@ -64,6 +59,8 @@ namespace Server.Mobiles
             AddLoot(LootPack.UltraRich);
             AddLoot(LootPack.FilthyRich, 2);
             AddLoot(LootPack.Gems, 6);
+            AddLoot(LootPack.LootItem<Eggs>(2));
+            AddLoot(LootPack.BonsaiSeed);
         }
 
         public override void OnDamagedBySpell(Mobile attacker)

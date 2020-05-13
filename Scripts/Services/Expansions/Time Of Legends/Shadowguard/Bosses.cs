@@ -1001,12 +1001,18 @@ namespace Server.Engines.Shadowguard
             scimitar.Movable = false;
 
             PackItem(scimitar);
-            PackItem(new Arrow(25));
 
             LesserHiryu hiryu = new LesserHiryu();
             hiryu.Rider = this;
 
             SetWeaponAbility(WeaponAbility.Dismount);
+        }
+
+        public override void GenerateLoot()
+        {
+            base.GenerateLoot();
+
+            AddLoot(LootPack.LootItem<Arrow>(25, true));
         }
 
         private DateTime _NextWeaponSwitch;

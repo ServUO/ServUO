@@ -58,31 +58,8 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            if (Utility.RandomDouble() < .05)
-            {
-                switch (Utility.Random(5))
-                {
-                    case 0:
-                        PackItem(new ObsidianSkull());
-                        break;
-                    case 1:
-                        PackItem(new CrystalSkull());
-                        break;
-                    case 2:
-                        PackItem(new JadeSkull());
-                        break;
-                    case 3:
-                        PackItem(new CarvablePumpkinTall());
-                        break;
-                    case 4:
-                        PackItem(new CarvableGordPumpkinTall());
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            PackItem(new WrappedCandy());
+            AddLoot(LootPack.LootItem<WrappedCandy>(true));
+            AddLoot(LootPack.RandomLootItem(new Type[] { typeof(ObsidianSkull), typeof(CrystalSkull), typeof(JadeSkull), typeof(CarvablePumpkinTall), typeof(CarvableGordPumpkinTall) }, 20.0, 1));
             AddLoot(LootPack.UltraRich, 2);
         }
 

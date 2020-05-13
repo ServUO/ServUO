@@ -45,9 +45,6 @@ namespace Server.Mobiles
 
             Fame = 12500;
             Karma = -12500;
-
-            PackItem(new Nightshade(4));
-            PackItem(new LesserPoisonPotion());
         }
 
         public GreaterPoisonElemental(Serial serial)
@@ -65,6 +62,8 @@ namespace Server.Mobiles
             AddLoot(LootPack.FilthyRich);
             AddLoot(LootPack.Rich);
             AddLoot(LootPack.MedScrolls);
+            AddLoot(LootPack.LootItem<Nightshade>(4, true));
+            AddLoot(LootPack.LootItem<LesserPoisonPotion>(true));
         }
 
         public override void OnDeath(Container c)

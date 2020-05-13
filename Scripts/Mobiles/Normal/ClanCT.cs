@@ -39,7 +39,6 @@ namespace Server.Mobiles
             Karma = -6500;
 
             AddItem(new Bow());
-            PackItem(new Arrow(Utility.RandomMinMax(50, 70)));
         }
 
         public ClanCT(Serial serial)
@@ -53,6 +52,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Rich, 2);
+            AddLoot(LootPack.LootItem<Arrow>(Utility.RandomMinMax(50, 70)));
         }
 
         public override void Serialize(GenericWriter writer)

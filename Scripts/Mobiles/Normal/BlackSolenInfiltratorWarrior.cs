@@ -37,10 +37,14 @@ namespace Server.Mobiles
 
             Fame = 3000;
             Karma = -3000;
+        }
 
-            SolenHelper.PackPicnicBasket(this);
-
-            PackItem(new ZoogiFungus((0.05 > Utility.RandomDouble()) ? 13 : 3));
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.Average, 2);
+            AddLoot(LootPack.Gems, Utility.RandomMinMax(1, 4));
+            AddLoot(LootPack.LootItem<ZoogiFungus>(0.05 > Utility.RandomDouble() ? 16 : 4));
+            AddLoot(LootPack.LootItemCallback(SolenHelper.PackPicnicBasket, 1.0, 1, false, false));
         }
 
         public BlackSolenInfiltratorWarrior(Serial serial)
@@ -71,12 +75,6 @@ namespace Server.Mobiles
         public override int GetDeathSound()
         {
             return 0xE4;
-        }
-
-        public override void GenerateLoot()
-        {
-            AddLoot(LootPack.Average, 2);
-            AddLoot(LootPack.Gems, Utility.RandomMinMax(1, 4));
         }
 
         public override bool IsEnemy(Mobile m)

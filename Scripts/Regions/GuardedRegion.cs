@@ -149,8 +149,10 @@ namespace Server.Regions
                 {
                     Activator.CreateInstance(m_GuardType, m_GuardParams);
                 }
-                catch
-                { }
+                catch (Exception e)
+                {
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
+                }
             }
             else
             {

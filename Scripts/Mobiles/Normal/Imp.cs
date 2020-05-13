@@ -41,22 +41,6 @@ namespace Server.Mobiles
 
             Fame = 2500;
             Karma = -2500;
-            switch (Utility.Random(104))
-            {
-                case 0: PackItem(new BloodOathScroll()); break;
-                case 1: PackItem(new CorpseSkinScroll()); break;
-                case 2: PackItem(new CurseWeaponScroll()); break;
-                case 3: PackItem(new EvilOmenScroll()); break;
-                case 4: PackItem(new HorrificBeastScroll()); break;
-                case 5: PackItem(new LichFormScroll()); break;
-                case 6: PackItem(new MindRotScroll()); break;
-                case 7: PackItem(new PainSpikeScroll()); break;
-                case 8: PackItem(new PoisonStrikeScroll()); break;
-                case 9: PackItem(new StrangleScroll()); break;
-                case 10: PackItem(new SummonFamiliarScroll()); break;
-                case 11: PackItem(new WitherScroll()); break;
-                case 12: PackItem(new WraithFormScroll()); break;
-            }
 
             Tamable = true;
             ControlSlots = 2;
@@ -74,10 +58,33 @@ namespace Server.Mobiles
         public override FoodType FavoriteFood => FoodType.Meat;
         public override PackInstinct PackInstinct => PackInstinct.Daemon;
         public override bool CanFly => true;
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Meager);
             AddLoot(LootPack.MedScrolls, 2);
+        }
+
+        public override void OnDeath(Container c)
+        {
+            base.OnDeath(c);
+
+            switch (Utility.Random(13))
+            {
+                case 0: c.DropItem(new BloodOathScroll()); break;
+                case 1: c.DropItem(new CorpseSkinScroll()); break;
+                case 2: c.DropItem(new CurseWeaponScroll()); break;
+                case 3: c.DropItem(new EvilOmenScroll()); break;
+                case 4: c.DropItem(new HorrificBeastScroll()); break;
+                case 5: c.DropItem(new LichFormScroll()); break;
+                case 6: c.DropItem(new MindRotScroll()); break;
+                case 7: c.DropItem(new PainSpikeScroll()); break;
+                case 8: c.DropItem(new PoisonStrikeScroll()); break;
+                case 9: c.DropItem(new StrangleScroll()); break;
+                case 10: c.DropItem(new SummonFamiliarScroll()); break;
+                case 11: c.DropItem(new WitherScroll()); break;
+                case 12: c.DropItem(new WraithFormScroll()); break;
+            }
         }
 
         public override void Serialize(GenericWriter writer)

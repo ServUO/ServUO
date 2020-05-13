@@ -218,9 +218,9 @@ namespace Server.Misc
                 {
                     i = Activator.CreateInstance(m_LesserArtifacts[(int)DropEra - 1][Utility.Random(m_LesserArtifacts[(int)DropEra - 1].Length)]) as Item;
                 }
-                catch
+                catch (Exception e)
                 {
-                    return;
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
                 }
 
                 if (i != null)

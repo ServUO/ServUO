@@ -65,9 +65,10 @@ namespace Server.Accounting
                 {
                     Account acct = new Account(account);
                 }
-                catch
+                catch (Exception e)
                 {
                     Console.WriteLine("Warning: Account instance load failed");
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
                 }
             }
         }

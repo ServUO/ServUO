@@ -29,8 +29,6 @@ namespace Server.Mobiles
 
             Fame = 4000;
             Karma = -4000;
-
-            PackItem(new Bone());
         }
 
         public Bogle(Serial serial)
@@ -46,6 +44,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Meager);
+            AddLoot(LootPack.LootItem<Bone>());
         }
 
         public override void Serialize(GenericWriter writer)

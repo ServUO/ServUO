@@ -38,9 +38,6 @@ namespace Server.Mobiles
 
             Fame = 1500;
             Karma = -1500;
-
-            if (0.2 > Utility.RandomDouble())
-                PackItem(new BolaBall());
         }
 
         public EnslavedGrayGoblin(Serial serial)
@@ -61,6 +58,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Meager);
+            AddLoot(LootPack.LootItem<BolaBall>(20.0));
         }
 
         public override void Serialize(GenericWriter writer)

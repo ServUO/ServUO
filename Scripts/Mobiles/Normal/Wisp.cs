@@ -41,9 +41,6 @@ namespace Server.Mobiles
             Fame = 4000;
             Karma = 0;
 
-            if (Utility.RandomDouble() < 0.33)
-                PackItem(Engines.Plants.Seed.RandomPeculiarSeed(4));
-
             AddItem(new LightSource());
         }
 
@@ -61,6 +58,7 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.Rich);
             AddLoot(LootPack.Average);
+            AddLoot(LootPack.PeculiarSeed4);
         }
 
         public override void Serialize(GenericWriter writer)

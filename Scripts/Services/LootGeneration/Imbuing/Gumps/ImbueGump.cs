@@ -52,7 +52,7 @@ namespace Server.Gumps
             int minInt = ItemPropertyInfo.GetMinIntensity(m_Item, m_ID);
             int maxInt = ItemPropertyInfo.GetMaxIntensity(m_Item, m_ID, true);
             int weight = m_Info.Weight;
-            int scale = ItemPropertyInfo.GetScale(m_Item, m_ID);
+            int scale = ItemPropertyInfo.GetScale(m_Item, m_ID, false);
             int start = minInt - scale;
 
             if (m_Value < minInt)
@@ -141,7 +141,7 @@ namespace Server.Gumps
 
             if (specResAmount > 0)
             {
-                AddHtmlLocalized(40, 260, 390, 20, 1114057, string.Format("#{0}", m_Info.SpecialName.Number), LabelColor, false, false);
+                AddHtmlLocalized(40, 260, 390, 20, 1114057, string.Format("#{0}", ItemPropertyInfo.GetSpecialResName(m_Item, m_Info).Number), LabelColor, false, false);
                 AddLabel(210, 260, IceHue, specResAmount.ToString());
             }
 
@@ -174,13 +174,17 @@ namespace Server.Gumps
             {
                 AddHtmlLocalized(235, 350, 200, 20, 1062300, LabelColor, false, false); // New Value:
 
-                if (m_ID == 41)                                                    // - Mage Weapon Value ( i.e [Mage Weapon -25] )
+                if (m_ID == 41) // - Mage Weapon Value ( i.e [Mage Weapon -25] )
                 {
                     AddLabel(250, 370, IceHue, string.Format("-{0}", 30 - m_Value));
                 }
-                else if (maxInt <= 8 || m_ID == 21 || m_ID == 17)                 // - Show Property Value as just Number ( i.e [Mana Regen 2] )
+                else if (m_ID > 150 && m_ID < 184) // Skill Property
                 {
-                    AddLabel(m_Value > 9 ? 252 : 256, 370, IceHue, string.Format("{0}", m_Value));      // - Show Property Value as % ( i.e [Hit Fireball 25%] )
+                    AddLabel(m_Value > 9 ? 252 : 256, 370, IceHue, string.Format("+{0}", m_Value));
+                }
+                else if (maxInt <= 8 || m_ID == 21 || m_ID == 17) // - Show Property Value as just Number ( i.e [Mana Regen 2] )
+                {
+                    AddLabel(m_Value > 9 ? 252 : 256, 370, IceHue, string.Format("{0}", m_Value)); // - Show Property Value as % ( i.e [Hit Fireball 25%] )
                 }
                 else
                 {
@@ -286,7 +290,7 @@ namespace Server.Gumps
                     }
                 case 10051: // Decrease Mod Value [<]
                     {
-                        m_Value = Math.Max(ItemPropertyInfo.GetMinIntensity(m_Item, m_Info.ID), m_Value - ItemPropertyInfo.GetScale(m_Item, m_Info.ID));
+                        m_Value = Math.Max(ItemPropertyInfo.GetMinIntensity(m_Item, m_Info.ID), m_Value - ItemPropertyInfo.GetScale(m_Item, m_Info.ID, false));
                         Refresh();
 
                         break;
@@ -307,7 +311,7 @@ namespace Server.Gumps
                     }
                 case 10054: // Increase Mod Value [>]
                     {
-                        m_Value = Math.Min(ItemPropertyInfo.GetMaxIntensity(m_Item, m_Info.ID, true), m_Value + ItemPropertyInfo.GetScale(m_Item, m_Info.ID));
+                        m_Value = Math.Min(ItemPropertyInfo.GetMaxIntensity(m_Item, m_Info.ID, true), m_Value + ItemPropertyInfo.GetScale(m_Item, m_Info.ID, false));
                         Refresh();
 
                         break;

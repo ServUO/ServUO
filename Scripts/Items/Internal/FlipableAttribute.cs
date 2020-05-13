@@ -82,8 +82,9 @@ namespace Server.Items
                     if (flipMethod != null)
                         flipMethod.Invoke(item, new object[0]);
                 }
-                catch
+                catch (Exception e)
                 {
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
                 }
             }
             else

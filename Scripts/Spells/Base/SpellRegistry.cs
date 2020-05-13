@@ -79,8 +79,9 @@ namespace Server.Spells
                 {
                     spm = Activator.CreateInstance(type) as SpecialMove;
                 }
-                catch
+                catch (Exception e)
                 {
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
                 }
 
                 if (spm != null)
@@ -119,8 +120,9 @@ namespace Server.Spells
                 {
                     return (Spell)Activator.CreateInstance(t, m_Params);
                 }
-                catch
+                catch (Exception e)
                 {
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
                 }
             }
 
@@ -165,8 +167,9 @@ namespace Server.Spells
                     {
                         return (Spell)Activator.CreateInstance(t, m_Params);
                     }
-                    catch
+                    catch (Exception e)
                     {
+                        Server.Diagnostics.ExceptionLogging.LogException(e);
                     }
                 }
             }

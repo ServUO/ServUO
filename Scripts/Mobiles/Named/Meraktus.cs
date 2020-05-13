@@ -63,85 +63,23 @@ namespace Server.Mobiles
             Fame = 70000;
             Karma = -70000;
 
-            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
-
             NoKillAwards = true;
-
-            PackResources(8);
-            PackTalismans(5);
 
             Timer.DelayCall(TimeSpan.FromSeconds(1), SpawnTormented);
 
             SetWeaponAbility(WeaponAbility.Dismount);
         }
 
-        public virtual void PackResources(int amount)
-        {
-            for (int i = 0; i < amount; i++)
-                switch (Utility.Random(6))
-                {
-                    case 0:
-                        PackItem(new Blight());
-                        break;
-                    case 1:
-                        PackItem(new Scourge());
-                        break;
-                    case 2:
-                        PackItem(new Taint());
-                        break;
-                    case 3:
-                        PackItem(new Putrefaction());
-                        break;
-                    case 4:
-                        PackItem(new Corruption());
-                        break;
-                    case 5:
-                        PackItem(new Muculent());
-                        break;
-                }
-        }
-
-        public virtual void PackTalismans(int amount)
-        {
-            int count = Utility.Random(amount);
-
-            for (int i = 0; i < count; i++)
-                PackItem(new RandomTalisman());
-        }
-
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            c.DropItem(new MalletAndChisel());
-
-            switch (Utility.Random(3))
-            {
-                case 0:
-                    c.DropItem(new MinotaurHedge());
-                    break;
-                case 1:
-                    c.DropItem(new BonePile());
-                    break;
-                case 2:
-                    c.DropItem(new LightYarn());
-                    break;
-            }
-
-            if (Utility.RandomBool())
-                c.DropItem(new TormentedChains());
-
-            if (Utility.RandomDouble() < 0.025)
-                c.DropItem(new CrimsonCincture());
-        }
-
         public override void GenerateLoot()
         {
-
             AddLoot(LootPack.SuperBoss, 5);
+            AddLoot(LootPack.Talisman, 5);
+            AddLoot(LootPack.PeerlessResource, 8);
+            AddLoot(LootPack.LootItem<MalletAndChisel>());
+            AddLoot(LootPack.RandomLootItem(new Type[] { typeof(MinotaurHedge), typeof(BonePile), typeof(LightYarn) }, 100.0, 1, false, true));
+            AddLoot(LootPack.LootItem<TormentedChains>(50.0, 1));
+            AddLoot(LootPack.LootItem<CrimsonCincture>(2.25, 1));
+            AddLoot(LootPack.ArcanistScrolls, 1);
         }
 
         public override int GetAngerSound()

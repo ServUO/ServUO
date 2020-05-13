@@ -84,8 +84,11 @@ namespace Server.Mobiles
 
             if (Utility.Random(7) != 0)
                 Utility.AssignRandomFacialHair(this, hairHue);
+        }
 
-            PackGold(250, 300);
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.LootGold(250, 300));
         }
 
         public Samurai(Serial serial)
@@ -95,6 +98,7 @@ namespace Server.Mobiles
 
         public override bool CanTeach => true;
         public override bool ClickTitle => false;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

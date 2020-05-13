@@ -451,8 +451,9 @@ namespace Server.Commands
             {
                 DeleteDirectory("docs/");
             }
-            catch
+            catch (Exception e)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
                 return false;
             }
 

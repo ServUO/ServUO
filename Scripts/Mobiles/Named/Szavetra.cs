@@ -1,5 +1,3 @@
-using Server.Items;
-
 namespace Server.Mobiles
 {
     [CorpseName("a Szavetra corpse")]
@@ -37,17 +35,17 @@ namespace Server.Mobiles
             Fame = 24000;
             Karma = -24000;
 
-            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
-
             SetSpecialAbility(SpecialAbility.LifeDrain);
         }
 
         public Szavetra(Serial serial)
             : base(serial)
         {
+        }
+
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.ArcanistScrolls);
         }
 
         public override bool CanBeParagon => false;

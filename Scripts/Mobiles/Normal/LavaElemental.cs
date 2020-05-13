@@ -37,10 +37,6 @@ namespace Server.Mobiles
             SetSkill(SkillName.Wrestling, 71.7, 85.4);
             SetSkill(SkillName.Poisoning, 90.0, 100.0);
             SetSkill(SkillName.DetectHidden, 75.1);
-
-            PackItem(new Nightshade(4));
-            PackItem(new SulfurousAsh(5));
-            PackItem(new LesserPoisonPotion());
         }
 
         public LavaElemental(Serial serial)
@@ -53,6 +49,10 @@ namespace Server.Mobiles
             AddLoot(LootPack.FilthyRich, 3);
             AddLoot(LootPack.Gems, 2);
             AddLoot(LootPack.MedScrolls);
+
+            AddLoot(LootPack.LootItem<Nightshade>(4, true));
+            AddLoot(LootPack.LootItem<SulfurousAsh>(5, true));
+            AddLoot(LootPack.LootItem<LesserPoisonPotion>(true));
         }
 
         public override int GetAttackSound() { return 0x60A; }

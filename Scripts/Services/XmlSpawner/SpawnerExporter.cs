@@ -187,7 +187,11 @@ namespace Server.Mobiles
                             ImportSpawner(spawner);
                             successes++;
                         }
-                        catch { failures++; }
+                        catch (Exception ex)
+                        {
+                            failures++;
+                            Server.Diagnostics.ExceptionLogging.LogException(ex);
+                        }
                     }
 
                     e.Mobile.SendMessage("{0} spawners loaded successfully from {1}, {2} failures.", successes, filePath, failures);

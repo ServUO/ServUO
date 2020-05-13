@@ -38,9 +38,6 @@ namespace Server.Mobiles
             Fame = 15000;
             Karma = -15000;
 
-            if (Utility.RandomDouble() < 0.33)
-                PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
-
             SetSpecialAbility(SpecialAbility.AngryFire);
         }
 
@@ -79,6 +76,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich, 3);
+            AddLoot(LootPack.BonsaiSeed);
         }
 
         public override void Serialize(GenericWriter writer)

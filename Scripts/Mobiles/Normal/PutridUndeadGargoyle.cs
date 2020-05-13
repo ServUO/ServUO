@@ -43,15 +43,6 @@ namespace Server.Mobiles
 
             Fame = 3500;
             Karma = -3500;
-
-            if (0.05 > Utility.RandomDouble())
-                PackItem(new TatteredAncientScroll());
-
-            if (0.10 > Utility.RandomDouble())
-                PackItem(new InfusedGlassStave());
-
-            if (0.15 > Utility.RandomDouble())
-                PackItem(new AncientPotteryFragments());
         }
 
         public PutridUndeadGargoyle(Serial serial)
@@ -69,6 +60,9 @@ namespace Server.Mobiles
             AddLoot(LootPack.FilthyRich, 5);
             AddLoot(LootPack.MedScrolls);
             AddLoot(LootPack.Gems, Utility.RandomMinMax(1, 4));
+            AddLoot(LootPack.LootItem<TatteredAncientScroll>(5.0));
+            AddLoot(LootPack.LootItem<InfusedGlassStave>(10.0));
+            AddLoot(LootPack.LootItem<AncientPotteryFragments>(15.0));
         }
 
         public override void Serialize(GenericWriter writer)

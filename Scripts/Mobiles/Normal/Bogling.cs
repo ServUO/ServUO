@@ -35,9 +35,6 @@ namespace Server.Mobiles
 
             Fame = 450;
             Karma = -450;
-
-            PackItem(new Log(4));
-            PackItem(new Engines.Plants.Seed());
         }
 
         public Bogling(Serial serial)
@@ -47,9 +44,17 @@ namespace Server.Mobiles
 
         public override int Hides => 6;
         public override int Meat => 1;
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Meager);
+            AddLoot(LootPack.LootItem<Log>(4));
+            AddLoot(LootPack.LootItemCallback(RandomSeed));
+        }
+
+        private Item RandomSeed(IEntity e)
+        {
+            return new Engines.Plants.Seed();
         }
 
         public override void Serialize(GenericWriter writer)

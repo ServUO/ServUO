@@ -37,17 +37,6 @@ namespace Server.Mobiles
 
             Fame = 15000;
             Karma = -15000;
-
-            PackItem(new ShadowIronOre(25));
-            PackItem(new IronIngot(10));
-
-            if (0.05 > Utility.RandomDouble())
-                PackItem(new OrcishKinMask());
-
-            if (0.2 > Utility.RandomDouble())
-                PackItem(new BolaBall());
-
-            PackItem(new Yeast());
         }
 
         public OrcBrute(Serial serial)
@@ -62,10 +51,16 @@ namespace Server.Mobiles
 
         public override bool CanRummageCorpses => true;
         public override bool AutoDispel => true;
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich);
             AddLoot(LootPack.Rich);
+            AddLoot(LootPack.LootItem<ShadowIronOre>(25));
+            AddLoot(LootPack.LootItem<IronIngot>(10));
+            AddLoot(LootPack.LootItem<OrcishKinMask>(5.0));
+            AddLoot(LootPack.LootItem<BolaBall>(20.0));
+            AddLoot(LootPack.LootItem<Yeast>());
         }
 
         public override bool IsEnemy(Mobile m)

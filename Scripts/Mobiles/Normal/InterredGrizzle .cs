@@ -1,5 +1,3 @@
-using Server.Items;
-
 namespace Server.Mobiles
 {
     [CorpseName("an interred grizzle corpse")]
@@ -41,24 +39,21 @@ namespace Server.Mobiles
 
             Fame = 3700;  // Guessed
             Karma = -3700;  // Guessed
-
-            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
         }
-        public override bool CanBeParagon => false;
 
         public InterredGrizzle(Serial serial)
             : base(serial)
         {
         }
 
+        public override bool CanBeParagon => false;
+
         public override int TreasureMapLevel => 4;
 
         public override void GenerateLoot() // -- Need to verify
         {
             AddLoot(LootPack.FilthyRich);
+            AddLoot(LootPack.ArcanistScrolls, 0, 1);
         }
 
         public override void OnDamage(int amount, Mobile from, bool willKill)

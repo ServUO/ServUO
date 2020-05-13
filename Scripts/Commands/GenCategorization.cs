@@ -216,8 +216,9 @@ namespace Server.Commands
                 {
                     match.Matched.Add(new CategoryTypeEntry(type));
                 }
-                catch
+                catch (Exception e)
                 {
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
                 }
             }
         }

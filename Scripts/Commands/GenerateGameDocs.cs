@@ -122,20 +122,21 @@ namespace Server.Commands
             if (ctor == null)
                 return;
 
-            object obj;
+            object obj = null;
+
             try
             {
                 obj = ctor.Invoke(new object[] { });
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return;
+                Server.Diagnostics.ExceptionLogging.LogException(e);
             }
 
-            if (obj == null)
-                return;
-
-            proc(obj);
+            if (obj != null)
+            {
+                proc(obj);
+            }
         }
 
         private class CsvFile

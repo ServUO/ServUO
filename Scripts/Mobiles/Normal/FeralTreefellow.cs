@@ -34,8 +34,6 @@ namespace Server.Mobiles
             Fame = 1000;  //Unknown
             Karma = -3000;  //Unknown
 
-            PackItem(new Log(Utility.RandomMinMax(23, 34)));
-
             SetWeaponAbility(WeaponAbility.Dismount);
         }
 
@@ -64,6 +62,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Average); //Unknown
+            AddLoot(LootPack.LootItem<Log>(Utility.RandomMinMax(23, 34)));
         }
 
         public override void Serialize(GenericWriter writer)

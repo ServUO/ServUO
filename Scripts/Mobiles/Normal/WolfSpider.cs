@@ -40,8 +40,6 @@ namespace Server.Mobiles
             SetSkill(SkillName.Hiding, 105.0, 110.0);
             SetSkill(SkillName.Stealth, 105.0, 110.0);
 
-            PackItem(new SpidersSilk(8));
-
             Tamable = true;
             ControlSlots = 2;
             MinTameSkill = 59.1;
@@ -60,14 +58,8 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.Rich);
             AddLoot(LootPack.Gems, 2);
-        }
-
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            if (!Controlled && Utility.RandomDouble() < 0.01)
-                c.DropItem(new LuckyCoin());
+            AddLoot(LootPack.LootItem<SpidersSilk>(8, true));
+            AddLoot(LootPack.LootItem<LuckyCoin>(1.0));
         }
 
         public override int GetIdleSound()

@@ -37,15 +37,6 @@ namespace Server.Mobiles
             SetSkill(SkillName.EvalInt, 110, 120);
             SetSkill(SkillName.Meditation, 110, 120);
 
-            for (int i = 0; i < Utility.RandomMinMax(1, 7); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.RegularScrollTypes.Length, SpellbookType.Regular));
-            }
-
-            PackItem(new Arrow(35));
-            PackItem(new Bolt(25));
-            PackGem(2);
-
             Fame = 18900;
             Karma = -18900;
         }
@@ -58,6 +49,10 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 3);
+            AddLoot(LootPack.MageryScrolls, 1, 7);
+            AddLoot(LootPack.Gems, 2);
+            AddLoot(LootPack.LootItem<Arrow>(35));
+            AddLoot(LootPack.LootItem<Bolt>(25));
         }
 
         public override void Serialize(GenericWriter writer)

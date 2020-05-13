@@ -40,8 +40,6 @@ namespace Server.Mobiles
             Fame = 3500;
             Karma = -3500;
 
-            PackItem(new ValoriteOre(25));
-
             SetAreaEffect(AreaEffect.PoisonBreath);
         }
 
@@ -58,6 +56,7 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.FilthyRich);
             AddLoot(LootPack.Gems, 4);
+            AddLoot(LootPack.LootItem<ValoriteOre>(25));
         }
 
         public override void AlterMeleeDamageFrom(Mobile from, ref int damage)

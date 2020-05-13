@@ -161,25 +161,5 @@ namespace Server.Mobiles
 
             return base.OnBeforeDeath();
         }
-
-        public override void OnDeath(Container c)
-        {
-            if (Map == Map.Felucca || Map == Map.TerMur)
-            {
-                //TODO: Confirm SE change or AoS one too?
-                List<DamageStore> rights = GetLootingRights();
-                List<Mobile> toGive = new List<Mobile>();
-
-                for (int i = rights.Count - 1; i >= 0; --i)
-                {
-                    DamageStore ds = rights[i];
-
-                    if (ds.m_HasRight)
-                        toGive.Add(ds.m_Mobile);
-                }
-            }
-
-            base.OnDeath(c);
-        }
     }
 }

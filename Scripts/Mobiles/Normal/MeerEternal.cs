@@ -42,13 +42,6 @@ namespace Server.Mobiles
             Fame = 18000;
             Karma = 18000;
 
-            switch (Utility.Random(12))
-            {
-                case 0: PackItem(new StrangleScroll()); break;
-                case 1: PackItem(new WitherScroll()); break;
-                case 2: PackItem(new VampiricEmbraceScroll()); break;
-            }
-
             m_NextAbilityTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(2, 5));
         }
 
@@ -67,6 +60,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.FilthyRich, 2);
             AddLoot(LootPack.MedScrolls, 2);
             AddLoot(LootPack.HighScrolls, 2);
+            AddLoot(LootPack.RandomLootItem(new[] { typeof(StrangleScroll), typeof(WitherScroll), typeof(VampiricEmbraceScroll) }, 25.0, 1, false, true));
         }
 
         public override int GetHurtSound()

@@ -38,8 +38,11 @@ namespace Server.Mobiles
             Fame = 500;
 
             AddItem(new LightSource());
+        }
 
-            PackBones();
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.Bones);
         }
 
         public ShadowWisp(Serial serial)

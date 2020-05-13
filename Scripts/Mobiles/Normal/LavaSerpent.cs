@@ -38,10 +38,6 @@ namespace Server.Mobiles
             Fame = 4500;
             Karma = -4500;
 
-            PackItem(new SulfurousAsh(3));
-            PackItem(new Bone());
-            PackBodyPart();
-
             SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
@@ -55,14 +51,17 @@ namespace Server.Mobiles
         public override int Hides => 15;
         public override HideType HideType => HideType.Spined;
 
-        public void AuraEffect(Mobile m)
-        {
-            m.SendMessage("The radiating heat scorches your skin!");
-        }
-
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Average);
+            AddLoot(LootPack.LootItem<SulfurousAsh>(100.0, 1, false, true));
+            AddLoot(LootPack.LootItem<Bone>(100.0, 1, false, true));
+            AddLoot(LootPack.BodyParts);
+        }
+
+        public void AuraEffect(Mobile m)
+        {
+            m.SendMessage("The radiating heat scorches your skin!");
         }
 
         public override void Serialize(GenericWriter writer)

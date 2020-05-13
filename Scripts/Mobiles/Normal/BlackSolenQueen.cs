@@ -42,13 +42,6 @@ namespace Server.Mobiles
 
             Fame = 4500;
             Karma = -4500;
-
-            SolenHelper.PackPicnicBasket(this);
-
-            PackItem(new ZoogiFungus((Utility.RandomDouble() > 0.05) ? 5 : 25));
-
-            if (Utility.RandomDouble() < 0.05)
-                PackItem(new BallOfSummoning());
         }
 
         public BlackSolenQueen(Serial serial)
@@ -85,6 +78,9 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Rich);
+            AddLoot(LootPack.LootItem<ZoogiFungus>(Utility.RandomDouble() > 0.05 ? 5 : 25));
+            AddLoot(LootPack.LootItem<BallOfSummoning>(5.0));
+            AddLoot(LootPack.LootItemCallback(SolenHelper.PackPicnicBasket, 1.0, 1, false, false));
         }
 
         public override void OnGotMeleeAttack(Mobile attacker)

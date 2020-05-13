@@ -55,8 +55,6 @@ namespace Server.Mobiles
             Fame = 22000;
             Karma = -22000;
 
-            PackItem(new Arrow(Utility.RandomMinMax(100, 200)));
-
             IronwoodCompositeBow Bow = new IronwoodCompositeBow();
             Bow.Movable = false;
             AddItem(Bow);
@@ -526,14 +524,8 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.SuperBoss, 8);
-        }
-
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            if (Utility.RandomDouble() < 0.025)
-                c.DropItem(new MedusaStatue());
+            AddLoot(LootPack.LootItem<Arrow>(100, 200, true));
+            AddLoot(LootPack.LootItem<MedusaStatue>(2.5));
         }
 
         public override void OnAfterDelete()

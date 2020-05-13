@@ -185,8 +185,8 @@ namespace Server.Engines.MyrmidexInvasion
             bflag = new BattleFlag(0x42C, 2520);
             bflag.MoveToWorld(new Point3D(914, 1793, 6), Map.TerMur);
 
-            bflag = new BattleFlag(0x42D, 2520);
-            bflag.MoveToWorld(new Point3D(913, 1793, 6), Map.TerMur);
+            st = new Static(0x42D);
+            st.MoveToWorld(new Point3D(913, 1793, 6), Map.TerMur);
 
             XmlSpawner sp = new XmlSpawner("Yar");
             sp.SpawnRange = 1;

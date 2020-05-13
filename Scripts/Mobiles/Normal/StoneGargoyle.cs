@@ -35,11 +35,6 @@ namespace Server.Mobiles
 
             Fame = 4000;
             Karma = -4000;
-
-            PackItem(new IronIngot(12));
-
-            if (0.05 > Utility.RandomDouble())
-                PackItem(new GargoylesPickaxe());
         }
 
         public StoneGargoyle(Serial serial)
@@ -53,6 +48,8 @@ namespace Server.Mobiles
             AddLoot(LootPack.Average, 2);
             AddLoot(LootPack.Gems, 1);
             AddLoot(LootPack.Potions);
+            AddLoot(LootPack.LootItem<IronIngot>(12));
+            AddLoot(LootPack.LootItem<GargoylesPickaxe>(5.0));
         }
 
         public override void Serialize(GenericWriter writer)

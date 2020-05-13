@@ -43,9 +43,6 @@ namespace Server.Mobiles
             Frozen = true;
             CantWalk = true;
             Hue = 1153;
-
-            if (0.2 > Utility.RandomDouble())
-                PackItem(new GargoylesPickaxe());
         }
 
         public GargoyleGuardian(Serial serial)
@@ -60,6 +57,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.Rich);
             AddLoot(LootPack.MedScrolls);
             AddLoot(LootPack.Gems, 2);
+            AddLoot(LootPack.LootItem<GargoylesPickaxe>(20.0));
         }
 
         public override void OnDamagedBySpell(Mobile from)

@@ -81,9 +81,9 @@ namespace Server.Misc
                 {
                     i = Activator.CreateInstance(m_VirtueArtifacts[Utility.Random(m_VirtueArtifacts.Length)]) as Item;
                 }
-                catch
+                catch (Exception e)
                 {
-                    return;
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
                 }
 
                 if (i != null)

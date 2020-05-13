@@ -291,8 +291,9 @@ namespace Server.Engines.Quests
                 {
                     reward = Activator.CreateInstance(type) as Item;
                 }
-                catch
+                catch (Exception e)
                 {
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
                     reward = null;
                 }
 

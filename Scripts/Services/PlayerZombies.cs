@@ -265,6 +265,37 @@ namespace Server.Engines.Events
             }
         }
 
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.Meager);
+            AddLoot(LootPack.LootItemCallback(GenerateBodyPart, 50.0, 1, false, false));
+        }
+
+        public Item GenerateBodyPart(IEntity e)
+        {
+            switch (Utility.Random(6))
+            {
+                case 0:
+                    return new LeftArm();
+                case 1:
+                    return new RightArm();
+                case 2:
+                    return new Torso();
+                case 3:
+                    return new Bone();
+                case 4:
+                    return new RibCage();
+                default:
+                    if (m_DeadPlayer != null && !m_DeadPlayer.Deleted)
+                    {
+                        return new PlayerBones(m_DeadPlayer.Name);
+                    }
+                    break;
+            }
+
+            return null;
+        }
+
         public ZombieSkeleton(Serial serial)
             : base(serial)
         {
@@ -273,11 +304,6 @@ namespace Server.Engines.Events
         public override bool BleedImmune => true;
 
         public override Poison PoisonImmune => Poison.Regular;
-
-        public override void GenerateLoot()
-        {
-            AddLoot(LootPack.Meager);
-        }
 
         public override void OnDelete()
         {

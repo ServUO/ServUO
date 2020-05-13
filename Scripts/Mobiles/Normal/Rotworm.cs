@@ -39,8 +39,6 @@ namespace Server.Mobiles
             Fame = 500;
             Karma = -500;
 
-            PackBodyPartOrBones();
-
             SetSpecialAbility(SpecialAbility.BloodDisease);
         }
 
@@ -62,6 +60,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Meager);
+            AddLoot(LootPack.BodyPartsAndBones);
         }
 
         public override void OnKilledBy(Mobile mob)

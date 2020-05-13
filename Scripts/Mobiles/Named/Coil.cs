@@ -43,14 +43,6 @@ namespace Server.Mobiles
             Fame = 17500;
             Karma = -17500;
 
-            PackGem(2);
-            PackItem(new Bone());
-
-            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
-
             SetWeaponAbility(WeaponAbility.MortalStrike);
         }
 
@@ -64,9 +56,13 @@ namespace Server.Mobiles
         public override bool GivesMLMinorArtifact => true;
         public override int Hides => 48;
         public override int Meat => 1;
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 3);
+            AddLoot(LootPack.Gems, 2);
+            AddLoot(LootPack.LootItem<Bone>(false, true));
+            AddLoot(LootPack.ArcanistScrolls);
         }
 
         public override void OnDeath(Container c)

@@ -545,8 +545,10 @@ namespace Server.Mobiles
                                             op.WriteLine();
                                         }
                                     }
-                                    catch
-                                    { }
+                                    catch (Exception e)
+                                    {
+                                        Server.Diagnostics.ExceptionLogging.LogException(e);
+                                    }
 
                                     return true;
                                 }
@@ -1618,7 +1620,10 @@ namespace Server.Mobiles
                             minval = double.Parse(arglist[1]);
                             maxval = double.Parse(arglist[2]);
                         }
-                        catch { }
+                        catch (Exception e)
+                        {
+                            Server.Diagnostics.ExceptionLogging.LogException(e);
+                        }
                     }
                     else
                         if (arglist.Length == 4)
@@ -1628,13 +1633,19 @@ namespace Server.Mobiles
                             minval = double.Parse(arglist[2]);
                             maxval = double.Parse(arglist[3]);
                         }
-                        catch { }
+                        catch (Exception e)
+                        {
+                            Server.Diagnostics.ExceptionLogging.LogException(e);
+                        }
                     }
                     try
                     {
                         news = (SkillName)Enum.Parse(typeof(SkillName), arglist[0], true);
                     }
-                    catch { }
+                    catch (Exception e)
+                    {
+                        Server.Diagnostics.ExceptionLogging.LogException(e);
+                    }
                 }
 
                 // unregister the previous skill if it was assigned
@@ -2184,7 +2195,10 @@ namespace Server.Mobiles
                         BaseXmlSpawner.AddSpawnItem(null, attachedto, TheSpawn, item, loc, map, trigmob, false, substitutedtypeName, out status_str);
                     }
                 }
-                catch { }
+                catch (Exception e)
+                {
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
+                }
             }
         }
 
@@ -2235,7 +2249,10 @@ namespace Server.Mobiles
                 {
                     fs = File.Open(filename, FileMode.Open, FileAccess.Read);
                 }
-                catch { }
+                catch (Exception e)
+                {
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
+                }
 
                 if (fs == null)
                 {
@@ -2563,7 +2580,10 @@ namespace Server.Mobiles
                                 {
                                     Map = Map.Parse(strEntry);
                                 }
-                                catch { }
+                                catch (Exception e)
+                                {
+                                    Server.Diagnostics.ExceptionLogging.LogException(e);
+                                }
                             }
 
                             // try loading the new spawn specifications first
@@ -3322,7 +3342,10 @@ namespace Server.Mobiles
                                                             {
                                                                 impl.Commands.Remove(commandname);
                                                             }
-                                                            catch { }
+                                                            catch (Exception ex)
+                                                            {
+                                                                Server.Diagnostics.ExceptionLogging.LogException(ex);
+                                                            }
                                                             impl.Register(b);
                                                         }
                                                     }
@@ -3404,6 +3427,7 @@ namespace Server.Mobiles
                         {
                             Console.WriteLine("Config error '{0}'='{1}'", argname, value);
                             Console.WriteLine("Error: {0}", e.Message);
+                            Server.Diagnostics.ExceptionLogging.LogException(e);
                         }
                     }
 
@@ -3817,40 +3841,91 @@ namespace Server.Mobiles
         {
 
             try { XmlSpawner.defProximityRange = int.Parse(node["defProximityRange"].InnerText); }
-            catch { }
+            catch (Exception e)
+            {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
+            }
             try { XmlSpawner.defTriggerProbability = double.Parse(node["defTriggerProbability"].InnerText); }
-            catch { }
+            catch (Exception e)
+            {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
+            }
             try { XmlSpawner.defProximityTriggerSound = int.Parse(node["defProximityTriggerSound"].InnerText); }
-            catch { }
+            catch (Exception e)
+            {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
+            }
             try { XmlSpawner.defMinRefractory = TimeSpan.Parse(node["defMinRefractory"].InnerText); }
-            catch { }
+            catch (Exception e)
+            {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
+            }
             try { XmlSpawner.defMaxRefractory = TimeSpan.Parse(node["defMaxRefractory"].InnerText); }
-            catch { }
+            catch (Exception e)
+            {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
+            }
             try { XmlSpawner.defTODStart = TimeSpan.Parse(node["defTODStart"].InnerText); }
-            catch { }
+            catch (Exception e)
+            {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
+            }
             try { XmlSpawner.defTODEnd = TimeSpan.Parse(node["defTODEnd"].InnerText); }
-            catch { }
+            catch (Exception e)
+            {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
+            }
             try { XmlSpawner.defAmount = int.Parse(node["defStackAmount"].InnerText); }
-            catch { }
+            catch (Exception e)
+            {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
+            }
             try { XmlSpawner.defDuration = TimeSpan.Parse(node["defDuration"].InnerText); }
-            catch { }
+            catch (Exception e)
+            {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
+            }
             try { XmlSpawner.defIsGroup = bool.Parse(node["defIsGroup"].InnerText); }
-            catch { }
+            catch (Exception e)
+            {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
+            }
             try { XmlSpawner.defTeam = int.Parse(node["defTeam"].InnerText); }
-            catch { }
+            catch (Exception e)
+            {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
+            }
             try { XmlSpawner.defRelativeHome = bool.Parse(node["defRelativeHome"].InnerText); }
-            catch { }
+            catch(Exception e)
+                        {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
+            }
             try { XmlSpawner.defSpawnRange = int.Parse(node["defSpawnRange"].InnerText); }
-            catch { }
+            catch (Exception e)
+            {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
+            }
             try { XmlSpawner.defHomeRange = int.Parse(node["defHomeRange"].InnerText); }
-            catch { }
+            catch (Exception e)
+            {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
+            }
             try { XmlSpawner.defMinDelay = TimeSpan.Parse(node["defMinDelay"].InnerText); }
-            catch { }
+            catch (Exception e)
+            {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
+            }
             try { XmlSpawner.defMaxDelay = TimeSpan.Parse(node["defMaxDelay"].InnerText); }
-            catch { }
+            catch (Exception e)
+            {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
+            }
             int todmode = 0;
             try { todmode = int.Parse(node["defTODMode"].InnerText); }
-            catch { }
+            catch (Exception e)
+            {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
+            }
             switch (todmode)
             {
                 case (int)TODModeType.Realtime:
@@ -4251,7 +4326,7 @@ namespace Server.Mobiles
                 {
                     SmartSpawnAccessLevel = (AccessLevel)Enum.Parse(typeof(AccessLevel), e.Arguments[1], true);
                 }
-                catch { }
+                catch (Exception ex) { Server.Diagnostics.ExceptionLogging.LogException(ex); }
             }
             // handle the
             // number of spawners
@@ -4338,7 +4413,10 @@ namespace Server.Mobiles
                 {
                     maxdiff = int.Parse(e.Arguments[0]);
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    Server.Diagnostics.ExceptionLogging.LogException(ex);
+                }
             }
             int count = 0;
             int maxcount = 0;
@@ -4441,7 +4519,7 @@ namespace Server.Mobiles
                     fs = File.Open(filename, FileMode.Open, FileAccess.Read);
                 }
                 catch { }
-
+                
                 if (fs == null)
                 {
                     if (from != null)
@@ -6583,9 +6661,11 @@ namespace Server.Mobiles
                                     catch { }
                                 }
                             }
+
                             string triggerObjectName = null;
                             try { triggerObjectName = (string)dr["ObjectPropertyItemName"]; }
                             catch { }
+
                             if (triggerObjectName != null && triggerObjectName.Length > 0)
                             {
                                 string[] typeargs = triggerObjectName.Split(",".ToCharArray(), 2);
@@ -7481,7 +7561,7 @@ namespace Server.Mobiles
                 {
                     count = Convert.ToInt32(e.Arguments[0], 10);
                 }
-                catch { }
+                catch (Exception ex) { Server.Diagnostics.ExceptionLogging.LogException(ex); }
 
                 for (int i = 0; i < count; i++)
                 {

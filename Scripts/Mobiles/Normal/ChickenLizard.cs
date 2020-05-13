@@ -40,9 +40,11 @@ namespace Server.Mobiles
             Tamable = true;
             ControlSlots = 1;
             MinTameSkill = 0.0;
+        }
 
-            if (0.05 > Utility.RandomDouble())
-                PackItem(new ChickenLizardEgg());
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.LootItem<ChickenLizardEgg>(5.0));
         }
 
         public override int Meat => 3;

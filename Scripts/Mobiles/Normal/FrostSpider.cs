@@ -44,8 +44,6 @@ namespace Server.Mobiles
             Tamable = true;
             ControlSlots = 1;
             MinTameSkill = 74.7;
-
-            PackItem(new SpidersSilk(7));
         }
 
         public FrostSpider(Serial serial)
@@ -59,6 +57,7 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.Meager);
             AddLoot(LootPack.Poor);
+            AddLoot(LootPack.LootItem<SpidersSilk>(7));
         }
 
         public override void Serialize(GenericWriter writer)

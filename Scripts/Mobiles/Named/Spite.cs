@@ -39,11 +39,6 @@ namespace Server.Mobiles
             Fame = 21000;
             Karma = -21000;
 
-            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
-
             SetSpecialAbility(SpecialAbility.ManaDrain);
         }
 
@@ -55,9 +50,11 @@ namespace Server.Mobiles
         public override string DefaultName => "Spite";
         public override int DefaultHue => 0x21;
         public override bool GivesMLMinorArtifact => true;
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 2);
+            AddLoot(LootPack.ArcanistScrolls);
         }
 
         public override void Serialize(GenericWriter writer)

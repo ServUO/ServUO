@@ -42,11 +42,6 @@ namespace Server.Mobiles
             Fame = 17000;
             Karma = -17000;
 
-            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
-
             SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
@@ -60,6 +55,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.UltraRich, 2);
             AddLoot(LootPack.HighScrolls);
             AddLoot(LootPack.Parrot);
+            AddLoot(LootPack.ArcanistScrolls);
         }
 
         public override void OnDeath(Container c)

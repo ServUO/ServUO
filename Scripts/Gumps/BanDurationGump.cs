@@ -121,8 +121,9 @@ namespace Server.Gumps
 
                                 break;
                             }
-                            catch
+                            catch (Exception e)
                             {
+                                Server.Diagnostics.ExceptionLogging.LogException(e);
                             }
                         }
 
@@ -142,8 +143,9 @@ namespace Server.Gumps
 
                                 break;
                             }
-                            catch
+                            catch (Exception e)
                             {
+                                Server.Diagnostics.ExceptionLogging.LogException(e);
                             }
                         }
 
@@ -163,8 +165,9 @@ namespace Server.Gumps
 
                                 break;
                             }
-                            catch
+                            catch (Exception e)
                             {
+                                Server.Diagnostics.ExceptionLogging.LogException(e);
                             }
                         }
 
@@ -184,8 +187,9 @@ namespace Server.Gumps
 
                                 break;
                             }
-                            catch
+                            catch (Exception e)
                             {
+                                Server.Diagnostics.ExceptionLogging.LogException(e);
                             }
                         }
 
@@ -205,8 +209,9 @@ namespace Server.Gumps
 
                                 break;
                             }
-                            catch
+                            catch (Exception e)
                             {
+                                Server.Diagnostics.ExceptionLogging.LogException(e);
                             }
                         }
 

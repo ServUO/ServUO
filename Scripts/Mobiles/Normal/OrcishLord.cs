@@ -37,17 +37,6 @@ namespace Server.Mobiles
 
             Fame = 2500;
             Karma = -2500;
-
-            PackItem(new RingmailChest());
-
-            if (0.3 > Utility.RandomDouble())
-                PackItem(Loot.RandomPossibleReagent());
-
-            if (0.2 > Utility.RandomDouble())
-                PackItem(new BolaBall());
-
-            if (0.5 > Utility.RandomDouble())
-                PackItem(new Yeast());
         }
 
         public OrcishLord(Serial serial)
@@ -66,6 +55,11 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.Meager);
             AddLoot(LootPack.Average);
+
+            AddLoot(LootPack.LootItem<RingmailChest>());
+            AddLoot(LootPack.MageryRegs, 30.0);
+            AddLoot(LootPack.LootItem<BolaBall>(20.0));
+            AddLoot(LootPack.LootItem<Yeast>(50.0));
         }
 
         public override bool IsEnemy(Mobile m)

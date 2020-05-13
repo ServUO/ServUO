@@ -44,12 +44,6 @@ namespace Server.Mobiles
             Fame = 9000;
             Karma = -9000;
 
-            if (Utility.RandomDouble() < .33)
-                PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
-
-            if (0.02 >= Utility.RandomDouble())
-                PackItem(new OrigamiPaper());
-
             SetSpecialAbility(SpecialAbility.Repel);
         }
 
@@ -59,13 +53,15 @@ namespace Server.Mobiles
         }
 
         public override int TreasureMapLevel => 3;
-
         public override bool Uncalmable => true;
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich);
             AddLoot(LootPack.Rich);
             AddLoot(LootPack.Gems, 2);
+            AddLoot(LootPack.LootItem<OrigamiPaper>(2.0));
+            AddLoot(LootPack.BonsaiSeed);
         }
 
         /* TODO: Repel Magic

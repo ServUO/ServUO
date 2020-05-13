@@ -42,13 +42,24 @@ namespace Server.Mobiles
 
             Fame = 4500;
             Karma = -4500;
+           
+            SetSpecialAbility(SpecialAbility.DragonBreath);
+        }
 
-            PackItem(new Bone(3));
-            PackItem(new FertileDirt(Utility.RandomMinMax(1, 5)));
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.Average, 2);
+            AddLoot(LootPack.PeculiarSeed3);
+            AddLoot(LootPack.Bones);
+            AddLoot(LootPack.LootItem<Bone>(100.0, 3, false, true));
+            AddLoot(LootPack.LootItem<FertileDirt>(100.0, Utility.RandomMinMax(1, 5), false, true));
 
-            if (Utility.RandomDouble() < .33)
-                PackItem(Engines.Plants.Seed.RandomPeculiarSeed(3));
+            AddLoot(LootPack.LootItemCallback(RandomOre, 100.0, Utility.RandomMinMax(1, 10), false, true));
+            AddLoot(LootPack.LootItemCallback(RandomSkeleton, 7.0, 1, false, true));
+        }
 
+        private Item RandomOre(IEntity e)
+        {
             Item orepile = null;
 
             switch (Utility.Random(4))
@@ -67,23 +78,20 @@ namespace Server.Mobiles
                     break;
             }
 
-            orepile.Amount = Utility.RandomMinMax(1, 10);
             orepile.ItemID = 0x19B9;
-            PackItem(orepile);
 
-            PackBones();
+            return orepile;
+        }
 
-            if (0.07 >= Utility.RandomDouble())
+        private Item RandomSkeleton(IEntity e)
+        {
+            switch (Utility.Random(3))
             {
-                switch (Utility.Random(3))
-                {
-                    case 0: PackItem(new UnknownBardSkeleton()); break;
-                    case 1: PackItem(new UnknownMageSkeleton()); break;
-                    case 2: PackItem(new UnknownRogueSkeleton()); break;
-                }
+                default:
+                case 0: return new UnknownBardSkeleton();
+                case 1: return new UnknownMageSkeleton();
+                case 2: return new UnknownRogueSkeleton();
             }
-
-            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public override void OnThink()
@@ -228,11 +236,6 @@ namespace Server.Mobiles
         public override int GetAttackSound() { return 0x164; }
         public override int GetHurtSound() { return 0x187; }
         public override int GetDeathSound() { return 0x1BA; }
-
-        public override void GenerateLoot()
-        {
-            AddLoot(LootPack.Average, 2);
-        }
 
         public override void Serialize(GenericWriter writer)
         {

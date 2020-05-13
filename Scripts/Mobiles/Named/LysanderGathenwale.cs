@@ -56,10 +56,6 @@ namespace Server.Mobiles
 
             Fame = 5000;
             Karma = -10000;
-
-            Item reags = Loot.RandomReagent();
-            reags.Amount = 30;
-            PackItem(reags);
         }
 
         public LysanderGathenwale(Serial serial)
@@ -71,6 +67,7 @@ namespace Server.Mobiles
         public override bool ShowFameTitle => false;
         public override bool DeleteCorpseOnDeath => true;
         public override bool AlwaysMurderer => true;
+
         public override int GetIdleSound()
         {
             return 0x1CE;
@@ -94,6 +91,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.MedScrolls, 2);
+            AddLoot(LootPack.MageryRegs, 30);
         }
 
         public override bool OnBeforeDeath()

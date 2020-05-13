@@ -43,8 +43,6 @@ namespace Server.Mobiles
             Fame = 4500;
             Karma = -4500;
 
-            PackItem(new SulfurousAsh(3));
-
             AddItem(new LightSource());
         }
 
@@ -59,9 +57,11 @@ namespace Server.Mobiles
         public override double DispelFocus => 45.0;
         public override bool BleedImmune => true;
         public override int TreasureMapLevel => 2;
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich);
+            AddLoot(LootPack.LootItem<SulfurousAsh>(3, true));
         }
 
         public override void Serialize(GenericWriter writer)

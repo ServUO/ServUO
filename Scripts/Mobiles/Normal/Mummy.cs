@@ -36,12 +36,6 @@ namespace Server.Mobiles
 
             Fame = 4000;
             Karma = -4000;
-
-            if (Utility.RandomDouble() < 0.33)
-                PackItem(Engines.Plants.Seed.RandomPeculiarSeed(3));
-
-            PackItem(new Garlic(5));
-            PackItem(new Bandage(10));
         }
 
         public Mummy(Serial serial)
@@ -60,6 +54,9 @@ namespace Server.Mobiles
             AddLoot(LootPack.Rich);
             AddLoot(LootPack.Gems);
             AddLoot(LootPack.Potions);
+            AddLoot(LootPack.LootItem<Bandage>(100.0, 10, false, true));
+            AddLoot(LootPack.LootItem<Garlic>(100.0, 5, false, true));
+            AddLoot(LootPack.PeculiarSeed3);
         }
 
         public override void Serialize(GenericWriter writer)

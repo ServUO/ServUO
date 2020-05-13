@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -33,8 +33,9 @@ namespace Server.Engines.Chat
                 m_Output.WriteLine("Log started on {0}", DateTime.UtcNow);
                 m_Output.WriteLine();
             }
-            catch
+            catch (Exception e)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
             }
         }
 
@@ -45,7 +46,7 @@ namespace Server.Engines.Chat
 
         public static void WriteLine(string channel, string text)
         {
-            if (!Enabled)
+            if (!Enabled || m_Output == null)
                 return;
 
             try
@@ -54,7 +55,7 @@ namespace Server.Engines.Chat
 
                 StreamWriter channelOutput;
 
-                if (m_OutputPerChannel.ContainsKey(channel))
+                if (m_OutputPerChannel.ContainsKey(channel) && m_OutputPerChannel[channel] != null)
                     channelOutput = m_OutputPerChannel[channel];
                 else
                 {
@@ -72,8 +73,9 @@ namespace Server.Engines.Chat
 
                 channelOutput.WriteLine("{0}: {1}", DateTime.UtcNow, text);
             }
-            catch
+            catch (Exception e)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
             }
         }
 
@@ -110,7 +112,10 @@ namespace Server.Engines.Chat
             WriteLine(channel, "{0} left the channel.", username);
 
             if (m_OutputPerChannel.ContainsKey(channel))
+            {
                 m_OutputPerChannel[channel].Dispose();
+                m_OutputPerChannel.Remove(channel);
+            }     
         }
 
         public static void Log(string channel, string message)

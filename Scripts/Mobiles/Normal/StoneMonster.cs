@@ -87,13 +87,6 @@ namespace Server.Mobiles
                 SetSkill(SkillName.MagicResist, 100.1, 120.0);
                 SetSkill(SkillName.Tactics, 60.1, 70.0);
                 SetSkill(SkillName.Wrestling, 60.1, 70.0);
-
-                if (0.025 > Utility.RandomDouble())
-                    PackItem(new GargoylesPickaxe());
-
-                if (0.2 > Utility.RandomDouble())
-                    PackItem(new UndeadGargHorn());
-
             }
             else if (Body == 59)
             {
@@ -209,6 +202,12 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Average, 2);
+
+            if (LootStage == LootStage.Death && Body == 772)
+            {
+                AddLoot(LootPack.LootItem<GargoylesPickaxe>(2.5));
+                AddLoot(LootPack.LootItem<UndeadGargHorn>(20.0));
+            }
         }
 
         public override void OnDeath(Container c)

@@ -43,28 +43,6 @@ namespace Server.Mobiles
             Fame = 15000;
             Karma = -15000;
 
-            Container bag = new Bag();
-
-            int count = Utility.RandomMinMax(10, 20);
-
-            for (int i = 0; i < count; ++i)
-            {
-                Item item = Loot.RandomReagent();
-
-                if (item == null)
-                    continue;
-
-                if (!bag.TryDropItem(this, item, false))
-                    item.Delete();
-            }
-
-            PackItem(bag);
-
-            PackItem(new ArcaneGem());
-
-            if (Utility.RandomDouble() < .33)
-                PackItem(Engines.Plants.Seed.RandomPeculiarSeed(2));
-
             m_NextAbilityTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(2, 5));
         }
 
@@ -83,6 +61,22 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.Average, 2);
             AddLoot(LootPack.MedScrolls, 2);
+            AddLoot(LootPack.PeculiarSeed2);
+            AddLoot(LootPack.LootItem<ArcaneGem>());
+            AddLoot(LootPack.LootItemCallback(RegBag));
+        }
+
+        private Item RegBag(IEntity e)
+        {
+            var bag = new Bag();
+            int count = Utility.RandomMinMax(10, 20);
+
+            for (int i = 0; i < count; ++i)
+            {
+                bag.DropItemStacked(Loot.RandomReagent());
+            }
+
+            return bag;
         }
 
         public override int GetIdleSound()

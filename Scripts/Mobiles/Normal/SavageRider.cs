@@ -33,11 +33,6 @@ namespace Server.Mobiles
             Fame = 1000;
             Karma = -1000;
 
-            PackItem(new Bandage(Utility.RandomMinMax(1, 15)));
-
-            if (0.1 > Utility.RandomDouble())
-                PackItem(new BolaBall());
-
             AddItem(new TribalSpear());
             AddItem(new BoneArms());
             AddItem(new BoneLegs());
@@ -60,6 +55,8 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Average);
+            AddLoot(LootPack.LootItem<BolaBall>(10.0));
+            AddLoot(LootPack.LootItem<Bandage>(1, 15, true));
         }
 
         public override bool OnBeforeDeath()

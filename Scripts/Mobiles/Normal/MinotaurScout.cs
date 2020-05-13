@@ -36,11 +36,6 @@ namespace Server.Mobiles
             Fame = 5000;
             Karma = -5000;
 
-            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
-
             SetWeaponAbility(WeaponAbility.ParalyzingBlow);
         }
 
@@ -53,7 +48,8 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.Rich);  // Need to verify
+            AddLoot(LootPack.Rich);
+            AddLoot(LootPack.ArcanistScrolls, 0, 1);
         }
 
         // Using Tormented Minotaur sounds - Need to veryfy

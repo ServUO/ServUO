@@ -42,8 +42,6 @@ namespace Server.Mobiles
 
             Fame = 10000;
             Karma = -10000;
-
-            PackItem(new DaemonBone(15));
         }
 
         public Relanord(Serial serial)
@@ -60,6 +58,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich, 1);
+            AddLoot(LootPack.LootItem<DaemonBone>(15, true));
         }
 
         public override int GetIdleSound()

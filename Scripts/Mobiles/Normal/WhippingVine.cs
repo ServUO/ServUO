@@ -37,20 +37,15 @@ namespace Server.Mobiles
 
             Fame = 1000;
             Karma = -1000;
+        }
 
-            PackReg(3);
-            PackItem(new FertileDirt(Utility.RandomMinMax(1, 10)));
-
-            if (0.2 >= Utility.RandomDouble())
-                PackItem(new ExecutionersCap());
-
-            PackItem(new Vines());  //this is correct
-            PackItem(new FertileDirt(Utility.RandomMinMax(1, 10)));
-
-            if (Utility.RandomDouble() < 0.10)
-            {
-                PackItem(new DecorativeVines());
-            }
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.MageryRegs, 3);
+            AddLoot(LootPack.LootItem<DecorativeVines>(10.0));
+            AddLoot(LootPack.LootItem<FertileDirt>(1, 10, false, true));
+            AddLoot(LootPack.LootItem<Vines>());
+            AddLoot(LootPack.LootItem<ExecutionersCap>(20.0));
         }
 
         public WhippingVine(Serial serial)

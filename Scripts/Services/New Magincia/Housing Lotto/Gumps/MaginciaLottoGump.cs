@@ -116,7 +116,10 @@ namespace Server.Engines.NewMagincia
                 {
                     toBuy = Convert.ToInt32(text);
                 }
-                catch { }
+                catch (Exception e)
+                {
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
+                }
 
                 if (toBuy <= 0)
                     return;

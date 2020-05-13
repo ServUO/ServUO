@@ -1,5 +1,3 @@
-using Server.Items;
-
 namespace Server.Mobiles
 {
     [CorpseName("a minotaur general corpse")]
@@ -36,24 +34,20 @@ namespace Server.Mobiles
 
             Fame = 18000;
             Karma = -18000;
-
-            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
         }
-
-        public override void GenerateLoot()
-        {
-            AddLoot(LootPack.UltraRich, 2);
-        }
-
-        public override int TreasureMapLevel => 4;
 
         public MinotaurGeneral(Serial serial)
             : base(serial)
         {
         }
+
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.UltraRich, 2);
+            AddLoot(LootPack.ArcanistScrolls, 0, 1);
+        }
+
+        public override int TreasureMapLevel => 4;
 
         public override void Serialize(GenericWriter writer)
         {

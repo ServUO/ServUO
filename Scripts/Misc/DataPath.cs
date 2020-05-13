@@ -107,8 +107,9 @@ namespace Server.Misc
                     return v;
                 }
             }
-            catch
+            catch (Exception e)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
                 return null;
             }
         }

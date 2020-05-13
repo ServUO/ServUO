@@ -43,8 +43,6 @@ namespace Server.Mobiles
             Fame = 5000;
             Karma = -5000;
 
-            PackItem(new SpidersSilk(8));
-
             Tamable = true;
             ControlSlots = 3;
             MinTameSkill = 96.0;
@@ -63,6 +61,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich);
+            AddLoot(LootPack.LootItem<SpidersSilk>(8, true));
         }
 
         public override void Serialize(GenericWriter writer)

@@ -146,12 +146,16 @@ namespace Server.Accounting
                             box.UpdateTotals();
                         }
                     }
-                    catch
-                    { }
+                    catch (Exception ex)
+                    {
+                        Server.Diagnostics.ExceptionLogging.LogException(ex);
+                    }
                 }
             }
-            catch
-            { }
+            catch (Exception ex)
+            {
+                Server.Diagnostics.ExceptionLogging.LogException(ex);
+            }
 
             NetState.Resume();
 
@@ -365,9 +369,7 @@ namespace Server.Accounting
                     }
                     catch (Exception ex)
                     {
-                        Utility.PushColor(ConsoleColor.Red);
-                        Console.WriteLine("Writing Secure Account Exception: {0}", ex);
-                        Utility.PopColor();
+                        Server.Diagnostics.ExceptionLogging.LogException(ex);
                     }
                 }
             }
@@ -942,8 +944,10 @@ namespace Server.Accounting
                         list[index] = World.FindMobile(serial);
                     }
                 }
-                catch
-                { }
+                catch (Exception e)
+                {
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
+                }
             }
 
             return list;
@@ -971,8 +975,10 @@ namespace Server.Accounting
                 {
                     list.Add(new AccountComment(comment));
                 }
-                catch
-                { }
+                catch (Exception e)
+                {
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
+                }
             }
 
             return list;
@@ -1000,8 +1006,10 @@ namespace Server.Accounting
                 {
                     list.Add(new AccountTag(tag));
                 }
-                catch
-                { }
+                catch (Exception e)
+                {
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
+                }
             }
 
             return list;

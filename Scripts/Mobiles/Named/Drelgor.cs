@@ -43,34 +43,15 @@ namespace Server.Mobiles
 
             Fame = 3600;
             Karma = -3600;
-
-            PackItem(new Scimitar());
-            PackItem(new WoodenShield());
-
-            switch (Utility.Random(5))
-            {
-                case 0:
-                    PackItem(new BoneArms());
-                    break;
-                case 1:
-                    PackItem(new BoneChest());
-                    break;
-                case 2:
-                    PackItem(new BoneGloves());
-                    break;
-                case 3:
-                    PackItem(new BoneLegs());
-                    break;
-                case 4:
-                    PackItem(new BoneHelm());
-                    break;
-            }
         }
 
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Average);
             AddLoot(LootPack.Meager);
+            AddLoot(LootPack.LootItem<Scimitar>());
+            AddLoot(LootPack.LootItem<WoodenShield>());
+            AddLoot(LootPack.RandomLootItem(new Type[] { typeof(BoneArms), typeof(BoneChest), typeof(BoneGloves), typeof(BoneLegs), typeof(BoneHelm) }));
         }
 
         public override bool BleedImmune => true;

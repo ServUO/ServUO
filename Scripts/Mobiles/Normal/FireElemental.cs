@@ -41,8 +41,6 @@ namespace Server.Mobiles
 
             ControlSlots = 4;
 
-            PackItem(new SulfurousAsh(3));
-
             AddItem(new LightSource());
         }
 
@@ -60,6 +58,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.Average);
             AddLoot(LootPack.Meager);
             AddLoot(LootPack.Gems);
+            AddLoot(LootPack.LootItem<SulfurousAsh>(3, true));
         }
 
         public override void Serialize(GenericWriter writer)

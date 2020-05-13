@@ -42,9 +42,6 @@ namespace Server.Mobiles
 
             Fame = 7000;
             Karma = 7000;
-
-            if (0.02 > Utility.RandomDouble())
-                PackStatue();
         }
 
         public PixieRenowned(Serial serial)
@@ -62,6 +59,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 2);
+            AddLoot(LootPack.Statue);
         }
 
         public override void Serialize(GenericWriter writer)

@@ -549,8 +549,9 @@ namespace Server.Engines.CannedEvil
                             prot.AddToBackpack(scrollDupe);
                         }
                     }
-                    catch
+                    catch (Exception e)
                     {
+                        Server.Diagnostics.ExceptionLogging.LogException(e);
                     }
                 }
             }
@@ -758,8 +759,9 @@ namespace Server.Engines.CannedEvil
             {
                 m_Champion = Activator.CreateInstance(ChampionSpawnInfo.GetInfo(m_Type).Champion) as Mobile;
             }
-            catch
+            catch (Exception e)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
             }
 
             if (m_Champion != null)
@@ -924,8 +926,9 @@ namespace Server.Engines.CannedEvil
             {
                 return Activator.CreateInstance(types[Utility.Random(types.Length)]) as Mobile;
             }
-            catch
+            catch (Exception e)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
                 return null;
             }
         }

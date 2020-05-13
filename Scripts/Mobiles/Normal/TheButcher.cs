@@ -44,9 +44,6 @@ namespace Server.Mobiles
 
             Fame = 24000;
             Karma = -24000;
-
-            if (Utility.RandomDouble() < 0.2)
-                PackItem(new PumpkinCarvingKit());
         }
 
         public TheButcher(Serial serial)
@@ -78,6 +75,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 2);
+            AddLoot(LootPack.LootItem<PumpkinCarvingKit>(20.0));
         }
 
         public override void Serialize(GenericWriter writer)

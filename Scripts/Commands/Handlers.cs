@@ -749,8 +749,9 @@ namespace Server.Commands
                         return;
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
+                    Server.Diagnostics.ExceptionLogging.LogException(ex);
                 }
 
                 from.SendMessage("Region name not found");

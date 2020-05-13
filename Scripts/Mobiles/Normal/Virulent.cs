@@ -40,15 +40,8 @@ namespace Server.Mobiles
             SetSkill(SkillName.Magery, 104.2, 119.8);
             SetSkill(SkillName.EvalInt, 102.8, 116.8);
 
-            PackItem(new SpidersSilk(8));
-
             Fame = 21000;
             Karma = -21000;
-
-            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
 
             SetWeaponAbility(WeaponAbility.MortalStrike);
         }
@@ -65,6 +58,8 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 4);
+            AddLoot(LootPack.ArcanistScrolls, 0, 1);
+            AddLoot(LootPack.LootItem<SpidersSilk>(8, true));
         }
 
         public override void OnDeath(Container c)

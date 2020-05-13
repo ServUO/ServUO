@@ -66,8 +66,9 @@ namespace Server.Misc
                     _Client.Send(message);
                 }
             }
-            catch
+            catch (Exception e)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
                 return false;
             }
 

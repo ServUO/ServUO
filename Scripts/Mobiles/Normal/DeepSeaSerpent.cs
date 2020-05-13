@@ -41,12 +41,13 @@ namespace Server.Mobiles
             CanSwim = true;
             CantWalk = true;
 
-            if (Utility.RandomBool())
-                PackItem(new SulfurousAsh(4));
-            else
-                PackItem(new BlackPearl(4));
-
             SetSpecialAbility(SpecialAbility.DragonBreath);
+        }
+
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.Meager);
+            AddLoot(LootPack.RandomLootItem(new System.Type[] { typeof(SulfurousAsh), typeof(BlackPearl) }, 100.0, 4, false, true));
         }
 
         public DeepSeaSerpent(Serial serial)
@@ -60,11 +61,6 @@ namespace Server.Mobiles
         public override HideType HideType => HideType.Horned;
         public override int Scales => 8;
         public override ScaleType ScaleType => ScaleType.Blue;
-
-        public override void GenerateLoot()
-        {
-            AddLoot(LootPack.Meager);
-        }
 
         public override void Serialize(GenericWriter writer)
         {

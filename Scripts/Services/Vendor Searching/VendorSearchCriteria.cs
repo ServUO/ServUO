@@ -144,7 +144,7 @@ namespace Server.Engines.VendorSearching
 				new SearchCriterionEntry(AosAttribute.BonusStr, 1079767, 1060485),
                 new SearchCriterionEntry(AosAttribute.BonusDex, 1079732, 1060409),
                 new SearchCriterionEntry(AosAttribute.BonusInt, 1079756, 1060432),
-                new SearchCriterionEntry(AosAttribute.BonusHits, 1079404, 1060415),
+                new SearchCriterionEntry(AosAttribute.BonusHits, 1079404, 1060431),
                 new SearchCriterionEntry(AosAttribute.BonusStam, 1079405, 1060484),
                 new SearchCriterionEntry(AosAttribute.BonusMana, 1079406, 1060439),
                 new SearchCriterionEntry(AosAttribute.RegenHits, 1075627, 1060444),

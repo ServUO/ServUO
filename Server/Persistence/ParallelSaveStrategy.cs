@@ -321,7 +321,7 @@ namespace Server
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex);
+                    Server.Diagnostics.ExceptionLogging.LogException(ex);
                 }
             }
 

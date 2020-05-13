@@ -48,14 +48,6 @@ namespace Server.Mobiles
             ControlSlots = 2;
             MinTameSkill = 95.1;
 
-            switch (Utility.Random(12))
-            {
-                case 0: PackItem(new BloodOathScroll()); break;
-                case 1: PackItem(new HorrificBeastScroll()); break;
-                case 2: PackItem(new StrangleScroll()); break;
-                case 3: PackItem(new VengefulSpiritScroll()); break;
-            }
-
             switch (Utility.Random(4))
             {
                 case 0:
@@ -87,7 +79,6 @@ namespace Server.Mobiles
             if (Utility.RandomDouble() < 0.05)
                 Hue = 1910;
 
-            PackItem(new SulfurousAsh(Utility.RandomMinMax(3, 5)));
             SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
@@ -107,6 +98,8 @@ namespace Server.Mobiles
             AddLoot(LootPack.Average);
             AddLoot(LootPack.LowScrolls);
             AddLoot(LootPack.Potions);
+            AddLoot(LootPack.LootItem<SulfurousAsh>(3, 5, true));
+            AddLoot(LootPack.RandomLootItem(new[] { typeof(BloodOathScroll), typeof(HorrificBeastScroll), typeof(StrangleScroll), typeof(VengefulSpiritScroll) }, 33.0, 1));
         }
 
         public override int GetAngerSound()

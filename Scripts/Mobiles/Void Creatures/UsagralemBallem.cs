@@ -45,21 +45,9 @@ namespace Server.Mobiles
             Fame = 18000;
             Karma = -18000;
 
-            PackItem(new DaemonBone(30));
-
             SetWeaponAbility(WeaponAbility.DoubleStrike);
             SetWeaponAbility(WeaponAbility.WhirlwindAttack);
             SetWeaponAbility(WeaponAbility.CrushingBlow);
-        }
-
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            if (Utility.RandomDouble() < 0.30)
-            {
-                c.DropItem(new AncientPotteryFragments());
-            }
         }
 
         public UsagralemBallem(Serial serial)
@@ -79,6 +67,8 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.UltraRich, 1);
             AddLoot(LootPack.FilthyRich, 2);
+            AddLoot(LootPack.LootItem<DaemonBone>(30, true));
+            AddLoot(LootPack.LootItem<AncientPotteryFragments>(30.0));
         }
 
         public override void Serialize(GenericWriter writer)

@@ -61,14 +61,6 @@ namespace Server.Mobiles
             Fame = 24000;
             Karma = -24000;
 
-            PackResources(8);
-            PackTalismans(5);
-
-            for (int i = 0; i < Utility.RandomMinMax(1, 6); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
-
             SetSpecialAbility(SpecialAbility.HowlOfCacophony);
         }
 
@@ -83,57 +75,17 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.SuperBoss, 8);
-        }
+            AddLoot(LootPack.ArcanistScrolls, Utility.RandomMinMax(1, 6));
+            AddLoot(LootPack.PeerlessResource, 8);
+            AddLoot(LootPack.Talisman, 5);
+            AddLoot(LootPack.LootItem<GrizzledBones>());
 
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
+            AddLoot(LootPack.RandomLootItem(new[] { typeof(TombstoneOfTheDamned), typeof(GlobOfMonstreousInterredGrizzle), typeof(MonsterousInterredGrizzleMaggots), typeof(GrizzledSkullCollection) }));
 
-            c.DropItem(new GrizzledBones());
+            AddLoot(LootPack.LootItem<ParrotItem>(60.0));
+            AddLoot(LootPack.LootItem<GrizzledMareStatuette>(5.0));
 
-            switch (Utility.Random(4))
-            {
-                case 0:
-                    c.DropItem(new TombstoneOfTheDamned());
-                    break;
-                case 1:
-                    c.DropItem(new GlobOfMonstreousInterredGrizzle());
-                    break;
-                case 2:
-                    c.DropItem(new MonsterousInterredGrizzleMaggots());
-                    break;
-                case 3:
-                    c.DropItem(new GrizzledSkullCollection());
-                    break;
-            }
-
-            if (Utility.RandomDouble() < 0.6)
-                c.DropItem(new ParrotItem());
-
-            if (Utility.RandomDouble() < 0.05)
-                c.DropItem(new GrizzledMareStatuette());
-
-            if (Utility.RandomDouble() < 0.05)
-            {
-                switch (Utility.Random(5))
-                {
-                    case 0:
-                        c.DropItem(new GrizzleGauntlets());
-                        break;
-                    case 1:
-                        c.DropItem(new GrizzleGreaves());
-                        break;
-                    case 2:
-                        c.DropItem(new GrizzleHelm());
-                        break;
-                    case 3:
-                        c.DropItem(new GrizzleTunic());
-                        break;
-                    case 4:
-                        c.DropItem(new GrizzleVambraces());
-                        break;
-                }
-            }
+            AddLoot(LootPack.RandomLootItem(new[] { typeof(GrizzleGauntlets), typeof(GrizzleGreaves), typeof(GrizzleHelm), typeof(GrizzleTunic), typeof(GrizzleVambraces) }, 5.0, 1));
         }
 
         public override int GetDeathSound()

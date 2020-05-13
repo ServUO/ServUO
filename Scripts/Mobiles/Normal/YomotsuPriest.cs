@@ -40,11 +40,6 @@ namespace Server.Mobiles
             Fame = 9000;
             Karma = -9000;
 
-            PackItem(new GreenGourd());
-
-            if (Utility.RandomDouble() < 0.25)
-                PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
-
             SetWeaponAbility(WeaponAbility.DoubleStrike);
         }
 
@@ -64,6 +59,8 @@ namespace Server.Mobiles
             AddLoot(LootPack.FilthyRich);
             AddLoot(LootPack.Rich);
             AddLoot(LootPack.Gems, 4);
+            AddLoot(LootPack.LootItem<GreenGourd>(true));
+            AddLoot(LootPack.BonsaiSeed);
         }
 
         // TODO: Body Transformation

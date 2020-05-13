@@ -1,3 +1,4 @@
+using Server;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -35,12 +36,14 @@ namespace Server.Mobiles
 
             Fame = 1500;
             Karma = -1500;
+        }
 
-            PackGold(Utility.Random(100, 180));
-
-            SolenHelper.PackPicnicBasket(this);
-
-            PackItem(new ZoogiFungus());
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.Gems, 1, 2);
+            AddLoot(LootPack.LootGold(100, 180));
+            AddLoot(LootPack.LootItem<ZoogiFungus>(100.0, 1, false, true));
+            AddLoot(LootPack.LootItemCallback(SolenHelper.PackPicnicBasket, 1.0, 1, false, false));
         }
 
         public RedSolenWorker(Serial serial)
@@ -71,11 +74,6 @@ namespace Server.Mobiles
         public override int GetDeathSound()
         {
             return 0x8E;
-        }
-
-        public override void GenerateLoot()
-        {
-            AddLoot(LootPack.Gems, Utility.RandomMinMax(1, 2));
         }
 
         public override bool IsEnemy(Mobile m)

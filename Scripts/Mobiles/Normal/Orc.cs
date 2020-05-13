@@ -36,14 +36,6 @@ namespace Server.Mobiles
 
             Fame = 1500;
             Karma = -1500;
-
-            PackItem(new ThighBoots());
-
-            if (0.2 > Utility.RandomDouble())
-                PackItem(new BolaBall());
-
-            if (0.5 > Utility.RandomDouble())
-                PackItem(new Yeast());
         }
 
         public Orc(Serial serial)
@@ -61,6 +53,9 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Meager);
+            AddLoot(LootPack.LootItem<BolaBall>(20.0));
+            AddLoot(LootPack.LootItem<Yeast>(50.0, true));
+            AddLoot(LootPack.LootItem<ThighBoots>());
         }
 
         public override bool IsEnemy(Mobile m)

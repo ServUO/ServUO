@@ -155,28 +155,31 @@ namespace Server.Regions
                     }
                 }
 
-                Rectangle3D[] recs = new Rectangle3D[list.Count];
-                var i = 0;
-
-                foreach (var kvp in list)
+                if (list.Count > 0)
                 {
-                    recs[i++] = new Rectangle3D(kvp.Key.Location.X, kvp.Key.Location.Y, kvp.Key.Location.Z - 5, 1, 1, 10);
+                    Rectangle3D[] recs = new Rectangle3D[list.Count];
+                    var i = 0;
+
+                    foreach (var kvp in list)
+                    {
+                        recs[i++] = new Rectangle3D(kvp.Key.Location.X, kvp.Key.Location.Y, kvp.Key.Location.Z - 5, 1, 1, 10);
+                    }
+
+                    TeleportRegion teleRegion;
+
+                    if (!Siege.SiegeShard && locMap != null && locMap.Rules != MapRules.FeluccaRules && teleMap.Rules == MapRules.FeluccaRules)
+                    {
+                        teleRegion = new TeleportRegionPVPWarning(string.Format("Teleport Region {0}", unique.ToString()), locMap, recs, list);
+                    }
+                    else
+                    {
+                        teleRegion = new TeleportRegion(string.Format("Teleport Region {0}", unique.ToString()), locMap, recs, list);
+                    }
+
+                    teleRegion.Register();
+
+                    unique++;
                 }
-
-                TeleportRegion teleRegion;
-
-                if (!Siege.SiegeShard && locMap != null && locMap.Rules != MapRules.FeluccaRules && teleMap.Rules == MapRules.FeluccaRules)
-                {
-                    teleRegion = new TeleportRegionPVPWarning(string.Format("Teleport Region {0}", unique.ToString()), locMap, recs, list);
-                }
-                else
-                {
-                    teleRegion = new TeleportRegion(string.Format("Teleport Region {0}", unique.ToString()), locMap, recs, list);
-                }
-
-                teleRegion.Register();
-
-                unique++;
             }
         }
     }

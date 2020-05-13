@@ -43,9 +43,6 @@ namespace Server.Mobiles
             SetSkill(SkillName.Anatomy, 118.7, 125.0);
             SetSkill(SkillName.DetectHidden, 120.0);
 
-            // ingredients
-            PackResources(8);
-
             Fame = 20000;
             Karma = -20000;
 
@@ -73,10 +70,14 @@ namespace Server.Mobiles
         public override Poison PoisonImmune => Poison.Lethal;
         public override Poison HitPoison => Utility.RandomBool() ? Poison.Deadly : Poison.Lethal;
         public override int TreasureMapLevel => 5;
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.SuperBoss, 8);
             AddLoot(LootPack.Gems, 12);
+            AddLoot(LootPack.PeerlessResource, 8);
+            AddLoot(LootPack.LootItem<ParrotItem>(60.0));
+            AddLoot(LootPack.LootItem<CrimsonCincture>(2.5));
         }
 
         public override int GetIdleSound()
@@ -181,17 +182,6 @@ namespace Server.Mobiles
             }
 
             return base.OnBeforeDeath();
-        }
-
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            if (Utility.RandomDouble() < 0.6)
-                c.DropItem(new ParrotItem());
-
-            if (Utility.RandomDouble() < 0.025)
-                c.DropItem(new CrimsonCincture());
         }
 
         private void Terrorize(object o)

@@ -40,18 +40,10 @@ namespace Server.Mobiles
             SetSkill(SkillName.Necromancy, 120);
             SetSkill(SkillName.SpiritSpeak, 120);
 
-            PackResources(8);
-            PackTalismans(5);
-
             Timer.DelayCall(TimeSpan.FromSeconds(1), SpawnSatyrs);
 
             Fame = 25000;
             Karma = -25000;
-
-            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
 
             SetAreaEffect(AreaEffect.AuraOfNausea);
         }
@@ -60,38 +52,14 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.SuperBoss, 8);
             AddLoot(LootPack.Parrot, 1);
-        }
-
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            c.DropItem(new DiseasedBark());
-            c.DropItem(new EternallyCorruptTree());
-
-            int drop = Utility.Random(4, 8);
-
-            for (int i = 0; i < drop; i++)
-                c.DropItem(new MelisandesFermentedWine());
-
-            if (Utility.RandomDouble() < 0.6)
-                c.DropItem(new ParrotItem());
-
-            if (Utility.RandomDouble() < 0.2225)
-            {
-                switch (Utility.Random(3))
-                {
-                    case 0:
-                        c.DropItem(new MelisandesHairDye());
-                        break;
-                    case 1:
-                        c.DropItem(new MelisandesCorrodedHatchet());
-                        break;
-                    case 2:
-                        c.DropItem(new AlbinoSquirrelImprisonedInCrystal());
-                        break;
-                }
-            }
+            AddLoot(LootPack.ArcanistScrolls, Utility.RandomMinMax(1, 6));
+            AddLoot(LootPack.PeerlessResource, 8);
+            AddLoot(LootPack.Talisman, 5);
+            AddLoot(LootPack.LootItem<DiseasedBark>());
+            AddLoot(LootPack.LootItem<EternallyCorruptTree>());
+            AddLoot(LootPack.LootItem<MelisandesFermentedWine>(4, 8));
+            AddLoot(LootPack.LootItem<ParrotItem>(60.0));
+            AddLoot(LootPack.RandomLootItem(new[] { typeof(MelisandesHairDye), typeof(MelisandesCorrodedHatchet), typeof(AlbinoSquirrelImprisonedInCrystal) }, 22.25, 1));
         }
 
         public override void OnThink()

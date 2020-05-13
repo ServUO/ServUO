@@ -37,9 +37,6 @@ namespace Server.Mobiles
             Fame = 5000;
             Karma = -5000;
 
-            PackItem(new BlackPearl(3));
-            PackItem(new IronOre(3));
-
             SetAreaEffect(AreaEffect.AuraDamage);
         }
 
@@ -62,6 +59,8 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Rich);
+            AddLoot(LootPack.LootItem<BlackPearl>(3, true));
+            AddLoot(LootPack.LootItem<IronOre>(3, true));
         }
 
         public override void Serialize(GenericWriter writer)

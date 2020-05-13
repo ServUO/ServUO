@@ -36,54 +36,12 @@ namespace Server.Mobiles
             Fame = 18000;
             Karma = 0;
 
-            PackReg(4);
-
             Tamable = false;
-
-            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
 
             SetSpecialAbility(SpecialAbility.GraspingClaw);
         }
 
         public override bool CanBeParagon => false;
-
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            if (Utility.RandomDouble() < 0.025)
-            {
-                switch (Utility.Random(20))
-                {
-                    case 0: c.DropItem(new AssassinChest()); break;
-                    case 1: c.DropItem(new AssassinArms()); break;
-                    case 2: c.DropItem(new DeathChest()); break;
-                    case 3: c.DropItem(new MyrmidonArms()); break;
-                    case 4: c.DropItem(new MyrmidonLegs()); break;
-                    case 5: c.DropItem(new MyrmidonGorget()); break;
-                    case 6: c.DropItem(new LeafweaveGloves()); break;
-                    case 7: c.DropItem(new LeafweaveLegs()); break;
-                    case 8: c.DropItem(new LeafweavePauldrons()); break;
-                    case 9: c.DropItem(new PaladinGloves()); break;
-                    case 10: c.DropItem(new PaladinGorget()); break;
-                    case 11: c.DropItem(new PaladinArms()); break;
-                    case 12: c.DropItem(new HunterArms()); break;
-                    case 13: c.DropItem(new HunterGloves()); break;
-                    case 14: c.DropItem(new HunterLegs()); break;
-                    case 15: c.DropItem(new HunterChest()); break;
-                    case 16: c.DropItem(new GreymistArms()); break;
-                    case 17: c.DropItem(new GreymistGloves()); break;
-                    case 18: c.DropItem(new GreymistLegs()); break;
-                    case 19: c.DropItem(new MyrmidonChest()); break;
-                }
-            }
-
-            if (Utility.RandomDouble() < 0.1)
-                c.DropItem(new ParrotItem());
-        }
 
         public Swoop(Serial serial)
             : base(serial)
@@ -100,6 +58,14 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.UltraRich, 2);
             AddLoot(LootPack.HighScrolls);
+            AddLoot(LootPack.MageryRegs, 4);
+            AddLoot(LootPack.Parrot, 1);
+            AddLoot(LootPack.ArcanistScrolls, 0, 1);
+            AddLoot(LootPack.RandomLootItem(
+                new[] { typeof(AssassinChest),  typeof(AssassinArms),   typeof(DeathChest),     typeof(MyrmidonArms),       typeof(MyrmidonLegs),
+                        typeof(MyrmidonGorget), typeof(LeafweaveGloves),typeof(LeafweaveLegs),  typeof(LeafweavePauldrons), typeof(PaladinGloves),
+                        typeof(PaladinGorget),  typeof(PaladinArms),    typeof(HunterArms),     typeof(HunterGloves),       typeof(HunterLegs),
+                        typeof(HunterChest),    typeof(GreymistArms),   typeof(GreymistGloves), typeof(GreymistLegs),       typeof(MyrmidonChest) }, 2.5, 1, false, false));
         }
 
         public override void Serialize(GenericWriter writer)

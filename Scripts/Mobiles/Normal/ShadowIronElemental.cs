@@ -35,8 +35,6 @@ namespace Server.Mobiles
 
             Fame = 4500;
             Karma = -4500;
-
-            PackItem(new ShadowIronOre(25));
         }
 
         public ShadowIronElemental(Serial serial)
@@ -54,6 +52,7 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.Average);
             AddLoot(LootPack.Gems, 2);
+            AddLoot(LootPack.LootItem<ShadowIronOre>(25));
         }
 
         public override void AlterMeleeDamageFrom(Mobile from, ref int damage)

@@ -88,11 +88,6 @@ namespace Server.Mobiles
             CanSwim = true;
             CantWalk = true;
 
-            PackItem(new MessageInABottle());
-
-            PackItem(new Rope());
-            PackItem(new Rope());
-
             SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
@@ -189,6 +184,8 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich, 5);
+            AddLoot(LootPack.LootItem<Rope>(2));
+            AddLoot(LootPack.LootItem<MessageInABottle>());
         }
 
         public override void Serialize(GenericWriter writer)

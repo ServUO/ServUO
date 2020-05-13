@@ -36,24 +36,10 @@ namespace Server.Mobiles
             Fame = 21000;
             Karma = -21000;
 
-            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
-
             SetSpecialAbility(SpecialAbility.AngryFire);
         }
+
         public override bool CanBeParagon => false;
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            if (Utility.RandomDouble() < 0.25)
-                c.DropItem(new IrksBrain());
-
-            if (Utility.RandomDouble() < 0.025)
-                c.DropItem(new PaladinGloves());
-        }
 
         public Irk(Serial serial)
             : base(serial)
@@ -66,6 +52,9 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 2);
+            AddLoot(LootPack.ArcanistScrolls);
+            AddLoot(LootPack.LootItem<IrksBrain>(25.0));
+            AddLoot(LootPack.LootItem<PaladinGloves>(2.5));
         }
 
         public override void Serialize(GenericWriter writer)

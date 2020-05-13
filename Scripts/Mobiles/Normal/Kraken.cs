@@ -45,12 +45,6 @@ namespace Server.Mobiles
 
             CanSwim = true;
             CantWalk = true;
-
-            //Rope is supposed to be a rare drop.  ref UO Guide Kraken
-            if (Utility.RandomDouble() < 0.05)
-            {
-                PackItem(new Rope());
-            }
         }
 
         public Kraken(Serial serial)
@@ -92,6 +86,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Rich);
+            AddLoot(LootPack.LootItem<Rope>(5.0));
         }
 
         public override void Serialize(GenericWriter writer)

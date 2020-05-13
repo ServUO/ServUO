@@ -51,7 +51,7 @@ namespace Server
             catch (Exception e)
             {
                 Console.WriteLine("Warning: {0}: Pathing error from {1} to {2}", e.GetType().Name, start, goal);
-                Console.WriteLine(e.StackTrace);
+                Server.Diagnostics.ExceptionLogging.LogException(e);
             }
         }
 
@@ -128,8 +128,9 @@ namespace Server
                 from.NetState.BlockAllPackets = false;
                 from.ProcessDelta();
             }
-            catch
+            catch (Exception e)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
             }
         }
 

@@ -82,8 +82,10 @@ namespace Server.Items
                 {
                     m_TypeRestart = DateTime.UtcNow + value;
                 }
-                catch
-                { }
+                catch (Exception e)
+                {
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
+                }
             }
         }
 

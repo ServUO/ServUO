@@ -120,8 +120,9 @@ namespace Server.Engines.Reports
 
                 p.WaitForExit();
             }
-            catch
+            catch (Exception e)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
             }
 
             Console.WriteLine("Reports: {0}: Upload complete", m_Title);
@@ -130,8 +131,9 @@ namespace Server.Engines.Reports
             {
                 File.Delete(filePath);
             }
-            catch
+            catch (Exception e)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
             }
         }
 

@@ -830,8 +830,9 @@ namespace Server.Engines.Quests
             {
                 return Activator.CreateInstance(type);
             }
-            catch
+            catch (Exception e)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
                 return null;
             }
         }

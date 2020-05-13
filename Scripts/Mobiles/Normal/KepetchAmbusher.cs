@@ -42,8 +42,6 @@ namespace Server.Mobiles
 
             Fame = 2500;
             Karma = -2500;
-
-            PackItem(new RawRibs(5));
         }
 
         public bool Carve(Mobile from, Item item)
@@ -104,6 +102,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Average, 2);
+            AddLoot(LootPack.LootItem<RawRibs>(5));
         }
 
         public override int GetIdleSound()

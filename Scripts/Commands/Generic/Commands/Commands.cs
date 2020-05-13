@@ -108,6 +108,7 @@ namespace Server.Commands.Generic
             catch (Exception ex)
             {
                 e.Mobile.SendMessage(ex.Message);
+                Server.Diagnostics.ExceptionLogging.LogException(ex);
             }
         }
     }

@@ -78,10 +78,10 @@ namespace Server.Mobiles
             switch (Utility.Random(4))
             {
                 default:
-                case 0: bow = new CompositeBow(); PackItem(new Arrow(25)); break;
-                case 1: bow = new Crossbow(); PackItem(new Bolt(25)); break;
-                case 2: bow = new Bow(); PackItem(new Arrow(25)); break;
-                case 3: bow = new HeavyCrossbow(); PackItem(new Bolt(25)); break;
+                case 0: bow = new CompositeBow(); break;
+                case 1: bow = new Crossbow(); break;
+                case 2: bow = new Bow(); break;
+                case 3: bow = new HeavyCrossbow(); break;
             }
 
             AddItem(bow);
@@ -98,6 +98,8 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 2);
+            AddLoot(LootPack.LootItem<Arrow>(25, true));
+            AddLoot(LootPack.LootItem<Bolt>(25, true));
         }
 
         public MerchantCrew(Serial serial)

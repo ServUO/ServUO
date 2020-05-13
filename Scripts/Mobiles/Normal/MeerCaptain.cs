@@ -41,10 +41,30 @@ namespace Server.Mobiles
             Fame = 2000;
             Karma = 5000;
 
-            Container pack = new Backpack();
+            AddItem(new Crossbow());
 
-            pack.DropItem(new Bolt(Utility.RandomMinMax(10, 20)));
-            pack.DropItem(new Bolt(Utility.RandomMinMax(10, 20)));
+            m_NextAbilityTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(2, 5));
+        }
+
+        public MeerCaptain(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override bool CanRummageCorpses => true;
+        public override bool InitialInnocent => true;
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.Meager);
+            AddLoot(LootPack.LootItem<Bolt>(10, 20));
+            AddLoot(LootPack.LootItem<Arrow>(10, 20));
+            AddLoot(LootPack.LootItemCallback(DropWeapons));
+            AddLoot(LootPack.LootItemCallback(DropRegs));
+        }
+
+        private static Item DropWeapons(IEntity e)
+        {
+            var pack = new Backpack();
 
             switch (Utility.Random(6))
             {
@@ -68,39 +88,21 @@ namespace Server.Mobiles
                     break;
             }
 
-            Container bag = new Bag();
+            return pack;
+        }
+
+        private static Item DropRegs(IEntity e)
+        {
+            var bag = new Bag();
 
             int count = Utility.RandomMinMax(10, 20);
 
             for (int i = 0; i < count; ++i)
             {
-                Item item = Loot.RandomReagent();
-
-                if (item == null)
-                    continue;
-
-                if (!bag.TryDropItem(this, item, false))
-                    item.Delete();
+                bag.DropItemStacked(Loot.RandomReagent());
             }
 
-            pack.DropItem(bag);
-
-            AddItem(new Crossbow());
-            PackItem(pack);
-
-            m_NextAbilityTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(2, 5));
-        }
-
-        public MeerCaptain(Serial serial)
-            : base(serial)
-        {
-        }
-
-        public override bool CanRummageCorpses => true;
-        public override bool InitialInnocent => true;
-        public override void GenerateLoot()
-        {
-            AddLoot(LootPack.Meager);
+            return bag;
         }
 
         public override int GetHurtSound()

@@ -44,7 +44,7 @@ namespace Server.Mobiles
                 Add(new GenericBuyInfo(typeof(BreadLoaf), 7, 10, 0x103B, 0, true));
                 Add(new GenericBuyInfo(typeof(Backpack), 15, 20, 0x9B2, 0));
 
-                Type[] types = Loot.RegularScrollTypes;
+                Type[] types = Loot.MageryScrollTypes;
 
                 int circles = 3;
 
@@ -116,7 +116,7 @@ namespace Server.Mobiles
                 Add(typeof(NoxCrystal), 3);
                 Add(typeof(PigIron), 3);
 
-                Type[] types = Loot.RegularScrollTypes;
+                Type[] types = Loot.MageryScrollTypes;
 
                 for (int i = 0; i < types.Length; ++i)
                     Add(types[i], ((i / 8) + 2) * 5);

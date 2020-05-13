@@ -680,8 +680,9 @@ namespace Server.Items
                 {
                     bc = (BaseCreature)Activator.CreateInstance(list[Utility.Random(list.Length)]);
                 }
-                catch
+                catch (Exception e)
                 {
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
                     return null;
                 }
 

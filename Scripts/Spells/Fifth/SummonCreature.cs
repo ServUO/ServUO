@@ -68,8 +68,9 @@ namespace Server.Spells.Fifth
 
                     SpellHelper.Summon(creature, Caster, 0x215, duration, false, false);
                 }
-                catch
+                catch (Exception e)
                 {
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
                 }
             }
 

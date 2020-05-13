@@ -38,11 +38,6 @@ namespace Server.Mobiles
             Fame = 18900;
             Karma = -18900;
 
-            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
-
             SetWeaponAbility(WeaponAbility.ParalyzingBlow);
         }
 
@@ -52,9 +47,11 @@ namespace Server.Mobiles
         }
         public override bool CanBeParagon => false;
         public override bool GivesMLMinorArtifact => true;
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 2);
+            AddLoot(LootPack.ArcanistScrolls);
         }
 
         public override void Serialize(GenericWriter writer)

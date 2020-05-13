@@ -54,14 +54,6 @@ namespace Server.Mobiles
 
             m_Timer = new DrainTimer(this);
             m_Timer.Start();
-
-            PackReg(50);
-            PackNecroReg(15, 75);
-
-            switch (Utility.Random(3))
-            {
-                case 0: PackItem(new VampiricEmbraceScroll()); break;
-            }
         }
 
         public HarrowerTentacles(Serial serial)
@@ -124,6 +116,9 @@ namespace Server.Mobiles
             AddLoot(LootPack.FilthyRich, 2);
             AddLoot(LootPack.MedScrolls, 3);
             AddLoot(LootPack.HighScrolls, 2);
+            AddLoot(LootPack.MageryRegs, 50);
+            AddLoot(LootPack.NecroRegs, 15, 75);
+            AddLoot(LootPack.LootItem<VampiricEmbraceScroll>(33.3, true));
         }
 
         public override void Serialize(GenericWriter writer)

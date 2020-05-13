@@ -37,8 +37,6 @@ namespace Server.Mobiles
 
             Fame = 3500;
             Karma = -3500;
-
-            PackItem(new Nightshade(4));
         }
 
         public Gazer(Serial serial)
@@ -52,6 +50,7 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.Average);
             AddLoot(LootPack.Potions);
+            AddLoot(LootPack.LootItem<Nightshade>(4, true));
         }
 
         public override void Serialize(GenericWriter writer)

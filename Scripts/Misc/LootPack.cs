@@ -73,7 +73,40 @@ namespace Server
             m_Entries = entries;
         }
 
+        public void Generate(IEntity e)
+        {
+            BaseContainer cont = null;
+            LootStage stage = LootStage.Death;
+            int luckChance = 0;
+            bool hasBeenStolenFrom = false;
+            Mobile from = e as Mobile;
+
+            if (e is BaseCreature)
+            {
+                var bc = (BaseCreature)e;
+
+                cont = bc.Backpack as BaseContainer;
+                stage = bc.LootStage;
+                luckChance = bc.KillersLuck;
+                hasBeenStolenFrom = bc.StealPackGenerated;
+            }
+            else
+            {
+                cont = e as BaseContainer;
+            }
+
+            if (cont != null)
+            {
+                Generate(from, cont, stage, luckChance, hasBeenStolenFrom);
+            }
+        }
+
         public void Generate(Mobile from, Container cont, bool spawning, int luckChance)
+        {
+            Generate(from, cont as BaseContainer, spawning ? LootStage.Spawning : LootStage.Death, luckChance, false);
+        }
+
+        public void Generate(IEntity from, BaseContainer cont, LootStage stage, int luckChance, bool hasBeenStolenFrom)
         {
             if (cont == null)
             {
@@ -85,6 +118,9 @@ namespace Server
             for (int i = 0; i < m_Entries.Length; ++i)
             {
                 LootPackEntry entry = m_Entries[i];
+
+                if (!entry.CanGenerate(stage, hasBeenStolenFrom))
+                    continue;
 
                 bool shouldAdd = (entry.Chance > Utility.Random(10000));
 
@@ -103,11 +139,15 @@ namespace Server
                     continue;
                 }
 
-                Item item = entry.Construct(from, luckChance, spawning);
+                Item item = entry.Construct(from, luckChance, stage, hasBeenStolenFrom);
 
                 if (item != null)
                 {
-                    if (!item.Stackable || !cont.TryDropItem(from, item, false))
+                    if (item.Stackable)
+                    {
+                        cont.DropItemStacked(item);
+                    }
+                    else
                     {
                         cont.DropItem(item);
                     }
@@ -119,28 +159,244 @@ namespace Server
 
         public static readonly LootPackItem[] Instruments = new[] { new LootPackItem(typeof(BaseInstrument), 1) };
 
+        // Circles 1 - 3
         public static readonly LootPackItem[] LowScrollItems = new[]
         {
-            new LootPackItem(typeof(ClumsyScroll), 1)
+            new LootPackItem(typeof(ReactiveArmorScroll), 1),
+            new LootPackItem(typeof(ClumsyScroll), 1),
+            new LootPackItem(typeof(CreateFoodScroll), 1),
+            new LootPackItem(typeof(FeeblemindScroll), 1),
+            new LootPackItem(typeof(HealScroll), 1),
+            new LootPackItem(typeof(MagicArrowScroll), 1),
+            new LootPackItem(typeof(NightSightScroll), 1),
+            new LootPackItem(typeof(WeakenScroll), 1),
+            new LootPackItem(typeof(AgilityScroll), 1),
+            new LootPackItem(typeof(CunningScroll), 1),
+            new LootPackItem(typeof(CureScroll), 1),
+            new LootPackItem(typeof(HarmScroll), 1),
+            new LootPackItem(typeof(MagicTrapScroll), 1),
+            new LootPackItem(typeof(MagicUnTrapScroll), 1),
+            new LootPackItem(typeof(ProtectionScroll), 1),
+            new LootPackItem(typeof(StrengthScroll), 1),
+            new LootPackItem(typeof(BlessScroll), 1),
+            new LootPackItem(typeof(FireballScroll), 1),
+            new LootPackItem(typeof(MagicLockScroll), 1),
+            new LootPackItem(typeof(PoisonScroll), 1),
+            new LootPackItem(typeof(TelekinisisScroll), 1),
+            new LootPackItem(typeof(TeleportScroll), 1),
+            new LootPackItem(typeof(UnlockScroll), 1),
+            new LootPackItem(typeof(WallOfStoneScroll), 1)
         };
 
+        // Circles 4 - 6
         public static readonly LootPackItem[] MedScrollItems = new[]
         {
-            new LootPackItem(typeof(ArchCureScroll), 1)
+            new LootPackItem(typeof(ArchCureScroll), 1),
+            new LootPackItem(typeof(ArchProtectionScroll), 1),
+            new LootPackItem(typeof(CurseScroll), 1),
+            new LootPackItem(typeof(FireFieldScroll), 1),
+            new LootPackItem(typeof(GreaterHealScroll), 1),
+            new LootPackItem(typeof(LightningScroll), 1),
+            new LootPackItem(typeof(ManaDrainScroll), 1),
+            new LootPackItem(typeof(RecallScroll), 1),
+            new LootPackItem(typeof(BladeSpiritsScroll), 1),
+            new LootPackItem(typeof(DispelFieldScroll), 1),
+            new LootPackItem(typeof(IncognitoScroll), 1),
+            new LootPackItem(typeof(MagicReflectScroll), 1),
+            new LootPackItem(typeof(MindBlastScroll), 1),
+            new LootPackItem(typeof(ParalyzeScroll), 1),
+            new LootPackItem(typeof(PoisonFieldScroll), 1),
+            new LootPackItem(typeof(SummonCreatureScroll), 1),
+            new LootPackItem(typeof(DispelScroll), 1),
+            new LootPackItem(typeof(EnergyBoltScroll), 1),
+            new LootPackItem(typeof(ExplosionScroll), 1),
+            new LootPackItem(typeof(InvisibilityScroll), 1),
+            new LootPackItem(typeof(MarkScroll), 1),
+            new LootPackItem(typeof(MassCurseScroll), 1),
+            new LootPackItem(typeof(ParalyzeFieldScroll), 1),
+            new LootPackItem(typeof(RevealScroll), 1)
         };
 
+        // Circles 7 - 8
         public static readonly LootPackItem[] HighScrollItems = new[]
         {
-            new LootPackItem(typeof(SummonAirElementalScroll), 1)
+            new LootPackItem(typeof(ChainLightningScroll), 1),
+            new LootPackItem(typeof(EnergyFieldScroll), 1),
+            new LootPackItem(typeof(FlamestrikeScroll), 1),
+            new LootPackItem(typeof(GateTravelScroll), 1),
+            new LootPackItem(typeof(ManaVampireScroll), 1),
+            new LootPackItem(typeof(MassDispelScroll), 1),
+            new LootPackItem(typeof(MeteorSwarmScroll), 1),
+            new LootPackItem(typeof(PolymorphScroll), 1),
+            new LootPackItem(typeof(EarthquakeScroll), 1),
+            new LootPackItem(typeof(EnergyVortexScroll), 1),
+            new LootPackItem(typeof(ResurrectionScroll), 1),
+            new LootPackItem(typeof(SummonAirElementalScroll), 1),
+            new LootPackItem(typeof(SummonDaemonScroll), 1),
+            new LootPackItem(typeof(SummonEarthElementalScroll), 1),
+            new LootPackItem(typeof(SummonFireElementalScroll), 1),
+            new LootPackItem(typeof(SummonWaterElementalScroll), 1)
         };
 
+        public static readonly LootPackItem[] MageryScrollItems = new[]
+        {
+            new LootPackItem(typeof(ReactiveArmorScroll), 1), new LootPackItem(typeof(ClumsyScroll), 1), new LootPackItem(typeof(CreateFoodScroll), 1), new LootPackItem(typeof(FeeblemindScroll), 1),
+            new LootPackItem(typeof(HealScroll), 1), new LootPackItem(typeof(MagicArrowScroll), 1), new LootPackItem(typeof(NightSightScroll), 1), new LootPackItem(typeof(WeakenScroll), 1), new LootPackItem(typeof(AgilityScroll), 1),
+            new LootPackItem(typeof(CunningScroll), 1), new LootPackItem(typeof(CureScroll), 1), new LootPackItem(typeof(HarmScroll), 1), new LootPackItem(typeof(MagicTrapScroll), 1), new LootPackItem(typeof(MagicUnTrapScroll), 1),
+            new LootPackItem(typeof(ProtectionScroll), 1), new LootPackItem(typeof(StrengthScroll), 1), new LootPackItem(typeof(BlessScroll), 1), new LootPackItem(typeof(FireballScroll), 1),
+            new LootPackItem(typeof(MagicLockScroll), 1), new LootPackItem(typeof(PoisonScroll), 1), new LootPackItem(typeof(TelekinisisScroll), 1), new LootPackItem(typeof(TeleportScroll), 1),
+            new LootPackItem(typeof(UnlockScroll), 1), new LootPackItem(typeof(WallOfStoneScroll), 1), new LootPackItem(typeof(ArchCureScroll), 1), new LootPackItem(typeof(ArchProtectionScroll), 1),
+            new LootPackItem(typeof(CurseScroll), 1), new LootPackItem(typeof(FireFieldScroll), 1), new LootPackItem(typeof(GreaterHealScroll), 1), new LootPackItem(typeof(LightningScroll), 1),
+            new LootPackItem(typeof(ManaDrainScroll), 1), new LootPackItem(typeof(RecallScroll), 1), new LootPackItem(typeof(BladeSpiritsScroll), 1), new LootPackItem(typeof(DispelFieldScroll), 1),
+            new LootPackItem(typeof(IncognitoScroll), 1), new LootPackItem(typeof(MagicReflectScroll), 1), new LootPackItem(typeof(MindBlastScroll), 1), new LootPackItem(typeof(ParalyzeScroll), 1),
+            new LootPackItem(typeof(PoisonFieldScroll), 1), new LootPackItem(typeof(SummonCreatureScroll), 1), new LootPackItem(typeof(DispelScroll), 1), new LootPackItem(typeof(EnergyBoltScroll), 1),
+            new LootPackItem(typeof(ExplosionScroll), 1), new LootPackItem(typeof(InvisibilityScroll), 1), new LootPackItem(typeof(MarkScroll), 1), new LootPackItem(typeof(MassCurseScroll), 1),
+            new LootPackItem(typeof(ParalyzeFieldScroll), 1), new LootPackItem(typeof(RevealScroll), 1), new LootPackItem(typeof(ChainLightningScroll), 1), new LootPackItem(typeof(EnergyFieldScroll), 1),
+            new LootPackItem(typeof(FlamestrikeScroll), 1), new LootPackItem(typeof(GateTravelScroll), 1), new LootPackItem(typeof(ManaVampireScroll), 1), new LootPackItem(typeof(MassDispelScroll), 1),
+            new LootPackItem(typeof(MeteorSwarmScroll), 1), new LootPackItem(typeof(PolymorphScroll), 1), new LootPackItem(typeof(EarthquakeScroll), 1), new LootPackItem(typeof(EnergyVortexScroll), 1),
+            new LootPackItem(typeof(ResurrectionScroll), 1), new LootPackItem(typeof(SummonAirElementalScroll), 1), new LootPackItem(typeof(SummonDaemonScroll), 1),
+            new LootPackItem(typeof(SummonEarthElementalScroll), 1), new LootPackItem(typeof(SummonFireElementalScroll), 1), new LootPackItem(typeof(SummonWaterElementalScroll), 1 )
+        };
+
+        public static readonly LootPackItem[] NecroScrollItems = new[]
+        {
+            new LootPackItem(typeof(AnimateDeadScroll), 1),
+            new LootPackItem(typeof(BloodOathScroll), 1),
+            new LootPackItem(typeof(CorpseSkinScroll), 1),
+            new LootPackItem(typeof(CurseWeaponScroll), 1),
+            new LootPackItem(typeof(EvilOmenScroll), 1),
+            new LootPackItem(typeof(HorrificBeastScroll), 1),
+            new LootPackItem(typeof(MindRotScroll), 1),
+            new LootPackItem(typeof(PainSpikeScroll), 1),
+            new LootPackItem(typeof(SummonFamiliarScroll), 1),
+            new LootPackItem(typeof(WraithFormScroll), 1),
+            new LootPackItem(typeof(LichFormScroll), 1),
+            new LootPackItem(typeof(PoisonStrikeScroll), 1),
+            new LootPackItem(typeof(StrangleScroll), 1),
+            new LootPackItem(typeof(WitherScroll), 1),
+            new LootPackItem(typeof(VengefulSpiritScroll), 1),
+            new LootPackItem(typeof(VampiricEmbraceScroll), 1),
+            new LootPackItem(typeof(ExorcismScroll), 1)
+        };
+
+        public static readonly LootPackItem[] ArcanistScrollItems = new[]
+        {
+            new LootPackItem(typeof(ArcaneCircleScroll), 1),
+            new LootPackItem(typeof(GiftOfRenewalScroll), 1),
+            new LootPackItem(typeof(ImmolatingWeaponScroll), 1),
+            new LootPackItem(typeof(AttuneWeaponScroll), 1),
+            new LootPackItem(typeof(ThunderstormScroll), 1),
+            new LootPackItem(typeof(NatureFuryScroll), 1),
+            new LootPackItem(typeof(ReaperFormScroll), 1),
+            new LootPackItem(typeof(WildfireScroll), 1),
+            new LootPackItem(typeof(EssenceOfWindScroll), 1),
+            new LootPackItem(typeof(DryadAllureScroll), 1),
+            new LootPackItem(typeof(EtherealVoyageScroll), 1),
+            new LootPackItem(typeof(WordOfDeathScroll), 1),
+            new LootPackItem(typeof(GiftOfLifeScroll), 1),
+            new LootPackItem(typeof(ArcaneEmpowermentScroll), 1)
+        };
+
+        public static readonly LootPackItem[] MysticScrollItems = new[]
+        {
+            new LootPackItem(typeof(NetherBoltScroll), 1),
+            new LootPackItem(typeof(HealingStoneScroll), 1),
+            new LootPackItem(typeof(PurgeMagicScroll), 1),
+            new LootPackItem(typeof(EnchantScroll), 1),
+            new LootPackItem(typeof(SleepScroll), 1),
+            new LootPackItem(typeof(EagleStrikeScroll), 1),
+            new LootPackItem(typeof(AnimatedWeaponScroll), 1),
+            new LootPackItem(typeof(StoneFormScroll), 1),
+            new LootPackItem(typeof(SpellTriggerScroll), 1),
+            new LootPackItem(typeof(MassSleepScroll), 1),
+            new LootPackItem(typeof(CleansingWindsScroll), 1),
+            new LootPackItem(typeof(BombardScroll), 1),
+            new LootPackItem(typeof(SpellPlagueScroll), 1),
+            new LootPackItem(typeof(HailStormScroll), 1),
+            new LootPackItem(typeof(NetherCycloneScroll), 1),
+            new LootPackItem(typeof(RisingColossusScroll), 1)
+        };
+
+
         public static readonly LootPackItem[] GemItems = new[] { new LootPackItem(typeof(Amber), 1) };
+        public static readonly LootPackItem[] RareGemItems = new[] { new LootPackItem(typeof(BlueDiamond), 1) };
+
+
+        public static readonly LootPackItem[] MageryRegItems = new[]
+        {
+            new LootPackItem(typeof(BlackPearl), 1),
+            new LootPackItem(typeof(Bloodmoss), 1),
+            new LootPackItem(typeof(Garlic), 1),
+            new LootPackItem(typeof(Ginseng), 1),
+            new LootPackItem(typeof(MandrakeRoot), 1),
+            new LootPackItem(typeof(Nightshade), 1),
+            new LootPackItem(typeof(SulfurousAsh), 1),
+            new LootPackItem(typeof(SpidersSilk), 1)
+        };
+
+        public static readonly LootPackItem[] NecroRegItems = new[]
+        {
+            new LootPackItem(typeof(BatWing), 1),
+            new LootPackItem(typeof(GraveDust), 1),
+            new LootPackItem(typeof(DaemonBlood), 1),
+            new LootPackItem(typeof(NoxCrystal), 1),
+            new LootPackItem(typeof(PigIron), 1)
+        };
+
+        public static readonly LootPackItem[] MysticRegItems = new[]
+        {
+            new LootPackItem(typeof(Bone), 1),
+            new LootPackItem(typeof(DragonBlood), 1),
+            new LootPackItem(typeof(FertileDirt), 1),
+            new LootPackItem(typeof(DaemonBone), 1)
+        };
+
+        public static readonly LootPackItem[] PeerlessResourceItems = new[]
+{
+            new LootPackItem(typeof(Blight), 1),
+            new LootPackItem(typeof(Scourge), 1),
+            new LootPackItem(typeof(Taint), 1),
+            new LootPackItem(typeof(Putrefaction), 1),
+            new LootPackItem(typeof(Corruption), 1),
+            new LootPackItem(typeof(Muculent), 1)
+        };
 
         public static readonly LootPackItem[] PotionItems = new[]
         {
             new LootPackItem(typeof(AgilityPotion), 1), new LootPackItem(typeof(StrengthPotion), 1),
             new LootPackItem(typeof(RefreshPotion), 1), new LootPackItem(typeof(LesserCurePotion), 1),
             new LootPackItem(typeof(LesserHealPotion), 1), new LootPackItem(typeof(LesserPoisonPotion), 1)
+        };
+
+        public static readonly LootPackItem[] LootBodyParts = new[]
+        {
+            new LootPackItem(typeof(LeftArm), 1), new LootPackItem(typeof(RightArm), 1),
+            new LootPackItem(typeof(Torso), 1), new LootPackItem(typeof(RightLeg), 1),
+            new LootPackItem(typeof(LeftLeg), 1)
+        };
+
+        public static readonly LootPackItem[] LootBones = new[]
+        {
+            new LootPackItem(typeof(Bone), 1), new LootPackItem(typeof(RibCage), 2),
+            new LootPackItem(typeof(BonePile), 3)
+        };
+
+        public static readonly LootPackItem[] LootBodyPartsAndBones = new[]
+        {
+            new LootPackItem(typeof(LeftArm), 1), new LootPackItem(typeof(RightArm), 1),
+            new LootPackItem(typeof(Torso), 1), new LootPackItem(typeof(RightLeg), 1),
+            new LootPackItem(typeof(LeftLeg), 1), new LootPackItem(typeof(Bone), 1),
+            new LootPackItem(typeof(RibCage), 1), new LootPackItem(typeof(BonePile), 1)
+        };
+
+
+        public static readonly LootPackItem[] StatueItems = new[]
+        {
+            new LootPackItem(typeof(StatueSouth), 1), new LootPackItem(typeof(StatueSouth2), 1),
+            new LootPackItem(typeof(StatueNorth), 1), new LootPackItem(typeof(StatueWest), 1),
+            new LootPackItem(typeof(StatueEast), 1), new LootPackItem(typeof(StatueEast2), 1),
+            new LootPackItem(typeof(StatueSouthEast), 1), new LootPackItem(typeof(BustSouth), 1),
+            new LootPackItem(typeof(BustEast), 1)
         };
 
         #region AOS Magic Items
@@ -220,83 +476,84 @@ namespace Server
             new LootPack(
                 new[]
                 {
-                    new LootPackEntry(true, Gold, 100.00, "2d10+20"), new LootPackEntry(false, AosMagicItemsPoor, 1.00, 1, 5, 0, 100),
-                    new LootPackEntry(false, Instruments, 0.02, 1)
+                    new LootPackEntry(false, true, Gold, 100.00, "2d10+20"),
+                    new LootPackEntry(false, false, AosMagicItemsPoor, 1.00, 1, 5, 0, 100),
+                    new LootPackEntry(false, false, Instruments, 0.02, 1)
                 });
 
         public static readonly LootPack LootMeager =
             new LootPack(
                 new[]
                 {
-                    new LootPackEntry(true, Gold, 100.00, "4d10+40"),
-                    new LootPackEntry(false, AosMagicItemsMeagerType1, 20.40, 1, 2, 0, 50),
-                    new LootPackEntry(false, AosMagicItemsMeagerType2, 10.20, 1, 5, 0, 100),
-                    new LootPackEntry(false, Instruments, 0.10, 1)
+                    new LootPackEntry(false, true, Gold, 100.00, "4d10+40"),
+                    new LootPackEntry(false, false, AosMagicItemsMeagerType1, 20.40, 1, 2, 0, 50),
+                    new LootPackEntry(false, false, AosMagicItemsMeagerType2, 10.20, 1, 5, 0, 100),
+                    new LootPackEntry(false, false, Instruments, 0.10, 1)
                 });
 
         public static readonly LootPack LootAverage =
             new LootPack(
                 new[]
                 {
-                    new LootPackEntry(true, Gold, 100.00, "8d10+100"),
-                    new LootPackEntry(false, AosMagicItemsAverageType1, 32.80, 1, 3, 0, 50),
-                    new LootPackEntry(false, AosMagicItemsAverageType1, 32.80, 1, 4, 0, 75),
-                    new LootPackEntry(false, AosMagicItemsAverageType2, 19.50, 1, 5, 0, 100),
-                    new LootPackEntry(false, Instruments, 0.40, 1)
+                    new LootPackEntry(false, true, Gold, 100.00, "8d10+100"),
+                    new LootPackEntry(false, false, AosMagicItemsAverageType1, 32.80, 1, 3, 0, 50),
+                    new LootPackEntry(false, false, AosMagicItemsAverageType1, 32.80, 1, 4, 0, 75),
+                    new LootPackEntry(false, false, AosMagicItemsAverageType2, 19.50, 1, 5, 0, 100),
+                    new LootPackEntry(false, false, Instruments, 0.40, 1)
                 });
 
         public static readonly LootPack LootRich =
             new LootPack(
                 new[]
                 {
-                    new LootPackEntry(true, Gold, 100.00, "15d10+225"),
-                    new LootPackEntry(false, AosMagicItemsRichType1, 76.30, 1, 4, 0, 75),
-                    new LootPackEntry(false, AosMagicItemsRichType1, 76.30, 1, 4, 0, 75),
-                    new LootPackEntry(false, AosMagicItemsRichType2, 61.70, 1, 5, 0, 100),
-                    new LootPackEntry(false, Instruments, 1.00, 1)
+                    new LootPackEntry(false, true, Gold, 100.00, "15d10+225"),
+                    new LootPackEntry(false, false, AosMagicItemsRichType1, 76.30, 1, 4, 0, 75),
+                    new LootPackEntry(false, false, AosMagicItemsRichType1, 76.30, 1, 4, 0, 75),
+                    new LootPackEntry(false, false, AosMagicItemsRichType2, 61.70, 1, 5, 0, 100),
+                    new LootPackEntry(false, false, Instruments, 1.00, 1)
                 });
 
         public static readonly LootPack LootFilthyRich =
             new LootPack(
                 new[]
                 {
-                    new LootPackEntry(true, Gold, 100.00, "3d100+400"),
-                    new LootPackEntry(false, AosMagicItemsFilthyRichType1, 79.50, 1, 5, 0, 100),
-                    new LootPackEntry(false, AosMagicItemsFilthyRichType1, 79.50, 1, 5, 0, 100),
-                    new LootPackEntry(false, AosMagicItemsFilthyRichType2, 77.60, 1, 5, 25, 100),
-                    new LootPackEntry(false, Instruments, 2.00, 1)
+                    new LootPackEntry(false, true, Gold, 100.00, "3d100+400"),
+                    new LootPackEntry(false, false, AosMagicItemsFilthyRichType1, 79.50, 1, 5, 0, 100),
+                    new LootPackEntry(false, false, AosMagicItemsFilthyRichType1, 79.50, 1, 5, 0, 100),
+                    new LootPackEntry(false, false, AosMagicItemsFilthyRichType2, 77.60, 1, 5, 25, 100),
+                    new LootPackEntry(false, false, Instruments, 2.00, 1)
                 });
 
         public static readonly LootPack LootUltraRich =
             new LootPack(
                 new[]
                 {
-                    new LootPackEntry(true, Gold, 100.00, "6d100+600"),
-                    new LootPackEntry(false, AosMagicItemsUltraRich, 100.00, 1, 5, 25, 100),
-                    new LootPackEntry(false, AosMagicItemsUltraRich, 100.00, 1, 5, 25, 100),
-                    new LootPackEntry(false, AosMagicItemsUltraRich, 100.00, 1, 5, 25, 100),
-                    new LootPackEntry(false, AosMagicItemsUltraRich, 100.00, 1, 5, 25, 100),
-                    new LootPackEntry(false, AosMagicItemsUltraRich, 100.00, 1, 5, 25, 100),
-                    new LootPackEntry(false, AosMagicItemsUltraRich, 100.00, 1, 5, 33, 100),
-                    new LootPackEntry(false, Instruments, 2.00, 1)
+                    new LootPackEntry(false, true, Gold, 100.00, "6d100+600"),
+                    new LootPackEntry(false, false, AosMagicItemsUltraRich, 100.00, 1, 5, 25, 100),
+                    new LootPackEntry(false, false, AosMagicItemsUltraRich, 100.00, 1, 5, 25, 100),
+                    new LootPackEntry(false, false, AosMagicItemsUltraRich, 100.00, 1, 5, 25, 100),
+                    new LootPackEntry(false, false, AosMagicItemsUltraRich, 100.00, 1, 5, 25, 100),
+                    new LootPackEntry(false, false, AosMagicItemsUltraRich, 100.00, 1, 5, 25, 100),
+                    new LootPackEntry(false, false, AosMagicItemsUltraRich, 100.00, 1, 5, 33, 100),
+                    new LootPackEntry(false, false, Instruments, 2.00, 1)
                 });
 
         public static readonly LootPack LootSuperBoss =
             new LootPack(
                 new[]
                 {
-                    new LootPackEntry(true, Gold, 100.00, "10d100+800"),
-                    new LootPackEntry(false, AosMagicItemsUltraRich, 100.00, 1, 5, 25, 100),
-                    new LootPackEntry(false, AosMagicItemsUltraRich, 100.00, 1, 5, 25, 100),
-                    new LootPackEntry(false, AosMagicItemsUltraRich, 100.00, 1, 5, 25, 100),
-                    new LootPackEntry(false, AosMagicItemsUltraRich, 100.00, 1, 5, 25, 100),
-                    new LootPackEntry(false, AosMagicItemsUltraRich, 100.00, 1, 5, 33, 100),
-                    new LootPackEntry(false, AosMagicItemsUltraRich, 100.00, 1, 5, 33, 100),
-                    new LootPackEntry(false, AosMagicItemsUltraRich, 100.00, 1, 5, 33, 100),
-                    new LootPackEntry(false, AosMagicItemsUltraRich, 100.00, 1, 5, 33, 100),
-                    new LootPackEntry(false, AosMagicItemsUltraRich, 100.00, 1, 5, 50, 100),
-                    new LootPackEntry(false, AosMagicItemsUltraRich, 100.00, 1, 5, 50, 100),
-                    new LootPackEntry(false, Instruments, 2.00, 1)
+                    new LootPackEntry(false, true, Gold, 100.00, "10d100+800"),
+                    new LootPackEntry(false, false, AosMagicItemsUltraRich, 100.00, 1, 5, 25, 100),
+                    new LootPackEntry(false, false, AosMagicItemsUltraRich, 100.00, 1, 5, 25, 100),
+                    new LootPackEntry(false, false, AosMagicItemsUltraRich, 100.00, 1, 5, 25, 100),
+                    new LootPackEntry(false, false, AosMagicItemsUltraRich, 100.00, 1, 5, 25, 100),
+                    new LootPackEntry(false, false, AosMagicItemsUltraRich, 100.00, 1, 5, 33, 100),
+                    new LootPackEntry(false, false, AosMagicItemsUltraRich, 100.00, 1, 5, 33, 100),
+                    new LootPackEntry(false, false, AosMagicItemsUltraRich, 100.00, 1, 5, 33, 100),
+                    new LootPackEntry(false, false, AosMagicItemsUltraRich, 100.00, 1, 5, 33, 100),
+                    new LootPackEntry(false, false, AosMagicItemsUltraRich, 100.00, 1, 5, 50, 100),
+                    new LootPackEntry(false, false, AosMagicItemsUltraRich, 100.00, 1, 5, 50, 100),
+                    new LootPackEntry(false, false, Instruments, 2.00, 1)
                 });
         #endregion
 
@@ -310,20 +567,176 @@ namespace Server
         public static LootPack SuperBoss => LootSuperBoss;
         #endregion
 
-        public static readonly LootPack LowScrolls = new LootPack(new[] { new LootPackEntry(false, LowScrollItems, 100.00, 1) });
+        public static readonly LootPack LowScrolls = new LootPack(new[] { new LootPackEntry(false, true, LowScrollItems, 100.00, 1) });
+        public static readonly LootPack MedScrolls = new LootPack(new[] { new LootPackEntry(false, true, MedScrollItems, 100.00, 1) });
+        public static readonly LootPack HighScrolls = new LootPack(new[] { new LootPackEntry(false, true, HighScrollItems, 100.00, 1) });
+        public static readonly LootPack MageryScrolls = new LootPack(new[] { new LootPackEntry(false, true, MageryScrollItems, 100.00, 1) });
+        public static readonly LootPack NecroScrolls = new LootPack(new[] { new LootPackEntry(false, true, NecroScrollItems, 100.00, 1) });
+        public static readonly LootPack ArcanistScrolls = new LootPack(new[] { new LootPackEntry(false, true, ArcanistScrollItems, 100.00, 1) });
+        public static readonly LootPack MysticScrolls = new LootPack(new[] { new LootPackEntry(false, true, MysticScrollItems, 100.00, 1) });
 
-        public static readonly LootPack MedScrolls = new LootPack(new[] { new LootPackEntry(false, MedScrollItems, 100.00, 1) });
+        public static readonly LootPack MageryRegs = new LootPack(new[] { new LootPackEntry(false, true, MageryRegItems, 100.00, 1) });
+        public static readonly LootPack NecroRegs = new LootPack(new[] { new LootPackEntry(false, true, NecroRegItems, 100.00, 1) });
+        public static readonly LootPack MysticRegs = new LootPack(new[] { new LootPackEntry(false, true, MysticRegItems, 100.00, 1) });
+        public static readonly LootPack PeerlessResource = new LootPack(new[] { new LootPackEntry(false, true, PeerlessResourceItems, 100.00, 1) });
 
-        public static readonly LootPack HighScrolls =
-            new LootPack(new[] { new LootPackEntry(false, HighScrollItems, 100.00, 1) });
+        public static readonly LootPack Gems = new LootPack(new[] { new LootPackEntry(false, true, GemItems, 100.00, 1) });
+        public static readonly LootPack RareGems = new LootPack(new[] { new LootPackEntry(false, true, RareGemItems, 100.00, 1) });
 
-        public static readonly LootPack Gems = new LootPack(new[] { new LootPackEntry(false, GemItems, 100.00, 1) });
+        public static readonly LootPack Potions = new LootPack(new[] { new LootPackEntry(false, true, PotionItems, 100.00, 1) });
+        public static readonly LootPack BodyParts = new LootPack(new[] { new LootPackEntry(false, true, LootBodyParts, 100.00, 1) });
+        public static readonly LootPack Bones = new LootPack(new[] { new LootPackEntry(false, true, LootBones, 100.00, 1) });
+        public static readonly LootPack BodyPartsAndBones = new LootPack(new[] { new LootPackEntry(false, true, LootBodyPartsAndBones, 100.00, 1) });
+        public static readonly LootPack Statue = new LootPack(new[] { new LootPackEntry(false, true, StatueItems, 100.00, 1) });
 
-        public static readonly LootPack Potions = new LootPack(new[] { new LootPackEntry(false, PotionItems, 100.00, 1) });
+        public static readonly LootPack Parrot = new LootPack(new[] { new LootPackEntry(false, false, new LootPackItem[] { new LootPackItem(typeof(ParrotItem), 1) }, 10.00, 1) });
+        public static readonly LootPack Talisman = new LootPack(new[] { new LootPackEntry(false, false, new LootPackItem[] { new LootPackItem(typeof(RandomTalisman), 1) }, 100.00, 1) });
 
-        public static readonly LootPackItem[] ParrotItem = new[] { new LootPackItem(typeof(ParrotItem), 1) };
+        public static readonly LootPack PeculiarSeed1 = new LootPack(new[] { new LootPackEntry(false, true, new LootPackItem[] { new LootPackItem(e => Engines.Plants.Seed.RandomPeculiarSeed(1), 1) }, 33.3, 1) });
+        public static readonly LootPack PeculiarSeed2 = new LootPack(new[] { new LootPackEntry(false, true, new LootPackItem[] { new LootPackItem(e => Engines.Plants.Seed.RandomPeculiarSeed(2), 1) }, 33.3, 1) });
+        public static readonly LootPack PeculiarSeed3 = new LootPack(new[] { new LootPackEntry(false, true, new LootPackItem[] { new LootPackItem(e => Engines.Plants.Seed.RandomPeculiarSeed(3), 1)}, 33.3, 1) });
+        public static readonly LootPack PeculiarSeed4 = new LootPack(new[] { new LootPackEntry(false, true, new LootPackItem[] { new LootPackItem(e => Engines.Plants.Seed.RandomPeculiarSeed(4), 1) }, 33.3, 1) });
+        public static readonly LootPack BonsaiSeed = new LootPack(new[] { new LootPackEntry(false, true, new LootPackItem[] { new LootPackItem(e => Engines.Plants.Seed.RandomBonsaiSeed(), 1) }, 25.0, 1) });
 
-        public static readonly LootPack Parrot = new LootPack(new[] { new LootPackEntry(false, ParrotItem, 10.00, 1) });
+        public static LootPack LootItems(LootPackItem[] items)
+        {
+            return new LootPack(new[] { new LootPackEntry(false, false, items, 100.0, 1) });
+        }
+
+        public static LootPack LootItems(LootPackItem[] items, int amount)
+        {
+            return new LootPack(new[] { new LootPackEntry(false, false, items, 100.0, amount) });
+        }
+
+        public static LootPack LootItems(LootPackItem[] items, double chance)
+        {
+            return new LootPack(new[] { new LootPackEntry(false, false, items, chance, 1) });
+        }
+
+        public static LootPack LootItems(LootPackItem[] items, double chance, int amount)
+        {
+            return new LootPack(new[] { new LootPackEntry(false, false, items, chance, amount) });
+        }
+
+        public static LootPack LootItems(LootPackItem[] items, double chance, int amount, bool resource)
+        {
+            return new LootPack(new[] { new LootPackEntry(false, resource, items, chance, amount) });
+        }
+
+        public static LootPack LootItems(LootPackItem[] items, double chance, int amount, bool spawn, bool steal)
+        {
+            return new LootPack(new[] { new LootPackEntry(spawn, steal, items, chance, amount) });
+        }
+
+        public static LootPack LootItem<T>() where T : Item
+        {
+            return new LootPack(new[] { new LootPackEntry(false, false, new LootPackItem[] { new LootPackItem(typeof(T), 1) }, 100.0, 1) });
+        }
+
+        public static LootPack LootItem<T>(bool resource) where T : Item
+        {
+            return new LootPack(new[] { new LootPackEntry(false, resource, new LootPackItem[] { new LootPackItem(typeof(T), 1) }, 100.0, 1) });
+        }
+
+        public static LootPack LootItem<T>(double chance) where T : Item
+        {
+            return new LootPack(new[] { new LootPackEntry(false, false, new LootPackItem[] { new LootPackItem(typeof(T), 1) }, chance, 1) });
+        }
+
+        public static LootPack LootItem<T>(double chance, bool resource) where T : Item
+        {
+            return new LootPack(new[] { new LootPackEntry(false, resource, new LootPackItem[] { new LootPackItem(typeof(T), 1) }, chance, 1) });
+        }
+
+        public static LootPack LootItem<T>(bool onSpawn, bool onSteal) where T : Item
+        {
+            return new LootPack(new[] { new LootPackEntry(onSpawn, onSteal, new LootPackItem[] { new LootPackItem(typeof(T), 1) }, 100.0, 1) });
+        }
+
+        public static LootPack LootItem<T>(int amount) where T : Item
+        {
+            return new LootPack(new[] { new LootPackEntry(false, false, new LootPackItem[] { new LootPackItem(typeof(T), 1) }, 100.0, amount) });
+        }
+
+        public static LootPack LootItem<T>(int min, int max) where T : Item
+        {
+            return new LootPack(new[] { new LootPackEntry(false, false, new LootPackItem[] { new LootPackItem(typeof(T), 1) }, 100.0, Utility.RandomMinMax(min, max)) });
+        }
+
+        public static LootPack LootItem<T>(int min, int max, bool resource) where T : Item
+        {
+            return new LootPack(new[] { new LootPackEntry(false, resource, new LootPackItem[] { new LootPackItem(typeof(T), 1) }, 100.0, Utility.RandomMinMax(min, max)) });
+        }
+
+        public static LootPack LootItem<T>(int amount, bool resource) where T : Item
+        {
+            return new LootPack(new[] { new LootPackEntry(false, resource, new LootPackItem[] { new LootPackItem(typeof(T), 1) }, 100.0, amount) });
+        }
+
+        public static LootPack LootItem<T>(double chance, int amount) where T : Item
+        {
+            return new LootPack(new[] { new LootPackEntry(false, false, new LootPackItem[] { new LootPackItem(typeof(T), 1) }, chance, amount) });
+        }
+
+        public static LootPack LootItem<T>(double chance, int amount, bool spawnTime, bool onSteal) where T : Item
+        {
+            return new LootPack(new[] { new LootPackEntry(spawnTime, onSteal, new LootPackItem[] { new LootPackItem(typeof(T), 1) }, chance, amount) });
+        }
+
+        public static LootPack RandomLootItem(Type[] types)
+        {
+            return RandomLootItem(types, 100.0, 1, false, false);
+        }
+
+        public static LootPack RandomLootItem(Type[] types, bool onSpawn, bool onSteal)
+        {
+            return RandomLootItem(types, 100.0, 1, onSpawn, onSteal);
+        }
+
+        public static LootPack RandomLootItem(Type[] types, double chance, int amount)
+        {
+            return RandomLootItem(types, chance, amount, false, false);
+        }
+
+        public static LootPack RandomLootItem(Type[] types, double chance, int amount, bool onSpawn, bool onSteal)
+        {
+            var items = new LootPackItem[types.Length];
+
+            for (int i = 0; i < items.Length; i++)
+            {
+                items[i] = new LootPackItem(types[i], 1);
+            }
+
+            return new LootPack(new[] { new LootPackEntry(onSpawn, onSteal, items, chance, amount) });
+        }
+
+        public static LootPack LootItemCallback(Func<IEntity, Item> callback)
+        {
+            return new LootPack(new[] { new LootPackEntry(false, false, new LootPackItem[] { new LootPackItem(callback, 1) }, 100.0, 1) });
+        }
+
+        public static LootPack LootItemCallback(Func<IEntity, Item> callback, double chance, int amount, bool onSpawn, bool onSteal)
+        {
+            return new LootPack(new[] { new LootPackEntry(onSpawn, onSteal, new LootPackItem[] { new LootPackItem(callback, 1) }, chance, amount) });
+        }
+
+        public static LootPack LootGold(int amount)
+        {
+            return new LootPack(new[] { new LootPackEntry(false, true, new LootPackItem[] { new LootPackItem(typeof(Gold), 1) }, 100.0, amount) });
+        }
+
+        public static LootPack LootGold(int min, int max)
+        {
+            if (min > max)
+                min = max;
+
+            if (min > 0)
+            {
+                return LootGold(Utility.RandomMinMax(min, max));
+            }
+
+            return null;
+        }
     }
 
     public class LootPackEntry
@@ -333,6 +746,8 @@ namespace Server
         private int m_MaxProps, m_MinIntensity, m_MaxIntensity;
 
         private readonly bool m_AtSpawnTime;
+
+        private readonly bool m_OnStolen;
 
         private LootPackItem[] m_Items;
 
@@ -378,7 +793,7 @@ namespace Server
             return MondainsLegacy.IsMLRegion(Region.Find(e.Location, e.Map));
         }
 
-        public static bool IsStygian/*Abyss*/(IEntity e)
+        public static bool IsStygian(IEntity e)
         {
             if (e == null)
                 return false;
@@ -386,13 +801,29 @@ namespace Server
             return e.Map == Map.TerMur || (!IsInTokuno(e) && !IsMondain(e) && Utility.RandomBool());
         }
 
-        public Item Construct(Mobile from, int luckChance, bool spawning)
+        public bool CanGenerate(LootStage stage, bool hasBeenStolenFrom)
         {
-            if (m_AtSpawnTime != spawning)
+            switch (stage)
             {
-                return null;
+                case LootStage.Spawning:
+                    if (!m_AtSpawnTime)
+                        return false;
+                    break;
+                case LootStage.Stolen:
+                    if (!m_OnStolen)
+                        return false;
+                    break;
+                case LootStage.Death:
+                    if (m_OnStolen && hasBeenStolenFrom)
+                        return false;
+                    break;
             }
 
+            return true;
+        }
+
+        public Item Construct(IEntity from, int luckChance, LootStage stage, bool hasBeenStolenFrom)
+        {
             int totalChance = 0;
 
             for (int i = 0; i < m_Items.Length; ++i)
@@ -408,7 +839,21 @@ namespace Server
 
                 if (rnd < item.Chance)
                 {
-                    return Mutate(from, luckChance, item.Construct(IsInTokuno(from), IsMondain(from), IsStygian(from)));
+                    Item loot = null;
+
+                    if(item.ConstructCallback != null)
+                    {
+                        loot = item.ConstructCallback(from);
+                    }
+                    else
+                    {
+                        loot = item.Construct(IsInTokuno(from), IsMondain(from), IsStygian(from));
+                    }
+
+                    if (loot != null)
+                    {
+                        return Mutate(from, luckChance, loot);
+                    }
                 }
 
                 rnd -= item.Chance;
@@ -417,46 +862,7 @@ namespace Server
             return null;
         }
 
-        private int GetRandomOldBonus()
-        {
-            int rnd = Utility.RandomMinMax(m_MinIntensity, m_MaxIntensity);
-
-            if (50 > rnd)
-            {
-                return 1;
-            }
-            else
-            {
-                rnd -= 50;
-            }
-
-            if (25 > rnd)
-            {
-                return 2;
-            }
-            else
-            {
-                rnd -= 25;
-            }
-
-            if (14 > rnd)
-            {
-                return 3;
-            }
-            else
-            {
-                rnd -= 14;
-            }
-
-            if (8 > rnd)
-            {
-                return 4;
-            }
-
-            return 5;
-        }
-
-        public Item Mutate(Mobile from, int luckChance, Item item)
+        public Item Mutate(IEntity from, int luckChance, Item item)
         {
             if (item != null)
             {
@@ -540,32 +946,33 @@ namespace Server
             return item;
         }
 
-        public LootPackEntry(bool atSpawnTime, LootPackItem[] items, double chance, string quantity)
-            : this(atSpawnTime, items, chance, new LootPackDice(quantity), 0, 0, 0)
+        public LootPackEntry(bool atSpawnTime, bool onStolen, LootPackItem[] items, double chance, string quantity)
+            : this(atSpawnTime, onStolen, items, chance, new LootPackDice(quantity), 0, 0, 0)
         { }
 
-        public LootPackEntry(bool atSpawnTime, LootPackItem[] items, double chance, int quantity)
-            : this(atSpawnTime, items, chance, new LootPackDice(0, 0, quantity), 0, 0, 0)
+        public LootPackEntry(bool atSpawnTime, bool onStolen, LootPackItem[] items, double chance, int quantity)
+            : this(atSpawnTime, onStolen, items, chance, new LootPackDice(0, 0, quantity), 0, 0, 0)
         { }
 
         public LootPackEntry(
             bool atSpawnTime,
+            bool onStolen,
             LootPackItem[] items,
             double chance,
             string quantity,
             int maxProps,
             int minIntensity,
             int maxIntensity)
-            : this(atSpawnTime, items, chance, new LootPackDice(quantity), maxProps, minIntensity, maxIntensity)
+            : this(atSpawnTime, onStolen, items, chance, new LootPackDice(quantity), maxProps, minIntensity, maxIntensity)
         { }
 
-        public LootPackEntry(
-            bool atSpawnTime, LootPackItem[] items, double chance, int quantity, int maxProps, int minIntensity, int maxIntensity)
-            : this(atSpawnTime, items, chance, new LootPackDice(0, 0, quantity), maxProps, minIntensity, maxIntensity)
+        public LootPackEntry( bool atSpawnTime, bool onStolen, LootPackItem[] items, double chance, int quantity, int maxProps, int minIntensity, int maxIntensity)
+            : this(atSpawnTime, onStolen, items, chance, new LootPackDice(0, 0, quantity), maxProps, minIntensity, maxIntensity)
         { }
 
         public LootPackEntry(
             bool atSpawnTime,
+            bool onStolen,
             LootPackItem[] items,
             double chance,
             LootPackDice quantity,
@@ -574,6 +981,7 @@ namespace Server
             int maxIntensity)
         {
             m_AtSpawnTime = atSpawnTime;
+            m_OnStolen = onStolen;
             m_Items = items;
             Chance = (int)(100 * chance);
             m_Quantity = quantity;
@@ -679,71 +1087,7 @@ namespace Server
 
         private static readonly Type[] m_BlankTypes = new[] { typeof(BlankScroll) };
 
-        private static readonly Type[][] m_NecroTypes = new[]
-        {
-            new[] // low
-			{
-                typeof(AnimateDeadScroll), typeof(BloodOathScroll), typeof(CorpseSkinScroll), typeof(CurseWeaponScroll),
-                typeof(EvilOmenScroll), typeof(HorrificBeastScroll), typeof(MindRotScroll), typeof(PainSpikeScroll),
-                typeof(SummonFamiliarScroll), typeof(WraithFormScroll)
-            },
-            new[] // med
-			{
-                typeof(LichFormScroll), typeof(PoisonStrikeScroll), typeof(StrangleScroll), typeof(WitherScroll)
-            },
-            new [] // high
-            {
-                typeof(VengefulSpiritScroll), typeof(VampiricEmbraceScroll), typeof(ExorcismScroll)
-            }
-        };
-
-        private static readonly SpellbookType[] m_BookTypes = new[]
-        {
-            SpellbookType.Regular, SpellbookType.Necromancer, SpellbookType.Mystic
-        };
-
-        private static readonly int[][] m_ScrollIndexMin = new[]
-        {
-            new[] {0, 8, 16, 24, 32, 40, 48, 56},
-            new[] {0, 2, 4, 6, 8, 10, 12, 14},
-            new[] {0, 2, 4, 6, 8, 10, 12, 14},
-        };
-
-        private static readonly int[][] m_ScrollIndexMax = new[]
-        {
-            new[] {7, 15, 23, 31, 39, 47, 55, 63},
-            new[] {1, 3, 5, 7, 9, 11, 13, 14},
-            new[] {1, 3, 5, 7, 9, 11, 13, 14},
-        };
-
-        public static Item RandomScroll(int minCircle, int maxCircle)
-        {
-            --minCircle;
-            --maxCircle;
-
-            int minIndex, maxIndex, rnd, rndMax;
-            SpellbookType spellBookType;
-
-            // Magery scrolls are weighted at 4 because there are four times as many magery
-            // spells as other scolls of magic
-            rndMax = 7;
-
-            rnd = Utility.Random(rndMax);
-            rnd -= 3;
-
-            if (rnd < 0)
-                rnd = 0;
-
-            minIndex = m_ScrollIndexMin[rnd][minCircle];
-            maxIndex = m_ScrollIndexMax[rnd][maxCircle];
-
-            if (rnd == 2 && maxCircle == 7)
-                ++maxIndex;
-
-            spellBookType = m_BookTypes[rnd];
-
-            return Loot.RandomScroll(minIndex, maxIndex, spellBookType);
-        }
+        public Func<IEntity, Item> ConstructCallback { get; set; }
 
         public Item Construct(bool inTokuno, bool isMondain, bool isStygian)
         {
@@ -779,17 +1123,9 @@ namespace Server
                 {
                     item = Loot.RandomGem();
                 }
-                else if (m_Type == typeof(ClumsyScroll)) // low scroll
+                else if (m_Type == typeof(BlueDiamond)) // rare gem
                 {
-                    item = RandomScroll(1, 3);
-                }
-                else if (m_Type == typeof(ArchCureScroll)) // med scroll
-                {
-                    item = RandomScroll(4, 7);
-                }
-                else if (m_Type == typeof(SummonAirElementalScroll)) // high scroll
-                {
-                    item = RandomScroll(8, 8);
+                    item = Loot.RandomRareGem();
                 }
                 else
                 {
@@ -798,10 +1134,18 @@ namespace Server
 
                 return item;
             }
-            catch
-            { }
+            catch (Exception e)
+            {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
+            }
 
             return null;
+        }
+
+        public LootPackItem(Func<IEntity, Item> callback, int chance)
+        {
+            ConstructCallback = callback;
+            Chance = chance;
         }
 
         public LootPackItem(Type type, int chance)

@@ -58,8 +58,6 @@ namespace Server.Mobiles
                     AddItem(new Shirt(Utility.RandomDyedHue()));
                     break;
             }
-
-            PackGold(0, 25);
         }
 
         public HireSailor(Serial serial)

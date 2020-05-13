@@ -39,11 +39,6 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 25.0);
             SetSkill(SkillName.Tactics, 30.0, 50.0);
             SetSkill(SkillName.Wrestling, 30.0, 80.0);
-
-            if (0.75 > Utility.RandomDouble())
-                PackItem(new AcidSac());
-
-            PackItem(new CongealedSlugAcid());
         }
 
         public AcidSlug(Serial serial)
@@ -54,6 +49,8 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Average);
+            AddLoot(LootPack.LootItem<AcidSac>(75.0));
+            AddLoot(LootPack.LootItem<CongealedSlugAcid>());
         }
 
         public override int GetIdleSound()

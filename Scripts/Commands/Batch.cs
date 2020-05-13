@@ -152,8 +152,9 @@ namespace Server.Commands
                                 if (obj != null)
                                     usedList.Add(obj);
                             }
-                            catch
+                            catch (Exception ex)
                             {
+                                Server.Diagnostics.ExceptionLogging.LogException(ex);
                             }
                         }
                     }
@@ -169,6 +170,7 @@ namespace Server.Commands
             catch (Exception ex)
             {
                 e.Mobile.SendMessage(ex.Message);
+                Server.Diagnostics.ExceptionLogging.LogException(ex);
             }
         }
 

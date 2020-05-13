@@ -34,8 +34,6 @@ namespace Server.Mobiles
             SetSkill(SkillName.Tactics, 60, 70);
             SetSkill(SkillName.Wrestling, 80);
 
-            PackGold(500, 600);
-
             Fame = 10000;
             Karma = -10000;
         }
@@ -43,6 +41,11 @@ namespace Server.Mobiles
         public override int TreasureMapLevel => 5;
 
         private DateTime _NextDrop;
+
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.LootGold(500, 600));
+        }
 
         public override void OnActionCombat()
         {

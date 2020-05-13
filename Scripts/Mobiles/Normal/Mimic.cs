@@ -38,8 +38,6 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 126.5);
             SetSkill(SkillName.Tactics, 98.5);
             SetSkill(SkillName.Wrestling, 92.2);
-
-            PackReg(20);
         }
 
         public Mimic(Serial serial)
@@ -51,6 +49,7 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.FilthyRich, 4);
             AddLoot(LootPack.MedScrolls);
+            AddLoot(LootPack.MageryRegs, 20);
         }
 
         public override void OnDeath(Container c)

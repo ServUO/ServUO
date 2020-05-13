@@ -39,17 +39,6 @@ namespace Server.Mobiles
             ForcePassiveSpeed = 0.4;
         }
 
-        public virtual void SpawnPackItems()
-        {
-            int carrots = Utility.RandomMinMax(5, 10);
-            PackItem(new Carrot(carrots));
-
-            if (Utility.Random(5) == 0)
-                PackItem(new BrightlyColoredEggs());
-
-            PackStatue();
-        }
-
         public VorpalBunny(Serial serial)
             : base(serial)
         {
@@ -62,6 +51,9 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.FilthyRich);
             AddLoot(LootPack.Rich, 2);
+            AddLoot(LootPack.LootItem<Carrot>(100.0, Utility.RandomMinMax(5, 10), false, true));
+            AddLoot(LootPack.LootItem<BrightlyColoredEggs>(20.0, 1, false, true));
+            AddLoot(LootPack.RandomLootItem(Loot.StatueTypes, false, true));
         }
 
         public override IDamageable Combatant

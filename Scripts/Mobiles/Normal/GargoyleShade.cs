@@ -38,8 +38,6 @@ namespace Server.Mobiles
 
             Fame = 4000;
             Karma = -4000;
-
-            PackReg(10);
         }
 
         public GargoyleShade(Serial serial)
@@ -52,6 +50,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Meager);
+            AddLoot(LootPack.MageryRegs, 10);
         }
 
         public override void Serialize(GenericWriter writer)

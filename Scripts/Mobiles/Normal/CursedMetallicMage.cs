@@ -37,10 +37,14 @@ namespace Server.Mobiles
             SetSkill(SkillName.Magery, 60.9, 68.5);
             SetSkill(SkillName.SpiritSpeak, 61.9, 69.1);
             SetSkill(SkillName.Necromancy, 62.2, 68.8);
-            PackGold(75, 200);
         }
 
         public override bool DeleteCorpseOnDeath => true;
+
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.LootGold(75, 200));
+        }
 
         public override bool OnBeforeDeath()
         {

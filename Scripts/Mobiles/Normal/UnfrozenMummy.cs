@@ -41,22 +41,6 @@ namespace Server.Mobiles
 
             Fame = 25000;
             Karma = -25000;
-
-            for (int i = 0; i < Utility.RandomMinMax(0, 2); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
-        }
-
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            if (Utility.RandomDouble() < 0.6)
-                c.DropItem(new BrokenCrystals());
-
-            if (Utility.RandomDouble() < 0.1)
-                c.DropItem(new ParrotItem());
         }
 
         public UnfrozenMummy(Serial serial)
@@ -70,6 +54,9 @@ namespace Server.Mobiles
             AddLoot(LootPack.Parrot);
             AddLoot(LootPack.HighScrolls, 2);
             AddLoot(LootPack.MedScrolls);
+            AddLoot(LootPack.LootItem<BrokenCrystals>(60.0));
+            AddLoot(LootPack.Parrot);
+            AddLoot(LootPack.ArcanistScrolls, 0, 2);
         }
 
         public override void Serialize(GenericWriter writer)

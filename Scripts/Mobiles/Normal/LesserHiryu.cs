@@ -40,9 +40,6 @@ namespace Server.Mobiles
             ControlSlots = 3;
             MinTameSkill = 98.7;
 
-            if (Utility.RandomDouble() < .33)
-                PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
-
             SetWeaponAbility(WeaponAbility.Dismount);
             SetSpecialAbility(SpecialAbility.GraspingClaw);
         }
@@ -95,6 +92,7 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.FilthyRich, 2);
             AddLoot(LootPack.Gems, 4);
+            AddLoot(LootPack.BonsaiSeed);
         }
 
         public override double GetControlChance(Mobile m, bool useBaseSkill)

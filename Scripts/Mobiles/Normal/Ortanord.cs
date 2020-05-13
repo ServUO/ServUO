@@ -41,9 +41,6 @@ namespace Server.Mobiles
 
             Fame = 8000;
             Karma = -8000;
-
-            if (0.25 > Utility.RandomDouble())
-                PackItem(new DaemonBone(10));
         }
 
         public Ortanord(Serial serial)
@@ -55,6 +52,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Average, 2);
+            AddLoot(LootPack.LootItem<DaemonBone>(25.0, 10, false, true));
         }
 
         public override void OnDeath(Container c)

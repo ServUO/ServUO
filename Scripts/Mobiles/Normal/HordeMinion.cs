@@ -34,8 +34,11 @@ namespace Server.Mobiles
             Karma = -500;
 
             AddItem(new LightSource());
+        }
 
-            PackItem(new Bone(3));
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.LootItem<Bone>(3));
         }
 
         public HordeMinion(Serial serial)

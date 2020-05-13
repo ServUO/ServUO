@@ -34,24 +34,17 @@ namespace Server.Mobiles
             Fame = 18000;
             Karma = -18000;
 
-            PackItem(new PowerCrystal());
-            PackItem(new ArcaneGem());
-            PackItem(new ClockworkAssembly());
-
-            switch (Utility.Random(3))
-            {
-                case 0:
-                    PackItem(new PowerCrystal());
-                    break;
-                case 1:
-                    PackItem(new ArcaneGem());
-                    break;
-                case 2:
-                    PackItem(new ClockworkAssembly());
-                    break;
-            }
-
             m_FieldActive = CanUseField;
+        }
+
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.Average);
+            AddLoot(LootPack.Rich);
+            AddLoot(LootPack.LootItem<PowerCrystal>());
+            AddLoot(LootPack.LootItem<ArcaneGem>());
+            AddLoot(LootPack.LootItem<ClockworkAssembly>());
+            AddLoot(LootPack.RandomLootItem(new System.Type[] { typeof(PowerCrystal), typeof(ArcaneGem), typeof(ClockworkAssembly) }));
         }
 
         public ExodusMinion(Serial serial)
@@ -66,11 +59,6 @@ namespace Server.Mobiles
         public override bool IsScaryToPets => true;
 
         public override Poison PoisonImmune => Poison.Lethal;
-        public override void GenerateLoot()
-        {
-            AddLoot(LootPack.Average);
-            AddLoot(LootPack.Rich);
-        }
 
         public override int GetIdleSound()
         {

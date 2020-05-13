@@ -4,6 +4,7 @@ using Server.SkillHandlers;
 using Server.Targeting;
 using System;
 using System.Linq;
+using Server.Mobiles;
 
 namespace Server.Engines.Craft
 {
@@ -359,6 +360,12 @@ namespace Server.Engines.Craft
             return (item.LabelNumber >= 1073505 && item.LabelNumber <= 1073552) || (item.LabelNumber >= 1073111 && item.LabelNumber <= 1075040);
         }
 
+        private static readonly Type[] ArmorType =
+        {
+            typeof(RingmailGloves),    typeof(RingmailGlovesOfMining),
+            typeof(PlateGloves),   typeof(LeatherGloves)
+        };
+
         private static bool IsAlterable(Item item)
         {
             if (item is BaseWeapon)
@@ -382,7 +389,7 @@ namespace Server.Engines.Craft
                 if ((armor.RequiredRace != null && armor.RequiredRace == Race.Gargoyle && !armor.IsArtifact))
                     return false;
 
-                if (armor is RingmailGlovesOfMining && armor.Resource > CraftResource.Iron)
+                if (ArmorType.Any(t => t == armor.GetType()) && armor.Resource > CraftResource.Iron)
                     return false;
             }
 

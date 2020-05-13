@@ -39,7 +39,7 @@ namespace Server.Mobiles
                 Add(new GenericBuyInfo(typeof(RecallRune), 25, 10, 0x1f14, 0));
                 Add(new GenericBuyInfo(typeof(Spellbook), 50, 10, 0xEFA, 0));
 
-                Type[] types = Loot.RegularScrollTypes;
+                Type[] types = Loot.MageryScrollTypes;
 
                 for (int i = 0; i < types.Length && i < 8; ++i)
                 {
@@ -78,7 +78,7 @@ namespace Server.Mobiles
                 Add(typeof(BatWing), 1);
                 Add(typeof(GraveDust), 1);
 
-                Type[] types = Loot.RegularScrollTypes;
+                Type[] types = Loot.MageryScrollTypes;
 
                 for (int i = 0; i < types.Length; ++i)
                     Add(types[i], ((i / 8) + 2) * 2);

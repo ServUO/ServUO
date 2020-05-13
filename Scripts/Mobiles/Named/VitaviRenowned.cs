@@ -40,11 +40,6 @@ namespace Server.Mobiles
 
             Fame = 7500;
             Karma = -7500;
-
-            PackReg(6);
-
-            if (0.02 > Utility.RandomDouble())
-                PackStatue();
         }
 
         public VitaviRenowned(Serial serial)
@@ -70,6 +65,8 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich, 3);
+            AddLoot(LootPack.MageryRegs, 6);
+            AddLoot(LootPack.Statue);
         }
 
         public override void Serialize(GenericWriter writer)

@@ -59,10 +59,12 @@ namespace Server
                     {
                         PerformanceCounterCategory.Create(PerformanceCategoryName, PerformanceCategoryDesc, PerformanceCounterCategoryType.SingleInstance, counters);
                     }
-                    catch
+                    catch(Exception ex)
                     {
                         if (Core.Debug)
                             Console.WriteLine("Metrics: Metrics enabled. Performance counters creation requires ServUO to be run as Administrator once!");
+
+                        Server.Diagnostics.ExceptionLogging.LogException(ex);
                     }
                 }
                 else

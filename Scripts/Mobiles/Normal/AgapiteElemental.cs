@@ -35,8 +35,6 @@ namespace Server.Mobiles
 
             Fame = 3500;
             Karma = -3500;
-
-            PackItem(new AgapiteOre(25));
         }
 
         public AgapiteElemental(Serial serial)
@@ -52,6 +50,7 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.Average);
             AddLoot(LootPack.Gems, 2);
+            AddLoot(LootPack.LootItem<AgapiteOre>(25));
         }
 
         public override void Serialize(GenericWriter writer)

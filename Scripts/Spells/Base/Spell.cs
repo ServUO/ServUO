@@ -1306,9 +1306,9 @@ namespace Server.Spells
                     op.WriteLine("_____");
                 }
             }
-            catch
+            catch (Exception e)
             {
-                // ignored
+                Server.Diagnostics.ExceptionLogging.LogException(e);
             }
         }
     }

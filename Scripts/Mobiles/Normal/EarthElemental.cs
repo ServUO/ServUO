@@ -37,13 +37,6 @@ namespace Server.Mobiles
             Karma = -3500;
 
             ControlSlots = 2;
-
-            PackItem(new FertileDirt(Utility.RandomMinMax(1, 4)));
-            PackItem(new MandrakeRoot());
-
-            Item ore = new IronOre(5);
-            ore.ItemID = 0x19B7;
-            PackItem(ore);
         }
 
         public EarthElemental(Serial serial)
@@ -60,6 +53,17 @@ namespace Server.Mobiles
             AddLoot(LootPack.Average);
             AddLoot(LootPack.Meager);
             AddLoot(LootPack.Gems);
+            AddLoot(LootPack.LootItemCallback(SpawnOre, 100.0, 5, false, true));
+            AddLoot(LootPack.LootItem<FertileDirt>(Utility.RandomMinMax(1, 4)));
+            AddLoot(LootPack.LootItem<MandrakeRoot>());
+        }
+
+        private Item SpawnOre(IEntity e)
+        {
+            Item ore = new IronOre();
+            ore.ItemID = 0x19B7;
+
+            return ore;
         }
 
         public override void Serialize(GenericWriter writer)

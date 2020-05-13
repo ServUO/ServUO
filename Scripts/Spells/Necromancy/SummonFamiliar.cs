@@ -190,8 +190,9 @@ namespace Server.Spells.Necromancy
                             SummonFamiliarSpell.Table[m_From] = bc;
                         }
                     }
-                    catch
+                    catch (Exception e)
                     {
+                        Server.Diagnostics.ExceptionLogging.LogException(e);
                     }
                 }
             }

@@ -78,8 +78,9 @@ namespace Server.Accounting
                             accessLog.Counts);
                     }
                 }
-                catch
+                catch (Exception e)
                 {
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
                 }
             }
         }

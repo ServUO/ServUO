@@ -34,6 +34,7 @@ namespace Server.Engines.Quests
                 catch (Exception ex)
                 {
                     Console.WriteLine("Error creating quest {0}: {1}", m_Quest, ex);
+                    Server.Diagnostics.ExceptionLogging.LogException(ex);
                 }
             }
         }

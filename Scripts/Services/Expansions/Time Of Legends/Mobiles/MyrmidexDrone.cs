@@ -38,18 +38,24 @@ namespace Server.Mobiles
             SetSkill(SkillName.Tactics, 30.1, 49.0);
             SetSkill(SkillName.Wrestling, 41.1, 49.8);
 
-            PackGold(50, 70);
-
             Fame = 2500;
             Karma = -2500;
         }
 
-        public override bool OnBeforeDeath()
+        public override void GenerateLoot()
         {
-            if (Region.IsPartOf("MyrmidexBattleground") && 0.25 > Utility.RandomDouble())
-                PackItem(new MyrmidexEggsac(Utility.RandomMinMax(1, 5)));
+            AddLoot(LootPack.LootGold(50, 70));
+            AddLoot(LootPack.LootItemCallback(TryDropEggsac, 25.0, Utility.RandomMinMax(1, 5), false, false));
+        }
 
-            return base.OnBeforeDeath();
+        private Item TryDropEggsac(IEntity e)
+        {
+            if (Region.Find(e.Location, e.Map).IsPartOf("MyrmidexBattleground"))
+            {
+                return new MyrmidexEggsac();
+            }
+
+            return null;
         }
 
         public override int Meat => 4;

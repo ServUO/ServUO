@@ -38,15 +38,18 @@ namespace Server.Mobiles
             ControlSlots = 3;
             MinTameSkill = 93.9;
 
-            PackItem(new SulfurousAsh(Utility.RandomMinMax(16, 25)));
-            PackItem(new IronIngot(2));
-
             Hue = 0x489;
         }
 
         public FireBeetle(Serial serial)
             : base(serial)
         {
+        }
+
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.LootItem<SulfurousAsh>(16, 25, true));
+            AddLoot(LootPack.LootItem<IronIngot>(2, true));
         }
 
         public override bool SubdueBeforeTame => true;// Must be beaten into submission

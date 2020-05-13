@@ -38,13 +38,6 @@ namespace Server.Mobiles
             Fame = 4500;
             Karma = -4500;
 
-            PackItem(new Log(Utility.RandomMinMax(1, 10)));
-            PackItem(new Board(Utility.RandomMinMax(10, 20)));
-            PackItem(new ExecutionersAxe());
-
-            if (0.5 > Utility.RandomDouble())
-                PackItem(new Yeast());
-
             SetWeaponAbility(WeaponAbility.WhirlwindAttack);
             SetWeaponAbility(WeaponAbility.CrushingBlow);
         }
@@ -60,17 +53,14 @@ namespace Server.Mobiles
 
         public override TribeType Tribe => TribeType.Orc;
 
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            if (Utility.RandomDouble() < 0.1)
-                c.DropItem(new EvilOrcHelm());
-        }
-
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Meager, 2);
+            AddLoot(LootPack.LootItem<EvilOrcHelm>(10.0));
+            AddLoot(LootPack.LootItem<Yeast>(50.0, true));
+            AddLoot(LootPack.LootItem<Log>(1, 10, true));
+            AddLoot(LootPack.LootItem<Board>(10, 20, true));
+            AddLoot(LootPack.LootItem<ExecutionersAxe>());
         }
 
         public override bool IsEnemy(Mobile m)

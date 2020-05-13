@@ -60,15 +60,6 @@ namespace Server.Mobiles
 
             Fame = 15000;
             Karma = -15000;
-
-            PackItem(new Arrow(35));
-            PackItem(new Bolt(25));
-            PackGem(2);
-
-            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
         }
 
         public Changeling(Serial serial)
@@ -93,6 +84,18 @@ namespace Server.Mobiles
 
         public override bool ShowFameTitle => false;
         public override bool InitialInnocent => (m_MorphedInto != null);
+
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.Rich, 3);
+            AddLoot(LootPack.LowScrolls);
+            AddLoot(LootPack.MedScrolls);
+            AddLoot(LootPack.Gems, 2);
+            AddLoot(LootPack.LootItem<Arrow>(35));
+            AddLoot(LootPack.LootItem<Bolt>(25));
+            AddLoot(LootPack.ArcanistScrolls);
+        }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile MorphedInto
         {
@@ -119,12 +122,6 @@ namespace Server.Mobiles
                     Delta(MobileDelta.Noto);
                 }
             }
-        }
-        public override void GenerateLoot()
-        {
-            AddLoot(LootPack.Rich, 3);
-            AddLoot(LootPack.LowScrolls);
-            AddLoot(LootPack.MedScrolls);
         }
 
         public override int GetAngerSound()

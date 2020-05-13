@@ -679,15 +679,15 @@ namespace Server.Items
             if (random >= m_Decorations.Length)
                 random = m_Decorations.Length - 1;
 
-            Item item;
+            Item item = null;
 
             try
             {
                 item = Activator.CreateInstance(m_Decorations[random]) as Item;
             }
-            catch
+            catch (Exception e)
             {
-                return;
+                Server.Diagnostics.ExceptionLogging.LogException(e);
             }
 
             if (item == null)

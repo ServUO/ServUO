@@ -45,9 +45,6 @@ namespace Server.Mobiles
 
             Fame = 4000;
             Karma = -4000;
-
-            if (0.7 > Utility.RandomDouble())
-                PackItem(new ArcaneGem());
         }
 
         public GolemController(Serial serial)
@@ -61,6 +58,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Rich);
+            AddLoot(LootPack.LootItem<ArcaneGem>(70.0));
         }
 
         public void AddArcane(Item item)

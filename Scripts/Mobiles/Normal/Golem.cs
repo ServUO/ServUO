@@ -74,8 +74,6 @@ namespace Server.Mobiles
 
                 Fame = 3500;
                 Karma = -3500;
-
-                SpawnPackItems();
             }
 
             SetDamage(13, 24);
@@ -91,21 +89,34 @@ namespace Server.Mobiles
             SetSpecialAbility(SpecialAbility.ColossalBlow);
         }
 
-        public virtual void SpawnPackItems()
+        public override void GenerateLoot()
         {
-            PackItem(new IronIngot(Utility.RandomMinMax(13, 21)));
+            AddLoot(LootPack.LootItem<IronIngot>(Utility.RandomMinMax(13, 21), true));
+            AddLoot(LootPack.LootItem<PowerCrystal>(1.0));
+            AddLoot(LootPack.LootItem<ClockworkAssembly>(15.0));
+            AddLoot(LootPack.LootItem<ArcaneGem>(20.0, 1, false, true));
+            AddLoot(LootPack.LootItem<Gears>(25.0));
 
-            if (0.1 > Utility.RandomDouble())
-                PackItem(new PowerCrystal());
+            AddLoot(LootPack.LootItemCallback(SpawnGears, 5.0, 1, false, false));
+        }
 
-            if (0.15 > Utility.RandomDouble())
-                PackItem(new ClockworkAssembly());
-
-            if (0.2 > Utility.RandomDouble())
-                PackItem(new ArcaneGem());
-
-            if (0.25 > Utility.RandomDouble())
-                PackItem(new Gears());
+        public static Item SpawnGears(IEntity e)
+        {
+            if (!(e is BaseCreature) || !((BaseCreature)e).IsParagon)
+            {
+                if (0.75 > Utility.RandomDouble())
+                {
+                    return DawnsMusicGear.RandomCommon;
+                }
+                else
+                {
+                    return DawnsMusicGear.RandomUncommon;
+                }
+            }
+            else
+            {
+                return DawnsMusicGear.RandomRare;
+            }
         }
 
         public Golem(Serial serial)
@@ -121,24 +132,6 @@ namespace Server.Mobiles
         public override bool AutoDispel => !Controlled;
         public override bool BleedImmune => true;
         public override Poison PoisonImmune => Poison.Lethal;
-
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            if (0.05 > Utility.RandomDouble() && !Controlled)
-            {
-                if (!IsParagon)
-                {
-                    if (0.75 > Utility.RandomDouble())
-                        c.DropItem(DawnsMusicGear.RandomCommon);
-                    else
-                        c.DropItem(DawnsMusicGear.RandomUncommon);
-                }
-                else
-                    c.DropItem(DawnsMusicGear.RandomRare);
-            }
-        }
 
         public override int GetAngerSound()
         {

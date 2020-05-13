@@ -47,8 +47,6 @@ namespace Server.Mobiles
 
             Fame = 2500;
             Karma = -2500;
-
-            PackItem(new DaemonBone(5));
         }
 
         public Anzuanord(Serial serial)
@@ -70,6 +68,7 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.Meager);
             AddLoot(LootPack.MedScrolls, 2);
+            AddLoot(LootPack.LootItem<DaemonBone>(5, true));
         }
 
         public override void Serialize(GenericWriter writer)

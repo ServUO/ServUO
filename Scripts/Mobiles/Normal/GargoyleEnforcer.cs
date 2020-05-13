@@ -39,9 +39,6 @@ namespace Server.Mobiles
             Fame = 5000;
             Karma = -5000;
 
-            if (0.2 > Utility.RandomDouble())
-                PackItem(new GargoylesPickaxe());
-
             SetWeaponAbility(WeaponAbility.WhirlwindAttack);
         }
 
@@ -57,6 +54,7 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.Rich);
             AddLoot(LootPack.MedScrolls);
+            AddLoot(LootPack.LootItem<GargoylesPickaxe>(20.0));
         }
 
         public override void Serialize(GenericWriter writer)

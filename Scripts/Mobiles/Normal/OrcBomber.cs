@@ -42,18 +42,6 @@ namespace Server.Mobiles
 
             Fame = 2500;
             Karma = -2500;
-
-            PackItem(new SulfurousAsh(Utility.RandomMinMax(6, 10)));
-            PackItem(new MandrakeRoot(Utility.RandomMinMax(6, 10)));
-            PackItem(new BlackPearl(Utility.RandomMinMax(6, 10)));
-            PackItem(new MortarPestle());
-            PackItem(new LesserExplosionPotion());
-
-            if (0.2 > Utility.RandomDouble())
-                PackItem(new BolaBall());
-
-            if (0.5 > Utility.RandomDouble())
-                PackItem(new Yeast());
         }
 
         public OrcBomber(Serial serial)
@@ -70,6 +58,14 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.Average);
             AddLoot(LootPack.Meager);
+
+            AddLoot(LootPack.LootItem<SulfurousAsh>(6, 10));
+            AddLoot(LootPack.LootItem<MandrakeRoot>(6, 10));
+            AddLoot(LootPack.LootItem<BlackPearl>(6, 10));
+            AddLoot(LootPack.LootItem<MortarPestle>(20.0));
+            AddLoot(LootPack.LootItem<LesserExplosionPotion>(20.0));
+            AddLoot(LootPack.LootItem<BolaBall>(20.0));
+            AddLoot(LootPack.LootItem<Yeast>(5.0));
         }
 
         public override bool IsEnemy(Mobile m)

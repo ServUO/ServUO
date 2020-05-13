@@ -39,9 +39,6 @@ namespace Server.Mobiles
 
             Fame = 3500;
             Karma = -3500;
-
-            PackItem(new Log(10));
-            PackItem(new MandrakeRoot(5));
         }
 
         public Reaper(Serial serial)
@@ -55,6 +52,8 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Average);
+            AddLoot(LootPack.LootItem<Log>(10));
+            AddLoot(LootPack.LootItem<MandrakeRoot>(5));
         }
 
         public override void Serialize(GenericWriter writer)

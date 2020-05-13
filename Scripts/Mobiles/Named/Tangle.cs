@@ -35,11 +35,6 @@ namespace Server.Mobiles
 
             Fame = 16000;
             Karma = -16000;
-
-            for (int i = 0; i < Utility.RandomMinMax(1, 3); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
         }
 
         public Tangle(Serial serial)
@@ -54,14 +49,8 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 3);
-        }
-
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            if (Utility.RandomDouble() < 0.3)
-                c.DropItem(new TaintedSeeds());
+            AddLoot(LootPack.ArcanistScrolls, 1, 3);
+            AddLoot(LootPack.LootItem<TaintedSeeds>(30.0));
         }
 
         public override void Serialize(GenericWriter writer)

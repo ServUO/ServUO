@@ -232,8 +232,10 @@ namespace Server
                     EventSink.InvokeCrashed(args);
                     close = args.Close;
                 }
-                catch
-                { }
+                catch (Exception ex)
+                {
+                    Server.Diagnostics.ExceptionLogging.LogException(ex);
+                }
 
                 if (CrashedHandler != null)
                 {
@@ -242,8 +244,10 @@ namespace Server
                         CrashedHandler(args);
                         close = args.Close;
                     }
-                    catch
-                    { }
+                    catch (Exception ex)
+                    {
+                        Server.Diagnostics.ExceptionLogging.LogException(ex);
+                    }
                 }
 
                 if (!close && !Service)
@@ -255,8 +259,10 @@ namespace Server
                             l.Dispose();
                         }
                     }
-                    catch
-                    { }
+                    catch (Exception ex)
+                    {
+                        Server.Diagnostics.ExceptionLogging.LogException(ex);
+                    }
 
                     Console.WriteLine("This exception is fatal, press return to exit");
                     Console.ReadLine();
@@ -442,8 +448,10 @@ namespace Server
                     Console.SetOut(MultiConsoleOut = new MultiTextWriter(Console.Out));
                 }
             }
-            catch
-            { }
+            catch (Exception e)
+            {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
+            }
 
             Thread = Thread.CurrentThread;
             Process = Process.GetCurrentProcess();

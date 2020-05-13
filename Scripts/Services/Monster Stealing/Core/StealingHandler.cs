@@ -23,49 +23,39 @@ namespace Server.Engines.CreatureStealing
             typeof(SmugglersToolBox)
         };
 
-        public static void HandleSteal(BaseCreature from, PlayerMobile thief)
+        public static void HandleSteal(BaseCreature bc, PlayerMobile thief, ref Item stolen)
         {
-            if (from.HasBeenStolen)
+            if (!CheckLocation(thief, bc))
             {
-                thief.SendLocalizedMessage(1094948); //That creature has already been stolen from.  There is nothing left to steal.
                 return;
             }
-
-            if (from.Controlled || from.Summoned)
-            {
-                thief.SendLocalizedMessage(502708); //You can't steal from this.
-                return;
-            }
-
-            if (!CheckLocation(thief, from))
-                return;
 
             double stealing = thief.Skills.Stealing.Value;
 
-            if (stealing < 100)
-                return;
-
-            int chance = GetStealingChance(thief, from, stealing);
-
-            if ((Utility.Random(100) + 1) <= chance)
+            if (stealing >= 100)
             {
-                thief.SendLocalizedMessage(1094947);//You successfully steal a special item from the creature!
+                int chance = GetStealingChance(thief, bc, stealing);
 
-                Item item;
+                Console.WriteLine("Chance: {0}", chance);
 
-                if (from is ExodusZealot)
+                if ((Utility.Random(100) + 1) <= chance)
                 {
-                    item = Activator.CreateInstance(ExodusChest.RituelItem[Utility.Random(ExodusChest.RituelItem.Length)]) as Item;
-                }
-                else
-                {
-                    item = Activator.CreateInstance(SpecialItemList[Utility.Random(SpecialItemList.Length - 2)]) as Item;
-                }
+                    thief.SendLocalizedMessage(1094947);//You successfully steal a special item from the creature!
 
-                thief.AddToBackpack(item);
+                    Item item;
+
+                    if (bc is ExodusZealot)
+                    {
+                        item = Activator.CreateInstance(ExodusChest.RituelItem[Utility.Random(ExodusChest.RituelItem.Length)]) as Item;
+                    }
+                    else
+                    {
+                        item = Activator.CreateInstance(SpecialItemList[Utility.Random(SpecialItemList.Length - 2)]) as Item;
+                    }
+
+                    stolen = item;
+                }
             }
-
-            from.HasBeenStolen = true;
         }
 
         public static void HandleSmugglersEdgeSteal(BaseCreature from, PlayerMobile thief)

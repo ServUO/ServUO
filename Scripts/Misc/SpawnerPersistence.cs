@@ -1156,7 +1156,10 @@ namespace Server
                     files = new List<string>(Directory.GetFiles(filename, "*.xml"));
                     dirs = Directory.GetDirectories(filename);
                 }
-                catch { }
+                catch (Exception e)
+                {
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
+                }
 
                 if (dirs != null && dirs.Length > 0)
                 {
@@ -1167,7 +1170,10 @@ namespace Server
                             string[] dirFiles = Directory.GetFiles(dir, "*.xml");
                             files.AddRange(dirFiles);
                         }
-                        catch { }
+                        catch (Exception e)
+                        {
+                            Server.Diagnostics.ExceptionLogging.LogException(e);
+                        }
                     }
                 }
 
@@ -1187,7 +1193,10 @@ namespace Server
                         {
                             fs = File.Open(file, FileMode.Open, FileAccess.Read);
                         }
-                        catch { }
+                        catch (Exception e)
+                        {
+                            Server.Diagnostics.ExceptionLogging.LogException(e);
+                        }
 
                         if (fs == null)
                         {
@@ -1220,7 +1229,10 @@ namespace Server
                                     {
                                         id = (string)dr["UniqueId"];
                                     }
-                                    catch { }
+                                    catch (Exception e)
+                                    {
+                                        Server.Diagnostics.ExceptionLogging.LogException(e);
+                                    }
 
                                     bool convert = id != null && ConvertSpawner(id, dr);
 
@@ -1234,7 +1246,10 @@ namespace Server
                                             loc = new Point3D(int.Parse((string)dr["CentreX"]), int.Parse((string)dr["CentreY"]), int.Parse((string)dr["CentreZ"]));
                                             spawnMap = Map.Parse((string)dr["Map"]);
                                         }
-                                        catch { }
+                                        catch (Exception e)
+                                        {
+                                            Server.Diagnostics.ExceptionLogging.LogException(e);
+                                        }
 
                                         if (loc != Point3D.Zero && spawnMap != null && spawnMap != Map.Internal)
                                         {
@@ -1381,7 +1396,10 @@ namespace Server
                     files = new List<string>(Directory.GetFiles(filename, "*.xml"));
                     dirs = Directory.GetDirectories(filename);
                 }
-                catch { }
+                catch (Exception e)
+                {
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
+                }
 
                 if (dirs != null && dirs.Length > 0)
                 {
@@ -1392,7 +1410,10 @@ namespace Server
                             string[] dirFiles = Directory.GetFiles(dir, "*.xml");
                             files.AddRange(dirFiles);
                         }
-                        catch { }
+                        catch (Exception e)
+                        {
+                            Server.Diagnostics.ExceptionLogging.LogException(e);
+                        }
                     }
                 }
 
@@ -1413,7 +1434,10 @@ namespace Server
                         {
                             fs = File.Open(file, FileMode.Open, FileAccess.Read);
                         }
-                        catch { }
+                        catch (Exception e)
+                        {
+                            Server.Diagnostics.ExceptionLogging.LogException(e);
+                        }
 
                         if (fs == null)
                         {
@@ -1446,7 +1470,10 @@ namespace Server
                                     {
                                         id = (string)dr["UniqueId"];
                                     }
-                                    catch { }
+                                    catch (Exception e)
+                                    {
+                                        Server.Diagnostics.ExceptionLogging.LogException(e);
+                                    }
 
                                     if (DeleteSpawner(id))
                                     {
@@ -1489,7 +1516,10 @@ namespace Server
                 {
                     files = new List<string>(Directory.GetFiles(directory, filename + ".xml"));
                 }
-                catch { }
+                catch (Exception e)
+                {
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
+                }
 
                 ToConsole(String.Format("Found {0} Xmlspawner files for removal.", files == null ? "0" : files.Count.ToString()), files != null && files.Count > 0 ? ConsoleColor.Green : ConsoleColor.Red);
                 ToConsole("Deleting spawners...", ConsoleColor.Cyan);
@@ -1506,7 +1536,10 @@ namespace Server
                         {
                             fs = File.Open(file, FileMode.Open, FileAccess.Read);
                         }
-                        catch { }
+                        catch (Exception e)
+                        {
+                            Server.Diagnostics.ExceptionLogging.LogException(e);
+                        }
 
                         if (fs == null)
                         {
@@ -1539,7 +1572,10 @@ namespace Server
                                     {
                                         id = (string)dr["UniqueId"];
                                     }
-                                    catch { }
+                                    catch (Exception e)
+                                    {
+                                        Server.Diagnostics.ExceptionLogging.LogException(e);
+                                    }
 
                                     if (DeleteSpawner(id))
                                     {
@@ -1580,7 +1616,10 @@ namespace Server
                     files = new List<string>(Directory.GetFiles(filename, "*.xml"));
                     dirs = Directory.GetDirectories(filename);
                 }
-                catch { }
+                catch (Exception e)
+                {
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
+                }
 
                 if (dirs != null && dirs.Length > 0)
                 {
@@ -1591,7 +1630,10 @@ namespace Server
                             string[] dirFiles = Directory.GetFiles(dir, "*.xml");
                             files.AddRange(dirFiles);
                         }
-                        catch { }
+                        catch (Exception e)
+                        {
+                            Server.Diagnostics.ExceptionLogging.LogException(e);
+                        }
                     }
                 }
 
@@ -1612,7 +1654,10 @@ namespace Server
                         {
                             fs = File.Open(file, FileMode.Open, FileAccess.Read);
                         }
-                        catch { }
+                        catch (Exception e)
+                        {
+                            Server.Diagnostics.ExceptionLogging.LogException(e);
+                        }
 
                         if (fs == null)
                         {
@@ -1645,7 +1690,10 @@ namespace Server
                                     {
                                         id = (string)dr["UniqueId"];
                                     }
-                                    catch { }
+                                    catch (Exception e)
+                                    {
+                                        Server.Diagnostics.ExceptionLogging.LogException(e);
+                                    }
 
                                     if (DeleteSpawner(id))
                                     {
@@ -1679,7 +1727,10 @@ namespace Server
                                                 eable.Free();
                                             }
                                         }
-                                        catch { }
+                                        catch (Exception e)
+                                        {
+                                            Server.Diagnostics.ExceptionLogging.LogException(e);
+                                        }
 
                                         if (!deleted)
                                         {

@@ -40,23 +40,14 @@ namespace Server.Mobiles
 
             Fame = 4000;
             Karma = -4000;
-
-            if (0.02 > Utility.RandomDouble())
-                PackStatue();
-        }
-
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            if (Utility.RandomDouble() < 0.3)
-                c.DropItem(new PixieLeg());
         }
 
         public override void GenerateLoot()
         {
             AddLoot(LootPack.LowScrolls);
             AddLoot(LootPack.Gems, 2);
+            AddLoot(LootPack.Statue);
+            AddLoot(LootPack.LootItem<PixieLeg>(33.0, 1, false, true));
         }
 
         public override HideType HideType => HideType.Spined;

@@ -916,8 +916,9 @@ namespace Server.Mobiles
                 {
                     return Build(type, CommandSystem.Split(obj.SpawnName));
                 }
-                catch
+                catch (Exception e)
                 {
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
                 }
             }
 
@@ -1153,8 +1154,9 @@ namespace Server.Mobiles
                         op.WriteLine();
                     }
                 }
-                catch
+                catch (Exception e)
                 {
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
                 }
             }
 

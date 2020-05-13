@@ -183,14 +183,23 @@ namespace Server.Misc
                 string dest = Path.Combine(Destination, file);
 
                 try { File.Delete(dest); }
-                catch { }
+                catch (Exception e)
+                {
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
+                }
 
                 ZipFile.CreateFromDirectory(source, dest, CompressionLevel.Optimal, false);
             }
-            catch { }
+            catch (Exception e)
+            {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
+            }
 
             try { Directory.Delete(source, true); }
-            catch { }
+            catch (Exception e)
+            {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
+            }
 
             sw.Stop();
 
@@ -244,10 +253,16 @@ namespace Server.Misc
                         if (archive.LastWriteTimeUtc < threshold)
                             archive.Delete();
                     }
-                    catch { }
+                    catch (Exception e)
+                    {
+                        Server.Diagnostics.ExceptionLogging.LogException(e);
+                    }
                 }
             }
-            catch { }
+            catch (Exception e)
+            {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
+            }
 
             sw.Stop();
 

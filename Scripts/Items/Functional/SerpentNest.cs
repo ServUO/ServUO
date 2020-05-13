@@ -93,8 +93,9 @@ namespace Server.Items
                     snake.RemoveOnSave = true;
                     snake.MoveToWorld(Map.GetSpawnPosition(Location, 1), Map);
                 }
-                catch
+                catch (Exception e)
                 {
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
                 }
             }
 

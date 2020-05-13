@@ -34,7 +34,7 @@ namespace Server.Spells.Bushido
         {
             HonorableExecutionInfo info = m_Table[target] as HonorableExecutionInfo;
 
-            if (info == null || !info.m_Penalty)
+            if (info == null || info.m_SwingBonus == 0 && !info.m_Penalty)
                 return;
 
             info.Clear();
@@ -82,6 +82,8 @@ namespace Server.Spells.Bushido
 
                 info = new HonorableExecutionInfo(attacker, swingBonus);
                 info.m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(20.0), new TimerStateCallback(EndEffect), info);
+
+                BuffInfo.AddBuff(attacker, new BuffInfo(BuffIcon.HonorableExecution, 1060595, 1153807, TimeSpan.FromSeconds(20.0), attacker, string.Format("{0}", swingBonus)));
 
                 m_Table[attacker] = info;
             }

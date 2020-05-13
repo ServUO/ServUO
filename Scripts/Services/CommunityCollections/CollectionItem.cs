@@ -32,8 +32,9 @@ namespace Server
             {
                 rec = ItemBounds.Table[m_ItemID];
             }
-            catch
+            catch (Exception e)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
                 rec = new Rectangle2D(0, 0, 0, 0);
             }
 

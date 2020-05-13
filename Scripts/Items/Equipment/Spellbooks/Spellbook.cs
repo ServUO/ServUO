@@ -375,7 +375,10 @@ namespace Server.Items
                     from.SendLocalizedMessage(500015); // You do not have that spell!
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Server.Diagnostics.ExceptionLogging.LogException(ex);
+            }
         }
         #endregion
 

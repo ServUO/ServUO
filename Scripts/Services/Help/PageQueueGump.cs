@@ -211,7 +211,7 @@ namespace Server.Engines.Help
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Server.Diagnostics.ExceptionLogging.LogException(e);
             }
         }
 
@@ -243,15 +243,16 @@ namespace Server.Engines.Help
                                 if (split.Length == 2)
                                     list.Add(new PredefinedResponse(split[0], split[1]));
                             }
-                            catch
+                            catch (Exception e)
                             {
+                                Server.Diagnostics.ExceptionLogging.LogException(e);
                             }
                         }
                     }
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e);
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
                 }
             }
 
@@ -632,7 +633,7 @@ namespace Server.Engines.Help
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Server.Diagnostics.ExceptionLogging.LogException(e);
             }
         }
 

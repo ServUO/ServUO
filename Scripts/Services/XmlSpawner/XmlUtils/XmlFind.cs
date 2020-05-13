@@ -262,7 +262,7 @@ namespace Server.Mobiles
                 {
                     r = item.Map.Regions[regionname];
                 }
-                catch { }
+                catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
 
                 if (r == null) return false;
                 return (r.Contains(loc));
@@ -278,7 +278,7 @@ namespace Server.Mobiles
                 {
                     r = mob.Map.Regions[regionname];
                 }
-                catch { }
+                catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
 
                 //Region r = Region.GetByName(regionname, mob.Map);
                 if (r == null) return false;
@@ -429,7 +429,7 @@ namespace Server.Mobiles
             {
                 tokunomap = Map.Parse("Tokuno");
             }
-            catch { }
+            catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
 
             // if the type is specified then get the search type
             if (criteria.Dosearchtype && criteria.Searchtype != null)
@@ -1923,7 +1923,7 @@ namespace Server.Mobiles
             if (tr != null && tr.Text != null && tr.Text.Length > 0)
             {
                 try { m_SearchCriteria.Searchage = double.Parse(tr.Text); }
-                catch { }
+                catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
             }
 
             // read the text entries for the search criteria
@@ -1932,7 +1932,7 @@ namespace Server.Mobiles
             if (tr != null && tr.Text != null && tr.Text.Length > 0)
             {
                 try { m_SearchCriteria.Searchrange = int.Parse(tr.Text); }
-                catch { }
+                catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
             }
 
             tr = info.GetTextEntry(101);        // type info
@@ -1957,12 +1957,10 @@ namespace Server.Mobiles
 
 
             tr = info.GetTextEntry(400);        // displayfrom info
-            try
+            if (tr != null)
             {
-                DisplayFrom = int.Parse(tr.Text);
+                DisplayFrom = Utility.ToInt32(tr.Text);
             }
-            catch { }
-
 
             tr = info.GetTextEntry(300);        // savefilename info
             if (tr != null)
@@ -2381,7 +2379,7 @@ namespace Server.Mobiles
                                             {
                                                 ((Item)o).Delete();
                                             }
-                                            catch { }
+                                            catch (Exception ex) { Server.Diagnostics.ExceptionLogging.LogException(ex); }
                                         }
                                         else
                                             // block player deletion
@@ -2391,7 +2389,7 @@ namespace Server.Mobiles
                                             {
                                                 ((Mobile)o).Delete();
                                             }
-                                            catch { }
+                                            catch (Exception ex) { Server.Diagnostics.ExceptionLogging.LogException(ex); }
                                         }
                                     }
 

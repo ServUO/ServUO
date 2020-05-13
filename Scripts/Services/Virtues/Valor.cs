@@ -43,8 +43,10 @@ namespace Server.Services.Virtues
                     pm.LastValorLoss = DateTime.UtcNow;
                 }
             }
-            catch
-            { }
+            catch (Exception e)
+            {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
+            }
         }
 
         public static void Valor(Mobile from, object targ)

@@ -428,7 +428,7 @@ namespace Server.Mobiles
                 {
                     fs = File.Open(dirname, FileMode.Open, FileAccess.Read);
                 }
-                catch { }
+                catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
 
                 if (fs == null)
                 {
@@ -466,52 +466,52 @@ namespace Server.Mobiles
                         DataRow dr = ds.Tables[DefsTablePointName].Rows[0];
 
                         try { defs.SpawnerName = (string)dr["SpawnerName"]; }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
 
                         double mindelay = defs.MinDelay.TotalMinutes;
                         try { mindelay = double.Parse((string)dr["MinDelay"]); }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         defs.MinDelay = TimeSpan.FromMinutes(mindelay);
 
                         double maxdelay = defs.MaxDelay.TotalMinutes;
                         try { maxdelay = double.Parse((string)dr["MaxDelay"]); }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         defs.MaxDelay = TimeSpan.FromMinutes(maxdelay);
 
                         try { defs.SpawnRange = int.Parse((string)dr["SpawnRange"]); }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         try { defs.HomeRange = int.Parse((string)dr["HomeRange"]); }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         try { defs.HomeRangeIsRelative = bool.Parse((string)dr["RelativeHome"]); }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         try { defs.Group = bool.Parse((string)dr["IsGroup"]); }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         try { defs.Team = int.Parse((string)dr["Team"]); }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
 
                         double minrefract = defs.RefractMin.TotalMinutes;
                         try { minrefract = double.Parse((string)dr["MinRefractory"]); }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         defs.RefractMin = TimeSpan.FromMinutes(minrefract);
 
                         double maxrefract = defs.RefractMax.TotalMinutes;
                         try { maxrefract = double.Parse((string)dr["MaxRefractory"]); }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         defs.RefractMax = TimeSpan.FromMinutes(maxrefract);
 
                         double todstart = defs.TODStart.TotalMinutes;
                         try { todstart = double.Parse((string)dr["TODStart"]); }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         defs.TODStart = TimeSpan.FromMinutes(todstart);
 
                         double todend = defs.TODEnd.TotalMinutes;
                         try { todend = double.Parse((string)dr["TODEnd"]); }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         defs.TODEnd = TimeSpan.FromMinutes(todend);
 
                         string todmode = null;
                         try { todmode = (string)dr["TODMode"]; }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         if (todmode != null)
                         {
                             if (todmode == "Realtime") defs.TODMode = XmlSpawner.TODModeType.Realtime;
@@ -521,69 +521,69 @@ namespace Server.Mobiles
 
                         double duration = defs.Duration.TotalMinutes;
                         try { duration = double.Parse((string)dr["Duration"]); }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         defs.Duration = TimeSpan.FromMinutes(duration);
 
                         double despawnTime = defs.DespawnTime.TotalHours;
                         try { despawnTime = double.Parse((string)dr["DespawnTime"]); }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         defs.DespawnTime = TimeSpan.FromHours(despawnTime);
 
                         try { defs.ProximityRange = int.Parse((string)dr["ProximityRange"]); }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         try { defs.ProximitySound = int.Parse((string)dr["ProximityTriggerSound"]); }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         try { defs.ProximityMsg = (string)dr["ProximityMessage"]; }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         try { defs.SpeechTrigger = (string)dr["SpeechTrigger"]; }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         try { defs.SkillTrigger = (string)dr["SkillTrigger"]; }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         try { defs.SequentialSpawn = int.Parse((string)dr["SequentialSpawn"]); }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         try { defs.KillReset = int.Parse((string)dr["KillReset"]); }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         try { defs.TriggerProbability = double.Parse((string)dr["TrigProb"]); }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         try { defs.AllowGhostTrig = bool.Parse((string)dr["AllowGhost"]); }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         try { defs.AllowNPCTrig = bool.Parse((string)dr["AllowNPC"]); }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         try { defs.SpawnOnTrigger = bool.Parse((string)dr["SpawnOnTrigger"]); }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         try { defs.SmartSpawning = bool.Parse((string)dr["SmartSpawn"]); }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         try { defs.ExternalTriggering = bool.Parse((string)dr["ExtTrig"]); }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         try { defs.TriggerOnCarried = (string)dr["TrigOnCarried"]; }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         try { defs.NoTriggerOnCarried = (string)dr["NoTrigOnCarried"]; }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         try { defs.PlayerTriggerProp = (string)dr["PlayerTrigProp"]; }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         try { defs.TriggerObjectProp = (string)dr["TrigObjectProp"]; }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
 
                         try { defs.NameList = StringToNameList((string)dr["NameList"]); }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         try { defs.SelectionList = StringToSelectionList((string)dr["SelectionList"]); }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         try { defs.AddGumpX = int.Parse((string)dr["AddGumpX"]); }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         try { defs.AddGumpY = int.Parse((string)dr["AddGumpY"]); }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         try { defs.SpawnerGumpX = int.Parse((string)dr["SpawnerGumpX"]); }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         try { defs.SpawnerGumpY = int.Parse((string)dr["SpawnerGumpY"]); }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         try { defs.FindGumpX = int.Parse((string)dr["FindGumpX"]); }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         try { defs.FindGumpY = int.Parse((string)dr["FindGumpY"]); }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         try { defs.AutoNumber = bool.Parse((string)dr["AutoNumber"]); }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                         try { defs.AutoNumberValue = int.Parse((string)dr["AutoNumberValue"]); }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
 
                         if (from != null && !from.Deleted)
                             from.SendMessage("Loaded defs from file {0}", dirname);
@@ -635,7 +635,7 @@ namespace Server.Mobiles
                     }
                 }
             }
-            catch { }
+            catch (Exception ex) { Server.Diagnostics.ExceptionLogging.LogException(ex); }
 
             e.Mobile.SendGump(new XmlAddGump(e.Mobile, e.Mobile.Location, e.Mobile.Map, true, false, x, y));
 
@@ -1161,41 +1161,41 @@ namespace Server.Mobiles
             if (tr != null && tr.Text != null && tr.Text.Length > 0)
             {
                 try { defs.MinDelay = TimeSpan.FromMinutes(double.Parse(tr.Text)); }
-                catch { }
+                catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
             }
             tr = info.GetTextEntry(101);        // maxdelay info
             if (tr != null && tr.Text != null && tr.Text.Length > 0)
             {
                 try { defs.MaxDelay = TimeSpan.FromMinutes(double.Parse(tr.Text)); }
-                catch { }
+                catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
             }
 
             tr = info.GetTextEntry(102);        // min refractory
             if (tr != null && tr.Text != null && tr.Text.Length > 0)
             {
                 try { defs.RefractMin = TimeSpan.FromMinutes(double.Parse(tr.Text)); }
-                catch { }
+                catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
             }
 
             tr = info.GetTextEntry(103);        // max refractory
             if (tr != null && tr.Text != null && tr.Text.Length > 0)
             {
                 try { defs.RefractMax = TimeSpan.FromMinutes(double.Parse(tr.Text)); }
-                catch { }
+                catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
             }
 
             tr = info.GetTextEntry(104);        // TOD start
             if (tr != null && tr.Text != null && tr.Text.Length > 0)
             {
                 try { defs.TODStart = TimeSpan.FromHours(double.Parse(tr.Text)); }
-                catch { }
+                catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
             }
 
             tr = info.GetTextEntry(105);        // TOD end
             if (tr != null && tr.Text != null && tr.Text.Length > 0)
             {
                 try { defs.TODEnd = TimeSpan.FromHours(double.Parse(tr.Text)); }
-                catch { }
+                catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
             }
 
             tr = info.GetTextEntry(106);        // Speech trigger
@@ -1212,49 +1212,49 @@ namespace Server.Mobiles
             if (tr != null && tr.Text != null && tr.Text.Length > 0)
             {
                 try { defs.HomeRange = int.Parse(tr.Text); }
-                catch { }
+                catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
             }
 
             tr = info.GetTextEntry(108);        // SpawnRange
             if (tr != null && tr.Text != null && tr.Text.Length > 0)
             {
                 try { defs.SpawnRange = int.Parse(tr.Text); }
-                catch { }
+                catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
             }
 
             tr = info.GetTextEntry(109);        // ProximityRange
             if (tr != null && tr.Text != null && tr.Text.Length > 0)
             {
                 try { defs.ProximityRange = int.Parse(tr.Text); }
-                catch { }
+                catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
             }
 
             tr = info.GetTextEntry(110);        // Team
             if (tr != null && tr.Text != null && tr.Text.Length > 0)
             {
                 try { defs.Team = int.Parse(tr.Text); }
-                catch { }
+                catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
             }
 
             tr = info.GetTextEntry(111);        // Duration
             if (tr != null && tr.Text != null && tr.Text.Length > 0)
             {
                 try { defs.Duration = TimeSpan.FromMinutes(double.Parse(tr.Text)); }
-                catch { }
+                catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
             }
 
             tr = info.GetTextEntry(112);        // ProximitySound
             if (tr != null && tr.Text != null && tr.Text.Length > 0)
             {
                 try { defs.ProximitySound = int.Parse(tr.Text); }
-                catch { }
+                catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
             }
 
             tr = info.GetTextEntry(113);        // Kill reset
             if (tr != null && tr.Text != null && tr.Text.Length > 0)
             {
                 try { defs.KillReset = int.Parse(tr.Text); }
-                catch { }
+                catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
             }
 
             tr = info.GetTextEntry(114);        // Spawner name
@@ -1302,7 +1302,7 @@ namespace Server.Mobiles
             if (tr != null && tr.Text != null && tr.Text.Length > 0)
             {
                 try { defs.TriggerProbability = double.Parse(tr.Text); }
-                catch { }
+                catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
             }
 
             tr = info.GetTextEntry(122);        // trig object prop
@@ -1317,7 +1317,7 @@ namespace Server.Mobiles
             if (tr != null && tr.Text != null && tr.Text.Length > 0)
             {
                 try { defs.DespawnTime = TimeSpan.FromHours(double.Parse(tr.Text)); }
-                catch { }
+                catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
             }
 
             tr = info.GetTextEntry(124);        // Skill trigger
@@ -1332,7 +1332,7 @@ namespace Server.Mobiles
             if (tr != null && tr.Text != null && tr.Text.Length > 0)
             {
                 try { defs.AutoNumberValue = int.Parse(tr.Text); }
-                catch { }
+                catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
             }
 
 
@@ -1610,37 +1610,37 @@ namespace Server.Mobiles
                 if (tr != null && tr.Text != null && tr.Text.Length > 0)
                 {
                     try { defs.AddGumpX = int.Parse(tr.Text); }
-                    catch { }
+                    catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                 }
                 tr = info.GetTextEntry(101);        // AddGumpY info
                 if (tr != null && tr.Text != null && tr.Text.Length > 0)
                 {
                     try { defs.AddGumpY = int.Parse(tr.Text); }
-                    catch { }
+                    catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                 }
                 tr = info.GetTextEntry(102);        // SpawnerGumpX info
                 if (tr != null && tr.Text != null && tr.Text.Length > 0)
                 {
                     try { defs.SpawnerGumpX = int.Parse(tr.Text); }
-                    catch { }
+                    catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                 }
                 tr = info.GetTextEntry(103);        // SpawnerGumpY info
                 if (tr != null && tr.Text != null && tr.Text.Length > 0)
                 {
                     try { defs.SpawnerGumpY = int.Parse(tr.Text); }
-                    catch { }
+                    catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                 }
                 tr = info.GetTextEntry(104);        // FindGumpX info
                 if (tr != null && tr.Text != null && tr.Text.Length > 0)
                 {
                     try { defs.FindGumpX = int.Parse(tr.Text); }
-                    catch { }
+                    catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                 }
                 tr = info.GetTextEntry(105);        // FindGumpY info
                 if (tr != null && tr.Text != null && tr.Text.Length > 0)
                 {
                     try { defs.FindGumpY = int.Parse(tr.Text); }
-                    catch { }
+                    catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                 }
             }
 

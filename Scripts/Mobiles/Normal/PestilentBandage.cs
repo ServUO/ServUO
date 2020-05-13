@@ -43,8 +43,6 @@ namespace Server.Mobiles
             Fame = 20000;
             Karma = -20000;
 
-            PackItem(new Bandage(5));
-
             SetAreaEffect(AreaEffect.PoisonBreath);
         }
 
@@ -56,7 +54,8 @@ namespace Server.Mobiles
         public override Poison HitPoison => Poison.Lethal;
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.Rich);  // Need to verify
+            AddLoot(LootPack.Rich);
+            AddLoot(LootPack.LootItem<Bandage>(5, true));
         }
 
         public override void Serialize(GenericWriter writer)

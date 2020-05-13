@@ -38,21 +38,10 @@ namespace Server.Mobiles
 
             Tamable = false;
 
-            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
-
             SetSpecialAbility(SpecialAbility.Rage);
         }
-        public override bool CanBeParagon => false;
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
 
-            if (Utility.RandomDouble() < 0.3)
-                c.DropItem(new GnawsFang());
-        }
+        public override bool CanBeParagon => false;
 
         public Gnaw(Serial serial)
             : base(serial)
@@ -64,6 +53,8 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich, 2);
+            AddLoot(LootPack.ArcanistScrolls);
+            AddLoot(LootPack.LootItem<GnawsFang>(30.0));
         }
 
         public override void Serialize(GenericWriter writer)

@@ -36,17 +36,6 @@ namespace Server.Mobiles
 
             Fame = 2500;
             Karma = -2500;
-
-            if (0.5 > Utility.RandomDouble())
-                PackItem(new Yeast());
-        }
-
-        public override void OnDeath(Container c)
-        {
-            if (Utility.RandomDouble() < 0.05)
-                c.DropItem(new StoutWhip());
-
-            base.OnDeath(c);
         }
 
         public OrcCaptain(Serial serial)
@@ -63,6 +52,8 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Meager, 2);
+            AddLoot(LootPack.LootItem<Yeast>(50.0));
+            AddLoot(LootPack.LootItem<StoutWhip>(5.0));
         }
 
         public override bool IsEnemy(Mobile m)

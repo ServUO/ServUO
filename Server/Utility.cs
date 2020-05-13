@@ -1446,8 +1446,10 @@ namespace Server
                     Console.ForegroundColor = color;
                 }
             }
-            catch
-            { }
+            catch (Exception e)
+            {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
+            }
         }
 
         public static void PopColor()
@@ -1459,8 +1461,10 @@ namespace Server
                     Console.ForegroundColor = m_ConsoleColors.Pop();
                 }
             }
-            catch
-            { }
+            catch (Exception e)
+            {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
+            }
         }
 
         public static bool NumberBetween(double num, int bound1, int bound2, double allowance)
