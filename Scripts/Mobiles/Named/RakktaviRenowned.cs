@@ -44,7 +44,6 @@ namespace Server.Mobiles
             Karma = -6500;
 
             AddItem(new Bow());
-            PackItem(new Arrow(Utility.RandomMinMax(10, 30)));
         }
 
         public RakktaviRenowned(Serial serial)
@@ -61,6 +60,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 3);
+            AddLoot(LootPack.LootItem<Arrow>(Utility.RandomMinMax(10, 30)));
         }
 
         public override void Serialize(GenericWriter writer)

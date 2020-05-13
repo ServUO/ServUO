@@ -39,11 +39,6 @@ namespace Server.Mobiles
             Fame = 18900;
             Karma = -18900;
 
-            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
-
             SetWeaponAbility(WeaponAbility.BleedAttack);
         }
 
@@ -52,30 +47,14 @@ namespace Server.Mobiles
         {
         }
         public override bool CanBeParagon => false;
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
 
-            if (Utility.RandomDouble() < 0.025)
-                c.DropItem(new GreymistChest());
-
-            if (Utility.RandomDouble() < 0.45)
-                c.DropItem(new LissithsSilk());
-
-            if (Utility.RandomDouble() < 0.1)
-                c.DropItem(new ParrotItem());
-        }
-
-        /*public override bool GivesMLMinorArtifact
-        {
-            get
-            {
-                return true;
-            }
-        }*/
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 2);
+            AddLoot(LootPack.ArcanistScrolls);
+            AddLoot(LootPack.LootItem<GreymistChest>(2.5));
+            AddLoot(LootPack.LootItem<LissithsSilk>(45.0));
+            AddLoot(LootPack.Parrot);
         }
 
         public override void Serialize(GenericWriter writer)

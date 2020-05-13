@@ -481,8 +481,9 @@ namespace Server
             {
                 return new FileStream(orig.Name, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
             }
-            catch
+            catch (Exception e)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
                 return null;
             }
         }
@@ -532,8 +533,9 @@ namespace Server
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
                 count = -1;
             }
 

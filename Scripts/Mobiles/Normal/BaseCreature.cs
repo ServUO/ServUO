@@ -140,6 +140,13 @@ namespace Server.Mobiles
         GrayGoblin,
         GreenGoblin
     }
+
+    public enum LootStage
+    {
+        Spawning,
+        Stolen,
+        Death
+    }
     #endregion
 
     public class DamageStore : IComparable
@@ -311,17 +318,6 @@ namespace Server.Mobiles
         private bool m_IsChampionSpawn;
 
         private Mobile m_InitialFocus;
-        #endregion
-
-        #region Monster Stealables
-        private bool m_HasBeenStolen;
-
-        [CommandProperty(AccessLevel.Administrator)]
-        public bool HasBeenStolen
-        {
-            get { return m_HasBeenStolen; }
-            set { m_HasBeenStolen = value; }
-        }
         #endregion
 
         public virtual InhumanSpeech SpeechType => null;
@@ -2189,7 +2185,7 @@ namespace Server.Mobiles
 
             InitializeAbilities();
 
-            Timer.DelayCall(GenerateLoot, true);
+            Timer.DelayCall(() => GenerateLoot(LootStage.Spawning));
         }
 
         public BaseCreature(Serial serial)
@@ -2205,7 +2201,10 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write(30); // version
+            writer.Write(31); // version
+
+            writer.Write(StealPackGenerated);
+            writer.Write(HasBeenStolen);
 
             writer.Write(m_ForceActiveSpeed);
             writer.Write(m_ForcePassiveSpeed);
@@ -2390,6 +2389,10 @@ namespace Server.Mobiles
 
             switch (version)
             {
+                case 31:
+                    StealPackGenerated = reader.ReadBool();
+                    HasBeenStolen = reader.ReadBool();
+                    goto case 28;
                 case 30:
                     goto case 28;
                 case 29:
@@ -4991,19 +4994,31 @@ namespace Server.Mobiles
             }
         }
 
-        protected bool m_Spawning;
-        protected int m_KillersLuck;
+        public LootStage LootStage { get; protected set; }
+        public int KillersLuck { get; protected set; }
+        public bool StealPackGenerated { get; protected set; }
+        public bool HasBeenStolen { get; set; }
 
         public virtual void GenerateLoot(bool spawning)
+        {
+            GenerateLoot(spawning ? LootStage.Spawning : LootStage.Death);
+        }
+
+        public virtual void GenerateLoot(LootStage stage)
         {
             if (m_NoLootOnDeath || m_Allured)
                 return;
 
-            m_Spawning = spawning;
+            LootStage = stage;
 
-            if (!spawning)
+            switch (stage)
             {
-                m_KillersLuck = LootPack.GetLuckChanceForKiller(this);
+                case LootStage.Stolen:
+                    StealPackGenerated = true;
+                    break;
+                case LootStage.Death:
+                    KillersLuck = LootPack.GetLuckChanceForKiller(this);
+                    break;
             }
 
             GenerateLoot();
@@ -5032,24 +5047,46 @@ namespace Server.Mobiles
                 }
             }
 
-            m_Spawning = false;
-            m_KillersLuck = 0;
+            KillersLuck = 0;
         }
 
         public virtual void GenerateLoot()
         { }
 
+        public virtual void AddLoot(LootPack pack, int min, int max)
+        {
+            AddLoot(pack, Utility.RandomMinMax(min, max), 100.0);
+        }
+
+        public virtual void AddLoot(LootPack pack, int min, int max, double chance)
+        {
+            if (min > max)
+                min = max;
+
+            AddLoot(pack, Utility.RandomMinMax(min, max), chance);
+        }
+
         public virtual void AddLoot(LootPack pack, int amount)
+        {
+            AddLoot(pack, amount, 100.0);
+        }
+
+        public virtual void AddLoot(LootPack pack, int amount, double chance)
         {
             for (int i = 0; i < amount; ++i)
             {
-                AddLoot(pack);
+                AddLoot(pack, chance);
             }
         }
 
         public virtual void AddLoot(LootPack pack)
         {
-            if (Summoned)
+            AddLoot(pack, 100.0);
+        }
+
+        public virtual void AddLoot(LootPack pack, double chance)
+        {
+            if (Summoned || pack == null || (chance < 100.0 && Utility.RandomDouble() > chance / 100))
             {
                 return;
             }
@@ -5065,7 +5102,7 @@ namespace Server.Mobiles
                 AddItem(backpack);
             }
 
-            pack.Generate(this, backpack, m_Spawning, m_KillersLuck);
+            pack.Generate(this);
         }
 
         public static void GetRandomAOSStats(int minLevel, int maxLevel, out int attributeCount, out int min, out int max)
@@ -5211,83 +5248,6 @@ namespace Server.Mobiles
             gem.Amount = amount;
 
             PackItem(gem);
-        }
-
-        public void PackNecroReg(int min, int max)
-        {
-            PackNecroReg(Utility.RandomMinMax(min, max));
-        }
-
-        public void PackNecroReg(int amount)
-        {
-            for (int i = 0; i < amount; ++i)
-            {
-                PackNecroReg();
-            }
-        }
-
-        public void PackNecroReg()
-        {
-            PackItem(Loot.RandomNecromancyReagent());
-        }
-
-        public void PackReg(int min, int max)
-        {
-            PackReg(Utility.RandomMinMax(min, max));
-        }
-
-        public void PackReg(int amount)
-        {
-            if (amount <= 0)
-            {
-                return;
-            }
-
-            Item reg = Loot.RandomReagent();
-
-            reg.Amount = amount;
-
-            PackItem(reg);
-        }
-
-        public void PackBodyPart()
-        {
-            switch (Utility.Random(5))
-            {
-                case 0: PackItem(new LeftArm()); break;
-                case 1: PackItem(new RightArm()); break;
-                case 2: PackItem(new Torso()); break;
-                case 3: PackItem(new RightLeg()); break;
-                case 4: PackItem(new LeftLeg()); break;
-            }
-        }
-
-        public void PackBones()
-        {
-            switch (Utility.Random(6))
-            {
-                case 0: PackItem(new Bone()); break;
-                case 1: PackItem(new RibCage()); break;
-                case 2: PackItem(new RibCage()); break;
-                case 3: PackItem(new BonePile()); break;
-                case 4: PackItem(new BonePile()); break;
-                case 5: PackItem(new BonePile()); break;
-            }
-        }
-
-        public void PackBodyPartOrBones()
-        {
-            switch (Utility.Random(8))
-            {
-                case 0: PackItem(new LeftArm()); break;
-                case 1: PackItem(new RightArm()); break;
-                case 2: PackItem(new Torso()); break;
-                case 3: PackItem(new RightLeg()); break;
-                case 4: PackItem(new LeftLeg()); break;
-                case 5: PackItem(new Bone()); break;
-                case 6: PackItem(new RibCage()); break;
-                case 7: PackItem(new BonePile()); break;
-            }
         }
 
         public void PackItem(Item item)
@@ -5507,7 +5467,7 @@ namespace Server.Mobiles
             if (!Summoned && !NoKillAwards && !m_HasGeneratedLoot && !m_NoLootOnDeath)
             {
                 m_HasGeneratedLoot = true;
-                GenerateLoot(false);
+                GenerateLoot(LootStage.Death);
             }
 
             if (!NoKillAwards && Region.IsPartOf("Doom"))

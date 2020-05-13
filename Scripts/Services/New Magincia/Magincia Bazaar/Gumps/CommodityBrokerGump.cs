@@ -104,7 +104,7 @@ namespace Server.Engines.NewMagincia
                     {
                         amount = Convert.ToInt32(text1);
                     }
-                    catch { }
+                    catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
 
                     if (amount > 0)
                     {
@@ -120,7 +120,7 @@ namespace Server.Engines.NewMagincia
                     {
                         amount1 = Convert.ToInt32(text2);
                     }
-                    catch { }
+                    catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
 
                     if (amount1 > 0)
                     {
@@ -392,22 +392,22 @@ namespace Server.Engines.NewMagincia
                     {
                         buyAt = Convert.ToInt32(relay1.Text);
                     }
-                    catch { }
+                    catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                     try
                     {
                         buyLmt = Convert.ToInt32(relay2.Text);
                     }
-                    catch { }
+                    catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                     try
                     {
                         sellAt = Convert.ToInt32(relay3.Text);
                     }
-                    catch { }
+                    catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                     try
                     {
                         sellLmt = Convert.ToInt32(relay4.Text);
                     }
-                    catch { }
+                    catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
 
                     if (buyLmt < 0 || buyLmt > 60000 || sellLmt < 0 || sellLmt > 60000)
                         from.SendLocalizedMessage(1150776); // You have entered an invalid numeric value. Negative values are not allowed. Trade quantities are limited to 60,000 per transaction.
@@ -539,7 +539,7 @@ namespace Server.Engines.NewMagincia
                         {
                             amount = Convert.ToInt32(relay.Text);
                         }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
 
                         if (amount <= 0 || amount > entry.Stock)
                             from.SendLocalizedMessage(1150215); // You have entered an invalid value, or a non-numeric value. Please try again.
@@ -846,7 +846,7 @@ namespace Server.Engines.NewMagincia
                             {
                                 amount = Convert.ToInt32(relay.Text);
                             }
-                            catch { }
+                            catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
 
                             if (amount > 0)
                             {

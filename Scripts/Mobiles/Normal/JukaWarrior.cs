@@ -39,9 +39,6 @@ namespace Server.Mobiles
 
             Fame = 10000;
             Karma = -10000;
-
-            if (Utility.RandomDouble() < 0.1)
-                PackItem(new ArcaneGem());
         }
 
         public JukaWarrior(Serial serial)
@@ -57,6 +54,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.Average);
             AddLoot(LootPack.Meager);
             AddLoot(LootPack.Gems, 1);
+            AddLoot(LootPack.LootItem<ArcaneGem>(10.0));
         }
 
         public override int GetIdleSound()

@@ -41,9 +41,6 @@ namespace Server.Mobiles
 
             Fame = 12500;
             Karma = -12500;
-
-            PackItem(new Nightshade(4));
-            PackItem(new LesserPoisonPotion());
         }
 
         public AcidElementalRenowned(Serial serial)
@@ -58,6 +55,8 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Rich, 2);
+            AddLoot(LootPack.LootItem<Nightshade>(4));
+            AddLoot(LootPack.LootItem<LesserPoisonPotion>());
         }
 
         public override void Serialize(GenericWriter writer)

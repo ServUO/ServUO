@@ -227,46 +227,6 @@ namespace Server.Mobiles
 
         #endregion
 
-        public virtual void PackResources(int amount)
-        {
-            for (int i = 0; i < amount; i++)
-                switch (Utility.Random(6))
-                {
-                    case 0:
-                        PackItem(new Blight());
-                        break;
-                    case 1:
-                        PackItem(new Scourge());
-                        break;
-                    case 2:
-                        PackItem(new Taint());
-                        break;
-                    case 3:
-                        PackItem(new Putrefaction());
-                        break;
-                    case 4:
-                        PackItem(new Corruption());
-                        break;
-                    case 5:
-                        PackItem(new Muculent());
-                        break;
-                }
-        }
-
-        public virtual void PackItems(Item item, int amount)
-        {
-            for (int i = 0; i < amount; i++)
-                PackItem(item);
-        }
-
-        public virtual void PackTalismans(int amount)
-        {
-            int count = Utility.Random(amount);
-
-            for (int i = 0; i < count; i++)
-                PackItem(Loot.RandomTalisman());
-        }
-
         #region Fire Ring
         private static readonly int[] m_North = new int[]
         {

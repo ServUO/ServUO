@@ -31,8 +31,6 @@ namespace Server.Mobiles
 
             Fame = 900;
             Karma = -900;
-
-            PackItem(new Nightshade(Utility.RandomMinMax(2, 3)));
         }
 
         public GazerLarva(Serial serial)
@@ -44,6 +42,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Poor);
+            AddLoot(LootPack.LootItem<Nightshade>(2, 3));
         }
 
         public override void Serialize(GenericWriter writer)

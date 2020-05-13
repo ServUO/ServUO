@@ -38,11 +38,6 @@ namespace Server.Mobiles
             Fame = 12000;
             Karma = -12000;
 
-            PackItem(new GreenGourd());
-
-            if (Utility.RandomDouble() < 0.25)
-                PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
-
             SetWeaponAbility(WeaponAbility.DoubleStrike);
         }
 
@@ -60,6 +55,9 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.FilthyRich, 3);
             AddLoot(LootPack.Gems, 2);
+
+            AddLoot(LootPack.LootItem<GreenGourd>(true));
+            AddLoot(LootPack.BonsaiSeed);
         }
 
         // TODO: Axe Throw

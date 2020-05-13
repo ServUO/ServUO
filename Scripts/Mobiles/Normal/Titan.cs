@@ -35,12 +35,6 @@ namespace Server.Mobiles
 
             Fame = 11500;
             Karma = -11500;
-
-            if (Utility.RandomDouble() < 0.33)
-                PackItem(Engines.Plants.Seed.RandomPeculiarSeed(1));
-
-            if (0.1 > Utility.RandomDouble())
-                PackItem(new Server.Items.RoastPig());
         }
 
         public Titan(Serial serial)
@@ -56,6 +50,8 @@ namespace Server.Mobiles
             AddLoot(LootPack.FilthyRich);
             AddLoot(LootPack.Average);
             AddLoot(LootPack.MedScrolls);
+            AddLoot(LootPack.PeculiarSeed1);
+            AddLoot(LootPack.LootItem<Server.Items.RoastPig>(10.0));
         }
 
         public override void Serialize(GenericWriter writer)

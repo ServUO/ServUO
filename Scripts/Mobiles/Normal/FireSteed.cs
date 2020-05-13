@@ -46,10 +46,13 @@ namespace Server.Mobiles
             ControlSlots = 2;
             MinTameSkill = 106.0;
 
-            PackItem(new SulfurousAsh(Utility.RandomMinMax(151, 300)));
-            PackItem(new Ruby(Utility.RandomMinMax(16, 30)));
-
             SetSpecialAbility(SpecialAbility.DragonBreath);
+        }
+
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.LootItem<SulfurousAsh>(151, 300, true));
+            AddLoot(LootPack.LootItem<Ruby>(16, 30, true));
         }
 
         public FireSteed(Serial serial)

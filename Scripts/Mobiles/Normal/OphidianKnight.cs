@@ -42,8 +42,6 @@ namespace Server.Mobiles
 
             Fame = 10000;
             Karma = -10000;
-
-            PackItem(new LesserPoisonPotion());
         }
 
         public OphidianKnight(Serial serial)
@@ -61,6 +59,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Rich, 2);
+            AddLoot(LootPack.LootItem<LesserPoisonPotion>());
         }
 
         public override void Serialize(GenericWriter writer)

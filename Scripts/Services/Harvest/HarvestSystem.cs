@@ -286,8 +286,9 @@ namespace Server.Engines.Harvest
             {
                 return Activator.CreateInstance(type) as Item;
             }
-            catch
+            catch (Exception e)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
                 return null;
             }
         }

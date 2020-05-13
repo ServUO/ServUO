@@ -144,7 +144,7 @@ namespace Server.Engines.BulkOrders
                         }
                         catch (Exception e)
                         {
-                            Console.WriteLine(e);
+                            Server.Diagnostics.ExceptionLogging.LogException(e);
                         }
                     }
                 }

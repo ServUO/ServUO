@@ -4093,8 +4093,10 @@ namespace Server.Network
                                     op.WriteLine(new StackTrace());
                                 }
                             }
-                            catch
-                            { }
+                            catch (Exception e)
+                            {
+                                Server.Diagnostics.ExceptionLogging.LogException(e);
+                            }
                         }
 
                         m_CompiledBuffer = new byte[0];

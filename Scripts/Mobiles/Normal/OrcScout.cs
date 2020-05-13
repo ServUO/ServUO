@@ -51,10 +51,6 @@ namespace Server.Mobiles
             Fame = 1500;
             Karma = -1500;
 
-            PackItem(new Apple(Utility.RandomMinMax(3, 5)));
-            PackItem(new Arrow(Utility.RandomMinMax(60, 70)));
-            PackItem(new Bandage(Utility.RandomMinMax(1, 15)));
-
             if (0.1 > Utility.RandomDouble())
             {
                 AddItem(new OrcishBow());
@@ -63,9 +59,6 @@ namespace Server.Mobiles
             {
                 AddItem(new Bow());
             }
-
-            if (0.5 > Utility.RandomDouble())
-                PackItem(new Yeast());
         }
 
         public OrcScout(Serial serial)
@@ -82,6 +75,10 @@ namespace Server.Mobiles
 
         {
             AddLoot(LootPack.Rich);
+            AddLoot(LootPack.LootItem<Yeast>(50.0));
+            AddLoot(LootPack.LootItem<Apple>(3, 5));
+            AddLoot(LootPack.LootItem<Arrow>(60, 70));
+            AddLoot(LootPack.LootItem<Bandage>(1, 15));
         }
 
         public override bool IsEnemy(Mobile m)

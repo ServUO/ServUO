@@ -38,11 +38,6 @@ namespace Server.Mobiles
             Fame = 18900;
             Karma = -18900;
 
-            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
-
             SetWeaponAbility(WeaponAbility.ArmorIgnore);
         }
 
@@ -50,30 +45,16 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
+
         public override bool CanBeParagon => false;
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            if (Utility.RandomDouble() < 0.2)
-                c.DropItem(new SabrixsEye());
-
-            if (Utility.RandomDouble() < 0.25)
-            {
-                switch (Utility.Random(2))
-                {
-                    case 0: AddToBackpack(new PaladinArms()); break;
-                    case 1: AddToBackpack(new HunterLegs()); break;
-                }
-            }
-
-            if (Utility.RandomDouble() < 0.1)
-                c.DropItem(new ParrotItem());
-        }
 
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 2);
+            AddLoot(LootPack.ArcanistScrolls);
+            AddLoot(LootPack.LootItem<SabrixsEye>(20.0));
+            AddLoot(LootPack.Parrot);
+            AddLoot(LootPack.RandomLootItem(new System.Type[] { typeof(PaladinArms), typeof(HunterLegs) }, 25.0, 1, false, false));
         }
 
         public override void Serialize(GenericWriter writer)

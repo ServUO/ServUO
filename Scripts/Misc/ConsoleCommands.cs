@@ -49,8 +49,10 @@ namespace Server.Misc
                         Console.WriteLine("" + args.Mobile.Name + ": " + args.Speech + "");
                     }
                 }
-                catch
-                { }
+                catch (Exception e)
+                {
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
+                }
             };
         }
 

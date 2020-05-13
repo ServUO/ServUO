@@ -88,18 +88,7 @@ namespace Server.Spells.First
         }
         public Item Create()
         {
-            Item item;
-
-            try
-            {
-                item = (Item)Activator.CreateInstance(m_Type);
-            }
-            catch
-            {
-                item = null;
-            }
-
-            return item;
+            return Loot.Construct(m_Type);
         }
     }
 }

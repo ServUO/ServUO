@@ -618,15 +618,15 @@ namespace Server.Items
 
                 if (type != null)
                 {
-                    object obj;
+                    object obj = null;
 
                     try
                     {
                         obj = Activator.CreateInstance(type);
                     }
-                    catch
+                    catch (Exception e)
                     {
-                        obj = null;
+                        Server.Diagnostics.ExceptionLogging.LogException(e);
                     }
 
                     if (obj is Item)

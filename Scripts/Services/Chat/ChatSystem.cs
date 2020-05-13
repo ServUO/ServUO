@@ -73,7 +73,7 @@ namespace Server.Engines.Chat
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Server.Diagnostics.ExceptionLogging.LogException(e);
             }
         }
 

@@ -37,8 +37,6 @@ namespace Server.Mobiles
             Fame = 600;
             Karma = -600;
 
-            PackItem(new SulfurousAsh());
-
             SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
@@ -54,6 +52,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Poor);
+            AddLoot(LootPack.LootItem<SulfurousAsh>());
         }
 
         public override void Serialize(GenericWriter writer)

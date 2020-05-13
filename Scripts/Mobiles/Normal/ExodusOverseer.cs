@@ -37,11 +37,6 @@ namespace Server.Mobiles
             Fame = 10000;
             Karma = -10000;
 
-            if (Utility.Random(2) == 0)
-                PackItem(new PowerCrystal());
-            else
-                PackItem(new ArcaneGem());
-
             m_FieldActive = CanUseField;
         }
 
@@ -58,6 +53,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Rich);
+            AddLoot(LootPack.RandomLootItem(new System.Type[] { typeof(PowerCrystal), typeof(ArcaneGem) }));
         }
 
         public override int GetIdleSound()

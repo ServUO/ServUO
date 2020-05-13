@@ -35,8 +35,6 @@ namespace Server.Mobiles
 
             Fame = 3500;
             Karma = -3500;
-
-            PackItem(new GoldOre(25));
         }
 
         public GoldenElemental(Serial serial)
@@ -52,6 +50,7 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.Average);
             AddLoot(LootPack.Gems, 2);
+            AddLoot(LootPack.LootItem<GoldOre>(25, true));
         }
 
         public override void Serialize(GenericWriter writer)

@@ -36,8 +36,6 @@ namespace Server.Mobiles
 
             Fame = 3500;
             Karma = -3500;
-
-            PackItem(new DullCopperOre(2));
         }
 
         public DullCopperElemental(Serial serial)
@@ -88,6 +86,7 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.Average);
             AddLoot(LootPack.Gems, 2);
+            AddLoot(LootPack.LootItem<DullCopperOre>(2));
         }
 
         public override void Serialize(GenericWriter writer)

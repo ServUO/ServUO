@@ -26,10 +26,9 @@ namespace Server.Mobiles
                     writer.WriteLine(line);
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine(ex.StackTrace);
+                Server.Diagnostics.ExceptionLogging.LogException(e);
             }
         }
 
@@ -159,10 +158,9 @@ namespace Server.Mobiles
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                LogMessage(ex.Message);
-                LogMessage(ex.StackTrace);
+                Server.Diagnostics.ExceptionLogging.LogException(e);
                 LogMessage(m_Delimiter);
             }
         }

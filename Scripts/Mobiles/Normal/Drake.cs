@@ -39,8 +39,6 @@ namespace Server.Mobiles
             ControlSlots = 2;
             MinTameSkill = 84.3;
 
-            PackReg(3);
-
             SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
@@ -63,6 +61,7 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.Rich);
             AddLoot(LootPack.MedScrolls, 2);
+            AddLoot(LootPack.MageryRegs, 3);
         }
 
         public override void Serialize(GenericWriter writer)

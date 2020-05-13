@@ -48,17 +48,9 @@ namespace Server.Mobiles
             Fame = 32000;
             Karma = -32000;
 
-            PackResources(8);
-            PackTalismans(5);
-
             m_Change = DateTime.UtcNow;
             m_Stomp = DateTime.UtcNow;
             m_Teleport = DateTime.UtcNow;
-
-            for (int i = 0; i < Utility.RandomMinMax(1, 3); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
         }
 
         public override void GenerateLoot()
@@ -67,6 +59,17 @@ namespace Server.Mobiles
             AddLoot(LootPack.LowScrolls, 4);
             AddLoot(LootPack.MedScrolls, 4);
             AddLoot(LootPack.HighScrolls, 4);
+            AddLoot(LootPack.ArcanistScrolls, Utility.RandomMinMax(1, 6));
+            AddLoot(LootPack.PeerlessResource, 8);
+            AddLoot(LootPack.Talisman, 5);
+            AddLoot(LootPack.LootItem<DreadHornMane>());
+            AddLoot(LootPack.LootItem<TaintedMushroom>(60.0));
+            AddLoot(LootPack.LootItem<ParrotItem>(60.0));
+            AddLoot(LootPack.LootItem<MangledHeadOfDreadhorn>(50.0));
+            AddLoot(LootPack.LootItem<HornOfTheDreadhorn>(50.0));
+            AddLoot(LootPack.LootItem<PristineDreadHorn>(5.0));
+            AddLoot(LootPack.LootItem<DreadFlute>(5.0));
+            AddLoot(LootPack.LootItem<DreadsRevenge>(5.0));
         }
 
         public override void OnThink()
@@ -84,34 +87,6 @@ namespace Server.Mobiles
                 if (m_Teleport < DateTime.UtcNow && Utility.RandomDouble() < 0.1)
                     Teleport();
             }
-        }
-
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            c.DropItem(new DreadHornMane());
-
-            if (Utility.RandomDouble() < 0.6)
-                c.DropItem(new TaintedMushroom());
-
-            if (Utility.RandomDouble() < 0.6)
-                c.DropItem(new ParrotItem());
-
-            if (Utility.RandomDouble() < 0.5)
-                c.DropItem(new MangledHeadOfDreadhorn());
-
-            if (Utility.RandomDouble() < 0.5)
-                c.DropItem(new HornOfTheDreadhorn());
-
-            if (Utility.RandomDouble() < 0.05)
-                c.DropItem(new PristineDreadHorn());
-
-            if (Utility.RandomDouble() < 0.05)
-                c.DropItem(new DreadFlute());
-
-            if (Utility.RandomDouble() < 0.05)
-                c.DropItem(new DreadsRevenge());
         }
 
         public override int Hides => 10;

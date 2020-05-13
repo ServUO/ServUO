@@ -38,26 +38,6 @@ namespace Server.Mobiles
             Fame = 1700;
             Karma = -1700;
 
-            PackItem(new RawFishSteak(3));
-            for (int i = 0; i < 2; i++)
-            {
-                switch (Utility.Random(6))
-                {
-                    case 0:
-                        PackItem(new Gears());
-                        break;
-                    case 1:
-                        PackItem(new Hinge());
-                        break;
-                    case 2:
-                        PackItem(new Axle());
-                        break;
-                }
-            }
-
-            if (Utility.RandomDouble() < .33)
-                PackItem(Engines.Plants.Seed.RandomPeculiarSeed(2));
-
             SetSpecialAbility(SpecialAbility.LifeLeech);
         }
 
@@ -72,6 +52,9 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.Meager);
             AddLoot(LootPack.Average);
+            AddLoot(LootPack.LootItem<RawFishSteak>(3, true));
+            AddLoot(LootPack.RandomLootItem(new [] { typeof(Gears), typeof(Hinge), typeof(Axle) }, 50.0, 1));
+            AddLoot(LootPack.PeculiarSeed2);
         }
 
         public override int GetAngerSound()

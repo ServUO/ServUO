@@ -150,6 +150,7 @@
     <Compile Include=".\VirtueInfo.cs" />
     <Compile Include=".\World.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="ExceptionLogging.cs" />
     <Compile Include="Gumps\ECHandleInput.cs" />
     <Compile Include="Gumps\Gump.cs" />
     <Compile Include="Gumps\GumpAlphaRegion.cs" />

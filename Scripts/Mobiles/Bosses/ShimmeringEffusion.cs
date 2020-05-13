@@ -42,14 +42,6 @@ namespace Server.Mobiles
 
             Fame = 30000;
             Karma = -30000;
-
-            PackResources(8);
-            PackTalismans(5);
-
-            for (int i = 0; i < Utility.RandomMinMax(1, 6); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
         }
 
         public override void GenerateLoot()
@@ -58,39 +50,16 @@ namespace Server.Mobiles
             AddLoot(LootPack.Parrot, 2);
             AddLoot(LootPack.HighScrolls, 3);
             AddLoot(LootPack.MedScrolls, 3);
-        }
+            AddLoot(LootPack.ArcanistScrolls, Utility.RandomMinMax(1, 6));
+            AddLoot(LootPack.PeerlessResource, 8);
+            AddLoot(LootPack.Talisman, 5);
+            AddLoot(LootPack.LootItem<CapturedEssence>());
+            AddLoot(LootPack.LootItem<ShimmeringCrystals>());
 
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
+            AddLoot(LootPack.RandomLootItem(new[] { typeof(ShimmeringEffusionStatuette), typeof(CorporealBrumeStatuette), typeof(MantraEffervescenceStatuette), typeof(FetidEssenceStatuette) }, 5.0, 1));
 
-            c.DropItem(new CapturedEssence());
-            c.DropItem(new ShimmeringCrystals());
-
-            if (Utility.RandomDouble() < 0.05)
-            {
-                switch (Utility.Random(4))
-                {
-                    case 0:
-                        c.DropItem(new ShimmeringEffusionStatuette());
-                        break;
-                    case 1:
-                        c.DropItem(new CorporealBrumeStatuette());
-                        break;
-                    case 2:
-                        c.DropItem(new MantraEffervescenceStatuette());
-                        break;
-                    case 3:
-                        c.DropItem(new FetidEssenceStatuette());
-                        break;
-                }
-            }
-
-            if (Utility.RandomDouble() < 0.05)
-                c.DropItem(new FerretImprisonedInCrystal());
-
-            if (Utility.RandomDouble() < 0.025)
-                c.DropItem(new CrystallineRing());
+            AddLoot(LootPack.LootItem<FerretImprisonedInCrystal>(5.0));
+            AddLoot(LootPack.LootItem<CrystallineRing>(2.25));
         }
 
         public override bool AutoDispel => true;

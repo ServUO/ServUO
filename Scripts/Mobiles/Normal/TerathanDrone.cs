@@ -37,8 +37,6 @@ namespace Server.Mobiles
 
             Fame = 2000;
             Karma = -2000;
-
-            PackItem(new SpidersSilk(2));
         }
 
         public TerathanDrone(Serial serial)
@@ -53,6 +51,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Meager);
+            AddLoot(LootPack.LootItem<SpidersSilk>(2));
         }
 
         public override void Serialize(GenericWriter writer)

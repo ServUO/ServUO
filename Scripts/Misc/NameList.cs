@@ -35,7 +35,7 @@ namespace Server
             catch (Exception e)
             {
                 Console.WriteLine("Warning: Exception caught loading name lists:");
-                Console.WriteLine(e);
+                Server.Diagnostics.ExceptionLogging.LogException(e);
             }
         }
 
@@ -95,8 +95,9 @@ namespace Server
 
                     m_Table[type] = list;
                 }
-                catch
+                catch (Exception e)
                 {
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
                 }
             }
         }

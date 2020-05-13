@@ -445,8 +445,10 @@ namespace Server
                     }
                 }
             }
-            catch (EndOfStreamException)
+            catch (EndOfStreamException ex)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(ex);
+
                 if (DateTime.UtcNow >= m_NextStaticWarning)
                 {
                     Console.WriteLine("Warning: Static EOS for {0} ({1}, {2})", m_Owner, x, y);
@@ -490,9 +492,11 @@ namespace Server
                 }
 
                 return tiles;
-            }
-            catch
+            } 
+            catch (Exception ex)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(ex);
+
                 if (DateTime.UtcNow >= m_NextLandWarning)
                 {
                     Console.WriteLine("Warning: Land EOS for {0} ({1}, {2})", m_Owner, x, y);

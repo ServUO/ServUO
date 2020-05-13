@@ -566,8 +566,10 @@ namespace Server.Mobiles
                         {
                             ammo = Activator.CreateInstance(kvp.Key) as Item;
                         }
-                        catch
-                        { }
+                        catch (Exception e)
+                        {
+                            Server.Diagnostics.ExceptionLogging.LogException(e);
+                        }
 
                         if (ammo != null)
                         {
@@ -1497,7 +1499,7 @@ namespace Server.Mobiles
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Server.Diagnostics.ExceptionLogging.LogException(e);
             }
             finally
             {

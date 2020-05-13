@@ -36,9 +36,6 @@ namespace Server.Mobiles
 
             Fame = 3000;
             Karma = -3000;
-
-            PackItem(new Scimitar());
-            PackItem(new WoodenShield());
         }
 
         public SkeletalKnight(Serial serial)
@@ -54,6 +51,8 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.Average);
             AddLoot(LootPack.Meager);
+            AddLoot(LootPack.LootItem<Scimitar>());
+            AddLoot(LootPack.LootItem<WoodenShield>());
         }
 
         public override void Serialize(GenericWriter writer)

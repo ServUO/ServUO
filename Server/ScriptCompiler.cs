@@ -204,8 +204,10 @@ namespace Server
                             }
                         }
                     }
-                    catch
-                    { }
+                    catch (Exception e)
+                    {
+                        Server.Diagnostics.ExceptionLogging.LogException(e);
+                    }
                 }
             }
 
@@ -278,8 +280,10 @@ namespace Server
                             }
                         }
                     }
-                    catch
-                    { }
+                    catch (Exception ex)
+                    {
+                        Server.Diagnostics.ExceptionLogging.LogException(ex);
+                    }
                 }
 
                 assembly = results.CompiledAssembly;
@@ -424,12 +428,16 @@ namespace Server
                     {
                         File.Delete(file);
                     }
-                    catch
-                    { }
+                    catch (Exception ex)
+                    {
+                        Server.Diagnostics.ExceptionLogging.LogException(ex);
+                    }
                 }
             }
-            catch
-            { }
+            catch (Exception ex)
+            {
+                Server.Diagnostics.ExceptionLogging.LogException(ex);
+            }
         }
 
         private delegate CompilerResults Compiler(bool debug);

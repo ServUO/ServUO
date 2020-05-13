@@ -43,8 +43,6 @@ namespace Server.Mobiles
             ControlSlots = 4;
             MinTameSkill = 85.0;
 
-            PackReg(3);
-
             SetMagicalAbility(MagicalAbility.MageryMastery);
         }
 
@@ -70,6 +68,7 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.Rich);
             AddLoot(LootPack.MedScrolls, 2);
+            AddLoot(LootPack.MageryRegs, 3);
         }
 
         public override void Serialize(GenericWriter writer)

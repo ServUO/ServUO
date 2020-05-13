@@ -939,10 +939,13 @@ namespace Server.Engines.Quests
 
             Fame = 1000;
             Karma = 10000;
+        }
 
-            PackItem(new Bandage(Utility.RandomMinMax(5, 10)));
-            PackItem(new HealPotion());
-            PackItem(new CurePotion());
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.LootItem<Bandage>(Utility.RandomMinMax(5, 10), true));
+            AddLoot(LootPack.LootItem<Bandage>(true));
+            AddLoot(LootPack.LootItem<Bandage>(true));
         }
 
         public EscortableHealer(Serial serial)

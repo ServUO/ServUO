@@ -322,8 +322,10 @@ namespace Server
                                 ctorArgs[0] = (Serial)serial;
                                 m = (Mobile)(ctor.Invoke(ctorArgs));
                             }
-                            catch
-                            { }
+                            catch (Exception ex)
+                            {
+                                Server.Diagnostics.ExceptionLogging.LogException(ex);
+                            }
 
                             if (m != null)
                             {
@@ -382,8 +384,10 @@ namespace Server
                                 ctorArgs[0] = (Serial)serial;
                                 item = (Item)(ctor.Invoke(ctorArgs));
                             }
-                            catch
-                            { }
+                            catch (Exception e)
+                            {
+                                Server.Diagnostics.ExceptionLogging.LogException(e);
+                            }
 
                             if (item != null)
                             {
@@ -745,8 +749,10 @@ namespace Server
                     op.WriteLine();
                 }
             }
-            catch
-            { }
+            catch (Exception ex)
+            {
+                Server.Diagnostics.ExceptionLogging.LogException(ex);
+            }
         }
 
         private static void SaveIndex<T>(List<T> list, string path) where T : IEntityEntry

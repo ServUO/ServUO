@@ -36,9 +36,7 @@ namespace Server.Mobiles
 
             Fame = 5000;
             Karma = -5000;
-
-            PackItem(new BronzeOre(25));
-
+            
             SetAreaEffect(AreaEffect.PoisonBreath);
         }
 
@@ -55,6 +53,7 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.Average);
             AddLoot(LootPack.Gems, 2);
+            AddLoot(LootPack.LootItem<BronzeOre>(25));
         }
 
         public override void Serialize(GenericWriter writer)

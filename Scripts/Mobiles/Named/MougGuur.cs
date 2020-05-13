@@ -32,11 +32,11 @@ namespace Server.Mobiles
 
             Fame = 3000;
             Karma = -3000;
+        }
 
-            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.ArcanistScrolls);
         }
 
         public MougGuur(Serial serial)
@@ -44,6 +44,7 @@ namespace Server.Mobiles
         {
         }
         public override bool CanBeParagon => false;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

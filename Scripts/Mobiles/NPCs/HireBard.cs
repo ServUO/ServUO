@@ -64,26 +64,15 @@ namespace Server.Mobiles
                     AddItem(new Shirt(Utility.RandomDyedHue()));
                     break;
             }
-            switch (Utility.Random(4))
-            {
-                case 0:
-                    PackItem(new Harp());
-                    break;
-                case 1:
-                    PackItem(new Lute());
-                    break;
-                case 2:
-                    PackItem(new Drums());
-                    break;
-                case 3:
-                    PackItem(new Tambourine());
-                    break;
-            }
+        }
 
-            AddItem(new Longsword());
-            PackItem(new Bow());
-            PackItem(new Arrow(100));
-            PackGold(10, 50);
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.RandomLootItem(new System.Type[] { typeof(Harp), typeof(Lute), typeof(Drums), typeof(Tambourine) }));
+            AddLoot(LootPack.LootItem<Longsword>(true));
+            AddLoot(LootPack.LootItem<Bow>(true));
+            AddLoot(LootPack.LootItem<Arrow>(100, true));
+            AddLoot(LootPack.LootGold(10, 50));
         }
 
         public HireBard(Serial serial)

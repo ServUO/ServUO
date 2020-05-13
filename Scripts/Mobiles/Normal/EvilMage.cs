@@ -43,15 +43,6 @@ namespace Server.Mobiles
 
             Fame = 2500;
             Karma = -2500;
-
-            PackReg(6);
-
-            switch (Utility.Random(18))
-            {
-                case 0: PackItem(new BloodOathScroll()); break;
-                case 1: PackItem(new CurseWeaponScroll()); break;
-                case 2: PackItem(new StrangleScroll()); break;
-            }
         }
 
         public override int GetDeathSound()
@@ -73,10 +64,13 @@ namespace Server.Mobiles
         public override bool AlwaysMurderer => true;
         public override int Meat => 1;
         public override int TreasureMapLevel => 1;
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Average);
             AddLoot(LootPack.MedScrolls);
+            AddLoot(LootPack.MageryRegs, 6);
+            AddLoot(LootPack.RandomLootItem(new[] { typeof(BloodOathScroll), typeof(CurseWeaponScroll), typeof(StrangleScroll) }, 16.6, 1, false, true));
         }
 
         public override void Serialize(GenericWriter writer)

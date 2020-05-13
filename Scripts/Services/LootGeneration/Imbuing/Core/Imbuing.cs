@@ -318,7 +318,7 @@ namespace Server.SkillHandlers
 
             Type gem = def.GemRes;
             Type primary = def.PrimaryRes;
-            Type special = def.SpecialRes;
+            Type special = ItemPropertyInfo.GetSpecialRes(i, id, def.SpecialRes);
 
             context.Imbue_ModVal = def.Weight;
 
@@ -890,7 +890,7 @@ namespace Server.SkillHandlers
         public static int GetGemAmount(Item item, int id, int value)
         {
             int max = ItemPropertyInfo.GetMaxIntensity(item, id, true);
-            int inc = ItemPropertyInfo.GetScale(item, id);
+            int inc = ItemPropertyInfo.GetScale(item, id, false);
 
             if (max == 1 && inc == 0)
                 return 10;
@@ -906,7 +906,7 @@ namespace Server.SkillHandlers
         public static int GetPrimaryAmount(Item item, int id, int value)
         {
             int max = ItemPropertyInfo.GetMaxIntensity(item, id, true);
-            int inc = ItemPropertyInfo.GetScale(item, id);
+            int inc = ItemPropertyInfo.GetScale(item, id, false);
 
             //if (item is BaseJewel && id == 12)
             //    max /= 2;

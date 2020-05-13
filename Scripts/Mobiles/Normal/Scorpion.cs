@@ -42,8 +42,6 @@ namespace Server.Mobiles
             Tamable = true;
             ControlSlots = 1;
             MinTameSkill = 47.1;
-
-            PackItem(new LesserPoisonPotion());
         }
 
         public Scorpion(Serial serial)
@@ -59,6 +57,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Meager);
+            AddLoot(LootPack.LootItem<LesserPoisonPotion>(true));
         }
 
         public override void Serialize(GenericWriter writer)

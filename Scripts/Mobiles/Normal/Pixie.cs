@@ -38,9 +38,6 @@ namespace Server.Mobiles
 
             Fame = 7000;
             Karma = 7000;
-
-            if (0.02 > Utility.RandomDouble())
-                PackStatue();
         }
 
         public Pixie(Serial serial)
@@ -59,6 +56,7 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.LowScrolls);
             AddLoot(LootPack.Gems, 2);
+            AddLoot(LootPack.Statue);
         }
 
         public override void OnDeath(Container c)

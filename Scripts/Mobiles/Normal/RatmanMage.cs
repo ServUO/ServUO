@@ -1,3 +1,4 @@
+using System;
 using Server.Items;
 using Server.Misc;
 
@@ -38,25 +39,6 @@ namespace Server.Mobiles
 
             Fame = 7500;
             Karma = -7500;
-
-            PackReg(6);
-
-            if (0.02 > Utility.RandomDouble())
-                PackStatue();
-
-            switch (Utility.Random(60))
-            {
-                case 0: PackItem(new AnimateDeadScroll()); break;
-                case 1: PackItem(new BloodOathScroll()); break;
-                case 2: PackItem(new CorpseSkinScroll()); break;
-                case 3: PackItem(new CurseWeaponScroll()); break;
-                case 4: PackItem(new EvilOmenScroll()); break;
-                case 5: PackItem(new HorrificBeastScroll()); break;
-                case 6: PackItem(new MindRotScroll()); break;
-                case 7: PackItem(new PainSpikeScroll()); break;
-                case 8: PackItem(new WraithFormScroll()); break;
-                case 9: PackItem(new PoisonStrikeScroll()); break;
-            }
         }
 
         public RatmanMage(Serial serial)
@@ -70,10 +52,17 @@ namespace Server.Mobiles
         public override int Meat => 1;
         public override int Hides => 8;
         public override HideType HideType => HideType.Spined;
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Rich);
             AddLoot(LootPack.LowScrolls);
+            AddLoot(LootPack.MageryRegs, 6);
+            AddLoot(LootPack.Statue);
+
+            AddLoot(LootPack.RandomLootItem(new Type[] { typeof(AnimateDeadScroll), typeof(BloodOathScroll), typeof(CorpseSkinScroll),
+                typeof(CurseWeaponScroll), typeof(EvilOmenScroll), typeof(HorrificBeastScroll), typeof(MindRotScroll),
+                typeof(PainSpikeScroll), typeof(WraithFormScroll), typeof(PoisonStrikeScroll) }, 20.0, 1, false, true));
         }
 
         public override void Serialize(GenericWriter writer)

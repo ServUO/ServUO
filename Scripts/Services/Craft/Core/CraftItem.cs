@@ -230,8 +230,10 @@ namespace Server.Engines.Craft
                     {
                         item = Activator.CreateInstance(type) as Item;
                     }
-                    catch
-                    { }
+                    catch (Exception e)
+                    {
+                        Server.Diagnostics.ExceptionLogging.LogException(e);
+                    }
 
                     if (item != null)
                     {
@@ -2097,8 +2099,10 @@ namespace Server.Engines.Craft
                                     m_CraftItem.ItemType, new object[] { m_From, m_CraftItem, m_CraftSystem, ItemTypeRes, m_Tool, quality }) as
                                 CustomCraft;
                         }
-                        catch
-                        { }
+                        catch (Exception e)
+                        {
+                            Server.Diagnostics.ExceptionLogging.LogException(e);
+                        }
 
                         if (cc != null)
                         {

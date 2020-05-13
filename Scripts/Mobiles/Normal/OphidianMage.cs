@@ -42,14 +42,6 @@ namespace Server.Mobiles
 
             Fame = 4000;
             Karma = -4000;
-
-            PackReg(10);
-
-            switch (Utility.Random(6))
-            {
-                case 0: PackItem(new PainSpikeScroll()); break;
-            }
-
         }
 
         public OphidianMage(Serial serial)
@@ -68,6 +60,8 @@ namespace Server.Mobiles
             AddLoot(LootPack.LowScrolls);
             AddLoot(LootPack.MedScrolls);
             AddLoot(LootPack.Potions);
+            AddLoot(LootPack.MageryRegs, 10);
+            AddLoot(LootPack.LootItem<PainSpikeScroll>(16.7));
         }
 
         public override void Serialize(GenericWriter writer)

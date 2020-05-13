@@ -325,8 +325,9 @@ namespace Server.Spells.Necromancy
             {
                 summoned = Activator.CreateInstance(toSummon) as Mobile;
             }
-            catch
+            catch (Exception e)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
             }
 
             if (summoned == null)

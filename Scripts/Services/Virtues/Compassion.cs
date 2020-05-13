@@ -38,8 +38,10 @@ namespace Server.Services.Virtues
                     pm.LastCompassionLoss = DateTime.UtcNow;
                 }
             }
-            catch
-            { }
+            catch (Exception e)
+            {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
+            }
         }
     }
 }

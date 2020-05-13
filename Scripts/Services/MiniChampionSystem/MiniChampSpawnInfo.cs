@@ -99,10 +99,7 @@ namespace Server.Engines.MiniChamps
         {
             Type essenceType = MiniChampInfo.GetInfo(Owner.Type).EssenceType;
 
-            Item essence = null;
-
-            try { essence = (Item)Activator.CreateInstance(essenceType); }
-            catch { }
+            Item essence = Loot.Construct(essenceType);
 
             if (essence != null)
             {

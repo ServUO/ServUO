@@ -32,8 +32,6 @@ namespace Server.Mobiles
 
             Fame = 3000;
             Karma = -3000;
-
-            PackNecroReg(10, 15);
         }
 
         public PutridUndeadGuardian(Serial serial)
@@ -45,6 +43,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich, 3);
+            AddLoot(LootPack.NecroRegs, 10, 15);
         }
 
         public override int GetIdleSound()

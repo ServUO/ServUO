@@ -38,11 +38,6 @@ namespace Server.Mobiles
             Fame = 10000;
             Karma = -10000;
 
-            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
-
             SetWeaponAbility(WeaponAbility.CrushingBlow);
         }
 
@@ -54,9 +49,11 @@ namespace Server.Mobiles
         public override bool GivesMLMinorArtifact => true;
         public override int TreasureMapLevel => 4;
         public override bool AllureImmune => true;
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 2);
+            AddLoot(LootPack.ArcanistScrolls);
         }
 
         public override void Serialize(GenericWriter writer)

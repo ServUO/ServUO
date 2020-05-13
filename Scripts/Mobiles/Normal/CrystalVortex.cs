@@ -39,11 +39,6 @@ namespace Server.Mobiles
 
             Fame = 17000;
             Karma = -17000;
-
-            for (int i = 0; i < Utility.RandomMinMax(0, 2); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
         }
 
         public CrystalVortex(Serial serial)
@@ -57,6 +52,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.Parrot);
             AddLoot(LootPack.MedScrolls);
             AddLoot(LootPack.HighScrolls);
+            AddLoot(LootPack.ArcanistScrolls, Utility.RandomMinMax(0, 2));
         }
 
         public override void OnDeath(Container c)

@@ -385,7 +385,6 @@ namespace Server.Engines.Despise
         public override bool OnBeforeDeath()
         {
             Summoned = false;
-            PackItem(new Gold(Utility.Random(800, 1000)));
             return base.OnBeforeDeath();
         }
 
@@ -464,7 +463,6 @@ namespace Server.Engines.Despise
         public override bool OnBeforeDeath()
         {
             Summoned = false;
-            PackItem(new Gold(Utility.Random(800, 1000)));
             return base.OnBeforeDeath();
         }
 

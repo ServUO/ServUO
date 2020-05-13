@@ -1,4 +1,4 @@
-﻿using Server.Multis;
+using Server.Multis;
 using System;
 using System.Reflection;
 
@@ -85,8 +85,9 @@ namespace Server.Items
                         addon.Direction = m_Directions[index];
                     }
                 }
-                catch
+                catch (Exception e)
                 {
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
                 }
             }
         }

@@ -56,8 +56,9 @@ namespace Server.Engines.VeteranRewards
 
                 return item;
             }
-            catch
+            catch (Exception e)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
             }
 
             return null;

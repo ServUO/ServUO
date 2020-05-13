@@ -40,7 +40,7 @@ namespace Server.Engines.Quests
                 catch (Exception e)
                 {
                     Console.WriteLine("Quest Save Failure: {0}", Utility.FormatDelegate(serializer));
-                    Console.WriteLine(e);
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
 
                     writer.Write(0L);
 

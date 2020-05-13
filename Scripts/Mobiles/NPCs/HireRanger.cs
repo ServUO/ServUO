@@ -66,9 +66,12 @@ namespace Server.Mobiles
             SetWearable(new StuddedGloves(), 0x59C);
             SetWearable(new StuddedLegs(), 0x59C);
             SetWearable(new StuddedGorget(), 0x59C);
+        }
 
-            PackItem(new Arrow(20));
-            PackGold(10, 75);
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.LootItem<Arrow>(20, true));
+            AddLoot(LootPack.LootGold(10, 75));
         }
 
         public HireRanger(Serial serial)

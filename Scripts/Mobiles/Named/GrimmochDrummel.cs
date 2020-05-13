@@ -58,14 +58,6 @@ namespace Server.Mobiles
 
             Fame = 5000;
             Karma = -1000;
-
-            PackItem(new Arrow(40));
-
-            if (3 > Utility.Random(100))
-                PackItem(new FireHorn());
-
-            if (1 > Utility.Random(3))
-                PackItem(Loot.RandomGrimmochJournal());
         }
 
         public GrimmochDrummel(Serial serial)
@@ -77,6 +69,7 @@ namespace Server.Mobiles
         public override bool ShowFameTitle => false;
         public override bool DeleteCorpseOnDeath => true;
         public override bool AlwaysMurderer => true;
+
         public override int GetIdleSound()
         {
             return 0x178;
@@ -102,10 +95,16 @@ namespace Server.Mobiles
             Gold gold = new Gold(Utility.RandomMinMax(190, 230));
             gold.MoveToWorld(Location, Map);
 
-            Container pack = Backpack;
+            Backpack pack = Backpack as Backpack;
+
             if (pack != null)
             {
                 pack.Movable = true;
+
+                pack.AddLoot(LootPack.LootItem<FireHorn>(3.0));
+                pack.AddLoot(LootPack.RandomLootItem(Loot.GrimmochJournalTypes, 33.3, 1));
+                pack.AddLoot(LootPack.LootItem<Arrow>(40));
+
                 pack.MoveToWorld(Location, Map);
             }
 

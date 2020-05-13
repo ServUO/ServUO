@@ -382,7 +382,7 @@ namespace Server.Services.TownCryer
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e);
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
                     Utility.WriteConsoleColor(ConsoleColor.Cyan, "...FAILED! ***");
                     return;
                 }
@@ -469,8 +469,9 @@ namespace Server.Services.TownCryer
             {
                 datetime = DateTime.Parse(text, CultureInfo.CreateSpecificCulture("en-US"));
             }
-            catch
+            catch (Exception e)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
             }
 
             return datetime;

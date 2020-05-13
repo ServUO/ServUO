@@ -36,8 +36,6 @@ namespace Server.Mobiles
             SetSkill(SkillName.Anatomy, 120.0);
             SetSkill(SkillName.Poisoning, 120.0);
 
-            PackResources(8);
-            PackTalismans(5);
             Timer.DelayCall(TimeSpan.FromSeconds(1), SpawnBulbous);  //BulbousPutrification
 
             Fame = 25000;
@@ -57,38 +55,14 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.SuperBoss, 8);
-        }
-
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            c.DropItem(new LardOfParoxysmus());
-
-            switch (Utility.Random(3))
-            {
-                case 0:
-                    c.DropItem(new ParoxysmusDinner());
-                    break;
-                case 1:
-                    c.DropItem(new ParoxysmusCorrodedStein());
-                    break;
-                case 2:
-                    c.DropItem(new StringOfPartsOfParoxysmusVictims());
-                    break;
-            }
-
-            if (Utility.RandomDouble() < 0.6)
-                c.DropItem(new ParrotItem());
-
-            if (Utility.RandomBool())
-                c.DropItem(new SweatOfParoxysmus());
-
-            if (Utility.RandomDouble() < 0.05)
-                c.DropItem(new ParoxysmusSwampDragonStatuette());
-
-            if (Utility.RandomDouble() < 0.05)
-                c.DropItem(new ScepterOfTheChief());
+            AddLoot(LootPack.PeerlessResource, 8);
+            AddLoot(LootPack.Talisman, 5);
+            AddLoot(LootPack.LootItem<LardOfParoxysmus>());
+            AddLoot(LootPack.RandomLootItem(new[] { typeof(ParoxysmusDinner), typeof(ParoxysmusCorrodedStein), typeof(StringOfPartsOfParoxysmusVictims) }));
+            AddLoot(LootPack.LootItem<ParrotItem>(60.0));
+            AddLoot(LootPack.LootItem<SweatOfParoxysmus>(50.0));
+            AddLoot(LootPack.LootItem<ParoxysmusSwampDragonStatuette>(5.0));
+            AddLoot(LootPack.LootItem<ScepterOfTheChief>(5.0));
         }
 
         public override int GetDeathSound()

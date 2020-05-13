@@ -55,8 +55,9 @@ namespace Server.Misc
                             else
                                 ChangeSkill(@from, name, value);
                         }
-                        catch
+                        catch (Exception e)
                         {
+                            Server.Diagnostics.ExceptionLogging.LogException(e);
                         }
                     }
                 }

@@ -45,19 +45,6 @@ namespace Server.Mobiles
             Karma = -500;
 
             AddItem(new LightSource());
-
-            PackItem(new FertileDirt(Utility.RandomMinMax(1, 4)));
-            PackItem(new DaemonBone(5));
-        }
-
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            if (Utility.RandomDouble() < 0.10)
-            {
-                c.DropItem(new AncientPotteryFragments());
-            }
         }
 
         public Betballem(Serial serial)
@@ -78,6 +65,9 @@ namespace Server.Mobiles
             AddLoot(LootPack.Rich);
             AddLoot(LootPack.Meager);
             AddLoot(LootPack.Gems);
+            AddLoot(LootPack.LootItem<DaemonBone>(5, true));
+            AddLoot(LootPack.LootItem<FertileDirt>(1, 4, true));
+            AddLoot(LootPack.LootItem<AncientPotteryFragments>(10.0));
         }
 
         public override int GetIdleSound()

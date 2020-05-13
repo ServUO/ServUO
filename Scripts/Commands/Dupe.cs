@@ -117,15 +117,15 @@ namespace Server.Commands
 
                     for (int i = 0; i < _Amount; i++)
                     {
-                        Item o;
+                        Item o = null;
 
                         try
                         {
                             o = Activator.CreateInstance(t, true) as Item;
                         }
-                        catch
+                        catch (Exception e)
                         {
-                            o = null;
+                            Server.Diagnostics.ExceptionLogging.LogException(e);
                         }
 
                         if (o == null)
@@ -176,9 +176,8 @@ namespace Server.Commands
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.StackTrace);
-
-                    m.SendMessage("Error!");
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
+                    m.SendMessage("Error");
                     return;
                 }
 
@@ -214,15 +213,15 @@ namespace Server.Commands
                     }
                 }
 
-                Item o;
+                Item o = null;
 
                 try
                 {
                     o = Activator.CreateInstance(t, true) as Item;
                 }
-                catch
+                catch (Exception e)
                 {
-                    o = null;
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
                 }
 
                 if (o == null)
@@ -257,8 +256,9 @@ namespace Server.Commands
 
                 return o;
             }
-            catch
+            catch (Exception e)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
                 return null;
             }
         }
@@ -286,15 +286,15 @@ namespace Server.Commands
                         }
                     }
 
-                    Item o;
+                    Item o = null;
 
                     try
                     {
                         o = Activator.CreateInstance(t, true) as Item;
                     }
-                    catch
+                    catch (Exception e)
                     {
-                        o = null;
+                        Server.Diagnostics.ExceptionLogging.LogException(e);
                     }
 
                     if (o == null)
@@ -330,8 +330,10 @@ namespace Server.Commands
 
                     item.Delta(ItemDelta.Update);
                 }
-                catch
-                { }
+                catch (Exception e)
+                {
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
+                }
             }
         }
 
@@ -348,8 +350,10 @@ namespace Server.Commands
                         p.SetValue(dest, p.GetValue(src, null), null);
                     }
                 }
-                catch
-                { }
+                catch (Exception e)
+                {
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
+                }
             }
         }
     }

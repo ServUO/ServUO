@@ -41,14 +41,16 @@ namespace Server.Mobiles
             ControlSlots = 4;
             MinTameSkill = 98.7;
 
-            if (Utility.RandomDouble() < .33)
-                PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
-
-            if (Utility.RandomDouble() < .33)
-                PackItem(Engines.Plants.Seed.RandomPeculiarSeed(4));
-
             SetWeaponAbility(WeaponAbility.Dismount);
             SetSpecialAbility(SpecialAbility.GraspingClaw);
+        }
+
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.FilthyRich, 3);
+            AddLoot(LootPack.Gems, 4);
+            AddLoot(LootPack.PeculiarSeed4);
+            AddLoot(LootPack.BonsaiSeed);
         }
 
         public Hiryu(Serial serial)
@@ -90,12 +92,6 @@ namespace Server.Mobiles
         public override int GetDeathSound()
         {
             return 0x4FB;
-        }
-
-        public override void GenerateLoot()
-        {
-            AddLoot(LootPack.FilthyRich, 3);
-            AddLoot(LootPack.Gems, 4);
         }
 
         public override void OnAfterTame(Mobile tamer)

@@ -41,8 +41,6 @@ namespace Server.Mobiles
 
             Fame = 4000;
             Karma = -4000;
-
-            PackReg(10);
         }
 
         public DreamWraith(Serial serial)
@@ -55,6 +53,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Rich);
+            AddLoot(LootPack.MageryRegs, 10);
         }
 
         public override int GetIdleSound()

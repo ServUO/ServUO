@@ -38,8 +38,6 @@ namespace Server.Mobiles
 
             Fame = 4500;
             Karma = -4500;
-
-            PackItem(new Bone());
         }
 
         public SandVortex(Serial serial)
@@ -50,6 +48,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Meager, 2);
+            AddLoot(LootPack.LootItem<Bone>());
         }
 
         public override void OnActionCombat()

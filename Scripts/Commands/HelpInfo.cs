@@ -405,8 +405,9 @@ namespace Server.Commands
                         string command = CommandSystem.Prefix + m_Info.Name + " " + info.TextEntries[0].Text;
                         CommandSystem.Handle(from, command);
                     }
-                    catch
+                    catch (Exception e)
                     {
+                        Server.Diagnostics.ExceptionLogging.LogException(e);
                     }
                 //else close the gump silently
             }

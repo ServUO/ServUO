@@ -1710,8 +1710,9 @@ namespace Server.Items
 
                     return true;
                 }
-                catch
+                catch (Exception e)
                 {
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
                 }
             }
 

@@ -39,27 +39,11 @@ namespace Server.Mobiles
 
             Fame = 17000;
             Karma = -17000;
-
-            for (int i = 0; i < Utility.RandomMinMax(0, 2); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
         }
 
         public CrystalLatticeSeeker(Serial serial)
             : base(serial)
         {
-        }
-
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            if (Utility.RandomDouble() < 0.75)
-                c.DropItem(new CrystallineFragments());
-
-            if (Utility.RandomDouble() < 0.07)
-                c.DropItem(new PiecesOfCrystal());
         }
 
         public override int Feathers => 100;
@@ -70,6 +54,9 @@ namespace Server.Mobiles
             AddLoot(LootPack.Parrot);
             AddLoot(LootPack.Gems);
             AddLoot(LootPack.HighScrolls, 2);
+            AddLoot(LootPack.ArcanistScrolls, 0, 2);
+            AddLoot(LootPack.LootItem<CrystallineFragments>(75.0));
+            AddLoot(LootPack.LootItem<PiecesOfCrystal>(7.0));
         }
 
         public override void OnGaveMeleeAttack(Mobile defender)

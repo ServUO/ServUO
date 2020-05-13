@@ -121,9 +121,9 @@ namespace Server.Engines.Reports
                     File.Move(m_TempFilePath, m_RealFilePath);
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Console.WriteLine(ex);
+                Server.Diagnostics.ExceptionLogging.LogException(e);
             }
         }
     }

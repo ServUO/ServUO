@@ -42,11 +42,6 @@ namespace Server.Mobiles
 
             Tamable = false;
 
-            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
-
             SetWeaponAbility(WeaponAbility.Dismount);
         }
 
@@ -56,9 +51,11 @@ namespace Server.Mobiles
         }
         public override bool CanBeParagon => false;
         public override bool GivesMLMinorArtifact => true;
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 3);
+            AddLoot(LootPack.ArcanistScrolls);
         }
 
         public override void Serialize(GenericWriter writer)

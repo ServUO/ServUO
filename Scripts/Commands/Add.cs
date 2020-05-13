@@ -276,8 +276,9 @@ namespace Server.Commands
                         return Convert.ChangeType(obj, type);
                 }
             }
-            catch
+            catch (Exception e)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
                 return null;
             }
         }
@@ -403,9 +404,9 @@ namespace Server.Commands
 
                 return objectCount;
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Console.WriteLine(ex);
+                Server.Diagnostics.ExceptionLogging.LogException(e);
                 return 0;
             }
         }

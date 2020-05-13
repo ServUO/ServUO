@@ -44,8 +44,6 @@ namespace Server.Mobiles
             Fame = 22500;
             Karma = -22500;
 
-            PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
-
             SetWeaponAbility(WeaponAbility.DoubleStrike);
             SetAreaEffect(AreaEffect.PoisonBreath);
         }
@@ -79,6 +77,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.UltraRich, 4);
             AddLoot(LootPack.FilthyRich);
             AddLoot(LootPack.Gems, 6);
+            AddLoot(LootPack.BonsaiSeed);
         }
 
         // TODO: Hit Lightning Area

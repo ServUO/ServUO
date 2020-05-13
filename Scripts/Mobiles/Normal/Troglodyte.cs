@@ -39,14 +39,6 @@ namespace Server.Mobiles
 
             Fame = 5000;
             Karma = -5000;
-
-            PackItem(new Bandage(5));
-            PackItem(new Ribs());
-
-            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
         }
 
         public Troglodyte(Serial serial)
@@ -58,7 +50,10 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.Rich);  // Need to verify
+            AddLoot(LootPack.Rich);
+            AddLoot(LootPack.LootItem<Bandage>(5, true));
+            AddLoot(LootPack.LootItem<Ribs>(true));
+            AddLoot(LootPack.ArcanistScrolls, 0, 1);
         }
 
         public override void OnDeath(Container c)

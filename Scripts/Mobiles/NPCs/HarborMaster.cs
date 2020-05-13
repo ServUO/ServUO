@@ -44,8 +44,6 @@ namespace Server.Mobiles
             AddItem(new QuarterStaff());
 
             Utility.AssignRandomHair(this);
-
-            PackGold(250, 300);
         }
 
         public HarborMaster(Serial serial)

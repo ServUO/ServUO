@@ -41,11 +41,6 @@ namespace Server.Mobiles
             Fame = 28000;
             Karma = -28000;
 
-            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
-
             SetWeaponAbility(WeaponAbility.WhirlwindAttack);
             SetSpecialAbility(SpecialAbility.DragonBreath);
         }
@@ -62,13 +57,8 @@ namespace Server.Mobiles
             AddLoot(LootPack.UltraRich, 3);
             AddLoot(LootPack.MedScrolls, 2);
             AddLoot(LootPack.HighScrolls, 2);
-        }
-
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            c.DropItem(new ResolvesBridle());
+            AddLoot(LootPack.ArcanistScrolls);
+            AddLoot(LootPack.LootItem<ResolvesBridle>());
         }
 
         public override void Serialize(GenericWriter writer)

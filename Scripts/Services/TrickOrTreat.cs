@@ -80,7 +80,11 @@ namespace Server.Engines.Events
                             {
                                 item = Activator.CreateInstance(m_Items[i].GetType()) as Item;
                             }
-                            catch { continue; }
+                            catch (Exception e)
+                            {
+                                Server.Diagnostics.ExceptionLogging.LogException(e);
+                                continue;
+                            }
 
                             if (item != null)
                             {

@@ -39,13 +39,6 @@ namespace Server.Mobiles
             Karma = -3500;
 
             ControlSlots = 2;
-
-            PackItem(new FertileDirt(Utility.RandomMinMax(1, 4)));
-            PackItem(new MandrakeRoot());
-
-            Item ore = new IronOre(5);
-            ore.ItemID = 0x19B7;
-            PackItem(ore);
         }
 
         public EnragedEarthElemental(Serial serial)
@@ -57,11 +50,23 @@ namespace Server.Mobiles
         public override double DispelFocus => 45.0;
         public override bool BleedImmune => true;
         public override int TreasureMapLevel => 1;
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Average);
             AddLoot(LootPack.Meager);
             AddLoot(LootPack.Gems);
+            AddLoot(LootPack.LootItem<FertileDirt>(Utility.RandomMinMax(1, 4)));
+            AddLoot(LootPack.LootItem<MandrakeRoot>());
+            AddLoot(LootPack.LootItemCallback(SpawnOre));
+        }
+
+        private Item SpawnOre(IEntity e)
+        {
+            var ore = new IronOre(5);
+            ore.ItemID = 0x19B7;
+
+            return ore;
         }
 
         public override void OnDeath(Container c)

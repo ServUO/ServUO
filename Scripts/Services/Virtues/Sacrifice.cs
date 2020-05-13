@@ -53,8 +53,10 @@ namespace Server.Services.Virtues
                     pm.LastSacrificeLoss = DateTime.UtcNow;
                 }
             }
-            catch
-            { }
+            catch (Exception e)
+            {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
+            }
         }
 
         public static void Resurrect(Mobile from)

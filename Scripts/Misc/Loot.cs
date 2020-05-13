@@ -242,7 +242,8 @@ namespace Server
 
         public static Type[] StatueTypes => m_StatueTypes;
 
-        private static readonly Type[] m_RegularScrollTypes = new[]
+        #region Spell Scrolls
+        private static readonly Type[] m_MageryScrollTypes = new[]
         {
             typeof(ReactiveArmorScroll), typeof(ClumsyScroll), typeof(CreateFoodScroll), typeof(FeeblemindScroll),
             typeof(HealScroll), typeof(MagicArrowScroll), typeof(NightSightScroll), typeof(WeakenScroll), typeof(AgilityScroll),
@@ -267,19 +268,9 @@ namespace Server
             typeof(AnimateDeadScroll), typeof(BloodOathScroll), typeof(CorpseSkinScroll), typeof(CurseWeaponScroll),
             typeof(EvilOmenScroll), typeof(HorrificBeastScroll), typeof(LichFormScroll), typeof(MindRotScroll),
             typeof(PainSpikeScroll), typeof(PoisonStrikeScroll), typeof(StrangleScroll), typeof(SummonFamiliarScroll),
-            typeof(VampiricEmbraceScroll), typeof(VengefulSpiritScroll), typeof(WitherScroll), typeof(WraithFormScroll)
-        };
-
-        private static readonly Type[] m_SENecromancyScrollTypes = new[]
-        {
-            typeof(AnimateDeadScroll), typeof(BloodOathScroll), typeof(CorpseSkinScroll), typeof(CurseWeaponScroll),
-            typeof(EvilOmenScroll), typeof(HorrificBeastScroll), typeof(LichFormScroll), typeof(MindRotScroll),
-            typeof(PainSpikeScroll), typeof(PoisonStrikeScroll), typeof(StrangleScroll), typeof(SummonFamiliarScroll),
             typeof(VampiricEmbraceScroll), typeof(VengefulSpiritScroll), typeof(WitherScroll), typeof(WraithFormScroll),
             typeof(ExorcismScroll)
         };
-
-        private static readonly Type[] m_PaladinScrollTypes = new Type[0];
 
         private static readonly Type[] m_MysticScrollTypes = new[]
         {
@@ -290,17 +281,14 @@ namespace Server
         };
         public static Type[] MysticScrollTypes => m_MysticScrollTypes;
 
-        #region Mondain's Legacy
         private static readonly Type[] m_ArcanistScrollTypes = new[]
         {
             typeof(ArcaneCircleScroll), typeof(GiftOfRenewalScroll), typeof(ImmolatingWeaponScroll), typeof(AttuneWeaponScroll),
-            typeof(ThunderstormScroll), typeof(NatureFuryScroll), /*typeof( SummonFeyScroll ),			typeof( SummonFiendScroll ),*/
+            typeof(ThunderstormScroll), typeof(NatureFuryScroll),
 			typeof(ReaperFormScroll), typeof(WildfireScroll), typeof(EssenceOfWindScroll), typeof(DryadAllureScroll),
             typeof(EtherealVoyageScroll), typeof(WordOfDeathScroll), typeof(GiftOfLifeScroll), typeof(ArcaneEmpowermentScroll)
         };
-        #endregion
 
-        #region SA
         private static readonly Type[] m_MysticismScrollTypes = new[]
         {
             typeof(NetherBoltScroll), typeof(HealingStoneScroll), typeof(PurgeMagicScroll), typeof(EagleStrikeScroll),
@@ -308,18 +296,14 @@ namespace Server
             typeof(BombardScroll), typeof(SpellPlagueScroll), typeof(HailStormScroll), typeof(NetherCycloneScroll),
             typeof(RisingColossusScroll), typeof(SleepScroll), typeof(MassSleepScroll), typeof(EnchantScroll)
         };
-        #endregion
 
-        public static Type[] RegularScrollTypes => m_RegularScrollTypes;
+        public static Type[] MageryScrollTypes => m_MageryScrollTypes;
         public static Type[] NecromancyScrollTypes => m_NecromancyScrollTypes;
-        public static Type[] SENecromancyScrollTypes => m_SENecromancyScrollTypes;
-        public static Type[] PaladinScrollTypes => m_PaladinScrollTypes;
         public static Type[] MysticismScrollTypes => m_MysticismScrollTypes;
-
-        #region Mondain's Legacy
         public static Type[] ArcanistScrollTypes => m_ArcanistScrollTypes;
         #endregion
 
+        #region Journals/Books
         private static readonly Type[] m_GrimmochJournalTypes = new[]
         {
             typeof(GrimmochJournal1), typeof(GrimmochJournal2), typeof(GrimmochJournal3), typeof(GrimmochJournal6),
@@ -352,6 +336,7 @@ namespace Server
             typeof(FireballWand), typeof(LightningWand), typeof(MagicArrowWand), typeof(GreaterHealWand), typeof(HarmWand),
             typeof(HealWand)
         };
+        #endregion
 
         public static Type[] NewWandTypes => m_NewWandTypes;
 
@@ -833,14 +818,10 @@ namespace Server
             switch (type)
             {
                 default:
-                    //case SpellbookType.Regular:
-                    types = m_RegularScrollTypes;
+                    types = m_MageryScrollTypes;
                     break;
                 case SpellbookType.Necromancer:
-                    types = (m_SENecromancyScrollTypes);
-                    break;
-                case SpellbookType.Paladin:
-                    types = m_PaladinScrollTypes;
+                    types = m_NecromancyScrollTypes;
                     break;
                 case SpellbookType.Arcanist:
                     types = m_ArcanistScrollTypes;
@@ -887,8 +868,9 @@ namespace Server
             {
                 item = Activator.CreateInstance(type) as Item;
             }
-            catch
+            catch (Exception e)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
                 return null;
             }
 

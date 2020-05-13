@@ -58,8 +58,6 @@ namespace Server.Mobiles
             ControlSlots = 4;
             MinTameSkill = 101.1;
 
-            PackGold(500, 800);
-
             SetWeaponAbility(WeaponAbility.BleedAttack);
         }
 
@@ -75,6 +73,7 @@ namespace Server.Mobiles
         public override bool StatLossAfterTame => true;
         public override int Hides => 10;
         public override int Meat => 3;
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich, 5);

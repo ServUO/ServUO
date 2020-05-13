@@ -38,26 +38,15 @@ namespace Server.Mobiles
             Fame = 15000;
             Karma = -15000;
 
-            switch (Utility.Random(20))
-            {
-                case 0:
-                    PackItem(new LichFormScroll());
-                    break;
-                case 1:
-                    PackItem(new PoisonStrikeScroll());
-                    break;
-                case 2:
-                    PackItem(new StrangleScroll());
-                    break;
-                case 3:
-                    PackItem(new VengefulSpiritScroll());
-                    break;
-                case 4:
-                    PackItem(new WitherScroll());
-                    break;
-            }
-
             ControlSlots = 4;
+        }
+
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.Rich);
+            AddLoot(LootPack.Average, 2);
+            AddLoot(LootPack.MedScrolls, 2);
+            AddLoot(LootPack.RandomLootItem(new System.Type[] { typeof(LichFormScroll), typeof(PoisonStrikeScroll), typeof(StrangleScroll), typeof(VengefulSpiritScroll), typeof(WitherScroll) }, 25.0, 1, false, true));
         }
 
         public Daemon(Serial serial)
@@ -78,13 +67,6 @@ namespace Server.Mobiles
         public override int Meat => 1;
 
         public override bool CanFly => true;
-
-        public override void GenerateLoot()
-        {
-            AddLoot(LootPack.Rich);
-            AddLoot(LootPack.Average, 2);
-            AddLoot(LootPack.MedScrolls, 2);
-        }
 
         public override void Serialize(GenericWriter writer)
         {

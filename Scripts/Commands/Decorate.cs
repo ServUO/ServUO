@@ -1228,8 +1228,9 @@ namespace Server.Commands
                             {
                                 ((MarkContainer)item).Target = Point3D.Parse(extra);
                             }
-                            catch
+                            catch (Exception e)
                             {
+                                Server.Diagnostics.ExceptionLogging.LogException(e);
                             }
                         }
 

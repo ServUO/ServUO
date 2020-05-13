@@ -43,9 +43,6 @@ namespace Server.Mobiles
             ControlSlots = 2;
             MinTameSkill = 80.7;
 
-            if (Utility.RandomDouble() < .25)
-                PackItem(Engines.Plants.Seed.RandomBonsaiSeed());
-
             SetSpecialAbility(SpecialAbility.Rage);
         }
 
@@ -54,6 +51,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.FilthyRich);
             AddLoot(LootPack.Rich);
             AddLoot(LootPack.MedScrolls, 2);
+            AddLoot(LootPack.BonsaiSeed);
         }
 
         public override int Meat => 5;

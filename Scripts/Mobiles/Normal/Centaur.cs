@@ -39,7 +39,6 @@ namespace Server.Mobiles
             Karma = 0;
 
             AddItem(new Bow());
-            PackItem(new Arrow(Utility.RandomMinMax(80, 90)));
         }
 
         public Centaur(Serial serial)
@@ -57,6 +56,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.Rich);
             AddLoot(LootPack.Average);
             AddLoot(LootPack.Gems);
+            AddLoot(LootPack.LootItem<Arrow>(Utility.RandomMinMax(80, 90)));
         }
 
         public override void Serialize(GenericWriter writer)

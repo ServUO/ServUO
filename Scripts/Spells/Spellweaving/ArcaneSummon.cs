@@ -40,8 +40,9 @@ namespace Server.Spells.Spellweaving
                     {
                         bc = Activator.CreateInstance<T>();
                     }
-                    catch
+                    catch (Exception e)
                     {
+                        Server.Diagnostics.ExceptionLogging.LogException(e);
                         break;
                     }
 

@@ -181,8 +181,10 @@ namespace Server.Services.Virtues
                     pm.LastJusticeLoss = DateTime.UtcNow;
                 }
             }
-            catch
-            { }
+            catch (Exception e)
+            {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
+            }
         }
     }
 

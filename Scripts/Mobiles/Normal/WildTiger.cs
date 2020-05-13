@@ -49,9 +49,6 @@ namespace Server.Mobiles
             Fame = 11000;
             Karma = -11000;
 
-            if (Utility.RandomDouble() < .33)
-                PackItem(Engines.Plants.Seed.RandomPeculiarSeed(Utility.RandomList(1, 1, 1, 1, 2, 2, 2, 3, 3, 4)));
-
             Tamable = true;
             ControlSlots = 2;
             MinTameSkill = 95.1;
@@ -90,6 +87,20 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Rich, 1);
+
+            if (LootStage == LootStage.Death)
+            {
+                switch (Utility.Random(11))
+                {
+                    default: AddLoot(LootPack.PeculiarSeed1); break;
+                    case 5:
+                    case 6:
+                    case 7: AddLoot(LootPack.PeculiarSeed2); break;
+                    case 8:
+                    case 9: AddLoot(LootPack.PeculiarSeed3); break;
+                    case 10: AddLoot(LootPack.PeculiarSeed4); break;
+                }
+            }
         }
 
         public override void OnCarve(Mobile from, Corpse corpse, Item with)

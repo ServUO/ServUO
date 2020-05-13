@@ -71,12 +71,6 @@ namespace Server.Mobiles
             Fame = 13000;
             Karma = -13000;
 
-            if (Utility.RandomDouble() < 0.80)
-                PackItem(new PlagueBeastGland());
-
-            if (Utility.RandomDouble() < 0.33)
-                PackItem(Engines.Plants.Seed.RandomPeculiarSeed(2));
-
             m_DevourTotal = 0;
             m_DevourGoal = Utility.RandomMinMax(15, 25); // How many corpses must be devoured before a metal chest is awarded
 
@@ -87,6 +81,8 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.FilthyRich);
             AddLoot(LootPack.Gems, Utility.Random(1, 3));
+            AddLoot(LootPack.LootItem<PlagueBeastGland>(80.0));
+            AddLoot(LootPack.PeculiarSeed2);
         }
 
         public override void OnDamagedBySpell(Mobile caster)

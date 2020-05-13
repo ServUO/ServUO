@@ -44,8 +44,6 @@ namespace Server.Mobiles
 
             Fame = 9500;
             Karma = -9500;
-
-            PackNecroReg(24, 45);
         }
 
         public DevourerRenowned(Serial serial)
@@ -60,6 +58,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich, 2);
+            AddLoot(LootPack.NecroRegs, 24, 45);
         }
 
         public override void Serialize(GenericWriter writer)

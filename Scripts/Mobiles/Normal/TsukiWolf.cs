@@ -52,12 +52,6 @@ namespace Server.Mobiles
             Fame = 8500;
             Karma = -8500;
 
-
-            if (Utility.RandomDouble() < .33)
-                PackItem(Engines.Plants.Seed.RandomPeculiarSeed(1));
-
-            PackBodyPartOrBones();
-
             Tamable = true;
             ControlSlots = 3;
             MinTameSkill = 96.0;
@@ -76,6 +70,13 @@ namespace Server.Mobiles
         public override int Meat => 4;
         public override int Hides => 25;
         public override FoodType FavoriteFood => FoodType.Meat;
+
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.FilthyRich);
+            AddLoot(LootPack.BodyPartsAndBones);
+            AddLoot(LootPack.PeculiarSeed1);
+        }
 
         public override int GetAngerSound()
         {
@@ -100,11 +101,6 @@ namespace Server.Mobiles
         public override int GetDeathSound()
         {
             return 0x52A;
-        }
-
-        public override void GenerateLoot()
-        {
-            AddLoot(LootPack.FilthyRich);
         }
 
         public override void Serialize(GenericWriter writer)

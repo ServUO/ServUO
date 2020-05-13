@@ -40,11 +40,6 @@ namespace Server.Mobiles
             Fame = 21000;
             Karma = -21000;
 
-            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
-
             SetWeaponAbility(WeaponAbility.BleedAttack);
             SetWeaponAbility(WeaponAbility.ParalyzingBlow);
         }
@@ -62,12 +57,12 @@ namespace Server.Mobiles
 
             if (Paragon.ChestChance > Utility.RandomDouble())
                 c.DropItem(new ParagonChest(Name, 5));
-
         }
 
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 3);
+            AddLoot(LootPack.ArcanistScrolls);
         }
 
         public override void Serialize(GenericWriter writer)

@@ -806,8 +806,10 @@ namespace Server.Network
 
                                 m.Location = new Point3D(x, y, z);
                             }
-                            catch
-                            { }
+                            catch (Exception e)
+                            {
+                                Server.Diagnostics.ExceptionLogging.LogException(e);
+                            }
                         }
 
                         break;

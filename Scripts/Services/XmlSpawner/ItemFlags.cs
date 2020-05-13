@@ -73,7 +73,10 @@ namespace Server.Items
                 {
                     e.Mobile.SendMessage(33, "Flag: Bad flagfield argument");
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    Server.Diagnostics.ExceptionLogging.LogException(ex);
+                }
             }
         }
 

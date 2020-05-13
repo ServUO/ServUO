@@ -37,8 +37,6 @@ namespace Server.Mobiles
 
             Fame = 3500;
             Karma = -3500;
-
-            PackItem(new VeriteOre(25));
         }
 
         public VeriteElemental(Serial serial)
@@ -82,6 +80,7 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.Rich);
             AddLoot(LootPack.Gems, 2);
+            AddLoot(LootPack.LootItem<VeriteOre>(25));
         }
 
         public override void Serialize(GenericWriter writer)

@@ -37,10 +37,6 @@ namespace Server.Mobiles
 
             Fame = 3500;
             Karma = -3500;
-
-            PackItem(new SpidersSilk(5));
-            PackItem(new LesserPoisonPotion());
-            PackItem(new LesserPoisonPotion());
         }
 
         public GiantBlackWidow(Serial serial)
@@ -54,6 +50,8 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Average);
+            AddLoot(LootPack.LootItem<SpidersSilk>(5, true));
+            AddLoot(LootPack.LootItem<LesserPoisonPotion>(2, true));
         }
 
         public override void Serialize(GenericWriter writer)

@@ -40,13 +40,14 @@ namespace Server.Mobiles
 
             Fame = 3000;
             Karma = -3000;
+        }
 
-            if (0.25 > Utility.RandomDouble())
-                PackItem(new Board(10));
-            else
-                PackItem(new Log(10));
-
-            PackItem(new MandrakeRoot(3));
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.FilthyRich);
+            AddLoot(LootPack.LootItem<LuckyCoin>(2.0));
+            AddLoot(LootPack.RandomLootItem(new[] { typeof(Board), typeof(Log) }, 100.0, 10, false, true));
+            AddLoot(LootPack.LootItem<MandrakeRoot>(3, true));
         }
 
         public TanglingRoots(Serial serial)
@@ -112,19 +113,6 @@ namespace Server.Mobiles
 
                 m_DamageTable.Remove(m);
             }
-        }
-
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            if (Utility.RandomDouble() < 0.02)
-                c.DropItem(new LuckyCoin());
-        }
-
-        public override void GenerateLoot()
-        {
-            AddLoot(LootPack.FilthyRich);
         }
 
         public override void Serialize(GenericWriter writer)

@@ -264,8 +264,10 @@ namespace Server.Services.Virtues
                                 spawned[i] = item;
                             }
                         }
-                        catch
-                        { }
+                        catch (Exception e)
+                        {
+                            Server.Diagnostics.ExceptionLogging.LogException(e);
+                        }
                     }
 
                     for (int i = 0; i < spawned.Length; i++)
@@ -310,9 +312,10 @@ namespace Server.Services.Virtues
                             item.MoveToWorld(loc, facet);
                             item.OnAfterSpawn();
                         }
-                        catch
+                        catch (Exception e)
                         {
                             item.Delete();
+                            Server.Diagnostics.ExceptionLogging.LogException(e);
                         }
                         finally
                         {
@@ -331,9 +334,7 @@ namespace Server.Services.Virtues
             }
             catch (Exception e)
             {
-                Utility.PushColor(ConsoleColor.Red);
-                Console.WriteLine(e);
-                Utility.PopColor();
+                Server.Diagnostics.ExceptionLogging.LogException(e);
             }
 
             Utility.PushColor(ConsoleColor.Yellow);

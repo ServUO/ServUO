@@ -997,21 +997,15 @@ namespace Server
             return info.m_Items;
         }
 
-        #region Mondain's Legacy
         public static Bitmap GetBitmap(int itemID)
         {
             try
             {
                 return Ultima.Art.GetStatic(itemID);
             }
-            catch
+            catch (Exception e)
             {
-                if (Core.Debug)
-                {
-                    Utility.PushColor(ConsoleColor.Red);
-                    Console.WriteLine("Ultima Art: Unable to read client files.");
-                    Utility.PopColor();
-                }
+                Server.Diagnostics.ExceptionLogging.LogException(e);
             }
 
             return null;
@@ -1035,7 +1029,6 @@ namespace Server
             Measure(bmp, out xMin, out yMin, out xMax, out yMax);
             return new Size(xMax - xMin, yMax - yMin);
         }
-        #endregion
 
         private void SetFlag(ImplFlag flag, bool value)
         {
@@ -6106,12 +6099,9 @@ namespace Server
             {
                 newSocket = Activator.CreateInstance(GetType()) as ItemSocket;
             }
-            catch
+            catch (Exception e)
             {
-                Console.WriteLine(
-                    "Warning: 0x{0:X}: Item socket must have a zero paramater constructor to be separated from a stack. '{1}'.",
-                    Owner.Serial.Value,
-                    GetType().Name);
+                Server.Diagnostics.ExceptionLogging.LogException(e);
             }
 
             if (newSocket != null)

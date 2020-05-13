@@ -30,8 +30,6 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 66.6);
             SetSkill(SkillName.Tactics, 86.2);
             SetSkill(SkillName.Wrestling, 86.9);
-
-            PackNecroReg(10, 15);
         }
 
         public UndeadGuardian(Serial serial)
@@ -43,6 +41,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich, 3);
+            AddLoot(LootPack.NecroRegs, 10, 15);
         }
 
         public override int GetIdleSound()

@@ -40,11 +40,6 @@ namespace Server.Mobiles
 
             Tamable = false;
 
-            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
-
             SetWeaponAbility(WeaponAbility.MortalStrike);
 
             ForceActiveSpeed = 0.3;
@@ -56,43 +51,30 @@ namespace Server.Mobiles
         {
         }
         public override bool CanBeParagon => false;
+
         public override void OnDeath(Container c)
         {
             base.OnDeath(c);
 
             if (Paragon.ChestChance > Utility.RandomDouble())
                 c.DropItem(new ParagonChest(Name, 5));
-
-            if (Utility.RandomDouble() < 0.025)
-            {
-                switch (Utility.Random(18))
-                {
-                    case 0: c.DropItem(new MyrmidonGloves()); break;
-                    case 1: c.DropItem(new MyrmidonGorget()); break;
-                    case 2: c.DropItem(new MyrmidonLegs()); break;
-                    case 3: c.DropItem(new MyrmidonArms()); break;
-                    case 4: c.DropItem(new PaladinArms()); break;
-                    case 5: c.DropItem(new PaladinGorget()); break;
-                    case 6: c.DropItem(new LeafweaveLegs()); break;
-                    case 7: c.DropItem(new DeathChest()); break;
-                    case 8: c.DropItem(new DeathGloves()); break;
-                    case 9: c.DropItem(new DeathLegs()); break;
-                    case 10: c.DropItem(new GreymistGloves()); break;
-                    case 11: c.DropItem(new GreymistArms()); break;
-                    case 12: c.DropItem(new AssassinChest()); break;
-                    case 13: c.DropItem(new AssassinArms()); break;
-                    case 14: c.DropItem(new HunterGloves()); break;
-                    case 15: c.DropItem(new HunterLegs()); break;
-                    case 16: c.DropItem(new GreymistLegs()); break;
-                    case 17: c.DropItem(new MyrmidonChest()); break;
-                }
-            }
         }
 
         public override bool GivesMLMinorArtifact => true;
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 2);
+            AddLoot(LootPack.ArcanistScrolls);
+            AddLoot(LootPack.RandomLootItem(new System.Type[]
+                {
+                    typeof(MyrmidonGloves),typeof(MyrmidonGorget),typeof(MyrmidonLegs),
+                    typeof(MyrmidonArms),typeof(PaladinArms),typeof(PaladinGorget),
+                    typeof(LeafweaveLegs),typeof(DeathChest),typeof(DeathGloves),
+                    typeof(DeathLegs),typeof(GreymistGloves),typeof(GreymistArms),
+                    typeof(AssassinChest),typeof(AssassinArms),typeof(HunterGloves),
+                    typeof(HunterLegs),typeof(GreymistLegs),typeof(MyrmidonChest)
+
+                }, 2.5, 1, false, false));
         }
 
         public override void Serialize(GenericWriter writer)

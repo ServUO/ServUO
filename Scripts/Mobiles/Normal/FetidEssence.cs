@@ -1,5 +1,3 @@
-using Server.Items;
-
 namespace Server.Mobiles
 {
     [CorpseName("a fetid essence corpse")]
@@ -41,11 +39,6 @@ namespace Server.Mobiles
             Fame = 3700;  // Guessed
             Karma = -3700;  // Guessed
 
-            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
-
             SetAreaEffect(AreaEffect.EssenceOfDisease);
         }
 
@@ -59,6 +52,7 @@ namespace Server.Mobiles
         public override void GenerateLoot() // Need to verify
         {
             AddLoot(LootPack.FilthyRich);
+            AddLoot(LootPack.ArcanistScrolls, 0, 1);
         }
 
         public override int GetAngerSound()

@@ -363,7 +363,7 @@ namespace Server
             {
                 d = new TimeSpan(ticks - now);
             }
-            catch
+            catch (Exception ex)
             {
                 if (ticks < now)
                 {
@@ -373,6 +373,8 @@ namespace Server
                 {
                     d = TimeSpan.MaxValue;
                 }
+
+                Server.Diagnostics.ExceptionLogging.LogException(ex);
             }
 
             Write(d);
@@ -1103,8 +1105,10 @@ namespace Server
             {
                 return new DateTime(now + ticks);
             }
-            catch
+            catch (Exception e)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
+
                 if (ticks > 0)
                 {
                     return DateTime.MaxValue;
@@ -1728,7 +1732,7 @@ namespace Server
             {
                 d = new TimeSpan(ticks - now);
             }
-            catch
+            catch (Exception ex)
             {
                 if (ticks < now)
                 {
@@ -1738,6 +1742,8 @@ namespace Server
                 {
                     d = TimeSpan.MaxValue;
                 }
+
+                Server.Diagnostics.ExceptionLogging.LogException(ex);
             }
 
             Write(d);

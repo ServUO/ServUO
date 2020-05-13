@@ -1,3 +1,5 @@
+using System;
+
 namespace Server.Misc
 {
     public class Broadcasts
@@ -14,8 +16,9 @@ namespace Server.Misc
             {
                 World.Broadcast(0x35, true, "The server has crashed.");
             }
-            catch
+            catch (Exception ex)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(ex);
             }
         }
 
@@ -25,8 +28,9 @@ namespace Server.Misc
             {
                 World.Broadcast(0x35, true, "The server has shut down.");
             }
-            catch
+            catch (Exception ex)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(ex);
             }
         }
     }

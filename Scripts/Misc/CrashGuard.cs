@@ -58,8 +58,9 @@ namespace Server.Misc
             {
                 return Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]);
             }
-            catch
+            catch (Exception e)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
                 return "";
             }
         }
@@ -112,8 +113,9 @@ namespace Server.Misc
                 if (File.Exists(originPath))
                     File.Copy(originPath, backupPath);
             }
-            catch
+            catch (Exception e)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
             }
         }
 
@@ -190,16 +192,18 @@ namespace Server.Misc
                     {
                         op.WriteLine("Mobiles: {0}", World.Mobiles.Count);
                     }
-                    catch
+                    catch (Exception ex)
                     {
+                        Server.Diagnostics.ExceptionLogging.LogException(ex);
                     }
 
                     try
                     {
                         op.WriteLine("Items: {0}", World.Items.Count);
                     }
-                    catch
+                    catch (Exception ex)
                     {
+                        Server.Diagnostics.ExceptionLogging.LogException(ex);
                     }
 
                     op.WriteLine("Exception:");

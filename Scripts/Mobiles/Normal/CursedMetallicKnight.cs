@@ -33,10 +33,14 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 67.4, 77.8);
             SetSkill(SkillName.Tactics, 89.5, 98.5);
             SetSkill(SkillName.Wrestling, 86.8, 93.1);
-            PackGold(75, 200);
         }
 
         public override bool DeleteCorpseOnDeath => true;
+
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.LootGold(75, 200));
+        }
 
         public override bool OnBeforeDeath()
         {

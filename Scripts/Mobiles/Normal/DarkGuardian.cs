@@ -39,8 +39,6 @@ namespace Server.Mobiles
 
             Fame = 5000;
             Karma = -5000;
-
-            PackNecroReg(15, 25);
         }
 
         public DarkGuardian(Serial serial)
@@ -52,6 +50,7 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.Rich);
             AddLoot(LootPack.MedScrolls, 2);
+            AddLoot(LootPack.NecroRegs, 15, 25);
         }
 
         public override int TreasureMapLevel => Utility.RandomMinMax(1, 3);

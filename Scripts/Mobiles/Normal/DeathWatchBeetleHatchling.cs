@@ -34,12 +34,16 @@ namespace Server.Mobiles
 
             Fame = 700;
             Karma = -700;
+        }
+
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.LowScrolls, 1);
+            AddLoot(LootPack.Potions, 1);
 
             if (Utility.RandomBool())
             {
-                Item i = Loot.RandomReagent();
-                i.Amount = 3;
-                PackItem(i);
+                AddLoot(LootPack.MageryRegs, 3);
             }
         }
 
@@ -72,12 +76,6 @@ namespace Server.Mobiles
         public override int GetDeathSound()
         {
             return 0x4F0;
-        }
-
-        public override void GenerateLoot()
-        {
-            AddLoot(LootPack.LowScrolls, 1);
-            AddLoot(LootPack.Potions, 1);
         }
 
         public override void Serialize(GenericWriter writer)

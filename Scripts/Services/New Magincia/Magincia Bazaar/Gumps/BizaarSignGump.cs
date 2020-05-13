@@ -485,7 +485,10 @@ namespace Server.Engines.NewMagincia
                                 from.SendGump(new ConfirmBidGump(from, m_Plot, m_Plot, amount, amount <= 0));
                                 return;
                             }
-                            catch { Console.WriteLine("Error"); }
+                            catch (Exception e)
+                            {
+                                Server.Diagnostics.ExceptionLogging.LogException(e);
+                            }
 
                             from.SendGump(new StallBidGump(from, m_Plot));
                         }
@@ -518,8 +521,9 @@ namespace Server.Engines.NewMagincia
                             from.SendGump(new ConfirmBidGump(from, m_Plot, null, amount1, amount1 <= 0));
                             return;
                         }
-                        catch
+                        catch (Exception e)
                         {
+                            Server.Diagnostics.ExceptionLogging.LogException(e);
                         }
 
                         from.SendGump(new StallBidGump(from, m_Plot));
@@ -1131,8 +1135,9 @@ namespace Server.Engines.NewMagincia
                             amount = Convert.ToInt32(relay.Text);
                             from.SendGump(new ConfirmMatchBidGump(from, amount, m_Plot));
                         }
-                        catch
+                        catch (Exception e)
                         {
+                            Server.Diagnostics.ExceptionLogging.LogException(e);
                         }
                     }
                     break;

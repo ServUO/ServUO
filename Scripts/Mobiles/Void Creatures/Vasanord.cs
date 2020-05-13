@@ -44,21 +44,13 @@ namespace Server.Mobiles
 
             Fame = 15000;
             Karma = -15000;
-
-            PackItem(new DaemonBone(30));
-        }
-
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            if (Utility.RandomDouble() < 0.6)
-                c.DropItem(new TaintedSeeds(2));
         }
 
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 2);
+            AddLoot(LootPack.LootItem<DaemonBone>(30, true));
+            AddLoot(LootPack.LootItem<TaintedSeeds>(60.0, 2));
         }
 
         public override Poison PoisonImmune => Poison.Lethal;

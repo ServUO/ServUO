@@ -46,8 +46,6 @@ namespace Server.Mobiles
 
             ControlSlots = 3;
             CanSwim = true;
-
-            PackItem(new BlackPearl(3));
         }
 
         public WaterElemental(Serial serial)
@@ -64,6 +62,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.Average);
             AddLoot(LootPack.Meager);
             AddLoot(LootPack.Potions);
+            AddLoot(LootPack.LootItem<BlackPearl>(3, true));
         }
 
         public override void Serialize(GenericWriter writer)

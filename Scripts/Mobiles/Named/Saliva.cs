@@ -31,11 +31,6 @@ namespace Server.Mobiles
             SetSkill(SkillName.Wrestling, 106.4, 128.8);
             SetSkill(SkillName.Tactics, 129.9, 141.0);
             SetSkill(SkillName.MagicResist, 84.3, 90.1);
-
-            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
         }
 
         public Saliva(Serial serial)
@@ -46,16 +41,9 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 2);
-        }
-
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            c.DropItem(new SalivasFeather());
-
-            if (Utility.RandomDouble() < 0.1)
-                c.DropItem(new ParrotItem());
+            AddLoot(LootPack.ArcanistScrolls);
+            AddLoot(LootPack.Parrot);
+            AddLoot(LootPack.LootItem<SalivasFeather>());
         }
 
         public override void Serialize(GenericWriter writer)

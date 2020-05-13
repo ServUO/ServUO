@@ -287,6 +287,34 @@ namespace Server.Items
             }
         }
 
+        public virtual void AddLoot(LootPack pack)
+        {
+            AddLoot(pack, 100.0);
+        }
+
+        public virtual void AddLoot(LootPack pack, int amount)
+        {
+            AddLoot(pack, amount, 100.0);
+        }
+
+        public virtual void AddLoot(LootPack pack, int amount, double chance)
+        {
+            for (int i = 0; i < amount; i++)
+            {
+                AddLoot(pack, chance);
+            }
+        }
+
+        public virtual void AddLoot(LootPack pack, double chance)
+        {
+            if (chance < 100.0 && Utility.RandomDouble() > chance / 100)
+            {
+                return;
+            }
+
+            pack.Generate(this);
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

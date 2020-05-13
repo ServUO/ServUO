@@ -42,17 +42,6 @@ namespace Server.Mobiles
             Fame = 15000;
             Karma = -15000;
 
-            Container pack = new Backpack();
-
-            pack.DropItem(new Arrow(Utility.RandomMinMax(25, 35)));
-            pack.DropItem(new Arrow(Utility.RandomMinMax(25, 35)));
-            pack.DropItem(new Bandage(Utility.RandomMinMax(5, 15)));
-            pack.DropItem(new Bandage(Utility.RandomMinMax(5, 15)));
-            pack.DropItem(Loot.RandomGem());
-            pack.DropItem(new ArcaneGem());
-
-            PackItem(pack);
-
             AddItem(new JukaBow());
         }
 
@@ -68,6 +57,21 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.Rich);
             AddLoot(LootPack.Average);
+            AddLoot(LootPack.LootItemCallback(AddLootContainer));
+        }
+
+        private Item AddLootContainer(IEntity e)
+        {
+            var pack = new Backpack();
+
+            pack.DropItem(new Arrow(Utility.RandomMinMax(25, 35)));
+            pack.DropItem(new Arrow(Utility.RandomMinMax(25, 35)));
+            pack.DropItem(new Bandage(Utility.RandomMinMax(5, 15)));
+            pack.DropItem(new Bandage(Utility.RandomMinMax(5, 15)));
+            pack.DropItem(Loot.RandomGem());
+            pack.DropItem(new ArcaneGem());
+
+            return pack;
         }
 
         public override void OnDamage(int amount, Mobile from, bool willKill)

@@ -42,9 +42,6 @@ namespace Server.Mobiles
 
             Fame = 3500;
             Karma = -3500;
-
-            if (0.025 > Utility.RandomDouble())
-                PackItem(new GargoylesPickaxe());
         }
 
         public UndeadGargoyle(Serial serial)
@@ -59,6 +56,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.Average);
             AddLoot(LootPack.MedScrolls);
             AddLoot(LootPack.Gems, Utility.RandomMinMax(1, 4));
+            AddLoot(LootPack.LootItem<GargoylesPickaxe>(2.5));
         }
 
         public override void Serialize(GenericWriter writer)

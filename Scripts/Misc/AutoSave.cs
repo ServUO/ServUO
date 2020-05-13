@@ -72,6 +72,7 @@ namespace Server.Misc
             catch (Exception e)
             {
                 Console.WriteLine("WARNING: Automatic backup FAILED:\n{0}", e);
+                Server.Diagnostics.ExceptionLogging.LogException(e);
             }
 
             World.Save(true, permitBackgroundWrite);
@@ -135,7 +136,7 @@ namespace Server.Misc
 
                         anySuccess = true;
                     }
-                    catch { }
+                    catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                 }
                 else
                 {
@@ -147,12 +148,12 @@ namespace Server.Misc
 
                         delete = !ArchivedSaves.Process(tempRoot);
                     }
-                    catch { }
+                    catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
 
                     if (delete)
                     {
                         try { dir.Delete(true); }
-                        catch { }
+                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
                     }
                 }
             }

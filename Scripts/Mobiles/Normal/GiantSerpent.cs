@@ -39,8 +39,6 @@ namespace Server.Mobiles
 
             Fame = 2500;
             Karma = -2500;
-
-            PackItem(new Bone());
         }
 
         public GiantSerpent(Serial serial)
@@ -57,6 +55,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Average);
+            AddLoot(LootPack.LootItem<Bone>());
         }
 
         public override void Serialize(GenericWriter writer)

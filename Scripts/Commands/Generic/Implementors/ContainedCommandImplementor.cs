@@ -77,6 +77,7 @@ namespace Server.Commands.Generic
                 catch (Exception e)
                 {
                     from.SendMessage(e.Message);
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
                 }
             }
         }

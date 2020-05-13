@@ -60,8 +60,9 @@ namespace Server.Engines.BulkOrders
             {
                 return m_Constructor(m_Type);
             }
-            catch
+            catch (Exception e)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
                 return null;
             }
         }

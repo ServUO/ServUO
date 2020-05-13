@@ -42,11 +42,6 @@ namespace Server.Mobiles
 
             Fame = 24000;
             Karma = -24000;
-
-            for (int i = 0; i < Utility.RandomMinMax(0, 2); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
         }
 
         public Putrefier(Serial serial)
@@ -58,17 +53,22 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            c.DropItem(new SpleenOfThePutrefier());
-
-            if (Utility.RandomDouble() < 0.6)
-                c.DropItem(new ParrotItem());
-
             if (Paragon.ChestChance > Utility.RandomDouble())
                 c.DropItem(new ParagonChest(Name, 5));
         }
 
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.UltraRich, 3);
+            AddLoot(LootPack.MedScrolls, 2);
+            AddLoot(LootPack.ArcanistScrolls);
+            AddLoot(LootPack.LootItem<ParrotItem>(60.0));
+            AddLoot(LootPack.LootItem<SpleenOfThePutrefier>());
+        }
+
         public override bool GivesMLMinorArtifact => true;
-        public override Poison HitPoison => Poison.Deadly;// Becomes Lethal with Paragon bonus   
+        public override Poison HitPoison => Poison.Deadly;// Becomes Lethal with Paragon bonus
+
         public override void OnDamagedBySpell(Mobile attacker)
         {
             base.OnDamagedBySpell(attacker);
@@ -141,12 +141,6 @@ namespace Server.Mobiles
                 targets.Clear();
                 targets.TrimExcess();
             }
-        }
-
-        public override void GenerateLoot()
-        {
-            AddLoot(LootPack.UltraRich, 3);
-            AddLoot(LootPack.MedScrolls, 2);
         }
 
         public override void Serialize(GenericWriter writer)

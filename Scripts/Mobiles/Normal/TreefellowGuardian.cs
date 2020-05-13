@@ -35,11 +35,6 @@ namespace Server.Mobiles
             Fame = 500;
             Karma = 1500;
 
-            PackItem(new Log(Utility.RandomMinMax(23, 34)));
-
-            if (0.05 > Utility.RandomDouble())
-                PackItem(new TreefellowWood());
-
             SetWeaponAbility(WeaponAbility.Dismount);
         }
 
@@ -68,6 +63,8 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Average);
+            AddLoot(LootPack.LootItem<TreefellowWood>(5.0));
+            AddLoot(LootPack.LootItem<Log>(23, 34));
         }
 
         public override void Serialize(GenericWriter writer)

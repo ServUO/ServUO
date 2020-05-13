@@ -36,8 +36,6 @@ namespace Server.Mobiles
             SetSkill(SkillName.Tactics, 30.1, 49.0);
             SetSkill(SkillName.Wrestling, 40, 50);
 
-            PackGold(20, 40);
-
             Fame = 2500;
             Karma = -2500;
         }
@@ -45,6 +43,11 @@ namespace Server.Mobiles
         public override Poison HitPoison => Poison.Lesser;
         public override Poison PoisonImmune => Poison.Lesser;
         public override int TreasureMapLevel => 1;
+
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.LootGold(20, 40));
+        }
 
         public override bool IsEnemy(Mobile m)
         {

@@ -36,13 +36,6 @@ namespace Server.Mobiles
 
             Fame = 1000;
             Karma = -1000;
-
-            if (0.25 > Utility.RandomDouble())
-                PackItem(new Board(10));
-            else
-                PackItem(new Log(10));
-
-            PackItem(new MandrakeRoot(3));
         }
 
         public Corpser(Serial serial)
@@ -55,6 +48,8 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Meager);
+            AddLoot(LootPack.LootItem<MandrakeRoot>(3, true));
+            AddLoot(LootPack.LootItems(new[] { new LootPackItem(typeof(Board), 1), new LootPackItem(typeof(Log), 3) }, 10));
         }
 
         public override void Serialize(GenericWriter writer)

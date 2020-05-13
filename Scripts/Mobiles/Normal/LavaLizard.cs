@@ -41,8 +41,6 @@ namespace Server.Mobiles
             ControlSlots = 1;
             MinTameSkill = 80.7;
 
-            PackItem(new SulfurousAsh(Utility.Random(4, 10)));
-
             SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
@@ -58,6 +56,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Meager);
+            AddLoot(LootPack.LootItem<SulfurousAsh>(4, 10));
         }
 
         public override void Serialize(GenericWriter writer)

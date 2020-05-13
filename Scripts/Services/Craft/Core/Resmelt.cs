@@ -171,8 +171,9 @@ namespace Server.Engines.Craft
                     from.PlaySound(0x240);
                     return SmeltResult.Success;
                 }
-                catch
+                catch (Exception e)
                 {
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
                 }
 
                 return SmeltResult.Invalid;

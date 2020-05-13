@@ -35,8 +35,6 @@ namespace Server.Mobiles
 
             Fame = 4800;
             Karma = -4800;
-
-            PackItem(new CopperOre(25));
         }
 
         public CopperElemental(Serial serial)
@@ -52,6 +50,7 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.Average);
             AddLoot(LootPack.Gems, 2);
+            AddLoot(LootPack.LootItem<CopperOre>(25));
         }
 
         public override void CheckReflect(Mobile caster, ref bool reflect)

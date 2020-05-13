@@ -36,15 +36,6 @@ namespace Server.Mobiles
 
             Fame = 3500;
             Karma = -3500;
-
-            if (0.025 > Utility.RandomDouble())
-                PackItem(new GargoylesPickaxe());
-
-            switch (Utility.Random(6))
-            {
-                case 0: PackItem(new PainSpikeScroll()); break;
-            }
-
         }
 
         public Gargoyle(Serial serial)
@@ -60,6 +51,8 @@ namespace Server.Mobiles
             AddLoot(LootPack.Average);
             AddLoot(LootPack.MedScrolls);
             AddLoot(LootPack.Gems, Utility.RandomMinMax(1, 4));
+            AddLoot(LootPack.LootItem<GargoylesPickaxe>(2.5));
+            AddLoot(LootPack.LootItem<PainSpikeScroll>(15.0, true));
         }
 
         public override void Serialize(GenericWriter writer)

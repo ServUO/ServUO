@@ -41,19 +41,6 @@ namespace Server.Mobiles
 
             Fame = 15000;
             Karma = -15000;
-
-            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
-        }
-
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            if (Utility.RandomDouble() < 0.4)
-                c.DropItem(new ScatteredCrystals());
         }
 
         public CrystalDaemon(Serial serial)
@@ -65,6 +52,8 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.FilthyRich, 3);
             AddLoot(LootPack.HighScrolls);
+            AddLoot(LootPack.ArcanistScrolls);
+            AddLoot(LootPack.LootItem<ScatteredCrystals>(40.0));
         }
 
         public override void Serialize(GenericWriter writer)

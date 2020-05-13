@@ -51,9 +51,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Meager);
-
-            if (0.025 > Utility.RandomDouble())
-                PackItem(new GlacialStaff());
+            AddLoot(LootPack.LootItem<GlacialStaff>(2.5));
         }
 
         public override void Serialize(GenericWriter writer)

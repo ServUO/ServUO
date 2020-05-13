@@ -105,9 +105,12 @@ namespace Server.Mobiles
             ControlSlots = 2;
             MinTameSkill = 96.0;
 
-            PackItem(new Bandage(11));
-
             SetSpecialAbility(SpecialAbility.Heal);
+        }
+
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.LootItem<Bandage>(11, true));
         }
 
         public Triton(Serial serial)

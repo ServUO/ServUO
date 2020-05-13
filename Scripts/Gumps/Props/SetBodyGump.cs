@@ -194,9 +194,9 @@ namespace Server.Gumps
                             m_Property.SetValue(m_Object, entry.Body, null);
                             PropertiesGump.OnValueChanged(m_Object, m_Property, m_Stack);
                         }
-                        catch
+                        catch (Exception e)
                         {
-                            m_Mobile.SendMessage("An exception was caught. The property may not have changed.");
+                            Server.Diagnostics.ExceptionLogging.LogException(e);
                         }
 
                         m_Mobile.SendGump(

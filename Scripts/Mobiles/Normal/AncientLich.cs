@@ -41,8 +41,6 @@ namespace Server.Mobiles
 
             Fame = 23000;
             Karma = -23000;
-
-            PackNecroReg(100, 200);
         }
 
         public AncientLich(Serial serial)
@@ -85,6 +83,7 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.FilthyRich, 3);
             AddLoot(LootPack.MedScrolls, 2);
+            AddLoot(LootPack.NecroRegs, 100, 200);
         }
 
         public override void Serialize(GenericWriter writer)

@@ -48,7 +48,6 @@ namespace Server.Mobiles
             ControlSlots = 4;
             MinTameSkill = 47.1;
 
-            PackItem(new FertileDirt(2));
             m_Timer = new HideTimer(this);
             m_Timer.Start();
 
@@ -148,6 +147,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Gems, 2);
+            AddLoot(LootPack.LootItem<FertileDirt>(2, true));
         }
 
         public override int GetAngerSound()

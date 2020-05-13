@@ -42,8 +42,6 @@ namespace Server.Mobiles
 
             Fame = 8000;
             Karma = -8000;
-
-            PackItem(new DaemonBone(30));
         }
 
         public Anlorvaglem(Serial serial)
@@ -62,6 +60,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich);
+            AddLoot(LootPack.LootItem<DaemonBone>(30, true));
         }
 
         public override void Serialize(GenericWriter writer)

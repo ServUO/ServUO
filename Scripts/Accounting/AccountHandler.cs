@@ -218,8 +218,9 @@ namespace Server.Misc
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(ex);
             }
         }
 

@@ -392,8 +392,9 @@ namespace Server.Gumps
                     if (ctor != null)
                         i = ctor.Invoke(null) as Item;
                 }
-                catch
+                catch (Exception e)
                 {
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
                 }
 
                 return i;

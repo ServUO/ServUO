@@ -57,9 +57,10 @@ namespace Server.Commands.Generic
 
                 obj = list;
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                from.SendMessage(ex.Message);
+                from.SendMessage(e.Message);
+                Server.Diagnostics.ExceptionLogging.LogException(e);
             }
         }
     }

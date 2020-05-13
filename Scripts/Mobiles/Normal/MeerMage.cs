@@ -43,13 +43,14 @@ namespace Server.Mobiles
             Fame = 8000;
             Karma = 8000;
 
-            switch (Utility.Random(8))
-            {
-                case 0: PackItem(new StrangleScroll()); break;
-                case 1: PackItem(new WitherScroll()); break;
-            }
-
             m_NextAbilityTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(2, 5));
+        }
+
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.FilthyRich);
+            AddLoot(LootPack.MedScrolls, 2);
+            AddLoot(LootPack.RandomLootItem(new[] { typeof(StrangleScroll), typeof(WitherScroll) }, 25.0, 1));
         }
 
         public MeerMage(Serial serial)
@@ -79,13 +80,6 @@ namespace Server.Mobiles
                 t.Stop();
                 m_Table.Remove(m);
             }
-        }
-
-        public override void GenerateLoot()
-        {
-            AddLoot(LootPack.FilthyRich);
-            AddLoot(LootPack.MedScrolls, 2);
-            // TODO: Daemon bone ...
         }
 
         public override int GetHurtSound()

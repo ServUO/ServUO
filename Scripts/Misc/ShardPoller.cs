@@ -108,8 +108,9 @@ namespace Server.Misc
 
                     return ts;
                 }
-                catch
+                catch (Exception e)
                 {
+                    Server.Diagnostics.ExceptionLogging.LogException(e);
                     return TimeSpan.Zero;
                 }
             }

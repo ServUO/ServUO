@@ -1,4 +1,3 @@
-using Server.Engines.Plants;
 using Server.Items;
 using System;
 
@@ -43,19 +42,18 @@ namespace Server.Mobiles
 
             Fame = 5000;
             Karma = 5000;
+        }
 
-            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
-
-            if (Utility.RandomDouble() < 0.6)
-                PackItem(Seed.RandomPeculiarSeed(1));
+        public MLDryad(Serial serial)
+            : base(serial)
+        {
         }
 
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Rich);
+            AddLoot(LootPack.ArcanistScrolls, 0, 1);
+            AddLoot(LootPack.PeculiarSeed1);
         }
 
         public override int Meat => 1;
@@ -144,11 +142,6 @@ namespace Server.Mobiles
         }
 
         #endregion
-
-        public MLDryad(Serial serial)
-            : base(serial)
-        {
-        }
 
         public override void Serialize(GenericWriter writer)
         {

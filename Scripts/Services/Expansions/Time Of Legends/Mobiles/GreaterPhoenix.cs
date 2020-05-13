@@ -34,12 +34,15 @@ namespace Server.Mobiles
             SetSkill(SkillName.Magery, 90, 100);
             SetSkill(SkillName.EvalInt, 90, 100);
 
-            PackGold(500, 700);
-
             Fame = 10000;
             Karma = -10000;
 
             SetSpecialAbility(SpecialAbility.GraspingClaw);
+        }
+
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.LootGold(500, 700));
         }
 
         public GreaterPhoenix(Serial serial) : base(serial)

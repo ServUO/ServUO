@@ -35,21 +35,9 @@ namespace Server.Mobiles
             Fame = 1000;
             Karma = -1000;
 
-            PackItem(new Bandage(Utility.RandomMinMax(1, 15)));
-
-            if (Female && 0.1 > Utility.RandomDouble())
-                PackItem(new TribalBerry());
-            else if (!Female && 0.1 > Utility.RandomDouble())
-                PackItem(new BolaBall());
-
             AddItem(new Spear());
             AddItem(new BoneArms());
             AddItem(new BoneLegs());
-
-            if (0.5 > Utility.RandomDouble())
-                AddItem(new SavageMask());
-            else if (0.1 > Utility.RandomDouble())
-                AddItem(new OrcishKinMask());
         }
 
         public Savage(Serial serial)
@@ -66,6 +54,28 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Meager);
+            AddLoot(LootPack.LootItem<Bandage>(1, 15, true));
+
+            if (LootStage == LootStage.Death)
+            {
+                if (!Female)
+                {
+                    AddLoot(LootPack.LootItem<Bola>(10.0));
+                }
+                else
+                {
+                    AddLoot(LootPack.LootItem<TribalBerry>(10.0));
+                }
+
+                if (0.5 > Utility.RandomDouble())
+                {
+                    AddLoot(LootPack.LootItem<SavageMask>());
+                }
+                else if (0.1 > Utility.RandomDouble())
+                {
+                    AddLoot(LootPack.LootItem<OrcishKinMask>());
+                }
+            }
         }
 
         public override bool IsEnemy(Mobile m)

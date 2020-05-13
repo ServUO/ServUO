@@ -43,15 +43,6 @@ namespace Server.Mobiles
             AddItem(new Shoes(0x537));
             AddItem(new Robe(0x452));
 
-            PackReg(7);
-            PackReg(7);
-            PackReg(8);
-
-            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
-
             SetWeaponAbility(WeaponAbility.ParalyzingBlow);
         }
 
@@ -64,26 +55,19 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (Utility.RandomDouble() < 0.15)
-                c.DropItem(new DisintegratingThesisNotes());
-
             if (Paragon.ChestChance > Utility.RandomDouble())
                 c.DropItem(new ParagonChest(Name, 5));
         }
 
-        /*public override bool GivesMLMinorArtifact
-        {
-            get
-            {
-                return true;
-            }
-        }*/
         public override bool AllureImmune => true;
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 3);
             AddLoot(LootPack.MedScrolls, 4);
             AddLoot(LootPack.HighScrolls, 4);
+            AddLoot(LootPack.MageryRegs, 22);
+            AddLoot(LootPack.ArcanistScrolls, 0, 1);
+            AddLoot(LootPack.LootItem<DisintegratingThesisNotes>(15.0));
         }
 
         public override void Serialize(GenericWriter writer)

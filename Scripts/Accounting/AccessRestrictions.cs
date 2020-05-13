@@ -39,8 +39,9 @@ namespace Server
                     return;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(ex);
                 e.AllowConnection = false;
             }
         }

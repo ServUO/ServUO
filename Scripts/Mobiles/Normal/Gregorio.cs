@@ -32,8 +32,6 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 25.0, 50.0);
             SetSkill(SkillName.Tactics, 80.0, 100.0);
             SetSkill(SkillName.Wrestling, 80.0, 100.0);
-
-            PackGold(50, 150);
         }
 
         public Gregorio(Serial serial)
@@ -42,6 +40,11 @@ namespace Server.Mobiles
         }
 
         public override bool AlwaysMurderer => true;
+
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.LootGold(50, 150));
+        }
 
         public override int Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
         {

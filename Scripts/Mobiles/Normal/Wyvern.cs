@@ -37,8 +37,6 @@ namespace Server.Mobiles
 
             Fame = 4000;
             Karma = -4000;
-
-            PackItem(new LesserPoisonPotion());
         }
 
         public Wyvern(Serial serial)
@@ -59,6 +57,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.Average);
             AddLoot(LootPack.Meager);
             AddLoot(LootPack.MedScrolls);
+            AddLoot(LootPack.LootItem<LesserPoisonPotion>(true));
         }
 
         public override int GetAttackSound()

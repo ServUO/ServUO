@@ -46,7 +46,6 @@ namespace Server.Mobiles
             Karma = 50000;
 
             AddItem(new Bow());
-            PackItem(new Arrow(Utility.RandomMinMax(500, 700)));
         }
 
         public Twaulo(Serial serial)
@@ -81,6 +80,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.UltraRich, 2);
             AddLoot(LootPack.Average);
             AddLoot(LootPack.Gems);
+            AddLoot(LootPack.LootItem<Arrow>(Utility.RandomMinMax(500, 700)));
         }
 
         public void SpawnPixies(Mobile target)

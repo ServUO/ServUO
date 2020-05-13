@@ -52,14 +52,6 @@ namespace Server.Mobiles
             Fame = 24000;
             Karma = -24000;
 
-            for (int i = 0; i < Utility.RandomMinMax(1, 3); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
-
-            PackTalismans(5);
-            PackGold(2000, 2500);
-
             SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
@@ -84,18 +76,12 @@ namespace Server.Mobiles
         public override Poison PoisonImmune => Poison.Lethal;
         public override int TreasureMapLevel => 5;
 
-        public virtual void PackTalismans(int amount)
-        {
-            int count = Utility.Random(amount);
-
-            for (int i = 0; i < count; i++)
-                PackItem(new RandomTalisman());
-        }
-
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 4);
             AddLoot(LootPack.FilthyRich);
+            AddLoot(LootPack.Talisman, 5);
+            AddLoot(LootPack.ArcanistScrolls, Utility.RandomMinMax(1, 3));
         }
 
         public override void OnDamage(int amount, Mobile from, bool willKill)

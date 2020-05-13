@@ -87,8 +87,6 @@ namespace Server.Mobiles
 
             if (weapon.Layer == Layer.OneHanded && Utility.RandomBool())
                 AddItem(Loot.RandomShield());
-
-            PackGold(50, 150);
         }
 
         public ElfBrigand(Serial serial)
@@ -98,12 +96,11 @@ namespace Server.Mobiles
 
         public override bool AlwaysMurderer => true;
         public override bool ShowFameTitle => false;
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
 
-            if (Utility.RandomDouble() < 0.75)
-                c.DropItem(new SeveredElfEars());
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.LootGold(50, 150));
+            AddLoot(LootPack.LootItem<SeveredElfEars>(75.0, 1));
         }
 
         public override void Serialize(GenericWriter writer)

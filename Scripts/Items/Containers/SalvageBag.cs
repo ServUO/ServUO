@@ -160,9 +160,9 @@ namespace Server.Items
 
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Console.WriteLine(ex.ToString());
+                Server.Diagnostics.ExceptionLogging.LogException(e);
             }
 
             return false;

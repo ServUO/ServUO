@@ -299,8 +299,10 @@ namespace Server.Mobiles
 
                         m_From.SendGump(g);
                     }
-                    catch
-                    { }
+                    catch (Exception e)
+                    {
+                        Server.Diagnostics.ExceptionLogging.LogException(e);
+                    }
                 }
                 else
                 {

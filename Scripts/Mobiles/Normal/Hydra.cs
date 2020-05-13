@@ -41,11 +41,6 @@ namespace Server.Mobiles
             Fame = 22000;
             Karma = -22000;
 
-            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
-
             SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
@@ -60,19 +55,10 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 3);
-        }
-
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            c.DropItem(new HydraScale());
-
-            if (Utility.RandomDouble() < 0.2)
-                c.DropItem(new ParrotItem());
-
-            if (Utility.RandomDouble() < 0.05)
-                c.DropItem(new ThorvaldsMedallion());
+            AddLoot(LootPack.ArcanistScrolls, 0, 1);
+            AddLoot(LootPack.LootItem<HydraScale>());
+            AddLoot(LootPack.LootItem<ParrotItem>(20.0));
+            AddLoot(LootPack.LootItem<ThorvaldsMedallion>(5.0));
         }
 
         public override void Serialize(GenericWriter writer)

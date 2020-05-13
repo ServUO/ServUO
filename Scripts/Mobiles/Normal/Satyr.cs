@@ -1,5 +1,3 @@
-using Server.Items;
-
 namespace Server.Mobiles
 {
     [CorpseName("a satyr's corpse")]
@@ -40,11 +38,11 @@ namespace Server.Mobiles
 
             Fame = 5000;
             Karma = 0;
+        }
 
-            for (int i = 0; i < Utility.RandomMinMax(0, 1); i++)
-            {
-                PackItem(Loot.RandomScroll(0, Loot.ArcanistScrollTypes.Length, SpellbookType.Arcanist));
-            }
+        public Satyr(Serial serial)
+            : base(serial)
+        {
         }
 
         public override TribeType Tribe => TribeType.Fey;
@@ -53,6 +51,7 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.Rich);
             AddLoot(LootPack.MedScrolls);
+            AddLoot(LootPack.ArcanistScrolls, 0, 1);
         }
 
         public override bool CanDiscord => true;
@@ -60,11 +59,6 @@ namespace Server.Mobiles
         public override bool CanProvoke => true;
 
         public override int Meat => 1;
-
-        public Satyr(Serial serial)
-            : base(serial)
-        {
-        }
 
         public override void Serialize(GenericWriter writer)
         {

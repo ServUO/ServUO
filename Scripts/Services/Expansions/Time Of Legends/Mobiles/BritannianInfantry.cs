@@ -52,8 +52,6 @@ namespace Server.Mobiles
             AddImmovableItem(new BodySash(1157));
             AddImmovableItem(new Halberd());
 
-            PackGold(Utility.RandomMinMax(250, 300));
-
             Fame = 7500;
             Karma = 4500;
 

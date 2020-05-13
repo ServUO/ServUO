@@ -44,20 +44,6 @@ namespace Server.Mobiles
             ControlSlots = 3;
             MinTameSkill = 96.0;
 
-            PackReg(3);
-
-            for (int i = 0; i <= 1; i++)
-            {
-                Item item;
-
-                if (Utility.RandomBool())
-                    item = Loot.RandomScroll(0, Loot.NecromancyScrollTypes.Length, SpellbookType.Necromancer);
-                else
-                    item = Loot.RandomScroll(0, Loot.RegularScrollTypes.Length, SpellbookType.Regular);
-
-                PackItem(item);
-            }
-
             SetSpecialAbility(SpecialAbility.DragonBreath);
             SetAreaEffect(AreaEffect.AuraDamage);
         }
@@ -65,6 +51,16 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich, 3);
+            AddLoot(LootPack.MageryRegs, 3);
+
+            if (Utility.RandomBool())
+            {
+                AddLoot(LootPack.NecroScrolls, 2);
+            }
+            else
+            {
+                AddLoot(LootPack.MageryScrolls, 2);
+            }
         }
 
         public override bool CanAngerOnTame => true;

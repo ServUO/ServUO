@@ -41,9 +41,6 @@ namespace Server.Mobiles
 
             Fame = 11500;
             Karma = -11500;
-
-            PackReg(5, 15);
-            PackNecroReg(5, 15);
         }
 
         public OphidianArchmage(Serial serial)
@@ -60,6 +57,8 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.Rich);
             AddLoot(LootPack.MedScrolls, 2);
+            AddLoot(LootPack.MageryRegs, 5, 15);
+            AddLoot(LootPack.NecroRegs, 5, 15);
         }
 
         public override void Serialize(GenericWriter writer)

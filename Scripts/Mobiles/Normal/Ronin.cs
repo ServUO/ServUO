@@ -84,17 +84,13 @@ namespace Server.Mobiles
             SetWeaponAbility(WeaponAbility.RidingSwipe);
         }
 
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-            c.DropItem(new BookOfBushido());
-        }
-
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich);
             AddLoot(LootPack.Rich);
             AddLoot(LootPack.Gems, 2);
+
+            AddLoot(LootPack.LootItem<BookOfBushido>());
         }
 
         public override bool AlwaysMurderer => true;

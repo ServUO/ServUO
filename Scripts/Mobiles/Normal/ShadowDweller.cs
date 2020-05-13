@@ -39,8 +39,6 @@ namespace Server.Mobiles
             Fame = 8000;
             Karma = -8000;
 
-            PackNecroReg(17, 24);
-
             SetSpecialAbility(SpecialAbility.LifeLeech);
         }
 
@@ -57,6 +55,7 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.Rich, 3);
             AddLoot(LootPack.MedScrolls, 2);
+            AddLoot(LootPack.NecroRegs, 17, 24);
         }
 
         public override void Serialize(GenericWriter writer)

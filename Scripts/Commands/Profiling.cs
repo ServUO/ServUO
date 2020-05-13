@@ -50,8 +50,9 @@ namespace Server.Commands
                     sw.WriteLine();
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(ex);
             }
         }
 
@@ -76,8 +77,9 @@ namespace Server.Commands
                 using (StreamWriter sw = new StreamWriter("timerdump.log", true))
                     Timer.DumpInfo(sw);
             }
-            catch
+            catch (Exception ex)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(ex);
             }
         }
 
@@ -235,8 +237,9 @@ namespace Server.Commands
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(ex);
             }
         }
 
@@ -350,8 +353,9 @@ namespace Server.Commands
                         op.WriteLine("{0}\t{1:F2}%\t{2}", de.Value, (100 * (int)de.Value) / (double)total, de.Key);
                 }
             }
-            catch
+            catch (Exception e)
             {
+                Server.Diagnostics.ExceptionLogging.LogException(e);
             }
         }
 

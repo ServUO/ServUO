@@ -38,8 +38,6 @@ namespace Server.Mobiles
             Tamable = true;
             ControlSlots = 1;
             MinTameSkill = 59.1;
-
-            PackItem(new SpidersSilk(5));
         }
 
         public GiantSpider(Serial serial)
@@ -54,6 +52,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Poor);
+            AddLoot(LootPack.LootItem<SpidersSilk>(5, true));
         }
 
         public override void Serialize(GenericWriter writer)

@@ -38,13 +38,16 @@ namespace Server.Mobiles
             Fame = 12000;
             Karma = -12000;
 
-            if (0.1 > Utility.RandomDouble())
-                PackItem(new PowerCrystal());
-
-            if (0.4 > Utility.RandomDouble())
-                PackItem(new ClockworkAssembly());
-
             SetSpecialAbility(SpecialAbility.ColossalBlow);
+        }
+
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.Rich);
+            AddLoot(LootPack.Gems);
+            AddLoot(LootPack.LootItem<PowerCrystal>(10.0));
+            AddLoot(LootPack.LootItem<ClockworkAssembly>(40.0));
+            AddLoot(LootPack.LootItemCallback(Golem.SpawnGears, 5.0, 1, false, false));
         }
 
         public Juggernaut(Serial serial)
@@ -57,30 +60,6 @@ namespace Server.Mobiles
         public override Poison PoisonImmune => Poison.Lethal;
         public override int Meat => 1;
         public override int TreasureMapLevel => 5;
-
-        public override void OnDeath(Container c)
-        {
-            base.OnDeath(c);
-
-            if (0.05 > Utility.RandomDouble())
-            {
-                if (!IsParagon)
-                {
-                    if (0.75 > Utility.RandomDouble())
-                        c.DropItem(DawnsMusicGear.RandomCommon);
-                    else
-                        c.DropItem(DawnsMusicGear.RandomUncommon);
-                }
-                else
-                    c.DropItem(DawnsMusicGear.RandomRare);
-            }
-        }
-
-        public override void GenerateLoot()
-        {
-            AddLoot(LootPack.Rich);
-            AddLoot(LootPack.Gems, 1);
-        }
 
         public override int GetDeathSound()
         {

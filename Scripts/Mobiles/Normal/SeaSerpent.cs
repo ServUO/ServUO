@@ -42,13 +42,6 @@ namespace Server.Mobiles
             CanSwim = true;
             CantWalk = true;
 
-            if (Utility.RandomBool())
-                PackItem(new SulfurousAsh(4));
-            else
-                PackItem(new BlackPearl(4));
-
-            PackItem(new RawFishSteak());
-
             SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
@@ -66,6 +59,8 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Meager);
+            AddLoot(LootPack.LootItem<RawFishSteak>());
+            AddLoot(LootPack.RandomLootItem(new[] { typeof(SulfurousAsh), typeof(BlackPearl) }, 100.0, 4, false, true));
         }
 
         public override void Serialize(GenericWriter writer)

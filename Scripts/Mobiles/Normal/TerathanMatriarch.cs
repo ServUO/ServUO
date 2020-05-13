@@ -37,9 +37,6 @@ namespace Server.Mobiles
 
             Fame = 10000;
             Karma = -10000;
-
-            PackItem(new SpidersSilk(5));
-            PackNecroReg(Utility.RandomMinMax(4, 10));
         }
 
         public TerathanMatriarch(Serial serial)
@@ -57,6 +54,8 @@ namespace Server.Mobiles
             AddLoot(LootPack.Average, 2);
             AddLoot(LootPack.MedScrolls, 2);
             AddLoot(LootPack.Potions);
+            AddLoot(LootPack.NecroRegs, 4, 10);
+            AddLoot(LootPack.LootItem<SpidersSilk>(100.0, 5, false, true));
         }
 
         public override void Serialize(GenericWriter writer)

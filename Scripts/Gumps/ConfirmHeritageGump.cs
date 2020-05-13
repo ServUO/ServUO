@@ -1,4 +1,4 @@
-﻿using Server.Items;
+using Server.Items;
 using Server.Network;
 using System;
 
@@ -54,15 +54,7 @@ namespace Server.Gumps
 
                     foreach (Type type in m_Selected)
                     {
-                        try
-                        {
-                            item = Activator.CreateInstance(type) as Item;
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine(ex.Message);
-                            Console.WriteLine(ex.StackTrace);
-                        }
+                        item = Loot.Construct(type);
 
                         if (item != null)
                         {
