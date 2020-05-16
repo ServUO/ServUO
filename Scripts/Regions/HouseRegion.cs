@@ -56,7 +56,10 @@ namespace Server.Regions
                 }
             }
 
-            m.SendEverything();
+            Timer.DelayCall(TimeSpan.FromMilliseconds(500), () =>
+            {
+                m.SendEverything();
+            });
         }
 
         public override bool CanSee(Mobile m, IEntity e)

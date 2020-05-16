@@ -585,6 +585,12 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(WorkableGlass), 1154170, 1, 1154171);
             AddRes(index, typeof(SextantParts), 1044175, 1, 1044253);
             AddRecipe(index, (int)TinkerRecipes.Telescope);
+
+            index = AddCraft(typeof(OracleOfTheSea), 1044051, 1150184, 100.0, 120, typeof(IronIngot), 1044036, 3, 1044037);
+            AddRes(index, typeof(WorkableGlass), 1154170, 2, 1154171);
+            AddRes(index, typeof(OceanSapphire), 1159162, 3, 1044253);
+            SetItemHue(index, 1265);
+            ForceNonExceptional(index);
             #endregion
 
             #region Traps

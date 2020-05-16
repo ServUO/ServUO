@@ -1,4 +1,4 @@
-﻿using Server.Mobiles;
+using Server.Mobiles;
 using System;
 using System.Collections.Generic;
 
@@ -54,6 +54,14 @@ namespace Server.Items
 
         public TimeSpan m_EffectDuration;
         protected ThieveConsumableEffect m_EffectType;
+
+        public override void OnDoubleClick(Mobile m)
+        {
+            if (m is PlayerMobile && IsChildOf(m.Backpack))
+            {
+                OnUse((PlayerMobile)m);
+            }
+        }
 
         protected virtual void OnUse(PlayerMobile by)
         {
@@ -129,21 +137,12 @@ namespace Server.Items
 
         public static bool IsUnderThieveConsumableEffect(PlayerMobile pm, ThieveConsumableEffect eff)
         {
-            if (EffectTable.ContainsKey(pm))
+            if (EffectTable.ContainsKey(pm) && EffectTable[pm].Effect == eff)
             {
-                if (EffectTable[pm].Effect == eff)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return true;
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
 
         public static ThieveConsumableEffect CheckThieveConsumable(PlayerMobile pm)

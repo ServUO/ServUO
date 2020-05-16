@@ -36,8 +36,6 @@ namespace Server.Mobiles
 
             Fame = 1500;
             Karma = -1500;
-
-            SolenHelper.PackPicnicBasket(this);
         }
 
         public override void GenerateLoot()

@@ -618,7 +618,7 @@ namespace Server.Gumps
         public static int GetTypes(PlayerMobile pm, CollectionItem colItem)
         {
             Type type = colItem.Type;
-            bool derives = type == typeof(RedScales) || type == typeof(Fish) || type == typeof(Crab) || type == typeof(Lobster);
+            bool derives = type == typeof(BaseScales) || type == typeof(Fish) || type == typeof(Crab) || type == typeof(Lobster);
 
             int count = 0;
 
@@ -643,7 +643,7 @@ namespace Server.Gumps
         public static List<Item> FindTypes(PlayerMobile pm, CollectionItem colItem)
         {
             Type type = colItem.Type;
-            bool derives = type == typeof(RedScales) || type == typeof(Fish) || type == typeof(Crab) || type == typeof(Lobster);
+            bool derives = type == typeof(BaseScales) || type == typeof(Fish) || type == typeof(Crab) || type == typeof(Lobster);
 
             List<Item> list = new List<Item>();
 

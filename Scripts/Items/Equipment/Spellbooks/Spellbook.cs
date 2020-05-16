@@ -351,22 +351,18 @@ namespace Server.Items
                         Item toI = World.FindItem(e.Target.Serial);
                         Spell spell = SpellRegistry.NewSpell(spellID, from, null);
 
-                        if (to != null)
+                        if (spell != null && !Spells.SkillMasteries.MasteryInfo.IsPassiveMastery(spellID))
                         {
-                            spell.InstantTarget = to;
-                        }
-                        else if (toI != null)
-                        {
-                            spell.InstantTarget = toI as IDamageableItem;
-                        }
+                            if (to != null)
+                            {
+                                spell.InstantTarget = to;
+                            }
+                            else if (toI != null)
+                            {
+                                spell.InstantTarget = toI as IDamageableItem;
+                            }
 
-                        if (spell != null)
-                        {
                             spell.Cast();
-                        }
-                        else if (!Spells.SkillMasteries.MasteryInfo.IsPassiveMastery(spellID))
-                        {
-                            from.SendLocalizedMessage(502345); // This spell has been temporarily disabled.
                         }
                     }
                 }

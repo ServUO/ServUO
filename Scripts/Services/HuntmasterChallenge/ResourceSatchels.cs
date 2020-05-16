@@ -116,7 +116,7 @@ namespace Server.Items
     {
         public override int LabelNumber => 1158773;  // Miner's Satchel
 
-        public override Type[] HoldTypes => new Type[] { typeof(BaseOre), typeof(BaseIngot), typeof(Granite), typeof(Saltpeter) };
+        public override Type[] HoldTypes => new Type[] { typeof(BaseOre), typeof(BaseIngot), typeof(BaseGranite), typeof(Saltpeter) };
 
         [Constructable]
         public MinersSatchel()

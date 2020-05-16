@@ -202,6 +202,12 @@ namespace Server.Engines.Craft
             index = AddCraft(typeof(Charcoal), 1044496, 1116303, 0.0, 50.0, typeof(Board), 1044041, 1, 1044351);
             SetUseAllRes(index, true);
             SetNeedHeat(index, true);
+
+            index = AddCraft(typeof(Bait), 1044496, 1159164, 100.0, 140.0, typeof(SamuelsSecretSauce), 1116338, 1, 1044253);
+            AddRes(index, typeof(RawFishSteak), 1044476, 50, 1044253);
+            AddRes(index, typeof(SaltedSerpentSteaks), 1159163, 3, 1044253);
+            AddCreateItem(index, CraftCharydbisBait);
+            SetNeedHeat(index, true);
             #endregion
 
             #region Baking
@@ -515,6 +521,15 @@ namespace Server.Engines.Craft
             SetNeedMaker(index, true);
             ForceNonExceptional(index);
             #endregion
+        }
+
+        private Item CraftCharydbisBait(Mobile m, CraftItem craftItem, ITool tool)
+        {
+            var bait = new Bait();
+            bait.Index = 35;
+            bait.UsesRemaining = 5;
+
+            return bait;
         }
     }
 }

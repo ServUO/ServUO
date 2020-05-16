@@ -339,7 +339,7 @@ namespace Server.Engines.Harvest
                         if (map == null)
                             return;
 
-                        if (Activator.CreateInstance(res.Types[2], new object[] { 25 }) is BaseCreature spawned)
+                        if (Activator.CreateInstance(res.Types[2]) is BaseCreature spawned)
                         {
                             int offset = Utility.Random(8) * 2;
 

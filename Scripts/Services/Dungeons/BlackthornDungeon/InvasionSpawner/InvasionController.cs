@@ -362,7 +362,6 @@ namespace Server.Engines.Blackthorn
 
             Timer.DelayCall(TimeSpan.FromMinutes(2), () =>
                 {
-                    Cleanup();
                     BeginInvasion();
                 });
         }
@@ -417,8 +416,10 @@ namespace Server.Engines.Blackthorn
 
         public void Cleanup()
         {
-            if (Beacon != null)
+            if (Beacon != null && !Beacon.Deleted)
+            {
                 Beacon.Delete();
+            }
         }
 
         public void RemoveSpawn()

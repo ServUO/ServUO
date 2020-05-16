@@ -16,7 +16,7 @@ namespace Server.Mobiles
         private EffectMobile()
         {
             CantWalk = true;
-            Hidden = true;
+            Blessed = true;
         }
 
         public static EffectMobile Create(Point3D p, Map map, TimeSpan duration)
@@ -45,6 +45,15 @@ namespace Server.Mobiles
         public void BeginFree(TimeSpan duration)
         {
             new FreeTimer(this, duration).Start();
+        }
+
+        public override void Kill()
+        {
+        }
+
+        public override int Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
+        {
+            return 0;
         }
 
         public override void Serialize(GenericWriter writer)

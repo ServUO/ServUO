@@ -83,22 +83,10 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            switch (version)
-            {
-                case 1:
-                    {
-                        m_SecureLevel = (SecureLevel)reader.ReadInt();
-                        goto case 0;
-                    }
-                case 0:
-                    {
-                        m_Redyable = reader.ReadBool();
-                        m_DyedHue = reader.ReadInt();
-
-                        break;
-                    }
-            }
+			
+			m_SecureLevel = (SecureLevel)reader.ReadInt();
+			m_Redyable = reader.ReadBool();
+            m_DyedHue = reader.ReadInt();
         }
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
@@ -140,6 +128,8 @@ namespace Server.Items
                     {
                         if (!from.InRange(m_Tub.GetWorldLocation(), 1) || !from.InRange(item.GetWorldLocation(), 1))
                             from.SendLocalizedMessage(500446); // That is too far away.
+						else if (item.IsLockedDown)
+                            from.SendLocalizedMessage(1061637); // You are not allowed to access this.
                         else if (item.Parent is Mobile)
                             from.SendLocalizedMessage(500861); // Can't Dye clothing that is being worn.
                         else if (((IDyable)item).Dye(from, m_Tub))
