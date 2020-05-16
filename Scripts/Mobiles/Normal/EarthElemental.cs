@@ -54,8 +54,8 @@ namespace Server.Mobiles
             AddLoot(LootPack.Meager);
             AddLoot(LootPack.Gems);
             AddLoot(LootPack.LootItemCallback(SpawnOre, 100.0, 5, false, true));
-            AddLoot(LootPack.LootItem<FertileDirt>(Utility.RandomMinMax(1, 4)));
-            AddLoot(LootPack.LootItem<MandrakeRoot>());
+            AddLoot(LootPack.LootItem<FertileDirt>(1, 4, true));
+            AddLoot(LootPack.LootItem<MandrakeRoot>(true));
         }
 
         private Item SpawnOre(IEntity e)

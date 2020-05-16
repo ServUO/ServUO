@@ -6,6 +6,20 @@ namespace Server.Items
     {
         private static readonly TimeSpan DeathDelay = TimeSpan.FromMinutes(5);
         private Timer m_Timer;
+
+        public override int LabelNumber
+        {
+            get
+            {
+                if (ItemID >= 0xA35F)
+                {
+                    return 1117256 + ItemID;
+                }
+
+                return base.LabelNumber;
+            }
+        }
+
         [Constructable]
         public BaseFish(int itemID)
             : base(itemID)
@@ -20,6 +34,7 @@ namespace Server.Items
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Dead => (ItemID == 0x3B0C);
+
         public virtual void StartTimer()
         {
             if (m_Timer != null)

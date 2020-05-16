@@ -2205,6 +2205,8 @@ namespace Server.Items
                 damage += (int)inc;
             }
 
+            damage += WhirlwindAttack.DamageBonus(attacker, defender);
+
             damageGiven = AOS.Damage(
                 defender,
                 attacker,

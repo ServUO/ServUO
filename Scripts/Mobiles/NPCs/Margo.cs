@@ -54,7 +54,7 @@ namespace Server.Items
             Donations.Add(new CollectionItem(typeof(BrownBook), 0xFEF, 1074906, 0x0, 3));
             Donations.Add(new CollectionItem(typeof(TanBook), 0xFF0, 1074906, 0x0, 3));
             Donations.Add(new CollectionItem(typeof(ShepherdsCrook), 0xE81, 1015110, 0x0, 7));
-            Donations.Add(new CollectionItem(typeof(RedScales), 0x26B4, 1053137, 0x0, 20));
+            Donations.Add(new CollectionItem(typeof(BaseScales), 0x26B4, 1053137, 0x0, 20));
 
             int[] hues = new int[] { 0x1E0, 0x190, 0x151 };
             Rewards.Add(new CollectionHuedItem(typeof(LibraryFriendBodySash), 0x1541, 1073346, 0x190, 100000.0, hues));

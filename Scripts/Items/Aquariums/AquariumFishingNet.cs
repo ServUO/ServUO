@@ -6,9 +6,7 @@ namespace Server.Items
         public AquariumFishNet()
         {
             ItemID = 0xDC8;
-
-            if (Hue == 0x8A0)
-                Hue = 0x240;
+            Hue = 0x240;
         }
 
         public AquariumFishNet(Serial serial)
@@ -87,7 +85,7 @@ namespace Server.Items
             }
         }
 
-        private BaseFish GiveFish(Mobile from)
+        protected virtual BaseFish GiveFish(Mobile from)
         {
             double skill = from.Skills.Fishing.Value;
 

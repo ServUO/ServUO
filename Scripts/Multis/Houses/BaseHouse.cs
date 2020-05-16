@@ -4978,8 +4978,8 @@ namespace Server.Multis
             : base(null, house.Map, DefaultPriority, house.Region.Area)
         {
             Register();
-
             m_RegionOwner = regionowner;
+            Timer.DelayCall(house.RestrictedPlacingTime, Unregister);
         }
 
         public override bool AllowHousing(Mobile from, Point3D p)

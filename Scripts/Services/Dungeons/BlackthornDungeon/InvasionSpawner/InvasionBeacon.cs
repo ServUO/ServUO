@@ -25,6 +25,11 @@ namespace Server.Engines.Blackthorn
 
         public override void OnHalfDamage()
         {
+            if (Map == null)
+            {
+                return;
+            }
+
             IPooledEnumerable eable = Map.GetMobilesInRange(Location, 20);
 
             foreach (Mobile m in eable)
@@ -42,7 +47,13 @@ namespace Server.Engines.Blackthorn
         public override bool OnBeforeDestroyed()
         {
             if (Controller != null)
+            {
                 Controller.OnBeaconDestroyed();
+            }
+            else
+            {
+                Timer.DelayCall(TimeSpan.FromMinutes(1), Delete);
+            }
 
             return base.OnBeforeDestroyed();
         }

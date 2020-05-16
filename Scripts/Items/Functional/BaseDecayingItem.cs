@@ -115,6 +115,11 @@ namespace Server.Items
             Delete();
         }
 
+        public virtual void SendTimeRemainingMessage(Mobile to)
+        {
+            to.SendLocalizedMessage(1072516, string.Format("{0}\t{1}", (this.Name == null ? string.Format("#{0}", LabelNumber) : this.Name), (int)TimeSpan.FromSeconds(m_Lifespan).TotalSeconds)); // ~1_name~ will expire in ~2_val~ seconds!
+        }
+
         public BaseDecayingItem(Serial serial) : base(serial)
         {
         }

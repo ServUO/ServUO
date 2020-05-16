@@ -6,21 +6,21 @@ namespace Server.Gumps
     {
         private readonly Mobile m_From;
 
-        public CompassDirectionGump(Mobile from) : base(120, 50)
+        public CompassDirectionGump(Mobile from)
+            : base(100, 100)
         {
             m_From = from;
-            List<Point3D> pointList = Server.Regions.MazeOfDeathRegion.Path;
+            List<Point2D> pointList = Regions.MazeOfDeathRegion.Path;
 
-            Point3D cur = m_From.Location;
-            Point3D northLoc = new Point3D(cur.X, cur.Y - 1, cur.Z);
-            Point3D eastLoc = new Point3D(cur.X + 1, cur.Y, cur.Z);
-            Point3D southLoc = new Point3D(cur.X, cur.Y + 1, cur.Z);
-            Point3D westLoc = new Point3D(cur.X - 1, cur.Y, cur.Z);
-
-            //this.Closable = false;
-
+            Point2D cur = new Point2D(m_From.Location.X, m_From.Location.Y);
+            Point2D northLoc = new Point2D(cur.X, cur.Y - 1);
+            Point2D eastLoc = new Point2D(cur.X + 1, cur.Y);
+            Point2D southLoc = new Point2D(cur.X, cur.Y + 1);
+            Point2D westLoc = new Point2D(cur.X - 1, cur.Y);
+            
             //Empty radar
             AddImage(0, 0, 9007);
+            AddAlphaRegion(0, 0, 200, 200);
 
             //Arrows
             if (pointList.Contains(northLoc))

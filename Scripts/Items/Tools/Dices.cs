@@ -70,15 +70,8 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (version > 0)
-            {
-                Level = (SecureLevel)reader.ReadInt();
-            }
-            else
-            {
-                Level = SecureLevel.Friends;
-            }
+			
+			Level = (SecureLevel)reader.ReadInt();            
         }
     }
 }
