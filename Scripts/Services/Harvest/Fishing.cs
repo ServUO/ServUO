@@ -460,9 +460,15 @@ namespace Server.Engines.Harvest
                         else
                         {
                             if (Utility.RandomBool())
+                            {
                                 chest = new MetalGoldenChest();
+                                chest.Name = "metal chest";
+                            }
                             else
+                            {
                                 chest = new WoodenChest();
+                                chest.Name = "wooden chest";
+                            }
                         }
 
                         if (sos.IsAncient)

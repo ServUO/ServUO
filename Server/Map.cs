@@ -844,40 +844,45 @@ namespace Server
 
         public bool CanFit(Point3D p, int height, bool checkBlocksFit, bool checkMobiles)
         {
-            return CanFit(p.m_X, p.m_Y, p.m_Z, height, checkBlocksFit, checkMobiles, true);
+            return CanFit(p.m_X, p.m_Y, p.m_Z, height, checkBlocksFit, checkMobiles, true, false);
         }
 
         public bool CanFit(Point2D p, int z, int height, bool checkBlocksFit)
         {
-            return CanFit(p.m_X, p.m_Y, z, height, checkBlocksFit, true, true);
+            return CanFit(p.m_X, p.m_Y, z, height, checkBlocksFit, true, true, false);
         }
 
         public bool CanFit(Point3D p, int height)
         {
-            return CanFit(p.m_X, p.m_Y, p.m_Z, height, false, true, true);
+            return CanFit(p.m_X, p.m_Y, p.m_Z, height, false, true, true, false);
         }
 
         public bool CanFit(Point2D p, int z, int height)
         {
-            return CanFit(p.m_X, p.m_Y, z, height, false, true, true);
+            return CanFit(p.m_X, p.m_Y, z, height, false, true, true, false);
         }
 
         public bool CanFit(int x, int y, int z, int height)
         {
-            return CanFit(x, y, z, height, false, true, true);
+            return CanFit(x, y, z, height, false, true, true, false);
         }
 
         public bool CanFit(int x, int y, int z, int height, bool checksBlocksFit)
         {
-            return CanFit(x, y, z, height, checksBlocksFit, true, true);
+            return CanFit(x, y, z, height, checksBlocksFit, true, true, false);
         }
 
         public bool CanFit(int x, int y, int z, int height, bool checkBlocksFit, bool checkMobiles)
         {
-            return CanFit(x, y, z, height, checkBlocksFit, checkMobiles, true);
+            return CanFit(x, y, z, height, checkBlocksFit, checkMobiles, true, false);
         }
 
         public bool CanFit(int x, int y, int z, int height, bool checkBlocksFit, bool checkMobiles, bool requireSurface)
+        {
+            return CanFit(x, y, z, height, checkBlocksFit, checkMobiles, requireSurface, false);
+        }
+
+        public bool CanFit(int x, int y, int z, int height, bool checkBlocksFit, bool checkMobiles, bool requireSurface, bool ignoreRoof)
         {
             if (this == Internal)
             {
@@ -906,15 +911,16 @@ namespace Server
 
             StaticTile[] staticTiles = Tiles.GetStaticTiles(x, y, true);
 
-            bool surface, impassable;
+            bool surface, impassable, roof;
 
             foreach (StaticTile t in staticTiles)
             {
                 ItemData id = TileData.ItemTable[t.ID & TileData.MaxItemValue];
                 surface = id.Surface;
                 impassable = id.Impassable;
+                roof = (id.Flags & TileFlag.Roof) != 0;
 
-                if ((surface || impassable) && (t.Z + id.CalcHeight) > z && (z + height) > t.Z)
+                if ((surface || impassable) && (!ignoreRoof || !roof) && (t.Z + id.CalcHeight) > z && (z + height) > t.Z)
                 {
                     return false;
                 }

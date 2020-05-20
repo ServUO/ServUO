@@ -44,6 +44,7 @@ namespace Server.Engines.Plants
         [CommandProperty(AccessLevel.GameMaster)]
         public int UniqueCount => Entries == null ? 0 : Entries.Where(e => e != null && e.Seed != null && e.Seed.Amount > 0).Count();
 
+        public override int DefaultMaxWeight { get { return 0; } }
         public override double DefaultWeight => 10.0;
 
         [Constructable]

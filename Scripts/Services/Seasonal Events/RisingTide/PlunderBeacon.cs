@@ -52,13 +52,10 @@ namespace Server.Items
 
                 for (int i = 0; i < eligables.Count; i++)
                 {
-                    if (0.25 > Utility.RandomDouble())
-                    {
-                        Mobile winner = eligables[i];
+                    Mobile winner = eligables[i];
 
-                        winner.AddToBackpack(new MaritimeCargo(CargoQuality.Mythical));
-                        winner.SendLocalizedMessage(1158907); // You recover maritime trade cargo!
-                    }
+                    winner.AddToBackpack(new MaritimeCargo(CargoQuality.Mythical));
+                    winner.SendLocalizedMessage(1158907); // You recover maritime trade cargo!
                 }
             }
 

@@ -298,7 +298,7 @@ namespace Server.Mobiles
 
             if (0.30 > Utility.RandomDouble())
             {
-                Mobile m = DemonKnight.FindRandomPlayer(this);
+                Mobile m = RandomPlayerWithLootingRights();
 
                 if (m != null)
                 {
