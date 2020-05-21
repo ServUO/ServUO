@@ -167,7 +167,6 @@ namespace Server.Mobiles
         }
 
         public int MountedID => Transparent ? TransparentMountedID : NonTransparentMountedID;
-
         public int MountedHue => Transparent ? TransparentMountedHue : NonTransparentMountedHue;
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -293,13 +292,11 @@ namespace Server.Mobiles
 
         public virtual bool Validate(Mobile from)
         {
-            #region SA
             if (from.Race == Race.Gargoyle)
             {
                 from.SendLocalizedMessage(1112281); // gargs can't mount
                 return false;
             }
-            #endregion
 
             if (Parent == null)
             {
@@ -369,11 +366,9 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(7); // version
 
             writer.Write(m_Transparent);
-
             writer.Write(m_TransparentMountedID);
             writer.Write(m_NonTransparentMountedID);
             writer.Write(m_TransparentMountedHue);
@@ -382,60 +377,24 @@ namespace Server.Mobiles
             writer.Write(m_StatueHue);
 
             writer.Write(m_IsRewardItem);
-
             writer.Write(m_Rider);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            LootType = LootType.Blessed;
-
             int version = reader.ReadInt();
 
-            switch (version)
-            {
-                case 7:
-                case 6:
-                case 5:
-                    m_Transparent = reader.ReadBool();
-                    m_TransparentMountedID = reader.ReadInt();
-                    m_NonTransparentMountedID = reader.ReadInt();
-                    m_TransparentMountedHue = reader.ReadInt();
-                    m_NonTransparentMountedHue = reader.ReadInt();
-                    m_StatueID = reader.ReadInt();
-                    m_StatueHue = reader.ReadInt();
+            m_Transparent = reader.ReadBool();
+            m_TransparentMountedID = reader.ReadInt();
+            m_NonTransparentMountedID = reader.ReadInt();
+            m_TransparentMountedHue = reader.ReadInt();
+            m_NonTransparentMountedHue = reader.ReadInt();
+            m_StatueID = reader.ReadInt();
+            m_StatueHue = reader.ReadInt();
 
-                    m_IsRewardItem = reader.ReadBool();
-                    m_Rider = reader.ReadMobile();
-                    break;
-                case 4:
-                    m_NonTransparentMountedID = reader.ReadInt(); // m_DefaultMountedID = reader.ReadInt();
-                    m_NonTransparentMountedHue = reader.ReadInt(); // m_OriginalHue = reader.ReadInt();
-                    m_TransparentMountedHue = reader.ReadInt(); // m_EtherealHue = reader.ReadInt();
-                    goto case 3;
-                case 3:
-                    reader.ReadBool();
-                    goto case 2;
-                case 2:
-                    m_IsRewardItem = reader.ReadBool();
-                    goto case 0;
-                case 1:
-                    reader.ReadInt();
-                    goto case 0;
-                case 0:
-                    {
-                        m_TransparentMountedID = reader.ReadInt(); // m_MountedID = reader.ReadInt();
-                        m_StatueID = reader.ReadInt(); // m_RegularID = reader.ReadInt();
-                        m_Rider = reader.ReadMobile();
-
-                        if (m_TransparentMountedID == 0x3EA2)
-                        {
-                            m_TransparentMountedID = 0x3EAA;
-                        }
-                    }
-                    break;
-            }
+            m_IsRewardItem = reader.ReadBool();
+            m_Rider = reader.ReadMobile();
 
             AddFollowers();
         }
@@ -497,7 +456,8 @@ namespace Server.Mobiles
         }
 
         public virtual void OnRiderDamaged(Mobile from, ref int amount, bool willKill)
-        { }
+        {
+        }
 
         private class EtherealSpell : Spell
         {
@@ -577,8 +537,6 @@ namespace Server.Mobiles
                 {
                     Caster.SendLocalizedMessage(1049455); // You have been disrupted while attempting to summon your ethereal mount!
                 }
-
-                //m_Mount.UnmountMe();
             }
 
             public override void OnCast()
@@ -595,291 +553,232 @@ namespace Server.Mobiles
 
     public class EtherealHorse : EtherealMount
     {
+        public override int LabelNumber => 1041298; // Ethereal Horse Statuette
+
         [Constructable]
         public EtherealHorse()
             : base(0x20DD, 0x3EAA, 0x3EA0)
-        { }
+        {
+        }
 
         public EtherealHorse(Serial serial)
             : base(serial)
-        { }
+        {
+        }
 
-        public override int LabelNumber => 1041298;  // Ethereal Horse Statuette
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                NonTransparentMountedID = 0x3EA0;
-                Transparent = true;
-            }
         }
     }
 
     public class EtherealLlama : EtherealMount
     {
+        public override int LabelNumber => 1041300; // Ethereal Llama Statuette
+
         [Constructable]
         public EtherealLlama()
             : base(0x20F6, 0x3EAB, 0x3EA6)
-        { }
+        {
+        }
 
         public EtherealLlama(Serial serial)
             : base(serial)
-        { }
+        {
+        }
 
-        public override int LabelNumber => 1041300;  // Ethereal Llama Statuette
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                NonTransparentMountedID = 0x3EA6;
-                Transparent = true;
-            }
         }
     }
 
     public class EtherealOstard : EtherealMount
     {
+        public override int LabelNumber => 1041299; // Ethereal Ostard Statuette
+
         [Constructable]
         public EtherealOstard()
             : base(0x2135, 0x3EAC, 0x3EA5)
-        { }
+        {
+        }
 
         public EtherealOstard(Serial serial)
             : base(serial)
-        { }
+        {
+        }
 
-        public override int LabelNumber => 1041299;  // Ethereal Ostard Statuette
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                NonTransparentMountedID = 0x3EA5;
-                Transparent = true;
-            }
         }
     }
 
     public class EtherealRidgeback : EtherealMount
     {
+        public override int LabelNumber => 1049747; // Ethereal Ridgeback Statuette
+
         [Constructable]
         public EtherealRidgeback()
             : base(0x2615, 0x3E9A, 0x3EBA, DefaultEtherealHue)
-        { }
+        {
+        }
 
         public EtherealRidgeback(Serial serial)
             : base(serial)
-        { }
+        {
+        }
 
-        public override int LabelNumber => 1049747;  // Ethereal Ridgeback Statuette
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(2); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                NonTransparentMountedID = 0x3EBA;
-                Transparent = true;
-            }
-
-            if (version == 1)
-            {
-                TransparentMountedHue = DefaultEtherealHue;
-            }
         }
     }
 
     public class EtherealUnicorn : EtherealMount
     {
+        public override int LabelNumber => 1049745; // Ethereal Unicorn Statuette
+
         [Constructable]
         public EtherealUnicorn()
             : base(0x25CE, 0x3E9B, 0x3EB4, DefaultEtherealHue)
-        { }
+        {
+        }
 
         public EtherealUnicorn(Serial serial)
             : base(serial)
-        { }
+        {
+        }
 
-        public override int LabelNumber => 1049745;  // Ethereal Unicorn Statuette
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(2); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                NonTransparentMountedID = 0x3EB4;
-                Transparent = true;
-            }
-
-            if (version == 1)
-            {
-                TransparentMountedHue = DefaultEtherealHue;
-            }
         }
     }
 
     public class EtherealBeetle : EtherealMount
     {
+        public override int LabelNumber => 1049748; // Ethereal Beetle Statuette
+
         [Constructable]
         public EtherealBeetle()
             : base(0x260F, 0x3E97, 0x3EBC, DefaultEtherealHue)
-        { }
+        {
+        }
 
         public EtherealBeetle(Serial serial)
             : base(serial)
-        { }
+        {
+        }
 
-        public override int LabelNumber => 1049748;  // Ethereal Beetle Statuette
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(2); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                NonTransparentMountedID = 0x3EBC;
-                Transparent = true;
-            }
-
-            if (version == 1)
-            {
-                TransparentMountedHue = DefaultEtherealHue;
-            }
         }
     }
 
     public class EtherealKirin : EtherealMount
     {
+        public override int LabelNumber => 1049746; // Ethereal Ki-Rin Statuette
+
         [Constructable]
         public EtherealKirin()
             : base(0x25A0, 0x3E9C, 0x3EAD, DefaultEtherealHue)
-        { }
+        {
+        }
 
         public EtherealKirin(Serial serial)
             : base(serial)
-        { }
+        {
+        }
 
-        public override int LabelNumber => 1049746;  // Ethereal Ki-Rin Statuette
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(2); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                NonTransparentMountedID = 0x3EAD;
-                Transparent = true;
-            }
-
-            if (version == 1)
-            {
-                TransparentMountedHue = DefaultEtherealHue;
-            }
         }
     }
 
     public class EtherealSwampDragon : EtherealMount
     {
+        public override int LabelNumber => 1049749; // Ethereal Swamp Dragon Statuette
+
         [Constructable]
         public EtherealSwampDragon()
             : base(0x2619, 0x3E98, 0x3EBD, DefaultEtherealHue, 0x851)
-        { }
+        {
+        }
 
         public EtherealSwampDragon(Serial serial)
             : base(serial)
-        { }
+        {
+        }
 
-        public override int LabelNumber => 1049749;  // Ethereal Swamp Dragon Statuette
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                NonTransparentMountedID = 0x3EBD;
-                NonTransparentMountedHue = 0x851;
-                Transparent = true;
-            }
         }
     }
 
     public class RideablePolarBear : EtherealMount
     {
+        public override int LabelNumber => 1076159; // Rideable Polar Bear
+
         [Constructable]
         public RideablePolarBear()
             : base(0x20E1, 0x3EC5, 0x3EC5, DefaultEtherealHue)
@@ -889,32 +788,26 @@ namespace Server.Mobiles
 
         public RideablePolarBear(Serial serial)
             : base(serial)
-        { }
-
-        public override int LabelNumber => 1076159;  // Rideable Polar Bear
+        {
+        }      
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(2); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadEncodedInt();
-
-            if (version == 1)
-            {
-                Transparent = false;
-            }
         }
     }
 
     public class EtherealCuSidhe : EtherealMount
     {
+        public override int LabelNumber => 1080386; // Ethereal Cu Sidhe Statuette
+
         [Constructable]
         public EtherealCuSidhe()
             : base(0x2D96, 0x3E91, 0x3E91, DefaultEtherealHue)
@@ -924,31 +817,26 @@ namespace Server.Mobiles
 
         public EtherealCuSidhe(Serial serial)
             : base(serial)
-        { }
-
-        public override int LabelNumber => 1080386;  // Ethereal Cu Sidhe Statuette
+        {
+        }
+        
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadEncodedInt();
-
-            if (version == 0)
-            {
-                Transparent = false;
-            }
         }
     }
 
     public class EtherealHiryu : EtherealMount
     {
+        public override int LabelNumber => 1113813; // Ethereal Hiryu Statuette
+
         [Constructable]
         public EtherealHiryu()
             : base(0x276A, 0x3E94, 0x3E94, DefaultEtherealHue)
@@ -958,31 +846,26 @@ namespace Server.Mobiles
 
         public EtherealHiryu(Serial serial)
             : base(serial)
-        { }
+        {
+        }
 
-        public override int LabelNumber => 1113813;  // Ethereal Hiryu Statuette
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadEncodedInt();
-
-            if (version == 0)
-            {
-                Transparent = false;
-            }
         }
     }
 
     public class EtherealReptalon : EtherealMount
     {
+        public override int LabelNumber => 1113812; // Ethereal Reptalon Statuette
+
         [Constructable]
         public EtherealReptalon()
             : base(0x2d95, 0x3e90, 0x3e90, DefaultEtherealHue)
@@ -992,31 +875,26 @@ namespace Server.Mobiles
 
         public EtherealReptalon(Serial serial)
             : base(serial)
-        { }
+        {
+        }
 
-        public override int LabelNumber => 1113812;  // Ethereal Reptalon Statuette
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadEncodedInt();
-
-            if (version == 0)
-            {
-                Transparent = false;
-            }
         }
     }
 
     public class ChargerOfTheFallen : EtherealMount
     {
+        public override int LabelNumber => 1074816; // Charger of the Fallen Statuette
+
         [Constructable]
         public ChargerOfTheFallen()
             : base(0x2D9C, 0x3E92, 0x3E92, DefaultEtherealHue)
@@ -1026,33 +904,25 @@ namespace Server.Mobiles
 
         public ChargerOfTheFallen(Serial serial)
             : base(serial)
-        { }
-
-        public override int LabelNumber => 1074816;  // Charger of the Fallen Statuette
+        {
+        }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                Transparent = false;
-            }
         }
     }
 
     public class EtherealBoura : EtherealMount
     {
-        public override int LabelNumber => 1150006;  // Rideable Boura Statuette
+        public override int LabelNumber => 1150006; // Rideable Boura Statuette
 
         [Constructable]
         public EtherealBoura()
@@ -1069,26 +939,19 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(2); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (version == 1)
-            {
-                Transparent = false;
-            }
         }
     }
 
     public class EtherealAncientHellHound : EtherealMount
     {
-        public override int LabelNumber => 1155723;  // Ancient Hell Hound Statuette
+        public override int LabelNumber => 1155723; // Ancient Hell Hound Statuette
 
         [Constructable]
         public EtherealAncientHellHound()
@@ -1105,25 +968,20 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(2); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (version == 1)
-            {
-                Transparent = false;
-            }
         }
     }
 
     public class EtherealTiger : EtherealMount
     {
+        public override int LabelNumber => 1154589; // Ethereal Tiger Statuette
+
         [Constructable]
         public EtherealTiger()
             : this(false)
@@ -1139,33 +997,25 @@ namespace Server.Mobiles
 
         public EtherealTiger(Serial serial)
             : base(serial)
-        { }
-
-        public override int LabelNumber => 1154589;  // Ethereal Tiger Statuette
+        {
+        }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                Transparent = false;
-            }
         }
     }
 
     public class EtherealTarantula : EtherealMount
     {
-        public override int LabelNumber => 1157081;  // Tarantula Statuette
+        public override int LabelNumber => 1157081; // Tarantula Statuette
 
         [Constructable]
         public EtherealTarantula()
@@ -1173,7 +1023,6 @@ namespace Server.Mobiles
         {
             Transparent = false;
         }
-
 
         public EtherealTarantula(Serial serial)
             : base(serial)
@@ -1183,26 +1032,19 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                Transparent = false;
-            }
         }
     }
 
     public class EtherealLasher : EtherealMount
     {
-        public override int LabelNumber => 1157214;  // Lasher
+        public override int LabelNumber => 1157214; // Lasher
 
         [Constructable]
         public EtherealLasher()
@@ -1219,26 +1061,19 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                Transparent = false;
-            }
         }
     }
 
     public class EtherealSerpentineDragon : EtherealMount
     {
-        public override int LabelNumber => 1157995;  // Ethereal Dragon Statuette
+        public override int LabelNumber => 1157995; // Ethereal Dragon Statuette
 
         [Constructable]
         public EtherealSerpentineDragon()
@@ -1255,20 +1090,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                Transparent = false;
-            }
         }
     }
 

@@ -664,18 +664,17 @@ namespace Server.Engines.Quests
 
                 if (Server.Engines.Points.PointsSystem.RisingTide.Enabled)
                 {
-                    if (0.25 > Utility.RandomDouble())
+                    hold.DropItem(new MaritimeCargo());
+                    hold.DropItem(new MaritimeCargo());
+
+                    if (galleon is OrcishGalleon)
                     {
                         hold.DropItem(new MaritimeCargo());
 
-                        if (0.1 > Utility.RandomDouble())
+                        if (Utility.RandomBool())
                         {
                             hold.DropItem(new MaritimeCargo());
                         }
-                    }
-                    else if (0.25 > Utility.RandomDouble())
-                    {
-                        hold.DropItem(new MaritimeCargo());
                     }
                 }
             }

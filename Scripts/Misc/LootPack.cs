@@ -143,7 +143,26 @@ namespace Server
 
                 if (item != null)
                 {
-                    if (item.Stackable)
+                    if (from is BaseCreature && item.LootType == LootType.Blessed)
+                    {
+                        Timer.DelayCall(TimeSpan.FromMilliseconds(25), () =>
+                        {
+                            var corpse = ((BaseCreature)from).Corpse;
+
+                            if (corpse != null)
+                            {
+                                if (!corpse.TryDropItem((BaseCreature)from, item, false))
+                                {
+                                    corpse.DropItem(item);
+                                }
+                            }
+                            else
+                            {
+                                item.Delete();
+                            }
+                        });
+                    }
+                    else if (item.Stackable)
                     {
                         cont.DropItemStacked(item);
                     }
@@ -666,6 +685,11 @@ namespace Server
         public static LootPack LootItem<T>(int min, int max, bool resource) where T : Item
         {
             return new LootPack(new[] { new LootPackEntry(false, resource, new LootPackItem[] { new LootPackItem(typeof(T), 1) }, 100.0, Utility.RandomMinMax(min, max)) });
+        }
+
+        public static LootPack LootItem<T>(int min, int max, bool spawnTime, bool onSteal) where T : Item
+        {
+            return new LootPack(new[] { new LootPackEntry(spawnTime, onSteal, new LootPackItem[] { new LootPackItem(typeof(T), 1) }, 100.0, Utility.RandomMinMax(min, max)) });
         }
 
         public static LootPack LootItem<T>(int amount, bool resource) where T : Item

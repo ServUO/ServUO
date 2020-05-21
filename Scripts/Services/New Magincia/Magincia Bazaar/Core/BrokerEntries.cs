@@ -82,8 +82,7 @@ namespace Server.Engines.NewMagincia
         /// <returns></returns>
         public bool PlayerCanBuy(int amount)
         {
-            //return (m_SellAtLimit == 0 || m_Stock >= m_SellAtLimit) && m_Stock > 0 && m_SellPricePer > 0 && m_SellLimit < amount;
-            return (m_SellLimit == 0 || amount <= ActualSellLimit) && m_SellPricePer > 0;
+            return (m_SellLimit == 0 || amount <= ActualSellLimit) && m_Stock > 0 &&  m_SellPricePer > 0;
         }
 
         /// <summary>
@@ -93,8 +92,7 @@ namespace Server.Engines.NewMagincia
         /// <returns></returns>
         public bool PlayerCanSell(int amount)
         {
-            //(m_BuyAtLimit == 0 || m_Stock <= entry.BuyAtLimit) && m_Stock > 0 && m_BuyPricePer * amount <= m_Broker.BankBalance && m_BuyPricePer > 0 && m_BuyLimit < amount;
-            return (m_BuyLimit == 0 || amount <= ActualBuyLimit) && m_Stock > 0 && m_BuyPricePer > 0 && m_BuyPricePer <= m_Broker.BankBalance;
+            return (m_BuyLimit == 0 || amount <= ActualBuyLimit) && m_BuyPricePer > 0 && m_BuyPricePer <= m_Broker.BankBalance;
         }
 
         public CommodityBrokerEntry(GenericReader reader)

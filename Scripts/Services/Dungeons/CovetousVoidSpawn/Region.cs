@@ -68,7 +68,7 @@ namespace Server.Engines.VoidPool
 
                     if (chance > Utility.RandomDouble())
                     {
-                        Mobile mob = DemonKnight.FindRandomPlayer((BaseCreature)m);
+                        Mobile mob = ((BaseCreature)m).RandomPlayerWithLootingRights();
 
                         if (mob != null)
                         {

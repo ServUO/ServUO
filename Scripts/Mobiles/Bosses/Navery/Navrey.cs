@@ -77,7 +77,7 @@ namespace Server.Mobiles
         {
             int random = Utility.Random(typelist.Length);
             Item item = Loot.Construct(typelist[random]);
-            DistributeArtifact(DemonKnight.FindRandomPlayer(bc), item);
+            DistributeArtifact(bc.RandomPlayerWithLootingRights(), item);
         }
 
         public static void DistributeArtifact(Mobile to, Item artifact)

@@ -92,20 +92,24 @@ namespace Server.Mobiles
         {
             int random = Utility.Random(typelist.Length);
             Item item = Loot.Construct(typelist[random]);
-            DistributeArtifact(DemonKnight.FindRandomPlayer(bc), item);
+            DistributeArtifact(bc.RandomPlayerWithLootingRights(), item);
         }
 
         public static void DistributeArtifact(Mobile to, Item artifact)
         {
-            if (to == null || artifact == null)
-                return;
+            if (to != null)
+            {
+                Container pack = to.Backpack;
 
-            Container pack = to.Backpack;
+                if (pack == null || !pack.TryDropItem(to, artifact, false))
+                    to.BankBox.DropItem(artifact);
 
-            if (pack == null || !pack.TryDropItem(to, artifact, false))
-                to.BankBox.DropItem(artifact);
-
-            to.SendLocalizedMessage(502088); // A special gift has been placed in your backpack.
+                to.SendLocalizedMessage(502088); // A special gift has been placed in your backpack.
+            }
+            else if (artifact != null)
+            {
+                artifact.Delete();
+            }
         }
 
         public override bool OnBeforeDeath()

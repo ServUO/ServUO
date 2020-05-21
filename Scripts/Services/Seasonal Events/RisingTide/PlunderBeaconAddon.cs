@@ -514,5 +514,54 @@ namespace Server.Items
 		};
 
         #endregion
+
+        public static List<PlunderBeaconAddon> Beacons { get; set; }
+
+        public static void AddBeacon(PlunderBeaconAddon beacon)
+        {
+            if (Beacons == null)
+            {
+                Beacons = new List<PlunderBeaconAddon>();
+            }
+
+            Beacons.Add(beacon);
+        }
+
+        public static void RemoveBeacon(PlunderBeaconAddon beacon)
+        {
+            if (Beacons != null && Beacons.Contains(beacon))
+            {
+                Beacons.Remove(beacon);
+            }
+        }
+
+        public static void Initialize()
+        {
+            if (Server.Engines.Points.PointsSystem.RisingTide.Enabled)
+            {
+                EventSink.CreatureDeath += OnCreatureDeath;
+            }
+        }
+
+        public static void OnCreatureDeath(CreatureDeathEventArgs e)
+        {
+            var killed = e.Creature as BaseCreature;
+
+            if (killed != null && Beacons != null && Beacons.Any(b => b.Spawn != null && b.Spawn.ContainsKey(killed)))
+            {
+                double chance = killed is PirateCrew ? 0.15 : 0.025;
+
+                if (chance >= Utility.RandomDouble())
+                {
+                    var m = killed.RandomPlayerWithLootingRights();
+
+                    if (m != null)
+                    {
+                        m.AddToBackpack(new MaritimeCargo());
+                        m.SendLocalizedMessage(1158907); // You recover maritime trade cargo!
+                    }
+                }
+            }
+        }
     }
 }

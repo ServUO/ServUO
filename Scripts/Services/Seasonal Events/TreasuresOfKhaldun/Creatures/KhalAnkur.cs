@@ -331,6 +331,20 @@ namespace Server.Mobiles
             AddLoot(LootPack.Meager);
         }
 
+        private int _120Scrolls = 4;
+
+        public override PowerScroll CreateRandomPowerScroll()
+        {
+            if (_120Scrolls > 0)
+            {
+                _120Scrolls--;
+
+                return PowerScroll.CreateRandomNoCraft(20, 20);
+            }
+
+            return base.CreateRandomPowerScroll();
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

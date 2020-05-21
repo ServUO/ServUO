@@ -171,7 +171,7 @@ namespace Server.Items
             {
                 Point3D p3D = new Point3D(p.X + c.Offset.X, p.Y + c.Offset.Y, p.Z + c.Offset.Z);
 
-                if (!map.CanFit(p3D.X, p3D.Y, p3D.Z, c.ItemData.Height, false, true, (c.Z == 0)))
+                if (!map.CanFit(p3D.X, p3D.Y, p3D.Z, c.ItemData.Height, false, true, (c.Z == 0), true))
                     return AddonFitResult.Blocked;
                 if (!CheckHouse(from, p3D, map, c.ItemData.Height, ref house))
                     return AddonFitResult.NotInHouse;

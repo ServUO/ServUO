@@ -41,7 +41,7 @@ namespace Server.Mobiles
                     SpecialAbility ability = null;
 
                     SpecialAbility[] abilties = profile.EnumerateSpecialAbilities().Where(m =>
-                        (type == DamageType.Melee && m.TriggerOnDoMeleeDamage) || (type >= DamageType.Spell && m.TriggerOnDoSpellDamage) &&
+                        ((type == DamageType.Melee && m.TriggerOnDoMeleeDamage) || (type >= DamageType.Spell && m.TriggerOnDoSpellDamage)) &&
                         !m.IsInCooldown(attacker)).ToArray();
 
                     if (abilties != null && abilties.Length > 0)
@@ -66,7 +66,7 @@ namespace Server.Mobiles
                     SpecialAbility ability = null;
 
                     SpecialAbility[] abilties = profile.EnumerateSpecialAbilities().Where(m =>
-                        (type == DamageType.Melee && m.TriggerOnGotMeleeDamage) || (type >= DamageType.Spell && m.TriggerOnGotSpellDamage) &&
+                        ((type == DamageType.Melee && m.TriggerOnGotMeleeDamage) || (type >= DamageType.Spell && m.TriggerOnGotSpellDamage)) &&
                         !m.IsInCooldown(defender)).ToArray();
 
                     if (abilties != null && abilties.Length > 0)
@@ -1420,40 +1420,45 @@ namespace Server.Mobiles
     {
         public override bool TriggerOnDoMeleeDamage => true;
         public override int ManaCost => 30;
+        public override TimeSpan CooldownDuration => TimeSpan.FromSeconds(Utility.Random(20, 40));
 
         public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
         {
-            defender.FixedParticles(0x374A, 1, 15, 5054, 23, 7, EffectLayer.Head);
-            defender.PlaySound(0x1F9);
+            var dam = AOS.Damage(defender, creature, 22, 0, 0, 0, 0, 100);
+            creature.Hits = Math.Min(creature.HitsMax, creature.Hits + dam);
+            defender.SendLocalizedMessage(1070848); // You feel your life force being stolen away!
 
-            AOS.Damage(defender, creature, damage, 0, 0, 0, 0, 100);
-
-            new InternalTimer(creature, defender, damage);
+            var timer = new InternalTimer(creature, defender);
+            timer.Start();
         }
 
         private class InternalTimer : Timer
         {
             public BaseCreature Attacker { get; set; }
             public Mobile Defender { get; set; }
-            public int ToHeal { get; set; }
+            public int Ticks { get; set; }
 
-            public InternalTimer(BaseCreature creature, Mobile defender, int toHeal)
-                : base(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5), 5)
+            public InternalTimer(BaseCreature creature, Mobile defender)
+                : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1))
             {
                 Attacker = creature;
                 Defender = defender;
-                ToHeal = toHeal;
-
-                defender.FixedParticles(0x374A, 10, 15, 5013, 0x496, 0, EffectLayer.Waist);
-                defender.PlaySound(0x231);
-
-                Start();
             }
 
             protected override void OnTick()
             {
-                Defender.FixedParticles(0x374A, 10, 15, 5013, 0x496, 0, EffectLayer.Waist);
-                Attacker.Hits = Math.Min(Attacker.HitsMax, Attacker.Hits + (ToHeal / 5));
+                if (Ticks > 5 || !Defender.Alive)
+                {
+                    Defender.SendLocalizedMessage(1070849); // The drain on your life force is gone.
+                    Stop();
+                }
+                else
+                {
+                    var dam = AOS.Damage(Defender, Attacker, 2, 0, 0, 0, 0, 100);
+                    Attacker.Hits = Math.Min(Attacker.HitsMax, Attacker.Hits + 2);
+
+                    Ticks++;
+                }
             }
         }
     }
@@ -1663,7 +1668,7 @@ namespace Server.Mobiles
 
             protected override void OnTick()
             {
-                m_Mobile.SendMessage("The corruption of your armor has worn off");
+                m_Mobile.SendLocalizedMessage(1071967); // The corruption of your armor has worn off
                 DoExpire();
             }
         }
@@ -1672,78 +1677,12 @@ namespace Server.Mobiles
     public class LifeLeech : SpecialAbility
     {
         public override int ManaCost => 5;
-        public override TimeSpan CooldownDuration => TimeSpan.FromSeconds(Utility.Random(10, 20));
+        public override TimeSpan CooldownDuration => TimeSpan.FromSeconds(1);
         public override bool TriggerOnDoMeleeDamage => true;
-
-        public static Dictionary<Mobile, InternalTimer> _Table;
 
         public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
         {
-            if (_Table == null)
-                _Table = new Dictionary<Mobile, InternalTimer>();
-
-            InternalTimer t = null;
-
-            if (_Table.ContainsKey(defender))
-                t = _Table[defender];
-
-            if (t != null)
-                t.Stop();
-
-            t = new InternalTimer(creature, defender);
-            _Table[defender] = t;
-
-            defender.SendLocalizedMessage(1070848); // You feel your life force being stolen away!
-
-            t.Start();
-        }
-
-        public static void DrainLife(Mobile m, Mobile from)
-        {
-            if (m.Alive)
-            {
-                int damageGiven = AOS.Damage(m, from, 5, 0, 0, 0, 0, 100);
-                from.Hits += damageGiven;
-
-                m.SendLocalizedMessage(1070847); // The creature continues to steal your life force!
-            }
-            else
-            {
-                EndLifeDrain(m);
-            }
-        }
-
-        public static void EndLifeDrain(Mobile m)
-        {
-            if (_Table != null && _Table.ContainsKey(m))
-            {
-                _Table[m].Stop();
-                _Table.Remove(m);
-                m.SendLocalizedMessage(1070849); // The drain on your life force is gone.
-            }
-        }
-
-        public class InternalTimer : Timer
-        {
-            private readonly Mobile m_From;
-            private readonly Mobile m_Mobile;
-            private int m_Count;
-
-            public InternalTimer(Mobile from, Mobile m)
-                : base(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0))
-            {
-                m_From = from;
-                m_Mobile = m;
-                Priority = TimerPriority.TwoFiftyMS;
-            }
-
-            protected override void OnTick()
-            {
-                DrainLife(m_Mobile, m_From);
-
-                if (Running && ++m_Count == 5)
-                    EndLifeDrain(m_Mobile);
-            }
+            creature.Hits = Math.Min(creature.HitsMax, creature.Hits + (int)(damage * Utility.RandomMinMax(.4, .5)));
         }
     }
 
@@ -2011,6 +1950,9 @@ namespace Server.Mobiles
         }
     }
 
+    /// <summary>
+    /// This is an ability of certain wild creatures. This is not a trainable pet ability
+    /// </summary>
     public class Rage : SpecialAbility
     {
         public override bool TriggerOnDoMeleeDamage => true;
@@ -2083,6 +2025,9 @@ namespace Server.Mobiles
         }
     }
 
+    /// <summary>
+    /// This is an ability of certain creatures. While this ability cannot be directly trained by a tamed creaure, it is used when they have the ability to heal
+    /// </summary>
     public class Heal : SpecialAbility
     {
         public override bool TriggerOnThink => true;
@@ -2113,6 +2058,9 @@ namespace Server.Mobiles
         }
     }
 
+    /// <summary>
+    /// This is an ability of certain wild creatures. This is not a trainable pet ability
+    /// </summary>
     public class PoisonSpit : SpecialAbility
     {
         public override bool TriggerOnGotMeleeDamage => true;
@@ -2135,6 +2083,9 @@ namespace Server.Mobiles
         }
     }
 
+    /// <summary>
+    /// This is an ability of certain wild creatures. This is not a trainable pet ability
+    /// </summary>
     public class TrueFear : SpecialAbility
     {
         public override bool TriggerOnApproach => true;
@@ -2174,6 +2125,9 @@ namespace Server.Mobiles
         }
     }
 
+    /// <summary>
+    /// This is an ability of certain wild creatures. This is not a trainable pet ability
+    /// </summary>
     public class ColossalBlow : SpecialAbility
     {
         public override bool TriggerOnDoMeleeDamage => true;
@@ -2208,9 +2162,11 @@ namespace Server.Mobiles
         }
     }
 
+    /// <summary>
+    /// This is the Succubus/Semidar type life drain. This is not a trainable pet ability
+    /// </summary>
     public class LifeDrain : SpecialAbility
-    {
-        public override bool TriggerOnDoMeleeDamage => true;
+    {        public override bool TriggerOnDoMeleeDamage => true;
         public override bool TriggerOnGotMeleeDamage => true;
         public override bool NaturalAbility => true;
         public override TimeSpan CooldownDuration => TimeSpan.FromSeconds(1);
@@ -2268,6 +2224,9 @@ namespace Server.Mobiles
         }
     }
 
+    /// <summary>
+    /// This is an ability of certain wild creatures. This is not a trainable pet ability
+    /// </summary>
     public class ColossalRage : SpecialAbility
     {
         public override bool TriggerOnGotMeleeDamage => true;

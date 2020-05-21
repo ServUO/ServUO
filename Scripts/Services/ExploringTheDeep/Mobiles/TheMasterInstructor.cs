@@ -109,7 +109,7 @@ namespace Server.Mobiles
 
         public override bool OnBeforeDeath()
         {
-            Mobile killer = DemonKnight.FindRandomPlayer(this);
+            Mobile killer = RandomPlayerWithLootingRights();
 
             if (killer != null)
             {
