@@ -1,4 +1,4 @@
-﻿namespace Server.Mobiles
+namespace Server.Mobiles
 {
     public class BoundSoul : BaseCreature
     {
@@ -38,10 +38,19 @@
             Karma = -5000;
         }
 
-
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich, 3);
+        }
+
+        public override bool OnBeforeDeath()
+        {
+            if (Region.IsPartOf<Server.Regions.CorgulRegion>())
+            {
+                CorgulTheSoulBinder.CheckDropSOT(this);
+            }
+
+            return base.OnBeforeDeath();
         }
 
         public BoundSoul(Serial serial)

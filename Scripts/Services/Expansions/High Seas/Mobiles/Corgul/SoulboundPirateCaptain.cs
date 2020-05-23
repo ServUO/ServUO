@@ -1,4 +1,4 @@
-﻿using Server.Items;
+using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -49,6 +49,15 @@ namespace Server.Mobiles
 
         }
 
+        public override bool OnBeforeDeath()
+        {
+            if (Region.IsPartOf<Server.Regions.CorgulRegion>())
+            {
+                CorgulTheSoulBinder.CheckDropSOT(this);
+            }
+
+            return base.OnBeforeDeath();
+        }
 
         public override void GenerateLoot()
         {

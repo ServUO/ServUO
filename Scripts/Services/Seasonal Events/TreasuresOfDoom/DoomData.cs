@@ -42,10 +42,9 @@ namespace Server.Engines.Points
                 if (!DungeonPoints.ContainsKey(damager))
                     DungeonPoints[damager] = 0;
 
-                int fame = bc.Fame / 2;
                 int luck = Math.Max(0, ((PlayerMobile)damager).RealLuck);
 
-                DungeonPoints[damager] += (int)(fame * (1 + Math.Sqrt(luck) / 100));
+                DungeonPoints[damager] += (int)Math.Max(0, (bc.Fame * (1 + Math.Sqrt(luck) / 100)));
 
                 int x = DungeonPoints[damager];
                 const double A = 0.000863316841;

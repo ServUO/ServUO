@@ -233,7 +233,7 @@ namespace Server.Engines.SeasonalEvents
 
                 Point3D p = new Point3D(SpawnLocation);
 
-                for (int j = 0; i < 10; j++)
+                for (int j = 0; j < 10; j++)
                 {
                     p = SpawnMap.GetRandomSpawnPoint(rec);
 

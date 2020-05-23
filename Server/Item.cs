@@ -5147,14 +5147,14 @@ namespace Server
                 int zStart = checkZ - z;
                 int zEnd = checkTop - z;
 
-                if (zStart >= 20 || zEnd < 0)
+                if (zStart >= 17 || zEnd < 0)
                     continue;
 
                 if (zStart < 0)
                     zStart = 0;
 
-                if (zEnd > 19)
-                    zEnd = 19;
+                if (zEnd > 16)
+                    zEnd = 16;
 
                 int bitCount = zEnd - zStart;
 

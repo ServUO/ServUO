@@ -1,3 +1,5 @@
+using Server.Items;
+
 namespace Server.Mobiles
 {
     [CorpseName("a dark guardians' corpse")]
@@ -51,9 +53,14 @@ namespace Server.Mobiles
             AddLoot(LootPack.Rich);
             AddLoot(LootPack.MedScrolls, 2);
             AddLoot(LootPack.NecroRegs, 15, 25);
+            AddLoot(LootPack.LootItemCallback(DropTreasureMap));
         }
 
-        public override int TreasureMapLevel => Utility.RandomMinMax(1, 3);
+        private Item DropTreasureMap(IEntity e)
+        {
+            return new TreasureMap(Utility.RandomList(0, 0, 0, 1), e.Map, Server.Spells.SpellHelper.IsEodon(e.Map, e.Location));
+        }
+
         public override bool BleedImmune => true;
         public override Poison PoisonImmune => Poison.Lethal;
         public override bool Unprovokable => true;

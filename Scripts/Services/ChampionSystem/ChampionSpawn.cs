@@ -478,7 +478,7 @@ namespace Server.Engines.CannedEvil
         }
 
         #region Scroll of Transcendence
-        private ScrollOfTranscendence CreateRandomSoT(bool felucca)
+        public static ScrollOfTranscendence CreateRandomSoT(bool felucca)
         {
             int level = Utility.RandomMinMax(1, 5);
 

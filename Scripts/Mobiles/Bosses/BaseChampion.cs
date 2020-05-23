@@ -31,6 +31,8 @@ namespace Server.Mobiles
         public virtual bool NoGoodies => false;
 
         public virtual bool CanGivePowerscrolls => true;
+        public virtual bool RestrictedToFelucca => true;
+        public virtual int PowerScrollAmount => ChampionSystem.PowerScrollAmount;
 
         public override void Serialize(GenericWriter writer)
         {
@@ -80,7 +82,7 @@ namespace Server.Mobiles
 
         public virtual void GivePowerScrolls()
         {
-            if (Map != Map.Felucca)
+            if (Map == null || (RestrictedToFelucca && Map.Rules != MapRules.FeluccaRules))
                 return;
 
             List<Mobile> toGive = new List<Mobile>();
@@ -127,12 +129,12 @@ namespace Server.Mobiles
                 toGive[rand] = hold;
             }
 
-            for (int i = 0; i < ChampionSystem.PowerScrollAmount; ++i)
+            for (int i = 0; i < PowerScrollAmount; ++i)
             {
                 Mobile m = toGive[i % toGive.Count];
 
-                PowerScroll ps = CreateRandomPowerScroll();
-                m.SendLocalizedMessage(1049524); // You have received a scroll of power!
+                var ps = CreateRandomPowerScroll();
+                GiveItemMessage(m, ps);
 
                 GivePowerScrollTo(m, ps);
             }
@@ -146,17 +148,36 @@ namespace Server.Mobiles
                 toGive[rand] = hold;
             }
 
-            for (int i = 0; i < ChampionSystem.PowerScrollAmount; ++i)
+            for (int i = 0; i < PowerScrollAmount; ++i)
             {
                 Mobile m = toGive[i % toGive.Count];
 
                 SkillMasteryPrimer p = CreateRandomPrimer();
-                m.SendLocalizedMessage(1156209); // You have received a mastery primer!
+                GiveItemMessage(m, p);
 
                 GivePowerScrollTo(m, p);
             }
 
             ColUtility.Free(toGive);
+        }
+
+        public virtual void GiveItemMessage(Mobile m, Item item)
+        {
+            if (m == null)
+                return;
+
+            if (item is ScrollOfTranscendence)
+            {
+                m.SendLocalizedMessage(1094936); // You have received a Scroll of Transcendence!
+            }
+            else if (item is SkillMasteryPrimer)
+            {
+                m.SendLocalizedMessage(1156209); // You have received a mastery primer!
+            }
+            else
+            {
+                m.SendLocalizedMessage(1049524); // You have received a scroll of power!
+            }
         }
 
         public virtual void GivePowerScrollTo(Mobile m, Item item)
@@ -202,7 +223,7 @@ namespace Server.Mobiles
 
                     if (chance > Utility.Random(100))
                     {
-                        PowerScroll powerScroll = CreateRandomPowerScroll();
+                        var powerScroll = CreateRandomPowerScroll();
 
                         prot.SendLocalizedMessage(1049368); // You have been rewarded for your dedication to Justice!
 
@@ -220,7 +241,7 @@ namespace Server.Mobiles
             }
         }
 
-        public virtual PowerScroll CreateRandomPowerScroll()
+        public virtual Item CreateRandomPowerScroll()
         {
             int level;
             double random = Utility.RandomDouble();
@@ -233,6 +254,11 @@ namespace Server.Mobiles
                 level = 10;
 
             return PowerScroll.CreateRandomNoCraft(level, level);
+        }
+
+        public virtual SkillMasteryPrimer CreateRandomPrimer()
+        {
+            return SkillMasteryPrimer.GetRandom();
         }
 
         public virtual void OnChampPopped(ChampionSpawn spawn)
@@ -281,11 +307,6 @@ namespace Server.Mobiles
             }
 
             base.OnDeath(c);
-        }
-
-        private static SkillMasteryPrimer CreateRandomPrimer()
-        {
-            return SkillMasteryPrimer.GetRandom();
         }
     }
 }
