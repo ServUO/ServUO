@@ -47,7 +47,6 @@ namespace Server.Mobiles
             m_Hue = hue;
             m_Args = args;
             m_Stackable = stacks;
-
             if (type != null && EconomyItem)
             {
                 m_MaxAmount = m_Amount = BaseVendor.EconomyStockAmount;
@@ -288,10 +287,11 @@ namespace Server.Mobiles
         public virtual IEntity GetEntity()
         {
             if (m_Args == null || m_Args.Length == 0)
+            {
                 return (IEntity)Activator.CreateInstance(m_Type);
+            }
 
             return (IEntity)Activator.CreateInstance(m_Type, m_Args);
-            //return (Item)Activator.CreateInstance( m_Type );
         }
 
         //Attempt to restock with item, (return true if restock sucessful)
@@ -484,6 +484,44 @@ namespace Server.Mobiles
 
                 m_Table = new Dictionary<Type, IEntity>();
             }
+        }
+    }
+
+    public class GenericBuyInfo<T> : GenericBuyInfo
+    {
+        public Action<T, GenericBuyInfo> CreateCallback { get; set; }
+
+        public GenericBuyInfo(int price, int amount, int itemID, int hue, bool stacks = false, Action<T, GenericBuyInfo> callback = null)
+            : this(null, price, amount, itemID, hue, null, stacks, callback)
+        {
+        }
+
+        public GenericBuyInfo(string name, int price, int amount, int itemID, int hue, bool stacks = false, Action<T, GenericBuyInfo> callback = null)
+            : this(name, price, amount, itemID, hue, null, stacks, callback)
+        {
+        }
+
+        public GenericBuyInfo(int price, int amount, int itemID, int hue, object[] args, bool stacks = false, Action<T, GenericBuyInfo> callback = null)
+            : this(null, price, amount, itemID, hue, args, stacks, callback)
+        {
+        }
+
+        public GenericBuyInfo(string name, int price, int amount, int itemID, int hue, object[] args, bool stacks = false, Action<T, GenericBuyInfo> callback = null)
+            : base(name, typeof(T), price, amount, itemID, hue, args, stacks)
+        {
+            CreateCallback = callback;
+        }
+
+        public override IEntity GetEntity()
+        {
+            var entity = base.GetEntity();
+
+            if (CreateCallback != null)
+            {
+                CreateCallback((T)entity, this);
+            }
+
+            return entity;
         }
     }
 }

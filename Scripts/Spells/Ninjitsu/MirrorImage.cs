@@ -122,7 +122,7 @@ namespace Server.Spells.Ninjitsu
         {
             Clone clone = null;
 
-            if (HasClone(defender) && (defender.Skills.Ninjitsu.Value / 150.0) > Utility.RandomDouble())
+            if (HasClone(defender) && (defender.Skills.Ninjitsu.Value / 133.2) > Utility.RandomDouble())
             {
                 IPooledEnumerable eable = defender.GetMobilesInRange(4);
 

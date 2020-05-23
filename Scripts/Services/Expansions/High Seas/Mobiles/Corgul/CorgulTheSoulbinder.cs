@@ -1,6 +1,7 @@
 using Server.Items;
 using Server.Misc;
 using Server.Regions;
+using Server.Engines.CannedEvil;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +34,7 @@ namespace Server.Mobiles
         public override Type[] DecorativeList => new Type[] { typeof(EnchantedBladeDeed), typeof(EnchantedVortexDeed) };
 
         public override bool NoGoodies => true;
-        public override bool CanGivePowerscrolls => false;
+        public override bool RestrictedToFelucca => false;
 
         private readonly int _SpawnPerLoc = 15;
 
@@ -352,6 +353,11 @@ namespace Server.Mobiles
             AddLoot(LootPack.SuperBoss, 6);
         }
 
+        public override Item CreateRandomPowerScroll()
+        {
+            return ChampionSpawn.CreateRandomSoT(Map != null && Map.Rules == MapRules.FeluccaRules);
+        }
+
         public override void OnDeath(Container c)
         {
             base.OnDeath(c);
@@ -371,6 +377,30 @@ namespace Server.Mobiles
 
                     if (bc != null && bc.Alive)
                         bc.Kill();
+                }
+            }
+        }
+
+        public static void CheckDropSOT(BaseCreature bc)
+        {
+            if (bc == null)
+                return;
+
+            var killer = bc.FindMostRecentDamager(false);
+            var creature = killer as BaseCreature;
+
+            if (creature != null)
+            {
+                killer = creature.GetMaster();
+            }
+
+            if (killer is PlayerMobile && Utility.RandomDouble() < ChampionSystem.ScrollChance * 10)
+            {
+                PlayerMobile pm = (PlayerMobile)killer;
+
+                if (Utility.RandomDouble() < ChampionSystem.TranscendenceChance)
+                {
+                    ChampionSpawn.GiveScrollTo(pm, ChampionSpawn.CreateRandomSoT(bc.Map != null && bc.Map.Rules == MapRules.FeluccaRules));
                 }
             }
         }

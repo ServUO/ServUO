@@ -1,3 +1,8 @@
+using System;
+using System.Linq;
+
+using Server.Items;
+
 namespace Server.Mobiles
 {
     [CorpseName("a goat corpse")]
@@ -44,6 +49,29 @@ namespace Server.Mobiles
         public override int Meat => 2;
         public override int Hides => 8;
         public override FoodType FavoriteFood => FoodType.GrainsAndHay | FoodType.FruitsAndVegies;
+
+        private static readonly Type[] _FeedTypes = new[]
+        {
+            typeof(Backpack), typeof(BaseShoes), typeof(Bag)
+        };
+
+        public override bool CheckFoodPreference(Item f)
+        {
+            if (!base.CheckFoodPreference(f))
+            {
+                if (f is BaseArmor && (((BaseArmor)f).MaterialType == ArmorMaterialType.Leather || ((BaseArmor)f).MaterialType == ArmorMaterialType.Studded))
+                {
+                    return true;
+                }
+
+                var type = f.GetType();
+
+                return _FeedTypes.Any(t => t == type || type.IsSubclassOf(t));
+            }
+
+            return true;
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

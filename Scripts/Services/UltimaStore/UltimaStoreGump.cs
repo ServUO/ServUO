@@ -172,7 +172,7 @@ namespace Server.Engines.UOStore
             AddECHandleInput();
 
             AddBackground(167, 516, 114, 22, 0x2486);
-            AddTextEntry(169, 518, 110, 18, 0, 16, "", 169);
+            AddTextEntry(169, 518, 110, 18, 0, 0, "", 169);
 
             AddECHandleInput();
 

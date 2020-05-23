@@ -1,4 +1,4 @@
-﻿namespace Server.Mobiles
+namespace Server.Mobiles
 {
     public class SoulboundBattleMage : EvilMageLord
     {
@@ -40,10 +40,19 @@
             Karma = -5000;
         }
 
-
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich, 3);
+        }
+
+        public override bool OnBeforeDeath()
+        {
+            if (Region.IsPartOf<Server.Regions.CorgulRegion>())
+            {
+                CorgulTheSoulBinder.CheckDropSOT(this);
+            }
+
+            return base.OnBeforeDeath();
         }
 
         public SoulboundBattleMage(Serial serial)

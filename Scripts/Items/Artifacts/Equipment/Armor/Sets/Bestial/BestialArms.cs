@@ -62,9 +62,6 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (Hue != 2010)
-                Hue = 2010;
         }
     }
 }

@@ -69,7 +69,8 @@ namespace Server.Engines.Craft
             typeof(GozaMatEastDeed), typeof(GozaMatSouthDeed),
             typeof(SquareGozaMatEastDeed), typeof(SquareGozaMatSouthDeed),
             typeof(BrocadeGozaMatEastDeed), typeof(BrocadeGozaMatSouthDeed),
-            typeof(BrocadeSquareGozaMatEastDeed), typeof(BrocadeSquareGozaMatSouthDeed)
+            typeof(BrocadeSquareGozaMatEastDeed), typeof(BrocadeSquareGozaMatSouthDeed),
+            typeof(SquareGozaMatDeed)
    };
 
         private static readonly Type[] m_TailorClothNonColorables = new Type[]
@@ -380,22 +381,15 @@ namespace Server.Engines.Craft
             AddCraft(typeof(GargishSash), 1015283, 1115388, 4.1, 29.1, typeof(Cloth), 1044455, 4, 1044287);
 
             AddCraft(typeof(OilCloth), 1015283, 1041498, 74.6, 99.6, typeof(Cloth), 1044455, 1, 1044287);
-
-            index = AddCraft(typeof(GozaMatEastDeed), 1015283, 1030404, 55.0, 80.0, typeof(Cloth), 1044455, 25, 1044287);
-
-            index = AddCraft(typeof(GozaMatSouthDeed), 1015283, 1030405, 55.0, 80.0, typeof(Cloth), 1044455, 25, 1044287);
-
-            index = AddCraft(typeof(SquareGozaMatEastDeed), 1015283, 1030407, 55.0, 80.0, typeof(Cloth), 1044455, 25, 1044287);
-
-            index = AddCraft(typeof(SquareGozaMatSouthDeed), 1015283, 1030406, 55.0, 80.0, typeof(Cloth), 1044455, 25, 1044287);
-
-            index = AddCraft(typeof(BrocadeGozaMatEastDeed), 1015283, 1030408, 55.0, 80.0, typeof(Cloth), 1044455, 25, 1044287);
-
-            index = AddCraft(typeof(BrocadeGozaMatSouthDeed), 1015283, 1030409, 55.0, 80.0, typeof(Cloth), 1044455, 25, 1044287); ;
-
-            index = AddCraft(typeof(BrocadeSquareGozaMatEastDeed), 1015283, 1030411, 55.0, 80.0, typeof(Cloth), 1044455, 25, 1044287);
-
-            index = AddCraft(typeof(BrocadeSquareGozaMatSouthDeed), 1015283, 1030410, 55.0, 80.0, typeof(Cloth), 1044455, 25, 1044287);
+            AddCraft(typeof(GozaMatEastDeed), 1015283, 1030404, 55.0, 80.0, typeof(Cloth), 1044455, 25, 1044287);
+            AddCraft(typeof(GozaMatSouthDeed), 1015283, 1030405, 55.0, 80.0, typeof(Cloth), 1044455, 25, 1044287);
+            AddCraft(typeof(SquareGozaMatEastDeed), 1015283, 1030407, 55.0, 80.0, typeof(Cloth), 1044455, 25, 1044287);
+            AddCraft(typeof(SquareGozaMatSouthDeed), 1015283, 1030406, 55.0, 80.0, typeof(Cloth), 1044455, 25, 1044287);
+            AddCraft(typeof(BrocadeGozaMatEastDeed), 1015283, 1030408, 55.0, 80.0, typeof(Cloth), 1044455, 25, 1044287);
+            AddCraft(typeof(BrocadeGozaMatSouthDeed), 1015283, 1030409, 55.0, 80.0, typeof(Cloth), 1044455, 25, 1044287);
+            AddCraft(typeof(BrocadeSquareGozaMatEastDeed), 1015283, 1030411, 55.0, 80.0, typeof(Cloth), 1044455, 25, 1044287);
+            AddCraft(typeof(BrocadeSquareGozaMatSouthDeed), 1015283, 1030410, 55.0, 80.0, typeof(Cloth), 1044455, 25, 1044287);
+            AddCraft(typeof(SquareGozaMatDeed), 1015283, 1113621, 55.0, 80.0, typeof(Cloth), 1044455, 25, 1044287);
 
             index = AddCraft(typeof(MaceBelt), 1015283, 1126020, 90.0, 110.0, typeof(Cloth), 1044455, 5, 1044287);
             AddRes(index, typeof(Leather), 1044462, 5, 1044463);

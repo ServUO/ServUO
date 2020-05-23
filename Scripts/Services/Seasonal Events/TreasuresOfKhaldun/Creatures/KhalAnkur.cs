@@ -333,7 +333,7 @@ namespace Server.Mobiles
 
         private int _120Scrolls = 4;
 
-        public override PowerScroll CreateRandomPowerScroll()
+        public override Item CreateRandomPowerScroll()
         {
             if (_120Scrolls > 0)
             {

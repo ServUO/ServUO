@@ -15,7 +15,7 @@ namespace Server.Items
         {
         }
 
-        public override WeaponAbility PrimaryAbility => WeaponAbility.CrushingBlow;
+        public override WeaponAbility PrimaryAbility => WeaponAbility.ShadowStrike;
         public override WeaponAbility SecondaryAbility => WeaponAbility.Dismount;
         public override int StrengthReq => 40;
         public override int MinDamage => 10;

@@ -117,15 +117,15 @@ namespace Server.Commands
 
                     for (int i = 0; i < _Amount; i++)
                     {
-                        Item o = null;
+                        Item o;
 
                         try
                         {
                             o = Activator.CreateInstance(t, true) as Item;
                         }
-                        catch (Exception e)
+                        catch
                         {
-                            Server.Diagnostics.ExceptionLogging.LogException(e);
+                            o = null;
                         }
 
                         if (o == null)
@@ -213,15 +213,15 @@ namespace Server.Commands
                     }
                 }
 
-                Item o = null;
+                Item o;
 
                 try
                 {
                     o = Activator.CreateInstance(t, true) as Item;
                 }
-                catch (Exception e)
+                catch
                 {
-                    Server.Diagnostics.ExceptionLogging.LogException(e);
+                    o = null;
                 }
 
                 if (o == null)
@@ -286,15 +286,15 @@ namespace Server.Commands
                         }
                     }
 
-                    Item o = null;
+                    Item o;
 
                     try
                     {
                         o = Activator.CreateInstance(t, true) as Item;
                     }
-                    catch (Exception e)
+                    catch
                     {
-                        Server.Diagnostics.ExceptionLogging.LogException(e);
+                        o = null;
                     }
 
                     if (o == null)
