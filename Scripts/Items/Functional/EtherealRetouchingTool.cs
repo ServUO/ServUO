@@ -107,13 +107,7 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadEncodedInt();
 
-            if (version == 0)
-                IsRewardItem = true;
-            else
-                IsRewardItem = reader.ReadBool();
-
-            if (LootType != LootType.Blessed)
-                LootType = LootType.Blessed;
+            IsRewardItem = reader.ReadBool();
         }
     }
 }

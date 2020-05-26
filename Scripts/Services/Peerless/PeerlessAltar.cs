@@ -453,15 +453,21 @@ namespace Server.Items
             // teleport party to exit if not already there
             if (Fighters != null)
             {
-                Fighters.ForEach(x => Exit(x));
-                Fighters.Clear();
+                var fighters = new List<Mobile>(Fighters);
+
+                fighters.ForEach(x => Exit(x));
+
+                ColUtility.Free(fighters);
             }
 
             // delete master keys
             if (MasterKeys != null)
             {
-                MasterKeys.ForEach(x => x.Delete());
-                MasterKeys.Clear();
+                var keys = new List<Item>(MasterKeys);
+
+                keys.ForEach(x => x.Delete());
+
+                ColUtility.Free(keys);
             }
 
             // delete any remaining helpers
@@ -469,8 +475,10 @@ namespace Server.Items
 
             // reset summoner, boss		
             Peerless = null;
-
             Deadline = DateTime.MinValue;
+
+            ColUtility.Free(Fighters);
+            ColUtility.Free(MasterKeys);
         }
 
         public virtual void Exit(Mobile fighter)

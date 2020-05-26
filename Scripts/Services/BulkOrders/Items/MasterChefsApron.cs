@@ -15,7 +15,7 @@ namespace Server.Items
             Hue = 1990;
 
             while (_Bonus == 0)
-                _Bonus = BaseTalisman.GetRandomExceptional();
+                _Bonus = Utility.RandomMinMax(20, 30);
         }
 
         public override void GetProperties(ObjectPropertyList list)
@@ -33,7 +33,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             writer.Write(_Bonus);
@@ -42,7 +41,6 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
             _Bonus = reader.ReadInt();
