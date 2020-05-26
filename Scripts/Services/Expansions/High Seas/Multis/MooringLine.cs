@@ -12,7 +12,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public BaseBoat Boat { get; private set; }
 
-        public override int LabelNumber { get { return Boat.IsRowBoat ? 1020935 : 1149697; } } // rope || mooring line
+        public override int LabelNumber => Boat == null || Boat.IsRowBoat ? 1020935 : 1149697; // rope || mooring line
 
         public MooringLine(BaseBoat boat)
             : base(5368)
@@ -73,7 +73,7 @@ namespace Server.Items
         {
             base.GetContextMenuEntries(from, list);
 
-            if (Boat.IsRowBoat && from.Alive && !Boat.Contains(from))
+            if (Boat != null && Boat.IsRowBoat && from.Alive && !Boat.Contains(from))
             {
                 list.Add(new DryDockEntry(Boat, from));
             }
