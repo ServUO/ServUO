@@ -46,18 +46,21 @@ namespace Server.Mobiles
             SetWeaponAbility(WeaponAbility.Dismount);
         }
 
+        public SkeletalLich(Serial serial) : base(serial)
+        {
+        }
+		
+		public override bool CanFlee => false;
+		
+        public override bool BleedImmune => true;
+		
+        public override Poison PoisonImmune => Poison.Lethal;
+		
+        public override int TreasureMapLevel => 1;
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich, 2);
-        }
-
-        public override bool BleedImmune => true;
-        public override Poison PoisonImmune => Poison.Lethal;
-
-        public override int TreasureMapLevel => 1;
-
-        public SkeletalLich(Serial serial) : base(serial)
-        {
         }
 
         public override void Serialize(GenericWriter writer)

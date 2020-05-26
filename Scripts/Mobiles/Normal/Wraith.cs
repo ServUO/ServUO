@@ -42,11 +42,14 @@ namespace Server.Mobiles
         {
         }
 
+		public override bool CanFlee => false;
+		
         public override bool BleedImmune => true;
 
         public override TribeType Tribe => TribeType.Undead;
 
         public override Poison PoisonImmune => Poison.Lethal;
+		
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Meager);

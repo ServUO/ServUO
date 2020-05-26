@@ -48,12 +48,18 @@ namespace Server.Mobiles
         {
         }
 
+		public override bool CanFlee => false;
+		
         public override TribeType Tribe => TribeType.Undead;
-
+		
         public override bool Unprovokable => true;
+		
         public override bool BleedImmune => true;
+		
         public override Poison PoisonImmune => Poison.Lethal;
+		
         public override int TreasureMapLevel => 5;
+		
         public override int GetIdleSound()
         {
             return 0x19D;

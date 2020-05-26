@@ -322,6 +322,7 @@ namespace Server.Items
     {
         public override int LabelNumber => 1155607;  // Boots of Escaping
 
+        [Constructable]
         public BootsOfEscaping()
         {
             Attributes.BonusDex = 4;

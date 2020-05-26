@@ -13,11 +13,13 @@ namespace Server.Items
             LootType = LootType.Blessed;
 
             Slayer = SlayerGroup.RandomSuperSlayerTOL();
-            //Caddellite Infused
+
             Attributes.DefendChance = 5;
             Attributes.SpellDamage = 25;
             Attributes.CastRecovery = 2;
             Attributes.LowerManaCost = 4;
+
+            AttachSocket(new Caddellite());
         }
 
         public CultistsRitualTome(Serial serial)
@@ -28,13 +30,18 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0); // version
+            writer.Write(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (version == 0)
+            {
+                AttachSocket(new Caddellite());
+            }
         }
     }
 }

@@ -572,7 +572,10 @@ namespace Server.Items
                 {
                     BaseCreature spawn = TreasureMap.Spawn(Level, GetWorldLocation(), Map, from, false);
 
-                    spawn.Hue = 2725;
+                    if (spawn != null)
+                    {
+                        spawn.Hue = 2725;
+                    }
                 }
             }
 

@@ -3009,20 +3009,27 @@ namespace Server.Mobiles
 
         public override bool OnDragDrop(Mobile from, Item dropped)
         {
+            bool canDrop = false;
+
             if (CheckFeed(from, dropped))
             {
-                return true;
+                canDrop = true;
             }
-            if (CheckGold(from, dropped))
+            if (!canDrop && CheckGold(from, dropped))
+            {
+                canDrop = true;
+            }
+            if (!canDrop && !from.InRange(Location, 2) && base.OnDragDrop(from, dropped))
             {
                 return true;
-            }
-            if (!from.InRange(Location, 2))
-            {
-                return base.OnDragDrop(from, dropped);
             }
 
-            return false;
+            if (!canDrop)
+            {
+                PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1043257, from.NetState); // The animal shies away.
+            }
+
+            return canDrop;
         }
 
         protected virtual BaseAI ForcedAI => null;
