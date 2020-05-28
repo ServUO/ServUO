@@ -392,26 +392,32 @@ namespace Server.Mobiles
                             }
 
                             TextDefinition[] loc = PetTrainingHelper.GetLocalization(profile.Advancements[i]);
-                            bool skill = profile.Advancements[i] is SkillName; // ? "#228B22" : "#FF4500";
+                            int tooltip = PetTrainingHelper.GetCategoryLocalization(profile.Advancements[i]);
+                            bool skill = profile.Advancements[i] is SkillName;                            
 
                             if (loc[0] != null)
                             {
                                 if (loc[0].Number > 0)
                                 {
-                                    AddHtmlLocalized(53, y, 180, 18, loc[0], C32216(skill ? 0x008000 : 0xFF4500), false, false);
+                                    AddHtmlLocalized(53, y, 180, 18, loc[0], skill ? 0x208 : 0x68A5, false, false);
+                                    AddTooltip(tooltip);
 
                                     if (skill)
                                     {
-                                        AddHtml(180, y, 75, 18, String.Format("<div align=right>{0:F1}</div>", Creature.Skills[(SkillName)profile.Advancements[i]].Cap), false, false);
+                                        double cap = Creature.Skills[(SkillName)profile.Advancements[i]].Cap;
+
+                                        if (cap > 0)
+                                        {
+                                            AddHtml(180, y, 75, 18, String.Format("<div align=right>{0:F1}</div>", cap), false, false);
+                                        }
                                     }
                                 }
                                 else if (loc[0].String != null)
                                 {
-                                    AddHtml(53, y, 180, 18, Color(skill ? "#008000" : "#FF4500", loc[0]), false, false);
+                                    AddHtml(53, y, 180, 18, Color(skill ? "#008442" : "#D62929", loc[0]), false, false);
+                                    AddTooltip(tooltip);
                                 }
                             }
-
-                            AddTooltip(PetTrainingHelper.GetCategoryLocalization(profile.Advancements[i]));
 
                             y += 18;
                         }

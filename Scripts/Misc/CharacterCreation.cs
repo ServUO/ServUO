@@ -10,23 +10,6 @@ namespace Server.Misc
 {
     public class CharacterCreation
     {
-        private static readonly CityInfo m_NewHavenInfo = new CityInfo(
-            "New Haven",
-            "The Bountiful Harvest Inn",
-            3503,
-            2574,
-            14,
-            Map.Trammel);
-
-        private static readonly CityInfo m_SiegeInfo = new CityInfo(
-            "Britain",
-            "The Wayfarer's Inn",
-            1075074,
-            1602,
-            1591,
-            20,
-            Map.Felucca);
-
         private static Mobile m_Mobile;
 
         public static void Initialize()
