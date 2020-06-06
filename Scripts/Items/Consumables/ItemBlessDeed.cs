@@ -67,26 +67,8 @@ namespace Server.Items
             : base(serial)
         {
         }
-
-        public override string DefaultName => "a item bless deed";
-        public override bool DisplayLootType => true;
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write(0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-
-            LootType = LootType.Blessed;
-        }
-
-        public override void OnDoubleClick(Mobile from) // Override double click of the deed to call our target
+		
+		public override void OnDoubleClick(Mobile from) // Override double click of the deed to call our target
         {
             if (!IsChildOf(from.Backpack)) // Make sure its in their pack
             {
@@ -98,5 +80,19 @@ namespace Server.Items
                 from.Target = new ItemBlessTarget(this); // Call our target
             }
         }
+
+        public override string DefaultName => "a item bless deed";
+        public override bool DisplayLootType => true;
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
+        }        
     }
 }

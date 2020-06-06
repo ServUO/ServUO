@@ -31,8 +31,6 @@ namespace Server.Items
 
         public virtual void Fill()
         {
-            Reset();
-
             List<Item> contains = new List<Item>(Items);
 
             foreach (Item i in contains)
@@ -128,21 +126,6 @@ namespace Server.Items
 
                 DropItem(item);
             }
-        }
-
-        public void Reset()
-        {
-            EndTimer();
-
-            Visible = false;
-            Locked = true;
-
-            RequiredSkill = 90;
-            LockLevel = RequiredSkill - Utility.Random(1, 10);
-            MaxLockLevel = RequiredSkill;
-
-            TrapType = TrapType.MagicTrap;
-            TrapPower = 100;
         }
 
         public virtual bool CheckReveal(Mobile m)

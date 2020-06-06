@@ -71,7 +71,7 @@ namespace Server.SkillHandlers
                     else if (stmMod < 0)
                         stmMod = 0;
 
-                    if (from.CheckTargetSkill(SkillName.Anatomy, targ, 0, 100))
+                    if (from.CheckTargetSkill(SkillName.Anatomy, targ, 0, from.Skills[SkillName.Anatomy].Cap))
                     {
                         targ.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1038045 + (strMod * 11) + dexMod, from.NetState); // That looks [strong] and [dexterous].
 

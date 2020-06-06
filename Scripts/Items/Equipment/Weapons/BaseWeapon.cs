@@ -1152,7 +1152,7 @@ namespace Server.Items
             if (info != null && info.Defender == defender)
                 bonus -= info.DefenseChanceMalus;
 
-            int max = 45 + BaseArmor.GetRefinedDefenseChance(defender);
+            int max = 45 + BaseArmor.GetRefinedDefenseChance(defender) + WhiteTigerFormSpell.GetDefenseCap(defender);
 
             // Defense Chance Increase = 45%
             if (bonus > max)
@@ -1507,7 +1507,7 @@ namespace Server.Items
                     // Successful block removes the Honorable Execution penalty.
                     HonorableExecution.RemovePenalty(defender);
 
-                    if (CounterAttack.IsCountering(defender) && defender.InRange(attacker.Location, 1))
+                    if (CounterAttack.IsCountering(defender))
                     {
                         if (weapon != null)
                         {

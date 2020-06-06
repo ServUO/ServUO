@@ -3146,8 +3146,10 @@ namespace Server.Multis
 
         public void Refresh(Mobile from = null)
         {
-            if (from != null && from.Account != Owner.Account)
+            if (from != null && Owner != null && from.Account != Owner.Account)
+            {
                 return;
+            }
 
             if (from != null && Status > 1043010)
             {

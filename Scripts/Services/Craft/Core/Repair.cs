@@ -344,7 +344,7 @@ namespace Server.Engines.Craft
                             {
                                 number = (usingDeed) ? 1061136 : 1044277; // That item cannot be repaired. // You cannot repair that item with this type of repair contract.
                             }
-                            else if (!jewel.IsChildOf(from.Backpack))
+                            else if (!jewel.IsChildOf(from.Backpack) && jewel.Parent != from)
                             {
                                 number = 1044275; // The item must be in your backpack to repair it.
                             }

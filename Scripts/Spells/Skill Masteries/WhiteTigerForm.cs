@@ -100,6 +100,8 @@ namespace Server.Spells.SkillMasteries
                     Caster.Mana -= mana;
 
                     BuffInfo.RemoveBuff(Caster, BuffIcon.WhiteTigerForm);
+
+                    FinishSequence();
                     return;
                 }
                 else
@@ -113,6 +115,7 @@ namespace Server.Spells.SkillMasteries
                         if (chance < Utility.RandomDouble())
                         {
                             DoFizzle();
+                            FinishSequence();
                             return;
                         }
                     }

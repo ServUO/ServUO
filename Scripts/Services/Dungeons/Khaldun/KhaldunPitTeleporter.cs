@@ -28,6 +28,16 @@ namespace Server.Items
         {
         }
 
+        public override void OnMapChange()
+        {
+            base.OnMapChange();
+
+            if (Map != null && Map != Map.Internal && m_MapDest != Map)
+            {
+                m_MapDest = Map;
+            }
+        }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Active
         {
@@ -101,7 +111,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write(0); // version
+            writer.Write(1); // version
 
             writer.Write(m_Active);
             writer.Write(m_PointDest);
@@ -117,6 +127,11 @@ namespace Server.Items
             m_Active = reader.ReadBool();
             m_PointDest = reader.ReadPoint3D();
             m_MapDest = reader.ReadMap();
+
+            if (version == 0 && m_MapDest != Map)
+            {
+                m_MapDest = Map;
+            }
         }
     }
 }

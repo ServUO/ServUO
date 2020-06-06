@@ -37,7 +37,6 @@ namespace Server.Items
         }
         public override bool DisplaysContent => false;// Do not display (x items, y stones)
         public override bool IsDecoContainer => false;
-        public override TimeSpan DecayTime => TimeSpan.FromDays(1.0);
         public static bool ValidateDefault(Mobile from, BaseBoard board)
         {
             if (from.AccessLevel >= AccessLevel.GameMaster)

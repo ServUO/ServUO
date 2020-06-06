@@ -132,9 +132,13 @@ namespace Server.Items
 
         public static void ApplyReforgedProperties(Item item, ReforgedPrefix prefix, ReforgedSuffix suffix, int budget, int perclow, int perchigh, int maxmods, int luckchance, BaseRunicTool tool, ReforgingOption option)
         {
-            List<int> props = new List<int>(ItemPropertyInfo.LookupLootTable(item));
-            ApplyReforgedProperties(item, props, prefix, suffix, budget, perclow, perchigh, maxmods, luckchance, tool, option);
-            ColUtility.Free(props);
+            var props = ItemPropertyInfo.LookupLootTable(item);
+
+            if (props != null)
+            {
+                ApplyReforgedProperties(item, new List<int>(props), prefix, suffix, budget, perclow, perchigh, maxmods, luckchance, tool, option);
+                ColUtility.Free(props);
+            }
         }
 
         public static void ApplyReforgedProperties(Item item, List<int> props, ReforgedPrefix prefix, ReforgedSuffix suffix, int budget, int perclow, int perchigh, int maxmods, int luckchance, BaseRunicTool tool, ReforgingOption option)
