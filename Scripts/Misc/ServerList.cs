@@ -90,9 +90,8 @@ namespace Server.Misc
 
                 e.AddServer(ServerName, new IPEndPoint(localAddress, localPort));
             }
-            catch (Exception ex)
+            catch
             {
-                Server.Diagnostics.ExceptionLogging.LogException(ex);
                 e.Rejected = true;
             }
         }

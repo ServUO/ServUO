@@ -594,6 +594,7 @@ namespace Server.Engines.Points
             Entries[typeof(HatOfTheMagi)] = 5500.0;
             Entries[typeof(BladeOfInsanity)] = 5500.0;
             Entries[typeof(JackalsCollar)] = 5500.0;
+			Entries[typeof(SpiritOfTheTotem)] = 5500.0;
 
             //Artifacts
             Entries[typeof(PendantOfTheMagi)] = 35;

@@ -3088,7 +3088,6 @@ namespace Server.Multis
             writer.Write(BuiltOn);
             writer.Write(LastTraded);
 
-            //writer.WriteItemList(m_Addons, true);
             writer.Write(Addons.Count);
             foreach (KeyValuePair<Item, Mobile> kvp in Addons)
             {
@@ -3337,30 +3336,7 @@ namespace Server.Multis
                         if (version < 14)
                             m_RelativeBanLocation = BaseBanLocation;
 
-                        if (version < 12)
-                        {
-                            VendorRentalContracts = new List<Item>();
-                            InternalizedVendors = new List<Mobile>();
-                        }
-
-                        if (version < 4)
-                            Addons = new Dictionary<Item, Mobile>();
-
-                        if (version < 7)
-                            Access = new List<Mobile>();
-
-                        if (version < 8)
-                            Price = DefaultPrice;
-
                         m_Owner = reader.ReadMobile();
-
-                        if (version < 5)
-                        {
-                            count = reader.ReadInt();
-
-                            for (int i = 0; i < count; i++)
-                                reader.ReadRect2D();
-                        }
 
                         UpdateRegion();
 
@@ -3404,23 +3380,6 @@ namespace Server.Multis
                         for (int i = 0; i < VendorRentalContracts.Count; ++i)
                             VendorRentalContracts[i].IsLockedDown = true;
 
-                        if (version < 3)
-                        {
-                            List<Item> items = reader.ReadStrongItemList();
-                            Secures = new List<SecureInfo>(items.Count);
-
-                            for (int i = 0; i < items.Count; ++i)
-                            {
-                                Container c = items[i] as Container;
-
-                                if (c != null)
-                                {
-                                    c.IsSecure = true;
-                                    Secures.Add(new SecureInfo(c, SecureLevel.CoOwners, Owner));
-                                }
-                            }
-                        }
-
                         MaxLockDowns = reader.ReadInt();
                         MaxSecures = reader.ReadInt();
 
@@ -3440,9 +3399,6 @@ namespace Server.Multis
                         break;
                     }
             }
-
-            if (version <= 1)
-                ChangeSignType(0xBD2);//private house, plain brass sign
 
             if (version < 10)
             {
@@ -3471,8 +3427,6 @@ namespace Server.Multis
                 if (RelocatedEntities.Count > 0)
                     Timer.DelayCall(TimeSpan.Zero, RestoreRelocatedEntities);
 
-                //if (m_Owner == null && m_Friends.Count == 0 && m_CoOwners.Count == 0)
-                //    Timer.DelayCall(TimeSpan.FromSeconds(10.0), new TimerCallback(Delete));
             }
 
             if (version == 19)
@@ -4200,8 +4154,6 @@ namespace Server.Multis
         public virtual int ConvertOffsetX => 0;
         public virtual int ConvertOffsetY => 0;
         public virtual int ConvertOffsetZ => 0;
-
-        public virtual int DefaultPrice => 0;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int Price { get; set; }

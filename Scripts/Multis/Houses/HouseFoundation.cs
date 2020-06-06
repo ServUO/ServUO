@@ -695,10 +695,6 @@ namespace Server.Multis
             base.Serialize(writer);
         }
 
-        private int m_DefaultPrice;
-
-        public override int DefaultPrice => m_DefaultPrice;
-
         public override void Deserialize(GenericReader reader)
         {
             int version = reader.ReadInt();
@@ -726,12 +722,6 @@ namespace Server.Multis
                         goto case 1;
                     }
                 case 1:
-                    {
-                        if (version < 5)
-                            m_DefaultPrice = reader.ReadInt();
-
-                        goto case 0;
-                    }
                 case 0:
                     {
                         if (version < 3)

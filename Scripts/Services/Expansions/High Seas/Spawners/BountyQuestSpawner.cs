@@ -450,15 +450,10 @@ namespace Server.Engines.Quests
                         hold.DropItem(item);
                 }
 
-                hold.DropItem(new Swab());
                 hold.DropItem(new Ramrod());
-                hold.DropItem(new Matches(Utility.RandomMinMax(25, 30)));
-                hold.DropItem(new HeavyCannonball(Utility.RandomMinMax(7, 10)));
-                hold.DropItem(new LightCannonball(Utility.RandomMinMax(7, 10)));
-                hold.DropItem(new HeavyGrapeshot(Utility.RandomMinMax(7, 10)));
-                hold.DropItem(new LightGrapeshot(Utility.RandomMinMax(7, 10)));
-                hold.DropItem(new HeavyPowderCharge(Utility.RandomMinMax(7, 10)));
-                hold.DropItem(new LightPowderCharge(Utility.RandomMinMax(7, 10)));
+                hold.DropItem(new Cannonball(Utility.RandomMinMax(7, 10)));              
+                hold.DropItem(new Grapeshot(Utility.RandomMinMax(7, 10)));
+                hold.DropItem(new PowderCharge(Utility.RandomMinMax(7, 10)));
                 hold.DropItem(new FuseCord(Utility.RandomMinMax(7, 10)));
 
                 if (.10 >= Utility.RandomDouble())

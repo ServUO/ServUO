@@ -409,8 +409,12 @@ namespace Server.Items
                 default:
                     {
                         Item item = m_Box.Items.Find(x => x.Serial == index);
-                        m_From.AddToBackpack(item);
-                        m_From.SendGump(new JewelryBoxGump(m_From, m_Box));
+
+                        if (item != null)
+                        {
+                            m_From.AddToBackpack(item);
+                            m_From.SendGump(new JewelryBoxGump(m_From, m_Box));
+                        }
 
                         break;
                     }

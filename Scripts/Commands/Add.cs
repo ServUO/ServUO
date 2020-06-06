@@ -276,9 +276,8 @@ namespace Server.Commands
                         return Convert.ChangeType(obj, type);
                 }
             }
-            catch (Exception e)
+            catch
             {
-                Server.Diagnostics.ExceptionLogging.LogException(e);
                 return null;
             }
         }

@@ -165,6 +165,11 @@ namespace Server.Mobiles
         {
             Map map = Map;
 
+            if (map == null || m == null)
+            {
+                return;
+            }
+
             int x = m.X; int y = m.Y; int z = m.Z;
 
             Point3D loc = m.Location;
@@ -178,11 +183,13 @@ namespace Server.Mobiles
 
                     if (Spells.SpellHelper.CheckMulti(new Point3D(x, y, m.Z), map) || map.CanSpawnMobile(x, y, z))
                     {
-                        ParasiticEel eel = new ParasiticEel(this);
+                        var eel = new ParasiticEel(this);
                         eel.MoveToWorld(new Point3D(x, y, loc.Z), map);
 
                         if (m is PlayerMobile)
-                            eel.Combatant = m;
+                        {
+                            Timer.DelayCall(() => eel.Combatant = m);
+                        }
 
                         break;
                     }

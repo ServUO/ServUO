@@ -23,7 +23,6 @@ namespace Server.Multis
 
         public override Rectangle2D[] Area => AreaArray;
         public override Point3D BaseBanLocation => new Point3D(2, 4, 0);
-        public override int DefaultPrice => 43800;
         public override HousePlacementEntry ConvertEntry => HousePlacementEntry.TwoStoryFoundations[0];
         public override HouseDeed GetDeed()
         {
@@ -79,7 +78,6 @@ namespace Server.Multis
         {
         }
 
-        public override int DefaultPrice => 144500;
         public override HousePlacementEntry ConvertEntry => HousePlacementEntry.ThreeStoryFoundations[20];
         public override int ConvertOffsetX => -1;
         public override int ConvertOffsetY => -1;
@@ -126,7 +124,6 @@ namespace Server.Multis
 
         public override Rectangle2D[] Area => AreaArray;
         public override Point3D BaseBanLocation => new Point3D(2, 8, 0);
-        public override int DefaultPrice => 192400;
         public override HouseDeed GetDeed()
         {
             switch (ItemID)
@@ -174,7 +171,6 @@ namespace Server.Multis
         {
         }
 
-        public override int DefaultPrice => 433200;
         public override HousePlacementEntry ConvertEntry => HousePlacementEntry.ThreeStoryFoundations[37];
         public override int ConvertOffsetY => -1;
         public override Rectangle2D[] Area => AreaArray;
@@ -215,7 +211,6 @@ namespace Server.Multis
         {
         }
 
-        public override int DefaultPrice => 665200;
         public override Rectangle2D[] Area => AreaArray;
         public override Point3D BaseBanLocation => new Point3D(5, 13, 0);
         public override HouseDeed GetDeed()
@@ -258,7 +253,6 @@ namespace Server.Multis
         {
         }
 
-        public override int DefaultPrice => 1022800;
         public override Rectangle2D[] Area => AreaArray;
         public override Point3D BaseBanLocation => new Point3D(5, 17, 0);
 
@@ -307,7 +301,6 @@ namespace Server.Multis
         {
         }
 
-        public override int DefaultPrice => 152800;
         public override HousePlacementEntry ConvertEntry => HousePlacementEntry.ThreeStoryFoundations[29];
         public override int ConvertOffsetY => -1;
         public override Rectangle2D[] Area => AreaArray;
@@ -348,7 +341,6 @@ namespace Server.Multis
         {
         }
 
-        public override int DefaultPrice => 192000;
         public override HousePlacementEntry ConvertEntry => HousePlacementEntry.ThreeStoryFoundations[29];
         public override int ConvertOffsetY => -1;
         public override Rectangle2D[] Area => AreaArray;
@@ -389,7 +381,6 @@ namespace Server.Multis
         {
         }
 
-        public override int DefaultPrice => 88500;
         public override HousePlacementEntry ConvertEntry => HousePlacementEntry.TwoStoryFoundations[6];
         public override Rectangle2D[] Area => AreaArray;
         public override Point3D BaseBanLocation => new Point3D(1, 4, 0);
@@ -431,7 +422,6 @@ namespace Server.Multis
         {
         }
 
-        public override int DefaultPrice => 97800;
         public override HousePlacementEntry ConvertEntry => HousePlacementEntry.TwoStoryFoundations[12];
         public override Rectangle2D[] Area => AreaArray;
         public override Point3D BaseBanLocation => new Point3D(5, 8, 0);
@@ -471,7 +461,6 @@ namespace Server.Multis
         {
         }
 
-        public override int DefaultPrice => 90900;
         public override HousePlacementEntry ConvertEntry => HousePlacementEntry.TwoStoryFoundations[35];
         public override int ConvertOffsetY => -1;
         public override Rectangle2D[] Area => AreaArray;
@@ -515,7 +504,6 @@ namespace Server.Multis
         {
         }
 
-        public override int DefaultPrice => 136500;
         public override HousePlacementEntry ConvertEntry => HousePlacementEntry.TwoStoryFoundations[31];
         public override Rectangle2D[] Area => AreaArray;
         public override Point3D BaseBanLocation => new Point3D(3, 8, 0);
@@ -567,7 +555,6 @@ namespace Server.Multis
 
         public override Rectangle2D[] Area => (ItemID == 0x40A2 ? AreaArray1 : AreaArray2);
         public override Point3D BaseBanLocation => new Point3D(3, 4, 0);
-        public override int DefaultPrice => 63000;
         public override HousePlacementEntry ConvertEntry => HousePlacementEntry.TwoStoryFoundations[0];
         public override HouseDeed GetDeed()
         {
