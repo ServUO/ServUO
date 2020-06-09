@@ -36,23 +36,36 @@ namespace Server.Items
             }
             else if (from.Player)
             {
-                Item damager = from.FindItemOnLayer(Layer.OneHanded);
+                Item damager;
 
-                if (damager == null)
+                switch (type)
                 {
-                    damager = from.FindItemOnLayer(Layer.TwoHanded);
-                }
+                    case Server.DamageType.Melee:
+                    case Server.DamageType.Ranged:
+                        damager = from.FindItemOnLayer(Layer.OneHanded);
 
-                if (damager != null && damager.HasSocket<Caddellite>())
-                {
-                    switch (type)
-                    {
-                        case Server.DamageType.Melee:
-                        case Server.DamageType.Ranged:
-                            return damager is BaseWeapon;
-                        default:
-                            return damager is Spellbook;
-                    }
+                        if (damager == null || !damager.HasSocket<Caddellite>())
+                        {
+                            damager = from.FindItemOnLayer(Layer.TwoHanded);
+                        }
+
+                        return damager != null && damager.HasSocket<Caddellite>() && damager is BaseWeapon;
+                    default:
+                        damager = from.FindItemOnLayer(Layer.OneHanded);
+
+                        if (damager != null && damager.HasSocket<Caddellite>() && damager is Spellbook)
+                        {
+                            return true;
+                        }
+
+                        damager = from.FindItemOnLayer(Layer.Neck);
+
+                        if (damager == null || !damager.HasSocket<Caddellite>())
+                        {
+                            damager = from.FindItemOnLayer(Layer.Helm);
+                        }
+
+                        return damager != null && damager.HasSocket<Caddellite>();
                 }
             }
 

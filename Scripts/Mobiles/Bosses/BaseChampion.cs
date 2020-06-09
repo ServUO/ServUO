@@ -133,7 +133,7 @@ namespace Server.Mobiles
             {
                 Mobile m = toGive[i % toGive.Count];
 
-                var ps = CreateRandomPowerScroll();
+                var ps = GetPowerScroll();
                 GiveItemMessage(m, ps);
 
                 GivePowerScrollTo(m, ps);
@@ -223,7 +223,7 @@ namespace Server.Mobiles
 
                     if (chance > Utility.Random(100))
                     {
-                        var powerScroll = CreateRandomPowerScroll();
+                        var powerScroll = GetJusticePowerScroll();
 
                         prot.SendLocalizedMessage(1049368); // You have been rewarded for your dedication to Justice!
 
@@ -239,6 +239,16 @@ namespace Server.Mobiles
                     }
                 }
             }
+        }
+
+        public virtual Item GetPowerScroll()
+        {
+            return CreateRandomPowerScroll();
+        }
+
+        public virtual Item GetJusticePowerScroll()
+        {
+            return CreateRandomPowerScroll();
         }
 
         public virtual Item CreateRandomPowerScroll()

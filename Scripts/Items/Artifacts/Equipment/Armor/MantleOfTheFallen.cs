@@ -1,7 +1,11 @@
+using Server.Engines.Craft;
+
 namespace Server.Items
 {
-    public class MantleOfTheFallen : GargishClothChest
+    public class MantleOfTheFallen : GargishClothChest, IRepairable
     {
+        public CraftSystem RepairSystem => DefTailoring.CraftSystem;
+
         public override bool IsArtifact => true;
         public override int LabelNumber => 1113819; // Mantle of the Fallen
         public override int BasePhysicalResistance => 5;

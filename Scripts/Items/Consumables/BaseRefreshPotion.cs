@@ -31,10 +31,17 @@ namespace Server.Items
         {
             if (from.Stam < from.StamMax)
             {
-                from.Stam += Scale(from, (int)(Refresh * from.StamMax));
+                if (!PropertyEffect.IsUnderEffects(from, EffectsType.BoneBreaker))
+                {
+                    from.Stam += Scale(from, (int)(Refresh * from.StamMax));
 
-                PlayDrinkEffect(from);
-                Consume();
+                    PlayDrinkEffect(from);
+                    Consume();
+                }
+                else
+                {
+                    // TODO: Message?
+                }
             }
             else
             {

@@ -1,8 +1,12 @@
+using System;
+
 namespace Server.Mobiles
 {
     [CorpseName("a dread warhorse corpse")]
     public class DreadWarhorse : BaseMount
     {
+        private DateTime _NextTrick;
+
         [Constructable]
         public DreadWarhorse()
             : this("a dread warhorse")
@@ -59,6 +63,7 @@ namespace Server.Mobiles
         public override HideType HideType => HideType.Barbed;
         public override FoodType FavoriteFood => FoodType.Meat;
         public override bool CanAngerOnTame => true;
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Rich);
@@ -73,6 +78,59 @@ namespace Server.Mobiles
                 return 0x16A;
 
             return base.GetAngerSound();
+        }
+
+        public override void OnSpeech(SpeechEventArgs e)
+        {
+            base.OnSpeech(e);
+
+            if (_NextTrick > DateTime.UtcNow)
+            {
+                return;
+            }
+
+            var m = e.Mobile;
+
+            if (GetMaster() == m && e.Speech.ToLower() == "trick" && !IsDeadBondedPet && !Deleted && Map != null)
+            {
+                _NextTrick = DateTime.UtcNow + TimeSpan.FromSeconds(10);
+
+                e.Handled = true;
+                Map myMap = Map;
+                Point3D p = Location;
+
+                Timer.DelayCall(TimeSpan.FromMilliseconds(350), () =>
+                {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        Timer.DelayCall(TimeSpan.FromMilliseconds(i * 250), idx =>
+                        {
+                            Server.Misc.Geometry.Circle2D(p, myMap, idx, (pnt, map) =>
+                            {
+                                Effects.SendLocationEffect(pnt, map, Utility.RandomBool() ? 14000 : 14013, 14, 20, 2018, 0);
+                            });
+
+                            if (idx == 3)
+                            {
+                                var c = 0;
+
+                                for (int j = idx; j > 0; j--)
+                                {
+                                    Timer.DelayCall(TimeSpan.FromMilliseconds(c * 250), idx2 =>
+                                    {
+                                        Server.Misc.Geometry.Circle2D(p, myMap, idx2, (pnt, map) =>
+                                        {
+                                            Effects.SendLocationEffect(pnt, map, Utility.RandomBool() ? 14000 : 14013, 14, 20, 2018, 0);
+                                        });
+                                    }, j);
+
+                                    c++;
+                                }
+                            }
+                        }, i);
+                    }
+                });
+            }
         }
 
         public override void Serialize(GenericWriter writer)

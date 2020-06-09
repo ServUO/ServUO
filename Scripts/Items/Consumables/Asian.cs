@@ -133,9 +133,16 @@ namespace Server.Items
     {
         [Constructable]
         public SushiRolls()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public SushiRolls(int amount)
             : base(0x283E)
         {
-            Stackable = false;
+            Stackable = true;
+            Amount = amount;
             Weight = 3.0;
             FillFactor = 2;
         }
@@ -164,9 +171,16 @@ namespace Server.Items
     {
         [Constructable]
         public SushiPlatter()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public SushiPlatter(int amount)
             : base(0x2840)
         {
             Stackable = true;
+            Amount = amount;
             Weight = 3.0;
             FillFactor = 2;
         }

@@ -5,11 +5,12 @@ namespace Server.Items
 {
     public abstract class BaseFruitTreeAddon : BaseAddon
     {
-        private int m_Fruits;
+        private int m_Fruit;
+
         public BaseFruitTreeAddon()
             : base()
         {
-            Timer.DelayCall(TimeSpan.FromMinutes(5), Respawn);
+            Respawn();
         }
 
         public BaseFruitTreeAddon(Serial serial)
@@ -18,29 +19,34 @@ namespace Server.Items
         }
 
         public override abstract BaseAddonDeed Deed { get; }
-        public abstract Item Fruit { get; }
+        public abstract Item FruitItem { get; }
+
+        public virtual int MaxFruit => 10;
+        public virtual TimeSpan SpawnTime => TimeSpan.FromHours(24);
+
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Fruits
+        public int Fruit
         {
             get
             {
-                return m_Fruits;
+                return m_Fruit;
             }
             set
             {
-                if (value < 0)
-                    m_Fruits = 0;
-                else
-                    m_Fruits = value;
+                m_Fruit = Math.Max(0, Math.Min(MaxFruit, value));
             }
         }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public DateTime NextSpawn { get; set; }
+
         public override void OnComponentUsed(AddonComponent c, Mobile from)
         {
             if (from.InRange(c.Location, 2))
             {
-                if (m_Fruits > 0)
+                if (m_Fruit > 0)
                 {
-                    Item fruit = Fruit;
+                    Item fruit = FruitItem;
 
                     if (fruit == null)
                         return;
@@ -52,26 +58,34 @@ namespace Server.Items
                     }
                     else
                     {
-                        if (--m_Fruits == 0)
-                            Timer.DelayCall(TimeSpan.FromMinutes(30), Respawn);
-
+                        Fruit--;
                         from.SendLocalizedMessage(501016); // You pick some fruit and put it in your backpack.
                     }
                 }
                 else
+                {
                     from.SendLocalizedMessage(501017); // There is no more fruit on this tree
+                }
             }
             else
+            {
                 from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
+            }
         }
 
         public override void Serialize(GenericWriter writer)
         {
+            if (NextSpawn < DateTime.UtcNow)
+            {
+                Respawn();
+            }
+
             base.Serialize(writer);
 
-            writer.WriteEncodedInt(0); // version
+            writer.WriteEncodedInt(1); // version
 
-            writer.Write(m_Fruits);
+            writer.Write(NextSpawn);
+            writer.Write(m_Fruit);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -80,15 +94,22 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            m_Fruits = reader.ReadInt();
-
-            if (m_Fruits == 0)
-                Respawn();
+            switch (version)
+            {
+                case 1:
+                    NextSpawn = reader.ReadDateTime();
+                    goto case 0;
+                case 0:
+                    m_Fruit = reader.ReadInt();
+                    break;
+            }
         }
 
         private void Respawn()
         {
-            m_Fruits = Utility.RandomMinMax(1, 4);
+            Fruit++;
+
+            NextSpawn = DateTime.UtcNow + SpawnTime;
         }
     }
 
@@ -108,7 +129,7 @@ namespace Server.Items
         }
 
         public override BaseAddonDeed Deed => new AppleTreeDeed();
-        public override Item Fruit => new Apple();
+        public override Item FruitItem => new Apple();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -171,7 +192,7 @@ namespace Server.Items
         }
 
         public override BaseAddonDeed Deed => new PeachTreeDeed();
-        public override Item Fruit => new Peach();
+        public override Item FruitItem => new Peach();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

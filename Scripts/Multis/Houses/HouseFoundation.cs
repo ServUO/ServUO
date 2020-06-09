@@ -208,8 +208,6 @@ namespace Server.Multis
             if (Fixtures == null)
                 return;
 
-            RemoveKeys(from);
-
             for (int i = 0; i < Fixtures.Count; ++i)
             {
                 Fixtures[i].Delete();

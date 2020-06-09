@@ -8657,7 +8657,6 @@
     <Compile Include="Multis\Houses\Gumps\SetSecureLevelGump.cs" />
     <Compile Include="Multis\Houses\BaseHouse.cs" />
     <Compile Include="Multis\Houses\ComponentVerification.cs" />
-    <Compile Include="Multis\Houses\Deeds.cs" />
     <Compile Include="Multis\Houses\DynamicDecay.cs" />
     <Compile Include="Multis\Houses\HouseFoundation.cs" />
     <Compile Include="Multis\Houses\HousePlacement.cs" />
@@ -11299,7 +11298,6 @@
     <Compile Include="VendorInfo\SBHelmetArmor.cs" />
     <Compile Include="VendorInfo\SBHerbalist.cs" />
     <Compile Include="VendorInfo\SBHolyMage.cs" />
-    <Compile Include="VendorInfo\SBHouseDeed.cs" />
     <Compile Include="VendorInfo\SBInfo.cs" />
     <Compile Include="VendorInfo\SBInnKeeper.cs" />
     <Compile Include="VendorInfo\SBJewel.cs" />
