@@ -148,12 +148,7 @@ namespace Server.Items
 
         public static bool IsUnderEffects(Mobile from, EffectsType effect)
         {
-            foreach (PropertyEffect e in m_Effects)
-            {
-                if (e.Mobile == from && e.Effect == effect)
-                    return true;
-            }
-            return false;
+            return m_Effects.Any(e => e.Mobile == from && e.Effect == effect);
         }
 
         public static T GetContext<T>(Mobile from, EffectsType type) where T : PropertyEffect

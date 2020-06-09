@@ -702,7 +702,6 @@ namespace Server.Items
                             {
                                 if (!Banker.Withdraw(from, m_Cost, true))
                                 {
-                                    house.RemoveKeys(from);
                                     house.Delete();
                                     from.SendLocalizedMessage(1060646); // You do not have the funds available in your bank box to purchase this house.  Try placing a smaller house, or adding gold or checks to your bank box.
                                     return;

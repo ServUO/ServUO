@@ -7,7 +7,6 @@ using Server.Gumps;
 using Server.Items;
 using Server.Misc;
 using Server.Mobiles;
-using Server.Multis.Deeds;
 using Server.Network;
 using Server.Regions;
 using Server.Targeting;
@@ -1794,11 +1793,6 @@ namespace Server.Multis
 
             if (door != null)
             {
-                if (from != null)
-                {
-                    door.KeyValue = CreateKeys(from);
-                }
-
                 AddDoor(door, xOffset, yOffset, zOffset);
             }
             else
@@ -1815,32 +1809,6 @@ namespace Server.Multis
             * DoorFacing	2	3	6	7
             */
             return (DoorFacing)((offset / 2 + 2 * (1 + offset / 4)) % 8);
-        }
-
-        public uint CreateKeys(Mobile m)
-        {
-            uint value = Key.RandomValue();
-
-            if (!IsAosRules)
-            {
-                Key packKey = new Key(KeyType.Gold);
-                Key bankKey = new Key(KeyType.Gold);
-
-                packKey.KeyValue = value;
-                bankKey.KeyValue = value;
-
-                packKey.LootType = LootType.Newbied;
-                bankKey.LootType = LootType.Newbied;
-
-                BankBox box = m.BankBox;
-
-                if (!box.TryDropItem(m, bankKey, false))
-                    bankKey.Delete();
-
-                m.AddToBackpack(packKey);
-            }
-
-            return value;
         }
 
         public BaseDoor[] AddSouthDoors(int x, int y, int z)
@@ -2164,12 +2132,10 @@ namespace Server.Multis
                 * You should double-check the security settings on any doors and teleporters in the house.
                 */
 
-                m_House.RemoveKeys(from);
                 m_House.Owner = to;
                 m_House.Bans.Clear();
                 m_House.Friends.Clear();
                 m_House.CoOwners.Clear();
-                m_House.ChangeLocks(to);
                 m_House.LastTraded = DateTime.UtcNow;
 
                 m_House.OnTransfer();
@@ -4099,57 +4065,6 @@ namespace Server.Multis
             return (m.Guild == Owner.Guild);
         }
 
-        public void RemoveKeys(Mobile m)
-        {
-            if (Doors != null)
-            {
-                uint keyValue = 0;
-
-                for (int i = 0; keyValue == 0 && i < Doors.Count; ++i)
-                {
-                    BaseDoor door = Doors[i] as BaseDoor;
-
-                    if (door != null)
-                        keyValue = door.KeyValue;
-                }
-
-                Key.RemoveKeys(m, keyValue);
-            }
-        }
-
-        public void ChangeLocks(Mobile m)
-        {
-            uint keyValue = CreateKeys(m);
-
-            if (Doors != null)
-            {
-                for (int i = 0; i < Doors.Count; ++i)
-                {
-                    BaseDoor door = Doors[i] as BaseDoor;
-
-                    if (door != null)
-                        door.KeyValue = keyValue;
-                }
-            }
-        }
-
-        public void RemoveLocks()
-        {
-            if (Doors != null)
-            {
-                for (int i = 0; i < Doors.Count; ++i)
-                {
-                    BaseDoor door = Doors[i] as BaseDoor;
-
-                    if (door != null)
-                    {
-                        door.KeyValue = 0;
-                        door.Locked = false;
-                    }
-                }
-            }
-        }
-
         public virtual HousePlacementEntry ConvertEntry => null;
         public virtual int ConvertOffsetX => 0;
         public virtual int ConvertOffsetY => 0;
@@ -4157,11 +4072,6 @@ namespace Server.Multis
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int Price { get; set; }
-
-        public virtual HouseDeed GetDeed()
-        {
-            return null;
-        }
 
         public bool IsFriend(Mobile m)
         {

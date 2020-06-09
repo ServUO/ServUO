@@ -353,7 +353,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.SuperBoss, 6);
         }
 
-        public override Item CreateRandomPowerScroll()
+        public override Item GetPowerScroll()
         {
             return ChampionSpawn.CreateRandomSoT(Map != null && Map.Rules == MapRules.FeluccaRules);
         }

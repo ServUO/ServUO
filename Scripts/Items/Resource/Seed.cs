@@ -99,9 +99,20 @@ namespace Server.Engines.Plants
             int title;
 
             if (m_ShowType || typeInfo.PlantCategory == PlantCategory.Default)
-                title = hueInfo.Name;
+            {
+                if (typeInfo.PlantCategory >= PlantCategory.Common && typeInfo.PlantCategory <= PlantCategory.Exotic)
+                {
+                    title = (int)typeInfo.PlantCategory;
+                }
+                else
+                {
+                    title = hueInfo.Name;
+                }
+            }
             else
+            {
                 title = (int)typeInfo.PlantCategory;
+            }
 
             if (Amount == 1)
             {

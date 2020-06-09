@@ -1083,8 +1083,6 @@ namespace Server.Gumps
 
                                         m_House.Public = false;
 
-                                        m_House.ChangeLocks(from);
-
                                         // This house is now private.
                                         from.SendGump(new NoticeGump(1060637, 30720, 501888, 32512, 320, 180, PublicPrivateNotice_Callback, m_House));
 
@@ -1107,9 +1105,6 @@ namespace Server.Gumps
                                     if (isOwner)
                                     {
                                         m_House.Public = true;
-
-                                        m_House.RemoveKeys(from);
-                                        m_House.RemoveLocks();
 
                                         if (BaseHouse.NewVendorSystem)
                                         {
