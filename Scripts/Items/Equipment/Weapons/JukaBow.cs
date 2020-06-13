@@ -5,16 +5,16 @@ namespace Server.Items
     {
         [Constructable]
         public JukaBow()
-        { }
+        { 
+		}
 
         public JukaBow(Serial serial)
             : base(serial)
-        { }
+        { 
+		}
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsModified => Slayer != SlayerName.None;
-        public override int StrengthReq => 80;
-        public override int DexterityReq => 80;
 
         public override bool CanEquip(Mobile from)
         {
@@ -54,7 +54,7 @@ namespace Server.Items
 
             if (g == null || !g.IsChildOf(from.Backpack))
             {
-                from.SendMessage("Those are not gears."); // Apparently gears that aren't in your backpack aren't really gears at all. :-(
+                from.SendMessage("Those are not gears."); 
             }
             else if (IsModified)
             {

@@ -557,7 +557,7 @@
     <Compile Include="Items\Consumables\AnniversaryPromotionalToken.cs" />
     <Compile Include="Items\Consumables\CommissionPlayerVendorDeed.cs" />
     <Compile Include="Items\Consumables\FearEssence.cs" />
-    <Compile Include="Items\Consumables\ShatterPotion.cs" />
+    <Compile Include="Items\Consumables\Potions\ShatterPotion.cs" />
     <Compile Include="Items\Containers\BagOfMysticRegs.cs" />
     <Compile Include="Items\Containers\BoxOfCrystalItems.cs" />
     <Compile Include="Items\Containers\BoxOfShadowItems.cs" />
@@ -966,14 +966,14 @@
     <Compile Include="Items\Artifacts\Equipment\Weapons\FNPitchfork.cs" />
     <Compile Include="Items\Books\RunicAtlas.cs" />
     <Compile Include="Items\Consumables\AlterContract.cs" />
-    <Compile Include="Items\Consumables\BaseAgilityPotion.cs">
+    <Compile Include="Items\Consumables\Potions\BaseAgilityPotion.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Consumables\BaseRewardTitleDeed.cs" />
     <Compile Include="Items\Consumables\BaseRewardTitleScroll.cs" />
     <Compile Include="Items\Consumables\CreepyCake.cs" />
     <Compile Include="Items\Consumables\ElixirOfRebirth.cs" />
-    <Compile Include="Items\Consumables\EodonPotions.cs" />
+    <Compile Include="Items\Consumables\Potions\EodonPotions.cs" />
     <Compile Include="Items\Consumables\GoldFoil.cs" />
     <Compile Include="Items\Consumables\HarvestWine.cs" />
     <Compile Include="Items\Consumables\Jellybeans.cs" />
@@ -1052,13 +1052,13 @@
     <Compile Include="Items\Equipment\Clothing\BaseClothing.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\BaseConflagrationPotion.cs">
+    <Compile Include="Items\Consumables\Potions\BaseConflagrationPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\BaseConfusionBlastPotion.cs">
+    <Compile Include="Items\Consumables\Potions\BaseConfusionBlastPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\BaseCurePotion.cs">
+    <Compile Include="Items\Consumables\Potions\BaseCurePotion.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Artifacts\Decorative\BaseDecorationArtifact.cs">
@@ -1089,7 +1089,7 @@
     <Compile Include="Items\Equipment\Light\BaseEquipableLight.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\BaseExplosionPotion.cs">
+    <Compile Include="Items\Consumables\Potions\BaseExplosionPotion.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Functional\ChickenLizardEgg.cs" />
@@ -1196,7 +1196,7 @@
     <Compile Include="Items\Tools\BaseHarvestTool.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\BaseHealPotion.cs">
+    <Compile Include="Items\Consumables\Potions\BaseHealPotion.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Decorative\BaseImprisonedMobile.cs">
@@ -1220,13 +1220,13 @@
     <Compile Include="Items\Decorative\BasePiece.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\BasePoisonPotion.cs">
+    <Compile Include="Items\Consumables\Potions\BasePoisonPotion.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Equipment\Weapons\BasePoleArm.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\BasePotion.cs">
+    <Compile Include="Items\Consumables\Potions\BasePotion.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Equipment\Quivers\BaseQuiver.cs">
@@ -1238,7 +1238,7 @@
     <Compile Include="Items\Consumables\BaseReagent.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\BaseRefreshPotion.cs">
+    <Compile Include="Items\Consumables\Potions\BaseRefreshPotion.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Tools\BaseRunicTool.cs">
@@ -1259,7 +1259,7 @@
     <Compile Include="Items\Decorative\BaseStatuette.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\BaseStrengthPotion.cs">
+    <Compile Include="Items\Consumables\Potions\BaseStrengthPotion.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Equipment\Suits\BaseSuit.cs">
@@ -2921,8 +2921,8 @@
     <Compile Include="Mobiles\Normal\GargishOutcast.cs" />
     <Compile Include="Mobiles\Normal\GargishRouser.cs" />
     <Compile Include="Mobiles\Normal\VoidManesfistation.cs" />
-    <Compile Include="Items\Consumables\BaseExplodingTarPotion.cs" />
-    <Compile Include="Items\Consumables\ExplodingTarPotion.cs" />
+    <Compile Include="Items\Consumables\Potions\BaseExplodingTarPotion.cs" />
+    <Compile Include="Items\Consumables\Potions\ExplodingTarPotion.cs" />
     <Compile Include="Mobiles\NPCs\Gretchen.cs" />
     <Compile Include="Items\Quest\BagOfJewels.cs" />
     <Compile Include="Items\Quest\DeBoorShield.cs" />
@@ -3233,7 +3233,7 @@
     <Compile Include="Services\CleanUpBritannia\PointExchange.cs" />
     <Compile Include="Services\CommunityCollections\CommunityCollectionGump.cs" />
     <Compile Include="Services\Expansions\High Seas\Generate.cs" />
-    <Compile Include="Services\Expansions\High Seas\Gumps\BountyBoard.cs" />
+    <Compile Include="Services\Expansions\High Seas\Quests\ProfessionalBountyQuest\BountyBoard.cs" />
     <Compile Include="Services\Expansions\High Seas\Items\Artifacts\CorgulsEnchantedSash.cs" />
     <Compile Include="Services\Expansions\High Seas\Items\Artifacts\CorgulsHandbookOnMysticism.cs" />
     <Compile Include="Services\Expansions\High Seas\Items\Artifacts\CorgulsHandbookOnTheUndead.cs" />
@@ -3258,7 +3258,6 @@
     <Compile Include="Services\Expansions\High Seas\Items\Cannons and Ammo\Matches.cs" />
     <Compile Include="Services\Expansions\High Seas\Items\Cannons and Ammo\PowderCharge.cs" />
     <Compile Include="Services\Expansions\High Seas\Items\Cannons and Ammo\Ramrod.cs" />
-    <Compile Include="Services\Expansions\High Seas\Items\Cannons and Ammo\SpecialAmmo.cs" />
     <Compile Include="Services\Expansions\High Seas\Items\Cannons and Ammo\Swab.cs" />
     <Compile Include="Services\Expansions\High Seas\Items\CorgulAltar.cs" />
     <Compile Include="Services\Expansions\High Seas\Items\Fish\Bait.cs" />
@@ -5759,7 +5758,7 @@
     <Compile Include="Items\Consumables\Cookies.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\Fish Steak.cs">
+    <Compile Include="Items\Consumables\FishSteak.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Tools\BegFishingPole.cs">
@@ -5882,385 +5881,385 @@
     <Compile Include="Items\Equipment\Spellbooks\NecromancerSpellbook.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\AgilityPotion.cs">
+    <Compile Include="Items\Consumables\Potions\AgilityPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\GreaterAgilityPotion.cs">
+    <Compile Include="Items\Consumables\Potions\GreaterAgilityPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\ConflagrationPotion.cs">
+    <Compile Include="Items\Consumables\Potions\ConflagrationPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\GreaterConflagrationPotion.cs">
+    <Compile Include="Items\Consumables\Potions\GreaterConflagrationPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\ConfusionBlastPotion.cs">
+    <Compile Include="Items\Consumables\Potions\ConfusionBlastPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\GreaterConfusionBlastPotion.cs">
+    <Compile Include="Items\Consumables\Potions\GreaterConfusionBlastPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\CurePotion.cs">
+    <Compile Include="Items\Consumables\Potions\CurePotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\GreaterCurePotion.cs">
+    <Compile Include="Items\Consumables\Potions\GreaterCurePotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\LesserCurePotion.cs">
+    <Compile Include="Items\Consumables\Potions\LesserCurePotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\DarkglowPotion.cs">
+    <Compile Include="Items\Consumables\Potions\DarkglowPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\ExplosionPotion.cs">
+    <Compile Include="Items\Consumables\Potions\ExplosionPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\GreaterExplosionPotion.cs">
+    <Compile Include="Items\Consumables\Potions\GreaterExplosionPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\LesserExplosionPotion.cs">
+    <Compile Include="Items\Consumables\Potions\LesserExplosionPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\GreaterHealPotion.cs">
+    <Compile Include="Items\Consumables\Potions\GreaterHealPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\HealPotion.cs">
+    <Compile Include="Items\Consumables\Potions\HealPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\LesserHealPotion.cs">
+    <Compile Include="Items\Consumables\Potions\LesserHealPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\InvisibilityPotion.cs">
+    <Compile Include="Items\Consumables\Potions\InvisibilityPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\NightSight.cs">
+    <Compile Include="Items\Consumables\Potions\NightSightPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\ParasiticPotion.cs">
+    <Compile Include="Items\Consumables\Potions\ParasiticPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\DeadlyPoisonPotion.cs">
+    <Compile Include="Items\Consumables\Potions\DeadlyPoisonPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\GreaterPoisonPotion.cs">
+    <Compile Include="Items\Consumables\Potions\GreaterPoisonPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\LesserPoisonPotion.cs">
+    <Compile Include="Items\Consumables\Potions\LesserPoisonPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\PoisonPotion.cs">
+    <Compile Include="Items\Consumables\Potions\PoisonPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\RefreshPotion.cs">
+    <Compile Include="Items\Consumables\Potions\RefreshPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\TotalRefreshPotion.cs">
+    <Compile Include="Items\Consumables\Potions\TotalRefreshPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\GreaterStrengthPotion.cs">
+    <Compile Include="Items\Consumables\Potions\GreaterStrengthPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\StrengthPotion.cs">
+    <Compile Include="Items\Consumables\Potions\StrengthPotion.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Artifacts\Equipment\Spellbooks\Runebook.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\EarthquakeScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\EarthquakeScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\EnergyVortexScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\EnergyVortexScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\ResurrectionScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\ResurrectionScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\SummonAirElementalScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\SummonAirElementalScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\SummonDaemonScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\SummonDaemonScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\SummonEarthElementalScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\SummonEarthElementalScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\SummonFireElementalScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\SummonFireElementalScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\SummonWaterElementalScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\SummonWaterElementalScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\BladeSpiritsScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\BladeSpiritsScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\DispelFieldScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\DispelFieldScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\IncognitoScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\IncognitoScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\MagicReflectScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\MagicReflectScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\MindBlastScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\MindBlastScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\ParalyzeScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\ParalyzeScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\PoisonFieldScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\PoisonFieldScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\SummonCreatureScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\SummonCreatureScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\ClumsyScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\ClumsyScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\CreateFoodScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\CreateFoodScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\FeeblemindScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\FeeblemindScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\HealScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\HealScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\MagicArrowScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\MagicArrowScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\NightSightScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\NightSightScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\ReactiveArmorScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\ReactiveArmorScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\WeakenScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\WeakenScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\ArchcureScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\ArchcureScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\ArchProtectionScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\ArchProtectionScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\CurseScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\CurseScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\FireFieldScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\FireFieldScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\GreaterHealScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\GreaterHealScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\LightningScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\LightningScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\ManaDrainScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\ManaDrainScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\RecallScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\RecallScroll.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Consumables\AnimatedWeaponScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\BombardScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\BombardScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\CleansingWindsScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\CleansingWindsScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\EagleStrikeScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\EagleStrikeScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\EnchantScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\EnchantScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\HailStormScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\HailStormScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\HealingStoneScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\HealingStoneScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\MassSleepScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\MassSleepScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\NetherBoltScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\NetherBoltScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\NetherCycloneScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\NetherCycloneScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\PurgeMagicScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\PurgeMagicScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\RisingColossusScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\RisingColossusScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\SleepScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\SleepScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\SpellPlagueScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\SpellPlagueScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\SpellTriggerScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\SpellTriggerScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\StoneFormScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\StoneFormScroll.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Consumables\AnimateDeadScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\BloodOathScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\BloodOathScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\CorpseSkinScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\CorpseSkinScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\CurseWeaponScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\CurseWeaponScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\EvilOmenScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\EvilOmenScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\ExorcismScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\ExorcismScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\HorrificBeastScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\HorrificBeastScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\LichFormScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\LichFormScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\MindRotScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\MindRotScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\PainSpikeScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\PainSpikeScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\PoisonStrikeScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\PoisonStrikeScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\StrangleScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\StrangleScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\SummonFamiliarScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\SummonFamiliarScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\VampiricEmbraceScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\VampiricEmbraceScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\VengefulSpiritScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\VengefulSpiritScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\WitherScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\WitherScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\WraithFormScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\WraithFormScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\AgilityScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\AgilityScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\CunningScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\CunningScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\CureScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\CureScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\HarmScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\HarmScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\MagicTrapScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\MagicTrapScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\MagicUnTrapScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\MagicUnTrapScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\ProtectionScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\ProtectionScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\StrengthScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\StrengthScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\ChainLightningScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\ChainLightningScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\EnergyFieldScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\EnergyFieldScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\FlamestrikeScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\FlamestrikeScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\GateTravelScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\GateTravelScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\ManaVampireScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\ManaVampireScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\MassDispelScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\MassDispelScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\MeteorStormScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\MeteorStormScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\PolymorphScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\PolymorphScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\DispelScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\DispelScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\EnergyBoltScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\EnergyBoltScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\ExplosionScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\ExplosionScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\InvisibilityScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\InvisibilityScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\MarkScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\MarkScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\MassCurseScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\MassCurseScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\ParalyzeFieldSpell.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\ParalyzeFieldScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\RevealScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\RevealScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\SpellScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\SpellScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\SpellweavingScrolls.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\SpellweavingScrolls.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\BlessScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\BlessScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\FireballScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\FireballScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\MagicLockScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\MagicLockScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\PoisonScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\PoisonScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\TelekinisisScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\TelekinisisScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\TeleportScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\TeleportScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\UnlockScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\UnlockScroll.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Consumables\WallOfStoneScroll.cs">
+    <Compile Include="Items\Consumables\SpellScrolls\WallOfStoneScroll.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Equipment\Spellbooks\Spellbook.cs">

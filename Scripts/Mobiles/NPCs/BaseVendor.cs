@@ -455,11 +455,7 @@ namespace Server.Mobiles
             if (!ChangeRace)
                 return;
 
-            if (CheckGargoyle())
-            {
-                return;
-            }
-            else if (CheckTerMur())
+            if (CheckTerMur())
             {
                 return;
             }
@@ -509,29 +505,7 @@ namespace Server.Mobiles
             {
                 Name = NameList.RandomName("tokuno male");
             }
-        }
-
-        public virtual bool CheckGargoyle()
-        {
-            Map map = Map;
-
-            if (map != Map.Ilshenar)
-            {
-                return false;
-            }
-
-            if (!Region.IsPartOf("Gargoyle City"))
-            {
-                return false;
-            }
-
-            if (Body != 0x2F6 || (Hue & 0x8000) == 0)
-            {
-                TurnToGargoyle();
-            }
-
-            return true;
-        }
+        }      
 
         #region SA Change
         public virtual bool CheckTerMur()
@@ -617,28 +591,6 @@ namespace Server.Mobiles
             FacialHairHue = 0;
 
             Hue = 0x83E8;
-        }
-
-        public virtual void TurnToGargoyle()
-        {
-            for (int i = 0; i < Items.Count; ++i)
-            {
-                Item item = Items[i];
-
-                if (item is BaseClothing || item is Hair || item is Beard)
-                {
-                    item.Delete();
-                }
-            }
-
-            HairItemID = 0;
-            FacialHairItemID = 0;
-
-            Body = 0x2F6;
-            Hue = Utility.RandomBrightHue() | 0x8000;
-            Name = NameList.RandomName("gargoyle vendor");
-
-            CapitalizeTitle();
         }
 
         #region SA
