@@ -1185,7 +1185,7 @@ namespace Server.Items
                             return !reforged;
                         case 206: // Reactive Paralyze Weapon
                             return item is BaseWeapon && item.Layer == Layer.TwoHanded;
-                        case 207: // Reactive Paralyze Armor
+                        case 220: // Reactive Paralyze Armor
                             return item is BaseShield;
                         case 61:  // Balanced
                             return item.Layer == Layer.TwoHanded;
