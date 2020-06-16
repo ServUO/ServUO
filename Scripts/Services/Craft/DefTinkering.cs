@@ -399,17 +399,14 @@ namespace Server.Engines.Craft
             index = AddCraft(typeof(DragonLamp), 1044050, 1098404, 75.0, 125.0, typeof(IronIngot), 1044036, 8, 1044253);
             AddRes(index, typeof(Candelabra), 1011213, 1, 1154172);
             AddRes(index, typeof(WorkableGlass), 1154170, 1, 1154171);
-            SetNeededThemePack(index, ThemePack.Kings);
 
             index = AddCraft(typeof(StainedGlassLamp), 1044050, 1098408, 75.0, 125.0, typeof(IronIngot), 1044036, 8, 1044253);
             AddRes(index, typeof(Candelabra), 1011213, 1, 1154172);
             AddRes(index, typeof(WorkableGlass), 1154170, 1, 1154171);
-            SetNeededThemePack(index, ThemePack.Kings);
 
             index = AddCraft(typeof(TallDoubleLamp), 1044050, 1098414, 75.0, 125.0, typeof(IronIngot), 1044036, 8, 1044253);
             AddRes(index, typeof(Candelabra), 1011213, 1, 1154172);
             AddRes(index, typeof(WorkableGlass), 1154170, 1, 1154171);
-            SetNeededThemePack(index, ThemePack.Kings);
 
             index = AddCraft(typeof(CraftableHouseItem), 1044050, 1155851, 40.0, 90.0, typeof(IronIngot), 1044036, 8, 1044253);
             SetData(index, CraftableItemType.CurledMetalSignHanger);
@@ -555,14 +552,12 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(CloseHelm), 1025128, 1, 1044253);
             AddRes(index, typeof(Broadsword), 1015055, 1, 1044253);
             ForceNonExceptional(index);
-            SetNeededThemePack(index, ThemePack.Gothic);
 
             index = AddCraft(typeof(AdvancedTrainingDummyEastDeed), 1044051, 1150596, 90.0, 120.0, typeof(TrainingDummyEastDeed), 1044335, 1, 1044253);
             AddRes(index, typeof(PlateChest), 1025141, 1, 1044253);
             AddRes(index, typeof(CloseHelm), 1025128, 1, 1044253);
             AddRes(index, typeof(Broadsword), 1015055, 1, 1044253);
             ForceNonExceptional(index);
-            SetNeededThemePack(index, ThemePack.Gothic);
 
             index = AddCraft(typeof(DistillerySouthAddonDeed), 1044051, 1150663, 90.0, 110.0, typeof(MetalKeg), 1150675, 2, 1044253);
             AddRes(index, typeof(HeatingStand), 1011224, 4, 1044253);

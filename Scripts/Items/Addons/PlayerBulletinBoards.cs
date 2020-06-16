@@ -11,6 +11,8 @@ namespace Server.Items
 {
     public class PlayerBBSouth : BasePlayerBB
     {
+		public override int LabelNumber => 1062421;// bulletin board (south)
+		
         [Constructable]
         public PlayerBBSouth()
             : base(0x2311)
@@ -23,24 +25,23 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber => 1062421;// bulletin board (south)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
 
     public class PlayerBBEast : BasePlayerBB
     {
+		public override int LabelNumber => 1062420;// bulletin board (east)
+		
         [Constructable]
         public PlayerBBEast()
             : base(0x2312)
@@ -53,18 +54,15 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber => 1062420;// bulletin board (east)
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }
@@ -75,6 +73,7 @@ namespace Server.Items
         private List<PlayerBBMessage> m_Messages;
         private string m_Title;
         private SecureLevel m_Level;
+		
         public BasePlayerBB(int itemID)
             : base(itemID)
         {
@@ -88,6 +87,7 @@ namespace Server.Items
         }
 
         public List<PlayerBBMessage> Messages => m_Messages;
+		
         public PlayerBBMessage Greeting
         {
             get
@@ -99,6 +99,7 @@ namespace Server.Items
                 m_Greeting = value;
             }
         }
+		
         [CommandProperty(AccessLevel.GameMaster)]
         public string Title
         {
@@ -111,6 +112,7 @@ namespace Server.Items
                 m_Title = value;
             }
         }
+		
         [CommandProperty(AccessLevel.GameMaster)]
         public SecureLevel Level
         {
@@ -134,7 +136,7 @@ namespace Server.Items
             if (house == null)
                 return false;
 
-            if (house.Public || !house.IsAosRules)
+            if (house.Public)
                 return !house.IsBanned(from);
 
             return house.HasAccess(from);
@@ -429,6 +431,7 @@ namespace Server.Items
                 m_Message = value;
             }
         }
+		
         public void Serialize(GenericWriter writer)
         {
             writer.WriteEncodedInt(0); // version

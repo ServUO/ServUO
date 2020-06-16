@@ -13,6 +13,7 @@ namespace Server.Regions
     {
         public static readonly int HousePriority = DefaultPriority + 1;
         public static TimeSpan CombatHeatDelay = TimeSpan.FromSeconds(30.0);
+		
         private bool m_Recursion;
 
         public HouseRegion(BaseHouse house)
@@ -125,11 +126,11 @@ namespace Server.Regions
             else if (m is BaseCreature && ((BaseCreature)m).IsHouseSummonable && !(BaseCreature.Summoning || House.IsInside(oldLocation, 16)))
             {
             }
-            else if ((House.Public || !House.IsAosRules) && House.IsBanned(m) && House.IsInside(m))
+            else if ((House.Public) && House.IsBanned(m) && House.IsInside(m))
             {
                 m.Location = House.BanLocation;
             }
-            else if (House.IsAosRules && !House.Public && !House.HasAccess(m) && House.IsInside(m))
+            else if (!House.Public && !House.HasAccess(m) && House.IsInside(m))
             {
                 m.Location = House.BanLocation;
             }
@@ -176,16 +177,16 @@ namespace Server.Regions
             {
                 return false;
             }
-            else if (from is BaseCreature && !((BaseCreature)from).Controlled && House.IsAosRules && !House.Public)
+            else if (from is BaseCreature && !((BaseCreature)from).Controlled && !House.Public)
             {
                 return false;
             }
-            else if ((House.Public || !House.IsAosRules) && House.IsBanned(from) && House.IsInside(newLocation, 16))
+            else if ((House.Public) && House.IsBanned(from) && House.IsInside(newLocation, 16))
             {
                 from.Location = House.BanLocation;
                 return false;
             }
-            else if (House.IsAosRules && !House.Public && !House.HasAccess(from) && House.IsInside(newLocation, 16))
+            else if (!House.Public && !House.HasAccess(from) && House.IsInside(newLocation, 16))
             {
                 return false;
             }
@@ -312,7 +313,7 @@ namespace Server.Regions
             }
             else if (e.HasKeyword(0x34)) // I ban thee
             {
-                if (!House.Public && House.IsAosRules)
+                if (!House.Public)
                 {
                     from.SendLocalizedMessage(1062521); // You cannot ban someone from a private house.  Revoke their access instead.
                 }

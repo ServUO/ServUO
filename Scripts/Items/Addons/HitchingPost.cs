@@ -461,7 +461,7 @@ namespace Server.Items
 
             BaseHouse house = BaseHouse.FindHouseAt(this);
 
-            if (house != null && house.IsAosRules && (house.Public ? house.IsBanned(m) : !house.HasAccess(m)))
+            if (house != null && (house.Public ? house.IsBanned(m) : !house.HasAccess(m)))
                 return false;
 
             return (house != null && house.HasSecureAccess(m, m_Level));

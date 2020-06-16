@@ -2295,10 +2295,7 @@ namespace Server.Mobiles
                         list.Add(new CallbackEntry(6204, GetVendor));
                     }
 
-                    if (house.IsAosRules)
-                    {
-                        list.Add(new CallbackEntry(6207, LeaveHouse));
-                    }
+                    list.Add(new CallbackEntry(6207, LeaveHouse));
                 }
 
                 list.Add(new CallbackEntry(RefuseTrades ? 1154112 : 1154113, ToggleTrades)); // Allow Trades / Refuse Trades				
@@ -2375,7 +2372,7 @@ namespace Server.Mobiles
 
                 if (curhouse != null)
                 {
-                    if (Alive && curhouse.IsAosRules && curhouse.IsFriend(from))
+                    if (Alive && curhouse.IsFriend(from))
                     {
                         list.Add(new EjectPlayerEntry(from, this));
                     }

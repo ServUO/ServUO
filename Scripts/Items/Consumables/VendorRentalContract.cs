@@ -10,11 +10,14 @@ namespace Server.Items
 {
     public class VendorRentalContract : Item
     {
+		public override int LabelNumber => 1062332;// a vendor rental contract
+		
         private VendorRentalDuration m_Duration;
         private int m_Price;
         private bool m_LandlordRenew;
         private Mobile m_Offeree;
         private Timer m_OfferExpireTimer;
+		
         [Constructable]
         public VendorRentalContract()
             : base(0x14F0)
@@ -30,8 +33,7 @@ namespace Server.Items
             : base(serial)
         {
         }
-
-        public override int LabelNumber => 1062332;// a vendor rental contract
+		
         public VendorRentalDuration Duration
         {
             get
@@ -44,6 +46,7 @@ namespace Server.Items
                     m_Duration = value;
             }
         }
+		
         [CommandProperty(AccessLevel.GameMaster)]
         public int Price
         {
@@ -56,6 +59,7 @@ namespace Server.Items
                 m_Price = value;
             }
         }
+		
         [CommandProperty(AccessLevel.GameMaster)]
         public bool LandlordRenew
         {
@@ -68,6 +72,7 @@ namespace Server.Items
                 m_LandlordRenew = value;
             }
         }
+		
         public Mobile Offeree
         {
             get
@@ -93,6 +98,7 @@ namespace Server.Items
                 InvalidateProperties();
             }
         }
+		
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
@@ -179,10 +185,6 @@ namespace Server.Items
                 {
                     from.SendLocalizedMessage(1062333); // You must be standing inside of a house that you own to make use of this contract.
                 }
-                else if (!house.IsAosRules)
-                {
-                    from.SendMessage("Rental contracts can only be placed in AOS-enabled houses.");
-                }
                 else if (!house.Public)
                 {
                     from.SendLocalizedMessage(1062335); // Rental contracts can only be placed in public houses.
@@ -252,6 +254,7 @@ namespace Server.Items
         private class ContractOptionEntry : ContextMenuEntry
         {
             private readonly VendorRentalContract m_Contract;
+			
             public ContractOptionEntry(VendorRentalContract contract)
                 : base(6209)
             {
@@ -300,10 +303,6 @@ namespace Server.Items
                 else if (BaseHouse.FindHouseAt(from) != house)
                 {
                     from.SendLocalizedMessage(1062339); // You must be located inside of the house in which you are trying to place the contract.
-                }
-                else if (!house.IsAosRules)
-                {
-                    from.SendMessage("Rental contracts can only be placed in AOS-enabled houses.");
                 }
                 else if (!house.Public)
                 {
@@ -355,6 +354,7 @@ namespace Server.Items
         private class OfferExpireTimer : Timer
         {
             private readonly VendorRentalContract m_Contract;
+			
             public OfferExpireTimer(VendorRentalContract contract)
                 : base(TimeSpan.FromSeconds(30.0))
             {

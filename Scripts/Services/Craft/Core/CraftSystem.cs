@@ -331,12 +331,6 @@ namespace Server.Engines.Craft
             craftItem.NeedMill = needMill;
         }
 
-        public void SetNeededThemePack(int index, ThemePack pack)
-        {
-            CraftItem craftItem = CraftItems.GetAt(index);
-            craftItem.RequiredThemePack = pack;
-        }
-
         public void SetRequiresBasketWeaving(int index)
         {
             CraftItem craftItem = CraftItems.GetAt(index);

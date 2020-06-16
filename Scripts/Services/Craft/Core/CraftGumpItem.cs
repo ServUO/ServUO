@@ -101,17 +101,6 @@ namespace Server.Engines.Craft
             DrawSkill();
             DrawResource();
 
-            if (craftItem.RequiredExpansion != Expansion.None)
-            {
-                bool supportsEx = (from.NetState != null && from.NetState.SupportsExpansion(craftItem.RequiredExpansion));
-                TextDefinition.AddHtmlText(this, 170, 302 + (m_OtherCount++ * 20), 310, 18, RequiredExpansionMessage(craftItem.RequiredExpansion), false, false, supportsEx ? LabelColor : RedLabelColor, supportsEx ? LabelHue : RedLabelHue);
-            }
-
-            if (craftItem.RequiredThemePack != ThemePack.None)
-            {
-                TextDefinition.AddHtmlText(this, 170, 302 + (m_OtherCount++ * 20), 310, 18, RequiredThemePackMessage(craftItem.RequiredThemePack), false, false, LabelColor, LabelHue);
-            }
-
             if (needsRecipe)
                 AddHtmlLocalized(170, 302 + (m_OtherCount++ * 20), 310, 18, 1073620, RedLabelColor, false, false); // You have not learned this recipe.
         }
@@ -175,40 +164,6 @@ namespace Server.Engines.Craft
         #endregion
 
         #region Methods
-        private TextDefinition RequiredExpansionMessage(Expansion expansion)
-        {
-            switch (expansion)
-            {
-                case Expansion.SE:
-                    return 1063363; // * Requires the "Samurai Empire" expansion
-                case Expansion.ML:
-                    return 1072651; // * Requires the "Mondain's Legacy" expansion
-                case Expansion.SA:
-                    return 1094732; // * Requires the "Stygian Abyss" expansion
-                case Expansion.HS:
-                    return 1116296; // * Requires the "High Seas" booster
-                case Expansion.TOL:
-                    return 1155876; // * Requires the "Time of Legends" expansion.
-                default:
-                    return String.Format("* Requires the \"{0}\" expansion", ExpansionInfo.GetInfo(expansion).Name);
-            }
-        }
-
-        private TextDefinition RequiredThemePackMessage(ThemePack pack)
-        {
-            switch (pack)
-            {
-                case ThemePack.Kings:
-                    return 1154195; // *Requires the "King's Collection" theme pack
-                case ThemePack.Rustic:
-                    return 1150651; // * Requires the "Rustic" theme pack
-                case ThemePack.Gothic:
-                    return 1150650; // * Requires the "Gothic" theme pack
-                default:
-                    return String.Format("Requires the \"{0}\" theme pack.", null);
-            }
-        }
-
         public void DrawItem()
         {
             Type type = m_CraftItem.ItemType;
