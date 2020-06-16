@@ -202,7 +202,7 @@ namespace Server.Engines.Help
                     {
                         BaseHouse house = BaseHouse.FindHouseAt(from);
 
-                        if (house != null && house.IsAosRules)
+                        if (house != null)
                         {
                             from.Location = house.BanLocation;
                         }

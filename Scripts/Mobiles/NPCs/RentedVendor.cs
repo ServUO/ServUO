@@ -205,7 +205,7 @@ namespace Server.Mobiles
 
         public override void Destroy(bool toBackpack)
         {
-            if (RentalGold > 0 && House != null && House.IsAosRules)
+            if (RentalGold > 0 && House != null)
             {
                 if (House.MovingCrate == null)
                     House.MovingCrate = new MovingCrate(House);

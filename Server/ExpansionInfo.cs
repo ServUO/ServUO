@@ -20,14 +20,6 @@ namespace Server
         EJ
     }
 
-    public enum ThemePack
-    {
-        None = 0,
-        Kings,
-        Rustic,
-        Gothic
-    }
-
     [Flags]
     public enum ClientFlags
     {

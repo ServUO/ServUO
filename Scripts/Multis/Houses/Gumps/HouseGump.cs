@@ -361,43 +361,23 @@ namespace Server.Gumps
                         AddHtmlLocalized(10, 210, 300, 20, 1060686, LabelColor, false, false); // Used by Lockdowns
                         AddLabel(310, 210, LabelHue, fromLockdowns.ToString());
 
-                        if (BaseHouse.NewVendorSystem)
-                        {
-                            AddHtmlLocalized(10, 230, 300, 20, 1060688, LabelColor, false, false); // Used by Secure Containers
-                            AddLabel(310, 230, LabelHue, fromSecures.ToString());
+                        AddHtmlLocalized(10, 230, 300, 20, 1060688, LabelColor, false, false); // Used by Secure Containers
+                        AddLabel(310, 230, LabelHue, fromSecures.ToString());
 
-                            AddHtmlLocalized(10, 250, 300, 20, 1060689, LabelColor, false, false); // Available Storage
-                            AddLabel(310, 250, LabelHue, Math.Max(maxSecures - curSecures, 0).ToString());
+                        AddHtmlLocalized(10, 250, 300, 20, 1060689, LabelColor, false, false); // Available Storage
+                        AddLabel(310, 250, LabelHue, Math.Max(maxSecures - curSecures, 0).ToString());
 
-                            AddHtmlLocalized(10, 290, 300, 20, 1060690, LabelColor, false, false); // Maximum Lockdowns
-                            AddLabel(310, 290, LabelHue, maxLockdowns.ToString());
+                        AddHtmlLocalized(10, 290, 300, 20, 1060690, LabelColor, false, false); // Maximum Lockdowns
+                        AddLabel(310, 290, LabelHue, maxLockdowns.ToString());
 
-                            AddHtmlLocalized(10, 310, 300, 20, 1060691, LabelColor, false, false); // Available Lockdowns
-                            AddLabel(310, 310, LabelHue, Math.Max(maxLockdowns - curLockdowns, 0).ToString());
+                        AddHtmlLocalized(10, 310, 300, 20, 1060691, LabelColor, false, false); // Available Lockdowns
+                        AddLabel(310, 310, LabelHue, Math.Max(maxLockdowns - curLockdowns, 0).ToString());
 
-                            int maxVendors = house.GetNewVendorSystemMaxVendors();
-                            int vendors = house.PlayerVendors.Count + house.VendorRentalContracts.Count;
+                        int maxVendors = house.GetVendorSystemMaxVendors();
+                        int vendors = house.PlayerVendors.Count + house.VendorRentalContracts.Count;
 
-                            AddHtmlLocalized(10, 350, 300, 20, 1062391, LabelColor, false, false); // Vendor Count
-                            AddLabel(310, 350, LabelHue, vendors.ToString() + " / " + maxVendors.ToString());
-                        }
-                        else
-                        {
-                            AddHtmlLocalized(10, 230, 300, 20, 1060687, LabelColor, false, false); // Used by Vendors
-                            AddLabel(310, 230, LabelHue, fromVendors.ToString());
-
-                            AddHtmlLocalized(10, 250, 300, 20, 1060688, LabelColor, false, false); // Used by Secure Containers
-                            AddLabel(310, 250, LabelHue, fromSecures.ToString());
-
-                            AddHtmlLocalized(10, 270, 300, 20, 1060689, LabelColor, false, false); // Available Storage
-                            AddLabel(310, 270, LabelHue, Math.Max(maxSecures - curSecures, 0).ToString());
-
-                            AddHtmlLocalized(10, 330, 300, 20, 1060690, LabelColor, false, false); // Maximum Lockdowns
-                            AddLabel(310, 330, LabelHue, maxLockdowns.ToString());
-
-                            AddHtmlLocalized(10, 350, 300, 20, 1060691, LabelColor, false, false); // Available Lockdowns
-                            AddLabel(310, 350, LabelHue, Math.Max(maxLockdowns - curLockdowns, 0).ToString());
-                        }
+                        AddHtmlLocalized(10, 350, 300, 20, 1062391, LabelColor, false, false); // Vendor Count
+                        AddLabel(310, 350, LabelHue, vendors.ToString() + " / " + maxVendors.ToString());
 
                         break;
                     }
@@ -1106,15 +1086,8 @@ namespace Server.Gumps
                                     {
                                         m_House.Public = true;
 
-                                        if (BaseHouse.NewVendorSystem)
-                                        {
-                                            // This house is now public. The owner may now place vendors and vendor rental contracts.
-                                            from.SendGump(new NoticeGump(1060637, 30720, 501886, 32512, 320, 180, PublicPrivateNotice_Callback, m_House));
-                                        }
-                                        else
-                                        {
-                                            from.SendGump(new NoticeGump(1060637, 30720, "This house is now public. Friends of the house may now have vendors working out of this building.", 0xF8C000, 320, 180, PublicPrivateNotice_Callback, m_House));
-                                        }
+                                        // This house is now public. The owner may now place vendors and vendor rental contracts.
+                                        from.SendGump(new NoticeGump(1060637, 30720, 501886, 32512, 320, 180, PublicPrivateNotice_Callback, m_House));
 
                                         Region r = m_House.Region;
                                         List<Mobile> list = r.GetMobiles();
@@ -1321,7 +1294,7 @@ namespace Server.Gumps
                                 {
                                     if (isOwner)
                                     {
-                                        if (BaseHouse.NewVendorSystem && m_House.HasPersonalVendors)
+                                        if (m_House.HasPersonalVendors)
                                         {
                                             from.SendLocalizedMessage(1062467); // You cannot trade this house while you still have personal vendors inside.
                                         }

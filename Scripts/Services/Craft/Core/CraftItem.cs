@@ -63,8 +63,6 @@ namespace Server.Engines.Craft
         public bool ForceNonExceptional { get; set; }
         public bool ForceExceptional { get; set; }
         public Expansion RequiredExpansion { get; set; }
-        public ThemePack RequiredThemePack { get; set; }
-
         public bool RequiresBasketWeaving { get; set; }
         public bool RequiresResTarget { get; set; }
         public bool RequiresMechanicalLife { get; set; }

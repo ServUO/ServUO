@@ -60,11 +60,7 @@ namespace Server.Items
                 {
                     from.SendLocalizedMessage(503240); // Vendors can only be placed in houses.	
                 }
-                else if (!BaseHouse.NewVendorSystem && !house.IsFriend(from))
-                {
-                    from.SendLocalizedMessage(503242); // You must ask the owner of this building to name you a friend of the household in order to place a vendor here.
-                }
-                else if (BaseHouse.NewVendorSystem && !house.IsOwner(from))
+                else if (!house.IsOwner(from))
                 {
                     from.SendLocalizedMessage(1062423); // Only the house owner can directly place vendors.  Please ask the house owner to offer you a vendor contract so that you may place a vendor in this house.
                 }
