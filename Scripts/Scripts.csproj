@@ -991,7 +991,6 @@
     <Compile Include="Items\Containers\BaseTrash.cs" />
     <Compile Include="Items\Containers\MeagerImbuingBag.cs" />
     <Compile Include="Items\Containers\ScrollBox2.cs" />
-    <Compile Include="Items\Containers\CleanupTrashBarrel.cs" />
     <Compile Include="Items\Decorative\AcidWall.cs" />
     <Compile Include="Items\Decorative\AcidWall1.cs" />
     <Compile Include="Items\Decorative\BasePaintedMask.cs" />
@@ -5962,7 +5961,7 @@
     <Compile Include="Items\Consumables\Potions\StrengthPotion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Artifacts\Equipment\Spellbooks\Runebook.cs">
+    <Compile Include="Items\Equipment\Spellbooks\Runebook.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Items\Consumables\SpellScrolls\EarthquakeScroll.cs">

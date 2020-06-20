@@ -239,7 +239,7 @@ namespace Server.Gumps
             int multiID = house.ItemID;
             HousePlacementEntry[] entries;
 
-            entries = HousePlacementEntry.ClassicHouses;
+            entries = HousePlacementEntry.PreBuiltHouses;
 
             for (int i = 0; i < entries.Length; ++i)
             {

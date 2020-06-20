@@ -140,16 +140,6 @@ namespace Server.Gumps
 
                 int amount = 0;
 
-                /*if (item.Type == typeof(Gold) && acct != null)
-                    amount = acct.TotalGold + m_Owner.Backpack.GetAmount(item.Type);
-                else if (item.Type == typeof(RedScales))
-                    amount = GetScales(m_Owner.Backpack);
-                else if (item.Type == typeof(Fish))
-                    amount = GetFishyItems(m_Owner.Backpack);
-                else if (item.Type == typeof(Crab) || item.Type == typeof(Lobster))
-                    amount = GetCrabsAndLobsters(m_Owner.Backpack);
-                else if (m_Owner.Backpack != null)
-                    amount = m_Owner.Backpack.GetAmount(item.Type);*/
                 if (item.Type == typeof(Gold) && acct != null)
                 {
                     amount = acct.TotalGold + m_Owner.Backpack.GetAmount(item.Type);

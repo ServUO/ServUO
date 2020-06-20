@@ -5,7 +5,7 @@ namespace Server.Mobiles
     [CorpseName("a vollem corpse")]
     public class Vollem : BaseCreature, IRepairableMobile
     {
-        public Type RepairResource => typeof(Server.Items.IronIngot);
+        public virtual Type RepairResource => typeof(Server.Items.IronIngot);
 
         [Constructable]
         public Vollem()

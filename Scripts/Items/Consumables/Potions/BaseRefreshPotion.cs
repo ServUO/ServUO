@@ -31,7 +31,7 @@ namespace Server.Items
         {
             if (from.Stam < from.StamMax)
             {
-                if (!PropertyEffect.IsUnderEffects(from, EffectsType.BoneBreaker))
+                if (!PropertyEffect.VictimIsUnderEffects<BoneBreakerContext>(from))
                 {
                     from.Stam += Scale(from, (int)(Refresh * from.StamMax));
 

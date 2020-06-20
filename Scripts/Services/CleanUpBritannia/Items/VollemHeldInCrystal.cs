@@ -1,4 +1,6 @@
-﻿using Server.Gumps;
+using System;
+
+using Server.Gumps;
 using Server.Mobiles;
 
 namespace Server.Items
@@ -46,6 +48,8 @@ namespace Server.Items
 
     public class VollemHeld : Vollem
     {
+        public override Type RepairResource => typeof(Server.Items.Bandage);
+
         [Constructable]
         public VollemHeld()
             : base()

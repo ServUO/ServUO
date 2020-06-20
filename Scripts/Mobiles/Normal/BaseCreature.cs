@@ -418,7 +418,7 @@ namespace Server.Mobiles
         #region Bonding
         public const bool BondingEnabled = true;
 
-        public virtual bool IsBondable => (BondingEnabled && !Summoned && !m_Allured && !IsGolem);
+        public virtual bool IsBondable => (BondingEnabled && !Summoned && !m_Allured && !(this is IRepairableMobile));
         public virtual TimeSpan BondingDelay => TimeSpan.FromDays(7.0);
         public virtual TimeSpan BondingAbandonDelay => TimeSpan.FromDays(1.0);
 
@@ -461,8 +461,6 @@ namespace Server.Mobiles
                 return m_Owners[m_Owners.Count - 1];
             }
         }
-
-        public bool IsGolem => this is IRepairableMobile;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsBonded
