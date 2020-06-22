@@ -5055,6 +5055,8 @@ namespace Server.Mobiles
         {
             base.GetProperties(list);
 
+            JollyRogerData.DisplayTitle(this, list);
+
             if (m_SubtitleSkillTitle != null)
                 list.Add(1042971, m_SubtitleSkillTitle);
 

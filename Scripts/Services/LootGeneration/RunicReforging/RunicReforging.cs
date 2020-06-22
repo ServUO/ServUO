@@ -46,7 +46,8 @@ namespace Server.Items
         Kotl,
         Khaldun,
         Doom,
-        EnchantedOrigin
+        EnchantedOrigin,
+        Fellowship
     }
 
     public enum ItemPower
@@ -1722,6 +1723,7 @@ namespace Server.Items
             new int[] {       0, 1158672 }, // Khaldun
             new int[] {       0, 1155589 }, // Doom
             new int[] {       0, 1157614 }, // Sorcerers Dungeon
+            new int[] {       0, 1159317 }, // Fellowship
         };
 
         public static void AddSuffixName(ObjectPropertyList list, ReforgedSuffix suffix, string name)
@@ -2061,6 +2063,7 @@ namespace Server.Items
                     case ReforgedSuffix.Kotl: item.Hue = 2591; break;
                     case ReforgedSuffix.EnchantedOrigin: item.Hue = 1171; break;
                     case ReforgedSuffix.Doom: item.Hue = 2301; break;
+                    case ReforgedSuffix.Fellowship: item.Hue = 2751; break;
                 }
 
                 ColUtility.Free(props);

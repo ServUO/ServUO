@@ -48,7 +48,7 @@ namespace Server.Items
 
     public class VollemHeld : Vollem
     {
-        public override Type RepairResource => typeof(Server.Items.Bandage);
+        public override bool IsMechanical => false;
 
         [Constructable]
         public VollemHeld()

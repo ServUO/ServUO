@@ -93,6 +93,7 @@ namespace Server.Services.TownCryer
             {
                 EventSink.Login += OnLogin;
 
+                NewsEntries.Add(new TownCryerNewsEntry(1159346, 1159347, 0x9D3E, null, "https://uo.com/wiki/ultima-online-wiki/combat/jolly-roger/")); // Jolly Roger
                 NewsEntries.Add(new TownCryerNewsEntry(1159262, 1159263, 0x64E, null, "https://uo.com/wiki/ultima-online-wiki/seasonal-events/halloween-treasures-of-the-sea/")); // Forsaken Foes
                 NewsEntries.Add(new TownCryerNewsEntry(1158944, 1158945, 0x9CEA, null, "https://uo.com/wiki/ultima-online-wiki/combat/pvm-player-versus-monster/rising-tide/")); // Rising Tide
                 NewsEntries.Add(new TownCryerNewsEntry(1158552, 1158553, 0x6CE, typeof(GoingGumshoeQuest), null)); // Going Gumshoe

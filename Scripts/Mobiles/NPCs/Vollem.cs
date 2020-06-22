@@ -5,7 +5,8 @@ namespace Server.Mobiles
     [CorpseName("a vollem corpse")]
     public class Vollem : BaseCreature, IRepairableMobile
     {
-        public virtual Type RepairResource => typeof(Server.Items.IronIngot);
+        public virtual Type RepairResource => IsMechanical ? typeof(Server.Items.IronIngot) : typeof(Server.Items.Bandage);
+        public virtual bool IsMechanical => true;
 
         [Constructable]
         public Vollem()
@@ -92,7 +93,7 @@ namespace Server.Mobiles
 
         public override void OnDamage(int amount, Mobile from, bool willKill)
         {
-            if (Controlled || Summoned)
+            if (IsMechanical && (Controlled || Summoned))
             {
                 Mobile master = (ControlMaster);
 
