@@ -137,7 +137,7 @@ namespace Server.Engines.Quests
             m_EntryTable[3] = new QuestionAndAnswerEntry(1075688, new object[] { 1075691 }, new object[] { 1075689, 1075690, 1075692 });  //<center>What is the color of Humility?</center>
             m_EntryTable[4] = new QuestionAndAnswerEntry(1075693, new object[] { 1075697 }, new object[] { 1075694, 1075695, 1075696 });  //<center>How doth one find Humility?</center>
             m_EntryTable[5] = new QuestionAndAnswerEntry(1075698, new object[] { 1075700 }, new object[] { 1075699, 1075601, 1075602 });  //<center>Which city embodies the need for Humility?</center>
-            m_EntryTable[6] = new QuestionAndAnswerEntry(1075703, new object[] { 1075705 }, new object[] { 1075704, 1075706, 1075707 });  //<center>By name, which den of evil challenges one’s humility?</center>
+            m_EntryTable[6] = new QuestionAndAnswerEntry(1075703, new object[] { 1075705 }, new object[] { 1075704, 1075706, 1075707 });  //<center>By name, which den of evil challenges oneâ€™s humility?</center>
         }
 
         private static readonly QuestionAndAnswerEntry[] m_EntryTable = new QuestionAndAnswerEntry[7];
@@ -200,7 +200,7 @@ namespace Server.Engines.Quests
         public override QuestChain ChainID => QuestChain.CloakOfHumility;
         public override Type NextQuest => typeof(CommunityServiceLibraryQuest);
 
-        //Community Service – Zoo
+        //Community Service â€“ Zoo
         public override object Title => 1075722;
 
         /*Now, go on and donate to the Moonglow Zoo. Givest thou enough to receive a 'For the Life of Britannia' sash. Once ye have it, 
@@ -237,17 +237,17 @@ namespace Server.Engines.Quests
         public CommunityServiceLibraryQuest()
             : base()
         {
-            AddObjective(new CollectionsObtainObjective(typeof(SpecialPrintingOfVirtue), "Special Painint of 'Virtue' Book", 1));
+            AddObjective(new CollectionsObtainObjective(typeof(SpecialPrintingOfVirtue), "Special Printing of 'Virtue' Book", 1));
         }
 
         public override QuestChain ChainID => QuestChain.CloakOfHumility;
         public override Type NextQuest => typeof(WhosMostHumbleQuest);
 
-        //Community Service – Library
+        //Community Service â€“ Library
         public override object Title => 1075728;
 
         /*I have one more charity for thee, my diligent friend. Go forth and donate to the Britain Library and do that which is necessary to receive 
-         * a special printing of ‘Virtue’, by Lord British. Once in hand, bring the book back with ye. Art thou ready?*/
+         * a special printing of â€˜Virtueâ€™, by Lord British. Once in hand, bring the book back with ye. Art thou ready?*/
         public override object Description => 1075729;
 
         //I wish that thou wouldest reconsider.

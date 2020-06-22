@@ -350,10 +350,21 @@ namespace Server
         KurakAmbushersEssence,
         BarakoDraftOfMight,
         UraliTranceTonic,
-        SakkhraProphylaxis,
-        CaddelliteInfused = 1186,
+        SakkhraProphylaxis, // 1175
+        Sparks,
+        Swarm,
+        BoneBreaker,
+        Unknown2,
+        SwarmImmune,
+        BoneBreakerImmune,
+        UnknownGoblin,
+        UnknownRedDrop,
+        UnknownStar,
+        FeintDebuff,
+        CaddelliteInfused,
         PotionGloriousFortune,
-        MysticalPolymorphTotem
+        MysticalPolymorphTotem,
+        UnknownDebuff,
     }
 
     public sealed class AddBuffPacket : Packet

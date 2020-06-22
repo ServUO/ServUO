@@ -6,7 +6,8 @@ namespace Server.Engines.Quests
 {
     public class GentleBladeQuest : BaseQuest
     {
-        Dagger dagger;
+        public Dagger Dagger { get; set; }
+
         public GentleBladeQuest()
             : base()
         {
@@ -18,7 +19,7 @@ namespace Server.Engines.Quests
         public override TimeSpan RestartDelay => TimeSpan.FromMinutes(3);
         /* Gentle Blade */
         public override object Title => 1075361;
-        /* I came to this place looking for a cure for my wife. But I’m getting ahead of myself -- my wife was attacked by a 
+        /* I came to this place looking for a cure for my wife. But Iâ€™m getting ahead of myself -- my wife was attacked by a 
         werewolf, and survived. Now she has become a werewolf herself. My research has turned up nothing that would cure her 
         affliction. *Sob* She begged me to end her suffering, but I cannot. She has removed herself to a remote part of Ice 
         Island so that she does not endanger others. If I give you the means, will you go there, find her, and give her the 
@@ -34,15 +35,17 @@ namespace Server.Engines.Quests
         public override object Complete => 1075366;
         public override void OnAccept()
         {
-            dagger = new Dagger();
-            dagger.QuestItem = true;
-            dagger.WeaponAttributes.UseBestSkill = 1;
+            Dagger = new Dagger();
+            Dagger.QuestItem = true;
+            Dagger.WeaponAttributes.UseBestSkill = 1;
 
-            if (Owner.PlaceInBackpack(dagger))
+            if (Owner.PlaceInBackpack(Dagger))
+            {
                 base.OnAccept();
+            }
             else
             {
-                dagger.Delete();
+                Dagger.Delete();
                 Owner.SendLocalizedMessage(1075574); // Could not create all the necessary items. Your quest has not advanced.
             }
         }
@@ -51,12 +54,12 @@ namespace Server.Engines.Quests
         {
             base.GiveRewards();
 
-            if (dagger != null && !dagger.Deleted && dagger.RootParent == Owner)
+            if (Dagger != null && !Dagger.Deleted && Dagger.RootParent == Owner)
             {
-                dagger.Name = "Misericord";
-                dagger.WeaponAttributes.UseBestSkill = 0;
-                dagger.QuestItem = false;
-                dagger.Slayer3 = TalismanSlayerName.Wolf;
+                Dagger.Name = "Misericord";
+                Dagger.WeaponAttributes.UseBestSkill = 0;
+                Dagger.QuestItem = false;
+                Dagger.Slayer3 = TalismanSlayerName.Wolf;
             }
         }
 
@@ -64,7 +67,8 @@ namespace Server.Engines.Quests
         {
             base.Serialize(writer);
 
-            writer.Write(0); // version
+            writer.Write(1); // version
+            writer.WriteItem<Dagger>(Dagger);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -72,6 +76,11 @@ namespace Server.Engines.Quests
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (version > 0)
+            {
+                Dagger = reader.ReadItem<Dagger>();
+            }
         }
     }
 

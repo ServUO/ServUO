@@ -63,7 +63,7 @@ namespace Server.Engines.VvV
         {
             if (IsChildOf(m.Backpack))
             {
-                if (!ViceVsVirtueSystem.IsVvV(m))
+                if (m.AccessLevel == AccessLevel.Player && !ViceVsVirtueSystem.IsVvV(m))
                 {
                     m.SendLocalizedMessage(1155496); // This item can only be used by VvV participants!
                 }
@@ -250,6 +250,9 @@ namespace Server.Engines.VvV
 
         public void AddToCooldown(Mobile m)
         {
+            if (m.AccessLevel > AccessLevel.Player)
+                return;
+
             if (!_Cooldown.ContainsKey(m))
                 _Cooldown[m] = new Dictionary<PotionType, DateTime>();
 
@@ -265,7 +268,7 @@ namespace Server.Engines.VvV
             {
                 DateTime dt = DateTime.UtcNow;
 
-                if (ViceVsVirtueSystem.Enabled && !ViceVsVirtueSystem.IsVvV(m))
+                if (m.AccessLevel == AccessLevel.Player && ViceVsVirtueSystem.Enabled && !ViceVsVirtueSystem.IsVvV(m))
                 {
                     m.SendLocalizedMessage(1155496); // This item can only be used by VvV participants!
                 }
@@ -423,7 +426,7 @@ namespace Server.Engines.VvV
                             {
                                 Server.Misc.Geometry.Circle2D(m.Location, m.Map, index, (pnt, map) =>
                                 {
-                                    Effects.SendLocationEffect(pnt, map, 0x3709, 30, 10, 0, 5);
+                                    Effects.SendLocationEffect(pnt, map, 0x3709, 30, 10, 1458, 5);
                                 });
                             }, i);
                     }

@@ -40,7 +40,7 @@ namespace Server.Spells.Fourth
             {
                 Caster.SendLocalizedMessage(1060177); // You cannot heal a creature that is already dead!
             }
-            else if (m is IRepairableMobile)
+            else if (m is IRepairableMobile && ((IRepairableMobile)m).RepairResource != typeof(Server.Items.Bandage))
             {
                 Caster.LocalOverheadMessage(MessageType.Regular, 0x3B2, 500951); // You cannot heal that.
             }
