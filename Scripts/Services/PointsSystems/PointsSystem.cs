@@ -51,6 +51,7 @@ namespace Server.Engines.Points
         TOT,
         VAS,
         FellowshipData,
+        JollyRogerData,
     }
 
     public abstract class PointsSystem
@@ -357,6 +358,7 @@ namespace Server.Engines.Points
         public static TreasuresOfTokuno TreasuresOfTokuno { get; set; }
         public static VirtueArtifactsSystem VirtueArtifacts { get; set; }
         public static FellowshipData FellowshipData { get; set; }
+        public static JollyRogerData JollyRogerData { get; set; }
 
         public static void Configure()
         {
@@ -387,6 +389,7 @@ namespace Server.Engines.Points
             TreasuresOfTokuno = new TreasuresOfTokuno();
             VirtueArtifacts = new VirtueArtifactsSystem();
             FellowshipData = new FellowshipData();
+            JollyRogerData = new JollyRogerData();
         }
 
         public static void OnKilledBy(OnKilledByEventArgs e)

@@ -422,6 +422,11 @@ namespace Server.Items
                 {
                     special = GetRandomSpecial(level, cont.Map);
                 }
+
+                if (.30 > Utility.RandomDouble())
+                {
+                    cont.DropItem(new MysteriousFragment());
+                }
             }
 
             if (arty != null)
