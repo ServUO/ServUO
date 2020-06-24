@@ -58,6 +58,7 @@ namespace Server.Engines.Points
         public static void SetShrineTitle(PlayerMobile pm, int title)
         {
             ShrineTitles[pm] = title;
+            pm.InvalidateProperties();
         }
 
         public static RewardArray GetList(Mobile m)
@@ -174,7 +175,7 @@ namespace Server.Engines.Points
                 var playerTitle = GetShrineTitle(pm);
                 var shrineTitle = GetTitle(shrine);
 
-                if ((playerTitle == 0 || playerTitle != shrineTitle) && list.Shrine.Any(x => x.FragmentCount < count && x.Shrine != shrine))
+                if (playerTitle == 0 || (playerTitle != shrineTitle && list.Shrine.Any(x => x.FragmentCount < count && x.Shrine != shrine)))
                 {
                     SetShrineTitle(pm, shrineTitle);
                 }

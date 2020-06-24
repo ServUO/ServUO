@@ -2368,14 +2368,9 @@ namespace Server.Mobiles
                     list.Add(new CallbackEntry(1077728, () => OpenTrade(from))); // Trade
                 }
 
-                BaseHouse curhouse = BaseHouse.FindHouseAt(this);
-
-                if (curhouse != null)
+                if (Alive && EjectPlayerEntry.CheckAccessible(from, this))
                 {
-                    if (Alive && curhouse.IsFriend(from))
-                    {
-                        list.Add(new EjectPlayerEntry(from, this));
-                    }
+                    list.Add(new EjectPlayerEntry(from, this));
                 }
             }
         }

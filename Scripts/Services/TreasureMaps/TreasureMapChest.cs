@@ -423,7 +423,7 @@ namespace Server.Items
                     special = GetRandomSpecial(level, cont.Map);
                 }
 
-                if (.30 > Utility.RandomDouble())
+                if (Engines.Points.PointsSystem.JollyRogerData.Enabled && .30 > Utility.RandomDouble())
                 {
                     cont.DropItem(new MysteriousFragment());
                 }
