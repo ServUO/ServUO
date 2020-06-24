@@ -2,7 +2,6 @@ using Server.Gumps;
 using Server.Mobiles;
 using Server.Network;
 using System;
-using System.Linq;
 
 namespace Server.Items
 {
@@ -35,27 +34,10 @@ namespace Server.Items
 
         public static IFellowshipMedallion CheckMedallion(Mobile from)
         {
-            return from.Items.FirstOrDefault(i => (i is IFellowshipMedallion) && i.Parent is Mobile mobile && mobile.FindItemOnLayer(i.Layer) == i) as IFellowshipMedallion;
+            return from.FindItemOnLayer(Layer.Neck) as IFellowshipMedallion;            
         }
 
         private Timer m_Timer;
-
-        public override void OnMapChange()
-        {
-            if (RootParent is PlayerMobile pm)
-            {
-                if (pm.Map == Map.Internal)
-                {
-                    Start(pm);
-                }
-                else
-                {
-                    Stop();
-                }
-            }
-
-            base.OnMapChange();
-        }
 
         public override void OnAdded(object parent)
         {
@@ -106,21 +88,12 @@ namespace Server.Items
         {
             base.Serialize(writer);
             writer.Write(0); // version
-
-            writer.Write(m_Timer!=null);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             reader.ReadInt();
-
-            bool timer = reader.ReadBool();
-
-            if (timer && RootParent is PlayerMobile pm)
-            {
-                Start(pm);
-            }
         }
 
         public static void Initialize()
@@ -149,11 +122,11 @@ namespace Server.Items
         private readonly Mobile _Mobile;
 
         public InternalTimer(Mobile m)
-            : base(TimeSpan.FromSeconds(12), TimeSpan.FromSeconds(12))
+            : base(TimeSpan.FromMinutes(12), TimeSpan.FromMinutes(12))
         {
             _Mobile = m;
 
-            Priority = TimerPriority.OneSecond;
+            Priority = TimerPriority.OneMinute;
         }
 
         protected override void OnTick()
@@ -217,23 +190,6 @@ namespace Server.Items
 
         private Timer m_Timer;
 
-        public override void OnMapChange()
-        {
-            if (RootParent is PlayerMobile pm)
-            {
-                if (pm.Map == Map.Internal)
-                {
-                    Start(pm);
-                }
-                else
-                {
-                    Stop();
-                }
-            }
-
-            base.OnMapChange();
-        }
-
         public override void OnAdded(object parent)
         {
             base.OnAdded(parent);
@@ -281,7 +237,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

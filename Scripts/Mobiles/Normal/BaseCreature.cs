@@ -1084,6 +1084,8 @@ namespace Server.Mobiles
             }
         }
 
+        public bool IsGolem => this is IRepairableMobile && GetMaster() != null;
+
         public virtual bool TaintedLifeAura => false;
         public virtual bool BreathImmune => false;
 
@@ -5386,6 +5388,9 @@ namespace Server.Mobiles
             {
                 list.Add(1080078); // guarding
             }
+
+            if (IsGolem)
+                list.Add(1113697); // (Golem)
 
             if (Summoned && !IsAnimatedDead && !IsNecroFamiliar && !(this is Clone))
             {

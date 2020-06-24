@@ -132,7 +132,7 @@ namespace Server.Engines.Fellowship
                 }
                 else
                 {
-                    from.PrivateOverheadMessage(MessageType.Regular, 0x47E, 1159380,
+                    PrivateOverheadMessage(MessageType.Regular, 0x47E, 1159380,
                         from.NetState); // * You attempt to understand the spirit but your connection to them is weak... *
                 }
             }

@@ -58,15 +58,15 @@ namespace Server.Engines.JollyRoger
                 {
                     Gump g = new Gump(100, 100);
                     g.AddBackground(0, 0, 570, 295, 0x2454);
-                    g.AddImage(0, 0, 0x9CD6);
-                    g.AddHtmlLocalized(335, 24, 223, 261, 1159381, 0xC63, false, true); // *squeak squeak* Have you come to play the instruments? *squeak squeak* I bet you are as good as Iolo! “Practice! Practice!” he would say, “Practice your musical scales!” *squeak squeak* My fingers were too tiny for the lute, but I could sing! Do Re Mi Fa So La Ti Do! *squeak squeak*  <br><br>Long ago, I was supposed to perform at the wedding of Shamino and Princess Beatrix. Ready to go at noon on the nose I would have been, but that was before...everything. *frowns* Sometimes I still visit Castle Sallé Dacil through a secret door in Ilshenar. Even though the castle has seen better days, I am still reminded of the Pure Love Princess Beatrix had for Shamino! *squeak squeak*
+                    g.AddImage(0, 0, 0x9D3D);
+                    g.AddHtmlLocalized(335, 24, 223, 261, 1159379, 0xC63, false, true); // Tis true, I am unlike the spirits you will see roaming nearby - the Well of Souls has allowed me a more robust form between the plane of reality and the ethereal void. Tis no matter though, I return to Britannia only to remember my beloved Beatrix. My how beautiful my Beatrix was... We were to be wed you know! <br><br>What a wedding it would have been! Castle Sallé Dacil was decorated in full regalia and the ceremony was to begin promptly at noon. Elegantly carved swans, a feast set for a king, and a generous gift from our Forgotten King - a magnificent sandalwood box! <br><br>Alas, none of that happened. I was rushed off to the war against Mondain in service of our Forgotten King. <br><br>Ah, I remember my first meeting with him well, I nearly chopped off my own leg from the shock!  Offworld travelers were a rarity then, those would be crowned king even more so!  Little about him was ordinary, right up to his coronation - tis no small feat to assemble such a crowd at midnight! It was very important to pay attention to the clocks so we wouldn't miss the spectacle, but many were in attendance to rejoice in the occasion despite the late hour.<br><br>Time is a funny thing - and my time in the ethereal plane has allowed me to see what would have been. *gestures to the glowing Well* I am afraid in this age of uncertainty, travel to the ethereal void via the Well of Souls is most perilous. Only those bearing the blessing of the Forgotten King will be able to pass. <br><br>And pass you must, for the Time Lord, Hawkwind, has been bound there by dark magics, and only a mortal being, virtuous and true, will be able to free him!  Even bound, time is a fickle thing and the influence of its agent no doubt still at hand. Your quest on this timeline is the one true way forward...<br><br>Thank you for listening to me reminisce. It is especially nice to remember my beloved Beatrix. *smiles*<br>
 
                     from.SendGump(g);
                     from.PlaySound(1664);
                 }
                 else
                 {
-                    from.PrivateOverheadMessage(MessageType.Regular, 0x47E, 1159380,
+                    PrivateOverheadMessage(MessageType.Regular, 0x47E, 1159380,
                         from.NetState); // * You attempt to understand the spirit but your connection to them is weak... *
                 }
             }

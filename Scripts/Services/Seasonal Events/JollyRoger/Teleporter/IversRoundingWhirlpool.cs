@@ -22,12 +22,13 @@ namespace Server.Items
 
         public override bool OnMoveOver(Mobile m)
         {
-            if (m.IsPlayer())
+            if (m is PlayerMobile)
             {
                 if (FellowshipMedallion.IsDressed(m))
                 {
                     BaseCreature.TeleportPets(m, m_Dest, Map.Ilshenar);
                     m.MoveToWorld(m_Dest, Map.Ilshenar);
+                    return false;
                 }
                 else
                 {
@@ -36,7 +37,7 @@ namespace Server.Items
                 }
             }
 
-            return base.OnMoveOver(m);
+            return true;
         }
 
         public override void Serialize(GenericWriter writer)

@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class WineRack : LockableContainer, IFlipable, IDyable
     {
-        public override string DefaultName => "Wine Rack";
+        public override int LabelNumber => 1126367; // wine rack
 
         public override int DefaultGumpID => 0x44;
 
