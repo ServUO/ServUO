@@ -992,26 +992,31 @@ namespace Server.Mobiles
             }
             set
             {
-                Mobile initialFocus = InitialFocus;
+                if (Deleted)
+                    return;
 
-                if (base.Combatant == null)
+                var c = base.Combatant;
+
+                if (c == value)
+                    return;
+
+                if (AttacksFocus)
                 {
-                    if (value is Mobile && AttacksFocus)
+                    Mobile focus = InitialFocus;
+
+                    if (c != null)
                     {
-                        InitialFocus = (Mobile)value;
+                        if (focus != null && focus != value && InRange(focus.Location, RangePerception) && CanSee(focus))
+                            value = focus;
+                    }
+                    else
+                    {
+                        if (focus == null && value is Mobile m)
+                            InitialFocus = m;
                     }
                 }
-                else if (AttacksFocus &&
-                        initialFocus != null &&
-                        value != initialFocus &&
-                        !initialFocus.Hidden &&
-                        Map == initialFocus.Map &&
-                        InRange(initialFocus.Location, RangePerception))
-                {
-                    //Keeps focus
-                    base.Combatant = initialFocus;
-                    return;
-                }
+                else
+                    InitialFocus = null;
 
                 base.Combatant = value;
 
