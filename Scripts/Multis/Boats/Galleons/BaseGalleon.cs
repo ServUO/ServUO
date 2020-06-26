@@ -1445,7 +1445,7 @@ namespace Server.Multis
                 case 4:
                 case 3:
                 case 2:
-                    if (version == 5)
+                    if (version < 6)
                     {
                         Item pole = reader.ReadItem();
                         AddFixture(pole);
