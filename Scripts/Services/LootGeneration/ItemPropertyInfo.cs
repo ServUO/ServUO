@@ -307,7 +307,7 @@ namespace Server.Items
             Register(20, new ItemPropertyInfo(AosAttribute.EnhancePotions, 1075624, 100, typeof(EnchantedEssence), typeof(Citrine), typeof(CrushedGlass), 5, 5, 25, 1111950,
                 new PropInfo(1, 0, 15), new PropInfo(2, 0, 15), new PropInfo(3, 0, 5), new PropInfo(5, 0, 5), new PropInfo(6, 25, 25, new int[] { 30, 35 })));
 
-            Register(21, new ItemPropertyInfo(AosAttribute.Luck, 1061153, 100, typeof(MagicalResidue), typeof(Citrine), typeof(ChagaMushroom), 10, 10, 100, 1111999,
+            Register(21, new ItemPropertyInfo(AosAttribute.Luck, 1061153, 100, typeof(MagicalResidue), typeof(Citrine), typeof(ChagaMushroom), 1, 1, 100, 1111999,
                 new PropInfo(1, 100, 100, new int[] { 110, 120, 130, 140, 150 }), new PropInfo(2, 120, 120, new int[] { 130, 140, 150, 160, 170 }), new PropInfo(3, 100, 100, new int[] { 110, 120, 130, 140, 150 }), new PropInfo(4, 100, 100, new int[] { 110, 120, 130, 140, 150 }), new PropInfo(5, 100, 100, new int[] { 110, 120, 130, 140, 150 }), new PropInfo(6, 100, 100, new int[] { 110, 120, 130, 140, 150 })));
 
             Register(22, new ItemPropertyInfo(AosAttribute.SpellChanneling, 1079766, 100, typeof(MagicalResidue), typeof(Diamond), typeof(SilverSnakeSkin), 0, 1, 1, 1112040,
@@ -813,9 +813,17 @@ namespace Server.Items
         {
             if (Table.ContainsKey(id))
             {
-                if (loot && id >= 151 && id <= 183)
+                if (loot)
                 {
-                    return 5;
+                    if (id >= 151 && id <= 183)
+                    {
+                        return 5;
+                    }
+
+                    if (id == 21)
+                    {
+                        return 10;
+                    }
                 }
 
                 PropInfo info = Table[id].GetItemTypeInfo(GetItemType(item));
@@ -1185,7 +1193,7 @@ namespace Server.Items
                             return !reforged;
                         case 206: // Reactive Paralyze Weapon
                             return item is BaseWeapon && item.Layer == Layer.TwoHanded;
-                        case 207: // Reactive Paralyze Armor
+                        case 220: // Reactive Paralyze Armor
                             return item is BaseShield;
                         case 61:  // Balanced
                             return item.Layer == Layer.TwoHanded;

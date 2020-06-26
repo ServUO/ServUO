@@ -640,7 +640,7 @@ namespace Server.Items
             return ((m.Skills[SkillName.Musicianship].Value / 100) > Utility.RandomDouble());
         }
 
-        public void PlayInstrumentWell(Mobile from)
+        public virtual void PlayInstrumentWell(Mobile from)
         {
             from.PlaySound(m_WellSound);
         }

@@ -20,8 +20,6 @@ namespace Server.Multis
     {
         public static int AccountHouseLimit { get; } = Config.Get("Housing.AccountHouseLimit", 1);
 
-        public static bool NewVendorSystem => true; // Is new player vendor system enabled?
-
         public static double GlobalBonusStorageScalar => 1.4;
 
         public const int MaxCoOwners = 15;
@@ -325,8 +323,6 @@ namespace Server.Multis
 
         private static readonly Dictionary<Mobile, List<BaseHouse>> m_Table = new Dictionary<Mobile, List<BaseHouse>>();
 
-        public virtual bool IsAosRules => true;
-
         public virtual bool IsActive => true;
 
         public virtual HousePlacementEntry GetAosEntry()
@@ -421,17 +417,6 @@ namespace Server.Multis
 
             fromLockdowns += GetCommissionVendorLockdowns();
 
-            if (!NewVendorSystem)
-            {
-                foreach (Mobile vendor in PlayerVendors)
-                {
-                    if (vendor.Backpack != null)
-                    {
-                        fromVendors += vendor.Backpack.TotalItems;
-                    }
-                }
-            }
-
             if (MovingCrate != null)
             {
                 fromMovingCrate += MovingCrate.TotalItems;
@@ -460,7 +445,7 @@ namespace Server.Multis
             return false;
         }
 
-        public virtual int GetNewVendorSystemMaxVendors()
+        public virtual int GetVendorSystemMaxVendors()
         {
             HousePlacementEntry hpe = GetAosEntry();
 
@@ -472,13 +457,7 @@ namespace Server.Multis
 
         public virtual bool CanPlaceNewVendor()
         {
-            if (!IsAosRules)
-                return true;
-
-            if (!NewVendorSystem)
-                return CheckAosLockdowns(10);
-
-            return (PlayerVendors.Count + VendorRentalContracts.Count) < GetNewVendorSystemMaxVendors();
+            return (PlayerVendors.Count + VendorRentalContracts.Count) < GetVendorSystemMaxVendors();
         }
 
         public const int MaximumBarkeepCount = 2;
@@ -1032,9 +1011,6 @@ namespace Server.Multis
             if (Secures != null)
                 v += Secures.Where(x => !LockDowns.ContainsKey(x.Item)).Count();
 
-            if (!NewVendorSystem)
-                v += PlayerVendors.Count * 10;
-
             return v;
         }
 
@@ -1086,7 +1062,7 @@ namespace Server.Multis
         {
             BaseHouse house = FindHouseAt(cont);
 
-            if (house == null || !house.IsAosRules)
+            if (house == null)
                 return true;
 
             if (house.IsSecure(cont) && !house.CheckAosStorage(1 + item.TotalItems + plusItems))
@@ -2003,7 +1979,7 @@ namespace Server.Multis
                 {
                     m.SendLocalizedMessage(501736); // You must lockdown the container first!
                 }
-                else if (!(item is VendorRentalContract) && (IsAosRules ? (!CheckAosLockdowns(amt) || !CheckAosStorage(amt)) : (LockDownCount + amt) > MaxLockDowns))
+                else if (!(item is VendorRentalContract) && ((!CheckAosLockdowns(amt) || !CheckAosStorage(amt))))
                 {
                     m.SendLocalizedMessage(1005379);//That would exceed the maximum lock down limit for this house
                 }
@@ -2174,7 +2150,7 @@ namespace Server.Multis
             if (Deleted || !from.CheckAlive() || !IsOwner(from))
                 return;
 
-            if (NewVendorSystem && HasPersonalVendors)
+            if (HasPersonalVendors)
             {
                 from.SendLocalizedMessage(1062467); // You cannot trade this house while you still have personal vendors inside.
             }
@@ -2238,7 +2214,7 @@ namespace Server.Multis
             if (Deleted || !from.CheckAlive() || !IsOwner(from))
                 return;
 
-            if (NewVendorSystem && HasPersonalVendors)
+            if (HasPersonalVendors)
             {
                 from.SendLocalizedMessage(1062467); // You cannot trade this house while you still have personal vendors inside.
             }
@@ -2438,16 +2414,11 @@ namespace Server.Multis
                 {
                     m.SendLocalizedMessage(1010424); // You cannot secure 
                 }
-                else if (!IsAosRules && SecureCount >= MaxSecures)
-                {
-                    // The maximum number of secure items has been reached :
-                    m.SendLocalizedMessage(1008142, true, MaxSecures.ToString());
-                }
-                else if (IsAosRules ? !CheckAosLockdowns(1) : ((LockDownCount + 125) >= MaxLockDowns))
+                else if (!CheckAosLockdowns(1))
                 {
                     m.SendLocalizedMessage(1005379); // That would exceed the maximum lock down limit for this house
                 }
-                else if (IsAosRules && !CheckAosStorage(item.TotalItems))
+                else if (!CheckAosStorage(item.TotalItems))
                 {
                     m.SendLocalizedMessage(1061839); // This action would exceed the secure storage limit of the house.
                 }
@@ -2490,7 +2461,7 @@ namespace Server.Multis
 
         public virtual bool IsCombatRestricted(Mobile m)
         {
-            if (m == null || !m.Player || m.AccessLevel >= AccessLevel.GameMaster || !IsAosRules || (m_Owner != null && m_Owner.AccessLevel >= AccessLevel.GameMaster))
+            if (m == null || !m.Player || m.AccessLevel >= AccessLevel.GameMaster || (m_Owner != null && m_Owner.AccessLevel >= AccessLevel.GameMaster))
                 return false;
 
             for (int i = 0; i < m.Aggressed.Count; ++i)
@@ -2635,7 +2606,7 @@ namespace Server.Multis
                 return;
             }
 
-            if (IsAosRules ? !CheckAosLockdowns(1) : ((LockDownCount + 1) > MaxLockDowns))
+            if (!CheckAosLockdowns(1))
             {
                 from.SendLocalizedMessage(1005379);//That would exceed the maximum lock down limit for this house
                 return;
@@ -2771,7 +2742,7 @@ namespace Server.Multis
             {
                 from.SendLocalizedMessage(501352); // You may not eject someone who is not in your house!
             }
-            else if (!Public && IsAosRules)
+            else if (!Public)
             {
                 from.SendLocalizedMessage(1062521); // You cannot ban someone from a private house.  Revoke their access instead.
             }
@@ -4037,7 +4008,7 @@ namespace Server.Multis
             if (m == m_Owner || m.AccessLevel >= AccessLevel.GameMaster)
                 return true;
 
-            return IsAosRules && AccountHandler.CheckAccount(m, m_Owner);
+            return AccountHandler.CheckAccount(m, m_Owner);
         }
 
         public bool IsCoOwner(Mobile m)
@@ -4054,7 +4025,7 @@ namespace Server.Multis
                     return true;
             }
 
-            return !IsAosRules && AccountHandler.CheckAccount(m, m_Owner);
+            return false;
         }
 
         public bool IsGuildMember(Mobile m)
@@ -4623,7 +4594,7 @@ namespace Server.Multis
         {
             BaseHouse house = BaseHouse.FindHouseAt(item);
 
-            if (house == null || !house.IsAosRules)
+            if (house == null)
                 return null;
 
             bool owner = house.IsOwner(from) || (house.IsLockedDown(item) && house.CheckLockdownOwnership(from, item));

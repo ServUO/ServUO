@@ -168,7 +168,7 @@ namespace Server.Multis
         {
             base.GetContextMenuEntries(from, list);
 
-            if (BaseHouse.NewVendorSystem && from.Alive && Owner != null && Owner.IsAosRules)
+            if (from.Alive && Owner != null)
             {
                 if (Owner.AreThereAvailableVendorsFor(from))
                     list.Add(new VendorsEntry(this));

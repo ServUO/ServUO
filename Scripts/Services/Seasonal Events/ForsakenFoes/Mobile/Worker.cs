@@ -124,7 +124,18 @@ namespace Server.Engines.Fellowship
 
                     if (FellowshipChainList[from] == FellowshipChain.Eight)
                     {
-                        from.AddToBackpack(new FellowshipMedallion());
+                        Item medallion;
+
+                        if (from.Race == Race.Gargoyle)
+                        {
+                            medallion = new GargishFellowshipMedallion();
+                        }
+                        else
+                        {
+                            medallion = new FellowshipMedallion();
+                        }
+
+                        from.AddToBackpack(medallion);
                     }
                 }
                 else

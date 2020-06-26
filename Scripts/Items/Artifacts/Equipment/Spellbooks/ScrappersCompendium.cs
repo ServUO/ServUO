@@ -39,20 +39,18 @@ namespace Server.Items
 
         public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
-            double magery = from.Skills.Magery.Value - 100;
-
-            if (magery < 0)
-                magery = 0;
-
-            int count = (int)Math.Round(magery * Utility.RandomDouble() / 5);
-
-            if (count > 2)
-                count = 2;
-
+            
             if (Utility.RandomDouble() < 0.5)
-                count = 0;
-            else
+            {
+                double magery = from.Skills.Magery.Value - 100;
+
+                if (magery < 0)
+                    magery = 0;
+
+                int count = Math.Min(3, (int)Math.Round(magery * Utility.RandomDouble() / 5));
+
                 BaseRunicTool.ApplyAttributesTo(this, true, 0, count, 70, 80);
+            }
 
             Attributes.SpellDamage = 25;
             Attributes.LowerManaCost = 10;

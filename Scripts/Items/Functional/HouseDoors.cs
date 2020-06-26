@@ -162,9 +162,6 @@ namespace Server.Items
             if (house == null)
                 return false;
 
-            if (!house.IsAosRules)
-                return true;
-
             if (house.Public ? house.IsBanned(m) : !house.HasAccess(m))
                 return false;
 
@@ -183,7 +180,7 @@ namespace Server.Items
         {
             BaseHouse house = FindHouse();
 
-            return (house == null || !house.IsAosRules);
+            return (house == null);
         }
 
         public override void Use(Mobile from)

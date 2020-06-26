@@ -2155,8 +2155,8 @@ namespace Server.Items
             bool sparks = false;
             if (a == null && move == null)
             {
-                if (m_ExtendedWeaponAttributes.BoneBreaker > 0)
-                    damage += BoneBreakerContext.CheckHit(attacker, defender);
+                if (m_ExtendedWeaponAttributes.BoneBreaker > 0 && !AnimalForm.UnderTransformation(attacker))
+                    BoneBreakerContext.CheckHit(attacker, defender);
 
                 if (m_ExtendedWeaponAttributes.HitSwarm > 0 && Utility.Random(100) < m_ExtendedWeaponAttributes.HitSwarm)
                     SwarmContext.CheckHit(attacker, defender);

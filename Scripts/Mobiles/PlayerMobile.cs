@@ -2295,10 +2295,7 @@ namespace Server.Mobiles
                         list.Add(new CallbackEntry(6204, GetVendor));
                     }
 
-                    if (house.IsAosRules)
-                    {
-                        list.Add(new CallbackEntry(6207, LeaveHouse));
-                    }
+                    list.Add(new CallbackEntry(6207, LeaveHouse));
                 }
 
                 list.Add(new CallbackEntry(RefuseTrades ? 1154112 : 1154113, ToggleTrades)); // Allow Trades / Refuse Trades				
@@ -2371,14 +2368,9 @@ namespace Server.Mobiles
                     list.Add(new CallbackEntry(1077728, () => OpenTrade(from))); // Trade
                 }
 
-                BaseHouse curhouse = BaseHouse.FindHouseAt(this);
-
-                if (curhouse != null)
+                if (Alive && EjectPlayerEntry.CheckAccessible(from, this))
                 {
-                    if (Alive && curhouse.IsAosRules && curhouse.IsFriend(from))
-                    {
-                        list.Add(new EjectPlayerEntry(from, this));
-                    }
+                    list.Add(new EjectPlayerEntry(from, this));
                 }
             }
         }
@@ -5058,6 +5050,8 @@ namespace Server.Mobiles
         {
             base.GetProperties(list);
 
+            JollyRogerData.DisplayTitle(this, list);
+
             if (m_SubtitleSkillTitle != null)
                 list.Add(1042971, m_SubtitleSkillTitle);
 
@@ -6471,7 +6465,7 @@ namespace Server.Mobiles
                         continue;
                     }
 
-                    if (!pet.CanAutoStable)
+                    if (!pet.CanAutoStable || Stabled.Count >= AnimalTrainer.GetMaxStabled(this))
                     {
                         continue;
                     }

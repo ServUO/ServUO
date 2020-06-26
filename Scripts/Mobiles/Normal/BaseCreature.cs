@@ -418,7 +418,7 @@ namespace Server.Mobiles
         #region Bonding
         public const bool BondingEnabled = true;
 
-        public virtual bool IsBondable => (BondingEnabled && !Summoned && !m_Allured && !IsGolem);
+        public virtual bool IsBondable => (BondingEnabled && !Summoned && !m_Allured && !(this is IRepairableMobile));
         public virtual TimeSpan BondingDelay => TimeSpan.FromDays(7.0);
         public virtual TimeSpan BondingAbandonDelay => TimeSpan.FromDays(1.0);
 
@@ -461,8 +461,6 @@ namespace Server.Mobiles
                 return m_Owners[m_Owners.Count - 1];
             }
         }
-
-        public bool IsGolem => this is IRepairableMobile;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsBonded
@@ -1085,6 +1083,8 @@ namespace Server.Mobiles
                 return true;
             }
         }
+
+        public bool IsGolem => this is IRepairableMobile && GetMaster() != null;
 
         public virtual bool TaintedLifeAura => false;
         public virtual bool BreathImmune => false;
@@ -5388,6 +5388,9 @@ namespace Server.Mobiles
             {
                 list.Add(1080078); // guarding
             }
+
+            if (IsGolem)
+                list.Add(1113697); // (Golem)
 
             if (Summoned && !IsAnimatedDead && !IsNecroFamiliar && !(this is Clone))
             {

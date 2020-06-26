@@ -39,15 +39,13 @@ namespace Server.Commands
             public int Delay { get; set; }
 
             public Category Category { get; set; }
-            public Expansion RequiredExpansion { get; set; }
 
-            public CommandEntry(string n, string c, string d, Category cat, Expansion expansion, int i, int delay = 0)
+            public CommandEntry(string n, string c, string d, Category cat, int i, int delay = 0)
             {
                 Name = n;
                 CreateCommand = c;
                 DeleteCommand = d;
                 Category = cat;
-                RequiredExpansion = expansion;
                 CheckID = i;
                 Delay = delay;
             }
@@ -55,31 +53,31 @@ namespace Server.Commands
 
         public static List<CommandEntry> Commands = new List<CommandEntry>(new CommandEntry[]
         {
-            new CommandEntry("Moongates",           "Moongen",          "MoonGenDelete",        Category.Decoration,      Expansion.None,   101),
-            new CommandEntry("Doors",               "DoorGen",          "DoorGenDelete",        Category.Decoration,      Expansion.None,   102),
-            new CommandEntry("Signs",               "SignGen",          "SignGenDelete",        Category.Decoration,      Expansion.None,   103),
-            new CommandEntry("Doom Lamp",           "GenLeverPuzzle",   "LampPuzzleDelete",     Category.System,          Expansion.AOS,    105),
-            new CommandEntry("Doom Gauntlet",       "GenGauntlet",      "DeleteGauntlet",       Category.Dungeon,         Expansion.AOS,    106),
-            new CommandEntry("Khaldun",             "GenKhaldun",       "DeleteKhaldun",        Category.Dungeon,         Expansion.None,   107),
-            new CommandEntry("Stealables",          "GenStealArties",   "RemoveStealArties",    Category.Spawn,           Expansion.AOS,    108),
-            new CommandEntry("Solen Hives",         "SHTelGen",         "SHTelGenDelete",       Category.Dungeon,         Expansion.LBR,    109),
-            new CommandEntry("Malas Secrets",       "SecretLocGen",     "SecretLocDelete",      Category.System,          Expansion.AOS,    110),
-            new CommandEntry("Decorations",         "Decorate",         "DecorateDelete",       Category.Decoration,      Expansion.None,   113),
-            new CommandEntry("ML Decorations",      "DecorateML",       "DecorateMLDelete",     Category.Decoration,      Expansion.ML,     114),
-            new CommandEntry("SA Decorations",      "DecorateSA",       "DecorateSADelete",     Category.Decoration,      Expansion.SA,     115),
-            new CommandEntry("Spawners",            "XmlLoad Spawns",   "WipeAllXmlSpawners",   Category.Spawn,           Expansion.None,   116),
-            new CommandEntry("New Despise",         "SetupDespise",     "DeleteDespise",        Category.RevampedDungeon, Expansion.SA,     117),
-            new CommandEntry("New Covetous",        "SetupNewCovetous", "DeleteCovetous",       Category.RevampedDungeon, Expansion.SA,     118),
-            new CommandEntry("New Shame",           "GenerateNewShame", "DeleteShame",          Category.RevampedDungeon, Expansion.SA,     119),
-            new CommandEntry("New Magincia",        "GenNewMagincia",   "DeleteNewMagincia",    Category.Decoration,      Expansion.None,   120),
-            new CommandEntry("High Seas",           "DecorateHS",       "DeleteHS",             Category.Expansion,       Expansion.HS,     121),
-            new CommandEntry("City Loyalty",        "SetupCityLoyaltySystem","DeleteCityLoyaltySystem",Category.System,     Expansion.SA,   122),
-            new CommandEntry("Castle Blackthorn",   "GenBlackthorn",                null,       Category.RevampedDungeon, Expansion.SA,     123),
-            new CommandEntry("TOL Decorations",     "DecorateTOL",                  null,       Category.Decoration,      Expansion.TOL,    124),
-            new CommandEntry("New Wrong",           "GenWrongRevamp",               null,       Category.RevampedDungeon, Expansion.SA,     125),
-            new CommandEntry("Kotl City",           "GenerateTreasuresOfKotlCity",  null,       Category.System,          Expansion.TOL,    126),
-            new CommandEntry("Fillable Containers", "CheckFillables",               null,       Category.Spawn,           Expansion.None,   127, 5),
-            new CommandEntry("Champ Spawns",        "GenChampSpawns",   "DelChampSpawns",       Category.Spawn,           Expansion.UOR,    128),
+            new CommandEntry("Moongates",           "Moongen",          "MoonGenDelete",        Category.Decoration,      101),
+            new CommandEntry("Doors",               "DoorGen",          "DoorGenDelete",        Category.Decoration,      102),
+            new CommandEntry("Signs",               "SignGen",          "SignGenDelete",        Category.Decoration,      103),
+            new CommandEntry("Doom Lamp",           "GenLeverPuzzle",   "LampPuzzleDelete",     Category.System,          105),
+            new CommandEntry("Doom Gauntlet",       "GenGauntlet",      "DeleteGauntlet",       Category.Dungeon,         106),
+            new CommandEntry("Khaldun",             "GenKhaldun",       "DeleteKhaldun",        Category.Dungeon,         107),
+            new CommandEntry("Stealables",          "GenStealArties",   "RemoveStealArties",    Category.Spawn,           108),
+            new CommandEntry("Solen Hives",         "SHTelGen",         "SHTelGenDelete",       Category.Dungeon,         109),
+            new CommandEntry("Malas Secrets",       "SecretLocGen",     "SecretLocDelete",      Category.System,          110),
+            new CommandEntry("Decorations",         "Decorate",         "DecorateDelete",       Category.Decoration,      113),
+            new CommandEntry("ML Decorations",      "DecorateML",       "DecorateMLDelete",     Category.Decoration,      114),
+            new CommandEntry("SA Decorations",      "DecorateSA",       "DecorateSADelete",     Category.Decoration,      115),
+            new CommandEntry("Spawners",            "XmlLoad Spawns",   "WipeAllXmlSpawners",   Category.Spawn,           116),
+            new CommandEntry("New Despise",         "SetupDespise",     "DeleteDespise",        Category.RevampedDungeon, 117),
+            new CommandEntry("New Covetous",        "SetupNewCovetous", "DeleteCovetous",       Category.RevampedDungeon, 118),
+            new CommandEntry("New Shame",           "GenerateNewShame", "DeleteShame",          Category.RevampedDungeon, 119),
+            new CommandEntry("New Magincia",        "GenNewMagincia",   "DeleteNewMagincia",    Category.Decoration,      120),
+            new CommandEntry("High Seas",           "DecorateHS",       "DeleteHS",             Category.Expansion,       121),
+            new CommandEntry("City Loyalty",        "SetupCityLoyaltySystem","DeleteCityLoyaltySystem",Category.System,   122),
+            new CommandEntry("Castle Blackthorn",   "GenBlackthorn",                null,       Category.RevampedDungeon, 123),
+            new CommandEntry("TOL Decorations",     "DecorateTOL",                  null,       Category.Decoration,      124),
+            new CommandEntry("New Wrong",           "GenWrongRevamp",               null,       Category.RevampedDungeon, 125),
+            new CommandEntry("Kotl City",           "GenerateTreasuresOfKotlCity",  null,       Category.System,          126),
+            new CommandEntry("Fillable Containers", "CheckFillables",               null,       Category.Spawn,           127, 5),
+            new CommandEntry("Champ Spawns",        "GenChampSpawns",   "DelChampSpawns",       Category.Spawn,           128),
         });
 
         public static bool WorldCreating { get; set; }
@@ -388,7 +386,7 @@ namespace Server.Gumps
             }
 
             AddHtml(152, 15, 450, 20, ColorAndCenter("#00FFFF", label), false, false);
-            AddHtml(12, 15, 140, 20, ColorAndCenter("#696969", String.Format("Your Expansion: {0}", Core.Expansion.ToString())), false, false);
+            AddHtml(12, 15, 140, 20, ColorAndCenter("#696969", String.Format("Shard Expansion: {0}", Core.Expansion.ToString())), false, false);
 
             for (int i = 0; i < 6; i++)
             {
@@ -410,7 +408,6 @@ namespace Server.Gumps
             {
                 CreateWorld.CommandEntry entry = commands[i];
                 bool created = CreateWorldData.CreateTable[entry.CheckID];
-                bool meetsExpansion = entry.RequiredExpansion <= Core.Expansion;
 
                 bool check;
 
@@ -421,16 +418,8 @@ namespace Server.Gumps
                 else
                     check = GumpType == CreateWorld.GumpType.Create ? !created : created;
 
-                if (meetsExpansion)
-                {
-                    AddLabel(x + 21, y, created ? 200 : 338, String.Format("{0} {1}", entry.Name, created ? "[created]" : "[not created]"));
-                    AddCheck(x, y - 2, 210, 211, check, entry.CheckID);
-                }
-                else
-                {
-                    AddLabel(x + 21, y, created ? 200 : 33, String.Format("{0} {1}", entry.Name, "[Wrong Expansion]"));
-                    AddImage(x, y - 2, 210);
-                }
+                AddLabel(x + 21, y, created ? 200 : 338, String.Format("{0} {1}", entry.Name, created ? "[created]" : "[not created]"));
+                AddCheck(x, y - 2, 210, 211, check, entry.CheckID);
 
                 y += 20;
 

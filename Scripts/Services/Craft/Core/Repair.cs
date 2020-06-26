@@ -186,7 +186,7 @@ namespace Server.Engines.Craft
                     value = from.Skills[m_CraftSystem.MainSkill].Base;
                 }
 
-                if (m_CraftSystem is DefTinkering && targeted is IRepairableMobile)
+                if (m_CraftSystem is DefTinkering && targeted is IRepairableMobile && ((IRepairableMobile)targeted).RepairResource != typeof(Bandage))
                 {
                     if (TryRepairMobile(from, (IRepairableMobile)targeted, usingDeed, out toDelete))
                     {

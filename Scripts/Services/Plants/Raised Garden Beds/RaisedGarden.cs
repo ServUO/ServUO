@@ -131,13 +131,6 @@ namespace Server.Items
                 from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
         }
 
-        public override void GetProperties(ObjectPropertyList list)
-        {
-            base.GetProperties(list);
-
-            list.Add(1150651); // * Requires the "Rustic" theme pack
-        }
-
         private void SendTarget(Mobile m)
         {
             base.OnDoubleClick(m);

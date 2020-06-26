@@ -1049,9 +1049,6 @@ namespace Server.Guilds
 
         private List<Mobile> m_Members;
 
-        private Item m_Guildstone;
-        private Item m_Teleporter;
-
         private string m_Charter;
         private string m_Website;
 
@@ -1251,8 +1248,6 @@ namespace Server.Guilds
                 }
             }
 
-            m_Guildstone = null;
-
             CheckExpiredWars();
 
             Alliance = null;
@@ -1318,7 +1313,7 @@ namespace Server.Guilds
                 Alliance.CheckLeader();
             }
 
-            writer.Write(6); //version
+            writer.Write(7); //version
 
             #region War Serialization
             writer.Write(m_PendingWars.Count);
@@ -1372,9 +1367,6 @@ namespace Server.Guilds
             writer.Write(m_Candidates, true);
             writer.Write(m_Accepted, true);
 
-            writer.Write(m_Guildstone);
-            writer.Write(m_Teleporter);
-
             writer.Write(m_Charter);
             writer.Write(m_Website);
         }
@@ -1385,6 +1377,7 @@ namespace Server.Guilds
 
             switch (version)
             {
+                case 7:
                 case 6:
                 case 5:
                     {
@@ -1465,8 +1458,11 @@ namespace Server.Guilds
                         m_Candidates = reader.ReadStrongMobileList();
                         m_Accepted = reader.ReadStrongMobileList();
 
-                        m_Guildstone = reader.ReadItem();
-                        m_Teleporter = reader.ReadItem();
+                        if (version < 7)
+                        {
+                            reader.ReadItem();
+                            reader.ReadItem();
+                        }
 
                         m_Charter = reader.ReadString();
                         m_Website = reader.ReadString();
@@ -1854,12 +1850,6 @@ namespace Server.Guilds
 
         #region Getters & Setters
         [CommandProperty(AccessLevel.GameMaster)]
-        public Item Guildstone { get { return m_Guildstone; } set { m_Guildstone = value; } }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public Item Teleporter { get { return m_Teleporter; } set { m_Teleporter = value; } }
-
-        [CommandProperty(AccessLevel.GameMaster)]
         public override string Name
         {
             get { return m_Name; }
@@ -1868,11 +1858,6 @@ namespace Server.Guilds
                 m_Name = value;
 
                 InvalidateMemberProperties(true);
-
-                if (m_Guildstone != null)
-                {
-                    m_Guildstone.InvalidateProperties();
-                }
             }
         }
 
@@ -1888,11 +1873,6 @@ namespace Server.Guilds
                 m_Abbreviation = value;
 
                 InvalidateMemberProperties(true);
-
-                if (m_Guildstone != null)
-                {
-                    m_Guildstone.InvalidateProperties();
-                }
             }
         }
 

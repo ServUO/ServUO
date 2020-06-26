@@ -199,7 +199,14 @@ namespace Server.Engines.NewMagincia
                 {
                     if (Message.Title.Number != 0)
                     {
-                        AddHtmlLocalized(47, 7, 360, 20, Message.Body.Number, Message.Args, GreenColor, false, false);
+                        if (!string.IsNullOrEmpty(Message.Args))
+                        {
+                            AddHtmlLocalized(47, 7, 360, 20, Message.Body.Number, Message.Args, GreenColor, false, false);
+                        }
+                        else
+                        {
+                            AddHtmlLocalized(47, 7, 360, 20, Message.Body.Number, GreenColor, false, false);
+                        }
                     }
                     else
                     {
@@ -216,13 +223,13 @@ namespace Server.Engines.NewMagincia
                 {
                     if (Message.Body.Number != 0)
                     {
-                        if (Message.Args == null)
+                        if (!string.IsNullOrEmpty(Message.Args))
                         {
-                            AddHtmlLocalized(7, 34, 404, 150, Message.Body.Number, BlueColor, true, true);
+                            AddHtmlLocalized(7, 34, 404, 150, Message.Body.Number, Message.Args, BlueColor, true, true);
                         }
                         else
                         {
-                            AddHtmlLocalized(7, 34, 404, 150, Message.Body.Number, Message.Args, BlueColor, true, true);
+                            AddHtmlLocalized(7, 34, 404, 150, Message.Body.Number, BlueColor, true, true);
                         }
                     }
                     else

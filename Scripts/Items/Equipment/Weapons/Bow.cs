@@ -32,6 +32,7 @@ namespace Server.Items
         public override int InitMinHits => 31;
         public override int InitMaxHits => 60;
         public override WeaponAnimation DefAnimation => WeaponAnimation.ShootBow;
+		
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

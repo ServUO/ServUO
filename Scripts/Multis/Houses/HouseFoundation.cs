@@ -59,8 +59,6 @@ namespace Server.Multis
         // Who is currently customizing this -or- null if not customizing.
         public Mobile Customizer { get; set; }
 
-        public override bool IsAosRules => true;
-
         public override bool IsActive => Customizer == null;
 
         public virtual int CustomizationCost => 0;
