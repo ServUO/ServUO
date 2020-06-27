@@ -25,4 +25,29 @@ namespace Server.Engines.Shadowguard
             }
         }
     }
+
+    public class ExitQueueEntry : ContextMenuEntry
+    {
+        private readonly Mobile _From;
+        private readonly ShadowguardController _Controller;
+
+        public ExitQueueEntry(Mobile from, ShadowguardController controller)
+            : base(1156247, 12) // Exit Shadowguard Queues
+        {
+            _From = from;
+            _Controller = controller;
+
+            Enabled = controller.IsInQueue(from);
+        }
+
+        public override void OnClick()
+        {
+            if (_Controller != null && _Controller.IsInQueue(_From))
+            {
+                if (_Controller.RemoveFromQueue(_From))
+                    _From.SendLocalizedMessage(1156248); // You have been removed from all Shadowguard queues
+
+            }
+        }
+    }
 }

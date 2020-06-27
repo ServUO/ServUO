@@ -200,7 +200,7 @@ namespace Server.Gumps
 
                     if (twoHanded)
                     {
-                        AddButton(250, 90 + (yOffset * 20), 4005, 4007, 10161, GumpButtonType.Reply, 0);
+                        AddButton(250, 90 + (yOffset * 20), 4005, 4007, 10163, GumpButtonType.Reply, 0);
                         AddHtmlLocalized(295, 90 + (yOffset * 20), 150, 18, 1072792, LabelColor, false, false);   //Balanced
                         yOffset += 1;
                     }

@@ -239,54 +239,41 @@ namespace Server.Regions
         }
     }
 
-    public class ParoxysmusBossEntry : DamagingRegion
-    {
-        public override TimeSpan DamageInterval => TimeSpan.FromSeconds(2);
-
-        public ParoxysmusBossEntry(XmlElement xml, Map map, Region parent)
-            : base(xml, map, parent)
-        { }
-
-        public override void OnEnter(Mobile m)
-        {
-            if (ParoxysmusAltar.IsUnderEffects(m))
-            {
-                m.SendLocalizedMessage(1074604); // The slimy ointment continues to protect you from the corrosive river.
-            }
-            else
-            {
-                m.MoveToWorld(new Point3D(6537, 506, -50), m.Map);
-                m.Kill();
-            }
-        }
-
-        protected override void OnDamage(Mobile m)
-        {
-            base.OnDamage(m);
-
-            if (!ParoxysmusAltar.IsUnderEffects(m))
-            {
-                m.MoveToWorld(new Point3D(6537, 506, -50), m.Map);
-                m.Kill();
-            }
-        }
-    }
-
     public class AcidRiver : DamagingRegion
     {
         public override TimeSpan DamageInterval => TimeSpan.FromSeconds(2);
+
+        private static Rectangle2D _ParoxysmusBossEntry = new Rectangle2D(6516, 493, 5, 7);
 
         public AcidRiver(XmlElement xml, Map map, Region parent)
             : base(xml, map, parent)
         { }
 
+        public override void OnEnter(Mobile m)
+        {
+            if (m.Alive && _ParoxysmusBossEntry.Contains(m.Location) && ParoxysmusAltar.IsUnderEffects(m))
+            {
+                m.SendLocalizedMessage(1074604); // The slimy ointment continues to protect you from the corrosive river.
+            }
+
+            base.OnEnter(m);
+        }
+
         protected override void OnDamage(Mobile m)
         {
+            var entrycheck = _ParoxysmusBossEntry.Contains(m.Location);
+
+            if (ParoxysmusAltar.IsUnderEffects(m) && entrycheck)
+                return;
+
             base.OnDamage(m);
 
-            if (m.Location.X > 6484 && m.Location.Y > 500)
+            if (m.Location.X > 6484 && m.Location.Y > 500 || entrycheck)
             {
                 m.Kill();
+
+                if (entrycheck)
+                    m.MoveToWorld(new Point3D(6537, 506, -50), m.Map);
             }
             else
             {
