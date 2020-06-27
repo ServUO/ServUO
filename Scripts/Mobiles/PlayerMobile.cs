@@ -2244,6 +2244,13 @@ namespace Server.Mobiles
 
             if (from == this)
             {
+                #region TOL Shadowguard
+                if (ShadowguardController.GetInstance(Location, Map) != null)
+                {
+                    list.Add(new ExitEntry(this));
+                }
+                #endregion
+
                 if (Alive)
                 {
                     list.Add(new SearchVendors(this));
@@ -2319,13 +2326,6 @@ namespace Server.Mobiles
 
                         list.Add(new VoidPoolInfo(this, controller));
                     }
-                }
-                #endregion
-
-                #region TOL Shadowguard
-                if (ShadowguardController.GetInstance(Location, Map) != null)
-                {
-                    list.Add(new ExitEntry(this));
                 }
                 #endregion
 

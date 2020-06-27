@@ -2008,6 +2008,11 @@ namespace Server.SkillHandlers
                 return 0;
             }
 
+            if (id == 61 && !(item is BaseRanged))
+            {
+                id = 63;
+            }
+
             if ((item is BaseWeapon || item is BaseShield) && id == 16)
             {
                 AosAttributes attrs = RunicReforging.GetAosAttributes(item);

@@ -1,4 +1,5 @@
 using Server.Commands;
+using Server.ContextMenus;
 using Server.Engines.PartySystem;
 using Server.Gumps;
 using Server.Items;
@@ -94,6 +95,8 @@ namespace Server.Engines.Shadowguard
         {
             Instance = this;
 
+            Weight = 0;
+
             KickLocation = new Point3D(505, 2192, 25);
             Lobby = new Rectangle2D(497, 2153, 50, 80);
 
@@ -106,6 +109,14 @@ namespace Server.Engines.Shadowguard
             Movable = false;
 
             StartTimer();
+        }
+
+        public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
+        {
+            if (from.Alive)
+            {
+                list.Add(new ExitQueueEntry(from, this));
+            }
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -745,19 +756,21 @@ namespace Server.Engines.Shadowguard
 
     public class ShadowguardGump : Gump
     {
-        public static readonly int Red = 0xF800;
-        public static readonly int Green = 0x07E0;
+        public static readonly int Red = 0x7E10;
+        public static readonly int Green = 0x43F0;
 
         public PlayerMobile User { get; set; }
 
         public ShadowguardGump(PlayerMobile user)
-            : base(100, 50)
+            : base(100, 100)
         {
             User = user;
 
-            AddBackground(0, 0, 400, 400, 83);
-            AddHtmlLocalized(0, 10, 400, 16, 1154645, "#1156164", 0xFFFF, false, false); // Shadowguard
-            AddHtmlLocalized(0, 45, 400, 16, 1154645, "#1156181", 0xFFFF, false, false); // Select the area of Shadowguard you wish to explore...
+            AddPage(0);
+
+            AddBackground(0, 0, 370, 320, 83);
+            AddHtmlLocalized(10, 10, 350, 18, 1154645, "#1156164", 0x7FFF, false, false); // Shadowguard
+            AddHtmlLocalized(10, 41, 350, 18, 1154645, "#1156181", 0x7FFF, false, false); // Select the area of Shadowguard you wish to explore...
 
             ShadowguardController controller = ShadowguardController.Instance;
             int index = 0;
@@ -768,33 +781,23 @@ namespace Server.Engines.Shadowguard
 
                 int hue = controller.HasCompletedEncounter(User, encounter) ? Green : Red;
 
-                AddHtmlLocalized(50, 78 + (index * 20), 200, 16, ShadowguardController.GetLocalization(encounter), hue, false, false);
-                AddButton(15, 80 + (index * 20), 1209, 1210, i + 1, GumpButtonType.Reply, 0);
+                AddHtmlLocalized(50, 72 + (index * 20), 150, 20, ShadowguardController.GetLocalization(encounter), hue, false, false);
+                AddButton(10, 72 + (index * 20), 1209, 1210, i + 1, GumpButtonType.Reply, 0);
 
                 index++;
-            }
-
-            if (controller.IsInQueue(User))
-            {
-                AddHtmlLocalized(50, 358, 200, 16, 1156247, 0xFFFFFF, false, false); // Exit Shadowguard Queues
-                AddButton(15, 360, 1209, 1210, 123, GumpButtonType.Reply, 0);
             }
         }
 
         public override void OnResponse(NetState state, RelayInfo info)
         {
-            ShadowguardController controller = ShadowguardController.Instance;
-
-            if (info.ButtonID == 123)
-            {
-                if (controller.RemoveFromQueue(User))
-                    User.SendLocalizedMessage(1156248); // You have been removed from all Shadowguard queues
-            }
-            else if (info.ButtonID > 0)
+            if (info.ButtonID > 0)
             {
                 int id = info.ButtonID - 1;
+
                 if (id >= 0 && id < _Encounters.Length)
                 {
+                    ShadowguardController controller = ShadowguardController.Instance;
+
                     EncounterType type = _Encounters[id];
                     ShadowguardInstance inst = controller.GetAvailableInstance(type);
 
