@@ -274,16 +274,26 @@ namespace Server.Items
     public class PMEntry
     {
         public Point3D Location { get; private set; }
-        public int Number { get; private set; }
+        public Map Map { get; private set; }
+        public TextDefinition Number { get; private set; }
         public TextDefinition Desc { get; private set; }
 
-        public PMEntry(Point3D loc, int number)
-            : this(loc, number, String.Empty)
+        public PMEntry(Point3D loc, TextDefinition number)
+            : this(loc, number, string.Empty, null)
         { }
 
-        public PMEntry(Point3D loc, int number, TextDefinition desc)
+        public PMEntry(Point3D loc, TextDefinition number, Map map)
+            : this(loc, number, string.Empty, map)
+        { }
+
+        public PMEntry(Point3D loc, TextDefinition number, TextDefinition desc)
+            : this(loc, number, desc, null)
+        { }
+
+        public PMEntry(Point3D loc, TextDefinition number, TextDefinition desc, Map map)
         {
             Location = loc;
+            Map = map;
             Number = number;
             Desc = desc;
         }
@@ -461,12 +471,12 @@ namespace Server.Items
             return null;
         }
 
-        private readonly int m_Number;
-        private readonly int m_SelNumber;
+        private readonly TextDefinition m_Number;
+        private readonly TextDefinition m_SelNumber;
         private readonly Map m_Map;
         private readonly PMEntry[] m_Entries;
 
-        public PMList(int number, int selNumber, Map map, PMEntry[] entries)
+        public PMList(TextDefinition number, TextDefinition selNumber, Map map, PMEntry[] entries)
         {
             m_Number = number;
             m_SelNumber = selNumber;
@@ -474,8 +484,8 @@ namespace Server.Items
             m_Entries = entries;
         }
 
-        public int Number => m_Number;
-        public int SelNumber => m_SelNumber;
+        public TextDefinition Number => m_Number;
+        public TextDefinition SelNumber => m_SelNumber;
         public Map Map => m_Map;
         public PMEntry[] Entries => m_Entries;
     }
@@ -560,7 +570,15 @@ namespace Server.Items
                 }
 
                 AddButton(10, 35 + (i * 25), 2117, 2118, 0, GumpButtonType.Page, Array.IndexOf(m_Lists, checkLists[i]) + 1);
-                AddHtmlLocalized(30, 35 + (i * 25), 150, 20, checkLists[i].Number, false, false);
+
+                if (checkLists[i].Number.Number > 0)
+                {
+                    AddHtmlLocalized(30, 35 + (i * 25), 150, 20, checkLists[i].Number.Number, false, false);
+                }
+                else if (!string.IsNullOrEmpty(checkLists[i].Number.String))
+                {
+                    AddHtml(30, 35 + (i * 25), 150, 20, checkLists[i].Number.String, false, false);
+                }
             }
 
             for (int i = 0; i < m_Lists.Length; ++i)
@@ -596,16 +614,17 @@ namespace Server.Items
                 return;
             }
 
-            PMList list = m_Lists[listIndex];
+            var list = m_Lists[listIndex];
 
             if (listEntry < 0 || listEntry >= list.Entries.Length)
             {
                 return;
             }
 
-            PMEntry entry = list.Entries[listEntry];
+            var entry = list.Entries[listEntry];
+            var map = entry.Map ?? list.Map;
 
-            if (m_Mobile.Map == list.Map && m_Mobile.InRange(entry.Location, 1))
+            if (m_Mobile.Map == map && m_Mobile.InRange(entry.Location, 1))
             {
                 m_Mobile.SendLocalizedMessage(1019003); // You are already there.
                 return;
@@ -619,12 +638,12 @@ namespace Server.Items
                 m_Mobile.SendLocalizedMessage(1019002); // You are too far away to use the gate.
                 return;
             }
-            else if (m_Mobile.Player && SpellHelper.RestrictRedTravel && m_Mobile.Murderer && list.Map != Map.Felucca && !Siege.SiegeShard)
+            else if (m_Mobile.Player && SpellHelper.RestrictRedTravel && m_Mobile.Murderer && map != Map.Felucca && !Siege.SiegeShard)
             {
                 m_Mobile.SendLocalizedMessage(1019004); // You are not allowed to travel there.
                 return;
             }
-            else if (Server.Engines.VvV.VvVSigil.ExistsOn(m_Mobile) && list.Map != Server.Engines.VvV.ViceVsVirtueSystem.Facet)
+            else if (Server.Engines.VvV.VvVSigil.ExistsOn(m_Mobile) && map != Server.Engines.VvV.ViceVsVirtueSystem.Facet)
             {
                 m_Mobile.SendLocalizedMessage(1019004); // You are not allowed to travel there.
                 return;
@@ -645,15 +664,15 @@ namespace Server.Items
                 return;
             }
 
-            BaseCreature.TeleportPets(m_Mobile, entry.Location, list.Map);
+            BaseCreature.TeleportPets(m_Mobile, entry.Location, map);
 
             m_Mobile.Combatant = null;
             m_Mobile.Warmode = false;
             m_Mobile.Hidden = true;
 
-            m_Mobile.MoveToWorld(entry.Location, list.Map);
+            m_Mobile.MoveToWorld(entry.Location, map);
 
-            Effects.PlaySound(entry.Location, list.Map, 0x1FE);
+            Effects.PlaySound(entry.Location, map, 0x1FE);
 
             CityTradeSystem.OnPublicMoongateUsed(m_Mobile);
         }
@@ -668,14 +687,30 @@ namespace Server.Items
             AddPage(index + 1);
 
             AddButton(10, 35 + (offset * 25), 2117, 2118, 0, GumpButtonType.Page, index + 1);
-            AddHtmlLocalized(30, 35 + (offset * 25), 150, 20, list.SelNumber, false, false);
+
+            if (list.SelNumber.Number > 0)
+            {
+                AddHtmlLocalized(30, 35 + (offset * 25), 150, 20, list.SelNumber.Number, false, false);
+            }
+            else if (!string.IsNullOrEmpty(list.SelNumber.String))
+            {
+                AddHtml(30, 35 + (offset * 25), 150, 20, list.SelNumber.String, false, false);
+            }
 
             PMEntry[] entries = list.Entries;
 
             for (int i = 0; i < entries.Length; ++i)
             {
                 AddRadio(200, 35 + (i * 25), 210, 211, false, (index * 100) + i);
-                AddHtmlLocalized(225, 35 + (i * 25), 150, 20, entries[i].Number, false, false);
+
+                if (entries[i].Number.Number > 0)
+                {
+                    AddHtmlLocalized(225, 35 + (i * 25), 150, 20, entries[i].Number.Number, false, false);
+                }
+                else if (!string.IsNullOrEmpty(entries[i].Number.String))
+                {
+                    AddHtml(225, 35 + (i * 25), 150, 20, entries[i].Number.String, false, false);
+                }
             }
         }
     }

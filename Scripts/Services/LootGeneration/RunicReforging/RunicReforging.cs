@@ -121,7 +121,9 @@ namespace Server.Items
                 goodtogo = false;
 
             if (!goodtogo)
+            {
                 from.SendLocalizedMessage(1152113); // You cannot reforge that item.
+            }
 
             return goodtogo;
         }
@@ -3371,17 +3373,27 @@ namespace Server.Items
                         }
                     }
                     else
+                    {
                         from.SendLocalizedMessage(1152277); // Both tools must be in your backpack in order to combine them.
+                    }
                 }
-                else
+                else if (item is ICombatEquipment)
                 {
                     if (item.IsChildOf(from.Backpack))
                     {
                         if (RunicReforging.CanReforge(from, item, m_Tool.CraftSystem))
+                        {
                             from.SendGump(new RunicReforgingGump(from, item, m_Tool));
+                        }
                     }
                     else
+                    {
                         from.SendLocalizedMessage(1152271); // The item must be in your backpack to re-forge it.
+                    }
+                }
+                else
+                {
+                    from.SendLocalizedMessage(1152113); // You cannot reforge that item.
                 }
             }
         }
