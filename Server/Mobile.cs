@@ -1845,6 +1845,12 @@ namespace Server
 
             protected override void OnTick()
             {
+                if (m_Owner == null)
+                {
+                    Stop();
+                    return;
+                }
+
                 if (m_Owner.Deleted)
                 {
                     Stop();
@@ -1881,6 +1887,12 @@ namespace Server
 
             protected override void OnTick()
             {
+                if (m_Owner == null)
+                {
+                    Stop();
+                    return;
+                }
+
                 if (m_Owner.Deleted)
                 {
                     Stop();
@@ -1920,6 +1932,12 @@ namespace Server
 
             protected override void OnTick()
             {
+                if (m_Owner == null)
+                {
+                    Stop();
+                    return;
+                }
+
                 if (m_Owner.Deleted)
                 {
                     Stop();
@@ -6100,17 +6118,17 @@ namespace Server
 
             if (Hits != HitsMax)
             {
-                Hits = Hits;
+                Hits = m_Hits;
             }
 
             if (Stam != StamMax)
             {
-                Stam = Stam;
+                Stam = m_Stam;
             }
 
             if (Mana != ManaMax)
             {
-                Mana = Mana;
+                Mana = m_Mana;
             }
         }
 
@@ -6133,9 +6151,9 @@ namespace Server
 
             if (!m_Deleted)
             {
-                Hits = Hits;
-                Stam = Stam;
-                Mana = Mana;
+                Hits = m_Hits;
+                Stam = m_Stam;
+                Mana = m_Mana;
             }
         }
 
