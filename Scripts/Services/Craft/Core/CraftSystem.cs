@@ -14,7 +14,9 @@ namespace Server.Engines.Craft
 
     public abstract class CraftSystem
     {
+        #region Static Properties
         public static List<CraftSystem> Systems { get; set; }
+
         private static readonly Type[] _GlobalNoConsume =
         {
             typeof(CapturedEssence), typeof(EyeOfTheTravesty), typeof(DiseasedBark),  typeof(LardOfParoxysmus), typeof(GrizzledBones), typeof(DreadHornMane),
@@ -36,6 +38,39 @@ namespace Server.Engines.Craft
             // Inscription
             typeof(AntiqueDocumentsKit)
         };
+        #endregion
+
+        #region Static Methods
+        public static CraftSystem GetSystem(Type type, bool subClass = false)
+        {
+            CraftSystem sys = null;
+
+            for (int i = 0; i < Systems.Count; i++)
+            {
+                var system = CraftSystem.Systems[i];
+
+                if (system.CraftItems == null)
+                {
+                    continue;
+                }
+
+                CraftItem crItem = system.CraftItems.SearchFor(type);
+
+                if (crItem == null && subClass)
+                {
+                    crItem = system.CraftItems.SearchForSubclass(type);
+                }
+
+                if (crItem != null)
+                {
+                    sys = system;
+                    break;
+                }
+            }
+
+            return sys;
+        }
+        #endregion
 
         private readonly Dictionary<Mobile, CraftContext> m_ContextTable = new Dictionary<Mobile, CraftContext>();
 

@@ -3542,26 +3542,6 @@ namespace Server
             Region.OnCriminalAction(this, message);
         }
 
-        public virtual bool CanUseStuckMenu()
-        {
-            if (m_StuckMenuUses == null)
-            {
-                return true;
-            }
-            else
-            {
-                for (int i = 0; i < m_StuckMenuUses.Length; ++i)
-                {
-                    if ((DateTime.UtcNow - m_StuckMenuUses[i]) > TimeSpan.FromDays(1.0))
-                    {
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-        }
-
         public virtual bool IsPlayer()
         {
             return AccessLevel == AccessLevel.Player;
@@ -5635,23 +5615,6 @@ namespace Server
 
         public virtual void OnHeal(ref int amount, Mobile from)
         { }
-
-        public void UsedStuckMenu()
-        {
-            if (m_StuckMenuUses == null)
-            {
-                m_StuckMenuUses = new DateTime[2];
-            }
-
-            for (int i = 0; i < m_StuckMenuUses.Length; ++i)
-            {
-                if ((DateTime.UtcNow - m_StuckMenuUses[i]) > TimeSpan.FromDays(1.0))
-                {
-                    m_StuckMenuUses[i] = DateTime.UtcNow;
-                    return;
-                }
-            }
-        }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Squelched { get { return m_Squelched; } set { m_Squelched = value; } }
