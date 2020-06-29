@@ -259,9 +259,8 @@ namespace Server
                             l.Dispose();
                         }
                     }
-                    catch (Exception ex)
+                    catch
                     {
-                        Server.Diagnostics.ExceptionLogging.LogException(ex);
                     }
 
                     Console.WriteLine("This exception is fatal, press return to exit");
