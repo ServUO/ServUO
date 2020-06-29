@@ -1080,7 +1080,7 @@ namespace Server.Items
                 return LootTable[type];
             }
 
-            return null;
+            return new List<int>();
         }
 
         public static void BuildLootTables()
