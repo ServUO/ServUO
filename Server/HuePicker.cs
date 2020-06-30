@@ -1,4 +1,5 @@
 #region References
+using System;
 using Server.Network;
 #endregion
 
@@ -24,6 +25,11 @@ namespace Server.HuePickers
             while (m_Serial == 0);
 
             m_ItemID = itemID;
+        }
+
+        public virtual void Clip(ref int hue)
+        {
+            hue = Math.Max(0, Math.Min(1000, hue));
         }
 
         public virtual void OnResponse(int hue)

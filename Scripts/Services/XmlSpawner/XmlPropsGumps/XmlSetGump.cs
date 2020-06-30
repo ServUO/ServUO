@@ -1,6 +1,7 @@
 using Server.Commands;
 using Server.HuePickers;
 using Server.Network;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
@@ -191,6 +192,11 @@ namespace Server.Gumps
                 m_Stack = stack;
                 m_Page = page;
                 m_List = list;
+            }
+
+            public override void Clip(ref int hue)
+            {
+                hue = Math.Max(0, Math.Min(3000, hue));
             }
 
             public override void OnResponse(int hue)
