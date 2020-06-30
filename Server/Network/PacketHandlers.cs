@@ -622,6 +622,11 @@ namespace Server.Network
                 {
                     state.RemoveHuePicker(huePicker);
 
+                    hue = Math.Max(0, hue);
+
+                    if (state.Mobile == null || state.Mobile.AccessLevel < AccessLevel.GameMaster)
+                        huePicker.Clip(ref hue);
+                    
                     huePicker.OnResponse(hue);
 
                     break;
@@ -2508,6 +2513,13 @@ namespace Server.Network
                 race = Race.DefaultRace;
             }
 
+            hue = race.ClipSkinHue(hue);
+            hairHue = race.ClipHairHue(hairHue);
+            hairHuef = race.ClipHairHue(hairHuef);
+
+            shirtHue = Math.Max(0, Math.Min(1000, shirtHue));
+            pantsHue = Math.Max(0, Math.Min(1000, pantsHue));
+
             CityInfo[] info = state.CityInfo;
             IAccount a = state.Account;
 
@@ -2648,6 +2660,13 @@ namespace Server.Network
             {
                 race = Race.DefaultRace;
             }
+
+            hue = race.ClipSkinHue(hue);
+            hairHue = race.ClipHairHue(hairHue);
+            hairHuef = race.ClipHairHue(hairHuef);
+
+            shirtHue = Math.Max(0, Math.Min(1000, shirtHue));
+            pantsHue = Math.Max(0, Math.Min(1000, pantsHue));
 
             CityInfo[] info = state.CityInfo;
             IAccount a = state.Account;
