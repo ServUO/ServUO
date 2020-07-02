@@ -59,6 +59,7 @@ namespace Server
 
         // TODO: Can we avoid this?
         private static readonly List<Mobile> m_DefaultMobileList = new List<Mobile>();
+        private static readonly List<Mobile> m_DefaultPlayerList = new List<Mobile>();
         private static readonly List<Item> m_DefaultItemList = new List<Item>();
         private static readonly List<NetState> m_DefaultClientList = new List<NetState>();
         private static readonly List<BaseMulti> m_DefaultMultiList = new List<BaseMulti>();
@@ -349,7 +350,7 @@ namespace Server
             {
                 if (m_Players == null)
                 {
-                    return m_DefaultMobileList;
+                    return m_DefaultPlayerList;
                 }
 
                 return m_Players;
