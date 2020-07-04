@@ -25,15 +25,15 @@ namespace Server.Items
             {
                 EndTimer();
             }
-            else if (Owner.RootParent is Mobile)
+            else if (Owner.RootParent is Mobile m)
             {
-                if (((Mobile)Owner.RootParent).Region.IsPartOf("Wrong"))
+                if (m.Region != null && m.Region.IsPartOf("Wrong"))
                 {
-                    AOS.Damage((Mobile)Owner.RootParent, Utility.RandomMinMax(10, 13), 0, 100, 0, 0, 0);
+                    AOS.Damage(m, Utility.RandomMinMax(10, 13), 0, 100, 0, 0, 0);
 
                     if (0.2 > Utility.RandomDouble())
                     {
-                        ((Mobile)Owner.RootParent).SendLocalizedMessage(1152086); // Ouch! These stolen items are hot!
+                        m.SendLocalizedMessage(1152086); // Ouch! These stolen items are hot!
                     }
                 }
             }
