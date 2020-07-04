@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace Server.Items
 {
     [Flipable(17615, 17616)]
-    public class LobsterTrap : Container, ITelekinesisable
+    public class LobsterTrap : Container, ITelekinesisable, IBaitable
     {
         public static readonly int TrapID = Utility.RandomMinMax(17615, 17616);
         public static readonly int BuoyID = 17611;

@@ -6,7 +6,13 @@ using System.Collections.Generic;
 
 namespace Server.Items
 {
-    public class FishingPole : Item, ICraftable, IUsesRemaining, IResource, IQuality
+    public interface IBaitable
+    {
+        Type BaitType { get; }
+        bool EnhancedBait { get; }
+    }
+
+    public class FishingPole : Item, IUsesRemaining, IResource, IQuality, IBaitable
     {
         private Type m_BaitType;
         private bool m_EnhancedBait;

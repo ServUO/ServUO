@@ -1,5 +1,7 @@
 using Server.Mobiles;
 using Server.Regions;
+using Server.Spells;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -75,8 +77,8 @@ namespace Server.Items
         public double BaseChance => m_BaseChance;
         public double MinSkill => m_MinSkill;
 
-        public static readonly double RareChance = 0.0075;
-        public static readonly double LegendaryChance = 0.001;
+        public static readonly double RareChance = 0.008;
+        public static readonly double LegendaryChance = 0.002;
 
         public static bool m_InvalidatedLocations;
 
@@ -138,7 +140,6 @@ namespace Server.Items
             }
 
             m_InvalidatedLocations = true;
-            //Console.WriteLine("Invalidated {0} Map Locations in FishInfo.cs", c.ToString());
         }
 
         public static bool IsRareFish(Type type)
@@ -185,9 +186,13 @@ namespace Server.Items
 
         public static int GetFishHue(Type type)
         {
-            foreach (FishInfo info in m_FishInfos)
-                if (info.Type == type)
-                    return info.Hue;
+            var info = m_FishInfos.FirstOrDefault(i => i.Type == type);
+
+            if (info != null)
+            {
+                return info.Hue;
+            }
+
             return 0;
         }
 
@@ -201,21 +206,25 @@ namespace Server.Items
 
         public static object GetFishLabel(Type type)
         {
-            foreach (FishInfo info in FishInfos)
+            var info = m_FishInfos.FirstOrDefault(i => i.Type == type);
+
+            if (info != null)
             {
-                if (info.Type == type)
-                    return info.LabelNumber;
+                return info.LabelNumber;
             }
+
             return null;
         }
 
         public static string GetFishLocation(Type type)
         {
-            foreach (FishInfo info in FishInfos)
+            var info = m_FishInfos.FirstOrDefault(i => i.Type == type);
+
+            if (info != null)
             {
-                if (info.Type == type)
-                    return info.Location.ToString();
+                return info.Location.ToString();
             }
+
             return null;
         }
 
@@ -229,8 +238,6 @@ namespace Server.Items
             InvalidateLocations();
 
             Map map = from.Map;
-            Point3D fromLoc = from.Location;
-
             Region reg = from.Region;
 
             if (reg.Parent != null)
@@ -243,77 +250,22 @@ namespace Server.Items
             Type item = null;
             bool enhanced = false;
 
-            if (harvestItem is FishingPole)
+            var baitable = harvestItem as IBaitable;
+
+            if (baitable != null)
             {
-                bait = ((FishingPole)harvestItem).BaitType;
-                enhanced = ((FishingPole)harvestItem).EnhancedBait;
-            }
-            else if (harvestItem is LobsterTrap)
-            {
-                bait = ((LobsterTrap)harvestItem).BaitType;
-                enhanced = ((LobsterTrap)harvestItem).EnhancedBait;
+                bait = baitable.BaitType;
+                enhanced = baitable.EnhancedBait;
             }
 
-            //insertion of baited type first to increase chances of fishing it up!
-            List<FishInfo> infos = new List<FishInfo>(m_FishInfos);
+            var infos = GetInfoFor(from);
 
-            if (bait != null)
+            foreach (var info in infos.OrderByDescending(i => i.Type == bait))
             {
-                for (int i = 0; i < infos.Count; i++)
+                if (info.Roll(from, bait, enhanced, bump))
                 {
-                    FishInfo info = infos[i];
-                    if (info.Type == bait)
-                    {
-                        infos.Remove(info);
-                        infos.Insert(0, info);
-                    }
-                }
-            }
-
-            for (int i = 0; i < infos.Count; i++)
-            {
-                FishInfo info = infos[i];
-
-                double baitStr = info.GetBaitStrength(bait, from, enhanced);
-
-                if ((info.RequiresDeepWater && !IsDeepWater(pnt, map, reg)) || skill < info.MinSkill)
-                    continue;
-
-                if (fishing && info.Type.IsSubclassOf(typeof(BaseCrabAndLobster)))
-                    continue;
-
-                if (!fishing && !info.Type.IsSubclassOf(typeof(BaseCrabAndLobster)))
-                    continue;
-
-                if (info.Location is string)
-                {
-                    string loc = (string)info.Location;
-
-                    if (loc.ToLower() == "cannotfishup")
-                        continue;
-
-                    if (loc.ToLower() == "t2a" && Server.Spells.SpellHelper.IsAnyT2A(map, fromLoc) && info.Roll(from, baitStr, bump))
-                        item = info.Type;
-
-                    if (loc.ToLower() == "trammelandfelucca" && (map == Map.Trammel || map == Map.Felucca) && !Server.Spells.SpellHelper.IsAnyT2A(map, fromLoc) && info.Roll(from, baitStr, bump))
-                        item = info.Type;
-
-                    if (loc.ToLower() == "fire island" && IsFireIsland(fromLoc, map) && info.Roll(from, baitStr, bump))
-                        item = info.Type;
-
-                    if (loc.ToLower() == "gravewater lake" && IsGravewaterLake(fromLoc, map))
-                        item = info.Type;
-
-                    if (from.Region != null && from.Region.IsPartOf(loc) && info.Roll(from, baitStr, bump))
-                        item = info.Type;
-
-                }
-                else if (info.Location is Map)
-                {
-                    Map locMap = (Map)info.Location;
-
-                    if (map == locMap && info.Roll(from, baitStr, bump))
-                        item = info.Type;
+                    item = info.Type;
+                    break;
                 }
             }
 
@@ -336,13 +288,67 @@ namespace Server.Items
                     else if (shore && skill >= 50.0)
                         item = BaseHighseasFish.ShoreFish[Utility.Random(BaseHighseasFish.ShoreFish.Length)];
                 }
-                else if (skill >= 50.0 && !fishing && chance >= Utility.RandomDouble())
+                else if (fishing && skill >= 50.0 && chance >= Utility.RandomDouble())
                 {
                     item = BaseHighseasFish.LobstersAndCrabs[Utility.Random(BaseHighseasFish.LobstersAndCrabs.Length)];
                 }
             }
 
             return item;
+        }
+
+        public static List<FishInfo> GetInfoFor(IEntity fisher)
+        {
+            var list = new List<FishInfo>();
+            var fisherMap = fisher.Map;
+            var fisherLoc = fisher.Location;
+
+            for (int i = 0; i < m_FishInfos.Count; i++)
+            {
+                var info = m_FishInfos[i];
+
+                if (info.Location is string)
+                {
+                    string loc = (string)info.Location;
+
+                    if (loc.ToLower() == "cannotfishup")
+                        continue;
+
+                    switch (loc)
+                    {
+                        case "T2A":
+                            if (SpellHelper.IsAnyT2A(fisherMap, fisherLoc))
+                            {
+                                list.Add(info);
+                            }
+                            break;
+                        case "TrammelAndFelucca":
+                            if ((fisherMap == Map.Trammel || fisherMap == Map.Felucca) && SpellHelper.IsAnyT2A(fisherMap, fisherLoc))
+                            {
+                                list.Add(info);
+                            }
+                            break;
+                        case "Gravewater Lake":
+                            if (IsGravewaterLake(fisherLoc, fisherMap))
+                            {
+                                list.Add(info);
+                            }
+                            break;
+                        default:
+                            if (Region.Find(fisherLoc, fisherMap).IsPartOf(loc))
+                            {
+                                list.Add(info);
+                            }
+                            break;
+                    }
+                }
+                else if (info.Location is Map && fisherMap == (Map)info.Location)
+                {
+                    list.Add(info);
+                }
+            }
+
+            return list;
         }
 
         public double GetBaitStrength(Type baitType, Mobile from, bool enhanced)
@@ -355,6 +361,7 @@ namespace Server.Items
             for (int i = 0; i < from.Items.Count; i++)
             {
                 Item item = from.Items[i];
+
                 if (item is IFishingAttire)
                 {
                     if (item is ISetItem)
@@ -374,11 +381,13 @@ namespace Server.Items
                     }
                 }
             }
+
             return str;
         }
 
-        public bool Roll(Mobile from, double baitStr, double bump)
+        public bool Roll(Mobile from, Type bait, bool enhanced, double bump)
         {
+            var baitStr = GetBaitStrength(bait, from, enhanced);
             double baseChance = MagicalFishFinder.HasSchool(from) ? BaseChance * 10 : BaseChance;
 
             return (baseChance + bump) * baitStr > Utility.RandomDouble();

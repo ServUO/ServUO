@@ -39,7 +39,7 @@ namespace Server.Engines.JollyRoger
 
         public static void AddPermission(Mobile from)
         {
-            if (Permission.Any(x => x.Mobile != from))
+            if (!Permission.Any(x => x.Mobile == from))
             {
                 Permission.Add(new BoxArray(from, false));
             }
@@ -59,8 +59,8 @@ namespace Server.Engines.JollyRoger
                         {
                             Item item = new SheetMusicForStones();
                             from.AddToBackpack(item);
-                            from.SendLocalizedMessage(1152339,
-                                item.Name.ToString()); // A reward of ~1_ITEM~ has been placed in your backpack.
+                            from.SendLocalizedMessage(1152339, "#1159343"); // A reward of ~1_ITEM~ has been placed in your backpack.
+                            Permission.FirstOrDefault(x => x.Mobile == from).Reward = true;
                         }
                         else
                         {
@@ -209,7 +209,7 @@ namespace Server.Engines.JollyRoger
                         else
                         {
                             Controller._List.Remove(from);
-                            from.PlaySound(0x4C);
+                            from.PlaySound(0x4D);
                         }
 
                         if (i == 8)
@@ -230,7 +230,7 @@ namespace Server.Engines.JollyRoger
                 }
                 else
                 {
-                    from.PlaySound(0x4C);
+                    from.PlaySound(0x4D);
                 }
             }
         }
@@ -278,7 +278,7 @@ namespace Server.Engines.JollyRoger
 
         public SherryStrongBox Box { get; set; }
         private List<Item> LuteList;
-        public Dictionary<Mobile, string[]> _List;
+        public Dictionary<Mobile, string[]> _List = new Dictionary<Mobile, string[]>();
         private List<NoteArray> NoteList;
 
         [Constructable]
@@ -286,7 +286,6 @@ namespace Server.Engines.JollyRoger
             : base("the Mouse")
         {
             LuteList = new List<Item>();
-            _List = new Dictionary<Mobile, string[]>();
 
             NoteList = RandomNotes();
 
@@ -360,8 +359,7 @@ namespace Server.Engines.JollyRoger
 
         public List<NoteArray> Notes = new List<NoteArray>()
         {
-            new NoteArray("C4", 0x4D),
-            new NoteArray( "C4", 0x4D ),
+            new NoteArray( "C4", 0x404 ),
             new NoteArray( "D", 0x409 ),
             new NoteArray( "E", 0x40E ),
             new NoteArray( "F", 0x410 ),
@@ -457,7 +455,7 @@ namespace Server.Engines.JollyRoger
                 InstanceFel = this;
             }
 
-            ChangeNotes();
+            Timer.DelayCall(TimeSpan.FromSeconds(10), () => { ChangeNotes(); });
         }
     }
 }

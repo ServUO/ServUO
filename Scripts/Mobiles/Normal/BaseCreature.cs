@@ -4221,6 +4221,15 @@ namespace Server.Mobiles
                     BuffInfo.AddBuff(aggressor, new BuffInfo(BuffIcon.HeatOfBattleStatus, 1153801, 1153827, Aggression.CombatHeatDelay, aggressor, true));
                 }
             }
+            else if (aggressor is BaseCreature)
+            {
+                var pm = ((BaseCreature)aggressor).GetMaster() as PlayerMobile;
+
+                if (pm != null)
+                {
+                    AggressiveAction(pm, criminal);
+                }
+            }
 
             base.AggressiveAction(aggressor, criminal);
 
@@ -4241,7 +4250,6 @@ namespace Server.Mobiles
             }
 
             StopFlee();
-
             ForceReacquire();
 
             if (aggressor.ChangingCombatant && (m_bControlled || m_bSummoned) &&

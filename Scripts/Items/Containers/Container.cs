@@ -1063,6 +1063,64 @@ namespace Server.Items
         }
     }
 
+    public class SOSChest : LockableContainer, IFlipable
+    {
+        public override int LabelNumber
+        {
+            get
+            {
+                if (ItemID >= 0xA306)
+                {
+                    return 1015097; // Chest
+                }
+
+                return base.LabelNumber;
+            }
+        }
+
+        [Constructable]
+        public SOSChest(int id)
+            : base(id)
+        {
+        }
+
+        public void OnFlip(Mobile m)
+        {
+            switch (ItemID)
+            {
+                case 0xE40: ItemID++; break;
+                case 0xE41: ItemID--; break;
+                case 0xE42: ItemID++; break;
+                case 0xE43: ItemID--; break;
+                case 0xA306: ItemID++; break;
+                case 0xA307: ItemID--; break;
+                case 0xA308: ItemID++; break;
+                case 0xA309: ItemID--; break;
+                case 0xA30A: ItemID++; break;
+                case 0xA30B: ItemID--; break;
+            }
+        }
+
+        public SOSChest(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+
+            writer.Write(0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+
+            reader.ReadInt();
+        }
+    }
+
     [Furniture]
     [Flipable(0xe43, 0xe42)]
     public class WoodenChest : LockableContainer

@@ -1609,13 +1609,14 @@ namespace Server.Items
 
         private static AosElementAttribute GetRandomElemental()
         {
-            switch (Utility.Random(4))
+            switch (Utility.Random(5))
             {
                 default:
                 case 0: return AosElementAttribute.Fire;
                 case 1: return AosElementAttribute.Cold;
                 case 2: return AosElementAttribute.Poison;
                 case 3: return AosElementAttribute.Energy;
+                case 4: return AosElementAttribute.Chaos;
             }
         }
 
@@ -2746,6 +2747,9 @@ namespace Server.Items
             if (item is BaseArmor)
                 return ((BaseArmor)item).WeaponAttributes;
 
+            if(item is BaseClothing)
+                return ((BaseClothing)item).WeaponAttributes;
+
             return null;
         }
 
@@ -2925,9 +2929,9 @@ namespace Server.Items
         #region Weapon Tables
         public static int[][] ElementalDamageTable = new int[][]
         {
-            new int[] { 40, 60, 60, 70, 80, 90, 100 },
-            new int[] { 50, 60, 70, 80, 90, 100, 100 },
-            new int[] { 60, 70, 80, 90, 100, 100, 100 },
+            new int[] { 60, 70, 80, 100, 100, 100, 100 },
+            new int[] { 80, 100, 100, 100, 100, 100, 100 },
+            new int[] { 100, 100, 100, 100, 100, 100, 100 },
             new int[] {  },
             new int[] { 100, 100, 100, 100, 100, 100, 100 },
             new int[] { 100, 100, 100, 100, 100, 100, 100 },

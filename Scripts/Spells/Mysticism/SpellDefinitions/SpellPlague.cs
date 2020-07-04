@@ -120,13 +120,12 @@ namespace Server.Spells.Mysticism
 
         public static void DoExplosion(Mobile from, Mobile caster, bool initial, int amount)
         {
-            double prim = caster.Skills[SkillName.Mysticism].Value;
-            double sec = caster.Skills[SkillName.Imbuing].Value;
+            int damage = BonusDamage(caster);
 
-            if (caster.Skills[SkillName.Focus].Value > sec)
-                sec = caster.Skills[SkillName.Focus].Value;
-
-            int damage = (int)((prim + sec) / 12) + Utility.RandomMinMax(1, 6);
+            if (initial)
+            {
+                damage += Utility.RandomMinMax(22, 24);
+            }
 
             if (amount > 1)
                 damage /= amount;
@@ -142,6 +141,73 @@ namespace Server.Spells.Mysticism
             damage /= 100;
 
             SpellHelper.Damage(null, TimeSpan.Zero, from, caster, damage, 0, 0, 0, 0, 0, DFAlgorithm.Standard, 100, 0);
+        }
+
+        public static int BonusDamage(Mobile caster)
+        {
+            var skill = Math.Max(caster.Skills[SkillName.Focus].Value, caster.Skills[SkillName.Imbuing].Value);
+
+            if (skill <= 20)
+            {
+                return 0;
+            }
+
+            if (skill <= 25)
+            {
+                return 2;
+            }
+
+            if (skill <= 30)
+            {
+                return 4;
+            }
+
+            if (skill <= 35)
+            {
+                return 7;
+            }
+
+            if (skill <= 40)
+            {
+                return 9;
+            }
+
+            if (skill <= 50)
+            {
+                return 13;
+            }
+
+            if (skill <= 60)
+            {
+                return 18;
+            }
+
+            if (skill <= 70)
+            {
+                return 22;
+            }
+
+            if (skill <= 80)
+            {
+                return 28;
+            }
+
+            if (skill <= 90)
+            {
+                return 32;
+            }
+
+            if (skill <= 100)
+            {
+                return 37;
+            }
+
+            if (skill <= 110)
+            {
+                return 41;
+            }
+
+            return 46;
         }
 
         public static void RemoveFromList(Mobile from)
