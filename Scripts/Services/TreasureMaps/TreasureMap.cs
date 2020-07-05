@@ -979,7 +979,7 @@ namespace Server.Items
         {
             if (TreasureMapInfo.NewSystem)
             {
-                list.Add(m_Decoder != null ? 1158975 + (int)TreasureLevel : 1158980 + (int)TreasureLevel, "#" + TreasureMapInfo.PackageLocalization(Package).ToString());
+                list.Add(m_Decoder != null ? 1158980 + (int)TreasureLevel : 1158975 + (int)TreasureLevel, "#" + TreasureMapInfo.PackageLocalization(Package).ToString());
             }
             else
             {

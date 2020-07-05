@@ -1382,6 +1382,24 @@ namespace Server.Network
             bool explode,
             int hue,
             int renderMode)
+            : this(type, from, to, itemID, fromPoint, toPoint, speed, duration, fixedDirection, explode, hue, renderMode, 0)
+        {
+        }
+
+        public HuedEffect(
+            EffectType type,
+            Serial from,
+            Serial to,
+            int itemID,
+            IPoint3D fromPoint,
+            IPoint3D toPoint,
+            int speed,
+            int duration,
+            bool fixedDirection,
+            bool explode,
+            int hue,
+            int renderMode,
+            int effect)
             : base(0xC0, 36)
         {
             m_Stream.Write((byte)type);
@@ -1401,7 +1419,7 @@ namespace Server.Network
             m_Stream.Write(fixedDirection);
             m_Stream.Write(explode);
             m_Stream.Write(hue);
-            m_Stream.Write(renderMode);
+            m_Stream.Write(effect);
         }
     }
 

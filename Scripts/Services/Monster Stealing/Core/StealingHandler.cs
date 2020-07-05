@@ -36,8 +36,6 @@ namespace Server.Engines.CreatureStealing
             {
                 int chance = GetStealingChance(thief, bc, stealing);
 
-                Console.WriteLine("Chance: {0}", chance);
-
                 if ((Utility.Random(100) + 1) <= chance)
                 {
                     thief.SendLocalizedMessage(1094947);//You successfully steal a special item from the creature!

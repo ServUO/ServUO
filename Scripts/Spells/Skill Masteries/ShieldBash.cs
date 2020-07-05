@@ -1,5 +1,6 @@
 using Server.Items;
 using Server.Mobiles;
+using Server.Network;
 using System;
 
 /*When activated the shield user will execute a shield bash on successfully hitting or parrying their opponent 
@@ -17,11 +18,12 @@ namespace Server.Spells.SkillMasteries
 
         public override int RequiredMana => 40;
         public override bool BlocksMovement => false;
+        public override bool CancelsWeaponAbility => true;
         public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(1.0);
 
         public override SkillName CastSkill => SkillName.Parry;
 
-        public double Multiplier => (Caster.Skills[GetBestSkill()].Value + Caster.Skills[SkillName.Parry].Value + (GetMasteryLevel() * 40)) / 360;
+        public override int ExpireMessage => 1063119; // You return to your normal stance.
 
         public ShieldBashSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
@@ -43,10 +45,16 @@ namespace Server.Spells.SkillMasteries
         {
             if (CheckSequence())
             {
-                Caster.FixedParticles(0x376A, 9, 32, 5030, 1168, 0, EffectLayer.Waist, 0);
+                Effects.SendPacket(Caster, Caster.Map, new HuedEffect(EffectType.FixedFrom, Caster.Serial, Serial.Zero, 0x37C4, Caster, Caster, 10, 7, false, false, 4, 0, 3));
+
+                Server.Timer.DelayCall(TimeSpan.FromMilliseconds(250), () =>
+                {
+                    Effects.SendPacket(Caster.Location, Caster.Map, new ParticleEffect(EffectType.FixedFrom, Caster.Serial, Serial.Zero, 0x375A, Caster.Location, Caster.Location, 1, 17, false, false, 45, 0, 3, 9502, 1, Caster.Serial, 209, 0));
+                });
+
                 Caster.PlaySound(0x51A);
 
-                TimeSpan duration = TimeSpan.FromSeconds((int)Math.Max(3, 5.0 * Multiplier));
+                TimeSpan duration = TimeSpan.FromSeconds(3);
 
                 Caster.SendLocalizedMessage(1156022); // You ready your shield.
 
@@ -101,59 +109,47 @@ namespace Server.Spells.SkillMasteries
             }
 
             Caster.SendLocalizedMessage(1156027); // You bash you target with your shield!
+
             bool pvp = Caster is PlayerMobile && defender is PlayerMobile;
 
-            double multiplier = Multiplier;
+            int dmg = GetDamage(pvp, GetMasteryLevel());
 
-            damage = pvp ? (int)(damage * (multiplier * 3)) : (int)(damage * (multiplier * 7));
+            if (pvp)
+            {
+                AOS.Damage(defender, Caster, dmg, 0, 0, 0, 0, 0, 0, 100);
 
-            if (pvp && damage > 35)
-                damage = 35;
+                damage = dmg / 10;
+            }
+            else
+            {
+                damage = dmg;
+            }
 
             Server.Timer.DelayCall(TimeSpan.FromMilliseconds(100), () =>
                 {
                     if (defender.Alive)
                     {
-                        CheckParalyze(defender, TimeSpan.FromSeconds(pvp ? multiplier * 3 : multiplier * 6));
+                        CheckParalyze(defender, TimeSpan.FromSeconds(3));
                     }
                 });
 
             Expire();
         }
 
-        private SkillName GetBestSkill()
+        private int GetDamage(bool pvp, int level)
         {
-            double swrd = Caster.Skills[SkillName.Swords].Value;
-            double fenc = Caster.Skills[SkillName.Fencing].Value;
-            double mcng = Caster.Skills[SkillName.Macing].Value;
-            double wres = Caster.Skills[SkillName.Wrestling].Value;
+            int damage;
 
-            SkillName sk = SkillName.Swords;
-            double val = swrd;
-
-            if (fenc > val)
+            if (pvp)
             {
-                sk = SkillName.Fencing;
-                val = fenc;
+                damage = Math.Max(35, Utility.RandomMinMax(27, 35) * level);
             }
-            if (mcng > val)
+            else
             {
-                sk = SkillName.Macing;
-                val = mcng;
-            }
-            if (wres > val)
-            {
-                sk = SkillName.Wrestling;
+                damage = Utility.RandomMinMax(45, 65) * level;
             }
 
-            return sk;
-        }
-
-        private void DoBash(Mobile defender)
-        {
-            GetMasteryLevel();
-
-
+            return damage;
         }
 
         private void CheckParalyze(Mobile defender, TimeSpan duration)
