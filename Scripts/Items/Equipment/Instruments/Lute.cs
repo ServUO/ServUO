@@ -39,6 +39,8 @@ namespace Server.Items
                     g.AddImage(0, 0, 0x9D3F);
                     g.AddHtmlLocalized(280, 14, 328, 18, 1114513, "#1159384", 0xC63, false, false); // <DIV ALIGN=CENTER>~1_TOKEN~</DIV>
                     g.AddHtmlLocalized(280, 51, 328, 229, 1159383, 0xC63, false, true); // Greetings, Britannian! Seems Hawkwind is having some fun with the timeline again? Britannia will always face threats, but it is brave adventurers such as yourself who forge the Britannian Legacy everyday. With your courage, you uphold the ideals of Virtue and the integrity of our realm against threats from monstrous evils and world thieves alike. Go now, visit the Well of Souls and free Hawkwind and restore Virtue to the realm!
+
+                    from.SendGump(g);
                 }
 
                 return;

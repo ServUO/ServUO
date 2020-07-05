@@ -149,6 +149,13 @@ namespace Server.Spells.SkillMasteries
             return sk;
         }
 
+        private void DoBash(Mobile defender)
+        {
+            GetMasteryLevel();
+
+
+        }
+
         private void CheckParalyze(Mobile defender, TimeSpan duration)
         {
             if (ParalyzingBlow.IsImmune(defender))

@@ -10,12 +10,10 @@ namespace Server.Items
         {
             Weight = 1.0;
 
-            BaseRunicTool.ApplyAttributesTo(this, true, 0, Utility.RandomMinMax(2, 3), 0, 100);
-
-            if (Utility.RandomBool())
+            if (.75 > Utility.RandomDouble())
                 Attributes.EnhancePotions = 50;
             else
-                Attributes.BonusStr += 5;
+                Attributes.BonusStr = Utility.RandomMinMax(5, 6);
         }
 
         public EcruCitrineRing(Serial serial)

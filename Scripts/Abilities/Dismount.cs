@@ -35,10 +35,13 @@ namespace Server.Items
             if (defender is ChaosDragoon || defender is ChaosDragoonElite)
                 return;
 
-            if (CheckMountedNoLance(attacker, defender)) // TODO: Should there be a message here?
-                return;
-
             ClearCurrentAbility(attacker);
+
+            if (CheckMountedNoLance(attacker, defender))
+            {
+                attacker.SendLocalizedMessage(1060089); // You fail to execute your special move
+                return;
+            }
 
             IMount mount = defender.Mount;
 

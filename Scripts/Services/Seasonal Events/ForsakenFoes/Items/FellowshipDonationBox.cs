@@ -69,7 +69,7 @@ namespace Server.Items
                 Donations.Add(from, amount);
             }
 
-            from.SendMessage(1159032, string.Format("{0}", Donations[from].ToString())); // The Fellowship thanks you for your donation. You have donated ~1_val~ worth of goods!
+            from.SendLocalizedMessage(1159032, string.Format("{0}", Donations[from].ToString())); // The Fellowship thanks you for your donation. You have donated ~1_val~ worth of goods!
 
             if (Donations[from] >= 450000000)
             {

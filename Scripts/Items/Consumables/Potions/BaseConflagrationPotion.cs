@@ -99,10 +99,10 @@ namespace Server.Items
             {
                 for (int j = -2; j <= 2; j++)
                 {
-                    Point3D p = new Point3D(loc.X + i, loc.Y + j, map.GetAverageZ(loc.X + i, loc.Y + j));
+                    Point3D p = new Point3D(loc.X + i, loc.Y + j, loc.Z);
                     SpellHelper.AdjustField(ref p, map, 16, true);
 
-                    if (map.CanFit(new Point3D(p), 12, true, false) && from.InLOS(p))
+                    if (SpellHelper.CheckField(p, map) && map.LineOfSight(new Point3D(loc.X, loc.Y, loc.Z + 14), p))
                         new InternalItem(from, p, map, MinDamage, MaxDamage);
                 }
             }
@@ -177,6 +177,7 @@ namespace Server.Items
                 {
                     AddDelay(from);
                 }
+
                 SpellHelper.GetSurfaceTop(ref p);
 
                 from.RevealingAction();

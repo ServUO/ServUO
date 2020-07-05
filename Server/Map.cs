@@ -2881,7 +2881,7 @@ namespace Server
                 StaticTarget st = (StaticTarget)o;
                 ItemData id = TileData.ItemTable[st.ItemID & TileData.MaxItemValue];
 
-                p = new Point3D(st.X, st.Y, st.Z - id.CalcHeight + (id.Height / 2) + 1);
+                p = new Point3D(st.X, st.Y, st.Z - id.CalcHeight + (id.Height / 2));
             }
             else if (o is IPoint3D)
             {
@@ -3017,7 +3017,7 @@ namespace Server
             for (int i = 0; i < pathCount; ++i)
             {
                 point = path[i];
-                pointTop = point.m_Z + 1;
+                pointTop = point.m_Z;
 
                 landTile = Tiles.GetLandTile(point.X, point.Y);
 
