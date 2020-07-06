@@ -418,7 +418,7 @@ namespace Server.Engines.Harvest
 
                     if (!dungeon)
                     {
-                        niter.MoveToWorld(new Point3D(loc.X, loc.Y, from.Z + 3), from.Map);
+                        niter.MoveToWorld(new Point3D(loc.X, loc.Y, from.Z), from.Map);
                         from.SendLocalizedMessage(1149918, niter.Size.ToString()); //You have uncovered a ~1_SIZE~ deposit of niter! Mine it to obtain saltpeter.
                         NiterDeposit.AddBank(bank);
                         return true;

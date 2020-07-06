@@ -68,8 +68,8 @@ namespace Server.Mobiles
                 RawStr = (int)Math.Max(1, RawStr * 0.5);
                 RawDex = (int)Math.Max(1, RawDex * 0.5);
 
-                HitsMaxSeed = RawStr;
-                Hits = RawStr;
+                HitsMaxSeed = (int)Math.Max(1, HitsMaxSeed * 0.5); ;
+                Hits = HitsMaxSeed;
 
                 StamMaxSeed = RawDex;
                 Stam = RawDex;

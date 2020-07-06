@@ -120,27 +120,33 @@ namespace Server.Spells.Mysticism
 
         public static void DoExplosion(Mobile from, Mobile caster, bool initial, int amount)
         {
-            int damage = BonusDamage(caster);
+            double damage = BonusDamage(caster) + Utility.RandomMinMax(22, 24);
 
             if (initial)
             {
-                damage += Utility.RandomMinMax(22, 24);
-            }
+                var sdiBonus = SpellHelper.GetSpellDamageBonus(caster, from, SkillName.Mysticism, from is PlayerMobile);
 
-            if (amount > 1)
-                damage /= amount;
+                damage *= (100 + sdiBonus);
+                damage /= 100;
+            }
+            else
+            {
+                switch (amount)
+                {
+                    default: break;
+                    case 0: 
+                    case 1: damage /= 2; break;
+                    case 2: damage /= 1.66; break;
+                    case 3: damage /= 1.33; break;
+                }
+            }
 
             from.PlaySound(0x658);
 
             from.FixedParticles(0x375A, 1, 17, 9919, 1161, 7, EffectLayer.Waist);
             from.FixedParticles(0x3728, 1, 13, 9502, 1161, 7, (EffectLayer)255);
 
-            int sdiBonus = SpellHelper.GetSpellDamageBonus(caster, from, SkillName.Mysticism, from is PlayerMobile);
-
-            damage *= (100 + sdiBonus);
-            damage /= 100;
-
-            SpellHelper.Damage(null, TimeSpan.Zero, from, caster, damage, 0, 0, 0, 0, 0, DFAlgorithm.Standard, 100, 0);
+            SpellHelper.Damage(null, TimeSpan.Zero, from, caster, (int)damage, 0, 0, 0, 0, 0, DFAlgorithm.Standard, 100, 0);
         }
 
         public static int BonusDamage(Mobile caster)

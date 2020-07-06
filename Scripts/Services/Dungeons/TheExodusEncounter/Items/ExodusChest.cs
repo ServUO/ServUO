@@ -19,7 +19,7 @@ namespace Server.Items
 
         private static readonly Type[] m_RituelItem = new Type[]
         {
-            typeof(ExodusSummoningRite), typeof(ExodusSacrificalDagger), typeof(RobeofRite), typeof(ExodusSummoningAlter)
+            typeof(ExodusSummoningRite), typeof(ExodusSacrificalDagger), typeof(RobeofRite), typeof(ExodusSummoningAlter), typeof(CapturedEssence)
         };
 
         private Timer m_Timer;
@@ -80,7 +80,7 @@ namespace Server.Items
         {
             if (Utility.RandomDouble() < 0.2)
             {
-                Item item = Activator.CreateInstance(m_RituelItem[Utility.Random(m_RituelItem.Length)]) as Item;
+                Item item = Activator.CreateInstance(m_RituelItem[Utility.Random(m_RituelItem.Length - 1)]) as Item;
                 DropItem(item);
             }
 
@@ -181,7 +181,7 @@ namespace Server.Items
 
         public static void GiveRituelItem(Mobile m)
         {
-            Item item = Activator.CreateInstance(m_RituelItem[Utility.Random(m_RituelItem.Length)]) as Item;
+            Item item = Activator.CreateInstance(m_RituelItem[Utility.Random(m_RituelItem.Length - 1)]) as Item;
             m.PlaySound(0x5B4);
 
             if (item == null)
