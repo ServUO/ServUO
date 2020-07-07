@@ -118,7 +118,7 @@ namespace Server.Spells.SkillMasteries
             {
                 AOS.Damage(defender, Caster, dmg, 0, 0, 0, 0, 0, 0, 100);
 
-                damage = dmg / 10;
+                damage /= 10;
             }
             else
             {
@@ -142,7 +142,7 @@ namespace Server.Spells.SkillMasteries
 
             if (pvp)
             {
-                damage = Math.Max(35, Utility.RandomMinMax(27, 35) * level);
+                damage = Math.Min(35, Utility.RandomMinMax(27, 35) * level);
             }
             else
             {

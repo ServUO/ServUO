@@ -46,23 +46,23 @@ namespace Server.Items
             if (region != null && region._Controller != null)
             {
                 _Controller = region._Controller;
-            }
 
-            if (!_Controller.Active && _Controller.FragmentCount < 8 &&
-                JollyRogerData.GetShrine(this) == _Controller.Shrine)
-            {
-                if (_Timer != null)
+                if (!_Controller.Active && _Controller.FragmentCount < 8 &&
+                    JollyRogerData.GetShrine(this) == _Controller.Shrine)
                 {
-                    _Timer.Stop();
+                    if (_Timer != null)
+                    {
+                        _Timer.Stop();
+                    }
+
+                    _Controller.FragmentCount++;
+
+                    from.PrivateOverheadMessage(MessageType.Regular, 0x47E, 1159028, from.NetState); // *The fragment settles into the ground and surges with power as it begins to sink!*
+                    Effects.SendPacket(Location, Map, new GraphicalEffect(EffectType.FixedXYZ, Serial.Zero, Serial.Zero, 0x3735, Location, Location, 1, 120, true, true));
+                    from.PlaySound(0x5C);
+                    _Timer = new FragmentTimer(this, from, _Controller.FragmentCount);
+                    _Timer.Start();
                 }
-
-                _Controller.FragmentCount++;
-
-                from.PrivateOverheadMessage(MessageType.Regular, 0x47E, 1159028, from.NetState); // *The fragment settles into the ground and surges with power as it begins to sink!*
-                Effects.SendPacket(Location, Map, new GraphicalEffect(EffectType.FixedXYZ, Serial.Zero, Serial.Zero, 0x3735, Location, Location, 1, 120, true, true));
-                from.PlaySound(0x5C);
-                _Timer = new FragmentTimer(this, from, _Controller.FragmentCount);
-                _Timer.Start();
             }
 
             return drop;
