@@ -12,10 +12,10 @@ namespace Server.Engines.NewMagincia
         public readonly int LightBlueColor = 0x4AFD;
         public readonly int GreenColor = 0x4BB7;
 
-        public NewMaginciaMessageGump(PlayerMobile from)
+        public NewMaginciaMessageGump(PlayerMobile from, List<NewMaginciaMessage> messages)
             : base(from, 490, 30)
         {
-            Messages = MaginciaLottoSystem.GetMessages(from);
+            Messages = messages;
         }
 
         public override void AddGumpLayout()
@@ -35,14 +35,14 @@ namespace Server.Engines.NewMagincia
                     {
                         if (Messages.Count != 0)
                         {
-                            SendGump(new NewMaginciaMessageGump(User));
+                            SendGump(new NewMaginciaMessageGump(User, Messages));
                         }
 
                         break;
                     }
                 case 1:
                     {
-                        SendGump(new NewMaginciaMessageListGump(User));
+                        SendGump(new NewMaginciaMessageListGump(User, Messages));
                         break;
                     }
             }
@@ -57,11 +57,11 @@ namespace Server.Engines.NewMagincia
         public bool Widescreen;
         public List<NewMaginciaMessage> Messages;
 
-        public NewMaginciaMessageListGump(PlayerMobile from, bool widescreen = false)
+        public NewMaginciaMessageListGump(PlayerMobile from, List<NewMaginciaMessage> messages, bool widescreen = false)
             : base(from, 490, 30)
         {
             Widescreen = widescreen;
-            Messages = MaginciaLottoSystem.GetMessages(from);
+            Messages = messages;
         }
 
         public override void AddGumpLayout()
@@ -100,7 +100,7 @@ namespace Server.Engines.NewMagincia
                 {
                     if (message.Title.Number > 0)
                     {
-                        AddHtmlLocalized(47, 34 + (y * 32), 260 + width, 16, message.Title, LightBlueColor, false, false);
+                        AddHtmlLocalized(47, 34 + (y * 32), 260 + width, 16, message.Title.Number, LightBlueColor, false, false);
                     }
                     else
                     {
@@ -146,12 +146,12 @@ namespace Server.Engines.NewMagincia
             {
                 case 0:
                     {
-                        SendGump(new NewMaginciaMessageGump(User));
+                        SendGump(new NewMaginciaMessageGump(User, Messages));
                         break;
                     }
                 case 1:
                     {
-                        SendGump(new NewMaginciaMessageListGump(User, Widescreen ? false : true));
+                        SendGump(new NewMaginciaMessageListGump(User, Messages, Widescreen ? false : true));
                         break;
                     }
                 default:
@@ -253,35 +253,29 @@ namespace Server.Engines.NewMagincia
             {
                 case 0:
                     {
-                        SendGump(new NewMaginciaMessageGump(User));
+                        SendGump(new NewMaginciaMessageGump(User, Messages));
 
                         break;
                     }
                 case 1:
                     {
-                        SendGump(new NewMaginciaMessageListGump(User));
+                        SendGump(new NewMaginciaMessageListGump(User, Messages));
                     }
                     break;
                 case 2:
                     {
                         if (Message != null)
                         {
-                            List<NewMaginciaMessage> messages = MaginciaLottoSystem.MessageQueue[User];
-
-                            if (messages == null)
-                            {
-                                MaginciaLottoSystem.MessageQueue.Remove(User);
-                            }
-                            else
-                            {
-                                MaginciaLottoSystem.RemoveMessageFromQueue(User, Message);
-
-                                if (MaginciaLottoSystem.HasMessageInQueue(User))
-                                {
-                                    SendGump(new NewMaginciaMessageListGump(User));
-                                }
-                            }
+                            MaginciaLottoSystem.RemoveMessageFromQueue(User, Message);
                         }
+
+                        var messages = MaginciaLottoSystem.GetMessages(User);
+
+                        if (messages != null)
+                        {
+                            SendGump(new NewMaginciaMessageListGump(User, messages));
+                        }
+
                         break;
                     }
             }

@@ -34,6 +34,10 @@ namespace Server.Engines.Craft
         IronwoodCrown = 151,
         BrambleCoat = 152,
 
+        SmallElegantAquarium = 153,
+        WallMountedAquarium = 154,
+        LargeElegantAquarium = 155,
+
         KotlBlackRod = 170,
         KotlAutomaton = 171,
     }
@@ -710,6 +714,24 @@ namespace Server.Engines.Craft
             index = AddCraft(typeof(FancyCouchWestDeed), 1044290, 1156583, 70.0, 120.0, typeof(Board), 1044041, 80, 1044351);
             AddSkill(index, SkillName.Tailoring, 55.0, 60.0);
             AddRes(index, typeof(Cloth), 1044286, 48, 1044287);
+
+            index = AddCraft(typeof(SmallElegantAquariumDeed), 1044290, 1159134, 100.0, 160.0, typeof(Board), 1044041, 20, 1044351);
+            AddRes(index, typeof(WorkableGlass), 1154170, 2, 1154171);
+            AddRes(index, typeof(Sand), 1044625, 5, 1044627);
+            AddRes(index, typeof(LiveRock), 1159133, 1, 1159132);
+            AddRecipe(index, (int)CarpRecipes.SmallElegantAquarium);
+
+            index = AddCraft(typeof(WallMountedAquariumDeed), 1044290, 1159135, 100.0, 160.0, typeof(Board), 1044041, 50, 1044351);
+            AddRes(index, typeof(WorkableGlass), 1154170, 4, 1154171);
+            AddRes(index, typeof(Sand), 1044625, 10, 1044627);
+            AddRes(index, typeof(LiveRock), 1159133, 3, 1159132);
+            AddRecipe(index, (int)CarpRecipes.WallMountedAquarium);
+
+            index = AddCraft(typeof(LargeElegantAquariumDeed), 1044290, 1159136, 100.0, 160.0, typeof(Board), 1044041, 100, 1044351);
+            AddRes(index, typeof(WorkableGlass), 1154170, 8, 1154171);
+            AddRes(index, typeof(Sand), 1044625, 20, 1044627);
+            AddRes(index, typeof(LiveRock), 1159133, 5, 1159132);
+            AddRecipe(index, (int)CarpRecipes.LargeElegantAquarium);
 
             // Tailoring and Cooking
             index = AddCraft(typeof(DressformFront), 1044298, 1044339, 63.1, 88.1, typeof(Board), 1044041, 25, 1044351);

@@ -1,20 +1,53 @@
 using Server.ContextMenus;
+using Server.Gumps;
 using Server.Multis;
 using Server.Network;
+using Server.Targeting;
 using System;
 using System.Collections.Generic;
 
 namespace Server.Items
 {
+    public class AquariumAddonComponent : AddonContainerComponent
+    {
+        public override int LabelNumber => 1125918;  // aquarium
+
+        public AquariumAddonComponent(int id)
+            : base(id)
+        {
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            Addon.GetProperties(list);
+        }
+
+        public AquariumAddonComponent(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.WriteEncodedInt(0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadEncodedInt();
+        }
+    }
+
     public class Aquarium : BaseAddonContainer
     {
+        public override int LabelNumber => 1125918;  // aquarium
+
         public static readonly TimeSpan EvaluationInterval = TimeSpan.FromDays(1);
 
-        // items info
-        private int m_LiveCreatures;
-
         [CommandProperty(AccessLevel.GameMaster)]
-        public int LiveCreatures => m_LiveCreatures;
+        public int LiveCreatures { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int DeadCreatures
@@ -62,10 +95,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int VacationLeft
         {
-            get
-            {
-                return m_VacationLeft;
-            }
+            get { return m_VacationLeft; }
             set
             {
                 m_VacationLeft = value;
@@ -74,16 +104,12 @@ namespace Server.Items
         }
 
         // aquarium state
-        private AquariumState m_Food;
-        private AquariumState m_Water;
+        private AquariumState m_Food;       
 
         [CommandProperty(AccessLevel.GameMaster)]
         public AquariumState Food
         {
-            get
-            {
-                return m_Food;
-            }
+            get { return m_Food; }
             set
             {
                 m_Food = value;
@@ -91,13 +117,12 @@ namespace Server.Items
             }
         }
 
+        private AquariumState m_Water;
+
         [CommandProperty(AccessLevel.GameMaster)]
         public AquariumState Water
         {
-            get
-            {
-                return m_Water;
-            }
+            get { return m_Water; }
             set
             {
                 m_Water = value;
@@ -107,21 +132,17 @@ namespace Server.Items
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool OptimalState => (m_Food.State == (int)FoodState.Full && m_Water.State == (int)WaterState.Strong);
-
-        // events
-        private List<int> m_Events;
-        private bool m_RewardAvailable;
+                
         private bool m_EvaluateDay;
 
-        public List<int> Events => m_Events;
+        public List<int> Events { get; private set; }
+
+        private bool m_RewardAvailable;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool RewardAvailable
         {
-            get
-            {
-                return m_RewardAvailable;
-            }
+            get { return m_RewardAvailable; }
             set
             {
                 m_RewardAvailable = value;
@@ -132,14 +153,43 @@ namespace Server.Items
         // evaluate timer
         private Timer m_Timer;
 
-        public override BaseAddonContainerDeed Deed
+        public override BaseAddonContainerDeed Deed { get { return null; } }
+
+        public override void OnChop(Mobile from)
         {
-            get
+            BaseHouse house = BaseHouse.FindHouseAt(this);
+
+            if (house != null && house.IsOwner(from))
             {
+                Effects.PlaySound(GetWorldLocation(), Map, 0x3B3);
+                from.SendLocalizedMessage(500461); // You destroy the item.         
+
+                AddonContainerBarrel barrel;
+
                 if (ItemID == 0x3062)
-                    return new AquariumEastDeed();
+                    barrel = new AquariumEastBarrel();
+                else if (ItemID == 0x3060)
+                    barrel = new AquariumNorthBarrel();
+                else if (ItemID == 0xA3A6)
+                    barrel = new SmallElegantAquariumBarrel();
+                else if (ItemID == 41909 || ItemID == 41924)
+                    barrel = new WallMountedAquariumBarrel();
                 else
-                    return new AquariumNorthDeed();
+                    barrel = new LargeElegantAquariumBarrel();
+
+                for (int i = 0; i < Items.Count; i++)
+                {
+                    barrel.DropItem(Items[i]);
+                }
+
+                if (barrel != null)
+                {
+                    from.AddToBackpack(barrel);
+                }
+
+                Delete();
+
+                house.Addons.Remove(this);
             }
         }
 
@@ -151,10 +201,36 @@ namespace Server.Items
             Movable = false;
 
             if (itemID == 0x3060)
-                AddComponent(new AddonContainerComponent(0x3061), -1, 0, 0);
+                AddComponent(new AquariumAddonComponent(0x3061), -1, 0, 0);
 
             if (itemID == 0x3062)
-                AddComponent(new AddonContainerComponent(0x3063), 0, -1, 0);
+                AddComponent(new AquariumAddonComponent(0x3063), 0, -1, 0);
+
+            if (itemID == 41909)
+            {
+                AddComponent(new AquariumAddonComponent(41904), 1, 0, 0);
+                AddComponent(new AquariumAddonComponent(41914), -1, 0, 0);
+            }
+
+            if (itemID == 41924)
+            {
+                AddComponent(new AquariumAddonComponent(41919), 0, 1, 0);
+                AddComponent(new AquariumAddonComponent(41929), 0, -1, 0);
+            }
+
+            if (itemID == 41934)
+            {
+                AddComponent(new AquariumAddonComponent(41940), -1, 0, 0);
+                AddComponent(new AquariumAddonComponent(41941), -2, 0, 0);
+                AddComponent(new AquariumAddonComponent(41939), 0, -1, 0);
+            }
+
+            if (itemID == 41942)
+            {
+                AddComponent(new AquariumAddonComponent(41947), -1, 0, 0);
+                AddComponent(new AquariumAddonComponent(41948), 0, -1, 0);
+                AddComponent(new AquariumAddonComponent(41949), 0, -2, 0);
+            }
 
             MaxItems = 30;
 
@@ -169,10 +245,12 @@ namespace Server.Items
 
             m_Water.Maintain = Utility.RandomMinMax(1, 3);
 
-            m_Events = new List<int>();
+            Events = new List<int>();
 
             m_Timer = Timer.DelayCall(EvaluationInterval, EvaluationInterval, Evaluate);
         }
+
+        public override bool DisplaysContent => true;
 
         public Aquarium(Serial serial)
             : base(serial)
@@ -286,26 +364,6 @@ namespace Server.Items
             return takeItem;
         }
 
-        public override void DropItemsToGround()
-        {
-            Point3D loc = GetWorldLocation();
-
-            for (int i = Items.Count - 1; i >= 0; i--)
-            {
-                Item item = Items[i];
-
-                item.MoveToWorld(loc, Map);
-
-                if (item is BaseFish)
-                {
-                    BaseFish fish = (BaseFish)item;
-
-                    if (!fish.Dead)
-                        fish.StartTimer();
-                }
-            }
-        }
-
         public override bool CheckItemUse(Mobile from, Item item)
         {
             if (item != this)
@@ -332,20 +390,20 @@ namespace Server.Items
             if (m_VacationLeft > 0)
                 list.Add(1074430, m_VacationLeft.ToString()); // Vacation days left: ~1_DAYS
 
-            if (m_Events.Count > 0)
-                list.Add(1074426, m_Events.Count.ToString()); // ~1_NUM~ event(s) to view!
+            if (Events.Count > 0)
+                list.Add(1074426, Events.Count.ToString()); // ~1_NUM~ event(s) to view!
 
             if (m_RewardAvailable)
                 list.Add(1074362); // A reward is available!
 
-            list.Add(1074247, "{0}\t{1}", m_LiveCreatures, MaxLiveCreatures); // Live Creatures: ~1_NUM~ / ~2_MAX~
+            list.Add(1074247, "{0}\t{1}", LiveCreatures, MaxLiveCreatures); // Live Creatures: ~1_NUM~ / ~2_MAX~
 
             int dead = DeadCreatures;
 
             if (dead > 0)
                 list.Add(1074248, dead.ToString()); // Dead Creatures: ~1_NUM~
 
-            int decorations = Items.Count - m_LiveCreatures - dead;
+            int decorations = Items.Count - LiveCreatures - dead;
 
             if (decorations > 0)
                 list.Add(1074249, decorations.ToString()); // Decorations: ~1_NUM~
@@ -368,6 +426,8 @@ namespace Server.Items
                 list.Add(1074254, "{0}\t{1}\t{2}", m_Water.Added, m_Water.Maintain, m_Water.Improve); // Water Added: ~1_CUR~ Maintain: ~2_NEED~ Improve: ~3_GROW~
         }
 
+        public override bool DisplayWeight { get { return false; } }
+
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
         {
             base.GetContextMenuEntries(from, list);
@@ -381,7 +441,7 @@ namespace Server.Items
                     if (m_RewardAvailable)
                         list.Add(new CollectRewardEntry(this));
 
-                    if (m_Events.Count > 0)
+                    if (Events.Count > 0)
                         list.Add(new ViewEventEntry(this));
 
                     if (m_VacationLeft > 0)
@@ -412,16 +472,16 @@ namespace Server.Items
                 writer.Write(DateTime.UtcNow + EvaluationInterval);
 
             // version 0
-            writer.Write(m_LiveCreatures);
+            writer.Write(LiveCreatures);
             writer.Write(m_VacationLeft);
 
             m_Food.Serialize(writer);
             m_Water.Serialize(writer);
 
-            writer.Write(m_Events.Count);
+            writer.Write(Events.Count);
 
-            for (int i = 0; i < m_Events.Count; i++)
-                writer.Write(m_Events[i]);
+            for (int i = 0; i < Events.Count; i++)
+                writer.Write(Events[i]);
 
             writer.Write(m_RewardAvailable);
         }
@@ -449,7 +509,7 @@ namespace Server.Items
                     }
                 case 0:
                     {
-                        m_LiveCreatures = reader.ReadInt();
+                        LiveCreatures = reader.ReadInt();
                         m_VacationLeft = reader.ReadInt();
 
                         m_Food = new AquariumState();
@@ -458,12 +518,12 @@ namespace Server.Items
                         m_Food.Deserialize(reader);
                         m_Water.Deserialize(reader);
 
-                        m_Events = new List<int>();
+                        Events = new List<int>();
 
                         int count = reader.ReadInt();
 
                         for (int i = 0; i < count; i++)
-                            m_Events.Add(reader.ReadInt());
+                            Events.Add(reader.ReadInt());
 
                         m_RewardAvailable = reader.ReadBool();
 
@@ -483,13 +543,13 @@ namespace Server.Items
 
         private void RecountLiveCreatures()
         {
-            m_LiveCreatures = 0;
+            LiveCreatures = 0;
             List<BaseFish> fish = FindItemsByType<BaseFish>();
 
             foreach (BaseFish f in fish)
             {
                 if (!f.Dead)
-                    ++m_LiveCreatures;
+                    ++LiveCreatures;
             }
         }
 
@@ -542,12 +602,12 @@ namespace Server.Items
                 toKill.RemoveAt(kill);
 
                 amount -= 1;
-                m_LiveCreatures -= 1;
+                LiveCreatures -= 1;
 
-                if (m_LiveCreatures < 0)
-                    m_LiveCreatures = 0;
+                if (LiveCreatures < 0)
+                    LiveCreatures = 0;
 
-                m_Events.Add(1074366); // An unfortunate accident has left a creature floating upside-down.  It is starting to smell.
+                Events.Add(1074366); // An unfortunate accident has left a creature floating upside-down.  It is starting to smell.
             }
         }
 
@@ -560,41 +620,41 @@ namespace Server.Items
             else if (m_EvaluateDay)
             {
                 // reset events
-                m_Events = new List<int>();
+                Events = new List<int>();
 
                 // food events
                 if (
                     (m_Food.Added < m_Food.Maintain && m_Food.State != (int)FoodState.Overfed && m_Food.State != (int)FoodState.Dead) ||
                     (m_Food.Added >= m_Food.Improve && m_Food.State == (int)FoodState.Full)
                 )
-                    m_Events.Add(1074368); // The tank looks worse than it did yesterday.
+                    Events.Add(1074368); // The tank looks worse than it did yesterday.
 
                 if (
                     (m_Food.Added >= m_Food.Improve && m_Food.State != (int)FoodState.Full && m_Food.State != (int)FoodState.Overfed) ||
                     (m_Food.Added < m_Food.Maintain && m_Food.State == (int)FoodState.Overfed)
                 )
-                    m_Events.Add(1074367); // The tank looks healthier today.
+                    Events.Add(1074367); // The tank looks healthier today.
 
                 // water events
                 if (m_Water.Added < m_Water.Maintain && m_Water.State != (int)WaterState.Dead)
-                    m_Events.Add(1074370); // This tank can use more water.
+                    Events.Add(1074370); // This tank can use more water.
 
                 if (m_Water.Added >= m_Water.Improve && m_Water.State != (int)WaterState.Strong)
-                    m_Events.Add(1074369); // The water looks clearer today.
+                    Events.Add(1074369); // The water looks clearer today.
 
                 UpdateFoodState();
                 UpdateWaterState();
 
                 // reward
-                if (m_LiveCreatures > 0)
+                if (LiveCreatures > 0)
                     m_RewardAvailable = true;
             }
             else
             {
                 // new fish
-                if (OptimalState && m_LiveCreatures < MaxLiveCreatures)
+                if (OptimalState && LiveCreatures < MaxLiveCreatures)
                 {
-                    if (Utility.RandomDouble() < 0.005 * m_LiveCreatures)
+                    if (Utility.RandomDouble() < 0.005 * LiveCreatures)
                     {
                         BaseFish fish = null;
                         int message = 0;
@@ -645,21 +705,21 @@ namespace Server.Items
                             fish.Hue = Utility.RandomMinMax(0x100, 0x3E5);
 
                         if (AddFish(fish))
-                            m_Events.Add(message);
+                            Events.Add(message);
                         else
                             fish.Delete();
                     }
                 }
 
                 // kill fish *grins*
-                if (m_LiveCreatures < MaxLiveCreatures)
+                if (LiveCreatures < MaxLiveCreatures)
                 {
                     if (Utility.RandomDouble() < 0.01)
                         KillFish(1);
                 }
                 else
                 {
-                    KillFish(m_LiveCreatures - MaxLiveCreatures);
+                    KillFish(LiveCreatures - MaxLiveCreatures);
                 }
             }
 
@@ -672,7 +732,7 @@ namespace Server.Items
             if (!m_RewardAvailable)
                 return;
 
-            int max = (int)(((double)m_LiveCreatures / 30) * m_Decorations.Length);
+            int max = (int)(((double)LiveCreatures / 30) * m_Decorations.Length);
 
             int random = (max <= 0) ? 0 : Utility.Random(max);
 
@@ -781,7 +841,7 @@ namespace Server.Items
                 }
 
                 if (!fish.Dead)
-                    m_LiveCreatures -= 1;
+                    LiveCreatures -= 1;
             }
             else
             {
@@ -824,7 +884,7 @@ namespace Server.Items
             if (fish == null)
                 return false;
 
-            if (IsFull || m_LiveCreatures >= MaxLiveCreatures || fish.Dead)
+            if (IsFull || LiveCreatures >= MaxLiveCreatures || fish.Dead)
             {
                 if (from != null)
                     from.SendLocalizedMessage(1073633); // The aquarium can not hold the creature.
@@ -835,7 +895,7 @@ namespace Server.Items
             AddItem(fish);
             fish.StopTimer();
 
-            m_LiveCreatures += 1;
+            LiveCreatures += 1;
 
             if (from != null)
                 from.SendLocalizedMessage(1073632, String.Format("#{0}", fish.LabelNumber)); // You add the following creature to your aquarium: ~1_FISH~
@@ -1146,15 +1206,42 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // Version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
 
-            int version = reader.ReadInt();
+    public class AquariumEastBarrel : AddonContainerBarrel
+    {
+        public override BaseAddonContainer Addon => new Aquarium(0x3062);
+        public override int LabelNumber => 1074501;// Large Aquarium (east)
+
+        [Constructable]
+        public AquariumEastBarrel()
+            : base()
+        {
+        }
+
+        public AquariumEastBarrel(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0); // Version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+             reader.ReadInt();
         }
     }
 
@@ -1177,15 +1264,457 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // Version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
 
-            int version = reader.ReadInt();
+    public class AquariumNorthBarrel : AddonContainerBarrel
+    {
+        public override BaseAddonContainer Addon => new Aquarium(0x3060);
+        public override int LabelNumber => 1074497;// Large Aquarium (north)
+
+        [Constructable]
+        public AquariumNorthBarrel()
+            : base()
+        {
+        }
+
+        public AquariumNorthBarrel(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0); // Version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
+
+    public class SmallElegantAquariumDeed : BaseAddonContainerDeed
+    {
+        public override BaseAddonContainer Addon => new Aquarium(0xA3A6);
+        public override int LabelNumber => 1159134; // small elegant aquarium
+
+        [Constructable]
+        public SmallElegantAquariumDeed()
+            : base()
+        {
+        }
+
+        public SmallElegantAquariumDeed(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0); // Version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
+
+    public class SmallElegantAquariumBarrel : AddonContainerBarrel
+    {
+        public override BaseAddonContainer Addon => new Aquarium(0xA3A6);
+        public override int LabelNumber => 1159134; // small elegant aquarium
+
+        [Constructable]
+        public SmallElegantAquariumBarrel()
+            : base()
+        {
+        }
+
+        public SmallElegantAquariumBarrel(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0); // Version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
+
+    public class WallMountedAquariumDeed : BaseAddonContainerDeed, IRewardOption
+    {
+        public override BaseAddonContainer Addon => new Aquarium(_Direction == DirectionType.South ? 41909 : 41924);
+        public override int LabelNumber => 1159135; // wall mounted aquarium
+
+        private DirectionType _Direction;
+
+        [Constructable]
+        public WallMountedAquariumDeed()
+            : base()
+        {
+        }
+
+        public WallMountedAquariumDeed(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (IsChildOf(from.Backpack))
+            {
+                from.CloseGump(typeof(AddonOptionGump));
+                from.SendGump(new AddonOptionGump(this, 1154194)); // Choose a Facing:
+            }
+            else
+            {
+                from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
+            }
+        }
+
+        public void GetOptions(RewardOptionList list)
+        {
+            list.Add((int)DirectionType.South, 1075386); // South
+            list.Add((int)DirectionType.East, 1075387); // East
+        }
+
+        public void OnOptionSelected(Mobile from, int choice)
+        {
+            _Direction = (DirectionType)choice;
+
+            if (!Deleted)
+                base.OnDoubleClick(from);
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0); // Version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
+
+    public class WallMountedAquariumBarrel : AddonContainerBarrel, IRewardOption
+    {
+        public override BaseAddonContainer Addon => new Aquarium(_Direction == DirectionType.South ? 41909 : 41924);
+        public override int LabelNumber => 1159135; // wall mounted aquarium
+
+        private DirectionType _Direction;
+
+        [Constructable]
+        public WallMountedAquariumBarrel()
+            : base()
+        {
+        }
+
+        public WallMountedAquariumBarrel(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (IsChildOf(from.Backpack))
+            {
+                from.CloseGump(typeof(AddonOptionGump));
+                from.SendGump(new AddonOptionGump(this, 1154194)); // Choose a Facing:
+            }
+            else
+            {
+                from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
+            }
+        }
+
+        public void GetOptions(RewardOptionList list)
+        {
+            list.Add((int)DirectionType.South, 1075386); // South
+            list.Add((int)DirectionType.East, 1075387); // East
+        }
+
+        public void OnOptionSelected(Mobile from, int choice)
+        {
+            _Direction = (DirectionType)choice;
+
+            if (!Deleted)
+                base.OnDoubleClick(from);
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0); // Version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
+
+    public class LargeElegantAquariumDeed : BaseAddonContainerDeed, IRewardOption
+    {
+        public override BaseAddonContainer Addon => new Aquarium(_Direction == DirectionType.South ? 41934 : 41942);
+        public override int LabelNumber => 1159136; // large elegant aquarium
+
+        private DirectionType _Direction;
+
+        [Constructable]
+        public LargeElegantAquariumDeed()
+            : base()
+        {
+        }
+
+        public LargeElegantAquariumDeed(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (IsChildOf(from.Backpack))
+            {
+                from.CloseGump(typeof(AddonOptionGump));
+                from.SendGump(new AddonOptionGump(this, 1154194)); // Choose a Facing:
+            }
+            else
+            {
+                from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
+            }
+        }
+
+        public void GetOptions(RewardOptionList list)
+        {
+            list.Add((int)DirectionType.South, 1075386); // South
+            list.Add((int)DirectionType.East, 1075387); // East
+        }
+
+        public void OnOptionSelected(Mobile from, int choice)
+        {
+            _Direction = (DirectionType)choice;
+
+            if (!Deleted)
+                base.OnDoubleClick(from);
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0); // Version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
+
+    public class LargeElegantAquariumBarrel : AddonContainerBarrel, IRewardOption
+    {
+        public override BaseAddonContainer Addon => new Aquarium(_Direction == DirectionType.South ? 41934 : 41942);
+        public override int LabelNumber => 1159136; // large elegant aquarium
+
+        private DirectionType _Direction;
+
+        [Constructable]
+        public LargeElegantAquariumBarrel()
+            : base()
+        {
+        }
+
+        public LargeElegantAquariumBarrel(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (IsChildOf(from.Backpack))
+            {
+                from.CloseGump(typeof(AddonOptionGump));
+                from.SendGump(new AddonOptionGump(this, 1154194)); // Choose a Facing:
+            }
+            else
+            {
+                from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
+            }
+        }
+
+        public void GetOptions(RewardOptionList list)
+        {
+            list.Add((int)DirectionType.South, 1075386); // South
+            list.Add((int)DirectionType.East, 1075387); // East
+        }
+
+        public void OnOptionSelected(Mobile from, int choice)
+        {
+            _Direction = (DirectionType)choice;
+
+            if (!Deleted)
+                base.OnDoubleClick(from);
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0); // Version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
+
+    public abstract class AddonContainerBarrel : Container
+    {
+        public abstract BaseAddonContainer Addon { get; }
+
+        public override bool DisplaysContent => false;
+
+        public AddonContainerBarrel()
+            : base(0xFAE)
+        {
+            Weight = 2;
+        }
+
+        public AddonContainerBarrel(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
+
+        public override void OnDoubleClick(Mobile from)
+        {
+            if (IsChildOf(from.Backpack))
+                from.Target = new InternalTarget(this);
+            else
+                from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
+        }
+
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            base.GetProperties(list);
+
+            list.Add(1153883, "0");
+        }
+
+        private class InternalTarget : Target
+        {
+            private readonly AddonContainerBarrel _Barrel;
+
+            public InternalTarget(AddonContainerBarrel barrel)
+                : base(-1, true, TargetFlags.None)
+            {
+                _Barrel = barrel;
+
+                CheckLOS = false;
+            }
+
+            protected override void OnTarget(Mobile from, object targeted)
+            {
+                IPoint3D p = targeted as IPoint3D;
+                Map map = from.Map;
+
+                if (p == null || map == null || _Barrel.Deleted)
+                    return;
+
+                if (_Barrel.IsChildOf(from.Backpack))
+                {
+                    var addon = _Barrel.Addon as Aquarium;
+
+                    Spells.SpellHelper.GetSurfaceTop(ref p);
+
+                    BaseHouse house = null;
+
+                    AddonFitResult res = addon.CouldFit(p, map, from, ref house);
+
+                    if (res == AddonFitResult.Valid)
+                        addon.MoveToWorld(new Point3D(p), map);
+                    else if (res == AddonFitResult.Blocked)
+                        from.SendLocalizedMessage(500269); // You cannot build that there.
+                    else if (res == AddonFitResult.NotInHouse)
+                        from.SendLocalizedMessage(500274); // You can only place this in a house that you own!
+                    else if (res == AddonFitResult.DoorsNotClosed)
+                        from.SendMessage("You must close all house doors before placing this.");
+                    else if (res == AddonFitResult.DoorTooClose)
+                        from.SendLocalizedMessage(500271); // You cannot build near the door.
+                    else if (res == AddonFitResult.NoWall)
+                        from.SendLocalizedMessage(500268); // This object needs to be mounted on something.
+
+                    if (res == AddonFitResult.Valid)
+                    {
+                        house.Addons[addon] = from;                        
+
+                        if (addon.Security)
+                        {
+                            house.AddSecure(from, addon);
+                        }
+
+                        for (int i = 0; i < _Barrel.Items.Count; i++)
+                        {
+                            var item = _Barrel.Items[i];
+
+                            if (item is BaseFish bf)
+                            {
+                                addon.AddFish(bf);
+                            }
+                            else
+                            {
+                                addon.AddDecoration(item);
+                            }
+                        }
+
+                        _Barrel.Delete();
+                    }
+                    else
+                    {
+                        addon.Delete();
+                    }
+                }
+                else
+                {
+                    from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
+                }
+            }
         }
     }
 }

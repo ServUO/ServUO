@@ -34,6 +34,19 @@ namespace Server.Items
             }
         }
 
+        [Constructable]
+        public Mailbox()
+            : this(0x4142)
+        {
+        }
+
+        [Constructable]
+        public Mailbox(int id)
+            : base(id)
+        {
+            Weight = 5.0;
+        }
+
         public void CheckMailBox()
         {
             if (IsEmpty)
@@ -58,19 +71,6 @@ namespace Server.Items
                     base.ItemID = EastMailBoxID;
                 }
             }
-        }
-
-        [Constructable]
-        public Mailbox()
-            : this(0x4142)
-        {
-        }
-
-        [Constructable]
-        public Mailbox(int id)
-            : base(id)
-        {
-            Weight = 5.0;
         }
 
         public virtual void OnFlip(Mobile from)

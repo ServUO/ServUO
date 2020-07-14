@@ -1120,6 +1120,23 @@ namespace Server.Multis
             return FindHouseAt(item.GetWorldLocation(), item.Map, item.ItemData.Height);
         }
 
+        public static BaseHouse FindHouseAt(IEntity e)
+        {
+            if (e == null || e.Deleted)
+                return null;
+
+            if (e is Item)
+            {
+                return FindHouseAt((Item)e);
+            }
+            else if (e is Mobile)
+            {
+                return FindHouseAt((Mobile)e);
+            }
+
+            return FindHouseAt(e.Location, e.Map, 16);
+        }
+
         public static BaseHouse FindHouseAt(Point3D loc, Map map, int height)
         {
             if (map == null || map == Map.Internal)

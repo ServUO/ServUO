@@ -54,6 +54,7 @@ namespace Server.Mobiles
         }
 
         public override int Meat => 3;
+        public override MeatType MeatType => MeatType.DinoRibs;
         public override bool CanAngerOnTame => true;
         public override int TreasureMapLevel => 1;
 

@@ -108,7 +108,9 @@ namespace Server.Mobiles
         Ribs,
         Bird,
         LambLeg,
-        Rotworm
+        Rotworm,
+        DinoRibs,
+        SeaSerpentSteak
     }
 
     public enum HideType
@@ -1976,6 +1978,8 @@ namespace Server.Mobiles
                         case MeatType.Bird: m = new RawBird(meat); break;
                         case MeatType.LambLeg: m = new RawLambLeg(meat); break;
                         case MeatType.Rotworm: m = new RawRotwormMeat(meat); break;
+                        case MeatType.DinoRibs: m = new RawDinoRibs(meat); break;
+                        case MeatType.SeaSerpentSteak: m = new RawSeaSerpentSteak(meat); break;
                     }
 
                     if (!special || !from.AddToBackpack(m))

@@ -20,12 +20,12 @@ namespace Server.Engines.Auction
         public const int Length = 400;
         public const int Height = 600;
 
-        public AuctionSafe Safe { get; set; }
+        public IAuctionItem Safe { get; set; }
         public bool Owner { get; set; }
         public PlayerMobile User { get; set; }
         public Auction Auction { get; set; }
 
-        public BaseAuctionGump(PlayerMobile p, AuctionSafe safe)
+        public BaseAuctionGump(PlayerMobile p, IAuctionItem safe)
             : base(100, 100)
         {
             Safe = safe;
@@ -97,7 +97,7 @@ namespace Server.Engines.Auction
         private long _TempBuyout;
         private bool _NoBid;
 
-        public AuctionOwnerGump(PlayerMobile pm, AuctionSafe safe)
+        public AuctionOwnerGump(PlayerMobile pm, IAuctionItem safe)
             : base(pm, safe)
         {
             Owner = true;
@@ -546,7 +546,7 @@ namespace Server.Engines.Auction
     {
         public long TempBid { get; set; }
 
-        public AuctionBidGump(PlayerMobile pm, AuctionSafe safe)
+        public AuctionBidGump(PlayerMobile pm, IAuctionItem safe)
             : base(pm, safe)
         {
         }

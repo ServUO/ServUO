@@ -28,11 +28,6 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (Weight != 2.0)
-            {
-                Weight = 2.0;
-            }
         }
 
         public override void OnDoubleClick(Mobile from)

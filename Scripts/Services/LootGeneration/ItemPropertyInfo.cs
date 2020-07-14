@@ -280,7 +280,7 @@ namespace Server.Items
             Register(11, new ItemPropertyInfo(AosAttribute.BonusMana, 1075631, 110, typeof(EnchantedEssence), typeof(Sapphire), typeof(LuminescentFungi), 1, 1, 8, 1112002,
                 new PropInfo(1, 0, 5), new PropInfo(2, 0, 5), new PropInfo(3, 8, 8, new int[] { 9, 10 }), new PropInfo(4, 0, 5), new PropInfo(5, 8, 8, new int[] { 9, 10 }), new PropInfo(6, 0, 5)));
 
-            Register(12, new ItemPropertyInfo(AosAttribute.WeaponDamage, 1079399, 100, typeof(EnchantedEssence), typeof(Citrine), typeof(CrystalShards), 5, 1, 50, 1112005,
+            Register(12, new ItemPropertyInfo(AosAttribute.WeaponDamage, 1079399, 100, typeof(EnchantedEssence), typeof(Citrine), typeof(CrystalShards), 1, 1, 50, 1112005,
                 new PropInfo(1, 50, 50, new int[] { 55, 60, 65, 70 }), new PropInfo(2, 50, 50, new int[] { 55, 60, 65, 70 }), new PropInfo(4, 0, 35), new PropInfo(6, 25, 25, new int[] { 30, 35 })));
 
             Register(13, new ItemPropertyInfo(AosAttribute.WeaponSpeed, 1075629, 110, typeof(RelicFragment), typeof(Tourmaline), typeof(EssenceControl), 5, 5, 30, 1112045,
@@ -830,6 +830,11 @@ namespace Server.Items
                     if (id == 21)
                     {
                         return 10;
+                    }
+
+                    if (id == 12)
+                    {
+                        return 5;
                     }
                 }
 

@@ -210,6 +210,11 @@ namespace Server.Mobiles
 
         public void DoTeleportEffects(Point3D p, Map map)
         {
+            if (map == null || map == Map.Internal)
+            {
+                return;
+            }
+
             for (int x = -2; x <= 2; x++)
             {
                 for (int y = -2; y <= 2; y++)
@@ -217,7 +222,7 @@ namespace Server.Mobiles
                     if (Math.Abs(x) == 2 && Math.Abs(y) == 2)
                         continue;
 
-                    Point3D pnt = new Point3D(p.X + x, p.Y + y, Map.GetAverageZ(p.X + x, p.Y + y));
+                    Point3D pnt = new Point3D(p.X + x, p.Y + y, map.GetAverageZ(p.X + x, p.Y + y));
                     Effects.SendLocationEffect(pnt, map, 0x3728, 16, 4);
                 }
             }

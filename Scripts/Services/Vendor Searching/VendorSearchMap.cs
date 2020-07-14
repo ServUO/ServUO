@@ -18,7 +18,7 @@ namespace Server.Items
         public PlayerVendor Vendor { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public AuctionSafe AuctionSafe { get; set; }
+        public IAuctionItem AuctionSafe { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsAuction { get; set; }

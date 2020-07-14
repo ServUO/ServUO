@@ -55,12 +55,11 @@ namespace Server.Mobiles
             AddLoot(LootPack.FilthyRich, 3);
         }
 
-        // Missing: Life Leech, Tail Swipe ability
-
         public override bool CanAngerOnTame => true;
         public override bool StatLossAfterTame => true;
         public override int DragonBlood => 8;
         public override int Meat => 5;
+        public override MeatType MeatType => MeatType.DinoRibs;
         public override int Hides => 11;
         public override int TreasureMapLevel => 2;
 

@@ -27,9 +27,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (Weight == 6.0)
-                Weight = 10.0;
         }
     }
 
@@ -40,7 +37,7 @@ namespace Server.Items
         public FootStool()
             : base(0xB5E)
         {
-            Weight = 6.0;
+            Weight = 10.0;
         }
 
         public FootStool(Serial serial)
@@ -60,9 +57,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (Weight == 6.0)
-                Weight = 10.0;
         }
     }
 }

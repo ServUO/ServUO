@@ -8,6 +8,8 @@ using Server.Spells.Fifth;
 using Server.Spells.Ninjitsu;
 using Server.Spells.Seventh;
 using Server.Targeting;
+using Server.Multis;
+
 using System;
 using System.Collections;
 #endregion
@@ -186,7 +188,7 @@ namespace Server.SkillHandlers
                 }
                 else if (root is Mobile && !m_Thief.CanBeHarmful((Mobile)root))
                 { }
-                else if (root is Corpse)
+                else if (root is Corpse || !CheckHouse(toSteal, root))
                 {
                     m_Thief.SendLocalizedMessage(502710); // You can't steal that!
                 }
@@ -295,6 +297,25 @@ namespace Server.SkillHandlers
                 }
 
                 return stolen;
+            }
+
+            private bool CheckHouse(Item stolen, object root)
+            {
+                var house = BaseHouse.FindHouseAt(stolen);
+
+                if (house != null)
+                {
+                    var rootItem = root as Item;
+
+                    if (rootItem != null)
+                    {
+                        SecureInfo secure = house.GetSecureInfoFor(rootItem);
+
+                        return secure != null && house.HasSecureAccess(m_Thief, secure);
+                    }
+                }
+
+                return true;
             }
 
             protected override void OnTarget(Mobile from, object target)

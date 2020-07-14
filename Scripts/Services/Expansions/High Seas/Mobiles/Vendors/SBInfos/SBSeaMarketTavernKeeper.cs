@@ -15,9 +15,10 @@ namespace Server.Mobiles
         {
             public InternalBuyInfo()
             {
-                Add(new GenericBuyInfo("1116299", typeof(MentoSeasoning), 1002, 10, 2454, 95));
-                Add(new GenericBuyInfo("1116338", typeof(SamuelsSecretSauce), 1007, 10, 2463, 1461));
-                Add(new GenericBuyInfo("1116300", typeof(DarkTruffle), 1001, 10, 3352, 1908));
+                Add(new GenericBuyInfo(typeof(MentoSeasoning), 1002, 20, 0x996, 2591));
+                Add(new GenericBuyInfo(typeof(SamuelsSecretSauce), 1007, 20, 0x99B, 1461));
+                Add(new GenericBuyInfo(typeof(Salt), 1052, 500, 0x4C09, 1150));
+                Add(new GenericBuyInfo(typeof(DarkTruffle), 1001, 20, 0xD18, 2021));
 
                 Add(new BeverageBuyInfo(typeof(BeverageBottle), BeverageType.Ale, 7, 20, 0x99F, 0));
                 Add(new BeverageBuyInfo(typeof(BeverageBottle), BeverageType.Wine, 7, 20, 0x9C7, 0));

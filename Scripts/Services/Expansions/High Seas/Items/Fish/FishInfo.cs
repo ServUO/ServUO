@@ -288,7 +288,7 @@ namespace Server.Items
                     else if (shore && skill >= 50.0)
                         item = BaseHighseasFish.ShoreFish[Utility.Random(BaseHighseasFish.ShoreFish.Length)];
                 }
-                else if (fishing && skill >= 50.0 && chance >= Utility.RandomDouble())
+                else if (!fishing && skill >= 50.0 && chance >= Utility.RandomDouble())
                 {
                     item = BaseHighseasFish.LobstersAndCrabs[Utility.Random(BaseHighseasFish.LobstersAndCrabs.Length)];
                 }

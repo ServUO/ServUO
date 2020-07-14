@@ -453,7 +453,7 @@ namespace Server.Mobiles
                     User.CloseGump(typeof(PetTrainingOptionsGump));
                     User.CloseGump(typeof(PetTrainingPlanningGump));
                     User.CloseGump(typeof(PetTrainingInfoGump));
-                    User.CloseGump(typeof(PetTrainingConfirmGump));
+                    User.CloseGump(typeof(PetTrainingStyleConfirmGump));
                     User.CloseGump(typeof(PetTrainingConfirmationGump));
                     break;
                 case 1: // training tracker
@@ -468,7 +468,7 @@ namespace Server.Mobiles
                     if (User.HasGump(typeof(PetTrainingConfirmationGump)) ||
                     User.HasGump(typeof(PetTrainingOptionsGump)) ||
                     User.HasGump(typeof(PetTrainingPlanningGump)) ||
-                    User.HasGump(typeof(PetTrainingConfirmGump)))
+                    User.HasGump(typeof(PetTrainingStyleConfirmGump)))
                     {
                         Refresh();
                         break;
@@ -484,7 +484,7 @@ namespace Server.Mobiles
 
                             Timer.DelayCall(TimeSpan.FromSeconds(.5), () =>
                                 {
-                                    BaseGump.SendGump(new PetTrainingConfirmGump(User, 1157571, 1157572, () =>
+                                    BaseGump.SendGump(new PetTrainingStyleConfirmGump(User, 1157571, 1157572, () =>
                                     {
                                         Refresh();
                                         User.CloseGump(typeof(PetTrainingOptionsGump));
@@ -504,7 +504,7 @@ namespace Server.Mobiles
                     }
                     break;
                 case 3: // cancel
-                    BaseGump.SendGump(new PetTrainingConfirmGump(User, 1153093, 1158019, () =>
+                    BaseGump.SendGump(new PetTrainingStyleConfirmGump(User, 1153093, 1158019, () =>
                         {
                             TrainingProfile trainProfile1 = PetTrainingHelper.GetTrainingProfile(Creature, true);
 
@@ -692,77 +692,6 @@ namespace Server.Mobiles
 
                 AddHtml(162, 78 + (40 * i), 50, 18, NewAnimalLoreGump.FormatDouble(progress, false, true), false, false);
             }
-        }
-    }
-
-    public class PetTrainingConfirmGump : BaseGump
-    {
-        private readonly int _Title;
-        private readonly int _Body;
-
-        private Action ConfirmCallback { get; set; }
-        private Action CancelCallback { get; set; }
-
-        public PetTrainingConfirmGump(PlayerMobile pm, int title, int body, Action confirmCallback, Action cancelCallback = null)
-            : base(pm, 250, 50)
-        {
-            pm.CloseGump(GetType());
-
-            _Title = title;
-            _Body = body;
-            ConfirmCallback = confirmCallback;
-            CancelCallback = cancelCallback;
-        }
-
-        public override void AddGumpLayout()
-        {
-            AddBackground(0, 0, 454, 240, 0x24A4);
-
-            AddHtmlLocalized(0, 12, 454, 16, CenterLoc, String.Format("#{0}", _Title.ToString()), 0xF424E5, false, false);
-            AddHtmlLocalized(55, 65, 344, 80, _Body, C32216(0x8B0000), false, false);
-
-            AddECHandleInput();
-
-            AddButton(70, 150, 0x9CC8, 0x9CC7, 1, GumpButtonType.Reply, 0);
-            AddHtml(70, 153, 126, 16, Center("Yes"), false, false);
-
-            AddECHandleInput();
-            AddECHandleInput();
-
-            AddButton(235, 150, 0x9CC8, 0x9CC7, 2, GumpButtonType.Reply, 0);
-            AddHtml(235, 153, 126, 16, Center("Cancel"), false, false);
-
-            AddECHandleInput();
-        }
-
-        public override void OnResponse(RelayInfo info)
-        {
-            if (info.ButtonID == 1)
-            {
-                if (ConfirmCallback != null)
-                {
-                    ConfirmCallback();
-                }
-
-                OnConfirm();
-            }
-            else if (info.ButtonID == 2)
-            {
-                if (CancelCallback != null)
-                {
-                    CancelCallback();
-                }
-
-                OnCancel();
-            }
-        }
-
-        public virtual void OnConfirm()
-        {
-        }
-
-        public virtual void OnCancel()
-        {
         }
     }
 
@@ -1665,7 +1594,7 @@ namespace Server.Mobiles
                     }
                     else if (PetTrainingHelper.CanControl(User, Creature, profile))
                     {
-                        BaseGump.SendGump(new PetTrainingConfirmGump(User, 1157502, TrainingPoint.TrainPoint is MagicalAbility ? 1157566 : 1157503, () =>
+                        BaseGump.SendGump(new PetTrainingStyleConfirmGump(User, 1157502, TrainingPoint.TrainPoint is MagicalAbility ? 1157566 : 1157503, () =>
                             {
                                 if (PetTrainingHelper.ApplyTrainingPoint(Creature, TrainingPoint, Value))
                                 {

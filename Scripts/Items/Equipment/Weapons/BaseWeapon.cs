@@ -979,6 +979,7 @@ namespace Server.Items
                     FocusWeilder = null;
 
                 SkillMasterySpell.OnWeaponRemoved(m, this);
+                ForceOfNature.Remove(m);
 
                 if (IsSetItem && m_SetEquipped)
                 {
@@ -1924,6 +1925,8 @@ namespace Server.Items
                 percentageBonus += (int)(move.GetDamageScalar(attacker, defender) * 100) - 100;
             }
 
+            percentageBonus += (int)(ForceOfNature.GetDamageScalar(attacker, defender) * 100) - 100;
+
             if (ConsecratedContext != null && ConsecratedContext.Owner == attacker)
             {
                 percentageBonus += ConsecratedContext.ConsecrateDamageBonus;
@@ -2068,8 +2071,6 @@ namespace Server.Items
                     percentageBonus += 100;
                 }
             }
-
-            percentageBonus += ForceOfNature.GetBonus(attacker, defender);
 
             if (m_ExtendedWeaponAttributes.AssassinHoned > 0 && GetOppositeDir(attacker.Direction) == defender.Direction)
             {
@@ -2456,6 +2457,8 @@ namespace Server.Items
             {
                 a.OnHit(attacker, defender, damage);
             }
+
+            ForceOfNature.OnHit(attacker, defender);
 
             if (move != null)
             {

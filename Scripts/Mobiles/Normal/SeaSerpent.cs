@@ -50,6 +50,8 @@ namespace Server.Mobiles
         {
         }
 
+        public override int Meat => 5;
+        public override MeatType MeatType => MeatType.SeaSerpentSteak;
         public override int TreasureMapLevel => Utility.RandomList(1, 2);
         public override int Hides => 10;
         public override HideType HideType => HideType.Horned;
