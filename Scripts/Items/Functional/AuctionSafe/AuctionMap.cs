@@ -14,7 +14,7 @@ namespace Server.Items
         public readonly int DeleteDelayMinutes = 30;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public AuctionSafe AuctionSafe { get; set; }
+        public IAuctionItem AuctionSafe { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Item AuctionItem { get; set; }
@@ -34,7 +34,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public Map SetMap { get; set; }
 
-        public AuctionMap(AuctionSafe auctionsafe)
+        public AuctionMap(IAuctionItem auctionsafe)
             : base(auctionsafe.Map)
         {
             AuctionSafe = auctionsafe;
@@ -272,7 +272,7 @@ namespace Server.Items
             base.Serialize(writer);
             writer.Write(0);
 
-            writer.Write(AuctionSafe);
+            writer.Write(AuctionSafe as Item);
             writer.Write(AuctionItem);
             writer.Write(SafeLocation);
             writer.Write(SafeMap);
@@ -286,7 +286,7 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            AuctionSafe = (AuctionSafe)reader.ReadItem();
+            AuctionSafe = reader.ReadItem() as IAuctionItem;
             AuctionItem = reader.ReadItem();
             SafeLocation = reader.ReadPoint3D();
             SafeMap = reader.ReadMap();

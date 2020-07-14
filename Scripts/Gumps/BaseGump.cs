@@ -9,7 +9,7 @@ namespace Server.Gumps
 {
     public abstract class BaseGump : Gump, IDisposable
     {
-        public static int CenterLoc = 1154645;     // <center>~1_val~</center>
+        public static int CenterLoc = 1114513;     // <center>~1_val~</center>
         public static int AlignRightLoc = 1114514; // <DIV ALIGN=RIGHT>~1_TOKEN~</DIV>
 
         private Gump _Parent;
@@ -336,6 +336,11 @@ namespace Server.Gumps
             return String.Format("<basefont color={0}>{1}", color, str);
         }
 
+        protected string Color(int color, string str)
+        {
+            return String.Format("<basefont color=#{0:X6}>{1}", color, str);
+        }
+
         protected string ColorAndCenter(string color, string str)
         {
             return String.Format("<center><basefont color={0}>{1}</center>", color, str);
@@ -349,11 +354,6 @@ namespace Server.Gumps
         protected string ColorAndCenterAndSize(string color, int size, string str)
         {
             return String.Format("<basefont color={0} size={1}><center>{2}</center>", color, size.ToString(), str);
-        }
-
-        protected string Color(int color, string str)
-        {
-            return String.Format("<basefont color=#{0:X6}>{1}", color, str);
         }
 
         protected string ColorAndCenter(int color, string str)
@@ -381,6 +381,30 @@ namespace Server.Gumps
             return String.Format("<DIV ALIGN=RIGHT>{0}</DIV>", str);
         }
 
+        public void AddHtmlTextDefinition(int x, int y, int length, int height, TextDefinition text, bool background, bool scrollbar)
+        {
+            if (text.Number > 0)
+            {
+                AddHtmlLocalized(x, y, length, height, text.Number, false, false);
+            }
+            else if (!string.IsNullOrEmpty(text.String))
+            {
+                AddHtml(x, y, length, height, text.String, background, scrollbar);
+            }
+        }
+
+        public void AddHtmlTextDefinition(int x, int y, int length, int height, TextDefinition text, int hue, bool background, bool scrollbar)
+        {
+            if (text.Number > 0)
+            {
+                AddHtmlLocalized(x, y, length, height, text.Number, hue, false, false);
+            }
+            else if (!string.IsNullOrEmpty(text.String))
+            {
+                AddHtml(x, y, length, height, Color(hue, text.String), background, scrollbar);
+            }
+        }
+
         public void AddHtmlLocalizedCentered(int x, int y, int length, int height, int localization, bool background, bool scrollbar)
         {
             AddHtmlLocalized(x, y, length, height, 1113302, String.Format("#{0}", localization), 0, background, scrollbar);
@@ -405,6 +429,18 @@ namespace Server.Gumps
         #region Tooltips
         private readonly Dictionary<string, Spoof> _TextTooltips = new Dictionary<string, Spoof>();
         private readonly Dictionary<Dictionary<int, string>, Spoof> _ClilocTooltips = new Dictionary<Dictionary<int, string>, Spoof>();
+
+        public void AddTooltipTextDefinition(TextDefinition text)
+        {
+            if (text.Number > 0)
+            {
+                AddTooltip(text.Number);
+            }
+            else if (!string.IsNullOrEmpty(text.String))
+            {
+                AddTooltip(text.String);
+            }
+        }
 
         public void AddTooltip(string text)
         {

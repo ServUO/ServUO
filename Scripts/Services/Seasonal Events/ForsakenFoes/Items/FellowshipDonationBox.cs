@@ -75,7 +75,6 @@ namespace Server.Items
             {
                 from.SendLocalizedMessage(1152339, string.Format("{0}", Donations[from].ToString())); // A reward of ~1_ITEM~ has been placed in your backpack.
                 from.AddToBackpack(new FellowshipCoin());
-                Donations[from] -= 450000000;
             }
 
             item.Delete();

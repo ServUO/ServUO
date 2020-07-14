@@ -103,6 +103,7 @@ namespace Server.Mobiles
         public override bool CanAngerOnTame => true;
         public override bool StatLossAfterTame => true;
         public override int Meat => 1;
+        public override MeatType MeatType => MeatType.DinoRibs;
         public override int Hides => 11;
         public override HideType HideType => HideType.Spined;
         public override FoodType FavoriteFood => FoodType.FruitsAndVegies;

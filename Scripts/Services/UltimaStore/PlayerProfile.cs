@@ -14,6 +14,8 @@ namespace Server.Engines.UOStore
         public StoreCategory Category { get; set; }
         public SortBy SortBy { get; set; }
 
+        public int VaultTokens { get; set; }
+
         public PlayerProfile(Mobile m)
         {
             Cart = new Dictionary<StoreEntry, int>();
@@ -58,7 +60,9 @@ namespace Server.Engines.UOStore
 
         public void Serialize(GenericWriter writer)
         {
-            writer.Write(0);
+            writer.Write(1);
+
+            writer.Write(VaultTokens);
 
             writer.Write(Player);
 
@@ -68,12 +72,20 @@ namespace Server.Engines.UOStore
 
         public void Deserialize(GenericReader reader)
         {
-            reader.ReadInt();
+            int version = reader.ReadInt();
 
-            Player = reader.ReadMobile();
+            switch (version)
+            {
+                case 1:
+                    VaultTokens = reader.ReadInt();
+                    goto case 0;
+                case 0:
+                    Player = reader.ReadMobile();
 
-            Category = (StoreCategory)reader.ReadInt();
-            SortBy = (SortBy)reader.ReadInt();
+                    Category = (StoreCategory)reader.ReadInt();
+                    SortBy = (SortBy)reader.ReadInt();
+                    break;
+            }
         }
     }
 }

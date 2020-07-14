@@ -326,6 +326,7 @@
     <Compile Include="Gumps\ConfirmReleaseGump.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Gumps\ConstainerDisplayGump.cs" />
     <Compile Include="Gumps\DawnsMusicBoxGump.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -353,6 +354,7 @@
     <Compile Include="Gumps\PetResurrectGump.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Gumps\PetTrainingStyleConfirmGump.cs" />
     <Compile Include="Gumps\PlayerVendorGumps.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -833,6 +835,13 @@
     <Compile Include="Mobiles\NPCs\Mannequin\Property\WeaponAttributeProperty.cs" />
     <Compile Include="Multis\Boats\Galleons\GalleonItem.cs" />
     <Compile Include="Multis\Houses\ContestHouses.cs" />
+    <Compile Include="Services\AccountVault\AccountVault.cs" />
+    <Compile Include="Services\AccountVault\AuctionVault.cs" />
+    <Compile Include="Services\AccountVault\Gumps.cs" />
+    <Compile Include="Services\AccountVault\SystemSettings.cs" />
+    <Compile Include="Services\AccountVault\VaultManager.cs" />
+    <Compile Include="Services\AccountVault\VaultTimer.cs" />
+    <Compile Include="Services\AccountVault\VaultToken.cs" />
     <Compile Include="Services\PointsSystems\JollyRogerData.cs" />
     <Compile Include="Services\Seasonal Events\ForsakenFoes\Mobile\MiningCooperativeMerchant.cs" />
     <Compile Include="Mobiles\NPCs\CommissionPlayerVendor.cs" />

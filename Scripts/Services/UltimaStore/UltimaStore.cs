@@ -303,6 +303,12 @@ namespace Server.Engines.UOStore
 
             // misc
             cat = StoreCategory.Misc;
+
+            if (Server.AccountVault.SystemSettings.UseTokens)
+            {
+                Register<VaultToken>(1158315, 1158316, 0x9FE8, 0, 0, 300, cat);
+            }
+
             Register<SoulstoneToken>(1158404, 1158405, 0x2A93, 0, 2598, 1000, cat, ConstructSoulstone);
             Register<BagOfBulkOrderCovers>(1071116, 1157603, 0, 0x9CC6, 0, 200, cat, ConstructBOBCoverOne);
 
@@ -348,6 +354,11 @@ namespace Server.Engines.UOStore
             Register(new StoreEntry(itemType, name, tooltip, itemID, gumpID, hue, cost, cat, constructor));
         }
 
+        public static StoreEntry GetEntry(Type t)
+        {
+            return Entries.FirstOrDefault(e => e.ItemType == t);
+        }
+
         public static void Register(StoreEntry entry)
         {
             Entries.Add(entry);
@@ -363,7 +374,7 @@ namespace Server.Engines.UOStore
             OpenStore(state.Mobile as PlayerMobile);
         }
 
-        public static void OpenStore(PlayerMobile user)
+        public static void OpenStore(PlayerMobile user, StoreEntry forcedEntry = null)
         {
             if (user == null || user.NetState == null)
             {
@@ -394,7 +405,7 @@ namespace Server.Engines.UOStore
 
             if (!user.HasGump(typeof(UltimaStoreGump)))
             {
-                BaseGump.SendGump(new UltimaStoreGump(user));
+                BaseGump.SendGump(new UltimaStoreGump(user, forcedEntry));
             }
         }
 
@@ -671,8 +682,13 @@ namespace Server.Engines.UOStore
             return str ?? String.Empty;
         }
 
-        public static List<StoreEntry> GetList(StoreCategory cat)
+        public static List<StoreEntry> GetList(StoreCategory cat, StoreEntry forcedEntry = null)
         {
+            if (forcedEntry != null)
+            {
+                return new List<StoreEntry>() { forcedEntry };
+            }
+
             return Entries.Where(e => e.Category == cat).ToList();
         }
 

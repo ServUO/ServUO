@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Server.Engines.Auction
 {
-    public class AuctionSafe : BaseAddon, ISecurable
+    public class AuctionSafe : BaseAddon, IAuctionItem, ISecurable
     {
         private Auction _Auction;
 
@@ -48,6 +48,33 @@ namespace Server.Engines.Auction
             else
             {
                 return false;
+            }
+        }
+
+        public void OnAuctionTray()
+        {
+            // Nothing to do here
+        }
+
+        public void ClaimPrize(Mobile m)
+        {
+            var item = Auction.AuctionItem;
+
+            if (item != null)
+            {
+                var name = Auction.AuctionItemName();
+
+                if (m.Backpack != null && m.Backpack.TryDropItem(m, item, false))
+                {
+                    m.SendLocalizedMessage(1152339, name); // A reward of ~1_ITEM~ has been placed in your backpack.
+                    item.Movable = true;
+
+                    Auction.Reset();
+                }
+                else
+                {
+                    m.SendLocalizedMessage(1158079); // You cannot currently unpack this vault or claim this item, as doing so would overload you!
+                }
             }
         }
 

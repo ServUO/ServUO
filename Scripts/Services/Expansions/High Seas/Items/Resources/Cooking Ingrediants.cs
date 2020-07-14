@@ -1,16 +1,16 @@
-﻿using Server.Targeting;
+using Server.Targeting;
 
 namespace Server.Items
 {
     public class MentoSeasoning : Item
     {
-        public override int LabelNumber => 1116299;
+        public override int LabelNumber => 1116299; // Mento Seasoning
 
         [Constructable]
         public MentoSeasoning()
-            : base(2454)
+            : base(0x996)
         {
-            Hue = 95;
+            Hue = 2591;
         }
 
         public MentoSeasoning(Serial serial) : base(serial)
@@ -26,16 +26,17 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class SamuelsSecretSauce : Item
     {
-        public override int LabelNumber => 1116338;
+        public override int LabelNumber => 1116338; // Samuel's Secret Sauce
 
         [Constructable]
-        public SamuelsSecretSauce() : base(2463)
+        public SamuelsSecretSauce()
+            : base(0x99B)
         {
             Hue = 1461;
         }
@@ -53,19 +54,19 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class DarkTruffle : Item
     {
-        public override int LabelNumber => 1116300;
+        public override int LabelNumber => 1116300; // dark truffle
 
         [Constructable]
         public DarkTruffle()
-            : base(3352)
+            : base(0xD18)
         {
-            Hue = 1908;
+            Hue = 2021;
         }
 
         public DarkTruffle(Serial serial)
@@ -82,17 +83,17 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class FreshGinger : Item
     {
-        public override int LabelNumber => 1031235;
+        public override int LabelNumber => 1031235; // Fresh Ginger
 
         [Constructable]
         public FreshGinger()
-            : base(11235)
+            : base(0x2BE3)
         {
         }
 
@@ -110,19 +111,18 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class FishOilFlask : Item
     {
-        public override int LabelNumber => 1150863;
+        public override int LabelNumber => 1150863; // fish oil flask
 
         [Constructable]
         public FishOilFlask()
-            : base(7192)
+            : base(0x1C18)
         {
-            Hue = 2404;
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -170,7 +170,64 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
+        }
+    }
+
+    public class Salt : Item
+    {
+        public override int LabelNumber => 1159201; // salt
+
+        [Constructable]
+        public Salt()
+            : base(0x4C09)
+        {
+            Hue = 1150;
+        }
+
+        public Salt(Serial serial) : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
+
+    public class FreshSeasoning : Item
+    {
+        public override int LabelNumber => 1159200; // fresh seasoning
+
+        [Constructable]
+        public FreshSeasoning()
+            : base(0x1006)
+        {
+            Hue = 1150;
+        }
+
+        public FreshSeasoning(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
         }
     }
 }

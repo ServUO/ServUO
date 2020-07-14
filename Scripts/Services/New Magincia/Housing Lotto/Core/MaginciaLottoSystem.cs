@@ -36,7 +36,7 @@ namespace Server.Engines.NewMagincia
             EventSink.Login += OnLogin;
 
             if (m_Instance != null)
-                m_Instance.CheckMessages();
+                m_Instance.PruneMessages();
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -392,18 +392,15 @@ namespace Server.Engines.NewMagincia
 
             if (from is PlayerMobile && from.NetState != null)
             {
-                if (from.HasGump(typeof(NewMaginciaMessageGump)))
-                    from.CloseGump(typeof(NewMaginciaMessageGump));
+                from.CloseGump(typeof(NewMaginciaMessageGump));
+                from.CloseGump(typeof(NewMaginciaMessageListGump));
+                from.CloseGump(typeof(NewMaginciaMessageDetailGump));
 
-                if (from.HasGump(typeof(NewMaginciaMessageListGump)))
-                    from.CloseGump(typeof(NewMaginciaMessageListGump));
+                var messages = GetMessages(from);
 
-                if (from.HasGump(typeof(NewMaginciaMessageDetailGump)))
-                    from.CloseGump(typeof(NewMaginciaMessageDetailGump));
-
-                if (HasMessageInQueue(from))
+                if (messages != null)
                 {
-                    BaseGump.SendGump(new NewMaginciaMessageGump((PlayerMobile)from));
+                    BaseGump.SendGump(new NewMaginciaMessageGump((PlayerMobile)from, messages));
                 }
             }
         }
@@ -411,7 +408,9 @@ namespace Server.Engines.NewMagincia
         public static void AddMessageToQueue(Mobile from, NewMaginciaMessage message)
         {
             if (!MessageQueue.ContainsKey(from) || m_MessageQueue[from] == null)
+            {
                 m_MessageQueue[from] = new List<NewMaginciaMessage>();
+            }
 
             m_MessageQueue[from].Add(message);
         }
@@ -426,40 +425,59 @@ namespace Server.Engines.NewMagincia
                 m_MessageQueue[from].Remove(message);
 
                 if (m_MessageQueue[from].Count == 0)
+                {
                     m_MessageQueue.Remove(from);
-            }
-        }
+                }
 
-        public static bool HasMessageInQueue(Mobile from)
-        {
-            return from != null && m_MessageQueue.ContainsKey(from) && m_MessageQueue[from] != null && m_MessageQueue[from].Count > 0;
+                return;
+            }
+
+            var account = from.Account as Account;
+
+            for (int i = 0; i < account.Length; i++)
+            {
+                var m = account[i];
+
+                if (m == from)
+                {
+                    continue;
+                }
+
+                if (m_MessageQueue.ContainsKey(m) && m_MessageQueue[m].Contains(message))
+                {
+                    m_MessageQueue[m].Remove(message);
+
+                    if (m_MessageQueue[m].Count == 0)
+                    {
+                        m_MessageQueue.Remove(m);
+                    }
+
+                    break;
+                }
+            }
         }
 
         public static void OnLogin(LoginEventArgs e)
         {
             Mobile from = e.Mobile;
-            Account acct = from.Account as Account;
             CheckMessages(from);
 
-            //TODO: Support for account wide messages?
+            var messages = GetMessages(from);
 
-            if (m_MessageQueue.ContainsKey(from))
+            if (messages != null)
             {
-                if (m_MessageQueue[from] == null || m_MessageQueue[from].Count == 0)
-                {
-                    m_MessageQueue.Remove(from);
-                }
-                else if (from is PlayerMobile)
-                {
-                    from.CloseGump(typeof(NewMaginciaMessageGump));
-                    BaseGump.SendGump(new NewMaginciaMessageGump((PlayerMobile)from));
-                }
+                from.CloseGump(typeof(NewMaginciaMessageGump));
+                BaseGump.SendGump(new NewMaginciaMessageGump((PlayerMobile)from, messages));
+            }
+            else if (from.Account != null)
+            {
+                var account = from.Account.Username;
             }
 
             GetWinnerGump(from);
         }
 
-        public void CheckMessages()
+        public void PruneMessages()
         {
             List<Mobile> mobiles = new List<Mobile>(m_MessageQueue.Keys);
 
@@ -470,7 +488,9 @@ namespace Server.Engines.NewMagincia
                 foreach (NewMaginciaMessage message in messages)
                 {
                     if (m_MessageQueue.ContainsKey(m) && m_MessageQueue[m].Contains(message) && message.Expired)
+                    {
                         m_MessageQueue[m].Remove(message);
+                    }
                 }
 
                 ColUtility.Free(messages);
@@ -481,12 +501,46 @@ namespace Server.Engines.NewMagincia
 
         public static List<NewMaginciaMessage> GetMessages(Mobile m)
         {
+            List<NewMaginciaMessage> list = null;
+
             if (m_MessageQueue.ContainsKey(m))
             {
-                return m_MessageQueue[m];
+                var messages = m_MessageQueue[m];
+
+                if (messages.Count == 0)
+                {
+                    m_MessageQueue.Remove(m);
+                }
+                else
+                {
+                    list = new List<NewMaginciaMessage>();
+
+                    list.AddRange(messages);
+                }
             }
 
-            return null;
+            if (m.Account != null)
+            {
+                foreach (var kvp in m_MessageQueue.Where(kvp => kvp.Key != m && kvp.Key.Account != null && kvp.Key.Account.Username == m.Account.Username && kvp.Value.Any(message => message.AccountBound)))
+                {
+                    if (list == null)
+                    {
+                        list = new List<NewMaginciaMessage>();
+                    }
+
+                    foreach (var message in kvp.Value.Where(message => message.AccountBound))
+                    {
+                        list.Add(message);
+                    }
+                }
+            }
+
+            if (list != null)
+            {
+                list = list.OrderBy(message => message.Expires).ToList();
+            }
+
+            return list;
         }
 
         public static void CheckMessages(Mobile from)
@@ -566,7 +620,7 @@ namespace Server.Engines.NewMagincia
                     message.Serialize(writer);
             }
 
-            Timer.DelayCall(TimeSpan.FromSeconds(30), CheckMessages);
+            Timer.DelayCall(TimeSpan.FromSeconds(30), PruneMessages);
         }
 
         public override void Deserialize(GenericReader reader)

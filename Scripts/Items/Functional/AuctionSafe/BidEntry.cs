@@ -4,13 +4,20 @@ using System;
 
 namespace Server.Engines.Auction
 {
+    [PropertyObject]
     public class BidEntry : IComparable<BidEntry>
     {
+        [CommandProperty(AccessLevel.GameMaster)]
         public PlayerMobile Mobile { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public long CurrentBid { get; set; }
 
         //Converts to gold/plat
+        [CommandProperty(AccessLevel.GameMaster)]
         public int TotalGoldBid => (int)(CurrentBid >= Account.CurrencyThreshold ? CurrentBid - (TotalPlatBid * Account.CurrencyThreshold) : CurrentBid);
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public int TotalPlatBid => (int)(CurrentBid >= Account.CurrencyThreshold ? CurrentBid / Account.CurrencyThreshold : 0);
 
         public BidEntry(PlayerMobile m, long bid = 0)

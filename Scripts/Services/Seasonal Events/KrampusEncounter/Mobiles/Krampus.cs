@@ -338,9 +338,9 @@ namespace Server.Mobiles
                             case 7: item = new KrampusCoinPurse(463); break; // minion talons
                             case 8: item = new KrampusCoinPurse(588); break; // minion earrings
                             case 9: item = new KrampusPunishinList(m.Name); break;
-                            case 10: item = new SpikedWhip(); break;
-                            case 11: item = new BarbedWhip(); break;
-                            case 12: item = new BladedWhip(); break;
+                            case 10: item = new RecipeScroll(466); break; // barbed whip
+                            case 11: item = new RecipeScroll(467); break; // spiked whip
+                            case 12: item = new RecipeScroll(468); break; // bladed whip
                         }
 
                         if (item != null)

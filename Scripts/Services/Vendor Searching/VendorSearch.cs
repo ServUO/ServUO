@@ -1240,7 +1240,7 @@ namespace Server.Engines.VendorSearching
     public class SearchItem
     {
         public PlayerVendor Vendor { get; set; }
-        public AuctionSafe AuctionSafe { get; set; }
+        public IAuctionItem AuctionSafe { get; set; }
         public Item Item { get; set; }
         public int Price { get; set; }
         public bool IsChild { get; set; }
@@ -1255,7 +1255,7 @@ namespace Server.Engines.VendorSearching
             IsAuction = false;
         }
 
-        public SearchItem(AuctionSafe auctionsafe, Item item, int price, bool isChild)
+        public SearchItem(IAuctionItem auctionsafe, Item item, int price, bool isChild)
         {
             AuctionSafe = auctionsafe;
             Item = item;

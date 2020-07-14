@@ -1,7 +1,6 @@
 namespace Server.Items
 {
     [Furniture]
-    [TypeAlias("Server.Items.TallMusicStand")]
     public class TallMusicStandLeft : Item
     {
         [Constructable]
@@ -26,9 +25,6 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (Weight == 8.0)
-                Weight = 10.0;
         }
     }
 
@@ -61,7 +57,6 @@ namespace Server.Items
     }
 
     [Furniture]
-    [TypeAlias("Server.Items.ShortMusicStand")]
     public class ShortMusicStandLeft : Item
     {
         [Constructable]
@@ -86,9 +81,6 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (Weight == 6.0)
-                Weight = 10.0;
         }
     }
 

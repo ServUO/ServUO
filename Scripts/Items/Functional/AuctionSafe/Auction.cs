@@ -2,6 +2,7 @@ using Server.Accounting;
 using Server.Engines.NewMagincia;
 using Server.Items;
 using Server.Mobiles;
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -9,40 +10,24 @@ using System.Linq;
 
 namespace Server.Engines.Auction
 {
+    public interface IAuctionItem : IEntity
+    {
+        Auction Auction { get; set; }
+        bool CheckAuctionItem(Item item);
+        void OnAuctionTray();
+        void ClaimPrize(Mobile m);
+    }
+
     [PropertyObject]
     public class Auction : IDisposable
     {
-        public static void Configure()
-        {
-            Auctions = new List<Auction>();
-        }
-
-        public static void Initialize()
-        {
-            Timer.DelayCall(TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), () =>
-            {
-                Auctions.ForEach(a =>
-                {
-                    if (a.OnGoing && a.EndTime < DateTime.Now && !a.InClaimPeriod)
-                    {
-                        a.EndAuction();
-                    }
-                    else if (a.InClaimPeriod && DateTime.UtcNow > a.ClaimPeriod)
-                    {
-                        a.EndClaimPeriod();
-                    }
-
-                });
-            });
-        }
-
         public const int DefaultDuration = 10080;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Owner { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public AuctionSafe Safe { get; set; }
+        public IAuctionItem Safe { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Item AuctionItem { get; set; }
@@ -76,6 +61,7 @@ namespace Server.Engines.Auction
 
         public List<BidEntry> Bids;
 
+        [CommandProperty(AccessLevel.GameMaster)]
         public BidEntry HighestBid { get; set; }
 
         public bool HasBegun => StartTime != DateTime.MinValue;
@@ -90,11 +76,12 @@ namespace Server.Engines.Auction
 
         public List<HistoryEntry> BidHistory { get; set; }
         public List<PlayerMobile> Viewers { get; set; }
-        public static List<Auction> Auctions { get; set; }
 
-        public Auction(Mobile owner, AuctionSafe safe)
+        public bool PublicAuction { get { return Owner == null; } }
+
+        public Auction(Mobile owner, IAuctionItem item)
         {
-            Safe = safe;
+            Safe = item;
             Owner = owner;
             Bids = new List<BidEntry>();
 
@@ -104,6 +91,11 @@ namespace Server.Engines.Auction
         ~Auction()
         {
             Dispose();
+        }
+
+        public override string ToString()
+        {
+            return "...";
         }
 
         public bool AuctionItemOnDisplay()
@@ -166,54 +158,60 @@ namespace Server.Engines.Auction
 
             BidEntry entry = GetBidEntry(m);
             Account acct = m.Account as Account;
+            bool firstBid = HighestBid == null;
 
-            long highestBid = HighestBid != null ? HighestBid.CurrentBid : CurrentBid;
+            long highestBid = firstBid ? CurrentBid : HighestBid.CurrentBid;
 
             if (acct == null || Banker.GetBalance(m) < bidTotal)
             {
                 m.SendLocalizedMessage(1155867); // The amount entered is invalid. Verify that there are sufficient funds to complete this transaction.
                 return false;
             }
-            else if (bidTotal < entry.CurrentBid || entry == HighestBid)
-            {
-                m.SendLocalizedMessage(1156445); // You have been out bid.
-                return false;
-            }
 
-            if (bidTotal <= highestBid)
+            if ((firstBid && bidTotal < highestBid) || (!firstBid && bidTotal <= highestBid))
             {
                 m.SendLocalizedMessage(1156445); // You have been out bid.
+
+                if (bidTotal > CurrentBid)
+                {
+                    CurrentBid = bidTotal;
+
+                    AddToHistory(m, bidTotal);
+                }
             }
             else
             {
                 acct.WithdrawGold(bidTotal);
                 entry.CurrentBid = bidTotal;
 
-                CurrentBid = highestBid + 1;
-
-                if (HighestBid != null)
+                if (!firstBid)
                 {
-                    string name = "Unknown Item";
+                    if (HighestBid.Mobile != m)
+                    {
+                        string name = AuctionItemName();
 
-                    if (AuctionItem.Name != null)
-                        name = AuctionItem.Name;
-                    else
-                        name = String.Format("#{0}", AuctionItem.LabelNumber.ToString());
+                        if (string.IsNullOrEmpty(name))
+                        {
+                            name = "the item you bid on";
+                        }
 
-                    NewMaginciaMessage message = new NewMaginciaMessage(null, new TextDefinition(1156427), String.Format("{0}\t{1}\t{2}",
-                                                            name,
-                                                            CurrentPlatBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")),
-                                                            CurrentGoldBid.ToString("N0", CultureInfo.GetCultureInfo("en-US"))));
-                    /*  You have been out bid in an auction for ~1_ITEMNAME~. The current winning bid amount is 
-					 * ~2_BIDAMT~plat and ~3_BIDAMT~gp.*/
-                    MaginciaLottoSystem.SendMessageTo(HighestBid.Mobile, message);
+                        NewMaginciaMessage message = new NewMaginciaMessage(null, 1156427, String.Format("{0}\t{1}\t{2}",
+                                                                name,
+                                                                CurrentPlatBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")),
+                                                                CurrentGoldBid.ToString("N0", CultureInfo.GetCultureInfo("en-US"))));
+                        /*  You have been out bid in an auction for ~1_ITEMNAME~. The current winning bid amount is 
+                         * ~2_BIDAMT~plat and ~3_BIDAMT~gp.*/
+                        MaginciaLottoSystem.SendMessageTo(HighestBid.Mobile, message);
+                    }
 
                     Account a = HighestBid.Mobile.Account as Account;
 
                     if (a != null)
                         a.DepositGold(HighestBid.CurrentBid);
-
-                    HighestBid.CurrentBid = 0;
+                }
+                else
+                {
+                    AddToHistory(m, bidTotal);
                 }
 
                 m.SendLocalizedMessage(1156433); // Your bid has been placed.               
@@ -230,7 +228,6 @@ namespace Server.Engines.Auction
                 }
 
                 HighestBid = entry;
-                AddToHistory(m, entry.CurrentBid);
                 return true;
             }
 
@@ -291,24 +288,26 @@ namespace Server.Engines.Auction
         {
             if (HighestBid != null && HighestBid.Mobile != null)
             {
-                Mobile m = HighestBid.Mobile;
-                string name = "Unknown Item";
+                var isPublic = PublicAuction;
+                var m = HighestBid.Mobile;
+                string name = AuctionItemName();
 
-                if (AuctionItem.Name != null)
-                    name = AuctionItem.Name;
-                else
-                    name = String.Format("#{0}", AuctionItem.LabelNumber.ToString());
+                if (string.IsNullOrEmpty(name))
+                {
+                    name = "the item you bid on";
+                }
 
-                NewMaginciaMessage message = new NewMaginciaMessage(null, new TextDefinition(1156426), TimeSpan.FromHours(24), String.Format("{0}\t{1}\t{2}",
+                NewMaginciaMessage message = new NewMaginciaMessage(null, isPublic ? 1158078 : 1156426, TimeSpan.FromHours(72), String.Format("{0}\t{1}\t{2}",
                                                         name,
                                                         CurrentPlatBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")),
                                                         CurrentGoldBid.ToString("N0", CultureInfo.GetCultureInfo("en-US"))));
                 /*  You have won an auction for ~1_ITEMNAME~! Your bid amount of ~2_BIDAMT~plat and ~3_BIDAMT~gp won the auction. 
                  *  You have 3 days from the end of the auction to claim your item or it will be lost.*/
+
                 MaginciaLottoSystem.SendMessageTo(HighestBid.Mobile, message);
 
                 Account a = m.Account as Account;
-                Account b = Owner.Account as Account;
+                Account b = isPublic ? null : Owner.Account as Account;
                 long dif = HighestBid.CurrentBid - CurrentBid;
 
                 if (a != null && dif > 0)
@@ -317,13 +316,16 @@ namespace Server.Engines.Auction
                 if (b != null)
                     b.DepositGold(HighestBid.CurrentBid);
 
-                message = new NewMaginciaMessage(null, new TextDefinition(1156428), TimeSpan.FromHours(24), String.Format("{0}\t{1}\t{2}",
-                                                        name,
-                                                        CurrentPlatBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")),
-                                                        CurrentGoldBid.ToString("N0", CultureInfo.GetCultureInfo("en-US"))));
-                /*Your auction for ~1_ITEMNAME~ has ended with a winning bid of ~2_BIDAMT~plat and ~3_BIDAMT~gp. The winning bid has 
-                 *been deposited into your currency account.*/
-                MaginciaLottoSystem.SendMessageTo(Owner, message);
+                if (!isPublic)
+                {
+                    message = new NewMaginciaMessage(null, new TextDefinition(1156428), TimeSpan.FromHours(24), String.Format("{0}\t{1}\t{2}",
+                                                            name,
+                                                            CurrentPlatBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")),
+                                                            CurrentGoldBid.ToString("N0", CultureInfo.GetCultureInfo("en-US"))));
+                    /*Your auction for ~1_ITEMNAME~ has ended with a winning bid of ~2_BIDAMT~plat and ~3_BIDAMT~gp. The winning bid has 
+                     *been deposited into your currency account.*/
+                    MaginciaLottoSystem.SendMessageTo(Owner, message);
+                }
 
                 ClaimPeriod = DateTime.UtcNow + TimeSpan.FromDays(3);
             }
@@ -353,12 +355,12 @@ namespace Server.Engines.Auction
             {
                 Bids.ForEach(bid =>
                 {
-                    string name = "Unknown Item";
+                    string name = AuctionItemName();
 
-                    if (item.Name != null)
-                        name = item.Name;
-                    else
-                        name = String.Format("#{0}", item.LabelNumber.ToString());
+                    if (string.IsNullOrEmpty(name))
+                    {
+                        name = "the item you bid on";
+                    }
 
                     NewMaginciaMessage mes = new NewMaginciaMessage(null, new TextDefinition(1156454), String.Format("{0}\t{1}\t{2}",
                                                                 CurrentPlatBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")),
@@ -389,40 +391,10 @@ namespace Server.Engines.Auction
 
         public void ClaimPrize(Mobile m)
         {
-            if (AuctionItem != null)
+            if (Safe != null)
             {
-                AuctionItem.Movable = true;
-
-                if (m.Backpack == null || !m.Backpack.TryDropItem(m, AuctionItem, false))
-                {
-                    m.BankBox.DropItem(AuctionItem);
-
-                    if (AuctionItem.LabelNumber != 0)
-                    {
-                        m.SendLocalizedMessage(1156322, String.Format("#{0}", AuctionItem.LabelNumber)); // A reward of ~1_ITEM~ has been placed in your bank.
-                    }
-                    else
-                    {
-                        m.SendLocalizedMessage(1156322, AuctionItem.Name); // A reward of ~1_ITEM~ has been placed in your bank.
-                    }
-                }
-                else
-                {
-                    if (AuctionItem.LabelNumber != 0)
-                    {
-                        m.SendLocalizedMessage(1152339, String.Format("#{0}", AuctionItem.LabelNumber)); // A reward of ~1_ITEM~ has been placed in your backpack.
-                    }
-                    else
-                    {
-                        m.SendLocalizedMessage(1152339, AuctionItem.Name); // A reward of ~1_ITEM~ has been placed in your backpack.
-                    }
-                }
-
-                AuctionItem = null;
+                Safe.ClaimPrize(m);
             }
-
-            RemoveAuction();
-            Safe.Auction = new Auction(Owner, Safe);
         }
 
         public void EndClaimPeriod()
@@ -431,6 +403,21 @@ namespace Server.Engines.Auction
             {
                 TrayAuction();
             }
+        }
+
+        public string AuctionItemName()
+        {
+            if (AuctionItem == null)
+            {
+                return string.Empty;
+            }
+
+            if (AuctionItem.LabelNumber != 0)
+            {
+                return string.Format("#{0}", AuctionItem.LabelNumber.ToString());
+            }
+
+            return AuctionItem.Name;
         }
 
         public void TrayAuction()
@@ -447,6 +434,15 @@ namespace Server.Engines.Auction
             Buyout = 0;
 
             Duration = DefaultDuration;
+
+            Safe.OnAuctionTray();
+        }
+
+        public void Reset()
+        {
+            RemoveAuction();
+
+            Safe.Auction = new Auction(Owner, Safe);
         }
 
         public void RemoveAuction()
@@ -519,7 +515,7 @@ namespace Server.Engines.Auction
             }
         }
 
-        public Auction(AuctionSafe safe, GenericReader reader)
+        public Auction(IAuctionItem safe, GenericReader reader)
         {
             Safe = safe;
 
@@ -604,5 +600,33 @@ namespace Server.Engines.Auction
             if (BidHistory != null)
                 BidHistory.ForEach(e => e.Serialize(writer));
         }
+
+        #region static memebers
+        public static List<Auction> Auctions { get; set; }
+
+        public static void Configure()
+        {
+            Auctions = new List<Auction>();
+        }
+
+        public static void Initialize()
+        {
+            Timer.DelayCall(TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), () =>
+            {
+                Auctions.ForEach(a =>
+                {
+                    if (a.OnGoing && a.EndTime < DateTime.Now && !a.InClaimPeriod)
+                    {
+                        a.EndAuction();
+                    }
+                    else if (a.InClaimPeriod && DateTime.UtcNow > a.ClaimPeriod)
+                    {
+                        a.EndClaimPeriod();
+                    }
+
+                });
+            });
+        }
+        #endregion
     }
 }
