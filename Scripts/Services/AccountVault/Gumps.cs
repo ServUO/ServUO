@@ -177,7 +177,7 @@ namespace Server.AccountVault
 
         public static int VaultCount(string region)
         {
-            return AccountVault.Vaults.Count(v => Region.Find(v.GetWorldLocation(), v.Map).IsPartOf(region));
+            return AccountVault.Vaults.Count(v => v.Account == null && Region.Find(v.GetWorldLocation(), v.Map).IsPartOf(region) && AccountVault.ValidateMap(v));
         }
     }
 }

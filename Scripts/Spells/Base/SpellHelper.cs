@@ -65,38 +65,49 @@ namespace Server.Spells
         private static readonly SkillName[] _Schools =
         {
             SkillName.Magery,
+            SkillName.Mysticism,
+            SkillName.Necromancy,
             SkillName.AnimalTaming,
             SkillName.Musicianship,
-            SkillName.Mysticism,
             SkillName.Spellweaving,
             SkillName.Chivalry,
-            SkillName.Necromancy,
-            SkillName.Bushido,
-            SkillName.Ninjitsu
-        };
-
-        private static readonly SkillName[] _TOLSchools =
-        {
-            SkillName.Magery,
-            SkillName.AnimalTaming,
-            SkillName.Musicianship,
-            SkillName.Mysticism,
-            SkillName.Spellweaving,
-            SkillName.Chivalry,
-            SkillName.Necromancy,
             SkillName.Bushido,
             SkillName.Ninjitsu,
-            SkillName.Parry
+            SkillName.Parry,
+            SkillName.EvalInt,
+            SkillName.SpiritSpeak,
+            SkillName.Focus,
+            SkillName.Imbuing
         };
+
+        private static bool IsExempt(SkillName main, SkillName secondary)
+        {
+            switch (main)
+            {
+                default: return false;
+                case SkillName.Magery: return secondary == SkillName.EvalInt;
+                case SkillName.Necromancy: return secondary == SkillName.SpiritSpeak;
+                case SkillName.Mysticism: return secondary == SkillName.Focus || secondary == SkillName.Imbuing;
+            }
+        }
 
         public static bool HasSpellFocus(Mobile m, SkillName focus)
         {
-            SkillName[] list = _TOLSchools;
+            bool foundExempt = false;
 
-            foreach (SkillName skill in list)
+            foreach (SkillName skill in _Schools)
             {
                 if (skill != focus && m.Skills[skill].Value >= 30.0)
-                    return false;
+                {
+                    if (!foundExempt && IsExempt(focus, skill))
+                    {
+                        foundExempt = true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
             }
 
             return true;
@@ -106,7 +117,7 @@ namespace Server.Spells
         {
             if (HasSpellFocus(m, castskill))
             {
-                return 30;
+                return 25;
             }
             else
             {

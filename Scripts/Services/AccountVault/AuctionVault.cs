@@ -175,10 +175,12 @@ namespace Server.AccountVault
         {
             if (Vaults.Count == 0)
             {
+                var map = Siege.SiegeShard ? Map.Felucca : Map.Trammel;
+
                 for (int i = 0; i < Locs.Length; i++)
                 {
                     var vault = new AuctionVault(i + 1);
-                    vault.MoveToWorld(Locs[i], Map.Trammel);
+                    vault.MoveToWorld(Locs[i], map);
                 }
             }
         }

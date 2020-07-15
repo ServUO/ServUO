@@ -22,7 +22,7 @@ namespace Server.Items
                 if (FellowshipMedallion.IsDressed(from))
                 {
                     Gump g = new Gump(100, 100);
-                    g.AddImage(0, 0, 0x761C6);
+                    g.AddImage(0, 0, 0x761C);
                     g.AddHtmlLocalized(115, 30, 350, 600, 1159311, "#1159311", 0x1, false,
                         true); // My inner voice guided me but has fallen silent...and to that end I have failed my purpose. We set sail for Iver's Rounding West of Skara Brae...I fear the end has come though, we are far off course and provisions are low and the weather has turned. The Love I had is my only Truth now. All that is left is Courage. When will my inner voice return?
 

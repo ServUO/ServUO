@@ -806,11 +806,6 @@ namespace Server.Gumps
                 m_Mob = from;
             }
 
-            public override void Clip(ref int hue)
-            {
-                hue = (m_Vendor?.Race ?? Race.DefaultRace).ClipHairHue(hue);
-            }
-
             public override void OnResponse(int hue)
             {
                 if (m_Vendor.Deleted)
@@ -1195,11 +1190,6 @@ namespace Server.Gumps
                 m_Vendor = vendor;
                 m_FacialHair = facialHair;
                 m_From = from;
-            }
-
-            public override void Clip(ref int hue)
-            {
-                hue = (m_Vendor?.Race ?? Race.DefaultRace).ClipHairHue(hue);
             }
 
             public override void OnResponse(int hue)
