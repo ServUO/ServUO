@@ -245,7 +245,7 @@ namespace Server.Spells.Necromancy
             if (list.Count > 3)
                 Timer.DelayCall(TimeSpan.Zero, list[0].Kill);
 
-            Timer.DelayCall(TimeSpan.FromSeconds(2.0), TimeSpan.FromSeconds(2.0), new TimerStateCallback(Summoned_Damage), summoned);
+            Timer.DelayCall(TimeSpan.FromMilliseconds(1650), TimeSpan.FromMilliseconds(1650), new TimerStateCallback(Summoned_Damage), summoned);
         }
 
         private static void Summoned_Damage(object state)
@@ -253,7 +253,7 @@ namespace Server.Spells.Necromancy
             Mobile mob = (Mobile)state;
 
             if (mob.Hits > 0)
-                mob.Hits -= 2;
+                mob.Hits--;
             else
                 mob.Kill();
         }

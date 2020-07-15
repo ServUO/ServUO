@@ -547,7 +547,7 @@ namespace Server.Engines.Harvest
                 return true; // we don't want to give the item to the player, it's on the serpent
             }
 
-            if (item is BigFish || item is WoodenChest || item is MetalGoldenChest)
+            if (item is BigFish || item is LockableContainer)
                 placeAtFeet = true;
 
             #region High Seas

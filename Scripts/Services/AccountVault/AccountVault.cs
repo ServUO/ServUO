@@ -677,7 +677,22 @@ namespace Server.AccountVault
         {
             var reg = Region.Find(v.GetWorldLocation(), v.Map).Name;
 
-            return SystemSettings.VaultRegions.Any(r => reg == r && v.Map == Map.Trammel);
+            if (SystemSettings.VaultRegions.Any(r => reg == r))
+            {
+                return ValidateMap(v);
+            }
+
+            return false;
+        }
+
+        public static bool ValidateMap(AccountVault v)
+        {
+            if (Siege.SiegeShard)
+            {
+                return v.Map != Map.Trammel;
+            }
+
+            return v.Map != Map.Felucca;
         }
         #endregion
     }
