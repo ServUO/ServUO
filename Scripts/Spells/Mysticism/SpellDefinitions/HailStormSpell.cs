@@ -8,7 +8,7 @@ namespace Server.Spells.Mysticism
     public class HailStormSpell : MysticSpell
     {
         public override SpellCircle Circle => SpellCircle.Seventh;
-        public override bool DelayedDamage => true;
+        public override bool DelayedDamage => false;
         public override DamageType SpellDamageType => DamageType.SpellAOE;
 
         private static readonly SpellInfo m_Info = new SpellInfo(
