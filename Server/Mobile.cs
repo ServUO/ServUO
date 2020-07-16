@@ -4397,9 +4397,7 @@ namespace Server
             }
         }
 
-        private static int m_ActionDelay = 500;
-
-        public static int ActionDelay { get { return m_ActionDelay; } set { m_ActionDelay = value; } }
+        public static int ActionDelay { get; set; } = 750;
 
         public virtual void Lift(Item item, int amount, out bool rejected, out LRReason reject)
         {
@@ -4562,7 +4560,7 @@ namespace Server
                                 from.Send(new PlaySound(liftSound, from));
                             }
 
-                            from.NextActionTime = Core.TickCount + m_ActionDelay;
+                            from.NextActionTime = Core.TickCount + ActionDelay;
 
                             if (fixMap != null && shouldFix)
                             {

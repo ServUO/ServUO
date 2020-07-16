@@ -7,6 +7,7 @@ namespace Server.Items
     {
         public override int LabelNumber => 1159343; // Sheet Music for Stones
 
+        [CommandProperty(AccessLevel.GameMaster)]
         public bool Active { get; set; }
 
         [Constructable]

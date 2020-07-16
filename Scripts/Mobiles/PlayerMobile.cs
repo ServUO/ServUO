@@ -888,38 +888,46 @@ namespace Server.Mobiles
         {
             PlayerMobile pm = e.Mobile as PlayerMobile;
 
-            if (pm != null && pm.Backpack != null && pm.Alive && e.List != null && e.List.Count > 0)
+            if (pm.IsStaff() || Core.TickCount - pm.NextActionTime >= 0)
             {
-                Container pack = pm.Backpack;
-
-                e.List.ForEach(serial =>
+                if (pm != null && pm.Backpack != null && pm.Alive && e.List != null && e.List.Count > 0)
                 {
-                    Item item = pack.Items.FirstOrDefault(i => i.Serial == serial);
+                    Container pack = pm.Backpack;
 
-                    if (item != null)
+                    e.List.ForEach(serial =>
                     {
-                        Item toMove = pm.FindItemOnLayer(item.Layer);
+                        Item item = pack.Items.FirstOrDefault(i => i.Serial == serial);
 
-                        if (toMove != null)
+                        if (item != null)
                         {
-                            //pack.DropItem(toMove);
-                            toMove.Internalize();
+                            Item toMove = pm.FindItemOnLayer(item.Layer);
 
-                            if (!pm.EquipItem(item))
+                            if (toMove != null)
                             {
-                                pm.EquipItem(toMove);
+                                toMove.Internalize();
+
+                                if (!pm.EquipItem(item))
+                                {
+                                    pm.EquipItem(toMove);
+                                }
+                                else
+                                {
+                                    pack.DropItem(toMove);
+                                }
                             }
                             else
                             {
-                                pack.DropItem(toMove);
+                                pm.EquipItem(item);
                             }
                         }
-                        else
-                        {
-                            pm.EquipItem(item);
-                        }
-                    }
-                });
+                    });
+
+                    pm.NextActionTime = Core.TickCount + Mobile.ActionDelay;
+                }
+            }
+            else
+            {
+                pm.SendActionMessage();
             }
         }
 
@@ -927,21 +935,29 @@ namespace Server.Mobiles
         {
             PlayerMobile pm = e.Mobile as PlayerMobile;
 
-            if (pm != null && pm.Backpack != null && pm.Alive && e.List != null && e.List.Count > 0)
+            if (pm.IsStaff() || Core.TickCount - pm.NextActionTime >= 0)
             {
-                Container pack = pm.Backpack;
-
-                List<Item> worn = new List<Item>(pm.Items);
-
-                foreach (Item item in worn)
+                if (pm != null && pm.Backpack != null && pm.Alive && e.List != null && e.List.Count > 0)
                 {
-                    if (e.List.Contains((int)item.Layer))
-                    {
-                        pack.TryDropItem(pm, item, false);
-                    }
-                }
+                    Container pack = pm.Backpack;
 
-                ColUtility.Free(worn);
+                    List<Item> worn = new List<Item>(pm.Items);
+
+                    foreach (Item item in worn)
+                    {
+                        if (e.List.Contains((int)item.Layer))
+                        {
+                            pack.TryDropItem(pm, item, false);
+                        }
+                    }
+
+                    pm.NextActionTime = Core.TickCount + Mobile.ActionDelay;
+                    ColUtility.Free(worn);
+                }
+            }
+            else
+            {
+                pm.SendActionMessage();
             }
         }
         #endregion

@@ -45,7 +45,7 @@ namespace Server.Mobiles
 
         public override bool OnBeforeDeath()
         {
-            if (Region.IsPartOf<Server.Regions.CorgulRegion>())
+            if (Region.IsPartOf<Regions.CorgulRegion>())
             {
                 CorgulTheSoulBinder.CheckDropSOT(this);
             }

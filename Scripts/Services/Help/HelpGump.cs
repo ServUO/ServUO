@@ -206,7 +206,7 @@ namespace Server.Engines.Help
                         {
                             from.Location = house.BanLocation;
                         }
-                        else if (from.Region.IsPartOf<Server.Regions.Jail>())
+                        else if (from.Region.IsPartOf<Regions.Jail>())
                         {
                             from.SendLocalizedMessage(1114345, "", 0x35); // You'll need a better jailbreak plan than that!
                         }
