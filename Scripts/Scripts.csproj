@@ -582,6 +582,7 @@
     <Compile Include="Items\Addons\FormalDiningTable.cs" />
     <Compile Include="Items\Addons\GadgetryTable.cs" />
     <Compile Include="Items\Functional\CaptainsHeartyRum.cs" />
+    <Compile Include="Items\Internal\ItemSockets\DecayingItemSocket.cs" />
     <Compile Include="Items\Resource\SaltedSerpentSteaks.cs" />
     <Compile Include="Items\StoreBought\DecorativeDungeonSet\DecorativeDungeonSet.cs" />
     <Compile Include="Items\StoreBought\DecorativeKitchenSet.cs" />

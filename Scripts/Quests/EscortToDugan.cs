@@ -12,6 +12,8 @@ namespace Server.Engines.Quests
             AddReward(new BaseReward(typeof(TalismanofGoblinSlaying), "Talisman of Goblin Slaying"));
         }
 
+        public override bool DoneOnce => true;
+
         /* The Lost Brightwhistle */
         public override object Title => 1095003;
 
@@ -51,7 +53,7 @@ namespace Server.Engines.Quests
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

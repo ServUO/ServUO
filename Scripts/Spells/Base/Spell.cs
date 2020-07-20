@@ -53,6 +53,8 @@ namespace Server.Spells
         public virtual bool ClearHandsOnCast => true;
         public virtual bool ShowHandMovement => true;
 
+        public virtual bool CheckManaBeforeCast => true;
+
         public virtual bool DelayedDamage => false;
         public virtual Type[] DelayDamageFamily => null;
         // DelayDamageFamily can define spells so they don't stack, even though they are different spells
@@ -710,7 +712,7 @@ namespace Server.Spells
             {
                 m_Caster.SendLocalizedMessage(1072060); // You cannot cast a spell while calmed.
             }
-            else if (m_Caster.Mana >= ScaleMana(GetMana()))
+            else if (!CheckManaBeforeCast || m_Caster.Mana >= ScaleMana(GetMana()))
             {
                 #region Stygian Abyss
                 if (m_Caster.Race == Race.Gargoyle && m_Caster.Flying)

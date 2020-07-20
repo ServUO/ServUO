@@ -367,10 +367,16 @@ namespace Server.Engines.Shadowguard
             }
         }
 
+        public override void OnTick()
+        {
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0);
+            writer.Write(1);
+
+            writer.WriteItem(Apple);
 
             writer.Write(Trees == null ? 0 : Trees.Count);
             if (Trees != null) Trees.ForEach(t => writer.Write(t));
@@ -388,28 +394,45 @@ namespace Server.Engines.Shadowguard
 
             Trees = new List<ShadowguardCypress>();
 
-            int count = reader.ReadInt();
-            for (int i = 0; i < count; i++)
+            switch (version)
             {
-                ShadowguardCypress tree = reader.ReadItem() as ShadowguardCypress;
+                case 1:
+                    Apple = reader.ReadItem<ShadowguardApple>();
+                    goto case 0;
+                case 0:
+                    int count = reader.ReadInt();
+                    for (int i = 0; i < count; i++)
+                    {
+                        ShadowguardCypress tree = reader.ReadItem() as ShadowguardCypress;
 
-                if (tree != null)
-                    Trees.Add(tree);
+                        if (tree != null)
+                        {
+                            tree.Encounter = this;
+                            Trees.Add(tree);
+                        }
+                    }
+
+                    count = reader.ReadInt();
+                    for (int i = 0; i < count; i++)
+                    {
+                        if (Spawn == null)
+                            Spawn = new List<BaseCreature>();
+
+                        BaseCreature bc = reader.ReadMobile() as BaseCreature;
+
+                        if (bc != null)
+                            Spawn.Add(bc);
+                    }
+
+                    Bones = reader.ReadItem();
+                    break;
             }
 
-            count = reader.ReadInt();
-            for (int i = 0; i < count; i++)
+            if (Apple != null)
             {
-                if (Spawn == null)
-                    Spawn = new List<BaseCreature>();
-
-                BaseCreature bc = reader.ReadMobile() as BaseCreature;
-
-                if (bc != null)
-                    Spawn.Add(bc);
+                Apple.Encounter = this;
+                Apple.Delete();
             }
-
-            Bones = reader.ReadItem();
         }
     }
 

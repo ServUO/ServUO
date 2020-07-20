@@ -16,6 +16,7 @@ namespace Server.Spells.SkillMasteries
 
         public override SkillName CastSkill => SkillName.Macing;
         public override SkillName DamageSkill => SkillName.Tactics;
+        public override bool CheckManaBeforeCast { get { return !HasSpell(Caster, GetType()); } }
 
         private int _HPBonus;
 

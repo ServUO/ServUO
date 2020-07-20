@@ -174,88 +174,61 @@ namespace Server.Engines.Quests
 
     public class SlayObjective : BaseObjective
     {
-        private Type[] m_Creatures;
-        private string m_Name;
-        private string m_Region;
-
         public SlayObjective(Type creature, string name, int amount)
-            : this(new Type[] { creature }, name, amount, null, 0)
+            : this(new Type[] { creature }, name, amount, 0, null, 0)
+        {
+        }
+
+        public SlayObjective(Type creature, string name, int amount, int label, string region)
+            : this(new Type[] { creature }, name, amount, label, region, 0)
         {
         }
 
         public SlayObjective(Type creature, string name, int amount, string region)
-            : this(new Type[] { creature }, name, amount, region, 0)
+            : this(new Type[] { creature }, name, amount, 0, region, 0)
         {
         }
 
         public SlayObjective(Type creature, string name, int amount, int seconds)
-            : this(new Type[] { creature }, name, amount, null, seconds)
+            : this(new Type[] { creature }, name, amount, 0, null, seconds)
         {
         }
 
         public SlayObjective(string name, int amount, params Type[] creatures)
-            : this(creatures, name, amount, null, 0)
+            : this(creatures, name, amount, 0, null, 0)
         {
         }
 
         public SlayObjective(string name, int amount, string region, params Type[] creatures)
-            : this(creatures, name, amount, region, 0)
+            : this(creatures, name, amount, 0, region, 0)
         {
         }
 
         public SlayObjective(string name, int amount, int seconds, params Type[] creatures)
-            : this(creatures, name, amount, null, seconds)
+            : this(creatures, name, amount, 0, null, seconds)
         {
         }
 
-        public SlayObjective(Type[] creatures, string name, int amount, string region, int seconds)
+        public SlayObjective(Type[] creatures, string name, int amount, int label, string region, int seconds)
             : base(amount, seconds)
         {
-            m_Creatures = creatures;
-            m_Name = name;
+            Creatures = creatures;
+            Name = name;
+            Label = label;
 
             if (region != null)
             {
-                m_Region = QuestHelper.ValidateRegion(region) ? region : null;
+                Region = QuestHelper.ValidateRegion(region) ? region : null;
 
-                if (m_Region == null)
+                if (Region == null)
                     Console.WriteLine(String.Format("Invalid region name ('{0}') in '{1}' objective!", region, GetType()));
             }
         }
 
-        public Type[] Creatures
-        {
-            get
-            {
-                return m_Creatures;
-            }
-            set
-            {
-                m_Creatures = value;
-            }
-        }
-        public string Name
-        {
-            get
-            {
-                return m_Name;
-            }
-            set
-            {
-                m_Name = value;
-            }
-        }
-        public string Region
-        {
-            get
-            {
-                return m_Region;
-            }
-            set
-            {
-                m_Region = value;
-            }
-        }
+        public Type[] Creatures { get; set; }
+        public string Name { get; set; }
+        public string Region { get; set; }
+        public int Label { get; set; }
 
         public virtual void OnKill(Mobile killed)
         {
@@ -267,14 +240,14 @@ namespace Server.Engines.Quests
 
         public virtual bool IsObjective(Mobile mob)
         {
-            if (m_Creatures == null)
+            if (Creatures == null)
                 return false;
 
-            foreach (Type type in m_Creatures)
+            foreach (Type type in Creatures)
             {
                 if (type.IsAssignableFrom(mob.GetType()))
                 {
-                    if (m_Region != null && !mob.Region.IsPartOf(m_Region))
+                    if (Region != null && !mob.Region.IsPartOf(Region))
                         return false;
 
                     return true;
@@ -305,21 +278,19 @@ namespace Server.Engines.Quests
 
         public override Type Type()
         {
-            return m_Creatures != null && m_Creatures.Length > 0 ? m_Creatures[0] : null;
+            return Creatures != null && Creatures.Length > 0 ? Creatures[0] : null;
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 

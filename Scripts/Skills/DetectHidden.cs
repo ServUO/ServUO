@@ -85,7 +85,7 @@ namespace Server.SkillHandlers
                             if (src.AccessLevel >= trg.AccessLevel && (ss >= ts || houseCheck) && Utility.RandomDouble() > shadow)
                             {
                                 if ((trg is ShadowKnight && (trg.X != p.X || trg.Y != p.Y)) ||
-                                     (!houseCheck && !CanDetect(src, trg)))
+                                     (!houseCheck && !CanDetect(src, trg, true)))
                                     continue;
 
                                 trg.RevealingAction();
@@ -149,7 +149,7 @@ namespace Server.SkillHandlers
 
             foreach (Mobile m in eable)
             {
-                if (m == null || m == src || m is ShadowKnight || !CanDetect(src, m))
+                if (m == null || m == src || m is ShadowKnight || !CanDetect(src, m, false))
                     continue;
 
                 double ts = (m.Skills[SkillName.Hiding].Value + m.Skills[SkillName.Stealth].Value) / 2;
@@ -179,7 +179,7 @@ namespace Server.SkillHandlers
             eable.Free();
         }
 
-        public static bool CanDetect(Mobile src, Mobile target)
+        public static bool CanDetect(Mobile src, Mobile target, bool direct = true)
         {
             if (src.Map == null || target.Map == null || !src.CanBeHarmful(target, false, false, true))
                 return false;
@@ -192,14 +192,13 @@ namespace Server.SkillHandlers
                 return false;
 
             // pet owner, guild/alliance, party
-            if (!Spells.SpellHelper.ValidIndirectTarget(target, src))
-                return false;
+            if ((src.Map.Rules == MapRules.FeluccaRules && direct) || Spells.SpellHelper.ValidIndirectTarget(target, src))
+                return true;
             
             // Checked aggressed/aggressors
             if (src.Aggressed.Any(x => x.Defender == target) || src.Aggressors.Any(x => x.Attacker == target))
                 return true;
 
-            // In Fel or Follow the same rules as indirect spells such as wither
             return src.Map.Rules == MapRules.FeluccaRules;
         }
     }

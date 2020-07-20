@@ -47,6 +47,7 @@ namespace Server.Spells.SkillMasteries
         public override int RequiredMana => 40;
         public override bool PartyEffects => false;
         public override SkillName CastSkill => SkillName.AnimalTaming;
+        public override bool CheckManaBeforeCast { get { return !HasSpell(Caster, GetType()); } }
 
         public TrainingType SpellType { get; set; }
 

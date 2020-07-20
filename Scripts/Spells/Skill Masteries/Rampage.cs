@@ -21,7 +21,8 @@ namespace Server.Spells.SkillMasteries
             );
 
         public override int RequiredMana => 20;
-        public override int DamageThreshold => 1;
+        public override int DamageThreshold => 0;
+        public override bool CheckManaBeforeCast { get { return !HasSpell(Caster, GetType()); } }
 
         public override SkillName CastSkill => SkillName.Wrestling;
 
@@ -67,7 +68,9 @@ namespace Server.Spells.SkillMasteries
             RampageSpell spell = GetSpell(Caster, typeof(RampageSpell)) as RampageSpell;
 
             if (spell != null)
+            {
                 spell.Expire();
+            }
             else if (CheckSequence())
             {
                 Effects.SendTargetParticles(Caster, 0x37CC, 1, 40, 2724, 5, 9907, EffectLayer.LeftFoot, 0);

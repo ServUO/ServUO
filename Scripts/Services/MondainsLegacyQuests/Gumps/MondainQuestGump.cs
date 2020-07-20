@@ -256,8 +256,9 @@ namespace Server.Engines.Quests
 
                         if (slay != null)
                         {
-                            AddHtmlLocalized(98, offset, 30, 16, 1072204, 0x15F90, false, false); // Slay	
-                            AddLabel(133, offset, 0x481, slay.MaxProgress + " " + slay.Name); // %count% + %name%
+                            AddHtmlLocalized(98, offset, 30, 16, 1072204, 0x15F90, false, false); // Slay
+                            AddLabel(133, offset, 0x481, slay.MaxProgress.ToString()); // Count
+                            AddLabel(163, offset, 0x481, slay.Name); // Name 
 
                             offset += 16;
 
@@ -270,13 +271,23 @@ namespace Server.Engines.Quests
 
                                     offset += 16;
                                 }
-                                continue;
                             }
 
-                            if (slay.Region != null)
+                            if (slay.Region != null || slay.Label > 0)
                             {
                                 AddHtmlLocalized(103, offset, 312, 20, 1018327, 0x15F90, false, false); // Location
-                                AddHtmlObject(223, offset, 312, 20, slay.Region, White, false, false); // %location%
+
+                                if (slay.Label > 0)
+                                {
+                                    AddHtmlLocalized(223, offset, 312, 20, slay.Label, 0xFFFFFF, false, false);
+                                }
+                                else
+                                {
+                                    AddHtmlObject(223, offset, 312, 20, slay.Region, White, false, false); // %location%
+                                }
+
+                                if (m_Offer)
+                                    continue;
 
                                 offset += 16;
                             }
