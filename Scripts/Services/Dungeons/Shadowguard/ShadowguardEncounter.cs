@@ -423,9 +423,9 @@ namespace Server.Engines.Shadowguard
                 Instance.Encounter = this;
             }
 
-            if (Completed)
+            if (Completed || !HasBegun)
             {
-                Timer.DelayCall(ResetDuration, () =>
+                Timer.DelayCall(HasBegun ? ResetDuration : TimeSpan.Zero, () =>
                 {
                     Reset();
                 });

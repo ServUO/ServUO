@@ -120,22 +120,23 @@ namespace Server.Engines.Shadowguard
         Pride
     }
 
-    public class ShadowguardApple : BaseDecayingItem
+    public class ShadowguardApple : Apple
     {
         [CommandProperty(AccessLevel.GameMaster)]
-        public ShadowguardCypress Tree { get; set; }
+        public ShadowguardCypress Tree { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public OrchardEncounter Encounter { get; set; }
 
-        public bool _Thrown;
+        private bool _Thrown;
+        private bool _EatenByPet;
 
-        public override int Lifespan => 30;
-
-        public ShadowguardApple(OrchardEncounter encounter, ShadowguardCypress tree) : base(0x9D0)
+        public ShadowguardApple(OrchardEncounter encounter, ShadowguardCypress tree)
         {
             Encounter = encounter;
             Tree = tree;
+
+            AttachSocket(new DecayingItemSocket(30, true));
         }
 
         public override void AddNameProperty(ObjectPropertyList list)
@@ -236,7 +237,7 @@ namespace Server.Engines.Shadowguard
         {
             base.OnDelete();
 
-            if (!_Thrown && Encounter != null)
+            if (!_Thrown && !_EatenByPet && Encounter != null)
             {
                 foreach (PlayerMobile pm in Encounter.Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
                 {
@@ -268,6 +269,18 @@ namespace Server.Engines.Shadowguard
             }
         }
 
+        public override bool DropToMobile(Mobile from, Mobile target, Point3D p)
+        {
+            var bc = target as BaseCreature;
+
+            if (bc != null && !bc.IsDeadPet && bc.Controlled && (bc.ControlMaster == from || bc.IsPetFriend(from)))
+            {
+                _EatenByPet = true;
+            }
+
+            return base.DropToMobile(from, target, p);
+        }
+
         public override void Delete()
         {
             base.Delete();
@@ -285,9 +298,7 @@ namespace Server.Engines.Shadowguard
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0);
-
-            writer.Write(Tree);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -295,7 +306,10 @@ namespace Server.Engines.Shadowguard
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            Tree = reader.ReadItem() as ShadowguardCypress;
+            if (version == 0)
+            {
+                reader.ReadItem();
+            }
         }
     }
 
@@ -467,9 +481,8 @@ namespace Server.Engines.Shadowguard
         }
 
         [Constructable]
-        public Phylactery() : base(17076)
+        public Phylactery() : base(0x4686)
         {
-            Hue = 2075;
         }
 
         public override void OnDoubleClick(Mobile m)

@@ -1102,20 +1102,20 @@ namespace Server.Mobiles
             SpillAcid(null, Amount);
         }
 
-        public void SpillAcid(Mobile target, int Amount)
+        public void SpillAcid(Mobile target, int amount)
         {
             if ((target != null && target.Map == null) || Map == null)
             {
                 return;
             }
 
-            for (int i = 0; i < Amount; ++i)
+            for (int i = 0; i < amount; ++i)
             {
                 Point3D loc = Location;
                 Map map = Map;
                 Item acid = NewHarmfulItem();
 
-                if (target != null && target.Map != null && Amount == 1)
+                if (target != null && target.Map != null && amount == 1)
                 {
                     loc = target.Location;
                     map = target.Map;
@@ -2901,7 +2901,7 @@ namespace Server.Mobiles
                 return false;
             }
 
-            return types.Any(t => t == fed.GetType());
+            return types.Any(t => t == fed.GetType() || fed.GetType().IsSubclassOf(t));
         }
 
         public virtual bool CheckFeed(Mobile from, Item dropped)
@@ -2978,10 +2978,6 @@ namespace Server.Mobiles
                         dropped.Delete();
                         return true;
                     }
-                }
-                else
-                {
-                    PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1043257, from.NetState); // The animal shies away.
                 }
             }
 

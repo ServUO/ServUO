@@ -14,6 +14,7 @@ namespace Server.Spells.SkillMasteries
         public override int RequiredMana => 10;
         public override bool RevealOnTick => false;
         public override bool RevealOnCast => false;
+        public override bool CheckManaBeforeCast { get { return !HasSpell(Caster, GetType()); } }
 
         public override SkillName CastSkill => SkillName.Ninjitsu;
         public override SkillName DamageSkill => SkillName.Stealth;

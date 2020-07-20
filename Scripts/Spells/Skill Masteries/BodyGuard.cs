@@ -18,6 +18,7 @@ namespace Server.Spells.SkillMasteries
         public override int DisruptMessage => 1156103;  // Bodyguard has expired.
         public override bool BlocksMovement => false;
         public override TimeSpan CastDelayBase => TimeSpan.FromSeconds(1.0);
+        public override bool CheckManaBeforeCast { get { return !HasSpell(Caster, GetType()); } }
 
         public override SkillName CastSkill => SkillName.Parry;
 

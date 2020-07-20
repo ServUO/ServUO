@@ -4,19 +4,35 @@ namespace Server.Items
 {
     public class BaseDecayingItem : Item
     {
-        private int m_Lifespan;
-        private Timer m_Timer;
-
         public virtual int Lifespan => 0;
         public virtual bool UseSeconds => true;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int TimeLeft
         {
-            get { return m_Lifespan; }
+            get
+            {
+                var socket = GetSocket<DecayingItemSocket>();
+
+                if (socket != null)
+                {
+                    return socket.Remaining;
+                }
+
+                return 0;
+            }
             set
             {
-                m_Lifespan = value;
+                var socket = GetSocket<DecayingItemSocket>();
+
+                if (socket != null)
+                {
+                    socket.Expires = DateTime.UtcNow + TimeSpan.FromSeconds(value);
+                }
+                else if (value > 0)
+                {
+                    AttachSocket(new DecayingItemSocket(value, UseSeconds));
+                }
 
                 InvalidateProperties();
             }
@@ -28,67 +44,13 @@ namespace Server.Items
 
             if (Lifespan > 0)
             {
-                m_Lifespan = Lifespan;
-                StartTimer();
+                AttachSocket(new DecayingItemSocket(Lifespan, UseSeconds));
             }
         }
 
-        public override void GetProperties(ObjectPropertyList list)
+        public BaseDecayingItem(Serial serial)
+            : base(serial)
         {
-            base.GetProperties(list);
-
-            if (Lifespan > 0)
-            {
-                if (UseSeconds)
-                    list.Add(1072517, m_Lifespan.ToString()); // Lifespan: ~1_val~ seconds
-                else
-                {
-                    TimeSpan t = TimeSpan.FromSeconds(TimeLeft);
-
-                    int weeks = t.Days / 7;
-                    int days = t.Days;
-                    int hours = t.Hours;
-                    int minutes = t.Minutes;
-
-                    if (weeks > 1)
-                        list.Add(1153092, (t.Days / 7).ToString()); // Lifespan: ~1_val~ weeks
-                    else if (days > 1)
-                        list.Add(1153091, t.Days.ToString()); // Lifespan: ~1_val~ days
-                    else if (hours > 1)
-                        list.Add(1153090, t.Hours.ToString()); // Lifespan: ~1_val~ hours
-                    else if (minutes > 1)
-                        list.Add(1153089, t.Minutes.ToString()); // Lifespan: ~1_val~ minutes
-                    else
-                        list.Add(1072517, t.Seconds.ToString()); // Lifespan: ~1_val~ seconds
-                }
-            }
-        }
-
-        public virtual void StartTimer()
-        {
-            if (m_Timer != null || Lifespan == 0)
-                return;
-
-            m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), Slice);
-            m_Timer.Priority = TimerPriority.OneSecond;
-        }
-
-        public virtual void StopTimer()
-        {
-            if (m_Timer != null)
-                m_Timer.Stop();
-
-            m_Timer = null;
-        }
-
-        public virtual void Slice()
-        {
-            m_Lifespan -= 10;
-
-            InvalidateProperties();
-
-            if (m_Lifespan <= 0)
-                Decay();
         }
 
         public virtual void Decay()
@@ -111,25 +73,24 @@ namespace Server.Items
                 Effects.PlaySound(Location, Map, 0x201);
             }
 
-            StopTimer();
             Delete();
         }
 
         public virtual void SendTimeRemainingMessage(Mobile to)
         {
-            to.SendLocalizedMessage(1072516, string.Format("{0}\t{1}", (this.Name == null ? string.Format("#{0}", LabelNumber) : this.Name), (int)TimeSpan.FromSeconds(m_Lifespan).TotalSeconds)); // ~1_name~ will expire in ~2_val~ seconds!
-        }
+            var socket = GetSocket<DecayingItemSocket>();
 
-        public BaseDecayingItem(Serial serial) : base(serial)
-        {
+            if (socket != null && socket.Expires > DateTime.UtcNow)
+            {
+                to.SendLocalizedMessage(1072516, string.Format("{0}\t{1}", (Name == null ? string.Format("#{0}", LabelNumber) : Name), socket.Remaining)); // ~1_name~ will expire in ~2_val~ seconds!
+            }
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write(0); // version
-            writer.Write(m_Lifespan);
+            writer.Write(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -137,10 +98,16 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-            m_Lifespan = reader.ReadInt();
 
-            if (Lifespan > 0)
-                StartTimer();
+            if (version == 0)
+            {
+                var lifespan = reader.ReadInt();
+
+                if (lifespan > 0)
+                {
+                    AttachSocket(new DecayingItemSocket(lifespan, UseSeconds));
+                }
+            }
         }
     }
 }

@@ -218,6 +218,7 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(RawFishSteak), 1044476, 50, 1044253);
             AddRes(index, typeof(SaltedSerpentSteaks), 1159163, 3, 1044253);
             AddCreateItem(index, CraftCharydbisBait);
+            SetForceSuccess(index, 5);
             SetNeedHeat(index, true);
             #endregion
 

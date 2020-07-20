@@ -103,7 +103,7 @@ namespace Server.Engines.VeteranRewards
 
                     item.Delete();
 
-                    InvalidateProperties();
+                    UpdateProperties();
                 }
             }
         }
@@ -718,7 +718,10 @@ namespace Server.Engines.VeteranRewards
                 else
                 {
                     if (m_List.Contains(entry))
+                    {
                         m_List.Remove(entry);
+                        m_Addon.UpdateProperties();
+                    }
                 }
             }
         }

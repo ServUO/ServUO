@@ -1909,10 +1909,7 @@ namespace Server
 
                 if (m_Owner.CanRegenStam)
                 {
-                    if (!m_Owner.Player)
-                        m_Owner.Stam += (int)(m_Owner.StamMax * 0.01);
-                    else
-                        m_Owner.Stam++;
+                    m_Owner.Stam++;
                 }
 
                 Delay = Interval = GetStamRegenRate(m_Owner);
@@ -1954,10 +1951,7 @@ namespace Server
 
                 if (m_Owner.CanRegenMana) // m_Owner.Alive )
                 {
-                    if (!m_Owner.Player)
-                        m_Owner.Mana += (int)(m_Owner.ManaMax * 0.01);
-                    else
-                        m_Owner.Mana++;
+                    m_Owner.Mana++;
                 }
 
                 Delay = Interval = GetManaRegenRate(m_Owner);

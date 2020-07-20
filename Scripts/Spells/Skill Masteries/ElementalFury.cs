@@ -19,6 +19,7 @@ namespace Server.Spells.SkillMasteries
 
         public override SkillName CastSkill => SkillName.Throwing;
         public override SkillName DamageSkill => SkillName.Tactics;
+        public override bool CheckManaBeforeCast { get { return !HasSpell(Caster, GetType()); } }
 
         private int _MaxAdd;
         private ResistanceType _Type;

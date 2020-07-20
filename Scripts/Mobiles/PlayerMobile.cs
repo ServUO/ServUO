@@ -922,7 +922,7 @@ namespace Server.Mobiles
                         }
                     });
 
-                    pm.NextActionTime = Core.TickCount + Mobile.ActionDelay;
+                    pm.NextActionTime = Core.TickCount + (Mobile.ActionDelay * e.List.Count);
                 }
             }
             else

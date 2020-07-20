@@ -20,7 +20,7 @@ namespace Server.Spells.SkillMasteries
             );
 
         public override double RequiredSkill => 90;
-        public override double UpKeep => 10;
+        public override double UpKeep => 8;
         public override int RequiredMana => 24;
         public override bool PartyEffects => false;
         public override double TickTime => 2.0;

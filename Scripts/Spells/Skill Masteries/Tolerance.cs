@@ -15,6 +15,7 @@ namespace Server.Spells.SkillMasteries
 
         public override int RequiredMana => 20;
         public override SkillName CastSkill => SkillName.Poisoning;
+        public override bool CheckManaBeforeCast { get { return !HasSpell(Caster, GetType()); } }
 
         public ToleranceSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)

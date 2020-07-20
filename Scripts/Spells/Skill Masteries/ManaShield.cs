@@ -20,6 +20,7 @@ namespace Server.Spells.SkillMasteries
 
         public override SkillName CastSkill => SkillName.Spellweaving;
         public override SkillName DamageSkill => SkillName.Meditation;
+        public override bool CheckManaBeforeCast { get { return !HasSpell(Caster, GetType()); } }
 
         public double Chance { get; set; }
 

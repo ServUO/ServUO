@@ -144,13 +144,12 @@ namespace Server.Items
             SelectNewHue();
         }
 
-        public override void StartTimer()
+        public void StartTimer()
         {
             if (m_Span == 0)
             {
                 TimeLeft = 1800;
                 m_Span = 1800;
-                base.StartTimer();
                 InvalidateProperties();
             }
         }

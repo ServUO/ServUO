@@ -36,12 +36,11 @@ namespace Server.Items
             }
         }
 
-        public override void StartTimer()
+        public void StartTimer()
         {
             TimeLeft = 1800;
             m_Span = 1800;
             Movable = true;
-            base.StartTimer();
             InvalidateProperties();
         }
 

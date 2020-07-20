@@ -25,7 +25,7 @@ namespace Server.Spells.SkillMasteries
 
         public override double UpKeep => 35;
         public override int RequiredMana => 50;
-        public override int DamageThreshold => 1;
+        public override int DamageThreshold => 0;
         public override bool DamageCanDisrupt => true;
         public override double TickTime => 3;
 

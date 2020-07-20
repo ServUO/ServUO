@@ -85,6 +85,10 @@ namespace Server.Engines.Quests
             m.Say(say[Utility.Random(say.Length)]);
         }
 
+        public override void OnAfterDelete()
+        {            
+        }
+
         public override void OnDelete()
         {
             if (Instances != null && Instances.Contains(this))
@@ -103,9 +107,12 @@ namespace Server.Engines.Quests
             if (Instances != null && Instances.Count > 0)
                 return;
 
-            Neville creature = new Neville();
-            creature.Home = HomeLocation;
-            creature.RangeHome = HomeRange;
+            Neville creature = new Neville
+            {
+                Home = HomeLocation,
+                RangeHome = HomeRange
+            };
+
             creature.MoveToWorld(HomeLocation, Map.TerMur);
         }
 

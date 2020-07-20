@@ -6026,15 +6026,15 @@ namespace Server
 
     public class ItemSocket
     {
+        private DateTime _Expires;
+
         [CommandProperty(AccessLevel.GameMaster)]
         public Item Owner { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime Expires { get; set; }
+        public DateTime Expires { get { return _Expires; } set { _Expires = value; CheckTimer(); } }
 
         public virtual TimeSpan TickDuration => TimeSpan.FromMinutes(1);
-
-        public Timer Timer { get; set; }
 
         public ItemSocket()
             : this(TimeSpan.Zero)
@@ -6046,26 +6046,32 @@ namespace Server
             if (duration != TimeSpan.Zero)
             {
                 Expires = DateTime.UtcNow + duration;
+            }
+        }
 
-                BeginTimer();
+        public void CheckTimer()
+        {
+            if (Expires > DateTime.UtcNow)
+            {
+                if (!SocketTimer.HasTimer(this))
+                {
+                    SocketTimer.RegisterTimer(this);
+                }
+            }
+            else if(SocketTimer.HasTimer(this))
+            {
+                SocketTimer.RemoveTimer(this);
             }
         }
 
         protected void BeginTimer()
         {
-            EndTimer();
-
-            Timer = Timer.DelayCall(TickDuration, TickDuration, OnTick);
-            Timer.Start();
+            SocketTimer.RegisterTimer(this);
         }
 
         protected void EndTimer()
         {
-            if (Timer != null)
-            {
-                Timer.Stop();
-                Timer = null;
-            }
+            SocketTimer.RemoveTimer(this);
         }
 
         protected virtual void OnTick()
@@ -6078,8 +6084,7 @@ namespace Server
 
         public virtual void Remove()
         {
-            EndTimer();
-
+            SocketTimer.RemoveTimer(this);
             Owner.RemoveItemSocket(this);
         }
 
@@ -6110,7 +6115,7 @@ namespace Server
 
                 if (newSocket.Expires != DateTime.MinValue)
                 {
-                    newSocket.BeginTimer();
+                    SocketTimer.RegisterTimer(this);
                 }
 
                 newSocket.OnAfterDuped(this);
@@ -6133,21 +6138,8 @@ namespace Server
         {
             reader.ReadInt(); // version
 
-            Expires = reader.ReadDateTime();
-
-            if (Expires != DateTime.MinValue)
-            {
-                if (Expires < DateTime.UtcNow)
-                {
-                    return;
-                }
-                else
-                {
-                    BeginTimer();
-                }
-            }
-
             owner.AttachSocket(this);
+            Expires = reader.ReadDateTime();
         }
 
         public static void Save(ItemSocket socket, GenericWriter writer)
@@ -6162,6 +6154,78 @@ namespace Server
             ItemSocket socket = Activator.CreateInstance(typeName) as ItemSocket;
 
             socket.Deserialize(item, reader);
+        }
+
+        private class SocketTimer : Timer
+        {
+            public static SocketTimer Instance { get; private set; }
+            public Dictionary<ItemSocket, DateTime> TimerRegistry { get; set; } = new Dictionary<ItemSocket, DateTime>();
+
+            public SocketTimer()
+                : base(TimeSpan.FromMilliseconds(10), TimeSpan.FromMilliseconds(10))
+            {
+                Instance = this;
+                Start();
+            }
+
+            public static bool HasTimer(ItemSocket socket)
+            {
+                return Instance != null && Instance.TimerRegistry.ContainsKey(socket);
+            }
+
+            public static void RegisterTimer(ItemSocket socket)
+            {
+                var timer = Instance;
+
+                if (timer == null)
+                {
+                    timer = new SocketTimer();
+                }
+
+                timer.TimerRegistry[socket] = DateTime.UtcNow + socket.TickDuration;
+            }
+
+            public static void RemoveTimer(ItemSocket socket)
+            {
+                var timer = Instance;
+
+                if (timer != null)
+                {
+                    if (timer.TimerRegistry.ContainsKey(socket))
+                    {
+                        timer.TimerRegistry.Remove(socket);
+                    }
+
+                    if (timer.TimerRegistry.Count == 0)
+                    {
+                        timer.Stop();
+                        Instance = null;
+                    }
+                }
+            }
+
+            protected override void OnTick()
+            {
+                var list = new List<ItemSocket>();
+
+                foreach (var socket in TimerRegistry.Keys.Where(s => TimerRegistry[s] < DateTime.UtcNow))
+                {
+                    list.Add(socket);
+                }
+
+                for (int i = 0; i < list.Count; i++)
+                {
+                    var socket = list[i];
+                    socket.OnTick();
+
+                    if (TimerRegistry.ContainsKey(socket))
+                    {
+                        TimerRegistry[socket] = DateTime.UtcNow + socket.TickDuration;
+                    }
+                }
+
+                ColUtility.Free(list);
+            }
         }
     }
 }
