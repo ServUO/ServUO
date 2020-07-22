@@ -496,46 +496,12 @@ namespace Server.Engines.VendorSearching
 
         public static bool IsGargoyle(Item item)
         {
-            if (item is BaseArmor)
-            {
-                return ((BaseArmor)item).RequiredRace == Race.Gargoyle;
-            }
-            else if (item is BaseWeapon)
-            {
-                return ((BaseWeapon)item).RequiredRace == Race.Gargoyle;
-            }
-            else if (item is BaseClothing)
-            {
-                return ((BaseClothing)item).RequiredRace == Race.Gargoyle;
-            }
-            else if (item is BaseJewel)
-            {
-                return ((BaseJewel)item).RequiredRace == Race.Gargoyle;
-            }
-
-            return false;
+            return Race.Gargoyle.ValidateEquipment(item);
         }
 
         public static bool IsElf(Item item)
         {
-            if (item is BaseArmor)
-            {
-                return ((BaseArmor)item).RequiredRace == Race.Elf;
-            }
-            else if (item is BaseWeapon)
-            {
-                return ((BaseWeapon)item).RequiredRace == Race.Elf;
-            }
-            else if (item is BaseClothing)
-            {
-                return ((BaseClothing)item).RequiredRace == Race.Elf;
-            }
-            else if (item is BaseJewel)
-            {
-                return ((BaseJewel)item).RequiredRace == Race.Elf;
-            }
-
-            return false;
+            return Race.Elf.ValidateEquipment(item);
         }
 
         public static SearchCriteria AddNewContext(PlayerMobile pm)

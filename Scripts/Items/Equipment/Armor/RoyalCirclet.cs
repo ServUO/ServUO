@@ -15,7 +15,6 @@ namespace Server.Items
         {
         }
 
-        public override Race RequiredRace => Race.Elf;
         public override int BasePhysicalResistance => 1;
         public override int BaseFireResistance => 5;
         public override int BaseColdResistance => 2;

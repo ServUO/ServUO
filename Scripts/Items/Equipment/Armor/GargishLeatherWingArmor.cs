@@ -36,8 +36,6 @@ namespace Server.Items
         public override ArmorMaterialType MaterialType => ArmorMaterialType.Leather;
         public override CraftResource DefaultResource => CraftResource.RegularLeather;
         public override ArmorMeditationAllowance DefMedAllowance => ArmorMeditationAllowance.All;
-        public override Race RequiredRace => Race.Gargoyle;
-        public override bool CanBeWornByGargoyles => true;
 
         public override int GetLuckBonus() { return 0; }
 

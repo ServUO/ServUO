@@ -36,8 +36,6 @@ namespace Server.Items
     public class GargishSkullLongsword : Longsword
     {
         public override int LabelNumber => 1125821;  // gargish skull longsword
-        public override Race RequiredRace => Race.Gargoyle;
-        public override bool CanBeWornByGargoyles => true;
 
         [Constructable]
         public GargishSkullLongsword()

@@ -1,8 +1,10 @@
 namespace Server.Items
 {
-    public class PhantomStaff : WildStaff
+    public class PhantomStaff : WildStaff, ICanBeElfOrHuman
     {
+        public bool ElfOnly { get { return false; } set { } }
         public override bool IsArtifact => true;
+
         [Constructable]
         public PhantomStaff()
         {

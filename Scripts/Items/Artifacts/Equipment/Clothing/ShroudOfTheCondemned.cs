@@ -4,7 +4,6 @@ namespace Server.Items
     public class ShroudOfTheCondemned : BaseOuterTorso
     {
         public override bool IsArtifact => true;
-        public override bool CanBeWornByGargoyles => true;
 
         public override int LabelNumber => 1113703;  // Shroud of the Condemned
 

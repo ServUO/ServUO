@@ -31,8 +31,6 @@ namespace Server.Items
         public override int InitMinHits => 31;
         public override int InitMaxHits => 50;
 
-        public override bool CanBeWornByGargoyles => true;
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

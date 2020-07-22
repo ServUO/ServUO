@@ -9,9 +9,6 @@ namespace Server.Items
         public override int BasePoisonResistance => 8;
         public override int BaseEnergyResistance => 8;
 
-        public override bool CanBeWornByGargoyles => true;
-        public override int LabelNumber => 1109616;  // Virtue Shield
-
         public override int InitMinHits => 255;
         public override int InitMaxHits => 255;
         public override bool IsArtifact => true;

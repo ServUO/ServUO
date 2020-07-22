@@ -1,4 +1,4 @@
-﻿using Server.Engines.Craft;
+using Server.Engines.Craft;
 using System;
 using System.Collections.Generic;
 
@@ -138,9 +138,6 @@ namespace Server.Items
 
     public class GargishRunedSashOfWarding : RunedSashOfWarding
     {
-        public override Race RequiredRace => Race.Gargoyle;
-        public override bool CanBeWornByGargoyles => true;
-
         [Constructable]
         public GargishRunedSashOfWarding()
         {

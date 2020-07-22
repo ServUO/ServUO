@@ -1,8 +1,9 @@
 namespace Server.Items
 {
     [Flipable(0x2FB9, 0x3173)]
-    public class CloakOfPower : BaseOuterTorso
+    public class CloakOfPower : BaseOuterTorso, ICanBeElfOrHuman
     {
+        public bool ElfOnly { get { return false; } set { } }
         public override bool IsArtifact => true;
 
         [Constructable]

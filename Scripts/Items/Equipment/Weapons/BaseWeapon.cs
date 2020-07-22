@@ -12,6 +12,8 @@ using Server.Spells.Ninjitsu;
 using Server.Spells.Sixth;
 using Server.Spells.SkillMasteries;
 using Server.Spells.Spellweaving;
+using Server.Misc;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -769,11 +771,6 @@ namespace Server.Items
             return false;
         }
 
-        public virtual Race RequiredRace => null;
-        //On OSI, there are no weapons with race requirements, this is for custom stuff
-
-        public virtual bool CanBeWornByGargoyles => false;
-
         public override bool CanEquip(Mobile from)
         {
             if (from.IsPlayer())
@@ -802,29 +799,8 @@ namespace Server.Items
                 }
             }
 
-            bool morph = from.FindItemOnLayer(Layer.Earrings) is MorphEarrings;
-
-            if (from.Race == Race.Gargoyle && !CanBeWornByGargoyles && from.IsPlayer())
+            if (!RaceDefinitions.ValidateEquipment(from, this))
             {
-                from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1111708); // Gargoyles can't wear this.
-                return false;
-            }
-
-            if (RequiredRace != null && from.Race != RequiredRace && !morph)
-            {
-                if (RequiredRace == Race.Elf)
-                {
-                    from.SendLocalizedMessage(1072203); // Only Elves may use this.
-                }
-                else if (RequiredRace == Race.Gargoyle)
-                {
-                    from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1111707); // Only gargoyles can wear this.
-                }
-                else
-                {
-                    from.SendMessage("Only {0} may use ", RequiredRace.PluralName);
-                }
-
                 return false;
             }
             else if (from.Dex < DexRequirement)
@@ -2901,7 +2877,12 @@ namespace Server.Items
 
             for (int i = 0; i < count; i++)
             {
-                AddBlood(defender, m.GetRandomSpawnPoint(b), m);
+                var p = m.GetRandomSpawnPoint(b);
+                p.Z = defender.Z;
+
+                SpellHelper.AdjustField(ref p, m, 16, false);
+
+                AddBlood(defender, p, m);
             }
         }
 
@@ -4530,17 +4511,14 @@ namespace Server.Items
                 m_AosSkillBonuses.GetProperties(list);
             }
 
-            if (RequiredRace == Race.Elf)
+            if (RaceDefinitions.GetRequiredRace(this) == Race.Elf)
             {
                 list.Add(1075086); // Elves Only
             }
-
-            #region Stygian Abyss
-            else if (RequiredRace == Race.Gargoyle)
+            else if (RaceDefinitions.GetRequiredRace(this) == Race.Gargoyle)
             {
                 list.Add(1111709); // Gargoyles Only
             }
-            #endregion
 
             if (ArtifactRarity > 0)
             {

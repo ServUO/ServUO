@@ -1,5 +1,7 @@
 using Server.ContextMenus;
 using Server.Engines.Craft;
+using Server.Misc;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +14,12 @@ namespace Server.Items
     }
 
     [Alterable(typeof(DefTailoring), typeof(GargishLeatherWingArmor), true)]
-    public class BaseQuiver : Container, ICraftable, ISetItem, IVvVItem, IOwnerRestricted, IRangeDamage, IArtifact
+    public class BaseQuiver : Container, ICraftable, ISetItem, IVvVItem, IOwnerRestricted, IRangeDamage, IArtifact, ICanBeElfOrHuman
     {
         private bool _VvVItem;
         private Mobile _Owner;
         private string _OwnerName;
+        private bool _ElvesOnly;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsVvVItem
@@ -36,6 +39,13 @@ namespace Server.Items
         {
             get { return _OwnerName; }
             set { _OwnerName = value; InvalidateProperties(); }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool ElfOnly
+        {
+            get { return _ElvesOnly; }
+            set { _ElvesOnly = value; }
         }
 
         public override int DefaultGumpID => 0x108;
@@ -442,9 +452,8 @@ namespace Server.Items
 
         public override bool CanEquip(Mobile m)
         {
-            if (m.Race == Race.Gargoyle)
-            {
-                m.SendLocalizedMessage(1111708); // Gargoyles can't wear 
+            if (!RaceDefinitions.ValidateEquipment(m, this))
+            { 
                 return false;
             }
 
@@ -706,7 +715,7 @@ namespace Server.Items
             Crafter = 0x00000010,
             Quality = 0x00000020,
             Capacity = 0x00000040,
-
+            DamageIncrease = 0x00000080,
             SetAttributes = 0x00000100,
             SetHue = 0x00000200,
             LastEquipped = 0x00000400,
@@ -717,8 +726,7 @@ namespace Server.Items
             SetCold = 0x00010000,
             SetPoison = 0x00020000,
             SetEnergy = 0x00040000,
-
-            DamageIncrease = 0x00000080
+            ElvesOnly = 0x00080000,
         }
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
@@ -767,6 +775,7 @@ namespace Server.Items
             SetSaveFlag(ref flags, SaveFlag.SetCold, m_SetColdBonus != 0);
             SetSaveFlag(ref flags, SaveFlag.SetPoison, m_SetPoisonBonus != 0);
             SetSaveFlag(ref flags, SaveFlag.SetEnergy, m_SetEnergyBonus != 0);
+            SetSaveFlag(ref flags, SaveFlag.ElvesOnly, _ElvesOnly);
             #endregion
 
             writer.WriteEncodedInt((int)flags);
@@ -822,6 +831,9 @@ namespace Server.Items
 
             if (GetSaveFlag(flags, SaveFlag.SetEquipped))
                 writer.Write(m_SetEquipped);
+
+            if (GetSaveFlag(flags, SaveFlag.ElvesOnly))
+                writer.Write(_ElvesOnly);
             #endregion
         }
 
@@ -920,6 +932,9 @@ namespace Server.Items
 
                         if (GetSaveFlag(flags, SaveFlag.SetEquipped))
                             m_SetEquipped = reader.ReadBool();
+
+                        if (GetSaveFlag(flags, SaveFlag.ElvesOnly))
+                            _ElvesOnly = reader.ReadBool();
                         #endregion
 
                         break;

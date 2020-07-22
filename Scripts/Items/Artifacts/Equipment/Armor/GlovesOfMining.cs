@@ -124,9 +124,6 @@ namespace Server.Items
     [FlipableAttribute(0x13eb, 0x13f2)]
     public class GargishKiltOfMining : BaseGlovesOfMining
     {
-        public override Race RequiredRace => Race.Gargoyle;
-        public override bool CanBeWornByGargoyles => true;
-
         [Constructable]
         public GargishKiltOfMining() : this(5)
         {

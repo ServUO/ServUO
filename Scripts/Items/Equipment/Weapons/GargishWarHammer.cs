@@ -27,9 +27,6 @@ namespace Server.Items
         public override int InitMaxHits => 110;
         public override WeaponAnimation DefAnimation => WeaponAnimation.Bash2H;
 
-        public override Race RequiredRace => Race.Gargoyle;
-        public override bool CanBeWornByGargoyles => true;
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

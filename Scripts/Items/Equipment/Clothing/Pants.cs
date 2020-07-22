@@ -249,8 +249,6 @@ namespace Server.Items
     [FlipableAttribute(0x2FC3, 0x3179)]
     public class ElvenPants : BasePants
     {
-        public override Race RequiredRace => Race.Elf;
-
         [Constructable]
         public ElvenPants()
             : this(0)
@@ -286,9 +284,6 @@ namespace Server.Items
 
     public class GargishClothLegs : BaseClothing
     {
-        public override Race RequiredRace => Race.Gargoyle;
-        public override bool CanBeWornByGargoyles => true;
-
         [Constructable]
         public GargishClothLegs()
             : this(0)
@@ -335,9 +330,6 @@ namespace Server.Items
 
     public class FemaleGargishClothLegs : BaseClothing
     {
-        public override Race RequiredRace => Race.Gargoyle;
-        public override bool CanBeWornByGargoyles => true;
-
         [Constructable]
         public FemaleGargishClothLegs()
             : this(0)
@@ -371,9 +363,6 @@ namespace Server.Items
 
     public class MaleGargishClothLegs : BaseClothing
     {
-        public override Race RequiredRace => Race.Gargoyle;
-        public override bool CanBeWornByGargoyles => true;
-
         [Constructable]
         public MaleGargishClothLegs()
             : this(0)

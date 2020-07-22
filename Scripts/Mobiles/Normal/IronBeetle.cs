@@ -47,8 +47,6 @@ namespace Server.Mobiles
             Tamable = true;
             MinTameSkill = 71.1;
             ControlSlots = 4;
-
-            m_MiningTimer = Timer.DelayCall(MiningInterval, MiningInterval, DoMining);
         }
 
         public override void GenerateLoot()
@@ -96,9 +94,10 @@ namespace Server.Mobiles
 
         #region Mining
         private static readonly TimeSpan MiningInterval = TimeSpan.FromSeconds(5.0);
+        private static readonly TimeSpan EatInterval = TimeSpan.FromSeconds(3.0);
 
-        private Timer m_MiningTimer;
         private DateTime m_NextOreEat;
+        private DateTime m_NextMine;
 
         private void GetMiningOffset(Direction d, ref int x, ref int y)
         {
@@ -119,25 +118,21 @@ namespace Server.Mobiles
         {
             base.OnThink();
 
-            if (Owners.Count > 0 || m_NextOreEat > DateTime.UtcNow)
+            if (Owners.Count > 0)
                 return;
 
-            m_NextOreEat = DateTime.UtcNow + TimeSpan.FromSeconds(3.0);
-
-            if (0.5 > Utility.RandomDouble())
+            if (m_NextOreEat < DateTime.UtcNow && Utility.RandomBool())
             {
-                foreach (Item item in Map.GetItemsInRange(Location, 1))
-                {
-                    if (item is BaseOre)
-                    {
-                        // Epic coolness: turn to the ore hue!
-                        Hue = item.Hue;
+                m_NextOreEat = DateTime.UtcNow + EatInterval;
 
-                        item.Delete();
+                DoEat();
+            }
 
-                        return;
-                    }
-                }
+            if (m_NextMine < DateTime.UtcNow)
+            {
+                m_NextMine = DateTime.UtcNow + MiningInterval;
+
+                DoMining();
             }
         }
 
@@ -235,6 +230,25 @@ namespace Server.Mobiles
             }
         }
 
+        public void DoEat()
+        {
+            IPooledEnumerable eable = Map.GetItemsInRange(Location, 1);
+
+            foreach (Item item in eable)
+            {
+                if (item is BaseOre)
+                {
+                    // Epic coolness: turn to the ore hue!
+                    Hue = item.Hue;
+                    item.Delete();
+
+                    break;
+                }
+            }
+
+            eable.Free();
+        }
+
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
         {
             base.GetContextMenuEntries(from, list);
@@ -271,8 +285,6 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            m_MiningTimer = Timer.DelayCall(MiningInterval, MiningInterval, DoMining);
         }
     }
 }

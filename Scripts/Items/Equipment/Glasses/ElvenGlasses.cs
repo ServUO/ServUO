@@ -3,11 +3,15 @@ using Server.Engines.Craft;
 namespace Server.Items
 {
     [Alterable(typeof(DefTinkering), typeof(GargishGlasses), true)]
-    public class ElvenGlasses : BaseArmor, IRepairable
+    public class ElvenGlasses : BaseArmor, IRepairable, ICanBeElfOrHuman
     {
         public override int LabelNumber => 1032216;  // elven glasses
-
         public CraftSystem RepairSystem => DefTinkering.CraftSystem;
+
+        private bool _ElvesOnly;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool ElfOnly { get { return _ElvesOnly; } set { _ElvesOnly = value; } }
 
         [Constructable]
         public ElvenGlasses()
@@ -36,13 +40,20 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(1); // version
+            writer.Write(2); // version
+
+            writer.Write(_ElvesOnly);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (version > 1)
+            {
+                _ElvesOnly = reader.ReadBool();
+            }
         }
     }
 }

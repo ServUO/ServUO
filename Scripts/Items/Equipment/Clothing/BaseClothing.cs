@@ -1,6 +1,8 @@
 using Server.ContextMenus;
 using Server.Engines.Craft;
 using Server.Network;
+using Server.Misc;
+
 using System;
 using System.Collections.Generic;
 
@@ -385,10 +387,6 @@ namespace Server.Items
             }
         }
 
-        public virtual Race RequiredRace => null;
-
-        public virtual bool CanBeWornByGargoyles => false;
-
         public override bool CanEquip(Mobile from)
         {
             if (from.IsPlayer())
@@ -416,22 +414,8 @@ namespace Server.Items
                     return false;
                 }
 
-                bool morph = from.FindItemOnLayer(Layer.Earrings) is MorphEarrings;
-
-                if (from.Race == Race.Gargoyle && !CanBeWornByGargoyles)
+                if (!RaceDefinitions.ValidateEquipment(from, this))
                 {
-                    from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1111708); // Gargoyles can't wear this.
-                    return false;
-                }
-                else if (RequiredRace != null && from.Race != RequiredRace && !morph)
-                {
-                    if (RequiredRace == Race.Elf)
-                        from.SendLocalizedMessage(1072203); // Only Elves may use this.
-                    else if (RequiredRace == Race.Gargoyle)
-                        from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1111707); // Only gargoyles can wear this.
-                    else
-                        from.SendMessage("Only {0} may use this.", RequiredRace.PluralName);
-
                     return false;
                 }
                 else if (!AllowMaleWearer && !from.Female)
@@ -538,21 +522,8 @@ namespace Server.Items
                 {
                     BaseClothing clothing = (BaseClothing)item;
 
-                    if (m.Race == Race.Gargoyle && !clothing.CanBeWornByGargoyles)
+                    if (!RaceDefinitions.ValidateEquipment(m, clothing))
                     {
-                        m.SendLocalizedMessage(1111708); // Gargoyles can't wear this.
-                        m.AddToBackpack(clothing);
-                    }
-
-                    if (clothing.RequiredRace != null && m.Race != clothing.RequiredRace)
-                    {
-                        if (clothing.RequiredRace == Race.Elf)
-                            m.SendLocalizedMessage(1072203); // Only Elves may use this.
-                        else if (clothing.RequiredRace == Race.Gargoyle)
-                            m.SendLocalizedMessage(1111707); // Only gargoyles can wear this.
-                        else
-                            m.SendMessage("Only {0} may use this.", clothing.RequiredRace.PluralName);
-
                         m.AddToBackpack(clothing);
                     }
                     else if (!clothing.AllowMaleWearer && !m.Female && m.AccessLevel < AccessLevel.GameMaster)
@@ -958,10 +929,14 @@ namespace Server.Items
                 }
             }
 
-            if (RequiredRace == Race.Elf)
+            if (RaceDefinitions.GetRequiredRace(this) == Race.Elf)
+            {
                 list.Add(1075086); // Elves Only
-            else if (RequiredRace == Race.Gargoyle)
+            }
+            else if (RaceDefinitions.GetRequiredRace(this) == Race.Gargoyle)
+            {
                 list.Add(1111709); // Gargoyles Only
+            }
 
             if (m_NegativeAttributes != null)
                 m_NegativeAttributes.GetProperties(list, this);

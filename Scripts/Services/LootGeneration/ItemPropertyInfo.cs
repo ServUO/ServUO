@@ -723,8 +723,8 @@ namespace Server.Items
             {
                 PropInfo info = Table[id].GetItemTypeInfo(GetItemType(item));
 
-                // First, we try to get the max intensity from the PropInfo. If null or we're getting an intensity for imbuing purpopses, we go to the default MaxIntenity
-                if (info == null || (imbuing && !_ForceUseNewTable.Any(i => i == id)))
+                // First, we try to get the max intensity from the PropInfo. If null or we're getting an intensity for special imbuing purpopses, we go to the default MaxIntenity
+                if (info == null || (imbuing && !ForcesNewLootMax(item, id)))
                 {
                     if (item is BaseWeapon && (id == 25 || id == 27))
                     {
@@ -745,6 +745,23 @@ namespace Server.Items
             }
 
             return 0;
+        }
+
+        /// <summary>
+        /// We may want to force the new loot tables for items such as ranged weapons that have a different max than melee, think hci/dci (15/25).
+        /// This will be bypassed for special items, such as clockwork leggings
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static bool ForcesNewLootMax(Item item, int id)
+        {
+            if (Server.SkillHandlers.Imbuing.IsSpecialImbuable(item.GetType()))
+            {
+                return false;
+            }
+
+            return _ForceUseNewTable.Any(i => i == id);
         }
 
         public static int[] GetMaxOvercappedRange(Item item, int id)

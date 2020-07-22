@@ -62,9 +62,6 @@ namespace Server.Items
             return false;
         }
 
-        public override Race RequiredRace => Race.Gargoyle;
-        public override bool CanBeWornByGargoyles => true;
-
         public GargishClothArmsArmor(Serial serial)
             : base(serial)
         {
@@ -188,9 +185,6 @@ namespace Server.Items
             from.SendLocalizedMessage(502440); // Scissors can not be used on that to produce anything.
             return false;
         }
-
-        public override Race RequiredRace => Race.Gargoyle;
-        public override bool CanBeWornByGargoyles => true;
 
         public GargishClothChestArmor(Serial serial)
             : base(serial)
@@ -317,9 +311,6 @@ namespace Server.Items
             return false;
         }
 
-        public override Race RequiredRace => Race.Gargoyle;
-        public override bool CanBeWornByGargoyles => true;
-
         public GargishClothLegsArmor(Serial serial)
             : base(serial)
         {
@@ -444,9 +435,6 @@ namespace Server.Items
             from.SendLocalizedMessage(502440); // Scissors can not be used on that to produce anything.
             return false;
         }
-
-        public override Race RequiredRace => Race.Gargoyle;
-        public override bool CanBeWornByGargoyles => true;
 
         public GargishClothKiltArmor(Serial serial)
             : base(serial)
