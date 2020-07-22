@@ -192,12 +192,12 @@ namespace Server.SkillHandlers
             return true;
         }
 
-        private static bool IsSpecialImbuable(Item item)
+        public static bool IsSpecialImbuable(Item item)
         {
             return IsSpecialImbuable(item.GetType());
         }
 
-        private static bool IsSpecialImbuable(Type type)
+        public static bool IsSpecialImbuable(Type type)
         {
             if (_SpecialImbuable.Any(i => i == type))
                 return true;

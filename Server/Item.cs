@@ -6024,6 +6024,7 @@ namespace Server
         #endregion
     }
 
+    [PropertyObject]
     public class ItemSocket
     {
         private DateTime _Expires;
@@ -6049,9 +6050,14 @@ namespace Server
             }
         }
 
+        public override string ToString()
+        {
+            return "...";
+        }
+
         public void CheckTimer()
         {
-            if (Expires > DateTime.UtcNow)
+            if (Expires != DateTime.MinValue)
             {
                 if (!SocketTimer.HasTimer(this))
                 {

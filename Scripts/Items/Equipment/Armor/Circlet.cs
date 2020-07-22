@@ -25,7 +25,6 @@ namespace Server.Items
         public override int StrReq => 10;
         public override ArmorMaterialType MaterialType => ArmorMaterialType.Plate;
         public override ArmorMeditationAllowance DefMedAllowance => ArmorMeditationAllowance.All;
-        public override Race RequiredRace => Race.Elf;
 
         public override void Serialize(GenericWriter writer)
         {

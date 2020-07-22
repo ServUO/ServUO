@@ -1,3 +1,8 @@
+using System;
+using System.Linq;
+
+using Server.Items;
+
 namespace Server.Misc
 {
     public class RaceDefinitions
@@ -114,6 +119,20 @@ namespace Server.Misc
                 int rand = Utility.Random(9);
 
                 return 15172 + rand;
+            }
+
+            public override bool ValidateEquipment(Item item)
+            {
+                var elfOrHuman = item as ICanBeElfOrHuman;
+
+                if (elfOrHuman != null)
+                {
+                    return !elfOrHuman.ElfOnly;
+                }
+
+                var itemID = item.ItemID;
+
+                return !GargoyleOnlyIDs.Any(id => id == itemID) && !ElfOnlyIDs.Any(id => id == itemID);
             }
 
             public override int ClipSkinHue(int hue)
@@ -250,6 +269,20 @@ namespace Server.Misc
                 return 15172 + rand;
             }
 
+            public override bool ValidateEquipment(Item item)
+            {
+                var elfOrHuman = item as ICanBeElfOrHuman;
+
+                if (elfOrHuman != null && elfOrHuman.ElfOnly)
+                {
+                    return true;
+                }
+
+                var itemID = item.ItemID;
+
+                return !GargoyleOnlyIDs.Any(id => id == itemID);
+            }
+
             public override int ClipSkinHue(int hue)
             {
                 for (int i = 0; i < m_SkinHues.Length; i++)
@@ -378,6 +411,13 @@ namespace Server.Misc
                 return 22137 + rand;
             }
 
+            public override bool ValidateEquipment(Item item)
+            {
+                var itemID = item.ItemID;
+
+                return !(item is BaseQuiver) && GargoyleOnlyIDs.Any(id => id == itemID);
+            }
+
             public override int ClipSkinHue(int hue)
             {
                 return hue; // for hue infomation gathering
@@ -419,5 +459,173 @@ namespace Server.Misc
                 return RandomSkinHue();
             }
         }
+
+        public static bool ValidateEquipment(Mobile from, Item equipment)
+        {
+            return ValidateEquipment(from, equipment, true);
+        }
+
+        public static bool ValidateEquipment(Mobile from, Item equipment, bool message)
+        {
+            if (AllRaceTypes.Any(type => type == equipment.GetType()) || AllRaceIDs.Any(id => id == equipment.ItemID))
+            {
+                return true;
+            }
+
+            if (!from.Race.ValidateEquipment(equipment))
+            {
+                if (from.Race == Race.Gargoyle)
+                {
+                    if (message)
+                    {
+                        from.LocalOverheadMessage(Network.MessageType.Regular, 0x3B2, 1111708); // Gargoyles can't wear this.
+                    }
+                }
+                else
+                {
+                    var required = GetRequiredRace(equipment);
+
+                    if (required == Race.Elf)
+                    {
+                        if (from.FindItemOnLayer(Layer.Earrings) is MorphEarrings)
+                        {
+                            return true;
+                        }
+
+                        if (message)
+                        {
+                            from.SendLocalizedMessage(1072203); // Only Elves may use this.
+                        }
+                    }
+                    else if (required == Race.Gargoyle)
+                    {
+                        if (message)
+                        {
+                            from.LocalOverheadMessage(Network.MessageType.Regular, 0x3B2, 1111707); // Only gargoyles can wear this.
+                        }
+                    }
+                    else if (required != Race.Human)
+                    {
+                        if (message)
+                        {
+                            from.SendMessage("Only {0} may use this.", required.PluralName);
+                        }
+                    }
+                }
+
+                return false;
+            }
+
+            return true;
+        }
+
+        public static Race GetRequiredRace(Item item)
+        {
+            var itemID = item.ItemID;
+
+            if (GargoyleOnlyIDs.Any(id => id == itemID))
+            {
+                return Race.Gargoyle;
+            }
+
+            if (ElfOnlyIDs.Any(id => id == itemID))
+            {
+                return Race.Elf;
+            }
+
+            var elfOrHuman = item as ICanBeElfOrHuman;
+
+            if (elfOrHuman != null && elfOrHuman.ElfOnly)
+            {
+                return Race.Elf;
+            }
+
+            return Race.Human;
+        }
+
+        public static Type[] AllRaceTypes { get { return _AllRaceTypes; } }
+        private static Type[] _AllRaceTypes = new[]
+         {
+            typeof(BootsOfBallast)
+        };
+
+        public static int[] AllRaceIDs { get { return _AllRaceIDs; } }
+        private static int[] _AllRaceIDs = new[]
+        {
+            0xA289, 0xA28A, 0xA28B, 0xA291, 0xA292, 0xA293, // whips
+            0xE85, 0xE86, // Tools
+            0x1F03, 0x1F04, // Robe
+            0xE81,
+        };
+
+        public static int[] GargoyleOnlyIDs { get { return _GargoyleOnlyIDs; } }
+        private static int[] _GargoyleOnlyIDs = new[]
+        {
+            0x283, 0x284, 0x286, 0x287, 0x288, 0x289, 0x28A,        // Armor
+            0x301, 0x302, 0x303, 0x304, 0x305, 0x306, 0x310, 0x311, 
+            0x307, 0x308, 0x309, 0x30A, 0x30B, 0x30C, 0x30D, 0x30E, 
+            0x403, 0x404, 0x405, 0x406, 0x407, 0x408, 0x409, 0x40A, 
+
+            0x8FD, 0x8FE, 0x8FF, 0x900, 0x901, 0x902, 0x903, 0x904, // Weapons
+            0x905, 0x906, 0x907, 0x908, 0x909, 0x90A, 0x90B, 0x90C,
+            0x48AE, 0x48AF, 0x48B0, 0x48B1, 0x48B2, 0x48B3, 0x48B4,
+            0x48B5, 0x48B6, 0x48B7, 0x48B8, 0x48B9, 0x48BA, 0x48BB,
+            0x48BC, 0x48BD, 0x48BE, 0x48BF, 0x48C0, 0x48C1, 0x48C2,
+            0x48C3, 0x48C4, 0x48C5, 0x48C6, 0x48C7, 0x48C8, 0x48C9,
+            0x48CA, 0x48CB, 0x48CC, 0x48CD, 0x48CE, 0x48CF, 0x48D0,
+            0x48D1, 0x48D2, 0x48D3,
+
+            0x4000, 0x4001, 0x4002, 0x4003,                         // Robes
+            0x9986,                                                 // Apaulets
+
+            0x4047, 0x4048, 0x4049, 0x404A, 0x404B, 0x404C, 0x404D, // Armor/Weapons
+            0x404E, 0x404F, 0x4050, 0x4051, 0x4052, 0x4053, 0x4054,
+            0x4055, 0x4056, 0x4057, 0x4058, 0x4058, 0x4059, 0x405A,
+            0x405B, 0x405C, 0x405D, 0x405E, 0x405F, 0x4060, 0x4061,
+            0x4062, 0x4063, 0x4064, 0x4065, 0x4066, 0x4067, 0x4068,
+            0x4068, 0x4069, 0x406A, 0x406B, 0x406C, 0x406D, 0x406E,
+            0x406F, 0x4070, 0x4071, 0x4072, 0x4072, 0x7073, 0x4074,
+            0x4075, 0x4076,
+
+            0x4200, 0x4201, 0x4202, 0x4203, 0x4204, 0x4205, 0x4206, // Shields
+            0x4207, 0x4208, 0x4209, 0x420A, 0x420B, 0x4228, 0x4229,
+            0x422A, 0x422C,
+
+            0x4210, 0x4211, 0x4212, 0x4213, 0x4D0A, 0x4D0B,        // Jewelry
+
+            0x450D, 0x450E,                                         // Belts
+            0x457E, 0x457F, 0x45A4, 0x45A5,                         // Wing Armor
+            0x45B1, 0x45B3, 0x4644, 0x4645,                         // Glasses
+            0x46AA, 0x46AB, 0x46B4, 0x46B5,                         // Sashes
+
+            0xA1C9, 0xA1CA                                          // Special
+        };
+
+        public static int[] ElfOnlyIDs { get { return _ElfOnlyIDs; } }
+        private static int[] _ElfOnlyIDs = new[]
+        {
+            0x2B67, 0x2B68, 0x2B69, 0x2B6A, 0x2B6B, 0x2B6C, 0x2B6D, // Armor
+            0x2B6E, 0x2B6F, 0x2B70, 0x2B71, 0x2B72, 0x2B73, 0x2B74,
+            0x2B75, 0x2B76, 0x2B77, 0x2B78, 0x2B79, 0x3160, 0x3161,
+            0x3162, 0x3163, 0x3164, 0x3165, 0x3166, 0x3167, 0x3168,
+            0x3169, 0x316A, 0x316B, 0x316C, 0x316D, 0x316E, 0x316F,
+            0x3170, 0x3171, 0x3172, 0x3173, 0x3174, 0x3175, 0x3176,
+            0x3177, 0x3178, 0x3179, 0x317A, 0x317B, 0x317C, 0x317D,
+            0x317E, 0x317F, 0x3180, 0x3181,
+
+            0x2D1E, 0x2D1F, 0x2D20, 0x2D21, 0x2D22, 0x2D23, 0x2D24, // Weapons
+            0x2D25, 0x2D26, 0x2D27, 0x2D28, 0x2D29, 0x2D2A, 0x2D2B,
+            0x2D2C, 0x2D2D, 0x2D2E, 0x2D2F, 0x2D30, 0x2D31, 0x2D32,
+            0x2D33, 0x2D34, 0x2D35, 0x316A, 0x316B, 0x316C, 0x316D,
+                
+            0x2FB8,                                                 // Glasses
+
+            0x2FB9, 0x2FBA,                                         // Robes
+
+            0x2FC3, 0x2FC4, 0x2FC5, 0x2FC6, 0x2FC7, 0x2FC8, 0x2FC9, // Cloths
+            0x2FCA, 0x2FCB,
+
+            0x315F, // Belt
+        };
     }
 }

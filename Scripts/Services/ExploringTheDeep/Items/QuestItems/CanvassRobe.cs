@@ -1,11 +1,10 @@
-﻿using Server.Network;
+using Server.Network;
 
 namespace Server.Items
 {
     public class CanvassRobe : Robe
     {
         public override int LabelNumber => 1154238;  // A Canvass Robe
-        public override bool CanBeWornByGargoyles => true;
 
         [Constructable]
         public CanvassRobe()

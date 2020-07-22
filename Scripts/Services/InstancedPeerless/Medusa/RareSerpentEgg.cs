@@ -1,4 +1,4 @@
-﻿namespace Server.Items
+namespace Server.Items
 {
     public class RareSerpentEgg : PeerlessKey
     {
@@ -10,10 +10,8 @@
         {
             Weight = 1.0;
             LootType = LootType.Blessed;
-            Hue = Utility.RandomList(0x21, 0x4AC, 0x41C);
+            Hue = Utility.RandomList(0x21, 0x4AC, 0x41C, 0xA21);
         }
-
-        public override int Lifespan => 43200;
 
         public RareSerpentEgg(Serial serial)
             : base(serial)
@@ -29,7 +27,6 @@
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            /*int version = */
             reader.ReadInt();
         }
     }

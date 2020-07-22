@@ -448,10 +448,10 @@ namespace Server.Engines.Auction
         public void RemoveAuction()
         {
             Auctions.Remove(this);
+            AuctionItem = null;
             Safe.Auction = null;
             OnGoing = false;
 
-            AuctionItem = null;
             ClaimPeriod = DateTime.MinValue;
         }
 

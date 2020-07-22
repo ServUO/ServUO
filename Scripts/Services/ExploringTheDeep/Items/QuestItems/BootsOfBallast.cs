@@ -1,11 +1,10 @@
-﻿using Server.Network;
+using Server.Network;
 
 namespace Server.Items
 {
     public class BootsOfBallast : Boots
     {
         public override int LabelNumber => 1154242;  // Boots of Ballast
-        public override bool CanBeWornByGargoyles => true;
 
         [Constructable]
         public BootsOfBallast()

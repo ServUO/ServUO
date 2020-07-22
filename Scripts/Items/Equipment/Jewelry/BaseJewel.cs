@@ -1,5 +1,7 @@
 using Server.ContextMenus;
 using Server.Engines.Craft;
+using Server.Misc;
+
 using System;
 using System.Collections.Generic;
 
@@ -343,9 +345,6 @@ namespace Server.Items
         public virtual int InitMinHits => 0;
         public virtual int InitMaxHits => 0;
 
-        public virtual Race RequiredRace => null;
-        public virtual bool CanBeWornByGargoyles => true;
-
         public override int LabelNumber
         {
             get
@@ -505,26 +504,9 @@ namespace Server.Items
                 }
             }
 
-            if (from.AccessLevel < AccessLevel.GameMaster)
+            if (from.AccessLevel < AccessLevel.GameMaster && !RaceDefinitions.ValidateEquipment(from, this))
             {
-                bool morph = from.FindItemOnLayer(Layer.Earrings) is MorphEarrings;
-
-                if (from.Race == Race.Gargoyle && !CanBeWornByGargoyles)
-                {
-                    from.SendLocalizedMessage(1111708); // Gargoyles can't wear 
-                    return false;
-                }
-                else if (RequiredRace != null && from.Race != RequiredRace && !morph)
-                {
-                    if (RequiredRace == Race.Elf)
-                        from.SendLocalizedMessage(1072203); // Only Elves may use 
-                    else if (RequiredRace == Race.Gargoyle)
-                        from.SendLocalizedMessage(1111707); // Only gargoyles can wear 
-                    else
-                        from.SendMessage("Only {0} may use ", RequiredRace.PluralName);
-
-                    return false;
-                }
+                return false;
             }
 
             return base.CanEquip(from);
@@ -754,12 +736,14 @@ namespace Server.Items
 
             int prop;
 
-            #region Stygian Abyss
-            if (RequiredRace == Race.Elf)
+            if (RaceDefinitions.GetRequiredRace(this) == Race.Elf)
+            {
                 list.Add(1075086); // Elves Only
-            else if (RequiredRace == Race.Gargoyle)
+            }
+            else if (RaceDefinitions.GetRequiredRace(this) == Race.Gargoyle)
+            {
                 list.Add(1111709); // Gargoyles Only
-            #endregion
+            }
 
             if ((prop = ArtifactRarity) > 0)
                 list.Add(1061078, prop.ToString()); // artifact rarity ~1_val~

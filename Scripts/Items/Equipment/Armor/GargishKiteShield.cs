@@ -23,8 +23,7 @@ namespace Server.Items
         public override int InitMinHits => 45;
         public override int InitMaxHits => 60;
         public override int StrReq => 45;
-        public override bool CanBeWornByGargoyles => true;
-        public override Race RequiredRace => Race.Gargoyle;
+
         public bool Dye(Mobile from, DyeTub sender)
         {
             if (Deleted)

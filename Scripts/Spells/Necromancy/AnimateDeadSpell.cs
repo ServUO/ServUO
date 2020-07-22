@@ -1,8 +1,10 @@
 using Server.Items;
 using Server.Mobiles;
 using Server.Targeting;
+
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Spells.Necromancy
 {
@@ -199,63 +201,47 @@ namespace Server.Spells.Necromancy
             FinishSequence();
         }
 
-        private static readonly Dictionary<Mobile, List<Mobile>> m_Table = new Dictionary<Mobile, List<Mobile>>();
+        private static readonly Dictionary<Mobile, List<DamageTimer>> m_Table = new Dictionary<Mobile, List<DamageTimer>>();
 
-        public static void Unregister(Mobile master, Mobile summoned)
+        public static void Unregister(DamageTimer timer)
         {
-            if (master == null)
-                return;
+            var master = timer.Master;
 
-            List<Mobile> list = null;
-            m_Table.TryGetValue(master, out list);
+            if (m_Table.ContainsKey(master))
+            {
+                var list = m_Table[master];
 
-            if (list == null)
-                return;
+                if (timer.Running)
+                {
+                    timer.Stop();
+                }
 
-            list.Remove(summoned);
+                list.Remove(timer);
 
-            if (list.Count == 0)
-                m_Table.Remove(master);
+                if (list.Count == 0)
+                {
+                    m_Table.Remove(master);
+                }
+            }
         }
 
-        public static void Register(Mobile master, Mobile summoned)
+        public static void Register(Mobile master, BaseCreature summoned)
         {
             if (master == null)
                 return;
 
-            List<Mobile> list = null;
-            m_Table.TryGetValue(master, out list);
-
-            if (list == null)
-                m_Table[master] = list = new List<Mobile>();
-
-            for (int i = list.Count - 1; i >= 0; --i)
+            if (!m_Table.ContainsKey(master))
             {
-                if (i >= list.Count)
-                    continue;
-
-                Mobile mob = list[i];
-
-                if (mob.Deleted)
-                    list.RemoveAt(i--);
+                m_Table[master] = new List<DamageTimer>();
             }
 
-            list.Add(summoned);
+            List<DamageTimer> list = m_Table[master];
+            list.Add(new DamageTimer(master, summoned));
 
             if (list.Count > 3)
-                Timer.DelayCall(TimeSpan.Zero, list[0].Kill);
-
-            Timer.DelayCall(TimeSpan.FromMilliseconds(1650), TimeSpan.FromMilliseconds(1650), new TimerStateCallback(Summoned_Damage), summoned);
-        }
-
-        private static void Summoned_Damage(object state)
-        {
-            Mobile mob = (Mobile)state;
-
-            if (mob.Hits > 0)
-                mob.Hits--;
-            else
-                mob.Kill();
+            {
+                Timer.DelayCall(TimeSpan.Zero, () => list[0].Summon.Kill());
+            }
         }
 
         private static void SummonDelay_Callback(object state)
@@ -319,11 +305,11 @@ namespace Server.Spells.Necromancy
             if (toSummon == null)
                 return;
 
-            Mobile summoned = null;
+            BaseCreature summoned = null;
 
             try
             {
-                summoned = Activator.CreateInstance(toSummon) as Mobile;
+                summoned = Activator.CreateInstance(toSummon) as BaseCreature;
             }
             catch (Exception e)
             {
@@ -333,22 +319,19 @@ namespace Server.Spells.Necromancy
             if (summoned == null)
                 return;
 
-            if (summoned is BaseCreature)
-            {
-                BaseCreature bc = (BaseCreature)summoned;
+            BaseCreature bc = (BaseCreature)summoned;
 
-                // to be sure
-                bc.Tamable = false;
+            // to be sure
+            bc.Tamable = false;
 
-                if (bc is BaseMount)
-                    bc.ControlSlots = 1;
-                else
-                    bc.ControlSlots = 0;
+            if (bc is BaseMount)
+                bc.ControlSlots = 1;
+            else
+                bc.ControlSlots = 0;
 
-                Effects.PlaySound(loc, map, bc.GetAngerSound());
+            Effects.PlaySound(loc, map, bc.GetAngerSound());
 
-                BaseCreature.Summon((BaseCreature)summoned, false, caster, loc, 0x28, TimeSpan.FromDays(1.0));
-            }
+            BaseCreature.Summon((BaseCreature)summoned, false, caster, loc, 0x28, TimeSpan.FromDays(1.0));
 
             if (summoned is SkeletalDragon)
                 Scale((SkeletalDragon)summoned, 50); // lose 50% hp and strength
@@ -397,6 +380,42 @@ namespace Server.Spells.Necromancy
             protected override void OnTargetFinish(Mobile from)
             {
                 m_Owner.FinishSequence();
+            }
+        }
+
+        public class DamageTimer : Timer
+        {
+            public Mobile Master { get; private set; }
+            public BaseCreature Summon { get; private set; }
+
+            public DamageTimer(Mobile master, BaseCreature summon)
+                : base(TimeSpan.FromMilliseconds(1650), TimeSpan.FromMilliseconds(1650))
+            {
+                Summon = summon;
+                Master = master;
+                Start();
+            }
+
+            protected override void OnTick()
+            {
+                if (Summon.Deleted)
+                {
+                    AnimateDeadSpell.Unregister(this);
+                    Stop();
+                }
+                else
+                {
+                    if (Summon.Hits > 0)
+                    {
+                        Summon.Hits--;
+                    }
+                    else
+                    {
+                        Summon.Kill();
+                        AnimateDeadSpell.Unregister(this);
+                        Stop();
+                    }
+                }
             }
         }
     }

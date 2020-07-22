@@ -165,6 +165,8 @@ namespace Server
         }
         public abstract int RandomFace(bool female);
 
+        public abstract bool ValidateEquipment(Item item);
+
         public abstract int ClipSkinHue(int hue);
         public abstract int RandomSkinHue();
 

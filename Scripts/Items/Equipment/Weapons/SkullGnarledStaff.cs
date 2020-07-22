@@ -36,8 +36,6 @@ namespace Server.Items
     public class GargishSkullGnarledStaff : GnarledStaff
     {
         public override int LabelNumber => 1125823;  // gargish skull gnarled staff
-        public override Race RequiredRace => Race.Gargoyle;
-        public override bool CanBeWornByGargoyles => true;
 
         [Constructable]
         public GargishSkullGnarledStaff()

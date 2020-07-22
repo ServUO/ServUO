@@ -6,7 +6,6 @@ namespace Server.Items
         public override bool IsArtifact => true;
 
         private bool _ElfOnly;
-        public override Race RequiredRace => _ElfOnly ? Race.Elf : null;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool ElfOnly { get { return _ElfOnly; } set { _ElfOnly = value; InvalidateProperties(); } }

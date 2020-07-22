@@ -1,5 +1,7 @@
 using Server.ContextMenus;
 using Server.Engines.Craft;
+using Server.Misc;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -442,9 +444,8 @@ namespace Server.Items
 
         public override bool CanEquip(Mobile m)
         {
-            if (m.Race == Race.Gargoyle)
-            {
-                m.SendLocalizedMessage(1111708); // Gargoyles can't wear 
+            if (RaceDefinitions.ValidateEquipment(m, this))
+            { 
                 return false;
             }
 

@@ -476,13 +476,21 @@ namespace Server.Engines.Shadowguard
             set
             {
                 _Purified = value;
+
+                if (value)
+                {
+                    Hue = 0;
+                }
+
                 InvalidateProperties();
             }
         }
 
         [Constructable]
-        public Phylactery() : base(0x4686)
+        public Phylactery()
+            : base(0x4686)
         {
+            Hue = 2075;
         }
 
         public override void OnDoubleClick(Mobile m)

@@ -156,7 +156,7 @@ namespace Server.Mobiles
         }
 
         public InfernalOoze(Mobile owner, bool corrosive, int damage = 40)
-            : base(Utility.RandomList(0x1645, 0x122A, 0x122B, 0x122C, 0x122D, 0x122E, 0x122F))
+            : base(0x122A)
         {
             Movable = false;
             m_Owner = owner;

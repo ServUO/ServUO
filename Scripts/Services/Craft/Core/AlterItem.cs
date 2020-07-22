@@ -375,7 +375,7 @@ namespace Server.Engines.Craft
                 if (weapon.SetID != SetItem.None || !weapon.CanAlter || weapon.NegativeAttributes.Antique != 0)
                     return false;
 
-                if ((weapon.RequiredRace != null && weapon.RequiredRace == Race.Gargoyle && !weapon.IsArtifact))
+                if ((Race.Gargoyle.ValidateEquipment(weapon) && !weapon.IsArtifact))
                     return false;
             }
 
@@ -386,7 +386,7 @@ namespace Server.Engines.Craft
                 if (armor.SetID != SetItem.None || !armor.CanAlter || armor.NegativeAttributes.Antique != 0)
                     return false;
 
-                if ((armor.RequiredRace != null && armor.RequiredRace == Race.Gargoyle && !armor.IsArtifact))
+                if ((Race.Gargoyle.ValidateEquipment(armor) && !armor.IsArtifact))
                     return false;
 
                 if (ArmorType.Any(t => t == armor.GetType()) && armor.Resource > CraftResource.Iron)
@@ -400,7 +400,7 @@ namespace Server.Engines.Craft
                 if (cloth.SetID != SetItem.None || !cloth.CanAlter || cloth.NegativeAttributes.Antique != 0)
                     return false;
 
-                if ((cloth.RequiredRace != null && cloth.RequiredRace == Race.Gargoyle && !cloth.IsArtifact))
+                if ((Race.Gargoyle.ValidateEquipment(cloth) && !cloth.IsArtifact))
                     return false;
             }
 

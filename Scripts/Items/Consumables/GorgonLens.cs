@@ -65,7 +65,7 @@ namespace Server.Items
                 else if (targeted is BaseArmor)
                 {
                     BaseArmor armor = (BaseArmor)targeted;
-                    if (armor.Layer == Layer.Neck || armor.Layer == Layer.Helm || armor is BaseShield || (armor.RequiredRace == Race.Gargoyle && armor.Layer == Layer.Earrings))
+                    if (armor.Layer == Layer.Neck || armor.Layer == Layer.Helm || armor is BaseShield || (Race.Gargoyle.ValidateEquipment(armor) && armor.Layer == Layer.Earrings))
                     {
                         if (armor.GorgonLenseCharges > 0 && armor.GorgonLenseType != LenseType)
                             from.SendGump(new GorgonLenseWarningGump(this, armor));

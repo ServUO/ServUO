@@ -23,8 +23,7 @@ namespace Server.Items
         public override int InitMinHits => 25;
         public override int InitMaxHits => 30;
         public override int StrReq => 35;
-        public override bool CanBeWornByGargoyles => true;
-        public override Race RequiredRace => Race.Gargoyle;
+
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
