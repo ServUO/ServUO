@@ -17,7 +17,6 @@ namespace Server.Items
         {
         }
 
-        public override bool CanBeWornByGargoyles => true;
         public override WeaponAbility PrimaryAbility => WeaponAbility.ConcussionBlow;
         public override WeaponAbility SecondaryAbility => WeaponAbility.WhirlwindAttack;
         public override int StrengthReq => 20;

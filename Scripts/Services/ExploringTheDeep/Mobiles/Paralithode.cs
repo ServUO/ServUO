@@ -6,7 +6,7 @@ namespace Server.Mobiles
     [CorpseName("a paralithode corpse")]
     public class Paralithode : BaseCreature
     {
-        private HideTimer m_Timer;
+        private DateTime _HideCheck;
 
         [Constructable]
         public Paralithode()
@@ -48,9 +48,6 @@ namespace Server.Mobiles
             ControlSlots = 4;
             MinTameSkill = 47.1;
 
-            m_Timer = new HideTimer(this);
-            m_Timer.Start();
-
             SetWeaponAbility(WeaponAbility.DualWield);
             SetWeaponAbility(WeaponAbility.ForceOfNature);
         }
@@ -60,68 +57,56 @@ namespace Server.Mobiles
         {
         }
 
-        public override void OnAfterDelete()
-        {
-            if (m_Timer != null)
-                m_Timer.Stop();
-
-            m_Timer = null;
-
-            base.OnAfterDelete();
-        }
-
         public override void OnAfterTame(Mobile tamer)
         {
-            if (m_Timer != null)
-                m_Timer.Stop();
-
             CantWalk = false;
             Hidden = false;
 
             base.OnAfterTame(tamer);
         }
 
-        private class HideTimer : Timer
+        public override void OnThink()
         {
-            private readonly Paralithode m_Creature;
+            base.OnThink();
 
-            public HideTimer(Paralithode owner)
-                : base(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0))
+            if (_HideCheck < DateTime.UtcNow)
             {
-                m_Creature = owner;
-                Priority = TimerPriority.TwoFiftyMS;
+                CheckHide();
+
+                _HideCheck = DateTime.UtcNow + TimeSpan.FromSeconds(1);
             }
+        }
 
-            protected override void OnTick()
+        private void CheckHide()
+        {
+            if (!Controlled)
             {
-                if (!m_Creature.Controlled)
+                if (!Warmode && !Hidden)
                 {
-                    if (m_Creature.Warmode == false && m_Creature.Hidden == false)
-                        m_Creature.PerformHide();
-                    else if (m_Creature.Warmode == true)
-                    {
-                        m_Creature.CantWalk = false;
-                        return;
-                    }
-
-                    IPooledEnumerable eable = m_Creature.GetMobilesInRange(5);
-
-                    foreach (Mobile m in eable)
-                    {
-                        if (m == m_Creature || (m is Paralithode) || !m_Creature.CanBeHarmful(m))
-                            continue;
-
-                        m_Creature.CantWalk = false;
-                    }
-
-                    eable.Free();
+                    PerformHide();
                 }
-                else
+                else if (Warmode)
                 {
-                    Stop();
-                    m_Creature.CantWalk = false;
-                    m_Creature.Hidden = false;
+                    CantWalk = false;
+                    return;
                 }
+
+                IPooledEnumerable eable = GetMobilesInRange(5);
+
+                foreach (Mobile m in eable)
+                {
+                    if (m == this || (m is Paralithode) || !CanBeHarmful(m))
+                        continue;
+
+                    CantWalk = false;
+                }
+
+                eable.Free();
+            }
+            else
+            {
+                CantWalk = false;
+                Hidden = false;
             }
         }
 
@@ -197,12 +182,6 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            if (!Controlled)
-            {
-                m_Timer = new HideTimer(this);
-                m_Timer.Start();
-            }
         }
     }
 }

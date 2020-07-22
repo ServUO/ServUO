@@ -29,9 +29,6 @@ namespace Server.Items
         public override WeaponType DefType => WeaponType.Piercing;
         public override WeaponAnimation DefAnimation => WeaponAnimation.Pierce1H;
 
-        public override Race RequiredRace => Race.Gargoyle;
-        public override bool CanBeWornByGargoyles => true;
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

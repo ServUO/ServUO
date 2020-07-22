@@ -36,9 +36,6 @@ namespace Server.Items
         public override ArmorMaterialType MaterialType => ArmorMaterialType.Leather;
         public override CraftResource DefaultResource => CraftResource.RegularLeather;
 
-        public override Race RequiredRace => Race.Gargoyle;
-        public override bool CanBeWornByGargoyles => true;
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

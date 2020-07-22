@@ -54,7 +54,6 @@ namespace Server.Mobiles
         private int m_RenewalPrice;
         private int m_RentalGold;
         private DateTime m_RentalExpireTime;
-        private Timer m_RentalExpireTimer;
 
         public RentedVendor(Mobile owner, BaseHouse house, VendorRentalDuration duration, int rentalPrice, bool landlordRenew, int rentalGold)
             : base(owner, house)
@@ -67,8 +66,6 @@ namespace Server.Mobiles
             m_RentalGold = rentalGold;
 
             m_RentalExpireTime = DateTime.UtcNow + duration.Duration;
-            m_RentalExpireTimer = new RentalExpireTimer(this, duration.Duration);
-            m_RentalExpireTimer.Start();
         }
 
         public RentedVendor(Serial serial)
@@ -196,13 +193,6 @@ namespace Server.Mobiles
             to.SendLocalizedMessage(1062464, days.ToString() + "\t" + hours.ToString()); // The rental contract on this vendor will expire in ~1_DAY~ day(s) and ~2_HOUR~ hour(s).
         }
 
-        public override void OnAfterDelete()
-        {
-            base.OnAfterDelete();
-
-            m_RentalExpireTimer.Stop();
-        }
-
         public override void Destroy(bool toBackpack)
         {
             if (RentalGold > 0 && House != null)
@@ -284,10 +274,6 @@ namespace Server.Mobiles
             m_RentalGold = reader.ReadInt();
 
             m_RentalExpireTime = reader.ReadDeltaTime();
-
-            TimeSpan delay = m_RentalExpireTime - DateTime.UtcNow;
-            m_RentalExpireTimer = new RentalExpireTimer(this, delay > TimeSpan.Zero ? delay : TimeSpan.Zero);
-            m_RentalExpireTimer.Start();
         }
 
         private class ContractOptionsEntry : ContextMenuEntry
@@ -416,38 +402,6 @@ namespace Server.Mobiles
 
                     owner.CloseGump(typeof(VendorRentalRefundGump));
                     owner.SendGump(new VendorRentalRefundGump(m_Vendor, from, amount));
-                }
-            }
-        }
-
-        private class RentalExpireTimer : Timer
-        {
-            private readonly RentedVendor m_Vendor;
-
-            public RentalExpireTimer(RentedVendor vendor, TimeSpan delay)
-                : base(delay, vendor.RentalDuration.Duration)
-            {
-                m_Vendor = vendor;
-
-                Priority = TimerPriority.OneMinute;
-            }
-
-            protected override void OnTick()
-            {
-                int renewalPrice = m_Vendor.RenewalPrice;
-
-                if (m_Vendor.Renew && m_Vendor.HoldGold >= renewalPrice)
-                {
-                    m_Vendor.HoldGold -= renewalPrice;
-                    m_Vendor.RentalGold += renewalPrice;
-
-                    m_Vendor.RentalPrice = renewalPrice;
-
-                    m_Vendor.m_RentalExpireTime = DateTime.UtcNow + m_Vendor.RentalDuration.Duration;
-                }
-                else
-                {
-                    m_Vendor.Destroy(false);
                 }
             }
         }

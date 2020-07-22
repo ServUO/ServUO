@@ -234,7 +234,9 @@ namespace Server.Mobiles
 
         private static bool TestRegion(object o, string regionname)
         {
-            if (regionname == null) return false;
+            if (regionname == null)
+                return false;
+
             if (o is Item)
             {
                 Item item = (Item)o;
@@ -254,33 +256,19 @@ namespace Server.Mobiles
                     }
 
                 }
-                //Region r = Region.GetByName(regionname, item.Map);
 
-                Region r = null;
-
-                try
-                {
-                    r = item.Map.Regions[regionname];
-                }
-                catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
+                Region r = Region.Regions.FirstOrDefault(reg => reg.Map == item.Map && !string.IsNullOrEmpty(reg.Name) && reg.Name.ToLower() == regionname.ToLower());
 
                 if (r == null) return false;
                 return (r.Contains(loc));
 
             }
-            else
-                if (o is Mobile)
+            else if (o is Mobile)
             {
                 Mobile mob = (Mobile)o;
 
-                Region r = null;
-                try
-                {
-                    r = mob.Map.Regions[regionname];
-                }
-                catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
+                Region r = Region.Regions.FirstOrDefault(reg => reg.Map == mob.Map && !string.IsNullOrEmpty(reg.Name) && reg.Name.ToLower() == regionname.ToLower());
 
-                //Region r = Region.GetByName(regionname, mob.Map);
                 if (r == null) return false;
                 return (r.Contains(mob.Location));
 

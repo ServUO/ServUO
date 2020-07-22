@@ -1812,8 +1812,10 @@ namespace Server.Mobiles
             {
                 Timer.DelayCall(TimeSpan.FromSeconds(2), m_Mobile.Delete);
             }
-
-            m_Mobile.BeginDeleteTimer();
+            else
+            {
+                m_Mobile.BeginDeleteTimer();
+            }
 
             if (m_Mobile is BaseHire)
             {

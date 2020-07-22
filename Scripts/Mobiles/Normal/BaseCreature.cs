@@ -347,6 +347,7 @@ namespace Server.Mobiles
             set
             {
                 m_IsStabled = value;
+
                 if (m_IsStabled)
                 {
                     StopDeleteTimer();
@@ -434,6 +435,7 @@ namespace Server.Mobiles
         private bool m_IsDeadPet;
         private DateTime m_BondingBegin;
         private DateTime m_OwnerAbandonTime;
+        private DateTime m_DeleteTime;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Spawner MySpawner
@@ -482,58 +484,23 @@ namespace Server.Mobiles
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime OwnerAbandonTime { get { return m_OwnerAbandonTime; } set { m_OwnerAbandonTime = value; } }
-        #endregion
-
-        #region Delete Previously Tamed Timer
-        private DeleteTimer m_DeleteTimer;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public TimeSpan DeleteTimeLeft
+        public DateTime DeleteTime
         {
-            get
+            get { return m_DeleteTime; }
+            set
             {
-                if (m_DeleteTimer != null && m_DeleteTimer.Running)
+                m_DeleteTime = value;
+
+                if (m_DeleteTime != DateTime.MinValue)
                 {
-                    return m_DeleteTimer.Next - DateTime.UtcNow;
+                    CreatureDeleteTimer.RegisterTimer(this);
                 }
-
-                return TimeSpan.Zero;
-            }
-        }
-
-        private class DeleteTimer : Timer
-        {
-            private readonly Mobile m;
-
-            public DeleteTimer(Mobile creature, TimeSpan delay)
-                : base(delay)
-            {
-                m = creature;
-                Priority = TimerPriority.OneMinute;
-            }
-
-            protected override void OnTick()
-            {
-                m.Delete();
-            }
-        }
-
-        public void BeginDeleteTimer()
-        {
-            if (!Summoned && !Deleted && !IsStabled)
-            {
-                StopDeleteTimer();
-                m_DeleteTimer = new DeleteTimer(this, TimeSpan.FromDays(3.0));
-                m_DeleteTimer.Start();
-            }
-        }
-
-        public void StopDeleteTimer()
-        {
-            if (m_DeleteTimer != null)
-            {
-                m_DeleteTimer.Stop();
-                m_DeleteTimer = null;
+                else
+                {
+                    CreatureDeleteTimer.RemoveFromTimer(this);
+                }
             }
         }
         #endregion
@@ -1123,13 +1090,20 @@ namespace Server.Mobiles
                 else
                 {
                     bool validLocation = false;
+
                     for (int j = 0; !validLocation && j < 10; ++j)
                     {
                         loc = new Point3D(loc.X + (Utility.Random(0, 3) - 2), loc.Y + (Utility.Random(0, 3) - 2), loc.Z);
-                        loc.Z = map.GetAverageZ(loc.X, loc.Y);
+
+                        if (!map.CanFit(loc, 16, false, false))
+                        {
+                            SpellHelper.AdjustField(ref loc, map, 16, true);
+                        }
+
                         validLocation = map.CanFit(loc, 16, false, false);
                     }
                 }
+
                 acid.MoveToWorld(loc, map);
             }
         }
@@ -1459,6 +1433,18 @@ namespace Server.Mobiles
             chance -= (MaxLoyalty - m_Loyalty) * 10;
 
             return ((double)chance / 1000);
+        }
+
+        public static readonly TimeSpan DeleteTimeSpan = TimeSpan.FromDays(3);
+
+        public virtual void BeginDeleteTimer()
+        {
+            DeleteTime = DateTime.UtcNow + DeleteTimeSpan;
+        }
+
+        public virtual void StopDeleteTimer()
+        {
+            DeleteTime = DateTime.MinValue;
         }
 
         public virtual bool CanTransfer(Mobile m)
@@ -2210,7 +2196,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write(31); // version
+            writer.Write(32); // version
 
             writer.Write(StealPackGenerated);
             writer.Write(HasBeenStolen);
@@ -2340,11 +2326,11 @@ namespace Server.Mobiles
             // Version 17
             if (IsStabled || (Controlled && ControlMaster != null))
             {
-                writer.Write(TimeSpan.Zero);
+                writer.Write(DateTime.MinValue);
             }
             else
             {
-                writer.Write(DeleteTimeLeft);
+                writer.Write(m_DeleteTime);
             }
 
             // Version 18
@@ -2398,6 +2384,7 @@ namespace Server.Mobiles
 
             switch (version)
             {
+                case 32:
                 case 31:
                     StealPackGenerated = reader.ReadBool();
                     HasBeenStolen = reader.ReadBool();
@@ -2626,22 +2613,21 @@ namespace Server.Mobiles
                 m_RemoveStep = reader.ReadInt();
             }
 
-            TimeSpan deleteTime = TimeSpan.Zero;
-
             if (version >= 17)
             {
-                deleteTime = reader.ReadTimeSpan();
-            }
-
-            if (deleteTime > TimeSpan.Zero || LastOwner != null && !Controlled && !IsStabled)
-            {
-                if (deleteTime == TimeSpan.Zero)
+                if (version < 32)
                 {
-                    deleteTime = TimeSpan.FromDays(3.0);
-                }
+                    var span = reader.ReadTimeSpan();
 
-                m_DeleteTimer = new DeleteTimer(this, deleteTime);
-                m_DeleteTimer.Start();
+                    if (span > TimeSpan.Zero)
+                    {
+                        DeleteTime = DateTime.UtcNow + span;
+                    }
+                }
+                else
+                {
+                    DeleteTime = reader.ReadDateTime();
+                }
             }
 
             if (version >= 18)
@@ -3401,6 +3387,7 @@ namespace Server.Mobiles
                 RemoveFollowers();
                 m_ControlMaster = value;
                 AddFollowers();
+
                 if (m_ControlMaster != null)
                 {
                     StopDeleteTimer();
@@ -3712,18 +3699,9 @@ namespace Server.Mobiles
                 m_AI = null;
             }
 
-            if (m_DeleteTimer != null)
-            {
-                m_DeleteTimer.Stop();
-                m_DeleteTimer = null;
-            }
+            StopDeleteTimer();
 
             FocusMob = null;
-
-            if (IsAnimatedDead)
-            {
-                AnimateDeadSpell.Unregister(m_SummonMaster, this);
-            }
 
             base.OnAfterDelete();
         }
@@ -6194,11 +6172,7 @@ namespace Server.Mobiles
                 AdjustSpeeds();
                 CurrentSpeed = m_dActiveSpeed;
 
-                if (m_DeleteTimer != null)
-                {
-                    m_DeleteTimer.Stop();
-                    m_DeleteTimer = null;
-                }
+                StopDeleteTimer();
 
                 RemoveAggressed(m);
                 RemoveAggressor(m);
@@ -7546,6 +7520,76 @@ namespace Server.Mobiles
             ColUtility.Free(toRemove);
         }
     }
+
+    #region Delete Previously Tamed Timer
+    public class CreatureDeleteTimer : Timer
+    {
+        public static CreatureDeleteTimer Instance { get; set; }
+
+        public List<BaseCreature> ToDelete { get; set; } = new List<BaseCreature>();
+
+        public CreatureDeleteTimer()
+            : base(TimeSpan.FromMinutes(5), TimeSpan.FromSeconds(5))
+        {
+            Priority = TimerPriority.OneMinute;
+        }
+
+        protected override void OnTick()
+        {
+            var toDelete = ToDelete.Where(bc => bc.Deleted || bc.DeleteTime < DateTime.UtcNow).ToList();
+
+            for (int i = 0; i < toDelete.Count; i++)
+            {
+                var bc = toDelete[i];
+
+                if (!bc.Summoned && !bc.Deleted && !bc.IsStabled && bc.DeleteTime != DateTime.MinValue)
+                {
+                    bc.Delete();
+                }
+
+                RemoveFromTimer(bc);
+            }
+
+            ColUtility.Free(toDelete);
+        }
+
+        public static void RegisterTimer(BaseCreature bc)
+        {
+            if (Instance == null)
+            {
+                Instance = new CreatureDeleteTimer();
+            }
+
+            if (!Instance.Running)
+            {
+                Instance.Start();
+            }
+
+            if (!Instance.ToDelete.Contains(bc) && !bc.Summoned && !bc.Deleted && !bc.IsStabled)
+            {
+                Instance.ToDelete.Add(bc);
+            }
+        }
+
+        public static void RemoveFromTimer(BaseCreature bc)
+        {
+            if (Instance == null)
+            {
+                return;
+            }
+
+            if (Instance.ToDelete.Contains(bc))
+            {
+                Instance.ToDelete.Remove(bc);
+
+                if (Instance.ToDelete.Count == 0)
+                {
+                    Instance.Stop();
+                }
+            }
+        }
+    }
+    #endregion
 
     public sealed class PetWindow : Packet
     {

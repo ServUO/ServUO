@@ -516,8 +516,6 @@ namespace Server.Items
     {
         public override CraftResource DefaultResource => CraftResource.RegularLeather;
 
-        public override Race RequiredRace => Race.Elf;
-
         [Constructable]
         public ElvenBoots()
             : this(0)

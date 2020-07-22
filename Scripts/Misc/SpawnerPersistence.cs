@@ -39,8 +39,9 @@ namespace Server
             LifeStealers = 0x00000100,
             LootNerf2 = 0x00000200,
             RemoveUnused = 0x00000400,
-            RemoveUnused2 =     0x00000800,
+            RemoveUnused2 = 0x00000800,
             RemoveTeleporters = 0x00001000,
+            DestardSpawners = 0x00002000
         }
 
         public static string FilePath = Path.Combine("Saves/Misc", "SpawnerPresistence.bin");
@@ -166,6 +167,12 @@ namespace Server
             {
                 case 12:
                 case 11:
+                    if ((VersionFlag & SpawnerVersion.DestardSpawners) == 0)
+                    {
+                        UpdateDestardSpawners();
+                        VersionFlag |= SpawnerVersion.DestardSpawners;
+                    }
+
                     if ((VersionFlag & SpawnerVersion.RemoveTeleporters) == 0)
                     {
                         RemoveTeleporters();
@@ -285,8 +292,16 @@ namespace Server
             Utility.PopColor();
         }
 
+        #region Update Destard Spawners
+        public static void UpdateDestardSpawners()
+        {
+            ReplaceSpawnersByRegionName("Destard", Map.Trammel, "Destard");
+            ReplaceSpawnersByRegionName("Destard", Map.Felucca, "Destard");
+        }
+    #endregion
+
         #region Remove Teleporters
-        public static void RemoveTeleporters()
+    public static void RemoveTeleporters()
         {
             WeakEntityCollection.Delete("tel");
             var delCount = 0;

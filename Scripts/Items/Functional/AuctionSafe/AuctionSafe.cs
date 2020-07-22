@@ -67,6 +67,7 @@ namespace Server.Engines.Auction
                 if (m.Backpack != null && m.Backpack.TryDropItem(m, item, false))
                 {
                     m.SendLocalizedMessage(1152339, name); // A reward of ~1_ITEM~ has been placed in your backpack.
+                    Auction.AuctionItem = null;
                     item.Movable = true;
 
                     Auction.Reset();

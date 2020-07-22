@@ -7,7 +7,7 @@ namespace Server.Mobiles
 {
     public class Raider : BaseCreature
     {
-        public DateTime DeleteTime { get; set; }
+        public DateTime TimeToDelete { get; set; }
 
         public override bool Commandable => false;
         public override bool ReduceSpeedWithDamage => false;
@@ -97,7 +97,7 @@ namespace Server.Mobiles
             }
             else
             {
-                DeleteTime = DateTime.UtcNow + TimeSpan.FromHours(1);
+                TimeToDelete = DateTime.UtcNow + TimeSpan.FromHours(1);
 
                 SetControlMaster(m);
                 IsBonded = false;
@@ -122,7 +122,7 @@ namespace Server.Mobiles
 
         public void CheckDelete()
         {
-            if (DeleteTime != DateTime.MinValue && DateTime.UtcNow > DeleteTime)
+            if (TimeToDelete != DateTime.MinValue && DateTime.UtcNow > TimeToDelete)
             {
                 if (ControlMaster != null && ControlMaster.NetState != null)
                 {
@@ -152,7 +152,7 @@ namespace Server.Mobiles
 
             Timer.DelayCall(TimeSpan.FromSeconds(10), CheckDelete);
 
-            writer.Write(DeleteTime);
+            writer.Write(TimeToDelete);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -160,7 +160,7 @@ namespace Server.Mobiles
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            DeleteTime = reader.ReadDateTime();
+            TimeToDelete = reader.ReadDateTime();
         }
     }
 }

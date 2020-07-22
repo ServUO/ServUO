@@ -11,7 +11,7 @@ namespace Server.Engines.VvV
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsActive { get; set; }
-
+        
         public List<Item> Braziers { get; set; }
         public List<Item> Torches { get; set; }
 
@@ -269,8 +269,11 @@ namespace Server.Engines.VvV
 
         private void Clear()
         {
-            OccupationTimer.Stop();
-            OccupationTimer = null;
+            if (OccupationTimer != null)
+            {
+                OccupationTimer.Stop();
+                OccupationTimer = null;
+            }
 
             Torches.ForEach(t => t.Delete());
             Torches.Clear();
@@ -349,6 +352,18 @@ namespace Server.Engines.VvV
             base.Delete();
 
             Torches.ForEach(t => t.Delete());
+
+            if (OccupationTimer != null)
+            {
+                OccupationTimer.Stop();
+                OccupationTimer = null;
+            }
+
+            if (CheckTimer != null)
+            {
+                CheckTimer.Stop();
+                CheckTimer = null;
+            }
         }
 
         public VvVAltar(Serial serial)

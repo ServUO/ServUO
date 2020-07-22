@@ -11,8 +11,6 @@ namespace Server.Items
         public override int InitMinHits => 100;
         public override int InitMaxHits => 125;
         public override int StrReq => 95;
-        public override bool CanBeWornByGargoyles => true;
-        public override Race RequiredRace => Race.Gargoyle;
 
         [Constructable]
         public GargishChaosShield()

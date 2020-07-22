@@ -34,9 +34,6 @@ namespace Server.Items
 
         public override ArmorMaterialType MaterialType => ArmorMaterialType.Plate;
 
-        public override Race RequiredRace => Race.Gargoyle;
-        public override bool CanBeWornByGargoyles => true;
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

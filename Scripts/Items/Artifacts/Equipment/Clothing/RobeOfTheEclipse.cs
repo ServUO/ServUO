@@ -3,7 +3,6 @@ namespace Server.Items
     [Flipable(0x1F03, 0x1F04)]
     public class RobeOfTheEclipse : BaseOuterTorso
     {
-        public override bool CanBeWornByGargoyles => true;
         public override bool IsArtifact => true;
 
         [Constructable]

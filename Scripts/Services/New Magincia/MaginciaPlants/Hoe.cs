@@ -28,8 +28,6 @@ namespace Server.Items
         public override int InitMinHits => 31;
         public override int InitMaxHits => 60;
 
-        public override bool CanBeWornByGargoyles => true;
-
         public override WeaponAnimation DefAnimation => WeaponAnimation.Slash1H;
 
         public override void OnDoubleClick(Mobile from)

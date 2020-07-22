@@ -231,9 +231,6 @@ namespace Server.Items
             Weight = 4.0;
         }
 
-        public override Race RequiredRace => Race.Gargoyle;
-        public override bool CanBeWornByGargoyles => true;
-
         public ExodusSacrificalGargishDagger(Serial serial) : base(serial)
         {
         }

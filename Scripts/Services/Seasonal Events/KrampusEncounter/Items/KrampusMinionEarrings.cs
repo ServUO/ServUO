@@ -16,9 +16,6 @@ namespace Server.Items
         {
         }
 
-        public override Race RequiredRace => Race.Gargoyle;
-        public override bool CanBeWornByGargoyles => true;
-
         public override ArmorMaterialType MaterialType => ArmorMaterialType.Chainmail;
         public override ArmorMeditationAllowance DefMedAllowance => ArmorMeditationAllowance.All;
 

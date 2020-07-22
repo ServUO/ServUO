@@ -196,9 +196,6 @@ namespace Server.Items
         {
         }
 
-        public override Race RequiredRace => Race.Gargoyle;
-        public override bool CanBeWornByGargoyles => true;
-		
         public override void OnAdded(object parent)
         {
             base.OnAdded(parent);
@@ -245,9 +242,6 @@ namespace Server.Items
         {
         }
 
-        public override Race RequiredRace => Race.Gargoyle;
-        public override bool CanBeWornByGargoyles => true;
-		
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -281,9 +275,6 @@ namespace Server.Items
         {
         }
 
-        public override Race RequiredRace => Race.Gargoyle;
-        public override bool CanBeWornByGargoyles => true;
-		
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

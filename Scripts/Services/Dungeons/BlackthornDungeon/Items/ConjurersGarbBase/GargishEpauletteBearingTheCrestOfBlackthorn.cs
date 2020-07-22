@@ -3,8 +3,6 @@ namespace Server.Items
     public class GargishEpauletteBearingTheCrestOfBlackthorn7 : Cloak
     {
         public override bool IsArtifact => true;
-        public override Race RequiredRace => Race.Gargoyle;
-        public override bool CanBeWornByGargoyles => true;
 
         public override int LabelNumber => 1123326;  // Gargish Epaulette
 

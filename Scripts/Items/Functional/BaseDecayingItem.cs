@@ -8,6 +8,9 @@ namespace Server.Items
         public virtual bool UseSeconds => true;
 
         [CommandProperty(AccessLevel.GameMaster)]
+        public DecayingItemSocket DecayInfo { get { return GetSocket<DecayingItemSocket>(); } set { } }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public int TimeLeft
         {
             get

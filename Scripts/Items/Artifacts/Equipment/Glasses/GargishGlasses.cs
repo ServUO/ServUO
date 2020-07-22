@@ -7,9 +7,6 @@ namespace Server.Items
     {
         public CraftSystem RepairSystem => DefTinkering.CraftSystem;
 
-        public override Race RequiredRace => Race.Gargoyle;
-        public override bool CanBeWornByGargoyles => true;
-
         [Constructable]
         public GargishGlasses()
             : base(0x4644)
