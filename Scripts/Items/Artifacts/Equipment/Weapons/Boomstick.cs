@@ -1,8 +1,7 @@
 namespace Server.Items
 {
-    public class Boomstick : WildStaff, ICanBeElfOrHuman
+    public class Boomstick : WildStaff
     {
-        public bool ElfOnly { get { return false; } set { } }
         public override bool IsArtifact => true;
 
         [Constructable]

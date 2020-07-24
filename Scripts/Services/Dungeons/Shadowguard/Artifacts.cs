@@ -110,9 +110,8 @@ namespace Server.Items
         }
     }
 
-    public class BalakaisShamanStaff : WildStaff, ICanBeElfOrHuman
+    public class BalakaisShamanStaff : WildStaff
     {
-        public bool ElfOnly { get { return false; } set { } }
         public override int LabelNumber => 1156125;
 
         public override bool IsArtifact => true;
