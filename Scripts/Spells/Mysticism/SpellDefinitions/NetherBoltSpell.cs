@@ -47,7 +47,7 @@ namespace Server.Spells.Mysticism
                     return;
                 }
 
-                if (SpellHelper.CheckReflect((int)Circle, ref source, ref target))
+                if (SpellHelper.CheckReflect(this, ref source, ref target))
                 {
                     Timer.DelayCall(TimeSpan.FromSeconds(.5), () =>
                     {

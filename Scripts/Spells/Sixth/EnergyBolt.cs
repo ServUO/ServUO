@@ -36,7 +36,7 @@ namespace Server.Spells.Sixth
 
                 SpellHelper.Turn(Caster, m);
 
-                if (SpellHelper.CheckReflect((int)Circle, ref source, ref target))
+                if (SpellHelper.CheckReflect(this, ref source, ref target))
                 {
                     Timer.DelayCall(TimeSpan.FromSeconds(.5), () =>
                     {

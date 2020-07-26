@@ -37,6 +37,8 @@ namespace Server.Spells.Necromancy
                 Mobile mob = m as Mobile;
                 SpellHelper.Turn(Caster, m);
 
+                SpellHelper.CheckReflect(this, Caster, ref m);
+
                 ApplyEffects(m);
                 ConduitSpell.CheckAffected(Caster, m, ApplyEffects);
             }

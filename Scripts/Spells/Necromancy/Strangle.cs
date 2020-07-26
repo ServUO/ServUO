@@ -64,7 +64,7 @@ namespace Server.Spells.Necromancy
 
         public void ApplyEffects(Mobile m, double strength = 1.0)
         {
-            //SpellHelper.CheckReflect( (int)this.Circle, Caster, ref m );	//Irrelevent after AoS
+            SpellHelper.CheckReflect(this, Caster, ref m);
 
             /* Temporarily chokes off the air suply of the target with poisonous fumes.
              * The target is inflicted with poison damage over time.

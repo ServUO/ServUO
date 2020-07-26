@@ -171,7 +171,7 @@ namespace Server.Items
                         notEnoughTime = true;
                     }
 
-                    if (Corpse.PlayerCorpses.ContainsKey(c) && Corpse.PlayerCorpses[c] >= 3)
+                    if (Corpse.PlayerCorpses != null && Corpse.PlayerCorpses.ContainsKey(c) && Corpse.PlayerCorpses[c] >= 3)
                     {
                         remove = true;
                         tooManySummons = true;

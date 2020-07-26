@@ -1,6 +1,3 @@
-#region References
-#endregion
-
 namespace Server.Items
 {
     public class CrystalTeleporter : ClickTeleporter

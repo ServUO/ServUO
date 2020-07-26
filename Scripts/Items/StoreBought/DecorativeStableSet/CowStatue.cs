@@ -71,7 +71,7 @@ namespace Server.Items
             }
             else if (from.InRange(GetWorldLocation(), 2) && CheckAccessible(from, this))
             {
-                if (NextResourceCount > DateTime.UtcNow)
+                if (NextResourceCount < DateTime.UtcNow)
                 {
                     NextResourceCount = DateTime.UtcNow + TimeSpan.FromDays(1);
                     from.AddToBackpack(new RawRibs(2));

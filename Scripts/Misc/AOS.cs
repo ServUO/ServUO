@@ -546,6 +546,9 @@ namespace Server
 
                     if (obj is BaseArmor)
                         value += ((BaseArmor)obj).GetLuckBonus();
+
+                    if (obj is FishingPole)
+                        value += ((FishingPole)obj).GetLuckBonus();
                 }
 
                 if (obj is ISetItem)

@@ -25,8 +25,6 @@ namespace Server.Spells.Fourth
 
         public void Target(IDamageable m)
         {
-            Mobile mob = m as Mobile;
-
             if (!Caster.CanSee(m))
             {
                 Caster.SendLocalizedMessage(500237); // Target can not be seen.
@@ -36,7 +34,7 @@ namespace Server.Spells.Fourth
                 Mobile source = Caster;
                 SpellHelper.Turn(Caster, m.Location);
 
-                SpellHelper.CheckReflect((int)Circle, ref source, ref m);
+                SpellHelper.CheckReflect(this, ref source, ref m);
 
                 double damage = GetNewAosDamage(23, 1, 4, m);
 

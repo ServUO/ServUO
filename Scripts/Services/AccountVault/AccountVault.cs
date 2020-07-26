@@ -675,9 +675,9 @@ namespace Server.AccountVault
 
         public static bool ValidateLocation(AccountVault v)
         {
-            var reg = Region.Find(v.GetWorldLocation(), v.Map).Name;
+            var reg = Region.Find(v.GetWorldLocation(), v.Map);
 
-            if (SystemSettings.VaultRegions.Any(r => reg == r))
+            if (SystemSettings.VaultRegions.Any(r => reg.IsPartOf(r)))
             {
                 return ValidateMap(v);
             }

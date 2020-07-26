@@ -61,7 +61,7 @@ namespace Server.Items
                         {
                             from.AddToBackpack(new FNPitchfork());
 
-                            from.SendMessage("You find Farmer Nash's pitchfork under one of the brambles of weeds. You pick up the pitchfork and put it in your backpack.");
+                            from.SendLocalizedMessage(1113516); // You find Farmer Nash's pitchfork under one of the brambles of weeds.
                         }
                         break;
                 }
@@ -71,14 +71,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadEncodedInt();
         }
 

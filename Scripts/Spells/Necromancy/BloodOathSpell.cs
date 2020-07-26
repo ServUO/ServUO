@@ -72,6 +72,8 @@ namespace Server.Spells.Necromancy
             {
                 SpellHelper.Turn(Caster, m);
 
+                SpellHelper.CheckReflect(this, Caster, ref m);
+
                 ApplyEffects(m);
                 ConduitSpell.CheckAffected(Caster, m, ApplyEffects);
             }

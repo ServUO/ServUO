@@ -34,7 +34,7 @@ namespace Server.Spells.Seventh
 
                 Mobile source = Caster;
 
-                SpellHelper.CheckReflect((int)Circle, ref source, ref m);
+                SpellHelper.CheckReflect(this, ref source, ref m);
 
                 double damage = GetNewAosDamage(48, 1, 5, m);
 

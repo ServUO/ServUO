@@ -41,7 +41,8 @@ namespace Server
             RemoveUnused = 0x00000400,
             RemoveUnused2 = 0x00000800,
             RemoveTeleporters = 0x00001000,
-            DestardSpawners = 0x00002000
+            DestardSpawners = 0x00002000,
+            DoomSpawners    = 0x00004000
         }
 
         public static string FilePath = Path.Combine("Saves/Misc", "SpawnerPresistence.bin");
@@ -167,6 +168,12 @@ namespace Server
             {
                 case 12:
                 case 11:
+                    if ((VersionFlag & SpawnerVersion.DoomSpawners) == 0)
+                    {
+                        UpdateDoomSpawners();
+                        VersionFlag |= SpawnerVersion.DoomSpawners;
+                    }
+
                     if ((VersionFlag & SpawnerVersion.DestardSpawners) == 0)
                     {
                         UpdateDestardSpawners();
@@ -291,6 +298,13 @@ namespace Server
             Console.WriteLine("[Spawner Persistence v{0}] {1}", _Version.ToString(), str);
             Utility.PopColor();
         }
+
+        #region Update Doom Spawners
+        public static void UpdateDoomSpawners()
+        {
+            ReplaceSpawnersByRegionName("Doom", Map.Malas, "doom");
+        }
+        #endregion
 
         #region Update Destard Spawners
         public static void UpdateDestardSpawners()

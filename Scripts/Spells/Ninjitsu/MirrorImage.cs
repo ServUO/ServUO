@@ -132,7 +132,11 @@ namespace Server.Spells.Ninjitsu
 
                     if (clone != null && clone.Summoned && clone.SummonMaster == defender)
                     {
-                        attacker.SendLocalizedMessage(1063141); // Your attack has been diverted to a nearby mirror image of your target!
+                        if (attacker != null)
+                        {
+                            attacker.SendLocalizedMessage(1063141); // Your attack has been diverted to a nearby mirror image of your target!
+                        }
+
                         defender.SendLocalizedMessage(1063140); // You manage to divert the attack onto one of your nearby mirror images.
                         break;
                     }

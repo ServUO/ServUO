@@ -45,7 +45,7 @@ namespace Server.Spells.Mysticism
             }
             else if (CheckHSequence(target))
             {
-                SpellHelper.CheckReflect((int)Circle, Caster, ref target);
+                SpellHelper.CheckReflect(this, Caster, ref target);
 
                 double duration = ((Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) / 20) + 2;
                 duration -= GetResistSkill(target) / 10;

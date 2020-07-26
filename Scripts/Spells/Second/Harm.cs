@@ -40,7 +40,7 @@ namespace Server.Spells.Second
                 SpellHelper.Turn(Caster, m);
                 Mobile source = Caster;
 
-                SpellHelper.CheckReflect((int)Circle, ref source, ref m);
+                SpellHelper.CheckReflect(this, ref source, ref m);
 
                 double damage = GetNewAosDamage(17, 1, 5, m);
 

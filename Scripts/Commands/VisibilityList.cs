@@ -9,21 +9,9 @@ namespace Server.Commands
     {
         public static void Initialize()
         {
-            EventSink.Login += OnLogin;
-
             CommandSystem.Register("Vis", AccessLevel.Counselor, Vis_OnCommand);
             CommandSystem.Register("VisList", AccessLevel.Counselor, VisList_OnCommand);
             CommandSystem.Register("VisClear", AccessLevel.Counselor, VisClear_OnCommand);
-        }
-
-        public static void OnLogin(LoginEventArgs e)
-        {
-            if (e.Mobile is PlayerMobile)
-            {
-                PlayerMobile pm = (PlayerMobile)e.Mobile;
-
-                pm.VisibilityList.Clear();
-            }
         }
 
         [Usage("Vis")]

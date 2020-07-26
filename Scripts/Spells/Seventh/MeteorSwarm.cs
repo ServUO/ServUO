@@ -92,7 +92,7 @@ namespace Server.Spells.Seventh
                     IDamageable source = Caster;
                     IDamageable target = id;
 
-                    if (SpellHelper.CheckReflect((int)Circle, ref source, ref target, SpellDamageType))
+                    if (SpellHelper.CheckReflect(this, ref source, ref target))
                     {
                         Timer.DelayCall(TimeSpan.FromSeconds(.5), () =>
                         {
