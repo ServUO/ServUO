@@ -69,7 +69,7 @@ namespace Server.Spells.SkillMasteries
 
                     SpellHelper.Turn(Caster, target);
 
-                    if (SpellHelper.CheckReflect(0, ref source, ref target))
+                    if (SpellHelper.CheckReflect(this, ref source, ref target))
                     {
                         Server.Timer.DelayCall(TimeSpan.FromSeconds(.5), () =>
                         {

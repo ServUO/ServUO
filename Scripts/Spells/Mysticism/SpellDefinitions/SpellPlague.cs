@@ -47,7 +47,7 @@ namespace Server.Spells.Mysticism
             }
             else if (CheckHSequence(m))
             {
-                SpellHelper.CheckReflect((int)Circle, Caster, ref m);
+                SpellHelper.CheckReflect(this, Caster, ref m);
 
                 SpellHelper.Turn(Caster, m);
 

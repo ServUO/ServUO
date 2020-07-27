@@ -39,7 +39,7 @@ namespace Server.Spells.Fifth
             {
                 SpellHelper.Turn(Caster, m);
 
-                SpellHelper.CheckReflect((int)Circle, Caster, ref m);
+                SpellHelper.CheckReflect(this, Caster, ref m);
 
                 double duration;
 

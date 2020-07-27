@@ -60,7 +60,7 @@ namespace Server.Spells.First
             else if (CheckHSequence(m))
             {
                 SpellHelper.Turn(Caster, m);
-                SpellHelper.CheckReflect((int)Circle, Caster, ref m);
+                SpellHelper.CheckReflect(this, Caster, ref m);
 
                 if (Mysticism.StoneFormSpell.CheckImmunity(m))
                 {

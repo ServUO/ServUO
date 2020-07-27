@@ -27,7 +27,7 @@ namespace Server.Spells.Spellweaving
             }
             else if (CheckHSequence(m))
             {
-                SpellHelper.CheckReflect(0, Caster, ref m);
+                SpellHelper.CheckReflect(this, Caster, ref m);
 
                 Point3D loc = m.Location;
                 loc.Z += 50;

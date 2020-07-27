@@ -35,7 +35,7 @@ namespace Server.Spells.Fourth
             {
                 SpellHelper.Turn(Caster, m);
 
-                SpellHelper.CheckReflect((int)Circle, Caster, ref m);
+                SpellHelper.CheckReflect(this, Caster, ref m);
 
                 if (m.Spell != null)
                     m.Spell.OnCasterHurt();

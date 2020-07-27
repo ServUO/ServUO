@@ -121,8 +121,8 @@ namespace Server.Engines.Points
                     switch (tmap.Level)
                     {
                         default:
-                        case 0:
-                        case 1: return 50;
+                        case 0: return 50;
+                        case 1: return 100;
                         case 2: return 250;
                         case 3: return 750;
                         case 4: return 1000;

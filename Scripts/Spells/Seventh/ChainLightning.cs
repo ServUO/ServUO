@@ -56,7 +56,7 @@ namespace Server.Spells.Seventh
                         damage = (damage * 2) / count;
 
                     Mobile source = Caster;
-                    SpellHelper.CheckReflect((int)Circle, ref source, ref id, SpellDamageType);
+                    SpellHelper.CheckReflect(this, ref source, ref id);
 
                     if (m != null)
                     {

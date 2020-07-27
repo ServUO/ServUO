@@ -41,7 +41,7 @@ namespace Server.Spells.Sixth
 
                 SpellHelper.Turn(Caster, m);
 
-                SpellHelper.CheckReflect((int)Circle, Caster, ref m);
+                SpellHelper.CheckReflect(this, Caster, ref m);
 
                 InternalTimer t = new InternalTimer(this, attacker, m);
                 t.Start();

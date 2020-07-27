@@ -553,9 +553,10 @@ namespace Server.Misc
         private static int[] _AllRaceIDs = new[]
         {
             0xA289, 0xA28A, 0xA28B, 0xA291, 0xA292, 0xA293, // whips
-            0xE85, 0xE86, // Tools
-            0x1F03, 0x1F04, // Robe
-            0xE81,
+            0xE85, 0xE86,                                   // Tools
+            0x1F03, 0x1F04,                                 // Robe
+            0xE81,                                          // Crook
+            0x1086, 0x108A, 0x1F06, 0x1F09                  // Rings/Bracelet
         };
 
         public static int[] GargoyleOnlyIDs { get { return _GargoyleOnlyIDs; } }
@@ -593,7 +594,7 @@ namespace Server.Misc
 
             0x4210, 0x4211, 0x4212, 0x4213, 0x4D0A, 0x4D0B,        // Jewelry
 
-            0x450D, 0x450E,                                         // Belts
+            0x450D, 0x450E, 0x50D8,                                 // Belts and Half Apron
             0x457E, 0x457F, 0x45A4, 0x45A5,                         // Wing Armor
             0x45B1, 0x45B3, 0x4644, 0x4645,                         // Glasses
             0x46AA, 0x46AB, 0x46B4, 0x46B5,                         // Sashes

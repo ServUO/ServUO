@@ -1,5 +1,7 @@
 using Server.Mobiles;
 using Server.Network;
+using Server.Spells;
+
 using System.Collections.Generic;
 using System.Linq;
 
@@ -252,7 +254,7 @@ namespace Server.Items
         {
         }
 
-        public virtual bool CheckReflect(int circle, IDamageable caster)
+        public virtual bool CheckReflect(Spell spell, IDamageable caster)
         {
             return false;
         }

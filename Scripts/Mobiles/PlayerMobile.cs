@@ -1258,18 +1258,22 @@ namespace Server.Mobiles
                 return;
             }
 
-            if (from is PlayerMobile)
-            {
-                ((PlayerMobile)from).ClaimAutoStabledPets();
-                ((PlayerMobile)from).ValidateEquipment();
+            var pm = from as PlayerMobile;
 
-                ReportMurdererGump.CheckMurderer(from);
+            if (pm != null)
+            {
+                pm.ClaimAutoStabledPets();
+                pm.ValidateEquipment();
+
+                ReportMurdererGump.CheckMurderer(pm);
             }
-            else if (Siege.SiegeShard && from.Map == Map.Trammel && from.AccessLevel == AccessLevel.Player)
+
+            if (Siege.SiegeShard && from.Map == Map.Trammel && from.AccessLevel == AccessLevel.Player)
             {
                 from.Map = Map.Felucca;
             }
 
+            //TODO: Move to fellowship data event sink
             if (((from.Map == Map.Trammel && from.Region.IsPartOf("Blackthorn Castle")) || PointsSystem.FellowshipData.Enabled && from.Region.IsPartOf("BlackthornDungeon") || from.Region.IsPartOf("Ver Lor Reg")) && from.Player && from.AccessLevel == AccessLevel.Player && from.CharacterOut)
             {
                 StormLevelGump menu = new StormLevelGump(from);

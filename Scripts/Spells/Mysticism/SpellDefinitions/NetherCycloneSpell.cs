@@ -64,20 +64,25 @@ namespace Server.Spells.Mysticism
 
                     foreach (IDamageable d in AcquireIndirectTargets(p, 3))
                     {
+                        var m = d as Mobile;
+
+                        if (m != null && m.Hidden)
+                        {
+                            continue;
+                        }
+
                         Server.Effects.SendTargetParticles(d, 0x374A, 1, 15, 9502, 97, 3, (EffectLayer)255, 0);
 
-                        double damage = (((Caster.Skills[CastSkill].Value + (Caster.Skills[DamageSkill].Value / 2)) * .66) + Utility.RandomMinMax(1, 6));
+                        double damage = GetNewAosDamage(50, 1, 5, d);
 
                         Caster.DoHarmful(d);
 
                         SpellHelper.Damage(this, d, damage, 0, 0, 0, 0, 0, 100, 0);
 
-                        if (d is Mobile)
+                        if (m != null)
                         {
-                            Mobile m = d as Mobile;
-
-                            double stamSap = (damage / 3);
-                            double manaSap = (damage / 3);
+                            double stamSap = Utility.RandomMinMax(damage / 10, damage / 2);
+                            double manaSap = Utility.RandomMinMax(damage / 10, damage / 2);
                             double mod = m.Skills[SkillName.MagicResist].Value - ((Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) / 2);
 
                             if (mod > 0)
@@ -95,8 +100,8 @@ namespace Server.Spells.Mysticism
                             {
                                 if (m.Alive)
                                 {
-                                    m.Stam += (int)stamSap;
-                                    m.Mana += (int)manaSap;
+                                    m.Stam = Math.Min(m.StamMax, m.Stam + (int)stamSap);
+                                    m.Mana = Math.Min(m.ManaMax, m.Mana + (int)manaSap);
                                 }
                             });
                         }

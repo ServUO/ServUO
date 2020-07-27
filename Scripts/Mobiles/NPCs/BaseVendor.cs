@@ -2179,8 +2179,6 @@ namespace Server.Mobiles
                     }
                 }
             }
-            //no cliloc for this?
-            //SayTo( seller, true, "Thank you! I bought {0} item{1}. Here is your {2}gp.", Sold, (Sold > 1 ? "s" : ""), GiveGold );
 
             return true;
         }
@@ -2189,7 +2187,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write(3); // version
+            writer.Write(4); // version
 
             writer.Write(BribeMultiplier);
             writer.Write(NextMultiplierDecay);
@@ -2208,8 +2206,6 @@ namespace Server.Mobiles
 
                     int maxAmount = gbi.MaxAmount;
                     int doubled = 0;
-                    int bought = gbi.TotalBought;
-                    int sold = gbi.TotalSold;
 
                     switch (maxAmount)
                     {
@@ -2233,12 +2229,10 @@ namespace Server.Mobiles
                             break;
                     }
 
-                    if (doubled > 0 || bought > 0 || sold > 0)
+                    if (doubled > 0)
                     {
                         writer.WriteEncodedInt(1 + ((j * sbInfos.Count) + i));
                         writer.WriteEncodedInt(doubled);
-                        writer.WriteEncodedInt(bought);
-                        writer.WriteEncodedInt(sold);
                     }
                 }
             }
@@ -2269,6 +2263,7 @@ namespace Server.Mobiles
 
             switch (version)
             {
+                case 4:
                 case 3:
                 case 2:
                     BribeMultiplier = reader.ReadInt();
@@ -2283,13 +2278,11 @@ namespace Server.Mobiles
                         while ((index = reader.ReadEncodedInt()) > 0)
                         {
                             int doubled = reader.ReadEncodedInt();
-                            int bought = 0;
-                            int sold = 0;
 
-                            if (version >= 3)
+                            if (version < 4)
                             {
-                                bought = reader.ReadEncodedInt();
-                                sold = reader.ReadEncodedInt();
+                                reader.ReadEncodedInt();
+                                reader.ReadEncodedInt();
                             }
 
                             if (sbInfos != null)
@@ -2342,8 +2335,8 @@ namespace Server.Mobiles
                                             gbi.Amount = gbi.MaxAmount = amount;
                                         }
 
-                                        gbi.TotalBought = bought;
-                                        gbi.TotalSold = sold;
+                                        gbi.TotalBought = 0;
+                                        gbi.TotalSold = 0;
                                     }
                                 }
                             }

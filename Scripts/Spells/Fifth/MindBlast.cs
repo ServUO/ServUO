@@ -38,7 +38,7 @@ namespace Server.Spells.Fifth
                     Mobile from = Caster, target = m;
 
                     SpellHelper.Turn(from, target);
-                    SpellHelper.CheckReflect((int)Circle, ref from, ref target);
+                    SpellHelper.CheckReflect(this, ref from, ref target);
 
                     int intel = Math.Min(200, Caster.Int);
 
