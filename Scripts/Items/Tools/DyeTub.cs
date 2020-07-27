@@ -187,7 +187,7 @@ namespace Server.Items
                             from.PlaySound(0x23E);
                         }
                     }
-                    else if (item is MonsterStatuette && m_Tub.AllowStatuettes)
+                    else if ((item is MonsterStatuette || item is MongbatDartboard || item is FelineBlessedStatue) && m_Tub.AllowStatuettes)
                     {
                         if (!from.InRange(m_Tub.GetWorldLocation(), 1) || !from.InRange(item.GetWorldLocation(), 1))
                         {

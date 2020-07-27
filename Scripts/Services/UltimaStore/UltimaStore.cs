@@ -187,6 +187,7 @@ namespace Server.Engines.UOStore
 
             // decorations
             cat = StoreCategory.Decorations;
+            Register<DecorativeGardenSculpture>(1159464, 1159465, 0xA565, 0, 0, 400, cat);
             Register<WineRack>(1159462, 1159463, 0xA568, 0, 0, 400, cat);
             Register<DecorativeDungeonSet>(1159468, 1159475, 0, 0x9D40, 0, 1200, cat);
             Register<MetalLadderDeed>(1159478, 1159479, 0xA55C, 0, 0, 400, cat);

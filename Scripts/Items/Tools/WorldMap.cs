@@ -1,5 +1,36 @@
 namespace Server.Items
 {
+    public class NavigatorsWorldMap : WorldMap
+    {
+        public override int LabelNumber { get { return 1075500; } } // Navigator's World Map
+
+        [Constructable]
+        public NavigatorsWorldMap()
+        {
+            ItemID = 0x14EB;
+            LootType = LootType.Blessed;
+            Hue = 483;
+
+            SetDisplay(0, 0, 5119, 4095, 200, 200);
+        }
+
+        public NavigatorsWorldMap(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0); // version
+        }
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
+
     public class WorldMap : MapItem
     {
         [Constructable]

@@ -11,7 +11,7 @@ namespace Server.Mobiles
         {
             Name = "a gibberling";
             Body = 307;
-            BaseSoundID = 422;
+            BaseSoundID = 0x44D;
 
             SetStr(141, 165);
             SetDex(101, 125);

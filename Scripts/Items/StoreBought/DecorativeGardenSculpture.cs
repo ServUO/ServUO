@@ -1,12 +1,12 @@
 namespace Server.Items
 {
     [FlipableAttribute(0xA565, 0xA566)]
-    public class GardenSculpture : Item, IDyable
+    public class DecorativeGardenSculpture : Item, IDyable
     {
         public override string DefaultName => "Garden Sculpture";
 
         [Constructable]
-        public GardenSculpture()
+        public DecorativeGardenSculpture()
             : base(0xA565)
         {
         }
@@ -21,7 +21,7 @@ namespace Server.Items
             return true;
         }
 
-        public GardenSculpture(Serial serial)
+        public DecorativeGardenSculpture(Serial serial)
             : base(serial)
         {
         }
@@ -35,7 +35,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

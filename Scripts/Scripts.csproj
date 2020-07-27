@@ -342,6 +342,7 @@
     <Compile Include="Gumps\Go\ParentNode.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Gumps\SpringDecorTokenGump.cs" />
     <Compile Include="Gumps\HeritageTokenGump.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -559,6 +560,7 @@
     <Compile Include="Items\Consumables\AnniversaryPromotionalToken.cs" />
     <Compile Include="Items\Consumables\CommissionPlayerVendorDeed.cs" />
     <Compile Include="Items\Consumables\FearEssence.cs" />
+    <Compile Include="Items\Consumables\SpringDecorToken.cs" />
     <Compile Include="Items\Consumables\Potions\ShatterPotion.cs" />
     <Compile Include="Items\Containers\BagOfMysticRegs.cs" />
     <Compile Include="Items\Containers\BoxOfCrystalItems.cs" />
@@ -581,6 +583,14 @@
     <Compile Include="Items\Addons\BuffetTable.cs" />
     <Compile Include="Items\Addons\FormalDiningTable.cs" />
     <Compile Include="Items\Addons\GadgetryTable.cs" />
+    <Compile Include="Items\Containers\HeartwoodChest.cs" />
+    <Compile Include="Items\Decorative\BasketOfHerbs.cs" />
+    <Compile Include="Items\Containers\FelineBlessedStatue.cs" />
+    <Compile Include="Items\Decorative\DragonBrazier.cs" />
+    <Compile Include="Items\Decorative\MongbatDartboard.cs" />
+    <Compile Include="Items\Decorative\LowYewTable.cs" />
+    <Compile Include="Items\Decorative\ThrowingPillow.cs" />
+    <Compile Include="Items\Decorative\CarvedWoodenScreen.cs" />
     <Compile Include="Items\Functional\CaptainsHeartyRum.cs" />
     <Compile Include="Items\Internal\ItemSockets\DecayingItemSocket.cs" />
     <Compile Include="Items\Resource\SaltedSerpentSteaks.cs" />
@@ -668,7 +678,7 @@
     <Compile Include="Items\StoreBought\DecorativeDungeonSet\DecorativeDungeonMask.cs" />
     <Compile Include="Items\StoreBought\DecorativeDungeonSet\DungeonFountain.cs" />
     <Compile Include="Items\StoreBought\DecorativeDungeonSet\DungeonBull.cs" />
-    <Compile Include="Items\StoreBought\GardenSculpture.cs" />
+    <Compile Include="Items\StoreBought\DecorativeGardenSculpture.cs" />
     <Compile Include="Items\StoreBought\MetalLadder.cs" />
     <Compile Include="Items\StoreBought\PetWhistle.cs" />
     <Compile Include="Items\StoreBought\ImprovedRockHammer.cs" />

@@ -1233,7 +1233,7 @@ namespace Server.Gumps
                                     if (isCoOwner)
                                     {
                                         from.Prompt = new RenamePrompt(m_House);
-                                        from.SendLocalizedMessage(501302); // What dost thou wish the sign to say?
+                                        //What dost thou wish the sign to say? message handled below in the Rename Prompt.
                                     }
 
                                     break;
@@ -1576,7 +1576,7 @@ namespace Server.Prompts
 {
     public class RenamePrompt : Prompt
     {
-        public override int MessageCliloc => 501302;
+        public override int MessageCliloc => 501302; // What dost thou wish the sign to say?
         private readonly BaseHouse m_House;
         public RenamePrompt(BaseHouse house)
         {

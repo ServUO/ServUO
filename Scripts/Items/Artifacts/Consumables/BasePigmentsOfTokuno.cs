@@ -124,6 +124,9 @@ namespace Server.Items
             if (!CraftResources.IsStandard(resource))
                 return true;
 
+            if (i is MongbatDartboard || i is FelineBlessedStatue)
+                return true;
+
             if (i.IsArtifact)
                 return true;
 
