@@ -47,6 +47,13 @@ namespace Server.Regions
             return false;
         }
 
+        public override void OnExit(Mobile m)
+        {
+            base.OnExit(m);
+
+            BasketOfHerbs.CheckBonus(m);
+        }
+
         public override void OnEnter(Mobile m)
         {
             if (m.AccessLevel == AccessLevel.Player && House != null && House.IsFriend(m))

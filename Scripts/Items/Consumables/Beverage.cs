@@ -121,6 +121,41 @@ namespace Server.Items
         }
     }
 
+    public class Shochu : BaseBeverage
+    {
+        public override int LabelNumber => 1075497; // Shochu
+        public override int MaxQuantity => 5;
+
+        [Constructable]
+        public Shochu()
+            : base(0x1956)
+        {
+            Hue = 700;
+            LootType = LootType.Blessed;
+        }
+
+        public override int ComputeItemID()
+        {
+            return 0x1956;
+        }
+
+        public Shochu(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0); // version
+        }
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
+
     public class Jug : BaseBeverage
     {
         public override int BaseLabelNumber => 1042965;// a jug of Ale

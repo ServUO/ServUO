@@ -2,7 +2,7 @@ using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    [Alterable(typeof(DefBlacksmithy), typeof(GargishWoodenShield))]
+    [Alterable(typeof(DefCarpentry), typeof(GargishWoodenShield))]
     public class WoodenShield : BaseShield
     {
         [Constructable]

@@ -259,15 +259,15 @@ namespace Server.Engines.Craft
             SetDisplayID(index, 1945);
 
             // Stone Floors
-            index = AddCraft(typeof(CraftableHouseItem), 1155877, "Light Paver", 60.0, 110.0, typeof(Granite), 1044514, 5, 1044513);
+            index = AddCraft(typeof(CraftableHouseItem), 1155877, 1155878, 60.0, 110.0, typeof(Granite), 1044514, 5, 1044513);
             SetData(index, CraftableItemType.LightPaver);
             SetDisplayID(index, 1305);
 
-            index = AddCraft(typeof(CraftableHouseItem), 1155877, "Medium Paver", 60.0, 110.0, typeof(Granite), 1044514, 5, 1044513);
+            index = AddCraft(typeof(CraftableHouseItem), 1155877, 1155879, 60.0, 110.0, typeof(Granite), 1044514, 5, 1044513);
             SetData(index, CraftableItemType.MediumPaver);
             SetDisplayID(index, 1309);
 
-            index = AddCraft(typeof(CraftableHouseItem), 1155877, "Dark Paver", 60.0, 110.0, typeof(Granite), 1044514, 5, 1044513);
+            index = AddCraft(typeof(CraftableHouseItem), 1155877, 1155880, 60.0, 110.0, typeof(Granite), 1044514, 5, 1044513);
             SetData(index, CraftableItemType.DarkPaver);
             SetDisplayID(index, 1313);
 
@@ -278,14 +278,14 @@ namespace Server.Engines.Craft
             SetSubRes(typeof(Granite), 1044525);
 
             AddSubRes(typeof(Granite), 1044525, 00.0, 1044514, 1044526);
-            AddSubRes(typeof(DullCopperGranite), 1044023, 65.0, 1044514, 1044527);
-            AddSubRes(typeof(ShadowIronGranite), 1044024, 70.0, 1044514, 1044527);
-            AddSubRes(typeof(CopperGranite), 1044025, 75.0, 1044514, 1044527);
-            AddSubRes(typeof(BronzeGranite), 1044026, 80.0, 1044514, 1044527);
-            AddSubRes(typeof(GoldGranite), 1044027, 85.0, 1044514, 1044527);
-            AddSubRes(typeof(AgapiteGranite), 1044028, 90.0, 1044514, 1044527);
-            AddSubRes(typeof(VeriteGranite), 1044029, 95.0, 1044514, 1044527);
-            AddSubRes(typeof(ValoriteGranite), 1044030, 99.0, 1044514, 1044527);
+            AddSubRes(typeof(DullCopperGranite), 1044023, 65.0, 1044514, 1044526);
+            AddSubRes(typeof(ShadowIronGranite), 1044024, 70.0, 1044514, 1044526);
+            AddSubRes(typeof(CopperGranite), 1044025, 75.0, 1044514, 1044526);
+            AddSubRes(typeof(BronzeGranite), 1044026, 80.0, 1044514, 1044526);
+            AddSubRes(typeof(GoldGranite), 1044027, 85.0, 1044514, 1044526);
+            AddSubRes(typeof(AgapiteGranite), 1044028, 90.0, 1044514, 1044526);
+            AddSubRes(typeof(VeriteGranite), 1044029, 95.0, 1044514, 1044526);
+            AddSubRes(typeof(ValoriteGranite), 1044030, 99.0, 1044514, 1044526);
         }
     }
 }

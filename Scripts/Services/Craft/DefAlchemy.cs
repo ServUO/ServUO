@@ -253,7 +253,7 @@ namespace Server.Engines.Craft
             index = AddCraft(typeof(SmokeBomb), 1116353, 1030248, 90.0, 120.0, typeof(Eggs), 1044477, 1, 1044253);
             AddRes(index, typeof(Ginseng), 1044356, 3, 1044364);
 
-            index = AddCraft(typeof(HoveringWisp), 1116353, 1072881, 75.0, 125.0, typeof(CapturedEssence), 1032686, 4, 1044253);
+            AddCraft(typeof(HoveringWisp), 1116353, 1072881, 75.0, 125.0, typeof(CapturedEssence), 1032686, 4, 1044253);
 
             index = AddCraft(typeof(NaturalDye), 1116353, 1112136, 75.0, 100.0, typeof(PlantPigment), 1112132, 1, 1044253);
             AddRes(index, typeof(ColorFixative), 1112135, 1, 1044253);
@@ -298,7 +298,6 @@ namespace Server.Engines.Craft
             index = AddCraft(typeof(Potash), 1044495, 1116319, 0.0, 50.0, typeof(Board), 1044041, 1, 1044253);
             SetNeedWater(index, true);
             SetUseAllRes(index, true);
-
 
             index = AddCraft(typeof(GoldDust), 1044495, 1153504, 90.0, 120.0, typeof(Gold), 3000083, 1000, 1150747);
             ForceNonExceptional(index);

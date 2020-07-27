@@ -698,10 +698,10 @@ namespace Server.Engines.Craft
 
             // Add every material you want the player to be able to choose from
             // This will override the overridable material
-            AddSubRes(typeof(Leather), 1049150, 00.0, 1044462, 1049311);
-            AddSubRes(typeof(SpinedLeather), 1049151, 65.0, 1044462, 1049311);
-            AddSubRes(typeof(HornedLeather), 1049152, 80.0, 1044462, 1049311);
-            AddSubRes(typeof(BarbedLeather), 1049153, 99.0, 1044462, 1049311);
+            AddSubRes(typeof(Leather), 1049150, 0.0, 1044462, 1049312);
+            AddSubRes(typeof(SpinedLeather), 1049151, 65.0, 1044462, 1049312);
+            AddSubRes(typeof(HornedLeather), 1049152, 80.0, 1044462, 1049312);
+            AddSubRes(typeof(BarbedLeather), 1049153, 99.0, 1044462, 1049312);
 
             MarkOption = true;
             Repair = true;

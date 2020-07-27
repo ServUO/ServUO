@@ -8,57 +8,29 @@ namespace Server.Items
     [Flipable(0x14EB, 0x14EC)]
     public class MapItem : Item, ICraftable
     {
-        private Rectangle2D m_Bounds;
-        private Map m_Facet;
-
-        private int m_Width, m_Height;
-
-        private bool m_Protected;
         private bool m_Editable;
-
-        private readonly List<Point2D> m_Pins = new List<Point2D>();
-
         private const int MaxUserPins = 50;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Protected
-        {
-            get { return m_Protected; }
-            set { m_Protected = value; }
-        }
+        public bool Protected { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Rectangle2D Bounds
-        {
-            get { return m_Bounds; }
-            set { m_Bounds = value; }
-        }
+        public Rectangle2D Bounds { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Map Facet
-        {
-            get { return m_Facet; }
-            set { m_Facet = value; }
-        }
+        public Map Facet { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Width
-        {
-            get { return m_Width; }
-            set { m_Width = value; }
-        }
+        public int Width { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Height
-        {
-            get { return m_Height; }
-            set { m_Height = value; }
-        }
+        public int Height { get; set; }
 
-        public List<Point2D> Pins => m_Pins;
+        public List<Point2D> Pins { get; } = new List<Point2D>();
 
         [Constructable]
-        public MapItem() : this(Map.Trammel)
+        public MapItem()
+            : this(Siege.SiegeShard ? Map.Felucca : Map.Trammel)
         {
         }
 
@@ -67,10 +39,10 @@ namespace Server.Items
         {
             Weight = 1.0;
 
-            m_Width = 200;
-            m_Height = 200;
+            Width = 200;
+            Height = 200;
 
-            m_Facet = map;
+            Facet = map;
         }
 
         public virtual void CraftInit(Mobile from)
@@ -123,12 +95,11 @@ namespace Server.Items
 
         public virtual void DisplayTo(Mobile from)
         {
-            //from.Send(new MapDetails(this));
-            from.Send(new NewMapDetails(this));
+            from.Send(new MapDetails(this));
             from.Send(new MapDisplay(this));
 
-            for (int i = 0; i < m_Pins.Count; ++i)
-                from.Send(new MapAddPin(this, m_Pins[i]));
+            for (int i = 0; i < Pins.Count; ++i)
+                from.Send(new MapAddPin(this, Pins[i]));
 
             from.Send(new MapSetEditable(this, ValidateEdit(from)));
         }
@@ -137,7 +108,7 @@ namespace Server.Items
         {
             if (!ValidateEdit(from))
                 return;
-            else if (m_Pins.Count >= MaxUserPins)
+            else if (Pins.Count >= MaxUserPins)
                 return;
 
             Validate(ref x, ref y);
@@ -165,7 +136,7 @@ namespace Server.Items
         {
             if (!ValidateEdit(from))
                 return;
-            else if (m_Pins.Count >= MaxUserPins)
+            else if (Pins.Count >= MaxUserPins)
                 return;
 
             Validate(ref x, ref y);
@@ -192,13 +163,13 @@ namespace Server.Items
         {
             if (x < 0)
                 x = 0;
-            else if (x >= m_Width)
-                x = m_Width - 1;
+            else if (x >= Width)
+                x = Width - 1;
 
             if (y < 0)
                 y = 0;
-            else if (y >= m_Height)
-                y = m_Height - 1;
+            else if (y >= Height)
+                y = Height - 1;
         }
 
         public virtual bool ValidateEdit(Mobile from)
@@ -212,7 +183,7 @@ namespace Server.Items
                 return false;
             else if (from.AccessLevel >= AccessLevel.GameMaster)
                 return true;
-            else if (!Movable || m_Protected || !from.InRange(GetWorldLocation(), 2))
+            else if (!Movable || Protected || !from.InRange(GetWorldLocation(), 2))
                 return false;
 
             object root = RootParent;
@@ -231,58 +202,57 @@ namespace Server.Items
                 return;
             }
 
-            worldX = ((m_Bounds.Width * x) / Width) + m_Bounds.X;
-            worldY = ((m_Bounds.Height * y) / Height) + m_Bounds.Y;
+            worldX = ((Bounds.Width * x) / Width) + Bounds.X;
+            worldY = ((Bounds.Height * y) / Height) + Bounds.Y;
         }
 
         public void ConvertToMap(int x, int y, out int mapX, out int mapY)
         {
-            if (m_Bounds.Width == 0 || m_Bounds.Height == 0)
+            if (Bounds.Width == 0 || Bounds.Height == 0)
             {
                 mapX = mapY = 0;
                 return;
             }
 
-            mapX = ((x - m_Bounds.X) * Width) / m_Bounds.Width;
-            mapY = ((y - m_Bounds.Y) * Width) / m_Bounds.Height;
+            mapX = ((x - Bounds.X) * Width) / Bounds.Width;
+            mapY = ((y - Bounds.Y) * Width) / Bounds.Height;
         }
 
         public virtual void AddWorldPin(int x, int y)
         {
-            int mapX, mapY;
-            ConvertToMap(x, y, out mapX, out mapY);
+            ConvertToMap(x, y, out int mapX, out int mapY);
 
             AddPin(mapX, mapY);
         }
 
         public virtual void AddPin(int x, int y)
         {
-            m_Pins.Add(new Point2D(x, y));
+            Pins.Add(new Point2D(x, y));
         }
 
         public virtual void RemovePin(int index)
         {
-            if (index > 0 && index < m_Pins.Count)
-                m_Pins.RemoveAt(index);
+            if (index > 0 && index < Pins.Count)
+                Pins.RemoveAt(index);
         }
 
         public virtual void InsertPin(int index, int x, int y)
         {
-            if (index < 0 || index >= m_Pins.Count)
-                m_Pins.Add(new Point2D(x, y));
+            if (index < 0 || index >= Pins.Count)
+                Pins.Add(new Point2D(x, y));
             else
-                m_Pins.Insert(index, new Point2D(x, y));
+                Pins.Insert(index, new Point2D(x, y));
         }
 
         public virtual void ChangePin(int index, int x, int y)
         {
-            if (index >= 0 && index < m_Pins.Count)
-                m_Pins[index] = new Point2D(x, y);
+            if (index >= 0 && index < Pins.Count)
+                Pins[index] = new Point2D(x, y);
         }
 
         public virtual void ClearPins()
         {
-            m_Pins.Clear();
+            Pins.Clear();
         }
 
         public override void Serialize(GenericWriter writer)
@@ -291,18 +261,18 @@ namespace Server.Items
 
             writer.Write(1);
 
-            writer.Write(m_Facet);
+            writer.Write(Facet);
 
-            writer.Write(m_Bounds);
+            writer.Write(Bounds);
 
-            writer.Write(m_Width);
-            writer.Write(m_Height);
+            writer.Write(Width);
+            writer.Write(Height);
 
-            writer.Write(m_Protected);
+            writer.Write(Protected);
 
-            writer.Write(m_Pins.Count);
-            for (int i = 0; i < m_Pins.Count; ++i)
-                writer.Write(m_Pins[i]);
+            writer.Write(Pins.Count);
+            for (int i = 0; i < Pins.Count; ++i)
+                writer.Write(Pins[i]);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -315,21 +285,21 @@ namespace Server.Items
             {
                 case 1:
                     {
-                        m_Facet = reader.ReadMap();
+                        Facet = reader.ReadMap();
                         goto case 0;
                     }
                 case 0:
                     {
-                        m_Bounds = reader.ReadRect2D();
+                        Bounds = reader.ReadRect2D();
 
-                        m_Width = reader.ReadInt();
-                        m_Height = reader.ReadInt();
+                        Width = reader.ReadInt();
+                        Height = reader.ReadInt();
 
-                        m_Protected = reader.ReadBool();
+                        Protected = reader.ReadBool();
 
                         int count = reader.ReadInt();
                         for (int i = 0; i < count; i++)
-                            m_Pins.Add(reader.ReadPoint2D());
+                            Pins.Add(reader.ReadPoint2D());
 
                         break;
                     }
@@ -368,22 +338,8 @@ namespace Server.Items
 
         private sealed class MapDetails : Packet
         {
-            public MapDetails(MapItem map) : base(0x90, 19)
-            {
-                m_Stream.Write(map.Serial);
-                m_Stream.Write((short)0x139D);
-                m_Stream.Write((short)map.Bounds.Start.X);
-                m_Stream.Write((short)map.Bounds.Start.Y);
-                m_Stream.Write((short)map.Bounds.End.X);
-                m_Stream.Write((short)map.Bounds.End.Y);
-                m_Stream.Write((short)map.Width);
-                m_Stream.Write((short)map.Height);
-            }
-        }
-
-        private sealed class NewMapDetails : Packet
-        {
-            public NewMapDetails(MapItem map) : base(0xF5, 21)
+            public MapDetails(MapItem map)
+                : base(0xF5, 21)
             {
                 m_Stream.Write(map.Serial);
                 m_Stream.Write((short)0x139D);

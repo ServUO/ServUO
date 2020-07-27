@@ -1558,6 +1558,8 @@ namespace Server.Mobiles
 
             BaseFamiliar.OnLogout(pm);
 
+            BasketOfHerbs.CheckBonus(pm);
+
             BaseEscort.DeleteEscort(pm);
         }
 
