@@ -3,8 +3,10 @@ using Server.Gumps;
 using Server.Multis;
 using Server.Network;
 using Server.Targeting;
+
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Items
 {
@@ -104,7 +106,7 @@ namespace Server.Items
         }
 
         // aquarium state
-        private AquariumState m_Food;       
+        private AquariumState m_Food;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public AquariumState Food
@@ -132,7 +134,7 @@ namespace Server.Items
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool OptimalState => (m_Food.State == (int)FoodState.Full && m_Water.State == (int)WaterState.Strong);
-                
+
         private bool m_EvaluateDay;
 
         public List<int> Events { get; private set; }
@@ -150,8 +152,8 @@ namespace Server.Items
             }
         }
 
-        // evaluate timer
-        private Timer m_Timer;
+        [CommandProperty(AccessLevel.GameMaster)]
+        public DateTime NextEvaluate { get; set; }
 
         public override BaseAddonContainerDeed Deed { get { return null; } }
 
@@ -194,6 +196,7 @@ namespace Server.Items
         }
 
         public override double DefaultWeight => 10.0;
+        public override bool DisplaysContent => true;
 
         public Aquarium(int itemID)
             : base(itemID)
@@ -246,24 +249,21 @@ namespace Server.Items
             m_Water.Maintain = Utility.RandomMinMax(1, 3);
 
             Events = new List<int>();
+            NextEvaluate = DateTime.UtcNow + EvaluationInterval;
 
-            m_Timer = Timer.DelayCall(EvaluationInterval, EvaluationInterval, Evaluate);
+            EventTimer.AddTimer(this);
         }
-
-        public override bool DisplaysContent => true;
 
         public Aquarium(Serial serial)
             : base(serial)
         {
         }
 
-        public override void OnDelete()
+        public override void Delete()
         {
-            if (m_Timer != null)
-            {
-                m_Timer.Stop();
-                m_Timer = null;
-            }
+            base.Delete();
+
+            EventTimer.RemoveTimer(this);
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -465,11 +465,8 @@ namespace Server.Items
 
             writer.Write(3); // Version
 
-            // version 1
-            if (m_Timer != null)
-                writer.Write(m_Timer.Next);
-            else
-                writer.Write(DateTime.UtcNow + EvaluationInterval);
+            // version 4
+            writer.Write(NextEvaluate);
 
             // version 0
             writer.Write(LiveCreatures);
@@ -494,16 +491,19 @@ namespace Server.Items
 
             switch (version)
             {
+                case 4:
+                    NextEvaluate = reader.ReadDateTime();
+                    goto case 1;
                 case 3:
                 case 2:
                 case 1:
                     {
-                        DateTime next = reader.ReadDateTime();
+                        if (version < 4)
+                        {
+                            reader.ReadDateTime();
 
-                        if (next < DateTime.UtcNow)
-                            next = DateTime.UtcNow;
-
-                        m_Timer = Timer.DelayCall(next - DateTime.UtcNow, EvaluationInterval, Evaluate);
+                            NextEvaluate = DateTime.UtcNow + TimeSpan.FromMinutes(5);
+                        }
 
                         goto case 0;
                     }
@@ -539,6 +539,8 @@ namespace Server.Items
 
             if (version < 3)
                 ValidationQueue<Aquarium>.Add(this);
+
+            EventTimer.AddTimer(this);
         }
 
         private void RecountLiveCreatures()
@@ -613,6 +615,8 @@ namespace Server.Items
 
         public virtual void Evaluate()
         {
+            NextEvaluate = DateTime.UtcNow + EvaluationInterval;
+
             if (m_VacationLeft > 0)
             {
                 m_VacationLeft -= 1;
@@ -1241,7 +1245,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-             reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -1682,7 +1686,7 @@ namespace Server.Items
 
                     if (res == AddonFitResult.Valid)
                     {
-                        house.Addons[addon] = from;                        
+                        house.Addons[addon] = from;
 
                         if (addon.Security)
                         {
@@ -1715,6 +1719,58 @@ namespace Server.Items
                     from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
                 }
             }
+        }
+    }
+
+    public class EventTimer : Timer
+    {
+        public static List<Aquarium> Aquariums { get; set; } = new List<Aquarium>();
+
+        public static EventTimer Instance { get; set; }
+
+        public static void AddTimer(Aquarium aq)
+        {
+            if (!Aquariums.Contains(aq))
+            {
+                Aquariums.Add(aq);
+            }
+
+            if (Instance == null)
+            {
+                Instance = new EventTimer();
+                Instance.Start();
+            }
+        }
+
+        public static void RemoveTimer(Aquarium aq)
+        {
+            if (Aquariums.Contains(aq))
+            {
+                Aquariums.Remove(aq);
+            }
+
+            if (Aquariums.Count == 0 && Instance != null)
+            {
+                Instance.Stop();
+                Instance = null;
+            }
+        }
+
+        public EventTimer()
+            : base(TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5))
+        {
+        }
+
+        protected override void OnTick()
+        {
+            List<Aquarium> list = Aquariums.Where(a => a.NextEvaluate <= DateTime.UtcNow).ToList();
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                list[i].Evaluate();
+            }
+
+            ColUtility.Free(list);
         }
     }
 }

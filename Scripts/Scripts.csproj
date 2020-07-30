@@ -2435,7 +2435,7 @@
     <Compile Include="Mobiles\Normal\Triceratops.cs" />
     <Compile Include="Mobiles\Normal\Turkey.cs" />
     <Compile Include="Mobiles\Normal\PalaminoHorse.cs" />
-    <Compile Include="Mobiles\Normal\SabertoothedTiger.cs" />
+    <Compile Include="Mobiles\Normal\SabreToothedTiger.cs" />
     <Compile Include="Mobiles\Normal\WildTiger.cs" />
     <Compile Include="Mobiles\NPCs\BaseTurnInMobile.cs" />
     <Compile Include="Mobiles\NPCs\Brae.cs" />

@@ -197,15 +197,15 @@ namespace Server.Mobiles
         {
             if (RentalGold > 0 && House != null)
             {
-                if (House.MovingCrate == null)
-                    House.MovingCrate = new MovingCrate(House);
-
                 if (AccountGold.Enabled && Landlord != null)
                 {
                     Banker.Deposit(Landlord, RentalGold, true);
                 }
                 else
                 {
+                    if (House.MovingCrate == null)
+                        House.MovingCrate = new MovingCrate(House);
+
                     Banker.Deposit(House.MovingCrate, RentalGold);
                 }
 
