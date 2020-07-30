@@ -577,6 +577,7 @@ namespace Server.Mobiles
                     {
                         VendorInventory inventory = new VendorInventory(House, Owner, Name, ShopName);
                         inventory.Gold = HoldGold;
+                        HoldGold = 0;
 
                         foreach (Item item in list)
                         {
@@ -1641,7 +1642,6 @@ namespace Server.Mobiles
             for (int i = 0; i < rentals.Count; i++)
             {
                 var vendor = rentals[i];
-
                 int renewalPrice = vendor.RenewalPrice;
 
                 if (vendor.Renew && vendor.HoldGold >= renewalPrice)

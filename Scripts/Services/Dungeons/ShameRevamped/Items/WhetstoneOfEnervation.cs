@@ -15,7 +15,7 @@ namespace Server.Items
         [Constructable]
         public WhetstoneOfEnervation(int amount) : base(0x1368)
         {
-            Hue = 1458;
+            Hue = 254;
             Weight = 1;
 
             Stackable = true;

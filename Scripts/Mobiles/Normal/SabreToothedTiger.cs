@@ -2,16 +2,17 @@ using System;
 
 namespace Server.Mobiles
 {
-    [CorpseName("a saber-toothed tiger corpse")]
-    public class SabertoothedTiger : BaseCreature
+    [CorpseName("a sabre-toothed tiger corpse")]
+    [TypeAlias("Server.Mobiles.SabertoothedTiger")]
+    public class SabreToothedTiger : BaseCreature
     {
         public override double HealChance => .167;
 
         [Constructable]
-        public SabertoothedTiger()
+        public SabreToothedTiger()
             : base(AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            Name = "saber-toothed tiger";
+            Name = "sabre-toothed tiger";
             Body = 0x588;
             Female = true;
 
@@ -85,7 +86,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.Rich, 1);
         }
 
-        public SabertoothedTiger(Serial serial)
+        public SabreToothedTiger(Serial serial)
             : base(serial)
         {
         }

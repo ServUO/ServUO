@@ -39,7 +39,10 @@ namespace Server.Engines.Quests.TimeLord
         public override void OnTalk(PlayerMobile player, bool contextMenu)
         {
             if (player.Quest is TimeForLegendsQuest && ((TimeForLegendsQuest)player.Quest).Objectives.Count == 0)
+            {
+                player.CloseGump(typeof(ChooseMasteryGump));
                 player.SendGump(new ChooseMasteryGump(player, (TimeForLegendsQuest)player.Quest));
+            }
             else if (player.Quest == null && CanRecieveQuest(player))
             {
                 Direction = GetDirectionTo(player);

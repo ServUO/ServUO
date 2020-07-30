@@ -1520,46 +1520,58 @@ namespace Server.Mobiles
         public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
         {
             if (_Table != null && _Table.ContainsKey(defender))
+            {
                 return;
+            }
 
-            else if (_Table == null)
+            if (_Table == null)
+            {
                 _Table = new Dictionary<Mobile, InternalTimer>();
+            }
 
-            defender.PlaySound(0x1324);
-            defender.SendLocalizedMessage(1234567); // The creature gives you a particular vicious bite.
-            Effects.SendLocationParticles(EffectItem.Create(defender.Location, defender.Map, EffectItem.DefaultDuration), 0x37CC, 1, 40, 97, 3, 9917, 0);
+            defender.SendLocalizedMessage(1112472); // You've suffered a vicious bite!
+            defender.SendLocalizedMessage(1113211); // The kepetch gives you a particularly vicious bite!
 
-            _Table[defender] = new InternalTimer(creature, defender);
+            Effects.SendPacket(defender.Location, defender.Map, new ParticleEffect(EffectType.FixedFrom, defender.Serial, Serial.Zero, 0x37CC, defender.Location, defender.Location, 1, 10, false, false, 0, 0, 0, 1003, 1, defender.Serial, 8, 0));
+
+            _Table[defender] = new InternalTimer(defender);
         }
 
         private class InternalTimer : Timer
         {
-            public BaseCreature Attacker { get; set; }
-            public Mobile Defender { get; set; }
+            private Mobile Defender { get; }
+            private int Damage { get; set; }
 
-            private int _Tick;
-
-            public InternalTimer(BaseCreature creature, Mobile defender)
-                : base(TimeSpan.FromSeconds(20), TimeSpan.FromSeconds(20))
+            public InternalTimer(Mobile defender)
+                : base(TimeSpan.FromMinutes(1.0), TimeSpan.FromSeconds(20.0), 10)
             {
-                Attacker = creature;
                 Defender = defender;
+                Damage = 5;
                 Start();
             }
 
             protected override void OnTick()
             {
-                _Tick++;
-
-                AOS.Damage(Defender, Attacker, _Tick * 5, 0, 0, 0, 0, 0, 0, 100);
-                Defender.SendLocalizedMessage(1112473); //Your vicious wound is festering!
-
-                if (_Tick >= 20 || !Defender.Alive || Defender.IsDeadBondedPet)
+                if (!Defender.Alive || Defender.IsDeadBondedPet)
                 {
                     Stop();
 
                     if (_Table.ContainsKey(Defender))
+                    {
                         _Table.Remove(Defender);
+                    }
+                }
+                else
+                {
+                    Defender.Damage(Damage);
+                    Defender.SendLocalizedMessage(1112473); // Your vicious wound is festering!
+
+                    Damage += 5;
+
+                    if (Damage > 50)
+                    {
+                        _Table.Remove(Defender);
+                    }
                 }
             }
         }

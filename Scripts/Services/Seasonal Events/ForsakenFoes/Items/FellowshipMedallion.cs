@@ -170,6 +170,7 @@ namespace Server.Items
             : base(0xA42A)
         {
             Weight = 1.0;
+            Hue = 1151;
             Layer = Layer.Neck;
         }
 

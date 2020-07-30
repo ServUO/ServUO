@@ -44,7 +44,7 @@ namespace Server.Spells.Sixth
 
                     foreach (Mobile m in eable)
                     {
-                        if ((m is Mobiles.ShadowKnight && (m.X != p.X || m.Y != p.Y)) || !SkillHandlers.DetectHidden.CanDetect(Caster, m))
+                        if ((m is Mobiles.ShadowKnight && (m.X != p.X || m.Y != p.Y)) || !SkillHandlers.DetectHidden.CanDetect(Caster, m, true))
                             continue;
 
                         if (m.Hidden && (m.IsPlayer() || Caster.AccessLevel > m.AccessLevel) && CheckDifficulty(Caster, m))
