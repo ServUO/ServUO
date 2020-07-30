@@ -488,74 +488,53 @@ namespace Server.Spells
                 return false;
             }
 
-            if (from is BaseCreature && ((BaseCreature)from).GetMaster() != null)
-            {
-                from = ((BaseCreature)from).GetMaster();
-            }
+            CheckResponsible(ref from);
+            CheckResponsible(ref to);
 
-            if (to is BaseCreature && ((BaseCreature)to).GetMaster() != null)
-            {
-                to = ((BaseCreature)to).GetMaster();
-            }
-
-            Guild fromGuild = GetGuildFor(from);
-            Guild toGuild = GetGuildFor(to);
-
-            if (fromGuild != null && toGuild != null && (fromGuild == toGuild || fromGuild.IsAlly(toGuild)))
+            if (IsGuildAllyOrParty(from, to))
             {
                 return false;
             }
 
-            Party p = Party.Get(from);
+            var toCreature = to as BaseCreature;
 
-            if (p != null && p.Contains(to))
+            if (toCreature != null && (toCreature.Controlled || toCreature.Summoned))
             {
-                return false;
-            }
+                var master = toCreature.GetMaster();
 
-            if (to is BaseCreature)
-            {
-                BaseCreature c = (BaseCreature)to;
-
-                if (c.Controlled || c.Summoned)
+                if (master == from)
                 {
-                    if (c.ControlMaster == from || c.SummonMaster == from)
-                    {
-                        return false;
-                    }
+                    return false;
+                }
 
-                    if (p != null && (p.Contains(c.ControlMaster) || p.Contains(c.SummonMaster)))
-                    {
-                        return false;
-                    }
+                if (IsParty(master, from))
+                {
+                    return false;
                 }
             }
 
-            if (from is BaseCreature)
-            {
-                BaseCreature c = (BaseCreature)from;
+            var fromCreature = from as BaseCreature;
 
-                if (c.Controlled || c.Summoned)
+            if (fromCreature != null)
+            {
+                if (fromCreature.Controlled || fromCreature.Summoned)
                 {
-                    if (c.ControlMaster == to || c.SummonMaster == to)
+                    var master = fromCreature.GetMaster();
+
+                    if (master == to)
                     {
                         return false;
                     }
 
-                    p = Party.Get(to);
-
-                    if (p != null && (p.Contains(c.ControlMaster) || p.Contains(c.SummonMaster)))
+                    if (IsParty(master, to))
                     {
                         return false;
                     }
                 }
                 else
                 {
-                    if (to.Player)
-                    {
-                        return true;
-                    }
-                    if (to is BaseCreature && (((BaseCreature)to).Controlled || ((BaseCreature)to).Summoned) && ((BaseCreature)to).GetMaster() is PlayerMobile)
+                    if (to.Player ||
+                        (toCreature != null && (toCreature.Controlled || toCreature.Summoned) && toCreature.GetMaster() is PlayerMobile))
                     {
                         return true;
                     }
@@ -563,24 +542,25 @@ namespace Server.Spells
             }
 
             // Non-enemy monsters will no longer flag area spells on each other
-            if (from is BaseCreature && to is BaseCreature)
+            if (fromCreature != null && toCreature != null)
             {
-                BaseCreature fromBC = (BaseCreature)from;
-                BaseCreature toBC = (BaseCreature)to;
+                if (fromCreature.GetMaster() is BaseCreature)
+                {
+                    fromCreature = fromCreature.GetMaster() as BaseCreature;
+                }
 
-                if (fromBC.GetMaster() is BaseCreature)
-                    fromBC = fromBC.GetMaster() as BaseCreature;
+                if (toCreature.GetMaster() is BaseCreature)
+                {
+                    toCreature = toCreature.GetMaster() as BaseCreature;
+                }
 
-                if (toBC.GetMaster() is BaseCreature)
-                    toBC = toBC.GetMaster() as BaseCreature;
-
-                if (toBC.IsEnemy(fromBC))   //Natural Enemies
+                if (toCreature.IsEnemy(fromCreature))   //Natural Enemies
                 {
                     return true;
                 }
 
                 //All involved are monsters- no damage. If falls through this statement, normal noto rules apply
-                if (!toBC.Controlled && !toBC.Summoned && !fromBC.Controlled && !fromBC.Summoned) //All involved are monsters- no damage
+                if (!toCreature.Controlled && !toCreature.Summoned && !fromCreature.Controlled && !fromCreature.Summoned) //All involved are monsters- no damage
                 {
                     return false;
                 }
@@ -592,6 +572,39 @@ namespace Server.Spells
             }
 
             return (Notoriety.Compute(from, to) != Notoriety.Innocent || from.Murderer);
+        }
+
+        public static bool CheckResponsible(ref Mobile m)
+        {
+            var bc = m as BaseCreature;
+
+            if (bc != null && bc.GetMaster() != null)
+            {
+                m = bc.GetMaster();
+                return true;
+            }
+
+            return false;
+        }
+
+        public static bool IsGuildAllyOrParty(Mobile from, Mobile to)
+        {
+            return IsGuild(from, to) || IsParty(from, to);
+        }
+
+        public static bool IsGuild(Mobile from, Mobile to)
+        {
+            Guild fromGuild = GetGuildFor(from);
+            Guild toGuild = GetGuildFor(to);
+
+            return fromGuild != null && toGuild != null && (fromGuild == toGuild || fromGuild.IsAlly(toGuild));
+        }
+
+        public static bool IsParty(Mobile from, Mobile to)
+        {
+            Party p = Party.Get(from);
+
+            return p != null && p.Contains(to);
         }
 
         public static IEnumerable<IDamageable> AcquireIndirectTargets(Mobile caster, IPoint3D p, Map map, int range)
@@ -620,7 +633,7 @@ namespace Server.Spells
                     continue;
                 }
 
-                if (id is Mobile && !SpellHelper.ValidIndirectTarget(caster, (Mobile)id))
+                if (id is Mobile && !ValidIndirectTarget(caster, (Mobile)id))
                 {
                     continue;
                 }

@@ -95,9 +95,6 @@ namespace Server.Items
             box.DropItem(item);
 
             DropItem(box);
-
-            var bag = new Bag();
-            DropItem(bag);
         }
 
 
@@ -115,7 +112,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            var version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }
