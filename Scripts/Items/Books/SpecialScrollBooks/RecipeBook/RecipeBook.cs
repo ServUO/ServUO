@@ -61,11 +61,11 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Using { get; set; }
 
-        public List<RecipeScrollDefinition> Recipes;
+        public List<RecipeScrollDefinition> Recipes { get; set; }
 
         public RecipeScrollFilter Filter { get; set; }
 
-        public static RecipeScrollDefinition[] Definitions = new RecipeScrollDefinition[]
+        public RecipeScrollDefinition[] Definitions = new RecipeScrollDefinition[]
         {
             new RecipeScrollDefinition(1, 501, Expansion.ML, RecipeSkillName.Tailoring),
             new RecipeScrollDefinition(2, 502, Expansion.ML, RecipeSkillName.Tailoring),
@@ -354,11 +354,10 @@ namespace Server.Items
 
                 if (Recipes.Any(x => x.RecipeID == recipe.RecipeID))
                 {
-
                     Recipes.ForEach(x =>
                     {
                         if (x.RecipeID == recipe.RecipeID)
-                            x.Amount = x.Amount + 1;
+                            x.Amount += 1;
                     });
 
                     InvalidateProperties();

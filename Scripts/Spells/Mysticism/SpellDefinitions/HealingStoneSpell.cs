@@ -32,8 +32,8 @@ namespace Server.Spells.Mysticism
                 for (int i = 0; i < stones.Length; i++)
                     stones[i].Delete();
 
-                int amount = (int)((Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) * 1.5);
-                int maxHeal = (int)((Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) / 5);
+                int amount = (int)((Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) * 1.25);
+                int maxHeal = (int)((Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) / 6);
 
                 Caster.PlaySound(0x650);
                 Caster.FixedParticles(0x3779, 1, 15, 0x251E, 0, 0, EffectLayer.Waist);

@@ -1209,11 +1209,12 @@ namespace Server.Items
                         new NamedInfoCol(AosAttribute.BonusMana, WeaponStamManaLMCTable),
                         new NamedInfoCol(AosAttribute.BonusInt, DexIntTable),
                         new NamedInfoCol(AosAttribute.LowerManaCost, WeaponStamManaLMCTable),
+                        new NamedInfoCol(AosAttribute.RegenMana, WeaponRegenTable),
                         /*new NamedInfoCol(AosAttribute.LowerRegCost, LowerRegTable), */
                     },
                     new NamedInfoCol[] // armor
                     {
-                        new NamedInfoCol(AosAttribute.LowerRegCost, LowerRegTable),
+                        new NamedInfoCol(AosAttribute.BonusInt, DexIntTable),
                         new NamedInfoCol(AosAttribute.BonusMana, ArmorStamManaLMCTable),
                         new NamedInfoCol(AosAttribute.LowerManaCost, ArmorStamManaLMCTable),
                         new NamedInfoCol(AosAttribute.RegenMana, ArmorRegenTable),

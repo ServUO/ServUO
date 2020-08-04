@@ -1,5 +1,7 @@
 using Server.Items;
+
 using System;
+using System.Linq;
 
 namespace Server.Engines.Craft
 {
@@ -84,6 +86,23 @@ namespace Server.Engines.Craft
                 return num; // The tool must be on your person to use.
 
             return 0;
+        }
+
+        private readonly Type[] _RetainsColor = new[]
+        {
+            typeof(BasePlayerBB)
+        };
+
+        public override bool RetainsColorFrom(CraftItem item, Type type)
+        {
+            var itemType = item.ItemType;
+
+            if (_RetainsColor.Any(t => t == itemType || itemType.IsSubclassOf(t)))
+            {
+                return true;
+            }
+
+            return base.RetainsColorFrom(item, type);
         }
 
         public override void PlayCraftEffect(Mobile from)

@@ -502,12 +502,7 @@ namespace Server.Spells
             {
                 var master = toCreature.GetMaster();
 
-                if (master == from)
-                {
-                    return false;
-                }
-
-                if (IsParty(master, from))
+                if (master == from || IsParty(master, from))
                 {
                     return false;
                 }
@@ -566,7 +561,7 @@ namespace Server.Spells
                 }
             }
 
-            if (to is BaseCreature && !((BaseCreature)to).Controlled && ((BaseCreature)to).InitialInnocent)
+            if (toCreature != null && !toCreature.Controlled && toCreature.InitialInnocent)
             {
                 return true;
             }

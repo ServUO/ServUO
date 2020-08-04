@@ -11370,11 +11370,7 @@ namespace Server.Mobiles
             public SpawnerTimer(XmlSpawner spawner, TimeSpan delay)
                 : base(delay)
             {
-                if (spawner.IsInactivated) // reduce timer priority if spawner is inactivated
-                {
-                    Priority = TimerPriority.FiveSeconds;
-                }
-                else if (spawner.CurrentCount == spawner.MaxCount)
+                if (spawner.IsInactivated || spawner.CurrentCount == spawner.MaxCount) // reduce timer priority if spawner is inactivated or spawner is maxed
                 {
                     Priority = TimerPriority.FiveSeconds;
                 }

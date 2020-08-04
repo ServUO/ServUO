@@ -35,6 +35,7 @@ namespace Server.SkillHandlers
         {
             if (Table == null || !Table.ContainsKey(m))
             {
+                m.RevealingAction();
                 m.Freeze(TimeSpan.FromSeconds(1));
 
                 m.Animate(AnimationType.Spell, 1);

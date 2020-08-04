@@ -734,10 +734,7 @@ namespace Server.Items
 
                     ApplyResourceResistances(old);
 
-                    if (CraftItem.RetainsColor(GetType()))
-                    {
-                        Hue = CraftResources.GetHue(m_Resource);
-                    }
+                    Hue = CraftResources.GetHue(m_Resource);
 
                     Invalidate();
                     InvalidateProperties();
@@ -1088,7 +1085,9 @@ namespace Server.Items
             {
                 try
                 {
-                    Item res = (Item)Activator.CreateInstance(CraftResources.GetInfo(m_Resource).ResourceTypes[0]);
+                    var type = MaterialType == AMT.Cloth ? typeof(Cloth) : CraftResources.GetInfo(m_Resource).ResourceTypes[0];
+
+                    Item res = (Item)Activator.CreateInstance(type);
 
                     ScissorHelper(from, res, m_PlayerConstructed ? (item.Resources.GetAt(0).Amount / 2) : 1);
                     return true;
@@ -2476,7 +2475,7 @@ namespace Server.Items
             if (makersMark)
                 Crafter = from;
 
-            if (!craftItem.ForceNonExceptional)
+            if (!craftItem.ForceNonExceptional && MaterialType > AMT.Cloth)
             {
                 if (typeRes == null)
                     typeRes = craftItem.Resources.GetAt(0).ItemType;
