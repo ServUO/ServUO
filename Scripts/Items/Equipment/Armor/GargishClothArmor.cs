@@ -1,6 +1,3 @@
-using Server.Engines.Craft;
-using System;
-
 namespace Server.Items
 {
     public class GargishClothArmsArmor : BaseArmor
@@ -18,50 +15,6 @@ namespace Server.Items
             Weight = 2.0;
         }
 
-        public override bool Scissor(Mobile from, Scissors scissors)
-        {
-            if (!IsChildOf(from.Backpack))
-            {
-                from.SendLocalizedMessage(502437); // Items you wish to cut must be in your backpack.
-                return false;
-            }
-
-            CraftSystem system = DefTailoring.CraftSystem;
-
-            CraftItem item = system.CraftItems.SearchFor(GetType());
-
-            if (item != null && item.Resources.Count == 1 && item.Resources.GetAt(0).Amount >= 2)
-            {
-                try
-                {
-                    Type resourceType = null;
-
-                    CraftResourceInfo info = CraftResources.GetInfo(Resource);
-
-                    if (info != null && info.ResourceTypes.Length > 0)
-                        resourceType = info.ResourceTypes[0];
-
-                    if (resourceType == null)
-                        resourceType = item.Resources.GetAt(0).ItemType;
-
-                    Item res = (Item)Activator.CreateInstance(resourceType);
-
-                    ScissorHelper(from, res, PlayerConstructed ? (item.Resources.GetAt(0).Amount / 2) : 1);
-
-                    res.LootType = LootType.Regular;
-
-                    return true;
-                }
-                catch (Exception e)
-                {
-                    Server.Diagnostics.ExceptionLogging.LogException(e);
-                }
-            }
-
-            from.SendLocalizedMessage(502440); // Scissors can not be used on that to produce anything.
-            return false;
-        }
-
         public GargishClothArmsArmor(Serial serial)
             : base(serial)
         {
@@ -76,7 +29,7 @@ namespace Server.Items
         public override int InitMaxHits => 50;
         public override int StrReq => 20;
 
-        public override ArmorMaterialType MaterialType => ArmorMaterialType.Leather;
+        public override ArmorMaterialType MaterialType => ArmorMaterialType.Cloth;
         public override CraftResource DefaultResource => CraftResource.None;
         public override ArmorMeditationAllowance DefMedAllowance => ArmorMeditationAllowance.All;
 
@@ -142,50 +95,6 @@ namespace Server.Items
             Weight = 2.0;
         }
 
-        public override bool Scissor(Mobile from, Scissors scissors)
-        {
-            if (!IsChildOf(from.Backpack))
-            {
-                from.SendLocalizedMessage(502437); // Items you wish to cut must be in your backpack.
-                return false;
-            }
-
-            CraftSystem system = DefTailoring.CraftSystem;
-
-            CraftItem item = system.CraftItems.SearchFor(GetType());
-
-            if (item != null && item.Resources.Count == 1 && item.Resources.GetAt(0).Amount >= 2)
-            {
-                try
-                {
-                    Type resourceType = null;
-
-                    CraftResourceInfo info = CraftResources.GetInfo(Resource);
-
-                    if (info != null && info.ResourceTypes.Length > 0)
-                        resourceType = info.ResourceTypes[0];
-
-                    if (resourceType == null)
-                        resourceType = item.Resources.GetAt(0).ItemType;
-
-                    Item res = (Item)Activator.CreateInstance(resourceType);
-
-                    ScissorHelper(from, res, PlayerConstructed ? (item.Resources.GetAt(0).Amount / 2) : 1);
-
-                    res.LootType = LootType.Regular;
-
-                    return true;
-                }
-                catch (Exception e)
-                {
-                    Server.Diagnostics.ExceptionLogging.LogException(e);
-                }
-            }
-
-            from.SendLocalizedMessage(502440); // Scissors can not be used on that to produce anything.
-            return false;
-        }
-
         public GargishClothChestArmor(Serial serial)
             : base(serial)
         {
@@ -200,7 +109,7 @@ namespace Server.Items
         public override int InitMaxHits => 50;
         public override int StrReq => 25;
 
-        public override ArmorMaterialType MaterialType => ArmorMaterialType.Leather;
+        public override ArmorMaterialType MaterialType => ArmorMaterialType.Cloth;
         public override CraftResource DefaultResource => CraftResource.None;
         public override ArmorMeditationAllowance DefMedAllowance => ArmorMeditationAllowance.All;
 
@@ -267,50 +176,6 @@ namespace Server.Items
             Weight = 2.0;
         }
 
-        public override bool Scissor(Mobile from, Scissors scissors)
-        {
-            if (!IsChildOf(from.Backpack))
-            {
-                from.SendLocalizedMessage(502437); // Items you wish to cut must be in your backpack.
-                return false;
-            }
-
-            CraftSystem system = DefTailoring.CraftSystem;
-
-            CraftItem item = system.CraftItems.SearchFor(GetType());
-
-            if (item != null && item.Resources.Count == 1 && item.Resources.GetAt(0).Amount >= 2)
-            {
-                try
-                {
-                    Type resourceType = null;
-
-                    CraftResourceInfo info = CraftResources.GetInfo(Resource);
-
-                    if (info != null && info.ResourceTypes.Length > 0)
-                        resourceType = info.ResourceTypes[0];
-
-                    if (resourceType == null)
-                        resourceType = item.Resources.GetAt(0).ItemType;
-
-                    Item res = (Item)Activator.CreateInstance(resourceType);
-
-                    ScissorHelper(from, res, PlayerConstructed ? (item.Resources.GetAt(0).Amount / 2) : 1);
-
-                    res.LootType = LootType.Regular;
-
-                    return true;
-                }
-                catch (Exception e)
-                {
-                    Server.Diagnostics.ExceptionLogging.LogException(e);
-                }
-            }
-
-            from.SendLocalizedMessage(502440); // Scissors can not be used on that to produce anything.
-            return false;
-        }
-
         public GargishClothLegsArmor(Serial serial)
             : base(serial)
         {
@@ -325,7 +190,7 @@ namespace Server.Items
         public override int InitMaxHits => 50;
         public override int StrReq => 20;
 
-        public override ArmorMaterialType MaterialType => ArmorMaterialType.Leather;
+        public override ArmorMaterialType MaterialType => ArmorMaterialType.Cloth;
         public override CraftResource DefaultResource => CraftResource.None;
         public override ArmorMeditationAllowance DefMedAllowance => ArmorMeditationAllowance.All;
 
@@ -392,50 +257,6 @@ namespace Server.Items
             Weight = 2.0;
         }
 
-        public override bool Scissor(Mobile from, Scissors scissors)
-        {
-            if (!IsChildOf(from.Backpack))
-            {
-                from.SendLocalizedMessage(502437); // Items you wish to cut must be in your backpack.
-                return false;
-            }
-
-            CraftSystem system = DefTailoring.CraftSystem;
-
-            CraftItem item = system.CraftItems.SearchFor(GetType());
-
-            if (item != null && item.Resources.Count == 1 && item.Resources.GetAt(0).Amount >= 2)
-            {
-                try
-                {
-                    Type resourceType = null;
-
-                    CraftResourceInfo info = CraftResources.GetInfo(Resource);
-
-                    if (info != null && info.ResourceTypes.Length > 0)
-                        resourceType = info.ResourceTypes[0];
-
-                    if (resourceType == null)
-                        resourceType = item.Resources.GetAt(0).ItemType;
-
-                    Item res = (Item)Activator.CreateInstance(resourceType);
-
-                    ScissorHelper(from, res, PlayerConstructed ? (item.Resources.GetAt(0).Amount / 2) : 1);
-
-                    res.LootType = LootType.Regular;
-
-                    return true;
-                }
-                catch (Exception e)
-                {
-                    Server.Diagnostics.ExceptionLogging.LogException(e);
-                }
-            }
-
-            from.SendLocalizedMessage(502440); // Scissors can not be used on that to produce anything.
-            return false;
-        }
-
         public GargishClothKiltArmor(Serial serial)
             : base(serial)
         {
@@ -450,7 +271,7 @@ namespace Server.Items
         public override int InitMaxHits => 50;
         public override int StrReq => 20;
 
-        public override ArmorMaterialType MaterialType => ArmorMaterialType.Leather;
+        public override ArmorMaterialType MaterialType => ArmorMaterialType.Cloth;
         public override CraftResource DefaultResource => CraftResource.None;
         public override ArmorMeditationAllowance DefMedAllowance => ArmorMeditationAllowance.All;
 

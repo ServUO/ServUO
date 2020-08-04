@@ -1263,6 +1263,17 @@ namespace Server.Mobiles
             m_Combo = -1;
         }
 
+        public virtual bool IsBeneficial(Target targ)
+        {
+            return (targ.Flags & TargetFlags.Beneficial) != 0 || targ is ArchCureSpell.InternalTarget;
+        }
+
+        public virtual bool IsHarmful(Target targ)
+        {
+            return (targ.Flags & TargetFlags.Harmful) != 0 || targ is HailStormSpell.InternalTarget ||
+                          targ is WildfireSpell.InternalTarget;
+        }
+
         protected virtual bool ProcessTarget()
         {
             Target targ = m_Mobile.Target;
@@ -1270,9 +1281,8 @@ namespace Server.Mobiles
             if (targ == null)
                 return false;
 
-            bool harmful = (targ.Flags & TargetFlags.Harmful) != 0 || targ is HailStormSpell.InternalTarget ||
-                          targ is WildfireSpell.InternalTarget;
-            bool beneficial = (targ.Flags & TargetFlags.Beneficial) != 0 || targ is ArchCureSpell.InternalTarget;
+            bool harmful = IsHarmful(targ);
+            bool beneficial = IsBeneficial(targ);
 
             if (UsesMagery)
             {

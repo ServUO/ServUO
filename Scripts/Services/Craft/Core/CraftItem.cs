@@ -402,7 +402,7 @@ namespace Server.Engines.Craft
             typeof(BaseWeapon), typeof(BaseArmor), typeof(BaseClothing), typeof(BaseJewel), typeof(DragonBardingDeed),
             typeof(BaseAddonDeed), typeof(BaseAddon),
             typeof(PlantPigment), typeof(SoftenedReeds), typeof(DryReeds), typeof(PlantClippings),
-            typeof(MedusaLightScales), typeof(MedusaDarkScales)
+            typeof(MedusaLightScales), typeof(MedusaDarkScales),
         };
 
         private static readonly Type[] m_ClothColoredItemTable =
@@ -419,7 +419,7 @@ namespace Server.Engines.Craft
             typeof(Board), typeof(Log),
             typeof(BaseIngot), typeof(BaseOre), typeof(BaseLeather), typeof(BaseHides), typeof(AbyssalCloth), typeof(UncutCloth), typeof(Cloth),
             typeof(BaseGranite), typeof(BaseScales), typeof(PlantClippings), typeof(DryReeds), typeof(SoftenedReeds),
-            typeof(PlantPigment), typeof(BaseContainer)
+            typeof(PlantPigment), typeof(BaseContainer),
         };
 
         private static readonly Type[] m_MarkableTable =
@@ -480,18 +480,6 @@ namespace Server.Engines.Craft
             }
 
             return false;
-        }
-
-        public static bool RetainsColor(Type type)
-        {
-            bool inItemTable = false;
-
-            for (int i = 0; !inItemTable && i < m_ColoredItemTable.Length; ++i)
-            {
-                inItemTable = (type == m_ColoredItemTable[i] || type.IsSubclassOf(m_ColoredItemTable[i]));
-            }
-
-            return inItemTable;
         }
 
         public bool RetainsColorFrom(CraftSystem system, Type type)

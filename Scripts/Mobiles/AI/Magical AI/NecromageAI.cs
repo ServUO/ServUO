@@ -4,6 +4,8 @@ using Server.Spells.First;
 using Server.Spells.Fourth;
 using Server.Spells.Necromancy;
 using Server.Spells.Second;
+using Server.Targeting;
+using Server.Spells.SkillMasteries;
 #endregion
 
 namespace Server.Mobiles
@@ -70,7 +72,7 @@ namespace Server.Mobiles
                 case 0:
                     Spell spell;
 
-                    if (CheckCastCorpseSkin(m_Mobile))
+                    if (CheckCastCorpseSkin(m_Mobile) && Utility.RandomBool())
                         spell = new CorpseSkinSpell(m_Mobile, null);
                     else
                         spell = new EvilOmenSpell(m_Mobile, null);
@@ -97,6 +99,10 @@ namespace Server.Mobiles
             if (!SmartAI && Utility.RandomBool())
             {
                 return new CurseWeaponSpell(m_Mobile, null);
+            }
+            else if (Utility.RandomBool())
+            {
+                return new ConduitSpell(m_Mobile, null);
             }
 
             return GetRandomSummonSpell();
@@ -177,6 +183,16 @@ namespace Server.Mobiles
         public static bool CheckCastCorpseSkin(BaseCreature bc)
         {
             return bc.ColdDamage != 100 && bc.PhysicalDamage != 100;
+        }
+
+        public override bool IsBeneficial(Target targ)
+        {
+            if (targ is SkillMasterySpell.MasteryTarget && ((SkillMasterySpell.MasteryTarget)targ).Owner is ConduitSpell)
+            {
+                return true;
+            }
+
+            return base.IsBeneficial(targ);
         }
     }
 }

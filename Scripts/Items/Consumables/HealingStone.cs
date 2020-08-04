@@ -59,17 +59,25 @@ namespace Server.Items
             {
                 from.SendLocalizedMessage(1049547); //You are already at full health.
             }
-            else if (from.BeginAction(typeof(HealingStone)))
+            else if (from.CanBeginAction(typeof(HealingStone)))
             {
+                from.BeginAction(typeof(HealingStone));
+
                 if (m_MaxHeal > m_LifeForce)
+                {
                     m_MaxHeal = m_LifeForce;
+                }
+
+                Timer.DelayCall(TimeSpan.FromSeconds(2), m => m.EndAction(typeof(HealingStone)), from);
 
                 if (from.Poisoned)
                 {
                     int toUse = Math.Min(120, from.Poison.RealLevel * 25);
 
                     if (m_MaxLifeForce < toUse)
+                    {
                         from.SendLocalizedMessage(1115265); //Your Mysticism, Focus, or Imbuing Skills are not enough to use the heal stone to cure yourself.
+                    }
                     else if (m_LifeForce < toUse)
                     {
                         from.SendLocalizedMessage(1115264); //Your healing stone does not have enough energy to remove the poison.
@@ -88,16 +96,16 @@ namespace Server.Items
                     }
 
                     if (m_LifeForce <= 0)
+                    {
                         Consume();
+                    }
 
-                    Timer.DelayCall(TimeSpan.FromSeconds(2.0), new TimerStateCallback(ReleaseHealLock), from);
                     return;
                 }
                 else
                 {
                     int toHeal = Math.Min(m_MaxHeal, from.HitsMax - from.Hits);
                     from.Heal(toHeal);
-                    Timer.DelayCall(TimeSpan.FromSeconds(2.0), new TimerStateCallback(ReleaseHealLock), from);
 
                     from.FixedParticles(0x376A, 9, 32, 5030, EffectLayer.Waist);
                     from.PlaySound(0x202);
@@ -120,7 +128,9 @@ namespace Server.Items
                 }
             }
             else
+            {
                 from.SendLocalizedMessage(1095172); // You must wait a few seconds before using another Healing Stone.
+            }
         }
 
         public void OnTick()
@@ -167,11 +177,6 @@ namespace Server.Items
         public override bool AllowSecureTrade(Mobile from, Mobile to, Mobile newOwner, bool accepted)
         {
             return false;
-        }
-
-        private static void ReleaseHealLock(object state)
-        {
-            ((Mobile)state).EndAction(typeof(HealingStone));
         }
 
         public override void Delete()
@@ -231,5 +236,23 @@ namespace Server.Items
                 Delete();
             }
         }
+
+        public static void OnHealFromPotion(Mobile from, int healed)
+        {
+            if (from.Backpack != null)
+            {
+                var stone = from.Backpack.FindItemByType<HealingStone>();
+
+                if (stone != null)
+                {
+                    stone.m_MaxHeal = 1;
+
+                    if (from.CanBeginAction(typeof(HealingStone)))
+                    {
+                        Timer.DelayCall(TimeSpan.FromSeconds(2), m => m.EndAction(typeof(HealingStone)), from);
+                    }
+                }
+            }
+        }  
     }
 }
