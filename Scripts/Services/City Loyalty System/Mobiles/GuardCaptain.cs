@@ -57,7 +57,7 @@ namespace Server.Engines.CityLoyalty
             SetWearable(new BodySash(1326));
             SetWearable(new Halberd());
 
-            CantWalk = true;
+            Frozen = true;
         }
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
@@ -211,6 +211,7 @@ namespace Server.Engines.CityLoyalty
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+			Frozen = true;
 
             City = (City)reader.ReadInt();
 

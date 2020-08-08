@@ -66,11 +66,6 @@ namespace Server.Misc
 
             Map map = from.Map;
 
-            if (ViceVsVirtueSystem.Enabled && ViceVsVirtueSystem.IsEnemy(from, target))
-            {
-                return false;
-            }
-
             if (map != null && (map.Rules & MapRules.BeneficialRestrictions) == 0)
                 return true; // In felucca, anything goes
 

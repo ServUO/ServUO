@@ -327,12 +327,24 @@ namespace Server.Engines.Shadowguard
 
         public static void MovePlayer(Mobile m, Point3D p, bool pets = true)
         {
-            if (pets)
-                BaseCreature.TeleportPets(m, p, m.Map);
+            var pm = m as PlayerMobile;
+
+            if (pm != null && pets)
+            {
+                MovePets(pm, p, m.Map);
+            }
 
             m.MoveToWorld(p, m.Map);
             Effects.SendLocationParticles(EffectItem.Create(m.Location, m.Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 5023);
             m.PlaySound(0x1FE);
+        }
+
+        public static void MovePets(PlayerMobile pm, Point3D p, Map map)
+        {
+            foreach (var bc in pm.AllFollowers.OfType<BaseCreature>().Where(b => b.Map != Map.Internal && b.Region.IsPartOf<ShadowguardRegion>()))
+            {
+                bc.MoveToWorld(p, map);
+            }
         }
 
         public virtual void OnTick()

@@ -121,7 +121,7 @@ namespace Server.Items
                 return false;
             }
 
-            if (Server.Engines.CityLoyalty.CityTradeSystem.HasTrade(m))
+            if (Engines.CityLoyalty.CityTradeSystem.HasTrade(m))
             {
                 if (message)
                 {

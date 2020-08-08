@@ -40,7 +40,7 @@ namespace Server.Regions
                 }
                 else if (m.Region.Name == "Obsidian Wyvern" && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
                 {
-                    creature = ObsidianWyvern.Spawn(new Point3D(5136 + Utility.RandomMinMax(-5, 5), 966 + Utility.RandomMinMax(-5, 5), 0), Map.Trammel);
+                    creature = ObsidianWyvern.Spawn(new Point3D(5136, 966, 0), Map.Trammel);
                 }
                 else if (m.Region.Name == "Orc Engineer" && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
                 {

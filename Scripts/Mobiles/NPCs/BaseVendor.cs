@@ -1068,6 +1068,13 @@ namespace Server.Mobiles
                             continue;
                         }
 
+                        var lockable = item.ParentEntity as LockableContainer;
+
+                        if (lockable != null && lockable.Locked)
+                        {
+                            continue;
+                        }
+
                         if (item.IsStandardLoot() && item.Movable && ssi.IsSellable(item))
                         {
                             table[item] = new SellItemState(item, ssi.GetSellPriceFor(item, this), ssi.GetNameFor(item));

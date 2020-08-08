@@ -1,3 +1,5 @@
+using System;
+
 namespace Server.Items
 {
     public class LeatherDyeTub : DyeTub, Engines.VeteranRewards.IRewardItem
@@ -20,6 +22,14 @@ namespace Server.Items
         public override int FailMessage => 1042418;// You can only dye leather with this tub.
         public override int LabelNumber => 1041284;// Leather Dye Tub
         public override CustomHuePicker CustomHuePicker => CustomHuePicker.LeatherDyeTub;
+
+        private static Type[] _Dyables = new[]
+{
+            typeof(WoodlandBelt), typeof(BarbedWhip), typeof(BladedWhip), typeof(SpikedWhip)
+        };
+
+        public override Type[] ForcedDyables { get { return _Dyables; } }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsRewardItem
         {

@@ -86,6 +86,7 @@ namespace Server.Mobiles
                     p.PeacedUntil = DateTime.UtcNow + duration;
                     p.SendLocalizedMessage(1072065); // You gaze upon the dryad's beauty, and forget to continue battling!
                     p.FixedParticles(0x376A, 1, 20, 0x7F5, EffectLayer.Waist);
+                    p.Warmode = false;
                     p.Combatant = null;
                 }
             }

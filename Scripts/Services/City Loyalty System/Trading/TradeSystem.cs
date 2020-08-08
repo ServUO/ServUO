@@ -293,7 +293,7 @@ namespace Server.Engines.CityLoyalty
             }
         }
 
-        public static void OnPublicMoongateUsed(Mobile from)
+        public static void OnQuickTravelUsed(Mobile from)
         {
             if (ActiveTrades.ContainsKey(from))
             {

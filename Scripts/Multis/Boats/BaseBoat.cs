@@ -2117,10 +2117,7 @@ namespace Server.Multis
 
         public virtual bool SetFacing(Direction facing)
         {
-            if (Parent != null || Map == null)
-                return false;
-
-            if (CheckDecay())
+            if (Parent != null || Map == null || CheckDecay())
                 return false;
 
             if (Map != Map.Internal)
@@ -2168,7 +2165,7 @@ namespace Server.Multis
             {
                 if (o is Item item)
                 {
-                    if (CanMoveOver(item))
+                    if (CanMoveOver(item) || item is BaseAddon || (item is AddonComponent && ((AddonComponent)item).Addon != null))
                         continue;
 
                     if (item != this && Contains(item) && item.Visible && item.Z >= Z && !(item is TillerMan || item is Hold || item is Plank || item is RudderHandle))

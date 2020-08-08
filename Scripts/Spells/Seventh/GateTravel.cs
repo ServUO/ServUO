@@ -58,6 +58,11 @@ namespace Server.Spells.Seventh
                 Caster.SendLocalizedMessage(1061632); // You can't do that while carrying the sigil.
                 return false;
             }
+            else if (Engines.CityLoyalty.CityTradeSystem.HasTrade(Caster))
+            {
+                Caster.SendLocalizedMessage(1151733); // You cannot do that while carrying a Trade Order.
+                return false;
+            }
             else if (Caster.Criminal)
             {
                 Caster.SendLocalizedMessage(1005561, "", 0x22); // Thou'rt a criminal and cannot escape so easily.

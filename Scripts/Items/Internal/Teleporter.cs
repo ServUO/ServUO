@@ -1,4 +1,5 @@
 #region References
+using Server.Engines.CityLoyalty;
 using Server.Mobiles;
 using Server.Network;
 using Server.Spells;
@@ -227,6 +228,12 @@ namespace Server.Items
                 return false;
             }
 
+            if (CityTradeSystem.HasTrade(m))
+            {
+                m.SendLocalizedMessage(1151733); // You cannot do that while carrying a Trade Order.
+                return false;
+            }
+
             return true;
         }
 
@@ -306,7 +313,7 @@ namespace Server.Items
             }
 
             BaseCreature.TeleportPets(m, p, map);
-            m.MoveToWorld(p, map);
+            m.MoveToWorld(p, map);                     
 
             if (m_DestEffect && sendEffect)
             {

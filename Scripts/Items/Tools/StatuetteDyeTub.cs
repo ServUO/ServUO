@@ -1,3 +1,5 @@
+using System;
+
 namespace Server.Items
 {
     public class StatuetteDyeTub : DyeTub, Engines.VeteranRewards.IRewardItem
@@ -20,6 +22,14 @@ namespace Server.Items
         public override int FailMessage => 1049778;// You can only dye veteran reward statuettes with this tub.
         public override int LabelNumber => 1049741;// Reward Statuette Dye Tub
         public override CustomHuePicker CustomHuePicker => CustomHuePicker.LeatherDyeTub;
+
+        private static Type[] _Dyables = new[]
+{
+            typeof(MongbatDartboard), typeof(FelineBlessedStatue)
+        };
+
+        public override Type[] ForcedDyables { get { return _Dyables; } }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsRewardItem
         {

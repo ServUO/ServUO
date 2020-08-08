@@ -206,6 +206,9 @@ namespace Server
                 totalDamage = (int)(totalDamage * 1.25);
             }
 
+            var fromCreature = from as BaseCreature;
+            var toCreature = m as BaseCreature;
+
             if (from != null && !from.Deleted && from.Alive && !from.IsDeadBondedPet)
             {
                 Mobile oath = BloodOathSpell.GetBloodOath(from);
@@ -222,7 +225,7 @@ namespace Server
                     int originalDamage = totalDamage;
                     totalDamage = (int)(totalDamage * 1.2);
 
-                    if (m is BaseCreature)
+                    if (toCreature != null)
                     {
                         from.Damage((int)(originalDamage * (1 - (((from.Skills.MagicResist.Value * .5) + 10) / 100))), m);
                     }
@@ -283,20 +286,20 @@ namespace Server
 
             SkillMasterySpell.OnDamage(m, from, type, ref totalDamage);
 
-            if (from is BaseCreature || m is BaseCreature)
+            if (fromCreature != null || toCreature != null)
             {
                 SpecialAbility.CheckCombatTrigger(from, m, ref totalDamage, type);
 
-                if (from is BaseCreature && m is BaseCreature)
+                if (fromCreature != null && toCreature != null)
                 {
                     TrainingProfile profile = PetTrainingHelper.GetTrainingProfile((BaseCreature)from);
 
                     if (profile != null)
                     {
-                        profile.CheckProgress((BaseCreature)m);
+                        profile.CheckProgress(toCreature);
                     }
 
-                    profile = PetTrainingHelper.GetTrainingProfile((BaseCreature)m);
+                    profile = PetTrainingHelper.GetTrainingProfile(toCreature);
 
                     if (profile != null && 0.3 > Utility.RandomDouble())
                     {
@@ -304,7 +307,7 @@ namespace Server
                     }
                 }
 
-                if (from is BaseCreature && ((BaseCreature)from).Controlled && m.Player)
+                if (fromCreature != null && fromCreature.Controlled && m.Player)
                 {
                     totalDamage /= 2;
                 }
@@ -320,19 +323,15 @@ namespace Server
                 totalDamage = m.Hits;
             }
 
-            if (from is BaseCreature && type <= DamageType.Ranged)
+            if (fromCreature != null && type <= DamageType.Ranged)
             {
-                ((BaseCreature)from).AlterMeleeDamageTo(m, ref totalDamage);
+                fromCreature.AlterMeleeDamageTo(m, ref totalDamage);
             }
 
-            if (m is BaseCreature && type <= DamageType.Ranged)
+            if (toCreature != null && type <= DamageType.Ranged)
             {
-                ((BaseCreature)m).AlterMeleeDamageFrom(from, ref totalDamage);
-            }
-
-            if (m is BaseCreature)
-            {
-                ((BaseCreature)m).OnBeforeDamage(from, ref totalDamage, type);
+                toCreature.AlterMeleeDamageFrom(from, ref totalDamage);
+                toCreature.OnBeforeDamage(from, ref totalDamage, type);
             }
 
             if (totalDamage <= 0)
@@ -347,8 +346,10 @@ namespace Server
 
             totalDamage = m.Damage(totalDamage, from, true, false);
 
-            if (type == DamageType.Melee && from is BaseCreature &&
-                (m is PlayerMobile || (m is BaseCreature && !((BaseCreature)m).IsMonster)))
+            ExplodingTarPotion.RemoveEffects(m);
+
+            if (type == DamageType.Melee && fromCreature != null &&
+                (m is PlayerMobile || (toCreature != null && !toCreature.IsMonster)))
             {
                 from.RegisterDamage(totalDamage / 4, m);
             }
@@ -404,7 +405,9 @@ namespace Server
                 }
                 else if (context.Type == typeof(VampiricEmbraceSpell))
                 {
-                    if (target is BaseCreature && ((BaseCreature)target).TaintedLifeAura)
+                    var bc = target as BaseCreature;
+
+                    if (bc != null && bc.TaintedLifeAura)
                     {
                         Damage(from, target, Scale(damageGiven, 20), false, 0, 0, 0, 0, 0, 0, 100, false, false, false);
                         from.SendLocalizedMessage(1116778); //The tainted life force energy damages you as your body tries to absorb it.

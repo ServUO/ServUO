@@ -175,7 +175,6 @@ namespace Server.Engines.Auction
                 if (bidTotal > CurrentBid)
                 {
                     CurrentBid = bidTotal;
-
                     AddToHistory(m, bidTotal);
                 }
             }
@@ -183,31 +182,16 @@ namespace Server.Engines.Auction
             {
                 acct.WithdrawGold(bidTotal);
                 entry.CurrentBid = bidTotal;
+                var mobile = HighestBid != null ? HighestBid.Mobile : null;
 
                 if (!firstBid)
                 {
-                    if (HighestBid.Mobile != m)
+                    if (mobile != m)
                     {
-                        string name = AuctionItemName();
-
-                        if (string.IsNullOrEmpty(name))
-                        {
-                            name = "the item you bid on";
-                        }
-
-                        NewMaginciaMessage message = new NewMaginciaMessage(null, 1156427, String.Format("{0}\t{1}\t{2}",
-                                                                name,
-                                                                CurrentPlatBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")),
-                                                                CurrentGoldBid.ToString("N0", CultureInfo.GetCultureInfo("en-US"))));
-                        /*  You have been out bid in an auction for ~1_ITEMNAME~. The current winning bid amount is 
-                         * ~2_BIDAMT~plat and ~3_BIDAMT~gp.*/
-                        MaginciaLottoSystem.SendMessageTo(HighestBid.Mobile, message);
+                        DoOutBidMessage(mobile);
                     }
 
-                    Account a = HighestBid.Mobile.Account as Account;
-
-                    if (a != null)
-                        a.DepositGold(HighestBid.CurrentBid);
+                    HighestBid.Refund(this, highestBid);
                 }
                 else
                 {
@@ -226,6 +210,8 @@ namespace Server.Engines.Auction
                 {
                     m.SendLocalizedMessage(1156478); // The auction safe map has been placed in your backpack.
                 }
+
+                VaultLogging.NewHighBid(this, m, mobile, bidTotal);
 
                 HighestBid = entry;
                 return true;
@@ -250,17 +236,44 @@ namespace Server.Engines.Auction
                 }
                 else
                 {
+                    VaultLogging.Buyout(this, m, Buyout);
+
+                    if (HighestBid != null && HighestBid.Mobile != m)
+                    {
+                        DoOutBidMessage(HighestBid.Mobile);
+
+                        HighestBid.Refund(this, HighestBid.CurrentBid);
+                    }
+
                     HighestBid = GetBidEntry(m, true);
                     HighestBid.CurrentBid = Buyout - (int)(Buyout * .05);
                     CurrentBid = Buyout;
 
-                    EndAuction();
+                    EndAuction(true);
                     ClaimPrize(m);
                     return true;
                 }
             }
 
             return false;
+        }
+
+        private void DoOutBidMessage(Mobile to)
+        {
+            string name = AuctionItemName();
+
+            if (string.IsNullOrEmpty(name))
+            {
+                name = "the item you bid on";
+            }
+
+            NewMaginciaMessage message = new NewMaginciaMessage(null, 1156427, String.Format("{0}\t{1}\t{2}",
+                                                    name,
+                                                    CurrentPlatBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")),
+                                                    CurrentGoldBid.ToString("N0", CultureInfo.GetCultureInfo("en-US"))));
+            /*  You have been out bid in an auction for ~1_ITEMNAME~. The current winning bid amount is 
+             * ~2_BIDAMT~plat and ~3_BIDAMT~gp.*/
+            MaginciaLottoSystem.SendMessageTo(to, message);
         }
 
         private void AddToHistory(Mobile m, long highBid)
@@ -286,6 +299,11 @@ namespace Server.Engines.Auction
 
         public void EndAuction()
         {
+            EndAuction(false);
+        }
+
+        public void EndAuction(bool buyout)
+        {
             if (HighestBid != null && HighestBid.Mobile != null)
             {
                 var isPublic = PublicAuction;
@@ -305,6 +323,11 @@ namespace Server.Engines.Auction
                  *  You have 3 days from the end of the auction to claim your item or it will be lost.*/
 
                 MaginciaLottoSystem.SendMessageTo(HighestBid.Mobile, message);
+
+                if (!buyout)
+                {
+                    VaultLogging.WinAuction(this, m, CurrentBid, HighestBid.CurrentBid);
+                }
 
                 Account a = m.Account as Account;
                 Account b = isPublic ? null : Owner.Account as Account;
