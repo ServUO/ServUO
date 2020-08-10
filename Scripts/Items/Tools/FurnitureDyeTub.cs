@@ -1,3 +1,5 @@
+using System;
+
 namespace Server.Items
 {
     public class FurnitureDyeTub : DyeTub, Engines.VeteranRewards.IRewardItem
@@ -19,6 +21,14 @@ namespace Server.Items
         public override int TargetMessage => 501019;// Select the furniture to dye.
         public override int FailMessage => 501021;// That is not a piece of furniture.
         public override int LabelNumber => 1041246;// Furniture Dye Tub
+
+        private static Type[] _Dyables = new[]
+        {
+            typeof(PotionKeg), typeof(CustomizableSquaredDoorMatDeed)
+        };
+
+        public override Type[] ForcedDyables { get { return _Dyables; } }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsRewardItem
         {

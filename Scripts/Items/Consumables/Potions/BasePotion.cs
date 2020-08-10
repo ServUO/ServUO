@@ -108,14 +108,6 @@ namespace Server.Items
             if (!Movable)
                 return;
 
-            if (!from.BeginAction(GetType()))
-            {
-                from.SendLocalizedMessage(500119); // You must wait to perform another action.
-                return;
-            }
-
-            Timer.DelayCall(TimeSpan.FromMilliseconds(500), () => from.EndAction(GetType()));
-
             if (from.InRange(GetWorldLocation(), 1))
             {
                 if (!RequireFreeHand || HasFreeHand(from))

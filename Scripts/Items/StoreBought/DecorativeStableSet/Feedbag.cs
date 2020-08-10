@@ -6,6 +6,7 @@ namespace Server.Items
     {
         public override int LabelNumber => 1126235;  // feedbag
 
+		[Constructable]
         public Feedbag()
             : base(0xA4E3)
         {

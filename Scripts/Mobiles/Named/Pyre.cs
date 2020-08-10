@@ -10,6 +10,7 @@ namespace Server.Mobiles
         {
             Name = "Pyre";
             Hue = 0x489;
+            Body = 0x5;
 
             FightMode = FightMode.Closest;
 
@@ -71,7 +72,7 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
 
-            writer.Write(0); // version
+            writer.Write(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
@@ -79,6 +80,11 @@ namespace Server.Mobiles
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+            if (version == 0)
+            {
+                Body = 0x5;
+            }
         }
     }
 }

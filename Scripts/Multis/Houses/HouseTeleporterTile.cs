@@ -1,4 +1,5 @@
 using Server.ContextMenus;
+using Server.Engines.CityLoyalty;
 using Server.Gumps;
 using Server.Items;
 using Server.Mobiles;
@@ -382,7 +383,7 @@ namespace Server.Multis
                 from.SendLocalizedMessage(1019004); // You are not allowed to travel there.
                 return false;
             }
-            else if (Server.Engines.CityLoyalty.CityTradeSystem.HasTrade(from))
+            else if (CityTradeSystem.HasTrade(from))
             {
                 from.SendLocalizedMessage(1151733); // You cannot do that while carrying a Trade Order.
                 return false;
@@ -489,9 +490,8 @@ namespace Server.Multis
                     Point3D p = target.GetWorldTop();
                     Map map = target.Map;
 
-                    Server.Mobiles.BaseCreature.TeleportPets(m, p, map);
-
-                    m.MoveToWorld(p, map);
+                    BaseCreature.TeleportPets(m, p, map);
+                    m.MoveToWorld(p, map);                   
 
                     if (!m.Hidden || m.IsPlayer())
                     {

@@ -284,7 +284,7 @@ namespace Server.Items
                 new PropInfo(1, 50, 50, new int[] { 55, 60, 65, 70 }), new PropInfo(2, 50, 50, new int[] { 55, 60, 65, 70 }), new PropInfo(4, 0, 35), new PropInfo(6, 25, 25, new int[] { 30, 35 })));
 
             Register(13, new ItemPropertyInfo(AosAttribute.WeaponSpeed, 1075629, 110, typeof(RelicFragment), typeof(Tourmaline), typeof(EssenceControl), 5, 5, 30, 1112045,
-                new PropInfo(1, 30, 30, new int[] { 35, 40 }), new PropInfo(4, 0, 5, new int[] { 10 }), new PropInfo(6, 0, 5, new int[] { 10 })));
+                new PropInfo(1, 30, 30, new int[] { 35, 40 }), new PropInfo(2, 30, 30, new int[] { 35, 40 }), new PropInfo(4, 0, 5, new int[] { 10 }), new PropInfo(6, 0, 5, new int[] { 10 })));
 
             Register(14, new ItemPropertyInfo(AosAttribute.SpellDamage, 1075628, 100, typeof(EnchantedEssence), typeof(Emerald), typeof(CrystalShards), 1, 1, 12, 1112041,
                 new PropInfo(6, 12, 12, new int[] { 14, 16, 18 })));

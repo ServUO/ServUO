@@ -1,6 +1,6 @@
+using Server.Engines.CityLoyalty;
 using Server.Mobiles;
 using Server.Items;
-
 using System;
 using System.Xml;
 using System.Collections.Generic;
@@ -38,7 +38,7 @@ namespace Server.Regions
 
         public override void OnEnter(Mobile m)
         {
-            if (m is PlayerMobile && m.CanBeginAction(typeof(Teleporter)))
+            if (m is PlayerMobile && m.CanBeginAction(typeof(Teleporter)) && !CityTradeSystem.HasTrade(m))
             {
                 DoTeleport(m);
             }
@@ -62,6 +62,7 @@ namespace Server.Regions
                     {
                         BaseCreature.TeleportPets(m, destinationPoint, destinationMap);
                         m.MoveToWorld(destinationPoint, destinationMap);
+
                         m.Frozen = false;
 
                         Timer.DelayCall(TimeSpan.FromMilliseconds(250), () => m.EndAction(typeof(Teleporter)));

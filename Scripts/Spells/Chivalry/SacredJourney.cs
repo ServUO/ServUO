@@ -60,9 +60,14 @@ namespace Server.Spells.Chivalry
             if (!base.CheckCast())
                 return false;
 
-            if (Server.Engines.VvV.VvVSigil.ExistsOn(Caster))
+            if (Engines.VvV.VvVSigil.ExistsOn(Caster))
             {
                 Caster.SendLocalizedMessage(1061632); // You can't do that while carrying the sigil.
+                return false;
+            }
+            else if (Engines.CityLoyalty.CityTradeSystem.HasTrade(Caster))
+            {
+                Caster.SendLocalizedMessage(1151733); // You cannot do that while carrying a Trade Order.
                 return false;
             }
             else if (Caster.Criminal)

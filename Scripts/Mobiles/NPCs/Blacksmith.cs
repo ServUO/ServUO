@@ -26,21 +26,6 @@ namespace Server.Mobiles
 
         public override void InitSBInfo()
         {
-            /*m_SBInfos.Add( new SBSmithTools() );
-            m_SBInfos.Add( new SBMetalShields() );
-            m_SBInfos.Add( new SBWoodenShields() );
-            m_SBInfos.Add( new SBPlateArmor() );
-            m_SBInfos.Add( new SBHelmetArmor() );
-            m_SBInfos.Add( new SBChainmailArmor() );
-            m_SBInfos.Add( new SBRingmailArmor() );
-            m_SBInfos.Add( new SBAxeWeapon() );
-            m_SBInfos.Add( new SBPoleArmWeapon() );
-            m_SBInfos.Add( new SBRangedWeapon() );
-            m_SBInfos.Add( new SBKnifeWeapon() );
-            m_SBInfos.Add( new SBMaceWeapon() );
-            m_SBInfos.Add( new SBSpearForkWeapon() );
-            m_SBInfos.Add( new SBSwordWeapon() );*/
-
             if (!IsStygianVendor)
             {
                 m_SBInfos.Add(new SBBlacksmith());
@@ -62,7 +47,7 @@ namespace Server.Mobiles
 
         public override void InitOutfit()
         {
-            Item item = (Utility.RandomBool() ? null : new Server.Items.RingmailChest());
+            Item item = Utility.RandomBool() ? null : new Items.RingmailChest();
 
             if (item != null && !EquipItem(item))
             {
@@ -71,10 +56,10 @@ namespace Server.Mobiles
             }
 
             if (item == null)
-                AddItem(new Server.Items.FullApron());
+                AddItem(new Items.FullApron());
 
-            AddItem(new Server.Items.Bascinet());
-            AddItem(new Server.Items.SmithHammer());
+            AddItem(new Items.Bascinet());
+            AddItem(new Items.SmithHammer());
 
             base.InitOutfit();
         }
@@ -140,14 +125,12 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

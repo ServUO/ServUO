@@ -224,11 +224,10 @@ namespace Server.Items
 
             object[] states = (object[])state;
             Mobile from = (Mobile)states[0];
-            IPoint3D p = (IPoint3D)states[1];
+            Point3D p = (Point3D)states[1];
             Map map = (Map)states[2];
 
-            Point3D loc = new Point3D(p);
-            MoveToWorld(loc, map);
+            MoveToWorld(p, map);
         }
 
         private class ThrowTarget : Target
@@ -265,17 +264,11 @@ namespace Server.Items
                 }
 
                 SpellHelper.GetSurfaceTop(ref p);
-
                 from.RevealingAction();
-
                 IEntity to;
 
-                to = new Entity(Serial.Zero, new Point3D(p), map);
-
-                if (p is Mobile)
-                {
-                    to = (Mobile)p;
-                }
+                var point = new Point3D(p);
+                to = new Entity(Serial.Zero, point, map);
 
                 Effects.SendMovingEffect(from, to, m_Potion.ItemID, 7, 0, false, false, m_Potion.Hue, 0);
 
@@ -286,7 +279,7 @@ namespace Server.Items
 
                 m_Potion.Internalize();
                 Timer.DelayCall(
-                    TimeSpan.FromSeconds(1.0), new TimerStateCallback(m_Potion.Reposition_OnTick), new object[] { from, p, map });
+                    TimeSpan.FromSeconds(1.0), new TimerStateCallback(m_Potion.Reposition_OnTick), new object[] { from, point, map });
             }
         }
     }

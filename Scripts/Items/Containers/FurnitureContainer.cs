@@ -604,7 +604,6 @@ namespace Server.Items
     public class ChinaCabinet : FurnitureContainer, IFlipable
     {
         public override int LabelNumber => 1158974;  // China Cabinet
-        public override int DefaultGumpID => 0x4F;
 
         [Constructable]
         public ChinaCabinet()

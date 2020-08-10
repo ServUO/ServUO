@@ -924,7 +924,7 @@ namespace Server.Multis
                 {
                     DeckItem tile = Addons[addon];
 
-                    addon.MoveToWorld(new Point3D(tile.X, tile.Y, tile.Z), Map);
+                    addon.MoveToWorld(new Point3D(tile.X, tile.Y, tile.Z + tile.ItemData.Height), Map);
                 }
             }
 
@@ -950,7 +950,9 @@ namespace Server.Multis
             }
 
             if (GalleonPilot != null)
+            {
                 yield return GalleonPilot;
+            }
         }
 
         public int GetValueForDirection(Direction direction)
@@ -1267,14 +1269,14 @@ namespace Server.Multis
 
         public bool CanAddAddon(Point3D p)
         {
-            if (Addons.Count >= MaxAddons || Map == null || Map == Map.Internal)
+            if ((Addons != null && Addons.Count >= MaxAddons) || Map == null || Map == Map.Internal)
                 return false;
 
             IPooledEnumerable eable = Map.GetItemsInRange(p, 0);
 
             foreach (DeckItem item in eable.OfType<DeckItem>())
             {
-                if (m_ShipAddonTiles.Any(id => id == item.ItemID) && !Addons.ContainsValue(item))
+                if (m_ShipAddonTiles.Any(id => id == item.ItemID) && (Addons == null || !Addons.ContainsValue(item)))
                 {
                     eable.Free();
                     return true;
@@ -1563,7 +1565,7 @@ namespace Server.Multis
                     #endregion
                     else
                     {
-                        if (Addons == null)
+                        if (count > 0 && Addons == null)
                         {
                             Addons = new Dictionary<Item, DeckItem>();
                         }

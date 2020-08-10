@@ -4,6 +4,9 @@ using Server.Multis;
 using Server.Targeting;
 using System.Collections.Generic;
 
+using System;
+using System.Linq;
+
 namespace Server.Items
 {
     public interface IDyable
@@ -68,6 +71,13 @@ namespace Server.Items
 
         public virtual int TargetMessage => 500859;  // Select the clothing to dye.        
         public virtual int FailMessage => 1042083;  // You can not dye that.
+
+        public virtual Type[] ForcedDyables { get { return new Type[0]; } }
+
+        public virtual bool CanForceDye(Item item)
+        {
+            return ForcedDyables != null && ForcedDyables.Any(t => t == item.GetType());
+        }
 
         public override void Serialize(GenericWriter writer)
         {
@@ -135,7 +145,7 @@ namespace Server.Items
                         else if (((IDyable)item).Dye(from, m_Tub))
                             from.PlaySound(0x23E);
                     }
-                    else if ((FurnitureAttribute.Check(item) || (item is PotionKeg)) && m_Tub.AllowFurniture)
+                    else if (m_Tub.AllowFurniture && (FurnitureAttribute.Check(item) || m_Tub.CanForceDye(item)))
                     {
                         if (!from.InRange(m_Tub.GetWorldLocation(), 1) || !from.InRange(item.GetWorldLocation(), 1))
                         {
@@ -171,7 +181,7 @@ namespace Server.Items
                             }
                         }
                     }
-                    else if ((item is Runebook || item is RecallRune) && m_Tub.AllowRunebooks)
+                    else if (m_Tub.AllowRunebooks && (item is Runebook || item is RecallRune || m_Tub.CanForceDye(item)))
                     {
                         if (!from.InRange(m_Tub.GetWorldLocation(), 1) || !from.InRange(item.GetWorldLocation(), 1))
                         {
@@ -187,7 +197,7 @@ namespace Server.Items
                             from.PlaySound(0x23E);
                         }
                     }
-                    else if ((item is MonsterStatuette || item is MongbatDartboard || item is FelineBlessedStatue) && m_Tub.AllowStatuettes)
+                    else if (m_Tub.AllowStatuettes && (item is MonsterStatuette || m_Tub.CanForceDye(item)))
                     {
                         if (!from.InRange(m_Tub.GetWorldLocation(), 1) || !from.InRange(item.GetWorldLocation(), 1))
                         {
@@ -205,9 +215,13 @@ namespace Server.Items
                     }
                     else if (m_Tub.AllowLeather)
                     {
-                        if ((item is BaseArmor && (((BaseArmor)item).MaterialType == ArmorMaterialType.Leather || ((BaseArmor)item).MaterialType == ArmorMaterialType.Studded)) ||
-                            (item is BaseClothing && (((BaseClothing)item).DefaultResource == CraftResource.RegularLeather) || item is WoodlandBelt || item is BarbedWhip
-                            || item is BladedWhip || item is SpikedWhip))
+                        var armor = item as BaseArmor;
+                        var clothing = item as BaseClothing;
+
+                        if ((armor != null && (armor.MaterialType == ArmorMaterialType.Leather ||
+                            armor.MaterialType == ArmorMaterialType.Studded)) ||
+                            (clothing != null && (clothing.DefaultResource == CraftResource.RegularLeather)) ||
+                            m_Tub.CanForceDye(item))
                         {
                             if (!from.InRange(m_Tub.GetWorldLocation(), 1) || !from.InRange(item.GetWorldLocation(), 1))
                             {
@@ -232,24 +246,33 @@ namespace Server.Items
                             from.SendLocalizedMessage(m_Tub.FailMessage);
                         }
                     }
-                    else if ((item is BaseArmor && (((BaseArmor)item).MaterialType == ArmorMaterialType.Chainmail || ((BaseArmor)item).MaterialType == ArmorMaterialType.Ringmail || ((BaseArmor)item).MaterialType == ArmorMaterialType.Plate)) && m_Tub.AllowMetal)
+                    else if (m_Tub.AllowMetal)
                     {
-                        if (!from.InRange(m_Tub.GetWorldLocation(), 1) || !from.InRange(item.GetWorldLocation(), 1))
+                        var armor = item as BaseArmor;
+
+                        if ((armor != null && armor.MaterialType >= ArmorMaterialType.Chainmail && armor.MaterialType <= ArmorMaterialType.Plate) || m_Tub.CanForceDye(item))
                         {
-                            from.SendLocalizedMessage(500446); // That is too far away.
-                        }
-                        else if (!item.Movable)
-                        {
-                            from.SendLocalizedMessage(1042419); // You may not dye leather items which are locked down.
-                        }
-                        else if (item.Parent is Mobile)
-                        {
-                            from.SendLocalizedMessage(500861); // Can't Dye clothing that is being worn.
+                            if (!from.InRange(m_Tub.GetWorldLocation(), 1) || !from.InRange(item.GetWorldLocation(), 1))
+                            {
+                                from.SendLocalizedMessage(500446); // That is too far away.
+                            }
+                            else if (!item.Movable)
+                            {
+                                from.SendLocalizedMessage(1042419); // You may not dye leather items which are locked down.
+                            }
+                            else if (item.Parent is Mobile)
+                            {
+                                from.SendLocalizedMessage(500861); // Can't Dye clothing that is being worn.
+                            }
+                            else
+                            {
+                                item.Hue = m_Tub.DyedHue;
+                                from.PlaySound(0x23E);
+                            }
                         }
                         else
                         {
-                            item.Hue = m_Tub.DyedHue;
-                            from.PlaySound(0x23E);
+                            from.SendLocalizedMessage(m_Tub.FailMessage);
                         }
                     }
                     else

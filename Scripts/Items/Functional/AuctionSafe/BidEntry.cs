@@ -34,6 +34,17 @@ namespace Server.Engines.Auction
             CurrentBid = reader.ReadLong();
         }
 
+        public void Refund(Auction auction, long amount)
+        {
+            Account a = Mobile.Account as Account;
+
+            if (a != null)
+            {
+                a.DepositGold(amount);
+                VaultLogging.LogRefund(auction, Mobile, amount);
+            }
+        }
+
         public void Serialize(GenericWriter writer)
         {
             writer.Write(0);

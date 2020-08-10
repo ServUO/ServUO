@@ -50,7 +50,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.FilthyRich, 3);
+            AddLoot(LootPack.Rich, 3);
             AddLoot(LootPack.HighScrolls);
             AddLoot(LootPack.ArcanistScrolls);
             AddLoot(LootPack.LootItem<ScatteredCrystals>(40.0));

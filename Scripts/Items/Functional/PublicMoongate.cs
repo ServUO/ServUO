@@ -674,7 +674,7 @@ namespace Server.Items
 
             Effects.PlaySound(entry.Location, map, 0x1FE);
 
-            CityTradeSystem.OnPublicMoongateUsed(m_Mobile);
+            CityTradeSystem.OnQuickTravelUsed(m_Mobile);
         }
 
         private void RenderPage(int index, int offset)
