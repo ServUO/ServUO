@@ -554,7 +554,7 @@ namespace Server.Misc
         {
             0xA289, 0xA28A, 0xA28B, 0xA291, 0xA292, 0xA293, // whips
             0xE85, 0xE86,                                   // Tools
-            0x1F03, 0x1F04,                                 // Robe
+            0x1F03, 0x1F04, 0x26AE,                         // Robe & Arcane Robe
             0xE81,                                          // Crook
             0x1086, 0x108A, 0x1F06, 0x1F09                  // Rings/Bracelet
         };

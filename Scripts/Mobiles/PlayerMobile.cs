@@ -636,10 +636,8 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public TimeSpan DisguiseTimeLeft => DisguiseTimers.TimeRemaining(this);
 
-        private DateTime m_PeacedUntil;
-
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime PeacedUntil { get { return m_PeacedUntil; } set { m_PeacedUntil = value; } }
+        public DateTime PeacedUntil { get; set; }
 
         [CommandProperty(AccessLevel.Decorator)]
         public override string TitleName
@@ -1801,12 +1799,6 @@ namespace Server.Mobiles
 
             if (m_DesignContext != null || (target is PlayerMobile && ((PlayerMobile)target).m_DesignContext != null))
             {
-                return false;
-            }
-
-            if (Peaced && !ignorePeaceCheck)
-            {
-                //!+ TODO: message
                 return false;
             }
 
@@ -3994,22 +3986,14 @@ namespace Server.Mobiles
 
             m_AutoStabled = new List<Mobile>();
 
-            #region Mondain's Legacy
-            //m_Quests = new List<BaseQuest>();
-            //m_Chains = new Dictionary<QuestChain, BaseChain>();
             m_DoneQuests = new List<QuestRestartInfo>();
             m_Collections = new Dictionary<Collection, int>();
             m_RewardTitles = new List<object>();
-
-            m_PeacedUntil = DateTime.UtcNow;
-            #endregion
 
             m_VisList = new List<Mobile>();
             m_PermaFlags = new List<Mobile>();
             m_AntiMacroTable = new Hashtable();
             m_RecentlyReported = new List<Mobile>();
-
-            //m_BOBFilter = new BOBFilter();
 
             m_GameTime = TimeSpan.Zero;
             m_ShortTermElapse = TimeSpan.FromHours(8.0);
@@ -4301,7 +4285,8 @@ namespace Server.Mobiles
 
             switch (version)
             {
-                case 40: // Version 40, moved gauntlet points, virtua artys and TOT turn ins to PointsSystem
+                case 41: // removed PeacedUntil - no need to serialize this
+                case 40: // Version 40, moved gauntlet points, virtua artys and TOT convert to PointsSystem
                 case 39: // Version 39, removed ML quest save/load
                 case 38:
                     NextGemOfSalvationUse = reader.ReadDateTime();
@@ -4397,7 +4382,10 @@ namespace Server.Mobiles
                     }
                 case 28:
                     {
-                        m_PeacedUntil = reader.ReadDateTime();
+                        if (version < 41)
+                        {
+                            reader.ReadDateTime();
+                        }
 
                         goto case 27;
                     }
@@ -4767,7 +4755,7 @@ namespace Server.Mobiles
 
             base.Serialize(writer);
 
-            writer.Write(40); // version
+            writer.Write(41); // version
 
             writer.Write(NextGemOfSalvationUse);
 
@@ -4837,7 +4825,6 @@ namespace Server.Mobiles
             #endregion
 
             // Version 28
-            writer.Write(m_PeacedUntil);
             writer.Write(m_AnkhNextUse);
             writer.Write(m_AutoStabled, true);
 
@@ -5215,12 +5202,7 @@ namespace Server.Mobiles
         {
             get
             {
-                if (m_PeacedUntil > DateTime.UtcNow)
-                {
-                    return true;
-                }
-
-                return false;
+                return PeacedUntil > DateTime.UtcNow;
             }
         }
 

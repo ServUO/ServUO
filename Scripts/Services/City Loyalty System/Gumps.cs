@@ -408,7 +408,7 @@ namespace Server.Engines.CityLoyalty
             if (City.Election == null || !City.Election.Ongoing)
             {
                 AddBackground(0, 0, 400, 150, 5054);
-                AddHtmlLocalized(10, 12, 150, 20, 1155758, 0xFFFF, false, false); // City Stone
+                AddHtmlLocalized(0, 12, 400, 20, CenterLoc, "#1155758", 0xFFFF, false, false); // City Stone
 
                 DateTime next = City.Election.NextElection();
 

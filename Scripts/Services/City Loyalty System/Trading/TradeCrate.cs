@@ -109,9 +109,9 @@ namespace Server.Engines.CityLoyalty
                 for (int i = 0; i < Entry.Details.Count; i++)
                 {
                     if (Utility.ToInt32(Entry.Details[i].Name) > 0)
-                        list.Add(1116453 + i, String.Format("#{0}\t{1}\t{2}", Entry.Details[i].Name, GetAmount(Entry.Details[i].ItemType), Entry.Details[i].Amount)); // ~1_val~: ~2_val~/~3_val~
+                        list.Add(1116453 + i, String.Format("#{0}\t{1}\t{2}", Entry.Details[i].Name, Entry.Details[i].Count(this), Entry.Details[i].Amount)); // ~1_val~: ~2_val~/~3_val~
                     else
-                        list.Add(1116453 + i, String.Format("{0}\t{1}\t{2}", Entry.Details[i].Name, GetAmount(Entry.Details[i].ItemType), Entry.Details[i].Amount)); // ~1_val~: ~2_val~/~3_val~
+                        list.Add(1116453 + i, String.Format("{0}\t{1}\t{2}", Entry.Details[i].Name, Entry.Details[i].Count(this), Entry.Details[i].Amount)); // ~1_val~: ~2_val~/~3_val~
                 }
             }
 
@@ -146,7 +146,7 @@ namespace Server.Engines.CityLoyalty
 
             foreach (TradeEntry.TradeDetails details in Entry.Details)
             {
-                if (item.GetType() == details.ItemType)
+                if(details.Match(item.GetType()))
                 {
                     int hasAmount = GetAmount(item.GetType());
 
@@ -212,12 +212,11 @@ namespace Server.Engines.CityLoyalty
                 {
                     foreach (TradeEntry.TradeDetails detail in Crate.Entry.Details)
                     {
-                        Item[] items = Player.Backpack.FindItemsByType(detail.ItemType);
+                        var list = new List<Item>(Player.Backpack.Items);
 
-                        foreach (Item item in items)
+                        foreach (var item in list.Where(i => i.Amount == 1 && Crate.TryAddItem(Player, i, false)))
                         {
-                            if (item.Amount == 1 && Crate.TryAddItem(Player, item, false))
-                                Crate.DropItem(item);
+                            Crate.DropItem(item);
                         }
                     }
                 }

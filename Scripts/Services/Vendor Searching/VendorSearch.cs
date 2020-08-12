@@ -735,9 +735,8 @@ namespace Server.Engines.VendorSearching
                     parms[0] = StringList.GetString(Convert.ToInt32(args.Substring(1, parms[0].Length - 1)));
                 }
             }
-            catch (Exception e)
+            catch
             {
-                Server.Diagnostics.ExceptionLogging.LogException(e);
                 return null;
             }
 

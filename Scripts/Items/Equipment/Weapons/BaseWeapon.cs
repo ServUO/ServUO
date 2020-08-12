@@ -1262,13 +1262,6 @@ namespace Server.Items
                 canSwing = (sp == null || !sp.IsCasting || !sp.BlocksMovement);
             }
 
-            if (canSwing)
-            {
-                PlayerMobile p = attacker as PlayerMobile;
-
-                canSwing = (p == null || p.PeacedUntil <= DateTime.UtcNow);
-            }
-
             if (canSwing && attacker.HarmfulCheck(damageable))
             {
                 attacker.DisruptiveAction();

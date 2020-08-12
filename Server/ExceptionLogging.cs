@@ -48,5 +48,15 @@ namespace Server.Diagnostics
             Output.WriteLine(e);
             Output.WriteLine();
         }
+
+        public static void LogException(Exception e, string arg)
+        {
+            Utility.WriteConsoleColor(ConsoleColor.Red, "Caught Exception: {0}", arg);
+            Utility.WriteConsoleColor(ConsoleColor.DarkRed, e.ToString());
+
+            Output.WriteLine("Exception Caught: {0}", DateTime.UtcNow);
+            Output.WriteLine(e);
+            Output.WriteLine();
+        }
     }
 }

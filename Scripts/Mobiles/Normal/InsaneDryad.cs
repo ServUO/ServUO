@@ -1,5 +1,8 @@
 using Server.Items;
+
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Mobiles
 {
@@ -7,6 +10,7 @@ namespace Server.Mobiles
     public class MLDryad : BaseCreature
     {
         public override bool InitialInnocent => true;
+        public static TimeSpan PeaceDuration => TimeSpan.FromSeconds(20);
 
         [Constructable]
         public MLDryad()
@@ -66,7 +70,33 @@ namespace Server.Mobiles
             AreaUndress();
         }
 
+        public override void OnDeath(Container c)
+        {
+            base.OnDeath(c);
+
+            if (Peaced != null)
+            {
+                var peaced = Peaced.Keys.ToList();
+
+                for (int i = 0; i < peaced.Count; i++)
+                {
+                    var pm = peaced[i] as PlayerMobile;
+
+                    if (pm != null)
+                    {
+                        pm.PeacedUntil = DateTime.UtcNow;
+                    }
+
+                    RemoveTimer(peaced[i]);
+                }
+
+                ColUtility.Free(peaced);
+            }
+        }
+
         #region Area Peace
+        public Dictionary<Mobile, Timer> Peaced { get; set; }
+
         private DateTime m_NextPeace;
 
         public void AreaPeace()
@@ -74,36 +104,61 @@ namespace Server.Mobiles
             if (Combatant == null || Deleted || !Alive || m_NextPeace > DateTime.UtcNow || 0.1 < Utility.RandomDouble())
                 return;
 
-            TimeSpan duration = TimeSpan.FromSeconds(Utility.RandomMinMax(20, 80));
             IPooledEnumerable eable = GetMobilesInRange(RangePerception);
 
-            foreach (Mobile m in eable)
+            foreach (var p in eable.OfType<PlayerMobile>())
             {
-                PlayerMobile p = m as PlayerMobile;
-
                 if (IsValidTarget(p))
                 {
-                    p.PeacedUntil = DateTime.UtcNow + duration;
-                    p.SendLocalizedMessage(1072065); // You gaze upon the dryad's beauty, and forget to continue battling!
-                    p.FixedParticles(0x376A, 1, 20, 0x7F5, EffectLayer.Waist);
-                    p.Warmode = false;
-                    p.Combatant = null;
+                    AddPeaceEffects(p);
                 }
             }
+
             eable.Free();
 
             m_NextPeace = DateTime.UtcNow + TimeSpan.FromSeconds(10);
             PlaySound(0x1D3);
         }
 
-        public bool IsValidTarget(PlayerMobile m)
+        public void AddPeaceEffects(PlayerMobile p)
         {
-            if (m != null && m.PeacedUntil < DateTime.UtcNow && !m.Hidden && m.IsPlayer() && CanBeHarmful(m))
-                return true;
+            p.SendLocalizedMessage(1072065); // You gaze upon the dryad's beauty, and forget to continue battling!
+            p.FixedParticles(0x376A, 1, 20, 0x7F5, EffectLayer.Waist);
 
-            return false;
+            p.Warmode = false;
+            p.Combatant = null;
+
+            if (Peaced == null)
+            {
+                Peaced = new Dictionary<Mobile, Timer>();
+            }
+
+            if (Peaced.ContainsKey(p))
+            {
+                Peaced[p].Stop();
+            }
+
+            p.PeacedUntil = DateTime.UtcNow + PeaceDuration;
+            Peaced[p] = Timer.DelayCall(PeaceDuration, RemoveTimer, p);
         }
 
+        public bool IsValidTarget(PlayerMobile m)
+        {
+            return m.PeacedUntil < DateTime.UtcNow && !m.Hidden && CanBeHarmful(m);
+        }
+
+        public void RemoveTimer(Mobile m)
+        {
+            if (Peaced != null && Peaced.ContainsKey(m))
+            {
+                Peaced.Remove(m);
+
+                if (Peaced.Count == 0)
+                {
+                    Peaced = null;
+                }
+            }
+        }
         #endregion
 
         #region Undress
@@ -111,7 +166,7 @@ namespace Server.Mobiles
 
         public void AreaUndress()
         {
-            if (Combatant == null || Deleted || !Alive || m_NextUndress > DateTime.UtcNow || 0.005 < Utility.RandomDouble())
+            if (Combatant == null || Deleted || !Alive || m_NextUndress > DateTime.UtcNow || 0.05 < Utility.RandomDouble())
                 return;
 
             IPooledEnumerable eable = GetMobilesInRange(RangePerception);
