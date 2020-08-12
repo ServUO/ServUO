@@ -9,6 +9,8 @@ namespace Server.Engines.Chat
         public static readonly bool AllowCreateChannels = Config.Get("Chat.AllowCreateChannels", true);
         public static readonly string DefaultChannel = "Help";
 
+        public static readonly long ChatDelay = 5000;
+
         public static void Initialize()
         {
             PacketHandlers.Register(0xB5, 0x40, true, OpenChatWindowRequest);

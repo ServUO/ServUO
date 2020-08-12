@@ -478,18 +478,20 @@ namespace Server.Spells
                 return true;
             }
 
-            if (to.Hidden && to.AccessLevel > from.AccessLevel)
-            {
-                return false;
-            }
-
-            if (Server.Engines.ArenaSystem.PVPArenaSystem.IsFriendly(from, to))
+            if (to.Hidden && to.AccessLevel > from.AccessLevel || Server.Engines.ArenaSystem.PVPArenaSystem.IsFriendly(from, to))
             {
                 return false;
             }
 
             CheckResponsible(ref from);
             CheckResponsible(ref to);
+
+            var noto = Notoriety.Compute(from, to);
+
+            if (noto == Notoriety.Enemy)
+            {
+                return true;
+            }
 
             if (IsGuildAllyOrParty(from, to))
             {
@@ -566,7 +568,7 @@ namespace Server.Spells
                 return true;
             }
 
-            return (Notoriety.Compute(from, to) != Notoriety.Innocent || from.Murderer);
+            return (noto != Notoriety.Innocent || from.Murderer);
         }
 
         public static bool CheckResponsible(ref Mobile m)

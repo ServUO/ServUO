@@ -28,10 +28,7 @@ namespace Server.Engines.CityLoyalty
         {
             if (CityLoyaltySystem.Enabled && CityLoyaltySystem.IsSetup() && from is PlayerMobile && from.InRange(from.Location, 3))
             {
-                if (from is PlayerMobile && City != null && City.IsCitizen(from))
-                    BaseGump.SendGump(new CityStoneGump(from as PlayerMobile, City));
-                else
-                    from.SendLocalizedMessage(1153888); // Only Citizens of this City may use the Election Stone. 
+                BaseGump.SendGump(new CityStoneGump(from as PlayerMobile, City));
             }
         }
 

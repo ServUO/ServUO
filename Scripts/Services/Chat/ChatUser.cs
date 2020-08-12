@@ -22,6 +22,8 @@ namespace Server.Engines.Chat
 
         public bool IsOnline => (m_Mobile.NetState != null);
 
+        public long NextMessage { get; set; }
+
         public const char NormalColorCharacter = '0';
 
         public char GetColorCharacter()

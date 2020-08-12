@@ -559,7 +559,7 @@ namespace Server.Items
 
                 defender.FixedEffect(0x3779, 10, 20, 1365, 0);
             }
-            else if (attacker.Skills[SkillName.Tactics].Value > 60.0)
+            else if (attacker.Skills[SkillName.Tactics].Value >= 60.0)
             {
                 int mana = (int)(30.0 * ((AosAttributes.GetValue(attacker, AosAttribute.LowerManaCost) + BaseArmor.GetInherentLowerManaCost(attacker)) / 100.0));
 

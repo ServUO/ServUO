@@ -30,8 +30,13 @@ namespace Server.Engines.Chat
 
         public static void ChannelMessage(ChatUser from, Channel channel, string param)
         {
-            channel.SendMessage(57, from, from.GetColorCharacter() + from.Username, string.Format("{{{0}}} {1}", channel.Name, param)); // %1: %2
-            ChatLogging.LogMessage(channel.Name, from.Username, param);
+            if (from.NextMessage < Core.TickCount)
+            {
+                channel.SendMessage(57, from, from.GetColorCharacter() + from.Username, string.Format("{{{0}}} {1}", channel.Name, param)); // %1: %2
+                ChatLogging.LogMessage(channel.Name, from.Username, param);
+
+                from.NextMessage = Core.TickCount + ChatSystem.ChatDelay;
+            }
         }
 
         public static void LeaveChannel(ChatUser from, Channel channel, string param)
