@@ -50,6 +50,7 @@ namespace Server.Mobiles
 
         public override int Hides => 28;
         public override int Meat => 4;
+		
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich, 2);

@@ -1,6 +1,7 @@
 using Server.Items;
+using Server.Spells;
+
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,8 +17,8 @@ namespace Server.Mobiles
     [CorpseName("a shadowlord corpse")]
     public class Shadowlord : BaseCreature
     {
-        private static readonly ArrayList m_Instances = new ArrayList();
-        public static ArrayList Instances => m_Instances;
+        private static readonly List<Shadowlord> m_Instances = new List<Shadowlord>();
+        public static List<Shadowlord> Instances => m_Instances;
 
         private ShadowlordType m_Type;
         public virtual Type[] ArtifactDrops => _ArtifactTypes;
@@ -42,6 +43,8 @@ namespace Server.Mobiles
                 InvalidateProperties();
             }
         }
+
+        public List<DarkWisp> Wisps { get; set; } = new List<DarkWisp>();
 
         [Constructable]
         public Shadowlord()
@@ -164,18 +167,7 @@ namespace Server.Mobiles
 
         public override void CheckReflect(Mobile caster, ref bool reflect)
         {
-            int c = 0;
-            IPooledEnumerable eable = GetMobilesInRange(20);
-
-            foreach (Mobile m in eable)
-            {
-                if (m != null && m is DarkWisp)
-                    c++;
-                continue;
-            }
-            eable.Free();
-            if (c > 0)
-                reflect = true; // Reflect spells if ShadowLord having wisps around
+            reflect = Wisps.Any(w => !w.Deleted && w.InRange(Location, 20));
         }
 
         public override void OnDrainLife(Mobile victim)
@@ -183,40 +175,27 @@ namespace Server.Mobiles
             if (Map == null)
                 return;
 
-            ArrayList list = new ArrayList();
-            int count = 0;
-            IPooledEnumerable eable = GetMobilesInRange(20);
-
-            foreach (Mobile m in eable)
+            foreach (Mobile m in SpellHelper.AcquireIndirectTargets(this, Location, Map, 20).OfType<Mobile>())
             {
-                if (m == this || !CanBeHarmful(m))
+                var wisp = new DarkWisp();
+                wisp.MoveToWorld(Location, Map);
+
+                Wisps.Add(wisp);
+
+                if (Region.IsPartOf("Underwater World") && (Map == Map.Trammel || Map == Map.Felucca))
                 {
-                    if (m is DarkWisp) { count++; }
-                    continue;
-                }
+                    int teleportchance = Hits / HitsMax;
 
-                if (m is BaseCreature && (((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned || ((BaseCreature)m).Team != Team))
-                    list.Add(m);
-                else if (m.Player)
-                    list.Add(m);
-            }
-
-            eable.Free();
-
-            foreach (Mobile m in list)
-            {
-                (new DarkWisp()).MoveToWorld(new Point3D(Location), Map);
-                int teleportchance = Hits / HitsMax;
-
-                if (teleportchance < Utility.RandomDouble() && m.Alive)
-                {
-                    switch (Utility.Random(6))
+                    if (teleportchance < Utility.RandomDouble() && m.Alive)
                     {
-                        case 0: m.MoveToWorld(new Point3D(6431, 1664, 0), Map); break;
-                        case 1: m.MoveToWorld(new Point3D(6432, 1634, 0), Map); break;
-                        case 2: m.MoveToWorld(new Point3D(6401, 1657, 0), Map); break;
-                        case 3: m.MoveToWorld(new Point3D(6401, 1637, 0), Map); break;
-                        default: m.MoveToWorld(new Point3D(Location), Map); break;
+                        switch (Utility.Random(6))
+                        {
+                            case 0: m.MoveToWorld(new Point3D(6431, 1664, 0), Map); break;
+                            case 1: m.MoveToWorld(new Point3D(6432, 1634, 0), Map); break;
+                            case 2: m.MoveToWorld(new Point3D(6401, 1657, 0), Map); break;
+                            case 3: m.MoveToWorld(new Point3D(6401, 1637, 0), Map); break;
+                            default: m.MoveToWorld(Location, Map); break;
+                        }
                     }
                 }
             }
@@ -249,13 +228,22 @@ namespace Server.Mobiles
                 }
             }
 
+            foreach (var wisp in Wisps.Where(w => w != null && !w.Deleted))
+            {
+                wisp.Kill();
+            }
+
+            ColUtility.Free(Wisps);
+
             base.OnDeath(c);
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0); // version
+            writer.Write(1); // version
+
+            writer.WriteMobileList(Wisps, true);
 
             writer.Write((int)m_Type);
 
@@ -268,10 +256,14 @@ namespace Server.Mobiles
 
             switch (version)
             {
+                case 1:
+                    {
+                        Wisps = reader.ReadStrongMobileList<DarkWisp>();
+                        goto case 0;
+                    }
                 case 0:
                     {
                         m_Type = (ShadowlordType)reader.ReadInt();
-
                         break;
                     }
             }

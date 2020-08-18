@@ -414,12 +414,12 @@ namespace Server.Engines.VendorSearching
 
             for (int i = start; i < start + PerPage && i < Items.Count; i++)
             {
-                Item item = Items[i].Item;
-                int price = Items[i].Price;
+                var item = Items[i].Item;
+                var price = Items[i].Price;
+                var map = Items[i].Map;
 
                 Rectangle2D bounds = ItemBounds.Table[item.ItemID];
                 int y = 101 + (index * 75);
-                Map map = item.Map;
 
                 if (map == null && item.RootParentEntity is Mobile)
                     map = ((Mobile)item.RootParentEntity).Map;
@@ -476,7 +476,7 @@ namespace Server.Engines.VendorSearching
 
                         if (!_GivenTo[item.Item].Contains(User))
                         {
-                            VendorSearchMap map = new VendorSearchMap(item.Item, item.IsAuction);
+                            VendorSearchMap map = new VendorSearchMap(item);
 
                             if (User.Backpack == null || !User.Backpack.TryDropItem(User, map, false))
                                 map.Delete();

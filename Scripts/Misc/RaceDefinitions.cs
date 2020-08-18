@@ -467,7 +467,7 @@ namespace Server.Misc
 
         public static bool ValidateEquipment(Mobile from, Item equipment, bool message)
         {
-            if (AllRaceTypes.Any(type => type == equipment.GetType()) || AllRaceIDs.Any(id => id == equipment.ItemID))
+            if ((AllRaceTypes.Any(type => type == equipment.GetType()) || AllRaceIDs.Any(id => id == equipment.ItemID)) && ValidateElfOrHuman(from, equipment))
             {
                 return true;
             }
@@ -514,6 +514,18 @@ namespace Server.Misc
                 }
 
                 return false;
+            }
+
+            return true;
+        }
+
+        public static bool ValidateElfOrHuman(Mobile from, Item equipment)
+        {
+            var elfOrHuman = equipment as ICanBeElfOrHuman;
+
+            if (elfOrHuman != null)
+            {
+                return from.Race == Race.Elf || !elfOrHuman.ElfOnly;
             }
 
             return true;

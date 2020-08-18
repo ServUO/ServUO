@@ -139,12 +139,6 @@ namespace Server.Mobiles
 
         public override bool BardImmune => true;
 
-        public override void GenerateLoot()
-        {
-            AddLoot(LootPack.FilthyRich, 3);
-            AddLoot(LootPack.Gems, 5);
-        }
-
         public override int GetIdleSound() { return 0x2D3; }
         public override int GetHurtSound() { return 0x2D1; }
 

@@ -21,7 +21,7 @@ namespace Server.Mobiles
             SetDex(202, 283);
             SetInt(88, 142);
 
-            SetHits(628, 1291);
+            SetHits(1079, 1166);
 
             SetDamage(19, 28);
 
@@ -51,6 +51,7 @@ namespace Server.Mobiles
         {
         }
 
+        public override bool DeathAdderCharmable => false;
         public override Poison HitPoison => Poison.Lethal;
         public override Poison PoisonImmune => Poison.Lethal;
         public override bool GivesMLMinorArtifact => true;
@@ -59,7 +60,7 @@ namespace Server.Mobiles
 
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.UltraRich, 3);
+            AddLoot(LootPack.FilthyRich, 3);
             AddLoot(LootPack.Gems, 2);
             AddLoot(LootPack.LootItem<Bone>(false, true));
             AddLoot(LootPack.ArcanistScrolls);

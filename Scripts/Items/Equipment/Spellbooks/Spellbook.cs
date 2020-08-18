@@ -345,7 +345,7 @@ namespace Server.Items
                     {
                         SpecialMove.SetCurrentMove(from, move);
                     }
-                    else
+                    else if (e.Target != null)
                     {
                         Mobile to = World.FindMobile(e.Target.Serial);
                         Item toI = World.FindItem(e.Target.Serial);

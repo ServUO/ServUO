@@ -2562,7 +2562,7 @@
     <Compile Include="Mobiles\Normal\ValoriteElemental.cs" />
     <Compile Include="Mobiles\Normal\VampireBat.cs" />
     <Compile Include="Mobiles\Normal\VeriteElemental.cs" />
-    <Compile Include="Mobiles\Normal\Virulent.cs" />
+    <Compile Include="Mobiles\Named\Virulent.cs" />
     <Compile Include="Mobiles\Normal\VorpalBunny.cs" />
     <Compile Include="Mobiles\Normal\WailingBanshee.cs" />
     <Compile Include="Mobiles\Normal\Walrus.cs" />

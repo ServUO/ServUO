@@ -1,6 +1,9 @@
 using Server.Engines.JollyRoger;
 using Server.Engines.SeasonalEvents;
+using Server.Gumps;
 using Server.Mobiles;
+using Server.Network;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,6 +23,23 @@ namespace Server.Engines.Points
 
         public bool Enabled { get; set; }
         public bool QuestContentGenerated { get; set; }
+
+        public static void Initialize()
+        {
+            EventSink.Speech += EventSink_Speech;
+        }
+
+        public static void EventSink_Speech(SpeechEventArgs e)
+        {
+            string speech = e.Speech;
+            Mobile m = e.Mobile;
+
+            if (m.Region.Name == "Chaos Shrine" && !m.HasGump(typeof(RenounceVirtueGump)) && m is PlayerMobile pm && ShrineTitles.ContainsKey(pm) &&
+                speech.IndexOf("I renounce virtue", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                m.SendGump(new RenounceVirtueGump());
+            }
+        }
 
         public static Dictionary<PlayerMobile, int> ShrineTitles { get; set; } = new Dictionary<PlayerMobile, int>();
 
@@ -313,5 +333,44 @@ namespace Server.Engines.Points
         public Shrine Shrine { get; set; }
         public int FragmentCount { get; set; }
         public int MasterDeath { get; set; }
+    }
+
+    public class RenounceVirtueGump : Gump
+    {
+        public RenounceVirtueGump()
+            : base(100, 100)
+        {
+            AddPage(0);
+
+            AddBackground(0, 0, 320, 245, 0x6DB);
+            AddHtmlLocalized(65, 10, 200, 20, 1114513, "#1159452", 0x67D5, false, false); // <DIV ALIGN=CENTER>~1_TOKEN~</DIV>
+            AddHtmlLocalized(15, 50, 295, 100, 1159453, 0x72ED, false, false); // You are about to renounce your Shrine Battle virtue title. You may recover the title by placing a mysterious fragment at any shrine. Do you wish to proceed?
+            AddButton(30, 200, 0x867, 0x869, 1, GumpButtonType.Reply, 0);
+            AddButton(265, 200, 0x867, 0x869, 0, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(33, 180, 100, 50, 1046362, 0x7FFF, false, false); // Yes
+            AddHtmlLocalized(273, 180, 100, 50, 1046363, 0x7FFF, false, false); // No
+        }
+
+        public override void OnResponse(NetState sender, RelayInfo info)
+        {
+            switch (info.ButtonID)
+            {
+                case 0:
+                    {
+                        break;
+                    }
+                case 1:
+                    {
+
+                        if (sender.Mobile is PlayerMobile pm && JollyRogerData.ShrineTitles.ContainsKey(pm))
+                        {
+                            JollyRogerData.ShrineTitles.Remove(pm);
+                            pm.InvalidateProperties();
+                        }
+
+                        break;
+                    }
+            }
+        }
     }
 }

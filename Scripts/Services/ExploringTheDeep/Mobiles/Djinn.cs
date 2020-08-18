@@ -60,13 +60,6 @@ namespace Server.Mobiles
             m_Timer.Start();
         }
 
-        public override void GenerateLoot()
-        {
-            AddLoot(LootPack.FilthyRich);
-        }
-
-        public override int TreasureMapLevel => 4;
-
         public override void OnDeath(Container c)
         {
             List<DamageStore> rights = GetLootingRights();

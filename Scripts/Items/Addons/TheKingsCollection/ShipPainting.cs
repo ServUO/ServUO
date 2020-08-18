@@ -67,39 +67,9 @@ namespace Server.Items
 
         public override BaseAddonDeed Deed => new ShipPaintingDeed();
 
-        private class ShipPaintingComponent : LocalizedAddonComponent
+        public override void GetProperties(ObjectPropertyList list, AddonComponent c)
         {
-            public ShipPaintingComponent(int id)
-                : base(id, 1098378) // painting
-            {
-            }
-
-            public override void GetProperties(ObjectPropertyList list)
-            {
-                base.GetProperties(list);
-
-                if (Addon is ShipPaintingAddon)
-                {
-                    list.Add(1154175, ((ShipPaintingAddon)Addon).ResourceCount.ToString()); // Powder Charges: ~1_COUNT~
-                }
-            }
-
-            public ShipPaintingComponent(Serial serial)
-                : base(serial)
-            {
-            }
-
-            public override void Serialize(GenericWriter writer)
-            {
-                base.Serialize(writer);
-                writer.Write(0); // Version
-            }
-
-            public override void Deserialize(GenericReader reader)
-            {
-                base.Deserialize(reader);
-                int version = reader.ReadInt();
-            }
+            list.Add(1154175, ResourceCount.ToString()); // Powder Charges: ~1_COUNT~
         }
 
         private void TryGiveResourceCount()

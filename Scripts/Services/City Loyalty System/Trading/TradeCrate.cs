@@ -28,7 +28,7 @@ namespace Server.Engines.CityLoyalty
 
                 foreach (TradeEntry.TradeDetails details in Entry.Details)
                 {
-                    if (GetAmount(details.ItemType) < details.Amount)
+                    if (details.Count(this) < details.Amount)
                         return false;
                 }
 
@@ -148,12 +148,14 @@ namespace Server.Engines.CityLoyalty
             {
                 if(details.Match(item.GetType()))
                 {
-                    int hasAmount = GetAmount(item.GetType());
+                    int hasAmount = details.Count(this);
 
                     if (hasAmount + item.Amount > details.Amount)
                     {
                         if (message)
+                        {
                             from.SendLocalizedMessage(1151726); // You are trying to add too many of this item to the trade order. Only add the required quantity
+                        }
 
                         break;
                     }
@@ -166,7 +168,9 @@ namespace Server.Engines.CityLoyalty
             }
 
             if (!canAdd && message)
+            {
                 from.SendLocalizedMessage(1151725); // This trade order does not require this item.
+            }
 
             return canAdd;
         }

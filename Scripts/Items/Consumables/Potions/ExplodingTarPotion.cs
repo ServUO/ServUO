@@ -1,7 +1,7 @@
-using Server.Misc;
 using Server.Network;
 using Server.Spells;
 using Server.Targeting;
+using Server.Mobiles;
 
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ namespace Server.Items
     [TypeAlias("Server.Items.ExplodingTarPotion")]
     public class ExplodingTarPotion : BasePotion
     {
-        public virtual int Radius { get { return 20; } }
+        public virtual int Radius { get { return 4; } }
 
         public override int LabelNumber => 1095147; // Exploding Tar Potion
         public override bool RequireFreeHand => false;
@@ -87,38 +87,23 @@ namespace Server.Items
 
             Consume();
 
-            // Effects
             Effects.PlaySound(loc, map, 0x207);
-            Geometry.Circle2D(loc, map, Radius, TarEffect, 270, 90);
 
-            Timer.DelayCall(TimeSpan.FromSeconds(1), new TimerStateCallback(CircleEffect2), new object[] { loc, map });
+            var skill = (int)from.Skills[SkillName.Alchemy].Value + AosAttributes.GetValue(from, AosAttribute.EnhancePotions);
 
-            foreach (Mobile m in SpellHelper.AcquireIndirectTargets(from, loc, map, Radius).OfType<Mobile>())
+            foreach (PlayerMobile m in SpellHelper.AcquireIndirectTargets(from, loc, map, Radius).OfType<PlayerMobile>())
             {
-                AddEffects(m);
+                if (Utility.Random(skill) > m.Skills[SkillName.MagicResist].Value / 2)
+                {
+                    AddEffects(m);
+                }
             }
         }
 
-        #region Effects
-        public virtual void TarEffect(Point3D p, Map map)
-        {
-            if (map.CanFit(p, 12, true, false))
-                Effects.SendLocationEffect(p, map, 0x376A, 4, 9);
-        }
-
-        public void CircleEffect2(object state)
-        {
-            object[] states = (object[])state;
-
-            Geometry.Circle2D((Point3D)states[0], (Map)states[1], Radius, TarEffect, 90, 270);
-        }
-        #endregion
-
-        #region Delay
         private static Dictionary<Mobile, Timer> _SlowEffects;
         private static Dictionary<Mobile, Timer> _Delay;
 
-        public static void AddEffects(Mobile m)
+        public static void AddEffects(PlayerMobile m)
         {
             if (_SlowEffects == null)
             {
@@ -129,7 +114,19 @@ namespace Server.Items
                 _SlowEffects[m].Stop();
             }
 
-            _SlowEffects[m] = Timer.DelayCall(TimeSpan.FromMinutes(1), mob => RemoveEffects(mob), m);
+            _SlowEffects[m] = Timer.DelayCall(TimeSpan.FromMinutes(2), mob => RemoveEffects(mob), m);
+
+            m.FixedParticles(0x36B0, 1, 14, 9915, 1109, 0, EffectLayer.Head);
+
+            Timer.DelayCall(TimeSpan.FromMilliseconds(150), () =>
+            {
+                m.FixedParticles(0x3779, 10, 20, 5002, EffectLayer.Head);
+            });
+
+            if (!m.Paralyzed)
+            {
+                m.AddBuff(new BuffInfo(BuffIcon.Paralyze, 1095150, 1095151, TimeSpan.FromMinutes(2), m));
+            }
 
             m.SendLocalizedMessage(1095151);
             m.SendSpeedControl(SpeedControlType.WalkSpeed);
@@ -167,7 +164,7 @@ namespace Server.Items
                 }
             }
 
-            _Delay[m] = Timer.DelayCall(TimeSpan.FromSeconds(60), EndDelay_Callback, m);
+            _Delay[m] = Timer.DelayCall(TimeSpan.FromSeconds(120), EndDelay_Callback, m);
         }
 
         public static int GetDelay(Mobile m)
@@ -208,7 +205,6 @@ namespace Server.Items
                 }
             }
         }
-        #endregion
 
         private class ThrowTarget : Target
         {
@@ -231,7 +227,6 @@ namespace Server.Items
                 if (p == null || from.Map == null)
                     return;
 
-                // Add delay
                 AddDelay(from);
 
                 SpellHelper.GetSurfaceTop(ref p);
