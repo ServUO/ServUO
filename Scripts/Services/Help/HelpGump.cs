@@ -206,6 +206,10 @@ namespace Server.Engines.Help
                         {
                             from.Location = house.BanLocation;
                         }
+                        else if (CityLoyalty.CityTradeSystem.HasTrade(from))
+                        {
+                            from.SendLocalizedMessage(1151733); // You cannot do that while carrying a Trade Order.
+                        }
                         else if (from.Region.IsPartOf<Regions.Jail>())
                         {
                             from.SendLocalizedMessage(1114345, "", 0x35); // You'll need a better jailbreak plan than that!
@@ -262,6 +266,10 @@ namespace Server.Engines.Help
                             if (from.Region.IsPartOf<Regions.Jail>())
                             {
                                 from.SendLocalizedMessage(1114345, "", 0x35); // You'll need a better jailbreak plan than that!
+                            }
+                            else if (CityLoyalty.CityTradeSystem.HasTrade(from))
+                            {
+                                from.SendLocalizedMessage(1151733); // You cannot do that while carrying a Trade Order.
                             }
                             else if (from.Region.IsPartOf("Haven Island"))
                             {

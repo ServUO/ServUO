@@ -10,7 +10,6 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool ElfOnly { get { return _ElfOnly; } set { _ElfOnly = value; InvalidateProperties(); } }
 
-
         [Constructable]
         public RobeOfTheEquinox()
             : base(0x1F04, 0xD6)

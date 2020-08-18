@@ -424,7 +424,7 @@ namespace Server.Items
 
             Server.Effects.PlaySound(defender.Location, defender.Map, 0x1DF);
 
-            BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.SplinteringEffect, 1154670, 1152144, TimeSpan.FromSeconds(10), defender));
+            BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.SplinteringEffect, 1154670, 1152144, TimeSpan.FromSeconds(4), defender));
         }
 
         public override void OnTick()
@@ -455,7 +455,7 @@ namespace Server.Items
 
         public static bool CheckHit(Mobile attacker, Mobile defender, WeaponAbility ability, Item weapon)
         {
-            if (defender == null || ability == WeaponAbility.Disarm || ability == WeaponAbility.InfectiousStrike || SkillMasterySpell.HasSpell(attacker, typeof(SkillMasterySpell)))
+            if (defender == null || ability == WeaponAbility.Disarm || ability == WeaponAbility.InfectiousStrike || SkillMasterySpell.HasSpell(attacker, typeof(SkillMasterySpell)) || VictimIsUnderEffects<SplinteringWeaponContext>(defender))
                 return false;
 
             SplinteringWeaponContext context = GetContext<SplinteringWeaponContext>(attacker, defender);

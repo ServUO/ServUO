@@ -1211,6 +1211,14 @@ namespace Server.Engines.VendorSearching
         public bool IsChild { get; set; }
         public bool IsAuction { get; set; }
 
+        public Map Map
+        {
+            get
+            {
+                return Vendor != null ? Vendor.Map : AuctionSafe != null ? AuctionSafe.Map : null;
+            }
+        }
+
         public SearchItem(PlayerVendor vendor, Item item, int price, bool isChild)
         {
             Vendor = vendor;

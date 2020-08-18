@@ -151,9 +151,10 @@ namespace Server.Items
         {
             double toChance = Math.Min(45 + BaseArmor.GetRefinedDefenseChance(to),
                                        AosAttributes.GetValue(to, AosAttribute.DefendChance)) + 1;
+
             double fromChance = AosAttributes.GetValue(from, AosAttribute.AttackChance) + 1;
 
-            double hitChance = toChance / (fromChance * 2);
+            double hitChance = fromChance / (toChance * 2);
 
             if (Utility.RandomDouble() < hitChance)
             {

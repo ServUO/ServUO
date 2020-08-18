@@ -49,12 +49,13 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
+		
         public override bool CanBeParagon => false;
         public override bool GivesMLMinorArtifact => true;
 
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.UltraRich, 3);
+            AddLoot(LootPack.FilthyRich, 3);
             AddLoot(LootPack.ArcanistScrolls);
         }
 

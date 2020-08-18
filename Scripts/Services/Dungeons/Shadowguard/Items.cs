@@ -129,7 +129,6 @@ namespace Server.Engines.Shadowguard
         public OrchardEncounter Encounter { get; set; }
 
         private bool _Thrown;
-        private bool _EatenByPet;
 
         public ShadowguardApple(OrchardEncounter encounter, ShadowguardCypress tree)
         {
@@ -237,7 +236,7 @@ namespace Server.Engines.Shadowguard
         {
             base.OnDelete();
 
-            if (!_Thrown && !_EatenByPet && Encounter != null)
+            if (!_Thrown && Encounter != null)
             {
                 foreach (PlayerMobile pm in Encounter.Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
                 {
@@ -267,18 +266,6 @@ namespace Server.Engines.Shadowguard
                     Encounter.AddSpawn(creature);
                 }
             }
-        }
-
-        public override bool DropToMobile(Mobile from, Mobile target, Point3D p)
-        {
-            var bc = target as BaseCreature;
-
-            if (bc != null && !bc.IsDeadPet && bc.Controlled && (bc.ControlMaster == from || bc.IsPetFriend(from)))
-            {
-                _EatenByPet = true;
-            }
-
-            return base.DropToMobile(from, target, p);
         }
 
         public override void Delete()

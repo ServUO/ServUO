@@ -21,9 +21,6 @@ namespace Server.Items
         public IAuctionItem AuctionSafe { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsAuction { get; set; }
-
-        [CommandProperty(AccessLevel.GameMaster)]
         public Item SearchItem { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -35,33 +32,37 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime DeleteTime { get; set; }
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool IsAuction { get { return AuctionSafe != null; } }
+
         public int TimeRemaining => DeleteTime <= DateTime.UtcNow ? 0 : (int)(DeleteTime - DateTime.UtcNow).TotalMinutes;
 
-        public VendorSearchMap(Item item, bool auction)
+        public VendorSearchMap(SearchItem item)
             : base(item.Map)
         {
-            LootType = LootType.Blessed;
-            Hue = RecallRune.CalculateHue(item.Map, null, true);
+            var map = item.Map;
 
-            IsAuction = auction;
-            SearchItem = item;
+            LootType = LootType.Blessed;
+            Hue = RecallRune.CalculateHue(map, null, true);
+
+            SearchItem = item.Item;
+            Vendor = item.Vendor;
+            AuctionSafe = item.AuctionSafe;
 
             Point3D p;
 
             if (IsAuction)
             {
-                AuctionSafe = Auction.Auctions.Find(x => x.AuctionItem == item).Safe;
                 p = AuctionSafe.Location;
             }
             else
             {
-                Vendor = item.RootParentEntity as PlayerVendor;
                 p = Vendor.Location;
             }
 
             Width = 300;
             Height = 300;
-            int size = item.Map == Map.Tokuno ? 300 : item.Map == Map.TerMur ? 200 : 600;
+            int size = map == Map.Tokuno ? 300 : map == Map.TerMur ? 200 : 600;
 
             Bounds = new Rectangle2D(p.X - size / 2, p.Y - size / 2, size, size);
             AddWorldPin(p.X, p.Y);
@@ -363,7 +364,7 @@ namespace Server.Items
 
             private bool IsAccessible()
             {
-                if (Container == null || VendorMap.IsAuction)
+                if (Container == null || VendorMap.IsAuction || VendorMap.Vendor == null || Container.RootParent != VendorMap.Vendor)
                     return false;
 
                 if (!Container.IsAccessibleTo(Clicker))
@@ -377,7 +378,10 @@ namespace Server.Items
 
             public override void OnClick()
             {
-                RecurseOpen(Container, Clicker);
+                if (IsAccessible())
+                {
+                    RecurseOpen(Container, Clicker);
+                }
             }
 
             private static void RecurseOpen(Container c, Mobile from)

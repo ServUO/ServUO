@@ -136,7 +136,7 @@ namespace Server.Mobiles
 
             public override void OnClick()
             {
-                if (!m_From.InRange(m_Vendor.Location, 10))
+                if (!m_From.InRange(m_Vendor.Location, 20))
                     return;
 
                 EventSink.InvokeBODOffered(new BODOfferEventArgs(m_From, m_Vendor));

@@ -119,11 +119,6 @@ namespace Server.Mobiles
         {
         }
 
-        public override void GenerateLoot()
-        {
-            AddLoot(LootPack.Average);
-        }
-
         public class InternalSelfDeleteTimer : Timer
         {
             private readonly MercutioTheUnsavory Mare;

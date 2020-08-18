@@ -328,6 +328,7 @@ namespace Server.Mobiles
                 return ChargePerRealWorldDay / 12;
             }
         }
+
         public int ChargePerRealWorldDay
         {
             get
@@ -340,7 +341,7 @@ namespace Server.Mobiles
 
                 int perDay = (int)(60 + (total / 500) * 3);
 
-                MerchantsTrinket trinket = FindItemOnLayer(Layer.Earrings) as MerchantsTrinket;
+                var trinket = GetMerchantsTrinket();
 
                 if (trinket != null)
                 {
@@ -350,6 +351,19 @@ namespace Server.Mobiles
                 return perDay;
             }
         }
+
+        public MerchantsTrinket GetMerchantsTrinket()
+        {
+            var trinket = FindItemOnLayer(Layer.Earrings) as MerchantsTrinket;
+
+            if (trinket != null && trinket.UsesRemaining > 0)
+            {
+                return trinket;
+            }
+
+            return null;
+        }
+
         public static void TryToBuy(Item item, Mobile from)
         {
             PlayerVendor vendor = item.RootParent as PlayerVendor;
@@ -1619,11 +1633,8 @@ namespace Server.Mobiles
                 var vendor = list[i];
                 vendor.NextPayTime = DateTime.UtcNow + GetInterval();
 
-                int pay;
-                int totalGold;
-
-                pay = vendor.ChargePerRealWorldDay;
-                totalGold = vendor.HoldGold;
+                var pay = vendor.ChargePerRealWorldDay;
+                var totalGold = vendor.HoldGold;
 
                 if (pay > totalGold)
                 {
@@ -1632,6 +1643,13 @@ namespace Server.Mobiles
                 else
                 {
                     vendor.HoldGold -= pay;
+
+                    var trinket = vendor.GetMerchantsTrinket();
+
+                    if (trinket != null)
+                    {
+                        trinket.UsesRemaining--;
+                    }
                 }
             }
 

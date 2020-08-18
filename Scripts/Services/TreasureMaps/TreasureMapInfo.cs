@@ -861,11 +861,11 @@ namespace Server.Items
             #region Decorations
             switch (level)
             {
-                case TreasureLevel.Stash: dropChance = 0.0; break;
-                case TreasureLevel.Supply: dropChance = 0.2; break;
-                case TreasureLevel.Cache: dropChance = 0.4; break;
-                case TreasureLevel.Hoard: dropChance = 0.5; break;
-                case TreasureLevel.Trove: dropChance = .75; break;
+                case TreasureLevel.Stash: dropChance = 0.00; break;
+                case TreasureLevel.Supply: dropChance = 0.10; break;
+                case TreasureLevel.Cache: dropChance = 0.20; break;
+                case TreasureLevel.Hoard: dropChance = 0.40; break;
+                case TreasureLevel.Trove: dropChance = 0.50; break;
             }
 
             if (Utility.RandomDouble() < dropChance)
@@ -898,11 +898,11 @@ namespace Server.Items
 
             switch (level)
             {
-                case TreasureLevel.Stash: dropChance = 0.0; break;
+                case TreasureLevel.Stash: dropChance = 0.00; break;
                 case TreasureLevel.Supply: dropChance = 0.10; break;
                 case TreasureLevel.Cache: dropChance = 0.20; break;
                 case TreasureLevel.Hoard: dropChance = 0.50; break;
-                case TreasureLevel.Trove: dropChance = .75; break;
+                case TreasureLevel.Trove: dropChance = 0.75; break;
             }
 
             if (Utility.RandomDouble() < dropChance)

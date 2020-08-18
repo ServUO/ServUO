@@ -232,7 +232,8 @@ namespace Server.Engines.Shadowguard
             Point3D p = StartLoc;
             ConvertOffset(ref p);
 
-            MovePlayer(m, p);
+            BaseCreature.TeleportPets(m, p, m.Map);
+            MovePlayer(m, p, false);
             m.CloseGump(typeof(ShadowguardGump));
 
             if (m is PlayerMobile)

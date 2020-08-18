@@ -82,21 +82,16 @@ namespace Server.Items
 
         public override BaseAddonDeed Deed => new BarrelSpongeDeed();
 
+        public override void GetProperties(ObjectPropertyList list, AddonComponent c)
+        {
+            list.Add(1154178, ResourceCount.ToString()); // Potions: ~1_COUNT~
+        }
+
         private class BarrelSpongeComponent : LocalizedAddonComponent
         {
             public BarrelSpongeComponent(int id)
                 : base(id, 1098376) // Barrel Sponge
             {
-            }
-
-            public override void GetProperties(ObjectPropertyList list)
-            {
-                base.GetProperties(list);
-
-                if (Addon is BarrelSpongeAddon)
-                {
-                    list.Add(1154178, ((BarrelSpongeAddon)Addon).ResourceCount.ToString()); // Potions: ~1_COUNT~
-                }
             }
 
             public BarrelSpongeComponent(Serial serial)

@@ -67,39 +67,9 @@ namespace Server.Items
 
         public override BaseAddonDeed Deed => new FirePaintingDeed();
 
-        private class FirePaintingComponent : LocalizedAddonComponent
+        public override void GetProperties(ObjectPropertyList list, AddonComponent c)
         {
-            public FirePaintingComponent(int id)
-                : base(id, 1098378) // painting
-            {
-            }
-
-            public override void GetProperties(ObjectPropertyList list)
-            {
-                base.GetProperties(list);
-
-                if (Addon is FirePaintingAddon)
-                {
-                    list.Add(1154179, ((FirePaintingAddon)Addon).ResourceCount.ToString()); // Scrolls of Transcendence: ~1_COUNT~
-                }
-            }
-
-            public FirePaintingComponent(Serial serial)
-                : base(serial)
-            {
-            }
-
-            public override void Serialize(GenericWriter writer)
-            {
-                base.Serialize(writer);
-                writer.Write(0); // Version
-            }
-
-            public override void Deserialize(GenericReader reader)
-            {
-                base.Deserialize(reader);
-                int version = reader.ReadInt();
-            }
+            list.Add(1154179, ResourceCount.ToString()); // Scrolls of Transcendence: ~1_COUNT~
         }
 
         private void TryGiveResourceCount()
