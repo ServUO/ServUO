@@ -2,32 +2,33 @@ using System.Threading;
 
 namespace Server
 {
-    public sealed class DualSaveStrategy : StandardSaveStrategy
-    {
-        public DualSaveStrategy()
-        {
-        }
+	public sealed class DualSaveStrategy : StandardSaveStrategy
+	{
+		public DualSaveStrategy()
+		{
+		}
 
-        public override string Name => "Dual";
-        public override void Save(SaveMetrics metrics, bool permitBackgroundWrite)
-        {
-            PermitBackgroundWrite = permitBackgroundWrite;
+		public override string Name => "Dual";
+		public override void Save(SaveMetrics metrics, bool permitBackgroundWrite)
+		{
+			PermitBackgroundWrite = permitBackgroundWrite;
 
-            Thread saveThread = new Thread(delegate ()
-            {
-                SaveItems(metrics);
-            });
+			Thread saveThread = new Thread(delegate ()
+			{
+				SaveItems(metrics);
+			})
+			{
+				Name = "Item Save Subset"
+			};
+			saveThread.Start();
 
-            saveThread.Name = "Item Save Subset";
-            saveThread.Start();
+			SaveMobiles(metrics);
+			SaveGuilds(metrics);
 
-            SaveMobiles(metrics);
-            SaveGuilds(metrics);
+			saveThread.Join();
 
-            saveThread.Join();
-
-            if (permitBackgroundWrite && UseSequentialWriters)	//If we're permitted to write in the background, but we don't anyways, then notify.
-                World.NotifyDiskWriteComplete();
-        }
-    }
+			if (permitBackgroundWrite && UseSequentialWriters)  //If we're permitted to write in the background, but we don't anyways, then notify.
+				World.NotifyDiskWriteComplete();
+		}
+	}
 }

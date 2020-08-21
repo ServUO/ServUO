@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace Server.Diagnostics
@@ -16,9 +15,10 @@ namespace Server.Diagnostics
             {
                 if (_Output == null)
                 {
-                    _Output = new StreamWriter(Path.Combine(LogDirectory, String.Format("{0}.log", DateTime.UtcNow.ToLongDateString())), true);
-
-                    _Output.AutoFlush = true;
+					_Output = new StreamWriter(Path.Combine(LogDirectory, string.Format("{0}.log", DateTime.UtcNow.ToLongDateString())), true)
+					{
+						AutoFlush = true
+					};
 
                     _Output.WriteLine("##############################");
                     _Output.WriteLine("Exception log started on {0}", DateTime.UtcNow);
@@ -31,7 +31,7 @@ namespace Server.Diagnostics
 
         static ExceptionLogging()
         {
-            var directory = Path.Combine(Core.BaseDirectory, "Logs/Exceptions");
+			string directory = Path.Combine(Core.BaseDirectory, "Logs/Exceptions");
 
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
