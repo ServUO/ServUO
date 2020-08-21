@@ -94,6 +94,7 @@ namespace Server.Items
 
                 if (house != null && house.HasSecureAccess(m, Level))
                 {
+                    m.CloseGump(typeof(WallSafeGump));
                     m.SendGump(new WallSafeGump((PlayerMobile)m, this));
                 }
                 else

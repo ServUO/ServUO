@@ -26,8 +26,10 @@ namespace Server.Items
         SmallMarbleWorkshop,
         #region Veteran Rewards
         MalasMountainPass,
-        ChurchAtNight
+        ChurchAtNight,
         #endregion
+        RobinsNest,
+        TheSpires
     }
 
     public class MiniHouseAddonComponent : AddonComponent
@@ -57,7 +59,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Type = (MiniHouseType)reader.ReadInt();
         }
@@ -161,6 +163,10 @@ namespace Server.Items
                         return 1062692; // Mini House: Contest Winning House Design
                     case MiniHouseType.ChurchAtNight:
                         return 1072216; // Mini House: Contest 2004 Winning House Design
+                    case MiniHouseType.RobinsNest:
+                        return 1159527; // Mini Keep - Robin's Nest
+                    case MiniHouseType.TheSpires:
+                        return 1159526; // Mini Castle - The Spires
                     default:
                         return 1062096; // a mini house deed
                 }
@@ -229,16 +235,12 @@ namespace Server.Items
                         break;
                     }
             }
-
-            if (Weight == 0.0)
-                Weight = 1.0;
         }
     }
 
     public class MiniHouseInfo
     {
-        public static MiniHouseInfo[] Info => m_Info;
-        private static readonly MiniHouseInfo[] m_Info = new MiniHouseInfo[]
+        public static MiniHouseInfo[] Info { get; } = new MiniHouseInfo[]
         {
             /* Stone and plaster house           */ new MiniHouseInfo(0x22C4, 1, 1011303),
             /* Field stone house                 */ new MiniHouseInfo(0x22DE, 1, 1011304),
@@ -261,40 +263,39 @@ namespace Server.Items
             /* Small stone workshop              */ new MiniHouseInfo(0x22F6, 1, 1011321),
             /* Small marble workshop             */ new MiniHouseInfo(0x22F4, 1, 1011322),
             /* Malas Mountain Pass               */ new MiniHouseInfo(1062692, 0x2316, 0x2315, 0x2314, 0x2313),
-            /* Church At Night                   */ new MiniHouseInfo(1072215, 0x2318, 0x2317, 0x2319, 0x1)
+            /* Church At Night                   */ new MiniHouseInfo(1072215, 0x2318, 0x2317, 0x2319, 0x1),
+            /* Robin’s Nest                      */ new MiniHouseInfo(1126529, 0xA609, 0xA60A, 0xA60C, 0xA60B, 0xA60D, 0xA60F, 0xA60E, 0xA610, 0xA611),
+            /* The Spires                        */ new MiniHouseInfo(1126538, 0xA612, 0xA613, 0xA615, 0xA614, 0xA616, 0xA618, 0xA617, 0xA619, 0xA61A)
         };
-
-        private readonly int[] m_Graphics;
-        private readonly int m_LabelNumber;
 
         public MiniHouseInfo(int start, int count, int labelNumber)
         {
-            m_Graphics = new int[count];
+            Graphics = new int[count];
 
             for (int i = 0; i < count; ++i)
-                m_Graphics[i] = start + i;
+                Graphics[i] = start + i;
 
-            m_LabelNumber = labelNumber;
+            LabelNumber = labelNumber;
         }
 
         public MiniHouseInfo(int labelNumber, params int[] graphics)
         {
-            m_LabelNumber = labelNumber;
-            m_Graphics = graphics;
+            LabelNumber = labelNumber;
+            Graphics = graphics;
         }
 
-        public int[] Graphics => m_Graphics;
+        public int[] Graphics { get; }
 
-        public int LabelNumber => m_LabelNumber;
+        public int LabelNumber { get; }
 
         public static MiniHouseInfo GetInfo(MiniHouseType type)
         {
             int v = (int)type;
 
-            if (v < 0 || v >= m_Info.Length)
+            if (v < 0 || v >= Info.Length)
                 v = 0;
 
-            return m_Info[v];
+            return Info[v];
         }
     }
 }

@@ -252,7 +252,7 @@ namespace Server.Menus.Questions
 
             protected override void OnTick()
             {
-                if (m_Mobile.NetState == null || DateTime.UtcNow > m_End || CityTradeSystem.HasTrade(m_Mobile))
+                if (m_Mobile.NetState == null || DateTime.UtcNow > m_End)
                 {
                     m_Mobile.Frozen = false;
                     m_Mobile.CloseGump(typeof(StuckMenu));
@@ -298,6 +298,12 @@ namespace Server.Menus.Questions
                 {
                     m_Mobile.Frozen = true;
                 }
+				else if (CityTradeSystem.HasTrade(m_Mobile))
+				{
+					m_Mobile.Frozen = false;
+                    Stop();
+					m_Mobile.SendLocalizedMessage(1151733); // You cannot do that while carrying a Trade Order.
+				}
                 else
                 {
                     m_Mobile.Frozen = false;

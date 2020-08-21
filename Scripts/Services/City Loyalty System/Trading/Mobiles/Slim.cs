@@ -40,7 +40,7 @@ namespace Server.Engines.CityLoyalty
             boots.Hue = 1;
             EquipItem(boots);
 
-            CantWalk = true;
+            Frozen = true;
         }
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
@@ -153,6 +153,8 @@ namespace Server.Engines.CityLoyalty
         {
             base.Deserialize(reader);
             int v = reader.ReadInt();
+			
+			Frozen = true;
         }
     }
 }

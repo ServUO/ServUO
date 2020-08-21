@@ -113,8 +113,6 @@ namespace Server.Engines.Quests
 
         public override void OnDoubleClick(Mobile m)
         {
-            Console.WriteLine(m.Items.Count);
-
             if (m.Alive)
                 OnTalk(m);
         }
