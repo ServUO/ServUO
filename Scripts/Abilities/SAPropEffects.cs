@@ -7,19 +7,6 @@ using System.Linq;
 
 namespace Server.Items
 {
-    public enum EffectsType
-    {
-        BattleLust,
-        SoulCharge,
-        DamageEater,
-        Splintering,
-        Searing,
-        Bane,
-        BoneBreaker,
-        Swarm,
-        Sparks
-    }
-
     /// <summary>
     /// Used for complex weapon/armor properties introduced in Stagyian Abyss
     /// </summary>
@@ -28,19 +15,17 @@ namespace Server.Items
         public Mobile Attacker { get; set; }
         public Mobile Victim { get; set; }
         public Item Owner { get; set; }
-        public EffectsType Effect { get; set; }
         public TimeSpan Duration { get; set; }
         public TimeSpan TickDuration { get; set; }
         public Timer Timer { get; set; }
 
         public static List<PropertyEffect> Effects { get; set; } = new List<PropertyEffect>();
 
-        public PropertyEffect(Mobile from, Mobile victim, Item owner, EffectsType effect, TimeSpan duration, TimeSpan tickduration)
+        public PropertyEffect(Mobile from, Mobile victim, Item owner, TimeSpan duration, TimeSpan tickduration)
         {
             Attacker = from;
             Victim = victim;
             Owner = owner;
-            Effect = effect;
             Duration = duration;
             TickDuration = tickduration;
         }
@@ -97,14 +82,6 @@ namespace Server.Items
         {
         }
 
-        public virtual void OnDamaged(int damage)
-        {
-        }
-
-        public virtual void OnDamage(int damage, int phys, int fire, int cold, int poison, int energy, int direct)
-        {
-        }
-
         private class InternalTimer : Timer
         {
             private readonly PropertyEffect Effect;
@@ -148,21 +125,6 @@ namespace Server.Items
             return Effects.Any(e => e.Victim == from && e.GetType() == typeof(T));
         }
 
-        public static bool AttackerIsUnderEffects<T>(Mobile from, EffectsType effect)
-        {
-            return Effects.Any(e => e.Attacker == from && e.GetType() == typeof(T));
-        }
-
-        public static PropertyEffect GetContextForAttacker(Mobile from, EffectsType type)
-        {
-            return Effects.FirstOrDefault(e => e.Attacker == from && e.Effect == type);
-        }
-
-        public static PropertyEffect GetContextForVictim(Mobile from, EffectsType type)
-        {
-            return Effects.FirstOrDefault(e => e.Victim == from && e.Effect == type);
-        }
-
         public static T GetContextForAttacker<T>(Mobile from) where T : PropertyEffect
         {
             return Effects.FirstOrDefault(e => e.Attacker == from && e.GetType() == typeof(T)) as T;
@@ -192,12 +154,12 @@ namespace Server.Items
         private bool m_Active;
 
         public SoulChargeContext(Mobile from, Item item)
-            : base(from, null, item, EffectsType.SoulCharge, TimeSpan.FromSeconds(40), TimeSpan.FromSeconds(40))
+            : base(from, null, item, TimeSpan.FromSeconds(40), TimeSpan.FromSeconds(40))
         {
             m_Active = true;
         }
 
-        public override void OnDamaged(int damage)
+        public void OnDamaged(int damage)
         {
             if (m_Active && IsEquipped() && Attacker != null)
             {
@@ -244,12 +206,12 @@ namespace Server.Items
         private int m_Charges;
 
         public DamageEaterContext(Mobile mobile)
-            : base(mobile, null, null, EffectsType.DamageEater, TimeSpan.MinValue, TimeSpan.FromSeconds(10))
+            : base(mobile, null, null, TimeSpan.MinValue, TimeSpan.FromSeconds(10))
         {
             m_Charges = 0;
         }
 
-        public override void OnDamage(int damage, int phys, int fire, int cold, int poison, int energy, int direct)
+        public void OnDamage(int damage, int phys, int fire, int cold, int poison, int energy, int direct)
         {
             if (m_Charges >= 20)
                 return;
@@ -409,7 +371,7 @@ namespace Server.Items
         public static List<Mobile> BleedImmune { get; set; } = new List<Mobile>();
 
         public SplinteringWeaponContext(Mobile from, Mobile defender, Item weapon)
-            : base(from, defender, weapon, EffectsType.Splintering, TimeSpan.FromSeconds(4), TimeSpan.FromSeconds(4))
+            : base(from, defender, weapon, TimeSpan.FromSeconds(4), TimeSpan.FromSeconds(4))
         {
             StartForceWalk(defender);
 
@@ -489,7 +451,7 @@ namespace Server.Items
         public static int Damage => Utility.RandomMinMax(10, 15);
 
         public SearingWeaponContext(Mobile from, Mobile defender)
-            : base(from, defender, null, EffectsType.Searing, TimeSpan.FromSeconds(4), TimeSpan.FromSeconds(4))
+            : base(from, defender, null, TimeSpan.FromSeconds(4), TimeSpan.FromSeconds(4))
         {
             from.SendLocalizedMessage(1151177); //The searing attack cauterizes the wound on impact.
         }
@@ -515,7 +477,7 @@ namespace Server.Items
         private static TimeSpan _ImmunityDuration = TimeSpan.FromSeconds(60);
 
         public BoneBreakerContext(Mobile attacker, Mobile defender, Item weapon)
-            : base(attacker, defender, weapon, EffectsType.BoneBreaker, _EffectsDuration, TimeSpan.FromSeconds(1))
+            : base(attacker, defender, weapon, _EffectsDuration, TimeSpan.FromSeconds(1))
         {
         }
 
@@ -607,7 +569,7 @@ namespace Server.Items
         private readonly int _ID;
 
         public SwarmContext(Mobile attacker, Mobile defender, Item weapon)
-            : base(attacker, defender, weapon, EffectsType.Swarm, TimeSpan.FromSeconds(15), TimeSpan.FromSeconds(5))
+            : base(attacker, defender, weapon, TimeSpan.FromSeconds(15), TimeSpan.FromSeconds(5))
         {
             _ID = Utility.RandomMinMax(2331, 2339);
 
@@ -714,7 +676,7 @@ namespace Server.Items
         public static Dictionary<Mobile, DateTime> _Immunity;
 
         public SparksContext(Mobile attacker, Mobile defender, Item weapon)
-            : base(attacker, defender, weapon, EffectsType.Sparks, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(1))
+            : base(attacker, defender, weapon, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(1))
         {
         }
 

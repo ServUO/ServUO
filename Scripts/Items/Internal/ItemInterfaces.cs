@@ -73,4 +73,10 @@ namespace Server.Items
         North = 3,
         West = 4
     }
+
+    public enum Size
+    {
+        Small,
+        Large,
+    }
 }

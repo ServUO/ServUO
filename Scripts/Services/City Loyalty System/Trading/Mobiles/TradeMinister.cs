@@ -61,7 +61,7 @@ namespace Server.Engines.CityLoyalty
 
             Ministers.Add(this);
 
-            CantWalk = true;
+            Frozen = true;
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -323,6 +323,8 @@ namespace Server.Engines.CityLoyalty
             base.Deserialize(reader);
             int v = reader.ReadInt();
             City = (City)reader.ReadInt();
+			
+			Frozen = true;
 
             if (CitySystem != null)
                 CitySystem.Minister = this;

@@ -596,7 +596,14 @@
     <Compile Include="Items\Internal\ItemSockets\DecayingItemSocket.cs" />
     <Compile Include="Items\Resource\SaltedSerpentSteaks.cs" />
     <Compile Include="Items\StoreBought\DecorativeDungeonSet\DecorativeDungeonSet.cs" />
+    <Compile Include="Items\StoreBought\DecorativeGuildStone.cs" />
     <Compile Include="Items\StoreBought\DecorativeKitchenSet.cs" />
+    <Compile Include="Items\StoreBought\DecorativeMagesSet\DecorativeMagesCrystalBall.cs" />
+    <Compile Include="Items\StoreBought\DecorativeMagesSet\DecorativeMagesRug.cs" />
+    <Compile Include="Items\StoreBought\DecorativeMagesSet\DecorativeMagesSet.cs" />
+    <Compile Include="Items\StoreBought\DecorativeMagesSet\DecorativeMageThrone.cs" />
+    <Compile Include="Items\StoreBought\DecorativeMagesSet\DecorativeMagicBookStand.cs" />
+    <Compile Include="Items\StoreBought\DecorativeMagesSet\DecorativeSpecimenShelve.cs" />
     <Compile Include="Items\StoreBought\DecorativeStableSet\DecorativeStableFencing.cs" />
     <Compile Include="Items\StoreBought\DecorativeStableSet\DecorativeStableSet.cs" />
     <Compile Include="Items\Consumables\EmbroideryTool.cs" />
@@ -687,6 +694,7 @@
     <Compile Include="Items\StoreBought\SpiralStaircase.cs" />
     <Compile Include="Items\StoreBought\SquirrelMailbox.cs" />
     <Compile Include="Items\StoreBought\StoreSingingBall.cs" />
+    <Compile Include="Items\StoreBought\TransmogrificationPotion.cs" />
     <Compile Include="Items\StoreBought\WineRack.cs" />
     <Compile Include="Items\Tools\SteamPoweredBeverageMaker.cs" />
     <Compile Include="Items\Addons\ClawFootTub.cs" />
@@ -825,6 +833,7 @@
     <Compile Include="Misc\Replacer.cs" />
     <Compile Include="Misc\TaskPollingTimer.cs" />
     <Compile Include="Misc\WorldLocation.cs" />
+    <Compile Include="Mobiles\Normal\Capybara.cs" />
     <Compile Include="Mobiles\Normal\CoconutCrab.cs" />
     <Compile Include="Mobiles\Normal\HungryCoconutCrab.cs" />
     <Compile Include="Mobiles\Normal\SkeletalCat.cs" />
@@ -854,6 +863,11 @@
     <Compile Include="Services\AccountVault\VaultManager.cs" />
     <Compile Include="Services\AccountVault\VaultTimer.cs" />
     <Compile Include="Services\AccountVault\VaultToken.cs" />
+    <Compile Include="Services\GiftGiving\23rdAnniversary\Anniversary23GiftToken.cs" />
+    <Compile Include="Services\GiftGiving\23rdAnniversary\Giver.cs" />
+    <Compile Include="Services\GiftGiving\23rdAnniversary\Items\SilverPlatedBubblingCauldronAddon.cs" />
+    <Compile Include="Services\GiftGiving\23rdAnniversary\Items\SilverPlatedLamppost.cs" />
+    <Compile Include="Services\GiftGiving\23rdAnniversary\Items\SilverPlatedTome.cs" />
     <Compile Include="Services\PointsSystems\JollyRogerData.cs" />
     <Compile Include="Services\Seasonal Events\ForsakenFoes\Mobile\MiningCooperativeMerchant.cs" />
     <Compile Include="Mobiles\NPCs\CommissionPlayerVendor.cs" />
