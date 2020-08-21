@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 
 using Server.Diagnostics;
@@ -62,7 +63,7 @@ namespace Server
 
 		public static void DumpInfo(TextWriter tw)
 		{
-			TimerThread.DumpInfo2(tw);
+			TimerThread.Dump(tw);
 		}
 
 		public TimerPriority Priority
@@ -137,49 +138,67 @@ namespace Server
 				new List<Timer>(), new List<Timer>(), new List<Timer>(), new List<Timer>(), new List<Timer>()
 			};
 
-			public static void DumpInfo2(TextWriter tw)
-			{
-				for (int i = 0; i < 8; ++i)
-				{
-					tw.WriteLine("Priority: {0}", (TimerPriority)i);
-					tw.WriteLine();
+            private static readonly Dictionary<string, int>[] m_Dump = new Dictionary<string, int>[m_Timers.Length];
 
-					Dictionary<string, List<Timer>> hash = new Dictionary<string, List<Timer>>();
+            private static DateTime m_Dumped;
 
-					for (int j = 0; j < m_Timers[i].Count; ++j)
-					{
-						Timer t = m_Timers[i][j];
+            public static void Dump(TextWriter tw)
+            {
+                var now = DateTime.UtcNow;
 
-						string key = t.ToString();
+                tw.WriteLine($"Date: {now}");
 
-						hash.TryGetValue(key, out List<Timer> list);
+                if (m_Dumped > DateTime.MinValue)
+                {
+                    tw.WriteLine($"Last: {m_Dumped}");
+                    tw.WriteLine($"Span: {now - m_Dumped}");
+                }
 
-						if (list == null)
-						{
-							hash[key] = list = new List<Timer>();
-						}
+                tw.WriteLine();
+                tw.WriteLine();
 
-						list.Add(t);
-					}
+                for (var i = 0; i < 9; i++)
+                {
+                    tw.WriteLine($"Priority: {(TimerPriority)i}");
+                    tw.WriteLine();
 
-					foreach (KeyValuePair<string, List<Timer>> kv in hash)
-					{
-						string key = kv.Key;
-						List<Timer> list = kv.Value;
+                    var total = (double)m_Timers[i].Count;
 
-						tw.WriteLine(
-							"Type: {0}; Count: {1}; Percent: {2}%",
-							key,
-							list.Count,
-							(int)(100 * (list.Count / (double)m_Timers[i].Count)));
-					}
+                    var timers = m_Timers[i].GroupBy(t => t.ToString()).ToDictionary(o => o.Key, o => o.Count());
 
-					tw.WriteLine();
-					tw.WriteLine();
-				}
-			}
+                    foreach (var o in timers.OrderByDescending(o => o.Value))
+                    {
+                        var name = o.Key;
+                        var count = o.Value;
+                        var percent = count / total;
 
-			private class TimerChangeEntry
+                        var line = $"{count:#,0} ({percent:P1})";
+
+                        if (m_Dump[i] != null && m_Dump[i].TryGetValue(o.Key, out var lastCount))
+                        {
+                            var diff = count - lastCount;
+
+                            if (diff > 0)
+                                line += $" [+{diff:#,0}]";
+                            else if (diff < 0)
+                                line += $" [{diff:#,0}]";
+                        }
+
+                        var tabs = new string('\t', 6 - (line.Length / 8));
+
+                        tw.WriteLine($"{line}{tabs}{name}");
+                    }
+
+                    m_Dump[i] = timers;
+
+                    tw.WriteLine();
+                    tw.WriteLine();
+                }
+
+                m_Dumped = now;
+            }
+
+            private class TimerChangeEntry
 			{
 				public Timer m_Timer;
 
