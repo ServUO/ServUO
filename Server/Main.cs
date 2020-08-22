@@ -366,8 +366,9 @@ namespace Server
 			_Signal.Set();
 		}
 
-		public static void Main(string[] args)
-		{
+    public static void Setup(string[] args)
+    {
+
 #if DEBUG
             Debug = true;
 #endif
@@ -568,378 +569,381 @@ namespace Server
 				Console.WriteLine("Core: Server garbage collection mode enabled");
 				Utility.PopColor();
 			}
-
-			if (_UseHRT)
-			{
-				Utility.PushColor(ConsoleColor.DarkYellow);
-				Console.WriteLine(
-					"Core: Requested high resolution timing ({0})",
-					UsingHighResolutionTiming ? "Supported" : "Unsupported");
-				Utility.PopColor();
-			}
-
-			Utility.PushColor(ConsoleColor.DarkYellow);
-			Console.WriteLine("RandomImpl: {0} ({1})", RandomImpl.Type.Name, RandomImpl.IsHardwareRNG ? "Hardware" : "Software");
-			Utility.PopColor();
-
-			Utility.PushColor(ConsoleColor.Green);
-			Console.WriteLine("Core: Loading config...");
-			Config.Load();
-			Utility.PopColor();
-
-			while (!ScriptCompiler.Compile(Debug, _Cache))
-			{
-				Utility.PushColor(ConsoleColor.Red);
-				Console.WriteLine("Scripts: One or more scripts failed to compile or no script files were found.");
-				Utility.PopColor();
-
-				if (Service)
-				{
-					return;
-				}
-
-				Console.WriteLine(" - Press return to exit, or R to try again.");
-
-				if (Console.ReadKey(true).Key != ConsoleKey.R)
-				{
-					return;
-				}
-			}
-
-			ScriptCompiler.Invoke("Configure");
-
-			Region.Load();
-			World.Load();
-
-			ScriptCompiler.Invoke("Initialize");
-
-			MessagePump messagePump = MessagePump = new MessagePump();
-
-			_TimerThread.Start();
-
-			foreach (Map m in Map.AllMaps)
-			{
-				m.Tiles.Force();
-			}
-
-			NetState.Initialize();
-
-			EventSink.InvokeServerStarted();
-
-			try
-			{
-				long now, last = TickCount;
-
-				const int sampleInterval = 100;
-				const float ticksPerSecond = 1000.0f * sampleInterval;
-
-				long sample = 0;
-
-				while (!Closing)
-				{
-					_Signal.WaitOne();
-
-					Mobile.ProcessDeltaQueue();
-					Item.ProcessDeltaQueue();
-
-					Timer.Slice();
-					messagePump.Slice();
-
-					NetState.FlushAll();
-					NetState.ProcessDisposedQueue();
-
-					if (Slice != null)
-					{
-						Slice();
-					}
-
-					if (sample++ % sampleInterval != 0)
-					{
-						continue;
-					}
-
-					now = TickCount;
-					_CyclesPerSecond[_CycleIndex++ % _CyclesPerSecond.Length] = ticksPerSecond / (now - last);
-					last = now;
-				}
-			}
-			catch (Exception e)
-			{
-				CurrentDomain_UnhandledException(null, new UnhandledExceptionEventArgs(e, true));
-			}
-		}
-
-		public static string Arguments
-		{
-			get
-			{
-				StringBuilder sb = new StringBuilder();
-
-				if (Debug)
-				{
-					Utility.Separate(sb, "-debug", " ");
-				}
-
-				if (Service)
-				{
-					Utility.Separate(sb, "-service", " ");
-				}
-
-				if (Profiling)
-				{
-					Utility.Separate(sb, "-profile", " ");
-				}
-
-				if (!_Cache)
-				{
-					Utility.Separate(sb, "-nocache", " ");
-				}
-
-				if (HaltOnWarning)
-				{
-					Utility.Separate(sb, "-haltonwarning", " ");
-				}
-
-				if (VBdotNet)
-				{
-					Utility.Separate(sb, "-vb", " ");
-				}
-
-				if (_UseHRT)
-				{
-					Utility.Separate(sb, "-usehrt", " ");
-				}
-
-				if (NoConsole)
-				{
-					Utility.Separate(sb, "-noconsole", " ");
-				}
-
-				return sb.ToString();
-			}
-		}
-
-		public static int GlobalUpdateRange { get; set; }
-		public static int GlobalMaxUpdateRange { get; set; }
-		public static int GlobalRadarRange { get; set; }
-
-		private static int m_ItemCount, m_MobileCount, m_CustomsCount;
-
-		public static int ScriptItems => m_ItemCount;
-		public static int ScriptMobiles => m_MobileCount;
-		public static int ScriptCustoms => m_CustomsCount;
-
-		public static void VerifySerialization()
-		{
-			m_ItemCount = 0;
-			m_MobileCount = 0;
-			m_CustomsCount = 0;
-
-			VerifySerialization(Assembly.GetCallingAssembly());
-
-			foreach (Assembly a in ScriptCompiler.Assemblies)
-			{
-				VerifySerialization(a);
-			}
-		}
-
-		private static readonly Type[] m_SerialTypeArray = { typeof(Serial) };
-
-		private static void VerifyType(Type t)
-		{
-			bool isItem = t.IsSubclassOf(typeof(Item));
-
-			if (isItem || t.IsSubclassOf(typeof(Mobile)))
-			{
-				if (isItem)
-				{
-					Interlocked.Increment(ref m_ItemCount);
-				}
-				else
-				{
-					Interlocked.Increment(ref m_MobileCount);
-				}
-
-				StringBuilder warningSb = null;
-
-				try
-				{
-					if (t.GetConstructor(m_SerialTypeArray) == null)
-					{
-						warningSb = new StringBuilder();
-
-						warningSb.AppendLine("       - No serialization constructor");
-					}
-
-					if (
-						t.GetMethod(
-							"Serialize",
-							BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) == null)
-					{
-						if (warningSb == null)
-						{
-							warningSb = new StringBuilder();
-						}
-
-						warningSb.AppendLine("       - No Serialize() method");
-					}
-
-					if (
-						t.GetMethod(
-							"Deserialize",
-							BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) == null)
-					{
-						if (warningSb == null)
-						{
-							warningSb = new StringBuilder();
-						}
-
-						warningSb.AppendLine("       - No Deserialize() method");
-					}
-
-					if (warningSb != null && warningSb.Length > 0)
-					{
-						Utility.PushColor(ConsoleColor.Yellow);
-						Console.WriteLine("Warning: {0}\n{1}", t, warningSb);
-						Utility.PopColor();
-					}
-				}
-				catch
-				{
-					Utility.PushColor(ConsoleColor.Yellow);
-					Console.WriteLine("Warning: Exception in serialization verification of type {0}", t);
-					Utility.PopColor();
-				}
-			}
-		}
-
-		private static void VerifySerialization(Assembly a)
-		{
-			if (a != null)
-			{
-				Parallel.ForEach(a.GetTypes(), VerifyType);
-			}
-		}
-	}
-
-	public class FileLogger : TextWriter
-	{
-		public const string DateFormat = "[MMMM dd hh:mm:ss.f tt]: ";
-
-		private bool _NewLine;
-
-		public string FileName { get; private set; }
-
-		public FileLogger(string file)
-			: this(file, false)
-		{ }
-
-		public FileLogger(string file, bool append)
-		{
-			FileName = file;
-
-			using (
-				StreamWriter writer =
-					new StreamWriter(
-						new FileStream(FileName, append ? FileMode.Append : FileMode.Create, FileAccess.Write, FileShare.Read)))
-			{
-				writer.WriteLine(">>>Logging started on {0:f}.", DateTime.Now);
-				//f = Tuesday, April 10, 2001 3:51 PM 
-			}
-
-			_NewLine = true;
-		}
-
-		public override void Write(char ch)
-		{
-			using (StreamWriter writer = new StreamWriter(new FileStream(FileName, FileMode.Append, FileAccess.Write, FileShare.Read)))
-			{
-				if (_NewLine)
-				{
-					writer.Write(DateTime.UtcNow.ToString(DateFormat));
-					_NewLine = false;
-				}
-
-				writer.Write(ch);
-			}
-		}
-
-		public override void Write(string str)
-		{
-			using (StreamWriter writer = new StreamWriter(new FileStream(FileName, FileMode.Append, FileAccess.Write, FileShare.Read)))
-			{
-				if (_NewLine)
-				{
-					writer.Write(DateTime.UtcNow.ToString(DateFormat));
-					_NewLine = false;
-				}
-
-				writer.Write(str);
-			}
-		}
-
-		public override void WriteLine(string line)
-		{
-			using (StreamWriter writer = new StreamWriter(new FileStream(FileName, FileMode.Append, FileAccess.Write, FileShare.Read)))
-			{
-				if (_NewLine)
-				{
-					writer.Write(DateTime.UtcNow.ToString(DateFormat));
-				}
-
-				writer.WriteLine(line);
-				_NewLine = true;
-			}
-		}
-
-		public override Encoding Encoding => Encoding.Default;
-	}
-
-	public class MultiTextWriter : TextWriter
-	{
-		private readonly List<TextWriter> _Streams;
-
-		public MultiTextWriter(params TextWriter[] streams)
-		{
-			_Streams = new List<TextWriter>(streams);
-
-			if (_Streams.Count < 0)
-			{
-				throw new ArgumentException("You must specify at least one stream.");
-			}
-		}
-
-		public void Add(TextWriter tw)
-		{
-			_Streams.Add(tw);
-		}
-
-		public void Remove(TextWriter tw)
-		{
-			_Streams.Remove(tw);
-		}
-
-		public override void Write(char ch)
-		{
-			foreach (TextWriter t in _Streams)
-			{
-				t.Write(ch);
-			}
-		}
-
-		public override void WriteLine(string line)
-		{
-			foreach (TextWriter t in _Streams)
-			{
-				t.WriteLine(line);
-			}
-		}
-
-		public override void WriteLine(string line, params object[] args)
-		{
-			WriteLine(string.Format(line, args));
-		}
-
-		public override Encoding Encoding => Encoding.Default;
-	}
+      
+            if (_UseHRT)
+            {
+                Utility.PushColor(ConsoleColor.DarkYellow);
+                Console.WriteLine(
+                    "Core: Requested high resolution timing ({0})",
+                    UsingHighResolutionTiming ? "Supported" : "Unsupported");
+                Utility.PopColor();
+            }
+
+            Utility.PushColor(ConsoleColor.DarkYellow);
+            Console.WriteLine("RandomImpl: {0} ({1})", RandomImpl.Type.Name, RandomImpl.IsHardwareRNG ? "Hardware" : "Software");
+            Utility.PopColor();
+
+            Utility.PushColor(ConsoleColor.Green);
+            Console.WriteLine("Core: Loading config...");
+            Config.Load();
+            Utility.PopColor();
+
+            while (!ScriptCompiler.Compile(Debug, _Cache))
+            {
+                Utility.PushColor(ConsoleColor.Red);
+                Console.WriteLine("Scripts: One or more scripts failed to compile or no script files were found.");
+                Utility.PopColor();
+
+                if (Service)
+                {
+                    return;
+                }
+
+                Console.WriteLine(" - Press return to exit, or R to try again.");
+
+                if (Console.ReadKey(true).Key != ConsoleKey.R)
+                {
+                    return;
+                }
+            }
+
+            ScriptCompiler.Invoke("Configure");
+
+            Region.Load();
+            World.Load();
+
+            ScriptCompiler.Invoke("Initialize");
+
+            MessagePump = new MessagePump();
+
+            foreach (Map m in Map.AllMaps)
+            {
+                m.Tiles.Force();
+            }
+
+            NetState.Initialize();
+        }
+
+        public static void Run()
+        {
+            EventSink.InvokeServerStarted();
+
+            _TimerThread.Start();
+
+            try
+            {
+                long now, last = TickCount;
+
+                const int sampleInterval = 100;
+                const float ticksPerSecond = 1000.0f * sampleInterval;
+
+                long sample = 0;
+
+                while (!Closing)
+                {
+                    _Signal.WaitOne();
+
+                    Mobile.ProcessDeltaQueue();
+                    Item.ProcessDeltaQueue();
+
+                    Timer.Slice();
+                    MessagePump.Slice();
+
+                    NetState.FlushAll();
+                    NetState.ProcessDisposedQueue();
+
+                    if (Slice != null)
+                    {
+                        Slice();
+                    }
+
+                    if (sample++ % sampleInterval != 0)
+                    {
+                        continue;
+                    }
+
+                    now = TickCount;
+                    _CyclesPerSecond[_CycleIndex++ % _CyclesPerSecond.Length] = ticksPerSecond / (now - last);
+                    last = now;
+                }
+            }
+            catch (Exception e)
+            {
+                CurrentDomain_UnhandledException(null, new UnhandledExceptionEventArgs(e, true));
+            }
+        }
+
+        public static string Arguments
+        {
+            get
+            {
+                StringBuilder sb = new StringBuilder();
+
+                if (Debug)
+                {
+                    Utility.Separate(sb, "-debug", " ");
+                }
+
+                if (Service)
+                {
+                    Utility.Separate(sb, "-service", " ");
+                }
+
+                if (Profiling)
+                {
+                    Utility.Separate(sb, "-profile", " ");
+                }
+
+                if (!_Cache)
+                {
+                    Utility.Separate(sb, "-nocache", " ");
+                }
+
+                if (HaltOnWarning)
+                {
+                    Utility.Separate(sb, "-haltonwarning", " ");
+                }
+
+                if (VBdotNet)
+                {
+                    Utility.Separate(sb, "-vb", " ");
+                }
+
+                if (_UseHRT)
+                {
+                    Utility.Separate(sb, "-usehrt", " ");
+                }
+
+                if (NoConsole)
+                {
+                    Utility.Separate(sb, "-noconsole", " ");
+                }
+
+                return sb.ToString();
+            }
+        }
+
+        public static int GlobalUpdateRange { get; set; }
+        public static int GlobalMaxUpdateRange { get; set; }
+        public static int GlobalRadarRange { get; set; }
+
+        private static int m_ItemCount, m_MobileCount, m_CustomsCount;
+
+        public static int ScriptItems => m_ItemCount;
+        public static int ScriptMobiles => m_MobileCount;
+        public static int ScriptCustoms => m_CustomsCount;
+
+        public static void VerifySerialization()
+        {
+            m_ItemCount = 0;
+            m_MobileCount = 0;
+            m_CustomsCount = 0;
+
+            VerifySerialization(Assembly.GetCallingAssembly());
+
+            foreach (Assembly a in ScriptCompiler.Assemblies)
+            {
+                VerifySerialization(a);
+            }
+        }
+
+        private static readonly Type[] m_SerialTypeArray = { typeof(Serial) };
+
+        private static void VerifyType(Type t)
+        {
+            bool isItem = t.IsSubclassOf(typeof(Item));
+
+            if (isItem || t.IsSubclassOf(typeof(Mobile)))
+            {
+                if (isItem)
+                {
+                    Interlocked.Increment(ref m_ItemCount);
+                }
+                else
+                {
+                    Interlocked.Increment(ref m_MobileCount);
+                }
+
+                StringBuilder warningSb = null;
+
+                try
+                {
+                    if (t.GetConstructor(m_SerialTypeArray) == null)
+                    {
+                        warningSb = new StringBuilder();
+
+                        warningSb.AppendLine("       - No serialization constructor");
+                    }
+
+                    if (
+                        t.GetMethod(
+                            "Serialize",
+                            BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) == null)
+                    {
+                        if (warningSb == null)
+                        {
+                            warningSb = new StringBuilder();
+                        }
+
+                        warningSb.AppendLine("       - No Serialize() method");
+                    }
+
+                    if (
+                        t.GetMethod(
+                            "Deserialize",
+                            BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) == null)
+                    {
+                        if (warningSb == null)
+                        {
+                            warningSb = new StringBuilder();
+                        }
+
+                        warningSb.AppendLine("       - No Deserialize() method");
+                    }
+
+                    if (warningSb != null && warningSb.Length > 0)
+                    {
+                        Utility.PushColor(ConsoleColor.Yellow);
+                        Console.WriteLine("Warning: {0}\n{1}", t, warningSb);
+                        Utility.PopColor();
+                    }
+                }
+                catch
+                {
+                    Utility.PushColor(ConsoleColor.Yellow);
+                    Console.WriteLine("Warning: Exception in serialization verification of type {0}", t);
+                    Utility.PopColor();
+                }
+            }
+        }
+
+        private static void VerifySerialization(Assembly a)
+        {
+            if (a != null)
+            {
+                Parallel.ForEach(a.GetTypes(), VerifyType);
+            }
+        }
+    }
+
+    public class FileLogger : TextWriter
+    {
+        public const string DateFormat = "[MMMM dd hh:mm:ss.f tt]: ";
+
+        private bool _NewLine;
+
+        public string FileName { get; private set; }
+
+        public FileLogger(string file)
+            : this(file, false)
+        { }
+
+        public FileLogger(string file, bool append)
+        {
+            FileName = file;
+
+            using (
+                StreamWriter writer =
+                    new StreamWriter(
+                        new FileStream(FileName, append ? FileMode.Append : FileMode.Create, FileAccess.Write, FileShare.Read)))
+            {
+                writer.WriteLine(">>>Logging started on {0:f}.", DateTime.Now);
+                //f = Tuesday, April 10, 2001 3:51 PM
+            }
+
+            _NewLine = true;
+        }
+
+        public override void Write(char ch)
+        {
+            using (StreamWriter writer = new StreamWriter(new FileStream(FileName, FileMode.Append, FileAccess.Write, FileShare.Read)))
+            {
+                if (_NewLine)
+                {
+                    writer.Write(DateTime.UtcNow.ToString(DateFormat));
+                    _NewLine = false;
+                }
+
+                writer.Write(ch);
+            }
+        }
+
+        public override void Write(string str)
+        {
+            using (StreamWriter writer = new StreamWriter(new FileStream(FileName, FileMode.Append, FileAccess.Write, FileShare.Read)))
+            {
+                if (_NewLine)
+                {
+                    writer.Write(DateTime.UtcNow.ToString(DateFormat));
+                    _NewLine = false;
+                }
+
+                writer.Write(str);
+            }
+        }
+
+        public override void WriteLine(string line)
+        {
+            using (StreamWriter writer = new StreamWriter(new FileStream(FileName, FileMode.Append, FileAccess.Write, FileShare.Read)))
+            {
+                if (_NewLine)
+                {
+                    writer.Write(DateTime.UtcNow.ToString(DateFormat));
+                }
+
+                writer.WriteLine(line);
+                _NewLine = true;
+            }
+        }
+
+        public override Encoding Encoding => Encoding.Default;
+    }
+
+    public class MultiTextWriter : TextWriter
+    {
+        private readonly List<TextWriter> _Streams;
+
+        public MultiTextWriter(params TextWriter[] streams)
+        {
+            _Streams = new List<TextWriter>(streams);
+
+            if (_Streams.Count < 0)
+            {
+                throw new ArgumentException("You must specify at least one stream.");
+            }
+        }
+
+        public void Add(TextWriter tw)
+        {
+            _Streams.Add(tw);
+        }
+
+        public void Remove(TextWriter tw)
+        {
+            _Streams.Remove(tw);
+        }
+
+        public override void Write(char ch)
+        {
+            foreach (TextWriter t in _Streams)
+            {
+                t.Write(ch);
+            }
+        }
+
+        public override void WriteLine(string line)
+        {
+            foreach (TextWriter t in _Streams)
+            {
+                t.WriteLine(line);
+            }
+        }
+
+        public override void WriteLine(string line, params object[] args)
+        {
+            WriteLine(String.Format(line, args));
+        }
+
+        public override Encoding Encoding => Encoding.Default;
+    }
 }

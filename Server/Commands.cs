@@ -130,7 +130,7 @@ namespace Server.Commands
 	{
 		private static string m_Prefix = "[";
 
-		public static string Prefix { get => m_Prefix; set => m_Prefix = value; }
+		public static string Prefix { get; set; }
 
 		public static string[] Split(string value)
 		{
@@ -209,7 +209,7 @@ namespace Server.Commands
 
 		private static AccessLevel m_BadCommandIngoreLevel = AccessLevel.Player;
 
-		public static AccessLevel BadCommandIgnoreLevel { get => m_BadCommandIngoreLevel; set => m_BadCommandIngoreLevel = value; }
+		public static AccessLevel BadCommandIgnoreLevel { get; set; }
 
 		public static bool Handle(Mobile from, string text)
 		{

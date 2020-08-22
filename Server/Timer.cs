@@ -198,7 +198,7 @@ namespace Server
                 m_Dumped = now;
             }
 
-            private class TimerChangeEntry
+			private class TimerChangeEntry
 			{
 				public Timer m_Timer;
 

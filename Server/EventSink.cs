@@ -797,7 +797,7 @@ namespace Server
 
 		public Mobile Mobile => m_Mobile;
 		public Direction Direction => m_Direction;
-		public bool Blocked { get => m_Blocked; set => m_Blocked = value; }
+        public bool Blocked { get => m_Blocked; set => m_Blocked = value; }
 
 		private static readonly Queue<MovementEventArgs> m_Pool = new Queue<MovementEventArgs>();
 

@@ -3,12 +3,18 @@
 /Ultima.dll.mdb
 /Ultima/bin
 /Ultima/obj
+/Scripts.dll
+/Server.dll
 /Server/bin
 /Server/obj
 /Scripts/bin
 /Scripts/obj
 /Scripts/Output
 /Scripts/Custom
+/ServUO.exe.config
+/ServUO/Properties
+/ServUO/obj
+System.Drawing.Common.dll
 
 /Honesty
 /Logs

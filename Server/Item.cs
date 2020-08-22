@@ -1944,7 +1944,7 @@ namespace Server
 
 		private static TimeSpan m_DDT = TimeSpan.FromMinutes(Config.Get("General.DefaultItemDecayTime", 60));
 
-		public static TimeSpan DefaultDecayTime { get => m_DDT; set => m_DDT = value; }
+		public static TimeSpan DefaultDecayTime { get; set; }
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public virtual int DecayMultiplier => 1;
@@ -6169,7 +6169,7 @@ namespace Server
 			public Dictionary<ItemSocket, DateTime> TimerRegistry { get; set; } = new Dictionary<ItemSocket, DateTime>();
 
 			public SocketTimer()
-				: base(TimeSpan.FromMilliseconds(10), TimeSpan.FromMilliseconds(10))
+				: base(TimeSpan.FromMilliseconds(250), TimeSpan.FromMilliseconds(250))
 			{
 				Instance = this;
 				Start();

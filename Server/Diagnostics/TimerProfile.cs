@@ -27,13 +27,11 @@ namespace Server.Diagnostics
 			return prof;
 		}
 
-		private long _created, _started, _stopped;
+		public long Created { get; set; }
 
-		public long Created { get => _created; set => _created = value; }
+		public long Started { get; set; }
 
-		public long Started { get => _started; set => _started = value; }
-
-		public long Stopped { get => _stopped; set => _stopped = value; }
+		public long Stopped { get; set; }
 
 		public TimerProfile(string name)
 			: base(name)
@@ -43,7 +41,7 @@ namespace Server.Diagnostics
 		{
 			base.WriteTo(op);
 
-			op.Write("\t{0,12:N0} {1,12:N0} {2,-12:N0}", _created, _started, _stopped);
+			op.Write("\t{0,12:N0} {1,12:N0} {2,-12:N0}", Created, Started, Stopped);
 		}
 	}
 }
