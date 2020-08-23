@@ -1543,6 +1543,30 @@ namespace Server.Mobiles
                     }
                 }
             }
+
+            if (Map != null && bii.Amount <= 0)
+            {
+                IEntity entity = bii.GetDisplayEntity();
+                Packet remove = new RemoveEntity(entity.Serial);
+                Point3D worldLoc = Location;
+                IPooledEnumerable<NetState> eable = Map.GetClientsInRange(worldLoc);
+                remove.Acquire();
+                foreach (NetState state in eable)
+                {
+                    state.Send(remove);
+                }
+                remove.Release();
+                eable.Free();
+            }
+        }
+
+        private sealed class RemoveEntity : Packet
+        {
+            public RemoveEntity(Serial s)
+                : base(0x1D, 5)
+            {
+                m_Stream.Write(s);
+            }
         }
 
         public virtual bool OnBuyItems(Mobile buyer, List<BuyItemResponse> list)
@@ -2678,6 +2702,7 @@ namespace Server
     {
         //get a new instance of an object (we just bought it)
         IEntity GetEntity();
+        IEntity GetDisplayEntity();
 
         int ControlSlots { get; }
 
