@@ -396,10 +396,10 @@ namespace Server.Engines.Reports
 
                                     graph.FillPolygon(barBrush, new PointF[] { pts[2], pts[3], pts[6], pts[5] });
 
-                                    using (SolidBrush ltBrsh = new SolidBrush(System.Windows.Forms.ControlPaint.Light(item.ItemColor, 0.1f)))
+                                    using (SolidBrush ltBrsh = new SolidBrush(new ColorUtil.HLSColor(item.ItemColor).Lighter(0.1f)))
                                         graph.FillPolygon(ltBrsh, new PointF[] { pts[0], pts[2], pts[5], pts[4] });
 
-                                    using (SolidBrush drkBrush = new SolidBrush(System.Windows.Forms.ControlPaint.Dark(item.ItemColor, 0.05f)))
+                                    using (SolidBrush drkBrush = new SolidBrush(new ColorUtil.HLSColor(item.ItemColor).Darker(0.05f)))
                                         graph.FillPolygon(drkBrush, new PointF[] { pts[0], pts[1], pts[3], pts[2] });
 
                                     graph.DrawLine(pen, pts[0], pts[1]);

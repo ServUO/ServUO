@@ -366,10 +366,10 @@ namespace Server
 			_Signal.Set();
 		}
 
-		public static void Main(string[] args)
+		public static void Setup(string[] args)
 		{
 #if DEBUG
-            Debug = true;
+			Debug = true;
 #endif
 
 			AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
@@ -479,13 +479,13 @@ namespace Server
 
 			Utility.PushColor(ConsoleColor.Cyan);
 #if DEBUG
-            Console.WriteLine(
-                "ServUO - [https://www.servuo.com] Version {0}.{1}, Build {2}.{3} - Build on {4} UTC - Debug",
-                ver.Major,
-                ver.Minor,
-                ver.Build,
-                ver.Revision,
-                buildDate);
+			Console.WriteLine(
+				"ServUO - [https://www.servuo.com] Version {0}.{1}, Build {2}.{3} - Build on {4} UTC - Debug",
+				ver.Major,
+				ver.Minor,
+				ver.Build,
+				ver.Revision,
+				buildDate);
 #else
 			Console.WriteLine(
 				"ServUO - [https://www.servuo.com] Version {0}.{1}, Build {2}.{3} - Build on {4} UTC - Release",
@@ -613,9 +613,7 @@ namespace Server
 
 			ScriptCompiler.Invoke("Initialize");
 
-			MessagePump messagePump = MessagePump = new MessagePump();
-
-			_TimerThread.Start();
+			MessagePump = new MessagePump();
 
 			foreach (Map m in Map.AllMaps)
 			{
@@ -623,8 +621,13 @@ namespace Server
 			}
 
 			NetState.Initialize();
+		}
 
+		public static void Run()
+		{
 			EventSink.InvokeServerStarted();
+
+			_TimerThread.Start();
 
 			try
 			{
@@ -643,7 +646,7 @@ namespace Server
 					Item.ProcessDeltaQueue();
 
 					Timer.Slice();
-					messagePump.Slice();
+					MessagePump.Slice();
 
 					NetState.FlushAll();
 					NetState.ProcessDisposedQueue();
