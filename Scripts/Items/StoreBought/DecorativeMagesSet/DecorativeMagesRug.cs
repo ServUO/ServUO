@@ -26,14 +26,14 @@ namespace Server.Items
         public override BaseAddonDeed Deed => new DecorativeMagesRugAddonDeed();
 
         [Constructable]
-        public DecorativeMagesRugAddon(Size size)
+        public DecorativeMagesRugAddon(ItemSize size)
         {
             int[,] list;
 
             switch (size)
             {
                 default: list = _Small; break;
-                case Size.Large: list = _Large; break;
+                case ItemSize.Large: list = _Large; break;
             }
 
             for (int i = 0; i < list.Length / 4; i++)
@@ -73,7 +73,7 @@ namespace Server.Items
     {
         public override int LabelNumber => 1159522;  // Decorative Mage's Rug
 
-        private Size _Size;
+        private ItemSize _Size;
 
         public override BaseAddon Addon => new DecorativeMagesRugAddon(_Size);
 
@@ -112,13 +112,13 @@ namespace Server.Items
 
         public void GetOptions(RewardOptionList list)
         {
-            list.Add((int)Size.Small, 1062224); // Small
-            list.Add((int)Size.Large, 1062225); // Large
+            list.Add((int)ItemSize.Small, 1062224); // Small
+            list.Add((int)ItemSize.Large, 1062225); // Large
         }
 
         public void OnOptionSelected(Mobile from, int choice)
         {
-            _Size = (Size)choice - 1;
+            _Size = (ItemSize)choice - 1;
 
             if (!Deleted && IsChildOf(from.Backpack))
                 base.OnDoubleClick(from);
