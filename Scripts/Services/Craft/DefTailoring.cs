@@ -57,7 +57,7 @@ namespace Server.Engines.Craft
         AssassinsCowl = 1108,
         MagesHood = 1109,
         CowlOfTheMaceAndShield = 1110,
-        MagesHoodOfScholarlyInsight = 1111
+        MagesHoodOfScholarlyInsight = 1111,
 
     }
 
@@ -65,13 +65,13 @@ namespace Server.Engines.Craft
     {
         #region Statics
         private static readonly Type[] m_TailorColorables = new Type[]
-   {
+   		{
             typeof(GozaMatEastDeed), typeof(GozaMatSouthDeed),
             typeof(SquareGozaMatEastDeed), typeof(SquareGozaMatSouthDeed),
             typeof(BrocadeGozaMatEastDeed), typeof(BrocadeGozaMatSouthDeed),
             typeof(BrocadeSquareGozaMatEastDeed), typeof(BrocadeSquareGozaMatSouthDeed),
             typeof(SquareGozaMatDeed)
-   };
+   		};
 
         private static readonly Type[] m_TailorClothNonColorables = new Type[]
         {

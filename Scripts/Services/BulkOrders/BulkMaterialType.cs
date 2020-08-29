@@ -23,7 +23,7 @@ namespace Server.Engines.BulkOrders
         YewWood,
         Heartwood,
         Bloodwood,
-        Frostwood
+        Frostwood,
     }
 
     public enum BulkGenericType
