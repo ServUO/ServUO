@@ -25,7 +25,7 @@ namespace Server.AccountVault
         {
             if (_Timer == null)
             {
-                _Timer = _Timer = Timer.DelayCall(TimeSpan.FromMilliseconds(10), TimeSpan.FromMilliseconds(10), OnTick);
+                _Timer = Timer.DelayCall(TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), OnTick);
             }
 
             if (!_Timer.Running)

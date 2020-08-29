@@ -6169,7 +6169,7 @@ namespace Server
 			public Dictionary<ItemSocket, DateTime> TimerRegistry { get; set; } = new Dictionary<ItemSocket, DateTime>();
 
 			public SocketTimer()
-				: base(TimeSpan.FromMilliseconds(10), TimeSpan.FromMilliseconds(10))
+				: base(TimeSpan.FromMilliseconds(250), TimeSpan.FromMilliseconds(250))
 			{
 				Instance = this;
 				Start();

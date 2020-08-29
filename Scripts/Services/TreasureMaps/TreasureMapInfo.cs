@@ -682,6 +682,11 @@ namespace Server.Items
             chest.LockLevel = chest.RequiredSkill - 10;
             chest.MaxLockLevel = chest.RequiredSkill + 40;
 
+            if (Engines.Points.PointsSystem.JollyRogerData.Enabled && 0.10 > Utility.RandomDouble())
+            {
+                chest.DropItem(new MysteriousFragment());
+            }
+
             #region Refinements
             if (level == TreasureLevel.Stash)
             {
