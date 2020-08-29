@@ -110,6 +110,17 @@ namespace Server
             AddHtmlText(g, x, y, width, height, def, back, scroll, -1, -1);
         }
 
+        public static void AddTooltip(Gump g, TextDefinition def)
+        {
+            if (def == null)
+                return;
+
+            if (def.Number > 0)
+                g.AddTooltip(def.Number);
+            else if (def.String != null)
+                g.AddTooltip(def.String);
+        }
+
         public static void SendMessageTo(Mobile m, TextDefinition def)
         {
             if (def == null)
