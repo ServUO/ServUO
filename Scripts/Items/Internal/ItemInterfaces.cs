@@ -74,7 +74,7 @@ namespace Server.Items
         West = 4
     }
 
-    public enum Size
+    public enum ItemSize
     {
         Small,
         Large,

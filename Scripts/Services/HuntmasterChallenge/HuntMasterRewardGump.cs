@@ -58,7 +58,7 @@ namespace Server.Engines.HuntsmasterChallenge
             {
                 Item item;
 
-                switch (citem.Tooltip)
+                switch (citem.Tooltip.Number)
                 {
                     default:
                     case 1158769: item = new RecipeScroll(605); break;

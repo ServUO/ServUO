@@ -3006,10 +3006,12 @@ namespace Server.Mobiles
             {
                 canDrop = true;
             }
+            
             if (!canDrop && CheckGold(from, dropped))
             {
                 canDrop = true;
             }
+            
             if (!canDrop && !from.InRange(Location, 2) && base.OnDragDrop(from, dropped))
             {
                 return true;

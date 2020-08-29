@@ -442,11 +442,6 @@ namespace Server.Gumps
             }
         }
 
-        public void AddTooltip(string text)
-        {
-            AddTooltip(text, System.Drawing.Color.Empty);
-        }
-
         public void AddTooltip(string text, System.Drawing.Color color)
         {
             AddTooltip(String.Empty, text, System.Drawing.Color.Empty, color);

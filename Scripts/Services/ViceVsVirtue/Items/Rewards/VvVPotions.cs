@@ -63,7 +63,7 @@ namespace Server.Engines.VvV
         {
             if (IsChildOf(m.Backpack))
             {
-                if (m.AccessLevel == AccessLevel.Player && !ViceVsVirtueSystem.IsVvV(m))
+                if (m.AccessLevel < AccessLevel.Counselor && !ViceVsVirtueSystem.IsVvV(m))
                 {
                     m.SendLocalizedMessage(1155496); // This item can only be used by VvV participants!
                 }
@@ -250,7 +250,7 @@ namespace Server.Engines.VvV
 
         public void AddToCooldown(Mobile m)
         {
-            if (m.AccessLevel > AccessLevel.Player)
+            if (m.AccessLevel >= AccessLevel.Counselor)
                 return;
 
             if (!_Cooldown.ContainsKey(m))
@@ -268,7 +268,7 @@ namespace Server.Engines.VvV
             {
                 DateTime dt = DateTime.UtcNow;
 
-                if (m.AccessLevel == AccessLevel.Player && ViceVsVirtueSystem.Enabled && !ViceVsVirtueSystem.IsVvV(m))
+                if (m.AccessLevel < AccessLevel.Counselor && ViceVsVirtueSystem.Enabled && !ViceVsVirtueSystem.IsVvV(m))
                 {
                     m.SendLocalizedMessage(1155496); // This item can only be used by VvV participants!
                 }

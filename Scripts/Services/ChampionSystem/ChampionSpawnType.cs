@@ -21,7 +21,7 @@ namespace Server.Engines.CannedEvil
         #region TOL
         DragonTurtle,
         #endregion
-        Khaldun
+        Khaldun,
     }
 
     public class ChampionSpawnInfo

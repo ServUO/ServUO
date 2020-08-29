@@ -37,7 +37,7 @@ namespace Server.Engines.Craft
 
         BarbedWhip = 466,
         SpikedWhip = 467,
-        BladedWhip = 468
+        BladedWhip = 468,
     }
 
     public class DefTinkering : CraftSystem

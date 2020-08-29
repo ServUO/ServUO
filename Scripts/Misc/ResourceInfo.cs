@@ -34,7 +34,7 @@ namespace Server.Items
         YewWood,
         Heartwood,
         Bloodwood,
-        Frostwood
+        Frostwood,
     }
 
     public enum CraftResourceType
@@ -564,7 +564,7 @@ namespace Server.Items
             new CraftResourceInfo(0x455, 1053131, "Black Scales",   CraftAttributeInfo.BlackScales, CraftResource.BlackScales, typeof(BlackScales)),
             new CraftResourceInfo(0x851, 1053132, "Green Scales",   CraftAttributeInfo.GreenScales, CraftResource.GreenScales, typeof(GreenScales)),
             new CraftResourceInfo(0x8FD, 1053133, "White Scales",   CraftAttributeInfo.WhiteScales, CraftResource.WhiteScales, typeof(WhiteScales)),
-            new CraftResourceInfo(0x8B0, 1053134, "Blue Scales",    CraftAttributeInfo.BlueScales, CraftResource.BlueScales, typeof(BlueScales))
+            new CraftResourceInfo(0x8B0, 1053134, "Blue Scales",    CraftAttributeInfo.BlueScales, CraftResource.BlueScales, typeof(BlueScales)),
         };
 
         private static readonly CraftResourceInfo[] m_AOSLeatherInfo = new[]
@@ -583,7 +583,7 @@ namespace Server.Items
             new CraftResourceInfo(0x4A8, 1072535, "Yew", CraftAttributeInfo.YewWood, CraftResource.YewWood, typeof(YewLog), typeof(YewBoard)),
             new CraftResourceInfo(0x4A9, 1072536, "Heartwood", CraftAttributeInfo.Heartwood,    CraftResource.Heartwood,    typeof(HeartwoodLog),   typeof(HeartwoodBoard)),
             new CraftResourceInfo(0x4AA, 1072538, "Bloodwood", CraftAttributeInfo.Bloodwood,    CraftResource.Bloodwood,    typeof(BloodwoodLog),   typeof(BloodwoodBoard)),
-            new CraftResourceInfo(0x47F, 1072539, "Frostwood", CraftAttributeInfo.Frostwood,    CraftResource.Frostwood,    typeof(FrostwoodLog),   typeof(FrostwoodBoard))
+            new CraftResourceInfo(0x47F, 1072539, "Frostwood", CraftAttributeInfo.Frostwood,    CraftResource.Frostwood,    typeof(FrostwoodLog),   typeof(FrostwoodBoard)),
         };
 
         /// <summary>

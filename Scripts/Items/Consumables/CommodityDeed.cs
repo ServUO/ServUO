@@ -131,6 +131,21 @@ namespace Server.Items
             {
                 list.Add(1047016);
             }
+            else if(Commodity is ICommodity c)
+            {
+            	if (c.Description.Number > 0)
+	            {
+	                list.Add(1115599, string.Format("{0}\t#{1}", Commodity.Amount, c.Description.Number));
+	            }
+	            else if (c.Description.String != null)
+	            {
+	                list.Add(1115599, string.Format("{0}\t{1}", Commodity.Amount, c.Description.String));
+	            }
+	            else
+	            {
+	                list.Add(1115599, string.Format("{0}\t#{1}", Commodity.Amount, Commodity.LabelNumber));
+	            }
+            }
             else
             {
                 list.Add(1115599, string.Format("{0}\t#{1}", Commodity.Amount, Commodity.LabelNumber));

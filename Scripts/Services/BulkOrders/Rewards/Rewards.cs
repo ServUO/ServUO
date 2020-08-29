@@ -73,7 +73,7 @@ namespace Server.Engines.BulkOrders
         public ConstructCallback Constructor { get; set; }
         public int RewardType { get; set; }
 
-        public BODCollectionItem(int itemID, int tooltip, int hue, double points, ConstructCallback constructor, int type = 0)
+        public BODCollectionItem(int itemID, TextDefinition tooltip, int hue, double points, ConstructCallback constructor, int type = 0)
             : base(null, itemID, tooltip, hue, points, false)
         {
             Constructor = constructor;

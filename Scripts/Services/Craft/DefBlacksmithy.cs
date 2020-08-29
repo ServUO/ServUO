@@ -57,7 +57,7 @@ namespace Server.Engines.Craft
 
         // doom 
         BritchesOfWarding = 355,
-        GlovesOfFeudalGrip = 356
+        GlovesOfFeudalGrip = 356,
     }
     #endregion
 

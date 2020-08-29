@@ -22,7 +22,7 @@ namespace Server.Items
         Samurai,
         Arcanist,
         Mystic,
-        SkillMasteries
+        SkillMasteries,
     }
 
     public enum BookQuality
