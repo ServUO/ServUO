@@ -12,12 +12,12 @@ namespace Server
         private readonly int m_Y;
         private readonly int m_Width;
         private readonly int m_Height;
-        private readonly int m_Tooltip;
+        private readonly TextDefinition m_Tooltip;
         private readonly int m_Hue;
         private readonly double m_Points;
         private readonly bool m_QuestItem;
 
-        public CollectionItem(Type type, int itemID, int tooltip, int hue, double points, bool questitem = false)
+        public CollectionItem(Type type, int itemID, TextDefinition tooltip, int hue, double points, bool questitem = false)
         {
             m_Type = type;
             m_ItemID = itemID;
@@ -63,7 +63,7 @@ namespace Server
         public int Y => m_Y;
         public int Width => m_Width;
         public int Height => m_Height;
-        public int Tooltip => m_Tooltip;
+        public TextDefinition Tooltip => m_Tooltip;
         public int Hue => m_Hue;
         public double Points => m_Points;
         public bool QuestItem => m_QuestItem;
@@ -87,7 +87,7 @@ namespace Server
     {
         private readonly int[] m_Hues;
 
-        public CollectionHuedItem(Type type, int itemID, int tooltip, int hue, double points, int[] hues)
+        public CollectionHuedItem(Type type, int itemID, TextDefinition tooltip, int hue, double points, int[] hues)
             : base(type, itemID, tooltip, hue, points)
         {
             m_Hues = hues;
@@ -100,7 +100,7 @@ namespace Server
     {
         private readonly object m_Title;
 
-        public CollectionTitle(object title, int tooltip, double points)
+        public CollectionTitle(object title, TextDefinition tooltip, double points)
             : base(null, 0xFF1, tooltip, 0x0, points)
         {
             m_Title = title;
@@ -128,7 +128,7 @@ namespace Server
     {
         private readonly int m_Level;
 
-        public CollectionTreasureMap(int level, int tooltip, double points)
+        public CollectionTreasureMap(int level, TextDefinition tooltip, double points)
             : base(typeof(TreasureMap), 0x14EB, tooltip, 0x0, points)
         {
             m_Level = level;
@@ -151,7 +151,7 @@ namespace Server
     {
         private readonly SpellbookType m_Type;
 
-        public CollectionSpellbook(SpellbookType type, int itemID, int tooltip, double points)
+        public CollectionSpellbook(SpellbookType type, int itemID, TextDefinition tooltip, double points)
             : base(typeof(Spellbook), itemID, tooltip, 0x0, points)
         {
             m_Type = type;

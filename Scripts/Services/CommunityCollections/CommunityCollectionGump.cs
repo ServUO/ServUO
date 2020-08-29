@@ -152,7 +152,7 @@ namespace Server.Gumps
                 if (amount > 0)
                 {
                     AddButton(35, offset + height / 2 - 5, 0x837, 0x838, 300 + m_Index, GumpButtonType.Reply, 0);
-                    AddTooltip(item.Tooltip);
+                    TextDefinition.AddTooltip(this, item.Tooltip);
                 }
 
                 int y = offset - item.Y;
@@ -161,14 +161,14 @@ namespace Server.Gumps
                     y += (20 - item.Height) / 2;
 
                 AddItem(55 - item.X + m_Max / 2 - item.Width / 2, y, item.ItemID, item.Hue);
-                AddTooltip(item.Tooltip);
+                TextDefinition.AddTooltip(this, item.Tooltip);
 
                 if (item.Points < 1 && item.Points > 0)
                     AddLabel(65 + m_Max, offset + height / 2 - 10, 0x64, "1 per " + ((int)Math.Pow(item.Points, -1)).ToString());
                 else
                     AddLabel(65 + m_Max, offset + height / 2 - 10, 0x64, item.Points.ToString());
 
-                AddTooltip(item.Tooltip);
+                TextDefinition.AddTooltip(this, item.Tooltip);
 
                 if (amount > 0)
                     AddLabel(235, offset + height / 2 - 5, 0xB1, amount.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("en-US")));
@@ -232,7 +232,7 @@ namespace Server.Gumps
                 if (points >= item.Points && item.CanSelect(m_Owner))
                 {
                     AddButton(35, offset + height / 2 - 5, 0x837, 0x838, 200 + m_Index, GumpButtonType.Reply, 0);
-                    AddTooltip(item.Tooltip);
+                    TextDefinition.AddTooltip(this, item.Tooltip);
                 }
 
                 int y = offset - item.Y;
@@ -241,9 +241,9 @@ namespace Server.Gumps
                     y += (20 - item.Height) / 2;
 
                 AddItem(55 - item.X + m_Max / 2 - item.Width / 2, y, item.ItemID, points >= item.Points ? item.Hue : 0x3E9);
-                AddTooltip(item.Tooltip);
+                TextDefinition.AddTooltip(this, item.Tooltip);
                 AddLabel(65 + m_Max, offset + height / 2 - 10, points >= item.Points ? 0x64 : 0x21, item.Points.ToString());
-                AddTooltip(item.Tooltip);
+                TextDefinition.AddTooltip(this, item.Tooltip);
 
                 offset += 5 + height;
                 m_Index += 1;
@@ -294,10 +294,10 @@ namespace Server.Gumps
             while (offset + height < 290 && m_Index < m_Item.Hues.Length)
             {
                 AddButton(35, offset + height / 2 - 5, 0x837, 0x838, 100 + m_Index, GumpButtonType.Reply, 0);
-                AddTooltip(m_Item.Tooltip);
+                TextDefinition.AddTooltip(this, m_Item.Tooltip);
 
                 AddItem(55 - m_Item.X, offset - m_Item.Y, m_Item.ItemID, m_Item.Hues[m_Index]);
-                AddTooltip(m_Item.Tooltip);
+                TextDefinition.AddTooltip(this, m_Item.Tooltip);
 
                 offset += 5 + height;
                 m_Index += 1;
