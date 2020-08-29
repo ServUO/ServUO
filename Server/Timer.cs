@@ -157,7 +157,7 @@ namespace Server
                 tw.WriteLine();
                 tw.WriteLine();
 
-                for (var i = 0; i < 9; i++)
+                for (var i = 0; i < 8; i++)
                 {
                     tw.WriteLine($"Priority: {(TimerPriority)i}");
                     tw.WriteLine();
