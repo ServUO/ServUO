@@ -355,7 +355,7 @@ namespace Server.Mobiles
 
                     if (loc[1] != null && loc[1].Number > 0)
                     {
-                        AddTooltip(loc[1]);
+                        AddTooltip(loc[1].Number);
                     }
 
                     y += 18;
