@@ -1,4 +1,3 @@
-using Server.Engines.Points;
 using Server.Mobiles;
 using Server.Regions;
 using Server.Spells;
@@ -33,7 +32,7 @@ namespace Server.Engines.Blackthorn
 
         public void OnTick()
         {
-            if (!PointsSystem.FellowshipData.Enabled)
+            if (!Server.Engines.Fellowship.ForsakenFoesEvent.Instance.Running)
             {
                 foreach (Mobile m in GetEnumeratedMobiles().Where(m => m is PlayerMobile && m.AccessLevel == AccessLevel.Player))
                 {

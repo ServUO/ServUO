@@ -23,11 +23,12 @@ namespace Server.Engines.SeasonalEvents
             AddHtml(10, 40, 190, 20, "System Name", false, false);
             AddHtml(200, 40, 75, 20, "Status", false, false);
             AddHtml(275, 40, 150, 20, "Season", false, false);
+            AddHtml(400, 40, 50, 20, "Props", false, false);
             AddHtml(450, 40, 50, 20, "Edit", false, false);
 
             for (int i = 0; i < SeasonalEventSystem.Entries.Count; i++)
             {
-                SeasonalEventEntry entry = SeasonalEventSystem.Entries[i];
+                SeasonalEvent entry = SeasonalEventSystem.Entries[i];
 
                 int hue = entry.IsActive() ? 167 : 137;
 
@@ -42,9 +43,17 @@ namespace Server.Engines.SeasonalEvents
                 {
                     DateTime end = new DateTime(DateTime.Now.Year, entry.MonthStart, entry.DayStart, 0, 0, 0) + TimeSpan.FromDays(entry.Duration);
 
-                    AddLabel(275, y, hue, String.Format("{0}/{1} - {2}/{3}", entry.MonthStart.ToString(), entry.DayStart.ToString(), end.Month.ToString(), end.Day.ToString()));
+                    if (entry.Duration > -1)
+                    {
+                        AddLabel(275, y, hue, String.Format("{0}/{1} - {2}/{3}", entry.MonthStart.ToString(), entry.DayStart.ToString(), end.Month.ToString(), end.Day.ToString()));
+                    }
+                    else
+                    {
+                        AddLabel(275, y, hue, String.Format("{0}/{1} - Completion", entry.MonthStart.ToString(), entry.DayStart.ToString()));
+                    }
                 }
 
+                AddButton(400, y, 4029, 4030, i + 100, GumpButtonType.Reply, 0);
                 AddButton(450, y, 4029, 4030, i + 10, GumpButtonType.Reply, 0);
                 y += 25;
             }
@@ -58,13 +67,26 @@ namespace Server.Engines.SeasonalEvents
             if (info.ButtonID == 0)
                 return;
 
-            if (info.ButtonID >= 10)
+            if (info.ButtonID >= 100)
+            {
+                int id = info.ButtonID - 100;
+                Refresh();
+
+                if (id >= 0 && id < SeasonalEventSystem.Entries.Count)
+                {
+                    var entry = SeasonalEventSystem.Entries[id];
+
+                    User.SendGump(new PropertiesGump(User, entry));
+                    User.SendMessage("You are viewing props for {0}", entry.Name);
+                }
+            }
+            else if (info.ButtonID >= 10)
             {
                 int id = info.ButtonID - 10;
 
                 if (id >= 0 && id < SeasonalEventSystem.Entries.Count)
                 {
-                    SeasonalEventEntry entry = SeasonalEventSystem.Entries[id];
+                    var entry = SeasonalEventSystem.Entries[id];
 
                     if (entry.EventType == EventType.TreasuresOfTokuno)
                     {
@@ -79,6 +101,7 @@ namespace Server.Engines.SeasonalEvents
             }
             else if (info.ButtonID == 1)
             {
+                SeasonalEventSystem.ClearEntries();
                 SeasonalEventSystem.LoadEntries();
                 User.SendMessage("All event entries have been restored to default.");
 
@@ -89,14 +112,14 @@ namespace Server.Engines.SeasonalEvents
 
     public class EditEventGump : BaseGump
     {
-        public SeasonalEventEntry Entry { get; set; }
+        public SeasonalEvent Entry { get; set; }
 
         private int _Month;
         private int _Day;
         private int _Duration;
         private EventStatus _Status;
 
-        public EditEventGump(PlayerMobile pm, SeasonalEventEntry entry)
+        public EditEventGump(PlayerMobile pm, SeasonalEvent entry)
             : base(pm, 100, 100)
         {
             pm.CloseGump(typeof(EditEventGump));

@@ -1,78 +1,38 @@
-using Server.Engines.Points;
 using Server.Items;
-using System;
-using Server.Engines.JollyRoger;
+using Server.Engines.SeasonalEvents;
 using Server.Mobiles;
 
-namespace Server.Engines.JollyRoge
+using System;
+
+namespace Server.Engines.JollyRoger
 {
-    public static class JollyRogerGeneration
+    public class JollyRogerEvent : SeasonalEvent
     {
-        public static void Initialize()
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool QuestContentGenerated { get; set; }
+
+        public static JollyRogerEvent Instance { get; set; }
+
+        public JollyRogerEvent(EventType type, string name, EventStatus status)
+            : base(type, name, status)
         {
-            EventSink.WorldSave += OnWorldSave;
+            Instance = this;
         }
 
-        private static void OnWorldSave(WorldSaveEventArgs e)
+        public JollyRogerEvent(EventType type, string name, EventStatus status, int month, int day, int duration)
+            : base(type, name, status, month, day, duration)
         {
-            CheckEnabled(true);
+            Instance = this;
         }
 
-        public static void CheckEnabled(bool timed = false)
+        public override void CheckEnabled()
         {
-            JollyRogerData jollyroger = PointsSystem.JollyRogerData;
+            base.CheckEnabled();
 
-            if (jollyroger.Enabled && !jollyroger.InSeason)
+            if (Running && IsActive() && !QuestContentGenerated)
             {
-                if (timed)
-                {
-                    Timer.DelayCall(TimeSpan.FromSeconds(30), () =>
-                    {
-                        Utility.WriteConsoleColor(ConsoleColor.Green, "Disabling Jolly Roger");
-
-                        Remove();
-                        jollyroger.Enabled = false;
-                    });
-                }
-                else
-                {
-                    Utility.WriteConsoleColor(ConsoleColor.Green, "Auto Disabling Jolly Roger");
-
-                    Remove();
-                    jollyroger.Enabled = false;
-                }
-            }
-            else if (!jollyroger.Enabled && jollyroger.InSeason)
-            {
-                if (timed)
-                {
-                    Timer.DelayCall(TimeSpan.FromSeconds(30), () =>
-                    {
-                        Utility.WriteConsoleColor(ConsoleColor.Green, "Enabling Jolly Roger");
-
-                        Generate();
-                        jollyroger.Enabled = true;
-
-                        if (!jollyroger.QuestContentGenerated)
-                        {
-                            GenerateQuestContent();
-                            jollyroger.QuestContentGenerated = true;
-                        }
-                    });
-                }
-                else
-                {
-                    Utility.WriteConsoleColor(ConsoleColor.Green, "Auto Enabling Jolly Roger");
-
-                    Generate();
-                    jollyroger.Enabled = true;
-
-                    if (!jollyroger.QuestContentGenerated)
-                    {
-                        GenerateQuestContent();
-                        jollyroger.QuestContentGenerated = true;
-                    }
-                }
+                GenerateQuestContent();
+                QuestContentGenerated = true;
             }
         }
 
@@ -142,102 +102,8 @@ namespace Server.Engines.JollyRoge
             #endregion
         }
 
-        #region remove decoration
-        public static void Remove()
-        {
-            RemoveDecoration();
-        }
-
-        public static void RemoveDecoration()
-        {
-            WeakEntityCollection.Delete(EntityName);
-
-            /* Trammel Remove */
-
-            if (AdmiralJacksShipwreckAddon.InstanceTram != null)
-            {
-                AdmiralJacksShipwreckAddon.InstanceTram.Delete();
-                AdmiralJacksShipwreckAddon.InstanceTram = null;
-            }
-
-            if (JackCorpse.InstanceTram != null)
-            {
-                JackCorpse.InstanceTram.Delete();
-                JackCorpse.InstanceTram = null;
-            }
-
-            if (Shamino.InstanceTram != null)
-            {
-                Shamino.InstanceTram.Delete();
-                Shamino.InstanceTram = null;
-            }
-
-            if (SherryTheMouse.InstanceTram != null)
-            {
-                SherryTheMouse.InstanceTram.Delete();
-                SherryTheMouse.InstanceTram = null;
-            }
-
-            /* Felucca Remove */
-
-            if (AdmiralJacksShipwreckAddon.InstanceFel != null)
-            {
-                AdmiralJacksShipwreckAddon.InstanceFel.Delete();
-                AdmiralJacksShipwreckAddon.InstanceFel = null;
-            }
-
-            if (JackCorpse.InstanceFel != null)
-            {
-                JackCorpse.InstanceFel.Delete();
-                JackCorpse.InstanceFel = null;
-            }
-
-            if (Shamino.InstanceFel != null)
-            {
-                Shamino.InstanceFel.Delete();
-                Shamino.InstanceFel = null;
-            }
-
-            if (SherryTheMouse.InstanceFel != null)
-            {
-                SherryTheMouse.InstanceFel.Delete();
-                SherryTheMouse.InstanceFel = null;
-            }
-
-            /* Ilshenar Remove */
-            if (CastleAddon.Instance != null)
-            {
-                CastleAddon.Instance.Delete();
-                CastleAddon.Instance = null;
-            }            
-
-            if (HawkwindSpeak.Instance != null)
-            {
-                HawkwindSpeak.Instance.Delete();
-                HawkwindSpeak.Instance = null;
-            }
-
-            if (HawkwindTimeLord.Instance != null)
-            {
-                HawkwindTimeLord.Instance.Delete();
-                HawkwindTimeLord.Instance = null;
-            }
-        }
-
-        #endregion
-
-        private static string[] Ghost =
-        {
-            "Ghost,One",
-            "Ghost,Two",
-            "Ghost,Three",
-            "Ghost,Four",
-            "Ghost,Five",
-        };
-
-        public static readonly string EntityName = "JollyRoger";
-
-        public static void Generate()
+        #region Generate/Remove decoration
+        protected override void Generate()
         {
             BaseMulti shipwreck;
             Item item;
@@ -563,6 +429,121 @@ namespace Server.Engines.JollyRoge
 
             ShrineBattleGenerate(map);
         }
+
+        protected override void Remove()
+        {
+            RemoveDecoration();
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(1);
+
+            writer.Write(QuestContentGenerated);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int v = InheritInsertion ? 0 : reader.ReadInt();
+
+            switch (v)
+            {
+                case 1:
+                    QuestContentGenerated = reader.ReadBool();
+                    break;
+            }
+        }
+
+        public static void RemoveDecoration()
+        {
+            WeakEntityCollection.Delete(EntityName);
+
+            /* Trammel Remove */
+
+            if (AdmiralJacksShipwreckAddon.InstanceTram != null)
+            {
+                AdmiralJacksShipwreckAddon.InstanceTram.Delete();
+                AdmiralJacksShipwreckAddon.InstanceTram = null;
+            }
+
+            if (JackCorpse.InstanceTram != null)
+            {
+                JackCorpse.InstanceTram.Delete();
+                JackCorpse.InstanceTram = null;
+            }
+
+            if (Shamino.InstanceTram != null)
+            {
+                Shamino.InstanceTram.Delete();
+                Shamino.InstanceTram = null;
+            }
+
+            if (SherryTheMouse.InstanceTram != null)
+            {
+                SherryTheMouse.InstanceTram.Delete();
+                SherryTheMouse.InstanceTram = null;
+            }
+
+            /* Felucca Remove */
+
+            if (AdmiralJacksShipwreckAddon.InstanceFel != null)
+            {
+                AdmiralJacksShipwreckAddon.InstanceFel.Delete();
+                AdmiralJacksShipwreckAddon.InstanceFel = null;
+            }
+
+            if (JackCorpse.InstanceFel != null)
+            {
+                JackCorpse.InstanceFel.Delete();
+                JackCorpse.InstanceFel = null;
+            }
+
+            if (Shamino.InstanceFel != null)
+            {
+                Shamino.InstanceFel.Delete();
+                Shamino.InstanceFel = null;
+            }
+
+            if (SherryTheMouse.InstanceFel != null)
+            {
+                SherryTheMouse.InstanceFel.Delete();
+                SherryTheMouse.InstanceFel = null;
+            }
+
+            /* Ilshenar Remove */
+            if (CastleAddon.Instance != null)
+            {
+                CastleAddon.Instance.Delete();
+                CastleAddon.Instance = null;
+            }            
+
+            if (HawkwindSpeak.Instance != null)
+            {
+                HawkwindSpeak.Instance.Delete();
+                HawkwindSpeak.Instance = null;
+            }
+
+            if (HawkwindTimeLord.Instance != null)
+            {
+                HawkwindTimeLord.Instance.Delete();
+                HawkwindTimeLord.Instance = null;
+            }
+        }
+
+        #endregion
+
+        private static string[] Ghost =
+        {
+            "Ghost,One",
+            "Ghost,Two",
+            "Ghost,Three",
+            "Ghost,Four",
+            "Ghost,Five",
+        };
+
+        public static readonly string EntityName = "JollyRoger";
 
         public static void ShrineBattleGenerate(Map map)
         {

@@ -1,5 +1,4 @@
-using Server.Engines.JollyRoger;
-using Server.Engines.SeasonalEvents;
+using Server.Engines.Points;
 using Server.Gumps;
 using Server.Mobiles;
 using Server.Network;
@@ -7,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Server.Engines.Points
+namespace Server.Engines.JollyRoger
 {
     public class JollyRogerData : PointsSystem
     {
@@ -18,11 +17,6 @@ namespace Server.Engines.Points
         public override bool AutoAdd => true;
         public override double MaxPoints => double.MaxValue;
         public override bool ShowOnLoyaltyGump => false;
-
-        public bool InSeason => SeasonalEventSystem.IsActive(EventType.JollyRoger);
-
-        public bool Enabled { get; set; }
-        public bool QuestContentGenerated { get; set; }
 
         public static void Initialize()
         {
@@ -205,10 +199,7 @@ namespace Server.Engines.Points
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0);
-
-            writer.Write(Enabled);
-            writer.Write(QuestContentGenerated);
+            writer.Write(1);
 
             writer.Write(_List.Count);
 
@@ -244,9 +235,23 @@ namespace Server.Engines.Points
 
             switch (version)
             {
+                case 1:
                 case 0:
-                    Enabled = reader.ReadBool();
-                    QuestContentGenerated = reader.ReadBool();
+                    if (version == 0)
+                    {
+                        reader.ReadBool();
+                        var questGenerated = reader.ReadBool();
+
+                        Timer.DelayCall(() =>
+                        {
+                            var jolly = Server.Engines.SeasonalEvents.SeasonalEventSystem.GetEvent<JollyRogerEvent>();
+
+                            if (jolly != null)
+                            {
+                                jolly.QuestContentGenerated = questGenerated;
+                            }
+                        });
+                    }
 
                     var count = reader.ReadInt();
 

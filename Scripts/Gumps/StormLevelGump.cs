@@ -1,5 +1,6 @@
 using Server.Commands;
 using Server.Network;
+
 using System;
 
 namespace Server.Gumps
@@ -24,6 +25,19 @@ namespace Server.Gumps
         public static void Initialize()
         {
             CommandSystem.Register("StormLevelGump", AccessLevel.Administrator, StormLevel_OnCommand);
+            EventSink.Login += OnLogin;
+        }
+
+        private static void OnLogin(LoginEventArgs e)
+        {
+            var from = e.Mobile;
+
+            if (((from.Map == Map.Trammel && from.Region.IsPartOf("Blackthorn Castle")) || Server.Engines.Fellowship.ForsakenFoesEvent.Instance.Running && from.Region.IsPartOf("BlackthornDungeon") || from.Region.IsPartOf("Ver Lor Reg")) && from.Player && from.AccessLevel == AccessLevel.Player && from.CharacterOut)
+            {
+                var menu = new StormLevelGump(from);
+                menu.BeginClose();
+                from.SendGump(menu);
+            }
         }
 
         [Usage("StormLevelGump")]

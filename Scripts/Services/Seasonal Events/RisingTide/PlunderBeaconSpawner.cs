@@ -88,23 +88,15 @@ namespace Server.Items
 
         public PlunderBeaconSpawner()
         {
-            if (Spawner == null)
-            {
-                Spawner = this;
-                Timer = Timer.DelayCall(TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), TickTock);
+            Timer = Timer.DelayCall(TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), TickTock);
 
-                PlunderBeacons = new Dictionary<PlunderZone, List<PlunderBeaconAddon>>();
-                PlunderBeacons[PlunderZone.Tram] = new List<PlunderBeaconAddon>();
-                PlunderBeacons[PlunderZone.Fel] = new List<PlunderBeaconAddon>();
-                PlunderBeacons[PlunderZone.Tokuno1] = new List<PlunderBeaconAddon>();
-                PlunderBeacons[PlunderZone.Tokuno2] = new List<PlunderBeaconAddon>();
-                PlunderBeacons[PlunderZone.Tokuno3] = new List<PlunderBeaconAddon>();
-                PlunderBeacons[PlunderZone.Tokuno4] = new List<PlunderBeaconAddon>();
-            }
-            else
-            {
-                Console.WriteLine("ALREADY HAS A SPAWNER!");
-            }
+            PlunderBeacons = new Dictionary<PlunderZone, List<PlunderBeaconAddon>>();
+            PlunderBeacons[PlunderZone.Tram] = new List<PlunderBeaconAddon>();
+            PlunderBeacons[PlunderZone.Fel] = new List<PlunderBeaconAddon>();
+            PlunderBeacons[PlunderZone.Tokuno1] = new List<PlunderBeaconAddon>();
+            PlunderBeacons[PlunderZone.Tokuno2] = new List<PlunderBeaconAddon>();
+            PlunderBeacons[PlunderZone.Tokuno3] = new List<PlunderBeaconAddon>();
+            PlunderBeacons[PlunderZone.Tokuno4] = new List<PlunderBeaconAddon>();
         }
 
         public void TickTock()

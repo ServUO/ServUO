@@ -1739,5 +1739,21 @@ namespace Server
 				}
 			}
 		}
-	}
+
+        public static void Shuffle<T>(List<T> list)
+        {
+            if (list == null || list.Count < 2)
+            {
+                return;
+            }
+
+            for (int i = 0; i < list.Count * 2; i++)
+            {
+                var select = list[0];
+                list.RemoveAt(0);
+
+                list.Insert(Utility.RandomMinMax(0, list.Count - 1), select);
+            }
+        }
+    }
 }

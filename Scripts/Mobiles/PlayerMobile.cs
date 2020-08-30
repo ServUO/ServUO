@@ -35,6 +35,7 @@ using Server.Spells.Seventh;
 using Server.Spells.Sixth;
 using Server.Spells.SkillMasteries;
 using Server.Targeting;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -1269,14 +1270,6 @@ namespace Server.Mobiles
             if (Siege.SiegeShard && from.Map == Map.Trammel && from.AccessLevel == AccessLevel.Player)
             {
                 from.Map = Map.Felucca;
-            }
-
-            //TODO: Move to fellowship data event sink
-            if (((from.Map == Map.Trammel && from.Region.IsPartOf("Blackthorn Castle")) || PointsSystem.FellowshipData.Enabled && from.Region.IsPartOf("BlackthornDungeon") || from.Region.IsPartOf("Ver Lor Reg")) && from.Player && from.AccessLevel == AccessLevel.Player && from.CharacterOut)
-            {
-                StormLevelGump menu = new StormLevelGump(from);
-                menu.BeginClose();
-                from.SendGump(menu);
             }
 
             if (from.NetState != null && from.NetState.IsEnhancedClient && from.Mount is EtherealMount)
@@ -5051,7 +5044,7 @@ namespace Server.Mobiles
         {
             base.GetProperties(list);
 
-            JollyRogerData.DisplayTitle(this, list);
+            Engines.JollyRoger.JollyRogerData.DisplayTitle(this, list);
 
             if (m_SubtitleSkillTitle != null)
                 list.Add(1042971, m_SubtitleSkillTitle);
