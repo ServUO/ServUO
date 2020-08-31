@@ -23,7 +23,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public Point3D SpawnLocation { get; set; }
 
-        public bool IsKrampusEncounter => KrampusEncounter.Encounter != null && KrampusEncounter.Encounter.Krampus == this;
+        public bool IsKrampusEncounter => KrampusEvent.Instance.Krampus == this;
 
         [Constructable]
         public Krampus()
@@ -317,9 +317,9 @@ namespace Server.Mobiles
                     PlayerMobile m = ds.m_Mobile as PlayerMobile;
                     int ordersComplete = 0;
 
-                    if (KrampusEncounter.Encounter.CompleteTable.ContainsKey(m))
+                    if (KrampusEvent.Instance.CompleteTable.ContainsKey(m))
                     {
-                        ordersComplete = KrampusEncounter.Encounter.CompleteTable[m];
+                        ordersComplete = KrampusEvent.Instance.CompleteTable[m];
                     }
 
                     if (ordersComplete >= 3 || Utility.RandomMinMax(0, 8) <= ordersComplete)
@@ -365,7 +365,7 @@ namespace Server.Mobiles
 
             if (IsKrampusEncounter)
             {
-                KrampusEncounter.Encounter.OnKrampusKilled();
+                KrampusEvent.Instance.OnKrampusKilled();
             }
 
             if (SummonedHelpers != null)

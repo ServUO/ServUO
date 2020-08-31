@@ -1,5 +1,4 @@
 using Server.ContextMenus;
-using Server.Engines.Points;
 using Server.Items;
 using System;
 using System.Collections.Generic;
@@ -59,7 +58,7 @@ namespace Server.Engines.TreasuresOfDoom
                     Vases.Remove(vase);
                 }
 
-                if (PointsSystem.TreasuresOfDoom.InSeason && Vases.Count < VaseCount)
+                if (TreasuresOfDoomEvent.Instance.Running && Vases.Count < VaseCount)
                 {
                     Timer.DelayCall(TimeSpan.FromMinutes(Utility.RandomMinMax(MinSpawn, MaxSpawn)), () =>
                     {

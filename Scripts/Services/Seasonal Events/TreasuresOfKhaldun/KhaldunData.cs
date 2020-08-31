@@ -1,6 +1,8 @@
 using Server.Engines.SeasonalEvents;
 using Server.Items;
 using Server.Mobiles;
+using Server.Engines.Khaldun;
+
 using System;
 using System.Collections.Generic;
 
@@ -13,11 +15,6 @@ namespace Server.Engines.Points
         public override bool AutoAdd => true;
         public override double MaxPoints => double.MaxValue;
         public override bool ShowOnLoyaltyGump => false;
-
-        public bool InSeason => SeasonalEventSystem.IsActive(EventType.TreasuresOfKhaldun);
-
-        public bool Enabled { get; set; }
-        public bool QuestContentGenerated { get; set; }
 
         private readonly TextDefinition m_Name = null;
 
@@ -35,7 +32,7 @@ namespace Server.Engines.Points
         {
             BaseCreature bc = victim as BaseCreature;
 
-            if (!InSeason || bc == null || bc.Controlled || bc.Summoned || !damager.Alive || damager.Deleted || bc.IsChampionSpawn)
+            if (!TreasuresOfKhaldunEvent.Instance.Running || bc == null || bc.Controlled || bc.Summoned || !damager.Alive || damager.Deleted || bc.IsChampionSpawn)
                 return;
 
             Region r = bc.Region;
@@ -88,13 +85,10 @@ namespace Server.Engines.Points
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(2);
+            writer.Write(3);
 
             KhaldunTastyTreat.Save(writer);
             PotionOfGloriousFortune.Save(writer);
-
-            writer.Write(Enabled);
-            writer.Write(QuestContentGenerated);
 
             writer.Write(DungeonPoints.Count);
             foreach (KeyValuePair<Mobile, int> kvp in DungeonPoints)
@@ -112,13 +106,27 @@ namespace Server.Engines.Points
 
             switch (version)
             {
+                case 3:
                 case 2:
                     KhaldunTastyTreat.Load(reader);
                     PotionOfGloriousFortune.Load(reader);
                     goto case 1;
                 case 1:
-                    Enabled = reader.ReadBool();
-                    QuestContentGenerated = reader.ReadBool();
+                    if (version == 2)
+                    {
+                        reader.ReadBool();
+                        var questGenerated = reader.ReadBool();
+
+                        Timer.DelayCall(() =>
+                        {
+                            var khaldun = SeasonalEventSystem.GetEvent<TreasuresOfKhaldunEvent>();
+
+                            if (khaldun != null)
+                            {
+                                khaldun.QuestContentGenerated = questGenerated;
+                            }
+                        });
+                    }
                     goto case 0;
                 case 0:
                     int count = reader.ReadInt();

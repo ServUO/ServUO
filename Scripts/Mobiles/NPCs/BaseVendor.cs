@@ -368,6 +368,11 @@ namespace Server.Mobiles
 
         protected void LoadSBInfo()
         {
+            if (SBInfos == null)
+            {
+                return;
+            }
+
             m_LastRestock = DateTime.UtcNow;
 
             for (int i = 0; i < m_ArmorBuyInfo.Count; ++i)

@@ -44,6 +44,7 @@ namespace Server.Misc
 
         public override void SendMessage(PlayerMobile from, double old, double points, bool quest)
         {
+            // No message here
         }
 
         public override TextDefinition GetTitle(PlayerMobile from)
@@ -51,12 +52,12 @@ namespace Server.Misc
             return new TextDefinition("Virtue Artifact System");
         }
 
-        public override void ProcessKill(Mobile victim, Mobile killer)
+        public override void ProcessKill(Mobile victim, Mobile damager)
         {
-            PlayerMobile pm = killer as PlayerMobile;
+            PlayerMobile pm = damager as PlayerMobile;
             BaseCreature bc = victim as BaseCreature;
 
-            if (!Enabled || pm == null || bc == null || !CheckLocation(bc) || !CheckLocation(pm) || !killer.InRange(victim, 18) || !killer.Alive || bc.GivenSpecialArtifact)
+            if (!Enabled || pm == null || bc == null || !CheckLocation(bc) || !CheckLocation(pm) || !damager.InRange(victim, 18) || !damager.Alive || bc.GivenSpecialArtifact)
                 return;
 
             if (bc.Controlled || bc.Owners.Count > 0 || bc.Fame <= 0)
@@ -88,12 +89,12 @@ namespace Server.Misc
 
                 if (i != null)
                 {
-                    killer.PlaySound(0x5B4);
+                    damager.PlaySound(0x5B4);
                     pm.SendLocalizedMessage(1062317); // For your valor in combating the fallen beast, a special artifact has been bestowed on you.
 
                     if (!pm.PlaceInBackpack(i))
                     {
-                        if (pm.BankBox != null && pm.BankBox.TryDropItem(killer, i, false))
+                        if (pm.BankBox != null && pm.BankBox.TryDropItem(damager, i, false))
                             pm.SendLocalizedMessage(1079730); // The item has been placed into your bank box.
                         else
                         {

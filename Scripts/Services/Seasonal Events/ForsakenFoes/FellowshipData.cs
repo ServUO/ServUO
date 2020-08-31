@@ -1,7 +1,7 @@
-using Server.Engines.SeasonalEvents;
+using Server.Engines.Points;
 using Server.Mobiles;
 
-namespace Server.Engines.Points
+namespace Server.Engines.Fellowship
 {
     public class FellowshipData : PointsSystem
     {
@@ -11,10 +11,6 @@ namespace Server.Engines.Points
         public override double MaxPoints => double.MaxValue;
 
         public override bool ShowOnLoyaltyGump => false;
-        public bool InSeason => SeasonalEventSystem.IsActive(EventType.Fellowship);
-
-        public bool Enabled { get; set; }
-        public bool QuestContentGenerated { get; set; }
 
         public override void SendMessage(PlayerMobile from, double old, double points, bool quest)
         {
@@ -24,10 +20,7 @@ namespace Server.Engines.Points
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(1);
-
-            writer.Write(Enabled);
-            writer.Write(QuestContentGenerated);
+            writer.Write(2);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -37,9 +30,24 @@ namespace Server.Engines.Points
 
             switch (version)
             {
+                case 2:
                 case 1:
-                    Enabled = reader.ReadBool();
-                    QuestContentGenerated = reader.ReadBool();
+                    if (version == 1)
+                    {
+                        reader.ReadBool();
+                        var questGenerated = reader.ReadBool();
+
+                        Timer.DelayCall(() =>
+                        {
+                            var jolly = Server.Engines.SeasonalEvents.SeasonalEventSystem.GetEvent<ForsakenFoesEvent>();
+
+                            if (jolly != null)
+                            {
+                                jolly.QuestContentGenerated = questGenerated;
+                            }
+                        });
+
+                    }
                     break;
             }
         }

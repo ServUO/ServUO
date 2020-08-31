@@ -46,6 +46,11 @@ namespace Server.Services.TownCryer
         {
         }
 
+        public TownCryerGreetingEntry(TextDefinition title, TextDefinition body)
+            : this(title, body, null, null, -1)
+        {
+        }
+
         public TownCryerGreetingEntry(TextDefinition title, TextDefinition body, string link, string linkText)
             : this(title, body, null, null, -1, link, linkText)
         {

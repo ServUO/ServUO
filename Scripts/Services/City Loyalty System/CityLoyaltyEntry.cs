@@ -32,6 +32,9 @@ namespace Server.Engines.CityLoyalty
         public bool ShowGainMessage { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
+        public double ArtisanBodPoints { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public LoyaltyRating LoyaltyRating => CityLoyaltySystem.GetCityInstance(City).GetLoyaltyRating(Player, this);
 
         private bool _Utilizing;

@@ -1,6 +1,4 @@
-using Server.Commands;
 using Server.Engines.CityLoyalty;
-using Server.Gumps;
 using Server.Items;
 using Server.Mobiles;
 using Server.Network;
@@ -11,96 +9,26 @@ using System.IO;
 
 namespace Server.Engines.SeasonalEvents
 {
-    [PropertyObject]
-    public class KrampusEncounter
+    public class KrampusEvent : SeasonalEvent
     {
-        public static string FilePath = Path.Combine("Saves/Misc", "KrampusEncounter.bin");
-
-        public static bool Enabled => SeasonalEventSystem.IsActive(EventType.KrampusEncounter);
-        public static KrampusEncounter Encounter { get; set; }
-
+        public static KrampusEvent Instance { get; set; }
         public static readonly int MinComplete = 20;
 
-        public static void Configure()
+        public KrampusEvent(EventType type, string name, EventStatus status)
+            : base(type, name, status)
         {
-            EventSink.WorldSave += OnSave;
-            EventSink.WorldLoad += OnLoad;
+            Instance = this;
         }
 
-        public static void Initialize()
+        public KrampusEvent(EventType type, string name, EventStatus status, int month, int day, int duration)
+            : base(type, name, status, month, day, duration)
         {
-            CommandSystem.Register("KrampusEncounter", AccessLevel.Administrator, e =>
-            {
-                if (Encounter != null)
-                {
-                    e.Mobile.SendGump(new PropertiesGump(e.Mobile, Encounter));
-                }
-                else
-                {
-                    e.Mobile.SendMessage("Encounter null");
-                }
-            });
-        }
-
-        public static void OnSave(WorldSaveEventArgs e)
-        {
-            CheckEnabled();
-
-            Persistence.Serialize(
-                FilePath,
-                writer =>
-                {
-                    writer.Write(0);
-
-                    if (Encounter != null)
-                    {
-                        writer.Write(1);
-                        Encounter.Serialize(writer);
-                    }
-                    else
-                    {
-                        writer.Write(0);
-                    }
-                });
-        }
-
-        public static void OnLoad()
-        {
-            Persistence.Deserialize(
-                FilePath,
-                reader =>
-                {
-                    reader.ReadInt(); // version
-
-                    if (reader.ReadInt() == 1)
-                    {
-                        Encounter = new KrampusEncounter();
-                        Encounter.Deserialize(reader);
-                    }
-                });
-        }
-
-        public static void CheckEnabled()
-        {
-            if (Enabled)
-            {
-                if (Encounter == null)
-                {
-                    Encounter = new KrampusEncounter();
-                }
-            }
-            else
-            {
-                if (Encounter != null && Encounter.Krampus == null)
-                {
-                    Encounter = null;
-                }
-            }
+            Instance = this;
         }
 
         public static bool KrampusSpawned()
         {
-            return Enabled && Encounter != null && Encounter.Krampus != null && !Encounter.Krampus.Deleted;
+            return Instance.Krampus != null && !Instance.Krampus.Deleted;
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -258,14 +186,9 @@ namespace Server.Engines.SeasonalEvents
 
             CompleteTable.Clear();
             TotalTradesComplete = 0;
-
-            if (!Enabled)
-            {
-                Encounter = null;
-            }
         }
 
-        public Type[][] _SpawnTypes =
+        private readonly Type[][] _SpawnTypes =
         {
             new Type[] { typeof(FrostOoze), typeof(FrostSpider) },
             new Type[] { typeof(SnowElemental), typeof(IceElemental) },
@@ -275,14 +198,15 @@ namespace Server.Engines.SeasonalEvents
             new Type[] { typeof(Krampus) }
         };
 
-        public Type[] _WetSpawnTypes =
+        private readonly Type[] _WetSpawnTypes =
         {
             typeof(SeaSerpent), typeof(DeepSeaSerpent), typeof(Kraken), typeof(WaterElemental)
         };
 
-        public void Serialize(GenericWriter writer)
+        public override void Serialize(GenericWriter writer)
         {
-            writer.Write(0);
+            base.Serialize(writer);
+            writer.Write(1);
 
             writer.Write(Krampus);
             writer.Write(SpawnLocation);
@@ -299,33 +223,91 @@ namespace Server.Engines.SeasonalEvents
             }
         }
 
-        public void Deserialize(GenericReader reader)
+        public override void Deserialize(GenericReader reader)
         {
-            reader.ReadInt();
+            base.Deserialize(reader);
+            var version = InheritInsertion ? 0 : reader.ReadInt();
 
-            Krampus = reader.ReadMobile() as Krampus;
-            SpawnLocation = reader.ReadPoint3D();
-            SpawnMap = reader.ReadMap();
+            Deserialize(reader, version); // version
+        }
 
-            TotalTradesComplete = reader.ReadInt();
-
-            int count = reader.ReadInt();
-
-            for (int i = 0; i < count; i++)
+        public void Deserialize(GenericReader reader, int version)
+        {
+            switch (version)
             {
-                PlayerMobile m = reader.ReadMobile() as PlayerMobile;
-                int c = reader.ReadInt();
+                case 1:
+                    Krampus = reader.ReadMobile() as Krampus;
+                    SpawnLocation = reader.ReadPoint3D();
+                    SpawnMap = reader.ReadMap();
 
-                if (m != null)
-                {
-                    CompleteTable[m] = c;
-                }
+                    TotalTradesComplete = reader.ReadInt();
+
+                    int count = reader.ReadInt();
+
+                    for (int i = 0; i < count; i++)
+                    {
+                        PlayerMobile m = reader.ReadMobile() as PlayerMobile;
+                        int c = reader.ReadInt();
+
+                        if (m != null)
+                        {
+                            CompleteTable[m] = c;
+                        }
+                    }
+                    break;
             }
 
             if (KrampusSpawning && Krampus == null)
             {
                 Timer.DelayCall(TimeSpan.FromMinutes(2), SpawnKrampus);
             }
+        }
+
+        private static readonly string FilePath = Path.Combine("Saves/Misc", "KrampusEncounter.bin");
+
+        public static void Configure()
+        {
+            if (System.IO.File.Exists(FilePath))
+            {
+                EventSink.WorldLoad += OnLoad;
+            }
+        }
+
+        public static void OnLoad()
+        {
+            Persistence.Deserialize(
+                FilePath,
+                reader =>
+                {
+                    reader.ReadInt(); // version
+
+                    if (reader.ReadInt() == 1)
+                    {
+                        Timer.DelayCall(() =>
+                        {
+                            try
+                            {
+                                Instance.Deserialize(reader, 1);
+                            }
+                            catch (Exception e)
+                            {
+                                Server.Diagnostics.ExceptionLogging.LogException(e);
+                            }
+                        });
+                    }
+
+                    Timer.DelayCall(TimeSpan.FromSeconds(10), () =>
+                    {
+                        try
+                        {
+                            System.IO.File.Delete(FilePath);
+                        }
+                        catch (Exception e)
+                        {
+                            Server.Diagnostics.ExceptionLogging.LogException(e);
+                        }
+                    });
+                });
         }
     }
 }

@@ -38,7 +38,7 @@ namespace Server.Services.TownCryer
             {
                 if (Entry.Title.Number > 0)
                 {
-                    AddHtmlLocalized(78, y, 700, 400, Entry.Title.Number, false, false);
+                    AddHtmlLocalized(78, y, 700, 400, CenterLoc, string.Format("#{0}", Entry.Title.Number), C32216(0x080808), false, false);
                 }
                 else
                 {

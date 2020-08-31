@@ -1,25 +1,33 @@
-using Server.Engines.TreasuresOfKotlCity;
+using Server.Engines.SeasonalEvents;
+using Server.Commands;
 using Server.Items;
 
-namespace Server.Commands
+namespace Server.Engines.TreasuresOfKotlCity
 {
-    public static class GenerateTreasuresOfKotlCity
+    public class TreasuresOfKotlCityEvent : SeasonalEvent
     {
-        public static void Initialize()
+        public bool HasGenerated { get; set; }
+
+        public TreasuresOfKotlCityEvent(EventType type, string name, EventStatus status)
+            : base(type, name, status)
         {
-            CommandSystem.Register("GenerateTreasuresOfKotlCity", AccessLevel.GameMaster, Generate);
         }
 
-        public static void Generate(CommandEventArgs e)
+        public TreasuresOfKotlCityEvent(EventType type, string name, EventStatus status, int month, int day, int duration)
+            : base(type, name, status, month, day, duration)
         {
-            CommandSystem.Handle(e.Mobile, Server.Commands.CommandSystem.Prefix + "XmlLoad Spawns/TreasuresOfKotl.xml");
+        }
+
+        protected override void Generate()
+        {
+            CommandSystem.Handle(null, Server.Commands.CommandSystem.Prefix + "XmlLoad Spawns/TreasuresOfKotl.xml");
 
             Map map = Map.TerMur;
 
             KotlDoor door = new KotlDoor();
             door.MoveToWorld(new Point3D(610, 2319, 0), map);
 
-            if (!FindItem(new Point3D(595, 2289, 8), map))
+            if (!FindItem<WheelsOfTime>(new Point3D(595, 2289, 8), map))
             {
                 KotlCityPuzzle puzzle = new KotlCityPuzzle();
                 puzzle.MoveToWorld(new Point3D(595, 2289, 8), map);
@@ -31,59 +39,68 @@ namespace Server.Commands
                 simulator.MoveToWorld(new Point3D(545, 2272, 0), map);
             }
 
-            if (!FindItem(new Point3D(607, 2323, 0), map))
+            if (!FindItem<WheelsOfTime>(new Point3D(607, 2323, 0), map))
             {
                 WheelsOfTime wheels = new WheelsOfTime();
                 wheels.MoveToWorld(new Point3D(607, 2323, 0), map);
             }
 
-            if (!FindItem(new Point3D(592, 2393, 0), map))
+            if (!FindItem<EnergyTileAddon>(new Point3D(592, 2393, 0), map))
             {
                 EnergyTileAddon tiles = new EnergyTileAddon(13, Direction.South);
                 tiles.MoveToWorld(new Point3D(592, 2393, 0), map);
             }
 
-            if (!FindItem(new Point3D(600, 2393, 0), map))
+            if (!FindItem<EnergyTileAddon>(new Point3D(600, 2393, 0), map))
             {
                 EnergyTileAddon tiles = new EnergyTileAddon(13, Direction.South);
                 tiles.MoveToWorld(new Point3D(600, 2393, 0), map);
             }
 
-            if (!FindItem(new Point3D(608, 2393, 0), map))
+            if (!FindItem<EnergyTileAddon>(new Point3D(608, 2393, 0), map))
             {
                 EnergyTileAddon tiles = new EnergyTileAddon(13, Direction.South);
                 tiles.MoveToWorld(new Point3D(608, 2393, 0), map);
             }
 
-            if (!FindItem(new Point3D(616, 2393, 0), map))
+            if (!FindItem<EnergyTileAddon>(new Point3D(616, 2393, 0), map))
             {
                 EnergyTileAddon tiles = new EnergyTileAddon(13, Direction.South);
                 tiles.MoveToWorld(new Point3D(616, 2393, 0), map);
             }
 
-            if (!FindItem(new Point3D(624, 2393, 0), map))
+            if (!FindItem<EnergyTileAddon>(new Point3D(624, 2393, 0), map))
             {
                 EnergyTileAddon tiles = new EnergyTileAddon(13, Direction.South);
                 tiles.MoveToWorld(new Point3D(624, 2393, 0), map);
             }
 
-            GenTeleporters();
-            GenStations();
-            GenLOSBlockers();
-            GenChests();
+            if (!HasGenerated)
+            {
+                GenTeleporters();
+                GenStations();
+                GenLOSBlockers();
+                GenChests();
+            }
 
-            Hal hal = new Hal();
-            hal.MoveToWorld(new Point3D(489, 1606, 40), map);
+            if (Hal.Instance == null)
+            {
+                Hal hal = new Hal();
+                hal.MoveToWorld(new Point3D(489, 1606, 40), map);
+            }
         }
 
-        private static bool FindItem(Point3D p, Map map)
+        private static bool FindItem<T>(Point3D p, Map map)
         {
             IPooledEnumerable eable = map.GetItemsInRange(p, 0);
 
-            foreach (Item item in eable)
+            foreach (var item in eable)
             {
-                eable.Free();
-                return true;
+                if (item.GetType() == typeof(T))
+                {
+                    eable.Free();
+                    return true;
+                }
             }
 
             eable.Free();
@@ -229,6 +246,33 @@ namespace Server.Commands
 
             chest = new KotlRegalChest();
             chest.MoveToWorld(new Point3D(649, 2321, 0), map);
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(1);
+
+            writer.Write(HasGenerated);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int v = InheritInsertion ? 0 : reader.ReadInt();
+
+            switch (v)
+            {
+                case 0:
+                    Timer.DelayCall(() =>
+                    {
+                        HasGenerated = Hal.Instance != null;
+                    });
+                    break;
+                case 1:
+                    HasGenerated = reader.ReadBool();
+                    break;
+            }
         }
     }
 }

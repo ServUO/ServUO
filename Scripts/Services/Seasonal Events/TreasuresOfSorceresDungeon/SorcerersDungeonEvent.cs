@@ -1,63 +1,25 @@
-using Server.Engines.Points;
 using Server.Items;
-using System;
+using Server.Engines.SeasonalEvents;
 
 namespace Server.Engines.SorcerersDungeon
 {
-    public static class SorcerersDungeonGenerate
+    public class SorcerersDungeonEvent : SeasonalEvent
     {
-        private static void OnWorldSave(WorldSaveEventArgs e)
+        public static SorcerersDungeonEvent Instance { get; set; }
+
+        public SorcerersDungeonEvent(EventType type, string name, EventStatus status)
+            : base(type, name, status)
         {
-            CheckEnabled(true);
+            Instance = this;
         }
 
-        public static void CheckEnabled(bool timed = false)
+        public SorcerersDungeonEvent(EventType type, string name, EventStatus status, int month, int day, int duration)
+            : base(type, name, status, month, day, duration)
         {
-            SorcerersDungeonData sd = PointsSystem.SorcerersDungeon;
-
-            if (sd.Enabled && !sd.InSeason)
-            {
-                if (timed)
-                {
-                    Timer.DelayCall(TimeSpan.FromSeconds(30), () =>
-                    {
-                        Utility.WriteConsoleColor(ConsoleColor.Green, "Disabling Treasures of Scorcerer's Dungeon");
-
-                        Remove();
-                        sd.Enabled = false;
-                    });
-                }
-                else
-                {
-                    Utility.WriteConsoleColor(ConsoleColor.Green, "Auto Disabling Treasures of Scorcerer's Dungeon");
-
-                    Remove();
-                    sd.Enabled = false;
-                }
-            }
-            else if (!sd.Enabled && sd.InSeason)
-            {
-                if (timed)
-                {
-                    Timer.DelayCall(TimeSpan.FromSeconds(30), () =>
-                    {
-                        Utility.WriteConsoleColor(ConsoleColor.Green, "Enabling Treasures of Scorcerer's Dungeon");
-
-                        Generate();
-                        sd.Enabled = true;
-                    });
-                }
-                else
-                {
-                    Utility.WriteConsoleColor(ConsoleColor.Green, "Auto Enabling Treasures of Scorcerer's Dungeon");
-
-                    Generate();
-                    sd.Enabled = true;
-                }
-            }
+            Instance = this;
         }
 
-        public static void Generate()
+        protected override void Generate()
         {
             Map map = Map.Ilshenar;
 
@@ -110,12 +72,24 @@ namespace Server.Engines.SorcerersDungeon
             }
         }
 
-        public static void Remove()
+        protected override void Remove()
         {
             if (TOSDSpawner.Instance != null)
             {
                 TOSDSpawner.Instance.Deactivate();
             }
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(1);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = InheritInsertion ? 0 : reader.ReadInt();
         }
     }
 }

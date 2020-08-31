@@ -33,7 +33,7 @@ namespace Server.Engines.CityLoyalty
         public override double MaxPoints => double.MaxValue;
         public override bool ShowOnLoyaltyGump => false;
 
-        public static bool KrampusEncounterActive => KrampusEncounter.Enabled && KrampusEncounter.Encounter != null;
+        public static bool KrampusEncounterActive => KrampusEvent.Instance.Running;
 
         public static Dictionary<Mobile, TradeOrderCrate> ActiveTrades { get; private set; }
         public static Dictionary<BaseCreature, DateTime> Ambushers { get; private set; }
@@ -84,10 +84,10 @@ namespace Server.Engines.CityLoyalty
             {
                 minister.SayTo(from, 1151722); // It appears you are already delivering a trade order. Deliver your current order before requesting another.
             }
-            else if (KrampusEncounterActive && (KrampusEncounter.Encounter.Krampus != null || KrampusEncounter.Encounter.KrampusSpawning))
+            else if (KrampusEncounterActive && (KrampusEvent.Instance.Krampus != null || KrampusEvent.Instance.KrampusSpawning))
             {
-                Point3D p = KrampusEncounter.Encounter.SpawnLocation;
-                Map map = KrampusEncounter.Encounter.SpawnMap;
+                Point3D p = KrampusEvent.Instance.SpawnLocation;
+                Map map = KrampusEvent.Instance.SpawnMap;
 
                 minister.SayTo(
                     from,
@@ -538,7 +538,7 @@ namespace Server.Engines.CityLoyalty
         {
             if (KrampusEncounterActive)
             {
-                return KrampusEncounter.Encounter.GetCreatureTypes(m, wet);
+                return KrampusEvent.Instance.GetCreatureTypes(m, wet);
             }
 
             return wet ? _SeaTypes : _LandTypes;

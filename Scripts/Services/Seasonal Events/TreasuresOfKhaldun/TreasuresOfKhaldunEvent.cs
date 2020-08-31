@@ -1,126 +1,43 @@
 using Server.Engines.CannedEvil;
-using Server.Engines.Points;
 using Server.Items;
 using Server.Mobiles;
-using System;
+using Server.Engines.SeasonalEvents;
+
 using System.Linq;
 
 namespace Server.Engines.Khaldun
 {
-    public static class TreasuresOfKhaldunGeneration
+    public class TreasuresOfKhaldunEvent : SeasonalEvent
     {
-        public static void Initialize()
+        public static TreasuresOfKhaldunEvent Instance { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool QuestContentGenerated { get; set; }
+
+        public TreasuresOfKhaldunEvent(EventType type, string name, EventStatus status)
+            : base(type, name, status)
         {
-            EventSink.WorldSave += OnWorldSave;
+            Instance = this;
+        }
 
-            if (!Siege.SiegeShard)
+        public TreasuresOfKhaldunEvent(EventType type, string name, EventStatus status, int month, int day, int duration)
+            : base(type, name, status, month, day, duration)
+        {
+            Instance = this;
+        }
+
+        public override void CheckEnabled()
+        {
+            base.CheckEnabled();
+
+            if (Running && IsActive() && !QuestContentGenerated)
             {
-                KhaldunCampRegion.InstanceTram = new KhaldunCampRegion(Map.Trammel);
-            }
-
-            KhaldunCampRegion.InstanceFel = new KhaldunCampRegion(Map.Felucca);
-
-            if (PointsSystem.Khaldun.Enabled)
-            {
-                if (ChestSpawner.InstanceFel == null)
-                {
-                    ChestSpawner.InstanceFel = new ChestSpawner();
-                }
-
-                ChestSpawner.InstanceFel.CheckChests();
-
-                if (!Siege.SiegeShard)
-                {
-                    if (ChestSpawner.InstanceTram == null)
-                    {
-                        ChestSpawner.InstanceTram = new ChestSpawner();
-                    }
-
-                    ChestSpawner.InstanceTram.CheckChests();
-                }
-            }
-            else
-            {
-                if (ChestSpawner.InstanceFel != null)
-                {
-                    if (ChestSpawner.InstanceFel.Chests != null)
-                    {
-                        ColUtility.SafeDelete(ChestSpawner.InstanceFel.Chests);
-                    }
-
-                    ChestSpawner.InstanceFel = null;
-                }
-
-                if (ChestSpawner.InstanceTram != null)
-                {
-                    if (ChestSpawner.InstanceTram.Chests != null)
-                    {
-                        ColUtility.SafeDelete(ChestSpawner.InstanceTram.Chests);
-                    }
-
-                    ChestSpawner.InstanceTram = null;
-                }
+                GenerateQuestContent();
+                QuestContentGenerated = true;
             }
         }
 
-        private static void OnWorldSave(WorldSaveEventArgs e)
-        {
-            CheckEnabled(true);
-        }
-
-        public static void CheckEnabled(bool timed = false)
-        {
-            KhaldunData khaldun = PointsSystem.Khaldun;
-
-            if (khaldun.Enabled && !khaldun.InSeason)
-            {
-                if (timed)
-                {
-                    Timer.DelayCall(TimeSpan.FromSeconds(30), () =>
-                    {
-                        Utility.WriteConsoleColor(ConsoleColor.Green, "Disabling Treasures of Khaldun");
-
-                        Remove();
-                        khaldun.Enabled = false;
-                    });
-                }
-                else
-                {
-                    Utility.WriteConsoleColor(ConsoleColor.Green, "Auto Disabling Treasures of Khaldun");
-
-                    Remove();
-                    khaldun.Enabled = false;
-                }
-            }
-            else if (!khaldun.Enabled && khaldun.InSeason)
-            {
-                if (timed)
-                {
-                    Timer.DelayCall(TimeSpan.FromSeconds(30), () =>
-                    {
-                        Utility.WriteConsoleColor(ConsoleColor.Green, "Enabling Treasures of Khaldun");
-
-                        Generate();
-                        khaldun.Enabled = true;
-                    });
-                }
-                else
-                {
-                    Utility.WriteConsoleColor(ConsoleColor.Green, "Auto Enabling Treasures of Khaldun");
-
-                    Generate();
-                    khaldun.Enabled = true;
-                }
-
-                if (!khaldun.QuestContentGenerated)
-                {
-                    GenerateQuestContent();
-                    khaldun.QuestContentGenerated = true;
-                }
-            }
-        }
-
-        public static void Generate()
+        protected override void Generate()
         {
             if (KhaldunResearcher.InstanceTram == null && !Siege.SiegeShard)
             {
@@ -191,7 +108,7 @@ namespace Server.Engines.Khaldun
             }
         }
 
-        public static void Remove()
+        protected override void Remove()
         {
             ChampionSystem.AllSpawns.Where(s => s.Type == ChampionSpawnType.Khaldun && Region.Find(s.Location, s.Map).IsPartOf("Khaldun")).IterateReverse(s =>
             {
@@ -216,6 +133,27 @@ namespace Server.Engines.Khaldun
                 }
 
                 ChestSpawner.InstanceTram = null;
+            }
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(1);
+
+            writer.Write(QuestContentGenerated);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int v = InheritInsertion ? 0 : reader.ReadInt();
+
+            switch (v)
+            {
+                case 1:
+                    QuestContentGenerated = reader.ReadBool();
+                    break;
             }
         }
 
@@ -358,6 +296,58 @@ namespace Server.Engines.Khaldun
             st.Hue = 0x47E;
             st.MoveToWorld(new Point3D(5807, 3268, -15), map);
             st.Name = "A Corpse of an Ophidian Beserker";
+        }
+
+        public static void Initialize()
+        {
+            if (!Siege.SiegeShard)
+            {
+                KhaldunCampRegion.InstanceTram = new KhaldunCampRegion(Map.Trammel);
+            }
+
+            KhaldunCampRegion.InstanceFel = new KhaldunCampRegion(Map.Felucca);
+
+            if (Instance != null && Instance.Running)
+            {
+                if (ChestSpawner.InstanceFel == null)
+                {
+                    ChestSpawner.InstanceFel = new ChestSpawner();
+                }
+
+                ChestSpawner.InstanceFel.CheckChests();
+
+                if (!Siege.SiegeShard)
+                {
+                    if (ChestSpawner.InstanceTram == null)
+                    {
+                        ChestSpawner.InstanceTram = new ChestSpawner();
+                    }
+
+                    ChestSpawner.InstanceTram.CheckChests();
+                }
+            }
+            else
+            {
+                if (ChestSpawner.InstanceFel != null)
+                {
+                    if (ChestSpawner.InstanceFel.Chests != null)
+                    {
+                        ColUtility.SafeDelete(ChestSpawner.InstanceFel.Chests);
+                    }
+
+                    ChestSpawner.InstanceFel = null;
+                }
+
+                if (ChestSpawner.InstanceTram != null)
+                {
+                    if (ChestSpawner.InstanceTram.Chests != null)
+                    {
+                        ColUtility.SafeDelete(ChestSpawner.InstanceTram.Chests);
+                    }
+
+                    ChestSpawner.InstanceTram = null;
+                }
+            }
         }
     }
 }

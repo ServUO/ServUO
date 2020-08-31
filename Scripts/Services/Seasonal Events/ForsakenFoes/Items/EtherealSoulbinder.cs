@@ -14,18 +14,21 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public double SoulPoint
         {
-            get
-            {
-                return m_SoulPoint;
-            }
+            get { return m_SoulPoint; }
             set
             {
                 if (value < 0)
-                    value = 0;
+                {
+                    m_SoulPoint = 0;
+                }
                 else if (value > MaxSoulPoint)
-                    value = MaxSoulPoint;
-
-                m_SoulPoint += value;
+                {
+                    m_SoulPoint = MaxSoulPoint;
+                }
+                else
+                {
+                    m_SoulPoint = value;
+                }
 
                 SetHue();
                 InvalidateProperties();
@@ -102,7 +105,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_SoulPoint = reader.ReadDouble();
         }
@@ -114,16 +117,24 @@ namespace Server.Items
 
         public static void CreatureDeath(CreatureDeathEventArgs e)
         {
-            BaseCreature bc = e.Creature as BaseCreature;
             Mobile killer = e.Killer;
 
-            if (bc != null && bc.IsSoulBound && killer is PlayerMobile && killer.Backpack != null)
+            if (e.Creature is BaseCreature bc && bc.IsSoulBound && killer is PlayerMobile && killer.Backpack != null)
             {
                 EtherealSoulbinder es = killer.Backpack.FindItemsByType<EtherealSoulbinder>().Where(x => x.SoulPoint < x.MaxSoulPoint).FirstOrDefault();
 
                 if (es != null)
                 {
-                    es.SoulPoint += bc.HitsMax / 1000;
+                    var hm = bc.HitsMax;
+
+                    if (hm > 1000)
+                    {
+                        es.SoulPoint += (double)hm/1000;
+                    }
+                    else
+                    {
+                        es.SoulPoint += (double)hm/100;
+                    }
                 }
             }
         }

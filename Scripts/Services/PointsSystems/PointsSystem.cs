@@ -1,6 +1,8 @@
 using Server.Engines.ArenaSystem;
 using Server.Engines.CityLoyalty;
 using Server.Engines.SorcerersDungeon;
+using Server.Engines.Fellowship;
+using Server.Engines.JollyRoger;
 using Server.Engines.VvV;
 using Server.Misc;
 using Server.Mobiles;
@@ -34,6 +36,7 @@ namespace Server.Engines.Points
         SkaraBrae,
         NewMagincia,
         Vesper,
+        // End City Loyalty System
 
         Blackthorn,
         CleanUpBritannia,

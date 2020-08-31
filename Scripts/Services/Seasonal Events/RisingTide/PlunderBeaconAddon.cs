@@ -1,4 +1,6 @@
 using Server.Mobiles;
+using Server.Engines.RisingTide;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -537,7 +539,7 @@ namespace Server.Items
 
         public static void Initialize()
         {
-            if (Server.Engines.Points.PointsSystem.RisingTide.Enabled)
+            if (RisingTideEvent.Instance.Running)
             {
                 EventSink.CreatureDeath += OnCreatureDeath;
             }

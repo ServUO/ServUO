@@ -1236,7 +1236,7 @@ namespace Server.Engines.Craft
                 m_ResAmount = amount;
             }
 
-            if (CaddelliteCraft && (!item.HasSocket<Caddellite>() || !Server.Engines.Points.PointsSystem.Khaldun.InSeason))
+            if (CaddelliteCraft && (!item.HasSocket<Caddellite>() || !Server.Engines.Khaldun.TreasuresOfKhaldunEvent.Instance.Running))
             {
                 CaddelliteCraft = false;
             }

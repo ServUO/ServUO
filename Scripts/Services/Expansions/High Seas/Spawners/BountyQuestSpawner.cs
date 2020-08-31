@@ -3,6 +3,8 @@ using Server.Gumps;
 using Server.Items;
 using Server.Mobiles;
 using Server.Multis;
+using Server.Engines.RisingTide;
+
 using System;
 using System.Collections.Generic;
 
@@ -657,7 +659,7 @@ namespace Server.Engines.Quests
 
                 RefinementComponent.Roll(hold, 3, 0.25);
 
-                if (Server.Engines.Points.PointsSystem.RisingTide.Enabled)
+                if (RisingTideEvent.Instance.Running)
                 {
                     hold.DropItem(new MaritimeCargo());
                     hold.DropItem(new MaritimeCargo());
