@@ -159,7 +159,6 @@ namespace Server.Engines.NewMagincia
                 m_Timer.Stop();
 
             m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), OnTick);
-            m_Timer.Priority = TimerPriority.OneMinute;
             m_Timer.Start();
         }
 

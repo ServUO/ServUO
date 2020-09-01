@@ -227,7 +227,6 @@ namespace Server.Engines.NewMagincia
             public InternalTimer(BaseCreature bc) : base(TimeSpan.FromMinutes(2), TimeSpan.FromMinutes(2))
             {
                 m_Creature = bc;
-                Priority = TimerPriority.OneMinute;
             }
 
             protected override void OnTick()

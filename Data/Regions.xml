@@ -2339,7 +2339,7 @@
       <rect x="256" y="1560" width="80" height="32" />
       <go x="285" y="1585" z="-27" />
     </region>
-    <region type="DungeonRegion" priority="50" name="Exodus Dungeon">
+    <region type="ExodusDungeonRegion" priority="50" name="Exodus Dungeon">
       <rect x="1832" y="16" width="248" height="200" />
       <go x="1966" y="117" z="-28" />
       <entrance x="827" y="777" />

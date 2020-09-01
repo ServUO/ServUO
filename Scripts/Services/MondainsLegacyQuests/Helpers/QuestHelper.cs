@@ -52,7 +52,7 @@ namespace Server.Engines.Quests
                 // give it 10 tries to generate quest
                 for (int i = 0; i < 10; i++)
                 {
-                    quest = Construct(quests[Utility.Random(quests.Length)]) as BaseQuest;
+                    quest = Construct(quests[Utility.Random(quests.Length)]);
                 }
             }
 
@@ -821,18 +821,19 @@ namespace Server.Engines.Quests
             return false;
         }
 
-        public static object Construct(Type type)
+        public static BaseQuest Construct(Type type)
         {
             if (type == null)
+            {
                 return null;
+            }
 
             try
             {
-                return Activator.CreateInstance(type);
+                return Activator.CreateInstance(type) as BaseQuest;
             }
-            catch (Exception e)
+            catch
             {
-                Server.Diagnostics.ExceptionLogging.LogException(e);
                 return null;
             }
         }

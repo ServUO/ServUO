@@ -1,4 +1,3 @@
-using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -84,21 +83,10 @@ namespace Server.Mobiles
             SetWearable(cloak);
         }
 
-        public override void OnKilledBy(Mobile m)
-        {
-            base.OnKilledBy(m);
-
-            if (Utility.RandomDouble() < 0.1)
-            {
-                ExodusChest.GiveRituelItem(m);
-            }
-        }
-
         public override void GenerateLoot()
         {
-            AddLoot(LootPack.RandomLootItem(new Type[] { typeof(ExodusSummoningRite), typeof(ExodusSacrificalDagger), typeof(RobeofRite), typeof(ExodusSummoningAlter) }, 1.0, 1, false, false));
             AddLoot(LootPack.LootGold(400, 600));
-    }
+        }
 
         public override bool CanBeParagon => false;
 
@@ -120,7 +108,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

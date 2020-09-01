@@ -23,33 +23,56 @@ namespace Server.Items
         public int LootMax { get; set; }                // Max Intensity for new loot system
         public int[] PowerfulLootRange { get; set; }    // Range of over-cappeed for new loot system
 
+        public bool UseStandardMax { get; set; }
+
         public PropInfo(int itemRef, int sMax, int lMax)
-            : this((ItemType)itemRef, -1, sMax, lMax, null)
+            : this((ItemType)itemRef, -1, sMax, lMax, null, false)
+        {
+        }
+
+        public PropInfo(int itemRef, int sMax, int lMax, bool useStarndardMax)
+            : this((ItemType)itemRef, -1, sMax, lMax, null, useStarndardMax)
         {
         }
 
         public PropInfo(int itemRef, int scale, int sMax, int lMax)
-            : this((ItemType)itemRef, scale, sMax, lMax, null)
+            : this((ItemType)itemRef, scale, sMax, lMax, null, false)
+        {
+        }
+
+        public PropInfo(int itemRef, int scale, int sMax, int lMax, bool useStarndardMax)
+            : this((ItemType)itemRef, scale, sMax, lMax, null, useStarndardMax)
         {
         }
 
         public PropInfo(int itemRef, int sMax, int lMax, int[] powerfulRange)
-            : this((ItemType)itemRef, -1, sMax, lMax, powerfulRange)
+            : this((ItemType)itemRef, -1, sMax, lMax, powerfulRange, false)
+        {
+        }
+
+        public PropInfo(int itemRef, int sMax, int lMax, int[] powerfulRange, bool useStandardMax)
+            : this((ItemType)itemRef, -1, sMax, lMax, powerfulRange, useStandardMax)
         {
         }
 
         public PropInfo(int itemRef, int scale, int sMax, int lMax, int[] powerfulRange)
-            : this((ItemType)itemRef, scale, sMax, lMax, powerfulRange)
+            : this((ItemType)itemRef, scale, sMax, lMax, powerfulRange, false)
         {
         }
 
-        public PropInfo(ItemType type, int scale, int sMax, int lMax, int[] powerfulRange)
+        public PropInfo(int itemRef, int scale, int sMax, int lMax, int[] powerfulRange, bool useStandardMax)
+            : this((ItemType)itemRef, scale, sMax, lMax, powerfulRange, useStandardMax)
+        {
+        }
+
+        public PropInfo(ItemType type, int scale, int sMax, int lMax, int[] powerfulRange, bool useStandardMax)
         {
             ItemType = type;
             Scale = scale;
             StandardMax = sMax;
             LootMax = lMax;
             PowerfulLootRange = powerfulRange;
+            UseStandardMax = useStandardMax;
         }
     }
 
@@ -248,10 +271,10 @@ namespace Server.Items
             // i = runic, r = reforg, l = loot
             // 1 = melee, 2 = ranged, 3 = armor, 4 = sheild, 5 = hat, 6 = jewels
             Register(1, new ItemPropertyInfo(AosAttribute.DefendChance, 1075620, 110, typeof(RelicFragment), typeof(Tourmaline), typeof(EssenceSingularity), 1, 1, 15, 1111947,
-                new PropInfo(1, 15, 15, new int[] { 20 }), new PropInfo(2, 25, 25, new int[] { 30, 35 }), new PropInfo(3, 0, 5), new PropInfo(4, 15, 15, new int[] { 20 }), new PropInfo(5, 0, 5), new PropInfo(6, 15, 15, new int[] { 20 })));
+                new PropInfo(1, 15, 15, new int[] { 20 }), new PropInfo(2, 25, 25, new int[] { 30, 35 }), new PropInfo(3, 0, 5, true), new PropInfo(4, 15, 15, new int[] { 20 }), new PropInfo(5, 0, 5, true), new PropInfo(6, 15, 15, new int[] { 20 })));
 
             Register(2, new ItemPropertyInfo(AosAttribute.AttackChance, 1075616, 130, typeof(RelicFragment), typeof(Amber), typeof(EssencePrecision), 1, 1, 15, 1111958,
-                new PropInfo(1, 15, 15, new int[] { 20 }), new PropInfo(2, 25, 25, new int[] { 30, 35 }), new PropInfo(3, 0, 5), new PropInfo(4, 15, 15, new int[] { 20 }), new PropInfo(5, 0, 5), new PropInfo(6, 15, 15, new int[] { 20 })));
+                new PropInfo(1, 15, 15, new int[] { 20 }), new PropInfo(2, 25, 25, new int[] { 30, 35 }), new PropInfo(3, 0, 5, true), new PropInfo(4, 15, 15, new int[] { 20 }), new PropInfo(5, 0, 5, true), new PropInfo(6, 15, 15, new int[] { 20 })));
 
             Register(3, new ItemPropertyInfo(AosAttribute.RegenHits, 1075627, 100, typeof(EnchantedEssence), typeof(Tourmaline), typeof(SeedOfRenewal), 1, 1, 2, 1111994,
                 new PropInfo(1, 3, 0, 9), new PropInfo(2, 3, 0, 9), new PropInfo(3, 2, 2, new int[] { 4 }), new PropInfo(4, 0, 2, new int[] { 4 }), new PropInfo(5, 2, 2, new int[] { 4 })));
@@ -705,10 +728,8 @@ namespace Server.Items
 
         public static int GetMaxIntensity(Item item, object attribute)
         {
-            return GetMaxIntensity(item, GetID(attribute), false);
+            return GetMaxIntensity(item, GetID(attribute), false, false);
         }
-
-        private static readonly int[] _ForceUseNewTable = { 12, 1, 2 };
 
         /// <summary>
         /// Maximum intensity in regards to imbuing weight calculation. Some items may be over this 'cap'
@@ -716,15 +737,16 @@ namespace Server.Items
         /// <param name="item">item to check</param>
         /// <param name="id">property id</param>
         /// <param name="imbuing">true for imbuing, false for loot</param>
+        /// <param name="applyingProperty">are we calling this to assign a property value</param>
         /// <returns></returns>
-        public static int GetMaxIntensity(Item item, int id, bool imbuing)
+        public static int GetMaxIntensity(Item item, int id, bool imbuing, bool applyingProperty = false)
         {
             if (Table.ContainsKey(id))
             {
                 PropInfo info = Table[id].GetItemTypeInfo(GetItemType(item));
 
                 // First, we try to get the max intensity from the PropInfo. If null or we're getting an intensity for special imbuing purpopses, we go to the default MaxIntenity
-                if (info == null || (imbuing && !ForcesNewLootMax(item, id)))
+                if (info == null || (!applyingProperty && info.UseStandardMax) || (imbuing && !ForcesNewLootMax(item, id)))
                 {
                     if (item is BaseWeapon && (id == 25 || id == 27))
                     {
@@ -747,20 +769,16 @@ namespace Server.Items
             return 0;
         }
 
+        private static readonly int[] _ForceUseNewTable = { 1, 2, 12 };
+
         /// <summary>
         /// We may want to force the new loot tables for items such as ranged weapons that have a different max than melee, think hci/dci (15/25).
-        /// This will be bypassed for special items, such as clockwork leggings
         /// </summary>
         /// <param name="item"></param>
         /// <param name="id"></param>
         /// <returns></returns>
         public static bool ForcesNewLootMax(Item item, int id)
         {
-            if (Server.SkillHandlers.Imbuing.IsSpecialImbuable(item.GetType()))
-            {
-                return false;
-            }
-
             return _ForceUseNewTable.Any(i => i == id);
         }
 

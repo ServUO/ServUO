@@ -510,7 +510,7 @@ namespace Server.Engines.Quests
 
             while (amount > 0 && !Failed)
             {
-                Item item = QuestHelper.Construct(m_Delivery) as Item;
+                Item item = Loot.Construct(m_Delivery);
 
                 if (item == null)
                 {

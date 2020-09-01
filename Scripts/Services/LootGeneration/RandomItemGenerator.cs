@@ -27,7 +27,7 @@ namespace Server.Items
 
             MaxBaseBudget = Config.Get("Loot.MaxBaseBudget", 700);
             MinBaseBudget = Config.Get("Loot.MinBaseBudget", 150);
-            MaxProps = Config.Get("Loot.MaxProps", 11);
+            MaxProps = Config.Get("Loot.MaxProps", 8);
 
             MaxAdjustedBudget = Config.Get("Loot.MaxAdjustedBudget", 1450);
             MinAdjustedBudget = Config.Get("Loot.MinAdjustedBudget", 150);

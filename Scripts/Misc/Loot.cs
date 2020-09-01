@@ -782,6 +782,7 @@ namespace Server
         public static Item Construct(Type type)
         {
             Item item;
+
             try
             {
                 item = Activator.CreateInstance(type) as Item;

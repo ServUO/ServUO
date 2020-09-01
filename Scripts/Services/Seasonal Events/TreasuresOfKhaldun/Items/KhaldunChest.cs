@@ -54,8 +54,7 @@ namespace Server.Items
                     case 0:
                         item = new Bandage(Utility.Random(10, 30)); break;
                     case 1:
-                        item = new SmokeBomb();
-                        item.Amount = Utility.Random(3, 6);
+                        item = new SmokeBomb(Utility.Random(3, 6));
                         break;
                     case 2:
                         item = new InvisibilityPotion();

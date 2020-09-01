@@ -6,7 +6,8 @@ namespace Server.Mobiles
     public class DupresKnight : BaseCreature
     {
         [Constructable]
-        public DupresKnight() : base(AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4)
+        public DupresKnight()
+            : base(AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
             Name = NameList.RandomName("male");
             Title = "the Knight";
@@ -73,16 +74,6 @@ namespace Server.Mobiles
             SetWearable(bs);
         }
 
-        public override void OnKilledBy(Mobile m)
-        {
-            base.OnKilledBy(m);
-
-            if (Utility.RandomDouble() < 0.1)
-            {
-                ExodusChest.GiveRituelItem(m);
-            }
-        }
-
         public override bool CanBeParagon => false;
 
         public override bool InitialInnocent => true;
@@ -110,7 +101,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

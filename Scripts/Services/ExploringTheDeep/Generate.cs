@@ -272,6 +272,14 @@ namespace Server.Engines.ExploringTheDeep
             item = new MasterThinkerContoller();
             item.MoveToWorld(new Point3D(1652, 1547, 45), Map.Trammel);
             WeakEntityCollection.Add(EntityName, item);
+
+            item = new Static(2974);
+            item.MoveToWorld(new Point3D(1648, 1552, 20), Map.Trammel);
+            WeakEntityCollection.Add(EntityName, item);
+
+            item = new CusteauPerronHouseSign();
+            item.MoveToWorld(new Point3D(1648, 1552, 20), Map.Trammel);
+            WeakEntityCollection.Add(EntityName, item);
             #endregion
 
             #region Ice Dungeon

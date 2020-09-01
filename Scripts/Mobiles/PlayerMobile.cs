@@ -4631,15 +4631,6 @@ namespace Server.Mobiles
             }
 
             #region Mondain's Legacy
-            /*if (m_Quests == null)
-			{
-				m_Quests = new List<BaseQuest>();
-			}
-
-			if (m_Chains == null)
-			{
-				m_Chains = new Dictionary<QuestChain, BaseChain>();
-			}*/
 
             if (m_DoneQuests == null)
             {
@@ -5187,7 +5178,6 @@ namespace Server.Mobiles
 
         #region Mondain's Legacy
         public List<BaseQuest> Quests => MondainQuestData.GetQuests(this);
-
         public Dictionary<QuestChain, BaseChain> Chains => MondainQuestData.GetChains(this);
 
         [CommandProperty(AccessLevel.GameMaster)]

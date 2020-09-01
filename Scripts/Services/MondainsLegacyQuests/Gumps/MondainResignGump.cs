@@ -83,7 +83,7 @@ namespace Server.Engines.Quests
                 m_Quest.OnResign(false);
             }
 
-            if (info.IsSwitched((int)Radios.None) && m_Quest.Owner != null)
+            if (info.IsSwitched((int)Radios.None) && m_Quest.Owner != null && m_Quest.Owner == state.Mobile)
                 m_Quest.Owner.SendGump(new MondainQuestGump(m_Quest.Owner));
         }
     }
