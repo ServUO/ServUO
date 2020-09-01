@@ -12,6 +12,7 @@ namespace Server.Engines.JollyRoger
         public HawkwindTimeLord()
             : base("the Time Lord")
         {
+            Instance = this;
         }
 
         public override void InitBody()

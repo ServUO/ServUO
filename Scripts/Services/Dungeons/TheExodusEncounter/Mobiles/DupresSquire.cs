@@ -69,16 +69,6 @@ namespace Server.Mobiles
             SetWearable(bs);
         }
 
-        public override void OnKilledBy(Mobile m)
-        {
-            base.OnKilledBy(m);
-
-            if (Utility.RandomDouble() < 0.1)
-            {
-                ExodusChest.GiveRituelItem(m);
-            }
-        }
-
         public override void GenerateLoot()
         {
             AddLoot(LootPack.LootGold(400, 600));
@@ -106,7 +96,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

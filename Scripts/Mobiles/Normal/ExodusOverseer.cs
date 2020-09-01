@@ -50,6 +50,7 @@ namespace Server.Mobiles
         public override bool IsScaredOfScaryThings => false;
         public override bool IsScaryToPets => true;
         public override Poison PoisonImmune => Poison.Lethal;
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Rich);

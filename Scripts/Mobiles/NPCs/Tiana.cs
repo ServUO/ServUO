@@ -109,47 +109,6 @@ namespace Server.Engines.Quests
         }
     }
 
-    public class DishBestServedColdQuest : BaseQuest
-    {
-        public DishBestServedColdQuest()
-            : base()
-        {
-            AddObjective(new SlayObjective(typeof(Orc), "orcs", 10, "Sanctuary"));
-            AddObjective(new SlayObjective(typeof(OrcBomber), "orc bombers", 5, "Sanctuary"));
-            AddObjective(new SlayObjective(typeof(OrcBrute), "orc brutes", 3, "Sanctuary"));
-
-            AddReward(new BaseReward(typeof(TreasureBag), 1072583));
-        }
-
-        /* A Dish Best Served Cold */
-        public override object Title => 1072372;
-        /* *mutter* I'll have my revenge.  Oh!  You there.  Fancy some orc extermination?  I despise them all.  Bombers, brutes -- 
-        you name it, if it's orcish I want it killed. */
-        public override object Description => 1072657;
-        /* Hrmph.  Well maybe another time then. */
-        public override object Refuse => 1072667;
-        /* Shouldn't you be slaying orcs? */
-        public override object Uncomplete => 1072668;
-        public override bool CanOffer()
-        {
-            return MondainsLegacy.Sanctuary;
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write(0); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-    }
-
     public class CommonBrigandsQuest : BaseQuest
     {
         public CommonBrigandsQuest()
@@ -198,7 +157,7 @@ namespace Server.Engines.Quests
         /* Arch Enemies */
         public override object Title => 1073085;
         /* Vermin! They get into everything! I told the boy to leave out some poisoned cheese -- and they shot him. 
-        What else can I do? Unless…these ratmen are skilled with a bow, but I'd lay a wager you're better, eh? Could 
+        What else can I do? Unlessâ€¦these ratmen are skilled with a bow, but I'd lay a wager you're better, eh? Could 
         you skin a few of the wretches for me? */
         public override object Description => 1073575;
         /* I hope you'll reconsider. Until then, farwell. */
@@ -274,7 +233,6 @@ namespace Server.Engines.Quests
                     typeof(IndustriousAsAnAntLionQuest),
                     typeof(ThePerilsOfFarmingQuest),
                     typeof(UnholyConstructQuest),
-                    typeof(DishBestServedColdQuest),
                     typeof(CommonBrigandsQuest),
                     typeof(ArchEnemiesQuest),
                     typeof(TrollingForTrollsQuest),

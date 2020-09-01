@@ -9,8 +9,6 @@ namespace Server.Engines.Khaldun
 {
     public class GoingGumshoeQuest : BaseQuest
     {
-        public override bool DoneOnce => true;
-
         /* Going Gumshoe */
         public override object Title => 1158588;
 
@@ -52,6 +50,13 @@ namespace Server.Engines.Khaldun
             int version = reader.ReadInt();
         }
 
+        public override bool CanOffer()
+        {
+            return !QuestHelper.HasQuest<GoingGumshoeQuest2>(Owner) &&
+                !QuestHelper.HasQuest<GoingGumshoeQuest3>(Owner) &&
+                !QuestHelper.HasQuest<GoingGumshoeQuest4>(Owner);
+        }
+
         private class InternalObjective : BaseObjective
         {
             public override object ObjectiveDescription => Quest.Uncomplete;
@@ -79,8 +84,6 @@ namespace Server.Engines.Khaldun
 
     public class GoingGumshoeQuest2 : BaseQuest
     {
-        public override bool DoneOnce => true;
-
         /* Going Gumshoe */
         public override object Title => 1158588;
 
@@ -234,8 +237,6 @@ namespace Server.Engines.Khaldun
 
     public class GoingGumshoeQuest3 : BaseQuest
     {
-        public override bool DoneOnce => true;
-
         /* Going Gumshoe */
         public override object Title => 1158588;
 
@@ -473,8 +474,6 @@ namespace Server.Engines.Khaldun
 
     public class GoingGumshoeQuest4 : BaseQuest
     {
-        public override bool DoneOnce => true;
-
         /* Going Gumshoe */
         public override object Title => 1158588;
 
@@ -522,6 +521,8 @@ namespace Server.Engines.Khaldun
             }
 
             base.GiveRewards();
+
+            Owner.DoneQuests.Add(new QuestRestartInfo(typeof(GoingGumshoeQuest), TimeSpan.Zero));
         }
 
         public override void Serialize(GenericWriter writer)

@@ -157,7 +157,7 @@ namespace Server.Engines.Quests
 
                 if (list.Count > 0)
                 {
-                    return QuestHelper.Construct(list[Utility.Random(list.Count)]) as BaseQuest;
+                    return QuestHelper.Construct(list[Utility.Random(list.Count)]);
                 }
             }
 

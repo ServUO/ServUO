@@ -6,7 +6,7 @@ namespace Server.Items
         public PileofInspectedDullCopperIngots()
             : base(0x1BEA)
         {
-            Hue = 2419;
+            Hue = CraftResources.GetHue(CraftResource.DullCopper);
         }
 
         public PileofInspectedDullCopperIngots(Serial serial)

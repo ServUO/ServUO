@@ -304,7 +304,7 @@ namespace Server.Mobiles
 
         public virtual void Reward(PlayerMobile player, CollectionItem reward, int hue)
         {
-            Item item = QuestHelper.Construct(reward.Type) as Item;
+            Item item = Loot.Construct(reward.Type);
 
             if (item != null && player.AddToBackpack(item))
             {

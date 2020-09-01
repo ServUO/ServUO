@@ -8,9 +8,16 @@ namespace Server.Items
     {
         [Constructable]
         public SmokeBomb()
+            : this(1)
+        {
+        }
+
+        [Constructable]
+        public SmokeBomb(int amount)
             : base(0x2808)
         {
             Stackable = true;
+            Amount = amount;
             Weight = 1.0;
         }
 

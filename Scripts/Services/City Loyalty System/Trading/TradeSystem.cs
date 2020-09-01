@@ -239,15 +239,24 @@ namespace Server.Engines.CityLoyalty
 
             if (from != null)
             {
-                crate.Items.ForEach(i =>
+                var items = new List<Item>(crate.Items);
+
+                for (int i = 0; i < items.Count; i++)
                 {
-                    from.Backpack.DropItem(i);
-                });
+                    from.Backpack.DropItem(items[i]);
+                }
 
-                CityTradeEntry entry = CityLoyaltySystem.CityTrading.GetPlayerEntry<CityTradeEntry>(from as PlayerMobile, true);
+                ColUtility.Free(items);
 
-                if (entry != null)
-                    entry.Canceled++;
+                if (from is PlayerMobile pm)
+                {
+                    CityTradeEntry entry = CityLoyaltySystem.CityTrading.GetPlayerEntry<CityTradeEntry>(pm, true);
+
+                    if (entry != null)
+                    {
+                        entry.Canceled++;
+                    }
+                }
             }
 
             crate.Delete();

@@ -6,9 +6,7 @@ namespace Server.Items
         public PileofInspectedAgapiteIngots()
             : base(0x1BEA)
         {
-            Name = "Pile of Inspected Agapite Ingots";
-
-            Hue = 2425;
+            Hue = CraftResources.GetHue(CraftResource.Agapite);
         }
 
         public PileofInspectedAgapiteIngots(Serial serial)
@@ -16,7 +14,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber => 1113770;//Essence Box
+        public override int LabelNumber => 1113028; //P ile of Inspected Agapite Ingots
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

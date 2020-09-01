@@ -6,7 +6,7 @@ namespace Server.Items
         public PileofInspectedBronzeIngots()
             : base(0x1BEA)
         {
-            Hue = 2418;
+            Hue = CraftResources.GetHue(CraftResource.Bronze);
         }
 
         public PileofInspectedBronzeIngots(Serial serial)

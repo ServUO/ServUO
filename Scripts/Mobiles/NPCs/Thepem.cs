@@ -79,6 +79,7 @@ namespace Server.Engines.Quests
             {
                 new Type[] {typeof(DullCopperIngot),  typeof(PileofInspectedDullCopperIngots) },
                 new Type[] {typeof(ShadowIronIngot),  typeof(PileofInspectedShadowIronIngots) },
+                new Type[] {typeof(CopperIngot),      typeof(PileofInspectedCopperIngots) },
                 new Type[] {typeof(BronzeIngot),      typeof(PileofInspectedBronzeIngots) },
                 new Type[] {typeof(GoldIngot),        typeof(PileofInspectedGoldIngots) },
                 new Type[] {typeof(AgapiteIngot),     typeof(PileofInspectedAgapiteIngots) },

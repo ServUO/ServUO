@@ -2632,7 +2632,7 @@ namespace Server.Items
         public static bool ApplyProperty(Item item, int id, int perclow, int perchigh, ref int budget, int luckchance, bool reforged, bool powerful)
         {
             int min = ItemPropertyInfo.GetMinIntensity(item, id);
-            int naturalMax = ItemPropertyInfo.GetMaxIntensity(item, id, false);
+            int naturalMax = ItemPropertyInfo.GetMaxIntensity(item, id, false, true);
             int max = naturalMax;
             int[] overcap = null;
 
@@ -2660,8 +2660,8 @@ namespace Server.Items
                     value = naturalMax;
                 }
             }
-            Imbuing.SetProperty(item, id, value);
 
+            Imbuing.SetProperty(item, id, value);
             budget -= Imbuing.GetIntensityForID(item, id, -1, value);
 
             return true;

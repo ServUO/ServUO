@@ -16,6 +16,7 @@ namespace Server.Engines.Quests
         public static void Configure()
         {
             EventSink.OnKilledBy += OnKilledBy;
+            EventSink.Login += OnLogin;
         }
 
         public static readonly Type[] QuestTypes = new Type[]
@@ -201,6 +202,20 @@ namespace Server.Engines.Quests
                 if (qs != null)
                 {
                     qs.OnKill((BaseCreature)e.Killed, e.Killed.Corpse);
+                }
+            }
+        }
+
+        public static void OnLogin(LoginEventArgs e)
+        {
+            if (e.Mobile is PlayerMobile pm)
+            {
+                if (pm.Quest != null)
+                {
+                    Timer.DelayCall(TimeSpan.FromSeconds(2), () =>
+                    {
+                        pm.Quest.ShowQuestLog();
+                    });
                 }
             }
         }

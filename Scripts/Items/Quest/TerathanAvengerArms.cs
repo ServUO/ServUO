@@ -1,31 +1,31 @@
 namespace Server.Items
 {
-    public class PileofInspectedValoriteIngots : Item
+    public class TerathanAvengerArms : Item
     {
         [Constructable]
-        public PileofInspectedValoriteIngots()
-            : base(0x1BEA)
+        public TerathanAvengerArms()
+            : base(0x1B9D)
         {
-            Hue = CraftResources.GetHue(CraftResource.Valorite);
         }
 
-        public PileofInspectedValoriteIngots(Serial serial)
+        public TerathanAvengerArms(Serial serial)
             : base(serial)
         {
         }
 
+        public override int LabelNumber => 1150044;// Terathan Avenger arms
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write(0);
+            writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
 
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

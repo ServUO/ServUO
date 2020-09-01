@@ -463,9 +463,10 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write(3); // Version
+            writer.Write(4); // Version
 
             // version 4
+            writer.Write(m_EvaluateDay);
             writer.Write(NextEvaluate);
 
             // version 0
@@ -492,8 +493,9 @@ namespace Server.Items
             switch (version)
             {
                 case 4:
+                    m_EvaluateDay = reader.ReadBool();
                     NextEvaluate = reader.ReadDateTime();
-                    goto case 1;
+                    goto case 0;
                 case 3:
                 case 2:
                 case 1:

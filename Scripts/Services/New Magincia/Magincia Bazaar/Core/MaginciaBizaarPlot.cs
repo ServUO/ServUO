@@ -78,17 +78,6 @@ namespace Server.Engines.NewMagincia
         {
             get
             {
-                /*if(m_Auction == null)
-				{
-					TimeSpan ts;
-					if(m_Owner == null)
-						ts = MaginciaBazaar.GetLongAuctionTime;
-					else
-						ts = MaginciaBazaar.GetShortAuctionTime;
-						
-					m_Auction = new MaginciaPlotAuction(this, ts);
-				}*/
-
                 return m_Auction;
             }
             set { m_Auction = value; }

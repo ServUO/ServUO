@@ -58,7 +58,6 @@ namespace Server.Engines.Quests
 
         public override Type[] Quests => new Type[]
                 {
-                    typeof(DishBestServedColdQuest),
                     typeof(TroubleOnTheWingQuest),
                     typeof(MaraudersQuest),
                     typeof(DisciplineQuest)

@@ -1,3 +1,4 @@
+using Server.Items;
 using Server.Mobiles;
 using Server.Regions;
 using Server.Spells;
@@ -75,6 +76,49 @@ namespace Server.Engines.Exodus
                 VerLorRegController.Stop();
                 new ExitTimer(this).Start();
             }
+        }
+    }
+
+    public class ExodusDungeonRegion : DungeonRegion
+    {
+        public ExodusDungeonRegion(XmlElement xml, Map map, Region parent)
+            : base(xml, map, parent)
+        {
+        }
+
+        private static readonly Type[] m_Mobile = new Type[]
+        {
+            typeof(ExodusDrone), typeof(ExodusMinion), typeof(ExodusMinionLord), typeof(ExodusSentinel), typeof(ExodusOverseer),
+            typeof(EnslavedGargoyle), typeof(ExodusZealot), typeof(ExodusJuggernaut), typeof(Golem), typeof(GolemController),
+            typeof(GargoyleDestroyer), typeof(DupresChampion) , typeof(DupresKnight), typeof(DupresSquire) 
+        };
+
+        private static bool IsDropKeyMobile(BaseCreature bc)
+        {
+            return m_Mobile.Any(t => t == bc.GetType());
+        }
+
+        public override void OnDeath(Mobile m)
+        {
+            base.OnDeath(m);
+
+            if (m is BaseCreature bc && IsDropKeyMobile(bc) && !bc.Controlled && Utility.RandomDouble() < 0.1)
+            {
+                Mobile killer = m.LastKiller;
+
+                if (killer != null)
+                {
+                    if (killer is BaseCreature bct && bct.GetMaster() is PlayerMobile pm && bct.InRange(pm, 18))
+                    {
+                        killer = bct.GetMaster();
+                    }
+
+                    if (killer is PlayerMobile)
+                    {
+                        ExodusChest.GiveRituelItem(killer);
+                    }
+                }                
+            }            
         }
     }
 }
