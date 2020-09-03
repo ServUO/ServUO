@@ -1,6 +1,5 @@
 #region References
 using Server.Items;
-using System;
 #endregion
 
 namespace Server.Mobiles
@@ -152,17 +151,10 @@ namespace Server.Mobiles
                 m_Mobile.DebugSay("I should be closer to {0}", c.Name);
             }
 
-            if (!m_Mobile.Controlled && !m_Mobile.Summoned && m_Mobile.CanFlee)
+            if (!m_Mobile.Controlled && !m_Mobile.Summoned && m_Mobile.CheckCanFlee())
             {
-                if (m_Mobile.Hits < m_Mobile.HitsMax * 20 / 100)
-                {
-                    // We are low on health, should we flee?
-                    if (Utility.Random(100) <= Math.Max(10, 10 + c.Hits - m_Mobile.Hits))
-                    {
-                        m_Mobile.DebugSay("I am going to flee from {0}", c.Name);
-                        Action = ActionType.Flee;
-                    }
-                }
+                m_Mobile.DebugSay("I am going to flee from {0}", c.Name);
+                Action = ActionType.Flee;
             }
 
             return true;

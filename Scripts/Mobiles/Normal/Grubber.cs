@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Mobiles
 {
     [CorpseName("a grubber corpse")]
@@ -32,20 +30,6 @@ namespace Server.Mobiles
             Karma = 0;
         }
 
-        public override IDamageable Combatant
-        {
-            get { return base.Combatant; }
-            set
-            {
-                base.Combatant = value;
-
-                if (0.10 > Utility.RandomDouble())
-                    StopFlee();
-                else if (!CheckFlee())
-                    BeginFlee(TimeSpan.FromSeconds(10));
-            }
-        }
-
         public Grubber(Serial serial)
             : base(serial)
         {
@@ -53,6 +37,25 @@ namespace Server.Mobiles
 
         public override int Meat => 1;
         public override int Hides => 1;
+        public override double FleeChance => 1.0;
+        public override double BreakFleeChance => 0.05;
+
+        public override bool CheckFlee()
+        {
+            return true;
+        }
+
+        public override bool CheckBreakFlee()
+        {
+            return false;
+        }
+
+        public override bool BreakFlee()
+        {
+            NextFleeCheck = Core.TickCount + 1500;
+
+            return true;
+        }
 
         public override int GetAttackSound()
         {

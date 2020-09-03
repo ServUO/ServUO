@@ -48,8 +48,6 @@ namespace Server.Mobiles
         {
         }
 
-		public override bool CanFlee => false;
-		
         public override TribeType Tribe => TribeType.Undead;
 		
         public override bool Unprovokable => true;

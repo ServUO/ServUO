@@ -86,7 +86,9 @@ namespace Server.Mobiles
             CandlewoodTorch torch = m.FindItemOnLayer(Layer.TwoHanded) as CandlewoodTorch;
 
             if (torch != null && torch.Burning)
-                BeginFlee(TimeSpan.FromSeconds(5.0));
+            {
+                ForceFleeUntil = DateTime.UtcNow + TimeSpan.FromSeconds(5.0);
+            }
         }
 
         public override void Serialize(GenericWriter writer)

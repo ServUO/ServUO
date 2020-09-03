@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Mobiles
 {
     [CorpseName("a chicken lizard corpse")]
@@ -43,36 +41,24 @@ namespace Server.Mobiles
         public override int GetHurtSound() { return 1510; }
         public override int GetDeathSound() { return 1509; }
 
-        public override IDamageable Combatant
-        {
-            get { return base.Combatant; }
-            set
-            {
-                base.Combatant = value;
-
-                if (!Controlled)
-                {
-                    if (0.05 > Utility.RandomDouble())
-                    {
-                        StopFlee();
-                    }
-                    else if (!CheckFlee())
-                    {
-                        BeginFlee(TimeSpan.FromSeconds(30));
-                    }
-                }
-            }
-        }
-
+        public override double FleeChance => 1.0;
+        public override double BreakFleeChance => 0.05;
 
         public override bool CheckFlee()
         {
-            if (Controlled)
-            {
-                return base.CheckFlee();
-            }
+            return true;
+        }
 
-            return DateTime.UtcNow < EndFleeTime;
+        public override bool CheckBreakFlee()
+        {
+            return Controlled;
+        }
+
+        public override bool BreakFlee()
+        {
+            NextFleeCheck = Core.TickCount + 1500;
+
+            return true;
         }
 
         public override void OnAfterTame(Mobile tamer)
@@ -82,8 +68,6 @@ namespace Server.Mobiles
 
             if (Frozen)
                 Frozen = false;
-
-            StopFlee();
         }
 
         public BattleChickenLizard(Serial serial)

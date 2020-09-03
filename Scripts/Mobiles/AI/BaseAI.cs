@@ -315,22 +315,6 @@ namespace Server.Mobiles
             }
         }
 
-        public virtual void OnAggressiveAction(Mobile aggressor)
-        {
-            if (m_Mobile.Controlled && m_Mobile.ControlOrder == OrderType.Attack)
-            {
-                return;
-            }
-
-            Mobile currentCombat = m_Mobile.Combatant as Mobile;
-
-            if (currentCombat != null && !aggressor.Hidden && currentCombat != aggressor &&
-                m_Mobile.GetDistanceToSqrt(currentCombat) > m_Mobile.GetDistanceToSqrt(aggressor))
-            {
-                m_Mobile.Combatant = aggressor;
-            }
-        }
-
         public virtual void EndPickTarget(Mobile from, IDamageable target, OrderType order)
         {
             if (m_Mobile.Deleted || !m_Mobile.Controlled || !from.InRange(m_Mobile, 14) || from.Map != m_Mobile.Map ||
@@ -883,11 +867,6 @@ namespace Server.Mobiles
             if (CheckCharming())
                 return true;
 
-            if (CheckFlee())
-            {
-                return true;
-            }
-
             switch (Action)
             {
                 case ActionType.Wander:
@@ -916,6 +895,32 @@ namespace Server.Mobiles
 
                 default:
                     return false;
+            }
+        }
+
+        public virtual void OnAggressiveAction(Mobile aggressor)
+        {
+            if (m_Mobile.Controlled && m_Mobile.ControlOrder == OrderType.Attack)
+            {
+                return;
+            }
+
+            Mobile currentCombat = m_Mobile.Combatant as Mobile;
+
+            if (currentCombat != null && !aggressor.Hidden && currentCombat != aggressor &&
+                m_Mobile.GetDistanceToSqrt(currentCombat) > m_Mobile.GetDistanceToSqrt(aggressor))
+            {
+                m_Mobile.Combatant = aggressor;
+            }
+
+            m_Mobile.DebugSay("I am being aggressed by {0}! [{1}]", aggressor.Name, Action);
+
+            if (Action == ActionType.Flee && m_Mobile.BreakFleeChance > Utility.RandomDouble())
+            {
+                m_Mobile.BreakFlee();
+                Action = ActionType.Combat;
+
+                m_Mobile.DebugSay("I am breaking my flee status!");
             }
         }
 
@@ -1141,6 +1146,7 @@ namespace Server.Mobiles
                     Action = ActionType.Guard;
                     return true;
                 }
+
                 m_Mobile.DebugSay("I am scared of {0}", c.Name);
             }
             else
@@ -2723,6 +2729,7 @@ namespace Server.Mobiles
                 {
                     return true;
                 }
+
                 return false;
             }
 

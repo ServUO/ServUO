@@ -47,6 +47,9 @@ namespace Server.Mobiles
         public override int Meat => 1;
         public override int Hides => 1;
 
+        public override double FleeChance => 1.0;
+        public override double BreakFleeChance => 0.05;
+
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich);
@@ -56,27 +59,21 @@ namespace Server.Mobiles
             AddLoot(LootPack.RandomLootItem(Loot.StatueTypes, false, true));
         }
 
-        public override IDamageable Combatant
-        {
-            get { return base.Combatant; }
-            set
-            {
-                base.Combatant = value;
-
-                if (0.05 > Utility.RandomDouble())
-                {
-                    StopFlee();
-                }
-                else if (!CheckFlee())
-                {
-                    BeginFlee(TimeSpan.FromSeconds(30));
-                }
-            }
-        }
-
         public override bool CheckFlee()
         {
-            return DateTime.UtcNow < EndFleeTime;
+            return true;
+        }
+
+        public override bool CheckBreakFlee()
+        {
+            return false;
+        }
+
+        public override bool BreakFlee()
+        {
+            NextFleeCheck = Core.TickCount + 1500;
+
+            return true;
         }
 
         public virtual void DelayBeginTunnel()

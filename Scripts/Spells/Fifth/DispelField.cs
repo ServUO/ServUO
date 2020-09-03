@@ -26,30 +26,19 @@ namespace Server.Spells.Fifth
             Caster.Target = new InternalTarget(this);
         }
 
-        public void Target(Item item)
+        public void Target(IEntity e)
         {
-            Type t = item.GetType();
+            if (Caster.CanSee(e) && CheckSequence())
+            {
+                SpellHelper.Turn(Caster, e);
 
-            if (!Caster.CanSee(item))
-            {
-                Caster.SendLocalizedMessage(500237); // Target can not be seen.
-            }
-            else if (!t.IsDefined(typeof(DispellableFieldAttribute), false))
-            {
-                Caster.SendLocalizedMessage(1005049); // That cannot be dispelled.
-            }
-            else if (item is Moongate && !((Moongate)item).Dispellable)
-            {
-                Caster.SendLocalizedMessage(1005047); // That magic is too chaotic
-            }
-            else if (CheckSequence())
-            {
-                SpellHelper.Turn(Caster, item);
+                Effects.SendLocationParticles(EffectItem.Create(e.Location, e.Map, EffectItem.DefaultDuration), 0x376A, 9, 20, 5042);
+                Effects.PlaySound(e.Location, e.Map, 0x201);
 
-                Effects.SendLocationParticles(EffectItem.Create(item.Location, item.Map, EffectItem.DefaultDuration), 0x376A, 9, 20, 5042);
-                Effects.PlaySound(item.GetWorldLocation(), item.Map, 0x201);
-
-                item.Delete();
+                if (e is Item item && (e.GetType().IsDefined(typeof(DispellableFieldAttribute), false) || (item is Moongate && !((Moongate)item).Dispellable)))
+                {
+                    item.Delete();
+                }
             }
 
             FinishSequence();
@@ -66,13 +55,9 @@ namespace Server.Spells.Fifth
 
             protected override void OnTarget(Mobile from, object o)
             {
-                if (o is Item)
+                if (o is IEntity)
                 {
-                    m_Owner.Target((Item)o);
-                }
-                else
-                {
-                    m_Owner.Caster.SendLocalizedMessage(1005049); // That cannot be dispelled.
+                    m_Owner.Target((IEntity)o);
                 }
             }
 
