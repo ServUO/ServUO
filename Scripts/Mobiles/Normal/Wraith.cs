@@ -42,8 +42,6 @@ namespace Server.Mobiles
         {
         }
 
-		public override bool CanFlee => false;
-		
         public override bool BleedImmune => true;
 
         public override TribeType Tribe => TribeType.Undead;

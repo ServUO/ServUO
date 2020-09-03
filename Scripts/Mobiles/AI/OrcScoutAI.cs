@@ -112,33 +112,14 @@ namespace Server.Mobiles
                 m_Mobile.DebugSay("I should be closer to {0}", c.Name);
             }
 
-            if (!m_Mobile.Controlled && !m_Mobile.Summoned && m_Mobile.CanFlee)
+            if (!m_Mobile.Controlled && !m_Mobile.Summoned && m_Mobile.CheckCanFlee())
             {
-                /*                // When we have no ammo, we flee
-								Container pack = m_Mobile.Backpack;
-				
-								if (pack == null || pack.FindItemByType(typeof(Arrow)) == null)
-								{
-									Action = ActionType.Flee;
-									if (Utility.RandomDouble() < teleportChance + 0.1)
-									{
-										TryToTeleport();
-									}
-									return true;
-								}
-				*/
-                if (m_Mobile.Hits < m_Mobile.HitsMax * 20 / 100)
+                m_Mobile.DebugSay("I am going to flee from {0}", c.Name);
+                Action = ActionType.Flee;
+
+                if (Utility.RandomDouble() < teleportChance + 0.1)
                 {
-                    // We are low on health, should we flee?
-                    if (Utility.Random(100) <= Math.Max(10, 10 + c.Hits - m_Mobile.Hits))
-                    {
-                        m_Mobile.DebugSay("I am going to flee from {0}", c.Name);
-                        Action = ActionType.Flee;
-                        if (Utility.RandomDouble() < teleportChance + 0.1)
-                        {
-                            TryToTeleport();
-                        }
-                    }
+                    TryToTeleport();
                 }
             }
 
@@ -166,11 +147,7 @@ namespace Server.Mobiles
         {
             Mobile c = m_Mobile.Combatant as Mobile;
 
-            //            Container pack = m_Mobile.Backpack;
-            //            bool hasAmmo = !(pack == null || pack.FindItemByType(typeof(Arrow)) == null);
-            // They can shoot even with no ammo!
-
-            if ( /*hasAmmo && */m_Mobile.Hits > m_Mobile.HitsMax / 2)
+            if (m_Mobile.CheckBreakFlee())
             {
                 // If I have a target, go back and fight them
                 if (c != null && m_Mobile.GetDistanceToSqrt(c) <= m_Mobile.RangePerception * 2)

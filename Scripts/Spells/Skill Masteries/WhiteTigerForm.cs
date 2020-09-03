@@ -26,6 +26,8 @@ namespace Server.Spells.SkillMasteries
         public override bool BlocksMovement => false;
         public override int CastRecoveryBase => (10);
 
+        public override bool RevealOnCast => false;
+
         public WhiteTigerFormSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
         {

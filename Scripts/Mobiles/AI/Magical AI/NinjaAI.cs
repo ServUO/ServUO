@@ -147,34 +147,48 @@ namespace Server.Mobiles
         {
             base.DoActionCombat();
 
-            if (m_Mobile.Combatant == null)
-                return true;
-
-            SpecialMove special = SpecialMove.GetCurrentMove(m_Mobile);
-
-            if (special == null && m_NextCastTime < DateTime.UtcNow && 0.05 > Utility.RandomDouble())
+            if (m_Mobile.Combatant is Mobile c)
             {
-                if (0.05 > Utility.RandomDouble())
+                if (!m_Mobile.Controlled && !m_Mobile.Summoned && m_Mobile.CheckCanFlee())
                 {
-                    new MirrorImage(m_Mobile, null).Cast();
+                    m_Mobile.DebugSay("I am going to flee from {0}", c.Name);
+                    Action = ActionType.Flee;
                 }
                 else
                 {
-                    if (m_Mobile.Hidden)
-                        special = GetHiddenSpecialMove();
-                    else
-                        special = GetSpecialMove();
+                    SpecialMove special = SpecialMove.GetCurrentMove(m_Mobile);
 
-                    if (special != null)
+                    if (special == null && m_NextCastTime < DateTime.UtcNow && 0.05 > Utility.RandomDouble())
                     {
-                        SpecialMove.SetCurrentMove(m_Mobile, special);
-                        m_NextCastTime = DateTime.UtcNow + GetCastDelay();
+                        if (0.05 > Utility.RandomDouble())
+                        {
+                            new MirrorImage(m_Mobile, null).Cast();
+                        }
+                        else
+                        {
+                            if (m_Mobile.Hidden)
+                            {
+                                special = GetHiddenSpecialMove();
+                            }
+                            else
+                            {
+                                special = GetSpecialMove();
+                            }
+
+                            if (special != null)
+                            {
+                                SpecialMove.SetCurrentMove(m_Mobile, special);
+                                m_NextCastTime = DateTime.UtcNow + GetCastDelay();
+                            }
+                        }
+                    }
+
+                    if (m_NextRanged < DateTime.UtcNow && 0.08 > Utility.RandomDouble())
+                    {
+                        DoRangedAttack();
                     }
                 }
             }
-
-            if (m_NextRanged < DateTime.UtcNow && 0.08 > Utility.RandomDouble())
-                DoRangedAttack();
 
             return true;
         }

@@ -44,8 +44,6 @@ namespace Server.Mobiles
         {
         }
 
-		public override bool CanFlee => false;
-		
         public override bool AutoDispel => true;
 		
         public override bool BleedImmune => true;

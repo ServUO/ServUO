@@ -74,7 +74,7 @@ namespace Server.Spells.Chivalry
                             if (fleeChance > Utility.RandomDouble())
                             {
                                 // guide says 2 seconds, it's longer
-                                bc.BeginFlee(TimeSpan.FromSeconds(30.0));
+                                bc.ForceFleeUntil = DateTime.UtcNow + TimeSpan.FromSeconds(30.0);
                             }
                         }
                     }

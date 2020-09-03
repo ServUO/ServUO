@@ -42,6 +42,8 @@ namespace Server.Items
         {
         }
 
+        public override bool RetainComponentHue => true;
+
         public override BaseAddonDeed Deed => new SilverPlatedBubblingCauldronDeed(Components.OfType<AddonComponentHue>().FirstOrDefault().Hue);
 
         public override void Serialize(GenericWriter writer)
@@ -60,6 +62,8 @@ namespace Server.Items
     public class SilverPlatedBubblingCauldronDeed : BaseAddonDeed
     {
         public override int LabelNumber => 1159508; // Silver Plated Bubbling Cauldron
+
+        public override bool ExcludeDeedHue => true;
 
         [Constructable]
         public SilverPlatedBubblingCauldronDeed()

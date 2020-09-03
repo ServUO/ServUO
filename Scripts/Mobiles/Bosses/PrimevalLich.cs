@@ -98,7 +98,7 @@ namespace Server.Mobiles
         public void ChangeCombatant()
         {
             ForceReacquire();
-            BeginFlee(TimeSpan.FromSeconds(2.5));
+            ForceFleeUntil = DateTime.UtcNow + TimeSpan.FromSeconds(2.5);
         }
 
         public override void OnThink()
