@@ -47,7 +47,7 @@ namespace Server.Spells.Fifth
 
                 if (context == null)
                 {
-                    int physiMod = -20 + (int)(targ.Skills[SkillName.Inscribe].Value / 20);
+                    int physiMod = 25 - (int)(targ.Skills[SkillName.Inscribe].Value / 20);
                     int otherMod = 10;
 
                     var mods = new ResistanceMod[5]

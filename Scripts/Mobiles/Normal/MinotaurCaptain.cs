@@ -11,6 +11,7 @@ namespace Server.Mobiles
         {
             Name = "a minotaur captain";
             Body = 280;
+            BaseSoundID = 1270;
 
             SetStr(401, 425);
             SetDex(91, 110);
@@ -56,32 +57,6 @@ namespace Server.Mobiles
             AddLoot(LootPack.ArcanistScrolls, 0, 1);
         }
 
-        // Using Tormented Minotaur sounds - Need to veryfy
-        public override int GetAngerSound()
-        {
-            return 0x597;
-        }
-
-        public override int GetIdleSound()
-        {
-            return 0x596;
-        }
-
-        public override int GetAttackSound()
-        {
-            return 0x599;
-        }
-
-        public override int GetHurtSound()
-        {
-            return 0x59a;
-        }
-
-        public override int GetDeathSound()
-        {
-            return 0x59c;
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -91,7 +66,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }
