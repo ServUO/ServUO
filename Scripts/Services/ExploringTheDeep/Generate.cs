@@ -133,10 +133,6 @@ namespace Server.Engines.ExploringTheDeep
             ladder.MoveToWorld(new Point3D(6304, 1672, -5), Map.Trammel);
             WeakEntityCollection.Add(EntityName, ladder);
 
-            ladder = new ShipLadder(new Point3D(6292, 1720, 0), Map.Trammel, 0x08A1);
-            ladder.MoveToWorld(new Point3D(6400, 1656, 0), Map.Trammel);
-            WeakEntityCollection.Add(EntityName, ladder);
-
             ladder = new ShipLadder(new Point3D(1699, 1646, -115), Map.Malas, 0x14FA);
             ladder.MoveToWorld(new Point3D(6278, 1773, 0), Map.Trammel);
             WeakEntityCollection.Add(EntityName, ladder);

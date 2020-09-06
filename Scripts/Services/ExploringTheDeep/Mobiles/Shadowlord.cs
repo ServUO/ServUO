@@ -15,10 +15,10 @@ namespace Server.Mobiles
     };
 
     [CorpseName("a shadowlord corpse")]
-    public class Shadowlord : BaseCreature
+    public class Shadowlord : BasePeerless
     {
-        private static readonly List<Shadowlord> m_Instances = new List<Shadowlord>();
-        public static List<Shadowlord> Instances => m_Instances;
+        //private static readonly List<Shadowlord> m_Instances = new List<Shadowlord>();
+        //public static List<Shadowlord> Instances => m_Instances;
 
         private ShadowlordType m_Type;
         public virtual Type[] ArtifactDrops => _ArtifactTypes;
@@ -50,7 +50,7 @@ namespace Server.Mobiles
         public Shadowlord()
             : base(AIType.AI_NecroMage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            m_Instances.Add(this);
+            //m_Instances.Add(this);
 
             m_Type = (ShadowlordType)Utility.Random(3);
             Name = m_Type.ToString();
@@ -93,9 +93,6 @@ namespace Server.Mobiles
             Fame = 24000;
             Karma = -24000;
 
-            Timer SelfDeleteTimer = new InternalSelfDeleteTimer(this);
-            SelfDeleteTimer.Start();
-
             SetSpecialAbility(SpecialAbility.LifeDrain);
         }
 
@@ -109,53 +106,23 @@ namespace Server.Mobiles
         public Shadowlord(Serial serial)
             : base(serial)
         {
-            m_Instances.Add(this);
+            //m_Instances.Add(this);
         }
 
         public override void OnAfterDelete()
         {
-            m_Instances.Remove(this);
+            //m_Instances.Remove(this);
 
             base.OnAfterDelete();
         }
 
         public override bool AlwaysMurderer => true;
+        public override bool DropPrimer => false;
+        public override bool GiveMLSpecial => false;
 
         public override int GetAngerSound() { return 1550; }
         public override int GetHurtSound() { return 1552; }
         public override int GetDeathSound() { return 1551; }
-
-        public class InternalSelfDeleteTimer : Timer
-        {
-            private readonly Shadowlord Mare;
-
-            public InternalSelfDeleteTimer(Mobile p) : base(TimeSpan.FromMinutes(180))
-            {
-                Priority = TimerPriority.FiveSeconds;
-                Mare = ((Shadowlord)p);
-            }
-            protected override void OnTick()
-            {
-                if (Mare.Map != Map.Internal)
-                {
-                    Mare.Delete();
-                    Stop();
-                }
-            }
-        }
-
-        public static Shadowlord Spawn(Point3D platLoc, Map platMap)
-        {
-            if (m_Instances.Count > 0)
-                return null;
-
-            Shadowlord creature = new Shadowlord();
-            creature.Home = platLoc;
-            creature.RangeHome = 4;
-            creature.MoveToWorld(platLoc, platMap);
-
-            return creature;
-        }
 
         public override Poison PoisonImmune => Poison.Lethal;
 
@@ -172,15 +139,17 @@ namespace Server.Mobiles
 
         public override void OnDrainLife(Mobile victim)
         {
-            if (Map == null)
+            if (Map == null || Altar == null)
                 return;
+
+            var count = Altar == null ? 0 : Altar.Helpers.Count;
 
             foreach (Mobile m in SpellHelper.AcquireIndirectTargets(this, Location, Map, 20).OfType<Mobile>())
             {
-                var wisp = new DarkWisp();
-                wisp.MoveToWorld(Location, Map);
-
-                Wisps.Add(wisp);
+                if (Altar.Helpers.Count < 6)
+                {
+                    SpawnHelper(new DarkWisp(), Location);
+                }
 
                 if (Region.IsPartOf("Underwater World") && (Map == Map.Trammel || Map == Map.Felucca))
                 {
@@ -228,22 +197,13 @@ namespace Server.Mobiles
                 }
             }
 
-            foreach (var wisp in Wisps.Where(w => w != null && !w.Deleted))
-            {
-                wisp.Kill();
-            }
-
-            ColUtility.Free(Wisps);
-
             base.OnDeath(c);
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(1); // version
-
-            writer.WriteMobileList(Wisps, true);
+            writer.Write(0); // version
 
             writer.Write((int)m_Type);
 
@@ -254,22 +214,7 @@ namespace Server.Mobiles
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            switch (version)
-            {
-                case 1:
-                    {
-                        Wisps = reader.ReadStrongMobileList<DarkWisp>();
-                        goto case 0;
-                    }
-                case 0:
-                    {
-                        m_Type = (ShadowlordType)reader.ReadInt();
-                        break;
-                    }
-            }
-
-            Timer SelfDeleteTimer = new InternalSelfDeleteTimer(this);
-            SelfDeleteTimer.Start();
+            m_Type = (ShadowlordType)reader.ReadInt();
         }
     }
 }

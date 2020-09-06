@@ -8,6 +8,7 @@ namespace Server.Mobiles
         {
             Name = "a minotaur general";
             Body = 0x118;
+            BaseSoundID = 1270;
 
             SetStr(602, 606);
             SetDex(137, 139);
@@ -58,7 +59,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }
