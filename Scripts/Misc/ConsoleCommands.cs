@@ -5,6 +5,7 @@ using Server.Network;
 using System;
 using System.Linq;
 using System.Threading;
+using System.IO;
 #endregion
 
 namespace Server.Misc
@@ -198,6 +199,38 @@ namespace Server.Misc
                     {
                         AutoSave.Save();
                         Core.Kill(true);
+                    }
+                    break;
+                case "save recompile":
+                    {
+                        var path = AutoRestart.RecompilePath;
+
+                        if (!File.Exists(path))
+                        {
+                            Console.WriteLine("Unable to Re-Compile due to missing file: {0}", AutoRestart.RecompilePath);
+                        }
+                        else
+                        {
+                            AutoSave.Save();
+
+                            System.Diagnostics.Process.Start(path);
+                            Core.Kill();
+                        }
+                    }
+                    break;
+                case "nosave recompile":
+                    {
+                        var path = AutoRestart.RecompilePath;
+
+                        if (!File.Exists(path))
+                        {
+                            Console.WriteLine("Unable to Re-Compile due to missing file: {0}", AutoRestart.RecompilePath);
+                        }
+                        else
+                        {
+                            System.Diagnostics.Process.Start(path);
+                            Core.Kill();
+                        }
                     }
                     break;
                 case "restart nosave":

@@ -1,5 +1,8 @@
 using Server.Commands;
+
 using System;
+using System.IO;
+using System.Diagnostics;
 
 namespace Server.Misc
 {
@@ -17,6 +20,8 @@ namespace Server.Misc
         public static int Hour = Config.Get("AutoRestart.Hour", 12);
         public static int Minutes = Config.Get("AutoRestart.Minute", 0);
         public static int Frequency = Config.Get("AutoRestart.Frequency", 24);
+
+        public static readonly string RecompilePath = Path.Combine(Core.BaseDirectory, Core.Debug ? "Compile.WIN - Debug.bat" : "Compile.WIN - Release.bat");
 
         public AutoRestart()
             : base(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0))
@@ -59,12 +64,27 @@ namespace Server.Misc
 
                 StopTimer();
 
+                bool recompile = e.Arguments.Length > 0 && e.Arguments[0].ToLower() == "true";
+
+                if (recompile)
+                {
+                    if (!File.Exists(RecompilePath))
+                    {
+                        e.Mobile.SendMessage("Unable to Re-Compile due to missing file: {0}", RecompilePath);
+                        recompile = false;
+                    }
+                    else
+                    {
+                        e.Mobile.SendMessage("Recompiling after restart!");
+                    }
+                }
+
                 DelayCall(TimeSpan.FromSeconds(1), () =>
                     {
                         AutoSave.Save();
 
                         Restarting = true;
-                        TimedShutdown(true);
+                        TimedShutdown(true, recompile);
                     });
             }
         }
@@ -134,12 +154,25 @@ namespace Server.Misc
 
         private static void TimedShutdown(bool restart)
         {
+            TimedShutdown(restart, false);
+        }
+
+        private static void TimedShutdown(bool restart, bool recompile)
+        {
             World.Broadcast(0x22, true, String.Format("The server will be going down in about {0} seconds!", RestartDelay.TotalSeconds.ToString()));
-            DelayCall(RestartDelay, rest =>
+            DelayCall(RestartDelay, (rest, recomp) =>
                 {
-                    Core.Kill(rest);
+                    if (recomp)
+                    {
+                        Process.Start(RecompilePath);
+                        Core.Kill();
+                    }
+                    else
+                    {
+                        Core.Kill(rest);
+                    }
                 },
-                restart);
+                restart, recompile);
         }
     }
 }

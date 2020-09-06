@@ -1,6 +1,5 @@
 #region References
 using Server.Accounting;
-using System;
 #endregion
 
 namespace Server.Items

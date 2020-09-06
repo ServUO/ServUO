@@ -1,4 +1,3 @@
-using Server.Engines.PartySystem;
 using Server.Commands;
 using Server.Mobiles;
 using Server.Gumps;
@@ -83,7 +82,7 @@ namespace Server.Items
 
         public override BasePeerless Boss { get { return new Shadowlord(); } }
         public override Rectangle2D[] BossBounds { get { return new Rectangle2D[] { new Rectangle2D(6399, 1631, 38, 38) }; } }
-       
+
         [CommandProperty(AccessLevel.GameMaster)]
         public Hatch Hatch { get; set; }
 
@@ -175,7 +174,7 @@ namespace Server.Items
             {
                 from.SendLocalizedMessage(1075213); // The master of this realm has already been summoned and is engaged in combat.  Your opportunity will come after he has squashed the current batch of intruders!
             }
-            else if(!Winch.CheckParty(from))
+            else if (!Winch.CheckParty(from))
             {
                 from.SendLocalizedMessage(1072683, Winch.Owner.Name); // ~1_NAME~ has already activated the Prism, please wait...
             }

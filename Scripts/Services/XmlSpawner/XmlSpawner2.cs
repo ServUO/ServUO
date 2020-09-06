@@ -8,7 +8,6 @@ using Server.Targeting;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Xml;
@@ -1920,7 +1919,7 @@ namespace Server.Mobiles
         public override void OnDoubleClick(Mobile from)
         {
             if (from == null || from.Deleted || from.AccessLevel < AccessLevel.GameMaster || (m_SpawnerGump != null && SomeOneHasGumpOpen)) return;
-            
+
             // clear any text entry books that might still be around
             DeleteTextEntryBook();
 
@@ -2732,8 +2731,8 @@ namespace Server.Mobiles
             }
         }
 #else
-		public static void _TraceStart(int index) { }
-		public static void _TraceEnd(int index) { }
+        public static void _TraceStart(int index) { }
+        public static void _TraceEnd(int index) { }
 #endif
 
         #endregion
@@ -3896,8 +3895,8 @@ namespace Server.Mobiles
                 Server.Diagnostics.ExceptionLogging.LogException(e);
             }
             try { XmlSpawner.defRelativeHome = bool.Parse(node["defRelativeHome"].InnerText); }
-            catch(Exception e)
-                        {
+            catch (Exception e)
+            {
                 Server.Diagnostics.ExceptionLogging.LogException(e);
             }
             try { XmlSpawner.defSpawnRange = int.Parse(node["defSpawnRange"].InnerText); }
@@ -4519,7 +4518,7 @@ namespace Server.Mobiles
                     fs = File.Open(filename, FileMode.Open, FileAccess.Read);
                 }
                 catch { }
-                
+
                 if (fs == null)
                 {
                     if (from != null)
@@ -5794,7 +5793,7 @@ namespace Server.Mobiles
 
             spawner.SpawnRange = spawnRange;
             spawner.m_PlayerCreated = true;
-            
+
             // Try to find a valid Z height if required (Z == -999)
 
             if (location.Z == -999)
@@ -11886,7 +11885,7 @@ namespace Server.Mobiles
                             tmpSequentialResetTo.Add(resetto);
                             tmpKillsNeeded.Add(killsneeded);
                         }
-                        m_RegionName = reader.ReadString(); 
+                        m_RegionName = reader.ReadString();
                         goto case 15;
                     }
                 case 15:

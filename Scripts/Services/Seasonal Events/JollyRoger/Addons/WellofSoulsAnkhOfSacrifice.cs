@@ -1,5 +1,4 @@
 using Server.Engines.JollyRoger;
-using Server.Engines.Points;
 using Server.Gumps;
 using Server.Mobiles;
 using Server.Network;
@@ -20,7 +19,7 @@ namespace Server.Items
         public WOSAnkhOfSacrifice(Serial serial)
             : base(serial)
         {
-        }       
+        }
 
         public override void OnComponentUsed(AddonComponent c, Mobile from)
         {
@@ -129,34 +128,34 @@ namespace Server.Items
             switch (info.ButtonID)
             {
                 case 0:
-                {
-                    break;
-                }
-                case 1:
-                {
-                    var l = JollyRogerData.GetList(from);
-
-                    if (l != null)
                     {
-                        if (l.Tabard)
-                        {
-                            from.SendLocalizedMessage(1152687); // You've already claimed your reward! 
-                        }
-                        else
-                        {
-                            from.CloseGump(typeof(TabardClaimConfirmGump));
-                            from.SendGump(new TabardClaimConfirmGump(_Shrine));
-                        }
+                        break;
                     }
+                case 1:
+                    {
+                        var l = JollyRogerData.GetList(from);
 
-                    break;
-                }
+                        if (l != null)
+                        {
+                            if (l.Tabard)
+                            {
+                                from.SendLocalizedMessage(1152687); // You've already claimed your reward! 
+                            }
+                            else
+                            {
+                                from.CloseGump(typeof(TabardClaimConfirmGump));
+                                from.SendGump(new TabardClaimConfirmGump(_Shrine));
+                            }
+                        }
+
+                        break;
+                    }
                 case 2:
-                {
-                    from.CloseGump(typeof(TabardConvertConfirmGump));
-                    from.SendGump(new TabardConvertConfirmGump());
-                    break;
-                }
+                    {
+                        from.CloseGump(typeof(TabardConvertConfirmGump));
+                        from.SendGump(new TabardConvertConfirmGump());
+                        break;
+                    }
             }
         }
     }

@@ -2,7 +2,6 @@ using Server.Engines.JollyRoger;
 using Server.Gumps;
 using Server.Network;
 using System;
-using Server.Engines.Points;
 
 namespace Server.Items
 {
