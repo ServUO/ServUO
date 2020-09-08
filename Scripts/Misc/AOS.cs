@@ -307,9 +307,16 @@ namespace Server
                     }
                 }
 
-                if (fromCreature != null && fromCreature.Controlled && m.Player)
+                if (fromCreature != null)
                 {
-                    totalDamage /= 2;
+                    if (fromCreature.Controlled && m.Player)
+                    {
+                        totalDamage /= 2;
+                    }
+                    else if (type == DamageType.Melee && toCreature != null && toCreature.Controlled)
+                    {
+                        totalDamage += (int)((double)totalDamage * 0.10);
+                    }
                 }
             }
 

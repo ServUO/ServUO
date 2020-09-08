@@ -24,7 +24,11 @@ namespace Server.Engines.Despise
             {
                 default:
                     {
-                        m_Creature.ControlOrder = OrderType.Follow;
+                        if (m_Creature.ControlOrder != OrderType.Follow)
+                        {
+                            m_Creature.ControlOrder = OrderType.Follow;
+                        }
+
                         DoOrderFollow();
                     }
                     break;
@@ -110,7 +114,11 @@ namespace Server.Engines.Despise
 
             if (m_Creature.Combatant == null)
             {
-                m_Creature.ControlOrder = OrderType.Follow;
+                if (m_Creature.ControlOrder != OrderType.Follow)
+                {
+                    m_Creature.ControlOrder = OrderType.Follow;
+                }
+
                 m_Creature.ControlTarget = m_Creature.ControlMaster;
                 Action = ActionType.Guard;
                 DoOrderFollow();
@@ -171,7 +179,7 @@ namespace Server.Engines.Despise
 
             foreach (Mobile m in eable)
             {
-                if (m is DespiseCreature || m is DespiseBoss)
+                if (m_Creature.CanSee(m) && m_Creature.InLOS(m) && (m is DespiseCreature || m is DespiseBoss))
                 {
                     DespiseCreature dc = m as DespiseCreature;
 
@@ -205,7 +213,7 @@ namespace Server.Engines.Despise
             {
                 p = m_Creature.Orb.GetAnchorActual();
 
-                if (m_Creature.InRange(p, range))
+                if (m_Creature.InRange(p, range + 1))
                 {
                     return false;
                 }
@@ -248,7 +256,11 @@ namespace Server.Engines.Despise
             {
                 default:
                     {
-                        m_Creature.ControlOrder = OrderType.Follow;
+                        if (m_Creature.ControlOrder != OrderType.Follow)
+                        {
+                            m_Creature.ControlOrder = OrderType.Follow;
+                        }
+
                         DoOrderFollow();
                     }
                     break;
@@ -334,7 +346,11 @@ namespace Server.Engines.Despise
 
             if (m_Creature.Combatant == null)
             {
-                m_Creature.ControlOrder = OrderType.Follow;
+                if (m_Creature.ControlOrder != OrderType.Follow)
+                {
+                    m_Creature.ControlOrder = OrderType.Follow;
+                }
+
                 m_Creature.ControlTarget = m_Creature.ControlMaster;
                 Action = ActionType.Guard;
                 DoOrderFollow();
@@ -395,7 +411,7 @@ namespace Server.Engines.Despise
 
             foreach (Mobile m in eable)
             {
-                if (m is DespiseCreature || m is DespiseBoss)
+                if (m_Creature.CanSee(m) && m_Creature.InLOS(m) && (m is DespiseCreature || m is DespiseBoss))
                 {
                     DespiseCreature dc = m as DespiseCreature;
 
@@ -429,7 +445,7 @@ namespace Server.Engines.Despise
             {
                 p = m_Creature.Orb.GetAnchorActual();
 
-                if (m_Creature.InRange(p, range))
+                if (m_Creature.InRange(p, range + 1))
                 {
                     return false;
                 }

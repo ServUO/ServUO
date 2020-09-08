@@ -1117,6 +1117,11 @@ namespace Server.Items
 
             bonus += AosAttributes.GetValue(attacker, AosAttribute.AttackChance);
 
+            if (attacker is BaseCreature bc && !bc.Controlled && defender is BaseCreature bc2 && bc2.Controlled)
+            {
+                bonus = Math.Max(bonus, 45);
+            }
+
             //SA Gargoyle cap is 50, else 45
             bonus = Math.Min(attacker.Race == Race.Gargoyle ? 50 : 45, bonus);
 
@@ -1271,9 +1276,8 @@ namespace Server.Items
                     attacker.Send(new Swing(0, attacker, damageable));
                 }
 
-                if (attacker is BaseCreature)
+                if (attacker is BaseCreature bc)
                 {
-                    BaseCreature bc = (BaseCreature)attacker;
                     WeaponAbility ab = bc.TryGetWeaponAbility();
 
                     if (ab != null)

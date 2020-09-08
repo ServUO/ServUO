@@ -77,6 +77,26 @@ namespace Server.Mobiles
 
         public override bool Unprovokable => false;
         public override bool BardImmune => false;
+
+        [CommandProperty(AccessLevel.Counselor)]
+        public override int PhysicalResistance => Weakened ? base.PhysicalResistance / 2 : base.PhysicalResistance;
+
+        [CommandProperty(AccessLevel.Counselor)]
+        public override int FireResistance => Weakened ? base.FireResistance / 2 : base.FireResistance;
+
+        [CommandProperty(AccessLevel.Counselor)]
+        public override int ColdResistance => Weakened ? base.ColdResistance / 2 : base.ColdResistance;
+
+        [CommandProperty(AccessLevel.Counselor)]
+        public override int PoisonResistance => Weakened ? base.PoisonResistance / 2 : base.PoisonResistance;
+
+        [CommandProperty(AccessLevel.Counselor)]
+        public override int EnergyResistance => Weakened ? base.EnergyResistance / 2 : base.EnergyResistance;
+
+        private static readonly Rectangle2D _WeakBounds = new Rectangle2D(740, 466, 20, 20);
+
+        public bool Weakened => Map == Map.TerMur && _WeakBounds.Contains(this);
+
         public override int GetIdleSound()
         {
             return 1589;
