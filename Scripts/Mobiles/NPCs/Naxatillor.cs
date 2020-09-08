@@ -9,22 +9,14 @@ namespace Server.Engines.Quests
         public TheArisenQuest()
             : base()
         {
-            if (0.30 > Utility.RandomDouble())
-            {
-                AddObjective(new SlayObjective(typeof(GargoyleShade), "Gargoyle Shade", 10));
-            }
-            else if (0.50 > Utility.RandomDouble())
-            {
-                AddObjective(new SlayObjective(typeof(EffetePutridGargoyle), "Effete Putrid Gargoyle", 10));
-            }
-            else
-            {
-                AddObjective(new SlayObjective(typeof(EffeteUndeadGargoyle), "Effete Undead Gargoyle", 10));
-            }
+            AddObjective(new SlayObjective(typeof(GargoyleShade), "Gargoyle Shade", 10));
+            AddObjective(new SlayObjective(typeof(EffetePutridGargoyle), "Effete Putrid Gargoyle", 10));
+            AddObjective(new SlayObjective(typeof(EffeteUndeadGargoyle), "Effete Undead Gargoyle", 10));
 
             AddReward(new BaseReward(typeof(NecklaceofDiligence), 1113137));
         }
 
+        public override bool AllObjectives => false;
         public override bool DoneOnce => true;
 
         /* The Arisen */
@@ -42,6 +34,11 @@ namespace Server.Engines.Quests
         {
             Owner.SendLocalizedMessage(1112542, null, 0x23);
             Owner.PlaySound(CompleteSound);
+        }
+
+        public override bool CanOffer()
+        {
+            return QuestHelper.CheckDoneOnce(Owner, typeof(RumorsAboundQuest), null, false);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -74,9 +71,10 @@ namespace Server.Engines.Quests
         }
 
         public override Type[] Quests => new Type[]
-                {
-                    typeof(TheArisenQuest)
-                };
+        {
+            typeof(TheArisenQuest)
+        };
+
         public override void InitBody()
         {
             InitStats(100, 100, 25);

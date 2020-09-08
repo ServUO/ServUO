@@ -1,7 +1,6 @@
 using Server.Mobiles;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Server.Items
 {
@@ -330,7 +329,7 @@ namespace Server.Items
         public Beacon Beacon { get; set; }
 
         public BeaconRubble(Beacon beacon, int itemID)
-            : this (beacon, itemID, TimeSpan.Zero)
+            : this(beacon, itemID, TimeSpan.Zero)
         {
         }
 

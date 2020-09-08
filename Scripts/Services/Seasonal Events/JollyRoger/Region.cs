@@ -1,5 +1,4 @@
 using Server.Engines.JollyRoger;
-using Server.Engines.Points;
 using Server.Items;
 using Server.Network;
 using Server.Spells.Seventh;
@@ -84,7 +83,7 @@ namespace Server.Regions
             var virtue = Virtue.FirstOrDefault(x => x.Area.Contains(m.Location));
 
             var list = JollyRogerData.GetList(m);
-            
+
             if (list != null && list.Shrine != null)
             {
                 var s = list.Shrine.FirstOrDefault(x => x.Shrine == virtue.Shrine);

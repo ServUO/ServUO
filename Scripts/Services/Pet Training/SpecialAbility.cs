@@ -2178,7 +2178,8 @@ namespace Server.Mobiles
     /// This is the Succubus/Semidar type life drain. This is not a trainable pet ability
     /// </summary>
     public class LifeDrain : SpecialAbility
-    {        public override bool TriggerOnDoMeleeDamage => true;
+    {
+        public override bool TriggerOnDoMeleeDamage => true;
         public override bool TriggerOnGotMeleeDamage => true;
         public override bool NaturalAbility => true;
         public override TimeSpan CooldownDuration => TimeSpan.FromSeconds(1);

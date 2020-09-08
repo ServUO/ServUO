@@ -2,7 +2,6 @@ using Server.ContextMenus;
 using Server.Gumps;
 using Server.Multis;
 using Server.Network;
-using System;
 using System.Collections.Generic;
 
 namespace Server.Items
@@ -35,11 +34,11 @@ namespace Server.Items
                 m_Level = value;
             }
         }
-		
+
         public override bool DisplaysContent => false;// Do not display (x items, y stones)
-		
+
         public override bool IsDecoContainer => false;
-		
+
         public static bool ValidateDefault(Mobile from, BaseBoard board)
         {
             if (from.AccessLevel >= AccessLevel.GameMaster)

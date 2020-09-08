@@ -1,6 +1,5 @@
 using Server.Engines.Craft;
 using Server.Engines.JollyRoger;
-using Server.Engines.Points;
 
 namespace Server.Items
 {
@@ -11,9 +10,9 @@ namespace Server.Items
         public override bool IsArtifact => true;
 
         public Shrine _Shrine { get; set; }
-        
+
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Converted {get; set;}
+        public bool Converted { get; set; }
 
         [Constructable]
         public Tabard(Shrine shrine)
