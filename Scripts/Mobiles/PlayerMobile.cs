@@ -1495,6 +1495,11 @@ namespace Server.Mobiles
                     #endregion
                 }
 
+                if (from.Mount is VvVMount && !ViceVsVirtueSystem.IsVvV(from))
+                {
+                    from.Mount.Rider = null;
+                }
+
                 if (moved)
                 {
                     from.SendLocalizedMessage(500647); // Some equipment has been moved to your backpack.
