@@ -47,12 +47,12 @@ namespace Server.Spells.Fifth
 
                 if (context == null)
                 {
-                    int physiMod = 25 - (int)(targ.Skills[SkillName.Inscribe].Value / 20);
+                    int physiMod = 20 - (int)(targ.Skills[SkillName.Inscribe].Value / 20);
                     int otherMod = 10;
 
                     var mods = new ResistanceMod[5]
                     {
-                        new ResistanceMod(ResistanceType.Physical,  physiMod),
+                        new ResistanceMod(ResistanceType.Physical,  -physiMod),
                         new ResistanceMod(ResistanceType.Fire,      otherMod),
                         new ResistanceMod(ResistanceType.Cold,      otherMod),
                         new ResistanceMod(ResistanceType.Poison,    otherMod),
@@ -65,7 +65,7 @@ namespace Server.Spells.Fifth
                     for (int i = 0; i < mods.Length; ++i)
                         targ.AddResistanceMod(mods[i]);
 
-                    string buffFormat = String.Format("{0}\t+{1}\t+{1}\t+{1}\t+{1}\t{2}\t{3}", physiMod, otherMod, "-5", context.ReflectPool);
+                    string buffFormat = String.Format("-{0}\t+{1}\t+{1}\t+{1}\t+{1}\t{2}\t{3}", physiMod, otherMod, "-5", context.ReflectPool);
                     BuffInfo.AddBuff(targ, new BuffInfo(BuffIcon.MagicReflection, 1015197, 1149979, buffFormat, true));
                 }
                 else if (CooldownTimer.InCooldown(Caster))
@@ -79,7 +79,6 @@ namespace Server.Spells.Fifth
             }
 
             FinishSequence();
-
         }
 
         public static void Expire(MagicReflectContext context)
@@ -121,6 +120,8 @@ namespace Server.Spells.Fifth
 
             m_Table.Remove(context);
             BuffInfo.RemoveBuff(context.Caster, BuffIcon.MagicReflection);
+
+            context.Caster.Delta(MobileDelta.WeaponDamage);
         }
 
         public static MagicReflectContext GetContext(Mobile m)

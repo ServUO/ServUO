@@ -2490,7 +2490,7 @@ namespace Server.Items
 
             if (Quality == ItemQuality.Exceptional && !craftItem.ForceNonExceptional)
             {
-                DistributeExceptionalBonuses(from, (tool is BaseRunicTool ? 6 : 15)); // Not sure since when, but right now 15 points are added, not 14.
+                DistributeExceptionalBonuses(from, tool is BaseRunicTool); // Not sure since when, but right now 15 points are added, not 14.
             }
 
             if (tool is BaseRunicTool && !craftItem.ForceNonExceptional)
@@ -2514,36 +2514,42 @@ namespace Server.Items
             return quality;
         }
 
-        public virtual void DistributeExceptionalBonuses(Mobile from, int amount)
+        public virtual void DistributeExceptionalBonuses(Mobile from, bool runic)
         {
-            // Exceptional Bonus
-            for (int i = 0; i < amount; ++i)
+            var anvilEntry = CraftContext.GetAnvilEntry(from, false);
+
+            if (anvilEntry != null && anvilEntry.Ready)
             {
-                switch (Utility.Random(5))
+                var table = runic ? anvilEntry.Runic : anvilEntry.Exceptional;
+
+                foreach (var kvp in table)
                 {
-                    case 0: ++m_PhysicalBonus; break;
-                    case 1: ++m_FireBonus; break;
-                    case 2: ++m_ColdBonus; break;
-                    case 3: ++m_PoisonBonus; break;
-                    case 4: ++m_EnergyBonus; break;
+                    switch (kvp.Key)
+                    {
+                        case ResistanceType.Physical: m_PhysicalBonus += kvp.Value; break;
+                        case ResistanceType.Fire: m_FireBonus += kvp.Value; break;
+                        case ResistanceType.Cold: m_ColdBonus += kvp.Value; break;
+                        case ResistanceType.Poison: m_PoisonBonus += kvp.Value; break;
+                        case ResistanceType.Energy: m_EnergyBonus += kvp.Value; break;
+                    }
                 }
+
+                anvilEntry.Clear(from);
             }
-
-            // Arms Lore Bonus
-            if (from != null)
+            else
             {
-                double div = Siege.SiegeShard ? 12.5 : 20;
-                int bonus = (int)(from.Skills.ArmsLore.Value / div);
+                int amount = GetResistBonus(from, runic);
 
-                for (int i = 0; i < bonus; i++)
+                // Exceptional Bonus
+                for (int i = 0; i < amount; ++i)
                 {
                     switch (Utility.Random(5))
                     {
-                        case 0: m_PhysicalBonus++; break;
-                        case 1: m_FireBonus++; break;
-                        case 2: m_ColdBonus++; break;
-                        case 3: m_EnergyBonus++; break;
-                        case 4: m_PoisonBonus++; break;
+                        case 0: ++m_PhysicalBonus; break;
+                        case 1: ++m_FireBonus; break;
+                        case 2: ++m_ColdBonus; break;
+                        case 3: ++m_PoisonBonus; break;
+                        case 4: ++m_EnergyBonus; break;
                     }
                 }
 
@@ -2564,6 +2570,13 @@ namespace Server.Items
             }
 
             InvalidateProperties();
+        }
+
+        private int GetResistBonus(Mobile from, bool runic)
+        {
+            int amount = runic ? 6 : 15;
+
+            return Siege.SiegeShard ? amount + (int)(from.Skills[SkillName.ArmsLore].Value / 12.5) : amount + (int)(from.Skills[SkillName.ArmsLore].Value / 20.0);
         }
 
         protected virtual void ApplyResourceResistances(CraftResource oldResource)

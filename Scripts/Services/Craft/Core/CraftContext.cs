@@ -1,4 +1,6 @@
 using Server.Engines.Plants;
+using Server.Items;
+
 using System.Collections.Generic;
 using System.IO;
 
@@ -22,103 +24,18 @@ namespace Server.Engines.Craft
         public Mobile Owner { get; private set; }
         public CraftSystem System { get; private set; }
 
-        private readonly List<CraftItem> m_Items;
-        private int m_LastResourceIndex;
-        private int m_LastResourceIndex2;
-        private int m_LastGroupIndex;
-        private bool m_DoNotColor;
-        private CraftMarkOption m_MarkOption;
-        private CraftQuestOption m_QuestOption;
-        private int m_MakeTotal;
-        private PlantHue m_RequiredPlantHue;
+        public int LastResourceIndex { get; set; }
+        public int LastResourceIndex2 { get; set; }
+        public int LastGroupIndex { get; set; }
+        public bool DoNotColor { get; set; }
+        public CraftMarkOption MarkOption { get; set; }
+        public CraftQuestOption QuestOption { get; set; }
 
-        public List<CraftItem> Items => m_Items;
+        public List<CraftItem> Items { get; set; }
 
-        public int LastResourceIndex
-        {
-            get
-            {
-                return m_LastResourceIndex;
-            }
-            set
-            {
-                m_LastResourceIndex = value;
-            }
-        }
-        public int LastResourceIndex2
-        {
-            get
-            {
-                return m_LastResourceIndex2;
-            }
-            set
-            {
-                m_LastResourceIndex2 = value;
-            }
-        }
-        public int LastGroupIndex
-        {
-            get
-            {
-                return m_LastGroupIndex;
-            }
-            set
-            {
-                m_LastGroupIndex = value;
-            }
-        }
-        public bool DoNotColor
-        {
-            get
-            {
-                return m_DoNotColor;
-            }
-            set
-            {
-                m_DoNotColor = value;
-            }
-        }
-        public CraftMarkOption MarkOption
-        {
-            get
-            {
-                return m_MarkOption;
-            }
-            set
-            {
-                m_MarkOption = value;
-            }
-        }
-        public CraftQuestOption QuestOption
-        {
-            get
-            {
-                return m_QuestOption;
-            }
-            set
-            {
-                m_QuestOption = value;
-            }
-        }
+        public int MakeTotal { get; set; }
 
-        public int MakeTotal
-        {
-            get
-            {
-                return m_MakeTotal;
-            }
-            set
-            {
-                m_MakeTotal = value;
-            }
-        }
-
-        public PlantHue RequiredPlantHue
-        {
-            get { return m_RequiredPlantHue; }
-            set { m_RequiredPlantHue = value; }
-        }
-
+        public PlantHue RequiredPlantHue { get; set; }
         public PlantPigmentHue RequiredPigmentHue { get; set; }
 
         public CraftContext(Mobile owner, CraftSystem system)
@@ -126,13 +43,13 @@ namespace Server.Engines.Craft
             Owner = owner;
             System = system;
 
-            m_Items = new List<CraftItem>();
-            m_LastResourceIndex = -1;
-            m_LastResourceIndex2 = -1;
-            m_LastGroupIndex = -1;
+            Items = new List<CraftItem>();
+            LastResourceIndex = -1;
+            LastResourceIndex2 = -1;
+            LastGroupIndex = -1;
 
-            m_QuestOption = CraftQuestOption.NonQuestItem;
-            m_RequiredPlantHue = PlantHue.None;
+            QuestOption = CraftQuestOption.NonQuestItem;
+            RequiredPlantHue = PlantHue.None;
             RequiredPigmentHue = PlantPigmentHue.None;
 
             Contexts.Add(this);
@@ -142,8 +59,8 @@ namespace Server.Engines.Craft
         {
             get
             {
-                if (m_Items.Count > 0)
-                    return m_Items[0];
+                if (Items.Count > 0)
+                    return Items[0];
 
                 return null;
             }
@@ -151,12 +68,12 @@ namespace Server.Engines.Craft
 
         public void OnMade(CraftItem item)
         {
-            m_Items.Remove(item);
+            Items.Remove(item);
 
-            if (m_Items.Count == 10)
-                m_Items.RemoveAt(9);
+            if (Items.Count == 10)
+                Items.RemoveAt(9);
 
-            m_Items.Insert(0, item);
+            Items.Insert(0, item);
         }
 
         public virtual void Serialize(GenericWriter writer)
@@ -165,39 +82,37 @@ namespace Server.Engines.Craft
 
             writer.Write(Owner);
             writer.Write(GetSystemIndex(System));
-            writer.Write(m_LastResourceIndex);
-            writer.Write(m_LastResourceIndex2);
-            writer.Write(m_LastGroupIndex);
-            writer.Write(m_DoNotColor);
-            writer.Write((int)m_MarkOption);
-            writer.Write((int)m_QuestOption);
+            writer.Write(LastResourceIndex);
+            writer.Write(LastResourceIndex2);
+            writer.Write(LastGroupIndex);
+            writer.Write(DoNotColor);
+            writer.Write((int)MarkOption);
+            writer.Write((int)QuestOption);
 
-            writer.Write(m_MakeTotal);
+            writer.Write(MakeTotal);
         }
 
         public CraftContext(GenericReader reader)
         {
             int version = reader.ReadInt();
 
-            m_Items = new List<CraftItem>();
+            Items = new List<CraftItem>();
 
             Owner = reader.ReadMobile();
             int sysIndex = reader.ReadInt();
-            m_LastResourceIndex = reader.ReadInt();
-            m_LastResourceIndex2 = reader.ReadInt();
-            m_LastGroupIndex = reader.ReadInt();
-            m_DoNotColor = reader.ReadBool();
-            m_MarkOption = (CraftMarkOption)reader.ReadInt();
-            m_QuestOption = (CraftQuestOption)reader.ReadInt();
+            LastResourceIndex = reader.ReadInt();
+            LastResourceIndex2 = reader.ReadInt();
+            LastGroupIndex = reader.ReadInt();
+            DoNotColor = reader.ReadBool();
+            MarkOption = (CraftMarkOption)reader.ReadInt();
+            QuestOption = (CraftQuestOption)reader.ReadInt();
 
-            m_MakeTotal = reader.ReadInt();
-
+            MakeTotal = reader.ReadInt();
             System = GetCraftSystem(sysIndex);
 
             if (System != null && Owner != null)
             {
                 System.AddContext(Owner, this);
-                Contexts.Add(this);
             }
         }
 
@@ -224,6 +139,43 @@ namespace Server.Engines.Craft
         private static readonly string FilePath = Path.Combine("Saves", "CraftContext", "Contexts.bin");
 
         private static readonly List<CraftContext> Contexts = new List<CraftContext>();
+        private static readonly Dictionary<Mobile, AnvilOfArtifactsEntry> AnvilEntries = new Dictionary<Mobile, AnvilOfArtifactsEntry>();
+
+        public static AnvilOfArtifactsEntry GetAnvilEntry(Mobile m)
+        {
+            return GetAnvilEntry(m, true);
+        }
+
+        public static AnvilOfArtifactsEntry GetAnvilEntry(Mobile m, bool create)
+        {
+            if (AnvilEntries.ContainsKey(m))
+            {
+                return AnvilEntries[m];
+            }
+
+            if (create)
+            {
+                var entry = new AnvilOfArtifactsEntry();
+
+                AnvilEntries[m] = entry;
+
+                return entry;
+            }
+
+            return null;
+        }
+
+        public static bool IsAnvilReady(Mobile m)
+        {
+            var entry = CraftContext.GetAnvilEntry(m, false);
+
+            if (entry != null)
+            {
+                return entry.Ready;
+            }
+
+            return false;
+        }
 
         public static CraftSystem[] Systems => _Systems;
         private static readonly CraftSystem[] _Systems = new CraftSystem[11];
@@ -252,7 +204,14 @@ namespace Server.Engines.Craft
                 FilePath,
                 writer =>
                 {
-                    writer.Write(0); // version
+                    writer.Write(1); // version
+
+                    writer.Write(AnvilEntries.Count);
+                    foreach (var kvp in AnvilEntries)
+                    {
+                        writer.Write(kvp.Key);
+                        kvp.Value.Serialize(writer);
+                    }
 
                     writer.Write(Contexts.Count);
                     Contexts.ForEach(c => c.Serialize(writer));
@@ -266,14 +225,142 @@ namespace Server.Engines.Craft
                 reader =>
                 {
                     int version = reader.ReadInt();
+                    int count = 0;
 
-                    int count = reader.ReadInt();
-                    for (int i = 0; i < count; i++)
+                    switch (version)
                     {
-                        new CraftContext(reader);
+                        case 1:
+                            count = reader.ReadInt();
+                            for (int i = 0; i < count; i++)
+                            {
+                                var m = reader.ReadMobile();
+
+                                var anvilEntry = new AnvilOfArtifactsEntry();
+                                anvilEntry.Deserialize(reader);
+
+                                if (m != null)
+                                {
+                                    AnvilEntries[m] = anvilEntry;
+                                }
+                            }
+                            goto case 0;
+                        case 0:
+
+                            count = reader.ReadInt();
+                            for (int i = 0; i < count; i++)
+                            {
+                                var context = new CraftContext(reader);
+                                Contexts.Add(context);
+                            }
+                            break;
                     }
                 });
         }
         #endregion
+    }
+
+    public class AnvilOfArtifactsEntry
+    {
+        private AnvilofArtifactsAddon _Anvil;
+
+        public Dictionary<ResistanceType, int> Exceptional { get; set; }
+        public Dictionary<ResistanceType, int> Runic { get; set; }
+        public AnvilofArtifactsAddon Anvil
+        {
+            get { return _Anvil; }
+            set
+            {
+                _Anvil = value;
+
+                if (_Anvil != null)
+                {
+                    Ready = true;
+                }
+                else
+                {
+                    Ready = false;
+                }
+            }
+        }
+
+        public bool Ready { get; set; }
+
+        public AnvilOfArtifactsEntry()
+        {
+            Exceptional = CreateArray();
+            Runic = CreateArray();
+
+            Ready = false;
+        }
+
+        public void Clear(Mobile m)
+        {
+            var gump = m.FindGump<AnvilofArtifactsGump>();
+
+            if (gump != null)
+            {
+                gump.Refresh();
+            }
+
+            Anvil = null;
+        }
+
+        public void Serialize(GenericWriter writer)
+        {
+            writer.Write(0);
+
+            writer.Write(Exceptional.Count);
+
+            foreach (var kvp in Exceptional)
+            {
+                writer.Write((int)kvp.Key);
+                writer.Write(kvp.Value);
+            }
+
+            writer.Write(Runic.Count);
+
+            foreach (var kvp in Runic)
+            {
+                writer.Write((int)kvp.Key);
+                writer.Write(kvp.Value);
+            }
+
+            writer.Write(Ready);
+            writer.WriteItem<AnvilofArtifactsAddon>(_Anvil);
+        }
+
+        public void Deserialize(GenericReader reader)
+        {
+            reader.ReadInt();
+
+            var count = reader.ReadInt();
+
+            for (int i = 0; i < count; i++)
+            {
+                Exceptional[(ResistanceType)reader.ReadInt()] = reader.ReadInt();
+            }
+
+            count = reader.ReadInt();
+
+            for (int i = 0; i < count; i++)
+            {
+                Runic[(ResistanceType)reader.ReadInt()] = reader.ReadInt();
+            }
+
+            Ready = reader.ReadBool();
+            _Anvil = reader.ReadItem<AnvilofArtifactsAddon>();
+        }
+
+        public static Dictionary<ResistanceType, int> CreateArray()
+        {
+            return new Dictionary<ResistanceType, int>
+                {
+                    { ResistanceType.Physical, 0 },
+                    { ResistanceType.Fire, 0 },
+                    { ResistanceType.Cold, 0 },
+                    { ResistanceType.Poison, 0 },
+                    { ResistanceType.Energy, 0 },
+                };
+        }
     }
 }

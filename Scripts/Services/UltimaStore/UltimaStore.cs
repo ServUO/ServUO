@@ -79,6 +79,7 @@ namespace Server.Engines.UOStore
         {
             // Featured
             StoreCategory cat = StoreCategory.Featured;
+            Register<AnvilofArtifactsDeed>(1159437, 1159466, 0xA108, 0, 0, 1000, cat);
             Register<VirtueShield>(1109616, 1158384, 0x7818, 0, 0, 1500, cat);
             Register<SoulstoneToken>(1158404, 1158405, 0x2A93, 0, 2598, 1000, cat, ConstructSoulstone);
             //Register<DeluxeStarterPackToken>(1158368, 1158369, 0, 0x9CCB, 0, 2000, cat);

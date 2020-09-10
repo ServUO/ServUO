@@ -245,6 +245,8 @@ namespace Server.Engines.Craft
                               m_CraftItem.Resources.GetAt(m_CraftItem.Resources.Count - 1).ItemType == typeofBlankScroll &&
                               typeofSpellScroll.IsAssignableFrom(m_CraftItem.ItemType);
 
+            bool anvilOfArtifactCraft = m_CraftItem.IsAnvilOfArtifactValid(m_From, m_CraftSystem);
+
             for (int i = 0; i < m_CraftItem.Resources.Count - (cropScroll ? 1 : 0) && i < 4; i++)
             {
                 Type type;
@@ -284,7 +286,14 @@ namespace Server.Engines.Craft
                 else
                     AddLabel(170, 219 + (i * 20), LabelHue, nameString);
 
-                AddLabel(430, 219 + (i * 20), LabelHue, craftResource.Amount.ToString());
+                var amount = craftResource.Amount;
+
+                if (anvilOfArtifactCraft)
+                {
+                    amount *= 10;
+                }
+
+                AddLabel(430, 219 + (i * 20), LabelHue, amount.ToString());
             }
 
             if (m_CraftItem.NameNumber == 1041267) // runebook

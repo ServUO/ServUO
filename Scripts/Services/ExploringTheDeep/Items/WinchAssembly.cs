@@ -102,6 +102,16 @@ namespace Server.Items
         {
         }
 
+        public override void StopTimers()
+        {
+            base.StopTimers();
+
+            if (Hatch != null)
+            {
+                Hatch.Reset();  
+            }
+        }
+
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
@@ -384,10 +394,14 @@ namespace Server.Items
                 if (Z == 1)
                 {
                     Hue = 1;
-                    m_Timer = new InternalTimer(this);
-                    m_Timer.Start();
                 }
             }
+        }
+
+        public void Reset()
+        {
+            Z = 10;
+            Hue = 2969;
         }
 
         public override void OnAfterDelete()
@@ -398,23 +412,6 @@ namespace Server.Items
             m_Timer = null;
 
             base.OnAfterDelete();
-        }
-
-        public class InternalTimer : Timer
-        {
-            public Hatch Hatch;
-
-            public InternalTimer(Hatch hatch) : base(TimeSpan.FromMinutes(30.0))
-            {
-                Priority = TimerPriority.OneSecond;
-                Hatch = hatch;
-            }
-
-            protected override void OnTick()
-            {
-                Hatch.Z = 10;
-                Hatch.Hue = 2969;
-            }
         }
 
         public override void Serialize(GenericWriter writer)
@@ -434,11 +431,6 @@ namespace Server.Items
                 {
                     WinchAssembly.GenWinchAssembly(null);
                 });
-            }
-            else
-            {
-                m_Timer = new InternalTimer(this);
-                m_Timer.Start();
             }
         }
     }
