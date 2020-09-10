@@ -979,7 +979,7 @@ namespace Server.Engines.Craft
                     types[i] = new[] { baseType };
                 }
 
-                amounts[i] = craftRes.Amount;
+                amounts[i] = IsAnvilOfArtifactValid(from, craftSystem)  ? craftRes.Amount * 10 : craftRes.Amount;
 
                 // For stackable items that can ben crafted more than one at a time
                 if (UseAllRes)
@@ -1256,6 +1256,19 @@ namespace Server.Engines.Craft
             }
 
             return true;
+        }
+
+        public bool IsAnvilOfArtifactValid(Mobile from, CraftSystem system)
+        {
+            if (CraftContext.IsAnvilReady(from) && ItemType.IsSubclassOf(typeof(BaseArmor)) && !ItemType.IsSubclassOf(typeof(BaseShield)))
+            {
+                bool allRequiredSkills = true;
+                double chance = GetSuccessChance(from, null, system, false, ref allRequiredSkills);
+
+                return GetExceptionalChance(system, chance, from) > 0.0;
+            }
+
+            return false;
         }
 
         public double GetExceptionalChance(CraftSystem system, double chance, Mobile from)

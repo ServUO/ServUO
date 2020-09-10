@@ -1009,12 +1009,16 @@ namespace Server.Mobiles
             if (type != ResistanceType.Physical && 60 < max && CurseSpell.UnderEffect(this))
             {
                 max -= 10;
-                //max = 60;
             }
 
             if ((type == ResistanceType.Fire || type == ResistanceType.Poison) && CorpseSkinSpell.IsUnderEffects(this))
             {
                 max = CorpseSkinSpell.GetResistMalus(this);
+            }
+
+            if (type == ResistanceType.Physical && MagicReflectSpell.HasReflect(this))
+            {
+                max -= 5;
             }
 
             return max;
