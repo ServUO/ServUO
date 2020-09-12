@@ -204,6 +204,8 @@ namespace Server.Spells.Mysticism
         {
             if (Table != null && Table.ContainsKey(caster))
             {
+                var weapon = Table[caster].Weapon;
+
                 Table[caster].Stop();
                 Table[caster] = null;
                 Table.Remove(caster);
@@ -212,6 +214,13 @@ namespace Server.Spells.Mysticism
                 caster.PlaySound(0x1E6);
 
                 Enhancement.RemoveMobile(caster);
+
+                if (weapon != null)
+                {
+                    weapon.InvalidateProperties();
+                }
+
+                BuffInfo.RemoveBuff(caster, BuffIcon.Enchant);
             }
         }
 
