@@ -205,6 +205,11 @@ namespace Server.Items
 
         public bool KeysValidated()
         {
+            if (KeyValidation == null)
+            {
+                return false;
+            }
+
             return KeyValidation.Count(x => x.Active) == Keys.Length;
         }
 
