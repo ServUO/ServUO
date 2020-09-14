@@ -14,7 +14,7 @@ namespace Server.Items
         NotInHouse,
         DoorTooClose,
         NoWall,
-        DoorsNotClosed
+        OwnerNotInHouse
     }
 
     public interface IAddon : IEntity, IChopable
@@ -80,7 +80,6 @@ namespace Server.Items
         }
 
         public virtual bool RetainDeedHue => Hue != 0 && CraftResources.GetHue(Resource) != Hue;
-
         public virtual bool RetainComponentHue => false;
 
         public virtual void OnChop(Mobile from)
@@ -172,23 +171,42 @@ namespace Server.Items
         public virtual AddonFitResult CouldFit(IPoint3D p, Map map, Mobile from, ref BaseHouse house)
         {
             if (Deleted)
+            {
                 return AddonFitResult.Blocked;
+            }
 
             foreach (AddonComponent c in m_Components)
             {
                 Point3D p3D = new Point3D(p.X + c.Offset.X, p.Y + c.Offset.Y, p.Z + c.Offset.Z);
 
                 if (!map.CanFit(p3D.X, p3D.Y, p3D.Z, Math.Max(1, c.ItemData.Height), false, true, (c.Z == 0), true))
+                {
                     return AddonFitResult.Blocked;
+                }
+
                 if (!CheckHouse(from, p3D, map, c.ItemData.Height, ref house))
+                {
                     return AddonFitResult.NotInHouse;
+                }
+
+                if (from != null)
+                {
+                    var fromHouse = BaseHouse.FindHouseAt(from.Location, map, 16);
+
+                    if (fromHouse == null || house != fromHouse)
+                    {
+                        return AddonFitResult.OwnerNotInHouse;
+                    }
+                }
 
                 if (c.NeedsWall)
                 {
                     Point3D wall = c.WallPosition;
 
                     if (!IsWall(p3D.X + wall.X, p3D.Y + wall.Y, p3D.Z + wall.Z, map))
+                    {
                         return AddonFitResult.NoWall;
+                    }
                 }
             }
 
@@ -223,7 +241,9 @@ namespace Server.Items
             house = BaseHouse.FindHouseAt(p, map, height);
 
             if (house == null || (from != null && !house.IsCoOwner(from)))
+            {
                 return false;
+            }
 
             return true;
         }

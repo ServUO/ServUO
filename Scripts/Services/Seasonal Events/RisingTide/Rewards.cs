@@ -181,7 +181,7 @@ namespace Server.Items
 
         private void FlyOnTick()
         {
-            if (_FlyEnd < DateTime.UtcNow)
+            if (_FlyEnd < DateTime.UtcNow && _LastShoulder != null)
             {
                 Movable = true;
                 ItemID = 0xA2CA;

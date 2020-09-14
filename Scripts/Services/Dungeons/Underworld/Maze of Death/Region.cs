@@ -2,6 +2,8 @@ using Server.Gumps;
 using Server.Items;
 using Server.Network;
 using Server.Targeting;
+using Server.Mobiles;
+
 using System;
 using System.Collections.Generic;
 
@@ -129,27 +131,24 @@ namespace Server.Regions
 
         public override void OnEnter(Mobile m)
         {
-            if (m.Alive && (m_FrontEntrance.Contains(m.Location) || m_RearEntrance.Contains(m.Location)))
+            if (m is PlayerMobile pm && pm.Alive && (m_FrontEntrance.Contains(pm.Location) || m_RearEntrance.Contains(pm.Location)))
             {
-                m.Frozen = true;
+                pm.Frozen = true;
+                pm.LocalOverheadMessage(MessageType.Regular, 33, 1113580); // You are filled with a sense of dread and impending doom!
 
-                m.LocalOverheadMessage(MessageType.Regular, 33, 1113580); // You are filled with a sense of dread and impending doom!
-
-                Timer.DelayCall(TimeSpan.FromSeconds(2.0), new TimerCallback(
-                    delegate
+                Timer.DelayCall(TimeSpan.FromSeconds(2.0), () =>
+                {
+                    if (pm.Backpack != null && pm.Backpack.FindItemByType<GoldenCompass>(false) != null)
                     {
-                        if (m.Backpack.FindItemByType<GoldenCompass>(false) != null)
-                        {
-                            m.LocalOverheadMessage(MessageType.Regular, 946, 1113582); // I better proceed with caution.
-                        }
-                        else
-                        {
-                            m.LocalOverheadMessage(MessageType.Regular, 946, 1113581); // I might need something to help me navigate through this.
-                        }
-
-                        Timer.DelayCall(TimeSpan.FromSeconds(2.0), delegate { m.Frozen = false; });
+                        pm.LocalOverheadMessage(MessageType.Regular, 946, 1113582); // I better proceed with caution.
                     }
-                ));
+                    else
+                    {
+                        pm.LocalOverheadMessage(MessageType.Regular, 946, 1113581); // I might need something to help me navigate through this.
+                    }
+
+                    Timer.DelayCall(TimeSpan.FromSeconds(2.0), () => { pm.Frozen = false; });
+                });
             }
         }
 

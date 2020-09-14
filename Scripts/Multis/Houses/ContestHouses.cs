@@ -234,7 +234,7 @@ namespace Server.Multis
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             HouseType = (ContestHouseType)reader.ReadInt();
 
@@ -254,7 +254,7 @@ namespace Server.Multis
 
     public class TrinsicKeep : BaseContestHouse
     {
-        public static Rectangle2D[] AreaArray = new Rectangle2D[]
+        private static readonly Rectangle2D[] AreaArray = new Rectangle2D[]
         {
             new Rectangle2D(-11, -11, 23, 23), new Rectangle2D(-10, 13, 6, 1),
             new Rectangle2D(-2, 13, 6, 1), new Rectangle2D(6, 13, 7, 1)
@@ -282,13 +282,15 @@ namespace Server.Multis
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class GothicRoseCastle : BaseContestHouse
     {
-        public static Rectangle2D[] AreaArray = new Rectangle2D[]
+        public override Rectangle2D[] Area => AreaArray;
+
+        private static readonly Rectangle2D[] AreaArray = new Rectangle2D[]
         {
             new Rectangle2D(-15, -15, 31, 31),
             new Rectangle2D(-14, 16, 11, 1),
@@ -316,7 +318,7 @@ namespace Server.Multis
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -342,7 +344,7 @@ namespace Server.Multis
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -368,7 +370,7 @@ namespace Server.Multis
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -394,13 +396,13 @@ namespace Server.Multis
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class FeudalCastle : BaseContestHouse
     {
-        public static Rectangle2D[] AreaArray = new Rectangle2D[]
+        private static readonly Rectangle2D[] AreaArray = new Rectangle2D[]
         {
             new Rectangle2D(-15, -15, 31, 31),
             new Rectangle2D(5, 16, 1, 1),
@@ -430,7 +432,7 @@ namespace Server.Multis
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -456,18 +458,13 @@ namespace Server.Multis
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                AddTeleporters(0x1822, new Point3D(4, 3, 47), new Point3D(11, -10, 67));
-            }
+            reader.ReadInt();
         }
     }
 
     public class TraditionalKeep : BaseContestHouse
     {
-        public static Rectangle2D[] AreaArray = new Rectangle2D[]
+        private static readonly Rectangle2D[] AreaArray = new Rectangle2D[]
         {
             new Rectangle2D(-11, -11, 23, 23),
             new Rectangle2D(-10, 13, 6, 1),
@@ -497,7 +494,7 @@ namespace Server.Multis
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -523,7 +520,7 @@ namespace Server.Multis
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -549,7 +546,7 @@ namespace Server.Multis
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -577,13 +574,7 @@ namespace Server.Multis
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                AddTeleporters(0x1820, new Point3D(9, 5, 7), new Point3D(7, -7, 47));
-                AddTeleporters(0x181E, new Point3D(8, 5, 7), new Point3D(9, 5, 27));
-            }
+            reader.ReadInt();
         }
     }
 
@@ -609,7 +600,7 @@ namespace Server.Multis
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -635,7 +626,7 @@ namespace Server.Multis
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -661,7 +652,7 @@ namespace Server.Multis
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -687,13 +678,13 @@ namespace Server.Multis
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class OkinawaSweetDreamCastle : BaseContestHouse
     {
-        public static Rectangle2D[] AreaArray = new Rectangle2D[]
+        private static readonly Rectangle2D[] AreaArray = new Rectangle2D[]
         {
             new Rectangle2D(-15, -15, 31, 31),
             new Rectangle2D(-14, 16, 6, 1),
@@ -723,7 +714,7 @@ namespace Server.Multis
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -749,13 +740,13 @@ namespace Server.Multis
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class GrimswindSisters : BaseContestHouse
     {
-        public static Rectangle2D[] AreaArray = new Rectangle2D[]
+        private static readonly Rectangle2D[] AreaArray = new Rectangle2D[]
         {
             new Rectangle2D(-15, -15, 31, 31),
             new Rectangle2D(-14, 16, 9, 1),
@@ -785,7 +776,441 @@ namespace Server.Multis
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
+        }
+    }
+
+    public class FortressOfLestat : BaseContestHouse
+    {
+        public FortressOfLestat(Mobile owner)
+            : base(ContestHouseType.Keep, 0x1490, owner, 2113, 18)
+        {
+            SetSign(-11, 13, 7, true);
+        }
+
+        public FortressOfLestat(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);//version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
+
+    public class CitadelOfTheFarEast : BaseContestHouse
+    {
+        public CitadelOfTheFarEast(Mobile owner)
+            : base(ContestHouseType.Keep, 0x1491, owner, 2113, 18)
+        {
+            SetSign(-11, 13, 7, true);
+        }
+
+        public CitadelOfTheFarEast(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);//version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
+
+    public class KeepIncarcerated : BaseContestHouse
+    {
+        private static readonly Rectangle2D[] AreaArray = new Rectangle2D[]
+        {
+            new Rectangle2D(-11, -11, 23, 23), new Rectangle2D(-10, 13, 4, 1),
+            new Rectangle2D(-3, 13, 9, 1), new Rectangle2D(9, 13, 4, 1)
+        };
+
+        public override Rectangle2D[] Area => AreaArray;
+
+        public KeepIncarcerated(Mobile owner)
+            : base(ContestHouseType.Keep, 0x1492, owner, 2113, 18)
+        {
+            SetSign(-11, 13, 7, true);
+        }
+
+        public KeepIncarcerated(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);//version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
+
+    public class SallyTreesRefurbishedKeep : BaseContestHouse
+    {
+        public SallyTreesRefurbishedKeep(Mobile owner)
+            : base(ContestHouseType.Keep, 0x1493, owner, 2113, 18)
+        {
+            SetSign(-11, 13, 7, true);
+        }
+
+        public SallyTreesRefurbishedKeep(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);//version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
+
+    public class DesertRose : BaseContestHouse
+    {
+        private static readonly Rectangle2D[] AreaArray = new Rectangle2D[]
+        {
+            new Rectangle2D(-11, -11, 23, 23), new Rectangle2D(-7, 13, 11, 1),
+        };
+
+        public override Rectangle2D[] Area => AreaArray;
+
+        public DesertRose(Mobile owner)
+            : base(ContestHouseType.Keep, 0x1494, owner, 2113, 18)
+        {
+            SetSign(-11, 13, 7, true);
+        }
+
+        public DesertRose(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);//version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
+
+    public class TheCloversKeep : BaseContestHouse
+    {
+        private static readonly Rectangle2D[] AreaArray = new Rectangle2D[]
+        {
+            new Rectangle2D(-11, -11, 23, 23), new Rectangle2D(-8, 13, 2, 1),
+            new Rectangle2D(-4, 13, 10, 1), new Rectangle2D(8, 13, 2, 1)
+        };
+
+        public override Rectangle2D[] Area => AreaArray;
+
+        public TheCloversKeep(Mobile owner)
+            : base(ContestHouseType.Keep, 0x1495, owner, 2113, 18)
+        {
+            SetSign(-11, 13, 7, false);
+        }
+
+        public TheCloversKeep(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);//version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
+
+    public class TheSorceresCastle : BaseContestHouse
+    {
+        public TheSorceresCastle(Mobile owner)
+            : base(ContestHouseType.Castle, 0x1496, owner, 3281, 28)
+        {
+            SetSign(-15, 16, 7, true);
+        }
+
+        public TheSorceresCastle(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);//version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
+
+    public class TheCastleCascade : BaseContestHouse
+    {
+        public TheCastleCascade(Mobile owner)
+            : base(ContestHouseType.Castle, 0x1497, owner, 3281, 28)
+        {
+            SetSign(-15, 16, 7, false);
+        }
+
+        public TheCastleCascade(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);//version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
+
+    public class TheHouseBuiltOnTheRuins : BaseContestHouse
+    {
+        private static readonly Rectangle2D[] AreaArray = new Rectangle2D[]
+        {
+            new Rectangle2D(-15, -15, 31, 31),
+            new Rectangle2D(-13, 16, 3, 1),
+            new Rectangle2D(-7, 16, 3, 1),
+            new Rectangle2D(2, 16, 3, 1),
+             new Rectangle2D(10, 16, 3, 1)
+        };
+
+        public override Rectangle2D[] Area => AreaArray;
+
+        public TheHouseBuiltOnTheRuins(Mobile owner)
+            : base(ContestHouseType.Castle, 0x1498, owner, 3281, 28)
+        {
+            SetSign(-15, 16, 7, true);
+        }
+
+        public TheHouseBuiltOnTheRuins(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);//version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
+
+    public class TheSandstoneFortressOfGrand : BaseContestHouse
+    {
+        public TheSandstoneFortressOfGrand(Mobile owner)
+            : base(ContestHouseType.Castle, 0x1499, owner, 3281, 28)
+        {
+            SetSign(-15, 16, 7, false);
+        }
+
+        public TheSandstoneFortressOfGrand(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);//version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
+
+    public class TheDragonstoneCastle : BaseContestHouse
+    {
+        public TheDragonstoneCastle(Mobile owner)
+            : base(ContestHouseType.Castle, 0x149A, owner, 3281, 28)
+        {
+            SetSign(-15, 16, 7, true);
+        }
+
+        public TheDragonstoneCastle(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);//version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
+
+    public class TheTerraceGardens : BaseContestHouse
+    {
+        private static readonly Rectangle2D[] AreaArray = new Rectangle2D[]
+        {
+            new Rectangle2D(-15, -15, 31, 31),
+            new Rectangle2D(-11, 16, 4, 1),
+            new Rectangle2D(-3, 16, 8, 1),
+            new Rectangle2D(9, 16, 3, 1),
+        };
+
+        public override Rectangle2D[] Area => AreaArray;
+
+        public TheTerraceGardens(Mobile owner)
+            : base(ContestHouseType.Castle, 0x149B, owner, 3281, 28)
+        {
+            SetSign(-15, 16, 7, false);
+        }
+
+        public TheTerraceGardens(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);//version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
+
+    public class TheKeepCalmAndCarryOnKeep : BaseContestHouse
+    {
+        public TheKeepCalmAndCarryOnKeep(Mobile owner)
+            : base(ContestHouseType.Keep, 0x149C, owner, 2113, 18)
+        {
+            SetSign(-11, 13, 7, true);
+        }
+
+        public TheKeepCalmAndCarryOnKeep(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);//version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
+
+    public class TheRavenloftKeep : BaseContestHouse
+    {
+        public TheRavenloftKeep(Mobile owner)
+            : base(ContestHouseType.Keep, 0x149D, owner, 2113, 18)
+        {
+            SetSign(-11, 13, 7, false);
+        }
+
+        public TheRavenloftKeep(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);//version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
+
+    public class TheQueensRetreatKeep : BaseContestHouse
+    {
+        public TheQueensRetreatKeep(Mobile owner)
+            : base(ContestHouseType.Keep, 0x149E, owner, 2113, 18)
+        {
+            SetSign(-11, 13, 7, true);
+        }
+
+        public TheQueensRetreatKeep(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);//version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
         }
     }
 }

@@ -424,8 +424,7 @@ namespace Server.Engines.Craft
 
         private static readonly Type[] m_MarkableTable =
         {
-            typeof(BlueDiamondRing), typeof(BrilliantAmberBracelet), typeof(DarkSapphireBracelet), typeof(EcruCitrineRing),
-            typeof(FireRubyBracelet), typeof(PerfectEmeraldRing), typeof(TurqouiseRing), typeof(WhitePearlBracelet),
+            typeof(BaseBracelet), typeof(BaseRing),
             typeof(BaseContainer), typeof(CraftableFurniture),
 
             typeof(BaseArmor), typeof(BaseWeapon), typeof(BaseClothing), typeof(BaseInstrument), typeof(BaseTool),

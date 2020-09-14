@@ -14,6 +14,7 @@ namespace Server.Items
             set { m_Quest = value; }
         }
 
+        [CommandProperty(AccessLevel.GameMaster)]
         public BaseGalleon Galleon
         {
             get { return m_Galleon; }

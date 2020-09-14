@@ -185,27 +185,45 @@ namespace Server.Items
                         if (!m_Deed.ExcludeDeedHue)
                         {
                             if (addon.RetainDeedHue || (m_Deed.Hue != 0 && CraftResources.GetHue(m_Deed.Resource) != m_Deed.Hue))
+                            {
                                 addon.Hue = m_Deed.Hue;
+                            }
                         }
 
                         addon.MoveToWorld(new Point3D(p), map);
 
                         if (house != null)
+                        {
                             house.Addons[addon] = from;
+                        }
 
                         if (galleon != null)
+                        {
                             galleon.AddAddon(addon);
+                        }
 
                         m_Deed.DeleteDeed();
                     }
                     else if (res == AddonFitResult.Blocked)
+                    {
                         from.SendLocalizedMessage(500269); // You cannot build that there.
+                    }
                     else if (res == AddonFitResult.NotInHouse)
+                    {
                         from.SendLocalizedMessage(500274); // You can only place this in a house that you own!
+                    }
+                    else if (res == AddonFitResult.OwnerNotInHouse)
+                    {
+                        from.SendLocalizedMessage(1153770); // The deed is not in the same house as you.
+                    }
                     else if (res == AddonFitResult.DoorTooClose)
+                    {
                         from.SendLocalizedMessage(500271); // You cannot build near the door.
+                    }
                     else if (res == AddonFitResult.NoWall)
+                    {
                         from.SendLocalizedMessage(500268); // This object needs to be mounted on something.
+                    }
 
                     if (res != AddonFitResult.Valid)
                     {
