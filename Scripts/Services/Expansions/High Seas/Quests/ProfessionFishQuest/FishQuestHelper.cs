@@ -225,7 +225,7 @@ namespace Server.Engines.Quests
                         object label = FishInfo.GetFishLabel(bait.Index);
 
                         if (label is int)
-                            from.SendLocalizedMessage(1149588, String.Format("#{0}\t", (int)label)); //You receive bait to catch ~1_val~
+                            from.SendLocalizedMessage(1149588, string.Format("#{0}\t", (int)label)); //You receive bait to catch ~1_val~
                         else
                             from.SendLocalizedMessage(1149588, (string)label);      //You receive bait to catch ~1_val~
 

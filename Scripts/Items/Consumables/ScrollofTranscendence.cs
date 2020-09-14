@@ -13,7 +13,7 @@ namespace Server.Items
         *level in that skill by the amount of points displayed on the scroll.
         *As you may not gain skills beyond your maximum skill cap, any excess points will be lost.*/
 
-        public override string DefaultTitle => String.Format("<basefont color=#FFFFFF>Scroll of Transcendence ({0} Skill):</basefont>", Value);
+        public override string DefaultTitle => string.Format("<basefont color=#FFFFFF>Scroll of Transcendence ({0} Skill):</basefont>", Value);
 
         public static ScrollOfTranscendence CreateRandom(int min, int max)
         {
@@ -49,7 +49,7 @@ namespace Server.Items
 
             list.Add(1076759, "{0}\t{1:0.0} Skill Points", GetName(), Value);
 
-            if (!String.IsNullOrEmpty(Account))
+            if (!string.IsNullOrEmpty(Account))
                 list.Add(1155526); // Account Bound
         }
 
@@ -71,7 +71,7 @@ namespace Server.Items
             }
             #endregion
 
-            if (!String.IsNullOrEmpty(Account))
+            if (!string.IsNullOrEmpty(Account))
             {
                 Account acct = pm.Account as Account;
 

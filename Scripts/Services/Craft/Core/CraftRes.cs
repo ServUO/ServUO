@@ -42,7 +42,7 @@ namespace Server.Engines.Craft
         {
             if (m_MessageNumber > 0)
                 from.SendLocalizedMessage(m_MessageNumber);
-            else if (!String.IsNullOrEmpty(m_MessageString))
+            else if (!string.IsNullOrEmpty(m_MessageString))
                 from.SendMessage(m_MessageString);
             else
                 from.SendLocalizedMessage(502925); // You don't have the resources required to make that item.

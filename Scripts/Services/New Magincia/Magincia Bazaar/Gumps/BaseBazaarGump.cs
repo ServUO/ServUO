@@ -40,7 +40,7 @@ namespace Server.Engines.NewMagincia
 
         protected string Color(string str, int color)
         {
-            return String.Format("<BASEFONT COLOR=#{0:X6}>{1}</BASEFONT>", color, str);
+            return string.Format("<BASEFONT COLOR=#{0:X6}>{1}</BASEFONT>", color, str);
         }
 
         protected string FormatAmt(int amount)
@@ -52,22 +52,22 @@ namespace Server.Engines.NewMagincia
 
         protected string FormatStallName(string str)
         {
-            return String.Format("<DIV ALIGN=CENTER><i>{0}</i></DIV>", str);
+            return string.Format("<DIV ALIGN=CENTER><i>{0}</i></DIV>", str);
         }
 
         protected string FormatBrokerName(string str)
         {
-            return String.Format("<DIV ALIGN=CENTER>{0}</DIV>", str);
+            return string.Format("<DIV ALIGN=CENTER>{0}</DIV>", str);
         }
 
         protected string AlignRight(string str)
         {
-            return String.Format("<DIV ALIGN=RIGHT>{0}</DIV>", str);
+            return string.Format("<DIV ALIGN=RIGHT>{0}</DIV>", str);
         }
 
         protected string AlignLeft(string str)
         {
-            return String.Format("<DIV ALIGN=LEFT>{0}</DIV>", str);
+            return string.Format("<DIV ALIGN=LEFT>{0}</DIV>", str);
         }
     }
 }

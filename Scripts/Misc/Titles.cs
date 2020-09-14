@@ -192,14 +192,14 @@ namespace Server.Misc
 
                         if (karma <= ke.m_Karma || j == (karmaEntries.Length - 1))
                         {
-                            return String.Format(ke.m_Title, beheld.Name, beheld.Female ? "Lady" : "Lord");
+                            return string.Format(ke.m_Title, beheld.Name, beheld.Female ? "Lady" : "Lord");
                         }
                     }
 
-                    return String.Empty;
+                    return string.Empty;
                 }
             }
-            return String.Empty;
+            return string.Empty;
         }
 
         public static string ComputeTitle(Mobile beholder, Mobile beheld)
@@ -246,7 +246,7 @@ namespace Server.Misc
                 if (mob.Female && skillTitle.EndsWith("man"))
                     skillTitle = skillTitle.Substring(0, skillTitle.Length - 3) + "woman";
 
-                return String.Concat(skillLevel, " ", skillTitle);
+                return string.Concat(skillLevel, " ", skillTitle);
             }
 
             return null;
@@ -262,7 +262,7 @@ namespace Server.Misc
                 if (mob.Female && skillTitle.EndsWith("man"))
                     skillTitle = skillTitle.Substring(0, skillTitle.Length - 3) + "woman";
 
-                return String.Concat(skillLevel, " ", skillTitle);
+                return string.Concat(skillLevel, " ", skillTitle);
             }
 
             return null;

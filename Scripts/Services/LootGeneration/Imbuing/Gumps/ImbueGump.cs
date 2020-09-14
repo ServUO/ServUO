@@ -125,10 +125,10 @@ namespace Server.Gumps
 
             // Weight Modifier
             AddHtmlLocalized(25, 120, 200, 20, 1114272, 0xFFFFFF, false, false); // Weight:
-            AddLabel(95, 120, IceHue, String.Format("{0}x", (m_Info.Weight / 100.0).ToString("0.0")));
+            AddLabel(95, 120, IceHue, string.Format("{0}x", (m_Info.Weight / 100.0).ToString("0.0")));
 
             AddHtmlLocalized(25, 140, 200, 20, 1114273, LabelColor, false, false); // Intensity:
-            AddLabel(95, 140, IceHue, String.Format("{0}%", currentIntensity));
+            AddLabel(95, 140, IceHue, string.Format("{0}%", currentIntensity));
 
             // Materials needed
             AddHtmlLocalized(100, 200, 80, 20, 1044055, LabelColor, false, false); // <CENTER>MATERIALS</CENTER>
@@ -151,14 +151,14 @@ namespace Server.Gumps
             AddHtmlLocalized(350, 200, 65, 20, 1113650, LabelColor, false, false); // RESULTS
 
             AddHtmlLocalized(280, 220, 140, 20, 1113645, LabelColor, false, false); // Properties:
-            AddLabel(430, 220, GetColor(m_TotalProps + 1, 5), String.Format("{0}/{1}", m_TotalProps + 1, Imbuing.GetMaxProps(m_Item)));
+            AddLabel(430, 220, GetColor(m_TotalProps + 1, 5), string.Format("{0}/{1}", m_TotalProps + 1, Imbuing.GetMaxProps(m_Item)));
 
             int projWeight = m_TotalItemWeight + propWeight;
             AddHtmlLocalized(280, 240, 260, 20, 1113646, LabelColor, false, false); // Total Property Weight:
-            AddLabel(430, 240, GetColor(projWeight, m_MaxWeight), String.Format("{0}/{1}", projWeight, m_MaxWeight));
+            AddLabel(430, 240, GetColor(projWeight, m_MaxWeight), string.Format("{0}/{1}", projWeight, m_MaxWeight));
 
             AddHtmlLocalized(280, 260, 200, 20, 1113647, LabelColor, false, false); // Times Imbued:
-            AddLabel(430, 260, GetColor(timesImbued, 20), String.Format("{0}/20", timesImbued));
+            AddLabel(430, 260, GetColor(timesImbued, 20), string.Format("{0}/20", timesImbued));
 
             // ===== CALCULATE DIFFICULTY =====
             int truePropWeight = (int)((propWeight / (double)weight) * 100);
@@ -167,7 +167,7 @@ namespace Server.Gumps
             double suc = Imbuing.GetSuccessChance(User, m_Item, trueTotalWeight, truePropWeight, bonus);
 
             AddHtmlLocalized(300, 300, 250, 20, 1044057, 0xFFFFFF, false, false); // Success Chance:
-            AddLabel(420, 300, GetSuccessChanceHue(suc), String.Format("{0}%", suc.ToString("0.0")));
+            AddLabel(420, 300, GetSuccessChanceHue(suc), string.Format("{0}%", suc.ToString("0.0")));
 
             // - Attribute Level
             if (maxInt > 1)

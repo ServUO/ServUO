@@ -148,7 +148,7 @@ namespace Server.Gumps
             if (!OldStyle)
                 AddImageTiled(x - (OldStyle ? OffsetSize : 0), y, emptyWidth + (OldStyle ? OffsetSize * 2 : 0), EntryHeight, EntryGumpID);
 
-            AddHtml(x + TextOffsetX, y, emptyWidth - TextOffsetX, EntryHeight, String.Format("<center>{0}</center>", node.Name), false, false);
+            AddHtml(x + TextOffsetX, y, emptyWidth - TextOffsetX, EntryHeight, string.Format("<center>{0}</center>", node.Name), false, false);
 
             x += emptyWidth + OffsetSize;
 

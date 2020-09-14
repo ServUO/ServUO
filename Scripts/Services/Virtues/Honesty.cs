@@ -351,7 +351,7 @@ namespace Server.Services.Virtues
             {
                 socket.HonestyRegion = _Regions[Utility.Random(_Regions.Length)];
 
-                if (!String.IsNullOrWhiteSpace(socket.HonestyRegion) && BaseVendor.AllVendors.Count >= 10)
+                if (!string.IsNullOrWhiteSpace(socket.HonestyRegion) && BaseVendor.AllVendors.Count >= 10)
                 {
                     List<BaseVendor> matchedVendors = BaseVendor.AllVendors.Where(vendor => (vendor.Map == socket.Owner.Map && vendor.Region.IsPartOf(socket.HonestyRegion))).ToList();
 

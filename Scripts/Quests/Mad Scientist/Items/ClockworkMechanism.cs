@@ -28,7 +28,7 @@ namespace Server.Items
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            list.Add(1112858, String.Format("#{0}", ((int)CreatureDef.CreatureType).ToString())); // ~1_TYPE~ clockwork mechanism
+            list.Add(1112858, string.Format("#{0}", ((int)CreatureDef.CreatureType).ToString())); // ~1_TYPE~ clockwork mechanism
         }
 
         public override void GetProperties(ObjectPropertyList list)

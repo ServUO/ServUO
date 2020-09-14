@@ -204,7 +204,7 @@ namespace Server.Items
             public override void AddNameProperty(ObjectPropertyList list)
             {
                 if (Addon != null && Addon.Resource != CraftResource.None)
-                    list.Add(1152600, String.Format("#{0}", CraftResources.GetLocalizationNumber(Addon.Resource).ToString())); // ~1_RES~ Cauldron of Transmutation
+                    list.Add(1152600, string.Format("#{0}", CraftResources.GetLocalizationNumber(Addon.Resource).ToString())); // ~1_RES~ Cauldron of Transmutation
                 else
                     base.AddNameProperty(list);
             }
@@ -225,8 +225,8 @@ namespace Server.Items
                 CraftResource res = Addon.Resource;
                 CraftResource res2 = (CraftResource)res + 1;
 
-                list.Add(1152630, String.Format("#{0}\t#{1}", CraftResources.GetLocalizationNumber(Addon.Resource), CraftResources.GetLocalizationNumber(res2))); // transmutes ~1_SOURCE~ to ~2_DEST~
-                list.Add(1152631, String.Format("3\t1")); // ratio ~1_INPUT~ to ~2_OUTPUT~
+                list.Add(1152630, string.Format("#{0}\t#{1}", CraftResources.GetLocalizationNumber(Addon.Resource), CraftResources.GetLocalizationNumber(res2))); // transmutes ~1_SOURCE~ to ~2_DEST~
+                list.Add(1152631, string.Format("3\t1")); // ratio ~1_INPUT~ to ~2_OUTPUT~
                 list.Add(1060584, ((CauldronOfTransmutation)Addon).Charges.ToString()); // uses remaining: ~1_val~
 
             }
@@ -340,7 +340,7 @@ namespace Server.Items
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            list.Add(1152600, String.Format("#{0}", CraftResources.GetLocalizationNumber(Resource))); // ~1_RES~ Cauldron of Transmutation
+            list.Add(1152600, string.Format("#{0}", CraftResources.GetLocalizationNumber(Resource))); // ~1_RES~ Cauldron of Transmutation
         }
 
         public override void GetProperties(ObjectPropertyList list)

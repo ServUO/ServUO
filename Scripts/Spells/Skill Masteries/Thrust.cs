@@ -96,7 +96,7 @@ namespace Server.Spells.SkillMasteries
 
             Caster.PrivateOverheadMessage(MessageType.Regular, 1150, 1155988, Caster.NetState); // *You enter a thrusting stance!*
 
-            BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.Thrust, 1155989, 1155990, String.Format("{0}\t{1}\t{2}", AttackModifier.ToString(), DefenseModifier.ToString(), ScaleMana(30).ToString())));
+            BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.Thrust, 1155989, 1155990, string.Format("{0}\t{1}\t{2}", AttackModifier.ToString(), DefenseModifier.ToString(), ScaleMana(30).ToString())));
             //Your next physical attack will be increased by +~1_VAL~% damage while reducing your victim's physical attack damage by ~2_VAL~%.<br>Mana Upkeep Cost: ~3_VAL~.
 
             FinishSequence();
@@ -127,7 +127,7 @@ namespace Server.Spells.SkillMasteries
             BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.ThrustDebuff, 1155989, 1156234, TimeSpan.FromSeconds(8), defender, DefenseModifier.ToString()));
             // All damage from your physical attacks have been reduced by ~1_val~%.
 
-            BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.Thrust, 1155989, 1155990, String.Format("{0}\t{1}\t{2}", AttackModifier.ToString(), (GetMasteryLevel() * 6).ToString(), ScaleMana(30).ToString())));
+            BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.Thrust, 1155989, 1155990, string.Format("{0}\t{1}\t{2}", AttackModifier.ToString(), (GetMasteryLevel() * 6).ToString(), ScaleMana(30).ToString())));
             //Your next physical attack will be increased by +~1_VAL~% damage while reducing your victim's physical attack damage by ~2_VAL~%.<br>Mana Upkeep Cost: ~3_VAL~.
 
             if (!CheckMana())
@@ -161,7 +161,7 @@ namespace Server.Spells.SkillMasteries
             DefenseModifier = 0;
             Target = null;
 
-            BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.Thrust, 1155989, 1155990, String.Format("{0}\t{1}\t{2}", AttackModifier.ToString(), (GetMasteryLevel() * 6).ToString(), ScaleMana(30).ToString())));
+            BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.Thrust, 1155989, 1155990, string.Format("{0}\t{1}\t{2}", AttackModifier.ToString(), (GetMasteryLevel() * 6).ToString(), ScaleMana(30).ToString())));
             //Your next physical attack will be increased by +~1_VAL~% damage while reducing your victim's physical attack damage by ~2_VAL~%.<br>Mana Upkeep Cost: ~3_VAL~.
 
             if (Target != null)

@@ -90,7 +90,7 @@ namespace Server.Services.Virtues
                                         1156050,
                                         TimeSpan.FromMinutes(20),
                                         from,
-                                        String.Format("{0}\t{1}", bc.Name, GetRegenBonus(bc)))); // Pet: ~1_NAME~<br>+~2_VAL~ HPR<br>
+                                        string.Format("{0}\t{1}", bc.Name, GetRegenBonus(bc)))); // Pet: ~1_NAME~<br>+~2_VAL~ HPR<br>
 
                                 CheckTimer();
                                 bc.ResetStatTimers();

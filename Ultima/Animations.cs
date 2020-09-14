@@ -921,7 +921,7 @@ namespace Ultima
             }
             else
             {
-                return String.Format("anim{0}.mul", fileType);
+                return string.Format("anim{0}.mul", fileType);
             }
         }
     }

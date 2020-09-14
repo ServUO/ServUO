@@ -50,7 +50,7 @@ namespace Server.Spells.SkillMasteries
             m.FixedParticles(0x373A, 10, 15, 5018, EffectLayer.Waist);
             m.SendLocalizedMessage(1115738); // The bard's spellsong fills you with a feeling of resilience.
 
-            string args = String.Format("{0}\t{1}\t{2}", m_PropertyBonus, m_PropertyBonus, m_PropertyBonus);
+            string args = string.Format("{0}\t{1}\t{2}", m_PropertyBonus, m_PropertyBonus, m_PropertyBonus);
             BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Resilience, 1115614, 1115731, args.ToString()));
 
             m.ResetStatTimers();

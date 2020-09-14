@@ -129,10 +129,10 @@ namespace Server.Engines.Quests
                 writer.Write((byte)0x1);
                 writer.Write((int)obj);
             }
-            else if (obj is String)
+            else if (obj is string)
             {
                 writer.Write((byte)0x2);
-                writer.Write((String)obj);
+                writer.Write((string)obj);
             }
             else if (obj is Item)
             {

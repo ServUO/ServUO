@@ -94,10 +94,10 @@ namespace Server.Mobiles
 
         private static readonly Type[] m_NumericTypes = new Type[]
         {
-            typeof( Byte ), typeof( SByte ),
-            typeof( Int16 ), typeof( UInt16 ),
-            typeof( Int32 ), typeof( UInt32 ),
-            typeof( Int64 ), typeof( UInt64 ), typeof( Server.Serial )
+            typeof( byte ), typeof( sbyte ),
+            typeof( short ), typeof( ushort ),
+            typeof( int ), typeof( uint ),
+            typeof( long ), typeof( ulong ), typeof( Server.Serial )
         };
 
         public static bool IsNumeric(Type t)
@@ -112,14 +112,14 @@ namespace Server.Mobiles
             return (t == typeofType);
         }
 
-        private static readonly Type typeofChar = typeof(Char);
+        private static readonly Type typeofChar = typeof(char);
 
         private static bool IsChar(Type t)
         {
             return (t == typeofChar);
         }
 
-        private static readonly Type typeofString = typeof(String);
+        private static readonly Type typeofString = typeof(string);
 
         private static bool IsString(Type t)
         {
@@ -342,7 +342,7 @@ namespace Server.Mobiles
 
         public static bool IsTypeOrItemKeyword(string typeName)
         {
-            if (string.IsNullOrEmpty(typeName) || !Char.IsUpper(typeName[0])) return false;
+            if (string.IsNullOrEmpty(typeName) || !char.IsUpper(typeName[0])) return false;
             return (typeKeywordHash.ContainsKey(typeName));
         }
 
@@ -757,7 +757,7 @@ namespace Server.Mobiles
         public static string TagInfo(KeywordTag tag)
         {
             if (tag != null)
-                return (String.Format("{0} : type={1} cond={2} go={3} del={4} end={5}", tag.Typename, tag.Type, tag.m_Condition, tag.m_Goto, tag.m_Delay, tag.m_End));
+                return (string.Format("{0} : type={1} cond={2} go={3} del={4} end={5}", tag.Typename, tag.Type, tag.m_Condition, tag.m_Goto, tag.m_Delay, tag.m_End));
             else
                 return null;
         }
@@ -817,15 +817,15 @@ namespace Server.Mobiles
             if (value == null)
                 toString = "(-null-)";
             else if (IsNumeric(type))
-                toString = String.Format("{0} (0x{0:X})", value);
+                toString = string.Format("{0} (0x{0:X})", value);
             else if (IsChar(type))
-                toString = String.Format("'{0}' ({1} [0x{1:X}])", value, (int)value);
+                toString = string.Format("'{0}' ({1} [0x{1:X}])", value, (int)value);
             else if (IsString(type))
-                toString = String.Format("\"{0}\"", value);
+                toString = string.Format("\"{0}\"", value);
             else
                 toString = value.ToString();
 
-            return String.Format("{0} = {1}", p.Name, toString);
+            return string.Format("{0} = {1}", p.Name, toString);
         }
 
         public static bool IsItem(Type type)
@@ -1369,7 +1369,7 @@ namespace Server.Mobiles
                         Skill skill = ((Mobile)o).Skills[skillname];
                         ptype = skill.Value.GetType();
 
-                        return String.Format("{0} = {1}", skillname, skill.Value);
+                        return string.Format("{0} = {1}", skillname, skill.Value);
                     }
                     else
                         return "Object is not mobile";
@@ -1386,14 +1386,14 @@ namespace Server.Mobiles
                     {
                         ptype = ((Mobile)o).Serial.GetType();
 
-                        return String.Format("Serial = {0}", ((Mobile)o).Serial);
+                        return string.Format("Serial = {0}", ((Mobile)o).Serial);
                     }
                     else
                         if (o is Item)
                     {
                         ptype = ((Item)o).Serial.GetType();
 
-                        return String.Format("Serial = {0}", ((Item)o).Serial);
+                        return string.Format("Serial = {0}", ((Item)o).Serial);
                     }
                     else
                         return "Object is not item/mobile";
@@ -1407,7 +1407,7 @@ namespace Server.Mobiles
             {
                 ptype = typeof(Type);
 
-                return String.Format("Type = {0}", o.GetType().Name);
+                return string.Format("Type = {0}", o.GetType().Name);
 
             }
             else if (keywordargs[0] == "STEALABLE")
@@ -1419,7 +1419,7 @@ namespace Server.Mobiles
                     if (o is Item)
                     {
                         ptype = typeof(bool);
-                        return String.Format("Stealable = {0}", ItemFlags.GetStealable((Item)o));
+                        return string.Format("Stealable = {0}", ItemFlags.GetStealable((Item)o));
                     }
                     else
                         return "Object is not an item";
@@ -1669,8 +1669,8 @@ namespace Server.Mobiles
 
                     // this quick optimization can determine whether this is a regular prop/value assignment
                     // since most prop modification strings will use regular propnames and not keywords, it makes sense to check for that first
-                    if (value_keywordargs[0].Length > 0 && !Char.IsUpper(value_keywordargs[0][0]) &&
-                        arglist[0].Length > 0 && !Char.IsUpper(arglist[0][0]))
+                    if (value_keywordargs[0].Length > 0 && !char.IsUpper(value_keywordargs[0][0]) &&
+                        arglist[0].Length > 0 && !char.IsUpper(arglist[0][0]))
                     {
                         // all of this code is also included in the keyword candidate tests
                         // this is because regular props can also be entered with uppercase so the lowercase test is not definitive
@@ -1733,7 +1733,7 @@ namespace Server.Mobiles
                                     int min, max;
                                     if (int.TryParse(value_keywordargs[1], out min) && int.TryParse(value_keywordargs[2], out max))
                                     {
-                                        randvalue = String.Format("{0}", Utility.RandomMinMax(min, max));
+                                        randvalue = string.Format("{0}", Utility.RandomMinMax(min, max));
                                     }
                                     else
                                     {
@@ -2337,7 +2337,7 @@ namespace Server.Mobiles
 
                                         if (double.TryParse(value_keywordargs[1], NumberStyles.Any, CultureInfo.InvariantCulture, out d0) && double.TryParse(value_keywordargs[2], NumberStyles.Any, CultureInfo.InvariantCulture, out d1))
                                         {
-                                            incvalue = String.Format("{0}", Utility.RandomMinMax((int)(10000 * d0), (int)(10000 * d1)) / 10000.0);
+                                            incvalue = string.Format("{0}", Utility.RandomMinMax((int)(10000 * d0), (int)(10000 * d1)) / 10000.0);
                                         }
                                         else { status_str = "Invalid MUL args : " + arglist[1]; no_error = false; }
                                     }
@@ -2352,7 +2352,7 @@ namespace Server.Mobiles
                                     // see if it was successful
                                     if (ptype == null)
                                     {
-                                        status_str = String.Format("Cant find {0}", arglist[0]);
+                                        status_str = string.Format("Cant find {0}", arglist[0]);
                                         no_error = false;
                                     }
                                     else
@@ -2404,7 +2404,7 @@ namespace Server.Mobiles
                                         int min, max;
                                         if (int.TryParse(value_keywordargs[1], out min) && int.TryParse(value_keywordargs[2], out max))
                                         {
-                                            incvalue = String.Format("{0}", Utility.RandomMinMax(min, max));
+                                            incvalue = string.Format("{0}", Utility.RandomMinMax(min, max));
                                         }
                                         else { status_str = "Invalid INC args : " + arglist[1]; no_error = false; }
                                     }
@@ -2420,7 +2420,7 @@ namespace Server.Mobiles
                                     // see if it was successful
                                     if (ptype == null)
                                     {
-                                        status_str = String.Format("Cant find {0}", arglist[0]);
+                                        status_str = string.Format("Cant find {0}", arglist[0]);
                                         no_error = false;
                                     }
                                     else
@@ -3338,8 +3338,8 @@ namespace Server.Mobiles
                                     int dx = m.X, dy = m.Y;
                                     if (keywordargs.Length > 2)
                                     {
-                                        Int32.TryParse(keywordargs[1], out dx);
-                                        Int32.TryParse(keywordargs[2], out dy);
+                                        int.TryParse(keywordargs[1], out dx);
+                                        int.TryParse(keywordargs[2], out dy);
                                     }
                                     m.Direction = m.GetDirectionTo(dx, dy);
                                 }
@@ -3639,28 +3639,28 @@ namespace Server.Mobiles
                 // determine the type
                 if (str.IndexOf(".") >= 0)
                 {
-                    ptype = typeof(Double);
+                    ptype = typeof(double);
                 }
                 else
                 {
-                    ptype = typeof(Int32);
+                    ptype = typeof(int);
                 }
                 return str;
             }
             else if (startc == '"' || startc == '(')
             {
-                ptype = typeof(String);
+                ptype = typeof(string);
                 return str;
             }
             else if (startc == '#')
             {
-                ptype = typeof(String);
+                ptype = typeof(string);
                 return str.Substring(1);
             }
             // or a bool
             else if ((str.ToLower()) == "true" || (str.ToLower() == "false"))
             {
-                ptype = typeof(Boolean);
+                ptype = typeof(bool);
                 return str;
             }
             // then look for a keyword
@@ -3938,7 +3938,7 @@ namespace Server.Mobiles
                 {
                     // syntax is RND,min,max
                     string randvalue = "0";
-                    ptype = typeof(Int32);
+                    ptype = typeof(int);
                     int min, max;
                     if (int.TryParse(arglist[1], out min) && int.TryParse(arglist[2], out max))
                         randvalue = string.Format("{0}", Utility.RandomMinMax(min, max));
@@ -3958,7 +3958,7 @@ namespace Server.Mobiles
                 {
                     // syntax is RNDLIST,val1,val2,...
 
-                    ptype = typeof(Int32);
+                    ptype = typeof(int);
 
                     // compute a random index into the arglist
 
@@ -3991,7 +3991,7 @@ namespace Server.Mobiles
                 {
                     // syntax is AMOUNTCARRIED,itemtype[,banksearch[,itemname]]
 
-                    ptype = typeof(Int32);
+                    ptype = typeof(int);
 
                     int amount = 0;
 
@@ -4042,7 +4042,7 @@ namespace Server.Mobiles
                 {
                     // syntax is PLAYERSINRANGE,range
 
-                    ptype = typeof(Int32);
+                    ptype = typeof(int);
 
                     int nplayers = 0;
                     int range;
@@ -4120,7 +4120,7 @@ namespace Server.Mobiles
             }
             else if (literal)
             {
-                ptype = typeof(String);
+                ptype = typeof(string);
                 return str;
             }
             else
@@ -4591,7 +4591,7 @@ namespace Server.Mobiles
                     else { status_str = "invalid int comparison : {0}" + testString; }
                 }
             }
-            else if (ptype2 == typeof(Boolean) && ptype1 == typeof(Boolean))
+            else if (ptype2 == typeof(bool) && ptype1 == typeof(bool))
             {
                 bool val1, val2;
                 if (hasequal)
@@ -4611,7 +4611,7 @@ namespace Server.Mobiles
                     else { status_str = "invalid bool comparison : {0}" + testString; }
                 }
             }
-            else if (ptype2 == typeof(Double) || ptype2 == typeof(Double))
+            else if (ptype2 == typeof(double) || ptype2 == typeof(double))
             {
                 double val1 = 0, val2 = 0;
                 if (hasequal)
@@ -5388,7 +5388,7 @@ namespace Server.Mobiles
             {
                 Type itemtype = item.GetType();
 
-                if (!item.Deleted && (name.Length == 0 || String.Compare(item.Name, name, true) == 0))
+                if (!item.Deleted && (name.Length == 0 || string.Compare(item.Name, name, true) == 0))
                 {
 
                     if (typestr == null ||
@@ -5434,7 +5434,7 @@ namespace Server.Mobiles
             foreach (Mobile mobile in World.Mobiles.Values)
             {
                 Type mobtype = mobile.GetType();
-                if (!mobile.Deleted && ((name.Length == 0 || String.Compare(mobile.Name, name, true) == 0)) && (typestr == null ||
+                if (!mobile.Deleted && ((name.Length == 0 || string.Compare(mobile.Name, name, true) == 0)) && (typestr == null ||
                     (mobtype != null && targettype != null && (mobtype.Equals(targettype) || mobtype.IsSubclassOf(targettype)))))
                 {
 
@@ -5486,7 +5486,7 @@ namespace Server.Mobiles
                     if (item is XmlSpawner)
                     {
                         XmlSpawner spawner = (XmlSpawner)item;
-                        if (!spawner.Deleted && (String.Compare(spawner.Name, name, true) == 0))
+                        if (!spawner.Deleted && (string.Compare(spawner.Name, name, true) == 0))
                         {
                             foundspawner = spawner;
 
@@ -5544,7 +5544,7 @@ namespace Server.Mobiles
                     deletelist.Add(s);
                 }
                 else
-                    if (String.Compare(s.Name, name, true) == 0)
+                    if (string.Compare(s.Name, name, true) == 0)
                 {
                     foundspawner = s;
                     break;
@@ -5601,7 +5601,7 @@ namespace Server.Mobiles
                     deletelist.Add(item);
                 }
                 else
-                    if (name.Length == 0 || String.Compare(item.Name, name, true) == 0)
+                    if (name.Length == 0 || string.Compare(item.Name, name, true) == 0)
                 {
                     if (typestr == null ||
                         (item.GetType() != null && targettype != null && (item.GetType().Equals(targettype) || item.GetType().IsSubclassOf(targettype))))
@@ -5662,7 +5662,7 @@ namespace Server.Mobiles
                     deletelist.Add(m);
                 }
                 else
-                    if (name.Length == 0 || String.Compare(m.Name, name, true) == 0)
+                    if (name.Length == 0 || string.Compare(m.Name, name, true) == 0)
                 {
 
                     if (typestr == null ||
@@ -6792,7 +6792,7 @@ namespace Server.Mobiles
 
                                     if (mob == null)
                                     {
-                                        status_str = String.Format("named mob '{0}' not found", keywordargs[1]);
+                                        status_str = string.Format("named mob '{0}' not found", keywordargs[1]);
                                     }
                                 }
                                 else
@@ -8037,13 +8037,13 @@ namespace Server.Mobiles
                                     Mobile dummy = FindMobileByName(spawner, CommandMobileName, "Mobile");
                                     if (dummy != null)
                                     {
-                                        CommandSystem.Handle(dummy, String.Format("{0}{1}", CommandSystem.Prefix, arglist[1]));
+                                        CommandSystem.Handle(dummy, string.Format("{0}{1}", CommandSystem.Prefix, arglist[1]));
                                     }
                                 }
                                 else
                                     if (triggermob != null && !triggermob.Deleted)
                                 {
-                                    CommandSystem.Handle(triggermob, String.Format("{0}{1}", CommandSystem.Prefix, arglist[1]));
+                                    CommandSystem.Handle(triggermob, string.Format("{0}{1}", CommandSystem.Prefix, arglist[1]));
                                 }
 
                             }

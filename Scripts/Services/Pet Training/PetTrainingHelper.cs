@@ -1715,7 +1715,7 @@ namespace Server.Mobiles
 
                 string arg = e.GetString(0);
 
-                if (!String.IsNullOrEmpty(arg))
+                if (!string.IsNullOrEmpty(arg))
                 {
                     Type t = ScriptCompiler.FindTypeByName(arg);
 

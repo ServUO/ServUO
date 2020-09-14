@@ -40,7 +40,7 @@ namespace Server.Engines.Shadowguard
             Center = center;
             Index = index;
 
-            Region = new ShadowguardRegion(bounds, index >= 13 ? String.Format("Roof {0}", (index - 12).ToString()) : index.ToString(), this);
+            Region = new ShadowguardRegion(bounds, index >= 13 ? string.Format("Roof {0}", (index - 12).ToString()) : index.ToString(), this);
             Region.Register();
         }
 

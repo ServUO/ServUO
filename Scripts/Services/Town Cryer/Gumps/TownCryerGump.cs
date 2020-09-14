@@ -112,7 +112,7 @@ namespace Server.Services.TownCryer
                 AddButton(430, 570, 0x607, 0x608, 7, GumpButtonType.Reply, 0);
                 AddButton(455, 570, 0x603, 0x604, 8, GumpButtonType.Reply, 0);
 
-                AddHtml(395, 570, 35, 20, Center(String.Format("{0}/{1}", (Page + 1).ToString(), (Pages + 1).ToString())), false, false);
+                AddHtml(395, 570, 35, 20, Center(string.Format("{0}/{1}", (Page + 1).ToString(), (Pages + 1).ToString())), false, false);
             }
         }
 
@@ -170,7 +170,7 @@ namespace Server.Services.TownCryer
             AddButton(601, 150, City == City.Yew ? 0x5E9 : 0x5E8, City == City.Yew ? 0x5E9 : 0x5E8, 18, GumpButtonType.Reply, 0);
             AddTooltip(CityLoyaltySystem.GetCityLocalization(City.Yew));
 
-            AddHtmlLocalized(0, 260, 854, 20, CenterLoc, String.Format("#{0}", TownCryerSystem.GetCityLoc(City)), 0, false, false); // The Latest News from the City of ~1_CITY~
+            AddHtmlLocalized(0, 260, 854, 20, CenterLoc, string.Format("#{0}", TownCryerSystem.GetCityLoc(City)), 0, false, false); // The Latest News from the City of ~1_CITY~
 
             int y = 300;
 
@@ -233,7 +233,7 @@ namespace Server.Services.TownCryer
             AddButton(430, 570, 0x607, 0x608, 7, GumpButtonType.Reply, 0);
             AddButton(455, 570, 0x603, 0x604, 8, GumpButtonType.Reply, 0);
 
-            AddHtml(395, 570, 35, 20, Center(String.Format("{0}/{1}", (Page + 1).ToString(), (Pages + 1).ToString())), false, false);
+            AddHtml(395, 570, 35, 20, Center(string.Format("{0}/{1}", (Page + 1).ToString(), (Pages + 1).ToString())), false, false);
         }
 
         private void SetDefaultCity()

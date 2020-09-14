@@ -121,9 +121,9 @@ namespace Ultima
             foreach (string file in m_Files)
             {
                 string filePath;
-                if (!String.IsNullOrEmpty(m_MulPath[file])) //file was set
+                if (!string.IsNullOrEmpty(m_MulPath[file])) //file was set
                 {
-                    if (String.IsNullOrEmpty(Path.GetDirectoryName(m_MulPath[file]))) //and relative
+                    if (string.IsNullOrEmpty(Path.GetDirectoryName(m_MulPath[file]))) //and relative
                     {
                         filePath = Path.Combine(m_RootDir, m_MulPath[file]);
                         if (File.Exists(filePath)) // exists in new Root?
@@ -174,11 +174,11 @@ namespace Ultima
                 {
                     path = MulPath[file.ToLower()];
                 }
-                if (String.IsNullOrEmpty(path))
+                if (string.IsNullOrEmpty(path))
                 {
                     return null;
                 }
-                if (String.IsNullOrEmpty(Path.GetDirectoryName(path)))
+                if (string.IsNullOrEmpty(Path.GetDirectoryName(path)))
                 {
                     path = Path.Combine(m_RootDir, path);
                 }
@@ -193,7 +193,7 @@ namespace Ultima
 
         internal static string GetFilePath(string format, params object[] args)
         {
-            return GetFilePath(String.Format(format, args));
+            return GetFilePath(string.Format(format, args));
         }
 
         private static readonly string[] knownRegkeys = new[]
@@ -355,7 +355,7 @@ namespace Ultima
         /// <returns></returns>
         public static bool CompareHashFile(string what, string path)
         {
-            string FileName = Path.Combine(path, String.Format("UOFiddler{0}.hash", what));
+            string FileName = Path.Combine(path, string.Format("UOFiddler{0}.hash", what));
             if (File.Exists(FileName))
             {
                 try
@@ -366,7 +366,7 @@ namespace Ultima
                         byte[] buffer = new byte[length];
                         bin.Read(buffer, 0, length);
                         string hashold = BitConverter.ToString(buffer).Replace("-", "").ToLower();
-                        return CompareMD5(GetFilePath(String.Format("{0}.mul", what)), hashold);
+                        return CompareMD5(GetFilePath(string.Format("{0}.mul", what)), hashold);
                     }
                 }
                 catch

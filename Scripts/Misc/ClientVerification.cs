@@ -106,7 +106,7 @@ namespace Server.Misc
 
             if (required != null && version < required && (m_OldClientResponse == OldClientResponse.Kick || (m_OldClientResponse == OldClientResponse.LenientKick && (DateTime.UtcNow - state.Mobile.CreationTime) > m_AgeLeniency && state.Mobile is PlayerMobile && ((PlayerMobile)state.Mobile).GameTime > m_GameTimeLeniency)))
             {
-                kickMessage = String.Format("This server requires your client version be at least {0}.", required);
+                kickMessage = string.Format("This server requires your client version be at least {0}.", required);
             }
             else if (!AllowGod || !AllowRegular || !AllowUOTD)
             {
@@ -220,7 +220,7 @@ namespace Server.Misc
         {
             if (m.NetState != null && m.NetState.Version < Required)
             {
-                Gump g = new WarningGump(1060637, 30720, String.Format("Your client is out of date. Please update your client.<br>This server recommends that your client version be at least {0}.<br> <br>You are currently using version {1}.<br> <br>To patch, run UOPatch.exe inside your Ultima Online folder.", Required, m.NetState.Version), 0xFFC000, 480, 360,
+                Gump g = new WarningGump(1060637, 30720, string.Format("Your client is out of date. Please update your client.<br>This server recommends that your client version be at least {0}.<br> <br>You are currently using version {1}.<br> <br>To patch, run UOPatch.exe inside your Ultima Online folder.", Required, m.NetState.Version), 0xFFC000, 480, 360,
                     delegate (Mobile mob, bool selection, object o)
                     {
                         m.SendMessage("You will be reminded of this again.");

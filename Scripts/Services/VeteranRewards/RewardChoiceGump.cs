@@ -85,7 +85,7 @@ namespace Server.Engines.VeteranRewards
             else if (rewardInterval == TimeSpan.FromDays(365.0))
                 intervalAsString = "year";
             else
-                intervalAsString = String.Format("{0} day{1}", rewardInterval.TotalDays, rewardInterval.TotalDays == 1 ? "" : "s");
+                intervalAsString = string.Format("{0} day{1}", rewardInterval.TotalDays, rewardInterval.TotalDays == 1 ? "" : "s");
 
             AddPage(1);
 

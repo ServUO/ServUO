@@ -159,7 +159,7 @@ namespace Server.SkillHandlers
                             {
                                 if (honestySocket.HonestyOwner != null)
 								{
-                                    from.SendLocalizedMessage(1151521, String.Format("{0}\t{1}", honestySocket.HonestyOwner.Name, region)); // This item belongs to ~1_val~ who lives in ~2_val~.
+                                    from.SendLocalizedMessage(1151521, string.Format("{0}\t{1}", honestySocket.HonestyOwner.Name, region)); // This item belongs to ~1_val~ who lives in ~2_val~.
 								}
                             }
                             else

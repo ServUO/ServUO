@@ -88,7 +88,7 @@ namespace Server.Gumps
 
             string rgb = "#" + (m_OldColor.ToArgb() & 0x00FFFFFF).ToString("X6");
 
-            string val = String.Format("{0} ({1}) ({2},{3},{4})", name, rgb, m_OldColor.R, m_OldColor.G, m_OldColor.B);
+            string val = string.Format("{0} ({1}) ({2},{3},{4})", name, rgb, m_OldColor.R, m_OldColor.G, m_OldColor.B);
 
             AddRect(0, prop.Name, 0, -1);
             AddRect(1, val, 0, -1);
@@ -169,7 +169,7 @@ namespace Server.Gumps
                     break;
                 case 2: // RGB
                     {
-                        string toapply = rgb != string.Empty ? rgb : String.Format("{0},{1},{2}", m_OldColor.R, m_OldColor.G, m_OldColor.B);
+                        string toapply = rgb != string.Empty ? rgb : string.Format("{0},{1},{2}", m_OldColor.R, m_OldColor.G, m_OldColor.B);
 
                         string[] args = toapply.Split(',');
 
@@ -177,7 +177,7 @@ namespace Server.Gumps
                         {
                             byte r, g, b;
 
-                            if (Byte.TryParse(args[0], out r) && Byte.TryParse(args[1], out g) && Byte.TryParse(args[2], out b))
+                            if (byte.TryParse(args[0], out r) && byte.TryParse(args[1], out g) && byte.TryParse(args[2], out b))
                             {
                                 toSet = Color.FromArgb(r, g, b);
                                 shouldSet = true;
@@ -187,11 +187,11 @@ namespace Server.Gumps
                     break;
                 case 3: // Hex
                     {
-                        string toapply = hex != string.Empty ? hex : String.Format("#{0:X6}", m_OldColor.ToArgb() & 0x00FFFFFF);
+                        string toapply = hex != string.Empty ? hex : string.Format("#{0:X6}", m_OldColor.ToArgb() & 0x00FFFFFF);
 
                         int val;
 
-                        if (Int32.TryParse(toapply.TrimStart('#'), NumberStyles.HexNumber, CultureInfo.CurrentCulture, out val))
+                        if (int.TryParse(toapply.TrimStart('#'), NumberStyles.HexNumber, CultureInfo.CurrentCulture, out val))
                         {
                             toSet = Color.FromArgb(val);
                             shouldSet = true;

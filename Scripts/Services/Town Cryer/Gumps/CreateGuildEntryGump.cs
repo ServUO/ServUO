@@ -25,7 +25,7 @@ namespace Server.Services.TownCryer
             base.AddGumpLayout();
 
             AddHtmlLocalized(58, 150, 100, 20, 1158027, false, false); // Author:
-            AddLabel(105, 150, 0, String.Format("{0}", Entry != null ? Entry.Author : User.Name));
+            AddLabel(105, 150, 0, string.Format("{0}", Entry != null ? Entry.Author : User.Name));
 
             AddHtmlLocalized(58, 170, 100, 20, 1158055, false, false); // Guild:
             AddLabel(105, 170, 0, Entry != null && Entry.Guild != null ? Entry.Guild.Name : "Unknown");
@@ -86,7 +86,7 @@ namespace Server.Services.TownCryer
 
                 if (Entry == null)
                 {
-                    if (!DateTime.TryParse(String.Format("{0}/{1}/{2} {3}:00:00", m, d, year.ToString(), t), out dt)) // bad format
+                    if (!DateTime.TryParse(string.Format("{0}/{1}/{2} {3}:00:00", m, d, year.ToString(), t), out dt)) // bad format
                     {
                         illegalDate = true;
                         dt = DateTime.MinValue;
@@ -100,7 +100,7 @@ namespace Server.Services.TownCryer
                     Entry.Body = desc;
                     Entry.EventLocation = meet;
 
-                    if (DateTime.TryParse(String.Format("{0}/{1}/{2} {3}:00:00", m, d, year.ToString(), t), out dt))
+                    if (DateTime.TryParse(string.Format("{0}/{1}/{2} {3}:00:00", m, d, year.ToString(), t), out dt))
                     {
                         Entry.EventTime = dt;
                     }

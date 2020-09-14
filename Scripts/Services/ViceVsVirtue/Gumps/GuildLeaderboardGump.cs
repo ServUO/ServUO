@@ -68,7 +68,7 @@ namespace Server.Engines.VvV
                 pages = 1;
 
             AddPage(page);
-            AddHtmlLocalized(60, 290, 150, 20, 1153561, String.Format("{0}\t{1}", page.ToString(), pages.ToString()), 0xFFFF, false, false); // Page ~1_CUR~ of ~2_MAX~
+            AddHtmlLocalized(60, 290, 150, 20, 1153561, string.Format("{0}\t{1}", page.ToString(), pages.ToString()), 0xFFFF, false, false); // Page ~1_CUR~ of ~2_MAX~
 
             for (int i = 0; i < list.Count; i++)
             {
@@ -85,7 +85,7 @@ namespace Server.Engines.VvV
 
                 if (pageindex == PerPage)
                 {
-                    AddHtmlLocalized(60, 290, 150, 20, 1153561, String.Format("{0}\t{1}", page.ToString(), pages.ToString()), 0xFFFF, false, false); // Page ~1_CUR~ of ~2_MAX~
+                    AddHtmlLocalized(60, 290, 150, 20, 1153561, string.Format("{0}\t{1}", page.ToString(), pages.ToString()), 0xFFFF, false, false); // Page ~1_CUR~ of ~2_MAX~
 
                     if (i > 0 && i < list.Count - 1)
                     {
@@ -124,22 +124,22 @@ namespace Server.Engines.VvV
 
         private string CenterGray(string format)
         {
-            return String.Format("<basefont color=#A9A9A9><DIV ALIGN=CENTER>{0}</DIV>", format);
+            return string.Format("<basefont color=#A9A9A9><DIV ALIGN=CENTER>{0}</DIV>", format);
         }
 
         private string RightGray(string format)
         {
-            return String.Format("<basefont color=#A9A9A9><DIV ALIGN=RIGHT>{0}</DIV>", format);
+            return string.Format("<basefont color=#A9A9A9><DIV ALIGN=RIGHT>{0}</DIV>", format);
         }
 
         private string LeftGray(string format)
         {
-            return String.Format("<basefont color=#A9A9A9><DIV ALIGN=LEFT>{0}</DIV>", format);
+            return string.Format("<basefont color=#A9A9A9><DIV ALIGN=LEFT>{0}</DIV>", format);
         }
 
         private string RightGreen(string format)
         {
-            return String.Format("<basefont color=#00FA9A><DIV ALIGN=RIGHT>{0}</DIV>", format);
+            return string.Format("<basefont color=#00FA9A><DIV ALIGN=RIGHT>{0}</DIV>", format);
         }
     }
 }

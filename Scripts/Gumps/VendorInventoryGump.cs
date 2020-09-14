@@ -34,7 +34,7 @@ namespace Server.Gumps
                 if (inventory.Owner == from)
                     AddButton(10, y, 0xFA5, 0xFA7, i + 1, GumpButtonType.Reply, 0);
 
-                AddLabel(45, y, 0x481, String.Format("{0} ({1})", inventory.ShopName, inventory.VendorName));
+                AddLabel(45, y, 0x481, string.Format("{0} ({1})", inventory.ShopName, inventory.VendorName));
 
                 TimeSpan expire = inventory.ExpireTime - DateTime.UtcNow;
                 int hours = (int)expire.TotalHours;

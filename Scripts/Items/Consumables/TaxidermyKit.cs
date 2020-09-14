@@ -360,7 +360,7 @@ namespace Server.Items
 
             if (DateCaught != DateTime.MinValue)
             {
-                list.Add(String.Format("[{0}]", DateCaught.ToShortDateString()));
+                list.Add(string.Format("[{0}]", DateCaught.ToShortDateString()));
             }
         }
 

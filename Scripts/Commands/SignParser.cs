@@ -148,10 +148,10 @@ namespace Server.Commands
                 if (map == Map.Malas) return 4;
                 if (map == Map.Tokuno) return 5;
                 if (map == Map.TerMur) return 6;
-                throw new ArgumentException(String.Format("Unhandled map {0}", map.Name));
+                throw new ArgumentException(string.Format("Unhandled map {0}", map.Name));
             }
 
-            public static List<SignEntry> LoadConfig(String path)
+            public static List<SignEntry> LoadConfig(string path)
             {
                 List<SignEntry> list = new List<SignEntry>();
                 string cfg = Path.Combine(Core.BaseDirectory, path);
@@ -179,14 +179,14 @@ namespace Server.Commands
                 return list;
             }
 
-            public static void WriteConfig(List<SignEntry> signs, String path)
+            public static void WriteConfig(List<SignEntry> signs, string path)
             {
                 string cfg = Path.Combine(Core.BaseDirectory, path);
                 using (StreamWriter op = new StreamWriter(cfg))
                 {
                     foreach (SignEntry sign in signs)
                     {
-                        string line = String.Format("{0} {1} {2} {3} {4} {5}", sign.m_Map,
+                        string line = string.Format("{0} {1} {2} {3} {4} {5}", sign.m_Map,
                             sign.m_ItemID, sign.m_Location.X, sign.m_Location.Y,
                             sign.m_Location.Z, sign.m_Text);
                         op.WriteLine(line);

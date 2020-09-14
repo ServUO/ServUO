@@ -330,7 +330,7 @@ namespace Server.Spells
         public static bool AddStatBonus(Mobile caster, Mobile target, StatType type, int bonus, TimeSpan duration)
         {
             int offset = bonus;
-            string name = String.Format("[Magic] {0} Buff", type);
+            string name = string.Format("[Magic] {0} Buff", type);
 
             StatMod mod = target.GetStatMod(name);
 
@@ -347,7 +347,7 @@ namespace Server.Spells
 
         public static int GetBuffOffset(Mobile m, StatType type)
         {
-            string name = String.Format("[Magic] {0} Buff", type);
+            string name = string.Format("[Magic] {0} Buff", type);
 
             StatMod mod = m.GetStatMod(name);
 
@@ -372,7 +372,7 @@ namespace Server.Spells
         public static bool AddStatCurse(Mobile caster, Mobile target, StatType type, int curse, TimeSpan duration)
         {
             int offset = curse;
-            string name = String.Format("[Magic] {0} Curse", type);
+            string name = string.Format("[Magic] {0} Curse", type);
 
             StatMod mod = target.GetStatMod(name);
 
@@ -397,7 +397,7 @@ namespace Server.Spells
 
         public static int GetCurseOffset(Mobile m, StatType type)
         {
-            string name = String.Format("[Magic] {0} Curse", type);
+            string name = string.Format("[Magic] {0} Curse", type);
 
             StatMod mod = m.GetStatMod(name);
 

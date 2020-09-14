@@ -205,7 +205,7 @@ namespace Server.Spells.Ninjitsu
 
             if (m.Skills.Ninjitsu.Value < entry.ReqSkill)
             {
-                string args = String.Format("{0}\t{1}\t ", entry.ReqSkill.ToString("F1"), SkillName.Ninjitsu);
+                string args = string.Format("{0}\t{1}\t ", entry.ReqSkill.ToString("F1"), SkillName.Ninjitsu);
                 m.SendLocalizedMessage(1063013, args);
                 // You need at least ~1_SKILL_REQUIREMENT~ ~2_SKILL_NAME~ skill to use that ability.
                 return MorphResult.NoSkill;
@@ -526,7 +526,7 @@ namespace Server.Spells.Ninjitsu
                             40 - b.Width / 2 - b.X,
                             30 - b.Height / 2 - b.Y,
                             entries[i].Tooltip);
-                        AddHtml(x + 84, y, 250, 60, Color(String.Format(entries[i].Name), 0xFFFFFF), false, false);
+                        AddHtml(x + 84, y, 250, 60, Color(string.Format(entries[i].Name), 0xFFFFFF), false, false);
 
                         current++;
                     }
@@ -535,7 +535,7 @@ namespace Server.Spells.Ninjitsu
 
             private string Color(string str, int color)
             {
-                return String.Format("<BASEFONT COLOR=#{0:X6}>{1}</BASEFONT>", color, str);
+                return string.Format("<BASEFONT COLOR=#{0:X6}>{1}</BASEFONT>", color, str);
             }
 
             public override void OnResponse(NetState sender, RelayInfo info)
@@ -570,7 +570,7 @@ namespace Server.Spells.Ninjitsu
 
                         string typename = entry.Name;
 
-                        BuffInfo.AddBuff(m_Caster, new BuffInfo(BuffIcon.AnimalForm, 1060612, 1075823, String.Format("{0}\t{1}", "aeiouy".IndexOf(typename.ToLower()[0]) >= 0 ? "an" : "a", typename)));
+                        BuffInfo.AddBuff(m_Caster, new BuffInfo(BuffIcon.AnimalForm, 1060612, 1075823, string.Format("{0}\t{1}", "aeiouy".IndexOf(typename.ToLower()[0]) >= 0 ? "an" : "a", typename)));
                     }
                 }
             }

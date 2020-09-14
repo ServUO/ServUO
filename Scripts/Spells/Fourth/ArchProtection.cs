@@ -72,9 +72,9 @@ namespace Server.Spells.Fourth
             FinishSequence();
         }
 
-        private static readonly Dictionary<Mobile, Int32> _Table = new Dictionary<Mobile, Int32>();
+        private static readonly Dictionary<Mobile, int> _Table = new Dictionary<Mobile, int>();
 
-        private static void AddEntry(Mobile m, Int32 v)
+        private static void AddEntry(Mobile m, int v)
         {
             _Table[m] = v;
         }

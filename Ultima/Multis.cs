@@ -159,12 +159,12 @@ namespace Ultima
             }
         }
 
-        public static List<Object[]> LoadFromDesigner(string FileName)
+        public static List<object[]> LoadFromDesigner(string FileName)
         {
-            List<object[]> multilist = new List<Object[]>();
+            List<object[]> multilist = new List<object[]>();
             string root = Path.GetFileNameWithoutExtension(FileName);
-            string idx = String.Format("{0}.idx", root);
-            string bin = String.Format("{0}.bin", root);
+            string idx = string.Format("{0}.idx", root);
+            string bin = string.Format("{0}.bin", root);
             if ((!File.Exists(idx)) || (!File.Exists(bin)))
             {
                 return multilist;
@@ -180,7 +180,7 @@ namespace Ultima
 
                     for (int i = 0; i < count; ++i)
                     {
-                        object[] data = new Object[2];
+                        object[] data = new object[2];
                         switch (version)
                         {
                             case 0:
@@ -1247,7 +1247,7 @@ namespace Ultima
                 for (int i = 0; i < m_SortedTiles.Length; ++i)
                 {
                     Tex.WriteLine(
-                        String.Format(
+                        string.Format(
                             "0x{0:X} {1} {2} {3} {4}",
                             m_SortedTiles[i].m_ItemID,
                             m_SortedTiles[i].m_OffsetX,
@@ -1266,12 +1266,12 @@ namespace Ultima
             {
                 for (int i = 0; i < m_SortedTiles.Length; ++i)
                 {
-                    Tex.WriteLine(String.Format("SECTION WORLDITEM {0}", i));
+                    Tex.WriteLine(string.Format("SECTION WORLDITEM {0}", i));
                     Tex.WriteLine("{");
-                    Tex.WriteLine(String.Format("\tID\t{0}", m_SortedTiles[i].m_ItemID));
-                    Tex.WriteLine(String.Format("\tX\t{0}", m_SortedTiles[i].m_OffsetX));
-                    Tex.WriteLine(String.Format("\tY\t{0}", m_SortedTiles[i].m_OffsetY));
-                    Tex.WriteLine(String.Format("\tZ\t{0}", m_SortedTiles[i].m_OffsetZ));
+                    Tex.WriteLine(string.Format("\tID\t{0}", m_SortedTiles[i].m_ItemID));
+                    Tex.WriteLine(string.Format("\tX\t{0}", m_SortedTiles[i].m_OffsetX));
+                    Tex.WriteLine(string.Format("\tY\t{0}", m_SortedTiles[i].m_OffsetY));
+                    Tex.WriteLine(string.Format("\tZ\t{0}", m_SortedTiles[i].m_OffsetZ));
                     Tex.WriteLine("\tColor\t0");
                     Tex.WriteLine("}");
                 }
@@ -1287,11 +1287,11 @@ namespace Ultima
                 Tex.WriteLine("6 version");
                 Tex.WriteLine("1 template id");
                 Tex.WriteLine("-1 item version");
-                Tex.WriteLine(String.Format("{0} num components", m_SortedTiles.Length));
+                Tex.WriteLine(string.Format("{0} num components", m_SortedTiles.Length));
                 for (int i = 0; i < m_SortedTiles.Length; ++i)
                 {
                     Tex.WriteLine(
-                        String.Format(
+                        string.Format(
                             "{0} {1} {2} {3} {4}",
                             m_SortedTiles[i].m_ItemID,
                             m_SortedTiles[i].m_OffsetX,

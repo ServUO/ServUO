@@ -1000,7 +1000,7 @@ namespace Server.Mobiles
                     Point2D point = m_Mobile.NavPoints[map][m_Mobile.CurrentNavPoint];
                     if (point.X != m_Mobile.X || point.Y != m_Mobile.Y)
                     {
-                        m_Mobile.DebugSay(String.Format("I will move towards my navpoint: {0}", point));
+                        m_Mobile.DebugSay(string.Format("I will move towards my navpoint: {0}", point));
                         //DoMove(m_Mobile.GetDirectionTo(point));
                         MoveResult res = DoMoveImpl(m_Mobile.GetDirectionTo(point));
 
@@ -1017,7 +1017,7 @@ namespace Server.Mobiles
                         {
                             m_Mobile.CurrentNavPoint++;
                             m_Mobile.DebugSay(
-                                String.Format("I will go to the next navpoint: {0}", m_Mobile.NavPoints[map][m_Mobile.CurrentNavPoint]));
+                                string.Format("I will go to the next navpoint: {0}", m_Mobile.NavPoints[map][m_Mobile.CurrentNavPoint]));
                         }
                     }
                 }
@@ -1263,7 +1263,7 @@ namespace Server.Mobiles
                     m_Mobile.Warmode = true;
                     m_Mobile.Combatant = null;
                     m_Mobile.ControlTarget = null;
-                    string petname = String.Format("{0}", m_Mobile.Name);
+                    string petname = string.Format("{0}", m_Mobile.Name);
                     m_Mobile.ControlMaster.SendLocalizedMessage(1049671, petname); //~1_PETNAME~ is now guarding you.
                     break;
                 case OrderType.Attack:
@@ -1561,12 +1561,12 @@ namespace Server.Mobiles
                         else if (m_Mobile.CanFriend(to))
                         {
                             // ~1_NAME~ will now accept movement commands from ~2_NAME~.
-                            from.SendLocalizedMessage(1049676, String.Format("{0}\t{1}", m_Mobile.Name, to.Name));
+                            from.SendLocalizedMessage(1049676, string.Format("{0}\t{1}", m_Mobile.Name, to.Name));
 
                             /* ~1_NAME~ has granted you the ability to give orders to their pet ~2_PET_NAME~.
                             * This creature will now consider you as a friend.
                             */
-                            to.SendLocalizedMessage(1043246, String.Format("{0}\t{1}", from.Name, m_Mobile.Name));
+                            to.SendLocalizedMessage(1043246, string.Format("{0}\t{1}", from.Name, m_Mobile.Name));
 
                             m_Mobile.AddPetFriend(to);
 
@@ -1601,12 +1601,12 @@ namespace Server.Mobiles
             else
             {
                 // ~1_NAME~ will no longer accept movement commands from ~2_NAME~.
-                from.SendLocalizedMessage(1070951, String.Format("{0}\t{1}", m_Mobile.Name, to.Name));
+                from.SendLocalizedMessage(1070951, string.Format("{0}\t{1}", m_Mobile.Name, to.Name));
 
                 /* ~1_NAME~ has no longer granted you the ability to give orders to their pet ~2_PET_NAME~.
                 * This creature will no longer consider you as a friend.
                 */
-                to.SendLocalizedMessage(1070952, String.Format("{0}\t{1}", from.Name, m_Mobile.Name));
+                to.SendLocalizedMessage(1070952, string.Format("{0}\t{1}", from.Name, m_Mobile.Name));
 
                 m_Mobile.RemovePetFriend(to);
             }
@@ -1796,7 +1796,7 @@ namespace Server.Mobiles
                     MessageType.Regular,
                     0x3B2,
                     1043255,
-                    String.Format("{0}", m_Mobile.Name),
+                    string.Format("{0}", m_Mobile.Name),
                     master.NetState); // ~1_NAME~ appears to have decided that it is better off without a master!
             }
 
@@ -1965,7 +1965,7 @@ namespace Server.Mobiles
                 }
                 else if (accepted && !m_Creature.CanBeControlledBy(to))
                 {
-                    string args = String.Format("{0}\t{1}\t ", to.Name, from.Name);
+                    string args = string.Format("{0}\t{1}\t ", to.Name, from.Name);
 
                     from.SendLocalizedMessage(1043248, args);
                     // The pet refuses to be transferred because it will not obey ~1_NAME~.~3_BLANK~
@@ -1976,7 +1976,7 @@ namespace Server.Mobiles
                 }
                 else if (accepted && !m_Creature.CanBeControlledBy(from))
                 {
-                    string args = String.Format("{0}\t{1}\t ", to.Name, from.Name);
+                    string args = string.Format("{0}\t{1}\t ", to.Name, from.Name);
 
                     from.SendLocalizedMessage(1043250, args);
                     // The pet refuses to be transferred because it will not obey you sufficiently.~3_BLANK~
@@ -2038,7 +2038,7 @@ namespace Server.Mobiles
 
                         m_Creature.PlaySound(m_Creature.GetIdleSound());
 
-                        string args = String.Format("{0}\t{1}\t{2}", from.Name, m_Creature.Name, to.Name);
+                        string args = string.Format("{0}\t{1}\t{2}", from.Name, m_Creature.Name, to.Name);
 
                         from.SendLocalizedMessage(1043253, args); // You have transferred your pet to ~3_GETTER~.
                         to.SendLocalizedMessage(1043252, args); // ~1_NAME~ has transferred the allegiance of ~2_PET_NAME~ to you.
@@ -2074,7 +2074,7 @@ namespace Server.Mobiles
                 }
                 else if (!m_Mobile.CanBeControlledBy(to))
                 {
-                    string args = String.Format("{0}\t{1}\t ", to.Name, from.Name);
+                    string args = string.Format("{0}\t{1}\t ", to.Name, from.Name);
 
                     from.SendLocalizedMessage(1043248, args);
                     // The pet refuses to be transferred because it will not obey ~1_NAME~.~3_BLANK~
@@ -2083,7 +2083,7 @@ namespace Server.Mobiles
                 }
                 else if (!m_Mobile.CanBeControlledBy(from))
                 {
-                    string args = String.Format("{0}\t{1}\t ", to.Name, from.Name);
+                    string args = string.Format("{0}\t{1}\t ", to.Name, from.Name);
 
                     from.SendLocalizedMessage(1043250, args);
                     // The pet refuses to be transferred because it will not obey you sufficiently.~3_BLANK~

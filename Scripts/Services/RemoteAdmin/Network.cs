@@ -29,7 +29,7 @@ namespace Server.RemoteAdmin
             string outStr;
             if (m_NewLine)
             {
-                outStr = String.Format("[{0}]: {1}", DateTime.UtcNow.ToString(DateFormat), str);
+                outStr = string.Format("[{0}]: {1}", DateTime.UtcNow.ToString(DateFormat), str);
                 m_NewLine = false;
             }
             else
@@ -48,7 +48,7 @@ namespace Server.RemoteAdmin
             if (m_NewLine)
             {
                 string outStr;
-                outStr = String.Format("[{0}]: {1}", DateTime.UtcNow.ToString(DateFormat), ch);
+                outStr = string.Format("[{0}]: {1}", DateTime.UtcNow.ToString(DateFormat), ch);
 
                 m_ConsoleData.Append(outStr);
                 SendToAll(outStr);
@@ -68,9 +68,9 @@ namespace Server.RemoteAdmin
         {
             string outStr;
             if (m_NewLine)
-                outStr = String.Format("[{0}]: {1}{2}", DateTime.UtcNow.ToString(DateFormat), line, Console.Out.NewLine);
+                outStr = string.Format("[{0}]: {1}{2}", DateTime.UtcNow.ToString(DateFormat), line, Console.Out.NewLine);
             else
-                outStr = String.Format("{0}{1}", line, Console.Out.NewLine);
+                outStr = string.Format("{0}{1}", line, Console.Out.NewLine);
 
             m_ConsoleData.Append(outStr);
             RoughTrimConsoleData();
@@ -124,7 +124,7 @@ namespace Server.RemoteAdmin
             }
             else if (cmd == 0xFF)
             {
-                string statStr = String.Format(", Name={0}, Age={1}, Clients={2}, Items={3}, Chars={4}, Mem={5}K, Ver={6}", Server.Misc.ServerList.ServerName, (int)(DateTime.UtcNow - Server.Items.Clock.ServerStart).TotalHours, NetState.Instances.Count, World.Items.Count, World.Mobiles.Count, (int)(System.GC.GetTotalMemory(false) / 1024), ProtocolVersion);
+                string statStr = string.Format(", Name={0}, Age={1}, Clients={2}, Items={3}, Chars={4}, Mem={5}K, Ver={6}", Server.Misc.ServerList.ServerName, (int)(DateTime.UtcNow - Server.Items.Clock.ServerStart).TotalHours, NetState.Instances.Count, World.Items.Count, World.Mobiles.Count, (int)(System.GC.GetTotalMemory(false) / 1024), ProtocolVersion);
                 state.Send(new UOGInfo(statStr));
                 state.Dispose();
             }

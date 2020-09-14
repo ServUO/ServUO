@@ -79,7 +79,7 @@ namespace Server.Spells.Spellweaving
                     {
                         m_Table[m] = new EssenceOfWindInfo(m, fcMalus, ssiMalus, duration);
 
-                        BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.EssenceOfWind, 1075802, duration, m, String.Format("{0}\t{1}", fcMalus.ToString(), ssiMalus.ToString())));
+                        BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.EssenceOfWind, 1075802, duration, m, string.Format("{0}\t{1}", fcMalus.ToString(), ssiMalus.ToString())));
 
                         m.Delta(MobileDelta.WeaponDamage);
                     }

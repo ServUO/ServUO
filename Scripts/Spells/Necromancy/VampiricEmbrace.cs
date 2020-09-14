@@ -53,7 +53,7 @@ namespace Server.Spells.Necromancy
             Effects.SendLocationParticles(EffectItem.Create(m.Location, m.Map, EffectItem.DefaultDuration), 0x376A, 1, 22, 67, 7, 9502, 0);
             Effects.PlaySound(m.Location, m.Map, 0x4B1);
 
-            BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.VampiricEmbrace, 1028812, 1153768, String.Format("{0}\t{1}\t{2}\t{3}", "20", "15", "3", "25")));
+            BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.VampiricEmbrace, 1028812, 1153768, string.Format("{0}\t{1}\t{2}\t{3}", "20", "15", "3", "25")));
             BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.PoisonImmunity, 1153785, 1153814));
 
             m.ResetStatTimers();

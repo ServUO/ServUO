@@ -75,7 +75,7 @@ namespace Server.Services.Virtues
                                         BuffIcon.Spirituality,
                                         1155824,
                                         1155825,
-                                        String.Format(
+                                        string.Format(
                                             "{0}\t{1}",
                                             context.Reduction.ToString(),
                                             context.Pool.ToString()))); // ~1_VAL~% Reduction to Incoming Damage<br>~2_VAL~ Shield HP Remaining
@@ -167,7 +167,7 @@ namespace Server.Services.Virtues
                             BuffIcon.Spirituality,
                             1155824,
                             1155825,
-                            String.Format(
+                            string.Format(
                                 "{0}\t{1}",
                                 context.Reduction,
                                 context.Pool))); // ~1_VAL~% Reduction to Incoming Damage<br>~2_VAL~ Shield HP Remaining

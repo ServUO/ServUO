@@ -564,7 +564,7 @@ namespace Server.Commands
             }
             catch (Exception e)
             {
-                throw new Exception(String.Format("Bad type: {0}", m_Type), e);
+                throw new Exception(string.Format("Bad type: {0}", m_Type), e);
             }
 
             if (item is BaseAddon)
@@ -1294,7 +1294,7 @@ namespace Server.Commands
             list.m_Type = ScriptCompiler.FindTypeByName(line.Substring(0, indexOf++), true);
 
             if (list.m_Type == null)
-                throw new ArgumentException(String.Format("Type not found for header: '{0}'", line));
+                throw new ArgumentException(string.Format("Type not found for header: '{0}'", line));
 
             line = line.Substring(indexOf);
             indexOf = line.IndexOf('(');

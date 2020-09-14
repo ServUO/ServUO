@@ -215,7 +215,7 @@ namespace Server.Items
         {
             if (GemType != GemType.None)
             {
-                list.Add(1159018, String.Format("#{0}", GemLocalization())); // ~1_type~ octopus necklace
+                list.Add(1159018, string.Format("#{0}", GemLocalization())); // ~1_type~ octopus necklace
             }
             else
             {

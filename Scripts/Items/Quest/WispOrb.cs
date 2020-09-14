@@ -187,8 +187,8 @@ namespace Server.Engines.Despise
         {
             base.GetProperties(list);
 
-            list.Add(1153329, String.Format("#{0}", GetAlignment())); // Alignment: ~1_VAL~
-            list.Add(1153306, String.Format("{0}", GetArmyPower())); // Army Power: ~1_VAL~
+            list.Add(1153329, string.Format("#{0}", GetAlignment())); // Alignment: ~1_VAL~
+            list.Add(1153306, string.Format("{0}", GetArmyPower())); // Army Power: ~1_VAL~
             list.Add(1153272, m_Pet != null ? m_Pet.Name : "None"); // Controlling: ~1_VAL~
 
             object name = GetAnchorName();
@@ -196,7 +196,7 @@ namespace Server.Engines.Despise
             if (name != null)                   //Anchor: ~1_NAME~
             {
                 if (name is int)
-                    list.Add(1153265, String.Format("#{0}", (int)name));
+                    list.Add(1153265, string.Format("#{0}", (int)name));
                 else if (name is string)
                     list.Add(1153265, (string)name);
             }
@@ -204,8 +204,8 @@ namespace Server.Engines.Despise
             int leash = 1153262 + (int)m_LeashLength;
             int aggr = 1153269 + (int)m_Aggression;
 
-            list.Add(1153260, String.Format("#{0}", leash.ToString())); // Leash: ~1_VAL~
-            list.Add(1153267, String.Format("#{0}", aggr.ToString())); // Aggression: ~1_VAL~
+            list.Add(1153260, string.Format("#{0}", leash.ToString())); // Leash: ~1_VAL~
+            list.Add(1153267, string.Format("#{0}", aggr.ToString())); // Aggression: ~1_VAL~
         }
 
         public override bool DropToWorld(Mobile m, Point3D p)
@@ -422,10 +422,10 @@ namespace Server.Engines.Despise
             }
 
             if (m_Anchor is StaticTarget)
-                return String.Format("{0} {1}", ((StaticTarget)m_Anchor).Name, ((StaticTarget)m_Anchor).Location.ToString());
+                return string.Format("{0} {1}", ((StaticTarget)m_Anchor).Name, ((StaticTarget)m_Anchor).Location.ToString());
 
             if (m_Anchor is LandTarget)
-                return String.Format("{0} {1}", ((LandTarget)m_Anchor).Name, ((LandTarget)m_Anchor).Location.ToString());
+                return string.Format("{0} {1}", ((LandTarget)m_Anchor).Name, ((LandTarget)m_Anchor).Location.ToString());
 
             Point3D p = new Point3D(m_Anchor);
 
@@ -457,7 +457,7 @@ namespace Server.Engines.Despise
                 object name = GetAnchorName(); // Your possessed creature is now anchored to ~1_NAME~
 
                 if (name is int)
-                    from.SendLocalizedMessage(1153280, String.Format("#{0}", (int)name));
+                    from.SendLocalizedMessage(1153280, string.Format("#{0}", (int)name));
                 else if (name is string)
                     from.SendLocalizedMessage(1153280, (string)name);
 

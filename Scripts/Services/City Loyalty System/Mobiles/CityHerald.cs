@@ -27,7 +27,7 @@ namespace Server.Engines.CityLoyalty
             }
             set
             {
-                if (String.IsNullOrEmpty(value))
+                if (string.IsNullOrEmpty(value))
                 {
                     AnnouncementExpires = DateTime.MinValue;
 
@@ -154,7 +154,7 @@ namespace Server.Engines.CityLoyalty
 
         public void DoAnnouncement()
         {
-            if (!String.IsNullOrEmpty(_Announcement))
+            if (!string.IsNullOrEmpty(_Announcement))
             {
                 PublicOverheadMessage(MessageType.Regular, 0x3B2, 502976); // Hear ye! Hear ye!
                 Timer.DelayCall(TimeSpan.FromSeconds(3), () =>

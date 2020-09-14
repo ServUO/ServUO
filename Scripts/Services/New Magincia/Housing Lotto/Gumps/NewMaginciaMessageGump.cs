@@ -24,7 +24,7 @@ namespace Server.Engines.NewMagincia
 
             AddBackground(0, 0, 164, 32, 0x24B8);
             AddButton(7, 7, 0x1523, 0x1523, 1, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(37, 7, 120, 18, 1150425, String.Format("{0}", Messages.Count), GreenColor, false, false); // ~1_COUNT~ Messages
+            AddHtmlLocalized(37, 7, 120, 18, 1150425, string.Format("{0}", Messages.Count), GreenColor, false, false); // ~1_COUNT~ Messages
         }
 
         public override void OnResponse(RelayInfo info)
@@ -79,7 +79,7 @@ namespace Server.Engines.NewMagincia
             AddBackground(0, 0, 314 + width, 241 + width, 0x24B8);
             AddButton(7, 7, 0x1523, 0x1523, 0, GumpButtonType.Reply, 0);
             AddButton(290 + width, 7, buttonid, buttonid, 1, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(47, 7, Widescreen ? 460 : 194, 18, 1150425, String.Format("{0}", Messages.Count), GreenColor, false, false); // ~1_COUNT~ Messages   
+            AddHtmlLocalized(47, 7, Widescreen ? 460 : 194, 18, 1150425, string.Format("{0}", Messages.Count), GreenColor, false, false); // ~1_COUNT~ Messages   
 
             int page = 1;
             int y = 0;
@@ -216,7 +216,7 @@ namespace Server.Engines.NewMagincia
                 }
                 else
                 {
-                    AddHtmlLocalized(47, 7, 360, 18, 1150425, String.Format("{0}", Messages.Count), GreenColor, false, false); // ~1_COUNT~ Messages
+                    AddHtmlLocalized(47, 7, 360, 18, 1150425, string.Format("{0}", Messages.Count), GreenColor, false, false); // ~1_COUNT~ Messages
                 }
 
                 if (Message.Body != null)
@@ -240,7 +240,7 @@ namespace Server.Engines.NewMagincia
 
                 TimeSpan ts = Message.Expires - DateTime.UtcNow;
 
-                AddHtmlLocalized(7, 194, 400, 18, 1150432, String.Format("@{0}@{1}@{2}", ts.Days, ts.Hours, ts.Minutes), GreenColor, false, false); // This message will expire in ~1_DAYS~ days, ~2_HOURS~ hours, and ~3_MIN~ minutes.
+                AddHtmlLocalized(7, 194, 400, 18, 1150432, string.Format("@{0}@{1}@{2}", ts.Days, ts.Hours, ts.Minutes), GreenColor, false, false); // This message will expire in ~1_DAYS~ days, ~2_HOURS~ hours, and ~3_MIN~ minutes.
 
                 AddHtmlLocalized(47, 212, 360, 22, 1150433, EntryColor, false, false); // DELETE NOW
                 AddButton(7, 212, 4005, 4007, 2, GumpButtonType.Reply, 0);

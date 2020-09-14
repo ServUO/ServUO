@@ -16,7 +16,7 @@ namespace Server.Engines.Points
 
         public override void SendMessage(PlayerMobile from, double old, double points, bool quest)
         {
-            from.SendLocalizedMessage(1152649, String.Format("{0}\t{1}", from.Map.ToString(), points));
+            from.SendLocalizedMessage(1152649, string.Format("{0}\t{1}", from.Map.ToString(), points));
             // For your participation in the Battle for the Void Pool on ~1_FACET~, you have received ~2_POINTS~ reward points. Any reward points you have accumulated may be redeemed by visiting Vela in Cove.
         }
 

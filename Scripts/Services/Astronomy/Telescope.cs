@@ -90,7 +90,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if (!String.IsNullOrEmpty(_DisplayName))
+            if (!string.IsNullOrEmpty(_DisplayName))
             {
                 list.Add(1158477, _DisplayName); // <BASEFONT COLOR=#FFD24D>From the personal study of ~1_NAME~<BASEFONT COLOR=#FFFFFF>
             }

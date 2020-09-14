@@ -103,7 +103,7 @@ namespace Server.Engines.CityLoyalty
         public bool ArtisanFestivalActive => SeasonalEventSystem.IsActive(EventType.ArtisanFestival);
         public static readonly bool AwakeingEventActive = false;
 
-        public override TextDefinition Name => new TextDefinition(String.Format("{0}", City.ToString()));
+        public override TextDefinition Name => new TextDefinition(string.Format("{0}", City.ToString()));
         public override bool AutoAdd => false;
         public override double MaxPoints => double.MaxValue;
         public override PointsType Loyalty => PointsType.None;
@@ -745,17 +745,17 @@ namespace Server.Engines.CityLoyalty
         {
             switch (deal)
             {
-                case TradeDeal.OrderOfEngineers: m.AddStatMod(new StatMod(StatType.Dex, String.Format("TradeDeal_{0}", StatType.Dex), 3, TimeSpan.Zero)); break;
-                case TradeDeal.MiningCooperative: m.AddStatMod(new StatMod(StatType.Str, String.Format("TradeDeal_{0}", StatType.Str), 3, TimeSpan.Zero)); break;
-                case TradeDeal.LeagueOfRangers: m.AddStatMod(new StatMod(StatType.Int, String.Format("TradeDeal_{0}", StatType.Int), 3, TimeSpan.Zero)); break;
+                case TradeDeal.OrderOfEngineers: m.AddStatMod(new StatMod(StatType.Dex, string.Format("TradeDeal_{0}", StatType.Dex), 3, TimeSpan.Zero)); break;
+                case TradeDeal.MiningCooperative: m.AddStatMod(new StatMod(StatType.Str, string.Format("TradeDeal_{0}", StatType.Str), 3, TimeSpan.Zero)); break;
+                case TradeDeal.LeagueOfRangers: m.AddStatMod(new StatMod(StatType.Int, string.Format("TradeDeal_{0}", StatType.Int), 3, TimeSpan.Zero)); break;
             }
         }
 
         public static void RemoveTradeDeal(Mobile m)
         {
-            m.RemoveStatMod(String.Format("TradeDeal_{0}", StatType.Dex));
-            m.RemoveStatMod(String.Format("TradeDeal_{0}", StatType.Str));
-            m.RemoveStatMod(String.Format("TradeDeal_{0}", StatType.Int));
+            m.RemoveStatMod(string.Format("TradeDeal_{0}", StatType.Dex));
+            m.RemoveStatMod(string.Format("TradeDeal_{0}", StatType.Str));
+            m.RemoveStatMod(string.Format("TradeDeal_{0}", StatType.Int));
         }
 
         public static void OnBODTurnIn(Mobile from, int gold)
@@ -916,10 +916,10 @@ namespace Server.Engines.CityLoyalty
                 {
                     CityLoyaltyEntry entry = city.GetPlayerEntry<CityLoyaltyEntry>(pm, true);
 
-                    if (entry != null && !String.IsNullOrEmpty(entry.CustomTitle))
+                    if (entry != null && !string.IsNullOrEmpty(entry.CustomTitle))
                     {
-                        prefix = String.Format("{0} {1} the {2}", prefix, pm.Name, entry.CustomTitle);
-                        list.Add(1154017, String.Format("{0}\t{1}", prefix, city.Definition.Name)); // ~1_TITLE~ of ~2_CITY~
+                        prefix = string.Format("{0} {1} the {2}", prefix, pm.Name, entry.CustomTitle);
+                        list.Add(1154017, string.Format("{0}\t{1}", prefix, city.Definition.Name)); // ~1_TITLE~ of ~2_CITY~
                         return true;
                     }
                 }
@@ -942,8 +942,8 @@ namespace Server.Engines.CityLoyalty
             {
                 CityLoyaltyEntry entry = city.GetPlayerEntry<CityLoyaltyEntry>(pm, true);
 
-                if (entry != null && !String.IsNullOrEmpty(entry.CustomTitle))
-                    str = String.Format("{0}\t{1}", entry.CustomTitle, city.Definition.Name);
+                if (entry != null && !string.IsNullOrEmpty(entry.CustomTitle))
+                    str = string.Format("{0}\t{1}", entry.CustomTitle, city.Definition.Name);
             }
 
             return str != null;
@@ -1144,7 +1144,7 @@ namespace Server.Engines.CityLoyalty
             if (gold > 0)
             {
                 origin.AddToTreasury(from, gold);
-                from.SendLocalizedMessage(1154761, String.Format("{0}\t{1}", gold.ToString("N0", CultureInfo.GetCultureInfo("en-US")), origin.Definition.Name)); // ~1_val~ gold has been deposited into the ~2_NAME~ City treasury for your efforts!
+                from.SendLocalizedMessage(1154761, string.Format("{0}\t{1}", gold.ToString("N0", CultureInfo.GetCultureInfo("en-US")), origin.Definition.Name)); // ~1_val~ gold has been deposited into the ~2_NAME~ City treasury for your efforts!
             }
 
             if (entry.Distance > 0)

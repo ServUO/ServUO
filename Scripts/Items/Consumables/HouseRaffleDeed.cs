@@ -197,11 +197,11 @@ namespace Server.Items
             private static string FormatDescription(HouseRaffleDeed deed)
             {
                 if (deed == null)
-                    return String.Empty;
+                    return string.Empty;
 
                 if (deed.IsExpired)
                 {
-                    return String.Format(
+                    return string.Format(
                                          "<bodytextblack>" +
                                          "This deed once entitled the bearer to build a house on the plot of land " +
                                          "located at {0} on the {1} facet.<br><br>" +
@@ -216,7 +216,7 @@ namespace Server.Items
                 {
                     int daysLeft = (int)Math.Ceiling((deed.Stone.Started + deed.Stone.Duration + HouseRaffleStone.ExpirationTime - DateTime.UtcNow).TotalDays);
 
-                    return String.Format(
+                    return string.Format(
                                          "<bodytextblack>" +
                                          "This deed entitles the bearer to build a house on the plot of land " +
                                          "located at {0} on the {1} facet.<br><br>" +

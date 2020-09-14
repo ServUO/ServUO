@@ -1176,8 +1176,8 @@ namespace Server.Mobiles
                 // display the item list
                 if (m_SearchList != null)
                 {
-                    AddLabel(180, y - 50, 68, String.Format("Found {0} items/mobiles", m_SearchList.Count));
-                    AddLabel(400, y - 50, 68, String.Format("Displaying {0}-{1}", DisplayFrom,
+                    AddLabel(180, y - 50, 68, string.Format("Found {0} items/mobiles", m_SearchList.Count));
+                    AddLabel(400, y - 50, 68, string.Format("Displaying {0}-{1}", DisplayFrom,
                         (DisplayFrom + MaxEntries < m_SearchList.Count ? DisplayFrom + MaxEntries : m_SearchList.Count)));
                     // count the number of selected objects
                     int count = 0;
@@ -1185,7 +1185,7 @@ namespace Server.Mobiles
                     {
                         if (e.Selected) count++;
                     }
-                    AddLabel(600, y - 50, 33, String.Format("Selected {0}", count));
+                    AddLabel(600, y - 50, 33, string.Format("Selected {0}", count));
                 }
 
                 // display the select-all-displayed toggle
@@ -1522,9 +1522,9 @@ namespace Server.Mobiles
                     ystr = arglist[arglist.Length - 1];
                 }
                 if (Dsort)
-                    return String.Compare(ystr, xstr, true);
+                    return string.Compare(ystr, xstr, true);
                 else
-                    return String.Compare(xstr, ystr, true);
+                    return string.Compare(xstr, ystr, true);
             }
         }
 
@@ -1570,9 +1570,9 @@ namespace Server.Mobiles
                     ystr = ((Mobile)y).Name;
                 }
                 if (Dsort)
-                    return String.Compare(ystr, xstr, true);
+                    return string.Compare(ystr, xstr, true);
                 else
-                    return String.Compare(xstr, ystr, true);
+                    return string.Compare(xstr, ystr, true);
             }
         }
 
@@ -1622,9 +1622,9 @@ namespace Server.Mobiles
                         ystr = ((Mobile)y).Map.ToString();
                 }
                 if (Dsort)
-                    return String.Compare(ystr, xstr, true);
+                    return string.Compare(ystr, xstr, true);
                 else
-                    return String.Compare(xstr, ystr, true);
+                    return string.Compare(xstr, ystr, true);
             }
         }
 
@@ -1801,7 +1801,7 @@ namespace Server.Mobiles
             if (System.IO.Directory.Exists(XmlSpawner.XmlSpawnDir) && filename != null && !filename.StartsWith("/") && !filename.StartsWith("\\"))
             {
                 // put it in the defaults directory if it exists
-                dirname = String.Format("{0}/{1}", XmlSpawner.XmlSpawnDir, filename);
+                dirname = string.Format("{0}/{1}", XmlSpawner.XmlSpawnDir, filename);
             }
             else
             {
@@ -2244,7 +2244,7 @@ namespace Server.Mobiles
                     }
                 }
 
-                AddLabel(20, 225, 33, String.Format("Bring {0} objects to you?", count));
+                AddLabel(20, 225, 33, string.Format("Bring {0} objects to you?", count));
                 AddRadio(35, 255, 9721, 9724, false, 1); // accept/yes radio
                 AddRadio(135, 255, 9721, 9724, true, 2); // decline/no radio
                 AddHtmlLocalized(72, 255, 200, 30, 1049016, 0x7fff, false, false); // Yes
@@ -2328,7 +2328,7 @@ namespace Server.Mobiles
                     }
                 }
 
-                AddLabel(20, 225, 33, String.Format("Delete {0} objects?", count));
+                AddLabel(20, 225, 33, string.Format("Delete {0} objects?", count));
                 AddRadio(35, 255, 9721, 9724, false, 1); // accept/yes radio
                 AddRadio(135, 255, 9721, 9724, true, 2); // decline/no radio
                 AddHtmlLocalized(72, 255, 200, 30, 1049016, 0x7fff, false, false); // Yes

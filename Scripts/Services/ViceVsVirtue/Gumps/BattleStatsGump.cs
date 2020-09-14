@@ -25,13 +25,13 @@ namespace Server.Engines.VvV
             AddBackground(0, 0, 500, 500, 9380);
 
             AddHtmlLocalized(0, 40, 500, 20, 1154645, "#1154945", Color16, false, false); // The Battle between Vice and Virtue has ended!
-            AddHtml(40, 65, 420, 20, String.Format("<basefont color=#B22222>{0} [{1}] has won the battle!", leader.Guild.Name, leader.Guild.Abbreviation), false, false);
+            AddHtml(40, 65, 420, 20, string.Format("<basefont color=#B22222>{0} [{1}] has won the battle!", leader.Guild.Name, leader.Guild.Abbreviation), false, false);
 
             int y = 90;
 
             if (leader.Guild.Alliance != null)
             {
-                AddHtml(40, y, 420, 20, String.Format("<basefont color=#B22222>The {0} Alliance has won the battle!", leader.Guild.Alliance.Name), false, false);
+                AddHtml(40, y, 420, 20, string.Format("<basefont color=#B22222>The {0} Alliance has won the battle!", leader.Guild.Alliance.Name), false, false);
                 y += 25;
             }
 

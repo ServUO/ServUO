@@ -69,7 +69,7 @@ namespace Ultima
             {
                 m_Args[i + 1] = args[i];
             }
-            return String.Format(m_FmtTxt, m_Args);
+            return string.Format(m_FmtTxt, m_Args);
         }
 
         public string SplitFormat(string argstr)
@@ -83,7 +83,7 @@ namespace Ultima
             {
                 m_Args[i + 1] = args[i];
             }
-            return String.Format(m_FmtTxt, m_Args);		
+            return string.Format(m_FmtTxt, m_Args);		
         }
     }
 }

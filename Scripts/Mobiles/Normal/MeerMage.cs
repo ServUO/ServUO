@@ -198,7 +198,7 @@ namespace Server.Mobiles
                     if ((count % 4) == 0)
                     {
                         m.LocalOverheadMessage(Network.MessageType.Emote, m.SpeechHue, true, "* The swarm of insects bites and stings your flesh! *");
-                        m.NonlocalOverheadMessage(Network.MessageType.Emote, m.SpeechHue, true, String.Format("* {0} is stung by a swarm of insects *", m.Name));
+                        m.NonlocalOverheadMessage(Network.MessageType.Emote, m.SpeechHue, true, string.Format("* {0} is stung by a swarm of insects *", m.Name));
                     }
 
                     m.FixedParticles(0x91C, 10, 180, 9539, EffectLayer.Waist);

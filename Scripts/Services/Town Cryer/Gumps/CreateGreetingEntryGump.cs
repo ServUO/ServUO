@@ -18,10 +18,10 @@ namespace Server.Services.TownCryer
             {
                 Edit = true;
 
-                _Headline = Entry.Title != null ? Entry.Title.String : String.Empty;
-                _Body = Entry.Body1 != null ? Entry.Body1.String : String.Empty;
-                _Body2 = Entry.Body2 != null ? Entry.Body2 : String.Empty;
-                _Body3 = Entry.Body3 != null ? Entry.Body3 : String.Empty;
+                _Headline = Entry.Title != null ? Entry.Title.String : string.Empty;
+                _Body = Entry.Body1 != null ? Entry.Body1.String : string.Empty;
+                _Body2 = Entry.Body2 != null ? Entry.Body2 : string.Empty;
+                _Body3 = Entry.Body3 != null ? Entry.Body3 : string.Empty;
 
                 _Link = Entry.Link;
                 _LinkText = Entry.LinkText;
@@ -33,7 +33,7 @@ namespace Server.Services.TownCryer
             base.AddGumpLayout();
 
             AddHtmlLocalized(58, 140, 100, 20, 1158027, false, false); // Author:
-            AddLabel(105, 140, 0, String.Format("{1} {0}", User.Name, User.AccessLevel.ToString()));
+            AddLabel(105, 140, 0, string.Format("{1} {0}", User.Name, User.AccessLevel.ToString()));
 
             AddHtmlLocalized(58, 160, 100, 20, 1158026, false, false); // Headline:
             AddBackground(58, 180, 740, 20, 0x2486);
@@ -146,7 +146,7 @@ namespace Server.Services.TownCryer
 
                 int expires = -1;
 
-                if (!String.IsNullOrEmpty(exp))
+                if (!string.IsNullOrEmpty(exp))
                 {
                     expires = Utility.ToInt32(exp);
                 }

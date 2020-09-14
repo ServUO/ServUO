@@ -467,7 +467,7 @@ namespace Ultima
         /// <returns>True if the Client is running, false if not.</returns>
         public static bool SendText(string format, params object[] args)
         {
-            return SendText(String.Format(format, args));
+            return SendText(string.Format(format, args));
         }
 
         private static ClientWindowHandle FindHandle()

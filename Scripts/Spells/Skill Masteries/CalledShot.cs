@@ -74,7 +74,7 @@ namespace Server.Spells.SkillMasteries
 
                 AddToCooldown(TimeSpan.FromSeconds(60));
 
-                BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.CalledShot, 1156025, 1156026, duration, Caster, String.Format("{0}\t{1}", _HCIBonus.ToString(), _DamageBonus.ToString())));
+                BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.CalledShot, 1156025, 1156026, duration, Caster, string.Format("{0}\t{1}", _HCIBonus.ToString(), _DamageBonus.ToString())));
                 //Hit Chance Increase: ~1_VAL~%<br>Damage Increase: ~2_VAL~%
             }
 

@@ -89,11 +89,11 @@ namespace Server.Items
             int minutes = totalSeconds / 60;
 
             if (minutes != 0 && seconds != 0)
-                return String.Format("{0} minute{1} and {2} second{3}", minutes, minutes == 1 ? "" : "s", seconds, seconds == 1 ? "" : "s");
+                return string.Format("{0} minute{1} and {2} second{3}", minutes, minutes == 1 ? "" : "s", seconds, seconds == 1 ? "" : "s");
             else if (minutes != 0)
-                return String.Format("{0} minute{1}", minutes, minutes == 1 ? "" : "s");
+                return string.Format("{0} minute{1}", minutes, minutes == 1 ? "" : "s");
             else
-                return String.Format("{0} second{1}", seconds, seconds == 1 ? "" : "s");
+                return string.Format("{0} second{1}", seconds, seconds == 1 ? "" : "s");
         }
 
         public static void Initialize()
@@ -571,7 +571,7 @@ namespace Server.Items
         public string SafeString(string v)
         {
             if (v == null)
-                return String.Empty;
+                return string.Empty;
 
             return v;
         }
@@ -651,7 +651,7 @@ namespace Server.Items
         public string SafeString(string v)
         {
             if (v == null)
-                return String.Empty;
+                return string.Empty;
 
             return v;
         }

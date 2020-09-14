@@ -222,7 +222,7 @@ namespace Server.Mobiles
             {
                 get
                 {
-                    string text = String.Empty;
+                    string text = string.Empty;
 
                     foreach (string s in m_Arguments)
                         text += '|' + s;
@@ -267,7 +267,7 @@ namespace Server.Mobiles
                 }
                 else if (m_Message.String != null)
                 {
-                    string message = String.Format("<BASEFONT COLOR=#{0:X6}>{1}</BASEFONT>", color, ConstructString(herald, null));
+                    string message = string.Format("<BASEFONT COLOR=#{0:X6}>{1}</BASEFONT>", color, ConstructString(herald, null));
 
                     return new GumpHtml(x, y, width, height, message, false, false);
                 }
@@ -277,14 +277,14 @@ namespace Server.Mobiles
 
             public string ConstructNumber(AttendantHerald herald, Mobile visitor)
             {
-                string args = String.Empty;
+                string args = string.Empty;
 
                 if (m_Arguments != null && m_Arguments.Length > 0)
                 {
                     args = Construct(herald, visitor, m_Arguments[0]);
 
                     for (int i = 1; i < m_Arguments.Length; i++)
-                        args = String.Format("{0}\t{1}", args, Construct(herald, visitor, m_Arguments[i]));
+                        args = string.Format("{0}\t{1}", args, Construct(herald, visitor, m_Arguments[i]));
                 }
 
                 return args;
@@ -301,7 +301,7 @@ namespace Server.Mobiles
                     for (int i = 0; i < args.Length; i++)
                         args[i] = Construct(herald, visitor, m_Arguments[i]);
 
-                    message = String.Format(message, args);
+                    message = string.Format(message, args);
                 }
 
                 return message;
@@ -310,7 +310,7 @@ namespace Server.Mobiles
             public string Construct(AttendantHerald herald, Mobile visitor, string argument)
             {
                 if (herald == null || herald.Deleted || herald.ControlMaster == null)
-                    return String.Empty;
+                    return string.Empty;
 
                 Mobile m = herald.ControlMaster;
 
@@ -334,7 +334,7 @@ namespace Server.Mobiles
                         return visitor != null ? visitor.Name : argument;
                 }
 
-                return String.Empty;
+                return string.Empty;
             }
 
             public void Serialize(GenericWriter writer)

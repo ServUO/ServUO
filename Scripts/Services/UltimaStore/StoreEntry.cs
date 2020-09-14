@@ -88,7 +88,7 @@ namespace Server.Engines.UOStore
                 return true;
             }
 
-            Utility.WriteConsoleColor(ConsoleColor.Red, String.Format("[Ultima Store Warning]: {0} failed to construct.", ItemType.Name));
+            Utility.WriteConsoleColor(ConsoleColor.Red, string.Format("[Ultima Store Warning]: {0} failed to construct.", ItemType.Name));
 
             return false;
         }

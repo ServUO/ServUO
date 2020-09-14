@@ -35,10 +35,10 @@ namespace Server.Spells
             }
         }
 
-        private static readonly Dictionary<Type, Int32> m_IDsFromTypes = new Dictionary<Type, Int32>(m_Types.Length);
+        private static readonly Dictionary<Type, int> m_IDsFromTypes = new Dictionary<Type, int>(m_Types.Length);
 
-        private static readonly Dictionary<Int32, SpecialMove> m_SpecialMoves = new Dictionary<Int32, SpecialMove>();
-        public static Dictionary<Int32, SpecialMove> SpecialMoves => m_SpecialMoves;
+        private static readonly Dictionary<int, SpecialMove> m_SpecialMoves = new Dictionary<int, SpecialMove>();
+        public static Dictionary<int, SpecialMove> SpecialMoves => m_SpecialMoves;
 
         public static int GetRegistryNumber(ISpell s)
         {
@@ -156,7 +156,7 @@ namespace Server.Spells
         {
             for (int i = 0; i < m_CircleNames.Length; ++i)
             {
-                Type t = ScriptCompiler.FindTypeByFullName(String.Format("Server.Spells.{0}.{1}", m_CircleNames[i], name));
+                Type t = ScriptCompiler.FindTypeByFullName(string.Format("Server.Spells.{0}.{1}", m_CircleNames[i], name));
 
                 if (t != null && !t.IsSubclassOf(typeof(SpecialMove)))
                 {

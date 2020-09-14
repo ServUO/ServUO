@@ -30,11 +30,11 @@ namespace Server.Engines.Khaldun
         {
             AddBackground(0, 0, 454, 400, 9380);
             AddItem(75, 120, itemID, itemHue);
-            AddHtml(177, 50, 250, 20, String.Format("<center><basefont color=#6B1010>{0}</center>", itemName), false, false);
+            AddHtml(177, 50, 250, 20, string.Format("<center><basefont color=#6B1010>{0}</center>", itemName), false, false);
 
             if (!string.IsNullOrEmpty(secondLineText))
             {
-                AddHtml(177, 77, 250, 40, String.Format("<center><basefont color=#6B1010>{0}</center>", secondLineText), false, false);
+                AddHtml(177, 77, 250, 40, string.Format("<center><basefont color=#6B1010>{0}</center>", secondLineText), false, false);
                 AddHtmlLocalized(177, 122, 250, 228, cliloc, true, true);
             }
             else

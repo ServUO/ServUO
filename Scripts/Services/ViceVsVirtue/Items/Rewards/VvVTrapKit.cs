@@ -192,8 +192,8 @@ namespace Server.Engines.VvV
         {
             base.GetProperties(list);
 
-            list.Add(1154938, String.Format("#{0}", ((int)DeploymentType).ToString())); // Deployment Type: ~1_DEPLOYTYPE~
-            list.Add(1154941, String.Format("#{0}", ((int)TrapType).ToString())); // Damage Type: ~1_DMGTYPE~
+            list.Add(1154938, string.Format("#{0}", ((int)DeploymentType).ToString())); // Deployment Type: ~1_DEPLOYTYPE~
+            list.Add(1154941, string.Format("#{0}", ((int)TrapType).ToString())); // Damage Type: ~1_DMGTYPE~
             list.Add(1154937); // VvV Item
         }
 

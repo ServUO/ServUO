@@ -79,7 +79,7 @@ namespace Server.Spells.SkillMasteries
                         _Mod = new ResistanceMod(ResistanceType.Energy, -mod);
                         m.AddResistanceMod(_Mod);
 
-                        BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.DeathRay, 1155896, 1156085, String.Format("{0}\t{1}", ((int)damage).ToString(), m.Name))); // Deals ~2_DAMAGE~ to ~1_NAME~ every 3 seconds while in range. Preforming any action will end spell.
+                        BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.DeathRay, 1155896, 1156085, string.Format("{0}\t{1}", ((int)damage).ToString(), m.Name))); // Deals ~2_DAMAGE~ to ~1_NAME~ every 3 seconds while in range. Preforming any action will end spell.
                         BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.DeathRayDebuff, 1155896, 1156086, mod.ToString())); // Energy Resist Debuff: ~1_VAL~%
 
                         Target = m;

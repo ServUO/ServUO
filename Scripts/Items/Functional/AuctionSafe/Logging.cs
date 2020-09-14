@@ -56,7 +56,7 @@ namespace Server.Engines.Auction
 
         private static string GetTimeStamp(DateTime time)
         {
-            return String.Format(" [{0}-{1}-{2}-{3}-{4}-{5}]",
+            return string.Format(" [{0}-{1}-{2}-{3}-{4}-{5}]",
                 time.Day,
                 time.Month,
                 time.Year,

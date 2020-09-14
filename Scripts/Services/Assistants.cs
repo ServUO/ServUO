@@ -38,7 +38,7 @@ namespace Server.Misc
             JScriptMacros = 1 << 19, // Javascript macro engine
             AutoRemount = 1 << 20, // Auto remount after dismount
 
-            All = UInt64.MaxValue // Every feature possible
+            All = ulong.MaxValue // Every feature possible
         }
 
         public class Settings

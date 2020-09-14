@@ -95,16 +95,16 @@ namespace Server.Items
                 {
                     Ultima.StringList strList = VendorSearch.StringList;
 
-                    args = String.Format("{0} {1} {2}", strList.GetString(capt.Adjective), strList.GetString(capt.Noun), capt.PirateName > 0 ? strList.GetString(capt.PirateName) : capt.Name);
+                    args = string.Format("{0} {1} {2}", strList.GetString(capt.Adjective), strList.GetString(capt.Noun), capt.PirateName > 0 ? strList.GetString(capt.PirateName) : capt.Name);
 
                     AddHtml(110, y, 400, 16, Color(C16232(lightHue), args), false, false);
                 }
                 else
                 {
                     if (capt.PirateName > 0)
-                        args = String.Format("#{0}\t#{1}\t#{2}", capt.Adjective, capt.Noun, capt.PirateName);
+                        args = string.Format("#{0}\t#{1}\t#{2}", capt.Adjective, capt.Noun, capt.PirateName);
                     else
-                        args = String.Format("#{0}\t#{1}\t{2}", capt.Adjective, capt.Noun, capt.Name);
+                        args = string.Format("#{0}\t#{1}\t{2}", capt.Adjective, capt.Noun, capt.Name);
 
                     AddHtmlLocalized(110, y, 400, 16, 1116690 + (idx - 1), args, lightHue, false, false); // ~1_val~ ~2_val~ ~3_val~
                 }

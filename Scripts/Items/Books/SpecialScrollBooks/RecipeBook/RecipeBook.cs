@@ -453,7 +453,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            list.Add(1158849, String.Format("{0}", Recipes.Sum(x => x.Amount))); // Recipes in book: ~1_val~
+            list.Add(1158849, string.Format("{0}", Recipes.Sum(x => x.Amount))); // Recipes in book: ~1_val~
 
             if (BookName != null && BookName.Length > 0)
                 list.Add(1062481, BookName);

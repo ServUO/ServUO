@@ -73,7 +73,7 @@ namespace Server.Engines.Quests.RitualQuest
         {
             if (_NextUse > DateTime.UtcNow)
             {
-                m.SendLocalizedMessage(1072529, String.Format("{0}\t{1}", ((int)(_NextUse - DateTime.UtcNow).TotalSeconds).ToString(), "seconds"));
+                m.SendLocalizedMessage(1072529, string.Format("{0}\t{1}", ((int)(_NextUse - DateTime.UtcNow).TotalSeconds).ToString(), "seconds"));
             }
             else if (m is PlayerMobile)
             {

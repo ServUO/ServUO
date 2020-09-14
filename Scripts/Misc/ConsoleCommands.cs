@@ -79,14 +79,14 @@ namespace Server.Misc
                 return;
             }
 
-            if (String.IsNullOrEmpty(_Command))
+            if (string.IsNullOrEmpty(_Command))
             {
                 return;
             }
 
             ProcessCommand(_Command);
 
-            Interlocked.Exchange(ref _Command, String.Empty);
+            Interlocked.Exchange(ref _Command, string.Empty);
 
             _Listen.BeginInvoke(r => ProcessInput(_Listen.EndInvoke(r)), null);
         }
@@ -113,7 +113,7 @@ namespace Server.Misc
             {
                 string sub = input.Substring(2).Trim();
 
-                BroadcastMessage(AccessLevel.Player, 0x35, String.Format("[Admin] {0}", sub));
+                BroadcastMessage(AccessLevel.Player, 0x35, string.Format("[Admin] {0}", sub));
 
                 Console.WriteLine("[World]: {0}", sub);
                 return;
@@ -123,7 +123,7 @@ namespace Server.Misc
             {
                 string sub = input.Substring(2).Trim();
 
-                BroadcastMessage(AccessLevel.Counselor, 0x32, String.Format("[Admin] {0}", sub));
+                BroadcastMessage(AccessLevel.Counselor, 0x32, string.Format("[Admin] {0}", sub));
 
                 Console.WriteLine("[Staff]: {0}", sub);
                 return;
@@ -328,7 +328,7 @@ namespace Server.Misc
             {
                 DisplayPagingHelp();
 
-                HandlePaging(String.Empty);
+                HandlePaging(string.Empty);
                 return;
             }
 
@@ -346,7 +346,7 @@ namespace Server.Misc
                 return;
             }
 
-            if (String.IsNullOrWhiteSpace(sub))
+            if (string.IsNullOrWhiteSpace(sub))
             {
                 if (_Pages == null)
                 {
@@ -417,7 +417,7 @@ namespace Server.Misc
                     Console.WriteLine("[Pages]: Removed from queue.");
                 }
 
-                HandlePaging(String.Empty);
+                HandlePaging(string.Empty);
                 return;
             }
 
@@ -431,7 +431,7 @@ namespace Server.Misc
                 {
                     Console.WriteLine("[Pages]: Invalid page entry.");
 
-                    HandlePaging(String.Empty);
+                    HandlePaging(string.Empty);
                     return;
                 }
 
@@ -439,11 +439,11 @@ namespace Server.Misc
                 {
                     Console.WriteLine("[Pages]: Message required.");
 
-                    HandlePaging(String.Empty);
+                    HandlePaging(string.Empty);
                     return;
                 }
 
-                page.Sender.SendGump(new MessageSentGump(page.Sender, ServerList.ServerName, String.Join(" ", args)));
+                page.Sender.SendGump(new MessageSentGump(page.Sender, ServerList.ServerName, string.Join(" ", args)));
 
                 Console.WriteLine("[Pages]: Message sent.");
 
@@ -451,7 +451,7 @@ namespace Server.Misc
 
                 Console.WriteLine("[Pages]: Removed from queue.");
 
-                HandlePaging(String.Empty);
+                HandlePaging(string.Empty);
                 return;
             }
 
@@ -465,7 +465,7 @@ namespace Server.Misc
                 {
                     Console.WriteLine("[Pages]: Invalid page entry.");
 
-                    HandlePaging(String.Empty);
+                    HandlePaging(string.Empty);
                     return;
                 }
 
@@ -473,7 +473,7 @@ namespace Server.Misc
 
                 Console.WriteLine("[Pages]: {0:D3}:\t{1}\t{2}", idx, page.Type, page.Sender);
 
-                if (!String.IsNullOrWhiteSpace(page.Message))
+                if (!string.IsNullOrWhiteSpace(page.Message))
                 {
                     Console.WriteLine("[Pages]: {0}", page.Message);
                 }
@@ -482,7 +482,7 @@ namespace Server.Misc
                     Console.WriteLine("[Pages]: No message supplied.");
                 }
 
-                HandlePaging(String.Empty);
+                HandlePaging(string.Empty);
                 return;
             }
 
@@ -498,7 +498,7 @@ namespace Server.Misc
 
                     Console.WriteLine("[Pages]: {0:D3}:\t{1}\t{2}", idx, page.Type, page.Sender);
 
-                    if (!String.IsNullOrWhiteSpace(page.Message))
+                    if (!string.IsNullOrWhiteSpace(page.Message))
                     {
                         Console.WriteLine("[Pages]: {0}", page.Message);
                     }
@@ -507,7 +507,7 @@ namespace Server.Misc
                         Console.WriteLine("[Pages]: No message supplied.");
                     }
 
-                    HandlePaging(String.Empty);
+                    HandlePaging(string.Empty);
                     return;
                 }
 
@@ -539,7 +539,7 @@ namespace Server.Misc
 
             int id;
 
-            if (Int32.TryParse(sub, out id) && --id >= 0 && id < _Pages.Length)
+            if (int.TryParse(sub, out id) && --id >= 0 && id < _Pages.Length)
             {
                 PageEntry page = _Pages[id];
 

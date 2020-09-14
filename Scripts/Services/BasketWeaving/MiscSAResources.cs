@@ -50,12 +50,12 @@ namespace Server.Items
             if (Amount > 1)
             {
                 cliloc = info.IsBright() ? 1113273 : 1113275;
-                list.Add(cliloc, String.Format("{0}\t#{1}", Amount.ToString(), info.Name));
+                list.Add(cliloc, string.Format("{0}\t#{1}", Amount.ToString(), info.Name));
             }
             else
             {
                 cliloc = info.IsBright() ? 1112288 : 1112289;
-                list.Add(cliloc, String.Format("#{0}", info.Name));
+                list.Add(cliloc, string.Format("#{0}", info.Name));
             }
         }
 
@@ -148,12 +148,12 @@ namespace Server.Items
             if (Amount > 1)
             {
                 cliloc = info.IsBright() ? 1113273 : 1113275;
-                list.Add(cliloc, String.Format("{0}\t#{1}", Amount.ToString(), info.Name));
+                list.Add(cliloc, string.Format("{0}\t#{1}", Amount.ToString(), info.Name));
             }
             else
             {
                 cliloc = info.IsBright() ? 1112288 : 1112289;
-                list.Add(cliloc, String.Format("#{0}", info.Name));
+                list.Add(cliloc, string.Format("#{0}", info.Name));
             }
         }
 

@@ -70,7 +70,7 @@ namespace Server.Engines.BulkOrders
 
         public static SmallBulkEntry[] LoadEntries(string type, string name)
         {
-            return LoadEntries(String.Format("Data/Bulk Orders/{0}/{1}.cfg", type, name));
+            return LoadEntries(string.Format("Data/Bulk Orders/{0}/{1}.cfg", type, name));
         }
 
         public static SmallBulkEntry[] LoadEntries(string path)

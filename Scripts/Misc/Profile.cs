@@ -66,7 +66,7 @@ namespace Server.Misc
         {
             if (value >= 1.0)
             {
-                op = String.Format(format, (int)value, (int)value != 1 ? "s" : "");
+                op = string.Format(format, (int)value, (int)value != 1 ? "s" : "");
                 return true;
             }
 

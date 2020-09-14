@@ -218,7 +218,7 @@ namespace Server.Misc
             string data;
             Match match;
 
-            foreach (string service in services.Where(s => !String.IsNullOrWhiteSpace(s)))
+            foreach (string service in services.Where(s => !string.IsNullOrWhiteSpace(s)))
             {
                 try
                 {

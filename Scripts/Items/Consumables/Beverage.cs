@@ -901,7 +901,7 @@ namespace Server.Items
         {
             if (_Resource > CraftResource.Iron)
             {
-                list.Add(1053099, "#{0}\t{1}", CraftResources.GetLocalizationNumber(_Resource), String.Format("#{0}", LabelNumber.ToString())); // ~1_oretype~ ~2_armortype~
+                list.Add(1053099, "#{0}\t{1}", CraftResources.GetLocalizationNumber(_Resource), string.Format("#{0}", LabelNumber.ToString())); // ~1_oretype~ ~2_armortype~
             }
             else
             {
@@ -1521,7 +1521,7 @@ namespace Server.Items
 
         protected bool CheckType(string name)
         {
-            return (World.LoadingType == String.Format("Server.Items.{0}", name));
+            return (World.LoadingType == string.Format("Server.Items.{0}", name));
         }
 
         public override void Deserialize(GenericReader reader)

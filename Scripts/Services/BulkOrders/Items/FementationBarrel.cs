@@ -408,7 +408,7 @@ namespace Server.Items
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            list.Add(1049519, String.Format("#{0}", (1157248 + (int)_FruitType).ToString())); // a bottle of ~1_DRINK_NAME~
+            list.Add(1049519, string.Format("#{0}", (1157248 + (int)_FruitType).ToString())); // a bottle of ~1_DRINK_NAME~
         }
 
         public override void GetProperties(ObjectPropertyList list)

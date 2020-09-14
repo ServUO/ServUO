@@ -956,7 +956,7 @@ namespace Server.SkillHandlers
             {
                 int ids = GetTotalMods((Item)targeted);
 
-                ((Item)targeted).LabelTo(from, String.Format("Total Mods: {0}", ids.ToString()));
+                ((Item)targeted).LabelTo(from, string.Format("Total Mods: {0}", ids.ToString()));
             }
             else
                 from.SendMessage("That is not an item!");
@@ -1301,11 +1301,11 @@ namespace Server.SkillHandlers
             if (targeted is Item)
             {
                 int w = GetTotalWeight((Item)targeted, -1, false, true);
-                ((Item)targeted).LabelTo(from, String.Format("Imbuing Weight: {0}", w.ToString()));
+                ((Item)targeted).LabelTo(from, string.Format("Imbuing Weight: {0}", w.ToString()));
                 w = GetTotalWeight((Item)targeted, -1, false, false);
-                ((Item)targeted).LabelTo(from, String.Format("Loot Weight: {0}", w.ToString()));
+                ((Item)targeted).LabelTo(from, string.Format("Loot Weight: {0}", w.ToString()));
                 w = GetTotalWeight((Item)targeted, -1, true, true);
-                ((Item)targeted).LabelTo(from, String.Format("True Weight: {0}", w.ToString()));
+                ((Item)targeted).LabelTo(from, string.Format("True Weight: {0}", w.ToString()));
             }
             else
                 from.SendMessage("That is not an item!");

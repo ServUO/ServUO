@@ -267,7 +267,7 @@ namespace Server.Engines.Auction
                 name = "the item you bid on";
             }
 
-            NewMaginciaMessage message = new NewMaginciaMessage(null, 1156427, String.Format("{0}\t{1}\t{2}",
+            NewMaginciaMessage message = new NewMaginciaMessage(null, 1156427, string.Format("{0}\t{1}\t{2}",
                                                     name,
                                                     CurrentPlatBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")),
                                                     CurrentGoldBid.ToString("N0", CultureInfo.GetCultureInfo("en-US"))));
@@ -315,7 +315,7 @@ namespace Server.Engines.Auction
                     name = "the item you bid on";
                 }
 
-                NewMaginciaMessage message = new NewMaginciaMessage(null, isPublic ? 1158078 : 1156426, TimeSpan.FromHours(72), String.Format("{0}\t{1}\t{2}",
+                NewMaginciaMessage message = new NewMaginciaMessage(null, isPublic ? 1158078 : 1156426, TimeSpan.FromHours(72), string.Format("{0}\t{1}\t{2}",
                                                         name,
                                                         CurrentPlatBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")),
                                                         CurrentGoldBid.ToString("N0", CultureInfo.GetCultureInfo("en-US"))));
@@ -341,7 +341,7 @@ namespace Server.Engines.Auction
 
                 if (!isPublic)
                 {
-                    message = new NewMaginciaMessage(null, new TextDefinition(1156428), TimeSpan.FromHours(24), String.Format("{0}\t{1}\t{2}",
+                    message = new NewMaginciaMessage(null, new TextDefinition(1156428), TimeSpan.FromHours(24), string.Format("{0}\t{1}\t{2}",
                                                             name,
                                                             CurrentPlatBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")),
                                                             CurrentGoldBid.ToString("N0", CultureInfo.GetCultureInfo("en-US"))));
@@ -385,7 +385,7 @@ namespace Server.Engines.Auction
                         name = "the item you bid on";
                     }
 
-                    NewMaginciaMessage mes = new NewMaginciaMessage(null, new TextDefinition(1156454), String.Format("{0}\t{1}\t{2}",
+                    NewMaginciaMessage mes = new NewMaginciaMessage(null, new TextDefinition(1156454), string.Format("{0}\t{1}\t{2}",
                                                                 CurrentPlatBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")),
                                                                 CurrentGoldBid.ToString("N0", CultureInfo.GetCultureInfo("en-US")),
                                                                 name));

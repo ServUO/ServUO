@@ -103,9 +103,9 @@ namespace Server.Engines.Doom
 
     public class LeverPuzzleLever : Item
     {
-        private UInt16 m_Code;
+        private ushort m_Code;
         private LeverPuzzleController m_Controller;
-        public LeverPuzzleLever(UInt16 code, LeverPuzzleController controller)
+        public LeverPuzzleLever(ushort code, LeverPuzzleController controller)
             : base(0x108E)
         {
             m_Controller = controller;
@@ -120,7 +120,7 @@ namespace Server.Engines.Doom
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public UInt16 Code => m_Code;
+        public ushort Code => m_Code;
         public override void OnDoubleClick(Mobile m)
         {
             if (m != null && m_Controller.Enabled)

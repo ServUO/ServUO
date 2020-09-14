@@ -45,7 +45,7 @@ namespace Server.Items
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            list.Add(1075200, String.Format("#{0}", (int)Form));
+            list.Add(1075200, string.Format("#{0}", (int)Form));
         }
 
         public override void Serialize(GenericWriter writer)

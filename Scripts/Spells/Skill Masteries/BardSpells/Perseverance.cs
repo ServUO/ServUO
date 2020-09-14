@@ -54,7 +54,7 @@ namespace Server.Spells.SkillMasteries
             m.FixedParticles(0x373A, 10, 15, 5018, EffectLayer.Waist);
             m.SendLocalizedMessage(1115739); // The bard's spellsong fills you with a feeling of invincibility.
 
-            string args = String.Format("{0}\t-{1}\t{2}", m_PropertyBonus, m_DamageMod, m_PropertyBonus2);
+            string args = string.Format("{0}\t-{1}\t{2}", m_PropertyBonus, m_DamageMod, m_PropertyBonus2);
             BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Perseverance, 1115615, 1115732, args.ToString()));
         }
 

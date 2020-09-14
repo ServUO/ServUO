@@ -55,7 +55,7 @@ namespace Server.Spells.SkillMasteries
 
                 BeginTimer();
 
-                BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.HeightenedSenses, 1155925, 1156062, String.Format("{0}\t{1}", PropertyBonus().ToString(), ScaleUpkeep().ToString()))); // +~1_ARG~% Parry Bonus.<br>Mana Upkeep Cost: ~2_VAL~.
+                BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.HeightenedSenses, 1155925, 1156062, string.Format("{0}\t{1}", PropertyBonus().ToString(), ScaleUpkeep().ToString()))); // +~1_ARG~% Parry Bonus.<br>Mana Upkeep Cost: ~2_VAL~.
             }
 
             FinishSequence();

@@ -661,11 +661,11 @@ namespace Server.Engines.UOStore
             {
                 if (td.Number > 0 && VendorSearch.StringList != null)
                 {
-                    str += String.Format("{0} ", VendorSearch.StringList.GetString(td.Number));
+                    str += string.Format("{0} ", VendorSearch.StringList.GetString(td.Number));
                 }
-                else if (!String.IsNullOrWhiteSpace(td.String))
+                else if (!string.IsNullOrWhiteSpace(td.String))
                 {
-                    str += String.Format("{0} ", td.String);
+                    str += string.Format("{0} ", td.String);
                 }
             }
 
@@ -681,7 +681,7 @@ namespace Server.Engines.UOStore
                 str = VendorSearch.StringList.GetString(text.Number);
             }
 
-            return str ?? String.Empty;
+            return str ?? string.Empty;
         }
 
         public static List<StoreEntry> GetList(StoreCategory cat, StoreEntry forcedEntry = null)
@@ -699,7 +699,7 @@ namespace Server.Engines.UOStore
             switch (sort)
             {
                 case SortBy.Name:
-                    list.Sort((a, b) => String.CompareOrdinal(GetStringName(a.Name), GetStringName(b.Name)));
+                    list.Sort((a, b) => string.CompareOrdinal(GetStringName(a.Name), GetStringName(b.Name)));
                     break;
                 case SortBy.PriceLower:
                     list.Sort((a, b) => a.Price.CompareTo(b.Price));
@@ -764,7 +764,7 @@ namespace Server.Engines.UOStore
 
                         if (sys != null)
                         {
-                            return (int)Math.Min(Int32.MaxValue, sys.GetPoints(m));
+                            return (int)Math.Min(int.MaxValue, sys.GetPoints(m));
                         }
                     }
                     break;

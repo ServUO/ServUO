@@ -140,7 +140,7 @@ namespace Server.Services.Virtues
             {
                 protectee.JusticeProtectors.Add(protector);
 
-                string args = String.Format("{0}\t{1}", protector.Name, protectee.Name);
+                string args = string.Format("{0}\t{1}", protector.Name, protectee.Name);
 
                 protectee.SendLocalizedMessage(1049451, args); // You are now being protected by ~1_NAME~.
                 protector.SendLocalizedMessage(1049452, args); // You are now protecting ~2_NAME~.
@@ -149,7 +149,7 @@ namespace Server.Services.Virtues
 
         public static void OnVirtueRejected(PlayerMobile protector, PlayerMobile protectee)
         {
-            string args = String.Format("{0}\t{1}", protector.Name, protectee.Name);
+            string args = string.Format("{0}\t{1}", protector.Name, protectee.Name);
 
             protectee.SendLocalizedMessage(1049453, args); // You have declined protection from ~1_NAME~.
             protector.SendLocalizedMessage(1049454, args); // ~2_NAME~ has declined your protection.

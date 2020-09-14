@@ -175,7 +175,7 @@ namespace Server.Commands.Generic
                     else
                     {
                         throw new InvalidOperationException(
-                            String.Format(
+                            string.Format(
                                 "Unable to convert string \"{0}\" into type '{1}'.",
                                 m_Value,
                                 m_Type));
@@ -263,7 +263,7 @@ namespace Server.Commands.Generic
 
             if (m_IgnoreCase || methodName == "Equals")
             {
-                Type type = (m_IgnoreCase ? typeof(Insensitive) : typeof(String));
+                Type type = (m_IgnoreCase ? typeof(Insensitive) : typeof(string));
 
                 emitter.BeginCall(
                     type.GetMethod(

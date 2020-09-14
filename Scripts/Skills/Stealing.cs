@@ -418,7 +418,7 @@ namespace Server.SkillHandlers
                             m_Thief.CriminalAction(false);
                         }
 
-                        string message = String.Format("You notice {0} trying to steal from {1}.", m_Thief.Name, mobRoot.Name);
+                        string message = string.Format("You notice {0} trying to steal from {1}.", m_Thief.Name, mobRoot.Name);
 
                         foreach (NetState ns in m_Thief.GetClientsInRange(8))
                         {

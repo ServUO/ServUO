@@ -48,7 +48,7 @@ namespace Server.Guilds
             AddImageTiled(65, 166, 480, 4, 0x238D);
 
             string s = guild.Charter;
-            if (String.IsNullOrEmpty(s))
+            if (string.IsNullOrEmpty(s))
                 s = "The guild leader has not yet set the guild charter.";
 
             AddHtml(65, 186, 480, 80, s, true, true);

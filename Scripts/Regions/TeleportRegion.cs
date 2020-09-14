@@ -119,12 +119,12 @@ namespace Server.Regions
 
                     if (fromMap == null)
                     {
-                        throw new ArgumentException(String.Format("Map parsed as null: {0}", from));
+                        throw new ArgumentException(string.Format("Map parsed as null: {0}", from));
                     }
 
                     if (toMap == null)
                     {
-                        throw new ArgumentException(String.Format("Map parsed as null: {0}", to));
+                        throw new ArgumentException(string.Format("Map parsed as null: {0}", to));
                     }
 
                     if (Siege.SiegeShard && (fromMap == Map.Trammel || toMap == Map.Trammel))

@@ -29,7 +29,7 @@ namespace Server.Engines.NewMagincia
             }
 
             AddHtmlLocalized(10, 55, 260, 18, 1114514, "#1150313", BlueColor16, false, false); // Proprietor:
-            AddHtml(280, 55, 260, 18, Color(String.Format("{0}", broker.Name), BlueColor), false, false);
+            AddHtml(280, 55, 260, 18, Color(string.Format("{0}", broker.Name), BlueColor), false, false);
 
             AddHtmlLocalized(10, 100, 500, 18, 1114513, "#1150328", GreenColor16, false, false); // OWNER MENU
 
@@ -247,7 +247,7 @@ namespace Server.Engines.NewMagincia
             }
 
             AddHtmlLocalized(10, 55, 260, 18, 1114514, "#1150313", BlueColor16, false, false); // Proprietor:
-            AddHtml(280, 55, 260, 18, Color(String.Format("{0}", broker.Name), BlueColor), false, false);
+            AddHtml(280, 55, 260, 18, Color(string.Format("{0}", broker.Name), BlueColor), false, false);
 
             /* Target commodity items or filled commodity deeds in your backpack to add them to the 
 			 * broker's inventory. These items will be retrievable, and the broker will not trade them 
@@ -311,7 +311,7 @@ namespace Server.Engines.NewMagincia
                 int col16 = col == YellowColor ? YellowColor16 : OrangeColor16;
                 CommodityBrokerEntry entry = broker.CommodityEntries[i];
 
-                AddHtmlLocalized(1, y, 130, 18, 1114514, String.Format("#{0}", entry.Label), col16, false, false); // <DIV ALIGN=RIGHT>~1_TOKEN~</DIV>
+                AddHtmlLocalized(1, y, 130, 18, 1114514, string.Format("#{0}", entry.Label), col16, false, false); // <DIV ALIGN=RIGHT>~1_TOKEN~</DIV>
                 AddHtml(170, y, 45, 18, Color(AlignRight(FormatAmt(entry.BuyPricePer)), col), false, false);
                 AddHtml(230, y, 80, 18, Color(AlignRight(FormatAmt(entry.BuyLimit)), col), false, false);
                 AddHtml(315, y, 45, 18, Color(AlignRight(FormatAmt(entry.SellPricePer)), col), false, false);
@@ -484,7 +484,7 @@ namespace Server.Engines.NewMagincia
                 int col16 = col == YellowColor ? YellowColor16 : OrangeColor16;
                 CommodityBrokerEntry entry = broker.CommodityEntries[i];
 
-                AddHtmlLocalized(1, y, 260, 18, 1114514, String.Format("#{0}", entry.Label), col16, false, false); // <DIV ALIGN=RIGHT>~1_TOKEN~</DIV>
+                AddHtmlLocalized(1, y, 260, 18, 1114514, string.Format("#{0}", entry.Label), col16, false, false); // <DIV ALIGN=RIGHT>~1_TOKEN~</DIV>
                 AddHtml(360, y, 55, 18, Color(AlignRight(FormatAmt(entry.Stock)), col), false, false);
 
                 AddButton(440, y, 4014, 4016, 1000 + i, GumpButtonType.Reply, 0); // SELECT
@@ -654,7 +654,7 @@ namespace Server.Engines.NewMagincia
             }
 
             AddHtmlLocalized(10, 55, 310, 18, 1114514, "#1150313", BlueColor16, false, false); // Proprietor:
-            AddHtml(330, 55, 320, 18, Color(String.Format("{0}", broker.Name), BlueColor), false, false);
+            AddHtml(330, 55, 320, 18, Color(string.Format("{0}", broker.Name), BlueColor), false, false);
 
             if (cliloc != 0)
             {
@@ -674,7 +674,7 @@ namespace Server.Engines.NewMagincia
                 }
                 else
                 {
-                    AddHtmlLocalized(10, 127, 640, 354, 1114513, String.Format("#{0}", cliloc), OrangeColor16, false, false);
+                    AddHtmlLocalized(10, 127, 640, 354, 1114513, string.Format("#{0}", cliloc), OrangeColor16, false, false);
                 }
 
                 AddButton(10, 490, 0xFAE, 0xFAF, 999, GumpButtonType.Reply, 0);
@@ -729,7 +729,7 @@ namespace Server.Engines.NewMagincia
                         }
 
                         // what we're selling/buying
-                        AddHtmlLocalized(200, y, 164, 20, 1114514, String.Format("#{0}", entry.Label), OrangeColor16, false, false); // <DIV ALIGN=RIGHT>~1_TOKEN~</DIV>
+                        AddHtmlLocalized(200, y, 164, 20, 1114514, string.Format("#{0}", entry.Label), OrangeColor16, false, false); // <DIV ALIGN=RIGHT>~1_TOKEN~</DIV>
                         AddTooltip(entry.Label);
 
                         // buy from player
@@ -957,7 +957,7 @@ namespace Server.Engines.NewMagincia
             }
 
             AddHtmlLocalized(10, 55, 310, 18, 1114514, "#1150313", BlueColor16, false, false); // Proprietor:
-            AddHtml(330, 55, 320, 18, Color(String.Format("{0}", broker.Name), BlueColor), false, false);
+            AddHtml(330, 55, 320, 18, Color(string.Format("{0}", broker.Name), BlueColor), false, false);
 
             AddHtmlLocalized(10, 127, 640, 64, 1114513, "#1150666", RedColor16, false, false); // Please review the details of this transaction. If you wish to make this trade, click the TRADE button below. Otherwise, click the MAIN MENU button to return to the price list.
 
@@ -969,7 +969,7 @@ namespace Server.Engines.NewMagincia
                 AddHtmlLocalized(230, 193, 420, 18, m_Broker.GetLabelID(entry), DarkGreenColor16, false, false);
 
                 AddHtmlLocalized(10, 213, 210, 18, 1114514, "#1150152", OrangeColor16, false, false); // Quantity to Buy:
-                AddHtml(230, 213, 420, 18, Color(String.Format("{0}", amount), DarkGreenColor), false, false);
+                AddHtml(230, 213, 420, 18, Color(string.Format("{0}", amount), DarkGreenColor), false, false);
 
                 AddHtmlLocalized(10, 233, 210, 18, 1114514, "#1150246", OrangeColor16, false, false); // Total Cost:
                 AddHtml(230, 233, 420, 18, Color(FormatAmt(cost), DarkGreenColor), false, false);
@@ -985,7 +985,7 @@ namespace Server.Engines.NewMagincia
                 AddHtmlLocalized(230, 193, 420, 18, m_Broker.GetLabelID(entry), DarkGreenColor16, false, false);
 
                 AddHtmlLocalized(10, 213, 210, 18, 1114514, "#1150153", OrangeColor16, false, false); // Quantity to Sell:
-                AddHtml(230, 213, 420, 18, Color(String.Format("{0}", amount), DarkGreenColor), false, false);
+                AddHtml(230, 213, 420, 18, Color(string.Format("{0}", amount), DarkGreenColor), false, false);
 
                 AddHtmlLocalized(10, 233, 210, 18, 1114514, "#1150251", OrangeColor16, false, false); // Gold You Will Receive:
                 AddHtml(230, 233, 420, 18, Color(FormatAmt(cost), DarkGreenColor), false, false);

@@ -13,7 +13,7 @@ namespace Server.Engines.BulkOrders
         public BODType BODType { get; set; }
 
         public ConfirmBankPointsGump(PlayerMobile user, Mobile owner, BODType type, int points, double banked)
-            : base(user, 1157076, 1157077, new object[] { points, banked, type, owner }, String.Format("{0}\t{1}", banked.ToString("0.000000"), points.ToString()), OnSave, OnClaim)
+            : base(user, 1157076, 1157077, new object[] { points, banked, type, owner }, string.Format("{0}\t{1}", banked.ToString("0.000000"), points.ToString()), OnSave, OnClaim)
         {
             Closable = false;
             user.CloseGump(typeof(ConfirmBankPointsGump));

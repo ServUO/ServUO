@@ -174,7 +174,7 @@ namespace Server.Items
             else
             {
                 BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.CaddelliteInfused, 1158662, 1158677,
-                    String.Format("{0}\t{1}\t{2}\t{3}", equipped != null && equipped.Owner is BaseWeapon ? "100" : "0", equipped != null && equipped.Owner is Spellbook ? "100" : "0", pet != null ? pet.Name : "", pet != null ? "100" : "0")));
+                    string.Format("{0}\t{1}\t{2}\t{3}", equipped != null && equipped.Owner is BaseWeapon ? "100" : "0", equipped != null && equipped.Owner is Spellbook ? "100" : "0", pet != null ? pet.Name : "", pet != null ? "100" : "0")));
             }
         }
 

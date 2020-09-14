@@ -201,7 +201,7 @@ namespace Server.Items
                         return;
                     }
 
-                    from.SendLocalizedMessage(1158862, String.Format("{0}", hue)); // That object is hue ~1_HUE~
+                    from.SendLocalizedMessage(1158862, string.Format("{0}", hue)); // That object is hue ~1_HUE~
                 }
                 else if (targeted is Item && CheckUse(m_Decorator, from))
                 {

@@ -41,7 +41,7 @@ namespace Server.Engines.Astronomy
 
                 AddBackground(0, 0, 820, 620, 0x2454);
                 AddHtmlLocalized(10, 28, 800, 18, 1114513, "#1158520", 0x0, false, false); // Constellation Ledger
-                AddHtmlLocalized(295, 55, 515, 36, 1158521, String.Format("{0}\t{1}", AstronomySystem.DiscoveredConstellations.Count, AstronomySystem.MaxConstellations), 0x0, false, false); // Constellations Discovered: ~1_VAL~ / ~2_VAL~
+                AddHtmlLocalized(295, 55, 515, 36, 1158521, string.Format("{0}\t{1}", AstronomySystem.DiscoveredConstellations.Count, AstronomySystem.MaxConstellations), 0x0, false, false); // Constellations Discovered: ~1_VAL~ / ~2_VAL~
 
                 AddHtmlLocalized(55, 100, 100, 36, 1114513, "#1158522", 0x0, false, false); // Constellation Name
                 AddHtmlLocalized(245, 100, 80, 36, 1114513, "#1158523", 0x0, false, false); // Astronomer
@@ -60,7 +60,7 @@ namespace Server.Engines.Astronomy
                     AddHtml(240, y, 112, 18, Color("#0040FF", info.DiscoveredBy != null ? info.DiscoveredBy.Name : "Unknown"), false, false);
                     AddHtml(380, y, 112, 18, Color("#0040FF", info.DiscoveredOn.ToShortDateString()), false, false);
                     AddHtmlLocalized(492, y, 130, 18, AstronomySystem.TimeCoordinateLocalization(info.TimeCoordinate), 0x1F, false, false);
-                    AddHtmlLocalized(632, y, 150, 18, 1158527, String.Format("{0}\t{1}", info.CoordRA, info.CoordDEC), 0x1F, false, false); // RA ~1_VAL~  DEC ~2_VAL~
+                    AddHtmlLocalized(632, y, 150, 18, 1158527, string.Format("{0}\t{1}", info.CoordRA, info.CoordDEC), 0x1F, false, false); // RA ~1_VAL~  DEC ~2_VAL~
 
                     y += 18;
                 }
@@ -70,7 +70,7 @@ namespace Server.Engines.Astronomy
                 AddButton(460, 540, 0x607, 0x608, 3, GumpButtonType.Reply, 0);
                 AddButton(484, 540, 0x603, 0x604, 4, GumpButtonType.Reply, 0);
 
-                AddLabel(415, 570, 0, String.Format("{0}/{1}", Page + 1, Pages.ToString()));
+                AddLabel(415, 570, 0, string.Format("{0}/{1}", Page + 1, Pages.ToString()));
             }
 
             public override void OnResponse(RelayInfo info)

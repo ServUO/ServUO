@@ -38,7 +38,7 @@ namespace Server.Engines.MyrmidexInvasion
             if (entry != null)
                 AllianceEntries.Remove(entry);
 
-            pm.SendLocalizedMessage(1156636, String.Format("#{0}", ((int)type).ToString())); // You have declared allegiance to the ~1_SIDE~!  You may only change your allegiance once every 2 hours.
+            pm.SendLocalizedMessage(1156636, string.Format("#{0}", ((int)type).ToString())); // You have declared allegiance to the ~1_SIDE~!  You may only change your allegiance once every 2 hours.
 
             AllianceEntries.Add(new AllianceEntry(pm, type));
         }

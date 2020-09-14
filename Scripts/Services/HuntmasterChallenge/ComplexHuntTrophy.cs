@@ -148,7 +148,7 @@ namespace Server.Items
             public HuntTrophyComponent(int id)
                 : base(id)
             {
-                if (Info != null && !String.IsNullOrEmpty(Info.TrophyName.String))
+                if (Info != null && !string.IsNullOrEmpty(Info.TrophyName.String))
                 {
                     Name = Info.TrophyName.String;
                 }

@@ -290,7 +290,7 @@ namespace Server.Spells.SkillMasteries
                 switch (passive)
                 {
                     case PassiveSpell.EnchantedSummoning:
-                        BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.EnchantedSummoning, 1155904, 1156090, String.Format("{0}\t{0}", EnchantedSummoningBonus(m).ToString()), true)); // +~1_STAMINA~ Stamina Regeneration and +~2_HP~% Hit Points for summoned pets.<br>Increased difficulty for summoned pets to be dispelled.
+                        BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.EnchantedSummoning, 1155904, 1156090, string.Format("{0}\t{0}", EnchantedSummoningBonus(m).ToString()), true)); // +~1_STAMINA~ Stamina Regeneration and +~2_HP~% Hit Points for summoned pets.<br>Increased difficulty for summoned pets to be dispelled.
                         break;
                     case PassiveSpell.Intuition:
                         BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Intuition, 1155907, 1156089, IntuitionBonus(m).ToString(), true)); // Mana Increase ~1_VAL~
@@ -314,7 +314,7 @@ namespace Server.Spells.SkillMasteries
                         BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Potency, 1155928, 1156195, NonPoisonConsumeChance(m).ToString(), true)); // ~1_VAL~% chance to not consume poison charges when using infecting strike or injected strike.
                         break;
                     case PassiveSpell.Knockout:
-                        BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Knockout, 1155931, 1156030, String.Format("{0}\t{1}", GetKnockoutModifier(m).ToString(), GetKnockoutModifier(m, true).ToString(), true))); // Wrestling Damage Bonus:<br>+~1_VAL~% PvM<br>+~2_VAL~% PvP
+                        BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Knockout, 1155931, 1156030, string.Format("{0}\t{1}", GetKnockoutModifier(m).ToString(), GetKnockoutModifier(m, true).ToString(), true))); // Wrestling Damage Bonus:<br>+~1_VAL~% PvM<br>+~2_VAL~% PvP
                         break;
                     case PassiveSpell.Boarding:
                         BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Boarding, 1155934, 1156194, BoardingSlotIncrease(m).ToString(), true)); // Your number of stable slots has been increased by ~1_VAL~.

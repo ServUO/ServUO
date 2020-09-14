@@ -203,7 +203,7 @@ namespace Server.Items
             {
                 if (IsUnderEffects(from))
                 {
-                    from.SendLocalizedMessage(1079544, String.Format("#{0}", GetCliloc(m_Table[from].VType)));
+                    from.SendLocalizedMessage(1079544, string.Format("#{0}", GetCliloc(m_Table[from].VType)));
                     return false;
                 }
 
@@ -242,7 +242,7 @@ namespace Server.Items
 
             from.Delta(MobileDelta.WeaponDamage);
 
-            from.SendLocalizedMessage(1079546, String.Format("#{0}", GetCliloc(t)));
+            from.SendLocalizedMessage(1079546, string.Format("#{0}", GetCliloc(t)));
         }
 
         private static int GetCliloc(VirtueType t)

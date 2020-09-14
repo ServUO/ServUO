@@ -144,7 +144,7 @@ namespace Server.Engines.Khaldun
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (Destination == Point3D.Zero || DestinationMap == null || DestinationMap == Map.Internal || String.IsNullOrEmpty(Keyword))
+            if (Destination == Point3D.Zero || DestinationMap == null || DestinationMap == Map.Internal || string.IsNullOrEmpty(Keyword))
                 return;
 
             if (m.InRange(GetWorldLocation(), 2) && _HasBeenExamined)
@@ -166,7 +166,7 @@ namespace Server.Engines.Khaldun
 
             public override void OnResponse(Mobile from, string text)
             {
-                if (Door.Destination == Point3D.Zero || Door.DestinationMap == null || Door.DestinationMap == Map.Internal || String.IsNullOrEmpty(Door.Keyword))
+                if (Door.Destination == Point3D.Zero || Door.DestinationMap == null || Door.DestinationMap == Map.Internal || string.IsNullOrEmpty(Door.Keyword))
                     return;
 
                 if (!string.IsNullOrEmpty(text) && text.Trim().ToLower() == Door.Keyword.ToLower())

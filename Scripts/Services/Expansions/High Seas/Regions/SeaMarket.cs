@@ -133,11 +133,11 @@ namespace Server.Regions
                     string combine;
 
                     if (Sextant.Format(loc, map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
-                        locArgs = String.Format("{0}°{1}'{2},{3}°{4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
+                        locArgs = string.Format("{0}°{1}'{2},{3}°{4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
                     else
                         locArgs = "?????";
 
-                    combine = String.Format("{0}\t{1}", capt.PirateName > -1 ? String.Format("#{0}", capt.PirateName) : capt.Name, locArgs);
+                    combine = string.Format("{0}\t{1}", capt.PirateName > -1 ? string.Format("#{0}", capt.PirateName) : capt.Name, locArgs);
 
                     int cliloc = Utility.RandomMinMax(1149856, 1149865);
                     npc.SayTo(from, cliloc, combine);

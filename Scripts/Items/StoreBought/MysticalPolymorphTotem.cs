@@ -51,7 +51,7 @@ namespace Server.Items
 
             if (CostumeCreatureName != null)
             {
-                list.Add(1158707, String.Format("{0}", CostumeCreatureName)); // a ~1_name~ costume
+                list.Add(1158707, string.Format("{0}", CostumeCreatureName)); // a ~1_name~ costume
             }
         }
 

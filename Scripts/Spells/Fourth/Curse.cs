@@ -123,12 +123,12 @@ namespace Server.Spells.Fourth
 
             if (masscurse)
             {
-                args = String.Format("{0}\t{0}\t{0}", percentage);
+                args = string.Format("{0}\t{0}\t{0}", percentage);
                 BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.MassCurse, 1075839, length, m, args));
             }
             else
             {
-                args = String.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}", percentage, percentage, percentage, 10, 10, 10, 10);
+                args = string.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}", percentage, percentage, percentage, 10, 10, 10, 10);
                 BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Curse, 1075835, 1075836, length, m, args.ToString()));
             }
 

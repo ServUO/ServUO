@@ -96,7 +96,7 @@ namespace Server.Engines.ArenaSystem
 
             if (GuardRegion == null)
             {
-                GuardRegion = new GuardedArenaRegion(String.Format("{0}_Guarded", Definition.Name), Definition.Map, Definition.GuardBounds);
+                GuardRegion = new GuardedArenaRegion(string.Format("{0}_Guarded", Definition.Name), Definition.Map, Definition.GuardBounds);
                 GuardRegion.Register();
             }
         }

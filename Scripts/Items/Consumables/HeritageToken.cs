@@ -34,7 +34,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            list.Add(1070998, String.Format("#{0}", 1076595));  // Use this to redeem<br>Your Heritage Items
+            list.Add(1070998, string.Format("#{0}", 1076595));  // Use this to redeem<br>Your Heritage Items
         }
 
         public override void Serialize(GenericWriter writer)

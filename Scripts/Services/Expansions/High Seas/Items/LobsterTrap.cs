@@ -109,7 +109,7 @@ namespace Server.Items
             {
                 object label = FishInfo.GetFishLabel(m_BaitType);
                 if (label is int)
-                    list.Add(1116468, String.Format("#{0}", (int)label)); //baited to attract: ~1_val~
+                    list.Add(1116468, string.Format("#{0}", (int)label)); //baited to attract: ~1_val~
                 else if (label is string)
                     list.Add(1116468, (string)label);
 
@@ -165,7 +165,7 @@ namespace Server.Items
                 if (!pack.TryDropItem(from, item, false))
                     item.MoveToWorld(from.Location, from.Map);
 
-                from.SendLocalizedMessage(1116386, String.Format("#{0}", item.LabelNumber));
+                from.SendLocalizedMessage(1116386, string.Format("#{0}", item.LabelNumber));
             }
         }
 

@@ -8,7 +8,7 @@ namespace Server
 {
     public static class ShardSettings
     {
-        [CallPriority(Int32.MinValue)]
+        [CallPriority(int.MinValue)]
         public static void Configure()
         {
             AccountGold.Enabled = true;

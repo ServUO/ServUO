@@ -37,7 +37,7 @@ namespace Server.Engines.ArenaSystem
                 ArenaDefinition def = ArenaDefinition.Definitions[i];
                 bool exists = PVPArenaSystem.Arenas != null && PVPArenaSystem.Arenas.Any(arena => arena.Definition == def);
 
-                AddHtml(45, 105 + (i * 25), 200, 20, Color("#FFFFFF", String.Format("{0} [{1}]", def.Name, exists ? "Enabled" : PVPArenaSystem.Instance != null && PVPArenaSystem.Instance.IsBlocked(def) ? "Blocked" : "Disabled")), false, false);
+                AddHtml(45, 105 + (i * 25), 200, 20, Color("#FFFFFF", string.Format("{0} [{1}]", def.Name, exists ? "Enabled" : PVPArenaSystem.Instance != null && PVPArenaSystem.Instance.IsBlocked(def) ? "Blocked" : "Disabled")), false, false);
                 AddButton(10, 105 + (i * 25), !exists ? 4023 : 4017, !exists ? 4024 : 4018, i + 500, GumpButtonType.Reply, 0);
             }
 
@@ -59,7 +59,7 @@ namespace Server.Engines.ArenaSystem
 
                 BaseGump.SendGump(new GenericConfirmCallbackGump<ArenaDefinition>(
                     User,
-                    String.Format("{0} {1}", exists ? "Disable" : "Enable", def.Name),
+                    string.Format("{0} {1}", exists ? "Disable" : "Enable", def.Name),
                     exists ? _DisableBody : _EnableBody,
                     def,
                     null,
@@ -189,7 +189,7 @@ namespace Server.Engines.ArenaSystem
 
         protected string GetSlots()
         {
-            return String.Format("{0} slot(s)", Duel.PetSlots);
+            return string.Format("{0} slot(s)", Duel.PetSlots);
         }
 
         protected string GetPotion()
@@ -916,7 +916,7 @@ namespace Server.Engines.ArenaSystem
                     AddButton(10, y, 4005, 4007, 1 + i, GumpButtonType.Reply, 0);
                 }
 
-                AddLabel(54, y, LabelHue, String.Format("{0}/{1}", duel.ParticipantCount.ToString(), duel.Entries.ToString()));
+                AddLabel(54, y, LabelHue, string.Format("{0}/{1}", duel.ParticipantCount.ToString(), duel.Entries.ToString()));
                 AddLabel(103, y, LabelHue, duel.Host.Name);
 
                 if (i != 0 && i % perPage == 0)
@@ -1248,12 +1248,12 @@ namespace Server.Engines.ArenaSystem
             string rewardTitle = "None";
 
             if (title is int)
-                rewardTitle = String.Format("#{0}", (int)title);
+                rewardTitle = string.Format("#{0}", (int)title);
             else if (title is string)
                 rewardTitle = (string)title;
 
             AddHtmlLocalized(0, 12, 580, 20, CenterLoc, "#1115976", 0xFFFF, false, false); // <CENTER>Arena Menu - Stats</CENTER>
-            AddHtmlLocalized(0, 32, 580, 20, 1149602, String.Format("{0}\t{1}", WhosStats.Name, rewardTitle), 0xFFFF, false, false); // <CENTER>Arena Menu - Stats</CENTER>
+            AddHtmlLocalized(0, 32, 580, 20, 1149602, string.Format("{0}\t{1}", WhosStats.Name, rewardTitle), 0xFFFF, false, false); // <CENTER>Arena Menu - Stats</CENTER>
 
             AddHtmlLocalized(8, 66, 222, 20, CenterLoc, "#1115983", 0xFFFF, false, false); // Stats - Survival
             AddHtmlLocalized(15, 100, 100, 20, 1115977, 0xFFFF, false, false); // Wins
@@ -1295,7 +1295,7 @@ namespace Server.Engines.ArenaSystem
 
                 if (i > entry.Record.Count - 6)
                 {
-                    latest += String.Format("{0}-", record.KilledBy ? "L" : "W");
+                    latest += string.Format("{0}-", record.KilledBy ? "L" : "W");
                 }
 
                 AddLabel(237, y, LabelHue, record.DuelDate.ToShortDateString());

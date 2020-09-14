@@ -144,14 +144,14 @@ namespace Server.Items
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            list.Add(1158906, String.Format("#{0}", CityLoyaltySystem.GetCityLocalization(_City).ToString())); // Maritime Trade Cargo Destined for ~1_CITY~
+            list.Add(1158906, string.Format("#{0}", CityLoyaltySystem.GetCityLocalization(_City).ToString())); // Maritime Trade Cargo Destined for ~1_CITY~
         }
 
         public override void AddWeightProperty(ObjectPropertyList list)
         {
             base.AddWeightProperty(list);
 
-            list.Add(_CargoQuality < CargoQuality.Mythical ? 1158903 + (int)_CargoQuality : 1158969, String.Format("#{0}", TypeLabel(_CargoType)));
+            list.Add(_CargoQuality < CargoQuality.Mythical ? 1158903 + (int)_CargoQuality : 1158969, string.Format("#{0}", TypeLabel(_CargoType)));
         }
 
         public static int TypeLabel(CargoType type)

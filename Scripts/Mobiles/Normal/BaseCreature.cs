@@ -1366,7 +1366,7 @@ namespace Server.Mobiles
                 }
                 else
                 {
-                    suffix = String.Concat(suffix, " (Paragon)");
+                    suffix = string.Concat(suffix, " (Paragon)");
                 }
             }
 
@@ -3732,7 +3732,7 @@ namespace Server.Mobiles
         {
             if (m_bDebugAI)
             {
-                PublicOverheadMessage(MessageType.Regular, 41, false, String.Format(format, args));
+                PublicOverheadMessage(MessageType.Regular, 41, false, string.Format(format, args));
             }
         }
 
@@ -4125,7 +4125,7 @@ namespace Server.Mobiles
                         else
                         {
                             // I will teach thee all I know, if paid the amount in full.  The price is:
-                            Say(1019077, AffixType.Append, String.Format(" {0}", pointsToLearn), "");
+                            Say(1019077, AffixType.Append, string.Format(" {0}", pointsToLearn), "");
                             Say(1043108); // For less I shall teach thee less.
 
                             m_Teaching = skill;
@@ -5379,7 +5379,7 @@ namespace Server.Mobiles
         {
             base.AddNameProperties(list);
 
-            if (Controlled && !String.IsNullOrEmpty(EngravedText))
+            if (Controlled && !string.IsNullOrEmpty(EngravedText))
             {
                 list.Add(1157315, EngravedText); // <BASEFONT COLOR=#668cff>Branded: ~1_VAL~<BASEFONT COLOR=#FFFFFF>
             }

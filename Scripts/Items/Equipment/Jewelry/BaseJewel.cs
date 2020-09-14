@@ -657,9 +657,9 @@ namespace Server.Items
                     int prefix = RunicReforging.GetPrefixName(m_ReforgedPrefix);
 
                     if (m_ReforgedSuffix == ReforgedSuffix.None)
-                        list.Add(1151757, String.Format("#{0}\t{1}", prefix, GetNameString())); // ~1_PREFIX~ ~2_ITEM~
+                        list.Add(1151757, string.Format("#{0}\t{1}", prefix, GetNameString())); // ~1_PREFIX~ ~2_ITEM~
                     else
-                        list.Add(1151756, String.Format("#{0}\t{1}\t#{2}", prefix, GetNameString(), RunicReforging.GetSuffixName(m_ReforgedSuffix))); // ~1_PREFIX~ ~2_ITEM~ of ~3_SUFFIX~
+                        list.Add(1151756, string.Format("#{0}\t{1}\t#{2}", prefix, GetNameString(), RunicReforging.GetSuffixName(m_ReforgedSuffix))); // ~1_PREFIX~ ~2_ITEM~ of ~3_SUFFIX~
                 }
                 else if (m_ReforgedSuffix != ReforgedSuffix.None)
                 {
@@ -677,7 +677,7 @@ namespace Server.Items
             string name = Name;
 
             if (name == null)
-                name = String.Format("#{0}", LabelNumber);
+                name = string.Format("#{0}", LabelNumber);
 
             return name;
         }

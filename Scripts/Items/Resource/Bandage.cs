@@ -645,9 +645,9 @@ namespace Server.Items
                 TimeSpan delay = GetDelay(healer, patient);
 
                 if (patient is PlayerMobile)
-                    BuffInfo.AddBuff(healer, new BuffInfo(BuffIcon.Healing, 1002082, 1151400, delay, healer, String.Format("{0}", patient.Name)));
+                    BuffInfo.AddBuff(healer, new BuffInfo(BuffIcon.Healing, 1002082, 1151400, delay, healer, string.Format("{0}", patient.Name)));
                 else
-                    BuffInfo.AddBuff(healer, new BuffInfo(BuffIcon.Veterinary, 1002167, 1151400, delay, healer, String.Format("{0}", patient.Name)));
+                    BuffInfo.AddBuff(healer, new BuffInfo(BuffIcon.Veterinary, 1002167, 1151400, delay, healer, string.Format("{0}", patient.Name)));
 
                 context = new BandageContext(healer, patient, delay, enhanced);
 

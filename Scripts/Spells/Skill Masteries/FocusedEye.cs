@@ -63,7 +63,7 @@ namespace Server.Spells.SkillMasteries
                 _PropertyBonus = (int)((Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value + (GetMasteryLevel() * 40)) / 12);
 
                 Caster.PrivateOverheadMessage(MessageType.Regular, 1150, 1156002, Caster.NetState); // *You focus your eye on your opponents!*
-                BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.FocusedEye, 1156003, 1156004, String.Format("{0}\t{1}", _PropertyBonus.ToString(), ScaleUpkeep().ToString()))); // +~1_VAL~% Hit Chance Increase.<br>Mana Upkeep Cost: ~2_VAL~.
+                BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.FocusedEye, 1156003, 1156004, string.Format("{0}\t{1}", _PropertyBonus.ToString(), ScaleUpkeep().ToString()))); // +~1_VAL~% Hit Chance Increase.<br>Mana Upkeep Cost: ~2_VAL~.
 
                 Caster.PlaySound(0x101);
                 Effects.SendTargetParticles(Caster, 0x3789, 1, 40, 2726, 5, 9907, EffectLayer.RightFoot, 0);

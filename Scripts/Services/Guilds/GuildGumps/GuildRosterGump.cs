@@ -126,7 +126,7 @@ namespace Server.Guilds
         {
             TextDefinition[] defs = new TextDefinition[aryLength];
 
-            string name = String.Format("{0} {1}{2}",
+            string name = string.Format("{0} {1}{2}",
                 pm.Name,
                 Engines.VvV.ViceVsVirtueSystem.IsVvV(pm) ? "VvV" : "",
                 (player.GuildFealty == pm && player.GuildFealty != guild.Leader) ? " *" : "");

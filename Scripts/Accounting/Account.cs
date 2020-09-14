@@ -750,7 +750,7 @@ namespace Server.Accounting
                 return 1;
             }
 
-            return String.Compare(Username, other.Username, StringComparison.Ordinal);
+            return string.Compare(Username, other.Username, StringComparison.Ordinal);
         }
 
         public int CompareTo(object obj)
@@ -770,7 +770,7 @@ namespace Server.Accounting
                 return 1;
             }
 
-            return String.Compare(Username, other.Username, StringComparison.Ordinal);
+            return string.Compare(Username, other.Username, StringComparison.Ordinal);
         }
 
         public static string HashMD5(string phrase)

@@ -96,7 +96,7 @@ namespace Ultima
                 Tex.WriteLine("Order;ID;KeyWord");
                 foreach (SpeechEntry entry in Entries)
                 {
-                    Tex.WriteLine(String.Format("{0};{1};{2}", entry.Order, entry.ID, entry.KeyWord));
+                    Tex.WriteLine(string.Format("{0};{1};{2}", entry.Order, entry.ID, entry.KeyWord));
                 }
             }
         }
@@ -197,11 +197,11 @@ namespace Ultima
             {
                 if (m_desc)
                 {
-                    return String.Compare(objB.KeyWord, objA.KeyWord);
+                    return string.Compare(objB.KeyWord, objA.KeyWord);
                 }
                 else
                 {
-                    return String.Compare(objA.KeyWord, objB.KeyWord);
+                    return string.Compare(objA.KeyWord, objB.KeyWord);
                 }
             }
         }

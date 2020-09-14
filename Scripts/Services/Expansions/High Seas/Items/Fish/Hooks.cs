@@ -40,7 +40,7 @@ namespace Server.Items
             base.GetProperties(list);
 
             int condition = GetCondition(m_Uses);
-            list.Add(1149847, String.Format("#{0}", condition)); //Condition: ~1_val~
+            list.Add(1149847, string.Format("#{0}", condition)); //Condition: ~1_val~
         }
 
         public static int GetCondition(int uses)

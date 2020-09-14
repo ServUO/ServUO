@@ -1750,7 +1750,7 @@ namespace Server.Items
             }
             else
             {
-                list.Add(1151758, String.Format("{0}\t#{1}", name, GetSuffixName(suffix)));// ~1_ITEM~ of ~2_SUFFIX~
+                list.Add(1151758, string.Format("{0}\t#{1}", name, GetSuffixName(suffix)));// ~1_ITEM~ of ~2_SUFFIX~
             }
         }
 
@@ -3287,7 +3287,7 @@ namespace Server.Items
                 }
             }
 
-            SpawnerPersistence.ToConsole(String.Format("Removed Self Repair from {0} items.", fix));
+            SpawnerPersistence.ToConsole(string.Format("Removed Self Repair from {0} items.", fix));
         }
 
         public static void ItemNerfVersion6()
@@ -3348,7 +3348,7 @@ namespace Server.Items
                 }
             }
 
-            SpawnerPersistence.ToConsole(String.Format("Cleauned up {0} items: {1} fc2, {2} non-Armor eater, {3} non armor casting focus, {4} brittle jewels converted to Antique.", fc2 + eater + focus + brittle, fc2, eater, focus, brittle));
+            SpawnerPersistence.ToConsole(string.Format("Cleauned up {0} items: {1} fc2, {2} non-Armor eater, {3} non armor casting focus, {4} brittle jewels converted to Antique.", fc2 + eater + focus + brittle, fc2, eater, focus, brittle));
         }
         #endregion
     }

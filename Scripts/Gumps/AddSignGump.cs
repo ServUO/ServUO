@@ -165,7 +165,7 @@ namespace Server.Gumps
                 if (xpos == 0 && ypos == 0)
                 {
                     AddPage(page);
-                    AddHtmlLocalized(30, 20, 60, 20, 1042971, String.Format("{0}", page), 0x7FFF, false, false); // #
+                    AddHtmlLocalized(30, 20, 60, 20, 1042971, string.Format("{0}", page), 0x7FFF, false, false); // #
 
                     AddHtmlLocalized(30, 45, 60, 20, 1043353, 0x7FFF, false, false); // Next
                     if (page < pages)
@@ -218,7 +218,7 @@ namespace Server.Gumps
             if (button < 0)
                 return;
 
-            CommandSystem.Handle(from, String.Format("{0}Add {1} {2}", CommandSystem.Prefix, " Sign ", m_Types[button].m_BaseID));
+            CommandSystem.Handle(from, string.Format("{0}Add {1} {2}", CommandSystem.Prefix, " Sign ", m_Types[button].m_BaseID));
             from.SendGump(new AddSignGump());
         }
     }

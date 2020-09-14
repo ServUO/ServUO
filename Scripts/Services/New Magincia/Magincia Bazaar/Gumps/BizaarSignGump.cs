@@ -622,7 +622,7 @@ namespace Server.Engines.NewMagincia
 					  *bank balance is now ~5_NEWBAL~gp. */
 
                     cliloc1 = 1150576;
-                    args1 = String.Format("@{0}@{1}@{2}@{3}@{4}", FormatAmt(oldBid), "empty", "empty", FormatAmt(bankBal), FormatAmt(bankBal + oldBid));
+                    args1 = string.Format("@{0}@{1}@{2}@{3}@{4}", FormatAmt(oldBid), "empty", "empty", FormatAmt(bankBal), FormatAmt(bankBal + oldBid));
                 }
                 else
                 {
@@ -630,7 +630,7 @@ namespace Server.Engines.NewMagincia
 					 *refunded to your bank account, because your bank box cannot hold the additional 
 					 *funds. Your current bank balance is ~4_OLDVAL~gp.<br><br>Your bid status has not changed.*/
                     cliloc1 = 1150575;
-                    args1 = String.Format("@{0}@{1}@{2}@{3}", FormatAmt(oldBid), "empty", "empty", FormatAmt(bankBal));
+                    args1 = string.Format("@{0}@{1}@{2}@{3}", FormatAmt(oldBid), "empty", "empty", FormatAmt(bankBal));
                 }
             }
             else if (oldBid == newBid)
@@ -650,7 +650,7 @@ namespace Server.Engines.NewMagincia
 
                             //You were previously bidding on Stall ~1_OLDSTALL~ and now you are bidding on Stall ~2_NEWSTALL~.
                             cliloc1 = 1150582;
-                            args1 = String.Format("@{0}@{1}", oldPlot.PlotDef.ID, newPlot.PlotDef.ID);
+                            args1 = string.Format("@{0}@{1}", oldPlot.PlotDef.ID, newPlot.PlotDef.ID);
 
                             // You are now bidding on Stall ~1_NEWSTALL~
                             cliloc2 = 1150585;
@@ -664,7 +664,7 @@ namespace Server.Engines.NewMagincia
 
                             // You are still bidding on Stall ~2_NEWSTALL~.
                             cliloc2 = 1150583;
-                            args2 = String.Format("@{0}@{1}", "empty", oldPlot.PlotDef.ID);
+                            args2 = string.Format("@{0}@{1}", "empty", oldPlot.PlotDef.ID);
                         }
                     }
                     else
@@ -690,7 +690,7 @@ namespace Server.Engines.NewMagincia
 
                         //You were previously bidding on the first available stall, and now you are bidding specifically for Stall ~2_NEWSTALL~.
                         cliloc1 = 1150579;
-                        args1 = String.Format("@{0}@{1}", "empty", newPlot.PlotDef.ID);
+                        args1 = string.Format("@{0}@{1}", "empty", newPlot.PlotDef.ID);
 
                         // You are now bidding on the next available stall.
                         cliloc2 = 1150584;
@@ -721,13 +721,13 @@ namespace Server.Engines.NewMagincia
 						 *your bank account. Your current bank balance is ~4_CURBAL~gp.<br><br>The 
 						 *status of your bid has not changed.*/
                         cliloc1 = 1150571;
-                        args2 = String.Format("@{0}@{1}@{2}@{3}", FormatAmt(oldBid), FormatAmt(newBid), FormatAmt(dif), FormatAmt(bankBal));
+                        args2 = string.Format("@{0}@{1}@{2}@{3}", FormatAmt(oldBid), FormatAmt(newBid), FormatAmt(dif), FormatAmt(bankBal));
 
                         if (hasbidspecific)
                         {
                             // You are still bidding on Stall ~2_NEWSTALL~.
                             cliloc2 = 1150583;
-                            args2 = String.Format("@{0}@{1}", "empty", oldPlot.PlotDef.ID);
+                            args2 = string.Format("@{0}@{1}", "empty", oldPlot.PlotDef.ID);
                         }
                         else if (hasbidnextavailable)
                         {
@@ -748,13 +748,13 @@ namespace Server.Engines.NewMagincia
 						 *funds. Your current bank balance is ~4_OLDVAL~gp.<br><br>Your bid status has not 
 						 changed.*/
                         cliloc1 = 1150575;
-                        args1 = String.Format("@{0}@{1}@{2}@{3}", FormatAmt(oldBid), "empty", "empty", FormatAmt(bankBal));
+                        args1 = string.Format("@{0}@{1}@{2}@{3}", FormatAmt(oldBid), "empty", "empty", FormatAmt(bankBal));
 
                         if (hasbidspecific)
                         {
                             // You are still bidding on Stall ~2_NEWSTALL~.
                             cliloc2 = 1150583;
-                            args2 = String.Format("@{0}@{1}", "empty", oldPlot.PlotDef.ID);
+                            args2 = string.Format("@{0}@{1}", "empty", oldPlot.PlotDef.ID);
                         }
                         else if (hasbidnextavailable)
                         {
@@ -776,7 +776,7 @@ namespace Server.Engines.NewMagincia
 						*withdrawn from your bank box. Your previous bank balance was 
 						~4_OLDBAL~gp and your new bank balance is ~5_NEWBAL~gp.*/
                         cliloc1 = 1150578;
-                        args1 = String.Format("@{0}@{1}@{2}@{3}@{4}", "empty", FormatAmt(newBid), "empty", FormatAmt(bankBal), FormatAmt(bankBal - dif));
+                        args1 = string.Format("@{0}@{1}@{2}@{3}@{4}", "empty", FormatAmt(newBid), "empty", FormatAmt(bankBal), FormatAmt(bankBal - dif));
 
                         if (hasbidspecific && oldPlot == newPlot)       // same plot
                         {
@@ -787,20 +787,20 @@ namespace Server.Engines.NewMagincia
                             cliloc1 = 1150572;
                             //You are still bidding on Stall ~2_NEWSTALL~.
                             cliloc2 = 1150583;
-                            args1 = String.Format("@{0}@{1}@{2}@{3}@{4}", FormatAmt(oldBid), FormatAmt(newBid), FormatAmt(dif), FormatAmt(bankBal), FormatAmt(bankBal - dif));
-                            args2 = String.Format("@{0}@{1}", "empty", newPlot.PlotDef.ID);
+                            args1 = string.Format("@{0}@{1}@{2}@{3}@{4}", FormatAmt(oldBid), FormatAmt(newBid), FormatAmt(dif), FormatAmt(bankBal), FormatAmt(bankBal - dif));
+                            args2 = string.Format("@{0}@{1}", "empty", newPlot.PlotDef.ID);
                         }
                         else if (hasbidspecific && oldPlot != newPlot)  // switching plots
                         {
                             //You were previously bidding on Stall ~1_OLDSTALL~ and now you are bidding on Stall ~2_NEWSTALL~.
                             cliloc2 = 1150582;
-                            args2 = String.Format("@{0}@{1}", oldPlot.PlotDef.ID, newPlot.PlotDef.ID);
+                            args2 = string.Format("@{0}@{1}", oldPlot.PlotDef.ID, newPlot.PlotDef.ID);
                         }
                         else if (hasbidnextavailable)                   // had next available
                         {
                             //You were previously bidding on the first available stall, and now you are bidding specifically for Stall ~2_NEWSTALL~.
                             cliloc2 = 1150579;
-                            args2 = String.Format("@{0}@{1}", "empty", newPlot.PlotDef.ID);
+                            args2 = string.Format("@{0}@{1}", "empty", newPlot.PlotDef.ID);
                         }
                         else                                            // no bids before
                         {
@@ -821,13 +821,13 @@ namespace Server.Engines.NewMagincia
 						 *funds. Your current bank balance is ~4_OLDVAL~gp.<br><br>Your bid status has not 
 						 changed.*/
                         cliloc1 = 1150575;
-                        args1 = String.Format("@{0}@{1}@{2}@{3}", FormatAmt(oldBid), "empty", "empty", FormatAmt(bankBal));
+                        args1 = string.Format("@{0}@{1}@{2}@{3}", FormatAmt(oldBid), "empty", "empty", FormatAmt(bankBal));
 
                         if (hasbidspecific)
                         {
                             // You are still bidding on Stall ~2_NEWSTALL~.
                             cliloc2 = 1150583;
-                            args2 = String.Format("@{0}@{1}", "empty", oldPlot.PlotDef.ID);
+                            args2 = string.Format("@{0}@{1}", "empty", oldPlot.PlotDef.ID);
                         }
                         else if (hasbidnextavailable)
                         {
@@ -847,7 +847,7 @@ namespace Server.Engines.NewMagincia
 						*withdrawn from your bank box. Your previous bank balance was 
 						~4_OLDBAL~gp and your new bank balance is ~5_NEWBAL~gp.*/
                         cliloc1 = 1150578;
-                        args1 = String.Format("@{0}@{1}@{2}@{3}@{4}", "empty", FormatAmt(newBid), "empty", FormatAmt(bankBal), FormatAmt(bankBal - dif));
+                        args1 = string.Format("@{0}@{1}@{2}@{3}@{4}", "empty", FormatAmt(newBid), "empty", FormatAmt(bankBal), FormatAmt(bankBal - dif));
 
                         Banker.Withdraw(from, newBid);
                         newPlot.Auction.MakeBid(from, newBid);
@@ -861,26 +861,26 @@ namespace Server.Engines.NewMagincia
                             cliloc1 = 1150574;
                             //You are still bidding on Stall ~2_NEWSTALL~.
                             cliloc2 = 1150583;
-                            args1 = String.Format("@{0}@{1}@{2}@{3}@{4}", FormatAmt(oldBid), FormatAmt(newBid), FormatAmt(dif), FormatAmt(bankBal), FormatAmt(bankBal + dif));
-                            args2 = String.Format("@{0}@{1}", "empty", oldPlot.PlotDef.ID);
+                            args1 = string.Format("@{0}@{1}@{2}@{3}@{4}", FormatAmt(oldBid), FormatAmt(newBid), FormatAmt(dif), FormatAmt(bankBal), FormatAmt(bankBal + dif));
+                            args2 = string.Format("@{0}@{1}", "empty", oldPlot.PlotDef.ID);
                         }
                         else if (hasbidspecific && oldPlot != newPlot)  // switch plots
                         {
                             //You were previously bidding on Stall ~1_OLDSTALL~ and now you are bidding on Stall ~2_NEWSTALL~.
                             cliloc2 = 1150582;
-                            args2 = String.Format("@{0}@{1}", oldPlot.PlotDef.ID, newPlot.PlotDef.ID);
+                            args2 = string.Format("@{0}@{1}", oldPlot.PlotDef.ID, newPlot.PlotDef.ID);
                         }
                         else if (hasbidnextavailable)                   // new plot
                         {
                             //You were previously bidding on the first available stall, and now you are bidding specifically for Stall ~2_NEWSTALL~.
                             cliloc2 = 1150579;
-                            args2 = String.Format("@{0}@{1}", "empty", newPlot.PlotDef.ID);
+                            args2 = string.Format("@{0}@{1}", "empty", newPlot.PlotDef.ID);
                         }
                         else
                         {
                             // You are now bidding on Stall ~1_NEWSTALL~
                             cliloc2 = 1150585;
-                            args2 = String.Format(newPlot.PlotDef.ID);
+                            args2 = string.Format(newPlot.PlotDef.ID);
                         }
                     }
                 }
@@ -897,13 +897,13 @@ namespace Server.Engines.NewMagincia
                          *your current bank balance of ~4_OLDBAL~gp.<br><br>Your bid status has not 
                          changed.*/
                         cliloc1 = 1150577;
-                        args1 = String.Format("@{0}@{1}@{2}@{3}", "empty", FormatAmt(newBid), "empty", FormatAmt(bankBal));
+                        args1 = string.Format("@{0}@{1}@{2}@{3}", "empty", FormatAmt(newBid), "empty", FormatAmt(bankBal));
 
                         if (hasbidspecific)
                         {
                             // You are still bidding on Stall ~2_NEWSTALL~.
                             cliloc2 = 1150583;
-                            args2 = String.Format("@{0}@{1}", "empty", oldPlot.PlotDef.ID);
+                            args2 = string.Format("@{0}@{1}", "empty", oldPlot.PlotDef.ID);
                         }
                         else if (hasbidnextavailable)
                         {
@@ -924,13 +924,13 @@ namespace Server.Engines.NewMagincia
 						 *funds. Your current bank balance is ~4_OLDVAL~gp.<br><br>Your bid status has not 
 						 changed.*/
                         cliloc1 = 1150575;
-                        args1 = String.Format("@{0}@{1}@{2}@{3}", FormatAmt(oldBid), "empty", "empty", FormatAmt(bankBal));
+                        args1 = string.Format("@{0}@{1}@{2}@{3}", FormatAmt(oldBid), "empty", "empty", FormatAmt(bankBal));
 
                         if (hasbidspecific)
                         {
                             // You are still bidding on Stall ~2_NEWSTALL~.
                             cliloc2 = 1150583;
-                            args2 = String.Format("@{0}@{1}", "empty", oldPlot.PlotDef.ID);
+                            args2 = string.Format("@{0}@{1}", "empty", oldPlot.PlotDef.ID);
                         }
                         else if (hasbidnextavailable)
                         {
@@ -953,7 +953,7 @@ namespace Server.Engines.NewMagincia
 						*withdrawn from your bank box. Your previous bank balance was 
 						*~4_OLDBAL~gp and your new bank balance is ~5_NEWBAL~gp.*/
                         cliloc1 = 1150578;
-                        args1 = String.Format("@{0}@{1}@{2}@{3}@{4}", "empty", FormatAmt(newBid), "empty", FormatAmt(bankBal), FormatAmt(bankBal - newBid));
+                        args1 = string.Format("@{0}@{1}@{2}@{3}@{4}", "empty", FormatAmt(newBid), "empty", FormatAmt(bankBal), FormatAmt(bankBal - newBid));
 
                         if (hasbidspecific)             // Change from specific to next available
                         {
@@ -986,13 +986,13 @@ namespace Server.Engines.NewMagincia
 						 *funds. Your current bank balance is ~4_OLDVAL~gp.<br><br>Your bid status has not 
 						 changed.*/
                         cliloc1 = 1150575;
-                        args1 = String.Format("@{0}@{1}@{2}@{3}", FormatAmt(oldBid), "empty", "empty", FormatAmt(bankBal));
+                        args1 = string.Format("@{0}@{1}@{2}@{3}", FormatAmt(oldBid), "empty", "empty", FormatAmt(bankBal));
 
                         if (hasbidspecific)
                         {
                             // You are still bidding on Stall ~2_NEWSTALL~.
                             cliloc2 = 1150583;
-                            args2 = String.Format("@{0}@{1}", "empty", oldPlot.PlotDef.ID);
+                            args2 = string.Format("@{0}@{1}", "empty", oldPlot.PlotDef.ID);
                         }
                         else if (hasbidnextavailable)
                         {
@@ -1012,7 +1012,7 @@ namespace Server.Engines.NewMagincia
 						*withdrawn from your bank box. Your previous bank balance was 
 						*~4_OLDBAL~gp and your new bank balance is ~5_NEWBAL~gp.*/
                         cliloc1 = 1150578;
-                        args1 = String.Format("@{0}@{1}@{2}@{3}@{4}", "empty", FormatAmt(newBid), "empty", FormatAmt(bankBal), FormatAmt(bankBal - newBid));
+                        args1 = string.Format("@{0}@{1}@{2}@{3}@{4}", "empty", FormatAmt(newBid), "empty", FormatAmt(bankBal), FormatAmt(bankBal - newBid));
 
                         Banker.Withdraw(from, newBid);
                         MaginciaBazaar.MakeBidNextAvailable(from, newBid);
@@ -1168,7 +1168,7 @@ namespace Server.Engines.NewMagincia
 					 *failed. The difference of ~3_CHANGE~gp could not be withdrawn from your bank 
 					 *account balance. Your current bank balance is ~5_NEWBAL~gp.*/
                     cliloc1 = 1150588;
-                    args1 = String.Format("@{0}@{1}@{2}@{3}", FormatAmt(current), FormatAmt(amount), FormatAmt(dif), FormatAmt(bankBal));
+                    args1 = string.Format("@{0}@{1}@{2}@{3}", FormatAmt(current), FormatAmt(amount), FormatAmt(dif), FormatAmt(bankBal));
                 }
                 else
                 {
@@ -1179,7 +1179,7 @@ namespace Server.Engines.NewMagincia
 					 *Your previous bank balance was ~4_OLDBAL~gp and your current bank balance is 
 					 ~5_NEWBAL~gp.*/
                     cliloc1 = 1150589;
-                    args1 = String.Format("@{0}@{1}@{2}@{3}@{4}", FormatAmt(current), FormatAmt(amount), FormatAmt(dif), FormatAmt(bankBal), FormatAmt(bankBal - dif));
+                    args1 = string.Format("@{0}@{1}@{2}@{3}@{4}", FormatAmt(current), FormatAmt(amount), FormatAmt(dif), FormatAmt(bankBal), FormatAmt(bankBal - dif));
                 }
             }
             else if (amount < current)
@@ -1192,7 +1192,7 @@ namespace Server.Engines.NewMagincia
 					 *failed. The difference of ~3_CHANGE~gp could not be deposited into your bank 
 					 box. Your current bank balance is ~5_NEWBAL~gp.*/
                     cliloc1 = 1150590;
-                    args1 = String.Format("@{0}@{1}@{2}@{3}", FormatAmt(current), FormatAmt(amount), FormatAmt(dif), FormatAmt(bankBal));
+                    args1 = string.Format("@{0}@{1}@{2}@{3}", FormatAmt(current), FormatAmt(amount), FormatAmt(dif), FormatAmt(bankBal));
                 }
                 else
                 {
@@ -1202,7 +1202,7 @@ namespace Server.Engines.NewMagincia
 					 *previous bank balance was ~4_OLDBAL~gp and your current bank balance is 
 					 ~5_NEWBAL~gp.*/
                     cliloc1 = 1150591;
-                    args1 = String.Format("@{0}@{1}@{2}@{3}@{4}", FormatAmt(current), FormatAmt(amount), FormatAmt(dif), FormatAmt(bankBal), FormatAmt(bankBal + dif));
+                    args1 = string.Format("@{0}@{1}@{2}@{3}@{4}", FormatAmt(current), FormatAmt(amount), FormatAmt(dif), FormatAmt(bankBal), FormatAmt(bankBal + dif));
                 }
             }
             else
@@ -1255,9 +1255,9 @@ namespace Server.Engines.NewMagincia
             AddHtmlLocalized(10, 10, 500, 18, 1114513, "#1150385", useHue, false, false); // New Magincia Bazaar
 
             if (title > 0)
-                AddHtmlLocalized(10, 48, 500, 40, 1114513, String.Format("#{0}", title), useHue, false, false);
+                AddHtmlLocalized(10, 48, 500, 40, 1114513, string.Format("#{0}", title), useHue, false, false);
 
-            AddHtmlLocalized(10, 95, 500, 375, 1114513, String.Format("#{0}", message), useHue, true, true);
+            AddHtmlLocalized(10, 95, 500, 375, 1114513, string.Format("#{0}", message), useHue, true, true);
 
             if (g != null)
             {
@@ -1309,7 +1309,7 @@ namespace Server.Engines.NewMagincia
                     RecallRune rune = new RecallRune();
                     rune.Target = from.Location;
                     rune.TargetMap = from.Map;
-                    rune.Description = String.Format("Lot: {0}", m_Sign.Plot.PlotDef.ID);
+                    rune.Description = string.Format("Lot: {0}", m_Sign.Plot.PlotDef.ID);
                     rune.Marked = true;
 
                     if (from.Backpack == null || !from.Backpack.TryDropItem(from, rune, false))

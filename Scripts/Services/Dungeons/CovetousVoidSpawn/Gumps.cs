@@ -66,7 +66,7 @@ namespace Server.Engines.VoidPool
             if (stats.BestWave != null)
             {
                 AddButton(140, 130, 4005, 4006, 4, GumpButtonType.Reply, 0);
-                AddHtml(180, 130, 200, 16, String.Format("<basefont color=#A52A2A>Best Wave: {0}", stats.BestWave.Waves.ToString()), false, false);
+                AddHtml(180, 130, 200, 16, string.Format("<basefont color=#A52A2A>Best Wave: {0}", stats.BestWave.Waves.ToString()), false, false);
             }
 
             AddHtmlLocalized(10, 150, 400, 16, 1152552, Orange, false, false);          // See Loyalty Menu for Reward Points
@@ -147,12 +147,12 @@ namespace Server.Engines.VoidPool
             if (loc is int)
                 AddHtmlLocalized(10, 50, 200, 16, (int)loc, Red, false, false);
             else if (loc is string)
-                AddHtml(10, 50, 200, 16, String.Format("<basefont color=#8B0000>{0}", (string)loc), false, false);
+                AddHtml(10, 50, 200, 16, string.Format("<basefont color=#8B0000>{0}", (string)loc), false, false);
 
             if (ScoreType == ScoreType.BestWave)
             {
-                AddHtml(200, 30, 200, 16, String.Format("<basefont color=#8B0000>Total Waves: {0}", stats.BestWave.Waves.ToString()), false, false);
-                AddHtml(200, 50, 200, 16, String.Format("<basefont color=#8B0000>Total Score: {0}", stats.BestWave.TotalScore.ToString()), false, false);
+                AddHtml(200, 30, 200, 16, string.Format("<basefont color=#8B0000>Total Waves: {0}", stats.BestWave.Waves.ToString()), false, false);
+                AddHtml(200, 50, 200, 16, string.Format("<basefont color=#8B0000>Total Score: {0}", stats.BestWave.TotalScore.ToString()), false, false);
             }
 
             AddHtmlLocalized(10, 90, 100, 16, 1152541, Orange, false, false); // RANK
