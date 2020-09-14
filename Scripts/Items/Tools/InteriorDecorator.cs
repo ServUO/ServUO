@@ -271,13 +271,21 @@ namespace Server.Items
                     else if (!house.IsLockedDown(item) && !house.IsSecure(item) && !isDecorableComponent)
                     {
                         if (item is AddonComponent && m_Decorator.Command == DecorateCommand.Turn)
+                        {
                             from.SendLocalizedMessage(1042273); // You cannot turn that.
+                        }
                         else if (item is AddonComponent && m_Decorator.Command == DecorateCommand.Up)
+                        {
                             from.SendLocalizedMessage(1042274); // You cannot raise it up any higher.
+                        }
                         else if (item is AddonComponent && m_Decorator.Command == DecorateCommand.Down)
+                        {
                             from.SendLocalizedMessage(1042275); // You cannot lower it down any further.
+                        }
                         else
+                        {
                             from.SendLocalizedMessage(1042271); // That is not locked down.
+                        }
                     }
                     else if (item is VendorRentalContract)
                     {

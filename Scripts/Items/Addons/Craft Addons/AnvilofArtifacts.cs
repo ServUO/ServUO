@@ -11,46 +11,52 @@ using System.Linq;
 
 namespace Server.Items
 {
-    public class AnvilofArtifactsComponent : LocalizedAddonComponent
+    public class AnvilofArtifactsComponent : LocalizedAddonComponent, IFlipable
     {
         public override bool ForceShowProperties { get { return true; } }
-
-        private bool _TurnedOn;
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int InactiveID { get; private set; }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int ActiveID { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool TurnedOn
         {
-            get { return _TurnedOn; }
+            get { return IsActive; }
             set
             {
-                if (_TurnedOn != value)
+                if ((!value && IsActive) || (value && !IsActive))
                 {
-                    if (value)
-                        ItemID = ActiveID;
-                    else
-                        ItemID = InactiveID;
+                    ToggleOnOff();
                 }
-
-                _TurnedOn = value;
             }
         }
 
-        public AnvilofArtifactsComponent(int inactiveid, int activeid)
+        public virtual bool IsActive => ItemID == 0xA103 || ItemID == 0xA109;
+
+        public AnvilofArtifactsComponent(int inactiveid)
             : base(inactiveid, 1125242) // anvil of artifacts
         {
-            InactiveID = inactiveid;
-            ActiveID = activeid;
         }
 
         public AnvilofArtifactsComponent(Serial serial)
             : base(serial)
         {
+        }
+
+        public void OnFlip(Mobile m)
+        {
+            switch (ItemID)
+            {
+                case 0xA102:
+                    ItemID = 0xA108;
+                    break;
+                case 0xA103:
+                    ItemID = 0xA109;
+                    break;
+                case 0xA108:
+                    ItemID = 0xA102;
+                    break;
+                case 0xA109:
+                    ItemID = 0xA103;
+                    break;
+            }
         }
 
         public override void GetProperties(ObjectPropertyList list)
@@ -76,28 +82,38 @@ namespace Server.Items
             {
                 list.Add(new SimpleContextMenuEntry(from, 1155742, m => // Toggle: On/Off
                 {
-                    if (_TurnedOn)
-                    {
-                        TurnedOn = false;
-                    }
-                    else
-                    {
-                        TurnedOn = true;
-                    }
-
-                    from.PlaySound(42);
+                    ToggleOnOff();
 
                 }, 8));
             }
         }
 
+        private void ToggleOnOff()
+        {
+            switch (ItemID)
+            {
+                case 0xA102:
+                    ItemID = 0xA109;
+                    break;
+                case 0xA103:
+                    ItemID = 0xA108;
+                    break;
+                case 0xA108:
+                    ItemID = 0xA103;
+                    break;
+                case 0xA109:
+                    ItemID = 0xA102;
+                    break;
+            }
+
+            Effects.PlaySound(GetWorldLocation(), Map, 42);
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0); // Version
+            writer.Write(1); // Version
 
-            writer.Write(ActiveID);
-            writer.Write(InactiveID);
             writer.Write(TurnedOn);
         }
 
@@ -106,8 +122,12 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            ActiveID = reader.ReadInt();
-            InactiveID = reader.ReadInt();
+            if (version == 0)
+            {
+                reader.ReadInt();
+                reader.ReadInt();
+            }
+
             TurnedOn = reader.ReadBool();
         }
     }
@@ -133,11 +153,11 @@ namespace Server.Items
 
             if (east)
             {
-                AddComponent(new AnvilofArtifactsComponent(0xA102, 0xA109), 0, 0, 0);
+                AddComponent(new AnvilofArtifactsComponent(0xA102), 0, 0, 0);
             }
             else
             {
-                AddComponent(new AnvilofArtifactsComponent(0xA108, 0xA103), 0, 0, 0);
+                AddComponent(new AnvilofArtifactsComponent(0xA108), 0, 0, 0);
             }
         }
 
@@ -150,7 +170,7 @@ namespace Server.Items
         {
             BaseHouse house = BaseHouse.FindHouseAt(from);
 
-            if (house != null && (house.IsOwner(from) || (house.LockDowns.ContainsKey(this) && house.LockDowns[this] == from)))
+            if (house != null && (house.IsOwner(from) || (house.Addons.ContainsKey(this) && house.Addons[this] == from)))
             {
                 if (from is PlayerMobile pm && UsesRemaining > 0)
                 {
@@ -246,7 +266,7 @@ namespace Server.Items
             }
             else
             {
-                    from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
+                from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
             }
         }
 

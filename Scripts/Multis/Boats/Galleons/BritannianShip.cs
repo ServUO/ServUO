@@ -1,5 +1,6 @@
 using Server.Items;
 using System;
+using System.Linq;
 
 namespace Server.Multis
 {
@@ -51,71 +52,47 @@ namespace Server.Multis
         {
         }
 
-        public override int[][] CannonTileIDs => m_CannonTileIDs;
-        private readonly int[][] m_CannonTileIDs = new int[][]
+        public override int[] CannonTileIDs => m_CannonTileIDs;
+        private static readonly int[] m_CannonTileIDs = new int[]
         {
-            new int[] { 23612, 23631, 23630, 23632, 23634, 23639, 23637, 23643, 23641 }, //SOUTH
-            new int[] { 23666, 23684, 23685, 23686, 23688, 23691, 23693, 23695, 23697 }, //WEST
-            new int[] { 23558, 23576, 23577, 23580, 23578, 23583, 23585, 23587, 23589 }, //NORTH 
-            new int[] { 23504, 23522, 23523, 23526, 23524, 23529, 23531, 23533, 23535 }, //EAST 
+            23612, 23631, 23630, 23632, 23634, 23639, 23637, 23643, 23641, //SOUTH
+            23666, 23684, 23685, 23686, 23688, 23691, 23693, 23695, 23697, //WEST
+            23558, 23576, 23577, 23580, 23578, 23583, 23585, 23587, 23589, //NORTH 
+            23504, 23522, 23523, 23526, 23524, 23529, 23531, 23533, 23535, //EAST 
 
-            new int[] { 23612, 23631, 23630, 23632, 23634, 23639, 23637, 23643, 23641 }, //SOUTH
-            new int[] { 23666, 23684, 23685, 23686, 23688, 23691, 23693, 23695, 23697 }, //WEST
-            new int[] { 23558, 23576, 23577, 23580, 23578, 23583, 23585, 23587, 23589 }, //NORTH 
-            new int[] { 23504, 23522, 23523, 23526, 23524, 23529, 23531, 23533, 23535 }, //EAST 
+            23612, 23631, 23630, 23632, 23634, 23639, 23637, 23643, 23641, //SOUTH
+            23666, 23684, 23685, 23686, 23688, 23691, 23693, 23695, 23697, //WEST
+            23558, 23576, 23577, 23580, 23578, 23583, 23585, 23587, 23589, //NORTH 
+            23504, 23522, 23523, 23526, 23524, 23529, 23531, 23533, 23535  //EAST 
         };
 
-        public override int[][] FillerIDs => m_FillerIDs;
-        private readonly int[][] m_FillerIDs = new int[][]
-        {                 
-            //          fsail  faddn  baddn
-            new int[] { 23833, 23664, 23665 },   //SOUTH
-            new int[] { 23887, 23718, 23719 },  //WEST
-            new int[] { 23779, 23610, 23611 },  //NORTH
-            new int[] { 23725, 23556, 23557 },  //EAST
+        public override int[] HoldIDs => m_HoldIDs;
+        private static readonly int[] m_HoldIDs = new int[]
+        {
+            23649, 23650, 23652, 23653, 23654, 23655, 23656, 23651,  //SOUTH
+            23703, 23704, 23706, 23707, 23708, 23709, 23710, 23705,  //WEST
+            23595, 23596, 23598, 23599, 23600, 23601, 23602, 23597,  //NORTH
+            23541, 23542, 23544, 23545, 23546, 23547, 23548, 23543,  //EAST
 
-            new int[] { 23833, 23664, 23665 },   //SOUTH
-            new int[] { 23887, 23718, 23719 },  //WEST
-            new int[] { 23779, 23610, 23611 },  //NORTH
-            new int[] { 23725, 23556, 23557 },  //EAST
+            23649, 23650, 23652, 23653, 23654, 23655, 23656, 23651,  //SOUTH
+            23703, 23704, 23706, 23707, 23708, 23709, 23710, 23705,  //WEST
+            23595, 23596, 23598, 23599, 23600, 23601, 23602, 23597,  //NORTH
+            23541, 23542, 23544, 23545, 23546, 23547, 23548, 23543   //EAST
         };
 
-        public override int[][] HoldIDs => m_HoldIDs;
-        private readonly int[][] m_HoldIDs = new int[][]
+        public override int[] HoldItemIDs => m_HoldItemIDs;
+        private static readonly int[] m_HoldItemIDs = new int[]
         {
-            new int[] { 23649, 23650, 23652, 23653, 23654, 23655, 23656, 23651},  //SOUTH
-            new int[] { 23703, 23704, 23706, 23707, 23708, 23709, 23710, 23705},  //WEST
-            new int[] { 23595, 23596, 23598, 23599, 23600, 23601, 23602, 23597},  //NORTH
-            new int[] { 23541, 23542, 23544, 23545, 23546, 23547, 23548, 23543},  //EAST
-
-            new int[] { 23649, 23650, 23652, 23653, 23654, 23655, 23656, 23651},  //SOUTH
-            new int[] { 23703, 23704, 23706, 23707, 23708, 23709, 23710, 23705},  //WEST
-            new int[] { 23595, 23596, 23598, 23599, 23600, 23601, 23602, 23597},  //NORTH
-            new int[] { 23541, 23542, 23544, 23545, 23546, 23547, 23548, 23543},  //EAST
+            23648, 23702, 23594, 23540,
+            23648, 23702, 23594, 23540,
         };
 
-        public override int[][] HoldItemIDs => m_HoldItemIDs;
-        private readonly int[][] m_HoldItemIDs = new int[][]
-        {
-            new int[] { 23648 },
-            new int[] { 23702 },
-            new int[] { 23594 },
-            new int[] { 23540 },
-
-            new int[] { 23648 },
-            new int[] { 23702 },
-            new int[] { 23594 },
-            new int[] { 23540 },
-        };
-
-        public override int[][] WheelItemIDs => m_WheelItemIDs;
-        private readonly int[][] m_WheelItemIDs = new int[][]
+        public override int[] WheelItemIDs => m_WheelItemIDs;
+        private static readonly int[] m_WheelItemIDs = new int[]
         {
 
-            new int[] { 23618 },
-            new int[] { 23618 },
-            new int[] { 23618 },
-            new int[] { 23618 },
+            23618, 23672, 23564, 23510,
+            25154, 25208, 25100, 25046
         };
 
         public override ShipPosition GetCannonPosition(Point3D pnt)
@@ -287,13 +264,32 @@ namespace Server.Multis
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0);
+            writer.Write(1);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (version == 0)
+            {
+                Timer.DelayCall(() =>
+                {
+                    var deckItem = Fixtures.FirstOrDefault(f => m_WheelItemIDs.Any(listID => listID == f.ItemID));
+
+                    if (deckItem != null)
+                    {
+                        ShipWheel wheel = new ShipWheel(this, deckItem.ItemID);
+                        AddFixture(wheel);
+
+                        wheel.MoveToWorld(new Point3D(deckItem.X, deckItem.Y, deckItem.Z), deckItem.Map);
+
+                        deckItem.Delete();
+                        RemoveFixture(deckItem);
+                    }
+                });
+            }
         }
     }
 

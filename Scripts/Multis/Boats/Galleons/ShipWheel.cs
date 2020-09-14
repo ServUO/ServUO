@@ -6,6 +6,7 @@ namespace Server.Items
     {
         public override int LabelNumber => 1149698;  // wheel
 
+        [CommandProperty(AccessLevel.GameMaster)]
         public BaseGalleon Galleon { get; set; }
 
         public Mobile Pilot => Galleon != null ? Galleon.Pilot : null;

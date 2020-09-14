@@ -33,90 +33,59 @@ namespace Server.Multis
         {
         }
 
-        public override int[][] CannonTileIDs => m_CannonTileIDs;
-        private readonly int[][] m_CannonTileIDs = new int[][]
+        public override int[] CannonTileIDs => m_CannonTileIDs;
+        private static readonly int[] m_CannonTileIDs = new int[]
         {
 
-            new int[] { 30012, 30037, 30041, 30065, 30069, 30093, 30097 }, //SOUTH
-            new int[] { 30512, 30537, 30541, 30565, 30569, 30593, 30597 }, //WEST
-            new int[] { 31012, 31037, 31041, 31065, 31069, 31093, 31097 }, //NORTH
-            new int[] { 31512, 31537, 31541, 31565, 31569, 31593, 31597 }, //EAST
+            30012, 30037, 30041, 30065, 30069, 30093, 30097, //SOUTH
+            30512, 30537, 30541, 30565, 30569, 30593, 30597, //WEST
+            31012, 31037, 31041, 31065, 31069, 31093, 31097, //NORTH
+            31512, 31537, 31541, 31565, 31569, 31593, 31597, //EAST
 
-            new int[] { 31712, 31737, 31741, 31765, 31769, 31793, 31797 }, //SOUTH D1
-            new int[] { 31913, 31938, 31942, 31966, 31970, 31994, 31998 }, //WEST  D1
-            new int[] { 32112, 32137, 32141, 32165, 32169, 32193, 32197 }, //NORTH D1
-            new int[] { 32312, 32337, 32341, 32365, 32369, 32393, 32397 }, //EAST  D1
+            31712, 31737, 31741, 31765, 31769, 31793, 31797, //SOUTH D1
+            31913, 31938, 31942, 31966, 31970, 31994, 31998, //WEST  D1
+            32112, 32137, 32141, 32165, 32169, 32193, 32197, //NORTH D1
+            32312, 32337, 32341, 32365, 32369, 32393, 32397, //EAST  D1
 
-            new int[] { 32512, 32537, 32541, 32565, 32569, 32593, 32597 }, //NORTH D2
-            new int[] { 32712, 32737, 32741, 32765, 32769, 32793, 32797 }, //WEST  D2
-            new int[] { 32912, 32937, 32941, 32965, 32969, 32993, 32997 }, //NORTH D2
-            new int[] { 33112, 33137, 33141, 33165, 33169, 33193, 33197 }, //NORTH D2   
+            32512, 32537, 32541, 32565, 32569, 32593, 32597, //NORTH D2
+            32712, 32737, 32741, 32765, 32769, 32793, 32797, //WEST  D2
+            32912, 32937, 32941, 32965, 32969, 32993, 32997, //NORTH D2
+            33112, 33137, 33141, 33165, 33169, 33193, 33197  //NORTH D2   
         };
 
-        public override int[][] FillerIDs => m_FillerIDs;
-        private readonly int[][] m_FillerIDs = new int[][]
+        public override int[] HoldIDs => m_HoldIDs;
+        private static readonly int[] m_HoldIDs = new int[]
         {
-            new int[] { 30030, 30034, 30048, 30044, 30090, 30086 },  //SOUTH
-            new int[] { 30530, 30534, 30548, 30544, 30590, 30586 },  //WEST
-            new int[] { 31030, 31034, 31048, 31044, 31090, 31086 },  //NORTH
-            new int[] { 31530, 31534, 31548, 31544, 31590, 31586 },  //EAST
+            30127, 30124, 30122, 30115, 30120,  //SOUTH
+            30627, 30624, 30622, 30615, 30620,  //WEST
+            31127, 31124, 31122, 31115, 31120,  //NORTH
+            31627, 31624, 31622, 31615, 31620,  //EAST
 
-            new int[] { 31730, 31734, 31748, 31744, 31790, 31786 },  //SOUTH D1
-            new int[] { 31931, 31935, 31949, 31945, 31991, 31987 },  //WEST  D1
-            new int[] { 32130, 32134, 32148, 32144, 32190, 32186 },  //NORTH D1
-            new int[] { 32330, 32334, 32348, 32344, 32390, 32386 },  //EAST  D1
-
-            new int[] { 32530, 32534, 32548, 32544, 32590, 32586 },  //SOUTH D2
-            new int[] { 32730, 32734, 32748, 32744, 32790, 32786 },  //WEST  D2
-            new int[] { 32930, 32934, 32948, 32944, 32990, 32986 },  //NORTH D2
-            new int[] { 33130, 33134, 33148, 33144, 33190, 33186 },  //EAST  D2
-        };
-
-        public override int[][] HoldIDs => m_HoldIDs;
-        private readonly int[][] m_HoldIDs = new int[][]
-        {
-            new int[] { 30127, 30124, 30122, 30115, 30120 },  //SOUTH
-            new int[] { 30627, 30624, 30622, 30615, 30620 },  //WEST
-            new int[] { 31127, 31124, 31122, 31115, 31120 },  //NORTH
-            new int[] { 31627, 31624, 31622, 31615, 31620 },  //EAST
-
-            new int[] { 31827, 31824, 31822, 31815, 31820 },  //SOUTH D1
-            new int[] { 32028, 32025, 32023, 32016, 32021 },  //WEST D1
-            new int[] { 32227, 32224, 32222, 32215, 32220 },  //NORTH D1
-            new int[] { 32427, 32424, 32422, 32415, 32420 },  //EAST D1
+            31827, 31824, 31822, 31815, 31820,  //SOUTH D1
+            32028, 32025, 32023, 32016, 32021,  //WEST D1
+            32227, 32224, 32222, 32215, 32220,  //NORTH D1
+            32427, 32424, 32422, 32415, 32420,  //EAST D1
              
-            new int[] { 32627, 32624, 32622, 32615, 32620 },  //SOUTH D2
-            new int[] { 32827, 32824, 32822, 32815, 32820 },  //WEST D2
-            new int[] { 33027, 33024, 33022, 33015, 33020 },  //NORTH D2
-            new int[] { 33227, 33224, 33222, 33215, 33220 },  //EAST D1
+            32627, 32624, 32622, 32615, 32620,  //SOUTH D2
+            32827, 32824, 32822, 32815, 32820,  //WEST D2
+            33027, 33024, 33022, 33015, 33020,  //NORTH D2
+            33227, 33224, 33222, 33215, 33220   //EAST D1
         };
 
-        public override int[][] HoldItemIDs => m_HoldItemIDs;
-        private readonly int[][] m_HoldItemIDs = new int[][]
+        public override int[] HoldItemIDs => m_HoldItemIDs;
+        private static readonly int[] m_HoldItemIDs = new int[]
         {
-            new int[] { 30117 },
-            new int[] { 30617 },
-            new int[] { 31117 },
-            new int[] { 31617 },
-
-            new int[] { 31817 },
-            new int[] { 32018 },
-            new int[] { 32217 },
-            new int[] { 32417 },
-
-            new int[] { 32617 },
-            new int[] { 32817 },
-            new int[] { 33017 },
-            new int[] { 33217 },
+            30117, 30617, 31117, 31617,
+            31817, 32018, 32217, 32417,
+            32617, 32817, 33017, 33217
         };
 
-        public override int[][] WheelItemIDs => m_WheelItemIDs;
-        private readonly int[][] m_WheelItemIDs = new int[][]
+        public override int[] WheelItemIDs => m_WheelItemIDs;
+        private static readonly int[] m_WheelItemIDs = new int[]
         {
-            new int[] { 30141 },
-            new int[] { 30641 },
-            new int[] { 31141 },
-            new int[] { 31642 },
+            30141, 30641, 31141, 31642,
+            31890, 32090, 32290, 32493,
+            32692, 32891, 33090, 33290
         };
 
         public override ShipPosition GetCannonPosition(Point3D pnt)
