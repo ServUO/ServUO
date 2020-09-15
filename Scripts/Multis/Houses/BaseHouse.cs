@@ -1242,6 +1242,47 @@ namespace Server.Multis
             typeof(PotionKeg)
         };
 
+        public virtual bool IsStairArea(Point3D p)
+        {
+            bool frontStairs;
+            return IsStairArea(p, out frontStairs);
+        }
+
+        public virtual bool IsStairArea(Point3D p, out bool frontStairs)
+        {
+            MultiComponentList mcl = Components;
+
+            int x = p.X - (X + mcl.Min.X);
+            int y = p.Y - (Y + mcl.Min.Y);
+
+            StaticTile[] tiles = mcl.Tiles[x][y];
+            int dir = 0;
+            frontStairs = false;
+
+            if (tiles.Length == 1)
+            {
+                var id = tiles[0].ID & TileData.MaxItemValue;
+
+                if (HouseFoundation.IsStair(id, ref dir) || HouseFoundation.IsStairBlock(id))
+                {
+                    frontStairs = true;
+                    return true;
+                }
+            }
+
+            for (int j = 0; j < tiles.Length; ++j)
+            {
+                int id = tiles[j].ID & TileData.MaxItemValue;
+
+                if (HouseFoundation.IsStair(id, ref dir) || HouseFoundation.IsStairBlock(id))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public virtual bool IsInside(Point3D p, int height)
         {
             if (Deleted)

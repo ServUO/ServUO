@@ -224,6 +224,10 @@ namespace Server.Items
                     {
                         from.SendLocalizedMessage(500268); // This object needs to be mounted on something.
                     }
+                    else if (res == AddonFitResult.FoundationStairs)
+                    {
+                        from.SendLocalizedMessage(1071262); // You can't place the multi-tile addon at the entrance!
+                    }
 
                     if (res != AddonFitResult.Valid)
                     {
