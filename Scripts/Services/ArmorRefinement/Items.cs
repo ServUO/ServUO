@@ -107,15 +107,15 @@ namespace Server.Items
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            list.Add(1153966, String.Format("#{0}\t#{1}", Labels[(int)m_RefinementType][(int)m_CraftType], GetModLabel())); // ~1_OBJTYPE~ ~2_BONUSLEVEL~
+            list.Add(1153966, string.Format("#{0}\t#{1}", Labels[(int)m_RefinementType][(int)m_CraftType], GetModLabel())); // ~1_OBJTYPE~ ~2_BONUSLEVEL~
         }
 
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 
-            list.Add(1154002, String.Format("#{0}", 1153954 + (int)m_SubCraftType));                // Armor Type: ~1_TYPE~
-            list.Add(1154124, String.Format("#{0}", m_RefinementType == RefinementType.Reinforcing ? 1154123 : 1154122));  // Bonus Type: ~1_TYPE~
+            list.Add(1154002, string.Format("#{0}", 1153954 + (int)m_SubCraftType));                // Armor Type: ~1_TYPE~
+            list.Add(1154124, string.Format("#{0}", m_RefinementType == RefinementType.Reinforcing ? 1154123 : 1154122));  // Bonus Type: ~1_TYPE~
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -397,7 +397,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            list.Add(1154002, String.Format("#{0}", (1153954 + (int)m_SubCraftType).ToString()));                // Armor Type: ~1_TYPE~
+            list.Add(1154002, string.Format("#{0}", (1153954 + (int)m_SubCraftType).ToString()));                // Armor Type: ~1_TYPE~
             list.Add(1154124, m_RefinementType == RefinementType.Reinforcing ? "#1154123" : "#1154122");         // Bonus Type: ~1_TYPE~
         }
 
@@ -451,7 +451,7 @@ namespace Server.Items
 
         public string GetNameArgs()
         {
-            return String.Format("#{0}\t#{1}\t#{2}", LabelPrefix[(int)m_RefinementType][(int)m_CraftType], LabelSuffix[(int)m_CraftType], GetModLabel());
+            return string.Format("#{0}\t#{1}\t#{2}", LabelPrefix[(int)m_RefinementType][(int)m_CraftType], LabelSuffix[(int)m_CraftType], GetModLabel());
         }
 
         public int[][] LabelPrefix = new int[][]

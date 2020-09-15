@@ -106,7 +106,7 @@ namespace Server.Engines.Blackthorn
             }
             else
             {
-                title = String.Format("the {0}", Skills[specialty].Info.Title);
+                title = string.Format("the {0}", Skills[specialty].Info.Title);
                 if (Female && title.EndsWith("man"))
                     title = title.Substring(0, title.Length - 3) + "woman";
             }

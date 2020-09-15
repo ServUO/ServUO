@@ -417,7 +417,7 @@ namespace Server.Engines.NewMagincia
                     /*You won a lease on Stall ~1_STALLNAME~ at the ~2_FACET~ New Magincia Bazaar. 
                      *Your bid amount of ~3_BIDAMT~gp won the auction and has been remitted. Your 
                      *lease begins immediately and will continue for 7 days.*/
-                    MaginciaLottoSystem.SendMessageTo(winner, new NewMaginciaMessage(null, new TextDefinition(1150426), String.Format("{0}\t{1}\t{2}", plot.PlotDef.ID, plot.PlotDef.Map.ToString(), highest.ToString("###,###,###"))));
+                    MaginciaLottoSystem.SendMessageTo(winner, new NewMaginciaMessage(null, new TextDefinition(1150426), string.Format("{0}\t{1}\t{2}", plot.PlotDef.ID, plot.PlotDef.Map.ToString(), highest.ToString("###,###,###"))));
                 }
 
                 plot.Reset();
@@ -429,7 +429,7 @@ namespace Server.Engines.NewMagincia
                      *Bazaar. The lease on your previous stall has been terminated. Your hired 
                      *merchant, if any, has relocated your stall and goods to the new lot. Your 
                      *bid amount of ~3_BIDAMT~gp has been remitted.*/
-                    MaginciaLottoSystem.SendMessageTo(winner, new NewMaginciaMessage(null, new TextDefinition(1150428), String.Format("{0}\t{1}\t{2}", plot.PlotDef.ID, plot.PlotDef.Map, highest.ToString("###,###,###"))));
+                    MaginciaLottoSystem.SendMessageTo(winner, new NewMaginciaMessage(null, new TextDefinition(1150428), string.Format("{0}\t{1}\t{2}", plot.PlotDef.ID, plot.PlotDef.Map, highest.ToString("###,###,###"))));
 
                     plot.PlotMulti = current.PlotMulti;
                     plot.Merchant = current.Merchant;

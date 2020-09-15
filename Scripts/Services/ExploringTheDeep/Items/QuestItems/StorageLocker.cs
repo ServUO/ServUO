@@ -88,7 +88,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            list.Add(1154425, String.Format("#{0}", 1154427 + (int)m_Type)); // *You barely make out some words on a rusted nameplate*<BR>REPLACEMENT PARTS: ~1_PART~
+            list.Add(1154425, string.Format("#{0}", 1154427 + (int)m_Type)); // *You barely make out some words on a rusted nameplate*<BR>REPLACEMENT PARTS: ~1_PART~
         }
 
         public static int[][] WoodenToMetalBarrelCoordinate =

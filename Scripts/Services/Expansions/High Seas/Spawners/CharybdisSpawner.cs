@@ -105,7 +105,7 @@ namespace Server.Mobiles
                 if (m_Charydbis != null && m_Charydbis.Alive)
                 {
                     Point3D pnt = new Point3D(m_CurrentLocation.X + 5, m_CurrentLocation.Y + 5, -5);
-                    from.SendMessage(String.Format("The location you seek is: {0} in {1}", GetSextantLocation(pnt), m_Map));
+                    from.SendMessage(string.Format("The location you seek is: {0} in {1}", GetSextantLocation(pnt), m_Map));
                 }
                 else if (m_HasSpawned && (m_Charydbis == null || !m_Charydbis.Alive))
                 {
@@ -135,7 +135,7 @@ namespace Server.Mobiles
             m_NextSpawn = DateTime.UtcNow + NoSpawnDelay;
             m_IsSummoned = true;
             Point3D p = SOS.FindLocation(map);
-            from.SendMessage(String.Format("The location you seek is: {0} in {1}", GetSextantLocation(p), m_Map));
+            from.SendMessage(string.Format("The location you seek is: {0} in {1}", GetSextantLocation(p), m_Map));
             m_CurrentLocation = new Rectangle2D(p.X - 5, p.Y - 5, 10, 10);
             m_LastLocation = m_CurrentLocation;
             m_Timer = new InternalTimer(this, NoSpawnDelay);
@@ -151,7 +151,7 @@ namespace Server.Mobiles
             bool xEast = false, ySouth = false;
 
             if (Sextant.Format(pnt, m_Map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
-                return String.Format("{0}° {1}'{2}, {3}° {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
+                return string.Format("{0}° {1}'{2}, {3}° {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
 
             return pnt.ToString();
         }

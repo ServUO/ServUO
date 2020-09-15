@@ -84,7 +84,7 @@ namespace Server.Gumps
                 OffsetGumpID);
 
             AddRect(0, prop.Name, 0, -1);
-            AddRect(1, String.Format("{0:u}", m_OldDT), 0, -1);
+            AddRect(1, string.Format("{0:u}", m_OldDT), 0, -1);
             AddRect(2, "MinValue", 1, -1);
             AddRect(3, "From YYYY:MM:DD hh:mm", 2, -1);
             AddRect(4, "From YYYY:MM:DD", 3, -1);
@@ -176,13 +176,13 @@ namespace Server.Gumps
                 case 2: // From YYYY MM DD H:M
                     {
                         bool successfulParse = false;
-                        string toapply = String.Format(
+                        string toapply = string.Format(
                             "{0}/{1}/{2} {3}:{4}:00",
-                            (year != string.Empty ? year : String.Format("{0:yyyy}", m_OldDT)),
-                            (month != string.Empty ? month : String.Format("{0:MM}", m_OldDT)),
-                            (day != string.Empty ? day : String.Format("{0:dd}", m_OldDT)),
-                            (hour != string.Empty ? hour : String.Format("{0:HH}", m_OldDT)),
-                            (min != string.Empty ? min : String.Format("{0:mm}", m_OldDT)));
+                            (year != string.Empty ? year : string.Format("{0:yyyy}", m_OldDT)),
+                            (month != string.Empty ? month : string.Format("{0:MM}", m_OldDT)),
+                            (day != string.Empty ? day : string.Format("{0:dd}", m_OldDT)),
+                            (hour != string.Empty ? hour : string.Format("{0:HH}", m_OldDT)),
+                            (min != string.Empty ? min : string.Format("{0:mm}", m_OldDT)));
                         successfulParse = DateTime.TryParse(toapply, out toSet);
 
                         shouldSet = shouldSend = successfulParse;

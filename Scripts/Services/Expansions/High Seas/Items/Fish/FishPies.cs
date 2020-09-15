@@ -203,7 +203,7 @@ namespace Server.Items
             {
                 from.FixedEffect(0x375A, 10, 15);
                 from.PlaySound(0x1E7);
-                from.SendLocalizedMessage(1116285, String.Format("#{0}", LabelNumber)); //You eat the ~1_val~.  Mmm, tasty!
+                from.SendLocalizedMessage(1116285, string.Format("#{0}", LabelNumber)); //You eat the ~1_val~.  Mmm, tasty!
                 Delete();
             }
         }

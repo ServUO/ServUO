@@ -65,7 +65,7 @@ namespace Server.Spells.Fifth
                     for (int i = 0; i < mods.Length; ++i)
                         targ.AddResistanceMod(mods[i]);
 
-                    string buffFormat = String.Format("-{0}\t+{1}\t+{1}\t+{1}\t+{1}\t{2}\t{3}", physiMod, otherMod, "-5", context.ReflectPool);
+                    string buffFormat = string.Format("-{0}\t+{1}\t+{1}\t+{1}\t+{1}\t{2}\t{3}", physiMod, otherMod, "-5", context.ReflectPool);
                     BuffInfo.AddBuff(targ, new BuffInfo(BuffIcon.MagicReflection, 1015197, 1149979, buffFormat, true));
                 }
                 else if (CooldownTimer.InCooldown(Caster))
@@ -180,7 +180,7 @@ namespace Server.Spells.Fifth
                         CooldownTimer.AddTimer(m);
                     }
 
-                    string buffFormat = String.Format("{0}\t+{1}\t+{1}\t+{1}\t+{1}\t{2}\t{3}", context.Mods[0].Offset, context.Mods[1].Offset, "-5", context.ReflectPool);
+                    string buffFormat = string.Format("{0}\t+{1}\t+{1}\t+{1}\t+{1}\t{2}\t{3}", context.Mods[0].Offset, context.Mods[1].Offset, "-5", context.ReflectPool);
                     BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.MagicReflection, 1015197, 1149979, buffFormat, true));
 
                     return true;
@@ -238,7 +238,7 @@ namespace Server.Spells.Fifth
                     ReflectPool = pool;
                     Caster.SendLocalizedMessage(1150072); //Your magic reflection pool has been replenished.
 
-                    string buffFormat = String.Format("{0}\t+{1}\t+{1}\t+{1}\t+{1}\t{2}\t{3}", Mods[0].Offset, Mods[1].Offset, "-5", ReflectPool);
+                    string buffFormat = string.Format("{0}\t+{1}\t+{1}\t+{1}\t+{1}\t{2}\t{3}", Mods[0].Offset, Mods[1].Offset, "-5", ReflectPool);
                     BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.MagicReflection, 1015197, 1149979, buffFormat, true));
 
                     return true;

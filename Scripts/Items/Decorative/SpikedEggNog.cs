@@ -74,7 +74,7 @@ namespace Server.Items
                 return;
             }
 
-            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Bleed, 1075829, 1075830, TimeSpan.FromSeconds(12), m, String.Format("{0}\t{1}\t{2}", "1", "10", "2")));
+            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Bleed, 1075829, 1075830, TimeSpan.FromSeconds(12), m, string.Format("{0}\t{1}\t{2}", "1", "10", "2")));
 
             m_Timer = new BleedTimer(m, this);
             m_Timer.Start();

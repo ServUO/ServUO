@@ -222,7 +222,7 @@ namespace Server.Engines.VvV
 
             if (Battle.OnGoing)
             {
-                SendVvVMessageTo(pm, 1154721, String.Format("#{0}", GetCityLocalization(Battle.City).ToString()));
+                SendVvVMessageTo(pm, 1154721, string.Format("#{0}", GetCityLocalization(Battle.City).ToString()));
                 // A Battle between Vice and Virtue is active! To Arms! The City of ~1_CITY~ is besieged!
 
                 if (Battle != null && Battle.IsInActiveBattle(pm))
@@ -996,7 +996,7 @@ namespace Server.Engines.VvV
                 });
         }
 
-        private static readonly string _EnhancedRulesNotice = String.Format("Notice: The Vice Vs Virtue system has recently enabled enhanced rules. To avoid any issues and " +
+        private static readonly string _EnhancedRulesNotice = string.Format("Notice: The Vice Vs Virtue system has recently enabled enhanced rules. To avoid any issues and " +
              "unexpected deaths due to the new game mechanics, it is important that you read this message. " +
              "<br><br>New VvV Mechanics:<br><br>" +
              "- VvV combatants are attackable on all facets.<br>" +
@@ -1102,7 +1102,7 @@ namespace Server.Engines.VvV
 
             if (silver > 0)
             {
-                Player.SendLocalizedMessage(1042736, String.Format("{0:N0} silver\t{1}", silver, victim.Name));
+                Player.SendLocalizedMessage(1042736, string.Format("{0:N0} silver\t{1}", silver, victim.Name));
                 // You have earned ~1_SILVER_AMOUNT~ pieces for vanquishing ~2_PLAYER_NAME~!
 
                 Points += silver;

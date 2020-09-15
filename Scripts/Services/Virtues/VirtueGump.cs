@@ -166,7 +166,7 @@ namespace Server.Services.Virtues
 
             public override string Compile()
             {
-                return String.Format("{{ gumppic {0} {1} {2} hue={3} class=VirtueGumpItem }}", X, Y, GumpID, Hue);
+                return string.Format("{{ gumppic {0} {1} {2} hue={3} class=VirtueGumpItem }}", X, Y, GumpID, Hue);
             }
 
             public override void AppendTo(IGumpWriter disp)

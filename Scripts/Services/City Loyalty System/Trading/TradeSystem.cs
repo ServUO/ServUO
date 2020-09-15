@@ -92,7 +92,7 @@ namespace Server.Engines.CityLoyalty
                 minister.SayTo(
                     from,
                     1158790,
-                    String.Format("{0}\t{1}",
+                    string.Format("{0}\t{1}",
                     WorldLocationInfo.GetLocationString(p, map),
                     Sextant.GetCoords(p, map)), 1150);
                 // Take notice! The vile Krampus has been spotted near ~2_where~ at ~1_coords~!  New Trade Orders are suspended until Krampus has been defeated!
@@ -157,7 +157,7 @@ namespace Server.Engines.CityLoyalty
             TradeMinister minister = turninMobile as TradeMinister;
 
             if (from.AccessLevel == AccessLevel.Player && minister != null && minister.City != entry.Destination)
-                turninMobile.SayTo(from, 1151738, String.Format("#{0}", CityLoyaltySystem.GetCityLocalization(entry.Destination))); // Begging thy pardon, but those goods are destined for the City of ~1_city~
+                turninMobile.SayTo(from, 1151738, string.Format("#{0}", CityLoyaltySystem.GetCityLocalization(entry.Destination))); // Begging thy pardon, but those goods are destined for the City of ~1_city~
             else if (!order.Fulfilled)
                 turninMobile.SayTo(from, 1151732); // This trade order has not been fulfilled.  Fill the trade order with all necessary items and try again.
             else

@@ -137,7 +137,7 @@ namespace Server.Items
         {
             base.AddNameProperty(list);
 
-            if (!String.IsNullOrEmpty(EngravedText))
+            if (!string.IsNullOrEmpty(EngravedText))
             {
                 list.Add(1072305, Utility.FixHtml(EngravedText)); // Engraved: ~1_INSCRIPTION~
             }

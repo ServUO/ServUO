@@ -219,7 +219,7 @@ namespace Server.Commands
             sw.RaisableItem = stone;
             lv.RaisableItem = door;
 
-            e.Mobile.SendMessage(String.Format("{0} dynamic Khaldun item{1} generated.", m_Count, m_Count == 1 ? "" : "s"));
+            e.Mobile.SendMessage(string.Format("{0} dynamic Khaldun item{1} generated.", m_Count, m_Count == 1 ? "" : "s"));
         }
     }
 }

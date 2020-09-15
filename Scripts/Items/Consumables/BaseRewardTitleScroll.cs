@@ -55,8 +55,8 @@ namespace Server.Items
 
                         if (textdef.Number > 0)
                             AddHtmlLocalized(50, 65 + (i * 20), 240, 20, textdef.Number, 0xFFFF, false, false);
-                        else if (!String.IsNullOrEmpty(textdef.String))
-                            AddHtml(50, 65 + (i * 20), 240, 20, String.Format("<basefond color=#FFFFFF>{0}", textdef.String), false, false);
+                        else if (!string.IsNullOrEmpty(textdef.String))
+                            AddHtml(50, 65 + (i * 20), 240, 20, string.Format("<basefond color=#FFFFFF>{0}", textdef.String), false, false);
 
                         i++;
                     });

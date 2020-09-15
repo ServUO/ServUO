@@ -316,14 +316,14 @@ namespace Server.Commands
             int start = text.IndexOf('(');
 
             if (start < 0)
-                throw new FormatException(String.Format("Input string not correctly formatted ('{0}')", text));
+                throw new FormatException(string.Format("Input string not correctly formatted ('{0}')", text));
 
             m_Title = text.Substring(0, start).Trim();
 
             int end = text.IndexOf(')', ++start);
 
             if (end < start)
-                throw new FormatException(String.Format("Input string not correctly formatted ('{0}')", text));
+                throw new FormatException(string.Format("Input string not correctly formatted ('{0}')", text));
 
             text = text.Substring(start, end - start);
             string[] split = text.Split(';');
@@ -382,12 +382,12 @@ namespace Server.Commands
 
             for (index = 0; index < input.Length; ++index)
             {
-                if (Char.IsLetter(input, index))
+                if (char.IsLetter(input, index))
                     break;
             }
 
             if (index >= input.Length)
-                throw new FormatException(String.Format("Input string not correctly formatted ('{0}')", input));
+                throw new FormatException(string.Format("Input string not correctly formatted ('{0}')", input));
 
             m_Indentation = index;
             m_Text = input.Substring(index);

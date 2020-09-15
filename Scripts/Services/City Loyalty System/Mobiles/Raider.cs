@@ -93,7 +93,7 @@ namespace Server.Mobiles
             else if (Hits > ((double)HitsMax / 10))
             {
                 m.SendLocalizedMessage(1152229); // That person won't sit still for it! A more aggressive approach is in order.
-                m.NonlocalOverheadMessage(MessageType.Regular, 0x3B2, 1152237, String.Format("{0}\t{1}", m.Name, Name, "raider"));
+                m.NonlocalOverheadMessage(MessageType.Regular, 0x3B2, 1152237, string.Format("{0}\t{1}", m.Name, Name, "raider"));
             }
             else
             {
@@ -105,7 +105,7 @@ namespace Server.Mobiles
                 ControlOrder = OrderType.Follow;
 
                 m.SendLocalizedMessage(1152236, Name); // You arrest the ~1_name~. Take the criminal to the guard captain.
-                m.NonlocalOverheadMessage(MessageType.Regular, 0x3B2, 1152238, String.Format("{0}\t{1}", m.Name, Name));
+                m.NonlocalOverheadMessage(MessageType.Regular, 0x3B2, 1152238, string.Format("{0}\t{1}", m.Name, Name));
 
                 return true;
             }

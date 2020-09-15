@@ -232,7 +232,7 @@ namespace Server.Engines.Despise
             if (ControlMaster != null)
                 list.Add(1153303, ControlMaster.Name); // Controller: ~1_NAME~
 
-            list.Add(1153297, String.Format("{0}\t#{1}", m_Power.ToString(), GetPowerLabel(m_Power))); // Power Level: ~1_LEVEL~: ~2_VAL~
+            list.Add(1153297, string.Format("{0}\t#{1}", m_Power.ToString(), GetPowerLabel(m_Power))); // Power Level: ~1_LEVEL~: ~2_VAL~
         }
 
         public override void OnCombatantChange()

@@ -272,9 +272,9 @@ namespace Server.Engines.Plants
                 string args;
 
                 if (ShowContainerType)
-                    args = String.Format("#{0}\t#{1}", GetLocalizedContainerType(), m_PlantSystem.GetLocalizedDirtStatus());
+                    args = string.Format("#{0}\t#{1}", GetLocalizedContainerType(), m_PlantSystem.GetLocalizedDirtStatus());
                 else
-                    args = String.Format("#{0}", m_PlantSystem.GetLocalizedDirtStatus());
+                    args = string.Format("#{0}", m_PlantSystem.GetLocalizedDirtStatus());
 
                 list.Add(1060830, args); // a ~1_val~ of ~2_val~ dirt
             }
@@ -285,24 +285,24 @@ namespace Server.Engines.Plants
 
                 if (m_PlantStatus >= PlantStatus.DecorativePlant)
                 {
-                    list.Add(typeInfo.GetPlantLabelDecorative(hueInfo), String.Format("#{0}\t#{1}", hueInfo.Name, typeInfo.Name));
+                    list.Add(typeInfo.GetPlantLabelDecorative(hueInfo), string.Format("#{0}\t#{1}", hueInfo.Name, typeInfo.Name));
                 }
                 else if (m_PlantStatus >= PlantStatus.FullGrownPlant)
                 {
-                    list.Add(typeInfo.GetPlantLabelFullGrown(hueInfo), String.Format("#{0}\t#{1}\t#{2}", m_PlantSystem.GetLocalizedHealth(), hueInfo.Name, typeInfo.Name));
+                    list.Add(typeInfo.GetPlantLabelFullGrown(hueInfo), string.Format("#{0}\t#{1}\t#{2}", m_PlantSystem.GetLocalizedHealth(), hueInfo.Name, typeInfo.Name));
                 }
                 else
                 {
                     string args;
 
                     if (ShowContainerType)
-                        args = String.Format("#{0}\t#{1}\t#{2}", GetLocalizedContainerType(), m_PlantSystem.GetLocalizedDirtStatus(), m_PlantSystem.GetLocalizedHealth());
+                        args = string.Format("#{0}\t#{1}\t#{2}", GetLocalizedContainerType(), m_PlantSystem.GetLocalizedDirtStatus(), m_PlantSystem.GetLocalizedHealth());
                     else
-                        args = String.Format("#{0}\t#{1}", m_PlantSystem.GetLocalizedDirtStatus(), m_PlantSystem.GetLocalizedHealth());
+                        args = string.Format("#{0}\t#{1}", m_PlantSystem.GetLocalizedDirtStatus(), m_PlantSystem.GetLocalizedHealth());
 
                     if (m_ShowType)
                     {
-                        args += String.Format("\t#{0}\t#{1}\t#{2}", hueInfo.Name, typeInfo.Name, GetLocalizedPlantStatus());
+                        args += string.Format("\t#{0}\t#{1}\t#{2}", hueInfo.Name, typeInfo.Name, GetLocalizedPlantStatus());
 
                         if (m_PlantStatus == PlantStatus.Plant)
                             list.Add(typeInfo.GetPlantLabelPlant(hueInfo), args);
@@ -311,7 +311,7 @@ namespace Server.Engines.Plants
                     }
                     else
                     {
-                        args += String.Format("\t#{0}\t#{1}", (typeInfo.PlantCategory == PlantCategory.Default) ? hueInfo.Name : (int)typeInfo.PlantCategory, GetLocalizedPlantStatus());
+                        args += string.Format("\t#{0}\t#{1}", (typeInfo.PlantCategory == PlantCategory.Default) ? hueInfo.Name : (int)typeInfo.PlantCategory, GetLocalizedPlantStatus());
 
                         list.Add(hueInfo.IsBright() ? 1060832 : 1060831, args); // a ~1_val~ of ~2_val~ dirt with a ~3_val~ [bright] ~4_val~ ~5_val~
                     }

@@ -87,7 +87,7 @@ namespace Server.Items
                 else
                     Sign.GumpID++;
 
-                _From.SendLocalizedMessage(1158830, String.Format("{0}", SingType.ToList().Find(x => x.Key == Sign.GumpID).Value)); // The sign text has been set to: ~1_TEXT~
+                _From.SendLocalizedMessage(1158830, string.Format("{0}", SingType.ToList().Find(x => x.Key == Sign.GumpID).Value)); // The sign text has been set to: ~1_TEXT~
             }
         }
 

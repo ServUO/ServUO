@@ -635,13 +635,13 @@ namespace Server.Engines.Harvest
                         from.SendLocalizedMessage(1043297, "a fish");
                     }
                     else
-                        from.SendLocalizedMessage(1043297, String.Format("#{0}", item.LabelNumber));
+                        from.SendLocalizedMessage(1043297, string.Format("#{0}", item.LabelNumber));
 
                     return;
                 }
                 else if (item.LabelNumber > 0)
                 {
-                    from.SendLocalizedMessage(1043297, String.Format("#{0}", item.LabelNumber));
+                    from.SendLocalizedMessage(1043297, string.Format("#{0}", item.LabelNumber));
                     return;
                 }
                 else

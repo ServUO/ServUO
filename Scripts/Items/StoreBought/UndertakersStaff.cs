@@ -37,7 +37,7 @@ namespace Server.Items
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
-            list.Add(1071518, String.Format("#{0}", _SummonAll ? "1071508" : "1071507"));
+            list.Add(1071518, string.Format("#{0}", _SummonAll ? "1071508" : "1071507"));
             list.Add(1060584, _Charges.ToString());
         }
 

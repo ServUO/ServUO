@@ -105,7 +105,7 @@ namespace Server.Spells.Bushido
                 info = new HonorableExecutionInfo(attacker, mods);
                 info.m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(7.0), new TimerStateCallback(EndEffect), info);
 
-                BuffInfo.AddBuff(attacker, new BuffInfo(BuffIcon.HonorableExecution, 1060595, 1153808, TimeSpan.FromSeconds(7.0), attacker, String.Format("{0}\t40\t40\t40\t40\t40", resSpells)));
+                BuffInfo.AddBuff(attacker, new BuffInfo(BuffIcon.HonorableExecution, 1060595, 1153808, TimeSpan.FromSeconds(7.0), attacker, string.Format("{0}\t40\t40\t40\t40\t40", resSpells)));
 
                 m_Table[attacker] = info;
             }

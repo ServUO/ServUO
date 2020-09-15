@@ -221,7 +221,7 @@ namespace Server.Items
 
         public static void ResolveDest(Mobile m, string name, ref Point3D loc, ref Map map)
         {
-            if (String.IsNullOrWhiteSpace(name))
+            if (string.IsNullOrWhiteSpace(name))
             {
                 return;
             }

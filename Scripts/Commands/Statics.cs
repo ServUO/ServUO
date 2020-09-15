@@ -68,7 +68,7 @@ namespace Server
 
         public static void SendWarning(Mobile m, string header, string baseWarning, Map map, Point3D start, Point3D end, WarningGumpCallback callback)
         {
-            m.SendGump(new WarningGump(1060635, 30720, String.Format(baseWarning, String.Format(header, map)), 0xFFC000, 420, 400, callback, new StateInfo(map, start, end)));
+            m.SendGump(new WarningGump(1060635, 30720, string.Format(baseWarning, string.Format(header, map)), 0xFFC000, 420, 400, callback, new StateInfo(map, start, end)));
         }
 
         public static void Freeze(Mobile from, Map targetMap, Point3D start3d, Point3D end3d)
@@ -266,7 +266,7 @@ namespace Server
             if (totalFrozen == 0 && badDataFile)
                 from.SendGump(new NoticeGump(1060637, 30720, "Output data files could not be opened and the freeze operation has been aborted.<br><br>This probably means your server and client are using the same data files.  Instructions on how to resolve this can be found in the first warning window.", 0xFFC000, 320, 240, null, null));
             else
-                from.SendGump(new NoticeGump(1060637, 30720, String.Format("Freeze operation completed successfully.<br><br>{0} item{1} frozen.<br><br>You must restart your client and update it's data files to see the changes.", totalFrozen, totalFrozen != 1 ? "s were" : " was"), 0xFFC000, 320, 240, null, null));
+                from.SendGump(new NoticeGump(1060637, 30720, string.Format("Freeze operation completed successfully.<br><br>{0} item{1} frozen.<br><br>You must restart your client and update it's data files to see the changes.", totalFrozen, totalFrozen != 1 ? "s were" : " was"), 0xFFC000, 320, 240, null, null));
         }
 
         [Usage("Unfreeze")]
@@ -329,7 +329,7 @@ namespace Server
             if (totalUnfrozen == 0 && badDataFile)
                 from.SendGump(new NoticeGump(1060637, 30720, "Output data files could not be opened and the unfreeze operation has been aborted.<br><br>This probably means your server and client are using the same data files.  Instructions on how to resolve this can be found in the first warning window.", 0xFFC000, 320, 240, null, null));
             else
-                from.SendGump(new NoticeGump(1060637, 30720, String.Format("Unfreeze operation completed successfully.<br><br>{0} item{1} unfrozen.<br><br>You must restart your client and update it's data files to see the changes.", totalUnfrozen, totalUnfrozen != 1 ? "s were" : " was"), 0xFFC000, 320, 240, null, null));
+                from.SendGump(new NoticeGump(1060637, 30720, string.Format("Unfreeze operation completed successfully.<br><br>{0} item{1} unfrozen.<br><br>You must restart your client and update it's data files to see the changes.", totalUnfrozen, totalUnfrozen != 1 ? "s were" : " was"), 0xFFC000, 320, 240, null, null));
         }
 
         private static void FreezeBox_Callback(Mobile from, Map map, Point3D start, Point3D end, object state)

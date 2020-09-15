@@ -111,7 +111,7 @@ namespace Server.Items
             if (Galleon != null && Galleon.GalleonHold != null)
             {
                 GalleonHold hold = Galleon.GalleonHold;
-                list.Add(1072241, String.Format("{0}\t{1}\t{2}\t{3}", hold.TotalItems, hold.MaxItems, hold.TotalWeight, hold.MaxWeight)); // Contents: ~1_COUNT~/~2_MAXCOUNT~ items, ~3_WEIGHT~/~4_MAXWEIGHT~ stones
+                list.Add(1072241, string.Format("{0}\t{1}\t{2}\t{3}", hold.TotalItems, hold.MaxItems, hold.TotalWeight, hold.MaxWeight)); // Contents: ~1_COUNT~/~2_MAXCOUNT~ items, ~3_WEIGHT~/~4_MAXWEIGHT~ stones
             }
         }
 

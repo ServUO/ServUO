@@ -408,7 +408,7 @@ namespace Server.Mobiles
 
                                         if (cap > 0)
                                         {
-                                            AddHtml(180, y, 75, 18, String.Format("<div align=right>{0:F1}</div>", cap), false, false);
+                                            AddHtml(180, y, 75, 18, string.Format("<div align=right>{0:F1}</div>", cap), false, false);
                                         }
                                     }
                                 }
@@ -555,7 +555,7 @@ namespace Server.Mobiles
             if (c.Skills[name].Base < 10.0)
                 return "<div align=right>---</div>";
 
-            return String.Format("<div align=right>{0:F1}/{1}</div>", c.Skills[name].Value, c.Skills[name].Cap);
+            return string.Format("<div align=right>{0:F1}/{1}</div>", c.Skills[name].Value, c.Skills[name].Cap);
         }
 
         private static string FormatAttributes(int cur, int max)
@@ -563,7 +563,7 @@ namespace Server.Mobiles
             if (max == 0)
                 return "<div align=right>---</div>";
 
-            return String.Format("<div align=right>{0}/{1}</div>", cur, max);
+            return string.Format("<div align=right>{0}/{1}</div>", cur, max);
         }
 
         private static string FormatStat(int val)
@@ -571,7 +571,7 @@ namespace Server.Mobiles
             if (val == 0)
                 return "<div align=right>---</div>";
 
-            return String.Format("<div align=right>{0}</div>", val);
+            return string.Format("<div align=right>{0}</div>", val);
         }
 
         public static string FormatDouble(double val)
@@ -579,7 +579,7 @@ namespace Server.Mobiles
             if (val == 0)
                 return "<div align=right>---</div>";
 
-            return String.Format("<div align=right>{0:F1}</div>", val);
+            return string.Format("<div align=right>{0:F1}</div>", val);
         }
 
         public static string FormatDouble(double val, bool dontshowzero = true, bool percentage = false)
@@ -591,10 +591,10 @@ namespace Server.Mobiles
 
             if (percentage)
             {
-                return String.Format("<div align=right>{0:F1}%</div>", val);
+                return string.Format("<div align=right>{0:F1}%</div>", val);
             }
 
-            return String.Format("<div align=right>{0:F1}</div>", val);
+            return string.Format("<div align=right>{0:F1}</div>", val);
         }
 
         public static string FormatElement(int val, string color)
@@ -602,15 +602,15 @@ namespace Server.Mobiles
             if (color == null)
             {
                 if (val <= 0)
-                    return String.Format("<div align=right>---</div>");
+                    return string.Format("<div align=right>---</div>");
 
-                return String.Format("<div align=right>{0}%</div>", val);
+                return string.Format("<div align=right>{0}%</div>", val);
             }
 
             if (val <= 0)
-                return String.Format("<BASEFONT COLOR={0}><div align=right>---</div>", color);
+                return string.Format("<BASEFONT COLOR={0}><div align=right>---</div>", color);
 
-            return String.Format("<BASEFONT COLOR={1}><div align=right>{0}%</div>", val, color);
+            return string.Format("<BASEFONT COLOR={1}><div align=right>{0}%</div>", val, color);
         }
 
         public static string FormatDamage(int min, int max)
@@ -618,12 +618,12 @@ namespace Server.Mobiles
             if (min <= 0 || max <= 0)
                 return "<div align=right>---</div>";
 
-            return String.Format("<div align=right>{0}-{1}</div>", min, max);
+            return string.Format("<div align=right>{0}-{1}</div>", min, max);
         }
 
         public string FormatPetSlots(int min, int max)
         {
-            return String.Format("<BASEFONT COLOR=#57412F>{0} => {1}", min.ToString(), max.ToString());
+            return string.Format("<BASEFONT COLOR=#57412F>{0} => {1}", min.ToString(), max.ToString());
         }
     }
 
@@ -1365,14 +1365,14 @@ namespace Server.Mobiles
                     case 200: cliloc = 1049642; break;
                 }
 
-                AddHtmlLocalized(45, 225, 225, 60, cliloc, String.Format("#{0}", TrainingPoint.Name.Number), 0, false, false);
+                AddHtmlLocalized(45, 225, 225, 60, cliloc, string.Format("#{0}", TrainingPoint.Name.Number), 0, false, false);
             }
 
             AddHtmlLocalized(305, 225, 145, 18, 1157490, false, false); // Avail. Training Points:
             AddLabel(455, 225, avail <= 0 ? 0x26 : 0, avail.ToString());
 
             AddHtmlLocalized(305, 245, 145, 18, 1113646, false, false); // Total Property Weight:
-            AddLabel(455, 245, 0, String.Format("{0}/{1}", ((int)(Value * weight)).ToString(), (max * weight).ToString()));
+            AddLabel(455, 245, 0, string.Format("{0}/{1}", ((int)(Value * weight)).ToString(), (max * weight).ToString()));
 
             if (TrainingPoint.Name.Number > 0)
                 AddHtmlLocalized(305, 265, 145, 18, TrainingPoint.Name.Number, false, false);
@@ -1764,7 +1764,7 @@ namespace Server.Mobiles
                 int value = entry.TrainPoint is SkillName ? entry.Value + 1000 : entry.Value;
 
                 AddLabel(460, y, entry.Value == 0 ? 0x27 : 0, value.ToString());
-                AddLabel(510, y, entry.Cost == 0 ? 0x27 : 0, String.Format("-{0}", entry.Cost));
+                AddLabel(510, y, entry.Cost == 0 ? 0x27 : 0, string.Format("-{0}", entry.Cost));
 
                 total += entry.Cost;
                 y += 22;

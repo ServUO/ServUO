@@ -64,9 +64,9 @@ namespace Server.Engines.Quests
             foreach (QuestionAndAnswerObjective obj in Objectives.OfType<QuestionAndAnswerObjective>())
             {
                 if (offer)
-                    str = String.Format("Answer {0} questions correctly.", obj.MaxProgress);
+                    str = string.Format("Answer {0} questions correctly.", obj.MaxProgress);
                 else
-                    str = String.Format("Answer {0}/{1} questions answered correctly.", obj.CurProgress, obj.MaxProgress);
+                    str = string.Format("Answer {0}/{1} questions answered correctly.", obj.CurProgress, obj.MaxProgress);
 
                 g.AddHtmlObject(98, offset, 312, 16, str, BaseQuestGump.LightGreen, false, false);
 

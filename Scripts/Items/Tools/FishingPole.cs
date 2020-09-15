@@ -457,15 +457,15 @@ namespace Server.Items
 
             if (m_HookType > HookType.None && hookCliloc > 0)
             {
-                list.Add(1150885, String.Format("#{0}", hookCliloc)); //special hook: ~1_token~
-                list.Add(1150889, String.Format("#{0}", BaseFishingHook.GetCondition(m_HookUses))); //Hook condition: ~1_val~
+                list.Add(1150885, string.Format("#{0}", hookCliloc)); //special hook: ~1_token~
+                list.Add(1150889, string.Format("#{0}", BaseFishingHook.GetCondition(m_HookUses))); //Hook condition: ~1_val~
             }
 
             if (m_BaitType != null)
             {
                 object label = FishInfo.GetFishLabel(m_BaitType);
                 if (label is int)
-                    list.Add(1116468, String.Format("#{0}", (int)label)); //baited to attract: ~1_val~
+                    list.Add(1116468, string.Format("#{0}", (int)label)); //baited to attract: ~1_val~
                 else if (label is string)
                     list.Add(1116468, (string)label);
 

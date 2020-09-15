@@ -143,7 +143,7 @@ namespace Server.Items
                         if (m_Cleanup.Find(x => x.mobiles == m && x.confirm) != null)
                         {
                             double point = m_Cleanup.Where(x => x.mobiles == m && x.confirm).Sum(x => x.points);
-                            m.SendLocalizedMessage(1151280, String.Format("{0}\t{1}", point.ToString(), m_Cleanup.Count(r => r.mobiles == m))); // You have received approximately ~1_VALUE~points for turning in ~2_COUNT~items for Clean Up Britannia.
+                            m.SendLocalizedMessage(1151280, string.Format("{0}\t{1}", point.ToString(), m_Cleanup.Count(r => r.mobiles == m))); // You have received approximately ~1_VALUE~points for turning in ~2_COUNT~items for Clean Up Britannia.
                             PointsSystem.CleanUpBritannia.AwardPoints(m, point);
                         }
                     }

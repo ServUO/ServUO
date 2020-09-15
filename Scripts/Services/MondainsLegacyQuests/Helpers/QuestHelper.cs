@@ -153,11 +153,11 @@ namespace Server.Engines.Quests
                         string str;
 
                         if (ts.TotalDays > 1)
-                            str = String.Format("I cannot offer this quest again for about {0} more days.", ts.TotalDays);
+                            str = string.Format("I cannot offer this quest again for about {0} more days.", ts.TotalDays);
                         else if (ts.TotalHours > 1)
-                            str = String.Format("I cannot offer this quest again for about {0} more hours.", ts.TotalHours);
+                            str = string.Format("I cannot offer this quest again for about {0} more hours.", ts.TotalHours);
                         else if (ts.TotalMinutes > 1)
-                            str = String.Format("I cannot offer this quest again for about {0} more minutes.", ts.TotalMinutes);
+                            str = string.Format("I cannot offer this quest again for about {0} more minutes.", ts.TotalMinutes);
                         else
                             str = "I can offer this quest again very soon.";
 
@@ -219,15 +219,15 @@ namespace Server.Engines.Quests
 
                         if (ts.Days > 0)
                         {
-                            player.SendLocalizedMessage(1158377, String.Format("{0}\t{1}", ts.Days.ToString(), "day[s]"));
+                            player.SendLocalizedMessage(1158377, string.Format("{0}\t{1}", ts.Days.ToString(), "day[s]"));
                         }
                         else if (ts.Hours > 0)
                         {
-                            player.SendLocalizedMessage(1158377, String.Format("{0}\t{1}", ts.Hours.ToString(), "hour[s]"));
+                            player.SendLocalizedMessage(1158377, string.Format("{0}\t{1}", ts.Hours.ToString(), "hour[s]"));
                         }
                         else
                         {
-                            player.SendLocalizedMessage(1158377, String.Format("{0}\t{1}", ts.Minutes.ToString(), "minute[s]"));
+                            player.SendLocalizedMessage(1158377, string.Format("{0}\t{1}", ts.Minutes.ToString(), "minute[s]"));
                         }
 
                         return false;

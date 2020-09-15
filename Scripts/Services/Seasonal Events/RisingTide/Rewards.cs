@@ -144,7 +144,7 @@ namespace Server.Items
         {
             if (_MasterName != null)
             {
-                list.Add(1158958, String.Format("{0}{1}", _MasterName, _MasterName.ToLower().EndsWith("s") || _MasterName.ToLower().EndsWith("z") ? "'" : "'s"));
+                list.Add(1158958, string.Format("{0}{1}", _MasterName, _MasterName.ToLower().EndsWith("s") || _MasterName.ToLower().EndsWith("z") ? "'" : "'s"));
             }
             else
             {
@@ -343,7 +343,7 @@ namespace Server.Items
 
         public void AssignRandomName()
         {
-            System.Collections.Generic.List<string> list = BaseBoat.Boats.Where(b => !String.IsNullOrEmpty(b.ShipName)).Select(x => x.ShipName).ToList();
+            System.Collections.Generic.List<string> list = BaseBoat.Boats.Where(b => !string.IsNullOrEmpty(b.ShipName)).Select(x => x.ShipName).ToList();
 
             if (list.Count > 0)
             {
@@ -387,7 +387,7 @@ namespace Server.Items
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            if (String.IsNullOrEmpty(_ShipName))
+            if (string.IsNullOrEmpty(_ShipName))
             {
                 list.Add(1158943); // Wood Carving of [Ship's Name]
             }
@@ -401,7 +401,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if (String.IsNullOrEmpty(_ShipName))
+            if (string.IsNullOrEmpty(_ShipName))
             {
                 list.Add(1158953); // Named with a random famous ship, or if yer lucky - named after you!
             }

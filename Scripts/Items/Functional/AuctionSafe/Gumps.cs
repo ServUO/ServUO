@@ -47,7 +47,7 @@ namespace Server.Engines.Auction
 
         public string Color(string color, string str)
         {
-            return String.Format("<basefont color=#{0}>{1}", color, str);
+            return string.Format("<basefont color=#{0}>{1}", color, str);
         }
 
         public virtual void AddGumpLayout()
@@ -183,11 +183,11 @@ namespace Server.Engines.Auction
 
                 if (ts.TotalMinutes > 60)
                 {
-                    AddHtmlLocalized(200, y, 175, 18, 1153091, String.Format("{0}", ts.TotalDays), Gray, false, false); // Lifespan: ~1_val~ days
+                    AddHtmlLocalized(200, y, 175, 18, 1153091, string.Format("{0}", ts.TotalDays), Gray, false, false); // Lifespan: ~1_val~ days
                 }
                 else
                 {
-                    AddHtmlLocalized(200, y, 175, 18, 1153089, String.Format("{0}", ts.TotalMinutes), Gray, false, false); // Lifespan: ~1_val~ minutes
+                    AddHtmlLocalized(200, y, 175, 18, 1153089, string.Format("{0}", ts.TotalMinutes), Gray, false, false); // Lifespan: ~1_val~ minutes
                 }
             }
 
@@ -359,7 +359,7 @@ namespace Server.Engines.Auction
                             {
                                 if (Auction.AuctionItem.LabelNumber != 0)
                                 {
-                                    from.SendLocalizedMessage(1152339, String.Format("#{0}", Auction.AuctionItem.LabelNumber)); // A reward of ~1_ITEM~ has been placed in your backpack.
+                                    from.SendLocalizedMessage(1152339, string.Format("#{0}", Auction.AuctionItem.LabelNumber)); // A reward of ~1_ITEM~ has been placed in your backpack.
                                 }
                                 else
                                 {
@@ -752,10 +752,10 @@ namespace Server.Engines.Auction
                 long plat = bid >= Account.CurrencyThreshold ? bid / Account.CurrencyThreshold : 0;
                 long gold = bid >= Account.CurrencyThreshold ? bid - ((bid / Account.CurrencyThreshold) * Account.CurrencyThreshold) : bid;
 
-                AddHtml(50, y, 58, 22, Color(HGray, String.Format("{0}*****", h.Mobile != null ? h.Mobile.Name.Trim()[0].ToString() : "?")), false, false);
+                AddHtml(50, y, 58, 22, Color(HGray, string.Format("{0}*****", h.Mobile != null ? h.Mobile.Name.Trim()[0].ToString() : "?")), false, false);
                 AddHtml(118, y, 117, 22, Color(HGray, plat.ToString("N0", CultureInfo.GetCultureInfo("en-US"))), false, false);
                 AddHtml(245, y, 117, 22, Color(HGray, gold.ToString("N0", CultureInfo.GetCultureInfo("en-US"))), false, false);
-                AddHtml(372, y, 176, 22, Color(HGray, String.Format("{0}-{1}-{2} {3}", h.BidTime.Year, h.BidTime.Month, h.BidTime.Day, h.BidTime.ToShortTimeString())), false, false);
+                AddHtml(372, y, 176, 22, Color(HGray, string.Format("{0}-{1}-{2} {3}", h.BidTime.Year, h.BidTime.Month, h.BidTime.Day, h.BidTime.ToShortTimeString())), false, false);
 
                 y += 24;
             }
@@ -763,7 +763,7 @@ namespace Server.Engines.Auction
 
         public string Color(string color, string str)
         {
-            return String.Format("<basefont color=#{0}>{1}", color, str);
+            return string.Format("<basefont color=#{0}>{1}", color, str);
         }
     }
 }

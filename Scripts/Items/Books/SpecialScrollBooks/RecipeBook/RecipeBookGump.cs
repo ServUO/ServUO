@@ -356,7 +356,7 @@ namespace Server.Items
                 if (recipe.Amount > 0 && (canDrop || canLocked))
                     AddButton(35, y + 2, 5602, 5606, 4 + (i * 2), GumpButtonType.Reply, 0);
 
-                AddLabel(61, y, 0x480, String.Format("{0}", recipe.ID));
+                AddLabel(61, y, 0x480, string.Format("{0}", recipe.ID));
                 AddHtmlLocalized(103, y, 130, 32, Recipe.Recipes[recipe.RecipeID].TextDefinition.Number, "#103221", 0xFFFFFF, false, false); // ~1_val~
                 AddLabel(235, y, 0x480, GetExpansion(recipe.Expansion));
                 AddHtmlLocalized(316, y, 100, 20, GetSkillName(recipe.Skill), "#104409", 0xFFFFFF, false, false); // ~1_val~

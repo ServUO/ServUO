@@ -58,12 +58,12 @@ namespace Server.Guilds
                         }
                         else if (alliance != null && alliance.Leader != guild)
                         {
-                            pm.SendLocalizedMessage(1063239, String.Format("{0}\t{1}", guild.Name, alliance.Name)); // ~1_val~ is not the leader of the ~2_val~ alliance.
+                            pm.SendLocalizedMessage(1063239, string.Format("{0}\t{1}", guild.Name, alliance.Name)); // ~1_val~ is not the leader of the ~2_val~ alliance.
                             pm.SendLocalizedMessage(1070707, alliance.Leader.Name); // You need to negotiate via ~1_val~ instead.
                         }
                         else if (otherAlliance != null && otherAlliance.Leader != m_Other)
                         {
-                            pm.SendLocalizedMessage(1063239, String.Format("{0}\t{1}", m_Other.Name, otherAlliance.Name)); // ~1_val~ is not the leader of the ~2_val~ alliance.
+                            pm.SendLocalizedMessage(1063239, string.Format("{0}\t{1}", m_Other.Name, otherAlliance.Name)); // ~1_val~ is not the leader of the ~2_val~ alliance.
                             pm.SendLocalizedMessage(1070707, otherAlliance.Leader.Name); // You need to negotiate via ~1_val~ instead.
                         }
                         else

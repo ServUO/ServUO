@@ -26,7 +26,7 @@ namespace Server
 
         public override string ToString()
         {
-            return String.Format("({0}, {1}, {2}) [{3}]", Location.X, Location.Y, Location.Z, Map == null ? "(Null)" : Map.ToString());
+            return string.Format("({0}, {1}, {2}) [{3}]", Location.X, Location.Y, Location.Z, Map == null ? "(Null)" : Map.ToString());
         }
     }
 }

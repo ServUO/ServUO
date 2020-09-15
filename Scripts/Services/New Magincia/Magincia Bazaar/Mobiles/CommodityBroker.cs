@@ -66,7 +66,7 @@ namespace Server.Engines.NewMagincia
             m_CommodityEntries.Add(entry);
 
             if (amount > 0)
-                from.SendLocalizedMessage(1150220, String.Format("{0}\t#{1}\t{2}", amount.ToString(), entry.Label, Plot.ShopName == null ? "an unnamed shop" : Plot.ShopName)); // You have added ~1_QUANTITY~ units of ~2_ITEMNAME~ to the inventory of "~3_SHOPNAME~"
+                from.SendLocalizedMessage(1150220, string.Format("{0}\t#{1}\t{2}", amount.ToString(), entry.Label, Plot.ShopName == null ? "an unnamed shop" : Plot.ShopName)); // You have added ~1_QUANTITY~ units of ~2_ITEMNAME~ to the inventory of "~3_SHOPNAME~"
 
             item.Delete();
 
@@ -113,7 +113,7 @@ namespace Server.Engines.NewMagincia
                     item.Delete();
 
                     if (from != null && Plot.Owner == from)
-                        from.SendLocalizedMessage(1150220, String.Format("{0}\t#{1}\t{2}", amountToAdd.ToString(), entry.Label, Plot.ShopName == null ? "an unnamed shop" : Plot.ShopName)); // You have added ~1_QUANTITY~ units of ~2_ITEMNAME~ to the inventory of "~3_SHOPNAME~"
+                        from.SendLocalizedMessage(1150220, string.Format("{0}\t#{1}\t{2}", amountToAdd.ToString(), entry.Label, Plot.ShopName == null ? "an unnamed shop" : Plot.ShopName)); // You have added ~1_QUANTITY~ units of ~2_ITEMNAME~ to the inventory of "~3_SHOPNAME~"
                     break;
                 }
             }
@@ -164,7 +164,7 @@ namespace Server.Engines.NewMagincia
             }
 
             if (Plot != null && from == Plot.Owner)
-                from.SendLocalizedMessage(1150221, String.Format("{0}\t#{1}\t{2}", amount.ToString(), entry.Label, Plot.ShopName != null ? Plot.ShopName : "a shop with no name")); // You have removed ~1_QUANTITY~ units of ~2_ITEMNAME~ from the inventory of "~3_SHOPNAME~"
+                from.SendLocalizedMessage(1150221, string.Format("{0}\t#{1}\t{2}", amount.ToString(), entry.Label, Plot.ShopName != null ? Plot.ShopName : "a shop with no name")); // You have removed ~1_QUANTITY~ units of ~2_ITEMNAME~ from the inventory of "~3_SHOPNAME~"
         }
 
         public int GetBuyCost(Mobile from, CommodityBrokerEntry entry, int amount)
@@ -183,7 +183,7 @@ namespace Server.Engines.NewMagincia
 
             if (Banker.Withdraw(from, totalCost, true))
             {
-                from.SendLocalizedMessage(1150643, String.Format("{0}\t#{1}", amount.ToString("###,###,###"), entry.Label)); // A commodity deed worth ~1_AMOUNT~ ~2_ITEM~ has been placed in your backpack.
+                from.SendLocalizedMessage(1150643, string.Format("{0}\t#{1}", amount.ToString("###,###,###"), entry.Label)); // A commodity deed worth ~1_AMOUNT~ ~2_ITEM~ has been placed in your backpack.
                 WithdrawInventory(from, amount, entry);
                 BankBalance += toAdd;
             }
@@ -237,7 +237,7 @@ namespace Server.Engines.NewMagincia
                         TakeCommodities(from.Backpack, type, ref total);
 
                     BankBalance -= totalCost + (int)(totalCost * (ComissionFee / 100.0));
-                    from.SendLocalizedMessage(1150668, String.Format("{0}\t#{1}", amount.ToString(), entry.Label)); // You have sold ~1_QUANTITY~ units of ~2_COMMODITY~ to the broker. These have been transferred from deeds and/or items in your backpack.
+                    from.SendLocalizedMessage(1150668, string.Format("{0}\t#{1}", amount.ToString(), entry.Label)); // You have sold ~1_QUANTITY~ units of ~2_COMMODITY~ to the broker. These have been transferred from deeds and/or items in your backpack.
                 }
                 else
                     from.SendLocalizedMessage(1150265); // Your bank box cannot hold the proceeds from this transaction.

@@ -109,7 +109,7 @@ namespace Server.Engines.Astronomy
 
                 if (chart.Constellation >= 0 && chart.Constellation < AstronomySystem.MaxConstellations)
                 {
-                    if (String.IsNullOrEmpty(chart.ConstellationName))
+                    if (string.IsNullOrEmpty(chart.ConstellationName))
                     {
                         m.SendLocalizedMessage(1158751); // You must name your constellation before submitting it.
                     }

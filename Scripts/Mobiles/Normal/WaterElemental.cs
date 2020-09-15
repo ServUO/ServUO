@@ -6,10 +6,10 @@ namespace Server.Mobiles
     [CorpseName("a water elemental corpse")]
     public class WaterElemental : BaseCreature
     {
-        private Boolean m_HasDecanter = true;
+        private bool m_HasDecanter = true;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Boolean HasDecanter { get { return m_HasDecanter; } set { m_HasDecanter = value; } }
+        public bool HasDecanter { get { return m_HasDecanter; } set { m_HasDecanter = value; } }
 
         [Constructable]
         public WaterElemental()

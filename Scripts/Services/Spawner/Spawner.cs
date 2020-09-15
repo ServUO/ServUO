@@ -48,7 +48,7 @@ namespace Server.Mobiles
         {
             List<SpawnObject> objects = new List<SpawnObject>();
 
-            if (!String.IsNullOrEmpty(spawnName))
+            if (!string.IsNullOrEmpty(spawnName))
                 objects.Add(new SpawnObject(spawnName));
 
             InitSpawner(amount, TimeSpan.FromMinutes(minDelay), TimeSpan.FromMinutes(maxDelay), team, spawnRange, objects);

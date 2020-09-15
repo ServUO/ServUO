@@ -139,8 +139,8 @@ namespace Server.Items
 
             AddHtmlLocalized(50, 30, 100, 20, 1157695, 0x7FF0, false, false); // Select Filter:
 
-            AddHtmlLocalized(41, 350, 123, 20, 1157698, String.Format("{0}@{1}", m_List.Count, m_Box.DefaultMaxItems), 0x7FF0, false, false); // Items: ~1_NUM~ of ~2_MAX~
-            AddHtmlLocalized(212, 350, 123, 20, 1153561, String.Format("{0}@{1}", currentpage, pageCount), 0x7FF0, false, false); // Page ~1_CUR~ of ~2_MAX~
+            AddHtmlLocalized(41, 350, 123, 20, 1157698, string.Format("{0}@{1}", m_List.Count, m_Box.DefaultMaxItems), 0x7FF0, false, false); // Items: ~1_NUM~ of ~2_MAX~
+            AddHtmlLocalized(212, 350, 123, 20, 1153561, string.Format("{0}@{1}", currentpage, pageCount), 0x7FF0, false, false); // Page ~1_CUR~ of ~2_MAX~
             AddHtmlLocalized(416, 350, 100, 20, 1153562, 0x7FF0, false, false); // <DIV ALIGN="CENTER">PAGE</DIV>
 
             JewelryBoxFilter f = box.Filter;

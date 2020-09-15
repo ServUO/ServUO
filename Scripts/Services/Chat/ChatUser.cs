@@ -16,7 +16,7 @@ namespace Server.Engines.Chat
 
         public Mobile Mobile => m_Mobile;
 
-        public string Username => String.Format("<{0}>{1}", m_Mobile.Serial.Value, m_Mobile.Name);
+        public string Username => string.Format("<{0}>{1}", m_Mobile.Serial.Value, m_Mobile.Name);
 
         public Channel CurrentChannel { get { return m_Channel; } set { m_Channel = value; } }
 

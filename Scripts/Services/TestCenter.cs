@@ -223,7 +223,7 @@ namespace Server.Misc
             {
                 if (value < 0 || value > skill.Cap)
                 {
-                    from.SendMessage(String.Format("Your skill in {0} is capped at {1:F1}.", skill.Info.Name, skill.Cap));
+                    from.SendMessage(string.Format("Your skill in {0} is capped at {1:F1}.", skill.Info.Name, skill.Cap));
                 }
                 else
                 {
@@ -687,7 +687,7 @@ namespace Server.Misc
                 var skill = MasteryInfo.Skills[i];
 
                 bag = new Bag();
-                bag.Name = String.Format("{0} Mastery", SkillInfo.Table[(int)skill].Name);
+                bag.Name = string.Format("{0} Mastery", SkillInfo.Table[(int)skill].Name);
 
                 for (int j = 1; j <= 3; j++)
                 {
@@ -809,9 +809,9 @@ namespace Server.Misc
             bag.Hue = 1152;
             bag.Name = "Spell Casting Stuff";
 
-            PlaceItemIn(bag, 45, 107, new Spellbook(UInt64.MaxValue));
-            PlaceItemIn(bag, 65, 107, new NecromancerSpellbook((UInt64)0xFFFF));
-            PlaceItemIn(bag, 85, 107, new BookOfChivalry((UInt64)0x3FF));
+            PlaceItemIn(bag, 45, 107, new Spellbook(ulong.MaxValue));
+            PlaceItemIn(bag, 65, 107, new NecromancerSpellbook((ulong)0xFFFF));
+            PlaceItemIn(bag, 85, 107, new BookOfChivalry((ulong)0x3FF));
             PlaceItemIn(bag, 105, 107, new BookOfBushido());	//Default ctor = full
             PlaceItemIn(bag, 125, 107, new BookOfNinjitsu()); //Default ctor = full
 

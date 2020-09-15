@@ -45,11 +45,11 @@ namespace Server.Gumps
             AddBackground(0, 0, 900, 600, 0x2454);
             AddPage(0);
 
-            AddHtml(0, 5, 900, 20, String.Format("Item Properties: {0}", Filter.ToString()), false, false);
+            AddHtml(0, 5, 900, 20, string.Format("Item Properties: {0}", Filter.ToString()), false, false);
             AddHtml(275, 15, 625, 20, Center("Item Description: (Imbuing/Runic Cap) - (Loot Cap) [Scale]"), false, false);
 
             AddButton(5, 550, 4005, 4007, 1, GumpButtonType.Reply, 0);
-            AddHtml(40, 550, 200, 20, String.Format("Filter: {0}", Filter.ToString()), false, false);
+            AddHtml(40, 550, 200, 20, string.Format("Filter: {0}", Filter.ToString()), false, false);
 
             //
             AddButton(105, 575, TypeFilter == ItemType.Melee ? 4006 : 4005, 4007, 2, GumpButtonType.Reply, 0);
@@ -129,7 +129,7 @@ namespace Server.Gumps
 
             if (typeInfo != null)
             {
-                AddLabel(x, y, TypeFilter == type ? 0x9E : 0, String.Format("{0}-{1}[{2}]", typeInfo.StandardMax, typeInfo.LootMax, typeInfo.Scale > 1 ? typeInfo.Scale.ToString() : scale.ToString()));
+                AddLabel(x, y, TypeFilter == type ? 0x9E : 0, string.Format("{0}-{1}[{2}]", typeInfo.StandardMax, typeInfo.LootMax, typeInfo.Scale > 1 ? typeInfo.Scale.ToString() : scale.ToString()));
             }
             else
             {
@@ -337,7 +337,7 @@ namespace Server.Gumps
 
                     if (typeInfo.PowerfulLootRange != null)
                     {
-                        string str = String.Empty;
+                        string str = string.Empty;
 
                         for (int j = 0; j < typeInfo.PowerfulLootRange.Length; j++)
                         {
@@ -345,11 +345,11 @@ namespace Server.Gumps
 
                             if (j == typeInfo.PowerfulLootRange.Length - 1)
                             {
-                                str += String.Format(" {0}", v.ToString());
+                                str += string.Format(" {0}", v.ToString());
                             }
                             else
                             {
-                                str += String.Format(" {0},", v.ToString());
+                                str += string.Format(" {0},", v.ToString());
                             }
                         }
 

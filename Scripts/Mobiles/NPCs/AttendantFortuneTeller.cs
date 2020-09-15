@@ -125,7 +125,7 @@ namespace Server.Mobiles
                 {
                     TextRelay text = info.GetTextEntry(15);
 
-                    if (text != null && !String.IsNullOrEmpty(text.Text))
+                    if (text != null && !string.IsNullOrEmpty(text.Text))
                     {
                         sender.Mobile.CloseGump(typeof(FortuneGump));
                         sender.Mobile.SendGump(new FortuneGump(text.Text));

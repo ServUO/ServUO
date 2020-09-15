@@ -116,7 +116,7 @@ namespace Server.Spells.SkillMasteries
 
             Target.FixedParticles(0x373A, 10, 80, 5018, 0, 0, EffectLayer.Waist);
 
-            BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.CombatTraining, 1155933, 1156107, String.Format("{0}\t{1}\t{2}", SpellType.ToString(), Target.Name, ScaleUpkeep().ToString())));
+            BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.CombatTraining, 1155933, 1156107, string.Format("{0}\t{1}\t{2}", SpellType.ToString(), Target.Name, ScaleUpkeep().ToString())));
             //You train ~2_NAME~ to use ~1_SKILLNAME~.<br>Mana Upkeep: ~3_COST~
 
             FinishSequence();

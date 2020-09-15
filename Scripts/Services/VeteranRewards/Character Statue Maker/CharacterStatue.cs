@@ -172,7 +172,7 @@ namespace Server.Mobiles
             if (m_SculptedBy != null)
             {
                 if (m_SculptedBy.ShowFameTitle && (m_SculptedBy.Player || m_SculptedBy.Body.IsHuman) && m_SculptedBy.Fame >= 10000)
-                    list.Add(1076202, String.Format("{0} {1}", m_SculptedBy.Female ? "Lady" : "Lord", m_SculptedBy.Name)); // Sculpted by ~1_Name~
+                    list.Add(1076202, string.Format("{0} {1}", m_SculptedBy.Female ? "Lady" : "Lord", m_SculptedBy.Name)); // Sculpted by ~1_Name~
                 else
                     list.Add(1076202, m_SculptedBy.Name); // Sculpted by ~1_Name~
             }

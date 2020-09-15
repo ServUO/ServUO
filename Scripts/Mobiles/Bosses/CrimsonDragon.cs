@@ -130,7 +130,7 @@ namespace Server.Mobiles
                         Combatant = null;
                         pet.ControlMaster = null;
                         pet.Controlled = false;
-                        attacker.Emote(String.Format("* {0} decided to go wild *", attacker.Name));
+                        attacker.Emote(string.Format("* {0} decided to go wild *", attacker.Name));
                     }
 
                     if (pet.ControlMaster != null && 0.1 > Utility.RandomDouble())
@@ -138,7 +138,7 @@ namespace Server.Mobiles
                         Combatant = null;
                         pet.Combatant = pet.ControlMaster;
                         Combatant = null;
-                        attacker.Emote(String.Format("* {0} is being angered *", attacker.Name));
+                        attacker.Emote(string.Format("* {0} is being angered *", attacker.Name));
                     }
                 }
             }

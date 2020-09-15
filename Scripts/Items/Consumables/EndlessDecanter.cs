@@ -8,12 +8,12 @@ namespace Server.Items
 {
     public class EndlessDecanter : Pitcher
     {
-        private Boolean m_Linked = false;
+        private bool m_Linked = false;
         private Point3D m_LinkLocation;
         private Map m_LinkMap;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Boolean Linked { get { return m_Linked; } set { m_Linked = value; InvalidateProperties(); } }
+        public bool Linked { get { return m_Linked; } set { m_Linked = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Point3D LinkLocation { get { return m_LinkLocation; } set { m_LinkLocation = value; } }
@@ -132,7 +132,7 @@ namespace Server.Items
         {
             base.Deserialize(reader);
 
-            Int32 version = reader.ReadInt();
+            int version = reader.ReadInt();
 
             switch (version)
             {
@@ -168,7 +168,7 @@ namespace Server.Items
 
             private void Link_OnTarget(Mobile from, object targ)
             {
-                Int32 itemID = 0;
+                int itemID = 0;
                 Point3D location = new Point3D();
                 Map map = Map.Felucca;
 

@@ -61,7 +61,7 @@ namespace Server.Gumps
 
         public virtual void BuildCategoriesPage()
         {
-            AddHtmlLocalized(0, 15, 175, 20, CenterLoc, String.Format("#{0}", Book.GumpTitle), 0, false, false);
+            AddHtmlLocalized(0, 15, 175, 20, CenterLoc, string.Format("#{0}", Book.GumpTitle), 0, false, false);
 
             if (Book == null || Book.Deleted || Book.SkillInfo == null)
                 return;
@@ -82,7 +82,7 @@ namespace Server.Gumps
 
         public virtual void BuildSkillsPage()
         {
-            AddHtmlLocalized(0, 15, 175, 20, CenterLoc, String.Format("#{0}", BaseSpecialScrollBook.GetCategoryLocalization(Category)), 0, false, false); // Power Scrolls
+            AddHtmlLocalized(0, 15, 175, 20, CenterLoc, string.Format("#{0}", BaseSpecialScrollBook.GetCategoryLocalization(Category)), 0, false, false); // Power Scrolls
 
             if (Category == SkillCat.None || Book == null || Book.Deleted || Book.SkillInfo == null)
                 return;
@@ -118,7 +118,7 @@ namespace Server.Gumps
 
         public virtual void BuildSkillPage()
         {
-            AddHtmlLocalized(0, 15, 175, 20, CenterLoc, String.Format("#{0}", SkillInfo.Table[Skill].Localization), 0, false, false);
+            AddHtmlLocalized(0, 15, 175, 20, CenterLoc, string.Format("#{0}", SkillInfo.Table[Skill].Localization), 0, false, false);
 
             if (Skill == -1 || Book == null || Book.Deleted || Book.ValueInfo == null)
                 return;

@@ -29,7 +29,7 @@ namespace Server.Gumps
                 if (from.RewardTitles[page] is int)
                     AddHtmlLocalized(20, 35, 230, 40, (int)from.RewardTitles[page], 0x32, true, false);
                 else if (from.RewardTitles[page] is string)
-                    AddHtml(20, 35, 230, 40, String.Format("<BASEFONT COLOR=#{0:X6}>{1}</BASEFONT>", 0x32, (string)from.RewardTitles[page]), true, false);
+                    AddHtml(20, 35, 230, 40, string.Format("<BASEFONT COLOR=#{0:X6}>{1}</BASEFONT>", 0x32, (string)from.RewardTitles[page]), true, false);
             }
             else
                 AddHtmlLocalized(20, 35, 230, 40, 1073995, 0x32, true, false);

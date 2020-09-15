@@ -69,7 +69,7 @@ namespace Server.Gumps
 
         protected virtual void AddPoints()
         {
-            AddLabel(230, 65, 0x64, String.Format(((int)Points).ToString()));
+            AddLabel(230, 65, 0x64, string.Format(((int)Points).ToString()));
         }
 
         public void DisplayRewardPage()

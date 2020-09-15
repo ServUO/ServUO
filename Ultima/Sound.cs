@@ -360,9 +360,9 @@ namespace Ultima
                 {
                     if (IsValidSound(i - 1, out name))
                     {
-                        Tex.Write(String.Format("0x{0:X3}", i));
-                        Tex.Write(String.Format(";{0}", name));
-                        Tex.WriteLine(String.Format(";{0:f}", GetSoundLength(i - 1)));
+                        Tex.Write(string.Format("0x{0:X3}", i));
+                        Tex.Write(string.Format(";{0}", name));
+                        Tex.WriteLine(string.Format(";{0:f}", GetSoundLength(i - 1)));
                     }
                 }
             }

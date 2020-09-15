@@ -424,7 +424,7 @@ namespace Server.Engines.VoidPool
 
             foreach (Mobile m in list.Where(m => CurrentScore.ContainsKey(m)))
             {
-                m.SendLocalizedMessage(1152650, String.Format("{0}\t{1}\t{2}\t{3}", GetTotalWaves(m), Wave.ToString(), Wave.ToString(), CurrentScore[m]));
+                m.SendLocalizedMessage(1152650, string.Format("{0}\t{1}\t{2}\t{3}", GetTotalWaves(m), Wave.ToString(), Wave.ToString(), CurrentScore[m]));
                 // During the battle, you helped fight back ~1_COUNT~ out of ~2_TOTAL~ waves of enemy forces. Your final wave was ~3_MAX~. Your total score for the battle was ~4_SCORE~ points.
 
                 if (m is PlayerMobile)

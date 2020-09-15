@@ -110,12 +110,12 @@ namespace Server.Engines.CityLoyalty
                 if (theirSystem != null && thisSystem != null && CityLoyaltySystem.HasCitizenship(Player, Guard.City))
                 {
                     if (Guard.IsInBannerCooldown(Player))
-                        Guard.SayTo(Player, 1152364, String.Format("#{0}", CityLoyaltySystem.BannerLocalization(thisSystem.City))); // I have quite a backlog of orders and I cannot satisfy your request for a ~1_ITEM~ right now.
+                        Guard.SayTo(Player, 1152364, string.Format("#{0}", CityLoyaltySystem.BannerLocalization(thisSystem.City))); // I have quite a backlog of orders and I cannot satisfy your request for a ~1_ITEM~ right now.
                     if (theirSystem.GetLoyaltyRating(Player) < LoyaltyRating.Adored)
-                        Guard.SayTo(Player, 1152363, String.Format("#{0}", CityLoyaltySystem.GetCityLocalization(thisSystem.City))); // I apologize, but you are not well-enough renowned in the city of ~1_CITY~ to make this purchase.
+                        Guard.SayTo(Player, 1152363, string.Format("#{0}", CityLoyaltySystem.GetCityLocalization(thisSystem.City))); // I apologize, but you are not well-enough renowned in the city of ~1_CITY~ to make this purchase.
                     else
                     {
-                        string args = String.Format("#{0}\t{1}", CityLoyaltySystem.BannerLocalization(thisSystem.City), CityLoyaltySystem.BannerCost.ToString("N0", CultureInfo.GetCultureInfo("en-US")));
+                        string args = string.Format("#{0}\t{1}", CityLoyaltySystem.BannerLocalization(thisSystem.City), CityLoyaltySystem.BannerCost.ToString("N0", CultureInfo.GetCultureInfo("en-US")));
                         Player.SendGump(new ConfirmCallbackGump(Player, 1049004, 1152365, Player, args, Guard.OnConfirm));
                     }
                 }

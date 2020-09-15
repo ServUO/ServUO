@@ -91,7 +91,7 @@ namespace Ultima
 
                 for (int i = 0; i < m_Colors.Length; ++i)
                 {
-                    Tex.WriteLine(String.Format("0x{0:X4};{1}", i, m_Colors[i]));
+                    Tex.WriteLine(string.Format("0x{0:X4};{1}", i, m_Colors[i]));
                 }
             }
         }

@@ -64,7 +64,7 @@ namespace Server.Engines.MyrmidexInvasion
 
                     Timer.DelayCall(TimeSpan.FromSeconds(delay), () =>
                     {
-                        m.SendLocalizedMessage(1156606, String.Format("{0}\t{1}\t{2}", (BattleSpawner.WaveCount - count).ToString(), BattleSpawner.WaveCount.ToString(), wave.ToString())); // Myrmidex have lost ~1_VAL~ of ~2_VAL~ from wave ~3_VAL~ of their front line.	
+                        m.SendLocalizedMessage(1156606, string.Format("{0}\t{1}\t{2}", (BattleSpawner.WaveCount - count).ToString(), BattleSpawner.WaveCount.ToString(), wave.ToString())); // Myrmidex have lost ~1_VAL~ of ~2_VAL~ from wave ~3_VAL~ of their front line.	
                     });
                 }
 
@@ -81,7 +81,7 @@ namespace Server.Engines.MyrmidexInvasion
 
                     Timer.DelayCall(TimeSpan.FromSeconds(delay), () =>
                     {
-                        m.SendLocalizedMessage(1156607, String.Format("{0}\t{1}\t{2}", (BattleSpawner.WaveCount - count).ToString(), BattleSpawner.WaveCount.ToString(), wave.ToString())); // Myrmidex have lost ~1_VAL~ of ~2_VAL~ from wave ~3_VAL~ of their front line.	
+                        m.SendLocalizedMessage(1156607, string.Format("{0}\t{1}\t{2}", (BattleSpawner.WaveCount - count).ToString(), BattleSpawner.WaveCount.ToString(), wave.ToString())); // Myrmidex have lost ~1_VAL~ of ~2_VAL~ from wave ~3_VAL~ of their front line.	
                     });
                 }
 

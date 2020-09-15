@@ -30,11 +30,11 @@ namespace Server.Items
             {
                 if (MasteryInfo.HasLearned(from, Skill, Volume))
                 {
-                    from.SendLocalizedMessage(1155884, String.Format("#{0}", MasteryInfo.GetLocalization(Skill))); // You are already proficient in this level of ~1_MasterySkill~
+                    from.SendLocalizedMessage(1155884, string.Format("#{0}", MasteryInfo.GetLocalization(Skill))); // You are already proficient in this level of ~1_MasterySkill~
                 }
                 else if (MasteryInfo.LearnMastery(from, Skill, Volume))
                 {
-                    from.SendLocalizedMessage(1155885, String.Format("#{0}", MasteryInfo.GetLocalization(Skill))); // You have increased your proficiency in ~1_SkillMastery~!
+                    from.SendLocalizedMessage(1155885, string.Format("#{0}", MasteryInfo.GetLocalization(Skill))); // You have increased your proficiency in ~1_SkillMastery~!
 
                     Effects.SendLocationParticles(EffectItem.Create(from.Location, from.Map, EffectItem.DefaultDuration), 0, 0, 0, 0, 0, 5060, 0);
                     Effects.PlaySound(from.Location, from.Map, 0x243);
@@ -52,14 +52,14 @@ namespace Server.Items
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            list.Add(1155882, String.Format("#{0}", MasteryInfo.GetLocalization(Skill))); // Primer on ~1_Skill~
+            list.Add(1155882, string.Format("#{0}", MasteryInfo.GetLocalization(Skill))); // Primer on ~1_Skill~
         }
 
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 
-            list.Add(1155883, String.Format("{0}", GetVolume(Volume))); // Volume ~1_Level~
+            list.Add(1155883, string.Format("{0}", GetVolume(Volume))); // Volume ~1_Level~
         }
 
         private string GetVolume(int volume)

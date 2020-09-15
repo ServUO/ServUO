@@ -115,11 +115,11 @@ namespace Server.Items
             }
             else if (Amount > 1)
             {
-                list.Add(1113276, "{0}\t{1}", Amount, String.Format("#{0}", HueInfo[DyeType].Item2));  // ~1_AMOUNT~ ~2_COLOR~ natural dyes
+                list.Add(1113276, "{0}\t{1}", Amount, string.Format("#{0}", HueInfo[DyeType].Item2));  // ~1_AMOUNT~ ~2_COLOR~ natural dyes
             }
             else
             {
-                list.Add(1112137, String.Format("#{0}", HueInfo[DyeType].Item2));  // ~1_COLOR~ natural dye
+                list.Add(1112137, string.Format("#{0}", HueInfo[DyeType].Item2));  // ~1_COLOR~ natural dye
             }
         }
 

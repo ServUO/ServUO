@@ -998,7 +998,7 @@ namespace Server.Engines.Craft
                             {
                                 message = res.MessageNumber;
                             }
-                            else if (!String.IsNullOrEmpty(res.MessageString))
+                            else if (!string.IsNullOrEmpty(res.MessageString))
                             {
                                 message = res.MessageString;
                             }
@@ -1181,7 +1181,7 @@ namespace Server.Engines.Craft
                 {
                     message = res.MessageNumber;
                 }
-                else if (res.MessageString != null && res.MessageString != String.Empty)
+                else if (res.MessageString != null && res.MessageString != string.Empty)
                 {
                     message = res.MessageString;
                 }
@@ -1579,7 +1579,7 @@ namespace Server.Engines.Craft
                 case Expansion.TOL:
                     return 1155875; // You must have the Time of Legends expansion to use this feature.
                 default:
-                    return String.Format("The \"{0}\" expansion is required to attempt this item.", ExpansionInfo.GetInfo(expansion).Name);
+                    return string.Format("The \"{0}\" expansion is required to attempt this item.", ExpansionInfo.GetInfo(expansion).Name);
             }
         }
 

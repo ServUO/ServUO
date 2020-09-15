@@ -33,7 +33,7 @@ namespace Server.Items
 
             BuffInfo.RemoveBuff(defender, BuffIcon.PsychicAttack);
 
-            string args = String.Format("{0}\t{1}", m_Registry[defender].SpellDamageMalus, m_Registry[defender].ManaCostMalus);
+            string args = string.Format("{0}\t{1}", m_Registry[defender].SpellDamageMalus, m_Registry[defender].ManaCostMalus);
             BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.PsychicAttack, 1151296, 1151297, args));
         }
 

@@ -79,7 +79,7 @@ namespace Server.Items
             BlockInfo info = new BlockInfo(dciBonus, spellblock, meleeblock);
             _Table[m] = info;
 
-            string args = String.Format("{0}\t{1}\t{2}\t{3}\t{4}", dciBonus, spellblock, meleeblock, "15", "30");
+            string args = string.Format("{0}\t{1}\t{2}\t{3}\t{4}", dciBonus, spellblock, meleeblock, "15", "30");
 
             BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Block, 1151291, 1151292, TimeSpan.FromSeconds(6), m, args));
             // Next incoming damage reduced.<br>Defense Chance Increase: +~1_val~%<br>Incoming Spell Damage: -~2_val~%<br>Incoming Attack Damage: -~3_val~%<br>Hit Chance Penalty: ~4_val~%<br>Damage Penalty: ~5_val~%

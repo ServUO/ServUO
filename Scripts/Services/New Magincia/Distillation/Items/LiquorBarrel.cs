@@ -89,7 +89,7 @@ namespace Server.Items
                     {
                         TimeSpan remaining = (m_MaturationBegin + m_MaturationDuration) - DateTime.UtcNow;
                         if (remaining.TotalDays > 0)
-                            from.SendLocalizedMessage(1150814, String.Format("{0}\t{1}", remaining.Days.ToString(), remaining.Hours.ToString()));
+                            from.SendLocalizedMessage(1150814, string.Format("{0}\t{1}", remaining.Days.ToString(), remaining.Hours.ToString()));
                         else
                             from.SendLocalizedMessage(1150813, remaining.TotalHours.ToString());
                     }
@@ -117,11 +117,11 @@ namespace Server.Items
                 int cliloc = IsMature ? 1150804 : 1150812;  // maturing: ~1_NAME~ / // matured: ~1_NAME~
 
                 if (m_Label == null)
-                    list.Add(cliloc, String.Format("#{0}", DistillationSystem.GetLabel(m_Liquor, m_IsStrong)));
+                    list.Add(cliloc, string.Format("#{0}", DistillationSystem.GetLabel(m_Liquor, m_IsStrong)));
                 else
                     list.Add(cliloc, m_Label);
 
-                list.Add(1150454, String.Format("#{0}", DistillationSystem.GetLabel(m_Liquor, m_IsStrong))); // Liquor Type: ~1_TYPE~
+                list.Add(1150454, string.Format("#{0}", DistillationSystem.GetLabel(m_Liquor, m_IsStrong))); // Liquor Type: ~1_TYPE~
 
                 if (m_Distiller != null)
                     list.Add(1150679, m_Distiller.Name); // Distiller: ~1_NAME~

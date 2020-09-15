@@ -74,7 +74,7 @@ namespace Server.Engines.Distillation
                 }
             }
 
-            AddHtmlLocalized(250, 54, 240, 20, 1150735, String.Format("#{0}", DistillationSystem.GetLabel(liquor, false)), LabelColor, false, false); // <center>Ingredients of ~1_NAME~</center>
+            AddHtmlLocalized(250, 54, 240, 20, 1150735, string.Format("#{0}", DistillationSystem.GetLabel(liquor, false)), LabelColor, false, false); // <center>Ingredients of ~1_NAME~</center>
 
             y = 80;
             for (int i = 0; i < m_Def.Ingredients.Length; i++)
@@ -102,7 +102,7 @@ namespace Server.Engines.Distillation
                     int amount = DistillationTarget.GetAmount(from, type, liquor);
                     if (amount > total)
                         amount = total;
-                    AddHtmlLocalized(295, y, 200, 20, 1150733, String.Format("#{0}\t{1}", m_Def.Labels[i], String.Format("{0}/{1}", amount.ToString(), total.ToString())), LabelColor, false, false); // ~1_NAME~ : ~2_NUMBER~
+                    AddHtmlLocalized(295, y, 200, 20, 1150733, string.Format("#{0}\t{1}", m_Def.Labels[i], string.Format("{0}/{1}", amount.ToString(), total.ToString())), LabelColor, false, false); // ~1_NAME~ : ~2_NUMBER~
                 }
 
                 y += 26;
@@ -117,7 +117,7 @@ namespace Server.Engines.Distillation
             AddHtmlLocalized(295, 320, 200, 20, m_Context.Mark ? 1150731 : 1150732, LabelColor, false, false); // Mark Distiller Name - Do Not Mark
 
             AddButton(15, 395, 4005, 4007, 6, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(55, 395, 200, 20, 1150733, String.Format("Label\t{0}", m_Context.Label == null ? "None" : m_Context.Label), LabelColor, false, false); // ~1_NAME~ : ~2_NUMBER~
+            AddHtmlLocalized(55, 395, 200, 20, 1150733, string.Format("Label\t{0}", m_Context.Label == null ? "None" : m_Context.Label), LabelColor, false, false); // ~1_NAME~ : ~2_NUMBER~
 
             AddButton(15, 465, 4005, 4007, 7, GumpButtonType.Reply, 0);
             AddHtmlLocalized(55, 465, 200, 20, 1150771, LabelColor, false, false); // Execute Distillation

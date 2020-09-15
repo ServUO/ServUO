@@ -133,10 +133,10 @@ namespace Server.Items
 
                 AddBackground(0, 0, 454, 350, 0x24AE);
                 AddHtmlLocalized(32, 68, 112, 36, 1158505, false, false); // Constellation Name:
-                AddHtml(154, 68, 300, 36, Color("#0040FF", String.IsNullOrEmpty(Chart.ConstellationName) ? "This constellation has not yet been named" : Chart.ConstellationName), false, false);
+                AddHtml(154, 68, 300, 36, Color("#0040FF", string.IsNullOrEmpty(Chart.ConstellationName) ? "This constellation has not yet been named" : Chart.ConstellationName), false, false);
 
                 AddHtmlLocalized(32, 104, 75, 36, 1158502, false, false); // Charted By:
-                AddHtml(112, 104, 50, 36, Color("#0040FF", Chart.ChartedBy == null ? String.Empty : Chart.ChartedBy.Name), false, false);
+                AddHtml(112, 104, 50, 36, Color("#0040FF", Chart.ChartedBy == null ? string.Empty : Chart.ChartedBy.Name), false, false);
 
                 AddHtmlLocalized(32, 140, 75, 36, 1158503, false, false); // Charted On:
                 AddHtml(112, 140, 80, 36, Color("#0040FF", Chart.ChartedOn.ToShortDateString()), false, false);
@@ -151,7 +151,7 @@ namespace Server.Items
                 AddHtml(272, 199, 50, 36, Color("#0040FF", info.CoordDEC.ToString()), false, false);
 
                 AddBackground(32, 253, 343, 22, 0x2486);
-                AddTextEntry(34, 255, 339, 18, 0, 1, String.Empty, 34);
+                AddTextEntry(34, 255, 339, 18, 0, 1, string.Empty, 34);
 
                 AddButton(375, 245, 0x232C, 0x232D, 1, GumpButtonType.Reply, 0);
             }

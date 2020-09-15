@@ -27,7 +27,7 @@ namespace Ultima
         public StringList(string language)
         {
             Language = language;
-            LoadEntry(Files.GetFilePath(String.Format("cliloc.{0}", language)));
+            LoadEntry(Files.GetFilePath(string.Format("cliloc.{0}", language)));
         }
 
         /// <summary>
@@ -204,11 +204,11 @@ namespace Ultima
             {
                 if (m_desc)
                 {
-                    return String.Compare(objB.Text, objA.Text);
+                    return string.Compare(objB.Text, objA.Text);
                 }
                 else
                 {
-                    return String.Compare(objA.Text, objB.Text);
+                    return string.Compare(objA.Text, objB.Text);
                 }
             }
         }

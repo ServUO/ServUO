@@ -21,7 +21,7 @@ namespace Server.Engines.NewMagincia
             else
                 AddHtmlLocalized(180, 40, 200, 18, 1150314, BlueColor16, false, false); // This Shop Has No Name
 
-            AddHtml(173, 65, 173, 18, Color(FormatBrokerName(String.Format("Proprietor: {0}", broker.Name)), BlueColor), false, false);
+            AddHtml(173, 65, 173, 18, Color(FormatBrokerName(string.Format("Proprietor: {0}", broker.Name)), BlueColor), false, false);
 
             AddHtmlLocalized(215, 100, 200, 18, 1150328, GreenColor16, false, false); // Owner Menu
 
@@ -195,7 +195,7 @@ namespace Server.Engines.NewMagincia
                     continue;
 
                 AddButton(10, y, 4005, 4007, i + 1, GumpButtonType.Reply, 0);
-                AddHtmlLocalized(60, y, 200, 18, 1150340, String.Format("{0}\t{1}", bc.Name, PetBrokerEntry.GetOriginalName(bc)), col, false, false); // ~1_NAME~ (~2_type~)
+                AddHtmlLocalized(60, y, 200, 18, 1150340, string.Format("{0}\t{1}", bc.Name, PetBrokerEntry.GetOriginalName(bc)), col, false, false); // ~1_NAME~ (~2_type~)
                 y += 22;
             }
 
@@ -247,7 +247,7 @@ namespace Server.Engines.NewMagincia
                         {
                             from.Stabled.Remove(bc);
                             from.SendGump(new SetPetPricesGump(m_Broker));
-                            from.SendLocalizedMessage(1150345, String.Format("{0}\t{1}\t{2}\t{3}", PetBrokerEntry.GetOriginalName(bc), bc.Name, m_Broker.Name, cost)); // Your pet ~1_TYPE~ named ~2_NAME~ has been transferred to the inventory of your animal broker named ~3_SHOP~ with an asking price of ~4_PRICE~.
+                            from.SendLocalizedMessage(1150345, string.Format("{0}\t{1}\t{2}\t{3}", PetBrokerEntry.GetOriginalName(bc), bc.Name, m_Broker.Name, cost)); // Your pet ~1_TYPE~ named ~2_NAME~ has been transferred to the inventory of your animal broker named ~3_SHOP~ with an asking price of ~4_PRICE~.
                         }
                     }
                     else
@@ -312,7 +312,7 @@ namespace Server.Engines.NewMagincia
                 BaseCreature bc = broker.BrokerEntries[i].Pet;
                 int col = index == i ? YellowColor16 : OrangeColor16;
                 AddButton(10, y, 4005, 4007, i + 1, GumpButtonType.Reply, 0);
-                AddHtmlLocalized(50, y, 200, 18, 1150340, String.Format("{0}\t{1}", bc.Name, PetBrokerEntry.GetOriginalName(bc)), col, false, false); // ~1_NAME~ (~2_type~)
+                AddHtmlLocalized(50, y, 200, 18, 1150340, string.Format("{0}\t{1}", bc.Name, PetBrokerEntry.GetOriginalName(bc)), col, false, false); // ~1_NAME~ (~2_type~)
 
                 y += 20;
             }
@@ -351,7 +351,7 @@ namespace Server.Engines.NewMagincia
 
                         PetBroker.SendToStables(from, bc);
 
-                        from.SendLocalizedMessage(1150635, String.Format("{0}\t{1}", entry.TypeName, bc.Name)); // Your pet ~1_TYPE~ named ~2_NAME~ has been transferred to the stables.
+                        from.SendLocalizedMessage(1150635, string.Format("{0}\t{1}", entry.TypeName, bc.Name)); // Your pet ~1_TYPE~ named ~2_NAME~ has been transferred to the stables.
                         from.SendGump(new PetBrokerGump(m_Broker, from));
                         return;
                     }
@@ -478,7 +478,7 @@ namespace Server.Engines.NewMagincia
             }
 
             AddHtmlLocalized(10, 55, 240, 18, 1114514, "#1150313", BlueColor16, false, false); // Proprietor:
-            AddHtml(260, 55, 250, 18, Color(String.Format("{0}", broker.Name), BlueColor), false, false);
+            AddHtml(260, 55, 250, 18, Color(string.Format("{0}", broker.Name), BlueColor), false, false);
 
             if (m_Entries.Count != 0)
             {
@@ -578,7 +578,7 @@ namespace Server.Engines.NewMagincia
                         pet.Loyalty = BaseCreature.MaxLoyalty;
 
                         PetBroker.AddToViewTimer(pet);
-                        from.SendLocalizedMessage(1150369, String.Format("{0}\t{1}", entry.TypeName, pet.Name)); // The ~1_TYPE~ named "~2_NAME~" is now in the animal broker's pen for inspection.
+                        from.SendLocalizedMessage(1150369, string.Format("{0}\t{1}", entry.TypeName, pet.Name)); // The ~1_TYPE~ named "~2_NAME~" is now in the animal broker's pen for inspection.
                     }
                     else
                         from.SendLocalizedMessage(1150368); // The selected animal is not available.
@@ -621,7 +621,7 @@ namespace Server.Engines.NewMagincia
             }
 
             AddHtmlLocalized(10, 55, 240, 18, 1114514, "#1150313", BlueColor16, false, false); // Proprietor:
-            AddHtml(260, 55, 250, 18, Color(String.Format("{0}", broker.Name), BlueColor), false, false);
+            AddHtml(260, 55, 250, 18, Color(string.Format("{0}", broker.Name), BlueColor), false, false);
 
             AddHtmlLocalized(10, 91, 500, 18, 1114513, "#1150375", GreenColor16, false, false); // PURCHASE PET
             AddHtmlLocalized(10, 118, 500, 72, 1114513, "#1150370", GreenColor16, false, false); // Please confirm your purchase order below, and click "ACCEPT" if you wish to purchase this animal.
@@ -693,9 +693,9 @@ namespace Server.Engines.NewMagincia
             }
 
             AddHtmlLocalized(10, 55, 240, 18, 1114514, "#1150313", BlueColor16, false, false); // Proprietor:
-            AddHtml(260, 55, 250, 18, Color(String.Format("{0}", broker.Name), BlueColor), false, false);
+            AddHtml(260, 55, 250, 18, Color(string.Format("{0}", broker.Name), BlueColor), false, false);
 
-            AddHtmlLocalized(10, 127, 500, 534, 1114513, String.Format("#{0}", cliloc), OrangeColor16, false, false);
+            AddHtmlLocalized(10, 127, 500, 534, 1114513, string.Format("#{0}", cliloc), OrangeColor16, false, false);
 
             AddButton(10, 490, 0xFAE, 0xFAF, 1, GumpButtonType.Reply, 0);
             AddHtmlLocalized(50, 490, 210, 20, 1149777, BlueColor16, false, false); // MAIN MENU

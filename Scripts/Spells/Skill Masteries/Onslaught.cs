@@ -85,7 +85,7 @@ namespace Server.Spells.SkillMasteries
                 defender.AddResistanceMod(mod);
 
                 attacker.PrivateOverheadMessage(MessageType.Regular, 1150, 1156008, attacker.NetState);  // You deliver an onslaught of sword strikes!
-                BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.Onslaught, 1156009, 1156010, TimeSpan.FromSeconds(duration), defender, String.Format("{0}\t{1}", amount.ToString(), resistType.ToString()))); // -~2_VAL~% ~1_RESIST~ Debuff.
+                BuffInfo.AddBuff(defender, new BuffInfo(BuffIcon.Onslaught, 1156009, 1156010, TimeSpan.FromSeconds(duration), defender, string.Format("{0}\t{1}", amount.ToString(), resistType.ToString()))); // -~2_VAL~% ~1_RESIST~ Debuff.
 
                 defender.FixedEffect(0x37B9, 10, 5, 632, 0);
 

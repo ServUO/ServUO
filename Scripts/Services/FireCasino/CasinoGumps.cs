@@ -248,12 +248,12 @@ namespace Server.Engines.ResortAndCasino
 
         protected string Color(string color, string str)
         {
-            return String.Format("<basefont color={0}>{1}", color, str);
+            return string.Format("<basefont color={0}>{1}", color, str);
         }
 
         protected string ColorAndCenter(string color, string str)
         {
-            return String.Format("<basefont color={0}><center>{1}</center>", color, str);
+            return string.Format("<basefont color={0}><center>{1}</center>", color, str);
         }
     }
 
@@ -378,12 +378,12 @@ namespace Server.Engines.ResortAndCasino
 
         protected string Color(string color, string str)
         {
-            return String.Format("<basefont color={0}>{1}", color, str);
+            return string.Format("<basefont color={0}>{1}", color, str);
         }
 
         protected string ColorAndCenter(string color, string str)
         {
-            return String.Format("<basefont color={0}><center>{1}</center>", color, str);
+            return string.Format("<basefont color={0}><center>{1}</center>", color, str);
         }
     }
 
@@ -462,7 +462,7 @@ namespace Server.Engines.ResortAndCasino
                 int matches = Game.GetMatches();
                 int win = Game.CurrentBet * matches;
 
-                AddHtmlLocalized(20, 250, 240, 32, 1153384, String.Format("{0}\t{1}", matches.ToString(), win.ToString(CultureInfo.GetCultureInfo("en-US"))), Yellow, false, false); // The dice matched your number ~1_COUNT~ times. You win ~2_AMT~ chips!
+                AddHtmlLocalized(20, 250, 240, 32, 1153384, string.Format("{0}\t{1}", matches.ToString(), win.ToString(CultureInfo.GetCultureInfo("en-US"))), Yellow, false, false); // The dice matched your number ~1_COUNT~ times. You win ~2_AMT~ chips!
             }
 
             AddHtml(55, 293, 150, 16, Color("#FFFF00", Game.Winner ? "COLLECT" : "CONTINUE"), false, false);
@@ -816,7 +816,7 @@ namespace Server.Engines.ResortAndCasino
                 }
                 else
                 {
-                    AddHtmlLocalized(15, 375, Width - 30, 16, 1153640, String.Format("{0}\t#{1}", Game.WinningTotal, WinningHand()), Yellow, false, false); // You won ~1_AMT~ for making a ~2_HAND_NAME~!
+                    AddHtmlLocalized(15, 375, Width - 30, 16, 1153640, string.Format("{0}\t#{1}", Game.WinningTotal, WinningHand()), Yellow, false, false); // You won ~1_AMT~ for making a ~2_HAND_NAME~!
                 }
 
                 AddHtml(55, Height - 35, 150, 16, Color("#FFFF00", Game.Winner ? "COLLECT" : "CONTINUE"), false, false);

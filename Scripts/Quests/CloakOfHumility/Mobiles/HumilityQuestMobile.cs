@@ -103,9 +103,9 @@ namespace Server.Engines.Quests
                                 quest.AddQuestItem(nextItem, this);
 
                                 if (this is Sean)
-                                    SayTo(from, Greeting + 3, String.Format("#{0}", quest.Infos[idx].NeedsLoc));
+                                    SayTo(from, Greeting + 3, string.Format("#{0}", quest.Infos[idx].NeedsLoc));
                                 else
-                                    SayTo(from, Greeting + 4, String.Format("#{0}\t#{1}", quest.Infos[idx].NeedsLoc, quest.Infos[idx].GivesLoc));
+                                    SayTo(from, Greeting + 4, string.Format("#{0}\t#{1}", quest.Infos[idx].NeedsLoc, quest.Infos[idx].GivesLoc));
                             }
                         }
                         else //Didn't find needed item

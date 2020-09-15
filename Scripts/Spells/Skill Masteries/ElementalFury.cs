@@ -77,7 +77,7 @@ namespace Server.Spells.SkillMasteries
 
                 _Type = GetResistanceType(GetWeapon());
 
-                BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.ElementalFury, 1156018, 1156019, duration, Caster, String.Format("{0}\t69\t{1}", _Type.ToString(), _MaxAdd.ToString())));
+                BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.ElementalFury, 1156018, 1156019, duration, Caster, string.Format("{0}\t69\t{1}", _Type.ToString(), _MaxAdd.ToString())));
                 //Each attack the caster deals with ~1_TYPE~ damage will add up to ~3_VAL~ damage to the Fury Pool. Once the Fury Pool 
                 //reaches ~2_VAL~ the throwing weapon will unleash the Elemental Fury.
             }

@@ -116,7 +116,7 @@ namespace Server.Commands
 
                 if (v == 0)
                 {
-                    v = String.Compare(
+                    v = string.Compare(
                         GetNameFrom(aCtor, aProp, aMethod),
                         GetNameFrom(bCtor, bProp, bMethod),
                         StringComparison.Ordinal);
@@ -202,7 +202,7 @@ namespace Server.Commands
                     return 1;
                 }
 
-                return String.Compare(x.TypeName, y.TypeName, StringComparison.Ordinal);
+                return string.Compare(x.TypeName, y.TypeName, StringComparison.Ordinal);
             }
         }
 
@@ -260,11 +260,11 @@ namespace Server.Commands
             }
 
             int index = 0;
-            string file = String.Concat(name, ext);
+            string file = string.Concat(name, ext);
 
             while (File.Exists(Path.Combine(root, file)))
             {
-                file = String.Concat(name, ++index, ext);
+                file = string.Concat(name, ++index, ext);
             }
 
             return file;
@@ -435,7 +435,7 @@ namespace Server.Commands
                 }
             }
 
-            string retval = String.Concat(prepend, aliased, append, name);
+            string retval = string.Concat(prepend, aliased, append, name);
             //Console.WriteLine(">> getpair: "+retval);
             return retval;
         }
@@ -1209,7 +1209,7 @@ namespace Server.Commands
                     html.WriteLine(
                         "            <td width=\"{0}\"{1} class=\"entry\">&nbsp;</td>",
                         count * 25,
-                        count == 1 ? "" : String.Format(" colspan=\"{0}\"", count));
+                        count == 1 ? "" : string.Format(" colspan=\"{0}\"", count));
                 }
             }
 
@@ -1224,7 +1224,7 @@ namespace Server.Commands
 
             lbod.Entries = LargeBulkEntry.ConvertEntries(lbod, entries);
 
-            WriteSmithBODHeader(html, String.Format("(Large) {0}: Normal", name));
+            WriteSmithBODHeader(html, string.Format("(Large) {0}: Normal", name));
 
             lbod.RequireExceptional = false;
             for (BulkMaterialType mat = BulkMaterialType.None; mat <= BulkMaterialType.Valorite; ++mat)
@@ -1238,7 +1238,7 @@ namespace Server.Commands
 
             html.WriteLine("      <br /><br />");
 
-            WriteSmithBODHeader(html, String.Format("(Large) {0}: Exceptional", name));
+            WriteSmithBODHeader(html, string.Format("(Large) {0}: Exceptional", name));
 
             lbod.RequireExceptional = true;
             for (BulkMaterialType mat = BulkMaterialType.None; mat <= BulkMaterialType.Valorite; ++mat)
@@ -1527,7 +1527,7 @@ namespace Server.Commands
                     html.WriteLine(
                         "            <td style=\"width: {0}px;\"{1} class=\"entry\">&nbsp;</td>",
                         count * 25,
-                        count == 1 ? "" : String.Format(" colspan=\"{0}\"", count));
+                        count == 1 ? "" : string.Format(" colspan=\"{0}\"", count));
                 }
             }
 
@@ -1568,7 +1568,7 @@ namespace Server.Commands
 
                         int body;
 
-                        if (!Int32.TryParse(split[0], out body))
+                        if (!int.TryParse(split[0], out body))
                         {
                             continue;
                         }
@@ -1580,7 +1580,7 @@ namespace Server.Commands
                             type = ModelBodyType.Invalid;
                         }
 
-                        string name = String.Join(" ", split.Skip(2).Select(n => !String.IsNullOrWhiteSpace(n) ? n : "unknown"));
+                        string name = string.Join(" ", split.Skip(2).Select(n => !string.IsNullOrWhiteSpace(n) ? n : "unknown"));
 
                         BodyEntry entry = new BodyEntry(body, type, name);
 
@@ -1904,7 +1904,7 @@ namespace Server.Commands
 
                 if (v == 0)
                 {
-                    v = String.Compare(a.Name, b.Name, StringComparison.Ordinal);
+                    v = string.Compare(a.Name, b.Name, StringComparison.Ordinal);
                 }
 
                 return v;
@@ -2438,19 +2438,19 @@ namespace Server.Commands
 
         private static readonly object[,] m_Tooltips =
         {
-            {typeof(Byte), "Numeric value in the range from 0 to 255, inclusive."},
-            {typeof(SByte), "Numeric value in the range from negative 128 to positive 127, inclusive."},
-            {typeof(UInt16), "Numeric value in the range from 0 to 65,535, inclusive."},
-            {typeof(Int16), "Numeric value in the range from negative 32,768 to positive 32,767, inclusive."},
-            {typeof(UInt32), "Numeric value in the range from 0 to 4,294,967,295, inclusive."},
-            {typeof(Int32), "Numeric value in the range from negative 2,147,483,648 to positive 2,147,483,647, inclusive."},
-            {typeof(UInt64), "Numeric value in the range from 0 through about 10^20."},
-            {typeof(Int64), "Numeric value in the approximate range from negative 10^19 through 10^19."},
+            {typeof(byte), "Numeric value in the range from 0 to 255, inclusive."},
+            {typeof(sbyte), "Numeric value in the range from negative 128 to positive 127, inclusive."},
+            {typeof(ushort), "Numeric value in the range from 0 to 65,535, inclusive."},
+            {typeof(short), "Numeric value in the range from negative 32,768 to positive 32,767, inclusive."},
+            {typeof(uint), "Numeric value in the range from 0 to 4,294,967,295, inclusive."},
+            {typeof(int), "Numeric value in the range from negative 2,147,483,648 to positive 2,147,483,647, inclusive."},
+            {typeof(ulong), "Numeric value in the range from 0 through about 10^20."},
+            {typeof(long), "Numeric value in the approximate range from negative 10^19 through 10^19."},
             {
-                typeof(String),
+                typeof(string),
                 "Text value. To specify a value containing spaces, encapsulate the value in quote characters:{0}{0}&quot;Spaced text example&quot;"
             },
-            {typeof(Boolean), "Boolean value which can be either True or False."},
+            {typeof(bool), "Boolean value which can be either True or False."},
             {typeof(Map), "Map or facet name. Possible values include:{0}{0}- Felucca{0}- Trammel{0}- Ilshenar{0}- Malas"},
             {
                 typeof(Poison),
@@ -2472,7 +2472,7 @@ namespace Server.Commands
 
                 if (paramType == checkType)
                 {
-                    return String.Format((string)m_Tooltips[i, 1], HtmlNewLine);
+                    return string.Format((string)m_Tooltips[i, 1], HtmlNewLine);
                 }
             }
 
@@ -3084,7 +3084,7 @@ namespace Server.Commands
         {
             // MONO: type.Namespace is null/empty for generic arguments
 
-            if (type.Name == "T" || String.IsNullOrEmpty(type.Namespace) || m_Namespaces == null)
+            if (type.Name == "T" || string.IsNullOrEmpty(type.Namespace) || m_Namespaces == null)
             {
                 return true;
             }
@@ -3148,7 +3148,7 @@ namespace Server.Commands
 
             if (v == 0)
             {
-                v = String.Compare(a.Name, b.Name, StringComparison.Ordinal);
+                v = string.Compare(a.Name, b.Name, StringComparison.Ordinal);
             }
 
             return v;

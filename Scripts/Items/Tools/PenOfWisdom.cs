@@ -226,7 +226,7 @@ namespace Server.Items
             AddBackground(4, 39, 391, 313 + y, 9200);
             AddImageTiled(8, 45, 380, 53, 2624);
 
-            AddHtmlLocalized(7, 50, 380, 53, 1115428, String.Format("@{0}@{1}@{2}@{3}", MarkScrollAmount.ToString(), RuneAmount.ToString(), Checked.Count, Blank.ToString()), EntryColor, false, false); // <CENTER>Pen of Wisdom<br>(Mark Scrolls: ~1_VAL~, Runes: ~2_VAL~ | Selected: ~3_VAL~, Blank: ~4_VAL~)</CENTER>
+            AddHtmlLocalized(7, 50, 380, 53, 1115428, string.Format("@{0}@{1}@{2}@{3}", MarkScrollAmount.ToString(), RuneAmount.ToString(), Checked.Count, Blank.ToString()), EntryColor, false, false); // <CENTER>Pen of Wisdom<br>(Mark Scrolls: ~1_VAL~, Runes: ~2_VAL~ | Selected: ~3_VAL~, Blank: ~4_VAL~)</CENTER>
 
             AddImageTiled(8, 101, 188, 220, 2624);
             AddImageTiled(199, 101, 188, 220, 2624);
@@ -272,12 +272,12 @@ namespace Server.Items
                 if (yy < 8)
                 {
                     AddButton(15, 110 + (yy * 25), Checked.Contains(SourceBook.Entries[i]) ? 211 : 210, Checked.Contains(SourceBook.Entries[i]) ? 210 : 211, i, GumpButtonType.Reply, 0);
-                    AddLabelCropped(45, 110 + (yy * 25), 115, 17, RunebookGump.GetMapHue(SourceBook.Entries[i].Map), String.Format("{0}", description));
+                    AddLabelCropped(45, 110 + (yy * 25), 115, 17, RunebookGump.GetMapHue(SourceBook.Entries[i].Map), string.Format("{0}", description));
                 }
                 else
                 {
                     AddButton(205, 110 + ((yy - 8) * 25), Checked.Contains(SourceBook.Entries[i]) ? 211 : 210, Checked.Contains(SourceBook.Entries[i]) ? 210 : 211, i, GumpButtonType.Reply, 0);
-                    AddLabelCropped(235, 110 + ((yy - 8) * 25), 115, 17, RunebookGump.GetMapHue(SourceBook.Entries[i].Map), String.Format("{0}", description));
+                    AddLabelCropped(235, 110 + ((yy - 8) * 25), 115, 17, RunebookGump.GetMapHue(SourceBook.Entries[i].Map), string.Format("{0}", description));
                 }
 
                 yy++;

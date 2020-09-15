@@ -4,8 +4,8 @@ namespace Server
 {
     public interface IDynamicEnum
     {
-        String Value { get; set; }
-        String[] Values { get; }
-        Boolean IsValid { get; }
+        string Value { get; set; }
+        string[] Values { get; }
+        bool IsValid { get; }
     }
 }

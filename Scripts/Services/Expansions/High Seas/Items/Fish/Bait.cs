@@ -95,7 +95,7 @@ namespace Server.Items
                     list.Add(1116464, "#{0}\t{1}", 1116470, (string)label);
             }
             else if (label is int)
-                list.Add(1116465, String.Format("#{0}", (int)label)); //~1_token~ bait
+                list.Add(1116465, string.Format("#{0}", (int)label)); //~1_token~ bait
             else if (label is string)
                 list.Add(1116465, (string)label);
         }

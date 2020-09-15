@@ -184,7 +184,7 @@ namespace Server.Items
         {
             string coords = GetCoords(from);
 
-            if (!String.IsNullOrEmpty(coords))
+            if (!string.IsNullOrEmpty(coords))
             {
                 from.LocalOverheadMessage(MessageType.Regular, from.SpeechHue, false, GetCoords(from));
             }
@@ -203,10 +203,10 @@ namespace Server.Items
 
             if (Sextant.Format(location, map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
             {
-                return String.Format("{0}° {1}'{2}, {3}° {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
+                return string.Format("{0}° {1}'{2}, {3}° {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
             }
 
-            return String.Empty;
+            return string.Empty;
         }
     }
 }

@@ -150,8 +150,8 @@ namespace Server.Spells.SkillMasteries
                 Caster.SendLocalizedMessage(1049452, "\t" + toGuard.Name); // You are now protecting ~2_NAME~.
                 toGuard.SendLocalizedMessage(1049451, Caster.Name); // You are now being protected by ~1_NAME~.
 
-                BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.Bodyguard, 1155924, 1156061, TimeSpan.FromSeconds(90), Caster, String.Format("{0}\t{1}\t{2}\t{3}", Caster.Name, ((int)(_Block + 5)).ToString(), toGuard.Name, ((int)_Block).ToString())));
-                BuffInfo.AddBuff(toGuard, new BuffInfo(BuffIcon.Bodyguard, 1155924, 1156061, TimeSpan.FromSeconds(90), toGuard, String.Format("{0}\t{1}\t{2}\t{3}", Caster.Name, ((int)(_Block + 5)).ToString(), toGuard.Name, ((int)_Block).ToString())));
+                BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.Bodyguard, 1155924, 1156061, TimeSpan.FromSeconds(90), Caster, string.Format("{0}\t{1}\t{2}\t{3}", Caster.Name, ((int)(_Block + 5)).ToString(), toGuard.Name, ((int)_Block).ToString())));
+                BuffInfo.AddBuff(toGuard, new BuffInfo(BuffIcon.Bodyguard, 1155924, 1156061, TimeSpan.FromSeconds(90), toGuard, string.Format("{0}\t{1}\t{2}\t{3}", Caster.Name, ((int)(_Block + 5)).ToString(), toGuard.Name, ((int)_Block).ToString())));
                 //~1_NAME~ receives ~2_DAMAGE~% of all damage dealt to ~3_NAME~. All damage dealt to ~3_NAME~ will be reduced by ~4_DAMAGE~%. Body guard must be within 2 tiles. 
             }
 
@@ -278,7 +278,7 @@ namespace Server.Spells.SkillMasteries
             AddAlphaRegion(15, 15, 365, 190);
 
             AddHtmlLocalized(30, 20, 360, 25, 1156099, 0x7FFF, false, false); // Another player is offering to bodyguard you:
-            AddLabel(90, 55, 1153, String.Format("{0} will body guard {1}", protector.Name, protectee.Name));
+            AddLabel(90, 55, 1153, string.Format("{0} will body guard {1}", protector.Name, protectee.Name));
 
             AddImage(50, 45, 9005);
             AddImageTiled(80, 80, 200, 1, 9107);

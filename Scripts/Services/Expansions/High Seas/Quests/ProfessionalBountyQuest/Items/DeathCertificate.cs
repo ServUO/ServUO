@@ -20,9 +20,9 @@ namespace Server.Items
                 PirateCaptain capt = (PirateCaptain)owner;
 
                 if (capt.PirateName > 0)
-                    m_Owner = String.Format("#{0}\t#{1}\t#{2}", capt.Adjective, capt.Noun, capt.PirateName);
+                    m_Owner = string.Format("#{0}\t#{1}\t#{2}", capt.Adjective, capt.Noun, capt.PirateName);
                 else
-                    m_Owner = String.Format("#{0}\t#{1}\t{2}", capt.Adjective, capt.Noun, Name);
+                    m_Owner = string.Format("#{0}\t#{1}\t{2}", capt.Adjective, capt.Noun, Name);
             }
         }
 

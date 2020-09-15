@@ -376,7 +376,7 @@ namespace Server.Items
             if (PhysicalResistance != 0 || m_RefinedPhysical != 0)
             {
                 if (m_RefinedPhysical != 0)
-                    list.Add(1153735, String.Format("{0}\t{1}\t{2}", PhysicalResistance.ToString(), "", m_RefinedPhysical.ToString()));// physical resist ~1_val~% / ~2_symb~~3_val~% Max
+                    list.Add(1153735, string.Format("{0}\t{1}\t{2}", PhysicalResistance.ToString(), "", m_RefinedPhysical.ToString()));// physical resist ~1_val~% / ~2_symb~~3_val~% Max
                 else
                     list.Add(1060448, PhysicalResistance.ToString()); // physical resist ~1_val~%
             }
@@ -384,7 +384,7 @@ namespace Server.Items
             if (FireResistance != 0 || m_RefinedFire != 0)
             {
                 if (m_RefinedFire != 0)
-                    list.Add(1153737, String.Format("{0}\t{1}\t{2}", FireResistance.ToString(), "", m_RefinedFire.ToString()));// physical resist ~1_val~% / ~2_symb~~3_val~% Max
+                    list.Add(1153737, string.Format("{0}\t{1}\t{2}", FireResistance.ToString(), "", m_RefinedFire.ToString()));// physical resist ~1_val~% / ~2_symb~~3_val~% Max
                 else
                     list.Add(1060447, FireResistance.ToString()); // physical resist ~1_val~%
             }
@@ -392,7 +392,7 @@ namespace Server.Items
             if (ColdResistance != 0 || m_RefinedCold != 0)
             {
                 if (m_RefinedCold != 0)
-                    list.Add(1153739, String.Format("{0}\t{1}\t{2}", ColdResistance.ToString(), "", m_RefinedCold.ToString()));// physical resist ~1_val~% / ~2_symb~~3_val~% Max
+                    list.Add(1153739, string.Format("{0}\t{1}\t{2}", ColdResistance.ToString(), "", m_RefinedCold.ToString()));// physical resist ~1_val~% / ~2_symb~~3_val~% Max
                 else
                     list.Add(1060445, ColdResistance.ToString()); // physical resist ~1_val~%
             }
@@ -400,7 +400,7 @@ namespace Server.Items
             if (PoisonResistance != 0 || m_RefinedPoison != 0)
             {
                 if (m_RefinedPoison != 0)
-                    list.Add(1153736, String.Format("{0}\t{1}\t{2}", PoisonResistance.ToString(), "", m_RefinedPoison.ToString()));// physical resist ~1_val~% / ~2_symb~~3_val~% Max
+                    list.Add(1153736, string.Format("{0}\t{1}\t{2}", PoisonResistance.ToString(), "", m_RefinedPoison.ToString()));// physical resist ~1_val~% / ~2_symb~~3_val~% Max
                 else
                     list.Add(1060449, PoisonResistance.ToString()); // physical resist ~1_val~%
             }
@@ -408,13 +408,13 @@ namespace Server.Items
             if (EnergyResistance != 0 || m_RefinedEnergy != 0)
             {
                 if (m_RefinedEnergy != 0)
-                    list.Add(1153738, String.Format("{0}\t{1}\t{2}", EnergyResistance.ToString(), "", m_RefinedEnergy.ToString()));// physical resist ~1_val~% / ~2_symb~~3_val~% Max
+                    list.Add(1153738, string.Format("{0}\t{1}\t{2}", EnergyResistance.ToString(), "", m_RefinedEnergy.ToString()));// physical resist ~1_val~% / ~2_symb~~3_val~% Max
                 else
                     list.Add(1060446, EnergyResistance.ToString()); // physical resist ~1_val~%
             }
 
             if (RefinedDefenseChance != 0)
-                list.Add(1153733, String.Format("{0}\t{1}", "", RefinedDefenseChance.ToString()));
+                list.Add(1153733, string.Format("{0}\t{1}", "", RefinedDefenseChance.ToString()));
         }
 
         public static int GetInherentLowerManaCost(Mobile from)
@@ -1411,7 +1411,7 @@ namespace Server.Items
             SaveFlag flags = SaveFlag.None;
 
             SetSaveFlag(ref flags, SaveFlag.xWeaponAttributes, !m_AosWeaponAttributes.IsEmpty);
-            SetSaveFlag(ref flags, SaveFlag.EngravedText, !String.IsNullOrEmpty(_EngravedText));
+            SetSaveFlag(ref flags, SaveFlag.EngravedText, !string.IsNullOrEmpty(_EngravedText));
             SetSaveFlag(ref flags, SaveFlag.TalismanProtection, !m_TalismanProtection.IsEmpty);
             SetSaveFlag(ref flags, SaveFlag.NegativeAttributes, !m_NegativeAttributes.IsEmpty);
             SetSaveFlag(ref flags, SaveFlag.Attributes, !m_AosAttributes.IsEmpty);
@@ -2070,7 +2070,7 @@ namespace Server.Items
             string name = Name;
 
             if (name == null)
-                name = String.Format("#{0}", LabelNumber);
+                name = string.Format("#{0}", LabelNumber);
 
             return name;
         }
@@ -2128,9 +2128,9 @@ namespace Server.Items
                     int prefix = RunicReforging.GetPrefixName(m_ReforgedPrefix);
 
                     if (m_ReforgedSuffix == ReforgedSuffix.None)
-                        list.Add(1151757, String.Format("#{0}\t{1}", prefix, GetNameString())); // ~1_PREFIX~ ~2_ITEM~
+                        list.Add(1151757, string.Format("#{0}\t{1}", prefix, GetNameString())); // ~1_PREFIX~ ~2_ITEM~
                     else
-                        list.Add(1151756, String.Format("#{0}\t{1}\t#{2}", prefix, GetNameString(), RunicReforging.GetSuffixName(m_ReforgedSuffix))); // ~1_PREFIX~ ~2_ITEM~ of ~3_SUFFIX~
+                        list.Add(1151756, string.Format("#{0}\t{1}\t#{2}", prefix, GetNameString(), RunicReforging.GetSuffixName(m_ReforgedSuffix))); // ~1_PREFIX~ ~2_ITEM~ of ~3_SUFFIX~
                 }
                 else if (m_ReforgedSuffix != ReforgedSuffix.None)
                 {
@@ -2147,7 +2147,7 @@ namespace Server.Items
                     list.Add(Name);
             }
 
-            if (!String.IsNullOrEmpty(_EngravedText))
+            if (!string.IsNullOrEmpty(_EngravedText))
             {
                 list.Add(1062613, Utility.FixHtml(_EngravedText));
             }

@@ -82,8 +82,8 @@ namespace Server.Engines.Doom
         private static readonly int[] exp = { 0x307 };
         private static bool installed;
         private bool m_Enabled;
-        private UInt16 m_MyKey;
-        private UInt16 m_TheirKey;
+        private ushort m_MyKey;
+        private ushort m_TheirKey;
         private List<Item> m_Levers;
         private List<Item> m_Teles;
         private List<Item> m_Statues;
@@ -133,7 +133,7 @@ namespace Server.Engines.Doom
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public UInt16 MyKey
+        public ushort MyKey
         {
             get
             {
@@ -145,7 +145,7 @@ namespace Server.Engines.Doom
             }
         }
         [CommandProperty(AccessLevel.GameMaster)]
-        public UInt16 TheirKey
+        public ushort TheirKey
         {
             get
             {
@@ -445,7 +445,7 @@ namespace Server.Engines.Doom
             m_Successful = null;
         }
 
-        public virtual void LeverPulled(UInt16 code)
+        public virtual void LeverPulled(ushort code)
         {
             int Correct = 0;
             Mobile m_Player;
@@ -509,7 +509,7 @@ namespace Server.Engines.Doom
 
         public virtual void GenKey() /* Shuffle & build key */
         {
-            UInt16 tmp;
+            ushort tmp;
             int n, i;
             ushort[] CA = { 1, 2, 4, 8 };
             for (i = 0; i < 4; i++)

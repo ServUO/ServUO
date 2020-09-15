@@ -600,8 +600,8 @@ namespace Ultima
             int blockx = width >> 3;
             int blocky = height >> 3;
 
-            string idx = Path.Combine(path, String.Format("staidx{0}.mul", map.FileIndex));
-            string mul = Path.Combine(path, String.Format("statics{0}.mul", map.FileIndex));
+            string idx = Path.Combine(path, string.Format("staidx{0}.mul", map.FileIndex));
+            string mul = Path.Combine(path, string.Format("statics{0}.mul", map.FileIndex));
             using (
                 FileStream fsidx = new FileStream(idx, FileMode.Create, FileAccess.Write, FileShare.Write),
                            fsmul = new FileStream(mul, FileMode.Create, FileAccess.Write, FileShare.Write))
@@ -831,7 +831,7 @@ namespace Ultima
             int blockx = width >> 3;
             int blocky = height >> 3;
 
-            string mul = Path.Combine(path, String.Format("map{0}.mul", map));
+            string mul = Path.Combine(path, string.Format("map{0}.mul", map));
             using (FileStream fsmul = new FileStream(mul, FileMode.Create, FileAccess.Write, FileShare.Write))
             {
                 MemoryStream memmul = new MemoryStream();
@@ -893,7 +893,7 @@ namespace Ultima
 
         public void ReportInvisStatics(string reportfile)
         {
-            reportfile = Path.Combine(reportfile, String.Format("staticReport-{0}.csv", m_MapID));
+            reportfile = Path.Combine(reportfile, string.Format("staticReport-{0}.csv", m_MapID));
             using (
                 StreamWriter Tex = new StreamWriter(
                     new FileStream(reportfile, FileMode.Create, FileAccess.ReadWrite), Encoding.GetEncoding(1252)))
@@ -910,7 +910,7 @@ namespace Ultima
                             {
                                 if (TileData.ItemTable[currstatic.ID].Height + currstatic.Z < currtile.Z)
                                 {
-                                    Tex.WriteLine(String.Format("{0};{1};{2};0x{3:X}", x, y, currstatic.Z, currstatic.ID));
+                                    Tex.WriteLine(string.Format("{0};{1};{2};0x{3:X}", x, y, currstatic.Z, currstatic.ID));
                                 }
                             }
                         }
@@ -921,7 +921,7 @@ namespace Ultima
 
         public void ReportInvalidMapIDs(string reportfile)
         {
-            reportfile = Path.Combine(reportfile, String.Format("ReportInvalidMapIDs-{0}.csv", m_MapID));
+            reportfile = Path.Combine(reportfile, string.Format("ReportInvalidMapIDs-{0}.csv", m_MapID));
             using (
                 StreamWriter Tex = new StreamWriter(
                     new FileStream(reportfile, FileMode.Create, FileAccess.ReadWrite), Encoding.GetEncoding(1252)))
@@ -934,13 +934,13 @@ namespace Ultima
                         Tile currtile = Tiles.GetLandTile(x, y);
                         if (!Art.IsValidLand(currtile.ID))
                         {
-                            Tex.WriteLine(String.Format("{0};{1};{2};0;0x{3:X}", x, y, currtile.Z, currtile.ID));
+                            Tex.WriteLine(string.Format("{0};{1};{2};0;0x{3:X}", x, y, currtile.Z, currtile.ID));
                         }
                         foreach (HuedTile currstatic in Tiles.GetStaticTiles(x, y))
                         {
                             if (!Art.IsValidStatic(currstatic.ID))
                             {
-                                Tex.WriteLine(String.Format("{0};{1};{2};0x{3:X};0", x, y, currstatic.Z, currstatic.ID));
+                                Tex.WriteLine(string.Format("{0};{1};{2};0x{3:X};0", x, y, currstatic.Z, currstatic.ID));
                             }
                         }
                     }

@@ -60,7 +60,7 @@ namespace Server.Gumps
             int y = BorderSize + OffsetSize;
 
             AddImageTiled(x, y, EntryWidth, EntryHeight, EntryGumpID);
-            AddLabelCropped(x + TextOffsetX, y, EntryWidth - TextOffsetX, EntryHeight, TextHue, String.Format("{0}  [{1}]", skill.Name, skill.Cap));
+            AddLabelCropped(x + TextOffsetX, y, EntryWidth - TextOffsetX, EntryHeight, TextHue, string.Format("{0}  [{1}]", skill.Name, skill.Cap));
             x += EntryWidth + OffsetSize;
 
             if (SetGumpID != 0)
@@ -92,7 +92,7 @@ namespace Server.Gumps
                         if (text != null)
                         {
                             m_Skill.Base = Convert.ToDouble(text.Text);
-                            CommandLogging.LogChangeProperty(m_From, m_Target, String.Format("{0}.Base", m_Skill), m_Skill.Base.ToString());
+                            CommandLogging.LogChangeProperty(m_From, m_Target, string.Format("{0}.Base", m_Skill), m_Skill.Base.ToString());
                         }
                     }
                     else

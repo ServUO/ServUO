@@ -311,7 +311,7 @@ namespace Server.Items
 
                 AddBackground(0, 0, 414, 214, 0x7752);
 
-                AddHtmlLocalized(27, 47, 380, 80, 1156475, String.Format("@{0}@{1}@{2}", AuctionMap.TeleportCost.ToString(), AuctionMap.HouseName, AuctionMap.DeleteDelayMinutes.ToString()), 0xFFFF, false, false); // Please select 'Accept' if you would like to pay ~1_cost~ gold to teleport to auction house ~2_name~. For this price you will also be able to teleport back to this location within the next ~3_minutes~ minutes.
+                AddHtmlLocalized(27, 47, 380, 80, 1156475, string.Format("@{0}@{1}@{2}", AuctionMap.TeleportCost.ToString(), AuctionMap.HouseName, AuctionMap.DeleteDelayMinutes.ToString()), 0xFFFF, false, false); // Please select 'Accept' if you would like to pay ~1_cost~ gold to teleport to auction house ~2_name~. For this price you will also be able to teleport back to this location within the next ~3_minutes~ minutes.
 
                 AddButton(7, 167, 0x7747, 0x7747, 0, GumpButtonType.Reply, 0);
                 AddHtmlLocalized(47, 167, 100, 40, 1150300, 0x4E73, false, false); // CANCEL

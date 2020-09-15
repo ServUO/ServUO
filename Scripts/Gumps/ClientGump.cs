@@ -64,10 +64,10 @@ namespace Server.Gumps
             if (m != null)
             {
                 AddHtml(14, 36 + (line * 20), 200, 20, Color("Mobile:", LabelColor32), false, false);
-                AddHtml(70, 36 + (line++ * 20), 200, 20, Color(String.Format("{0} (0x{1:X})", m.Name, m.Serial.Value), LabelColor32), false, false);
+                AddHtml(70, 36 + (line++ * 20), 200, 20, Color(string.Format("{0} (0x{1:X})", m.Name, m.Serial.Value), LabelColor32), false, false);
 
                 AddHtml(14, 36 + (line * 20), 200, 20, Color("Location:", LabelColor32), false, false);
-                AddHtml(70, 36 + (line++ * 20), 200, 20, Color(String.Format("{0} [{1}]", m.Location, m.Map), LabelColor32), false, false);
+                AddHtml(70, 36 + (line++ * 20), 200, 20, Color(string.Format("{0} [{1}]", m.Location, m.Map), LabelColor32), false, false);
 
                 AddButton(13, 157, 0xFAB, 0xFAD, 1, GumpButtonType.Reply, 0);
                 AddHtml(48, 158, 200, 20, Color("Send Message", LabelColor32), false, false);
@@ -279,12 +279,12 @@ namespace Server.Gumps
 
         public string Center(string text)
         {
-            return String.Format("<CENTER>{0}</CENTER>", text);
+            return string.Format("<CENTER>{0}</CENTER>", text);
         }
 
         public string Color(string text, int color)
         {
-            return String.Format("<BASEFONT COLOR=#{0:X6}>{1}</BASEFONT>", color, text);
+            return string.Format("<BASEFONT COLOR=#{0:X6}>{1}</BASEFONT>", color, text);
         }
 
         private void Resend(Mobile to, RelayInfo info)

@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace Server.Misc
 {
-    public delegate Int32 RegenBonusHandler(Mobile from);
+    public delegate int RegenBonusHandler(Mobile from);
 
     public class RegenRates
     {

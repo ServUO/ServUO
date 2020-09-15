@@ -59,7 +59,7 @@ namespace Server.Spells.SkillMasteries
             m.FixedParticles(0x373A, 10, 15, 5018, EffectLayer.Waist);
             m.SendLocalizedMessage(1115737); // You feel invigorated by the bard's spellsong.
 
-            string args = String.Format("{0}\t{1}\t{2}\t{3}", m_HPBonus, m_StatBonus, m_StatBonus, m_StatBonus);
+            string args = string.Format("{0}\t{1}\t{2}\t{3}", m_HPBonus, m_StatBonus, m_StatBonus, m_StatBonus);
             BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Invigorate, 1115613, 1115730, args.ToString()));
 
             m.AddStatMod(new StatMod(StatType.Str, StatModName + "str", m_StatBonus, TimeSpan.Zero));

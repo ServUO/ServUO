@@ -291,7 +291,7 @@ namespace Server.Engines.Events
                 Body = from.Body;
 
                 m_From = from;
-                Name = String.Format("{0}\'s Naughty Twin", from.Name);
+                Name = string.Format("{0}\'s Naughty Twin", from.Name);
 
                 Timer.DelayCall(TrickOrTreat.OneSecond, Utility.RandomBool() ? StealCandy : new TimerStateCallback<Mobile>(ToGate), m_From);
             }

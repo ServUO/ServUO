@@ -81,7 +81,7 @@ namespace Server.Commands.Generic
             else
                 AddEntryHeader(20);
 
-            AddEntryHtml(40 + (m_Columns.Length * 130) - 20 + ((m_Columns.Length - 2) * OffsetSize), Center(String.Format("Page {0} of {1}", m_Page + 1, (m_List.Count + EntriesPerPage - 1) / EntriesPerPage)));
+            AddEntryHtml(40 + (m_Columns.Length * 130) - 20 + ((m_Columns.Length - 2) * OffsetSize), Center(string.Format("Page {0} of {1}", m_Page + 1, (m_List.Count + EntriesPerPage - 1) / EntriesPerPage)));
 
             if ((m_Page + 1) * EntriesPerPage < m_List.Count)
                 AddEntryButton(20, ArrowRightID1, ArrowRightID2, 2, ArrowRightWidth, ArrowRightHeight);
@@ -330,7 +330,7 @@ namespace Server.Commands.Generic
                 case 4: // Go there
                     {
                         m_From.SendGump(new InterfaceItemGump(m_From, m_Columns, m_List, m_Page, m_Item));
-                        InvokeCommand(String.Format("Go {0}", m_Item.Serial.Value));
+                        InvokeCommand(string.Format("Go {0}", m_Item.Serial.Value));
                         break;
                     }
                 case 5: // Move to target
@@ -364,7 +364,7 @@ namespace Server.Commands.Generic
 
         private void InvokeCommand(string ip)
         {
-            CommandSystem.Handle(m_From, String.Format("{0}{1}", CommandSystem.Prefix, ip));
+            CommandSystem.Handle(m_From, string.Format("{0}{1}", CommandSystem.Prefix, ip));
         }
     }
 
@@ -491,7 +491,7 @@ namespace Server.Commands.Generic
                 case 4: // Go there
                     {
                         m_From.SendGump(new InterfaceMobileGump(m_From, m_Columns, m_List, m_Page, m_Mobile));
-                        InvokeCommand(String.Format("Go {0}", m_Mobile.Serial.Value));
+                        InvokeCommand(string.Format("Go {0}", m_Mobile.Serial.Value));
                         break;
                     }
                 case 5: // Bring them here
@@ -551,7 +551,7 @@ namespace Server.Commands.Generic
 
         private void InvokeCommand(string ip)
         {
-            CommandSystem.Handle(m_From, String.Format("{0}{1}", CommandSystem.Prefix, ip));
+            CommandSystem.Handle(m_From, string.Format("{0}{1}", CommandSystem.Prefix, ip));
         }
     }
 }

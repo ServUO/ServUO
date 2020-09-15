@@ -14,7 +14,7 @@ namespace Server.Items
         *level in that skill by the amount of points displayed on the scroll.
         *As you may not gain skills beyond your maximum skill cap, any excess points will be lost.*/
 
-        public override string DefaultTitle => String.Format("<basefont color=#FFFFFF>Scroll of Alacrity:</basefont>");
+        public override string DefaultTitle => string.Format("<basefont color=#FFFFFF>Scroll of Alacrity:</basefont>");
 
         public ScrollOfAlacrity()
             : this(SkillName.Alchemy)

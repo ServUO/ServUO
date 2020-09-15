@@ -54,7 +54,7 @@ namespace Server.Spells.SkillMasteries
             m.FixedParticles(0x373A, 10, 15, 5018, EffectLayer.Waist);
             m.SendLocalizedMessage(1115736); // You feel inspired by the bard's spellsong.
 
-            string args = String.Format("{0}\t{1}\t{2}\t{3}", m_PropertyBonus, m_PropertyBonus, m_DamageBonus, m_DamageModifier);
+            string args = string.Format("{0}\t{1}\t{2}\t{3}", m_PropertyBonus, m_PropertyBonus, m_DamageBonus, m_DamageModifier);
             BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Inspire, 1115683, 1151951, args.ToString()));
         }
 

@@ -69,7 +69,7 @@ namespace Server.Spells.SkillMasteries
                 _HCIBonus = (int)Math.Max(45, skill / 2.667);
                 _SSIBonus = (int)Math.Max(30, skill / 4);
 
-                string args = String.Format("{0}\t{1}\t{2}", Caster.Name, _HCIBonus.ToString(), _SSIBonus.ToString());
+                string args = string.Format("{0}\t{1}\t{2}", Caster.Name, _HCIBonus.ToString(), _SSIBonus.ToString());
                 BuffInfo.AddBuff(Caster, new BuffInfo(BuffIcon.PlayingTheOddsDebuff, 1155913, 1156091, duration, Caster));
                 //Your bow range has been reduced as you play the odds.
 
@@ -110,7 +110,7 @@ namespace Server.Spells.SkillMasteries
 
             if (m != Caster)
             {
-                string args = String.Format("{0}\t{1}\t{2}", Caster.Name, _HCIBonus.ToString(), _SSIBonus.ToString());
+                string args = string.Format("{0}\t{1}\t{2}", Caster.Name, _HCIBonus.ToString(), _SSIBonus.ToString());
                 BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.PlayingTheOdds, 1155913, 1155998, Expires - DateTime.UtcNow, m, args));
                 //~1_NAME~ grants you the following:<br>+~2_VAl~% Hit Chance Increase.<br>+~3_VAL~% Swing Speed Increase.
             }

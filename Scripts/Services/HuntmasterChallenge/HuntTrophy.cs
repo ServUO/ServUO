@@ -69,7 +69,7 @@ namespace Server.Items
             m_DateKilled = killed;
             m_Measurement = measurement;
 
-            if (!String.IsNullOrEmpty(Info.TrophyName.String))
+            if (!string.IsNullOrEmpty(Info.TrophyName.String))
             {
                 Name = Info.TrophyName.String;
             }

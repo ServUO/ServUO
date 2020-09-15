@@ -483,7 +483,7 @@ namespace Server.Items
                 }
             }
 
-            string n = (ld.Name ?? String.Empty).ToLower();
+            string n = (ld.Name ?? string.Empty).ToLower();
 
             if (n != "dirt" && n != "grass" && n != "jungle" && n != "forest" && n != "snow")
             {
@@ -500,7 +500,7 @@ namespace Server.Items
                     return false;
                 }
 
-                n = (td.Name ?? String.Empty).ToLower();
+                n = (td.Name ?? string.Empty).ToLower();
 
                 if (n != "dirt" && n != "grass" && n != "jungle" && n != "forest" && n != "snow")
                 {

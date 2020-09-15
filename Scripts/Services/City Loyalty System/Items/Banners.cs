@@ -92,7 +92,7 @@ namespace Server.Engines.CityLoyalty
                     base.OnDoubleClick(from);
                 }
                 else
-                    from.SendLocalizedMessage(1152361, String.Format("#{0}", CityLoyaltySystem.GetCityLocalization(City))); // You are not sufficiently loyal to ~1_CITY~ to use this.
+                    from.SendLocalizedMessage(1152361, string.Format("#{0}", CityLoyaltySystem.GetCityLocalization(City))); // You are not sufficiently loyal to ~1_CITY~ to use this.
             }
         }
 

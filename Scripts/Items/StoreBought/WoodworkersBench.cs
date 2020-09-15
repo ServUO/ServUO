@@ -44,7 +44,7 @@ namespace Server.Items
             {
                 TimeSpan tsRem = (_Table[m].Item2 + TimeSpan.FromMinutes(BonusDuration) - DateTime.UtcNow);
 
-                m.SendLocalizedMessage(1071522, String.Format("{0}\t{1}", tsRem.Minutes.ToString(), tsRem.Seconds.ToString())); // You already have the bench's buff. Time remaining of the buff: ~1_VAL~ min ~2_VAL~ sec
+                m.SendLocalizedMessage(1071522, string.Format("{0}\t{1}", tsRem.Minutes.ToString(), tsRem.Seconds.ToString())); // You already have the bench's buff. Time remaining of the buff: ~1_VAL~ min ~2_VAL~ sec
             }
             else
             {

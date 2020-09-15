@@ -93,7 +93,7 @@ namespace Server.Commands
         [Description("Generates the world with a menu. If nogump argument is given, no gump will be displayed, all options will be assumed true, and the action will proceed immediately.")]
         private static void Create_OnCommand(CommandEventArgs e)
         {
-            if (String.IsNullOrEmpty(e.ArgString))
+            if (string.IsNullOrEmpty(e.ArgString))
             {
                 if (e.Mobile is PlayerMobile)
                     BaseGump.SendGump(new NewCreateWorldGump((PlayerMobile)e.Mobile, GumpType.Create));
@@ -115,7 +115,7 @@ namespace Server.Commands
         [Description("Undoes world generation with a menu. If nogump argument is given, no gump will be displayed, all options will be assumed true, and the action will proceed immediately.")]
         private static void Delete_OnCommand(CommandEventArgs e)
         {
-            if (String.IsNullOrEmpty(e.ArgString))
+            if (string.IsNullOrEmpty(e.ArgString))
             {
                 if (e.Mobile is PlayerMobile)
                     BaseGump.SendGump(new NewCreateWorldGump((PlayerMobile)e.Mobile, GumpType.Delete));
@@ -137,7 +137,7 @@ namespace Server.Commands
         [Description("Re-generates the world with a menu. If nogump argument is given, no gump will be displayed, all options will be assumed true, and the action will proceed immediately.")]
         private static void Recreate_OnCommand(CommandEventArgs e)
         {
-            if (String.IsNullOrEmpty(e.ArgString))
+            if (string.IsNullOrEmpty(e.ArgString))
             {
                 e.Mobile.SendGump(new CreateWorldGump(e, GumpType.Recreate));
             }
@@ -199,7 +199,7 @@ namespace Server.Commands
 
                                 break;
                             case GumpType.Delete:
-                                if (!String.IsNullOrEmpty(entry.DeleteCommand))
+                                if (!string.IsNullOrEmpty(entry.DeleteCommand))
                                 {
                                     from.Say("Deleting " + entry.Name);
                                     CommandSystem.Handle(from, prefix + entry.DeleteCommand);
@@ -226,7 +226,7 @@ namespace Server.Commands
         {
             if (CreateWorldData.CreateTable.ContainsKey(entry.CheckID) && CreateWorldData.CreateTable[entry.CheckID])
             {
-                string er = String.Format("<br>- {0} have been generated already.", entry.Name);
+                string er = string.Format("<br>- {0} have been generated already.", entry.Name);
                 Console.WriteLine(er);
 
                 error += er;
@@ -241,7 +241,7 @@ namespace Server.Commands
                     return true;
                 }
 
-                string er = String.Format("<br>- Cannot generate {0}. You need to generate Decorations and Spawners first.", entry.Name);
+                string er = string.Format("<br>- Cannot generate {0}. You need to generate Decorations and Spawners first.", entry.Name);
                 Console.WriteLine(er);
 
                 error += er;
@@ -257,7 +257,7 @@ namespace Server.Commands
                 }
                 else
                 {
-                    string er = String.Format("<br>- Cannot generate {0}. You need to generate Spawners first.", entry.Name);
+                    string er = string.Format("<br>- Cannot generate {0}. You need to generate Spawners first.", entry.Name);
                     Console.WriteLine(er);
 
                     error += er;
@@ -322,7 +322,7 @@ namespace Server.Gumps
             {
                 bool created = CreateWorldData.CreateTable.ContainsKey(entry.CheckID) && CreateWorldData.CreateTable[entry.CheckID];
 
-                AddLabel(20, y + 1, created ? 200 : 338, String.Format("{0} {1}", entry.Name, created ? "[created]" : "[not created]"));
+                AddLabel(20, y + 1, created ? 200 : 338, string.Format("{0} {1}", entry.Name, created ? "[created]" : "[not created]"));
                 AddCheck(210, y - 2, 210, 211, m_Type == CreateWorld.GumpType.Create ? !created : created, entry.CheckID);
 
                 y += 25;
@@ -386,7 +386,7 @@ namespace Server.Gumps
             }
 
             AddHtml(152, 15, 450, 20, ColorAndCenter("#00FFFF", label), false, false);
-            AddHtml(12, 15, 140, 20, ColorAndCenter("#696969", String.Format("Shard Expansion: {0}", Core.Expansion.ToString())), false, false);
+            AddHtml(12, 15, 140, 20, ColorAndCenter("#696969", string.Format("Shard Expansion: {0}", Core.Expansion.ToString())), false, false);
 
             for (int i = 0; i < 6; i++)
             {
@@ -418,7 +418,7 @@ namespace Server.Gumps
                 else
                     check = GumpType == CreateWorld.GumpType.Create ? !created : created;
 
-                AddLabel(x + 21, y, created ? 200 : 338, String.Format("{0} {1}", entry.Name, created ? "[created]" : "[not created]"));
+                AddLabel(x + 21, y, created ? 200 : 338, string.Format("{0} {1}", entry.Name, created ? "[created]" : "[not created]"));
                 AddCheck(x, y - 2, 210, 211, check, entry.CheckID);
 
                 y += 20;

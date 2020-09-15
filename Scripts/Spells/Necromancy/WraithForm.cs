@@ -36,7 +36,7 @@ namespace Server.Spells.Necromancy
 
             int manadrain = Math.Max(8, 5 + (int)(0.16 * m.Skills.SpiritSpeak.Value));
 
-            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.WraithForm, 1060524, 1153829, String.Format("15\t5\t5\t{0}", manadrain)));
+            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.WraithForm, 1060524, 1153829, string.Format("15\t5\t5\t{0}", manadrain)));
         }
 
         public override void RemoveEffect(Mobile m)

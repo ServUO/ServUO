@@ -20,7 +20,7 @@ namespace Server.Services.TownCryer
         {
             Guild = m.Guild as Guild;
             Title = title;
-            FullTitle = String.Format("{0}-{1} [{2}] {3}", eventTime.Month, eventTime.Day, Guild.Abbreviation, title);
+            FullTitle = string.Format("{0}-{1} [{2}] {3}", eventTime.Month, eventTime.Day, Guild.Abbreviation, title);
             Body = body;
             Author = m.Name;
             EventTime = eventTime;

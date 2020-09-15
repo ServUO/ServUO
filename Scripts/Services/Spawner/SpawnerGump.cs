@@ -36,10 +36,10 @@ namespace Server.Mobiles
             AddLabel(38, 356, LabelHue, "Cancel");
 
             AddButton(110, 310, 0xFA5, 0xFA7, 1500, GumpButtonType.Reply, 0);
-            AddLabel(143, 310, LabelHue, String.Format("Running: {0}", Spawner.Running ? "Yes" : "No"));
+            AddLabel(143, 310, LabelHue, string.Format("Running: {0}", Spawner.Running ? "Yes" : "No"));
 
             AddButton(110, 333, 0xFA5, 0xFA7, 1000, GumpButtonType.Reply, 0);
-            AddLabel(143, 333, LabelHue, String.Format("Group: {0}", Spawner.Group ? "Yes" : "No"));
+            AddLabel(143, 333, LabelHue, string.Format("Group: {0}", Spawner.Group ? "Yes" : "No"));
 
             AddButton(110, 356, 0xFB4, 0xFB6, 2, GumpButtonType.Reply, 0);
             AddLabel(143, 356, LabelHue, "Bring to Home");
@@ -114,7 +114,7 @@ namespace Server.Mobiles
                     {
                         name = name.Trim();
 
-                        if (!String.IsNullOrEmpty(maxCount))
+                        if (!string.IsNullOrEmpty(maxCount))
                         {
                             max = Utility.ToInt32(maxCount);
                         }

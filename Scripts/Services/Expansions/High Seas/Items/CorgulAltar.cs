@@ -56,7 +56,7 @@ namespace Server.Items
             set
             {
                 m_Active = value;
-                PublicOverheadMessage(Server.Network.MessageType.Regular, 25, false, String.Format("Corgul Altar for {0} has been {1}", Map, m_Active ? "activated" : "deactivated"));
+                PublicOverheadMessage(Server.Network.MessageType.Regular, 25, false, string.Format("Corgul Altar for {0} has been {1}", Map, m_Active ? "activated" : "deactivated"));
             }
         }
 

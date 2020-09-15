@@ -133,7 +133,7 @@ namespace Server.Engines.SeasonalEvents
 
                 if (mob != null && CityTradeSystem.HasTrade(mob))
                 {
-                    mob.LocalOverheadMessage(MessageType.Regular, 1150, 1158832, String.Format("{0}\t{1}", WorldLocationInfo.GetLocationString(SpawnLocation, SpawnMap), Sextant.GetCoords(SpawnLocation, SpawnMap))); // *You sense Krampus has been spotted near ~2_where~ at ~1_coords~!*
+                    mob.LocalOverheadMessage(MessageType.Regular, 1150, 1158832, string.Format("{0}\t{1}", WorldLocationInfo.GetLocationString(SpawnLocation, SpawnMap), Sextant.GetCoords(SpawnLocation, SpawnMap))); // *You sense Krampus has been spotted near ~2_where~ at ~1_coords~!*
                 }
             }
 

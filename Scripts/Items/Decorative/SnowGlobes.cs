@@ -222,7 +222,7 @@ namespace Server.Items
                 if (idx < 0 || idx >= m_PlaceNames.Length)
                     return "a snowy scene";
 
-                return String.Format("a snowy scene of {0}", m_PlaceNames[idx]);
+                return string.Format("a snowy scene of {0}", m_PlaceNames[idx]);
             }
         }
         public override void Serialize(GenericWriter writer)

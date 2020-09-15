@@ -591,16 +591,16 @@ namespace Server.Mobiles
 
                             if (name != null && ammo.Amount > 1)
                             {
-                                name = String.Format("{0}s", name);
+                                name = string.Format("{0}s", name);
                             }
 
                             if (name == null)
                             {
-                                name = String.Format("#{0}", ammo.LabelNumber);
+                                name = string.Format("#{0}", ammo.LabelNumber);
                             }
 
                             PlaceInBackpack(ammo);
-                            SendLocalizedMessage(1073504, String.Format("{0}\t{1}", ammo.Amount, name)); // You recover ~1_NUM~ ~2_AMMO~.
+                            SendLocalizedMessage(1073504, string.Format("{0}\t{1}", ammo.Amount, name)); // You recover ~1_NUM~ ~2_AMMO~.
                         }
                     }
                 }
@@ -648,7 +648,7 @@ namespace Server.Mobiles
                 string name;
 
                 if (Fame >= 10000)
-                    name = String.Format("{0} {1}", Female ? "Lady" : "Lord", RawName);
+                    name = string.Format("{0} {1}", Female ? "Lady" : "Lord", RawName);
                 else
                     name = RawName;
 
@@ -1374,7 +1374,7 @@ namespace Server.Mobiles
 
                             if (name == null)
                             {
-                                name = String.Format("#{0}", weapon.LabelNumber);
+                                name = string.Format("#{0}", weapon.LabelNumber);
                             }
 
                             from.SendLocalizedMessage(1062001, name); // You can no longer wield your ~1_WEAPON~
@@ -1423,7 +1423,7 @@ namespace Server.Mobiles
 
                             if (name == null)
                             {
-                                name = String.Format("#{0}", armor.LabelNumber);
+                                name = string.Format("#{0}", armor.LabelNumber);
                             }
 
                             if (armor is BaseShield)
@@ -1471,7 +1471,7 @@ namespace Server.Mobiles
 
                             if (name == null)
                             {
-                                name = String.Format("#{0}", clothing.LabelNumber);
+                                name = string.Format("#{0}", clothing.LabelNumber);
                             }
 
                             from.SendLocalizedMessage(1062002, name); // You can no longer wear your ~1_ARMOR~
@@ -1688,7 +1688,7 @@ namespace Server.Mobiles
 
                 if (curWeight > MaxWeight)
                 {
-                    SendLocalizedMessage(1019035, true, String.Format(" : {0} / {1}", curWeight, MaxWeight));
+                    SendLocalizedMessage(1019035, true, string.Format(" : {0} / {1}", curWeight, MaxWeight));
                 }
             }
         }
@@ -2069,7 +2069,7 @@ namespace Server.Mobiles
             {
                 if (Hits <= HitsMax / 2)
                 {
-                    BuffInfo.AddBuff(this, new BuffInfo(BuffIcon.Berserk, 1080449, 1115021, String.Format("{0}\t{1}", GetRacialBerserkBuff(false), GetRacialBerserkBuff(true)), false));
+                    BuffInfo.AddBuff(this, new BuffInfo(BuffIcon.Berserk, 1080449, 1115021, string.Format("{0}\t{1}", GetRacialBerserkBuff(false), GetRacialBerserkBuff(true)), false));
                     Delta(MobileDelta.WeaponDamage);
                 }
                 else if (oldValue < Hits && Hits > HitsMax / 2)
@@ -2389,7 +2389,7 @@ namespace Server.Mobiles
             {
                 Mobile prot = m_JusticeProtectors[i];
 
-                string args = String.Format("{0}\t{1}", Name, prot.Name);
+                string args = string.Format("{0}\t{1}", Name, prot.Name);
 
                 prot.SendLocalizedMessage(1049371, args);
                 // The protective relationship between ~1_PLAYER1~ and ~2_PLAYER2~ has been ended.
@@ -4097,7 +4097,7 @@ namespace Server.Mobiles
 
         private static void SendToStaffMessage(Mobile from, string format, params object[] args)
         {
-            SendToStaffMessage(from, String.Format(format, args));
+            SendToStaffMessage(from, string.Format(format, args));
         }
 
         #region Poison
@@ -5089,7 +5089,7 @@ namespace Server.Mobiles
             {
                 VvVPlayerEntry entry = PointsSystem.ViceVsVirtue.GetPlayerEntry<VvVPlayerEntry>(this);
 
-                list.Add(String.Format("Kills: {0} / Deaths: {1} / Assists: {2}", // no cliloc for this!
+                list.Add(string.Format("Kills: {0} / Deaths: {1} / Assists: {2}", // no cliloc for this!
                     entry == null ? "0" : entry.Kills.ToString(), entry == null ? "0" : entry.Deaths.ToString(), entry == null ? "0" : entry.Assists.ToString()));
 
                 list.Add(1060415, AosAttributes.GetValue(this, AosAttribute.AttackChance).ToString()); // hit chance increase ~1_val~%
@@ -5416,11 +5416,11 @@ namespace Server.Mobiles
                     }
                     else if (suffix.Length > 0)
                     {
-                        suffix = String.Format("{0} {1}", suffix, m_OverheadTitle);
+                        suffix = string.Format("{0} {1}", suffix, m_OverheadTitle);
                     }
                     else
                     {
-                        suffix = String.Format("{0}", m_OverheadTitle);
+                        suffix = string.Format("{0}", m_OverheadTitle);
                     }
                 }
             }
@@ -5428,15 +5428,15 @@ namespace Server.Mobiles
             {
                 if (vvv)
                 {
-                    suffix = String.Format("[{0}] [VvV]", Utility.FixHtml(guild.Abbreviation));
+                    suffix = string.Format("[{0}] [VvV]", Utility.FixHtml(guild.Abbreviation));
                 }
                 else if (suffix.Length > 0)
                 {
-                    suffix = String.Format("{0} [{1}]", suffix, Utility.FixHtml(guild.Abbreviation));
+                    suffix = string.Format("{0} [{1}]", suffix, Utility.FixHtml(guild.Abbreviation));
                 }
                 else
                 {
-                    suffix = String.Format("[{0}]", Utility.FixHtml(guild.Abbreviation));
+                    suffix = string.Format("[{0}]", Utility.FixHtml(guild.Abbreviation));
                 }
             }
             else if (vvv)
@@ -5748,7 +5748,7 @@ namespace Server.Mobiles
                 }
                 else
                 {
-                    suffix = String.Concat(suffix, " (Young)");
+                    suffix = string.Concat(suffix, " (Young)");
                 }
             }
 

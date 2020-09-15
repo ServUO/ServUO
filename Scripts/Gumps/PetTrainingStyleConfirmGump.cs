@@ -29,7 +29,7 @@ namespace Server.Gumps
 
             if (_Title.Number > 0)
             {
-                AddHtmlLocalized(35, 10, 400, 20, 1114513, String.Format("#{0}", _Title.Number.ToString()), C32216(0x0d0d0d), false, false);
+                AddHtmlLocalized(35, 10, 400, 20, 1114513, string.Format("#{0}", _Title.Number.ToString()), C32216(0x0d0d0d), false, false);
             }
             else if(!string.IsNullOrEmpty(_Title.String))
             {

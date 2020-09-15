@@ -93,7 +93,7 @@ namespace Server.Multis
                     if (level == DecayLevel.Collapsed)
                         level = DecayLevel.IDOC;
 
-                    list.Add(1062028, String.Format("#{0}", 1043009 + (int)level)); // Condition: This structure is ...
+                    list.Add(1062028, string.Format("#{0}", 1043009 + (int)level)); // Condition: This structure is ...
                 }
             }
         }

@@ -182,8 +182,8 @@ namespace Server.Services.Virtues
             if (!source.Mounted && !source.IsBodyMod)
                 source.Animate(32, 5, 1, true, true, 0);
 
-            BuffInfo.AddBuff(source, new BuffInfo(BuffIcon.Honored, 1075649, 1153815, String.Format("{0}", target.Name, true)));
-            BuffInfo.AddBuff(source, new BuffInfo(BuffIcon.Perfection, 1153786, 1151394, String.Format("0\t{0}", target.Name)));
+            BuffInfo.AddBuff(source, new BuffInfo(BuffIcon.Honored, 1075649, 1153815, string.Format("{0}", target.Name, true)));
+            BuffInfo.AddBuff(source, new BuffInfo(BuffIcon.Perfection, 1153786, 1151394, string.Format("0\t{0}", target.Name)));
         }
 
         private class InternalTarget : Target
@@ -350,11 +350,11 @@ namespace Server.Services.Virtues
                         1075652,
                         TimeSpan.FromSeconds(5),
                         from,
-                        String.Format("{0}\t{1}", m_Perfection, from.Name)));
+                        string.Format("{0}\t{1}", m_Perfection, from.Name)));
 
                 BuffInfo.AddBuff(
                     from,
-                    new BuffInfo(BuffIcon.Perfection, 1153786, 1151394, String.Format("{0}\t{1}", m_Target.Name, m_Perfection)));
+                    new BuffInfo(BuffIcon.Perfection, 1153786, 1151394, string.Format("{0}\t{1}", m_Target.Name, m_Perfection)));
             }
             else
             {
@@ -362,7 +362,7 @@ namespace Server.Services.Virtues
 
                 BuffInfo.AddBuff(
                     from,
-                    new BuffInfo(BuffIcon.Perfection, 1153786, 1151394, String.Format("{0}\t{1}", m_Target.Name, m_Perfection)));
+                    new BuffInfo(BuffIcon.Perfection, 1153786, 1151394, string.Format("{0}\t{1}", m_Target.Name, m_Perfection)));
             }
         }
 

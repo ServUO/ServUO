@@ -25,7 +25,7 @@ namespace Server.Services.TownCryer
             base.AddGumpLayout();
 
             AddHtmlLocalized(58, 150, 100, 20, 1158027, false, false); // Author:
-            AddLabel(105, 150, 0, String.Format("EM {0}", User.Name));
+            AddLabel(105, 150, 0, string.Format("EM {0}", User.Name));
 
             AddHtmlLocalized(58, 180, 100, 20, 1158026, false, false); // Headline:
             AddBackground(58, 200, 740, 20, 0x2486);

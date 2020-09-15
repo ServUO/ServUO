@@ -141,7 +141,7 @@ namespace Server.Spells.Chivalry
             {
                 for (int i = 0; i < name.Length; i++)
                 {
-                    if (i > 0 && Char.IsUpper(name[i]))
+                    if (i > 0 && char.IsUpper(name[i]))
                     {
                         name = name.Insert(i, " ");
                         i++;

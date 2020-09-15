@@ -216,7 +216,7 @@ namespace Server.Engines.VvV
 
             NextAltarActivate = DateTime.UtcNow + TimeSpan.FromMinutes(1);
 
-            System.SendVvVMessage(1154721, String.Format("#{0}", ViceVsVirtueSystem.GetCityLocalization(City).ToString()));
+            System.SendVvVMessage(1154721, string.Format("#{0}", ViceVsVirtueSystem.GetCityLocalization(City).ToString()));
             // A Battle between Vice and Virtue is active! To Arms! The City of ~1_CITY~ is besieged!
         }
 
@@ -715,7 +715,7 @@ namespace Server.Engines.VvV
                                 killerTeam.Silver += AwardSilver(KillSilver + (OppositionCount(killer.Guild) * 50));
                             }
 
-                            SendStatusMessage(String.Format("{0} has killed {1}!", killer.Player.Name, victim.Player.Name));
+                            SendStatusMessage(string.Format("{0} has killed {1}!", killer.Player.Name, victim.Player.Name));
                             KillCooldown[victim.Player] = DateTime.UtcNow + TimeSpan.FromMinutes(KillCooldownDuration);
                         }
                     }
@@ -733,7 +733,7 @@ namespace Server.Engines.VvV
                     if (killerStats != null)
                     {
                         killerStats.Stolen++;
-                        SendStatusMessage(String.Format("{0} has stolen the sigil!", killer.Player.Name));
+                        SendStatusMessage(string.Format("{0} has stolen the sigil!", killer.Player.Name));
                     }
 
                     if (killerTeam != null)
@@ -762,14 +762,14 @@ namespace Server.Engines.VvV
                         }
                     }
 
-                    SendStatusMessage(String.Format("{0} has returned the sigil!", killer.Player.Name));
+                    SendStatusMessage(string.Format("{0} has returned the sigil!", killer.Player.Name));
 
                     NextSigilSpawn = DateTime.UtcNow + TimeSpan.FromMinutes(1);
                     RemovePriests();
 
                     break;
                 case UpdateType.Disarm:
-                    SendStatusMessage(String.Format("{0} has disarmed a trap!", killer.Player.Name));
+                    SendStatusMessage(string.Format("{0} has disarmed a trap!", killer.Player.Name));
 
                     if (killerStats != null)
                     {
@@ -814,7 +814,7 @@ namespace Server.Engines.VvV
             team.Score += (int)AltarPoints;
             team.Silver += AwardSilver(AltarSilver + (OppositionCount(g) * 50));
 
-            SendStatusMessage(String.Format("{0} claimed the altar!", g != null ? g.Abbreviation : "somebody"));
+            SendStatusMessage(string.Format("{0} claimed the altar!", g != null ? g.Abbreviation : "somebody"));
 
             foreach (PlayerMobile p in Region.GetEnumeratedMobiles().Where(player => player is PlayerMobile))
             {
@@ -843,7 +843,7 @@ namespace Server.Engines.VvV
                 {
                     if (ViceVsVirtueSystem.EnhancedRules)
                     {
-                        System.SendVvVMessage(String.Format("{0} is occupying {1}!", team.Guild.Name, City == VvVCity.SkaraBrae ? "Skara Brae" : City.ToString()));
+                        System.SendVvVMessage(string.Format("{0} is occupying {1}!", team.Guild.Name, City == VvVCity.SkaraBrae ? "Skara Brae" : City.ToString()));
                     }
                     else
                     {
@@ -859,7 +859,7 @@ namespace Server.Engines.VvV
                 {
                     if (ViceVsVirtueSystem.EnhancedRules)
                     {
-                        System.SendVvVMessage(1050039, String.Format("#{0}\tis unoccupied! Slay opposing forces to claim the city for your guild!", ViceVsVirtueSystem.GetCityLocalization(City).ToString()));
+                        System.SendVvVMessage(1050039, string.Format("#{0}\tis unoccupied! Slay opposing forces to claim the city for your guild!", ViceVsVirtueSystem.GetCityLocalization(City).ToString()));
                     }
                     else
                     {

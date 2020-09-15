@@ -64,12 +64,12 @@ namespace Server.Mobiles
                     {
                         string line = reader.ReadLine();
 
-                        if (!String.IsNullOrEmpty(line) && !line.StartsWith("#"))
+                        if (!string.IsNullOrEmpty(line) && !line.StartsWith("#"))
                         {
                             string[] split = line.Split(m_Separators, StringSplitOptions.RemoveEmptyEntries);
 
                             if (split != null && split.Length > 1)
-                                m_ShopDefinitions.Add(Int32.Parse(split[1]));
+                                m_ShopDefinitions.Add(int.Parse(split[1]));
                         }
                     }
                 }
@@ -87,7 +87,7 @@ namespace Server.Mobiles
                         {
                             string line = reader.ReadLine();
 
-                            if (!String.IsNullOrEmpty(line))
+                            if (!string.IsNullOrEmpty(line))
                             {
                                 string[] split = line.Split(m_Separators, StringSplitOptions.RemoveEmptyEntries);
                                 int num;
@@ -98,7 +98,7 @@ namespace Server.Mobiles
                                     {
                                         for (int i = 1; i < split.Length; i++)
                                         {
-                                            num = Int32.Parse(split[i]);
+                                            num = int.Parse(split[i]);
                                             neighbour = FindVertex(list, num);
 
                                             if (neighbour == null)
@@ -117,12 +117,12 @@ namespace Server.Mobiles
                                     {
                                         for (int i = 1; i < split.Length; i++)
                                         {
-                                            num = Int32.Parse(split[i]);
+                                            num = int.Parse(split[i]);
 
                                             if (num >= 0 && num < m_ShopDefinitions.Count)
                                                 current.Shops.Add(num);
                                             else
-                                                throw new Exception(String.Format("Invalid shop ID: {0}", num));
+                                                throw new Exception(string.Format("Invalid shop ID: {0}", num));
                                         }
                                     }
                                 }
@@ -130,7 +130,7 @@ namespace Server.Mobiles
                                 {
                                     if (split.Length > 5)
                                     {
-                                        num = Int32.Parse(split[1]);
+                                        num = int.Parse(split[1]);
                                         neighbour = FindVertex(list, num);
 
                                         if (neighbour != null)
@@ -142,14 +142,14 @@ namespace Server.Mobiles
                                         }
 
                                         Point3D location = new Point3D();
-                                        location.X = Int32.Parse(split[2]);
-                                        location.Y = Int32.Parse(split[3]);
-                                        location.Z = Int32.Parse(split[4]);
+                                        location.X = int.Parse(split[2]);
+                                        location.Y = int.Parse(split[3]);
+                                        location.Z = int.Parse(split[4]);
                                         current.Location = location;
-                                        current.Teleporter = Boolean.Parse(split[5]);
+                                        current.Teleporter = bool.Parse(split[5]);
                                     }
                                     else
-                                        throw new Exception(String.Format("Incomplete vertex definition!"));
+                                        throw new Exception(string.Format("Incomplete vertex definition!"));
                                 }
                             }
                         }
@@ -190,7 +190,7 @@ namespace Server.Mobiles
             List<GuideVertex> vertices = m_GraphDefinitions[town];
 
             GuideVertex closest = null;
-            double min = Int32.MaxValue;
+            double min = int.MaxValue;
             double distance;
 
             foreach (GuideVertex v in vertices)
@@ -248,7 +248,7 @@ namespace Server.Mobiles
 
             foreach (GuideVertex v in m_GraphDefinitions[town])
             {
-                v.Distance = Int32.MaxValue;
+                v.Distance = int.MaxValue;
                 v.Previous = null;
                 v.Visited = false;
                 v.Removed = false;
@@ -366,7 +366,7 @@ namespace Server.Mobiles
                     return;
 
                 List<GuideVertex> list = m_GraphDefinitions[town];
-                string path = Core.BaseDirectory + String.Format("\\Data\\Guide\\{0}.graph", town);
+                string path = Core.BaseDirectory + string.Format("\\Data\\Guide\\{0}.graph", town);
 
                 using (FileStream stream = new FileStream(path, FileMode.Create))
                 using (StreamWriter writer = new StreamWriter(stream))
@@ -378,14 +378,14 @@ namespace Server.Mobiles
 
                     foreach (GuideVertex v in list)
                     {
-                        writer.WriteLine(String.Format("V:\t{0}\t{1}\t{2}\t{3}\t{4}", v.ID, v.Location.X, v.Location.Y, v.Location.Z, v.Teleporter.ToString()));
+                        writer.WriteLine(string.Format("V:\t{0}\t{1}\t{2}\t{3}\t{4}", v.ID, v.Location.X, v.Location.Y, v.Location.Z, v.Teleporter.ToString()));
 
                         if (v.Shops.Count > 0)
                         {
                             writer.Write("S:");
 
                             foreach (int i in v.Shops)
-                                writer.Write(String.Format("\t{0}", i));
+                                writer.Write(string.Format("\t{0}", i));
 
                             writer.WriteLine();
                         }
@@ -395,7 +395,7 @@ namespace Server.Mobiles
                             writer.Write("N:");
 
                             foreach (GuideVertex n in v.Vertices)
-                                writer.Write(String.Format("\t{0}", n.ID));
+                                writer.Write(string.Format("\t{0}", n.ID));
 
                             writer.WriteLine();
                         }
@@ -425,7 +425,7 @@ namespace Server.Mobiles
                 m_ID = id;
                 m_Location = location;
                 m_Previous = null;
-                m_Distance = Int32.MaxValue;
+                m_Distance = int.MaxValue;
                 m_Visited = false;
                 m_Removed = false;
             }

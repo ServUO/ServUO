@@ -95,7 +95,7 @@ namespace Server.Spells.Spellweaving
 
             if (Caster.Skills[CastSkill].Value < RequiredSkill)
             {
-                Caster.SendLocalizedMessage(1063013, String.Format("{0}\t{1}", RequiredSkill.ToString("F1"), "#1044114"));
+                Caster.SendLocalizedMessage(1063013, string.Format("{0}\t{1}", RequiredSkill.ToString("F1"), "#1044114"));
                 // You need at least ~1_SKILL_REQUIREMENT~ ~2_SKILL_NAME~ skill to use that ability.
                 return false;
             }

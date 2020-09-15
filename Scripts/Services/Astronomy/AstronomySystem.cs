@@ -151,7 +151,7 @@ namespace Server.Engines.Astronomy
 
         public static bool CheckNameExists(string name)
         {
-            return Constellations.Any(c => !String.IsNullOrEmpty(c.Name) && c.Name.ToLower() == name.ToLower());
+            return Constellations.Any(c => !string.IsNullOrEmpty(c.Name) && c.Name.ToLower() == name.ToLower());
         }
 
         public static TimeCoordinate GetTimeCoordinate(IEntity e)

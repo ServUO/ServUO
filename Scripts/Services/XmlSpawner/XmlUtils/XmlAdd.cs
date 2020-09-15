@@ -373,12 +373,12 @@ namespace Server.Mobiles
             if (System.IO.Directory.Exists(DefsDir) == true)
             {
                 // put it in the defaults directory if it exists
-                dirname = String.Format("{0}/{1}.defs", DefsDir, filename);
+                dirname = string.Format("{0}/{1}.defs", DefsDir, filename);
             }
             else
             {
                 // otherwise just put it in the main installation dir
-                dirname = String.Format("{0}.defs", filename);
+                dirname = string.Format("{0}.defs", filename);
             }
             try
             {
@@ -407,18 +407,18 @@ namespace Server.Mobiles
             if (System.IO.Directory.Exists(DefsDir) == true)
             {
                 // look for it in the defaults directory
-                dirname = String.Format("{0}/{1}.defs", DefsDir, filename);
+                dirname = string.Format("{0}/{1}.defs", DefsDir, filename);
                 // Check if the file exists
                 if (System.IO.File.Exists(dirname) == false)
                 {
                     // didnt find it so just look in the main install dir
-                    dirname = String.Format("{0}.defs", filename);
+                    dirname = string.Format("{0}.defs", filename);
                 }
             }
             else
             {
                 // look in the main installation dir
-                dirname = String.Format("{0}.defs", filename);
+                dirname = string.Format("{0}.defs", filename);
             }
             // Check if the file exists
             if (System.IO.File.Exists(dirname) == true)
@@ -1082,7 +1082,7 @@ namespace Server.Mobiles
                 string sname = defs.SpawnerName;
                 if (defs.AutoNumber)
                 {
-                    sname = String.Format("{0}#{1}", defs.SpawnerName, defs.AutoNumberValue);
+                    sname = string.Format("{0}#{1}", defs.SpawnerName, defs.AutoNumberValue);
                 }
 
                 XmlSpawner spawner = new XmlSpawner(SpawnId, from.Location.X, from.Location.Y, 0, 0, sname, maxcount,
@@ -1375,11 +1375,11 @@ namespace Server.Mobiles
                         string filename;
                         if (defs.DefsExt != null && defs.DefsExt.Length > 0)
                         {
-                            filename = String.Format("{0}-{1}-{2}", defs.AccountName, defs.PlayerName, defs.DefsExt);
+                            filename = string.Format("{0}-{1}-{2}", defs.AccountName, defs.PlayerName, defs.DefsExt);
                         }
                         else
                         {
-                            filename = String.Format("{0}-{1}", defs.AccountName, defs.PlayerName);
+                            filename = string.Format("{0}-{1}", defs.AccountName, defs.PlayerName);
                         }
                         DoSaveDefs(state.Mobile, filename);
                         break;
@@ -1389,18 +1389,18 @@ namespace Server.Mobiles
                         string filename;
                         if (defs.DefsExt != null && defs.DefsExt.Length > 0)
                         {
-                            filename = String.Format("{0}-{1}-{2}", defs.AccountName, defs.PlayerName, defs.DefsExt);
+                            filename = string.Format("{0}-{1}-{2}", defs.AccountName, defs.PlayerName, defs.DefsExt);
                         }
                         else
                         {
-                            filename = String.Format("{0}-{1}", defs.AccountName, defs.PlayerName);
+                            filename = string.Format("{0}-{1}", defs.AccountName, defs.PlayerName);
                         }
                         DoLoadDefs(state.Mobile, filename);
                         break;
                     }
                 case 117: // Restore Defaults
                     {
-                        state.Mobile.SendMessage(String.Format("Restoring defaults"));
+                        state.Mobile.SendMessage(string.Format("Restoring defaults"));
                         XmlSpawnerDefaults.RestoreDefs(defs);
                         break;
                     }
@@ -1567,7 +1567,7 @@ namespace Server.Mobiles
                 AddBackground(0, 0, 300, 130, 5054);
 
 
-                AddLabel(20, 5, 0, String.Format("Options"));
+                AddLabel(20, 5, 0, string.Format("Options"));
                 // add the AddGumpX/Y entries
                 AddImageTiled(5, 30, 40, 21, 0xBBC);
                 AddTextEntry(5, 30, 40, 21, 0, 100, defs.AddGumpX.ToString());
@@ -1662,7 +1662,7 @@ namespace Server.Mobiles
                 AddBackground(10, 200, 200, 130, 5054);
 
 
-                AddLabel(20, 225, 33, String.Format("Delete Last Spawner?"));
+                AddLabel(20, 225, 33, string.Format("Delete Last Spawner?"));
                 AddRadio(35, 255, 9721, 0x86A, false, 1); // accept/yes radio
                 AddRadio(135, 255, 9721, 0x86A, true, 2); // decline/no radio
                 AddHtmlLocalized(72, 255, 200, 30, 1049016, 0x7fff, false, false); // Yes

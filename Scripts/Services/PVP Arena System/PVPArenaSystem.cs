@@ -292,7 +292,7 @@ namespace Server.Engines.ArenaSystem
             if (title > 0)
             {
                 pm.AddRewardTitle(title);
-                pm.SendLocalizedMessage(1152067, String.Format("#{0}", title.ToString())); // You have gotten a new subtitle, ~1_VAL~, in reward for your duel!
+                pm.SendLocalizedMessage(1152067, string.Format("#{0}", title.ToString())); // You have gotten a new subtitle, ~1_VAL~, in reward for your duel!
             }
         }
 
@@ -402,7 +402,7 @@ namespace Server.Engines.ArenaSystem
                             PVPArena arena = stone.Arena;
 
                             BaseGump.SendGump(new GenericConfirmCallbackGump<PVPArena>((PlayerMobile)m,
-                                String.Format("Reset {0} Statistics?", arena.Definition.Name),
+                                string.Format("Reset {0} Statistics?", arena.Definition.Name),
                                 "By selecting yes, you will permanently wipe the stats associated to this arena.",
                                 arena,
                                 null,

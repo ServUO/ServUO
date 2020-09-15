@@ -193,11 +193,11 @@ namespace Server.Multis
             {
                 if (kvp.Value.Count > 2)
                 {
-                    Utility.WriteConsoleColor(ConsoleColor.Yellow, String.Format("Warning: More than 2 teleporters detected for {0}!", kvp.Key.ToString("X")));
+                    Utility.WriteConsoleColor(ConsoleColor.Yellow, string.Format("Warning: More than 2 teleporters detected for {0}!", kvp.Key.ToString("X")));
                 }
                 else if (kvp.Value.Count <= 1)
                 {
-                    Utility.WriteConsoleColor(ConsoleColor.Yellow, String.Format("Warning: 1 or less teleporters detected for {0}!", kvp.Key.ToString("X")));
+                    Utility.WriteConsoleColor(ConsoleColor.Yellow, string.Format("Warning: 1 or less teleporters detected for {0}!", kvp.Key.ToString("X")));
 
                     continue;
                 }

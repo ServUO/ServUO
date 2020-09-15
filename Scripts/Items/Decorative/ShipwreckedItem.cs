@@ -29,7 +29,7 @@ namespace Server.Items
             if (m_IsBarnacleItem)
             {
                 if (LabelNumber > 0)
-                    list.Add(1151075, String.Format("#{0}", LabelNumber)); //barnacle covered ~1_token~
+                    list.Add(1151075, string.Format("#{0}", LabelNumber)); //barnacle covered ~1_token~
                 else
                     list.Add(1151075, ItemData.Name); //barnacle covered ~1_token~
 

@@ -24,7 +24,7 @@ namespace Server.Items
         {
             base.AddNameProperties(list);
 
-            if (String.IsNullOrEmpty(Owner))
+            if (string.IsNullOrEmpty(Owner))
             {
                 list.Add(1152708); // Double click to permanently gain +5 to your maximum stats 
             }
@@ -45,7 +45,7 @@ namespace Server.Items
                 {
                     from.SendLocalizedMessage(1049510); // Your stats are too high for this power scroll.
                 }
-                else if (String.IsNullOrEmpty(Owner))
+                else if (string.IsNullOrEmpty(Owner))
                 {
                     from.SendLocalizedMessage(1049512); // You feel a surge of magic as the scroll enhances your powers!
 

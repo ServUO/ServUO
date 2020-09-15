@@ -22,7 +22,7 @@ namespace Server.Engines.Help
 
             AddHtmlLocalized(150, 40, 360, 40, 1062610, false, false); // <CENTER><U>Ultima Online Help Response</U></CENTER>
 
-            AddHtml(80, 90, 480, 290, String.Format("{0} tells {1}: {2}", name, from.Name, text), true, true);
+            AddHtml(80, 90, 480, 290, string.Format("{0} tells {1}: {2}", name, from.Name, text), true, true);
 
             AddHtmlLocalized(80, 390, 480, 40, 1062611, false, false); // Clicking the OKAY button will remove the reponse you have received.
             AddButton(400, 417, 2074, 2075, 1, GumpButtonType.Reply, 0); // OKAY

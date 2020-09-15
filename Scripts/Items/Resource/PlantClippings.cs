@@ -47,9 +47,9 @@ namespace Server.Items
             PlantHueInfo info = PlantHueInfo.GetInfo(m_PlantHue);
 
             if (Amount > 1)
-                list.Add(info.IsBright() ? 1113272 : 1113274, String.Format("{0}\t#{1}", Amount.ToString(), info.Name)); //~1_AMOUNT~ bright ~2_COLOR~ plant clippings
+                list.Add(info.IsBright() ? 1113272 : 1113274, string.Format("{0}\t#{1}", Amount.ToString(), info.Name)); //~1_AMOUNT~ bright ~2_COLOR~ plant clippings
             else
-                list.Add(info.IsBright() ? 1112121 : 1112122, String.Format("#{0}", info.Name)); //bright ~1_COLOR~ plant clippings
+                list.Add(info.IsBright() ? 1112121 : 1112122, string.Format("#{0}", info.Name)); //bright ~1_COLOR~ plant clippings
         }
 
         public override bool WillStack(Mobile from, Item dropped)

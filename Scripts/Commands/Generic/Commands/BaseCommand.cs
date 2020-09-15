@@ -228,7 +228,7 @@ namespace Server.Commands.Generic
             public override string ToString()
             {
                 if (m_Count > 1)
-                    return String.Format("{0} ({1})", m_Message, m_Count);
+                    return string.Format("{0} ({1})", m_Message, m_Count);
 
                 return m_Message;
             }

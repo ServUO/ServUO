@@ -264,7 +264,7 @@ namespace Server.Engines.VoidPool
             if (stats.BestWave == null || wave > stats.BestWave.Waves)
             {
                 stats.BestWave = new BestWave(controller.CurrentScore, wave);
-                Timer.DelayCall(TimeSpan.FromSeconds(1.5), () => World.Broadcast(2072, false, String.Format("A new Void Pool Invasion record has been made: {0}!", wave.ToString())));
+                Timer.DelayCall(TimeSpan.FromSeconds(1.5), () => World.Broadcast(2072, false, string.Format("A new Void Pool Invasion record has been made: {0}!", wave.ToString())));
             }
         }
 

@@ -95,7 +95,7 @@ namespace Server.Engines.CityLoyalty
         {
             base.GetProperties(list);
 
-            list.Add(1151737, String.Format("#{0}", CityLoyaltySystem.CityLocalization(Entry.Destination))); // Destination City: ~1_city~
+            list.Add(1151737, string.Format("#{0}", CityLoyaltySystem.CityLocalization(Entry.Destination))); // Destination City: ~1_city~
             list.Add(1076255); // NO-TRADE
 
             int weight = Items.Sum(x => x.Amount);
@@ -109,9 +109,9 @@ namespace Server.Engines.CityLoyalty
                 for (int i = 0; i < Entry.Details.Count; i++)
                 {
                     if (Utility.ToInt32(Entry.Details[i].Name) > 0)
-                        list.Add(1116453 + i, String.Format("#{0}\t{1}\t{2}", Entry.Details[i].Name, Entry.Details[i].Count(this), Entry.Details[i].Amount)); // ~1_val~: ~2_val~/~3_val~
+                        list.Add(1116453 + i, string.Format("#{0}\t{1}\t{2}", Entry.Details[i].Name, Entry.Details[i].Count(this), Entry.Details[i].Amount)); // ~1_val~: ~2_val~/~3_val~
                     else
-                        list.Add(1116453 + i, String.Format("{0}\t{1}\t{2}", Entry.Details[i].Name, Entry.Details[i].Count(this), Entry.Details[i].Amount)); // ~1_val~: ~2_val~/~3_val~
+                        list.Add(1116453 + i, string.Format("{0}\t{1}\t{2}", Entry.Details[i].Name, Entry.Details[i].Count(this), Entry.Details[i].Amount)); // ~1_val~: ~2_val~/~3_val~
                 }
             }
 
