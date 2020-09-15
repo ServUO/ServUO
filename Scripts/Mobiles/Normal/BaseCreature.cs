@@ -3444,16 +3444,9 @@ namespace Server.Mobiles
             {
                 m_ControlOrder = value;
 
-                if (m_Allured)
+                if (m_Allured && m_ControlOrder != OrderType.None)
                 {
-                    if (m_ControlOrder == OrderType.Release)
-                    {
-                        Say(502003); // Sorry, but no.
-                    }
-                    else if (m_ControlOrder != OrderType.None)
-                    {
-                        Say(1079120); // Very well.
-                    }
+                    Say(1079120); // Very well.
                 }
 
                 if (m_AI != null)
@@ -3617,7 +3610,7 @@ namespace Server.Mobiles
             m.Delete();
         }
 
-        public virtual bool DeleteOnRelease => m_bSummoned;
+        public virtual bool DeleteOnRelease => m_bSummoned || m_Allured;
 
         public virtual void OnGaveMeleeAttack(Mobile defender)
         {
@@ -5779,17 +5772,9 @@ namespace Server.Mobiles
                 }
             }
         }
-
-        public virtual bool GivesMLMinorArtifact => false;
         #endregion
 
-        public virtual void OnRelease(Mobile from)
-        {
-            if (m_Allured)
-            {
-                Timer.DelayCall(TimeSpan.FromSeconds(2), Delete);
-            }
-        }
+        public virtual bool GivesMLMinorArtifact => false;
 
         public override void OnItemLifted(Mobile from, Item item)
         {
