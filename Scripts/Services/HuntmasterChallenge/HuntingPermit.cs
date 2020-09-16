@@ -153,7 +153,7 @@ namespace Server.Items
                                 c.VisitedByTaxidermist = true;
 
                                 from.PlaySound(0x249);
-                                from.PrivateOverheadMessage(Server.Network.MessageType.Regular, 0x45, 1155713, from.NetState); // *You document your kill on the permit*
+                                from.PrivateOverheadMessage(Network.MessageType.Regular, 0x45, 1155713, from.NetState); // *You document your kill on the permit*
                                 m_Permit.InvalidateProperties();
                                 return;
                             }

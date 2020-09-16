@@ -25,10 +25,10 @@ namespace Server.Mobiles
 
         public override void InitOutfit()
         {
-            AddItem(new Server.Items.FancyShirt(0x3E4));
-            AddItem(new Server.Items.LongPants(0x192));
-            AddItem(new Server.Items.Pickaxe());
-            AddItem(new Server.Items.ThighBoots(0x283));
+            AddItem(new Items.FancyShirt(0x3E4));
+            AddItem(new Items.LongPants(0x192));
+            AddItem(new Items.Pickaxe());
+            AddItem(new Items.ThighBoots(0x283));
 
             base.InitOutfit();
         }

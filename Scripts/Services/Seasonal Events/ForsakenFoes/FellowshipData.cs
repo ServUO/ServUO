@@ -39,7 +39,7 @@ namespace Server.Engines.Fellowship
 
                         Timer.DelayCall(() =>
                         {
-                            var jolly = Server.Engines.SeasonalEvents.SeasonalEventSystem.GetEvent<ForsakenFoesEvent>();
+                            var jolly = SeasonalEvents.SeasonalEventSystem.GetEvent<ForsakenFoesEvent>();
 
                             if (jolly != null)
                             {

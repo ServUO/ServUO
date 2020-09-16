@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x403D, 0x403E)]
+    [Flipable(0x403D, 0x403E)]
     public class GargoylePainting : Item
     {
         [Constructable]

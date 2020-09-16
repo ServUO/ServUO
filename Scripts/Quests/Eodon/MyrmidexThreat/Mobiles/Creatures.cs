@@ -125,7 +125,7 @@ namespace Server.Mobiles
 
                         Timer.DelayCall(TimeSpan.FromSeconds(Utility.RandomMinMax(2, 3)), () =>
                             {
-                                Type t = Utility.RandomList<Type>(typeof(MyrmidexWarrior), typeof(MyrmidexDrone), typeof(MyrmidexLarvae));
+                                Type t = Utility.RandomList(typeof(MyrmidexWarrior), typeof(MyrmidexDrone), typeof(MyrmidexLarvae));
                                 BaseCreature bc = Activator.CreateInstance(t) as BaseCreature;
 
                                 if (bc != null)
@@ -284,7 +284,7 @@ namespace Server.Mobiles
 
                         if (0.75 > Utility.RandomDouble())
                         {
-                            int id = Utility.RandomList<int>(2282, 2273, 2277, 40106, 40107, 40108, 40106, 40107, 40108, 40106, 40107, 40108);
+                            int id = Utility.RandomList(2282, 2273, 2277, 40106, 40107, 40108, 40106, 40107, 40108, 40106, 40107, 40108);
                             Effects.SendLocationEffect(new Point3D(x, y, Map.GetAverageZ(x, y)), Map, id, 60);
                         }
                     }
@@ -561,14 +561,14 @@ namespace Server.Mobiles
 
                 p = new Point3D(tarx, tary, tarz);
 
-                Timer.DelayCall<Point3D>(TimeSpan.FromMilliseconds(350 * counter), (point) =>
+                Timer.DelayCall(TimeSpan.FromMilliseconds(350 * counter), (point) =>
                     {
                         //Point3D point = new Point3D(tarx, tary, tarz);
 
                         Entity e = new Entity(Serial.Zero, point, map);
                         MovingParticles(e, 0x3818, 10, 0, false, false, 1150, 0, 9502, 6014, 0x11D, EffectLayer.Waist, 0);
 
-                        Timer.DelayCall<Point3D>(TimeSpan.FromMilliseconds(250), (pnt) =>
+                        Timer.DelayCall(TimeSpan.FromMilliseconds(250), (pnt) =>
                         {
                             Effects.SendLocationEffect(pnt, Map, 14089, 30, 1150, 4); // TODO: Check
                         }, point);

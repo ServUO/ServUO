@@ -80,7 +80,7 @@ namespace Server.Items
             {
                 if (!m_Opened && m_Timer == null)
                 {
-                    m_Timer = Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(3), FinishOpening, from);
+                    m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(3), FinishOpening, from);
                     scissors.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1071897); // You carefully cut into the organ.
                     return true;
                 }
@@ -121,7 +121,7 @@ namespace Server.Items
 
             writer.WriteEncodedInt(0); // version
 
-            writer.WriteItemList<PlagueBeastComponent>(m_Components);
+            writer.WriteItemList(m_Components);
             writer.Write(m_BrainHue);
             writer.Write(m_Opened);
         }

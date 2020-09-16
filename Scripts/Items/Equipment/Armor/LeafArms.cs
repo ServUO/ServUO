@@ -3,7 +3,7 @@ using Server.Engines.Craft;
 namespace Server.Items
 {
     [Alterable(typeof(DefTailoring), typeof(GargishLeatherArms))]
-    [FlipableAttribute(0x2FC8, 0x317E)]
+    [Flipable(0x2FC8, 0x317E)]
     public class LeafArms : BaseArmor
     {
         [Constructable]

@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class LowYewTable : Item
     {
-        public override int LabelNumber { get { return 1075502; } } // Low Yew Table
+        public override int LabelNumber => 1075502;  // Low Yew Table
 
         [Constructable]
         public LowYewTable()

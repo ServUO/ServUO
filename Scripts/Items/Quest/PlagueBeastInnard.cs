@@ -169,7 +169,7 @@ namespace Server.Items
 
             writer.WriteEncodedInt(0); // version
 
-            writer.WriteItem<PlagueBeastOrgan>(m_Organ);
+            writer.WriteItem(m_Organ);
         }
 
         public override void Deserialize(GenericReader reader)

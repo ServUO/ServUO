@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0xA4B2, 0xA4B1)]
+    [Flipable(0xA4B2, 0xA4B1)]
     public class DoveCage : Item, IDyable
     {
         public override int LabelNumber => 1126185;  // cage

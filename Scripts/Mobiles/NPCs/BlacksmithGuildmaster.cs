@@ -31,7 +31,7 @@ namespace Server.Mobiles
 
         public override void InitOutfit()
         {
-            Item item = (Utility.RandomBool() ? null : new Server.Items.RingmailChest());
+            Item item = (Utility.RandomBool() ? null : new Items.RingmailChest());
 
             if (item != null && !EquipItem(item))
             {
@@ -40,10 +40,10 @@ namespace Server.Mobiles
             }
 
             if (item == null)
-                AddItem(new Server.Items.FullApron());
+                AddItem(new Items.FullApron());
 
-            AddItem(new Server.Items.Bascinet());
-            AddItem(new Server.Items.SmithHammer());
+            AddItem(new Items.Bascinet());
+            AddItem(new Items.SmithHammer());
 
             base.InitOutfit();
         }

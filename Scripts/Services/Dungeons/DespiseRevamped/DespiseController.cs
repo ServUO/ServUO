@@ -706,7 +706,7 @@ namespace Server.Engines.Despise
                     int points = reader.ReadInt();
 
                     if (m != null && points > 0)
-                        Server.Engines.Points.PointsSystem.DespiseCrystals.ConvertFromOldSystem((PlayerMobile)m, points);
+                        Points.PointsSystem.DespiseCrystals.ConvertFromOldSystem((PlayerMobile)m, points);
                 }
             }
 

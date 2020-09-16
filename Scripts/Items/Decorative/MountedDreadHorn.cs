@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x3158, 0x3159)]
+    [Flipable(0x3158, 0x3159)]
     public class MountedDreadHorn : Item
     {
         [Constructable]

@@ -3,7 +3,7 @@ using Server.Engines.Craft;
 namespace Server.Items
 {
     [Alterable(typeof(DefBlacksmithy), typeof(GargishPlateKilt))]
-    [FlipableAttribute(0x13eb, 0x13f2)]
+    [Flipable(0x13eb, 0x13f2)]
     public class RingmailGloves : BaseArmor
     {
         [Constructable]

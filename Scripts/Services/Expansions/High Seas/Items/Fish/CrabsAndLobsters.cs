@@ -68,7 +68,7 @@ namespace Server.Items
 
         [Constructable]
         public Crab()
-            : base(BaseHighseasFish.GetCrabID())
+            : base(GetCrabID())
         {
         }
 
@@ -93,7 +93,7 @@ namespace Server.Items
 
         [Constructable]
         public Lobster()
-            : base(BaseHighseasFish.GetLobsterID())
+            : base(GetLobsterID())
         {
         }
 
@@ -117,7 +117,7 @@ namespace Server.Items
         public override int LabelNumber => 1116378;
 
         [Constructable]
-        public AppleCrab() : base(BaseHighseasFish.GetCrabID())
+        public AppleCrab() : base(GetCrabID())
         {
         }
 
@@ -142,7 +142,7 @@ namespace Server.Items
 
         [Constructable]
         public BlueCrab()
-            : base(BaseHighseasFish.GetCrabID())
+            : base(GetCrabID())
         {
         }
 
@@ -167,7 +167,7 @@ namespace Server.Items
 
         [Constructable]
         public DungeonessCrab()
-            : base(BaseHighseasFish.GetCrabID())
+            : base(GetCrabID())
         {
         }
 
@@ -192,7 +192,7 @@ namespace Server.Items
 
         [Constructable]
         public KingCrab()
-            : base(BaseHighseasFish.GetCrabID())
+            : base(GetCrabID())
         {
         }
 
@@ -217,7 +217,7 @@ namespace Server.Items
 
         [Constructable]
         public RockCrab()
-            : base(BaseHighseasFish.GetCrabID())
+            : base(GetCrabID())
         {
         }
 
@@ -242,7 +242,7 @@ namespace Server.Items
 
         [Constructable]
         public SnowCrab()
-            : base(BaseHighseasFish.GetCrabID())
+            : base(GetCrabID())
         {
         }
 
@@ -268,7 +268,7 @@ namespace Server.Items
 
         [Constructable]
         public StoneCrab()
-            : base(BaseHighseasFish.GetCrabID())
+            : base(GetCrabID())
         {
             Hue = FishInfo.GetFishHue(typeof(StoneCrab));
         }
@@ -295,7 +295,7 @@ namespace Server.Items
 
         [Constructable]
         public SpiderCrab()
-            : base(BaseHighseasFish.GetCrabID())
+            : base(GetCrabID())
         {
             Hue = FishInfo.GetFishHue(typeof(SpiderCrab));
         }
@@ -321,7 +321,7 @@ namespace Server.Items
 
         [Constructable]
         public TunnelCrab()
-            : base(BaseHighseasFish.GetCrabID())
+            : base(GetCrabID())
         {
             Hue = FishInfo.GetFishHue(typeof(TunnelCrab));
         }
@@ -347,7 +347,7 @@ namespace Server.Items
 
         [Constructable]
         public VoidCrab()
-            : base(BaseHighseasFish.GetCrabID())
+            : base(GetCrabID())
         {
             Hue = FishInfo.GetFishHue(typeof(VoidCrab));
         }
@@ -372,7 +372,7 @@ namespace Server.Items
 
         [Constructable]
         public CrustyLobster()
-            : base(BaseHighseasFish.GetLobsterID())
+            : base(GetLobsterID())
         {
         }
 
@@ -397,7 +397,7 @@ namespace Server.Items
 
         [Constructable]
         public FredLobster()
-            : base(BaseHighseasFish.GetLobsterID())
+            : base(GetLobsterID())
         {
         }
 
@@ -422,7 +422,7 @@ namespace Server.Items
 
         [Constructable]
         public HummerLobster()
-            : base(BaseHighseasFish.GetLobsterID())
+            : base(GetLobsterID())
         {
         }
 
@@ -447,7 +447,7 @@ namespace Server.Items
 
         [Constructable]
         public RockLobster()
-            : base(BaseHighseasFish.GetLobsterID())
+            : base(GetLobsterID())
         {
         }
 
@@ -472,7 +472,7 @@ namespace Server.Items
 
         [Constructable]
         public ShovelNoseLobster()
-            : base(BaseHighseasFish.GetLobsterID())
+            : base(GetLobsterID())
         {
         }
 
@@ -497,7 +497,7 @@ namespace Server.Items
 
         [Constructable]
         public SpineyLobster()
-            : base(BaseHighseasFish.GetLobsterID())
+            : base(GetLobsterID())
         {
         }
 
@@ -523,7 +523,7 @@ namespace Server.Items
 
         [Constructable]
         public BlueLobster()
-            : base(BaseHighseasFish.GetLobsterID())
+            : base(GetLobsterID())
         {
             Hue = FishInfo.GetFishHue(typeof(BlueLobster));
         }
@@ -549,7 +549,7 @@ namespace Server.Items
 
         [Constructable]
         public BloodLobster()
-            : base(BaseHighseasFish.GetLobsterID())
+            : base(GetLobsterID())
         {
             Hue = FishInfo.GetFishHue(typeof(BloodLobster));
         }
@@ -575,7 +575,7 @@ namespace Server.Items
 
         [Constructable]
         public DreadLobster()
-            : base(BaseHighseasFish.GetLobsterID())
+            : base(GetLobsterID())
         {
             Hue = FishInfo.GetFishHue(typeof(DreadLobster));
         }
@@ -601,7 +601,7 @@ namespace Server.Items
 
         [Constructable]
         public VoidLobster()
-            : base(BaseHighseasFish.GetLobsterID())
+            : base(GetLobsterID())
         {
             Hue = FishInfo.GetFishHue(typeof(VoidLobster));
         }

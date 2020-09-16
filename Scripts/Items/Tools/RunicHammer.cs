@@ -2,7 +2,7 @@ using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    [FlipableAttribute(0x13E4, 0x13E3)]
+    [Flipable(0x13E4, 0x13E3)]
     public class RunicHammer : BaseRunicTool
     {
         [Constructable]

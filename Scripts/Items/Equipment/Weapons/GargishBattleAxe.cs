@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x48B0, 0x48B1)]
+    [Flipable(0x48B0, 0x48B1)]
     public class GargishBattleAxe : BaseAxe
     {
         [Constructable]

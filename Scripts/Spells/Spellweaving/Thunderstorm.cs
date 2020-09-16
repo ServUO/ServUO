@@ -78,7 +78,7 @@ namespace Server.Spells.Spellweaving
                     {
                         if (!CheckResisted(m))
                         {
-                            m_Table[m] = Timer.DelayCall<Mobile>(duration, DoExpire, m);
+                            m_Table[m] = Timer.DelayCall(duration, DoExpire, m);
 
                             BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Thunderstorm, 1075800, duration, m, GetCastRecoveryMalus(m)));
                             m.Delta(MobileDelta.WeaponDamage);

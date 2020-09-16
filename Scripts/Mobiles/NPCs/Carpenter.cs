@@ -36,7 +36,7 @@ namespace Server.Mobiles
         {
             base.InitOutfit();
 
-            AddItem(new Server.Items.HalfApron());
+            AddItem(new Items.HalfApron());
         }
 
         #region Bulk Orders

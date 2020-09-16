@@ -1,7 +1,7 @@
 namespace Server.Items
 {
     [Furniture]
-    [FlipableAttribute(0x2DF1, 0x2DF2)]
+    [Flipable(0x2DF1, 0x2DF2)]
     public class RarewoodChest : LockableContainer
     {
         [Constructable]

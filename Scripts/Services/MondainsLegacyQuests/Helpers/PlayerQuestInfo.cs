@@ -35,7 +35,7 @@ namespace Server.Engines.Quests
                         var chains = subject.Chains;
                         var done = subject.DoneQuests;
 
-                        BaseGump.SendGump(new PlayerQuestInfoGump(pm, subject));
+                        SendGump(new PlayerQuestInfoGump(pm, subject));
                     }
                 });
             }
@@ -195,7 +195,7 @@ namespace Server.Engines.Quests
 
                             if (restart != null)
                             {
-                                BaseGump.SendGump(new ConfirmCallbackGump(
+                                SendGump(new ConfirmCallbackGump(
                                     User,
                                     "Remove Delayed Restart",
                                     string.Format("By selecting yes, you will remove restart delay or restart restriction for this quest. This player will be able to restart this quest immediately thereafter.", restart.RestartTime.ToString()),

@@ -18,7 +18,7 @@ namespace Server
 
     public static class MondainsLegacy
     {
-        public static Type[] Artifacts { get { return m_Artifacts; } }
+        public static Type[] Artifacts => m_Artifacts;
         private static readonly Type[] m_Artifacts = new Type[]
         {
             typeof(AegisOfGrace), typeof(BladeDance), typeof(BloodwoodSpirit), typeof(Bonesmasher),
@@ -259,7 +259,7 @@ namespace Server
             }
             catch (Exception e)
             {
-                Server.Diagnostics.ExceptionLogging.LogException(e);
+                Diagnostics.ExceptionLogging.LogException(e);
             }
 
             if (!FindItem(new Point3D(1431, 1696, 0), Map.Trammel, 0x307F))
@@ -311,7 +311,7 @@ namespace Server
             }
             catch (Exception e)
             {
-                Server.Diagnostics.ExceptionLogging.LogException(e);
+                Diagnostics.ExceptionLogging.LogException(e);
             }
         }
 
@@ -346,7 +346,7 @@ namespace Server
 
             if (killed != null && killer != null && killer.Alive && killed.GivesMLMinorArtifact && CheckArtifactChance(killer, killed))
             {
-                MondainsLegacy.GiveArtifactTo(killer);
+                GiveArtifactTo(killer);
             }
         }
 
@@ -643,7 +643,7 @@ namespace Server
             Mobile m = e.Mobile;
             m.SendMessage("Target a player to view their quests.");
 
-            m.BeginTarget(-1, false, Server.Targeting.TargetFlags.None, delegate (Mobile from, object targeted)
+            m.BeginTarget(-1, false, Targeting.TargetFlags.None, delegate (Mobile from, object targeted)
             {
                 if (targeted is PlayerMobile)
                     m.SendGump(new MondainQuestGump((PlayerMobile)targeted));

@@ -76,7 +76,7 @@ namespace Server.Engines.VoidPool
             AddHtmlLocalized(10, 375, 380, 175, 1152534, Orange, true, true);
         }
 
-        public override void OnResponse(Server.Network.NetState state, RelayInfo info)
+        public override void OnResponse(Network.NetState state, RelayInfo info)
         {
             VoidPoolStats stats = VoidPoolStats.GetStats(Controller);
 

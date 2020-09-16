@@ -3,7 +3,7 @@ using Server.Multis;
 namespace Server.Items
 {
     // This item is no longer used.
-    [FlipableAttribute(0x1f14, 0x1f15, 0x1f16, 0x1f17)]
+    [Flipable(0x1f14, 0x1f15, 0x1f16, 0x1f17)]
     public class ShipRune : Item
     {
         private BaseGalleon m_Galleon;

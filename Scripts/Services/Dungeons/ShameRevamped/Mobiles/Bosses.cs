@@ -46,7 +46,7 @@ namespace Server.Mobiles
                     good = true;
                 else if (ShameAltar.AllowParties)
                 {
-                    Server.Engines.PartySystem.Party p = Server.Engines.PartySystem.Party.Get(from);
+                    Party p = Engines.PartySystem.Party.Get(from);
 
                     foreach (PartyMemberInfo info in p.Members)
                     {

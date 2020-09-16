@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x48CC, 0x48CD)]
+    [Flipable(0x48CC, 0x48CD)]
     public class GargishTessen : BaseBashing
     {
         [Constructable]

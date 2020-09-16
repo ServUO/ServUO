@@ -132,7 +132,7 @@ namespace Server.Spells.Spellweaving
 
                 m_Table.Remove(m_Mobile);
 
-                Timer.DelayCall(TimeSpan.FromSeconds(120), delegate { m_Mobile.EndAction(typeof(AttuneWeaponSpell)); });
+                DelayCall(TimeSpan.FromSeconds(120), delegate { m_Mobile.EndAction(typeof(AttuneWeaponSpell)); });
                 BuffInfo.RemoveBuff(m_Mobile, BuffIcon.AttuneWeapon);
             }
 

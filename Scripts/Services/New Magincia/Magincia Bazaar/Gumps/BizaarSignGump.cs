@@ -511,7 +511,7 @@ namespace Server.Engines.NewMagincia
                         }
                         catch (Exception e)
                         {
-                            Server.Diagnostics.ExceptionLogging.LogException(e);
+                            Diagnostics.ExceptionLogging.LogException(e);
                         }
 
                         from.SendGump(new StallBidGump(from, m_Plot));
@@ -1125,7 +1125,7 @@ namespace Server.Engines.NewMagincia
                         }
                         catch (Exception e)
                         {
-                            Server.Diagnostics.ExceptionLogging.LogException(e);
+                            Diagnostics.ExceptionLogging.LogException(e);
                         }
                     }
                     break;

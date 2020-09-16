@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x1441, 0x1440)]
+    [Flipable(0x1441, 0x1440)]
     public class Cutlass : BaseSword
     {
         [Constructable]

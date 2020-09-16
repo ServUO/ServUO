@@ -321,13 +321,7 @@ namespace Server.Mobiles
             }
         }
 
-        public int ChargePerDay
-        {
-            get
-            {
-                return ChargePerRealWorldDay / 12;
-            }
-        }
+        public int ChargePerDay => ChargePerRealWorldDay / 12;
 
         public int ChargePerRealWorldDay
         {

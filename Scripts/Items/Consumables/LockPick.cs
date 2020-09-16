@@ -14,7 +14,7 @@ namespace Server.Items
         void LockPick(Mobile from);
     }
 
-    [FlipableAttribute(0x14fc, 0x14fb)]
+    [Flipable(0x14fc, 0x14fb)]
     public class Lockpick : Item
     {
         public virtual bool IsSkeletonKey => false;

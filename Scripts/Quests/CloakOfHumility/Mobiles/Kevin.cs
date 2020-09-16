@@ -43,8 +43,8 @@ namespace Server.Mobiles
         {
             base.InitOutfit();
 
-            AddItem(new Server.Items.HalfApron());
-            AddItem(new Server.Items.Cleaver());
+            AddItem(new Items.HalfApron());
+            AddItem(new Items.Cleaver());
         }
 
         public override void Serialize(GenericWriter writer)

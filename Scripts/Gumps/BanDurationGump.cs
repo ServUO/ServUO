@@ -123,7 +123,7 @@ namespace Server.Gumps
                             }
                             catch (Exception e)
                             {
-                                Server.Diagnostics.ExceptionLogging.LogException(e);
+                                Diagnostics.ExceptionLogging.LogException(e);
                             }
                         }
 
@@ -145,7 +145,7 @@ namespace Server.Gumps
                             }
                             catch (Exception e)
                             {
-                                Server.Diagnostics.ExceptionLogging.LogException(e);
+                                Diagnostics.ExceptionLogging.LogException(e);
                             }
                         }
 
@@ -167,7 +167,7 @@ namespace Server.Gumps
                             }
                             catch (Exception e)
                             {
-                                Server.Diagnostics.ExceptionLogging.LogException(e);
+                                Diagnostics.ExceptionLogging.LogException(e);
                             }
                         }
 
@@ -189,7 +189,7 @@ namespace Server.Gumps
                             }
                             catch (Exception e)
                             {
-                                Server.Diagnostics.ExceptionLogging.LogException(e);
+                                Diagnostics.ExceptionLogging.LogException(e);
                             }
                         }
 
@@ -211,7 +211,7 @@ namespace Server.Gumps
                             }
                             catch (Exception e)
                             {
-                                Server.Diagnostics.ExceptionLogging.LogException(e);
+                                Diagnostics.ExceptionLogging.LogException(e);
                             }
                         }
 

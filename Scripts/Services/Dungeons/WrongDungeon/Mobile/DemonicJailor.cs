@@ -62,7 +62,7 @@ namespace Server.Mobiles
             Effects.SendLocationParticles(EffectItem.Create(loc, map, EffectItem.DefaultDuration), 0x3728, 10, 10, 0, 0, 2023, 0);
             Effects.PlaySound(loc, map, 0x1FE);
 
-            BaseCreature.TeleportPets(defender, loc, map);
+            TeleportPets(defender, loc, map);
 
             defender.MoveToWorld(loc, map);
 

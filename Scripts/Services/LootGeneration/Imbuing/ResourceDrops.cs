@@ -189,7 +189,7 @@ namespace Server.Items
                         }
                         else if (reg != "TerMur" && reg != "Abyss")
                         {
-                            Server.Region r = Server.Region.Find(c.Location, c.Map);
+                            Region r = Server.Region.Find(c.Location, c.Map);
 
                             if (r == null || !r.IsPartOf(entry.Region))
                                 continue;

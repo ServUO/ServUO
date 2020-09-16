@@ -20,7 +20,7 @@ namespace Server.Items
             City = city;
         }
 
-        public override bool CanPostGreeting(Server.Multis.BaseHouse house, Mobile m)
+        public override bool CanPostGreeting(Multis.BaseHouse house, Mobile m)
         {
             CityLoyaltySystem sys = CitySystem;
 
@@ -40,7 +40,7 @@ namespace Server.Items
                 }
                 else
                 {
-                    from.PrivateOverheadMessage(Server.Network.MessageType.Regular, 0x3B2, 1019045, from.NetState);
+                    from.PrivateOverheadMessage(Network.MessageType.Regular, 0x3B2, 1019045, from.NetState);
                 }
             }
             else

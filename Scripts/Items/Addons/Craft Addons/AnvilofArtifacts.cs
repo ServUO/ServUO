@@ -13,7 +13,7 @@ namespace Server.Items
 {
     public class AnvilofArtifactsComponent : LocalizedAddonComponent, IFlipable
     {
-        public override bool ForceShowProperties { get { return true; } }
+        public override bool ForceShowProperties => true;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool TurnedOn
@@ -134,7 +134,7 @@ namespace Server.Items
 
     public class AnvilofArtifactsAddon : BaseAddon
     {
-        public override BaseAddonDeed Deed { get { return new AnvilofArtifactsDeed(UsesRemaining); } }
+        public override BaseAddonDeed Deed => new AnvilofArtifactsDeed(UsesRemaining);
 
         private int m_UsesRemaining;
 
@@ -203,8 +203,8 @@ namespace Server.Items
 
     public class AnvilofArtifactsDeed : BaseAddonDeed, IRewardOption
     {
-        public override int LabelNumber { get { return 1125242; } } // anvil of artifacts
-        public override BaseAddon Addon { get { return new AnvilofArtifactsAddon(m_Direction, UsesRemaining); } }
+        public override int LabelNumber => 1125242;  // anvil of artifacts
+        public override BaseAddon Addon => new AnvilofArtifactsAddon(m_Direction, UsesRemaining);
 
         private int m_UsesRemaining;
 

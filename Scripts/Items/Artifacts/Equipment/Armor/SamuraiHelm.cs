@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x236C, 0x236D)]
+    [Flipable(0x236C, 0x236D)]
     public class SamuraiHelm : BaseArmor
     {
         public override bool IsArtifact => true;

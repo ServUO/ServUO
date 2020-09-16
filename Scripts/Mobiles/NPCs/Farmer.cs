@@ -35,7 +35,7 @@ namespace Server.Mobiles
         {
             base.InitOutfit();
 
-            AddItem(new Server.Items.WideBrimHat(Utility.RandomNeutralHue()));
+            AddItem(new Items.WideBrimHat(Utility.RandomNeutralHue()));
         }
 
         public override void Serialize(GenericWriter writer)

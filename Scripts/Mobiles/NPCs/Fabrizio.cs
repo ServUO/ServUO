@@ -68,7 +68,7 @@ namespace Server.Engines.Quests
             base.Serialize(writer);
 
             writer.Write(1); // version
-            writer.WriteItem<Dagger>(Dagger);
+            writer.WriteItem(Dagger);
         }
 
         public override void Deserialize(GenericReader reader)

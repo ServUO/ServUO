@@ -12,7 +12,7 @@ namespace Server.Items
     [TypeAlias("Server.Items.ExplodingTarPotion")]
     public class ExplodingTarPotion : BasePotion
     {
-        public virtual int Radius { get { return 4; } }
+        public virtual int Radius => 4;
 
         public override int LabelNumber => 1095147; // Exploding Tar Potion
         public override bool RequireFreeHand => false;

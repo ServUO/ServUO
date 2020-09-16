@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x144f, 0x1454)]
+    [Flipable(0x144f, 0x1454)]
     public class DaemonChest : BaseArmor
     {
         public override bool IsArtifact => true;

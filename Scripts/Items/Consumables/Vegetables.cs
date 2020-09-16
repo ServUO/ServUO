@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0xc77, 0xc78)]
+    [Flipable(0xc77, 0xc78)]
     public class Carrot : Food
     {
         [Constructable]
@@ -37,7 +37,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0xc7b, 0xc7c)]
+    [Flipable(0xc7b, 0xc7c)]
     public class Cabbage : Food
     {
         [Constructable]
@@ -74,7 +74,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0xc6d, 0xc6e)]
+    [Flipable(0xc6d, 0xc6e)]
     public class Onion : Food
     {
         [Constructable]
@@ -111,7 +111,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0xc70, 0xc71)]
+    [Flipable(0xc70, 0xc71)]
     public class Lettuce : Food
     {
         [Constructable]
@@ -148,7 +148,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0xC6A, 0xC6B)]
+    [Flipable(0xC6A, 0xC6B)]
     public class Pumpkin : Food
     {
         [Constructable]

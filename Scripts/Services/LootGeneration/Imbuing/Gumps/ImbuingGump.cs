@@ -185,7 +185,7 @@ namespace Server.Gumps
                 else if (m is PlayerMobile && Imbuing.CanUnravelItem(m, item))
                 {
                     m.BeginAction(typeof(Imbuing));
-                    BaseGump.SendGump(new UnravelGump((PlayerMobile)m, item));
+                    SendGump(new UnravelGump((PlayerMobile)m, item));
                 }
             }
 
@@ -274,7 +274,7 @@ namespace Server.Gumps
                     if (unraveled)
                     {
                         m.BeginAction(typeof(Imbuing));
-                        BaseGump.SendGump(new UnravelContainerGump((PlayerMobile)m, cont));
+                        SendGump(new UnravelContainerGump((PlayerMobile)m, cont));
                     }
                     else
                     {
@@ -414,7 +414,7 @@ namespace Server.Gumps
                     context.ImbMenu_Cat = 1;
 
                 m.CloseGump(typeof(ImbuingGump));
-                BaseGump.SendGump(new ImbueSelectGump((PlayerMobile)m, item));
+                SendGump(new ImbueSelectGump((PlayerMobile)m, item));
             }
         }
 

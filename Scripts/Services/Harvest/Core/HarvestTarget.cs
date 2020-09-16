@@ -54,7 +54,7 @@ namespace Server.Engines.Harvest
                 }
                 else if (targeted is LandTarget && ((LandTarget)targeted).TileID >= 113 && ((LandTarget)targeted).TileID <= 120)
                 {
-                    if (Server.Engines.Quests.TheGreatVolcanoQuest.OnHarvest(from, m_Tool))
+                    if (TheGreatVolcanoQuest.OnHarvest(from, m_Tool))
                         return;
                 }
             }

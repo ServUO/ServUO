@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x2B6E, 0x3165)]
+    [Flipable(0x2B6E, 0x3165)]
     public class Circlet : BaseArmor
     {
         [Constructable]

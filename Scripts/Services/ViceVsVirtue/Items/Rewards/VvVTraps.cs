@@ -96,7 +96,7 @@ namespace Server.Engines.VvV
 
         public bool CheckReveal(Mobile m)
         {
-            if (!ViceVsVirtueSystem.IsVvV(m) || ItemID != VvVTrap.HiddenID)
+            if (!ViceVsVirtueSystem.IsVvV(m) || ItemID != HiddenID)
                 return false;
 
             return Utility.Random(100) <= m.Skills[SkillName.DetectHidden].Value;
@@ -131,7 +131,7 @@ namespace Server.Engines.VvV
                 int skill = (int)m.Skills[SkillName.DetectHidden].Value;
 
                 if (skill >= 80 && Utility.Random(600) < skill)
-                    PrivateOverheadMessage(Server.Network.MessageType.Regular, 0x21, 500813, m.NetState); // [trapped]
+                    PrivateOverheadMessage(Network.MessageType.Regular, 0x21, 500813, m.NetState); // [trapped]
             }
 
             return false;

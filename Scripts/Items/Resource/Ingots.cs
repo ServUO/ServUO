@@ -145,7 +145,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x1BF2, 0x1BEF)]
+    [Flipable(0x1BF2, 0x1BEF)]
     public class IronIngot : BaseIngot
     {
         [Constructable]
@@ -180,7 +180,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x1BF2, 0x1BEF)]
+    [Flipable(0x1BF2, 0x1BEF)]
     public class DullCopperIngot : BaseIngot
     {
         protected override CraftResource DefaultResource => CraftResource.DullCopper;
@@ -217,7 +217,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x1BF2, 0x1BEF)]
+    [Flipable(0x1BF2, 0x1BEF)]
     public class ShadowIronIngot : BaseIngot
     {
         protected override CraftResource DefaultResource => CraftResource.ShadowIron;
@@ -254,7 +254,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x1BF2, 0x1BEF)]
+    [Flipable(0x1BF2, 0x1BEF)]
     public class CopperIngot : BaseIngot
     {
         protected override CraftResource DefaultResource => CraftResource.Copper;
@@ -291,7 +291,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x1BF2, 0x1BEF)]
+    [Flipable(0x1BF2, 0x1BEF)]
     public class BronzeIngot : BaseIngot
     {
         protected override CraftResource DefaultResource => CraftResource.Bronze;
@@ -328,7 +328,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x1BF2, 0x1BEF)]
+    [Flipable(0x1BF2, 0x1BEF)]
     public class GoldIngot : BaseIngot
     {
         protected override CraftResource DefaultResource => CraftResource.Gold;
@@ -365,7 +365,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x1BF2, 0x1BEF)]
+    [Flipable(0x1BF2, 0x1BEF)]
     public class AgapiteIngot : BaseIngot
     {
         protected override CraftResource DefaultResource => CraftResource.Agapite;
@@ -402,7 +402,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x1BF2, 0x1BEF)]
+    [Flipable(0x1BF2, 0x1BEF)]
     public class VeriteIngot : BaseIngot
     {
         protected override CraftResource DefaultResource => CraftResource.Verite;
@@ -439,7 +439,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x1BF2, 0x1BEF)]
+    [Flipable(0x1BF2, 0x1BEF)]
     public class ValoriteIngot : BaseIngot
     {
         protected override CraftResource DefaultResource => CraftResource.Valorite;

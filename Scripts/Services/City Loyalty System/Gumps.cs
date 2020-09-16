@@ -147,10 +147,10 @@ namespace Server.Engines.CityLoyalty
             {
                 case 0: break;
                 case 1:
-                    BaseGump.SendGump(new CityTitlesGump(User));
+                    SendGump(new CityTitlesGump(User));
                     break;
                 case 2:
-                    BaseGump.SendGump(new RenounceCitizenshipGump(User));
+                    SendGump(new RenounceCitizenshipGump(User));
                     break;
                 case 3:
                 default:
@@ -158,7 +158,7 @@ namespace Server.Engines.CityLoyalty
                     if (id >= 0 && id < CityLoyaltySystem.Cities.Count)
                     {
                         if (Citizenship == null)
-                            BaseGump.SendGump(new DeclareCitizenshipGump(CityLoyaltySystem.Cities[id], User));
+                            SendGump(new DeclareCitizenshipGump(CityLoyaltySystem.Cities[id], User));
                     }
                     break;
             }
@@ -209,7 +209,7 @@ namespace Server.Engines.CityLoyalty
                 }
             }
             else if (info.ButtonID == 2)
-                BaseGump.SendGump(new CityLoyaltyGump(User));
+                SendGump(new CityLoyaltyGump(User));
         }
     }
 
@@ -255,7 +255,7 @@ namespace Server.Engines.CityLoyalty
                 }
             }
             else if (info.ButtonID == 2)
-                BaseGump.SendGump(new CityLoyaltyGump(User));
+                SendGump(new CityLoyaltyGump(User));
         }
     }
 
@@ -320,7 +320,7 @@ namespace Server.Engines.CityLoyalty
                 CityTitle t = (CityTitle)info.ButtonID - 1;
 
                 if (!Citizenship.HasTitle(User, t))
-                    BaseGump.SendGump(new CityTitlesInfoGump(User, t));
+                    SendGump(new CityTitlesInfoGump(User, t));
             }
         }
     }
@@ -386,7 +386,7 @@ namespace Server.Engines.CityLoyalty
             }
             else if (info.ButtonID == 2)
             {
-                BaseGump.SendGump(new CityTitlesGump(User));
+                SendGump(new CityTitlesGump(User));
             }
         }
     }
@@ -445,8 +445,8 @@ namespace Server.Engines.CityLoyalty
             {
                 case 0: break;
                 case 1: City.Election.TryNominate(User); break;
-                case 2: BaseGump.SendGump(new NomineesGump(User, City)); break;
-                case 3: BaseGump.SendGump(new CandidatesGump(User, City)); break;
+                case 2: SendGump(new NomineesGump(User, City)); break;
+                case 3: SendGump(new CandidatesGump(User, City)); break;
             }
         }
     }
@@ -518,7 +518,7 @@ namespace Server.Engines.CityLoyalty
         public override void OnResponse(RelayInfo info)
         {
             if (info.ButtonID == 1)
-                BaseGump.SendGump(new CityStoneGump(User, City));
+                SendGump(new CityStoneGump(User, City));
             else if (info.ButtonID == 2)
                 City.Election.TryWithdraw(User);
             else if (info.ButtonID >= 100)
@@ -612,7 +612,7 @@ namespace Server.Engines.CityLoyalty
         public override void OnResponse(RelayInfo info)
         {
             if (info.ButtonID == 1)
-                BaseGump.SendGump(new CityStoneGump(User, City));
+                SendGump(new CityStoneGump(User, City));
             else if (info.ButtonID == 2)
                 City.Election.TryWithdraw(User);
             else if (info.ButtonID >= 100)
@@ -769,7 +769,7 @@ namespace Server.Engines.CityLoyalty
             {
                 string text = Utility.FixHtml(relay.Text);
 
-                if (Server.Guilds.BaseGuildGump.CheckProfanity(text) && text.Trim().Length > 3)
+                if (BaseGuildGump.CheckProfanity(text) && text.Trim().Length > 3)
                 {
                     if (entry != null && entry.IsCitizen)
                     {
@@ -1043,7 +1043,7 @@ namespace Server.Engines.CityLoyalty
                             }
 
                             m.CloseGump(typeof(OpenInventoryGump));
-                            BaseGump.SendGump(new OpenInventoryGump(User, City));
+                            SendGump(new OpenInventoryGump(User, City));
                         }, box, true));
                 }
             }
@@ -1063,7 +1063,7 @@ namespace Server.Engines.CityLoyalty
         {
             AddBackground(0, 0, 554, 350, 9380);
 
-            AddHtmlLocalized(0, 55, 554, 20, 1154645, "#1154911", Server.Engines.Quests.BaseQuestGump.C32216(_Red), false, false);
+            AddHtmlLocalized(0, 55, 554, 20, 1154645, "#1154911", Quests.BaseQuestGump.C32216(_Red), false, false);
 
             for (int i = 0; i < CityLoyaltySystem.Cities.Count; i++)
             {
@@ -1083,7 +1083,7 @@ namespace Server.Engines.CityLoyalty
             int id = info.ButtonID - 100;
 
             if (id >= 0 && id < CityLoyaltySystem.Cities.Count)
-                BaseGump.SendGump(new CityMessageGump(User, CityLoyaltySystem.Cities[id]));
+                SendGump(new CityMessageGump(User, CityLoyaltySystem.Cities[id]));
         }
     }
 
@@ -1148,7 +1148,7 @@ namespace Server.Engines.CityLoyalty
 
             if (id >= 0 && id < CityLoyaltySystem.Cities.Count)
             {
-                BaseGump.SendGump(new CityInfoGump(User, CityLoyaltySystem.Cities[id]));
+                SendGump(new CityInfoGump(User, CityLoyaltySystem.Cities[id]));
             }
         }
     }
@@ -1221,7 +1221,7 @@ namespace Server.Engines.CityLoyalty
 
             if (info.ButtonID == 1)
             {
-                BaseGump.SendGump(new SystemInfoGump(User));
+                SendGump(new SystemInfoGump(User));
                 return;
             }
 

@@ -74,11 +74,11 @@ namespace Server
             gate.MoveToWorld(new Point3D(719, 1863, 40), Map.TerMur);
 
             ShadowguardController.SetupShadowguard(e.Mobile);
-            Server.Engines.MyrmidexInvasion.GenerateMyrmidexQuest.Generate();
+            Engines.MyrmidexInvasion.GenerateMyrmidexQuest.Generate();
 
             MacawSpawner.Generate();
 
-            CommandSystem.Handle(e.Mobile, Server.Commands.CommandSystem.Prefix + "XmlLoad Spawns/Eodon.xml");
+            CommandSystem.Handle(e.Mobile, CommandSystem.Prefix + "XmlLoad Spawns/Eodon.xml");
 
             e.Mobile.SendMessage("Time Of Legends world generating complete.");
         }
@@ -116,7 +116,7 @@ namespace Server
                 {
                     if (0.33 > Utility.RandomDouble())
                     {
-                        Item item = Server.Loot.Construct(_ArmorDropTypes[Utility.Random(_ArmorDropTypes.Length)]);
+                        Item item = Loot.Construct(_ArmorDropTypes[Utility.Random(_ArmorDropTypes.Length)]);
 
                         if (item != null)
                             c.DropItem(item);

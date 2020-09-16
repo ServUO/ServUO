@@ -8,10 +8,10 @@ namespace Server.Engines.Quests.Doom
     {
         private static readonly Type[] m_TypeReferenceTable = new Type[]
         {
-            typeof(Doom.AcceptConversation),
-            typeof(Doom.CollectBonesObjective),
-            typeof(Doom.VanquishDaemonConversation),
-            typeof(Doom.VanquishDaemonObjective)
+            typeof(AcceptConversation),
+            typeof(CollectBonesObjective),
+            typeof(VanquishDaemonConversation),
+            typeof(VanquishDaemonObjective)
         };
         private Victoria m_Victoria;
         private bool m_WaitForSummon;

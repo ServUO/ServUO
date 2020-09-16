@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x13ec, 0x13ed)]
+    [Flipable(0x13ec, 0x13ed)]
     public class RingmailChest : BaseArmor
     {
         [Constructable]

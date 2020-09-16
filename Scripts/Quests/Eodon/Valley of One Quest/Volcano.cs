@@ -202,7 +202,7 @@ namespace Server.Items
         public Volcano Volcano { get; private set; }
 
         public VolcanoRegion(Volcano volcano)
-            : base("Eodon_Volcano", Map.TerMur, Region.DefaultPriority, new Rectangle2D[] { new Rectangle2D(832, 1502, 255, 217) })
+            : base("Eodon_Volcano", Map.TerMur, DefaultPriority, new Rectangle2D[] { new Rectangle2D(832, 1502, 255, 217) })
         {
             Volcano = volcano;
             Register();

@@ -3,7 +3,7 @@ using Server.Engines.Craft;
 namespace Server.Items
 {
     [Alterable(typeof(DefCarpentry), typeof(GargishGnarledStaff))]
-    [FlipableAttribute(0x13F8, 0x13F9)]
+    [Flipable(0x13F8, 0x13F9)]
     public class GnarledStaff : BaseStaff
     {
         [Constructable]

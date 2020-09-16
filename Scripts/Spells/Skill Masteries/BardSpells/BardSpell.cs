@@ -16,7 +16,7 @@ namespace Server.Spells.SkillMasteries
         public override int RequiredMana => 0;
         public override bool PartyEffects => false;
         public override bool DamageCanDisrupt => true;
-        public override bool CheckManaBeforeCast { get { return !HasSpell(Caster, GetType()); } }
+        public override bool CheckManaBeforeCast => !HasSpell(Caster, GetType());
 
         public override double BaseSkillBonus => Math.Floor(2 + (((Caster.Skills[CastSkill].Base - 90) / 10) + ((Caster.Skills[DamageSkill].Base - 90) / 10)));
 

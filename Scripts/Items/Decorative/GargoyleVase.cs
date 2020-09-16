@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x4042, 0x4043)]
+    [Flipable(0x4042, 0x4043)]
     public class GargoyleVase : Item
     {
         [Constructable]

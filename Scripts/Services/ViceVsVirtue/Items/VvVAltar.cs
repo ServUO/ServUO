@@ -174,9 +174,9 @@ namespace Server.Engines.VvV
 
             for (int i = 2; i <= 8; i += 2)
             {
-                Server.Timer.DelayCall(TimeSpan.FromMilliseconds((i - 2) * 600), o =>
+                Timer.DelayCall(TimeSpan.FromMilliseconds((i - 2) * 600), o =>
                 {
-                    Server.Misc.Geometry.Circle2D(Location, Map, o, (pnt, map) =>
+                    Misc.Geometry.Circle2D(Location, Map, o, (pnt, map) =>
                     {
                         LaunchFireworks(pnt, map);
                     });
@@ -195,7 +195,7 @@ namespace Server.Engines.VvV
             Effects.SendMovingEffect(new Entity(Serial.Zero, startLoc, map), new Entity(Serial.Zero, endLoc, map),
                 0x36E4, 5, 0, false, false);
 
-            Server.Timer.DelayCall(TimeSpan.FromSeconds(1.0), () =>
+            Timer.DelayCall(TimeSpan.FromSeconds(1.0), () =>
                 {
                     int hue = Utility.Random(40);
 
@@ -317,7 +317,7 @@ namespace Server.Engines.VvV
 
                 if (_Tick > 0 && index < Altar.Braziers.Count && (_Tick + 1) % 4 == 0)
                 {
-                    Server.Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
+                    DelayCall(TimeSpan.FromSeconds(1), () =>
                         {
                             AddonComponent torch = new AddonComponent(6571);
                             Altar.Torches.Add(torch);

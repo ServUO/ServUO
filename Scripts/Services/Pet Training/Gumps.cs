@@ -95,7 +95,7 @@ namespace Server.Mobiles
             AddHtmlLocalized(53, 182, 160, 18, 3000112, _Label, false, false); // Intelligence
             AddHtml(180, 182, 75, 18, FormatStat(Creature.Int), false, false);
 
-            double bd = Items.BaseInstrument.GetBaseDifficulty(Creature);
+            double bd = BaseInstrument.GetBaseDifficulty(Creature);
 
             if (Creature.Uncalmable)
                 bd = 0;
@@ -461,7 +461,7 @@ namespace Server.Mobiles
 
                     Timer.DelayCall(TimeSpan.FromSeconds(.5), () =>
                         {
-                            BaseGump.SendGump(new PetTrainingProgressGump(User, Creature));
+                            SendGump(new PetTrainingProgressGump(User, Creature));
                         });
                     break;
                 case 2: // pet training options
@@ -484,11 +484,11 @@ namespace Server.Mobiles
 
                             Timer.DelayCall(TimeSpan.FromSeconds(.5), () =>
                                 {
-                                    BaseGump.SendGump(new PetTrainingStyleConfirmGump(User, 1157571, 1157572, () =>
+                                    SendGump(new PetTrainingStyleConfirmGump(User, 1157571, 1157572, () =>
                                     {
                                         Refresh();
                                         User.CloseGump(typeof(PetTrainingOptionsGump));
-                                        BaseGump.SendGump(new PetTrainingOptionsGump(User, Creature));
+                                        SendGump(new PetTrainingOptionsGump(User, Creature));
                                     }));
                                 });
                         }
@@ -498,13 +498,13 @@ namespace Server.Mobiles
                                 {
                                     Refresh();
                                     User.CloseGump(typeof(PetTrainingOptionsGump));
-                                    BaseGump.SendGump(new PetTrainingOptionsGump(User, Creature));
+                                    SendGump(new PetTrainingOptionsGump(User, Creature));
                                 });
                         }
                     }
                     break;
                 case 3: // cancel
-                    BaseGump.SendGump(new PetTrainingStyleConfirmGump(User, 1153093, 1158019, () =>
+                    SendGump(new PetTrainingStyleConfirmGump(User, 1153093, 1158019, () =>
                         {
                             TrainingProfile trainProfile1 = PetTrainingHelper.GetTrainingProfile(Creature, true);
 
@@ -519,7 +519,7 @@ namespace Server.Mobiles
                     trainProfile2.BeginTraining();
                     Refresh();
 
-                    Server.Engines.Quests.UsingAnimalLoreQuest.CheckComplete(User);
+                    Engines.Quests.UsingAnimalLoreQuest.CheckComplete(User);
                     break;
             }
         }
@@ -1103,7 +1103,7 @@ namespace Server.Mobiles
                         {
                             Refresh();
                             User.CloseGump(typeof(PetTrainingPlanningGump));
-                            BaseGump.SendGump(new PetTrainingPlanningGump(User, Creature));
+                            SendGump(new PetTrainingPlanningGump(User, Creature));
                         }
                     });
                 return;
@@ -1117,7 +1117,7 @@ namespace Server.Mobiles
                         {
                             Refresh();
                             User.CloseGump(typeof(PetTrainingInfoGump));
-                            BaseGump.SendGump(new PetTrainingInfoGump(User));
+                            SendGump(new PetTrainingInfoGump(User));
                         }
                     });
                 return;
@@ -1179,7 +1179,7 @@ namespace Server.Mobiles
                         if (User.HasGump(typeof(NewAnimalLoreGump)))
                         {
                             User.CloseGump(typeof(PetTrainingConfirmationGump));
-                            BaseGump.SendGump(new PetTrainingConfirmationGump(User, Creature, tp));
+                            SendGump(new PetTrainingConfirmationGump(User, Creature, tp));
                         }
                     });
             }
@@ -1467,7 +1467,7 @@ namespace Server.Mobiles
                         {
                             if (User.HasGump(typeof(NewAnimalLoreGump)))
                             {
-                                BaseGump.SendGump(new PetTrainingOptionsGump(User, Creature));
+                                SendGump(new PetTrainingOptionsGump(User, Creature));
                             }
                         });
                     break;
@@ -1571,7 +1571,7 @@ namespace Server.Mobiles
                     {
                         User.SendLocalizedMessage(1153204); // The pet is too far away from you!
                     }
-                    else if (Server.Spells.SpellHelper.CheckCombat(User) || Server.Spells.SpellHelper.CheckCombat(Creature) ||
+                    else if (Spells.SpellHelper.CheckCombat(User) || Spells.SpellHelper.CheckCombat(Creature) ||
                         Creature.Aggressed.Count > 0 || Creature.Combatant != null)
                     {
                         User.SendLocalizedMessage(1156876); // Since you have been in combat recently you may not use this feature.
@@ -1594,7 +1594,7 @@ namespace Server.Mobiles
                     }
                     else if (PetTrainingHelper.CanControl(User, Creature, profile))
                     {
-                        BaseGump.SendGump(new PetTrainingStyleConfirmGump(User, 1157502, TrainingPoint.TrainPoint is MagicalAbility ? 1157566 : 1157503, () =>
+                        SendGump(new PetTrainingStyleConfirmGump(User, 1157502, TrainingPoint.TrainPoint is MagicalAbility ? 1157566 : 1157503, () =>
                             {
                                 if (PetTrainingHelper.ApplyTrainingPoint(Creature, TrainingPoint, Value))
                                 {
@@ -1624,7 +1624,7 @@ namespace Server.Mobiles
 
                                     ResendGumps(profile.HasBegunTraining);
 
-                                    Server.Engines.Quests.TeachingSomethingNewQuest.CheckComplete(User);
+                                    Engines.Quests.TeachingSomethingNewQuest.CheckComplete(User);
                                 }
                             },
                             () =>
@@ -1659,7 +1659,7 @@ namespace Server.Mobiles
                             }
                             else
                             {
-                                BaseGump.SendGump(new PetTrainingPlanningGump(User, Creature));
+                                SendGump(new PetTrainingPlanningGump(User, Creature));
                             }
                         }
                     });
@@ -1679,7 +1679,7 @@ namespace Server.Mobiles
                 }
                 else
                 {
-                    BaseGump.SendGump(new NewAnimalLoreGump(User, Creature));
+                    SendGump(new NewAnimalLoreGump(User, Creature));
                 }
 
                 if (sendOptions)
@@ -1692,7 +1692,7 @@ namespace Server.Mobiles
                     }
                     else
                     {
-                        BaseGump.SendGump(new PetTrainingOptionsGump(User, Creature));
+                        SendGump(new PetTrainingOptionsGump(User, Creature));
                     }
                 }
             });

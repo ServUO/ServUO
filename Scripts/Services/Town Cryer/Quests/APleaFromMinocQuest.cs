@@ -253,7 +253,7 @@ namespace Server.Engines.Quests
             TownCryerSystem.CompleteQuest(Owner, 1158280, 1158281, 0x623);
             GiveRewards();
 
-            Server.Engines.Points.PointsSystem.VoidPool.AwardPoints(Owner, 2000, false, false);
+            Points.PointsSystem.VoidPool.AwardPoints(Owner, 2000, false, false);
             Owner.SendLocalizedMessage(1158282); // For your accomplishments you have been awarded a bonus 2000 Covetous points! Visit Vela in the Town of Cove to redeem them!
         }
     }

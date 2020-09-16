@@ -9,7 +9,7 @@ namespace Server.Engines.ArtisanFestival
 {
     public class FestivalElf : BaseVendor
     {
-        protected override List<SBInfo> SBInfos { get { return new List<SBInfo>(); } }
+        protected override List<SBInfo> SBInfos => new List<SBInfo>();
         public override bool IsActiveVendor => false;
 
         public override void InitSBInfo()

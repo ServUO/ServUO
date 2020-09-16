@@ -2,10 +2,10 @@ namespace Server.Items
 {
     public class DragonBrazier : BaseLight
     {
-        public override int LabelNumber { get { return 1075501; } } // Dragon Brazier
+        public override int LabelNumber => 1075501;  // Dragon Brazier
 
-        public override int LitItemID { get { return 0x194D; } }
-        public override int UnlitItemID { get { return 0x194E; } }
+        public override int LitItemID => 0x194D;
+        public override int UnlitItemID => 0x194E;
 
         [Constructable]
         public DragonBrazier()

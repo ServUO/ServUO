@@ -266,7 +266,7 @@ namespace Server.Items
         {
             Region r = Region.Find(from.Location, from.Map);
 
-            if (r is Server.Regions.GuardedRegion && !((Server.Regions.GuardedRegion)r).IsDisabled())
+            if (r is Regions.GuardedRegion && !((Regions.GuardedRegion)r).IsDisabled())
             {
                 from.SendMessage("You are forbidden from discharging cannons within the town limits.");
                 return false;
@@ -1205,7 +1205,7 @@ namespace Server.Items
             public override void OnClick()
             {
                 if (m_Cannon != null)
-                    m_From.Target = new BaseCannon.LoadCannonTarget(m_Cannon);
+                    m_From.Target = new LoadCannonTarget(m_Cannon);
             }
         }
         private class PrimeContext : ContextMenuEntry

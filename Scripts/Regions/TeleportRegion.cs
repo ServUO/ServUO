@@ -33,7 +33,7 @@ namespace Server.Regions
 
         private static Region GetParent(Rectangle3D[] recs, Map map)
         {
-            return Region.Find(new Point3D(recs[0].Start.X, recs[0].Start.Y, recs[0].Start.Z), map);
+            return Find(new Point3D(recs[0].Start.X, recs[0].Start.Y, recs[0].Start.Z), map);
         }
 
         public override void OnEnter(Mobile m)

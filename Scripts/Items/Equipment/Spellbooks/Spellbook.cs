@@ -373,7 +373,7 @@ namespace Server.Items
             }
             catch (Exception ex)
             {
-                Server.Diagnostics.ExceptionLogging.LogException(ex);
+                Diagnostics.ExceptionLogging.LogException(ex);
             }
         }
         #endregion

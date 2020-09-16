@@ -389,8 +389,8 @@ namespace Server.Items
             if (Pending != null)
             {
                 writer.Write(1);
-                writer.WriteMobile<PlayerMobile>(Pending.Mobile);
-                writer.WriteItem<BraceletOfBinding>(Pending.Bracelet);
+                writer.WriteMobile(Pending.Mobile);
+                writer.WriteItem(Pending.Bracelet);
             }
             else
             {
@@ -407,8 +407,8 @@ namespace Server.Items
                 {
                     writer.Write(1);
 
-                    writer.WriteMobile<PlayerMobile>(entry.Mobile);
-                    writer.WriteItem<BraceletOfBinding>(entry.Bracelet);
+                    writer.WriteMobile(entry.Mobile);
+                    writer.WriteItem(entry.Bracelet);
                 }
             }
         }

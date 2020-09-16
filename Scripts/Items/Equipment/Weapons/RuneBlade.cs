@@ -3,7 +3,7 @@ using Server.Engines.Craft;
 namespace Server.Items
 {
     [Alterable(typeof(DefBlacksmithy), typeof(GargishTalwar))]
-    [FlipableAttribute(0x2D32, 0x2D26)]
+    [Flipable(0x2D32, 0x2D26)]
     public class RuneBlade : BaseSword
     {
         [Constructable]

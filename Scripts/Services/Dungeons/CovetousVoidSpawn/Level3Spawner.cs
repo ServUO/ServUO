@@ -113,7 +113,7 @@ namespace Server.Engines.VoidPool
 
                     if (entry.CurrentCount == 0)
                     {
-                        Timer.DelayCall<SpawnEntry>(TimeSpan.FromMinutes(Utility.RandomMinMax(2, 5)), en =>
+                        Timer.DelayCall(TimeSpan.FromMinutes(Utility.RandomMinMax(2, 5)), en =>
                             {
                                 Reset(en);
                             }, entry);

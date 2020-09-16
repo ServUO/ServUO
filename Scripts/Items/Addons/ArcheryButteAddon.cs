@@ -5,7 +5,7 @@ using System.Collections;
 
 namespace Server.Items
 {
-    [FlipableAttribute(0x100A/*East*/, 0x100B/*South*/)]
+    [Flipable(0x100A/*East*/, 0x100B/*South*/)]
     public class ArcheryButte : AddonComponent
     {
         private static readonly TimeSpan UseDelay = TimeSpan.FromSeconds(2.0);

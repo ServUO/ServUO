@@ -1187,7 +1187,7 @@ namespace Server
                 }
                 catch (Exception e)
                 {
-                    Server.Diagnostics.ExceptionLogging.LogException(e);
+                    Diagnostics.ExceptionLogging.LogException(e);
                 }
 
                 if (dirs != null && dirs.Length > 0)
@@ -1201,7 +1201,7 @@ namespace Server
                         }
                         catch (Exception e)
                         {
-                            Server.Diagnostics.ExceptionLogging.LogException(e);
+                            Diagnostics.ExceptionLogging.LogException(e);
                         }
                     }
                 }
@@ -1224,7 +1224,7 @@ namespace Server
                         }
                         catch (Exception e)
                         {
-                            Server.Diagnostics.ExceptionLogging.LogException(e);
+                            Diagnostics.ExceptionLogging.LogException(e);
                         }
 
                         if (fs == null)
@@ -1260,7 +1260,7 @@ namespace Server
                                     }
                                     catch (Exception e)
                                     {
-                                        Server.Diagnostics.ExceptionLogging.LogException(e);
+                                        Diagnostics.ExceptionLogging.LogException(e);
                                     }
 
                                     bool convert = id != null && ConvertSpawner(id, dr);
@@ -1277,7 +1277,7 @@ namespace Server
                                         }
                                         catch (Exception e)
                                         {
-                                            Server.Diagnostics.ExceptionLogging.LogException(e);
+                                            Diagnostics.ExceptionLogging.LogException(e);
                                         }
 
                                         if (loc != Point3D.Zero && spawnMap != null && spawnMap != Map.Internal)
@@ -1427,7 +1427,7 @@ namespace Server
                 }
                 catch (Exception e)
                 {
-                    Server.Diagnostics.ExceptionLogging.LogException(e);
+                    Diagnostics.ExceptionLogging.LogException(e);
                 }
 
                 if (dirs != null && dirs.Length > 0)
@@ -1441,7 +1441,7 @@ namespace Server
                         }
                         catch (Exception e)
                         {
-                            Server.Diagnostics.ExceptionLogging.LogException(e);
+                            Diagnostics.ExceptionLogging.LogException(e);
                         }
                     }
                 }
@@ -1465,7 +1465,7 @@ namespace Server
                         }
                         catch (Exception e)
                         {
-                            Server.Diagnostics.ExceptionLogging.LogException(e);
+                            Diagnostics.ExceptionLogging.LogException(e);
                         }
 
                         if (fs == null)
@@ -1501,7 +1501,7 @@ namespace Server
                                     }
                                     catch (Exception e)
                                     {
-                                        Server.Diagnostics.ExceptionLogging.LogException(e);
+                                        Diagnostics.ExceptionLogging.LogException(e);
                                     }
 
                                     if (DeleteSpawner(id))
@@ -1547,7 +1547,7 @@ namespace Server
                 }
                 catch (Exception e)
                 {
-                    Server.Diagnostics.ExceptionLogging.LogException(e);
+                    Diagnostics.ExceptionLogging.LogException(e);
                 }
 
                 ToConsole(string.Format("Found {0} Xmlspawner files for removal.", files == null ? "0" : files.Count.ToString()), files != null && files.Count > 0 ? ConsoleColor.Green : ConsoleColor.Red);
@@ -1567,7 +1567,7 @@ namespace Server
                         }
                         catch (Exception e)
                         {
-                            Server.Diagnostics.ExceptionLogging.LogException(e);
+                            Diagnostics.ExceptionLogging.LogException(e);
                         }
 
                         if (fs == null)
@@ -1603,7 +1603,7 @@ namespace Server
                                     }
                                     catch (Exception e)
                                     {
-                                        Server.Diagnostics.ExceptionLogging.LogException(e);
+                                        Diagnostics.ExceptionLogging.LogException(e);
                                     }
 
                                     if (DeleteSpawner(id))
@@ -1647,7 +1647,7 @@ namespace Server
                 }
                 catch (Exception e)
                 {
-                    Server.Diagnostics.ExceptionLogging.LogException(e);
+                    Diagnostics.ExceptionLogging.LogException(e);
                 }
 
                 if (dirs != null && dirs.Length > 0)
@@ -1661,7 +1661,7 @@ namespace Server
                         }
                         catch (Exception e)
                         {
-                            Server.Diagnostics.ExceptionLogging.LogException(e);
+                            Diagnostics.ExceptionLogging.LogException(e);
                         }
                     }
                 }
@@ -1685,7 +1685,7 @@ namespace Server
                         }
                         catch (Exception e)
                         {
-                            Server.Diagnostics.ExceptionLogging.LogException(e);
+                            Diagnostics.ExceptionLogging.LogException(e);
                         }
 
                         if (fs == null)
@@ -1721,7 +1721,7 @@ namespace Server
                                     }
                                     catch (Exception e)
                                     {
-                                        Server.Diagnostics.ExceptionLogging.LogException(e);
+                                        Diagnostics.ExceptionLogging.LogException(e);
                                     }
 
                                     if (DeleteSpawner(id))
@@ -1758,7 +1758,7 @@ namespace Server
                                         }
                                         catch (Exception e)
                                         {
-                                            Server.Diagnostics.ExceptionLogging.LogException(e);
+                                            Diagnostics.ExceptionLogging.LogException(e);
                                         }
 
                                         if (!deleted)

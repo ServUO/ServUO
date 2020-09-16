@@ -3,7 +3,7 @@ using Server.Engines.Craft;
 namespace Server.Items
 {
     [Alterable(typeof(DefBlacksmithy), typeof(GargishTekagi))]
-    [FlipableAttribute(0x27Ab, 0x27F6)]
+    [Flipable(0x27Ab, 0x27F6)]
     public class Tekagi : BaseKnife
     {
         [Constructable]

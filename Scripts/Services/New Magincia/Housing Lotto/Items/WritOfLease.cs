@@ -56,7 +56,7 @@ namespace Server.Engines.NewMagincia
 
             list.Add(m_Facet == Map.Trammel ? 1150549 : 1150548); // Facet: Felucca
 
-            list.Add(1150546, Server.Misc.ServerList.ServerName); // Shard: ~1_SHARDNAME~
+            list.Add(1150546, Misc.ServerList.ServerName); // Shard: ~1_SHARDNAME~
 
             if (m_Expired)
                 list.Add(1150487); // [Expired]
@@ -144,13 +144,13 @@ namespace Server.Engines.NewMagincia
 
                 if (lease.Expired)
                 {
-                    args = string.Format("{0}\t{1}\t{2}\t{3}\t{4}", lease.Identifier, lease.Facet.ToString(), Server.Misc.ServerList.ServerName, "", string.Format("{0} {1}", lease.RecallLoc.X, lease.RecallLoc.Y));
+                    args = string.Format("{0}\t{1}\t{2}\t{3}\t{4}", lease.Identifier, lease.Facet.ToString(), Misc.ServerList.ServerName, "", string.Format("{0} {1}", lease.RecallLoc.X, lease.RecallLoc.Y));
                     AddHtmlLocalized(38, 55, 215, 178, 1150488, args, 1, false, true);
                     //This deed once entitled the bearer to build a house on the plot of land designated "~1_PLOT~" (located at ~5_SEXTANT~) in the City of New Magincia on the ~2_FACET~ facet of the ~3_SHARD~ shard.<br><br>The deed has expired, and now the indicated plot of land is subject to normal house construction rules.<br><br>This deed was won by lottery, and while it is no longer valid for land ownership it does serve to commemorate the winning of land during the Rebuilding of Magincia.<br><br>This deed functions as a recall rune marked for the location of the plot it represents.
                 }
                 else
                 {
-                    args = string.Format("{0}\t{1}\t{2}\t{3}\t{4}", lease.Identifier, lease.Facet.ToString(), Server.Misc.ServerList.ServerName, MaginciaLottoSystem.WritExpirePeriod.ToString(), string.Format("{0} {1}", lease.RecallLoc.X, lease.RecallLoc.Y));
+                    args = string.Format("{0}\t{1}\t{2}\t{3}\t{4}", lease.Identifier, lease.Facet.ToString(), Misc.ServerList.ServerName, MaginciaLottoSystem.WritExpirePeriod.ToString(), string.Format("{0} {1}", lease.RecallLoc.X, lease.RecallLoc.Y));
                     AddHtmlLocalized(38, 55, 215, 178, 1150483, args, 1, false, true);
                     //This deed entitles the bearer to build a house on the plot of land designated "~1_PLOT~" (located at ~5_SEXTANT~) in the City of New Magincia on the ~2_FACET~ facet of the ~3_SHARD~ shard.<br><br>The deed will expire once it is used to construct a house, and thereafter the indicated plot of land will be subject to normal house construction rules. The deed will expire after ~4_DAYS~ more days have passed, and at that time the right to place a house reverts to normal house construction rules.<br><br>This deed functions as a recall rune marked for the location of the plot it represents.<br><br>To place a house on the deeded plot, you must simply have this deed in your backpack or bank box when using a House Placement Tool there.
                 }

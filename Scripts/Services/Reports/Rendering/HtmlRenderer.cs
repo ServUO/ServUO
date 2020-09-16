@@ -122,7 +122,7 @@ namespace Server.Engines.Reports
             }
             catch (Exception e)
             {
-                Server.Diagnostics.ExceptionLogging.LogException(e);
+                Diagnostics.ExceptionLogging.LogException(e);
             }
 
             Console.WriteLine("Reports: {0}: Upload complete", m_Title);
@@ -133,7 +133,7 @@ namespace Server.Engines.Reports
             }
             catch (Exception e)
             {
-                Server.Diagnostics.ExceptionLogging.LogException(e);
+                Diagnostics.ExceptionLogging.LogException(e);
             }
         }
 

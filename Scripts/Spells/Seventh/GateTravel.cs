@@ -53,7 +53,7 @@ namespace Server.Spells.Seventh
 
         public override bool CheckCast()
         {
-            if (Server.Engines.VvV.VvVSigil.ExistsOn(Caster))
+            if (Engines.VvV.VvVSigil.ExistsOn(Caster))
             {
                 Caster.SendLocalizedMessage(1061632); // You can't do that while carrying the sigil.
                 return false;
@@ -99,7 +99,7 @@ namespace Server.Spells.Seventh
 
         public void Effect(Point3D loc, Map map, bool checkMulti, bool isboatkey = false)
         {
-            if (Server.Engines.VvV.VvVSigil.ExistsOn(Caster))
+            if (Engines.VvV.VvVSigil.ExistsOn(Caster))
             {
                 Caster.SendLocalizedMessage(1061632); // You can't do that while carrying the sigil.
             }

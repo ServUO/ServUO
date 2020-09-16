@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x4919, 0x491A)]
+    [Flipable(0x4919, 0x491A)]
     public class GoblinTopiary : Item
     {
 

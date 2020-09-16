@@ -54,7 +54,7 @@ namespace Server.Commands.Generic
             catch (Exception ex)
             {
                 from.SendMessage(ex.Message);
-                Server.Diagnostics.ExceptionLogging.LogException(ex);
+                Diagnostics.ExceptionLogging.LogException(ex);
             }
         }
     }

@@ -200,7 +200,7 @@ namespace Server.Items
             writer.Write(_Crafter);
             writer.Write((int)_Quality);
 
-            writer.WriteItemList<Key>(m_Keys);
+            writer.WriteItemList(m_Keys);
         }
 
         public override void Deserialize(GenericReader reader)

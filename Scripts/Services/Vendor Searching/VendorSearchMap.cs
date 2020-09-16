@@ -33,7 +33,7 @@ namespace Server.Items
         public DateTime DeleteTime { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsAuction { get { return AuctionSafe != null; } }
+        public bool IsAuction => AuctionSafe != null;
 
         public int TimeRemaining => DeleteTime <= DateTime.UtcNow ? 0 : (int)(DeleteTime - DateTime.UtcNow).TotalMinutes;
 

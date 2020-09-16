@@ -17,7 +17,7 @@ namespace Server.Engines.VoidPool
 
         public VoidPoolController Controller { get; private set; }
 
-        public VoidPoolRegion(VoidPoolController controller, Map map) : base("Void Pool", map, Region.DefaultPriority, Bounds)
+        public VoidPoolRegion(VoidPoolController controller, Map map) : base("Void Pool", map, DefaultPriority, Bounds)
         {
             Controller = controller;
         }

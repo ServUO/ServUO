@@ -179,7 +179,7 @@ namespace Server.Mobiles
 
                     if (!tribesman.HasYelled)
                     {
-                        m.PublicOverheadMessage(Server.Network.MessageType.Regular, 0x47E, 1156584); // Ahhhh-OOOO! Ahhh-OOOO!
+                        m.PublicOverheadMessage(Network.MessageType.Regular, 0x47E, 1156584); // Ahhhh-OOOO! Ahhh-OOOO!
                         tribesman.HasYelled = true;
                     }
                 }

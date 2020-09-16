@@ -72,7 +72,7 @@ namespace Server.Items
         public virtual int TargetMessage => 500859;  // Select the clothing to dye.        
         public virtual int FailMessage => 1042083;  // You can not dye that.
 
-        public virtual Type[] ForcedDyables { get { return new Type[0]; } }
+        public virtual Type[] ForcedDyables => new Type[0];
 
         public virtual bool CanForceDye(Item item)
         {

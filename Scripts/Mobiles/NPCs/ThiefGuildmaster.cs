@@ -33,9 +33,9 @@ namespace Server.Mobiles
             base.InitOutfit();
 
             if (Utility.RandomBool())
-                AddItem(new Server.Items.Kryss());
+                AddItem(new Kryss());
             else
-                AddItem(new Server.Items.Dagger());
+                AddItem(new Dagger());
         }
 
         public override bool CheckCustomReqs(PlayerMobile pm)

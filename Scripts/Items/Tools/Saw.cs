@@ -2,7 +2,7 @@ using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    [FlipableAttribute(0x1034, 0x1035)]
+    [Flipable(0x1034, 0x1035)]
     public class Saw : BaseTool
     {
         [Constructable]

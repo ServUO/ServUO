@@ -27,7 +27,7 @@ namespace Server.Engines.InstancedPeerless
         }
 
         public InstanceRegion(PeerlessInstance instance)
-            : base(null, instance.Map, Region.Find(instance.EntranceLocation, instance.Map), instance.RegionBounds)
+            : base(null, instance.Map, Find(instance.EntranceLocation, instance.Map), instance.RegionBounds)
         {
             m_Owner = instance;
 

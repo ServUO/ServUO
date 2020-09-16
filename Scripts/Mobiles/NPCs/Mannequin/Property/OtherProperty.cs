@@ -122,7 +122,7 @@ namespace Server.Mobiles.MannequinProperty
 
         public double GetPropertyValue(Item item)
         {
-            return item is BaseArmor ? Misc.RegenRates.GetArmorMeditationValue((BaseArmor)item) : 0;
+            return item is BaseArmor ? RegenRates.GetArmorMeditationValue((BaseArmor)item) : 0;
         }
 
         public override bool Matches(Item item)

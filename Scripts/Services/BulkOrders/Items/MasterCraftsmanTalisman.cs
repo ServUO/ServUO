@@ -14,7 +14,7 @@ namespace Server.Items
             Skill = skill;
 
             SuccessBonus = GetRandomSuccessful();
-            ExceptionalBonus = BaseTalisman.GetRandomExceptional();
+            ExceptionalBonus = GetRandomExceptional();
             Blessed = GetRandomBlessed();
 
             _Type = charges;

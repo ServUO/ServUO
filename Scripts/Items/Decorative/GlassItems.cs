@@ -3,7 +3,7 @@ using Server.Targeting;
 
 namespace Server.Items
 {
-    [FlipableAttribute(0x182E, 0x182F, 0x1830, 0x1831)]
+    [Flipable(0x182E, 0x182F, 0x1830, 0x1831)]
     public class SmallFlask : Item
     {
         [Constructable]
@@ -34,7 +34,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x182A, 0x182B, 0x182C, 0x182D)]
+    [Flipable(0x182A, 0x182B, 0x182C, 0x182D)]
     public class MediumFlask : Item
     {
         [Constructable]
@@ -65,7 +65,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x183B, 0x183C, 0x183D)]
+    [Flipable(0x183B, 0x183C, 0x183D)]
     public class LargeFlask : Item
     {
         [Constructable]
@@ -96,7 +96,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x1832, 0x1833, 0x1834, 0x1835, 0x1836, 0x1837)]
+    [Flipable(0x1832, 0x1833, 0x1834, 0x1835, 0x1836, 0x1837)]
     public class CurvedFlask : Item
     {
         [Constructable]
@@ -127,7 +127,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x1838, 0x1839, 0x183A)]
+    [Flipable(0x1838, 0x1839, 0x183A)]
     public class LongFlask : Item
     {
         [Constructable]
@@ -1134,7 +1134,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x185B, 0x185C)]
+    [Flipable(0x185B, 0x185C)]
     public class EmptyVialsWRack : Item
     {
         [Constructable]
@@ -1165,7 +1165,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x185D, 0x185E)]
+    [Flipable(0x185D, 0x185E)]
     public class FullVialsWRack : Item
     {
         [Constructable]

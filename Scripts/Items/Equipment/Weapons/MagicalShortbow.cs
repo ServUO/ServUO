@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    [FlipableAttribute(0x2D2B, 0x2D1F)]
+    [Flipable(0x2D2B, 0x2D1F)]
     public class MagicalShortbow : BaseRanged
     {
         [Constructable]

@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x2B08, 0x2B09)]
+    [Flipable(0x2B08, 0x2B09)]
     public class JusticeBreastplate : BaseArmor
     {
         public override bool IsArtifact => true;

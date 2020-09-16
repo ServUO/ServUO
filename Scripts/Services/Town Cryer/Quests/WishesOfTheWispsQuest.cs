@@ -129,7 +129,7 @@ namespace Server.Engines.Quests
             return true;
         }
 
-        public static void OnBossSlain(Server.Engines.Despise.DespiseBoss boss)
+        public static void OnBossSlain(Despise.DespiseBoss boss)
         {
             foreach (DamageStore ds in boss.GetLootingRights())
             {
@@ -153,7 +153,7 @@ namespace Server.Engines.Quests
             GiveRewards();
 
             Owner.SendLocalizedMessage(1158326); // For your accomplishments you have been awarded a bonus 1000 Despise points! Trade with the wisp to redeem them!
-            Server.Engines.Points.PointsSystem.DespiseCrystals.AwardPoints(Owner, 1000, false, false);
+            Points.PointsSystem.DespiseCrystals.AwardPoints(Owner, 1000, false, false);
         }
 
         private class InternalObjective : BaseObjective

@@ -146,7 +146,7 @@ namespace Server.Mobiles
 
         private static void HeplerPaulsonGump_OnCommand(CommandEventArgs e)
         {
-            BaseGump.SendGump(new HeplerPaulsonGump(e.Mobile as PlayerMobile));
+            SendGump(new HeplerPaulsonGump(e.Mobile as PlayerMobile));
         }
 
         private static readonly PageData[] GumpInfo =
@@ -180,7 +180,7 @@ namespace Server.Mobiles
 
         private static void HeplerPaulsonCompleteGump_OnCommand(CommandEventArgs e)
         {
-            BaseGump.SendGump(new HeplerPaulsonCompleteGump(e.Mobile as PlayerMobile));
+            SendGump(new HeplerPaulsonCompleteGump(e.Mobile as PlayerMobile));
         }
 
         public HeplerPaulsonCompleteGump(PlayerMobile pm)
@@ -198,7 +198,7 @@ namespace Server.Mobiles
 
         private static void HeplerPaulsonCollectCompleteGump_OnCommand(CommandEventArgs e)
         {
-            BaseGump.SendGump(new HeplerPaulsonCollectCompleteGump(e.Mobile as PlayerMobile));
+            SendGump(new HeplerPaulsonCollectCompleteGump(e.Mobile as PlayerMobile));
         }
 
         private static readonly PageData[] GumpInfo =

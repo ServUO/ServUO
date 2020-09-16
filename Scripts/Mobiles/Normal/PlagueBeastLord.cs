@@ -226,7 +226,7 @@ namespace Server.Mobiles
                 }
 
                 from.LocalOverheadMessage(MessageType.Regular, 0x21, 1071904); // * You slice through the plague beast's amorphous tissue *
-                Timer.DelayCall<Mobile>(TimeSpan.Zero, pack.Open, from);
+                Timer.DelayCall(TimeSpan.Zero, pack.Open, from);
 
                 return true;
             }

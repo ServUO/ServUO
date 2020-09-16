@@ -3,7 +3,7 @@ using Server.Engines.Craft;
 namespace Server.Items
 {
     [Alterable(typeof(DefBlacksmithy), typeof(GargishMaul))]
-    [FlipableAttribute(0x143B, 0x143A)]
+    [Flipable(0x143B, 0x143A)]
     public class Maul : BaseBashing
     {
         [Constructable]

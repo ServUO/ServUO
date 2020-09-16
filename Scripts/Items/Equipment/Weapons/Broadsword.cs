@@ -3,7 +3,7 @@ using Server.Engines.Craft;
 namespace Server.Items
 {
     [Alterable(typeof(DefBlacksmithy), typeof(DreadSword))]
-    [FlipableAttribute(0xF5E, 0xF5F)]
+    [Flipable(0xF5E, 0xF5F)]
     public class Broadsword : BaseSword
     {
         [Constructable]

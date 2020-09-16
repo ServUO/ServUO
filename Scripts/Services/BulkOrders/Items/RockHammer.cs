@@ -2,7 +2,7 @@ using Server.Engines.Harvest;
 
 namespace Server.Items
 {
-    [FlipableAttribute(0x9E7E, 0x9E7F)]
+    [Flipable(0x9E7E, 0x9E7F)]
     public class RockHammer : BaseHarvestTool
     {
         public override int LabelNumber => 1124598;

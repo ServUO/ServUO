@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x9DB1, 0x9DB2)]
+    [Flipable(0x9DB1, 0x9DB2)]
     public class InoperativeAutomatonHead : Item
     {
         public override int LabelNumber => 1157002;  // Inoperative Automaton Head

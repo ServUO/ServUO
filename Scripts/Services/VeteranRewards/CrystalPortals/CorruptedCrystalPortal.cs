@@ -72,7 +72,7 @@ namespace Server.Items
                 return false;
             }
 
-            if (Server.Engines.VvV.VvVSigil.ExistsOn(m))
+            if (Engines.VvV.VvVSigil.ExistsOn(m))
             {
                 if (message)
                 {
@@ -122,7 +122,7 @@ namespace Server.Items
                 return false;
             }
 
-            if (Server.Engines.CityLoyalty.CityTradeSystem.HasTrade(m))
+            if (Engines.CityLoyalty.CityTradeSystem.HasTrade(m))
             {
                 if (message)
                 {

@@ -37,7 +37,7 @@ namespace Server.Spells.Spellweaving
         public static void HandleDeath(Mobile m)
         {
             if (m_Table.ContainsKey(m))
-                Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(Utility.RandomMinMax(2, 4)), HandleDeath_OnCallback, m);
+                Timer.DelayCall(TimeSpan.FromSeconds(Utility.RandomMinMax(2, 4)), HandleDeath_OnCallback, m);
         }
 
         public static void Login(LoginEventArgs e)

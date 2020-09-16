@@ -2,7 +2,7 @@ using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    [FlipableAttribute(0xE8A, 0xE89)]
+    [Flipable(0xE8A, 0xE89)]
     public class Blowpipe : BaseTool
     {
         public override CraftSystem CraftSystem => DefGlassblowing.CraftSystem;

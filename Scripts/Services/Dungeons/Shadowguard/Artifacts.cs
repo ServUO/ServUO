@@ -386,9 +386,9 @@ namespace Server.Items
         }
     }
 
-    public class HawkwindsRobe : BaseOuterTorso, Server.Engines.Craft.IRepairable
+    public class HawkwindsRobe : BaseOuterTorso, IRepairable
     {
-        public Server.Engines.Craft.CraftSystem RepairSystem => Server.Engines.Craft.DefTailoring.CraftSystem;
+        public CraftSystem RepairSystem => DefTailoring.CraftSystem;
 
         public override int LabelNumber => 1156299;
 

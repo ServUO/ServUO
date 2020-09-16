@@ -72,7 +72,7 @@ namespace Server.Misc
             catch (Exception e)
             {
                 Console.WriteLine("WARNING: Automatic backup FAILED:\n{0}", e);
-                Server.Diagnostics.ExceptionLogging.LogException(e);
+                Diagnostics.ExceptionLogging.LogException(e);
             }
 
             World.Save(true, permitBackgroundWrite);
@@ -80,7 +80,7 @@ namespace Server.Misc
 
         private static void Tick()
         {
-            if (!SavesEnabled || AutoRestart.Restarting || Commands.CreateWorld.WorldCreating)
+            if (!SavesEnabled || AutoRestart.Restarting || CreateWorld.WorldCreating)
                 return;
 
             if (m_Warning == TimeSpan.Zero)
@@ -136,7 +136,7 @@ namespace Server.Misc
 
                         anySuccess = true;
                     }
-                    catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
+                    catch (Exception e) { Diagnostics.ExceptionLogging.LogException(e); }
                 }
                 else
                 {
@@ -148,12 +148,12 @@ namespace Server.Misc
 
                         delete = !ArchivedSaves.Process(tempRoot);
                     }
-                    catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
+                    catch (Exception e) { Diagnostics.ExceptionLogging.LogException(e); }
 
                     if (delete)
                     {
                         try { dir.Delete(true); }
-                        catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
+                        catch (Exception e) { Diagnostics.ExceptionLogging.LogException(e); }
                     }
                 }
             }

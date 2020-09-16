@@ -101,7 +101,7 @@ namespace Server.Engines.TreasuresOfKotlCity
                     comp.Active = false;
 
                     _Fails = 0;
-                    from.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1154, 1157028, from.NetState); // *You activate the switch!*
+                    from.PrivateOverheadMessage(Network.MessageType.Regular, 1154, 1157028, from.NetState); // *You activate the switch!*
 
                     if (_Order.Count - 1 == _Index)
                     {
@@ -110,7 +110,7 @@ namespace Server.Engines.TreasuresOfKotlCity
                         if (KotlDoor.Instance != null)
                         {
                             KotlDoor.Instance.Locked = false;
-                            from.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1154, 1157019, from.NetState); // *You hear a low hum as the door to the Time Room unseals...*
+                            from.PrivateOverheadMessage(Network.MessageType.Regular, 1154, 1157019, from.NetState); // *You hear a low hum as the door to the Time Room unseals...*
                             from.PlaySound(0x667);
 
                             Timer.DelayCall(TimeSpan.FromMinutes(5), () =>
@@ -134,11 +134,11 @@ namespace Server.Engines.TreasuresOfKotlCity
 
                     from.FixedParticles(0x3818, 1, 11, 0x13A8, 0, 0, EffectLayer.Waist);
                     from.PlaySound(0x665);
-                    from.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1154, 1157029, from.NetState); // *The switch shorts out and electrocutes you! You are vulnerable to more energy damage in your shocked state!*
+                    from.PrivateOverheadMessage(Network.MessageType.Regular, 1154, 1157029, from.NetState); // *The switch shorts out and electrocutes you! You are vulnerable to more energy damage in your shocked state!*
 
                     if (_Fails > 5 && _Fails > Utility.Random(15))
                     {
-                        component.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1154, 1157031, from.NetState); // *Circuit Fault! Generating new circuit sequence!*
+                        component.PrivateOverheadMessage(Network.MessageType.Regular, 1154, 1157031, from.NetState); // *Circuit Fault! Generating new circuit sequence!*
                         Reset();
                     }
                 }

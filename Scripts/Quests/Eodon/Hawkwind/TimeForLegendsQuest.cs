@@ -90,7 +90,7 @@ namespace Server.Engines.Quests.TimeLord
 
             TargetOfTheDay = _Targets[Utility.Random(_Targets.Length)];
 
-            Server.Commands.CommandSystem.Register("NewTargetOfTheDay", AccessLevel.GameMaster, e =>
+            Commands.CommandSystem.Register("NewTargetOfTheDay", AccessLevel.GameMaster, e =>
                 {
                     TargetOfTheDay = _Targets[Utility.Random(_Targets.Length)];
 

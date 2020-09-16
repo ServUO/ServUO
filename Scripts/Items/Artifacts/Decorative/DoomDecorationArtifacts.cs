@@ -765,7 +765,7 @@ namespace Server.Items
     #endregion
 
     #region Publish 97 Stealables
-    [FlipableAttribute(40681, 40682)]
+    [Flipable(40681, 40682)]
     public class HangingPlatemailArms : BaseDecorationArtifact
     {
         public override int LabelNumber => 1124703;  // Hanging Platemail
@@ -796,7 +796,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(40683, 40684)]
+    [Flipable(40683, 40684)]
     public class HangingPlatemailLeggings : BaseDecorationArtifact
     {
         public override int LabelNumber => 1124703;  // Hanging Platemail
@@ -827,7 +827,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(40679, 40680)]
+    [Flipable(40679, 40680)]
     public class HangingPlatemailTunic : BaseDecorationArtifact
     {
         public override int LabelNumber => 1124703;  // Hanging Platemail
@@ -858,7 +858,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(40677, 40678)]
+    [Flipable(40677, 40678)]
     public class ArcaneTable : BaseDecorationArtifact
     {
         public override int LabelNumber => 1124701;  // Table
@@ -889,7 +889,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(40675, 40676)]
+    [Flipable(40675, 40676)]
     public class ArtifactBookshelf : BaseDecorationArtifact
     {
         public override int LabelNumber => 1124699;  // Bookshelf

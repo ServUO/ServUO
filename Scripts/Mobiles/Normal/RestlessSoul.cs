@@ -62,7 +62,7 @@ namespace Server.Mobiles
 
             for (int i = 0; i < list.Count; ++i)
             {
-                if (list[i] is ContextMenus.PaperdollEntry)
+                if (list[i] is PaperdollEntry)
                     list.RemoveAt(i--);
             }
         }

@@ -423,7 +423,7 @@ namespace Server.Mobiles
                 {
                     int damage = Utility.RandomMinMax(120, 150);
 
-                    Timer.DelayCall(TimeSpan.FromSeconds(.20), new TimerStateCallback(DoDamage_Callback), new object[] { m_Combatant, m_Dragon, damage });
+                    DelayCall(TimeSpan.FromSeconds(.20), new TimerStateCallback(DoDamage_Callback), new object[] { m_Combatant, m_Dragon, damage });
 
                     Stop();
                 }

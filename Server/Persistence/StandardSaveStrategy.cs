@@ -24,7 +24,7 @@ namespace Server
 		public override string Name => "Standard";
 		
 		protected bool PermitBackgroundWrite { get; set; }
-		protected bool UseSequentialWriters => (StandardSaveStrategy.SaveType == SaveOption.Normal || !PermitBackgroundWrite);
+		protected bool UseSequentialWriters => (SaveType == SaveOption.Normal || !PermitBackgroundWrite);
 
 		public override void Save(SaveMetrics metrics, bool permitBackgroundWrite)
 		{

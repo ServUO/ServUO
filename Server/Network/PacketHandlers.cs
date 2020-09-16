@@ -812,7 +812,7 @@ namespace Server.Network
 						}
 						catch (Exception e)
 						{
-							Server.Diagnostics.ExceptionLogging.LogException(e);
+                                ExceptionLogging.LogException(e);
 						}
 					}
 

@@ -34,7 +34,7 @@ namespace Server.Engines.Points
             }
             else
             {
-                m.LocalOverheadMessage(Server.Network.MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
+                m.LocalOverheadMessage(Network.MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
             }
         }
 

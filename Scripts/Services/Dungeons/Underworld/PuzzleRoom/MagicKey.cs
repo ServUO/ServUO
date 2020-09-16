@@ -28,8 +28,8 @@ namespace Server.Items
 
                 if (key == null)
                 {
-                    if (from.HasGump(typeof(MagicKey.MagicKeyConfirmGump)))
-                        from.CloseGump(typeof(MagicKey.MagicKeyConfirmGump));
+                    if (from.HasGump(typeof(MagicKeyConfirmGump)))
+                        from.CloseGump(typeof(MagicKeyConfirmGump));
 
                     from.SendGump(new MagicKeyConfirmGump(this));
                 }
@@ -111,7 +111,7 @@ namespace Server.Items
                 AddHtmlLocalized(250, 87, 80, 25, 1006044, 0x7FFF, false, false);  //OK
             }
 
-            public override void OnResponse(Server.Network.NetState state, RelayInfo info)
+            public override void OnResponse(Network.NetState state, RelayInfo info)
             {
                 Mobile from = state.Mobile;
 

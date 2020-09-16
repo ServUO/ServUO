@@ -148,13 +148,13 @@ namespace Server.Accounting
                     }
                     catch (Exception ex)
                     {
-                        Server.Diagnostics.ExceptionLogging.LogException(ex);
+                        Diagnostics.ExceptionLogging.LogException(ex);
                     }
                 }
             }
             catch (Exception ex)
             {
-                Server.Diagnostics.ExceptionLogging.LogException(ex);
+                Diagnostics.ExceptionLogging.LogException(ex);
             }
 
             NetState.Resume();
@@ -369,7 +369,7 @@ namespace Server.Accounting
                     }
                     catch (Exception ex)
                     {
-                        Server.Diagnostics.ExceptionLogging.LogException(ex);
+                        Diagnostics.ExceptionLogging.LogException(ex);
                     }
                 }
             }
@@ -946,7 +946,7 @@ namespace Server.Accounting
                 }
                 catch (Exception e)
                 {
-                    Server.Diagnostics.ExceptionLogging.LogException(e);
+                    Diagnostics.ExceptionLogging.LogException(e);
                 }
             }
 
@@ -977,7 +977,7 @@ namespace Server.Accounting
                 }
                 catch (Exception e)
                 {
-                    Server.Diagnostics.ExceptionLogging.LogException(e);
+                    Diagnostics.ExceptionLogging.LogException(e);
                 }
             }
 
@@ -1008,7 +1008,7 @@ namespace Server.Accounting
                 }
                 catch (Exception e)
                 {
-                    Server.Diagnostics.ExceptionLogging.LogException(e);
+                    Diagnostics.ExceptionLogging.LogException(e);
                 }
             }
 

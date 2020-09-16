@@ -379,7 +379,7 @@ namespace Server.Engines.ArenaSystem
                 ((Spell)pm.Spell).Disturb(DisturbType.Hurt);
             }
 
-            Server.Targeting.Target.Cancel(pm);
+            Targeting.Target.Cancel(pm);
 
             bool allin = true;
 
@@ -589,7 +589,7 @@ namespace Server.Engines.ArenaSystem
                 {
                     Timer.DelayCall(TimeSpan.FromMilliseconds(i * 100), index =>
                         {
-                            Server.Misc.Geometry.Circle2D(loc, pmmap, index, (pnt, map) =>
+                            Misc.Geometry.Circle2D(loc, pmmap, index, (pnt, map) =>
                             {
                                 Effects.SendLocationEffect(pnt, map, 0x3709, 0x1E, 0x14, 0x5DE, 0x4);
                             });

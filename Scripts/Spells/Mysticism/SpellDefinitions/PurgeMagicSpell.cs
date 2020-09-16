@@ -272,7 +272,7 @@ namespace Server.Spells.Mysticism
 
             protected override void OnTick()
             {
-                PurgeMagicSpell.RemoveImmunity(m_Mobile);
+                RemoveImmunity(m_Mobile);
             }
         }
 
@@ -296,7 +296,7 @@ namespace Server.Spells.Mysticism
 
             protected override void OnTick()
             {
-                PurgeMagicSpell.RemoveCurse(m_Mobile, m_Caster);
+                RemoveCurse(m_Mobile, m_Caster);
             }
         }
 

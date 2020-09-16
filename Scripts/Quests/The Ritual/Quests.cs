@@ -269,7 +269,7 @@ namespace Server.Engines.Quests.RitualQuest
             }
 
             public BexilRegion()
-                : base("Bexil Region", Map.TerMur, Region.DefaultPriority, new Rectangle2D(386, 3356, 35, 51))
+                : base("Bexil Region", Map.TerMur, DefaultPriority, new Rectangle2D(386, 3356, 35, 51))
             {
                 Register();
                 SetupRegion();
@@ -297,7 +297,7 @@ namespace Server.Engines.Quests.RitualQuest
                 }
             }
 
-            public override bool CheckTravel(Mobile traveller, Point3D p, Server.Spells.TravelCheckType type)
+            public override bool CheckTravel(Mobile traveller, Point3D p, Spells.TravelCheckType type)
             {
                 return false;
             }

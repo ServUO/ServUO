@@ -64,7 +64,7 @@ namespace Server.Spells.Fourth
                     if (m == Caster || (party != null && party.Contains(m)))
                     {
                         Caster.DoBeneficial(m);
-                        Spells.Second.ProtectionSpell.Toggle(Caster, m, true);
+                        Second.ProtectionSpell.Toggle(Caster, m, true);
                     }
                 }
             }
@@ -107,7 +107,7 @@ namespace Server.Spells.Fourth
 
             protected override void OnTick()
             {
-                ArchProtectionSpell.RemoveEntry(m_Owner);
+                RemoveEntry(m_Owner);
             }
         }
 

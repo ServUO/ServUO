@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0xA511, 0xA512)]
+    [Flipable(0xA511, 0xA512)]
     public class HorseStatue : MonsterStatuette
     {
         public override int LabelNumber => 1018263;  // horse

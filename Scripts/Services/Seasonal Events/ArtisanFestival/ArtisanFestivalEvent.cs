@@ -86,23 +86,17 @@ namespace Server.Engines.ArtisanFestival
         public DateTime NextStage { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public City CurrentCity { get { return Stage > 0 && Stage < Stages ? CityOrder[Stage] : Cities[0]; } }
+        public City CurrentCity => Stage > 0 && Stage < Stages ? CityOrder[Stage] : Cities[0];
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Stages { get { return Cities.Length; } }
+        public int Stages => Cities.Length;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool ClaimPeriod { get { return NextStage > DateTime.MinValue && NextStage - TimeSpan.FromDays(_StageDuration - _ClaimDuration) < DateTime.UtcNow; } }
+        public bool ClaimPeriod => NextStage > DateTime.MinValue && NextStage - TimeSpan.FromDays(_StageDuration - _ClaimDuration) < DateTime.UtcNow;
 
         public Timer Timer { get; set; }
 
-        public List<City> CityOrder
-        {
-            get
-            {
-                return _CityOrder ?? (_CityOrder = GetCityOrder());
-            }
-        }
+        public List<City> CityOrder => _CityOrder ?? (_CityOrder = GetCityOrder());
 
         [CommandProperty(AccessLevel.GameMaster)]
         public TownTree TownTree { get; set; }
@@ -117,13 +111,13 @@ namespace Server.Engines.ArtisanFestival
         public Dictionary<PlayerMobile, bool> Winners { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public double PointsToNext { get { return TownTree != null && TownTree.Stage < TreeStage.Five ? _TreeGrowthPoints[(int)TownTree.Stage - 1] : -1; } }
+        public double PointsToNext => TownTree != null && TownTree.Stage < TreeStage.Five ? _TreeGrowthPoints[(int)TownTree.Stage - 1] : -1;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public double PointsThisStage { get { return PointTable != null ? PointTable.Sum(kvp => kvp.Value) : 0.0; } }
+        public double PointsThisStage => PointTable != null ? PointTable.Sum(kvp => kvp.Value) : 0.0;
 
-        public override EventStatus Status { get { return EventStatus.Seasonal; } }
-        public override bool FreezeDuration { get { return true; } }
+        public override EventStatus Status => EventStatus.Seasonal;
+        public override bool FreezeDuration => true;
 
         public ArtisanFestivalEvent(EventType type, string name, EventStatus status, int month, int day, int duration)
             : base(type, name, status, month, day, duration)
@@ -463,7 +457,7 @@ namespace Server.Engines.ArtisanFestival
                     }
                     else
                     {
-                        Server.Spells.SpellHelper.AdjustField(ref temp, map, 20, false);
+                        Spells.SpellHelper.AdjustField(ref temp, map, 20, false);
 
                         spawnPoint = temp;
                     }
@@ -541,11 +535,11 @@ namespace Server.Engines.ArtisanFestival
 
             for (int i = 2; i <= 8; i += 2)
             {
-                Server.Timer.DelayCall(TimeSpan.FromMilliseconds((i - 2) * 600), o =>
+                Timer.DelayCall(TimeSpan.FromMilliseconds((i - 2) * 600), o =>
                 {
-                    Server.Misc.Geometry.Circle2D(e.Location, e.Map, o, (pnt, map) =>
+                    Misc.Geometry.Circle2D(e.Location, e.Map, o, (pnt, map) =>
                     {
-                        Server.Engines.VvV.VvVAltar.LaunchFireworks(pnt, map);
+                        VvV.VvVAltar.LaunchFireworks(pnt, map);
                     });
                 }, i);
             }

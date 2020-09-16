@@ -123,7 +123,7 @@ namespace Server.Engines.Reports
             }
             catch (Exception e)
             {
-                Server.Diagnostics.ExceptionLogging.LogException(e);
+                Diagnostics.ExceptionLogging.LogException(e);
             }
         }
     }

@@ -22,7 +22,7 @@ namespace Server.Spells.SkillMasteries
 
         public override int RequiredMana => 20;
         public override int DamageThreshold => 0;
-        public override bool CheckManaBeforeCast { get { return !HasSpell(Caster, GetType()); } }
+        public override bool CheckManaBeforeCast => !HasSpell(Caster, GetType());
 
         public override SkillName CastSkill => SkillName.Wrestling;
 

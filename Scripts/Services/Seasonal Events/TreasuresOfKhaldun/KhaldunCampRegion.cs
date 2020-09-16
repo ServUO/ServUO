@@ -15,7 +15,7 @@ namespace Server.Engines.Khaldun
         public static KhaldunCampRegion InstanceFel { get; set; }
 
         public KhaldunCampRegion(Map map)
-            : base("Khaldun Camp Region", map, Region.DefaultPriority, new Rectangle2D(5990, 3706, 52, 88))
+            : base("Khaldun Camp Region", map, DefaultPriority, new Rectangle2D(5990, 3706, 52, 88))
         {
             Register();
         }

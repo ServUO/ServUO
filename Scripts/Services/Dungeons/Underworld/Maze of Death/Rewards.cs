@@ -186,7 +186,7 @@ namespace Server.Items
 
     public class FlouredBreadBoard : Item
     {
-        public override int LabelNumber { get { return 1113639; } } // floured bread board
+        public override int LabelNumber => 1113639;  // floured bread board
 
         [Constructable]
         public FlouredBreadBoard()

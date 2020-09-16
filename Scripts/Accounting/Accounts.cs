@@ -68,7 +68,7 @@ namespace Server.Accounting
                 catch (Exception e)
                 {
                     Console.WriteLine("Warning: Account instance load failed");
-                    Server.Diagnostics.ExceptionLogging.LogException(e);
+                    Diagnostics.ExceptionLogging.LogException(e);
                 }
             }
         }

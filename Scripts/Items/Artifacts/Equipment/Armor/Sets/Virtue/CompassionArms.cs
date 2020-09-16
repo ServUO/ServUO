@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x2B0A, 0x2B0B)]
+    [Flipable(0x2B0A, 0x2B0B)]
     public class CompassionArms : BaseArmor
     {
         public override bool IsArtifact => true;

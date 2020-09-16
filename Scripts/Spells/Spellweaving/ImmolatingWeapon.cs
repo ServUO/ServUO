@@ -105,7 +105,7 @@ namespace Server.Spells.Spellweaving
                     int duration = 10 + (int)(skill / 24) + FocusLevel;
                     int damage = 5 + (int)(skill / 24) + FocusLevel;
 
-                    Timer stopTimer = Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(duration), StopImmolating, Caster);
+                    Timer stopTimer = Timer.DelayCall(TimeSpan.FromSeconds(duration), StopImmolating, Caster);
 
                     m_WeaponDamageTable[Caster] = new ImmolatingWeaponEntry(damage, stopTimer, weapon);
 

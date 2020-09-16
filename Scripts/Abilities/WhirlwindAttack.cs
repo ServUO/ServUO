@@ -47,7 +47,7 @@ namespace Server.Items
             attacker.FixedEffect(0x3728, 10, 15);
             attacker.PlaySound(0x2A1);
 
-            System.Collections.Generic.List<Mobile> list = SpellHelper.AcquireIndirectTargets(attacker, attacker, attacker.Map, 1)
+            List<Mobile> list = SpellHelper.AcquireIndirectTargets(attacker, attacker, attacker.Map, 1)
                 .OfType<Mobile>()
                 .Where(m => attacker.InRange(m, weapon.MaxRange) && m != defender).ToList();
 

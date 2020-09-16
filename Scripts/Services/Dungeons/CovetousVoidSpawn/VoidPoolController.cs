@@ -182,7 +182,7 @@ namespace Server.Engines.VoidPool
         public override void OnDoubleClick(Mobile from)
         {
             if (from.AccessLevel >= AccessLevel.GameMaster)
-                from.SendGump(new Server.Gumps.PropertiesGump(from, this));
+                from.SendGump(new Gumps.PropertiesGump(from, this));
         }
 
         private void OnTick()
@@ -526,7 +526,7 @@ namespace Server.Engines.VoidPool
 
         public void ResetLevel3Spawners(Map map)
         {
-            Server.Region r = Server.Region.Find(new Point3D(5574, 1859, 0), map);
+            Region r = Server.Region.Find(new Point3D(5574, 1859, 0), map);
 
             foreach (Item item in r.GetEnumeratedItems().Where(i => i is ISpawner
                 && i.X >= 5501 && i.X <= 5627 && i.Y >= 1799 && i.Y <= 1927))

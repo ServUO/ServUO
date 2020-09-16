@@ -215,7 +215,7 @@ namespace Server.Engines.BulkOrders
             AddButton(505, 670, 4017, 4018, 0, GumpButtonType.Reply, 0);
         }
 
-        public override void OnResponse(Server.Network.NetState sender, RelayInfo info)
+        public override void OnResponse(Network.NetState sender, RelayInfo info)
         {
             BOBFilter f = (m_From.UseOwnFilter ? m_From.BOBFilter : m_Book.Filter);
 

@@ -407,7 +407,7 @@ namespace Server.Multis
             if (IsChildOf(m.Backpack))
             {
                 m.SendLocalizedMessage(1114918); // Select a House Teleporter to link to.
-                m.BeginTarget(-1, false, Server.Targeting.TargetFlags.None, (from, targeted) =>
+                m.BeginTarget(-1, false, TargetFlags.None, (from, targeted) =>
                 {
                     if (targeted is HouseTeleporterTile)
                     {

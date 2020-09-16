@@ -99,7 +99,7 @@ namespace Server.Engines.NewMagincia
                     }
                     catch (Exception e)
                     {
-                        Server.Diagnostics.ExceptionLogging.LogException(e);
+                        Diagnostics.ExceptionLogging.LogException(e);
                     }
 
                     if (amount > 0)
@@ -116,7 +116,7 @@ namespace Server.Engines.NewMagincia
                     {
                         amount1 = Convert.ToInt32(text2);
                     }
-                    catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
+                    catch (Exception e) { Diagnostics.ExceptionLogging.LogException(e); }
 
                     if (amount1 > 0)
                     {
@@ -237,7 +237,7 @@ namespace Server.Engines.NewMagincia
                     {
                         cost = Convert.ToInt32(relay.Text);
                     }
-                    catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
+                    catch (Exception e) { Diagnostics.ExceptionLogging.LogException(e); }
 
                     if (cost > 0)
                     {
@@ -436,7 +436,7 @@ namespace Server.Engines.NewMagincia
                             {
                                 amount = Convert.ToInt32(relay.Text);
                             }
-                            catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
+                            catch (Exception e) { Diagnostics.ExceptionLogging.LogException(e); }
 
                             if (amount > 0)
                                 entry.SalePrice = amount;

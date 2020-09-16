@@ -220,19 +220,19 @@ namespace Server.Items
                 switch (MaterialType)
                 {
                     default:
-                    case ArmorMaterialType.Cloth: return 0;
-                    case ArmorMaterialType.Spined:
-                    case ArmorMaterialType.Horned:
-                    case ArmorMaterialType.Barbed:
-                    case ArmorMaterialType.Leather: return 13;
-                    case ArmorMaterialType.Studded: return 16;
-                    case ArmorMaterialType.Ringmail: return 22;
-                    case ArmorMaterialType.Chainmail: return 28;
-                    case ArmorMaterialType.Bone: return 30;
-                    case ArmorMaterialType.Plate:
-                    case ArmorMaterialType.Dragon:
-                    case ArmorMaterialType.Wood:
-                    case ArmorMaterialType.Stone: return 40;
+                    case AMT.Cloth: return 0;
+                    case AMT.Spined:
+                    case AMT.Horned:
+                    case AMT.Barbed:
+                    case AMT.Leather: return 13;
+                    case AMT.Studded: return 16;
+                    case AMT.Ringmail: return 22;
+                    case AMT.Chainmail: return 28;
+                    case AMT.Bone: return 30;
+                    case AMT.Plate:
+                    case AMT.Dragon:
+                    case AMT.Wood:
+                    case AMT.Stone: return 40;
                 }
             }
         }
@@ -423,20 +423,20 @@ namespace Server.Items
 
             foreach (BaseArmor armor in from.Items.OfType<BaseArmor>())
             {
-                if (armor.ArmorAttributes.MageArmor > 0 || armor.MaterialType == ArmorMaterialType.Wood || armor is BaseShield)
+                if (armor.ArmorAttributes.MageArmor > 0 || armor.MaterialType == AMT.Wood || armor is BaseShield)
                     continue;
 
                 switch (armor.MaterialType)
                 {
-                    case ArmorMaterialType.Studded:
-                    case ArmorMaterialType.Bone:
-                    case ArmorMaterialType.Stone:
+                    case AMT.Studded:
+                    case AMT.Bone:
+                    case AMT.Stone:
                         toReduce += 3;
                         break;
-                    case ArmorMaterialType.Ringmail:
-                    case ArmorMaterialType.Chainmail:
-                    case ArmorMaterialType.Plate:
-                    case ArmorMaterialType.Dragon:
+                    case AMT.Ringmail:
+                    case AMT.Chainmail:
+                    case AMT.Plate:
+                    case AMT.Dragon:
                         toReduce += 1;
                         break;
                 }
@@ -467,18 +467,18 @@ namespace Server.Items
             switch (armor.MaterialType)
             {
                 default: return 0.0;
-                case ArmorMaterialType.Cloth:
-                case ArmorMaterialType.Leather:
+                case AMT.Cloth:
+                case AMT.Leather:
                     return .1;
-                case ArmorMaterialType.Wood:
-                case ArmorMaterialType.Stone:
-                case ArmorMaterialType.Studded:
-                case ArmorMaterialType.Bone:
+                case AMT.Wood:
+                case AMT.Stone:
+                case AMT.Studded:
+                case AMT.Bone:
                     return .5;
-                case ArmorMaterialType.Ringmail:
-                case ArmorMaterialType.Chainmail:
-                case ArmorMaterialType.Plate:
-                case ArmorMaterialType.Dragon:
+                case AMT.Ringmail:
+                case AMT.Chainmail:
+                case AMT.Plate:
+                case AMT.Dragon:
                     return 1.0;
             }
         }
@@ -1094,7 +1094,7 @@ namespace Server.Items
                 }
                 catch (Exception e)
                 {
-                    Server.Diagnostics.ExceptionLogging.LogException(e);
+                    Diagnostics.ExceptionLogging.LogException(e);
                 }
             }
 

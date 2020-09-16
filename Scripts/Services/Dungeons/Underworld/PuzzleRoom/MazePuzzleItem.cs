@@ -112,8 +112,8 @@ namespace Server.Items
                 m.FixedParticles(0x3818, 1, 11, 0x13A8, 0, 0, EffectLayer.Head);
                 m.PlaySound(0x1DC);
 
-                m.LocalOverheadMessage(Server.Network.MessageType.Regular, 0x21, 1114443); // * Your body convulses from electric shock *
-                m.NonlocalOverheadMessage(Server.Network.MessageType.Regular, 0x21, 1114443, m.Name); //  * ~1_NAME~ spasms from electric shock *
+                m.LocalOverheadMessage(Network.MessageType.Regular, 0x21, 1114443); // * Your body convulses from electric shock *
+                m.NonlocalOverheadMessage(Network.MessageType.Regular, 0x21, 1114443, m.Name); //  * ~1_NAME~ spasms from electric shock *
             }
         }
 

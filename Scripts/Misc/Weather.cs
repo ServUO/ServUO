@@ -397,7 +397,7 @@ namespace Server.Misc
                         continue;
 
                     if (weatherPacket == null)
-                        weatherPacket = Packet.Acquire(new Server.Network.Weather(type, density, temperature));
+                        weatherPacket = Packet.Acquire(new Network.Weather(type, density, temperature));
 
                     ns.Send(weatherPacket);
                 }

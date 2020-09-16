@@ -124,7 +124,7 @@ namespace Server.Mobiles
                 z = Map.GetAverageZ(x, y);
                 Point3D p = new Point3D(x, y, z);
 
-                if (Server.Spells.SpellHelper.AdjustField(ref p, Map, 12, false))/*Map.CanFit(x, y, z, 16, false, false, true))/*Map.CanSpawnMobile(x, y, z)*/
+                if (Spells.SpellHelper.AdjustField(ref p, Map, 12, false))/*Map.CanFit(x, y, z, 16, false, false, true))/*Map.CanSpawnMobile(x, y, z)*/
                 {
                     MovementPath path = new MovementPath(this, p);
 
@@ -599,7 +599,7 @@ namespace Server.Mobiles
                 if (quest != null && !quest.Completed)
                     quest.Update(this);
 
-                Protector.PrivateOverheadMessage(Server.Network.MessageType.Regular, 0x35, 1156501, Protector.NetState); // *You watch as the Tiger Cub safely returns to the Kurak Tribe*
+                Protector.PrivateOverheadMessage(Network.MessageType.Regular, 0x35, 1156501, Protector.NetState); // *You watch as the Tiger Cub safely returns to the Kurak Tribe*
 
                 Timer.DelayCall(TimeSpan.FromSeconds(.25), Delete);
                 Protector = null;
@@ -610,7 +610,7 @@ namespace Server.Mobiles
         {
             if (from == Protector)
             {
-                PrivateOverheadMessage(Server.Network.MessageType.Regular, 0x35, 1156500, from.NetState); // *The cub looks at you playfully. Your attack fails as you are overwhelmed by its cuteness*
+                PrivateOverheadMessage(Network.MessageType.Regular, 0x35, 1156500, from.NetState); // *The cub looks at you playfully. Your attack fails as you are overwhelmed by its cuteness*
                 return 0;
             }
 

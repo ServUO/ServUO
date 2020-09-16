@@ -293,14 +293,14 @@ namespace Server.Gumps
         {
             mob.SendPropertiesTo(User);
 
-            base.AddItemProperty(mob.Serial.Value);
+            AddItemProperty(mob.Serial.Value);
         }
 
         public void AddProperties(Spoof spoof)
         {
             User.Send(spoof.PropertyList);
 
-            base.AddItemProperty(spoof.Serial.Value);
+            AddItemProperty(spoof.Serial.Value);
         }
 
         #region Formatting

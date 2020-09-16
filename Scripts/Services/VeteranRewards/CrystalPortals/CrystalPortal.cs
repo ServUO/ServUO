@@ -71,7 +71,7 @@ namespace Server.Items
                 return false;
             }
 
-            if (Server.Engines.VvV.VvVSigil.ExistsOn(m))
+            if (Engines.VvV.VvVSigil.ExistsOn(m))
             {
                 if (message)
                 {

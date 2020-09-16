@@ -41,7 +41,7 @@ namespace Server.Items
 
         [Constructable]
         public WrongBarredMetalDoor(DoorFacing facing)
-            : base(0x685 + (2 * (int)facing), 0x686 + (2 * (int)facing), 0xEC, 0xF3, BaseDoor.GetOffset(facing))
+            : base(0x685 + (2 * (int)facing), 0x686 + (2 * (int)facing), 0xEC, 0xF3, GetOffset(facing))
         {
             Locked = true;
             m_LockLevel = 80;

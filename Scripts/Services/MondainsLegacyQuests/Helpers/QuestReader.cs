@@ -55,7 +55,7 @@ namespace Server.Engines.Quests
                     catch (Exception e)
                     {
                         Console.WriteLine("Quest Load Failure: {0}", Utility.FormatDelegate(deserializer));
-                        Server.Diagnostics.ExceptionLogging.LogException(e);
+                        Diagnostics.ExceptionLogging.LogException(e);
 
                         return false;
                     }

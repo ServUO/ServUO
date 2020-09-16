@@ -235,7 +235,7 @@ namespace Server
 				}
 				catch (Exception ex)
 				{
-					Server.Diagnostics.ExceptionLogging.LogException(ex);
+                    Diagnostics.ExceptionLogging.LogException(ex);
 				}
 
 				if (CrashedHandler != null)
@@ -247,7 +247,7 @@ namespace Server
 					}
 					catch (Exception ex)
 					{
-						Server.Diagnostics.ExceptionLogging.LogException(ex);
+                        Diagnostics.ExceptionLogging.LogException(ex);
 					}
 				}
 
@@ -412,7 +412,7 @@ namespace Server
 				else if (Insensitive.Equals(a, "-h") || Insensitive.Equals(a, "-help"))
 				{
 					Console.WriteLine("An Ultima Online server emulator written in C# - Visit https://www.servuo.com for more information.\n\n");
-					Console.WriteLine(System.AppDomain.CurrentDomain.FriendlyName + " [Parameter]\n\n");
+					Console.WriteLine(AppDomain.CurrentDomain.FriendlyName + " [Parameter]\n\n");
 					Console.WriteLine("     -debug              Starting ServUO in Debug Mode. Debug Mode is being used in Core and Scripts to give extended inforamtion during runtime.");
 					Console.WriteLine("     -haltonwarning      ServUO halts if any warning is raised during compilation of scripts.");
 					Console.WriteLine("     -h or -help         Displays this help text.");
@@ -423,7 +423,7 @@ namespace Server
 					Console.WriteLine("     -usehrt             Enables High Resolution Timing if requirements are met. Increasing the resolution of the timer. *Windows only*");
 					Console.WriteLine("     -vb                 Enables compilation of VB.NET Scripts. Without this option VB.NET Scripts are skipped.");
 
-					System.Environment.Exit(0);
+                    Environment.Exit(0);
 				}
 			}
 
@@ -450,7 +450,7 @@ namespace Server
 			}
 			catch (Exception e)
 			{
-				Server.Diagnostics.ExceptionLogging.LogException(e);
+                Diagnostics.ExceptionLogging.LogException(e);
 			}
 
 			Thread = Thread.CurrentThread;

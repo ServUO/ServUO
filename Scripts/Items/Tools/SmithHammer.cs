@@ -2,7 +2,7 @@ using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    [FlipableAttribute(0x13E3, 0x13E4)]
+    [Flipable(0x13E3, 0x13E4)]
     public class SmithHammer : BaseTool
     {
         [Constructable]

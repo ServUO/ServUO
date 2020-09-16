@@ -19,7 +19,7 @@ namespace Server.Engines.VvV
 
             AddBackground(0, 0, 500, 200, 83);
 
-            AddHtmlLocalized(0, 25, 500, 20, 1154645, "#1155582", Engines.Quests.BaseQuestGump.C32216(0xFF0000), false, false);
+            AddHtmlLocalized(0, 25, 500, 20, 1154645, "#1155582", Quests.BaseQuestGump.C32216(0xFF0000), false, false);
             AddHtmlLocalized(10, 55, 480, 100, 1154645, "#1155583", 0xFFFF, false, false); // You are in an active Vice vs Virtue battle region!  If you do not leave the City you will be open to attack!
 
             AddButton(463, 168, 4005, 4007, 1, GumpButtonType.Reply, 0);

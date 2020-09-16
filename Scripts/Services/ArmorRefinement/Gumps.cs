@@ -144,7 +144,7 @@ namespace Server.Gumps
                         from.SendLocalizedMessage(1054107); // This item must be in your backpack.
                     else if (armor.ArmorAttributes.MageArmor > 0)
                         from.SendLocalizedMessage(1153986); // You cannot refine this piece of armor! 
-                    else if (!RefinementGump.CanApplyToArmor(from, armor, m_Item))
+                    else if (!CanApplyToArmor(from, armor, m_Item))
                         from.SendLocalizedMessage(1153987); // The type of armor you have selected is not compatible with this Refinement Tool. 
                     else if (RefinementItem.CheckForVendor(from, m_Item))
                     {

@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0xA565, 0xA566)]
+    [Flipable(0xA565, 0xA566)]
     public class DecorativeGardenSculpture : Item, IDyable
     {
         public override string DefaultName => "Garden Sculpture";

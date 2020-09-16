@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x4205, 0x420B)]
+    [Flipable(0x4205, 0x420B)]
     public class LargeStoneShield : BaseShield
     {
         [Constructable]

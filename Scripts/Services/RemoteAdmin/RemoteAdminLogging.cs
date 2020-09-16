@@ -51,7 +51,7 @@ namespace Server.RemoteAdmin
             catch (Exception e)
             {
                 Console.WriteLine("RemoteAdminLogging: Failed to initialize LogWriter.");
-                Server.Diagnostics.ExceptionLogging.LogException(e);
+                Diagnostics.ExceptionLogging.LogException(e);
                 m_Enabled = false;
             }
         }
@@ -101,7 +101,7 @@ namespace Server.RemoteAdmin
             }
             catch (Exception e)
             {
-                Server.Diagnostics.ExceptionLogging.LogException(e);
+                Diagnostics.ExceptionLogging.LogException(e);
             }
         }
     }

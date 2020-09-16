@@ -40,7 +40,7 @@ namespace Server.Engines.VvV
 
             Container pack = mob.Backpack;
 
-            return Server.Engines.VvV.ViceVsVirtueSystem.Enabled && vvvOnly && pack.FindItemByType(typeof(Server.Engines.VvV.VvVSigil)) != null;
+            return ViceVsVirtueSystem.Enabled && vvvOnly && pack.FindItemByType(typeof(VvVSigil)) != null;
         }
 
         public void OnStolen(VvVPlayerEntry entry)

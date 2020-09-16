@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x1c0c, 0x1c0d)]
+    [Flipable(0x1c0c, 0x1c0d)]
     public class StuddedBustierArms : BaseArmor
     {
         [Constructable]

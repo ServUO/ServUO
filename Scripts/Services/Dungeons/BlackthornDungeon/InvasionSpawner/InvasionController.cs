@@ -111,7 +111,7 @@ namespace Server.Engines.Blackthorn
         {
             if (from.AccessLevel > AccessLevel.GameMaster)
             {
-                from.SendGump(new Server.Gumps.PropertiesGump(from, this));
+                from.SendGump(new Gumps.PropertiesGump(from, this));
             }
         }
 
@@ -350,7 +350,7 @@ namespace Server.Engines.Blackthorn
             foreach (Mobile m in eable)
             {
                 if (m != null && m.NetState != null)
-                    m.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1154, 1154550, m.NetState); // *A sound roars in the distance...Minax's Beacon is vulnerable to attack!!*
+                    m.PrivateOverheadMessage(Network.MessageType.Regular, 1154, 1154550, m.NetState); // *A sound roars in the distance...Minax's Beacon is vulnerable to attack!!*
             }
 
             eable.Free();

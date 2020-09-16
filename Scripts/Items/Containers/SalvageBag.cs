@@ -162,7 +162,7 @@ namespace Server.Items
             }
             catch (Exception e)
             {
-                Server.Diagnostics.ExceptionLogging.LogException(e);
+                Diagnostics.ExceptionLogging.LogException(e);
             }
 
             return false;
@@ -269,7 +269,7 @@ namespace Server.Items
 
             Container pack = from.Backpack;
 
-            foreach (Item i in (this).FindItemsByType(typeof(Item), true))
+            foreach (Item i in FindItemsByType(typeof(Item), true))
             {
                 if ((i is Leather) || (i is Cloth) || (i is SpinedLeather) || (i is HornedLeather) || (i is BarbedLeather) || (i is Bandage) || (i is Bone))
                 {

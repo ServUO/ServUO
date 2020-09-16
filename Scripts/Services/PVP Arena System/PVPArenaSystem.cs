@@ -391,7 +391,7 @@ namespace Server.Engines.ArenaSystem
         {
             Mobile m = e.Mobile;
 
-            m.BeginTarget(-1, false, Server.Targeting.TargetFlags.None, (fro, targeted) =>
+            m.BeginTarget(-1, false, Targeting.TargetFlags.None, (fro, targeted) =>
                 {
                     if (m is PlayerMobile && targeted is ArenaStone)
                     {

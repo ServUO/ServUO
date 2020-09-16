@@ -20,7 +20,7 @@ namespace Server.Mobiles
         public DateTime NextPay { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Pay { get { return PerDayCost(); } }
+        public int Pay => PerDayCost();
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int HoldGold { get; set; }

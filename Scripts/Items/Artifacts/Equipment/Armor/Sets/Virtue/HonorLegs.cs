@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x2B06, 0x2B07)]
+    [Flipable(0x2B06, 0x2B07)]
     public class HonorLegs : BaseArmor
     {
         public override bool IsArtifact => true;

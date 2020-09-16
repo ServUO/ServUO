@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x2B73, 0x316A)]
+    [Flipable(0x2B73, 0x316A)]
     public class WingedHelm : BaseArmor
     {
         [Constructable]

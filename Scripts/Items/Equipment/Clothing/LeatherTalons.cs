@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x41D8, 0x41D9)]
+    [Flipable(0x41D8, 0x41D9)]
     public class LeatherTalons : BaseShoes
     {
         [Constructable]

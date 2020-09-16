@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x19BC, 0x19BD)]
+    [Flipable(0x19BC, 0x19BD)]
     public partial class BaseCostume : BaseShield
     {
         public bool m_Transformed;

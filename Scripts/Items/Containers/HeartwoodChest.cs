@@ -3,7 +3,7 @@ namespace Server.Items
     [Flipable(0x9AA, 0xE7D)]
     public class HeartwoodChest : LockableContainer
     {
-        public override int LabelNumber { get { return 1075503; } } // Heartwood Chest
+        public override int LabelNumber => 1075503;  // Heartwood Chest
 
         [Constructable]
         public HeartwoodChest()

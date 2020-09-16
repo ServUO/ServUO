@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class MarinersBrassSextant : Sextant
     {
-        public override int LabelNumber { get { return 1075499; } } // Mariner's Brass Sextant
+        public override int LabelNumber => 1075499;  // Mariner's Brass Sextant
 
         [Constructable]
         public MarinersBrassSextant()
@@ -201,7 +201,7 @@ namespace Server.Items
             int xMins = 0, yMins = 0;
             bool xEast = false, ySouth = false;
 
-            if (Sextant.Format(location, map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
+            if (Format(location, map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
             {
                 return string.Format("{0}° {1}'{2}, {3}° {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
             }

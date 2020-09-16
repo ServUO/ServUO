@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x48B8, 0x48B9)]
+    [Flipable(0x48B8, 0x48B9)]
     public class GargishGnarledStaff : BaseStaff
     {
         [Constructable]

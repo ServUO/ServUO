@@ -857,7 +857,7 @@ namespace Server.Multis
 
         public override DryDockResult CheckDryDock(Mobile from, Mobile dockmaster)
         {
-            if (this is BaseGalleon && (this).GalleonHold.Items.Count > 0)
+            if (this is BaseGalleon && GalleonHold.Items.Count > 0)
                 return DryDockResult.Hold;
 
             Container pack = from.Backpack;

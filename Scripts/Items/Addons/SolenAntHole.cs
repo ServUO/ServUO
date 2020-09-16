@@ -155,7 +155,7 @@ namespace Server.Items
 
             writer.WriteEncodedInt(0); // version
 
-            writer.WriteMobileList<Mobile>(m_Spawned);
+            writer.WriteMobileList(m_Spawned);
         }
 
         public override void Deserialize(GenericReader reader)

@@ -498,7 +498,7 @@ namespace Server.Items
 
         public static Item GetRandomRecipe()
         {
-            List<Server.Engines.Craft.Recipe> recipes = new List<Server.Engines.Craft.Recipe>(Server.Engines.Craft.Recipe.Recipes.Values);
+            List<Engines.Craft.Recipe> recipes = new List<Engines.Craft.Recipe>(Engines.Craft.Recipe.Recipes.Values);
 
             return new RecipeScroll(recipes[Utility.Random(recipes.Count)]);
         }
@@ -790,7 +790,7 @@ namespace Server.Items
                 AOS.Damage(from, damage, 0, 100, 0, 0, 0);
 
                 // Your skin blisters from the heat!
-                from.LocalOverheadMessage(Network.MessageType.Regular, 0x2A, 503000);
+                from.LocalOverheadMessage(MessageType.Regular, 0x2A, 503000);
 
                 Effects.SendLocationEffect(from.Location, from.Map, 0x36BD, 15, 10);
                 Effects.PlaySound(from.Location, from.Map, 0x307);

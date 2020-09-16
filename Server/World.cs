@@ -327,7 +327,7 @@ namespace Server
 							}
 							catch (Exception ex)
 							{
-								Server.Diagnostics.ExceptionLogging.LogException(ex);
+                                Diagnostics.ExceptionLogging.LogException(ex);
 							}
 
 							if (m != null)
@@ -389,7 +389,7 @@ namespace Server
 							}
 							catch (Exception e)
 							{
-								Server.Diagnostics.ExceptionLogging.LogException(e);
+                                Diagnostics.ExceptionLogging.LogException(e);
 							}
 
 							if (item != null)
@@ -755,7 +755,7 @@ namespace Server
 			}
 			catch (Exception ex)
 			{
-				Server.Diagnostics.ExceptionLogging.LogException(ex);
+                Diagnostics.ExceptionLogging.LogException(ex);
 			}
 		}
 

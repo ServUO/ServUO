@@ -7,7 +7,7 @@ namespace Server
     {
         public static void Replace(Item item1, Item item2)
         {
-            Timer.DelayCall<Item, Item>(TimeSpan.FromSeconds(1), (oldItem, newItem) =>
+            Timer.DelayCall(TimeSpan.FromSeconds(1), (oldItem, newItem) =>
             {
                 object parent = oldItem.Parent;
 

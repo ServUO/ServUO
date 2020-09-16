@@ -202,7 +202,7 @@ namespace Server.Mobiles
             if (best != null)
             {
                 // teleport
-                best.Location = BasePeerless.GetSpawnPosition(Location, Map, 1);
+                best.Location = GetSpawnPosition(Location, Map, 1);
                 best.FixedParticles(0x376A, 9, 32, 0x13AF, EffectLayer.Waist);
                 best.PlaySound(0x1FE);
 

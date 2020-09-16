@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0xA1DE, 0xA1DF)]
+    [Flipable(0xA1DE, 0xA1DF)]
     public class ZombiePainting : Item
     {
         public override int LabelNumber => 1023744;  // painting
@@ -30,7 +30,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0xA1E0, 0xA1E1)]
+    [Flipable(0xA1E0, 0xA1E1)]
     public class SkeletonPortrait : Item
     {
         public override int LabelNumber => 1023744;  // painting
@@ -60,7 +60,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0xA1E2, 0xA1E3)]
+    [Flipable(0xA1E2, 0xA1E3)]
     public class LichPainting : Item
     {
         public override int LabelNumber => 1023744;  // painting

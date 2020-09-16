@@ -569,7 +569,7 @@ namespace Server.Mobiles
                         }
                         catch (Exception e)
                         {
-                            Server.Diagnostics.ExceptionLogging.LogException(e);
+                            Diagnostics.ExceptionLogging.LogException(e);
                         }
 
                         if (ammo != null)
@@ -921,7 +921,7 @@ namespace Server.Mobiles
                         }
                     });
 
-                    pm.NextActionTime = Core.TickCount + (Mobile.ActionDelay * e.List.Count);
+                    pm.NextActionTime = Core.TickCount + (ActionDelay * e.List.Count);
                 }
             }
             else
@@ -950,7 +950,7 @@ namespace Server.Mobiles
                         }
                     }
 
-                    pm.NextActionTime = Core.TickCount + Mobile.ActionDelay;
+                    pm.NextActionTime = Core.TickCount + ActionDelay;
                     ColUtility.Free(worn);
                 }
             }
@@ -1511,7 +1511,7 @@ namespace Server.Mobiles
             }
             catch (Exception e)
             {
-                Server.Diagnostics.ExceptionLogging.LogException(e);
+                Diagnostics.ExceptionLogging.LogException(e);
             }
             finally
             {
@@ -5190,13 +5190,7 @@ namespace Server.Mobiles
         public Dictionary<QuestChain, BaseChain> Chains => MondainQuestData.GetChains(this);
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Peaced
-        {
-            get
-            {
-                return PeacedUntil > DateTime.UtcNow;
-            }
-        }
+        public bool Peaced => PeacedUntil > DateTime.UtcNow;
 
         private Dictionary<Collection, int> m_Collections;
         private List<object> m_RewardTitles;

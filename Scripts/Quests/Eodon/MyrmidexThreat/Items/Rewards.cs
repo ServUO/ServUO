@@ -164,7 +164,7 @@ namespace Server.Items
 
                 AddHtmlLocalized(0, 15, 400, 16, 1154645, "#1156704", 0xFFFF, false, false); // Select your destination:
 
-                ColUtility.For<int, Point3D>(MoonstoneCrystal.Locations, (i, key, value) =>
+                ColUtility.For(Locations, (i, key, value) =>
                 {
                     AddHtmlLocalized(60, 45 + (i * 25), 250, 16, key, 0xFFFF, false, false);
                     AddButton(20, 50 + (i * 25), 2117, 2118, key, GumpButtonType.Reply, 0);
@@ -177,9 +177,9 @@ namespace Server.Items
                 {
                     int id = info.ButtonID;
 
-                    if (MoonstoneCrystal.Locations.ContainsKey(id))
+                    if (Locations.ContainsKey(id))
                     {
-                        Point3D p = MoonstoneCrystal.Locations[id];
+                        Point3D p = Locations[id];
 
                         if (CheckTravel(p))
                         {
@@ -210,7 +210,7 @@ namespace Server.Items
                 {
                     User.SendLocalizedMessage(1005561, "", 0x22); // Thou'rt a criminal and cannot escape so easily.
                 }
-                else if (Server.Spells.SpellHelper.CheckCombat(User))
+                else if (Spells.SpellHelper.CheckCombat(User))
                 {
                     User.SendLocalizedMessage(1005564, "", 0x22); // Wouldst thou flee during the heat of battle??
                 }

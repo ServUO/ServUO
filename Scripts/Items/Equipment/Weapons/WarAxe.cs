@@ -4,7 +4,7 @@ using Server.Engines.Harvest;
 namespace Server.Items
 {
     [Alterable(typeof(DefBlacksmithy), typeof(DiscMace))]
-    [FlipableAttribute(0x13B0, 0x13AF)]
+    [Flipable(0x13B0, 0x13AF)]
     public class WarAxe : BaseAxe
     {
         [Constructable]

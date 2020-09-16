@@ -155,7 +155,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime NextEvaluate { get; set; }
 
-        public override BaseAddonContainerDeed Deed { get { return null; } }
+        public override BaseAddonContainerDeed Deed => null;
 
         public override void OnChop(Mobile from)
         {
@@ -426,7 +426,7 @@ namespace Server.Items
                 list.Add(1074254, "{0}\t{1}\t{2}", m_Water.Added, m_Water.Maintain, m_Water.Improve); // Water Added: ~1_CUR~ Maintain: ~2_NEED~ Improve: ~3_GROW~
         }
 
-        public override bool DisplayWeight { get { return false; } }
+        public override bool DisplayWeight => false;
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
         {
@@ -753,7 +753,7 @@ namespace Server.Items
             }
             catch (Exception e)
             {
-                Server.Diagnostics.ExceptionLogging.LogException(e);
+                Diagnostics.ExceptionLogging.LogException(e);
             }
 
             if (item == null)

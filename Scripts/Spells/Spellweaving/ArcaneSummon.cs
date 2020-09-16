@@ -42,7 +42,7 @@ namespace Server.Spells.Spellweaving
                     }
                     catch (Exception e)
                     {
-                        Server.Diagnostics.ExceptionLogging.LogException(e);
+                        Diagnostics.ExceptionLogging.LogException(e);
                         break;
                     }
 

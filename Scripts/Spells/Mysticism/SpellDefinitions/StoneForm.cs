@@ -150,7 +150,7 @@ namespace Server.Spells.Mysticism
 
         private static int GetMaxResistance(Mobile m)
         {
-            if (Server.Items.BaseArmor.HasRefinedResist(m))
+            if (Items.BaseArmor.HasRefinedResist(m))
                 return 0;
 
             int prim = (int)m.Skills[SkillName.Mysticism].Value;
@@ -185,7 +185,7 @@ namespace Server.Spells.Mysticism
 
                 int immunity = (int)(((double)(prim + sec) / 480) * 100);
 
-                if (Server.Spells.Necromancy.EvilOmenSpell.TryEndEffect(from))
+                if (Necromancy.EvilOmenSpell.TryEndEffect(from))
                     immunity -= 30;
 
                 return immunity > Utility.Random(100);

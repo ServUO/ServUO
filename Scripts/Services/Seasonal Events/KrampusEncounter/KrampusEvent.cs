@@ -267,7 +267,7 @@ namespace Server.Engines.SeasonalEvents
 
         public static void Configure()
         {
-            if (System.IO.File.Exists(FilePath))
+            if (File.Exists(FilePath))
             {
                 EventSink.WorldLoad += OnLoad;
             }
@@ -291,7 +291,7 @@ namespace Server.Engines.SeasonalEvents
                             }
                             catch (Exception e)
                             {
-                                Server.Diagnostics.ExceptionLogging.LogException(e);
+                                Diagnostics.ExceptionLogging.LogException(e);
                             }
                         });
                     }
@@ -300,11 +300,11 @@ namespace Server.Engines.SeasonalEvents
                     {
                         try
                         {
-                            System.IO.File.Delete(FilePath);
+                            File.Delete(FilePath);
                         }
                         catch (Exception e)
                         {
-                            Server.Diagnostics.ExceptionLogging.LogException(e);
+                            Diagnostics.ExceptionLogging.LogException(e);
                         }
                     });
                 });

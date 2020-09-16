@@ -13,7 +13,7 @@ namespace Server.Items
     [Flipable(0x194B, 0x194C)]
     public class SurveyorsScope : HousePlacementTool
     {
-        public override int LabelNumber { get { return 1026475; } } // surveyor's scope
+        public override int LabelNumber => 1026475;  // surveyor's scope
 
         [Constructable]
         public SurveyorsScope()
@@ -67,7 +67,7 @@ namespace Server.Items
         {
             if (IsChildOf(from.Backpack))
             {
-                if (from.Map == Map.TerMur && !Server.Engines.Points.PointsSystem.QueensLoyalty.IsNoble(from))
+                if (from.Map == Map.TerMur && !Engines.Points.PointsSystem.QueensLoyalty.IsNoble(from))
                 {
                     from.SendLocalizedMessage(1113713); // You must rise to the rank of noble in the eyes of the Gargoyle Queen before her majesty will allow you to build a house in her lands.
                     return;
@@ -145,7 +145,7 @@ namespace Server.Items
             }
         }
 
-        public override void OnResponse(Server.Network.NetState sender, RelayInfo info)
+        public override void OnResponse(NetState sender, RelayInfo info)
         {
             if (!m_From.CheckAlive() || m_From.Backpack == null || !m_Tool.IsChildOf(m_From.Backpack))
                 return;
@@ -667,7 +667,7 @@ namespace Server.Items
             }
             catch (Exception e)
             {
-                Server.Diagnostics.ExceptionLogging.LogException(e);
+                Diagnostics.ExceptionLogging.LogException(e);
             }
 
             return null;

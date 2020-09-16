@@ -6,7 +6,7 @@ namespace Server.Items
 
     // ---------- [Level 1] ----------
     // Large, Medium and Small Crate
-    [FlipableAttribute(0xe3e, 0xe3f)]
+    [Flipable(0xe3e, 0xe3f)]
     public class TreasureLevel1 : BaseTreasureChestMod
     {
         public override int DefaultGumpID => 0x49;
@@ -53,7 +53,7 @@ namespace Server.Items
 
     // ---------- [Level 1 Hybrid] ----------
     // Large, Medium and Small Crate
-    [FlipableAttribute(0xe3e, 0xe3f)]
+    [Flipable(0xe3e, 0xe3f)]
     public class TreasureLevel1h : BaseTreasureChestMod
     {
         public override int DefaultGumpID => 0x49;
@@ -106,7 +106,7 @@ namespace Server.Items
     // Large, Medium and Small Crate
     // Wooden, Metal and Metal Golden Chest
     // Keg and Barrel
-    [FlipableAttribute(0xe43, 0xe42)]
+    [Flipable(0xe43, 0xe42)]
     public class TreasureLevel2 : BaseTreasureChestMod
     {
         [Constructable]
@@ -157,7 +157,7 @@ namespace Server.Items
 
     // ---------- [Level 3] ----------
     // Wooden, Metal and Metal Golden Chest
-    [FlipableAttribute(0x9ab, 0xe7c)]
+    [Flipable(0x9ab, 0xe7c)]
     public class TreasureLevel3 : BaseTreasureChestMod
     {
         public override int DefaultGumpID => 0x4A;
@@ -235,7 +235,7 @@ namespace Server.Items
 
     // ---------- [Level 4] ----------
     // Wooden, Metal and Metal Golden Chest
-    [FlipableAttribute(0xe41, 0xe40)]
+    [Flipable(0xe41, 0xe40)]
     public class TreasureLevel4 : BaseTreasureChestMod
     {
         [Constructable]

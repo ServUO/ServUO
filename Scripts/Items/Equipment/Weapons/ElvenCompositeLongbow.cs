@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    [FlipableAttribute(0x2D1E, 0x2D2A)]
+    [Flipable(0x2D1E, 0x2D2A)]
     public class ElvenCompositeLongbow : BaseRanged
     {
         [Constructable]

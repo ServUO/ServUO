@@ -244,7 +244,7 @@ namespace Server.Engines.SeasonalEvents
         [CommandProperty(AccessLevel.Administrator)]
         public bool Running { get; protected set; }
 
-        public virtual bool FreezeDuration { get { return false; } }
+        public virtual bool FreezeDuration => false;
 
         public override string ToString()
         {

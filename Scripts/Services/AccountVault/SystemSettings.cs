@@ -24,15 +24,9 @@ namespace Server.AccountVault
 
         internal static int AuctionDuration = 480;
 
-        public static int MaxBalance
-        {
-            get { return UseTokens ? MaxTokenBalance : MaxGoldBalance; }
-        }
+        public static int MaxBalance => UseTokens ? MaxTokenBalance : MaxGoldBalance;
 
-        public static int RentValue
-        {
-            get { return UseTokens ? RentTokenValue : RentGoldValue; }
-        }
+        public static int RentValue => UseTokens ? RentTokenValue : RentGoldValue;
 
         internal static string Humanize(this TimeSpan timeSpan)
         {
@@ -120,7 +114,7 @@ namespace Server.AccountVault
             }
         }
 
-        public static string[] VaultRegions { get { return _VaultRegions; } }
+        public static string[] VaultRegions => _VaultRegions;
 
         private static string[] _VaultRegions = new[]
         {

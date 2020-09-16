@@ -270,7 +270,7 @@ namespace Server.Items
 
             public void Expire()
             {
-                MagicalFishFinder.ExpireSchool(Map, this);
+                ExpireSchool(Map, this);
             }
         }
     }

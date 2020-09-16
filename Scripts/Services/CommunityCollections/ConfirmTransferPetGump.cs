@@ -35,7 +35,7 @@ namespace Server.Gumps
             Cancel,
             Continue,
         }
-        public override void OnResponse(Server.Network.NetState state, RelayInfo info)
+        public override void OnResponse(Network.NetState state, RelayInfo info)
         {
             if (m_Collection == null || m_Pet == null || m_Pet.Deleted || m_Pet.ControlMaster != state.Mobile || !state.Mobile.InRange(m_Location, 2))
                 return;

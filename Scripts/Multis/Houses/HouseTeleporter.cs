@@ -200,7 +200,7 @@ namespace Server.Items
                         Point3D p = target.GetWorldTop();
                         Map map = target.Map;
 
-                        Server.Mobiles.BaseCreature.TeleportPets(m, p, map);
+                        BaseCreature.TeleportPets(m, p, map);
 
                         m.MoveToWorld(p, map);
 

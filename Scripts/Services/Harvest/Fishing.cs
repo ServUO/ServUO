@@ -223,7 +223,7 @@ namespace Server.Engines.Harvest
                         {
                             if (sp.Charydbis == null && !sp.HasSpawned && sp.CurrentLocation.Contains(loc))
                             {
-                                Server.Multis.BaseBoat boat = Server.Multis.BaseBoat.FindBoatAt(from, from.Map);
+                                Multis.BaseBoat boat = Multis.BaseBoat.FindBoatAt(from, from.Map);
                                 sp.SpawnCharydbis(from, loc, sp.Map, boat);
                                 sp.HasSpawned = true;
                                 pole.OnFishedHarvest(from, true);
@@ -285,7 +285,7 @@ namespace Server.Engines.Harvest
 
         private bool IsDeepWater(Point3D p, Map map)
         {
-            return Items.SpecialFishingNet.ValidateDeepWater(map, p.X, p.Y) && (map == Map.Trammel || map == Map.Felucca || map == Map.Tokuno);
+            return SpecialFishingNet.ValidateDeepWater(map, p.X, p.Y) && (map == Map.Trammel || map == Map.Felucca || map == Map.Tokuno);
         }
 
         public override bool CheckResources(Mobile from, Item tool, HarvestDefinition def, Map map, Point3D loc, bool timed)

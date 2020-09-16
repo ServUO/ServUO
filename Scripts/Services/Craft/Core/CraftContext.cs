@@ -167,7 +167,7 @@ namespace Server.Engines.Craft
 
         public static bool IsAnvilReady(Mobile m)
         {
-            var entry = CraftContext.GetAnvilEntry(m, false);
+            var entry = GetAnvilEntry(m, false);
 
             if (entry != null)
             {
@@ -326,7 +326,7 @@ namespace Server.Engines.Craft
             }
 
             writer.Write(Ready);
-            writer.WriteItem<AnvilofArtifactsAddon>(_Anvil);
+            writer.WriteItem(_Anvil);
         }
 
         public void Deserialize(GenericReader reader)

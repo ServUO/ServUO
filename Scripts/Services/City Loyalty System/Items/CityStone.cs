@@ -139,7 +139,7 @@ namespace Server.Engines.CityLoyalty
                             if (targeted is IPoint3D)
                             {
                                 IPoint3D p = targeted as IPoint3D;
-                                Server.Spells.SpellHelper.GetSurfaceTop(ref p);
+                                Spells.SpellHelper.GetSurfaceTop(ref p);
                                 BallotBox box = new BallotBox();
 
                                 if (CheckLocation(m, box, p))

@@ -37,14 +37,14 @@ namespace Server.Items
         {
             if (m_key != Parts.None)
             {
-                (new LockerKey(m_key)).MoveToWorld(new Point3D(base.Location), base.Map);
+                (new LockerKey(m_key)).MoveToWorld(new Point3D(base.Location), Map);
                 m_StorageLocker.BeginRestart(TimeSpan.FromMinutes(10.0));
             }
             else
             {
                 Item debris = new WoodKeyDebris();
                 debris.Movable = false;
-                debris.MoveToWorld(new Point3D(base.Location), base.Map);
+                debris.MoveToWorld(new Point3D(base.Location), Map);
 
                 switch (Utility.Random(3))
                 {

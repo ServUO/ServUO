@@ -57,7 +57,7 @@ namespace Server.Multis
                 return HousePlacementResult.InvalidCastleKeep;
 
             #region SA
-            if (map == Map.TerMur && !Server.Engines.Points.PointsSystem.QueensLoyalty.IsNoble(from))
+            if (map == Map.TerMur && !Engines.Points.PointsSystem.QueensLoyalty.IsNoble(from))
             {
                 return HousePlacementResult.NoQueenLoyalty;
             }

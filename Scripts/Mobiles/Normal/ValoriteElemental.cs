@@ -97,7 +97,7 @@ namespace Server.Mobiles
 
             foreach (Mobile m in list)
             {
-                Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(.5), mob =>
+                Timer.DelayCall(TimeSpan.FromSeconds(.5), mob =>
                 {
                     mob.FixedParticles(0x36BD, 20, 10, 5044, EffectLayer.Head);
                     mob.PlaySound(0x307);

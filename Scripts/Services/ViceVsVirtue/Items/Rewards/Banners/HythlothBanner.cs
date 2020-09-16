@@ -3,7 +3,7 @@ using Server.Items;
 
 namespace Server.Engines.VvV
 {
-    [FlipableAttribute(39343, 39344)]
+    [Flipable(39343, 39344)]
     public class HythlothBanner : Item
     {
         public override int LabelNumber => 1123367;

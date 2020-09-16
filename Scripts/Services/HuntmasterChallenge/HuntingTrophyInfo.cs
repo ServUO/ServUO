@@ -149,9 +149,9 @@ namespace Server.Engines.HuntsmasterChallenge
 
         public static int CheckInfo(int number)
         {
-            for (int i = 0; i < HuntingTrophyInfo.Infos.Count; i++)
+            for (int i = 0; i < Infos.Count; i++)
             {
-                HuntingTrophyInfo info = HuntingTrophyInfo.Infos[i];
+                HuntingTrophyInfo info = Infos[i];
 
                 if (info.Species.Number == number)
                 {

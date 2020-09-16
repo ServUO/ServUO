@@ -162,7 +162,7 @@ namespace Server.AccountVault
             base.Serialize(writer);
             writer.Write(1);
 
-            writer.WriteItem<AccountVaultContainer>(_Container);
+            writer.WriteItem(_Container);
             writer.Write(PastDue);
             writer.Write(Index);
 
@@ -591,11 +591,11 @@ namespace Server.AccountVault
                         }
                         else if (manager != null)
                         {
-                            manager.SayTo(pm, 0x3B2, "But thou hast not the gold! You need {0} to rent a vault!", SystemSettings.RentGoldValue.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("en-US")));
+                            manager.SayTo(pm, 0x3B2, "But thou hast not the gold! You need {0} to rent a vault!", SystemSettings.RentGoldValue.ToString("N0", CultureInfo.GetCultureInfo("en-US")));
                         }
                         else
                         {
-                            pm.SendMessage("But thou hast not the gold! You need {0} to rent a vault!", SystemSettings.RentGoldValue.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("en-US")));
+                            pm.SendMessage("But thou hast not the gold! You need {0} to rent a vault!", SystemSettings.RentGoldValue.ToString("N0", CultureInfo.GetCultureInfo("en-US")));
                         }
                     }
                     else
@@ -708,17 +708,14 @@ namespace Server.AccountVault
         [CommandProperty(AccessLevel.GameMaster)]
         public bool AuctionItem { get { return _AuctionItem; } set { _AuctionItem = value; InvalidateProperties(); } }
 
-        public override int DefaultMaxWeight => DisplaysContent ? Container.GlobalMaxWeight : 0;
+        public override int DefaultMaxWeight => DisplaysContent ? GlobalMaxWeight : 0;
         public override bool DisplayWeight => DisplaysContent;
         public override bool DisplaysContent => Vault == null && !AuctionItem;
 
         public VaultAuctionClaimTimer DeadlineTimer { get; set; }
 
-        public AccountVault Vault
-        {
-            get { return RootParent as AccountVault; }
-        }
-        
+        public AccountVault Vault => RootParent as AccountVault;
+
         public AccountVaultContainer(int index)
         {
             _Index = index;

@@ -2,7 +2,7 @@ using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    [FlipableAttribute(0xFB5, 0xFB4)]
+    [Flipable(0xFB5, 0xFB4)]
     public class SledgeHammer : BaseTool
     {
         [Constructable]

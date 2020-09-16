@@ -171,7 +171,7 @@ namespace Server.Engines.Craft
                     number = 1094793;
                 }
             }
-            else if (!Server.SkillHandlers.Imbuing.CheckSoulForge(from, 2, false, false))
+            else if (!Imbuing.CheckSoulForge(from, 2, false, false))
             {
                 number = 1111867; // You must be near a soulforge to alter an item.
             }
@@ -287,10 +287,10 @@ namespace Server.Engines.Craft
                 {
                     newitem.Name = origItem.Name;
                 }
-                else if (Server.Engines.VendorSearching.VendorSearch.StringList != null)
+                else if (VendorSearching.VendorSearch.StringList != null)
                 {
                     if (origItem.LabelNumber > 0 && RetainsName(origItem))
-                        newitem.Name = Server.Engines.VendorSearching.VendorSearch.StringList.GetString(origItem.LabelNumber);
+                        newitem.Name = VendorSearching.VendorSearch.StringList.GetString(origItem.LabelNumber);
                 }
 
                 AlterResists(newitem, origItem);

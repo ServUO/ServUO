@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x2B77, 0x316E)]
+    [Flipable(0x2B77, 0x316E)]
     public class HidePauldrons : BaseArmor
     {
         [Constructable]

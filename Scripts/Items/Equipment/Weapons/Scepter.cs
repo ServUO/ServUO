@@ -3,7 +3,7 @@ using Server.Engines.Craft;
 namespace Server.Items
 {
     [Alterable(typeof(DefBlacksmithy), typeof(DiscMace))]
-    [FlipableAttribute(0x26BC, 0x26C6)]
+    [Flipable(0x26BC, 0x26C6)]
     public class Scepter : BaseBashing
     {
         [Constructable]

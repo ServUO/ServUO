@@ -167,7 +167,7 @@ namespace Server.Engines.Quests
     public class LenleyRegion : BaseRegion
     {
         public LenleyRegion(Mobile lenley)
-            : base(null, lenley.Map, Region.Find(lenley.Location, lenley.Map), new Rectangle2D(lenley.Location.X - 2, lenley.Location.Y - 2, 5, 5))
+            : base(null, lenley.Map, Find(lenley.Location, lenley.Map), new Rectangle2D(lenley.Location.X - 2, lenley.Location.Y - 2, 5, 5))
         {
         }
 

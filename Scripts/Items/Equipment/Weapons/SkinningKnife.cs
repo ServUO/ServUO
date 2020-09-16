@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0xEC4, 0xEC5)]
+    [Flipable(0xEC4, 0xEC5)]
     public class SkinningKnife : BaseKnife
     {
         [Constructable]

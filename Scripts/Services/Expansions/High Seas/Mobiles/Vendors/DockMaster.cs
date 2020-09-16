@@ -75,9 +75,9 @@ namespace Server.Mobiles
 
                 Container pack = m_From.Backpack;
 
-                if (pack != null && pack.GetAmount(typeof(Gold)) < DockMaster.DryDockAmount && Banker.GetBalance(m_From) < DryDockAmount)
+                if (pack != null && pack.GetAmount(typeof(Gold)) < DryDockAmount && Banker.GetBalance(m_From) < DryDockAmount)
                 {
-                    m_DockMaster.PrivateOverheadMessage(MessageType.Regular, m_DockMaster.SpeechHue, 1116506, DockMaster.DryDockAmount.ToString(), m_From.NetState); //The price is ~1_price~ and I will accept nothing less!
+                    m_DockMaster.PrivateOverheadMessage(MessageType.Regular, m_DockMaster.SpeechHue, 1116506, DryDockAmount.ToString(), m_From.NetState); //The price is ~1_price~ and I will accept nothing less!
                     return;
                 }
 

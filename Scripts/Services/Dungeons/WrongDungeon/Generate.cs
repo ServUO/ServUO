@@ -15,7 +15,7 @@ namespace Server.Engines
         {
             DeleteOldWrong(e.Mobile);
 
-            CommandSystem.Handle(e.Mobile, Server.Commands.CommandSystem.Prefix + "XmlLoad RevampedSpawns/WrongRevamped.xml");
+            CommandSystem.Handle(e.Mobile, CommandSystem.Prefix + "XmlLoad RevampedSpawns/WrongRevamped.xml");
 
             Decorate.Generate("wrong", "Data/Decoration/Wrong", Map.Trammel, Map.Felucca);
 

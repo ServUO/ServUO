@@ -47,7 +47,7 @@ namespace Server.Mobiles
 
                 string status_str;
 
-                ArrayList results = XmlFindGump.Search(m_SearchCriteria, out status_str);
+                ArrayList results = Search(m_SearchCriteria, out status_str);
 
                 XmlFindGump gump = new XmlFindGump(m_From, m_From.Location, m_From.Map, true, true, false,
 
@@ -388,7 +388,7 @@ namespace Server.Mobiles
                 if (i is BaseAddon && (i is ArmoryAddon || i is BarAddon || i is BelfryAddon || i is ShadowguardFountainAddon || i is OrchardAddon))
                     return true;
 
-                if (i is BoatMountItem || i is Server.Misc.TreasuresOfTokunoPersistence || i is StealableArtifactsSpawner)
+                if (i is BoatMountItem || i is Misc.TreasuresOfTokunoPersistence || i is StealableArtifactsSpawner)
                     return true;
 
                 if (i is ArisenController)
@@ -417,7 +417,7 @@ namespace Server.Mobiles
             {
                 tokunomap = Map.Parse("Tokuno");
             }
-            catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
+            catch (Exception e) { Diagnostics.ExceptionLogging.LogException(e); }
 
             // if the type is specified then get the search type
             if (criteria.Dosearchtype && criteria.Searchtype != null)
@@ -1911,7 +1911,7 @@ namespace Server.Mobiles
             if (tr != null && tr.Text != null && tr.Text.Length > 0)
             {
                 try { m_SearchCriteria.Searchage = double.Parse(tr.Text); }
-                catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
+                catch (Exception e) { Diagnostics.ExceptionLogging.LogException(e); }
             }
 
             // read the text entries for the search criteria
@@ -1920,7 +1920,7 @@ namespace Server.Mobiles
             if (tr != null && tr.Text != null && tr.Text.Length > 0)
             {
                 try { m_SearchCriteria.Searchrange = int.Parse(tr.Text); }
-                catch (Exception e) { Server.Diagnostics.ExceptionLogging.LogException(e); }
+                catch (Exception e) { Diagnostics.ExceptionLogging.LogException(e); }
             }
 
             tr = info.GetTextEntry(101);        // type info
@@ -2367,7 +2367,7 @@ namespace Server.Mobiles
                                             {
                                                 ((Item)o).Delete();
                                             }
-                                            catch (Exception ex) { Server.Diagnostics.ExceptionLogging.LogException(ex); }
+                                            catch (Exception ex) { Diagnostics.ExceptionLogging.LogException(ex); }
                                         }
                                         else
                                             // block player deletion
@@ -2377,7 +2377,7 @@ namespace Server.Mobiles
                                             {
                                                 ((Mobile)o).Delete();
                                             }
-                                            catch (Exception ex) { Server.Diagnostics.ExceptionLogging.LogException(ex); }
+                                            catch (Exception ex) { Diagnostics.ExceptionLogging.LogException(ex); }
                                         }
                                     }
 

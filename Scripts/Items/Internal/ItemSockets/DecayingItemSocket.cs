@@ -6,7 +6,7 @@ namespace Server.Items
     {
         public override TimeSpan TickDuration => TimeSpan.FromSeconds(10);
 
-        public int Remaining { get { return Expires > DateTime.UtcNow ? (int)(Expires - DateTime.UtcNow).TotalSeconds : 0; } }
+        public int Remaining => Expires > DateTime.UtcNow ? (int)(Expires - DateTime.UtcNow).TotalSeconds : 0;
 
         public bool DisplaySeconds { get; set; }
 

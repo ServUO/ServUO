@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x9A1A, 0x9A1B)]
+    [Flipable(0x9A1A, 0x9A1B)]
     public class CrystalSkull : Item
     {
         public override int LabelNumber => 1123474;  // Crystal Skull

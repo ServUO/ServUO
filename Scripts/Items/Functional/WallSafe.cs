@@ -309,7 +309,7 @@ namespace Server.Items
             {
                 case 1:
                     User.SendLocalizedMessage(1155865); // Enter amount to deposit:
-                    User.BeginPrompt<Account>(
+                    User.BeginPrompt(
                     (from, text, acct) =>
                     {
                         int v = 0;
@@ -350,7 +350,7 @@ namespace Server.Items
                     break;
                 case 2:
                     User.SendLocalizedMessage(1155866); // Enter amount to withdraw:
-                    User.BeginPrompt<Account>(
+                    User.BeginPrompt(
                     (from, text, acct) =>
                     {
                         int v = 0;
