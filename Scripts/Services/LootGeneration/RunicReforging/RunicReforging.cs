@@ -206,7 +206,7 @@ namespace Server.Items
                     catch (Exception e)
                     {
                         Console.WriteLine("Error: Prefix not in collection: {0}", prefixID);
-                        Server.Diagnostics.ExceptionLogging.LogException(e);
+                        Diagnostics.ExceptionLogging.LogException(e);
                     }
                 }
 
@@ -222,7 +222,7 @@ namespace Server.Items
                     catch (Exception e)
                     {
                         Console.WriteLine("Error: Suffix not in collection: {0}", suffixID);
-                        Server.Diagnostics.ExceptionLogging.LogException(e);
+                        Diagnostics.ExceptionLogging.LogException(e);
                     }
                 }
 
@@ -1154,13 +1154,13 @@ namespace Server.Items
 
         public static void Configure()
         {
-            Server.Commands.CommandSystem.Register("GetCreatureScore", AccessLevel.GameMaster, e =>
+            Commands.CommandSystem.Register("GetCreatureScore", AccessLevel.GameMaster, e =>
                 {
-                    e.Mobile.BeginTarget(12, false, Server.Targeting.TargetFlags.None, (from, targeted) =>
+                    e.Mobile.BeginTarget(12, false, TargetFlags.None, (from, targeted) =>
                         {
                             if (targeted is BaseCreature)
                             {
-                                ((BaseCreature)targeted).PrivateOverheadMessage(Server.Network.MessageType.Regular, 0x25, false, GetDifficultyFor((BaseCreature)targeted).ToString(), e.Mobile.NetState);
+                                ((BaseCreature)targeted).PrivateOverheadMessage(Network.MessageType.Regular, 0x25, false, GetDifficultyFor((BaseCreature)targeted).ToString(), e.Mobile.NetState);
                             }
                         });
                 });

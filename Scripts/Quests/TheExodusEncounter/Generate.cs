@@ -16,7 +16,7 @@ namespace Server.Engines.Blackthorn
 
             Generate(Map.Ilshenar);
 
-            CommandSystem.Handle(m, Server.Commands.CommandSystem.Prefix + "XmlLoad Spawns/TheExodusEncounterQuest.xml");
+            CommandSystem.Handle(m, CommandSystem.Prefix + "XmlLoad Spawns/TheExodusEncounterQuest.xml");
         }
 
         public static void Generate(Map map)

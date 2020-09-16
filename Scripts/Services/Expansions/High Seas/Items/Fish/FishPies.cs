@@ -174,7 +174,7 @@ namespace Server.Items
 
             protected override void OnTick()
             {
-                BaseFishPie.RemoveBuff(m_From, m_EffectType);
+                RemoveBuff(m_From, m_EffectType);
             }
         }
 

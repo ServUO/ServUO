@@ -682,7 +682,7 @@ namespace Server.Items
                 }
                 catch (Exception e)
                 {
-                    Server.Diagnostics.ExceptionLogging.LogException(e);
+                    Diagnostics.ExceptionLogging.LogException(e);
                     return null;
                 }
 

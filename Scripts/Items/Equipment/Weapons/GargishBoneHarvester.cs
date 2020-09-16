@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x48C6, 0x48C7)]
+    [Flipable(0x48C6, 0x48C7)]
     public class GargishBoneHarvester : BaseSword
     {
         [Constructable]

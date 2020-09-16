@@ -51,7 +51,7 @@ namespace Server.Spells.Fourth
                 FeeblemindSpell.RemoveEffects(m, false);
             }
 
-            m_UnderEffect[m] = Timer.DelayCall<Mobile>(duration, RemoveEffect, m); //= new CurseTimer(m, duration, strOffset, dexOffset, intOffset);
+            m_UnderEffect[m] = Timer.DelayCall(duration, RemoveEffect, m); //= new CurseTimer(m, duration, strOffset, dexOffset, intOffset);
             m.UpdateResistances();
         }
 

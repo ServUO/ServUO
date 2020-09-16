@@ -15,8 +15,8 @@ namespace Server.Items
             Charges = charges;
 
             Skill = TalismanSkill.Inscription;
-            SuccessBonus = BaseTalisman.GetRandomSuccessful();
-            ExceptionalBonus = BaseTalisman.GetRandomExceptional();
+            SuccessBonus = GetRandomSuccessful();
+            ExceptionalBonus = GetRandomExceptional();
         }
 
         public override void GetProperties(ObjectPropertyList list)

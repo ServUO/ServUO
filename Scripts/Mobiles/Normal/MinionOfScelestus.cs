@@ -69,7 +69,7 @@ namespace Server.Mobiles
             {
                 if (defender is PlayerMobile)
                 {
-                    if (Server.Spells.Ninjitsu.AnimalForm.UnderTransformation(defender))
+                    if (Spells.Ninjitsu.AnimalForm.UnderTransformation(defender))
                     {
                         defender.SendLocalizedMessage(1114066, Name); // ~1_NAME~ knocked you out of animal form!
                     }

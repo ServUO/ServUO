@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class NavigatorsWorldMap : WorldMap
     {
-        public override int LabelNumber { get { return 1075500; } } // Navigator's World Map
+        public override int LabelNumber => 1075500;  // Navigator's World Map
 
         [Constructable]
         public NavigatorsWorldMap()

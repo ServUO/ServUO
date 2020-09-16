@@ -14,7 +14,7 @@ namespace Server.Items
         public override int LabelNumber => 1070997;  // A promotional token
         public TextDefinition ItemName => 1157618;  // your Stable Slot Increase (Account-Bound)
 
-        public Type GumpType => typeof(StableSlotIncreaseToken.InternalGump);
+        public Type GumpType => typeof(InternalGump);
 
         [CommandProperty(AccessLevel.GameMaster)]
         public string Account { get; set; }

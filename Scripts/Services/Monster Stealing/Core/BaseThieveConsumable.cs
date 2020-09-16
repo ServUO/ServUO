@@ -41,7 +41,7 @@ namespace Server.Items
 
             protected override void OnTick()
             {
-                BaseThieveConsumable.RemoveEffect(pm, effect);
+                RemoveEffect(pm, effect);
             }
 
             public InternalTimer(PlayerMobile p, ThieveConsumableEffect e, TimeSpan delay)

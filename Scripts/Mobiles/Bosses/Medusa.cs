@@ -365,7 +365,7 @@ namespace Server.Mobiles
                     target.SolidHueOverride = 761;
 
                     //clone.MoveToWorld(loc, target.Map);
-                    BaseCreature.Summon(clone, false, this, loc, 0, TimeSpan.FromMinutes(90));
+                    Summon(clone, false, this, loc, 0, TimeSpan.FromMinutes(90));
 
                     if (target is BaseCreature && !((BaseCreature)target).Summoned && ((BaseCreature)target).GetMaster() != null)
                         ((BaseCreature)target).GetMaster().SendLocalizedMessage(1113281, null, 43); // Your pet has been petrified!
@@ -424,7 +424,7 @@ namespace Server.Mobiles
                         loc = new Point3D(x, y, z);
                 }
 
-                BaseCreature.Summon(stone, false, this, loc, 0, TimeSpan.FromMinutes(90));
+                Summon(stone, false, this, loc, 0, TimeSpan.FromMinutes(90));
                 //stone.MoveToWorld(loc, map);
                 stone.Frozen = stone.Blessed = true;
                 stone.SolidHueOverride = 761;

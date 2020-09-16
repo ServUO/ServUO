@@ -41,7 +41,7 @@ namespace Server
             }
             catch (Exception ex)
             {
-                Server.Diagnostics.ExceptionLogging.LogException(ex);
+                Diagnostics.ExceptionLogging.LogException(ex);
                 e.AllowConnection = false;
             }
         }

@@ -114,7 +114,7 @@ namespace Server.SkillHandlers
 
         public static bool OnBeforeImbue(Mobile from, Item item, int id, int value)
         {
-            return OnBeforeImbue(from, item, id, value, GetTotalMods(item, id), GetMaxProps(item), GetTotalWeight(item, id, false, true), Imbuing.GetMaxWeight(item));
+            return OnBeforeImbue(from, item, id, value, GetTotalMods(item, id), GetMaxProps(item), GetTotalWeight(item, id, false, true), GetMaxWeight(item));
         }
 
         public static bool OnBeforeImbue(Mobile from, Item item, int id, int value, int totalprops, int maxprops, int totalitemweight, int maxweight)
@@ -306,7 +306,7 @@ namespace Server.SkillHandlers
             if (!CheckSoulForge(from, 2, out bonus))
                 return;
 
-            ImbuingContext context = Imbuing.GetContext(from);
+            ImbuingContext context = GetContext(from);
 
             context.LastImbued = i;
             context.Imbue_Mod = id;
@@ -365,7 +365,7 @@ namespace Server.SkillHandlers
 
                 success /= 100;
 
-                Effects.SendPacket(from, from.Map, new GraphicalEffect(EffectType.FixedFrom, from.Serial, Server.Serial.Zero, 0x375A, from.Location, from.Location, 1, 17, true, false));
+                Effects.SendPacket(from, from.Map, new GraphicalEffect(EffectType.FixedFrom, from.Serial, Serial.Zero, 0x375A, from.Location, from.Location, 1, 17, true, false));
                 Effects.SendTargetParticles(from, 0, 1, 0, 0x1593, EffectLayer.Waist);
 
                 if (success >= Utility.RandomDouble() || id < 0 || id > 180)
@@ -1693,7 +1693,7 @@ namespace Server.SkillHandlers
             PlayerMobile m = from as PlayerMobile;
             bonus = 0.0;
 
-            ImbuingContext context = Imbuing.GetContext(m);
+            ImbuingContext context = GetContext(m);
             Map map = from.Map;
 
             if (map == null)
@@ -1726,7 +1726,7 @@ namespace Server.SkillHandlers
             {
                 if (from.Region != null && from.Region.IsPartOf("Queen's Palace"))
                 {
-                    if (!Server.Engines.Points.PointsSystem.QueensLoyalty.IsNoble(from))
+                    if (!Engines.Points.PointsSystem.QueensLoyalty.IsNoble(from))
                     {
                         if (message)
                         {

@@ -105,7 +105,7 @@ namespace Server.Mobiles
                     {
                         Timer.DelayCall(TimeSpan.FromMilliseconds(i * 250), idx =>
                         {
-                            Server.Misc.Geometry.Circle2D(p, myMap, idx, (pnt, map) =>
+                            Misc.Geometry.Circle2D(p, myMap, idx, (pnt, map) =>
                             {
                                 Effects.SendLocationEffect(pnt, map, Utility.RandomBool() ? 14000 : 14013, 14, 20, 2018, 0);
                             });
@@ -118,7 +118,7 @@ namespace Server.Mobiles
                                 {
                                     Timer.DelayCall(TimeSpan.FromMilliseconds(c * 250), idx2 =>
                                     {
-                                        Server.Misc.Geometry.Circle2D(p, myMap, idx2, (pnt, map) =>
+                                        Misc.Geometry.Circle2D(p, myMap, idx2, (pnt, map) =>
                                         {
                                             Effects.SendLocationEffect(pnt, map, Utility.RandomBool() ? 14000 : 14013, 14, 20, 2018, 0);
                                         });

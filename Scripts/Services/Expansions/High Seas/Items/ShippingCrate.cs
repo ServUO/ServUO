@@ -33,7 +33,7 @@ namespace Server.Items
 
         public override void Delete()
         {
-            Server.Mobiles.DockMaster.RemoveCrate(this);
+            Mobiles.DockMaster.RemoveCrate(this);
             base.Delete();
         }
 
@@ -98,7 +98,7 @@ namespace Server.Items
                 if (hold == null)
                     return;
 
-                if (m_From.InRange(m_Crate.Boat.Location, Server.Mobiles.DockMaster.DryDockDistance))
+                if (m_From.InRange(m_Crate.Boat.Location, Mobiles.DockMaster.DryDockDistance))
                 {
                     List<Item> items = new List<Item>(m_Crate.Items);
                     foreach (Item item in items)

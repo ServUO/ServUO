@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x1db9, 0x1dba)]
+    [Flipable(0x1db9, 0x1dba)]
     public class LeatherCap : BaseArmor
     {
         [Constructable]

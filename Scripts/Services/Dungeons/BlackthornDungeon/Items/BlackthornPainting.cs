@@ -1,6 +1,6 @@
 ﻿namespace Server.Items
 {
-    [FlipableAttribute(0x4C62, 0x4C63)]
+    [Flipable(0x4C62, 0x4C63)]
     public class BlackthornPainting1 : Item
     {
         public override int LabelNumber => 1023744;  // painting
@@ -32,7 +32,7 @@
         }
     }
 
-    [FlipableAttribute(0x4C64, 0x4C65)]
+    [Flipable(0x4C64, 0x4C65)]
     public class BlackthornPainting2 : Item
     {
         public override int LabelNumber => 1023744;  // painting

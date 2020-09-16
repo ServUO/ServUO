@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x13B8, 0x13B7)]
+    [Flipable(0x13B8, 0x13B7)]
     public class ThinLongsword : BaseSword
     {
         [Constructable]

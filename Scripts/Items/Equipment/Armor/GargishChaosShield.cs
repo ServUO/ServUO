@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x4228, 0x4229)]
+    [Flipable(0x4228, 0x4229)]
     public class GargishChaosShield : BaseShield
     {
         public override int BasePhysicalResistance => 1;

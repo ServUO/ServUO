@@ -4,7 +4,7 @@ namespace Server.Items
     [Flipable(0x1945, 0x1946)]
     public class CarvedWoodenScreen : Item
     {
-        public override int LabelNumber { get { return 1075495; } } // Carved Wooden Screen
+        public override int LabelNumber => 1075495;  // Carved Wooden Screen
 
         [Constructable]
         public CarvedWoodenScreen()

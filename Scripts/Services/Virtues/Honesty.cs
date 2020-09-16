@@ -266,7 +266,7 @@ namespace Server.Services.Virtues
                         }
                         catch (Exception e)
                         {
-                            Server.Diagnostics.ExceptionLogging.LogException(e);
+                            Diagnostics.ExceptionLogging.LogException(e);
                         }
                     }
 
@@ -315,7 +315,7 @@ namespace Server.Services.Virtues
                         catch (Exception e)
                         {
                             item.Delete();
-                            Server.Diagnostics.ExceptionLogging.LogException(e);
+                            Diagnostics.ExceptionLogging.LogException(e);
                         }
                         finally
                         {
@@ -334,7 +334,7 @@ namespace Server.Services.Virtues
             }
             catch (Exception e)
             {
-                Server.Diagnostics.ExceptionLogging.LogException(e);
+                Diagnostics.ExceptionLogging.LogException(e);
             }
 
             Utility.PushColor(ConsoleColor.Yellow);

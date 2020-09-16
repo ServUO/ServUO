@@ -239,7 +239,7 @@ namespace Server.Items
                     base.OnDoubleClick(from);
                 else
                 {
-                    from.BeginTarget(10, true, Server.Targeting.TargetFlags.None, (m, targeted) =>
+                    from.BeginTarget(10, true, Targeting.TargetFlags.None, (m, targeted) =>
                     {
                         if (targeted is IPoint3D)
                         {
@@ -261,7 +261,7 @@ namespace Server.Items
                                 else
                                 {
                                     IPoint3D point = (IPoint3D)targeted;
-                                    Server.Spells.SpellHelper.GetSurfaceTop(ref point);
+                                    Spells.SpellHelper.GetSurfaceTop(ref point);
 
                                     BaseAddon addon = Addon;
                                     addon.MoveToWorld(new Point3D(point), m.Map);

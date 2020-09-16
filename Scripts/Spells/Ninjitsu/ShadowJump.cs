@@ -60,7 +60,7 @@ namespace Server.Spells.Ninjitsu
             {
                 Caster.SendLocalizedMessage(1063087); // You must be in stealth mode to use this ability.
             }
-            else if (Server.Misc.WeightOverloading.IsOverloaded(Caster))
+            else if (Misc.WeightOverloading.IsOverloaded(Caster))
             {
                 Caster.SendLocalizedMessage(502359, "", 0x22); // Thou art too encumbered to move.
             }
@@ -92,7 +92,7 @@ namespace Server.Spells.Ninjitsu
 
                 m.PlaySound(0x512);
 
-                Server.SkillHandlers.Stealth.OnUse(m); // stealth check after the a jump
+                SkillHandlers.Stealth.OnUse(m); // stealth check after the a jump
             }
 
             FinishSequence();

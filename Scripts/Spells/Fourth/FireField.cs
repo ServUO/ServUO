@@ -76,7 +76,7 @@ namespace Server.Spells.Fourth
 
                 for (int i = 1; i <= 2; ++i)
                 {
-                    Timer.DelayCall<int>(TimeSpan.FromMilliseconds(i * 300), index =>
+                    Timer.DelayCall(TimeSpan.FromMilliseconds(i * 300), index =>
                     {
                         Point3D point = new Point3D(eastToWest ? pnt.X + index : pnt.X, eastToWest ? pnt.Y : pnt.Y + index, pnt.Z);
                         SpellHelper.AdjustField(ref point, Caster.Map, 16, false);

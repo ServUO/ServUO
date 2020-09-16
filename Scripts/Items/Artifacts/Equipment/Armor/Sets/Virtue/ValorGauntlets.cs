@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x2B0C, 0x2B0D)]
+    [Flipable(0x2B0C, 0x2B0D)]
     public class ValorGauntlets : BaseArmor
     {
         public override bool IsArtifact => true;

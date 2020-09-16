@@ -62,7 +62,7 @@ namespace Server.Engines.Despise
                         from.SendLocalizedMessage(1158320, null, 0x23); // You've completed a quest objective!
                         from.PlaySound(0x5B5);
 
-                        Server.Services.TownCryer.TownCryerSystem.CompleteQuest((PlayerMobile)from, 1158303, 1158308, 0x65C);
+                        Services.TownCryer.TownCryerSystem.CompleteQuest((PlayerMobile)from, 1158303, 1158308, 0x65C);
                     }
                 }
                 else

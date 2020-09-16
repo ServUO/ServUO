@@ -32,8 +32,8 @@ namespace Server.Mobiles
         {
             base.InitOutfit();
 
-            AddItem(new Server.Items.Bow());
-            AddItem(new Server.Items.LeatherGorget());
+            AddItem(new Items.Bow());
+            AddItem(new Items.LeatherGorget());
         }
 
         public override void InitSBInfo()

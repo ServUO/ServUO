@@ -483,7 +483,7 @@ namespace Server
             }
             catch (Exception e)
             {
-                Server.Diagnostics.ExceptionLogging.LogException(e);
+                Diagnostics.ExceptionLogging.LogException(e);
                 return null;
             }
         }
@@ -535,7 +535,7 @@ namespace Server
             }
             catch (Exception e)
             {
-                Server.Diagnostics.ExceptionLogging.LogException(e);
+                Diagnostics.ExceptionLogging.LogException(e);
                 count = -1;
             }
 

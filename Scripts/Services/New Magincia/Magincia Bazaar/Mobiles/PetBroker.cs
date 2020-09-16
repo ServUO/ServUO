@@ -169,7 +169,7 @@ namespace Server.Engines.NewMagincia
             pet.SetControlMaster(null);
             pet.SummonMaster = null;
             pet.IsStabled = true;
-            pet.Loyalty = BaseCreature.MaxLoyalty;
+            pet.Loyalty = MaxLoyalty;
             to.Stabled.Add(pet);
         }
 
@@ -186,7 +186,7 @@ namespace Server.Engines.NewMagincia
             pet.SummonMaster = null;
 
             pet.IsStabled = true;
-            pet.Loyalty = BaseCreature.MaxLoyalty;
+            pet.Loyalty = MaxLoyalty;
 
             pet.Home = Point3D.Zero;
             pet.RangeHome = 10;
@@ -231,7 +231,7 @@ namespace Server.Engines.NewMagincia
 
             protected override void OnTick()
             {
-                PetBroker.SendToBrokerStables(m_Creature);
+                SendToBrokerStables(m_Creature);
             }
         }
 

@@ -393,7 +393,7 @@ namespace Server.Engines.VvV
 
         public void AddVvVItem(Item item, bool initial = false)
         {
-            if (ViceVsVirtueSystem.Enabled && item is IVvVItem)
+            if (Enabled && item is IVvVItem)
             {
                 ((IVvVItem)item).IsVvVItem = true;
 
@@ -417,27 +417,27 @@ namespace Server.Engines.VvV
             EventSink.Login += OnLogin;
             EventSink.PlayerDeath += OnPlayerDeath;
 
-            Server.Commands.CommandSystem.Register("BattleProps", AccessLevel.GameMaster, e =>
+            Commands.CommandSystem.Register("BattleProps", AccessLevel.GameMaster, e =>
                 {
                     if (Instance.Battle != null)
                         e.Mobile.SendGump(new PropertiesGump(e.Mobile, Instance.Battle));
                 });
 
-            Server.Commands.CommandSystem.Register("ForceStartBattle", AccessLevel.GameMaster, e =>
+            Commands.CommandSystem.Register("ForceStartBattle", AccessLevel.GameMaster, e =>
             {
                 if (Instance.Battle != null && !Instance.Battle.OnGoing)
                     Instance.Battle.Begin();
             });
 
-            Server.Commands.CommandSystem.Register("ExemptCities", AccessLevel.Administrator, e =>
+            Commands.CommandSystem.Register("ExemptCities", AccessLevel.Administrator, e =>
             {
                 e.Mobile.SendGump(new ExemptCitiesGump());
             });
 
-            Server.Commands.CommandSystem.Register("VvVKick", AccessLevel.GameMaster, e =>
+            Commands.CommandSystem.Register("VvVKick", AccessLevel.GameMaster, e =>
             {
                 e.Mobile.SendMessage("Target the person you'd like to remove from VvV.");
-                e.Mobile.BeginTarget(-1, false, Server.Targeting.TargetFlags.None, (from, targeted) =>
+                e.Mobile.BeginTarget(-1, false, Targeting.TargetFlags.None, (from, targeted) =>
                     {
                         if (targeted is PlayerMobile)
                         {

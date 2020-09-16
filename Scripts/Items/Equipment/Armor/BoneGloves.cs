@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x1450, 0x1455)]
+    [Flipable(0x1450, 0x1455)]
     public class BoneGloves : BaseArmor
     {
         public override int BasePhysicalResistance => 3;

@@ -32,7 +32,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x1efd, 0x1efe)]
+    [Flipable(0x1efd, 0x1efe)]
     public class FancyShirt : BaseShirt
     {
         [Constructable]
@@ -68,7 +68,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x1517, 0x1518)]
+    [Flipable(0x1517, 0x1518)]
     public class Shirt : BaseShirt
     {
         [Constructable]

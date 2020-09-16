@@ -97,12 +97,12 @@ namespace Server.Spells
                 return 0;
             }
 
-            if (!Server.Spells.Necromancy.MindRotSpell.GetMindRotScalar(m, ref scalar))
+            if (!Necromancy.MindRotSpell.GetMindRotScalar(m, ref scalar))
             {
                 scalar = 1.0;
             }
 
-            if (Server.Spells.Mysticism.PurgeMagicSpell.IsUnderCurseEffects(m))
+            if (Mysticism.PurgeMagicSpell.IsUnderCurseEffects(m))
             {
                 scalar += .5;
             }

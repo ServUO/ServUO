@@ -60,7 +60,7 @@ namespace Server.Misc
             }
             catch (Exception e)
             {
-                Server.Diagnostics.ExceptionLogging.LogException(e);
+                Diagnostics.ExceptionLogging.LogException(e);
                 return "";
             }
         }
@@ -115,7 +115,7 @@ namespace Server.Misc
             }
             catch (Exception e)
             {
-                Server.Diagnostics.ExceptionLogging.LogException(e);
+                Diagnostics.ExceptionLogging.LogException(e);
             }
         }
 
@@ -194,7 +194,7 @@ namespace Server.Misc
                     }
                     catch (Exception ex)
                     {
-                        Server.Diagnostics.ExceptionLogging.LogException(ex);
+                        Diagnostics.ExceptionLogging.LogException(ex);
                     }
 
                     try
@@ -203,7 +203,7 @@ namespace Server.Misc
                     }
                     catch (Exception ex)
                     {
-                        Server.Diagnostics.ExceptionLogging.LogException(ex);
+                        Diagnostics.ExceptionLogging.LogException(ex);
                     }
 
                     op.WriteLine("Exception:");

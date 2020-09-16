@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x27A6, 0x27F1)]
+    [Flipable(0x27A6, 0x27F1)]
     public class Tetsubo : BaseBashing
     {
         [Constructable]

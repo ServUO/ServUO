@@ -682,7 +682,7 @@ namespace Server.Items
             chest.LockLevel = chest.RequiredSkill - 10;
             chest.MaxLockLevel = chest.RequiredSkill + 40;
 
-            if (Server.Engines.JollyRoger.JollyRogerEvent.Instance.Running && 0.10 > Utility.RandomDouble())
+            if (Engines.JollyRoger.JollyRogerEvent.Instance.Running && 0.10 > Utility.RandomDouble())
             {
                 chest.DropItem(new MysteriousFragment());
             }

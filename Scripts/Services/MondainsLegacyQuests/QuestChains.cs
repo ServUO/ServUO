@@ -77,7 +77,7 @@ namespace Server.Engines.Quests
             Chains[(int)QuestChain.AnimalTraining] = new Type[] { typeof(TamingPetQuest), typeof(UsingAnimalLoreQuest), typeof(LeadingIntoBattleQuest), typeof(TeachingSomethingNewQuest) };
             Chains[(int)QuestChain.PaladinsOfTrinsic] = new Type[] { typeof(PaladinsOfTrinsic), typeof(PaladinsOfTrinsic2) };
             Chains[(int)QuestChain.RightingWrong] = new Type[] { typeof(RightingWrongQuest2), typeof(RightingWrongQuest3), typeof(RightingWrongQuest4) };
-            Chains[(int)QuestChain.Ritual] = new Type[] { typeof(Server.Engines.Quests.RitualQuest.ScalesOfADreamSerpentQuest), typeof(Server.Engines.Quests.RitualQuest.TearsOfASoulbinderQuest), typeof(Server.Engines.Quests.RitualQuest.PristineCrystalLotusQuest) };
+            Chains[(int)QuestChain.Ritual] = new Type[] { typeof(RitualQuest.ScalesOfADreamSerpentQuest), typeof(RitualQuest.TearsOfASoulbinderQuest), typeof(RitualQuest.PristineCrystalLotusQuest) };
         }
 
         public Type CurrentQuest { get; set; }

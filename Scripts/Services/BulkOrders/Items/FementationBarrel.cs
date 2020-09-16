@@ -16,7 +16,7 @@ namespace Server.Items
         Plum
     }
 
-    [FlipableAttribute(0x9E36, 0x9E37)]
+    [Flipable(0x9E36, 0x9E37)]
     public class FermentationBarrel : Item
     {
         private static readonly int MinFruit = 20;
@@ -111,7 +111,7 @@ namespace Server.Items
                 {
                     if (_BadBatch)
                     {
-                        from.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1154, 1157258, from.NetState); // *You gently taste the fermentation...it's spoiled! You should probably empty the barrel*
+                        from.PrivateOverheadMessage(Network.MessageType.Regular, 1154, 1157258, from.NetState); // *You gently taste the fermentation...it's spoiled! You should probably empty the barrel*
                     }
                     else if (_BottlesRemaining > 0)
                     {
@@ -250,7 +250,7 @@ namespace Server.Items
                                 text = text.Trim();
                                 text = Utility.FixHtml(text);
 
-                                if (text.Length > 15 || !Server.Guilds.BaseGuildGump.CheckProfanity(text))
+                                if (text.Length > 15 || !Guilds.BaseGuildGump.CheckProfanity(text))
                                 {
                                     mob.SendMessage("That label is unacceptable. Please try again.");
                                 }

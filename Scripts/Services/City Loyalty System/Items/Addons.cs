@@ -92,7 +92,7 @@ namespace Server.Items
                 if (addon is InterchangeableAddon)
                     ((InterchangeableAddon)addon).EastFacing = east;
 
-                Server.Spells.SpellHelper.GetSurfaceTop(ref p);
+                Spells.SpellHelper.GetSurfaceTop(ref p);
 
                 addon.MoveToWorld(new Point3D(p), map);
 

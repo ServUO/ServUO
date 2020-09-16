@@ -196,7 +196,7 @@ namespace Server.Gumps
                         }
                         catch (Exception e)
                         {
-                            Server.Diagnostics.ExceptionLogging.LogException(e);
+                            Diagnostics.ExceptionLogging.LogException(e);
                         }
 
                         m_Mobile.SendGump(

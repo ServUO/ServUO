@@ -36,11 +36,11 @@ namespace Server.Engines.VvV
             AddHtmlLocalized(10, 55, 65, 20, 1114981, 0xFFFF, false, false); // <DIV ALIGN=CENTER>#:</DIV>
             AddHtmlLocalized(70, 55, 160, 20, 1114966, 0xFFFF, false, false); // <DIV ALIGN=LEFT>Name:</DIV>
             AddHtmlLocalized(230, 55, 70, 20, 1114978, 0xFFFF, false, false); // <DIV ALIGN=CENTER>Guild:</DIV>
-            AddHtmlLocalized(300, 55, 100, 20, 1114977, Filter == Filter.Score ? Server.Engines.Quests.BaseQuestGump.C32216(0x00FA9A) : 0xFFFF, false, false); // <DIV ALIGN=RIGHT>Score:</DIV>
-            AddHtmlLocalized(420, 55, 55, 20, 1114975, Filter == Filter.Kills ? Server.Engines.Quests.BaseQuestGump.C32216(0x00FA9A) : 0xFFFF, false, false); // <DIV ALIGN=RIGHT>Kills:</DIV>
+            AddHtmlLocalized(300, 55, 100, 20, 1114977, Filter == Filter.Score ? Quests.BaseQuestGump.C32216(0x00FA9A) : 0xFFFF, false, false); // <DIV ALIGN=RIGHT>Score:</DIV>
+            AddHtmlLocalized(420, 55, 55, 20, 1114975, Filter == Filter.Kills ? Quests.BaseQuestGump.C32216(0x00FA9A) : 0xFFFF, false, false); // <DIV ALIGN=RIGHT>Kills:</DIV>
             AddHtmlLocalized(480, 55, 55, 20, 1114893, 0xFFFF, false, false); // <DIV ALIGN=RIGHT>Deaths:</DIV>
             AddHtmlLocalized(540, 55, 55, 20, 1155572, 0xFFFF, false, false); // <DIV ALIGN=RIGHT>Assists:</DIV>
-            AddHtmlLocalized(610, 55, 90, 20, 1155575, Filter == Filter.ReturnedSigils ? Server.Engines.Quests.BaseQuestGump.C32216(0x00FA9A) : 0xFFFF, false, false); // <DIV ALIGN=RIGHT>Returned Sigil:</DIV>
+            AddHtmlLocalized(610, 55, 90, 20, 1155575, Filter == Filter.ReturnedSigils ? Quests.BaseQuestGump.C32216(0x00FA9A) : 0xFFFF, false, false); // <DIV ALIGN=RIGHT>Returned Sigil:</DIV>
             AddHtmlLocalized(710, 55, 100, 20, 1155574, 0xFFFF, false, false); // <DIV ALIGN=RIGHT>Disarmed Traps:</DIV>
             AddHtmlLocalized(810, 55, 80, 20, 1155573, 0xFFFF, false, false); // <DIV ALIGN=RIGHT>Stolen Sigil:</DIV>
 

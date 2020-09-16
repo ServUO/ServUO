@@ -7,7 +7,7 @@
         {
         }
 
-        public override int[] UseableTiles => Server.Engines.Harvest.Fishing.LavaTiles;
+        public override int[] UseableTiles => Engines.Harvest.Fishing.LavaTiles;
 
         public override void AddNameProperty(ObjectPropertyList list)
         {

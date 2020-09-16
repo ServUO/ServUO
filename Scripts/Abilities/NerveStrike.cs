@@ -33,7 +33,7 @@ namespace Server.Items
 
             ClearCurrentAbility(attacker);
 
-            bool immune = Server.Items.ParalyzingBlow.IsImmune(defender);
+            bool immune = Items.ParalyzingBlow.IsImmune(defender);
             bool doEffects = false;
 
             AOS.Damage(defender, attacker, (int)(15.0 * (attacker.Skills[SkillName.Bushido].Value - 50.0) / 70.0 + Utility.Random(10)), true, 100, 0, 0, 0, 0);	//0-25
@@ -65,7 +65,7 @@ namespace Server.Items
                 defender.FixedParticles(0x37C4, 1, 8, 0x13AF, 0, 0, EffectLayer.Waist);
             }
 
-            Server.Items.ParalyzingBlow.BeginImmunity(defender, Server.Items.ParalyzingBlow.FreezeDelayDuration);
+            Items.ParalyzingBlow.BeginImmunity(defender, Items.ParalyzingBlow.FreezeDelayDuration);
         }
     }
 }

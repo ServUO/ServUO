@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Server.Items
 {
-    [FlipableAttribute(0x2790, 0x27DB)]
+    [Flipable(0x2790, 0x27DB)]
     public class LeatherNinjaBelt : BaseWaist, IDyable, INinjaWeapon
     {
         private int m_UsesRemaining;

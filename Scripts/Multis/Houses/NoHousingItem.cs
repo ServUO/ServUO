@@ -82,7 +82,7 @@ namespace Server.Items
         private class SimpleNoHousingRegion : BaseRegion
         {
             public SimpleNoHousingRegion(Map map, Rectangle3D[] area)
-                : base(null, map, Region.DefaultPriority, area)
+                : base(null, map, DefaultPriority, area)
             {
             }
 

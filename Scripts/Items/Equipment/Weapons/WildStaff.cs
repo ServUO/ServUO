@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x2D25, 0x2D31)]
+    [Flipable(0x2D25, 0x2D31)]
     public class WildStaff : BaseStaff
     {
         [Constructable]

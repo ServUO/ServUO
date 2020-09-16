@@ -319,7 +319,7 @@ namespace Server.Engines.Khaldun
                     {
                         quest.FoundCipherBook = true;
 
-                        from.PrivateOverheadMessage(Server.Network.MessageType.Regular, 0x47E, 1158713, from.NetState);
+                        from.PrivateOverheadMessage(Network.MessageType.Regular, 0x47E, 1158713, from.NetState);
                         // *You find the cipher text hidden among the books! Return to the Cryptologist to tell him where it is!*
 
                         Region region = Region.Find(from.Location, from.Map);
@@ -408,8 +408,8 @@ namespace Server.Engines.Khaldun
             public QuestRegion()
                 : base("Going Gumshoe Quest Region",
                         Map.Trammel,
-                        Region.DefaultPriority,
-                        GoingGumshoeQuest3.Bounds)
+                        DefaultPriority,
+                        Bounds)
             {
                 Register();
             }
@@ -426,7 +426,7 @@ namespace Server.Engines.Khaldun
 
                     if (quest != null && !quest.FoundCipherBook && 0.2 > Utility.RandomDouble())
                     {
-                        Rectangle2D rec = GoingGumshoeQuest3.Bounds.FirstOrDefault(b => b.Contains(m.Location));
+                        Rectangle2D rec = Bounds.FirstOrDefault(b => b.Contains(m.Location));
 
                         if (rec.Contains(quest.BookCase) && CanGiveMessage(m))
                         {

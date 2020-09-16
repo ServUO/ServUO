@@ -47,7 +47,7 @@ namespace Server.Engines.Craft
 
             for (int i = 0; i < Systems.Count; i++)
             {
-                var system = CraftSystem.Systems[i];
+                var system = Systems[i];
 
                 if (system.CraftItems == null)
                 {

@@ -153,7 +153,7 @@ namespace Server.Engines.BulkOrders
             }
             else if (info.ButtonID == 4) // combine from container
             {
-                m_From.BeginTarget(-1, false, Server.Targeting.TargetFlags.None, (m, targeted) =>
+                m_From.BeginTarget(-1, false, Targeting.TargetFlags.None, (m, targeted) =>
                 {
                     if (!m_Deed.Deleted && targeted is Container)
                     {

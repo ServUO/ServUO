@@ -51,7 +51,7 @@ namespace Server
             catch (Exception e)
             {
                 Console.WriteLine("Warning: {0}: Pathing error from {1} to {2}", e.GetType().Name, start, goal);
-                Server.Diagnostics.ExceptionLogging.LogException(e);
+                Diagnostics.ExceptionLogging.LogException(e);
             }
         }
 
@@ -130,7 +130,7 @@ namespace Server
             }
             catch (Exception e)
             {
-                Server.Diagnostics.ExceptionLogging.LogException(e);
+                Diagnostics.ExceptionLogging.LogException(e);
             }
         }
 

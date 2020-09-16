@@ -10,7 +10,7 @@ namespace Server.Items
         public override int LabelNumber => 1070997;  // a promotional token
         public TextDefinition ItemName => 1152353;  // Mythic Character Token
 
-        public Type GumpType => typeof(MythicCharacterToken.InternalGump);
+        public Type GumpType => typeof(InternalGump);
 
         [Constructable]
         public MythicCharacterToken()

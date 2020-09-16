@@ -813,7 +813,7 @@ namespace Server.Items
                         {
                             SendEffect();
 
-                            Timer.DelayCall(TimeSpan.FromSeconds(8), () =>
+                            DelayCall(TimeSpan.FromSeconds(8), () =>
                             {
                                 _Addon.CastleCarpet.Hue = 0;
                                 _Addon.NightDecoration.MoveToWorld(
@@ -829,7 +829,7 @@ namespace Server.Items
                         {
                             SendEffect();
 
-                            Timer.DelayCall(TimeSpan.FromSeconds(8), () =>
+                            DelayCall(TimeSpan.FromSeconds(8), () =>
                             {
                                 _Addon.CastleCarpet.Hue = 923;
                                 _Addon.DayDecoration.MoveToWorld(

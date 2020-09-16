@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    [FlipableAttribute(0x27A5, 0x27F0)]
+    [Flipable(0x27A5, 0x27F0)]
     public class Yumi : BaseRanged
     {
         [Constructable]

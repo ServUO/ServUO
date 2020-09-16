@@ -1709,7 +1709,7 @@ namespace Server.Mobiles
         public static void Initialize()
         {
             // Syntax: [PetTrainTest <PetType>
-            Server.Commands.CommandSystem.Register("PetTrainTest", AccessLevel.GameMaster, e =>
+            Commands.CommandSystem.Register("PetTrainTest", AccessLevel.GameMaster, e =>
             {
                 Mobile m = e.Mobile;
 
@@ -1751,7 +1751,7 @@ namespace Server.Mobiles
 
                                 Timer.DelayCall(TimeSpan.FromSeconds(.25), () =>
                                 {
-                                    bc.PrivateOverheadMessage(Server.Network.MessageType.Regular, 0x3B2, 502799, m.NetState);
+                                    bc.PrivateOverheadMessage(Network.MessageType.Regular, 0x3B2, 502799, m.NetState);
                                     // It seems to accept you as master.
                                     bc.OnAfterTame(m);
 
@@ -1760,7 +1760,7 @@ namespace Server.Mobiles
 
                                     bc.Owners.Add(m);
 
-                                    PetTrainingHelper.GetAbilityProfile(bc, true).OnTame();
+                                    GetAbilityProfile(bc, true).OnTame();
                                 });
                             }
                         }

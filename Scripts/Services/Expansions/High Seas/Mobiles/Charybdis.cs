@@ -284,8 +284,8 @@ namespace Server.Mobiles
                 Point3D point = path[i];
                 int o = i - 1;
 
-                Server.Effects.PlaySound(point, Map, 278);
-                Server.Effects.PlaySound(point, Map, 279);
+                Effects.PlaySound(point, Map, 278);
+                Effects.PlaySound(point, Map, 279);
 
                 for (int rn = 0; rn < (o * 2) + 1; rn++)
                 {

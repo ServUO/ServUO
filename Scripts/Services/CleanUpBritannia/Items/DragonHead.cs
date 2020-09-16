@@ -284,7 +284,7 @@ namespace Server.Items
             }
             else if (Parent == null)
             {
-                Server.Multis.BaseHouse house = Server.Multis.BaseHouse.FindHouseAt(this);
+                BaseHouse house = BaseHouse.FindHouseAt(this);
 
                 DragonHeadAddonDeed deed = new DragonHeadAddonDeed();
                 deed.MoveToWorld(Location, Map);

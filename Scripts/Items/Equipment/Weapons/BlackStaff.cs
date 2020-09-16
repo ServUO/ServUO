@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0xDF1, 0xDF0)]
+    [Flipable(0xDF1, 0xDF0)]
     public class BlackStaff : BaseStaff
     {
         [Constructable]

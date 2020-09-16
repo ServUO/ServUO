@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Server.Items
 {
-    [FlipableAttribute(0x27AA, 0x27F5)]
+    [Flipable(0x27AA, 0x27F5)]
     public class Fukiya : Item, INinjaWeapon
     {
         private int m_UsesRemaining;

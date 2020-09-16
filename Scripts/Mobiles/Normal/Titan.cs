@@ -51,7 +51,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.Average);
             AddLoot(LootPack.MedScrolls);
             AddLoot(LootPack.PeculiarSeed1);
-            AddLoot(LootPack.LootItem<Server.Items.RoastPig>(10.0));
+            AddLoot(LootPack.LootItem<Items.RoastPig>(10.0));
         }
 
         public override void Serialize(GenericWriter writer)

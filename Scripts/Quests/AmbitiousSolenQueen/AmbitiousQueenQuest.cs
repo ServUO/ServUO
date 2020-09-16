@@ -8,18 +8,18 @@ namespace Server.Engines.Quests.Ambitious
     {
         private static readonly Type[] m_TypeReferenceTable = new Type[]
         {
-            typeof(Ambitious.DontOfferConversation),
-            typeof(Ambitious.AcceptConversation),
-            typeof(Ambitious.DuringKillQueensConversation),
-            typeof(Ambitious.GatherFungiConversation),
-            typeof(Ambitious.DuringFungiGatheringConversation),
-            typeof(Ambitious.EndConversation),
-            typeof(Ambitious.FullBackpackConversation),
-            typeof(Ambitious.End2Conversation),
-            typeof(Ambitious.KillQueensObjective),
-            typeof(Ambitious.ReturnAfterKillsObjective),
-            typeof(Ambitious.GatherFungiObjective),
-            typeof(Ambitious.GetRewardObjective)
+            typeof(DontOfferConversation),
+            typeof(AcceptConversation),
+            typeof(DuringKillQueensConversation),
+            typeof(GatherFungiConversation),
+            typeof(DuringFungiGatheringConversation),
+            typeof(EndConversation),
+            typeof(FullBackpackConversation),
+            typeof(End2Conversation),
+            typeof(KillQueensObjective),
+            typeof(ReturnAfterKillsObjective),
+            typeof(GatherFungiObjective),
+            typeof(GetRewardObjective)
         };
         private bool m_RedSolen;
         public AmbitiousQueenQuest(PlayerMobile from, bool redSolen)

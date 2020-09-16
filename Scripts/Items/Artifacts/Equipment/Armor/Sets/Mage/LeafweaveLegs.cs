@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x2B78, 0x316F)]
+    [Flipable(0x2B78, 0x316F)]
     public class LeafweaveLegs : HidePants
     {
         public override bool IsArtifact => true;

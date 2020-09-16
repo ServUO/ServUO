@@ -28,7 +28,7 @@ namespace Server.Mobiles
         {
             base.InitOutfit();
 
-            AddItem(new Server.Items.FishingPole());
+            AddItem(new Items.FishingPole());
         }
 
         public override void Serialize(GenericWriter writer)

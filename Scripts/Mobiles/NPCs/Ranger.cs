@@ -32,10 +32,10 @@ namespace Server.Mobiles
         {
             base.InitOutfit();
 
-            AddItem(new Server.Items.Shirt(Utility.RandomNeutralHue()));
-            AddItem(new Server.Items.LongPants(Utility.RandomNeutralHue()));
-            AddItem(new Server.Items.Bow());
-            AddItem(new Server.Items.ThighBoots(Utility.RandomNeutralHue()));
+            AddItem(new Items.Shirt(Utility.RandomNeutralHue()));
+            AddItem(new Items.LongPants(Utility.RandomNeutralHue()));
+            AddItem(new Items.Bow());
+            AddItem(new Items.ThighBoots(Utility.RandomNeutralHue()));
         }
 
         public override void Serialize(GenericWriter writer)

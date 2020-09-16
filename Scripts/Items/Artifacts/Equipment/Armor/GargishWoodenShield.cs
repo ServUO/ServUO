@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x4200, 0x4207)]
+    [Flipable(0x4200, 0x4207)]
     public class GargishWoodenShield : BaseShield
     {
         public override bool IsArtifact => true;

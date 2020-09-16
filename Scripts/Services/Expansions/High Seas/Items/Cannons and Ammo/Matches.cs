@@ -82,7 +82,7 @@ namespace Server.Items
         {
             private readonly Matches m_Match;
 
-            public InternalTimer(Matches match) : base(Matches.LightDuration)
+            public InternalTimer(Matches match) : base(LightDuration)
             {
                 m_Match = match;
                 Start();

@@ -208,7 +208,7 @@ namespace Server.Items
                         m_From.SendLocalizedMessage(1116592, left != TimeSpan.Zero ? left.TotalMinutes.ToString() : "0"); //Your ship is underway with emergency repairs holding for an estimated ~1_TIME~ more minutes.
                     }
                     else if (!g.TryEmergencyRepair(m_From))
-                        m_From.SendLocalizedMessage(1116591, string.Format("{0}\t{1}", BaseGalleon.EmergencyRepairClothCost.ToString(), BaseGalleon.EmergencyRepairWoodCost)); //You need a minimum of ~1_CLOTH~ yards of cloth and ~2_WOOD~ pieces of lumber to effect emergency repairs.
+                        m_From.SendLocalizedMessage(1116591, string.Format("{0}\t{1}", BaseBoat.EmergencyRepairClothCost.ToString(), BaseBoat.EmergencyRepairWoodCost)); //You need a minimum of ~1_CLOTH~ yards of cloth and ~2_WOOD~ pieces of lumber to effect emergency repairs.
                 }
             }
         }

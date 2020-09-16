@@ -100,7 +100,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.LootItem<Bone>());
         }
 
-        public override void OnBeforeDamage(Mobile from, ref int totalDamage, Server.DamageType type)
+        public override void OnBeforeDamage(Mobile from, ref int totalDamage, DamageType type)
         {
             if (Region.IsPartOf("Khaldun") && IsChampionSpawn && !Caddellite.CheckDamage(from, type))
             {

@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x403A, 0x4046)]
+    [Flipable(0x403A, 0x4046)]
     public class GargoyleFloorMirror : Item
     {
         [Constructable]

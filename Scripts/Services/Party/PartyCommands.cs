@@ -4,7 +4,7 @@ namespace Server.Engines.PartySystem
     {
         public static void Initialize()
         {
-            PartyCommands.Handler = new PartyCommandHandlers();
+            Handler = new PartyCommandHandlers();
         }
 
         public override void OnAdd(Mobile from)

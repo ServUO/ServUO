@@ -65,7 +65,7 @@ namespace Server.Engines.Quests.RitualQuest
             {
                 Order[i] = Tiles[Utility.Random(Tiles.Count)];
 
-                Timer.DelayCall<PuzzleTile, int>(TimeSpan.FromSeconds(i * WhiteLength), (tile, index) =>
+                Timer.DelayCall(TimeSpan.FromSeconds(i * WhiteLength), (tile, index) =>
                 {
                     tile.Hue = White;
 
@@ -409,7 +409,7 @@ namespace Server.Engines.Quests.RitualQuest
             }
             else
             {
-                m.LocalOverheadMessage(Server.Network.MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
+                m.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
             }
         }
 

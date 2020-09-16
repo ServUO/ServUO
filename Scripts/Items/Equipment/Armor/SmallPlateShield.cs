@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x4202, 0x420A)]
+    [Flipable(0x4202, 0x420A)]
     public class SmallPlateShield : BaseShield
     {
         [Constructable]

@@ -113,7 +113,7 @@ namespace Server.Engines.VvV
                     Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
                     {
                         if (!Deleted && ControlMaster != null)
-                            ControlMaster.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1154, cliloc, ControlMaster.NetState);
+                            ControlMaster.PrivateOverheadMessage(Network.MessageType.Regular, 1154, cliloc, ControlMaster.NetState);
                     });
                 }
 
@@ -181,7 +181,7 @@ namespace Server.Engines.VvV
             }
 
             if (ControlMaster != null && ControlMaster.NetState != null)
-                ControlMaster.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1154, 1155550, ControlMaster.NetState); // *Your steed has depleted it's battle readiness!*
+                ControlMaster.PrivateOverheadMessage(Network.MessageType.Regular, 1154, 1155550, ControlMaster.NetState); // *Your steed has depleted it's battle readiness!*
 
             Delete();
         }

@@ -33,7 +33,7 @@ namespace Server.Services.TownCryer
             {
                 TownCryerGump gump = new TownCryerGump(User, Cryer);
                 gump.Category = TownCryerGump.GumpCategory.EventModerator;
-                BaseGump.SendGump(gump);
+                SendGump(gump);
             }
         }
     }

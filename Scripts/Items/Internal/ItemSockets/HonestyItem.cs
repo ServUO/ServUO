@@ -128,7 +128,7 @@ namespace Server.Items
                     honestySocket.StartHonestyTimer();
 
                     if (honestySocket.HonestyOwner == null)
-                        Server.Services.Virtues.HonestyVirtue.AssignOwner(honestySocket);
+                        HonestyVirtue.AssignOwner(honestySocket);
 
                     if (from != null)
                     {

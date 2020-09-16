@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x90C, 0x4073)]
+    [Flipable(0x90C, 0x4073)]
     public class GlassSword : BaseSword
     {
         [Constructable]

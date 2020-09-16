@@ -66,7 +66,7 @@ namespace Server.Mobiles
                 for (int y = m.Y - 1; y <= m.Y + 1; y++)
                 {
                     IPoint3D p = new Point3D(x, y, Map.GetAverageZ(x, y)) as IPoint3D;
-                    Server.Spells.SpellHelper.GetSurfaceTop(ref p);
+                    Spells.SpellHelper.GetSurfaceTop(ref p);
 
                     if (((x == 0 && y == 0) || .5 > Utility.RandomDouble()) && Map.CanSpawnMobile(p.X, p.Y, p.Z))
                     {
@@ -96,13 +96,13 @@ namespace Server.Mobiles
 
             public override bool OnMoveOver(Mobile from)
             {
-                if (Mobile != null && Mobile != from && Server.Spells.SpellHelper.ValidIndirectTarget(Mobile, from) && Mobile.CanBeHarmful(from, false))
+                if (Mobile != null && Mobile != from && Spells.SpellHelper.ValidIndirectTarget(Mobile, from) && Mobile.CanBeHarmful(from, false))
                 {
                     Mobile.DoHarmful(from);
 
                     AOS.Damage(from, Mobile, Utility.RandomMinMax(50, 85), 0, 100, 0, 0, 0);
                     Effects.PlaySound(Location, Map, 0x1DD);
-                    from.PrivateOverheadMessage(Server.Network.MessageType.Regular, 0x20, 1156084, from.NetState); // *The trail of fire scorches you, setting you ablaze!*
+                    from.PrivateOverheadMessage(Network.MessageType.Regular, 0x20, 1156084, from.NetState); // *The trail of fire scorches you, setting you ablaze!*
                 }
 
                 return true;

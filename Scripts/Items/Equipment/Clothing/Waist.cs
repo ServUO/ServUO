@@ -35,7 +35,7 @@ namespace Server.Items
     }
 
     [Alterable(typeof(DefTailoring), typeof(GargoyleHalfApron))]
-    [FlipableAttribute(0x153b, 0x153c)]
+    [Flipable(0x153b, 0x153c)]
     public class HalfApron : BaseWaist
     {
         [Constructable]
@@ -107,7 +107,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x2B68, 0x315F)]
+    [Flipable(0x2B68, 0x315F)]
     public class WoodlandBelt : BaseWaist
     {
         [Constructable]
@@ -155,7 +155,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x50D8, 0x50D9)]
+    [Flipable(0x50D8, 0x50D9)]
     public class GargoyleHalfApron : BaseWaist
     {
         [Constructable]
@@ -191,7 +191,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x50D8, 0x50D9)]
+    [Flipable(0x50D8, 0x50D9)]
     public class GargishApron : BaseWaist
     {
         [Constructable]

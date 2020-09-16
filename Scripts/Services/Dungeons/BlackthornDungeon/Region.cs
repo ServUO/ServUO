@@ -32,7 +32,7 @@ namespace Server.Engines.Blackthorn
 
         public void OnTick()
         {
-            if (!Server.Engines.Fellowship.ForsakenFoesEvent.Instance.Running)
+            if (!Fellowship.ForsakenFoesEvent.Instance.Running)
             {
                 foreach (Mobile m in GetEnumeratedMobiles().Where(m => m is PlayerMobile && m.AccessLevel == AccessLevel.Player))
                 {
@@ -199,7 +199,7 @@ namespace Server.Engines.Blackthorn
                 pet.IsStabled = true;
                 pet.StabledBy = owner;
 
-                pet.Loyalty = AnimalTrainer.MaxLoyalty; // Wonderfully happy
+                pet.Loyalty = BaseCreature.MaxLoyalty; // Wonderfully happy
                 owner.Stabled.Add(pet);
                 owner.SendLocalizedMessage(1153050, pet.Name); // Pets are not permitted in this location. Your pet named ~1_NAME~ has been sent to the stables.
             }

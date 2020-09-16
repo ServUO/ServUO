@@ -308,7 +308,7 @@ namespace Server.Spells.Ninjitsu
 
             if (context.SpeedBoost)
             {
-                if (m.Region is Server.Regions.TwistedWealdDesert)
+                if (m.Region is Regions.TwistedWealdDesert)
                     m.SendSpeedControl(SpeedControlType.WalkSpeed);
                 else
                     m.SendSpeedControl(SpeedControlType.Disable);

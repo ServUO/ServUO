@@ -322,7 +322,7 @@ namespace Server.Mobiles
                         {
                             Creature.PrivateOverheadMessage(MessageType.Regular, 0x59, 1157543, master.NetState); // *The creature surges with battle experience and is ready to train!*
 
-                            Server.Engines.Quests.LeadingIntoBattleQuest.CheckComplete((PlayerMobile)master);
+                            Engines.Quests.LeadingIntoBattleQuest.CheckComplete((PlayerMobile)master);
                         }
                     }
                     else
@@ -358,7 +358,7 @@ namespace Server.Mobiles
 
             if (g == null)
             {
-                Server.Gumps.BaseGump.SendGump(new PetTrainingProgressGump((PlayerMobile)m, Creature));
+                BaseGump.SendGump(new PetTrainingProgressGump((PlayerMobile)m, Creature));
             }
             else
             {

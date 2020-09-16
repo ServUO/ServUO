@@ -59,7 +59,7 @@ namespace Server.Spells.Spellweaving
 
             TimeSpan duration = TimeSpan.FromSeconds(12 + (int)(skill / 24) + (FocusLevel * 2));
 
-            Timer.DelayCall<Mobile>(duration, RemoveEffect, Caster);
+            Timer.DelayCall(duration, RemoveEffect, Caster);
 
             Caster.BeginAction(typeof(EtherealVoyageSpell));	//Cannot cast this spell for another 5 minutes(300sec) after effect removed.
 

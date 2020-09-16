@@ -3,7 +3,7 @@ using Server.Engines.Craft;
 namespace Server.Items
 {
     [Alterable(typeof(DefBlacksmithy), typeof(DualShortAxes))]
-    [FlipableAttribute(0x2D28, 0x2D34)]
+    [Flipable(0x2D28, 0x2D34)]
     public class OrnateAxe : BaseAxe
     {
         [Constructable]

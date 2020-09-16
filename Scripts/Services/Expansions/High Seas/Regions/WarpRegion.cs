@@ -15,7 +15,7 @@ namespace Server.Regions
         public Rectangle2D Bounds => m_Bounds;
 
         public CorgulWarpRegion(CorgulAltar ped, Rectangle2D rec)
-            : base("Corgul Warp Region", ped.Map, Region.DefaultPriority, new Rectangle2D[] { rec })
+            : base("Corgul Warp Region", ped.Map, DefaultPriority, new Rectangle2D[] { rec })
         {
             m_Pedestal = ped;
             m_Bounds = rec;
@@ -67,7 +67,7 @@ namespace Server.Regions
                 return;
 
             //Do not enter corgul region if we aren't in this region anymore
-            Region r = Region.Find(boat.Location, boat.Map);
+            Region r = Find(boat.Location, boat.Map);
             if (r != null && !r.IsPartOf(this))
                 return;
 

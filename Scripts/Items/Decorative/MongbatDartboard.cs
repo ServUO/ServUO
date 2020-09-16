@@ -6,7 +6,7 @@ namespace Server.Items
     [Flipable(0x1950, 0x1953)]
     public class MongbatDartboard : Item
     {
-        public override int LabelNumber { get { return 1075498; } } // Mongbat Dartboard
+        public override int LabelNumber => 1075498;  // Mongbat Dartboard
 
         [Constructable]
         public MongbatDartboard()

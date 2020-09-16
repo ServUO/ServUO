@@ -59,7 +59,7 @@ namespace Server.Spells.Mysticism
                         IPoint3D pnt = new Point3D(x, y, p.Z);
                         SpellHelper.GetSurfaceTop(ref pnt);
 
-                        Timer.DelayCall<Point3D>(TimeSpan.FromMilliseconds(Utility.RandomMinMax(100, 300)), point =>
+                        Timer.DelayCall(TimeSpan.FromMilliseconds(Utility.RandomMinMax(100, 300)), point =>
                             {
                                 Effects.SendLocationEffect(point, map, 0x3779, 12, 11, 0x63, 0);
                             },
@@ -83,7 +83,7 @@ namespace Server.Spells.Mysticism
                     Caster.DoHarmful(id);
                     SpellHelper.Damage(this, id, damage, 0, 0, 100, 0, 0);
 
-                    Server.Effects.SendTargetParticles(id, 0x374A, 1, 15, 9502, 97, 3, (EffectLayer)255, 0);
+                    Effects.SendTargetParticles(id, 0x374A, 1, 15, 9502, 97, 3, (EffectLayer)255, 0);
                 }
 
                 ColUtility.Free(list);

@@ -3,7 +3,7 @@ using Server.Engines.Craft;
 namespace Server.Items
 {
     [Alterable(typeof(DefCarpentry), typeof(GargishSkullGnarledStaff))]
-    [FlipableAttribute(41795, 41796)]
+    [Flipable(41795, 41796)]
     public class SkullGnarledStaff : GnarledStaff
     {
         public override int LabelNumber => 1125819;  // skull gnarled staff
@@ -32,7 +32,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(41799, 41800)]
+    [Flipable(41799, 41800)]
     public class GargishSkullGnarledStaff : GnarledStaff
     {
         public override int LabelNumber => 1125823;  // gargish skull gnarled staff

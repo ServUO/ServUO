@@ -190,7 +190,7 @@ namespace Server.Mobiles
                         catch (Exception ex)
                         {
                             failures++;
-                            Server.Diagnostics.ExceptionLogging.LogException(ex);
+                            Diagnostics.ExceptionLogging.LogException(ex);
                         }
                     }
 

@@ -197,7 +197,7 @@ namespace Server.Gumps
 
                     int huemodifier = TextHue;
                     FieldInfo finfo = null;
-                    Server.Mobiles.XmlSpawnerDefaults.DefaultEntry de = new Server.Mobiles.XmlSpawnerDefaults.DefaultEntry();
+                    Mobiles.XmlSpawnerDefaults.DefaultEntry de = new Mobiles.XmlSpawnerDefaults.DefaultEntry();
                     Type ftype = de.GetType();
                     if (ftype != null)
                         finfo = ftype.GetField(prop.Name);

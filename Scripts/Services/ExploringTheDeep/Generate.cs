@@ -37,9 +37,9 @@ namespace Server.Engines.ExploringTheDeep
         {
             #region Gravewater Lake Finish
 
-            CommandSystem.Handle(m, Server.Commands.CommandSystem.Prefix + "XmlLoad Spawns/GravewaterLake.xml");
+            CommandSystem.Handle(m, CommandSystem.Prefix + "XmlLoad Spawns/GravewaterLake.xml");
 
-            CommandSystem.Handle(m, Server.Commands.CommandSystem.Prefix + "GenWinchAssembly");
+            CommandSystem.Handle(m, CommandSystem.Prefix + "GenWinchAssembly");
 
             // StorageLocker
 
@@ -331,7 +331,7 @@ namespace Server.Engines.ExploringTheDeep
             sp.MoveToWorld(new Point3D(122, 10, -28), Map.Ilshenar);
             sp.Respawn();
 
-            CommandSystem.Handle(m, Server.Commands.CommandSystem.Prefix + "GenSorcerersPlate");
+            CommandSystem.Handle(m, CommandSystem.Prefix + "GenSorcerersPlate");
 
             #endregion
 

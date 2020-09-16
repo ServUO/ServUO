@@ -31,7 +31,7 @@ namespace Server.Services.TownCryer
             {
                 TownCryerGump gump = new TownCryerGump(User, Cryer);
                 gump.Category = TownCryerGump.GumpCategory.City;
-                BaseGump.SendGump(gump);
+                SendGump(gump);
             }
         }
     }

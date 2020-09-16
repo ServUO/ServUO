@@ -70,7 +70,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0xEDD, 0xEDE)]
+    [Flipable(0xEDD, 0xEDE)]
     public class HouseRaffleStone : Item
     {
         public static readonly TimeSpan DefaultDuration = TimeSpan.FromDays(7.0);
@@ -678,7 +678,7 @@ namespace Server.Items
                 : base(from, stone, 5113)// Start
             {
                 if (!stone.ValidLocation())
-                    Flags |= Network.CMEFlags.Disabled;
+                    Flags |= CMEFlags.Disabled;
             }
 
             public override void OnClick()

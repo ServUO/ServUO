@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x422A, 0x422C)]
+    [Flipable(0x422A, 0x422C)]
     public class GargishOrderShield : BaseShield
     {
         [Constructable]

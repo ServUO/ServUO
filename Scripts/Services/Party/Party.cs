@@ -66,7 +66,7 @@ namespace Server.Engines.PartySystem
         {
             if (obj is Mobile)
             {
-                Party p = Party.Get((Mobile)obj);
+                Party p = Get((Mobile)obj);
 
                 if (p == null)
                 {
@@ -88,7 +88,7 @@ namespace Server.Engines.PartySystem
         public static void EventSink_PlayerDeath(PlayerDeathEventArgs e)
         {
             Mobile from = e.Mobile;
-            Party p = Party.Get(from);
+            Party p = Get(from);
 
             if (p != null)
             {
@@ -106,7 +106,7 @@ namespace Server.Engines.PartySystem
         public static void EventSink_Login(LoginEventArgs e)
         {
             Mobile from = e.Mobile;
-            Party p = Party.Get(from);
+            Party p = Get(from);
 
             if (p != null)
                 new RejoinTimer(from).Start();
@@ -117,7 +117,7 @@ namespace Server.Engines.PartySystem
         public static void EventSink_Logout(LogoutEventArgs e)
         {
             Mobile from = e.Mobile;
-            Party p = Party.Get(from);
+            Party p = Get(from);
 
             if (p != null)
                 p.Remove(from);
@@ -135,7 +135,7 @@ namespace Server.Engines.PartySystem
 
         public static void Invite(Mobile from, Mobile target)
         {
-            Party p = Party.Get(from);
+            Party p = Get(from);
 
             if (p == null)
                 from.Party = p = new Party(from);
@@ -278,7 +278,7 @@ namespace Server.Engines.PartySystem
                 }
             }
 
-            Server.Spells.SkillMasteries.SkillMasterySpell.OnPartyRemoved(m, m_Members == null || m_Members.Count == 0);
+            Spells.SkillMasteries.SkillMasterySpell.OnPartyRemoved(m, m_Members == null || m_Members.Count == 0);
         }
 
         public bool Contains(Mobile m)
@@ -452,7 +452,7 @@ namespace Server.Engines.PartySystem
 
             protected override void OnTick()
             {
-                Party p = Party.Get(m_Mobile);
+                Party p = Get(m_Mobile);
 
                 if (p == null)
                     return;

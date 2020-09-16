@@ -77,7 +77,7 @@ namespace Server.Items
         {
             if (Door != null)
             {
-                pm.PrivateOverheadMessage(Server.Network.MessageType.Regular, 0x35, 1156501, pm.NetState); // *You watch as the Tiger Cub safely returns to the Kurak Tribe*
+                pm.PrivateOverheadMessage(MessageType.Regular, 0x35, 1156501, pm.NetState); // *You watch as the Tiger Cub safely returns to the Kurak Tribe*
 
                 Timer.DelayCall(TimeSpan.FromSeconds(.25), Delete);
                 //1156499;*The enclosure unlocks!*  Is this used?
@@ -97,7 +97,7 @@ namespace Server.Items
             if (Utility.RandomBool())
             {
                 if (Door != null)
-                    pm.PrivateOverheadMessage(Server.Network.MessageType.Regular, 0x35, 1156493, pm.NetState); //*A poisonous dart embeds itself into your neck!*
+                    pm.PrivateOverheadMessage(MessageType.Regular, 0x35, 1156493, pm.NetState); //*A poisonous dart embeds itself into your neck!*
 
                 Effects.PlaySound(pm.Location, pm.Map, 0x22E);
 
@@ -107,7 +107,7 @@ namespace Server.Items
             else
             {
                 if (Door != null)
-                    pm.PrivateOverheadMessage(Server.Network.MessageType.Regular, 0x35, 1156494, pm.NetState); //*You are ambushed by attacking trappers!*
+                    pm.PrivateOverheadMessage(MessageType.Regular, 0x35, 1156494, pm.NetState); //*You are ambushed by attacking trappers!*
 
                 SpawnTrappers(pm);
             }

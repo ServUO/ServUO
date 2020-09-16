@@ -3,7 +3,7 @@ using Server.Engines.Craft;
 namespace Server.Items
 {
     [Alterable(typeof(DefBlacksmithy), typeof(GargishAxe))]
-    [FlipableAttribute(0xF49, 0xF4A)]
+    [Flipable(0xF49, 0xF4A)]
     public class Axe : BaseAxe
     {
         [Constructable]

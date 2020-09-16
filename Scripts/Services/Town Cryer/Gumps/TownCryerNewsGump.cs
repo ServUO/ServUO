@@ -52,7 +52,7 @@ namespace Server.Services.TownCryer
                 case 0:
                     TownCryerGump gump = new TownCryerGump(User, Cryer);
                     gump.Category = TownCryerGump.GumpCategory.News;
-                    BaseGump.SendGump(gump);
+                    SendGump(gump);
                     break;
                 case 1:
                     User.LaunchBrowser(Entry.InfoUrl);

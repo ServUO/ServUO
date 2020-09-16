@@ -3,7 +3,7 @@ using Server.Engines.Craft;
 namespace Server.Items
 {
     [Alterable(typeof(DefBlacksmithy), typeof(FemaleGargishPlateChest))]
-    [FlipableAttribute(0x1c04, 0x1c05)]
+    [Flipable(0x1c04, 0x1c05)]
     public class FemalePlateChest : BaseArmor
     {
         [Constructable]

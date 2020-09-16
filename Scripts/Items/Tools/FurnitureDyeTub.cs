@@ -27,7 +27,7 @@ namespace Server.Items
             typeof(PotionKeg), typeof(CustomizableSquaredDoorMatDeed)
         };
 
-        public override Type[] ForcedDyables { get { return _Dyables; } }
+        public override Type[] ForcedDyables => _Dyables;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsRewardItem

@@ -12,7 +12,7 @@ namespace Server.Engines.ArtisanFestival
         public override int LitItemID => GetLitID();
         public override int UnlitItemID => GetUnlitID();
 
-        public bool EastFacing { get { return IDTable.Any(list => Array.IndexOf(list, ItemID) == 0 || Array.IndexOf(list, ItemID) == 2); } }
+        public bool EastFacing => IDTable.Any(list => Array.IndexOf(list, ItemID) == 0 || Array.IndexOf(list, ItemID) == 2);
 
         [Constructable]
         public RewardLantern()
@@ -122,7 +122,7 @@ namespace Server.Engines.ArtisanFestival
     {
         public override int LabelNumber => 1125137;
 
-        public bool EastFacing { get { return IDTable.Any(list => Array.IndexOf(list, ItemID) == 1); } }
+        public bool EastFacing => IDTable.Any(list => Array.IndexOf(list, ItemID) == 1);
 
         [Constructable]
         public RewardPillow()
@@ -204,7 +204,7 @@ namespace Server.Engines.ArtisanFestival
     {
         public override int LabelNumber => 1125147;
 
-        public bool EastFacing { get { return IDTable.Any(list => Array.IndexOf(list, ItemID) == 1); } }
+        public bool EastFacing => IDTable.Any(list => Array.IndexOf(list, ItemID) == 1);
 
         [Constructable]
         public RewardPainting()
@@ -286,7 +286,7 @@ namespace Server.Engines.ArtisanFestival
     {
         public override int LabelNumber => 1125080;
 
-        public bool Active { get { return IDTable.Any(list => Array.IndexOf(list, ItemID) > 0); } }
+        public bool Active => IDTable.Any(list => Array.IndexOf(list, ItemID) > 0);
 
         [Constructable]
         public RewardSculpture()

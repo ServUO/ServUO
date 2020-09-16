@@ -1,7 +1,7 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0xFAF, 0xFB0)]
-    [Server.Engines.Craft.Anvil]
+    [Flipable(0xFAF, 0xFB0)]
+    [Engines.Craft.Anvil]
     public class Anvil : Item
     {
         [Constructable]
@@ -31,7 +31,7 @@ namespace Server.Items
         }
     }
 
-    [Server.Engines.Craft.Forge]
+    [Engines.Craft.Forge]
     public class Forge : Item
     {
         [Constructable]

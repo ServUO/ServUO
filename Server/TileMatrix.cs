@@ -447,7 +447,7 @@ namespace Server
 			}
 			catch (EndOfStreamException ex)
 			{
-				Server.Diagnostics.ExceptionLogging.LogException(ex);
+                Diagnostics.ExceptionLogging.LogException(ex);
 
 				if (DateTime.UtcNow >= m_NextStaticWarning)
 				{
@@ -495,7 +495,7 @@ namespace Server
 			}
 			catch (Exception ex)
 			{
-				Server.Diagnostics.ExceptionLogging.LogException(ex);
+                Diagnostics.ExceptionLogging.LogException(ex);
 
 				if (DateTime.UtcNow >= m_NextLandWarning)
 				{

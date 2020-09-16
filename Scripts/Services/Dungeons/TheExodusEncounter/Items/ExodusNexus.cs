@@ -211,8 +211,8 @@ namespace Server.Items
         {
             to.SendLocalizedMessage(1152372); // The Nexus shoots an arc of energy at you! 
             to.BoltEffect(0);
-            to.LocalOverheadMessage(Server.Network.MessageType.Regular, 0x21, 1114443); // * Your body convulses from electric shock *
-            to.NonlocalOverheadMessage(Server.Network.MessageType.Regular, 0x21, 1114443, to.Name); //  * ~1_NAME~ spasms from electric shock *
+            to.LocalOverheadMessage(MessageType.Regular, 0x21, 1114443); // * Your body convulses from electric shock *
+            to.NonlocalOverheadMessage(MessageType.Regular, 0x21, 1114443, to.Name); //  * ~1_NAME~ spasms from electric shock *
 
             AOS.Damage(to, to, 60, 0, 0, 0, 0, 100);
 

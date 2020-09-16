@@ -88,7 +88,7 @@ namespace Server.Engines.NewMagincia
                         bc.ControlOrder = OrderType.Stay;
                         bc.Internalize();
                         bc.IsStabled = true;
-                        bc.Loyalty = BaseCreature.MaxLoyalty; // Wonderfully happy
+                        bc.Loyalty = MaxLoyalty; // Wonderfully happy
                         from.Stabled.Add(bc);
                         bc.SetControlMaster(null);
                         bc.SummonMaster = null;

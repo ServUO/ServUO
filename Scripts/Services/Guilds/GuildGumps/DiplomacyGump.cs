@@ -96,12 +96,12 @@ namespace Server.Guilds
         readonly TextDefinition m_LowerText;
 
         public GuildDiplomacyGump(PlayerMobile pm, Guild g)
-            : this(pm, g, GuildDiplomacyGump.NameComparer.Instance, true, "", 0, GuildDisplayType.All, Utility.CastConvertList<BaseGuild, Guild>(new List<BaseGuild>(Guild.List.Values)), (1063136 + (int)GuildDisplayType.All))
+            : this(pm, g, NameComparer.Instance, true, "", 0, GuildDisplayType.All, Utility.CastConvertList<BaseGuild, Guild>(new List<BaseGuild>(BaseGuild.List.Values)), (1063136 + (int)GuildDisplayType.All))
         {
         }
 
         public GuildDiplomacyGump(PlayerMobile pm, Guild g, IComparer<Guild> currentComparer, bool ascending, string filter, int startNumber, GuildDisplayType display)
-            : this(pm, g, currentComparer, ascending, filter, startNumber, display, Utility.CastConvertList<BaseGuild, Guild>(new List<BaseGuild>(Guild.List.Values)), (1063136 + (int)display))
+            : this(pm, g, currentComparer, ascending, filter, startNumber, display, Utility.CastConvertList<BaseGuild, Guild>(new List<BaseGuild>(BaseGuild.List.Values)), (1063136 + (int)display))
         {
         }
 
@@ -111,7 +111,7 @@ namespace Server.Guilds
         }
 
         public GuildDiplomacyGump(PlayerMobile pm, Guild g, bool ascending, string filter, int startNumber, List<Guild> list, TextDefinition lowerText)
-            : this(pm, g, GuildDiplomacyGump.NameComparer.Instance, ascending, filter, startNumber, GuildDisplayType.All, list, lowerText)
+            : this(pm, g, NameComparer.Instance, ascending, filter, startNumber, GuildDisplayType.All, list, lowerText)
         {
         }
 
@@ -119,9 +119,9 @@ namespace Server.Guilds
             : base(pm, g, list, currentComparer, ascending, filter, startNumber,
             new InfoField<Guild>[]
             {
-                new InfoField<Guild>(1062954, 280, GuildDiplomacyGump.NameComparer.Instance), //Guild Name
-                new InfoField<Guild>(1062957, 50,   GuildDiplomacyGump.AbbrevComparer.Instance), //Abbrev
-                new InfoField<Guild>(1062958, 120, new GuildDiplomacyGump.StatusComparer(g))//Guild Title
+                new InfoField<Guild>(1062954, 280, NameComparer.Instance), //Guild Name
+                new InfoField<Guild>(1062957, 50,   AbbrevComparer.Instance), //Abbrev
+                new InfoField<Guild>(1062958, 120, new StatusComparer(g))//Guild Title
             })
         {
             m_Display = display;

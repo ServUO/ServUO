@@ -95,7 +95,7 @@ namespace Server.Engines.SeasonalEvents
                     }
                     else
                     {
-                        BaseGump.SendGump(new EditEventGump(User, entry));
+                        SendGump(new EditEventGump(User, entry));
                     }
                 }
             }
@@ -238,11 +238,11 @@ namespace Server.Engines.SeasonalEvents
 
                     Entry.Duration = _Duration;
 
-                    BaseGump.SendGump(new SeasonalEventGump(User));
+                    SendGump(new SeasonalEventGump(User));
 
                     return;
                 case 10:
-                    BaseGump.SendGump(new SeasonalEventGump(User));
+                    SendGump(new SeasonalEventGump(User));
                     return;
             }
 

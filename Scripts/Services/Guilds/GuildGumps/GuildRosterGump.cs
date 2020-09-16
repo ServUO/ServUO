@@ -91,14 +91,14 @@ namespace Server.Guilds
 
         private static readonly InfoField<PlayerMobile>[] m_Fields = new InfoField<PlayerMobile>[]
         {
-            new InfoField<PlayerMobile>(1062955, 130, GuildRosterGump.NameComparer.Instance), //Name
-            new InfoField<PlayerMobile>(1062956, 80, GuildRosterGump.RankComparer.Instance), //Rank
-            new InfoField<PlayerMobile>(1062952, 80, GuildRosterGump.LastOnComparer.Instance), //Last On
-            new InfoField<PlayerMobile>(1062953, 150, GuildRosterGump.TitleComparer.Instance)//Guild Title
+            new InfoField<PlayerMobile>(1062955, 130, NameComparer.Instance), //Name
+            new InfoField<PlayerMobile>(1062956, 80, RankComparer.Instance), //Rank
+            new InfoField<PlayerMobile>(1062952, 80, LastOnComparer.Instance), //Last On
+            new InfoField<PlayerMobile>(1062953, 150, TitleComparer.Instance)//Guild Title
         };
 
         public GuildRosterGump(PlayerMobile pm, Guild g)
-            : this(pm, g, GuildRosterGump.LastOnComparer.Instance, true, "", 0)
+            : this(pm, g, LastOnComparer.Instance, true, "", 0)
         {
         }
 

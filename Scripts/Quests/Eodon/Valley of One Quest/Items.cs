@@ -662,7 +662,7 @@ namespace Server.Items
                 int x = p.X;
                 int y = p.Y;
 
-                Server.Movement.Movement.Offset(from.Direction, ref x, ref y);
+                Movement.Movement.Offset(from.Direction, ref x, ref y);
                 int z = from.Map.GetAverageZ(x, y);
 
                 if (from.Map.CanSpawnMobile(x, y, z))

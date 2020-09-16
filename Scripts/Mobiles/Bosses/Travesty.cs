@@ -117,7 +117,7 @@ namespace Server.Mobiles
         {
             if (0.1 > Utility.RandomDouble() && m_NextMirrorImage < DateTime.UtcNow)
             {
-                new Server.Spells.Ninjitsu.MirrorImage(this, null).Cast();
+                new Spells.Ninjitsu.MirrorImage(this, null).Cast();
 
                 m_NextMirrorImage = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(20, 45));
             }
@@ -191,7 +191,7 @@ namespace Server.Mobiles
                     {
                         if (item is BaseWeapon)
                         {
-                            var crItem = Server.Engines.Craft.CraftItem.GetCraftItem(item.GetType(), true);
+                            var crItem = Engines.Craft.CraftItem.GetCraftItem(item.GetType(), true);
 
                             if (crItem != null)
                             {

@@ -3,7 +3,7 @@ using Server.Engines.Craft;
 namespace Server.Items
 {
     [Alterable(typeof(DefBlacksmithy), typeof(GargishPike))]
-    [FlipableAttribute(0x26BE, 0x26C8)]
+    [Flipable(0x26BE, 0x26C8)]
     public class Pike : BaseSpear
     {
         [Constructable]

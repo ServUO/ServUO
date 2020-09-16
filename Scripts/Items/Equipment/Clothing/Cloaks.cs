@@ -312,7 +312,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x45A4, 0x45A5)]
+    [Flipable(0x45A4, 0x45A5)]
     public class GargishClothWingArmor : BaseClothing
     {
         [Constructable]

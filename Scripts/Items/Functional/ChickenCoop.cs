@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace Server.Items
 {
-    [FlipableAttribute(0x4513, 0x4514)]
+    [Flipable(0x4513, 0x4514)]
     public class ChickenCoop : Item, ISecurable, IChopable
     {
         public static readonly int MaxStables = 3;

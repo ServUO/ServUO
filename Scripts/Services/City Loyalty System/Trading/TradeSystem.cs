@@ -229,7 +229,7 @@ namespace Server.Engines.CityLoyalty
         public override void OnPlayerAdded(PlayerMobile m)
         {
             m.Backpack.DropItem(new MysteriousNote());
-            m.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1150, 1151734, m.NetState); // *A passerby slips a rolled bit of parchment into your hand...*
+            m.PrivateOverheadMessage(Network.MessageType.Regular, 1150, 1151734, m.NetState); // *A passerby slips a rolled bit of parchment into your hand...*
         }
 
         public static void CancelTradeOrder(Mobile from, TradeOrderCrate crate)
@@ -539,7 +539,7 @@ namespace Server.Engines.CityLoyalty
                 }
             }
 
-            m.LocalOverheadMessage(Server.Network.MessageType.Regular, 1150, 1155479); // *Your keen senses alert you to an incoming ambush of attackers!*
+            m.LocalOverheadMessage(Network.MessageType.Regular, 1150, 1155479); // *Your keen senses alert you to an incoming ambush of attackers!*
             m.SendLocalizedMessage(1049330, "", 0x22); // You have been ambushed! Fight for your honor!!!
         }
 

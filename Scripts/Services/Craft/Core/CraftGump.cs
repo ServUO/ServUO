@@ -729,7 +729,7 @@ namespace Server.Engines.Craft
                                 {
                                     if (system.CanAlter)
                                     {
-                                        if (Server.SkillHandlers.Imbuing.CheckSoulForge(m_From, 1, false))
+                                        if (SkillHandlers.Imbuing.CheckSoulForge(m_From, 1, false))
                                         {
                                             AlterItem.BeginTarget(m_From, system, m_Tool);
                                         }

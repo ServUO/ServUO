@@ -2,7 +2,7 @@ using Server.Engines.Harvest;
 
 namespace Server.Items
 {
-    [FlipableAttribute(0x48C4, 0x48C5)]
+    [Flipable(0x48C4, 0x48C5)]
     public class GargishScythe : BasePoleArm
     {
         [Constructable]

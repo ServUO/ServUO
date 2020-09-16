@@ -37,7 +37,7 @@ namespace Server.Engines.Quests
             AddButton(313, 395, 0x2EEC, 0x2EEE, 0, GumpButtonType.Reply, 0);
         }
 
-        public override void OnResponse(Server.Network.NetState state, RelayInfo info)
+        public override void OnResponse(Network.NetState state, RelayInfo info)
         {
             if (m_Cliloc == 1075783)
                 state.Mobile.SendLocalizedMessage(1075787); // I feel that thou hast yet more to learn about Humility... Please ponder these things further, and visit me again on the 'morrow.

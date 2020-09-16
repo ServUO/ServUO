@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x904, 0x406D)]
+    [Flipable(0x904, 0x406D)]
     public class DualPointedSpear : BaseSpear
     {
         [Constructable]

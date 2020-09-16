@@ -66,7 +66,7 @@ namespace Server.Mobiles
             }
             else
             {
-                defender.LocalOverheadMessage(Server.Network.MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
+                defender.LocalOverheadMessage(Network.MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
                 dur.MaxHitPoints = Math.Max(0, dur.MaxHitPoints - damage);
 
                 if (!item.Deleted && dur.MaxHitPoints == 0)

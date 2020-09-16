@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x2641, 0x2642)]
+    [Flipable(0x2641, 0x2642)]
     public class DragonChest : BaseArmor
     {
         [Constructable]

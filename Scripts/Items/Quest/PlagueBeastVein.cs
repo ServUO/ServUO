@@ -25,7 +25,7 @@ namespace Server.Items
             {
                 if (!m_Cut && m_Timer == null)
                 {
-                    m_Timer = Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(3), CuttingDone, from);
+                    m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(3), CuttingDone, from);
                     scissors.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1071899); // You begin cutting through the vein.
                     return true;
                 }

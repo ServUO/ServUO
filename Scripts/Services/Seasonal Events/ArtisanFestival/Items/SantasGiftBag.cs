@@ -4,8 +4,8 @@ namespace Server.Engines.ArtisanFestival
 {
     public class SantasGiftBag : Item
     {
-        public override bool ForceShowProperties { get { return true; } }
-        public override int LabelNumber { get { return 1157280; } } // Santa's Gift Bag
+        public override bool ForceShowProperties => true;
+        public override int LabelNumber => 1157280;  // Santa's Gift Bag
 
         public SantasGiftBag()
             : base(0x9DB5)

@@ -829,7 +829,7 @@ namespace Server.Gumps
 
                         if (Imbuing.OnBeforeImbue(User, context.LastImbued, id, -1))
                         {
-                            BaseGump.SendGump(new ImbueGump(User, context.LastImbued, id, -1));
+                            SendGump(new ImbueGump(User, context.LastImbued, id, -1));
                         }
 
                         break;

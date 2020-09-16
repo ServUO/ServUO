@@ -35,7 +35,7 @@ namespace Server.Spells.Chivalry
                     if (m is BaseCreature || (m.Player && (m.Criminal || m.Murderer)))
                         continue;
 
-                    if (Caster != m && m.InLOS(Caster) && Caster.CanBeBeneficial(m, false, true) && (!(m is IRepairableMobile) || ((IRepairableMobile)m).RepairResource == typeof(Server.Items.Bandage)))
+                    if (Caster != m && m.InLOS(Caster) && Caster.CanBeBeneficial(m, false, true) && (!(m is IRepairableMobile) || ((IRepairableMobile)m).RepairResource == typeof(Items.Bandage)))
                         targets.Add(m);
                 }
                 eable.Free();

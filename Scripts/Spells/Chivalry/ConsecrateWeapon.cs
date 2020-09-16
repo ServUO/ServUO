@@ -107,7 +107,7 @@ namespace Server.Spells.Chivalry
                 }
 
                 weapon.ConsecratedContext = context;
-                context.Timer = Timer.DelayCall<Mobile>(duration, RemoveEffects, Caster);
+                context.Timer = Timer.DelayCall(duration, RemoveEffects, Caster);
 
                 m_Table[Caster] = context;
 

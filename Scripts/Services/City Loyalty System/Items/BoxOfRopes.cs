@@ -45,7 +45,7 @@ namespace Server.Items
                     from.SendLocalizedMessage(1152264); // You must wait a moment before taking another rope.
             }
             else
-                from.PrivateOverheadMessage(Server.Network.MessageType.Regular, 0x3B2, 1019045, from.NetState); // I can't reach that.
+                from.PrivateOverheadMessage(Network.MessageType.Regular, 0x3B2, 1019045, from.NetState); // I can't reach that.
         }
 
         public static Dictionary<Mobile, DateTime> _Cooldown { get; set; }

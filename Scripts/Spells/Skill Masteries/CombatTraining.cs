@@ -47,7 +47,7 @@ namespace Server.Spells.SkillMasteries
         public override int RequiredMana => 40;
         public override bool PartyEffects => false;
         public override SkillName CastSkill => SkillName.AnimalTaming;
-        public override bool CheckManaBeforeCast { get { return !HasSpell(Caster, GetType()); } }
+        public override bool CheckManaBeforeCast => !HasSpell(Caster, GetType());
 
         public TrainingType SpellType { get; set; }
 
@@ -386,7 +386,7 @@ namespace Server.Spells.SkillMasteries
             if (_RageCooldown == null)
                 _RageCooldown = new Dictionary<Mobile, Timer>();
 
-            _RageCooldown[m] = Server.Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(60), EndRageCooldown, m);
+            _RageCooldown[m] = Server.Timer.DelayCall(TimeSpan.FromSeconds(60), EndRageCooldown, m);
         }
 
         public static bool InRageCooldown(Mobile m)

@@ -329,7 +329,7 @@ namespace Server.Menus.Questions
 
                     if (m_Mobile.Map != Map.Internal)
                     {
-                        Mobiles.BaseCreature.TeleportPets(m_Mobile, dest, destMap);
+                        BaseCreature.TeleportPets(m_Mobile, dest, destMap);
                         m_Mobile.MoveToWorld(dest, destMap);
                     }
                     else

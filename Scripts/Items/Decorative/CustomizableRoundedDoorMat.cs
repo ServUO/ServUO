@@ -12,7 +12,7 @@ namespace Server.Items
     }
 
     [Furniture]
-    [FlipableAttribute(0x4790, 0x4791)]
+    [Flipable(0x4790, 0x4791)]
     public class CustomizableRoundedDoorMat : Item, IDyable, ICustomizableMessageItem
     {
         public string[] Lines { get; set; }

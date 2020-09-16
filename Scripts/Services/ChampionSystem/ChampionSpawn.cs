@@ -551,7 +551,7 @@ namespace Server.Engines.CannedEvil
                     }
                     catch (Exception e)
                     {
-                        Server.Diagnostics.ExceptionLogging.LogException(e);
+                        Diagnostics.ExceptionLogging.LogException(e);
                     }
                 }
             }
@@ -761,7 +761,7 @@ namespace Server.Engines.CannedEvil
             }
             catch (Exception e)
             {
-                Server.Diagnostics.ExceptionLogging.LogException(e);
+                Diagnostics.ExceptionLogging.LogException(e);
             }
 
             if (m_Champion != null)
@@ -928,7 +928,7 @@ namespace Server.Engines.CannedEvil
             }
             catch (Exception e)
             {
-                Server.Diagnostics.ExceptionLogging.LogException(e);
+                Diagnostics.ExceptionLogging.LogException(e);
                 return null;
             }
         }

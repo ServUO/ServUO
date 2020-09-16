@@ -65,7 +65,7 @@ namespace Server
 						if (Core.Debug)
 							Console.WriteLine("Metrics: Metrics enabled. Performance counters creation requires ServUO to be run as Administrator once!");
 
-						Server.Diagnostics.ExceptionLogging.LogException(ex);
+                        Diagnostics.ExceptionLogging.LogException(ex);
 					}
 				}
 				else

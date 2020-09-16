@@ -221,7 +221,7 @@ namespace Server.Engines.Despise
             return false;
         }
 
-        public override void GetContextMenuEntries(Mobile from, System.Collections.Generic.List<Server.ContextMenus.ContextMenuEntry> list)
+        public override void GetContextMenuEntries(Mobile from, System.Collections.Generic.List<ContextMenus.ContextMenuEntry> list)
         {
         }
 

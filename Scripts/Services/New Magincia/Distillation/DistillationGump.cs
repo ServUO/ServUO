@@ -212,7 +212,7 @@ namespace Server.Engines.Distillation
                 else if (text != null)
                 {
                     text = text.Trim();
-                    if (text.Length > 15 || !Server.Guilds.BaseGuildGump.CheckProfanity(text))
+                    if (text.Length > 15 || !Guilds.BaseGuildGump.CheckProfanity(text))
                         from.SendMessage("That label is unacceptable. Please try again.");
                     else
                         m_Context.Label = text;

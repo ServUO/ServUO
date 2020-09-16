@@ -108,8 +108,8 @@ namespace Server.Items
                 from.SendLocalizedMessage(1113413); // You have recently participated in this challenge. You must wait 24 hours to try again.
             else if (!m_Active && m_Entrance.Contains(from.Location) && from.Map == Map.TerMur)
             {
-                if (from.HasGump(typeof(ExperimentalGem.InternalGump)))
-                    from.CloseGump(typeof(ExperimentalGem.InternalGump));
+                if (from.HasGump(typeof(InternalGump)))
+                    from.CloseGump(typeof(InternalGump));
 
                 from.SendGump(new InternalGump(this));
             }
@@ -709,7 +709,7 @@ namespace Server.Items
                 AddHtmlLocalized(250, 87, 80, 25, 1006044, 0x7FFF, false, false);  //OK
             }
 
-            public override void OnResponse(Server.Network.NetState state, RelayInfo info)
+            public override void OnResponse(NetState state, RelayInfo info)
             {
                 if (info.ButtonID == 1)
                     m_Gem.Activate(state.Mobile);

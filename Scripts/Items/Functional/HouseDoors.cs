@@ -10,7 +10,7 @@ namespace Server.Items
     {
         [Constructable]
         public MetalHouseDoor(DoorFacing facing)
-            : base(facing, 0x675 + (2 * (int)facing), 0x676 + (2 * (int)facing), 0xEC, 0xF3, BaseDoor.GetOffset(facing))
+            : base(facing, 0x675 + (2 * (int)facing), 0x676 + (2 * (int)facing), 0xEC, 0xF3, GetOffset(facing))
         {
         }
 
@@ -38,7 +38,7 @@ namespace Server.Items
     {
         [Constructable]
         public DarkWoodHouseDoor(DoorFacing facing)
-            : base(facing, 0x6A5 + (2 * (int)facing), 0x6A6 + (2 * (int)facing), 0xEA, 0xF1, BaseDoor.GetOffset(facing))
+            : base(facing, 0x6A5 + (2 * (int)facing), 0x6A6 + (2 * (int)facing), 0xEA, 0xF1, GetOffset(facing))
         {
         }
 
@@ -72,7 +72,7 @@ namespace Server.Items
 
         [Constructable]
         public GenericHouseDoor(DoorFacing facing, int baseItemID, int openedSound, int closedSound, bool autoAdjust)
-            : base(facing, baseItemID + (autoAdjust ? (2 * (int)facing) : 0), baseItemID + 1 + (autoAdjust ? (2 * (int)facing) : 0), openedSound, closedSound, BaseDoor.GetOffset(facing))
+            : base(facing, baseItemID + (autoAdjust ? (2 * (int)facing) : 0), baseItemID + 1 + (autoAdjust ? (2 * (int)facing) : 0), openedSound, closedSound, GetOffset(facing))
         {
         }
 

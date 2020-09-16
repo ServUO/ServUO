@@ -35,10 +35,10 @@ namespace Server.Engines.Quests
         {
             CantWalk = true;
 
-            AddItem(new Server.Items.Boots());
-            AddItem(new Server.Items.Shirt(1436));
-            AddItem(new Server.Items.ShortPants(1436));
-            AddItem(new Server.Items.CompositeBow());
+            AddItem(new Items.Boots());
+            AddItem(new Items.Shirt(1436));
+            AddItem(new Items.ShortPants(1436));
+            AddItem(new Items.CompositeBow());
 
             Blessed = true;
         }

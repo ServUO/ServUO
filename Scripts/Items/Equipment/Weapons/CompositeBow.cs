@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    [FlipableAttribute(0x26C2, 0x26CC)]
+    [Flipable(0x26C2, 0x26CC)]
     public class CompositeBow : BaseRanged
     {
         [Constructable]

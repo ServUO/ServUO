@@ -6548,7 +6548,7 @@ namespace Server
 				}
 				catch (Exception e)
 				{
-					Server.Diagnostics.ExceptionLogging.LogException(e);
+                    Diagnostics.ExceptionLogging.LogException(e);
 				}
 			}
 
@@ -8660,7 +8660,7 @@ namespace Server
 						}
 					}
 
-					NextActionTime = Core.TickCount + Mobile.ActionDelay;
+					NextActionTime = Core.TickCount + ActionDelay;
 
 					OnWarmodeChanged();
 				}

@@ -211,7 +211,7 @@ namespace Server.Engines.Help
             }
             catch (Exception e)
             {
-                Server.Diagnostics.ExceptionLogging.LogException(e);
+                Diagnostics.ExceptionLogging.LogException(e);
             }
         }
 
@@ -245,14 +245,14 @@ namespace Server.Engines.Help
                             }
                             catch (Exception e)
                             {
-                                Server.Diagnostics.ExceptionLogging.LogException(e);
+                                Diagnostics.ExceptionLogging.LogException(e);
                             }
                         }
                     }
                 }
                 catch (Exception e)
                 {
-                    Server.Diagnostics.ExceptionLogging.LogException(e);
+                    Diagnostics.ExceptionLogging.LogException(e);
                 }
             }
 
@@ -633,7 +633,7 @@ namespace Server.Engines.Help
             }
             catch (Exception e)
             {
-                Server.Diagnostics.ExceptionLogging.LogException(e);
+                Diagnostics.ExceptionLogging.LogException(e);
             }
         }
 

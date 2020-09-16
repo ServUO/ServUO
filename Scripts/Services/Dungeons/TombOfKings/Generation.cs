@@ -160,7 +160,7 @@ namespace Server.Engines.TombOfKings
             Chamber.Generate();
             ChamberSpawner.Generate();
 
-            CommandSystem.Handle(e.Mobile, Server.Commands.CommandSystem.Prefix + "ArisenGenerate");
+            CommandSystem.Handle(e.Mobile, CommandSystem.Prefix + "ArisenGenerate");
 
             e.Mobile.SendMessage("Generation completed!");
         }

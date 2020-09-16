@@ -39,7 +39,7 @@ namespace Server.Items
                 {
                     writer.Write(1);
 
-                    Server.Regions.SeaMarketRegion.Save(writer);
+                    SeaMarketRegion.Save(writer);
 
                     writer.Write(PlayerFishingEntry.FishingEntries.Count);
 
@@ -66,7 +66,7 @@ namespace Server.Items
                 {
                     int version = reader.ReadInt();
 
-                    Server.Regions.SeaMarketRegion.Load(reader);
+                    SeaMarketRegion.Load(reader);
                     int count = reader.ReadInt();
                     for (int i = 0; i < count; i++)
                         new PlayerFishingEntry(reader);

@@ -182,7 +182,7 @@ namespace Server.Mobiles
                             Movement.Movement.Offset(d, ref x, ref y);
 
                         IPoint3D p = new Point3D(x, y, Map.GetAverageZ(x, y)) as IPoint3D;
-                        Server.Spells.SpellHelper.GetSurfaceTop(ref p);
+                        Spells.SpellHelper.GetSurfaceTop(ref p);
 
                         newLoc = new Point3D(p);
 
@@ -268,7 +268,7 @@ namespace Server.Mobiles
 
             BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.DragonTurtleDebuff, 1156192, 1156192));
 
-            Server.Timer.DelayCall(TimeSpan.FromSeconds(30), RemoveMod_Callback, new object[] { m, mod });
+            Timer.DelayCall(TimeSpan.FromSeconds(30), RemoveMod_Callback, new object[] { m, mod });
         }
 
         private void RemoveMod_Callback(object obj)

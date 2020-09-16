@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x2B76, 0x316D)]
+    [Flipable(0x2B76, 0x316D)]
     public class HideGorget : BaseArmor
     {
         [Constructable]

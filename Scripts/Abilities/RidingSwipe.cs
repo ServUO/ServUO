@@ -53,7 +53,7 @@ namespace Server.Items
                     type = BlockMountType.RidingSwipeEthereal;
                 }
 
-                Server.Items.Dismount.DoDismount(attacker, defender, mount, 10, type);
+                Items.Dismount.DoDismount(attacker, defender, mount, 10, type);
 
                 if (mount is Mobile)
                     AOS.Damage((Mobile)mount, attacker, amount, 100, 0, 0, 0, 0);
@@ -65,7 +65,7 @@ namespace Server.Items
             {
                 AOS.Damage(defender, attacker, amount, 100, 0, 0, 0, 0);
 
-                if (Server.Items.ParalyzingBlow.IsImmune(defender))	//Does it still do damage?
+                if (Items.ParalyzingBlow.IsImmune(defender))	//Does it still do damage?
                 {
                     attacker.SendLocalizedMessage(1070804); // Your target resists paralysis.
                     defender.SendLocalizedMessage(1070813); // You resist paralysis.
@@ -73,7 +73,7 @@ namespace Server.Items
                 else
                 {
                     defender.Paralyze(TimeSpan.FromSeconds(3.0));
-                    Server.Items.ParalyzingBlow.BeginImmunity(defender, Server.Items.ParalyzingBlow.FreezeDelayDuration);
+                    Items.ParalyzingBlow.BeginImmunity(defender, Items.ParalyzingBlow.FreezeDelayDuration);
                 }
             }
         }

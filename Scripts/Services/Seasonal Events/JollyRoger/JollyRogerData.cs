@@ -223,7 +223,7 @@ namespace Server.Engines.JollyRoger
 
             foreach (var kvp in ShrineTitles)
             {
-                writer.WriteMobile<PlayerMobile>(kvp.Key);
+                writer.WriteMobile(kvp.Key);
                 writer.Write(kvp.Value);
             }
         }
@@ -244,7 +244,7 @@ namespace Server.Engines.JollyRoger
 
                         Timer.DelayCall(() =>
                         {
-                            var jolly = Server.Engines.SeasonalEvents.SeasonalEventSystem.GetEvent<JollyRogerEvent>();
+                            var jolly = SeasonalEvents.SeasonalEventSystem.GetEvent<JollyRogerEvent>();
 
                             if (jolly != null)
                             {

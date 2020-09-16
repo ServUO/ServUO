@@ -24,7 +24,7 @@
         {
             if (from.InRange(Location, 2))
             {
-                Server.Mobiles.BaseCreature.TeleportPets(from, m_PointDest, from.Map);
+                Mobiles.BaseCreature.TeleportPets(from, m_PointDest, from.Map);
                 from.MoveToWorld(m_PointDest, m_Map);
             }
         }
@@ -36,7 +36,7 @@
 
             if (from.InRange(Location, 2))
             {
-                Server.Mobiles.BaseCreature.TeleportPets(from, m_PointDest, from.Map);
+                Mobiles.BaseCreature.TeleportPets(from, m_PointDest, from.Map);
                 from.MoveToWorld(m_PointDest, m_Map);
             }
         }

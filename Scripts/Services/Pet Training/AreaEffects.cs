@@ -138,7 +138,7 @@ namespace Server.Mobiles
                     _Cooldown = new List<BaseCreature>();
 
                 _Cooldown.Add(bc);
-                Timer.DelayCall<BaseCreature>(cooldown, RemoveFromCooldown, bc);
+                Timer.DelayCall(cooldown, RemoveFromCooldown, bc);
             }
         }
 
@@ -220,11 +220,11 @@ namespace Server.Mobiles
                 if (timer != null)
                     timer.Stop();
 
-                _Table[defender] = Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(30), EndNausea, defender);
+                _Table[defender] = Timer.DelayCall(TimeSpan.FromSeconds(30), EndNausea, defender);
             }
             else
             {
-                _Table.Add(defender, Timer.DelayCall<Mobile>(TimeSpan.FromSeconds(30), EndNausea, defender));
+                _Table.Add(defender, Timer.DelayCall(TimeSpan.FromSeconds(30), EndNausea, defender));
             }
 
             defender.Animate(32, 5, 1, true, false, 0); // bow animation
@@ -306,7 +306,7 @@ namespace Server.Mobiles
 
         public override void DoEffect(BaseCreature creature, Mobile defender)
         {
-            Timer.DelayCall<Mobile>(TimeSpan.FromMilliseconds(Utility.RandomMinMax(10, 1000)), m =>
+            Timer.DelayCall(TimeSpan.FromMilliseconds(Utility.RandomMinMax(10, 1000)), m =>
             {
                 if (m.Alive && !m.Deleted && m.Map != null)
                 {

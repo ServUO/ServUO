@@ -27,7 +27,7 @@ namespace Server.Misc
 
             if (m.IsStaff())
             {
-                Server.Engines.Help.PageQueue.Pages_OnCalled(m);
+                Engines.Help.PageQueue.Pages_OnCalled(m);
             }
         }
     }

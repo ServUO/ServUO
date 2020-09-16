@@ -306,7 +306,7 @@ namespace Server.Engines.UOStore
             // misc
             cat = StoreCategory.Misc;
 
-            if (Server.AccountVault.SystemSettings.UseTokens)
+            if (AccountVault.SystemSettings.UseTokens)
             {
                 Register<VaultToken>(1158315, 1158316, 0x9FE8, 0, 0, 300, cat);
             }
@@ -818,7 +818,7 @@ namespace Server.Engines.UOStore
                             }
                             catch (Exception e)
                             {
-                                Server.Diagnostics.ExceptionLogging.LogException(e);
+                                Diagnostics.ExceptionLogging.LogException(e);
                             }
                         }
                         else

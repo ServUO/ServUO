@@ -162,7 +162,7 @@ namespace Server.Multis
                 //int zavg = Map.GetAverageZ(bc.X, bc.Y);
                 IPoint3D p = bc.Location; //new Point3D(bc.X, bc.Y, zavg);
 
-                Server.Spells.SpellHelper.GetSurfaceTop(ref p);
+                Spells.SpellHelper.GetSurfaceTop(ref p);
 
                 Point3D loc = new Point3D(p);
                 bc.RangeHome = bc.IsPrisoner ? 0 : 6;

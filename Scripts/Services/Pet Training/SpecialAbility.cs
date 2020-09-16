@@ -538,7 +538,7 @@ namespace Server.Mobiles
 
             if (def.AttacksMultipleTargets)
             {
-                List<Mobile> list = Server.Spells.SpellHelper.AcquireIndirectTargets(creature, target, creature.Map, 5).OfType<Mobile>().Where(m => m.InRange(creature.Location, MaxRange)).ToList();
+                List<Mobile> list = Spells.SpellHelper.AcquireIndirectTargets(creature, target, creature.Map, 5).OfType<Mobile>().Where(m => m.InRange(creature.Location, MaxRange)).ToList();
 
                 for (int i = 0; i < 5; i++)
                 {
@@ -600,7 +600,7 @@ namespace Server.Mobiles
 
         public void BreathDealDamage(BaseCreature creature, Mobile target, DragonBreathDefinition def)
         {
-            if (!Server.Spells.Bushido.Evasion.CheckSpellEvasion(target))
+            if (!Spells.Bushido.Evasion.CheckSpellEvasion(target))
             {
                 AOS.Damage(
                     target,
@@ -1206,7 +1206,7 @@ namespace Server.Mobiles
 
         public override void DoEffects(BaseCreature creature, Mobile defender, ref int damage)
         {
-            Server.Effects.SendBoltEffect(defender, true);
+            Effects.SendBoltEffect(defender, true);
             AOS.Damage(defender, creature, Utility.RandomMinMax(15, 20), 0, 0, 0, 0, 100);
         }
     }

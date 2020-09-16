@@ -158,7 +158,7 @@ namespace Server.Mobiles
                 z = Map.GetAverageZ(x, y);
                 Point3D p = new Point3D(x, y, z);
 
-                if (Server.Spells.SpellHelper.AdjustField(ref p, Map, 12, false))
+                if (Spells.SpellHelper.AdjustField(ref p, Map, 12, false))
                 {
                     MovementPath path = new MovementPath(this, p);
 
@@ -323,11 +323,11 @@ namespace Server.Mobiles
 
             if (Siege.SiegeShard && mob is PlayerMobile)
             {
-                int chance = Server.Engines.Despise.DespiseBoss.ArtifactChance + Math.Min(10, ((PlayerMobile)mob).Luck / 180);
+                int chance = Engines.Despise.DespiseBoss.ArtifactChance + Math.Min(10, ((PlayerMobile)mob).Luck / 180);
 
                 if (chance >= Utility.Random(100))
                 {
-                    Type t = Server.Engines.Despise.DespiseBoss.Artifacts[Utility.Random(Server.Engines.Despise.DespiseBoss.Artifacts.Length)];
+                    Type t = Engines.Despise.DespiseBoss.Artifacts[Utility.Random(Engines.Despise.DespiseBoss.Artifacts.Length)];
 
                     if (t != null)
                     {

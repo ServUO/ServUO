@@ -2,7 +2,7 @@ using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    [FlipableAttribute(0x1022, 0x1023)]
+    [Flipable(0x1022, 0x1023)]
     public class FletcherTools : BaseTool
     {
         public override CraftSystem CraftSystem => DefBowFletching.CraftSystem;

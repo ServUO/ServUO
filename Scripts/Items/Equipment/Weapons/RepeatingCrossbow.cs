@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    [FlipableAttribute(0x26C3, 0x26CD)]
+    [Flipable(0x26C3, 0x26CD)]
     public class RepeatingCrossbow : BaseRanged
     {
         [Constructable]

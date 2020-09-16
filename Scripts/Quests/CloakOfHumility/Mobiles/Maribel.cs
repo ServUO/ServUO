@@ -38,9 +38,9 @@ namespace Server.Mobiles
 
         public override void InitOutfit()
         {
-            AddItem(new Server.Items.Backpack());
-            AddItem(new Server.Items.Sandals());
-            AddItem(new Server.Items.FancyDress(2205));
+            AddItem(new Items.Backpack());
+            AddItem(new Items.Sandals());
+            AddItem(new Items.FancyDress(2205));
         }
 
         public override void Serialize(GenericWriter writer)

@@ -177,7 +177,7 @@ namespace Server.Items
             if (IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(1071121); // Select the bulk order book you want to replace a cover.
-                from.BeginTarget(-1, false, Server.Targeting.TargetFlags.None, (m, targeted) =>
+                from.BeginTarget(-1, false, Targeting.TargetFlags.None, (m, targeted) =>
                     {
                         if (targeted is BulkOrderBook)
                         {

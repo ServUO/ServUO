@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x1765, 0x1767)]
+    [Flipable(0x1765, 0x1767)]
     public class UncutCloth : Item, IScissorable, IDyable, ICommodity
     {
         [Constructable]

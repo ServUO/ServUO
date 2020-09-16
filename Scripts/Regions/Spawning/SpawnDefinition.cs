@@ -367,7 +367,7 @@ namespace Server.Regions
             catch (Exception ex)
             {
                 Console.WriteLine("Could not load SpawnDefinitions.xml: ");
-                Server.Diagnostics.ExceptionLogging.LogException(ex);
+                Diagnostics.ExceptionLogging.LogException(ex);
             }
         }
 

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Server.Items
 {
-    [FlipableAttribute(0x234E, 0x234F)]
+    [Flipable(0x234E, 0x234F)]
     public class TapestryOfSosaria : Item, ISecurable
     {
         private SecureLevel m_Level;

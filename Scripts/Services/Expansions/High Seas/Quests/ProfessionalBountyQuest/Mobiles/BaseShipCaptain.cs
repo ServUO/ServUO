@@ -136,7 +136,7 @@ namespace Server.Mobiles
                 gal.MoveToWorld(p, map);
                 m_Galleon = gal;
 
-                Server.Engines.Quests.BountyQuestSpawner.FillHold(m_Galleon);
+                BountyQuestSpawner.FillHold(m_Galleon);
                 MoveToWorld(new Point3D(p.X, p.Y - 1, gal.Z + gal.ZSurface), map);
 
                 int crewCount = Utility.RandomMinMax(3, 5);

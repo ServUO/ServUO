@@ -81,7 +81,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x1EB1, 0x1EB2, 0x1EB3, 0x1EB4)]
+    [Flipable(0x1EB1, 0x1EB2, 0x1EB3, 0x1EB4)]
     public class BarrelStaves : Item, IResource, IQuality
     {
         private CraftResource _Resource;

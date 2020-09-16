@@ -46,7 +46,7 @@ namespace Server.Engines.TreasuresOfKotlCity
             }
             else
             {
-                from.PrivateOverheadMessage(Server.Network.MessageType.Regular, 1154, 1157020, from.NetState);
+                from.PrivateOverheadMessage(MessageType.Regular, 1154, 1157020, from.NetState);
                 from.PlaySound(0x0FF);
 
                 ActivateTimeWarp();

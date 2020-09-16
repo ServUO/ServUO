@@ -2,7 +2,7 @@ using Server.Engines.Craft;
 
 namespace Server.Items
 {
-    [FlipableAttribute(0xfbb, 0xfbc)]
+    [Flipable(0xfbb, 0xfbc)]
     public class Tongs : BaseTool
     {
         [Constructable]

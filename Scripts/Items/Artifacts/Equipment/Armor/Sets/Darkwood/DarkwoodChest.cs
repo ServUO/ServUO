@@ -3,7 +3,7 @@ using System;
 
 namespace Server.Items
 {
-    [FlipableAttribute(0x2B67, 0x315E)]
+    [Flipable(0x2B67, 0x315E)]
     public class DarkwoodChest : WoodlandChest
     {
         public override bool IsArtifact => true;

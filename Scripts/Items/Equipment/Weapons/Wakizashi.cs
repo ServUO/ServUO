@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x27A4, 0x27EF)]
+    [Flipable(0x27A4, 0x27EF)]
     public class Wakizashi : BaseSword
     {
         [Constructable]

@@ -110,7 +110,7 @@ namespace Server.Items
                         if (m_Wool is TaintedWool)
                             wheel.BeginSpin(TaintedWool.OnSpun, from, m_Wool.Hue);
                         else
-                            wheel.BeginSpin(Wool.OnSpun, from, m_Wool.Hue);
+                            wheel.BeginSpin(OnSpun, from, m_Wool.Hue);
                     }
                 }
                 else

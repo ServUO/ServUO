@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class ThrowPillow : Item, IDyable
     {
-        public override int LabelNumber { get { return 1075496; } } // Throw Pillow
+        public override int LabelNumber => 1075496;  // Throw Pillow
 
         [Constructable]
         public ThrowPillow()

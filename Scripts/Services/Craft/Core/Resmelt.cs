@@ -173,7 +173,7 @@ namespace Server.Engines.Craft
                 }
                 catch (Exception e)
                 {
-                    Server.Diagnostics.ExceptionLogging.LogException(e);
+                    Diagnostics.ExceptionLogging.LogException(e);
                 }
 
                 return SmeltResult.Invalid;

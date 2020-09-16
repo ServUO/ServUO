@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x1443, 0x1442)]
+    [Flipable(0x1443, 0x1442)]
     public class TheDeceiver : TwoHandedAxe
     {
         public override int LabelNumber => 1157344;  // the deceiver

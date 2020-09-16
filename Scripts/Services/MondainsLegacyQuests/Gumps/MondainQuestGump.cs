@@ -629,7 +629,7 @@ namespace Server.Engines.Quests
             return null;
         }
 
-        public override void OnResponse(Server.Network.NetState state, RelayInfo info)
+        public override void OnResponse(Network.NetState state, RelayInfo info)
         {
             if (m_From != null)
                 m_From.CloseGump(typeof(MondainQuestGump));

@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    [FlipableAttribute(0x236E, 0x2371)]
+    [Flipable(0x236E, 0x2371)]
     public class LightOfTheWinterSolstice : Item
     {
         private static readonly string[] m_StaffNames = new string[]

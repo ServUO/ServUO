@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Server.Items
 {
-    [FlipableAttribute(0xE80, 0x9A8)]
+    [Flipable(0xE80, 0x9A8)]
     public class StrongBox : BaseContainer, IChopable
     {
         private Mobile m_Owner;

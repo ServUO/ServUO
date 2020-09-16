@@ -31,10 +31,10 @@ namespace Server.Mobiles
 
         public override void InitOutfit()
         {
-            AddItem(new Server.Items.Shirt(Utility.RandomNeutralHue()));
-            AddItem(new Server.Items.LongPants(Utility.RandomNeutralHue()));
-            AddItem(new Server.Items.Dagger());
-            AddItem(new Server.Items.ThighBoots(Utility.RandomNeutralHue()));
+            AddItem(new Items.Shirt(Utility.RandomNeutralHue()));
+            AddItem(new Items.LongPants(Utility.RandomNeutralHue()));
+            AddItem(new Items.Dagger());
+            AddItem(new Items.ThighBoots(Utility.RandomNeutralHue()));
 
             base.InitOutfit();
         }

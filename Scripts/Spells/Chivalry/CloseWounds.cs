@@ -50,7 +50,7 @@ namespace Server.Spells.Chivalry
             {
                 Caster.SendLocalizedMessage(500955); // That being is not damaged!
             }
-            else if (m.Poisoned || Server.Items.MortalStrike.IsWounded(m))
+            else if (m.Poisoned || Items.MortalStrike.IsWounded(m))
             {
                 Caster.LocalOverheadMessage(MessageType.Regular, 0x3B2, (Caster == m) ? 1005000 : 1010398);
             }

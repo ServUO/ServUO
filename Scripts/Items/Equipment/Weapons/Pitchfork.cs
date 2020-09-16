@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0xE87, 0xE88)]
+    [Flipable(0xE87, 0xE88)]
     public class Pitchfork : BaseSpear
     {
         [Constructable]

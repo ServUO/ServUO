@@ -100,7 +100,7 @@ namespace Server.Items
 
             _Immunity.Add(m);
 
-            Timer.DelayCall<Mobile>(duration, mob =>
+            Timer.DelayCall(duration, mob =>
                 {
                     if (_Immunity != null && _Immunity.Contains(mob))
                         _Immunity.Remove(mob);

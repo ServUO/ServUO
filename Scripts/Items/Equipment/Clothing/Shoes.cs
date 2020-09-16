@@ -142,7 +142,7 @@ namespace Server.Items
     }
 
     [Alterable(typeof(DefTailoring), typeof(LeatherTalons), true)]
-    [FlipableAttribute(0x170b, 0x170c)]
+    [Flipable(0x170b, 0x170c)]
     public class Boots : BaseShoes
     {
         public override CraftResource DefaultResource => CraftResource.RegularLeather;
@@ -322,7 +322,7 @@ namespace Server.Items
     }
 
     [Alterable(typeof(DefTailoring), typeof(LeatherTalons), true)]
-    [FlipableAttribute(0x170f, 0x1710)]
+    [Flipable(0x170f, 0x1710)]
     public class Shoes : BaseShoes
     {
         public override CraftResource DefaultResource => CraftResource.RegularLeather;
@@ -361,7 +361,7 @@ namespace Server.Items
     }
 
     [Alterable(typeof(DefTailoring), typeof(LeatherTalons), true)]
-    [FlipableAttribute(0x170d, 0x170e)]
+    [Flipable(0x170d, 0x170e)]
     public class Sandals : BaseShoes
     {
         public override CraftResource DefaultResource => CraftResource.RegularLeather;
@@ -511,7 +511,7 @@ namespace Server.Items
     }
 
     [Alterable(typeof(DefTailoring), typeof(LeatherTalons), true)]
-    [FlipableAttribute(0x2FC4, 0x317A)]
+    [Flipable(0x2FC4, 0x317A)]
     public class ElvenBoots : BaseShoes
     {
         public override CraftResource DefaultResource => CraftResource.RegularLeather;

@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x1bdd, 0x1be0)]
+    [Flipable(0x1bdd, 0x1be0)]
     public class BaseLog : Item, ICommodity, IAxe, IResource
     {
         private CraftResource m_Resource;
@@ -144,7 +144,7 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             //don't deserialize anything on update
-            if (BaseLog.UpdatingBaseLogClass)
+            if (UpdatingBaseLogClass)
                 return;
 
             int version = reader.ReadInt();

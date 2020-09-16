@@ -7,7 +7,7 @@ namespace Server.Engines.Quests
 {
     public sealed class HeritagePacket : Packet
     {
-        public static readonly Packet Close = Packet.SetStatic(new HeritagePacket(false, 0xFF));
+        public static readonly Packet Close = SetStatic(new HeritagePacket(false, 0xFF));
         public HeritagePacket(bool female, short type)
             : base(0xBF)
         {

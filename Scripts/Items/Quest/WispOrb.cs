@@ -296,14 +296,14 @@ namespace Server.Engines.Despise
                 m_Orb = orb;
 
                 if (m_Orb.Pet == null || m_Orb.Conscripted || m_Orb.Pet.Alignment != m_Orb.Alignment)
-                    Flags |= Server.Network.CMEFlags.Disabled;
+                    Flags |= CMEFlags.Disabled;
             }
 
             public override void OnClick()
             {
                 if (m_Orb.Pet != null && m_Orb.IsChildOf(m_From.Backpack) && !m_Orb.Conscripted && m_Orb.Pet.Alignment == m_Orb.Alignment)
                 {
-                    if (m_Orb.Pet.Power < WispOrb.MinPowerToConscript)
+                    if (m_Orb.Pet.Power < MinPowerToConscript)
                         m_From.SendLocalizedMessage(1153311); // The creature under control of your Wisp Orb cannot be conscripted at this time.
                     else
                     {
@@ -325,7 +325,7 @@ namespace Server.Engines.Despise
                 m_Orb = orb;
 
                 if (m_Orb.Pet == null/* || !m_Orb.Conscripted*/)
-                    Flags |= Server.Network.CMEFlags.Disabled;
+                    Flags |= CMEFlags.Disabled;
             }
 
             public override void OnClick()

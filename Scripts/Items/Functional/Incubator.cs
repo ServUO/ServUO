@@ -5,7 +5,7 @@ using System;
 
 namespace Server.Items
 {
-    [FlipableAttribute(0x407C, 0x407D)]
+    [Flipable(0x407C, 0x407D)]
     public class Incubator : Container, ISecurable
     {
         public static readonly int MaxEggs = 6;

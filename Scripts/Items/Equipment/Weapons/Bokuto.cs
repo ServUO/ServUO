@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x27A8, 0x27F3)]
+    [Flipable(0x27A8, 0x27F3)]
     public class Bokuto : BaseSword
     {
         [Constructable]

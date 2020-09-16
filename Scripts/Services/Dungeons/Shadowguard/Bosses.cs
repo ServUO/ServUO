@@ -827,7 +827,7 @@ namespace Server.Engines.Shadowguard
             //Flame Columns
             for (int i = 0; i < 2; i++)
             {
-                Server.Misc.Geometry.Circle2D(Location, Map, i, (pnt, map) =>
+                Misc.Geometry.Circle2D(Location, Map, i, (pnt, map) =>
                     {
                         Effects.SendLocationParticles(EffectItem.Create(pnt, map, EffectItem.DefaultDuration), 0x3709, 10, 30, 5052);
                     });
@@ -851,7 +851,7 @@ namespace Server.Engines.Shadowguard
 
                         for (int i = 0; i < range; i++)
                         {
-                            Server.Misc.Geometry.Circle2D(Location, Map, i, (pnt, map) =>
+                            Misc.Geometry.Circle2D(Location, Map, i, (pnt, map) =>
                             {
                                 Effects.SendLocationEffect(pnt, map, 14000, 14, 10, Utility.RandomMinMax(2497, 2499), 2);
                             });

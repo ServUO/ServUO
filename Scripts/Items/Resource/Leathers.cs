@@ -111,7 +111,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x1081, 0x1082)]
+    [Flipable(0x1081, 0x1082)]
     public class Leather : BaseLeather
     {
         [Constructable]
@@ -146,7 +146,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x1081, 0x1082)]
+    [Flipable(0x1081, 0x1082)]
     public class SpinedLeather : BaseLeather
     {
         protected override CraftResource DefaultResource => CraftResource.SpinedLeather;
@@ -183,7 +183,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x1081, 0x1082)]
+    [Flipable(0x1081, 0x1082)]
     public class HornedLeather : BaseLeather
     {
         protected override CraftResource DefaultResource => CraftResource.HornedLeather;
@@ -220,7 +220,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(0x1081, 0x1082)]
+    [Flipable(0x1081, 0x1082)]
     public class BarbedLeather : BaseLeather
     {
         protected override CraftResource DefaultResource => CraftResource.BarbedLeather;

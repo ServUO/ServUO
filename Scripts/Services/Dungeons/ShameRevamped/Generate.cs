@@ -25,7 +25,7 @@ namespace Server.Engines.ShameRevamped
         {
             RemoveItems();
 
-            CommandSystem.Handle(e.Mobile, Server.Commands.CommandSystem.Prefix + "XmlLoad RevampedSpawns/ShameRevamped.xml");
+            CommandSystem.Handle(e.Mobile, CommandSystem.Prefix + "XmlLoad RevampedSpawns/ShameRevamped.xml");
 
             // Level 1
             Point3D altarLoc = new Point3D(5403, 43, 30);

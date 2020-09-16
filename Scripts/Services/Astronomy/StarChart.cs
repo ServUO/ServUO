@@ -166,7 +166,7 @@ namespace Server.Items
                     {
                         string text = relay.Text;
 
-                        if (Server.Guilds.BaseGuildGump.CheckProfanity(text) &&
+                        if (Guilds.BaseGuildGump.CheckProfanity(text) &&
                             !AstronomySystem.CheckNameExists(text) &&
                             text.Length > 0 &&
                             text.Length < 37)

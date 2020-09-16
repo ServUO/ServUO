@@ -111,7 +111,7 @@ namespace Server.Items
                     if (_Item._Controller.FragmentCount == 8 && _Count == 8)
                     {
                         _Item._Controller.FragmentCount = 0;
-                        Timer.DelayCall(TimeSpan.FromSeconds(5), () => _Item._Controller.Active = true);
+                        DelayCall(TimeSpan.FromSeconds(5), () => _Item._Controller.Active = true);
                     }
 
                     JollyRogerData.FragmentIncrease(_Mobile, _Item._Controller.Shrine);

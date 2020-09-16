@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x905, 0x4070)]
+    [Flipable(0x905, 0x4070)]
     public class GlassStaff : BaseStaff
     {
         [Constructable]

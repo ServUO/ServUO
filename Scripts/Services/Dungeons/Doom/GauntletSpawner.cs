@@ -818,7 +818,7 @@ namespace Server.Engines.Doom
             }
             catch (Exception e)
             {
-                Server.Diagnostics.ExceptionLogging.LogException(e);
+                Diagnostics.ExceptionLogging.LogException(e);
             }
         }
 
@@ -933,7 +933,7 @@ namespace Server.Engines.Doom
     {
         private readonly GauntletSpawner m_Spawner;
         public GauntletRegion(GauntletSpawner spawner, Map map)
-            : base(null, map, Region.Find(spawner.Location, spawner.Map), spawner.RegionBounds)
+            : base(null, map, Find(spawner.Location, spawner.Map), spawner.RegionBounds)
         {
             m_Spawner = spawner;
 

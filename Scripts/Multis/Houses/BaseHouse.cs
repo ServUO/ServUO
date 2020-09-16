@@ -4048,7 +4048,7 @@ namespace Server.Multis
                     }
                     else
                     {
-                        m.SendMessage("You already own {0} houses, you may not place any more!", BaseHouse.AccountHouseLimit.ToString());
+                        m.SendMessage("You already own {0} houses, you may not place any more!", AccountHouseLimit.ToString());
                     }
                 }
 

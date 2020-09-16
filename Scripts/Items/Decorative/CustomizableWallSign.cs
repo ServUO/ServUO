@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Server.Items
 {
-    [FlipableAttribute(0x4B20, 0x4B21)]
+    [Flipable(0x4B20, 0x4B21)]
     public class CustomizableWallSign : Item, ICustomizableMessageItem
     {
         public string[] Lines { get; set; }

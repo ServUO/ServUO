@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x2B04, 0x2B05)]
+    [Flipable(0x2B04, 0x2B05)]
     public class HumilityCloak : BaseClothing
     {
         public override bool IsArtifact => true;

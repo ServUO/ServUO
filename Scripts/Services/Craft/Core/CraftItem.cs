@@ -230,7 +230,7 @@ namespace Server.Engines.Craft
                     }
                     catch (Exception e)
                     {
-                        Server.Diagnostics.ExceptionLogging.LogException(e);
+                        Diagnostics.ExceptionLogging.LogException(e);
                     }
 
                     if (item != null)
@@ -1235,7 +1235,7 @@ namespace Server.Engines.Craft
                 m_ResAmount = amount;
             }
 
-            if (CaddelliteCraft && (!item.HasSocket<Caddellite>() || !Server.Engines.Khaldun.TreasuresOfKhaldunEvent.Instance.Running))
+            if (CaddelliteCraft && (!item.HasSocket<Caddellite>() || !Khaldun.TreasuresOfKhaldunEvent.Instance.Running))
             {
                 CaddelliteCraft = false;
             }
@@ -1449,7 +1449,7 @@ namespace Server.Engines.Craft
             {
                 CraftSkill craftSkill = Skills.GetAt(i);
 
-                Server.Misc.SkillCheck.CheckSkill(from, craftSkill.SkillToMake, craftSkill.MinSkill - MinSkillOffset, craftSkill.MaxSkill, amount);
+                Misc.SkillCheck.CheckSkill(from, craftSkill.SkillToMake, craftSkill.MinSkill - MinSkillOffset, craftSkill.MaxSkill, amount);
             }
         }
 
@@ -2099,7 +2099,7 @@ namespace Server.Engines.Craft
                         }
                         catch (Exception e)
                         {
-                            Server.Diagnostics.ExceptionLogging.LogException(e);
+                            Diagnostics.ExceptionLogging.LogException(e);
                         }
 
                         if (cc != null)
@@ -2200,7 +2200,7 @@ namespace Server.Engines.Craft
             return false;
         }
 
-        public class ChooseResTarget : Server.Targeting.Target
+        public class ChooseResTarget : Targeting.Target
         {
             private readonly CraftItem m_CraftItem;
             private readonly CraftSystem m_CraftSystem;
@@ -2208,14 +2208,14 @@ namespace Server.Engines.Craft
             private readonly ITool m_Tool;
 
             public ChooseResTarget(Mobile from, CraftItem craftitem, CraftSystem craftSystem, Type typeRes, ITool tool)
-                : base(-1, false, Server.Targeting.TargetFlags.None)
+                : base(-1, false, Targeting.TargetFlags.None)
             {
                 m_CraftItem = craftitem;
                 m_CraftSystem = craftSystem;
                 ItemTypeRes = typeRes;
                 m_Tool = tool;
 
-                CraftItem.AddResTarget(from);
+                AddResTarget(from);
             }
 
             protected override void OnTarget(Mobile from, object targeted)
@@ -2231,7 +2231,7 @@ namespace Server.Engines.Craft
                 m_CraftItem.Craft(from, m_CraftSystem, ItemTypeRes, m_Tool);
             }
 
-            protected override void OnTargetCancel(Mobile from, Server.Targeting.TargetCancelType cancelType)
+            protected override void OnTargetCancel(Mobile from, Targeting.TargetCancelType cancelType)
             {
                 from.EndAction(typeof(CraftSystem));
                 from.SendGump(new CraftGump(from, m_CraftSystem, m_Tool, null));
@@ -2239,7 +2239,7 @@ namespace Server.Engines.Craft
 
             protected override void OnTargetFinish(Mobile from)
             {
-                CraftItem.RemoveResTarget(from);
+                RemoveResTarget(from);
             }
         }
     }

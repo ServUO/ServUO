@@ -69,9 +69,9 @@ namespace Server.Guilds
                             pm.SendLocalizedMessage(1063036, Guild.NameLimit.ToString()); // A guild name cannot be more than ~1_val~ characters in length.
                         else if (guildAbbrev.Length > Guild.AbbrevLimit)
                             pm.SendLocalizedMessage(1063037, Guild.AbbrevLimit.ToString()); // An abbreviation cannot exceed ~1_val~ characters in length.
-                        else if (Guild.FindByAbbrev(guildAbbrev) != null || !BaseGuildGump.CheckProfanity(guildAbbrev))
+                        else if (BaseGuild.FindByAbbrev(guildAbbrev) != null || !BaseGuildGump.CheckProfanity(guildAbbrev))
                             pm.SendLocalizedMessage(501153); // That abbreviation is not available.
-                        else if (Guild.FindByName(guildName) != null || !BaseGuildGump.CheckProfanity(guildName))
+                        else if (BaseGuild.FindByName(guildName) != null || !BaseGuildGump.CheckProfanity(guildName))
                             pm.SendLocalizedMessage(1063000); // That guild name is not available.
                         else if (!Banker.Withdraw(pm, Guild.RegistrationFee))
                             pm.SendLocalizedMessage(1063001, Guild.RegistrationFee.ToString()); // You do not possess the ~1_val~ gold piece fee required to create a guild.

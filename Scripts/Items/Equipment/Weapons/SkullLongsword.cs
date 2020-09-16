@@ -3,7 +3,7 @@ using Server.Engines.Craft;
 namespace Server.Items
 {
     [Alterable(typeof(DefBlacksmithy), typeof(GargishSkullLongsword))]
-    [FlipableAttribute(41793, 41794)]
+    [Flipable(41793, 41794)]
     public class SkullLongsword : Longsword
     {
         public override int LabelNumber => 1125817;  // skull longsword
@@ -32,7 +32,7 @@ namespace Server.Items
         }
     }
 
-    [FlipableAttribute(41797, 41798)]
+    [Flipable(41797, 41798)]
     public class GargishSkullLongsword : Longsword
     {
         public override int LabelNumber => 1125821;  // gargish skull longsword

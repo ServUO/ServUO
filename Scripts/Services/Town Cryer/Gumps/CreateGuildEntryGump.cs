@@ -123,7 +123,7 @@ namespace Server.Services.TownCryer
 
                     User.SendLocalizedMessage(1158039); // Your entry has been submitted.
 
-                    BaseGump.SendGump(new TownCryerGump(User, Cryer, 0, TownCryerGump.GumpCategory.Guild));
+                    SendGump(new TownCryerGump(User, Cryer, 0, TownCryerGump.GumpCategory.Guild));
                     return;
                 }
 

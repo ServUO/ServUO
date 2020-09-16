@@ -67,9 +67,9 @@ namespace Server.Guilds
 
             AddBackground(65, 370, 170, 26, 0x2486);
 
-            if (Server.Engines.VvV.ViceVsVirtueSystem.Enabled)
+            if (Engines.VvV.ViceVsVirtueSystem.Enabled)
             {
-                if (Server.Engines.VvV.ViceVsVirtueSystem.IsVvV(player))
+                if (Engines.VvV.ViceVsVirtueSystem.IsVvV(player))
                 {
                     AddButton(67, 375, 0x4B9, 0x4BA, 9, GumpButtonType.Reply, 0); // Resign Vice vs Virtue
                     AddHtmlLocalized(92, 373, 170, 26, 1155557, m_IsResigningVvV ? 0x5000 : 0, false, false);
@@ -150,18 +150,18 @@ namespace Server.Guilds
                     }
                     else
                     {
-                        pm.SendGump(new Server.Engines.VvV.ConfirmSignupGump(pm));
+                        pm.SendGump(new Engines.VvV.ConfirmSignupGump(pm));
                     }
                     break;
                 case 9:
-                    if (Server.Engines.Points.PointsSystem.ViceVsVirtue.IsResigning(pm, guild))
+                    if (Engines.Points.PointsSystem.ViceVsVirtue.IsResigning(pm, guild))
                     {
                         pm.SendLocalizedMessage(1155560); // You are currently in the process of quitting Vice vs Virtue.
                     }
                     else if (m_IsResigningVvV)
                     {
                         pm.SendLocalizedMessage(1155559); // You have begun the Vice vs Virtue resignation process.  You will be removed from VvV in 3 days.
-                        Server.Engines.Points.PointsSystem.ViceVsVirtue.OnResign(pm);
+                        Engines.Points.PointsSystem.ViceVsVirtue.OnResign(pm);
                     }
                     else
                     {
@@ -170,7 +170,7 @@ namespace Server.Guilds
                     }
                     break;
                 case 10:
-                    pm.SendGump(new Server.Engines.VvV.ViceVsVirtueLeaderboardGump(pm));
+                    pm.SendGump(new Engines.VvV.ViceVsVirtueLeaderboardGump(pm));
                     break;
             }
         }

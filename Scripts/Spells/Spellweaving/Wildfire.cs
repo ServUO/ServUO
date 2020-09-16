@@ -172,7 +172,7 @@ namespace Server.Spells.Spellweaving
                         damage /= Math.Min(3, count);
 
                     AOS.Damage(m, m_Owner, damage, 0, 100, 0, 0, 0, 0, 0, DamageType.SpellAOE);
-                    WildfireSpell.Table[m] = Core.TickCount + 1000;
+                    Table[m] = Core.TickCount + 1000;
                 }
 
                 ColUtility.Free(targets);
@@ -180,7 +180,7 @@ namespace Server.Spells.Spellweaving
 
             private IEnumerable<Mobile> GetTargets()
             {
-                WildfireSpell.DefragTable();
+                DefragTable();
 
                 return m_Spell.AcquireIndirectTargets(m_Location, m_Range).OfType<Mobile>().Where(m => !m_Table.ContainsKey(m));
             }

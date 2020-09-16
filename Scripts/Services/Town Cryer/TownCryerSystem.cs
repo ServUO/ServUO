@@ -383,7 +383,7 @@ namespace Server.Services.TownCryer
                 }
                 catch (Exception e)
                 {
-                    Server.Diagnostics.ExceptionLogging.LogException(e);
+                    Diagnostics.ExceptionLogging.LogException(e);
                     Utility.WriteConsoleColor(ConsoleColor.Cyan, "...FAILED! ***");
                     return;
                 }
@@ -433,7 +433,7 @@ namespace Server.Services.TownCryer
                                 entry.Expires = expires;
                             }
 
-                            TownCryerSystem.AddEntry(entry);
+                            AddEntry(entry);
                             good++;
                         }
                         else
@@ -472,7 +472,7 @@ namespace Server.Services.TownCryer
             }
             catch (Exception e)
             {
-                Server.Diagnostics.ExceptionLogging.LogException(e);
+                Diagnostics.ExceptionLogging.LogException(e);
             }
 
             return datetime;

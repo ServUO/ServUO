@@ -16,7 +16,7 @@ namespace Server.Items
         public DateTime Expire { get; set; }
     }
 
-    [FlipableAttribute(0x9707, 0x9706)]
+    [Flipable(0x9707, 0x9706)]
     public class SecretChest : LockableContainer
     {
         public List<SecretChestArray> list = new List<SecretChestArray>();

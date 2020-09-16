@@ -49,7 +49,7 @@ namespace Server.Spells.Mysticism
 
                 if (SpellHelper.CheckReflect(this, ref source, ref target))
                 {
-                    Server.Timer.DelayCall(TimeSpan.FromSeconds(.5), () =>
+                    Timer.DelayCall(TimeSpan.FromSeconds(.5), () =>
                     {
                         source.MovingEffect(target, 0x1363, 12, 1, false, true, 0, 0);
                         source.PlaySound(0x64B);

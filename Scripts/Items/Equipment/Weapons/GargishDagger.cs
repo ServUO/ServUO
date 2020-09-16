@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    [FlipableAttribute(0x902, 0x406A)]
+    [Flipable(0x902, 0x406A)]
     public class GargishDagger : BaseKnife
     {
         [Constructable]

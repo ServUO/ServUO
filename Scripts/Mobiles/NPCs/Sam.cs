@@ -90,7 +90,7 @@ namespace Server.Items
             Rewards.Add(new CollectionTitle(1073344, 1073862, 550000.0)); // Prominent Library Contributor
             Rewards.Add(new CollectionTitle(1073345, 1073863, 800000.0)); // Eminent Library Contributor
             Rewards.Add(new CollectionItem(typeof(MaritimeGlasses), 0x2FB8, 1073364, 0x581, 800000.0));
-            Rewards.Add(new CollectionItem(typeof(Server.Multis.BritannianShipDeed), 0x14F4, 1150017, 0x0, 10000000));
+            Rewards.Add(new CollectionItem(typeof(Multis.BritannianShipDeed), 0x14F4, 1150017, 0x0, 10000000));
         }
 
         public override bool CanDonate(PlayerMobile player)

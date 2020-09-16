@@ -107,7 +107,7 @@ namespace Server.Items
                     else
                     {
                         m_Cotton.Consume();
-                        wheel.BeginSpin(Cotton.OnSpun, from, m_Cotton.Hue);
+                        wheel.BeginSpin(OnSpun, from, m_Cotton.Hue);
                     }
                 }
                 else

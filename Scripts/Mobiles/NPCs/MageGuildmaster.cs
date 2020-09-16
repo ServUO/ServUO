@@ -28,8 +28,8 @@ namespace Server.Mobiles
         {
             base.InitOutfit();
 
-            AddItem(new Server.Items.Robe(Utility.RandomBlueHue()));
-            AddItem(new Server.Items.GnarledStaff());
+            AddItem(new Items.Robe(Utility.RandomBlueHue()));
+            AddItem(new Items.GnarledStaff());
         }
 
         public override void Serialize(GenericWriter writer)

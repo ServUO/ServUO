@@ -1052,7 +1052,7 @@ namespace Server.Items
 
     public class DuganMissingQuestCorpse : QuestHintItem
     {
-        public override Type QuestType => typeof(Server.Engines.Quests.Missing);
+        public override Type QuestType => typeof(Engines.Quests.Missing);
 
         [Constructable]
         public DuganMissingQuestCorpse()
@@ -1080,7 +1080,7 @@ namespace Server.Items
 
     public class FlintLostBarrelHint : QuestHintItem
     {
-        public override Type QuestType => typeof(Server.Engines.Quests.ThievesBeAfootQuest);
+        public override Type QuestType => typeof(Engines.Quests.ThievesBeAfootQuest);
         public override Type QuestItemType => typeof(BarrelOfBarley);
         public override int DefaultRange => 5;
 
@@ -1110,7 +1110,7 @@ namespace Server.Items
 
     public class FlintLostLogbookHint : QuestHintItem
     {
-        public override Type QuestType => typeof(Server.Engines.Quests.BibliophileQuest);
+        public override Type QuestType => typeof(Engines.Quests.BibliophileQuest);
         public override Type QuestItemType => typeof(FlintsLogbook);
         public override int DefaultRange => 5;
 

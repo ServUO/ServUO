@@ -15,7 +15,7 @@ namespace Server.Engines.Despise
         {
         }
 
-        public DespiseRegion(string name, Rectangle2D[] bounds, bool lowerLevel) : base(name, Map.Trammel, Region.DefaultPriority, bounds)
+        public DespiseRegion(string name, Rectangle2D[] bounds, bool lowerLevel) : base(name, Map.Trammel, DefaultPriority, bounds)
         {
             m_LowerLevel = lowerLevel;
             Register();
@@ -65,7 +65,7 @@ namespace Server.Engines.Despise
 
                 if (controller != null && controller.Boss == m)
                 {
-                    Server.Engines.Quests.WhisperingWithWispsQuest.OnBossSlain((DespiseBoss)m);
+                    Quests.WhisperingWithWispsQuest.OnBossSlain((DespiseBoss)m);
 
                     controller.OnBossSlain();
                 }

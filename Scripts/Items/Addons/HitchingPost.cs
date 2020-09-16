@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace Server.Items
 {
-    [FlipableAttribute(0x14E7, 0x14E8)]
+    [Flipable(0x14E7, 0x14E8)]
     public class HitchingPost : Item, ISecurable
     {
         public override int LabelNumber => m_Replica ? 1071127 : 1025351;// hitching post (replica)

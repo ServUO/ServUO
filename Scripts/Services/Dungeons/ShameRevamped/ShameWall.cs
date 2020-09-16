@@ -155,7 +155,7 @@ namespace Server.Engines.ShameRevamped
             {
                 Timer.DelayCall(TimeSpan.FromSeconds(20), () =>
                     {
-                        ShameWall.AddTeleporters(this);
+                        AddTeleporters(this);
                     });
             }
         }

@@ -47,7 +47,7 @@ namespace Server.Services.TownCryer
             {
                 TownCryerGump gump = new TownCryerGump(User, Cryer);
                 gump.Category = TownCryerGump.GumpCategory.Guild;
-                BaseGump.SendGump(gump);
+                SendGump(gump);
             }
         }
     }

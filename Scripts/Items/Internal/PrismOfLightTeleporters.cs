@@ -114,7 +114,7 @@ namespace Server.Items
                 if (Utility.RandomBool())
                 {
                     Point3D p = new Point3D(6523, 71, -10);
-                    Server.Mobiles.BaseCreature.TeleportPets(m, p, m.Map);
+                    Mobiles.BaseCreature.TeleportPets(m, p, m.Map);
                     m.MoveToWorld(p, m.Map);
                 }
 
