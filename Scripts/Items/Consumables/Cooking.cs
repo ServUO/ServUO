@@ -453,8 +453,10 @@ namespace Server.Items
             if (!Movable)
                 return;
 
-            SackFlourOpen flour = new SackFlourOpen();
-            flour.Location = Location;
+            SackFlourOpen flour = new SackFlourOpen
+            {
+                Location = Location
+            };
 
             if (Parent is Container)
             {

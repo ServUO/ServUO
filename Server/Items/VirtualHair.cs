@@ -64,7 +64,7 @@ namespace Server
 
 		public static int FakeSerial(Mobile parent)
 		{
-			return (0x7FFFFFFF - 0x400 - (parent.Serial * 4));
+			return 0x7FFFFFFF - 0x400 - (parent.Serial * 4);
 		}
 	}
 
@@ -84,7 +84,7 @@ namespace Server
 
 		public static int FakeSerial(Mobile parent)
 		{
-			return (0x7FFFFFFF - 0x400 - 1 - (parent.Serial * 4));
+			return 0x7FFFFFFF - 0x400 - 1 - (parent.Serial * 4);
 		}
 	}
 
@@ -107,7 +107,7 @@ namespace Server
 
 		public static int FakeSerial(Mobile parent)
 		{
-			return (0x7FFFFFFF - 0x400 - 2 - (parent.Serial * 4));
+			return 0x7FFFFFFF - 0x400 - 2 - (parent.Serial * 4);
 		}
 	}
 

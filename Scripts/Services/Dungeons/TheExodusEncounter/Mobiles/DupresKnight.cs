@@ -36,41 +36,59 @@ namespace Server.Mobiles
             SetSkill(SkillName.Tactics, 195.0, 220.0);
             SetSkill(SkillName.Wrestling, 195.0, 220.0);
 
-            Item longsword = new Longsword();
-            longsword.LootType = LootType.Blessed;
+            Item longsword = new Longsword
+            {
+                LootType = LootType.Blessed
+            };
             SetWearable(longsword);
 
-            Item ph = new PlateHelm();
-            ph.LootType = LootType.Blessed;
+            Item ph = new PlateHelm
+            {
+                LootType = LootType.Blessed
+            };
             SetWearable(ph);
 
-            Item pa = new PlateArms();
-            pa.LootType = LootType.Blessed;
+            Item pa = new PlateArms
+            {
+                LootType = LootType.Blessed
+            };
             SetWearable(pa);
 
-            Item pg = new PlateGorget();
-            pg.LootType = LootType.Blessed;
+            Item pg = new PlateGorget
+            {
+                LootType = LootType.Blessed
+            };
             SetWearable(pg);
 
-            Item pgl = new PlateGloves();
-            pgl.LootType = LootType.Blessed;
+            Item pgl = new PlateGloves
+            {
+                LootType = LootType.Blessed
+            };
             SetWearable(pgl);
 
-            Item pl = new PlateLegs();
-            pl.LootType = LootType.Blessed;
+            Item pl = new PlateLegs
+            {
+                LootType = LootType.Blessed
+            };
             SetWearable(pl);
 
-            Item pc = new PlateChest();
-            pc.LootType = LootType.Blessed;
+            Item pc = new PlateChest
+            {
+                LootType = LootType.Blessed
+            };
             SetWearable(pc);
 
-            Item mks = new MetalKiteShield();
-            mks.LootType = LootType.Blessed;
-            mks.Hue = 0x794;
+            Item mks = new MetalKiteShield
+            {
+                LootType = LootType.Blessed,
+                Hue = 0x794
+            };
             SetWearable(mks);
 
-            Item bs = new BodySash(0x794); // dark purple
-            bs.LootType = LootType.Blessed;
+            Item bs = new BodySash(0x794)
+            {
+                LootType = LootType.Blessed
+            }; // dark purple
             SetWearable(bs);
         }
 

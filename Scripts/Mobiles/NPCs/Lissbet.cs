@@ -77,9 +77,11 @@ namespace Server.Engines.Quests
             if (Instances != null && Instances.Count > 0)
                 return;
 
-            Lissbet creature = new Lissbet();
-            creature.Home = HomeLocation;
-            creature.RangeHome = HomeRange;
+            Lissbet creature = new Lissbet
+            {
+                Home = HomeLocation,
+                RangeHome = HomeRange
+            };
             creature.MoveToWorld(HomeLocation, Map.Ilshenar);
         }
 

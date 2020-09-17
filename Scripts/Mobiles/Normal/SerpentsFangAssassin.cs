@@ -25,20 +25,28 @@ namespace Server.Mobiles
 
             Item item;
 
-            item = new StuddedGloves();
-            item.Hue = 0x2A;
+            item = new StuddedGloves
+            {
+                Hue = 0x2A
+            };
             AddItem(item);
 
-            item = new LeatherNinjaPants();
-            item.Hue = 0x51D;
+            item = new LeatherNinjaPants
+            {
+                Hue = 0x51D
+            };
             AddItem(item);
 
-            item = new LightPlateJingasa();
-            item.Hue = 0x51D;
+            item = new LightPlateJingasa
+            {
+                Hue = 0x51D
+            };
             AddItem(item);
 
-            item = new Sai();
-            item.Hue = 0x51D;
+            item = new Sai
+            {
+                Hue = 0x51D
+            };
             AddItem(item);
 
             SetStr(440, 460);

@@ -457,7 +457,7 @@ namespace Server
 
 		public bool IsPartOf(Type regionType)
 		{
-			return (GetRegion(regionType) != null);
+			return GetRegion(regionType) != null;
 		}
 
 		public bool IsPartOf<T>() where T : Region
@@ -467,7 +467,7 @@ namespace Server
 
 		public bool IsPartOf(string regionName)
 		{
-			return (GetRegion(regionName) != null);
+			return GetRegion(regionName) != null;
 		}
 
 		public virtual bool AcceptsSpawnsFrom(Region region)
@@ -709,10 +709,10 @@ namespace Server
 
 			if (thisPriority != regPriority)
 			{
-				return (regPriority - thisPriority);
+				return regPriority - thisPriority;
 			}
 
-			return (reg.ChildLevel - ChildLevel);
+			return reg.ChildLevel - ChildLevel;
 		}
 
 		public override string ToString()
@@ -741,7 +741,7 @@ namespace Server
 
 		public virtual bool OnMoveInto(Mobile m, Direction d, Point3D newLocation, Point3D oldLocation)
 		{
-			return (m.WalkRegion == null || AcceptsSpawnsFrom(m.WalkRegion));
+			return m.WalkRegion == null || AcceptsSpawnsFrom(m.WalkRegion);
 		}
 
 		public virtual void OnEnter(Mobile m)
@@ -1133,8 +1133,8 @@ namespace Server
 
 			while (oldR != newR)
 			{
-				int oldRChild = (oldR != null ? oldR.ChildLevel : -1);
-				int newRChild = (newR != null ? newR.ChildLevel : -1);
+				int oldRChild = oldR != null ? oldR.ChildLevel : -1;
+				int newRChild = newR != null ? newR.ChildLevel : -1;
 
 				if (oldRChild >= newRChild && oldR != null)
 				{

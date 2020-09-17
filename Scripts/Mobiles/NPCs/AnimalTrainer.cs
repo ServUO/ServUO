@@ -130,9 +130,11 @@ namespace Server.Mobiles
                 }
             }
 
-            BaseQuest questt = new TamingPetQuest();
-            questt.Owner = player;
-            questt.Quester = this;
+            BaseQuest questt = new TamingPetQuest
+            {
+                Owner = player,
+                Quester = this
+            };
             player.CloseGump(typeof(MondainQuestGump));
             player.SendGump(new MondainQuestGump(questt));
 

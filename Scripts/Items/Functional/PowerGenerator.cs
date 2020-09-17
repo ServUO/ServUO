@@ -46,9 +46,11 @@ namespace Server.Items
 
         private void AddGeneratorComponent(int itemID, int x, int y, int z)
         {
-            AddonComponent component = new AddonComponent(itemID);
-            component.Name = "a power generator";
-            component.Hue = 0x451;
+            AddonComponent component = new AddonComponent(itemID)
+            {
+                Name = "a power generator",
+                Hue = 0x451
+            };
 
             AddComponent(component, x, y, z);
         }

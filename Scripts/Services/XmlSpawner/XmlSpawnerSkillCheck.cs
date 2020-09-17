@@ -157,9 +157,11 @@ namespace Server.Mobiles
             // if it hasnt already been added to the list, then add it
             if (!found)
             {
-                RegisteredSkill newrs = new RegisteredSkill();
-                newrs.target = o;
-                newrs.sid = s;
+                RegisteredSkill newrs = new RegisteredSkill
+                {
+                    target = o,
+                    sid = s
+                };
 
                 skilllist.Add(newrs);
 

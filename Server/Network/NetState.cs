@@ -49,7 +49,7 @@ namespace Server.Network
 		public DateTime ConnectedOn { get; }
 
 		[CommandProperty(AccessLevel.Administrator, true)]
-		public TimeSpan ConnectedFor => (DateTime.UtcNow - ConnectedOn);
+		public TimeSpan ConnectedFor => DateTime.UtcNow - ConnectedOn;
 
 		[CommandProperty(AccessLevel.Administrator, true)]
 		public uint AuthID { get; set; }
@@ -91,7 +91,7 @@ namespace Server.Network
 		public ClientVersion Version { get; set; }
 
 		[CommandProperty(AccessLevel.Administrator, true)]
-		public bool IsUOTDClient => ((Flags & ClientFlags.UOTD) != 0 || (Version != null && Version.Type == ClientType.UOTD));
+		public bool IsUOTDClient => (Flags & ClientFlags.UOTD) != 0 || (Version != null && Version.Type == ClientType.UOTD);
 
 		[CommandProperty(AccessLevel.Administrator, true)]
 		public bool IsEnhancedClient => IsUOTDClient || (Version != null && Version.Major >= 67);
@@ -1087,10 +1087,10 @@ namespace Server.Network
 
 			if (info.RequiredClient != null)
 			{
-				return (IsEnhancedClient || Version >= info.RequiredClient);
+				return IsEnhancedClient || Version >= info.RequiredClient;
 			}
 
-			return ((Flags & info.ClientFlags) != 0);
+			return (Flags & info.ClientFlags) != 0;
 		}
 
 		public bool SupportsExpansion(Expansion ex, bool checkCoreExpansion)

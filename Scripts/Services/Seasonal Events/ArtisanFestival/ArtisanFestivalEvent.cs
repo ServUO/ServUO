@@ -152,8 +152,10 @@ namespace Server.Engines.ArtisanFestival
         {
             if (TownCryerSystem.GreetingsEntries != null)
             {
-                var entry = new TownCryerGreetingEntry(1157283, 1157284);
-                entry.PreLoaded = true;
+                var entry = new TownCryerGreetingEntry(1157283, 1157284)
+                {
+                    PreLoaded = true
+                };
 
                 TownCryerSystem.GreetingsEntries.Add(entry);
                 // The Artisan Festival
@@ -462,8 +464,10 @@ namespace Server.Engines.ArtisanFestival
                         spawnPoint = temp;
                     }
 
-                    var component = new AddonComponent(Utility.Random(0x46A2, 6));
-                    component.Hue = Utility.RandomMinMax(1, 500);
+                    var component = new AddonComponent(Utility.Random(0x46A2, 6))
+                    {
+                        Hue = Utility.RandomMinMax(1, 500)
+                    };
 
                     tree.AddComponent(component, tree.X - spawnPoint.X, tree.Y - spawnPoint.Y, tree.Z - spawnPoint.Z);
                 }

@@ -130,8 +130,8 @@ namespace Ultima
 
             byte[] resultBuffer = new byte[buffer.Length + (waveHeader.Length << 2)];
 
-            Buffer.BlockCopy(waveHeader, 0, resultBuffer, 0, (waveHeader.Length << 2));
-            Buffer.BlockCopy(buffer, 0, resultBuffer, (waveHeader.Length << 2), buffer.Length);
+            Buffer.BlockCopy(waveHeader, 0, resultBuffer, 0, waveHeader.Length << 2);
+            Buffer.BlockCopy(buffer, 0, resultBuffer, waveHeader.Length << 2, buffer.Length);
 
             string str = Encoding.ASCII.GetString(stringBuffer);
             // seems that the null terminator's not being properly recognized :/
@@ -174,7 +174,7 @@ namespace Ultima
 			 * ====================
 			 * */
             return new[]
-            {0x46464952, (length + 36), 0x45564157, 0x20746D66, 0x10, 0x010001, 0x5622, 0xAC44, 0x100002, 0x61746164, length};
+            {0x46464952, length + 36, 0x45564157, 0x20746D66, 0x10, 0x010001, 0x5622, 0xAC44, 0x100002, 0x61746164, length};
         }
 
         /// <summary>
@@ -309,7 +309,7 @@ namespace Ultima
                                 sound = null;
                             }
                         }
-                        if ((sound == null) || (m_Removed[i]))
+                        if ((sound == null) || m_Removed[i])
                         {
                             binidx.Write(-1); // lookup
                             binidx.Write(-1); // length

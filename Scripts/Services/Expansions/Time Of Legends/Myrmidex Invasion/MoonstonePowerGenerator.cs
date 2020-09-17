@@ -47,40 +47,58 @@ namespace Server.Items
         [Constructable]
         public MoonstonePowerGeneratorAddon(bool link)
         {
-            AddonComponent c = new AddonComponent(39759);
-            c.Hue = 2955;
+            AddonComponent c = new AddonComponent(39759)
+            {
+                Hue = 2955
+            };
             AddComponent(c, 0, 0, 0);
 
-            c = new AddonComponent(39759);
-            c.Hue = 2955;
+            c = new AddonComponent(39759)
+            {
+                Hue = 2955
+            };
             AddComponent(c, -1, 0, 0);
 
-            c = new AddonComponent(39759);
-            c.Hue = 2955;
+            c = new AddonComponent(39759)
+            {
+                Hue = 2955
+            };
             AddComponent(c, 1, 0, 0);
 
-            c = new AddonComponent(39759);
-            c.Hue = 2955;
+            c = new AddonComponent(39759)
+            {
+                Hue = 2955
+            };
             AddComponent(c, 0, -1, 0);
 
-            c = new AddonComponent(39759);
-            c.Hue = 2955;
+            c = new AddonComponent(39759)
+            {
+                Hue = 2955
+            };
             AddComponent(c, 0, 1, 0);
 
-            c = new AddonComponent(39818);
-            c.Hue = 2955;
+            c = new AddonComponent(39818)
+            {
+                Hue = 2955
+            };
             AddComponent(c, -1, -1, 0);
 
-            c = new AddonComponent(39818);
-            c.Hue = 2955;
+            c = new AddonComponent(39818)
+            {
+                Hue = 2955
+            };
             AddComponent(c, -1, 1, 0);
 
-            c = new AddonComponent(39818);
-            c.Hue = 2955;
+            c = new AddonComponent(39818)
+            {
+                Hue = 2955
+            };
             AddComponent(c, 1, -1, 0);
 
-            c = new AddonComponent(39818);
-            c.Hue = 2955;
+            c = new AddonComponent(39818)
+            {
+                Hue = 2955
+            };
             AddComponent(c, 1, 1, 0);
 
             Activator1 = new InternalComponent(40158);

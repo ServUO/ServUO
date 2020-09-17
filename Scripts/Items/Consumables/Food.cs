@@ -1531,8 +1531,10 @@ namespace Server.Items
         {
             if (IsChildOf(from.Backpack))
             {
-                Cake cake = new Cake();
-                cake.ItemID = 0x4BA4;
+                Cake cake = new Cake
+                {
+                    ItemID = 0x4BA4
+                };
 
                 from.PrivateOverheadMessage(Network.MessageType.Regular, 1154, 1157341, from.NetState); // *You cut a slice from the cake.*
                 from.AddToBackpack(cake);

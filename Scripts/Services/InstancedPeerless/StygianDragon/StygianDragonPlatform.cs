@@ -63,8 +63,10 @@ namespace Server.Engines.InstancedPeerless
 
         private void AddHuedComponent(int itemId, int x, int y, int z)
         {
-            AddonComponent component = new AddonComponent(itemId);
-            component.Hue = 0x2EF;
+            AddonComponent component = new AddonComponent(itemId)
+            {
+                Hue = 0x2EF
+            };
             AddComponent(component, x, y, z);
         }
 

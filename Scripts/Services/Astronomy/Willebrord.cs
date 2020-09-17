@@ -34,29 +34,37 @@ namespace Server.Engines.Astronomy
 
             if (Map.Trammel.FindItem<PersonalTelescope>(new Point3D(4705, 1128, 0)) == null)
             {
-                PersonalTelescope tele = new PersonalTelescope();
-                tele.Movable = false;
+                PersonalTelescope tele = new PersonalTelescope
+                {
+                    Movable = false
+                };
                 tele.MoveToWorld(new Point3D(4705, 1128, 0), Map.Trammel);
             }
 
             if (Map.Trammel.FindItem<BrassOrrery>(new Point3D(4705, 1126, 0)) == null)
             {
-                BrassOrrery orrery = new BrassOrrery();
-                orrery.Movable = false;
+                BrassOrrery orrery = new BrassOrrery
+                {
+                    Movable = false
+                };
                 orrery.MoveToWorld(new Point3D(4705, 1126, 0), Map.Trammel);
             }
 
             if (Map.Trammel.FindItem<ConstellationLedger>(new Point3D(4709, 1127, 0)) == null)
             {
-                ConstellationLedger ledger = new ConstellationLedger();
-                ledger.Movable = false;
+                ConstellationLedger ledger = new ConstellationLedger
+                {
+                    Movable = false
+                };
                 ledger.MoveToWorld(new Point3D(4709, 1127, 4), Map.Trammel);
             }
 
             if (Map.Trammel.FindItem<PrimerOnBritannianAstronomy>(new Point3D(4709, 1126, 0)) == null)
             {
-                PrimerOnBritannianAstronomy book = new PrimerOnBritannianAstronomy();
-                book.Movable = false;
+                PrimerOnBritannianAstronomy book = new PrimerOnBritannianAstronomy
+                {
+                    Movable = false
+                };
                 book.MoveToWorld(new Point3D(4709, 1126, 4), Map.Trammel);
             }
         }

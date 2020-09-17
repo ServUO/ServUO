@@ -40,8 +40,10 @@ namespace Server.Items
             Weight = 0.0;
 
             m_Rituals = new List<RitualArray>();
-            m_ExodusAlterAddon = new ExodusAlterAddon();
-            m_ExodusAlterAddon.Movable = false;
+            m_ExodusAlterAddon = new ExodusAlterAddon
+            {
+                Movable = false
+            };
         }
 
         public ExodusTomeAltar(Serial serial) : base(serial)

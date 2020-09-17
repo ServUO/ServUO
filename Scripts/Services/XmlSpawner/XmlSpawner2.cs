@@ -1124,8 +1124,10 @@ namespace Server.Mobiles
                             if (NewX == ValidX1 || NewX == ValidX2 || NewX == ValidY1 || NewX == ValidY2 || NewY == ValidX1 || NewY == ValidX2 || NewY == ValidY1 || NewY == ValidY2)
                             {
                                 // Add an object to show the spawn area
-                                Static s = new Static(ShowBoundsItemId);
-                                s.Visible = false;
+                                Static s = new Static(ShowBoundsItemId)
+                                {
+                                    Visible = false
+                                };
                                 s.MoveToWorld(new Point3D(NewX, NewY, Z), Map);
                                 m_ShowBoundsItems.Add(s);
                             }
@@ -2149,9 +2151,10 @@ namespace Server.Mobiles
             if (action == null || action.Length <= 0 || attachedto == null || map == null) return;
 
             string status_str = null;
-            SpawnObject TheSpawn = new SpawnObject(null, 0);
-
-            TheSpawn.TypeName = action;
+            SpawnObject TheSpawn = new SpawnObject(null, 0)
+            {
+                TypeName = action
+            };
             string substitutedtypeName = BaseXmlSpawner.ApplySubstitution(null, attachedto, trigmob, action);
             string typeName = BaseXmlSpawner.ParseObjectType(substitutedtypeName);
 
@@ -3745,11 +3748,12 @@ namespace Server.Mobiles
                 {
                     m.SendMessage("unable to open file {0}", filePath);
                 }
-                XmlTextWriter xml = new XmlTextWriter(op);
-
-                xml.Formatting = Formatting.Indented;
-                xml.IndentChar = '\t';
-                xml.Indentation = 1;
+                XmlTextWriter xml = new XmlTextWriter(op)
+                {
+                    Formatting = Formatting.Indented,
+                    IndentChar = '\t',
+                    Indentation = 1
+                };
 
                 xml.WriteStartDocument(true);
 
@@ -4205,8 +4209,10 @@ namespace Server.Mobiles
                     int y = root_item.Location.Y;
                     int z = root_item.Location.Z + 10;
 
-                    Static s = new Static(ShowItemId);
-                    s.Visible = false;
+                    Static s = new Static(ShowItemId)
+                    {
+                        Visible = false
+                    };
                     s.MoveToWorld(new Point3D(x, y, z), root_item.Map);
 
                     xml_item.m_ShowContainerStatic = s;
@@ -5149,10 +5155,11 @@ namespace Server.Mobiles
                             0, homerange, false, so, TimeSpan.FromMinutes(0), TimeSpan.FromMinutes(0), TimeSpan.FromMinutes(0),
                             TimeSpan.FromMinutes(0), null, null, null, null, null,
                             null, null, null, null, 1, null, false, defTODMode, defKillReset, false, -1, null, false, false, false, null,
-                            TimeSpan.FromHours(0), null, false, null);
-
-                        spawner.SpawnRange = spawnrange;
-                        spawner.m_PlayerCreated = true;
+                            TimeSpan.FromHours(0), null, false, null)
+                        {
+                            SpawnRange = spawnrange,
+                            m_PlayerCreated = true
+                        };
 
                         spawner.MoveToWorld(new Point3D(x, y, z), spawnmap);
                         if (spawner.Map == Map.Internal)
@@ -5405,10 +5412,11 @@ namespace Server.Mobiles
                             0, homerange, false, so, TimeSpan.FromMinutes(0), TimeSpan.FromMinutes(0), TimeSpan.FromMinutes(0),
                             TimeSpan.FromMinutes(0), null, null, null, null, null,
                             null, null, null, null, 1, null, false, defTODMode, defKillReset, false, -1, null, false, false, false, null,
-                            TimeSpan.FromHours(0), null, false, null);
-
-                        spawner.SpawnRange = spawnrange;
-                        spawner.m_PlayerCreated = true;
+                            TimeSpan.FromHours(0), null, false, null)
+                        {
+                            SpawnRange = spawnrange,
+                            m_PlayerCreated = true
+                        };
 
                         spawner.MoveToWorld(new Point3D(x, y, z), spawnmap);
                         if (spawner.Map == Map.Internal)
@@ -5789,10 +5797,11 @@ namespace Server.Mobiles
                 minDelay, maxDelay, TimeSpan.FromMinutes(0), -1, defaultTriggerSound, 1,
                 team, homeRange, false, so, TimeSpan.FromMinutes(0), TimeSpan.FromMinutes(0), TimeSpan.FromMinutes(0),
                 TimeSpan.FromMinutes(0), null, null, null, null, null,
-                null, null, null, null, 1, null, group, defTODMode, defKillReset, false, -1, null, false, false, false, null, defDespawnTime, null, false, null);
-
-            spawner.SpawnRange = spawnRange;
-            spawner.m_PlayerCreated = true;
+                null, null, null, null, 1, null, group, defTODMode, defKillReset, false, -1, null, false, false, false, null, defDespawnTime, null, false, null)
+            {
+                SpawnRange = spawnRange,
+                m_PlayerCreated = true
+            };
 
             // Try to find a valid Z height if required (Z == -999)
 
@@ -6478,8 +6487,10 @@ namespace Server.Mobiles
                                     SpawnTODEnd, SpawnObjectPropertyItem, SpawnObjectPropertyName, SpawnProximityMessage, SpawnItemTriggerName, SpawnNoItemTriggerName,
                                     SpawnSpeechTrigger, SpawnMobTriggerName, SpawnMobPropertyName, SpawnPlayerPropertyName, SpawnTriggerProbability,
                                     SpawnSetPropertyItem, SpawnIsGroup, SpawnTODMode, SpawnKillReset, SpawnExternalTriggering, SpawnSequentialSpawning,
-                                    SpawnRegionName, SpawnAllowGhost, SpawnAllowNPC, SpawnSpawnOnTrigger, SpawnConfigFile, SpawnDespawnTime, SpawnSkillTrigger, SpawnSmartSpawning, SpawnWaypoint);
-                                TheSpawn.m_DisableGlobalAutoReset = TickReset;
+                                    SpawnRegionName, SpawnAllowGhost, SpawnAllowNPC, SpawnSpawnOnTrigger, SpawnConfigFile, SpawnDespawnTime, SpawnSkillTrigger, SpawnSmartSpawning, SpawnWaypoint)
+                                {
+                                    m_DisableGlobalAutoReset = TickReset
+                                };
                                 //TheSpawn.Group = SpawnIsGroup;\
 
 

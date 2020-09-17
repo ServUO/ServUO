@@ -249,8 +249,10 @@ namespace Server.Multis
         {
             int dir = GetValueForDirection(Facing);
 
-            GalleonPilot pilot = new GalleonPilot(this);
-            pilot.Direction = direction;
+            GalleonPilot pilot = new GalleonPilot(this)
+            {
+                Direction = direction
+            };
 
             TillerMan = pilot;
             GalleonPilot = pilot;

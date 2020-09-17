@@ -630,11 +630,12 @@ namespace Server.Commands
                 html.WriteLine("   </head>");
                 html.WriteLine("   <body>");
 
-                SmallBOD sbod = new SmallSmithBOD();
-
-                sbod.Type = typeof(Katana);
-                sbod.Material = BulkMaterialType.None;
-                sbod.AmountMax = 10;
+                SmallBOD sbod = new SmallSmithBOD
+                {
+                    Type = typeof(Katana),
+                    Material = BulkMaterialType.None,
+                    AmountMax = 10
+                };
 
                 WriteSmithBODHeader(html, "(Small) Weapons");
                 sbod.RequireExceptional = false;

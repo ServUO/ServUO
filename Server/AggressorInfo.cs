@@ -91,7 +91,7 @@ namespace Server
 					DumpAccess();
 				}
 
-				return (m_Attacker.Deleted || m_Defender.Deleted || DateTime.UtcNow >= (m_LastCombatTime + m_ExpireDelay));
+				return m_Attacker.Deleted || m_Defender.Deleted || DateTime.UtcNow >= (m_LastCombatTime + m_ExpireDelay);
 			}
 		}
 

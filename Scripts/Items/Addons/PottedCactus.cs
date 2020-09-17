@@ -181,8 +181,10 @@ namespace Server.Items
 
                 if (info.ButtonID >= 0x1E0F && info.ButtonID <= 0x1E14)
                 {
-                    RewardPottedCactus cactus = new RewardPottedCactus(info.ButtonID);
-                    cactus.IsRewardItem = m_Cactus.IsRewardItem;
+                    RewardPottedCactus cactus = new RewardPottedCactus(info.ButtonID)
+                    {
+                        IsRewardItem = m_Cactus.IsRewardItem
+                    };
 
                     if (!m.PlaceInBackpack(cactus))
                     {

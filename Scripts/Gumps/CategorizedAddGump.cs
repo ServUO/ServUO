@@ -120,9 +120,10 @@ namespace Server.Gumps
         {
             if (File.Exists(path))
             {
-                XmlTextReader xml = new XmlTextReader(path);
-
-                xml.WhitespaceHandling = WhitespaceHandling.None;
+                XmlTextReader xml = new XmlTextReader(path)
+                {
+                    WhitespaceHandling = WhitespaceHandling.None
+                };
 
                 while (xml.Read())
                 {

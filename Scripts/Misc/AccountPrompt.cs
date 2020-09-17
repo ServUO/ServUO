@@ -24,8 +24,10 @@ namespace Server.Misc
                     Console.Write("Password: ");
                     string password = Console.ReadLine();
 
-                    Account a = new Account(username, password);
-                    a.AccessLevel = AccessLevel.Owner;
+                    _ = new Account(username, password)
+                    {
+                        AccessLevel = AccessLevel.Owner
+                    };
 
                     Console.WriteLine("Account created.");
                 }

@@ -53,22 +53,26 @@ namespace Server.Mobiles
             Fame = 8500;
             Karma = -8500;
 
-            LeatherNinjaBelt belt = new LeatherNinjaBelt();
-            belt.UsesRemaining = 20;
-            belt.Poison = Poison.Greater;
-            belt.PoisonCharges = 20;
-            belt.Movable = false;
+            LeatherNinjaBelt belt = new LeatherNinjaBelt
+            {
+                UsesRemaining = 20,
+                Poison = Poison.Greater,
+                PoisonCharges = 20,
+                Movable = false
+            };
             AddItem(belt);
 
             int amount = Skills[SkillName.Ninjitsu].Value >= 100 ? 2 : 1;
 
             for (int i = 0; i < amount; i++)
             {
-                Fukiya f = new Fukiya();
-                f.UsesRemaining = 10;
-                f.Poison = amount == 1 ? Poison.Regular : Poison.Greater;
-                f.PoisonCharges = 10;
-                f.Movable = false;
+                Fukiya f = new Fukiya
+                {
+                    UsesRemaining = 10,
+                    Poison = amount == 1 ? Poison.Regular : Poison.Greater,
+                    PoisonCharges = 10,
+                    Movable = false
+                };
                 PackItem(f);
             }
 

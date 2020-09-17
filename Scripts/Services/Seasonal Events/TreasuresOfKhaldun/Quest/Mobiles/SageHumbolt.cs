@@ -50,8 +50,10 @@ namespace Server.Engines.Khaldun
         {
             AddItem(new Backpack());
 
-            DeathRobe robe = new DeathRobe();
-            robe.ItemID = 9863;
+            DeathRobe robe = new DeathRobe
+            {
+                ItemID = 9863
+            };
             SetWearable(robe);
         }
 

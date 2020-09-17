@@ -33,8 +33,10 @@ namespace Server.Items
         {
             get
             {
-                DecorativeShieldDeed deed = new DecorativeShieldDeed();
-                deed.IsRewardItem = m_IsRewardItem;
+                DecorativeShieldDeed deed = new DecorativeShieldDeed
+                {
+                    IsRewardItem = m_IsRewardItem
+                };
 
                 return deed;
             }

@@ -20,9 +20,10 @@ namespace Server.Items
 
         public override Item GetCropObject()
         {
-            Pumpkin pumpkin = new Pumpkin();
-
-            pumpkin.ItemID = Utility.Random(3178, 3);
+            Pumpkin pumpkin = new Pumpkin
+            {
+                ItemID = Utility.Random(3178, 3)
+            };
 
             return pumpkin;
         }

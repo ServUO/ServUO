@@ -33,9 +33,11 @@ namespace Server.Items
         {
             get
             {
-                TreeStumpDeed deed = new TreeStumpDeed();
-                deed.IsRewardItem = m_IsRewardItem;
-                deed.Logs = m_Logs;
+                TreeStumpDeed deed = new TreeStumpDeed
+                {
+                    IsRewardItem = m_IsRewardItem,
+                    Logs = m_Logs
+                };
 
                 return deed;
             }
@@ -243,9 +245,11 @@ namespace Server.Items
         {
             get
             {
-                TreeStump addon = new TreeStump(m_ItemID);
-                addon.IsRewardItem = m_IsRewardItem;
-                addon.Logs = m_Logs;
+                TreeStump addon = new TreeStump(m_ItemID)
+                {
+                    IsRewardItem = m_IsRewardItem,
+                    Logs = m_Logs
+                };
 
                 return addon;
             }

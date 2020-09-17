@@ -169,22 +169,22 @@ namespace Ultima
         public static Color HueToColor(short hue)
         {
             const int scale = 255 / 31;
-            return Color.FromArgb((((hue & 0x7c00) >> 10) * scale), (((hue & 0x3e0) >> 5) * scale), ((hue & 0x1f) * scale));
+            return Color.FromArgb(((hue & 0x7c00) >> 10) * scale, ((hue & 0x3e0) >> 5) * scale, (hue & 0x1f) * scale);
         }
 
         public static int HueToColorR(short hue)
         {
-            return (((hue & 0x7c00) >> 10) * (255 / 31));
+            return ((hue & 0x7c00) >> 10) * (255 / 31);
         }
 
         public static int HueToColorG(short hue)
         {
-            return (((hue & 0x3e0) >> 5) * (255 / 31));
+            return ((hue & 0x3e0) >> 5) * (255 / 31);
         }
 
         public static int HueToColorB(short hue)
         {
-            return ((hue & 0x1f) * (255 / 31));
+            return (hue & 0x1f) * (255 / 31);
         }
 
         public static unsafe void ApplyTo(Bitmap bmp, short[] Colors, bool onlyHueGrayPixels)

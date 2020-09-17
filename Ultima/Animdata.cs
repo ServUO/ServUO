@@ -86,7 +86,7 @@ namespace Ultima
         {
             if (AnimData.Contains(id))
             {
-                return ((Data)AnimData[id]);
+                return (Data)AnimData[id];
             }
             else
             {

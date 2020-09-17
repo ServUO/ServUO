@@ -447,10 +447,11 @@ namespace Server.Mobiles
 
             for (int i = 0; i < newShadowDwellers; ++i)
             {
-                ShadowDweller shadowdweller = new ShadowDweller();
-
-                shadowdweller.Team = Team;
-                shadowdweller.FightMode = FightMode.Closest;
+                ShadowDweller shadowdweller = new ShadowDweller
+                {
+                    Team = Team,
+                    FightMode = FightMode.Closest
+                };
 
                 bool validLocation = false;
                 Point3D loc = Location;

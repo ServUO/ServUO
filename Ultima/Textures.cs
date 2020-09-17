@@ -211,7 +211,7 @@ namespace Ultima
                         }
 
                         Bitmap bmp = m_Cache[index];
-                        if ((bmp == null) || (m_Removed[index]))
+                        if ((bmp == null) || m_Removed[index])
                         {
                             binidx.Write(-1); // lookup
                             binidx.Write(0); // length
@@ -249,7 +249,7 @@ namespace Ultima
                             int start = length;
                             length = (int)binmul.BaseStream.Position - length;
                             binidx.Write(length);
-                            binidx.Write((bmp.Width == 64 ? 0 : 1));
+                            binidx.Write(bmp.Width == 64 ? 0 : 1);
                             bmp.UnlockBits(bd);
                             CheckSums s = new CheckSums
                             {
@@ -273,7 +273,7 @@ namespace Ultima
             for (int i = 0; i < checksums.Count; ++i)
             {
                 byte[] cmp = checksums[i].checksum;
-                if (((cmp == null) || (newchecksum == null)) || (cmp.Length != newchecksum.Length))
+                if ((cmp == null) || (newchecksum == null) || (cmp.Length != newchecksum.Length))
                 {
                     return false;
                 }

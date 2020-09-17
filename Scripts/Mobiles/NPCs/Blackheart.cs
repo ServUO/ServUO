@@ -36,15 +36,19 @@ namespace Server.Engines.Quests.Hag
             AddItem(new TricorneHat(0x1));
             AddItem(new BodySash(0x66D));
 
-            LeatherGloves gloves = new LeatherGloves();
-            gloves.Hue = 0x66D;
+            LeatherGloves gloves = new LeatherGloves
+            {
+                Hue = 0x66D
+            };
             AddItem(gloves);
 
             FacialHairItemID = 0x203E; // Long Beard
             FacialHairHue = 0x455;
 
-            Item sword = new Cutlass();
-            sword.Movable = false;
+            Item sword = new Cutlass
+            {
+                Movable = false
+            };
             AddItem(sword);
         }
 

@@ -53,8 +53,10 @@ namespace Server.Engines.VeteranRewards
         {
             get
             {
-                GadgetryTableAddonDeed deed = new GadgetryTableAddonDeed();
-                deed.IsRewardItem = IsRewardItem;
+                GadgetryTableAddonDeed deed = new GadgetryTableAddonDeed
+                {
+                    IsRewardItem = IsRewardItem
+                };
 
                 return deed;
             }
@@ -231,8 +233,10 @@ namespace Server.Engines.VeteranRewards
         {
             get
             {
-                GadgetryTableAddon addon = new GadgetryTableAddon(_Direction);
-                addon.IsRewardItem = m_IsRewardItem;
+                GadgetryTableAddon addon = new GadgetryTableAddon(_Direction)
+                {
+                    IsRewardItem = m_IsRewardItem
+                };
 
                 return addon;
             }

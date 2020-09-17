@@ -84,8 +84,10 @@ namespace Server.Engines.NewMagincia
 
         public void AddPlotStone(Point3D p)
         {
-            m_Stone = new MaginciaPlotStone();
-            m_Stone.Plot = this;
+            m_Stone = new MaginciaPlotStone
+            {
+                Plot = this
+            };
             m_Stone.MoveToWorld(p, m_Map);
         }
 

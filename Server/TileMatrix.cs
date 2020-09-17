@@ -49,7 +49,7 @@ namespace Server
 
 		public BinaryReader IndexReader { get => m_IndexReader; set => m_IndexReader = value; }
 
-		public bool Exists => (m_Map != null && m_Index != null && m_Statics != null);
+		public bool Exists => m_Map != null && m_Index != null && m_Statics != null;
 
 		private static readonly List<TileMatrix> m_Instances = new List<TileMatrix>();
 		private readonly List<TileMatrix> m_FileShare = new List<TileMatrix>();
@@ -542,7 +542,7 @@ namespace Server
 
 		public int Height => 0;
 
-		public bool Ignored => (m_ID == 2 || m_ID == 0x1DB || (m_ID >= 0x1AE && m_ID <= 0x1B5));
+		public bool Ignored => m_ID == 2 || m_ID == 0x1DB || (m_ID >= 0x1AE && m_ID <= 0x1B5);
 
 		public LandTile(short id, sbyte z)
 		{

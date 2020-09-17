@@ -20,9 +20,11 @@ namespace Server.Engines
         {
             if (Map.Malas.FindItem<XmlSpawner>(new Point3D(1821, 1797, -110)) == null)
             {
-                XmlSpawner sp = new XmlSpawner("Sphynx");
-                sp.SpawnRange = 10;
-                sp.HomeRange = 15;
+                XmlSpawner sp = new XmlSpawner("Sphynx")
+                {
+                    SpawnRange = 10,
+                    HomeRange = 15
+                };
                 sp.MoveToWorld(new Point3D(1821, 1797, -110), Map.Malas);
                 sp.Respawn();
             }

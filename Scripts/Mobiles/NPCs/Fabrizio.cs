@@ -35,8 +35,10 @@ namespace Server.Engines.Quests
         public override object Complete => 1075366;
         public override void OnAccept()
         {
-            Dagger = new Dagger();
-            Dagger.QuestItem = true;
+            Dagger = new Dagger
+            {
+                QuestItem = true
+            };
             Dagger.WeaponAttributes.UseBestSkill = 1;
 
             if (Owner.PlaceInBackpack(Dagger))

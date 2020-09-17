@@ -75,8 +75,10 @@ namespace Server.Items
                     from.Heal(damage);
                 }
 
-                Blood blood = new Blood();
-                blood.ItemID = Utility.Random(0x122A, 5);
+                Blood blood = new Blood
+                {
+                    ItemID = Utility.Random(0x122A, 5)
+                };
                 blood.MoveToWorld(m.Location, m.Map);
             }
             else

@@ -60,8 +60,10 @@ namespace Server.Mobiles
 
         private Item SpawnOre(IEntity e)
         {
-            Item ore = new IronOre();
-            ore.ItemID = 0x19B7;
+            Item ore = new IronOre
+            {
+                ItemID = 0x19B7
+            };
 
             return ore;
         }

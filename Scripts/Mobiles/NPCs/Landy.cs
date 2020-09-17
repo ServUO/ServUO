@@ -45,8 +45,10 @@ namespace Server.Engines.Quests
 
             Item item;
 
-            item = new LeafGloves();
-            item.Hue = 0x1BB;
+            item = new LeafGloves
+            {
+                Hue = 0x1BB
+            };
             AddItem(item);
         }
 

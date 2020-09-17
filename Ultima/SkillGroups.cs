@@ -56,7 +56,7 @@ namespace Ultima
                         for (int i = 0; i < count - 1; ++i)
                         {
                             int strbuild;
-                            fs.Seek((start + (i * strlen)), SeekOrigin.Begin);
+                            fs.Seek(start + (i * strlen), SeekOrigin.Begin);
                             StringBuilder builder2 = new StringBuilder(17);
                             if (unicode)
                             {
@@ -74,7 +74,7 @@ namespace Ultima
                             }
                             List.Add(new SkillGroup(builder2.ToString()));
                         }
-                        fs.Seek((start + ((count - 1) * strlen)), SeekOrigin.Begin);
+                        fs.Seek(start + ((count - 1) * strlen), SeekOrigin.Begin);
                         try
                         {
                             while (bin.BaseStream.Length != bin.BaseStream.Position)

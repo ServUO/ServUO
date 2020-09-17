@@ -276,19 +276,23 @@ namespace Server.Engines.Blackthorn
                 case SkillName.Ninjitsu:
                     SetWearable(RandomNinjaWeapon());
 
-                    LeatherNinjaBelt belt = new LeatherNinjaBelt();
-                    belt.UsesRemaining = 20;
-                    belt.Poison = Poison.Greater;
-                    belt.PoisonCharges = 20;
+                    LeatherNinjaBelt belt = new LeatherNinjaBelt
+                    {
+                        UsesRemaining = 20,
+                        Poison = Poison.Greater,
+                        PoisonCharges = 20
+                    };
                     SetWearable(belt);
 
                     for (int i = 0; i < 2; i++)
                     {
-                        Fukiya f = new Fukiya();
-                        f.UsesRemaining = 10;
-                        f.Poison = Poison.Greater;
-                        f.PoisonCharges = 10;
-                        f.Movable = false;
+                        Fukiya f = new Fukiya
+                        {
+                            UsesRemaining = 10,
+                            Poison = Poison.Greater,
+                            PoisonCharges = 10,
+                            Movable = false
+                        };
                         PackItem(f);
                     }
 

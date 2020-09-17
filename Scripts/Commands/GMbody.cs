@@ -81,16 +81,20 @@ namespace Server.Commands
 
                         if (pack == null)
                         {
-                            pack = new Backpack();
-                            pack.Movable = false;
+                            pack = new Backpack
+                            {
+                                Movable = false
+                            };
 
                             from.AddItem(pack);
                         }
                         else
                         {
                             pack.Delete();
-                            pack = new Backpack();
-                            pack.Movable = false;
+                            pack = new Backpack
+                            {
+                                Movable = false
+                            };
 
                             from.AddItem(pack);
                         }

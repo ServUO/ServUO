@@ -243,9 +243,11 @@ namespace Server.Engines.JollyRoger
                     SpawnMobile(bc, point);
                 }
 
-                ShrineMaster capt = new ShrineMaster(type, this);
-                capt.Blessed = true;
-                capt._Controller = this;
+                ShrineMaster capt = new ShrineMaster(type, this)
+                {
+                    Blessed = true,
+                    _Controller = this
+                };
                 Spawn[capt] = list;
                 SpawnMobile(capt, p);
             }

@@ -164,9 +164,10 @@ namespace Server.Items
 
                 if (itemID > 0)
                 {
-                    Item addon = new StaghornFernAddon();
-
-                    addon.ItemID = itemID;
+                    Item addon = new StaghornFernAddon
+                    {
+                        ItemID = itemID
+                    };
                     addon.MoveToWorld(loc, from.Map);
 
                     house.Addons[addon] = from;

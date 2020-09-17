@@ -48,15 +48,19 @@ namespace Server.PathAlgorithms.SlowAStar
 
             PathNode curNode;
 
-            PathNode goalNode = new PathNode();
-            goalNode.x = goal.X;
-            goalNode.y = goal.Y;
-            goalNode.z = goal.Z;
+            PathNode goalNode = new PathNode
+            {
+                x = goal.X,
+                y = goal.Y,
+                z = goal.Z
+            };
 
-            PathNode startNode = new PathNode();
-            startNode.x = start.X;
-            startNode.y = start.Y;
-            startNode.z = start.Z;
+            PathNode startNode = new PathNode
+            {
+                x = start.X,
+                y = start.Y,
+                z = start.Z
+            };
             startNode.h = Heuristic(startNode.x, startNode.y, startNode.z);
 
             PathNode[] closed = m_Closed, open = m_Open, successors = m_Successors;

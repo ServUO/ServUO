@@ -276,8 +276,10 @@ namespace Server.Items
                         }
                         else
                         {
-                            trophy = new HuntTrophy(m_Owner, Index, m_Measurement, m_DateKilled, m_Location);
-                            trophy.ItemID = itemID;
+                            trophy = new HuntTrophy(m_Owner, Index, m_Measurement, m_DateKilled, m_Location)
+                            {
+                                ItemID = itemID
+                            };
                         }
 
                         trophy.MoveToWorld(from.Location, from.Map);

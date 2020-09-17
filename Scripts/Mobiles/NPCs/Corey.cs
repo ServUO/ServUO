@@ -42,28 +42,40 @@ namespace Server.Items
 
             Item item;
 
-            item = new PlateLegs();
-            item.Hue = 0x8A6;
+            item = new PlateLegs
+            {
+                Hue = 0x8A6
+            };
             AddItem(item);
 
-            item = new PlateArms();
-            item.Hue = 0x8A6;
+            item = new PlateArms
+            {
+                Hue = 0x8A6
+            };
             AddItem(item);
 
-            item = new PlateChest();
-            item.Hue = 0x8A6;
+            item = new PlateChest
+            {
+                Hue = 0x8A6
+            };
             AddItem(item);
 
-            item = new PlateGloves();
-            item.Hue = 0x8A6;
+            item = new PlateGloves
+            {
+                Hue = 0x8A6
+            };
             AddItem(item);
 
-            item = new PlateHelm();
-            item.Hue = 0x8A6;
+            item = new PlateHelm
+            {
+                Hue = 0x8A6
+            };
             AddItem(item);
 
-            item = new PlateGorget();
-            item.Hue = 0x8A6;
+            item = new PlateGorget
+            {
+                Hue = 0x8A6
+            };
             AddItem(item);
         }
 

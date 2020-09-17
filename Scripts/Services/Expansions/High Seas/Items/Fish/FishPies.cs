@@ -121,13 +121,17 @@ namespace Server.Items
                     default:
                     case FishPieEffect.None: break;
                     case FishPieEffect.MedBoost:
-                        TimedSkillMod mod1 = new TimedSkillMod(SkillName.Meditation, true, 10.0, Duration);
-                        mod1.ObeyCap = true;
+                        TimedSkillMod mod1 = new TimedSkillMod(SkillName.Meditation, true, 10.0, Duration)
+                        {
+                            ObeyCap = true
+                        };
                         from.AddSkillMod(mod1);
                         break;
                     case FishPieEffect.FocusBoost:
-                        TimedSkillMod mod2 = new TimedSkillMod(SkillName.Focus, true, 10.0, Duration);
-                        mod2.ObeyCap = true;
+                        TimedSkillMod mod2 = new TimedSkillMod(SkillName.Focus, true, 10.0, Duration)
+                        {
+                            ObeyCap = true
+                        };
                         from.AddSkillMod(mod2);
                         break;
                     case FishPieEffect.ColdSoak: break;

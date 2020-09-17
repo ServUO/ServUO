@@ -94,9 +94,11 @@ namespace Server.Engines.Khaldun
 
             for (int i = 0; i < count; i++)
             {
-                var Chest = new KhaldunChest();
-                Chest.Movable = false;
-                Chest.Spawner = this;
+                var Chest = new KhaldunChest
+                {
+                    Movable = false,
+                    Spawner = this
+                };
 
                 AddChest(Chest);
 

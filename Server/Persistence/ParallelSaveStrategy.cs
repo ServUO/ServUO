@@ -129,7 +129,7 @@ namespace Server
 		{
 			byte[] buffer = new byte[4];
 
-			buffer[0] = (byte)(count);
+			buffer[0] = (byte)count;
 			buffer[1] = (byte)(count >> 8);
 			buffer[2] = (byte)(count >> 16);
 			buffer[3] = (byte)(count >> 24);

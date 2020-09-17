@@ -50,11 +50,11 @@ namespace Server
 
 		public int CompareTo(Point2D other)
 		{
-			int v = (m_X.CompareTo(other.m_X));
+			int v = m_X.CompareTo(other.m_X);
 
 			if (v == 0)
 			{
-				v = (m_Y.CompareTo(other.m_Y));
+				v = m_Y.CompareTo(other.m_Y);
 			}
 
 			return v;
@@ -327,15 +327,15 @@ namespace Server
 
 		public int CompareTo(Point3D other)
 		{
-			int v = (m_X.CompareTo(other.m_X));
+			int v = m_X.CompareTo(other.m_X);
 
 			if (v == 0)
 			{
-				v = (m_Y.CompareTo(other.m_Y));
+				v = m_Y.CompareTo(other.m_Y);
 
 				if (v == 0)
 				{
-					v = (m_Z.CompareTo(other.m_Z));
+					v = m_Z.CompareTo(other.m_Z);
 				}
 			}
 
@@ -456,19 +456,19 @@ namespace Server
 
 		public bool Contains(Point3D p)
 		{
-			return (m_Start.m_X <= p.m_X && m_Start.m_Y <= p.m_Y && m_End.m_X > p.m_X && m_End.m_Y > p.m_Y);
+			return m_Start.m_X <= p.m_X && m_Start.m_Y <= p.m_Y && m_End.m_X > p.m_X && m_End.m_Y > p.m_Y;
 			//return ( m_Start <= p && m_End > p );
 		}
 
 		public bool Contains(Point2D p)
 		{
-			return (m_Start.m_X <= p.m_X && m_Start.m_Y <= p.m_Y && m_End.m_X > p.m_X && m_End.m_Y > p.m_Y);
+			return m_Start.m_X <= p.m_X && m_Start.m_Y <= p.m_Y && m_End.m_X > p.m_X && m_End.m_Y > p.m_Y;
 			//return ( m_Start <= p && m_End > p );
 		}
 
 		public bool Contains(IPoint2D p)
 		{
-			return (m_Start <= p && m_End > p);
+			return m_Start <= p && m_End > p;
 		}
 
 		public override string ToString()

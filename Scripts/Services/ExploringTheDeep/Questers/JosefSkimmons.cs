@@ -28,12 +28,16 @@ namespace Server.Mobiles
             AddItem(new LongPants(2017));
             AddItem(new FullApron(1322));
 
-            Item gloves = new LeatherGloves();
-            gloves.Hue = 1;
+            Item gloves = new LeatherGloves
+            {
+                Hue = 1
+            };
             AddItem(gloves);
 
-            Item weapon = new SmithHammer();
-            weapon.Hue = 1;
+            Item weapon = new SmithHammer
+            {
+                Hue = 1
+            };
             AddItem(weapon);
         }
 

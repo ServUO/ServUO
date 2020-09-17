@@ -40,9 +40,9 @@ namespace Server.Network
 
 			public int Length => _length;
 
-			public int Available => (_buffer.Length - _length);
+			public int Available => _buffer.Length - _length;
 
-			public bool IsFull => (_length == _buffer.Length);
+			public bool IsFull => _length == _buffer.Length;
 
 			private Gram()
 			{ }
@@ -117,9 +117,9 @@ namespace Server.Network
 
 		private Gram _buffered;
 
-		public bool IsFlushReady => (_pending.Count == 0 && _buffered != null);
+		public bool IsFlushReady => _pending.Count == 0 && _buffered != null;
 
-		public bool IsEmpty => (_pending.Count == 0 && _buffered == null);
+		public bool IsEmpty => _pending.Count == 0 && _buffered == null;
 
 		public SendQueue()
 		{

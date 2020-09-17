@@ -49,7 +49,7 @@ namespace Ultima
                         while (j != len)
                         {
                             pixel = m_StreamBuffer[j++];
-                            count = (pixel & 0x7f);
+                            count = pixel & 0x7f;
 
                             if ((pixel & 0x80) != 0)
                             {

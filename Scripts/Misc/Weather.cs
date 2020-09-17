@@ -191,10 +191,11 @@ namespace Server.Misc
                 if (!isValid)
                     continue;
 
-                Weather w = new Weather(m_Facets[i], new Rectangle2D[] { area }, temperature, chanceOfPercipitation, chanceOfExtremeTemperature, TimeSpan.FromSeconds(30.0));
-
-                w.m_Bounds = bounds;
-                w.m_MoveSpeed = moveSpeed;
+                _ = new Weather(m_Facets[i], new Rectangle2D[] { area }, temperature, chanceOfPercipitation, chanceOfExtremeTemperature, TimeSpan.FromSeconds(30.0))
+                {
+                    m_Bounds = bounds,
+                    m_MoveSpeed = moveSpeed
+                };
             }
         }
 

@@ -20,9 +20,10 @@ namespace Server.Items
 
         public override Item GetCropObject()
         {
-            Lettuce lettuce = new Lettuce();
-
-            lettuce.ItemID = Utility.Random(3184, 2);
+            Lettuce lettuce = new Lettuce
+            {
+                ItemID = Utility.Random(3184, 2)
+            };
 
             return lettuce;
         }

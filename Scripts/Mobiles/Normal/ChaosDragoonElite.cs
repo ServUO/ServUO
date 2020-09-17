@@ -83,33 +83,45 @@ namespace Server.Mobiles
             melee.Movable = false;
             AddItem(melee);
 
-            DragonChest Tunic = new DragonChest();
-            Tunic.Resource = res;
-            Tunic.Movable = false;
+            DragonChest Tunic = new DragonChest
+            {
+                Resource = res,
+                Movable = false
+            };
             AddItem(Tunic);
 
-            DragonLegs Legs = new DragonLegs();
-            Legs.Resource = res;
-            Legs.Movable = false;
+            DragonLegs Legs = new DragonLegs
+            {
+                Resource = res,
+                Movable = false
+            };
             AddItem(Legs);
 
-            DragonArms Arms = new DragonArms();
-            Arms.Resource = res;
-            Arms.Movable = false;
+            DragonArms Arms = new DragonArms
+            {
+                Resource = res,
+                Movable = false
+            };
             AddItem(Arms);
 
-            DragonGloves Gloves = new DragonGloves();
-            Gloves.Resource = res;
-            Gloves.Movable = false;
+            DragonGloves Gloves = new DragonGloves
+            {
+                Resource = res,
+                Movable = false
+            };
             AddItem(Gloves);
 
-            DragonHelm Helm = new DragonHelm();
-            Helm.Resource = res;
-            Helm.Movable = false;
+            DragonHelm Helm = new DragonHelm
+            {
+                Resource = res,
+                Movable = false
+            };
             AddItem(Helm);
 
-            ChaosShield shield = new ChaosShield();
-            shield.Movable = false;
+            ChaosShield shield = new ChaosShield
+            {
+                Movable = false
+            };
             AddItem(shield);
 
             AddItem(new Boots(0x455));
@@ -169,9 +181,11 @@ namespace Server.Mobiles
                     break;
             }
 
-            SwampDragon mt = new SwampDragon();
-            mt.HasBarding = true;
-            mt.BardingResource = res;
+            SwampDragon mt = new SwampDragon
+            {
+                HasBarding = true,
+                BardingResource = res
+            };
             mt.BardingHP = mt.BardingMaxHP;
             mt.Rider = this;
 

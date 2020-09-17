@@ -59,11 +59,12 @@ namespace Server.Commands
 
         public static void Export(CategoryEntry ce, string fileName, string title)
         {
-            XmlTextWriter xml = new XmlTextWriter(fileName, System.Text.Encoding.UTF8);
-
-            xml.Indentation = 1;
-            xml.IndentChar = '\t';
-            xml.Formatting = Formatting.Indented;
+            XmlTextWriter xml = new XmlTextWriter(fileName, System.Text.Encoding.UTF8)
+            {
+                Indentation = 1,
+                IndentChar = '\t',
+                Formatting = Formatting.Indented
+            };
 
             xml.WriteStartDocument(true);
 

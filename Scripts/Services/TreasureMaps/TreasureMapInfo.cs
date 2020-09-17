@@ -885,8 +885,10 @@ namespace Server.Items
 
                         if (_DecorativeMinorArtifacts.Any(t => t == deco.GetType()))
                         {
-                            Container pack = new Backpack();
-                            pack.Hue = 1278;
+                            Container pack = new Backpack
+                            {
+                                Hue = 1278
+                            };
 
                             pack.DropItem(deco);
                             chest.DropItem(pack);
@@ -946,8 +948,10 @@ namespace Server.Items
 
                         if (_FunctionalMinorArtifacts.Any(t => t == type))
                         {
-                            Container pack = new Backpack();
-                            pack.Hue = 1278;
+                            Container pack = new Backpack
+                            {
+                                Hue = 1278
+                            };
 
                             pack.DropItem(deco);
                             chest.DropItem(pack);

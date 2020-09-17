@@ -166,10 +166,12 @@ namespace Server.Items
 
                                 if (g != null && g.DamageTaken < DamageLevel.Severely && g.Owner is PlayerMobile)
                                 {
-                                    Target target = new Target();
-                                    target.Entity = g;
-                                    target.Location = newPoint;
-                                    target.Range = currentRange;
+                                    Target target = new Target
+                                    {
+                                        Entity = g,
+                                        Location = newPoint,
+                                        Range = currentRange
+                                    };
 
                                     return new Target[] { target };
                                 }
@@ -190,10 +192,12 @@ namespace Server.Items
 
                                 foreach (Mobile m in GetTargets(newPoint, map))
                                 {
-                                    Target target = new Target();
-                                    target.Entity = m;
-                                    target.Location = newPoint;
-                                    target.Range = currentRange;
+                                    Target target = new Target
+                                    {
+                                        Entity = m,
+                                        Location = newPoint,
+                                        Range = currentRange
+                                    };
 
                                     mobiles.Add(target);
                                 }

@@ -94,8 +94,10 @@ namespace Server.Items
         {
             get
             {
-                SkullRugAddonDeed deed = new SkullRugAddonDeed(RugType, m_ResourceCount, NextResourceCount);
-                deed.IsRewardItem = m_IsRewardItem;
+                SkullRugAddonDeed deed = new SkullRugAddonDeed(RugType, m_ResourceCount, NextResourceCount)
+                {
+                    IsRewardItem = m_IsRewardItem
+                };
 
                 return deed;
             }
@@ -283,8 +285,10 @@ namespace Server.Items
         {
             get
             {
-                SkullRugAddon addon = new SkullRugAddon(RugType, m_ResourceCount, NextResourceCount);
-                addon.IsRewardItem = m_IsRewardItem;
+                SkullRugAddon addon = new SkullRugAddon(RugType, m_ResourceCount, NextResourceCount)
+                {
+                    IsRewardItem = m_IsRewardItem
+                };
 
                 return addon;
             }

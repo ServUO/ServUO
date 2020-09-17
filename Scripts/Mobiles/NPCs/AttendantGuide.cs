@@ -141,10 +141,12 @@ namespace Server.Mobiles
                                             list.Add(current);
                                         }
 
-                                        Point3D location = new Point3D();
-                                        location.X = int.Parse(split[2]);
-                                        location.Y = int.Parse(split[3]);
-                                        location.Z = int.Parse(split[4]);
+                                        Point3D location = new Point3D
+                                        {
+                                            X = int.Parse(split[2]),
+                                            Y = int.Parse(split[3]),
+                                            Z = int.Parse(split[4])
+                                        };
                                         current.Location = location;
                                         current.Teleporter = bool.Parse(split[5]);
                                     }
@@ -337,8 +339,10 @@ namespace Server.Mobiles
                     }
                 }
 
-                m_Item = new Item(0x1183);
-                m_Item.Visible = false;
+                m_Item = new Item(0x1183)
+                {
+                    Visible = false
+                };
                 m_Item.MoveToWorld(m_Vertex.Location, map);
             }
 
@@ -951,8 +955,10 @@ namespace Server.Mobiles
             AddItem(new FeatheredHat(Utility.RandomBlueHue()));
             AddItem(new Kilt(Utility.RandomBlueHue()));
 
-            Item item = new Spellbook();
-            item.Hue = Utility.RandomBlueHue();
+            Item item = new Spellbook
+            {
+                Hue = Utility.RandomBlueHue()
+            };
             AddItem(item);
         }
 

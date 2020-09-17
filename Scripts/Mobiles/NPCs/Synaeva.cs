@@ -41,8 +41,10 @@ namespace Server.Engines.Quests
 
             Item item;
 
-            item = new RavenHelm();
-            item.Hue = 0x583;
+            item = new RavenHelm
+            {
+                Hue = 0x583
+            };
             AddItem(item);
         }
 

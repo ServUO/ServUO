@@ -305,8 +305,10 @@ namespace Server.Engines.Quests
             {
                 Rectangle2D rec = def.SpawnRegion;
                 OrcishGalleon gal = new OrcishGalleon(Direction.North);
-                PirateCaptain pirate = new PirateCaptain(gal);
-                pirate.Zone = zone;
+                PirateCaptain pirate = new PirateCaptain(gal)
+                {
+                    Zone = zone
+                };
                 gal.Owner = pirate;
                 Point3D p = Point3D.Zero;
                 bool spawned = false;

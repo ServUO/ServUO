@@ -423,10 +423,11 @@ namespace Server.Services.TownCryer
                         }
                         else if (expires > DateTime.Now || expires == DateTime.MinValue)
                         {
-                            TownCryerGreetingEntry entry = new TownCryerGreetingEntry(title, body, -1, link, linktext);
-
-                            entry.PreLoaded = true;
-                            entry.Created = created;
+                            TownCryerGreetingEntry entry = new TownCryerGreetingEntry(title, body, -1, link, linktext)
+                            {
+                                PreLoaded = true,
+                                Created = created
+                            };
 
                             if (expires > created)
                             {

@@ -157,15 +157,19 @@ namespace Server.Mobiles
             Body = 400;
             Hue = 0x847E;
 
-            Items.Robe shroud = new Items.Robe();
-            shroud.ItemID = 0x2683;
-            shroud.Hue = 0x4001;
-            shroud.Movable = false;
+            Items.Robe shroud = new Items.Robe
+            {
+                ItemID = 0x2683,
+                Hue = 0x4001,
+                Movable = false
+            };
             SetWearable(shroud);
 
-            Items.Boots boots = new Items.Boots();
-            boots.Hue = 0x4001;
-            boots.Movable = false;
+            Items.Boots boots = new Items.Boots
+            {
+                Hue = 0x4001,
+                Movable = false
+            };
             SetWearable(boots);
         }
 

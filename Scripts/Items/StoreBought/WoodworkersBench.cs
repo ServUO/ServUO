@@ -68,8 +68,10 @@ namespace Server.Items
                 _Table = new Dictionary<Mobile, Tuple<bool, DateTime, SkillMod>>();
             }
 
-            DefaultSkillMod mod = new DefaultSkillMod(SkillName.Carpentry, true, 5.0);
-            mod.ObeyCap = false;
+            DefaultSkillMod mod = new DefaultSkillMod(SkillName.Carpentry, true, 5.0)
+            {
+                ObeyCap = false
+            };
             m.AddSkillMod(mod);
 
             _Table[m] = new Tuple<bool, DateTime, SkillMod>(true, DateTime.UtcNow, mod);

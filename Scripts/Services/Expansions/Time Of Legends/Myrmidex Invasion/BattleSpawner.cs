@@ -758,8 +758,10 @@ namespace Server.Engines.MyrmidexInvasion
                 {
                     foreach (Point2D p in pss)
                     {
-                        Static st = new Static(14089);
-                        st.Hue = hue;
+                        Static st = new Static(14089)
+                        {
+                            Hue = hue
+                        };
                         st.MoveToWorld(new Point3D(p.X, p.Y, Map.TerMur.GetAverageZ(p.X, p.Y)), Map.TerMur);
                     }
                 }
@@ -772,8 +774,10 @@ namespace Server.Engines.MyrmidexInvasion
                 {
                     foreach (Point2D p in pss)
                     {
-                        Static st = new Static(14089);
-                        st.Hue = hue;
+                        Static st = new Static(14089)
+                        {
+                            Hue = hue
+                        };
                         st.MoveToWorld(new Point3D(p.X, p.Y, Map.TerMur.GetAverageZ(p.X, p.Y)), Map.TerMur);
                     }
                 }

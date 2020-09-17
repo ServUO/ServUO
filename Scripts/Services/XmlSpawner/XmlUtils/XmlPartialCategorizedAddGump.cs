@@ -131,9 +131,11 @@ namespace Server.Gumps
                     {
                         if ( /*ctors[j].GetParameters().Length == 0 && */ ctors[j].IsDefined(typeof(ConstructableAttribute), false))
                         {
-                            SearchEntry s = new SearchEntry();
-                            s.EntryType = t;
-                            s.Parameters = ctors[j].GetParameters();
+                            SearchEntry s = new SearchEntry
+                            {
+                                EntryType = t,
+                                Parameters = ctors[j].GetParameters()
+                            };
                             //results.Add( t );
                             results.Add(s);
                             //break;
@@ -240,10 +242,12 @@ namespace Server.Gumps
                                 if (xg != null)
                                 {
 
-                                    xg.Rentry = new XmlSpawnerGump.ReplacementEntry();
-                                    xg.Rentry.Typename = type.Name;
-                                    xg.Rentry.Index = m_EntryIndex;
-                                    xg.Rentry.Color = 0x1436;
+                                    xg.Rentry = new XmlSpawnerGump.ReplacementEntry
+                                    {
+                                        Typename = type.Name,
+                                        Index = m_EntryIndex,
+                                        Color = 0x1436
+                                    };
 
                                     Timer.DelayCall(TimeSpan.Zero, new TimerStateCallback(XmlSpawnerGump.Refresh_Callback), new object[] { from });
                                     //from.CloseGump(typeof(XmlSpawnerGump));

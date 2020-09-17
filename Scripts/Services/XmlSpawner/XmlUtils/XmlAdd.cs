@@ -127,9 +127,11 @@ namespace Server.Mobiles
                 }
             }
             // if not found then add one
-            DefaultEntry newentry = new DefaultEntry();
-            newentry.PlayerName = name;
-            newentry.AccountName = account;
+            DefaultEntry newentry = new DefaultEntry
+            {
+                PlayerName = name,
+                AccountName = account
+            };
             if (DefaultEntryList == null)
                 DefaultEntryList = new ArrayList();
             DefaultEntryList.Add(newentry);
@@ -1090,9 +1092,10 @@ namespace Server.Mobiles
                     defs.Team, defs.HomeRange, defs.HomeRangeIsRelative, new XmlSpawner.SpawnObject[0], defs.RefractMin, defs.RefractMax,
                     defs.TODStart, defs.TODEnd, null, defs.TriggerObjectProp, defs.ProximityMsg, defs.TriggerOnCarried, defs.NoTriggerOnCarried,
                     defs.SpeechTrigger, null, null, defs.PlayerTriggerProp, defs.TriggerProbability, null, defs.Group, defs.TODMode, defs.KillReset, defs.ExternalTriggering,
-                    defs.SequentialSpawn, null, defs.AllowGhostTrig, defs.AllowNPCTrig, defs.SpawnOnTrigger, null, defs.DespawnTime, defs.SkillTrigger, defs.SmartSpawning, null);
-
-                spawner.PlayerCreated = true;
+                    defs.SequentialSpawn, null, defs.AllowGhostTrig, defs.AllowNPCTrig, defs.SpawnOnTrigger, null, defs.DespawnTime, defs.SkillTrigger, defs.SmartSpawning, null)
+                {
+                    PlayerCreated = true
+                };
 
                 // if the object is a container, then place it in the container
                 if (targeted is Container)

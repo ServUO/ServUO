@@ -61,9 +61,11 @@ namespace Server.Engines.VvV
 
         public override void InitOutfit()
         {
-            Robe robe = new Robe();
-            robe.ItemID = 19357;
-            robe.Name = VvVType == VvVType.Virtue ? "Robe of Virtue" : "Robe of Vice";
+            Robe robe = new Robe
+            {
+                ItemID = 19357,
+                Name = VvVType == VvVType.Virtue ? "Robe of Virtue" : "Robe of Vice"
+            };
 
             Timer.DelayCall<Item>(TimeSpan.FromSeconds(1), item =>
                 {

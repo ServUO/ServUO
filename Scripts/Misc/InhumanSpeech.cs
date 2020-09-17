@@ -36,14 +36,14 @@ namespace Server.Misc
             {
                 if (m_RatmanSpeech == null)
                 {
-                    m_RatmanSpeech = new InhumanSpeech();
+                    m_RatmanSpeech = new InhumanSpeech
+                    {
+                        Hue = 149,
+                        Sound = 438,
 
-                    m_RatmanSpeech.Hue = 149;
-                    m_RatmanSpeech.Sound = 438;
+                        Flags = IHSFlags.All,
 
-                    m_RatmanSpeech.Flags = IHSFlags.All;
-
-                    m_RatmanSpeech.Keywords = new[]
+                        Keywords = new[]
                     {
                         "meat", "gold", "kill", "killing", "slay",
                         "sword", "axe", "spell", "magic", "spells",
@@ -56,9 +56,9 @@ namespace Server.Misc
                         "ultima", "silly", "stupid", "dumb", "idiot",
                         "idiots", "cheesy", "cheezy", "crazy", "dork",
                         "jerk", "fool", "foolish", "ugly", "insult", "scum"
-                    };
+                    },
 
-                    m_RatmanSpeech.Responses = new[]
+                        Responses = new[]
                     {
                         "meat", "kill", "pound", "crush", "yum yum",
                         "crunch", "destroy", "murder", "eat", "munch",
@@ -70,9 +70,9 @@ namespace Server.Misc
                         "stupid", "hideous", "smell", "tasty", "invader",
                         "attack", "raid", "plunder", "pillage", "treasure",
                         "loser", "lose", "scum"
-                    };
+                    },
 
-                    m_RatmanSpeech.Syllables = new[]
+                        Syllables = new[]
                     {
                         "skrit",
                         "ch", "ch",
@@ -93,6 +93,7 @@ namespace Server.Misc
                         "rach", "rech", "rich", "roch", "ruch", "rych",
                         "rrap", "rrep", "rrip", "rrop", "rrup", "rryp",
                         "ccka", "ccke", "ccki", "ccko", "ccku", "ccky"
+                    }
                     };
                 }
 
@@ -105,14 +106,14 @@ namespace Server.Misc
             {
                 if (m_OrcSpeech == null)
                 {
-                    m_OrcSpeech = new InhumanSpeech();
+                    m_OrcSpeech = new InhumanSpeech
+                    {
+                        Hue = 34,
+                        Sound = 432,
 
-                    m_OrcSpeech.Hue = 34;
-                    m_OrcSpeech.Sound = 432;
+                        Flags = IHSFlags.All,
 
-                    m_OrcSpeech.Flags = IHSFlags.All;
-
-                    m_OrcSpeech.Keywords = new[]
+                        Keywords = new[]
                     {
                         "meat", "gold", "kill", "killing", "slay",
                         "sword", "axe", "spell", "magic", "spells",
@@ -125,9 +126,9 @@ namespace Server.Misc
                         "ultima", "silly", "stupid", "dumb", "idiot",
                         "idiots", "cheesy", "cheezy", "crazy", "dork",
                         "jerk", "fool", "foolish", "ugly", "insult", "scum"
-                    };
+                    },
 
-                    m_OrcSpeech.Responses = new[]
+                        Responses = new[]
                     {
                         "meat", "kill", "pound", "crush", "yum yum",
                         "crunch", "destroy", "murder", "eat", "munch",
@@ -139,9 +140,9 @@ namespace Server.Misc
                         "stupid", "hideous", "smell", "tasty", "invader",
                         "attack", "raid", "plunder", "pillage", "treasure",
                         "loser", "lose", "scum"
-                    };
+                    },
 
-                    m_OrcSpeech.Syllables = new[]
+                        Syllables = new[]
                     {
                         "bu", "du", "fu", "ju", "gu",
                         "ulg", "gug", "gub", "gur", "oog",
@@ -177,6 +178,7 @@ namespace Server.Misc
                         "nar", "nag", "neg", "neh", "oag", "ob", "ogh", "oh",
                         "om", "dud", "oo", "pa", "hrak", "qo", "quad", "quil",
                         "ghig", "rur", "sag", "sah", "sg"
+                    }
                     };
                 }
 
@@ -189,14 +191,14 @@ namespace Server.Misc
             {
                 if (m_LizardmanSpeech == null)
                 {
-                    m_LizardmanSpeech = new InhumanSpeech();
+                    m_LizardmanSpeech = new InhumanSpeech
+                    {
+                        Hue = 58,
+                        Sound = 418,
 
-                    m_LizardmanSpeech.Hue = 58;
-                    m_LizardmanSpeech.Sound = 418;
+                        Flags = IHSFlags.All,
 
-                    m_LizardmanSpeech.Flags = IHSFlags.All;
-
-                    m_LizardmanSpeech.Keywords = new[]
+                        Keywords = new[]
                     {
                         "meat", "gold", "kill", "killing", "slay",
                         "sword", "axe", "spell", "magic", "spells",
@@ -209,9 +211,9 @@ namespace Server.Misc
                         "ultima", "silly", "stupid", "dumb", "idiot",
                         "idiots", "cheesy", "cheezy", "crazy", "dork",
                         "jerk", "fool", "foolish", "ugly", "insult", "scum"
-                    };
+                    },
 
-                    m_LizardmanSpeech.Responses = new[]
+                        Responses = new[]
                     {
                         "meat", "kill", "pound", "crush", "yum yum",
                         "crunch", "destroy", "murder", "eat", "munch",
@@ -223,9 +225,9 @@ namespace Server.Misc
                         "stupid", "hideous", "smell", "tasty", "invader",
                         "attack", "raid", "plunder", "pillage", "treasure",
                         "loser", "lose", "scum"
-                    };
+                    },
 
-                    m_LizardmanSpeech.Syllables = new[]
+                        Syllables = new[]
                     {
                         "ss", "sth", "iss", "is", "ith", "kth",
                         "sith", "this", "its", "sit", "tis", "tsi",
@@ -238,6 +240,7 @@ namespace Server.Misc
                         "syth", "thys", "yts", "syt", "tys", "tsy", "ssy",
                         "syl", "lys", "sys", "lyl", "thyl", "lyth", "sthy",
                         "lysh", "shy", "myss", "ysa", "sthy", "ysth"
+                    }
                     };
                 }
 
@@ -250,14 +253,14 @@ namespace Server.Misc
             {
                 if (m_WispSpeech == null)
                 {
-                    m_WispSpeech = new InhumanSpeech();
+                    m_WispSpeech = new InhumanSpeech
+                    {
+                        Hue = 89,
+                        Sound = 466,
 
-                    m_WispSpeech.Hue = 89;
-                    m_WispSpeech.Sound = 466;
+                        Flags = IHSFlags.OnMovement,
 
-                    m_WispSpeech.Flags = IHSFlags.OnMovement;
-
-                    m_WispSpeech.Syllables = new[]
+                        Syllables = new[]
                     {
                         "b", "c", "d", "f", "g", "h", "i",
                         "j", "k", "l", "m", "n", "p", "r",
@@ -265,6 +268,7 @@ namespace Server.Misc
                         "c", "x", "x", "x", "x", "x", "y",
                         "y", "y", "y", "t", "t", "k", "k",
                         "l", "l", "m", "m", "m", "m", "z"
+                    }
                     };
                 }
 

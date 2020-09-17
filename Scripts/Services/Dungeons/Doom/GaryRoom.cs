@@ -317,8 +317,10 @@ namespace Server.Engines.Doom
                 }
                 else
                 {
-                    Dice = new Sapphired20();
-                    Dice.Movable = false;
+                    Dice = new Sapphired20
+                    {
+                        Movable = false
+                    };
                     Dice.MoveToWorld(_DiceLoc, Map.Malas);
                 }
             }
@@ -341,8 +343,10 @@ namespace Server.Engines.Doom
 
                     if (s == null)
                     {
-                        Statues[i] = new DisplayStatue();
-                        Statues[i].Movable = false;
+                        Statues[i] = new DisplayStatue
+                        {
+                            Movable = false
+                        };
                         Statues[i].MoveToWorld(_StatueLocs[i], Map.Malas);
                     }
                     else
@@ -424,8 +428,10 @@ namespace Server.Engines.Doom
 
             if (!FindObject(typeof(UOBoard), _RulesLoc))
             {
-                UOBoard rules = new UOBoard();
-                rules.Movable = false;
+                UOBoard rules = new UOBoard
+                {
+                    Movable = false
+                };
                 rules.MoveToWorld(_RulesLoc, Map.Malas);
             }
 
@@ -439,9 +445,11 @@ namespace Server.Engines.Doom
 
             if (!FindObject(typeof(ScribesPen), p))
             {
-                ScribesPen pen = new ScribesPen();
-                pen.ItemID = 4032;
-                pen.Movable = false;
+                ScribesPen pen = new ScribesPen
+                {
+                    ItemID = 4032,
+                    Movable = false
+                };
                 pen.MoveToWorld(p, Map.Malas);
             }
         }

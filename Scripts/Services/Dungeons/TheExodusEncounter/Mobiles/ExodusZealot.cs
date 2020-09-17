@@ -45,16 +45,22 @@ namespace Server.Mobiles
             Fame = 10000;
             Karma = -10000;
 
-            Item boots = new ThighBoots();
-            boots.Movable = false;
+            Item boots = new ThighBoots
+            {
+                Movable = false
+            };
             SetWearable(boots);
 
-            Item item = new HoodedShroudOfShadows(2702);
-            item.LootType = LootType.Blessed;
+            Item item = new HoodedShroudOfShadows(2702)
+            {
+                LootType = LootType.Blessed
+            };
             SetWearable(item);
 
-            item = new Spellbook();
-            item.LootType = LootType.Blessed;
+            item = new Spellbook
+            {
+                LootType = LootType.Blessed
+            };
             SetWearable(item);
         }
 

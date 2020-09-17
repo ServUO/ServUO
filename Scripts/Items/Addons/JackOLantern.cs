@@ -82,10 +82,11 @@ namespace Server.Items
 
         private AddonComponent GetComponent(int itemID, int hue)
         {
-            AddonComponent ac = new AddonComponent(itemID);
-
-            ac.Hue = hue;
-            ac.Name = "jack-o-lantern";
+            AddonComponent ac = new AddonComponent(itemID)
+            {
+                Hue = hue,
+                Name = "jack-o-lantern"
+            };
 
             return ac;
         }

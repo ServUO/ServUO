@@ -101,7 +101,7 @@ namespace Server
 		{
 			if (oldValue != null && newValue != null)
 			{
-				int index = (list != null ? list.IndexOf(oldValue) : -1);
+				int index = list != null ? list.IndexOf(oldValue) : -1;
 
 				if (index >= 0)
 				{
@@ -358,7 +358,7 @@ namespace Server
 			}
 		}
 
-		public bool Active => (m_Active && m_Owner != Map.Internal);
+		public bool Active => m_Active && m_Owner != Map.Internal;
 
 		public Map Owner => m_Owner;
 

@@ -25,9 +25,10 @@ namespace Server.Engines.Chat
 
             try
             {
-                m_Output = new StreamWriter(Path.Combine(directory, string.Format("{0}.log", DateTime.UtcNow.ToLongDateString())), true);
-
-                m_Output.AutoFlush = true;
+                m_Output = new StreamWriter(Path.Combine(directory, string.Format("{0}.log", DateTime.UtcNow.ToLongDateString())), true)
+                {
+                    AutoFlush = true
+                };
 
                 m_Output.WriteLine("##############################");
                 m_Output.WriteLine("Log started on {0}", DateTime.UtcNow);
@@ -65,8 +66,10 @@ namespace Server.Engines.Chat
                     AppendPath(ref path, "channels");
                     path = Path.Combine(path, string.Format("{0}.log", channel));
 
-                    channelOutput = new StreamWriter(path, true);
-                    channelOutput.AutoFlush = true;
+                    channelOutput = new StreamWriter(path, true)
+                    {
+                        AutoFlush = true
+                    };
 
                     m_OutputPerChannel[channel] = channelOutput;
                 }

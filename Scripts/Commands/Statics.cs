@@ -422,9 +422,10 @@ namespace Server
                                 {
                                     ++totalUnfrozen;
 
-                                    Item item = new Static(oldTile.ID);
-
-                                    item.Hue = oldTile.Hue;
+                                    Item item = new Static(oldTile.ID)
+                                    {
+                                        Hue = oldTile.Hue
+                                    };
 
                                     item.MoveToWorld(new Point3D(px + xTileStart, py + yTileStart, oldTile.Z), map);
                                 }

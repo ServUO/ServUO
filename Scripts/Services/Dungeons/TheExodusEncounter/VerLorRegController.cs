@@ -78,9 +78,11 @@ namespace Server.Engines.Exodus
 
             if (m_Mobile == null)
             {
-                ClockworkExodus m = new ClockworkExodus();
-                m.Home = new Point3D(854, 642, -40);
-                m.RangeHome = 4;
+                ClockworkExodus m = new ClockworkExodus
+                {
+                    Home = new Point3D(854, 642, -40),
+                    RangeHome = 4
+                };
                 m.MoveToWorld(new Point3D(854, 642, -40), Map.Ilshenar);
                 m_Mobile = m;
             }

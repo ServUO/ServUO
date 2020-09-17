@@ -718,20 +718,28 @@ namespace Server.Engines.Shadowguard
             ShadowguardController controller = new ShadowguardController();
             controller.MoveToWorld(new Point3D(501, 2192, 50), Map.TerMur);
 
-            MetalDoor door = new MetalDoor(DoorFacing.NorthCCW);
-            door.Hue = 1779;
+            MetalDoor door = new MetalDoor(DoorFacing.NorthCCW)
+            {
+                Hue = 1779
+            };
             door.MoveToWorld(new Point3D(519, 2188, 25), Map.TerMur);
 
-            door = new MetalDoor(DoorFacing.SouthCW);
-            door.Hue = 1779;
+            door = new MetalDoor(DoorFacing.SouthCW)
+            {
+                Hue = 1779
+            };
             door.MoveToWorld(new Point3D(519, 2189, 25), Map.TerMur);
 
-            door = new MetalDoor(DoorFacing.NorthCCW);
-            door.Hue = 1779;
+            door = new MetalDoor(DoorFacing.NorthCCW)
+            {
+                Hue = 1779
+            };
             door.MoveToWorld(new Point3D(519, 2192, 25), Map.TerMur);
 
-            door = new MetalDoor(DoorFacing.SouthCW);
-            door.Hue = 1779;
+            door = new MetalDoor(DoorFacing.SouthCW)
+            {
+                Hue = 1779
+            };
             door.MoveToWorld(new Point3D(519, 2193, 25), Map.TerMur);
 
             AnkhWest ankh = new AnkhWest();

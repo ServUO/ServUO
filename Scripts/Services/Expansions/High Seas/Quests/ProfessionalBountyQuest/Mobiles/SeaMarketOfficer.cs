@@ -49,9 +49,11 @@ namespace Server.Mobiles
                     }
                     else
                     {
-                        ProfessionalBountyQuest q = new ProfessionalBountyQuest((BaseGalleon)boat);
-                        q.Owner = pm;
-                        q.Quester = this;
+                        ProfessionalBountyQuest q = new ProfessionalBountyQuest((BaseGalleon)boat)
+                        {
+                            Owner = pm,
+                            Quester = this
+                        };
 
                         pm.CloseGump(typeof(MondainQuestGump));
                         pm.SendGump(new MondainQuestGump(q));

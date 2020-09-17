@@ -64,8 +64,6 @@ namespace Server.Mobiles
 
             if (Utility.RandomDouble() < 0.25)
                 c.DropItem(new ShatteredCrystals());
-
-            c.DropItem(new CrystallineFragments());
         }
 
         public override int Hides => 40;

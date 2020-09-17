@@ -79,14 +79,18 @@ namespace Server.Engines.Khaldun
 
             if (!Siege.SiegeShard)
             {
-                champ = new ChampionSpawn();
-                champ.Type = ChampionSpawnType.Khaldun;
+                champ = new ChampionSpawn
+                {
+                    Type = ChampionSpawnType.Khaldun
+                };
                 champ.MoveToWorld(new Point3D(5469, 1461, 20), Map.Trammel);
                 ChampionSystem.AllSpawns.Add(champ);
             }
 
-            champ = new ChampionSpawn();
-            champ.Type = ChampionSpawnType.Khaldun;
+            champ = new ChampionSpawn
+            {
+                Type = ChampionSpawnType.Khaldun
+            };
             champ.MoveToWorld(new Point3D(5469, 1461, 20), Map.Felucca);
             ChampionSystem.AllSpawns.Add(champ);
 
@@ -257,8 +261,10 @@ namespace Server.Engines.Khaldun
             DamagedHeadstone grave = new DamagedHeadstone(1158607); // brit
             grave.MoveToWorld(new Point3D(1378, 1445, 10), map);
 
-            grave = new DamagedHeadstone(1158608); // vesper
-            grave.ItemID = 4477;
+            grave = new DamagedHeadstone(1158608)
+            {
+                ItemID = 4477
+            }; // vesper
             grave.MoveToWorld(new Point3D(2747, 882, 0), map);
 
             grave = new DamagedHeadstone(1158609); // moonglow
@@ -283,17 +289,21 @@ namespace Server.Engines.Khaldun
             footprints = new BloodyFootPrints(0x1E03);
             footprints.MoveToWorld(new Point3D(1378, 1464, 10), map);
 
-            Static st = new Static(0x2006);
-            st.Stackable = true;
-            st.Amount = 0x191;
-            st.Hue = 0x47E;
+            Static st = new Static(0x2006)
+            {
+                Stackable = true,
+                Amount = 0x191,
+                Hue = 0x47E
+            };
             st.MoveToWorld(new Point3D(5808, 3270, -15), map);
             st.Name = "A Corpse of Liane";
 
-            st = new Static(0x2006);
-            st.Stackable = true;
-            st.Amount = 86;
-            st.Hue = 0x47E;
+            st = new Static(0x2006)
+            {
+                Stackable = true,
+                Amount = 86,
+                Hue = 0x47E
+            };
             st.MoveToWorld(new Point3D(5807, 3268, -15), map);
             st.Name = "A Corpse of an Ophidian Beserker";
         }

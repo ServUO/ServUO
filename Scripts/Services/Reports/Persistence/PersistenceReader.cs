@@ -36,8 +36,10 @@ namespace Server.Engines.Reports
         public XmlPersistenceReader(string filePath, string title)
         {
             m_Reader = new StreamReader(filePath);
-            m_Xml = new XmlTextReader(m_Reader);
-            m_Xml.WhitespaceHandling = WhitespaceHandling.None;
+            m_Xml = new XmlTextReader(m_Reader)
+            {
+                WhitespaceHandling = WhitespaceHandling.None
+            };
             m_Title = title;
         }
 

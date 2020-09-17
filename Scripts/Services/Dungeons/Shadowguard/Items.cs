@@ -532,9 +532,11 @@ namespace Server.Engines.Shadowguard
 
                             Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
                             {
-                                Item item = new Static(Utility.Random(8762, 16));
-                                item.Hue = 1111;
-                                item.Name = "Broken Armor";
+                                Item item = new Static(Utility.Random(8762, 16))
+                                {
+                                    Hue = 1111,
+                                    Name = "Broken Armor"
+                                };
                                 item.MoveToWorld(p, Map.TerMur);
 
                                 ArmoryEncounter encounter = ShadowguardController.GetEncounter(p, Map.TerMur) as ArmoryEncounter;

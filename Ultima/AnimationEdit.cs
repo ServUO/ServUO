@@ -506,8 +506,8 @@ namespace Ultima
                 {
                     FrameEdit.Raw raw = frame.RawData[j];
 
-                    ushort* cur = line + (((raw.offy) * delta) + ((raw.offx) & 0x3FF));
-                    ushort* end = cur + (raw.run);
+                    ushort* cur = line + ((raw.offy * delta) + ((raw.offx) & 0x3FF));
+                    ushort* end = cur + raw.run;
 
                     int ii = 0;
                     while (cur < end)
@@ -540,7 +540,7 @@ namespace Ultima
             {
                 return;
             }
-            Frames[index] = new FrameEdit(bit, Palette, (Frames[index]).Center.X, (Frames[index]).Center.Y);
+            Frames[index] = new FrameEdit(bit, Palette, Frames[index].Center.X, Frames[index].Center.Y);
         }
 
         public void RemoveFrame(int index)
@@ -678,32 +678,32 @@ namespace Ultima
             {
                 int BlueTemp = (Palette[i] - 0x8000) / 0x20;
                 BlueTemp *= 0x20;
-                BlueTemp = (Palette[i] - 0x8000) - BlueTemp;
+                BlueTemp = Palette[i] - 0x8000 - BlueTemp;
                 int GreenTemp = (Palette[i] - 0x8000) / 0x400;
                 GreenTemp *= 0x400;
-                GreenTemp = ((Palette[i] - 0x8000) - GreenTemp) - BlueTemp;
+                GreenTemp = Palette[i] - 0x8000 - GreenTemp - BlueTemp;
                 GreenTemp /= 0x20;
                 int RedTemp = (Palette[i] - 0x8000) / 0x400;
                 int contaFinal = 0;
                 switch (seletor)
                 {
                     case 1:
-                        contaFinal = (((0x400 * RedTemp) + (0x20 * GreenTemp)) + BlueTemp) + 0x8000;
+                        contaFinal = (0x400 * RedTemp) + (0x20 * GreenTemp) + BlueTemp + 0x8000;
                         break;
                     case 2:
-                        contaFinal = (((0x400 * RedTemp) + (0x20 * BlueTemp)) + GreenTemp) + 0x8000;
+                        contaFinal = (0x400 * RedTemp) + (0x20 * BlueTemp) + GreenTemp + 0x8000;
                         break;
                     case 3:
-                        contaFinal = (((0x400 * GreenTemp) + (0x20 * RedTemp)) + BlueTemp) + 0x8000;
+                        contaFinal = (0x400 * GreenTemp) + (0x20 * RedTemp) + BlueTemp + 0x8000;
                         break;
                     case 4:
-                        contaFinal = (((0x400 * GreenTemp) + (0x20 * BlueTemp)) + RedTemp) + 0x8000;
+                        contaFinal = (0x400 * GreenTemp) + (0x20 * BlueTemp) + RedTemp + 0x8000;
                         break;
                     case 5:
-                        contaFinal = (((0x400 * BlueTemp) + (0x20 * GreenTemp)) + RedTemp) + 0x8000;
+                        contaFinal = (0x400 * BlueTemp) + (0x20 * GreenTemp) + RedTemp + 0x8000;
                         break;
                     case 6:
-                        contaFinal = (((0x400 * BlueTemp) + (0x20 * RedTemp)) + GreenTemp) + 0x8000;
+                        contaFinal = (0x400 * BlueTemp) + (0x20 * RedTemp) + GreenTemp + 0x8000;
                         break;
                 }
                 if (contaFinal == 0x8000)
@@ -731,10 +731,10 @@ namespace Ultima
             {
                 int BlueTemp = (Palette[i] - 0x8000) / 0x20;
                 BlueTemp *= 0x20;
-                BlueTemp = (Palette[i] - 0x8000) - BlueTemp;
+                BlueTemp = Palette[i] - 0x8000 - BlueTemp;
                 int GreenTemp = (Palette[i] - 0x8000) / 0x400;
                 GreenTemp *= 0x400;
-                GreenTemp = ((Palette[i] - 0x8000) - GreenTemp) - BlueTemp;
+                GreenTemp = Palette[i] - 0x8000 - GreenTemp - BlueTemp;
                 GreenTemp /= 0x20;
                 int RedTemp = (Palette[i] - 0x8000) / 0x400;
                 RedTemp += Redp;
@@ -764,7 +764,7 @@ namespace Ultima
                 {
                     BlueTemp = 0x1f;
                 }
-                int contaFinal = (((0x400 * RedTemp) + (0x20 * GreenTemp)) + BlueTemp) + 0x8000;
+                int contaFinal = (0x400 * RedTemp) + (0x20 * GreenTemp) + BlueTemp + 0x8000;
                 if (contaFinal == 0x8000)
                 {
                     contaFinal = 0x8001;
@@ -959,9 +959,9 @@ namespace Ultima
             {
                 Raw raw = new Raw();
                 header ^= DoubleXor;
-                raw.run = (header & 0xFFF);
-                raw.offy = ((header >> 12) & 0x3FF);
-                raw.offx = ((header >> 22) & 0x3FF);
+                raw.run = header & 0xFFF;
+                raw.offy = (header >> 12) & 0x3FF;
+                raw.offx = (header >> 22) & 0x3FF;
 
                 int i = 0;
                 raw.data = new byte[raw.run];
@@ -1009,7 +1009,7 @@ namespace Ultima
                     }
                     if (i < bit.Width)
                     {
-                        for (j = (i + 1); j < bit.Width; ++j)
+                        for (j = i + 1; j < bit.Width; ++j)
                         {
                             //next non set pixel
                             if (cur[j] == 0)
@@ -1017,8 +1017,10 @@ namespace Ultima
                                 break;
                             }
                         }
-                        Raw raw = new Raw();
-                        raw.run = j - i;
+                        Raw raw = new Raw
+                        {
+                            run = j - i
+                        };
                         raw.offx = j - raw.run - centerx;
                         raw.offx += 512;
                         raw.offy = Y - centery - bit.Height;
@@ -1028,7 +1030,7 @@ namespace Ultima
                         raw.data = new byte[raw.run];
                         while (r < raw.run)
                         {
-                            ushort col = (cur[r + i]);
+                            ushort col = cur[r + i];
                             raw.data[r++] = GetPaletteIndex(palette, col);
                         }
                         tmp.Add(raw);

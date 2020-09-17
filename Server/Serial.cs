@@ -21,7 +21,7 @@ namespace Server
 		{
 			get
 			{
-				while (World.FindMobile(m_LastMobile = (m_LastMobile + 1)) != null)
+				while (World.FindMobile(m_LastMobile = m_LastMobile + 1) != null)
 				{
 					;
 				}
@@ -34,7 +34,7 @@ namespace Server
 		{
 			get
 			{
-				while (World.FindItem(m_LastItem = (m_LastItem + 1)) != null)
+				while (World.FindItem(m_LastItem = m_LastItem + 1) != null)
 				{
 					;
 				}
@@ -50,11 +50,11 @@ namespace Server
 
 		public int Value => m_Serial;
 
-		public bool IsMobile => (m_Serial > 0 && m_Serial < 0x40000000);
+		public bool IsMobile => m_Serial > 0 && m_Serial < 0x40000000;
 
-		public bool IsItem => (m_Serial >= 0x40000000 && m_Serial <= 0x7FFFFFFF);
+		public bool IsItem => m_Serial >= 0x40000000 && m_Serial <= 0x7FFFFFFF;
 
-		public bool IsValid => (m_Serial > 0);
+		public bool IsValid => m_Serial > 0;
 
 		public override int GetHashCode()
 		{

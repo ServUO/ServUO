@@ -25,9 +25,11 @@ namespace Server.Engines.Quests
                 WeakEntityCollection.Add("sa", new SutekIngredientItem(def));
             }
 
-            XmlSpawner sp = new XmlSpawner("Sutek");
-            sp.SpawnRange = 5;
-            sp.HomeRange = 5;
+            XmlSpawner sp = new XmlSpawner("Sutek")
+            {
+                SpawnRange = 5,
+                HomeRange = 5
+            };
             sp.MoveToWorld(new Point3D(917, 594, -14), Map.TerMur);
             sp.Respawn();
             WeakEntityCollection.Add("sa", sp);

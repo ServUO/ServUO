@@ -65,7 +65,7 @@ namespace Server
 					_ProfileTime += DateTime.UtcNow - _ProfileStart;
 				}
 
-				_ProfileStart = (_Profiling ? DateTime.UtcNow : DateTime.MinValue);
+				_ProfileStart = _Profiling ? DateTime.UtcNow : DateTime.MinValue;
 			}
 		}
 

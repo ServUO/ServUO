@@ -39,34 +39,48 @@ namespace Server.Mobiles
             Fame = 10000;
             Karma = -10000;
 
-            VikingSword weapon = new VikingSword();
-            weapon.Hue = 0x835;
-            weapon.Movable = false;
+            VikingSword weapon = new VikingSword
+            {
+                Hue = 0x835,
+                Movable = false
+            };
             AddItem(weapon);
 
-            MetalShield shield = new MetalShield();
-            shield.Hue = 0x835;
-            shield.Movable = false;
+            MetalShield shield = new MetalShield
+            {
+                Hue = 0x835,
+                Movable = false
+            };
             AddItem(shield);
 
-            BoneHelm helm = new BoneHelm();
-            helm.Hue = 0x835;
+            BoneHelm helm = new BoneHelm
+            {
+                Hue = 0x835
+            };
             AddItem(helm);
 
-            BoneArms arms = new BoneArms();
-            arms.Hue = 0x835;
+            BoneArms arms = new BoneArms
+            {
+                Hue = 0x835
+            };
             AddItem(arms);
 
-            BoneGloves gloves = new BoneGloves();
-            gloves.Hue = 0x835;
+            BoneGloves gloves = new BoneGloves
+            {
+                Hue = 0x835
+            };
             AddItem(gloves);
 
-            BoneChest tunic = new BoneChest();
-            tunic.Hue = 0x835;
+            BoneChest tunic = new BoneChest
+            {
+                Hue = 0x835
+            };
             AddItem(tunic);
 
-            BoneLegs legs = new BoneLegs();
-            legs.Hue = 0x835;
+            BoneLegs legs = new BoneLegs
+            {
+                Hue = 0x835
+            };
             AddItem(legs);
 
             AddItem(new Boots());
@@ -104,15 +118,19 @@ namespace Server.Mobiles
 
         public override bool OnBeforeDeath()
         {
-            BoneKnight rm = new BoneKnight();
-            rm.Team = Team;
-            rm.Combatant = Combatant;
-            rm.NoKillAwards = true;
+            BoneKnight rm = new BoneKnight
+            {
+                Team = Team,
+                Combatant = Combatant,
+                NoKillAwards = true
+            };
 
             if (rm.Backpack == null)
             {
-                Backpack pack = new Backpack();
-                pack.Movable = false;
+                Backpack pack = new Backpack
+                {
+                    Movable = false
+                };
                 rm.AddItem(pack);
             }
 

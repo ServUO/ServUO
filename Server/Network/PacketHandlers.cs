@@ -1065,7 +1065,7 @@ namespace Server.Network
 			Mobile from = state.Mobile;
 			Item item = from.Holding;
 
-			bool valid = (item != null && item.HeldBy == from && item.Map == Map.Internal);
+			bool valid = item != null && item.HeldBy == from && item.Map == Map.Internal;
 
 			from.Holding = null;
 
@@ -1704,7 +1704,7 @@ namespace Server.Network
 
 			for (int i = 0; !ok && i < m_ValidAnimations.Length; ++i)
 			{
-				ok = (action == m_ValidAnimations[i]);
+				ok = action == m_ValidAnimations[i];
 			}
 
 			if (from != null && ok && from.Alive && from.Body.IsHuman && !from.Mounted)
@@ -2499,7 +2499,7 @@ namespace Server.Network
 			0x05, 0x06 -> Gargoyle Male, Gargoyle Female
 			*/
 
-			bool female = ((genderRace % 2) != 0);
+			bool female = (genderRace % 2) != 0;
 			byte raceID = (byte)(genderRace < 4 ? 0 : ((genderRace / 2) - 1));
 			Race race = Race.Races[raceID];
 
@@ -2644,7 +2644,7 @@ namespace Server.Network
 			0x05, 0x06 -> Gargoyle Male, Gargoyle Female
 			*/
 
-			bool female = ((genderRace % 2) != 0);
+			bool female = (genderRace % 2) != 0;
 
 			Race race = null;
 
@@ -2796,7 +2796,7 @@ namespace Server.Network
 
 			do
 			{
-				authID = (uint)(Utility.RandomMinMax(1, uint.MaxValue - 1));
+				authID = (uint)Utility.RandomMinMax(1, uint.MaxValue - 1);
 
 				if (Utility.RandomBool())
 				{
@@ -3090,8 +3090,8 @@ namespace Server.Network
 			Race race = null;
 			bool female = false;
 
-			female = (gender != 0);
-			race = Race.Races[(byte)(((genderRace - 1)))]; //SA client sends race packet one higher than KR, so this is neccesary
+			female = gender != 0;
+			race = Race.Races[(byte)(genderRace - 1)]; //SA client sends race packet one higher than KR, so this is neccesary
 			if (race == null)
 				race = Race.DefaultRace;
 

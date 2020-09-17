@@ -53,11 +53,12 @@ namespace Server.Engines.Astronomy
 
             for (int i = 0; i < amount; i++)
             {
-                StarPosition star = new StarPosition();
-
-                star.ImageID = Utility.RandomMinMax(0x668, 0x67D);
-                star.X = Utility.RandomMinMax(180, 450);
-                star.Y = Utility.RandomMinMax(150, 400);
+                StarPosition star = new StarPosition
+                {
+                    ImageID = Utility.RandomMinMax(0x668, 0x67D),
+                    X = Utility.RandomMinMax(180, 450),
+                    Y = Utility.RandomMinMax(150, 400)
+                };
 
                 positions[i] = star;
             }
@@ -90,11 +91,12 @@ namespace Server.Engines.Astronomy
 
             for (int i = 0; i < count; i++)
             {
-                StarPosition pos = new StarPosition();
-
-                pos.ImageID = reader.ReadInt();
-                pos.X = reader.ReadInt();
-                pos.Y = reader.ReadInt();
+                StarPosition pos = new StarPosition
+                {
+                    ImageID = reader.ReadInt(),
+                    X = reader.ReadInt(),
+                    Y = reader.ReadInt()
+                };
 
                 StarPositions[i] = pos;
             }

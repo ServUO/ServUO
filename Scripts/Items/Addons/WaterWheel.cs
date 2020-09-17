@@ -37,8 +37,10 @@ namespace Server.Items
         {
             get
             {
-                WaterWheelDeed deed = new WaterWheelDeed();
-                deed.IsRewardItem = IsRewardItem;
+                WaterWheelDeed deed = new WaterWheelDeed
+                {
+                    IsRewardItem = IsRewardItem
+                };
 
                 return deed;
             }
@@ -69,8 +71,10 @@ namespace Server.Items
         {
             get
             {
-                WaterWheelAddon addon = new WaterWheelAddon(_Direction);
-                addon.IsRewardItem = m_IsRewardItem;
+                WaterWheelAddon addon = new WaterWheelAddon(_Direction)
+                {
+                    IsRewardItem = m_IsRewardItem
+                };
 
                 return addon;
             }

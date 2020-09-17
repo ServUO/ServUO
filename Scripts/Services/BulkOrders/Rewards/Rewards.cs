@@ -359,8 +359,10 @@ namespace Server.Engines.BulkOrders
 
         private static Item CreateSmithHammer(int type)
         {
-            SmithHammer hammer = new SmithHammer();
-            hammer.UsesRemaining = 250;
+            SmithHammer hammer = new SmithHammer
+            {
+                UsesRemaining = 250
+            };
 
             return hammer;
         }
@@ -687,8 +689,10 @@ namespace Server.Engines.BulkOrders
 
         private static Item CreateSewingKit(int type)
         {
-            SewingKit kit = new SewingKit();
-            kit.UsesRemaining = 250;
+            SewingKit kit = new SewingKit
+            {
+                UsesRemaining = 250
+            };
 
             return kit;
         }
@@ -707,8 +711,10 @@ namespace Server.Engines.BulkOrders
         {
             if (type >= 0 && type < m_ClothHues.Length)
             {
-                UncutCloth cloth = new UncutCloth(100);
-                cloth.Hue = m_ClothHues[type][Utility.Random(m_ClothHues[type].Length)];
+                UncutCloth cloth = new UncutCloth(100)
+                {
+                    Hue = m_ClothHues[type][Utility.Random(m_ClothHues[type].Length)]
+                };
                 return cloth;
             }
 
@@ -952,8 +958,10 @@ namespace Server.Engines.BulkOrders
 
         private static Item TinkerTools(int type)
         {
-            BaseTool tool = new TinkerTools();
-            tool.UsesRemaining = 250;
+            BaseTool tool = new TinkerTools
+            {
+                UsesRemaining = 250
+            };
 
             return tool;
         }
@@ -1136,8 +1144,10 @@ namespace Server.Engines.BulkOrders
 
         private static Item DovetailSaw(int type)
         {
-            BaseTool tool = new DovetailSaw();
-            tool.UsesRemaining = 250;
+            BaseTool tool = new DovetailSaw
+            {
+                UsesRemaining = 250
+            };
 
             return tool;
         }
@@ -1316,8 +1326,10 @@ namespace Server.Engines.BulkOrders
 
         private static Item ScribesPen(int type)
         {
-            BaseTool tool = new ScribesPen();
-            tool.UsesRemaining = 250;
+            BaseTool tool = new ScribesPen
+            {
+                UsesRemaining = 250
+            };
 
             return tool;
         }
@@ -1439,8 +1451,10 @@ namespace Server.Engines.BulkOrders
 
         private static Item Skillet(int type)
         {
-            BaseTool tool = new Skillet();
-            tool.UsesRemaining = 250;
+            BaseTool tool = new Skillet
+            {
+                UsesRemaining = 250
+            };
 
             return tool;
         }
@@ -1577,8 +1591,10 @@ namespace Server.Engines.BulkOrders
 
         private static Item FletcherTools(int type)
         {
-            BaseTool tool = new FletcherTools();
-            tool.UsesRemaining = 250;
+            BaseTool tool = new FletcherTools
+            {
+                UsesRemaining = 250
+            };
 
             return tool;
         }
@@ -1739,8 +1755,10 @@ namespace Server.Engines.BulkOrders
         #region Constructors
         private static Item MortarAndPestle(int type)
         {
-            BaseTool tool = new MortarPestle();
-            tool.UsesRemaining = 250;
+            BaseTool tool = new MortarPestle
+            {
+                UsesRemaining = 250
+            };
 
             return tool;
         }

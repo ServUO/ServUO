@@ -5,8 +5,10 @@
         [Constructable]
         public SeaMarketBuoy()
         {
-            AddonComponent comp1 = new AddonComponent(18102);
-            comp1.Name = "buoy";
+            AddonComponent comp1 = new AddonComponent(18102)
+            {
+                Name = "buoy"
+            };
 
             AddonComponent comp2 = new AddonComponent(18103);
             comp1.Name = "buoy";

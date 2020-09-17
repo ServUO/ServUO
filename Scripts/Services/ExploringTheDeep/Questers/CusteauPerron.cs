@@ -31,8 +31,10 @@ namespace Server.Mobiles
             AddItem(new Cloak(2017));
             AddItem(new Cap(398));
 
-            Item gloves = new LeatherGloves();
-            gloves.Hue = 2213;
+            Item gloves = new LeatherGloves
+            {
+                Hue = 2213
+            };
             AddItem(gloves);
         }
 

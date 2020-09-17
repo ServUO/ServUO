@@ -39,28 +39,40 @@ namespace Server.Mobiles
             Fame = 10000;
             Karma = -10000;
 
-            LeatherGloves gloves = new LeatherGloves();
-            gloves.Hue = 0x66D;
+            LeatherGloves gloves = new LeatherGloves
+            {
+                Hue = 0x66D
+            };
             AddItem(gloves);
 
-            BoneHelm helm = new BoneHelm();
-            helm.Hue = 0x835;
+            BoneHelm helm = new BoneHelm
+            {
+                Hue = 0x835
+            };
             AddItem(helm);
 
-            Necklace necklace = new Necklace();
-            necklace.Hue = 0x66D;
+            Necklace necklace = new Necklace
+            {
+                Hue = 0x66D
+            };
             AddItem(necklace);
 
-            Cloak cloak = new Cloak();
-            cloak.Hue = 0x66D;
+            Cloak cloak = new Cloak
+            {
+                Hue = 0x66D
+            };
             AddItem(cloak);
 
-            Kilt kilt = new Kilt();
-            kilt.Hue = 0x66D;
+            Kilt kilt = new Kilt
+            {
+                Hue = 0x66D
+            };
             AddItem(kilt);
 
-            Sandals sandals = new Sandals();
-            sandals.Hue = 0x66D;
+            Sandals sandals = new Sandals
+            {
+                Hue = 0x66D
+            };
             AddItem(sandals);
         }
 
@@ -95,15 +107,19 @@ namespace Server.Mobiles
 
         public override bool OnBeforeDeath()
         {
-            BoneMagi rm = new BoneMagi();
-            rm.Team = Team;
-            rm.Combatant = Combatant;
-            rm.NoKillAwards = true;
+            BoneMagi rm = new BoneMagi
+            {
+                Team = Team,
+                Combatant = Combatant,
+                NoKillAwards = true
+            };
 
             if (rm.Backpack == null)
             {
-                Backpack pack = new Backpack();
-                pack.Movable = false;
+                Backpack pack = new Backpack
+                {
+                    Movable = false
+                };
                 rm.AddItem(pack);
             }
 

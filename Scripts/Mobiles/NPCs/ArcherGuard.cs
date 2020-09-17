@@ -46,21 +46,24 @@ namespace Server.Mobiles
             AddItem(new Boots());
             AddItem(new SkullCap());
 
-            Bow bow = new Bow();
-
-            bow.Movable = false;
-            bow.Crafter = this;
-            bow.Quality = ItemQuality.Exceptional;
+            Bow bow = new Bow
+            {
+                Movable = false,
+                Crafter = this,
+                Quality = ItemQuality.Exceptional
+            };
 
             AddItem(bow);
 
-            Container pack = new Backpack();
+            Container pack = new Backpack
+            {
+                Movable = false
+            };
 
-            pack.Movable = false;
-
-            Arrow arrows = new Arrow(250);
-
-            arrows.LootType = LootType.Newbied;
+            Arrow arrows = new Arrow(250)
+            {
+                LootType = LootType.Newbied
+            };
 
             pack.DropItem(arrows);
 

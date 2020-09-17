@@ -1306,11 +1306,13 @@ namespace Server.Engines.NewMagincia
                         return;
                     }
 
-                    RecallRune rune = new RecallRune();
-                    rune.Target = from.Location;
-                    rune.TargetMap = from.Map;
-                    rune.Description = string.Format("Lot: {0}", m_Sign.Plot.PlotDef.ID);
-                    rune.Marked = true;
+                    RecallRune rune = new RecallRune
+                    {
+                        Target = from.Location,
+                        TargetMap = from.Map,
+                        Description = string.Format("Lot: {0}", m_Sign.Plot.PlotDef.ID),
+                        Marked = true
+                    };
 
                     if (from.Backpack == null || !from.Backpack.TryDropItem(from, rune, false))
                     {

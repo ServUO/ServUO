@@ -160,9 +160,11 @@ namespace Server.Engines.MyrmidexInvasion
             allegianceIdol = new AllegianceIdol(Allegiance.Myrmidex);
             allegianceIdol.MoveToWorld(new Point3D(176, 1813, 91), map);
 
-            HealerCamp camp = new HealerCamp();
-            camp.Map = Map.TerMur;
-            camp.Location = new Point3D(262, 1716, 80);
+            _ = new HealerCamp
+            {
+                Map = Map.TerMur,
+                Location = new Point3D(262, 1716, 80)
+            };
 
             GeoffreyCampAddon gcamp = new GeoffreyCampAddon();
             gcamp.MoveToWorld(new Point3D(264, 1732, 80), Map.TerMur);
@@ -188,63 +190,83 @@ namespace Server.Engines.MyrmidexInvasion
             st = new Static(0x42D);
             st.MoveToWorld(new Point3D(913, 1793, 6), Map.TerMur);
 
-            XmlSpawner sp = new XmlSpawner("Yar");
-            sp.SpawnRange = 1;
-            sp.HomeRange = 5;
+            XmlSpawner sp = new XmlSpawner("Yar")
+            {
+                SpawnRange = 1,
+                HomeRange = 5
+            };
             sp.MoveToWorld(new Point3D(169, 1813, 80), map);
             sp.Respawn();
 
-            sp = new XmlSpawner("Bront");
-            sp.SpawnRange = 1;
-            sp.HomeRange = 5;
+            sp = new XmlSpawner("Bront")
+            {
+                SpawnRange = 1,
+                HomeRange = 5
+            };
             sp.MoveToWorld(new Point3D(1448, 3774, 0), Map.Trammel);
             sp.Respawn();
 
-            sp = new XmlSpawner("CollectorOfOddities");
-            sp.SpawnRange = 1;
-            sp.HomeRange = 5;
+            sp = new XmlSpawner("CollectorOfOddities")
+            {
+                SpawnRange = 1,
+                HomeRange = 5
+            };
             sp.MoveToWorld(new Point3D(4305, 1003, 0), Map.Trammel);
             sp.Respawn();
 
-            sp = new XmlSpawner("Carroll");
-            sp.SpawnRange = 1;
-            sp.HomeRange = 5;
+            sp = new XmlSpawner("Carroll")
+            {
+                SpawnRange = 1,
+                HomeRange = 5
+            };
             sp.MoveToWorld(new Point3D(2878, 723, 0), Map.Trammel);
             sp.Respawn();
 
-            sp = new XmlSpawner("Eriathwen");
-            sp.SpawnRange = 1;
-            sp.HomeRange = 5;
+            sp = new XmlSpawner("Eriathwen")
+            {
+                SpawnRange = 1,
+                HomeRange = 5
+            };
             sp.MoveToWorld(new Point3D(1426, 1653, 0), Map.Trammel);
             sp.Respawn();
 
-            sp = new XmlSpawner("EllieRafkin");
-            sp.SpawnRange = 1;
-            sp.HomeRange = 5;
+            sp = new XmlSpawner("EllieRafkin")
+            {
+                SpawnRange = 1,
+                HomeRange = 5
+            };
             sp.MoveToWorld(new Point3D(261, 1742, 80), map);
             sp.Respawn();
 
-            sp = new XmlSpawner("Yero");
-            sp.SpawnRange = 1;
-            sp.HomeRange = 5;
+            sp = new XmlSpawner("Yero")
+            {
+                SpawnRange = 1,
+                HomeRange = 5
+            };
             sp.MoveToWorld(new Point3D(3692, 2252, 26), Map.Trammel);
             sp.Respawn();
 
-            sp = new XmlSpawner("Alida");
-            sp.SpawnRange = 1;
-            sp.HomeRange = 5;
+            sp = new XmlSpawner("Alida")
+            {
+                SpawnRange = 1,
+                HomeRange = 5
+            };
             sp.MoveToWorld(new Point3D(5257, 4012, 40), Map.Trammel);
             sp.Respawn();
 
-            sp = new XmlSpawner("Foxx");
-            sp.SpawnRange = 1;
-            sp.HomeRange = 5;
+            sp = new XmlSpawner("Foxx")
+            {
+                SpawnRange = 1,
+                HomeRange = 5
+            };
             sp.MoveToWorld(new Point3D(269, 1727, 80), map);
             sp.Respawn();
 
-            sp = new XmlSpawner("MyrmidexQueen/Cantwalk/true");
-            sp.SpawnRange = 0;
-            sp.HomeRange = 1;
+            sp = new XmlSpawner("MyrmidexQueen/Cantwalk/true")
+            {
+                SpawnRange = 0,
+                HomeRange = 1
+            };
             sp.MoveToWorld(new Point3D(768, 2303, 0), map);
             sp.Respawn();
 

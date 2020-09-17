@@ -122,8 +122,10 @@ namespace Server.Items
                     list.Add(c);
 
                     // crystal ball
-                    c = new Static(0xE2D);
-                    c.Weight = 10.0;
+                    c = new Static(0xE2D)
+                    {
+                        Weight = 10.0
+                    };
                     c.MoveToWorld(new Point3D(1410, 1604, 57), Map);
                     list.Add(c);
 

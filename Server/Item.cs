@@ -1043,7 +1043,7 @@ namespace Server
 
 		private bool GetFlag(ImplFlag flag)
 		{
-			return ((m_Flags & flag) != 0);
+			return (m_Flags & flag) != 0;
 		}
 
 		public BounceInfo GetBounce()
@@ -1554,7 +1554,7 @@ namespace Server
 
 		public virtual bool CheckConflictingLayer(Mobile m, Item item, Layer layer)
 		{
-			return (m_Layer == layer);
+			return m_Layer == layer;
 		}
 
 		public virtual bool CanEquip(Mobile m)
@@ -1751,12 +1751,12 @@ namespace Server
 
 		public bool AtWorldPoint(int x, int y)
 		{
-			return (m_Parent == null && m_Location.m_X == x && m_Location.m_Y == y);
+			return m_Parent == null && m_Location.m_X == x && m_Location.m_Y == y;
 		}
 
 		public bool AtPoint(int x, int y)
 		{
-			return (m_Location.m_X == x && m_Location.m_Y == y);
+			return m_Location.m_X == x && m_Location.m_Y == y;
 		}
 
 		/// <summary>
@@ -1963,7 +1963,7 @@ namespace Server
 
 		public virtual bool OnDecay()
 		{
-			return (Decays && Parent == null && Map != Map.Internal && Region.Find(Location, Map).OnDecay(this));
+			return Decays && Parent == null && Map != Map.Internal && Region.Find(Location, Map).OnDecay(this);
 		}
 
 		public void SetLastMoved()
@@ -2457,7 +2457,7 @@ namespace Server
 
 		private static bool GetSaveFlag(SaveFlag flags, SaveFlag toGet)
 		{
-			return ((flags & toGet) != 0);
+			return (flags & toGet) != 0;
 		}
 
 		int ISerializable.TypeReference => m_TypeRef;
@@ -2618,8 +2618,8 @@ namespace Server
 				}
 			}
 
-			ImplFlag implFlags = (m_Flags & (ImplFlag.Visible | ImplFlag.Movable | ImplFlag.Stackable | ImplFlag.Insured |
-										ImplFlag.PayedInsurance | ImplFlag.QuestItem));
+			ImplFlag implFlags = m_Flags & (ImplFlag.Visible | ImplFlag.Movable | ImplFlag.Stackable | ImplFlag.Insured |
+										ImplFlag.PayedInsurance | ImplFlag.QuestItem);
 
 			if (implFlags != (ImplFlag.Visible | ImplFlag.Movable))
 			{
@@ -2912,7 +2912,7 @@ namespace Server
 				return false;
 			}
 
-			return ((info.m_TempFlags & flag) != 0);
+			return (info.m_TempFlags & flag) != 0;
 		}
 
 		public void SetTempFlag(int flag, bool value)
@@ -2943,7 +2943,7 @@ namespace Server
 				return false;
 			}
 
-			return ((info.m_SavedFlags & flag) != 0);
+			return (info.m_SavedFlags & flag) != 0;
 		}
 
 		public void SetSavedFlag(int flag, bool value)
@@ -3599,7 +3599,7 @@ namespace Server
 				}
 				else if (HeldBy != null)
 				{
-					(HeldBy).UpdateTotal(sender, type, delta);
+					HeldBy.UpdateTotal(sender, type, delta);
 				}
 			}
 		}
@@ -3712,7 +3712,7 @@ namespace Server
 
 		public virtual bool HiddenQuestItemHue { get; set; }
 
-		public int QuestItemHue => (HiddenQuestItemHue ? Hue : 0x04EA);
+		public int QuestItemHue => HiddenQuestItemHue ? Hue : 0x04EA;
 
 		public virtual bool Nontransferable => QuestItem;
 
@@ -5393,7 +5393,7 @@ namespace Server
 		public virtual void OnSnoop(Mobile from)
 		{ }
 
-		public bool InSecureTrade => (GetSecureTradeCont() != null);
+		public bool InSecureTrade => GetSecureTradeCont() != null;
 
 		public SecureTradeContainer GetSecureTradeCont()
 		{
@@ -5687,7 +5687,7 @@ namespace Server
 
 			if (amount > (60000 / amountPerOldItem)) // let's not go over 60000
 			{
-				amount = (60000 / amountPerOldItem);
+				amount = 60000 / amountPerOldItem;
 			}
 
 			Amount -= amount;
@@ -5819,12 +5819,12 @@ namespace Server
 				return true;
 			}
 
-			return (m != null && m == BlessedFor);
+			return m != null && m == BlessedFor;
 		}
 
 		public virtual bool CheckNewbied()
 		{
-			return (m_LootType == LootType.Newbied);
+			return m_LootType == LootType.Newbied;
 		}
 
 		public virtual bool IsStandardLoot()
@@ -5839,7 +5839,7 @@ namespace Server
 				return false;
 			}
 
-			return (m_LootType == LootType.Regular);
+			return m_LootType == LootType.Regular;
 		}
 
 		public override string ToString()

@@ -65,10 +65,11 @@ namespace Server.Mobiles
 
             for (int i = 0; i < newPixies; ++i)
             {
-                Pixie pixie = new Pixie();
-
-                pixie.Team = Team;
-                pixie.FightMode = FightMode.Closest;
+                Pixie pixie = new Pixie
+                {
+                    Team = Team,
+                    FightMode = FightMode.Closest
+                };
 
                 bool validLocation = false;
                 Point3D loc = Location;

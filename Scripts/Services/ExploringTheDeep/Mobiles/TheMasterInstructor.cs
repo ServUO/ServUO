@@ -133,9 +133,11 @@ namespace Server.Mobiles
             if (m_Instances.Count > 0)
                 return null;
 
-            TheMasterInstructor creature = new TheMasterInstructor(controller);
-            creature.Home = platLoc;
-            creature.RangeHome = 4;
+            TheMasterInstructor creature = new TheMasterInstructor(controller)
+            {
+                Home = platLoc,
+                RangeHome = 4
+            };
             creature.MoveToWorld(platLoc, platMap);
 
             return creature;

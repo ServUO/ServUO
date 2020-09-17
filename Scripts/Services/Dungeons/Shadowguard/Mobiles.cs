@@ -348,32 +348,46 @@ namespace Server.Engines.Shadowguard
             SetSkill(SkillName.Tactics, 125.0);
             SetSkill(SkillName.Lumberjacking, 125.0);
 
-            CloseHelm helm = new CloseHelm();
-            helm.Hue = 0x96D;
+            CloseHelm helm = new CloseHelm
+            {
+                Hue = 0x96D
+            };
             AddItem(helm);
 
-            PlateArms arms = new PlateArms();
-            arms.Hue = 0x96D;
+            PlateArms arms = new PlateArms
+            {
+                Hue = 0x96D
+            };
             AddItem(arms);
 
-            PlateLegs legs = new PlateLegs();
-            legs.Hue = 0x96D;
+            PlateLegs legs = new PlateLegs
+            {
+                Hue = 0x96D
+            };
             AddItem(legs);
 
-            PlateChest tunic = new PlateChest();
-            tunic.Hue = 0x96D;
+            PlateChest tunic = new PlateChest
+            {
+                Hue = 0x96D
+            };
             AddItem(tunic);
 
-            PlateGorget gorget = new PlateGorget();
-            gorget.Hue = 0x96D;
+            PlateGorget gorget = new PlateGorget
+            {
+                Hue = 0x96D
+            };
             AddItem(gorget);
 
-            PlateGloves golves = new PlateGloves();
-            golves.Hue = 0x96D;
+            PlateGloves golves = new PlateGloves
+            {
+                Hue = 0x96D
+            };
             AddItem(golves);
 
-            Halberd halberd = new Halberd();
-            halberd.Hue = 0x96D;
+            Halberd halberd = new Halberd
+            {
+                Hue = 0x96D
+            };
             AddItem(halberd);
 
             AddItem(new HalfApron(728));

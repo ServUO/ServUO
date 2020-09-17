@@ -101,8 +101,10 @@ namespace Server.Items
             if (m_Key != null)
                 m_Key.Decay();
 
-            ExperimentalGem gem = new ExperimentalGem();
-            gem.Owner = from;
+            ExperimentalGem gem = new ExperimentalGem
+            {
+                Owner = from
+            };
 
             from.AddToBackpack(gem);
 

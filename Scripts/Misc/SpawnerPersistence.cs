@@ -1376,10 +1376,11 @@ namespace Server
                                                  spawner.MaxDelay,
                                                  spawner.Team,
                                                  spawner.SpawnRange,
-                                                 spawns.ToList());
-
-                newSpawner.Group = spawner.Group;
-                newSpawner.Running = spawner.Running;
+                                                 spawns.ToList())
+                {
+                    Group = spawner.Group,
+                    Running = spawner.Running
+                };
 
                 newSpawner.MoveToWorld(spawner.Location, spawner.Map);
                 spawner.Delete();

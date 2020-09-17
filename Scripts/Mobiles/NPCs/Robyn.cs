@@ -139,24 +139,34 @@ namespace Server.Engines.Quests
 
             Item item;
 
-            item = new StuddedLegs();
-            item.Hue = 0x592;
+            item = new StuddedLegs
+            {
+                Hue = 0x592
+            };
             AddItem(item);
 
-            item = new StuddedGloves();
-            item.Hue = 0x592;
+            item = new StuddedGloves
+            {
+                Hue = 0x592
+            };
             AddItem(item);
 
-            item = new StuddedGorget();
-            item.Hue = 0x592;
+            item = new StuddedGorget
+            {
+                Hue = 0x592
+            };
             AddItem(item);
 
-            item = new StuddedChest();
-            item.Hue = 0x592;
+            item = new StuddedChest
+            {
+                Hue = 0x592
+            };
             AddItem(item);
 
-            item = new StuddedArms();
-            item.Hue = 0x592;
+            item = new StuddedArms
+            {
+                Hue = 0x592
+            };
             AddItem(item);
         }
 

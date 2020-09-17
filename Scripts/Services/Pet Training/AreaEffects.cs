@@ -485,19 +485,25 @@ namespace Server.Mobiles
                 defaul = new AuraDefinition();
                 Definitions.Add(defaul);
 
-                cora = new AuraDefinition(typeof(CoraTheSorceress));
-                cora.Damage = 10;
-                cora.Fire = 0;
+                cora = new AuraDefinition(typeof(CoraTheSorceress))
+                {
+                    Damage = 10,
+                    Fire = 0
+                };
                 Definitions.Add(cora);
 
-                fireAura = new AuraDefinition(typeof(FlameElemental), typeof(FireDaemon), typeof(LesserFlameElemental));
-                fireAura.Damage = 7;
+                fireAura = new AuraDefinition(typeof(FlameElemental), typeof(FireDaemon), typeof(LesserFlameElemental))
+                {
+                    Damage = 7
+                };
                 Definitions.Add(fireAura);
 
-                coldAura = new AuraDefinition(typeof(ColdDrake), typeof(FrostDrake), typeof(FrostDragon), typeof(SnowElemental), typeof(FrostMite), typeof(IceFiend), typeof(IceElemental), typeof(CorporealBrume));
-                coldAura.Damage = 15;
-                coldAura.Fire = 0;
-                coldAura.Cold = 100;
+                coldAura = new AuraDefinition(typeof(ColdDrake), typeof(FrostDrake), typeof(FrostDragon), typeof(SnowElemental), typeof(FrostMite), typeof(IceFiend), typeof(IceElemental), typeof(CorporealBrume))
+                {
+                    Damage = 15,
+                    Fire = 0,
+                    Cold = 100
+                };
                 Definitions.Add(coldAura);
             }
 

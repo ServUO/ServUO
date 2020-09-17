@@ -102,8 +102,10 @@ namespace Server.Items
         {
             get
             {
-                RoseRugAddonDeed deed = new RoseRugAddonDeed(RugType, m_ResourceCount, NextResourceCount);
-                deed.IsRewardItem = m_IsRewardItem;
+                RoseRugAddonDeed deed = new RoseRugAddonDeed(RugType, m_ResourceCount, NextResourceCount)
+                {
+                    IsRewardItem = m_IsRewardItem
+                };
 
                 return deed;
             }
@@ -277,8 +279,10 @@ namespace Server.Items
         {
             get
             {
-                RoseRugAddon addon = new RoseRugAddon(RugType, m_ResourceCount, NextResourceCount);
-                addon.IsRewardItem = m_IsRewardItem;
+                RoseRugAddon addon = new RoseRugAddon(RugType, m_ResourceCount, NextResourceCount)
+                {
+                    IsRewardItem = m_IsRewardItem
+                };
 
                 return addon;
             }

@@ -248,15 +248,19 @@ namespace Server.Misc
 
         public static void GiveResources(Mobile from)
         {
-            var box = new WoodenBox();
-            box.Hue = 1193;
-            box.Name = "General Resources";
+            var box = new WoodenBox
+            {
+                Hue = 1193,
+                Name = "General Resources"
+            };
 
             PlaceItemIn(box, 115, 63, new PowderOfTemperament(30000));
 
-            Container bag = new Bag();
-            bag.Hue = 75;
-            bag.Name = "Bag of Imbuing Materials";
+            Container bag = new Bag
+            {
+                Hue = 75,
+                Name = "Bag of Imbuing Materials"
+            };
 
             for (int i = 0; i < Imbuing.IngredTypes.Length; i++)
             {
@@ -283,9 +287,11 @@ namespace Server.Misc
 
             PlaceItemIn(box, 17, 67, bag);
 
-            bag = new Bag();
-            bag.Hue = 1195;
-            bag.Name = "Bag of Elven Materials";
+            bag = new Bag
+            {
+                Hue = 1195,
+                Name = "Bag of Elven Materials"
+            };
 
             for (int i = 0; i < Loot.RareGemTypes.Length; i++)
             {
@@ -314,8 +320,10 @@ namespace Server.Misc
 
             PlaceItemIn(box, 40, 67, bag);
 
-            bag = new Backpack();
-            bag.Name = "Runic Tool Bag";
+            bag = new Backpack
+            {
+                Name = "Runic Tool Bag"
+            };
 
             PlaceItemIn(bag, 54, 74, new RunicHammer(CraftResource.DullCopper, 30000));
             PlaceItemIn(bag, 64, 74, new RunicHammer(CraftResource.ShadowIron, 30000));
@@ -342,8 +350,10 @@ namespace Server.Misc
 
             PlaceItemIn(box, 65, 67, bag);
 
-            bag = new Bag();
-            bag.Name = "Raw Materials Bag";
+            bag = new Bag
+            {
+                Name = "Raw Materials Bag"
+            };
 
             PlaceItemIn(bag, 92, 59, new BarbedLeather(5000));
             PlaceItemIn(bag, 92, 68, new HornedLeather(5000));
@@ -373,16 +383,20 @@ namespace Server.Misc
 
             PlaceItemIn(box, 40, 93, bag);
 
-            bag = new Bag();
-            bag.Name = "Bag of Archery Ammo";
+            bag = new Bag
+            {
+                Name = "Bag of Archery Ammo"
+            };
 
             PlaceItemIn(bag, 48, 76, new Arrow(5000));
             PlaceItemIn(bag, 72, 76, new Bolt(5000));
 
             PlaceItemIn(box, 65, 93, bag);
 
-            bag = new Bag();
-            bag.Name = "Tool Bag";
+            bag = new Bag
+            {
+                Name = "Tool Bag"
+            };
 
             PlaceItemIn(bag, 30, 35, new TinkerTools(30000));
             PlaceItemIn(bag, 60, 35, new HousePlacementTool());
@@ -399,9 +413,11 @@ namespace Server.Misc
 
             PlaceItemIn(box, 90, 93, bag);
 
-            bag = new Bag();
-            bag.Name = "Bag of Recipes";
-            bag.Hue = 2301;
+            bag = new Bag
+            {
+                Name = "Bag of Recipes",
+                Hue = 2301
+            };
 
             foreach (var recipe in Recipe.Recipes.Values)
             {
@@ -410,9 +426,11 @@ namespace Server.Misc
 
             PlaceItemIn(box, 115, 93, bag);
 
-            bag = new Bag();
-            bag.Name = "Bag of Wood";
-            bag.Hue = 1321;
+            bag = new Bag
+            {
+                Name = "Bag of Wood",
+                Hue = 1321
+            };
 
             bag.DropItem(new Board(5000));
             bag.DropItem(new OakBoard(5000));
@@ -430,13 +448,17 @@ namespace Server.Misc
 
         public static void GiveArtifacts(Mobile from)
         {
-            var box = new WoodenBox();
-            box.Hue = 1170;
-            box.Name = "Artifacts";
+            var box = new WoodenBox
+            {
+                Hue = 1170,
+                Name = "Artifacts"
+            };
 
-            Container bag = new Bag();
-            bag.Hue = 2075;
-            bag.Name = "SA Major Artifacts Human";
+            Container bag = new Bag
+            {
+                Hue = 2075,
+                Name = "SA Major Artifacts Human"
+            };
 
             bag.DropItem(new AnimatedLegsoftheInsaneTinker());
             bag.DropItem(new ResonantStaffofEnlightenment());
@@ -459,9 +481,11 @@ namespace Server.Misc
 
             PlaceItemIn(box, 17, 57, bag);
 
-            bag = new Bag();
-            bag.Hue = 1159;
-            bag.Name = "Eodon Artifacts";
+            bag = new Bag
+            {
+                Hue = 1159,
+                Name = "Eodon Artifacts"
+            };
 
             bag.DropItem(new AnonsBoots());
             bag.DropItem(new AnonsBootsGargoyle());
@@ -493,9 +517,11 @@ namespace Server.Misc
 
             PlaceItemIn(box, 40, 57, bag);
 
-            bag = new Bag();
-            bag.Hue = 1266;
-            bag.Name = "Major Artifacts";
+            bag = new Bag
+            {
+                Hue = 1266,
+                Name = "Major Artifacts"
+            };
 
             bag.DropItem(new TitansHammer());
             bag.DropItem(new InquisitorsResolution());
@@ -509,9 +535,11 @@ namespace Server.Misc
 
             PlaceItemIn(box, 65, 57, bag);
 
-            bag = new Bag();
-            bag.Hue = 1281;
-            bag.Name = "Tokuno Major Artifacts";
+            bag = new Bag
+            {
+                Hue = 1281,
+                Name = "Tokuno Major Artifacts"
+            };
 
             bag.DropItem(new SwordsOfProsperity());
             bag.DropItem(new SwordOfTheStampede());
@@ -543,9 +571,11 @@ namespace Server.Misc
 
             PlaceItemIn(box, 115, 57, bag);
 
-            bag = new Bag();
-            bag.Hue = 1167;
-            bag.Name = "Minor Artifacts";
+            bag = new Bag
+            {
+                Hue = 1167,
+                Name = "Minor Artifacts"
+            };
 
             for (int i = 0; i < MondainsLegacy.Artifacts.Length; i++)
             {
@@ -554,9 +584,11 @@ namespace Server.Misc
 
             PlaceItemIn(box, 90, 57, bag);
 
-            bag = new Bag();
-            bag.Hue = 55;
-            bag.Name = "Replicas";
+            bag = new Bag
+            {
+                Hue = 55,
+                Name = "Replicas"
+            };
 
             bag.DropItem(new RoyalGuardInvestigatorsCloak());
             bag.DropItem(new TongueOfTheBeast());
@@ -588,9 +620,11 @@ namespace Server.Misc
 
             PlaceItemIn(box, 90, 139, bag);
 
-            bag = new Bag();
-            bag.Hue = 2731;
-            bag.Name = "Doom Upgrade Arties";
+            bag = new Bag
+            {
+                Hue = 2731,
+                Name = "Doom Upgrade Arties"
+            };
 
             bag.DropItem(new BritchesOfWarding());
             bag.DropItem(new BowOfTheInfiniteSwarm());
@@ -611,9 +645,11 @@ namespace Server.Misc
 
         public static void GiveSeeds(Mobile from)
         {
-            var box = new WoodenBox();
-            box.Hue = 578;
-            box.Name = "Box of Seeds";
+            var box = new WoodenBox
+            {
+                Hue = 578,
+                Name = "Box of Seeds"
+            };
 
             box.DropItem(new FertileDirt(5000));
             box.DropItem(new GreenThorns(15));
@@ -676,9 +712,11 @@ namespace Server.Misc
 
         public static void GiveMasteries(Mobile from)
         {
-            var backpack = new Backpack();
-            backpack.Hue = 1154;
-            backpack.Name = "Skill Masteries";
+            var backpack = new Backpack
+            {
+                Hue = 1154,
+                Name = "Skill Masteries"
+            };
 
             Bag bag = null;
 
@@ -686,8 +724,10 @@ namespace Server.Misc
             {
                 var skill = MasteryInfo.Skills[i];
 
-                bag = new Bag();
-                bag.Name = string.Format("{0} Mastery", SkillInfo.Table[(int)skill].Name);
+                bag = new Bag
+                {
+                    Name = string.Format("{0} Mastery", SkillInfo.Table[(int)skill].Name)
+                };
 
                 for (int j = 1; j <= 3; j++)
                 {
@@ -709,11 +749,12 @@ namespace Server.Misc
 
         private static Item MakePotionKeg(PotionEffect type, int hue)
         {
-            PotionKeg keg = new PotionKeg();
-
-            keg.Held = 100;
-            keg.Type = type;
-            keg.Hue = hue;
+            PotionKeg keg = new PotionKeg
+            {
+                Held = 100,
+                Type = type,
+                Hue = hue
+            };
 
             return keg;
         }
@@ -760,8 +801,10 @@ namespace Server.Misc
             Container cont;
 
             #region TMaps
-            cont = new Bag();
-            cont.Name = "Bag of Treasure Maps";
+            cont = new Bag
+            {
+                Name = "Bag of Treasure Maps"
+            };
 
             for (int i = 0; i < 10; i++)
             {
@@ -792,22 +835,28 @@ namespace Server.Misc
             #endregion
 
             #region Magery Items
-            cont = new WoodenBox();
-            cont.Hue = 1195;
-            cont.Name = "Magery Items";
+            cont = new WoodenBox
+            {
+                Hue = 1195,
+                Name = "Magery Items"
+            };
 
             PlaceItemIn(cont, 78, 88, new CrimsonCincture() { Hue = 232 });
             PlaceItemIn(cont, 102, 90, new CrystallineRing());
 
-            var brac = new GoldBracelet();
-            brac.Name = "Farmer's Bank of Mastery";
+            var brac = new GoldBracelet
+            {
+                Name = "Farmer's Bank of Mastery"
+            };
             brac.Attributes.CastRecovery = 3;
             brac.Attributes.CastSpeed = 1;
             PlaceItemIn(cont, 139, 30, brac);
 
-            Container bag = new Backpack();
-            bag.Hue = 1152;
-            bag.Name = "Spell Casting Stuff";
+            Container bag = new Backpack
+            {
+                Hue = 1152,
+                Name = "Spell Casting Stuff"
+            };
 
             PlaceItemIn(bag, 45, 107, new Spellbook(ulong.MaxValue));
             PlaceItemIn(bag, 65, 107, new NecromancerSpellbook((ulong)0xFFFF));
@@ -822,16 +871,22 @@ namespace Server.Misc
             runebook.CurCharges = runebook.MaxCharges;
             PlaceItemIn(bag, 145, 105, runebook);
 
-            Item toHue = new BagOfReagents(5000);
-            toHue.Hue = 0x2D;
+            Item toHue = new BagOfReagents(5000)
+            {
+                Hue = 0x2D
+            };
             PlaceItemIn(bag, 45, 128, toHue);
 
-            toHue = new BagOfNecroReagents(3000);
-            toHue.Hue = 0x488;
+            toHue = new BagOfNecroReagents(3000)
+            {
+                Hue = 0x488
+            };
             PlaceItemIn(bag, 64, 125, toHue);
 
-            toHue = new BagOfMysticReagents(3000);
-            toHue.Hue = 1167;
+            toHue = new BagOfMysticReagents(3000)
+            {
+                Hue = 1167
+            };
             PlaceItemIn(bag, 141, 128, toHue);
 
             for (int i = 0; i < 9; ++i)
@@ -839,8 +894,10 @@ namespace Server.Misc
 
             PlaceItemIn(cont, 47, 91, bag);
 
-            bag = new Backpack();
-            bag.Name = "Various Potion Kegs";
+            bag = new Backpack
+            {
+                Name = "Various Potion Kegs"
+            };
 
             PlaceItemIn(bag, 45, 149, MakePotionKeg(PotionEffect.CureGreater, 0x2D));
             PlaceItemIn(bag, 69, 149, MakePotionKeg(PotionEffect.HealGreater, 0x499));
@@ -864,9 +921,11 @@ namespace Server.Misc
             #endregion
 
             #region Ethys
-            cont = new Backpack();
-            cont.Hue = 0x490;
-            cont.Name = "Bag Of Ethy's!";
+            cont = new Backpack
+            {
+                Hue = 0x490,
+                Name = "Bag Of Ethy's!"
+            };
 
             PlaceItemIn(cont, 45, 66, new EtherealHorse());
             PlaceItemIn(cont, 93, 99, new EtherealLlama());

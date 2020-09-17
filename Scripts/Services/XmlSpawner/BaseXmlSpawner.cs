@@ -3574,8 +3574,10 @@ namespace Server.Mobiles
                         if (tinfo == null)
                         {
                             // if not then add the type to the list
-                            tinfo = new TypeInfo();
-                            tinfo.t = type;
+                            tinfo = new TypeInfo
+                            {
+                                t = type
+                            };
 
                             spawner.PropertyInfoList.Add(tinfo);
                         }
@@ -6496,9 +6498,10 @@ namespace Server.Mobiles
             if (action == null || action.Length <= 0 || attachedto == null || map == null) return;
 
             string status_str = null;
-            XmlSpawner.SpawnObject TheSpawn = new XmlSpawner.SpawnObject(null, 0);
-
-            TheSpawn.TypeName = action;
+            XmlSpawner.SpawnObject TheSpawn = new XmlSpawner.SpawnObject(null, 0)
+            {
+                TypeName = action
+            };
             string substitutedtypeName = ApplySubstitution(null, attachedto, trigmob, action);
             string typeName = ParseObjectType(substitutedtypeName);
 
@@ -8251,8 +8254,10 @@ namespace Server.Mobiles
                             }
 
                             // make the placeholder wand to avoid reagent and mana use
-                            BaseWand cwand = new ClumsyWand();
-                            cwand.Parent = caster;
+                            BaseWand cwand = new ClumsyWand
+                            {
+                                Parent = caster
+                            };
 
                             if (hasnumber)
                             {

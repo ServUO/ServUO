@@ -82,19 +82,25 @@ namespace Server.Items
             chest.MoveToWorld(new Point3D(984, 1064, -37), Map.TerMur);
             WeakEntityCollection.Add("sa", chest);
 
-            ExperimentalBook instr = new ExperimentalBook();
-            instr.Movable = false;
+            ExperimentalBook instr = new ExperimentalBook
+            {
+                Movable = false
+            };
             instr.MoveToWorld(new Point3D(995, 1114, -36), Map.TerMur);
             WeakEntityCollection.Add("sa", instr);
 
-            SecretDungeonDoor dd = new SecretDungeonDoor(DoorFacing.NorthCCW);
-            dd.ClosedID = 87;
-            dd.OpenedID = 88;
+            SecretDungeonDoor dd = new SecretDungeonDoor(DoorFacing.NorthCCW)
+            {
+                ClosedID = 87,
+                OpenedID = 88
+            };
             dd.MoveToWorld(new Point3D(1007, 1119, -42), Map.TerMur);
             WeakEntityCollection.Add("sa", dd);
 
-            LocalizedSign sign = new LocalizedSign(3026, 1113407);  // Experimental Room Access
-            sign.Movable = false;
+            LocalizedSign sign = new LocalizedSign(3026, 1113407)
+            {
+                Movable = false
+            };  // Experimental Room Access
             sign.MoveToWorld(new Point3D(980, 1119, -37), Map.TerMur);
             WeakEntityCollection.Add("sa", sign);
 
@@ -111,50 +117,66 @@ namespace Server.Items
             box.MoveToWorld(new Point3D(1097, 1163, 11), Map.TerMur);
             WeakEntityCollection.Add("sa", box);
 
-            PuzzleBook book = new PuzzleBook();
-            book.Movable = false;
+            PuzzleBook book = new PuzzleBook
+            {
+                Movable = false
+            };
             book.MoveToWorld(new Point3D(1109, 1153, -17), Map.TerMur);
             WeakEntityCollection.Add("sa", book);
 
-            PuzzleRoomTeleporter tele = new PuzzleRoomTeleporter();
-            tele.PointDest = new Point3D(1097, 1173, 1);
-            tele.MapDest = Map.TerMur;
+            PuzzleRoomTeleporter tele = new PuzzleRoomTeleporter
+            {
+                PointDest = new Point3D(1097, 1173, 1),
+                MapDest = Map.TerMur
+            };
             tele.MoveToWorld(new Point3D(1097, 1175, 0), Map.TerMur);
             WeakEntityCollection.Add("sa", tele);
 
-            tele = new PuzzleRoomTeleporter();
-            tele.PointDest = new Point3D(1098, 1173, 1);
-            tele.MapDest = Map.TerMur;
+            tele = new PuzzleRoomTeleporter
+            {
+                PointDest = new Point3D(1098, 1173, 1),
+                MapDest = Map.TerMur
+            };
             tele.MoveToWorld(new Point3D(1098, 1175, 0), Map.TerMur);
             WeakEntityCollection.Add("sa", tele);
 
-            MetalDoor2 door2 = new MetalDoor2(DoorFacing.WestCCW);
-            door2.Locked = true;
-            door2.KeyValue = 50000;
+            MetalDoor2 door2 = new MetalDoor2(DoorFacing.WestCCW)
+            {
+                Locked = true,
+                KeyValue = 50000
+            };
             door2.MoveToWorld(new Point3D(1097, 1174, 1), Map.TerMur);
             WeakEntityCollection.Add("sa", door2);
 
-            door2 = new MetalDoor2(DoorFacing.EastCW);
-            door2.Locked = true;
-            door2.KeyValue = 50000;
+            door2 = new MetalDoor2(DoorFacing.EastCW)
+            {
+                Locked = true,
+                KeyValue = 50000
+            };
             door2.MoveToWorld(new Point3D(1098, 1174, 1), Map.TerMur);
             WeakEntityCollection.Add("sa", door);
 
-            Teleporter telep = new Teleporter();
-            telep.PointDest = new Point3D(1097, 1175, 0);
-            telep.MapDest = Map.TerMur;
+            Teleporter telep = new Teleporter
+            {
+                PointDest = new Point3D(1097, 1175, 0),
+                MapDest = Map.TerMur
+            };
             telep.MoveToWorld(new Point3D(1097, 1173, 1), Map.TerMur);
             WeakEntityCollection.Add("sa", telep);
 
-            telep = new Teleporter();
-            telep.PointDest = new Point3D(1098, 1175, 0);
-            telep.MapDest = Map.TerMur;
+            telep = new Teleporter
+            {
+                PointDest = new Point3D(1098, 1175, 0),
+                MapDest = Map.TerMur
+            };
             telep.MoveToWorld(new Point3D(1098, 1173, 1), Map.TerMur);
             WeakEntityCollection.Add("sa", telep);
 
-            telep = new Teleporter();
-            telep.PointDest = new Point3D(996, 1117, -42);
-            telep.MapDest = Map.TerMur;
+            telep = new Teleporter
+            {
+                PointDest = new Point3D(996, 1117, -42),
+                MapDest = Map.TerMur
+            };
             telep.MoveToWorld(new Point3D(980, 1064, -42), Map.TerMur);
             WeakEntityCollection.Add("sa", telep);
 

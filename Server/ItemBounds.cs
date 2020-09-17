@@ -30,7 +30,7 @@ namespace Server
 						int xMax = bin.ReadInt16();
 						int yMax = bin.ReadInt16();
 
-						m_Bounds[i].Set(xMin, yMin, (xMax - xMin) + 1, (yMax - yMin) + 1);
+						m_Bounds[i].Set(xMin, yMin, xMax - xMin + 1, yMax - yMin + 1);
 					}
 
 					bin.Close();

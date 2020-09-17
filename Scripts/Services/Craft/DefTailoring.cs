@@ -756,8 +756,10 @@ namespace Server.Engines.Craft
 
                         foreach (KeyValuePair<int, int> kvp in bolts)
                         {
-                            UncutCloth cloth = new UncutCloth(kvp.Value * 50);
-                            cloth.Hue = kvp.Key;
+                            UncutCloth cloth = new UncutCloth(kvp.Value * 50)
+                            {
+                                Hue = kvp.Key
+                            };
 
                             DropItem(m, cloth, tool);
                         }
@@ -832,8 +834,10 @@ namespace Server.Engines.Craft
 
                         foreach (KeyValuePair<int, int> kvp in cloth)
                         {
-                            UncutCloth c = new UncutCloth(kvp.Value);
-                            c.Hue = kvp.Key;
+                            UncutCloth c = new UncutCloth(kvp.Value)
+                            {
+                                Hue = kvp.Key
+                            };
 
                             DropItem(m, c, tool);
                         }

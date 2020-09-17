@@ -204,9 +204,10 @@ namespace Server.Engines.Reports
                 counts[hour]++;
             }
 
-            BarGraph barGraph = new BarGraph("Hourly average " + valueName, "graphs_" + valueName.ToLower() + "_avg", 10, "Time", valueName, BarGraphRenderMode.Lines);
-
-            barGraph.m_FontSize = 6;
+            BarGraph barGraph = new BarGraph("Hourly average " + valueName, "graphs_" + valueName.ToLower() + "_avg", 10, "Time", valueName, BarGraphRenderMode.Lines)
+            {
+                m_FontSize = 6
+            };
 
             for (int i = 7; i <= totals.Length + 7; ++i)
             {
@@ -235,10 +236,11 @@ namespace Server.Engines.Reports
 
         public static BarGraph Growth(SnapshotHistory history, string reportName, string valueName)
         {
-            BarGraph barGraph = new BarGraph("Growth of " + valueName + " over time", "graphs_" + valueName.ToLower() + "_growth", 10, "Time", valueName, BarGraphRenderMode.Lines);
-
-            barGraph.FontSize = 6;
-            barGraph.Interval = 7;
+            BarGraph barGraph = new BarGraph("Growth of " + valueName + " over time", "graphs_" + valueName.ToLower() + "_growth", 10, "Time", valueName, BarGraphRenderMode.Lines)
+            {
+                FontSize = 6,
+                Interval = 7
+            };
 
             DateTime startPeriod = history.Snapshots[0].TimeStamp.Date + TimeSpan.FromDays(1.0);
             DateTime endPeriod = history.Snapshots[history.Snapshots.Count - 1].TimeStamp.Date;

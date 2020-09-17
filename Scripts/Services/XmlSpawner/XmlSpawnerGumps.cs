@@ -1567,10 +1567,12 @@ namespace Server.Mobiles
                                 ArrayList types = XmlPartialCategorizedAddGump.Match(categorystring);
 
 
-                                ReplacementEntry re = new ReplacementEntry();
-                                re.Typename = entrystring;
-                                re.Index = i;
-                                re.Color = 0x1436;
+                                ReplacementEntry re = new ReplacementEntry
+                                {
+                                    Typename = entrystring,
+                                    Index = i,
+                                    Color = 0x1436
+                                };
 
                                 XmlSpawnerGump newg = new XmlSpawnerGump(m_Spawner, X, Y, m_ShowGump, xoffset, page, re);
 

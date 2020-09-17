@@ -55,8 +55,10 @@ namespace Server.Engines.Quests
         protected override List<SBInfo> SBInfos => m_SBInfos;
         public static Container GetNewContainer()
         {
-            Bag bag = new Bag();
-            bag.Hue = QuestSystem.RandomBrightHue();
+            Bag bag = new Bag
+            {
+                Hue = QuestSystem.RandomBrightHue()
+            };
             return bag;
         }
 

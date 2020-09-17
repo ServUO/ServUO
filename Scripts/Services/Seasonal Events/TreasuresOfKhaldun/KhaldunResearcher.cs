@@ -41,32 +41,46 @@ namespace Server.Engines.Khaldun
             SetWearable(new Necklace());
 
             // QuiverOfInfinityBase
-            Item item = new SeekerOfTheFallenStarTitleDeed();
-            item.Movable = false;
+            Item item = new SeekerOfTheFallenStarTitleDeed
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new ZealotOfKhalAnkurTitleDeed();
-            item.Movable = false;
+            item = new ZealotOfKhalAnkurTitleDeed
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new ProphetTitleDeed();
-            item.Movable = false;
+            item = new ProphetTitleDeed
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new CultistsRitualTome();
-            item.Movable = false;
+            item = new CultistsRitualTome
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new SterlingSilverRing();
-            item.Movable = false;
+            item = new SterlingSilverRing
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new TalonsOfEscaping();
-            item.Movable = false;
+            item = new TalonsOfEscaping
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new BootsOfEscaping();
-            item.Movable = false;
+            item = new BootsOfEscaping
+            {
+                Movable = false
+            };
             PackItem(item);
         }
 

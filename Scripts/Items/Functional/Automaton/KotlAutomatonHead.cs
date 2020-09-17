@@ -67,8 +67,10 @@ namespace Server.Items
 
         public virtual KotlAutomaton GetAutomaton(Mobile master)
         {
-            KotlAutomaton automaton = new KotlAutomaton();
-            automaton.Resource = _Resource;
+            KotlAutomaton automaton = new KotlAutomaton
+            {
+                Resource = _Resource
+            };
 
             return automaton;
         }

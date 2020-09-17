@@ -96,8 +96,10 @@ namespace Server.Items
                     }
                     else
                     {
-                        Item create = new BoltOfCloth();
-                        create.Hue = m_Material.Hue;
+                        Item create = new BoltOfCloth
+                        {
+                            Hue = m_Material.Hue
+                        };
 
                         m_Material.Consume();
                         loom.Phase = 0;

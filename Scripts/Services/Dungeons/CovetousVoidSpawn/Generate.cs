@@ -59,15 +59,19 @@ namespace Server.Engines.VoidPool
 
                         hue = id >= 8511 ? 0 : 1954;
 
-                        Static item = new Static(id);
-                        item.Name = "Void Pool";
-                        item.Hue = hue;
+                        Static item = new Static(id)
+                        {
+                            Name = "Void Pool",
+                            Hue = hue
+                        };
                         WeakEntityCollection.Add("newcovetous", item);
                         item.MoveToWorld(new Point3D(x, y, 5), Map.Trammel);
 
-                        item = new Static(id);
-                        item.Name = "Void Pool";
-                        item.Hue = hue;
+                        item = new Static(id)
+                        {
+                            Name = "Void Pool",
+                            Hue = hue
+                        };
                         WeakEntityCollection.Add("newcovetous", item);
                         item.MoveToWorld(new Point3D(x, y, 5), Map.Felucca);
                     }

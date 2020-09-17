@@ -79,11 +79,12 @@ namespace Server.Engines.Quests.Hag
 
         private static Mobile GetOwner()
         {
-            Mobile apprentice = new Mobile();
-
-            apprentice.Hue = Utility.RandomSkinHue();
-            apprentice.Female = false;
-            apprentice.Body = 0x190;
+            Mobile apprentice = new Mobile
+            {
+                Hue = Utility.RandomSkinHue(),
+                Female = false,
+                Body = 0x190
+            };
 
             apprentice.Delete();
 

@@ -55,9 +55,10 @@ namespace Server.Engines.Reports
 
         public static void Generate()
         {
-            Snapshot ss = new Snapshot();
-
-            ss.TimeStamp = DateTime.UtcNow;
+            Snapshot ss = new Snapshot
+            {
+                TimeStamp = DateTime.UtcNow
+            };
 
             FillSnapshot(ss);
 

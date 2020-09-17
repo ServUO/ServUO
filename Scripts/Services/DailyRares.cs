@@ -108,8 +108,10 @@ namespace Server.Items
             p = new Point3D(5575, 1829, 6);
             if (map.FindItem<CandleLarge>(p) == null)
             {
-                CandleLarge candle = new CandleLarge();
-                candle.Burning = true;
+                CandleLarge candle = new CandleLarge
+                {
+                    Burning = true
+                };
                 SetItem(candle, p, map);
             }
 
@@ -117,8 +119,10 @@ namespace Server.Items
             p = new Point3D(5575, 1829, 6);
             if (map.FindItem<CandleLarge>(p) == null)
             {
-                CandleLarge candle = new CandleLarge();
-                candle.Burning = true;
+                CandleLarge candle = new CandleLarge
+                {
+                    Burning = true
+                };
                 SetItem(candle, p, map);
             }
 

@@ -38,576 +38,848 @@ namespace Server.Engines.Blackthorn
             SetWearable(new Epaulette());
 
             // QuiverOfInfinityBase
-            Item item = new CloakBearingTheCrestOfBlackthorn();
-            item.Movable = false;
+            Item item = new CloakBearingTheCrestOfBlackthorn
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GargishClothWingArmorBearingTheCrestOfBlackthorn();
-            item.Movable = false;
+            item = new GargishClothWingArmorBearingTheCrestOfBlackthorn
+            {
+                Movable = false
+            };
             PackItem(item);
 
             // RoyalBritannianBase
 
-            item = new DoubletBearingTheCrestOfBlackthorn();
-            item.Movable = false;
+            item = new DoubletBearingTheCrestOfBlackthorn
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GargishSashBearingTheCrestOfBlackthorn();
-            item.Movable = false;
+            item = new GargishSashBearingTheCrestOfBlackthorn
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new SurcoatBearingTheCrestOfBlackthorn();
-            item.Movable = false;
+            item = new SurcoatBearingTheCrestOfBlackthorn
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new TunicBearingTheCrestOfBlackthorn();
-            item.Movable = false;
+            item = new TunicBearingTheCrestOfBlackthorn
+            {
+                Movable = false
+            };
             PackItem(item);
 
             // RuneBeetleCarapaceBase
 
-            item = new ChainmailTunicBearingTheCrestOfBlackthorn();
-            item.Movable = false;
+            item = new ChainmailTunicBearingTheCrestOfBlackthorn
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new DragonBreastplateBearingTheCrestOfBlackthorn();
-            item.Movable = false;
+            item = new DragonBreastplateBearingTheCrestOfBlackthorn
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GargishPlatemailChestBearingTheCrestOfBlackthorn();
-            item.Movable = false;
+            item = new GargishPlatemailChestBearingTheCrestOfBlackthorn
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GargishStoneChestBearingTheCrestOfBlackthorn();
-            item.Movable = false;
+            item = new GargishStoneChestBearingTheCrestOfBlackthorn
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new PlatemailTunicBearingTheCrestOfBlackthorn();
-            item.Movable = false;
+            item = new PlatemailTunicBearingTheCrestOfBlackthorn
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new RingmailTunicBearingTheCrestOfBlackthorn();
-            item.Movable = false;
+            item = new RingmailTunicBearingTheCrestOfBlackthorn
+            {
+                Movable = false
+            };
             PackItem(item);
 
             // ShroudOfTheCondemnedBase
 
-            item = new EpauletteBearingTheCrestOfBlackthorn1();
-            item.Movable = false;
+            item = new EpauletteBearingTheCrestOfBlackthorn1
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new FancyDressBearingTheCrestOfBlackthorn1();
-            item.Movable = false;
+            item = new FancyDressBearingTheCrestOfBlackthorn1
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new FemaleKimonoBearingTheCrestOfBlackthorn1();
-            item.Movable = false;
+            item = new FemaleKimonoBearingTheCrestOfBlackthorn1
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GargishEpauletteBearingTheCrestOfBlackthorn1();
-            item.Movable = false;
+            item = new GargishEpauletteBearingTheCrestOfBlackthorn1
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GargishFancyBearingTheCrestOfBlackthorn1();
-            item.Movable = false;
+            item = new GargishFancyBearingTheCrestOfBlackthorn1
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GargishRobeBearingTheCrestOfBlackthorn1();
-            item.Movable = false;
+            item = new GargishRobeBearingTheCrestOfBlackthorn1
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GildedDressBearingTheCrestOfBlackthorn1();
-            item.Movable = false;
+            item = new GildedDressBearingTheCrestOfBlackthorn1
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new HoodedRobeBearingTheCrestOfBlackthorn1();
-            item.Movable = false;
+            item = new HoodedRobeBearingTheCrestOfBlackthorn1
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new MaleKimonoBearingTheCrestOfBlackthorn1();
-            item.Movable = false;
+            item = new MaleKimonoBearingTheCrestOfBlackthorn1
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new PlainDressBearingTheCrestOfBlackthorn1();
-            item.Movable = false;
+            item = new PlainDressBearingTheCrestOfBlackthorn1
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new RobeBearingTheCrestOfBlackthorn1();
-            item.Movable = false;
+            item = new RobeBearingTheCrestOfBlackthorn1
+            {
+                Movable = false
+            };
             PackItem(item);
 
             // MysticsGarbBase
 
-            item = new EpauletteBearingTheCrestOfBlackthorn2();
-            item.Movable = false;
+            item = new EpauletteBearingTheCrestOfBlackthorn2
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new FancyDressBearingTheCrestOfBlackthorn2();
-            item.Movable = false;
+            item = new FancyDressBearingTheCrestOfBlackthorn2
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new FemaleKimonoBearingTheCrestOfBlackthorn2();
-            item.Movable = false;
+            item = new FemaleKimonoBearingTheCrestOfBlackthorn2
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GargishEpauletteBearingTheCrestOfBlackthorn2();
-            item.Movable = false;
+            item = new GargishEpauletteBearingTheCrestOfBlackthorn2
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GargishFancyBearingTheCrestOfBlackthorn2();
-            item.Movable = false;
+            item = new GargishFancyBearingTheCrestOfBlackthorn2
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GargishRobeBearingTheCrestOfBlackthorn2();
-            item.Movable = false;
+            item = new GargishRobeBearingTheCrestOfBlackthorn2
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GildedDressBearingTheCrestOfBlackthorn2();
-            item.Movable = false;
+            item = new GildedDressBearingTheCrestOfBlackthorn2
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new HoodedRobeBearingTheCrestOfBlackthorn2();
-            item.Movable = false;
+            item = new HoodedRobeBearingTheCrestOfBlackthorn2
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new MaleKimonoBearingTheCrestOfBlackthorn2();
-            item.Movable = false;
+            item = new MaleKimonoBearingTheCrestOfBlackthorn2
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new PlainDressBearingTheCrestOfBlackthorn2();
-            item.Movable = false;
+            item = new PlainDressBearingTheCrestOfBlackthorn2
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new RobeBearingTheCrestOfBlackthorn2();
-            item.Movable = false;
+            item = new RobeBearingTheCrestOfBlackthorn2
+            {
+                Movable = false
+            };
             PackItem(item);
 
             // CloakOfSilenceBase
 
-            item = new EpauletteBearingTheCrestOfBlackthorn3();
-            item.Movable = false;
+            item = new EpauletteBearingTheCrestOfBlackthorn3
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new FancyDressBearingTheCrestOfBlackthorn3();
-            item.Movable = false;
+            item = new FancyDressBearingTheCrestOfBlackthorn3
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new FemaleKimonoBearingTheCrestOfBlackthorn3();
-            item.Movable = false;
+            item = new FemaleKimonoBearingTheCrestOfBlackthorn3
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GargishEpauletteBearingTheCrestOfBlackthorn3();
-            item.Movable = false;
+            item = new GargishEpauletteBearingTheCrestOfBlackthorn3
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GargishFancyBearingTheCrestOfBlackthorn3();
-            item.Movable = false;
+            item = new GargishFancyBearingTheCrestOfBlackthorn3
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GargishRobeBearingTheCrestOfBlackthorn3();
-            item.Movable = false;
+            item = new GargishRobeBearingTheCrestOfBlackthorn3
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GildedDressBearingTheCrestOfBlackthorn3();
-            item.Movable = false;
+            item = new GildedDressBearingTheCrestOfBlackthorn3
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new HoodedRobeBearingTheCrestOfBlackthorn3();
-            item.Movable = false;
+            item = new HoodedRobeBearingTheCrestOfBlackthorn3
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new MaleKimonoBearingTheCrestOfBlackthorn3();
-            item.Movable = false;
+            item = new MaleKimonoBearingTheCrestOfBlackthorn3
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new PlainDressBearingTheCrestOfBlackthorn3();
-            item.Movable = false;
+            item = new PlainDressBearingTheCrestOfBlackthorn3
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new RobeBearingTheCrestOfBlackthorn3();
-            item.Movable = false;
+            item = new RobeBearingTheCrestOfBlackthorn3
+            {
+                Movable = false
+            };
             PackItem(item);
 
             // CloakOfPowerBase
 
-            item = new EpauletteBearingTheCrestOfBlackthorn4();
-            item.Movable = false;
+            item = new EpauletteBearingTheCrestOfBlackthorn4
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new FancyDressBearingTheCrestOfBlackthorn4();
-            item.Movable = false;
+            item = new FancyDressBearingTheCrestOfBlackthorn4
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new FemaleKimonoBearingTheCrestOfBlackthorn4();
-            item.Movable = false;
+            item = new FemaleKimonoBearingTheCrestOfBlackthorn4
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GargishEpauletteBearingTheCrestOfBlackthorn4();
-            item.Movable = false;
+            item = new GargishEpauletteBearingTheCrestOfBlackthorn4
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GargishFancyBearingTheCrestOfBlackthorn4();
-            item.Movable = false;
+            item = new GargishFancyBearingTheCrestOfBlackthorn4
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GargishRobeBearingTheCrestOfBlackthorn4();
-            item.Movable = false;
+            item = new GargishRobeBearingTheCrestOfBlackthorn4
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GildedDressBearingTheCrestOfBlackthorn4();
-            item.Movable = false;
+            item = new GildedDressBearingTheCrestOfBlackthorn4
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new HoodedRobeBearingTheCrestOfBlackthorn4();
-            item.Movable = false;
+            item = new HoodedRobeBearingTheCrestOfBlackthorn4
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new MaleKimonoBearingTheCrestOfBlackthorn4();
-            item.Movable = false;
+            item = new MaleKimonoBearingTheCrestOfBlackthorn4
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new PlainDressBearingTheCrestOfBlackthorn4();
-            item.Movable = false;
+            item = new PlainDressBearingTheCrestOfBlackthorn4
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new RobeBearingTheCrestOfBlackthorn4();
-            item.Movable = false;
+            item = new RobeBearingTheCrestOfBlackthorn4
+            {
+                Movable = false
+            };
             PackItem(item);
 
             // CloakOfLifeBase
 
-            item = new EpauletteBearingTheCrestOfBlackthorn5();
-            item.Movable = false;
+            item = new EpauletteBearingTheCrestOfBlackthorn5
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new FancyDressBearingTheCrestOfBlackthorn5();
-            item.Movable = false;
+            item = new FancyDressBearingTheCrestOfBlackthorn5
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new FemaleKimonoBearingTheCrestOfBlackthorn5();
-            item.Movable = false;
+            item = new FemaleKimonoBearingTheCrestOfBlackthorn5
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GargishEpauletteBearingTheCrestOfBlackthorn5();
-            item.Movable = false;
+            item = new GargishEpauletteBearingTheCrestOfBlackthorn5
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GargishFancyBearingTheCrestOfBlackthorn5();
-            item.Movable = false;
+            item = new GargishFancyBearingTheCrestOfBlackthorn5
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GargishRobeBearingTheCrestOfBlackthorn5();
-            item.Movable = false;
+            item = new GargishRobeBearingTheCrestOfBlackthorn5
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GildedDressBearingTheCrestOfBlackthorn5();
-            item.Movable = false;
+            item = new GildedDressBearingTheCrestOfBlackthorn5
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new HoodedRobeBearingTheCrestOfBlackthorn5();
-            item.Movable = false;
+            item = new HoodedRobeBearingTheCrestOfBlackthorn5
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new MaleKimonoBearingTheCrestOfBlackthorn5();
-            item.Movable = false;
+            item = new MaleKimonoBearingTheCrestOfBlackthorn5
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new PlainDressBearingTheCrestOfBlackthorn5();
-            item.Movable = false;
+            item = new PlainDressBearingTheCrestOfBlackthorn5
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new RobeBearingTheCrestOfBlackthorn5();
-            item.Movable = false;
+            item = new RobeBearingTheCrestOfBlackthorn5
+            {
+                Movable = false
+            };
             PackItem(item);
 
             // CloakOfDeathBase
 
-            item = new EpauletteBearingTheCrestOfBlackthorn6();
-            item.Movable = false;
+            item = new EpauletteBearingTheCrestOfBlackthorn6
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new FancyDressBearingTheCrestOfBlackthorn6();
-            item.Movable = false;
+            item = new FancyDressBearingTheCrestOfBlackthorn6
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new FemaleKimonoBearingTheCrestOfBlackthorn6();
-            item.Movable = false;
+            item = new FemaleKimonoBearingTheCrestOfBlackthorn6
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GargishEpauletteBearingTheCrestOfBlackthorn6();
-            item.Movable = false;
+            item = new GargishEpauletteBearingTheCrestOfBlackthorn6
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GargishFancyBearingTheCrestOfBlackthorn6();
-            item.Movable = false;
+            item = new GargishFancyBearingTheCrestOfBlackthorn6
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GargishRobeBearingTheCrestOfBlackthorn6();
-            item.Movable = false;
+            item = new GargishRobeBearingTheCrestOfBlackthorn6
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GildedDressBearingTheCrestOfBlackthorn6();
-            item.Movable = false;
+            item = new GildedDressBearingTheCrestOfBlackthorn6
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new HoodedRobeBearingTheCrestOfBlackthorn6();
-            item.Movable = false;
+            item = new HoodedRobeBearingTheCrestOfBlackthorn6
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new MaleKimonoBearingTheCrestOfBlackthorn6();
-            item.Movable = false;
+            item = new MaleKimonoBearingTheCrestOfBlackthorn6
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new PlainDressBearingTheCrestOfBlackthorn6();
-            item.Movable = false;
+            item = new PlainDressBearingTheCrestOfBlackthorn6
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new RobeBearingTheCrestOfBlackthorn6();
-            item.Movable = false;
+            item = new RobeBearingTheCrestOfBlackthorn6
+            {
+                Movable = false
+            };
             PackItem(item);
 
             // ConjurersGarbBase
 
-            item = new EpauletteBearingTheCrestOfBlackthorn7();
-            item.Movable = false;
+            item = new EpauletteBearingTheCrestOfBlackthorn7
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new FancyDressBearingTheCrestOfBlackthorn7();
-            item.Movable = false;
+            item = new FancyDressBearingTheCrestOfBlackthorn7
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new FemaleKimonoBearingTheCrestOfBlackthorn7();
-            item.Movable = false;
+            item = new FemaleKimonoBearingTheCrestOfBlackthorn7
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GargishEpauletteBearingTheCrestOfBlackthorn7();
-            item.Movable = false;
+            item = new GargishEpauletteBearingTheCrestOfBlackthorn7
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GargishFancyBearingTheCrestOfBlackthorn7();
-            item.Movable = false;
+            item = new GargishFancyBearingTheCrestOfBlackthorn7
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GargishRobeBearingTheCrestOfBlackthorn7();
-            item.Movable = false;
+            item = new GargishRobeBearingTheCrestOfBlackthorn7
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GildedDressBearingTheCrestOfBlackthorn7();
-            item.Movable = false;
+            item = new GildedDressBearingTheCrestOfBlackthorn7
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new HoodedRobeBearingTheCrestOfBlackthorn7();
-            item.Movable = false;
+            item = new HoodedRobeBearingTheCrestOfBlackthorn7
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new MaleKimonoBearingTheCrestOfBlackthorn7();
-            item.Movable = false;
+            item = new MaleKimonoBearingTheCrestOfBlackthorn7
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new PlainDressBearingTheCrestOfBlackthorn7();
-            item.Movable = false;
+            item = new PlainDressBearingTheCrestOfBlackthorn7
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new RobeBearingTheCrestOfBlackthorn7();
-            item.Movable = false;
+            item = new RobeBearingTheCrestOfBlackthorn7
+            {
+                Movable = false
+            };
             PackItem(item);
 
             // NightEyesBase
 
-            item = new BandanaBearingTheCrestOfBlackthorn1();
-            item.Movable = false;
+            item = new BandanaBearingTheCrestOfBlackthorn1
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new BascinetBearingTheCrestOfBlackthorn1();
-            item.Movable = false;
+            item = new BascinetBearingTheCrestOfBlackthorn1
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new CircletBearingTheCrestOfBlackthorn1();
-            item.Movable = false;
+            item = new CircletBearingTheCrestOfBlackthorn1
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new FeatheredHatBearingTheCrestOfBlackthorn1();
-            item.Movable = false;
+            item = new FeatheredHatBearingTheCrestOfBlackthorn1
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GargishEarringsBearingTheCrestOfBlackthorn1();
-            item.Movable = false;
+            item = new GargishEarringsBearingTheCrestOfBlackthorn1
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GargishGlassesBearingTheCrestOfBlackthorn1();
-            item.Movable = false;
+            item = new GargishGlassesBearingTheCrestOfBlackthorn1
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new JesterHatBearingTheCrestOfBlackthorn1();
-            item.Movable = false;
+            item = new JesterHatBearingTheCrestOfBlackthorn1
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new NorseHelmBearingTheCrestOfBlackthorn1();
-            item.Movable = false;
+            item = new NorseHelmBearingTheCrestOfBlackthorn1
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new PlateHelmBearingTheCrestOfBlackthorn1();
-            item.Movable = false;
+            item = new PlateHelmBearingTheCrestOfBlackthorn1
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new RoyalCircletBearingTheCrestOfBlackthorn1();
-            item.Movable = false;
+            item = new RoyalCircletBearingTheCrestOfBlackthorn1
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new SkullcapBearingTheCrestOfBlackthorn1();
-            item.Movable = false;
+            item = new SkullcapBearingTheCrestOfBlackthorn1
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new TricorneHatBearingTheCrestOfBlackthorn1();
-            item.Movable = false;
+            item = new TricorneHatBearingTheCrestOfBlackthorn1
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new WizardsHatBearingTheCrestOfBlackthorn1();
-            item.Movable = false;
+            item = new WizardsHatBearingTheCrestOfBlackthorn1
+            {
+                Movable = false
+            };
             PackItem(item);
 
             // MaceAndShieldBase
 
-            item = new BandanaBearingTheCrestOfBlackthorn2();
-            item.Movable = false;
+            item = new BandanaBearingTheCrestOfBlackthorn2
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new BascinetBearingTheCrestOfBlackthorn2();
-            item.Movable = false;
+            item = new BascinetBearingTheCrestOfBlackthorn2
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new CircletBearingTheCrestOfBlackthorn2();
-            item.Movable = false;
+            item = new CircletBearingTheCrestOfBlackthorn2
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new FeatheredHatBearingTheCrestOfBlackthorn2();
-            item.Movable = false;
+            item = new FeatheredHatBearingTheCrestOfBlackthorn2
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GargishEarringsBearingTheCrestOfBlackthorn2();
-            item.Movable = false;
+            item = new GargishEarringsBearingTheCrestOfBlackthorn2
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GargishGlassesBearingTheCrestOfBlackthorn2();
-            item.Movable = false;
+            item = new GargishGlassesBearingTheCrestOfBlackthorn2
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new JesterHatBearingTheCrestOfBlackthorn2();
-            item.Movable = false;
+            item = new JesterHatBearingTheCrestOfBlackthorn2
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new NorseHelmBearingTheCrestOfBlackthorn2();
-            item.Movable = false;
+            item = new NorseHelmBearingTheCrestOfBlackthorn2
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new PlateHelmBearingTheCrestOfBlackthorn2();
-            item.Movable = false;
+            item = new PlateHelmBearingTheCrestOfBlackthorn2
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new RoyalCircletBearingTheCrestOfBlackthorn2();
-            item.Movable = false;
+            item = new RoyalCircletBearingTheCrestOfBlackthorn2
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new SkullcapBearingTheCrestOfBlackthorn2();
-            item.Movable = false;
+            item = new SkullcapBearingTheCrestOfBlackthorn2
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new TricorneHatBearingTheCrestOfBlackthorn2();
-            item.Movable = false;
+            item = new TricorneHatBearingTheCrestOfBlackthorn2
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new WizardsHatBearingTheCrestOfBlackthorn2();
-            item.Movable = false;
+            item = new WizardsHatBearingTheCrestOfBlackthorn2
+            {
+                Movable = false
+            };
             PackItem(item);
 
             // FoldedSteelBase
 
-            item = new BandanaBearingTheCrestOfBlackthorn3();
-            item.Movable = false;
+            item = new BandanaBearingTheCrestOfBlackthorn3
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new BascinetBearingTheCrestOfBlackthorn3();
-            item.Movable = false;
+            item = new BascinetBearingTheCrestOfBlackthorn3
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new CircletBearingTheCrestOfBlackthorn3();
-            item.Movable = false;
+            item = new CircletBearingTheCrestOfBlackthorn3
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new FeatheredHatBearingTheCrestOfBlackthorn3();
-            item.Movable = false;
+            item = new FeatheredHatBearingTheCrestOfBlackthorn3
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GargishEarringsBearingTheCrestOfBlackthorn3();
-            item.Movable = false;
+            item = new GargishEarringsBearingTheCrestOfBlackthorn3
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GargishGlassesBearingTheCrestOfBlackthorn3();
-            item.Movable = false;
+            item = new GargishGlassesBearingTheCrestOfBlackthorn3
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new JesterHatBearingTheCrestOfBlackthorn3();
-            item.Movable = false;
+            item = new JesterHatBearingTheCrestOfBlackthorn3
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new NorseHelmBearingTheCrestOfBlackthorn3();
-            item.Movable = false;
+            item = new NorseHelmBearingTheCrestOfBlackthorn3
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new PlateHelmBearingTheCrestOfBlackthorn3();
-            item.Movable = false;
+            item = new PlateHelmBearingTheCrestOfBlackthorn3
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new RoyalCircletBearingTheCrestOfBlackthorn3();
-            item.Movable = false;
+            item = new RoyalCircletBearingTheCrestOfBlackthorn3
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new SkullcapBearingTheCrestOfBlackthorn3();
-            item.Movable = false;
+            item = new SkullcapBearingTheCrestOfBlackthorn3
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new TricorneHatBearingTheCrestOfBlackthorn3();
-            item.Movable = false;
+            item = new TricorneHatBearingTheCrestOfBlackthorn3
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new WizardsHatBearingTheCrestOfBlackthorn3();
-            item.Movable = false;
+            item = new WizardsHatBearingTheCrestOfBlackthorn3
+            {
+                Movable = false
+            };
             PackItem(item);
 
             // TangleBase
 
-            item = new GargishHalfApronBearingTheCrestOfBlackthorn1();
-            item.Movable = false;
+            item = new GargishHalfApronBearingTheCrestOfBlackthorn1
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new LeatherNinjaBeltBearingTheCrestOfBlackthorn1();
-            item.Movable = false;
+            item = new LeatherNinjaBeltBearingTheCrestOfBlackthorn1
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new ObiBearingTheCrestOfBlackthorn1();
-            item.Movable = false;
+            item = new ObiBearingTheCrestOfBlackthorn1
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new WoodlandBeltBearingTheCrestOfBlackthorn1();
-            item.Movable = false;
+            item = new WoodlandBeltBearingTheCrestOfBlackthorn1
+            {
+                Movable = false
+            };
             PackItem(item);
 
             // CrimsonCinctureBase
 
-            item = new GargishHalfApronBearingTheCrestOfBlackthorn2();
-            item.Movable = false;
+            item = new GargishHalfApronBearingTheCrestOfBlackthorn2
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new LeatherNinjaBeltBearingTheCrestOfBlackthorn2();
-            item.Movable = false;
+            item = new LeatherNinjaBeltBearingTheCrestOfBlackthorn2
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new ObiBearingTheCrestOfBlackthorn2();
-            item.Movable = false;
+            item = new ObiBearingTheCrestOfBlackthorn2
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new WoodlandBeltBearingTheCrestOfBlackthorn2();
-            item.Movable = false;
+            item = new WoodlandBeltBearingTheCrestOfBlackthorn2
+            {
+                Movable = false
+            };
             PackItem(item);
         }
 

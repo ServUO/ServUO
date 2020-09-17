@@ -426,8 +426,10 @@ namespace Server.Items
 
             if (arty != null)
             {
-                Container pack = new Backpack();
-                pack.Hue = 1278;
+                Container pack = new Backpack
+                {
+                    Hue = 1278
+                };
 
                 pack.DropItem(arty);
                 cont.DropItem(pack);

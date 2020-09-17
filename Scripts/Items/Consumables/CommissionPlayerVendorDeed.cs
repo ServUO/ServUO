@@ -41,9 +41,10 @@ namespace Server.Items
             {
                 from.SendLocalizedMessage(503248); // Your godly powers allow you to place this vendor whereever you wish.
 
-                Mobile v = new CommissionPlayerVendor(from, BaseHouse.FindHouseAt(from));
-
-                v.Direction = from.Direction & Direction.Mask;
+                Mobile v = new CommissionPlayerVendor(from, BaseHouse.FindHouseAt(from))
+                {
+                    Direction = from.Direction & Direction.Mask
+                };
                 v.MoveToWorld(from.Location, from.Map);
 
                 v.SayTo(from, 503246); // Ah! it feels good to be working again.
@@ -83,9 +84,10 @@ namespace Server.Items
                     }
                     else
                     {
-                        Mobile v = new CommissionPlayerVendor(from, house);
-
-                        v.Direction = from.Direction & Direction.Mask;
+                        Mobile v = new CommissionPlayerVendor(from, house)
+                        {
+                            Direction = from.Direction & Direction.Mask
+                        };
                         v.MoveToWorld(from.Location, from.Map);
 
                         v.SayTo(from, 503246); // Ah! it feels good to be working again.

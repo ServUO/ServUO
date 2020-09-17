@@ -28,8 +28,10 @@ namespace Server.Items
         {
             get
             {
-                BannerDeed deed = new BannerDeed();
-                deed.IsRewardItem = m_IsRewardItem;
+                BannerDeed deed = new BannerDeed
+                {
+                    IsRewardItem = m_IsRewardItem
+                };
 
                 return deed;
             }

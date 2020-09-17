@@ -336,8 +336,10 @@ namespace Server.Items
             if (m_IsBattleChicken)
             {
                 from.SendLocalizedMessage(1112478); //You hatch a battle chicken lizard!!
-                bc = new BattleChickenLizard();
-                bc.Hue = Hue;
+                bc = new BattleChickenLizard
+                {
+                    Hue = Hue
+                };
             }
             else
             {
