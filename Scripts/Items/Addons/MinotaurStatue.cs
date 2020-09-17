@@ -51,8 +51,10 @@ namespace Server.Items
         {
             get
             {
-                MinotaurStatueDeed deed = new MinotaurStatueDeed();
-                deed.IsRewardItem = m_IsRewardItem;
+                MinotaurStatueDeed deed = new MinotaurStatueDeed
+                {
+                    IsRewardItem = m_IsRewardItem
+                };
 
                 return deed;
             }
@@ -110,8 +112,10 @@ namespace Server.Items
         {
             get
             {
-                MinotaurStatue addon = new MinotaurStatue(m_StatueType);
-                addon.IsRewardItem = m_IsRewardItem;
+                MinotaurStatue addon = new MinotaurStatue(m_StatueType)
+                {
+                    IsRewardItem = m_IsRewardItem
+                };
 
                 return addon;
             }

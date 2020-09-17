@@ -220,16 +220,17 @@ namespace Server.Mobiles
 
         public CollectionData GetData()
         {
-            CollectionData ret = new CollectionData();
-
-            ret.Collection = CollectionID;
-            ret.Points = Points;
-            ret.StartTier = StartTier;
-            ret.NextTier = NextTier;
-            ret.DailyDecay = DailyDecay;
-            ret.Tier = Tier;
-            ret.DonationTitle = m_DonationTitle;
-            ret.Tiers = m_Tiers;
+            CollectionData ret = new CollectionData
+            {
+                Collection = CollectionID,
+                Points = Points,
+                StartTier = StartTier,
+                NextTier = NextTier,
+                DailyDecay = DailyDecay,
+                Tier = Tier,
+                DonationTitle = m_DonationTitle,
+                Tiers = m_Tiers
+            };
 
             return ret;
         }

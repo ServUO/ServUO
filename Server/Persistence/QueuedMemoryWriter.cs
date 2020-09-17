@@ -81,17 +81,17 @@ namespace Server
 					int serial = info.serial;
 					int length = info.size;
 
-					indexBuffer[0] = (byte)(info.typeCode);
+					indexBuffer[0] = (byte)info.typeCode;
 					indexBuffer[1] = (byte)(info.typeCode >> 8);
 					indexBuffer[2] = (byte)(info.typeCode >> 16);
 					indexBuffer[3] = (byte)(info.typeCode >> 24);
 
-					indexBuffer[4] = (byte)(info.serial);
+					indexBuffer[4] = (byte)info.serial;
 					indexBuffer[5] = (byte)(info.serial >> 8);
 					indexBuffer[6] = (byte)(info.serial >> 16);
 					indexBuffer[7] = (byte)(info.serial >> 24);
 
-					indexBuffer[8] = (byte)(actualPosition);
+					indexBuffer[8] = (byte)actualPosition;
 					indexBuffer[9] = (byte)(actualPosition >> 8);
 					indexBuffer[10] = (byte)(actualPosition >> 16);
 					indexBuffer[11] = (byte)(actualPosition >> 24);
@@ -100,7 +100,7 @@ namespace Server
 					indexBuffer[14] = (byte)(actualPosition >> 48);
 					indexBuffer[15] = (byte)(actualPosition >> 56);
 
-					indexBuffer[16] = (byte)(info.size);
+					indexBuffer[16] = (byte)info.size;
 					indexBuffer[17] = (byte)(info.size >> 8);
 					indexBuffer[18] = (byte)(info.size >> 16);
 					indexBuffer[19] = (byte)(info.size >> 24);

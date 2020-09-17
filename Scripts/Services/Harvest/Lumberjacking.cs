@@ -30,45 +30,47 @@ namespace Server.Engines.Harvest
             HarvestVein[] veins;
 
             #region Lumberjacking
-            HarvestDefinition lumber = new HarvestDefinition();
+            HarvestDefinition lumber = new HarvestDefinition
+            {
 
-            // Resource banks are every 4x3 tiles
-            lumber.BankWidth = 4;
-            lumber.BankHeight = 3;
+                // Resource banks are every 4x3 tiles
+                BankWidth = 4,
+                BankHeight = 3,
 
-            // Every bank holds from 20 to 45 logs
-            lumber.MinTotal = 20;
-            lumber.MaxTotal = 45;
+                // Every bank holds from 20 to 45 logs
+                MinTotal = 20,
+                MaxTotal = 45,
 
-            // A resource bank will respawn its content every 20 to 30 minutes
-            lumber.MinRespawn = TimeSpan.FromMinutes(20.0);
-            lumber.MaxRespawn = TimeSpan.FromMinutes(30.0);
+                // A resource bank will respawn its content every 20 to 30 minutes
+                MinRespawn = TimeSpan.FromMinutes(20.0),
+                MaxRespawn = TimeSpan.FromMinutes(30.0),
 
-            // Skill checking is done on the Lumberjacking skill
-            lumber.Skill = SkillName.Lumberjacking;
+                // Skill checking is done on the Lumberjacking skill
+                Skill = SkillName.Lumberjacking,
 
-            // Set the list of harvestable tiles
-            lumber.Tiles = m_TreeTiles;
+                // Set the list of harvestable tiles
+                Tiles = m_TreeTiles,
 
-            // Players must be within 2 tiles to harvest
-            lumber.MaxRange = 2;
+                // Players must be within 2 tiles to harvest
+                MaxRange = 2,
 
-            // Ten logs per harvest action
-            lumber.ConsumedPerHarvest = 10;
-            lumber.ConsumedPerFeluccaHarvest = 20;
+                // Ten logs per harvest action
+                ConsumedPerHarvest = 10,
+                ConsumedPerFeluccaHarvest = 20,
 
-            // The chopping effect
-            lumber.EffectActions = new int[] { 7 };
-            lumber.EffectSounds = new int[] { 0x13E };
-            lumber.EffectCounts = (new int[] { 1 });
-            lumber.EffectDelay = TimeSpan.FromSeconds(1.6);
-            lumber.EffectSoundDelay = TimeSpan.FromSeconds(0.9);
+                // The chopping effect
+                EffectActions = new int[] { 7 },
+                EffectSounds = new int[] { 0x13E },
+                EffectCounts = (new int[] { 1 }),
+                EffectDelay = TimeSpan.FromSeconds(1.6),
+                EffectSoundDelay = TimeSpan.FromSeconds(0.9),
 
-            lumber.NoResourcesMessage = 500493; // There's not enough wood here to harvest.
-            lumber.FailMessage = 500495; // You hack at the tree for a while, but fail to produce any useable wood.
-            lumber.OutOfRangeMessage = 500446; // That is too far away.
-            lumber.PackFullMessage = 500497; // You can't place any wood into your backpack!
-            lumber.ToolBrokeMessage = 500499; // You broke your axe.
+                NoResourcesMessage = 500493, // There's not enough wood here to harvest.
+                FailMessage = 500495, // You hack at the tree for a while, but fail to produce any useable wood.
+                OutOfRangeMessage = 500446, // That is too far away.
+                PackFullMessage = 500497, // You can't place any wood into your backpack!
+                ToolBrokeMessage = 500499 // You broke your axe.
+            };
 
             res = new HarvestResource[]
             {

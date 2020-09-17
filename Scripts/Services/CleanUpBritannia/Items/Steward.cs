@@ -61,8 +61,10 @@ namespace Server.Mobiles
             Keyword = "";
             _Table = new Dictionary<Mobile, DateTime>();
 
-            Container pack = new StewardBackpack(Owner, this);
-            pack.Movable = false;
+            Container pack = new StewardBackpack(Owner, this)
+            {
+                Movable = false
+            };
             AddItem(pack);
         }
 

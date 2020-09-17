@@ -111,13 +111,17 @@ namespace Server.Engines.TombOfKings
             WeakEntityCollection.Add("sa", sq);
 
             // Guardian
-            XmlSpawner spawner = new XmlSpawner(1, 300, 600, 0, 0, 0, "GargoyleDestroyer, /blessed/true/Frozen/true/Direction/West/Paralyzed/true/Hue/2401/Name/Guardian");
-            spawner.SmartSpawning = true;
+            XmlSpawner spawner = new XmlSpawner(1, 300, 600, 0, 0, 0, "GargoyleDestroyer, /blessed/true/Frozen/true/Direction/West/Paralyzed/true/Hue/2401/Name/Guardian")
+            {
+                SmartSpawning = true
+            };
             spawner.MoveToWorld(new Point3D(42, 38, 13), Map.TerMur);
             WeakEntityCollection.Add("sa", spawner);
 
-            spawner = new XmlSpawner(1, 300, 600, 0, 0, 0, "GargoyleDestroyer, /blessed/true/Frozen/true/Direction/East/Paralyzed/true/Hue/2401/Name/Guardian");
-            spawner.SmartSpawning = true;
+            spawner = new XmlSpawner(1, 300, 600, 0, 0, 0, "GargoyleDestroyer, /blessed/true/Frozen/true/Direction/East/Paralyzed/true/Hue/2401/Name/Guardian")
+            {
+                SmartSpawning = true
+            };
             spawner.MoveToWorld(new Point3D(33, 38, 13), Map.TerMur);
             WeakEntityCollection.Add("sa", spawner);
 
@@ -145,13 +149,17 @@ namespace Server.Engines.TombOfKings
             flame = new FlameOfChaos(new Point3D(43, 212, 3), Map.TerMur);
             WeakEntityCollection.Add("sa", flame);
 
-            st = new Static(3025);
-            st.Name = "Order Shall Steal The Serpent's Strength";
+            st = new Static(3025)
+            {
+                Name = "Order Shall Steal The Serpent's Strength"
+            };
             st.MoveToWorld(new Point3D(28, 208, 4), Map.TerMur);
             WeakEntityCollection.Add("sa", st);
 
-            st = new Static(3025);
-            st.Name = "Chaos Shall Quell The Serpent's Wrath";
+            st = new Static(3025)
+            {
+                Name = "Chaos Shall Quell The Serpent's Wrath"
+            };
             st.MoveToWorld(new Point3D(28, 208, 4), Map.TerMur);
             WeakEntityCollection.Add("sa", st);
 

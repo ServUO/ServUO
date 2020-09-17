@@ -31,8 +31,10 @@ namespace Server.Mobiles
             HairHue = Race.RandomHairHue();
 
             Item fancyShirt = new FancyShirt();
-            Item shirt = new Shirt(PirateCaptain.GetRandomShirtHue());
-            shirt.Layer = Layer.OuterTorso;
+            Item shirt = new Shirt(PirateCaptain.GetRandomShirtHue())
+            {
+                Layer = Layer.OuterTorso
+            };
 
             AddItem(new Cloak(5));
             AddItem(new Cutlass());

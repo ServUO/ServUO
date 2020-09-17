@@ -646,8 +646,10 @@ namespace Server.Items
                 }
                 else
                 {
-                    WaterBarrel barrel = new WaterBarrel();
-                    barrel.Movable = false;
+                    WaterBarrel barrel = new WaterBarrel
+                    {
+                        Movable = false
+                    };
                     barrel.MoveToWorld(Location, Map);
 
                     WorldLocation = Location;

@@ -237,8 +237,10 @@ namespace Server.Items
 
                 if (info.ButtonID == 0x19AA || info.ButtonID == 0x19BB)
                 {
-                    RewardBrazier brazier = new RewardBrazier(info.ButtonID);
-                    brazier.IsRewardItem = m_Brazier.IsRewardItem;
+                    RewardBrazier brazier = new RewardBrazier(info.ButtonID)
+                    {
+                        IsRewardItem = m_Brazier.IsRewardItem
+                    };
 
                     if (!m.PlaceInBackpack(brazier))
                     {

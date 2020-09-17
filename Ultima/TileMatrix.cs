@@ -193,7 +193,7 @@ namespace Ultima
                 tiles = m_StaticTiles[x][y] = ReadStaticBlock(x, y);
             }
 
-            if ((Map.UseDiff) && (patch))
+            if (Map.UseDiff && patch)
             {
                 if (Patch.StaticBlocksCount > 0)
                 {
@@ -258,7 +258,7 @@ namespace Ultima
                 tiles = m_LandTiles[x][y] = ReadLandBlock(x, y);
             }
 
-            if ((Map.UseDiff) && (patch))
+            if (Map.UseDiff && patch)
             {
                 if (Patch.LandBlocksCount > 0)
                 {

@@ -55,8 +55,10 @@ namespace Server.Mobiles
             Fame = 22000;
             Karma = -22000;
 
-            IronwoodCompositeBow Bow = new IronwoodCompositeBow();
-            Bow.Movable = false;
+            IronwoodCompositeBow Bow = new IronwoodCompositeBow
+            {
+                Movable = false
+            };
             AddItem(Bow);
 
             m_Scales = Utility.RandomMinMax(1, 2) + 7;
@@ -706,12 +708,14 @@ namespace Server.Mobiles
 
         public Item CloneItem(Item item)
         {
-            Item cloned = new Item(item.ItemID);
-            cloned.Layer = item.Layer;
-            cloned.Name = item.Name;
-            cloned.Hue = item.Hue;
-            cloned.Weight = item.Weight;
-            cloned.Movable = false;
+            Item cloned = new Item(item.ItemID)
+            {
+                Layer = item.Layer,
+                Name = item.Name,
+                Hue = item.Hue,
+                Weight = item.Weight,
+                Movable = false
+            };
 
             return cloned;
         }

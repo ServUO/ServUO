@@ -490,9 +490,10 @@ namespace Server.Mobiles
         {
             if (from.Alive)
             {
-                OpenBankEntry entry = new OpenBankEntry(this);
-
-                entry.Enabled = from.Map.Rules == MapRules.FeluccaRules || CheckVendorAccess(from);
+                OpenBankEntry entry = new OpenBankEntry(this)
+                {
+                    Enabled = from.Map.Rules == MapRules.FeluccaRules || CheckVendorAccess(from)
+                };
 
                 list.Add(entry);
             }

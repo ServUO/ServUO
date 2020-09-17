@@ -193,8 +193,10 @@ namespace Server.Engines.CannedEvil
             {
                 if (node.Name.Equals("spawn"))
                 {
-                    spawn = new ChampionSpawn();
-                    spawn.SpawnName = GetAttr(node, "name", "Unamed Spawner");
+                    spawn = new ChampionSpawn
+                    {
+                        SpawnName = GetAttr(node, "name", "Unamed Spawner")
+                    };
                     string value = GetAttr(node, "type", null);
 
                     if (value == null)

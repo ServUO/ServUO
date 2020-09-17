@@ -349,8 +349,10 @@ namespace Server.Engines.Reports
             {
                 brsFont = new SolidBrush(_fontColor);
                 valFont = new Font(_fontFamily, _labelFontSize);
-                sfFormat = new StringFormat();
-                sfFormat.Alignment = StringAlignment.Center;
+                sfFormat = new StringFormat
+                {
+                    Alignment = StringAlignment.Center
+                };
                 int i = 0;
 
                 PointF[] linePoints = null;
@@ -529,10 +531,12 @@ namespace Server.Engines.Reports
 
                 if (_yTitle != null)
                 {
-                    sfVLabel = new StringFormat();
-                    sfVLabel.Alignment = StringAlignment.Center;
-                    sfVLabel.LineAlignment = StringAlignment.Center;
-                    sfVLabel.FormatFlags = StringFormatFlags.DirectionVertical;
+                    sfVLabel = new StringFormat
+                    {
+                        Alignment = StringAlignment.Center,
+                        LineAlignment = StringAlignment.Center,
+                        FormatFlags = StringFormatFlags.DirectionVertical
+                    };
 
                     lblFont = new Font(_fontFamily, _labelFontSize + 4.0f);
                     graph.DrawString(_yTitle, lblFont, brs, new RectangleF(0.0f, _yOrigin, 20.0f, _graphHeight), sfVLabel);
@@ -639,9 +643,11 @@ namespace Server.Engines.Reports
 
                 if (_xTitle != null)
                 {
-                    lblFormat = new StringFormat();
-                    lblFormat.Alignment = StringAlignment.Center;
-                    lblFormat.LineAlignment = StringAlignment.Center;
+                    lblFormat = new StringFormat
+                    {
+                        Alignment = StringAlignment.Center,
+                        LineAlignment = StringAlignment.Center
+                    };
                     //					sfVLabel.FormatFlags=StringFormatFlags.DirectionVertical;
 
                     lblFont = new Font(_fontFamily, _labelFontSize + 2.0f, FontStyle.Bold);
@@ -649,8 +655,10 @@ namespace Server.Engines.Reports
                 }
 
                 lblFont = new Font(_fontFamily, _labelFontSize);
-                lblFormat = new StringFormat();
-                lblFormat.Alignment = StringAlignment.Center;
+                lblFormat = new StringFormat
+                {
+                    Alignment = StringAlignment.Center
+                };
                 lblFormat.FormatFlags |= StringFormatFlags.NoClip;
                 lblFormat.Trimming = StringTrimming.None;
                 //lblFormat.FormatFlags |= StringFormatFlags.NoWrap;

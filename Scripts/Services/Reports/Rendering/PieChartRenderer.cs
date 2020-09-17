@@ -137,9 +137,11 @@ namespace Server.Engines.Reports
                         {
                             if (sfp == null)
                             {
-                                sfp = new StringFormat();
-                                sfp.Alignment = StringAlignment.Center;
-                                sfp.LineAlignment = StringAlignment.Center;
+                                sfp = new StringFormat
+                                {
+                                    Alignment = StringAlignment.Center,
+                                    LineAlignment = StringAlignment.Center
+                                };
                             }
 
                             float perc = (item.SweepSize * 100.0f) / 360.0f;

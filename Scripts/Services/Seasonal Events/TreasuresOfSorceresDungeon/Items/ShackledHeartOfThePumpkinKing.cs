@@ -56,8 +56,10 @@ namespace Server.Items
                 {
                     Owner.PlaySound(0x133);
 
-                    Blood blood = new Blood();
-                    blood.ItemID = Utility.Random(0x122A, 5);
+                    Blood blood = new Blood
+                    {
+                        ItemID = Utility.Random(0x122A, 5)
+                    };
                     blood.MoveToWorld(Owner.Location, Owner.Map);
                 }
             }

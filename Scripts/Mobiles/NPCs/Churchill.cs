@@ -133,24 +133,34 @@ namespace Server.Engines.Quests
 
             Item item;
 
-            item = new PlateLegs();
-            item.Hue = 0x966;
+            item = new PlateLegs
+            {
+                Hue = 0x966
+            };
             AddItem(item);
 
-            item = new PlateGloves();
-            item.Hue = 0x966;
+            item = new PlateGloves
+            {
+                Hue = 0x966
+            };
             AddItem(item);
 
-            item = new PlateGorget();
-            item.Hue = 0x966;
+            item = new PlateGorget
+            {
+                Hue = 0x966
+            };
             AddItem(item);
 
-            item = new PlateChest();
-            item.Hue = 0x966;
+            item = new PlateChest
+            {
+                Hue = 0x966
+            };
             AddItem(item);
 
-            item = new PlateArms();
-            item.Hue = 0x966;
+            item = new PlateArms
+            {
+                Hue = 0x966
+            };
             AddItem(item);
         }
 

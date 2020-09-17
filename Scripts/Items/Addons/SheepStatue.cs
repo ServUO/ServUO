@@ -32,9 +32,11 @@ namespace Server.Items
         {
             get
             {
-                SheepStatueDeed deed = new SheepStatueDeed();
-                deed.IsRewardItem = m_IsRewardItem;
-                deed.ResourceCount = m_ResourceCount;
+                SheepStatueDeed deed = new SheepStatueDeed
+                {
+                    IsRewardItem = m_IsRewardItem,
+                    ResourceCount = m_ResourceCount
+                };
 
                 return deed;
             }
@@ -240,9 +242,11 @@ namespace Server.Items
         {
             get
             {
-                SheepStatue addon = new SheepStatue(m_ResourceCount > 0 ? 0x4A94 : 0x4A95);
-                addon.IsRewardItem = m_IsRewardItem;
-                addon.ResourceCount = m_ResourceCount;
+                SheepStatue addon = new SheepStatue(m_ResourceCount > 0 ? 0x4A94 : 0x4A95)
+                {
+                    IsRewardItem = m_IsRewardItem,
+                    ResourceCount = m_ResourceCount
+                };
 
                 return addon;
             }

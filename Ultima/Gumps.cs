@@ -408,7 +408,7 @@ namespace Ultima
                 int count = 0;
                 for (int y = 0; y < height; ++y, line += delta)
                 {
-                    count = (*lookup++ * 2);
+                    count = *lookup++ * 2;
 
                     ushort* cur = line;
                     ushort* end = line + bd.Width;
@@ -463,7 +463,7 @@ namespace Ultima
                         }
 
                         Bitmap bmp = m_Cache[index];
-                        if ((bmp == null) || (m_Removed[index]))
+                        if ((bmp == null) || m_Removed[index])
                         {
                             binidx.Write(-1); // lookup
                             binidx.Write(-1); // length

@@ -2533,8 +2533,10 @@ namespace Server.Multis
             m_SendQueueSyncRoot = ((ICollection)m_SendQueue).SyncRoot;
             m_Sync = new AutoResetEvent(false);
 
-            m_Thread = new Thread(CompressionThread);
-            m_Thread.Name = "Housing Compression Thread";
+            m_Thread = new Thread(CompressionThread)
+            {
+                Name = "Housing Compression Thread"
+            };
             m_Thread.Start();
         }
 

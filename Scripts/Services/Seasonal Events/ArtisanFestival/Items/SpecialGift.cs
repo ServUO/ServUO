@@ -87,8 +87,10 @@ namespace Server.Engines.ArtisanFestival
         {
             if (IsChildOf(from.Backpack))
             {
-                var gift = new SpecialGift(from);
-                gift.Hue = Hue;
+                var gift = new SpecialGift(from)
+                {
+                    Hue = Hue
+                };
 
                 from.Backpack.DropItem(gift);
                 Delete();

@@ -269,8 +269,10 @@ namespace Server.Engines.Plants
             }
             else
             {
-                seed = new Seed(entry.Seed.PlantType, entry.Seed.PlantHue, true);
-                seed.Amount = amount;
+                seed = new Seed(entry.Seed.PlantType, entry.Seed.PlantHue, true)
+                {
+                    Amount = amount
+                };
 
                 entry.Seed.Amount -= amount;
             }

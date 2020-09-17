@@ -138,8 +138,10 @@ namespace Server.Engines.BulkOrders
 
             for (int i = 0; i < m_Entries.Length; ++i)
             {
-                entries[i] = new LargeBulkEntry(null, new SmallBulkEntry(m_Entries[i].ItemType, m_Entries[i].Number, m_Entries[i].Graphic, m_Entries[i].Hue));
-                entries[i].Amount = m_Entries[i].AmountCur;
+                entries[i] = new LargeBulkEntry(null, new SmallBulkEntry(m_Entries[i].ItemType, m_Entries[i].Number, m_Entries[i].Graphic, m_Entries[i].Hue))
+                {
+                    Amount = m_Entries[i].AmountCur
+                };
             }
 
             return entries;

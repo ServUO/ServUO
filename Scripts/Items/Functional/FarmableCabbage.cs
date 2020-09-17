@@ -20,9 +20,10 @@ namespace Server.Items
 
         public override Item GetCropObject()
         {
-            Cabbage cabbage = new Cabbage();
-
-            cabbage.ItemID = Utility.Random(3195, 2);
+            Cabbage cabbage = new Cabbage
+            {
+                ItemID = Utility.Random(3195, 2)
+            };
 
             return cabbage;
         }

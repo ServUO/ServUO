@@ -79,33 +79,45 @@ namespace Server.Mobiles
             melee.Movable = false;
             AddItem(melee);
 
-            DragonHelm helm = new DragonHelm();
-            helm.Resource = res;
-            helm.Movable = false;
+            DragonHelm helm = new DragonHelm
+            {
+                Resource = res,
+                Movable = false
+            };
             AddItem(helm);
 
-            DragonChest chest = new DragonChest();
-            chest.Resource = res;
-            chest.Movable = false;
+            DragonChest chest = new DragonChest
+            {
+                Resource = res,
+                Movable = false
+            };
             AddItem(chest);
 
-            DragonArms arms = new DragonArms();
-            arms.Resource = res;
-            arms.Movable = false;
+            DragonArms arms = new DragonArms
+            {
+                Resource = res,
+                Movable = false
+            };
             AddItem(arms);
 
-            DragonGloves gloves = new DragonGloves();
-            gloves.Resource = res;
-            gloves.Movable = false;
+            DragonGloves gloves = new DragonGloves
+            {
+                Resource = res,
+                Movable = false
+            };
             AddItem(gloves);
 
-            DragonLegs legs = new DragonLegs();
-            legs.Resource = res;
-            legs.Movable = false;
+            DragonLegs legs = new DragonLegs
+            {
+                Resource = res,
+                Movable = false
+            };
             AddItem(legs);
 
-            ChaosShield shield = new ChaosShield();
-            shield.Movable = false;
+            ChaosShield shield = new ChaosShield
+            {
+                Movable = false
+            };
             AddItem(shield);
 
             AddItem(new Shirt());

@@ -284,11 +284,12 @@ namespace Server.Engines.CannedEvil
 
                 for (int i = m_RedSkulls.Count; i < value; ++i)
                 {
-                    Item skull = new Item(0x1854);
-
-                    skull.Hue = 0x26;
-                    skull.Movable = false;
-                    skull.Light = LightType.Circle150;
+                    Item skull = new Item(0x1854)
+                    {
+                        Hue = 0x26,
+                        Movable = false,
+                        Light = LightType.Circle150
+                    };
 
                     skull.MoveToWorld(GetRedSkullLocation(i), Map);
 
@@ -345,10 +346,11 @@ namespace Server.Engines.CannedEvil
 
             for (int i = m_WhiteSkulls.Count; i < val; ++i)
             {
-                Item skull = new Item(0x1854);
-
-                skull.Movable = false;
-                skull.Light = LightType.Circle150;
+                Item skull = new Item(0x1854)
+                {
+                    Movable = false,
+                    Light = LightType.Circle150
+                };
 
                 skull.MoveToWorld(GetWhiteSkullLocation(i), Map);
 

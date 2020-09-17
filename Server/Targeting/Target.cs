@@ -171,7 +171,7 @@ namespace Server.Targeting
 				loc = ((LandTarget)targeted).Location;
 				map = from.Map;
 
-				if (enhancedClient && (loc.X == 0 && loc.Y == 0) && !from.InRange(loc, 10))
+				if (enhancedClient && loc.X == 0 && loc.Y == 0 && !from.InRange(loc, 10))
 				{
 					OnTargetCancel(from, TargetCancelType.Canceled);
 					OnTargetFinish(from);

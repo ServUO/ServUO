@@ -23,8 +23,10 @@ namespace Server.Items
             Movable = false;
             Hue = 1281;
 
-            Addon = new MacawNest();
-            Addon.Foil = this;
+            Addon = new MacawNest
+            {
+                Foil = this
+            };
         }
 
         public override bool VerifyMove(Mobile from)

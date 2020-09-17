@@ -36,8 +36,10 @@ namespace Server.Items
 
         public void OnOptionSelected(Mobile from, int choice)
         {
-            Bag bag = new Bag();
-            bag.Hue = 2720;
+            Bag bag = new Bag
+            {
+                Hue = 2720
+            };
 
             switch (choice)
             {

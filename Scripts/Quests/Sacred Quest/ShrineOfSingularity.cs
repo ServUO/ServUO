@@ -45,10 +45,11 @@ namespace Server.Items
                 }
                 else if (quest == null)
                 {
-                    quest = new QuestOfSingularity();
-
-                    quest.Owner = pm;
-                    quest.Quester = this;
+                    quest = new QuestOfSingularity
+                    {
+                        Owner = pm,
+                        Quester = this
+                    };
 
                     pm.SendGump(new MondainQuestGump(quest));
                 }
@@ -111,12 +112,16 @@ namespace Server.Items
 
             if (version == 0)
             {
-                Item book = new BookOfCircles();
-                book.Movable = false;
+                Item book = new BookOfCircles
+                {
+                    Movable = false
+                };
                 book.MoveToWorld(new Point3D(1000, 3991, -33), Map.TerMur);
 
-                book = new ShrineMantra();
-                book.Movable = false;
+                book = new ShrineMantra
+                {
+                    Movable = false
+                };
                 book.MoveToWorld(new Point3D(994, 3991, -33), Map.TerMur);
             }
 

@@ -17,9 +17,11 @@ namespace Server.Engines.Quests.RitualQuest
                 Instance = new CrystalLotusPuzzle();
                 Instance.MoveToWorld(new Point3D(978, 2876, 37), Map.TerMur);
 
-                Static s = new Static(0x283B);
-                s.Hue = 1152;
-                s.Name = "Pristine Crystal Lotus";
+                Static s = new Static(0x283B)
+                {
+                    Hue = 1152,
+                    Name = "Pristine Crystal Lotus"
+                };
                 s.MoveToWorld(new Point3D(978, 2876, 47), Map.TerMur);
             }
         }

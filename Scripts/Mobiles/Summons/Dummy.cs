@@ -34,14 +34,17 @@ namespace Server.Mobiles
 
             Utility.AssignRandomHair(this, iHue);
 
-            LeatherGloves glv = new LeatherGloves();
-            glv.Hue = iHue;
-            glv.LootType = LootType.Newbied;
+            LeatherGloves glv = new LeatherGloves
+            {
+                Hue = iHue,
+                LootType = LootType.Newbied
+            };
             AddItem(glv);
 
-            Container pack = new Backpack();
-
-            pack.Movable = false;
+            Container pack = new Backpack
+            {
+                Movable = false
+            };
 
             AddItem(pack);
 

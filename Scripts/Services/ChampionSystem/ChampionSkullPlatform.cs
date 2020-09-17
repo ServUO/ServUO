@@ -37,16 +37,22 @@ namespace Server.Engines.CannedEvil
             AddComponent(new AddonComponent(0x50F), 0, 1, 4);
             AddComponent(m_Death = new ChampionSkullBrazier(this, ChampionSkullType.Death), 0, 1, 5);
 
-            AddonComponent comp = new LocalizedAddonComponent(0x20D2, 1049495);
-            comp.Hue = 0x482;
+            AddonComponent comp = new LocalizedAddonComponent(0x20D2, 1049495)
+            {
+                Hue = 0x482
+            };
             AddComponent(comp, 0, 0, 5);
 
-            comp = new LocalizedAddonComponent(0x0BCF, 1049496);
-            comp.Hue = 0x482;
+            comp = new LocalizedAddonComponent(0x0BCF, 1049496)
+            {
+                Hue = 0x482
+            };
             AddComponent(comp, 0, 2, -7);
 
-            comp = new LocalizedAddonComponent(0x0BD0, 1049497);
-            comp.Hue = 0x482;
+            comp = new LocalizedAddonComponent(0x0BD0, 1049497)
+            {
+                Hue = 0x482
+            };
             AddComponent(comp, 2, 0, -7);
         }
 

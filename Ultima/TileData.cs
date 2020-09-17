@@ -350,25 +350,25 @@ namespace Ultima
         ///     Whether or not this item is flagged as '<see cref="TileFlag.Background" />'.
         ///     <seealso cref="TileFlag" />
         /// </summary>
-        public bool Background => ((m_Flags & TileFlag.Background) != 0);
+        public bool Background => (m_Flags & TileFlag.Background) != 0;
 
         /// <summary>
         ///     Whether or not this item is flagged as '<see cref="TileFlag.Bridge" />'.
         ///     <seealso cref="TileFlag" />
         /// </summary>
-        public bool Bridge => ((m_Flags & TileFlag.Bridge) != 0);
+        public bool Bridge => (m_Flags & TileFlag.Bridge) != 0;
 
         /// <summary>
         ///     Whether or not this item is flagged as '<see cref="TileFlag.Impassable" />'.
         ///     <seealso cref="TileFlag" />
         /// </summary>
-        public bool Impassable => ((m_Flags & TileFlag.Impassable) != 0);
+        public bool Impassable => (m_Flags & TileFlag.Impassable) != 0;
 
         /// <summary>
         ///     Whether or not this item is flagged as '<see cref="TileFlag.Surface" />'.
         ///     <seealso cref="TileFlag" />
         /// </summary>
-        public bool Surface => ((m_Flags & TileFlag.Surface) != 0);
+        public bool Surface => (m_Flags & TileFlag.Surface) != 0;
 
         /// <summary>
         ///     Gets the weight of this item.
@@ -446,7 +446,7 @@ namespace Ultima
         ///     Whether or not this item is wearable as '<see cref="TileFlag.Wearable" />'.
         ///     <seealso cref="TileFlag" />
         /// </summary>
-        public bool Wearable => ((m_Flags & TileFlag.Wearable) != 0);
+        public bool Wearable => (m_Flags & TileFlag.Wearable) != 0;
 
         public void ReadData(string[] split)
         {

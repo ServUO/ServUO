@@ -40,9 +40,10 @@ namespace Server.RemoteAdmin
 
             try
             {
-                m_Output = new StreamWriter(Path.Combine(directory, string.Format(LogSubDirectory + "{0}.log", DateTime.UtcNow.ToString("yyyyMMdd"))), true);
-
-                m_Output.AutoFlush = true;
+                m_Output = new StreamWriter(Path.Combine(directory, string.Format(LogSubDirectory + "{0}.log", DateTime.UtcNow.ToString("yyyyMMdd"))), true)
+                {
+                    AutoFlush = true
+                };
 
                 m_Output.WriteLine("##############################");
                 m_Output.WriteLine("Log started on {0}", DateTime.UtcNow);

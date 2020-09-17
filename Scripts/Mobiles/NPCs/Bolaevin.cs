@@ -46,8 +46,10 @@ namespace Server.Mobiles
 
             Item item;
 
-            item = new LeafLegs();
-            item.Hue = 0x1BB;
+            item = new LeafLegs
+            {
+                Hue = 0x1BB
+            };
             AddItem(item);
         }
 

@@ -135,9 +135,10 @@ namespace Server.Engines.Quests.Doom
                 Effects.SendLocationParticles(EffectItem.Create(loc, Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 0, 0, 2023, 0);
                 Effects.PlaySound(loc, Map, 0x1FE);
 
-                m_Chyloth = new Chyloth();
-
-                m_Chyloth.Direction = (Direction)(7 & (4 + (int)from.GetDirectionTo(loc)));
+                m_Chyloth = new Chyloth
+                {
+                    Direction = (Direction)(7 & (4 + (int)from.GetDirectionTo(loc)))
+                };
                 m_Chyloth.MoveToWorld(loc, Map);
 
                 m_Chyloth.Bell = this;

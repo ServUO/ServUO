@@ -75,7 +75,7 @@ namespace Server
 		{
 			Task commitTask = Task.Factory.StartNew(() =>
 			{
-				while (!(threadWriter.IsCompleted))
+				while (!threadWriter.IsCompleted)
 				{
 					QueuedMemoryWriter writer;
 
@@ -248,7 +248,7 @@ namespace Server
 			//Equiv to GenericWriter.Write( (int)count );
 			byte[] buffer = new byte[4];
 
-			buffer[0] = (byte)(count);
+			buffer[0] = (byte)count;
 			buffer[1] = (byte)(count >> 8);
 			buffer[2] = (byte)(count >> 16);
 			buffer[3] = (byte)(count >> 24);

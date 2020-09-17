@@ -119,8 +119,10 @@ namespace Server.Mobiles
 
             SpawnEntry entry = m_Entries[Utility.Random(m_Entries.Length)];
 
-            Harrower harrower = new Harrower();
-            harrower.m_IsSpawned = true;
+            Harrower harrower = new Harrower
+            {
+                m_IsSpawned = true
+            };
 
             m_Instances.Add(harrower);
 
@@ -189,9 +191,10 @@ namespace Server.Mobiles
                     if (!ok)
                         continue;
 
-                    HarrowerTentacles spawn = new HarrowerTentacles(this);
-
-                    spawn.Team = Team;
+                    HarrowerTentacles spawn = new HarrowerTentacles(this)
+                    {
+                        Team = Team
+                    };
 
                     spawn.MoveToWorld(new Point3D(x, y, z), map);
 

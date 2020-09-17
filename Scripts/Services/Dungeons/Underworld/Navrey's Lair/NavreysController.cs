@@ -135,8 +135,10 @@ namespace Server.Items
 
         public void Respawn()
         {
-            Navrey navrey = new Navrey(this);
-            navrey.RangeHome = 20;
+            Navrey navrey = new Navrey(this)
+            {
+                RangeHome = 20
+            };
 
             navrey.MoveToWorld(Map.GetSpawnPosition(Location, 10), Map);
 

@@ -229,11 +229,12 @@ namespace Server.Misc
                             m.SendMessage("Old clients will be kicked after {0} days of character age and {1} hours of play time", m_AgeLeniency, m_GameTimeLeniency);
 
                         Timer.DelayCall(TimeSpan.FromMinutes(Utility.Random(5, 15)), delegate { SendAnnoyGump(m); });
-                    }, null, false);
-
-                g.Dragable = false;
-                g.Closable = false;
-                g.Resizable = false;
+                    }, null, false)
+                {
+                    Dragable = false,
+                    Closable = false,
+                    Resizable = false
+                };
 
                 m.SendGump(g);
             }

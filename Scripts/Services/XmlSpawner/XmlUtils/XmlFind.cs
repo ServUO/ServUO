@@ -2003,8 +2003,10 @@ namespace Server.Mobiles
 
                         //m_SearchList = Search(m_SearchCriteria, out status_str);
                         XmlFindThread tobj = new XmlFindThread(state.Mobile, m_SearchCriteria, CommandString);
-                        Thread find = new Thread(tobj.XmlFindThreadMain);
-                        find.Name = "XmlFind Thread";
+                        Thread find = new Thread(tobj.XmlFindThreadMain)
+                        {
+                            Name = "XmlFind Thread"
+                        };
                         find.Start();
 
                         // turn on gump extension

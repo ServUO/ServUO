@@ -18,9 +18,10 @@ namespace Server.Gumps
 
             if (File.Exists(path))
             {
-                XmlTextReader xml = new XmlTextReader(new StreamReader(path));
-
-                xml.WhitespaceHandling = WhitespaceHandling.None;
+                XmlTextReader xml = new XmlTextReader(new StreamReader(path))
+                {
+                    WhitespaceHandling = WhitespaceHandling.None
+                };
 
                 m_Root = Parse(xml);
 

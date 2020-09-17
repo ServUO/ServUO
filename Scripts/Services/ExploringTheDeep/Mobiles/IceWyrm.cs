@@ -37,9 +37,11 @@ namespace Server.Mobiles
             if (Instances != null && Instances.Count > 0)
                 return null;
 
-            IceWyrm creature = new IceWyrm();
-            creature.Home = platLoc;
-            creature.RangeHome = 4;
+            IceWyrm creature = new IceWyrm
+            {
+                Home = platLoc,
+                RangeHome = 4
+            };
             creature.MoveToWorld(platLoc, platMap);
 
             return creature;

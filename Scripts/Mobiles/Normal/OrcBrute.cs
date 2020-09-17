@@ -118,9 +118,10 @@ namespace Server.Mobiles
 
             if (orcs < 10)
             {
-                BaseCreature orc = new SpawnedOrcishLord();
-
-                orc.Team = Team;
+                BaseCreature orc = new SpawnedOrcishLord
+                {
+                    Team = Team
+                };
 
                 Point3D loc = target.Location;
                 bool validLocation = false;

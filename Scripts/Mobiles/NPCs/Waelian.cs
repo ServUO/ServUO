@@ -48,8 +48,10 @@ namespace Server.Engines.Quests
 
             Item item;
 
-            item = new LeafChest();
-            item.Hue = 0x344;
+            item = new LeafChest
+            {
+                Hue = 0x344
+            };
             AddItem(item);
         }
 

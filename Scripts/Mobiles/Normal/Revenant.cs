@@ -50,15 +50,19 @@ namespace Server.Mobiles
 
             ControlSlots = 3;
 
-            Item shroud = new Robe();
-            shroud.ItemID = 0x2683;
-            shroud.Hue = 0x455;
-            shroud.Movable = false;
+            Item shroud = new Robe
+            {
+                ItemID = 0x2683,
+                Hue = 0x455,
+                Movable = false
+            };
             SetWearable(shroud);
 
-            Halberd weapon = new Halberd();
-            weapon.Hue = 1;
-            weapon.Movable = false;
+            Halberd weapon = new Halberd
+            {
+                Hue = 1,
+                Movable = false
+            };
             SetWearable(weapon);
         }
 

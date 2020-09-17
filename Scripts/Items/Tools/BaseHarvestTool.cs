@@ -167,8 +167,10 @@ namespace Server.Items
             if (!pm.ToggleMiningStone && !pm.ToggleMiningGem && !pm.ToggleStoneOnly)
                 typeentry = 6178;
 
-            ContextMenuEntry miningEntry = new ContextMenuEntry(typeentry);
-            miningEntry.Color = 0x421F;
+            ContextMenuEntry miningEntry = new ContextMenuEntry(typeentry)
+            {
+                Color = 0x421F
+            };
             list.Add(miningEntry);
 
             list.Add(new ToggleMiningStoneEntry(pm, MiningType.OreOnly, 6176));         // Set To Ore

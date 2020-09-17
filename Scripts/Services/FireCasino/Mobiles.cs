@@ -19,9 +19,11 @@ namespace Server.Engines.ResortAndCasino
             SetWearable(new FancyShirt(), 2498);
             SetWearable(new Shoes(), 2413);
 
-            Item pants = new LongPants();
-            pants.ItemID = 0x2FC3;
-            pants.Name = "Elven Pants";
+            Item pants = new LongPants
+            {
+                ItemID = 0x2FC3,
+                Name = "Elven Pants"
+            };
             SetWearable(pants, 1910);
         }
 
@@ -100,9 +102,11 @@ namespace Server.Engines.ResortAndCasino
             SetWearable(new FancyShirt(), 1169);
             SetWearable(new Shoes(), 1169);
 
-            Item pants = new LongPants();
-            pants.ItemID = 0x2FC3;
-            pants.Name = "Elven Pants";
+            Item pants = new LongPants
+            {
+                ItemID = 0x2FC3,
+                Name = "Elven Pants"
+            };
             SetWearable(pants, 1910);
         }
 

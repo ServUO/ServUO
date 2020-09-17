@@ -59,9 +59,6 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (Utility.RandomDouble() < 0.75)
-                c.DropItem(new CrystallineFragments());
-
             if (Utility.RandomDouble() < 0.06)
                 c.DropItem(new JaggedCrystals());
         }

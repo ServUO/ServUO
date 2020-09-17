@@ -19,7 +19,7 @@ namespace Server
 
 			for (int i = 0; !contains && i < m_Count; ++i)
 			{
-				contains = (keyword == m_Keywords[i]);
+				contains = keyword == m_Keywords[i];
 			}
 
 			return contains;

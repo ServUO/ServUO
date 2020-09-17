@@ -27,10 +27,12 @@ namespace Server.Mobiles
             AddItem(new HoodedShroudOfShadows(0xA91));
             AddItem(new ThighBoots());
 
-            Item beard = new Item(0x2040);
-            beard.Hue = 902;
-            beard.Layer = Layer.FacialHair;
-            beard.Movable = false;
+            Item beard = new Item(0x2040)
+            {
+                Hue = 902,
+                Layer = Layer.FacialHair,
+                Movable = false
+            };
 
             AddItem(beard);
         }

@@ -310,8 +310,10 @@ namespace Server.Mobiles
             {
                 default:
                 case EodonTribe.Jukari:
-                    weapon = new Pickaxe();
-                    weapon.Hue = 1175;
+                    weapon = new Pickaxe
+                    {
+                        Hue = 1175
+                    };
                     if (Female)
                     {
                         SetWearable(new LeatherShorts(), 1175);
@@ -367,8 +369,10 @@ namespace Server.Mobiles
                     SetWearable(new ChainLegs(), 2576);
                     break;
                 case EodonTribe.Sakkhra:
-                    weapon = new Bow();
-                    weapon.Hue = 2125;
+                    weapon = new Bow
+                    {
+                        Hue = 2125
+                    };
                     if (Female)
                     {
                         SetWearable(new LeatherBustierArms(), 2128);
@@ -520,8 +524,10 @@ namespace Server.Mobiles
                     weapon.Hue = 1150;
                     break;
                 case EodonTribe.Barrab:
-                    Robe robe = new Robe();
-                    robe.ItemID = 9860;
+                    Robe robe = new Robe
+                    {
+                        ItemID = 9860
+                    };
                     SetWearable(robe, 1834);
                     SetWearable(new Obi(), 1834);
                     SetWearable(new Sandals(), 1831);
@@ -668,24 +674,30 @@ namespace Server.Mobiles
                     SetWearable(new LeatherLegs(), 1175);
                     SetWearable(new Shirt(), 1175);
                     SetWearable(new Torch());
-                    weapon = new Bokuto();
-                    weapon.Hue = 1175;
+                    weapon = new Bokuto
+                    {
+                        Hue = 1175
+                    };
                     break;
                 case EodonTribe.Kurak:
                     SetWearable(new LeatherDo(), 1175);
                     SetWearable(new FancyShirt(), 1175);
                     SetWearable(new TattsukeHakama());
                     SetWearable(new Sandals(), 1175);
-                    weapon = new Tekagi();
-                    weapon.Hue = 1175;
+                    weapon = new Tekagi
+                    {
+                        Hue = 1175
+                    };
                     break;
                 case EodonTribe.Barrab:
                     SetWearable(new PlateDo(), 1828);
                     SetWearable(new PlateSuneate(), 1828);
                     SetWearable(new DecorativePlateKabuto(), 1834);
                     SetWearable(new Sandals(), 1828);
-                    weapon = new Spear();
-                    weapon.Hue = 1828;
+                    weapon = new Spear
+                    {
+                        Hue = 1828
+                    };
                     break;
                 case EodonTribe.Barako:
                     SetWearable(new BoneChest(), 2407);
@@ -694,8 +706,10 @@ namespace Server.Mobiles
                     SetWearable(new BoneGloves(), 2407);
                     SetWearable(new StuddedGorget(), 2407);
                     SetWearable(new Boots(), 2407);
-                    weapon = new Scepter();
-                    weapon.Hue = 2407;
+                    weapon = new Scepter
+                    {
+                        Hue = 2407
+                    };
                     break;
                 case EodonTribe.Urali:
                     SetWearable(new ChainLegs(), 2576);
@@ -713,8 +727,10 @@ namespace Server.Mobiles
                     SetWearable(new SkullCap(), 2118);
                     SetWearable(new RingmailLegs(), 2106);
                     SetWearable(new ThighBoots(), 2106);
-                    weapon = new Yumi();
-                    weapon.Hue = 2118;
+                    weapon = new Yumi
+                    {
+                        Hue = 2118
+                    };
                     break;
             }
 

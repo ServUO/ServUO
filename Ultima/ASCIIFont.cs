@@ -28,7 +28,7 @@ namespace Ultima
         /// <returns></returns>
         public Bitmap GetBitmap(char character)
         {
-            return Characters[((((character) - 0x20) & 0x7FFFFFFF) % 224)];
+            return Characters[((character - 0x20) & 0x7FFFFFFF) % 224];
         }
 
         public int GetWidth(string text)

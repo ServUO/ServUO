@@ -75,11 +75,12 @@ namespace Server.Mobiles
 
         public override Item NewHarmfulItem()
         {
-            Item bad = new AcidSlime(TimeSpan.FromSeconds(10), 25, 30);
+            Item bad = new AcidSlime(TimeSpan.FromSeconds(10), 25, 30)
+            {
+                Name = "gooey nasty pumpkin hummus",
 
-            bad.Name = "gooey nasty pumpkin hummus";
-
-            bad.Hue = 144;
+                Hue = 144
+            };
 
             return bad;
         }

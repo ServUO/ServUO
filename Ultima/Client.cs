@@ -110,7 +110,7 @@ namespace Ultima
                 case 2:
                     return (short)(buffer[0] | (buffer[1] << 8));
                 case 4:
-                    return (buffer[0] | (buffer[1] << 8) | (buffer[2] << 16) | (buffer[3] << 24));
+                    return buffer[0] | (buffer[1] << 8) | (buffer[2] << 16) | (buffer[3] << 24);
             }
 
             int val = 0;
@@ -155,7 +155,7 @@ namespace Ultima
 
                     for (int k = 0; ok && k < mask.Length; ++k)
                     {
-                        ok = ((read[j + k] & mask[k]) == vals[k]);
+                        ok = (read[j + k] & mask[k]) == vals[k];
                     }
 
                     if (ok)
@@ -195,7 +195,7 @@ namespace Ultima
 
                     for (int k = 0; ok && k < buffer.Length; ++k)
                     {
-                        ok = (buffer[k] == read[j + k]);
+                        ok = buffer[k] == read[j + k];
                     }
 
                     if (ok)
@@ -395,7 +395,7 @@ namespace Ultima
         ///     Whether or not the Client is currently running.
         ///     <seealso cref="ClientHandle" />
         /// </summary>
-        public static bool Running => (!Handle.IsInvalid);
+        public static bool Running => !Handle.IsInvalid;
 
         /// <summary>
         ///     Is Client Iris2

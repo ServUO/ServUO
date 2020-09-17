@@ -855,9 +855,11 @@ namespace Server.Multis
                     {
                         if (reader.ReadInt() == 1)
                         {
-                            BoatCourse = new BoatCourse(reader);
-                            BoatCourse.Boat = this;
-                            BoatCourse.Map = Map;
+                            BoatCourse = new BoatCourse(reader)
+                            {
+                                Boat = this,
+                                Map = Map
+                            };
                         }
 
                         BoatItem = reader.ReadItem() as BaseDockedBoat;

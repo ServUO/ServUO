@@ -5096,9 +5096,10 @@ namespace Server.Mobiles
 
             if (backpack == null)
             {
-                backpack = new Backpack();
-
-                backpack.Movable = false;
+                backpack = new Backpack
+                {
+                    Movable = false
+                };
 
                 AddItem(backpack);
             }
@@ -5267,9 +5268,10 @@ namespace Server.Mobiles
 
             if (pack == null)
             {
-                pack = new Backpack();
-
-                pack.Movable = false;
+                pack = new Backpack
+                {
+                    Movable = false
+                };
 
                 AddItem(pack);
             }
@@ -6680,11 +6682,13 @@ namespace Server.Mobiles
 
                 if (inst == null)
                 {
-                    inst = new Harp();
-                    inst.SuccessSound = PlayInstrumentSound ? 0x58B : 0;
-                    inst.FailureSound = PlayInstrumentSound ? 0x58C : 0;
-                    inst.Movable = false;
-                    inst.Quality = ItemQuality.Exceptional;
+                    inst = new Harp
+                    {
+                        SuccessSound = PlayInstrumentSound ? 0x58B : 0,
+                        FailureSound = PlayInstrumentSound ? 0x58C : 0,
+                        Movable = false,
+                        Quality = ItemQuality.Exceptional
+                    };
 
                     PackItem(inst);
                 }

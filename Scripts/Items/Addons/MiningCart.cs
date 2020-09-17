@@ -22,10 +22,12 @@ namespace Server.Items
         {
             get
             {
-                MiningCartDeed deed = new MiningCartDeed();
-                deed.IsRewardItem = m_IsRewardItem;
-                deed.Gems = m_Gems;
-                deed.Ore = m_Ore;
+                MiningCartDeed deed = new MiningCartDeed
+                {
+                    IsRewardItem = m_IsRewardItem,
+                    Gems = m_Gems,
+                    Ore = m_Ore
+                };
 
                 return deed;
             }
@@ -440,10 +442,12 @@ namespace Server.Items
         {
             get
             {
-                MiningCart addon = new MiningCart(m_CartType);
-                addon.IsRewardItem = m_IsRewardItem;
-                addon.Gems = m_Gems;
-                addon.Ore = m_Ore;
+                MiningCart addon = new MiningCart(m_CartType)
+                {
+                    IsRewardItem = m_IsRewardItem,
+                    Gems = m_Gems,
+                    Ore = m_Ore
+                };
 
                 return addon;
             }

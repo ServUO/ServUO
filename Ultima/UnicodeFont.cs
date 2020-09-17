@@ -182,7 +182,7 @@ namespace Ultima
                         for (int c = 0; c < 0x10000; ++c)
                         {
                             Fonts[i].Chars[c] = new UnicodeChar();
-                            fs.Seek(((c) * 4), SeekOrigin.Begin);
+                            fs.Seek(c * 4, SeekOrigin.Begin);
                             int num2 = bin.ReadInt32();
                             if ((num2 >= fs.Length) || (num2 <= 0))
                             {
@@ -255,7 +255,7 @@ namespace Ultima
                         {
                             continue;
                         }
-                        fs.Seek(((c) * 4), SeekOrigin.Begin);
+                        fs.Seek(c * 4, SeekOrigin.Begin);
                         bin.Write((int)fs.Length);
                         fs.Seek(fs.Length, SeekOrigin.Begin);
                         bin.Write(Fonts[filetype].Chars[c].XOffset);

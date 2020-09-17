@@ -130,15 +130,15 @@ namespace Server.Items
 		}
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public int GumpID { get => (m_GumpID == -1 ? DefaultGumpID : m_GumpID); set => m_GumpID = value; }
+		public int GumpID { get => m_GumpID == -1 ? DefaultGumpID : m_GumpID; set => m_GumpID = value; }
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public int DropSound { get => (m_DropSound == -1 ? DefaultDropSound : m_DropSound); set => m_DropSound = value; }
+		public int DropSound { get => m_DropSound == -1 ? DefaultDropSound : m_DropSound; set => m_DropSound = value; }
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public int MaxItems
 		{
-			get => (m_MaxItems == -1 ? DefaultMaxItems : m_MaxItems);
+			get => m_MaxItems == -1 ? DefaultMaxItems : m_MaxItems;
 			set
 			{
 				m_MaxItems = value;
@@ -1533,7 +1533,7 @@ namespace Server.Items
 
 		private static bool GetSaveFlag(SaveFlag flags, SaveFlag toGet)
 		{
-			return ((flags & toGet) != 0);
+			return (flags & toGet) != 0;
 		}
 
 		[Flags]

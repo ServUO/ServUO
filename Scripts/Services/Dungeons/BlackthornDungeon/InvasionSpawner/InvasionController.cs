@@ -217,8 +217,10 @@ namespace Server.Engines.Blackthorn
                         invader.Delete();
                 }
 
-                InvaderCaptain capt = new InvaderCaptain(InvasionType);
-                capt.Blessed = true;
+                InvaderCaptain capt = new InvaderCaptain(InvasionType)
+                {
+                    Blessed = true
+                };
 
                 if (SpawnMobile(capt, spawnrec) || SpawnMobile(capt, new Rectangle2D(Defs[CurrentInvasion].BeaconLoc.X - 10, Defs[CurrentInvasion].BeaconLoc.Y - 10, 20, 20)))
                 {

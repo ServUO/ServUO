@@ -359,16 +359,22 @@ namespace Server.Engines.Quests
 
             Item item;
 
-            item = new HideGloves();
-            item.Hue = 0x224;
+            item = new HideGloves
+            {
+                Hue = 0x224
+            };
             AddItem(item);
 
-            item = new HideChest();
-            item.Hue = 0x224;
+            item = new HideChest
+            {
+                Hue = 0x224
+            };
             AddItem(item);
 
-            item = new HidePauldrons();
-            item.Hue = 0x224;
+            item = new HidePauldrons
+            {
+                Hue = 0x224
+            };
             AddItem(item);
         }
 

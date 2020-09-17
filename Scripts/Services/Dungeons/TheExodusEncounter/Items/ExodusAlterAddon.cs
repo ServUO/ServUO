@@ -13,9 +13,10 @@
 
         public void AddComponent(int id, int x, int y, int z)
         {
-            AddonComponent ac = new AddonComponent(id);
-
-            ac.Hue = 2702;
+            AddonComponent ac = new AddonComponent(id)
+            {
+                Hue = 2702
+            };
             AddComponent(ac, x, y, z);
         }
 

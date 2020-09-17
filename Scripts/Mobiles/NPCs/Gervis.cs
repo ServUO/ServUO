@@ -84,8 +84,10 @@ namespace Server.Engines.Quests
 
             Item item;
 
-            item = new LeatherGloves();
-            item.Hue = 0x3B2;
+            item = new LeatherGloves
+            {
+                Hue = 0x3B2
+            };
             AddItem(item);
         }
 

@@ -145,10 +145,12 @@ namespace Server.Engines.SeasonalEvents
 
         private void SpawnKrampus()
         {
-            Krampus = new Krampus();
-            Krampus.SpawnLocation = SpawnLocation;
-            Krampus.Home = SpawnLocation;
-            Krampus.RangeHome = 5;
+            Krampus = new Krampus
+            {
+                SpawnLocation = SpawnLocation,
+                Home = SpawnLocation,
+                RangeHome = 5
+            };
 
             Krampus.MoveToWorld(SpawnLocation, SpawnMap);
             Krampus.Summon(Krampus, true);

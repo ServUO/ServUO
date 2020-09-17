@@ -65,9 +65,11 @@ namespace Server.Mobiles
             if (Instances != null && Instances.Count > 0)
                 return null;
 
-            ObsidianWyvern creature = new ObsidianWyvern();
-            creature.Home = platLoc;
-            creature.RangeHome = 4;
+            ObsidianWyvern creature = new ObsidianWyvern
+            {
+                Home = platLoc,
+                RangeHome = 4
+            };
             creature.MoveToWorld(platLoc, platMap);
 
             return creature;

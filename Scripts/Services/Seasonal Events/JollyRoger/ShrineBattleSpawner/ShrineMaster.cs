@@ -380,16 +380,22 @@ namespace Server.Engines.JollyRoger
                     SetWearable(new LeatherNinjaHood(), 2051);
                     break;
                 case MasterTitle.Swordsman:
-                    item = new PaladinSword();
-                    item.LootType = LootType.Blessed;
+                    item = new PaladinSword
+                    {
+                        LootType = LootType.Blessed
+                    };
                     SetWearable(item);
 
-                    item = new Daisho();
-                    item.LootType = LootType.Blessed;
+                    item = new Daisho
+                    {
+                        LootType = LootType.Blessed
+                    };
                     PackItem(item);
 
-                    item = new Wakizashi();
-                    item.LootType = LootType.Blessed;
+                    item = new Wakizashi
+                    {
+                        LootType = LootType.Blessed
+                    };
                     PackItem(item);
 
                     SetWearable(new NorseHelm(), 2406);
@@ -402,16 +408,22 @@ namespace Server.Engines.JollyRoger
                     SetWearable(new Cloak(), 2726);
                     break;
                 case MasterTitle.Fencer:
-                    item = new Lajatang();
-                    item.LootType = LootType.Blessed;
+                    item = new Lajatang
+                    {
+                        LootType = LootType.Blessed
+                    };
                     SetWearable(item);
 
-                    item = new Sai();
-                    item.LootType = LootType.Blessed;
+                    item = new Sai
+                    {
+                        LootType = LootType.Blessed
+                    };
                     PackItem(item);
 
-                    item = new Tekagi();
-                    item.LootType = LootType.Blessed;
+                    item = new Tekagi
+                    {
+                        LootType = LootType.Blessed
+                    };
                     PackItem(item);
 
                     if (Female)

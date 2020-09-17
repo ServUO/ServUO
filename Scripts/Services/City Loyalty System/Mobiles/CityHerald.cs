@@ -87,8 +87,10 @@ namespace Server.Engines.CityLoyalty
             EquipItem(new FeatheredHat(1157));
             EquipItem(new LongPants(1908));
 
-            Boots boots = new Boots();
-            boots.Hue = 2012;
+            Boots boots = new Boots
+            {
+                Hue = 2012
+            };
             EquipItem(boots);
 
             EquipItem(new GoldRing());

@@ -105,13 +105,14 @@ namespace Server.Engines.Reports
                 op.Write("quit");
             }
 
-            ProcessStartInfo psi = new ProcessStartInfo();
+            ProcessStartInfo psi = new ProcessStartInfo
+            {
+                FileName = "ftp",
+                Arguments = string.Format("-i -s:\"{0}\"", filePath),
 
-            psi.FileName = "ftp";
-            psi.Arguments = string.Format("-i -s:\"{0}\"", filePath);
-
-            psi.CreateNoWindow = true;
-            psi.WindowStyle = ProcessWindowStyle.Hidden;
+                CreateNoWindow = true,
+                WindowStyle = ProcessWindowStyle.Hidden
+            };
             //psi.UseShellExecute = true;
 
             try
@@ -276,9 +277,10 @@ namespace Server.Engines.Reports
 
         private void RenderPieChart(PieChart chart, HtmlTextWriter html)
         {
-            PieChartRenderer pieChart = new PieChartRenderer(Color.White);
-
-            pieChart.ShowPercents = chart.ShowPercents;
+            PieChartRenderer pieChart = new PieChartRenderer(Color.White)
+            {
+                ShowPercents = chart.ShowPercents
+            };
 
             string[] labels = new string[chart.Items.Count];
             string[] values = new string[chart.Items.Count];
@@ -360,11 +362,12 @@ namespace Server.Engines.Reports
 
         private void RenderBarGraph(BarGraph graph, HtmlTextWriter html)
         {
-            BarGraphRenderer barGraph = new BarGraphRenderer(Color.White);
+            BarGraphRenderer barGraph = new BarGraphRenderer(Color.White)
+            {
+                RenderMode = graph.RenderMode,
 
-            barGraph.RenderMode = graph.RenderMode;
-
-            barGraph._regions = graph.Regions;
+                _regions = graph.Regions
+            };
             barGraph.SetTitles(graph.xTitle, null);
 
             if (graph.yTitle != null)

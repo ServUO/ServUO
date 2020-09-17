@@ -192,7 +192,7 @@ namespace Server
 
 		public virtual int AliveBody(bool female)
 		{
-			return (female ? m_FemaleBody : m_MaleBody);
+			return female ? m_FemaleBody : m_MaleBody;
 		}
 
 		public virtual int GhostBody(Mobile m)
@@ -202,7 +202,7 @@ namespace Server
 
 		public virtual int GhostBody(bool female)
 		{
-			return (female ? m_FemaleGhostBody : m_MaleGhostBody);
+			return female ? m_FemaleGhostBody : m_MaleGhostBody;
 		}
 
 		public int RaceID => m_RaceID;

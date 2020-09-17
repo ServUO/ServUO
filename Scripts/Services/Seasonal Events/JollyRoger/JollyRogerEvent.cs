@@ -57,10 +57,12 @@ namespace Server.Engines.JollyRoger
 
             if (map.FindItem<Static>(new Point3D(2263, 1553, -28)) == null)
             {
-                st = new Static(0x18dc);
-                st.Hue = 2401;
-                st.Name = "Essence Of A Nascent Time Gate";
-                st.Weight = 0;
+                st = new Static(0x18dc)
+                {
+                    Hue = 2401,
+                    Name = "Essence Of A Nascent Time Gate",
+                    Weight = 0
+                };
                 st.MoveToWorld(new Point3D(2263, 1553, -28), map);
             }
             #endregion

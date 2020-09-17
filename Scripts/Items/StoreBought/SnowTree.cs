@@ -13,8 +13,10 @@ namespace Server.Items
 
             if (!trunk)
             {
-                var comp = new LocalizedAddonComponent(0xD9D, 1071103);
-                comp.Hue = 1153;
+                var comp = new LocalizedAddonComponent(0xD9D, 1071103)
+                {
+                    Hue = 1153
+                };
                 AddComponent(comp, 0, 0, 4);
             }
         }
@@ -66,8 +68,10 @@ namespace Server.Items
                 toDelete.Addon = null;
                 toDelete.Delete();
 
-                var comp = new LocalizedAddonComponent(0xD9D, 1071103);
-                comp.Hue = 1153;
+                var comp = new LocalizedAddonComponent(0xD9D, 1071103)
+                {
+                    Hue = 1153
+                };
                 AddComponent(comp, 0, 0, 4);
             }
         }

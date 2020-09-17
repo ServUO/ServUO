@@ -30,11 +30,13 @@ namespace Server.Items
             AddComponent(new AddonComponent(2102), 3, -1, 0);
 
             Door = new EnclosureDoor(this);
-            Cub = new TigerCub();
-            Cub.Blessed = true;
-            Cub.RangeHome = 5;
+            Cub = new TigerCub
+            {
+                Blessed = true,
+                RangeHome = 5,
 
-            Cub.Location = new Point3D(Location.X + 1, Location.Y + 1, Location.Z);
+                Location = new Point3D(Location.X + 1, Location.Y + 1, Location.Z)
+            };
         }
 
         public override void OnLocationChange(Point3D oldLocation)

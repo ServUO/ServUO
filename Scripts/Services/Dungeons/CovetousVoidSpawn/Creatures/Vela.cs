@@ -28,24 +28,34 @@ namespace Server.Engines.VoidPool
             SetWearable(new LeatherLegs(), 1928);
             SetWearable(new ThighBoots(), 1917);
 
-            Item item = new BraceletOfProtection();
-            item.Movable = false;
+            Item item = new BraceletOfProtection
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new Hephaestus();
-            item.Movable = false;
+            item = new Hephaestus
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GargishHephaestus();
-            item.Movable = false;
+            item = new GargishHephaestus
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new BlightOfTheTundra();
-            item.Movable = false;
+            item = new BlightOfTheTundra
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new GargishBlightOfTheTundra();
-            item.Movable = false;
+            item = new GargishBlightOfTheTundra
+            {
+                Movable = false
+            };
             PackItem(item);
         }
 

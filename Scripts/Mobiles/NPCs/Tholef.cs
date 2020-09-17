@@ -155,8 +155,10 @@ namespace Server.Engines.Quests
 
             Item item;
 
-            item = new LeafArms();
-            item.Hue = 0x28C;
+            item = new LeafArms
+            {
+                Hue = 0x28C
+            };
             AddItem(item);
         }
 

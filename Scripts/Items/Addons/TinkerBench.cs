@@ -15,8 +15,10 @@ namespace Server.Items
         {
             get
             {
-                TinkerBenchDeed deed = new TinkerBenchDeed(Tools.Count > 0 ? Tools[0].UsesRemaining : 0);
-                deed.IsRewardItem = IsRewardItem;
+                TinkerBenchDeed deed = new TinkerBenchDeed(Tools.Count > 0 ? Tools[0].UsesRemaining : 0)
+                {
+                    IsRewardItem = IsRewardItem
+                };
 
                 return deed;
             }
@@ -68,8 +70,10 @@ namespace Server.Items
         {
             get
             {
-                TinkerBenchAddon addon = new TinkerBenchAddon(_Direction, UsesRemaining);
-                addon.IsRewardItem = m_IsRewardItem;
+                TinkerBenchAddon addon = new TinkerBenchAddon(_Direction, UsesRemaining)
+                {
+                    IsRewardItem = m_IsRewardItem
+                };
 
                 return addon;
             }

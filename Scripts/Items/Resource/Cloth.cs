@@ -182,9 +182,11 @@ namespace Server.Items
 
             for (int i = 0; i < hues.Length; i++)
             {
-                Cloth cloth = new Cloth();
-                cloth.Hue = hues[i];
-                cloth.Amount = amounts[i];
+                Cloth cloth = new Cloth
+                {
+                    Hue = hues[i],
+                    Amount = amounts[i]
+                };
 
                 if (cloth.Amount > 0)
                     backpack.DropItem(cloth);

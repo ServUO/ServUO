@@ -74,8 +74,10 @@ namespace Server.Items
                         {
                             if (perch.Parrot == null || perch.Parrot.Deleted)
                             {
-                                PetParrot parrot = new PetParrot();
-                                parrot.Hue = m_Parrot.Hue;
+                                PetParrot parrot = new PetParrot
+                                {
+                                    Hue = m_Parrot.Hue
+                                };
                                 parrot.MoveToWorld(perch.Location, perch.Map);
                                 parrot.Z += 12;
 

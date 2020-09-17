@@ -16,15 +16,19 @@ namespace Server.Mobiles
 
             HairItemID = 0x204A;	//Krisna
 
-            Bow bow = new Bow();
-            bow.Movable = false;
+            Bow bow = new Bow
+            {
+                Movable = false
+            };
             AddItem(bow);
 
             AddItem(new Boots(0x8A4));
             AddItem(new BodySash(0x8A4));
 
-            Backpack backpack = new Backpack();
-            backpack.Movable = false;
+            Backpack backpack = new Backpack
+            {
+                Movable = false
+            };
             AddItem(backpack);
 
             LeatherGloves gloves = new LeatherGloves();

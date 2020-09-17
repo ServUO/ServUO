@@ -260,8 +260,10 @@ namespace Server.Mobiles
                 if (pm == null)
                     return;
 
-                ContextMenuEntry miningEntry = new ContextMenuEntry(pm.ToggleMiningStone ? 6179 : 6178);
-                miningEntry.Color = 0x421F;
+                ContextMenuEntry miningEntry = new ContextMenuEntry(pm.ToggleMiningStone ? 6179 : 6178)
+                {
+                    Color = 0x421F
+                };
                 list.Add(miningEntry);
 
                 list.Add(new BaseHarvestTool.ToggleMiningStoneEntry(pm, MiningType.OreOnly, 6176));         // Set To Ore

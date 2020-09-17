@@ -195,8 +195,10 @@ namespace Server.Mobiles
 
                     if (CanBeHarmful(fighter))
                     {
-                        EnslavedSatyr satyr = new EnslavedSatyr();
-                        satyr.FightMode = FightMode.Closest;
+                        EnslavedSatyr satyr = new EnslavedSatyr
+                        {
+                            FightMode = FightMode.Closest
+                        };
                         SpawnHelper(satyr, GetSpawnPosition(fighter.Location, fighter.Map, 2));
 
                         satyr.Combatant = fighter;

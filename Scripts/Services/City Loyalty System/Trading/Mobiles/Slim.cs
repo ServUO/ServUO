@@ -36,8 +36,10 @@ namespace Server.Engines.CityLoyalty
             EquipItem(new FancyShirt(1932));
             EquipItem(new LongPants(1));
 
-            Boots boots = new Boots();
-            boots.Hue = 1;
+            Boots boots = new Boots
+            {
+                Hue = 1
+            };
             EquipItem(boots);
 
             Frozen = true;

@@ -45,8 +45,10 @@ namespace Server.Services.TownCryer
         {
             if (info.ButtonID == 0)
             {
-                TownCryerGump gump = new TownCryerGump(User, Cryer);
-                gump.Category = TownCryerGump.GumpCategory.Guild;
+                TownCryerGump gump = new TownCryerGump(User, Cryer)
+                {
+                    Category = TownCryerGump.GumpCategory.Guild
+                };
                 SendGump(gump);
             }
         }

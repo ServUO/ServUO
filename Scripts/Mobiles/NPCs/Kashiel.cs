@@ -77,24 +77,34 @@ namespace Server.Engines.Quests
 
             Item item;
 
-            item = new LeatherLegs();
-            item.Hue = 0x901;
+            item = new LeatherLegs
+            {
+                Hue = 0x901
+            };
             AddItem(item);
 
-            item = new LeatherGloves();
-            item.Hue = 0x1BB;
+            item = new LeatherGloves
+            {
+                Hue = 0x1BB
+            };
             AddItem(item);
 
-            item = new LeatherChest();
-            item.Hue = 0x1BB;
+            item = new LeatherChest
+            {
+                Hue = 0x1BB
+            };
             AddItem(item);
 
-            item = new LeatherArms();
-            item.Hue = 0x901;
+            item = new LeatherArms
+            {
+                Hue = 0x901
+            };
             AddItem(item);
 
-            item = new CompositeBow();
-            item.Hue = 0x606;
+            item = new CompositeBow
+            {
+                Hue = 0x606
+            };
             AddItem(item);
         }
 

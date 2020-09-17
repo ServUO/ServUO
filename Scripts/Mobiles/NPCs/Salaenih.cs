@@ -157,24 +157,34 @@ namespace Server.Engines.Quests
 
             Item item;
 
-            item = new WoodlandLegs();
-            item.Hue = 0x1BB;
+            item = new WoodlandLegs
+            {
+                Hue = 0x1BB
+            };
             AddItem(item);
 
-            item = new WoodlandArms();
-            item.Hue = 0x1BB;
+            item = new WoodlandArms
+            {
+                Hue = 0x1BB
+            };
             AddItem(item);
 
-            item = new WoodlandChest();
-            item.Hue = 0x1BB;
+            item = new WoodlandChest
+            {
+                Hue = 0x1BB
+            };
             AddItem(item);
 
-            item = new WoodlandBelt();
-            item.Hue = 0x597;
+            item = new WoodlandBelt
+            {
+                Hue = 0x597
+            };
             AddItem(item);
 
-            item = new VultureHelm();
-            item.Hue = 0x1BB;
+            item = new VultureHelm
+            {
+                Hue = 0x1BB
+            };
             AddItem(item);
         }
 

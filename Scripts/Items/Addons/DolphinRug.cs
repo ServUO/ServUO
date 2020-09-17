@@ -95,8 +95,10 @@ namespace Server.Items
         {
             get
             {
-                DolphinRugAddonDeed deed = new DolphinRugAddonDeed(RugType, m_ResourceCount, NextResourceCount);
-                deed.IsRewardItem = m_IsRewardItem;
+                DolphinRugAddonDeed deed = new DolphinRugAddonDeed(RugType, m_ResourceCount, NextResourceCount)
+                {
+                    IsRewardItem = m_IsRewardItem
+                };
 
                 return deed;
             }
@@ -270,8 +272,10 @@ namespace Server.Items
         {
             get
             {
-                DolphinRugAddon addon = new DolphinRugAddon(RugType, m_ResourceCount, NextResourceCount);
-                addon.IsRewardItem = m_IsRewardItem;
+                DolphinRugAddon addon = new DolphinRugAddon(RugType, m_ResourceCount, NextResourceCount)
+                {
+                    IsRewardItem = m_IsRewardItem
+                };
 
                 return addon;
             }

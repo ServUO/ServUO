@@ -42,8 +42,10 @@ namespace Server.Items
             }
             else
             {
-                Item debris = new WoodKeyDebris();
-                debris.Movable = false;
+                Item debris = new WoodKeyDebris
+                {
+                    Movable = false
+                };
                 debris.MoveToWorld(new Point3D(base.Location), Map);
 
                 switch (Utility.Random(3))

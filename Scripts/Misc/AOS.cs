@@ -2254,8 +2254,10 @@ namespace Server
                 if (m_Mods == null)
                     m_Mods = new List<SkillMod>();
 
-                SkillMod sk = new DefaultSkillMod(skill, true, bonus);
-                sk.ObeyCap = true;
+                SkillMod sk = new DefaultSkillMod(skill, true, bonus)
+                {
+                    ObeyCap = true
+                };
                 m.AddSkillMod(sk);
                 m_Mods.Add(sk);
             }

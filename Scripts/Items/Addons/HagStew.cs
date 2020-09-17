@@ -8,9 +8,11 @@ namespace Server.Items
         public HagStew()
         {
             AddonComponent stew;
-            stew = new AddonComponent(2416);
-            stew.Name = "stew";
-            stew.Visible = true;
+            stew = new AddonComponent(2416)
+            {
+                Name = "stew",
+                Visible = true
+            };
             AddComponent(stew, 0, 0, -7);      //stew
         }
 

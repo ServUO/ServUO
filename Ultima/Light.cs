@@ -66,8 +66,8 @@ namespace Ultima
                 return false;
             }
             stream.Close();
-            int width = (extra & 0xFFFF);
-            int height = ((extra >> 16) & 0xFFFF);
+            int width = extra & 0xFFFF;
+            int height = (extra >> 16) & 0xFFFF;
             if ((width > 0) && (height > 0))
             {
                 return true;
@@ -114,8 +114,8 @@ namespace Ultima
                 return null;
             }
 
-            width = (extra & 0xFFFF);
-            height = ((extra >> 16) & 0xFFFF);
+            width = extra & 0xFFFF;
+            height = (extra >> 16) & 0xFFFF;
             byte[] buffer = new byte[length];
             stream.Read(buffer, 0, length);
             stream.Close();
@@ -148,8 +148,8 @@ namespace Ultima
                 return null;
             }
 
-            int width = (extra & 0xFFFF);
-            int height = ((extra >> 16) & 0xFFFF);
+            int width = extra & 0xFFFF;
+            int height = (extra >> 16) & 0xFFFF;
 
             if (m_StreamBuffer == null || m_StreamBuffer.Length < length)
             {
@@ -175,7 +175,7 @@ namespace Ultima
                     while (cur < end)
                     {
                         sbyte value = *bindat++;
-                        *cur++ = (ushort)(((0x1f + value) << 10) + ((0x1F + value) << 5) + (0x1F + value));
+                        *cur++ = (ushort)(((0x1f + value) << 10) + ((0x1F + value) << 5) + 0x1F + value);
                     }
                 }
             }
@@ -210,7 +210,7 @@ namespace Ultima
                         }
                         Bitmap bmp = m_Cache[index];
 
-                        if ((bmp == null) || (m_Removed[index]))
+                        if ((bmp == null) || m_Removed[index])
                         {
                             binidx.Write(-1); // lookup
                             binidx.Write(-1); // length

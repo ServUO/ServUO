@@ -196,13 +196,15 @@ namespace Server.Items
 
         private Item CreateReplacement()
         {
-            Item result = new AquariumFishNet();
-            result.Hue = Hue;
-            result.LootType = LootType;
-            result.Movable = Movable;
-            result.Name = Name;
-            result.QuestItem = QuestItem;
-            result.Visible = Visible;
+            Item result = new AquariumFishNet
+            {
+                Hue = Hue,
+                LootType = LootType,
+                Movable = Movable,
+                Name = Name,
+                QuestItem = QuestItem,
+                Visible = Visible
+            };
 
             return result;
         }

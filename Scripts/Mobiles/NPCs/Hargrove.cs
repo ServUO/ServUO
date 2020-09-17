@@ -82,8 +82,10 @@ namespace Server.Engines.Quests
 
             Item item;
 
-            item = new PlateGloves();
-            item.Hue = 0x21E;
+            item = new PlateGloves
+            {
+                Hue = 0x21E
+            };
             AddItem(item);
         }
 

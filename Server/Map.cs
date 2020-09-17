@@ -601,7 +601,7 @@ namespace Server
 				--v;
 			}
 
-			return (v / 2);
+			return v / 2;
 		}
 
 #if Map_NewEnumerables || Map_AllUpdates
@@ -3083,7 +3083,7 @@ namespace Server
 				}
 			}
 
-			Rectangle2D rect = new Rectangle2D(pTop.m_X, pTop.m_Y, (pBottom.m_X - pTop.m_X) + 1, (pBottom.m_Y - pTop.m_Y) + 1);
+			Rectangle2D rect = new Rectangle2D(pTop.m_X, pTop.m_Y, pBottom.m_X - pTop.m_X + 1, pBottom.m_Y - pTop.m_Y + 1);
 
 			IPooledEnumerable<Item> area = GetItemsInBounds(rect);
 

@@ -138,8 +138,8 @@ namespace Server.Network
 						// align on byte boundary
 						if ((bitCount & 7) != 0)
 						{
-							bitValue <<= (8 - (bitCount & 7));
-							bitCount += (8 - (bitCount & 7));
+							bitValue <<= 8 - (bitCount & 7);
+							bitCount += 8 - (bitCount & 7);
 						}
 
 						while (bitCount >= 8)

@@ -204,12 +204,16 @@ namespace Server.Engines.Quests
                 WoodenChest chest = new WoodenChest();
                 chest.DropItem(new TreasureHuntingBook());
 
-                GreaterHealPotion heals = new GreaterHealPotion();
-                heals.Amount = 10;
+                GreaterHealPotion heals = new GreaterHealPotion
+                {
+                    Amount = 10
+                };
                 chest.DropItem(heals);
 
-                TelekinisisScroll scrolls = new TelekinisisScroll();
-                scrolls.Amount = 20;
+                TelekinisisScroll scrolls = new TelekinisisScroll
+                {
+                    Amount = 20
+                };
                 chest.DropItem(scrolls);
 
                 chest.DropItem(new Pickaxe());

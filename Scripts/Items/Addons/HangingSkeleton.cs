@@ -34,8 +34,10 @@ namespace Server.Items
         {
             get
             {
-                HangingSkeletonDeed deed = new HangingSkeletonDeed();
-                deed.IsRewardItem = m_IsRewardItem;
+                HangingSkeletonDeed deed = new HangingSkeletonDeed
+                {
+                    IsRewardItem = m_IsRewardItem
+                };
 
                 return deed;
             }

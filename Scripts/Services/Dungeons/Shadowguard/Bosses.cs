@@ -997,13 +997,17 @@ namespace Server.Engines.Shadowguard
             SetWearable(new Waraji());
             SetWearable(new BoneArms());
 
-            Scimitar scimitar = new Scimitar();
-            scimitar.Movable = false;
+            Scimitar scimitar = new Scimitar
+            {
+                Movable = false
+            };
 
             PackItem(scimitar);
 
-            LesserHiryu hiryu = new LesserHiryu();
-            hiryu.Rider = this;
+            _ = new LesserHiryu
+            {
+                Rider = this
+            };
 
             SetWeaponAbility(WeaponAbility.Dismount);
         }

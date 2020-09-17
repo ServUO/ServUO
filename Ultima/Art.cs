@@ -56,7 +56,7 @@ namespace Ultima
 
         public static bool IsUOAHS()
         {
-            return (GetIdxLength() >= 0x13FDC);
+            return GetIdxLength() >= 0x13FDC;
         }
 
         public static ushort GetLegalItemID(int itemID, bool checkmaxid = true)
@@ -475,11 +475,11 @@ namespace Ultima
 
                 int[] lookups = new int[height];
 
-                int start = (height + 4);
+                int start = height + 4;
 
                 for (int i = 0; i < height; ++i)
                 {
-                    lookups[i] = (start + (bindata[count++]));
+                    lookups[i] = start + bindata[count++];
                 }
 
                 bmp = new Bitmap(width, height, Settings.PixelFormat);
@@ -604,7 +604,7 @@ namespace Ultima
                             }
                         }
                         Bitmap bmp = m_Cache[index];
-                        if ((bmp == null) || (m_Removed[index]))
+                        if ((bmp == null) || m_Removed[index])
                         {
                             binidx.Write(-1); // lookup
                             binidx.Write(0); // length
@@ -727,7 +727,7 @@ namespace Ultima
                                     }
                                     if (i < bmp.Width)
                                     {
-                                        for (j = (i + 1); j < bmp.Width; ++j)
+                                        for (j = i + 1; j < bmp.Width; ++j)
                                         {
                                             //next non set pixel
                                             if (cur[j] == 0)
@@ -774,7 +774,7 @@ namespace Ultima
             for (int i = 0; i < checksumsLand.Count; ++i)
             {
                 byte[] cmp = checksumsLand[i].checksum;
-                if (((cmp == null) || (newchecksum == null)) || (cmp.Length != newchecksum.Length))
+                if ((cmp == null) || (newchecksum == null) || (cmp.Length != newchecksum.Length))
                 {
                     return false;
                 }
@@ -802,7 +802,7 @@ namespace Ultima
             for (int i = 0; i < checksumsStatic.Count; ++i)
             {
                 byte[] cmp = checksumsStatic[i].checksum;
-                if (((cmp == null) || (newchecksum == null)) || (cmp.Length != newchecksum.Length))
+                if ((cmp == null) || (newchecksum == null) || (cmp.Length != newchecksum.Length))
                 {
                     return false;
                 }

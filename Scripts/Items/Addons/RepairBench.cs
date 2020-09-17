@@ -171,8 +171,10 @@ namespace Server.Items
         {
             get
             {
-                RepairBenchDeed deed = new RepairBenchDeed(Tools);
-                deed.IsRewardItem = IsRewardItem;
+                RepairBenchDeed deed = new RepairBenchDeed(Tools)
+                {
+                    IsRewardItem = IsRewardItem
+                };
 
                 return deed;
             }
@@ -273,8 +275,10 @@ namespace Server.Items
         {
             get
             {
-                RepairBenchAddon addon = new RepairBenchAddon(_Direction, Tools);
-                addon.IsRewardItem = m_IsRewardItem;
+                RepairBenchAddon addon = new RepairBenchAddon(_Direction, Tools)
+                {
+                    IsRewardItem = m_IsRewardItem
+                };
 
                 return addon;
             }

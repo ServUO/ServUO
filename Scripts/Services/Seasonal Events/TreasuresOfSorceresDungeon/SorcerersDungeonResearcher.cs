@@ -40,28 +40,40 @@ namespace Server.Engines.SorcerersDungeon
             SetWearable(new Necklace());
 
             // QuiverOfInfinityBase
-            Item item = new HeroOfTheUnlovedTitleDeed();
-            item.Movable = false;
+            Item item = new HeroOfTheUnlovedTitleDeed
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new SaviorOfTheDementedTitleDeed();
-            item.Movable = false;
+            item = new SaviorOfTheDementedTitleDeed
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new SlayerOfThePumpkinKingTitleDeed();
-            item.Movable = false;
+            item = new SlayerOfThePumpkinKingTitleDeed
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new SterlingSilverRing();
-            item.Movable = false;
+            item = new SterlingSilverRing
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new TalonsOfEscaping();
-            item.Movable = false;
+            item = new TalonsOfEscaping
+            {
+                Movable = false
+            };
             PackItem(item);
 
-            item = new BootsOfEscaping();
-            item.Movable = false;
+            item = new BootsOfEscaping
+            {
+                Movable = false
+            };
             PackItem(item);
         }
 

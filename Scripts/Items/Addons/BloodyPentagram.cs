@@ -88,8 +88,10 @@ namespace Server.Items
         {
             get
             {
-                BloodyPentagramDeed deed = new BloodyPentagramDeed();
-                deed.IsRewardItem = m_IsRewardItem;
+                BloodyPentagramDeed deed = new BloodyPentagramDeed
+                {
+                    IsRewardItem = m_IsRewardItem
+                };
 
                 return deed;
             }
@@ -146,8 +148,10 @@ namespace Server.Items
         {
             get
             {
-                BloodyPentagramAddon addon = new BloodyPentagramAddon();
-                addon.IsRewardItem = m_IsRewardItem;
+                BloodyPentagramAddon addon = new BloodyPentagramAddon
+                {
+                    IsRewardItem = m_IsRewardItem
+                };
 
                 return addon;
             }

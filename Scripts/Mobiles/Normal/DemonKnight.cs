@@ -150,11 +150,12 @@ namespace Server.Mobiles
                         continue;
                 }
 
-                UnholyBone bone = new UnholyBone();
-
-                bone.Hue = 0;
-                bone.Name = "unholy bones";
-                bone.ItemID = Utility.Random(0xECA, 9);
+                UnholyBone bone = new UnholyBone
+                {
+                    Hue = 0,
+                    Name = "unholy bones",
+                    ItemID = Utility.Random(0xECA, 9)
+                };
 
                 bone.MoveToWorld(new Point3D(x, y, z), map);
             }

@@ -234,9 +234,10 @@ namespace Server.Engines.Quests
 
             AddItem(new Broadsword());
 
-            Item shield = new MetalKiteShield();
-
-            shield.Hue = Utility.RandomNondyedHue();
+            Item shield = new MetalKiteShield
+            {
+                Hue = Utility.RandomNondyedHue()
+            };
 
             AddItem(shield);
 

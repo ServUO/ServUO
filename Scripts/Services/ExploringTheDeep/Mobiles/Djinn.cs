@@ -95,9 +95,11 @@ namespace Server.Mobiles
             if (Instances != null && Instances.Count > 0)
                 return null;
 
-            Djinn creature = new Djinn();
-            creature.Home = platLoc;
-            creature.RangeHome = 4;
+            Djinn creature = new Djinn
+            {
+                Home = platLoc,
+                RangeHome = 4
+            };
             creature.MoveToWorld(platLoc, platMap);
 
             return creature;

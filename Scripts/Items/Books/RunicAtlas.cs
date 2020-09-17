@@ -81,8 +81,10 @@ namespace Server.Items
                     if (g != null)
                         from.CloseGump(typeof(RunicAtlasGump));
 
-                    g = new RunicAtlasGump((PlayerMobile)from, this);
-                    g.Page = newPage;
+                    g = new RunicAtlasGump((PlayerMobile)from, this)
+                    {
+                        Page = newPage
+                    };
                     BaseGump.SendGump(g);
                 }
             }

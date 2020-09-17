@@ -117,7 +117,7 @@ namespace Ultima
                     {
                         continue;
                     }
-                    if ((line.Contains("Order")) && (line.Contains("KeyWord")))
+                    if (line.Contains("Order") && line.Contains("KeyWord"))
                     {
                         continue;
                     }

@@ -258,16 +258,22 @@ namespace Server.Engines.Quests
 
             Item item;
 
-            item = new WoodlandLegs();
-            item.Hue = 0x732;
+            item = new WoodlandLegs
+            {
+                Hue = 0x732
+            };
             AddItem(item);
 
-            item = new HideChest();
-            item.Hue = 0x727;
+            item = new HideChest
+            {
+                Hue = 0x727
+            };
             AddItem(item);
 
-            item = new LeafArms();
-            item.Hue = 0x749;
+            item = new LeafArms
+            {
+                Hue = 0x749
+            };
             AddItem(item);
         }
 

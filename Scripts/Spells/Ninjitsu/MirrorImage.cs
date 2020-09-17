@@ -268,9 +268,11 @@ namespace Server.Mobiles
 
         private Item CloneItem(Item item)
         {
-            Item newItem = new Item(item.ItemID);
-            newItem.Hue = item.Hue;
-            newItem.Layer = item.Layer;
+            Item newItem = new Item(item.ItemID)
+            {
+                Hue = item.Hue,
+                Layer = item.Layer
+            };
 
             return newItem;
         }

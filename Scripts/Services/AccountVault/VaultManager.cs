@@ -28,8 +28,10 @@ namespace Server.AccountVault
         {
             if (Backpack == null)
             {
-                Item backpack = new Backpack();
-                backpack.Movable = false;
+                Item backpack = new Backpack
+                {
+                    Movable = false
+                };
                 AddItem(backpack);
             }
 
@@ -61,20 +63,28 @@ namespace Server.AccountVault
                 var vault = AccountVault.GetVault(from);
                 var inRange = vault != null && from.Region.IsPartOf(this.Region);
 
-                var open = new OpenVaultEntry(this);
-                open.Enabled = vault != null && inRange && !from.Criminal;
+                var open = new OpenVaultEntry(this)
+                {
+                    Enabled = vault != null && inRange && !from.Criminal
+                };
                 list.Add(open);
 
-                var rent = new RentVaultEntry(this);
-                rent.Enabled = vault == null;
+                var rent = new RentVaultEntry(this)
+                {
+                    Enabled = vault == null
+                };
                 list.Add(rent);
 
-                var claim = new ClaimVaultEntry(this);
-                claim.Enabled = vault != null && inRange;
+                var claim = new ClaimVaultEntry(this)
+                {
+                    Enabled = vault != null && inRange
+                };
                 list.Add(claim);
 
-                var actions = new VaultActionsEntry(this, vault);
-                actions.Enabled = vault != null && inRange;
+                var actions = new VaultActionsEntry(this, vault)
+                {
+                    Enabled = vault != null && inRange
+                };
                 list.Add(actions);
 
                 var locations = new VaultLocationsEntry(this);

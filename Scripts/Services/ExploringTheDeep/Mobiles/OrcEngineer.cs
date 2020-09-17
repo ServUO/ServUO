@@ -56,9 +56,11 @@ namespace Server.Mobiles
             if (Instances != null && Instances.Count > 0)
                 return null;
 
-            OrcEngineer creature = new OrcEngineer();
-            creature.Home = platLoc;
-            creature.RangeHome = 4;
+            OrcEngineer creature = new OrcEngineer
+            {
+                Home = platLoc,
+                RangeHome = 4
+            };
             creature.MoveToWorld(platLoc, platMap);
 
             return creature;

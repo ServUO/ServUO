@@ -75,11 +75,15 @@ namespace Server.Engines.TreasuresOfKotlCity
 
             AddComponent(new AddonComponent(0x9CE5), -1, 2, 0);
 
-            Chest1 = new InternalContainer();
-            Chest1.Addon = this;
+            Chest1 = new InternalContainer
+            {
+                Addon = this
+            };
 
-            Chest2 = new InternalContainer();
-            Chest2.Addon = this;
+            Chest2 = new InternalContainer
+            {
+                Addon = this
+            };
         }
 
         public void AddStation()

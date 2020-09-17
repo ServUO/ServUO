@@ -25,7 +25,7 @@ namespace Server.Items
 			{
 				if (base.ItemID != value)
 				{
-					Map facet = (Parent == null ? Map : null);
+					Map facet = Parent == null ? Map : null;
 
 					if (facet != null)
 					{

@@ -497,9 +497,10 @@ namespace Server.Engines.Help
             Mobile sender = entry.Sender;
             DateTime time = DateTime.UtcNow;
 
-            MailMessage mail = new MailMessage(Email.FromAddress, Email.SpeechLogPageAddresses);
-
-            mail.Subject = "ServUO Speech Log Page Forwarding";
+            MailMessage mail = new MailMessage(Email.FromAddress, Email.SpeechLogPageAddresses)
+            {
+                Subject = "ServUO Speech Log Page Forwarding"
+            };
 
             using (StringWriter writer = new StringWriter())
             {

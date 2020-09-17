@@ -108,8 +108,10 @@ namespace Server.Commands
             }
             else
             {
-                sign = new Sign(itemID);
-                sign.Name = name;
+                sign = new Sign(itemID)
+                {
+                    Name = name
+                };
             }
             WeakEntityCollection.Add("sign", sign);
 

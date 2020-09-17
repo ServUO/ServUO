@@ -49,12 +49,16 @@ namespace Server.Engines.CityLoyalty
             EquipItem(new Cloak(1157));
             EquipItem(new BodySash(1326));
 
-            ChainChest chest = new ChainChest();
-            chest.Hue = 1908;
+            ChainChest chest = new ChainChest
+            {
+                Hue = 1908
+            };
             EquipItem(chest);
 
-            ThighBoots boots = new ThighBoots();
-            boots.Hue = 1908;
+            ThighBoots boots = new ThighBoots
+            {
+                Hue = 1908
+            };
             EquipItem(boots);
 
             EquipItem(new GoldRing());

@@ -82,8 +82,10 @@ namespace Server.Mobiles
 
             Item hat;
             Item fancyShirt = new FancyShirt();
-            Item shirt = new Shirt(GetRandomShirtHue());
-            shirt.Layer = Layer.OuterTorso;
+            Item shirt = new Shirt(GetRandomShirtHue())
+            {
+                Layer = Layer.OuterTorso
+            };
 
             if (Utility.RandomBool())
                 hat = new Bandana();

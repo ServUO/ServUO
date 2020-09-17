@@ -140,8 +140,10 @@ namespace Server.Engines.Quests
 
             Item item;
 
-            item = new SmithHammer();
-            item.Hue = 0x8AB;
+            item = new SmithHammer
+            {
+                Hue = 0x8AB
+            };
             AddItem(item);
         }
 

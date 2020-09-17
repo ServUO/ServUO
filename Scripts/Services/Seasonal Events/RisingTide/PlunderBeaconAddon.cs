@@ -72,8 +72,10 @@ namespace Server.Items
 
             if (oper)
             {
-                mob = new PirateCrew();
-                mob.CantWalk = true;
+                mob = new PirateCrew
+                {
+                    CantWalk = true
+                };
 
                 Crew.Add(mob);
             }

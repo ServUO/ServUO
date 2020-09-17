@@ -39,9 +39,9 @@ namespace Server
 			set => unbuffered = value;
 		}
 
-		public static bool AreSynchronous => (concurrency < 1);
+		public static bool AreSynchronous => concurrency < 1;
 
-		public static bool AreAsynchronous => (concurrency > 0);
+		public static bool AreAsynchronous => concurrency > 0;
 
 		public static FileStream OpenSequentialStream(string path, FileMode mode, FileAccess access, FileShare share)
 		{
@@ -68,7 +68,7 @@ namespace Server
 				throw new IOException();
 			}
 
-			return new UnbufferedFileStream(fileHandle, access, bufferSize, (concurrency > 0));
+			return new UnbufferedFileStream(fileHandle, access, bufferSize, concurrency > 0);
 		}
 
 		private class UnbufferedFileStream : FileStream

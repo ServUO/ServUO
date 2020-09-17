@@ -8,8 +8,10 @@ namespace Server.Items
         [Constructable]
         public EnchantedVortexAddon()
         {
-            AddonComponent comp = new AddonComponent(14284);
-            comp.Name = "an enchanted vortex";
+            AddonComponent comp = new AddonComponent(14284)
+            {
+                Name = "an enchanted vortex"
+            };
             AddComponent(comp, 0, 0, 0);
         }
 

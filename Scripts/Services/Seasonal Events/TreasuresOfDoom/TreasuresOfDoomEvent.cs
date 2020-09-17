@@ -75,12 +75,14 @@ namespace Server.Engines.TreasuresOfDoom
 
             if (Map.Malas.FindItem<Moongate>(p) == null)
             {
-                Moongate moongate = new Moongate();
-                moongate.ItemID = 0x4BCB;
-                moongate.Hue = 2676;
-                moongate.Dispellable = false;
-                moongate.Target = new Point3D(396, 220, -20);
-                moongate.TargetMap = Map.Malas;
+                Moongate moongate = new Moongate
+                {
+                    ItemID = 0x4BCB,
+                    Hue = 2676,
+                    Dispellable = false,
+                    Target = new Point3D(396, 220, -20),
+                    TargetMap = Map.Malas
+                };
 
                 moongate.MoveToWorld(p, Map.Malas);
             }

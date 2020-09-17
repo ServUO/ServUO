@@ -302,7 +302,7 @@ namespace Server
 
 				if (m_Base != sv)
 				{
-					m_Owner.Total = (m_Owner.Total - m_Base) + sv;
+					m_Owner.Total = m_Owner.Total - m_Base + sv;
 
 					m_Base = sv;
 
@@ -319,7 +319,7 @@ namespace Server
 		}
 
 		[CommandProperty(AccessLevel.Counselor, AccessLevel.GameMaster)]
-		public double Base { get => (m_Base / 10.0); set => BaseFixedPoint = (int)(value * 10.0); }
+		public double Base { get => m_Base / 10.0; set => BaseFixedPoint = (int)(value * 10.0); }
 
 		public int CapFixedPoint
 		{
@@ -349,7 +349,7 @@ namespace Server
 		[CommandProperty(AccessLevel.Counselor, AccessLevel.GameMaster)]
 		public double Cap
 		{
-			get => (m_Cap / 10.0);
+			get => m_Cap / 10.0;
 			set
 			{
 				double old = m_Cap / 10;
@@ -907,7 +907,7 @@ namespace Server
 					{
 						from.DisruptiveAction();
 
-						from.NextSkillTime = Core.TickCount + (int)(info.Callback(from)).TotalMilliseconds;
+						from.NextSkillTime = Core.TickCount + (int)info.Callback(from).TotalMilliseconds;
 
 						return true;
 					}

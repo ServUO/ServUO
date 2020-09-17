@@ -109,9 +109,11 @@ namespace Server.Items
         {
             get
             {
-                CannonDeed deed = new CannonDeed();
-                deed.Charges = m_Charges;
-                deed.IsRewardItem = m_IsRewardItem;
+                CannonDeed deed = new CannonDeed
+                {
+                    Charges = m_Charges,
+                    IsRewardItem = m_IsRewardItem
+                };
 
                 return deed;
             }
@@ -380,9 +382,11 @@ namespace Server.Items
         {
             get
             {
-                CannonAddon addon = new CannonAddon(m_Direction);
-                addon.Charges = m_Charges;
-                addon.IsRewardItem = m_IsRewardItem;
+                CannonAddon addon = new CannonAddon(m_Direction)
+                {
+                    Charges = m_Charges,
+                    IsRewardItem = m_IsRewardItem
+                };
 
                 return addon;
             }

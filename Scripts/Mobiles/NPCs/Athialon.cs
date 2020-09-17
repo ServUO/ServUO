@@ -45,20 +45,28 @@ namespace Server.Mobiles
 
             Item item;
 
-            item = new WoodlandLegs();
-            item.Hue = 0x3B2;
+            item = new WoodlandLegs
+            {
+                Hue = 0x3B2
+            };
             AddItem(item);
 
-            item = new WoodlandChest();
-            item.Hue = 0x3B2;
+            item = new WoodlandChest
+            {
+                Hue = 0x3B2
+            };
             AddItem(item);
 
-            item = new WoodlandArms();
-            item.Hue = 0x3B2;
+            item = new WoodlandArms
+            {
+                Hue = 0x3B2
+            };
             AddItem(item);
 
-            item = new WingedHelm();
-            item.Hue = 0x3B2;
+            item = new WingedHelm
+            {
+                Hue = 0x3B2
+            };
             AddItem(item);
         }
 

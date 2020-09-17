@@ -64,8 +64,10 @@ namespace Server.Items
         {
             GiftBox box = new GiftBox();
 
-            Item gift = new GingerBreadCookie();
-            gift.LootType = LootType.Regular;
+            Item gift = new GingerBreadCookie
+            {
+                LootType = LootType.Regular
+            };
             box.DropItem(gift);
 
             if (Utility.Random(100) < 60)

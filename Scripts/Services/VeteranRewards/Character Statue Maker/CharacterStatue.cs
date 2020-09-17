@@ -334,12 +334,14 @@ namespace Server.Mobiles
 
         public Item CloneItem(Item item)
         {
-            Item cloned = new Item(item.ItemID);
-            cloned.Layer = item.Layer;
-            cloned.Name = item.Name;
-            cloned.Hue = item.Hue;
-            cloned.Weight = item.Weight;
-            cloned.Movable = false;
+            Item cloned = new Item(item.ItemID)
+            {
+                Layer = item.Layer,
+                Name = item.Name,
+                Hue = item.Hue,
+                Weight = item.Weight,
+                Movable = false
+            };
 
             return cloned;
         }

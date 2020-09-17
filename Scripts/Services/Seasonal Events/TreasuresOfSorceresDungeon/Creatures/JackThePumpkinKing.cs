@@ -100,11 +100,12 @@ namespace Server.Engines.SorcerersDungeon
                         continue;
                 }
 
-                UnholyPumpkin bone = new UnholyPumpkin();
-
-                bone.Hue = 0;
-                bone.Name = "unholy pumpkin";
-                bone.ItemID = Utility.RandomMinMax(0xC6A, 0xC6C);
+                UnholyPumpkin bone = new UnholyPumpkin
+                {
+                    Hue = 0,
+                    Name = "unholy pumpkin",
+                    ItemID = Utility.RandomMinMax(0xC6A, 0xC6C)
+                };
 
                 bone.MoveToWorld(new Point3D(x, y, z), map);
             }

@@ -47,17 +47,17 @@ namespace Server
 				indexBuffer = new byte[20];
 			}
 
-			indexBuffer[0] = (byte)(typeCode);
+			indexBuffer[0] = (byte)typeCode;
 			indexBuffer[1] = (byte)(typeCode >> 8);
 			indexBuffer[2] = (byte)(typeCode >> 16);
 			indexBuffer[3] = (byte)(typeCode >> 24);
 
-			indexBuffer[4] = (byte)(serial);
+			indexBuffer[4] = (byte)serial;
 			indexBuffer[5] = (byte)(serial >> 8);
 			indexBuffer[6] = (byte)(serial >> 16);
 			indexBuffer[7] = (byte)(serial >> 24);
 
-			indexBuffer[8] = (byte)(position);
+			indexBuffer[8] = (byte)position;
 			indexBuffer[9] = (byte)(position >> 8);
 			indexBuffer[10] = (byte)(position >> 16);
 			indexBuffer[11] = (byte)(position >> 24);
@@ -66,7 +66,7 @@ namespace Server
 			indexBuffer[14] = (byte)(position >> 48);
 			indexBuffer[15] = (byte)(position >> 56);
 
-			indexBuffer[16] = (byte)(length);
+			indexBuffer[16] = (byte)length;
 			indexBuffer[17] = (byte)(length >> 8);
 			indexBuffer[18] = (byte)(length >> 16);
 			indexBuffer[19] = (byte)(length >> 24);

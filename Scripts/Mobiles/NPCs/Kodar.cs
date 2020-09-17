@@ -109,9 +109,11 @@ namespace Server.Engines.Quests
         {
             if (FelInstances == null)
             {
-                Kodar creature = new Kodar();
-                creature.Home = HomeLocation;
-                creature.RangeHome = HomeRange;
+                Kodar creature = new Kodar
+                {
+                    Home = HomeLocation,
+                    RangeHome = HomeRange
+                };
                 creature.MoveToWorld(HomeLocation, Map.Felucca);
 
                 FelInstances = new List<Kodar>();
@@ -120,9 +122,11 @@ namespace Server.Engines.Quests
 
             if (TramInstances == null)
             {
-                Kodar creature = new Kodar();
-                creature.Home = HomeLocation;
-                creature.RangeHome = HomeRange;
+                Kodar creature = new Kodar
+                {
+                    Home = HomeLocation,
+                    RangeHome = HomeRange
+                };
                 creature.MoveToWorld(HomeLocation, Map.Trammel);
 
                 TramInstances = new List<Kodar>();
