@@ -5569,10 +5569,13 @@ namespace Server.Mobiles
             }
         }
 
-        public virtual bool IsAggressiveMonster => IsMonster && (m_FightMode == FightMode.Closest ||
-                                     m_FightMode == FightMode.Strongest ||
-                                     m_FightMode == FightMode.Weakest ||
-                                     m_FightMode == FightMode.Good);
+        public virtual bool IsAggressiveMonster => IsMonster 
+        										&&
+        										 ( m_FightMode == FightMode.Closest 
+        										|| m_FightMode == FightMode.Strongest 
+        										|| m_FightMode == FightMode.Weakest 
+        										|| m_FightMode == FightMode.Good
+        										 );
 
         private class FKEntry
         {

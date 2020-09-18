@@ -23,7 +23,7 @@ namespace Server.Spells
             typeof(Bone),
             typeof(DragonBlood),
             typeof(FertileDirt),
-            typeof(DaemonBone)
+            typeof(DaemonBone),
         };
         public static Type BlackPearl
         {

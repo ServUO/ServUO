@@ -615,7 +615,6 @@ namespace Server.Misc
                         addSkillItems = false;
                         break;
                     }
-
                 case 6: // Samurai
                     {
                         if (elf || human)
@@ -1058,7 +1057,6 @@ namespace Server.Misc
                 case SkillName.Chivalry:
                     {
                         PackItem(new BookOfChivalry((ulong)0x3FF));
-
                         break;
                     }
                 case SkillName.DetectHidden:
