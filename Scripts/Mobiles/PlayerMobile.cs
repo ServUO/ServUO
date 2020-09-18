@@ -889,8 +889,8 @@ namespace Server.Mobiles
 
             if (pm != null && pm.Backpack != null && pm.Alive && e.List != null && e.List.Count > 0)
             {
-            if (pm.IsStaff() || Core.TickCount - pm.NextActionTime >= 0)
-            {
+                if (pm.IsStaff() || Core.TickCount - pm.NextActionTime >= 0)
+                {
                     Container pack = pm.Backpack;
 
                     e.List.ForEach(serial =>
@@ -923,12 +923,11 @@ namespace Server.Mobiles
 
                     pm.NextActionTime = Core.TickCount + (ActionDelay * e.List.Count);
                 }
-            }
-            else
-            {
-                pm.SendActionMessage();
-            }
-        }
+	            else
+	            {
+	                pm.SendActionMessage();
+	            }
+	        }
         }
 
         public static void UnequipMacro(UnequipMacroEventArgs e)
@@ -937,8 +936,8 @@ namespace Server.Mobiles
 
             if (pm != null && pm.Backpack != null && pm.Alive && e.List != null && e.List.Count > 0)
             {
-            if (pm.IsStaff() || Core.TickCount - pm.NextActionTime >= 0)
-            {
+                if (pm.IsStaff() || Core.TickCount - pm.NextActionTime >= 0)
+                {
                     Container pack = pm.Backpack;
 
                     List<Item> worn = new List<Item>(pm.Items);
@@ -954,11 +953,11 @@ namespace Server.Mobiles
                     pm.NextActionTime = Core.TickCount + ActionDelay;
                     ColUtility.Free(worn);
                 }
-            else
-            {
-                pm.SendActionMessage();
-            }
-        }
+	            else
+	            {
+	                pm.SendActionMessage();
+	            }
+	        }
         }
         #endregion
 

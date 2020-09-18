@@ -1,6 +1,4 @@
 /Ultima.dll
-/Ultima.pdb
-/Ultima.dll.mdb
 /Ultima/bin
 /Ultima/obj
 /Server.dll
@@ -11,9 +9,8 @@
 /Scripts/obj
 /Scripts/Output
 /Scripts/Custom
-/ServUO.exe.config
+/Application/bin
 /Application/obj
-System.Drawing.Common.dll
 
 /Honesty
 /Logs
@@ -24,6 +21,7 @@ System.Drawing.Common.dll
 /Reports
 /VitaNexCore
 /TheBox
+/Export
 /.vs
 
 /staffHistory.xml
@@ -32,6 +30,9 @@ System.Drawing.Common.dll
 /drng64.dll
 /drng32.dll
 /libdrng.so
+
+/Ultima.pdb
+/Ultima.dll.mdb
 
 *.pdb
 *.exe
