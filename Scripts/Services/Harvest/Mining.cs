@@ -96,7 +96,7 @@ namespace Server.Engines.Harvest
                 new HarvestVein(05.6, 0.5, res[5], res[0]), // Gold
                 new HarvestVein(04.2, 0.5, res[6], res[0]), // Agapite
                 new HarvestVein(02.8, 0.5, res[7], res[0]), // Verite
-                new HarvestVein(01.4, 0.5, res[8], res[0])// Valorite
+                new HarvestVein(01.4, 0.5, res[8], res[0]), // Valorite
             };
 
             oreAndStone.Resources = res;
