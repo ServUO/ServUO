@@ -5,8 +5,8 @@ namespace Server.Misc
 {
     public class WinterGiftGiver2004 : GiftGiver
     {
-        public override DateTime Start => new DateTime(DateTime.UtcNow.Year, 12, 24);
-        public override DateTime Finish => new DateTime(DateTime.UtcNow.Year + 1, 1, 1);
+        public override DateTime Start => new DateTime(2004, 12, 24);
+        public override DateTime Finish => new DateTime(2005, 1, 1);
         public static void Initialize()
         {
             GiftGiving.Register(new WinterGiftGiver2004());
