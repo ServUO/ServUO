@@ -3,14 +3,16 @@ using System;
 
 namespace Server.Misc
 {
-    public class WinterGiftGiver2004 : GiftGiver
+    public class WinterGiftGiver : GiftGiver
     {
-        public override DateTime Start => new DateTime(2004, 12, 24);
-        public override DateTime Finish => new DateTime(2005, 1, 1);
         public static void Initialize()
         {
-            GiftGiving.Register(new WinterGiftGiver2004());
+            GiftGiving.Register(new WinterGiftGiver());
         }
+
+        public override DateTime Start => new DateTime(2019, 09, 01); // When do you want your gift hand out?
+        public override DateTime Finish => new DateTime(2019, 10, 01); // When do you want your gift hand out to stop?
+        public override TimeSpan MinimumAge => TimeSpan.FromDays(30); // How old does a character have to be to obtain?
 
         public override void GiveGift(Mobile mob)
         {
