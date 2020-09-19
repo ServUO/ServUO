@@ -89,8 +89,7 @@ namespace Server.Engines.Quests
 
                         QuestSystem qs = Construct(type) as QuestSystem;
 
-                        if (qs != null)
-                            qs.BaseDeserialize(reader);
+                        Persistence.DeserializeBlock(reader, r => qs?.BaseDeserialize(r));
 
                         return qs;
                     }
@@ -109,7 +108,7 @@ namespace Server.Engines.Quests
 
                 Write(qs.GetType(), QuestSystem.QuestTypes, writer);
 
-                qs.BaseSerialize(writer);
+                Persistence.SerializeBlock(writer, qs.BaseSerialize);
             }
         }
 
@@ -130,8 +129,7 @@ namespace Server.Engines.Quests
 
                         QuestObjective obj = Construct(type) as QuestObjective;
 
-                        if (obj != null)
-                            obj.BaseDeserialize(reader);
+                        Persistence.DeserializeBlock(reader, r => obj?.BaseDeserialize(r));
 
                         return obj;
                     }
@@ -150,7 +148,7 @@ namespace Server.Engines.Quests
 
                 Write(obj.GetType(), referenceTable, writer);
 
-                obj.BaseSerialize(writer);
+                Persistence.SerializeBlock(writer, obj.BaseSerialize);
             }
         }
 
@@ -171,8 +169,7 @@ namespace Server.Engines.Quests
 
                         QuestConversation conv = Construct(type) as QuestConversation;
 
-                        if (conv != null)
-                            conv.BaseDeserialize(reader);
+                        Persistence.DeserializeBlock(reader, r => conv?.BaseDeserialize(r));
 
                         return conv;
                     }
@@ -191,7 +188,7 @@ namespace Server.Engines.Quests
 
                 Write(conv.GetType(), referenceTable, writer);
 
-                conv.BaseSerialize(writer);
+                Persistence.SerializeBlock(writer, conv.BaseSerialize);
             }
         }
     }
