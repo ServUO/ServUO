@@ -3,11 +3,13 @@ using Server.Items;
 using Server.Mobiles;
 using Server.Network;
 using Server.Spells;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using System.Linq;
 
 namespace Server.Multis
 {
@@ -1158,7 +1160,7 @@ namespace Server.Multis
         */
         private static readonly int[] m_StairIDs = new int[]
         {
-            0x71F, 0x736, 0x737, 0x749,
+            0x71F,  0x736,  0x737,  0x749,
             0x35D4, 0x35D3, 0x35D6, 0x35D5,
             0x360B, 0x360A, 0x360D, 0x360C,
             0x4360, 0x435E, 0x435F, 0x4361,
@@ -1166,7 +1168,16 @@ namespace Server.Multis
             0x4364, 0x4362, 0x4363, 0x4365,
             0x4B05, 0x4B04, 0x4B34, 0x4B33,
             0x7809, 0x7808, 0x780A, 0x780B,
-            0x7BB,  0x7BC, -1, -1,
+            0x7BB,  0x7BC, -1,      -1,
+        };
+
+        private static readonly int[] m_CornerIDs = new int[]
+        {
+            0x749, 0x74A, 0x74B, 0x74C,
+            0x4366, 0x4367, 0x4368, 0x4369,
+            0x436A, 0x436B, 0x436C, 0x436D,
+            0x4B01, 0x4B02, 0x4B03, 0x4B32,
+            0x780C, 0x708D, 0x708E, 0x708F
         };
 
         public static bool IsStairBlock(int id)
@@ -1177,6 +1188,11 @@ namespace Server.Multis
                 delta = (m_BlockIDs[i] - id);
 
             return (delta == 0);
+        }
+
+        public static bool IsStair(int id)
+        {
+            return m_StairSeqs.Any(seq => id >= seq && id <= seq + 8) || m_StairIDs.Any(stairID => stairID == id) || m_CornerIDs.Any(cornerID => cornerID == id);
         }
 
         public static bool IsStair(int id, ref int dir)

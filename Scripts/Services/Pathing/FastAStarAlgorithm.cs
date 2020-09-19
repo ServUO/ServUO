@@ -1,4 +1,3 @@
-using Server.Mobiles;
 using System.Collections;
 using CalcMoves = Server.Movement.Movement;
 using MoveImpl = Server.Movement.MovementImpl;
@@ -73,8 +72,6 @@ namespace Server.PathAlgorithms.FastAStar
             m_OnOpen[m_OpenList] = true;
             m_Touched[m_OpenList] = true;
 
-            BaseCreature bc = p as BaseCreature;
-
             int pathCount, parent;
             int backtrack = 0, depth = 0;
 
@@ -87,19 +84,11 @@ namespace Server.PathAlgorithms.FastAStar
                 if (++depth > MaxDepth)
                     break;
 
-                if (bc != null)
-                {
-                    MoveImpl.AlwaysIgnoreDoors = bc.CanOpenDoors;
-                    MoveImpl.IgnoreMovableImpassables = bc.CanMoveOverObstacles;
-                }
-
                 MoveImpl.Goal = goal;
 
                 int[] vals = m_Successors;
                 int count = GetSuccessors(bestNode, p, map);
 
-                MoveImpl.AlwaysIgnoreDoors = false;
-                MoveImpl.IgnoreMovableImpassables = false;
                 MoveImpl.Goal = Point3D.Zero;
 
                 if (count == 0)

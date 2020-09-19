@@ -413,9 +413,6 @@ namespace Server.Mobiles
         public DateTime LastOnline { get { return m_LastOnline; } set { m_LastOnline = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public long LastMoved => LastMoveTime;
-
-        [CommandProperty(AccessLevel.GameMaster)]
         public TimeSpan NpcGuildGameTime { get { return m_NpcGuildGameTime; } set { m_NpcGuildGameTime = value; } }
 
         public int ExecutesLightningStrike { get { return m_ExecutesLightningStrike; } set { m_ExecutesLightningStrike = value; } }
@@ -2002,16 +1999,7 @@ namespace Server.Mobiles
 
             int speed = ComputeMovementSpeed(d);
 
-            bool res;
-
-            if (!Alive)
-            {
-                MovementImpl.IgnoreMovableImpassables = true;
-            }
-
-            res = base.Move(d);
-
-            MovementImpl.IgnoreMovableImpassables = false;
+            bool res = base.Move(d);
 
             if (!res)
             {
@@ -5564,6 +5552,11 @@ namespace Server.Mobiles
             }
 
             return (running ? RunFoot : WalkFoot);
+        }
+
+        public override void OnBeforeDirectionChange(Direction newDirection)
+        {
+            m_NextMovementTime = Core.TickCount + RunMount;
         }
 
         public static bool MovementThrottle_Callback(NetState ns, out bool drop)

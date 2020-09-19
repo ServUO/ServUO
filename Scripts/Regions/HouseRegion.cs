@@ -100,7 +100,7 @@ namespace Server.Regions
         public bool IsStairArea(Item item)
         {
             bool frontStairs;
-            return House.IsStairArea(item.Location, out frontStairs) && frontStairs;
+            return House.IsStairArea(item, out frontStairs) && frontStairs;
         }
 
         public override bool SendInaccessibleMessage(Item item, Mobile from)

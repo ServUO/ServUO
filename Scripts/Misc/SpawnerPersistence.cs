@@ -1520,7 +1520,7 @@ namespace Server
                         fs.Close();
                     }
 
-                    ToConsole(string.Format("Deleted {0} XmlSpawners [{2} no id] in {3} seconds.", deletedxml, nospawner, ((Core.TickCount - start) / 1000).ToString()), ConsoleColor.Cyan);
+                    ToConsole(string.Format("Deleted {0} XmlSpawners [{1} no id] in {2} seconds.", deletedxml, nospawner, ((Core.TickCount - start) / 1000).ToString()), ConsoleColor.Cyan);
                 }
                 else
                 {

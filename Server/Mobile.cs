@@ -3090,221 +3090,225 @@ namespace Server
 			Point3D newLocation = m_Location;
 			Point3D oldLocation = newLocation;
 
-			if ((m_Direction & Direction.Mask) == (d & Direction.Mask))
-			{
-				// We are actually moving (not just a direction change)
+            if ((m_Direction & Direction.Mask) == (d & Direction.Mask))
+            {
+                // We are actually moving (not just a direction change)
 
-				if (m_Paralyzed || m_Frozen || (m_Spell != null && !m_Spell.CheckMovement(this)))
-				{
-					SendLocalizedMessage(500111); // You are frozen and can not move.
+                if (m_Paralyzed || m_Frozen || (m_Spell != null && !m_Spell.CheckMovement(this)))
+                {
+                    SendLocalizedMessage(500111); // You are frozen and can not move.
 
-					return false;
-				}
+                    return false;
+                }
 
 
-				if (CheckMovement(d, out int newZ))
-				{
-					int x = oldLocation.m_X, y = oldLocation.m_Y;
-					int oldX = x, oldY = y;
-					int oldZ = oldLocation.m_Z;
+                if (CheckMovement(d, out int newZ))
+                {
+                    int x = oldLocation.m_X, y = oldLocation.m_Y;
+                    int oldX = x, oldY = y;
+                    int oldZ = oldLocation.m_Z;
 
-					switch (d & Direction.Mask)
-					{
-						case Direction.North:
-						--y;
-						break;
-						case Direction.Right:
-						++x;
-						--y;
-						break;
-						case Direction.East:
-						++x;
-						break;
-						case Direction.Down:
-						++x;
-						++y;
-						break;
-						case Direction.South:
-						++y;
-						break;
-						case Direction.Left:
-						--x;
-						++y;
-						break;
-						case Direction.West:
-						--x;
-						break;
-						case Direction.Up:
-						--x;
-						--y;
-						break;
-					}
+                    switch (d & Direction.Mask)
+                    {
+                        case Direction.North:
+                            --y;
+                            break;
+                        case Direction.Right:
+                            ++x;
+                            --y;
+                            break;
+                        case Direction.East:
+                            ++x;
+                            break;
+                        case Direction.Down:
+                            ++x;
+                            ++y;
+                            break;
+                        case Direction.South:
+                            ++y;
+                            break;
+                        case Direction.Left:
+                            --x;
+                            ++y;
+                            break;
+                        case Direction.West:
+                            --x;
+                            break;
+                        case Direction.Up:
+                            --x;
+                            --y;
+                            break;
+                    }
 
-					newLocation.m_X = x;
-					newLocation.m_Y = y;
-					newLocation.m_Z = newZ;
+                    newLocation.m_X = x;
+                    newLocation.m_Y = y;
+                    newLocation.m_Z = newZ;
 
-					m_Pushing = false;
+                    m_Pushing = false;
 
-					Map map = m_Map;
+                    Map map = m_Map;
 
-					if (map != null)
-					{
-						Sector oldSector = map.GetSector(oldX, oldY);
-						Sector newSector = map.GetSector(x, y);
+                    if (map != null)
+                    {
+                        Sector oldSector = map.GetSector(oldX, oldY);
+                        Sector newSector = map.GetSector(x, y);
 
-						if (oldSector != newSector)
-						{
-							for (int i = 0; i < oldSector.Mobiles.Count; ++i)
-							{
-								Mobile m = oldSector.Mobiles[i];
+                        if (oldSector != newSector)
+                        {
+                            for (int i = 0; i < oldSector.Mobiles.Count; ++i)
+                            {
+                                Mobile m = oldSector.Mobiles[i];
 
-								if (m != this && m.X == oldX && m.Y == oldY && (m.Z + 15) > oldZ && (oldZ + 15) > m.Z && !m.OnMoveOff(this))
-								{
-									return false;
-								}
-							}
+                                if (m != this && m.X == oldX && m.Y == oldY && (m.Z + 15) > oldZ && (oldZ + 15) > m.Z && !m.OnMoveOff(this))
+                                {
+                                    return false;
+                                }
+                            }
 
-							for (int i = 0; i < oldSector.Items.Count; ++i)
-							{
-								Item item = oldSector.Items[i];
+                            for (int i = 0; i < oldSector.Items.Count; ++i)
+                            {
+                                Item item = oldSector.Items[i];
 
-								if (item.AtWorldPoint(oldX, oldY) &&
-									(item.Z == oldZ || ((item.Z + item.ItemData.Height) > oldZ && (oldZ + 15) > item.Z)) && !item.OnMoveOff(this))
-								{
-									return false;
-								}
-							}
+                                if (item.AtWorldPoint(oldX, oldY) &&
+                                    (item.Z == oldZ || ((item.Z + item.ItemData.Height) > oldZ && (oldZ + 15) > item.Z)) && !item.OnMoveOff(this))
+                                {
+                                    return false;
+                                }
+                            }
 
-							for (int i = 0; i < newSector.Mobiles.Count; ++i)
-							{
-								Mobile m = newSector.Mobiles[i];
+                            for (int i = 0; i < newSector.Mobiles.Count; ++i)
+                            {
+                                Mobile m = newSector.Mobiles[i];
 
-								if (m.X == x && m.Y == y && (m.Z + 15) > newZ && (newZ + 15) > m.Z && !m.OnMoveOver(this))
-								{
-									return false;
-								}
-							}
+                                if (m.X == x && m.Y == y && (m.Z + 15) > newZ && (newZ + 15) > m.Z && !m.OnMoveOver(this))
+                                {
+                                    return false;
+                                }
+                            }
 
-							for (int i = 0; i < newSector.Items.Count; ++i)
-							{
-								Item item = newSector.Items[i];
+                            for (int i = 0; i < newSector.Items.Count; ++i)
+                            {
+                                Item item = newSector.Items[i];
 
-								if (item.AtWorldPoint(x, y) &&
-									(item.Z == newZ || ((item.Z + item.ItemData.Height) >= newZ && (newZ + 15) > item.Z)) && !item.OnMoveOver(this))
-								{
-									return false;
-								}
-							}
-						}
-						else
-						{
-							for (int i = 0; i < oldSector.Mobiles.Count; ++i)
-							{
-								Mobile m = oldSector.Mobiles[i];
+                                if (item.AtWorldPoint(x, y) &&
+                                    (item.Z == newZ || ((item.Z + item.ItemData.Height) >= newZ && (newZ + 15) > item.Z)) && !item.OnMoveOver(this))
+                                {
+                                    return false;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            for (int i = 0; i < oldSector.Mobiles.Count; ++i)
+                            {
+                                Mobile m = oldSector.Mobiles[i];
 
-								if (m != this && m.X == oldX && m.Y == oldY && (m.Z + 15) > oldZ && (oldZ + 15) > m.Z && !m.OnMoveOff(this))
-								{
-									return false;
-								}
-								else if (m.X == x && m.Y == y && (m.Z + 15) > newZ && (newZ + 15) > m.Z && !m.OnMoveOver(this))
-								{
-									return false;
-								}
-							}
+                                if (m != this && m.X == oldX && m.Y == oldY && (m.Z + 15) > oldZ && (oldZ + 15) > m.Z && !m.OnMoveOff(this))
+                                {
+                                    return false;
+                                }
+                                else if (m.X == x && m.Y == y && (m.Z + 15) > newZ && (newZ + 15) > m.Z && !m.OnMoveOver(this))
+                                {
+                                    return false;
+                                }
+                            }
 
-							for (int i = 0; i < oldSector.Items.Count; ++i)
-							{
-								Item item = oldSector.Items[i];
+                            for (int i = 0; i < oldSector.Items.Count; ++i)
+                            {
+                                Item item = oldSector.Items[i];
 
-								if (item.AtWorldPoint(oldX, oldY) &&
-									(item.Z == oldZ || ((item.Z + item.ItemData.Height) > oldZ && (oldZ + 15) > item.Z)) && !item.OnMoveOff(this))
-								{
-									return false;
-								}
-								else if (item.AtWorldPoint(x, y) &&
-										 (item.Z == newZ || ((item.Z + item.ItemData.Height) >= newZ && (newZ + 15) > item.Z)) && !item.OnMoveOver(this))
-								{
-									return false;
-								}
-							}
-						}
+                                if (item.AtWorldPoint(oldX, oldY) &&
+                                    (item.Z == oldZ || ((item.Z + item.ItemData.Height) > oldZ && (oldZ + 15) > item.Z)) && !item.OnMoveOff(this))
+                                {
+                                    return false;
+                                }
+                                else if (item.AtWorldPoint(x, y) &&
+                                         (item.Z == newZ || ((item.Z + item.ItemData.Height) >= newZ && (newZ + 15) > item.Z)) && !item.OnMoveOver(this))
+                                {
+                                    return false;
+                                }
+                            }
+                        }
 
-						if (!Region.CanMove(this, d, newLocation, oldLocation, m_Map))
-						{
-							return false;
-						}
-					}
-					else
-					{
-						return false;
-					}
+                        if (!Region.CanMove(this, d, newLocation, oldLocation, m_Map))
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        return false;
+                    }
 
-					if (!InternalOnMove(d))
-					{
-						return false;
-					}
+                    if (!InternalOnMove(d))
+                    {
+                        return false;
+                    }
 
-					if (m_FwdEnabled && m_NetState != null && m_AccessLevel < m_FwdAccessOverride &&
-						(!m_FwdUOTDOverride || !m_NetState.IsUOTDClient))
-					{
-						if (m_MoveRecords == null)
-						{
-							m_MoveRecords = new Queue<MovementRecord>(6);
-						}
+                    if (m_FwdEnabled && m_NetState != null && m_AccessLevel < m_FwdAccessOverride &&
+                        (!m_FwdUOTDOverride || !m_NetState.IsUOTDClient))
+                    {
+                        if (m_MoveRecords == null)
+                        {
+                            m_MoveRecords = new Queue<MovementRecord>(6);
+                        }
 
-						while (m_MoveRecords.Count > 0)
-						{
-							MovementRecord r = m_MoveRecords.Peek();
+                        while (m_MoveRecords.Count > 0)
+                        {
+                            MovementRecord r = m_MoveRecords.Peek();
 
-							if (r.Expired())
-							{
-								m_MoveRecords.Dequeue();
-							}
-							else
-							{
-								break;
-							}
-						}
+                            if (r.Expired())
+                            {
+                                m_MoveRecords.Dequeue();
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
 
-						if (m_MoveRecords.Count >= m_FwdMaxSteps)
-						{
-							FastWalkEventArgs fw = new FastWalkEventArgs(m_NetState);
-							EventSink.InvokeFastWalk(fw);
+                        if (m_MoveRecords.Count >= m_FwdMaxSteps)
+                        {
+                            FastWalkEventArgs fw = new FastWalkEventArgs(m_NetState);
+                            EventSink.InvokeFastWalk(fw);
 
-							if (fw.Blocked)
-							{
-								return false;
-							}
-						}
+                            if (fw.Blocked)
+                            {
+                                return false;
+                            }
+                        }
 
-						int delay = ComputeMovementSpeed(d);
+                        int delay = ComputeMovementSpeed(d);
 
-						long end;
+                        long end;
 
-						if (m_MoveRecords.Count > 0)
-						{
-							end = m_EndQueue + delay;
-						}
-						else
-						{
-							end = Core.TickCount + delay;
-						}
+                        if (m_MoveRecords.Count > 0)
+                        {
+                            end = m_EndQueue + delay;
+                        }
+                        else
+                        {
+                            end = Core.TickCount + delay;
+                        }
 
-						m_MoveRecords.Enqueue(MovementRecord.NewInstance(end));
+                        m_MoveRecords.Enqueue(MovementRecord.NewInstance(end));
 
-						m_EndQueue = end;
-					}
+                        m_EndQueue = end;
+                    }
 
-					m_LastMoveTime = Core.TickCount;
-				}
-				else
-				{
-					return false;
-				}
+                    m_LastMoveTime = Core.TickCount;
+                }
+                else
+                {
+                    return false;
+                }
 
-				DisruptiveAction();
-			}
+                DisruptiveAction();
+            }
+            else
+            {
+                OnBeforeDirectionChange(d);
+            }
 
 			if (m_NetState != null)
 			{
@@ -3407,6 +3411,9 @@ namespace Server
 			OnAfterMove(oldLocation);
 			return true;
 		}
+
+        public virtual void OnBeforeDirectionChange(Direction newDirection)
+        { }
 
 		public virtual void OnAfterMove(Point3D oldLocation)
 		{ }
