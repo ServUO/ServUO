@@ -1,4 +1,4 @@
-﻿#region References
+#region References
 using System;
 using System.IO;
 #endregion
@@ -6,8 +6,72 @@ using System.IO;
 namespace Server
 {
 	public static class Persistence
-	{
-		public static void Serialize(string path, Action<GenericWriter> serializer)
+    {
+        public static void SerializeBlock(GenericWriter writer, Action<GenericWriter> serializer)
+        {
+            byte[] data;
+
+            using (MemoryStream ms = new MemoryStream())
+            {
+                BinaryFileWriter w = new BinaryFileWriter(ms, true);
+
+                try
+                {
+                    serializer(w);
+
+                    w.Flush();
+
+                    data = ms.ToArray();
+                }
+                finally
+                {
+                    w.Close();
+                }
+            }
+
+            writer.Write(0x0C0FFEE0);
+            writer.Write(data.Length);
+
+            for (int i = 0; i < data.Length; i++)
+            {
+                writer.Write(data[i]);
+            }
+        }
+
+        public static void DeserializeBlock(GenericReader reader, Action<GenericReader> deserializer)
+        {
+            if (reader.PeekInt() == 0x0C0FFEE0 && reader.ReadInt() == 0x0C0FFEE0)
+            {
+                int length = reader.ReadInt();
+
+                byte[] data = new byte[length];
+
+                for (int i = 0; i < length; i++)
+                {
+                    data[i] = reader.ReadByte();
+                }
+
+                using (MemoryStream ms = new MemoryStream(data))
+                {
+                    BinaryFileReader r = new BinaryFileReader(new BinaryReader(ms));
+
+                    try
+                    {
+                        deserializer(r);
+                    }
+                    finally
+                    {
+                        r.Close();
+                    }
+                }
+            }
+            else
+            {
+                deserializer(reader);
+            }
+        }
+
+        public static void Serialize(string path, Action<GenericWriter> serializer)
 		{
 			Serialize(new FileInfo(path), serializer);
 		}
