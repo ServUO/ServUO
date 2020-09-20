@@ -14,6 +14,8 @@ namespace Server
 {
 	public abstract class GenericReader
 	{
+        public abstract Type ReadObjectType();
+
 		public abstract string ReadString();
 		public abstract DateTime ReadDateTime();
 		public abstract DateTimeOffset ReadDateTimeOffset();
@@ -83,7 +85,10 @@ namespace Server
 
 		public abstract long Position { get; }
 
-		public abstract void Write(string value);
+        public abstract void WriteObjectType(object value);
+        public abstract void WriteObjectType(Type value);
+
+        public abstract void Write(string value);
 		public abstract void Write(DateTime value);
 		public abstract void Write(DateTimeOffset value);
 		public abstract void Write(TimeSpan value);
@@ -338,9 +343,21 @@ namespace Server
 			{
 				InternalWriteString(value);
 			}
-		}
+        }
 
-		public override void Write(DateTime value)
+        public override void WriteObjectType(object value)
+        {
+            WriteObjectType(value?.GetType());
+        }
+
+        public override void WriteObjectType(Type value)
+        {
+        	int hash = ScriptCompiler.FindHashByFullName(value?.FullName);
+        	
+            WriteEncodedInt(hash);
+        }
+
+        public override void Write(DateTime value)
 		{
 			Write(value.Ticks);
 		}
@@ -1074,7 +1091,14 @@ namespace Server
 			return m_File.BaseStream.Seek(offset, origin);
 		}
 
-		public override string ReadString()
+        public override Type ReadObjectType()
+        {
+        	int hash = ReadEncodedInt();
+        	
+            return ScriptCompiler.FindTypeByFullNameHash(hash);
+        }
+
+        public override string ReadString()
 		{
 			if (ReadByte() != 0)
 			{
@@ -1695,7 +1719,19 @@ namespace Server
 
 		public override long Position => m_CurPos;
 
-		public override void Write(IPAddress value)
+        public override void WriteObjectType(object value)
+        {
+            WriteObjectType(value?.GetType());
+        }
+
+        public override void WriteObjectType(Type value)
+        {
+        	int hash = ScriptCompiler.FindHashByFullName(value?.FullName);
+        	
+            WriteEncodedInt(hash);
+        }
+
+        public override void Write(IPAddress value)
 		{
 			m_Bin.Write(Utility.GetLongAddressValue(value));
 			OnWrite();

@@ -9,23 +9,26 @@ namespace Server
     {
         public static void SerializeBlock(GenericWriter writer, Action<GenericWriter> serializer)
         {
-            byte[] data;
+            byte[] data = Array.Empty<byte>();
 
-            using (MemoryStream ms = new MemoryStream())
+            if (serializer != null)
             {
-                BinaryFileWriter w = new BinaryFileWriter(ms, true);
-
-                try
+                using (MemoryStream ms = new MemoryStream())
                 {
-                    serializer(w);
+                    BinaryFileWriter w = new BinaryFileWriter(ms, true);
 
-                    w.Flush();
+                    try
+                    {
+                        serializer(w);
 
-                    data = ms.ToArray();
-                }
-                finally
-                {
-                    w.Close();
+                        w.Flush();
+
+                        data = ms.ToArray();
+                    }
+                    finally
+                    {
+                        w.Close();
+                    }
                 }
             }
 
@@ -44,30 +47,38 @@ namespace Server
             {
                 int length = reader.ReadInt();
 
-                byte[] data = new byte[length];
+                byte[] data = Array.Empty<byte>();
 
-                for (int i = 0; i < length; i++)
+                if (length > 0)
+                {
+                    data = new byte[length];
+                }
+
+                for (int i = 0; i < data.Length; i++)
                 {
                     data[i] = reader.ReadByte();
                 }
 
-                using (MemoryStream ms = new MemoryStream(data))
+                if (deserializer != null)
                 {
-                    BinaryFileReader r = new BinaryFileReader(new BinaryReader(ms));
+                    using (MemoryStream ms = new MemoryStream(data))
+                    {
+                        BinaryFileReader r = new BinaryFileReader(new BinaryReader(ms));
 
-                    try
-                    {
-                        deserializer(r);
-                    }
-                    finally
-                    {
-                        r.Close();
+                        try
+                        {
+                            deserializer(r);
+                        }
+                        finally
+                        {
+                            r.Close();
+                        }
                     }
                 }
             }
-            else
+            else 
             {
-                deserializer(reader);
+                deserializer?.Invoke(reader);
             }
         }
 
@@ -164,14 +175,14 @@ namespace Server
 				{
 					if (file.Length > 0)
 					{
-						throw new Exception(string.Format("[Persistance]: {0}", eos));
+						throw new Exception(string.Format("[Persistence]: {0}", eos));
 					}
 				}
 				catch (Exception e)
 				{
-					Utility.WriteConsoleColor(ConsoleColor.Red, "[Persistance]: An error was encountered while loading a saved object");
+					Utility.WriteConsoleColor(ConsoleColor.Red, "[Persistence]: An error was encountered while loading a saved object");
 
-					throw new Exception(string.Format("[Persistance]: {0}", e));
+					throw new Exception(string.Format("[Persistence]: {0}", e));
 				}
 				finally
 				{
