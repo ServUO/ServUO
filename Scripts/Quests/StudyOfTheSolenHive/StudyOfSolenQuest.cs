@@ -5,17 +5,6 @@ namespace Server.Engines.Quests.Naturalist
 {
     public class StudyOfSolenQuest : QuestSystem
     {
-        private static readonly Type[] m_TypeReferenceTable = new Type[]
-        {
-            typeof(StudyNestsObjective),
-            typeof(ReturnToNaturalistObjective),
-            typeof(DontOfferConversation),
-            typeof(AcceptConversation),
-            typeof(NaturalistDuringStudyConversation),
-            typeof(EndConversation),
-            typeof(SpecialEndConversation),
-            typeof(FullBackpackConversation)
-        };
         private Naturalist m_Naturalist;
         public StudyOfSolenQuest(PlayerMobile from, Naturalist naturalist)
             : base(from)
@@ -28,7 +17,6 @@ namespace Server.Engines.Quests.Naturalist
         {
         }
 
-        public override Type[] TypeReferenceTable => m_TypeReferenceTable;
         public override object Name =>
                 // "Study of the Solen Hive"
                 1054041;

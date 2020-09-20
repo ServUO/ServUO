@@ -4284,6 +4284,7 @@ namespace Server.Mobiles
 
             switch (version)
             {
+                case 42: // upgraded quest serialization
                 case 41: // removed PeacedUntil - no need to serialize this
                 case 40: // Version 40, moved gauntlet points, virtua artys and TOT convert to PointsSystem
                 case 39: // Version 39, removed ML quest save/load
@@ -4486,7 +4487,13 @@ namespace Server.Mobiles
 
                             for (int i = 0; i < count; ++i)
                             {
-                                Type questType = QuestSerializer.ReadType(QuestSystem.QuestTypes, reader);
+                                Type questType;
+
+                                if (version >= 42)
+                                    questType = reader.ReadObjectType();
+                                else
+                                    questType = QuestSerializer.ReadQuestType(reader);
+
                                 DateTime restartTime;
 
                                 if (version < 17)
@@ -4745,7 +4752,7 @@ namespace Server.Mobiles
 
             base.Serialize(writer);
 
-            writer.Write(41); // version
+            writer.Write(42); // version
 
             writer.Write(NextGemOfSalvationUse);
 
@@ -4861,7 +4868,7 @@ namespace Server.Mobiles
                 {
                     QuestRestartInfo restartInfo = m_DoneQuests[i];
 
-                    QuestSerializer.Write(restartInfo.QuestType, QuestSystem.QuestTypes, writer);
+                    writer.WriteObjectType(restartInfo.QuestType);
                     writer.Write(restartInfo.RestartTime);
                 }
             }
