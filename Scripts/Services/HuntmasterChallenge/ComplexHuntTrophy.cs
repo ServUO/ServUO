@@ -1,5 +1,4 @@
 using Server.Engines.HuntsmasterChallenge;
-using System;
 
 namespace Server.Items
 {

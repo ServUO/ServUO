@@ -1,5 +1,4 @@
 using Server.Network;
-using System;
 
 namespace Server.Spells.SkillMasteries
 {

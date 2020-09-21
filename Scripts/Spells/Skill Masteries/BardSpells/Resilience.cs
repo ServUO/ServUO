@@ -1,5 +1,3 @@
-using System;
-
 /*Poison resistance increase(not the stat), Mortal, Bleed, Curse effect Durations decreased, 
 Hp regen bonus 2-11, mana regen bonus 2-11, stamina regen bonus 2-11.*/
 

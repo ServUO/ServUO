@@ -176,10 +176,8 @@ namespace Server.Misc
                     });
             }
 
-            private static void OnHandshakeResponse(NetState state, PacketReader pvSrc)
+            private static void OnHandshakeResponse(NetState state)
             {
-                //pvSrc.Trace(state);
-
                 if (state == null || state.Mobile == null || !state.Running)
                 {
                     return;

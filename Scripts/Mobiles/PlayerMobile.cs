@@ -18,7 +18,6 @@ using Server.Guilds;
 using Server.Gumps;
 using Server.Items;
 using Server.Misc;
-using Server.Movement;
 using Server.Multis;
 using Server.Network;
 using Server.Regions;
@@ -411,9 +410,6 @@ namespace Server.Mobiles
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime LastOnline { get { return m_LastOnline; } set { m_LastOnline = value; } }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public long LastMoved => LastMoveTime;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public TimeSpan NpcGuildGameTime { get { return m_NpcGuildGameTime; } set { m_NpcGuildGameTime = value; } }
@@ -2002,30 +1998,17 @@ namespace Server.Mobiles
 
             int speed = ComputeMovementSpeed(d);
 
-            bool res;
+            bool result = base.Move(d);
 
-            if (!Alive)
-            {
-                MovementImpl.IgnoreMovableImpassables = true;
-            }
-
-            res = base.Move(d);
-
-            MovementImpl.IgnoreMovableImpassables = false;
-
-            if (!res)
-            {
-                return false;
-            }
-
-            m_NextMovementTime += speed;
-
-            if (!Siege.SiegeShard && Core.TickCount - NextPassiveDetectHidden >= 0)
+            if (result && !Siege.SiegeShard && Core.TickCount - NextPassiveDetectHidden >= 0)
             {
                 DetectHidden.DoPassiveDetect(this);
                 NextPassiveDetectHidden = Core.TickCount + (int)TimeSpan.FromSeconds(2).TotalMilliseconds;
             }
-            return true;
+
+            m_NextMovementTime += speed;
+
+            return result;
         }
 
         public override bool CheckMovement(Direction d, out int newZ)

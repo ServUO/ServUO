@@ -1,5 +1,3 @@
-using System;
-
 /*Party Hit chance increase by up to 15%, Damage increase by up to 40%, 
 SDI increased by up to 15% (PvP Cap 15)(Provocation Based)*/
 

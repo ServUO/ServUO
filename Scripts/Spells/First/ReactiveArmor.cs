@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 
 namespace Server.Spells.First

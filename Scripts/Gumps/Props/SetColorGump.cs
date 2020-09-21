@@ -1,7 +1,6 @@
 ﻿#region References
 using Server.Commands;
 using Server.Network;
-using System;
 using System.Collections;
 using System.Drawing;
 using System.Globalization;
