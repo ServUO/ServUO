@@ -20,8 +20,7 @@ namespace Server
 		OneSecond,
 		FiveSeconds,
         ThirtySeconds,
-		OneMinute,
-        FiveMinutes
+		OneMinute
 	}
 
 	public delegate void TimerCallback();
@@ -131,13 +130,13 @@ namespace Server
 		{
 			private static readonly Dictionary<Timer, TimerChangeEntry> m_Changed = new Dictionary<Timer, TimerChangeEntry>();
 
-			private static readonly long[] m_NextPriorities = new long[10];
-			private static readonly long[] m_PriorityDelays = { 0, 10, 25, 50, 250, 1000, 5000, 30000, 60000, 300000 };
+			private static readonly long[] m_NextPriorities = new long[9];
+			private static readonly long[] m_PriorityDelays = { 0, 10, 25, 50, 250, 1000, 5000, 30000, 60000 };
 
 			private static readonly List<Timer>[] m_Timers =
 			{
 				new List<Timer>(), new List<Timer>(), new List<Timer>(), new List<Timer>(), new List<Timer>(),
-                new List<Timer>(), new List<Timer>(), new List<Timer>(), new List<Timer>(), new List<Timer>()
+                new List<Timer>(), new List<Timer>(), new List<Timer>(), new List<Timer>()
 			};
 
             private static readonly Dictionary<string, int>[] m_Dump = new Dictionary<string, int>[m_Timers.Length];
@@ -159,7 +158,7 @@ namespace Server
                 tw.WriteLine();
                 tw.WriteLine();
 
-                for (var i = 0; i < 10; i++)
+                for (var i = 0; i < m_Timers.Length; i++)
                 {
                     tw.WriteLine($"Priority: {(TimerPriority)i}");
                     tw.WriteLine();
@@ -479,11 +478,6 @@ namespace Server
 
 		public static TimerPriority ComputePriority(TimeSpan ts)
 		{
-            if (ts.TotalMinutes >= 30.0)
-            {
-                return TimerPriority.FiveMinutes;
-            }
-
             if (ts.TotalMinutes >= 10.0)
 			{
 				return TimerPriority.OneMinute;
