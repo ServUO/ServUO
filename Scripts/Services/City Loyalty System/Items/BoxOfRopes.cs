@@ -66,10 +66,7 @@ namespace Server.Items
 
             foreach (var m in remove)
             {
-                if (_Cooldown.ContainsKey(m))
-                {
-                    _Cooldown.Remove(m);
-                }
+                _Cooldown.Remove(m);
             }
 
             ColUtility.Free(remove);
