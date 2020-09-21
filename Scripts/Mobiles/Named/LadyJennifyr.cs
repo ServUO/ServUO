@@ -101,7 +101,7 @@ namespace Server.Mobiles
             {
                 m_Mobile = m;
                 m_Mod = mod;
-                Priority = TimerPriority.TwoFiftyMS;
+                Priority = TimerPriority.OneSecond;
             }
 
             public void DoExpire()

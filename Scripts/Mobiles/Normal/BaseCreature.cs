@@ -7535,7 +7535,7 @@ namespace Server.Mobiles
         public List<BaseCreature> ToDelete { get; set; } = new List<BaseCreature>();
 
         public CreatureDeleteTimer()
-            : base(TimeSpan.FromMinutes(5), TimeSpan.FromSeconds(5))
+            : base(TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5))
         {
             Priority = TimerPriority.OneMinute;
         }

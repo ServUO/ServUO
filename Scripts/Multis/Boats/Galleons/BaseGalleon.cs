@@ -1397,7 +1397,7 @@ namespace Server.Multis
                 }
             }
 
-            Timer.DelayCall(TimeSpan.FromSeconds(25), CheckPaintDecay);
+            Timer.DelayCall(TimeSpan.FromMinutes(1), CheckPaintDecay);
         }
 
         public override void Deserialize(GenericReader reader)

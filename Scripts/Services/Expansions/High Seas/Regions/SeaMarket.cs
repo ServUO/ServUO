@@ -100,7 +100,7 @@ namespace Server.Regions
 
         #region Pirate Blabbing
         public static Dictionary<Mobile, DateTime> m_PirateBlabTable = new Dictionary<Mobile, DateTime>();
-        private static readonly TimeSpan BlabDuration = TimeSpan.FromSeconds(60);
+        private static readonly TimeSpan BlabDuration = TimeSpan.FromMinutes(1);
 
         public static void TryPirateBlab(Mobile from, Mobile npc)
         {
@@ -162,8 +162,7 @@ namespace Server.Regions
                 return;
 
             foreach (Mobile player in r.GetEnumeratedMobiles().Where(p => p is PlayerMobile &&
-                                                                       p.Alive /*&&
-                                                                       QuestHelper.GetQuest((PlayerMobile)p, typeof(ProfessionalBountyQuest)) != null*/))
+                                                                       p.Alive))
             {
                 IPooledEnumerable eable = player.GetMobilesInRange(4);
 
@@ -323,7 +322,7 @@ namespace Server.Regions
         {
             RestrictBoats = m_RestrictBoats;
 
-            m_BlabTimer = Timer.DelayCall(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), CheckBlab_Callback);
+            m_BlabTimer = Timer.DelayCall(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5), CheckBlab_Callback);
             m_BlabTimer.Priority = TimerPriority.OneSecond;
         }
         #endregion

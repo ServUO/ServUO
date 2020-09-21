@@ -142,7 +142,7 @@ namespace Server.Items
                 Spawn.ForEach(bc => writer.Write(bc));
             }
 
-            Timer.DelayCall(TimeSpan.FromSeconds(30), CheckSpawn);
+            Timer.DelayCall(TimeSpan.FromMinutes(1), CheckSpawn);
         }
 
         public override void Deserialize(GenericReader reader)
