@@ -313,9 +313,9 @@ namespace Server
                     {
                         totalDamage /= 2;
                     }
-                    else if (type == DamageType.Melee && toCreature != null && toCreature.Controlled)
+                    else if (toCreature != null && toCreature.Controlled)
                     {
-                        totalDamage += (int)((double)totalDamage * 0.10);
+                        totalDamage += (int)(totalDamage * 0.10);
                     }
                 }
             }

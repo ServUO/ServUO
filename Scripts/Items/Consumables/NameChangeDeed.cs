@@ -1,7 +1,6 @@
 using Server.Gumps;
 using Server.Misc;
 using Server.Network;
-using System;
 
 namespace Server.Items
 {

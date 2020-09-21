@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Spells.Ninjitsu
 {
     public abstract class NinjaSpell : Spell

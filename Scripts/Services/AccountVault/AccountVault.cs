@@ -6,7 +6,6 @@ using Server.Accounting;
 using Server.Engines.NewMagincia;
 using Server.Engines.UOStore;
 using Server.ContextMenus;
-using Server.Engines.Auction;
 using Server.Spells;
 
 using System;

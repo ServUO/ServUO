@@ -1137,6 +1137,16 @@ namespace Server.Multis
             return FindHouseAt(e.Location, e.Map, 16);
         }
 
+        public static BaseHouse FindHouseAt(IPoint3D p, Map map)
+        {
+            if (p == null)
+            {
+                return null;
+            }
+
+            return FindHouseAt(new Point3D(p), map, 16);
+        }
+
         public static BaseHouse FindHouseAt(Point3D loc, Map map, int height)
         {
             if (map == null || map == Map.Internal)
@@ -1242,14 +1252,15 @@ namespace Server.Multis
             typeof(PotionKeg)
         };
 
-        public virtual bool IsStairArea(Point3D p)
+        public virtual bool IsStairArea(IPoint3D p)
         {
             bool frontStairs;
             return IsStairArea(p, out frontStairs);
         }
 
-        public virtual bool IsStairArea(Point3D p, out bool frontStairs)
+        public virtual bool IsStairArea(IPoint3D p, out bool frontStairs)
         {
+            frontStairs = false;
             MultiComponentList mcl = Components;
 
             int x = p.X - (X + mcl.Min.X);
@@ -1260,32 +1271,19 @@ namespace Server.Multis
             {
                 return false;
             }
-            
-            StaticTile[] tiles = mcl.Tiles[x][y];
-            int dir = 0;
 
-            if (tiles.Length == 1)
+            var id = mcl.List.FirstOrDefault(entry =>
+                p.X - X == entry.m_OffsetX &&
+                p.Y - Y == entry.m_OffsetY &&
+                (p.Z - TileData.ItemTable[entry.m_ItemID].CalcHeight) - Z == entry.m_OffsetZ).m_ItemID;
+
+            if (id <= 0 || (!HouseFoundation.IsStair(id) && !HouseFoundation.IsStairBlock(id)))
             {
-                var id = tiles[0].ID & TileData.MaxItemValue;
-
-                if (HouseFoundation.IsStair(id, ref dir) || HouseFoundation.IsStairBlock(id))
-                {
-                    frontStairs = true;
-                    return true;
-                }
+                return false;
             }
 
-            for (int j = 0; j < tiles.Length; ++j)
-            {
-                int id = tiles[j].ID & TileData.MaxItemValue;
-
-                if (HouseFoundation.IsStair(id, ref dir) || HouseFoundation.IsStairBlock(id))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            frontStairs = mcl.Tiles[x][y].Length == 1;
+            return true;
         }
 
         public virtual bool IsInside(Point3D p, int height)
@@ -1793,7 +1791,7 @@ namespace Server.Multis
                 * Offset		0	2	4	6	8	10	12	14
                 * DoorFacing	2	3	2	3	6	7	6	7
                 */
-                int offset = itemID - 0x436E;
+            int offset = itemID - 0x436E;
                 DoorFacing facing = (DoorFacing)((offset / 2 + 2 * ((1 + offset / 4) % 2)) % 8);
                 door = new GenericHouseDoor(facing, itemID, 0xEA, 0xF1, false);
             }

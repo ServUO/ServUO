@@ -6,7 +6,7 @@ namespace Server.Engines.Chat
 {
     public class ChatLogging
     {
-        public static readonly bool Enabled = true;
+        public static readonly bool Enabled = Config.Get("Chat.Logging", false);
 
         private static StreamWriter m_Output;
         private static Dictionary<string, StreamWriter> m_OutputPerChannel;

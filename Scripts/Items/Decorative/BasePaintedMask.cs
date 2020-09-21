@@ -1,6 +1,4 @@
-﻿using System;
-
-//using System.Collections.Generic;
+﻿//using System.Collections.Generic;
 namespace Server.Items.Holiday
 {
     [TypeAlias("Server.Items.ClownMask", "Server.Items.DaemonMask", "Server.Items.PlagueMask")]

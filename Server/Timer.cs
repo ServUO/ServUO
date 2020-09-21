@@ -19,7 +19,9 @@ namespace Server
 		TwoFiftyMS,
 		OneSecond,
 		FiveSeconds,
-		OneMinute
+        ThirtySeconds,
+		OneMinute,
+        FiveMinutes
 	}
 
 	public delegate void TimerCallback();
@@ -129,13 +131,13 @@ namespace Server
 		{
 			private static readonly Dictionary<Timer, TimerChangeEntry> m_Changed = new Dictionary<Timer, TimerChangeEntry>();
 
-			private static readonly long[] m_NextPriorities = new long[8];
-			private static readonly long[] m_PriorityDelays = { 0, 10, 25, 50, 250, 1000, 5000, 60000 };
+			private static readonly long[] m_NextPriorities = new long[10];
+			private static readonly long[] m_PriorityDelays = { 0, 10, 25, 50, 250, 1000, 5000, 30000, 60000, 300000 };
 
 			private static readonly List<Timer>[] m_Timers =
 			{
-				new List<Timer>(), new List<Timer>(), new List<Timer>(),
-				new List<Timer>(), new List<Timer>(), new List<Timer>(), new List<Timer>(), new List<Timer>()
+				new List<Timer>(), new List<Timer>(), new List<Timer>(), new List<Timer>(), new List<Timer>(),
+                new List<Timer>(), new List<Timer>(), new List<Timer>(), new List<Timer>(), new List<Timer>()
 			};
 
             private static readonly Dictionary<string, int>[] m_Dump = new Dictionary<string, int>[m_Timers.Length];
@@ -157,7 +159,7 @@ namespace Server
                 tw.WriteLine();
                 tw.WriteLine();
 
-                for (var i = 0; i < 8; i++)
+                for (var i = 0; i < 10; i++)
                 {
                     tw.WriteLine($"Priority: {(TimerPriority)i}");
                     tw.WriteLine();
@@ -398,16 +400,12 @@ namespace Server
 
 		public static int BreakCount { get => m_BreakCount; set => m_BreakCount = value; }
 
-		private static int m_QueueCountAtSlice;
-
 		private bool m_Queued;
 
 		public static void Slice()
 		{
 			lock (m_Queue)
 			{
-				m_QueueCountAtSlice = m_Queue.Count;
-
 				int index = 0;
 
 				while (index < m_BreakCount && m_Queue.Count != 0)
@@ -481,12 +479,22 @@ namespace Server
 
 		public static TimerPriority ComputePriority(TimeSpan ts)
 		{
-			if (ts.TotalMinutes >= 10.0)
+            if (ts.TotalMinutes >= 30.0)
+            {
+                return TimerPriority.FiveMinutes;
+            }
+
+            if (ts.TotalMinutes >= 10.0)
 			{
 				return TimerPriority.OneMinute;
 			}
 
-			if (ts.TotalMinutes >= 1.0)
+            if (ts.TotalMinutes >= 5.0)
+            {
+                return TimerPriority.ThirtySeconds;
+            }
+
+            if (ts.TotalSeconds >= 30.0)
 			{
 				return TimerPriority.FiveSeconds;
 			}
@@ -709,11 +717,8 @@ namespace Server
 
 			protected override void OnTick()
 			{
-				if (m_Callback != null)
-				{
-					m_Callback();
-				}
-			}
+                m_Callback?.Invoke();
+            }
 
 			public override string ToString()
 			{
@@ -741,11 +746,8 @@ namespace Server
 
 			protected override void OnTick()
 			{
-				if (m_Callback != null)
-				{
-					m_Callback(m_State);
-				}
-			}
+                m_Callback?.Invoke(m_State);
+            }
 
 			public override string ToString()
 			{
@@ -773,11 +775,8 @@ namespace Server
 
 			protected override void OnTick()
 			{
-				if (m_Callback != null)
-				{
-					m_Callback(m_State);
-				}
-			}
+                m_Callback?.Invoke(m_State);
+            }
 
 			public override string ToString()
 			{
@@ -807,11 +806,8 @@ namespace Server
 
 			protected override void OnTick()
 			{
-				if (m_Callback != null)
-				{
-					m_Callback(m_State1, m_State2);
-				}
-			}
+                m_Callback?.Invoke(m_State1, m_State2);
+            }
 
 			public override string ToString()
 			{
@@ -843,11 +839,8 @@ namespace Server
 
 			protected override void OnTick()
 			{
-				if (m_Callback != null)
-				{
-					m_Callback(m_State1, m_State2, m_State3);
-				}
-			}
+                m_Callback?.Invoke(m_State1, m_State2, m_State3);
+            }
 
 			public override string ToString()
 			{
@@ -881,11 +874,8 @@ namespace Server
 
 			protected override void OnTick()
 			{
-				if (m_Callback != null)
-				{
-					m_Callback(m_State1, m_State2, m_State3, m_State4);
-				}
-			}
+                m_Callback?.Invoke(m_State1, m_State2, m_State3, m_State4);
+            }
 
 			public override string ToString()
 			{

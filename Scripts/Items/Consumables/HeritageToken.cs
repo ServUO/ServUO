@@ -1,5 +1,4 @@
 ﻿using Server.Gumps;
-using System;
 
 namespace Server.Items
 {
