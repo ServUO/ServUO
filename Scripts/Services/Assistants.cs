@@ -112,144 +112,81 @@ namespace Server.Misc
 
         public class Negotiator
         {
-            private static readonly Dictionary<Mobile, Timer> _Dictionary = new Dictionary<Mobile, Timer>();
+			private static readonly Dictionary<Mobile, Timer> _Handshakes = new Dictionary<Mobile, Timer>();
 
             public static void Initialize()
             {
-                if (!Settings.Enabled)
-                {
-                    return;
-                }
+                EventSink.Login += OnLogin;
 
-                EventSink.Login += e =>
-                {
-                    Mobile m = e.Mobile;
-                    NetState ns = m.NetState;
-
-                    if (m == null || ns == null || !ns.Running || ns.IsEnhancedClient)
-                    {
-                        return;
-                    }
-
-                    m.Send(new BeginHandshake());
-
-                    if (_Dictionary.ContainsKey(m))
-                    {
-                        Timer t = _Dictionary[m];
-
-                        if (t != null && t.Running)
-                        {
-                            t.Stop();
-                        }
-                    }
-
-                    _Dictionary[m] = Timer.DelayCall(Settings.HandshakeTimeout, OnHandshakeTimeout, m);
-                };
-
-                ProtocolExtensions.Register(
-                    0xFF,
-                    true,
-                    (state, pvSrc) =>
-                    {
-                        pvSrc.Trace(state);
-
-                        if (state == null || state.Mobile == null || !state.Running)
-                        {
-                            return;
-                        }
-
-                        Mobile m = state.Mobile;
-
-                        if (!_Dictionary.ContainsKey(m))
-                        {
-                            return;
-                        }
-
-                        Timer t = _Dictionary[m];
-
-                        if (t != null)
-                        {
-                            t.Stop();
-                        }
-
-                        _Dictionary.Remove(m);
-                    });
+                ProtocolExtensions.Register(0xFF, true, OnResponse);
             }
 
-            private static void OnHandshakeResponse(NetState state)
+            private static void OnLogin(LoginEventArgs e)
+            {
+                var m = e.Mobile;
+
+                if (m == null || m.NetState == null || !m.NetState.Running || m.NetState.IsEnhancedClient)
+                    return;
+
+                m.Send(new BeginHandshake());
+
+                if (_Handshakes.TryGetValue(m, out var t))
+                    t?.Stop();
+
+                _Handshakes[m] = Timer.DelayCall(Settings.HandshakeTimeout, OnTimeout, m);
+            }
+
+            private static void OnResponse(NetState state, PacketReader pvSrc)
             {
                 if (state == null || state.Mobile == null || !state.Running)
-                {
                     return;
-                }
 
                 Mobile m = state.Mobile;
 
-                if (!_Dictionary.ContainsKey(m))
-                {
+                if (!_Handshakes.TryGetValue(m, out var t))
                     return;
-                }
 
-                Timer t = _Dictionary[m];
+                t?.Stop();
 
-                if (t != null)
-                {
-                    t.Stop();
-                }
-
-                _Dictionary.Remove(m);
+                _Handshakes.Remove(m);
             }
 
-            private static void OnHandshakeTimeout(object state)
+            private static void OnTimeout(Mobile m)
             {
-                Mobile m = state as Mobile;
-
                 if (m == null)
-                {
                     return;
-                }
 
-                Timer t;
+                if (!_Handshakes.TryGetValue(m, out var t))
+                    return;
 
-                if (_Dictionary.TryGetValue(m, out t) && t != null)
+                t?.Stop();
+
+                _Handshakes.Remove(m);
+
+                if (Settings.KickOnFailure)
                 {
-                    t.Stop();
-                }
+                    if (m.NetState == null || !m.NetState.Running)
+                        return;
 
-                _Dictionary.Remove(m);
-
-                if (!Settings.KickOnFailure)
-                {
-                    Console.WriteLine("Player '{0}' failed to negotiate features.", m);
-                }
-                else if (m.NetState != null && m.NetState.Running)
-                {
                     m.SendGump(new WarningGump(1060635, 30720, Settings.WarningMessage, 0xFFC000, 420, 250, null, null));
 
                     if (m.AccessLevel <= AccessLevel.Player)
-                    {
-                        _Dictionary[m] = Timer.DelayCall(Settings.DisconnectDelay, OnForceDisconnect, m);
-                    }
+                        _Handshakes[m] = Timer.DelayCall(Settings.DisconnectDelay, OnForceDisconnect, m);
                 }
+                else
+                    Console.WriteLine($"Player '{m}' failed to negotiate features.");
             }
 
-            private static void OnForceDisconnect(object state)
+            private static void OnForceDisconnect(Mobile m)
             {
-                if (!(state is Mobile))
-                {
+                if (m == null)
                     return;
-                }
 
-                Mobile m = (Mobile)state;
+                m.NetState?.Dispose();
 
-                if (m.NetState != null && m.NetState.Running)
-                {
-                    m.NetState.Dispose();
-                }
+                _Handshakes.Remove(m);
 
-                _Dictionary.Remove(m);
-
-                Console.WriteLine("Player {0} kicked (Failed assistant handshake)", m);
+                Console.WriteLine($"Player {m} kicked (Failed assistant handshake)");
             }
 
             private sealed class BeginHandshake : ProtocolExtension
