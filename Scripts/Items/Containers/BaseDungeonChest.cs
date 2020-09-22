@@ -2,7 +2,6 @@ using System;
 
 namespace Server.Items
 {
-    [TypeAlias("Server.Items.BaseTreasureChestMod )]
     public abstract class BaseDungeonChest : LockableContainer
     {
         private ChestTimer m_DeleteTimer;
