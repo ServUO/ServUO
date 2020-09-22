@@ -79,7 +79,7 @@ namespace Server.Mobiles
         {
             private readonly ObsidianWyvern Mare;
 
-            public InternalSelfDeleteTimer(Mobile p) : base(TimeSpan.FromMinutes(60))
+            public InternalSelfDeleteTimer(Mobile p) : base(TimeSpan.FromMinutes(10))
             {
                 Priority = TimerPriority.FiveSeconds;
                 Mare = ((ObsidianWyvern)p);

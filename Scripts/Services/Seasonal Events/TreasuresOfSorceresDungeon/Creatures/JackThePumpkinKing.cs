@@ -4,15 +4,15 @@ using System;
 
 namespace Server.Engines.SorcerersDungeon
 {
-    [CorpseName("the corpse of jack the pumpkin king")]
+    [CorpseName("the corpse of Jack the Pumpkin King")]
     public class JackThePumpkinKing : BaseCreature
     {
         [Constructable]
         public JackThePumpkinKing()
             : base(AIType.AI_NecroMage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "jack";
-            Title = "the pumpkin king";
+            Name = "Jack";
+            Title = "the Pumpkin King";
             Body = 0x190;
             Hue = Race.RandomSkinHue();
 
@@ -58,7 +58,6 @@ namespace Server.Engines.SorcerersDungeon
 
         private bool m_InHere;
 
-        // gleefully stolen from DemonKnight
         public override void OnDamage(int amount, Mobile from, bool willKill)
         {
             if (from != null && from != this && !m_InHere)
@@ -203,7 +202,7 @@ namespace Server.Engines.SorcerersDungeon
             public SpawnTimer(Item item)
                 : base(TimeSpan.FromSeconds(Utility.RandomMinMax(5, 10)))
             {
-                Priority = TimerPriority.FiftyMS;
+                Priority = TimerPriority.OneSecond;
 
                 m_Item = item;
             }

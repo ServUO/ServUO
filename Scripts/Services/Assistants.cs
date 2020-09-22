@@ -125,7 +125,7 @@ namespace Server.Misc
             {
                 var m = e.Mobile;
 
-                if (m == null || m.NetState == null || !m.NetState.Running)
+                if (m == null || m.NetState == null || !m.NetState.Running || m.NetState.IsEnhancedClient)
                     return;
 
                 m.Send(new BeginHandshake());

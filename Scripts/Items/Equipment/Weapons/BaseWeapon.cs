@@ -2897,7 +2897,7 @@ namespace Server.Items
 
             Effects.SendMovingEffect(defender, blood, id, 7, 10, true, false, blood.Hue, 0);
 
-            Timer.DelayCall(TimeSpan.FromMilliseconds(500), b => b.ItemID = id, blood);
+            Timer.DelayCall(TimeSpan.FromMilliseconds(750), b => b.ItemID = id, blood);
         }
 
         protected virtual bool CanDrawBlood(Mobile defender)

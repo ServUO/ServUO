@@ -51,7 +51,7 @@ namespace Server.Mobiles
         {
             private readonly IceWyrm Mare;
 
-            public InternalSelfDeleteTimer(Mobile p) : base(TimeSpan.FromMinutes(60))
+            public InternalSelfDeleteTimer(Mobile p) : base(TimeSpan.FromMinutes(10))
             {
                 Priority = TimerPriority.FiveSeconds;
                 Mare = ((IceWyrm)p);

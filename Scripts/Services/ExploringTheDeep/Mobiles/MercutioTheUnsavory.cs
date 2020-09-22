@@ -125,7 +125,7 @@ namespace Server.Mobiles
         {
             private readonly MercutioTheUnsavory Mare;
 
-            public InternalSelfDeleteTimer(Mobile p) : base(TimeSpan.FromMinutes(60))
+            public InternalSelfDeleteTimer(Mobile p) : base(TimeSpan.FromMinutes(10))
             {
                 Priority = TimerPriority.FiveSeconds;
                 Mare = ((MercutioTheUnsavory)p);
