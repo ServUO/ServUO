@@ -1,6 +1,5 @@
 namespace Server.Items
 {
-    [Furniture]
     [Flipable(0x232A, 0x232B)]
     public class GiftBox : BaseContainer
     {
