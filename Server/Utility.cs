@@ -861,15 +861,23 @@ namespace Server
 			return RandomImpl.NextBool();
 		}
 
+#if MONO
+		public static TEnum RandomEnum<TEnum>() where TEnum : struct, IConvertible            
+#else
 		public static TEnum RandomEnum<TEnum>() where TEnum : Enum
+#endif
 		{
 			if (Enum.GetValues(typeof(TEnum)) is TEnum[] values && values.Length > 0)
 				return RandomList(values);
 
-			return default;
+			return default(TEnum);
 		}
-
+        
+#if MONO
+		public static TEnum RandomMinMax<TEnum>(TEnum min, TEnum max) where TEnum : struct, IConvertible            
+#else
 		public static TEnum RandomMinMax<TEnum>(TEnum min, TEnum max) where TEnum : Enum
+#endif
 		{
 			if (Enum.GetValues(typeof(TEnum)) is TEnum[] values && values.Length > 0)
 			{
@@ -906,7 +914,7 @@ namespace Server
 				return RandomList(min, max);
 			}
 
-			return default;
+			return default(TEnum);
 		}
 
 		public static double RandomMinMax(double min, double max)
