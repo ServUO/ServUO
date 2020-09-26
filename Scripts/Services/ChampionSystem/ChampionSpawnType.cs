@@ -14,14 +14,10 @@ namespace Server.Engines.CannedEvil
         SleepingDragon,
         Glade,
         Corrupt,
-        #region Stygian Abyss
         Terror,
         Infuse,
-        #endregion
-        #region TOL
         DragonTurtle,
-        #endregion
-        Khaldun,
+        Khaldun
     }
 
     public class ChampionSpawnInfo

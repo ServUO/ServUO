@@ -25,7 +25,6 @@ namespace Server.Engines.CannedEvil
         private int m_Kills;
         private Mobile m_Champion;
 
-        //private int m_SpawnRange;
         private Rectangle2D m_SpawnArea;
         private ChampionSpawnRegion m_Region;
 
@@ -861,9 +860,6 @@ namespace Server.Engines.CannedEvil
             if (map == null)
                 return Location;
 
-            int cx = Location.X;
-            int cy = Location.Y;
-
             // Try 20 times to find a spawnable location.
             for (int i = 0; i < 20; i++)
             {
@@ -871,10 +867,6 @@ namespace Server.Engines.CannedEvil
                 int dy = Utility.Random(range * 2);
                 int x = rect.X + dx;
                 int y = rect.Y + dy;
-
-                // Make spawn area circular
-                //if ((cx - x) * (cx - x) + (cy - y) * (cy - y) > range * range)
-                //	continue;
 
                 int z = Map.GetAverageZ(x, y);
 
