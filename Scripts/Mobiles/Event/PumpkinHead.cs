@@ -10,7 +10,7 @@ namespace Server.Mobiles
         public PumpkinHead()
             : base(Utility.RandomBool() ? AIType.AI_Melee : AIType.AI_Mage, FightMode.Closest, 10, 1, 0.05, 0.1)
         {
-            Name = "a killer pumpkin";
+            Name = "Grimm";
             Body = 1246 + Utility.Random(2);
 
             BaseSoundID = 268;
@@ -59,7 +59,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.LootItem<WrappedCandy>(true));
-            AddLoot(LootPack.RandomLootItem(new Type[] { typeof(ObsidianSkull), typeof(CrystalSkull), typeof(JadeSkull), typeof(CarvablePumpkinTall), typeof(CarvableGordPumpkinTall) }, 20.0, 1));
+            AddLoot(LootPack.RandomLootItem(new Type[] { typeof(CarvablePlainPumpkin), typeof(CarvablePumpkinTall), typeof(CarvableGordPumpkinTall) }, 20.0, 1));
             AddLoot(LootPack.UltraRich, 2);
         }
 

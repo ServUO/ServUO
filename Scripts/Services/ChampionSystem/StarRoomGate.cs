@@ -7,6 +7,9 @@ namespace Server.Items
         private bool m_Decays;
         private DateTime m_DecayTime;
         private Timer m_Timer;
+
+        public override int LabelNumber => 1049498;// dark moongate
+
         [Constructable]
         public StarRoomGate()
             : this(false)
@@ -43,7 +46,6 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber => 1049498;// dark moongate
         public override void OnAfterDelete()
         {
             if (m_Timer != null)
@@ -55,7 +57,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             writer.Write(m_Decays);
@@ -67,7 +68,6 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
             switch (version)

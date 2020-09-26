@@ -63,15 +63,18 @@ namespace Server.Items
                 {
                     BaseCarvablePumpkin pumpkin = (BaseCarvablePumpkin)targeted;
 
-                    from.PlaySound(0x249);
+                    if (pumpkin.CarvedBy == null)
+                    {
+                        from.PlaySound(0x249);
 
-                    pumpkin.ItemID = pumpkin.PumpkinDefinition[Utility.Random(pumpkin.PumpkinDefinition.Length)].UnlitItemID;
-                    pumpkin.CarvedBy = from.Name;
+                        pumpkin.ItemID = pumpkin.PumpkinDefinition[Utility.Random(pumpkin.PumpkinDefinition.Length)].UnlitItemID;
+                        pumpkin.CarvedBy = from.Name;
+                        pumpkin.InvalidateProperties();
 
-                    from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1154339); // *You carefully carve the pumpkin*
+                        from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1154339); // *You carefully carve the pumpkin*
 
-                    m_Item.Delete();
-
+                        m_Item.Delete();
+                    }
                 }
                 else
                 {
@@ -161,6 +164,9 @@ namespace Server.Items
                      new PumpkinDefinition(0x9945, 0x9946),
                      new PumpkinDefinition(0x9949, 0x994A),
                      new PumpkinDefinition(0x9951, 0x9952),
+                     new PumpkinDefinition(0xA39A, 0xA39B),
+                     new PumpkinDefinition(0xA39E, 0xA39F),
+                     new PumpkinDefinition(0x9BD5, 0x9BD6)
                 };
 
         [Constructable]
@@ -194,6 +200,17 @@ namespace Server.Items
                 {
                      new PumpkinDefinition(0x9D23, 0x9D24),
                      new PumpkinDefinition(0x9D27, 0x9D28),
+                     new PumpkinDefinition(0xA139, 0xA13A),
+                     new PumpkinDefinition(0xA13D, 0xA13E),
+                     new PumpkinDefinition(0xA141, 0xA142),
+                     new PumpkinDefinition(0xA145, 0xA146),
+                     new PumpkinDefinition(0xA149, 0xA14A),
+                     new PumpkinDefinition(0xA14D, 0xA14E),
+                     new PumpkinDefinition(0xA151, 0xA152),
+                     new PumpkinDefinition(0xA155, 0xA156),
+                     new PumpkinDefinition(0xA159, 0xA15A),
+                     new PumpkinDefinition(0xA15D, 0xA15E),
+                     new PumpkinDefinition(0xA161, 0xA162)
                 };
 
         [Constructable]
@@ -223,10 +240,18 @@ namespace Server.Items
 
     public class CarvablePlainPumpkin : BaseCarvablePumpkin
     {
+        public override bool ForceShowProperties => true;
+
         public override PumpkinDefinition[] PumpkinDefinition => new PumpkinDefinition[]
                 {
                      new PumpkinDefinition(0x9F23, 0x9F24),
                      new PumpkinDefinition(0x9F27, 0x9F28),
+                     new PumpkinDefinition(0xA396, 0xA397),
+                     new PumpkinDefinition(0xA5E0, 0xA5E1),
+                     new PumpkinDefinition(0xA5E4, 0xA5E5),
+                     new PumpkinDefinition(0xA165, 0xA166),
+                     new PumpkinDefinition(0xA169, 0xA16A),
+                     new PumpkinDefinition(0xA16D, 0xA16E)
                 };
 
         [Constructable]

@@ -9,6 +9,7 @@ namespace Server.Engines.CannedEvil
         private ChampionSkullPlatform m_Platform;
         private ChampionSkullType m_Type;
         private Item m_Skull;
+
         public ChampionSkullBrazier(ChampionSkullPlatform platform, ChampionSkullType type)
             : base(0x19BB)
         {
@@ -164,12 +165,6 @@ namespace Server.Engines.CannedEvil
                         break;
                     }
             }
-
-            if (Hue == 0x497)
-                Hue = 0x455;
-
-            if (Light != LightType.Circle300)
-                Light = LightType.Circle300;
         }
 
         private class SacrificeTarget : Target
