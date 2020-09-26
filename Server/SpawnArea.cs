@@ -13,10 +13,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.Linq;
-using System.Threading.Tasks;
 #endregion
 
 namespace Server
@@ -25,8 +22,6 @@ namespace Server
 
 	public sealed class SpawnArea : ICollection<Point3D>
 	{
-		private static readonly Bitmap _EmptyImage;
-
 		private static readonly TileFlag[] _EmptyFilters;
 		private static readonly TileFlag[] _AllFilters;
 
@@ -38,8 +33,6 @@ namespace Server
 
 		static SpawnArea()
 		{
-			_EmptyImage = new Bitmap(1, 1, PixelFormat.Format16bppRgb555);
-
 			_EmptyFilters = new TileFlag[0];
 
 			_AllFilters = Enum.GetValues(typeof(TileFlag)).Cast<TileFlag>().Where(f => f != TileFlag.None).ToArray();
@@ -151,8 +144,6 @@ namespace Server
 			}
 		}
 
-		private Bitmap _Image;
-
 		private Rectangle3D _Bounds;
 
 		private readonly HashSet<Point3D> _Points;
@@ -171,8 +162,6 @@ namespace Server
 
 		public int Count => _Points.Count;
 
-		public Bitmap Image => GetImage();
-
 		bool ICollection<Point3D>.IsReadOnly => true;
 
 		private SpawnArea(Map facet, string region, TileFlag[] filters, SpawnValidator validator)
@@ -183,73 +172,6 @@ namespace Server
 			Region = region;
 			Filters = filters;
 			Validator = validator;
-		}
-
-		public Bitmap GetImage()
-		{
-			if (Facet == null)
-			{
-				return _EmptyImage;
-			}
-
-			lock (this)
-			{
-				if (_Image != null)
-				{
-					return _Image;
-				}
-
-				Ultima.Map umap;
-
-				switch (Facet.MapID)
-				{
-					case 0:
-					umap = Ultima.Map.Felucca;
-					break;
-					case 1:
-					umap = Ultima.Map.Trammel;
-					break;
-					case 2:
-					umap = Ultima.Map.Ilshenar;
-					break;
-					case 3:
-					umap = Ultima.Map.Malas;
-					break;
-					case 4:
-					umap = Ultima.Map.Tokuno;
-					break;
-					case 5:
-					umap = Ultima.Map.TerMur;
-					break;
-					default:
-					return _Image = _EmptyImage;
-				}
-
-				Bitmap map = new Bitmap(_Bounds.Width, _Bounds.Height, PixelFormat.Format16bppRgb555);
-
-				Rectangle b = new Rectangle(_Bounds.Start.X >> 3, _Bounds.Start.Y >> 3, _Bounds.Width >> 3, _Bounds.Height >> 3);
-
-				umap.GetImage(b.X, b.Y, b.Width, b.Height, map, true);
-
-				Rectangle l = new Rectangle(Point.Empty, map.Size);
-
-				BitmapData data = map.LockBits(l, ImageLockMode.ReadWrite, map.PixelFormat);
-
-				Parallel.ForEach(_Points, o => SetPixel(o.X - _Bounds.Start.X, o.Y - _Bounds.Start.Y, data));
-
-				map.UnlockBits(data);
-
-				return _Image = map;
-			}
-		}
-
-		private static unsafe void SetPixel(int x, int y, BitmapData data)
-		{
-			int index = (y * data.Stride) + (x * 2);
-			byte* pixel = (byte*)data.Scan0.ToPointer();
-
-			pixel[index + 0] = (PixelColor >> 0) & 0xFF;
-			pixel[index + 1] = (PixelColor >> 8) & 0xFF;
 		}
 
 		public bool Contains(int x, int y)
@@ -307,8 +229,6 @@ namespace Server
 
 		public void Invalidate()
 		{
-			_Image = null;
-
 			_Points.Clear();
 
 			if (Facet == null || Facet == Map.Internal)

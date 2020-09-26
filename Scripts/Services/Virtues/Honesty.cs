@@ -2,9 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 using Server.Engines.CannedEvil;
 using Server.Items;
@@ -23,7 +21,7 @@ namespace Server.Services.Virtues
         public static bool TrammelGeneration { get; set; }
         public static bool UseSpawnArea { get; set; }
 
-        private static readonly string[] _Regions = {"Britain", "Minoc", "Magincia", "Trinsic", "Jhelom", "Moonglow", "Skara Brae", "Yew"};
+        private static readonly string[] _Regions = { "Britain", "Minoc", "Magincia", "Trinsic", "Jhelom", "Moonglow", "Skara Brae", "Yew" };
 
         private const TileFlag _Filter = TileFlag.Wet | TileFlag.Roof | TileFlag.Impassable;
 

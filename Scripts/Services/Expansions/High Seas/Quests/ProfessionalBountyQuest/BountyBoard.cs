@@ -1,4 +1,4 @@
-﻿using Server.Engines.Quests;
+using Server.Engines.Quests;
 using Server.Engines.VendorSearching;
 using Server.Gumps;
 using Server.Mobiles;
@@ -92,7 +92,7 @@ namespace Server.Items
 
                 if (User.NetState != null && User.NetState.IsEnhancedClient && VendorSearch.StringList != null)
                 {
-                    Ultima.StringList strList = VendorSearch.StringList;
+                    StringList strList = VendorSearch.StringList;
 
                     args = string.Format("{0} {1} {2}", strList.GetString(capt.Adjective), strList.GetString(capt.Noun), capt.PirateName > 0 ? strList.GetString(capt.PirateName) : capt.Name);
 
