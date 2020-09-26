@@ -456,7 +456,7 @@ namespace Server.Gumps
                         AddButtonLabeled(20, 150, GetButtonID(3, 600), "Rebuild Categorization");
                         AddButtonLabeled(220, 150, GetButtonID(3, 601), "Generate Documentation");
 
-                        if (Ultima.Files.MulPath["artlegacymul.uop"] != null || (Ultima.Files.MulPath["art.mul"] != null && Ultima.Files.MulPath["artidx.mul"] != null))
+                        if (ArtData.CheckFile)
                         {
                             AddButtonLabeled(20, 180, GetButtonID(3, 602), "Rebuild Bounds.bin");
                         }
