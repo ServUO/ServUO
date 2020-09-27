@@ -44,7 +44,7 @@ namespace Server.Items
         public GoldRing()
             : base(0x108a)
         {
-            //Weight = 0.1;
+
         }
 
         public GoldRing(Serial serial)
@@ -75,7 +75,7 @@ namespace Server.Items
         public SilverRing()
             : base(0x1F09)
         {
-            //Weight = 0.1;
+
         }
 
         public SilverRing(Serial serial)

@@ -107,7 +107,9 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt(0); // version
+            writer.WriteEncodedInt(1); // version
+
+            writer.Write((int)_Count);
 
             writer.Write(Path.Count);
             for (int i = 0; i < Path.Count; i++)
@@ -128,18 +130,32 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            int count = reader.ReadInt();
-
-            for (int i = 0; i < count; i++)
+            switch (version)
             {
-                Path.Add(reader.ReadInt());
+                case 1:
+                    _Count = (CircuitCount)reader.ReadInt();
+                    goto case 0;
+                case 0:
+                    int count = reader.ReadInt();
+
+                    for (int i = 0; i < count; i++)
+                    {
+                        Path.Add(reader.ReadInt());
+                    }
+
+                    count = reader.ReadInt();
+
+                    for (int i = 0; i < count; i++)
+                    {
+                        Progress.Add(reader.ReadInt());
+                    }
+                    break;
             }
 
-            count = reader.ReadInt();
-
-            for (int i = 0; i < count; i++)
+            if (version == 0)
             {
-                Progress.Add(reader.ReadInt());
+                Path.Clear();
+                Progress.Clear();
             }
         }
     }

@@ -605,9 +605,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadEncodedInt();
-
-            if (version == 0 && Weight == 3)
-                Weight = -1;
         }
     }
 
@@ -755,9 +752,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (version == 0 && Weight == 25)
-                Weight = -1;
         }
     }
 
@@ -787,9 +781,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (version == 0 && Weight == 25)
-                Weight = -1;
         }
     }
 
@@ -819,9 +810,6 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
-            if (version == 0 && Weight == 2)
-                Weight = -1;
         }
     }
 

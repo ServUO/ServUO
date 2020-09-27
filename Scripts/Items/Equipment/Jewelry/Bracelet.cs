@@ -44,7 +44,6 @@ namespace Server.Items
         public GoldBracelet()
             : base(0x1086)
         {
-            //Weight = 0.1;
         }
 
         public GoldBracelet(Serial serial)
@@ -75,7 +74,6 @@ namespace Server.Items
         public SilverBracelet()
             : base(0x1F06)
         {
-            //Weight = 0.1;
         }
 
         public SilverBracelet(Serial serial)

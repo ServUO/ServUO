@@ -383,6 +383,11 @@ namespace Server.Multis
                 from.SendLocalizedMessage(1019004); // You are not allowed to travel there.
                 return false;
             }
+            else if (Region.Find(dest, destMap).IsPartOf("Abyss") && from is PlayerMobile pm && !pm.AbyssEntry)
+            {
+                from.SendLocalizedMessage(1112226); // Thou must be on a Sacred Quest to pass through.
+                return false;
+            }
             else if (CityTradeSystem.HasTrade(from))
             {
                 from.SendLocalizedMessage(1151733); // You cannot do that while carrying a Trade Order.

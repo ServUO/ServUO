@@ -198,8 +198,8 @@ namespace Server.Mobiles
 
             TimeSpan duration = TimeSpan.FromSeconds(30 + caster.Skills.Ninjitsu.Fixed / 40);
 
-            new UnsummonTimer(caster, this, duration).Start();
             SummonEnd = DateTime.UtcNow + duration;
+            UnsummonTimer.Register(this);
 
             MirrorImage.AddClone(m_Caster);
 
