@@ -53,7 +53,7 @@ namespace Server.Items
                 if (ResourceCount > 0)
                 {
                     ResourceCount--;
-                    Item item = new HeavyPowderCharge();
+                    Item item = new PowderCharge();
 
                     from.AddToBackpack(item);
                     from.SendLocalizedMessage(1154174); // Powder charges have been placed in your backpack.

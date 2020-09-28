@@ -1,6 +1,5 @@
 namespace Server.Items
 {
-    [Furniture]
     [Flipable(0x9AA, 0xE7D)]
     public class BoxOfShadowItems : BaseContainer
     {

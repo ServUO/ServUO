@@ -925,7 +925,7 @@ namespace Server
 			return new string[] { "build/multicollection/{0:000000}.bin", "" };
 		}
 
-		private static ulong HashLittle2(string s)
+		public static ulong HashLittle2(string s)
 		{
 			int length = s.Length;
 

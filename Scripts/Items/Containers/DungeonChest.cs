@@ -1,18 +1,11 @@
-// Treasure Chest Pack - Version 0.99I
-// By Nerun
-
 namespace Server.Items
 {
-
-    // ---------- [Level 1] ----------
-    // Large, Medium and Small Crate
-    [Flipable(0xe3e, 0xe3f)]
-    public class TreasureLevel1 : BaseTreasureChestMod
+    public class TreasureLevel1 : BaseDungeonChest
     {
         public override int DefaultGumpID => 0x49;
 
         [Constructable]
-        public TreasureLevel1() : base(Utility.RandomList(0xE3C, 0xE3E, 0x9a9))
+        public TreasureLevel1() : base(Utility.RandomList(0xE3C, 0xE3E, 0x9a9)) // Large, Medium and Small Crate
         {
             RequiredSkill = 52;
             LockLevel = RequiredSkill - Utility.Random(1, 10);
@@ -51,66 +44,10 @@ namespace Server.Items
         }
     }
 
-    // ---------- [Level 1 Hybrid] ----------
-    // Large, Medium and Small Crate
-    [Flipable(0xe3e, 0xe3f)]
-    public class TreasureLevel1h : BaseTreasureChestMod
-    {
-        public override int DefaultGumpID => 0x49;
-
-        [Constructable]
-        public TreasureLevel1h() : base(Utility.RandomList(0xE3C, 0xE3E, 0x9a9))
-        {
-            RequiredSkill = 56;
-            LockLevel = RequiredSkill - Utility.Random(1, 10);
-            MaxLockLevel = RequiredSkill;
-            TrapType = TrapType.MagicTrap;
-            TrapPower = 1 * Utility.Random(1, 25);
-
-            DropItem(new Gold(10, 40));
-            DropItem(new Bolt(5));
-            switch (Utility.Random(2))
-            {
-                case 0: DropItem(new Shoes(Utility.Random(1, 2))); break;
-                case 1: DropItem(new Sandals(Utility.Random(1, 2))); break;
-            }
-
-            switch (Utility.Random(3))
-            {
-                case 0: DropItem(new BeverageBottle(BeverageType.Ale)); break;
-                case 1: DropItem(new BeverageBottle(BeverageType.Liquor)); break;
-                case 2: DropItem(new Jug(BeverageType.Cider)); break;
-            }
-        }
-
-        public TreasureLevel1h(Serial serial) : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.Write(0); // version 
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-    }
-
-    // ---------- [Level 2] ----------
-    // Large, Medium and Small Crate
-    // Wooden, Metal and Metal Golden Chest
-    // Keg and Barrel
-    [Flipable(0xe43, 0xe42)]
-    public class TreasureLevel2 : BaseTreasureChestMod
+    public class TreasureLevel2 : BaseDungeonChest
     {
         [Constructable]
-        public TreasureLevel2() : base(Utility.RandomList(0xe3c, 0xE3E, 0x9a9, 0xe42, 0x9ab, 0xe40, 0xe7f, 0xe77))
+        public TreasureLevel2() : base(Utility.RandomList(0xe3c, 0xE3E, 0x9a9, 0xe42, 0x9ab, 0xe40, 0xe7f, 0xe77)) // various container IDs
         {
             RequiredSkill = 72;
             LockLevel = RequiredSkill - Utility.Random(1, 10);
@@ -155,15 +92,12 @@ namespace Server.Items
         }
     }
 
-    // ---------- [Level 3] ----------
-    // Wooden, Metal and Metal Golden Chest
-    [Flipable(0x9ab, 0xe7c)]
-    public class TreasureLevel3 : BaseTreasureChestMod
+    public class TreasureLevel3 : BaseDungeonChest
     {
         public override int DefaultGumpID => 0x4A;
 
         [Constructable]
-        public TreasureLevel3() : base(Utility.RandomList(0x9ab, 0xe40, 0xe42))
+        public TreasureLevel3() : base(Utility.RandomList(0x9ab, 0xe40, 0xe42)) // Wooden, Metal and Metal Golden Chest
         {
             RequiredSkill = 84;
             LockLevel = RequiredSkill - Utility.Random(1, 10);
@@ -208,10 +142,6 @@ namespace Server.Items
 
             for (int i = Utility.Random(1, 2); i > 1; i--)
                 AddLoot(Loot.RandomJewelry());
-
-            // Magic clothing (not implemented)
-
-            // Magic jewelry (not implemented)
         }
 
         public TreasureLevel3(Serial serial) : base(serial)
@@ -233,13 +163,10 @@ namespace Server.Items
         }
     }
 
-    // ---------- [Level 4] ----------
-    // Wooden, Metal and Metal Golden Chest
-    [Flipable(0xe41, 0xe40)]
-    public class TreasureLevel4 : BaseTreasureChestMod
+    public class TreasureLevel4 : BaseDungeonChest
     {
         [Constructable]
-        public TreasureLevel4() : base(Utility.RandomList(0xe40, 0xe42, 0x9ab))
+        public TreasureLevel4() : base(Utility.RandomList(0xe40, 0xe42, 0x9ab)) // Wooden, Metal and Metal Golden Chest
         {
             RequiredSkill = 92;
             LockLevel = RequiredSkill - Utility.Random(1, 10);

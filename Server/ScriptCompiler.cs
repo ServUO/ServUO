@@ -4,12 +4,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 #endregion
 
 namespace Server
 {
-	public static class ScriptCompiler
+    public static class ScriptCompiler
 	{
 		public static Assembly[] Assemblies { get; set; }
 

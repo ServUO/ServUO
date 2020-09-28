@@ -119,7 +119,7 @@ namespace Server.Movement
 
             Mobile m = p as Mobile;
 
-            bool ignoreDoors = MovementImpl.AlwaysIgnoreDoors || m == null || !m.Alive || m.IsDeadBondedPet || m.Body.IsGhost ||
+            bool ignoreDoors = MovementImpl.AlwaysIgnoreDoors(p) || m == null || !m.Alive || m.IsDeadBondedPet || m.Body.IsGhost ||
                               m.Body.BodyID == 987;
             bool ignoreSpellFields = m is PlayerMobile && map.MapID != 0;
 
@@ -393,7 +393,7 @@ namespace Server.Movement
 
             IEnumerable<Item> itemsStart, itemsForward, itemsLeft, itemsRight;
 
-            bool ignoreMovableImpassables = MovementImpl.IgnoreMovableImpassables;
+            bool ignoreMovableImpassables = MovementImpl.IgnoresMovableImpassables(p);
             TileFlag reqFlags = ImpassableSurface;
 
             if (p is Mobile && ((Mobile)p).CanSwim)

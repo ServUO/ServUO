@@ -101,6 +101,9 @@ namespace Server.Mobiles
         {
             base.OnThink();
 
+            if (Combatant == null)
+                return;
+
             if (NextManaDrain < DateTime.UtcNow)
                 DoManaDrain();
         }

@@ -1,21 +1,17 @@
-// Treasure Chest Pack - Version 0.99H
-// By Nerun
-
 using System;
 
 namespace Server.Items
 {
-    public abstract class BaseTreasureChestMod : LockableContainer
+    public abstract class BaseDungeonChest : LockableContainer
     {
         private ChestTimer m_DeleteTimer;
-        //public override bool Decays { get{ return true; } }
-        //public override TimeSpan DecayTime{ get{ return TimeSpan.FromMinutes( Utility.Random( 10, 15 ) ); } }
+
         public override int DefaultGumpID => 0x42;
         public override int DefaultDropSound => 0x42;
         public override Rectangle2D Bounds => new Rectangle2D(20, 105, 150, 180);
         public override bool IsDecoContainer => false;
 
-        public BaseTreasureChestMod(int itemID) : base(itemID)
+        public BaseDungeonChest(int itemID) : base(itemID)
         {
             Locked = true;
             Movable = false;
@@ -28,7 +24,7 @@ namespace Server.Items
             RefinementComponent.Roll(this, 1, 0.08);
         }
 
-        public BaseTreasureChestMod(Serial serial) : base(serial)
+        public BaseDungeonChest(Serial serial) : base(serial)
         {
         }
 
@@ -101,9 +97,9 @@ namespace Server.Items
 
         private class ChestTimer : Timer
         {
-            private readonly BaseTreasureChestMod m_Chest;
+            private readonly BaseDungeonChest m_Chest;
 
-            public ChestTimer(BaseTreasureChestMod chest) : base(TimeSpan.FromMinutes(Utility.Random(2, 5)))
+            public ChestTimer(BaseDungeonChest chest) : base(TimeSpan.FromMinutes(Utility.Random(2, 5)))
             {
                 m_Chest = chest;
                 Priority = TimerPriority.OneMinute;

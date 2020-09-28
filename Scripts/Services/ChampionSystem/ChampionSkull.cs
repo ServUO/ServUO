@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class ChampionSkull : Item
     {
-        public static readonly ChampionSkullType[] Types = //
+        public static readonly ChampionSkullType[] Types = 
             Enum.GetValues(typeof(ChampionSkullType))
                 .Cast<ChampionSkullType>()
                 .Where(o => o != ChampionSkullType.None)

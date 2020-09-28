@@ -1,7 +1,6 @@
 #define BOOKTEXTENTRY
 
 using Server.Network;
-using System;
 
 namespace Server.Items
 {

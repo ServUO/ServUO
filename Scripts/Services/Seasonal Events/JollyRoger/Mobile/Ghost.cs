@@ -76,7 +76,7 @@ namespace Server.Engines.Fellowship
             public InternalTimer(Ghost mobile)
                 : base(TimeSpan.FromSeconds(1.0), TimeSpan.FromSeconds(1.0))
             {
-
+                Priority = TimerPriority.TwoFiftyMS;
                 _Mobile = mobile;
             }
 

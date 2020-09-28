@@ -26,6 +26,9 @@ namespace Server.Spells.First
         {
             SpellHelper.Turn(Caster, targ);
 
+            targ.FixedParticles(0x376A, 9, 32, 5007, EffectLayer.Waist);
+            targ.PlaySound(0x1E3);
+
             if (targ.BeginAction(typeof(LightCycle)))
             {
                 new LightCycle.NightSightTimer(targ).Start();
@@ -36,14 +39,7 @@ namespace Server.Spells.First
 
                 targ.LightLevel = level;
 
-                targ.FixedParticles(0x376A, 9, 32, 5007, EffectLayer.Waist);
-                targ.PlaySound(0x1E3);
-
                 BuffInfo.AddBuff(targ, new BuffInfo(BuffIcon.NightSight, 1075643));	//Night Sight/You ignore lighting effects
-            }
-            else
-            {
-                Caster.SendMessage("{0} already have nightsight.", Caster == targ ? "You" : "They");
             }
         }
 

@@ -1,5 +1,4 @@
 using Server.Engines.CityLoyalty;
-using System;
 
 namespace Server.Items
 {

@@ -360,7 +360,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsPrisoner { get; set; }
 
-        protected DateTime SummonEnd { get { return m_SummonEnd; } set { m_SummonEnd = value; } }
+        public DateTime SummonEnd { get { return m_SummonEnd; } set { m_SummonEnd = value; } }
 
         public virtual int DefaultHitsRegen
         {
@@ -2506,7 +2506,7 @@ namespace Server.Mobiles
                 if (m_bSummoned)
                 {
                     m_SummonEnd = reader.ReadDeltaTime();
-                    new UnsummonTimer(m_ControlMaster, this, m_SummonEnd - DateTime.UtcNow).Start();
+                    UnsummonTimer.Register(this);
                 }
 
                 m_iControlSlots = reader.ReadInt();
@@ -6283,8 +6283,8 @@ namespace Server.Mobiles
             creature.SetHits(
                 (int)Math.Floor(creature.HitsMax * (1 + ArcaneEmpowermentSpell.GetSpellBonus(caster, false) / 100.0)));
 
-            new UnsummonTimer(caster, creature, duration).Start();
             creature.m_SummonEnd = DateTime.UtcNow + duration;
+            UnsummonTimer.Register(creature);
 
             creature.MoveToWorld(p, caster.Map);
 
@@ -7535,7 +7535,7 @@ namespace Server.Mobiles
         public List<BaseCreature> ToDelete { get; set; } = new List<BaseCreature>();
 
         public CreatureDeleteTimer()
-            : base(TimeSpan.FromMinutes(5), TimeSpan.FromSeconds(5))
+            : base(TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5))
         {
             Priority = TimerPriority.OneMinute;
         }

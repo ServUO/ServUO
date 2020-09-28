@@ -134,8 +134,8 @@ namespace Server
 
 			private static readonly List<Timer>[] m_Timers =
 			{
-				new List<Timer>(), new List<Timer>(), new List<Timer>(),
-				new List<Timer>(), new List<Timer>(), new List<Timer>(), new List<Timer>(), new List<Timer>()
+				new List<Timer>(), new List<Timer>(), new List<Timer>(), new List<Timer>(),
+                new List<Timer>(), new List<Timer>(), new List<Timer>(), new List<Timer>()
 			};
 
             private static readonly Dictionary<string, int>[] m_Dump = new Dictionary<string, int>[m_Timers.Length];
@@ -157,7 +157,7 @@ namespace Server
                 tw.WriteLine();
                 tw.WriteLine();
 
-                for (var i = 0; i < 8; i++)
+                for (var i = 0; i < m_Timers.Length; i++)
                 {
                     tw.WriteLine($"Priority: {(TimerPriority)i}");
                     tw.WriteLine();
@@ -398,16 +398,12 @@ namespace Server
 
 		public static int BreakCount { get => m_BreakCount; set => m_BreakCount = value; }
 
-		private static int m_QueueCountAtSlice;
-
 		private bool m_Queued;
 
 		public static void Slice()
 		{
 			lock (m_Queue)
 			{
-				m_QueueCountAtSlice = m_Queue.Count;
-
 				int index = 0;
 
 				while (index < m_BreakCount && m_Queue.Count != 0)
@@ -481,12 +477,12 @@ namespace Server
 
 		public static TimerPriority ComputePriority(TimeSpan ts)
 		{
-			if (ts.TotalMinutes >= 10.0)
+            if (ts.TotalMinutes >= 10.0)
 			{
 				return TimerPriority.OneMinute;
 			}
 
-			if (ts.TotalMinutes >= 1.0)
+            if (ts.TotalSeconds >= 30.0)
 			{
 				return TimerPriority.FiveSeconds;
 			}
@@ -709,11 +705,8 @@ namespace Server
 
 			protected override void OnTick()
 			{
-				if (m_Callback != null)
-				{
-					m_Callback();
-				}
-			}
+                m_Callback?.Invoke();
+            }
 
 			public override string ToString()
 			{
@@ -741,11 +734,8 @@ namespace Server
 
 			protected override void OnTick()
 			{
-				if (m_Callback != null)
-				{
-					m_Callback(m_State);
-				}
-			}
+                m_Callback?.Invoke(m_State);
+            }
 
 			public override string ToString()
 			{
@@ -773,11 +763,8 @@ namespace Server
 
 			protected override void OnTick()
 			{
-				if (m_Callback != null)
-				{
-					m_Callback(m_State);
-				}
-			}
+                m_Callback?.Invoke(m_State);
+            }
 
 			public override string ToString()
 			{
@@ -807,11 +794,8 @@ namespace Server
 
 			protected override void OnTick()
 			{
-				if (m_Callback != null)
-				{
-					m_Callback(m_State1, m_State2);
-				}
-			}
+                m_Callback?.Invoke(m_State1, m_State2);
+            }
 
 			public override string ToString()
 			{
@@ -843,11 +827,8 @@ namespace Server
 
 			protected override void OnTick()
 			{
-				if (m_Callback != null)
-				{
-					m_Callback(m_State1, m_State2, m_State3);
-				}
-			}
+                m_Callback?.Invoke(m_State1, m_State2, m_State3);
+            }
 
 			public override string ToString()
 			{
@@ -881,11 +862,8 @@ namespace Server
 
 			protected override void OnTick()
 			{
-				if (m_Callback != null)
-				{
-					m_Callback(m_State1, m_State2, m_State3, m_State4);
-				}
-			}
+                m_Callback?.Invoke(m_State1, m_State2, m_State3, m_State4);
+            }
 
 			public override string ToString()
 			{

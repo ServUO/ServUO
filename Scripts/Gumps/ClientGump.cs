@@ -4,7 +4,6 @@ using Server.Commands.Generic;
 using Server.Mobiles;
 using Server.Network;
 using Server.Targets;
-using System;
 
 namespace Server.Gumps
 {

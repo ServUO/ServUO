@@ -123,7 +123,7 @@ namespace Server.Items
             public InternalTimer(FelineBlessedStatue item)
                 : base(TimeSpan.FromHours(1.0), TimeSpan.FromHours(1.0))
             {
-                Priority = TimerPriority.OneSecond;
+                Priority = TimerPriority.OneMinute;
                 _Item = item;
             }
 

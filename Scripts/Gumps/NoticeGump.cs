@@ -1,5 +1,3 @@
-using System;
-
 namespace Server.Gumps
 {
     public delegate void NoticeGumpCallback(Mobile from, object state);

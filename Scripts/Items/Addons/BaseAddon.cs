@@ -15,7 +15,8 @@ namespace Server.Items
         DoorTooClose,
         NoWall,
         OwnerNotInHouse,
-        FoundationStairs
+        FoundationStairs,
+        InternalStairs
     }
 
     public interface IAddon : IEntity, IChopable
@@ -214,9 +215,16 @@ namespace Server.Items
                 {
                     bool frontStairs;
 
-                    if (house.IsStairArea(p3D, out frontStairs) && frontStairs)
+                    if (house.IsStairArea(p, out frontStairs))
                     {
-                        return AddonFitResult.FoundationStairs;
+                        if (frontStairs)
+                        {
+                            return AddonFitResult.FoundationStairs;
+                        }
+                        else
+                        {
+                            return AddonFitResult.InternalStairs;
+                        }
                     }
                 }
             }

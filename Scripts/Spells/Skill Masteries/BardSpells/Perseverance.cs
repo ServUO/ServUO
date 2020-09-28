@@ -1,5 +1,3 @@
-using System;
-
 /*Party Defense Chance increased by up to 22%, Damage reduced by up to 22%.
 Casting focus bonus 1-6%.*/
 
