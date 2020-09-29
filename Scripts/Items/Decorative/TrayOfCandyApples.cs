@@ -1,16 +1,17 @@
 namespace Server.Items
 {
-    public class DecoTray : Item
+    [Flipable(0x9D32, 0x9D33)]
+    public class TrayOfCandyApples : Item
     {
+        public override int LabelNumber => 1124266;  // Tray of Candy Apples
+
         [Constructable]
-        public DecoTray()
-            : base(Utility.Random(2) + 0x991)
+        public TrayOfCandyApples()
+            : base(0x9D32)
         {
-            Movable = true;
-            Stackable = false;
         }
 
-        public DecoTray(Serial serial)
+        public TrayOfCandyApples(Serial serial)
             : base(serial)
         {
         }
@@ -18,14 +19,12 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
         }
     }

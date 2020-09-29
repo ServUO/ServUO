@@ -34,7 +34,6 @@ namespace Server.Engines.Help
                 if (entry != null && entry.Handler == null)
                 {
                     m_From.SendLocalizedMessage(1005307, "", 0x35); // Removed help request.
-                    entry.AddResponse(entry.Sender, "[Canceled]");
                     PageQueue.Remove(entry);
                 }
                 else

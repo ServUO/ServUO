@@ -1,6 +1,7 @@
 #region References
 using Server.Items;
 using Server.Misc;
+using Server.Mobiles;
 using Server.Network;
 using Server.Targeting;
 using System;
@@ -56,7 +57,7 @@ namespace Server.SkillHandlers
                     {
                         number = 500398; // Perhaps just asking would work better.
                     }
-                    else if (!targ.Body.IsHuman) // Make sure the NPC is human
+                    else if (!targ.Body.IsHuman || targeted is PlayerVendor || targeted is PlayerBarkeeper) // Make sure the NPC is human and not a player controlled vendor.
                     {
                         number = 500399; // There is little chance of getting money from that!
                     }

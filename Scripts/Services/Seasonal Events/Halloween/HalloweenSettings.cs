@@ -3,8 +3,11 @@ using System;
 
 namespace Server.Events.Halloween
 {
-    class HolidaySettings
+    class HalloweenSettings
     {
+        public static DateTime StartHalloween => new DateTime(2012, 10, 24);// YY MM DD
+        public static DateTime FinishHalloween => new DateTime(2012, 11, 15);
+
         private static readonly Type[] m_GMBeggarTreats =
         {
             typeof(CreepyCake),
@@ -18,8 +21,12 @@ namespace Server.Events.Halloween
             typeof(ExcellentIronMaiden),
             typeof(HalloweenGuillotine),
             typeof(ColoredSmallWebs),
+            typeof(GypsyWagonLamp),
+            typeof(TrayOfCandyApples),
+            typeof(TrayOfPumpkinSpiceCider),
             typeof(FlamingScarecrow)
         };
+
         private static readonly Type[] m_Treats =
         {
             typeof(Lollipops),
@@ -28,8 +35,7 @@ namespace Server.Events.Halloween
             typeof(Taffy),
             typeof(NougatSwirl)
         };
-        public static DateTime StartHalloween => new DateTime(2012, 10, 24);// YY MM DD
-        public static DateTime FinishHalloween => new DateTime(2012, 11, 15);
+  
         public static Item RandomGMBeggerItem => (Item)Activator.CreateInstance(m_GMBeggarTreats[Utility.Random(m_GMBeggarTreats.Length)]);
         public static Item RandomTreat => (Item)Activator.CreateInstance(m_Treats[Utility.Random(m_Treats.Length)]);
     }

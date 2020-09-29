@@ -1,7 +1,6 @@
 #region References
 using Server.Accounting;
 using Server.Commands;
-using Server.Engines.Reports;
 using Server.Gumps;
 using Server.Misc;
 using Server.Mobiles;
@@ -44,10 +43,6 @@ namespace Server.Engines.Help
 
         public static readonly string SupportEmail = Config.Get("General.SupportEmail", default(string));
         public static readonly string SupportWebsite = Config.Get("General.SupportWebsite", default(string));
-
-        private readonly PageInfo m_PageInfo;
-
-        public PageInfo PageInfo => m_PageInfo;
 
         public Mobile Sender => m_Sender;
 
@@ -104,21 +99,7 @@ namespace Server.Engines.Help
 
             m_Timer = null;
         }
-
-        public void AddResponse(Mobile mob, string text)
-        {
-            if (m_PageInfo != null)
-            {
-                lock (m_PageInfo)
-                    m_PageInfo.Responses.Add(PageInfo.GetAccount(mob), text);
-
-                if (PageInfo.ResFromResp(text) != PageResolution.None)
-                {
-                    m_PageInfo.UpdateResolver();
-                }
-            }
-        }
-
+    
         public PageEntry(Mobile sender, string message, PageType type)
         {
             m_Sender = sender;
@@ -136,15 +117,6 @@ namespace Server.Engines.Help
 
             m_Timer = new InternalTimer(this);
             m_Timer.Start();
-
-            StaffHistory history = Reports.Reports.StaffHistory;
-
-            if (history != null)
-            {
-                m_PageInfo = new PageInfo(this);
-
-                history.AddPage(m_PageInfo);
-            }
         }
 
         private class InternalTimer : Timer
@@ -184,11 +156,6 @@ namespace Server.Engines.Help
                 }
                 else
                 {
-                    if (index != -1)
-                    {
-                        m_Entry.AddResponse(m_Entry.Sender, "[Logout]");
-                    }
-
                     PageQueue.Remove(m_Entry);
                 }
             }

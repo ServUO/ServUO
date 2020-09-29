@@ -17,14 +17,12 @@ namespace Server.Engines.Events
             new Rectangle2D(835, 2344, 16, 16),
             new Rectangle2D(816, 2344, 16, 24)
         };
-        private static Timer m_Timer;
+
         public static void Initialize()
         {
-            DateTime now = DateTime.UtcNow;
-
-            if (DateTime.UtcNow >= HolidaySettings.StartHalloween && DateTime.UtcNow <= HolidaySettings.FinishHalloween)
+            if (DateTime.UtcNow >= HalloweenSettings.StartHalloween && DateTime.UtcNow <= HalloweenSettings.FinishHalloween)
             {
-                m_Timer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromMinutes(.50), 0, PumpkinPatchSpawnerCallback);
+                Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(30), 0, PumpkinPatchSpawnerCallback);
             }
         }
 

@@ -32,7 +32,7 @@ namespace Server.Items
 
                     if (0.1 > Utility.RandomDouble())
                     {
-                        item = HolidaySettings.RandomTreat;
+                        item = HalloweenSettings.RandomTreat;
                     }
                     else
                     {

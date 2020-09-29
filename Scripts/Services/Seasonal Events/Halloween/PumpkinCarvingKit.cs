@@ -125,7 +125,7 @@ namespace Server.Items
         }
 
         public override int LitItemID => PumpkinDefinition.FirstOrDefault(x => x.UnlitItemID == ItemID).LitItemID;
-        public override int UnlitItemID { get { return PumpkinDefinition.FirstOrDefault(x => x.LitItemID == ItemID).UnlitItemID; ; } }
+        public override int UnlitItemID { get { return PumpkinDefinition.FirstOrDefault(x => x.LitItemID == ItemID).UnlitItemID; } }
 
         public override void GetProperties(ObjectPropertyList list)
         {

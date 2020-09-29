@@ -44,9 +44,7 @@ namespace Server.Engines.NewMagincia
 
         protected string FormatAmt(int amount)
         {
-            if (amount == 0)
-                return "0";
-            return amount.ToString("###,###,###");
+            return amount.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("en-US"));
         }
 
         protected string FormatStallName(string str)
