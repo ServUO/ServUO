@@ -1,17 +1,16 @@
-/Ultima.dll
-/Ultima/bin
-/Ultima/obj
+
+# Project Assemblies
 /Server.dll
 /Server/bin
 /Server/obj
 /Scripts.dll
 /Scripts/bin
 /Scripts/obj
-/Scripts/Output
-/Scripts/Custom
 /Application/bin
 /Application/obj
 
+# Common Directories
+/.vs
 /Honesty
 /Logs
 /Backups
@@ -19,24 +18,32 @@
 /Web
 /Docs
 /Reports
+
+# Custom Directories
 /VitaNexCore
+/Leaderboard
+/UltimaLive
 /TheBox
 /Export
-/.vs
 
-/staffHistory.xml
-/reportHistory.xml
+# Common Files
 /firewall.cfg
 /drng64.dll
 /drng32.dll
 /libdrng.so
+/System.Drawing.Common.dll
 
-/Ultima.pdb
-/Ultima.dll.mdb
+# Custom Files
+/TotalAccountGold.txt
+/staffHistory.xml
+/reportHistory.xml
+/Ultima.dll
 
+# Wildcard Files
 *.pdb
 *.exe
 *.exe.mdb
+*.exe.config
 *.sh
 *.suo
 *.idea
@@ -46,6 +53,8 @@
 *.DotSettings.user
 *.ini
 
+# Include Data Files
 !/Data/*
 
+# Exclude Data Files
 /Data/PVPTournamentSystemData
