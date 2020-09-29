@@ -465,8 +465,6 @@ namespace Server.Gumps
                             AddLabelCropped(55, 180, 120, 20, RedHue, "Rebuild Bounds.bin");
                         }
 
-                        AddButtonLabeled(220, 180, GetButtonID(3, 603), "Generate Reports");
-
                         AddHtml(10, 210, 400, 20, Color(Center("Profiling"), LabelColor32), false, false);
 
                         AddButtonLabeled(20, 240, GetButtonID(3, 604), "Dump Timers");
@@ -2070,10 +2068,6 @@ namespace Server.Gumps
                             case 602:
                                 InvokeCommand("GenBounds");
                                 notice = "Bounds.bin rebuild. Restart server to take effect.";
-                                break;
-                            case 603:
-                                InvokeCommand("GenReports");
-                                notice = "Reports generated.";
                                 break;
                             case 604:
                                 InvokeCommand("DumpTimers");

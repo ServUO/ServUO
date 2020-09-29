@@ -12,7 +12,7 @@ namespace Server.Engines.Events
         public static TimeSpan OneSecond = TimeSpan.FromSeconds(1);
         public static void Initialize()
         {
-            if (DateTime.UtcNow >= HolidaySettings.StartHalloween && DateTime.UtcNow <= HolidaySettings.FinishHalloween)
+            if (DateTime.UtcNow >= HalloweenSettings.StartHalloween && DateTime.UtcNow <= HalloweenSettings.FinishHalloween)
             {
                 EventSink.Speech += EventSink_Speech;
             }
@@ -20,16 +20,13 @@ namespace Server.Engines.Events
 
         public static void Bleeding(Mobile m_From)
         {
-            if (CheckMobile(m_From))
+            if (CheckMobile(m_From) && m_From.Location != Point3D.Zero)
             {
-                if (m_From.Location != Point3D.Zero)
-                {
-                    int amount = Utility.RandomMinMax(3, 7);
+                int amount = Utility.RandomMinMax(3, 7);
 
-                    for (int i = 0; i < amount; i++)
-                    {
-                        new Blood(Utility.RandomMinMax(0x122C, 0x122F)).MoveToWorld(RandomPointOneAway(m_From.X, m_From.Y, m_From.Z, m_From.Map), m_From.Map);
-                    }
+                for (int i = 0; i < amount; i++)
+                {
+                    new Blood(Utility.RandomMinMax(0x122C, 0x122F)).MoveToWorld(RandomPointOneAway(m_From.X, m_From.Y, m_From.Z, m_From.Map), m_From.Map);
                 }
             }
         }
@@ -155,16 +152,16 @@ namespace Server.Engines.Events
             {
             }
 
-            protected override void OnTarget(Mobile from, object targ)
+            protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targ != null && CheckMobile(from))
+                if (targeted != null && CheckMobile(from))
                 {
-                    if (!(targ is Mobile))
+                    if (!(targeted is Mobile))
                     {
                         from.SendLocalizedMessage(1076781); /* There is little chance of getting candy from that! */
                         return;
                     }
-                    if (!(targ is BaseVendor) || ((BaseVendor)targ).Deleted)
+                    if (!(targeted is BaseVendor) || ((BaseVendor)targeted).Deleted)
                     {
                         from.SendLocalizedMessage(1076765); /* That doesn't look friendly. */
                         return;
@@ -172,7 +169,7 @@ namespace Server.Engines.Events
 
                     DateTime now = DateTime.UtcNow;
 
-                    BaseVendor m_Begged = targ as BaseVendor;
+                    BaseVendor m_Begged = targeted as BaseVendor;
 
                     if (CheckMobile(m_Begged))
                     {
@@ -205,13 +202,13 @@ namespace Server.Engines.Events
 
                                 if (Utility.RandomDouble() <= .01 && from.Skills.Begging.Value >= 100)
                                 {
-                                    from.AddToBackpack(HolidaySettings.RandomGMBeggerItem);
+                                    from.AddToBackpack(HalloweenSettings.RandomGMBeggerItem);
 
                                     from.SendLocalizedMessage(1076777); /* You receive a special treat! */
                                 }
                                 else
                                 {
-                                    from.AddToBackpack(HolidaySettings.RandomTreat);
+                                    from.AddToBackpack(HalloweenSettings.RandomTreat);
 
                                     from.SendLocalizedMessage(1076769);   /* You receive some candy. */
                                 }

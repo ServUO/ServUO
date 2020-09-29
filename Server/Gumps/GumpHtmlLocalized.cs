@@ -219,7 +219,7 @@ namespace Server.Gumps
 					disp.AppendLayout(m_Scrollbar);
 					disp.AppendLayout(m_Color);
 					disp.AppendLayout(m_Number);
-					disp.AppendLayout(m_Args);
+					disp.AppendLayout(m_Args ?? string.Empty);
 
 					break;
 				}

@@ -721,7 +721,7 @@ namespace Server.Engines.NewMagincia
 						 *your bank account. Your current bank balance is ~4_CURBAL~gp.<br><br>The 
 						 *status of your bid has not changed.*/
                         cliloc1 = 1150571;
-                        args2 = string.Format("@{0}@{1}@{2}@{3}", FormatAmt(oldBid), FormatAmt(newBid), FormatAmt(dif), FormatAmt(bankBal));
+                        args1 = string.Format("@{0}@{1}@{2}@{3}", FormatAmt(oldBid), FormatAmt(newBid), FormatAmt(dif), FormatAmt(bankBal));
 
                         if (hasbidspecific)
                         {
@@ -1042,14 +1042,27 @@ namespace Server.Engines.NewMagincia
             //string args1 = String.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}", );
 
             if (cliloc1 > 0)
-                AddHtmlLocalized(10, 100, 500, 120, cliloc1, args1, GreenColor16, false, false);
+            {
+                if (args1 != null)
+                {
+                    AddHtmlLocalized(10, 100, 500, 120, cliloc1, args1, GreenColor16, false, false);
+                }
+                else
+                {
+                    AddHtmlLocalized(10, 100, 500, 120, cliloc1, GreenColor16, false, false);
+                }
+            }
 
             if (cliloc2 > 0)
             {
                 if (args2 != null)
+                {
                     AddHtmlLocalized(10, 240, 500, 100, cliloc2, args2, GreenColor16, false, false);
+                }
                 else
+                {
                     AddHtmlLocalized(10, 240, 500, 100, cliloc2, GreenColor16, false, false);
+                }
             }
 
             AddHtmlLocalized(50, 490, 150, 18, 1150556, BlueColor16, false, false); // MY STALL BID
