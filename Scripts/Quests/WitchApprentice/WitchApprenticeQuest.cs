@@ -5,31 +5,6 @@ namespace Server.Engines.Quests.Hag
 {
     public class WitchApprenticeQuest : QuestSystem
     {
-        private static readonly Type[] m_TypeReferenceTable = new Type[]
-        {
-            typeof(FindApprenticeObjective),
-            typeof(FindGrizeldaAboutMurderObjective),
-            typeof(KillImpsObjective),
-            typeof(FindZeefzorpulObjective),
-            typeof(ReturnRecipeObjective),
-            typeof(FindIngredientObjective),
-            typeof(ReturnIngredientsObjective),
-            typeof(DontOfferConversation),
-            typeof(AcceptConversation),
-            typeof(HagDuringCorpseSearchConversation),
-            typeof(ApprenticeCorpseConversation),
-            typeof(MurderConversation),
-            typeof(HagDuringImpSearchConversation),
-            typeof(ImpDeathConversation),
-            typeof(ZeefzorpulConversation),
-            typeof(RecipeConversation),
-            typeof(HagDuringIngredientsConversation),
-            typeof(BlackheartFirstConversation),
-            typeof(BlackheartNoPirateConversation),
-            typeof(BlackheartPirateConversation),
-            typeof(EndConversation),
-            typeof(RecentlyFinishedConversation)
-        };
         private static readonly Point3D[] m_ZeefzorpulLocations = new Point3D[]
         {
             new Point3D(1226, 1573, 0),
@@ -63,7 +38,6 @@ namespace Server.Engines.Quests.Hag
         {
         }
 
-        public override Type[] TypeReferenceTable => m_TypeReferenceTable;
         public override object Name =>
                 // "The Witch's Apprentice"
                 1055042;

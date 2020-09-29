@@ -6,13 +6,6 @@ namespace Server.Engines.Quests.Doom
 {
     public class TheSummoningQuest : QuestSystem
     {
-        private static readonly Type[] m_TypeReferenceTable = new Type[]
-        {
-            typeof(AcceptConversation),
-            typeof(CollectBonesObjective),
-            typeof(VanquishDaemonConversation),
-            typeof(VanquishDaemonObjective)
-        };
         private Victoria m_Victoria;
         private bool m_WaitForSummon;
         public TheSummoningQuest(Victoria victoria, PlayerMobile from)
@@ -25,7 +18,6 @@ namespace Server.Engines.Quests.Doom
         {
         }
 
-        public override Type[] TypeReferenceTable => m_TypeReferenceTable;
         public Victoria Victoria => m_Victoria;
         public bool WaitForSummon
         {

@@ -5,17 +5,6 @@ namespace Server.Engines.Quests.Zento
 {
     public class TerribleHatchlingsQuest : QuestSystem
     {
-        private static readonly Type[] m_TypeReferenceTable = new Type[]
-        {
-            typeof(AcceptConversation),
-            typeof(DirectionConversation),
-            typeof(TakeCareConversation),
-            typeof(EndConversation),
-            typeof(FirstKillObjective),
-            typeof(SecondKillObjective),
-            typeof(ThirdKillObjective),
-            typeof(ReturnObjective)
-        };
         public TerribleHatchlingsQuest(PlayerMobile from)
             : base(from)
         {
@@ -26,7 +15,6 @@ namespace Server.Engines.Quests.Zento
         {
         }
 
-        public override Type[] TypeReferenceTable => m_TypeReferenceTable;
         public override object Name =>
                 // Terrible Hatchlings
                 1063314;
