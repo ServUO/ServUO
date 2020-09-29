@@ -5,52 +5,6 @@ namespace Server.Engines.Quests.Collector
 {
     public class CollectorQuest : QuestSystem
     {
-        private static readonly Type[] m_TypeReferenceTable = new Type[]
-        {
-            typeof(DontOfferConversation),
-            typeof(DeclineConversation),
-            typeof(AcceptConversation),
-            typeof(ElwoodDuringFishConversation),
-            typeof(ReturnPearlsConversation),
-            typeof(AlbertaPaintingConversation),
-            typeof(AlbertaStoolConversation),
-            typeof(AlbertaEndPaintingConversation),
-            typeof(AlbertaAfterPaintingConversation),
-            typeof(ElwoodDuringPainting1Conversation),
-            typeof(ElwoodDuringPainting2Conversation),
-            typeof(ReturnPaintingConversation),
-            typeof(GabrielAutographConversation),
-            typeof(GabrielNoSheetMusicConversation),
-            typeof(NoSheetMusicConversation),
-            typeof(GetSheetMusicConversation),
-            typeof(GabrielSheetMusicConversation),
-            typeof(GabrielIgnoreConversation),
-            typeof(ElwoodDuringAutograph1Conversation),
-            typeof(ElwoodDuringAutograph2Conversation),
-            typeof(ElwoodDuringAutograph3Conversation),
-            typeof(ReturnAutographConversation),
-            typeof(TomasToysConversation),
-            typeof(TomasDuringCollectingConversation),
-            typeof(ReturnImagesConversation),
-            typeof(ElwoodDuringToys1Conversation),
-            typeof(ElwoodDuringToys2Conversation),
-            typeof(ElwoodDuringToys3Conversation),
-            typeof(FullEndConversation),
-            typeof(FishPearlsObjective),
-            typeof(ReturnPearlsObjective),
-            typeof(FindAlbertaObjective),
-            typeof(SitOnTheStoolObjective),
-            typeof(ReturnPaintingObjective),
-            typeof(FindGabrielObjective),
-            typeof(FindSheetMusicObjective),
-            typeof(ReturnSheetMusicObjective),
-            typeof(ReturnAutographObjective),
-            typeof(FindTomasObjective),
-            typeof(CaptureImagesObjective),
-            typeof(ReturnImagesObjective),
-            typeof(ReturnToysObjective),
-            typeof(MakeRoomObjective)
-        };
         public CollectorQuest(PlayerMobile from)
             : base(from)
         {
@@ -61,7 +15,6 @@ namespace Server.Engines.Quests.Collector
         {
         }
 
-        public override Type[] TypeReferenceTable => m_TypeReferenceTable;
         public override object Name => 1020549; // Fishing for Rainbow Pearls
         public override object OfferMessage =>
                 /* <I>Elwood greets you warmly, like an old friend he's not

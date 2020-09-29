@@ -8,13 +8,6 @@ namespace Server.Engines.Quests.TimeLord
 {
     public class TimeForLegendsQuest : QuestSystem
     {
-        private readonly Type[] _TypeReferenceTable = new Type[]
-        {
-            typeof(TimeForLegendsObjective)
-        };
-
-        public override Type[] TypeReferenceTable => _TypeReferenceTable;
-
         public override object Name => 1156338;  		// A Time For Legends
         public override object OfferMessage => 1156339; 	/*Greetings Brave Traveler!<br><br>Throughout my travels in time I have forever 
 																		  encountered those who've reached the pinnacle of their profession.  These Legends 
