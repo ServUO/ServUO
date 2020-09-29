@@ -7,34 +7,30 @@ using System.IO;
 
 namespace Server
 {
-    public class ArtData
+    public static class ArtData
     {
 #if MONO
-		public const PixelFormat PixelFormat = System.Drawing.Imaging.PixelFormat.Format16bppRgb555;
+		public const PixelFormat PixelFormat = System.Drawing.Imaging.PixelFormat.Format32bppArgb;
 #else
         public const PixelFormat PixelFormat = System.Drawing.Imaging.PixelFormat.Format16bppArgb1555;
 #endif
+        private static readonly FileIndex m_FileIndex;
 
-        private static FileIndex m_FileIndex;
+        private static readonly Bitmap[] m_Cache = new Bitmap[0x14000];
+        private static readonly bool[] m_Removed = new bool[0x14000];
+        private static readonly Hashtable m_Patched = new Hashtable();
 
-        private static readonly Bitmap[] m_Cache;
-        private static readonly bool[] m_Removed;
-        private static readonly Hashtable m_patched = new Hashtable();
-        public static bool Modified = false;
+        public static bool Modified { get; }
 
         private static byte[] m_StreamBuffer;
 
-        public static bool CheckFile = File.Exists(Core.FindDataFile("artLegacyMUL.uop"));
+        public static bool CheckFile => File.Exists(Core.FindDataFile("artLegacyMUL.uop"));
 
         static ArtData()
         {
             if (CheckFile)
             {
-                m_Cache = new Bitmap[0x14000];
-                m_Removed = new bool[0x14000];
-                
-                m_FileIndex = new FileIndex(
-                "artLegacyMUL.uop", 0x10000, ".tga", 0x13FDC, false);
+                m_FileIndex = new FileIndex("artLegacyMUL.uop", 0x10000, ".tga", 0x13FDC, false);
             }
         }
 
@@ -63,11 +59,13 @@ namespace Server
             if (checkmaxid)
             {
                 int max = GetMaxItemID();
+
                 if (itemID > max)
                 {
                     return 0;
                 }
             }
+
             return (ushort)itemID;
         }
 
@@ -76,30 +74,53 @@ namespace Server
             return (int)(m_FileIndex.IdxLength / 12);
         }
 
-        /// <summary>
-        ///     Returns Bitmap of Static (with Cache)
-        /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        public static Bitmap GetStatic(int index, bool checkmaxid = true)
+        public static Bitmap GetStatic(int index, int hue, bool onlyHueGrayPixels)
         {
-            return GetStatic(index, out bool patched, checkmaxid);
+            return GetStatic(index, hue, onlyHueGrayPixels, out _, true);
         }
 
-        /// <summary>
-        ///     Returns Bitmap of Static (with Cache) and verdata bool
-        /// </summary>
-        /// <param name="index"></param>
-        /// <param name="patched"></param>
-        /// <returns></returns>
-        public static Bitmap GetStatic(int index, out bool patched, bool checkmaxid = true)
+        public static Bitmap GetStatic(int index, int hue, bool onlyHueGrayPixels, out bool patched)
+        {
+            return GetStatic(index, hue, onlyHueGrayPixels, out patched, true);
+        }
+
+        public static Bitmap GetStatic(int index, int hue, bool onlyHueGrayPixels, bool checkmaxid)
+        {
+            return GetStatic(index, hue, onlyHueGrayPixels, out _, checkmaxid);
+        }
+
+        public static Bitmap GetStatic(int index, int hue, bool onlyHueGrayPixels, out bool patched, bool checkmaxid)
+        {
+            Bitmap image = new Bitmap(GetStatic(index, out patched));
+
+            HueData.ApplyTo(image, hue, onlyHueGrayPixels);
+
+            return image;
+        }
+
+        public static Bitmap GetStatic(int index)
+        {
+            return GetStatic(index, out _, true);
+        }
+
+        public static Bitmap GetStatic(int index, out bool patched)
+        {
+            return GetStatic(index, out patched, true);
+        }
+
+        public static Bitmap GetStatic(int index, bool checkmaxid)
+        {
+            return GetStatic(index, out _, checkmaxid);
+        }
+
+        public static Bitmap GetStatic(int index, out bool patched, bool checkmaxid)
         {
             index = GetLegalItemID(index, checkmaxid);
             index += 0x4000;
 
-            if (m_patched.Contains(index))
+            if (m_Patched.Contains(index))
             {
-                patched = (bool)m_patched[index];
+                patched = (bool)m_Patched[index];
             }
             else
             {
@@ -122,9 +143,10 @@ namespace Server
             {
                 return null;
             }
+
             if (patched)
             {
-                m_patched[index] = true;
+                m_Patched[index] = true;
             }
 
             return LoadStatic(stream, length);
@@ -140,8 +162,7 @@ namespace Server
                 return;
             }
 
-            BitmapData bd = bmp.LockBits(
-                new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat);
+            BitmapData bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat);
 
             int delta = (bd.Stride >> 1) - bd.Width;
             int lineDelta = bd.Stride >> 1;
@@ -191,11 +212,13 @@ namespace Server
                             }
                         }
                     }
+
                     ++x;
                 }
 
                 pBuffer += delta;
                 pLineEnd += lineDelta;
+
                 ++y;
                 x = 0;
             }
@@ -206,17 +229,21 @@ namespace Server
         private static unsafe Bitmap LoadStatic(Stream stream, int length)
         {
             Bitmap bmp;
+
             if (m_StreamBuffer == null || m_StreamBuffer.Length < length)
             {
                 m_StreamBuffer = new byte[length];
             }
+
             stream.Read(m_StreamBuffer, 0, length);
             stream.Close();
 
             fixed (byte* data = m_StreamBuffer)
             {
                 ushort* bindata = (ushort*)data;
+
                 int count = 2;
+
                 int width = bindata[count++];
                 int height = bindata[count++];
 
@@ -235,8 +262,8 @@ namespace Server
                 }
 
                 bmp = new Bitmap(width, height, PixelFormat);
-                BitmapData bd = bmp.LockBits(
-                    new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, PixelFormat);
+
+                BitmapData bd = bmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, PixelFormat);
 
                 ushort* line = (ushort*)bd.Scan0;
                 int delta = bd.Stride >> 1;
@@ -245,8 +272,7 @@ namespace Server
                 {
                     count = lookups[y];
 
-                    ushort* cur = line;
-                    ushort* end;
+                    ushort* cur = line, end;
                     int xOffset, xRun;
 
                     while (((xOffset = bindata[count++]) + (xRun = bindata[count++])) != 0)
@@ -255,11 +281,14 @@ namespace Server
                         {
                             break;
                         }
+
                         cur += xOffset;
+
                         if (xOffset + xRun > delta)
                         {
                             break;
                         }
+
                         end = cur + xRun;
 
                         while (cur < end)
@@ -268,8 +297,10 @@ namespace Server
                         }
                     }
                 }
+
                 bmp.UnlockBits(bd);
             }
+
             return bmp;
         }
     }
