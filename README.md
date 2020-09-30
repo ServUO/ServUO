@@ -29,9 +29,10 @@ Run `Compile.WIN - Release.bat` for production environments.
 `make`
 
 
-#### Ubuntu
+#### Ubuntu / Debian
 
-`apt-get install mono-complete`  
+`apt-get install zlib1g-dev`
+`apt-get install mono-complete`
 `make`
 
 
