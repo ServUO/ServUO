@@ -31,8 +31,8 @@ Run `Compile.WIN - Release.bat` for production environments.
 
 #### Ubuntu / Debian
 
-`apt-get install zlib1g-dev`
-`apt-get install mono-complete`
+`apt-get install zlib1g-dev`  
+`apt-get install mono-complete`  
 `make`
 
 
