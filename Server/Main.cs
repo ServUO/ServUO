@@ -322,16 +322,46 @@ namespace Server
 			Kill(false);
 		}
 
+#if MONO
+		private static string[] SupportedTerminals => new string[]
+		{
+			"xfce4-terminal", "gnome-terminal", "xterm"
+		};
+
+		private static void RebootTerminal(int i = 0)
+		{
+			if(SupportedTerminals.Length > i)
+			{
+				try {
+					if(SupportedTerminals[i] != "xterm")
+						Process.Start(SupportedTerminals[i], $"--working-directory={BaseDirectory} -x ./ServUO.sh");
+					else
+						Process.Start(SupportedTerminals[i], $"-lcc {BaseDirectory} -e ./ServUO.sh");
+					Thread.Sleep(500); // a sleep here to not close the programm to quick, so that the new windows cant start.
+				}
+				catch(System.ComponentModel.Win32Exception)
+				{
+					RebootTerminal(i+1);
+				}
+			}
+		}
+#endif
+
 		public static void Kill(bool restart)
 		{
 			HandleClosed();
 
 			if (restart)
 			{
+#if MONO
+				RebootTerminal();
+				Environment.Exit(0);
+			}
+#else				
 				Process.Start(ExePath, Arguments);
 			}
-
 			Process.Kill();
+#endif
 		}
 
 		private static void HandleClosed()
