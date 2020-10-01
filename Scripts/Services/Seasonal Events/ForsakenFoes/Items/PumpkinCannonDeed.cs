@@ -2,18 +2,19 @@ using Server.Multis;
 
 namespace Server.Items
 {
-    public class PumpkinDeed : ShipCannonDeed
+    [TypeAlias("Server.Items.PumpkinDeed")]
+    public class PumpkinCannonDeed : ShipCannonDeed
     {
         public override CannonPower CannonType => CannonPower.Pumpkin;
         public override int LabelNumber => 1159232;  // Pumpkin Cannon
 
         [Constructable]
-        public PumpkinDeed()
+        public PumpkinCannonDeed()
         {
             Hue = 1192;
         }
 
-        public PumpkinDeed(Serial serial)
+        public PumpkinCannonDeed(Serial serial)
             : base(serial)
         {
         }
@@ -36,7 +37,7 @@ namespace Server.Items
         public override int LabelNumber => 1023691;  // cannon
 
         public override int Range => 10;
-        public override ShipCannonDeed GetDeed => new PumpkinDeed();
+        public override ShipCannonDeed GetDeed => new PumpkinCannonDeed();
         public override CannonPower Power => CannonPower.Pumpkin;
 
         public PumpkinCannon(BaseGalleon g)

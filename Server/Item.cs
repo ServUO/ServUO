@@ -6173,7 +6173,9 @@ namespace Server
 			{
 				Instance = this;
 				Start();
-			}
+
+                Priority = TimerPriority.FiftyMS;
+            }
 
 			public static bool HasTimer(ItemSocket socket)
 			{

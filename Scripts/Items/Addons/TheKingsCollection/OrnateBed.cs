@@ -2,8 +2,10 @@ using Server.Gumps;
 
 namespace Server.Items
 {
-    public class OrnateBedAddon : BaseAddon, IDyable
+    public class OrnateBedAddon : BaseAddon
     {
+        public override BaseAddonDeed Deed => new OrnateBedDeed();
+
         [Constructable]
         public OrnateBedAddon(DirectionType type)
         {
@@ -28,21 +30,10 @@ namespace Server.Items
             }
         }
 
-        public virtual bool Dye(Mobile from, DyeTub sender)
-        {
-            if (Deleted)
-                return false;
-
-            Hue = sender.DyedHue;
-            return true;
-        }
-
         public OrnateBedAddon(Serial serial)
             : base(serial)
         {
         }
-
-        public override BaseAddonDeed Deed => new OrnateBedDeed();
 
         public override void Serialize(GenericWriter writer)
         {
@@ -57,6 +48,7 @@ namespace Server.Items
         }
     }
 
+    [Furniture]
     public class OrnateBedDeed : BaseAddonDeed, IRewardOption
     {
         public override int LabelNumber => 1154133;  // Ornate Bed
