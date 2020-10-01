@@ -24,7 +24,8 @@ namespace Server.Items
 
         private static Type[] _Dyables = new[]
         {
-            typeof(PotionKeg), typeof(CustomizableSquaredDoorMatDeed)
+            typeof(PotionKeg), typeof(CustomizableSquaredDoorMatDeed), typeof(OrnateBedDeed),
+            typeof(FourPostBedDeed)
         };
 
         public override Type[] ForcedDyables => _Dyables;
@@ -80,9 +81,6 @@ namespace Server.Items
                         break;
                     }
             }
-
-            if (LootType == LootType.Regular)
-                LootType = LootType.Blessed;
         }
     }
 }

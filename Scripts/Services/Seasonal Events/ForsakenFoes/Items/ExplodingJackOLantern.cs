@@ -18,7 +18,11 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.Mounted)
+            if (!IsChildOf(from.Backpack))
+            {
+                from.SendLocalizedMessage(1042010); // You must have the object in your backpack to use it.
+            }
+            else if (from.Mounted)
             {
                 from.SendLocalizedMessage(1061130); // You can't do that while riding a mount.
             }
@@ -34,7 +38,7 @@ namespace Server.Items
             private readonly Mobile m_From;
 
             public ThrowTarget(Mobile from)
-                : base(12, true, TargetFlags.None)
+                : base(10, true, TargetFlags.None)
             {
                 m_From = from;
             }

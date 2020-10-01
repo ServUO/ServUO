@@ -35,9 +35,6 @@
 
 # Custom Files
 /TotalAccountGold.txt
-/staffHistory.xml
-/reportHistory.xml
-/Ultima.dll
 
 # Wildcard Files
 *.pdb

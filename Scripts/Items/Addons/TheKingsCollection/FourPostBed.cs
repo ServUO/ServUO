@@ -2,8 +2,10 @@ using Server.Gumps;
 
 namespace Server.Items
 {
-    public class FourPostBedAddon : BaseAddon, IDyable
+    public class FourPostBedAddon : BaseAddon
     {
+        public override BaseAddonDeed Deed => new FourPostBedDeed();
+
         [Constructable]
         public FourPostBedAddon(DirectionType type)
         {
@@ -28,22 +30,11 @@ namespace Server.Items
             }
         }
 
-        public virtual bool Dye(Mobile from, DyeTub sender)
-        {
-            if (Deleted)
-                return false;
-
-            Hue = sender.DyedHue;
-            return true;
-        }
-
         public FourPostBedAddon(Serial serial)
             : base(serial)
         {
         }
-
-        public override BaseAddonDeed Deed => new FourPostBedDeed();
-
+       
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -57,6 +48,7 @@ namespace Server.Items
         }
     }
 
+    [Furniture]
     public class FourPostBedDeed : BaseAddonDeed, IRewardOption
     {
         public override int LabelNumber => 1154131;  // Four Post Bed
