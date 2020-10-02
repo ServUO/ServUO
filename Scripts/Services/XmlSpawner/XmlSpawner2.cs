@@ -6835,7 +6835,9 @@ namespace Server.Mobiles
         [Description("Loads XmlSpawner objects (replacing existing spawners with matching GUIDs) into the proper map as defined in the file supplied.")]
         public static void Load_OnCommand(CommandEventArgs e)
         {
-            if (e.Mobile.AccessLevel >= DiskAccessLevel)
+            var m = e.Mobile;
+
+            if (m == null || m.AccessLevel >= DiskAccessLevel)
             {
                 if (e.Arguments.Length >= 1)
                 {
@@ -6850,13 +6852,17 @@ namespace Server.Mobiles
                     int processedmaps;
                     int processedspawners;
 
-                    XmlLoadFromFile(filename, SpawnerPrefix, e.Mobile, false, 0, false, out processedmaps, out processedspawners);
+                    XmlLoadFromFile(filename, SpawnerPrefix, m, false, 0, false, out processedmaps, out processedspawners);
                 }
-                else
+                else if (m != null)
+                {
                     e.Mobile.SendMessage("Usage:  {0} <SpawnFile or directory> [SpawnerPrefixFilter]", e.Command);
+                }
             }
             else
+            {
                 e.Mobile.SendMessage("You do not have rights to perform this command.");
+            }
         }
 
         [Usage("XmlNewLoadHere <SpawnFile or directory> [SpawnerPrefixFilter][-maxrange range]")]

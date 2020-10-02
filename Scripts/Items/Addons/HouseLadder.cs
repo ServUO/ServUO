@@ -15,22 +15,22 @@ namespace Server.Items
             {
                 case 0: // castle south
                     AddComponent(new LocalizedAddonComponent(0x3DB2, 1076791), 0, 0, 0);
-                    AddComponent(new LocalizedAddonComponent(0x3F28, 1076791), 0, 1, 28);
+                    AddComponent(new LocalizedAddonComponent(0x3F28, 1076791), 0, 1, 29);
                     AddComponent(new LocalizedAddonComponent(0x3DB4, 1076791), 0, 2, 20);
                     break;
                 case 1: // castle east
                     AddComponent(new LocalizedAddonComponent(0x3DB3, 1076791), 0, 0, 0);
-                    AddComponent(new LocalizedAddonComponent(0x3F28, 1076791), 1, 0, 28);
+                    AddComponent(new LocalizedAddonComponent(0x3F28, 1076791), 1, 0, 29);
                     AddComponent(new LocalizedAddonComponent(0x3DB5, 1076791), 2, 0, 20);
                     break;
                 case 2: // castle north
                     AddComponent(new LocalizedAddonComponent(0x2FDF, 1076791), 0, 0, 0);
-                    AddComponent(new LocalizedAddonComponent(0x3F28, 1076791), 0, -1, 28);
+                    AddComponent(new LocalizedAddonComponent(0x3F28, 1076791), 0, -1, 29);
                     AddComponent(new LocalizedAddonComponent(0x3DB6, 1076791), 0, -2, 20);
                     break;
                 case 3: // castle west
                     AddComponent(new LocalizedAddonComponent(0x2FDE, 1076791), 0, 0, 0);
-                    AddComponent(new LocalizedAddonComponent(0x3F28, 1076791), -1, 0, 28);
+                    AddComponent(new LocalizedAddonComponent(0x3F28, 1076791), -1, 0, 29);
                     AddComponent(new LocalizedAddonComponent(0x3DB7, 1076791), -2, 0, 20);
                     break;
                 case 4: // south

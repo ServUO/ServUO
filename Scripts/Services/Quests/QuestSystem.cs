@@ -178,13 +178,13 @@ namespace Server.Engines.Quests
 
         public static void OnKilledBy(OnKilledByEventArgs e)
         {
-            if (e.KilledBy is PlayerMobile && e.Killed is BaseCreature)
+            if (e.KilledBy is PlayerMobile pm && e.Killed is BaseCreature bc)
             {
-                QuestSystem qs = ((PlayerMobile)e.KilledBy).Quest;
+                QuestSystem qs = pm.Quest;
 
                 if (qs != null)
                 {
-                    qs.OnKill((BaseCreature)e.Killed, e.Killed.Corpse);
+                    qs.OnKill(bc, bc.Corpse);
                 }
             }
         }
