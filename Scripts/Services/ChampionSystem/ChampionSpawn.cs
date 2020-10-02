@@ -34,8 +34,6 @@ namespace Server.Engines.CannedEvil
         private TimeSpan m_RestartDelay;
         private DateTime m_RestartTime;
 
-        private Timer m_Timer, m_RestartTimer;
-
         private IdolOfTheChampion m_Idol;
 
         private bool m_HasBeenAdvanced;
@@ -88,6 +86,12 @@ namespace Server.Engines.CannedEvil
                 m_HasBeenAdvanced = value;
             }
         }
+
+        public bool TimerRunning => TimerRegistry.HasTimer(_TimerID, this);
+        public bool RestartTimerRunning => TimerRegistry.HasTimer(_RestartTimerID, this);
+
+        public static readonly string _TimerID = "ChampSpawnTimer";
+        public static readonly string _RestartTimerID = "ChampSpawnRestartTimer";
 
         [Constructable]
         public ChampionSpawn()
@@ -368,16 +372,8 @@ namespace Server.Engines.CannedEvil
             m_Active = true;
             m_HasBeenAdvanced = false;
 
-            if (m_Timer != null)
-                m_Timer.Stop();
-
-            m_Timer = new SliceTimer(this);
-            m_Timer.Start();
-
-            if (m_RestartTimer != null)
-                m_RestartTimer.Stop();
-
-            m_RestartTimer = null;
+            TimerRegistry.Register(_TimerID, this, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), false, spawner => spawner.OnSlice());
+            TimerRegistry.RemoveFromRegistry(_RestartTimerID, this);
 
             if (m_Altar != null)
                 m_Altar.Hue = 0;
@@ -415,7 +411,6 @@ namespace Server.Engines.CannedEvil
             m_Active = false;
             m_HasBeenAdvanced = false;
 
-            // We must despawn all the creatures.
             if (m_Creatures != null)
             {
                 for (int i = 0; i < m_Creatures.Count; ++i)
@@ -424,15 +419,8 @@ namespace Server.Engines.CannedEvil
                 m_Creatures.Clear();
             }
 
-            if (m_Timer != null)
-                m_Timer.Stop();
-
-            m_Timer = null;
-
-            if (m_RestartTimer != null)
-                m_RestartTimer.Stop();
-
-            m_RestartTimer = null;
+            TimerRegistry.RemoveFromRegistry(_TimerID, this);
+            TimerRegistry.RemoveFromRegistry(_RestartTimerID, this);
 
             if (m_Altar != null)
                 m_Altar.Hue = 0x455;
@@ -445,13 +433,9 @@ namespace Server.Engines.CannedEvil
 
         public void BeginRestart(TimeSpan ts)
         {
-            if (m_RestartTimer != null)
-                m_RestartTimer.Stop();
+            TimerRegistry.Register(_RestartTimerID, this, ts, spawner => spawner.EndRestart());
 
             m_RestartTime = DateTime.UtcNow + ts;
-
-            m_RestartTimer = new RestartTimer(this, ts);
-            m_RestartTimer.Start();
         }
 
         public void EndRestart()
@@ -609,10 +593,6 @@ namespace Server.Engines.CannedEvil
 
                     if (m.Deleted)
                     {
-                        if (m.Corpse != null && !m.Corpse.Deleted)
-                        {
-                            ((Corpse)m.Corpse).BeginDecay(TimeSpan.FromMinutes(1));
-                        }
                         m_Creatures.RemoveAt(i);
                         --i;
 
@@ -704,7 +684,7 @@ namespace Server.Engines.CannedEvil
                 Respawn();
             }
 
-            if (m_Timer != null && m_Timer.Running && _NextGhostCheck < DateTime.UtcNow)
+            if (TimerRunning && _NextGhostCheck < DateTime.UtcNow)
             {
                 foreach (PlayerMobile ghost in m_Region.GetEnumeratedMobiles().OfType<PlayerMobile>().Where(pm => !pm.Alive && (pm.Corpse == null || pm.Corpse.Deleted)))
                 {
@@ -1266,10 +1246,13 @@ namespace Server.Engines.CannedEvil
             writer.Write(m_Champion);
             writer.Write(m_RestartDelay);
 
-            writer.Write(m_RestartTimer != null);
+            var restarting = RestartTimerRunning;
+            writer.Write(restarting);
 
-            if (m_RestartTimer != null)
+            if (restarting)
+            {
                 writer.WriteDeltaTime(m_RestartTime);
+            }
         }
 
         public override void Deserialize(GenericReader reader)

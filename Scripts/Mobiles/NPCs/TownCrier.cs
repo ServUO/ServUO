@@ -450,7 +450,8 @@ namespace Server.Mobiles
 
         private List<TownCrierEntry> m_Entries;
         private Timer m_NewsTimer;
-        private Timer m_AutoShoutTimer;
+
+        private static readonly string _AutoShoutTimerID = "AutoShoutTimer";
 
         [Constructable]
         public TownCrier()
@@ -551,8 +552,7 @@ namespace Server.Mobiles
 
         public void ForceBeginAutoShout()
         {
-            if (m_AutoShoutTimer == null)
-                m_AutoShoutTimer = Timer.DelayCall(TimeSpan.FromMinutes(1.0), TimeSpan.FromMinutes(5.0), AutoShout_Callback);
+            TimerRegistry.Register(_AutoShoutTimerID, this, TimeSpan.FromMinutes(5.0), TimeSpan.FromMinutes(1.0), false, tc => tc.AutoShout_Callback());
         }
 
         public TownCrierEntry AddEntry(TextDefinition[] lines, TimeSpan duration)
@@ -564,8 +564,7 @@ namespace Server.Mobiles
 
             m_Entries.Add(tce);
 
-            if (m_AutoShoutTimer == null)
-                m_AutoShoutTimer = Timer.DelayCall(TimeSpan.FromMinutes(1.0), TimeSpan.FromMinutes(5.0), AutoShout_Callback);
+            TimerRegistry.Register(_AutoShoutTimerID, this, TimeSpan.FromMinutes(5.0), TimeSpan.FromMinutes(1.0), false, tc => tc.AutoShout_Callback());
 
             return tce;
         }
@@ -577,8 +576,7 @@ namespace Server.Mobiles
 
             m_Entries.Add(entry);
 
-            if (m_AutoShoutTimer == null)
-                m_AutoShoutTimer = Timer.DelayCall(TimeSpan.FromMinutes(1.0), TimeSpan.FromMinutes(5.0), AutoShout_Callback);
+            TimerRegistry.Register(_AutoShoutTimerID, this, TimeSpan.FromMinutes(5.0), TimeSpan.FromMinutes(1.0), false, tc => tc.AutoShout_Callback());
         }
 
         public void RemoveEntry(TownCrierEntry tce)
@@ -593,10 +591,7 @@ namespace Server.Mobiles
 
             if (m_Entries == null && GlobalTownCrierEntryList.Instance.IsEmpty)
             {
-                if (m_AutoShoutTimer != null)
-                    m_AutoShoutTimer.Stop();
-
-                m_AutoShoutTimer = null;
+                TimerRegistry.RemoveFromRegistry(_AutoShoutTimerID, this);
             }
         }
 
@@ -716,10 +711,7 @@ namespace Server.Mobiles
 
             if (tce == null)
             {
-                if (m_AutoShoutTimer != null)
-                    m_AutoShoutTimer.Stop();
-
-                m_AutoShoutTimer = null;
+                TimerRegistry.RemoveFromRegistry(_AutoShoutTimerID, this);
             }
             else if (m_NewsTimer == null)
             {

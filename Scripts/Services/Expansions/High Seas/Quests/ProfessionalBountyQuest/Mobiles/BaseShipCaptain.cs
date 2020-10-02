@@ -185,7 +185,7 @@ namespace Server.Mobiles
             if (m_Galleon != null && !m_Galleon.Deleted)
             {
                 m_Galleon.TimeOfDecay = DateTime.UtcNow + TimeSpan.FromMinutes(30);
-                Timer.DelayCall(DeleteAfterDeath, new TimerStateCallback(TryDecayGalleon), m_Galleon);
+                Timer.DelayCall(DeleteAfterDeath, TryDecayGalleon, m_Galleon);
             }
 
             base.Delete();
@@ -210,7 +210,7 @@ namespace Server.Mobiles
 
             if (gal.PlayerCount > 0)
             {
-                Timer.DelayCall(DecayRetry, new TimerStateCallback(TryDecayGalleon), gal);
+                Timer.DelayCall(DecayRetry, TryDecayGalleon, gal);
                 return;
             }
 

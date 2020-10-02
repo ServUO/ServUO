@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public class FireBarrier : Item
     {
-        private Timer m_SoundTimer;
+        private static readonly string _TimerID = "FireBarrierTimer";
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Active
@@ -18,9 +18,13 @@ namespace Server.Items
                     Visible = value;
 
                     if (Active)
-                        m_SoundTimer.Start();
+                    {
+                        ActivateTimer();
+                    }
                     else
-                        m_SoundTimer.Stop();
+                    {
+                        DeactivateTimer();
+                    }
                 }
             }
         }
@@ -33,18 +37,19 @@ namespace Server.Items
             Hue = 0x47E;
 
             MoveToWorld(location, map);
-
-            m_SoundTimer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(Utility.RandomMinMax(5, 50)), PlaySound);
-            m_SoundTimer.Start();
         }
 
         protected void PlaySound()
         {
-            // Randomize the Timer Interval
-            m_SoundTimer.Interval = TimeSpan.FromSeconds(Utility.RandomMinMax(5, 50));
-
-            //Effects.PlaySound( Location, Map, Utility.RandomList( 0x1DC, 0x210, 0x2F4 ) );
-            Effects.PlaySound(Location, Map, Utility.RandomList(0x1DD, 0x345, 0x346, 0x347, 0x348, 0x349, 0x34A));
+            if (Active)
+            {
+                Effects.PlaySound(Location, Map, Utility.RandomList(0x1DD, 0x345, 0x346, 0x347, 0x348, 0x349, 0x34A));
+                TimerRegistry.UpdateRegistry(_TimerID, this, TimeSpan.FromSeconds(Utility.RandomMinMax(5, 25)));
+            }
+            else
+            {
+                TimerRegistry.RemoveFromRegistry(_TimerID, this);
+            }
         }
 
         private readonly Dictionary<Mobile, Timer> m_DamageTable = new Dictionary<Mobile, Timer>();
@@ -63,6 +68,26 @@ namespace Server.Items
             }
         }
 
+        private void ActivateTimer()
+        {
+            TimerRegistry.Register(_TimerID, this, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), false, barrier => barrier.PlaySound());
+        }
+
+        private void DeactivateTimer()
+        {
+            TimerRegistry.RemoveFromRegistry(_TimerID, this);
+        }
+
+        public override void OnSectorActivate()
+        {
+            ActivateTimer();
+        }
+
+        public override void OnSectorDeactivate()
+        {
+            DeactivateTimer();
+        }
+
         protected void Damage(Mobile m)
         {
             if (Active && m.IsPlayer() && m.Alive && !Deleted && m.InRange(this, 1))
@@ -76,14 +101,6 @@ namespace Server.Items
 
                 m_DamageTable.Remove(m);
             }
-        }
-
-        public override void OnAfterDelete()
-        {
-            base.OnAfterDelete();
-
-            if (m_SoundTimer != null)
-                m_SoundTimer.Stop();
         }
 
         public FireBarrier(Serial serial)
@@ -101,9 +118,6 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            m_SoundTimer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(5.0), PlaySound);
-            m_SoundTimer.Start();
         }
     }
 }

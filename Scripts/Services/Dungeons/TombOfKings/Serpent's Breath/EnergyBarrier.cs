@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class EnergyBarrier : Item
     {
-        private Timer m_SoundTimer;
+        private static readonly string _TimerID = "EnergyBarrierTimer";
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Active
@@ -17,9 +17,13 @@ namespace Server.Items
                     Visible = value;
 
                     if (Active)
-                        m_SoundTimer.Start();
+                    {
+                        ActivateTimer();
+                    }
                     else
-                        m_SoundTimer.Stop();
+                    {
+                        DeactivateTimer();
+                    }
                 }
             }
         }
@@ -31,25 +35,39 @@ namespace Server.Items
             Light = LightType.Circle150;
 
             MoveToWorld(location, map);
-
-            m_SoundTimer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(Utility.RandomMinMax(5, 50)), PlaySound);
-            m_SoundTimer.Start();
         }
 
         protected void PlaySound()
         {
-            // Randomize the Timer Interval
-            m_SoundTimer.Interval = TimeSpan.FromSeconds(Utility.RandomMinMax(5, 50));
-
-            Effects.PlaySound(Location, Map, Utility.RandomList(0x1DC, 0x210, 0x2F4));
+            if (Active)
+            {
+                Effects.PlaySound(Location, Map, Utility.RandomList(0x1DC, 0x210, 0x2F4));
+                TimerRegistry.UpdateRegistry(_TimerID, this, TimeSpan.FromSeconds(Utility.RandomMinMax(5, 25)));
+            }
+            else
+            {
+                TimerRegistry.RemoveFromRegistry(_TimerID, this);
+            }
         }
 
-        public override void OnAfterDelete()
+        private void ActivateTimer()
         {
-            base.OnAfterDelete();
+            TimerRegistry.Register(_TimerID, this, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), false, barrier => barrier.PlaySound());
+        }
 
-            if (m_SoundTimer != null)
-                m_SoundTimer.Stop();
+        private void DeactivateTimer()
+        {
+            TimerRegistry.RemoveFromRegistry(_TimerID, this);
+        }
+
+        public override void OnSectorActivate()
+        {
+            ActivateTimer();
+        }
+
+        public override void OnSectorDeactivate()
+        {
+            DeactivateTimer();
         }
 
         public EnergyBarrier(Serial serial)
@@ -67,9 +85,6 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
-
-            m_SoundTimer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(5.0), PlaySound);
-            m_SoundTimer.Start();
         }
     }
 }

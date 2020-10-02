@@ -171,6 +171,7 @@ namespace Server.Engines.CannedEvil
         public static void DelSpawns_OnCommand(CommandEventArgs e)
         {
             RemoveSpawns();
+            m_Initialized = false;
             e.Mobile.SendMessage("Champ Spawns Removed!");
         }
 

@@ -20,9 +20,9 @@ namespace Server.Engines.SorcerersDungeon
             SetDex(200);
             SetInt(1200);
 
-            SetHits(26000);
+            SetHits(8000);
 
-            SetDamage(22, 26);
+            SetDamage(21, 27);
 
             SetDamageType(ResistanceType.Physical, 100);
 
@@ -45,8 +45,8 @@ namespace Server.Engines.SorcerersDungeon
             SetSkill(SkillName.Meditation, 120);
             SetSkill(SkillName.Focus, 70, 80);
 
-            Fame = 12000;
-            Karma = -12000;
+            Fame = 16000;
+            Karma = -16000;
 
             SetWearable(new ClothNinjaHood(), 1281);
             SetWearable(new BoneChest(), 1175);

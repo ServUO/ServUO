@@ -128,9 +128,8 @@ namespace Server.Spells.SkillMasteries
 
                     if (casterFocus != null)
                     {
-                        ArcaneFocus f = new ArcaneFocus(casterFocus.LifeSpan, casterFocus.StrengthBonus)
+                        ArcaneFocus f = new ArcaneFocus(casterFocus.TimeLeft, casterFocus.StrengthBonus)
                         {
-                            CreationTime = casterFocus.CreationTime,
                             Movable = false
                         };
 

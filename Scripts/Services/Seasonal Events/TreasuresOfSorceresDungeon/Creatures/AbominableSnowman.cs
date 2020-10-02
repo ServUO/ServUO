@@ -40,8 +40,8 @@ namespace Server.Engines.SorcerersDungeon
             SetSkill(SkillName.Tactics, 100.0);
             SetSkill(SkillName.Wrestling, 120, 130);
 
-            Fame = 12000;
-            Karma = -12000;
+            Fame = 16000;
+            Karma = -16000;
 
             SetWeaponAbility(WeaponAbility.ConcussionBlow);
             SetWeaponAbility(WeaponAbility.CrushingBlow);

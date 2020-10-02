@@ -428,6 +428,8 @@ namespace Server.Mobiles
         public override bool CanRegenStam => !IsParagon && !m_IsDeadPet && base.CanRegenStam;
         public override bool CanRegenMana => !m_IsDeadPet && base.CanRegenMana;
 
+        public override TimeSpan CorpseDecayTime { get { return IsChampionSpawn ? TimeSpan.FromMinutes(1) : base.CorpseDecayTime; } }
+
         public override bool IsDeadBondedPet => m_IsDeadPet;
 
         private bool m_IsBonded;
@@ -2196,8 +2198,6 @@ namespace Server.Mobiles
             }
 
             InitializeAbilities();
-
-            Timer.DelayCall(() => GenerateLoot(LootStage.Spawning));
         }
 
         public BaseCreature(Serial serial)
@@ -2207,6 +2207,11 @@ namespace Server.Mobiles
             m_arSpellDefense = new List<Type>();
 
             m_bDebugAI = false;
+        }
+
+        protected override void OnCreate()
+        {
+            GenerateLoot(LootStage.Spawning);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -2506,7 +2511,7 @@ namespace Server.Mobiles
                 if (m_bSummoned)
                 {
                     m_SummonEnd = reader.ReadDeltaTime();
-                    UnsummonTimer.Register(this);
+                    TimerRegistry.Register<BaseCreature>("UnsummonTimer", this, m_SummonEnd - DateTime.UtcNow, c => c.Delete()); 
                 }
 
                 m_iControlSlots = reader.ReadInt();
@@ -5254,7 +5259,7 @@ namespace Server.Mobiles
 
         public void PackItem(Item item)
         {
-            if (Summoned || item == null)
+            if ((Summoned && item.Movable) || item == null)
             {
                 if (item != null)
                 {
@@ -6284,7 +6289,7 @@ namespace Server.Mobiles
                 (int)Math.Floor(creature.HitsMax * (1 + ArcaneEmpowermentSpell.GetSpellBonus(caster, false) / 100.0)));
 
             creature.m_SummonEnd = DateTime.UtcNow + duration;
-            UnsummonTimer.Register(creature);
+            TimerRegistry.Register<BaseCreature>("UnsummonTimer", creature, duration, c => c.Delete());
 
             creature.MoveToWorld(p, caster.Map);
 

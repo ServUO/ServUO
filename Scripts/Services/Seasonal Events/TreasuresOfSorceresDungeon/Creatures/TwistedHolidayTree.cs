@@ -40,8 +40,8 @@ namespace Server.Engines.SorcerersDungeon
             SetSkill(SkillName.Tactics, 100.0);
             SetSkill(SkillName.Wrestling, 120);
 
-            Fame = 12000;
-            Karma = -12000;
+            Fame = 16000;
+            Karma = -16000;
 
             SetAreaEffect(AreaEffect.ExplosiveGoo);
         }
