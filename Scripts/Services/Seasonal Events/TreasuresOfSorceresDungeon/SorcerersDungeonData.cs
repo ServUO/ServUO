@@ -24,7 +24,7 @@ namespace Server.Engines.SorcerersDungeon
 
         public override void SendMessage(PlayerMobile from, double old, double points, bool quest)
         {
-            from.SendLocalizedMessage(1156902, ((int)points).ToString()); // You have turned in ~1_COUNT~ artifacts of the Kotl
+            from.SendLocalizedMessage(1157615, ((int)points).ToString()); // You have turned in ~1_COUNT~ artifacts of Enchanted Origin
         }
 
         public override void ProcessKill(Mobile victim, Mobile damager)

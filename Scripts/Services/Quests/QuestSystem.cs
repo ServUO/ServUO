@@ -22,7 +22,7 @@ namespace Server.Engines.Quests
         private PlayerMobile m_From;
         private ArrayList m_Objectives;
         private ArrayList m_Conversations;
-        private Timer m_Timer;
+
         public QuestSystem(PlayerMobile from)
         {
             m_From = from;
@@ -39,6 +39,7 @@ namespace Server.Engines.Quests
         public abstract int Picture { get; }
         public abstract bool IsTutorial { get; }
         public abstract TimeSpan RestartDelay { get; }
+
         public PlayerMobile From
         {
             get
@@ -72,6 +73,9 @@ namespace Server.Engines.Quests
                 m_Conversations = value;
             }
         }
+
+        private static readonly string _TimerID = "QuestTimer";
+
         public static bool CanOfferQuest(Mobile check, Type questType)
         {
             bool inRestartPeriod;
@@ -153,18 +157,12 @@ namespace Server.Engines.Quests
 
         public virtual void StartTimer()
         {
-            if (m_Timer != null)
-                return;
-
-            m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(0.5), TimeSpan.FromSeconds(0.5), Slice);
+            TimerRegistry.Register<QuestSystem>(_TimerID, this, TimeSpan.FromSeconds(0.5), TimeSpan.FromSeconds(0.5), false, q => q.Slice());
         }
 
         public virtual void StopTimer()
         {
-            if (m_Timer != null)
-                m_Timer.Stop();
-
-            m_Timer = null;
+            TimerRegistry.RemoveFromRegistry<QuestSystem>(_TimerID, this);
         }
 
         public virtual void Slice()

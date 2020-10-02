@@ -152,7 +152,7 @@ namespace Server.Spells.Spellweaving
 
             if (focus == null)
             {
-                ArcaneFocus f = new ArcaneFocus(duration, strengthBonus);
+                ArcaneFocus f = new ArcaneFocus((int)duration.TotalSeconds, strengthBonus);
                 if (to.PlaceInBackpack(f))
                 {
                     to.AddStatMod(new StatMod(StatType.Str, "[ArcaneFocus]", strengthBonus, duration));
@@ -168,8 +168,7 @@ namespace Server.Spells.Spellweaving
             else //OSI renewal rules: the new one will override the old one, always.
             {
                 to.SendLocalizedMessage(1072828); // Your arcane focus is renewed.
-                focus.LifeSpan = duration;
-                focus.CreationTime = DateTime.UtcNow;
+                focus.TimeLeft = (int)duration.TotalSeconds;
                 focus.StrengthBonus = strengthBonus;
                 focus.InvalidateProperties();
                 focus.SendTimeRemainingMessage(to);

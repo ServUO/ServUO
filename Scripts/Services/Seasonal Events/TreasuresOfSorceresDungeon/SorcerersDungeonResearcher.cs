@@ -39,7 +39,6 @@ namespace Server.Engines.SorcerersDungeon
             SetWearable(new ThighBoots(1908));
             SetWearable(new Necklace());
 
-            // QuiverOfInfinityBase
             Item item = new HeroOfTheUnlovedTitleDeed
             {
                 Movable = false

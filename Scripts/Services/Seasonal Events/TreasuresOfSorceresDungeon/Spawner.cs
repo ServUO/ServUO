@@ -140,7 +140,7 @@ namespace Server.Engines.SorcerersDungeon
             {
                 Spawning = true;
 
-                Timer.DelayCall(TimeSpan.FromSeconds(Utility.RandomMinMax(3, 8)), () =>
+                Timer.DelayCall(TimeSpan.FromSeconds(Utility.RandomMinMax(2, 5)), () =>
                 {
                     DoSpawn(Entries[Index].Spawn[Utility.Random(Entries[Index].Spawn.Length)], false);
 
@@ -247,15 +247,15 @@ namespace Server.Engines.SorcerersDungeon
 
         public void BuildEntries()
         {
-            Entries.Add(new TOSDSpawnEntry(typeof(NightmareFairy), new Type[] { typeof(Zombie), typeof(Skeleton), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(327, 26, 29, 32), 80, 15));
-            Entries.Add(new TOSDSpawnEntry(typeof(JackInTheBox), new Type[] { typeof(Zombie), typeof(Skeleton), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(296, 10, 17, 26), 80, 15));
-            Entries.Add(new TOSDSpawnEntry(typeof(HeadlessElf), new Type[] { typeof(Zombie), typeof(Skeleton), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(271, 4, 20, 33), 80, 15));
-            Entries.Add(new TOSDSpawnEntry(typeof(AbominableSnowman), new Type[] { typeof(Zombie), typeof(Skeleton), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(227, 39, 21, 19), 80, 15));
-            Entries.Add(new TOSDSpawnEntry(typeof(TwistedHolidayTree), new Type[] { typeof(Zombie), typeof(Skeleton), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(251, 68, 25, 32), 80, 15));
-            Entries.Add(new TOSDSpawnEntry(typeof(RabidReindeer), new Type[] { typeof(Zombie), typeof(Skeleton), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(144, 5, 23, 19), 80, 15));
-            Entries.Add(new TOSDSpawnEntry(typeof(GarishGingerman), new Type[] { typeof(Zombie), typeof(Skeleton), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(60, 53, 13, 34), 80, 15));
-            Entries.Add(new TOSDSpawnEntry(typeof(StockingSerpent), new Type[] { typeof(Zombie), typeof(Skeleton), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(152, 48, 16, 23), 80, 15));
-            Entries.Add(new TOSDSpawnEntry(typeof(JackThePumpkinKing), new Type[] { typeof(Zombie), typeof(Skeleton), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(291, 73, 37, 36), 80, 15));
+            Entries.Add(new TOSDSpawnEntry(typeof(NightmareFairy), new Type[] { typeof(Zombie), typeof(SkeletalKnight), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(327, 26, 29, 32), 70, 15));
+            Entries.Add(new TOSDSpawnEntry(typeof(JackInTheBox), new Type[] { typeof(Zombie), typeof(SkeletalKnight), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(296, 10, 17, 26), 70, 15));
+            Entries.Add(new TOSDSpawnEntry(typeof(HeadlessElf), new Type[] { typeof(Zombie), typeof(SkeletalKnight), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(271, 4, 20, 33), 70, 15));
+            Entries.Add(new TOSDSpawnEntry(typeof(AbominableSnowman), new Type[] { typeof(Zombie), typeof(SkeletalKnight), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(227, 39, 21, 19), 70, 15));
+            Entries.Add(new TOSDSpawnEntry(typeof(TwistedHolidayTree), new Type[] { typeof(Zombie), typeof(SkeletalKnight), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(251, 68, 25, 32), 70, 15));
+            Entries.Add(new TOSDSpawnEntry(typeof(RabidReindeer), new Type[] { typeof(Zombie), typeof(SkeletalKnight), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(144, 5, 23, 19), 70, 15));
+            Entries.Add(new TOSDSpawnEntry(typeof(GarishGingerman), new Type[] { typeof(Zombie), typeof(SkeletalKnight), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(60, 53, 13, 34), 70, 15));
+            Entries.Add(new TOSDSpawnEntry(typeof(StockingSerpent), new Type[] { typeof(Zombie), typeof(SkeletalKnight), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(152, 48, 16, 23), 70, 15));
+            Entries.Add(new TOSDSpawnEntry(typeof(JackThePumpkinKing), new Type[] { typeof(Zombie), typeof(SkeletalKnight), typeof(Gargoyle), typeof(Lich), typeof(LichLord) }, new Rectangle2D(291, 73, 37, 36), 70, 15));
         }
     }
 

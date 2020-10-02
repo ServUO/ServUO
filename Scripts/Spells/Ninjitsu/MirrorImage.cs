@@ -1,6 +1,5 @@
 using Server.Items;
 using Server.Mobiles;
-using Server.Spells;
 using Server.Spells.Necromancy;
 using Server.Spells.Ninjitsu;
 using System;
@@ -199,7 +198,7 @@ namespace Server.Mobiles
             TimeSpan duration = TimeSpan.FromSeconds(30 + caster.Skills.Ninjitsu.Fixed / 40);
 
             SummonEnd = DateTime.UtcNow + duration;
-            UnsummonTimer.Register(this);
+            TimerRegistry.Register<BaseCreature>("UnsummonTimer", this, duration, c => c.Delete());
 
             MirrorImage.AddClone(m_Caster);
 

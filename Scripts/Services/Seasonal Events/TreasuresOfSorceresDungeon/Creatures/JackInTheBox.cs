@@ -43,8 +43,8 @@ namespace Server.Engines.SorcerersDungeon
             SetSkill(SkillName.Meditation, 120);
             SetSkill(SkillName.Focus, 70, 80);
 
-            Fame = 12000;
-            Karma = -12000;
+            Fame = 16000;
+            Karma = -16000;
 
             SetWeaponAbility(WeaponAbility.ArmorIgnore);
             SetWeaponAbility(WeaponAbility.BleedAttack);
