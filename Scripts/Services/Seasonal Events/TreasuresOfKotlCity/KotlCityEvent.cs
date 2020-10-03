@@ -6,6 +6,7 @@ namespace Server.Engines.TreasuresOfKotlCity
 {
     public class TreasuresOfKotlCityEvent : SeasonalEvent
     {
+        [CommandProperty(AccessLevel.GameMaster)]
         public bool HasGenerated { get; set; }
 
         public TreasuresOfKotlCityEvent(EventType type, string name, EventStatus status)
@@ -24,8 +25,11 @@ namespace Server.Engines.TreasuresOfKotlCity
 
             Map map = Map.TerMur;
 
-            KotlDoor door = new KotlDoor();
-            door.MoveToWorld(new Point3D(610, 2319, 0), map);
+            if (!FindItem<KotlDoor>(new Point3D(610, 2319, 0), map))
+            {
+                KotlDoor door = new KotlDoor();
+                door.MoveToWorld(new Point3D(610, 2319, 0), map);
+            }
 
             if (!FindItem<WheelsOfTime>(new Point3D(595, 2289, 8), map))
             {
@@ -81,6 +85,8 @@ namespace Server.Engines.TreasuresOfKotlCity
                 GenStations();
                 GenLOSBlockers();
                 GenChests();
+
+                HasGenerated = true;
             }
 
             if (Hal.Instance == null)

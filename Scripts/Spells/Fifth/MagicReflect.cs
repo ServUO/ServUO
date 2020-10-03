@@ -108,6 +108,9 @@ namespace Server.Spells.Fifth
 
         public static void EndReflect(MagicReflectContext context)
         {
+            m_Table.Remove(context);
+            BuffInfo.RemoveBuff(context.Caster, BuffIcon.MagicReflection);
+
             var mods = context.Mods;
 
             if (mods != null)
@@ -117,9 +120,6 @@ namespace Server.Spells.Fifth
                     context.Caster.RemoveResistanceMod(mods[i]);
                 }
             }
-
-            m_Table.Remove(context);
-            BuffInfo.RemoveBuff(context.Caster, BuffIcon.MagicReflection);
 
             context.Caster.Delta(MobileDelta.WeaponDamage);
         }

@@ -86,21 +86,24 @@ namespace Server.Commands
 
             try
             {
-                m_Output.WriteLine("{0}: {1}: {2}", DateTime.UtcNow, from.NetState, text);
+                m_Output.WriteLine("{0}: {1}: {2}", DateTime.UtcNow, from == null ? "System" : from.NetState.ToString(), text);
 
                 string path = Core.BaseDirectory;
+                string name = "System";
 
-                Account acct = from.Account as Account;
-
-                string name = (acct == null ? from.Name : acct.Username);
+                if (from != null)
+                {
+                    Account acct = from.Account as Account;
+                    name = (acct == null ? from.Name : acct.Username);
+                }
 
                 AppendPath(ref path, "Logs");
                 AppendPath(ref path, "Commands");
-                AppendPath(ref path, from.AccessLevel.ToString());
+                AppendPath(ref path, from == null ? AccessLevel.Owner.ToString() : from.AccessLevel.ToString());
                 path = Path.Combine(path, string.Format("{0}.log", name));
 
                 using (StreamWriter sw = new StreamWriter(path, true))
-                    sw.WriteLine("{0}: {1}: {2}", DateTime.UtcNow, from.NetState, text);
+                    sw.WriteLine("{0}: {1}: {2}", DateTime.UtcNow, from == null ? "System" : from.NetState.ToString(), text);
             }
             catch (Exception e)
             {
@@ -144,7 +147,7 @@ namespace Server.Commands
 
         public static void EventSink_Command(CommandEventArgs e)
         {
-            WriteLine(e.Mobile, "{0} {1} used command '{2} {3}'", e.Mobile.AccessLevel, Format(e.Mobile), e.Command, e.ArgString);
+            WriteLine(e.Mobile, "{0} {1} used command '{2} {3}'", e.Mobile == null ? "System" : e.Mobile.AccessLevel.ToString(), Format(e.Mobile), e.Command, e.ArgString);
         }
 
         public static void LogChangeProperty(Mobile from, object o, string name, string value)

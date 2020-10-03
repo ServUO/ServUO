@@ -698,6 +698,11 @@ namespace Server.Items
                         bc.Name = "a chest guardian";
                         bc.Hue = 0x835;
                     }
+
+                    if (BaseCreature.IsSoulboundEnemies && !bc.Tamable)
+                    {
+                        bc.IsSoulBound = true;
+                    }
                 }
 
                 return bc;

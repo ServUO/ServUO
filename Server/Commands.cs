@@ -247,36 +247,36 @@ namespace Server.Commands
 
 				m_Entries.TryGetValue(command, out CommandEntry entry);
 
-				if (entry != null)
-				{
-					if (from.AccessLevel >= entry.AccessLevel)
-					{
-						if (entry.Handler != null)
-						{
-							CommandEventArgs e = new CommandEventArgs(from, command, argString, args);
-							entry.Handler(e);
-							EventSink.InvokeCommand(e);
-						}
-					}
-					else
-					{
-						if (from.AccessLevel <= m_BadCommandIngoreLevel)
-						{
-							return false;
-						}
+                if (entry != null)
+                {
+                    if (from == null || from.AccessLevel >= entry.AccessLevel)
+                    {
+                        if (entry.Handler != null)
+                        {
+                            CommandEventArgs e = new CommandEventArgs(from, command, argString, args);
+                            entry.Handler(e);
+                            EventSink.InvokeCommand(e);
+                        }
+                    }
+                    else
+                    {
+                        if (from.AccessLevel <= m_BadCommandIngoreLevel)
+                        {
+                            return false;
+                        }
 
-						from.SendMessage("You do not have access to that command.");
-					}
-				}
-				else
-				{
-					if (from.AccessLevel <= m_BadCommandIngoreLevel)
-					{
-						return false;
-					}
+                        from.SendMessage("You do not have access to that command.");
+                    }
+                }
+                else if (from != null)
+                {
+                    if (from.AccessLevel <= m_BadCommandIngoreLevel)
+                    {
+                        return false;
+                    }
 
-					from.SendMessage("That is not a valid command.");
-				}
+                    from.SendMessage("That is not a valid command.");
+                }
 
 				return true;
 			}
