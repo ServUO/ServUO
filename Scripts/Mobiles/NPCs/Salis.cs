@@ -21,19 +21,24 @@ namespace Server.Engines.Quests
         public override object Title => 1072372;
 
         /* Obtain a bowl of rotworm stew, five small pieces of blackrock, and the arms of a Terathan Avenger and return to Salis for your reward.<br><br>
-         * <center>-----</center><br><br>Greetings ally of the Ophidians-s-s.  I am working on a secret project to undermine the power of our hated enemies 
+         * <center>-----</center><br><br>Greetings ally of the Ophidians-s-s.  I am working on a secret project to undermine the power of our hated enemies
          * the Bane Chos-s-sen.<br><br>We know that the Bane Chos-s-sen use their knowledge of the Bane Dragon food to manipulate those hungry for power over
          * Bane Dragons-s-s.  If I can discover the s-s-secret recipe for their mysterious blackrock stew, we can sell it freely and weaken their power bas-s-se.
-         * <br><br>I s-s-seek assistance in this project.  If you will assist, I will give you a copy of the recipe when I discover it.<br><br>I need the following 
+         * <br><br>I s-s-seek assistance in this project.  If you will assist, I will give you a copy of the recipe when I discover it.<br><br>I need the following
          * ingredients-s-s, the arms of a Terathan Avenger, one bowl of rotworm stew, and five small pieces of blackrock.  Will you assis-s-st us-s-s? */
         public override object Description => 1150011;
 
         /* As-s-s you wish, ally.  Jus-s-st remember that whoever has this recipe, not only has power over the Bane Bragon but has power over thos-s-se who wish to ride them. */
-        public override object Refuse => 1150012
-            ;
+        public override object Refuse => 1150012;
+
         /* Have you retrieved the ingredients-s-s?  Do not wait, or the Bane Chos-s-sen will des-s-stroy all.  Remember, I need five small blackrock pieces, one bowl
          * of rotworm s-s-stew, and the arms of a Terethan Avenger.*/
         public override object Uncomplete => 1150013;
+
+        /* *** Salis takes the ingredients and slithers to the table to experiment.  After a few minutes of experimenting and tasting it slithers back to you.
+         * ***<br><br>I have discovered the recipe to blackrock stew, the secret to the bane dragon's power.
+         * As-s-s promised, I will share it with you.  Thank you for your assis-s-stance.*/
+        public override object Complete => 1150014;
 
         public override bool CanOffer()
         {
