@@ -3,7 +3,7 @@ using Server.Gumps;
 using Server.Network;
 using System;
 using System.Collections.Generic;
-#endregion
+#endregion References
 
 namespace Server.Misc
 {
@@ -34,6 +34,7 @@ namespace Server.Misc
 
             // AssistUO Only
             AutolootAgent = 1ul << 17, // The autoloot agent
+
             BoneCutterAgent = 1ul << 18, // The bone cutter agent
             JScriptMacros = 1ul << 19, // Javascript macro engine
             AutoRemount = 1ul << 20, // Auto remount after dismount
@@ -46,41 +47,27 @@ namespace Server.Misc
             /// <summary>
             ///     Enable assistant negotiator?
             /// </summary>
-            public static bool Enabled { get; set; }
+            public static bool Enabled { get; set; } = false;
 
             /// <summary>
             ///     When true, this will cause anyone who does not negotiate.
             ///     (include those not running allowed assistants at all) to be disconnected from the server.
             /// </summary>
-            public static bool KickOnFailure { get; set; }
+            public static bool KickOnFailure { get; set; } = true;
 
-            public static Features DisallowedFeatures { get; private set; }
+            public static Features DisallowedFeatures { get; private set; } = Features.None;
 
             /// <summary>
             ///     How long to wait for a handshake response before showing warning and disconnecting.
             /// </summary>
-            public static TimeSpan HandshakeTimeout { get; set; }
+            public static TimeSpan HandshakeTimeout { get; set; } = TimeSpan.FromSeconds(30.0);
 
             /// <summary>
             ///     How long to show warning message before they are disconnected.
             /// </summary>
-            public static TimeSpan DisconnectDelay { get; set; }
+            public static TimeSpan DisconnectDelay { get; set; } = TimeSpan.FromSeconds(15.0);
 
-            public static string WarningMessage { get; set; }
-
-            static Settings()
-            {
-                Enabled = false;
-                KickOnFailure = true;
-
-                DisallowedFeatures = Features.None;
-
-                HandshakeTimeout = TimeSpan.FromSeconds(30.0);
-                DisconnectDelay = TimeSpan.FromSeconds(15.0);
-
-                WarningMessage =
-                    "The server was unable to negotiate features with your assistant. You must download and run an updated version of <A HREF='http://www.runuo.com/products/assistuo'>AssistUO</A> or <A HREF='http://www.runuo.com/products/razor'>Razor</A>.<BR><BR>Make sure you've checked the option <B>Negotiate features with server</B>, once you have this box checked you may log in and play normally.<BR><BR>You will be disconnected shortly.";
-            }
+            public static string WarningMessage { get; set; } = "The server was unable to negotiate features with your assistant. You must download and run an updated version of <A HREF='http://www.runuo.com/products/assistuo'>AssistUO</A> or <A HREF='http://www.runuo.com/products/razor'>Razor</A>.<BR><BR>Make sure you've checked the option <B>Negotiate features with server</B>, once you have this box checked you may log in and play normally.<BR><BR>You will be disconnected shortly.";
 
             public static void Configure()
             {
@@ -100,22 +87,19 @@ namespace Server.Misc
             public static void SetDisallowed(Features feature, bool value)
             {
                 if (value)
-                {
                     DisallowedFeatures |= feature;
-                }
                 else
-                {
                     DisallowedFeatures &= ~feature;
-                }
             }
         }
 
         public class Negotiator
         {
-			private static readonly Dictionary<Mobile, Timer> _Handshakes = new Dictionary<Mobile, Timer>();
+            private static readonly Dictionary<Mobile, Timer> _Handshakes = new Dictionary<Mobile, Timer>();
 
             public static void Initialize()
             {
+                if (!Settings.Enabled) return;
                 EventSink.Login += OnLogin;
 
                 ProtocolExtensions.Register(0xFF, true, OnResponse);
@@ -138,8 +122,7 @@ namespace Server.Misc
 
             private static void OnResponse(NetState state, PacketReader pvSrc)
             {
-                if (state == null || state.Mobile == null || !state.Running)
-                    return;
+                if (state == null || state.Mobile == null || !state.Running) return;
 
                 Mobile m = state.Mobile;
 
@@ -153,11 +136,7 @@ namespace Server.Misc
 
             private static void OnTimeout(Mobile m)
             {
-                if (m == null)
-                    return;
-
-                if (!_Handshakes.TryGetValue(m, out var t))
-                    return;
+                if (m == null || !_Handshakes.TryGetValue(m, out var t)) return;
 
                 t?.Stop();
 
@@ -179,8 +158,7 @@ namespace Server.Misc
 
             private static void OnForceDisconnect(Mobile m)
             {
-                if (m == null)
-                    return;
+                if (m == null) return;
 
                 m.NetState?.Dispose();
 
