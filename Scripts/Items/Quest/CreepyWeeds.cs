@@ -82,8 +82,6 @@ namespace Server.Items
 
         protected virtual bool CheckUse(Mobile from)
         {
-            PlayerMobile pm = from as PlayerMobile;
-
             if (Deleted || !IsAccessibleTo(from))
             {
                 return false;

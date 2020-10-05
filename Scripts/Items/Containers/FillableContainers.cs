@@ -52,6 +52,21 @@ namespace Server.Items
         public static void Initialize()
         {
             CommandSystem.Register("CheckFillables", AccessLevel.Administrator, CheckFillables_OnCommand);
+
+            CheckPostLoad();
+        }
+
+        private static List<FillableContainer> _PostLoadCheck = new List<FillableContainer>();
+
+        public static void CheckPostLoad()
+        {
+            for (int i = 0; i < _PostLoadCheck.Count; i++)
+            {
+                _PostLoadCheck[i].CheckRespawn();
+            }
+
+            ColUtility.Free(_PostLoadCheck);
+            _PostLoadCheck = null;
         }
 
         public static void CheckFillables_OnCommand(CommandEventArgs e)
@@ -77,9 +92,10 @@ namespace Server.Items
             m.SendMessage("Fixed {0} fillable containers, while {1} failed.", count, fail);
         }
 
+        private static readonly string _RespawnTimerID = "FillableContainerTimer";
+
         protected FillableContent m_Content;
         protected DateTime m_NextRespawnTime;
-        protected Timer m_RespawnTimer;
 
         public FillableContainer(int itemID)
             : base(itemID)
@@ -121,8 +137,7 @@ namespace Server.Items
 
                 if (m_NextRespawnTime > DateTime.UtcNow)
                 {
-                    TimeSpan delay = m_NextRespawnTime - DateTime.UtcNow;
-                    m_RespawnTimer = Timer.DelayCall(delay, Respawn);
+                    StartTimer(m_NextRespawnTime - DateTime.UtcNow);
                 }
             }
         }
@@ -163,6 +178,16 @@ namespace Server.Items
             }
         }
 
+        private void StartTimer(TimeSpan delay)
+        {
+            TimerRegistry.Register(_RespawnTimerID, this, delay, TimeSpan.FromMinutes(1), fc => fc.Respawn());
+        }
+
+        private void RemoveTimer()
+        {
+            TimerRegistry.RemoveFromRegistry(_RespawnTimerID, this);
+        }
+
         public override void OnMapChange()
         {
             base.OnMapChange();
@@ -191,17 +216,6 @@ namespace Server.Items
             CheckRespawn();
         }
 
-        public override void OnAfterDelete()
-        {
-            base.OnAfterDelete();
-
-            if (m_RespawnTimer != null)
-            {
-                m_RespawnTimer.Stop();
-                m_RespawnTimer = null;
-            }
-        }
-
         public int GetItemsCount()
         {
             int count = 0;
@@ -220,19 +234,14 @@ namespace Server.Items
 
             if (canSpawn)
             {
-                if (m_RespawnTimer == null)
+                if (!TimerRegistry.HasTimer(_RespawnTimerID, this))
                 {
-                    int mins = Utility.RandomMinMax(MinRespawnMinutes, MaxRespawnMinutes);
-                    TimeSpan delay = TimeSpan.FromMinutes(mins);
-
-                    m_NextRespawnTime = DateTime.UtcNow + delay;
-                    m_RespawnTimer = Timer.DelayCall(delay, Respawn);
+                    StartTimer(TimeSpan.FromMinutes(Utility.RandomMinMax(MinRespawnMinutes, MaxRespawnMinutes)));
                 }
             }
-            else if (m_RespawnTimer != null)
+            else
             {
-                m_RespawnTimer.Stop();
-                m_RespawnTimer = null;
+                RemoveTimer();
             }
         }
 
@@ -243,12 +252,6 @@ namespace Server.Items
 
         public void Respawn(bool all)
         {
-            if (m_RespawnTimer != null)
-            {
-                m_RespawnTimer.Stop();
-                m_RespawnTimer = null;
-            }
-
             if (m_Content == null || Deleted)
                 return;
 
@@ -367,7 +370,7 @@ namespace Server.Items
 
             writer.Write((int)ContentType);
 
-            if (m_RespawnTimer != null)
+            if (TimerRegistry.HasTimer(_RespawnTimerID, this))
             {
                 writer.Write(true);
                 writer.WriteDeltaTime(m_NextRespawnTime);
@@ -409,12 +412,11 @@ namespace Server.Items
                         {
                             m_NextRespawnTime = reader.ReadDeltaTime();
 
-                            TimeSpan delay = m_NextRespawnTime - DateTime.UtcNow;
-                            m_RespawnTimer = Timer.DelayCall(delay > TimeSpan.Zero ? delay : TimeSpan.Zero, Respawn);
+                            StartTimer(m_NextRespawnTime - DateTime.UtcNow);
                         }
                         else
                         {
-                            CheckRespawn();
+                            _PostLoadCheck.Add(this);
                         }
 
                         break;

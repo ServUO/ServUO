@@ -162,11 +162,7 @@ namespace Server.Mobiles
 
             // test the type
             Type objecttype = o.GetType();
-
-            Type targettype = null;
-
-            targettype = SpawnerType.GetType(typename);
-
+            Type targettype = SpawnerType.GetType(typename);
             if (objecttype != null && targettype != null && (objecttype.Equals(targettype) || objecttype.IsSubclassOf(targettype)))
             {
                 return true;
@@ -1025,8 +1021,6 @@ namespace Server.Mobiles
                 return "Null object";
             }
 
-            Type ptype = null;
-            object po = null;
             Type type = o.GetType();
 
             PropertyInfo[] props = type.GetProperties(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public);
@@ -1106,6 +1100,9 @@ namespace Server.Mobiles
             {
                 PropertyInfo plookup = LookupPropertyInfo(spawner, type, propname);
 
+
+                Type ptype;
+                object po;
                 if (plookup != null)
                 {
                     if (IsProtected(type, propname))
@@ -1190,8 +1187,6 @@ namespace Server.Mobiles
                 return "Null object";
             }
 
-            Type ptype = null;
-            object po = null;
             Type type = o.GetType();
 
             PropertyInfo[] props = type.GetProperties(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public);
@@ -1207,6 +1202,9 @@ namespace Server.Mobiles
                 // use the lookup table for optimization if possible
                 PropertyInfo plookup = LookupPropertyInfo(spawner, type, arglist[0]);
 
+
+                Type ptype;
+                object po;
                 if (plookup != null)
                 {
                     if (IsProtected(type, arglist[0]))
@@ -1334,8 +1332,7 @@ namespace Server.Mobiles
             Type type = o.GetType();
             object po = null;
 
-            PropertyInfo[] props = null;
-
+            PropertyInfo[] props;
             try
             {
                 props = type.GetProperties(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public);
@@ -1379,7 +1376,7 @@ namespace Server.Mobiles
             }
             else if (keywordargs[0] == "SERIAL")
             {
-                bool found = true;
+                bool found;
                 try
                 {
                     if (o is Mobile)
@@ -1412,7 +1409,7 @@ namespace Server.Mobiles
             }
             else if (keywordargs[0] == "STEALABLE")
             {
-                bool found = true;
+                bool found;
                 try
                 {
 
@@ -1637,15 +1634,13 @@ namespace Server.Mobiles
                     // additemstr should have the full list of args <arg2/arg3/arg4>/arg5 if they are there.  In the case of /arg1/ADD/arg2
                     // it will just have arg2
                     string[] groupedarglist = ParseString(arglist[1], 2, "[");
-
-                    // take that argument list that should like like arg2/ag3/arg4>/arg5
-                    // need to find the matching ">"
-
-                    string[] groupargs = null;
                     string groupargstring = null;
                     if (groupedarglist.Length > 1)
                     {
-                        groupargs = ParseToMatchingParen(groupedarglist[1], '[', ']');
+                        // take that argument list that should like like arg2/ag3/arg4>/arg5
+                        // need to find the matching ">"
+
+                        string[] groupargs = ParseToMatchingParen(groupedarglist[1], '[', ']');
 
                         // and get the first part of the string without the >  so itemargs[0] should be arg2/ag3/arg4
                         groupargstring = groupargs[0];
@@ -1698,7 +1693,6 @@ namespace Server.Mobiles
                                 }
                                 else
                                 {
-                                    remainder = null;
                                     break;
                                 }
                             }
@@ -2725,9 +2719,9 @@ namespace Server.Mobiles
                                     // is this applied to the trig mob or to a location?
                                     if (keywordargs.Length > 5)
                                     {
-                                        int x = 0;
                                         int y = 0;
                                         int z = 0;
+                                        int x;
                                         if (!int.TryParse(keywordargs[3], out x) || !int.TryParse(keywordargs[4], out y) || !int.TryParse(keywordargs[5], out z))
                                         { status_str = "Improper effect location format"; }
                                         eloc = new Point3D(x, y, z);
@@ -2815,10 +2809,10 @@ namespace Server.Mobiles
 
                                 if (keywordargs.Length > 8)
                                 {
-
-                                    int x = 0;
                                     int y = 0;
                                     int z = 0;
+
+                                    int x;
                                     if (!int.TryParse(keywordargs[3], out x) || !int.TryParse(keywordargs[4], out y) || !int.TryParse(keywordargs[5], out z))
                                     { status_str = "Improper effect location format"; }
                                     eloc1 = new Point3D(x, y, z);
@@ -2832,9 +2826,9 @@ namespace Server.Mobiles
                                 else
                                     if (keywordargs.Length > 5)
                                 {
-                                    int x = 0;
                                     int y = 0;
                                     int z = 0;
+                                    int x;
                                     if (!int.TryParse(keywordargs[3], out x) || !int.TryParse(keywordargs[4], out y) || !int.TryParse(keywordargs[5], out z))
                                     { status_str = "Improper effect location format"; }
                                     eloc1 = new Point3D(x, y, z);
@@ -2901,9 +2895,9 @@ namespace Server.Mobiles
                                     // is this applied to the trig mob or to a location?
                                     if (keywordargs.Length > 5)
                                     {
-                                        int x = 0;
                                         int y = 0;
                                         int z = 0;
+                                        int x;
                                         if (!int.TryParse(keywordargs[3], out x) || !int.TryParse(keywordargs[4], out y) || !int.TryParse(keywordargs[5], out z))
                                         { status_str = "Improper effect location format"; }
                                         eloc = new Point3D(x, y, z);
@@ -3361,7 +3355,7 @@ namespace Server.Mobiles
                                     PlayerMobile m = (PlayerMobile)o;
                                     if (m.NetState != null && m.NetState.Running)
                                     {
-                                        short flash = 0;
+                                        short flash;
                                         if (short.TryParse(keywordargs[1], out flash) && flash > 0 && flash < 6)
                                         {
                                             ScreenEffect se = new ScreenEffect((ScreenEffectType)(flash - 1));
@@ -3471,7 +3465,6 @@ namespace Server.Mobiles
                                 }
                                 else
                                 {
-                                    remainder = null;
                                     break;
                                 }
                             }
@@ -3512,7 +3505,6 @@ namespace Server.Mobiles
 
         public static bool TestItemProperty(XmlSpawner spawner, Item ObjectPropertyItem, string testString, Mobile trigmob, out string status_str)
         {
-            status_str = null;
             // now make sure the item itself is there
             if (ObjectPropertyItem == null || ObjectPropertyItem.Deleted)
             {
@@ -3608,15 +3600,13 @@ namespace Server.Mobiles
             // additemstr should have the full list of args <arg2/arg3/arg4>/arg5 if they are there.  In the case of /arg1/ADD/arg2
             // it will just have arg2
             string[] groupedarglist = ParseString(str, 2, "[");
-
-            // take that argument list that should like like arg2/ag3/arg4>/arg5
-            // need to find the matching ">"
-
-            string[] groupargs = null;
             string groupargstring = null;
             if (groupedarglist.Length > 1)
             {
-                groupargs = ParseToMatchingParen(groupedarglist[1], '[', ']');
+                // take that argument list that should like like arg2/ag3/arg4>/arg5
+                // need to find the matching ">"
+
+                string[] groupargs = ParseToMatchingParen(groupedarglist[1], '[', ']');
 
                 // and get the first part of the string without the >  so itemargs[0] should be arg2/ag3/arg4
                 groupargstring = groupargs[0];
@@ -4549,7 +4539,8 @@ namespace Server.Mobiles
             }
             else if ((ptype1 == typeof(double)) && (ptype2 == typeof(double)))
             {
-                double val1 = 0, val2 = 0;
+                double val1;
+                double val2;
                 if (hasequal)
                 {
                     if (double.TryParse(value1, NumberStyles.Any, CultureInfo.InvariantCulture, out val1) && double.TryParse(value2, NumberStyles.Any, CultureInfo.InvariantCulture, out val2))
@@ -4615,7 +4606,8 @@ namespace Server.Mobiles
             }
             else if (ptype2 == typeof(double) || ptype2 == typeof(double))
             {
-                double val1 = 0, val2 = 0;
+                double val1;
+                double val2;
                 if (hasequal)
                 {
                     if (double.TryParse(value1, NumberStyles.Any, CultureInfo.InvariantCulture, out val1) && double.TryParse(value2, NumberStyles.Any, CultureInfo.InvariantCulture, out val2))
@@ -6016,9 +6008,8 @@ namespace Server.Mobiles
             if (str == null || delimstr == null) return null;
 
             char[] delims = delimstr.ToCharArray();
-            string[] args = null;
             str = str.Trim();
-            args = str.Split(delims, nitems);
+            string[] args = str.Split(delims, nitems);
 
             return args;
         }
@@ -6026,11 +6017,10 @@ namespace Server.Mobiles
         public static string[] ParseSlashArgs(string str, int nitems)
         {
             if (str == null) return null;
-
-            string[] args = null;
-
             str = str.Trim();
 
+
+            string[] args;
             // this supports strings that may have special html formatting in them that use the /
             if (str.IndexOf("</") >= 0 || str.IndexOf("/>") >= 0)
             {
@@ -6090,52 +6080,36 @@ namespace Server.Mobiles
         public static string[] ParseSpaceArgs(string str, int nitems)
         {
             if (str == null) return null;
-
-            string[] args = null;
-
             str = str.Trim();
 
-            args = str.Split(spacedelim, nitems);
-
+            string[] args = str.Split(spacedelim, nitems);
             return args;
         }
 
         public static string[] ParseCommaArgs(string str, int nitems)
         {
             if (str == null) return null;
-
-            string[] args = null;
-
             str = str.Trim();
 
-            args = str.Split(commadelim, nitems);
-
+            string[] args = str.Split(commadelim, nitems);
             return args;
         }
 
         public static string[] ParseLiteralTerminator(string str)
         {
             if (str == null) return null;
-
-            string[] args = null;
-
             str = str.Trim();
 
-            args = str.Split(literalend, 2);
-
+            string[] args = str.Split(literalend, 2);
             return args;
         }
 
         public static string[] ParseSemicolonArgs(string str, int nitems)
         {
             if (str == null) return null;
-
-            string[] args = null;
-
             str = str.Trim();
 
-            args = str.Split(semicolondelim, nitems);
-
+            string[] args = str.Split(semicolondelim, nitems);
             return args;
         }
 
@@ -6496,8 +6470,6 @@ namespace Server.Mobiles
             }
 
             if (action == null || action.Length <= 0 || attachedto == null || map == null) return;
-
-            string status_str = null;
             XmlSpawner.SpawnObject TheSpawn = new XmlSpawner.SpawnObject(null, 0)
             {
                 TypeName = action
@@ -6505,6 +6477,8 @@ namespace Server.Mobiles
             string substitutedtypeName = ApplySubstitution(null, attachedto, trigmob, action);
             string typeName = ParseObjectType(substitutedtypeName);
 
+
+            string status_str;
             if (IsTypeOrItemKeyword(typeName))
             {
                 SpawnTypeKeyword(attachedto, TheSpawn, typeName, substitutedtypeName, true, trigmob, loc, map, out status_str);
@@ -7015,11 +6989,11 @@ namespace Server.Mobiles
 
                             string[] arglist = ParseSlashArgs(substitutedtypeName, 3);
                             string typestr = null;
-                            string targetname = null;
                             string proptest = null;
-                            int range = -1;
                             bool searchcontainers = false;
 
+                            string targetname;
+                            int range;
                             if (arglist.Length > 0)
                             {
                                 string[] objstr = ParseString(arglist[0], 6, ",");
@@ -7085,9 +7059,9 @@ namespace Server.Mobiles
                             string[] arglist = ParseSlashArgs(substitutedtypeName, 3);
                             string typestr = "BaseCreature";
                             string targetname = "*";
-                            int range = -1;
                             bool searchcontainers = false;
 
+                            int range;
                             if (arglist.Length > 0)
                             {
                                 string[] objstr = ParseString(arglist[0], 3, ",");
@@ -7149,9 +7123,9 @@ namespace Server.Mobiles
                             // first find the carried item
                             string[] arglist = ParseSlashArgs(substitutedtypeName, 3);
                             string typestr = null;
-                            string itemname = null;
                             bool equippedonly = false;
 
+                            string itemname;
                             if (arglist.Length > 0)
                             {
                                 string[] objstr = ParseString(arglist[0], 4, ",");
@@ -7333,9 +7307,9 @@ namespace Server.Mobiles
                         {
                             // syntax TAKEGIVE[,quantity[,true*,[type]]]/itemnametotake/GIVE/itemtypetogive *search in banca
                             string[] arglist = ParseSlashArgs(substitutedtypeName, 5);
-                            string[] givelist = null;
                             string targetName;
                             string typestr = null;
+                            string[] givelist;
                             if (arglist.Length < 4)
                             {
                                 status_str = "invalid TAKEGIVE specification";
@@ -7386,15 +7360,12 @@ namespace Server.Mobiles
                                     itemlist.Reverse();
                                     int totaltaken = 0;
                                     int totake = quantity;
-                                    int remaining = 0;
-                                    int taken = 0;
-
                                     foreach (Item it in itemlist)
                                     {
-                                        remaining = it.Amount - quantity;
+                                        int remaining = it.Amount - quantity;
                                         if (remaining <= 0)
                                         {
-                                            taken = it.Amount;
+                                            int taken = it.Amount;
                                             totaltaken += taken;
 
                                             toRemove.Add(it);
@@ -7482,9 +7453,8 @@ namespace Server.Mobiles
                             }
 
                             string[] gumpkeywordargs = ParseString(arglist[0], 4, ",");
-                            string gumpTitle = "";
-                            int gumpNumber = 0; // 0=simple text gump, 1=yes/no gump, 2=reply gump, 3=quest gump, 4=multiple option gump (free)
-
+                            string gumpTitle;
+                            int gumpNumber;
                             if (gumpkeywordargs.Length > 2)
                             {
                                 gumpTitle = gumpkeywordargs[1];
@@ -7518,7 +7488,6 @@ namespace Server.Mobiles
                             KeywordTag newtag = new KeywordTag(substitutedtypeName, spawner, 1);
                             if (triggermob != null && !triggermob.Deleted && (triggermob is PlayerMobile))
                             {
-                                object newgump = null;
                                 object[] gumpargs = new object[7];
                                 gumpargs[0] = invoker;
                                 gumpargs[1] = gumpText;
@@ -7528,6 +7497,7 @@ namespace Server.Mobiles
                                 gumpargs[5] = triggermob;
                                 gumpargs[6] = gumpcallback;
 
+                                object newgump;
                                 //spawner.TriggerMob.SendGump( new XmlSimpleGump(this, gumpText,gumpTitle, gumpType ));
                                 try
                                 {
@@ -8098,7 +8068,8 @@ namespace Server.Mobiles
                                         speed = 1;
                                     }
 
-                                    int x = 0, y = 0, z = 0;
+                                    int y = 0, z = 0;
+                                    int x;
                                     if (!int.TryParse(keywordargs[3], out x) || !int.TryParse(keywordargs[4], out y) || !int.TryParse(keywordargs[5], out z))
                                         status_str = "Improper effect location format";
                                     eloc1 = new Point3D(x, y, z);
@@ -8222,8 +8193,8 @@ namespace Server.Mobiles
                             string[] arglist = ParseSlashArgs(substitutedtypeName, 3);
                             // Syntax is CAST,spellnumber[,arg] or CAST,spellname[,arg]
                             string[] keywordargs = ParseString(arglist[0], 3, ",");
-                            int spellnumber = 0;
-                            bool hasnumber = true;
+                            int spellnumber;
+                            bool hasnumber;
                             // try it as spellnumber
                             if (keywordargs.Length > 1)
                             {
@@ -8242,7 +8213,6 @@ namespace Server.Mobiles
                                 int.TryParse(keywordargs[2], out keywordarg2);
                             }
 
-                            Spell spell = null;
 
                             // the trigger mob will cast the spells
 
@@ -8259,6 +8229,8 @@ namespace Server.Mobiles
                                 Parent = caster
                             };
 
+
+                            Spell spell;
                             if (hasnumber)
                             {
                                 spell = SpellRegistry.NewSpell(spellnumber, caster, cwand);

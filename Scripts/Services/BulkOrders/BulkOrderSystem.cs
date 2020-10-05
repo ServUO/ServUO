@@ -376,9 +376,6 @@ namespace Server.Engines.BulkOrders
 
         public static void ComputePoints(SmallBOD bod, out int points, out double banked)
         {
-            points = 0;
-            banked = 0.0;
-
             switch (bod.BODType)
             {
                 default:
@@ -397,9 +394,6 @@ namespace Server.Engines.BulkOrders
 
         public static void ComputePoints(LargeBOD bod, out int points, out double banked)
         {
-            points = 0;
-            banked = 0.0;
-
             switch (bod.BODType)
             {
                 default:
@@ -822,8 +816,6 @@ namespace Server.Engines.BulkOrders
             get { return _CachedDeeds; }
             set
             {
-                int old = _CachedDeeds;
-
                 _CachedDeeds = Math.Max(0, Math.Min(BulkOrderSystem.MaxCachedDeeds, value));
             }
         }

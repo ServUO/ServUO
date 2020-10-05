@@ -75,17 +75,12 @@ namespace Server.Mobiles
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (m.Alive && !m.Hidden && m is PlayerMobile)
+            if (m.Alive && !m.Hidden && m is PlayerMobile && InLOS(m) && InRange(m, 8) && !InRange(oldLocation, 8) && DateTime.UtcNow >= _NextTalk)
             {
-                PlayerMobile pm = (PlayerMobile)m;
-
-                if (InLOS(m) && InRange(m, 8) && !InRange(oldLocation, 8) && DateTime.UtcNow >= _NextTalk)
-                {
-                    if (Utility.Random(100) < 50)
+                if (Utility.Random(100) < 50)
                         Say(1157526); // Such an exciting time to be an Animal Trainer! New taming techniques have been discovered!
 
-                    _NextTalk = DateTime.UtcNow + TimeSpan.FromSeconds(15);
-                }
+                _NextTalk = DateTime.UtcNow + TimeSpan.FromSeconds(15);
             }
         }
 

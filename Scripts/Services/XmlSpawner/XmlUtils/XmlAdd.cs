@@ -1147,11 +1147,9 @@ namespace Server.Mobiles
         public override void OnResponse(NetState state, RelayInfo info)
         {
             if (info == null || state == null || state.Mobile == null) return;
-
-            int radiostate = -1;
             if (info.Switches.Length > 0)
             {
-                radiostate = info.Switches[0];
+                int radiostate = info.Switches[0];
             }
             // read the text entries for default values
             XmlSpawnerDefaults.DefaultEntry defs = XmlSpawnerDefaults.GetDefaults(state.Account.ToString(), state.Mobile.Name);

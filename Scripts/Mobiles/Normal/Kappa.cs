@@ -102,9 +102,9 @@ namespace Server.Mobiles
                 {
                     SpillAcid(target, amt);
                     from.SendLocalizedMessage(1070820);
+
                     if (Mana > 14)
                         Mana -= 15;
-                    amt ^= amt;
                 }
             }
             base.OnDamage(amount, from, willKill);

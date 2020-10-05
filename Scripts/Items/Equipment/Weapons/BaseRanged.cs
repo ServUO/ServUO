@@ -67,9 +67,7 @@ namespace Server.Items
             // Make sure we've been standing still for .25/.5/1 second depending on Era
             if (nextShoot <= Core.TickCount || WeaponAbility.GetCurrentAbility(attacker) is MovingShot)
             {
-                bool canSwing = true;
-
-                canSwing = !attacker.Paralyzed && !attacker.Frozen;
+                bool canSwing = !attacker.Paralyzed && !attacker.Frozen;
 
                 if (canSwing)
                 {

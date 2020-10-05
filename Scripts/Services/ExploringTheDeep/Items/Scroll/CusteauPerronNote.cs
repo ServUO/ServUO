@@ -1,5 +1,4 @@
-﻿using Server.Gumps;
-using Server.Mobiles;
+using Server.Gumps;
 using Server.Network;
 
 namespace Server.Items
@@ -25,11 +24,6 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!(from is PlayerMobile))
-                return;
-
-            PlayerMobile mobile = (PlayerMobile)from;
-
             if (!from.HasGump(typeof(CusteauPerronNoteGump)))
             {
                 from.SendGump(new CusteauPerronNoteGump(from));

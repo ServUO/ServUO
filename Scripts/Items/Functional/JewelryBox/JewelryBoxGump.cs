@@ -162,8 +162,6 @@ namespace Server.Items
             AddHtmlLocalized(450, 55, 90, 20, 1062229, f.IsDefault ? 0x421F : LabelColor, false, false); // All
             AddButton(410, 55, 0xFA5, 0xFA7, 132, GumpButtonType.Reply, 0);
 
-            tableIndex = 0;
-
             AddButton(356, 353, 0x15E3, 0x15E7, 11, GumpButtonType.Reply, 0); // First page
             AddButton(376, 350, 0xFAE, 0xFB0, 1, GumpButtonType.Reply, 0); // Previous page
 

@@ -1030,7 +1030,6 @@ namespace Server.Items
                 if (mcng > val)
                 {
                     sk = SkillName.Macing;
-                    val = mcng;
                 }
             }
             else if (m_AosWeaponAttributes.MageWeapon != 0)
@@ -1256,9 +1255,7 @@ namespace Server.Items
 
         public virtual TimeSpan OnSwing(Mobile attacker, IDamageable damageable, double damageBonus)
         {
-            bool canSwing = true;
-
-            canSwing = (!attacker.Paralyzed && !attacker.Frozen);
+            bool canSwing = !attacker.Paralyzed && !attacker.Frozen;
 
             if (canSwing)
             {

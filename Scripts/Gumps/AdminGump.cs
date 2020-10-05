@@ -661,7 +661,6 @@ namespace Server.Gumps
 
                         AddButtonLabeled(20, y, GetButtonID(7, 12), "Kill");
                         AddButtonLabeled(200, y, GetButtonID(7, 13), "Resurrect");
-                        y += 20;
 
                         break;
                     }

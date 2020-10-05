@@ -647,7 +647,6 @@ namespace Server.Items
                         {
                             from.SendLocalizedMessage(500720); // You don't have enough room in your backpack!
                             item.Delete();
-                            item = null;
                             return;
                         }
 

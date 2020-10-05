@@ -55,8 +55,6 @@ namespace Server.Mobiles
         {
             if (m.Alive && m is PlayerMobile)
             {
-                PlayerMobile pm = (PlayerMobile)m;
-
                 int range = 5;
 
                 if (range >= 0 && InRange(m, range) && !InRange(oldLocation, range) && DateTime.UtcNow >= m_Spoken + TimeSpan.FromMinutes(1))

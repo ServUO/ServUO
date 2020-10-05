@@ -452,7 +452,6 @@ namespace Server.Spells.SkillMasteries
             {
                 AddButton(20, y, 9762, 9763, 4, GumpButtonType.Reply, 0);
                 AddHtmlLocalized(43, y, 150, 16, 1157544, Hue, false, false); // As One
-                y += 20;
             }
         }
 

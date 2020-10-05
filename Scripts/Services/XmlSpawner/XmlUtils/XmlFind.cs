@@ -907,8 +907,6 @@ namespace Server.Mobiles
 
             // prepare the page
             int height = 500;
-            int y = 0;
-
             AddPage(0);
             if (m_ShowExtension)
             {
@@ -933,7 +931,7 @@ namespace Server.Mobiles
             // ----------------
             // SORT section
             // ----------------
-            y = 5;
+            int y = 5;
             // add the Sort button
             AddButton(5, y, 0xFAB, 0xFAD, 700, GumpButtonType.Reply, 0);
             AddLabel(38, y, 0x384, "Sort");

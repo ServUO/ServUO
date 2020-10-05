@@ -85,8 +85,6 @@ namespace Server.Items
         {
             List<AddonComponent> components = Components;
 
-            int[][] stageTable = m_StageTable;
-
             for (int i = 0; i < components.Count; ++i)
             {
                 AddonComponent component = components[i] as AddonComponent;

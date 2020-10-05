@@ -6,11 +6,10 @@ namespace Server.Items
     [Flipable(0x2A65, 0x2A67)]
     public class UnsettlingPortraitComponent : AddonComponent
     {
-        private Timer m_Timer;
         public UnsettlingPortraitComponent()
             : base(0x2A65)
         {
-            m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(3), TimeSpan.FromMinutes(3), ChangeDirection);
+            TimerRegistry.Register("UnsettlingPortrait", this, TimeSpan.FromMinutes(3), TimeSpan.FromMinutes(3), false, p => p.ChangeDirection());
         }
 
         public UnsettlingPortraitComponent(Serial serial)
@@ -27,14 +26,6 @@ namespace Server.Items
                 from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
         }
 
-        public override void OnAfterDelete()
-        {
-            base.OnAfterDelete();
-
-            if (m_Timer != null)
-                m_Timer.Stop();
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -48,7 +39,7 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(3), TimeSpan.FromMinutes(3), ChangeDirection);
+            TimerRegistry.Register("UnsettlingPortrait", this, TimeSpan.FromMinutes(3), TimeSpan.FromMinutes(3), false, p => p.ChangeDirection());
         }
 
         private void ChangeDirection()
