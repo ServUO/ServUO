@@ -14,6 +14,8 @@ namespace Server.Engines.TombOfKings
             }
         }
 
+        private static readonly string _TimerID = "ChamberSpawner";
+
         private static readonly Point3D[] m_Positions = new Point3D[]
         {
             new Point3D( 9, 199, -9 ),
@@ -39,7 +41,6 @@ namespace Server.Engines.TombOfKings
         };
 
         private List<Mobile> m_Creatures;
-        private Timer m_RespawnTimer;
 
         public ChamberSpawner(Point3D loc, Map map)
             : base(0x2006)
@@ -53,7 +54,8 @@ namespace Server.Engines.TombOfKings
 
             MoveToWorld(loc, map);
             Respawn();
-            m_RespawnTimer = Timer.DelayCall(TimeSpan.FromMinutes(15.0), TimeSpan.FromMinutes(15.0), CheckSpawn);
+
+            StartTimer();
         }
 
         public override void AddNameProperties(ObjectPropertyList list)
@@ -106,9 +108,11 @@ namespace Server.Engines.TombOfKings
 
             for (int i = 0; i < m_Creatures.Count; i++)
                 m_Creatures[i].Delete();
+        }
 
-            if (m_RespawnTimer != null)
-                m_RespawnTimer.Stop();
+        private void StartTimer()
+        {
+            TimerRegistry.Register(_TimerID, this, TimeSpan.FromMinutes(15.0), TimeSpan.FromMinutes(15.0), false, spawner => spawner.CheckSpawn());
         }
 
         public ChamberSpawner(Serial serial)
@@ -143,7 +147,7 @@ namespace Server.Engines.TombOfKings
                     m_Creatures.Add(m);
             }
 
-            m_RespawnTimer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromMinutes(15.0), CheckSpawn);
+            StartTimer();
         }
     }
 }

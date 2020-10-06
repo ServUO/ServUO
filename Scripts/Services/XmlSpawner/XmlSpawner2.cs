@@ -2149,8 +2149,6 @@ namespace Server.Mobiles
             }
 
             if (action == null || action.Length <= 0 || attachedto == null || map == null) return;
-
-            string status_str = null;
             SpawnObject TheSpawn = new SpawnObject(null, 0)
             {
                 TypeName = action
@@ -2158,6 +2156,8 @@ namespace Server.Mobiles
             string substitutedtypeName = BaseXmlSpawner.ApplySubstitution(null, attachedto, trigmob, action);
             string typeName = BaseXmlSpawner.ParseObjectType(substitutedtypeName);
 
+
+            string status_str;
             if (BaseXmlSpawner.IsTypeOrItemKeyword(typeName))
             {
                 BaseXmlSpawner.SpawnTypeKeyword(attachedto, TheSpawn, typeName, substitutedtypeName, true, trigmob, loc, map, out status_str);
@@ -3093,7 +3093,6 @@ namespace Server.Mobiles
                     {
                         int count = 0;
                         int maxspeed = 0;
-                        int speed = 0;
                         foreach (MovementInfo moveinfo in m_Spawner.m_MovementList)
                         {
                             Mobile m = moveinfo.trigMob;
@@ -3103,7 +3102,7 @@ namespace Server.Mobiles
                             count++;
                             if (count > MaxMoveCheck) break;
 
-                            speed = (int)GetDistance(m.Location, moveinfo.trigLocation);
+                            int speed = (int)GetDistance(m.Location, moveinfo.trigLocation);
                             if (speed > maxspeed) maxspeed = speed;
                             m_Spawner.CheckTriggers(m, null, true);
                         }
@@ -4104,10 +4103,9 @@ namespace Server.Mobiles
                     else
                                                                                     if (e.Arguments[0].ToLower() == "todmode")
                     {
-                        int todmode = (int)TODModeType.Realtime;
                         try
                         {
-                            todmode = Convert.ToInt32(e.Arguments[1]);
+                            int todmode = Convert.ToInt32(e.Arguments[1]);
                             switch (todmode)
                             {
                                 case (int)TODModeType.Gametime:
@@ -4265,10 +4263,10 @@ namespace Server.Mobiles
             // Make sure a map name was given at least
             if (from != null && e.Length >= 1)
             {
-                // Get the map
-                Map NewMap = null;
                 string MapName = e.Arguments[0];
 
+                // Get the map
+                Map NewMap;
                 // Convert the xml map value to a real map object
                 if (string.Compare(MapName, Map.Trammel.Name, true) == 0)
                     NewMap = Map.Trammel;
@@ -4983,8 +4981,6 @@ namespace Server.Mobiles
                 double maxdelay = 0;
                 int homerange = 0;
                 int spawnrange = 0;
-
-                int spawnid = 0;
                 string[][] typenames = new string[6][];
 
                 int[] maxcount = new int[6];
@@ -5005,7 +5001,7 @@ namespace Server.Mobiles
                     maxdelay = double.Parse(args[12]);
                     homerange = int.Parse(args[13]);
                     spawnrange = int.Parse(args[14]);
-                    spawnid = int.Parse(args[15]);
+                    int spawnid = int.Parse(args[15]);
 
                     for (int k = 0; k < 6; k++)
                         maxcount[k] = int.Parse(args[k + 16]);
@@ -5241,7 +5237,6 @@ namespace Server.Mobiles
                 int homerange = 0;
                 int spawnrange = 0;
                 int maxcount = 0;
-                int spawnid = 0;
                 string[] typenames = null;
                 if (args.Length != 11 && args.Length != 12)
                 {
@@ -5286,7 +5281,7 @@ namespace Server.Mobiles
                             maxdelay = double.Parse(args[7]);
                             homerange = int.Parse(args[8]);
                             spawnrange = int.Parse(args[9]);
-                            spawnid = int.Parse(args[10]);
+                            int spawnid = int.Parse(args[10]);
                             maxcount = int.Parse(args[11]);
 
                         }
@@ -5928,18 +5923,12 @@ namespace Server.Mobiles
 
         public static void XmlLoadFromFile(string filename, string SpawnerPrefix, Point3D fromloc, Map frommap, bool loadrelative, int maxrange, bool loadnew, out int processedmaps, out int processedspawners)
         {
-            processedmaps = 0;
-            processedspawners = 0;
-
             XmlLoadFromFile(filename, SpawnerPrefix, null, fromloc, frommap, loadrelative, maxrange, loadnew, out processedmaps, out processedspawners);
 
         }
 
         public static void XmlLoadFromFile(string filename, string SpawnerPrefix, bool loadnew, out int processedmaps, out int processedspawners)
         {
-            processedmaps = 0;
-            processedspawners = 0;
-
             XmlLoadFromFile(filename, SpawnerPrefix, null, Point3D.Zero, Map.Internal, false, 0, loadnew, out processedmaps, out processedspawners);
 
         }
@@ -8773,7 +8762,7 @@ namespace Server.Mobiles
                 }
 
                 // Pick a spawn object to spawn
-                int SpawnIndex = 0;
+                int SpawnIndex;
 
                 // see if sequential spawning has been selected
                 if (m_SequentialSpawning >= 0)
@@ -9264,8 +9253,6 @@ namespace Server.Mobiles
 
         public Point3D GetPackCoord(int sgroup)
         {
-            Point3D packcoord = Point3D.Zero;
-
             for (int j = 0; j < m_SpawnObjects.Count; j++)
             {
                 SpawnObject so = m_SpawnObjects[j];
@@ -9788,8 +9775,7 @@ namespace Server.Mobiles
             {
                 holdSmartSpawningHash = new Dictionary<Type, PropertyInfo>();
             }
-            PropertyInfo prop = null;
-
+            PropertyInfo prop;
             if (!holdSmartSpawningHash.TryGetValue(o.GetType(), out prop))
             {
                 prop = o.GetType().GetProperty("HoldSmartSpawning");
@@ -10237,7 +10223,6 @@ namespace Server.Mobiles
             // random positioning by default
             SpawnPositionType positioning = SpawnPositionType.Random;
             Mobile trigmob = null;
-            string[] positionargs = null;
             List<int> includetilelist = null;
             List<int> excludetilelist = null;
             bool checkitems = false;
@@ -10259,7 +10244,7 @@ namespace Server.Mobiles
                     if (s == null) continue;
 
                     trigmob = s.trigMob;
-                    positionargs = s.positionArgs;
+                    string[] positionargs = s.positionArgs;
 
                     // parse the possible args to the spawn position control keywords
                     switch (s.positionType)
@@ -10702,7 +10687,7 @@ namespace Server.Mobiles
 
                 // try to find a valid spawn location using the z coord of the spawner
                 // relax the normal surface requirement for mobiles if the flag is set
-                bool fit = false;
+                bool fit;
                 if (requiresurface)
                 {
                     fit = CanSpawnMobile(x, y, defaultZ, mob);

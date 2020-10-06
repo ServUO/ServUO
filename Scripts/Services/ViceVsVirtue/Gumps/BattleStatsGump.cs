@@ -74,7 +74,6 @@ namespace Server.Engines.VvV
             y += 25;
 
             AddHtmlLocalized(40, y, 420, 20, 1154956, team.Disarmed.ToString("N0", CultureInfo.GetCultureInfo("en-US")), Color16, false, false);
-            y += 25;
         }
     }
 }

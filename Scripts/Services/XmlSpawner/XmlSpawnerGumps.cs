@@ -739,7 +739,6 @@ namespace Server.Mobiles
                         string strkill = null;
                         string strmind = null;
                         string strmaxd = null;
-                        string strnext = null;
                         string strpackrange = null;
                         string strspawnsper = spawnsper.ToString();
 
@@ -768,6 +767,7 @@ namespace Server.Mobiles
                             strpackrange = m_Spawner.SpawnObjects[i].PackRange.ToString();
                         }
 
+                        string strnext;
                         if (m_Spawner.SpawnObjects[i].NextSpawn > DateTime.UtcNow)
                         {
                             // if the next spawn tick of the spawner will occur after the subgroup is available for spawning

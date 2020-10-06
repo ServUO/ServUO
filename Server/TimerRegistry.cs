@@ -69,6 +69,11 @@ namespace Server
             Register(id, instance, duration, TimeSpan.Zero, removeOnExpire, true, callback);
         }
 
+        public static void Register<T>(string id, T instance, TimeSpan duration, bool removeOnExpire, TimerPriority? priority, Action<T> callback)
+        {
+            Register(id, instance, duration, TimeSpan.Zero, removeOnExpire, true, priority, callback);
+        }
+
         public static void Register<T>(string id, T instance, TimeSpan duration, TimeSpan delay, bool removeOnExpire, Action<T> callback)
         {
             Register(id, instance, duration, delay, removeOnExpire, true, null, callback);
@@ -228,6 +233,21 @@ namespace Server
             else if (seconds >= 600) // 10 minutes
             {
                 return TimeSpan.FromSeconds(1);
+            }
+
+            var mils = duration.TotalMilliseconds;
+
+            if (mils < 10)
+            {
+                return TimeSpan.Zero;
+            }
+            else if (mils < 250)
+            {
+                return TimeSpan.FromMilliseconds(10);
+            }
+            else if (mils < 500)
+            {
+                return TimeSpan.FromMilliseconds(250);
             }
 
             return TimeSpan.FromMilliseconds(500);

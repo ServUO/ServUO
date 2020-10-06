@@ -210,7 +210,6 @@ namespace Server.Engines.VvV
         {
             if (from == ControlMaster && dropped is EssenceOfCourage)
             {
-                EssenceOfCourage ec = dropped as EssenceOfCourage;
                 BattleReadiness += dropped.Amount;
 
                 dropped.Delete();

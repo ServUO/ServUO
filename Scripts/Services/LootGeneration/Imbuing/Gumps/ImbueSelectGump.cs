@@ -113,7 +113,6 @@ namespace Server.Gumps
             {
                 AddButton(15, 90 + (yOffset * 25), 4005, 4007, 10005, GumpButtonType.Reply, 0);
                 AddHtmlLocalized(50, 90 + (yOffset * 25), 150, 18, 1114262, LabelColor, false, false);   //Stats
-                yOffset += 1;
             }
 
             // ===== Attribute Catagories ========================================
@@ -136,7 +135,6 @@ namespace Server.Gumps
                     {
                         AddButton(250, 90 + (yOffset * 20), 4005, 4007, 10116, GumpButtonType.Reply, 0);
                         AddHtmlLocalized(295, 90 + (yOffset * 20), 150, 18, 1075617, LabelColor, false, false);       //Faster Casting
-                        yOffset += 1;
                     }
                 }
                 else if (itemRef == 3 || itemRef == 5)
@@ -147,7 +145,6 @@ namespace Server.Gumps
 
                     AddButton(250, 90 + (yOffset * 20), 4005, 4007, 10117, GumpButtonType.Reply, 0);
                     AddHtmlLocalized(295, 90 + (yOffset * 20), 150, 18, 1075621, LabelColor, false, false);       //Lower Mana Cost
-                    yOffset += 1;
 
                 }
                 else if (itemRef == 4)
@@ -160,7 +157,6 @@ namespace Server.Gumps
                     {
                         AddButton(250, 90 + (yOffset * 20), 4005, 4007, 10116, GumpButtonType.Reply, 0);
                         AddHtmlLocalized(295, 90 + (yOffset * 20), 150, 18, 1075617, LabelColor, false, false);       //Faster Casting
-                        yOffset += 1;
                     }
                 }
                 else if (itemRef == 6)
@@ -183,7 +179,6 @@ namespace Server.Gumps
 
                     AddButton(250, 90 + (yOffset * 20), 4005, 4007, 10115, GumpButtonType.Reply, 0);
                     AddHtmlLocalized(295, 90 + (yOffset * 20), 150, 18, 1075618, LabelColor, false, false);       //Faster Cast Recovery 
-                    yOffset += 1;
                 }
             }
             else if (menuCat == 2) // == COMBAT ==
@@ -215,7 +210,6 @@ namespace Server.Gumps
 
                     AddButton(250, 90 + (yOffset * 20), 4005, 4007, 10140, GumpButtonType.Reply, 0);
                     AddHtmlLocalized(295, 90 + (yOffset * 20), 150, 18, 1079592, LabelColor, false, false);       //Use Best Weapon Skill
-                    yOffset += 1;
                 }
                 else if (itemRef == 2)
                 {
@@ -225,14 +219,12 @@ namespace Server.Gumps
 
                     AddButton(250, 90 + (yOffset * 20), 4005, 4007, 10113, GumpButtonType.Reply, 0);
                     AddHtmlLocalized(295, 90 + (yOffset * 20), 150, 18, 1075629, LabelColor, false, false);       //Swing Speed Increase
-                    yOffset += 1;
 
                 }
                 else if (itemRef == 4)
                 {
                     AddButton(250, 90 + (yOffset * 20), 4005, 4007, 10101, GumpButtonType.Reply, 0);
                     AddHtmlLocalized(295, 90 + (yOffset * 20), 150, 18, 1075620, LabelColor, false, false);       //Defense Chance Increase
-                    yOffset += 1;
 
                 }
                 else if (itemRef == 6)
@@ -247,7 +239,6 @@ namespace Server.Gumps
 
                     AddButton(250, 90 + (yOffset * 20), 4005, 4007, 10101, GumpButtonType.Reply, 0);
                     AddHtmlLocalized(295, 90 + (yOffset * 20), 150, 18, 1075620, LabelColor, false, false);       //Defense Chance Increase
-                    yOffset += 1;
                 }
             }
             else if (menuCat == 3)  // == MISC ==
@@ -256,7 +247,6 @@ namespace Server.Gumps
                 {
                     AddButton(250, 90 + (yOffset * 20), 4005, 4007, 10121, GumpButtonType.Reply, 0);
                     AddHtmlLocalized(295, 90 + (yOffset * 20), 150, 18, 1061153, LabelColor, false, false);       //Luck
-                    yOffset += 1;
                 }
                 else if (itemRef == 3 || itemRef == 5)
                 {
@@ -270,7 +260,6 @@ namespace Server.Gumps
 
                     AddButton(250, 90 + (yOffset * 20), 4005, 4007, 10121, GumpButtonType.Reply, 0);
                     AddHtmlLocalized(295, 90 + (yOffset * 20), 150, 18, 1061153, LabelColor, false, false);       //Luck
-                    yOffset += 1;
                 }
                 else if (itemRef == 4)
                 {
@@ -284,7 +273,6 @@ namespace Server.Gumps
 
                     AddButton(250, 90 + (yOffset * 20), 4005, 4007, 10142, GumpButtonType.Reply, 0);
                     AddHtmlLocalized(295, 90 + (yOffset * 20), 150, 18, 1017323, LabelColor, false, false);       //Durability
-                    yOffset += 1;
                 }
                 else if (itemRef == 6)
                 {
@@ -298,7 +286,6 @@ namespace Server.Gumps
 
                     AddButton(250, 90 + (yOffset * 20), 4005, 4007, 10120, GumpButtonType.Reply, 0);
                     AddHtmlLocalized(295, 90 + (yOffset * 20), 150, 18, 1075624, LabelColor, false, false);       //Enhance Potions
-                    yOffset += 1;
                 }
             }
             else if (menuCat == 15)  // == Ranged ==
@@ -324,7 +311,6 @@ namespace Server.Gumps
                     {
                         AddButton(250, 90 + (yOffset * 20), 4005, 4007, 10161, GumpButtonType.Reply, 0);
                         AddHtmlLocalized(295, 90 + (yOffset * 20), 150, 18, 1072792, LabelColor, false, false);   //Balanced
-                        yOffset += 1;
                     }
                 }
             }
@@ -348,7 +334,6 @@ namespace Server.Gumps
 
                 AddButton(250, 90 + (yOffset * 20), 4005, 4007, 10153, GumpButtonType.Reply, 0);
                 AddHtmlLocalized(295, 90 + (yOffset * 20), 150, 18, 1061160, LabelColor, false, false);           //Cold Resist
-                yOffset += 1;
             }
 
             else if (menuCat == 5)  // == STATS ==
@@ -377,7 +362,6 @@ namespace Server.Gumps
 
                     AddButton(250, 90 + (yOffset * 20), 4005, 4007, 10109, GumpButtonType.Reply, 0);
                     AddHtmlLocalized(295, 90 + (yOffset * 20), 150, 18, 1075630, LabelColor, false, false);       //Hit Point Increase
-                    yOffset += 1;
                 }
                 else if (itemRef == 6)
                 {
@@ -391,7 +375,6 @@ namespace Server.Gumps
 
                     AddButton(250, 90 + (yOffset * 20), 4005, 4007, 10107, GumpButtonType.Reply, 0);
                     AddHtmlLocalized(295, 90 + (yOffset * 20), 150, 18, 1079732, LabelColor, false, false);       //Dexterity Bonus
-                    yOffset += 1;
                 }
             }
             else if (menuCat == 6)  // == HIT AREA EFFECTS ==
@@ -413,7 +396,6 @@ namespace Server.Gumps
 
                 AddButton(250, 90 + (yOffset * 20), 4005, 4007, 10132, GumpButtonType.Reply, 0);
                 AddHtmlLocalized(295, 90 + (yOffset * 20), 150, 18, 1079693, LabelColor, false, false);           //Hit Cold Area
-                yOffset += 1;
             }
             else if (menuCat == 7)  // == ON HIT EFFECTS ==
             {
@@ -455,7 +437,6 @@ namespace Server.Gumps
 
                 AddButton(250, 90 + (yOffset * 20), 4005, 4007, 10139, GumpButtonType.Reply, 0);
                 AddHtmlLocalized(295, 90 + (yOffset * 20), 150, 18, 1079702, LabelColor, false, false);           //Hit Dispel
-                yOffset += 1;
             }
             else if (menuCat == 8)  // == SLAYERS ==
             {
@@ -529,7 +510,6 @@ namespace Server.Gumps
 
                 AddButton(250, 90 + (yOffset * 20), 4005, 4007, 10216, GumpButtonType.Reply, 0);
                 AddHtmlLocalized(295, 90 + (yOffset * 20), 150, 18, 1079733, LabelColor, false, false);           //Air Elemental Slayer
-                yOffset += 1;
 
             }
             else if (menuCat == 9)  // == SUPER SLAYERS ==
@@ -560,7 +540,6 @@ namespace Server.Gumps
 
                 AddButton(250, 90 + (yOffset * 20), 4005, 4007, 10225, GumpButtonType.Reply, 0);
                 AddHtmlLocalized(295, 90 + (yOffset * 20), 150, 18, 1079747, LabelColor, false, false);           //Arachnid Slayer
-                yOffset += 1;
 
             }
             else if (menuCat == 10)  // == SKILL GROUP 1 ==
@@ -583,7 +562,6 @@ namespace Server.Gumps
 
                 AddButton(250, 90 + (yOffset * 20), 4005, 4007, 10255, GumpButtonType.Reply, 0);
                 AddHtmlLocalized(295, 90 + (yOffset * 20), 150, 18, 1044085, LabelColor, false, false);           //Magery
-                yOffset += 1;
             }
             else if (menuCat == 11)  // == SKILL GROUP 2 ==
             {
@@ -605,7 +583,6 @@ namespace Server.Gumps
 
                 AddButton(250, 90 + (yOffset * 20), 4005, 4007, 10260, GumpButtonType.Reply, 0);
                 AddHtmlLocalized(295, 90 + (yOffset * 20), 150, 18, 1044082, LabelColor, false, false);           //Provocation
-                yOffset += 1;
             }
             else if (menuCat == 12)  // == SKILL GROUP 3 ==
             {
@@ -631,7 +608,6 @@ namespace Server.Gumps
 
                 AddButton(250, 90 + (yOffset * 20), 4005, 4007, 10266, GumpButtonType.Reply, 0);
                 AddHtmlLocalized(295, 90 + (yOffset * 20), 150, 18, 1044075, LabelColor, false, false);           //Discordance
-                yOffset += 1;
             }
             else if (menuCat == 13)  // == SKILL GROUP 4 ==
             {
@@ -661,7 +637,6 @@ namespace Server.Gumps
 
                 AddButton(250, 90 + (yOffset * 20), 4005, 4007, 10273, GumpButtonType.Reply, 0);
                 AddHtmlLocalized(295, 90 + (yOffset * 20), 150, 18, 1044061, LabelColor, false, false);           //Anatomy
-                yOffset += 1;
             }
             else if (menuCat == 14)  // == SKILL GROUP 5 ==
             {
@@ -691,7 +666,6 @@ namespace Server.Gumps
 
                 AddButton(250, 90 + (yOffset * 20), 4005, 4007, 10279, GumpButtonType.Reply, 0);
                 AddHtmlLocalized(295, 90 + (yOffset * 20), 150, 18, 1044077, LabelColor, false, false);          //Healing
-                yOffset += 1;
             }
 
             AddButton(15, 490, 4005, 4007, 1, GumpButtonType.Reply, 0);
