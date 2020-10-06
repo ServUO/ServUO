@@ -1920,7 +1920,7 @@ namespace Server
                 TimeSpan.FromSeconds(0.01),
                 false,
                 playerTimer ? TimerPriority.EveryTick : TimerPriority.FiftyMS,
-                m => CombatTimerOnTick());
+                m => m.CombatTimerOnTick());
         }
 
         private void RemoveCombatTimer()
@@ -4256,7 +4256,7 @@ namespace Server
 								item.Spawner = null;
 							}
 
-							if (amount == 0)
+							if (amount < 1)
 							{
 								amount = 1;
 							}
@@ -7719,7 +7719,13 @@ namespace Server
                     {
                         if (Hits < HitsMax)
                         {
-                            TimerRegistry.Register(Player ? _HitsRegenTimerPlayerID : _HitsRegenTimerID, this, GetHitsRegenRate(this), Player ? TimeSpan.FromMilliseconds(50) : TimeSpan.FromMilliseconds(250), false, TimerPriority.TenMS, mobile => mobile.HitsOnTick());
+                            TimerRegistry.Register(
+                                Player ? _HitsRegenTimerPlayerID : _HitsRegenTimerID,
+                                this,
+                                GetHitsRegenRate(this),
+                                Player ? TimeSpan.FromMilliseconds(50) : TimeSpan.FromMilliseconds(250),
+                                false, TimerPriority.TenMS,
+                                mobile => mobile.HitsOnTick());
                         }
                         else if (Hits > HitsMax)
                         {
@@ -7805,7 +7811,12 @@ namespace Server
                     {
                         if (Stam < StamMax)
                         {
-                            TimerRegistry.Register(Player ? _StamRegenTimerPlayerID : _StamRegenTimerID, this, GetStamRegenRate(this), Player ? TimeSpan.FromMilliseconds(50) : TimeSpan.FromMilliseconds(250), false, TimerPriority.TenMS, mobile => mobile.StamOnTick());
+                            TimerRegistry.Register(Player ? _StamRegenTimerPlayerID : _StamRegenTimerID,
+                                this,
+                                GetStamRegenRate(this),
+                                Player ? TimeSpan.FromMilliseconds(50) : TimeSpan.FromMilliseconds(250),
+                                false, TimerPriority.TenMS,
+                                mobile => mobile.StamOnTick());
                         }
                         else if (Stam > StamMax)
                         {
@@ -7891,7 +7902,12 @@ namespace Server
                     {
                         if (Mana < ManaMax)
                         {
-                            TimerRegistry.Register(Player ? _ManaRegenTimerPlayerID : _ManaRegenTimerID, this, GetManaRegenRate(this), Player ? TimeSpan.FromMilliseconds(50) : TimeSpan.FromMilliseconds(250), false, TimerPriority.TenMS, mobile => mobile.ManaOnTick());
+                            TimerRegistry.Register(
+                                Player ? _ManaRegenTimerPlayerID : _ManaRegenTimerID,
+                                this,
+                                GetManaRegenRate(this), Player ? TimeSpan.FromMilliseconds(50) : TimeSpan.FromMilliseconds(250),
+                                false, TimerPriority.TenMS,
+                                mobile => mobile.ManaOnTick());
                         }
                         else if (Mana > ManaMax)
                         {
@@ -8001,7 +8017,13 @@ namespace Server
 				{
 					if (CanRegenHits)
 					{
-                        TimerRegistry.Register(Player ? _HitsRegenTimerPlayerID : _HitsRegenTimerID, this, GetHitsRegenRate(this), Player ? TimeSpan.FromMilliseconds(50) : TimeSpan.FromMilliseconds(250), false, TimerPriority.TenMS, mobile => mobile.HitsOnTick());
+                        TimerRegistry.Register(
+                            Player ? _HitsRegenTimerPlayerID : _HitsRegenTimerID,
+                            this, GetHitsRegenRate(this),
+                            Player ? TimeSpan.FromMilliseconds(50) : TimeSpan.FromMilliseconds(250),
+                            false,
+                            TimerPriority.TenMS,
+                            mobile => mobile.HitsOnTick());
                     }
 					else
 					{
@@ -8059,7 +8081,14 @@ namespace Server
                 {
                     if (CanRegenStam)
                     {
-                        TimerRegistry.Register(Player ? _StamRegenTimerPlayerID : _StamRegenTimerID, this, GetStamRegenRate(this), Player ? TimeSpan.FromMilliseconds(50) : TimeSpan.FromMilliseconds(250), false, TimerPriority.TenMS, mobile => mobile.StamOnTick());
+                        TimerRegistry.Register(
+                            Player ? _StamRegenTimerPlayerID : _StamRegenTimerID,
+                            this,
+                            GetStamRegenRate(this),
+                            Player ? TimeSpan.FromMilliseconds(50) : TimeSpan.FromMilliseconds(250),
+                            false,
+                            TimerPriority.TenMS,
+                            mobile => mobile.StamOnTick());
                     }
                     else
                     {
@@ -8123,7 +8152,13 @@ namespace Server
 				{
 					if (CanRegenMana)
 					{
-                        TimerRegistry.Register(Player ? _ManaRegenTimerPlayerID : _ManaRegenTimerID, this, GetManaRegenRate(this), Player ? TimeSpan.FromMilliseconds(50) : TimeSpan.FromMilliseconds(250), false, TimerPriority.TenMS, mobile => mobile.ManaOnTick());
+                        TimerRegistry.Register(
+                            Player ? _ManaRegenTimerPlayerID : _ManaRegenTimerID,
+                            this, GetManaRegenRate(this),
+                            Player ? TimeSpan.FromMilliseconds(50) : TimeSpan.FromMilliseconds(250),
+                            false,
+                            TimerPriority.TenMS,
+                            mobile => mobile.ManaOnTick());
                     }
 					else
 					{
