@@ -195,6 +195,8 @@ namespace Server.Engines.UOStore
             Register<DecorativeStableSet>(1159272, 1159278, 0, 0x9D3C, 0, 1200, cat);
             Register<DecorativeKitchenSet>(1158970, 1158971, 0, 0x9CE8, 0, 1200, cat);
             Register<SquirrelMailbox>(1158859, 1158857, 0xA207, 0, 0, 400, cat);
+            Register<DolphinMailbox>(1158859, 1158857, 0xA203, 0, 0, 400, cat);
+            Register<ScarecrowMailbox>(1158859, 1158857, 0xA3F4, 0, 0, 400, cat);
             Register<BarrelMailbox>(1158859, 1158857, 0xA1F7, 0, 0, 400, cat);
             Register<DecorativeBlackwidowDeed>(1157897, 1157898, 0, 0x9CD7, 0, 600, cat);
             Register<HildebrandtDragonRugDeed>(1157889, 1157890, 0, 0x9CD8, 0, 700, cat);

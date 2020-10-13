@@ -63,7 +63,11 @@ namespace Server.Items
                 {
                     BaseCarvablePumpkin pumpkin = (BaseCarvablePumpkin)targeted;
 
-                    if (pumpkin.CarvedBy == null)
+                    if (!pumpkin.IsChildOf(from.Backpack))
+                    {
+                        from.SendLocalizedMessage(1045158); // You must have the item in your backpack to target it.
+                    }
+                    else if (pumpkin.CarvedBy == null)
                     {
                         from.PlaySound(0x249);
 
