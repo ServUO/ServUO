@@ -34,7 +34,10 @@ namespace Server.Items
                 NegativeAttributes.Antique = 1;
             }
             else
+            {
                 MaxHitPoints = 255;
+                ArmorAttributes.SelfRepair = 5;
+            }
 
             HitPoints = MaxHitPoints;
         }
@@ -54,6 +57,9 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (NegativeAttributes.Antique != 0 && ArmorAttributes.SelfRepair > 0)
+                ArmorAttributes.SelfRepair = 0;
         }
     }
 
@@ -78,7 +84,6 @@ namespace Server.Items
             Attributes.LowerManaCost = 8;
 
             PhysicalBonus = 15;
-            ArmorAttributes.SelfRepair = 5;
 
             SkillBonuses.SetValues(0, SkillName.Parry, 10.0);
 
@@ -88,7 +93,10 @@ namespace Server.Items
                 NegativeAttributes.Antique = 1;
             }
             else
+            {
                 MaxHitPoints = 255;
+                ArmorAttributes.SelfRepair = 5;
+            }
 
             HitPoints = MaxHitPoints;
         }
@@ -108,6 +116,9 @@ namespace Server.Items
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (NegativeAttributes.Antique != 0 && ArmorAttributes.SelfRepair > 0)
+                ArmorAttributes.SelfRepair = 0;
         }
     }
 }
