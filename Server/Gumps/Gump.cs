@@ -402,7 +402,7 @@ namespace Server.Gumps
 
 		public int Intern(string value, bool enforceUnique)
 		{
-			if (enforceUnique)
+			if (!enforceUnique)
 			{
 				int indexOf = m_Strings.IndexOf(value);
 
