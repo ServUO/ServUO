@@ -397,12 +397,12 @@ namespace Server.Gumps
 
 		public int Intern(string value)
 		{
-			return Intern(value, false);
+			return Intern(value, true);
 		}
 
 		public int Intern(string value, bool enforceUnique)
 		{
-			if (!enforceUnique)
+			if (enforceUnique)
 			{
 				int indexOf = m_Strings.IndexOf(value);
 
