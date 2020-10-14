@@ -385,17 +385,9 @@ namespace Server.Engines.UOStore
                 return;
             }
 
-            if (!Enabled)
+            if (!Enabled || Configuration.CurrencyImpl == CurrencyType.None)
             {
-                // The promo code redemption system is currently unavailable. Please try again later.
-                user.SendLocalizedMessage(1062904);
-                return;
-            }
-
-            if (Configuration.CurrencyImpl == CurrencyType.None)
-            {
-                // The promo code redemption system is currently unavailable. Please try again later.
-                user.SendLocalizedMessage(1062904);
+                user.SendMessage("The Ultima Online Store is disabled!");
                 return;
             }
 
