@@ -63,8 +63,8 @@ namespace Server.Items
 
                             Timer.DelayCall(TimeSpan.FromSeconds(5.0), delegate
                             {
-                                @from.Frozen = false;
-                                @from.PrivateOverheadMessage(MessageType.Regular, 65, 1112941, @from.NetState); // You manage to free your hand!
+                                from.Frozen = false;
+                                from.PrivateOverheadMessage(MessageType.Regular, 65, 1112941, from.NetState); // You manage to free your hand!
                             });
 
                             break;
@@ -126,15 +126,15 @@ namespace Server.Items
 
                     Mobile from = snake.CharmMaster;
 
-                    if (@from == null || Deleted)
+                    if (from == null || Deleted)
                         return;
 
                     if (0.1 > Utility.RandomDouble())
                     {
-                        @from.SendLocalizedMessage(1112586); // The snake finds a rare egg and drags it out of the nest!
+                        from.SendLocalizedMessage(1112586); // The snake finds a rare egg and drags it out of the nest!
                         new RareSerpentEgg().MoveToWorld(Location, Map);
 
-                        Collapse(@from);
+                        Collapse(from);
                     }
                     else
                     {
@@ -142,21 +142,21 @@ namespace Server.Items
                         {
                             case 0:
                             {
-                                @from.SendLocalizedMessage(1112585); // Beware! The snake has hatched some of the eggs!!
-                                HatchEggs(@from);
+                                from.SendLocalizedMessage(1112585); // Beware! The snake has hatched some of the eggs!!
+                                HatchEggs(from);
 
                                 break;
                             }
                             case 1:
                             {
-                                @from.SendLocalizedMessage(1112584); // The snake searches the nest and finds nothing.
+                                from.SendLocalizedMessage(1112584); // The snake searches the nest and finds nothing.
 
                                 break;
                             }
                             case 2:
                             {
-                                @from.SendLocalizedMessage(1112584); // The snake searches the nest and finds nothing.
-                                Collapse(@from);
+                                from.SendLocalizedMessage(1112584); // The snake searches the nest and finds nothing.
+                                Collapse(from);
 
                                 break;
                             }

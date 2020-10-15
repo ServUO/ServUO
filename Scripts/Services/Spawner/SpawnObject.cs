@@ -50,10 +50,10 @@ namespace Server.Mobiles
             writer.Write(SpawnedObjects.Count);
             foreach (ISpawnable sp in SpawnedObjects)
             {
-                if (sp is Item)
-                    writer.Write((Item)sp);
-                else if (sp is Mobile)
-                    writer.Write((Mobile)sp);
+                if (sp is Item item)
+                    writer.Write(item);
+                else if (sp is Mobile mobile)
+                    writer.Write(mobile);
                 else
                     writer.Write(Serial.MinusOne);
             }

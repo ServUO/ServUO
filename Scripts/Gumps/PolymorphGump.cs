@@ -29,6 +29,7 @@ namespace Server.Gumps
         private readonly int m_Num;
         private readonly int m_X;
         private readonly int m_Y;
+
         private PolymorphEntry(int Art, int Body, int LocNum, int X, int Y)
         {
             m_Art = Art;
@@ -47,112 +48,7 @@ namespace Server.Gumps
 
     public class PolymorphGump : Gump
     {
-        private static readonly PolymorphCategory[] Categories = new PolymorphCategory[]
-        {
-            new PolymorphCategory(1015235, // Animals
-                PolymorphEntry.Chicken,
-                PolymorphEntry.Dog,
-                PolymorphEntry.Wolf,
-                PolymorphEntry.Panther,
-                PolymorphEntry.Gorilla,
-                PolymorphEntry.BlackBear,
-                PolymorphEntry.GrizzlyBear,
-                PolymorphEntry.PolarBear,
-                PolymorphEntry.HumanMale),
-                new PolymorphCategory(1015245, // Monsters
-                    PolymorphEntry.Slime,
-                    PolymorphEntry.Orc,
-                    PolymorphEntry.LizardMan,
-                    PolymorphEntry.Gargoyle,
-                    PolymorphEntry.Ogre,
-                    PolymorphEntry.Troll,
-                    PolymorphEntry.Ettin,
-                    PolymorphEntry.Daemon,
-                    PolymorphEntry.HumanFemale)
-        };
-        private readonly Mobile m_Caster;
-        private readonly Item m_Scroll;
-        public PolymorphGump(Mobile caster, Item scroll)
-            : base(50, 50)
-        {
-            m_Caster = caster;
-            m_Scroll = scroll;
-
-            int x, y;
-            AddPage(0);
-            AddBackground(0, 0, 585, 393, 5054);
-            AddBackground(195, 36, 387, 275, 3000);
-            AddHtmlLocalized(0, 0, 510, 18, 1015234, false, false); // <center>Polymorph Selection Menu</center>
-            AddHtmlLocalized(60, 355, 150, 18, 1011036, false, false); // OKAY
-            AddButton(25, 355, 4005, 4007, 1, GumpButtonType.Reply, 1);
-            AddHtmlLocalized(320, 355, 150, 18, 1011012, false, false); // CANCEL
-            AddButton(285, 355, 4005, 4007, 0, GumpButtonType.Reply, 2);
-
-            y = 35;
-            for (int i = 0; i < Categories.Length; i++)
-            {
-                PolymorphCategory cat = Categories[i];
-                AddHtmlLocalized(5, y, 150, 25, cat.LocNumber, true, false);
-                AddButton(155, y, 4005, 4007, 0, GumpButtonType.Page, i + 1);
-                y += 25;
-            }
-
-            for (int i = 0; i < Categories.Length; i++)
-            {
-                PolymorphCategory cat = Categories[i];
-                AddPage(i + 1);
-
-                for (int c = 0; c < cat.Entries.Length; c++)
-                {
-                    PolymorphEntry entry = cat.Entries[c];
-                    x = 198 + (c % 3) * 129;
-                    y = 38 + (c / 3) * 67;
-
-                    AddHtmlLocalized(x, y, 100, 18, entry.LocNumber, false, false);
-                    AddItem(x + 20, y + 25, entry.ArtID);
-                    AddRadio(x, y + 20, 210, 211, false, (c << 8) + i);
-                }
-            }
-        }
-
-        public override void OnResponse(NetState state, RelayInfo info)
-        {
-            if (info.ButtonID == 1 && info.Switches.Length > 0)
-            {
-                int cnum = info.Switches[0];
-                int cat = cnum % 256;
-                int ent = cnum >> 8;
-
-                if (cat >= 0 && cat < Categories.Length)
-                {
-                    if (ent >= 0 && ent < Categories[cat].Entries.Length)
-                    {
-                        Spell spell = new PolymorphSpell(m_Caster, m_Scroll, Categories[cat].Entries[ent].BodyID);
-                        spell.Cast();
-                    }
-                }
-            }
-        }
-
-        private class PolymorphCategory
-        {
-            private readonly int m_Num;
-            private readonly PolymorphEntry[] m_Entries;
-            public PolymorphCategory(int num, params PolymorphEntry[] entries)
-            {
-                m_Num = num;
-                m_Entries = entries;
-            }
-
-            public PolymorphEntry[] Entries => m_Entries;
-            public int LocNumber => m_Num;
-        }
-    }
-
-    public class NewPolymorphGump : Gump
-    {
-        private static readonly PolymorphEntry[] m_Entries = new PolymorphEntry[]
-        {
+        private static readonly PolymorphEntry[] m_Entries = {
             PolymorphEntry.Chicken,
             PolymorphEntry.Dog,
             PolymorphEntry.Wolf,
@@ -174,7 +70,8 @@ namespace Server.Gumps
         };
         private readonly Mobile m_Caster;
         private readonly Item m_Scroll;
-        public NewPolymorphGump(Mobile caster, Item scroll)
+
+        public PolymorphGump(Mobile caster, Item scroll)
             : base(0, 0)
         {
             m_Caster = caster;

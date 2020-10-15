@@ -108,10 +108,10 @@ namespace Server.Items
             {
                 switch (Type)
                 {
-                    case SoulstoneType.Green: return new SoulStone(from.Account.ToString()) { LastUserName = @from.RawName };
-                    case SoulstoneType.Blue: return new BlueSoulstone(from.Account.ToString()) { LastUserName = @from.RawName };
-                    case SoulstoneType.Red: return new RedSoulstone(from.Account.ToString()) { LastUserName = @from.RawName };
-                    case SoulstoneType.Violet: return new VioletSoulstone(from.Account.ToString()) { LastUserName = @from.RawName };
+                    case SoulstoneType.Green: return new SoulStone(from.Account.ToString()) { LastUserName = from.RawName };
+                    case SoulstoneType.Blue: return new BlueSoulstone(from.Account.ToString()) { LastUserName = from.RawName };
+                    case SoulstoneType.Red: return new RedSoulstone(from.Account.ToString()) { LastUserName = from.RawName };
+                    case SoulstoneType.Violet: return new VioletSoulstone(from.Account.ToString()) { LastUserName = from.RawName };
                 }
             }
 

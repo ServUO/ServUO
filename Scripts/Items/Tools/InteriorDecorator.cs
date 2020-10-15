@@ -346,7 +346,7 @@ namespace Server.Items
 
                         if (aAttributes.Length > 0)
                         {
-                            aAttributes[0].Flip(@from, (Item)addon);
+                            aAttributes[0].Flip(from, (Item)addon);
                             return;
                         }
                     }

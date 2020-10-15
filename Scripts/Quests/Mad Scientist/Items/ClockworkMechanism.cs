@@ -89,22 +89,22 @@ namespace Server.Items
 
             Timer.DelayCall(TimeSpan.FromSeconds(5.0), delegate
             {
-                @from.PlaySound(0xFA);
-                @from.PlaySound(0x5BC);
-                @from.PlaySound(0x5C7);
+                from.PlaySound(0xFA);
+                from.PlaySound(0x5BC);
+                from.PlaySound(0x5C7);
 
-                Effects.SendLocationEffect(p, @from.Map, 0x1FD4, 30, 16, 0x21, 4);
+                Effects.SendLocationEffect(p, from.Map, 0x1FD4, 30, 16, 0x21, 4);
 
                 for (int j = 0; j < 5; j++)
                 {
                     Point3D loc = new Point3D(p.X, p.Y, 10 + p.Z + (j * 20));
 
-                    Effects.SendLocationEffect(loc, @from.Map, 0x1AA1, 17, 16, 0x481, 4);
-                    Effects.SendLocationEffect(loc, @from.Map, 0x1A9F, 10, 16, 0x481, 4);
-                    Effects.SendLocationEffect(loc, @from.Map, 0x1A8, 25, 16, 0x47E, 4);
+                    Effects.SendLocationEffect(loc, from.Map, 0x1AA1, 17, 16, 0x481, 4);
+                    Effects.SendLocationEffect(loc, from.Map, 0x1A9F, 10, 16, 0x481, 4);
+                    Effects.SendLocationEffect(loc, from.Map, 0x1A8, 25, 16, 0x47E, 4);
                 }
 
-                @from.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1112987, @from.NetState); // The training clockwork fails and the creature vanishes.
+                from.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1112987, from.NetState); // The training clockwork fails and the creature vanishes.
 
                 Timer.DelayCall(TimeSpan.FromSeconds(1.0), delegate
                 {

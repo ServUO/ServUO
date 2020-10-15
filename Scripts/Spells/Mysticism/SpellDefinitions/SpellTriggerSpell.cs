@@ -240,7 +240,7 @@ namespace Server.Spells.Mysticism
             m_CooldownTable[from] = DateTime.UtcNow + TimeSpan.FromSeconds(300.0);
             Timer.DelayCall(TimeSpan.FromSeconds(300.0), delegate
             {
-                m_CooldownTable.Remove(@from);
+                m_CooldownTable.Remove(from);
             });
 
             Delete();

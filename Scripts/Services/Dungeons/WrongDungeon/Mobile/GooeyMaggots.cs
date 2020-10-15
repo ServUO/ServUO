@@ -124,8 +124,8 @@ namespace Server.Mobiles
 
                 Timer.DelayCall(TimeSpan.FromSeconds(1), delegate
                 {
-                    @from.SendSpeedControl(SpeedControlType.Disable);
-                    @from.SendLocalizedMessage(1152145); // You are are free to move again.
+                    from.SendSpeedControl(SpeedControlType.Disable);
+                    from.SendLocalizedMessage(1152145); // You are are free to move again.
                 });
 
                 Delete();

@@ -411,6 +411,7 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(BlackrockMoonstone), 1156993, 1, 1156992);
             AddRes(index, typeof(StaffOfTheMagi), 1061600, 1, 1044253);
             AddRecipe(index, (int)CarpRecipes.KotlBlackRod);
+            ForceNonExceptional(index);
 
             // Armor
             AddCraft(typeof(WoodenShield), 1062760, 1027034, 52.6, 77.6, typeof(Board), 1044041, 9, 1044351);
