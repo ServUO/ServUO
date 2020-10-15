@@ -319,7 +319,7 @@ namespace Server.Misc
                 if (skill.Info.SkillID == (int)SkillName.Archery && from.Race == Race.Gargoyle)
                     return false;
 
-                if (skill.Info.SkillID == (int)SkillName.Throwing && @from.Race != Race.Gargoyle)
+                if (skill.Info.SkillID == (int)SkillName.Throwing && from.Race != Race.Gargoyle)
                     return false;
 
                 if (_AntiMacroCode && UseAntiMacro[skill.Info.SkillID])

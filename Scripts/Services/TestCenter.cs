@@ -47,13 +47,13 @@ namespace Server.Misc
                             double value = Convert.ToDouble(split[2]);
 
                             if (Insensitive.Equals(name, "str"))
-                                ChangeStrength(@from, (int)value);
+                                ChangeStrength(from, (int)value);
                             else if (Insensitive.Equals(name, "dex"))
-                                ChangeDexterity(@from, (int)value);
+                                ChangeDexterity(from, (int)value);
                             else if (Insensitive.Equals(name, "int"))
-                                ChangeIntelligence(@from, (int)value);
+                                ChangeIntelligence(from, (int)value);
                             else
-                                ChangeSkill(@from, name, value);
+                                ChangeSkill(from, name, value);
                         }
                         catch (Exception e)
                         {
@@ -151,18 +151,18 @@ namespace Server.Misc
         {
             if (value < 10 || value > 125)
             {
-                @from.SendLocalizedMessage(1005628); // Stats range between 10 and 125.
+                from.SendLocalizedMessage(1005628); // Stats range between 10 and 125.
             }
             else
             {
-                if ((value + @from.RawDex + @from.RawInt) > @from.StatCap)
+                if ((value + from.RawDex + from.RawInt) > from.StatCap)
                 {
-                    @from.SendLocalizedMessage(1005629); // You can not exceed the stat cap.  Try setting another stat lower first.
+                    from.SendLocalizedMessage(1005629); // You can not exceed the stat cap.  Try setting another stat lower first.
                 }
                 else
                 {
-                    @from.RawStr = value;
-                    @from.SendLocalizedMessage(1005630); // Your stats have been adjusted.
+                    from.RawStr = value;
+                    from.SendLocalizedMessage(1005630); // Your stats have been adjusted.
                 }
             }
         }
@@ -171,18 +171,18 @@ namespace Server.Misc
         {
             if (value < 10 || value > 125)
             {
-                @from.SendLocalizedMessage(1005628); // Stats range between 10 and 125.
+                from.SendLocalizedMessage(1005628); // Stats range between 10 and 125.
             }
             else
             {
-                if ((@from.RawStr + value + @from.RawInt) > @from.StatCap)
+                if ((from.RawStr + value + from.RawInt) > from.StatCap)
                 {
-                    @from.SendLocalizedMessage(1005629); // You can not exceed the stat cap.  Try setting another stat lower first.
+                    from.SendLocalizedMessage(1005629); // You can not exceed the stat cap.  Try setting another stat lower first.
                 }
                 else
                 {
-                    @from.RawDex = value;
-                    @from.SendLocalizedMessage(1005630); // Your stats have been adjusted.
+                    from.RawDex = value;
+                    from.SendLocalizedMessage(1005630); // Your stats have been adjusted.
                 }
             }
         }
@@ -191,18 +191,18 @@ namespace Server.Misc
         {
             if (value < 10 || value > 125)
             {
-                @from.SendLocalizedMessage(1005628); // Stats range between 10 and 125.
+                from.SendLocalizedMessage(1005628); // Stats range between 10 and 125.
             }
             else
             {
-                if ((@from.RawStr + @from.RawDex + value) > @from.StatCap)
+                if ((from.RawStr + from.RawDex + value) > from.StatCap)
                 {
-                    @from.SendLocalizedMessage(1005629); // You can not exceed the stat cap.  Try setting another stat lower first.
+                    from.SendLocalizedMessage(1005629); // You can not exceed the stat cap.  Try setting another stat lower first.
                 }
                 else
                 {
-                    @from.RawInt = value;
-                    @from.SendLocalizedMessage(1005630); // Your stats have been adjusted.
+                    from.RawInt = value;
+                    from.SendLocalizedMessage(1005630); // Your stats have been adjusted.
                 }
             }
         }

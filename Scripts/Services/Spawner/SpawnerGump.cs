@@ -8,10 +8,10 @@ namespace Server.Mobiles
         public static readonly int MaxEntries = 13;
         public Spawner Spawner { get; set; }
 
-        public int LabelHue => User != null && User.NetState != null && User.NetState.IsEnhancedClient ? 0x386 : 0x384;
+        public int LabelHue => User?.NetState != null && User.NetState.IsEnhancedClient ? 0x386 : 0x384;
 
-        public SpawnerGump(Mobile m, Spawner spawner)
-            : base(m as PlayerMobile, 50, 50)
+        public SpawnerGump(IEntity m, Spawner spawner)
+            : base(m as PlayerMobile)
         {
             Spawner = spawner;
         }
@@ -107,7 +107,7 @@ namespace Server.Mobiles
                 if (te != null)
                 {
                     string name = te.Text;
-                    string maxCount = te2 != null ? te2.Text : null;
+                    string maxCount = te2?.Text;
                     int max = 0;
 
                     if (name.Length > 0)
@@ -155,73 +155,67 @@ namespace Server.Mobiles
             switch (info.ButtonID)
             {
                 case 0: // Closed
-                    {
-                        return;
-                    }
+                {
+                    return;
+                }
                 case 1: // Apply
+                {
+                    UpdateSpawnObjects(info, User);
+
+                    break;
+                }
+                case 2: // Bring to Home
+                {
+                    Spawner.BringToHome();
+
+                    break;
+                }
+                case 3: // Total Respawn
+                {
+                    Spawner.Respawn();
+
+                    break;
+                }
+                case 1000:
+                {
+                    Spawner.Group = !Spawner.Group;
+                    break;
+                }
+                case 1025:
+                {
+                    User.SendGump(new PropertiesGump(User, Spawner));
+                    break;
+                }
+                case 1500:
+                {
+                    Spawner.Running = !Spawner.Running;
+                    break;
+                }
+                case 1750:
+                {
+                    Spawner.RemoveSpawned();
+                    break;
+                }
+                default:
+                {
+                    int buttonID = info.ButtonID - 4;
+                    int index = buttonID / 2;
+                    int type = buttonID % 2;
+
+                    TextRelay entry = info.GetTextEntry(index);
+
+                    if (entry != null && entry.Text.Length > 0)
                     {
                         UpdateSpawnObjects(info, User);
 
-                        break;
+                        if (type == 0) // Spawn creature
+                            Spawner.Spawn(index);
+                        else // Remove creatures
+                            Spawner.RemoveSpawned(index);
                     }
-                case 2: // Bring to Home
-                    {
-                        Spawner.BringToHome();
 
-                        break;
-                    }
-                case 3: // Total Respawn
-                    {
-                        Spawner.Respawn();
-
-                        break;
-                    }
-                case 1000:
-                    {
-                        if (Spawner.Group)
-                            Spawner.Group = false;
-                        else
-                            Spawner.Group = true;
-                        break;
-                    }
-                case 1025:
-                    {
-                        User.SendGump(new PropertiesGump(User, Spawner));
-                        break;
-                    }
-                case 1500:
-                    {
-                        if (Spawner.Running)
-                            Spawner.Running = false;
-                        else
-                            Spawner.Running = true;
-                        break;
-                    }
-                case 1750:
-                    {
-                        Spawner.RemoveSpawned();
-                        break;
-                    }
-                default:
-                    {
-                        int buttonID = info.ButtonID - 4;
-                        int index = buttonID / 2;
-                        int type = buttonID % 2;
-
-                        TextRelay entry = info.GetTextEntry(index);
-
-                        if (entry != null && entry.Text.Length > 0)
-                        {
-                            UpdateSpawnObjects(info, User);
-
-                            if (type == 0) // Spawn creature
-                                Spawner.Spawn(index);
-                            else // Remove creatures
-                                Spawner.RemoveSpawned(index);
-                        }
-
-                        break;
-                    }
+                    break;
+                }
             }
 
             Refresh();
