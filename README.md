@@ -1,46 +1,19 @@
-# [ServUO]
+# Flawless Haven Shard
+This is an Ultima Online shard meant to provide a fun experience to its players. Crafted to be used by one or a small party of players to enjoy what this game has to offer while at the same time introducing a few custom experiences to promote the role-playing experience.
 
-[![Build Status](https://travis-ci.com/ServUO/ServUO.svg?branch=master)](https://travis-ci.com/ServUO/ServUO)
-[![GitHub issues](https://img.shields.io/github/issues/servuo/servuo.svg)](https://github.com/ServUO/ServUO/issues)
-[![GitHub release](https://img.shields.io/github/release/servuo/servuo.svg)](https://github.com/ServUO/ServUO/releases)
-[![GitHub repo size](https://img.shields.io/github/repo-size/servuo/servuo.svg)](https://github.com/ServUO/ServUO/)
-[![Discord](https://img.shields.io/discord/110970849628000256.svg)](https://discord.gg/0cQjvnFUN26nRt7y)
-[![GitHub contributors](https://img.shields.io/github/contributors/servuo/servuo.svg)](https://github.com/ServUO/ServUO/graphs/contributors)
-[![GitHub](https://img.shields.io/github/license/servuo/servuo.svg?color=a)](https://github.com/ServUO/ServUO/blob/master/LICENSE)
+## Characteristics
+ - Powered by ServUO which means that all expansions content is available up to Times of Lengends/Endless Journey.
+ - The Ultima Store is disabled.
+ - No Skill Cap.
+ - Each stat can be raised up to 325.
+ - The chance to gain a new stat point is 20%.
 
+More features will be added to promote RP and custom systems to enhance the experience.
 
-[ServUO] is a community driven Ultima Online Server Emulator written in C#.
+## Instructions
+Not available yet.
 
-
-#### Requirements
-
-[.NET Framework 4.8] Runtime and SDK
-
-
-#### Windows
-
-Run `Compile.WIN - Debug.bat` for development environments.
-Run `Compile.WIN - Release.bat` for production environments.
-
-
-#### OSX
-
-`brew install mono`  
-`make`
-
-
-#### Ubuntu / Debian
-
-`apt-get install zlib1g-dev`  
-`apt-get install mono-complete`  
-`make`
-
-
-#### Summary
-
-A [Quick Start] guide is available for more information on setting up your world.
-
-
-   [ServUO]: <https://www.servuo.com>
-   [Quick Start]: <https://www.servuo.com/wiki/startup/>
-   [.NET Framework 4.8]: <https://dotnet.microsoft.com/download/dotnet-framework/net48>
+## Planned content
+- Create a new map:
+   - Add a casino with slots, blackjack, and poker.
+   - Add a bar where players can but but exotic drinks that introduce effects on them.
