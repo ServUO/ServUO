@@ -40,11 +40,11 @@ namespace Server.Network
 			Serial = senderSerial;
 
 			Intern("TEXTENTRY");
-			Intern(senderSerial.Value.ToString());
-			Intern(to.Serial.Value.ToString());
-			Intern(prompt.TypeId.ToString());
-			Intern(prompt.MessageCliloc.ToString()); // TODO: Is there a way to include args here?
-			Intern("1"); // 0 = Ascii response, 1 = Unicode Response
+			Intern(senderSerial.Value.ToString(), false);
+			Intern(to.Serial.Value.ToString(), false);
+			Intern(prompt.TypeId.ToString(), false);
+			Intern(prompt.MessageCliloc.ToString(), false); // TODO: Is there a way to include args here?
+			Intern("1", false); // 0 = Ascii response, 1 = Unicode Response
 
 			AddBackground(50, 50, 540, 350, 0xA28);
 
