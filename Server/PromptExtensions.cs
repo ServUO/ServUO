@@ -39,7 +39,7 @@ namespace Server.Network
 
 			Serial = senderSerial;
 
-			Intern("TEXTENTRY");
+			Intern("TEXTENTRY", false);
 			Intern(senderSerial.Value.ToString(), false);
 			Intern(to.Serial.Value.ToString(), false);
 			Intern(prompt.TypeId.ToString(), false);
