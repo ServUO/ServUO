@@ -10,18 +10,17 @@ namespace Server.Gumps
     public class ReportMurdererGump : Gump
     {
         private readonly List<Mobile> m_Killers;
-        private readonly Mobile m_Victum;
         private int m_Idx;
-        public ReportMurdererGump(Mobile victum, List<Mobile> killers)
-            : this(victum, killers, 0)
+
+        public ReportMurdererGump(List<Mobile> killers)
+            : this(killers, 0)
         {
         }
 
-        private ReportMurdererGump(Mobile victum, List<Mobile> killers, int idx)
+        private ReportMurdererGump(List<Mobile> killers, int idx)
             : base(0, 0)
         {
             m_Killers = killers;
-            m_Victum = victum;
             m_Idx = idx;
             BuildGump();
         }
@@ -152,7 +151,7 @@ namespace Server.Gumps
 
             m_Idx++;
             if (m_Idx < m_Killers.Count)
-                from.SendGump(new ReportMurdererGump(from, m_Killers, m_Idx));
+                from.SendGump(new ReportMurdererGump(m_Killers, m_Idx));
         }
 
         public static void CheckMurderer(Mobile m)
@@ -212,7 +211,7 @@ namespace Server.Gumps
 
             protected override void OnTick()
             {
-                m_Victim.SendGump(new ReportMurdererGump(m_Victim, m_Killers));
+                m_Victim.SendGump(new ReportMurdererGump(m_Killers));
             }
         }
     }

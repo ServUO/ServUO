@@ -43,10 +43,10 @@ namespace Server.Gumps
             {
                 if (m_Type == typeof(Type))
                     targeted = targeted.GetType();
-                else if ((m_Type == typeof(BaseAddon) || m_Type.IsAssignableFrom(typeof(BaseAddon))) && targeted is AddonComponent)
-                    targeted = ((AddonComponent)targeted).Addon;
+                else if ((m_Type == typeof(BaseAddon) || m_Type.IsAssignableFrom(typeof(BaseAddon))) && targeted is AddonComponent component)
+                    targeted = component.Addon;
 
-                if (m_Type.IsAssignableFrom(targeted.GetType()))
+                if (m_Type.IsInstanceOfType(targeted))
                 {
                     CommandLogging.LogChangeProperty(m_Mobile, m_Object, m_Property.Name, targeted.ToString());
                     m_Property.SetValue(m_Object, targeted, null);

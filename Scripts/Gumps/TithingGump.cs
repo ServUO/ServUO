@@ -1,4 +1,3 @@
-using Server.Items;
 using Server.Mobiles;
 using Server.Network;
 using System.Globalization;
@@ -109,8 +108,6 @@ namespace Server.Gumps
 
                                 if ((from.TithingPoints + m_Offer) > MaxTithing)
                                     m_Offer = MaxTithing - from.TithingPoints;
-
-                                Container pack = from.Backpack;
 
                                 if (Banker.Withdraw(from, m_Offer, true))
                                 {

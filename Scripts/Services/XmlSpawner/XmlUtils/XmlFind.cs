@@ -12,20 +12,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-/*
-** XmlFind
-** utility for locating objects in the world.
-** ArteGordon
-** original version 1.0
-** 4/13/04
-**
-*/
-
 namespace Server.Mobiles
 {
     public class XmlFindGump : Gump
     {
-
         public class XmlFindThread
         {
             readonly SearchCriteria m_SearchCriteria;
@@ -159,7 +149,6 @@ namespace Server.Mobiles
                 Searchtype = type;
                 Searchname = name;
                 Searchspawnentry = entry;
-
             }
 
             public SearchCriteria()
@@ -174,7 +163,7 @@ namespace Server.Mobiles
         private bool Sortmap;
         private bool Sortselect;
         private readonly Mobile m_From;
-        private Point3D StartingLoc;
+        private readonly Point3D StartingLoc;
         private readonly Map StartingMap;
         private bool m_ShowExtension;
         private bool Descendingsort;
@@ -195,10 +184,8 @@ namespace Server.Mobiles
         private static bool TestRange(object o, int range, Map currentmap, Point3D currentloc)
         {
             if (range < 0) return true;
-            if (o is Item)
+            if (o is Item item)
             {
-                Item item = (Item)o;
-
                 if (item.Map != currentmap) return false;
 
                 // is the item in a container?
@@ -206,25 +193,22 @@ namespace Server.Mobiles
                 Point3D loc = item.Location;
                 if (item.Parent != null && item.RootParent != null)
                 {
-                    if (item.RootParent is Mobile)
+                    if (item.RootParent is Mobile mobile)
                     {
-                        loc = ((Mobile)item.RootParent).Location;
+                        loc = mobile.Location;
                     }
                     else
-                        if (item.RootParent is Container)
+                        if (item.RootParent is Container container)
                     {
-                        loc = ((Container)item.RootParent).Location;
+                        loc = container.Location;
                     }
 
                 }
                 return (Utility.InRange(currentloc, loc, range));
 
             }
-            else
-                if (o is Mobile)
+            if (o is Mobile mob)
             {
-                Mobile mob = (Mobile)o;
-
                 if (mob.Map != currentmap) return false;
                 return (Utility.InRange(currentloc, mob.Location, range));
 
@@ -237,42 +221,41 @@ namespace Server.Mobiles
             if (regionname == null)
                 return false;
 
-            if (o is Item)
+            if (o is Item item)
             {
-                Item item = (Item)o;
                 // is the item in a container?
                 // if so, then check the region of the parent rather than the item
                 Point3D loc = item.Location;
                 if (item.Parent != null && item.RootParent != null)
                 {
-                    if (item.RootParent is Mobile)
+                    if (item.RootParent is Mobile mobile)
                     {
-                        loc = ((Mobile)item.RootParent).Location;
+                        loc = mobile.Location;
                     }
                     else
-                        if (item.RootParent is Container)
+                        if (item.RootParent is Container container)
                     {
-                        loc = ((Container)item.RootParent).Location;
+                        loc = container.Location;
                     }
-
                 }
 
-                Region r = Region.Regions.FirstOrDefault(reg => reg.Map == item.Map && !string.IsNullOrEmpty(reg.Name) && reg.Name.ToLower() == regionname.ToLower());
+                Region r = Region.Regions.FirstOrDefault(reg => reg.Map == item.Map && !string.IsNullOrEmpty(reg.Name) && string.Equals(reg.Name, regionname, StringComparison.CurrentCultureIgnoreCase));
 
-                if (r == null) return false;
+                if (r == null)
+                    return false;
+
                 return (r.Contains(loc));
-
             }
-            else if (o is Mobile)
-            {
-                Mobile mob = (Mobile)o;
 
-                Region r = Region.Regions.FirstOrDefault(reg => reg.Map == mob.Map && !string.IsNullOrEmpty(reg.Name) && reg.Name.ToLower() == regionname.ToLower());
+            if (o is Mobile mob)
+            {
+                Region r = Region.Regions.FirstOrDefault(reg => reg.Map == mob.Map && !string.IsNullOrEmpty(reg.Name) && string.Equals(reg.Name, regionname, StringComparison.CurrentCultureIgnoreCase));
 
                 if (r == null) return false;
                 return (r.Contains(mob.Location));
 
             }
+
             return false;
         }
 
@@ -280,10 +263,8 @@ namespace Server.Mobiles
         {
             if (age <= 0) return true;
 
-            if (o is Mobile)
+            if (o is Mobile mob)
             {
-                Mobile mob = (Mobile)o;
-
                 if (direction)
                 {
                     // true means allow only mobs greater than the age
@@ -294,42 +275,31 @@ namespace Server.Mobiles
                     // false means allow only mobs less than the age
                     if ((DateTime.UtcNow - mob.CreationTime) < TimeSpan.FromHours(age)) return true;
                 }
-
             }
+
             return false;
         }
 
         private static void IgnoreManagedInternal(object i, ref ArrayList ignoreList)
         {
-
             // ignore valid internalized commodity deed items
-            if (i is CommodityDeed)
+            if (i is CommodityDeed deed && deed.Commodity != null && deed.Commodity.Map == Map.Internal)
             {
-                CommodityDeed deed = (CommodityDeed)i;
-
-                if (deed.Commodity != null && deed.Commodity.Map == Map.Internal)
-                    ignoreList.Add(deed.Commodity);
+                ignoreList.Add(deed.Commodity);
             }
 
             // ignore valid internalized keyring keys
-            if (i is KeyRing)
+            if (i is KeyRing keyring && keyring.Keys != null)
             {
-                KeyRing keyring = (KeyRing)i;
-
-                if (keyring.Keys != null)
+                foreach (Key k in keyring.Keys)
                 {
-                    foreach (Key k in keyring.Keys)
-                    {
-                        ignoreList.Add(k);
-                    }
+                    ignoreList.Add(k);
                 }
             }
 
             // ignore valid internalized relocatable house items
-            if (i is BaseHouse)
+            if (i is BaseHouse house)
             {
-                BaseHouse house = (BaseHouse)i;
-
                 foreach (RelocatedEntity relEntity in house.RelocatedEntities)
                 {
                     if (relEntity.Entity is Item)
@@ -347,24 +317,19 @@ namespace Server.Mobiles
         // test for valid items/mobs on the internal map
         private static bool TestValidInternal(object o)
         {
-            if (o is Mobile)
+            if (o is Mobile m)
             {
-                Mobile m = (Mobile)o;
-
                 if (m.Map != Map.Internal || m.Account != null ||
-                    (m is IMount && ((IMount)m).Rider != null) ||
+                    ((m as IMount)?.Rider != null) ||
                     (m is GalleonPilot) || m is PetParrot ||
                     (GenericBuyInfo.IsDisplayCache(m)) ||
                     (m is EffectMobile) ||
-                    (m is BaseCreature && ((BaseCreature)m).IsStabled) ||
+                    (m is BaseCreature creature && creature.IsStabled) ||
                     (m is PlayerVendor && BaseHouse.AllHouses.Any(x => x.InternalizedVendors.Contains(m))))
                     return true;
             }
-            else
-                if (o is Item)
+            else if (o is Item i)
             {
-                Item i = (Item)o;
-
                 // note, in order to test for a vendors display container that contains valid internal map items 
                 if (i.Map != Map.Internal || i.Parent != null || i is Fists || i is MountItem || i is EffectItem || i.HeldBy != null ||
                     i is MovingCrate || i is SpawnPersistence || GenericBuyInfo.IsDisplayCache(i) || i.GetType().DeclaringType == typeof(GenericBuyInfo))
@@ -377,15 +342,17 @@ namespace Server.Mobiles
                     return true;
 
                 // Ignores shadowguard addons that are internalized while not in use
-                if (i is AddonComponent)
+                if (i is AddonComponent component)
                 {
-                    BaseAddon addon = ((AddonComponent)i).Addon;
+                    BaseAddon addon = component.Addon;
 
-                    if (addon != null && (addon is ArmoryAddon || addon is BarAddon || addon is BelfryAddon || addon is ShadowguardFountainAddon || addon is OrchardAddon))
+                    if (addon != null && (addon is ArmoryAddon || addon is BarAddon || addon is BelfryAddon || addon is ShadowguardFountainAddon || addon is OrchardAddon
+                                          || addon is CastleAddon))
                         return true;
                 }
 
-                if (i is BaseAddon && (i is ArmoryAddon || i is BarAddon || i is BelfryAddon || i is ShadowguardFountainAddon || i is OrchardAddon))
+                if (i is BaseAddon && (i is ArmoryAddon || i is BarAddon || i is BelfryAddon || i is ShadowguardFountainAddon || i is OrchardAddon
+                                       || i is CastleAddon))
                     return true;
 
                 if (i is BoatMountItem || i is Misc.TreasuresOfTokunoPersistence || i is StealableArtifactsSpawner)
@@ -483,11 +450,11 @@ namespace Server.Mobiles
                         hasmap = true;
                     }
 
-
-                    if (!hasmap) continue;
+                    if (!hasmap)
+                        continue;
 
                     // check for type
-                    if (criteria.Dosearchtype && (i.GetType().IsSubclassOf(targetType) || i.GetType().Equals(targetType)))
+                    if (criteria.Dosearchtype && (i.GetType().IsSubclassOf(targetType) || i.GetType() == targetType))
                     {
                         hastype = true;
                     }
@@ -549,11 +516,11 @@ namespace Server.Mobiles
                         else
                         {
                             // see what kind of spawner it is
-                            if (i is XmlSpawner)
+                            if (i is XmlSpawner spawner)
                             {
 
                                 // search the entries of the spawner
-                                foreach (XmlSpawner.SpawnObject so in ((XmlSpawner)i).m_SpawnObjects)
+                                foreach (XmlSpawner.SpawnObject so in spawner.m_SpawnObjects)
                                 {
                                     if (criteria.Dosearchspawntype)
                                     {
@@ -589,10 +556,10 @@ namespace Server.Mobiles
                                     }
                                 }
                             }
-                            else if (i is Spawner)
+                            else if (i is Spawner spawner1)
                             {
                                 // search the entries of the spawner
-                                foreach (SpawnObject obj in ((Spawner)i).SpawnObjects)
+                                foreach (SpawnObject obj in spawner1.SpawnObjects)
                                 {
                                     string so = obj.SpawnName;
 
@@ -628,23 +595,17 @@ namespace Server.Mobiles
                             }
                         }
                     }
-                    if (criteria.Dosearchspawnentry && !hasentry) continue;
 
-                    // check for err
-                    if (criteria.Dosearcherr)
+                    if (criteria.Dosearchspawnentry && !hasentry)
+                        continue;
+
+                    if (criteria.Dosearcherr && i is XmlSpawner hasSpawn && hasSpawn.status_str != null)
                     {
-                        // see what kind of spawner it is
-                        if (i is XmlSpawner)
-                        {
-                            // check the status of the spawner
-                            if (((XmlSpawner)i).status_str != null)
-                            {
-                                hasspawnerr = true;
-                            }
-                        }
+                        hasspawnerr = true;
                     }
-                    if (criteria.Dosearcherr && !hasspawnerr) continue;
 
+                    if (criteria.Dosearcherr && !hasspawnerr)
+                        continue;
 
                     // satisfied all conditions so add it
                     newarray.Add(new SearchEntry(i));
@@ -726,7 +687,7 @@ namespace Server.Mobiles
                         if (criteria.Dosearchage && !hasage) continue;
 
                         // check for type
-                        if (criteria.Dosearchtype && (i.GetType().IsSubclassOf(targetType) || i.GetType().Equals(targetType)))
+                        if (criteria.Dosearchtype && (i.GetType().IsSubclassOf(targetType) || i.GetType() == targetType))
                         {
                             hastype = true;
                         }
@@ -752,7 +713,6 @@ namespace Server.Mobiles
                         newarray.Add(new SearchEntry(i));
                     }
                 }
-
             }
 
             ArrayList removelist = new ArrayList();
@@ -780,7 +740,8 @@ namespace Server.Mobiles
         [Description("Finds objects in the world")]
         public static void XmlFind_OnCommand(CommandEventArgs e)
         {
-            if (e == null || e.Mobile == null) return;
+            if (e?.Mobile == null)
+                return;
 
             Account acct = e.Mobile.Account as Account;
             int x = 0;
@@ -899,14 +860,13 @@ namespace Server.Mobiles
             m_ShowExtension = extension;
             Descendingsort = descend;
 
-            m_SearchCriteria = criteria;
-
-            if (m_SearchCriteria == null) m_SearchCriteria = new SearchCriteria();
+            m_SearchCriteria = criteria ?? new SearchCriteria();
 
             m_SearchList = searchlist;
 
             // prepare the page
-            int height = 500;
+            const int height = 500;
+
             AddPage(0);
             if (m_ShowExtension)
             {
@@ -919,14 +879,6 @@ namespace Server.Mobiles
                 AddAlphaRegion(0, 0, 170, height);
             }
 
-
-            // Close button
-            //AddButton( 5, 450, 0xFB1, 0xFB3, 0, GumpButtonType.Reply, 0 );
-            //AddLabel( 38, 450, 0x384, "Close" );
-
-            // add the SubSearch button
-            //AddButton( 90, 160, 0xFA8, 0xFAA, 4, GumpButtonType.Reply, 0 );
-            //AddLabel( 128, 160, 0x384, "SubSearch" );
 
             // ----------------
             // SORT section
@@ -1251,34 +1203,18 @@ namespace Server.Mobiles
                         // change the color for container held items
                         if (item.Parent != null)
                         {
-
-                            if (item.RootParent is Mobile)
+                            if (item.RootParent is Mobile m)
                             {
-
-                                Mobile m = item.RootParent as Mobile;
-                                if (m.Player)
-                                    texthue = 44;
-                                else
-                                    texthue = 24;
+                                texthue = m.Player ? 44 : 24;
                                 locstr = m.Location.ToString();
                                 ownstr = m.Name;
                             }
-                            else
-                                if (item.RootParent is Container)
+                            else if (item.RootParent is Container c)
                             {
                                 texthue = 5;
-                                Container c = item.RootParent as Container;
                                 locstr = c.Location.ToString();
-                                if (c.Name != null)
-                                {
-                                    ownstr = c.Name;
-                                }
-                                else
-                                {
-                                    ownstr = c.ItemData.Name;
-                                }
+                                ownstr = c.Name ?? c.ItemData.Name;
                             }
-
                         }
                         else
                         {
@@ -1336,7 +1272,6 @@ namespace Server.Mobiles
                     // display the selection button
 
                     AddButton(730, 22 * (i % MaxEntriesPerPage) + 32, (e.Selected ? 0xD3 : 0xD2), (e.Selected ? 0xD2 : 0xD3), 4000 + i, GumpButtonType.Reply, 0);
-
                 }
             }
         }
@@ -1348,20 +1283,18 @@ namespace Server.Mobiles
             if (m_SearchList != null && index < m_SearchList.Count)
             {
                 object o = ((SearchEntry)m_SearchList[index]).Object;
-                if (o is Item)
+                if (o is Item item)
                 {
-                    Item item = (Item)o;
                     Point3D itemloc;
                     if (item.Parent != null)
                     {
-                        if (item.RootParent is Mobile)
+                        if (item.RootParent is Mobile mobile)
                         {
-                            itemloc = ((Mobile)(item.RootParent)).Location;
+                            itemloc = mobile.Location;
                         }
-                        else
-                            if (item.RootParent is Container)
+                        else if (item.RootParent is Container container)
                         {
-                            itemloc = ((Container)(item.RootParent)).Location;
+                            itemloc = container.Location;
                         }
                         else
                         {
@@ -1372,16 +1305,16 @@ namespace Server.Mobiles
                     {
                         itemloc = item.Location;
                     }
-                    if (item == null || item.Deleted || item.Map == null || item.Map == Map.Internal) return;
+                    if (item.Deleted || item.Map == null || item.Map == Map.Internal)
+                        return;
+
                     m_From.Location = itemloc;
                     m_From.Map = item.Map;
-
                 }
-                else
-                    if (o is Mobile)
+
+                else if (o is Mobile mob)
                 {
-                    Mobile mob = (Mobile)o;
-                    if (mob == null || mob.Deleted || mob.Map == null || mob.Map == Map.Internal) return;
+                    if (mob.Deleted || mob.Map == null || mob.Map == Map.Internal) return;
                     m_From.Location = mob.Location;
                     m_From.Map = mob.Map;
                 }
@@ -1390,24 +1323,26 @@ namespace Server.Mobiles
 
         private void DoShowGump(int index)
         {
-            if (m_From == null || m_From.Deleted) return;
+            if (m_From == null || m_From.Deleted)
+                return;
 
             if (m_SearchList != null && index < m_SearchList.Count)
             {
                 object o = ((SearchEntry)m_SearchList[index]).Object;
-                if (o is XmlSpawner)
+                if (o is XmlSpawner x1)
                 {
                     // dont open anything with a null map null item or deleted
-                    XmlSpawner x = (XmlSpawner)o;
-                    if (x == null || x.Deleted || x.Map == null || x.Map == Map.Internal) return;
-                    x.OnDoubleClick(m_From);
+                    if (x1.Deleted || x1.Map == null || x1.Map == Map.Internal)
+                        return;
+
+                    x1.OnDoubleClick(m_From);
                 }
-                else
-                    if (o is Spawner)
+                else if (o is Spawner x2)
                 {
-                    Spawner x = (Spawner)o;
-                    if (x == null || x.Deleted || x.Map == null || x.Map == Map.Internal) return;
-                    x.OnDoubleClick(m_From);
+                    if (x2.Deleted || x2.Map == null || x2.Map == Map.Internal)
+                        return;
+
+                    x2.OnDoubleClick(m_From);
                 }
             }
         }
@@ -1419,20 +1354,20 @@ namespace Server.Mobiles
             if (m_SearchList != null && index < m_SearchList.Count)
             {
                 object o = ((SearchEntry)m_SearchList[index]).Object;
-                if (o is Item)
+                if (o is Item x1)
                 {
-                    Item x = (Item)o;
-                    if (x == null || x.Deleted /*|| x.Map == null*/) return;
-                    m_From.SendGump(new PropertiesGump(m_From, o));
-                }
-                else
-                    if (o is Mobile)
-                {
-                    Mobile x = (Mobile)o;
-                    if (x == null || x.Deleted /*|| x.Map == null*/) return;
-                    m_From.SendGump(new PropertiesGump(m_From, o));
-                }
+                    if (x1.Deleted)
+                        return;
 
+                    m_From.SendGump(new PropertiesGump(m_From, x1));
+                }
+                else if (o is Mobile x2)
+                {
+                    if (x2.Deleted)
+                        return;
+
+                    m_From.SendGump(new PropertiesGump(m_From, x2));
+                }
             }
         }
 
@@ -1462,7 +1397,7 @@ namespace Server.Mobiles
                 else
                                 if (Sortselect)
                 {
-                    m_SearchList.Sort(new ListSelectSorter(m_From, Descendingsort));
+                    m_SearchList.Sort(new ListSelectSorter(Descendingsort));
                 }
             }
         }
@@ -1481,23 +1416,25 @@ namespace Server.Mobiles
             {
                 object x = null;
                 object y = null;
-                if (e1 is SearchEntry)
-                    x = ((SearchEntry)e1).Object;
-                if (e2 is SearchEntry)
-                    y = ((SearchEntry)e2).Object;
+
+                if (e1 is SearchEntry entry)
+                    x = entry.Object;
+                if (e2 is SearchEntry searchEntry)
+                    y = searchEntry.Object;
 
                 string xstr = null;
                 string ystr = null;
                 string str = null;
-                if (x is Item)
+
+                if (x is Item item)
                 {
-                    str = ((Item)x).GetType().ToString();
+                    str = item.GetType().ToString();
                 }
-                else
-                    if (x is Mobile)
+                else if (x is Mobile mobile)
                 {
-                    str = ((Mobile)x).GetType().ToString();
+                    str = mobile.GetType().ToString();
                 }
+
                 if (str != null)
                 {
                     string[] arglist = str.Split('.');
@@ -1505,24 +1442,28 @@ namespace Server.Mobiles
                 }
 
                 str = null;
-                if (y is Item)
+
+                if (y is Item item1)
                 {
-                    str = ((Item)y).GetType().ToString();
+                    str = item1.GetType().ToString();
                 }
-                else
-                    if (y is Mobile)
+                else if (y is Mobile mobile)
                 {
-                    str = ((Mobile)y).GetType().ToString();
+                    str = mobile.GetType().ToString();
                 }
+
                 if (str != null)
                 {
                     string[] arglist = str.Split('.');
                     ystr = arglist[arglist.Length - 1];
                 }
+
                 if (Dsort)
+                {
                     return string.Compare(ystr, xstr, true);
-                else
-                    return string.Compare(xstr, ystr, true);
+                }
+
+                return string.Compare(xstr, ystr, true);
             }
         }
 
@@ -1540,37 +1481,39 @@ namespace Server.Mobiles
             {
                 object x = null;
                 object y = null;
-                if (e1 is SearchEntry)
-                    x = ((SearchEntry)e1).Object;
-                if (e2 is SearchEntry)
-                    y = ((SearchEntry)e2).Object;
+
+                if (e1 is SearchEntry entry)
+                    x = entry.Object;
+                if (e2 is SearchEntry searchEntry)
+                    y = searchEntry.Object;
 
                 string xstr = null;
                 string ystr = null;
 
-                if (x is Item)
+                if (x is Item item1)
                 {
-                    xstr = ((Item)x).Name;
+                    xstr = item1.Name;
                 }
-                else
-                    if (x is Mobile)
+                else if (x is Mobile mobile)
                 {
-                    xstr = ((Mobile)x).Name;
+                    xstr = mobile.Name;
                 }
 
-                if (y is Item)
+                if (y is Item item)
                 {
-                    ystr = ((Item)y).Name;
+                    ystr = item.Name;
                 }
-                else
-                    if (y is Mobile)
+                else if (y is Mobile mobile)
                 {
-                    ystr = ((Mobile)y).Name;
+                    ystr = mobile.Name;
                 }
+
                 if (Dsort)
+                {
                     return string.Compare(ystr, xstr, true);
-                else
-                    return string.Compare(xstr, ystr, true);
+                }
+
+                return string.Compare(xstr, ystr, true);
             }
         }
 
@@ -1588,57 +1531,41 @@ namespace Server.Mobiles
             {
                 object x = null;
                 object y = null;
-                if (e1 is SearchEntry)
-                    x = ((SearchEntry)e1).Object;
-                if (e2 is SearchEntry)
-                    y = ((SearchEntry)e2).Object;
+
+                if (e1 is SearchEntry entry)
+                    x = entry.Object;
+                if (e2 is SearchEntry searchEntry)
+                    y = searchEntry.Object;
 
                 string xstr = null;
                 string ystr = null;
 
-                if (x is Item)
+                if (x is Item item)
                 {
-                    if (((Item)x).Map != null)
-                        xstr = ((Item)x).Map.ToString();
+                    if (item.Map != null)
+                        xstr = item.Map.ToString();
                 }
-                else
-                    if (x is Mobile)
+                else if (x is Mobile mobile && mobile.Map != null)
                 {
-                    if (((Mobile)x).Map != null)
-                        xstr = ((Mobile)x).Map.ToString();
+                    xstr = mobile.Map.ToString();
                 }
 
-                if (y is Item)
+                if (y is Item item1)
                 {
-                    if (((Item)y).Map != null)
-                        ystr = ((Item)y).Map.ToString();
+                    if (item1.Map != null)
+                        ystr = item1.Map.ToString();
                 }
-                else
-                    if (y is Mobile)
+                else if (y is Mobile mobile && mobile.Map != null)
                 {
-                    if (((Mobile)y).Map != null)
-                        ystr = ((Mobile)y).Map.ToString();
+                    ystr = mobile.Map.ToString();
                 }
+
                 if (Dsort)
+                {
                     return string.Compare(ystr, xstr, true);
-                else
-                    return string.Compare(xstr, ystr, true);
-            }
-        }
+                }
 
-        private class ListEntrySorter : IComparer
-        {
-            private readonly bool Dsort;
-
-            public ListEntrySorter(bool descend)
-                : base()
-            {
-                Dsort = descend;
-            }
-
-            public int Compare(object x, object y)
-            {
-                return 0;
+                return string.Compare(xstr, ystr, true);
             }
         }
 
@@ -1658,43 +1585,44 @@ namespace Server.Mobiles
             {
                 object x = null;
                 object y = null;
-                if (e1 is SearchEntry)
-                    x = ((SearchEntry)e1).Object;
-                if (e2 is SearchEntry)
-                    y = ((SearchEntry)e2).Object;
+
+                if (e1 is SearchEntry entry)
+                    x = entry.Object;
+                if (e2 is SearchEntry searchEntry)
+                    y = searchEntry.Object;
 
                 Map xmap = null;
                 Map ymap = null;
                 Point3D xloc = new Point3D(0, 0, 0);
                 Point3D yloc = new Point3D(0, 0, 0);
 
-                if (From == null || From.Deleted) return 0;
-                if (x is Item)
+                if (From == null || From.Deleted)
+                    return 0;
+
+                if (x is Item item)
                 {
-                    xmap = ((Item)x).Map;
-                    xloc = ((Item)x).Location;
+                    xmap = item.Map;
+                    xloc = item.Location;
                 }
-                else
-                    if (x is Mobile)
+                else if (x is Mobile mobile)
                 {
-                    xmap = ((Mobile)x).Map;
-                    xloc = ((Mobile)x).Location;
+                    xmap = mobile.Map;
+                    xloc = mobile.Location;
                 }
 
-                if (y is Item)
+                if (y is Item item1)
                 {
-                    ymap = ((Item)y).Map;
-                    yloc = ((Item)y).Location;
+                    ymap = item1.Map;
+                    yloc = item1.Location;
                 }
-                else
-                    if (y is Mobile)
+                else if (y is Mobile mobile)
                 {
-                    ymap = ((Mobile)y).Map;
-                    yloc = ((Mobile)y).Location;
+                    ymap = mobile.Map;
+                    yloc = mobile.Location;
                 }
 
-                if (xmap != From.Map && ymap != From.Map) return 0;
-
+                if (xmap != From.Map && ymap != From.Map)
+                    return 0;
 
                 if (Dsort)
                 {
@@ -1702,24 +1630,24 @@ namespace Server.Mobiles
                     if (xmap != From.Map && ymap == From.Map) return -1;
                     return From.GetDistanceToSqrt(yloc).CompareTo(From.GetDistanceToSqrt(xloc));
                 }
-                else
-                {
-                    if (xmap == From.Map && ymap != From.Map) return -1;
-                    if (xmap != From.Map && ymap == From.Map) return 1;
-                    return From.GetDistanceToSqrt(xloc).CompareTo(From.GetDistanceToSqrt(yloc));
-                }
+
+                if (xmap == From.Map && ymap != From.Map)
+                    return -1;
+
+                if (xmap != From.Map && ymap == From.Map)
+                    return 1;
+
+                return From.GetDistanceToSqrt(xloc).CompareTo(From.GetDistanceToSqrt(yloc));
             }
         }
 
         private class ListSelectSorter : IComparer
         {
-            private readonly Mobile From;
             private readonly bool Dsort;
 
-            public ListSelectSorter(Mobile from, bool descend)
+            public ListSelectSorter(bool descend)
                 : base()
             {
-                From = from;
                 Dsort = descend;
             }
 
@@ -1727,20 +1655,19 @@ namespace Server.Mobiles
             {
                 int x = 0;
                 int y = 0;
-                if (e1 is SearchEntry)
-                    x = ((SearchEntry)e1).Selected ? 1 : 0;
-                if (e2 is SearchEntry)
-                    y = ((SearchEntry)e2).Selected ? 1 : 0;
 
+                if (e1 is SearchEntry entry)
+                    x = entry.Selected ? 1 : 0;
+
+                if (e2 is SearchEntry searchEntry)
+                    y = searchEntry.Selected ? 1 : 0;
 
                 if (Dsort)
                 {
                     return x - y;
                 }
-                else
-                {
-                    return y - x;
-                }
+
+                return y - x;
             }
         }
 
@@ -1763,9 +1690,9 @@ namespace Server.Mobiles
                 {
                     object o = e.Object;
 
-                    if (o is XmlSpawner)
+                    if (o is XmlSpawner spawner)
                     {
-                        ((XmlSpawner)o).DoReset = true;
+                        spawner.DoReset = true;
                     }
                 }
             }
@@ -1783,9 +1710,9 @@ namespace Server.Mobiles
                 {
                     object o = e.Object;
 
-                    if (o is XmlSpawner)
+                    if (o is XmlSpawner spawner)
                     {
-                        ((XmlSpawner)o).DoRespawn = true;
+                        spawner.DoRespawn = true;
                     }
                 }
             }
@@ -1807,7 +1734,6 @@ namespace Server.Mobiles
                 dirname = filename;
             }
 
-
             List<XmlSpawner> savelist = new List<XmlSpawner>();
 
             for (int i = 0; i < m_SearchList.Count; i++)
@@ -1818,10 +1744,10 @@ namespace Server.Mobiles
                 {
                     object o = e.Object;
 
-                    if (o is XmlSpawner)
+                    if (o is XmlSpawner spawner)
                     {
                         // add it to the saves list
-                        savelist.Add((XmlSpawner)o);
+                        savelist.Add(spawner);
                     }
                 }
             }
@@ -1852,11 +1778,11 @@ namespace Server.Mobiles
 
             // lookup the command
             // and execute it
-            if (command != null && command.Length > 0)
+            if (!string.IsNullOrEmpty(command))
             {
                 string[] args = command.Split(' ');
 
-                if (args != null && args.Length > 1)
+                if (args.Length > 1)
                 {
                     string[] cargs = new string[args.Length - 1];
                     for (int i = 0; i < args.Length - 1; i++)
@@ -1867,7 +1793,7 @@ namespace Server.Mobiles
                     foreach (BaseCommand c in TargetCommands.AllCommands)
                     {
                         // find the matching command
-                        if (c.Commands[0].ToLower() == args[0].ToLower())
+                        if (string.Equals(c.Commands[0], args[0], StringComparison.CurrentCultureIgnoreCase))
                         {
                             bool flushToLog = false;
 
@@ -1895,7 +1821,7 @@ namespace Server.Mobiles
 
         public override void OnResponse(NetState state, RelayInfo info)
         {
-            if (info == null || state == null || state.Mobile == null || m_SearchCriteria == null) return;
+            if (info == null || state?.Mobile == null || m_SearchCriteria == null) return;
 
             int radiostate = -1;
             if (info.Switches.Length > 0)
@@ -1906,7 +1832,7 @@ namespace Server.Mobiles
             // read the text entries for the search criteria
             TextRelay tr = info.GetTextEntry(105);        // range info
             m_SearchCriteria.Searchage = 0;
-            if (tr != null && tr.Text != null && tr.Text.Length > 0)
+            if (tr?.Text != null && tr.Text.Length > 0)
             {
                 try { m_SearchCriteria.Searchage = double.Parse(tr.Text); }
                 catch (Exception e) { Diagnostics.ExceptionLogging.LogException(e); }
@@ -1915,7 +1841,7 @@ namespace Server.Mobiles
             // read the text entries for the search criteria
             tr = info.GetTextEntry(100);        // range info
             m_SearchCriteria.Searchrange = -1;
-            if (tr != null && tr.Text != null && tr.Text.Length > 0)
+            if (tr?.Text != null && tr.Text.Length > 0)
             {
                 try { m_SearchCriteria.Searchrange = int.Parse(tr.Text); }
                 catch (Exception e) { Diagnostics.ExceptionLogging.LogException(e); }
@@ -2026,7 +1952,7 @@ namespace Server.Mobiles
                     {
                         Refresh(state);
 
-                        state.Mobile.SendGump(new XmlConfirmBringGump(state.Mobile, m_SearchList));
+                        state.Mobile.SendGump(new XmlConfirmBringGump(m_SearchList));
                         return;
                     }
                 case 155: // Return the player to the starting loc
@@ -2039,7 +1965,7 @@ namespace Server.Mobiles
                     {
                         Refresh(state);
 
-                        state.Mobile.SendGump(new XmlConfirmDeleteGump(state.Mobile, m_SearchList));
+                        state.Mobile.SendGump(new XmlConfirmDeleteGump(m_SearchList));
                         return;
                     }
                 case 157: // Reset selected items
@@ -2164,8 +2090,7 @@ namespace Server.Mobiles
                             DoShowProps(info.ButtonID - 3000 + DisplayFrom);
                             return;
                         }
-                        else
-                            if (info.ButtonID == 3998)
+                        if (info.ButtonID == 3998)
                         {
                             SelectAll = !SelectAll;
 
@@ -2179,7 +2104,6 @@ namespace Server.Mobiles
                         }
                         if (info.ButtonID == 3999)
                         {
-
                             // toggle selection of everything currently displayed
                             if (m_SearchList != null)
                             {
@@ -2213,8 +2137,7 @@ namespace Server.Mobiles
                         break;
                     }
             }
-            // Create a new gump
-            //m_Spawner.OnDoubleClick( state.Mobile);
+
             Refresh(state);
         }
 
@@ -2222,14 +2145,11 @@ namespace Server.Mobiles
         {
             private readonly ArrayList SearchList;
 
-            private readonly Mobile From;
-
-            public XmlConfirmBringGump(Mobile from, ArrayList searchlist)
+            public XmlConfirmBringGump(ArrayList searchlist)
                 : base(0, 0)
             {
                 SearchList = searchlist;
 
-                From = from;
                 Closable = false;
                 Dragable = true;
                 AddPage(0);
@@ -2254,7 +2174,7 @@ namespace Server.Mobiles
             }
             public override void OnResponse(NetState state, RelayInfo info)
             {
-                if (info == null || state == null || state.Mobile == null) return;
+                if (info == null || state?.Mobile == null) return;
 
                 int radiostate = -1;
 
@@ -2267,7 +2187,6 @@ namespace Server.Mobiles
                 }
                 switch (info.ButtonID)
                 {
-
                     default:
                         {
                             if (radiostate == 1 && SearchList != null)
@@ -2280,17 +2199,16 @@ namespace Server.Mobiles
                                     {
                                         object o = e.Object;
 
-                                        if (o is Item)
+                                        if (o is Item item)
                                         {
 
-                                            ((Item)o).MoveToWorld(myloc, mymap);
+                                            item.MoveToWorld(myloc, mymap);
 
                                         }
-                                        else
-                                            if (o is Mobile)
+                                        else if (o is Mobile mobile)
                                         {
 
-                                            ((Mobile)o).MoveToWorld(myloc, mymap);
+                                            mobile.MoveToWorld(myloc, mymap);
 
                                         }
                                     }
@@ -2306,14 +2224,11 @@ namespace Server.Mobiles
         {
             private readonly ArrayList SearchList;
 
-            private readonly Mobile From;
-
-            public XmlConfirmDeleteGump(Mobile from, ArrayList searchlist)
+            public XmlConfirmDeleteGump(ArrayList searchlist)
                 : base(0, 0)
             {
                 SearchList = searchlist;
 
-                From = from;
                 Closable = false;
                 Dragable = true;
                 AddPage(0);
@@ -2338,7 +2253,7 @@ namespace Server.Mobiles
             }
             public override void OnResponse(NetState state, RelayInfo info)
             {
-                if (info == null || state == null || state.Mobile == null) return;
+                if (info == null || state?.Mobile == null) return;
 
                 int radiostate = -1;
                 if (info.Switches.Length > 0)
@@ -2360,29 +2275,27 @@ namespace Server.Mobiles
                                     {
                                         object o = e.Object;
 
-                                        if (o is Item)
+                                        if (o is Item item)
                                         {
                                             // some objects may not delete gracefully (null map items are particularly error prone) so trap them
                                             try
                                             {
-                                                ((Item)o).Delete();
+                                                item.Delete();
                                             }
                                             catch (Exception ex) { Diagnostics.ExceptionLogging.LogException(ex); }
                                         }
-                                        else
-                                            // block player deletion
-                                            if ((o is Mobile) && !(((Mobile)o).Player))
+                                        else if ((o is Mobile mobile) && !(mobile.Player))
                                         {
                                             try
                                             {
-                                                ((Mobile)o).Delete();
+                                                mobile.Delete();
                                             }
                                             catch (Exception ex) { Diagnostics.ExceptionLogging.LogException(ex); }
                                         }
                                     }
-
                                 }
                             }
+
                             break;
                         }
                 }

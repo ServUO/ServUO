@@ -13,8 +13,8 @@ namespace Server.Gumps
         public object State { get; set; }
         public string Arguments { get; set; }
 
-        public int ConfirmLocalization { get; private set; }
-        public int CloseLocalization { get; private set; }
+        public int ConfirmLocalization { get; }
+        public int CloseLocalization { get; }
 
         public ConfirmCallbackGump(
             PlayerMobile user,
@@ -136,8 +136,8 @@ namespace Server.Gumps
         public T State { get; set; }
         public string Arguments { get; set; }
 
-        public int ConfirmLocalization { get; private set; }
-        public int CloseLocalization { get; private set; }
+        public int ConfirmLocalization { get; }
+        public int CloseLocalization { get; }
 
         public GenericConfirmCallbackGump(
             PlayerMobile user,

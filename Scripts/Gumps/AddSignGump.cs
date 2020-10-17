@@ -139,17 +139,9 @@ namespace Server.Gumps
             new SignInfo(0x9A13)
         };
 
-        private readonly int m_Type;
         public AddSignGump()
-            : this(-1)
-        {
-        }
-
-        public AddSignGump(int type)
             : base(50, 40)
         {
-            m_Type = type;
-
             AddPage(0);
 
             AddBlueBack(570, 175);

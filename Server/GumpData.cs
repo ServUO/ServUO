@@ -1,5 +1,4 @@
 #region References
-using System;
 using System.Collections;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -124,11 +123,10 @@ namespace Server
 				ushort* line = (ushort*)bd.Scan0;
 
 				int delta = bd.Stride >> 1;
-				int count = 0;
 
-				for (int y = 0; y < height; ++y, line += delta)
+                for (int y = 0; y < height; ++y, line += delta)
 				{
-					count = (*lookup++ * 2);
+					var count = (*lookup++ * 2);
 
 					ushort* cur = line;
 					ushort* end = line + bd.Width;

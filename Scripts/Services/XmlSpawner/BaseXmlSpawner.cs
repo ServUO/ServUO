@@ -7476,7 +7476,7 @@ namespace Server.Mobiles
                                 // get the gump constructor type
                                 gumptypestr = gumpkeywordargs[3].Trim();
                             }
-                            Type type = SpawnerType.GetType(gumptypestr); ;
+                            Type type = SpawnerType.GetType(gumptypestr);
 
                             if (type == null)
                             {

@@ -195,7 +195,7 @@ namespace Server.Gumps
                         shouldSet = false;
                         m_Mobile.SendMessage("No object with that serial was found.");
                     }
-                    else if (!m_Type.IsAssignableFrom(toSet.GetType()))
+                    else if (!m_Type.IsInstanceOfType(toSet))
                     {
                         toSet = null;
                         shouldSet = false;

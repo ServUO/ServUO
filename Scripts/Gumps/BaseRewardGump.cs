@@ -7,10 +7,10 @@ namespace Server.Gumps
     public abstract class BaseRewardGump : Gump
     {
         public int Index { get; private set; }
-        public Mobile Owner { get; private set; }
-        public PlayerMobile User { get; private set; }
+        public Mobile Owner { get; }
+        public PlayerMobile User { get; }
         public int Page { get; private set; }
-        public int Title { get; private set; }
+        public int Title { get; }
 
         public double Points { get; protected set; }
         public List<CollectionItem> Collection { get; protected set; }

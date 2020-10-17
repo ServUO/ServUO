@@ -106,7 +106,7 @@ namespace Server.Gumps
 
                                 if (v <= 0 || v > canHold || v > Banker.GetBalance(from))
                                     from.SendLocalizedMessage(1155867); // The amount entered is invalid. Verify that there are sufficient funds to complete this transaction.
-                                else if (account != null)
+                                else
                                 {
                                     Banker.Withdraw(from, v, true);
                                     account.DepositToSecure(from, v);
@@ -139,20 +139,17 @@ namespace Server.Gumps
                             {
                                 v = Utility.ToInt32(text);
 
-                                if (ac != null)
+                                if (v <= 0 || v > acct.GetSecureAccountAmount(from))
+                                    from.SendLocalizedMessage(1155867); // The amount entered is invalid. Verify that there are sufficient funds to complete this transaction.
+                                else
                                 {
-                                    if (v <= 0 || v > acct.GetSecureAccountAmount(from))
-                                        from.SendLocalizedMessage(1155867); // The amount entered is invalid. Verify that there are sufficient funds to complete this transaction.
-                                    else
-                                    {
-                                        Banker.Deposit(from, v, true);
-                                        ac.WithdrawFromSecure(from, v);
+                                    Banker.Deposit(from, v, true);
+                                    ac.WithdrawFromSecure(from, v);
 
-                                        from.SendLocalizedMessage(1153188); // Transaction successful:
-                                    }
-
-                                    Timer.DelayCall(TimeSpan.FromSeconds(2), SendGump);
+                                    from.SendLocalizedMessage(1153188); // Transaction successful:
                                 }
+
+                                Timer.DelayCall(TimeSpan.FromSeconds(2), SendGump);
                             }
                             else
                                 from.SendLocalizedMessage(1155867); // The amount entered is invalid. Verify that there are sufficient funds to complete this transaction.

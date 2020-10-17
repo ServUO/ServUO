@@ -927,7 +927,7 @@ namespace Server.Network
 			Mobile from = state.Mobile;
 			Prompt p = from.Prompt;
 
-			if (from != null && p != null && p.Sender.Serial == serial && p.TypeId == prompt)
+			if (p != null && p.Sender.Serial == serial && p.TypeId == prompt)
 			{
 				from.Prompt = null;
 
@@ -1687,8 +1687,8 @@ namespace Server.Network
 			}
 		}
 
-		public static int[] m_ValidAnimations = new[]
-		{
+		public static int[] m_ValidAnimations =
+        {
 			6, 21, 32, 33, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119,
 			120, 121, 123, 124, 125, 126, 127, 128
 		};
@@ -2242,8 +2242,10 @@ namespace Server.Network
 
 		public static PlayCharCallback ThirdPartyAuthCallback = null, ThirdPartyHackedCallback = null;
 
-		private static readonly byte[] m_ThirdPartyAuthKey = new byte[]
-		{0x9, 0x11, 0x83, (byte)'+', 0x4, 0x17, 0x83, 0x5, 0x24, 0x85, 0x7, 0x17, 0x87, 0x6, 0x19, 0x88,};
+		private static readonly byte[] m_ThirdPartyAuthKey =
+        {
+            0x9, 0x11, 0x83, (byte)'+', 0x4, 0x17, 0x83, 0x5, 0x24, 0x85, 0x7, 0x17, 0x87, 0x6, 0x19, 0x88
+        };
 
 		private class LoginTimer : Timer
 		{
@@ -2296,7 +2298,7 @@ namespace Server.Network
 					bool match = true;
 					for (int i = 0; match && i < m_ThirdPartyAuthKey.Length; i++)
 					{
-						match = match && pvSrc.ReadByte() == m_ThirdPartyAuthKey[i];
+						match = pvSrc.ReadByte() == m_ThirdPartyAuthKey[i];
 					}
 
 					if (match)
@@ -2646,10 +2648,8 @@ namespace Server.Network
 
 			bool female = (genderRace % 2) != 0;
 
-			Race race = null;
-
-			byte raceID = (byte)(genderRace < 4 ? 0 : ((genderRace / 2) - 1));
-			race = Race.Races[raceID];
+            byte raceID = (byte)(genderRace < 4 ? 0 : ((genderRace / 2) - 1));
+			var race = Race.Races[raceID];
 
 			if (race == null)
 			{
@@ -3087,11 +3087,10 @@ namespace Server.Network
 			int beardID = pvSrc.ReadInt16();
 
 			int pantsHue = shirtHue; // Obsolete
-			Race race = null;
-			bool female = false;
 
-			female = gender != 0;
-			race = Race.Races[(byte)(genderRace - 1)]; //SA client sends race packet one higher than KR, so this is neccesary
+            var female = gender != 0;
+			var race = Race.Races[(byte)(genderRace - 1)];
+
 			if (race == null)
 				race = Race.DefaultRace;
 

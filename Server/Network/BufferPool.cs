@@ -6,7 +6,7 @@ namespace Server.Network
 {
 	public class BufferPool
 	{
-		public static List<BufferPool> Pools { get; private set; }
+		public static List<BufferPool> Pools { get; }
 
 		static BufferPool()
 		{

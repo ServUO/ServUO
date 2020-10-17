@@ -10,7 +10,7 @@ namespace Server
     public static class TimerRegistry
     {
         public static readonly bool Debug = false;
-        private static readonly int _RegistryThreshold = 250;
+        private const int _RegistryThreshold = 250;
 
         public static void Initialize()
         {
@@ -151,7 +151,8 @@ namespace Server
                 timer.Registry[instance] = Core.TickCount + (long)duration.TotalMilliseconds;
                 return true;
             }
-            else if (Debug)
+
+            if (Debug)
             {
                 Console.WriteLine("Failed, timer not found");
             }
@@ -165,7 +166,8 @@ namespace Server
             {
                 return Timers[id].FirstOrDefault(t => t is RegistryTimer<T> regTimer && regTimer.Registry.Count < _RegistryThreshold) as RegistryTimer<T>;
             }
-            else if (create)
+
+            if (create)
             {
                 Timers[id] = new List<Timer>();
             }
@@ -226,11 +228,13 @@ namespace Server
             {
                 return TimeSpan.FromMinutes(5);
             }
-            else if (seconds >= 3600) // 1 hour
+
+            if (seconds >= 3600) // 1 hour
             {
                 return TimeSpan.FromMinutes(1);
             }
-            else if (seconds >= 600) // 10 minutes
+
+            if (seconds >= 600) // 10 minutes
             {
                 return TimeSpan.FromSeconds(1);
             }
@@ -241,11 +245,13 @@ namespace Server
             {
                 return TimeSpan.Zero;
             }
-            else if (mils < 250)
+
+            if (mils < 250)
             {
                 return TimeSpan.FromMilliseconds(10);
             }
-            else if (mils < 500)
+
+            if (mils < 500)
             {
                 return TimeSpan.FromMilliseconds(250);
             }
