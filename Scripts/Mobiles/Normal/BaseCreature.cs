@@ -2757,6 +2757,9 @@ namespace Server.Mobiles
             {
                 AdjustTameRequirements();
             }
+
+            if (AI is AIType.AI_UNUSED1 || AI is AIType.AI_UNUSED2)
+                AI = AIType.AI_Melee; // Can be safely removed on 1/1/2021 - Dan
         }
 
         public virtual bool IsHumanInTown()
