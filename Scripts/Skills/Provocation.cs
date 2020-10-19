@@ -206,10 +206,8 @@ namespace Server.SkillHandlers
 
                     return false;
                 }
-                else
-                {
-                    return false;
-                }
+
+                return false;
             }
         }
     }

@@ -80,7 +80,6 @@ namespace Server.Items
         /// <summary>
         /// Called from BaseWeapon, on successful hit
         /// </summary>
-        /// <param name="from"></param>
         public static void DoHit(Mobile attacker, Mobile defender, int damage)
         {
             if (HasRegistry(attacker) && attacker.Weapon is BaseWeapon && m_Registry[attacker].DualHitChance > Utility.RandomDouble())

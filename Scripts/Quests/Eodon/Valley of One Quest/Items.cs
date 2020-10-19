@@ -39,33 +39,6 @@ namespace Server.Items
         }
     }
 
-    /*public class LavaStone : Item
-    {
-        public override int LabelNumber { get { return 1151166; } }  // lava rock
-
-        [Constructable]
-        public LavaStone()
-            : base(39638)
-        {
-        }
-
-        public LavaStone(Serial serial) : base(serial)
-        {
-        }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-            writer.Write(0);
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-            int v = reader.ReadInt();
-        }
-    }*/
-
     public class MosaicOfHeluzz : Item
     {
         public override int LabelNumber => 1156467;   // Mosaic of Heluzz
@@ -438,7 +411,7 @@ namespace Server.Items
         {
             if (IsChildOf(from.Backpack))
             {
-                from.SendGump(new InternalGump(from as PlayerMobile, s =>
+                from.SendGump(new InternalGump(s =>
                 {
                     BananaHoardSize = s;
                     base.OnDoubleClick(from);
@@ -448,18 +421,16 @@ namespace Server.Items
 
         private class InternalGump : Gump
         {
-            public Action<BananaHoardSize> Callback { get; set; }
-            public PlayerMobile User { get; set; }
+            private Action<BananaHoardSize> Callback { get; }
 
-            public InternalGump(PlayerMobile p, Action<BananaHoardSize> callback) : base(50, 50)
+            public InternalGump(Action<BananaHoardSize> callback) : base(50, 50)
             {
                 Callback = callback;
-                User = p;
 
                 AddGumpLayout();
             }
 
-            public void AddGumpLayout()
+            private void AddGumpLayout()
             {
                 AddBackground(0, 0, 200, 200, 5054);
                 AddBackground(10, 10, 180, 180, 3000);

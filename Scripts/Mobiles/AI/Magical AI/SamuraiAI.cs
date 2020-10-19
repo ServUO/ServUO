@@ -25,7 +25,7 @@ namespace Server.Mobiles
             if (skill <= 50)
                 return null;
 
-            if (m_Mobile.Combatant != null && m_Mobile.Combatant.Hits <= 10 && skill >= 25)
+            if (m_Mobile.Combatant != null && m_Mobile.Combatant.Hits <= 10)
                 return SpellRegistry.GetSpecialMove(400); //new HonerableExecution();
             if (skill >= 70 && CheckForMomentumStrike() && 0.5 > Utility.RandomDouble())
                 return SpellRegistry.GetSpecialMove(405); //new MomentumStrike();

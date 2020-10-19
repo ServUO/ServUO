@@ -1,4 +1,4 @@
-﻿namespace Server.Mobiles
+namespace Server.Mobiles
 {
     public enum ClockworkCreatureType
     {
@@ -33,7 +33,7 @@
     {
         public static ClockworkCreatureDef[] Definitions => m_Definitions;
 
-        private static readonly ClockworkCreatureDef[] m_Definitions = new ClockworkCreatureDef[]
+        private static readonly ClockworkCreatureDef[] m_Definitions =
         {
             new ClockworkCreatureDef( ClockworkCreatureType.ExodusOverseer,     "an exodus overseer",   0x2F4 ),
             new ClockworkCreatureDef( ClockworkCreatureType.Betrayer,           "a betrayer",           0x2FF ),

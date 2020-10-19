@@ -36,7 +36,7 @@ namespace Server.SkillHandlers
 
         public static double GetStalkingBonus(Mobile tracker, Mobile target)
         {
-            TrackingInfo info = null;
+            TrackingInfo info;
             m_Table.TryGetValue(tracker, out info);
 
             if (info == null || info.m_Target != target || info.m_Map != target.Map)
@@ -116,7 +116,7 @@ namespace Server.SkillHandlers
 
     public class TrackWhoGump : Gump
     {
-        private static readonly TrackTypeDelegate[] m_Delegates = new TrackTypeDelegate[]
+        private static readonly TrackTypeDelegate[] m_Delegates =
         {
             IsAnimal,
             IsMonster,
@@ -298,9 +298,9 @@ namespace Server.SkillHandlers
             {
                 if (x == null && y == null)
                     return 0;
-                else if (x == null)
+                if (x == null)
                     return -1;
-                else if (y == null)
+                if (y == null)
                     return 1;
 
                 return m_From.GetDistanceToSqrt(x).CompareTo(m_From.GetDistanceToSqrt(y));
@@ -369,7 +369,8 @@ namespace Server.SkillHandlers
                 Stop();
                 return;
             }
-            else if (m_From.NetState == null || m_From.Deleted || m_Target.Deleted || m_From.Map != m_Target.Map || !m_From.InRange(m_Target, m_Range) || m_Target is Mobile && (((Mobile)m_Target).Hidden && ((Mobile)m_Target).AccessLevel > m_From.AccessLevel))
+
+            if (m_From.NetState == null || m_From.Deleted || m_Target.Deleted || m_From.Map != m_Target.Map || !m_From.InRange(m_Target, m_Range) || m_Target is Mobile && (((Mobile)m_Target).Hidden && ((Mobile)m_Target).AccessLevel > m_From.AccessLevel))
             {
                 m_Arrow.Stop();
                 Stop();

@@ -187,9 +187,7 @@ namespace Server.Engines.Quests
         public Kane()
             : base("Kane", "the Master of Arms")
         {
-            if (!(this is MondainQuester))
-
-                Name = "Kane";
+            Name = "Kane";
             Title = "the Master of Arms";
         }
 

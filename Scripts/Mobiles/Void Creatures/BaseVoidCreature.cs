@@ -35,7 +35,7 @@ namespace Server.Mobiles
         public override bool PlayerRangeSensitive => Evolution != VoidEvolution.Killing && Stage < 3;
         public override bool AlwaysMurderer => true;
 
-        public BaseVoidCreature(AIType aiType, FightMode fightMode, int perception, int range, double passive, double active)
+        public BaseVoidCreature(AIType aiType, int perception, int range, double passive, double active)
             : base(aiType, FightMode.Good, perception, range, passive, active)
         {
             m_NextMutate = DateTime.UtcNow + TimeSpan.FromMinutes(MutateCheck);
@@ -67,7 +67,7 @@ namespace Server.Mobiles
             {
                 if (m != this && IsEvolutionType(m) && !m.Deleted && m.Alive && !buddies.Contains((BaseVoidCreature)m))
                 {
-                    if (m is BaseVoidCreature && ((BaseVoidCreature)m).BuddyMutate)
+                    if (((BaseVoidCreature)m).BuddyMutate)
                         buddies.Add((BaseVoidCreature)m);
                 }
             }
@@ -98,7 +98,7 @@ namespace Server.Mobiles
             return from is BaseVoidCreature;
         }
 
-        public Type[][] m_EvolutionCycle = new Type[][]
+        public Type[][] m_EvolutionCycle =
         {
             new Type[] { typeof(Betballem),     typeof(Ballem),     typeof(UsagralemBallem) },
             new Type[] { typeof(Anlorzen),      typeof(Anlorlem),   typeof(Anlorvaglem) },

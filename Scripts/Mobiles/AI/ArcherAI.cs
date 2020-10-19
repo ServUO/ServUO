@@ -43,7 +43,7 @@ namespace Server.Mobiles
                     if (!DirectionLocked)
                         m_Mobile.Direction = m_Mobile.GetDirectionTo(c.Location);
                 }
-                else if (c != null)
+                else
                 {
                     m_Mobile.DebugSay("I am still not in range of {0}", c.Name);
 

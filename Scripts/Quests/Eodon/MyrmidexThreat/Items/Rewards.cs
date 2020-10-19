@@ -147,8 +147,8 @@ namespace Server.Items
 
         private class InternalGump : Gump
         {
-            public Item Moonstone { get; set; }
-            public PlayerMobile User { get; set; }
+            public Item Moonstone { get; }
+            public PlayerMobile User { get; }
 
             public InternalGump(PlayerMobile pm, Item moonstone) : base(75, 75)
             {

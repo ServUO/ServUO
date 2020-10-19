@@ -66,7 +66,7 @@ namespace Server.Engines.Quests
 
     public class Ortlem : MondainQuester
     {
-        private static readonly Type[] m_Quests = new Type[] { typeof(MysticsJourneyQuest) };
+        private static readonly Type[] m_Quests = { typeof(MysticsJourneyQuest) };
         public override Type[] Quests => m_Quests;
 
         public override bool IsActiveVendor => true;

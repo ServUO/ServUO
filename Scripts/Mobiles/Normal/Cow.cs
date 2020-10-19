@@ -7,9 +7,10 @@ namespace Server.Mobiles
     {
         private DateTime m_MilkedOn;
         private int m_Milk;
+
         [Constructable]
         public Cow()
-            : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
             Name = "a cow";
             Body = Utility.RandomList(0xD8, 0xE7);
@@ -120,8 +121,7 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
-            writer.Write(1);
+            writer.Write(0);
 
             writer.Write(m_MilkedOn);
             writer.Write(m_Milk);
@@ -130,14 +130,10 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
-            if (version > 0)
-            {
-                m_MilkedOn = reader.ReadDateTime();
-                m_Milk = reader.ReadInt();
-            }
+            m_MilkedOn = reader.ReadDateTime();
+            m_Milk = reader.ReadInt();
         }
     }
 }

@@ -287,17 +287,14 @@ namespace Server.Engines.Quests
             return true;
         }
 
-        private readonly Type[] m_CapturedRewards = new Type[]
-       {
+        private readonly Type[] m_CapturedRewards =
+        {
            typeof(RuinedShipPlans),      typeof(RuinedShipPlans),
            typeof(LightFlameCannonball), typeof(HeavyFlameCannonball),
            typeof(LightFrostCannonball), typeof(HeavyFrostCannonball),
            typeof(LightFlameCannonball), typeof(HeavyFlameCannonball),
-           typeof(LightFrostCannonball), typeof(HeavyFrostCannonball),
-           /*typeof(HeavyScatterShot),     typeof(LightScatterShot),
-           typeof(HeavyHotShot),         typeof(LightHotShot),
-           typeof(HeavyFragShot),        typeof(LightFragShot)*/
-       };
+           typeof(LightFrostCannonball), typeof(HeavyFrostCannonball)
+        };
 
         public override void Serialize(GenericWriter writer)
         {

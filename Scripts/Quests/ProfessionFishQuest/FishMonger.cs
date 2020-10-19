@@ -1,4 +1,4 @@
-﻿using Server.Engines.Quests;
+using Server.Engines.Quests;
 using Server.Items;
 using Server.Multis;
 using System;
@@ -56,19 +56,15 @@ namespace Server.Mobiles
                         SayTo(player, "It seems my fellow fish mongers are on vacation.  Try again later, or perhaps another Facet.");
                     else
                     {
-
                         ProfessionalFisherQuest quest = new ProfessionalFisherQuest(player, monger, this, boat);
 
-                        if (quest != null)
-                        {
-                            quest.Quester = this;
-                            quest.Owner = player;
-                            player.CloseGump(typeof(MondainQuestGump));
-                            player.SendGump(new MondainQuestGump(quest));
+                        quest.Quester = this;
+                        quest.Owner = player;
+                        player.CloseGump(typeof(MondainQuestGump));
+                        player.SendGump(new MondainQuestGump(quest));
 
-                            if (boat.IsClassicBoat)
-                                SayTo(player, "Such a weak vessle can only catch a weak line.");
-                        }
+                        if (boat.IsClassicBoat)
+                            SayTo(player, "Such a weak vessle can only catch a weak line.");
                     }
                 }
             }

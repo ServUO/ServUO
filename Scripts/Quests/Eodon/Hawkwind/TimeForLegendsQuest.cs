@@ -50,12 +50,11 @@ namespace Server.Engines.Quests.TimeLord
 
             SkillMasteryPrimer primer = new SkillMasteryPrimer(Mastery, 1);
 
-            if (primer != null)
-                From.AddToBackpack(primer);
+            From.AddToBackpack(primer);
         }
 
         public static Type[] Targets => _Targets;
-        private static readonly Type[] _Targets = new Type[]
+        private static readonly Type[] _Targets =
         {
             typeof(Semidar), typeof(Mephitis), typeof(Rikktor), typeof(LordOaks), typeof(Neira), typeof(Barracoon), typeof(Serado), typeof(Meraktus), typeof(Ilhenir),
             typeof(Twaulo), typeof(AbyssalInfernal), typeof(PrimevalLich), typeof(CorgulTheSoulBinder), typeof(CorgulTheSoulBinder) /*dragon turtle*/,

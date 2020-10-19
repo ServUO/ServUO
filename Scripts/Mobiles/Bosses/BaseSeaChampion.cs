@@ -121,8 +121,7 @@ namespace Server.Mobiles
                 }
             }
 
-            if (artifact != null)
-                artifact.Delete();
+            artifact.Delete();
         }
 
         public void GiveArtifact(Mobile to, Item artifact)
@@ -219,7 +218,6 @@ namespace Server.Mobiles
             int size = boat is BritannianShip ? 4 : 3;
 
             int range = distance - size;
-            if (range < 1) range = 1;
 
             switch (boat.Facing)
             {

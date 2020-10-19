@@ -24,7 +24,7 @@ namespace Server.Engines.Quests.Hag
 
     public class IngredientInfo
     {
-        private static readonly IngredientInfo[] m_Table = new IngredientInfo[]
+        private static readonly IngredientInfo[] m_Table =
         {
             // sheep liver
             new IngredientInfo(1055020, 5, typeof(Sheep)),

@@ -25,7 +25,7 @@ namespace Server.Engines.Quests
                                                                          * <br><br>	I have received word that the isle which houses the daemon, Athenaeum
                                                                          * Isle, is once again swarming with daemons. Based on the description provided to 
                                                                          * me, I believe these are the minions of the Defiler himself. They have no doubt 
-                                                                         * crawled out of the dark in anticipation of their master’s return. In truth, the
+                                                                         * crawled out of the dark in anticipation of their masterâ€™s return. In truth, the
                                                                          * prison I placed him within will not last forever.<br><br>	I ask that you journey
                                                                          * to the southwestern flight tower, adventurer, and head further southwest towards
                                                                          * the shore. Near the water's edge, you will find an ancient teleport site which 
@@ -154,20 +154,20 @@ namespace Server.Engines.Quests
             gump.AddHtmlObject(133, offset, 280, 100, reward.Name, BaseQuestGump.LightGreen, false, false);
         }
 
-        private readonly Type[] m_Types = new Type[]
-            {
+        private readonly Type[] m_Types =
+        {
                 typeof(ChallengeRite),          typeof(AnthenaeumDecree),       typeof(LetterFromTheKing),
                 typeof(OnTheVoid),              typeof(ShilaxrinarsMemorial),   typeof(ToTheHighScholar),
                 typeof(ToTheHighBroodmother),   typeof(ReplyToTheHighScholar),  typeof(AccessToTheIsle),
                 typeof(InMemory)
-            };
+        };
 
-        private readonly string[] m_Names = new string[]
-            {
+        private readonly string[] m_Names =
+        {
                 "Obtain Gargish Document - Challenge Rite",             "Obtain Gargish Document - Athenaeum Decree",           "Obtain Gargish Document - Letter from the King",
                 "Obtain Gargish Document - On the Void",                "Obtain Gargish Document - Shilaxrinar's Memorial",     "Obtain Gargish Document - To the High Scholar",
                 "Obtain Gargish Document - To the High Broodmother",    "Obtain Gargish Document - Reply to the High Scholar",  "Obtain Gargish Document - Access to the Isle",
                 "Obtain Gargish Document - In Memory"
-            };
+        };
     }
 }

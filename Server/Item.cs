@@ -1464,13 +1464,13 @@ namespace Server
 
 		public void Bounce(Mobile from)
 		{
-			if (m_Parent is Item)
+			if (m_Parent is Item oip)
 			{
-				((Item)m_Parent).RemoveItem(this);
+				oip.RemoveItem(this);
 			}
-			else if (m_Parent is Mobile)
+			else if (m_Parent is Mobile omp)
 			{
-				((Mobile)m_Parent).RemoveItem(this);
+				omp.RemoveItem(this);
 			}
 
 			m_Parent = null;
@@ -1479,42 +1479,28 @@ namespace Server
 
 			if (bounce != null)
 			{
-				object stack = bounce.m_ParentStack;
-
-				if (stack is Item)
+				if (bounce.m_ParentStack is Item ps && !ps.Deleted && ps.IsAccessibleTo(from) && ps.StackWith(from, this))
 				{
-					Item s = (Item)stack;
-
-					if (!s.Deleted)
-					{
-						if (s.IsAccessibleTo(from))
-						{
-							s.StackWith(from, this);
-						}
-					}
+					ClearBounce();
+                    return;
 				}
 
-				object parent = bounce.m_Parent;
-
-				if (parent is Item && !((Item)parent).Deleted)
+				if (bounce.m_Parent is Item ip)
 				{
-					Item p = (Item)parent;
-					object root = p.RootParent;
-
-					if (p.IsAccessibleTo(from) && (!(root is Mobile) || ((Mobile)root).CheckNonlocalDrop(from, this, p)))
+					if (!ip.Deleted && ip.m_Map == bounce.m_Map && ip.GetWorldLocation() == bounce.m_WorldLoc && ip.IsAccessibleTo(from) && (!(ip.RootParent is Mobile rm) || rm.CheckNonlocalDrop(from, this, ip)))
 					{
 						Location = bounce.m_Location;
 
-						p.AddItem(this);
+						ip.AddItem(this);
 					}
 					else
 					{
 						MoveToWorld(from.Location, from.Map);
 					}
 				}
-				else if (parent is Mobile && !((Mobile)parent).Deleted)
+				else if (bounce.m_Parent is Mobile mp)
 				{
-					if (!((Mobile)parent).EquipItem(this))
+					if (mp.Deleted || !mp.EquipItem(this))
 					{
 						MoveToWorld(bounce.m_WorldLoc, bounce.m_Map);
 					}

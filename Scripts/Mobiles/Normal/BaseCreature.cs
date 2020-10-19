@@ -3067,12 +3067,7 @@ namespace Server.Mobiles
             switch (NewAI)
             {
                 case AIType.AI_Melee:
-                case AIType.AI_Animal:
-                case AIType.AI_Predator:
                     m_AI = new MeleeAI(this);
-                    break;
-                case AIType.AI_Berserk:
-                    m_AI = new BerserkAI(this);
                     break;
                 case AIType.AI_Archer:
                     m_AI = new ArcherAI(this);
@@ -3085,9 +3080,6 @@ namespace Server.Mobiles
                     break;
                 case AIType.AI_Mage:
                     m_AI = new MageAI(this);
-                    break;
-                case AIType.AI_Thief:
-                    m_AI = new ThiefAI(this);
                     break;
                 case AIType.AI_NecroMage:
                     m_AI = new NecroMageAI(this);

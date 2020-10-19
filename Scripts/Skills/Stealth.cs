@@ -5,7 +5,7 @@ namespace Server.SkillHandlers
 {
     public class Stealth
     {
-        private static readonly int[,] m_ArmorTable = new int[,]
+        private static readonly int[,] m_ArmorTable =
         {
             //	Gorget	Gloves	Helmet	Arms	Legs	Chest	Shield
             /* Cloth	*/ { 0, 0, 0, 0, 0, 0, 0 },

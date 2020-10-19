@@ -1,4 +1,4 @@
-﻿using Server.Multis;
+using Server.Multis;
 using Server.Targeting;
 using System.Collections.Generic;
 
@@ -55,7 +55,7 @@ namespace Server.Items
 
                 string str = "Contains Parts ";
                 foreach (int i in m_Joined)
-                    str += (i.ToString() + ", ");
+                    str += (i + ", ");
 
                 list.Add(1114057, str);
             }

@@ -7,14 +7,14 @@ namespace Server.Mobiles
     [CorpseName("a slasher of veils corpse")]
     public class SlasherOfVeils : BaseSABoss
     {
-        private static readonly int[] m_North = new[]
+        private static readonly int[] m_North =
         {
             -1, -1,
             1, -1,
             -1, 2,
             1, 2
         };
-        private static readonly int[] m_East = new[]
+        private static readonly int[] m_East =
         {
             -1, 0,
             2, 0

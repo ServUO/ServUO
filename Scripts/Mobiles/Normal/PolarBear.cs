@@ -1,12 +1,11 @@
 namespace Server.Mobiles
 {
     [CorpseName("a polar bear corpse")]
-    [TypeAlias("Server.Mobiles.Polarbear")]
     public class PolarBear : BaseCreature
     {
         [Constructable]
         public PolarBear()
-            : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
             Name = "a polar bear";
             Body = 213;

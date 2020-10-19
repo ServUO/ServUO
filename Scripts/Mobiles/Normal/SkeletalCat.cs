@@ -52,7 +52,7 @@ namespace Server.Mobiles
 
         [Constructable]
         public SkeletalCat(string name)
-            : base(name, 1441, 16080, AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
+            : base(name, 1441, 16080, AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
             BaseSoundID = 229;
 

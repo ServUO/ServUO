@@ -177,13 +177,13 @@ namespace Server.Mobiles
                 return;
             }
 
-            int x, y, z = 0;
+            int x, y;
 
             for (int i = 0; i < 25; i++)
             {
                 x = Utility.RandomMinMax(p.X - 4, p.X + 4);
                 y = Utility.RandomMinMax(p.Y - 4, p.Y + 4);
-                z = Map.GetAverageZ(x, y);
+                var z = Map.GetAverageZ(x, y);
 
                 if (Map.CanSpawnMobile(x, y, z))
                 {
@@ -264,7 +264,7 @@ namespace Server.Mobiles
                 {
                     PlayerMobile pm = m as PlayerMobile;
 
-                    if (pm != null && (pm.Mounted || pm.Flying))
+                    if (pm.Mounted || pm.Flying)
                     {
                         pm.SetMountBlock(BlockMountType.DismountRecovery, TimeSpan.FromSeconds(10), true);
                     }
@@ -321,7 +321,11 @@ namespace Server.Mobiles
 
         public void DoEffect(Point3D p, Map map)
         {
-            int[] effect = new int[] { 14000, 14013 };
+            int[] effect =
+            {
+                14000, 14013
+            };
+
             Effects.PlaySound(p, map, 0x307);
             Effects.SendLocationEffect(p, map, Utility.RandomBool() ? 14000 : 14013, 20);
         }
@@ -467,7 +471,7 @@ namespace Server.Mobiles
             private readonly Map m_Map;
             private readonly Point3D m_Location;
             private readonly int m_PilesMax;
-            private int m_PilesDone = 0;
+            private int m_PilesDone;
             private readonly int m_MinAmount;
             private readonly int m_MaxAmount;
 

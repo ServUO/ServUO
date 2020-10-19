@@ -112,21 +112,18 @@ namespace Server.Misc
 			true, 	// Bushido = 52
 			true, 	// Ninjitsu = 53
 			true, 	// Spellweaving = 54
-
-			#region Stygian Abyss
-			true, 	// Mysticism = 55
+            true, 	// Mysticism = 55
 			true, 	// Imbuing = 56
-			false,  // Throwing = 57
-			#endregion
-		};
+			false  // Throwing = 57
+        };
 
         public static void Initialize()
         {
-            Mobile.SkillCheckLocationHandler = XmlSpawnerSkillCheck.Mobile_SkillCheckLocation;
-            Mobile.SkillCheckDirectLocationHandler = XmlSpawnerSkillCheck.Mobile_SkillCheckDirectLocation;
+            Mobile.SkillCheckLocationHandler = Mobile_SkillCheckLocation;
+            Mobile.SkillCheckDirectLocationHandler = Mobile_SkillCheckDirectLocation;
 
-            Mobile.SkillCheckTargetHandler = XmlSpawnerSkillCheck.Mobile_SkillCheckTarget;
-            Mobile.SkillCheckDirectTargetHandler = XmlSpawnerSkillCheck.Mobile_SkillCheckDirectTarget;
+            Mobile.SkillCheckTargetHandler = Mobile_SkillCheckTarget;
+            Mobile.SkillCheckDirectTargetHandler = Mobile_SkillCheckDirectTarget;
         }
 
         public static bool Mobile_SkillCheckLocation(Mobile from, SkillName skillName, double minSkill, double maxSkill)
@@ -178,8 +175,10 @@ namespace Server.Misc
         /// using this currently is UseAllRes for CraftItem.cs
         /// </summary>
         /// <param name="from"></param>
-        /// <param name="skill"></param>
+        /// <param name="maxSkill"></param>
         /// <param name="amount"></param>
+        /// <param name="sk"></param>
+        /// <param name="minSkill"></param>
         /// <returns></returns>
         public static bool CheckSkill(Mobile from, SkillName sk, double minSkill, double maxSkill, int amount)
         {
@@ -530,11 +529,13 @@ namespace Server.Misc
             switch (stat)
             {
                 case Stat.Str:
-                    return (from.StrLock == StatLockType.Down && from.RawStr > 10);
+                    return from.StrLock == StatLockType.Down && from.RawStr > 10;
+
                 case Stat.Dex:
-                    return (from.DexLock == StatLockType.Down && from.RawDex > 10);
+                    return from.DexLock == StatLockType.Down && from.RawDex > 10;
+
                 case Stat.Int:
-                    return (from.IntLock == StatLockType.Down && from.RawInt > 10);
+                    return from.IntLock == StatLockType.Down && from.RawInt > 10;
             }
 
             return false;
@@ -551,12 +552,12 @@ namespace Server.Misc
                         {
                             return CanLower(from, Stat.Dex) || CanLower(from, Stat.Int);
                         }
-                        else
-                        {
-                            return true;
-                        }
+
+                        return true;
                     }
+
                     return false;
+
                 case Stat.Dex:
                     if (from.RawDex < from.DexCap)
                     {
@@ -564,12 +565,12 @@ namespace Server.Misc
                         {
                             return CanLower(from, Stat.Str) || CanLower(from, Stat.Int);
                         }
-                        else
-                        {
-                            return true;
-                        }
+
+                        return true;
                     }
+
                     return false;
+
                 case Stat.Int:
                     if (from.RawInt < from.IntCap)
                     {
@@ -577,11 +578,10 @@ namespace Server.Misc
                         {
                             return CanLower(from, Stat.Str) || CanLower(from, Stat.Dex);
                         }
-                        else
-                        {
-                            return true;
-                        }
+
+                        return true;
                     }
+
                     return false;
             }
 
@@ -694,10 +694,10 @@ namespace Server.Misc
                     {
                         if (from is BaseCreature && ((BaseCreature)from).Controlled)
                         {
-                            if ((from.LastStrGain + _PetStatGainDelay) >= DateTime.UtcNow)
+                            if (from.LastStrGain + _PetStatGainDelay >= DateTime.UtcNow)
                                 return false;
                         }
-                        else if ((from.LastStrGain + _StatGainDelay) >= DateTime.UtcNow)
+                        else if (from.LastStrGain + _StatGainDelay >= DateTime.UtcNow)
                             return false;
 
                         from.LastStrGain = DateTime.UtcNow;
@@ -707,10 +707,10 @@ namespace Server.Misc
                     {
                         if (from is BaseCreature && ((BaseCreature)from).Controlled)
                         {
-                            if ((from.LastDexGain + _PetStatGainDelay) >= DateTime.UtcNow)
+                            if (from.LastDexGain + _PetStatGainDelay >= DateTime.UtcNow)
                                 return false;
                         }
-                        else if ((from.LastDexGain + _StatGainDelay) >= DateTime.UtcNow)
+                        else if (from.LastDexGain + _StatGainDelay >= DateTime.UtcNow)
                             return false;
 
                         from.LastDexGain = DateTime.UtcNow;
@@ -720,10 +720,10 @@ namespace Server.Misc
                     {
                         if (from is BaseCreature && ((BaseCreature)from).Controlled)
                         {
-                            if ((from.LastIntGain + _PetStatGainDelay) >= DateTime.UtcNow)
+                            if (from.LastIntGain + _PetStatGainDelay >= DateTime.UtcNow)
                                 return false;
                         }
-                        else if ((from.LastIntGain + _StatGainDelay) >= DateTime.UtcNow)
+                        else if (from.LastIntGain + _StatGainDelay >= DateTime.UtcNow)
                             return false;
 
                         from.LastIntGain = DateTime.UtcNow;

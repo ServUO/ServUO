@@ -9,7 +9,7 @@ namespace Server.Mobiles
         private bool GatheredFur { get; set; }
 
         [Constructable]
-        public LowlandBoura() : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
+        public LowlandBoura() : base(AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
             Name = "a lowland boura";
             Body = 715;

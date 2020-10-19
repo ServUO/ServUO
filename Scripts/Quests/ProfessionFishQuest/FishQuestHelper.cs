@@ -9,7 +9,7 @@ namespace Server.Engines.Quests
     public static class FishQuestHelper
     {
         public static Type[] Fish => m_Fish;
-        private static readonly Type[] m_Fish = new Type[]
+        private static readonly Type[] m_Fish =
         {
 	        //to level 80.0 (shore fish) index to 11
 	        typeof(BluegillSunfish), typeof(BrookTrout),        typeof(GreenCatfish),
@@ -41,7 +41,7 @@ namespace Server.Engines.Quests
         };
 
         public static int[] Labels => m_Labels;
-        private static readonly int[] m_Labels = new int[]
+        private static readonly int[] m_Labels =
         {
 	        //to level 80.0 (shore fish) index to 11
 	        1116417,     1116415,      1116421,
@@ -72,7 +72,7 @@ namespace Server.Engines.Quests
 
         };
 
-        private static readonly Type[][][] m_RewardTable = new Type[][][]
+        private static readonly Type[][][] m_RewardTable =
         {
             new Type[][]
             {
@@ -296,7 +296,7 @@ namespace Server.Engines.Quests
                 }
             }
 
-            if (mongers == null || mongers.Count < 1)
+            if (mongers.Count < 1)
                 return null;
 
             while (NOGO)
@@ -359,7 +359,7 @@ namespace Server.Engines.Quests
 
             for (int i = 0; i < quests.Count; i++)
             {
-                ProfessionalFisherQuest quest = quests[i] as ProfessionalFisherQuest;
+                ProfessionalFisherQuest quest = quests[i];
 
                 if (quest.Quester is Mobile && (Mobile)quest.Quester == quester)
                 {
@@ -408,7 +408,7 @@ namespace Server.Engines.Quests
 
             if (skill < 80.0)
                 return 11;
-            else if (skill < 106.0)
+            if (skill < 106.0)
                 return 41;
             else
                 return m_Fish.Length; //TODO CHECK

@@ -14,22 +14,22 @@ using System.Linq;
 
 namespace Server.Mobiles
 {
-    public enum AIType
+    public enum AIType // Should other types need to be created, use the Unused ones first.
     {
         AI_Use_Default,
         AI_Melee,
-        AI_Animal,
+        AI_UNUSED1,
         AI_Archer,
         AI_Healer,
         AI_Vendor,
         AI_Mage,
-        AI_Berserk,
-        AI_Predator,
-        AI_Thief,
+        AI_UNUSED2,
+        AI_UNUSED3,
+        AI_UNUSED4,
         AI_NecroMage,
         AI_OrcScout,
         AI_Spellbinder,
-        AI_OmniAI,
+        AI_UNUSED5,
         AI_Samurai,
         AI_Ninja,
         AI_Spellweaving,
@@ -1662,7 +1662,7 @@ namespace Server.Mobiles
 
             if (closestMob != null)
             {
-                if (m_Mobile.Debug && closestMob != null && combatant != closestMob)
+                if (m_Mobile.Debug && combatant != closestMob)
                 {
                     m_Mobile.DebugSay("Crap, my master has been attacked! I will attack one of those bastards!");
                 }
@@ -2667,7 +2667,6 @@ namespace Server.Mobiles
                     if (iCurrDist < iWantDistMin || iCurrDist > iWantDistMax)
                     {
                         bool needCloser = (iCurrDist > iWantDistMax);
-                        bool needFurther = !needCloser;
 
                         if (needCloser && m_Path != null && m_Path.Goal == p)
                         {

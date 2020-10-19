@@ -702,7 +702,7 @@ namespace Server.Mobiles
 
         public virtual Spell RandomCombatSpell()
         {
-            Spell spell = null;
+            Spell spell;
 
             if (!UsesMagery)
             {

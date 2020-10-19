@@ -11,7 +11,7 @@ namespace Server.Mobiles
 
         [Constructable]
         public ForestOstard(string name)
-            : base(name, 0xDB, 0x3EA5, AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
+            : base(name, 0xDB, 0x3EA5, AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
             Hue = Utility.RandomSlimeHue() | 0x8000;
 

@@ -12,7 +12,7 @@ namespace Server.Items
         public static readonly Rectangle2D LavaStart = new Rectangle2D(927, 1615, 2, 2);
         public static readonly int LastLavaStage = 70;
 
-        public static readonly Rectangle2D[] SafeZone = new Rectangle2D[]
+        public static readonly Rectangle2D[] SafeZone =
         {
             new Rectangle2D(959, 1704, 15, 14),
             new Rectangle2D(915, 1696, 15, 15),
@@ -199,10 +199,10 @@ namespace Server.Items
 
     public class VolcanoRegion : BaseRegion
     {
-        public Volcano Volcano { get; private set; }
+        public Volcano Volcano { get; }
 
         public VolcanoRegion(Volcano volcano)
-            : base("Eodon_Volcano", Map.TerMur, DefaultPriority, new Rectangle2D[] { new Rectangle2D(832, 1502, 255, 217) })
+            : base("Eodon_Volcano", Map.TerMur, DefaultPriority, new Rectangle2D(832, 1502, 255, 217))
         {
             Volcano = volcano;
             Register();

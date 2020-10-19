@@ -202,12 +202,12 @@ namespace Server.Items
 
         public static EodonTribeRegion[] _Zones = new EodonTribeRegion[6];
 
-        public int MaxSpawns { get; private set; }
+        public int MaxSpawns { get; }
         public EodonTribe Tribe { get; set; }
         public int Spawns => GetItemCount(i => i is MyrmidexHill);
 
         public EodonTribeRegion(EodonTribe tribe, Rectangle2D[] rec, int maxSpawns)
-            : base(tribe.ToString() + " tribe", Map.TerMur, DefaultPriority, rec)
+            : base(tribe + " tribe", Map.TerMur, DefaultPriority, rec)
         {
             Tribe = tribe;
             Register();

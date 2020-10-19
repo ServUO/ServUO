@@ -131,7 +131,7 @@ namespace Server.Engines.Despise
 
         public static Type[] Artifacts => m_Artifacts;
 
-        private static readonly Type[] m_Artifacts = new[]
+        private static readonly Type[] m_Artifacts =
         {
             typeof(CompassionsEye),
             typeof(UnicornManeWovenSandals),

@@ -561,14 +561,12 @@ namespace Server.Mobiles
 
                 p = new Point3D(tarx, tary, tarz);
 
-                Timer.DelayCall(TimeSpan.FromMilliseconds(350 * counter), (point) =>
+                Timer.DelayCall(TimeSpan.FromMilliseconds(350 * counter), point =>
                     {
-                        //Point3D point = new Point3D(tarx, tary, tarz);
-
                         Entity e = new Entity(Serial.Zero, point, map);
                         MovingParticles(e, 0x3818, 10, 0, false, false, 1150, 0, 9502, 6014, 0x11D, EffectLayer.Waist, 0);
 
-                        Timer.DelayCall(TimeSpan.FromMilliseconds(250), (pnt) =>
+                        Timer.DelayCall(TimeSpan.FromMilliseconds(250), pnt =>
                         {
                             Effects.SendLocationEffect(pnt, Map, 14089, 30, 1150, 4); // TODO: Check
                         }, point);
@@ -621,8 +619,8 @@ namespace Server.Mobiles
                 });
         }
 
-        private static readonly double[] _Offsets = new double[]
-            {
+        private static readonly double[] _Offsets =
+        {
                 Math.Cos( 300.0 / 180.0 * Math.PI ), Math.Sin( 300.0 / 180.0 * Math.PI ),
                 Math.Cos( 320.0 / 180.0 * Math.PI ), Math.Sin( 320.0 / 180.0 * Math.PI ),
                 Math.Cos( 340.0 / 180.0 * Math.PI ), Math.Sin( 340.0 / 180.0 * Math.PI ),
@@ -659,7 +657,7 @@ namespace Server.Mobiles
                 Math.Cos( 340.0 / 180.0 * Math.PI ), Math.Sin( 340.0 / 180.0 * Math.PI ),
                 Math.Cos( 320.0 / 180.0 * Math.PI ), Math.Sin( 320.0 / 180.0 * Math.PI ),
                 Math.Cos( 300.0 / 180.0 * Math.PI ), Math.Sin( 300.0 / 180.0 * Math.PI ),
-            };
+        };
 
         public override void GenerateLoot()
         {

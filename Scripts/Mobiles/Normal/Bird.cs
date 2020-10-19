@@ -5,7 +5,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public Bird()
-            : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
             if (Utility.RandomBool())
             {
@@ -80,7 +80,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public TropicalBird()
-            : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
             Hue = Utility.RandomBirdHue();
             Name = "a tropical bird";

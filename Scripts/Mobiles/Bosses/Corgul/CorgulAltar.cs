@@ -14,7 +14,7 @@ namespace Server.Items
 
         private static readonly int m_RegionSize = 186;
 
-        private static readonly Rectangle2D[] m_WarpLocations = new Rectangle2D[]
+        private static readonly Rectangle2D[] m_WarpLocations =
         {
                 new Rectangle2D(2885, 1373, 500, 800),
                 new Rectangle2D(330,  2940, 400, 400),
@@ -63,7 +63,10 @@ namespace Server.Items
         public CorgulWarpRegion WarpRegion => m_WarpRegion;
         public CorgulRegion BossRegion => m_BossRegion;
 
-        private readonly Type[] m_Keys = new Type[] { typeof(TreasureMap), typeof(WorldMap) };
+        private readonly Type[] m_Keys =
+        {
+            typeof(TreasureMap), typeof(WorldMap)
+        };
 
         public static Point3D SpawnLoc = new Point3D(6431, 1236, 10);
 

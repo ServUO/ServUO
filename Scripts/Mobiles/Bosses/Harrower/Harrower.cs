@@ -10,7 +10,7 @@ namespace Server.Mobiles
     public class Harrower : BaseCreature
     {
         private readonly int m_StatCap = Config.Get("PlayerCaps.TotalStatCap", 225);
-        private static readonly SpawnEntry[] m_Entries = new[]
+        private static readonly SpawnEntry[] m_Entries =
         {
             new SpawnEntry(new Point3D(5242, 945, -40), new Point3D(1176, 2638, 0)), // Destard
             new SpawnEntry(new Point3D(5225, 798, 0), new Point3D(1176, 2638, 0)), // Destard
@@ -29,7 +29,7 @@ namespace Server.Mobiles
             new SpawnEntry(new Point3D(5579, 1858, 0), new Point3D(2499, 919, 0))// Covetous
         };
         private static readonly ArrayList m_Instances = new ArrayList();
-        private static readonly double[] m_Offsets = new[]
+        private static readonly double[] m_Offsets =
         {
             Math.Cos(000.0 / 180.0 * Math.PI), Math.Sin(000.0 / 180.0 * Math.PI),
             Math.Cos(040.0 / 180.0 * Math.PI), Math.Sin(040.0 / 180.0 * Math.PI),
