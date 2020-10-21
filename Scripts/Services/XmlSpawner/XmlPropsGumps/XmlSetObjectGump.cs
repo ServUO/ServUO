@@ -32,7 +32,6 @@ namespace Server.Gumps
         public static readonly int TextOffsetX = PropsConfig.TextOffsetX;
 
         public static readonly int OffsetGumpID = PropsConfig.OffsetGumpID;
-        public static readonly int HeaderGumpID = PropsConfig.HeaderGumpID;
         public static readonly int EntryGumpID = PropsConfig.EntryGumpID;
         public static readonly int BackGumpID = PropsConfig.BackGumpID;
         public static readonly int SetGumpID = PropsConfig.SetGumpID;
@@ -41,16 +40,6 @@ namespace Server.Gumps
         public static readonly int SetOffsetX = PropsConfig.SetOffsetX, SetOffsetY = PropsConfig.SetOffsetY;
         public static readonly int SetButtonID1 = PropsConfig.SetButtonID1;
         public static readonly int SetButtonID2 = PropsConfig.SetButtonID2;
-
-        public static readonly int PrevWidth = PropsConfig.PrevWidth;
-        public static readonly int PrevOffsetX = PropsConfig.PrevOffsetX, PrevOffsetY = PropsConfig.PrevOffsetY;
-        public static readonly int PrevButtonID1 = PropsConfig.PrevButtonID1;
-        public static readonly int PrevButtonID2 = PropsConfig.PrevButtonID2;
-
-        public static readonly int NextWidth = PropsConfig.NextWidth;
-        public static readonly int NextOffsetX = PropsConfig.NextOffsetX, NextOffsetY = PropsConfig.NextOffsetY;
-        public static readonly int NextButtonID1 = PropsConfig.NextButtonID1;
-        public static readonly int NextButtonID2 = PropsConfig.NextButtonID2;
 
         public static readonly int OffsetSize = PropsConfig.OffsetSize;
 
@@ -217,7 +206,7 @@ namespace Server.Gumps
                 {
                     try
                     {
-                        CommandLogging.LogChangeProperty(m_Mobile, m_Object, m_Property.Name, toSet == null ? "(null)" : toSet.ToString());
+                        CommandLogging.LogChangeProperty(m_Mobile, m_Object, m_Property.Name, toSet.ToString());
                         m_Property.SetValue(m_Object, toSet, null);
                     }
                     catch
@@ -232,7 +221,6 @@ namespace Server.Gumps
 
         public override void OnResponse(NetState sender, RelayInfo info)
         {
-            object toSet;
             bool shouldSet, shouldSend = true;
             object viewProps = null;
 
@@ -241,8 +229,6 @@ namespace Server.Gumps
                 case 0: // closed
                     {
                         m_Mobile.SendGump(new XmlPropertiesGump(m_Mobile, m_Object, m_Stack, m_List, m_Page));
-
-                        toSet = null;
                         shouldSet = false;
                         shouldSend = false;
 
@@ -251,17 +237,14 @@ namespace Server.Gumps
                 case 1: // Change by Target
                     {
                         m_Mobile.Target = new XmlSetObjectTarget(m_Property, m_Mobile, m_Object, m_Stack, m_Type, m_Page, m_List);
-                        toSet = null;
                         shouldSet = false;
                         shouldSend = false;
                         break;
                     }
                 case 2: // Change by Serial
                     {
-                        toSet = null;
                         shouldSet = false;
                         shouldSend = false;
-
                         m_Mobile.SendMessage("Enter the serial you wish to find:");
                         m_Mobile.Prompt = new InternalPrompt(m_Property, m_Mobile, m_Object, m_Stack, m_Type, m_Page, m_List);
 
@@ -269,14 +252,11 @@ namespace Server.Gumps
                     }
                 case 3: // Nullify
                     {
-                        toSet = null;
                         shouldSet = true;
-
                         break;
                     }
                 case 4: // View Properties
                     {
-                        toSet = null;
                         shouldSet = false;
 
                         object obj = m_Property.GetValue(m_Object, null);
@@ -292,9 +272,7 @@ namespace Server.Gumps
                     }
                 default:
                     {
-                        toSet = null;
                         shouldSet = false;
-
                         break;
                     }
             }
@@ -303,8 +281,8 @@ namespace Server.Gumps
             {
                 try
                 {
-                    CommandLogging.LogChangeProperty(m_Mobile, m_Object, m_Property.Name, toSet == null ? "(null)" : toSet.ToString());
-                    m_Property.SetValue(m_Object, toSet, null);
+                    CommandLogging.LogChangeProperty(m_Mobile, m_Object, m_Property.Name, "(null)");
+                    m_Property.SetValue(m_Object, null, null);
                 }
                 catch
                 {

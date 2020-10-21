@@ -25,11 +25,11 @@ namespace Server.Mobiles
             public TimeSpan TODEnd = TimeSpan.FromMinutes(0);
             public TimeSpan Duration = TimeSpan.FromMinutes(0);
             public TimeSpan DespawnTime = TimeSpan.FromHours(0);
-            public bool Group = false;
-            public int Team = 0;
+            public bool Group;
+            public int Team;
             public int ProximitySound = 0x1F4;
-            public string SpeechTrigger = null;
-            public string SkillTrigger = null;
+            public string SpeechTrigger;
+            public string SkillTrigger;
             public int SequentialSpawn = -1;
             public bool HomeRangeIsRelative = true;
             public int SpawnRange = 5;
@@ -38,34 +38,33 @@ namespace Server.Mobiles
             public XmlSpawner.TODModeType TODMode = XmlSpawner.TODModeType.Realtime;
             public int KillReset = 1;
             public string SpawnerName = "Spawner";
-            public bool AllowGhostTrig = false;
-            public bool AllowNPCTrig = false;
-            public bool SpawnOnTrigger = false;
-            public bool SmartSpawning = false;
-            public bool ExternalTriggering = false;
-            public string TriggerOnCarried = null;
-            public string NoTriggerOnCarried = null;
-            public string ProximityMsg = null;
+            public bool AllowGhostTrig;
+            public bool AllowNPCTrig;
+            public bool SpawnOnTrigger;
+            public bool SmartSpawning;
+            public bool ExternalTriggering;
+            public string TriggerOnCarried;
+            public string NoTriggerOnCarried;
+            public string ProximityMsg;
             public double TriggerProbability = 1;
-            public string PlayerTriggerProp = null;
-            public string TriggerObjectProp = null;
+            public string PlayerTriggerProp;
+            public string TriggerObjectProp;
             public string DefsExt;
             public string[] NameList;
             public bool[] SelectionList;
             public int AddGumpX = 440;
-            public int AddGumpY = 0;
-            public int SpawnerGumpX = 0;
-            public int SpawnerGumpY = 0;
-            public int FindGumpX = 0;
-            public int FindGumpY = 0;
+            public int AddGumpY;
+            public int SpawnerGumpX;
+            public int SpawnerGumpY;
+            public int FindGumpX;
+            public int FindGumpY;
 
             // these are additional defaults that are not set by XmlAdd but can be used by other routines such as the custom properties gump to determine 
             // whether properties have been changed from spawner default values
             public bool Running = true;
-            public Item SetItem = null;
 
-            public bool AutoNumber = false;
-            public int AutoNumberValue = 0;
+            public bool AutoNumber;
+            public int AutoNumberValue;
 
             public XmlAddCAGCategory CurrentCategory;
             public int CurrentCategoryPage;
@@ -154,7 +153,6 @@ namespace Server.Mobiles
             if (defs.SelectionList != null) Array.Clear(defs.SelectionList, 0, defs.SelectionList.Length);
             if (defs.NameList != null) Array.Clear(defs.NameList, 0, defs.NameList.Length);
         }
-
     }
 
     public class XmlAddGump : Gump
@@ -165,11 +163,9 @@ namespace Server.Mobiles
         private const string DefsTablePointName = "Values";
         private const string DefsDir = "SpawnerDefs";
 
-        private const int StartingXoffset = 440;
         private readonly Mobile m_From;
 
         public XmlSpawnerDefaults.DefaultEntry defs;
-
 
         private string NameListToString()
         {
@@ -595,10 +591,6 @@ namespace Server.Mobiles
 
             e.Mobile.SendGump(new XmlAddGump(e.Mobile, e.Mobile.Location, e.Mobile.Map, true, false, x, y));
 
-        }
-
-        public XmlAddGump(Mobile from, Point3D startloc, Map startmap) : this(from, startloc, startmap, true, false, StartingXoffset, 0)
-        {
         }
 
         public XmlAddGump(Mobile from, Point3D startloc, Map startmap, bool firststart, bool extension, int gumpx, int gumpy) : base(gumpx, gumpy)
@@ -1063,7 +1055,6 @@ namespace Server.Mobiles
                         p = item.GetWorldTop();
 
                     spawner.MoveToWorld(new Point3D(p), from.Map);
-
                 }
 
                 spawner.SpawnRange = defs.SpawnRange;
@@ -1095,11 +1086,6 @@ namespace Server.Mobiles
         {
             if (info == null || state?.Mobile == null)
                 return;
-
-            if (info.Switches.Length > 0)
-            {
-                int radiostate = info.Switches[0];
-            }
 
             // read the text entries for default values
             XmlSpawnerDefaults.DefaultEntry defaults = XmlSpawnerDefaults.GetDefaults(state.Account.ToString(), state.Mobile.Name);

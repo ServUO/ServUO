@@ -32,7 +32,6 @@ namespace Server.Gumps
         public static readonly int TextOffsetX = PropsConfig.TextOffsetX;
 
         public static readonly int OffsetGumpID = PropsConfig.OffsetGumpID;
-        public static readonly int HeaderGumpID = PropsConfig.HeaderGumpID;
         public static readonly int EntryGumpID = PropsConfig.EntryGumpID;
         public static readonly int BackGumpID = PropsConfig.BackGumpID;
         public static readonly int SetGumpID = PropsConfig.SetGumpID;
@@ -42,24 +41,10 @@ namespace Server.Gumps
         public static readonly int SetButtonID1 = PropsConfig.SetButtonID1;
         public static readonly int SetButtonID2 = PropsConfig.SetButtonID2;
 
-        public static readonly int PrevWidth = PropsConfig.PrevWidth;
-        public static readonly int PrevOffsetX = PropsConfig.PrevOffsetX, PrevOffsetY = PropsConfig.PrevOffsetY;
-        public static readonly int PrevButtonID1 = PropsConfig.PrevButtonID1;
-        public static readonly int PrevButtonID2 = PropsConfig.PrevButtonID2;
-
-        public static readonly int NextWidth = PropsConfig.NextWidth;
-        public static readonly int NextOffsetX = PropsConfig.NextOffsetX, NextOffsetY = PropsConfig.NextOffsetY;
-        public static readonly int NextButtonID1 = PropsConfig.NextButtonID1;
-        public static readonly int NextButtonID2 = PropsConfig.NextButtonID2;
-
         public static readonly int OffsetSize = PropsConfig.OffsetSize;
 
         public static readonly int EntryHeight = PropsConfig.EntryHeight;
         public static readonly int BorderSize = PropsConfig.BorderSize;
-
-        private static readonly bool PrevLabel = OldStyle, NextLabel = OldStyle;
-
-        private static readonly int PrevLabelOffsetX = PrevWidth + 1;
 
         private static readonly int NameWidth = 103;
         private static readonly int ValueWidth = 82;
@@ -70,10 +55,6 @@ namespace Server.Gumps
         private static readonly int TypeWidth = NameWidth + OffsetSize + ValueWidth;
 
         private static readonly int TotalWidth = OffsetSize + NameWidth + OffsetSize + ValueWidth + OffsetSize + SetWidth + OffsetSize;
-        private static readonly int TotalHeight = OffsetSize + ((EntryHeight + OffsetSize) * (EntryCount + 1));
-
-        private static readonly int BackWidth = BorderSize + TotalWidth + BorderSize;
-        private static readonly int BackHeight = BorderSize + TotalHeight + BorderSize;
 
         public XmlPropertiesGump(Mobile mobile, object o) : base(GumpOffsetX, GumpOffsetY)
         {
@@ -176,11 +157,11 @@ namespace Server.Gumps
                     // look for the default value of the equivalent property in the XmlSpawnerDefaults.DefaultEntry class
 
                     int huemodifier = TextHue;
-                    FieldInfo finfo = null;
                     Mobiles.XmlSpawnerDefaults.DefaultEntry de = new Mobiles.XmlSpawnerDefaults.DefaultEntry();
                     Type ftype = de.GetType();
-                    if (ftype != null)
-                        finfo = ftype.GetField(prop.Name);
+
+                    var finfo = ftype.GetField(prop.Name);
+
                     // is there an equivalent default field?
                     if (finfo != null)
                     {
@@ -606,75 +587,12 @@ namespace Server.Gumps
             }
             if (t.IsDefined(typeof(ParsableAttribute), false))
             {
-                MethodInfo parseMethod = t.GetMethod("Parse", new Type[] { typeof(string) });
+                MethodInfo parseMethod = t.GetMethod("Parse", new[] { typeof(string) });
 
                 return parseMethod.Invoke(null, new object[] { s });
             }
 
             throw new Exception("bad");
-        }
-
-        private static string GetStringFromObject(object o)
-        {
-            if (o == null)
-            {
-                return "-null-";
-            }
-
-            if (o is string s1)
-            {
-                return string.Format("\"{0}\"", s1);
-            }
-
-            if (o is bool)
-            {
-                return o.ToString();
-            }
-
-            if (o is char c)
-            {
-                return string.Format("0x{0:X} '{1}'", (int)c, c);
-            }
-
-            if (o is Serial s)
-            {
-                if (s.IsValid)
-                {
-                    if (s.IsItem)
-                    {
-                        return string.Format("(I) 0x{0:X}", s.Value);
-                    }
-
-                    if (s.IsMobile)
-                    {
-                        return string.Format("(M) 0x{0:X}", s.Value);
-                    }
-                }
-
-                return string.Format("(?) 0x{0:X}", s.Value);
-            }
-
-            if (o is byte || o is sbyte || o is short || o is ushort || o is int || o is uint || o is long || o is ulong)
-            {
-                return string.Format("{0} (0x{0:X})", o);
-            }
-
-            if (o is Mobile mobile)
-            {
-                return string.Format("(M) 0x{0:X} \"{1}\"", mobile.Serial.Value, mobile.Name);
-            }
-
-            if (o is Item item)
-            {
-                return string.Format("(I) 0x{0:X}", item.Serial);
-            }
-
-            if (o is Type type)
-            {
-                return type.Name;
-            }
-
-            return o.ToString();
         }
 
         private class PropertySorter : IComparer

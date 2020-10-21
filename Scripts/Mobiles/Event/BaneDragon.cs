@@ -69,11 +69,12 @@ namespace Server.Mobiles
             ControlSlots = 3;
             MinTameSkill = 107.1;
 
-            PowerLevel = 10;
+            PowerLevel = 5;
             _NextSpecial = DateTime.UtcNow;
         }
 
 		public override bool SubdueBeforeTame => true;
+        public override bool StatLossAfterTame => false;
         public override Poison HitPoison => Poison.Lethal;
         public override bool AlwaysMurderer => !Controlled;
         public override FoodType FavoriteFood => FoodType.BlackrockStew;

@@ -1017,7 +1017,6 @@ namespace Server.Items
                 new FillableEntry(8, typeof(SmithHammer)),
                 new FillableEntry(8, typeof(Tongs)),
                 new FillableEntry(8, typeof(SledgeHammer)),
-                //new FillableEntry( 8, typeof( IronOre ) ), TODO: Smaller ore
                 new FillableEntry(8, typeof(IronIngot)),
                 new FillableEntry(1, typeof(IronWire)),
                 new FillableEntry(1, typeof(SilverWire)),
@@ -1103,11 +1102,6 @@ namespace Server.Items
                 new FillableEntry(1, typeof(LightYarn)),
                 new FillableEntry(1, typeof(LightYarnUnraveled)),
                 new FillableEntry(1, typeof(SpoolOfThread)),
-                // Four different types
-                //new FillableEntry( 1, typeof( FoldedCloth ) ),
-                //new FillableEntry( 1, typeof( FoldedCloth ) ),
-                //new FillableEntry( 1, typeof( FoldedCloth ) ),
-                //new FillableEntry( 1, typeof( FoldedCloth ) ),
                 new FillableEntry(1, typeof(Dyes)),
                 new FillableEntry(2, typeof(Leather))
             });
@@ -1216,7 +1210,6 @@ namespace Server.Items
                 new FillableEntry(10, typeof(Garlic)),
                 new FillableEntry(10, typeof(Ginseng)),
                 new FillableEntry(10, typeof(MandrakeRoot)),
-                new FillableEntry(1, typeof(DeadWood)),
                 new FillableEntry(1, typeof(WhiteDriedFlowers)),
                 new FillableEntry(1, typeof(GreenDriedFlowers)),
                 new FillableEntry(1, typeof(DriedOnions)),
@@ -1360,7 +1353,6 @@ namespace Server.Items
                 new FillableEntry(2, typeof(Pickaxe)),
                 new FillableEntry(2, typeof(Shovel)),
                 new FillableEntry(2, typeof(IronIngot)),
-                //new FillableEntry( 2, typeof( IronOre ) ),	TODO: Smaller Ore
                 new FillableEntry(1, typeof(ForgedMetal))
             });
         public static FillableContent Observatory = new FillableContent(
@@ -1397,13 +1389,6 @@ namespace Server.Items
                 new FillableEntry(1, typeof(CheeseSlice)),
                 new FillableEntry(1, typeof(Eggs)),
                 new FillableEntry(4, typeof(Fish)),
-                new FillableEntry(1, typeof(DirtyFrypan)),
-                new FillableEntry(1, typeof(DirtyPan)),
-                new FillableEntry(1, typeof(DirtyKettle)),
-                new FillableEntry(1, typeof(DirtySmallRoundPot)),
-                new FillableEntry(1, typeof(DirtyRoundPot)),
-                new FillableEntry(1, typeof(DirtySmallPot)),
-                new FillableEntry(1, typeof(DirtyPot)),
                 new FillableEntry(1, typeof(Apple)),
                 new FillableEntry(2, typeof(Banana)),
                 new FillableEntry(2, typeof(Bananas)),
@@ -1553,22 +1538,18 @@ namespace Server.Items
             new FillableEntry[]
             {
                 new FillableEntry(1, typeof(Lockpick)),
-                //new FillableEntry( 1, typeof( KeyRing ) ),
                 new FillableEntry(2, typeof(Clock)),
                 new FillableEntry(2, typeof(ClockParts)),
                 new FillableEntry(2, typeof(AxleGears)),
                 new FillableEntry(2, typeof(Gears)),
                 new FillableEntry(2, typeof(Hinge)),
-                //new FillableEntry( 1, typeof( ArrowShafts ) ),
                 new FillableEntry(2, typeof(Sextant)),
                 new FillableEntry(2, typeof(SextantParts)),
                 new FillableEntry(2, typeof(Axle)),
                 new FillableEntry(2, typeof(Springs)),
                 new FillableEntry(5, typeof(TinkerTools)),
                 new FillableEntry(4, typeof(Key)),
-                new FillableEntry(1, typeof(DecoArrowShafts)),
-                new FillableEntry(1, typeof(Lockpicks)),
-                new FillableEntry(1, typeof(ToolKit))
+                new FillableEntry(1, typeof(Lockpicks))
             });
         public static FillableContent Veterinarian = new FillableContent(
             1,
@@ -1581,7 +1562,6 @@ namespace Server.Items
                 new FillableEntry(1, typeof(Bandage)),
                 new FillableEntry(1, typeof(MortarPestle)),
                 new FillableEntry(1, typeof(LesserHealPotion)),
-                //new FillableEntry( 1, typeof( Wheat ) ),
                 new FillableEntry(1, typeof(Carrot))
             });
         public static FillableContent Weaponsmith = new FillableContent(

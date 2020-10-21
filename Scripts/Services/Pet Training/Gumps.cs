@@ -282,6 +282,8 @@ namespace Server.Mobiles
                 foodPref = 1049564; // Meat
             else if ((Creature.FavoriteFood & FoodType.Eggs) != 0)
                 foodPref = 1044477; // Eggs
+            else if ((Creature.FavoriteFood & FoodType.BlackrockStew) != 0)
+                foodPref = 1115752; // blackrock stew
 
             AddHtmlLocalized(53, 164, 160, 18, foodPref, _Label, false, false);
 
