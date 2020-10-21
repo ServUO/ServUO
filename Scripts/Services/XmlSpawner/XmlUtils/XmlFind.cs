@@ -495,7 +495,7 @@ namespace Server.Mobiles
                     if (criteria.Dosearchcondition && (criteria.Searchcondition != null))
                     {
                         // check the property test
-                        hascondition = BaseXmlSpawner.CheckPropertyString(null, i, criteria.Searchcondition, null, out status_str);
+                        hascondition = BaseXmlSpawner.CheckPropertyString(null, i, criteria.Searchcondition, out status_str);
                     }
                     if (criteria.Dosearchcondition && !hascondition) continue;
 
@@ -704,7 +704,7 @@ namespace Server.Mobiles
                         if (criteria.Dosearchcondition && (criteria.Searchcondition != null))
                         {
                             // check the property test
-                            hascondition = BaseXmlSpawner.CheckPropertyString(null, i, criteria.Searchcondition, null, out status_str);
+                            hascondition = BaseXmlSpawner.CheckPropertyString(null, i, criteria.Searchcondition, out status_str);
                         }
                         if (criteria.Dosearchcondition && !hascondition) continue;
 
@@ -1407,7 +1407,6 @@ namespace Server.Mobiles
             private readonly bool Dsort;
 
             public ListTypeSorter(bool descend)
-                : base()
             {
                 Dsort = descend;
             }
@@ -1472,7 +1471,6 @@ namespace Server.Mobiles
             private readonly bool Dsort;
 
             public ListNameSorter(bool descend)
-                : base()
             {
                 Dsort = descend;
             }
@@ -1522,7 +1520,6 @@ namespace Server.Mobiles
             private readonly bool Dsort;
 
             public ListMapSorter(bool descend)
-                : base()
             {
                 Dsort = descend;
             }
@@ -1575,7 +1572,6 @@ namespace Server.Mobiles
             private readonly bool Dsort;
 
             public ListRangeSorter(Mobile from, bool descend)
-                : base()
             {
                 From = from;
                 Dsort = descend;
@@ -1646,7 +1642,6 @@ namespace Server.Mobiles
             private readonly bool Dsort;
 
             public ListSelectSorter(bool descend)
-                : base()
             {
                 Dsort = descend;
             }

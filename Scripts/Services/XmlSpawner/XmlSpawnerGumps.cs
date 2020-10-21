@@ -1,6 +1,5 @@
 #define NEWPROPSGUMP
 #define BOOKTEXTENTRY
-
 using Server.Commands;
 using Server.Gumps;
 using Server.Items;
@@ -11,246 +10,6 @@ using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
-    public class HelpGump : Gump
-    {
-        public XmlSpawner m_Spawner;
-
-        public HelpGump(XmlSpawner spawner, int X, int Y)
-            : base(X, Y)
-        {
-            if (spawner == null || spawner.Deleted)
-                return;
-
-            m_Spawner = spawner;
-
-            AddPage(0);
-
-            const int width = 370;
-
-            AddBackground(20, 0, width, 480, 5054);
-
-            AddPage(1);
-            //AddAlphaRegion( 20, 0, 220, 554 );
-            AddImageTiled(20, 0, width, 480, 0x52);
-            //AddImageTiled( 24, 6, 213, 261, 0xBBC );
-
-            AddLabel(27, 2, 0x384, "Standalone Keywords NB: ( « stands for < ) ( » stands for > )");
-            AddHtml(25, 20, width - 10, 440,
-                "mobtype[,arg1,arg2,...]\n" +
-                "SET[,itemname o seriale][,itemtype]/prop/value/...\n" +
-                "SETONMOB,nomemob[,mobtype]/prop/value/...\n" +
-                "SETONTHIS[,proptest]/prop/value/...\n" +
-                "SETONTRIGMOB/prop/value/...\n" +
-                "FOREACH,objecttype[,name][,distance]/action (KILL,DAMAGE,etc)\n" +
-                "SETVAR,namevar/value\n" +
-                "SETONNEARBY,distance,name[,type][,searchcontainers (true/false)]/prop/value/...\n" +
-                "SETONPETS,distance[,name]/prop/value/...\n" +
-                "SETONCARRIED,itemname[,itemtype][,equippedonly (true/false)]/prop/value/...\n" +
-                "SETONSPAWN[,spawnername],subgroup/prop/value/...\n" +
-                "SETONSPAWNENTRY[,spawnername],entrystring/prop/value/...\n" +
-                "SETONPARENT/prop/value/...\n" +
-                "TAKEGIVE[,quantity[,searchinbank (true/false),[type]]]/itemnametotake/GIVE/itemtypetogive\n" +
-                "GIVE[,probability (0.01=1% 1=100%)]/itemtypetogive\n" +
-                "GIVE[,probability (0.01=1% 1=100%)]/«itemtypedadare/proprietà/valore/...»\n" +
-                "TAKE[,probability (0.01=1% 1=100%)[,quantity[,searchinbank (true/false)[,itemtype]]]]/nomeitem\n" +
-                "TAKEBYTYPE[,probability (0.01=1% 1=100%)[,quantity[,searchinbank (true/false)]]]/itemtype\n" +
-                "GUMP,titolo,gumptype (*)[,gumpconstructor]/text  *(0=messaggio - 1=yes/no - 2=response - 3=questgump - 4=multiple response)\n" +
-                "BROWSER/url\n" +
-                "SENDMSG[,color]/text\n" +
-                "SENDASCIIMSG[,color][,fontnumber]/text (no accent)\n" +
-                "WAITUNTIL[,duration][,timeout][/condition][/spawngroup]\n" +
-                "WHILE/condition/spawngroup\n" +
-                "SPAWN[,spawnername],subgroup\n" +
-                "IF/condition/thenspawn[/elsespawn]\n" +
-                "DESPAWN[,spawnername],subgroup\n" +
-                "SPAWN[,spawnername],subgroup\n" +
-                "GOTO/subgroup\n" +
-                "COMMAND/command string (pay attention please!)\n" +
-                "MUSIC,musicname[,distance]\n" +
-                "SOUND,soundnumber\n" +
-                "MEFFECT,itemid[,speed][,x,y,z][,x2,y2,z2]\n" +
-                "EFFECT,itemid,duration[,x,y,z] OR EFFECT,itemid,durata[,trigmob]\n" +
-                "POISON,levelname[,distance][,onlyplayers (true/false)]\n" +
-                "DAMAGE,damage,phys,fire,cold,pois,energy[,distance][,onlyplayers (true/false)]\n" +
-                "RESURRECT[,distance][,pets (true/false)]\n" +
-                "CAST,spellnumber[,argomenti] OR CAST,spellname[,argomenti]\n" +
-                "BCAST[,color][,fontnumber]/text\n" +
-                "BSOUND,soundnumber",
-                false, true);
-            AddButton(width - 30, 5, 0x15E1, 0x15E5, 200, GumpButtonType.Page, 2);
-            AddLabel(width - 38, 2, 0x384, "1");
-            AddButton(width - 60, 5, 0x15E3, 0x15E7, 200, GumpButtonType.Page, 4);
-
-            AddPage(2);
-            AddLabel(27, 2, 0x384, "Value and Itemtype Keywords NB: ( « EQUALE TO < ) ( » EQUALS TO > )");
-            AddHtml(25, 20, width - 10, 440,
-                "property/@value\n\n" +
-                "Special KeyWords\n" +
-                "ARMOR,minlevel,maxlevel\n" +
-                "WEAPON,minlevel,maxlevel\n" +
-                "JARMOR,minlevel,maxlevel\n" +
-                "JWEAPON,minlevel,maxlevel\n" +
-                "SARMOR,minlevel,maxlevel\n" +
-                "SHIELD,minlevel,maxlevel\n" +
-                "JEWELRY,minlevel,maxlevel\n" +
-                "ITEM,serial (to find that item)\n" +
-                "SCROLL,mincircle,maxcircle\n" +
-                "LOOT,methodname\n" +
-                "NECROSCROLL,index\n" +
-                "LOOTPACK,loottype\n" +
-                "POTION\n" +
-                "TAKEN (it will help you find item taken during quest, xmlspawners and such)\n" +
-                "GIVEN (equal to TAKEN, but for item given)\n" +
-                "MULTIADDON,filename\n\n" +
-                "{the GET or RND keyword are used inside brachets}\n" +
-                "RND,min,max\n" +
-                "RNDBOOL\n" +
-                "RNDLIST,int1[,int2,...]\n" +
-                "RNDSTRLIST,str1[,str2,...]\n" +
-                "MY,prop (for spawner mob)\n" +
-                "GET,[itemname or serial or SETITEM(*)][,itemtype],prop (*: the setitem of spawner, it's written SETITEM, upper char!)\n" +
-                "GET,[itemname or serial or SETITEM][,itemtype],«ATTACHMENT,type,name,property»\n" +
-                "GETONMOB,mobname[,mobtype],prop\n" +
-                "GETONMOB,mobname[,mobtype],«ATTACHMENT,type,nome,prop»\n" +
-                "GETONCARRIED,itemname[,itemtype][,equippedonly (true/false)],prop\n" +
-                "GETONCARRIED,itemname[,itemtype][,equippedonly (true/false)],«ATTACHMENT,type,nome,prop»\n" +
-                "GETONTRIGMOB,prop\n" +
-                "GETONTRIGMOB,«ATTACHMENT,type,name,prop»\n" +
-                "GETONNEARBY,distance,name[,type][,searchcontainers (true/false)],prop\n" +
-                "GETONNEARBY,distance,name[,type][,searchcontainers (true/false)],«ATTACHMENT,type,name,prop»\n" +
-                "GETONPARENT,prop\n" +
-                "GETONPARENT,«ATTACHMENT,type,name,prop»\n" +
-                "GETONTHIS,prop\n" +
-                "GETONTHIS,«ATTACHMENT,type,name,prop»\n" +
-                "GETONTAKEN,prop\n" +
-                "GETONTAKEN,«ATTACHMENT,type,name,prop»\n" +
-                "GETONGIVEN,prop\n" +
-                "GETONGIVEN,«ATTACHMENT,type,name,prop»\n" +
-                "GETONSPAWN[,nomespawner],subgroup,prop\n" +
-                "GETONSPAWN[,nomespawner],subgroup,COUNT (special - returns the number of objects spawned!)\n" +
-                "GETONSPAWN[,spawnername],subgroup,«ATTACHMENT,type,name,prop»\n" +
-                "GETFROMFILE,filename\n" +
-                "GETACCOUNTTAG,tagname\n" +
-                "MUL,value or MUL,min,max (fractal numbers)\n" +
-                "INC,value or INC,min,max (integer numbers)\n" +
-                "MOB,name[,mobtype] (search the id of a mob by name and eventually by type)\n" +
-                "TRIGMOB\n" +
-                "AMOUNTCARRIED,itemtype[,searchinbank (true/false)][,itemname]\n" +
-                "PLAYERSINRANGE,distance\n" +
-                "TRIGSKILL,name or value or base or cap\n" +
-                "RANDNAME,nametype (female,male etc)\n" +
-                "MUSIC,musicname[,distance]\n" +
-                "SOUND,value\n" +
-                "EFFECT,itemid,duration[,x,y,z]\n" +
-                "BOLTEFFECT[,sound[,color]]\n" +
-                "MEFFECT,itemid[,speed][,x,y,z][,x2,y2,z2]\n" +
-                "PEFFECT,itemid,speed,[x,y,z]\n" +
-                "POISON,level[,distance][,onlyplayers (true/false)]\n" +
-                "DAMAGE,damage,phys,fire,cold,pois,energy[,distance][,onlyplayers (true/false)]\n" +
-                "ADD[,probability (0.01=1% 1=100%)]/itemtype[,args]\n" +
-                "ADD[,probability (0.01=1% 1=100%)]/«itemtype[,args]/prop/value...»\n" +
-                "EQUIP[,probability (0.01=1% 1=100%)]/itemtype[,args]\n" +
-                "EQUIP[,probability (0.01=1% 1=100%)]/«itemtype[,args]/prop/value...»\n" +
-                "DELETE\n" +
-                "KILL\n" +
-                "UNEQUIP,layer[,delete (true/false)]\n" +
-                "ATTACH[,probability (0.01=1% 1=100%)]/attachmenttype[,args]\n" +
-                "ATTACH[,probability (0.01=1% 1=100%)]/«attachmenttype[,args]/prop/value...»\n" +
-                "MSG[,probability (0.01=1% 1=100%)]/text\n" +
-                "ASCIIMSG[,probability (0.01=1% 1=100%)][,color][,fontnumber]/text\n" +
-                "SENDMSG[,probability (0.01=1% 1=100%)][,color]/text\n" +
-                "SENDASCIIMSG[,probability (0.01=1% 1=100%)][,color][,fontnumber]/text\n" +
-                "SAY[,probability (0.01=1% 1=100%)]/text\n" +
-                "SPEECH[,probability (0.01=1% 1=100%)][,keywordnumber]\n" +
-                "OFFSET,x,y,[,z]\n" +
-                "ANIMATE,action[,framecount][,repeatcount][,forward true/false][,repeat true/false][,delay]\n" +
-                "FACETO,x,y (turns the mobile to face in a direction by the coords given)\n" +
-                "FLASH,number (1 fade black - 2 fade white - 3 light flash - 4 light to black flash - 5 black flash SOLO PG)\n" +
-                "PRIVMSG[,probability (0.01=1% 1=100%)][,color]/text (shows a message only to that player)\n" +
-                "BCAST[,color][,font]/message\n" +
-                "always...«ATTACHMENT,type,name,prop» as a property on  GET\n" +
-                "SKILL,skillname\n" +
-                "STEALABLE,stealable (true/false)",
-                false, true);
-            AddButton(width - 30, 5, 0x15E1, 0x15E5, 200, GumpButtonType.Page, 3);
-            AddLabel(width - 41, 2, 0x384, "2");
-            AddButton(width - 60, 5, 0x15E3, 0x15E7, 200, GumpButtonType.Page, 1);
-
-            AddPage(3);
-            AddLabel(27, 2, 0x384, "[ Commands");
-
-            AddHtml(25, 20, width - 10, 440,
-                "XmlAdd [-defaults]\n" +
-                "XmlShow\n" +
-                "XmlHide\n" +
-                "XmlFind\n" +
-                "AddAtt type [args]\n" +
-                "GetAtt [type]\n" +
-                "DelAtt [type][serialno]\n" +
-                "AvailAtt\n" +
-                "SmartStat [accesslevel GameMaster]\n" +
-                "OptimalSmartSpawning [maxdiff]\n" +
-                "XmlSpawnerWipe [prefix]\n" +
-                "XmlSpawnerWipeAll [prefix]\n" +
-                "XmlSpawnerRespawn [prefix]\n" +
-                "XmlSpawnerRespawnAll [prefix]\n" +
-                "XmlHome [go][gump][send]\n" +
-                "XmlUnLoad filename [prefix]\n" +
-                "XmlLoad filename [prefix]\n" +
-                "XmlLoadHere filename [prefix][-maxrange range]\n" +
-                "XmlNewLoad filename [prefix]\n" +
-                "XmlNewLoadHere filename [prefix][-maxrange range]\n" +
-                "XmlSave filename [prefix]\n" +
-                "XmlSaveAll filename [prefix]\n" +
-                "XmlSaveOld filename [prefix]\n" +
-                "XmlSpawnerSaveAll filename [prefix]\n" +
-                "XmlImportSpawners filename\n" +
-                "XmlImportMap filename\n" +
-                "XmlImportMSF filename\n" +
-                "XmlDefaults [defaultpropertyname value]\n" +
-                "XmlGet property\n" +
-                "XmlSet property value",
-                false, true);
-
-            AddButton(width - 30, 5, 0x15E1, 0x15E5, 200, GumpButtonType.Page, 4);
-            AddLabel(width - 41, 2, 0x384, "3");
-            AddButton(width - 60, 5, 0x15E3, 0x15E7, 200, GumpButtonType.Page, 2);
-
-            AddPage(4);
-            AddLabel(27, 2, 0x384, "Quest types");
-            AddHtml(25, 20, width - 10, 180,
-                "KILL,mobtype[,count][,proptest]\n" +
-                "KILLNAMED,mobname[,type][,count][,proptest]\n" +
-                "GIVE,mobname,itemtype[,count][,proptest]\n" +
-                "GIVENAMED,mobname,itemname[,type][,count][,proptest]\n" +
-                "COLLECT,itemtype[,count][,proptest]\n" +
-                "COLLECTNAMED,itemname[,itemtype][,count][,proptest]\n" +
-                "ESCORT[,mobname][,proptest]\n",
-                false, true);
-
-            AddLabel(27, 200, 0x384, "Trigger/NoTriggerOnCarried");
-            AddHtml(25, 220, width - 10, 50,
-                "ATTACHMENT,name,type\n" +
-                "itemname[,type][,EQUIPPED][,objective#,objective#,...]\n",
-                false, true);
-
-            AddLabel(27, 300, 0x384, "GUMPITEMS");
-            AddHtml(25, 320, width - 10, 150,
-                "BUTTON,gumpid,x,y\n" +
-                "HTML,x,y,width,height,text\n" +
-                "IMAGE,gumpid,x,y[,hue]\n" +
-                "IMAGETILED,gumpid,x,y,width,height\n" +
-                "ITEM,itemid,x,y[,hue]\n" +
-                "LABEL,x,y,labelstring[,labelcolor]\n" +
-                "RADIO,gumpid1,gumpid2,x,y[,initialstate]\n" +
-                "TEXTENTRY,x,y,width,height[,text][,textcolor]\n",
-                false, true);
-
-            AddButton(width - 30, 5, 0x15E1, 0x15E5, 200, GumpButtonType.Page, 1);
-            AddLabel(width - 41, 2, 0x384, "4");
-            AddButton(width - 60, 5, 0x15E3, 0x15E7, 200, GumpButtonType.Page, 3);
-        }
-    }
     public class TextEntryGump : Gump
     {
         private readonly XmlSpawner m_Spawner;
@@ -410,7 +169,6 @@ namespace Server.Mobiles
         public const int MaxSpawnEntries = 60;
         private const int MaxEntriesPerPage = 15;
         public int m_ShowGump = 0;
-        public bool AllowGumpUpdate = true;
         public int xoffset = 0;
         public int initial_maxcount;
         public int page;
@@ -450,14 +208,6 @@ namespace Server.Mobiles
                 // show the fully extended gump with subgroups and reset timer info
                 m_ShowGump = 2;
             }
-            /*
-		else
-			if(spawner.HasSubGroups() || spawner.SequentialSpawn >= 0)
-		{
-			// show partially extended gump with subgroups
-			m_ShowGump = 1;
-		}
-		*/
 
             if (extension > 0)
             {
@@ -469,8 +219,6 @@ namespace Server.Mobiles
             }
 
             // if the expanded gump toggle has been activated then override the auto settings.
-
-
             if (m_ShowGump > 1)
             {
                 AddBackground(0, 0, 670 + xoffset + 30, 474, 5054);
@@ -638,8 +386,6 @@ namespace Server.Mobiles
                     {
                         AddButton(2, 22 * (i % MaxEntriesPerPage) + 36, 0x837, 0x837, 6000 + i, GumpButtonType.Reply, 0);
                     }
-
-
                 }
 
                 bool hasreplacement = false;
@@ -652,9 +398,7 @@ namespace Server.Mobiles
                     background = Rentry.Color;
                     // replacement is one time only.
                     Rentry = null;
-
                 }
-
 
                 // increment/decrement buttons
                 AddButton(15, 22 * (i % MaxEntriesPerPage) + 34, 0x15E0, 0x15E4, 6 + (i * 2), GumpButtonType.Reply, 0);
@@ -672,12 +416,6 @@ namespace Server.Mobiles
                 // background for text entry area
                 AddImageTiled(48, 22 * (i % MaxEntriesPerPage) + 30, 133 + xoffset - 25, 23, 0x52);
                 AddImageTiled(49, 22 * (i % MaxEntriesPerPage) + 31, 131 + xoffset - 25, 21, background);
-
-                // Add page number
-                //AddLabel( 15, 365, 33, String.Format("{0}",(int)(i/MaxEntriesPerPage + 1)) );
-                //AddButton( 38+page*25, 365, 0x8B1+i, 0x8B1+i, 0, GumpButtonType.Page, 1+i );
-
-
 
                 if (i < m_Spawner.SpawnObjects.Length)
                 {
@@ -705,7 +443,6 @@ namespace Server.Mobiles
                     // AddTextEntry(x,y,w,ht,color,id,str)
                     AddTextEntry(270 + xoffset, 22 * (i % MaxEntriesPerPage) + 30, 30, 30, 33, 500 + i, max.ToString());
 
-
                     if (m_ShowGump > 0)
                     {
                         // Add subgroup
@@ -716,7 +453,6 @@ namespace Server.Mobiles
                     if (m_ShowGump > 1)
                     {
                         // Add subgroup timer fields
-
                         string strrst = null;
                         string strto = null;
                         string strkill = null;
@@ -817,13 +553,9 @@ namespace Server.Mobiles
 
                         // add the next spawn time
                         AddLabelCropped(590 + xoffset + 30, yoff, 70, 20, 55, strnext);
-
                     }
-
-                    //AddButton( 20, 22 * (i%MaxEntriesPerPage) + 34, 0x15E3, 0x15E7, 5 + (i * 2), GumpButtonType.Reply, 0 );
                 }
-                // the spawn specification text
-                //if(str != null)
+
                 AddTextEntry(52, 22 * (i % MaxEntriesPerPage) + 31, 119 + xoffset - 25, 21, texthue, i, str);
             }
         }
@@ -911,58 +643,10 @@ namespace Server.Mobiles
                                 m_Spawner.SpawnObjects[i].TypeName = str;
                             }
                         }
-
                     }
                 }
             }
         }
-
-
-#if (BOOKTEXTENTRY)
-
-        public static void ProcessSpawnerBookEntry(Mobile from, object[] args, string entry)
-        {
-            if (from == null || args == null || args.Length < 6)
-                return;
-
-            XmlSpawner m_Spawner = (XmlSpawner)args[0];
-
-            int m_Index = (int)args[1];
-            int m_X = (int)args[2];
-            int m_Y = (int)args[3];
-            int m_Extension = (int)args[4];
-            int m_page = (int)args[5];
-
-            if (m_Spawner?.SpawnObjects == null)
-                return;
-
-            // place the book text into the spawn entry
-            if (m_Index < m_Spawner.SpawnObjects.Length)
-            {
-                XmlSpawner.SpawnObject so = m_Spawner.SpawnObjects[m_Index];
-
-                if (so.TypeName != entry)
-                {
-                    CommandLogging.WriteLine(from, "{0} {1} changed XmlSpawner {2} '{3}' [{4}, {5}] ({6}) : {7} to {8}", from.AccessLevel, CommandLogging.Format(from), m_Spawner.Serial, m_Spawner.Name, m_Spawner.GetWorldLocation().X, m_Spawner.GetWorldLocation().Y, m_Spawner.Map, so.TypeName, entry);
-
-                }
-
-                so.TypeName = entry;
-            }
-            else
-            {
-                // add a new spawn entry
-                m_Spawner.m_SpawnObjects.Add(new XmlSpawner.SpawnObject(from, m_Spawner, entry, 1));
-
-                // and bump the maxcount of the spawner
-                m_Spawner.MaxCount++;
-            }
-
-            // refresh the spawner gumps			
-            RefreshSpawnerGumps(from);
-        }
-
-#endif
 
         public static void Refresh_Callback(object state)
         {
@@ -1045,11 +729,6 @@ namespace Server.Mobiles
                 return;
             }
 
-            // restrict access to the original creator or someone of higher access level
-            //if (m_Spawner.FirstModifiedBy != null && m_Spawner.FirstModifiedBy != state.Mobile && state.Mobile.AccessLevel <= m_Spawner.FirstModifiedBy.AccessLevel)
-            //return;
-
-
             // Get the current name
             TextRelay tr = info.GetTextEntry(999);
             if (tr != null)
@@ -1068,8 +747,6 @@ namespace Server.Mobiles
                 m_Spawner.SpawnerGump = null;
                 return;
             }
-
-            AllowGumpUpdate = true;
 
             for (int i = 0; i < m_Spawner.SpawnObjects.Length; i++)
             {
@@ -1276,8 +953,6 @@ namespace Server.Mobiles
                     }
                 case 1: // Help
                     {
-                        //state.Mobile.SendGump( new XmlSpawnerGump(m_Spawner, this.X, this.Y, this.m_ShowGump));
-                        state.Mobile.SendGump(new HelpGump(m_Spawner, X + 290, Y));
                         break;
                     }
                 case 2: // Bring everything home
@@ -1346,11 +1021,8 @@ namespace Server.Mobiles
                     {
                         // Show the props window for the spawner, as well as a new gump
                         state.Mobile.SendGump(new XmlSpawnerGump(m_Spawner, X, Y, m_ShowGump, xoffset, page));
-#if (NEWPROPSGUMP)
+
                         state.Mobile.SendGump(new XmlPropertiesGump(state.Mobile, m_Spawner));
-#else
-					state.Mobile.SendGump( new PropertiesGump( state.Mobile, m_Spawner ) );
-#endif
                         return;
                     }
                 default:
@@ -1394,7 +1066,7 @@ namespace Server.Mobiles
                             args[4] = m_ShowGump;
                             args[5] = page;
 
-                            XmlTextEntryBook book = new XmlTextEntryBook(0, string.Empty, m_Spawner.Name, 20, true, ProcessSpawnerBookEntry, args);
+                            XmlTextEntryBook book = new XmlTextEntryBook(0, string.Empty, m_Spawner.Name, 20, true);
 
                             m_Spawner.m_TextEntryBook.Add(book);
 
@@ -1529,8 +1201,6 @@ namespace Server.Mobiles
                             }
 
                             return;
-
-
                         }
                         else
                         {
@@ -1554,7 +1224,6 @@ namespace Server.Mobiles
                                         entrystr = str;
                                 }
 #endif
-
                                 if (type == 0) // Add creature
                                 {
                                     m_Spawner.AddSpawnObject(entrystr);
@@ -1563,15 +1232,13 @@ namespace Server.Mobiles
                                 {
                                     m_Spawner.DeleteSpawnObject(state.Mobile, entrystr);
 
-
                                 }
                             }
                         }
                         break;
                     }
             }
-            // Create a new gump
-            //m_Spawner.OnDoubleClick( state.Mobile);
+
             state.Mobile.SendGump(new XmlSpawnerGump(m_Spawner, X, Y, m_ShowGump, xoffset, page, Rentry));
         }
     }

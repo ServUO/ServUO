@@ -33,7 +33,7 @@ namespace Server.Mobiles
             {
                 AccessLevel = AccessLevel.Administrator;
                 Supports = CommandSupport.Area | CommandSupport.Region | CommandSupport.Global | CommandSupport.Multi | CommandSupport.Single;
-                Commands = new string[] { "ExportSpawner" };
+                Commands = new[] { "ExportSpawner" };
                 ObjectTypes = ObjectTypes.Items;
                 Usage = "ExportSpawner <filename>";
                 Description = "Exports all Spawner objects to the specified filename.";
