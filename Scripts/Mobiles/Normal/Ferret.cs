@@ -6,16 +6,17 @@ namespace Server.Mobiles
     [CorpseName("a ferret corpse")]
     public class Ferret : BaseCreature
     {
-        private static readonly string[] m_Vocabulary = new string[]
+        private static readonly string[] m_Vocabulary =
         {
             "dook",
             "dook dook",
             "dook dook dook!"
         };
         private bool m_CanTalk;
+
         [Constructable]
         public Ferret()
-            : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
             Name = "a ferret";
             Body = 0x117;

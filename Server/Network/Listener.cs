@@ -116,7 +116,7 @@ namespace Server.Network
 				foreach (NetworkInterface adapter in adapters)
 				{
 					IPInterfaceProperties properties = adapter.GetIPProperties();
-					foreach (IPAddressInformation unicast in properties.UnicastAddresses)
+					foreach (UnicastIPAddressInformation unicast in properties.UnicastAddresses)
 					{
 						if (ipep.AddressFamily == unicast.Address.AddressFamily)
 						{
@@ -145,7 +145,7 @@ namespace Server.Network
 			}
 
 			Utility.PushColor(ConsoleColor.DarkGreen);
-			Console.WriteLine(@"----------------------------------------------------------------------");
+			Console.WriteLine("----------------------------------------------------------------------");
 			Utility.PopColor();
 		}
 

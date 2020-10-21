@@ -212,9 +212,9 @@ namespace Server
 
 	public class CheckEquipItemEventArgs : EventArgs
 	{
-		public Mobile Mobile { get; private set; }
-		public Item Item { get; private set; }
-		public bool Message { get; private set; }
+		public Mobile Mobile { get; }
+		public Item Item { get; }
+		public bool Message { get; }
 
 		public bool Block { get; set; }
 
@@ -228,9 +228,9 @@ namespace Server
 
 	public class ContextMenuEventArgs : EventArgs
 	{
-		public Mobile Mobile { get; private set; }
-		public IEntity Target { get; private set; }
-		public List<ContextMenuEntry> Entries { get; private set; }
+		public Mobile Mobile { get; }
+		public IEntity Target { get; }
+		public List<ContextMenuEntry> Entries { get; }
 
 		public ContextMenuEventArgs(Mobile m, IEntity target, List<ContextMenuEntry> entries)
 		{
@@ -533,9 +533,9 @@ namespace Server
 
 	public class PlayerDeathEventArgs : EventArgs
 	{
-		public Mobile Mobile { get; private set; }
-		public Mobile Killer { get; private set; }
-		public Container Corpse { get; private set; }
+		public Mobile Mobile { get; }
+		public Mobile Killer { get; }
+		public Container Corpse { get; }
 
 		public PlayerDeathEventArgs(Mobile mobile)
 			: this(mobile, mobile.LastKiller, mobile.Corpse)
@@ -551,9 +551,9 @@ namespace Server
 
 	public class CreatureDeathEventArgs : EventArgs
 	{
-		public Mobile Creature { get; private set; }
-		public Mobile Killer { get; private set; }
-		public Container Corpse { get; private set; }
+		public Mobile Creature { get; }
+		public Mobile Killer { get; }
+		public Container Corpse { get; }
 
 		public List<Item> ForcedLoot { get; private set; }
 
@@ -1167,11 +1167,11 @@ namespace Server
 
 	public class OnPropertyChangedEventArgs : EventArgs
 	{
-		public Mobile Mobile { get; private set; }
-		public PropertyInfo Property { get; private set; }
-		public object Instance { get; private set; }
-		public object OldValue { get; private set; }
-		public object NewValue { get; private set; }
+		public Mobile Mobile { get; }
+		public PropertyInfo Property { get; }
+		public object Instance { get; }
+		public object OldValue { get; }
+		public object NewValue { get; }
 
 		public OnPropertyChangedEventArgs(Mobile m, object instance, PropertyInfo prop, object oldValue, object newValue)
 		{
@@ -1185,8 +1185,8 @@ namespace Server
 
 	public class BODUsedEventArgs : EventArgs
 	{
-		public Mobile User { get; private set; }
-		public Item BODItem { get; private set; }
+		public Mobile User { get; }
+		public Item BODItem { get; }
 
 		public BODUsedEventArgs(Mobile m, Item i)
 		{
@@ -1197,8 +1197,8 @@ namespace Server
 
 	public class BODOfferEventArgs : EventArgs
 	{
-		public Mobile Player { get; private set; }
-		public Mobile Vendor { get; private set; }
+		public Mobile Player { get; }
+		public Mobile Vendor { get; }
 
 		public BODOfferEventArgs(Mobile p, Mobile v)
 		{
@@ -1209,9 +1209,9 @@ namespace Server
 
 	public class ResourceHarvestAttemptEventArgs : EventArgs
 	{
-		public Mobile Harvester { get; private set; }
-		public Item Tool { get; private set; }
-		public object HarvestSystem { get; private set; }
+		public Mobile Harvester { get; }
+		public Item Tool { get; }
+		public object HarvestSystem { get; }
 
 		public ResourceHarvestAttemptEventArgs(Mobile m, Item i, object o)
 		{
@@ -1223,11 +1223,11 @@ namespace Server
 
 	public class ResourceHarvestSuccessEventArgs : EventArgs
 	{
-		public Mobile Harvester { get; private set; }
-		public Item Tool { get; private set; }
-		public Item Resource { get; private set; }
-		public Item BonusResource { get; private set; }
-		public object HarvestSystem { get; private set; }
+		public Mobile Harvester { get; }
+		public Item Tool { get; }
+		public Item Resource { get; }
+		public Item BonusResource { get; }
+		public object HarvestSystem { get; }
 
 		public ResourceHarvestSuccessEventArgs(Mobile m, Item i, Item r, Item b, object o)
 		{
@@ -1241,9 +1241,9 @@ namespace Server
 
 	public class CraftSuccessEventArgs : EventArgs
 	{
-		public Mobile Crafter { get; private set; }
-		public Item Tool { get; private set; }
-		public Item CraftedItem { get; private set; }
+		public Mobile Crafter { get; }
+		public Item Tool { get; }
+		public Item CraftedItem { get; }
 
 		public CraftSuccessEventArgs(Mobile m, Item i, Item t)
 		{
@@ -1255,9 +1255,9 @@ namespace Server
 
 	public class SkillGainEventArgs : EventArgs
 	{
-		public int Gained { get; private set; }
-		public Mobile From { get; private set; }
-		public Skill Skill { get; private set; }
+		public int Gained { get; }
+		public Mobile From { get; }
+		public Skill Skill { get; }
 
 		public SkillGainEventArgs(Mobile from, Skill skill, int toGain)
 		{
@@ -1283,10 +1283,10 @@ namespace Server
 
 	public class SkillCapChangeEventArgs : EventArgs
 	{
-		public Mobile Mobile { get; private set; }
-		public Skill Skill { get; private set; }
-		public double OldCap { get; private set; }
-		public double NewCap { get; private set; }
+		public Mobile Mobile { get; }
+		public Skill Skill { get; }
+		public double OldCap { get; }
+		public double NewCap { get; }
 
 		public SkillCapChangeEventArgs(Mobile from, Skill skill, double oldCap, double newCap)
 		{
@@ -1299,9 +1299,9 @@ namespace Server
 
 	public class StatCapChangeEventArgs : EventArgs
 	{
-		public Mobile Mobile { get; private set; }
-		public int OldCap { get; private set; }
-		public int NewCap { get; private set; }
+		public Mobile Mobile { get; }
+		public int OldCap { get; }
+		public int NewCap { get; }
 
 		public StatCapChangeEventArgs(Mobile from, int oldCap, int newCap)
 		{
@@ -1313,8 +1313,8 @@ namespace Server
 
 	public class QuestCompleteEventArgs : EventArgs
 	{
-		public Type QuestType { get; private set; }
-		public Mobile Mobile { get; private set; }
+		public Type QuestType { get; }
+		public Mobile Mobile { get; }
 
 		public QuestCompleteEventArgs(Mobile from, Type type)
 		{

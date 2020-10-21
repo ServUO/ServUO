@@ -140,7 +140,7 @@ namespace Server.Items
                 BaseCreature bc = new Trapper();
                 bc.MoveToWorld(p, m.Map);
 
-                Timer.DelayCall(TimeSpan.FromSeconds(.25), (mob) => mob.Combatant = m, bc);
+                Timer.DelayCall(TimeSpan.FromSeconds(.25), mob => mob.Combatant = m, bc);
             }
         }
 
@@ -209,15 +209,15 @@ namespace Server.Items
             }
         }
 
-        private readonly int[] m_Possibles = new int[]
-            {
+        private readonly int[] m_Possibles =
+        {
                 0,   1,   2,   3,
                 4,   5,   6,   7,
                 8,   9,  10,  11,
                 12, 13,  14,  15
-            };
+        };
 
-        private readonly int[][] _Paths = new int[][]
+        private readonly int[][] _Paths =
         {
             new int[] { 0, 1, 2, 3, 7, 11, 15 },
             new int[] { 0, 4, 8, 12, 13, 9, 5, 1, 2, 6, 10, 14, 15 },

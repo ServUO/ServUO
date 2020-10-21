@@ -11,7 +11,7 @@ namespace Server.Mobiles
 
         [Constructable]
         public SkeletalMount(string name)
-            : base(name, 793, 0x3EBB, AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
+            : base(name, 793, 0x3EBB, AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
             SetStr(91, 100);
             SetDex(46, 55);

@@ -6,7 +6,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public Artist()
-            : base(AIType.AI_Animal, FightMode.None, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Melee, FightMode.None, 10, 1, 0.2, 0.4)
         {
             InitStats(31, 41, 51);
 

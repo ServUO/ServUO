@@ -10,7 +10,7 @@ namespace Server.Mobiles
 
         [Constructable]
         public Anlorzen()
-            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Melee, 10, 1, 0.2, 0.4)
         {
             Name = "anlorzen";
             Body = 11;
@@ -70,7 +70,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

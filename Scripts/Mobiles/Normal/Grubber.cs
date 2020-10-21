@@ -5,7 +5,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public Grubber()
-            : base(AIType.AI_Animal, FightMode.None, 10, 1, 0.06, 0.1)
+            : base(AIType.AI_Melee, FightMode.None, 10, 1, 0.06, 0.1)
         {
             Name = "a grubber";
             Body = 270;

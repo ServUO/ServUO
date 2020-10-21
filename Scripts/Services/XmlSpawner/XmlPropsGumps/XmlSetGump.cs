@@ -87,12 +87,8 @@ namespace Server.Gumps
             }
 
             object val = prop.GetValue(m_Object, null);
-            string initialText;
 
-            if (val == null)
-                initialText = "";
-            else
-                initialText = val.ToString();
+            var initialText = val == null ? "" : val.ToString();
 
             AddPage(0);
 

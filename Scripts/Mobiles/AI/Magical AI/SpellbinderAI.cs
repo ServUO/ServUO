@@ -373,7 +373,7 @@ namespace Server.Mobiles
             if (m_Mobile.Spell == null && DateTime.UtcNow > m_NextCastTime && m_Mobile.InRange(c, 12))
             {
                 // We are ready to cast a spell
-                Spell spell = null;
+                Spell spell;
                 Mobile toDispel = FindDispelTarget(true);
 
                 if (m_Mobile.Poisoned) // Top cast priority is cure
@@ -589,7 +589,7 @@ namespace Server.Mobiles
                     {
                         double prio = m_Mobile.GetDistanceToSqrt(m);
 
-                        if (!activeOnly && (inactive == null || prio < inactPrio))
+                        if (inactive == null || prio < inactPrio)
                         {
                             inactive = m;
                             inactPrio = prio;
@@ -641,9 +641,6 @@ namespace Server.Mobiles
             if (m_Mobile.Hits < m_Mobile.HitsMax - 50)
             {
                 spell = new GreaterHealSpell(m_Mobile, null);
-
-                if (spell == null)
-                    spell = new HealSpell(m_Mobile, null);
             }
             else if (m_Mobile.Hits < m_Mobile.HitsMax - 10)
                 spell = new HealSpell(m_Mobile, null);

@@ -8,7 +8,7 @@ namespace Server.Mobiles
     [CorpseName("a monstrous interred grizzle corpse")]
     public class MonstrousInterredGrizzle : BasePeerless
     {
-        private static readonly int[] m_Tiles = new[]
+        private static readonly int[] m_Tiles =
         {
             -2, 0,
             2, 0,

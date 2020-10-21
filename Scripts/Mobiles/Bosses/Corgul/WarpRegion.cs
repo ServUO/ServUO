@@ -1,4 +1,4 @@
-﻿using Server.Items;
+using Server.Items;
 using Server.Mobiles;
 using Server.Multis;
 using System.Collections.Generic;
@@ -8,18 +8,15 @@ namespace Server.Regions
 {
     public class CorgulWarpRegion : Region
     {
-        private readonly CorgulAltar m_Pedestal;
         private Rectangle2D m_Bounds;
         private List<Item> m_Markers;
 
         public Rectangle2D Bounds => m_Bounds;
 
         public CorgulWarpRegion(CorgulAltar ped, Rectangle2D rec)
-            : base("Corgul Warp Region", ped.Map, DefaultPriority, new Rectangle2D[] { rec })
+            : base("Corgul Warp Region", ped.Map, DefaultPriority, rec)
         {
-            m_Pedestal = ped;
             m_Bounds = rec;
-            //MarkBounds(rec);
         }
 
         public void MarkBounds(Rectangle2D rec)

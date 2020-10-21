@@ -5,7 +5,7 @@ namespace Server.Engines.Quests.Hag
 {
     public class WitchApprenticeQuest : QuestSystem
     {
-        private static readonly Point3D[] m_ZeefzorpulLocations = new Point3D[]
+        private static readonly Point3D[] m_ZeefzorpulLocations =
         {
             new Point3D(1226, 1573, 0),
             new Point3D(1929, 1148, 0),

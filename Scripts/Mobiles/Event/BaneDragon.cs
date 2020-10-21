@@ -73,8 +73,9 @@ namespace Server.Mobiles
             _NextSpecial = DateTime.UtcNow;
         }
 
+		public override bool SubdueBeforeTame => true;
         public override Poison HitPoison => Poison.Lethal;
-        public override bool AlwaysMurderer => true;
+        public override bool AlwaysMurderer => !Controlled;
         public override FoodType FavoriteFood => FoodType.BlackrockStew;
 
         public override bool CheckFeed(Mobile from, Item dropped)
@@ -140,8 +141,8 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(1); // version
+
             writer.Write(PowerLevel);
             writer.Write(PowerDecay);
         }
@@ -149,7 +150,6 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
             switch (version)

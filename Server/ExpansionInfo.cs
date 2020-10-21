@@ -144,7 +144,7 @@ namespace Server
 	{
 		public static ExpansionInfo CoreExpansion => GetInfo(Core.Expansion);
 
-		public static ExpansionInfo[] Table { get; private set; }
+		public static ExpansionInfo[] Table { get; }
 
 		static ExpansionInfo()
 		{
@@ -189,7 +189,7 @@ namespace Server
 			return Table[v];
 		}
 
-		public int ID { get; private set; }
+		public int ID { get; }
 		public string Name { get; set; }
 
 		public ClientFlags ClientFlags { get; set; }

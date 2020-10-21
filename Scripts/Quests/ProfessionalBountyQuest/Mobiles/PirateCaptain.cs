@@ -230,7 +230,7 @@ namespace Server.Mobiles
 
             m_Quest = quest;
 
-            if (quest != null && quest.Galleon != null)
+            if (quest.Galleon != null)
                 quest.Galleon.CapturedCaptain = this;
 
             Timer.DelayCall(TimeSpan.FromSeconds(2.5), new TimerStateCallback(MoveCaptainToShip), new object[] { x, y, pole });

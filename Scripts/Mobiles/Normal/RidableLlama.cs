@@ -11,7 +11,7 @@ namespace Server.Mobiles
 
         [Constructable]
         public RidableLlama(string name)
-            : base(name, 0xDC, 0x3EA6, AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
+            : base(name, 0xDC, 0x3EA6, AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
             BaseSoundID = 0x3F3;
 

@@ -79,7 +79,7 @@ namespace Server.Mobiles
                 m_SeperationStart = DateTime.MinValue;
             }
 
-            int range = 4;
+            const int range = 4;
 
             if (!InRange(ControlMaster.Location, RangeHome) && InLOS(ControlMaster))
             {
@@ -270,7 +270,7 @@ namespace Server.Mobiles
         {
             base.Deserialize(reader);
 
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             ValidationQueue<BaseFamiliar>.Add(this);
         }

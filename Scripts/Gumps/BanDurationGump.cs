@@ -88,8 +88,6 @@ namespace Server.Gumps
             TimeSpan duration;
             bool shouldSet;
 
-            string fromString = from.ToString();
-
             switch (info.ButtonID)
             {
                 case 0:

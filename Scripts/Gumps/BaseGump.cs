@@ -14,7 +14,7 @@ namespace Server.Gumps
 
         private Gump _Parent;
 
-        public PlayerMobile User { get; private set; }
+        public PlayerMobile User { get; }
         public bool Open { get; set; }
 
         public virtual bool CloseOnMapChange => false;
@@ -186,7 +186,7 @@ namespace Server.Gumps
         {
         }
 
-        public override sealed void OnResponse(NetState state, RelayInfo info)
+        public sealed override void OnResponse(NetState state, RelayInfo info)
         {
             OnResponse(info);
 

@@ -36,7 +36,7 @@ namespace Server.Regions
         public CorgulAltar Altar => m_Altar;
 
         public CorgulRegion(Rectangle2D rec, CorgulAltar altar)
-            : base("Corgul Boss Region", altar.Map, DefaultPriority, new Rectangle2D[] { rec })
+            : base("Corgul Boss Region", altar.Map, DefaultPriority, rec)
         {
             //MarkBounds(rec);
             m_Altar = altar;
@@ -128,8 +128,7 @@ namespace Server.Regions
 
             foreach (BaseBoat b in GetEnumeratedMultis().OfType<BaseBoat>())
             {
-                if (b != null)
-                    RemoveBoat(b);
+                RemoveBoat(b);
             }
         }
 

@@ -10,7 +10,7 @@ namespace Server.Mobiles
 
         [Constructable]
         public Relanord()
-            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Melee, 10, 1, 0.2, 0.4)
         {
             Name = "relanord";
             Body = 0x2F4;
@@ -95,7 +95,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

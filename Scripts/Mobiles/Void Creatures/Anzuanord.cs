@@ -10,7 +10,7 @@ namespace Server.Mobiles
 
         [Constructable]
         public Anzuanord()
-            : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Mage, 10, 1, 0.2, 0.4)
         {
             Name = "anzuanord";
             Body = 74;
@@ -80,7 +80,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

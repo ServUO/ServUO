@@ -1,4 +1,4 @@
-﻿namespace Server.Items
+namespace Server.Items
 {
     public class SmugglersLiquor : BaseBeverage
     {
@@ -200,6 +200,7 @@
                     m_Label = 1150021;
                     break;
             }
+
             return id;
         }
 
@@ -207,7 +208,7 @@
         {
             int pick = Utility.Random(22);
 
-            return new SmugglersLiquor((SmugglersLiquorType)pick) as Item;
+            return new SmugglersLiquor((SmugglersLiquorType)pick);
         }
 
         public SmugglersLiquor(Serial serial)

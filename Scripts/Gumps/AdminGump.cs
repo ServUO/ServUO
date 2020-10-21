@@ -1831,7 +1831,7 @@ namespace Server.Gumps
                                     TextRelay relay = info.GetTextEntry(0);
                                     string text = (relay == null ? null : relay.Text.Trim());
 
-                                    if (text == null || text.Length == 0)
+                                    if (string.IsNullOrEmpty(text))
                                     {
                                         notice = "You must enter text to broadcast it.";
                                     }
@@ -2136,7 +2136,7 @@ namespace Server.Gumps
                                     string match = (matchEntry == null ? null : matchEntry.Text.Trim().ToLower());
                                     string notice = null;
 
-                                    if (match == null || match.Length == 0)
+                                    if (string.IsNullOrEmpty(match))
                                     {
                                         notice = string.Format("You must enter {0} to search.", forName ? "a name" : "an ip address");
                                     }
@@ -2196,7 +2196,7 @@ namespace Server.Gumps
                                 {
                                     index -= 2;
 
-                                    if (m_List != null && index >= 0 && index < m_List.Count)
+                                    if (m_List != null && index < m_List.Count)
                                     {
                                         NetState ns = m_List[index] as NetState;
 
@@ -2262,11 +2262,11 @@ namespace Server.Gumps
                                     Account dispAccount = null;
                                     string notice;
 
-                                    if (un == null || un.Length == 0)
+                                    if (string.IsNullOrEmpty(un))
                                     {
                                         notice = "You must enter a username to add an account.";
                                     }
-                                    else if (pw == null || pw.Length == 0)
+                                    else if (string.IsNullOrEmpty(pw))
                                     {
                                         notice = "You must enter a password to add an account.";
                                     }
@@ -2297,7 +2297,7 @@ namespace Server.Gumps
                                     string match = (matchEntry == null ? null : matchEntry.Text.Trim().ToLower());
                                     string notice = null;
 
-                                    if (match == null || match.Length == 0)
+                                    if (string.IsNullOrEmpty(match))
                                     {
                                         results = new ArrayList((ICollection)Accounts.GetAccounts());
                                         results.Sort(AccountComparer.Instance);
@@ -2362,7 +2362,7 @@ namespace Server.Gumps
                                     string notice;
                                     AdminGumpPage page = AdminGumpPage.AccountDetails_ChangePassword;
 
-                                    if (password == null || password.Length == 0)
+                                    if (string.IsNullOrEmpty(password))
                                     {
                                         notice = "You must enter the password.";
                                     }
@@ -2467,7 +2467,7 @@ namespace Server.Gumps
 
                                     string notice;
 
-                                    if (ip == null || ip.Length == 0)
+                                    if (string.IsNullOrEmpty(ip))
                                     {
                                         notice = "You must enter an address to add.";
                                     }
@@ -2787,7 +2787,7 @@ namespace Server.Gumps
                                     string notice = null;
                                     ArrayList results = new ArrayList();
 
-                                    if (match == null || match.Length == 0)
+                                    if (string.IsNullOrEmpty(match))
                                     {
                                         notice = "You must enter a username to search.";
                                     }
@@ -2816,7 +2816,7 @@ namespace Server.Gumps
                                     TextRelay relay = info.GetTextEntry(0);
                                     string text = (relay == null ? null : relay.Text.Trim());
 
-                                    if (text == null || text.Length == 0)
+                                    if (string.IsNullOrEmpty(text))
                                     {
                                         from.SendGump(new AdminGump(from, m_PageType, m_ListPage, m_List, "You must enter an address or pattern to add.", m_State));
                                     }
@@ -2858,7 +2858,7 @@ namespace Server.Gumps
                                 {
                                     index -= 4;
 
-                                    if (m_List != null && index >= 0 && index < m_List.Count)
+                                    if (m_List != null && index < m_List.Count)
                                         from.SendGump(new AdminGump(from, AdminGumpPage.FirewallInfo, 0, null, null, m_List[index]));
 
                                     break;
@@ -3028,7 +3028,7 @@ namespace Server.Gumps
                     }
                 case 8:
                     {
-                        if (m_List != null && index >= 0 && index < m_List.Count)
+                        if (m_List != null && index < m_List.Count)
                         {
                             Account a = m_State as Account;
 
@@ -3055,7 +3055,7 @@ namespace Server.Gumps
                     }
                 case 9:
                     {
-                        if (m_List != null && index >= 0 && index < m_List.Count)
+                        if (m_List != null && index < m_List.Count)
                         {
                             if (m_PageType == AdminGumpPage.AccountDetails_Access_ClientIPs)
                             {
@@ -3082,7 +3082,7 @@ namespace Server.Gumps
                     }
                 case 10:
                     {
-                        if (m_List != null && index >= 0 && index < m_List.Count)
+                        if (m_List != null && index < m_List.Count)
                         {
                             if (m_PageType == AdminGumpPage.AccountDetails_Access_ClientIPs)
                             {

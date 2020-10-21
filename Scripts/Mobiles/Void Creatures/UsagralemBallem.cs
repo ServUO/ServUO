@@ -10,7 +10,7 @@ namespace Server.Mobiles
 
         [Constructable]
         public UsagralemBallem()
-            : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Melee, 10, 1, 0.2, 0.4)
         {
             Name = "usagrallem ballem";
             Hue = 2071;
@@ -80,7 +80,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

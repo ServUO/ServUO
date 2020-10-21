@@ -5,7 +5,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public BattleChickenLizard()
-            : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.05, 0.1)
+            : base(AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.05, 0.1)
         {
             Name = "a battle chicken lizard";
             Body = 716;

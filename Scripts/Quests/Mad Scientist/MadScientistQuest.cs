@@ -50,7 +50,7 @@ namespace Server.Engines.Quests
         public static readonly int NeededIngredients = 20;
         public static readonly TimeSpan Timeout = TimeSpan.FromSeconds(15.0);
 
-        public static readonly SutekIngredientInfo[] m_Ingredients = new SutekIngredientInfo[]
+        public static readonly SutekIngredientInfo[] m_Ingredients =
         {
             new SutekIngredientInfo(SutekIngredient.Feathers,      new Point3D(921, 598, -8),    0x1BD3, 1023578),
             new SutekIngredientInfo(SutekIngredient.Shafts,        new Point3D(918, 591, -14),   0x1BD6, 1027125),

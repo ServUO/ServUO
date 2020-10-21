@@ -9,7 +9,7 @@ namespace Server.Mobiles
         public override int Stage => 3;
 
         [Constructable]
-        public Vasanord() : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.6, 1.2)
+        public Vasanord() : base(AIType.AI_Mage, 10, 1, 0.6, 1.2)
         {
             Name = "vasanord";
             Body = 780;
@@ -68,7 +68,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

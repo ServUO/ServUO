@@ -11,7 +11,7 @@ namespace Server.Mobiles
 
         [Constructable]
         public SilverSteed(string name)
-            : base(name, 0x75, 0x3EA8, AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
+            : base(name, 0x75, 0x3EA8, AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
             InitStats(Utility.Random(50, 30), Utility.Random(50, 30), 10);
             Skills[SkillName.MagicResist].Base = 25.0 + (Utility.RandomDouble() * 5.0);

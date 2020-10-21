@@ -16,7 +16,7 @@ namespace Server.Mobiles
 
         [Constructable]
         public CuSidhe(string name)
-            : base(name, 277, 0x3E91, AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
+            : base(name, 277, 0x3E91, AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
             double chance = Utility.RandomDouble() * 23301;
 

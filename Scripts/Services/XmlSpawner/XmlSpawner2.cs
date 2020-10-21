@@ -215,10 +215,7 @@ namespace Server.Mobiles
         private bool m_skillTriggerActivated;
         private SkillName m_skill_that_triggered;
         private bool m_FreeRun = false;     // override for all other triggering modes
-        private SkillName m_SkillTriggerName;
-        private double m_SkillTriggerMin;
-        private double m_SkillTriggerMax;
-        private int m_SkillTriggerSuccess;
+
         private Map currentmap;
 
         public bool m_IsInactivated = false;
@@ -658,32 +655,6 @@ namespace Server.Mobiles
                             status_str = string.Format("{0} is not a valid type name.", str);
                     }
                     InvalidateProperties();
-                }
-            }
-        }
-
-        public Skill TriggerSkill
-        {
-            get
-            {
-                if (TriggerMob != null && m_skill_that_triggered >= 0)
-                {
-                    return TriggerMob.Skills[m_skill_that_triggered];
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            set
-            {
-                if (value != null)
-                {
-                    m_skill_that_triggered = value.SkillName;
-                }
-                else
-                {
-                    m_skill_that_triggered = XmlSpawnerSkillCheck.RegisteredSkill.Invalid;
                 }
             }
         }
@@ -1581,98 +1552,10 @@ namespace Server.Mobiles
             set { m_SpeechTrigger = value; }
         }
 
-        [CommandProperty(AccessLevel.GameMaster)]
         public string SkillTrigger
         {
             get { return m_SkillTrigger; }
-            set
-            {
-
-                SkillName news = XmlSpawnerSkillCheck.RegisteredSkill.Invalid;
-                double minval = -1;
-                double maxval = -1;
-                int successval = 3;  // either success or failure will trigger
-
-                if (value != null)
-                {
-                    // try parsing the skill trigger string for min and maxval
-                    // the string can take the form "skill,[+/-][,minval,maxval]"
-
-                    string[] arglist = BaseXmlSpawner.ParseString(value, 4, ",");
-
-                    if (arglist.Length == 2 || arglist.Length == 4)
-                    {
-                        if (arglist[1] == "+")
-                        {
-                            successval = 1;     // trigger on success only
-                        }
-                        else
-                            if (arglist[1] == "-")
-                        {
-                            successval = 2;     // trigger on failure only
-                        }
-                    }
-
-                    if (arglist.Length == 3)
-                    {
-                        successval = 3;
-                        try
-                        {
-                            minval = double.Parse(arglist[1]);
-                            maxval = double.Parse(arglist[2]);
-                        }
-                        catch (Exception e)
-                        {
-                            Diagnostics.ExceptionLogging.LogException(e);
-                        }
-                    }
-                    else
-                        if (arglist.Length == 4)
-                    {
-                        try
-                        {
-                            minval = double.Parse(arglist[2]);
-                            maxval = double.Parse(arglist[3]);
-                        }
-                        catch (Exception e)
-                        {
-                            Diagnostics.ExceptionLogging.LogException(e);
-                        }
-                    }
-                    try
-                    {
-                        news = (SkillName)Enum.Parse(typeof(SkillName), arglist[0], true);
-                    }
-                    catch (Exception e)
-                    {
-                        Diagnostics.ExceptionLogging.LogException(e);
-                    }
-                }
-
-                // unregister the previous skill if it was assigned
-                if (m_SkillTrigger != null)
-                {
-                    XmlSpawnerSkillCheck.UnRegisterSkillTrigger(this, m_SkillTriggerName, Map, false);
-                }
-
-                // if the skill trigger was valid then register it
-                if (news != XmlSpawnerSkillCheck.RegisteredSkill.Invalid)
-                {
-                    XmlSpawnerSkillCheck.RegisterSkillTrigger(this, news, Map);
-                    m_SkillTrigger = value;
-                    m_SkillTriggerName = news;
-                    m_SkillTriggerMin = minval;
-                    m_SkillTriggerMax = maxval;
-                    m_SkillTriggerSuccess = successval;
-                }
-                else
-                {
-                    m_SkillTrigger = null;
-                    m_SkillTriggerName = XmlSpawnerSkillCheck.RegisteredSkill.Invalid;
-                    m_SkillTriggerMin = -1;
-                    m_SkillTriggerMax = -1;
-                }
-            }
+            set { m_SkillTrigger = value; }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -1689,7 +1572,6 @@ namespace Server.Mobiles
             {
                 Start();
                 DoTimer(value);
-                //InvalidateProperties();
             }
         }
 
@@ -1906,12 +1788,6 @@ namespace Server.Mobiles
         {
             base.OnMapChange();
 
-            // unregister the skill trigger on the previous map
-            XmlSpawnerSkillCheck.UnRegisterSkillTrigger(this, m_SkillTriggerName, currentmap, false);
-
-            // register the skill trigger on the new current map
-            XmlSpawnerSkillCheck.RegisterSkillTrigger(this, m_SkillTriggerName, Map);
-
             currentmap = Map;
 
             // reset the sector list for smart spawning
@@ -2029,9 +1905,6 @@ namespace Server.Mobiles
             // if statics were added for marking container held spawners, delete them
             if (m_ShowContainerStatic != null && !m_ShowContainerStatic.Deleted)
                 m_ShowContainerStatic.Delete();
-
-            // unregister all triggerskills that might have been added
-            XmlSpawnerSkillCheck.UnRegisterSkillTrigger(this, SkillName.Alchemy, Map, true);
         }
 
         static bool IgnoreLocationChange = false;
@@ -2633,57 +2506,10 @@ namespace Server.Mobiles
                     }
                 }
             }
+
             ShowTagList(this);
             int count = 0;
-            Console.WriteLine("Registered Skills");
-            Console.WriteLine("Felucca");
-            for (int i = 0; i < XmlSpawnerSkillCheck.RegisteredSkill.MaxSkills + 1; i++)
-            {
-
-                if (XmlSpawnerSkillCheck.RegisteredSkill.TriggerList((SkillName)i, Map.Felucca).Count > 0)
-                    Console.WriteLine("\t{0} : {1}", (SkillName)i, XmlSpawnerSkillCheck.RegisteredSkill.TriggerList((SkillName)i, Map.Felucca).Count);
-
-                count += XmlSpawnerSkillCheck.RegisteredSkill.TriggerList((SkillName)i, Map.Felucca).Count;
-            }
-            Console.WriteLine("Trammel");
-            for (int i = 0; i < XmlSpawnerSkillCheck.RegisteredSkill.MaxSkills + 1; i++)
-            {
-
-                if (XmlSpawnerSkillCheck.RegisteredSkill.TriggerList((SkillName)i, Map.Trammel).Count > 0)
-                    Console.WriteLine("\t{0} : {1}", (SkillName)i, XmlSpawnerSkillCheck.RegisteredSkill.TriggerList((SkillName)i, Map.Trammel).Count);
-
-                count += XmlSpawnerSkillCheck.RegisteredSkill.TriggerList((SkillName)i, Map.Trammel).Count;
-            }
-            Console.WriteLine("Ilshenar");
-            for (int i = 0; i < XmlSpawnerSkillCheck.RegisteredSkill.MaxSkills + 1; i++)
-            {
-
-                if (XmlSpawnerSkillCheck.RegisteredSkill.TriggerList((SkillName)i, Map.Ilshenar).Count > 0)
-                    Console.WriteLine("\t{0} : {1}", (SkillName)i, XmlSpawnerSkillCheck.RegisteredSkill.TriggerList((SkillName)i, Map.Ilshenar).Count);
-
-                count += XmlSpawnerSkillCheck.RegisteredSkill.TriggerList((SkillName)i, Map.Ilshenar).Count;
-            }
-            Console.WriteLine("Malas");
-            for (int i = 0; i < XmlSpawnerSkillCheck.RegisteredSkill.MaxSkills + 1; i++)
-            {
-
-                if (XmlSpawnerSkillCheck.RegisteredSkill.TriggerList((SkillName)i, Map.Malas).Count > 0)
-                    Console.WriteLine("\t{0} : {1}", (SkillName)i, XmlSpawnerSkillCheck.RegisteredSkill.TriggerList((SkillName)i, Map.Malas).Count);
-
-                count += XmlSpawnerSkillCheck.RegisteredSkill.TriggerList((SkillName)i, Map.Malas).Count;
-            }
-
-            Console.WriteLine("Tokuno");
-            for (int i = 0; i < XmlSpawnerSkillCheck.RegisteredSkill.MaxSkills + 1; i++)
-            {
-
-                if (XmlSpawnerSkillCheck.RegisteredSkill.TriggerList((SkillName)i, Map.Tokuno).Count > 0)
-                    Console.WriteLine("\t{0} : {1}", (SkillName)i, XmlSpawnerSkillCheck.RegisteredSkill.TriggerList((SkillName)i, Map.Tokuno).Count);
-
-                count += XmlSpawnerSkillCheck.RegisteredSkill.TriggerList((SkillName)i, Map.Tokuno).Count;
-            }
-
-            Console.WriteLine("Total = {0}", count);
+            Console.WriteLine("Registered SkillsTotal = {0}", count);
         }
 
         #endregion
@@ -2936,18 +2762,6 @@ namespace Server.Mobiles
 
                     // keep track of who triggered this
                     m_mob_who_triggered = m;
-
-                    // keep track of the skill that triggered this
-                    if (s != null)
-                    {
-                        m_skill_that_triggered = s.SkillName;
-                    }
-                    else
-                    {
-                        m_skill_that_triggered = XmlSpawnerSkillCheck.RegisteredSkill.Invalid;
-                    }
-
-
                 }
                 else
                 {
@@ -2963,35 +2777,6 @@ namespace Server.Mobiles
                 }
             }
         }
-
-        public bool HandlesOnSkillUse => (m_Running && m_SkillTrigger != null && m_SkillTrigger.Length > 0);
-
-        // this is the handler for skill use
-        public void OnSkillUse(Mobile m, Skill skill, bool success)
-        {
-
-            if (m_Running && m_ProximityRange >= 0 && ValidPlayerTrig(m) && CanSpawn && !m_refractActivated && TODInRange)
-            {
-
-                if (!Utility.InRange(m.Location, Location, m_ProximityRange))
-                    return;
-
-                m_skillTriggerActivated = false;
-
-                // check the skill trigger conditions, Skillname[+/-][,min,max]
-                if (m_SkillTrigger != null && (skill.SkillName == m_SkillTriggerName) &&
-                    ((m_SkillTriggerMin < 0) || (skill.Value >= m_SkillTriggerMin)) &&
-                    ((m_SkillTriggerMax < 0) || (skill.Value <= m_SkillTriggerMax)) &&
-                    ((m_SkillTriggerSuccess == 3) || ((m_SkillTriggerSuccess == 1) && success) || ((m_SkillTriggerSuccess == 2) && !success)))
-                {
-                    // have a skill trigger so flag it and test it
-                    m_skillTriggerActivated = true;
-
-                    CheckTriggers(m, skill, true);
-                }
-            }
-        }
-
 
         public override bool HandlesOnSpeech => (m_Running && m_SpeechTrigger != null && m_SpeechTrigger.Length > 0);
 
@@ -8683,15 +8468,13 @@ namespace Server.Mobiles
                     // try to spawn.  If spawning conditions such as triggering or TOD are not met, then it returns false
                     bool triedtospawn = Spawn(false, 0);
 
-                    if (triedtospawn) ClearGOTOTags();
+                    if (triedtospawn)
+                        ClearGOTOTags();
                     // this will maintain any sequential holds if spawning was suppressed due to triggering
-                    // if nothing was spawned or triggered, then restore the hold status to previous state
-                    //if(!triedtospawn) HoldSequence = hadhold;
 
                     if (!FreeRun)
                     {
                         m_mob_who_triggered = null;
-                        m_skill_that_triggered = XmlSpawnerSkillCheck.RegisteredSkill.Invalid;
                     }
 
                 }
@@ -9291,7 +9074,6 @@ namespace Server.Mobiles
             m_durActivated = false;
             m_refractActivated = false;
             m_mob_who_triggered = null;
-            m_skill_that_triggered = XmlSpawnerSkillCheck.RegisteredSkill.Invalid;
             m_killcount = 0;
             m_GumpState = null;
             FreeRun = false;
@@ -9364,10 +9146,8 @@ namespace Server.Mobiles
             }
         }
 
-
         public void Stop()
         {
-
             if (m_Running == true)
             {
                 // turn off all timers
@@ -9381,7 +9161,6 @@ namespace Server.Mobiles
                 m_proximityActivated = false;
                 m_ExternalTrigger = false;
                 m_mob_who_triggered = null;
-                m_skill_that_triggered = XmlSpawnerSkillCheck.RegisteredSkill.Invalid;
             }
         }
 
@@ -9431,16 +9210,16 @@ namespace Server.Mobiles
             {
                 triedtospawn = Spawn(false, 0);
 
-                if (x < m_Count - 1 || OnHold) m_proximityActivated = keepProximityActivated;
+                if (x < m_Count - 1 || OnHold)
+                    m_proximityActivated = keepProximityActivated;
+
             }
             if (!FreeRun)
             {
                 m_mob_who_triggered = null;
-                m_skill_that_triggered = XmlSpawnerSkillCheck.RegisteredSkill.Invalid;
             }
 
             ClearTags(true);
-
 
             inrespawn = false;
 
@@ -9479,7 +9258,6 @@ namespace Server.Mobiles
             if (!FreeRun)
             {
                 m_mob_who_triggered = null;
-                m_skill_that_triggered = XmlSpawnerSkillCheck.RegisteredSkill.Invalid;
             }
 
             ClearTags(true);

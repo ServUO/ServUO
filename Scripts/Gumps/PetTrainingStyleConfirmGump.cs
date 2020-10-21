@@ -9,8 +9,8 @@ namespace Server.Gumps
         private readonly TextDefinition _Title;
         private readonly TextDefinition _Body;
 
-        private Action ConfirmCallback { get; set; }
-        private Action CancelCallback { get; set; }
+        private Action ConfirmCallback { get; }
+        private Action CancelCallback { get; }
 
         public PetTrainingStyleConfirmGump(PlayerMobile pm, TextDefinition title, TextDefinition body, Action confirmCallback, Action cancelCallback = null)
             : base(pm, 250, 50)

@@ -2026,7 +2026,7 @@ namespace Server.Network
 
 			MessageLocalized p;
 
-			if (cache != null && index >= 0 && index < cache.Length)
+			if (cache != null && index < cache.Length)
 			{
 				p = cache[index];
 

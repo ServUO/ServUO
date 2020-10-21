@@ -1,4 +1,4 @@
-﻿using Server.Items;
+using Server.Items;
 using Server.Multis;
 using System;
 
@@ -100,7 +100,7 @@ namespace Server.Mobiles
                 return false;
             }
 
-            else if (m_IsSummoned)
+            if (m_IsSummoned)
             {
                 if (m_Charydbis != null && m_Charydbis.Alive)
                 {

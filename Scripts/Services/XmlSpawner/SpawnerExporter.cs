@@ -51,7 +51,7 @@ namespace Server.Mobiles
                     if (list[i] is Spawner)
                     {
                         Spawner spawner = (Spawner)list[i];
-                        if (spawner != null && !spawner.Deleted && spawner.Map != Map.Internal && spawner.Parent == null)
+                        if (!spawner.Deleted && spawner.Map != Map.Internal && spawner.Parent == null)
                             spawners.Add(spawner);
                     }
                 }
@@ -104,7 +104,7 @@ namespace Server.Mobiles
                 }
             }
 
-            private void ExportSpawner(Spawner spawner, XmlTextWriter xml)
+            private void ExportSpawner(Spawner spawner, XmlWriter xml)
             {
                 xml.WriteStartElement("spawner");
 
@@ -208,7 +208,7 @@ namespace Server.Mobiles
             }
         }
 
-        private static string GetText(XmlElement node, string defaultValue)
+        private static string GetText(XmlNode node, string defaultValue)
         {
             if (node == null)
                 return defaultValue;
@@ -216,7 +216,7 @@ namespace Server.Mobiles
             return node.InnerText;
         }
 
-        private static void ImportSpawner(XmlElement node)
+        private static void ImportSpawner(XmlNode node)
         {
             int count = int.Parse(GetText(node["count"], "1"));
             int homeRange = int.Parse(GetText(node["homerange"], "4"));
@@ -228,7 +228,7 @@ namespace Server.Mobiles
             bool group = bool.Parse(GetText(node["group"], "False"));
             TimeSpan maxDelay = TimeSpan.Parse(GetText(node["maxdelay"], "10:00"));
             TimeSpan minDelay = TimeSpan.Parse(GetText(node["mindelay"], "05:00"));
-            List<string> creaturesName = LoadCreaturesName(node["creaturesname"]);
+            IEnumerable<string> creaturesName = LoadCreaturesName(node["creaturesname"]);
 
             string name = GetText(node["name"], "Spawner");
             Point3D location = Point3D.Parse(GetText(node["location"], "Error"));
@@ -248,7 +248,7 @@ namespace Server.Mobiles
             spawner.Respawn();
         }
 
-        private static List<string> LoadCreaturesName(XmlElement node)
+        private static IEnumerable<string> LoadCreaturesName(XmlElement node)
         {
             List<string> names = new List<string>();
 

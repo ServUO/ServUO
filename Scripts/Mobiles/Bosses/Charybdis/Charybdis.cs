@@ -320,7 +320,6 @@ namespace Server.Mobiles
                         case (int)Direction.Left: { y2--; diag = true; break; }
                         case (int)Direction.ValueMask:
                         case (int)Direction.Up: { x2++; diag = true; break; }
-                        default: { break; }
                     }
 
                     Point3D ep = new Point3D(point.X + x, point.Y + y, point.Z);
@@ -495,7 +494,7 @@ namespace Server.Mobiles
 
                 for (int i = 0; i < 25; i++)
                 {
-                    Point3D spawnLoc = Point3D.Zero;
+                    Point3D spawnLoc;
 
                     if (boat != null)
                         spawnLoc = GetValidPoint(boat, map, 4);
@@ -604,7 +603,7 @@ namespace Server.Mobiles
             base.Delete();
         }
 
-        private readonly Type[] m_Pies = new Type[]
+        private readonly Type[] m_Pies =
         {
             typeof(AutumnDragonfishPie),
             typeof(BlueLobsterPie),
@@ -624,7 +623,7 @@ namespace Server.Mobiles
             typeof(YellowtailBarracudaPie),
         };
 
-        private readonly Type[] m_Steaks = new Type[]
+        private readonly Type[] m_Steaks =
         {
             typeof(AutumnDragonfishSteak),
             typeof(BlueLobsterMeat),

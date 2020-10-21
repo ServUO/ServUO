@@ -216,19 +216,17 @@ namespace Server.SkillHandlers
                             else
                             {
                                 ArrayList mods = new ArrayList();
-                                int effect;
-                                double scalar;
 
                                 double discord = from.Skills[SkillName.Discordance].Value;
 
-                                effect = (int)Math.Max(-28.0, (discord / -4.0));
+                                var effect = (int)Math.Max(-28.0, (discord / -4.0));
 
                                 if (BaseInstrument.GetBaseDifficulty(targ) >= 160.0)
                                 {
                                     effect /= 2;
                                 }
 
-                                scalar = (double)effect / 100;
+                                var scalar = (double)effect / 100;
 
                                 mods.Add(new ResistanceMod(ResistanceType.Physical, effect));
                                 mods.Add(new ResistanceMod(ResistanceType.Fire, effect));

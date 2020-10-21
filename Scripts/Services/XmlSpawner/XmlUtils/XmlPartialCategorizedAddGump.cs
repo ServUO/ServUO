@@ -1,14 +1,8 @@
-
 using Server.Mobiles;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
-
-/*
-** Modified from RunUO 1.0.0 AddGump.cs
-** by ArteGordon
-** 3/13/05
-*/
 
 namespace Server.Gumps
 {
@@ -18,16 +12,15 @@ namespace Server.Gumps
         private readonly ArrayList m_SearchResults;
         private readonly int m_Page;
         private readonly Gump m_Gump;
-        private readonly int m_EntryIndex = -1;
+        private readonly int m_EntryIndex;
         private readonly XmlSpawner m_Spawner;
 
         public XmlPartialCategorizedAddGump(Mobile from, string searchString, int page, ArrayList searchResults, bool explicitSearch, int entryindex, Gump gump) : base(50, 50)
         {
-
-            if (gump is XmlSpawnerGump)
+            if (gump is XmlSpawnerGump spawnerGump)
             {
                 // keep track of the spawner for xmlspawnergumps
-                m_Spawner = ((XmlSpawnerGump)gump).m_Spawner;
+                m_Spawner = spawnerGump.m_Spawner;
             }
 
             // keep track of the gump
@@ -112,14 +105,14 @@ namespace Server.Gumps
             public Type EntryType;
             public ParameterInfo[] Parameters;
         }
-        private static void Match(string match, Type[] types, ArrayList results)
+        private static void Match(string match, IReadOnlyList<Type> types, IList results)
         {
             if (match.Length == 0)
                 return;
 
             match = match.ToLower();
 
-            for (int i = 0; i < types.Length; ++i)
+            for (int i = 0; i < types.Count; ++i)
             {
                 Type t = types[i];
 
@@ -221,21 +214,17 @@ namespace Server.Gumps
 
                         if (index >= 0 && index < m_SearchResults.Count)
                         {
-
                             Type type = ((SearchEntry)m_SearchResults[index]).EntryType;
 
-                            if (m_Gump is XmlAddGump && type != null)
+                            if (m_Gump is XmlAddGump mXmlAddGump && type != null)
                             {
-                                XmlAddGump m_XmlAddGump = (XmlAddGump)m_Gump;
-                                if (type != null && m_XmlAddGump.defs != null && m_XmlAddGump.defs.NameList != null &&
-                                    m_EntryIndex >= 0 && m_EntryIndex < m_XmlAddGump.defs.NameList.Length)
+                                if (mXmlAddGump.defs?.NameList != null && m_EntryIndex >= 0 && m_EntryIndex < mXmlAddGump.defs.NameList.Length)
                                 {
-                                    m_XmlAddGump.defs.NameList[m_EntryIndex] = type.Name;
+                                    mXmlAddGump.defs.NameList[m_EntryIndex] = type.Name;
                                     XmlAddGump.Refresh(from, true);
                                 }
                             }
-                            else
-                            if (m_Spawner != null && type != null)
+                            else if (m_Spawner != null && type != null)
                             {
                                 XmlSpawnerGump xg = m_Spawner.SpawnerGump;
 

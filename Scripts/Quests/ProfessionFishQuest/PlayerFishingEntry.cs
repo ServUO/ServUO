@@ -281,7 +281,7 @@ namespace Server.Engines.Quests
             return m_Status[5];
         }
 
-        private readonly string[] m_Status = new string[]
+        private readonly string[] m_Status =
         {
             "a small",
             "a fair",

@@ -403,7 +403,7 @@ namespace Server.Engines.Quests
 
     public class TownEscortable : BaseEscort
     {
-        private static readonly Type[] m_Quests = new Type[]
+        private static readonly Type[] m_Quests =
         {
             typeof(EscortToYewQuest),
             typeof(EscortToVesperQuest),
@@ -419,7 +419,7 @@ namespace Server.Engines.Quests
             typeof(EscortToBritainQuest)
         };
 
-        private static readonly string[] m_Destinations = new string[]
+        private static readonly string[] m_Destinations =
         {
             "Yew",
             "Vesper",
@@ -982,7 +982,8 @@ namespace Server.Engines.Quests
                 Say(501222); // Thou art a criminal.  I shall not resurrect thee.
                 return false;
             }
-            else if (m.Murderer)
+
+            if (m.Murderer)
             {
                 Say(501223); // Thou'rt not a decent and good person. I shall not resurrect thee.
                 return false;

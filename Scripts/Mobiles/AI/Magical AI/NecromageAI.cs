@@ -100,7 +100,8 @@ namespace Server.Mobiles
             {
                 return new CurseWeaponSpell(m_Mobile, null);
             }
-            else if (Utility.RandomBool())
+
+            if (Utility.RandomBool())
             {
                 return new ConduitSpell(m_Mobile, null);
             }

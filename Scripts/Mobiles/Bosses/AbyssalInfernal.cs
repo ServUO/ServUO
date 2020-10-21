@@ -1,9 +1,10 @@
-using Server.Engines.CannedEvil;
-using Server.Items;
-using Server.Network;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Server.Engines.CannedEvil;
+using Server.Items;
+using Server.Misc;
+using Server.Network;
 
 namespace Server.Mobiles
 {
@@ -151,8 +152,7 @@ namespace Server.Mobiles
         }
 
         #region Condemn
-        private static readonly Point3D[] _Locs = new[]
-        {
+        private static readonly Point3D[] _Locs = {
             new Point3D(6949, 701, 32),
             new Point3D(6941, 761, 32),
             new Point3D(7015, 688, 32),
@@ -213,7 +213,7 @@ namespace Server.Mobiles
             //Flame Columns
             for (int i = 0; i < 2; i++)
             {
-                Misc.Geometry.Circle2D(Location, Map, i, (pnt, map) =>
+                Geometry.Circle2D(Location, Map, i, (pnt, map) =>
                 {
                     Effects.SendLocationParticles(EffectItem.Create(pnt, map, EffectItem.DefaultDuration), 0x3709, 10, 30, 5052);
                 });
@@ -239,7 +239,7 @@ namespace Server.Mobiles
 
                     for (int i = 0; i < range; i++)
                     {
-                        Misc.Geometry.Circle2D(Location, Map, i, (pnt, map) =>
+                        Geometry.Circle2D(Location, Map, i, (pnt, map) =>
                         {
                             Effects.SendLocationEffect(pnt, map, 14000, 14, 10, Utility.RandomMinMax(2497, 2499), 2);
                         });
@@ -295,7 +295,7 @@ namespace Server.Mobiles
         #region Spawn
         public List<BaseCreature> SummonedHelpers { get; set; }
 
-        private static readonly Type[] SummonTypes = new[]
+        private static readonly Type[] SummonTypes =
         {
             typeof(HellHound),      typeof(Phoenix),
             typeof(FireSteed),      typeof(FireElemental),
@@ -309,7 +309,7 @@ namespace Server.Mobiles
             if (SummonedHelpers == null || SummonedHelpers.Count == 0)
                 return 0;
 
-            return SummonedHelpers.Where(bc => bc != null && bc.Alive).Count();
+            return SummonedHelpers.Count(bc => bc != null && bc.Alive);
         }
 
         public virtual void DoSummon()
@@ -347,9 +347,9 @@ namespace Server.Mobiles
                     spawn.Team = Team;
                     spawn.SummonMaster = this;
 
-                    Timer.DelayCall(TimeSpan.FromSeconds(1), (o) =>
+                    Timer.DelayCall(TimeSpan.FromSeconds(1), o =>
                     {
-                        BaseCreature s = o as BaseCreature;
+                        BaseCreature s = o;
 
                         if (s != null && s.Combatant != null)
                         {

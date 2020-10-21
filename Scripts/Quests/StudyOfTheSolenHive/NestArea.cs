@@ -2,7 +2,7 @@ namespace Server.Engines.Quests.Naturalist
 {
     public class NestArea
     {
-        private static readonly NestArea[] m_Areas = new NestArea[]
+        private static readonly NestArea[] m_Areas =
         {
             new NestArea(false, new Rectangle2D(5861, 1787, 26, 25)),
             new NestArea(false, new Rectangle2D(5734, 1788, 14, 50),

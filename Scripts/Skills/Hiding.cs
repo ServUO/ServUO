@@ -87,25 +87,23 @@ namespace Server.SkillHandlers
 
                 return TimeSpan.Zero;
             }
+
+            if (ok)
+            {
+                m.Hidden = true;
+                m.Warmode = false;
+                Spells.Sixth.InvisibilitySpell.RemoveTimer(m);
+                Items.InvisibilityPotion.RemoveTimer(m);
+                m.LocalOverheadMessage(MessageType.Regular, 0x1F4, 501240); // You have hidden yourself well.
+            }
             else
             {
-                if (ok)
-                {
-                    m.Hidden = true;
-                    m.Warmode = false;
-                    Spells.Sixth.InvisibilitySpell.RemoveTimer(m);
-                    Items.InvisibilityPotion.RemoveTimer(m);
-                    m.LocalOverheadMessage(MessageType.Regular, 0x1F4, 501240); // You have hidden yourself well.
-                }
-                else
-                {
-                    m.RevealingAction();
+                m.RevealingAction();
 
-                    m.LocalOverheadMessage(MessageType.Regular, 0x22, 501241); // You can't seem to hide here.
-                }
-
-                return TimeSpan.FromSeconds(10.0);
+                m.LocalOverheadMessage(MessageType.Regular, 0x22, 501241); // You can't seem to hide here.
             }
+
+            return TimeSpan.FromSeconds(10.0);
         }
     }
 }

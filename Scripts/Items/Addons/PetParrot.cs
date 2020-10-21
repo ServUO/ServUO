@@ -15,7 +15,7 @@ namespace Server.Mobiles
 
         [Constructable]
         public PetParrot(DateTime birth, string name, int hue)
-            : base(AIType.AI_Animal, FightMode.None, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Melee, FightMode.None, 10, 1, 0.2, 0.4)
         {
             Name = "a pet parrot";
             Title = "the parrot";

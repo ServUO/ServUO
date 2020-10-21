@@ -9,9 +9,9 @@ namespace Server.Gumps
     {
         public int Page { get; private set; } = 0;
 
-        public TextDefinition Title { get; private set; }
-        public Container Container { get; private set; }
-        public List<Item> Contents { get; private set; }
+        public TextDefinition Title { get; }
+        public Container Container { get; }
+        public List<Item> Contents { get; }
         public bool CanTake { get; set; }
 
         public int Pages => Contents.Count / 50 + 1;

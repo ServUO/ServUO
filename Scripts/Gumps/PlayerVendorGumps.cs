@@ -721,7 +721,7 @@ namespace Server.Gumps
                     {
                         cat -= 100;
 
-                        if (cat < Categories.Length && cat >= 0)
+                        if (cat < Categories.Length)
                         {
                             CustomCategory category = Categories[cat];
 

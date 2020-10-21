@@ -8,7 +8,6 @@ namespace Server.Gumps
     {
         private readonly BaseImprisonedMobile m_Item;
         public ConfirmBreakCrystalGump(BaseImprisonedMobile item)
-            : base()
         {
             m_Item = item;
         }

@@ -9,7 +9,6 @@ namespace Server.Gumps
         private readonly Item m_Item;
 
         public ConfirmMountStatuetteGump(Item item)
-            : base()
         {
             m_Item = item;
         }

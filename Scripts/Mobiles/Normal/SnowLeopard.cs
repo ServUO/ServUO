@@ -5,7 +5,7 @@ namespace Server.Mobiles
     {
         [Constructable]
         public SnowLeopard()
-            : base(AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
             Name = "a snow leopard";
             Body = Utility.RandomList(64, 65);

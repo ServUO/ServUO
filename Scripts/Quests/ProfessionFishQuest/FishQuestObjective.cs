@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Server.Engines.Quests
@@ -94,7 +94,7 @@ namespace Server.Engines.Quests
             for (int i = 0; i < count; i++)
             {
                 Type type = FishQuestHelper.GetTypeFromIndex(reader.ReadInt());
-                int[] line = new int[] { reader.ReadInt(), reader.ReadInt() };
+                int[] line = { reader.ReadInt(), reader.ReadInt() };
 
                 if (type != null)
                     Line[type] = line;

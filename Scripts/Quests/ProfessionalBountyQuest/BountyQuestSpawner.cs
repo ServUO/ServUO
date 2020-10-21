@@ -29,7 +29,10 @@ namespace Server.Engines.Quests
             }
         }
 
-        private static readonly int[] GoldRange = new int[] { 1000, 10000 };
+        private static readonly int[] GoldRange =
+        {
+            1000, 10000
+        };
 
         private static BountyQuestSpawner m_Instance;
         public static BountyQuestSpawner Instance => m_Instance;
@@ -703,7 +706,7 @@ namespace Server.Engines.Quests
                 writer.Write((int)kvp.Key);
                 writer.Write(kvp.Value.Count);
                 foreach (BaseShipCaptain capt in kvp.Value)
-                    writer.Write(capt as Mobile);
+                    writer.Write(capt);
             }
 
             writer.Write(m_Bounties.Count);
@@ -912,7 +915,7 @@ namespace Server.Engines.Quests
             return m_Waypoints[Utility.Random(m_Waypoints.Length)];
         }
 
-        //Defines teh definitions!
+        //Defines the definitions.
         public static void Configure()
         {
             new SpawnDefinition(new Rectangle2D(1500, 3600, 180, 400), m_PirateTramFelCoursesJhelom, SpawnZone.TramJhelom, Map.Trammel);
@@ -929,7 +932,7 @@ namespace Server.Engines.Quests
         }
 
         public static Point2D[][] PirateTramFelCoursesJhelom => m_PirateTramFelCoursesJhelom;
-        private static readonly Point2D[][] m_PirateTramFelCoursesJhelom = new Point2D[][]
+        private static readonly Point2D[][] m_PirateTramFelCoursesJhelom =
         {
             new Point2D[]{ new Point2D(1598, 3861), new Point2D(1520, 3470), new Point2D(1418, 3314), new Point2D(1159, 3277), new Point2D(1320, 3508), new Point2D(1527, 3584) },
             new Point2D[]{ new Point2D(1947, 3536), new Point2D(2023, 4016), new Point2D(1795, 3855), new Point2D(1613, 3887) },
@@ -941,8 +944,8 @@ namespace Server.Engines.Quests
         };
 
         public static Point2D[][] PirateTramFelCoursesMoonglow => m_PirateTramFelCoursesMoonglow;
-        private static readonly Point2D[][] m_PirateTramFelCoursesMoonglow = new Point2D[][]
-         {
+        private static readonly Point2D[][] m_PirateTramFelCoursesMoonglow =
+        {
             new Point2D[]{ new Point2D(4415, 792), new Point2D(3927, 900), new Point2D(4069, 1630), new Point2D(4799, 1670), new Point2D(4861, 1061), new Point2D(4533, 589) },
             new Point2D[]{ new Point2D(4265, 145), new Point2D(5015, 153), new Point2D(5001, 669), new Point2D(4950, 720), new Point2D(4573, 663) },
             new Point2D[]{ new Point2D(4265, 145), new Point2D(3709, 107), new Point2D(3703, 773), new Point2D(4131, 913), new Point2D(4533, 713) },
@@ -950,7 +953,7 @@ namespace Server.Engines.Quests
         };
 
         public static Point2D[][] PirateTokunoCourses => m_PirateTokunoCourses;
-        private static readonly Point2D[][] m_PirateTokunoCourses = new Point2D[][]
+        private static readonly Point2D[][] m_PirateTokunoCourses =
         {
             new Point2D[]{ new Point2D(1324, 1178), new Point2D(1358, 1334), new Point2D(1032, 1358), new Point2D(1070, 1240) },
             new Point2D[]{ new Point2D(1370, 1074), new Point2D(1422, 962), new Point2D(1416, 620), new Point2D(1422, 1310) },
@@ -959,21 +962,21 @@ namespace Server.Engines.Quests
         };
 
         public static Point2D[][] MerchantTokunoCourses => m_MerchantTokunoCourses;
-        private static readonly Point2D[][] m_MerchantTokunoCourses = new Point2D[][]
+        private static readonly Point2D[][] m_MerchantTokunoCourses =
         {
             new Point2D[]{ new Point2D(460, 1408), new Point2D(878, 1408), new Point2D(500, 1408) },
             new Point2D[]{ new Point2D(460, 1408), new Point2D(460, 768), new Point2D(460, 1350) },
         };
 
         public static Point2D[][] MerchantTramFelCourses1 => m_MerchantTramFelCourses1;
-        private static readonly Point2D[][] m_MerchantTramFelCourses1 = new Point2D[][]
+        private static readonly Point2D[][] m_MerchantTramFelCourses1 =
         {
             new Point2D[]{ new Point2D(2420, 1708), new Point2D(2420, 1400), new Point2D(3516, 1400), new Point2D(3516, 1696), new Point2D(2500, 1696) },
             new Point2D[]{ new Point2D(2420, 1708), new Point2D(2420, 2760), new Point2D(3164, 2760), new Point2D(3164, 1696), new Point2D(2500, 1696) },
         };
 
         public static Point2D[][] MerchantTramFelCourses2 => m_MerchantTramFelCourses2;
-        private static readonly Point2D[][] m_MerchantTramFelCourses2 = new Point2D[][]
+        private static readonly Point2D[][] m_MerchantTramFelCourses2 =
         {
             new Point2D[]{ new Point2D(4129, 2367), new Point2D(4129, 1891), new Point2D(4773, 1891), new Point2D(4773, 2639), new Point2D(4129, 2639), new Point2D(4129, 2351) },
             new Point2D[]{ new Point2D(4000, 2415), new Point2D(4000, 3515), new Point2D(3141, 3515), new Point2D(3141, 3043), new Point2D(4093, 3043), new Point2D(4093, 2371) },

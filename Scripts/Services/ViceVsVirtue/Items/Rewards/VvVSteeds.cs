@@ -128,7 +128,7 @@ namespace Server.Engines.VvV
         public override bool DeleteOnRelease => true;
 
         public VvVMount(string name, int id, int itemid, int hue)
-            : base(name, id, itemid, AIType.AI_Animal, FightMode.Aggressor, 10, 1, 0.4, .2)
+            : base(name, id, itemid, AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.4, .2)
         {
             Hue = hue;
 

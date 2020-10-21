@@ -130,7 +130,7 @@ namespace Server.Engines.Quests.RitualQuest
         private DateTime _NextTeleport;
 
         public BexilPunchingBag()
-            : base(AIType.AI_Animal, FightMode.None, 10, 1, 0.4, 0.8)
+            : base(AIType.AI_Melee, FightMode.None, 10, 1, 0.4, 0.8)
         {
             Name = "Bexil";
             Title = "the Dream Serpent";

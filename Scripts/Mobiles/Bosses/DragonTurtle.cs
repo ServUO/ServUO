@@ -162,7 +162,6 @@ namespace Server.Mobiles
                         if (!Alive || map == null || (i > 0 && _BubbleLocs[j].Item1 == Point3D.Zero))
                             continue;
 
-                        Point3D newLoc;
                         Direction d = _Directions[j];
 
                         int hue = _BubbleLocs[j].Item2;
@@ -181,10 +180,10 @@ namespace Server.Mobiles
                         else
                             Movement.Movement.Offset(d, ref x, ref y);
 
-                        IPoint3D p = new Point3D(x, y, Map.GetAverageZ(x, y)) as IPoint3D;
+                        IPoint3D p = new Point3D(x, y, Map.GetAverageZ(x, y));
                         Spells.SpellHelper.GetSurfaceTop(ref p);
 
-                        newLoc = new Point3D(p);
+                        var newLoc = new Point3D(p);
 
                         bool hasMobile = false;
                         IPooledEnumerable eable = Map.GetMobilesInRange(newLoc, 0);

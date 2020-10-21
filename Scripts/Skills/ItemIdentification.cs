@@ -79,7 +79,7 @@ namespace Server.Items
                     return;
                 }
 
-                from.PrivateOverheadMessage(MessageType.Emote, 0x3B2, 1041351, AffixType.Append, "  " + GetPriceFor(item).ToString(), "", from.NetState); // You guess the value of that item at:
+                from.PrivateOverheadMessage(MessageType.Emote, 0x3B2, 1041351, AffixType.Append, "  " + GetPriceFor(item), "", from.NetState); // You guess the value of that item at:
 
                 if (item is BaseWeapon || item is BaseArmor || item is BaseJewel || item is BaseHat)
                 {

@@ -259,7 +259,6 @@ namespace Server.Mobiles
             RNDBOOL,
             RNDLIST,
             RNDSTRLIST,
-            TRIGSKILL,
             PLAYERSINRANGE,
             MY,
             RANDNAME
@@ -287,7 +286,6 @@ namespace Server.Mobiles
             MOB,
             TRIGMOB,
             MY,
-            TRIGSKILL,
             PLAYERSINRANGE,
             RANDNAME
         }
@@ -465,7 +463,6 @@ namespace Server.Mobiles
             AddValueKeyword("GETFROMFILE");
             AddValueKeyword("GETACCOUNTTAG");
             AddValueKeyword("RANDNAME");
-            AddValueKeyword("TRIGSKILL");
             AddValueKeyword("PLAYERSINRANGE");
 
             // Valuemod keywords
@@ -491,7 +488,6 @@ namespace Server.Mobiles
             AddValuemodKeyword("MOB");
             AddValuemodKeyword("TRIGMOB");
             AddValuemodKeyword("RANDNAME");
-            AddValuemodKeyword("TRIGSKILL");
             AddValuemodKeyword("PLAYERSINRANGE");
         }
         #endregion
@@ -1031,54 +1027,6 @@ namespace Server.Mobiles
 
             string propname = arglist[0];
 
-            string[] keywordargs = ParseString(propname, 4, ",");
-
-            // check for special keywords
-            if (keywordargs[0] == "SKILL")
-            {
-                if (keywordargs.Length < 2)
-                {
-                    return "Invalid SKILL format";
-                }
-                SkillName skillname;
-
-                if (TryParse(keywordargs[1], true, out skillname))
-                {
-                    if (o is Mobile)
-                    {
-                        Skill skill = ((Mobile)o).Skills[skillname];
-                        double d;
-                        if (double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out d))
-                        {
-                            skill.Base = d;
-                            return "Property has been set.";
-                        }
-                        else
-                            return "Invalid double number";
-                    }
-                    else
-                        return "Object is not mobile";
-                }
-                else
-                    return "Invalid SKILL reference.";
-            }
-            else if (keywordargs[0] == "STEALABLE")
-            {
-                if (o is Item)
-                {
-                    bool b;
-                    if (bool.TryParse(value, out b))
-                    {
-                        ItemFlags.SetStealable((Item)o, b);
-                        return "Property has been set.";
-                    }
-                    else
-                        return "Invalid Stealable assignment.";
-                }
-                else
-                    return "Object is not an item";
-            }
-
             // do a bit of parsing to handle array references
             string[] arraystring = propname.Split('[');
             int index = 0;
@@ -1350,31 +1298,7 @@ namespace Server.Mobiles
             // parse up to 4 comma separated args for special keyword properties
             string[] keywordargs = ParseString(propname, 4, ",");
 
-            if (keywordargs[0] == "SKILL")
-            {
-                // syntax is SKILL,skillname
-                if (keywordargs.Length < 2)
-                {
-                    return "Invalid SKILL format";
-                }
-                SkillName skillname;
-
-                if (TryParse(keywordargs[1], true, out skillname))
-                {
-                    if (o is Mobile)
-                    {
-                        Skill skill = ((Mobile)o).Skills[skillname];
-                        ptype = skill.Value.GetType();
-
-                        return string.Format("{0} = {1}", skillname, skill.Value);
-                    }
-                    else
-                        return "Object is not mobile";
-                }
-                else
-                { return "Skill not found."; }
-            }
-            else if (keywordargs[0] == "SERIAL")
+            if (keywordargs[0] == "SERIAL")
             {
                 bool found;
                 try
@@ -1406,25 +1330,6 @@ namespace Server.Mobiles
 
                 return string.Format("Type = {0}", o.GetType().Name);
 
-            }
-            else if (keywordargs[0] == "STEALABLE")
-            {
-                bool found;
-                try
-                {
-
-                    if (o is Item)
-                    {
-                        ptype = typeof(bool);
-                        return string.Format("Stealable = {0}", ItemFlags.GetStealable((Item)o));
-                    }
-                    else
-                        return "Object is not an item";
-                }
-                catch { found = false; }
-
-                if (!found)
-                    return "Stealable flag not found.";
             }
 
             // do a bit of parsing to handle array references
@@ -2604,46 +2509,6 @@ namespace Server.Mobiles
                                 {
                                     status_str = arglist[0] + " : " + result;
                                     no_error = false;
-                                }
-                                if (arglist.Length < 3) break;
-                                remainder = arglist[2];
-                            }
-                            else if (kw == valuemodKeyword.TRIGSKILL)
-                            {
-                                if (value_keywordargs.Length > 1)
-                                {
-                                    if (spawner != null && spawner.TriggerSkill != null)
-                                    {
-                                        string skillstr = null;
-                                        // syntax is TRIGSKILL,name|value|cap|base
-                                        if (value_keywordargs[1].ToLower() == "name")
-                                        {
-                                            skillstr = spawner.TriggerSkill.Name;
-                                        }
-                                        else
-                                            if (value_keywordargs[1].ToLower() == "value")
-                                        {
-                                            skillstr = spawner.TriggerSkill.Value.ToString();
-                                        }
-                                        else
-                                                if (value_keywordargs[1].ToLower() == "cap")
-                                        {
-                                            skillstr = spawner.TriggerSkill.Cap.ToString();
-                                        }
-                                        else
-                                                    if (value_keywordargs[1].ToLower() == "base")
-                                        {
-                                            skillstr = spawner.TriggerSkill.Base.ToString();
-                                        }
-
-                                        string result = SetPropertyValue(spawner, o, arglist[0], skillstr);
-                                        // see if it was successful
-                                        if (result != "Property has been set.")
-                                        {
-                                            status_str = arglist[0] + " : " + result;
-                                            no_error = false;
-                                        }
-                                    }
                                 }
                                 if (arglist.Length < 3) break;
                                 remainder = arglist[2];
@@ -4069,35 +3934,6 @@ namespace Server.Mobiles
                     }
 
                     return nplayers.ToString();
-                }
-                else if ((kw == valueKeyword.TRIGSKILL) && arglist.Length > 1)
-                {
-                    if (spawner != null && spawner.TriggerSkill != null)
-                    {
-                        // syntax is TRIGSKILL,name|value|cap|base
-                        if (arglist[1].ToLower() == "name")
-                        {
-                            ptype = typeof(string);
-                            return spawner.TriggerSkill.Name;
-                        }
-                        else if (arglist[1].ToLower() == "value")
-                        {
-                            ptype = typeof(double);
-                            return spawner.TriggerSkill.Value.ToString();
-                        }
-                        else if (arglist[1].ToLower() == "cap")
-                        {
-                            ptype = typeof(double);
-                            return spawner.TriggerSkill.Cap.ToString();
-                        }
-                        else if (arglist[1].ToLower() == "base")
-                        {
-                            ptype = typeof(double);
-                            return spawner.TriggerSkill.Base.ToString();
-                        }
-                    }
-
-                    return null;
                 }
                 if ((kw == valueKeyword.RANDNAME) && arglist.Length > 1)
                 {
@@ -7476,7 +7312,7 @@ namespace Server.Mobiles
                                 // get the gump constructor type
                                 gumptypestr = gumpkeywordargs[3].Trim();
                             }
-                            Type type = SpawnerType.GetType(gumptypestr); ;
+                            Type type = SpawnerType.GetType(gumptypestr);
 
                             if (type == null)
                             {
