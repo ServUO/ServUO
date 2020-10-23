@@ -24,9 +24,9 @@ namespace Server.Guilds
             {
                 if (x == null && y == null)
                     return 0;
-                else if (x == null)
+                if (x == null)
                     return -1;
-                else if (y == null)
+                if (y == null)
                     return 1;
 
                 return Insensitive.Compare(x.Name, y.Name);
@@ -51,9 +51,9 @@ namespace Server.Guilds
             {
                 if (x == null && y == null)
                     return 0;
-                else if (x == null)
+                if (x == null)
                     return -1;
-                else if (y == null)
+                if (y == null)
                     return 1;
 
                 GuildCompareStatus aStatus = GuildCompareStatus.Peace;
@@ -81,9 +81,9 @@ namespace Server.Guilds
             {
                 if (x == null && y == null)
                     return 0;
-                else if (x == null)
+                if (x == null)
                     return -1;
-                else if (y == null)
+                if (y == null)
                     return 1;
 
                 return Insensitive.Compare(x.Abbreviation, y.Abbreviation);
@@ -117,7 +117,7 @@ namespace Server.Guilds
 
         public GuildDiplomacyGump(PlayerMobile pm, Guild g, IComparer<Guild> currentComparer, bool ascending, string filter, int startNumber, GuildDisplayType display, List<Guild> list, TextDefinition lowerText)
             : base(pm, g, list, currentComparer, ascending, filter, startNumber,
-            new InfoField<Guild>[]
+            new[]
             {
                 new InfoField<Guild>(1062954, 280, NameComparer.Instance), //Guild Name
                 new InfoField<Guild>(1062957, 50,   AbbrevComparer.Instance), //Abbrev
@@ -192,7 +192,7 @@ namespace Server.Guilds
             //AddHtmlText( 66, 153 + itemNumber * 28, 280, 26, m_LowerText, false, false );
             if (m_LowerText != null && m_LowerText.Number > 0)
                 AddHtmlLocalized(66, 153 + itemNumber * 28, 280, 26, m_LowerText.Number, 0xF, false, false);
-            else if (m_LowerText != null && m_LowerText.String != null)
+            else if (m_LowerText?.String != null)
                 AddHtml(66, 153 + itemNumber * 28, 280, 26, Color(m_LowerText.String, 0x99), false, false);
 
             if (AllowAdvancedSearch)

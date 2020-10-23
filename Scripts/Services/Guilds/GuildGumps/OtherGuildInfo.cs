@@ -388,10 +388,8 @@ namespace Server.Guilds
                             }
                             else if (otherAlliance != null)
                             {
-                                if (otherAlliance.IsPendingMember(m_Other))
-                                    pm.SendLocalizedMessage(1063416, m_Other.Name); // ~1_val~ is currently considering another alliance proposal.
-                                else
-                                    pm.SendLocalizedMessage(1063426, m_Other.Name); // ~1_val~ already belongs to an alliance.
+                                // ~1_val~ is currently considering another alliance proposal. | // ~1_val~ already belongs to an alliance.
+                                pm.SendLocalizedMessage(otherAlliance.IsPendingMember(m_Other) ? 1063416 : 1063426, m_Other.Name);
                             }
                             else if (m_Other.AcceptedWars.Count > 0 || m_Other.PendingWars.Count > 0)
                             {
@@ -421,10 +419,8 @@ namespace Server.Guilds
                             }
                             else if (otherAlliance != null)
                             {
-                                if (otherAlliance.IsPendingMember(m_Other))
-                                    pm.SendLocalizedMessage(1063416, m_Other.Name); // ~1_val~ is currently considering another alliance proposal.
-                                else
-                                    pm.SendLocalizedMessage(1063426, m_Other.Name); // ~1_val~ already belongs to an alliance.
+                                // ~1_val~ is currently considering another alliance proposal. | // ~1_val~ already belongs to an alliance.
+                                pm.SendLocalizedMessage(otherAlliance.IsPendingMember(m_Other) ? 1063416 : 1063426, m_Other.Name);
                             }
                             else if (alliance.IsPendingMember(guild))
                             {
@@ -578,10 +574,8 @@ namespace Server.Guilds
             }
             else if (otherAlliance != null)
             {
-                if (otherAlliance.IsPendingMember(m_Other))
-                    pm.SendLocalizedMessage(1063416, m_Other.Name); // ~1_val~ is currently considering another alliance proposal.
-                else
-                    pm.SendLocalizedMessage(1063426, m_Other.Name); // ~1_val~ already belongs to an alliance.
+                // ~1_val~ is currently considering another alliance proposal. | // ~1_val~ already belongs to an alliance.
+                pm.SendLocalizedMessage(otherAlliance.IsPendingMember(m_Other) ? 1063416 : 1063426, m_Other.Name);
             }
             else if (m_Other.AcceptedWars.Count > 0 || m_Other.PendingWars.Count > 0)
             {

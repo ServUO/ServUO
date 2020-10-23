@@ -1,6 +1,5 @@
 using Server.Mobiles;
 using Server.Multis;
-using Server.Network;
 using Server.Targeting;
 using System;
 
@@ -123,7 +122,6 @@ namespace Server.Items
             public int DeedNumber => m_DeedNumber;
             public int AddonNumber => m_AddonNumber;
         }
-
 
         private class CorpseTarget : Target
         {
@@ -361,26 +359,6 @@ namespace Server.Items
             if (DateCaught != DateTime.MinValue)
             {
                 list.Add(string.Format("[{0}]", DateCaught.ToShortDateString()));
-            }
-        }
-
-        public override void OnAosSingleClick(Mobile from)
-        {
-            ObjectPropertyList opl = PropertyList;
-
-            if (AddonNumber == 1041110)
-            {
-                from.Send(new UnicodeMessage(Serial, ItemID, MessageType.Label, 0x3B2, 3, "ENU", "", "A large fish trophy"));
-
-                if (Hunter != null)
-                    from.Send(new UnicodeMessage(Serial, ItemID, MessageType.Label, 0x3B2, 3, "ENU", "", "Caught by " + Hunter.Name));
-
-                from.Send(new UnicodeMessage(Serial, ItemID, MessageType.Label, 0x3B2, 3, "ENU", "", AnimalWeight + " stones"));
-            }
-            else
-            {
-                if (opl.Header > 0)
-                    from.Send(new MessageLocalized(Serial, ItemID, MessageType.Label, 0x3B2, 3, opl.Header, Name, opl.HeaderArgs));
             }
         }
 

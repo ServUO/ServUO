@@ -110,10 +110,6 @@ namespace Server.Mobiles
             return false;
         }
 
-        public override void OnAosSingleClick(Mobile from)
-        {
-        }
-
         public override void OnDoubleClick(Mobile from)
         {
             DisplayPaperdollTo(from);

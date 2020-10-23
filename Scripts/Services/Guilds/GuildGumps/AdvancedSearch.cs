@@ -53,15 +53,13 @@ namespace Server.Guilds
             if (pm == null || !IsMember(pm, guild))
                 return;
 
-            GuildDisplayType display = m_Display;
-
             if (info.ButtonID == 5)
             {
                 for (int i = 0; i < 3; i++)
                 {
                     if (info.IsSwitched(i))
                     {
-                        display = (GuildDisplayType)i;
+                        var display = (GuildDisplayType)i;
                         m_Callback(display);
                         break;
                     }
