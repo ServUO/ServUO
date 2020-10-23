@@ -174,15 +174,15 @@ namespace Server.Items
                 OnTarget(from, targeted);
             }
 
-            private static readonly Type[] m_KingsCollectionTypes = new Type[]
+            private static readonly Type[] _IsSpecialTypes = new Type[]
             {
-                typeof(BirdLamp),    typeof(DragonLantern),
-                typeof(KoiLamp),   typeof(TallLamp)
+                typeof(BirdLamp),  typeof(DragonLantern),  typeof(KoiLamp),
+                typeof(TallLamp)
             };
 
-            private static bool IsKingsCollection(Item item)
+            private static bool IsSpecialTypes(Item item)
             {
-                return m_KingsCollectionTypes.Any(t => t == item.GetType());
+                return _IsSpecialTypes.Any(t => t == item.GetType());
             }
 
             protected override void OnTarget(Mobile from, object targeted)
@@ -210,11 +210,11 @@ namespace Server.Items
 
                     bool isDecorableComponent = false;
 
-                    if (m_Decorator.Command == DecorateCommand.Turn && IsKingsCollection(item))
+                    if (m_Decorator.Command == DecorateCommand.Turn && IsSpecialTypes(item))
                     {
                         isDecorableComponent = true;
                     }
-                    else if (item is AddonComponent || item is AddonContainerComponent || item is BaseAddonContainer)
+                    else if (item is AddonComponent || item is AddonContainerComponent || item is BaseAddonContainer || item is TrophyAddon)
                     {
                         object addon = null;
                         int count = 0;
@@ -239,6 +239,9 @@ namespace Server.Items
                         }
 
                         if (count == 1)
+                            isDecorableComponent = true;
+
+                        if (item is TrophyAddon)
                             isDecorableComponent = true;
 
                         if (item is EnormousVenusFlytrapAddon)
@@ -291,10 +294,6 @@ namespace Server.Items
                     {
                         from.SendLocalizedMessage(1062491); // You cannot use the house decorator on that object.
                     }
-                    /*else if (item.TotalWeight + item.PileWeight > 100)
-                    {
-                        from.SendLocalizedMessage(1042272); // That is too heavy.
-                    }*/
                     else
                     {
                         switch (m_Decorator.Command)

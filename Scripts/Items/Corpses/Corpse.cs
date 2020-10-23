@@ -86,8 +86,6 @@ namespace Server.Items
         private List<Item> m_EquipItems;
         // List of dropped equipment when the owner died. Ingame, these items display /on/ the corpse, not just inside
 
-        private List<Item> m_RestoreEquip; // List of items equipped when the owner died. Includes insured and blessed items.
-
         private List<Mobile> m_Aggressors;
         // Anyone from this list will be able to loot this corpse; we attacked them, or they attacked us when we were freely attackable
 
@@ -101,13 +99,6 @@ namespace Server.Items
 
         // For notoriety:
         private AccessLevel m_AccessLevel; // Which AccessLevel the owner had when he died
-        private readonly Guild m_Guild; // Which Guild the owner was in when he died
-        private int m_Kills; // How many kills the owner had when he died
-
-        private DateTime m_TimeOfDeath; // What time was this corpse created?
-
-        private readonly HairInfo m_Hair; // This contains the hair of the owner
-        private readonly FacialHairInfo m_FacialHair; // This contains the facial hair of the owner
 
         // For Forensics Evaluation
         public string m_Forensicist; // Name of the first PlayerMobile who used Forensic Evaluation on the corpse
@@ -117,7 +108,7 @@ namespace Server.Items
         public static readonly TimeSpan InstancedCorpseTime = TimeSpan.FromMinutes(3.0);
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual bool InstancedCorpse => (DateTime.UtcNow < (m_TimeOfDeath + InstancedCorpseTime));
+        public virtual bool InstancedCorpse => (DateTime.UtcNow < (TimeOfDeath + InstancedCorpseTime));
 
         private Dictionary<Item, InstancedItemInfo> m_InstancedItems;
 
@@ -204,7 +195,7 @@ namespace Server.Items
 
         public void AssignInstancedLoot(Item item)
         {
-            AssignInstancedLoot(new Item[] { item });
+            AssignInstancedLoot(new[] { item });
         }
 
         private void AssignInstancedLoot(IEnumerable<Item> items)
@@ -326,12 +317,13 @@ namespace Server.Items
         public override bool IsDecoContainer => false;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime TimeOfDeath { get { return m_TimeOfDeath; } set { m_TimeOfDeath = value; } }
+        public DateTime TimeOfDeath { get; set; }
 
         public override bool DisplayWeight => false;
 
-        public HairInfo Hair => m_Hair;
-        public FacialHairInfo FacialHair => m_FacialHair;
+        public HairInfo Hair { get; }
+
+        public FacialHairInfo FacialHair { get; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsBones => GetFlag(CorpseFlag.IsBones);
@@ -369,12 +361,12 @@ namespace Server.Items
 
         public List<Item> EquipItems => m_EquipItems;
 
-        public List<Item> RestoreEquip { get { return m_RestoreEquip; } set { m_RestoreEquip = value; } }
+        public List<Item> RestoreEquip { get; set; }
 
-        public Guild Guild => m_Guild;
+        public Guild Guild { get; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Kills { get { return m_Kills; } set { m_Kills = value; } }
+        public int Kills { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Criminal { get { return GetFlag(CorpseFlag.Criminal); } set { SetFlag(CorpseFlag.Criminal, value); } }
@@ -405,7 +397,7 @@ namespace Server.Items
             SetFlag(CorpseFlag.NoBones, true);
             SetFlag(CorpseFlag.IsBones, true);
 
-            var delay = Owner != null ? Owner.CorpseDecayTime : Mobile.DefaultCorpseDecay;
+            var delay = Owner?.CorpseDecayTime ?? Mobile.DefaultCorpseDecay;
             m_DecayTime = DateTime.UtcNow + delay;
 
             if (!TimerRegistry.UpdateRegistry(m_TimerID, this, delay))
@@ -450,7 +442,7 @@ namespace Server.Items
 
             object[] attrs = t.GetCustomAttributes(typeof(CorpseNameAttribute), true);
 
-            if (attrs != null && attrs.Length > 0)
+            if (attrs.Length > 0)
             {
                 CorpseNameAttribute attr = attrs[0] as CorpseNameAttribute;
 
@@ -471,53 +463,42 @@ namespace Server.Items
         public static Container Mobile_CreateCorpseHandler(
             Mobile owner, HairInfo hair, FacialHairInfo facialhair, List<Item> initialContent, List<Item> equipItems)
         {
-            bool shouldFillCorpse = true;
-
-            Corpse c;
-
-            c = new Corpse(owner, hair, facialhair, shouldFillCorpse ? equipItems : new List<Item>());
+            var c = new Corpse(owner, hair, facialhair, equipItems);
 
             owner.Corpse = c;
 
-            if (shouldFillCorpse)
+            for (int i = 0; i < initialContent.Count; ++i)
             {
-                for (int i = 0; i < initialContent.Count; ++i)
+                Item item = initialContent[i];
+
+                if (owner.Player && item.Parent == owner.Backpack)
                 {
-                    Item item = initialContent[i];
-
-                    if (owner.Player && item.Parent == owner.Backpack)
-                    {
-                        c.AddItem(item);
-                    }
-                    else
-                    {
-                        c.DropItem(item);
-                    }
-
-                    if (owner.Player)
-                    {
-                        c.SetRestoreInfo(item, item.Location);
-                    }
-                }
-
-                if (!owner.Player)
-                {
-                    c.AssignInstancedLoot();
-                    c.HasAssignedInstancedLoot = true;
+                    c.AddItem(item);
                 }
                 else
                 {
-                    PlayerMobile pm = owner as PlayerMobile;
-
-                    if (pm != null)
-                    {
-                        c.RestoreEquip = pm.EquipSnapshot;
-                    }
+                    c.DropItem(item);
                 }
+
+                if (owner.Player)
+                {
+                    c.SetRestoreInfo(item, item.Location);
+                }
+            }
+
+            if (!owner.Player)
+            {
+                c.AssignInstancedLoot();
+                c.HasAssignedInstancedLoot = true;
             }
             else
             {
-                c.Carved = true; // TODO: Is it needed?
+                PlayerMobile pm = owner as PlayerMobile;
+
+                if (pm != null)
+                {
+                    c.RestoreEquip = pm.EquipSnapshot;
+                }
             }
 
             Point3D loc = owner.Location;
@@ -559,17 +540,17 @@ namespace Server.Items
 
             m_CorpseName = GetCorpseName(owner);
 
-            m_TimeOfDeath = DateTime.UtcNow;
+            TimeOfDeath = DateTime.UtcNow;
 
             m_AccessLevel = owner.AccessLevel;
-            m_Guild = owner.Guild as Guild;
-            m_Kills = owner.Kills;
+            Guild = owner.Guild as Guild;
+            Kills = owner.Kills;
 
             SetFlag(CorpseFlag.Criminal, owner.Criminal);
             SetFlag(CorpseFlag.Murderer, owner.Murderer);
 
-            m_Hair = hair;
-            m_FacialHair = facialhair;
+            Hair = hair;
+            FacialHair = facialhair;
 
             // This corpse does not turn to bones if: the owner is not a player
             SetFlag(CorpseFlag.NoBones, !owner.Player);
@@ -672,22 +653,22 @@ namespace Server.Items
 
             writer.Write(12); // version
 
-            if (m_RestoreEquip == null)
+            if (RestoreEquip == null)
             {
                 writer.Write(false);
             }
             else
             {
                 writer.Write(true);
-                writer.Write(m_RestoreEquip);
+                writer.Write(RestoreEquip);
             }
 
             writer.Write((int)m_Flags);
 
-            writer.WriteDeltaTime(m_TimeOfDeath);
+            writer.WriteDeltaTime(TimeOfDeath);
 
             List<KeyValuePair<Item, Point3D>> list = (m_RestoreTable == null ? null : new List<KeyValuePair<Item, Point3D>>(m_RestoreTable));
-            int count = (list == null ? 0 : list.Count);
+            int count = list?.Count ?? 0;
 
             writer.Write(count);
 
@@ -728,8 +709,8 @@ namespace Server.Items
             writer.Write(m_CorpseName);
 
             writer.Write((int)m_AccessLevel);
-            writer.Write(m_Guild);
-            writer.Write(m_Kills);
+            writer.Write(Guild);
+            writer.Write(Kills);
 
             writer.Write(m_EquipItems);
         }
@@ -746,7 +727,7 @@ namespace Server.Items
                     {
                         if (reader.ReadBool())
                         {
-                            m_RestoreEquip = reader.ReadStrongItemList();
+                            RestoreEquip = reader.ReadStrongItemList();
                         }
 
                         goto case 11;
@@ -755,7 +736,7 @@ namespace Server.Items
                     {
                         // Version 11, we move all bools to a CorpseFlag
                         m_Flags = (CorpseFlag)reader.ReadInt();
-                        m_TimeOfDeath = reader.ReadDeltaTime();
+                        TimeOfDeath = reader.ReadDeltaTime();
 
                         int count = reader.ReadInt();
 
@@ -788,7 +769,7 @@ namespace Server.Items
 
                         m_AccessLevel = (AccessLevel)reader.ReadInt();
                         reader.ReadInt(); // guild reserve
-                        m_Kills = reader.ReadInt();
+                        Kills = reader.ReadInt();
 
                         m_EquipItems = reader.ReadStrongItemList();
                         break;
@@ -907,11 +888,6 @@ namespace Server.Items
             {
                 m_Looters.Add(from);
             }
-
-            //if (m_InstancedItems != null && m_InstancedItems.ContainsKey(item))
-            //{
-            //	m_InstancedItems.Remove(item);
-            //}
         }
 
         public override void OnItemLifted(Mobile from, Item item)
@@ -932,11 +908,6 @@ namespace Server.Items
             {
                 m_Looters.Add(from);
             }
-
-            //if (m_InstancedItems != null && m_InstancedItems.ContainsKey(item))
-            //{
-            //	m_InstancedItems.Remove(item);
-            //}
         }
 
         private class OpenCorpseEntry : ContextMenuEntry
@@ -1040,7 +1011,8 @@ namespace Server.Items
 
                 return false;
             }
-            else if (IsCriminalAction(from))
+
+            if (IsCriminalAction(from))
             {
                 if (m_Owner == null || !m_Owner.Player)
                 {
@@ -1085,8 +1057,6 @@ namespace Server.Items
 
                     Container pack = from.Backpack;
 
-                    bool checkRobe = true;
-
                     for (int i = 0; !didntFit && i < items.Count; ++i)
                     {
                         Item item = items[i];
@@ -1097,14 +1067,11 @@ namespace Server.Items
                             continue;
                         }
 
-                        if (checkRobe)
-                        {
-                            DeathRobe robe = from.FindItemOnLayer(Layer.OuterTorso) as DeathRobe;
+                        DeathRobe robe = from.FindItemOnLayer(Layer.OuterTorso) as DeathRobe;
 
-                            if (robe != null)
-                            {
-                                robe.Delete();
-                            }
+                        if (robe != null)
+                        {
+                            robe.Delete();
                         }
 
                         if (m_EquipItems.Contains(item) && from.EquipItem(item))
@@ -1143,7 +1110,7 @@ namespace Server.Items
                         return;
                     }
 
-                    if (gathered && didntFit)
+                    if (gathered)
                     {
                         from.SendLocalizedMessage(1062472); // You gather some of your belongings. The rest remain on the corpse.
                     }
@@ -1192,7 +1159,6 @@ namespace Server.Items
             else
             {
                 from.SendLocalizedMessage(500446); // That is too far away.
-                return;
             }
         }
 
@@ -1233,17 +1199,6 @@ namespace Server.Items
             }
         }
 
-        public override void OnAosSingleClick(Mobile from)
-        {
-            int hue = Notoriety.GetHue(NotorietyHandlers.CorpseNotoriety(from, this));
-            ObjectPropertyList opl = PropertyList;
-
-            if (opl.Header > 0)
-            {
-                from.Send(new MessageLocalized(Serial, ItemID, MessageType.Label, hue, 3, opl.Header, Name, opl.HeaderArgs));
-            }
-        }
-
         public bool Carve(Mobile from, Item item)
         {
             if (IsCriminalAction(from) && Map != null && (Map.Rules & MapRules.HarmfulRestrictions) != 0)
@@ -1266,7 +1221,7 @@ namespace Server.Items
             {
                 PrivateOverheadMessage(MessageType.Regular, 0x3B2, 500485, from.NetState); // You see nothing useful to carve from the corpse.
             }
-            else if (((Body)Amount).IsHuman && ItemID == 0x2006)
+            else if (dead is PlayerMobile && ((Body)Amount).IsHuman && ItemID == 0x2006)
             {
                 new Blood(0x122D).MoveToWorld(Location, Map);
 

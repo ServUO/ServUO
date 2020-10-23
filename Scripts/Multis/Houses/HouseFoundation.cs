@@ -538,7 +538,7 @@ namespace Server.Multis
             {
                 MultiComponentList mcl = Components;
 
-                return new Rectangle2D[] { new Rectangle2D(mcl.Min.X, mcl.Min.Y, mcl.Width, mcl.Height) };
+                return new[] { new Rectangle2D(mcl.Min.X, mcl.Min.Y, mcl.Width, mcl.Height) };
             }
         }
 
@@ -620,7 +620,8 @@ namespace Server.Multis
             {
                 return;
             }
-            else if (SpellHelper.CheckCombat(m))
+
+            if (SpellHelper.CheckCombat(m))
             {
                 m.SendLocalizedMessage(1005564, "", 0x22); // Wouldst thou flee during the heat of battle??
                 return;
@@ -943,7 +944,6 @@ namespace Server.Multis
         /// So, we clear the cache on the current design state AFTER MoveToWorld, which at this point, is the only
         /// state. We still need to send details, regardless of client type, so the cache is set correctly for EC
         /// </summary>
-        /// <param name="from"></param>
         public void OnPlacement()
         {
             if (Deleted)
@@ -1103,16 +1103,7 @@ namespace Server.Multis
 
         private static ComponentVerification m_Verification;
 
-        public static ComponentVerification Verification
-        {
-            get
-            {
-                if (m_Verification == null)
-                    m_Verification = new ComponentVerification();
-
-                return m_Verification;
-            }
-        }
+        public static ComponentVerification Verification => m_Verification ?? (m_Verification = new ComponentVerification());
 
         public static bool ValidPiece(int itemID)
         {
@@ -1125,7 +1116,7 @@ namespace Server.Multis
 
             if (!roof && (TileData.ItemTable[itemID].Flags & TileFlag.Roof) != 0)
                 return false;
-            else if (roof && (TileData.ItemTable[itemID].Flags & TileFlag.Roof) == 0)
+            if (roof && (TileData.ItemTable[itemID].Flags & TileFlag.Roof) == 0)
                 return false;
 
             return Verification.IsItemValid(itemID);
@@ -1134,7 +1125,7 @@ namespace Server.Multis
         /* Stair block IDs
         * (sorted ascending)
         */
-        private static readonly int[] m_BlockIDs = new int[]
+        private static readonly int[] m_BlockIDs =
         {
             0x3EE, 0x709, 0x71E, 0x721,
             0x738, 0x750, 0x76C, 0x788,
@@ -1147,7 +1138,7 @@ namespace Server.Multis
         * (sorted ascending)
         * Use this for stairs in the proper N,W,S,E sequence
         */
-        private static readonly int[] m_StairSeqs = new int[]
+        private static readonly int[] m_StairSeqs =
         {
             0x3EF, 0x70A, 0x722, 0x739,
             0x751, 0x76D, 0x789, 0x7A4,
@@ -1158,7 +1149,7 @@ namespace Server.Multis
         * Listed in order: north, west, south, east
         * Use this for stairs not in the proper sequence
         */
-        private static readonly int[] m_StairIDs = new int[]
+        private static readonly int[] m_StairIDs =
         {
             0x71F,  0x736,  0x737,  0x749,
             0x35D4, 0x35D3, 0x35D6, 0x35D5,
@@ -1168,10 +1159,10 @@ namespace Server.Multis
             0x4364, 0x4362, 0x4363, 0x4365,
             0x4B05, 0x4B04, 0x4B34, 0x4B33,
             0x7809, 0x7808, 0x780A, 0x780B,
-            0x7BB,  0x7BC, -1,      -1,
+            0x7BB,  0x7BC, -1,      -1
         };
 
-        private static readonly int[] m_CornerIDs = new int[]
+        private static readonly int[] m_CornerIDs =
         {
             0x749, 0x74A, 0x74B, 0x74C,
             0x4366, 0x4367, 0x4368, 0x4369,
@@ -1440,7 +1431,7 @@ namespace Server.Multis
                 if (itemID >= 7668 && itemID <= 7675)
                 {
                     int idOffset = itemID <= 7671 ? 101 : 0;
-                    int[][] list = new int[][] { };
+                    int[][] list = { };
 
                     switch (itemID)
                     {
@@ -1483,62 +1474,62 @@ namespace Server.Multis
         #region TOL Stair Components cannot be found in MultiData
         private static readonly int[][] _StairsSouth =
         {
-            new int[] { 0x9B4F, 0,  -3, 0,  },
-            new int[] { 0x9B4F, 0,  -3, 5,  },
-            new int[] { 0x9B4F, 0,  -3, 10, },
-            new int[] { 0x9B50, 0,  -3, 15, },
-            new int[] { 0x9B4F, 0,  -2, 0,  },
-            new int[] { 0x9B4F, 0,  -2, 5,  },
-            new int[] { 0x9B50, 0,  -2, 10, },
-            new int[] { 0x9B4F, 0,  -1, 0,  },
-            new int[] { 0x9B50, 0,  -1, 5,  },
-            new int[] { 0x0001, 0 , 0, 0,  },
-            new int[] { 0x9B50, 0 , 0, 0,  },
+            new[] { 0x9B4F, 0,  -3, 0  },
+            new[] { 0x9B4F, 0,  -3, 5  },
+            new[] { 0x9B4F, 0,  -3, 10 },
+            new[] { 0x9B50, 0,  -3, 15 },
+            new[] { 0x9B4F, 0,  -2, 0  },
+            new[] { 0x9B4F, 0,  -2, 5  },
+            new[] { 0x9B50, 0,  -2, 10 },
+            new[] { 0x9B4F, 0,  -1, 0  },
+            new[] { 0x9B50, 0,  -1, 5  },
+            new[] { 0x0001, 0 , 0, 0   },
+            new[] { 0x9B50, 0 , 0, 0   }
         };
 
         private static readonly int[][] _StairsWest =
         {
-            new int[] { 0x0001, 0,  0, 0,  },
-            new int[] { 0x9B53, 0,  0, 0,  },
-            new int[] { 0x9B4F, 1,  0, 0,  },
-            new int[] { 0x9B53, 1,  0, 5,  },
-            new int[] { 0x9B4F, 2,  0, 0,  },
-            new int[] { 0x9B4F, 2,  0, 5,  },
-            new int[] { 0x9B53, 2,  0, 10, },
-            new int[] { 0x9B4F, 3,  0, 0,  },
-            new int[] { 0x9B4F, 3,  0, 5,  },
-            new int[] { 0x9B4F, 3, 0, 10, },
-            new int[] { 0x9B53, 3 , 0, 15, },
+            new[] { 0x0001, 0,  0, 0   },
+            new[] { 0x9B53, 0,  0, 0   },
+            new[] { 0x9B4F, 1,  0, 0   },
+            new[] { 0x9B53, 1,  0, 5   },
+            new[] { 0x9B4F, 2,  0, 0   },
+            new[] { 0x9B4F, 2,  0, 5   },
+            new[] { 0x9B53, 2,  0, 10  },
+            new[] { 0x9B4F, 3,  0, 0   },
+            new[] { 0x9B4F, 3,  0, 5   },
+            new[] { 0x9B4F, 3, 0, 10   },
+            new[] { 0x9B53, 3 , 0, 15  }
         };
 
         private static readonly int[][] _StairsNorth =
         {
-            new int[] { 0x0001, 0,  0, 0,  },
-            new int[] { 0x9B52, 0,  0, 0,  },
-            new int[] { 0x9B4F, 0,  1, 0,  },
-            new int[] { 0x9B52, 0,  1, 5,  },
-            new int[] { 0x9B4F, 0,  2, 0,  },
-            new int[] { 0x9B4F, 0,  2, 5,  },
-            new int[] { 0x9B52, 0,  2, 10, },
-            new int[] { 0x9B4F, 0,  3, 0,  },
-            new int[] { 0x9B4F, 0,  3, 5,  },
-            new int[] { 0x9B4F, 0,  3, 10,  },
-            new int[] { 0x9B52, 0,  3, 15,  },
+            new[] { 0x0001, 0,  0, 0  },
+            new[] { 0x9B52, 0,  0, 0  },
+            new[] { 0x9B4F, 0,  1, 0  },
+            new[] { 0x9B52, 0,  1, 5  },
+            new[] { 0x9B4F, 0,  2, 0  },
+            new[] { 0x9B4F, 0,  2, 5  },
+            new[] { 0x9B52, 0,  2, 10 },
+            new[] { 0x9B4F, 0,  3, 0  },
+            new[] { 0x9B4F, 0,  3, 5  },
+            new[] { 0x9B4F, 0,  3, 10 },
+            new[] { 0x9B52, 0,  3, 15 }
         };
 
         private static readonly int[][] _StairsEast =
         {
-            new int[] { 0x9B4F, -3, 0, 0  },
-            new int[] { 0x9B4F, -3, 0, 5  },
-            new int[] { 0x9B4F, -3, 0, 10 },
-            new int[] { 0x9B51, -3, 0, 15 },
-            new int[] { 0x9B4F, -2, 0, 0  },
-            new int[] { 0x9B4F, -2, 0, 5  },
-            new int[] { 0x9B51, -2, 0, 10 },
-            new int[] { 0x9B4F, -1, 0, 0  },
-            new int[] { 0x9B51, -1, 0, 5  },
-            new int[] { 0x0001, 0, 0, 0  },
-            new int[] { 0x9B51, 0, 0, 0  },
+            new[] { 0x9B4F, -3, 0, 0  },
+            new[] { 0x9B4F, -3, 0, 5  },
+            new[] { 0x9B4F, -3, 0, 10 },
+            new[] { 0x9B51, -3, 0, 15 },
+            new[] { 0x9B4F, -2, 0, 0  },
+            new[] { 0x9B4F, -2, 0, 5  },
+            new[] { 0x9B51, -2, 0, 10 },
+            new[] { 0x9B4F, -1, 0, 0  },
+            new[] { 0x9B51, -1, 0, 5  },
+            new[] { 0x0001, 0, 0, 0   },
+            new[] { 0x9B51, 0, 0, 0   }
         };
         #endregion
 
@@ -1813,7 +1804,7 @@ namespace Server.Multis
             }
         }
 
-        public HouseFoundation Foundation { get; set; }
+        public HouseFoundation Foundation { get; }
         public MultiComponentList Components { get; set; }
         public MultiTileEntry[] Fixtures { get; set; }
         public int Revision { get; set; }
@@ -1976,62 +1967,62 @@ namespace Server.Multis
         {
             if (itemID >= 0x675 && itemID < 0x6F5)
                 return true;
-            else if (itemID >= 0x314 && itemID < 0x364)
+            if (itemID >= 0x314 && itemID < 0x364)
                 return true;
-            else if (itemID >= 0x824 && itemID < 0x834)
+            if (itemID >= 0x824 && itemID < 0x834)
                 return true;
-            else if (itemID >= 0x839 && itemID < 0x849)
+            if (itemID >= 0x839 && itemID < 0x849)
                 return true;
-            else if (itemID >= 0x84C && itemID < 0x85C)
+            if (itemID >= 0x84C && itemID < 0x85C)
                 return true;
-            else if (itemID >= 0x866 && itemID < 0x876)
+            if (itemID >= 0x866 && itemID < 0x876)
                 return true;
-            else if (itemID >= 0x0E8 && itemID < 0x0F8)
+            if (itemID >= 0x0E8 && itemID < 0x0F8)
                 return true;
-            else if (itemID >= 0x1FED && itemID < 0x1FFD)
+            if (itemID >= 0x1FED && itemID < 0x1FFD)
                 return true;
-            else if (itemID >= 0x181D && itemID < 0x1829)
+            if (itemID >= 0x181D && itemID < 0x1829)
                 return true;
-            else if (itemID >= 0x241F && itemID < 0x2421)
+            if (itemID >= 0x241F && itemID < 0x2421)
                 return true;
-            else if (itemID >= 0x2423 && itemID < 0x2425)
+            if (itemID >= 0x2423 && itemID < 0x2425)
                 return true;
-            else if (itemID >= 0x2A05 && itemID < 0x2A1D)
+            if (itemID >= 0x2A05 && itemID < 0x2A1D)
                 return true;
-            else if (itemID >= 0x319C && itemID < 0x31B0)
+            if (itemID >= 0x319C && itemID < 0x31B0)
                 return true;
             // ML doors
-            else if (itemID == 0x2D46 || itemID == 0x2D48 || itemID == 0x2FE2 || itemID == 0x2FE4)
+            if (itemID == 0x2D46 || itemID == 0x2D48 || itemID == 0x2FE2 || itemID == 0x2FE4)
                 return true;
-            else if (itemID >= 0x2D63 && itemID < 0x2D70)
+            if (itemID >= 0x2D63 && itemID < 0x2D70)
                 return true;
-            else if (itemID >= 0x319C && itemID < 0x31AF)
+            if (itemID >= 0x319C && itemID < 0x31AF)
                 return true;
-            else if (itemID >= 0x367B && itemID < 0x369B)
+            if (itemID >= 0x367B && itemID < 0x369B)
                 return true;
             // SA doors
-            else if (itemID >= 0x409B && itemID < 0x40A3)
+            if (itemID >= 0x409B && itemID < 0x40A3)
                 return true;
-            else if (itemID >= 0x410C && itemID < 0x4114)
+            if (itemID >= 0x410C && itemID < 0x4114)
                 return true;
-            else if (itemID >= 0x41C2 && itemID < 0x41CA)
+            if (itemID >= 0x41C2 && itemID < 0x41CA)
                 return true;
-            else if (itemID >= 0x41CF && itemID < 0x41D7)
+            if (itemID >= 0x41CF && itemID < 0x41D7)
                 return true;
-            else if (itemID >= 0x436E && itemID < 0x437E)
+            if (itemID >= 0x436E && itemID < 0x437E)
                 return true;
-            else if (itemID >= 0x46DD && itemID < 0x46E5)
+            if (itemID >= 0x46DD && itemID < 0x46E5)
                 return true;
-            else if (itemID >= 0x4D22 && itemID < 0x4D2A)
+            if (itemID >= 0x4D22 && itemID < 0x4D2A)
                 return true;
-            else if (itemID >= 0x50C8 && itemID < 0x50D8)
+            if (itemID >= 0x50C8 && itemID < 0x50D8)
                 return true;
-            else if (itemID >= 0x5142 && itemID < 0x514A)
+            if (itemID >= 0x5142 && itemID < 0x514A)
                 return true;
             // TOL doors
-            else if (itemID >= 0x9AD7 && itemID < 0x9AE7)
+            if (itemID >= 0x9AD7 && itemID < 0x9AE7)
                 return true;
-            else if (itemID >= 0x9B3C && itemID < 0x9B4C)
+            if (itemID >= 0x9B3C && itemID < 0x9B4C)
                 return true;
 
             return false;
@@ -2097,7 +2088,7 @@ namespace Server.Multis
 
     public class DesignContext
     {
-        public HouseFoundation Foundation { get; set; }
+        public HouseFoundation Foundation { get; }
 
         public int Level { get; set; }
 
@@ -2179,9 +2170,6 @@ namespace Server.Multis
             if (from is PlayerMobile)
                 ((PlayerMobile)from).DesignContext = null;
 
-            if (context == null)
-                return;
-
             context.Foundation.Customizer = null;
 
             NetState state = from.NetState;
@@ -2257,9 +2245,6 @@ namespace Server.Multis
         private static readonly BufferPool m_StairBufferPool = new BufferPool("Housing Stair Buffers", 6, MaxItemsPerStairBuffer * 5);
         private static readonly BufferPool m_DeflatedBufferPool = new BufferPool("Housing Deflated Buffers", 1, 0x2000);
 
-        private readonly byte[][] m_PlaneBuffers;
-        private readonly byte[][] m_StairBuffers;
-
         private readonly bool[] m_PlaneUsed = new bool[9];
         private readonly byte[] m_PrimBuffer = new byte[4];
 
@@ -2315,24 +2300,24 @@ namespace Server.Multis
             int width = (xMax - xMin) + 1;
             int height = (yMax - yMin) + 1;
 
-            m_PlaneBuffers = new byte[9][];
+            var mPlaneBuffers = new byte[9][];
 
             lock (m_PlaneBufferPool)
-                for (int i = 0; i < m_PlaneBuffers.Length; ++i)
-                    m_PlaneBuffers[i] = m_PlaneBufferPool.AcquireBuffer();
+                for (int i = 0; i < mPlaneBuffers.Length; ++i)
+                    mPlaneBuffers[i] = m_PlaneBufferPool.AcquireBuffer();
 
-            m_StairBuffers = new byte[6][];
+            var mStairBuffers = new byte[6][];
 
             lock (m_StairBufferPool)
-                for (int i = 0; i < m_StairBuffers.Length; ++i)
-                    m_StairBuffers[i] = m_StairBufferPool.AcquireBuffer();
+                for (int i = 0; i < mStairBuffers.Length; ++i)
+                    mStairBuffers[i] = m_StairBufferPool.AcquireBuffer();
 
-            Clear(m_PlaneBuffers[0], width * height * 2);
+            Clear(mPlaneBuffers[0], width * height * 2);
 
             for (int i = 0; i < 4; ++i)
             {
-                Clear(m_PlaneBuffers[1 + i], (width - 1) * (height - 2) * 2);
-                Clear(m_PlaneBuffers[5 + i], width * (height - 1) * 2);
+                Clear(mPlaneBuffers[1 + i], (width - 1) * (height - 2) * 2);
+                Clear(mPlaneBuffers[5 + i], width * (height - 1) * 2);
             }
 
             int totalStairsUsed = 0;
@@ -2356,7 +2341,7 @@ namespace Server.Multis
                     default:
                         {
                             int stairBufferIndex = (totalStairsUsed / MaxItemsPerStairBuffer);
-                            byte[] stairBuffer = m_StairBuffers[stairBufferIndex];
+                            byte[] stairBuffer = mStairBuffers[stairBufferIndex];
 
                             int byteIndex = (totalStairsUsed % MaxItemsPerStairBuffer) * 5;
 
@@ -2394,7 +2379,7 @@ namespace Server.Multis
                 if (x < 0 || y < 0 || y >= size || (index + 1) >= 0x400)
                 {
                     int stairBufferIndex = (totalStairsUsed / MaxItemsPerStairBuffer);
-                    byte[] stairBuffer = m_StairBuffers[stairBufferIndex];
+                    byte[] stairBuffer = mStairBuffers[stairBufferIndex];
 
                     int byteIndex = (totalStairsUsed % MaxItemsPerStairBuffer) * 5;
 
@@ -2410,8 +2395,8 @@ namespace Server.Multis
                 else
                 {
                     m_PlaneUsed[plane] = true;
-                    m_PlaneBuffers[plane][index] = (byte)(mte.m_ItemID >> 8);
-                    m_PlaneBuffers[plane][index + 1] = (byte)mte.m_ItemID;
+                    mPlaneBuffers[plane][index] = (byte)(mte.m_ItemID >> 8);
+                    mPlaneBuffers[plane][index + 1] = (byte)mte.m_ItemID;
                 }
             }
 
@@ -2421,11 +2406,11 @@ namespace Server.Multis
             lock (m_DeflatedBufferPool)
                 m_DeflatedBuffer = m_DeflatedBufferPool.AcquireBuffer();
 
-            for (int i = 0; i < m_PlaneBuffers.Length; ++i)
+            for (int i = 0; i < mPlaneBuffers.Length; ++i)
             {
                 if (!m_PlaneUsed[i])
                 {
-                    m_PlaneBufferPool.ReleaseBuffer(m_PlaneBuffers[i]);
+                    m_PlaneBufferPool.ReleaseBuffer(mPlaneBuffers[i]);
                     continue;
                 }
 
@@ -2440,7 +2425,7 @@ namespace Server.Multis
                 else
                     size = width * (height - 1) * 2;
 
-                byte[] inflatedBuffer = m_PlaneBuffers[i];
+                byte[] inflatedBuffer = mPlaneBuffers[i];
 
                 int deflatedLength = m_DeflatedBuffer.Length;
                 ZLibError ce = Compression.Pack(m_DeflatedBuffer, ref deflatedLength, inflatedBuffer, size, ZLibQuality.Default);
@@ -2476,7 +2461,7 @@ namespace Server.Multis
 
                 int size = count * 5;
 
-                byte[] inflatedBuffer = m_StairBuffers[i];
+                byte[] inflatedBuffer = mStairBuffers[i];
 
                 int deflatedLength = m_DeflatedBuffer.Length;
                 ZLibError ce = Compression.Pack(m_DeflatedBuffer, ref deflatedLength, inflatedBuffer, size, ZLibQuality.Default);
@@ -2498,8 +2483,8 @@ namespace Server.Multis
             }
 
             lock (m_StairBufferPool)
-                for (int i = 0; i < m_StairBuffers.Length; ++i)
-                    m_StairBufferPool.ReleaseBuffer(m_StairBuffers[i]);
+                for (int i = 0; i < mStairBuffers.Length; ++i)
+                    m_StairBufferPool.ReleaseBuffer(mStairBuffers[i]);
 
             lock (m_DeflatedBufferPool)
                 m_DeflatedBufferPool.ReleaseBuffer(m_DeflatedBuffer);
@@ -2541,7 +2526,6 @@ namespace Server.Multis
         private static readonly Queue<SendQueueEntry> m_SendQueue;
         private static readonly object m_SendQueueSyncRoot;
         private static readonly AutoResetEvent m_Sync;
-        private static readonly Thread m_Thread;
 
         static DesignStateDetailed()
         {
@@ -2549,11 +2533,11 @@ namespace Server.Multis
             m_SendQueueSyncRoot = ((ICollection)m_SendQueue).SyncRoot;
             m_Sync = new AutoResetEvent(false);
 
-            m_Thread = new Thread(CompressionThread)
+            var mThread = new Thread(CompressionThread)
             {
                 Name = "Housing Compression Thread"
             };
-            m_Thread.Start();
+            mThread.Start();
         }
 
         public static void CompressionThread()

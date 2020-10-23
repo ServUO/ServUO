@@ -6,21 +6,20 @@ using System.Collections.Generic;
 
 namespace Server.Guilds
 {
-    public struct InfoField<T>
+    public readonly struct InfoField<T>
     {
-        private readonly TextDefinition m_Name;
-        private readonly int m_Width;
-        private readonly IComparer<T> m_Comparer;
         public InfoField(TextDefinition name, int width, IComparer<T> comparer)
         {
-            m_Name = name;
-            m_Width = width;
-            m_Comparer = comparer;
+            Name = name;
+            Width = width;
+            Comparer = comparer;
         }
 
-        public TextDefinition Name => m_Name;
-        public int Width => m_Width;
-        public IComparer<T> Comparer => m_Comparer;
+        public TextDefinition Name { get; }
+
+        public int Width { get; }
+
+        public IComparer<T> Comparer { get; }
     }
 
     public abstract class BaseGuildListGump<T> : BaseGuildGump

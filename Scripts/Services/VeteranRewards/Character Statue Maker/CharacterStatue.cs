@@ -214,10 +214,6 @@ namespace Server.Mobiles
             from.Send(new UpdateStatueAnimation(this, 1, m_Animation, m_Frames));
         }
 
-        public override void OnAosSingleClick(Mobile from)
-        {
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

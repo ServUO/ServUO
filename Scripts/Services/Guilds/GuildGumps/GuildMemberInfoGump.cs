@@ -214,10 +214,7 @@ namespace Server.Guilds
                 from.SendLocalizedMessage(501179); // That title is disallowed.
             else
             {
-                if (Insensitive.Equals(title, "none"))
-                    targ.GuildTitle = null;
-                else
-                    targ.GuildTitle = title;
+                targ.GuildTitle = Insensitive.Equals(title, "none") ? null : title;
 
                 pm.SendLocalizedMessage(1063156, targ.Name); // The guild information for ~1_val~ has been updated.
             }

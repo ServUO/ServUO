@@ -88,11 +88,7 @@ namespace Server.Guilds
                     {
                         pm.AcceptGuildInvites = !pm.AcceptGuildInvites;
 
-                        if (pm.AcceptGuildInvites)
-                            pm.SendLocalizedMessage(1070699); // You are now accepting guild invitations.
-                        else
-                            pm.SendLocalizedMessage(1070698); // You are now ignoring guild invitations.
-
+                        pm.SendLocalizedMessage(pm.AcceptGuildInvites ? 1070699 : 1070698); // You are now accepting guild invitations. | // You are now ignoring guild invitations.
                         break;
                     }
             }
