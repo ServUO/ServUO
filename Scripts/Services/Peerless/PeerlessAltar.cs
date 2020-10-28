@@ -699,24 +699,17 @@ namespace Server.Items
                 SendMessage(1075611, timeLeft.TotalSeconds);
             }
 
-            var remove = new List<Mobile>();
+            var now = DateTime.UtcNow;
+            var remove = Fighters.Count;
 
-            foreach (var player in Fighters.OfType<PlayerMobile>().Where(p => p.NetState == null))
+            while (--remove >= 0)
             {
-                var offline = DateTime.UtcNow - player.LastOnline;
-
-                if (offline > TimeSpan.FromMinutes(10))
+                if (remove < Fighters.Count && Fighters[remove] is PlayerMobile player)
                 {
-                    remove.Add(player);
+                    if (player.NetState == null && (now - player.LastOnline).TotalMinutes > 10)
+                        Exit(player);
                 }
             }
-
-            for (int i = 0; i < remove.Count; i++)
-            {
-                Exit(remove[i]);
-            }
-
-            ColUtility.Free(remove);
         }
 
         #region Helpers
