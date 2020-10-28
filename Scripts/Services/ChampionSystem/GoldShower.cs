@@ -1,4 +1,4 @@
-﻿using Server.Items;
+using Server.Items;
 using System;
 
 namespace Server.Engines.CannedEvil
@@ -23,7 +23,7 @@ namespace Server.Engines.CannedEvil
             private readonly Map m_Map;
             private readonly Point3D m_Location;
             private readonly int m_PilesMax;
-            private int m_PilesDone = 0;
+            private int m_PilesDone;
             private readonly int m_MinAmount;
             private readonly int m_MaxAmount;
             public GoodiesTimer(Point3D center, Map map, int piles, int minAmount, int maxAmount)

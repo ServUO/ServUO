@@ -854,7 +854,7 @@ namespace Server.Engines.CannedEvil
                     return new Point3D(x, y, z);
 
                 /* try @ platform Z if map z fails */
-                else if (Map.CanSpawnMobile(new Point2D(x, y), m_Platform.Location.Z))
+                if (Map.CanSpawnMobile(new Point2D(x, y), m_Platform.Location.Z))
                     return new Point3D(x, y, m_Platform.Location.Z);
             }
 
@@ -1231,7 +1231,6 @@ namespace Server.Engines.CannedEvil
 
             writer.Write(m_RandomizeType);
 
-            // writer.Write( m_SpawnRange );
             writer.Write(m_Kills);
 
             writer.Write(m_Active);
@@ -1318,22 +1317,12 @@ namespace Server.Engines.CannedEvil
                     }
                 case 1:
                     {
-                        if (version < 3)
-                        {
-                            int oldRange = reader.ReadInt();
-
-                            m_SpawnArea = new Rectangle2D(new Point2D(X - oldRange, Y - oldRange), new Point2D(X + oldRange, Y + oldRange));
-                        }
-
                         m_Kills = reader.ReadInt();
 
                         goto case 0;
                     }
                 case 0:
                     {
-                        if (version < 1)
-                            m_SpawnArea = new Rectangle2D(new Point2D(X - 24, Y - 24), new Point2D(X + 24, Y + 24));	//Default was 24
-
                         bool active = reader.ReadBool();
                         m_Type = (ChampionSpawnType)reader.ReadInt();
                         m_Creatures = reader.ReadStrongMobileList();
@@ -1350,12 +1339,6 @@ namespace Server.Engines.CannedEvil
                         {
                             m_RestartTime = reader.ReadDeltaTime();
                             BeginRestart(m_RestartTime - DateTime.UtcNow);
-                        }
-
-                        if (version < 4)
-                        {
-                            m_Idol = new IdolOfTheChampion(this);
-                            m_Idol.MoveToWorld(new Point3D(X, Y, Z - 15), Map);
                         }
 
                         if (m_Platform == null || m_Altar == null || m_Idol == null)

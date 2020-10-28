@@ -10,8 +10,8 @@ namespace Server.Engines.CannedEvil
 {
     public class ChampionSystem
     {
-        private static bool m_Enabled = false;
-        private static bool m_Initialized = false;
+        private static bool m_Enabled;
+        private static bool m_Initialized;
         private static readonly string m_Path = Path.Combine("Saves", "Champions", "ChampionSystem.bin");
         private static readonly string m_ConfigPath = Path.Combine("Config", "ChampionSpawns.xml");
         private static DateTime m_LastRotate;
@@ -349,7 +349,7 @@ namespace Server.Engines.CannedEvil
             private static readonly int[] gTab;
             private static readonly int gWidth;
 
-            public List<ChampionSpawn> Spawners { get; set; }
+            public List<ChampionSpawn> Spawners { get; }
 
             static ChampionSystemGump()
             {

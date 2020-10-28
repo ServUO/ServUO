@@ -110,7 +110,8 @@ namespace Server.Engines.Harvest
                 OnBadHarvestTarget(from, tool, toHarvest);
                 return;
             }
-            else if (!def.Validate(tileID) && !def.ValidateSpecial(tileID))
+
+            if (!def.Validate(tileID) && !def.ValidateSpecial(tileID))
             {
                 OnBadHarvestTarget(from, tool, toHarvest);
                 return;
@@ -118,9 +119,9 @@ namespace Server.Engines.Harvest
 
             if (!CheckRange(from, tool, def, map, loc, true))
                 return;
-            else if (!CheckResources(from, tool, def, map, loc, true))
+            if (!CheckResources(from, tool, def, map, loc, true))
                 return;
-            else if (!CheckHarvest(from, tool, def, toHarvest))
+            if (!CheckHarvest(from, tool, def, toHarvest))
                 return;
 
             if (SpecialHarvest(from, tool, def, map, loc))
@@ -386,23 +387,27 @@ namespace Server.Engines.Harvest
                 OnBadHarvestTarget(from, tool, toHarvest);
                 return false;
             }
-            else if (!def.Validate(tileID) && !def.ValidateSpecial(tileID))
+
+            if (!def.Validate(tileID) && !def.ValidateSpecial(tileID))
             {
                 from.EndAction(locked);
                 OnBadHarvestTarget(from, tool, toHarvest);
                 return false;
             }
-            else if (!CheckRange(from, tool, def, map, loc, true))
+
+            if (!CheckRange(from, tool, def, map, loc, true))
             {
                 from.EndAction(locked);
                 return false;
             }
-            else if (!CheckResources(from, tool, def, map, loc, true))
+
+            if (!CheckResources(from, tool, def, map, loc, true))
             {
                 from.EndAction(locked);
                 return false;
             }
-            else if (!CheckHarvest(from, tool, def, toHarvest))
+
+            if (!CheckHarvest(from, tool, def, toHarvest))
             {
                 from.EndAction(locked);
                 return false;
@@ -489,9 +494,9 @@ namespace Server.Engines.Harvest
 
             if (!CheckRange(from, tool, def, map, loc, false))
                 return;
-            else if (!CheckResources(from, tool, def, map, loc, false))
+            if (!CheckResources(from, tool, def, map, loc, false))
                 return;
-            else if (!CheckHarvest(from, tool, def, toHarvest))
+            if (!CheckHarvest(from, tool, def, toHarvest))
                 return;
 
             object toLock = GetLock(from, tool, def, toHarvest);
@@ -596,7 +601,7 @@ namespace Server.Engines.Harvest
             Map map = m.Map;
             toHarvest = null;
 
-            if (m == null || map == null || map == Map.Internal)
+            if (map == null || map == Map.Internal)
                 return false;
 
             for (int x = m.X - 1; x <= m.X + 1; x++)
@@ -740,7 +745,7 @@ namespace Server
             return _NotChoppables.Any(t => t == item.GetType());
         }
 
-        private static readonly Type[] _NotChoppables = new Type[]
+        private static readonly Type[] _NotChoppables =
         {
             typeof(CommodityDeedBox), typeof(ChinaCabinet), typeof(PieSafe), typeof(AcademicBookCase), typeof(JewelryBox),
             typeof(WoodenBookcase), typeof(Countertop), typeof(Mailbox), typeof(DecorativeMagesCrystalBall), typeof(DecorativeMageThrone),
@@ -766,7 +771,7 @@ namespace Server
                 return true;
             }
 
-            if (item is AddonComponent && ((AddonComponent)item).Addon != null && ((AddonComponent)item).Addon.GetType().IsDefined(typeof(FurnitureAttribute), false))
+            if ((item as AddonComponent)?.Addon != null && ((AddonComponent)item).Addon.GetType().IsDefined(typeof(FurnitureAttribute), false))
             {
                 return true;
             }
