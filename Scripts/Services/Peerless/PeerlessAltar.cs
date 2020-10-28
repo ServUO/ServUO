@@ -695,23 +695,28 @@ namespace Server.Items
             TimeSpan timeLeft = Deadline - DateTime.UtcNow;
 
             if (timeLeft < TimeSpan.FromMinutes(30))
-                SendMessage(1075611, timeLeft.TotalSeconds);
-
-            Fighters.ForEach(x =>
             {
-                if (x is PlayerMobile)
+                SendMessage(1075611, timeLeft.TotalSeconds);
+            }
+
+            var remove = new List<Mobile>();
+
+            foreach (var player in Fighters.OfType<PlayerMobile>().Where(p => p.NetState == null))
+            {
+                var offline = DateTime.UtcNow - player.LastOnline;
+
+                if (offline > TimeSpan.FromMinutes(10))
                 {
-                    PlayerMobile player = (PlayerMobile)x;
-
-                    if (player.NetState == null)
-                    {
-                        TimeSpan offline = DateTime.UtcNow - player.LastOnline;
-
-                        if (offline > TimeSpan.FromMinutes(10))
-                            Exit(player);
-                    }
+                    remove.Add(player);
                 }
-            });
+            }
+
+            for (int i = 0; i < remove.Count; i++)
+            {
+                Exit(remove[i]);
+            }
+
+            ColUtility.Free(remove);
         }
 
         #region Helpers

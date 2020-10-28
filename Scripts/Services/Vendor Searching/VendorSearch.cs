@@ -441,7 +441,8 @@ namespace Server.Engines.VendorSearching
                 {
                     return false;
                 }
-                else if (o is TalismanSlayerName && (!(item is BaseTalisman) || ((BaseTalisman)item).Slayer != (TalismanSlayerName)o))
+
+                if (o is TalismanSlayerName && (!(item is BaseTalisman) || ((BaseTalisman)item).Slayer != (TalismanSlayerName)o))
                 {
                     return false;
                 }
@@ -540,7 +541,7 @@ namespace Server.Engines.VendorSearching
                 {
                     writer.Write(0);
 
-                    writer.Write(Contexts == null ? 0 : Contexts.Where(kvp => !kvp.Value.IsEmpty).Count());
+                    writer.Write(Contexts == null ? 0 : Contexts.Count(kvp => !kvp.Value.IsEmpty));
 
                     if (Contexts != null)
                     {
@@ -642,12 +643,6 @@ namespace Server.Engines.VendorSearching
             ObjectPropertyList opl = new ObjectPropertyList(item);
             item.GetProperties(opl);
 
-            if (opl == null)
-            {
-                //if there was a problem with this process, just return null
-                return null;
-            }
-
             //since the object property list is based on a packet object, the property info is packed away in a packet format
             byte[] data = opl.UnderlyingStream.UnderlyingStream.ToArray();
 
@@ -703,7 +698,7 @@ namespace Server.Engines.VendorSearching
             basestring = StringList.GetString((int)number);
             string args = s.ToString();
 
-            if (args == null || args == string.Empty)
+            if (args == string.Empty)
             {
                 return basestring;
             }
@@ -860,10 +855,10 @@ namespace Server.Engines.VendorSearching
 
     public class SearchCategory
     {
-        public Category Category { get; private set; }
+        public Category Category { get; }
         public int Label => (int)Category;
 
-        public List<Tuple<object, int, int>> Objects { get; private set; }
+        public List<Tuple<object, int, int>> Objects { get; }
 
         public SearchCategory(Category category)
         {
@@ -1036,10 +1031,10 @@ namespace Server.Engines.VendorSearching
         }
 
         public object Attribute { get; set; }
-        public int Label { get; set; }
-        public int PropLabel { get; set; }
+        public int Label { get; }
+        public int PropLabel { get; }
         public int Value { get; set; }
-        public Category Category { get; set; }
+        public Category Category { get; }
 
         public SearchDetail(object o, int label, int proplabel, int value, Category category)
         {
@@ -1177,7 +1172,7 @@ namespace Server.Engines.VendorSearching
 
     public class SearchVendors : ContextMenuEntry
     {
-        public PlayerMobile Player { get; set; }
+        public PlayerMobile Player { get; }
 
         public SearchVendors(PlayerMobile pm)
             : base(1154679, -1)
@@ -1198,12 +1193,12 @@ namespace Server.Engines.VendorSearching
 
     public class SearchItem
     {
-        public PlayerVendor Vendor { get; set; }
-        public IAuctionItem AuctionSafe { get; set; }
-        public Item Item { get; set; }
-        public int Price { get; set; }
-        public bool IsChild { get; set; }
-        public bool IsAuction { get; set; }
+        public PlayerVendor Vendor { get; }
+        public IAuctionItem AuctionSafe { get; }
+        public Item Item { get; }
+        public int Price { get; }
+        public bool IsChild { get; }
+        public bool IsAuction { get; }
 
         public Map Map => Vendor != null ? Vendor.Map : AuctionSafe != null ? AuctionSafe.Map : null;
 

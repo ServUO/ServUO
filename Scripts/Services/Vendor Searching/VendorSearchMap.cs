@@ -15,13 +15,13 @@ namespace Server.Items
         public readonly int DeleteDelayMinutes = 30;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public PlayerVendor Vendor { get; set; }
+        public PlayerVendor Vendor { get; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public IAuctionItem AuctionSafe { get; set; }
+        public IAuctionItem AuctionSafe { get; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Item SearchItem { get; set; }
+        public Item SearchItem { get; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Point3D SetLocation { get; set; }
@@ -30,7 +30,7 @@ namespace Server.Items
         public Map SetMap { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime DeleteTime { get; set; }
+        public DateTime DeleteTime { get; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsAuction => AuctionSafe != null;
@@ -122,7 +122,7 @@ namespace Server.Items
                 }
             }
 
-            return new string[] { Name, Shop };
+            return new[] { Name, Shop };
         }
 
         public override void GetProperties(ObjectPropertyList list)
@@ -185,11 +185,11 @@ namespace Server.Items
 
                 if (Sextant.Format(new Point3D(x, y, z), map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
                 {
-                    return new string[] { string.Format("{0}o {1}'{2}, {3}o {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W"), map.ToString() };
+                    return new[] { string.Format("{0}o {1}'{2}, {3}o {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W"), map.ToString() };
                 }
             }
 
-            return new string[] { "an unknown location", "Unknown" };
+            return new[] { "an unknown location", "Unknown" };
         }
 
         public void OnBeforeTravel(Mobile from)
@@ -281,8 +281,8 @@ namespace Server.Items
 
         public class OpenMapEntry : ContextMenuEntry
         {
-            public VendorSearchMap VendorMap { get; set; }
-            public Mobile Clicker { get; set; }
+            public VendorSearchMap VendorMap { get; }
+            public Mobile Clicker { get; }
 
             public OpenMapEntry(Mobile from, VendorSearchMap map)
                 : base(3006150, 1) // Open Map
@@ -299,8 +299,8 @@ namespace Server.Items
 
         public class TeleportEntry : ContextMenuEntry
         {
-            private VendorSearchMap VendorMap { get; set; }
-            private Mobile Clicker { get; set; }
+            private VendorSearchMap VendorMap { get; }
+            private Mobile Clicker { get; }
 
             public TeleportEntry(Mobile from, VendorSearchMap map)
                 : base(1154558, -1) // Teleport To Vendor
@@ -325,8 +325,8 @@ namespace Server.Items
 
         public class ReturnTeleportEntry : ContextMenuEntry
         {
-            private VendorSearchMap VendorMap { get; set; }
-            private Mobile Clicker { get; set; }
+            private VendorSearchMap VendorMap { get; }
+            private Mobile Clicker { get; }
 
             public ReturnTeleportEntry(Mobile from, VendorSearchMap map)
                 : base(1154636, -1) // Return to Previous Location
@@ -346,9 +346,9 @@ namespace Server.Items
 
         public class OpenContainerEntry : ContextMenuEntry
         {
-            private VendorSearchMap VendorMap { get; set; }
-            private Mobile Clicker { get; set; }
-            private Container Container { get; set; }
+            private VendorSearchMap VendorMap { get; }
+            private Mobile Clicker { get; }
+            private Container Container { get; }
 
             public OpenContainerEntry(Mobile from, VendorSearchMap map)
                 : base(1154699, -1) // Open Container Containing Item

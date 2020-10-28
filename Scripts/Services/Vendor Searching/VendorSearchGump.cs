@@ -11,10 +11,10 @@ namespace Server.Engines.VendorSearching
 {
     public class VendorSearchGump : BaseGump
     {
-        public SearchCriteria Criteria { get; set; }
+        public SearchCriteria Criteria { get; }
         public Map SetMap { get; set; }
 
-        public int Feedback { get; private set; }
+        public int Feedback { get; }
 
         public static int LabelColor = 0x4BBD;
         public static int CriteriaColor = 0x6B55;
@@ -237,7 +237,7 @@ namespace Server.Engines.VendorSearching
                                 }
                                 else
                                 {
-                                    Refresh(true);
+                                    Refresh();
                                     SendGump(new SearchResultsGump(User, results));
                                 }
                             });
@@ -252,38 +252,38 @@ namespace Server.Engines.VendorSearching
                 case 2: // Clear Criteria
                     {
                         Criteria.Reset();
-                        Refresh(true);
+                        Refresh();
                         break;
                     }
                 case 4: // Nothing, resend gump                    
-                    Refresh(true);
+                    Refresh();
                     break;
                 case 7: // remove item name
                     Criteria.SearchName = null;
-                    Refresh(true);
+                    Refresh();
                     break;
                 case 8: // remove price entry
                     Criteria.EntryPrice = false;
-                    Refresh(true);
+                    Refresh();
                     break;
                 case 9: // remove auction entry
-                    Refresh(true);
+                    Refresh();
                     break;
                 case 236: // Low to High
                     Criteria.SortBy = SortBy.LowToHigh;
-                    Refresh(true);
+                    Refresh();
                     break;
                 case 237: // High to Low
                     Criteria.SortBy = SortBy.HighToLow;
-                    Refresh(true);
+                    Refresh();
                     break;
                 case 238: // Non Auction Item
                     Criteria.Auction = false;
-                    Refresh(true);
+                    Refresh();
                     break;
                 case 239: // Auction Item
                     Criteria.Auction = true;
-                    Refresh(true);
+                    Refresh();
                     break;
                 case 1154512: // Set Min/Max price
                     TextRelay tr1 = info.GetTextEntry(7);
@@ -310,7 +310,7 @@ namespace Server.Engines.VendorSearching
                     }
 
                     Criteria.EntryPrice = true;
-                    Refresh(true);
+                    Refresh();
                     break;
                 default:
                     if (info.ButtonID > 1000)
@@ -321,7 +321,7 @@ namespace Server.Engines.VendorSearching
                             Criteria.SearchType = Layer.Invalid;
 
                         Criteria.Details.Remove(toRemove);
-                        Refresh(true);
+                        Refresh();
                     }
                     else
                     {
@@ -340,7 +340,7 @@ namespace Server.Engines.VendorSearching
                             value = Math.Max(o is AosAttribute && (AosAttribute)o == AosAttribute.CastSpeed ? -1 : 0, Utility.ToInt32(valuetext.Text));
 
                         Criteria.TryAddDetails(o, criteria.Cliloc, criteria.PropCliloc, value, criteria.Category);
-                        Refresh(true);
+                        Refresh();
                     }
                     break;
             }
@@ -386,7 +386,7 @@ namespace Server.Engines.VendorSearching
         public int LabelColor => 0x4BBD;
         public int TextColor => 0x6B55;
 
-        public List<SearchItem> Items { get; set; }
+        public List<SearchItem> Items { get; }
         public int Index { get; set; }
 
         public SearchResultsGump(PlayerMobile pm, List<SearchItem> items)
@@ -433,7 +433,7 @@ namespace Server.Engines.VendorSearching
                     AddHtmlLocalized(162, y, 102, 72, Items[i].IsChild ? 1154598 : 1154645, string.Format("{0}", price <= 0 ? "0" : FormatPrice(price)), TextColor, false, false); // <center>~1_val~</center>
 
                 if (map != null)
-                    AddHtmlLocalized(274, y, 102, 72, 1114513, string.Format("{0}", map.ToString()), TextColor, false, false);
+                    AddHtmlLocalized(274, y, 102, 72, 1114513, string.Format("{0}", map), TextColor, false, false);
 
                 AddButton(386, y, 30533, 30533, 100 + i, GumpButtonType.Reply, 0);
 
@@ -522,7 +522,7 @@ namespace Server.Engines.VendorSearching
 
     public class ConfirmTeleportGump : BaseGump
     {
-        public VendorSearchMap VendorMap { get; set; }
+        public VendorSearchMap VendorMap { get; }
 
         public ConfirmTeleportGump(VendorSearchMap map, PlayerMobile pm)
             : base(pm, 10, 10)
