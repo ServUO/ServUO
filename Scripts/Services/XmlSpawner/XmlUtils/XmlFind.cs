@@ -1492,9 +1492,9 @@ namespace Server.Mobiles
                 {
                     xstr = item1.Name;
                 }
-                else if (x is Mobile mobile)
+                else if (x is Mobile mobile1)
                 {
-                    xstr = mobile.Name;
+                    xstr = mobile1.Name;
                 }
 
                 if (y is Item item)
@@ -1552,9 +1552,9 @@ namespace Server.Mobiles
                     if (item1.Map != null)
                         ystr = item1.Map.ToString();
                 }
-                else if (y is Mobile mobile && mobile.Map != null)
+                else if (y is Mobile mobile1 && mobile1.Map != null)
                 {
-                    ystr = mobile.Map.ToString();
+                    ystr = mobile1.Map.ToString();
                 }
 
                 if (Dsort)
@@ -1611,10 +1611,10 @@ namespace Server.Mobiles
                     ymap = item1.Map;
                     yloc = item1.Location;
                 }
-                else if (y is Mobile mobile)
+                else if (y is Mobile mobile1)
                 {
-                    ymap = mobile.Map;
-                    yloc = mobile.Location;
+                    ymap = mobile1.Map;
+                    yloc = mobile1.Location;
                 }
 
                 if (xmap != From.Map && ymap != From.Map)
