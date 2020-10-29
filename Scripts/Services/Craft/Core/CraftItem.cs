@@ -368,7 +368,8 @@ namespace Server.Engines.Craft
             0x99CA, 0x99CB,
             0x9A14, 0x9A19,
             0xA2AF, 0xA2B9,
-            0x2AC0, 0x2AC5
+            0x2AC0, 0x2AC5,
+            0xA300, 0xA301
         };
 
         private static readonly Type[][] ItemTypesTable =
