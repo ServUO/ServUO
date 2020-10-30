@@ -88,7 +88,7 @@ namespace Server.Engines.SorcerersDungeon
             }
         }
 
-        public Dictionary<Mobile, int> DungeonPoints { get; set; }
+        public Dictionary<Mobile, int> DungeonPoints { get; }
 
         public override void Serialize(GenericWriter writer)
         {

@@ -31,8 +31,8 @@ namespace Server.Items
 
         private class InternalTimer : Timer
         {
-            public Mobile Owner { get; set; }
-            public ShackledHeartOfThePumpkinKing Heart { get; set; }
+            public Mobile Owner { get; }
+            public ShackledHeartOfThePumpkinKing Heart { get; }
 
             public int Ticks { get; set; }
 

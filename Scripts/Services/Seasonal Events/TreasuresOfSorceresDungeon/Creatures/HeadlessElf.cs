@@ -1,4 +1,3 @@
-
 using Server.Mobiles;
 
 namespace Server.Engines.SorcerersDungeon
@@ -58,6 +57,7 @@ namespace Server.Engines.SorcerersDungeon
         {
         }
 
+        public override bool CanFlee => false;
         public override bool AlwaysMurderer => true;
         public override Poison PoisonImmune => Poison.Deadly;
 

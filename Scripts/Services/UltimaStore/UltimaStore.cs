@@ -315,11 +315,14 @@ namespace Server.Engines.UOStore
             }
 
             Register<SoulstoneToken>(1158404, 1158405, 0x2A93, 0, 2598, 1000, cat, ConstructSoulstone);
+            Register<WeddingChest>(1157895, 1157896, 0, 0x9CCC, 0, 500, cat);
             Register<BagOfBulkOrderCovers>(1071116, 1157603, 0, 0x9CC6, 0, 200, cat, ConstructBOBCoverOne);
 
-            //TODO: UndeadWeddingBundle, TotemOfChromaticFortune, 
+            //TODO: TotemOfChromaticFortune, 
 
             Register<PetBrandingIron>(1157314, 1157372, 0, 0x9CC3, 0, 600, cat);
+            Register<WeddingPackageAddonToken>(1157342, 1157371, 0, 0x9CC5, 0, 900, cat);
+            Register<WeddingPackageToken>(1157339, 1157370, 0, 0x9CC4, 0, 2900, cat);
             Register<ImprovedRockHammer>(1157177, 1157306, 0, 0x9CBB, 0, 1000, cat);
             Register<PetBondingPotion>(1152921, 1156678, 0, 0x9CBC, 0, 500, cat);
 
