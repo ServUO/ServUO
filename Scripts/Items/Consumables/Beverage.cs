@@ -1037,6 +1037,11 @@ namespace Server.Items
 
                 if (src == null || src.Quantity <= 0)
                 {
+                    if (item is DecorativeWishingWell dw)
+                    {
+                        dw.CheckWaterSource(from, this);
+                    }
+
                     if (item.ItemID >= 0xB41 && item.ItemID <= 0xB44)
                     {
                         Caddellite.CheckWaterSource(from, this, item);
