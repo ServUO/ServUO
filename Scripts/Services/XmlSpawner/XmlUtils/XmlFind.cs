@@ -1379,23 +1379,19 @@ namespace Server.Mobiles
                 {
                     m_SearchList.Sort(new ListTypeSorter(Descendingsort));
                 }
-                else
-                    if (Sortname)
+                else if (Sortname)
                 {
                     m_SearchList.Sort(new ListNameSorter(Descendingsort));
                 }
-                else
-                        if (Sortmap)
+                else if (Sortmap)
                 {
                     m_SearchList.Sort(new ListMapSorter(Descendingsort));
                 }
-                else
-                            if (Sortrange)
+                else if (Sortrange)
                 {
                     m_SearchList.Sort(new ListRangeSorter(m_From, Descendingsort));
                 }
-                else
-                                if (Sortselect)
+                else if (Sortselect)
                 {
                     m_SearchList.Sort(new ListSelectSorter(Descendingsort));
                 }
@@ -1413,49 +1409,8 @@ namespace Server.Mobiles
 
             public int Compare(object e1, object e2)
             {
-                object x = null;
-                object y = null;
-
-                if (e1 is SearchEntry entry)
-                    x = entry.Object;
-                if (e2 is SearchEntry searchEntry)
-                    y = searchEntry.Object;
-
-                string xstr = null;
-                string ystr = null;
-                string str = null;
-
-                if (x is Item item)
-                {
-                    str = item.GetType().ToString();
-                }
-                else if (x is Mobile mobile)
-                {
-                    str = mobile.GetType().ToString();
-                }
-
-                if (str != null)
-                {
-                    string[] arglist = str.Split('.');
-                    xstr = arglist[arglist.Length - 1];
-                }
-
-                str = null;
-
-                if (y is Item item1)
-                {
-                    str = item1.GetType().ToString();
-                }
-                else if (y is Mobile mobile)
-                {
-                    str = mobile.GetType().ToString();
-                }
-
-                if (str != null)
-                {
-                    string[] arglist = str.Split('.');
-                    ystr = arglist[arglist.Length - 1];
-                }
+                string xstr = (e1 as SearchEntry)?.Object?.GetType().Name;
+                string ystr = (e2 as SearchEntry)?.Object?.GetType().Name;
 
                 if (Dsort)
                 {
@@ -1477,34 +1432,8 @@ namespace Server.Mobiles
 
             public int Compare(object e1, object e2)
             {
-                object x = null;
-                object y = null;
-
-                if (e1 is SearchEntry entry)
-                    x = entry.Object;
-                if (e2 is SearchEntry searchEntry)
-                    y = searchEntry.Object;
-
-                string xstr = null;
-                string ystr = null;
-
-                if (x is Item item1)
-                {
-                    xstr = item1.Name;
-                }
-                else if (x is Mobile mobile1)
-                {
-                    xstr = mobile1.Name;
-                }
-
-                if (y is Item item)
-                {
-                    ystr = item.Name;
-                }
-                else if (y is Mobile mobile)
-                {
-                    ystr = mobile.Name;
-                }
+                string xstr = ((e1 as SearchEntry)?.Object as IEntity)?.Name;
+                string ystr = ((e2 as SearchEntry)?.Object as IEntity)?.Name;
 
                 if (Dsort)
                 {
@@ -1526,36 +1455,8 @@ namespace Server.Mobiles
 
             public int Compare(object e1, object e2)
             {
-                object x = null;
-                object y = null;
-
-                if (e1 is SearchEntry entry)
-                    x = entry.Object;
-                if (e2 is SearchEntry searchEntry)
-                    y = searchEntry.Object;
-
-                string xstr = null;
-                string ystr = null;
-
-                if (x is Item item)
-                {
-                    if (item.Map != null)
-                        xstr = item.Map.ToString();
-                }
-                else if (x is Mobile mobile && mobile.Map != null)
-                {
-                    xstr = mobile.Map.ToString();
-                }
-
-                if (y is Item item1)
-                {
-                    if (item1.Map != null)
-                        ystr = item1.Map.ToString();
-                }
-                else if (y is Mobile mobile1 && mobile1.Map != null)
-                {
-                    ystr = mobile1.Map.ToString();
-                }
+                string xstr = ((e1 as SearchEntry)?.Object as IEntity)?.Map.Name;
+                string ystr = ((e2 as SearchEntry)?.Object as IEntity)?.Map.Name;
 
                 if (Dsort)
                 {
@@ -1579,61 +1480,28 @@ namespace Server.Mobiles
 
             public int Compare(object e1, object e2)
             {
-                object x = null;
-                object y = null;
-
-                if (e1 is SearchEntry entry)
-                    x = entry.Object;
-                if (e2 is SearchEntry searchEntry)
-                    y = searchEntry.Object;
-
-                Map xmap = null;
-                Map ymap = null;
-                Point3D xloc = new Point3D(0, 0, 0);
-                Point3D yloc = new Point3D(0, 0, 0);
-
                 if (From == null || From.Deleted)
                     return 0;
 
-                if (x is Item item)
-                {
-                    xmap = item.Map;
-                    xloc = item.Location;
-                }
-                else if (x is Mobile mobile)
-                {
-                    xmap = mobile.Map;
-                    xloc = mobile.Location;
-                }
+                IEntity entity1 = ((e1 as SearchEntry)?.Object as IEntity);
+                IEntity entity2 = ((e2 as SearchEntry)?.Object as IEntity);
 
-                if (y is Item item1)
-                {
-                    ymap = item1.Map;
-                    yloc = item1.Location;
-                }
-                else if (y is Mobile mobile1)
-                {
-                    ymap = mobile1.Map;
-                    yloc = mobile1.Location;
-                }
+                if (entity1 == null && entity2 == null)
+                    return 0;
+                else if (entity1 == null)
+                    return Dsort ? 1 : -1;
+                else if (entity2 == null)
+                    return Dsort ? -1 : 1;
 
-                if (xmap != From.Map && ymap != From.Map)
+                if (entity1.Map != From.Map && entity2.Map != From.Map)
                     return 0;
 
+                if (entity1.Map == From.Map && entity2.Map != From.Map) return Dsort ? 1 : -1;
+                if (entity1.Map != From.Map && entity2.Map == From.Map) return Dsort ? -1 : 1;
+
                 if (Dsort)
-                {
-                    if (xmap == From.Map && ymap != From.Map) return 1;
-                    if (xmap != From.Map && ymap == From.Map) return -1;
-                    return From.GetDistanceToSqrt(yloc).CompareTo(From.GetDistanceToSqrt(xloc));
-                }
-
-                if (xmap == From.Map && ymap != From.Map)
-                    return -1;
-
-                if (xmap != From.Map && ymap == From.Map)
-                    return 1;
-
-                return From.GetDistanceToSqrt(xloc).CompareTo(From.GetDistanceToSqrt(yloc));
+                    return From.GetDistanceToSqrt(entity2.Location).CompareTo(From.GetDistanceToSqrt(entity1.Location));
+                return From.GetDistanceToSqrt(entity1.Location).CompareTo(From.GetDistanceToSqrt(entity2.Location));
             }
         }
 
