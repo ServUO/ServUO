@@ -1,4 +1,3 @@
-
 using Server.Mobiles;
 
 namespace Server.Engines.SorcerersDungeon
@@ -11,7 +10,6 @@ namespace Server.Engines.SorcerersDungeon
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             Name = "a stocking serpent";
-
             Body = 0x509;
             BaseSoundID = 0xDB;
             Hue = 1459;
@@ -50,6 +48,7 @@ namespace Server.Engines.SorcerersDungeon
         {
         }
 
+        public override bool CanFlee => false;
         public override Poison HitPoison => Poison.Lethal;
         public override bool AlwaysMurderer => true;
         public override Poison PoisonImmune => Poison.Lethal;

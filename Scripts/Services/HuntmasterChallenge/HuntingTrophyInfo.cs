@@ -49,7 +49,7 @@ namespace Server.Engines.HuntsmasterChallenge
         public static void Configure()
         {
             m_Infos.Add(new HuntingTrophyInfo(HuntType.GrizzlyBear, typeof(GrizzlyBear), 0x9A26, 1015242, 1123486, 400, 790, MeasuredBy.Weight, false));
-            m_Infos.Add(new HuntingTrophyInfo(HuntType.GrayWolf, typeof(GreyWolf), 0x9A28, 1029681, 1123488, 50, 99, MeasuredBy.Weight, false));
+            m_Infos.Add(new HuntingTrophyInfo(HuntType.GrayWolf, typeof(GreyWolf), 0x9A28, 1018118, 1123488, 50, 99, MeasuredBy.Weight, false));
             m_Infos.Add(new HuntingTrophyInfo(HuntType.Cougar, typeof(Cougar), 0x9A2A, 1029603, 1123490, 100, 220, MeasuredBy.Weight, false));
             m_Infos.Add(new HuntingTrophyInfo(HuntType.Turkey, typeof(Turkey), 0x9A2C, 1155714, 1123492, 10, 24, MeasuredBy.Weight, false));
             m_Infos.Add(new HuntingTrophyInfo(HuntType.Bull, typeof(Bull), 0x9A2E, 1072495, 1123494, 1100, 2200, MeasuredBy.Weight, false));

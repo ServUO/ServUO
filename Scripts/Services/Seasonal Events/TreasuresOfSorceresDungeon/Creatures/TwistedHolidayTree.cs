@@ -1,4 +1,3 @@
-
 using Server.Mobiles;
 
 namespace Server.Engines.SorcerersDungeon
@@ -10,8 +9,7 @@ namespace Server.Engines.SorcerersDungeon
         public TwistedHolidayTree()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            Name = "a twisted holidy tree";
-
+            Name = "a twisted holiday tree";
             Body = 47;
             BaseSoundID = 442;
             Hue = 1175;
@@ -51,6 +49,7 @@ namespace Server.Engines.SorcerersDungeon
         {
         }
 
+        public override bool CanFlee => false;
         public override bool AlwaysMurderer => true;
         public override Poison PoisonImmune => Poison.Deadly;
 
