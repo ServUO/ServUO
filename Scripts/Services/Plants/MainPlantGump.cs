@@ -68,7 +68,7 @@ namespace Server.Engines.Plants
             AddButton(48, 183, 0xD2, 0xD2, 11, GumpButtonType.Reply, 0); // Help
             AddLabel(54, 183, 0x835, "?");
 
-            if (plant is MaginciaPlantItem || plant is RaisedGardenPlantItem)
+            if (plant is MaginciaPlantItem || plant is GardenBedPlantItem)
             {
                 AddItem(219, 180, 0x913);
             }

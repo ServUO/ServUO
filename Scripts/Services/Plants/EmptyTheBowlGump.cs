@@ -7,7 +7,7 @@ namespace Server.Engines.Plants
     {
         private readonly PlantItem m_Plant;
 
-        public bool IsOtherPlant => m_Plant != null && m_Plant is MaginciaPlantItem || m_Plant is RaisedGardenPlantItem;
+        public bool IsOtherPlant => m_Plant != null && m_Plant is MaginciaPlantItem || m_Plant is GardenBedPlantItem;
 
         public EmptyTheBowlGump(PlantItem plant)
             : base(20, 20)
