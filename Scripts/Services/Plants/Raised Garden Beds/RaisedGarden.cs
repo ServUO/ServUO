@@ -1,10 +1,9 @@
 using Server.Engines.Plants;
 using Server.Gumps;
-using Server.Network;
 
 namespace Server.Items
 {
-    public enum RaisedGardenDirection
+    public enum GardenBedDirection
     {
         South = 1,
         East,
@@ -12,17 +11,17 @@ namespace Server.Items
         Small
     }
 
-    [TypeAlias("Server.Items.RaisedGardenSmallAddon", "Server.Items.RaisedGardenSouthAddon", "Server.Items.RaisedGardenEastAddon", "Server.Items.RaisedGardenLargeAddon")]
     public class RaisedGardenAddon : BaseAddon
     {
         public override BaseAddonDeed Deed => new RaisedGardenDeed();
+        public override bool ForceShowProperties => true;
 
         [Constructable]
-        public RaisedGardenAddon(RaisedGardenDirection direction)
+        public RaisedGardenAddon(GardenBedDirection direction)
         {
             switch (direction)
             {
-                case RaisedGardenDirection.Large:
+                case GardenBedDirection.Large:
                     {
                         AddComponent(new GardenAddonComponent(19234), 0, 0, 0);
                         AddComponent(new GardenAddonComponent(19240), 1, 0, 0);
@@ -36,7 +35,7 @@ namespace Server.Items
 
                         break;
                     }
-                case RaisedGardenDirection.East:
+                case GardenBedDirection.East:
                     {
                         AddComponent(new GardenAddonComponent(19234), 0, 0, 0);
                         AddComponent(new GardenAddonComponent(19235), 1, 0, 0);
@@ -47,7 +46,7 @@ namespace Server.Items
 
                         break;
                     }
-                case RaisedGardenDirection.South:
+                case GardenBedDirection.South:
                     {
                         AddComponent(new GardenAddonComponent(19234), 0, 0, 0);
                         AddComponent(new GardenAddonComponent(19240), 1, 0, 0);
@@ -58,7 +57,7 @@ namespace Server.Items
 
                         break;
                     }
-                case RaisedGardenDirection.Small:
+                case GardenBedDirection.Small:
                     {
                         AddComponent(new GardenAddonComponent(19234), 0, 0, 0);
                         AddComponent(new GardenAddonComponent(19235), 1, 0, 0);
@@ -98,16 +97,16 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
-    [TypeAlias("Server.Items.RaisedGardenSmallAddonDeed", "Server.Items.RaisedGardenEastAddonDeed", "Server.Items.RaisedGardenSouthAddonDeed", "Server.Items.RaisedGardenLargeAddonDeed")]
-    public class RaisedGardenDeed : BaseAddonDeed
+    public class RaisedGardenDeed : BaseAddonDeed, IRewardOption
     {
         public override int LabelNumber => 1150359;  // Raised Garden Bed
+
         public override BaseAddon Addon => new RaisedGardenAddon(m_Direction);
-        public RaisedGardenDirection m_Direction;
+        public GardenBedDirection m_Direction;
 
         [Constructable]
         public RaisedGardenDeed()
@@ -120,20 +119,31 @@ namespace Server.Items
         {
         }
 
+        public void GetOptions(RewardOptionList list)
+        {
+            list.Add(1, 1150381); // Garden Bed (South) 
+            list.Add(2, 1150382); // Garden Bed (East)
+            list.Add(3, 1150620); // Garden Bed (Large)
+            list.Add(4, 1150621); // Garden Bed (Small)
+        }
+
+        public void OnOptionSelected(Mobile from, int choice)
+        {
+            m_Direction = (GardenBedDirection)choice;
+
+            if (!Deleted)
+                base.OnDoubleClick(from);
+        }
+
         public override void OnDoubleClick(Mobile from)
         {
             if (IsChildOf(from.Backpack))
             {
-                from.CloseGump(typeof(InternalGump));
-                from.SendGump(new InternalGump(this));
+                from.CloseGump(typeof(RewardOptionGump));
+                from.SendGump(new RewardOptionGump(this, 1076170)); // Choose Direction
             }
             else
-                from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
-        }
-
-        private void SendTarget(Mobile m)
-        {
-            base.OnDoubleClick(m);
+                from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.       	
         }
 
         public override void Serialize(GenericWriter writer)
@@ -145,51 +155,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadEncodedInt();
-        }
-
-        private class InternalGump : Gump
-        {
-            private readonly RaisedGardenDeed m_Deed;
-
-            public InternalGump(RaisedGardenDeed deed) : base(60, 36)
-            {
-                m_Deed = deed;
-
-                AddPage(0);
-
-                AddBackground(0, 0, 273, 324, 0x13BE);
-                AddImageTiled(10, 10, 253, 20, 0xA40);
-                AddImageTiled(10, 40, 253, 244, 0xA40);
-                AddImageTiled(10, 294, 253, 20, 0xA40);
-                AddAlphaRegion(10, 10, 253, 304);
-                AddButton(10, 294, 0xFB1, 0xFB2, 0, GumpButtonType.Reply, 0);
-                AddHtmlLocalized(45, 296, 450, 20, 1060051, 0x7FFF, false, false); // CANCEL
-                AddHtmlLocalized(14, 12, 273, 20, 1076170, 0x7FFF, false, false); // Choose Direction
-
-                AddPage(1);
-
-                AddButton(19, 49, 0x845, 0x846, 1, GumpButtonType.Reply, 0);
-                AddHtmlLocalized(44, 47, 213, 20, 1150381, 0x7FFF, false, false); // Raised Garden Bed (South)
-
-                AddButton(19, 73, 0x845, 0x846, 2, GumpButtonType.Reply, 0);
-                AddHtmlLocalized(44, 71, 213, 20, 1150382, 0x7FFF, false, false); // Raised Garden Bed (East)
-
-                AddButton(19, 97, 0x845, 0x846, 3, GumpButtonType.Reply, 0);
-                AddHtmlLocalized(44, 95, 213, 20, 1150620, 0x7FFF, false, false); // Raised Garden Bed (Large)
-
-                AddButton(19, 121, 0x845, 0x846, 4, GumpButtonType.Reply, 0);
-                AddHtmlLocalized(44, 119, 213, 20, 1150621, 0x7FFF, false, false); // Raised Garden Bed (Small)
-            }
-
-            public override void OnResponse(NetState sender, RelayInfo info)
-            {
-                if (m_Deed == null || m_Deed.Deleted || info.ButtonID == 0)
-                    return;
-
-                m_Deed.m_Direction = (RaisedGardenDirection)info.ButtonID;
-                m_Deed.SendTarget(sender.Mobile);
-            }
+            reader.ReadEncodedInt();
         }
     }
 
@@ -222,10 +188,16 @@ namespace Server.Items
             }
         }
 
-        public override int LabelNumber => 1150359;  // Raised Garden Bed
+        public override int LabelNumber => Addon is RaisedGardenAddon ? 1150359 : 1159056; // Raised Garden Bed - Field Garden Bed
 
-        public GardenAddonComponent(int itemID) : base(itemID)
+        public GardenAddonComponent(int itemID)
+            : base(itemID)
         {
+        }
+
+        public int ZLocation()
+        {
+            return Addon is RaisedGardenAddon ? 5 : 1;
         }
 
         public override void Delete()
@@ -233,10 +205,11 @@ namespace Server.Items
             base.Delete();
 
             if (Plant != null)
-                m_Plant.Z -= 5;
+                m_Plant.Z -= ZLocation();
         }
 
-        public GardenAddonComponent(Serial serial) : base(serial)
+        public GardenAddonComponent(Serial serial)
+            : base(serial)
         {
         }
 
@@ -251,12 +224,12 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Plant = reader.ReadItem() as PlantItem;
 
-            if (m_Plant != null && m_Plant is RaisedGardenPlantItem && ((RaisedGardenPlantItem)m_Plant).Component == null)
-                ((RaisedGardenPlantItem)m_Plant).Component = this;
+            if (m_Plant != null && m_Plant is GardenBedPlantItem && ((GardenBedPlantItem)m_Plant).Component == null)
+                ((GardenBedPlantItem)m_Plant).Component = this;
         }
     }
 }

@@ -5,7 +5,8 @@ using System;
 
 namespace Server.Engines.Plants
 {
-    public class RaisedGardenPlantItem : PlantItem
+    [TypeAlias("Server.Engines.Plants.RaisedGardenPlantItem")]
+    public class GardenBedPlantItem : PlantItem
     {
         public override bool RequiresUpkeep => false;
         public override int BowlOfDirtID => 2323;
@@ -95,7 +96,7 @@ namespace Server.Engines.Plants
             get { return false; }
             set
             {
-                if (value = true && PlantSystem != null)
+                if (value && PlantSystem != null)
                 {
                     PlantSystem.NextGrowth = DateTime.UtcNow;
                     PlantSystem.DoGrowthCheck();
@@ -104,12 +105,14 @@ namespace Server.Engines.Plants
         }
 
         [Constructable]
-        public RaisedGardenPlantItem() : this(false)
+        public GardenBedPlantItem()
+            : this(false)
         {
         }
 
         [Constructable]
-        public RaisedGardenPlantItem(bool fertileDirt) : base(2323, fertileDirt)
+        public GardenBedPlantItem(bool fertileDirt)
+            : base(2323, fertileDirt)
         {
             Movable = false;
         }
@@ -151,61 +154,24 @@ namespace Server.Engines.Plants
             return house != null && house.IsCoOwner(from) && IsAccessibleTo(from);
         }
 
-        /*public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
-        {
-            base.GetContextMenuEntries(from, list);
-
-            list.Add(new RemovePlantEntry(this, IsUsableBy(from)));
-        }
-
-        private class RemovePlantEntry : ContextMenuEntry
-        {
-            private RaisedGardenPlantItem m_Patch;
-
-            public RemovePlantEntry(RaisedGardenPlantItem patch, bool enabled) : base(1150324, 3)
-            {
-                m_Patch = patch;
-
-                if (!enabled)
-                    Flags |= CMEFlags.Disabled;
-            }
-
-            public override void OnClick()
-            {
-                if (m_Patch.Deleted)
-                    return;
-
-                Mobile from = Owner.From;
-
-                if (from.CheckAlive())
-                {
-                    from.SendLocalizedMessage(1150325); // You have removed the plant from the raised garden bed.
-
-                    m_Patch.Movable = true;
-
-                    if (from.Backpack != null)
-                        from.Backpack.TryDropItem(from, m_Patch, false);
-                }
-            }
-        }*/
-
-        public RaisedGardenPlantItem(Serial serial) : base(serial)
+        public GardenBedPlantItem(Serial serial)
+            : base(serial)
         {
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
+
             writer.Write(m_Component);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+            reader.ReadInt();
 
-            int version = reader.ReadInt();
             m_Component = reader.ReadItem() as GardenAddonComponent;
         }
     }

@@ -60,7 +60,7 @@ namespace Server.Engines.Plants
 
             if (comp != null && m_Seed != null)
             {
-                RaisedGardenPlantItem dirt = new RaisedGardenPlantItem(fertile);
+                GardenBedPlantItem dirt = new GardenBedPlantItem(fertile);
                 dirt.MoveToWorld(new Point3D(comp.X, comp.Y, comp.Z + 5), comp.Map);
                 dirt.Component = comp;
                 comp.Plant = dirt;
