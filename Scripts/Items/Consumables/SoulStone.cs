@@ -810,7 +810,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(3); // version
 
             //version 3
@@ -832,7 +831,6 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadEncodedInt();
 
             switch (version)
@@ -934,7 +932,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(2); // version
 
             writer.WriteEncodedInt(m_UsesRemaining);
@@ -943,7 +940,6 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadEncodedInt();
 
             m_UsesRemaining = reader.ReadEncodedInt();
@@ -1048,15 +1044,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -1084,10 +1078,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsRewardItem
         {
-            get
-            {
-                return m_IsRewardItem;
-            }
+            get { return m_IsRewardItem; }
             set
             {
                 m_IsRewardItem = value;
@@ -1106,7 +1097,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(1); // version
 
             writer.Write(m_IsRewardItem);
@@ -1115,7 +1105,6 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
             switch (version)
@@ -1152,15 +1141,145 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
 
-            int version = reader.ReadInt();
+    public class OrangeSoulstone : SoulStone
+    {
+        [Constructable]
+        public OrangeSoulstone()
+            : this(null)
+        {
+        }
+
+        [Constructable]
+        public OrangeSoulstone(string account)
+            : base(account)
+        {
+            Hue = 43;
+        }
+
+        public OrangeSoulstone(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
+
+    public class YellowSoulstone : SoulStone
+    {
+        [Constructable]
+        public YellowSoulstone()
+            : this(null)
+        {
+        }
+
+        [Constructable]
+        public YellowSoulstone(string account)
+            : base(account)
+        {
+            Hue = 53;
+        }
+
+        public YellowSoulstone(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
+
+    public class WhiteSoulstone : SoulStone
+    {
+        [Constructable]
+        public WhiteSoulstone()
+            : this(null)
+        {
+        }
+
+        [Constructable]
+        public WhiteSoulstone(string account)
+            : base(account)
+        {
+            Hue = 1150;
+        }
+
+        public WhiteSoulstone(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
+
+    public class BlackSoulstone : SoulStone
+    {
+        [Constructable]
+        public BlackSoulstone()
+            : this(null)
+        {
+        }
+
+        [Constructable]
+        public BlackSoulstone(string account)
+            : base(account)
+        {
+            Hue = 1106;
+        }
+
+        public BlackSoulstone(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
         }
     }
 }

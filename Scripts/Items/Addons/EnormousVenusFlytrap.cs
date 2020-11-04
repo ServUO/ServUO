@@ -10,7 +10,7 @@ namespace Server.Items
     public class EnormousVenusFlytrapAddon : BaseAddonContainer
     {
         public override int LabelNumber => 1154462;  // Enormous Venus Flytrap
-
+        public override bool IsDecoContainer => false;
         public override bool Security => false;
         public override int DefaultGumpID => 0x9;
 
@@ -28,7 +28,7 @@ namespace Server.Items
             m_Cleanup = new List<CleanupArray>();
         }
 
-        public virtual void Flip(Mobile from, Direction direction)
+        public virtual void Flip(Direction direction)
         {
             switch (direction)
             {
@@ -214,7 +214,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             if (Items.Count > 0)
                 m_Timer = Timer.DelayCall(TimeSpan.FromMinutes(3), Empty);
@@ -256,7 +256,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

@@ -5,7 +5,11 @@ namespace Server.Items
         Green,
         Blue,
         Red,
-        Violet
+        Violet,
+        Orange,
+        Yellow,
+        White,
+        Black
     }
 
     public class SoulstoneFragmentToken : PromotionalToken
@@ -36,15 +40,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -82,6 +84,10 @@ namespace Server.Items
                     case SoulstoneType.Blue: return 1078832;
                     case SoulstoneType.Red: return 1078833;
                     case SoulstoneType.Violet: return 1158404;
+                    case SoulstoneType.Orange: return 1158869;
+                    case SoulstoneType.Yellow: return 1158870;
+                    case SoulstoneType.White: return 1158868;
+                    case SoulstoneType.Black: return 1158867;
                 }
             }
         }
@@ -98,6 +104,10 @@ namespace Server.Items
                     case SoulstoneType.Blue: return 1078835;
                     case SoulstoneType.Red: return 1078836;
                     case SoulstoneType.Violet: return 1158404;
+                    case SoulstoneType.Orange: return 1158869;
+                    case SoulstoneType.Yellow: return 1158870;
+                    case SoulstoneType.White: return 1158868;
+                    case SoulstoneType.Black: return 1158867;
                 }
             }
         }//soulstone
@@ -112,6 +122,10 @@ namespace Server.Items
                     case SoulstoneType.Blue: return new BlueSoulstone(from.Account.ToString()) { LastUserName = from.RawName };
                     case SoulstoneType.Red: return new RedSoulstone(from.Account.ToString()) { LastUserName = from.RawName };
                     case SoulstoneType.Violet: return new VioletSoulstone(from.Account.ToString()) { LastUserName = from.RawName };
+                    case SoulstoneType.Orange: return new OrangeSoulstone(from.Account.ToString()) { LastUserName = from.RawName };
+                    case SoulstoneType.Yellow: return new YellowSoulstone(from.Account.ToString()) { LastUserName = from.RawName };
+                    case SoulstoneType.White: return new WhiteSoulstone(from.Account.ToString()) { LastUserName = from.RawName };
+                    case SoulstoneType.Black: return new BlackSoulstone(from.Account.ToString()) { LastUserName = from.RawName };
                 }
             }
 
@@ -121,7 +135,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(1);
 
             writer.Write((int)Type);
@@ -130,7 +143,6 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
             switch (version)

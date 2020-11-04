@@ -1,23 +1,24 @@
 namespace Server.Items
 {
     [Furniture]
-    public class BarrelMailbox : Mailbox
+    public class StandingKittenMailbox : Mailbox
     {
         public override int LabelNumber => 1113927;  // Mailbox
-        public override int DefaultGumpID => 0x6D5;
 
-        public override int SouthMailBoxID => 0xA1F8;
-        public override int SouthEmptyMailBoxID => 0xA1F9;
-        public override int EastMailBoxID => 0xA1F5;
-        public override int EastEmptyMailBoxID => 0xA1F7;
+        public override int DefaultGumpID => 0x9D38;
+
+        public override int SouthMailBoxID => 0xA3F2;
+        public override int SouthEmptyMailBoxID => 0xA3F1;
+        public override int EastMailBoxID => 0xA3F0;
+        public override int EastEmptyMailBoxID => 0xA3EF;
 
         [Constructable]
-        public BarrelMailbox()
-            : base(0xA1F7)
+        public StandingKittenMailbox()
+            : base(0xA3EF)
         {
         }
 
-        public BarrelMailbox(Serial serial)
+        public StandingKittenMailbox(Serial serial)
             : base(serial)
         {
         }
@@ -31,7 +32,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

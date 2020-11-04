@@ -119,22 +119,21 @@ namespace Server.Items
         {
             Mobile killer = e.Killer;
 
+            if (killer is BaseCreature kbc && kbc.Controlled && kbc.ControlMaster != null)
+            {
+                killer = kbc.ControlMaster;
+            }
+
             if (e.Creature is BaseCreature bc && bc.IsSoulBound && killer is PlayerMobile && killer.Backpack != null)
             {
-                EtherealSoulbinder es = killer.Backpack.FindItemsByType<EtherealSoulbinder>().Where(x => x.SoulPoint < x.MaxSoulPoint).FirstOrDefault();
+                EtherealSoulbinder es = killer.Backpack.FindItemsByType<EtherealSoulbinder>().OrderByDescending(x => x.SoulPoint < x.MaxSoulPoint).First();
 
                 if (es != null)
                 {
                     var hm = bc.HitsMax;
+                    var scaler = hm > 1000 ? 1000 : 100;
 
-                    if (hm > 1000)
-                    {
-                        es.SoulPoint += (double)hm/1000;
-                    }
-                    else
-                    {
-                        es.SoulPoint += (double)hm/100;
-                    }
+                    es.SoulPoint += (double)(hm / scaler) * PotionOfGloriousFortune.GetBonus(killer, PotionEventType.Soulbinder);
                 }
             }
         }
