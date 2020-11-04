@@ -44,7 +44,7 @@ namespace Server.Engines.Points
 
                 int luck = Math.Max(0, ((PlayerMobile)damager).RealLuck);
 
-                DungeonPoints[damager] += (int)Math.Max(0, (bc.Fame * (1 + Math.Sqrt(luck) / 100)) * PotionOfGloriousFortune.GetBonus(damager));
+                DungeonPoints[damager] += (int)Math.Max(0, (bc.Fame * (1 + Math.Sqrt(luck) / 100)) * PotionOfGloriousFortune.GetBonus(damager, PotionEventType.Khaldun));
 
                 int x = DungeonPoints[damager];
                 const double A = 0.000863316841;
@@ -85,10 +85,9 @@ namespace Server.Engines.Points
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(3);
+            writer.Write(4);
 
             KhaldunTastyTreat.Save(writer);
-            PotionOfGloriousFortune.Save(writer);
 
             writer.Write(DungeonPoints.Count);
             foreach (KeyValuePair<Mobile, int> kvp in DungeonPoints)
@@ -101,15 +100,19 @@ namespace Server.Engines.Points
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
             switch (version)
             {
+                case 4:
                 case 3:
                 case 2:
                     KhaldunTastyTreat.Load(reader);
-                    PotionOfGloriousFortune.Load(reader);
+
+                    if (version < 4)
+                    {
+                        PotionOfGloriousFortune.OldLoad(reader);
+                    }
                     goto case 1;
                 case 1:
                     if (version == 2)
