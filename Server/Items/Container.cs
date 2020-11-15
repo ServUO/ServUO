@@ -291,6 +291,11 @@ namespace Server.Items
 
 		public virtual bool CheckStack(Mobile from, Item item)
 		{
+            if (item == null || item.Deleted || !item.Stackable)
+            {
+                return false;
+            }
+            
 			foreach (Item i in Items)
 			{
 				if (i.WillStack(from, item))
@@ -1792,22 +1797,30 @@ namespace Server.Items
 
 		public virtual bool TryDropItem(Mobile from, Item dropped, bool sendFullMessage)
 		{
-			if (!CheckStack(from, dropped) && !CheckHold(from, dropped, sendFullMessage, true))
-			{
-				return false;
-			}
+            if (CheckStack(from, dropped))
+            {
+                if (!CheckHold(from, dropped, sendFullMessage, false))
+                {
+                    return false;
+                }
 
-			List<Item> list = Items;
+                List<Item> list = Items;
 
-			for (int i = 0; i < list.Count; ++i)
-			{
-				Item item = list[i];
+                for (int i = 0; i < list.Count; ++i)
+                {
+                    Item item = list[i];
 
-				if (!(item is Container) && item.StackWith(from, dropped, false))
-				{
-					return true;
-				}
-			}
+                    if (!(item is Container) && item.StackWith(from, dropped, false))
+                    {
+                        return true;
+                    }
+                }
+            }
+            
+            if (!CheckHold(from, dropped, sendFullMessage, true))
+            {
+                return false;
+            }
 
 			DropItem(dropped);
 
