@@ -126,7 +126,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Selected = reader.ReadInt();
         }
@@ -144,7 +144,7 @@ namespace Server.Items
             return valid ? string.Format("{0}° {1}'{2}, {3}° {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W") : "Nowhere";
         }
 
-        public RunicAtlas Atlas { get; set; }
+        public RunicAtlas Atlas { get; }
         public int Selected => Atlas == null ? -1 : Atlas.Selected;
         public int Page { get; set; }
 
@@ -160,13 +160,13 @@ namespace Server.Items
         {
             if (map == Map.Trammel)
                 return 0xA;
-            else if (map == Map.Felucca)
+            if (map == Map.Felucca)
                 return 0x51;
-            else if (map == Map.Malas)
+            if (map == Map.Malas)
                 return 0x44E;
-            else if (map == Map.Tokuno)
+            if (map == Map.Tokuno)
                 return 0x482;
-            else if (map == Map.TerMur)
+            if (map == Map.TerMur)
                 return 0x66D;
 
             return 0;
@@ -272,6 +272,9 @@ namespace Server.Items
 
         public override void OnResponse(RelayInfo info)
         {
+            if (Atlas.Deleted || !User.InRange(Atlas.GetWorldLocation(), 3))
+                return;
+
             if (info.ButtonID >= 100 && info.ButtonID < 1000)
             {
                 SelectEntry(info.ButtonID - 100);
@@ -305,7 +308,7 @@ namespace Server.Items
                         {
                             if (entry != null)
                             {
-                                DropRune(); break;
+                                DropRune();
                             }
                             else
                             {
@@ -380,7 +383,7 @@ namespace Server.Items
 
         public void RenameBook()
         {
-            if (Atlas.CheckAccess(User) && Atlas.Movable != false || User.AccessLevel >= AccessLevel.GameMaster)
+            if (Atlas.CheckAccess(User) && Atlas.Movable || User.AccessLevel >= AccessLevel.GameMaster)
             {
                 User.Prompt = new InternalPrompt(Atlas);
             }
@@ -414,7 +417,7 @@ namespace Server.Items
 
         private void DropRune()
         {
-            if (Atlas.CheckAccess(User) && Atlas.Movable != false || User.AccessLevel >= AccessLevel.GameMaster)
+            if (Atlas.CheckAccess(User) && Atlas.Movable || User.AccessLevel >= AccessLevel.GameMaster)
             {
                 Atlas.DropRune(User, Atlas.Entries[Selected], Selected);
                 Refresh();
@@ -524,7 +527,7 @@ namespace Server.Items
         private class InternalPrompt : Prompt
         {
             public override int MessageCliloc => 502414;  // Please enter a title for the runebook:
-            public RunicAtlas Atlas { get; private set; }
+            public RunicAtlas Atlas { get; }
 
             public InternalPrompt(RunicAtlas atlas)
             {

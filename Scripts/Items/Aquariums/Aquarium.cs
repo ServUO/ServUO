@@ -275,7 +275,7 @@ namespace Server.Items
         {
             if (from == null || from.Deleted)
                 return false;
-            else if (from.AccessLevel >= AccessLevel.GameMaster)
+            if (from.AccessLevel >= AccessLevel.GameMaster)
                 return true;
 
             BaseHouse house = BaseHouse.FindHouseAt(this);
@@ -840,10 +840,8 @@ namespace Server.Items
                         from.SendLocalizedMessage(1074514); // You have no place to put it.
                         return false;
                     }
-                    else
-                    {
-                        from.SendLocalizedMessage(1074512); // You put the gasping creature into your pack.
-                    }
+
+                    from.SendLocalizedMessage(1074512); // You put the gasping creature into your pack.
                 }
 
                 if (!fish.Dead)
@@ -856,10 +854,8 @@ namespace Server.Items
                     from.SendLocalizedMessage(1074514); // You have no place to put it.
                     return false;
                 }
-                else
-                {
-                    from.SendLocalizedMessage(1074513); // You put the item into your pack.
-                }
+
+                from.SendLocalizedMessage(1074513); // You put the item into your pack.
             }
 
             InvalidateProperties();
@@ -969,7 +965,7 @@ namespace Server.Items
             return null;
         }
 
-        private static readonly Type[] m_Decorations = new Type[]
+        private static readonly Type[] m_Decorations =
         {
             typeof(FishBones),
             typeof(WaterloggedBoots),
@@ -998,7 +994,7 @@ namespace Server.Items
             return false;
         }
 
-        private static readonly int[] m_FishHues = new int[]
+        private static readonly int[] m_FishHues =
         {
             0x1C2, 0x1C3, 0x2A3, 0x47E, 0x51D
         };
@@ -1200,7 +1196,6 @@ namespace Server.Items
 
         [Constructable]
         public AquariumEastDeed()
-            : base()
         {
         }
 
@@ -1229,7 +1224,6 @@ namespace Server.Items
 
         [Constructable]
         public AquariumEastBarrel()
-            : base()
         {
         }
 
@@ -1258,7 +1252,6 @@ namespace Server.Items
 
         [Constructable]
         public AquariumNorthDeed()
-            : base()
         {
         }
 
@@ -1287,7 +1280,6 @@ namespace Server.Items
 
         [Constructable]
         public AquariumNorthBarrel()
-            : base()
         {
         }
 
@@ -1316,7 +1308,6 @@ namespace Server.Items
 
         [Constructable]
         public SmallElegantAquariumDeed()
-            : base()
         {
         }
 
@@ -1345,7 +1336,6 @@ namespace Server.Items
 
         [Constructable]
         public SmallElegantAquariumBarrel()
-            : base()
         {
         }
 
@@ -1376,7 +1366,6 @@ namespace Server.Items
 
         [Constructable]
         public WallMountedAquariumDeed()
-            : base()
         {
         }
 
@@ -1434,7 +1423,6 @@ namespace Server.Items
 
         [Constructable]
         public WallMountedAquariumBarrel()
-            : base()
         {
         }
 
@@ -1492,7 +1480,6 @@ namespace Server.Items
 
         [Constructable]
         public LargeElegantAquariumDeed()
-            : base()
         {
         }
 
@@ -1550,7 +1537,6 @@ namespace Server.Items
 
         [Constructable]
         public LargeElegantAquariumBarrel()
-            : base()
         {
         }
 
@@ -1604,6 +1590,11 @@ namespace Server.Items
         public abstract BaseAddonContainer Addon { get; }
 
         public override bool DisplaysContent => false;
+
+        public override bool OnDragDropInto(Mobile from, Item item, Point3D p)
+        {
+            return false;
+        }
 
         public AddonContainerBarrel()
             : base(0xFAE)
@@ -1724,7 +1715,7 @@ namespace Server.Items
 
     public class EventTimer : Timer
     {
-        public static List<Aquarium> Aquariums { get; set; } = new List<Aquarium>();
+        public static List<Aquarium> Aquariums { get; } = new List<Aquarium>();
 
         public static EventTimer Instance { get; set; }
 

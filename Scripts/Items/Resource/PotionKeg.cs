@@ -1,3 +1,4 @@
+using Server.Targeting;
 using System;
 
 namespace Server.Items
@@ -6,10 +7,13 @@ namespace Server.Items
     {
         private PotionEffect m_Type;
         private int m_Held;
+        private bool m_Unknown;
+
         [Constructable]
         public PotionKeg()
             : base(0x1940)
         {
+            Unknown = true;
             UpdateWeight();
         }
 
@@ -19,12 +23,19 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
+        public bool Unknown
+        {
+            get { return m_Unknown; }
+            set
+            {
+                m_Unknown = value; InvalidateProperties();
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public int Held
         {
-            get
-            {
-                return m_Held;
-            }
+            get { return m_Held; }
             set
             {
                 if (m_Held != value)
@@ -38,37 +49,77 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public PotionEffect Type
         {
-            get
-            {
-                return m_Type;
-            }
+            get { return m_Type; }
             set
             {
                 m_Type = value;
                 InvalidateProperties();
             }
         }
-        public override int LabelNumber
+
+        public override int LabelNumber { get { return GetLabelNumber(); } }
+
+        public int GetLabelNumber()
         {
-            get
+            int number = 1041610; // A keg of strange liquid.
+
+            if (m_Held > 0)
             {
-                if (m_Held > 0 && (int)m_Type >= (int)PotionEffect.Conflagration)
+                if (m_Unknown)
                 {
                     switch (m_Type)
                     {
-                        case PotionEffect.Parasitic: return 1080069;
-                        case PotionEffect.Darkglow: return 1080070;
-                        case PotionEffect.Invisibility: return 1080071;
-                        case PotionEffect.Conflagration: return 1072658;
-                        case PotionEffect.ConflagrationGreater: return 1072659;
-                        case PotionEffect.ConfusionBlast: return 1072662;
-                        case PotionEffect.ConfusionBlastGreater: return 1072663;
+                        case PotionEffect.Nightsight: number = 1041611; break; // A keg of black liquid.
+                        case PotionEffect.CureLesser: number = 1041612; break; // A keg of orange liquid.
+                        case PotionEffect.Cure: number = 1041612; break; // A keg of orange liquid.
+                        case PotionEffect.CureGreater: number = 1041612; break; // A keg of orange liquid.
+                        case PotionEffect.Agility: number = 1041613; break; // A keg of blue liquid.
+                        case PotionEffect.AgilityGreater: number = 1041613; break; // A keg of blue liquid.
+                        case PotionEffect.Strength: number = 1041614; break; // A keg of white liquid.
+                        case PotionEffect.StrengthGreater: number = 1041614; break; // A keg of white liquid.
+                        case PotionEffect.PoisonLesser: number = 1041615; break; // A keg of green liquid.
+                        case PotionEffect.Poison: number = 1041615; break; // A keg of green liquid.
+                        case PotionEffect.PoisonGreater: number = 1041615; break; // A keg of green liquid.
+                        case PotionEffect.Refresh: number = 1041616; break; // A keg of red liquid.
+                        case PotionEffect.RefreshTotal: number = 1041616; break; // A keg of red liquid.
+                        case PotionEffect.HealLesser: number = 1041617; break; // A keg of yellow liquid.
+                        case PotionEffect.Heal: number = 1041617; break; // A keg of yellow liquid.
+                        case PotionEffect.HealGreater: number = 1041617; break; // A keg of yellow liquid.
+                        case PotionEffect.ExplosionLesser: number = 1041618; break; // A keg of purple liquid.
+                        case PotionEffect.Explosion: number = 1041618; break; // A keg of purple liquid.
+                        case PotionEffect.ExplosionGreater: number = 1041618; break; // A keg of purple liquid.
+                        case PotionEffect.Conflagration: number = 1072654; break; // A keg of fiery liquid.
+                        case PotionEffect.ConflagrationGreater: number = 1072654; break; // A keg of fiery liquid.
+                        case PotionEffect.ConfusionBlast: number = 1072656; break; // A keg of muddled liquid.
+                        case PotionEffect.ConfusionBlastGreater: number = 1072656; break; // A keg of muddled liquid.
+                        case PotionEffect.Invisibility: number = 1080071; break; // A keg of Invisibility potions
+                        case PotionEffect.Parasitic: number = 1080067; break; // A Keg of Murky Liquid.
+                        case PotionEffect.Darkglow: number = 1080068; break; // A Keg of Baneful Liquid.
                     }
                 }
-
-                return (m_Held > 0 ? 1041620 + (int)m_Type : 1041641);
+                else
+                {
+                    switch (m_Type)
+                    {
+                        case PotionEffect.Conflagration: number = 1072658; break; // A keg of Conflagration potions
+                        case PotionEffect.ConflagrationGreater: number = 1072659; break; // A keg of Greater Conflagration potions
+                        case PotionEffect.ConfusionBlast: number = 1072662; break; // A keg of Confusion Blast potions
+                        case PotionEffect.ConfusionBlastGreater: number = 1072663; break; // A keg of Greater Confusion Blast potions
+                        case PotionEffect.Invisibility: number = 1080071; break; // A keg of Invisibility potions
+                        case PotionEffect.Parasitic: number = 1080069; break; // A keg of Parasitic Poison potions
+                        case PotionEffect.Darkglow: number = 1080070; break; // A keg of Darkglow Poison potions
+                        default: number = 1041620 + (int)m_Type; break;
+                    }
+                }
             }
+            else
+            {
+                number = 1041084; // A specially lined keg for potions.
+            }
+
+            return number;
         }
+
         public static void Initialize()
         {
             TileData.ItemTable[0x1940].Height = 4;
@@ -84,9 +135,9 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
+            writer.Write(2); // version
 
-            writer.Write(1); // version
-
+            writer.Write((bool)m_Unknown);
             writer.Write((int)m_Type);
             writer.Write(m_Held);
         }
@@ -94,11 +145,16 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
             int version = reader.ReadInt();
 
             switch (version)
             {
+                case 2:
+                    {
+                        m_Unknown = reader.ReadBool();
+
+                        goto case 1;
+                    }
                 case 1:
                 case 0:
                     {
@@ -167,7 +223,13 @@ namespace Server.Items
                             from.PlaySound(0x240);
 
                             if (--Held == 0)
-                                from.SendLocalizedMessage(502245); // The keg is now empty.
+                            {
+                                from.SendLocalizedMessage(502245); // The keg is now empty.							
+                            }
+                            else
+                            {
+                                Unknown = false;
+                            }
                         }
                         else
                         {
@@ -177,7 +239,9 @@ namespace Server.Items
                     }
                     else
                     {
-                        // TODO: Target a bottle
+                        from.Target = new BottleTarget(this);
+
+                        from.SendLocalizedMessage(502241); // Where is a container for your potion?
                     }
                 }
                 else
@@ -191,14 +255,61 @@ namespace Server.Items
             }
         }
 
+        private class BottleTarget : Target
+        {
+            private readonly PotionKeg m_Keg;
+
+            public BottleTarget(PotionKeg keg)
+                : base(12, true, TargetFlags.None)
+            {
+                m_Keg = keg;
+            }
+
+            protected override void OnTarget(Mobile from, object targeted)
+            {
+                if (targeted is Bottle bottle)
+                {
+                    Container pack = from.Backpack;
+
+                    from.SendLocalizedMessage(502242); // You pour some of the keg's contents into an empty bottle...
+
+                    BasePotion pot = m_Keg.FillBottle();
+
+                    if (pack.TryDropItem(from, pot, false))
+                    {
+                        from.SendLocalizedMessage(502243); // ...and place it into your backpack.
+                        from.PlaySound(0x240);
+
+                        if (--m_Keg.Held == 0)
+                            from.SendLocalizedMessage(502245); // The keg is now empty.							
+                        else
+                            m_Keg.Unknown = false;
+
+                        bottle.Consume();
+                    }
+                    else
+                    {
+                        from.SendLocalizedMessage(502244); // ...but there is no room for the bottle in your backpack.
+
+                        from.SendLocalizedMessage(502217); // Nothing comes out of the tap!
+                        pot.Delete();
+                    }
+
+                }
+                else
+                {
+                    from.SendLocalizedMessage(502227); // That cannot be used to hold a potion.
+                }
+            }
+        }
+
         public override bool OnDragDrop(Mobile from, Item item)
         {
-            if (item is BasePotion)
+            if (item is BasePotion pot)
             {
-                BasePotion pot = (BasePotion)item;
                 int toHold = Math.Min(100 - m_Held, pot.Amount);
 
-                if (pot.PotionEffect == PotionEffect.Darkglow || pot.PotionEffect == PotionEffect.Parasitic)
+                if (pot.PotionEffect > PotionEffect.Darkglow)
                 {
                     from.SendLocalizedMessage(502232); // The keg is not designed to hold that type of object.
                     return false;
@@ -348,6 +459,10 @@ namespace Server.Items
 
                 case PotionEffect.Invisibility:
                     return new InvisibilityPotion();
+                case PotionEffect.Parasitic:
+                    return new ParasiticPotion();
+                case PotionEffect.Darkglow:
+                    return new DarkglowPotion();
             }
         }
     }

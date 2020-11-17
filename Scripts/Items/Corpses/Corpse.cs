@@ -1199,6 +1199,17 @@ namespace Server.Items
             }
         }
 
+        public override void OnAosSingleClick(Mobile from)
+        {
+            int hue = Notoriety.GetHue(NotorietyHandlers.CorpseNotoriety(from, this));
+            ObjectPropertyList opl = PropertyList;
+
+            if (opl.Header > 0)
+            {
+                from.Send(new MessageLocalized(Serial, ItemID, MessageType.Label, hue, 3, opl.Header, Name, opl.HeaderArgs));
+            }
+        }
+
         public bool Carve(Mobile from, Item item)
         {
             if (IsCriminalAction(from) && Map != null && (Map.Rules & MapRules.HarmfulRestrictions) != 0)
