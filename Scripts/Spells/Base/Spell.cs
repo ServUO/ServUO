@@ -1292,6 +1292,7 @@ namespace Server.Spells
                             if (spell.Disturbed || !spell.Caster.Alive || spell.Caster.Deleted || spell.Caster.IsDeadBondedPet)
                             {
                                 registry.RemoveAt(i);
+                                spell.FinishSequence();
                             }
                             else if (spell.CastTime - 50 < Core.TickCount)
                             {

@@ -1907,6 +1907,12 @@ namespace Server.Items
             if (item != null)
             {
                 int budget = basebudget;
+
+                if (killer is BaseCreature bc && bc.Controlled)
+                {
+                    killer = bc.ControlMaster;
+                }
+
                 int rawLuck = killer != null ? killer is PlayerMobile ? ((PlayerMobile)killer).RealLuck : killer.Luck : 0;
 
                 int mods = 0;

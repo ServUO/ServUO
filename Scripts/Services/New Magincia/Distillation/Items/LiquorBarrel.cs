@@ -77,8 +77,8 @@ namespace Server.Items
                     else
                     {
                         from.PlaySound(0x240);
-                        from.SendMessage("You pour the liquior into a bottle and place it in your backpack.");
-                        m_UsesRemaining--;
+                        from.SendLocalizedMessage(1150815); // You have poured matured liquid into the bottle.
+                        UsesRemaining--;
                     }
                 }
                 else

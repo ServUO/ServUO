@@ -250,7 +250,7 @@ namespace Server.Items
                     {
                         var armor = item as BaseArmor;
 
-                        if ((armor != null && armor.MaterialType >= ArmorMaterialType.Chainmail && armor.MaterialType <= ArmorMaterialType.Plate) || m_Tub.CanForceDye(item))
+                        if ((armor != null && armor.MaterialType >= ArmorMaterialType.Ringmail && armor.MaterialType <= ArmorMaterialType.Plate) || m_Tub.CanForceDye(item))
                         {
                             if (!from.InRange(m_Tub.GetWorldLocation(), 1) || !from.InRange(item.GetWorldLocation(), 1))
                             {
@@ -258,7 +258,7 @@ namespace Server.Items
                             }
                             else if (!item.Movable)
                             {
-                                from.SendLocalizedMessage(1042419); // You may not dye leather items which are locked down.
+                                from.SendLocalizedMessage(1080395); // You may not dye metal items which are locked down.
                             }
                             else if (item.Parent is Mobile)
                             {

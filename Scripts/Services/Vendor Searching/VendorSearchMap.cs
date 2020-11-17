@@ -60,11 +60,10 @@ namespace Server.Items
                 p = Vendor.Location;
             }
 
-            Width = 300;
-            Height = 300;
-            int size = map == Map.Tokuno ? 300 : map == Map.TerMur ? 200 : 600;
+            const int width = 300;
+            const int height = 300;
 
-            Bounds = new Rectangle2D(p.X - size / 2, p.Y - size / 2, size, size);
+            SetDisplay(p.X - (width / 2), p.Y - (height / 2), p.X + (width / 2), p.Y + (height / 2), width, height);
             AddWorldPin(p.X, p.Y);
 
             DeleteTime = DateTime.UtcNow + TimeSpan.FromMinutes(DeleteDelayMinutes);

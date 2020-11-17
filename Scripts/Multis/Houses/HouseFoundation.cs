@@ -614,6 +614,18 @@ namespace Server.Multis
         {
         }
 
+        public override bool IsStairArea(IPoint3D p, out bool frontStairs)
+        {
+            if (p.Y >= Sign.Y)
+            {
+                frontStairs = true;
+                return true;
+            }
+
+            frontStairs = false;
+            return false;
+        }
+
         public void BeginCustomize(Mobile m)
         {
             if (!m.CheckAlive())
