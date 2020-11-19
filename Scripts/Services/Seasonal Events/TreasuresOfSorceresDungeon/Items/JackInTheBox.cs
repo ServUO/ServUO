@@ -2,14 +2,14 @@ using System;
 
 namespace Server.Items
 {
-    public class JackInTheBox : Item
+    public class DecoJackInTheBox : Item
     {
         public override int LabelNumber => 1157655;  // Jack in the Box
 
         private DateTime _LastUse;
 
         [Constructable]
-        public JackInTheBox()
+        public DecoJackInTheBox()
             : base(0x9F64)
         {
         }
@@ -40,7 +40,7 @@ namespace Server.Items
             }
         }
 
-        public JackInTheBox(Serial serial)
+        public DecoJackInTheBox(Serial serial)
             : base(serial)
         {
         }
