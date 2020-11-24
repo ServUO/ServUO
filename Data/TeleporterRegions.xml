@@ -1219,11 +1219,6 @@
 		<tiles from="(5140, 1773, 0)" frommap="Felucca" to="(5171, 1586, 0)" tomap="Felucca" />
 	</Teleporter>
 	<Teleporter>
-		<tiles from="(6992, 1367, -15)" frommap="Felucca" to="(511, 585, 11)" tomap="TerMur" />
-		<tiles from="(6993, 1367, -15)" frommap="Felucca" to="(512, 585, 11)" tomap="TerMur" />
-		<tiles from="(6994, 1367, -15)" frommap="Felucca" to="(513, 585, 11)" tomap="TerMur" />
-	</Teleporter>
-	<Teleporter>
 		<tiles from="(2186, 294, -27)" frommap="Ilshenar" to="(2186, 33, -27)" tomap="Ilshenar" />
 		<tiles from="(2187, 294, -27)" frommap="Ilshenar" to="(2187, 33, -27)" tomap="Ilshenar" />
 		<tiles from="(2188, 294, -27)" frommap="Ilshenar" to="(2188, 33, -27)" tomap="Ilshenar" />

@@ -362,6 +362,7 @@ namespace Server.Multis
             typeof(BaseBoard),              typeof(Aquarium),
             typeof(FishBowl),               typeof(BaseSpecialScrollBook),
             typeof(Engines.Plants.SeedBox), typeof(JewelryBox),
+            typeof(FermentationBarrel)
         };
 
         // Not Included Storage
