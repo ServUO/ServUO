@@ -3,8 +3,32 @@ using System.Linq;
 
 namespace Server.Items
 {
+    [TypeAlias("Server.Items.LuteTunedToStones")]
     public class Lute : BaseInstrument
     {
+        private bool m_LuteTunedToStones;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool LuteTunedToStones
+        {
+            get => m_LuteTunedToStones;
+            set
+            {
+                m_LuteTunedToStones = value;
+
+                if (value)
+                {
+                    SuccessSound = 0x682;
+                }
+                else
+                {
+                    SuccessSound = 0x4C;
+                }
+
+                InvalidateProperties();
+            }
+        }
+
         [Constructable]
         public Lute()
             : base(0xEB3, 0x4C, 0x4D)
@@ -17,6 +41,18 @@ namespace Server.Items
         {
         }
 
+        public override void AddNameProperty(ObjectPropertyList list)
+        {
+            if (m_LuteTunedToStones)
+            {
+                list.Add(1159413); // A Lute Tuned to Stones
+            }
+            else
+            {
+                base.AddNameProperty(list);
+            }
+        }
+
         public override void PlayInstrumentWell(Mobile from)
         {
             var smfs = from.Backpack.FindItemByType(typeof(SheetMusicForStones)) as SheetMusicForStones;
@@ -27,12 +63,19 @@ namespace Server.Items
 
                 if (box != null)
                 {
-                    from.FixedParticles(0x376A, 1, 72, 0x13B5, EffectLayer.Waist);
-                    from.AddToBackpack(new LuteTunedToStones());
+                    from.FixedParticles(0x376A, 1, 72, 0x13B5, EffectLayer.Waist);                    
                     from.PlaySound(1666);
+                    
+                    LuteTunedToStones = true;
+
+                    var neck = from.FindItemOnLayer(Layer.Neck);
+
+                    if (neck != null && (neck is FellowshipMedallion || neck is GargishFellowshipMedallion))
+                    {
+                        neck.Hue = 1151;
+                    }
 
                     smfs.Active = true;
-                    Delete();
 
                     Gump g = new Gump(100, 100);
                     g.AddBackground(0, 0, 620, 290, 0x2454);
@@ -52,13 +95,24 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0); // version
+            writer.Write(1); // version
+
+            writer.Write(m_LuteTunedToStones);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            if (version > 0)
+            {
+                m_LuteTunedToStones = reader.ReadBool();
+            }
+            else if (SuccessSound == 0x682)
+            {
+                LuteTunedToStones = true;
+            }
         }
     }
 }

@@ -22,9 +22,10 @@ namespace Server.Items
         public override int LabelNumber => 1150453;  // yeast
 
         [Constructable]
-        public Yeast() : base(3624)
+        public Yeast()
+            : base(0xF00)
         {
-            Hue = 2418;
+            Hue = 1501;
             int ran = Utility.Random(100);
 
             if (ran <= 5)
@@ -40,7 +41,8 @@ namespace Server.Items
         }
 
         [Constructable]
-        public Yeast(int resistance) : base(3624)
+        public Yeast(int resistance)
+            : base(0xF00)
         {
             BacterialResistance = resistance;
         }
@@ -65,7 +67,8 @@ namespace Server.Items
             }
         }
 
-        public Yeast(Serial serial) : base(serial)
+        public Yeast(Serial serial)
+            : base(serial)
         {
         }
 
@@ -80,7 +83,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_BacterialResistance = reader.ReadInt();
         }

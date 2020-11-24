@@ -24,9 +24,10 @@ namespace Server.Items
                 {
                     return base.OnMoveOver(m);
                 }
-                else
-                    player.SendLocalizedMessage(1077196); // You may not enter this area.				
+
+                player.SendLocalizedMessage(1112226); // Thou must be on a Sacred Quest to pass through.	
             }
+
             return true;
         }
 
@@ -39,7 +40,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

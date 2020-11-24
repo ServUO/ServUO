@@ -169,8 +169,7 @@ namespace Server.Items
         public GargishFellowshipMedallion()
             : base(0xA42A)
         {
-            Weight = 1.0;
-            Hue = 1151;
+            Weight = 1.0;            
             Layer = Layer.Neck;
         }
 
