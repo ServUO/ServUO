@@ -175,6 +175,7 @@ namespace Server.Items
 
                     m_Totem.CostumeCreatureName = costume.CreatureName;
                     m_Totem.CostumeBody = costume.CostumeBody;
+                    m_Totem.CostumeHue = costume.Hue;
 
                     m_Totem.InvalidateProperties();
 
@@ -196,7 +197,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             CostumeCreatureName = reader.ReadString();
             CostumeBody = reader.ReadInt();

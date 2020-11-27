@@ -153,6 +153,8 @@ namespace Server.Mobiles
 {
     public class Clone : BaseCreature
     {
+        public override bool AlwaysAttackable => m_Caster is Travesty;
+
         private Mobile m_Caster;
         public Clone(Mobile caster)
             : base(AIType.AI_Melee, FightMode.None, 10, 1, 0.2, 0.4)

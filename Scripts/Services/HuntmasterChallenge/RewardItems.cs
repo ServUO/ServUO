@@ -27,10 +27,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
-
-            if (v == 0)
-                Hue = 1191;
+            reader.ReadInt();
         }
     }
 
@@ -57,7 +54,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -85,7 +82,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -112,11 +109,11 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
-    [Flipable(18080, 18081)]
+    [Flipable(0x4BD9, 0x4BDA)]
     public class HornOfPlenty : Item, IUsesRemaining
     {
         public override int LabelNumber => 1153503;  // Horn of Plenty
@@ -142,7 +139,8 @@ namespace Server.Items
         }
 
         [Constructable]
-        public HornOfPlenty() : base(18080)
+        public HornOfPlenty()
+            : base(0x4BD9)
         {
             UsesRemaining = 10;
         }
@@ -300,9 +298,97 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             _Charges = reader.ReadInt();
+        }
+    }
+
+    public class GargishHarvestersAxe : GargishAxe
+    {
+        public override int LabelNumber => 1158774;  // Harvester's Axe
+
+        private int _Charges;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int Charges { get { return _Charges; } set { _Charges = value; InvalidateProperties(); } }
+
+        [Constructable]
+        public GargishHarvestersAxe()
+        {
+            Charges = 1000;
+        }
+
+        public override void AddWeightProperty(ObjectPropertyList list)
+        {
+            base.AddWeightProperty(list);
+            list.Add(1158775);  // * Magically Chops Logs into Boards *
+            list.Add(1060741, _Charges.ToString()); // charges: 
+        }
+
+        public GargishHarvestersAxe(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+
+            writer.Write(_Charges);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+
+            _Charges = reader.ReadInt();
+        }
+    }
+
+    public class BakeKitsuneHat : BaseHat
+    {
+        public override int LabelNumber => 1126051;  // bake-kitsune hat
+
+        public override int BasePhysicalResistance => 1;
+        public override int BaseFireResistance => 3;
+        public override int BaseColdResistance => 8;
+        public override int BasePoisonResistance => 3;
+        public override int BaseEnergyResistance => 9;
+
+        public override int InitMinHits => 40;
+        public override int InitMaxHits => 60;
+
+        [Constructable]
+        public BakeKitsuneHat()
+            : this(0)
+        {
+        }
+
+        [Constructable]
+        public BakeKitsuneHat(int hue)
+            : base(0xA42B, hue)
+        {
+            Quality = ItemQuality.Exceptional;
+        }
+
+        public BakeKitsuneHat(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0); // version
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
         }
     }
 }
