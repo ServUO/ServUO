@@ -1,19 +1,16 @@
+using Server.Mobiles;
 using System;
 
 namespace Server.Items
 {
     public class SecretWall : Item
     {
-        private Point3D m_PointDest;
-        private Map m_MapDest;
-        private bool m_Locked;
-        private bool m_Active;
         [Constructable]
         public SecretWall(int itemID)
             : base(itemID)
         {
-            m_Active = true;
-            m_Locked = true;
+            Active = true;
+            Locked = true;
         }
 
         public SecretWall(Serial serial)
@@ -22,60 +19,25 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Point3D PointDest
-        {
-            get
-            {
-                return m_PointDest;
-            }
-            set
-            {
-                m_PointDest = value;
-            }
-        }
+        public Point3D PointDest { get; set; }
+
         [CommandProperty(AccessLevel.GameMaster)]
-        public Map MapDest
-        {
-            get
-            {
-                return m_MapDest;
-            }
-            set
-            {
-                m_MapDest = value;
-            }
-        }
+        public Map MapDest { get; set; }
+
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Locked
-        {
-            get
-            {
-                return m_Locked;
-            }
-            set
-            {
-                m_Locked = value;
-            }
-        }
+        public bool Locked { get; set; }
+
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Active
-        {
-            get
-            {
-                return m_Active;
-            }
-            set
-            {
-                m_Active = value;
-            }
-        }
+        public bool Active { get; set; }
+
         public override void OnDoubleClick(Mobile from)
         {
             if (from.InRange(Location, 2))
             {
-                if (!m_Locked && m_Active)
+                if (!Locked && Active)
                 {
-                    from.MoveToWorld(m_PointDest, m_MapDest);
+                    BaseCreature.TeleportPets(from, PointDest, MapDest);
+                    from.MoveToWorld(PointDest, MapDest);
                     from.SendLocalizedMessage(1072790); // The wall becomes transparent, and you push your way through it.
                 }
                 else
@@ -86,32 +48,28 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
-            writer.Write(m_PointDest);
-            writer.Write(m_MapDest);
-            writer.Write(m_Locked);
-            writer.Write(m_Active);
+            writer.Write(PointDest);
+            writer.Write(MapDest);
+            writer.Write(Locked);
+            writer.Write(Active);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+            reader.ReadInt();
 
-            int version = reader.ReadInt();
-
-            m_PointDest = reader.ReadPoint3D();
-            m_MapDest = reader.ReadMap();
-            m_Locked = reader.ReadBool();
-            m_Active = reader.ReadBool();
+            PointDest = reader.ReadPoint3D();
+            MapDest = reader.ReadMap();
+            Locked = reader.ReadBool();
+            Active = reader.ReadBool();
         }
     }
 
     public class SecretSwitch : Item
     {
-        private SecretWall m_Wall;
-        private bool m_TurnedOn;
         [Constructable]
         public SecretSwitch()
             : this(0x108F, null)
@@ -122,7 +80,7 @@ namespace Server.Items
         public SecretSwitch(int itemID, SecretWall wall)
             : base(itemID)
         {
-            m_Wall = wall;
+            Wall = wall;
         }
 
         public SecretSwitch(Serial serial)
@@ -131,34 +89,16 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public SecretWall Wall
-        {
-            get
-            {
-                return m_Wall;
-            }
-            set
-            {
-                m_Wall = value;
-            }
-        }
+        public SecretWall Wall { get; set; }
+
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool TurnedOn
-        {
-            get
-            {
-                return m_TurnedOn;
-            }
-            set
-            {
-                m_TurnedOn = value;
-            }
-        }
+        public bool TurnedOn { get; set; }
+
         public override void OnDoubleClick(Mobile from)
         {
-            if (from.InRange(Location, 2) && m_Wall != null)
+            if (from.InRange(Location, 2) && Wall != null)
             {
-                if (m_TurnedOn)
+                if (TurnedOn)
                     ItemID -= 1;
                 else
                 {
@@ -167,8 +107,8 @@ namespace Server.Items
                     Timer.DelayCall(TimeSpan.FromSeconds(10), Lock);
                 }
 
-                m_TurnedOn = !m_TurnedOn;
-                m_Wall.Locked = !m_Wall.Locked;
+                TurnedOn = !TurnedOn;
+                Wall.Locked = !Wall.Locked;
 
                 if (Utility.RandomBool())
                 {
@@ -185,34 +125,32 @@ namespace Server.Items
 
         public virtual void Lock()
         {
-            if (m_Wall != null)
+            if (Wall != null)
             {
-                if (m_TurnedOn)
+                if (TurnedOn)
                     ItemID -= 1;
 
-                m_TurnedOn = false;
-                m_Wall.Locked = true;
+                TurnedOn = false;
+                Wall.Locked = true;
             }
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
-            writer.Write(m_Wall);
-            writer.Write(m_TurnedOn);
+            writer.Write(Wall);
+            writer.Write(TurnedOn);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+            reader.ReadInt();
 
-            int version = reader.ReadInt();
-
-            m_Wall = reader.ReadItem() as SecretWall;
-            m_TurnedOn = reader.ReadBool();
+            Wall = reader.ReadItem() as SecretWall;
+            TurnedOn = reader.ReadBool();
         }
     }
 }

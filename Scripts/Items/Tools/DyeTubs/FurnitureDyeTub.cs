@@ -25,7 +25,7 @@ namespace Server.Items
         private static Type[] _Dyables = new[]
         {
             typeof(PotionKeg), typeof(CustomizableSquaredDoorMatDeed), typeof(OrnateBedDeed),
-            typeof(FourPostBedDeed)
+            typeof(FourPostBedDeed), typeof(FormalDiningTableDeed)
         };
 
         public override Type[] ForcedDyables => _Dyables;

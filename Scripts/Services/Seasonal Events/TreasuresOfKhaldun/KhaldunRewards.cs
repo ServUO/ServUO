@@ -1,7 +1,6 @@
 using Server.Items;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Server.Engines.Khaldun
 {
@@ -23,11 +22,6 @@ namespace Server.Engines.Khaldun
             Rewards.Add(new CollectionItem(typeof(SterlingSilverRing), 0x1F09, 1155606, 0, 50));
             Rewards.Add(new CollectionItem(typeof(TalonsOfEscaping), 0x41D8, 1155682, 0, 50));
             Rewards.Add(new CollectionItem(typeof(BootsOfEscaping), 0x1711, 1155607, 0, 50));
-        }
-
-        public static bool IsTokunoDyable(Type t)
-        {
-            return Rewards.FirstOrDefault(item => item.Type == t) != null;
         }
     }
 }

@@ -4680,7 +4680,7 @@ namespace Server.Multis
                     isOwned = house.IsLockedDown(item);
 
                 if (!isOwned)
-                    isOwned = item is BaseAddon;
+                    isOwned = item is BaseAddon || item is JewelryBox || item is Engines.Plants.SeedBox;
 
                 if (isOwned)
                     sec = (ISecurable)item;

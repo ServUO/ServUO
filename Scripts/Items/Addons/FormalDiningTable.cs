@@ -60,6 +60,7 @@ namespace Server.Items
         }
     }
 
+    [Furniture]
     public class FormalDiningTableDeed : BaseAddonDeed, IRewardOption
     {
         public override int LabelNumber => 1157069;  // Formal Dining Table

@@ -11,7 +11,7 @@ using System.Linq;
 namespace Server.Engines.Plants
 {
     [Flipable(19288, 19290)]
-    public class SeedBox : Container, IRewardItem
+    public class SeedBox : Container, IRewardItem, ISecurable
     {
         public static readonly int MaxSeeds = 5000;
         public static readonly int MaxUnique = 300;

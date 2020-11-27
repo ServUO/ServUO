@@ -2,6 +2,8 @@ namespace Server.Items
 {
     public class KhaldunFirstAidBelt : FirstAidBelt
     {
+        public override bool IsArtifact => true;
+
         [Constructable]
         public KhaldunFirstAidBelt()
         {
@@ -25,7 +27,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

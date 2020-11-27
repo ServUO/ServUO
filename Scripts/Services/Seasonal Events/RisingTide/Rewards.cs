@@ -1,5 +1,6 @@
 using Server.Gumps;
 using Server.Multis;
+using Server.Network;
 using System;
 using System.Linq;
 
@@ -283,31 +284,44 @@ namespace Server.Items
     [Flipable(0xA2C6, 0xA2C7)]
     public class MysteriousStatue : Item
     {
-        public override int LabelNumber => 1158935;  // Mysterious Statue
+        public override int LabelNumber => 1158935; // Mysterious Statue
 
         [Constructable]
         public MysteriousStatue()
             : base(0xA2C6)
         {
+            Weight = 5.0;
         }
 
         public override void OnDoubleClick(Mobile m)
         {
             if (m.InRange(GetWorldLocation(), 2))
             {
-                m.SendGump(new BasicInfoGump(1158937));
-                /*This mysterious statue towers above you. Even as skilled a mason as you are, the craftsmanship is uncanny, and unlike anything you have encountered before.
-                 * The stone appears to be smooth and special attention was taken to sculpt the statue as a perfect likeness. According to the pirate you purchased the statue
-                 * from, it was recovered somewhere at sea. The amount of marine growth seems to reinforce this claim, yet you cannot discern how long it may have been
-                 * submerged and are thus unsure of its age. Whatever its origins, one thing is clear - the figure is one you hope you do not encounter anytime soon...*/
+                if (m.Skills[SkillName.Carpentry].Value >= 100)
+                {
+                    Gump g = new Gump(100, 100);
+                    g.AddBackground(0, 0, 454, 400, 0x24A4);
+                    g.AddItem(35, 120, 0xA2C6);
+                    g.AddHtmlLocalized(177, 50, 250, 18, 1114513, "#1158935", 0x3442, false, false); // Mysterious Statue
+                    g.AddHtmlLocalized(177, 77, 250, 36, 1114513, "#1158936", 0x3442, false, false); // Purchased from a Pirate Merchant
+                    g.AddHtmlLocalized(177, 122, 250, 228, 1158937, 0xC63, true, true);
+                    /*This mysterious statue towers above you. Even as skilled a mason as you are, the craftsmanship is uncanny, and unlike anything you have encountered before.
+                    *The stone appears to be smooth and special attention was taken to sculpt the statue as a perfect likeness. According to the pirate you purchased the statue
+                    *from, it was recovered somewhere at sea. The amount of marine growth seems to reinforce this claim, yet you cannot discern how long it may have been
+                    * submerged and are thus unsure of its age.Whatever its origins, one thing is clear - the figure is one you hope you do not encounter anytime soon...
+                    */
+
+                    m.SendGump(g);
+
+                    m.PrivateOverheadMessage(MessageType.Regular, 0x47E, 1157722, "Carpentry", m.NetState); // *Your proficiency in ~1_SKILL~ reveals more about the item*
+                }
+                else
+                {
+                    m.PrivateOverheadMessage(MessageType.Regular, 0x47E, 1157693, "Carpentry", m.NetState); // *You lack the required ~1_SKILL~ skill to make anything of it.*
+                    m.SendSound(m.Female ? 0x31F : 0x42F);
+                }
             }
         }
-
-        /*public override void GetProperties(ObjectPropertyList list)
-        {
-            base.GetProperties(list);
-            list.Add(1158936); // Purchased from a Pirate Merchant
-        }*/
 
         public MysteriousStatue(Serial serial) : base(serial)
         {

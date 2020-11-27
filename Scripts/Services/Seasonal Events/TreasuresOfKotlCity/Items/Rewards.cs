@@ -252,6 +252,7 @@ namespace Server.Items
 
     public class KatalkotlsRing : SilverRing
     {
+        public override bool IsArtifact => true;
         public override int LabelNumber => 1156989;
 
         [Constructable]
@@ -314,12 +315,13 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class BootsOfEscaping : ThighBoots
     {
+        public override bool IsArtifact => true;
         public override int LabelNumber => 1155607;  // Boots of Escaping
 
         [Constructable]
@@ -343,12 +345,13 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class TalonsOfEscaping : LeatherTalons
     {
+        public override bool IsArtifact => true;
         public override int LabelNumber => 1155682;  // Talons of Escaping
 
         public TalonsOfEscaping()
@@ -371,7 +374,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
