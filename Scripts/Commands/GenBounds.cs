@@ -15,7 +15,7 @@ namespace Server.Bounds
         [Description("GenBounds")]
         public static void GenBounds_OnCommand(CommandEventArgs e)
         {
-            if (ArtData.CheckFile)
+            try
             {
                 Utility.PushColor(ConsoleColor.Yellow);
                 Console.Write("Generating Bounds.bin...");
@@ -34,16 +34,19 @@ namespace Server.Bounds
                     bin.Write((ushort)xMax);
                     bin.Write((ushort)yMax);
                 }
+                
+                bin.Flush();
+                bin.Close();
 
                 Utility.PushColor(ConsoleColor.Green);
                 Console.WriteLine("done");
                 Utility.PopColor();
-                bin.Close();
             }
-            else
+            catch (Exception x)
             {
                 Utility.PushColor(ConsoleColor.Red);
-                Console.WriteLine("Art files missing.");
+                Console.WriteLine("GenBounds Failed: ");
+                Console.WriteLine(x);
                 Utility.PopColor();
             }
         }
