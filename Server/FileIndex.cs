@@ -60,7 +60,7 @@ namespace Server
 				}
 				else
 				{
-					Stream = new FileStream(_Path, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
+					Stream = new FileStream(_Path, FileMode.Open, FileAccess.Read, FileShare.Read);
 				}
 			}
 
@@ -98,7 +98,7 @@ namespace Server
 
 			if (idxPath != null && _Path != null)
 			{
-				using (var index = new FileStream(idxPath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
+				using (var index = new FileStream(idxPath, FileMode.Open, FileAccess.Read, FileShare.Read))
 				{
 					Stream = new FileStream(_Path, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
 					var count = (int)(index.Length / 12);
@@ -121,9 +121,9 @@ namespace Server
 
 			if (_Path != null && _Path.EndsWith(".uop"))
 			{
-				using (var index = new FileStream(_Path, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
+				using (var index = new FileStream(_Path, FileMode.Open, FileAccess.Read, FileShare.Read))
 				{
-					Stream = new FileStream(_Path, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
+					Stream = new FileStream(_Path, FileMode.Open, FileAccess.Read, FileShare.Read);
 
 					var fi = new FileInfo(_Path);
 
