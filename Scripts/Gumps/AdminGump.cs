@@ -456,14 +456,7 @@ namespace Server.Gumps
                         AddButtonLabeled(20, 150, GetButtonID(3, 600), "Rebuild Categorization");
                         AddButtonLabeled(220, 150, GetButtonID(3, 601), "Generate Documentation");
 
-                        if (ArtData.CheckFile)
-                        {
-                            AddButtonLabeled(20, 180, GetButtonID(3, 602), "Rebuild Bounds.bin");
-                        }
-                        else
-                        {
-                            AddLabelCropped(55, 180, 120, 20, RedHue, "Rebuild Bounds.bin");
-                        }
+                        AddButtonLabeled(20, 180, GetButtonID(3, 602), "Rebuild Bounds.bin");
 
                         AddHtml(10, 210, 400, 20, Color(Center("Profiling"), LabelColor32), false, false);
 
