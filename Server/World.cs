@@ -241,7 +241,47 @@ namespace Server
 						Console.WriteLine("Error: Type '{0}' was not found.", typeName);
 					}
 
-					throw new Exception(string.Format("Bad type '{0}'", typeName));
+					throw new Exception(String.Format("Missing type '{0}'", typeName));
+				}
+
+				if (t.IsAbstract)
+				{
+					foreach (var at in ScriptCompiler.FindTypesByFullName(t.FullName))
+					{
+						if (at != t && !at.IsAbstract)
+						{
+							t = at;
+							typeName = at.FullName;
+							break;
+						}
+					}
+
+					if (t.IsAbstract)
+					{
+						Console.WriteLine("failed");
+
+						if (!Core.Service)
+						{
+							Console.WriteLine("Error: Type '{0}' is abstract. Delete all of those types? (y/n)", typeName);
+
+							if (Console.ReadKey(true).Key == ConsoleKey.Y)
+							{
+								types.Add(null);
+								Utility.PushColor(ConsoleColor.Yellow);
+								Console.Write("World: Loading...");
+								Utility.PopColor();
+								continue;
+							}
+
+							Console.WriteLine("Types will not be deleted. An exception will be thrown.");
+						}
+						else
+						{
+							Console.WriteLine("Error: Type '{0}' is abstract.", typeName);
+						}
+
+						throw new Exception(String.Format("Abstract type '{0}'", typeName));
+					}
 				}
 
 				ConstructorInfo ctor = t.GetConstructor(m_SerialTypeArray);
