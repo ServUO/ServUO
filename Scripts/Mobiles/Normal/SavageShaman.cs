@@ -66,6 +66,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.MageryRegs, 10, 15);
             AddLoot(LootPack.LootItem<TribalBerry>(10.0, true));
             AddLoot(LootPack.LootItem<Bandage>(1, 15));
+            AddLoot(LootPack.LootItem<SeveredHumanEars>(75.0, 1));
         }
 
         public override bool IsEnemy(Mobile m)

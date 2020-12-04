@@ -53,7 +53,7 @@ namespace Server.Spells.Third
                 {
                     item.OnSnoop(Caster);
                 }
-                else if (item is Corpse && !((Corpse)item).CheckLoot(Caster, null))
+                else if (item is Corpse && !((Corpse)item).CheckLoot(Caster))
                 {
                 }
                 else if (Caster.Region.OnDoubleClick(Caster, item))

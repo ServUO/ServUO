@@ -5,6 +5,7 @@ using Server.Misc;
 using Server.Mobiles;
 using Server.Network;
 using Server.Targeting;
+using System;
 using System.Collections.Generic;
 
 namespace Server.Engines.CityLoyalty
@@ -15,7 +16,7 @@ namespace Server.Engines.CityLoyalty
         public City City { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public CityLoyaltySystem CitySystem { get { return CityLoyaltySystem.GetCityInstance(City); } set { } }
+        public CityLoyaltySystem CitySystem => CityLoyaltySystem.GetCityInstance(City);
 
         [CommandProperty(AccessLevel.GameMaster)]
         public CityItemDonation DonationCrate { get; set; }
@@ -24,6 +25,8 @@ namespace Server.Engines.CityLoyalty
         public CityPetDonation DonationPost { get; set; }
 
         public override bool IsInvulnerable => true;
+
+        private static readonly Dictionary<Mobile, ExpireTimer> List = new Dictionary<Mobile, ExpireTimer>();
 
         [Constructable]
         public TradeMinister(City city) : base(AIType.AI_Vendor, FightMode.None, 10, 1, .4, .2)
@@ -86,8 +89,8 @@ namespace Server.Engines.CityLoyalty
 
         private class TradeOrderEntry : ContextMenuEntry
         {
-            public TradeMinister Minister { get; private set; }
-            public Mobile Player { get; private set; }
+            public TradeMinister Minister { get; }
+            public Mobile Player { get; }
 
             public TradeOrderEntry(Mobile player, TradeMinister minister) : base(1114453, 5) // Get Trade Order
             {
@@ -99,17 +102,22 @@ namespace Server.Engines.CityLoyalty
 
             public override void OnClick()
             {
-                if (!CityTradeSystem.HasTrade(Player))
+                if (List.ContainsKey(Player))
+                {
+                    Minister.SayTo(Player, 1151724, 1150); // I don't have a trade order available right now.  Try again in a few minutes or try another Trade Minister.
+                }
+                else if (!CityTradeSystem.HasTrade(Player))
                 {
                     Player.SendGump(new InternalTradeOrderGump(Player as PlayerMobile, Minister));
+                    List[Player] = new ExpireTimer(Player);
                 }
             }
         }
 
         private class TurnInEntry : ContextMenuEntry
         {
-            public TradeMinister Minister { get; private set; }
-            public Mobile Player { get; private set; }
+            public TradeMinister Minister { get; }
+            public Mobile Player { get; }
 
             public TurnInEntry(Mobile player, TradeMinister minister) : base(1151729, 3) // Turn in a trade order
             {
@@ -130,7 +138,7 @@ namespace Server.Engines.CityLoyalty
 
             private class InternalTarget : Target
             {
-                public TradeMinister Minister { get; private set; }
+                public TradeMinister Minister { get; }
 
                 public InternalTarget(TradeMinister minister) : base(-1, false, TargetFlags.None)
                 {
@@ -163,6 +171,28 @@ namespace Server.Engines.CityLoyalty
             }
         }
 
+        public class ExpireTimer : Timer
+        {
+            private readonly Mobile _Mobile;
+
+            public ExpireTimer(Mobile m)
+                : base(TimeSpan.FromMinutes(2))
+            {
+                _Mobile = m;
+                Start();
+            }
+
+            protected override void OnTick()
+            {
+                if (List.ContainsKey(_Mobile))
+                {
+                    List.Remove(_Mobile);
+                }
+
+                Stop();
+            }
+        }
+
         private Item GiveReward(TradeEntry entry)
         {
             if (0.01 > Utility.RandomDouble())
@@ -174,14 +204,12 @@ namespace Server.Engines.CityLoyalty
                     case 1: return new RewardSign();
                 }
             }
-            else
+
+            switch (Utility.Random(2))
             {
-                switch (Utility.Random(2))
-                {
-                    default:
-                    case 1: return RandomResource(entry);
-                    case 2: return ScrollOfTranscendence.CreateRandom(1, 10);
-                }
+                default:
+                case 1: return RandomResource(entry);
+                case 2: return ScrollOfTranscendence.CreateRandom(1, 10);
             }
         }
 
@@ -255,8 +283,8 @@ namespace Server.Engines.CityLoyalty
 
         public class InternalTradeOrderGump : Gump
         {
-            public TradeMinister Minister { get; private set; }
-            public PlayerMobile User { get; set; }
+            public TradeMinister Minister { get; }
+            public PlayerMobile User { get; }
 
             public InternalTradeOrderGump(PlayerMobile user, TradeMinister minister)
                 : base(100, 100)
@@ -319,13 +347,15 @@ namespace Server.Engines.CityLoyalty
         {
             base.Serialize(writer);
             writer.Write(0);
+
             writer.Write((int)City);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
+
             City = (City)reader.ReadInt();
 			
 			Frozen = true;

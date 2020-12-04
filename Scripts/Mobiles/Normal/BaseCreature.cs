@@ -4979,17 +4979,26 @@ namespace Server.Mobiles
                     List<Item> list = new List<Item>(Backpack.Items);
                     foreach (Item item in list)
                     {
-                        b.DropItem(item);
+                        if (item.Movable)
+                            b.DropItem(item);
+                        else
+                            item.Delete();
                     }
 
                     BaseHouse house = BaseHouse.FindHouseAt(this);
                     if (house != null)
                     {
-                        b.MoveToWorld(house.BanLocation, house.Map);
+                        if (Backpack.Items.Count == 0)
+                            b.Delete();
+                        else
+                            b.MoveToWorld(house.BanLocation, house.Map);
                     }
                     else
                     {
-                        b.MoveToWorld(Location, Map);
+                        if (Backpack.Items.Count == 0)
+                            b.Delete();
+                        else
+                            b.MoveToWorld(Location, Map);
                     }
                 }
             }

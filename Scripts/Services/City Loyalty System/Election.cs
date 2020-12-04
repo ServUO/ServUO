@@ -95,7 +95,7 @@ namespace Server.Engines.CityLoyalty
 
                     BallotEntry ballot = Candidates.FirstOrDefault(entry => entry.Player == m);
 
-                    if (ballot != null && m is PlayerMobile)
+                    if (ballot != null)
                     {
                         pm.SendLocalizedMessage(ballot.Endorsements.Count > 0 ? 1153917 : 1153889);  // A character from this account is currently endorsed for Candidacy and cannot be nominated.                                                                      // A character from this account has already been nominated to run for office.
                         return false;                                                                // A character from this account has already been nominated to run for office. 
@@ -103,7 +103,7 @@ namespace Server.Engines.CityLoyalty
 
                     ballot = Candidates.FirstOrDefault(entry => entry.Endorsements.Contains(m));
 
-                    if (ballot != null && m is PlayerMobile)
+                    if (ballot != null)
                     {
                         pm.SendLocalizedMessage(1153892); // A character from this account has already endorsed a nominee! 
                         return false;
@@ -139,7 +139,7 @@ namespace Server.Engines.CityLoyalty
 
                     BallotEntry ballot = Candidates.FirstOrDefault(entry => entry.Endorsements.Contains(m as PlayerMobile));
 
-                    if (m is PlayerMobile && ballot != null)
+                    if (ballot != null)
                     {
                         pm.SendLocalizedMessage(1153892); // A character from this account has already endorsed a nominee! 
                         return false;
@@ -147,7 +147,7 @@ namespace Server.Engines.CityLoyalty
 
                     BallotEntry ballot2 = Candidates.FirstOrDefault(entry => entry.Player == m);
 
-                    if (m is PlayerMobile && ballot2 != null)
+                    if (ballot2 != null)
                     {
                         pm.SendLocalizedMessage(1153912); // A character from this account is currently nominated for candidacy and cannot offer an endorsement.  
                         return false;
@@ -304,11 +304,11 @@ namespace Server.Engines.CityLoyalty
 
             if (CanNominate())
             {
-                Candidates.ForEach(entry =>
-                    {
-                        if (entry.TimeOfNomination + TimeSpan.FromHours(NominationDeadline) < DateTime.Now && entry.Endorsements.Count == 0)
-                            Candidates.Remove(entry);
-                    });
+                foreach (var entry in Candidates.ToList())
+                {
+                    if (entry.TimeOfNomination + TimeSpan.FromHours(NominationDeadline) < DateTime.Now && entry.Endorsements.Count == 0)
+                        Candidates.Remove(entry);
+                }
             }
         }
 
