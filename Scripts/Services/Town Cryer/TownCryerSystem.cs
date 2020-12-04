@@ -22,9 +22,9 @@ namespace Server.Services.TownCryer
 
         public static readonly int MaxNewsEntries = 100;
         public static readonly int MaxPerGuildEntries = 1;
-        public static readonly int MaxPerCityGoverrnorEntries = 5;
-        public static readonly int MaxEMEntries = 15;
-        public static readonly int MinGuildMemberCount = 20;
+        public const int MaxPerCityGoverrnorEntries = 5;
+        public const int MaxEMEntries = 15;
+        public const int MinGuildMemberCount = 20;
 
         public static bool UsePreloadedMessages = false;
         public static AccessLevel EMAccess = AccessLevel.Counselor;
@@ -181,7 +181,7 @@ namespace Server.Services.TownCryer
 
         public static void OnLogin(LoginEventArgs e)
         {
-            if (Enabled && e.Mobile is PlayerMobile && !IsExempt(e.Mobile))
+            if (Enabled && e.Mobile is PlayerMobile mobile && !IsExempt(mobile))
             {
                 Timer.DelayCall(TimeSpan.FromSeconds(1), player =>
                 {
@@ -191,7 +191,7 @@ namespace Server.Services.TownCryer
                     }
                     else
                     {
-                        IPooledEnumerable eable = player.Map.GetMobilesInRange(player.Location, 25);
+                        IPooledEnumerable eable = player.Map.GetMobilesInRange(player.Location, 20);
 
                         foreach (Mobile m in eable)
                         {
@@ -205,13 +205,13 @@ namespace Server.Services.TownCryer
                         eable.Free();
                     }
 
-                }, (PlayerMobile)e.Mobile);
+                }, mobile);
             }
         }
 
         public static int CityEntryCount(City city)
         {
-            return CityEntries.Where(x => x.City == city).Count();
+            return CityEntries.Count(x => x.City == city);
         }
 
         public static bool HasGuildEntry(Guild g)
@@ -318,7 +318,7 @@ namespace Server.Services.TownCryer
 
                 if (IsGovernor(pm, system))
                 {
-                    list.Add(new UpdateCityEntry(tc, system.City));
+                    list.Add(new UpdateCityEntry(tc));
                 }
 
                 Guild g = pm.Guild as Guild;
@@ -351,7 +351,7 @@ namespace Server.Services.TownCryer
         {
             return
                 MysteriousPotionEffects != null && MysteriousPotionEffects.ContainsKey(m) && MysteriousPotionEffects[m] > DateTime.UtcNow &&
-                (!checkQuest || (m is PlayerMobile && QuestHelper.HasQuest<AForcedSacraficeQuest2>((PlayerMobile)m)));
+                (!checkQuest || m is PlayerMobile && QuestHelper.HasQuest<AForcedSacraficeQuest2>((PlayerMobile)m));
         }
 
         public static void AddMysteriousPotionEffects(Mobile m)
@@ -517,7 +517,7 @@ namespace Server.Services.TownCryer
             foreach (PlayerMobile pm in TownCryerExempt)
                 writer.Write(pm);
 
-            writer.Write(GreetingsEntries.Where(x => x.Saves).Count());
+            writer.Write(GreetingsEntries.Count(x => x.Saves));
             foreach (TownCryerGreetingEntry e in GreetingsEntries.Where(x => x.Saves))
                 e.Serialize(writer);
 
@@ -641,7 +641,7 @@ namespace Server.Services.TownCryer
 
     public class AddGreetingEntry : ContextMenuEntry
     {
-        public TownCrier Cryer { get; set; }
+        public TownCrier Cryer { get; }
 
         public AddGreetingEntry(TownCrier cryer)
             : base(1011405, 3) // Change Greeting
@@ -661,7 +661,7 @@ namespace Server.Services.TownCryer
 
     public class UpdateEMEntry : ContextMenuEntry
     {
-        public TownCrier Cryer { get; set; }
+        public TownCrier Cryer { get; }
 
         public UpdateEMEntry(TownCrier cryer)
             : base(1158022, 3) // Update EM Town Crier
@@ -688,14 +688,12 @@ namespace Server.Services.TownCryer
 
     public class UpdateCityEntry : ContextMenuEntry
     {
-        public City City { get; set; }
-        public TownCrier Cryer { get; set; }
+        public TownCrier Cryer { get; }
 
-        public UpdateCityEntry(TownCrier cryer, City city)
+        public UpdateCityEntry(TownCrier cryer)
             : base(1158023, 3) // Update City Town Crier
         {
             Cryer = cryer;
-            City = city;
         }
 
         public override void OnClick()
@@ -722,7 +720,7 @@ namespace Server.Services.TownCryer
 
     public class UpdateGuildEntry : ContextMenuEntry
     {
-        public TownCrier Cryer { get; set; }
+        public TownCrier Cryer { get; }
 
         public UpdateGuildEntry(Mobile from, TownCrier cryer)
             : base(1158024, 3) // Update Guild Town Crier

@@ -1402,7 +1402,7 @@ namespace Server.Mobiles
 
                 for (int i = list.Count - 1; i >= 0; --i)
                 {
-                    if (i < list.Count)
+                    if (i < list.Count && list[i].Movable)
                     {
                         list[i].MoveToWorld(m_Mobile.Location, m_Mobile.Map);
                     }

@@ -12,7 +12,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Harvest
         {
-            get { return m_Harvest; }
+            get => m_Harvest;
             set
             {
 
@@ -32,7 +32,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime NextHarvest { get; set; }
 
-        private static readonly Type[] DecorativePlants = new Type[]
+        private static readonly Type[] DecorativePlants =
         {
             typeof(DecorativePlant),    typeof(DecorativePlantWhiteFlowers),     typeof(DecorativePlantVines),
             typeof(DecorativePlantFlax),     typeof(DecorativePlantPoppies),          typeof(DecorativePlantLilypad)
@@ -160,7 +160,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Harvest = reader.ReadBool();
             Level = (SecureLevel)reader.ReadInt();
@@ -175,7 +175,7 @@ namespace Server.Items
     {
         public override int LabelNumber => 1125205;  // decorative plant
 
-        private static readonly int[] DecorativePlants = new[]
+        private static readonly int[] DecorativePlants =
         {
             0xA0E1, 0xA0E2, 0xA0E3, 0xA0E4, 0xA0E5, 0xA0ED, 0xA11B, 0xA11C, 0xA11F, 0xA120, 0xA121, 0xA122, 0xA123, 0xA124, 0xA125, 0xA128, 0xA12B
         };
@@ -206,7 +206,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -233,7 +233,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -260,7 +260,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -287,7 +287,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -314,7 +314,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -341,7 +341,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

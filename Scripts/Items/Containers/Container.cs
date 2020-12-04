@@ -371,7 +371,7 @@ namespace Server.Items
 
         public override bool OnDragLift(Mobile from)
         {
-            if (from.IsPlayer())
+            if (!from.IsPlayer())
                 return true;
 
             from.SendLocalizedMessage(500169); // You cannot pick that up.
@@ -391,18 +391,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-
-            if (version == 0)
-                Weight = 13.0;
+            reader.ReadInt();
         }
     }
 
