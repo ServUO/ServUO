@@ -25,7 +25,7 @@ namespace Server.Bounds
 
                 BinaryWriter bin = new BinaryWriter(fs);
 
-                for (int i = 0; i < ArtData.GetMaxItemID(); ++i)
+                for (int i = 0; i <= ArtData.MaxItemID; ++i)
                 {
                     ArtData.Measure(Item.GetBitmap(i), out int xMin, out int yMin, out int xMax, out int yMax);
 

@@ -1,4 +1,5 @@
 #region References
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -8,190 +9,276 @@ namespace Server
 {
     public sealed class FileIndex
     {
-        public Entry3D[] Index { get; private set; }
-        public Stream Stream { get; private set; }
-        public long IdxLength { get; private set; }
-        private readonly string MulPath;
+        public static readonly int EntryDataSize = Marshal.SizeOf<Entry3D>();
 
-        public Stream Seek(int index, out int length, out int extra, out bool patched)
+        public Entry3D[] Index { get; }
+
+        public FileInfo File { get; }
+
+        public int IdxLength { get; }
+        public int IdxCount { get; }
+
+        private readonly string _BinPath, _IdxPath;
+        private readonly bool _BinLoaded, _IdxLoaded;
+
+        public bool Loaded => _BinLoaded && _IdxLoaded;
+
+        private FileIndex(int entryCount)
         {
-            if (index < 0 || index >= Index.Length)
-            {
-                length = extra = 0;
-                patched = false;
-                return null;
-            }
+            IdxLength = entryCount * EntryDataSize;
+            IdxCount = entryCount;
 
-            Entry3D e = Index[index];
-
-            if (e.lookup < 0)
-            {
-                length = extra = 0;
-                patched = false;
-                return null;
-            }
-
-            length = e.length & 0x7FFFFFFF;
-            extra = e.extra;
-
-            if (e.length < 0)
-            {
-                length = extra = 0;
-                patched = false;
-                return null;
-            }
-
-            if ((Stream == null) || (!Stream.CanRead) || (!Stream.CanSeek))
-            {
-                if (MulPath == null)
-                {
-                    Stream = null;
-                }
-                else
-                {
-                    Stream = new FileStream(MulPath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
-                }
-            }
-
-            if (Stream == null)
-            {
-                length = extra = 0;
-                patched = false;
-                return null;
-            }
-            else if (Stream.Length < e.lookup)
-            {
-                length = extra = 0;
-                patched = false;
-                return null;
-            }
-
-            patched = false;
-
-            Stream.Seek(e.lookup, SeekOrigin.Begin);
-            return Stream;
+            Index = new Entry3D[entryCount];
         }
 
-        public FileIndex(
-            string uopFile,
-            int length,
-            string uopEntryExtension,
-            int idxLength,
-            bool hasExtra)
+        public FileIndex(string idxFile, string mulFile, int entryCount)
+            : this(entryCount)
         {
-            Index = new Entry3D[length];
-
-            MulPath = Core.FindDataFile(uopFile);
-
-            /* UOP files support code, written by Wyatt (c) www.ruosi.org
-			 * idxLength variable was added for compatibility with legacy code for art (see art.cs)
-			 * At the moment the only UOP file having entries with extra field is gumpartlegacy.uop,
-			 * and it's two dwords in the beginning of the entry.
-			 * It's possible that UOP can include some entries with unknown hash: not really unknown for me, but
-			 * not useful for reading legacy entries. That's why i removed unknown hash exception throwing from this code
-			 */
-            if (MulPath != null && MulPath.EndsWith(".uop"))
+            do
             {
-                using (FileStream index = new FileStream(MulPath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
+                _IdxPath = Core.FindDataFile(idxFile);
+                _BinPath = Core.FindDataFile(mulFile);
+
+                try
                 {
-                    Stream = new FileStream(MulPath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
-
-                    FileInfo fi = new FileInfo(MulPath);
-                    string uopPattern = fi.Name.Replace(fi.Extension, "").ToLowerInvariant();
-
-                    using (BinaryReader br = new BinaryReader(Stream))
+                    if (_IdxPath != null && System.IO.File.Exists(_IdxPath))
                     {
-                        br.BaseStream.Seek(0, SeekOrigin.Begin);
+                        FileStream index;
 
-                        if (br.ReadInt32() != 0x50594D)
-                            return;
+                        try
+                        { index = new FileStream(_IdxPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite); }
+                        catch { index = null; }
 
-                        br.ReadInt64(); // version + signature
-                        long nextBlock = br.ReadInt64();
-                        br.ReadInt32(); // block capacity
-                        int count = br.ReadInt32();
-
-                        if (idxLength > 0)
+                        if (index != null)
                         {
-                            IdxLength = idxLength * 12;
-                        }
-
-                        Dictionary<ulong, int> hashes = new Dictionary<ulong, int>();
-
-                        for (int i = 0; i < length; i++)
-                        {
-                            string entryName = string.Format("build/{0}/{1:D8}{2}", uopPattern, i, uopEntryExtension);
-                            ulong hash = UOPHash.HashLittle2(entryName);
-
-                            if (!hashes.ContainsKey(hash))
+                            using (index)
                             {
-                                hashes.Add(hash, i);
-                            }
-                        }
+                                IdxLength = (int)index.Length;
+                                IdxCount = IdxLength / EntryDataSize;
 
-                        br.BaseStream.Seek(nextBlock, SeekOrigin.Begin);
+                                if (Index.Length != IdxCount)
+                                    Index = new Entry3D[IdxCount];
 
-                        do
-                        {
-                            int filesCount = br.ReadInt32();
-                            nextBlock = br.ReadInt64();
-
-                            for (int i = 0; i < filesCount; i++)
-                            {
-                                long offset = br.ReadInt64();
-                                int headerLength = br.ReadInt32();
-                                int compressedLength = br.ReadInt32();
-                                int decompressedLength = br.ReadInt32();
-                                ulong hash = br.ReadUInt64();
-                                br.ReadUInt32(); // Adler32
-                                short flag = br.ReadInt16();
-
-                                int entryLength = flag == 1 ? compressedLength : decompressedLength;
-
-                                if (offset == 0)
+                                unsafe
                                 {
-                                    continue;
-                                }
-
-                                if (hashes.TryGetValue(hash, out int idx))
-                                {
-                                    if (idx < 0 || idx > Index.Length)
-                                        return;
-
-                                    Index[idx].lookup = (int)(offset + headerLength);
-                                    Index[idx].length = entryLength;
-
-                                    if (hasExtra)
-                                    {
-                                        long curPos = br.BaseStream.Position;
-
-                                        br.BaseStream.Seek(offset + headerLength, SeekOrigin.Begin);
-
-                                        byte[] extra = br.ReadBytes(8);
-
-                                        ushort extra1 = (ushort)((extra[3] << 24) | (extra[2] << 16) | (extra[1] << 8) | extra[0]);
-                                        ushort extra2 = (ushort)((extra[7] << 24) | (extra[6] << 16) | (extra[5] << 8) | extra[4]);
-
-                                        Index[idx].lookup += 8;
-                                        Index[idx].extra = extra1 << 16 | extra2;
-
-                                        br.BaseStream.Seek(curPos, SeekOrigin.Begin);
-                                    }
+                                    fixed (Entry3D* buffer = Index)
+                                        NativeReader.Read(index, buffer, IdxLength);
                                 }
                             }
+
+                            _IdxLoaded = true;
                         }
-                        while (br.BaseStream.Seek(nextBlock, SeekOrigin.Begin) != 0);
                     }
                 }
+                catch { }
+
+                try
+                {
+                    if (_BinPath != null)
+                    {
+                        try
+                        { File = new FileInfo(_BinPath); }
+                        catch { File = null; }
+
+                        _BinLoaded = File?.Exists ?? false;
+                    }
+                }
+                catch { }
+            }
+            while (CheckRetry());
+        }
+
+        public FileIndex(string uopFile, int entryCount, string entryExt, bool extended)
+            : this(entryCount)
+        {
+            do
+            {
+                _IdxPath = _BinPath = Core.FindDataFile(uopFile);
+
+                try
+                {
+                    if (_BinPath != null)
+                    {
+                        try
+                        { File = new FileInfo(_BinPath); }
+                        catch { File = null; }
+
+                        _BinLoaded = File?.Exists ?? false;
+                    }
+                }
+                catch { }
+
+                try
+                {
+                    if (File != null)
+                    {
+                        using (var stream = new FileStream(File.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                        using (var reader = new BinaryReader(stream))
+                        {
+                            if (reader.ReadInt32() == 0x50594D)
+                            {
+                                reader.ReadInt64(); // version + signature
+
+                                var nextBlock = reader.ReadInt64();
+
+                                reader.ReadInt32(); // block capacity
+                                reader.ReadInt32(); // block count
+
+                                var hashes = new Dictionary<ulong, int>();
+
+                                var root = $"build/{Path.GetFileNameWithoutExtension(_IdxPath).ToLowerInvariant()}";
+
+                                for (var i = 0; i < entryCount; i++)
+                                    hashes[UOPHash.HashLittle2($"{root}/{i:D8}{entryExt}")] = i;
+
+                                stream.Seek(nextBlock, SeekOrigin.Begin);
+
+                                do
+                                {
+                                    var filesCount = reader.ReadInt32();
+
+                                    nextBlock = reader.ReadInt64();
+
+                                    for (var i = 0; i < filesCount; i++)
+                                    {
+                                        var offset = reader.ReadInt64();
+                                        var headerLength = reader.ReadInt32();
+                                        var compressedLength = reader.ReadInt32();
+                                        var decompressedLength = reader.ReadInt32();
+                                        var hash = reader.ReadUInt64();
+
+                                        reader.ReadUInt32(); // Adler32
+
+                                        var flag = reader.ReadInt16();
+
+                                        var entryLength = flag == 1 ? compressedLength : decompressedLength;
+
+                                        if (offset == 0 || !hashes.TryGetValue(hash, out var idx))
+                                            continue;
+
+                                        if (idx < 0 || idx > Index.Length)
+                                            continue;
+
+                                        Index[idx].Offset = (int)(offset + headerLength);
+                                        Index[idx].Size = entryLength;
+
+                                        if (!extended)
+                                            continue;
+
+                                        var curPos = stream.Position;
+
+                                        stream.Seek(offset + headerLength, SeekOrigin.Begin);
+
+                                        var extra = reader.ReadBytes(8);
+                                        var extra1 = (ushort)((extra[3] << 24) | (extra[2] << 16) | (extra[1] << 8) | extra[0]);
+                                        var extra2 = (ushort)((extra[7] << 24) | (extra[6] << 16) | (extra[5] << 8) | extra[4]);
+
+                                        Index[idx].Offset += 8;
+                                        Index[idx].Data = extra1 << 16 | extra2;
+
+                                        stream.Seek(curPos, SeekOrigin.Begin);
+                                    }
+                                }
+                                while (stream.Seek(nextBlock, SeekOrigin.Begin) != 0);
+
+                                _IdxLoaded = true;
+                            }
+                        }
+                    }
+                }
+                catch { }
+            }
+            while (CheckRetry());
+        }
+
+        private bool CheckRetry()
+        {
+            if (_IdxLoaded && _BinLoaded)
+                return false;
+
+            if (!_BinLoaded)
+            {
+                if (System.IO.File.Exists(_BinPath))
+                    Utility.WriteConsoleColor(ConsoleColor.Yellow, $"Warning: Could not load [bin] '{_BinPath}'\nThe file cannot be opened, close any applications that are using the file and try again.");
+                else
+                    Utility.WriteConsoleColor(ConsoleColor.Yellow, $"Warning: Could not load [bin] '{_BinPath}'\nThe file cannot be opened, it does not exist.");
+            }
+            else if (!_IdxLoaded)
+            {
+                if (System.IO.File.Exists(_IdxPath))
+                    Utility.WriteConsoleColor(ConsoleColor.Yellow, $"Warning: Could not load [idx] '{_IdxPath}'\nThe file cannot be opened, close any applications that are using the file and try again.");
+                else
+                    Utility.WriteConsoleColor(ConsoleColor.Yellow, $"Warning: Could not load [idx] '{_IdxPath}'\nThe file cannot be opened, it does not exist.");
+            }
+
+            if (Core.Service)
+                return false;
+
+            ConsoleKeyInfo key;
+            bool retry;
+
+            do
+            {
+                Utility.WriteConsoleColor(ConsoleColor.Yellow, "Retry? (Y/N)");
+
+                key = Console.ReadKey();
+
+                Console.WriteLine();
+
+                retry = key.Key == ConsoleKey.Enter || key.Key == ConsoleKey.Y;
+            }
+            while (!retry && key.Key != ConsoleKey.Escape && key.Key != ConsoleKey.N);
+
+            return retry;
+        }
+
+        public bool Seek(int index, ref byte[] buffer, out int length, out int extra)
+        {
+            length = extra = 0;
+
+            if (File == null)
+                return false;
+
+            if (index < 0 || index >= Index.Length)
+                return false;
+
+            var e = Index[index];
+
+            if (e.Offset < 0 || e.Size < 0)
+                return false;
+
+            length = e.Size;
+            extra = e.Data;
+
+            try
+            {
+                using (var stream = new FileStream(File.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                {
+                    unsafe
+                    {
+                        if (buffer == null || buffer.Length < length)
+                            buffer = new byte[length];
+
+                        fixed (byte* data = buffer)
+                            length = NativeReader.Read(stream, e.Offset, data, length);
+                    }
+                }
+
+                return true;
+            }
+            catch
+            {
+                length = extra = 0;
+                return false;
             }
         }
     }
 
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 12)]
     public struct Entry3D
     {
-        public int lookup;
-        public int length;
-        public int extra;
+        public int Offset;
+        public int Size;
+        public int Data;
     }
 }

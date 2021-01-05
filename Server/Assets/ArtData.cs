@@ -1,307 +1,251 @@
 #region References
-using System.Collections;
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
+using System.Threading;
 #endregion
 
 namespace Server
 {
     public static class ArtData
     {
-#if MONO
-		public const PixelFormat PixelFormat = System.Drawing.Imaging.PixelFormat.Format32bppArgb;
-#else
-        public const PixelFormat PixelFormat = System.Drawing.Imaging.PixelFormat.Format16bppArgb1555;
-#endif
-        private static readonly FileIndex m_FileIndex;
-
-        private static readonly Bitmap[] m_Cache = new Bitmap[0x14000];
-        private static readonly bool[] m_Removed = new bool[0x14000];
-        private static readonly Hashtable m_Patched = new Hashtable();
-
-        public static bool Modified { get; }
+        private static readonly AutoResetEvent m_RenderSync = new AutoResetEvent(true);
+        private static readonly AutoResetEvent m_MeasureSync = new AutoResetEvent(true);
 
         private static byte[] m_StreamBuffer;
 
-        public static bool CheckFile => File.Exists(Core.FindDataFile("artLegacyMUL.uop"));
+        private static readonly FileIndex m_FileIndex;
+
+        private static readonly Bitmap[] m_Cache = new Bitmap[81920];
+        private static readonly bool[] m_Invalid = new bool[81920];
+
+        public static bool UOP => Core.FindDataFile("artLegacyMUL.uop") != null;
+        public static bool MUL => Core.FindDataFile("art.mul") != null;
+
+        public static int MaxLandID { get; }
+        public static int MaxItemID { get; }
 
         static ArtData()
         {
-            if (CheckFile)
+            if (UOP)
+                m_FileIndex = new FileIndex("artLegacyMUL.uop", 81920, ".tga", false);
+            else if (MUL)
+                m_FileIndex = new FileIndex("artidx.mul", "art.mul", 81920);
+
+            if (m_FileIndex != null)
             {
-                m_FileIndex = new FileIndex("artLegacyMUL.uop", 0x10000, ".tga", 0x13FDC, false);
+                MaxLandID = 16383;
+                MaxItemID = m_FileIndex.IdxCount - (MaxLandID + 1);
             }
-        }
-
-        public static int GetMaxItemID()
-        {
-            if (GetIdxLength() >= 0x13FDC)
-            {
-                return 0xFFFF;
-            }
-
-            if (GetIdxLength() == 0xC000)
-            {
-                return 0x7FFF;
-            }
-
-            return 0x3FFF;
-        }
-
-        public static ushort GetLegalItemID(int itemID, bool checkmaxid = true)
-        {
-            if (itemID < 0)
-            {
-                return 0;
-            }
-
-            if (checkmaxid)
-            {
-                int max = GetMaxItemID();
-
-                if (itemID > max)
-                {
-                    return 0;
-                }
-            }
-
-            return (ushort)itemID;
-        }
-
-        public static int GetIdxLength()
-        {
-            return (int)(m_FileIndex.IdxLength / 12);
         }
 
         public static Bitmap GetStatic(int index, int hue, bool onlyHueGrayPixels)
         {
-            return GetStatic(index, hue, onlyHueGrayPixels, out _, true);
-        }
-
-        public static Bitmap GetStatic(int index, int hue, bool onlyHueGrayPixels, out bool patched)
-        {
-            return GetStatic(index, hue, onlyHueGrayPixels, out patched, true);
-        }
-
-        public static Bitmap GetStatic(int index, int hue, bool onlyHueGrayPixels, bool checkmaxid)
-        {
-            return GetStatic(index, hue, onlyHueGrayPixels, out _, checkmaxid);
-        }
-
-        public static Bitmap GetStatic(int index, int hue, bool onlyHueGrayPixels, out bool patched, bool checkmaxid)
-        {
-            Bitmap image = new Bitmap(GetStatic(index, out patched));
-
-            HueData.ApplyTo(image, hue, onlyHueGrayPixels);
-
-            return image;
-        }
-
-        public static Bitmap GetStatic(int index)
-        {
-            return GetStatic(index, out _, true);
-        }
-
-        public static Bitmap GetStatic(int index, out bool patched)
-        {
-            return GetStatic(index, out patched, true);
-        }
-
-        public static Bitmap GetStatic(int index, bool checkmaxid)
-        {
-            return GetStatic(index, out _, checkmaxid);
-        }
-
-        public static Bitmap GetStatic(int index, out bool patched, bool checkmaxid)
-        {
-            index = GetLegalItemID(index, checkmaxid);
-            index += 0x4000;
-
-            if (m_Patched.Contains(index))
+            try
             {
-                patched = (bool)m_Patched[index];
+                var orig = GetStatic(index);
+
+                if (orig == null)
+                    return null;
+
+                var image = new Bitmap(orig);
+
+                HueData.ApplyTo(image, hue, onlyHueGrayPixels);
+
+                return image;
             }
-            else
+            catch (Exception e)
             {
-                patched = false;
-            }
+                if (Core.Debug)
+                    Console.WriteLine($"[Ultima]: ArtData.GetStatic({nameof(index)}:{index}, {nameof(hue)}:{hue}, {nameof(onlyHueGrayPixels)}:{onlyHueGrayPixels})\n{e}");
 
-            if (m_Removed[index])
-            {
                 return null;
             }
+        }
 
-            if (m_Cache[index] != null)
+        public static unsafe Bitmap GetStatic(int index)
+        {
+            m_RenderSync.WaitOne();
+
+            try
             {
-                return m_Cache[index];
+                if (index < 0 || index > MaxItemID)
+                    return null;
+
+                index += 16384;
+
+                if (m_Invalid[index])
+                    return null;
+
+                if (m_Cache[index] != null)
+                    return m_Cache[index];
+
+                if (!m_FileIndex.Seek(index, ref m_StreamBuffer, out var length, out var extra))
+                {
+                    m_Invalid[index] = true;
+                    return null;
+                }
+
+                fixed (byte* data = m_StreamBuffer)
+                {
+                    var dat = (ushort*)data;
+
+                    var count = 2;
+
+                    int width = dat[count++];
+                    int height = dat[count++];
+
+                    if (width <= 0 || height <= 0)
+                        return null;
+
+                    var lookups = new int[height];
+
+                    var start = height + 4;
+
+                    for (var i = 0; i < height; ++i)
+                        lookups[i] = start + dat[count++];
+
+                    var bmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+                    var bd = bmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, bmp.PixelFormat);
+
+                    try
+                    {
+                        var line = (int*)bd.Scan0;
+                        var delta = bd.Stride >> 2;
+
+                        for (var y = 0; y < height; ++y, line += delta)
+                        {
+                            count = lookups[y];
+
+                            int* cur = line, end;
+                            int xOffset, xRun, c, argb;
+
+                            while (((xOffset = dat[count++]) + (xRun = dat[count++])) != 0)
+                            {
+                                if (xOffset > delta)
+                                    break;
+
+                                cur += xOffset;
+
+                                if (xOffset + xRun > delta)
+                                    break;
+
+                                end = cur + xRun;
+
+                                while (cur < end)
+                                {
+                                    c = dat[count++] ^ 0x8000;
+
+                                    argb = ((c & 0x7C00) << 9) | ((c & 0x03E0) << 6) | ((c & 0x1F) << 3);
+                                    argb = ((c & 0x8000) * 0x1FE00) | argb | ((argb >> 5) & 0x070707);
+
+                                    *cur++ = argb;
+                                }
+                            }
+                        }
+                    }
+                    finally
+                    {
+                        bmp.UnlockBits(bd);
+                    }
+
+                    return m_Cache[index] = bmp;
+                }
             }
-
-            Stream stream = m_FileIndex.Seek(index, out int length, out int extra, out patched);
-
-            if (stream == null)
+            catch (Exception e)
             {
+                if (Core.Debug)
+                    Console.WriteLine($"[Ultima]: ArtData.GetStatic({nameof(index)}:{index})\n{e}");
+
                 return null;
             }
-
-            if (patched)
+            finally
             {
-                m_Patched[index] = true;
+                m_RenderSync.Set();
             }
-
-            return LoadStatic(stream, length);
         }
 
         public static unsafe void Measure(Bitmap bmp, out int xMin, out int yMin, out int xMax, out int yMax)
         {
+            m_MeasureSync.WaitOne();
+
             xMin = yMin = 0;
             xMax = yMax = -1;
 
-            if (bmp == null || bmp.Width <= 0 || bmp.Height <= 0)
+            try
             {
-                return;
-            }
+                if (bmp == null || bmp.Width <= 0 || bmp.Height <= 0)
+                    return;
 
-            BitmapData bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat);
+                var bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
-            int delta = (bd.Stride >> 1) - bd.Width;
-            int lineDelta = bd.Stride >> 1;
-
-            ushort* pBuffer = (ushort*)bd.Scan0;
-            ushort* pLineEnd = pBuffer + bd.Width;
-            ushort* pEnd = pBuffer + (bd.Height * lineDelta);
-
-            bool foundPixel = false;
-
-            int x = 0, y = 0;
-
-            while (pBuffer < pEnd)
-            {
-                while (pBuffer < pLineEnd)
+                try
                 {
-                    ushort c = *pBuffer++;
+                    var lineDelta = bd.Stride >> 2;
+                    var pBuffer = (uint*)bd.Scan0;
+                    var pLineEnd = pBuffer + bd.Width;
+                    var pEnd = pBuffer + (bd.Height * lineDelta);
+                    var delta = lineDelta - bd.Width;
 
-                    if ((c & 0x8000) != 0)
+                    var foundPixel = false;
+
+                    int x = 0, y = 0;
+
+                    while (pBuffer < pEnd)
                     {
-                        if (!foundPixel)
+                        while (pBuffer < pLineEnd)
                         {
-                            foundPixel = true;
-                            xMin = xMax = x;
-                            yMin = yMax = y;
-                        }
-                        else
-                        {
-                            if (x < xMin)
+                            var c = *pBuffer++;
+
+                            if ((c & 0x80000000) != 0)
                             {
-                                xMin = x;
+                                if (!foundPixel)
+                                {
+                                    foundPixel = true;
+
+                                    xMin = xMax = x;
+                                    yMin = yMax = y;
+                                }
+                                else
+                                {
+                                    if (x < xMin)
+                                        xMin = x;
+
+                                    if (y < yMin)
+                                        yMin = y;
+
+                                    if (x > xMax)
+                                        xMax = x;
+
+                                    if (y > yMax)
+                                        yMax = y;
+                                }
                             }
 
-                            if (y < yMin)
-                            {
-                                yMin = y;
-                            }
-
-                            if (x > xMax)
-                            {
-                                xMax = x;
-                            }
-
-                            if (y > yMax)
-                            {
-                                yMax = y;
-                            }
-                        }
-                    }
-
-                    ++x;
-                }
-
-                pBuffer += delta;
-                pLineEnd += lineDelta;
-
-                ++y;
-                x = 0;
-            }
-
-            bmp.UnlockBits(bd);
-        }
-
-        private static unsafe Bitmap LoadStatic(Stream stream, int length)
-        {
-            Bitmap bmp;
-
-            if (m_StreamBuffer == null || m_StreamBuffer.Length < length)
-            {
-                m_StreamBuffer = new byte[length];
-            }
-
-            stream.Read(m_StreamBuffer, 0, length);
-            stream.Close();
-
-            fixed (byte* data = m_StreamBuffer)
-            {
-                ushort* bindata = (ushort*)data;
-
-                int count = 2;
-
-                int width = bindata[count++];
-                int height = bindata[count++];
-
-                if (width <= 0 || height <= 0)
-                {
-                    return null;
-                }
-
-                int[] lookups = new int[height];
-
-                int start = height + 4;
-
-                for (int i = 0; i < height; ++i)
-                {
-                    lookups[i] = start + bindata[count++];
-                }
-
-                bmp = new Bitmap(width, height, PixelFormat);
-
-                BitmapData bd = bmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, PixelFormat);
-
-                ushort* line = (ushort*)bd.Scan0;
-                int delta = bd.Stride >> 1;
-
-                for (int y = 0; y < height; ++y, line += delta)
-                {
-                    count = lookups[y];
-
-                    ushort* cur = line, end;
-                    int xOffset, xRun;
-
-                    while (((xOffset = bindata[count++]) + (xRun = bindata[count++])) != 0)
-                    {
-                        if (xOffset > delta)
-                        {
-                            break;
+                            ++x;
                         }
 
-                        cur += xOffset;
+                        pBuffer += delta;
+                        pLineEnd += lineDelta;
 
-                        if (xOffset + xRun > delta)
-                        {
-                            break;
-                        }
-
-                        end = cur + xRun;
-
-                        while (cur < end)
-                        {
-                            *cur++ = (ushort)(bindata[count++] ^ 0x8000);
-                        }
+                        ++y;
+                        x = 0;
                     }
                 }
-
-                bmp.UnlockBits(bd);
+                finally
+                {
+                    bmp.UnlockBits(bd);
+                }
             }
-
-            return bmp;
+            catch (Exception e)
+            {
+                if (Core.Debug)
+                    Console.WriteLine($"[Ultima]: ArtData.Measure(...)\n{e}");
+            }
+            finally
+            {
+                m_MeasureSync.Set();
+            }
         }
     }
 }
