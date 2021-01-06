@@ -23,4 +23,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Server\Server.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Web" />
+  </ItemGroup>
 </Project>

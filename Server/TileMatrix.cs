@@ -401,7 +401,7 @@ namespace Server
 
 					fixed (StaticTile* pTiles = staTiles)
 					{
-						NativeReader.Read(m_Statics.SafeFileHandle.DangerousGetHandle(), pTiles, length);
+						NativeReader.Read(m_Statics, pTiles, length);
 
 						if (m_Lists == null)
 						{
@@ -488,7 +488,7 @@ namespace Server
 
 				fixed (LandTile* pTiles = tiles)
 				{
-					NativeReader.Read(m_Map.SafeFileHandle.DangerousGetHandle(), pTiles, 192);
+					NativeReader.Read(m_Map, pTiles, 192);
 				}
 
 				return tiles;
