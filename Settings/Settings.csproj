@@ -9,7 +9,7 @@
 		<ServerGarbageCollection>true</ServerGarbageCollection>
 		<ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<RootNamespace>Server</RootNamespace>
+		<RootNamespace>ServUO</RootNamespace>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -19,13 +19,5 @@
 	<PropertyGroup>
 		<DefineConstants>NEWTIMERS;ServUO;P58</DefineConstants>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<PackageReference Include="System.Drawing.Common" Version="4.7.0" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\Settings\Settings.csproj" />
-	</ItemGroup>
 
 </Project>

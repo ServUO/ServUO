@@ -1,6 +1,7 @@
 MCS=mcs
 EXENAME=ServUO
 CURPATH=`pwd`
+CFGPATH=${CURPATH}/Settings
 SCRPATH=${CURPATH}/Scripts
 SRVPATH=${CURPATH}/Server
 APPPATH=${CURPATH}/Application
@@ -14,9 +15,10 @@ PHONY : default build clean run
 default: run
 
 debug: 
-	${MCS} -target:library -out:"${CURPATH}/Server.dll" -r:${REFS} -nowarn:${NOWARNS} -d:DEBUG ${DEFS} -nologo -debug -unsafe -recurse:"${SRVPATH}/*.cs"
-	${MCS} -target:library -out:"${CURPATH}/Scripts.dll" -r:$"{CURPATH}/Server.dll",${REFS} -nowarn:${NOWARNS} -d:DEBUG ${DEFS} -nologo -debug -unsafe -recurse:"${SCRPATH}/*.cs"
-	${MCS} -target:exe -out:"${CURPATH}/${EXENAME}.exe" -win32icon:"${ICOPATH}/servuo.ico" -r:"${CURPATH}/Server.dll","${CURPATH}/Scripts.dll",${REFS} -nowarn:${NOWARNS} -d:DEBUG ${DEFS} -nologo -debug -unsafe -recurse:"${APPPATH}/*.cs"
+	${MCS} -target:library -out:"${CURPATH}/Settings.dll" -r:${REFS} -nowarn:${NOWARNS} -d:DEBUG ${DEFS} -nologo -debug -unsafe -recurse:"${CFGPATH}/*.cs"
+	${MCS} -target:library -out:"${CURPATH}/Server.dll" -r:"${CURPATH}/Settings.dll",${REFS} -nowarn:${NOWARNS} -d:DEBUG ${DEFS} -nologo -debug -unsafe -recurse:"${SRVPATH}/*.cs"
+	${MCS} -target:library -out:"${CURPATH}/Scripts.dll" -r:"${CURPATH}/Settings.dll","${CURPATH}/Server.dll",${REFS} -nowarn:${NOWARNS} -d:DEBUG ${DEFS} -nologo -debug -unsafe -recurse:"${SCRPATH}/*.cs"
+	${MCS} -target:exe -out:"${CURPATH}/${EXENAME}.exe" -win32icon:"${ICOPATH}/servuo.ico" -r:"${CURPATH}/Settings.dll","${CURPATH}/Server.dll","${CURPATH}/Scripts.dll",${REFS} -nowarn:${NOWARNS} -d:DEBUG ${DEFS} -nologo -debug -unsafe -recurse:"${APPPATH}/*.cs"
 	"${CURPATH}/${EXENAME}.sh"
 run: build
 	"${CURPATH}/${EXENAME}.sh"
@@ -27,19 +29,19 @@ clean:
 	rm -f ${EXENAME}.sh
 	rm -f ${EXENAME}.exe
 	rm -f ${EXENAME}.exe.mdb
-	rm -f Ultima.dll
-	rm -f Ultima.dll.mdb
 	rm -f *.bin
 
+Settings.dll: ${CFGPATH}/*.cs
+	${MCS} -target:library -out:"${CURPATH}/Settings.dll" -r:${REFS} -nowarn:${NOWARNS} ${DEFS} -nologo -optimize -unsafe -recurse:"${CFGPATH}/*.cs"
 
-Server.dll: Server/*.cs
-	${MCS} -target:library -out:"${CURPATH}/Server.dll" -r:${REFS} -nowarn:${NOWARNS} ${DEFS} -nologo -optimize -unsafe -recurse:"${SRVPATH}/*.cs"
+Server.dll: Settings.dll ${SRVPATH}/*.cs
+	${MCS} -target:library -out:"${CURPATH}/Server.dll" -r:"${CURPATH}/Settings.dll",${REFS} -nowarn:${NOWARNS} ${DEFS} -nologo -optimize -unsafe -recurse:"${SRVPATH}/*.cs"
 
-Scripts.dll: Server.dll Scripts/
-	${MCS} -target:library -out:"${CURPATH}/Scripts.dll" -r:"${CURPATH}/Server.dll",${REFS} -nowarn:${NOWARNS} ${DEFS} -nologo -optimize -unsafe -recurse:"${SCRPATH}/*.cs"
+Scripts.dll: Settings.dll Server.dll ${SCRPATH}/*.cs
+	${MCS} -target:library -out:"${CURPATH}/Scripts.dll" -r:"${CURPATH}/Settings.dll","${CURPATH}/Server.dll",${REFS} -nowarn:${NOWARNS} ${DEFS} -nologo -optimize -unsafe -recurse:"${SCRPATH}/*.cs"
 
-${EXENAME}.exe: Server.dll Scripts.dll Application/*.cs 
-	${MCS} -target:exe -out:"${CURPATH}/${EXENAME}.exe" -win32icon:"${ICOPATH}/servuo.ico" -r:"${CURPATH}/Server.dll","${CURPATH}/Scripts.dll",${REFS} -nowarn:${NOWARNS} ${DEFS} -nologo -optimize -unsafe -recurse:"./Application/*.cs"
+${EXENAME}.exe: Settings.dll Server.dll Scripts.dll ${APPPATH}/*.cs 
+	${MCS} -target:exe -out:"${CURPATH}/${EXENAME}.exe" -win32icon:"${ICOPATH}/servuo.ico" -r:"${CURPATH}/Settings.dll","${CURPATH}/Server.dll","${CURPATH}/Scripts.dll",${REFS} -nowarn:${NOWARNS} ${DEFS} -nologo -optimize -unsafe -recurse:"${APPPATH}/*.cs"
 
 ${EXENAME}.sh: ${EXENAME}.exe
 	echo "#!/bin/sh" > "${CURPATH}/${EXENAME}.sh"

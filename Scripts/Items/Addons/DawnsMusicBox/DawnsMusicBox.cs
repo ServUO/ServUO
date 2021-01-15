@@ -13,7 +13,7 @@ namespace Server.Items
 
         public static bool Send(NetState ns)
         {
-            return ns?.Mobile?.Send(Instantiate(ns)) ?? false;
+            return Send(ns, Instantiate(ns));
         }
 
         public static StopMusic Instantiate(NetState ns)

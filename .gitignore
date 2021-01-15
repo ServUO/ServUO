@@ -1,11 +1,11 @@
 
 # Project Assemblies
-/Server.dll
 /Server/bin
 /Server/obj
-/Scripts.dll
 /Scripts/bin
 /Scripts/obj
+/Settings/bin
+/Settings/obj
 /Application/bin
 /Application/obj
 
@@ -25,6 +25,11 @@
 /UltimaLive
 /TheBox
 /Export
+
+# Build Files
+/Server.dll
+/Scripts.dll
+/Settings.dll
 
 # Common Files
 /firewall.cfg

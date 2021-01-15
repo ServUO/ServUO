@@ -7082,7 +7082,7 @@ namespace Server.Mobiles
 
         public static void XmlTrace_OnCommand(CommandEventArgs e)
         {
-            Process currentprocess = Process.GetCurrentProcess();
+            System.Diagnostics.Process currentprocess = System.Diagnostics.Process.GetCurrentProcess();
             TimeSpan runningtime = DateTime.UtcNow - XmlSpawner._traceStartTime;
             double processtime = currentprocess.UserProcessorTime.TotalMilliseconds - _startProcessTime;
             double sysload = 0;
