@@ -1,7 +1,6 @@
 #region References
 using System;
 using System.Collections.Generic;
-using System.Net.Sockets;
 using System.Threading;
 
 using Server.Diagnostics;
@@ -19,15 +18,15 @@ namespace Server.Network
 
 		public MessagePump()
 		{
-			System.Net.IPEndPoint[] ipep = Listener.EndPoints;
+			var ipep = Listener.EndPoints;
 
 			Listeners = new Listener[ipep.Length];
 
-			bool success = false;
+			var success = false;
 
 			do
 			{
-				for (int i = 0; i < ipep.Length; i++)
+				for (var i = 0; i < ipep.Length; i++)
 				{
 					Listeners[i] = new Listener(ipep[i]);
 
@@ -52,11 +51,11 @@ namespace Server.Network
 
 		public void AddListener(Listener l)
 		{
-			Listener[] old = Listeners;
+			var old = Listeners;
 
 			Listeners = new Listener[old.Length + 1];
 
-			for (int i = 0; i < old.Length; ++i)
+			for (var i = 0; i < old.Length; ++i)
 			{
 				Listeners[i] = old[i];
 			}
@@ -66,13 +65,13 @@ namespace Server.Network
 
 		private void CheckListener()
 		{
-			foreach (Listener l in Listeners)
+			foreach (var l in Listeners)
 			{
-				Socket[] accepted = l.Slice();
+				var accepted = l.Slice();
 
-				foreach (Socket s in accepted)
+				foreach (var s in accepted)
 				{
-					NetState ns = new NetState(s, this);
+					var ns = new NetState(s, this);
 
 					ns.Start();
 
@@ -91,9 +90,9 @@ namespace Server.Network
 			if (ns == null)
 				return false;
 
-			string state = ns.ToString();
+			var state = ns.ToString();
 
-			foreach (string str in _NoDisplay)
+			foreach (var str in _NoDisplay)
 			{
 				if (str == state)
 					return false;
@@ -122,14 +121,14 @@ namespace Server.Network
 
 			lock (this)
 			{
-				Queue<NetState> temp = m_WorkingQueue;
+				var temp = m_WorkingQueue;
 				m_WorkingQueue = m_Queue;
 				m_Queue = temp;
 			}
 
 			while (m_WorkingQueue.Count > 0)
 			{
-				NetState ns = m_WorkingQueue.Dequeue();
+				var ns = m_WorkingQueue.Dequeue();
 
 				if (ns.Running)
 				{
@@ -161,11 +160,11 @@ namespace Server.Network
 
 			if (buffer.Length >= 4)
 			{
-				byte[] m_Peek = new byte[4];
+				var m_Peek = new byte[4];
 
 				buffer.Dequeue(m_Peek, 0, 4);
 
-				uint seed = (uint)((m_Peek[0] << 24) | (m_Peek[1] << 16) | (m_Peek[2] << 8) | m_Peek[3]);
+				var seed = (uint)((m_Peek[0] << 24) | (m_Peek[1] << 16) | (m_Peek[2] << 8) | m_Peek[3]);
 
 				if (seed == 0)
 				{
@@ -206,7 +205,7 @@ namespace Server.Network
 
 		public void HandleReceive(NetState ns)
 		{
-			ByteQueue buffer = ns.Buffer;
+			var buffer = ns.Buffer;
 
 			if (buffer == null || buffer.Length <= 0)
 			{
@@ -220,7 +219,7 @@ namespace Server.Network
 					return;
 				}
 
-				int length = buffer.Length;
+				var length = buffer.Length;
 
 				while (length > 0 && ns.Running)
 				{
@@ -231,17 +230,17 @@ namespace Server.Network
 						return;
 					}
 
-					PacketHandler handler = ns.GetHandler(packetID);
+					var handler = ns.GetHandler(packetID);
 
 					if (handler == null)
 					{
-						byte[] data = new byte[length];
+						var data = new byte[length];
 						length = buffer.Dequeue(data, 0, length);
 						new PacketReader(data, length, false).Trace(ns);
 						return;
 					}
 
-					int packetLength = handler.Length;
+					var packetLength = handler.Length;
 
 					if (packetLength <= 0)
 					{
@@ -289,12 +288,12 @@ namespace Server.Network
 						}
 					}
 
-					ThrottlePacketCallback throttler = handler.ThrottleCallback;
+					var throttler = handler.ThrottleCallback;
 
 					if (throttler != null)
 					{
 
-						if (!throttler(ns, out bool drop))
+						if (!throttler(ns, out var drop))
 						{
 							if (!drop)
 							{
@@ -336,7 +335,7 @@ namespace Server.Network
 
 					if (packetBuffer != null && packetBuffer.Length > 0 && packetLength > 0)
 					{
-						PacketReader r = new PacketReader(packetBuffer, packetLength, handler.Length != 0);
+						var r = new PacketReader(packetBuffer, packetLength, handler.Length != 0);
 
 						handler.OnReceive(ns, r);
 

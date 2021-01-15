@@ -69,7 +69,7 @@ namespace Server
 
 		public override bool IsAccessibleTo(Mobile check)
 		{
-			Items.SecureTradeContainer c = GetSecureTradeCont();
+			var c = GetSecureTradeCont();
 
 			if (check == null || c == null)
 			{
@@ -109,12 +109,12 @@ namespace Server
 		{
 			base.GetProperties(list);
 
-			list.Add(1060738, string.Format("{0:#,0} platinum, {1:#,0} gold", Plat, Gold)); // value: ~1_val~
+			list.Add(1060738, String.Format("{0:#,0} platinum, {1:#,0} gold", Plat, Gold)); // value: ~1_val~
 		}
 
 		public void UpdateTrade(Mobile user)
 		{
-			Items.SecureTradeContainer c = GetSecureTradeCont();
+			var c = GetSecureTradeCont();
 
 			if (c == null || c.Trade == null)
 			{
@@ -259,7 +259,7 @@ namespace Server
 				AddImage(10, 8, 113);
 				AddImage(360, 8, 113);
 
-				string title = string.Format(
+				var title = String.Format(
 					"<BASEFONT COLOR=#{0:X6}><CENTER>BANK OF {1}</CENTER>",
 					Color.DarkSlateGray.ToArgb() & 0x00FFFFFF,
 					User.RawName.ToUpper());
@@ -311,59 +311,59 @@ namespace Server
 					case Buttons.Close:
 					break;
 					case Buttons.Clear:
-					{
-						_Plat = _Gold = 0;
-						refresh = true;
-					}
-					break;
+						{
+							_Plat = _Gold = 0;
+							refresh = true;
+						}
+						break;
 					case Buttons.Accept:
-					{
-						string platText = info.GetTextEntry(0).Text;
-						string goldText = info.GetTextEntry(1).Text;
+						{
+							var platText = info.GetTextEntry(0).Text;
+							var goldText = info.GetTextEntry(1).Text;
 
-						if (!int.TryParse(platText, out _Plat))
-						{
-							User.SendMessage("That is not a valid amount of platinum.");
-							refresh = true;
-						}
-						else if (!int.TryParse(goldText, out _Gold))
-						{
-							User.SendMessage("That is not a valid amount of gold.");
-							refresh = true;
-						}
-						else
-						{
-							double cur = User.Account.TotalCurrency;
-							double off = _Plat + (_Gold / Math.Max(1.0, AccountGold.CurrencyThreshold));
-
-							if (off > cur)
+							if (!Int32.TryParse(platText, out _Plat))
 							{
-								_Plat = User.Account.TotalPlat;
-								_Gold = User.Account.TotalGold;
-								User.SendMessage("You do not have that much currency.");
+								User.SendMessage("That is not a valid amount of platinum.");
+								refresh = true;
+							}
+							else if (!Int32.TryParse(goldText, out _Gold))
+							{
+								User.SendMessage("That is not a valid amount of gold.");
 								refresh = true;
 							}
 							else
 							{
-								Check.Plat = _Plat;
-								Check.Gold = _Gold;
-								updated = true;
+								var cur = User.Account.TotalCurrency;
+								var off = _Plat + (_Gold / Math.Max(1.0, AccountGold.CurrencyThreshold));
+
+								if (off > cur)
+								{
+									_Plat = User.Account.TotalPlat;
+									_Gold = User.Account.TotalGold;
+									User.SendMessage("You do not have that much currency.");
+									refresh = true;
+								}
+								else
+								{
+									Check.Plat = _Plat;
+									Check.Gold = _Gold;
+									updated = true;
+								}
 							}
 						}
-					}
-					break;
+						break;
 					case Buttons.AllPlat:
-					{
-						_Plat = User.Account.TotalPlat;
-						refresh = true;
-					}
-					break;
+						{
+							_Plat = User.Account.TotalPlat;
+							refresh = true;
+						}
+						break;
 					case Buttons.AllGold:
-					{
-						_Gold = User.Account.TotalGold;
-						refresh = true;
-					}
-					break;
+						{
+							_Gold = User.Account.TotalGold;
+							refresh = true;
+						}
+						break;
 				}
 
 				if (updated)

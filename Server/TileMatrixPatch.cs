@@ -39,17 +39,17 @@ namespace Server
 				return;
 			}
 
-			string mapDataPath = Core.FindDataFile("mapdif{0}.mul", index);
-			string mapIndexPath = Core.FindDataFile("mapdifl{0}.mul", index);
+			var mapDataPath = Core.FindDataFile("mapdif{0}.mul", index);
+			var mapIndexPath = Core.FindDataFile("mapdifl{0}.mul", index);
 
 			if (File.Exists(mapDataPath) && File.Exists(mapIndexPath))
 			{
 				m_LandBlocks = PatchLand(matrix, mapDataPath, mapIndexPath);
 			}
 
-			string staDataPath = Core.FindDataFile("stadif{0}.mul", index);
-			string staIndexPath = Core.FindDataFile("stadifl{0}.mul", index);
-			string staLookupPath = Core.FindDataFile("stadifi{0}.mul", index);
+			var staDataPath = Core.FindDataFile("stadif{0}.mul", index);
+			var staIndexPath = Core.FindDataFile("stadifl{0}.mul", index);
+			var staLookupPath = Core.FindDataFile("stadifi{0}.mul", index);
 
 			if (File.Exists(staDataPath) && File.Exists(staIndexPath) && File.Exists(staLookupPath))
 			{
@@ -60,23 +60,23 @@ namespace Server
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		private unsafe int PatchLand(TileMatrix matrix, string dataPath, string indexPath)
 		{
-			using (FileStream fsData = new FileStream(dataPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+			using (var fsData = new FileStream(dataPath, FileMode.Open, FileAccess.Read, FileShare.Read))
 			{
-				using (FileStream fsIndex = new FileStream(indexPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+				using (var fsIndex = new FileStream(indexPath, FileMode.Open, FileAccess.Read, FileShare.Read))
 				{
-					BinaryReader indexReader = new BinaryReader(fsIndex);
+					var indexReader = new BinaryReader(fsIndex);
 
-					int count = (int)(indexReader.BaseStream.Length / 4);
+					var count = (int)(indexReader.BaseStream.Length / 4);
 
-					for (int i = 0; i < count; ++i)
+					for (var i = 0; i < count; ++i)
 					{
-						int blockID = indexReader.ReadInt32();
-						int x = blockID / matrix.BlockHeight;
-						int y = blockID % matrix.BlockHeight;
+						var blockID = indexReader.ReadInt32();
+						var x = blockID / matrix.BlockHeight;
+						var y = blockID % matrix.BlockHeight;
 
 						fsData.Seek(4, SeekOrigin.Current);
 
-						LandTile[] tiles = new LandTile[64];
+						var tiles = new LandTile[64];
 
 						fixed (LandTile* pTiles = tiles)
 						{
@@ -98,37 +98,37 @@ namespace Server
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		private unsafe int PatchStatics(TileMatrix matrix, string dataPath, string indexPath, string lookupPath)
 		{
-			using (FileStream fsData = new FileStream(dataPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+			using (var fsData = new FileStream(dataPath, FileMode.Open, FileAccess.Read, FileShare.Read))
 			{
-				using (FileStream fsIndex = new FileStream(indexPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+				using (var fsIndex = new FileStream(indexPath, FileMode.Open, FileAccess.Read, FileShare.Read))
 				{
-					using (FileStream fsLookup = new FileStream(lookupPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+					using (var fsLookup = new FileStream(lookupPath, FileMode.Open, FileAccess.Read, FileShare.Read))
 					{
-						BinaryReader indexReader = new BinaryReader(fsIndex);
-						BinaryReader lookupReader = new BinaryReader(fsLookup);
+						var indexReader = new BinaryReader(fsIndex);
+						var lookupReader = new BinaryReader(fsLookup);
 
-						int count = (int)(indexReader.BaseStream.Length / 4);
+						var count = (int)(indexReader.BaseStream.Length / 4);
 
-						TileList[][] lists = new TileList[8][];
+						var lists = new TileList[8][];
 
-						for (int x = 0; x < 8; ++x)
+						for (var x = 0; x < 8; ++x)
 						{
 							lists[x] = new TileList[8];
 
-							for (int y = 0; y < 8; ++y)
+							for (var y = 0; y < 8; ++y)
 							{
 								lists[x][y] = new TileList();
 							}
 						}
 
-						for (int i = 0; i < count; ++i)
+						for (var i = 0; i < count; ++i)
 						{
-							int blockID = indexReader.ReadInt32();
-							int blockX = blockID / matrix.BlockHeight;
-							int blockY = blockID % matrix.BlockHeight;
+							var blockID = indexReader.ReadInt32();
+							var blockX = blockID / matrix.BlockHeight;
+							var blockY = blockID % matrix.BlockHeight;
 
-							int offset = lookupReader.ReadInt32();
-							int length = lookupReader.ReadInt32();
+							var offset = lookupReader.ReadInt32();
+							var length = lookupReader.ReadInt32();
 							lookupReader.ReadInt32(); // Extra
 
 							if (offset < 0 || length <= 0)
@@ -139,14 +139,14 @@ namespace Server
 
 							fsData.Seek(offset, SeekOrigin.Begin);
 
-							int tileCount = length / 7;
+							var tileCount = length / 7;
 
 							if (m_TileBuffer.Length < tileCount)
 							{
 								m_TileBuffer = new StaticTile[tileCount];
 							}
 
-							StaticTile[] staTiles = m_TileBuffer;
+							var staTiles = m_TileBuffer;
 
 							fixed (StaticTile* pTiles = staTiles)
 							{
@@ -160,13 +160,13 @@ namespace Server
 									pCur = pCur + 1;
 								}
 
-								StaticTile[][][] tiles = new StaticTile[8][][];
+								var tiles = new StaticTile[8][][];
 
-								for (int x = 0; x < 8; ++x)
+								for (var x = 0; x < 8; ++x)
 								{
 									tiles[x] = new StaticTile[8][];
 
-									for (int y = 0; y < 8; ++y)
+									for (var y = 0; y < 8; ++y)
 									{
 										tiles[x][y] = lists[x][y].ToArray();
 									}

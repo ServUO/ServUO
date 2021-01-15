@@ -69,24 +69,24 @@ namespace Server
 			{
 				case 1: //Changed the values throughout the virtue system
 				case 0:
-				{
-					int mask = reader.ReadByte();
-
-					if (mask != 0)
 					{
-						m_Values = new int[8];
+						int mask = reader.ReadByte();
 
-						for (int i = 0; i < 8; ++i)
+						if (mask != 0)
 						{
-							if ((mask & (1 << i)) != 0)
+							m_Values = new int[8];
+
+							for (var i = 0; i < 8; ++i)
 							{
-								m_Values[i] = reader.ReadInt();
+								if ((mask & (1 << i)) != 0)
+								{
+									m_Values[i] = reader.ReadInt();
+								}
 							}
 						}
-					}
 
-					break;
-				}
+						break;
+					}
 			}
 
 			if (version == 0)
@@ -111,9 +111,9 @@ namespace Server
 			}
 			else
 			{
-				int mask = 0;
+				var mask = 0;
 
-				for (int i = 0; i < 8; ++i)
+				for (var i = 0; i < 8; ++i)
 				{
 					if (info.m_Values[i] != 0)
 					{
@@ -123,7 +123,7 @@ namespace Server
 
 				writer.Write((byte)mask);
 
-				for (int i = 0; i < 8; ++i)
+				for (var i = 0; i < 8; ++i)
 				{
 					if (info.m_Values[i] != 0)
 					{

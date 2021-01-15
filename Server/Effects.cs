@@ -50,9 +50,9 @@ namespace Server
 			{
 				Packet playSound = null;
 
-				IPooledEnumerable<NetState> eable = map.GetClientsInRange(new Point3D(p));
+				var eable = map.GetClientsInRange(new Point3D(p));
 
-				foreach (NetState state in eable)
+				foreach (var state in eable)
 				{
 					state.Mobile.ProcessDelta();
 
@@ -94,7 +94,7 @@ namespace Server
 
 		public static void SendBoltEffect(IEntity e, bool sound, int hue)
 		{
-			Map map = e.Map;
+			var map = e.Map;
 
 			if (map == null)
 			{
@@ -105,13 +105,13 @@ namespace Server
 
 			Packet preEffect = null, postEffect = null, boltEffect = null, playSound = null;
 
-			IPooledEnumerable<NetState> eable = map.GetClientsInRange(e.Location);
+			var eable = map.GetClientsInRange(e.Location);
 
-			foreach (NetState state in eable)
+			foreach (var state in eable)
 			{
 				if (state.Mobile.CanSee(e))
 				{
-					bool sendParticles = SendParticlesTo(state);
+					var sendParticles = SendParticlesTo(state);
 
 					if (sendParticles)
 					{
@@ -201,15 +201,15 @@ namespace Server
 		public static void SendLocationParticles(
 			IEntity e, int itemID, int speed, int duration, int hue, int renderMode, int effect, int unknown)
 		{
-			Map map = e.Map;
+			var map = e.Map;
 
 			if (map != null)
 			{
 				Packet particles = null, regular = null;
 
-				IPooledEnumerable<NetState> eable = map.GetClientsInRange(e.Location);
+				var eable = map.GetClientsInRange(e.Location);
 
-				foreach (NetState state in eable)
+				foreach (var state in eable)
 				{
 					state.Mobile.ProcessDelta();
 
@@ -295,15 +295,15 @@ namespace Server
 				((Mobile)target).ProcessDelta();
 			}
 
-			Map map = target.Map;
+			var map = target.Map;
 
 			if (map != null)
 			{
 				Packet particles = null, regular = null;
 
-				IPooledEnumerable<NetState> eable = map.GetClientsInRange(target.Location);
+				var eable = map.GetClientsInRange(target.Location);
 
-				foreach (NetState state in eable)
+				foreach (var state in eable)
 				{
 					state.Mobile.ProcessDelta();
 
@@ -462,15 +462,15 @@ namespace Server
 				((Mobile)to).ProcessDelta();
 			}
 
-			Map map = from.Map;
+			var map = from.Map;
 
 			if (map != null)
 			{
 				Packet particles = null, regular = null;
 
-				IPooledEnumerable<NetState> eable = map.GetClientsInRange(from.Location);
+				var eable = map.GetClientsInRange(from.Location);
 
-				foreach (NetState state in eable)
+				foreach (var state in eable)
 				{
 					state.Mobile.ProcessDelta();
 
@@ -524,11 +524,11 @@ namespace Server
 		{
 			if (map != null)
 			{
-				IPooledEnumerable<NetState> eable = map.GetClientsInRange(origin);
+				var eable = map.GetClientsInRange(origin);
 
 				p.Acquire();
 
-				foreach (NetState state in eable)
+				foreach (var state in eable)
 				{
 					state.Mobile.ProcessDelta();
 					state.Send(p);
@@ -544,11 +544,11 @@ namespace Server
 		{
 			if (map != null)
 			{
-				IPooledEnumerable<NetState> eable = map.GetClientsInRange(new Point3D(origin));
+				var eable = map.GetClientsInRange(new Point3D(origin));
 
 				p.Acquire();
 
-				foreach (NetState state in eable)
+				foreach (var state in eable)
 				{
 					state.Mobile.ProcessDelta();
 					state.Send(p);

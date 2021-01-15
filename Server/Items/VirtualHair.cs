@@ -27,16 +27,16 @@ namespace Server
 
 		protected BaseHairInfo(GenericReader reader)
 		{
-			int version = reader.ReadInt();
+			var version = reader.ReadInt();
 
 			switch (version)
 			{
 				case 0:
-				{
-					m_ItemID = reader.ReadInt();
-					m_Hue = reader.ReadInt();
-					break;
-				}
+					{
+						m_ItemID = reader.ReadInt();
+						m_Hue = reader.ReadInt();
+						break;
+					}
 			}
 		}
 
@@ -116,14 +116,14 @@ namespace Server
 		public HairEquipUpdate(Mobile parent)
 			: base(0x2E, 15)
 		{
-			int hue = parent.HairHue;
+			var hue = parent.HairHue;
 
 			if (parent.SolidHueOverride >= 0)
 			{
 				hue = parent.SolidHueOverride;
 			}
 
-			int hairSerial = HairInfo.FakeSerial(parent);
+			var hairSerial = HairInfo.FakeSerial(parent);
 
 			m_Stream.Write(hairSerial);
 			m_Stream.Write((short)parent.HairItemID);
@@ -139,14 +139,14 @@ namespace Server
 		public FacialHairEquipUpdate(Mobile parent)
 			: base(0x2E, 15)
 		{
-			int hue = parent.FacialHairHue;
+			var hue = parent.FacialHairHue;
 
 			if (parent.SolidHueOverride >= 0)
 			{
 				hue = parent.SolidHueOverride;
 			}
 
-			int hairSerial = FacialHairInfo.FakeSerial(parent);
+			var hairSerial = FacialHairInfo.FakeSerial(parent);
 
 			m_Stream.Write(hairSerial);
 			m_Stream.Write((short)parent.FacialHairItemID);
@@ -162,14 +162,14 @@ namespace Server
 		public FaceEquipUpdate(Mobile parent)
 			: base(0x2E, 15)
 		{
-			int hue = parent.FaceHue;
+			var hue = parent.FaceHue;
 
 			if (parent.SolidHueOverride >= 0)
 			{
 				hue = parent.SolidHueOverride;
 			}
 
-			int faceSerial = FaceInfo.FakeSerial(parent);
+			var faceSerial = FaceInfo.FakeSerial(parent);
 
 			m_Stream.Write(faceSerial);
 			m_Stream.Write((short)parent.FaceItemID);

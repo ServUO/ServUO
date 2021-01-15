@@ -23,7 +23,7 @@ namespace Server
 
 		public static void Error(int eventID, string format, params object[] args)
 		{
-			Error(eventID, string.Format(format, args));
+			Error(eventID, System.String.Format(format, args));
 		}
 
 		public static void Warning(int eventID, string text)
@@ -33,7 +33,7 @@ namespace Server
 
 		public static void Warning(int eventID, string format, params object[] args)
 		{
-			Warning(eventID, string.Format(format, args));
+			Warning(eventID, System.String.Format(format, args));
 		}
 
 		public static void Inform(int eventID, string text)
@@ -43,7 +43,7 @@ namespace Server
 
 		public static void Inform(int eventID, string format, params object[] args)
 		{
-			Inform(eventID, string.Format(format, args));
+			Inform(eventID, System.String.Format(format, args));
 		}
 	}
 }

@@ -134,12 +134,12 @@ namespace Server
 				return Map.Internal.DefaultRegion;
 			}
 
-			Sector sector = map.GetSector(p);
-			List<RegionRect> list = sector.RegionRects;
+			var sector = map.GetSector(p);
+			var list = sector.RegionRects;
 
-			for (int i = 0; i < list.Count; ++i)
+			for (var i = 0; i < list.Count; ++i)
 			{
-				RegionRect regRect = list[i];
+				var regRect = list[i];
 
 				if (regRect.Contains(p))
 				{
@@ -150,41 +150,41 @@ namespace Server
 			return map.DefaultRegion;
 		}
 
-        public static IEnumerable<Region> FindRegions(Point3D p, Map map)
-        {
-            if (map == null)
-            {
-                yield return Map.Internal.DefaultRegion;
-            }
-            else
-            {
-                Sector sector = map.GetSector(p);
-                List<RegionRect> list = sector.RegionRects;
-                bool found = false;
+		public static IEnumerable<Region> FindRegions(Point3D p, Map map)
+		{
+			if (map == null)
+			{
+				yield return Map.Internal.DefaultRegion;
+			}
+			else
+			{
+				var sector = map.GetSector(p);
+				var list = sector.RegionRects;
+				var found = false;
 
-                for (int i = 0; i < list.Count; ++i)
-                {
-                    RegionRect regRect = list[i];
+				for (var i = 0; i < list.Count; ++i)
+				{
+					var regRect = list[i];
 
-                    if (regRect.Contains(p))
-                    {
-                        if (!found)
-                        {
-                            found = true;
-                        }
+					if (regRect.Contains(p))
+					{
+						if (!found)
+						{
+							found = true;
+						}
 
-                        yield return regRect.Region;
-                    }
-                }
+						yield return regRect.Region;
+					}
+				}
 
-                if (!found)
-                {
-                    yield return map.DefaultRegion;
-                }
-            }
-        }
+				if (!found)
+				{
+					yield return map.DefaultRegion;
+				}
+			}
+		}
 
-        private static Type m_DefaultRegionType = typeof(Region);
+		private static Type m_DefaultRegionType = typeof(Region);
 		public static Type DefaultRegionType { get => m_DefaultRegionType; set => m_DefaultRegionType = value; }
 
 		private static TimeSpan m_StaffLogoutDelay = TimeSpan.Zero;
@@ -195,8 +195,8 @@ namespace Server
 
 		public static readonly int DefaultPriority = 50;
 
-		public static readonly int MinZ = sbyte.MinValue;
-		public static readonly int MaxZ = sbyte.MaxValue + 1;
+		public static readonly int MinZ = SByte.MinValue;
+		public static readonly int MaxZ = SByte.MaxValue + 1;
 
 		public static Rectangle3D ConvertTo3D(Rectangle2D rect)
 		{
@@ -205,9 +205,9 @@ namespace Server
 
 		public static Rectangle3D[] ConvertTo3D(Rectangle2D[] rects)
 		{
-			Rectangle3D[] ret = new Rectangle3D[rects.Length];
+			var ret = new Rectangle3D[rects.Length];
 
-			for (int i = 0; i < ret.Length; i++)
+			for (var i = 0; i < ret.Length; i++)
 			{
 				ret[i] = ConvertTo3D(rects[i]);
 			}
@@ -328,23 +328,23 @@ namespace Server
 
 			m_Map.RegisterRegion(this);
 
-			List<Sector> sectors = new List<Sector>();
+			var sectors = new List<Sector>();
 
-			for (int i = 0; i < m_Area.Length; i++)
+			for (var i = 0; i < m_Area.Length; i++)
 			{
-				Rectangle3D rect = m_Area[i];
+				var rect = m_Area[i];
 
-				Point2D start = m_Map.Bound(new Point2D(rect.Start));
-				Point2D end = m_Map.Bound(new Point2D(rect.End));
+				var start = m_Map.Bound(new Point2D(rect.Start));
+				var end = m_Map.Bound(new Point2D(rect.End));
 
-				Sector startSector = m_Map.GetSector(start);
-				Sector endSector = m_Map.GetSector(end);
+				var startSector = m_Map.GetSector(start);
+				var endSector = m_Map.GetSector(end);
 
-				for (int x = startSector.X; x <= endSector.X; x++)
+				for (var x = startSector.X; x <= endSector.X; x++)
 				{
-					for (int y = startSector.Y; y <= endSector.Y; y++)
+					for (var y = startSector.Y; y <= endSector.Y; y++)
 					{
-						Sector sector = m_Map.GetRealSector(x, y);
+						var sector = m_Map.GetRealSector(x, y);
 
 						sector.OnEnter(this, rect);
 
@@ -387,7 +387,7 @@ namespace Server
 
 			if (m_Sectors != null)
 			{
-				for (int i = 0; i < m_Sectors.Length; i++)
+				for (var i = 0; i < m_Sectors.Length; i++)
 				{
 					m_Sectors[i].OnLeave(this);
 				}
@@ -398,9 +398,9 @@ namespace Server
 
 		public bool Contains(Point3D p)
 		{
-			for (int i = 0; i < m_Area.Length; i++)
+			for (var i = 0; i < m_Area.Length; i++)
 			{
-				Rectangle3D rect = m_Area[i];
+				var rect = m_Area[i];
 
 				if (rect.Contains(p))
 				{
@@ -418,7 +418,7 @@ namespace Server
 				return false;
 			}
 
-			Region p = m_Parent;
+			var p = m_Parent;
 
 			while (p != null)
 			{
@@ -440,7 +440,7 @@ namespace Server
 				return null;
 			}
 
-			Region r = this;
+			var r = this;
 
 			do
 			{
@@ -463,7 +463,7 @@ namespace Server
 				return null;
 			}
 
-			Region r = this;
+			var r = this;
 
 			do
 			{
@@ -544,9 +544,9 @@ namespace Server
 		{
 			if (Sectors != null)
 			{
-				foreach (Sector s in Sectors)
+				foreach (var s in Sectors)
 				{
-					foreach (Mobile o in GetDistinctEnumeration(s.Players, predicate))
+					foreach (var o in GetDistinctEnumeration(s.Players, predicate))
 					{
 						yield return o;
 					}
@@ -583,9 +583,9 @@ namespace Server
 		{
 			if (Sectors != null)
 			{
-				foreach (Sector s in Sectors)
+				foreach (var s in Sectors)
 				{
-					foreach (Mobile o in GetDistinctEnumeration(s.Mobiles, predicate))
+					foreach (var o in GetDistinctEnumeration(s.Mobiles, predicate))
 					{
 						yield return o;
 					}
@@ -622,9 +622,9 @@ namespace Server
 		{
 			if (Sectors != null)
 			{
-				foreach (Sector s in Sectors)
+				foreach (var s in Sectors)
 				{
-					foreach (Item o in GetDistinctEnumeration(s.Items, predicate))
+					foreach (var o in GetDistinctEnumeration(s.Items, predicate))
 					{
 						yield return o;
 					}
@@ -661,9 +661,9 @@ namespace Server
 		{
 			if (Sectors != null)
 			{
-				foreach (Sector s in Sectors)
+				foreach (var s in Sectors)
 				{
-					foreach (BaseMulti o in GetDistinctEnumeration(s.Multis, predicate))
+					foreach (var o in GetDistinctEnumeration(s.Multis, predicate))
 					{
 						yield return o;
 					}
@@ -692,7 +692,7 @@ namespace Server
 		{
 			T e;
 
-			int i = list.Count;
+			var i = list.Count;
 
 			while (--i >= 0)
 			{
@@ -718,7 +718,7 @@ namespace Server
 				return 1;
 			}
 
-			Region reg = obj as Region;
+			var reg = obj as Region;
 
 			if (reg == null)
 			{
@@ -738,8 +738,8 @@ namespace Server
 				return 1;
 			}
 
-			int thisPriority = Priority;
-			int regPriority = reg.Priority;
+			var thisPriority = Priority;
+			var regPriority = reg.Priority;
 
 			if (thisPriority != regPriority)
 			{
@@ -1127,10 +1127,10 @@ namespace Server
 			}
 		}
 
-		internal static bool CanMove(Mobile m, Direction d, Point3D newLocation, Point3D oldLocation, Map map)
+		static internal bool CanMove(Mobile m, Direction d, Point3D newLocation, Point3D oldLocation, Map map)
 		{
-			Region oldRegion = m.Region;
-			Region newRegion = Find(newLocation, map);
+			var oldRegion = m.Region;
+			var newRegion = Find(newLocation, map);
 
 			while (oldRegion != newRegion)
 			{
@@ -1150,7 +1150,7 @@ namespace Server
 			return true;
 		}
 
-		internal static void OnRegionChange(Mobile m, Region oldRegion, Region newRegion)
+		static internal void OnRegionChange(Mobile m, Region oldRegion, Region newRegion)
 		{
 			if (newRegion != null && m.NetState != null)
 			{
@@ -1162,13 +1162,13 @@ namespace Server
 				}
 			}
 
-			Region oldR = oldRegion;
-			Region newR = newRegion;
+			var oldR = oldRegion;
+			var newR = newRegion;
 
 			while (oldR != newR)
 			{
-				int oldRChild = oldR != null ? oldR.ChildLevel : -1;
-				int newRChild = newR != null ? newR.ChildLevel : -1;
+				var oldRChild = oldR != null ? oldR.ChildLevel : -1;
+				var newRChild = newR != null ? newR.ChildLevel : -1;
 
 				if (oldRChild >= newRChild && oldR != null)
 				{
@@ -1188,7 +1188,7 @@ namespace Server
 			}
 		}
 
-		internal static void Load()
+		static internal void Load()
 		{
 			if (!File.Exists("Data/Regions.xml"))
 			{
@@ -1202,10 +1202,10 @@ namespace Server
 			Console.Write("Regions: Loading...");
 			Utility.PopColor();
 
-			XmlDocument doc = new XmlDocument();
+			var doc = new XmlDocument();
 			doc.Load(Path.Combine(Core.BaseDirectory, "Data/Regions.xml"));
 
-			XmlElement root = doc["ServerRegions"];
+			var root = doc["ServerRegions"];
 
 			if (root == null)
 			{
@@ -1243,14 +1243,14 @@ namespace Server
 		{
 			foreach (XmlElement xmlReg in xml.SelectNodes("region"))
 			{
-				Expansion expansion = Expansion.None;
+				var expansion = Expansion.None;
 
 				if (ReadEnum(xmlReg, "expansion", ref expansion, false) && expansion > Core.Expansion)
 				{
 					continue;
 				}
 
-				Type type = DefaultRegionType;
+				var type = DefaultRegionType;
 
 				ReadType(xmlReg, "type", ref type, false);
 
@@ -1305,24 +1305,24 @@ namespace Server
 				ReadInt32(xml, "priority", ref m_Priority, false);
 			}
 
-			int minZ = MinZ;
-			int maxZ = MaxZ;
+			var minZ = MinZ;
+			var maxZ = MaxZ;
 
-			XmlElement zrange = xml["zrange"];
+			var zrange = xml["zrange"];
 			ReadInt32(zrange, "min", ref minZ, false);
 			ReadInt32(zrange, "max", ref maxZ, false);
 
-			List<Rectangle3D> area = new List<Rectangle3D>();
+			var area = new List<Rectangle3D>();
 			foreach (XmlElement xmlRect in xml.SelectNodes("rect"))
 			{
-				Expansion expansion = Expansion.None;
+				var expansion = Expansion.None;
 
 				if (ReadEnum(xmlRect, "expansion", ref expansion, false) && expansion > Core.Expansion)
 				{
 					continue;
 				}
 
-				Rectangle3D rect = new Rectangle3D();
+				var rect = new Rectangle3D();
 				if (ReadRectangle3D(xmlRect, minZ, maxZ, ref rect))
 				{
 					area.Add(rect);
@@ -1340,16 +1340,16 @@ namespace Server
 
 			if (!ReadPoint3D(xml["go"], map, ref m_GoLocation, false) && m_Area.Length > 0)
 			{
-				Point3D start = m_Area[0].Start;
-				Point3D end = m_Area[0].End;
+				var start = m_Area[0].Start;
+				var end = m_Area[0].End;
 
-				int x = start.X + (end.X - start.X) / 2;
-				int y = start.Y + (end.Y - start.Y) / 2;
+				var x = start.X + (end.X - start.X) / 2;
+				var y = start.Y + (end.Y - start.Y) / 2;
 
 				m_GoLocation = new Point3D(x, y, m_Map.GetAverageZ(x, y));
 			}
 
-			MusicName music = DefaultMusic;
+			var music = DefaultMusic;
 
 			ReadEnum(xml["music"], "name", ref music, false);
 
@@ -1393,7 +1393,7 @@ namespace Server
 
 		public static bool ReadString(XmlElement xml, string attribute, ref string value, bool mandatory)
 		{
-			string s = GetAttribute(xml, attribute, mandatory);
+			var s = GetAttribute(xml, attribute, mandatory);
 
 			if (s == null)
 			{
@@ -1411,7 +1411,7 @@ namespace Server
 
 		public static bool ReadInt32(XmlElement xml, string attribute, ref int value, bool mandatory)
 		{
-			string s = GetAttribute(xml, attribute, mandatory);
+			var s = GetAttribute(xml, attribute, mandatory);
 
 			if (s == null)
 			{
@@ -1440,7 +1440,7 @@ namespace Server
 
 		public static bool ReadBoolean(XmlElement xml, string attribute, ref bool value, bool mandatory)
 		{
-			string s = GetAttribute(xml, attribute, mandatory);
+			var s = GetAttribute(xml, attribute, mandatory);
 
 			if (s == null)
 			{
@@ -1469,7 +1469,7 @@ namespace Server
 
 		public static bool ReadDateTime(XmlElement xml, string attribute, ref DateTime value, bool mandatory)
 		{
-			string s = GetAttribute(xml, attribute, mandatory);
+			var s = GetAttribute(xml, attribute, mandatory);
 
 			if (s == null)
 			{
@@ -1498,7 +1498,7 @@ namespace Server
 
 		public static bool ReadTimeSpan(XmlElement xml, string attribute, ref TimeSpan value, bool mandatory)
 		{
-			string s = GetAttribute(xml, attribute, mandatory);
+			var s = GetAttribute(xml, attribute, mandatory);
 
 			if (s == null)
 			{
@@ -1528,14 +1528,14 @@ namespace Server
 		public static bool ReadEnum<T>(XmlElement xml, string attribute, ref T value, bool mandatory) where T : struct
 			// We can't limit the where clause to Enums only
 		{
-			string s = GetAttribute(xml, attribute, mandatory);
+			var s = GetAttribute(xml, attribute, mandatory);
 
 			if (s == null)
 			{
 				return false;
 			}
 
-			Type type = typeof(T);
+			var type = typeof(T);
 
 			if (type.IsEnum && Enum.TryParse(s, true, out T tempVal))
 			{
@@ -1558,7 +1558,7 @@ namespace Server
 
 		public static bool ReadMap(XmlElement xml, string attribute, ref Map value, bool mandatory)
 		{
-			string s = GetAttribute(xml, attribute, mandatory);
+			var s = GetAttribute(xml, attribute, mandatory);
 
 			if (s == null)
 			{
@@ -1587,7 +1587,7 @@ namespace Server
 
 		public static bool ReadType(XmlElement xml, string attribute, ref Type value, bool mandatory)
 		{
-			string s = GetAttribute(xml, attribute, mandatory);
+			var s = GetAttribute(xml, attribute, mandatory);
 
 			if (s == null)
 			{
@@ -1628,8 +1628,8 @@ namespace Server
 		{
 			int x = 0, y = 0, z = 0;
 
-			bool xyOk = ReadInt32(xml, "x", ref x, mandatory) & ReadInt32(xml, "y", ref y, mandatory);
-			bool zOk = ReadInt32(xml, "z", ref z, mandatory && map == null);
+			var xyOk = ReadInt32(xml, "x", ref x, mandatory) & ReadInt32(xml, "y", ref y, mandatory);
+			var zOk = ReadInt32(xml, "z", ref z, mandatory && map == null);
 
 			if (xyOk && (zOk || map != null))
 			{
@@ -1677,8 +1677,8 @@ namespace Server
 				}
 			}
 
-			int z1 = defaultMinZ;
-			int z2 = defaultMaxZ;
+			var z1 = defaultMinZ;
+			var z2 = defaultMaxZ;
 
 			ReadInt32(xml, "zmin", ref z1, false);
 			ReadInt32(xml, "zmax", ref z2, false);

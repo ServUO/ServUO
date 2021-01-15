@@ -34,14 +34,14 @@ namespace Server.Targeting
 
 		public static void Cancel(Mobile m)
 		{
-			NetState ns = m.NetState;
+			var ns = m.NetState;
 
 			if (ns != null)
 			{
 				ns.Send(CancelTarget.Instance);
 			}
 
-			Target targ = m.Target;
+			var targ = m.Target;
 
 			if (targ != null)
 			{
@@ -151,7 +151,7 @@ namespace Server.Targeting
 
 		public void Invoke(Mobile from, object targeted)
 		{
-			bool enhancedClient = from.NetState != null && from.NetState.IsEnhancedClient;
+			var enhancedClient = from.NetState != null && from.NetState.IsEnhancedClient;
 
 			CancelTimeout();
 			from.ClearTarget();
@@ -203,7 +203,7 @@ namespace Server.Targeting
 			}
 			else if (targeted is Item)
 			{
-				Item item = (Item)targeted;
+				var item = (Item)targeted;
 
 				if (item.Deleted)
 				{
@@ -218,7 +218,7 @@ namespace Server.Targeting
 					return;
 				}
 
-				object root = item.RootParent;
+				var root = item.RootParent;
 
 				if (!m_AllowNonlocal && root is Mobile && root != from && from.AccessLevel == AccessLevel.Player)
 				{

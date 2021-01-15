@@ -7,7 +7,7 @@ namespace Server
 		{
 			if (Core.MultiProcessor)
 			{
-				int processorCount = Core.ProcessorCount;
+				var processorCount = Core.ProcessorCount;
 
 #if DynamicSaveStrategy
                 if (processorCount > 2)

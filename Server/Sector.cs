@@ -34,7 +34,7 @@ namespace Server
 				return 1;
 			}
 
-			RegionRect regRect = obj as RegionRect;
+			var regRect = obj as RegionRect;
 
 			if (regRect == null)
 			{
@@ -101,7 +101,7 @@ namespace Server
 		{
 			if (oldValue != null && newValue != null)
 			{
-				int index = list != null ? list.IndexOf(oldValue) : -1;
+				var index = list != null ? list.IndexOf(oldValue) : -1;
 
 				if (index >= 0)
 				{
@@ -190,9 +190,9 @@ namespace Server
 		{
 			if (m_RegionRects != null)
 			{
-				for (int i = m_RegionRects.Count - 1; i >= 0; i--)
+				for (var i = m_RegionRects.Count - 1; i >= 0; i--)
 				{
-					RegionRect regRect = m_RegionRects[i];
+					var regRect = m_RegionRects[i];
 
 					if (regRect.Region == region)
 					{
@@ -213,9 +213,9 @@ namespace Server
 		{
 			if (m_Mobiles != null)
 			{
-				List<Mobile> sandbox = new List<Mobile>(m_Mobiles);
+				var sandbox = new List<Mobile>(m_Mobiles);
 
-				foreach (Mobile mob in sandbox)
+				foreach (var mob in sandbox)
 				{
 					mob.UpdateRegion();
 				}
@@ -238,7 +238,7 @@ namespace Server
 			{
 				if (m_Items != null)
 				{
-					foreach (Item item in m_Items)
+					foreach (var item in m_Items)
 					{
 						item.OnSectorActivate();
 					}
@@ -246,7 +246,7 @@ namespace Server
 
 				if (m_Mobiles != null)
 				{
-					foreach (Mobile mob in m_Mobiles)
+					foreach (var mob in m_Mobiles)
 					{
 						mob.OnSectorActivate();
 					}
@@ -262,7 +262,7 @@ namespace Server
 			{
 				if (m_Items != null)
 				{
-					foreach (Item item in m_Items)
+					foreach (var item in m_Items)
 					{
 						item.OnSectorDeactivate();
 					}
@@ -270,7 +270,7 @@ namespace Server
 
 				if (m_Mobiles != null)
 				{
-					foreach (Mobile mob in m_Mobiles)
+					foreach (var mob in m_Mobiles)
 					{
 						mob.OnSectorDeactivate();
 					}

@@ -105,14 +105,14 @@ namespace Server.Network
 				return;
 			}
 
-			for (int i = Trades.Count - 1; i >= 0; --i)
+			for (var i = Trades.Count - 1; i >= 0; --i)
 			{
 				if (i >= Trades.Count)
 				{
 					continue;
 				}
 
-				SecureTrade trade = Trades[i];
+				var trade = Trades[i];
 
 				if (trade.From.Mobile.Deleted || trade.To.Mobile.Deleted || !trade.From.Mobile.Alive || !trade.To.Mobile.Alive ||
 					!trade.From.Mobile.InRange(trade.To.Mobile, 2) || trade.From.Mobile.Map != trade.To.Mobile.Map)
@@ -129,7 +129,7 @@ namespace Server.Network
 				return;
 			}
 
-			for (int i = Trades.Count - 1; i >= 0; --i)
+			for (var i = Trades.Count - 1; i >= 0; --i)
 			{
 				if (i < Trades.Count)
 				{
@@ -153,7 +153,7 @@ namespace Server.Network
 				return null;
 			}
 
-			foreach (SecureTrade trade in Trades)
+			foreach (var trade in Trades)
 			{
 				if (trade.From.Mobile == m || trade.To.Mobile == m)
 				{
@@ -171,10 +171,10 @@ namespace Server.Network
 				return null;
 			}
 
-			foreach (SecureTrade trade in Trades)
+			foreach (var trade in Trades)
 			{
-				SecureTradeInfo from = trade.From;
-				SecureTradeInfo to = trade.To;
+				var from = trade.From;
+				var to = trade.To;
 
 				if (from.Mobile == Mobile && to.Mobile == m)
 				{
@@ -197,7 +197,7 @@ namespace Server.Network
 				return null;
 			}
 
-			SecureTrade newTrade = new SecureTrade(Mobile, state.Mobile);
+			var newTrade = new SecureTrade(Mobile, state.Mobile);
 
 			Trades.Add(newTrade);
 			state.Trades.Add(newTrade);
@@ -231,7 +231,7 @@ namespace Server.Network
 
 		public void WriteConsole(string format, params object[] args)
 		{
-			WriteConsole(string.Format(format, args));
+			WriteConsole(String.Format(format, args));
 		}
 
 		public void AddMenu(IMenu menu)
@@ -454,7 +454,7 @@ namespace Server.Network
 			}
 
 
-			byte[] buffer = p.Compile(CompressionEnabled, out int length);
+			var buffer = p.Compile(CompressionEnabled, out var length);
 
 			if (buffer != null)
 			{
@@ -476,12 +476,12 @@ namespace Server.Network
 					prof.Start();
 				}
 
-				bool buffered = false;
+				var buffered = false;
 
 				if (PacketEncoder != null || PacketEncryptor != null)
 				{
-					byte[] packetBuffer = buffer;
-					int packetLength = length;
+					var packetBuffer = buffer;
+					var packetLength = length;
 
 					if (BufferStaticPackets && p.State.HasFlag(PacketState.Acquired))
 					{
@@ -567,7 +567,7 @@ namespace Server.Network
 				Console.WriteLine("Client: {0}: null buffer send, disconnecting...", this);
 				Utility.PopColor();
 
-				using (StreamWriter op = new StreamWriter("null_send.log", true))
+				using (var op = new StreamWriter("null_send.log", true))
 				{
 					op.WriteLine("{0} Client: {1}: null buffer send, disconnecting...", DateTime.UtcNow, this);
 					op.WriteLine(new StackTrace());
@@ -617,9 +617,9 @@ namespace Server.Network
 		{
 			try
 			{
-				Socket s = (Socket)asyncResult.AsyncState;
+				var s = (Socket)asyncResult.AsyncState;
 
-				int byteCount = s.EndReceive(asyncResult);
+				var byteCount = s.EndReceive(asyncResult);
 
 				if (byteCount > 0)
 				{
@@ -678,11 +678,11 @@ namespace Server.Network
 
 		private void OnSend(IAsyncResult asyncResult)
 		{
-			Socket s = (Socket)asyncResult.AsyncState;
+			var s = (Socket)asyncResult.AsyncState;
 
 			try
 			{
-				int bytes = s.EndSend(asyncResult);
+				var bytes = s.EndSend(asyncResult);
 
 				if (bytes <= 0)
 				{
@@ -739,7 +739,7 @@ namespace Server.Network
 		{
 			m_Paused = true;
 
-			foreach (NetState ns in m_Instances)
+			foreach (var ns in m_Instances)
 			{
 				lock (ns.m_AsyncLock)
 				{
@@ -752,7 +752,7 @@ namespace Server.Network
 		{
 			m_Paused = false;
 
-			foreach (NetState ns in m_Instances)
+			foreach (var ns in m_Instances)
 			{
 				if (ns.Socket == null)
 				{
@@ -831,7 +831,7 @@ namespace Server.Network
 
 		public static void FlushAll()
 		{
-			int index = m_Instances.Count;
+			var index = m_Instances.Count;
 
 			while (--index >= 0)
 			{
@@ -874,7 +874,7 @@ namespace Server.Network
 
 			try
 			{
-				using (StreamWriter op = new StreamWriter("network-errors.log", true))
+				using (var op = new StreamWriter("network-errors.log", true))
 				{
 					op.WriteLine("# {0}", DateTime.UtcNow);
 
@@ -981,9 +981,9 @@ namespace Server.Network
 		{
 			try
 			{
-				long curTicks = Core.TickCount;
+				var curTicks = Core.TickCount;
 
-				int i = m_Instances.Count;
+				var i = m_Instances.Count;
 
 				while (--i >= 0)
 				{
@@ -1005,14 +1005,14 @@ namespace Server.Network
 		{
 			lock (m_Disposed)
 			{
-				int breakout = 200;
+				var breakout = 200;
 
 				while (--breakout >= 0 && m_Disposed.Count > 0)
 				{
-					NetState ns = m_Disposed.Dequeue();
+					var ns = m_Disposed.Dequeue();
 
-					Mobile m = ns.Mobile;
-					IAccount a = ns.Account;
+					var m = ns.Mobile;
+					var a = ns.Account;
 
 					if (m != null)
 					{
@@ -1061,9 +1061,9 @@ namespace Server.Network
 		{
 			get
 			{
-				for (int i = ExpansionInfo.Table.Length - 1; i >= 0; i--)
+				for (var i = ExpansionInfo.Table.Length - 1; i >= 0; i--)
 				{
-					ExpansionInfo info = ExpansionInfo.Table[i];
+					var info = ExpansionInfo.Table[i];
 
 					if ((info.RequiredClient != null && Version >= info.RequiredClient) || ((Flags & info.ClientFlags) != 0))
 					{
@@ -1115,7 +1115,7 @@ namespace Server.Network
 				return 1;
 			}
 
-			return string.Compare(m_ToString, other.m_ToString, StringComparison.Ordinal);
+			return String.Compare(m_ToString, other.m_ToString, StringComparison.Ordinal);
 		}
 	}
 }

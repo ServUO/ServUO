@@ -26,16 +26,16 @@ namespace Server.Network
 		{
 			try
 			{
-				using (StreamWriter sw = new StreamWriter("Packets.log", true))
+				using (var sw = new StreamWriter("Packets.log", true))
 				{
-					byte[] buffer = m_Data;
+					var buffer = m_Data;
 
 					if (buffer.Length > 0)
 					{
 						sw.WriteLine("Client: {0}: Unhandled packet 0x{1:X2}", state, buffer[0]);
 					}
 
-					using (MemoryStream ms = new MemoryStream(buffer))
+					using (var ms = new MemoryStream(buffer))
 					{
 						Utility.FormatBuffer(sw, ms, buffer.Length);
 					}
@@ -138,7 +138,7 @@ namespace Server.Network
 
 		public string ReadUnicodeStringLE()
 		{
-			StringBuilder sb = new StringBuilder();
+			var sb = new StringBuilder();
 
 			int c;
 
@@ -152,15 +152,15 @@ namespace Server.Network
 
 		public string ReadUnicodeStringLESafe(int fixedLength)
 		{
-			int bound = m_Index + (fixedLength << 1);
-			int end = bound;
+			var bound = m_Index + (fixedLength << 1);
+			var end = bound;
 
 			if (bound > m_Size)
 			{
 				bound = m_Size;
 			}
 
-			StringBuilder sb = new StringBuilder();
+			var sb = new StringBuilder();
 
 			int c;
 
@@ -179,7 +179,7 @@ namespace Server.Network
 
 		public string ReadUnicodeStringLESafe()
 		{
-			StringBuilder sb = new StringBuilder();
+			var sb = new StringBuilder();
 
 			int c;
 
@@ -196,7 +196,7 @@ namespace Server.Network
 
 		public string ReadUnicodeStringSafe()
 		{
-			StringBuilder sb = new StringBuilder();
+			var sb = new StringBuilder();
 
 			int c;
 
@@ -213,7 +213,7 @@ namespace Server.Network
 
 		public string ReadUnicodeString()
 		{
-			StringBuilder sb = new StringBuilder();
+			var sb = new StringBuilder();
 
 			int c;
 
@@ -235,10 +235,10 @@ namespace Server.Network
 			if (m_Index >= m_Size)
 			{
 				m_Index += fixedLength;
-				return string.Empty;
+				return System.String.Empty;
 			}
 
-			int bound = m_Index + fixedLength;
+			var bound = m_Index + fixedLength;
 			//int end   = bound;
 
 			if (bound > m_Size)
@@ -246,9 +246,9 @@ namespace Server.Network
 				bound = m_Size;
 			}
 
-			int count = 0;
-			int index = m_Index;
-			int start = m_Index;
+			var count = 0;
+			var index = m_Index;
+			var start = m_Index;
 
 			while (index < bound && m_Data[index++] != 0)
 			{
@@ -257,19 +257,19 @@ namespace Server.Network
 
 			index = 0;
 
-			byte[] buffer = new byte[count];
-			int value = 0;
+			var buffer = new byte[count];
+			var value = 0;
 
 			while (m_Index < bound && (value = m_Data[m_Index++]) != 0)
 			{
 				buffer[index++] = (byte)value;
 			}
 
-			string s = Utility.UTF8.GetString(buffer);
+			var s = Utility.UTF8.GetString(buffer);
 
-			bool isSafe = true;
+			var isSafe = true;
 
-			for (int i = 0; isSafe && i < s.Length; ++i)
+			for (var i = 0; isSafe && i < s.Length; ++i)
 			{
 				isSafe = IsSafeChar(s[i]);
 			}
@@ -281,9 +281,9 @@ namespace Server.Network
 				return s;
 			}
 
-			StringBuilder sb = new StringBuilder(s.Length);
+			var sb = new StringBuilder(s.Length);
 
-			for (int i = 0; i < s.Length; ++i)
+			for (var i = 0; i < s.Length; ++i)
 			{
 				if (IsSafeChar(s[i]))
 				{
@@ -298,11 +298,11 @@ namespace Server.Network
 		{
 			if (m_Index >= m_Size)
 			{
-				return string.Empty;
+				return System.String.Empty;
 			}
 
-			int count = 0;
-			int index = m_Index;
+			var count = 0;
+			var index = m_Index;
 
 			while (index < m_Size && m_Data[index++] != 0)
 			{
@@ -311,19 +311,19 @@ namespace Server.Network
 
 			index = 0;
 
-			byte[] buffer = new byte[count];
-			int value = 0;
+			var buffer = new byte[count];
+			var value = 0;
 
 			while (m_Index < m_Size && (value = m_Data[m_Index++]) != 0)
 			{
 				buffer[index++] = (byte)value;
 			}
 
-			string s = Utility.UTF8.GetString(buffer);
+			var s = Utility.UTF8.GetString(buffer);
 
-			bool isSafe = true;
+			var isSafe = true;
 
-			for (int i = 0; isSafe && i < s.Length; ++i)
+			for (var i = 0; isSafe && i < s.Length; ++i)
 			{
 				isSafe = IsSafeChar(s[i]);
 			}
@@ -333,9 +333,9 @@ namespace Server.Network
 				return s;
 			}
 
-			StringBuilder sb = new StringBuilder(s.Length);
+			var sb = new StringBuilder(s.Length);
 
-			for (int i = 0; i < s.Length; ++i)
+			for (var i = 0; i < s.Length; ++i)
 			{
 				if (IsSafeChar(s[i]))
 				{
@@ -350,11 +350,11 @@ namespace Server.Network
 		{
 			if (m_Index >= m_Size)
 			{
-				return string.Empty;
+				return System.String.Empty;
 			}
 
-			int count = 0;
-			int index = m_Index;
+			var count = 0;
+			var index = m_Index;
 
 			while (index < m_Size && m_Data[index++] != 0)
 			{
@@ -363,8 +363,8 @@ namespace Server.Network
 
 			index = 0;
 
-			byte[] buffer = new byte[count];
-			int value = 0;
+			var buffer = new byte[count];
+			var value = 0;
 
 			while (m_Index < m_Size && (value = m_Data[m_Index++]) != 0)
 			{
@@ -376,7 +376,7 @@ namespace Server.Network
 
 		public string ReadString()
 		{
-			StringBuilder sb = new StringBuilder();
+			var sb = new StringBuilder();
 
 			int c;
 
@@ -390,7 +390,7 @@ namespace Server.Network
 
 		public string ReadStringSafe()
 		{
-			StringBuilder sb = new StringBuilder();
+			var sb = new StringBuilder();
 
 			int c;
 
@@ -407,15 +407,15 @@ namespace Server.Network
 
 		public string ReadUnicodeStringSafe(int fixedLength)
 		{
-			int bound = m_Index + (fixedLength << 1);
-			int end = bound;
+			var bound = m_Index + (fixedLength << 1);
+			var end = bound;
 
 			if (bound > m_Size)
 			{
 				bound = m_Size;
 			}
 
-			StringBuilder sb = new StringBuilder();
+			var sb = new StringBuilder();
 
 			int c;
 
@@ -434,15 +434,15 @@ namespace Server.Network
 
 		public string ReadUnicodeString(int fixedLength)
 		{
-			int bound = m_Index + (fixedLength << 1);
-			int end = bound;
+			var bound = m_Index + (fixedLength << 1);
+			var end = bound;
 
 			if (bound > m_Size)
 			{
 				bound = m_Size;
 			}
 
-			StringBuilder sb = new StringBuilder();
+			var sb = new StringBuilder();
 
 			int c;
 
@@ -458,15 +458,15 @@ namespace Server.Network
 
 		public string ReadStringSafe(int fixedLength)
 		{
-			int bound = m_Index + fixedLength;
-			int end = bound;
+			var bound = m_Index + fixedLength;
+			var end = bound;
 
 			if (bound > m_Size)
 			{
 				bound = m_Size;
 			}
 
-			StringBuilder sb = new StringBuilder();
+			var sb = new StringBuilder();
 
 			int c;
 
@@ -485,15 +485,15 @@ namespace Server.Network
 
 		public string ReadString(int fixedLength)
 		{
-			int bound = m_Index + fixedLength;
-			int end = bound;
+			var bound = m_Index + fixedLength;
+			var end = bound;
 
 			if (bound > m_Size)
 			{
 				bound = m_Size;
 			}
 
-			StringBuilder sb = new StringBuilder();
+			var sb = new StringBuilder();
 
 			int c;
 
