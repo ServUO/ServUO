@@ -80,14 +80,14 @@ namespace Server.Mobiles
 
         public override void OnStatsQuery(Mobile from)
         {
-            if (from.Map == Map && Utility.InUpdateRange(this, from) && from.CanSee(this))
+            if (from.Map == Map && Utility.InUpdateRange(from, this) && from.CanSee(this))
             {
                 BaseHouse house = BaseHouse.FindHouseAt(this);
 
                 if (house != null && house.IsCoOwner(from) && from.AccessLevel == AccessLevel.Player)
                     from.SendLocalizedMessage(1072625); // As the house owner, you may rename this Parrot.
 
-                from.Send(new Network.MobileStatus(from, this));
+                Network.MobileStatus.Send(from.NetState, this);
             }
         }
 

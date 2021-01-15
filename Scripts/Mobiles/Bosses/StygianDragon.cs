@@ -255,7 +255,7 @@ namespace Server.Mobiles
 
             Direction columnDir = Utility.GetDirection(this, Combatant);
 
-            Packet flash = ScreenLightFlash.Instance;
+            ScreenEffect flash = ScreenEffect.LightFlash;
             IPooledEnumerable e = Map.GetClientsInRange(Location, Core.GlobalUpdateRange);
 
             foreach (NetState ns in e)

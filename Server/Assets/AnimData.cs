@@ -14,16 +14,16 @@ namespace Server
 
         static unsafe AnimData()
         {
-            string path = Core.FindDataFile("animdata.mul");
+            var path = Core.FindDataFile("animdata.mul");
 
             if (path == null)
                 return;
 
-            using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
-            using (BinaryReader bin = new BinaryReader(fs))
+            using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (var bin = new BinaryReader(fs))
             {
-                int id = 0;
-                int h = 0;
+                var id = 0;
+                var h = 0;
 
                 byte unk, fcount, finter, fstart;
 
@@ -35,17 +35,17 @@ namespace Server
                 {
                     m_Header[h++] = bin.ReadInt32(); // chunk header
 
-                    byte[] buffer = bin.ReadBytes(544); // Read 8 tiles
+                    var buffer = bin.ReadBytes(544); // Read 8 tiles
 
                     fixed (byte* buf = buffer)
                     {
-                        byte* data = buf;
+                        var data = buf;
 
-                        for (int i = 0; i < 8; ++i, ++id)
+                        for (var i = 0; i < 8; ++i, ++id)
                         {
                             fdata = new sbyte[64];
 
-                            for (int j = 0; j < 64; ++j)
+                            for (var j = 0; j < 64; ++j)
                                 fdata[j] = (sbyte)*data++;
 
                             unk = *data++;
@@ -59,7 +59,7 @@ namespace Server
                     }
                 }
 
-                int remaining = (int)(bin.BaseStream.Length - bin.BaseStream.Position);
+                var remaining = (int)(bin.BaseStream.Length - bin.BaseStream.Position);
 
                 if (remaining > 0)
                     m_Unknown = bin.ReadBytes(remaining);

@@ -263,7 +263,7 @@ namespace Server.Items
         {
             if (from.Map == Map && Utility.InUpdateRange(from, this) && from.CanSee(this))
             {
-                from.Send(new MobileStatusCompact(false, this));
+                MobileStatus.Send(from.NetState, this);
             }
         }
 
@@ -340,7 +340,7 @@ namespace Server.Items
 
             if (amount > 0 && theirState != null)
             {
-                theirState.Send(new DamagePacket(this, amount));
+                DamagePacket.Send(theirState, this, amount);
             }
         }
 

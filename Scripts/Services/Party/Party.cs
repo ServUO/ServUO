@@ -174,13 +174,15 @@ namespace Server.Engines.PartySystem
 
                     if (f != m)
                     {
-                        f.Send(new MobileStatusCompact(m.CanBeRenamedBy(f), m));
+                        MobileStatus.Send(f.NetState, m);
+
                         f.Send(attrs);
 
                         if (f.NetState != null && f.NetState.IsEnhancedClient)
                             Waypoints.Create(f, m, WaypointType.PartyMember);
 
-                        m.Send(new MobileStatusCompact(f.CanBeRenamedBy(m), f));
+                        MobileStatus.Send(m.NetState, f);
+
                         m.Send(new MobileAttributesN(f));
 
                         if (m.NetState != null && m.NetState.IsEnhancedClient)
@@ -410,7 +412,7 @@ namespace Server.Engines.PartySystem
             if (beholder != beheld && Contains(beholder) && beholder.Map == beheld.Map && Utility.InUpdateRange(beholder, beheld))
             {
                 if (!beholder.CanSee(beheld))
-                    beholder.Send(new MobileStatusCompact(beheld.CanBeRenamedBy(beholder), beheld));
+                    MobileStatus.Send(beholder.NetState, beheld);
 
                 beholder.Send(new MobileAttributesN(beheld));
             }
@@ -470,9 +472,13 @@ namespace Server.Engines.PartySystem
                     if (m != m_Mobile)
                     {
                         m.Send(message);
-                        m.Send(new MobileStatusCompact(m_Mobile.CanBeRenamedBy(m), m_Mobile));
+
+                        MobileStatus.Send(m.NetState, m_Mobile);
+
                         m.Send(attrs);
-                        m_Mobile.Send(new MobileStatusCompact(m.CanBeRenamedBy(m_Mobile), m));
+
+                        MobileStatus.Send(m_Mobile.NetState, m);
+
                         m_Mobile.Send(new MobileAttributesN(m));
 
                         if (m_Mobile.NetState != null && m_Mobile.NetState.IsEnhancedClient)

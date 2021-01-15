@@ -20,7 +20,7 @@
   </PropertyGroup>
   
   <PropertyGroup>
-    <DefineConstants>NEWTIMERS;ServUO</DefineConstants>
+    <DefineConstants>NEWTIMERS;ServUO;P58</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

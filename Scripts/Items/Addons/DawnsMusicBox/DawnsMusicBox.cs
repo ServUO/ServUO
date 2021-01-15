@@ -9,8 +9,19 @@ namespace Server.Items
 {
     public sealed class StopMusic : Packet
     {
-        public static readonly Packet Instance = SetStatic(new StopMusic());
-        public StopMusic()
+        public static Packet Instance => PacketCache<StopMusic>.Global(() => new StopMusic());
+
+        public static bool Send(NetState ns)
+        {
+            return ns?.Mobile?.Send(Instantiate(ns)) ?? false;
+        }
+
+        public static StopMusic Instantiate(NetState ns)
+        {
+            return PacketCache<StopMusic>.Global(() => new StopMusic());
+        }
+
+        private StopMusic()
             : base(0x6D, 3)
         {
             m_Stream.Write((short)0x1FFF);
@@ -260,7 +271,8 @@ namespace Server.Items
             else
                 m_ItemID = ItemID;
 
-            m.Send(new PlayMusic(music));
+            Network.PlayMusic.Send(m.NetState, music);
+
             m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(0.5), TimeSpan.FromSeconds(0.5), 4, Animate);
         }
 

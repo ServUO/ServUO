@@ -732,21 +732,19 @@ namespace Server.Items
 
             if (Parent == null)
             {
-                to.Send(WorldPacket);
+                SendInfoTo(ns, to.ViewOPL);
             }
             else if (Parent is Item)
             {
-                to.Send(new ContainerContentUpdate(this));
+                ContainerContentUpdate.Send(ns, this);
             }
             else if (Parent is Mobile)
             {
-                // What will happen if the client doesn't know about our parent?
                 to.Send(new EquipUpdate(this));
             }
 
-            to.Send(new DisplaySpellbook(this));
-
-            to.Send(new SpellbookContent(this, ItemID, BookOffset + 1, m_Content));
+            DisplaySpellbook.Send(ns, this);
+            SpellbookContent.Send(ns, this, BookOffset + 1, m_Content);
         }
 
         public override void AddNameProperties(ObjectPropertyList list)

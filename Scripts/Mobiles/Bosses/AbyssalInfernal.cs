@@ -226,7 +226,7 @@ namespace Server.Mobiles
                 {
                     Effects.PlaySound(Location, Map, 0x44B);
 
-                    Packet flash = ScreenLightFlash.Instance;
+                    ScreenEffect flash = ScreenEffect.LightFlash;
                     IPooledEnumerable e = Map.GetClientsInRange(Location, (range * 4) + 5);
 
                     foreach (NetState ns in e)

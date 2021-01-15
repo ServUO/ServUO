@@ -988,13 +988,13 @@ namespace Server.Mobiles
                     return;
                 }
 
-                from.Send(new VendorBuyContent(list));
+                VendorBuyContent.Send(ns, list);
 
                 from.Send(new VendorBuyList(this, list));
 
-                from.Send(new DisplayBuyList(this));
+                DisplayBuyList.Send(ns, this);
 
-                from.Send(new MobileStatus(from)); //make sure their gold amount is sent
+                MobileStatus.Send(ns, from); //make sure their gold amount is sent
 
                 if (opls != null)
                 {

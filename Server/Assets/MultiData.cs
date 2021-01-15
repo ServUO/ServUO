@@ -178,14 +178,14 @@ namespace Server
                                 switch (flagint)
                                 {
                                     default:
-                                    case 0: 
-                                    flagg = TileFlag.Background; 
+                                    case 0:
+                                    flagg = TileFlag.Background;
                                     break;
-                                    case 1: 
-                                    flagg = TileFlag.None; 
+                                    case 1:
+                                    flagg = TileFlag.None;
                                     break;
-                                    case 257: 
-                                    flagg = TileFlag.Generic; 
+                                    case 257:
+                                    flagg = TileFlag.Generic;
                                     break;
                                 }
 
@@ -699,7 +699,7 @@ namespace Server
             }
 
             var tiles = new TileList[Width][];
-            
+
             Tiles = new StaticTile[Width][][];
 
             for (var x = 0; x < Width; ++x)
@@ -781,7 +781,7 @@ namespace Server
             Height = m_Max.m_Y - m_Min.m_Y + 1;
 
             var tiles = new TileList[Width][];
-            
+
             Tiles = new StaticTile[Width][][];
 
             for (var x = 0; x < Width; ++x)
@@ -860,7 +860,7 @@ namespace Server
             Height = m_Max.m_Y - m_Min.m_Y + 1;
 
             var tiles = new TileList[Width][];
-            
+
             Tiles = new StaticTile[Width][][];
 
             for (var x = 0; x < Width; ++x)
@@ -913,7 +913,7 @@ namespace Server
             {
                 chunkIds[HashLittle2(string.Format(formats[0], i))] = i;
             }
-            
+
             if (formats[1] != "")
             {
                 for (var i = 0; i < maxId; ++i)

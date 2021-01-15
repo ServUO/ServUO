@@ -134,7 +134,7 @@ namespace Server.Spells.Spellweaving
                     BaseCreature pet = (BaseCreature)m;
                     Mobile master = pet.GetMaster();
 
-                    if (master != null && master.NetState != null && Utility.InUpdateRange(pet, master))
+                    if (master != null && master.NetState != null && Utility.InUpdateRange(master, pet))
                     {
                         master.CloseGump(typeof(PetResurrectGump));
                         master.SendGump(new PetResurrectGump(master, pet, hitsScalar));
@@ -147,7 +147,7 @@ namespace Server.Spells.Spellweaving
                         {
                             Mobile friend = friends[i];
 
-                            if (friend.NetState != null && Utility.InUpdateRange(pet, friend))
+                            if (friend.NetState != null && Utility.InUpdateRange(friend, pet))
                             {
                                 friend.CloseGump(typeof(PetResurrectGump));
                                 friend.SendGump(new PetResurrectGump(friend, pet));

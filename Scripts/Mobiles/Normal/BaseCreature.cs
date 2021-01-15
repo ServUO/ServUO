@@ -4155,9 +4155,9 @@ namespace Server.Mobiles
                     // not in the list, so we're adding it
                     master.Aggressors.Add(AggressorInfo.Create(aggressor, master, criminal));
 
-                    if (CanSee(aggressor) && NetState != null)
+                    if (Utility.InUpdateRange(master, aggressor) && master.CanSee(aggressor))
                     {
-                        master.NetState.Send(MobileIncoming.Create(NetState, master, aggressor));
+                        MobileIncoming.Send(master.NetState, aggressor);
                     }
 
                     master.UpdateAggrExpire();
@@ -4192,9 +4192,9 @@ namespace Server.Mobiles
                     // not in the list, so we're adding it
                     aggressor.Aggressed.Add(AggressorInfo.Create(aggressor, master, criminal));
 
-                    if (CanSee(aggressor) && NetState != null)
+                    if (Utility.InUpdateRange(master, aggressor) && master.CanSee(aggressor))
                     {
-                        master.NetState.Send(MobileIncoming.Create(NetState, master, aggressor));
+                        MobileIncoming.Send(master.NetState, aggressor);
                     }
 
                     master.UpdateAggrExpire();

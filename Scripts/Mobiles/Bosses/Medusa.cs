@@ -621,7 +621,9 @@ namespace Server.Mobiles
                             if (m.NetState != null)
                             {
                                 m.Send(new RemoveMobile(clone));
-                                m.NetState.Send(MobileIncoming.Create(m.NetState, m, clone));
+
+                                MobileIncoming.Send(m.NetState, clone);
+
                                 m.SendLocalizedMessage(1112767); // Medusa releases one of the petrified creatures!!
                             }
 

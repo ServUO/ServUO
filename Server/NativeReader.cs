@@ -53,7 +53,7 @@ namespace Server
         internal class UnsafeNativeMethods
         {
             [DllImport("kernel32")]
-            static internal unsafe extern bool ReadFile(IntPtr hFile, void* lpBuffer, uint nNumberOfBytesToRead, ref uint lpNumberOfBytesRead, NativeOverlapped* lpOverlapped);
+            internal static extern unsafe bool ReadFile(IntPtr hFile, void* lpBuffer, uint nNumberOfBytesToRead, ref uint lpNumberOfBytesRead, NativeOverlapped* lpOverlapped);
         }
 
         public unsafe int Read(FileStream source, void* buffer, int length)
@@ -101,7 +101,7 @@ namespace Server
         internal class UnsafeNativeMethods
         {
             [DllImport("libc")]
-            static internal unsafe extern int read(IntPtr ptr, void* buffer, int length);
+            internal static extern unsafe int read(IntPtr ptr, void* buffer, int length);
         }
 
         public unsafe int Read(FileStream source, void* buffer, int length)

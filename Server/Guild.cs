@@ -4,110 +4,121 @@ using System.Collections.Generic;
 
 namespace Server.Guilds
 {
-	public abstract class BaseGuild : ISerializable
-	{
-		private readonly int m_Id;
+    public enum GuildType
+    {
+        Regular,
+        Chaos,
+        Order
+    }
 
-		protected BaseGuild(int Id) //serialization ctor
-		{
-			m_Id = Id;
-			m_GuildList.Add(m_Id, this);
-			if (m_Id + 1 > m_NextID)
-			{
-				m_NextID = m_Id + 1;
-			}
-		}
+    public abstract class BaseGuild : ISerializable
+    {
+        private readonly int m_Id;
 
-		protected BaseGuild()
-		{
-			m_Id = m_NextID++;
-			m_GuildList.Add(m_Id, this);
-		}
+        protected BaseGuild(int Id) //serialization ctor
+        {
+            m_Id = Id;
+            m_GuildList.Add(m_Id, this);
+            if (m_Id + 1 > m_NextID)
+            {
+                m_NextID = m_Id + 1;
+            }
+        }
 
-		[CommandProperty(AccessLevel.Counselor)]
-		public int Id => m_Id;
+        protected BaseGuild()
+        {
+            m_Id = m_NextID++;
+            m_GuildList.Add(m_Id, this);
+        }
 
-		int ISerializable.TypeReference => 0;
+        [CommandProperty(AccessLevel.Counselor)]
+        public int Id => m_Id;
 
-		int ISerializable.SerialIdentity => m_Id;
+        int ISerializable.TypeReference => 0;
 
-		public abstract void Deserialize(GenericReader reader);
-		public abstract void Serialize(GenericWriter writer);
+        int ISerializable.SerialIdentity => m_Id;
 
-		public abstract string Abbreviation { get; set; }
-		public abstract string Name { get; set; }
-		public abstract bool Disbanded { get; }
-		public abstract void OnDelete(Mobile mob);
+        public abstract void Deserialize(GenericReader reader);
+        public abstract void Serialize(GenericWriter writer);
 
-		private static readonly Dictionary<int, BaseGuild> m_GuildList = new Dictionary<int, BaseGuild>();
-		private static int m_NextID = 1;
+        public abstract string Abbreviation { get; set; }
+        public abstract string Name { get; set; }
 
-		public static Dictionary<int, BaseGuild> List => m_GuildList;
+        public virtual GuildType Type { get; set; }
 
-		public static BaseGuild Find(int id)
-		{
+        public abstract bool Disbanded { get; }
 
-			m_GuildList.TryGetValue(id, out BaseGuild g);
+        public abstract void OnDelete(Mobile mob);
 
-			return g;
-		}
+        private static readonly Dictionary<int, BaseGuild> m_GuildList = new Dictionary<int, BaseGuild>();
+        private static int m_NextID = 1;
 
-		public static BaseGuild FindByName(string name)
-		{
-			foreach (BaseGuild g in m_GuildList.Values)
-			{
-				if (g.Name == name)
-				{
-					return g;
-				}
-			}
+        public static Dictionary<int, BaseGuild> List => m_GuildList;
 
-			return null;
-		}
+        public static BaseGuild Find(int id)
+        {
 
-		public static BaseGuild FindByAbbrev(string abbr)
-		{
-			foreach (BaseGuild g in m_GuildList.Values)
-			{
-				if (g.Abbreviation == abbr)
-				{
-					return g;
-				}
-			}
+            m_GuildList.TryGetValue(id, out var g);
 
-			return null;
-		}
+            return g;
+        }
 
-		public static List<BaseGuild> Search(string find)
-		{
-			string[] words = find.ToLower().Split(' ');
-			List<BaseGuild> results = new List<BaseGuild>();
+        public static BaseGuild FindByName(string name)
+        {
+            foreach (var g in m_GuildList.Values)
+            {
+                if (g.Name == name)
+                {
+                    return g;
+                }
+            }
 
-			foreach (BaseGuild g in m_GuildList.Values)
-			{
-				bool match = true;
-				string name = g.Name.ToLower();
-				for (int i = 0; i < words.Length; i++)
-				{
-					if (name.IndexOf(words[i]) == -1)
-					{
-						match = false;
-						break;
-					}
-				}
+            return null;
+        }
 
-				if (match)
-				{
-					results.Add(g);
-				}
-			}
+        public static BaseGuild FindByAbbrev(string abbr)
+        {
+            foreach (var g in m_GuildList.Values)
+            {
+                if (g.Abbreviation == abbr)
+                {
+                    return g;
+                }
+            }
 
-			return results;
-		}
+            return null;
+        }
 
-		public override string ToString()
-		{
-			return string.Format("0x{0:X} \"{1} [{2}]\"", m_Id, Name, Abbreviation);
-		}
-	}
+        public static List<BaseGuild> Search(string find)
+        {
+            var words = find.ToLower().Split(' ');
+            var results = new List<BaseGuild>();
+
+            foreach (var g in m_GuildList.Values)
+            {
+                var match = true;
+                var name = g.Name.ToLower();
+                for (var i = 0; i < words.Length; i++)
+                {
+                    if (name.IndexOf(words[i]) == -1)
+                    {
+                        match = false;
+                        break;
+                    }
+                }
+
+                if (match)
+                {
+                    results.Add(g);
+                }
+            }
+
+            return results;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("0x{0:X} \"{1} [{2}]\"", m_Id, Name, Abbreviation);
+        }
+    }
 }
