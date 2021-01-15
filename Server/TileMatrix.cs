@@ -58,9 +58,9 @@ namespace Server
 		{
 			lock (m_Instances)
 			{
-				for (int i = 0; i < m_Instances.Count; ++i)
+				for (var i = 0; i < m_Instances.Count; ++i)
 				{
-					TileMatrix tm = m_Instances[i];
+					var tm = m_Instances[i];
 
 					if (tm.m_FileIndex == fileIndex)
 					{
@@ -88,7 +88,7 @@ namespace Server
 
 			if (fileIndex != 0x7F)
 			{
-				string mapPath = Core.FindDataFile("map{0}.mul", fileIndex);
+				var mapPath = Core.FindDataFile("map{0}.mul", fileIndex);
 
 				if (File.Exists(mapPath))
 				{
@@ -105,7 +105,7 @@ namespace Server
 					}
 				}
 
-				string indexPath = Core.FindDataFile("staidx{0}.mul", fileIndex);
+				var indexPath = Core.FindDataFile("staidx{0}.mul", fileIndex);
 
 				if (File.Exists(indexPath))
 				{
@@ -113,7 +113,7 @@ namespace Server
 					m_IndexReader = new BinaryReader(m_Index);
 				}
 
-				string staticsPath = Core.FindDataFile("statics{0}.mul", fileIndex);
+				var staticsPath = Core.FindDataFile("statics{0}.mul", fileIndex);
 
 				if (File.Exists(staticsPath))
 				{
@@ -123,11 +123,11 @@ namespace Server
 
 			m_EmptyStaticBlock = new StaticTile[8][][];
 
-			for (int i = 0; i < 8; ++i)
+			for (var i = 0; i < 8; ++i)
 			{
 				m_EmptyStaticBlock[i] = new StaticTile[8][];
 
-				for (int j = 0; j < 8; ++j)
+				for (var j = 0; j < 8; ++j)
 				{
 					m_EmptyStaticBlock[i][j] = new StaticTile[0];
 				}
@@ -181,21 +181,21 @@ namespace Server
 				m_StaticTiles[x] = new StaticTile[m_BlockHeight][][][];
 			}
 
-			StaticTile[][][] tiles = m_StaticTiles[x][y];
+			var tiles = m_StaticTiles[x][y];
 
 			if (tiles == null)
 			{
 				lock (m_FileShare)
 				{
-					for (int i = 0; tiles == null && i < m_FileShare.Count; ++i)
+					for (var i = 0; tiles == null && i < m_FileShare.Count; ++i)
 					{
-						TileMatrix shared = m_FileShare[i];
+						var shared = m_FileShare[i];
 
 						lock (shared)
 						{
 							if (x >= 0 && x < shared.m_BlockWidth && y >= 0 && y < shared.m_BlockHeight)
 							{
-								StaticTile[][][][] theirTiles = shared.m_StaticTiles[x];
+								var theirTiles = shared.m_StaticTiles[x];
 
 								if (theirTiles != null)
 								{
@@ -204,7 +204,7 @@ namespace Server
 
 								if (tiles != null)
 								{
-									int[] theirBits = shared.m_StaticPatches[x];
+									var theirBits = shared.m_StaticPatches[x];
 
 									if (theirBits != null && (theirBits[y >> 5] & (1 << (y & 0x1F))) != 0)
 									{
@@ -229,7 +229,7 @@ namespace Server
 
 		public StaticTile[] GetStaticTiles(int x, int y)
 		{
-			StaticTile[][][] tiles = GetStaticBlock(x >> 3, y >> 3);
+			var tiles = GetStaticBlock(x >> 3, y >> 3);
 
 			return tiles[x & 0x7][y & 0x7];
 		}
@@ -239,20 +239,20 @@ namespace Server
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public StaticTile[] GetStaticTiles(int x, int y, bool multis)
 		{
-			StaticTile[][][] tiles = GetStaticBlock(x >> 3, y >> 3);
+			var tiles = GetStaticBlock(x >> 3, y >> 3);
 
 			if (multis)
 			{
-				IPooledEnumerable<StaticTile[]> eable = m_Owner.GetMultiTilesAt(x, y);
+				var eable = m_Owner.GetMultiTilesAt(x, y);
 
 				if (eable == Map.NullEnumerable<StaticTile[]>.Instance)
 				{
 					return tiles[x & 0x7][y & 0x7];
 				}
 
-				bool any = false;
+				var any = false;
 
-				foreach (StaticTile[] multiTiles in eable)
+				foreach (var multiTiles in eable)
 				{
 					if (!any)
 					{
@@ -315,21 +315,21 @@ namespace Server
 				m_LandTiles[x] = new LandTile[m_BlockHeight][];
 			}
 
-			LandTile[] tiles = m_LandTiles[x][y];
+			var tiles = m_LandTiles[x][y];
 
 			if (tiles == null)
 			{
 				lock (m_FileShare)
 				{
-					for (int i = 0; tiles == null && i < m_FileShare.Count; ++i)
+					for (var i = 0; tiles == null && i < m_FileShare.Count; ++i)
 					{
-						TileMatrix shared = m_FileShare[i];
+						var shared = m_FileShare[i];
 
 						lock (shared)
 						{
 							if (x >= 0 && x < shared.m_BlockWidth && y >= 0 && y < shared.m_BlockHeight)
 							{
-								LandTile[][] theirTiles = shared.m_LandTiles[x];
+								var theirTiles = shared.m_LandTiles[x];
 
 								if (theirTiles != null)
 								{
@@ -338,7 +338,7 @@ namespace Server
 
 								if (tiles != null)
 								{
-									int[] theirBits = shared.m_LandPatches[x];
+									var theirBits = shared.m_LandPatches[x];
 
 									if (theirBits != null && (theirBits[y >> 5] & (1 << (y & 0x1F))) != 0)
 									{
@@ -363,7 +363,7 @@ namespace Server
 
 		public LandTile GetLandTile(int x, int y)
 		{
-			LandTile[] tiles = GetLandBlock(x >> 3, y >> 3);
+			var tiles = GetLandBlock(x >> 3, y >> 3);
 
 			return tiles[((y & 0x7) << 3) + (x & 0x7)];
 		}
@@ -379,8 +379,8 @@ namespace Server
 			{
 				m_IndexReader.BaseStream.Seek(((x * m_BlockHeight) + y) * 12, SeekOrigin.Begin);
 
-				int lookup = m_IndexReader.ReadInt32();
-				int length = m_IndexReader.ReadInt32();
+				var lookup = m_IndexReader.ReadInt32();
+				var length = m_IndexReader.ReadInt32();
 
 				if (lookup < 0 || length <= 0)
 				{
@@ -388,7 +388,7 @@ namespace Server
 				}
 				else
 				{
-					int count = length / 7;
+					var count = length / 7;
 
 					m_Statics.Seek(lookup, SeekOrigin.Begin);
 
@@ -397,7 +397,7 @@ namespace Server
 						m_TileBuffer = new StaticTile[count];
 					}
 
-					StaticTile[] staTiles = m_TileBuffer; //new StaticTile[tileCount];
+					var staTiles = m_TileBuffer; //new StaticTile[tileCount];
 
 					fixed (StaticTile* pTiles = staTiles)
 					{
@@ -407,18 +407,18 @@ namespace Server
 						{
 							m_Lists = new TileList[8][];
 
-							for (int i = 0; i < 8; ++i)
+							for (var i = 0; i < 8; ++i)
 							{
 								m_Lists[i] = new TileList[8];
 
-								for (int j = 0; j < 8; ++j)
+								for (var j = 0; j < 8; ++j)
 								{
 									m_Lists[i][j] = new TileList();
 								}
 							}
 						}
 
-						TileList[][] lists = m_Lists;
+						var lists = m_Lists;
 
 						StaticTile* pCur = pTiles, pEnd = pTiles + count;
 
@@ -429,13 +429,13 @@ namespace Server
 							pCur = pCur + 1;
 						}
 
-						StaticTile[][][] tiles = new StaticTile[8][][];
+						var tiles = new StaticTile[8][][];
 
-						for (int i = 0; i < 8; ++i)
+						for (var i = 0; i < 8; ++i)
 						{
 							tiles[i] = new StaticTile[8][];
 
-							for (int j = 0; j < 8; ++j)
+							for (var j = 0; j < 8; ++j)
 							{
 								tiles[i][j] = lists[i][j].ToArray();
 							}
@@ -447,7 +447,7 @@ namespace Server
 			}
 			catch (EndOfStreamException ex)
 			{
-                Diagnostics.ExceptionLogging.LogException(ex);
+				Diagnostics.ExceptionLogging.LogException(ex);
 
 				if (DateTime.UtcNow >= m_NextStaticWarning)
 				{
@@ -475,7 +475,7 @@ namespace Server
 		{
 			try
 			{
-				int offset = ((x * m_BlockHeight) + y) * 196 + 4;
+				var offset = ((x * m_BlockHeight) + y) * 196 + 4;
 
 				if (m_MapIndex != null)
 				{
@@ -484,7 +484,7 @@ namespace Server
 
 				m_Map.Seek(offset, SeekOrigin.Begin);
 
-				LandTile[] tiles = new LandTile[64];
+				var tiles = new LandTile[64];
 
 				fixed (LandTile* pTiles = tiles)
 				{
@@ -495,7 +495,7 @@ namespace Server
 			}
 			catch (Exception ex)
 			{
-                Diagnostics.ExceptionLogging.LogException(ex);
+				Diagnostics.ExceptionLogging.LogException(ex);
 
 				if (DateTime.UtcNow >= m_NextLandWarning)
 				{
@@ -663,20 +663,20 @@ namespace Server
 
 			m_Version = m_Reader.ReadInt32();
 			m_Reader.ReadInt32();
-			int nextTable = m_Reader.ReadInt32();
+			var nextTable = m_Reader.ReadInt32();
 
-			List<UOPEntry> entries = new List<UOPEntry>();
+			var entries = new List<UOPEntry>();
 
 			do
 			{
 				stream.Seek(nextTable, SeekOrigin.Begin);
-				int count = m_Reader.ReadInt32();
+				var count = m_Reader.ReadInt32();
 				nextTable = m_Reader.ReadInt32();
 				m_Reader.ReadInt32();
 
-				for (int i = 0; i < count; ++i)
+				for (var i = 0; i < count; ++i)
 				{
-					int offset = m_Reader.ReadInt32();
+					var offset = m_Reader.ReadInt32();
 
 					if (offset == 0)
 					{
@@ -685,7 +685,7 @@ namespace Server
 					}
 
 					m_Reader.ReadInt64();
-					int length = m_Reader.ReadInt32();
+					var length = m_Reader.ReadInt32();
 
 					entries.Add(new UOPEntry(offset, length));
 
@@ -696,7 +696,7 @@ namespace Server
 
 			entries.Sort(OffsetComparer.Instance);
 
-			for (int i = 0; i < entries.Count; ++i)
+			for (var i = 0; i < entries.Count; ++i)
 			{
 				stream.Seek(entries[i].m_Offset + 2, SeekOrigin.Begin);
 
@@ -713,11 +713,11 @@ namespace Server
 
 		public int Lookup(int offset)
 		{
-			int total = 0;
+			var total = 0;
 
-			for (int i = 0; i < m_Entries.Length; ++i)
+			for (var i = 0; i < m_Entries.Length; ++i)
 			{
-				int newTotal = total + m_Entries[i].m_Length;
+				var newTotal = total + m_Entries[i].m_Length;
 
 				if (offset < newTotal)
 				{

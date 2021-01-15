@@ -50,7 +50,7 @@ namespace Server.ContextMenus
 			From = from;
 			Target = target;
 
-			List<ContextMenuEntry> list = new List<ContextMenuEntry>();
+			var list = new List<ContextMenuEntry>();
 
 			if (target is Mobile)
 			{
@@ -63,7 +63,7 @@ namespace Server.ContextMenus
 
 			EventSink.InvokeContextMenu(new ContextMenuEventArgs(From, Target, list));
 
-			foreach (ContextMenuEntry e in list)
+			foreach (var e in list)
 			{
 				e.Owner = this;
 			}
@@ -95,7 +95,7 @@ namespace Server.ContextMenus
 
 			if (Entries != null)
 			{
-				foreach (ContextMenuEntry e in Entries.Where(e => e != null))
+				foreach (var e in Entries.Where(e => e != null))
 				{
 					e.Dispose();
 				}
@@ -138,7 +138,7 @@ namespace Server.ContextMenus
 				return false;
 			}
 
-			ContextMenu c = new ContextMenu(m, target);
+			var c = new ContextMenu(m, target);
 
 			if (c.Entries.Length <= 0)
 			{
@@ -147,11 +147,11 @@ namespace Server.ContextMenus
 
 			if (target is Item)
 			{
-				object root = ((Item)target).RootParent;
+				var root = ((Item)target).RootParent;
 
 				if (root is Mobile && root != m && ((Mobile)root).AccessLevel >= m.AccessLevel)
 				{
-					foreach (ContextMenuEntry e in c.Entries.Where(e => !e.NonLocalUse))
+					foreach (var e in c.Entries.Where(e => !e.NonLocalUse))
 					{
 						e.Enabled = false;
 					}
@@ -171,7 +171,7 @@ namespace Server.ContextMenus
 		/// <returns>actual index of pre-desribed index from client</returns>
 		public int GetIndexEC(int index)
 		{
-			int number = index;
+			var number = index;
 
 			switch (index)
 			{
@@ -260,7 +260,7 @@ namespace Server.ContextMenus
 
 			if (index >= 0x64)
 			{
-				for (int i = 0; i < Entries.Length; i++)
+				for (var i = 0; i < Entries.Length; i++)
 				{
 					if (Entries[i].Number == number)
 					{

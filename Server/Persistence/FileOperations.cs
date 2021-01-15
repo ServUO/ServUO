@@ -45,7 +45,7 @@ namespace Server
 
 		public static FileStream OpenSequentialStream(string path, FileMode mode, FileAccess access, FileShare share)
 		{
-			FileOptions options = FileOptions.SequentialScan;
+			var options = FileOptions.SequentialScan;
 
 			if (concurrency > 0)
 			{
@@ -61,7 +61,7 @@ namespace Server
 				return new FileStream(path, mode, access, share, bufferSize, options);
 			}
 
-			SafeFileHandle fileHandle = CreateFile(path, (int)access, share, IntPtr.Zero, mode, (int)options, IntPtr.Zero);
+			var fileHandle = CreateFile(path, (int)access, share, IntPtr.Zero, mode, (int)options, IntPtr.Zero);
 
 			if (fileHandle.IsInvalid)
 			{

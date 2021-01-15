@@ -97,7 +97,7 @@ namespace Server
 				return false;
 			}
 
-			ClientVersion v = obj as ClientVersion;
+			var v = obj as ClientVersion;
 
 			if (v == null)
 			{
@@ -110,7 +110,7 @@ namespace Server
 
 		private string _ToStringImpl()
 		{
-			StringBuilder builder = new StringBuilder(16);
+			var builder = new StringBuilder(16);
 
 			builder.Append(m_Major);
 			builder.Append('.');
@@ -153,11 +153,11 @@ namespace Server
 			{
 				fmt = fmt.ToLower();
 
-				int br1 = fmt.IndexOf('.');
-				int br2 = fmt.IndexOf('.', br1 + 1);
+				var br1 = fmt.IndexOf('.');
+				var br2 = fmt.IndexOf('.', br1 + 1);
 
-				int br3 = br2 + 1;
-				while (br3 < fmt.Length && char.IsDigit(fmt, br3))
+				var br3 = br2 + 1;
+				while (br3 < fmt.Length && Char.IsDigit(fmt, br3))
 				{
 					br3++;
 				}
@@ -170,7 +170,7 @@ namespace Server
 				{
 					if (m_Major <= 5 && m_Minor <= 0 && m_Revision <= 6) //Anything before 5.0.7
 					{
-						if (!char.IsWhiteSpace(fmt, br3))
+						if (!Char.IsWhiteSpace(fmt, br3))
 						{
 							m_Patch = fmt[br3] - 'a' + 1;
 						}
@@ -216,7 +216,7 @@ namespace Server
 				return 1;
 			}
 
-			ClientVersion o = obj as ClientVersion;
+			var o = obj as ClientVersion;
 
 			if (o == null)
 			{
@@ -281,8 +281,8 @@ namespace Server
 				return 1;
 			}
 
-			ClientVersion a = x as ClientVersion;
-			ClientVersion b = y as ClientVersion;
+			var a = x as ClientVersion;
+			var b = y as ClientVersion;
 
 			if (IsNull(a) || IsNull(b))
 			{

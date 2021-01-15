@@ -48,7 +48,7 @@ namespace Server.Items
 					MessageType.Regular,
 					0x3B2,
 					true,
-					string.Format("Bank container has {0} items, {1} stones", TotalItems, TotalWeight),
+					String.Format("Bank container has {0} items, {1} stones", TotalItems, TotalWeight),
 					m_Owner.NetState);
 
 				m_Owner.Send(new EquipUpdate(this));
@@ -117,7 +117,7 @@ namespace Server.Items
 
 		public override bool CheckHold(Mobile m, Item item, bool message, bool checkItems, int plusItems, int plusWeight)
 		{
-			Type type = item.GetType();
+			var type = item.GetType();
 
 			if (AccountGold.Enabled && Owner != null && Owner.Account != null && (type.IsAssignableFrom(_GoldType) || type.IsAssignableFrom(_CheckType)))
 			{

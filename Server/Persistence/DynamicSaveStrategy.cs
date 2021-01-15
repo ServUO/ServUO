@@ -34,7 +34,7 @@ namespace Server
 
 			OpenFiles();
 
-			Task[] saveTasks = new Task[4];
+			var saveTasks = new Task[4];
 
 			saveTasks[0] = SaveItems();
 			saveTasks[1] = SaveMobiles();
@@ -62,7 +62,7 @@ namespace Server
 		public override void ProcessDecay()
 		{
 
-			while (_decayBag.TryTake(out Item item))
+			while (_decayBag.TryTake(out var item))
 			{
 				if (item.OnDecay())
 				{
@@ -73,7 +73,7 @@ namespace Server
 
 		private Task StartCommitTask(BlockingCollection<QueuedMemoryWriter> threadWriter, SequentialFileWriter data, SequentialFileWriter index)
 		{
-			Task commitTask = Task.Factory.StartNew(() =>
+			var commitTask = Task.Factory.StartNew(() =>
 			{
 				while (!threadWriter.IsCompleted)
 				{
@@ -99,7 +99,7 @@ namespace Server
 		private Task SaveItems()
 		{
 			//Start the blocking consumer; this runs in background.
-			Task commitTask = StartCommitTask(_itemThreadWriters, _itemData, _itemIndex);
+			var commitTask = StartCommitTask(_itemThreadWriters, _itemData, _itemIndex);
 
 			IEnumerable<Item> items = World.Items.Values;
 
@@ -107,11 +107,11 @@ namespace Server
 			Parallel.ForEach(items, () => new QueuedMemoryWriter(),
 				(Item item, ParallelLoopState state, QueuedMemoryWriter writer) =>
 				{
-					long startPosition = writer.Position;
+					var startPosition = writer.Position;
 
 					item.Serialize(writer);
 
-					int size = (int)(writer.Position - startPosition);
+					var size = (int)(writer.Position - startPosition);
 
 					writer.QueueForIndex(item, size);
 
@@ -142,7 +142,7 @@ namespace Server
 		private Task SaveMobiles()
 		{
 			//Start the blocking consumer; this runs in background.
-			Task commitTask = StartCommitTask(_mobileThreadWriters, _mobileData, _mobileIndex);
+			var commitTask = StartCommitTask(_mobileThreadWriters, _mobileData, _mobileIndex);
 
 			IEnumerable<Mobile> mobiles = World.Mobiles.Values;
 
@@ -150,11 +150,11 @@ namespace Server
 			Parallel.ForEach(mobiles, () => new QueuedMemoryWriter(),
 				(Mobile mobile, ParallelLoopState state, QueuedMemoryWriter writer) =>
 				{
-					long startPosition = writer.Position;
+					var startPosition = writer.Position;
 
 					mobile.Serialize(writer);
 
-					int size = (int)(writer.Position - startPosition);
+					var size = (int)(writer.Position - startPosition);
 
 					writer.QueueForIndex(mobile, size);
 
@@ -180,7 +180,7 @@ namespace Server
 		private Task SaveGuilds()
 		{
 			//Start the blocking consumer; this runs in background.
-			Task commitTask = StartCommitTask(_guildThreadWriters, _guildData, _guildIndex);
+			var commitTask = StartCommitTask(_guildThreadWriters, _guildData, _guildIndex);
 
 			IEnumerable<BaseGuild> guilds = BaseGuild.List.Values;
 
@@ -188,11 +188,11 @@ namespace Server
 			Parallel.ForEach(guilds, () => new QueuedMemoryWriter(),
 				(BaseGuild guild, ParallelLoopState state, QueuedMemoryWriter writer) =>
 				{
-					long startPosition = writer.Position;
+					var startPosition = writer.Position;
 
 					guild.Serialize(writer);
 
-					int size = (int)(writer.Position - startPosition);
+					var size = (int)(writer.Position - startPosition);
 
 					writer.QueueForIndex(guild, size);
 
@@ -246,7 +246,7 @@ namespace Server
 		private void WriteCount(SequentialFileWriter indexFile, int count)
 		{
 			//Equiv to GenericWriter.Write( (int)count );
-			byte[] buffer = new byte[4];
+			var buffer = new byte[4];
 
 			buffer[0] = (byte)count;
 			buffer[1] = (byte)(count >> 8);
@@ -264,11 +264,11 @@ namespace Server
 
 		private void SaveTypeDatabase(string path, List<Type> types)
 		{
-			BinaryFileWriter bfw = new BinaryFileWriter(path, false);
+			var bfw = new BinaryFileWriter(path, false);
 
 			bfw.Write(types.Count);
 
-			foreach (Type type in types)
+			foreach (var type in types)
 			{
 				bfw.Write(type.FullName);
 			}

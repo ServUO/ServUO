@@ -23,9 +23,9 @@ namespace Server
 
 		public static void Register(Poison reg)
 		{
-			string regName = reg.Name.ToLower();
+			var regName = reg.Name.ToLower();
 
-			for (int i = 0; i < m_Poisons.Count; i++)
+			for (var i = 0; i < m_Poisons.Count; i++)
 			{
 				if (reg.Level == m_Poisons[i].Level)
 				{
@@ -55,7 +55,7 @@ namespace Server
 			Poison p = null;
 
 
-			if (int.TryParse(value, out int plevel))
+			if (Int32.TryParse(value, out var plevel))
 			{
 				p = GetPoison(plevel);
 			}
@@ -70,9 +70,9 @@ namespace Server
 
 		public static Poison GetPoison(int level)
 		{
-			for (int i = 0; i < m_Poisons.Count; ++i)
+			for (var i = 0; i < m_Poisons.Count; ++i)
 			{
-				Poison p = m_Poisons[i];
+				var p = m_Poisons[i];
 
 				if (p.Level == level)
 				{
@@ -85,9 +85,9 @@ namespace Server
 
 		public static Poison GetPoison(string name)
 		{
-			for (int i = 0; i < m_Poisons.Count; ++i)
+			for (var i = 0; i < m_Poisons.Count; ++i)
 			{
-				Poison p = m_Poisons[i];
+				var p = m_Poisons[i];
 
 				if (Utility.InsensitiveCompare(p.Name, name) == 0)
 				{

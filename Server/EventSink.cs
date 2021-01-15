@@ -1018,7 +1018,7 @@ namespace Server
 
 		public bool HasKeyword(int keyword)
 		{
-			for (int i = 0; i < m_Keywords.Length; ++i)
+			for (var i = 0; i < m_Keywords.Length; ++i)
 			{
 				if (m_Keywords[i] == keyword)
 				{

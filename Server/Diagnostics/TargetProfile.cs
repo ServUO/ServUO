@@ -19,7 +19,7 @@ namespace Server.Diagnostics
 			}
 
 
-			if (!_profiles.TryGetValue(type, out TargetProfile prof))
+			if (!_profiles.TryGetValue(type, out var prof))
 			{
 				_profiles.Add(type, prof = new TargetProfile(type));
 			}

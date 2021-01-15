@@ -120,9 +120,9 @@ namespace Server
 					buffered.buffer = bufferPool.AcquireBuffer();
 				}
 
-				byte[] page = buffered.buffer; // buffer page
-				int pageSpace = page.Length - buffered.length; // available bytes in page
-				int byteCount = size > pageSpace ? pageSpace : size; // how many bytes we can copy over
+				var page = buffered.buffer; // buffer page
+				var pageSpace = page.Length - buffered.length; // available bytes in page
+				var byteCount = size > pageSpace ? pageSpace : size; // how many bytes we can copy over
 
 				Buffer.BlockCopy(buffer, offset, page, buffered.length, byteCount);
 
@@ -151,7 +151,7 @@ namespace Server
 
 				++activeCount;
 
-				for (int slot = 0; slot < active.Length; ++slot)
+				for (var slot = 0; slot < active.Length; ++slot)
 				{
 					if (active[slot] == null)
 					{
@@ -185,7 +185,7 @@ namespace Server
 
 				if (pending.Count > 0)
 				{
-					Page page = pending.Dequeue();
+					var page = pending.Dequeue();
 
 					active[slot] = new Chunk(this, slot, page.buffer, 0, page.length);
 

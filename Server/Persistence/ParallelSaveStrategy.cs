@@ -34,14 +34,14 @@ namespace Server
 
 			consumers = new Consumer[GetThreadCount()];
 
-			for (int i = 0; i < consumers.Length; ++i)
+			for (var i = 0; i < consumers.Length; ++i)
 			{
 				consumers[i] = new Consumer(this, 256);
 			}
 
 			IEnumerable<ISerializable> collection = new Producer();
 
-			foreach (ISerializable value in collection)
+			foreach (var value in collection)
 			{
 				while (!Enqueue(value))
 				{
@@ -73,7 +73,7 @@ namespace Server
 		{
 			while (_decayQueue.Count > 0)
 			{
-				Item item = _decayQueue.Dequeue();
+				var item = _decayQueue.Dequeue();
 
 				if (item.OnDecay())
 				{
@@ -95,11 +95,11 @@ namespace Server
 
 		private void SaveTypeDatabase(string path, List<Type> types)
 		{
-			BinaryFileWriter bfw = new BinaryFileWriter(path, false);
+			var bfw = new BinaryFileWriter(path, false);
 
 			bfw.Write(types.Count);
 
-			foreach (Type type in types)
+			foreach (var type in types)
 			{
 				bfw.Write(type.FullName);
 			}
@@ -127,7 +127,7 @@ namespace Server
 
 		private void WriteCount(SequentialFileWriter indexFile, int count)
 		{
-			byte[] buffer = new byte[4];
+			var buffer = new byte[4];
 
 			buffer[0] = (byte)count;
 			buffer[1] = (byte)(count >> 8);
@@ -153,8 +153,8 @@ namespace Server
 
 		private void OnSerialized(ConsumableEntry entry)
 		{
-			ISerializable value = entry.value;
-			BinaryMemoryWriter writer = entry.writer;
+			var value = entry.value;
+			var writer = entry.writer;
 
 			if (value is Item item)
 			{
@@ -172,7 +172,7 @@ namespace Server
 
 		private void Save(Item item, BinaryMemoryWriter writer)
 		{
-			int length = writer.CommitTo(itemData, itemIndex, item.m_TypeRef, item.Serial);
+			var length = writer.CommitTo(itemData, itemIndex, item.m_TypeRef, item.Serial);
 
 			if (metrics != null)
 			{
@@ -187,7 +187,7 @@ namespace Server
 
 		private void Save(Mobile mob, BinaryMemoryWriter writer)
 		{
-			int length = writer.CommitTo(mobileData, mobileIndex, mob.m_TypeRef, mob.Serial);
+			var length = writer.CommitTo(mobileData, mobileIndex, mob.m_TypeRef, mob.Serial);
 
 			if (metrics != null)
 			{
@@ -197,7 +197,7 @@ namespace Server
 
 		private void Save(BaseGuild guild, BinaryMemoryWriter writer)
 		{
-			int length = writer.CommitTo(guildData, guildIndex, 0, guild.Id);
+			var length = writer.CommitTo(guildData, guildIndex, 0, guild.Id);
 
 			if (metrics != null)
 			{
@@ -207,9 +207,9 @@ namespace Server
 
 		private bool Enqueue(ISerializable value)
 		{
-			for (int i = 0; i < consumers.Length; ++i)
+			for (var i = 0; i < consumers.Length; ++i)
 			{
-				Consumer consumer = consumers[cycle++ % consumers.Length];
+				var consumer = consumers[cycle++ % consumers.Length];
 
 				if ((consumer.tail - consumer.head) < consumer.buffer.Length)
 				{
@@ -225,11 +225,11 @@ namespace Server
 
 		private bool Commit()
 		{
-			bool committed = false;
+			var committed = false;
 
-			for (int i = 0; i < consumers.Length; ++i)
+			for (var i = 0; i < consumers.Length; ++i)
 			{
-				Consumer consumer = consumers[i];
+				var consumer = consumers[i];
 
 				while (consumer.head < consumer.done)
 				{
@@ -263,13 +263,13 @@ namespace Server
 
 			public IEnumerator<ISerializable> GetEnumerator()
 			{
-				foreach (Item item in items)
+				foreach (var item in items)
 					yield return item;
 
-				foreach (Mobile mob in mobiles)
+				foreach (var mob in mobiles)
 					yield return mob;
 
-				foreach (BaseGuild guild in guilds)
+				foreach (var guild in guilds)
 					yield return guild;
 			}
 
@@ -286,14 +286,14 @@ namespace Server
 			public int head, done, tail;
 			private readonly ParallelSaveStrategy owner;
 			private readonly Thread thread;
-			
+
 			public Consumer(ParallelSaveStrategy ow, int bufferSize)
 			{
 				owner = ow;
 
 				buffer = new ConsumableEntry[bufferSize];
 
-				for (int i = 0; i < buffer.Length; ++i)
+				for (var i = 0; i < buffer.Length; ++i)
 				{
 					buffer[i].writer = new BinaryMemoryWriter();
 				}
@@ -324,7 +324,7 @@ namespace Server
 				}
 				catch (Exception ex)
 				{
-                    Diagnostics.ExceptionLogging.LogException(ex);
+					Diagnostics.ExceptionLogging.LogException(ex);
 				}
 			}
 

@@ -87,8 +87,8 @@ namespace Server.Network
 				return;
 			}
 
-			int bitCount = 0;
-			int bitValue = 0;
+			var bitCount = 0;
+			var bitValue = 0;
 
 			fixed (int* pTable = _huffmanTable)
 			{
@@ -220,17 +220,17 @@ namespace Server.Network
 		internal class SafeNativeMethods
 		{
 			[DllImport("zlibwapi32")]
-			internal static extern string zlibVersion();
+			static internal extern string zlibVersion();
 
 			[DllImport("zlibwapi32")]
-			internal static extern ZLibError compress(byte[] dest, ref int destLength, byte[] source, int sourceLength);
+			static internal extern ZLibError compress(byte[] dest, ref int destLength, byte[] source, int sourceLength);
 
 			[DllImport("zlibwapi32")]
-			internal static extern ZLibError compress2(
+			static internal extern ZLibError compress2(
 				byte[] dest, ref int destLength, byte[] source, int sourceLength, ZLibQuality quality);
 
 			[DllImport("zlibwapi32")]
-			internal static extern ZLibError uncompress(byte[] dest, ref int destLen, byte[] source, int sourceLen);
+			static internal extern ZLibError uncompress(byte[] dest, ref int destLen, byte[] source, int sourceLen);
 		}
 
 		public string Version => SafeNativeMethods.zlibVersion();
@@ -256,17 +256,17 @@ namespace Server.Network
 		internal class SafeNativeMethods
 		{
 			[DllImport("zlibwapi64")]
-			internal static extern string zlibVersion();
+			static internal extern string zlibVersion();
 
 			[DllImport("zlibwapi64")]
-			internal static extern ZLibError compress(byte[] dest, ref int destLength, byte[] source, int sourceLength);
+			static internal extern ZLibError compress(byte[] dest, ref int destLength, byte[] source, int sourceLength);
 
 			[DllImport("zlibwapi64")]
-			internal static extern ZLibError compress2(
+			static internal extern ZLibError compress2(
 				byte[] dest, ref int destLength, byte[] source, int sourceLength, ZLibQuality quality);
 
 			[DllImport("zlibwapi64")]
-			internal static extern ZLibError uncompress(byte[] dest, ref int destLen, byte[] source, int sourceLen);
+			static internal extern ZLibError uncompress(byte[] dest, ref int destLen, byte[] source, int sourceLen);
 		}
 
 		public string Version => SafeNativeMethods.zlibVersion();
@@ -292,17 +292,17 @@ namespace Server.Network
 		internal class SafeNativeMethods
 		{
 			[DllImport("libz")]
-			internal static extern string zlibVersion();
+			static internal extern string zlibVersion();
 
 			[DllImport("libz")]
-			internal static extern ZLibError compress(byte[] dest, ref int destLength, byte[] source, int sourceLength);
+			static internal extern ZLibError compress(byte[] dest, ref int destLength, byte[] source, int sourceLength);
 
 			[DllImport("libz")]
-			internal static extern ZLibError compress2(
+			static internal extern ZLibError compress2(
 				byte[] dest, ref int destLength, byte[] source, int sourceLength, ZLibQuality quality);
 
 			[DllImport("libz")]
-			internal static extern ZLibError uncompress(byte[] dest, ref int destLen, byte[] source, int sourceLen);
+			static internal extern ZLibError uncompress(byte[] dest, ref int destLen, byte[] source, int sourceLen);
 		}
 
 		public string Version => SafeNativeMethods.zlibVersion();
@@ -328,16 +328,16 @@ namespace Server.Network
 		internal class SafeNativeMethods
 		{
 			[DllImport("libz")]
-			internal static extern string zlibVersion();
+			static internal extern string zlibVersion();
 
 			[DllImport("libz")]
-			internal static extern ZLibError compress(byte[] dest, ref long destLength, byte[] source, long sourceLength);
+			static internal extern ZLibError compress(byte[] dest, ref long destLength, byte[] source, long sourceLength);
 
 			[DllImport("libz")]
-			internal static extern ZLibError compress2(byte[] dest, ref long destLength, byte[] source, long sourceLength, ZLibQuality quality);
+			static internal extern ZLibError compress2(byte[] dest, ref long destLength, byte[] source, long sourceLength, ZLibQuality quality);
 
 			[DllImport("libz")]
-			internal static extern ZLibError uncompress(byte[] dest, ref long destLen, byte[] source, long sourceLen);
+			static internal extern ZLibError uncompress(byte[] dest, ref long destLen, byte[] source, long sourceLen);
 		}
 
 		public string Version => SafeNativeMethods.zlibVersion();
@@ -345,7 +345,7 @@ namespace Server.Network
 		public ZLibError Compress(byte[] dest, ref int destLength, byte[] source, int sourceLength)
 		{
 			long destLengthLong = destLength;
-			ZLibError z = SafeNativeMethods.compress(dest, ref destLengthLong, source, sourceLength);
+			var z = SafeNativeMethods.compress(dest, ref destLengthLong, source, sourceLength);
 			destLength = (int)destLengthLong;
 			return z;
 		}
@@ -353,7 +353,7 @@ namespace Server.Network
 		public ZLibError Compress(byte[] dest, ref int destLength, byte[] source, int sourceLength, ZLibQuality quality)
 		{
 			long destLengthLong = destLength;
-			ZLibError z = SafeNativeMethods.compress2(dest, ref destLengthLong, source, sourceLength, quality);
+			var z = SafeNativeMethods.compress2(dest, ref destLengthLong, source, sourceLength, quality);
 			destLength = (int)destLengthLong;
 			return z;
 		}
@@ -361,7 +361,7 @@ namespace Server.Network
 		public ZLibError Decompress(byte[] dest, ref int destLength, byte[] source, int sourceLength)
 		{
 			long destLengthLong = destLength;
-			ZLibError z = SafeNativeMethods.uncompress(dest, ref destLengthLong, source, sourceLength);
+			var z = SafeNativeMethods.uncompress(dest, ref destLengthLong, source, sourceLength);
 			destLength = (int)destLengthLong;
 			return z;
 		}

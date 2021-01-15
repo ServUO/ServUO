@@ -28,7 +28,7 @@ namespace Server
 				return;
 			}
 
-			NetState ns = m_Mobile.NetState;
+			var ns = m_Mobile.NetState;
 
 			if (ns == null)
 			{
@@ -59,7 +59,7 @@ namespace Server
 
 			m_Mobile.ClearQuestArrow();
 
-			NetState ns = m_Mobile.NetState;
+			var ns = m_Mobile.NetState;
 
 			if (ns != null)
 			{

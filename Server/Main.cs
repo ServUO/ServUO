@@ -152,7 +152,7 @@ namespace Server
 
 			string fullPath = null;
 
-			foreach (string p in DataDirectories)
+			foreach (var p in DataDirectories)
 			{
 				fullPath = Path.Combine(p, path);
 
@@ -169,7 +169,7 @@ namespace Server
 
 		public static string FindDataFile(string format, params object[] args)
 		{
-			return FindDataFile(string.Format(format, args));
+			return FindDataFile(String.Format(format, args));
 		}
 
 		#region Expansions
@@ -224,9 +224,9 @@ namespace Server
 			{
 				_Crashed = true;
 
-				bool close = false;
+				var close = false;
 
-				CrashedEventArgs args = new CrashedEventArgs(e.ExceptionObject as Exception);
+				var args = new CrashedEventArgs(e.ExceptionObject as Exception);
 
 				try
 				{
@@ -235,7 +235,7 @@ namespace Server
 				}
 				catch (Exception ex)
 				{
-                    Diagnostics.ExceptionLogging.LogException(ex);
+					Diagnostics.ExceptionLogging.LogException(ex);
 				}
 
 				if (CrashedHandler != null)
@@ -247,7 +247,7 @@ namespace Server
 					}
 					catch (Exception ex)
 					{
-                        Diagnostics.ExceptionLogging.LogException(ex);
+						Diagnostics.ExceptionLogging.LogException(ex);
 					}
 				}
 
@@ -255,7 +255,7 @@ namespace Server
 				{
 					try
 					{
-						foreach (Listener l in MessagePump.Listeners)
+						foreach (var l in MessagePump.Listeners)
 						{
 							l.Dispose();
 						}
@@ -357,7 +357,7 @@ namespace Server
 				RebootTerminal();
 				Environment.Exit(0);
 			}
-#else				
+#else
 				Process.Start(ExePath, Arguments);
 			}
 			Process.Kill();
@@ -405,7 +405,7 @@ namespace Server
 			AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 			AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
 
-			foreach (string a in args)
+			foreach (var a in args)
 			{
 				if (Insensitive.Equals(a, "-debug"))
 				{
@@ -453,7 +453,7 @@ namespace Server
 					Console.WriteLine("     -usehrt             Enables High Resolution Timing if requirements are met. Increasing the resolution of the timer. *Windows only*");
 					Console.WriteLine("     -vb                 Enables compilation of VB.NET Scripts. Without this option VB.NET Scripts are skipped.");
 
-                    Environment.Exit(0);
+					Environment.Exit(0);
 				}
 			}
 
@@ -480,7 +480,7 @@ namespace Server
 			}
 			catch (Exception e)
 			{
-                Diagnostics.ExceptionLogging.LogException(e);
+				Diagnostics.ExceptionLogging.LogException(e);
 			}
 
 			Thread = Thread.CurrentThread;
@@ -497,15 +497,15 @@ namespace Server
 				Directory.SetCurrentDirectory(BaseDirectory);
 			}
 
-			Timer.TimerThread ttObj = new Timer.TimerThread();
+			var ttObj = new Timer.TimerThread();
 
 			_TimerThread = new Thread(ttObj.TimerMain)
 			{
 				Name = "Timer Thread"
 			};
 
-			Version ver = Assembly.GetName().Version;
-			DateTime buildDate = new DateTime(2000, 1, 1).AddDays(ver.Build).AddSeconds(ver.Revision * 2);
+			var ver = Assembly.GetName().Version;
+			var buildDate = new DateTime(2000, 1, 1).AddDays(ver.Build).AddSeconds(ver.Revision * 2);
 
 			Utility.PushColor(ConsoleColor.Cyan);
 #if DEBUG
@@ -527,7 +527,7 @@ namespace Server
 #endif
 			Utility.PopColor();
 
-			string s = Arguments;
+			var s = Arguments;
 
 			if (s.Length > 0)
 			{
@@ -558,7 +558,7 @@ namespace Server
 
 			if (Type.GetType("Mono.Runtime") != null)
 			{
-				MethodInfo displayName = Type.GetType("Mono.Runtime").GetMethod("GetDisplayName", BindingFlags.NonPublic | BindingFlags.Static);
+				var displayName = Type.GetType("Mono.Runtime").GetMethod("GetDisplayName", BindingFlags.NonPublic | BindingFlags.Static);
 
 				if (displayName != null)
 				{
@@ -585,7 +585,7 @@ namespace Server
 			dotnet = "4.8";
 #endif
 
-			if (string.IsNullOrEmpty(dotnet))
+			if (String.IsNullOrEmpty(dotnet))
 				dotnet = "MONO/CSC/Unknown";
 
 			Utility.PushColor(ConsoleColor.Green);
@@ -645,7 +645,7 @@ namespace Server
 
 			MessagePump = new MessagePump();
 
-			foreach (Map m in Map.AllMaps)
+			foreach (var m in Map.AllMaps)
 			{
 				m.Tiles.Force();
 			}
@@ -706,7 +706,7 @@ namespace Server
 		{
 			get
 			{
-				StringBuilder sb = new StringBuilder();
+				var sb = new StringBuilder();
 
 				if (Debug)
 				{
@@ -770,7 +770,7 @@ namespace Server
 
 			VerifySerialization(Assembly.GetCallingAssembly());
 
-			foreach (Assembly a in ScriptCompiler.Assemblies)
+			foreach (var a in ScriptCompiler.Assemblies)
 			{
 				VerifySerialization(a);
 			}
@@ -780,7 +780,7 @@ namespace Server
 
 		private static void VerifyType(Type t)
 		{
-			bool isItem = t.IsSubclassOf(typeof(Item));
+			var isItem = t.IsSubclassOf(typeof(Item));
 
 			if (isItem || t.IsSubclassOf(typeof(Mobile)))
 			{
@@ -872,7 +872,7 @@ namespace Server
 			FileName = file;
 
 			using (
-				StreamWriter writer =
+				var writer =
 					new StreamWriter(
 						new FileStream(FileName, append ? FileMode.Append : FileMode.Create, FileAccess.Write, FileShare.Read)))
 			{
@@ -885,7 +885,7 @@ namespace Server
 
 		public override void Write(char ch)
 		{
-			using (StreamWriter writer = new StreamWriter(new FileStream(FileName, FileMode.Append, FileAccess.Write, FileShare.Read)))
+			using (var writer = new StreamWriter(new FileStream(FileName, FileMode.Append, FileAccess.Write, FileShare.Read)))
 			{
 				if (_NewLine)
 				{
@@ -899,7 +899,7 @@ namespace Server
 
 		public override void Write(string str)
 		{
-			using (StreamWriter writer = new StreamWriter(new FileStream(FileName, FileMode.Append, FileAccess.Write, FileShare.Read)))
+			using (var writer = new StreamWriter(new FileStream(FileName, FileMode.Append, FileAccess.Write, FileShare.Read)))
 			{
 				if (_NewLine)
 				{
@@ -913,7 +913,7 @@ namespace Server
 
 		public override void WriteLine(string line)
 		{
-			using (StreamWriter writer = new StreamWriter(new FileStream(FileName, FileMode.Append, FileAccess.Write, FileShare.Read)))
+			using (var writer = new StreamWriter(new FileStream(FileName, FileMode.Append, FileAccess.Write, FileShare.Read)))
 			{
 				if (_NewLine)
 				{
@@ -954,7 +954,7 @@ namespace Server
 
 		public override void Write(char ch)
 		{
-			foreach (TextWriter t in _Streams)
+			foreach (var t in _Streams)
 			{
 				t.Write(ch);
 			}
@@ -962,7 +962,7 @@ namespace Server
 
 		public override void WriteLine(string line)
 		{
-			foreach (TextWriter t in _Streams)
+			foreach (var t in _Streams)
 			{
 				t.WriteLine(line);
 			}
@@ -970,7 +970,7 @@ namespace Server
 
 		public override void WriteLine(string line, params object[] args)
 		{
-			WriteLine(string.Format(line, args));
+			WriteLine(String.Format(line, args));
 		}
 
 		public override Encoding Encoding => Encoding.Default;

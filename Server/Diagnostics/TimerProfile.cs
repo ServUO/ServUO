@@ -19,7 +19,7 @@ namespace Server.Diagnostics
 			}
 
 
-			if (!_profiles.TryGetValue(name, out TimerProfile prof))
+			if (!_profiles.TryGetValue(name, out var prof))
 			{
 				_profiles.Add(name, prof = new TimerProfile(name));
 			}

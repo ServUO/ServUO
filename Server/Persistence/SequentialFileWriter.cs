@@ -120,7 +120,7 @@ namespace Server
 
 		private void OnWrite(IAsyncResult asyncResult)
 		{
-			FileQueue.Chunk chunk = asyncResult.AsyncState as FileQueue.Chunk;
+			var chunk = asyncResult.AsyncState as FileQueue.Chunk;
 
 			fileStream.EndWrite(asyncResult);
 

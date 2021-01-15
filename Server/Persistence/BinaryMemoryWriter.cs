@@ -35,10 +35,10 @@ namespace Server
 		{
 			Flush();
 
-			byte[] buffer = stream.GetBuffer();
-			int length = (int)stream.Length;
+			var buffer = stream.GetBuffer();
+			var length = (int)stream.Length;
 
-			long position = dataFile.Position;
+			var position = dataFile.Position;
 
 			dataFile.Write(buffer, 0, length);
 

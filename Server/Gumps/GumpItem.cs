@@ -67,9 +67,9 @@ namespace Server.Gumps
 		public override string Compile()
 		{
 			if (m_Hue == 0)
-				return string.Format("{{ tilepic {0} {1} {2} }}", m_X, m_Y, m_ItemID);
+				return System.String.Format("{{ tilepic {0} {1} {2} }}", m_X, m_Y, m_ItemID);
 			else
-				return string.Format("{{ tilepichue {0} {1} {2} {3} }}", m_X, m_Y, m_ItemID, m_Hue);
+				return System.String.Format("{{ tilepichue {0} {1} {2} {3} }}", m_X, m_Y, m_ItemID, m_Hue);
 		}
 
 		private static readonly byte[] m_LayoutName = Gump.StringToBuffer("tilepic");

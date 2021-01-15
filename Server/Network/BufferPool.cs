@@ -59,7 +59,7 @@ namespace Server.Network
 
 			m_FreeBuffers = new Queue<byte[]>(initialCapacity);
 
-			for (int i = 0; i < initialCapacity; ++i)
+			for (var i = 0; i < initialCapacity; ++i)
 			{
 				m_FreeBuffers.Enqueue(new byte[bufferSize]);
 			}
@@ -79,7 +79,7 @@ namespace Server.Network
 
 				++m_Misses;
 
-				for (int i = 0; i < m_InitialCapacity; ++i)
+				for (var i = 0; i < m_InitialCapacity; ++i)
 				{
 					m_FreeBuffers.Enqueue(new byte[m_BufferSize]);
 				}

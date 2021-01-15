@@ -13,7 +13,7 @@ namespace Server.Network
 			}
 			else
 			{
-				if (prompt.MessageCliloc != 1042971 || prompt.MessageArgs != string.Empty)
+				if (prompt.MessageCliloc != 1042971 || prompt.MessageArgs != System.String.Empty)
 					m.SendLocalizedMessage(prompt.MessageCliloc, prompt.MessageArgs, prompt.MessageHue);
 
 				m.Send(new UnicodePrompt(prompt, m));
@@ -35,7 +35,7 @@ namespace Server.Network
 		{
 			User = to;
 
-			Serial senderSerial = prompt.Sender?.Serial ?? to.Serial;
+			var senderSerial = prompt.Sender?.Serial ?? to.Serial;
 
 			Serial = senderSerial;
 

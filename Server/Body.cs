@@ -25,7 +25,7 @@ namespace Server
 		{
 			if (File.Exists("Data/bodyTable.cfg"))
 			{
-				using (StreamReader ip = new StreamReader("Data/bodyTable.cfg"))
+				using (var ip = new StreamReader("Data/bodyTable.cfg"))
 				{
 					m_Types = new BodyType[0x1000];
 
@@ -38,10 +38,10 @@ namespace Server
 							continue;
 						}
 
-						string[] split = line.Split('\t');
+						var split = line.Split('\t');
 
 
-						if (int.TryParse(split[0], out int bodyID) && Enum.TryParse(split[1], true, out BodyType type) && bodyID >= 0 &&
+						if (Int32.TryParse(split[0], out var bodyID) && Enum.TryParse(split[1], true, out BodyType type) && bodyID >= 0 &&
 							bodyID < m_Types.Length)
 						{
 							m_Types[bodyID] = type;
@@ -120,7 +120,7 @@ namespace Server
 
 		public override string ToString()
 		{
-			return string.Format("0x{0:X}", m_BodyID);
+			return String.Format("0x{0:X}", m_BodyID);
 		}
 
 		public override int GetHashCode()

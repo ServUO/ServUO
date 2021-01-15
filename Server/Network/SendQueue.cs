@@ -49,7 +49,7 @@ namespace Server.Network
 
 			public int Write(byte[] buffer, int offset, int length)
 			{
-				int write = Math.Min(length, Available);
+				var write = Math.Min(length, Available);
 
 				System.Buffer.BlockCopy(buffer, offset, _buffer, _length, write);
 
@@ -81,7 +81,7 @@ namespace Server.Network
 					return;
 				}
 
-				BufferPool old = m_UnusedBuffers;
+				var old = m_UnusedBuffers;
 
 				lock (old)
 				{
@@ -128,7 +128,7 @@ namespace Server.Network
 
 		public Gram CheckFlushReady()
 		{
-			Gram gram = _buffered;
+			var gram = _buffered;
 			_pending.Enqueue(_buffered);
 			_buffered = null;
 			return gram;
@@ -179,7 +179,7 @@ namespace Server.Network
 				throw new ArgumentException("Offset and length do not point to a valid segment within the buffer.");
 			}
 
-			int existingBytes = (_pending.Count * m_CoalesceBufferSize) + (_buffered == null ? 0 : _buffered.Length);
+			var existingBytes = (_pending.Count * m_CoalesceBufferSize) + (_buffered == null ? 0 : _buffered.Length);
 
 			if ((existingBytes + length) > PendingCap)
 			{
@@ -196,7 +196,7 @@ namespace Server.Network
 					_buffered = Gram.Acquire();
 				}
 
-				int bytesWritten = _buffered.Write(buffer, offset, length);
+				var bytesWritten = _buffered.Write(buffer, offset, length);
 
 				offset += bytesWritten;
 				length -= bytesWritten;
