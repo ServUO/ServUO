@@ -1,23 +1,3 @@
-/***************************************************************************
- *                               GumpLabel.cs
- *                            -------------------
- *   begin                : May 1, 2002
- *   copyright            : (C) The RunUO Software Team
- *   email                : info@runuo.com
- *
- *   $Id$
- *
- ***************************************************************************/
-
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
-
 using Server.Network;
 
 namespace Server.Gumps
@@ -71,7 +51,7 @@ namespace Server.Gumps
 
 		public override string Compile()
 		{
-			return System.String.Format("{{ text {0} {1} {2} {3} }}", m_X, m_Y, m_Hue, m_Text == null ? m_TextID : Parent.Intern(m_Text));
+			return $"{{ text {m_X} {m_Y} {m_Hue} {(m_Text == null ? m_TextID : Parent.Intern(m_Text))} }}";
 		}
 
 		private static readonly byte[] m_LayoutName = Gump.StringToBuffer("text");
