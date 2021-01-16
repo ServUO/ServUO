@@ -613,7 +613,7 @@ namespace Server
 			sw.Stop();
 
 			Console.WriteLine();
-			Console.WriteLine($"Core: Preparation took {sw.Elapsed.TotalSeconds:#,0.#}s");
+			Console.WriteLine($"Core: Preparation took {sw.Elapsed.TotalSeconds:F1} seconds");
 
 			EndColor();
 
@@ -626,7 +626,7 @@ namespace Server
 			sw.Stop();
 
 			Console.WriteLine();
-			Console.WriteLine($"Core: Configuration took {sw.Elapsed.TotalSeconds:#,0.#}s");
+			Console.WriteLine($"Core: Configuration took {sw.Elapsed.TotalSeconds:F1} seconds");
 			Console.WriteLine();
 
 			Region.Load();
@@ -641,7 +641,7 @@ namespace Server
 			sw.Stop();
 
 			Console.WriteLine();
-			Console.WriteLine($"Core: Initialization took {sw.Elapsed.TotalSeconds:#,0.#}s");
+			Console.WriteLine($"Core: Initialization took {sw.Elapsed.TotalSeconds:F1} seconds");
 			Console.WriteLine();
 
 			sw.Reset();

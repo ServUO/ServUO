@@ -15,13 +15,6 @@ namespace Server
 	public static class World
 	{
 		private static readonly bool m_Metrics = Config.Get("General.Metrics", false);
-		private static readonly ManualResetEvent m_DiskWriteHandle = new ManualResetEvent(true);
-
-		private static Queue<IEntity> _addQueue, _deleteQueue;
-
-		public static bool Saving { get; private set; }
-		public static bool Loaded { get; private set; }
-		public static bool Loading { get; private set; }
 
 		public static readonly string MobileIndexPath = Path.Combine("Saves/Mobiles/", "Mobiles.idx");
 		public static readonly string MobileTypesPath = Path.Combine("Saves/Mobiles/", "Mobiles.tdb");
@@ -33,6 +26,14 @@ namespace Server
 
 		public static readonly string GuildIndexPath = Path.Combine("Saves/Guilds/", "Guilds.idx");
 		public static readonly string GuildDataPath = Path.Combine("Saves/Guilds/", "Guilds.bin");
+
+		private static readonly ManualResetEvent m_DiskWriteHandle = new ManualResetEvent(true);
+
+		private static Queue<IEntity> _addQueue, _deleteQueue;
+
+		public static bool Saving { get; private set; }
+		public static bool Loaded { get; private set; }
+		public static bool Loading { get; private set; }
 
 		public static void NotifyDiskWriteComplete()
 		{
@@ -225,7 +226,7 @@ namespace Server
 
 					if (!Core.Service)
 					{
-						Console.WriteLine("Error: Type '{0}' was not found. Delete all of those types? (y/n)", typeName);
+						Console.WriteLine($"Error: Type '{typeName}' was not found. Delete all of those types? (y/n)");
 
 						if (Console.ReadKey(true).Key == ConsoleKey.Y)
 						{
@@ -240,10 +241,10 @@ namespace Server
 					}
 					else
 					{
-						Console.WriteLine("Error: Type '{0}' was not found.", typeName);
+						Console.WriteLine($"Error: Type '{typeName}' was not found.");
 					}
 
-					throw new Exception(String.Format("Missing type '{0}'", typeName));
+					throw new Exception($"Missing type '{typeName}'");
 				}
 
 				if (t.IsAbstract)
@@ -264,7 +265,7 @@ namespace Server
 
 						if (!Core.Service)
 						{
-							Console.WriteLine("Error: Type '{0}' is abstract. Delete all of those types? (y/n)", typeName);
+							Console.WriteLine($"Error: Type '{typeName}' is abstract. Delete all of those types? (y/n)");
 
 							if (Console.ReadKey(true).Key == ConsoleKey.Y)
 							{
@@ -279,10 +280,10 @@ namespace Server
 						}
 						else
 						{
-							Console.WriteLine("Error: Type '{0}' is abstract.", typeName);
+							Console.WriteLine($"Error: Type '{typeName}' is abstract.");
 						}
 
-						throw new Exception(String.Format("Abstract type '{0}'", typeName));
+						throw new Exception($"Abstract type '{typeName}'");
 					}
 				}
 
@@ -294,7 +295,7 @@ namespace Server
 				}
 				else
 				{
-					throw new Exception(String.Format("Type '{0}' does not have a serialization constructor", t));
+					throw new Exception($"Type '{t}' does not have a serialization constructor");
 				}
 			}
 
@@ -515,7 +516,7 @@ namespace Server
 
 								if (reader.Position != (entry.Position + entry.Length))
 								{
-									throw new Exception(String.Format("***** Bad serialize on {0} *****", m.GetType()));
+									throw new Exception($"***** Bad serialize on {m.GetType()} *****");
 								}
 							}
 							catch (Exception e)
@@ -560,7 +561,7 @@ namespace Server
 
 								if (reader.Position != (entry.Position + entry.Length))
 								{
-									throw new Exception(String.Format("***** Bad serialize on {0} *****", item.GetType()));
+									throw new Exception($"***** Bad serialize on {item.GetType()} *****");
 								}
 							}
 							catch (Exception e)
@@ -605,7 +606,7 @@ namespace Server
 
 								if (reader.Position != (entry.Position + entry.Length))
 								{
-									throw new Exception(String.Format("***** Bad serialize on Guild {0} *****", g.Id));
+									throw new Exception($"***** Bad serialize on Guild {g.Id} *****");
 								}
 							}
 							catch (Exception e)
@@ -633,8 +634,8 @@ namespace Server
 				Console.WriteLine("An error was encountered while loading a saved object");
 				Utility.PopColor();
 
-				Console.WriteLine(" - Type: {0}", failedType);
-				Console.WriteLine(" - Serial: {0}", failedSerial);
+				Console.WriteLine($" - Type: {failedType}");
+				Console.WriteLine($" - Serial: {failedSerial}");
 
 				if (!Core.Service)
 				{
@@ -694,7 +695,7 @@ namespace Server
 					Utility.PopColor();
 				}
 
-				throw new Exception(String.Format("Load failed (items={0}, mobiles={1}, guilds={2}, type={3}, serial={4})", failedItems, failedMobiles, failedGuilds, failedType, failedSerial), failed);
+				throw new Exception($"Load failed (items={failedItems}, mobiles={failedMobiles}, guilds={failedGuilds}, type={failedType}, serial={failedSerial})", failed);
 			}
 
 			EventSink.InvokeWorldLoad();
@@ -722,7 +723,7 @@ namespace Server
 			watch.Stop();
 
 			Utility.PushColor(ConsoleColor.Green);
-			Console.WriteLine("done ({1} items, {2} mobiles) ({0:F2} seconds)", watch.Elapsed.TotalSeconds, Items.Count, Mobiles.Count);
+			Console.WriteLine($"done ({Items.Count} items, {Mobiles.Count} mobiles) ({watch.Elapsed.TotalSeconds:F2} seconds)");
 			Utility.PopColor();
 		}
 
@@ -759,9 +760,9 @@ namespace Server
 
 		private static void AppendSafetyLog(string action, IEntity entity)
 		{
-			var message = String.Format("Warning: Attempted to {1} {2} during world save." + "{0}This action could cause inconsistent state." +
-										"{0}It is strongly advised that the offending scripts be corrected.",
-										Environment.NewLine, action, entity);
+			var message = $"Warning: Attempted to {action} {entity} during world save." 
+						+ $"{Environment.NewLine}This action could cause inconsistent state." 
+						+ $"{Environment.NewLine}It is strongly advised that the offending scripts be corrected.";
 
 			AppendSafetyLog(message);
 		}
@@ -774,7 +775,7 @@ namespace Server
 			{
 				using (var op = new StreamWriter("world-save-errors.log", true))
 				{
-					op.WriteLine("{0}\t{1}", DateTime.UtcNow, message);
+					op.WriteLine($"{DateTime.UtcNow}\t{message}");
 					op.WriteLine(new StackTrace(2).ToString());
 					op.WriteLine();
 				}
@@ -854,7 +855,7 @@ namespace Server
 
 			var strategy = SaveStrategy.Acquire();
 
-			Console.WriteLine("Core: Using {0} save strategy", strategy.Name.ToLowerInvariant());
+			Console.WriteLine($"Core: Using {strategy.Name.ToLowerInvariant()} save strategy");
 
 			Console.WriteLine("World: Saving...");
 
@@ -875,7 +876,6 @@ namespace Server
 				Directory.CreateDirectory("Saves/Guilds/");
 			}
 
-
 			try
 			{
 				EventSink.InvokeBeforeWorldSave(new BeforeWorldSaveEventArgs());
@@ -888,7 +888,9 @@ namespace Server
 			if (m_Metrics)
 			{
 				using (var metrics = new SaveMetrics())
+				{
 					strategy.Save(metrics, permitBackgroundWrite);
+				}
 			}
 			else
 			{
@@ -918,11 +920,11 @@ namespace Server
 
 			strategy.ProcessDecay();
 
-			Console.WriteLine("Save finished in {0:F2} seconds.", watch.Elapsed.TotalSeconds);
+			Console.WriteLine($"Save finished in {watch.Elapsed.TotalSeconds:F2} seconds.");
 
 			if (message)
 			{
-				Broadcast(0x35, false, AccessLevel.Player, "World save done in {0:F1} seconds.", watch.Elapsed.TotalSeconds);
+				Broadcast(0x35, false, AccessLevel.Player, $"World save done in {watch.Elapsed.TotalSeconds:F1} seconds.");
 			}
 
 			NetState.Resume();
