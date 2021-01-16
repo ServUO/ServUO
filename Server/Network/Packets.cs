@@ -8,6 +8,7 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 using Server.Accounting;
 using Server.ContextMenus;
@@ -111,7 +112,7 @@ namespace Server.Network
 			return new CancelArrow(-1, -1, null);
 		}
 
-		public CancelArrow(int x, int y, Serial? s)
+		private CancelArrow(int x, int y, Serial? s)
 			: base(0xBA, s != null ? 10 : 6)
 		{
 			m_Stream.Write((byte)0);
@@ -271,28 +272,90 @@ namespace Server.Network
 
 	public sealed class MapPatches : Packet
 	{
-		public MapPatches()
+		public static bool Send(NetState ns)
+		{
+			return Send(ns, Instantiate(ns));
+		}
+
+		public static MapPatches Instantiate(NetState ns)
+		{
+			if (ns.Flags.HasFlag(ClientFlags.TerMur))
+			{
+				return PacketCache<MapPatches>.Acquire(6, c => new MapPatches(c));
+			}
+
+			if (ns.Flags.HasFlag(ClientFlags.Tokuno))
+			{
+				return PacketCache<MapPatches>.Acquire(5, c => new MapPatches(c));
+			}
+
+			if (ns.Flags.HasFlag(ClientFlags.Malas))
+			{
+				return PacketCache<MapPatches>.Acquire(4, c => new MapPatches(c));
+			}
+
+			if (ns.Flags.HasFlag(ClientFlags.Ilshenar))
+			{
+				return PacketCache<MapPatches>.Acquire(3, c => new MapPatches(c));
+			}
+
+			if (ns.Flags.HasFlag(ClientFlags.Trammel))
+			{
+				return PacketCache<MapPatches>.Acquire(2, c => new MapPatches(c));
+			}
+
+			if (ns.Flags.HasFlag(ClientFlags.Felucca))
+			{
+				return PacketCache<MapPatches>.Acquire(1, c => new MapPatches(c));
+			}
+
+			return PacketCache<MapPatches>.Acquire(0, c => new MapPatches(c));
+		}
+
+		private MapPatches(int count)
 			: base(0xBF)
 		{
-			EnsureCapacity(9 + (3 * 8));
+			EnsureCapacity(9 + (3 * count));
 
 			m_Stream.Write((short)0x0018);
 
-			m_Stream.Write(4);
+			m_Stream.Write(count);
 
-			m_Stream.Write(Map.Felucca.Tiles.Patch.StaticBlocks);
-			m_Stream.Write(Map.Felucca.Tiles.Patch.LandBlocks);
+			if (count >= 1)
+			{
+				m_Stream.Write(Map.Felucca.Tiles.Patch.StaticBlocks);
+				m_Stream.Write(Map.Felucca.Tiles.Patch.LandBlocks);
+			}
 
-			m_Stream.Write(Map.Trammel.Tiles.Patch.StaticBlocks);
-			m_Stream.Write(Map.Trammel.Tiles.Patch.LandBlocks);
+			if (count >= 2)
+			{
+				m_Stream.Write(Map.Trammel.Tiles.Patch.StaticBlocks);
+				m_Stream.Write(Map.Trammel.Tiles.Patch.LandBlocks);
+			}
 
-			m_Stream.Write(Map.Ilshenar.Tiles.Patch.StaticBlocks);
-			m_Stream.Write(Map.Ilshenar.Tiles.Patch.LandBlocks);
+			if (count >= 3)
+			{
+				m_Stream.Write(Map.Ilshenar.Tiles.Patch.StaticBlocks);
+				m_Stream.Write(Map.Ilshenar.Tiles.Patch.LandBlocks);
+			}
 
-			m_Stream.Write(Map.Malas.Tiles.Patch.StaticBlocks);
-			m_Stream.Write(Map.Malas.Tiles.Patch.LandBlocks);
+			if (count >= 4)
+			{
+				m_Stream.Write(Map.Malas.Tiles.Patch.StaticBlocks);
+				m_Stream.Write(Map.Malas.Tiles.Patch.LandBlocks);
+			}
 
-			//TODO: Should this include newer facets?
+			if (count >= 5)
+			{
+				m_Stream.Write(Map.Tokuno.Tiles.Patch.StaticBlocks);
+				m_Stream.Write(Map.Tokuno.Tiles.Patch.LandBlocks);
+			}
+
+			if (count >= 6)
+			{
+				m_Stream.Write(Map.TerMur.Tiles.Patch.StaticBlocks);
+				m_Stream.Write(Map.TerMur.Tiles.Patch.LandBlocks);
+			}
 		}
 	}
 
@@ -2647,24 +2710,9 @@ namespace Server.Network
 
 	public sealed class DisplayGumpPacked : Packet, IGumpWriter
 	{
-		public int TextEntries { get; set; }
-		public int Switches { get; set; }
+		private const int GumpBufferSize = 0x10000;
 
-		private readonly Gump m_Gump;
-
-		private readonly PacketWriter m_Layout;
-		private readonly PacketWriter m_Strings;
-
-		private int m_StringCount;
-
-		public DisplayGumpPacked(Gump gump)
-			: base(0xDD)
-		{
-			m_Gump = gump;
-
-			m_Layout = PacketWriter.CreateInstance(8192);
-			m_Strings = PacketWriter.CreateInstance(8192);
-		}
+		private static readonly BufferPool m_PackBuffers = new BufferPool("Gump", 4, GumpBufferSize);
 
 		private static readonly byte[] m_True = Gump.StringToBuffer(" 1");
 		private static readonly byte[] m_False = Gump.StringToBuffer(" 0");
@@ -2677,6 +2725,25 @@ namespace Server.Network
 		static DisplayGumpPacked()
 		{
 			m_Buffer[0] = (byte)' ';
+		}
+
+		public int TextEntries { get; set; }
+		public int Switches { get; set; }
+
+		private readonly Gump m_Gump;
+
+		private PacketWriter m_Layout;
+		private PacketWriter m_Strings;
+
+		private int m_StringCount;
+
+		public DisplayGumpPacked(Gump gump)
+			: base(0xDD)
+		{
+			m_Gump = gump;
+
+			m_Layout = PacketWriter.CreateInstance(8192);
+			m_Strings = PacketWriter.CreateInstance(8192);
 		}
 
 		public void AppendLayout(bool val)
@@ -2743,18 +2810,16 @@ namespace Server.Network
 
 			// Note: layout MUST be null terminated
 			m_Layout.Write((byte)0);
+
 			WritePacked(m_Layout);
 
 			m_Stream.Write(m_StringCount);
 
 			WritePacked(m_Strings);
 
-			PacketWriter.ReleaseInstance(m_Layout);
-			PacketWriter.ReleaseInstance(m_Strings);
+			PacketWriter.ReleaseInstance(ref m_Layout);
+			PacketWriter.ReleaseInstance(ref m_Strings);
 		}
-
-		private const int GumpBufferSize = 0x10000;
-		private static readonly BufferPool m_PackBuffers = new BufferPool("Gump", 4, GumpBufferSize);
 
 		private void WritePacked(PacketWriter src)
 		{
@@ -2772,31 +2837,35 @@ namespace Server.Network
 			wantLength += 4095;
 			wantLength &= ~4095;
 
-			byte[] m_PackBuffer;
-			lock (m_PackBuffers)
-				m_PackBuffer = m_PackBuffers.AcquireBuffer();
-
-			if (m_PackBuffer.Length < wantLength)
+			var packBuffer = m_PackBuffers.AcquireBuffer();
+			
+			if (packBuffer.Length < wantLength)
 			{
-				//Console.WriteLine("Notice: DisplayGumpPacked creating new {0} byte buffer", wantLength);
-				m_PackBuffer = new byte[wantLength];
+				packBuffer = new byte[wantLength];
 			}
 
-			var packLength = m_PackBuffer.Length;
+			var packLength = packBuffer.Length;
 
-			Compression.Pack(m_PackBuffer, ref packLength, buffer, length, ZLibQuality.Default);
+			Compression.Pack(packBuffer, ref packLength, buffer, length, ZLibQuality.Default);
 
 			m_Stream.Write(4 + packLength);
 			m_Stream.Write(length);
-			m_Stream.Write(m_PackBuffer, 0, packLength);
+			m_Stream.Write(packBuffer, 0, packLength);
 
-			lock (m_PackBuffers)
-				m_PackBuffers.ReleaseBuffer(m_PackBuffer);
+			m_PackBuffers.ReleaseBuffer(ref packBuffer);
 		}
 	}
 
 	public sealed class DisplayGumpFast : Packet, IGumpWriter
 	{
+		private static readonly byte[] m_True = Gump.StringToBuffer(" 1");
+		private static readonly byte[] m_False = Gump.StringToBuffer(" 0");
+
+		private static readonly byte[] m_BeginTextSeparator = Gump.StringToBuffer(" @");
+		private static readonly byte[] m_EndTextSeparator = Gump.StringToBuffer("@");
+
+		private readonly byte[] m_Buffer = new byte[48];
+
 		private int m_LayoutLength;
 
 		public int TextEntries { get; set; }
@@ -2816,14 +2885,6 @@ namespace Server.Network
 			m_Stream.Write((ushort)0xFFFF);
 		}
 
-		private static readonly byte[] m_True = Gump.StringToBuffer(" 1");
-		private static readonly byte[] m_False = Gump.StringToBuffer(" 0");
-
-		private static readonly byte[] m_BeginTextSeparator = Gump.StringToBuffer(" @");
-		private static readonly byte[] m_EndTextSeparator = Gump.StringToBuffer("@");
-
-		private readonly byte[] m_Buffer = new byte[48];
-
 		public void AppendLayout(bool val)
 		{
 			AppendLayout(val ? m_True : m_False);
@@ -2835,6 +2896,7 @@ namespace Server.Network
 			var bytes = Encoding.ASCII.GetBytes(toString, 0, toString.Length, m_Buffer, 1) + 1;
 
 			m_Stream.Write(m_Buffer, 0, bytes);
+
 			m_LayoutLength += bytes;
 		}
 
@@ -2844,6 +2906,7 @@ namespace Server.Network
 			var bytes = Encoding.ASCII.GetBytes(toString, 0, toString.Length, m_Buffer, 1);
 
 			m_Stream.Write(m_Buffer, 1, bytes);
+
 			m_LayoutLength += bytes;
 		}
 
@@ -2852,7 +2915,9 @@ namespace Server.Network
 			AppendLayout(m_BeginTextSeparator);
 
 			var length = text.Length;
+
 			m_Stream.WriteAsciiFixed(text, length);
+
 			m_LayoutLength += length;
 
 			AppendLayout(m_EndTextSeparator);
@@ -2861,7 +2926,9 @@ namespace Server.Network
 		public void AppendLayout(byte[] buffer)
 		{
 			var length = buffer.Length;
+
 			m_Stream.Write(buffer, 0, length);
+
 			m_LayoutLength += length;
 		}
 
@@ -3048,18 +3115,49 @@ namespace Server.Network
 
 	public sealed class MapChange : Packet
 	{
-		public MapChange(Mobile m)
+		public static MapChange Felucca => PacketCache<MapChange>.Acquire(0, id => new MapChange(id));
+		public static MapChange Trammel => PacketCache<MapChange>.Acquire(1, id => new MapChange(id));
+		public static MapChange Ilshenar => PacketCache<MapChange>.Acquire(2, id => new MapChange(id));
+		public static MapChange Malas => PacketCache<MapChange>.Acquire(3, id => new MapChange(id));
+		public static MapChange Tokuno => PacketCache<MapChange>.Acquire(4, id => new MapChange(id));
+		public static MapChange TerMur => PacketCache<MapChange>.Acquire(5, id => new MapChange(id));
+
+		public static bool Send(NetState ns)
+		{
+			return Send(ns, Instantiate(ns));
+		}
+
+		public static MapChange Instantiate(NetState ns)
+		{
+			var mapID = ns.Mobile?.Map?.MapID ?? 0;
+
+			return PacketCache<MapChange>.Acquire(mapID, id => new MapChange(id));
+		}
+
+		private MapChange(int mapID)
 			: base(0xBF)
 		{
 			EnsureCapacity(6);
 
 			m_Stream.Write((short)0x08);
-			m_Stream.Write((byte)(m.Map?.MapID ?? 0));
+			m_Stream.Write((byte)mapID);
 		}
 	}
 
 	public sealed class SeasonChange : Packet
 	{
+		public static SeasonChange Spring => PacketCache<SeasonChange>.Acquire(1 << 0, () => new SeasonChange(0, false));
+		public static SeasonChange Summer => PacketCache<SeasonChange>.Acquire(1 << 1, () => new SeasonChange(1, false));
+		public static SeasonChange Autumn => PacketCache<SeasonChange>.Acquire(1 << 2, () => new SeasonChange(2, false));
+		public static SeasonChange Winter => PacketCache<SeasonChange>.Acquire(1 << 3, () => new SeasonChange(3, false));
+		public static SeasonChange Desolate => PacketCache<SeasonChange>.Acquire(1 << 4, () => new SeasonChange(4, false));
+
+		public static SeasonChange SpringSFX => PacketCache<SeasonChange>.Acquire(1 << 5, () => new SeasonChange(0, true));
+		public static SeasonChange SummerSFX => PacketCache<SeasonChange>.Acquire(1 << 6, () => new SeasonChange(1, true));
+		public static SeasonChange AutumnSFX => PacketCache<SeasonChange>.Acquire(1 << 7, () => new SeasonChange(2, true));
+		public static SeasonChange WinterSFX => PacketCache<SeasonChange>.Acquire(1 << 8, () => new SeasonChange(3, true));
+		public static SeasonChange DesolateSFX => PacketCache<SeasonChange>.Acquire(1 << 9, () => new SeasonChange(4, true));
+
 		public static bool Send(NetState ns, bool playSound)
 		{
 			return Send(ns, Instantiate(ns, playSound));
@@ -3067,11 +3165,11 @@ namespace Server.Network
 
 		public static SeasonChange Instantiate(NetState ns, bool playSound)
 		{
-			var season = Math.Max(0, Math.Min(5, ns.Mobile?.GetSeason() ?? 0));
+			var season = Math.Max(0, Math.Min(4, ns.Mobile?.GetSeason() ?? 0));
 
-			var hash = (season << 16) | (playSound ? 1 : 0);
+			var uid = 1 << (season + (playSound ? 5 : 0));
 
-			return PacketCache<SeasonChange>.Acquire(hash, () => new SeasonChange(season, playSound));
+			return PacketCache<SeasonChange>.Acquire(uid, () => new SeasonChange(season, playSound));
 		}
 
 		private SeasonChange(int season, bool playSound)
@@ -4532,32 +4630,23 @@ namespace Server.Network
 
 	public static class PacketCache<P> where P : Packet
 	{
-		private static readonly ThreadLocal<P> m_Instance = new ThreadLocal<P>();
+		private static readonly ConcurrentDictionary<object, P> m_Instances = new ConcurrentDictionary<object, P>();
 
-		private static volatile ConcurrentDictionary<object, P> m_Instances;
+		private static volatile P m_Instance;
 
 		public static P Global(Func<P> ctor)
 		{
-			var p = m_Instance.Value;
-
-			if (p == null || (p.State & PacketState.Static) == 0)
+			if ((m_Instance?.State & PacketState.Static) != PacketState.Static)
 			{
-				m_Instance.Value = p = Packet.SetStatic(ctor());
+				return m_Instance = Packet.SetStatic(ctor());
 			}
 
-			return p;
+			return m_Instance;
 		}
 
 		public static P Acquire<K>(K key, Func<P> ctor)
 		{
-			if (m_Instances == null)
-			{
-				m_Instances = new ConcurrentDictionary<object, P>();
-			}
-
-			m_Instances.TryGetValue(key, out var p);
-
-			if (p == null || (p.State & PacketState.Static) == 0)
+			if (!m_Instances.TryGetValue(key, out var p) || (p?.State & PacketState.Static) != PacketState.Static)
 			{
 				m_Instances[key] = p = Packet.SetStatic(ctor());
 			}
@@ -4567,14 +4656,7 @@ namespace Server.Network
 
 		public static P Acquire<K>(K key, Func<K, P> ctor)
 		{
-			if (m_Instances == null)
-			{
-				m_Instances = new ConcurrentDictionary<object, P>();
-			}
-
-			m_Instances.TryGetValue(key, out var p);
-
-			if (p == null || (p.State & PacketState.Static) == 0)
+			if (!m_Instances.TryGetValue(key, out var p) || (p?.State & PacketState.Static) != PacketState.Static)
 			{
 				m_Instances[key] = p = Packet.SetStatic(ctor(key));
 			}
@@ -4584,19 +4666,12 @@ namespace Server.Network
 
 		public static void Free()
 		{
-			var p = m_Instance.Value;
-
-			if (p != null)
-			{
-				Packet.Release(ref p);
-
-				m_Instance.Value = default(P);
-			}
+			Packet.Release(Interlocked.Exchange(ref m_Instance, null));
 		}
 
 		public static void Free<K>(K key)
 		{
-			if (m_Instances != null && m_Instances.TryRemove(key, out var p))
+			if (m_Instances.TryRemove(key, out var p))
 			{
 				Packet.Release(ref p);
 			}
@@ -4606,12 +4681,9 @@ namespace Server.Network
 		{
 			Free();
 
-			if (m_Instances != null)
+			if (m_Instances.Count > 0)
 			{
-				foreach (var p in m_Instances.Values)
-				{
-					Packet.Release(p);
-				}
+				Parallel.ForEach(m_Instances.Values, Packet.Release);
 
 				m_Instances.Clear();
 			}
@@ -4631,60 +4703,10 @@ namespace Server.Network
 
 	public abstract class Packet
 	{
-		protected PacketWriter m_Stream;
-
-		private readonly int m_PacketID;
-		private readonly int m_Length;
-
-		private PacketState m_State;
-
-		public int PacketID => m_PacketID;
-
-		public PacketState State => m_State;
-
-		protected Packet(int packetID)
-		{
-			m_PacketID = packetID;
-
-			if (Core.Profiling)
-			{
-				var prof = PacketSendProfile.Acquire(GetType());
-				prof.Increment();
-			}
-		}
-
-		protected Packet(int packetID, int length)
-			: this(packetID, length, PacketWriter.CreateInstance(length))
-		{ }
-
-		protected Packet(int packetID, int length, PacketWriter stream)
-		{
-			m_PacketID = packetID;
-			m_Length = length;
-
-			m_Stream = stream;
-			m_Stream.Write((byte)packetID);
-
-			if (Core.Profiling)
-			{
-				var prof = PacketSendProfile.Acquire(GetType());
-				prof.Increment();
-			}
-		}
-
-		public void EnsureCapacity(int length)
-		{
-			m_Stream = PacketWriter.CreateInstance(length);// new PacketWriter( length );
-			m_Stream.Write((byte)m_PacketID);
-			m_Stream.Write((short)0);
-		}
-
-		public PacketWriter UnderlyingStream => m_Stream;
-
 		private const int CompressorBufferSize = 0x10000;
-		private static readonly BufferPool m_CompressorBuffers = new BufferPool("Compressor", 4, CompressorBufferSize);
-
 		private const int BufferSize = 4096;
+
+		private static readonly BufferPool m_CompressorBuffers = new BufferPool("Compressor", 4, CompressorBufferSize);
 		private static readonly BufferPool m_Buffers = new BufferPool("Compressed", 16, BufferSize);
 
 		public static bool Send(NetState ns, Packet p)
@@ -4724,6 +4746,60 @@ namespace Server.Network
 			p = null;
 		}
 
+		private readonly int m_PacketID;
+		private readonly int m_Length;
+
+		private volatile byte[] m_CompiledBuffer;
+		private volatile int m_CompiledLength;
+
+		private volatile PacketState m_State;
+
+		protected PacketWriter m_Stream;
+
+		public int PacketID => m_PacketID;
+
+		public PacketState State => m_State;
+		public PacketWriter Stream => m_Stream;
+
+		protected Packet(int packetID)
+		{
+			m_PacketID = packetID;
+
+			if (Core.Profiling)
+			{
+				var prof = PacketSendProfile.Acquire(GetType());
+				prof.Increment();
+			}
+		}
+
+		protected Packet(int packetID, int length)
+			: this(packetID, length, PacketWriter.CreateInstance(length))
+		{ }
+
+		protected Packet(int packetID, int length, PacketWriter stream)
+		{
+			m_PacketID = packetID;
+			m_Length = length;
+
+			m_Stream = stream;
+			m_Stream.Write((byte)packetID);
+
+			if (Core.Profiling)
+			{
+				var prof = PacketSendProfile.Acquire(GetType());
+
+				prof.Increment();
+			}
+		}
+
+		public void EnsureCapacity(int length)
+		{
+			m_Stream = PacketWriter.CreateInstance(length);
+
+			m_Stream.Write((byte)m_PacketID);
+			m_Stream.Write((short)0);
+		}
+
 		public void SetStatic()
 		{
 			m_State |= PacketState.Static | PacketState.Acquired;
@@ -4738,30 +4814,27 @@ namespace Server.Network
 		{
 			Core.Set();
 
-			lock (this)
+			if ((m_State & (PacketState.Acquired | PacketState.Static)) == 0)
 			{
-				if ((m_State & (PacketState.Acquired | PacketState.Static)) == 0)
-				{
-					Free();
-				}
+				Free();
 			}
 		}
 
 		protected virtual void Free()
 		{
-			if (m_CompiledBuffer == null)
+			var buffer = Interlocked.Exchange(ref m_CompiledBuffer, null);
+
+			if (buffer == null)
 			{
 				return;
 			}
 
 			if ((m_State & PacketState.Buffered) != 0)
 			{
-				m_Buffers.ReleaseBuffer(m_CompiledBuffer);
+				m_Buffers.ReleaseBuffer(ref buffer);
 			}
 
 			m_State &= ~(PacketState.Static | PacketState.Acquired | PacketState.Buffered);
-
-			m_CompiledBuffer = null;
 		}
 
 		public void Release()
@@ -4771,9 +4844,6 @@ namespace Server.Network
 				Free();
 			}
 		}
-
-		private byte[] m_CompiledBuffer;
-		private int m_CompiledLength;
 
 		public byte[] Compile(bool compress, out int length)
 		{
@@ -4806,9 +4876,9 @@ namespace Server.Network
 						}
 
 						m_CompiledBuffer = new byte[0];
-						m_CompiledLength = 0;
 
-						length = m_CompiledLength;
+						length = m_CompiledLength = 0;
+
 						return m_CompiledBuffer;
 					}
 
@@ -4816,6 +4886,7 @@ namespace Server.Network
 				}
 
 				length = m_CompiledLength;
+
 				return m_CompiledBuffer;
 			}
 		}
@@ -4839,32 +4910,22 @@ namespace Server.Network
 			var ms = m_Stream.UnderlyingStream;
 
 			m_CompiledBuffer = ms.GetBuffer();
+
 			var length = (int)ms.Length;
 
 			if (compress)
 			{
-				byte[] buffer;
-
-				lock (m_CompressorBuffers)
-					buffer = m_CompressorBuffers.AcquireBuffer();
+				var buffer  = m_CompressorBuffers.AcquireBuffer();
 
 				Compression.Compress(m_CompiledBuffer, 0, length, buffer, ref length);
 
 				if (length <= 0)
 				{
-					Console.WriteLine(
-						"Warning: Compression buffer overflowed on packet 0x{0:X2} ('{1}') (length={2})",
-						m_PacketID,
-						GetType().Name,
-						length);
+					Console.WriteLine($"Warning: Compression buffer overflowed on packet 0x{m_PacketID:X2} ('{GetType().Name}') (length={length})");
+
 					using (var op = new StreamWriter("compression_overflow.log", true))
 					{
-						op.WriteLine(
-							"{0} Warning: Compression buffer overflowed on packet 0x{1:X2} ('{2}') (length={3})",
-							DateTime.UtcNow,
-							m_PacketID,
-							GetType().Name,
-							length);
+						op.WriteLine($"{DateTime.UtcNow} Warning: Compression buffer overflowed on packet 0x{m_PacketID:X2} ('{GetType().Name}') (length={length})");
 						op.WriteLine(new StackTrace());
 					}
 				}
@@ -4879,19 +4940,22 @@ namespace Server.Network
 					else
 					{
 						lock (m_Buffers)
+						{
 							m_CompiledBuffer = m_Buffers.AcquireBuffer();
+						}
+
 						m_State |= PacketState.Buffered;
 					}
 
 					Buffer.BlockCopy(buffer, 0, m_CompiledBuffer, 0, length);
 
-					lock (m_CompressorBuffers)
-						m_CompressorBuffers.ReleaseBuffer(buffer);
+					m_CompressorBuffers.ReleaseBuffer(ref buffer);
 				}
 			}
 			else if (length > 0)
 			{
 				var old = m_CompiledBuffer;
+
 				m_CompiledLength = length;
 
 				if (length > BufferSize || (m_State & PacketState.Static) != 0)
@@ -4900,16 +4964,15 @@ namespace Server.Network
 				}
 				else
 				{
-					lock (m_Buffers)
-						m_CompiledBuffer = m_Buffers.AcquireBuffer();
+					m_CompiledBuffer = m_Buffers.AcquireBuffer();
+
 					m_State |= PacketState.Buffered;
 				}
 
 				Buffer.BlockCopy(old, 0, m_CompiledBuffer, 0, length);
 			}
 
-			PacketWriter.ReleaseInstance(m_Stream);
-			m_Stream = null;
+			PacketWriter.ReleaseInstance(ref m_Stream);
 		}
 	}
 }

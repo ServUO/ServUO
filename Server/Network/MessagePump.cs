@@ -341,7 +341,7 @@ namespace Server.Network
 
 						if (BufferSize >= packetLength)
 						{
-							m_Buffers.ReleaseBuffer(packetBuffer);
+							m_Buffers.ReleaseBuffer(ref packetBuffer);
 						}
 					}
 

@@ -104,12 +104,9 @@ namespace Server.Network
 
 		public static void ReleaseBuffer(byte[] buffer)
 		{
-			lock (m_UnusedBuffers)
+			if (buffer != null && buffer.Length == m_CoalesceBufferSize)
 			{
-				if (buffer != null && buffer.Length == m_CoalesceBufferSize)
-				{
-					m_UnusedBuffers.ReleaseBuffer(buffer);
-				}
+				m_UnusedBuffers.ReleaseBuffer(ref buffer);
 			}
 		}
 

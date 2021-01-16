@@ -644,7 +644,7 @@ namespace Server.Engines.VendorSearching
             item.GetProperties(opl);
 
             //since the object property list is based on a packet object, the property info is packed away in a packet format
-            byte[] data = opl.UnderlyingStream.UnderlyingStream.ToArray();
+            byte[] data = opl.Stream.UnderlyingStream.ToArray();
 
             int index = 15; // First localization number index
             string basestring = null;

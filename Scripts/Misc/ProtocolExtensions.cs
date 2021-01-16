@@ -25,7 +25,7 @@ namespace Server.Misc
             {
                 AckPartyLocations ack = new AckPartyLocations(from, party);
 
-                if (ack.UnderlyingStream.Length > 8)
+                if (ack.Stream.Length > 8)
                     state.Send(ack);
             }
         }
@@ -41,7 +41,7 @@ namespace Server.Misc
 
                 AckGuildsLocations packet = new AckGuildsLocations(from, guild, locations);
 
-                if (packet.UnderlyingStream.Length > (locations ? 9 : 5))
+                if (packet.Stream.Length > (locations ? 9 : 5))
                     state.Send(packet);
             }
             else

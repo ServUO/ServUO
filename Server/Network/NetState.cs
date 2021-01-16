@@ -707,7 +707,7 @@ namespace Server.Network
 
 						if (buffered && m_SendBufferPool.Count < SendBufferCapacity)
 						{
-							m_SendBufferPool.ReleaseBuffer(buffer);
+							m_SendBufferPool.ReleaseBuffer(ref buffer);
 						}
 
 						if (gram != null && !_Sending)
@@ -1123,13 +1123,7 @@ namespace Server.Network
 				TraceException(ex);
 			}
 
-			if (m_RecvBuffer != null)
-			{
-				lock (m_ReceiveBufferPool)
-				{
-					m_ReceiveBufferPool.ReleaseBuffer(m_RecvBuffer);
-				}
-			}
+			m_ReceiveBufferPool.ReleaseBuffer(ref m_RecvBuffer);
 
 			Socket = null;
 

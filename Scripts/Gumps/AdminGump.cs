@@ -311,41 +311,28 @@ namespace Server.Gumps
                         sb.Append(((maxIOCP - curIOCP) * 100) / maxIOCP);
                         sb.Append("%");
 
-                        List<BufferPool> pools = BufferPool.Pools;
-
-                        lock (pools)
+                        foreach (var pool in BufferPool.Pools)
                         {
-                            for (int i = 0; i < pools.Count; ++i)
-                            {
-                                BufferPool pool = pools[i];
-                                string name;
-                                int freeCount;
-                                int initialCapacity;
-                                int currentCapacity;
-                                int bufferSize;
-                                int misses;
+                            pool.GetInfo(out var name, out var freeCount, out _, out var currentCapacity, out var bufferSize, out var misses);
 
-                                pool.GetInfo(out name, out freeCount, out initialCapacity, out currentCapacity, out bufferSize, out misses);
+                            if (sb.Length > 0)
+                                sb.Append("<br><br>");
 
-                                if (sb.Length > 0)
-                                    sb.Append("<br><br>");
-
-                                sb.Append(name);
-                                sb.Append("<br>Size: ");
-                                sb.Append(FormatByteAmount(bufferSize));
-                                sb.Append("<br>Capacity: ");
-                                sb.Append(currentCapacity);
-                                sb.Append(" (");
-                                sb.Append(misses);
-                                sb.Append(" misses)<br>Available: ");
-                                sb.Append(freeCount);
-                                sb.Append("<br>Usage: ");
-                                sb.Append(((currentCapacity - freeCount) * 100) / currentCapacity);
-                                sb.Append("% : ");
-                                sb.Append(FormatByteAmount((currentCapacity - freeCount) * bufferSize));
-                                sb.Append(" of ");
-                                sb.Append(FormatByteAmount(currentCapacity * bufferSize));
-                            }
+                            sb.Append(name);
+                            sb.Append("<br>Size: ");
+                            sb.Append(FormatByteAmount(bufferSize));
+                            sb.Append("<br>Capacity: ");
+                            sb.Append(currentCapacity);
+                            sb.Append(" (");
+                            sb.Append(misses);
+                            sb.Append(" misses)<br>Available: ");
+                            sb.Append(freeCount);
+                            sb.Append("<br>Usage: ");
+                            sb.Append(((currentCapacity - freeCount) * 100) / currentCapacity);
+                            sb.Append("% : ");
+                            sb.Append(FormatByteAmount((currentCapacity - freeCount) * bufferSize));
+                            sb.Append(" of ");
+                            sb.Append(FormatByteAmount(currentCapacity * bufferSize));
                         }
 
                         AddLabel(20, 200, LabelHue, "Pooling:");

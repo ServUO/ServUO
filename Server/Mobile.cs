@@ -9363,9 +9363,10 @@ namespace Server
 				SupportedFeatures.Send(ns);
 
 				if (m_Map != null)
-				{
-					ns.Send(new MapChange(this));
-					ns.Send(new MapPatches());
+				{				
+					MapPatches.Send(ns);
+					MapChange.Send(ns);	
+
 					ns.Send(new ServerChange(this, m_Map));
 
 					SeasonChange.Send(ns, true);

@@ -2414,15 +2414,13 @@ namespace Server.Multis
 
             int planeCount = 0;
 
-            byte[] m_DeflatedBuffer = null;
-            lock (m_DeflatedBufferPool)
-                m_DeflatedBuffer = m_DeflatedBufferPool.AcquireBuffer();
+            byte[] deflatedBuffer = m_DeflatedBufferPool.AcquireBuffer();
 
             for (int i = 0; i < mPlaneBuffers.Length; ++i)
             {
                 if (!m_PlaneUsed[i])
                 {
-                    m_PlaneBufferPool.ReleaseBuffer(mPlaneBuffers[i]);
+                    m_PlaneBufferPool.ReleaseBuffer(ref mPlaneBuffers[i]);
                     continue;
                 }
 
@@ -2439,8 +2437,8 @@ namespace Server.Multis
 
                 byte[] inflatedBuffer = mPlaneBuffers[i];
 
-                int deflatedLength = m_DeflatedBuffer.Length;
-                ZLibError ce = Compression.Pack(m_DeflatedBuffer, ref deflatedLength, inflatedBuffer, size, ZLibQuality.Default);
+                int deflatedLength = deflatedBuffer.Length;
+                ZLibError ce = Compression.Pack(deflatedBuffer, ref deflatedLength, inflatedBuffer, size, ZLibQuality.Default);
 
                 if (ce != ZLibError.Okay)
                 {
@@ -2453,11 +2451,11 @@ namespace Server.Multis
                 Write((byte)size);
                 Write((byte)deflatedLength);
                 Write((byte)(((size >> 4) & 0xF0) | ((deflatedLength >> 8) & 0xF)));
-                Write(m_DeflatedBuffer, 0, deflatedLength);
+                Write(deflatedBuffer, 0, deflatedLength);
 
                 totalLength += 4 + deflatedLength;
-                lock (m_PlaneBufferPool)
-                    m_PlaneBufferPool.ReleaseBuffer(inflatedBuffer);
+                
+				m_PlaneBufferPool.ReleaseBuffer(ref inflatedBuffer);
             }
 
             int totalStairBuffersUsed = (totalStairsUsed + (MaxItemsPerStairBuffer - 1)) / MaxItemsPerStairBuffer;
@@ -2475,8 +2473,8 @@ namespace Server.Multis
 
                 byte[] inflatedBuffer = mStairBuffers[i];
 
-                int deflatedLength = m_DeflatedBuffer.Length;
-                ZLibError ce = Compression.Pack(m_DeflatedBuffer, ref deflatedLength, inflatedBuffer, size, ZLibQuality.Default);
+                int deflatedLength = deflatedBuffer.Length;
+                ZLibError ce = Compression.Pack(deflatedBuffer, ref deflatedLength, inflatedBuffer, size, ZLibQuality.Default);
 
                 if (ce != ZLibError.Okay)
                 {
@@ -2489,17 +2487,15 @@ namespace Server.Multis
                 Write((byte)size);
                 Write((byte)deflatedLength);
                 Write((byte)(((size >> 4) & 0xF0) | ((deflatedLength >> 8) & 0xF)));
-                Write(m_DeflatedBuffer, 0, deflatedLength);
+                Write(deflatedBuffer, 0, deflatedLength);
 
                 totalLength += 4 + deflatedLength;
             }
 
-            lock (m_StairBufferPool)
-                for (int i = 0; i < mStairBuffers.Length; ++i)
-                    m_StairBufferPool.ReleaseBuffer(mStairBuffers[i]);
+			for (int i = 0; i < mStairBuffers.Length; ++i)
+				m_StairBufferPool.ReleaseBuffer(ref mStairBuffers[i]);
 
-            lock (m_DeflatedBufferPool)
-                m_DeflatedBufferPool.ReleaseBuffer(m_DeflatedBuffer);
+            m_DeflatedBufferPool.ReleaseBuffer(ref deflatedBuffer);
 
             m_Stream.Seek(15, SeekOrigin.Begin);
 
