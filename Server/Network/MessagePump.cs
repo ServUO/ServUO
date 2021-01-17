@@ -205,14 +205,22 @@ namespace Server.Network
 
 		public void HandleReceive(NetState ns)
 		{
-			var buffer = ns.Buffer;
+			var queue = ns.Buffer;
+			var slice = ns.BufferSlice;
 
-			if (buffer == null || buffer.Length <= 0)
+			if (queue == null || slice == null)
 			{
 				return;
 			}
 
-			lock (buffer)
+			var buffer = slice.Length > 0 ? slice : queue;
+
+			if (buffer.Length <= 0)
+			{
+				return;
+			}
+
+			lock (queue)
 			{
 				if (!ns.Seeded && !HandleSeed(ns, buffer))
 				{
@@ -240,28 +248,34 @@ namespace Server.Network
 						return;
 					}
 
+					var remainLength = 0;
 					var packetLength = handler.Length;
 
 					if (packetLength <= 0)
 					{
-						if (length >= 3)
+						remainLength = 3;
+
+						if (length >= remainLength)
 						{
 							packetLength = buffer.GetPacketLength();
 
-							if (packetLength < 3)
+							if (packetLength < remainLength)
 							{
 								ns.Dispose();
 								return;
 							}
-						}
-						else
-						{
-							return;
+
+							remainLength = packetLength - length;
 						}
 					}
 
-					if (length < packetLength)
+					if (remainLength > 0)
 					{
+						if (buffer == slice)
+						{
+							queue.CopyTo(slice, remainLength);
+						}
+
 						return;
 					}
 
@@ -269,20 +283,14 @@ namespace Server.Network
 					{
 						if (ns.Mobile == null)
 						{
-							Utility.PushColor(ConsoleColor.Red);
-							Console.WriteLine("Client: {0}: Packet (0x{1:X2}) Requires State Mobile", ns, packetID);
-							Utility.PopColor();
-
+							Utility.WriteConsoleColor(ConsoleColor.Red, $"Client: {ns}: Packet (0x{packetID:X2}) Requires State Mobile");
 							ns.Dispose();
 							return;
 						}
 
 						if (ns.Mobile.Deleted)
 						{
-							Utility.PushColor(ConsoleColor.Red);
-							Console.WriteLine("Client: {0}: Packet (0x{1:X2}) Ivalid State Mobile", ns, packetID);
-							Utility.PopColor();
-
+							Utility.WriteConsoleColor(ConsoleColor.Red, $"Client: {ns}: Packet (0x{packetID:X2}) Ivalid State Mobile");
 							ns.Dispose();
 							return;
 						}
@@ -292,7 +300,6 @@ namespace Server.Network
 
 					if (throttler != null)
 					{
-
 						if (!throttler(ns, out var drop))
 						{
 							if (!drop)
@@ -322,7 +329,7 @@ namespace Server.Network
 
 					byte[] packetBuffer;
 
-					if (BufferSize >= packetLength)
+					if (packetLength < BufferSize)
 					{
 						packetBuffer = m_Buffers.AcquireBuffer();
 					}
@@ -335,13 +342,55 @@ namespace Server.Network
 
 					if (packetBuffer != null && packetBuffer.Length > 0 && packetLength > 0)
 					{
-						var r = new PacketReader(packetBuffer, packetLength, handler.Length != 0);
+						var reader = false;
+						var handle = false;
 
-						handler.OnReceive(ns, r);
-
-						if (BufferSize >= packetLength)
+						try
 						{
-							m_Buffers.ReleaseBuffer(ref packetBuffer);
+							var r = new PacketReader(packetBuffer, packetLength, handler.Length != 0);
+
+							reader = true;
+
+							handler.OnReceive(ns, r);
+
+							handle = true;
+
+							if (r.Chop > 0)
+							{
+								if (buffer != slice)
+								{
+									slice.Enqueue(packetBuffer, r.Index, r.Chop);
+								}
+								else
+								{
+									Utility.WriteConsoleColor(ConsoleColor.Red, $"Client: {ns}: Packet (0x{packetID:X2}) sliced more than once");
+									ns.Dispose();
+									return;
+								}
+							}
+						}
+						catch (Exception ex)
+						{
+							ExceptionLogging.LogException(ex);
+
+							if (!reader)
+							{
+								Utility.WriteConsoleColor(ConsoleColor.Red, $"Client: {ns}: Packet (0x{packetID:X2}) reader fatal exception");
+							}
+							else if (!handle)
+							{
+								Utility.WriteConsoleColor(ConsoleColor.Red, $"Client: {ns}: Packet (0x{packetID:X2}) handler fatal exception");
+							}
+
+							ns.Dispose();
+							return;
+						}
+						finally
+						{
+							if (BufferSize >= packetLength)
+							{
+								m_Buffers.ReleaseBuffer(ref packetBuffer);
+							}
 						}
 					}
 

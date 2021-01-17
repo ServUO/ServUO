@@ -584,7 +584,11 @@ namespace Server.Network
 		public NetState(Socket socket, MessagePump messagePump)
 		{
 			Socket = socket;
-			Buffer = new ByteQueue();
+
+			for (var i = 0; i < Buffers.Length; i++)
+			{
+				Buffers[i] = new ByteQueue();
+			}
 
 			m_RecvBuffer = m_ReceiveBufferPool.AcquireBuffer();
 			m_MessagePump = messagePump;
@@ -824,7 +828,9 @@ namespace Server.Network
 					}
 
 					lock (Buffer)
+					{
 						Buffer.Enqueue(buffer, 0, byteCount);
+					}
 
 					m_MessagePump.OnReceive(this);
 
@@ -1007,11 +1013,6 @@ namespace Server.Network
 
 		public PacketHandler GetHandler(int packetID)
 		{
-			if (ContainerGridLines)
-			{
-				return PacketHandlers.Get6017Handler(packetID);
-			}
-
 			return PacketHandlers.GetHandler(packetID);
 		}
 
@@ -1130,7 +1131,11 @@ namespace Server.Network
 			PacketEncoder = null;
 			PacketEncryptor = null;
 
-			Buffer = null;
+			for (var i = 0; i < Buffers.Length; i++)
+			{
+				Buffers[i] = null;
+			}
+
 			m_RecvBuffer = null;
 
 			m_OnReceive = null;
@@ -1235,7 +1240,10 @@ namespace Server.Network
 
 		public Socket Socket { get; private set; }
 
-		public ByteQueue Buffer { get; private set; }
+		public ByteQueue[] Buffers { get; } = new ByteQueue[2];
+
+		public ByteQueue Buffer => Buffers[0];
+		public ByteQueue BufferSlice => Buffers[1];
 
 		public ExpansionInfo ExpansionInfo
 		{
