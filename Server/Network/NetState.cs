@@ -638,6 +638,31 @@ namespace Server.Network
 				return;
 			}
 
+			if (Core.Debug && IPAddress.IsLoopback(Address))
+			{
+				using (var s = File.AppendText(Path.Combine("Logs", $"{m_ToString.Replace('.', '-')}.log")))
+				{
+					var pb = p.Stream?.ToArray();
+
+					s.WriteLine();
+
+					if (pb != null)
+					{
+						using (var ms = new MemoryStream(pb))
+						{
+							s.WriteLine($"[CV {m_Version}] {p.GetType()} 0x{p.PacketID:X2} ({ms.Length:N0} bytes)");
+
+							Utility.FormatBuffer(s, ms, pb.Length);
+						}
+					}
+					else
+					{
+						s.WriteLine($"[CV {m_Version}] {p.GetType()} 0x{p.PacketID:X2} (Compiled)");
+					}
+
+					s.Flush();
+				}
+			}
 
 			var buffer = p.Compile(CompressionEnabled, out var length);
 
