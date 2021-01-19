@@ -772,6 +772,7 @@ namespace Server
 		/// <summary>
 		///     The <see cref="Mobile" /> who is currently <see cref="Mobile.Holding">holding</see> this item.
 		/// </summary>
+		[CommandProperty(AccessLevel.Counselor, true)]
 		public Mobile HeldBy
 		{
 			get
@@ -795,8 +796,42 @@ namespace Server
 				{
 					VerifyCompactInfo();
 				}
+
+				if (info.m_HeldBy != null && info.m_HeldBy.Player)
+				{
+					if (info.m_HeldBy.IsStaff())
+					{
+						LastHeldByStaff = info.m_HeldBy;
+
+						if (this is Container c)
+						{
+							foreach (var item in c.FindItemsByType<Item>(true))
+							{
+								item.LastHeldByStaff = info.m_HeldBy;
+							}
+						}
+					}
+					else if (info.m_HeldBy.IsPlayer())
+					{
+						LastHeldByPlayer = info.m_HeldBy;
+
+						if (this is Container c)
+						{
+							foreach (var item in c.FindItemsByType<Item>(true))
+							{
+								item.LastHeldByPlayer = info.m_HeldBy;
+							}
+						}
+					}
+				}
 			}
 		}
+
+		[CommandProperty(AccessLevel.Counselor, true)]
+		public Mobile LastHeldByPlayer { get; private set; }
+
+		[CommandProperty(AccessLevel.Counselor, true)]
+		public Mobile LastHeldByStaff { get; private set; }
 
 		private byte m_GridLocation; // Default 0
 
@@ -2437,7 +2472,11 @@ namespace Server
 
 		public virtual void Serialize(GenericWriter writer)
 		{
-			writer.Write(14); // version
+			writer.Write(15); // version
+
+			// 15
+			writer.Write(LastHeldByPlayer);
+			writer.Write(LastHeldByStaff);
 
 			// 14
 			writer.Write(Sockets != null ? Sockets.Count : 0);
@@ -2943,20 +2982,30 @@ namespace Server
 
 			switch (version)
 			{
+				case 15:
+					{
+						LastHeldByPlayer = reader.ReadMobile();
+						LastHeldByStaff = reader.ReadMobile();
+						goto case 14;
+					}
 				case 14:
-				var socketCount = reader.ReadInt();
+					{
+						var socketCount = reader.ReadInt();
 
-				for (var i = 0; i < socketCount; i++)
-				{
-					ItemSocket.Load(this, reader);
-				}
+						for (var i = 0; i < socketCount; i++)
+						{
+							ItemSocket.Load(this, reader);
+						}
 
-				goto case 13;
+						goto case 13;
+					}
 				case 13:
 				case 12:
 				case 11:
-				m_GridLocation = reader.ReadByte();
-				goto case 10;
+					{
+						m_GridLocation = reader.ReadByte();
+						goto case 10;
+					}
 				case 10:
 					{
 						// Honesty removed to ItemSockets
