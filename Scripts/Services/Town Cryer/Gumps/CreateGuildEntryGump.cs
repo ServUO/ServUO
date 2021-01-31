@@ -48,7 +48,7 @@ namespace Server.Services.TownCryer
             AddTextEntry(530, 240, 19, 20, 0, 4, Entry != null ? Entry.EventTime.Hour.ToString() : "", 2);
 
             AddHtmlLocalized(58, 260, 150, 20, 1158059, false, false); // Event Timezone:
-            AddLabel(155, 260, 0, TimeZone.CurrentTimeZone.StandardName);
+            AddLabel(155, 260, 0, TimeZoneInfo.Local.StandardName);
 
             AddHtmlLocalized(58, 290, 150, 20, 1158060, false, false); // Event Description:
             AddBackground(58, 310, 740, 40, 0x2486);
