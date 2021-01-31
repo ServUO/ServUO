@@ -35,7 +35,7 @@ namespace Server.Services.TownCryer
                 Entry.EventTime.Year,
                 time == 0 ? 12 : time > 12 ? time - 12 : time,
                 Entry.EventTime.Hour >= 12 ? "pm" : "am",
-                TimeZone.CurrentTimeZone.StandardName));
+                TimeZoneInfo.Local.StandardName));
 
             AddLabel(102, 235, 0, Entry.EventLocation);
 
